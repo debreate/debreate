@@ -1,0 +1,34 @@
+<?php
+$download = "
+<table class=standard-font align=center>
+  <TR>
+    <TD VALIGN=top STYLE=text-align:center>
+    
+      <BR><BR>
+      <B>$dl_version</B>
+      <BR><BR>
+      <b>$dl_debian</b><BR>
+      <B><A HREF=http://sourceforge.net/projects/debreate/files/current/debreate_0.7.7_all.deb/download target=_main>$dl</A></B>
+      <BR><BR>
+      <b>$dl_7z<br><grrr class=small-font>$dl_readme</grrr></b><BR>
+      <B><A HREF=https://sourceforge.net/projects/debreate/files/current/debreate_0.7.7_portable.7z/download target=_main>$dl</A></B>
+      <BR><BR>
+      
+      <B><A HREF=https://sourceforge.net/projects/debreate/files/current target=_main>$dl_page</A></B>
+      <br><br>
+      <a href=http://sourceforge.net/projects/debreate/files/locale/$dl_locale_file target=_main>$dl_locale</a>
+      <br>
+      Arabic available thanks to Karim Oulad Chalha<br>
+      French available thanks to Philippe Dalet
+      <BR><BR>
+      
+      <b>$dl_apt</b><BR><FONT COLOR=blue>deb http://debreate.sf.net/apt debreate main</FONT><BR>
+<a href=http://debreate.sf.net/apt/pubkey.asc>$dl_key</a>
+      <br><br>
+      <b>$dl_git</b><br><font color=blue>git clone git://git.code.sf.net/p/debreate/git debreate-git</font><br>
+      <b><a href=\"https://sourceforge.net/p/debreate/git/?branch=ref%2Fmaster\">$git_browse</a></b><br>
+    </TD>
+  </TR>
+</TABLE>
+"
+?>

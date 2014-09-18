@@ -1,0 +1,21 @@
+<?php
+
+// Files
+$pot_file = "res/translate/debreate.pot.zip";
+
+// Images
+$logo = "res/logo/debreate64.png";
+$logo_sourceforge = "res/logo/sourceforge.png";
+$logo_opendesktop = "res/logo/opendesktop.png";
+$menu_bg = "res/decor/menu-center.png";
+
+// Messages
+$maint_message = "</HEAD>
+
+<br><br>
+<h1 style=text-align:center>UNDER CONSTRUCTION<br>Will be back up soon</h1>
+
+</HTML>";
+
+?>
+

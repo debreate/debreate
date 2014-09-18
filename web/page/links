@@ -1,0 +1,109 @@
+<?php
+
+$lang_opts = array('ar', 'en', 'es', 'fr', 'it', 'ja', 'pt');
+$selected = array_search($lang, $lang_opts);
+$lang_opts[$selected] = $lang_opts[$selected] . " selected=true ";
+
+$opt_ar = $lang_opts[0];
+$opt_en = $lang_opts[1];
+$opt_es = $lang_opts[2];
+$opt_fr = $lang_opts[3];
+$opt_it = $lang_opts[4];
+$opt_ja = $lang_opts[5];
+$opt_pt = $lang_opts[6];
+
+$links = "<style type=text/css>
+  body { margin-top: 13px }
+</style>
+
+<div style=font-family:LiberationSerif background=bg.gif>
+
+<table HEIGHT=100% ALIGN=center BORDER=0 CELLSPACING=0 CELLPADDING=0>
+  <TR HEIGHT=1><TD ALIGN=center VALIGN=top>
+      
+      <img src='$logo'>
+      </TD></TR>
+  
+
+  <!-- LANGUAGE -->
+  <tr height = 80>
+    <td align=center valign=center>
+      $lin_lang
+      <br>
+      <select name='lang_select'>
+        <option value=$opt_ar onclick=location='?lang=ar'>العربية
+        </option>
+        <option value=$opt_en onclick=location='?lang=en'>English
+        </option>
+        <option value=$opt_es onclick=location='?lang=es'>Español
+        </option>
+        <option value=$opt_fr onclick=location='?lang=fr'>Français
+        </option>
+        <option value=$opt_it onclick=location='?lang=it'>Italiano
+        </option>
+        <option value=$opt_ja onclick=location='?lang=ja'>日本語
+        </option>
+        <option value=$opt_pt onclick=location='?lang=pt'>Português
+        </option>
+      <select>
+    </td>
+  </tr>
+  
+  <!-- Empty cell for spacing
+  <TR HEIGHT=20></TR> -->
+    
+  <TR HEIGHT=1><TD ALIGN=center VALIGN=top>
+      <A HREF=http://sourceforge.net/projects/debreate target=_main>
+      <IMG SRC='$logo_sourceforge' BORDER=none>
+      </A>
+  </TD></TR>
+  
+  <!-- Empty cell for spacing -->
+  <tr height=20></tr>
+  
+  <TR HEIGHT=1><TD ALIGN=center VALIGN=top>
+      <A HREF=http://www.opendesktop.org/content/show.php?content=101776 target=_main>
+      <IMG SRC='$logo_opendesktop' BORDER=none>
+      </A>
+  </TD></TR>
+  
+  <!-- Empty cell for spacing -->
+  <tr height=20></tr>
+  
+  <tr height=1>
+    <td align=center valign=center>
+      <form action=http://www.freewarefiles.com/programs_2008.php method=post>
+        <input type=hidden name=ProgramID value=56557>
+        <input type=hidden name=categoryid value=10>
+        <input type=hidden name=subcategoryid value=113>
+        <table bgcolor=#3F5C7B border=0 cellspacing=1>
+          <tr>
+            <td bgcolor=#FFFFFF align=center>
+              <font face=\"arial, verdana\" size=2>
+              <a href=http://www.freewarefiles.com/Debreate_program_56557.html target=_main><b>Rate&nbsp;Debreate</b><br><small>at FreewareFiles.com</small>
+              </a>
+              </font>
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor=#FFFFFF align=center>
+              <select name=rating size=1>
+                <option selected value=5>5 - Excellent!</option>
+                <option value=4>4 - Very Good</option>
+                <option value=3>3 - Good</option>
+                <option value=2>2 - Fair</option>
+                <option value=1>1 - Poor</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td bgcolor=#FFFFFF align=center>
+              <input type=submit name=subrev value=\"Submit Rating\">
+            </td>
+          </tr>
+        </table>
+      </form></a></td></tr>
+  
+</TABLE>"
+
+?>

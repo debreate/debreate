@@ -1,0 +1,48 @@
+<?php
+$home = "
+<br>
+<table class=standard-font border=0 align=center width=100%>
+  <tr>
+    <TD valign=top height=50>
+    
+      <p style=text-align:center><b>$php_greeting</b>
+      </p>
+      <p align=justify>$home_main1
+      </p>
+      <p align=justify>$home_main2
+      </p>
+      <p align=justify>$home_main3
+      </p>
+      <p align=right>- Jordan
+      </p>
+      
+      <p align=justify><b>$home_updated</b>
+      </p>
+    </td>
+  </tr>
+</table>
+
+<table style=font-size:large align=center border=0>
+
+  <tr align=center>
+    <td colspan=3><br><br>$home_demo
+    </td>
+  </tr>
+  <tr align=center>
+    <td colspan=3>
+      <object width=480 height=360>
+        <param name=movie value=http://www.youtube.com/v/kx4D5eL6HKE?version=3&amp;hl=en_US>
+        </param>
+        <param name=allowFullScreen value=true>
+        </param>
+        <param name=allowscriptaccess value=always>
+        </param>
+        <embed src=http://www.youtube.com/v/kx4D5eL6HKE?version=3&amp;hl=en_US type=application/x-shockwave-flash width=480 height=360 allowscriptaccess=always allowfullscreen=true>
+        </embed>
+        </object>
+    </td>
+  </tr>
+    
+</table>
+"
+?>

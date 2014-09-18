@@ -1,0 +1,76 @@
+<?php
+// Japanese
+
+// Menu
+$title_plain = "Debreate - Debian の パッケージ ビルダ";
+$title = $title_plain;
+$menu_home = "ホーム";
+$menu_screenshots = "スクショ";
+$menu_usage = "りよう";
+$menu_download = "ダウンロード";
+$menu_translate = "やくす ";
+$menu_author = "私について";
+
+// Links
+$lin_lang = "言語";
+$lin_ff = "のための最適化";
+
+// Home
+$php_greeting = "このサイトで翻訳ミスを許してください、私は日本語が話さない。";
+$home_main1 = "Debreate は、<a href=http://ja.wikipedia.org/wiki/Deb target=_blank>Debian パッケージ</a>を構築するためのヘルパーです(.deb)。";
+$home_main2 = "Debriateのゴールはアプリケーションとアートとメディアとテーマなどをパッケージするための使いやすいインターフェースを作って、DebianベースのLinux配布の開発をもっとアピールにする。";
+$home_main3 = "The project still has a ways to go until it will do all that I hope. I am currently working on some other very small projects in order to learn more about packaging and compiling, and hopefully implement what I learn.<br><br>
+Debreateは今のギットリビジョンコントロールを使用しています。最新のテストリリースをダウンロードする方法については、ダウンロードページをチェックしてください。";
+$home_updated = "ウェブサイトを " . $uyear . " 年 " . $umonth . " 月 " . $uday . " 日 " . "更新";
+$home_demo = "これは Debreate のデモです";
+
+// Screenshots
+$scr_ctrl1 = "かんせい 1";
+$scr_ctrl2 = "かんせい 2";
+$scr_dep = "依存関係";
+$scr_files = "ファイル";
+$scr_scripts = "スクリプト";
+$scr_clog = "チェンジログ";
+$scr_menu = "メインメニュー";
+
+// Usage
+$usg_file = "usage/usage_en.pdf";
+$usg_text = "以下のファイルを表示できない場合は<a href=$usg_file>ここで</a>ダウンロードすることができます。";
+
+// Download
+$dl_version = "現在のバージョン $version_current です";
+$dl_debian = "Debian/Ubuntu パッケージ";
+$dl = "ダウンロード";
+$dl_7z = "ポータブル 7zip パッケージ";
+$dl_readme = "(README ファイルの依存関係を読む)";
+$dl_page = " ダウンロードウェブページ";
+//$dl_locale_file = "debreate-locale-ja_0.0.1_all.deb";
+$dl_locale = "利用可能な言語パック";
+$dl_apt = "APT リポジトリ:";
+$dl_key = "公開キー";
+//$dl_git = "GITリポジトリからソースコードをダウンロード";
+//$git_browse = "GITリポジトリのブラウズ";
+$dl_git = "ギットリポジトリからソースコードをダウンロード";
+$git_browse = "ギットリポジトリをブラウズする";
+
+// Translation
+$trans_t1 = "Translation support is now fully implemented. This tutorial will show you how to create your own translation for Debreate.";
+$trans_n1 = "<b>NOTE:</b> I noticed that some of the translators were using a program called <a href=http://www.poedit.net/ target=_main>Poedit</a>, so I decided to try it out. It is a great tool and simplifies the translation process. I recommend using it. After you download <a href='$pot_file'>Debreate's .pot file</a>, just open Poedit, go to the File menu and select \"New catalog from POT file\". Open Debreate's .pot and begin translating. When you save the translated .po file it will automatically compile it into a binary .mo file. This is much simpler and quicker than the instructions I have laid out below. But I will keep them up because they may be helpful.";
+$trans_n2 = "Another important note, if you see two curly braces ({}) or a percent followed by an \"s\" (%s) in the original .pot file these need to be kept in the translation. These are symbols that the program uses for substituting text. For example if you see this:";
+$trans_n3 = "\"Debreate version {}\" or \"Debreate version %s\"";
+$trans_n4 = "The program will replace \"{}\" or \"%s\" with Debreate's current version number.";
+$trans_t2 = "INSTRUCTIONS WITHOUT POEDIT";
+$trans_i1 = "The first thing to do is to install gettext (it will probably already be installed along with Debreate):";
+$trans_i2 = "Now copy Debreate's .pot file to your current directory:";
+$trans_i3 = "You can also get the current .pot file <a href=files/debreate.pot.zip>here</a>.";
+$trans_i4 = "Generally the translated files are renamed with a .po extension, but it will not affect anything if you do not change it. Now edit the file with your favorite text editor. The file should look something like this:";
+$trans_i5 = "The first line that we need to look at is pictured as line 16. You need to change the encoding type. It will probably be UTF-8, so change this line:";
+$trans_i6 = "Now we are ready to begin translating. Below you will see sections with fields \"msgid\" and \"msgstr\". The \"msgid\" field will be followed by the original text in quotations. \"msgstr\" will be followed by empty quotations. Translate the text in the \"msgid\" field and enter into the \"msgstr\" field.";
+$trans_i7 = "When you are done save and close it. Now we need to compile it into binary. Use the following command:";
+$trans_i8 = "This binary file needs to be placed in Debreate's locale directory. But first we need to make a couple of sub-directories. You first need to create a sub-directory for your language. For example if you are translating to Spanish, you would create the directory called \"es\" (If the translation is specific to a country you can use the country code in the filename: \"es_MX\" for Mexico). Then inside the \"es\" directory, create a folder called LC_MESSAGES:";
+$trans_i9 = "Now place the .mo file into that directory:";
+$trans_i10 = "You are all finished. Now open Debreate to view your translation. If you would like your translation to be distributed with debreate, send me a copy of the edited .po file. I will also include your name in Debreate's credits unless you state that you do not want that. Let me know how you want your name/alias to be displayed or I will just write it as I see it in your email.";
+$trans_i11 = "In future versions Debreate's displayed text may change, causing translated .po files to become outdated. If you would like to update an existing .po file you can do the following: Get a copy of the <a href=files/debreate.pot.zip>most current .pot file</a> and use the following command to update the old .po translation:";
+$trans_i12 = "You can optionally use the \"--lang\" argument to set the language of the output .po file:";
+$trans_i13 = "Now translate any empty \"msgstr\" fields in the updated .po translation file.";
+?>
