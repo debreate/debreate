@@ -1,0 +1,740 @@
+# Debreate - Debian Package Builder
+# Copyright (C) 2011 Jordan Irwin
+# This file is distributed under the same license as the debreate package.
+# Jordan Irwin <antumdeluge@gmail.com>, 2011.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Debreate 0.7.6\n"
+"Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
+"POT-Creation-Date: 2011-12-01 08:00-0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: LANGUAGE"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# WARNING:
+# If "%s" or "{}" is in the msgid be sure to put it in the msgstr
+# or parts of Debreate will not function.
+#
+# If you do not wish to translate a line just leave its
+# msgstr blank
+#
+# ## Program name
+msgid "Debreate"
+msgstr ""
+
+# ## Title bar
+msgid "Debreate - Debian Package Builder"
+msgstr ""
+
+# ## First run message
+msgid "Debreate First Run"
+msgstr ""
+
+msgid "Thank you for using Debreate."
+msgstr ""
+
+msgid "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
+msgstr ""
+
+# ## Menu and Status bars
+msgid "File"
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Start a new project"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Open a previously saved project"
+msgstr ""
+
+msgid "Save current project"
+msgstr ""
+
+msgid "Save current project with a new filename"
+msgstr ""
+
+msgid "Quick Build"
+msgstr ""
+
+msgid "Build a package from an existing build tree"
+msgstr ""
+
+msgid "Information"
+msgstr ""
+
+msgid "Go to Information section"
+msgstr ""
+
+msgid "Control"
+msgstr ""
+
+msgid "Go to Control section"
+msgstr ""
+
+msgid "Dependencies"
+msgstr ""
+
+msgid "Go to Dependencies section"
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Go to Files section"
+msgstr ""
+
+msgid "Scripts"
+msgstr ""
+
+msgid "Go to Scripts section"
+msgstr ""
+
+msgid "Changelog"
+msgstr ""
+
+msgid "Go to Changelog section"
+msgstr ""
+
+msgid "Copyright"
+msgstr ""
+
+msgid "Go to Copyright section"
+msgstr ""
+
+msgid "Menu Launcher"
+msgstr ""
+
+msgid "Go to Menu Launcher section"
+msgstr ""
+
+msgid "Build"
+msgstr ""
+
+msgid "Go to Build section"
+msgstr ""
+
+msgid "Use Custom Dialogs"
+msgstr ""
+
+msgid "Use System or Custom Save/Open Dialogs"
+msgstr ""
+
+msgid "Check for Update"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Open a usage document"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "About Debreate"
+msgstr ""
+
+msgid "Debian Policy Manual"
+msgstr ""
+
+msgid "Control Files"
+msgstr ""
+
+msgid "Ubuntu Policy Manual"
+msgstr ""
+
+msgid "Building debs from Source"
+msgstr ""
+
+msgid "Lintian Tags Explanation"
+msgstr ""
+
+# ## Dialogs
+msgid "Start New Project"
+msgstr ""
+
+msgid "You will lose any unsaved information"
+msgstr ""
+
+msgid "Open File"
+msgstr ""
+
+msgid "Open Debreate Project"
+msgstr ""
+
+msgid "Save Debreate Project"
+msgstr ""
+
+msgid "Debreate project files"
+msgstr ""
+
+msgid "Not a valid Debreate project"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Save failed"
+msgstr ""
+
+msgid "Quit?"
+msgstr ""
+
+msgid "A package builder for Debian based systems"
+msgstr ""
+
+msgid "New Folder"
+msgstr ""
+
+msgid "Rename"
+msgstr ""
+
+msgid "Move to Trash"
+msgstr ""
+
+msgid "Permission Denied"
+msgstr ""
+
+msgid "Name already used in current directory"
+msgstr ""
+
+msgid "Choose Directory"
+msgstr ""
+
+msgid "Save File"
+msgstr ""
+
+msgid "Bad File Name"
+msgstr ""
+
+msgid "File Exists"
+msgstr ""
+
+msgid "Overwrite File?"
+msgstr ""
+
+msgid "Version %s is available!"
+msgstr ""
+
+msgid "Would you like to go to Debreate's website?"
+msgstr ""
+
+msgid "Debreate is up to date!"
+msgstr ""
+
+# ## About dialog
+msgid "Credits"
+msgstr ""
+
+msgid "Job"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "Developer"
+msgstr ""
+
+msgid "Packager"
+msgstr ""
+
+msgid "Translation"
+msgstr ""
+
+# ## Button tool tips
+msgid "Next"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Append"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Ok"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+# ## Information section
+msgid "Welcome to Debreate!"
+msgstr ""
+
+msgid "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
+msgstr ""
+
+msgid "For a video tutorial check the link below."
+msgstr ""
+
+msgid "Building a Debian Package with Debreate"
+msgstr ""
+
+# ## Control section
+msgid "Required"
+msgstr ""
+
+msgid "Package"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Maintainer"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Architecture"
+msgstr ""
+
+msgid "Recommended"
+msgstr ""
+
+msgid "Section"
+msgstr ""
+
+msgid "Priority"
+msgstr ""
+
+msgid "Short Description"
+msgstr ""
+
+msgid "Long Description"
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Essential"
+msgstr ""
+
+msgid "Save Control Information"
+msgstr ""
+
+# ## Dependencies and Conflicts section
+msgid "Dependencies and Conflicts"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Depends"
+msgstr ""
+
+msgid "Package will need to be installed"
+msgstr ""
+
+msgid "Pre-Depends"
+msgstr ""
+
+msgid "Package will need to be installed and configured first"
+msgstr ""
+
+msgid "Recommends"
+msgstr ""
+
+msgid "Package is highly recommended and will be installed by default"
+msgstr ""
+
+msgid "Suggests"
+msgstr ""
+
+msgid "Package may be useful but is not necessary and will not be installed by default"
+msgstr ""
+
+msgid "Enhances"
+msgstr ""
+
+msgid "This package may be useful to enhanced package"
+msgstr ""
+
+msgid "Conflicts"
+msgstr ""
+
+msgid "Package will be removed from the system if it is installed"
+msgstr ""
+
+msgid "Replaces"
+msgstr ""
+
+msgid "Package or its files may be overwritten"
+msgstr ""
+
+msgid "Breaks"
+msgstr ""
+
+msgid "Package conflicts and will be de-configured"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Package(s)"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Clear all dependencies?"
+msgstr ""
+
+# ## Files section
+msgid "Add Folder"
+msgstr ""
+
+msgid "Add File"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Target"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "Choose Target Directory"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "Getting files from %s"
+msgstr ""
+
+msgid "Clear all files?"
+msgstr ""
+
+msgid "Missing Files"
+msgstr ""
+
+msgid "Could not locate the following files:"
+msgstr ""
+
+# ## Scripts section
+msgid "Make this script"
+msgstr ""
+
+msgid "Pre-Install"
+msgstr ""
+
+msgid "Post-Install"
+msgstr ""
+
+msgid "Pre-Remove"
+msgstr ""
+
+msgid "Post-Remove"
+msgstr ""
+
+msgid "Auto-Link Executables"
+msgstr ""
+
+msgid "Path"
+msgstr ""
+
+msgid "Import executables from Files section"
+msgstr ""
+
+msgid "Generate scripts"
+msgstr ""
+
+msgid "Path Warning"
+msgstr ""
+
+msgid "Path %s does not exist. Continue?"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "post-install and pre-remove scripts generated"
+msgstr ""
+
+msgid "Auto-Link Help"
+msgstr ""
+
+msgid "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
+msgstr ""
+
+msgid "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
+msgstr ""
+
+# ## Changelog section
+msgid "Distribution"
+msgstr ""
+
+msgid "Urgency"
+msgstr ""
+
+msgid "Changes"
+msgstr ""
+
+msgid "Import information from Control section"
+msgstr ""
+
+# ## Menu section
+msgid "Open launcher file"
+msgstr ""
+
+msgid "Create system menu launcher"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Text for the launcher"
+msgstr ""
+
+msgid "Executable"
+msgstr ""
+
+msgid "Executable to be launched"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "Text displayed when mouse hovers over launcher"
+msgstr ""
+
+msgid "Icon"
+msgstr ""
+
+msgid "Icon to be displayed for the launcher"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Terminal"
+msgstr ""
+
+msgid "Specifies whether application should be run from a terminal"
+msgstr ""
+
+msgid "Startup Notify"
+msgstr ""
+
+msgid "Displays a notification in the system panel when launched"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Delete all categories?"
+msgstr ""
+
+msgid "Save Launcher"
+msgstr ""
+
+msgid "Open Launcher"
+msgstr ""
+
+# ## Build section
+msgid "Extra options"
+msgstr ""
+
+msgid "Create md5sums file"
+msgstr ""
+
+msgid "Install md5sum package for this option"
+msgstr ""
+
+msgid "Create checksums for files in package"
+msgstr ""
+
+msgid "Delete build tree"
+msgstr ""
+
+msgid "Delete temporary directory tree after package has been created"
+msgstr ""
+
+msgid "Check package for errors with lintian"
+msgstr ""
+
+msgid "Install lintian package for this option"
+msgstr ""
+
+msgid "Install package after build"
+msgstr ""
+
+msgid "Start building"
+msgstr ""
+
+msgid "Can't Continue"
+msgstr ""
+
+msgid "One of the required fields is empty"
+msgstr ""
+
+msgid "Debian Packages"
+msgstr ""
+
+msgid "Preparing to build"
+msgstr ""
+
+msgid "Gathering control information"
+msgstr ""
+
+msgid "Checking files"
+msgstr ""
+
+msgid "Checking scripts"
+msgstr ""
+
+msgid "Checking changelog"
+msgstr ""
+
+msgid "Checking copyright"
+msgstr ""
+
+msgid "Checking menu launcher"
+msgstr ""
+
+msgid "Checking create md5sums"
+msgstr ""
+
+msgid "Checking delete build tree"
+msgstr ""
+
+msgid "Checking lintian"
+msgstr ""
+
+msgid "Building"
+msgstr ""
+
+msgid "Preparing build tree"
+msgstr ""
+
+msgid "Copying files"
+msgstr ""
+
+msgid "Creating changelog"
+msgstr ""
+
+msgid "Creating copyright"
+msgstr ""
+
+msgid "Creating menu launcher"
+msgstr ""
+
+msgid "Creating md5sums"
+msgstr ""
+
+msgid "Creating control file"
+msgstr ""
+
+msgid "Creating scripts"
+msgstr ""
+
+msgid "Running dpkg"
+msgstr ""
+
+msgid "Removing temp directory"
+msgstr ""
+
+msgid "An error occurred when trying to delete the build tree"
+msgstr ""
+
+msgid "Checking package for errors"
+msgstr ""
+
+msgid "Lintian Errors"
+msgstr ""
+
+msgid "Lintian found some issues with the package."
+msgstr ""
+
+msgid "Details saved to %s"
+msgstr ""
+
+msgid "Package created successfully"
+msgstr ""
+
+msgid "Getting administrative privileges from user"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Installing Package"
+msgstr ""
+
+msgid "Empty password: Cancelling"
+msgstr ""
+
+msgid "Authentication failure"
+msgstr ""
+
+msgid "Could not install %s"
+msgstr ""
+
+msgid "Password mismatch, try again"
+msgstr ""
+
+msgid "Authenticated"
+msgstr ""
+
+msgid "The package failed to install"
+msgstr ""
+
+msgid "The package installed successfully"
+msgstr ""
+
+# ## Quick build
+msgid "Path to build tree"
+msgstr ""
+
+msgid "Could not locate \"%s\""
+msgstr ""
