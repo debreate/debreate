@@ -19,9 +19,15 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
+dbr_release=False
 maj_version = 0
 mid_version = 7
-min_version = 9
+min_version = 10
+
+# For testing release
+if (not dbr_release):
+    min_version -= 0.5
+
 debreate_version = u'%s.%s.%s' % (maj_version, mid_version, min_version)
 db_version = (maj_version, mid_version, min_version)
 db_here = PathOnly(__file__).decode(u'utf-8')
