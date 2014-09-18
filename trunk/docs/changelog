@@ -1,3 +1,6 @@
+0.7.10
+- add fields to default paths in 'files' section
+
 0.7.9
 - fixed _md5 module to work with older & newer versions of python
 
