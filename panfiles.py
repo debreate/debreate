@@ -69,14 +69,15 @@ class Panel(wx.Panel):
         # ----- Destination path
         # choices of destination
         self.radio_bin = wx.RadioButton(self, -1, "/bin", style=wx.RB_GROUP)
-        self.radio_usr = wx.RadioButton(self, -1, "/usr/bin")
-        self.radio_shr = wx.RadioButton(self, -1, "/usr/share/bin")
-        self.radio_loc = wx.RadioButton(self, -1, "/usr/local/bin")
+        self.radio_usrbin = wx.RadioButton(self, -1, "/usr/bin")
+        self.radio_usrlib = wx.RadioButton(self, -1, "/usr/lib")
+        self.radio_locbin = wx.RadioButton(self, -1, "/usr/local/bin")
+        self.radio_loclib = wx.RadioButton(self, -1, "/usr/local/lib")
         self.radio_cst = wx.RadioButton(self, -1, _('Custom'))
         self.radio_cst.SetValue(True)
         
         # group buttons together
-        self.radio_group = (self.radio_bin, self.radio_usr, self.radio_shr, self.radio_loc, self.radio_cst)
+        self.radio_group = (self.radio_bin, self.radio_usrbin, self.radio_usrlib, self.radio_locbin, self.radio_loclib, self.radio_cst)
         
         # create an event to enable/disable custom widget
         for item in self.radio_group:
