@@ -33,8 +33,7 @@ $scr_clog = "Cambios";
 $scr_menu = "Menú";
 
 // Usage
-$usg_file = "usage/usage_es.pdf";
-$usg_text = "Si no puede ver el siguiente archivo se puede descargar <a href=$usg_file>aquí</a>.";
+$usg_text = "Si no puede ver el siguiente archivo se puede descargar <a href='$file_usage'>aquí</a>.";
 
 // Download
 $dl_version = "La versión actual es $version_current";

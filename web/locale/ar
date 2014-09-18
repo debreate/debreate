@@ -33,8 +33,7 @@ $scr_clog = "سجل التغييرات";
 $scr_menu = "القائمة الرئيسية";
 
 // Usage
-$usg_file = "usage/usage_en.pdf";
-$usg_text = "إذ لم تستطع عرض الشرح أدناه يمكنك تحميله <a href=$usg_file>here</a>.";
+$usg_text = "إذ لم تستطع عرض الشرح أدناه يمكنك تحميله <a href='$file_usage'>here</a>.";
 
 // Download
 $dl_version = "لاإصدار الحالي هو $version_current";

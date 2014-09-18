@@ -1,8 +1,5 @@
 <?php
 
-// Import global functions & variables
-include_once 'globals';
-
 // Maintenance mode
 $maint_mode = 0;
 if ($maint_mode) {
@@ -51,15 +48,19 @@ $version_current = GetCurrentVersion();
 if ($_REQUEST['lang'])
 {
     $lang = $_REQUEST['lang'];
-    include_once GetLocaleFile($lang);
     $lang_override_h = "/?lang=$lang";
     $lang_override = "&lang=$lang";
 }
 else
 {
     $lang = GetLanguage();
-    include_once GetLocaleFile($lang);
 }
+
+// Import global functions & variables
+include_once 'globals';
+
+// Get the translated page
+include_once GetLocaleFile($lang);
 
 // Small text for menus in Japanese
 /*if ($lang == 'ja')

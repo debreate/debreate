@@ -34,8 +34,7 @@ $scr_clog = "チェンジログ";
 $scr_menu = "メインメニュー";
 
 // Usage
-$usg_file = "usage/usage_en.pdf";
-$usg_text = "以下のファイルを表示できない場合は<a href=$usg_file>ここで</a>ダウンロードすることができます。";
+$usg_text = "以下のファイルを表示できない場合は<a href='$file_usage'>ここで</a>ダウンロードすることができます。";
 
 // Download
 $dl_version = "現在のバージョン $version_current です";

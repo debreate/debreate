@@ -2,6 +2,7 @@
 
 // Files
 $pot_file = "res/translate/debreate.pot.zip";
+$file_usage = "res/doc/usage_$lang.pdf";
 
 // Images
 $logo = "res/logo/debreate64.png";
@@ -18,4 +19,3 @@ $maint_message = "</HEAD>
 </HTML>";
 
 ?>
-
