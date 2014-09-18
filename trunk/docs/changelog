@@ -1,0 +1,89 @@
+0.7.9
+- fixed _md5 module to work with older & newer versions of python
+
+0.7.8
+- fixed bug: AttributeError: 'module' object has no attribute 'MD5'
+
+0.7.7
+- fixed some incompatibilities with python 2.6
+
+0.7.6
+- added log to build section
+- removed summary from build section
+- added option to check for update from Help menu
+- added option to install package after build
+- fixed some unicode problems in about dialog
+- fixed more unicode problems in Files section
+- fixed missing icon on first run dialog
+
+0.7.5
+- fixed error creating changelog when spaces in build path
+- fixed error creating deb when spaces in build path
+- fixed unicode errors when saving project, control, and launcher
+- fixed unicode erros when building deb
+- added Quick Build option for building from preexisting tree
+
+0.7.4
+- file list is no longer editable
+- fixed progress dialog freezes when adding empty directory to file list
+- changed layout of Control section
+- removed colors from certain text fields
+- finished most of locale support
+- removed convert to RPM
+- fixed program frozen while help file open
+- fixed error when starting fresh project
+
+0.7.3
+- changed lintian tags explanation link
+- added Ubuntu Policy Manual link
+- added help documentation
+- fixed error on save menu launcher file
+- removed unnecessary fields from Control section
+
+0.7.2
+- Fixed build error caused by existing "doc" folder
+
+0.7.1
+- Changed config directory to ~/.config/debreate
+- Removed "mode" and "sounds" options
+- Added "Page" menu to switch between pages
+- Config file moved to ~/.config/debreate
+- Changed changelog.Debian.gz to changelog.gz
+- Error message for failed build from non-ASCII characters
+- Fixed opening and saving menu entry details
+
+0.7.0-0alpha6
+- Fixed: Opening reference links freezes application
+- Workaround: Hitting "Delete" removes dependencies
+- Fixed: About dialog, can't see link after click
+- Added partial language support
+- Added partial Spanish translation
+
+0.7.0-0alpha5
+- Checks for errors in produced .deb with lintian
+- Repairs file and executable permissions
+- Bug fix: Version field doesn't re-enable after changing modes
+- Changed "Section" default values to be in accordance
+      with Debian Policy Manual
+- Fixed changelog creation
+- Fixed text colors on Control page for dark themes
+- Put correct options in "Sections" under Control page
+- Fixed enabling/disabling some checkboxes if md5sum
+      and lintian aren't installed
+
+0.7.0-0alpha4
+- Fixed md5sums creaton
+- Fixed some packaging errors: changelog is compressed to changelog.Debian.gz
+- Added option to create copyright
+- Changed tabbed interface to wizard style
+- Added "debianize source" wizard
+
+0.7.0-0alpha3
+- Automatic date creation in changelog
+- Added support for changelog creation
+- bugfix: Can't save projects when files have sub-dir
+- Re-enabled md5sums
+- Enabled previewing .desktop (Menu) config
+- bugfix: Semi-colons in project files under Menu -> Categories
+- Changed "Type" field under "Menu" to be customizable
+- Added more functionality to custom save dialog
