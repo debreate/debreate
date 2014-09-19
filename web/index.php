@@ -53,7 +53,7 @@ else
 include_once 'globals';
 
 // Maintenance mode
-$maint_mode = 1;
+$maint_mode = 0;
 if ($maint_mode) {
     exit($maint_message);
 }
