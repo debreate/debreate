@@ -1,12 +1,5 @@
 <?php
 
-// Maintenance mode
-$maint_mode = 0;
-if ($maint_mode) {
-    print($maint_message);
-    exit();
-}
-
 function GetLanguage()
 {
     $lang = preg_split('/,/', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
@@ -58,6 +51,12 @@ else
 
 // Import global functions & variables
 include_once 'globals';
+
+// Maintenance mode
+$maint_mode = 1;
+if ($maint_mode) {
+    exit($maint_message);
+}
 
 // Get the translated page
 include_once GetLocaleFile($lang);
