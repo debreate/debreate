@@ -11,11 +11,25 @@ $logo_opendesktop = "res/logo/opendesktop.png";
 $menu_bg = "res/decor/menu-center.png";
 
 // Messages
-$maint_message = "</HEAD>
+$maint_message = "<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Debreate - Under Construction</title>
+</head>
+
+<body>
 
 <br><br>
-<h1 style=text-align:center>UNDER CONSTRUCTION<br>Will be back up soon</h1>
+  
+  <span style='text-align: center;'>
+    <center><img src='res/graphics/construction.png' /></center>
+    <br>
+    <h1>UNDER CONSTRUCTION<br>Will be back up soon</h1>
+  </span>
 
-</HTML>";
+</body>
+
+</html>";
 
 ?>
