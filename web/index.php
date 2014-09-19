@@ -37,7 +37,7 @@ function GetCurrentVersion()
 }
 
 // Site update date
-$uday = "18";
+$uday = "19";
 $umonth = "9";
 $uyear = "2014";
 

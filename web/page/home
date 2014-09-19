@@ -5,8 +5,6 @@ $home = "
   <tr>
     <TD valign=top height=50>
     
-      <p style=text-align:center><b>$php_greeting</b>
-      </p>
       <p align=justify>$home_main1
       </p>
       <p align=justify>$home_main2
