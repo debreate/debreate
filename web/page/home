@@ -29,24 +29,9 @@ $home = "
   
   <tr align=center>
     <td colspan=3>
-      <object width=480 height=360>
-        <param name=movie value=http://www.youtube.com/v/kx4D5eL6HKE />
-        <param name=allowFullScreen value=true />
-        <param name=allowscriptaccess value=always />
-        <embed src=http://www.youtube.com/v/kx4D5eL6HKE type=application/x-shockwave-flash width=480 height=360 allowscriptaccess=always allowfullscreen=true />
-      </object>
+      <object width=480 height=360 data='http://www.youtube.com/embed/kx4D5eL6HKE' />
     </td>
   </tr>
-  
-  <tr>
-    <td>
-      <video width='480' height='360' controls>
-        <source src='https://r1---sn-nwj7km7s.googlevideo.com/videoplayback?sparams=id%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Cmime%2Cmm%2Cms%2Cmv%2Cnh%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&expire=1411178316&ip=74.4.178.154&mt=1411156614&key=yt5&mime=video%2Fmp4&id=o-ANtcaNateAAzOEyMZfSv-Uyq6dq6eA1X-Ot7MXw6XJPS&mv=m&ratebypass=yes&source=youtube&ms=au&itag=18&initcwndbps=426250&requiressl=yes&mm=31&ipbits=0&signature=712AF2E68ECAD98D336CB4343ACFBCBC3ECE657B.A85EEB178FAE45212C94012BF5CFE6AC0ADB5C8F&upn=Fnb0zDVzkGU&sver=3&fexp=902029%2C902410%2C916633%2C927622%2C930666%2C931983%2C932404%2C934030%2C935673%2C940226%2C946008%2C947209%2C952302%2C953801&nh=EAE' type='video/mp4' />
-      Video tag (\<video\>) not supported.
-      </video>
-    </td>
-  </tr>
-    
 </table>
 "
 ?>
