@@ -7,23 +7,19 @@ $download = "
       <BR><BR>
       <B>$dl_version</B>
       <BR><BR>
-      <b>$dl_debian</b><BR>
-      <B><A HREF=http://sourceforge.net/projects/debreate/files/current/debreate_0.7.7_all.deb/download target=_main>$dl</A></B>
-      <BR><BR>
-      <b>$dl_7z<br><grrr class=small-font>$dl_readme</grrr></b><BR>
-      <B><A HREF=https://sourceforge.net/projects/debreate/files/current/debreate_0.7.7_portable.7z/download target=_main>$dl</A></B>
-      <BR><BR>
-      
-      <B><A HREF=https://sourceforge.net/projects/debreate/files/current target=_main>$dl_page</A></B>
+<!--      <b>$dl_debian</b><BR> -->
+      <B><A HREF=https://sourceforge.net/projects/debreate/files/latest/download target=_main>$dl</A></B>
       <br><br>
-      <a href=http://sourceforge.net/projects/debreate/files/locale/$dl_locale_file target=_main>$dl_locale</a>
-      <br>
-      Arabic available thanks to Karim Oulad Chalha<br>
-      French available thanks to Philippe Dalet
-      <BR><BR>
+<!--      <b>$dl_7z<br><grrr class=small-font>$dl_readme</grrr></b><BR>
+      <B><A HREF=https://sourceforge.net/projects/debreate/files/latest/download target=_main>$dl</A></B>
+      <BR><BR> -->
       
+      <B><A HREF=https://sourceforge.net/projects/debreate/files target=_main>$dl_page</A></B>
+      <br><br>
+<!--      
       <b>$dl_apt</b><BR><FONT COLOR=blue>deb http://debreate.sf.net/apt debreate main</FONT><BR>
 <a href=http://debreate.sf.net/apt/pubkey.asc>$dl_key</a>
+-->
     </TD>
   </TR>
 </TABLE>
