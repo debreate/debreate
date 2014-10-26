@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from common import *
-import db, os, commands, shutil, _md5, thread
+import db, os, commands, shutil, db_md5, thread
 from os.path import exists
 
 ID = wx.NewId()
@@ -32,12 +32,8 @@ class Panel(wx.Panel):
         else:
             self.chk_md5.SetToolTip(md5_tip)
         
-        if ((maj_pyversion >= 2) and (mid_pyversion >= 7) and min_pyversion >=8):
-            # For creating md5sum hashes
-            self.md5 = _md5.MD5()
-        else:
-            # Older versions of python do not appear to use .MD5()
-            self.md5 = _md5.new()
+        # For creating md5sum hashes
+        self.md5 = db_md5.MD5()
         
         # Deletes the temporary build tree
         self.chk_del = wx.CheckBox(self, -1, _('Delete build tree'))
