@@ -30,8 +30,8 @@ function GetCurrentVersion()
 }
 
 // Site update date
-$uday = "23";
-$umonth = "9";
+$uday = "26";
+$umonth = "10";
 $uyear = "2014";
 
 // Get current version
