@@ -1,0 +1,748 @@
+# Debreate - Debian Package Builder
+# Copyright (C) 2011 Jordan Irwin
+# This file is distributed under the same license as the debreate package.
+# Jordan Irwin <antumdeluge@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Debreate 0.7.6\n"
+"Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
+"POT-Creation-Date: 2011-12-01 08:00-0800\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
+"Language-Team: Arabic <herr.linux88@gmail.com>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Arabic\n"
+"X-Poedit-Country: Morocco\n"
+
+# WARNING:
+# If "%s" or "{}" is in the msgid be sure to put it in the msgstr
+# or parts of Debreate will not function.
+#
+# If you do not wish to translate a line just leave its
+# msgstr blank
+#
+# ## Program name
+msgid "Debreate"
+msgstr "Debreate"
+
+# ## Title bar
+msgid "Debreate - Debian Package Builder"
+msgstr "Debreate - منشئ حزم دبيان"
+
+# ## First run message
+msgid "Debreate First Run"
+msgstr "Debreate أول إستعمال"
+
+msgid "Thank you for using Debreate."
+msgstr "شكرا لإستعمالك Debreate."
+
+msgid "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
+msgstr "هذه الرسالة يعرض أول مرة يتم تشغيل البرنامج ، أو معطوبة إذا يصبح التكوين. سيتم الآن ملف التكوين الافتراضي يتم إنشاؤه. لحذف هذا الملف ، استخدم الأمر التالي :"
+
+# ## Menu and Status bars
+msgid "File"
+msgstr "ملف"
+
+msgid "Page"
+msgstr "صفحة"
+
+msgid "Options"
+msgstr "خيارات"
+
+msgid "Help"
+msgstr "مساعدة"
+
+msgid "Start a new project"
+msgstr "بدء مشروع جديد"
+
+msgid "Open"
+msgstr "مفتوحة"
+
+msgid "Open a previously saved project"
+msgstr "فتح مشروح تم حفظه سابقا"
+
+msgid "Save current project"
+msgstr "خفظ المشروع الحالي"
+
+msgid "Save current project with a new filename"
+msgstr "حفظ المشروع الحالي بإسم ملف جديد"
+
+msgid "Quick Build"
+msgstr "البناء سريع"
+
+msgid "Build a package from an existing build tree"
+msgstr "إنشاء حزمة من مجلد موجودة مسبقا"
+
+msgid "Information"
+msgstr "معلومات"
+
+msgid "Go to Information section"
+msgstr "ذهاب إلى قسم المعلومات"
+
+msgid "Control"
+msgstr "تحكم"
+
+msgid "Go to Control section"
+msgstr "ذهاب إلى قسم التحكم"
+
+msgid "Dependencies"
+msgstr "إعتماديات"
+
+msgid "Go to Dependencies section"
+msgstr "ذهاب إلى قسم الإعتماديات"
+
+msgid "Files"
+msgstr "ملفات"
+
+msgid "Go to Files section"
+msgstr "ذهاب إلى قسم الملفات"
+
+msgid "Scripts"
+msgstr "سكربت"
+
+msgid "Go to Scripts section"
+msgstr "ذهاب إلى قسم السكربتات"
+
+msgid "Changelog"
+msgstr "سجل التغييرات"
+
+msgid "Go to Changelog section"
+msgstr "ذهاب إلى قسم سجل التغييرات"
+
+msgid "Copyright"
+msgstr "حقوق النشر"
+
+msgid "Go to Copyright section"
+msgstr "ذهاب إلى قسم حقوق النسخ"
+
+msgid "Menu Launcher"
+msgstr "القائمة الرئيسية قاذفة"
+
+msgid "Go to Menu Launcher section"
+msgstr "ذهاب إلى قسم Menu Launcher"
+
+msgid "Build"
+msgstr "يناء"
+
+msgid "Go to Build section"
+msgstr "ذهاب إلى قسم الإنشاء"
+
+msgid "Use Custom Dialogs"
+msgstr "إستعمال حوارات مخصصة"
+
+msgid "Use System or Custom Save/Open Dialogs"
+msgstr "إستعمال نظام أو تخصيص حوارات حفظ/فتح"
+
+msgid "Check for Update"
+msgstr "التحقق من الإصدار الجديد"
+
+msgid "Reference"
+msgstr "مرجع"
+
+msgid "Open a usage document"
+msgstr "فتح وثيقة الإستعمال"
+
+msgid "About"
+msgstr "حول"
+
+msgid "About Debreate"
+msgstr "حول Debreate"
+
+msgid "Debian Policy Manual"
+msgstr "دليل سياسة دبيان"
+
+msgid "Control Files"
+msgstr "ملف التحكم"
+
+msgid "Ubuntu Policy Manual"
+msgstr "دليل سياسة أبنتو"
+
+msgid "Building debs from Source"
+msgstr "بناء حزم دبيان من المصدر"
+
+msgid "Lintian Tags Explanation"
+msgstr "تعليل Lintian العلامات"
+
+# ## Dialogs
+msgid "Start New Project"
+msgstr "بدء مشروع جديد"
+
+msgid "You will lose any unsaved information"
+msgstr "سوف تفقد كل المعلومات الغير محفوظة"
+
+msgid "Open File"
+msgstr "فتح ملف"
+
+msgid "Open Debreate Project"
+msgstr "فتح مشروع Debreate"
+
+msgid "Save Debreate Project"
+msgstr "حفظ مشروع Debreate"
+
+msgid "Debreate project files"
+msgstr "ملفات مشاريع Debreate"
+
+msgid "Not a valid Debreate project"
+msgstr "ليس مشروع Debreate سليم"
+
+msgid "Error"
+msgstr "خطأ"
+
+msgid "Save failed"
+msgstr "فشل الحفظ"
+
+msgid "Quit?"
+msgstr "خروج؟"
+
+msgid "A package builder for Debian based systems"
+msgstr "منشئ حزم للأنظمة المبنية على دبيان"
+
+msgid "New Folder"
+msgstr "مجلد جديد"
+
+msgid "Rename"
+msgstr "إعادة التسمية"
+
+msgid "Move to Trash"
+msgstr "نقل إلى المهملات"
+
+msgid "Permission Denied"
+msgstr "صلاحيات غير كافية"
+
+msgid "Name already used in current directory"
+msgstr "إسم حاليا مستعمل في هذا الدليل"
+
+msgid "Choose Directory"
+msgstr "إختر دليل"
+
+msgid "Save File"
+msgstr "حفظ الملف"
+
+msgid "Bad File Name"
+msgstr "إسم ملف غير سليم"
+
+msgid "File Exists"
+msgstr "الملف موجود"
+
+msgid "Overwrite File?"
+msgstr "كتابة فوق الملف؟"
+
+msgid "Version %s is available!"
+msgstr "%s يتوفر إصدار!"
+
+msgid "Would you like to go to Debreate's website?"
+msgstr "هل تريد أن تذهب إلى موقع Debreate؟"
+
+# ## First run message
+msgid "Debreate is up to date!"
+msgstr "Debreate هو الحالي"
+
+# ## About dialog
+msgid "Credits"
+msgstr "إشادات"
+
+msgid "Job"
+msgstr "عمل"
+
+msgid "License"
+msgstr "الترخيص"
+
+msgid "Developer"
+msgstr "مطور"
+
+msgid "Packager"
+msgstr "منشء حزم"
+
+msgid "Translation"
+msgstr "الترجمة"
+
+### Credits
+msgid "Karim Oulad Chalha"
+msgstr "كريم أولاد الشلحة"
+
+# ## Button tool tips
+msgid "Next"
+msgstr "تالي"
+
+msgid "Previous"
+msgstr "سابق"
+
+msgid "Add"
+msgstr "أضف"
+
+msgid "Remove"
+msgstr "حذف"
+
+msgid "Clear"
+msgstr "محو"
+
+msgid "Append"
+msgstr "إلحاق"
+
+msgid "Import"
+msgstr "إستورد"
+
+msgid "Browse"
+msgstr "تصفح"
+
+msgid "Ok"
+msgstr "نعم"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Preview"
+msgstr "سابق"
+
+msgid "Save"
+msgstr "حفظ"
+
+# ## Information section
+msgid "Welcome to Debreate!"
+msgstr "مرحبا بكم في Debreate!"
+
+msgid "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
+msgstr ""
+
+msgid "For a video tutorial check the link below."
+msgstr "إضغط على الرابط تحت لمشاهدة فيديو تعليمي."
+
+msgid "Building a Debian Package with Debreate"
+msgstr "إنشاء حزم دبيان بـ Debreate"
+
+# ## Control section
+msgid "Required"
+msgstr "مطلوب"
+
+msgid "Package"
+msgstr "حزمة"
+
+msgid "Version"
+msgstr "إصدار"
+
+msgid "Maintainer"
+msgstr "مسؤول"
+
+msgid "Email"
+msgstr "بريد إلكتروني"
+
+msgid "Architecture"
+msgstr "بنية"
+
+msgid "Recommended"
+msgstr "موصى به"
+
+msgid "Section"
+msgstr "قسم"
+
+msgid "Priority"
+msgstr "أولوية"
+
+msgid "Short Description"
+msgstr "وصف قصير"
+
+msgid "Long Description"
+msgstr "وصف طويل"
+
+msgid "Optional"
+msgstr "إخياري"
+
+msgid "Source"
+msgstr "مصدر"
+
+msgid "Homepage"
+msgstr "صفحة الوب"
+
+msgid "Essential"
+msgstr "أساسي"
+
+msgid "Save Control Information"
+msgstr "حفظ معلومات التحكم"
+
+# ## Dependencies and Conflicts section
+msgid "Dependencies and Conflicts"
+msgstr "إعتماديات وتضادات"
+
+msgid "Categories"
+msgstr "صنف"
+
+msgid "Depends"
+msgstr "تبعية"
+
+msgid "Package will need to be installed"
+msgstr "حزمة تحتاج للتثبيت"
+
+msgid "Pre-Depends"
+msgstr "ما قبل تبعية"
+
+msgid "Package will need to be installed and configured first"
+msgstr "حزمة تحتاج للتثبيت و الإعداد أولا"
+
+msgid "Recommends"
+msgstr "موصى به"
+
+msgid "Package is highly recommended and will be installed by default"
+msgstr "حزمة مهمة جدا وسيتم تثبيتها ذاتيا"
+
+msgid "Suggests"
+msgstr "مقترحات"
+
+msgid "Package may be useful but is not necessary and will not be installed by default"
+msgstr "حزمة يمكن إستعمالها لكنها ليست ضرورية و لن يتم تثبيتها ذاتيا"
+
+msgid "Enhances"
+msgstr "يعزز"
+
+msgid "This package may be useful to enhanced package"
+msgstr "حزمة المحسنة قد تستفيد من هذا واحد"
+
+msgid "Conflicts"
+msgstr "تعاردات"
+
+msgid "Package will be removed from the system if it is installed"
+msgstr "الحزمة سيتم حذفها من النظام إذا تم تثبيتها"
+
+msgid "Replaces"
+msgstr "إستبدال"
+
+msgid "Package or its files may be overwritten"
+msgstr "قد يتم الكتابة فوق الحزمة أو ملفاتها "
+
+msgid "Breaks"
+msgstr "مكسورة"
+
+msgid "Package conflicts and will be de-configured"
+msgstr "تضاد في الحزم و سيتم إلغاء الإعداد"
+
+msgid "Category"
+msgstr "أصناف"
+
+msgid "Package(s)"
+msgstr "حزم(ة)"
+
+msgid "Confirm"
+msgstr "تأكيد"
+
+msgid "Clear all dependencies?"
+msgstr "محو كل الإعتماديات؟"
+
+# ## Files section
+msgid "Add Folder"
+msgstr "أضف مجلد"
+
+msgid "Add File"
+msgstr "أضف ملف"
+
+msgid "Refresh"
+msgstr "أنعش"
+
+msgid "Target"
+msgstr "هدف"
+
+msgid "Custom"
+msgstr "تخصيص"
+
+msgid "Choose Target Directory"
+msgstr "إختيار الدليل الهدف"
+
+msgid "Progress"
+msgstr "تقدم"
+
+msgid "Getting files from %s"
+msgstr "حصول على الملفات من %s"
+
+msgid "Clear all files?"
+msgstr "محو كل الملفات؟"
+
+msgid "Missing Files"
+msgstr "ملفات مفقودة"
+
+msgid "Could not locate the following files:"
+msgstr "لا يمكن تحديد موقع الملفات التالية:"
+
+# ## Scripts section
+msgid "Make this script"
+msgstr "إنشاء هذا السكربت"
+
+msgid "Pre-Install"
+msgstr "قبل التثبيت"
+
+msgid "Post-Install"
+msgstr "بعد التثبيت"
+
+msgid "Pre-Remove"
+msgstr "قبل الحذف"
+
+msgid "Post-Remove"
+msgstr "بعد الحذف"
+
+msgid "Auto-Link Executables"
+msgstr "الوصل الذاتي للملفات التنفيدية"
+
+msgid "Path"
+msgstr "مسار"
+
+msgid "Import executables from Files section"
+msgstr "إستيراد ملف تنفيذي من قسم الملفات"
+
+msgid "Generate scripts"
+msgstr "تكوين السكربت"
+
+msgid "Path Warning"
+msgstr "مسار التحذير"
+
+msgid "Path %s does not exist. Continue?"
+msgstr "المسار %s غير موجود. الإستمرار؟"
+
+msgid "Success"
+msgstr "تم بنجاح"
+
+msgid "post-install and pre-remove scripts generated"
+msgstr "تكوين سكربتات بعد التثبيت و قبل الحذف"
+
+msgid "Auto-Link Help"
+msgstr "الوصل الذاتي للمساعدة"
+
+msgid "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
+msgstr ""
+
+msgid "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
+msgstr "كيفية إستعمال الوصل الذاتي: إضغط على زر إستيراد لإستيراد أي ملف تنفيذي من قسم الملفات. تم إضغط زر تكوين. سيتم إنشاء سكربت بعد التثبيت و قبل الحذف هذا مكان الوصلات الرمزية للملفات التنفيذية في المسار الموجود أعلاه."
+
+# ## Changelog section
+msgid "Distribution"
+msgstr "توزيعة"
+
+msgid "Urgency"
+msgstr "عاجل"
+
+msgid "Changes"
+msgstr "تغيرات"
+
+msgid "Import information from Control section"
+msgstr "إستيراد معلومات من ملف التحكم"
+
+# ## Menu section
+msgid "Open launcher file"
+msgstr "فتح ملف المطلقة"
+
+msgid "Create system menu launcher"
+msgstr "إنشاءsystem menu launcher"
+
+msgid "Name"
+msgstr "إسم"
+
+msgid "Text for the launcher"
+msgstr "نص للمطلقة"
+
+msgid "Executable"
+msgstr "تنفيذي"
+
+msgid "Executable to be launched"
+msgstr "تنفيدي لإطلاقه"
+
+msgid "Comment"
+msgstr "تعليق"
+
+msgid "Text displayed when mouse hovers over launcher"
+msgstr "إظهار النص عند مرور الفأرة فوق المطلقة"
+
+msgid "Icon"
+msgstr "أيقونة"
+
+msgid "Icon to be displayed for the launcher"
+msgstr "أيقونة لإظهارها في المطلقة"
+
+msgid "Type"
+msgstr "نوع"
+
+msgid "Terminal"
+msgstr "طرفية"
+
+msgid "Specifies whether application should be run from a terminal"
+msgstr "تحديد هل يجب تشغيل التطبيق من الطرفية"
+
+msgid "Startup Notify"
+msgstr "إشعارات البدء"
+
+msgid "Displays a notification in the system panel when launched"
+msgstr "إظهار إشعار في شريط النظام عند الإطلاق"
+
+msgid "Encoding"
+msgstr "ترميز"
+
+msgid "Other"
+msgstr "أخرى"
+
+msgid "Delete all categories?"
+msgstr "حذف كل الأصناف؟"
+
+msgid "Save Launcher"
+msgstr "حفظ المطلقة"
+
+msgid "Open Launcher"
+msgstr "فتح المطلقة"
+
+# ## Build section
+msgid "Extra options"
+msgstr "خيارات إضافية"
+
+msgid "Create md5sums file"
+msgstr "أنشئ ملف md5sums"
+
+msgid "Install md5sum package for this option"
+msgstr "تثبيت حزمة md5sum لهذا الخيار"
+
+msgid "Create checksums for files in package"
+msgstr "إنشاء checksums للملفات في الحزمة"
+
+msgid "Delete build tree"
+msgstr "حذف شجرة الإنشاء"
+
+msgid "Delete temporary directory tree after package has been created"
+msgstr "حذف شجرة دليل المؤقت قبل إنشاء الحزمة"
+
+msgid "Check package for errors with lintian"
+msgstr "التحقق من حزمة لأخطاء مع lintian"
+
+msgid "Install lintian package for this option"
+msgstr "تثبيت حزمة lintian لهذا الخيار"
+
+msgid "Install package after build"
+msgstr "بعد بنائه تثبيت حزمة"
+
+msgid "Start building"
+msgstr "بدء بناء"
+
+msgid "Can't Continue"
+msgstr "لا يمكن الإستمرار"
+
+msgid "One of the required fields is empty"
+msgstr "واحد من الحقول المطلوبة فارغ"
+
+msgid "Debian Packages"
+msgstr "حزم دبيان"
+
+msgid "Preparing to build"
+msgstr "تهيئ للإنشاء"
+
+msgid "Gathering control information"
+msgstr "جمع معلومات التحكم"
+
+msgid "Checking files"
+msgstr "فحص الملفات"
+
+msgid "Checking scripts"
+msgstr "فحص السكربتات"
+
+msgid "Checking changelog"
+msgstr "فحص سجل التغييرات"
+
+msgid "Checking copyright"
+msgstr "فحص حقوق النشر"
+
+msgid "Checking menu launcher"
+msgstr "فحص menu launcher"
+
+msgid "Checking create md5sums"
+msgstr "فحص إنشاء md5sums"
+
+msgid "Checking delete build tree"
+msgstr "فحص حذف شجرة الإنشاء"
+
+msgid "Checking lintian"
+msgstr "فحص lintian"
+
+msgid "Building"
+msgstr "بناء"
+
+msgid "Preparing build tree"
+msgstr "تهيئ شجرة الإنشاء"
+
+msgid "Copying files"
+msgstr "نسخ الملفات"
+
+msgid "Creating changelog"
+msgstr "إنشاء سجل التغييرات"
+
+msgid "Creating copyright"
+msgstr "إنشاء حقوق النسخ"
+
+msgid "Creating menu launcher"
+msgstr "إنشاء menu launcher"
+
+msgid "Creating md5sums"
+msgstr "إنشاء md5sums"
+
+msgid "Creating control file"
+msgstr "إنشاء ملف التحكم"
+
+msgid "Creating scripts"
+msgstr "إنشاء سكربت"
+
+msgid "Running dpkg"
+msgstr "شغل الأمر dpkg"
+
+msgid "Removing temp directory"
+msgstr "حذف الدليل المؤقت"
+
+msgid "An error occurred when trying to delete the build tree"
+msgstr "حدث خطأ ما عند محاولة حذف شجرة الإنشاء"
+
+msgid "Checking package for errors"
+msgstr "فحص الحزمة من الأخطاء"
+
+msgid "Lintian Errors"
+msgstr "أخطاء Lintian"
+
+msgid "Lintian found some issues with the package."
+msgstr "Lintian العثور على بعض القضايا مع الحزمة."
+
+msgid "Details saved to %s"
+msgstr "حفظ التفاصيل إلى *"
+
+msgid "Package created successfully"
+msgstr "تم إنشاء الحزمة بنجاح"
+
+msgid "Getting administrative privileges from user"
+msgstr "الحصول على امتيازات إدارية من المستخدم"
+
+msgid "Password"
+msgstr "كلمة السر"
+
+msgid "Installing Package"
+msgstr "حزمة تركيب"
+
+msgid "Empty password: Cancelling"
+msgstr "فارغ كلمة السر : إلغاء"
+
+msgid "Authentication failure"
+msgstr "فشل المصادقة"
+
+msgid "Could not install %s"
+msgstr "فشلت التثبيت %s"
+
+msgid "Password mismatch, try again"
+msgstr "عدم تطابق كلمة المرور ، حاول مرة أخرى"
+
+msgid "Authenticated"
+msgstr "موثق"
+
+msgid "The package failed to install"
+msgstr "فشل لتثبيت حزمة"
+
+msgid "The package installed successfully"
+msgstr "بنجاح تثبيت الحزمة"
+
+msgid "Path to build tree"
+msgstr "المسار إلى المجلد المؤقت"
+
+msgid "Could not locate \"%s\""
+msgstr "لا يمكن تحديد موقع \"%s\""
+
+#~ msgid "Unicode Error"
+#~ msgstr "خطأ في الـ إنكود"
