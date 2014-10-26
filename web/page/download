@@ -24,9 +24,6 @@ $download = "
       
       <b>$dl_apt</b><BR><FONT COLOR=blue>deb http://debreate.sf.net/apt debreate main</FONT><BR>
 <a href=http://debreate.sf.net/apt/pubkey.asc>$dl_key</a>
-      <br><br>
-      <b>$dl_git</b><br><font color=blue>git clone git://git.code.sf.net/p/debreate/git debreate-git</font><br>
-      <b><a href=\"https://sourceforge.net/p/debreate/git/?branch=ref%2Fmaster\">$git_browse</a></b><br>
     </TD>
   </TR>
 </TABLE>
