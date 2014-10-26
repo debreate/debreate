@@ -19,7 +19,7 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
-dbr_release=False
+dbr_release=True
 maj_version = 0
 mid_version = 7
 min_version = 10
