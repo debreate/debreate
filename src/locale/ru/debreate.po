@@ -1,0 +1,738 @@
+# Debreate - Debian Package Builder
+# Copyright (C) 2011 Jordan Irwin
+# This file is distributed under the same license as the debreate package.
+# Jordan Irwin <antumdeluge@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Debreate 0.7.6\n"
+"Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
+"POT-Creation-Date: 2011-12-01 08:00-0800\n"
+"PO-Revision-Date: 2014-10-26 21:59-0800\n"
+"Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: LANGUAGEMIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"MIME-Version: 1.0\n"
+
+# WARNING:
+# If "%s" or "{}" is in the msgid be sure to put it in the msgstr
+# or parts of Debreate will not function.
+# If you do not wish to translate a line just leave its
+# msgstr blank
+# ## Program name
+msgid "Debreate"
+msgstr ""
+
+# ## Title bar
+msgid "Debreate - Debian Package Builder"
+msgstr "Debreate - построитель deb пакетов"
+
+# ## First run message
+msgid "Debreate First Run"
+msgstr "Первый запуск Debreate"
+
+msgid "Thank you for using Debreate."
+msgstr "Благодарим за использование Debreate"
+
+msgid "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
+msgstr "Это сообщение только выводится на экран при первом запуске, или если конфигурационный файл поврежден. Конфигурационный файл будет теперь создаваться по умолчанию . Чтобы удалить этот файл, введите следующую команду в терминале:"
+
+# ## Menu and Status bars
+msgid "File"
+msgstr "Файл"
+
+msgid "Page"
+msgstr "Страницы"
+
+msgid "Options"
+msgstr "Опции"
+
+msgid "Help"
+msgstr "Помощь"
+
+msgid "Start  a new project"
+msgstr "Новый проект"
+
+msgid "Open"
+msgstr "Открыть проект"
+
+msgid "Open a previously saved project"
+msgstr "Открыть ранее сохраненный проект"
+
+msgid "Save current project"
+msgstr "Сохранить текущий проект"
+
+msgid "Save current project with a new filename"
+msgstr "Сохранить проект с новым именем"
+
+msgid "Quick Build"
+msgstr "Быстрое создание"
+
+msgid "Build a package from an existing build tree"
+msgstr "Построить проект из существующего дерева"
+
+msgid "Information"
+msgstr "Информация"
+
+msgid "Go to Information section"
+msgstr "Перейти к странице информации"
+
+msgid "Control"
+msgstr "Контроль"
+
+msgid "Go to Control section"
+msgstr "Перейти к странице контроля"
+
+msgid "Dependencies"
+msgstr "Зависимости"
+
+msgid "Go to Dependencies section"
+msgstr "Перейти к странице зависимостей"
+
+msgid "Files"
+msgstr "Файлы"
+
+msgid "Go to Files section"
+msgstr "Перейти к странице файлов"
+
+msgid "Scripts"
+msgstr "Сценарии"
+
+msgid "Go to Scripts section"
+msgstr "Перейти к странице сценариев"
+
+msgid "Changelog"
+msgstr "Изменения"
+
+msgid "Go to Changelog section"
+msgstr "Перейти к странице изменений"
+
+msgid "Copyright"
+msgstr "Правообладатель"
+
+msgid "Go to Copyright section"
+msgstr "Перейти к странице правообладатель"
+
+msgid "Menu Launcher"
+msgstr "Меню"
+
+msgid "Go to Menu Launcher section"
+msgstr "Перейти к странице меню"
+
+msgid "Build"
+msgstr "Построение"
+
+msgid "Go to Build section"
+msgstr "Перейти к секции построение"
+
+msgid "Use Custom Dialogs"
+msgstr "Использовать диалог выбора"
+
+msgid "Use System or Custom Save/Open Dialogs"
+msgstr "Использовать системный или выбраный диалог Сохранить/Открыть"
+
+msgid "Check for Update"
+msgstr "Проверить обновления"
+
+msgid "Reference"
+msgstr "Ссылки"
+
+msgid "Open a usage document"
+msgstr "Открыть"
+
+msgid "About"
+msgstr "О программе"
+
+msgid "About Debreate"
+msgstr "О Debreate"
+
+msgid "Debian Policy Manual"
+msgstr "О Debian"
+
+msgid "Control Files"
+msgstr "Контроль файлов"
+
+msgid "Ubuntu Policy Manual"
+msgstr "Об Ubuntu"
+
+msgid "Building debs from Source"
+msgstr "Построение Deb из исходников"
+
+msgid "Lintian Tags Explanation"
+msgstr "Англ. описание ТЭГов"
+
+# ## Dialogs
+msgid "Start New Project"
+msgstr "Запустить новый проект"
+
+msgid "You will lose any unsaved information"
+msgstr "Все несохраненные данные будут потеряны."
+
+msgid "Open File"
+msgstr "Открыть файл"
+
+msgid "Open Debreate Project"
+msgstr "Открыть проект"
+
+msgid "Save Debreate Project"
+msgstr "Сохранить проект"
+
+msgid "Debreate project files"
+msgstr "Файлы проекта"
+
+msgid "Not a valid Debreate project"
+msgstr "Нет доступных Debreate проектов"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Save failed"
+msgstr "Ошибка сохранения"
+
+msgid "Quit?"
+msgstr "Выйти?"
+
+msgid "A package builder for Debian based systems"
+msgstr "Разработчик пакета для базовой Debian системы"
+
+msgid "New Folder"
+msgstr "Новая папка"
+
+msgid "Rename"
+msgstr "Переименовать"
+
+msgid "Move to Trash"
+msgstr "Переместить в корзину"
+
+msgid "Permission Denied"
+msgstr "Неразрешимая зависимость"
+
+msgid "Name already used in current directory"
+msgstr "Имя уже существует в папке"
+
+msgid "Choose Directory"
+msgstr "Выбор папки"
+
+msgid "Save File"
+msgstr "Сохранить файл"
+
+msgid "Bad File Name"
+msgstr "Ошибка в имени файла"
+
+msgid "File Exists"
+msgstr "Файл существует"
+
+msgid "Overwrite File?"
+msgstr "Переписать файл?"
+
+msgid "Version %s is available!"
+msgstr "Доступна версия %s!"
+
+msgid "Would you like to go to Debreate's website?"
+msgstr "Хотите перейти на Web сайт?"
+
+msgid "Debreate is up to date!"
+msgstr "Debreate обновлен!"
+
+# ## About dialog
+msgid "Credits"
+msgstr "Участники"
+
+msgid "Job"
+msgstr "Соучастники"
+
+msgid "License"
+msgstr "Лицензия"
+
+msgid "Developer"
+msgstr "Разработчик"
+
+msgid "Packager"
+msgstr "Сборщик"
+
+msgid "Translation"
+msgstr "Переводчик"
+
+# ## Button tool tips
+msgid "Next"
+msgstr "Вперед"
+
+msgid "Previous"
+msgstr "Назад"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Remove"
+msgstr "Удалить"
+
+msgid "Clear"
+msgstr "Очистить"
+
+msgid "Append"
+msgstr "Присоединить"
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Browse"
+msgstr "Обзор"
+
+msgid "Ok"
+msgstr "ОК"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Preview"
+msgstr "Просмотр"
+
+msgid "Save"
+msgstr "Сохранить"
+
+# ## Information section
+msgid "Welcome to Debreate!"
+msgstr "Добро пожаловать в Debreate"
+
+msgid "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
+msgstr "Debreate помогает создавать пакеты для установки в системах базируемых на Debian. Используйте стрелки, расположенные в верхнем правом углу или \"Страница \", чтобы перемещаться по частям программы. Для получения дополнительной информации о пакетах Debian используйте ссылки в \"Помощь \"."
+
+msgid "For a video tutorial check the link below."
+msgstr "Для видеоуроков перейдите по ссылке."
+
+msgid "Building a Debian Package with Debreate"
+msgstr "Построение пакетов в Debreate"
+
+# ## Control section
+msgid "Required"
+msgstr "Обязательно"
+
+msgid "Package"
+msgstr "Пакет"
+
+msgid "Version"
+msgstr "Версия"
+
+msgid "Maintainer"
+msgstr "Сборщик"
+
+msgid "Email"
+msgstr ""
+
+msgid "Architecture"
+msgstr "Архитектура"
+
+msgid "Recommended"
+msgstr "Рекомендовано"
+
+msgid "Section"
+msgstr "Группа"
+
+msgid "Priority"
+msgstr "Паритет"
+
+msgid "Short Description"
+msgstr "Краткое описание"
+
+msgid "Long Description"
+msgstr "Полное описание"
+
+msgid "Optional"
+msgstr "Опционально"
+
+msgid "Source"
+msgstr "Исходник"
+
+msgid "Homepage"
+msgstr "Дом.страница"
+
+msgid "Essential"
+msgstr "Необходим"
+
+msgid "Save Control Information"
+msgstr "Сохранить информацию о контроле"
+
+# ## Dependencies and Conflicts section
+msgid "Dependencies and Conflicts"
+msgstr "Зависимости и конфликты"
+
+msgid "Categories"
+msgstr "Категории"
+
+msgid "Depends"
+msgstr "Зависимости"
+
+msgid "Package will need to be installed"
+msgstr "Нужно установить пакет"
+
+msgid "Pre-Depends"
+msgstr "Предзависимости"
+
+msgid "Package will need to be installed and configured first"
+msgstr "Нужно установить и сконфигуруровать пакет"
+
+msgid "Recommends"
+msgstr "Рекомендовано"
+
+msgid "Package is highly recommended and will be installed by default"
+msgstr "Пакет настоятельно рекомендован и будет установлен по умолчанию"
+
+msgid "Suggests"
+msgstr "Предложения"
+
+msgid "Package may be useful but is not necessary and will not be installed by default"
+msgstr "Пакет может быть полезным, но не необходим и не будет установлен по умолчанию"
+
+msgid "Enhances"
+msgstr "Улучшения"
+
+msgid "This package may be useful to enhanced package"
+msgstr "Этот пакет может быть полезным для улучшения пакета"
+
+msgid "Conflicts"
+msgstr "Конфликты"
+
+msgid "Package will be removed from the system if it is installed"
+msgstr "Пакет будет удален из системы, при установке запрошенного пакета"
+
+msgid "Replaces"
+msgstr "Замены"
+
+msgid "Package or its files may be overwritten"
+msgstr "Пакет или файлы могут быть перезаписаны"
+
+msgid "Breaks"
+msgstr "Отказы"
+
+msgid "Package conflicts and will be de-configured"
+msgstr "Пакет конфликтует и будет переконфигурирован"
+
+msgid "Category"
+msgstr "Категории"
+
+msgid "Package(s)"
+msgstr "Пакет(ы)"
+
+msgid "Confirm"
+msgstr "Подтверждение"
+
+msgid "Clear all dependencies?"
+msgstr "Стереть все зависимости?"
+
+# ## Files section
+msgid "Add Folder"
+msgstr "Добавить папку"
+
+msgid "Add File"
+msgstr "Добавить файл"
+
+msgid "Refresh"
+msgstr "Обновить"
+
+msgid "Target"
+msgstr "Цель"
+
+msgid "Custom"
+msgstr "Выбор"
+
+msgid "Choose Target Directory"
+msgstr "Выбор целевой папки"
+
+msgid "Progress"
+msgstr "Процесс"
+
+msgid "Getting files from %s"
+msgstr "Получить файлы из %s"
+
+msgid "Clear all files?"
+msgstr "Стереть все файлы?"
+
+msgid "Missing Files"
+msgstr "Недостающие файлы"
+
+msgid "Could not locate the following files:"
+msgstr "Невозможно определить местоположение следующих файлов:"
+
+# ## Scripts section
+msgid "Make this script"
+msgstr "Сценарий"
+
+msgid "Pre-Install"
+msgstr "Предустановка"
+
+msgid "Post-Install"
+msgstr "Постустановка"
+
+msgid "Pre-Remove"
+msgstr "Предудаление"
+
+msgid "Post-Remove"
+msgstr "Постудаление"
+
+msgid "Auto-Link Executables"
+msgstr "Автоссылка на выполнение"
+
+msgid "Path"
+msgstr "Путь"
+
+msgid "Import executables from Files section"
+msgstr "Импорт из страницы файлов"
+
+msgid "Generate Scripts"
+msgstr "Генерация сценария"
+
+msgid "Path Warning"
+msgstr "Предупреждение"
+
+msgid "Path %s does not exist. Continue?"
+msgstr "Путь %s не существует. Продолжить?"
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "post-install and pre-remove scripts generated"
+msgstr "Генерация сценариев постустановки и предудаления"
+
+msgid "Auto-Link Help"
+msgstr "Автоссылка на Помощь"
+
+msgid "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
+msgstr "Debreate предлагает функцию Автоссылки. При нахождении любых исполняемых программ в странице Файлов, и создает postinst сценарий, который создаст символические ссылки к ним по указанному пути. Это полезно, если Вы устанавливаете исполняемые программы в папку, которая не найдена в системной переменной PATH, но необходимо получить доступ к ним. Например, если Вы устанавливаете исполняемую программу \"bar \" в папку \"/usr/share/foo \", чтобы выполнить \"bar \" из терминала, Вы должны были бы ввести/usr/share/foo/bar. Автоссылка может использоваться, чтобы поместить ссылку на \"bar \" куда-нибудь в системный путь \"/usr/bin \".  Автоссылка также создает prerm сценарий, который удалит ссылку после удаления пакета."
+
+msgid "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
+msgstr "Как использовать Автоссылку: нажмите Импорт, чтобы импортировать любые исполнимые программы из раздела Файлы. Затем нажмите кнопку Генерировать. Будет создан сценарий постустаноки и предудаления, который поместит символьные ссылки на Ваши исполнимые программы в пути, выведенном на экран выше."
+
+# ## Changelog section
+msgid "Distribution"
+msgstr "Распространитель"
+
+msgid "Urgency"
+msgstr "Важность"
+
+msgid "Changes"
+msgstr "Изменения"
+
+msgid "Import information from Control section"
+msgstr "Импорт из секции Контроля"
+
+# ## Menu section
+msgid "Open launcher file"
+msgstr "Открыть файл запуска"
+
+msgid "Create system menu launcher"
+msgstr "Создать меню запуска"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Text for the launcher"
+msgstr "Текст при запуске"
+
+msgid "Executable"
+msgstr "Выполняемый"
+
+msgid "Executable to be launched"
+msgstr "Выполнить при запуске"
+
+msgid "Comment"
+msgstr "Коментарий"
+
+msgid "Text displayed when mouse hovers over launcher"
+msgstr "Текст при наведении курсора"
+
+msgid "Icon"
+msgstr "Значок"
+
+msgid "Icon to be displayed for the launcher"
+msgstr "Значок отображаемый при запуске"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Terminal"
+msgstr "Терминал"
+
+msgid "Specifies whether application should be run from a terminal"
+msgstr "Определяет, должно ли приложение быть запущено из терминала"
+
+msgid "Startup Notify"
+msgstr "Сообщения при запуске"
+
+msgid "Displays a notification in the system panel when launched"
+msgstr "Вывод на экран уведомления в системной панели"
+
+msgid "Encoding"
+msgstr "Кодировка"
+
+msgid "Other"
+msgstr "Прочее"
+
+msgid "Delete all categories?"
+msgstr "Удалить все категории?"
+
+msgid "Save Launcher"
+msgstr "Сохранить средство запуска"
+
+msgid "Open Launcher"
+msgstr "Открыть средство запуска"
+
+# ## Build section
+msgid "Extra options"
+msgstr "Дополнительные опции"
+
+msgid "Create md5sums file"
+msgstr "Создать файл md5sums"
+
+msgid "Install md5sum package for this option"
+msgstr "Установить md5sum для этой опции"
+
+msgid "Create checksums for files in package"
+msgstr "Создать контрольную сумму пакета"
+
+msgid "Delete build tree"
+msgstr "Удалить дерево построения"
+
+msgid "Delete temporary directory tree after package has been created"
+msgstr "Удалить временные папки и дерево после посртоения пакета"
+
+msgid "Check package for errors with lintian"
+msgstr "Проверить ошибки с lintian"
+
+msgid "Install lintian package for this option"
+msgstr "Установить lintian пакет для этой опции"
+
+msgid "Install package after build"
+msgstr "Установить пакет после построения"
+
+msgid "Start building"
+msgstr "Начать построение"
+
+msgid "Can't Continue"
+msgstr "Продолжение невозможно"
+
+msgid "One of the required fields is empty"
+msgstr "Одно из обязательных полей незаполнено"
+
+msgid "Debian Packages"
+msgstr "Debian пакеты"
+
+msgid "Preparing to build"
+msgstr "Подготовка построения"
+
+msgid "Gathering control information"
+msgstr "Сбор информации"
+
+msgid "Checking files"
+msgstr "Проверка файлов"
+
+msgid "Checking scripts"
+msgstr "Проверка сценариев"
+
+msgid "Checking changelog"
+msgstr "Проверка изменений"
+
+msgid "Checking copyright"
+msgstr "Проверка прапообладателя"
+
+msgid "Checking menu launcher"
+msgstr "Проверка меню запуска"
+
+msgid "Checking create md5sums"
+msgstr "Проверка создани md5sums"
+
+msgid "Checking delete build tree"
+msgstr "Проверка удаления дерева"
+
+msgid "Checking lintian"
+msgstr "Проверка lintian"
+
+msgid "Building"
+msgstr "Построение"
+
+msgid "Preparing build tree"
+msgstr "Подготовка дерева построения"
+
+msgid "Copying files"
+msgstr "Копирование файлов"
+
+msgid "Creating changelog"
+msgstr "Создание лог-файла"
+
+msgid "Creating copyright"
+msgstr "Создание правообладателя"
+
+msgid "Creating menu launcher"
+msgstr "Создание меню запуска"
+
+msgid "Creating md5sums"
+msgstr "Создание md5sums"
+
+msgid "Creating control file"
+msgstr "Создание контрольного файла"
+
+msgid "Creating scripts"
+msgstr "Создание сценария"
+
+msgid "Running dpkg"
+msgstr "Запуск dpkg"
+
+msgid "Removing temp directory"
+msgstr "Удаление временных папок"
+
+msgid "An error occurred when trying to delete the build tree"
+msgstr "Ошибка при попытке удалить дерево сборки"
+
+msgid "Checking package for errors"
+msgstr "Проверка ошибок пакета"
+
+msgid "Lintian Errors"
+msgstr "Lintian ошибки"
+
+msgid "Lintian found some issues with the package."
+msgstr "Lintian нашел некоторые проблемы с пакетом"
+
+msgid "Details saved to %s"
+msgstr "Подробности сохранены в %s"
+
+msgid "Package created successfully"
+msgstr "Пакет, создан успешно"
+
+msgid "Getting administrative privileges from user"
+msgstr "Получение административных привилегий для пользователя"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Installing Package"
+msgstr "Установка пакета"
+
+msgid "Empty password: Cancelling"
+msgstr "Пустой пароль: отменено"
+
+msgid "Authentication failure"
+msgstr "Ошибка аутентификации"
+
+msgid "Could not install %s"
+msgstr "Невозможно установить %s"
+
+msgid "Password mismatch, try again"
+msgstr "Неверный пароль, попробуйте еще раз"
+
+msgid "Authenticated"
+msgstr "Аутентифицирован"
+
+msgid "The package failed to install"
+msgstr "Ошибка установки пакета"
+
+msgid "The package installed successfully"
+msgstr "Пакет успешно установлен"
+
+# ## Quick build
+msgid "Path to build tree"
+msgstr "Путь создания дерева"
+
+msgid "Could not locate \"%s\""
+msgstr "Невозможно разместить \"%s \""
+
