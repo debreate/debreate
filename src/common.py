@@ -22,7 +22,7 @@ wx.SetDefaultPyEncoding('UTF-8')
 dbr_release=False
 maj_version = 0
 mid_version = 7
-min_version = 10
+min_version = 11
 
 # For testing release
 if (not dbr_release):
