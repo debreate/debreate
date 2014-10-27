@@ -19,6 +19,7 @@
   • Binary ............................................. 5.2
     ◦ Debian Package ................................. 5.2.1
     ◦ Tarballed Package .............................. 5.2.2
+‣ Planned Features ...................................... S6
   
   
 ###############################################################################
@@ -87,4 +88,17 @@ _______________________________________________________________________________
   
 - S5.2.2 - Tarballed Package:
   
+  
+###############################################################################
+# - S6 - Planned Features --------------------------------------------------- #
+###############################################################################
+  
+  The following features may or may not ever make it into Debreate. If a Target
+  Release is specified then it is probably in the works & chances are good that
+  it will be available in the future.
+  
+    Description                                                  Target Release
+  ‣ use XML format for saved projects ................................ none yet
+  ‣ editiable fields in "Dependencies" & "Files" sections ............ none yet
+  ‣ option to create manual pages (man pages) ........................ none yet
   
