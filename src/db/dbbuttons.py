@@ -1,5 +1,8 @@
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+
+
+from common import setWXVersion
+setWXVersion()
+
 import wx, os
 
 application_path = "%s/.." % os.path.dirname(__file__)

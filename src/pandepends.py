@@ -1,7 +1,8 @@
 # Page defining dependencies
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+from common import setWXVersion
+setWXVersion()
+
 import wx, wx.lib.mixins.listctrl as LC, db
 
 ID = wx.NewId()
@@ -108,7 +109,7 @@ class Panel(wx.Panel):
         self.dep_area = AutoListCtrl(self, -1)
         self.dep_area.InsertColumn(0, _('Category'), width=150)
         self.dep_area.InsertColumn(1, _('Package(s)'))
-        self.dep_area.SetColumnWidth(100, -1)
+        #self.dep_area.SetColumnWidth(100, -1)
         
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
         

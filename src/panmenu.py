@@ -1,7 +1,8 @@
 # Menu Page
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+from common import setWXVersion
+setWXVersion()
+
 import wx, db, os, shutil
 
 ID = wx.NewId()
@@ -121,7 +122,10 @@ class Panel(wx.Panel):
 		self.cat_add = db.ButtonAdd(self)
 		self.cat_del = db.ButtonDel(self)
 		self.cat_clr = db.ButtonClear(self)
-		self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+		if (wx.MAJOR_VERSION < 3):
+			self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+		else:
+			self.categories = wx.ListCtrl(self, -1, style=wx.LC_REPORT|wx.LC_SINGLE_SEL)
 		self.categories.InsertColumn(0, "")
 		
 		wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
