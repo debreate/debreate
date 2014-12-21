@@ -1,7 +1,8 @@
 # Scripts Page
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+from common import setWXVersion
+setWXVersion()
+
 import wx, os, db
 
 ID = wx.NewId()
@@ -92,8 +93,10 @@ class Panel(wx.Panel):
         alpath_sizer.Add(self.al_input, 1, wx.ALIGN_CENTER)
         
         # Auto-Link executables to be linked
-        self.executables = wx.ListCtrl(self, -1, size=(200,200),
-                style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
+        if (wx.MAJOR_VERSION < 3):
+            self.executables = wx.ListCtrl(self, -1, size=(200,200), style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
+        else:
+            self.executables = wx.ListCtrl(self, -1, size=(200,200), style=wx.LC_REPORT|wx.LC_SINGLE_SEL)
         self.executables.InsertColumn(0, "")
         
         # Auto-Link import, generate and remove buttons

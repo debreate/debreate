@@ -1,13 +1,20 @@
 # -*- coding: utf-8 -*-
 
+# Universal method for setting wxversion
+FORCEWXVERSION=False
+def setWXVersion():
+    import wxversion
+    if (FORCEWXVERSION):
+        vforced = '2.8'
+        wxversion.select(vforced)
+    else:
+        wxversion.select(['3.0', '2.8'])
+
+setWXVersion()
+
 import sys, os
 from urllib2 import urlopen, URLError, HTTPError
 from wx.lib.docview import PathOnly
-
-
-import wxversion
-# Force use of wxWidgets 2.8
-wxversion.select(['2.8'])
 import wx
 
 import language
