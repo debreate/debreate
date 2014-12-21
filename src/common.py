@@ -19,6 +19,8 @@ import wx
 
 import language
 
+# Get path to folder where application resides
+application_path = os.path.dirname(__file__)
 
 # Set the encoding to unicode
 if (sys.getdefaultencoding() != 'utf-8'):
