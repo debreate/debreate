@@ -6,7 +6,8 @@ from wx.lib.docview import PathOnly
 
 
 import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+# Force use of wxWidgets 2.8
+wxversion.select(['2.8'])
 import wx
 
 import language
