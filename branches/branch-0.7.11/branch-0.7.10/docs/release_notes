@@ -1,0 +1,15 @@
+Debreate 0.7.10 Release Notes
+
+Known Bugs:
+    *) Auto-Link Help only re-centers if "check" button is pressed
+    *) dpkg fails if non-ASCII characters are in package name or dependencies
+    *) Custom dialogs are buggy
+
+New Features:
+
+Tasks:
+    *) Add support for manpages
+    *) Add option to open changelog
+    *) Add option to build standalone installers
+    *) Add option to build from source
+    *) Add drag-and-drop support
