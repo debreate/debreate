@@ -6,8 +6,8 @@
 # (~/.config/debreate/config).  If the config file already exists and is corrupted, this script will bring it
 # back to its default settings.
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+from common import setWXVersion
+setWXVersion()
 
 import wx, sys, os, debreate, db, language, shutil
 
