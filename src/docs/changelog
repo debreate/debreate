@@ -1,6 +1,8 @@
 0.7.11
 - add Russian translation (ru)
 - first and last pages temporarily disable prev and next buttons
+- dropped support wxPython 2.6 and 2.7
+- added some support for Python3
 
 0.7.10
 - add fields to default paths in 'files' section
