@@ -48,9 +48,7 @@ ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
 
-# Get path to folder where application resides
-application_path = os.path.dirname(__file__)
-
+from common import application_path
 
 class MainWindow(wx.Frame):
     def __init__(self, parent, id, title, pos, size):
@@ -435,10 +433,10 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         """Opens a dialog box with information about the program"""
         about = db.AboutDialog(self, -1, _('About'))
         
-        about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
+        #about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
         about.SetVersion(_('Debreate'), debreate_version)
         about.SetAuthor('Jordan Irwin')
-        about.SetWebsite('http://debreate.sourceforge.net')
+        #about.SetWebsite('http://debreate.sourceforge.net')
         about.SetDescription(_('A package builder for Debian based systems'))
         
         about.AddDeveloper("Jordan Irwin", "antumdeluge@gmail.com")
