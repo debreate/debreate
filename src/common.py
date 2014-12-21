@@ -88,7 +88,7 @@ def GetCurrentVersion():
         version = (version[0], version[1], version[2])
         return version
     
-    except URLError, err:
+    except URLError as err:
         #err = unicode(err)
         return err
 
@@ -109,13 +109,13 @@ def CommandExists(command):
     try:
         subprocess.Popen(command.split(u' ')[0].split(u' '))
         exists = True
-        print u'First subprocess: %s' % (exists)
+        print(u'First subprocess: %s' % (exists))
     except OSError:
         exists = os.path.isfile(command)
-        print u'os.path: %s' % (exists)
+        print(u'os.path: %s' % (exists))
         if exists:
             subprocess.Popen((command))
-            print u'Second subprocess: %s' % (exists)
+            print(u'Second subprocess: %s' % (exists))
     return exists
 
 
