@@ -1,8 +1,7 @@
 # This script is used for field data that cannot use certain characters
 
-from common import setWXVersion
-setWXVersion()
-
+import wxversion
+wxversion.select(['2.6', '2.7', '2.8'])
 import wx
 
 class CharCtrl(wx.TextCtrl):

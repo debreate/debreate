@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from common import setWXVersion, application_path
-setWXVersion()
-
+import wxversion
+wxversion.select(['2.6', '2.7', '2.8'])
 import wx, db, wx.richtext
 
 class AboutDialog(wx.Dialog):
@@ -20,7 +19,6 @@ class AboutDialog(wx.Dialog):
         
         # Pages
         about = wx.Panel(tabs, -1)
-        self.about = about
         #about.SetBackgroundColour((0,0,0,0))
         credits = wx.Panel(tabs, -1)
         changelog = wx.Panel(tabs, -1)
@@ -33,22 +31,22 @@ class AboutDialog(wx.Dialog):
         tabs.AddPage(license, _(u'License'))
         
         # Put a picture on the first page
-        self.graphic = wx.StaticBitmap(about, -1, self.SetGraphic("%s/bitmaps/debreate64.png" % application_path))
+        self.graphic = wx.StaticBitmap(about)
         # Show the name and version of the application
         self.app = wx.StaticText(about, -1)
         self.app.SetFont(bigfont)
         # Show the author & website
         self.author = wx.StaticText(about)
-        self.website = self.SetWebsite("http://debreate.sourceforge.net/")
+        self.website = wx.HyperlinkCtrl(about, -1, "", "")
         # Show a short description
-        self.description = wx.StaticText(self, -1)
+        self.description = wx.StaticText(about, -1)
         
         about_sizer = wx.BoxSizer(wx.VERTICAL)
-        about_sizer.Add(self.graphic, 0, wx.ALIGN_CENTER|wx.ALL, 10)
-        about_sizer.Add(self.app, 0, wx.ALIGN_CENTER|wx.ALL, 10)
-        about_sizer.Add(self.author, 0, wx.ALIGN_CENTER|wx.ALL, 10)
-        about_sizer.Add(self.website, 0, wx.ALIGN_CENTER|wx.ALL, 10)
-        about_sizer.Add(self.description, 1, wx.ALIGN_CENTER|wx.ALL, 10)
+        about_sizer.AddMany( [
+            (self.graphic, 0, wx.ALIGN_CENTER|wx.ALL, 10),(self.app, 0, wx.ALIGN_CENTER|wx.ALL, 10),
+            (self.author, 0, wx.ALIGN_CENTER|wx.ALL, 10),(self.website, 0, wx.ALIGN_CENTER|wx.ALL, 10),
+            (self.description, 1, wx.ALIGN_CENTER|wx.ALL, 10)
+            ] )
         
         about.SetAutoLayout(True)
         about.SetSizer(about_sizer)
@@ -110,8 +108,7 @@ class AboutDialog(wx.Dialog):
     def SetGraphic(self, graphic):
         image = wx.Image(graphic)
         image.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
-        #self.graphic.SetBitmap(image.ConvertToBitmap())
-        return image.ConvertToBitmap()
+        self.graphic.SetBitmap(image.ConvertToBitmap())
 
     def SetVersion(self, name, version):
         self.app.SetLabel(u"%s %s" % (name, version))
@@ -120,10 +117,8 @@ class AboutDialog(wx.Dialog):
         self.author.SetLabel(author)
     
     def SetWebsite(self, URL):
-        #self.website.SetLabel(URL)
-        #self.website.SetURL(URL)
-        #self.website.Create(-1, URL, URL)
-        return wx.HyperlinkCtrl(self, -1, URL, URL)
+        self.website.SetLabel(URL)
+        self.website.SetURL(URL)
     
     def SetDescription(self, desc):
         self.description.SetLabel(desc)

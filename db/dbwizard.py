@@ -1,8 +1,6 @@
 # Wizard class for my Debreate
-
-from common import setWXVersion
-setWXVersion()
-
+import wxversion
+wxversion.select(['2.6', '2.7', '2.8'])
 import wx, dbbuttons, wx.lib.newevent
 
 ID_PREV = wx.NewId()
@@ -85,9 +83,6 @@ class Wizard(wx.Panel):
             else:
                 page.Show()
                 self.title_txt.SetLabel(page.GetName())
-        
-        # Disable "previous" button
-        self.button_prev.Disable()
         self.Layout()
     
     def ShowPage(self, id):
@@ -96,20 +91,8 @@ class Wizard(wx.Panel):
                 p.Hide()
             else:
                 p.Show()
-                name = p.GetName()
-                self.title_txt.SetLabel(name)
+                self.title_txt.SetLabel(p.GetName())
                 
-                # Previous and next buttons
-                if (name == "Information"):
-                    self.button_prev.Disable()
-                elif (not self.button_prev.IsEnabled()):
-                    self.button_prev.Enable()
-                
-                if (name == "Build"):
-                    self.button_next.Disable()
-                elif (not self.button_next.IsEnabled()):
-                    self.button_next.Enable()
-            
         self.Layout()
         for child in self.GetChildren():
             wx.PostEvent(child, self.evt)
