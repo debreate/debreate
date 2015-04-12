@@ -19,13 +19,13 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
-dbr_release=True
+RELEASE=False
 maj_version = 0
 mid_version = 7
 min_version = 10
 
 # For testing release
-if (not dbr_release):
+if (not RELEASE):
     min_version -= 0.5
 
 debreate_version = u'%s.%s.%s' % (maj_version, mid_version, min_version)
