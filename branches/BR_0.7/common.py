@@ -26,7 +26,7 @@ min_version = 10
 
 # For testing release
 if (not RELEASE):
-    min_version -= 0.5
+    min_version += 0.5
 
 debreate_version = u'%s.%s.%s' % (maj_version, mid_version, min_version)
 db_version = (maj_version, mid_version, min_version)
