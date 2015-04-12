@@ -48,7 +48,9 @@ ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
 
-from common import application_path
+# Get path to folder where application resides
+application_path = os.path.dirname(__file__)
+
 
 class MainWindow(wx.Frame):
     def __init__(self, parent, id, title, pos, size):
@@ -433,20 +435,19 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         """Opens a dialog box with information about the program"""
         about = db.AboutDialog(self, -1, _('About'))
         
-        #about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
+        about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
         about.SetVersion(_('Debreate'), debreate_version)
         about.SetAuthor('Jordan Irwin')
-        #about.SetWebsite('http://debreate.sourceforge.net')
+        about.SetWebsite('http://debreate.sourceforge.net')
         about.SetDescription(_('A package builder for Debian based systems'))
         
         about.AddDeveloper("Jordan Irwin", "antumdeluge@gmail.com")
         about.AddPackager("Jordan Irwin", "antumdeluge@gmail.com")
         job = _(u'Translation')
         job = job.decode(u'utf-8')
-        about.AddJob(_(u'Karim Oulad Chalha'), u'%s (ar_MA)' % (job), u'herr.linux88@gmail.com')
         about.AddJob(u'Jordan Irwin', u'%s (es)' % (job), u'antumdeluge@gmail.com')
+        about.AddJob(_(u'Karim Oulad Chalha'), u'%s (ar_MA)' % (job), u'herr.linux88@gmail.com')
         about.AddJob(_(u'Philippe Dalet'), u'%s (fr_FR)' % (job), u'philippe.dalet@ac-toulouse.fr')
-        about.AddJob(_(u'Zhmurkov Sergey'), u'%s (ru)' % (job), u'zhmsv@yandex.ru')
         
         file = open('%s/docs/changelog' % (application_path), 'r')
         log = file.read()

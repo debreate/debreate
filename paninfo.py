@@ -1,14 +1,11 @@
-
-
-from common import setWXVersion
-setWXVersion()
-
+import wxversion
+wxversion.select(['2.6', '2.7', '2.8'])
 import wx
 
-ID_INFO = wx.NewId()
+ID = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID_INFO, name=_('Information')):
+    def __init__(self, parent, id=ID, name=_('Information')):
         wx.Panel.__init__(self, parent, id, name=_('Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods

@@ -6,8 +6,8 @@
 # (~/.config/debreate/config).  If the config file already exists and is corrupted, this script will bring it
 # back to its default settings.
 
-from common import setWXVersion
-setWXVersion()
+import wxversion
+wxversion.select(['2.6', '2.7', '2.8'])
 
 import wx, sys, os, debreate, db, language, shutil
 
@@ -185,12 +185,12 @@ def TestConfig():
     # Check for old config file
     old_config = '%s/.debreate' % home
     if os.path.isdir(old_config):
-        print('Found deprecated configuration, deleting...')
+        print 'Found deprecated configuration, deleting...'
         shutil.rmtree(old_config)
     
     # Check if config file exists
     if not os.path.isfile(dbconfig):
-        print(_("Config not found, launching \"First Run\""))
+        print _("Config not found, launching \"First Run\"")
         StartFirstRun()
         return True # Centers the window
 
@@ -220,7 +220,7 @@ def TestConfig():
             if os.path.isdir(cwd) == False:
                 firstrun = True
         except:
-            print(_("Error found in config file, running first start"))
+            print _("Error found in config file, running first start")
             firstrun = True
         
         
