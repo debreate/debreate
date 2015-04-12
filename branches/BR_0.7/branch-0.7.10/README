@@ -1,0 +1,26 @@
+Debreate - Debian Package Builder (0.7.10)
+A graphical program for building Debian (.deb) packages. Package applications, media, artwork, etc.
+
+http://debreate.sourceforge.net
+
+To run launch file named "launch.py":
+  ./launch.py
+  or
+  python launch.py
+
+
+Debreate needs these packages installed to run:
+
+python
+wxpython (python-wxgtk)
+python-wxversion
+dpkg
+fakeroot
+coreutils
+
+
+Debreate recommends these packages to be installed:
+
+gvfs-bin
+lintian
+
