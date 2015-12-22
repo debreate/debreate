@@ -1,4 +1,4 @@
-@SHEBANG@
+#@SHEBANG@
 # -*- coding: utf-8 -*-
 
 # ============================== MIT LICENSE ==================================
@@ -25,3 +25,36 @@
 #
 # =============================================================================
 
+import os;
+
+INSTALLED = False;
+
+if (INSTALLED):
+    PREFIX = '/usr/local';
+    DATADIR = '%s/share/debreate' % PREFIX;
+else:
+    print('__file__: {}'.format(__file__));
+    SCRIPT = os.path.splitext(os.path.basename(__file__))[0];
+    print("SCRIPT: {}".format(SCRIPT));
+    PREFIX = os.path.dirname(os.path.dirname(os.path.abspath(__file__)));
+    print("PREFIX: {}".format(PREFIX));
+    DATADIR = '{}/src'.format(PREFIX);
+    print('DATADIR: {}'.format(DATADIR));
+try:
+    from modules.constants import DEBUG;
+except ImportError as err:
+    import sys;
+    sys.path.append(DATADIR);
+    print(sys.path[-1]);
+    from modules.constants import DEBUG;
+
+from modules.main import *;
+
+if (DEBUG):
+    print('Hello world!');
+
+if (__name__ == '__main__'):
+    from modules.main import *;
+
+    Debreate = DebreateApp();
+    Debreate.OnInit();
