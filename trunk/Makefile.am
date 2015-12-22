@@ -1,0 +1,4 @@
+
+SUBDIRS = src bin
+
+ACLOCAL_AMFLAGS = -I m4
