@@ -65,15 +65,15 @@ The source code is written in C++ syntax so a C++ compiler is required for build
 *Currently work is in progress to add GNU Autotools support.*
 
 The source from SVN comes with a Makefile. To install open a terminal and navigate into the source's root directory. Execute "make install" or "make uninstall". Optionally the DESTDIR variable can be set from the command line. For help execute "make help".
-~~~
-make install
-make uninstall
-~~~
+
+> make install
+> make uninstall
+
 or
-~~~
-make install DESTDIR=<path>
-make uninstall DESTDIR=<path>
-~~~
+
+> make install DESTDIR=<path>
+> make uninstall DESTDIR=<path>
+
 
 Make sure that DESTDIR is the same for both "install" & "uninstall", else uninstallation will fail.
 
