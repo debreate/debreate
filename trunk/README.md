@@ -25,11 +25,7 @@
 
 ---
 # 2: ABOUT
-  
-  Debreate is a utility to aid in building Debian packages (.deb). The goal is
-  to make packaging for Debian based Linux distributions more appealing with an
-  easy to use interface for creating distributable archives of applications,
-  artwork, media, and more.
+Debreate is a utility to aid in building Debian packages (.deb). The goal is to make packaging for Debian based Linux distributions more appealing with an easy to use interface for creating distributable archives of applications, artwork, media, and more.
 
 ---
 # 3: REQUIREMENTS
