@@ -21,7 +21,7 @@
 ---
 # 1: LICENSE
 
-  For information about licensing see 'REAME'.
+  For information about licensing see 'COPYING'.
 
 ---
 # 2: ABOUT
