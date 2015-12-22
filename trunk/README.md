@@ -38,7 +38,7 @@ Debreate is a utility to aid in building Debian packages (.deb). The goal is to 
 ---
 ## 3.2: Libraries
   
-### 3.2.1: wxWidgets/wxPython
+### 3.2.1: [wxWidgets][]/[wxPython][]
 
 The source code is written in C++ syntax so a C++ compiler is required for building. The project has been built & tested with the GNU Compiler Collection (GCC) & GNU/BSD make. Other compilers may be compatible but have not been tested so included instructions will mostly be limited to GCC.
 
