@@ -1,36 +1,33 @@
 
-# - SECTION 1 -
+# CONTENTS:
+---
 
-## 1.0 - CONTENTS:
-* CONTENTS .............................................. 1.0
-* LICENSE ............................................... S2
-* ABOUT ................................................. S3
-* REQUIREMENTS .......................................... S4
-    + Python Interpreter ................................. 4.1
-    + Libraries .......................................... 4.2
-        + wxWidgets/wxPython ............................. 4.2.1
-    + System ............................................. 4.3
-        + OS ............................................. 4.3.1
-        + Required Components ............................ 4.3.2
-        + Optional Components ............................ 4.3.3
-* Installing ............................................ S5
-    + Source ............................................. 5.1
-    + Binary ............................................. 5.2
-        + Debian Package ................................. 5.2.1
-        + Tarballed Package .............................. 5.2.2
-* Planned Features ...................................... S6
+* 1: LICENSE
+* 2: ABOUT
+* 3: REQUIREMENTS
+    + 3.1: Python Interpreter
+    + 3.2: Libraries
+        + 3.2.1: wxWidgets/wxPython
+    + 3.3: System
+        + 3.3.1: OS
+        + 3.3.2: Required Components
+        + 3.3.3: Optional Components
+* 4: Installation
+    + 4.1: Source
+    + 4.2: Binary
+        + 4.2.1: Debian Package
+        + 4.2.2: Tarballed Package
+* 4: Planned Features
   
   
-# - SECTION 2 -
-  
-  Debreate & its source code are copyright Jordan Irwin 2010-2014 & are
-  distributed under the terms & conditions of the GNU General Public
-  License (GPL) version 3. See "license-GPL3.txt" for more information.
-  
-  
-###############################################################################
-# - S3 - ABOUT -------------------------------------------------------------- #
-###############################################################################
+# 1: LICENSE
+---
+
+  For information about licensing see 'REAME'.
+
+
+# 2: ABOUT
+---
   
   Debreate is a utility to aid in building Debian packages (.deb). The goal is
   to make packaging for Debian based Linux distributions more appealing with an
@@ -38,9 +35,8 @@
   artwork, media, and more.
   
   
-###############################################################################
-# - S4 - REQUIREMENTS ------------------------------------------------------- #
-###############################################################################
+# 3: REQUIREMENTS
+---
   
 _______________________________________________________________________________
 - S4.1 - Python Interpreter --
