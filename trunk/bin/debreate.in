@@ -25,36 +25,42 @@
 #
 # =============================================================================
 
-import os;
+import os, sys;
 
+from modules.main import *;
+
+# Makefile will change this
 INSTALLED = False;
 
 if (INSTALLED):
     PREFIX = '/usr/local';
     DATADIR = '%s/share/debreate' % PREFIX;
+    CONFIGDIR = DATADIR;
 else:
-    print('__file__: {}'.format(__file__));
     SCRIPT = os.path.splitext(os.path.basename(__file__))[0];
-    print("SCRIPT: {}".format(SCRIPT));
     PREFIX = os.path.dirname(os.path.dirname(os.path.abspath(__file__)));
-    print("PREFIX: {}".format(PREFIX));
     DATADIR = '{}/src'.format(PREFIX);
-    print('DATADIR: {}'.format(DATADIR));
-try:
-    from modules.constants import DEBUG;
-except ImportError as err:
-    import sys;
-    sys.path.append(DATADIR);
-    print(sys.path[-1]);
-    from modules.constants import DEBUG;
+    CONFIGDIR = '{}/data'.format(PREFIX);
 
-from modules.main import *;
+sys.path.append(DATADIR);
 
-if (DEBUG):
-    print('Hello world!');
+import modules.constants as constants;
+
+from modules.constants import DEBUG, TESTING;
+
+constants.PREFIX = PREFIX;
+constants.DATADIR = DATADIR;
+constants.STANDARD_CONFIG = '{}/config'.format(CONFIGDIR);
+constants.INSTALLED = INSTALLED;
+constants.InitConstants();
+
+if (TESTING):
+    from tests.tests import RunTests;
+
+    testlist = ['ConfigParseTest'];
+    RunTests(testlist);
+    sys.exit(0);
 
 if (__name__ == '__main__'):
-    from modules.main import *;
-
     Debreate = DebreateApp();
     Debreate.OnInit();
