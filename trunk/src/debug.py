@@ -28,7 +28,7 @@
 #
 
 def Message(message, level='DEBUG', script=None, line=None):
-    levels = ('DEBUG', 'WARN', 'ERROR');
+    levels = ('DEBUG', 'INFO', 'WARN', 'ERROR');
     level = level.upper();
     if (level in levels):
         prefix = '{}:'.format(level);
