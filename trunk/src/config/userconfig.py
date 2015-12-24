@@ -25,4 +25,15 @@
 # =============================================================================
 
 ## @package config
-#
+#  Handles the user account configuration file
+
+import os, config;
+
+USERHOME = os.getenv('HOME');
+DEFAULT_CONFIG_DIR = '{}/.config'.format(USERHOME);
+OLD_CONFIG_DIR = '{}/debreate'.format(DEFAULT_CONFIG_DIR);
+
+
+class UserConfig(config.Config):
+    def __init__(self):
+        super(UserConfig, self).__init__(self);
