@@ -11,7 +11,7 @@ setWXVersion()
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
 
-class Wizard(wx.Panel):
+class WizardLayout(wx.Panel):
     def __init__(self, parent, id=wx.ID_ANY, page_list=None):
         wx.Panel.__init__(self, parent, id, page_list)
 

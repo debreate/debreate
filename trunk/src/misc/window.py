@@ -24,13 +24,21 @@
 #
 # =============================================================================
 
-from constants import *;
+from constants import REQ_WXVER;
 
 import wxversion;
 wxversion.select(REQ_WXVER);
 
-import wx
+# System imports
+import wx;
+
+# Local imports
+from wizard import WizardLayout;
 
 class MainWindow(wx.Frame):
-    def __init__(self, parent, title):
-        super(MainWindow, self).__init__(parent, title=title);
+    def __init__(self, parent, title, size=(800, 600)):
+        super(MainWindow, self).__init__(parent, title=title, size=size);
+
+        # Create a wizard-style layout
+        wizard = WizardLayout(self);
+
