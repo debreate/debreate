@@ -29,7 +29,7 @@
 
 import os;
 
-DATADIR = os.path.dirname(os.path.abspath(__file__));
+DBR_DATA = os.path.dirname(os.path.abspath(__file__));
 
 ## Debug mode #
 DEBUG = os.getenv('DEBUG');
@@ -43,5 +43,5 @@ REQ_WXVER = '3.0';
 ## Debreate version #
 VERSION = None;
 
-# FIXME: Should be set by installation
+## This is changed by the main script when installed correctly
 INSTALLED = False;
