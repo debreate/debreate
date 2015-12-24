@@ -45,7 +45,7 @@ else:
 
 sys.path.append(DATADIR);
 
-import constants, wizard;
+import constants;
 
 from constants import DEBUG, TESTING;
 from config.config import configuration;
