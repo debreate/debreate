@@ -24,11 +24,9 @@
 #
 # =============================================================================
 
-# System imports
-import wx;
-
 # Local imports
-from misc.window import MainWindow;
+#   (note that 'wx' is imported from misc.window to consolidate code)
+from misc.window import MainWindow, wx;
 
 class DebreateApp():
     def OnInit(self):

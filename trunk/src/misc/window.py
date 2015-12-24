@@ -30,10 +30,9 @@
 
 from constants import REQ_WXVER;
 
+# System imports
 import wxversion;
 wxversion.select(REQ_WXVER);
-
-# System imports
 import wx;
 
 # Local imports
