@@ -27,12 +27,13 @@
 
 import os, sys;
 
-from modules.main import *;
+from misc.main import *;
 
 # Makefile will change this
 INSTALLED = False;
 
 if (INSTALLED):
+    # TODO: These variables should be set at installation time
     PREFIX = '/usr/local';
     DATADIR = '%s/share/debreate' % PREFIX;
     CONFIGDIR = DATADIR;
@@ -44,15 +45,12 @@ else:
 
 sys.path.append(DATADIR);
 
-import modules.constants as constants;
+import constants, wizard;
 
-from modules.constants import DEBUG, TESTING;
+from constants import DEBUG, TESTING;
+from config.config import configuration;
 
-constants.PREFIX = PREFIX;
-constants.DATADIR = DATADIR;
-constants.STANDARD_CONFIG = '{}/config'.format(CONFIGDIR);
 constants.INSTALLED = INSTALLED;
-constants.InitConstants();
 
 if (TESTING):
     from tests.tests import RunTests;
@@ -60,6 +58,7 @@ if (TESTING):
     testlist = ['ConfigParseTest'];
     RunTests(testlist);
     sys.exit(0);
+
 
 if (__name__ == '__main__'):
     Debreate = DebreateApp();
