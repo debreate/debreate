@@ -24,14 +24,21 @@
 #
 # =============================================================================
 
-import wx, decor.buttons as dbbuttons, wx.lib.newevent
+##
+#
+
+# System modules
+import wx.lib.newevent;
+
+# Local modules
+import decor.buttons as dbbuttons;
 
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
 
 class WizardLayout(wx.Panel):
-    def __init__(self, parent, id=wx.ID_ANY, page_list=None):
-        super(WizardLayout, self).__init__(parent, id, page_list)
+    def __init__(self, parent, page_list=None):
+        super(WizardLayout, self).__init__(parent, wx.ID_ANY)
 
         self.parent = parent
 
