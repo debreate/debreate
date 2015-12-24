@@ -27,8 +27,6 @@
 
 import os, sys;
 
-from misc.main import *;
-
 ## The name of the executable script (debreate)
 DBR_SCRIPT = os.path.splitext(os.path.basename(__file__))[0];
 
@@ -42,6 +40,7 @@ sys.path.append(DBR_DATA);
 
 import constants
 
+from misc.main import *;
 from constants import DEBUG, TESTING;
 from config.config import configuration;
 
