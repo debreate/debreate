@@ -31,7 +31,7 @@ import wx
 
 ID_INFO = wx.NewId()
 
-class Panel(wx.Panel):
+class InfoPanel(wx.Panel):
     def __init__(self, parent, id=ID_INFO, name=_('Information')):
         wx.Panel.__init__(self, parent, id, name=_('Information'))
 
