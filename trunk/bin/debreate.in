@@ -29,28 +29,21 @@ import os, sys;
 
 from misc.main import *;
 
-# Makefile will change this
-INSTALLED = False;
+## The name of the executable script (debreate)
+DBR_SCRIPT = os.path.splitext(os.path.basename(__file__))[0];
 
-if (INSTALLED):
-    # TODO: These variables should be set at installation time
-    PREFIX = '/usr/local';
-    DATADIR = '%s/share/debreate' % PREFIX;
-    CONFIGDIR = DATADIR;
-else:
-    SCRIPT = os.path.splitext(os.path.basename(__file__))[0];
-    PREFIX = os.path.dirname(os.path.dirname(os.path.abspath(__file__)));
-    DATADIR = '{}/src'.format(PREFIX);
-    CONFIGDIR = '{}/data'.format(PREFIX);
+# The installation (make install) needs to set these paths
+## The base path where application is installed
+DBR_PREFIX = os.path.dirname(os.path.dirname(os.path.abspath(__file__)));
+## Location of imprted modules
+DBR_DATA = '{}/src'.format(DBR_PREFIX);
 
-sys.path.append(DATADIR);
+sys.path.append(DBR_DATA);
 
-import constants;
+import constants
 
 from constants import DEBUG, TESTING;
 from config.config import configuration;
-
-constants.INSTALLED = INSTALLED;
 
 if (TESTING):
     from tests.tests import RunTests;
