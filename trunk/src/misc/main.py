@@ -24,12 +24,16 @@
 #
 # =============================================================================
 
-from misc.window import *;
+# System imports
+import wx;
+
+# Local imports
+from misc.window import MainWindow;
 
 class DebreateApp():
     def OnInit(self):
         App = wx.App();
-        frame = MainWindow(None, 'Debreate');
+        frame = MainWindow('Debreate');
         frame.Show(True);
         App.SetTopWindow(frame);
         App.MainLoop();

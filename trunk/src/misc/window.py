@@ -24,6 +24,10 @@
 #
 # =============================================================================
 
+##
+# This script is the base of the application. It defines the user interface
+# and executes workload after the interface has been created.
+
 from constants import REQ_WXVER;
 
 import wxversion;
@@ -34,10 +38,13 @@ import wx;
 
 # Local imports
 from wizard import WizardLayout;
+from panel.info import InfoPanel;
 
+##
+# The main user interface class
 class MainWindow(wx.Frame):
-    def __init__(self, parent, title, size=(800, 600)):
-        super(MainWindow, self).__init__(parent, title=title, size=size);
+    def __init__(self, title, size=(800, 600)):
+        super(MainWindow, self).__init__(None, title=title, size=size);
 
         self.SetMinSize((640, 400))
 
