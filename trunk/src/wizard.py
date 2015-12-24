@@ -1,19 +1,37 @@
-# Wizard class for my Debreate
+# -*- coding: utf-8 -*-
+
+# ============================== MIT LICENSE ==================================
+#
+# Copyright (c) 2015 Jordan Irwin
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+# =============================================================================
 
 import wx, decor.buttons as dbbuttons, wx.lib.newevent
-
-from common import setWXVersion
-
-
-setWXVersion()
-
 
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
 
 class WizardLayout(wx.Panel):
     def __init__(self, parent, id=wx.ID_ANY, page_list=None):
-        wx.Panel.__init__(self, parent, id, page_list)
+        super(WizardLayout, self).__init__(parent, id, page_list)
 
         self.parent = parent
 
@@ -120,6 +138,7 @@ class WizardLayout(wx.Panel):
     def ChangePage(self, event):
         id = event.GetEventObject().GetId()
 
+        index = 0;
         # Get index of currently shown page
         for page in self.pages:
             if page.IsShown():
@@ -133,22 +152,13 @@ class WizardLayout(wx.Panel):
                 index += 1
 
         # Show the indexed page
-        self.ShowPage(self.pages[index].GetId())
+        if (self.pages):
+            self.ShowPage(self.pages[index].GetId());
 
-        # Check current page in "pages menu"
-        for p in self.parent.pages:
-            if self.pages[index].GetId() == p.GetId():
-                p.Check()
-#        for page in self.pages:
-#            if page != self.pages[index]:
-#                page.Hide()
-#            else:
-#                page.Show()
-#                self.title_txt.SetLabel(page.GetName())
-#
-#        self.Layout()
-#        for child in self.GetChildren():
-#            wx.PostEvent(child, self.evt)
+            # Check current page in "pages menu"
+            for p in self.parent.pages:
+                if self.pages[index].GetId() == p.GetId():
+                    p.Check()
 
     def ClearPages(self):
         for page in self.pages:
