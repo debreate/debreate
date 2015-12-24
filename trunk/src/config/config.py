@@ -27,16 +27,26 @@
 ## @package config
 #  Manages configuration files
 
-import os;
+# System modules
+import os, inspect;
 
-from constants import DATADIR, INSTALLED;
+# Local modules
+from constants import DBR_DATA, INSTALLED, DEBUG;
+
+if (DEBUG):
+    import debug;
+
 
 class Config():
     def __init__(self, name=None):
+        if (DEBUG):
+            dbgmsg = 'Initializing {}...'.format(name);
+            debug.Message(dbgmsg, 'DEBUG', os.path.basename(__file__), inspect.currentframe().f_lineno);
+
         self.name = name;
-        self.configfile = '{}/data/config'.format(DATADIR);
+        self.configfile = '{}/data/config'.format(DBR_DATA);
         if (not INSTALLED):
-            self.configfile = os.path.dirname(DATADIR) + '/data/config';
+            self.configfile = os.path.dirname(DBR_DATA) + '/data/config';
         self.configdata = {};
 
         # Fill configuration data on initialization
@@ -50,14 +60,6 @@ class Config():
                 value = self.configdata[key];
             except KeyError:
                 return(None);
-
-#            # Values with expandable variables
-#            if (('{' in value) or ('<' in value)):
-#                value = self.ExpandVariables(value);
-#
-#            # List values
-#            if ((';' in value) or (',' in value)):
-#                value = self.ParseList(value);
 
             # Return value without any modifications (plain variables)
             return(value);
@@ -154,4 +156,5 @@ class Config():
         return(self.name);
 
 
+## Initialize an instance of the configuration
 configuration = Config('Debreate Main Config');
