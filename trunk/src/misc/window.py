@@ -39,6 +39,8 @@ class MainWindow(wx.Frame):
     def __init__(self, parent, title, size=(800, 600)):
         super(MainWindow, self).__init__(parent, title=title, size=size);
 
+        self.SetMinSize((640, 400))
+
         # Create a wizard-style layout
         wizard = WizardLayout(self);
 
