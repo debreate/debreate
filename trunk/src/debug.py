@@ -27,5 +27,16 @@
 ## @package debug
 #
 
-def PrintDebugMessage(script, line):
-    pass;
+def Message(message, level='DEBUG', script=None, line=None):
+    levels = ('DEBUG', 'WARN', 'ERROR');
+    level = level.upper();
+    if (level in levels):
+        prefix = '{}:'.format(level);
+        if (script):
+            if (line):
+                script = '{}, {}'.format(script, line);
+            prefix = '{} ({}):'.format(level, script);
+
+        print('{} {}'.format(prefix, message));
+    else:
+        print('ERROR: Debug level \'{}\' not available.').format(level);
