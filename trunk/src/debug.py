@@ -27,9 +27,27 @@
 ## @package debug
 #
 
+# System modules
+from sys import stdout, stderr;
+
 def Message(message, level='DEBUG', script=None, line=None):
-    levels = ('DEBUG', 'INFO', 'WARN', 'ERROR');
+    # Console text output
+    ANSI_DEFAULT = '\033[0m';
+    ANSI_GREEN = '\033[0;32m';
+    ANSI_GREEN_I = ANSI_GREEN.replace('[0;', '[3;');
+    ANSI_BLUE = '\033[0;34m';
+    ANSI_BLUE_I = ANSI_BLUE.replace('[0;', '[3;');
+    ANSI_YELLOW = '\033[0;33m';
+    ANSI_YELLOW_I = ANSI_YELLOW.replace('[0;', '[3;');
+    ANSI_RED = '\033[0;31m';
+    ANSI_RED_I = ANSI_RED.replace('[0;', '[3;');
+
+    levels = {'DEBUG': ANSI_GREEN_I, 'INFO': ANSI_BLUE_I,
+              'WARN': ANSI_YELLOW_I, 'ERROR': ANSI_RED_I
+    };
     level = level.upper();
+    write = stderr.write;
+
     if (level in levels):
         prefix = '{}:'.format(level);
         if (script):
@@ -37,6 +55,9 @@ def Message(message, level='DEBUG', script=None, line=None):
                 script = '{}, {}'.format(script, line);
             prefix = '{} ({}):'.format(level, script);
 
-        print('{} {}'.format(prefix, message));
+        if (level == 'INFO'):
+            write = stdout.write;
+
+        write(levels[level] + '{} {}'.format(prefix, message) + ANSI_DEFAULT + '\n');
     else:
-        print('ERROR: Debug level \'{}\' not available.').format(level);
+        write(levels['ERROR'] + 'ERROR: Debug level \'{}\' not available.'.format(level) + ANSI_DEFAULT + '\n');
