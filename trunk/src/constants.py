@@ -29,7 +29,7 @@
 
 import os;
 
-from config.configparser import ConfigParser;
+DATADIR = os.path.dirname(os.path.abspath(__file__));
 
 ## Debug mode #
 DEBUG = os.getenv('DEBUG');
@@ -40,16 +40,8 @@ TESTING = os.getenv('TESTING');
 ## The version of wxWidgets that is needed #
 REQ_WXVER = '3.0';
 
-## System config file to load
-#  This gets set in __main__ script
-STANDARD_CONFIG = None;
-
 ## Debreate version #
 VERSION = None;
 
-
-def InitConstants():
-    parser = ConfigParser();
-    parser.SetConfigFile(STANDARD_CONFIG);
-    parser.LoadConfig();
-    VERSION = parser.GetKeyValue('VERSION');
+# FIXME: Should be set by installation
+INSTALLED = False;
