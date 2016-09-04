@@ -20,16 +20,16 @@ wx.SetDefaultPyEncoding('UTF-8')
 
 
 RELEASE=False
-maj_version = 0
-mid_version = 7
-min_version = 10
+ver_maj = 0
+ver_min = 7
+ver_rel = 10
 
 # For testing release
 if (not RELEASE):
-    min_version += 0.5
+    ver_rel += 0.5
 
-debreate_version = u'%s.%s.%s' % (maj_version, mid_version, min_version)
-db_version = (maj_version, mid_version, min_version)
+debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
+db_version = (ver_maj, ver_min, ver_rel)
 db_here = PathOnly(__file__).decode(u'utf-8')
 db_website = u'http://debreate.sourceforge.net'
 
@@ -38,9 +38,9 @@ mid_pyversion = sys.version_info[1]
 min_pyversion = sys.version_info[2]
 python_version = u'%s.%s.%s' % (maj_pyversion, mid_pyversion, min_pyversion)
 
-print("Python version: %s" % python_version)
-print("wxPython version: %s.%s.%s" % (wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEASE_VERSION))
-print("Debreate version: %s.%s.%s" % (maj_version, mid_version, min_version))
+print("Python version: {}".format(python_version))
+print("wxPython version: {}.{}.{}".format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEASE_VERSION))
+print("Debreate version: {}.{}.{}".format((ver_maj, ver_min, ver_rel))
 
 
 
