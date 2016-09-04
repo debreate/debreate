@@ -5,6 +5,7 @@ PREFIX = /usr
 DATAROOT = $(PREFIX)/share
 TARGET = $(DESTDIR)$(DATAROOT)/$(PACKAGE)
 BIN = $(DESTDIR)$(PREFIX)/bin
+APPS = $(DESTDIR)$(PREFIX)/share/applications
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -80,11 +81,13 @@ BITMAPS = \
 	bitmaps/save32.png \
 	bitmaps/save64.png
 
+MENU = debreate.desktop
+
 
 all:
 	@echo "Nothing to be done, run \"make install\""
 
-install: build bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale
+install: build bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
 	@mkdir -vp "$(TARGET)"
 	@for py in $(FILES_EXECUTABLE); do \
 		$(INSTALL_EXEC) "$${py}" "$(TARGET)"; \
@@ -112,12 +115,18 @@ install: build bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_E
 	
 	@$(MKDIR) "$(BIN)"
 	@$(INSTALL_EXEC) "bin/$(PACKAGE)" "$(BIN)"
+	
+	@$(MKDIR) "$(APPS)"
+	@$(INSTALL_EXEC) "data/$(MENU)" "$(APPS)"
 
 uninstall:
 	@$(UNINSTALL) "$(BIN)/$(PACKAGE)"
+	@$(UNINSTALL) "$(APPS)/$(MENU)"
 	
-	@find "$(TARGET)" -type f -delete
-	@find "$(TARGET)" -type d -empty -delete
+	@if [ -d "$(TARGET)" ]; then \
+		find "$(TARGET)" -type f -delete; \
+		find "$(TARGET)" -type d -empty -delete; \
+	fi
 
 build:
 	@mkdir -vp "bin"
