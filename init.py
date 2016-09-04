@@ -9,7 +9,7 @@
 import wxversion
 wxversion.select(['2.6', '2.7', '2.8'])
 
-import wx, sys, os, debreate, db, language, shutil
+import wx, sys, os, main, db, language, shutil
 
 # Get command line arguments
 project_file = 0 # Set project file to false
@@ -23,7 +23,7 @@ if len(sys.argv) > 1:
 
 
 # Get path to folder where script resides
-application_path = debreate.application_path
+application_path = main.application_path
 
 # Get the user's home directory
 home = os.getenv('HOME')
@@ -78,7 +78,7 @@ rm -r ~/.config/debreate' % (m1, m2))
 def Run(pos, size, maximize, center, dias, cwd):
     # Start the main application window
     app = wx.App()
-    frame = debreate.MainWindow(None, -1, "", pos, size)
+    frame = main.MainWindow(None, -1, "", pos, size)
     frame.SetTitle(frame.default_title)
     
     # Find out if user is using a dark theme (font will be light)
