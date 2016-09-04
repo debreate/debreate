@@ -91,7 +91,8 @@ DISTDIRS = \
 	data \
 	db \
 	docs \
-	locale
+	locale \
+	debian
 
 DISTFILES = \
 	$(FILES_EXECUTABLE) \
@@ -154,6 +155,9 @@ build:
 	@mkdir -vp "bin"
 	@echo "$(EXEC_SCRIPT)\n" > "bin/$(PACKAGE)"
 
+debuild:
+	@debuild -b -uc -us
+
 clean:
 	@find ./ -type f -name "*.pyc" -print -delete
 	@rm -vf "./bin/$(PACKAGE)"
@@ -161,12 +165,17 @@ clean:
 		$(UNINSTALL_FOLDER) "./bin"; \
 	fi
 
-distclean: clean
+distclean: clean debuild-clean
 
-dist:
+debuild-clean:
+	@rm -vrf "debian/debreate"
+	@DEBUILD_FILES="\
+	debian/debhelper-build-stamp debian/debreate.debhelper.log \
+	debian/debreate.substvars debian/files"; \
+	rm -vf $${DEBUILD_FILES};
+
+dist: debuild-clean
 	@echo "Creating distribution package ..."
-	@echo "$(DISTDIRS)"
-	@echo "$(DISTFILES)"
 	@if [ -f "$(DISTPACKAGE)" ]; then \
 		rm -v "$(DISTPACKAGE)"; \
 	fi
