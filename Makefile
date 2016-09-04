@@ -53,7 +53,7 @@ FILES_EXTRA = \
 
 FILES_DOC = \
 	docs/changelog \
-	docs/gpl-3.0.txt \
+	docs/LICENSE.txt \
 	docs/release_notes \
 	docs/usage.pdf
 
