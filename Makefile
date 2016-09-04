@@ -1,6 +1,7 @@
 # This is a generic Makefile. It will only work on systems with GNU make.
 
 PACKAGE = debreate
+VERSION = 0.7.10
 PREFIX = /usr
 DATAROOT = $(PREFIX)/share
 TARGET = $(DESTDIR)$(DATAROOT)/$(PACKAGE)
@@ -84,6 +85,21 @@ BITMAPS = \
 
 MENU = debreate.desktop
 
+DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
+
+DISTDIRS = \
+	bitmaps \
+	data \
+	db \
+	docs \
+	locale
+
+DISTFILES = \
+	$(FILES_EXECUTABLE) \
+	$(FILES) \
+	$(FILES_EXTRA) \
+	Makefile
+
 
 all:
 	@echo "Nothing to be done, run \"make install\""
@@ -145,3 +161,13 @@ clean:
 	@if [ -d "./bin" ]; then \
 		$(UNINSTALL_FOLDER) "./bin"; \
 	fi
+
+dist:
+	@echo "Creating distribution package ..."
+	@echo "$(DISTDIRS)"
+	@echo "$(DISTFILES)"
+	@if [ -f "$(DISTPACKAGE)" ]; then \
+		rm -v "$(DISTPACKAGE)"; \
+	fi
+	@tar -cJf "$(DISTPACKAGE)" $(DISTFILES) $(DISTDIRS)
+	@file "$(DISTPACKAGE)"
