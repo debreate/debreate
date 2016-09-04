@@ -19,14 +19,14 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
-RELEASE=False
+RELEASE = 0
 ver_maj = 0
 ver_min = 7
-ver_rel = 10
+ver_rel = 11
 
 # For testing release
 if (not RELEASE):
-    ver_rel += 0.5
+    ver_rel -= 0.5
 
 debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
 db_version = (ver_maj, ver_min, ver_rel)
