@@ -22,7 +22,7 @@ EXEC_SCRIPT = \
 
 
 FILES = \
-	debreate.py \
+	main.py \
 	common.py \
 	db_md5.py \
 	db.py \
