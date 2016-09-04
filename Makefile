@@ -122,3 +122,10 @@ uninstall:
 build:
 	@mkdir -vp "bin"
 	@echo "$(EXEC_SCRIPT)\n" > "bin/$(PACKAGE)"
+
+clean:
+	@find ./ -type f -name "*.pyc" -print -delete
+	@rm -vf "./bin/$(PACKAGE)"
+	@if [ -d "./bin" ]; then \
+		$(UNINSTALL_FOLDER) "./bin"; \
+	fi
