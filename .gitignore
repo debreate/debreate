@@ -1,4 +1,9 @@
 *.pyc
 /.project
 /bin
+/debian/debreate
+/debian/debhelper-build-stamp
+/debian/debreate.debhelper.log
+/debian/debreate.substvars
+/debian/files
 debreate_*.tar.xz
