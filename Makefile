@@ -2,23 +2,22 @@
 
 PACKAGE = debreate
 VERSION = 0.7.10
-PREFIX = /usr
-DATAROOT = $(PREFIX)/share
+prefix = /usr/local
+DATAROOT = $(prefix)/share
 TARGET = $(DESTDIR)$(DATAROOT)/$(PACKAGE)
-BINDIR = $(DESTDIR)$(PREFIX)/bin
-APPSDIR = $(DESTDIR)$(PREFIX)/share/applications
-PIXDIR = $(DESTDIR)$(PREFIX)/share/pixmaps
+BINDIR = $(DESTDIR)$(prefix)/bin
+APPSDIR = $(DESTDIR)$(prefix)/share/applications
+PIXDIR = $(DESTDIR)$(prefix)/share/pixmaps
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
-#UNINSTALL_DATA = find $(TARGET)
 UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
 
 EXEC_SCRIPT = \
-\#!/usr/bin/env bash \
+\#!/bin/sh \
 \n\n$(DATAROOT)/$(PACKAGE)/init.py
 
 
@@ -161,6 +160,8 @@ clean:
 	@if [ -d "./bin" ]; then \
 		$(UNINSTALL_FOLDER) "./bin"; \
 	fi
+
+distclean: clean
 
 dist:
 	@echo "Creating distribution package ..."
