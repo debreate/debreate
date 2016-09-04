@@ -454,7 +454,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         file.close()
         about.SetChangelog(log)
         
-        file = open('%s/docs/gpl-3.0.txt' % application_path, 'r')
+        file = open('%s/docs/LICENSE.txt' % application_path, 'r')
         license = file.read()
         file.close()
         about.SetLicense(license)
