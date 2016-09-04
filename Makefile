@@ -1,7 +1,7 @@
 # This is a generic Makefile. It will only work on systems with GNU make.
 
 PACKAGE = debreate
-VERSION = 0.7.10
+VERSION = 0.7.11
 prefix = /usr/local
 DATAROOT = $(prefix)/share
 TARGET = $(DESTDIR)$(DATAROOT)/$(PACKAGE)
