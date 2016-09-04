@@ -49,7 +49,8 @@ FILES_DB = \
 	db/dbwizard.py
 
 FILES_EXTRA = \
-	README
+	README \
+	INFO
 
 FILES_DOC = \
 	docs/changelog \
