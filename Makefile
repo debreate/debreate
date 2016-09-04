@@ -4,8 +4,9 @@ PACKAGE = debreate
 PREFIX = /usr
 DATAROOT = $(PREFIX)/share
 TARGET = $(DESTDIR)$(DATAROOT)/$(PACKAGE)
-BIN = $(DESTDIR)$(PREFIX)/bin
-APPS = $(DESTDIR)$(PREFIX)/share/applications
+BINDIR = $(DESTDIR)$(PREFIX)/bin
+APPSDIR = $(DESTDIR)$(PREFIX)/share/applications
+PIXDIR = $(DESTDIR)$(PREFIX)/share/pixmaps
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -113,18 +114,24 @@ install: build bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_E
 	
 	@$(INSTALL_FOLDER) locale "$(TARGET)"
 	
-	@$(MKDIR) "$(BIN)"
-	@$(INSTALL_EXEC) "bin/$(PACKAGE)" "$(BIN)"
+	@$(MKDIR) "$(BINDIR)"
+	@$(INSTALL_EXEC) "bin/$(PACKAGE)" "$(BINDIR)"
 	
-	@$(MKDIR) "$(APPS)"
-	@$(INSTALL_EXEC) "data/$(MENU)" "$(APPS)"
+	@$(MKDIR) "$(PIXDIR)"
+	@$(INSTALL_DATA) "bitmaps/debreate64.png" "$(PIXDIR)/debreate.png"
+	
+	@$(MKDIR) "$(APPSDIR)"
+	@$(INSTALL_EXEC) "data/$(MENU)" "$(APPSDIR)"
 
 uninstall:
-	@$(UNINSTALL) "$(BIN)/$(PACKAGE)"
-	@$(UNINSTALL) "$(APPS)/$(MENU)"
+	@$(UNINSTALL) "$(APPSDIR)/$(MENU)"
+	@$(UNINSTALL) "$(PIXDIR)/debreate.png"
+	@$(UNINSTALL) "$(BINDIR)/$(PACKAGE)"
 	
 	@if [ -d "$(TARGET)" ]; then \
-		find "$(TARGET)" -type f -delete; \
+		for f in `find "$(TARGET)" -type f`; do \
+			$(UNINSTALL) "$${f}"; \
+		done; \
 		find "$(TARGET)" -type d -empty -delete; \
 	fi
 
