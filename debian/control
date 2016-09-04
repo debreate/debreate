@@ -2,7 +2,7 @@ Source: debreate
 Section: Development
 Priority: optional
 Maintainer: Jordan Irwin <antumdeluge@gmail.com>
-Build-Depends: debhelper (>=9), dh-python, python-all (>= 2.6.6-3~), coreutils, make
+Build-Depends: debhelper (>=9), coreutils, make
 Standards-Version: 3.9.6
 Homepage: http://debreate.sourceforge.net/
 X-Python-Version: >= 2.6
@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${python:Depends}, ${misc:Depends}, python2.7, python-wxgtk2.8
 Suggests: 
 Description: Debian package builder
- <insert long description, indented with spaces>
+ Debreate - Debian package builder
  .
- This package installs the library for Python 2.
+ A utility to aid in packaging software and
+ media for Debian based systems.
