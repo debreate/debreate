@@ -9,7 +9,7 @@ To run launch file named "launch.py" (it should execute via mouse-click as well)
 * or
 * python init.py
 
-The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well. The source is not actually built. Just open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'.
+The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built. Just open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'.
 
 
 Debreate needs these packages installed to run:
