@@ -2,9 +2,9 @@
 
 #### A graphical program for building Debian (.deb) packages. Package applications, media, artwork, etc.
 
-(http://debreate.sourceforge.net)
+(http://debreate.sourceforge.net/)
 
-To run launch file named "launch.py":
+To run launch file named "launch.py" (it should execute via mouse-click as well):
 * ./init.py
 * or
 * python init.py
@@ -43,3 +43,6 @@ Debreate recommends these packages to be installed:
 [python-wxgtk3]: http://packages.ubuntu.com/python-wxgtk3
 
 [ubu.wily.python-wxgtk]: http://packages.ubuntu.com/wily/python-wxgtk2.8
+
+[cmake]: https://cmake.org/
+[gnu-autotools]: https://en.wikipedia.org/wiki/GNU_Build_System
