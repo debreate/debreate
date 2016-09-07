@@ -30,6 +30,9 @@ Debreate recommends these packages to be installed:
 * [lintian][]
 
 
+It is recommended to build the .deb package with 'make debuild' & install via the system's package manager.
+
+
 
 
 [coreutils]: http://packages.ubuntu.com/coreutils
