@@ -4,12 +4,14 @@
 
 (http://debreate.sourceforge.net/)
 
-To run launch file named "launch.py" (it should execute via mouse-click as well):
+To run launch file named "init.py" (it should execute via mouse-click as well):
 * ./init.py
 * or
 * python init.py
 
 The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built. Just open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'.
+
+If you have [debuild][] installed, you can run 'make debuild' from the command line to build the debian package (.deb).
 
 
 Debreate needs these packages installed to run:
@@ -33,6 +35,7 @@ Debreate recommends these packages to be installed:
 
 
 [coreutils]: http://packages.ubuntu.com/coreutils
+[debuild]: http://packages.ubuntu.com/debuild
 [dpkg]: http://packages.ubuntu.com/dpkg
 [fakeroot]: http://packages.ubuntu.com/fakeroot
 [gvfs-bin]: http://packages.ubuntu.com/gvfs-bin
