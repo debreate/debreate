@@ -37,15 +37,22 @@ class AboutDialog(wx.Dialog):
         self.app.SetFont(bigfont)
         # Show the author & website
         self.author = wx.StaticText(about)
-        self.website = wx.HyperlinkCtrl(about, -1, "", "")
+        self.website = wx.HyperlinkCtrl(about, -1, '', '')
+        self.website2 = wx.HyperlinkCtrl(about, -1, '', '')
         # Show a short description
         self.description = wx.StaticText(about, -1)
         
+        link_sizer = wx.BoxSizer(wx.VERTICAL)
+        link_sizer.Add(self.website, 0, wx.ALIGN_CENTER, 10)
+        link_sizer.Add(self.website2, 0, wx.ALIGN_CENTER, 10)
+        
         about_sizer = wx.BoxSizer(wx.VERTICAL)
         about_sizer.AddMany( [
-            (self.graphic, 0, wx.ALIGN_CENTER|wx.ALL, 10),(self.app, 0, wx.ALIGN_CENTER|wx.ALL, 10),
-            (self.author, 0, wx.ALIGN_CENTER|wx.ALL, 10),(self.website, 0, wx.ALIGN_CENTER|wx.ALL, 10),
-            (self.description, 1, wx.ALIGN_CENTER|wx.ALL, 10)
+            (self.graphic, 0, wx.ALIGN_CENTER|wx.ALL, 10),
+            (self.app, 0, wx.ALIGN_CENTER|wx.ALL, 10),
+            (self.author, 0, wx.ALIGN_CENTER|wx.ALL, 10),
+            (link_sizer, 0, wx.ALIGN_CENTER|wx.ALL, 10),
+            (self.description, 0, wx.ALIGN_CENTER|wx.ALL, 10)
             ] )
         
         about.SetAutoLayout(True)
@@ -119,6 +126,14 @@ class AboutDialog(wx.Dialog):
     def SetWebsite(self, URL):
         self.website.SetLabel(URL)
         self.website.SetURL(URL)
+    
+    def SetSFWebsite(self, label, URL):
+        self.website.SetLabel(label)
+        self.website.SetURL(URL)
+    
+    def SetGHWebsite(self, label, URL):
+        self.website2.SetLabel(label)
+        self.website2.SetURL(URL)
     
     def SetDescription(self, desc):
         self.description.SetLabel(desc)
