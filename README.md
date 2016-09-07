@@ -4,12 +4,10 @@
 
 (http://debreate.sourceforge.net/)
 
-To run launch file named "init.py" (it should execute via mouse-click as well):
-* ./init.py
-* or
-* python init.py
+To run, launch the file named "init.py" (it should execute via mouse-click as well):
+* './init.py' or 'python init.py'
 
-The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built. Just open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'.
+The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built, but the Makefile simply installs the scripts onto the system. Just open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'. To uninstall type 'make uninstall'.
 
 If you have [debuild][] installed, you can run 'make debuild' from the command line to build the debian package (.deb).
 
