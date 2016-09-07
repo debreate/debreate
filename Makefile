@@ -49,8 +49,9 @@ FILES_DB = \
 	db/dbwizard.py
 
 FILES_EXTRA = \
-	README \
-	INFO
+	README.md \
+	INFO \
+	update-version.py
 
 FILES_DOC = \
 	docs/changelog \
@@ -102,10 +103,10 @@ DISTFILES = \
 	Makefile
 
 
-all:
-	@echo "Nothing to be done, run \"make install\""
+all: build
+	@echo "Build complete. Now execute \"make install\"."
 
-install: build bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
+install: all bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
 	@mkdir -vp "$(TARGET)"
 	@for py in $(FILES_EXECUTABLE); do \
 		$(INSTALL_EXEC) "$${py}" "$(TARGET)"; \
@@ -154,6 +155,7 @@ uninstall:
 
 build:
 	@mkdir -vp "bin"
+	@echo "Creating executable \"bin/$(PACKAGE)\" ..."
 	@echo "$(EXEC_SCRIPT)\n" > "bin/$(PACKAGE)"
 
 debuild:
