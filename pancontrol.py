@@ -2,8 +2,6 @@
 
 # This panel displays the field input of the control file
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
 import wx, db, os
 
 ID = wx.NewId()
