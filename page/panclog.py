@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import wx, db, commands
+import db, commands
 
 ID = wx.NewId()
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import wx, os, wx.lib.mixins.listctrl as LC, db
+import os, wx.lib.mixins.listctrl as LC, db
 from os.path import exists, isfile, isdir
 from common import *
 

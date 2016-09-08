@@ -2,7 +2,7 @@
 
 # Page defining dependencies
 
-import wx, wx.lib.mixins.listctrl as LC, db
+import wx.lib.mixins.listctrl as LC, db
 
 ID = wx.NewId()
 

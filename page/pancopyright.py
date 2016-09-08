@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import wx
-
 ID = wx.NewId()
 
 class Panel(wx.Panel):

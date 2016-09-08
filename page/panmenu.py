@@ -2,7 +2,7 @@
 
 # Menu Page
 
-import wx, db, os, shutil
+import db, os, shutil
 
 ID = wx.NewId()
 
