@@ -1,7 +1,6 @@
 # Build Page
 # -*- coding: utf-8 -*-
 
-#from common import *
 from wximports import wxDialog, wxNewId, wxPanel, wxToolTip, \
     wxCheckBox, wxStaticBox, wxStaticBoxSizer, wxBoxSizer, \
     \
