@@ -1,5 +1,5 @@
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+# -*- coding: utf-8 -*-
+
 import wx, os, dbbuttons
 
 
