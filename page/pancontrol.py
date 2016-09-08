@@ -2,7 +2,7 @@
 
 # This panel displays the field input of the control file
 
-import wx, db, os
+import db, os
 
 ID = wx.NewId()
 
