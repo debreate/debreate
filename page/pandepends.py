@@ -4,14 +4,20 @@
 
 import wx.lib.mixins.listctrl as LC, db
 
-ID = wx.NewId()
+from wximports import \
+	wxNewId, wxPanel, wxToolTip, wxListCtrl, wxRadioButton, wxRB_GROUP, wxStaticText, \
+	wxTextCtrl, wxChoice, wxFlexGridSizer, wxLEFT, wxEXPAND, wxEVT_KEY_DOWN, wxEVT_BUTTON, \
+	wxBORDER_SIMPLE, wxLC_REPORT, wxStaticBoxSizer, wxStaticBox, wxVERTICAL, wxGridSizer, \
+	wxBoxSizer, wxHORIZONTAL, wxRIGHT, wxALIGN_CENTER, wxALL
 
-ID_Append = wx.NewId()
-ID_Delete = wx.NewId()
+ID = wxNewId()
 
-class Panel(wx.Panel):
+ID_Append = wxNewId()
+ID_Delete = wxNewId()
+
+class Panel(wxPanel):
     def __init__(self, parent, id=ID):
-        wx.Panel.__init__(self, parent, id, name=_('Dependencies and Conflicts'))
+        wxPanel.__init__(self, parent, id, name=_('Dependencies and Conflicts'))
         
         # For identifying page to parent
         #self.ID = "DEP"
@@ -20,89 +26,89 @@ class Panel(wx.Panel):
         self.parent = parent
         
         # ----- Tool Tips
-        dep_tip = wx.ToolTip(_('Package will need to be installed'))
-        pre_tip = wx.ToolTip(_('Package will need to be installed and configured first'))
-        rec_tip = wx.ToolTip(_('Package is highly recommended and will be installed by default'))
-        sug_tip = wx.ToolTip(_('Package may be useful but is not necessary and will not be installed by default'))
-        enh_tip = wx.ToolTip(_('This package may be useful to enhanced package'))
-        con_tip = wx.ToolTip(_('Package will be removed from the system if it is installed'))
-        rep_tip = wx.ToolTip(_('Package or its files may be overwritten'))
-        break_tip = wx.ToolTip(_('Package conflicts and will be de-configured'))
-#        syn_tip = wx.ToolTip("Breifly summarize the purpose of the application")
-#        desc_tip = wx.ToolTip("Here you can give a more detailed explanation\n\n\
+        dep_tip = wxToolTip(_('Package will need to be installed'))
+        pre_tip = wxToolTip(_('Package will need to be installed and configured first'))
+        rec_tip = wxToolTip(_('Package is highly recommended and will be installed by default'))
+        sug_tip = wxToolTip(_('Package may be useful but is not necessary and will not be installed by default'))
+        enh_tip = wxToolTip(_('This package may be useful to enhanced package'))
+        con_tip = wxToolTip(_('Package will be removed from the system if it is installed'))
+        rep_tip = wxToolTip(_('Package or its files may be overwritten'))
+        break_tip = wxToolTip(_('Package conflicts and will be de-configured'))
+#        syn_tip = wxToolTip("Breifly summarize the purpose of the application")
+#        desc_tip = wxToolTip("Here you can give a more detailed explanation\n\n\
 #If you need help open \"Help/Example Control\" for details on formatting")
         
         
         # Display a nice title
-#		self.title = wx.StaticText(self, -1) #Title for dependencies and conflictions
+#		self.title = wxStaticText(self, -1) #Title for dependencies and conflictions
 #		self.title.SetFont(parent.BoldFont)
         
         # --- DEPENDS
-        self.dep_chk = wx.RadioButton(self, -1, _('Depends'), name='Depends', style=wx.RB_GROUP)
+        self.dep_chk = wxRadioButton(self, -1, _('Depends'), name='Depends', style=wxRB_GROUP)
         self.dep_chk.SetToolTip(dep_tip)
         
         # --- PRE-DEPENDS
-        self.pre_chk = wx.RadioButton(self, -1, _('Pre-Depends'), name='Pre-Depends')
+        self.pre_chk = wxRadioButton(self, -1, _('Pre-Depends'), name='Pre-Depends')
         self.pre_chk.SetToolTip(pre_tip)
         
         # --- RECOMMENDS
-        self.rec_chk = wx.RadioButton(self, -1, _('Recommends'), name='Recommends')
+        self.rec_chk = wxRadioButton(self, -1, _('Recommends'), name='Recommends')
         self.rec_chk.SetToolTip(rec_tip)
         
         # --- SUGGESTS
-        self.sug_chk = wx.RadioButton(self, -1, _('Suggests'), name='Suggests')
+        self.sug_chk = wxRadioButton(self, -1, _('Suggests'), name='Suggests')
         self.sug_chk.SetToolTip(sug_tip)
         
         # --- ENHANCES
-        self.enh_chk = wx.RadioButton(self, -1, _('Enhances'), name='Enhances')
+        self.enh_chk = wxRadioButton(self, -1, _('Enhances'), name='Enhances')
         self.enh_chk.SetToolTip(enh_tip)
         
         # --- CONFLICTS
-        self.con_chk = wx.RadioButton(self, -1, _('Conflicts'), name='Conflicts')
+        self.con_chk = wxRadioButton(self, -1, _('Conflicts'), name='Conflicts')
         self.con_chk.SetToolTip(con_tip)
         
         # --- REPLACES
-        self.rep_chk = wx.RadioButton(self, -1, _('Replaces'), name='Replaces')
+        self.rep_chk = wxRadioButton(self, -1, _('Replaces'), name='Replaces')
         self.rep_chk.SetToolTip(rep_tip)
         
         # --- BREAKS
-        self.break_chk = wx.RadioButton(self, -1, _('Breaks'), name='Breaks')
+        self.break_chk = wxRadioButton(self, -1, _('Breaks'), name='Breaks')
         self.break_chk.SetToolTip(break_tip)
         
         
         # Input for dependencies
-        self.pack_text = wx.StaticText(self, -1, _('Package'))
-        self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
+        self.pack_text = wxStaticText(self, -1, _('Package'))
+        self.dep_name = wxTextCtrl(self, -1, size=(300,25))
         self.oper_options = (">=", "<=", "=", ">>", "<<")
-        self.ver_text = wx.StaticText(self, -1, _('Version'))
-        self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
-        self.dep_ver = wx.TextCtrl(self, -1)
+        self.ver_text = wxStaticText(self, -1, _('Version'))
+        self.dep_oper = wxChoice(self, -1, choices=self.oper_options)
+        self.dep_ver = wxTextCtrl(self, -1)
         
-        depH1 = wx.FlexGridSizer(2, 3, hgap=5)
+        depH1 = wxFlexGridSizer(2, 3, hgap=5)
         depH1.AddGrowableCol(2)
-        depH1.Add(self.pack_text, 0, wx.LEFT, 2)
+        depH1.Add(self.pack_text, 0, wxLEFT, 2)
         depH1.AddSpacer(0)
-        depH1.Add(self.ver_text, 1, wx.EXPAND|wx.LEFT, 2)
+        depH1.Add(self.ver_text, 1, wxEXPAND|wxLEFT, 2)
         depH1.Add(self.dep_name)
         depH1.Add(self.dep_oper)
-        depH1.Add(self.dep_ver, 1, wx.EXPAND)
+        depH1.Add(self.dep_ver, 1, wxEXPAND)
         
         self.dep_name.SetSize((100,50))
         
         # Add KEY_DOWN events to text areas
-        wx.EVT_KEY_DOWN(self.dep_name, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
+        wxEVT_KEY_DOWN(self.dep_name, self.SetDepends)
+        wxEVT_KEY_DOWN(self.dep_ver, self.SetDepends)
         
         # Buttons to add and remove dependencies from the list
         self.depadd = db.ButtonAdd(self)
         self.depapp = db.ButtonPipe(self, ID_Append)
-        self.deprem = db.ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
+        self.deprem = db.ButtonDel(self, ID_Delete) # Change the id from wxWXK_DELETE as workaround
         self.depclr = db.ButtonClear(self)
         
-        wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.deprem, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
+        wxEVT_BUTTON(self.depadd, -1, self.SetDepends)
+        wxEVT_BUTTON(self.depapp, -1, self.SetDepends)
+        wxEVT_BUTTON(self.deprem, -1, self.SetDepends)
+        wxEVT_BUTTON(self.depclr, -1, self.SetDepends)
         
         # ----- List
         self.dep_area = AutoListCtrl(self, -1)
@@ -110,11 +116,11 @@ class Panel(wx.Panel):
         self.dep_area.InsertColumn(1, _('Package(s)'))
         self.dep_area.SetColumnWidth(100, -1)
         
-        wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
+        wxEVT_KEY_DOWN(self.dep_area, self.SetDepends)
         
         # Start some sizing
-        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, -1, _('Categories')), wx.VERTICAL)
-        rg1 = wx.GridSizer(4, 2, 5, 5)
+        radio_box = wxStaticBoxSizer(wxStaticBox(self, -1, _('Categories')), wxVERTICAL)
+        rg1 = wxGridSizer(4, 2, 5, 5)
         rg1.AddMany( [
         (self.dep_chk, 0),
         (self.pre_chk, 0),
@@ -127,33 +133,33 @@ class Panel(wx.Panel):
         
         radio_box.Add(rg1, 0)
         
-        depH2 = wx.BoxSizer(wx.HORIZONTAL)
-        depH2.Add(radio_box, 0, wx.RIGHT, 5)
-        depH2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        depH2 = wxBoxSizer(wxHORIZONTAL)
+        depH2.Add(radio_box, 0, wxRIGHT, 5)
+        depH2.Add(self.depadd, 0, wxALIGN_CENTER|wxLEFT, 5)
+        depH2.Add(self.depapp, 0, wxALIGN_CENTER|wxLEFT, 5)
+        depH2.Add(self.deprem, 0, wxALIGN_CENTER|wxLEFT, 5)
+        depH2.Add(self.depclr, 0, wxALIGN_CENTER|wxLEFT, 5)
         
-        self.border = wx.StaticBox(self, -1)
-        border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        border_box.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        self.border = wxStaticBox(self, -1)
+        border_box = wxStaticBoxSizer(self.border, wxVERTICAL)
+        border_box.Add(depH1, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
         border_box.AddSpacer(5)
-        border_box.Add(depH2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.Add(depH2, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
         
-        depH3 = wx.BoxSizer(wx.HORIZONTAL)
-        depH3.Add(self.dep_area, 1, wx.EXPAND)
+        depH3 = wxBoxSizer(wxHORIZONTAL)
+        depH3.Add(self.dep_area, 1, wxEXPAND)
         
         # ----- Main Sizer
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
+        page_sizer = wxBoxSizer(wxVERTICAL)
         page_sizer.AddSpacer(10)
-#		page_sizer.Add(self.title, 0, wx.ALIGN_CENTER)
-#		page_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND)
+#		page_sizer.Add(self.title, 0, wxALIGN_CENTER)
+#		page_sizer.Add(wxStaticLine(self, -1), 0, wxEXPAND)
 #		page_sizer.AddSpacer(10)
-#		page_sizer.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+#		page_sizer.Add(depH1, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
 #		page_sizer.AddSpacer(5)
-#		page_sizer.Add(depH2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        page_sizer.Add(border_box, 0, wx.LEFT, 5)
-        page_sizer.Add(depH3, 1, wx.EXPAND|wx.ALL, 5)
+#		page_sizer.Add(depH2, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
+        page_sizer.Add(border_box, 0, wxLEFT, 5)
+        page_sizer.Add(depH3, 1, wxEXPAND|wxALL, 5)
         
         # ----- Layout
         self.SetAutoLayout(True)
@@ -214,7 +220,7 @@ class Panel(wx.Panel):
         ver = self.dep_ver.GetValue()
         addver = "(%s%s)" % (oper, ver)
             
-        if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+        if id == wxWXK_RETURN or id == wxWXK_NUMPAD_ENTER:
             for item in self.categories:
                 if item.GetValue() == True:
                     if addname != "":
@@ -234,7 +240,7 @@ class Panel(wx.Panel):
                 else:
                     self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
         
-        elif id == ID_Delete: # wx.WXK_DELETE:
+        elif id == ID_Delete: # wxWXK_DELETE:
             selected = None
             while selected != -1:
                 selected = self.dep_area.GetFirstSelected()
@@ -243,13 +249,13 @@ class Panel(wx.Panel):
         elif id == 65 and mod == 2:
             self.SelectAll()
         
-        elif id == wx.WXK_ESCAPE:
+        elif id == wxWXK_ESCAPE:
             # Create the dialog
 #			title = dia_lang.GetLanguage("Message Title", cur_lang)
 #			text = dia_lang.GetLanguage("Message Text", cur_lang)
-            confirm = wx.MessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-            if confirm.ShowModal() == wx.ID_YES:
+            confirm = wxMessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
+                    wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION)
+            if confirm.ShowModal() == wxID_YES:
                 self.dep_area.DeleteAllItems()
 #			confirm = dialogs.Confirm(self)
 #			if cur_lang == "English":
@@ -285,8 +291,8 @@ class Panel(wx.Panel):
     
 
 
-class AutoListCtrl(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):
+class AutoListCtrl(wxListCtrl, LC.ListCtrlAutoWidthMixin):
     """A ListCtrl that automatically expands columns"""
     def __init__(self, parent, id):
-        wx.ListCtrl.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+        wxListCtrl.__init__(self, parent, id, style=wxBORDER_SIMPLE|wxLC_REPORT)
         LC.ListCtrlAutoWidthMixin.__init__(self)
