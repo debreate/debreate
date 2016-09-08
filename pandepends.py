@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # Page defining dependencies
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
 import wx, wx.lib.mixins.listctrl as LC, db
 
 ID = wx.NewId()
