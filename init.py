@@ -6,10 +6,12 @@
 # (~/.config/debreate/config).  If the config file already exists and is corrupted, this script will bring it
 # back to its default settings.
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+import sys, os, main, db, language, shutil
 
-import wx, sys, os, main, db, language, shutil
+# wxWidgets
+from wx import Dialog as wxDialog
+from wx import App as wxApp
+from wx import TextCtrl as wxTextCtrl
 
 # Get command line arguments
 project_file = 0 # Set project file to false
@@ -77,7 +79,7 @@ rm -r ~/.config/debreate' % (m1, m2))
 
 def Run(pos, size, maximize, center, dias, cwd):
     # Start the main application window
-    app = wx.App()
+    app = wxApp()
     frame = main.MainWindow(None, -1, "", pos, size)
     frame.SetTitle(frame.default_title)
     
@@ -85,7 +87,7 @@ def Run(pos, size, maximize, center, dias, cwd):
     # Then we can change the priority colors according to that theme
     darktheme = False
     # Create a dummy text control to get theme colors
-    dummy = wx.TextCtrl(frame)
+    dummy = wxTextCtrl(frame)
     fg_color = dummy.GetForegroundColour()
     for rgb in fg_color:
         if rgb > 150:
@@ -125,7 +127,7 @@ def Run(pos, size, maximize, center, dias, cwd):
     app.MainLoop()
 
 
-class FirstRun(wx.Dialog):
+class FirstRun(wxDialog):
     """Create the config file on first run or if file has been corrupted"""
     def __init__(self, parent, id, title):
         wx.Dialog.__init__(self, parent, id, title, size=(450,300))
