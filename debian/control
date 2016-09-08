@@ -1,15 +1,15 @@
 Source: debreate
-Section: Development
+Section: devel
 Priority: optional
 Maintainer: Jordan Irwin <antumdeluge@gmail.com>
-Build-Depends: debhelper (>=9), coreutils, make
-Standards-Version: 3.9.6
+Build-Depends: debhelper (>=9), python
+Standards-Version: 3.9.7
 Homepage: http://debreate.sourceforge.net/
 X-Python-Version: >= 2.6
 
 Package: debreate
 Architecture: all
-Depends: ${python:Depends}, ${misc:Depends}, python2.7, python-wxgtk2.8
+Depends: ${misc:Depends}, python2.7, python-wxgtk2.8
 Suggests: 
 Description: Debian package builder
  Debreate - Debian package builder
