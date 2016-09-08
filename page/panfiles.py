@@ -2,9 +2,17 @@
 
 import os, wx.lib.mixins.listctrl as LC, db
 from os.path import exists, isfile, isdir
-from common import *
+#from common import *
 
-ID = wx.NewId()
+from wximports import \
+	wxNewId, wxListCtrl, wxPanel, wxBORDER_SIMPLE, wxLC_REPORT, wxMenu, wxMenuItem, \
+	wxEVT_MENU, wxGenericDirCtrl, wxEVT_CONTEXT_MENU, wxEVT_BUTTON, wxRadioButton, \
+	wxRB_GROUP, wxEVT_RADIOBUTTON, wxGridSizer, wxStaticBox, wxStaticBoxSizer, \
+	wxHORIZONTAL, wxTextCtrl, wxEVT_KEY_DOWN, wxEVT_KEY_UP, wxBoxSizer, wxVERTICAL, \
+	wxEXPAND, wxALIGN_CENTER_VERTICAL, wxLEFT, wxRIGHT, wxALL, wxBOTTOM, wxFlexGridSizer, \
+	wxTOP
+
+ID = wxNewId()
 
 ID_pin = 100
 ID_fin = 101
@@ -16,17 +24,17 @@ ID_Refresh = 142
 
 home = os.getenv("HOME")
 
-class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
+class DList(wxListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
     def __init__(self, parent, id):
-        wx.ListCtrl.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+        wxListCtrl.__init__(self, parent, id, style=wxBORDER_SIMPLE|wxLC_REPORT)
         #LC.TextEditMixin.__init__(self)
         LC.ListCtrlAutoWidthMixin.__init__(self)
 
-class Panel(wx.Panel):
+class Panel(wxPanel):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent, id=ID, name=_('Files')):
-        wx.Panel.__init__(self, parent, id, name=_('Files'))
+        wxPanel.__init__(self, parent, id, name=_('Files'))
         
         # For identifying page to parent
         #self.ID = "FILES"
@@ -35,15 +43,15 @@ class Panel(wx.Panel):
         self.parent = parent
         
         # Create a Context Menu
-        self.menu = wx.Menu()
+        self.menu = wxMenu()
         
-        self.add_dir = wx.MenuItem(self.menu, ID_AddDir, _('Add Folder'))
-        self.add_file = wx.MenuItem(self.menu, ID_AddFile, _('Add File'))
-        self.refresh = wx.MenuItem(self.menu, ID_Refresh, _('Refresh'))
+        self.add_dir = wxMenuItem(self.menu, ID_AddDir, _('Add Folder'))
+        self.add_file = wxMenuItem(self.menu, ID_AddFile, _('Add File'))
+        self.refresh = wxMenuItem(self.menu, ID_Refresh, _('Refresh'))
         
-        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
-        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
-        wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
+        wxEVT_MENU(self, ID_AddDir, self.AddPath)
+        wxEVT_MENU(self, ID_AddFile, self.AddPath)
+        wxEVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         self.menu.AppendItem(self.add_dir)
         self.menu.AppendItem(self.add_file)
@@ -51,27 +59,27 @@ class Panel(wx.Panel):
         self.menu.AppendItem(self.refresh)
         
         # Directory listing for importing files and folders
-        self.dir_tree = wx.GenericDirCtrl(self, -1, home, size=(300,20))
+        self.dir_tree = wxGenericDirCtrl(self, -1, home, size=(300,20))
         
-        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
+        wxEVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         
         # ----- Add/Remove/Clear buttons
         path_add = db.ButtonAdd(self)
         path_remove = db.ButtonDel(self)
         button_clear = db.ButtonClear(self)
         
-        wx.EVT_BUTTON(path_add, -1, self.AddPath)
-        wx.EVT_BUTTON(path_remove, -1, self.DelPath)
-        wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
+        wxEVT_BUTTON(path_add, -1, self.AddPath)
+        wxEVT_BUTTON(path_remove, -1, self.DelPath)
+        wxEVT_BUTTON(button_clear, -1, self.ClearAll)
         
         # ----- Destination path
         # choices of destination
-        self.radio_bin = wx.RadioButton(self, -1, "/bin", style=wx.RB_GROUP)
-        self.radio_usrbin = wx.RadioButton(self, -1, "/usr/bin")
-        self.radio_usrlib = wx.RadioButton(self, -1, "/usr/lib")
-        self.radio_locbin = wx.RadioButton(self, -1, "/usr/local/bin")
-        self.radio_loclib = wx.RadioButton(self, -1, "/usr/local/lib")
-        self.radio_cst = wx.RadioButton(self, -1, _('Custom'))
+        self.radio_bin = wxRadioButton(self, -1, "/bin", style=wxRB_GROUP)
+        self.radio_usrbin = wxRadioButton(self, -1, "/usr/bin")
+        self.radio_usrlib = wxRadioButton(self, -1, "/usr/lib")
+        self.radio_locbin = wxRadioButton(self, -1, "/usr/local/bin")
+        self.radio_loclib = wxRadioButton(self, -1, "/usr/local/lib")
+        self.radio_cst = wxRadioButton(self, -1, _('Custom'))
         self.radio_cst.SetValue(True)
         
         # group buttons together
@@ -79,35 +87,35 @@ class Panel(wx.Panel):
         
         # create an event to enable/disable custom widget
         for item in self.radio_group:
-            wx.EVT_RADIOBUTTON(item, -1, self.SetDestination)
+            wxEVT_RADIOBUTTON(item, -1, self.SetDestination)
         
         # make them look pretty
-        radio_sizer = wx.GridSizer(3, 2, 5, 5)
+        radio_sizer = wxGridSizer(3, 2, 5, 5)
         for item in self.radio_group:
             radio_sizer.Add(item, 0)
-        self.radio_border = wx.StaticBox(self, -1, _('Target'), size=(20,20))
-        radio_box = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
+        self.radio_border = wxStaticBox(self, -1, _('Target'), size=(20,20))
+        radio_box = wxStaticBoxSizer(self.radio_border, wxHORIZONTAL)
         radio_box.Add(radio_sizer, 0)
         
         self.prev_dest_value = "/usr/bin"
-        self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value)
-        wx.EVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
-        wx.EVT_KEY_UP(self.dest_cust, self.CheckDest)
-        cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
-        cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
+        self.dest_cust = wxTextCtrl(self, -1, self.prev_dest_value)
+        wxEVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
+        wxEVT_KEY_UP(self.dest_cust, self.CheckDest)
+        cust_sizer = wxBoxSizer(wxVERTICAL)  # put the textctrl in own sizer so expands horizontally
+        cust_sizer.Add(self.dest_cust, 1, wxEXPAND)
         
         self.dest_browse = db.ButtonBrowse(self, ID_pout)
         
-        wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
+        wxEVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
         
         self.path_dict = {ID_pout: self.dest_cust}
         
-        path_add_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        path_add_sizer = wxBoxSizer(wxHORIZONTAL)
         path_add_sizer.Add(path_add, 0)
         path_add_sizer.Add(path_remove, 0)
-        path_add_sizer.Add(button_clear, 0, wx.ALIGN_CENTER_VERTICAL)
-        path_add_sizer.Add(cust_sizer, 1, wx.ALIGN_CENTER_VERTICAL)
-        path_add_sizer.Add(self.dest_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
+        path_add_sizer.Add(button_clear, 0, wxALIGN_CENTER_VERTICAL)
+        path_add_sizer.Add(cust_sizer, 1, wxALIGN_CENTER_VERTICAL)
+        path_add_sizer.Add(self.dest_browse, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5)
         
         
         # Display area for files added to list
@@ -122,22 +130,22 @@ class Panel(wx.Panel):
         self.dest_area.InsertColumn(0, _('File'), width=parent_width/3-10)
         self.dest_area.InsertColumn(1, _('Target'))
         
-        wx.EVT_KEY_DOWN(self.dest_area, self.DelPath)
+        wxEVT_KEY_DOWN(self.dest_area, self.DelPath)
         
-        LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        LMR_sizer.Add(self.dest_area, 1, wx.EXPAND)
+        LMR_sizer = wxBoxSizer(wxHORIZONTAL)
+        LMR_sizer.Add(self.dest_area, 1, wxEXPAND)
         
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
+        page_sizer = wxBoxSizer(wxVERTICAL)
         page_sizer.AddSpacer(10)
-        page_sizer.Add(radio_box, 0, wx.ALL, 5)
-        page_sizer.Add(path_add_sizer, 0, wx.EXPAND|wx.ALL, 5)
-        page_sizer.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        page_sizer.Add(radio_box, 0, wxALL, 5)
+        page_sizer.Add(path_add_sizer, 0, wxEXPAND|wxALL, 5)
+        page_sizer.Add(LMR_sizer, 5, wxEXPAND|wxLEFT|wxRIGHT|wxBOTTOM, 5)
         
-        sizer = wx.FlexGridSizer(1, 2)
+        sizer = wxFlexGridSizer(1, 2)
         sizer.AddGrowableRow(0)
         sizer.AddGrowableCol(1, 2)
-        sizer.Add(self.dir_tree, 1, wx.EXPAND|wx.LEFT|wx.TOP|wx.BOTTOM, 5)
-        sizer.Add(page_sizer, 1, wx.EXPAND)
+        sizer.Add(self.dir_tree, 1, wxEXPAND|wxLEFT|wxTOP|wxBOTTOM, 5)
+        sizer.Add(page_sizer, 1, wxEXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(sizer)
@@ -178,8 +186,8 @@ class Panel(wx.Panel):
             if dia.DisplayModal() == True:
                 self.dest_cust.SetValue(dia.GetPath())
         else:
-            dia = wx.DirDialog(self, _('Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
+            dia = wxDirDialog(self, _('Choose Target Directory'), os.getcwd(), wxDD_CHANGE_DIR)
+            if dia.ShowModal() == wxID_OK:
                 self.dest_cust.SetValue(dia.GetPath())
 #		if dia.GetPath() == True:
 #			self.dest_cust.SetValue(dia.GetPath())
@@ -187,13 +195,13 @@ class Panel(wx.Panel):
 #			self.dest_cust.SetValue(dia.GetPath())
     
     def GetDestValue(self, event):
-        if self.dest_cust.GetValue() != wx.EmptyString:
+        if self.dest_cust.GetValue() != wxEmptyString:
             if self.dest_cust.GetValue()[0] == "/":
                 self.prev_dest_value = self.dest_cust.GetValue()
         event.Skip()
     
     def CheckDest(self, event):
-        if self.dest_cust.GetValue() == wx.EmptyString:
+        if self.dest_cust.GetValue() == wxEmptyString:
             self.dest_cust.SetValue(self.prev_dest_value)
             self.dest_cust.SetInsertionPoint(-1)
         elif self.dest_cust.GetValue()[0] != "/":
@@ -219,15 +227,15 @@ class Panel(wx.Panel):
                 cont = True
                 count = 0
                 msg_files = _('Getting files from %s')
-                loading = wx.ProgressDialog(_('Progress'), msg_files % (pin), total_files, self,
-                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                loading = wxProgressDialog(_('Progress'), msg_files % (pin), total_files, self,
+                                            wxPD_AUTO_HIDE|wxPD_ELAPSED_TIME|wxPD_ESTIMATED_TIME|wxPD_CAN_ABORT)
                 for root, dirs, files in os.walk(pin):
                     for file in files:
                         if cont == (False,False):  # If "cancel" pressed destroy the progress window
                             break
                         else:
                             sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
-                            if sub_dir != wx.EmptyString:
+                            if sub_dir != wxEmptyString:
                                 # Add the sub-dir to dest
                                 dest = "%s%s" % (pout, sub_dir)
                                 #self.list_data.insert(0, ("%s/%s" % (root, file), "%s/%s" % (sub_dir[1:], file), dest))
@@ -274,7 +282,7 @@ class Panel(wx.Panel):
         except AttributeError:
             keycode = event.GetEventObject().GetId()
         
-        if keycode == wx.WXK_DELETE:
+        if keycode == wxWXK_DELETE:
             selected = [] # Items to remove from visible list
             toremove = [] # Items to remove from invisible list
             total = self.dest_area.GetSelectedItemCount()
@@ -299,13 +307,13 @@ class Panel(wx.Panel):
             for item in toremove:
                 self.list_data.remove(item)
             
-        elif keycode == 65 and modifier == wx.MOD_CONTROL:
+        elif keycode == 65 and modifier == wxMOD_CONTROL:
             self.SelectAll()
     
     
     def ClearAll(self, event):
-        confirm = wx.MessageDialog(self, _('Clear all files?'), _('Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_YES:
+        confirm = wxMessageDialog(self, _('Clear all files?'), _('Confirm'), wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION)
+        if confirm.ShowModal() == wxID_YES:
             self.dest_area.DeleteAllItems()
             self.list_data = []
     
@@ -361,17 +369,17 @@ class Panel(wx.Panel):
             
             # If files are missing show a message
             if len(missing_files):
-                alert = wx.Dialog(self, -1, _('Missing Files'))
-                alert_text = wx.StaticText(alert, -1, _('Could not locate the following files:'))
-                alert_list = wx.TextCtrl(alert, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+                alert = wxDialog(self, -1, _('Missing Files'))
+                alert_text = wxStaticText(alert, -1, _('Could not locate the following files:'))
+                alert_list = wxTextCtrl(alert, -1, style=wxTE_MULTILINE|wxTE_READONLY)
                 alert_list.SetValue("\n".join(missing_files))
-                button_ok = wx.Button(alert, wx.ID_OK)
+                button_ok = wxButton(alert, wxID_OK)
                 
-                alert_sizer = wx.BoxSizer(wx.VERTICAL)
+                alert_sizer = wxBoxSizer(wxVERTICAL)
                 alert_sizer.AddSpacer(5)
                 alert_sizer.Add(alert_text, 1)
-                alert_sizer.Add(alert_list, 3, wx.EXPAND)
-                alert_sizer.Add(button_ok, 0, wx.ALIGN_RIGHT)
+                alert_sizer.Add(alert_list, 3, wxEXPAND)
+                alert_sizer.Add(button_ok, 0, wxALIGN_RIGHT)
                 
                 alert.SetSizerAndFit(alert_sizer)
                 alert.Layout()
