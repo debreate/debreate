@@ -19,24 +19,27 @@ UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
 prefix=/usr/local
 
 
+FILES_EXECUTABLE = \
+	init.py
+
 FILES = \
 	main.py \
 	common.py \
 	db_md5.py \
 	db.py \
 	language.py \
-	panbuild.py \
-	panclog.py \
-	pancontrol.py \
-	pancopyright.py \
-	pandepends.py \
-	panfiles.py \
-	paninfo.py \
-	panmenu.py \
-	panscripts.py
+	wximports.py
 
-FILES_EXECUTABLE = \
-	init.py
+FILES_PAGE = \
+	page/__init__.py \
+	page/panbuild.py \
+	page/panclog.py \
+	page/pancontrol.py \
+	page/pandepends.py \
+	page/panfiles.py \
+	page/paninfo.py \
+	page/panmenu.py \
+	page/panscripts.py \
 
 FILES_DB = \
 	db/dbabout.py \
@@ -97,6 +100,7 @@ DISTDIRS = \
 DISTFILES = \
 	$(FILES_EXECUTABLE) \
 	$(FILES) \
+	$(FILES_PAGE) \
 	$(FILES_EXTRA) \
 	Makefile
 
@@ -107,7 +111,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
+install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_PAGE) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -136,6 +140,11 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_D
 		mkdir -vp "$${datadir}/db"; \
 		for py in $(FILES_DB); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/db"; \
+		done; \
+		\
+		$(MKDIR) "$${datadir}/page"; \
+		for page in $(FILES_PAGE); do \
+			$(INSTALL_DATA) "$${page}" "$${datadir}/page"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/docs"; \
