@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 
+import wxversion
+#wxversion.select(['3.0', '2.8'])
+wxversion.select('2.8')
+
 import sys, os
 from urllib2 import urlopen, URLError, HTTPError
 from wx.lib.docview import PathOnly
 
-
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
-import wx
+# wxWidgets
+from wx import MAJOR_VERSION as wxMAJOR_VERSION
+from wx import MINOR_VERSION as wxMINOR_VERSION
+from wx import RELEASE_VERSION as wxRELEASE_VERSION
+from wx import Dialog as wxDialog
+from wx import FileDropTarget as wxFileDropTarget
+from wx import SetDefaultPyEncoding
+from wx import TextCtrl as wxTextCtrl
 
 import language
 
@@ -16,7 +24,7 @@ import language
 if (sys.getdefaultencoding() != 'utf-8'):
     reload(sys)
     sys.setdefaultencoding('utf-8')
-wx.SetDefaultPyEncoding('UTF-8')
+SetDefaultPyEncoding('UTF-8')
 
 
 RELEASE = 1
@@ -39,7 +47,7 @@ min_pyversion = sys.version_info[2]
 python_version = u'{}.{}.{}'.format(maj_pyversion, mid_pyversion, min_pyversion)
 
 print("Python version: {}".format(python_version))
-print("wxPython version: {}.{}.{}".format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEASE_VERSION))
+print("wxPython version: {}.{}.{}".format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION))
 print("Debreate version: {}.{}.{}".format(ver_maj, ver_min, ver_rel))
 
 
@@ -88,7 +96,7 @@ def GetCurrentVersion():
 ### -*- Execute commands with sudo privileges -*- ###
 def RunSudo(password, command):
     command = u'echo %s | sudo -S %s ; echo $?' % (password, command)
-    wx.SafeYield()
+    wxSafeYield()
     output = os.popen(command).read()
     err = int(output.split(u'\n')[-2])
     if (err):
@@ -116,10 +124,10 @@ def CommandExists(command):
 ###     CLASSES       ###
 ################
 
-### -*- A very handy widget that captures stdout and stderr to a wx.TextCtrl -*- ###
-class OutputLog(wx.TextCtrl):
+### -*- A very handy widget that captures stdout and stderr to a wxTextCtrl -*- ###
+class OutputLog(wxTextCtrl):
     def __init__(self, parent, id=-1):
-        wx.TextCtrl.__init__(self, parent, id, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        wxTextCtrl.__init__(self, parent, id, style=wxTE_MULTILINE|wxTE_READONLY)
         self.SetBackgroundColour(u'black')
         self.SetForegroundColour(u'white')
         self.stdout = sys.stdout
@@ -138,27 +146,27 @@ class OutputLog(wx.TextCtrl):
 
 
 ### -*- Dialog for overwrite prompt of a text area -*- ###
-class OverwriteDialog(wx.Dialog):
+class OverwriteDialog(wxDialog):
     def __init__(self, parent, id=-1, title=_(u'Overwrite?'), message=u''):
-        wx.Dialog.__init__(self, parent, id, title)
-        self.message = wx.StaticText(self, -1, message)
+        wxDialog.__init__(self, parent, id, title)
+        self.message = wxStaticText(self, -1, message)
         
-        self.button_overwrite = wx.Button(self, ID_OVERWRITE, _(u'Overwrite'))
-        self.button_append = wx.Button(self, ID_APPEND, _(u'Append'))
-        self.button_cancel = wx.Button(self, wx.ID_CANCEL)
+        self.button_overwrite = wxButton(self, ID_OVERWRITE, _(u'Overwrite'))
+        self.button_append = wxButton(self, ID_APPEND, _(u'Append'))
+        self.button_cancel = wxButton(self, wxID_CANCEL)
         
         ### -*- Button events -*- ###
-        wx.EVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
-        wx.EVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
+        wxEVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
+        wxEVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
         
-        hsizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer.Add(self.button_overwrite, 0, wx.LEFT|wx.RIGHT, 5)
-        hsizer.Add(self.button_append, 0, wx.LEFT|wx.RIGHT, 5)
-        hsizer.Add(self.button_cancel, 0, wx.LEFT|wx.RIGHT, 5)
+        hsizer = wxBoxSizer(wxHORIZONTAL)
+        hsizer.Add(self.button_overwrite, 0, wxLEFT|wxRIGHT, 5)
+        hsizer.Add(self.button_append, 0, wxLEFT|wxRIGHT, 5)
+        hsizer.Add(self.button_cancel, 0, wxLEFT|wxRIGHT, 5)
         
-        vsizer = wx.BoxSizer(wx.VERTICAL)
-        vsizer.Add(self.message, 1, wx.ALIGN_CENTER|wx.ALL, 5)
-        vsizer.Add(hsizer, 0, wx.ALIGN_RIGHT|wx.TOP|wx.BOTTOM, 5)
+        vsizer = wxBoxSizer(wxVERTICAL)
+        vsizer.Add(self.message, 1, wxALIGN_CENTER|wxALL, 5)
+        vsizer.Add(hsizer, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizerAndFit(vsizer)
@@ -173,9 +181,9 @@ class OverwriteDialog(wx.Dialog):
 
 
 ### -*- Object for Dropping Text Files -*-
-class SingleFileTextDropTarget(wx.FileDropTarget):
+class SingleFileTextDropTarget(wxFileDropTarget):
     def __init__(self, obj):
-        wx.FileDropTarget.__init__(self)
+        wxFileDropTarget.__init__(self)
         self.obj = obj
     
     def OnDropFiles(self, x, y, filenames):
@@ -194,7 +202,7 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
             else:
                 self.obj.SetValue(text)
         except UnicodeDecodeError:
-            wx.MessageDialog(None, _(u'Error decoding file'), _(u'Error'), wx.OK).ShowModal()
+            wxMessageDialog(None, _(u'Error decoding file'), _(u'Error'), wxOK).ShowModal()
 
 
 ### -*- Checks if Text Control is Empty -*- ###
