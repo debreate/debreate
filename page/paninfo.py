@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
-ID = wx.NewId()
+from wximports import wxNewId, wxPanel, wxStaticText, wxHyperlinkCtrl, wxStaticBox, wxGridSizer, \
+	wxALIGN_CENTER, wxALIGN_CENTER_VERTICAL, wxStaticBoxSizer, wxVERTICAL, wxEXPAND, wxALL
 
-class Panel(wx.Panel):
+ID = wxNewId()
+
+class Panel(wxPanel):
     def __init__(self, parent, id=ID, name=_('Information')):
-        wx.Panel.__init__(self, parent, id, name=_('Information'))
+        wxPanel.__init__(self, parent, id, name=_('Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         
@@ -23,16 +26,16 @@ class Panel(wx.Panel):
             )
         
         # ----- Helpful information to be displayed about each mode
-        self.info = wx.StaticText(self, -1)
-        self.vidlink = wx.HyperlinkCtrl(self, -1, _('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
-        self.info_border = wx.StaticBox(self, -1, size=(100,100))
-        info_box = wx.GridSizer()
-        info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        self.info = wxStaticText(self, -1)
+        self.vidlink = wxHyperlinkCtrl(self, -1, _('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        self.info_border = wxStaticBox(self, -1, size=(100,100))
+        info_box = wxGridSizer()
+        info_box.Add(self.info, 1, wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL)
         
         # ----- Layout
-        mode_sizer = wx.StaticBoxSizer(self.info_border, wx.VERTICAL)
-        mode_sizer.Add(info_box, 4, wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, 10)
-        mode_sizer.Add(self.vidlink, 2, wx.EXPAND|wx.ALIGN_CENTER)
+        mode_sizer = wxStaticBoxSizer(self.info_border, wxVERTICAL)
+        mode_sizer.Add(info_box, 4, wxEXPAND|wxALIGN_CENTER|wxALL, 10)
+        mode_sizer.Add(self.vidlink, 2, wxEXPAND|wxALIGN_CENTER)
         
         self.SetAutoLayout(True)
         self.SetSizer(mode_sizer)
