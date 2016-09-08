@@ -2,7 +2,7 @@
 
 # Scripts Page
 
-import wx, os, db
+import os, db
 
 ID = wx.NewId()
 
