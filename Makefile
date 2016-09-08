@@ -2,12 +2,11 @@
 
 PACKAGE = debreate
 VERSION = 0.7.11
-prefix = /usr/local
-DATAROOT = $(prefix)/share
-TARGET = $(DESTDIR)$(DATAROOT)/$(PACKAGE)
-BINDIR = $(DESTDIR)$(prefix)/bin
-APPSDIR = $(DESTDIR)$(prefix)/share/applications
-PIXDIR = $(DESTDIR)$(prefix)/share/pixmaps
+BINDIR = bin
+DATAROOT = share
+DATADIR = $(DATAROOT)/$(PACKAGE)
+APPSDIR = $(DATAROOT)/applications
+PIXDIR = $(DATAROOT)/pixmaps
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -16,9 +15,8 @@ MKDIR = mkdir -vp
 UNINSTALL = rm -vf
 UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
 
-EXEC_SCRIPT = \
-\#!/bin/sh \
-\n\n$(DATAROOT)/$(PACKAGE)/init.py
+# This is written to 'prefix' in 'build' rule, then read in 'install'
+prefix=/usr/local
 
 
 FILES = \
@@ -103,70 +101,118 @@ DISTFILES = \
 	Makefile
 
 
-all: build
-	@echo "Build complete. Now execute \"make install\"."
+all:
+	@echo "\n\tNothing to be done"; \
+	echo "\trun one of the following:"; \
+	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
+	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: all bin/$(PACKAGE) $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
-	@mkdir -vp "$(TARGET)"
-	@for py in $(FILES_EXECUTABLE); do \
-		$(INSTALL_EXEC) "$${py}" "$(TARGET)"; \
-	done
-	@for py in $(FILES) $(EXTRA_FILES); do \
-		$(INSTALL_DATA) "$${py}" "$(TARGET)"; \
-	done
-	
-	@mkdir -vp "$(TARGET)/db"
-	@for py in $(FILES_DB); do \
-		$(INSTALL_DATA) "$${py}" "$(TARGET)/db"; \
-	done
-	
-	@$(MKDIR) "$(TARGET)/docs"
-	@for doc in $(FILES_DOC); do \
-		$(INSTALL_DATA) "$${doc}" "$(TARGET)/docs"; \
-	done
-	
-	@mkdir -vp "$(TARGET)/bitmaps"
-	@for png in $(BITMAPS); do \
-		$(INSTALL_DATA) "$${png}" "$(TARGET)/bitmaps"; \
-	done
-	
-	@$(INSTALL_FOLDER) locale "$(TARGET)"
-	
-	@$(MKDIR) "$(BINDIR)"
-	@$(INSTALL_EXEC) "bin/$(PACKAGE)" "$(BINDIR)"
-	
-	@$(MKDIR) "$(PIXDIR)"
-	@$(INSTALL_DATA) "bitmaps/debreate64.png" "$(PIXDIR)/debreate.png"
-	
-	@$(MKDIR) "$(APPSDIR)"
-	@$(INSTALL_EXEC) "data/$(MENU)" "$(APPSDIR)"
+install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
+	@exec=bin/$(PACKAGE); \
+	if [ ! -f "$${exec}" ]; then \
+		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
+		\
+		echo "\t- Please run `tput bold`make`tput sgr0`, `tput bold`make build`tput sgr0`, or `tput bold`make all`tput sgr0`"; \
+		echo "\t  to create it, then re-run `tput bold`make install`tput sgr0`\n"; \
+	\
+	else \
+		target=$(DESTDIR)$(prefix); \
+		bindir=$${target}/$(BINDIR); \
+		datadir=$${target}/$(DATADIR); \
+		appsdir=$${target}/$(APPSDIR); \
+		pixdir=$${target}/$(PIXDIR); \
+		\
+		echo "\nprefix set to $(prefix)"; \
+		echo "Install target set to $${target}\n"; \
+		\
+		mkdir -vp "$${target}/$(DATADIR)"; \
+		for py in $(FILES_EXECUTABLE); do \
+			$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
+		done; \
+		for py in $(FILES) $(EXTRA_FILES); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}"; \
+		done; \
+		\
+		mkdir -vp "$${datadir}/db"; \
+		for py in $(FILES_DB); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/db"; \
+		done; \
+		\
+		$(MKDIR) "$${datadir}/docs"; \
+		for doc in $(FILES_DOC); do \
+			$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
+		done; \
+		\
+		mkdir -vp "$${datadir}/bitmaps"; \
+		for png in $(BITMAPS); do \
+			$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
+		done; \
+		\
+		$(INSTALL_FOLDER) locale "$${datadir}"; \
+		\
+		$(MKDIR) "$${bindir}"; \
+		$(INSTALL_EXEC) "$${exec}" "$${bindir}"; \
+		\
+		$(MKDIR) "$${pixdir}"; \
+		$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
+		\
+		$(MKDIR) "$${appsdir}"; \
+		$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
+	\
+	fi; \
 
 uninstall:
-	@$(UNINSTALL) "$(APPSDIR)/$(MENU)"
-	@$(UNINSTALL) "$(PIXDIR)/debreate.png"
-	@$(UNINSTALL) "$(BINDIR)/$(PACKAGE)"
-	
-	@if [ -d "$(TARGET)" ]; then \
-		for f in `find "$(TARGET)" -type f`; do \
+	@target=$(DESTDIR)$(prefix); \
+	bindir=$${target}/$(BINDIR); \
+	datadir=$${target}/$(DATADIR); \
+	appsdir=$${target}/$(APPSDIR); \
+	pixdir=$${target}/$(PIXDIR); \
+	\
+	echo "\nprefix set to $(prefix)"; \
+	echo "Uninstall target set to $${target}\n"; \
+	\
+	$(UNINSTALL) "$${appsdir}/$(MENU)"; \
+	$(UNINSTALL) "$${pixdir}/debreate.png"; \
+	$(UNINSTALL) "$${bindir}/$(PACKAGE)"; \
+	\
+	if [ -d "$${datadir}" ]; then \
+		for f in `find "$${datadir}" -type f`; do \
 			$(UNINSTALL) "$${f}"; \
 		done; \
-		find "$(TARGET)" -type d -empty -delete; \
-	fi
+		find "$${datadir}" -type d -empty -delete; \
+	fi; \
 
 build:
-	@mkdir -vp "bin"
-	@echo "Creating executable \"bin/$(PACKAGE)\" ..."
-	@echo "$(EXEC_SCRIPT)\n" > "bin/$(PACKAGE)"
+	@exec=bin/$(PACKAGE); \
+	echo "\nprefix set to \"$(prefix)\""; \
+	\
+	exec_script=\#"!/bin/sh \n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py"; \
+	\
+	mkdir -vp "bin"; \
+	echo "Creating executable \"$${exec}\" ..."; \
+	echo "$${exec_script}\n" > "$${exec}"; \
+	\
+	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
 debuild:
 	@debuild -b -uc -us
 
+debuild-source:
+	@debuild -S -uc -us
+
+debuild-signed:
+	@debuild -S -sa
+
+debianize: dist
+	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(DISTPACKAGE)" -p "$(PACKAGE)_$(VERSION)" -i
+
 clean:
-	@find ./ -type f -name "*.pyc" -print -delete
-	@rm -vf "./bin/$(PACKAGE)"
-	@if [ -d "./bin" ]; then \
+	@find ./ -type f -name "*.pyc" -print -delete; \
+	rm -vf "./bin/$(PACKAGE)"; \
+	if [ -d "./bin" ]; then \
 		$(UNINSTALL_FOLDER) "./bin"; \
-	fi
+	fi; \
+	rm -vf "./prefix"; \
 
 distclean: clean debuild-clean
 
@@ -184,3 +230,70 @@ dist: debuild-clean
 	fi
 	@tar -cJf "$(DISTPACKAGE)" $(DISTFILES) $(DISTDIRS)
 	@file "$(DISTPACKAGE)"
+
+help:
+	echo "Usage:"; \
+	\
+	echo "\tmake [command]\n"; \
+	\
+	echo "Commands:"; \
+	\
+	echo "\thelp"; \
+	echo "\t\t- Show this help dialog\n"; \
+	\
+	echo "\tall|build"; \
+	echo "\t\t- Create `tput bold`debreate`tput sgr0` executable (same as invoking"; \
+	echo "\t\t  `tput bold`make`tput sgr0` with no arguments)\n"; \
+	\
+	echo "\tinstall"; \
+	echo "\t\t- Install `tput bold`debreate`tput sgr0` executable & data files onto"; \
+	echo "\t\t  the system\n"; \
+	\
+	echo "\tuninstall"; \
+	echo "\t\t- Remove all installed Debreate files from"; \
+	echo "\t\t  the system\n"; \
+	\
+	echo "\tdist"; \
+	echo "\t\t- Create a source distribution package\n"; \
+	\
+	echo "\tdebianize"; \
+	echo "\t\t- Configure source for building a Debian package"; \
+	echo "\t\t  (not necessary, should already be configured)"; \
+	echo "\t\t- Uses `tput bold`dh_make`tput sgr0` command (apt install dh-make)\n"; \
+	\
+	echo "\tdebuild"; \
+	echo "\t\t- Build a Debian (.deb) package for installation"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
+	\
+	echo "\tdebuild-source"; \
+	echo "\t\t- Create a source distribution package with"; \
+	echo "\t\t  Debian .dsc, .build, & .changes files\n"; \
+	\
+	echo "\tdebuild-signed"; \
+	echo "\t\t- Create a source distribution package & sign"; \
+	echo "\t\t  it for upload to a repository\n"; \
+	\
+	echo "\tclean"; \
+	echo "\t\t- Delete Debreate binary & any compiled Python"; \
+	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
+	\
+	echo "\tdebuild-clean"; \
+	echo "\t\t- Delete files create by `tput bold`debuild`tput sgr0`\n"; \
+	\
+	echo "\tdistclean"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`debuild-clean`tput sgr0`\n"; \
+	\
+	echo "Environment Variables:"; \
+	\
+	echo "\tprefix"; \
+	echo "\t\t- Target prefix under which files will be installed"; \
+	echo "\t\t- Default is /usr/local\n"; \
+	\
+	echo "\tDESTDIR"; \
+	echo "\t\t- Prepends a target directory to prefix"; \
+	echo "\t\t- Files will be installed under DESTDIR\prefix"; \
+	echo "\t\t- DESTDIR is not written to the `tput bold`debreate`tput sgr0`"; \
+	echo "\t\t  executable so it will not be able to find the"; \
+	echo "\t\t  `tput bold`init.py`tput sgr0` script"; \
+	echo "\t\t- If used with `tput bold`uninstall`tput sgr0` it must match that of"; \
+	echo "\t\t  the `tput bold`install`tput sgr0` invocation\n"; \
