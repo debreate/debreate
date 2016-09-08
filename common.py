@@ -1,21 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import wxversion
-#wxversion.select(['3.0', '2.8'])
-wxversion.select('2.8')
+from wximports import *
 
 import sys, os
 from urllib2 import urlopen, URLError, HTTPError
 from wx.lib.docview import PathOnly
 
-# wxWidgets
-from wx import MAJOR_VERSION as wxMAJOR_VERSION
-from wx import MINOR_VERSION as wxMINOR_VERSION
-from wx import RELEASE_VERSION as wxRELEASE_VERSION
-from wx import Dialog as wxDialog
-from wx import FileDropTarget as wxFileDropTarget
-from wx import SetDefaultPyEncoding
-from wx import TextCtrl as wxTextCtrl
 
 import language
 
