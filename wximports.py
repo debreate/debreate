@@ -7,35 +7,56 @@ import wxversion
 wxversion.select('2.8')
 
 # wx system
-from wx import MAJOR_VERSION as wxMAJOR_VERSION
-from wx import MINOR_VERSION as wxMINOR_VERSION
-from wx import RELEASE_VERSION as wxRELEASE_VERSION
-from wx import SetDefaultPyEncoding
+from wx import \
+	MAJOR_VERSION as wxMAJOR_VERSION, \
+	MINOR_VERSION as wxMINOR_VERSION, \
+	RELEASE_VERSION as wxRELEASE_VERSION, \
+	SetDefaultPyEncoding
 
 # wx functions
 from wx import NewId as wxNewId
 
 # wx controls
-from wx import BoxSizer as wxBoxSizer
-from wx import CheckBox as wxCheckBox
-from wx import Dialog as wxDialog
-from wx import FileDropTarget as wxFileDropTarget
-from wx import Panel as wxPanel
-from wx import StaticBox as wxStaticBox
-from wx import StaticBoxSizer as wxStaticBoxSizer
-from wx import TextCtrl as wxTextCtrl
-from wx import ToolTip as wxToolTip
+from wx import \
+	CheckBox as wxCheckBox, \
+	Choice as wxChoice, \
+	ComboBox as wxComboBox, \
+	Dialog as wxDialog, \
+	EmptyString as wxEmptyString, \
+	FileDropTarget as wxFileDropTarget, \
+	HyperlinkCtrl as wxHyperlinkCtrl, \
+	Panel as wxPanel, \
+	ScrolledWindow as wxScrolledWindow, \
+	StaticBox as wxStaticBox, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	ToolTip as wxToolTip
+
+# wx layout controls
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	FlexGridSizer as wxFlexGridSizer, \
+	GridSizer as wxGridSizer, \
+	StaticBoxSizer as wxStaticBoxSizer
 
 # wx constants
-from wx import ALIGN_CENTER as wxALIGN_CENTER
-from wx import BOTTOM as wxBOTTOM
-from wx import EXPAND as wxEXPAND
-from wx import HORIZONTAL as wxHORIZONTAL
-from wx import LEFT as wxLEFT
-from wx import RIGHT as wxRIGHT
-from wx import TE_READONLY as wxTE_READONLY
-from wx import TE_MULTILINE as wxTE_MULTILINE
-from wx import VERTICAL as wxVERTICAL
+from wx import \
+	ALIGN_CENTER as wxALIGN_CENTER, \
+	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
+	ALL as wxALL, \
+	BOTTOM as wxBOTTOM, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	LEFT as wxLEFT, \
+	RIGHT as wxRIGHT, \
+	TE_READONLY as wxTE_READONLY, \
+	TE_MULTILINE as wxTE_MULTILINE, \
+	VERTICAL as wxVERTICAL
 
 # wx event constants
-from wx import EVT_BUTTON as wxEVT_BUTTON
+from wx import \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_KEY_DOWN as wxEVT_KEY_DOWN, \
+	EVT_KEY_UP as wxEVT_KEY_UP, \
+	EVT_SHOW as wxEVT_SHOW, \
+	EVT_SIZE as wxEVT_SIZE
