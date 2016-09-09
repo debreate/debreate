@@ -3,10 +3,11 @@
 
 import db, commands
 
-# Control widgets
+# General wx imports
 from wximports import \
 	wxBoxSizer, \
 	wxChoice, \
+	wxEmptyString, \
 	wxFlexGridSizer, \
 	wxPanel, \
 	wxRadioButton, \

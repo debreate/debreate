@@ -12,6 +12,7 @@ from wximports import \
 	wxFlexGridSizer, \
 	wxGridSizer, \
 	wxListCtrl, \
+	wxMessageDialog, \
 	wxMixinListCtrl, \
 	wxPanel, \
 	wxRadioButton, \
@@ -32,12 +33,15 @@ from wximports import \
 	wxBORDER_SIMPLE, \
 	wxEXPAND, \
 	wxHORIZONTAL, \
+	wxICON_QUESTION, \
 	wxLC_REPORT, \
 	wxLEFT, \
 	wxLIST_AUTOSIZE, \
+	wxNO_DEFAULT, \
 	wxRB_GROUP, \
 	wxRIGHT, \
-	wxVERTICAL
+	wxVERTICAL, \
+	wxYES_NO
 
 # Event constants
 from wximports import \
@@ -49,6 +53,10 @@ from wximports import \
 	wxWXK_ESCAPE, \
 	wxWXK_NUMPAD_ENTER, \
 	wxWXK_RETURN
+
+# ID constants
+from wximports import \
+	wxID_YES
 
 ID = wxNewId()
 
