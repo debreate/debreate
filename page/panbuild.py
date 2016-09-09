@@ -9,16 +9,19 @@ from wximports import \
 	wxDefaultPosition, \
 	wxDialog, \
 	wxDirDialog, \
+	wxEmptyString, \
 	wxFileDialog, \
 	wxGauge, \
 	wxMessageDialog, \
 	wxPanel, \
+	wxProgressDialog, \
 	wxStaticBox, \
 	wxStaticBoxSizer, \
 	wxStaticText, \
 	wxTextCtrl, \
 	wxTimer, \
-	wxToolTip
+	wxToolTip, \
+	wxYield
 
 # Functions
 from wximports import \
@@ -31,6 +34,7 @@ from wximports import \
 	wxEXPAND, \
 	wxHORIZONTAL, \
 	wxICON_ERROR, \
+	wxICON_INFORMATION, \
 	wxLEFT, \
 	wxOK, \
 	wxRIGHT, \
@@ -45,7 +49,17 @@ from wximports import \
 
 # Dialog constants
 from wximports import \
-	wxCHANGE_DIR
+	wxCHANGE_DIR, \
+	wxFD_CHANGE_DIR, \
+	wxFD_SAVE, \
+	wxFD_OVERWRITE_PROMPT
+
+# Progress dialog constants
+from wximports import \
+	wxPD_AUTO_HIDE, \
+	wxPD_CAN_ABORT, \
+	wxPD_ELAPSED_TIME, \
+	wxPD_ESTIMATED_TIME
 
 # ID constants
 from wximports import \
@@ -212,7 +226,6 @@ class Panel(wxPanel):
             
             # If all required fields were met, continue to build
             def BuildIt(build_path, filename):
-                
                 temp_tree = "%s/%s__dbp__" % (build_path, filename)
                 
                 deb = "\"%s/%s.deb\"" % (build_path, filename) # Actual path to new .deb
@@ -577,7 +590,8 @@ class Panel(wxPanel):
                             wxMessageDialog(self, _(u'The package installed successfully'), _(u'Sucess'), wxOK).ShowModal()
                         self.log.ToggleOutput()
                 
-                return build_status[0]
+               	return build_status[0]
+	               	
             
             cont = False
             
