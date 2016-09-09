@@ -2,17 +2,17 @@
 
 
 ### Version information ###
-RELEASE = 1
-ver_maj = 0
-ver_min = 7
-ver_rel = 11
+RELEASE = 0
+VER_MAJ = 0
+VER_MIN = 7
+VER_REL = 11
 
-# For testing release
-if (not RELEASE):
-    ver_rel -= 0.5
+VERSION = (VER_MAJ, VER_MIN, VER_REL)
+VERSION_STRING = u'{}.{}.{}'.format(VER_MAJ, VER_MIN, VER_REL)
 
-VERSION = (ver_maj, ver_min, ver_rel)
-VERSION_STRING = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
+# Development version
+if not RELEASE:
+	VERSION_STRING = '{}-dev'.format(VERSION_STRING)
 
 ### Website & hosting information ###
 HOMEPAGE = u'http://debreate.sourceforge.net/'
