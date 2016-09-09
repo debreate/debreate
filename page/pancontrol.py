@@ -3,12 +3,18 @@
 # This panel displays the field input of the control file
 
 
+# Functions
+from wximports import \
+	wxNewId
+
 # Control widgets
 from wximports import \
 	wxBoxSizer, \
 	wxChoice, \
 	wxComboBox, \
+	wxDialog, \
 	wxEmptyString, \
+	wxFileDialog, \
 	wxFlexGridSizer, \
 	wxPanel, \
 	wxScrolledWindow, \
@@ -17,16 +23,16 @@ from wximports import \
 	wxStaticText, \
 	wxTextCtrl
 
-# Functions
-from wximports import \
-	wxNewId
-
 # General constants
 from wximports import \
 	wxALL, \
 	wxEXPAND, \
+	wxFD_CHANGE_DIR, \
+	wxFD_OVERWRITE_PROMPT, \
+	wxFD_SAVE, \
 	wxHORIZONTAL, \
 	wxTE_MULTILINE, \
+	wxTE_READONLY, \
 	wxVERTICAL
 
 # Event constants
@@ -36,6 +42,10 @@ from wximports import \
 	wxEVT_KEY_UP, \
 	wxEVT_SHOW, \
 	wxEVT_SIZE
+
+# ID constants
+from wximports import \
+	wxID_OK
 
 import db, os
 
