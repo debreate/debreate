@@ -3,8 +3,7 @@
 # Everything from wx that needs to be accessed will be imported here
 
 import wxversion
-#wxversion.select(['3.0', '2.8'])
-wxversion.select('2.8')
+wxversion.select(['3.0', '2.8'])
 
 # wx system
 from wx import \
