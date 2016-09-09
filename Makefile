@@ -39,7 +39,7 @@ FILES_PAGE = \
 	page/panfiles.py \
 	page/paninfo.py \
 	page/panmenu.py \
-	page/panscripts.py \
+	page/panscripts.py
 
 FILES_DB = \
 	db/dbabout.py \
@@ -48,6 +48,12 @@ FILES_DB = \
 	db/dbmessage.py \
 	db/dbpathctrl.py \
 	db/dbwizard.py
+
+FILES_DBR = \
+	dbr/__init__.py \
+	dbr/compat.py \
+	dbr/constants.py \
+	dbr/functions.py
 
 FILES_EXTRA = \
 	README.md \
@@ -93,6 +99,7 @@ DISTDIRS = \
 	bitmaps \
 	data \
 	db \
+	dbr \
 	docs \
 	locale \
 	debian
@@ -111,7 +118,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_PAGE) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
+install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_PAGE) $(FILES_DB) $(FILES_DBR) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -140,6 +147,11 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_PAGE) $(FILES_DB) $(FILES_EX
 		mkdir -vp "$${datadir}/db"; \
 		for py in $(FILES_DB); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/db"; \
+		done; \
+		\
+		mkdir -vp "$${datadir}/dbr"; \
+		for py in $(FILES_DBR); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/page"; \
