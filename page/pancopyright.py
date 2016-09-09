@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 
-ID = wx.NewId()
+from wximports import \
+	wxNewId, wxPanel, wxButton, wxChoice, wxEVT_BUTTON, wxBoxSizer, wxHORIZONTAL, \
+	wxTextCtrl, wxTE_MULTILINE, wxID_ANY, wxVERTICAL, wxALL, wxEXPAND
 
-class Panel(wx.Panel):
-    def __init__(self, parent, id=wx.ID_ANY):
-        wx.Panel.__init__(self, parent, id, name=_('Copyright'))
+ID = wxNewId()
+
+class Panel(wxPanel):
+    def __init__(self, parent, id=wxID_ANY):
+        wxPanel.__init__(self, parent, id, name=_('Copyright'))
         
         self.debreate = parent.parent
         
@@ -13,20 +17,20 @@ class Panel(wx.Panel):
         	'GFDL-1.3', 'GPL', 'GPL-1', 'GPL-2', 'GPL-3', 'LGPL',
         	'LGPL-2', 'LGPL-2.1', 'LGPL-3'
         )
-        template_btn = wx.Button(self, -1, 'Generate Template')
-        self.template_lic = wx.Choice(self, -1, choices=lic_options)
+        template_btn = wxButton(self, -1, 'Generate Template')
+        self.template_lic = wxChoice(self, -1, choices=lic_options)
         
-        wx.EVT_BUTTON(template_btn, -1, self.GenerateTemplate)
+        wxEVT_BUTTON(template_btn, -1, self.GenerateTemplate)
         
-        template_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        template_sizer = wxBoxSizer(wxHORIZONTAL)
         template_sizer.Add(template_btn, 1)
         template_sizer.Add(self.template_lic, 1)
         
-        self.cp_display = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.cp_display = wxTextCtrl(self, style=wxTE_MULTILINE)
         
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-        main_sizer.Add(template_sizer, 0, wx.ALL, 5)
-        main_sizer.Add(self.cp_display, 1, wx.EXPAND|wx.ALL, 5)
+        main_sizer = wxBoxSizer(wxVERTICAL)
+        main_sizer.Add(template_sizer, 0, wxALL, 5)
+        main_sizer.Add(self.cp_display, 1, wxEXPAND|wxALL, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
