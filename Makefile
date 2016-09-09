@@ -59,6 +59,7 @@ FILES_DBR = \
 FILES_EXTRA = \
 	README.md \
 	INFO \
+	TODO.txt \
 	update-version.py
 
 FILES_DOC = \
