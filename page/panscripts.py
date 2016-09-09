@@ -9,6 +9,7 @@ from wximports import \
 	wxCheckBox, \
 	wxDialog, \
 	wxListCtrl, \
+	wxMessageDialog, \
 	wxPanel, \
 	wxRadioButton, \
 	wxStaticBox, \
@@ -27,10 +28,12 @@ from wximports import \
 	wxALIGN_RIGHT, \
 	wxALL, \
 	wxBORDER_SIMPLE, \
+	wxBOTH, \
 	wxBOTTOM, \
 	wxEXPAND, \
 	wxHORIZONTAL, \
 	wxLC_SINGLE_SEL, \
+	wxOK, \
 	wxRB_GROUP, \
 	wxTE_MULTILINE, \
 	wxTE_READONLY, \
@@ -175,18 +178,6 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # *** HELP *** #
         self.button_help = db.ButtonQuestion64(self)
-        self.al_help = wxDialog(self, -1, _('Auto-Link Help'))
-        description = _('Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
-        instructions = _('How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
-
-        self.al_help_te = wxTextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
-                style = wxTE_MULTILINE|wxTE_READONLY)
-        self.al_help_ok = db.ButtonConfirm(self.al_help)
-        
-        al_help_sizer = wxBoxSizer(wxVERTICAL)
-        al_help_sizer.AddMany([ (self.al_help_te, 1, wxEXPAND), (self.al_help_ok, 0, wxALIGN_RIGHT) ])
-        self.al_help.SetSizer(al_help_sizer)
-        self.al_help.Layout()
         
         wxEVT_BUTTON(self.button_help, wxID_HELP, self.OnHelpButton)
         
@@ -359,8 +350,21 @@ scripts will be created that will place a symbolic link to your executables in t
     
     # *** HELP *** #
     def OnHelpButton(self, event):
-        self.al_help.CenterOnParent()
+        self.al_help = wxDialog(self, -1, _('Auto-Link Help'))
+        description = _('Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
+        instructions = _('How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
+
+        self.al_help_te = wxTextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
+                style = wxTE_MULTILINE|wxTE_READONLY)
+        self.al_help_ok = db.ButtonConfirm(self.al_help)
+        
+        al_help_sizer = wxBoxSizer(wxVERTICAL)
+        al_help_sizer.AddMany([ (self.al_help_te, 1, wxEXPAND), (self.al_help_ok, 0, wxALIGN_RIGHT) ])
+        self.al_help.SetSizer(al_help_sizer)
+        self.al_help.Layout()
+        
         self.al_help.ShowModal()
+        self.al_help.CenterOnParent(wxBOTH)
         self.al_help.Close()
     
     

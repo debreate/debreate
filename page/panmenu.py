@@ -8,6 +8,8 @@ from wximports import \
 	wxCheckBox, \
 	wxChoice, \
 	wxComboBox, \
+	wxDialog, \
+	wxEmptyString, \
 	wxFileDialog, \
 	wxFlexGridSizer, \
 	wxListCtrl, \
@@ -36,6 +38,12 @@ from wximports import \
 	wxTOP, \
 	wxVERTICAL
 
+# File & directory constants
+from wximports import \
+	wxFD_CHANGE_DIR, \
+	wxFD_OVERWRITE_PROMPT, \
+	wxFD_SAVE
+
 # Event constants
 from wximports import \
 	wxEVT_BUTTON, \
@@ -44,7 +52,12 @@ from wximports import \
 
 # ID constants
 from wximports import \
-	wxID_ANY
+	wxID_ANY, \
+	wxID_OK
+
+# Text editing constants
+from wximports import \
+	wxTE_READONLY
 
 # Input constants
 from wximports import \
