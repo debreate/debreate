@@ -45,6 +45,12 @@ from wximports import \
 from wximports import \
 	wxID_ANY
 
+# Input constants
+from wximports import \
+	wxWXK_ESCAPE, \
+	wxWXK_NUMPAD_ENTER, \
+	wxWXK_RETURN
+
 
 import db, os, shutil
 
