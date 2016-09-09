@@ -2,6 +2,11 @@
 
 # Menu Page
 
+
+# wx build constants
+from wximports import \
+	wxMAJOR_VERSION
+
 # Control widgets
 from wximports import \
 	wxBoxSizer, \
@@ -31,6 +36,7 @@ from wximports import \
 	wxBOTTOM, \
 	wxEXPAND, \
 	wxHORIZONTAL, \
+	wxLC_REPORT, \
 	wxLC_SINGLE_SEL, \
 	wxLEFT, \
 	wxRIGHT, \
@@ -185,7 +191,16 @@ class Panel(wxPanel):
 		self.cat_add = db.ButtonAdd(self)
 		self.cat_del = db.ButtonDel(self)
 		self.cat_clr = db.ButtonClear(self)
-		self.categories = wxListCtrl(self, -1, style=wxLC_SINGLE_SEL|wxBORDER_SIMPLE)
+		
+		# FIXME: wx 3.0 compat
+		if wxMAJOR_VERSION > 3:
+			self.categories = wxListCtrl(self, -1, style=wxLC_SINGLE_SEL|wxBORDER_SIMPLE)
+		
+		else:
+			self.categories = wxListCtrl(self, -1)
+			self.categories.SetSingleStyle(wxLC_REPORT)
+			self.categories.SetSingleStyle(wxLC_SINGLE_SEL)
+		
 		self.categories.InsertColumn(0, "")
 		
 		wxEVT_KEY_DOWN(self.cat_choice, self.SetCategory)
