@@ -1,12 +1,42 @@
 # -*- coding: utf-8 -*-
 
+
 import db, commands
 
+# Control widgets
 from wximports import \
-	wxNewId, wxPanel, wxStaticText, wxTextCtrl, wxChoice, wxALIGN_CENTER_VERTICAL, wxALIGN_RIGHT, \
-	wxEXPAND, wxFlexGridSizer, wxTE_MULTILINE, wxStaticBox, wxStaticBoxSizer, wxVERTICAL, \
-	wxTOP, wxBOTTOM, wxRadioButton, wxRB_GROUP, wxBoxSizer, wxHORIZONTAL, wxRIGHT, wxToolTip, \
-	wxEVT_BUTTON, wxLEFT
+	wxBoxSizer, \
+	wxChoice, \
+	wxFlexGridSizer, \
+	wxPanel, \
+	wxRadioButton, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxStaticText, \
+	wxTextCtrl, \
+	wxToolTip
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALIGN_CENTER_VERTICAL, \
+	wxALIGN_RIGHT, \
+	wxBOTTOM, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxLEFT, \
+	wxRB_GROUP, \
+	wxRIGHT, \
+	wxTE_MULTILINE, \
+	wxTOP, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON
 
 ID = wxNewId()
 

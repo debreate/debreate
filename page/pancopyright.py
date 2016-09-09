@@ -1,8 +1,32 @@
 # -*- coding: utf-8 -*-
 
+
+# Control widgets
 from wximports import \
-	wxNewId, wxPanel, wxButton, wxChoice, wxEVT_BUTTON, wxBoxSizer, wxHORIZONTAL, \
-	wxTextCtrl, wxTE_MULTILINE, wxID_ANY, wxVERTICAL, wxALL, wxEXPAND
+	wxBoxSizer, \
+	wxButton, \
+	wxChoice, \
+	wxNewId, \
+	wxPanel, \
+	wxTextCtrl
+
+# Functions
+
+# General constants
+from wximports import \
+	wxALL, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxTE_MULTILINE, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON
+
+# ID constants
+from wximports import \
+	wxID_ANY
 
 ID = wxNewId()
 
