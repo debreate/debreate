@@ -62,6 +62,7 @@ from wx import \
 	LC_REPORT as wxLC_REPORT, \
 	LC_SINGLE_SEL as wxLC_SINGLE_SEL, \
 	LEFT as wxLEFT, \
+	LIST_AUTOSIZE as wxLIST_AUTOSIZE, \
 	RB_GROUP as wxRB_GROUP, \
 	RIGHT as wxRIGHT, \
 	TE_READONLY as wxTE_READONLY, \
@@ -85,3 +86,9 @@ from wx import \
 from wx import \
 	ID_ANY as wxID_ANY, \
 	ID_HELP as wxID_HELP
+
+# wx input constants
+from wx import \
+	WXK_ESCAPE as wxWXK_ESCAPE, \
+	WXK_NUMPAD_ENTER as wxWXK_NUMPAD_ENTER, \
+	WXK_RETURN as wxWXK_RETURN
