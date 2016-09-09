@@ -3,6 +3,10 @@
 # Scripts Page
 
 
+# wx build constants
+from wximports import \
+	wxMAJOR_VERSION
+
 # Control widgets
 from wximports import \
 	wxBoxSizer, \
@@ -32,6 +36,7 @@ from wximports import \
 	wxBOTTOM, \
 	wxEXPAND, \
 	wxHORIZONTAL, \
+	wxLC_REPORT, \
 	wxLC_SINGLE_SEL, \
 	wxOK, \
 	wxRB_GROUP, \
@@ -141,8 +146,14 @@ class Panel(wxPanel):
         alpath_sizer.Add(self.al_input, 1, wxALIGN_CENTER)
         
         # Auto-Link executables to be linked
-        self.executables = wxListCtrl(self, -1, size=(200,200),
-                style=wxBORDER_SIMPLE|wxLC_SINGLE_SEL)
+        if wxMAJOR_VERSION < 3: # FIXME: wx 3.0 compat
+            self.executables = wxListCtrl(self, -1, size=(200,200), style=wxBORDER_SIMPLE|wxLC_SINGLE_SEL)
+        
+        else:
+            self.executables = wxListCtrl(self, -1, size=(200,200))
+            self.executables.SetSingleStyle(wxLC_REPORT)
+            self.executables.SetSingleStyle(wxLC_SINGLE_SEL)
+	    
         self.executables.InsertColumn(0, "")
         
         # Auto-Link import, generate and remove buttons

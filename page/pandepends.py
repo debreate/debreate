@@ -5,6 +5,10 @@
 import db
 
 
+# wx build constants
+from wximports import \
+	wxMAJOR_VERSION
+
 # Control widgets
 from wximports import \
 	wxBoxSizer, \
@@ -162,7 +166,9 @@ class Panel(wxPanel):
         self.dep_area = AutoListCtrl(self, -1)
         self.dep_area.InsertColumn(0, _('Category'), width=150)
         self.dep_area.InsertColumn(1, _('Package(s)'))
-        self.dep_area.SetColumnWidth(100, wxLIST_AUTOSIZE)
+        # FIXME: wx 3.0
+        if (wxMAJOR_VERSION < 3):
+	        self.dep_area.SetColumnWidth(100, wxLIST_AUTOSIZE)
         
         wxEVT_KEY_DOWN(self.dep_area, self.SetDepends)
         
