@@ -4,19 +4,26 @@
 
 import os, db
 
-ID = wx.NewId()
+from wximports import \
+	wxNewId, wxPanel, wxCheckBox, wxRadioButton, wxRB_GROUP, wxTextCtrl, wxTE_MULTILINE, \
+	wxEVT_RADIOBUTTON, wxBoxSizer, wxHORIZONTAL, wxVERTICAL, wxEXPAND, wxBOTTOM, \
+	wxStaticText, wxALIGN_CENTER, wxListCtrl, wxBORDER_SIMPLE, wxLC_SINGLE_SEL, \
+	wxToolTip, wxEVT_BUTTON, wxStaticBox, wxStaticBoxSizer, wxTOP, wxDialog, wxTE_READONLY, \
+	wxALIGN_RIGHT, wxID_HELP, wxALL
+
+ID = wxNewId()
 
 ID_Import = 100
 ID_Remove = 101
 
-ID_Preinst = wx.NewId()
-ID_Postinst = wx.NewId()
-ID_Prerm = wx.NewId()
-ID_Postrm = wx.NewId()
+ID_Preinst = wxNewId()
+ID_Postinst = wxNewId()
+ID_Prerm = wxNewId()
+ID_Postrm = wxNewId()
 
-class Panel(wx.Panel):
+class Panel(wxPanel):
     def __init__(self, parent, id=ID, name=_('Scripts')):
-        wx.Panel.__init__(self, parent, id, name=_('Scripts'))
+        wxPanel.__init__(self, parent, id, name=_('Scripts'))
         
         # For identifying page to parent
         #self.ID = "SCRIPTS"
@@ -25,22 +32,22 @@ class Panel(wx.Panel):
         self.debreate = parent.parent
         
         # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_Preinst, _('Make this script'))
-        self.chk_postinst = wx.CheckBox(self, ID_Postinst, _('Make this script'))
-        self.chk_prerm = wx.CheckBox(self, ID_Prerm, _('Make this script'))
-        self.chk_postrm = wx.CheckBox(self, ID_Postrm, _('Make this script'))
+        self.chk_preinst = wxCheckBox(self, ID_Preinst, _('Make this script'))
+        self.chk_postinst = wxCheckBox(self, ID_Postinst, _('Make this script'))
+        self.chk_prerm = wxCheckBox(self, ID_Prerm, _('Make this script'))
+        self.chk_postrm = wxCheckBox(self, ID_Postrm, _('Make this script'))
         
         # Radio buttons for displaying between pre- and post- install scripts
-        self.rb_preinst = wx.RadioButton(self, ID_Preinst, _('Pre-Install'), style=wx.RB_GROUP)
-        self.rb_postinst = wx.RadioButton(self, ID_Postinst, _('Post-Install'))
-        self.rb_prerm = wx.RadioButton(self, ID_Prerm, _('Pre-Remove'))
-        self.rb_postrm = wx.RadioButton(self, ID_Postrm, _('Post-Remove'))
+        self.rb_preinst = wxRadioButton(self, ID_Preinst, _('Pre-Install'), style=wxRB_GROUP)
+        self.rb_postinst = wxRadioButton(self, ID_Postinst, _('Post-Install'))
+        self.rb_prerm = wxRadioButton(self, ID_Prerm, _('Pre-Remove'))
+        self.rb_postrm = wxRadioButton(self, ID_Postrm, _('Post-Remove'))
         
         # Text area for each radio button
-        self.te_preinst = wx.TextCtrl(self, ID_Preinst, style=wx.TE_MULTILINE)
-        self.te_postinst = wx.TextCtrl(self, ID_Postinst, style=wx.TE_MULTILINE)
-        self.te_prerm = wx.TextCtrl(self, ID_Prerm, style=wx.TE_MULTILINE)
-        self.te_postrm = wx.TextCtrl(self, ID_Postrm, style=wx.TE_MULTILINE)
+        self.te_preinst = wxTextCtrl(self, ID_Preinst, style=wxTE_MULTILINE)
+        self.te_postinst = wxTextCtrl(self, ID_Postinst, style=wxTE_MULTILINE)
+        self.te_prerm = wxTextCtrl(self, ID_Prerm, style=wxTE_MULTILINE)
+        self.te_postrm = wxTextCtrl(self, ID_Postrm, style=wxTE_MULTILINE)
         
         # For testing to make sure scripts page is reset back to defaults
         #self.te_preinst.SetBackgroundColour("red")
@@ -52,13 +59,13 @@ class Panel(wx.Panel):
                             self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
         
         for rb in self.script_te:
-            wx.EVT_RADIOBUTTON(rb, -1, self.ScriptSelect)
+            wxEVT_RADIOBUTTON(rb, -1, self.ScriptSelect)
             self.script_te[rb].Hide()
         for rb in self.script_chk:
             self.script_chk[rb].Hide()
         
         # Organizing radio buttons
-        srb_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        srb_sizer = wxBoxSizer(wxHORIZONTAL)
         srb_sizer.AddMany( [
             (self.chk_preinst),(self.chk_postinst),
             (self.chk_prerm),(self.chk_postrm)
@@ -70,92 +77,92 @@ class Panel(wx.Panel):
         srb_sizer.Add(self.rb_postrm, 0)
         
         # Sizer for left half of scripts panel
-        sleft_sizer = wx.BoxSizer(wx.VERTICAL)
-        sleft_sizer.Add(srb_sizer, 0, wx.EXPAND|wx.BOTTOM, 5)
-        sleft_sizer.Add(self.te_preinst, 1, wx.EXPAND)
-        sleft_sizer.Add(self.te_postinst, 1, wx.EXPAND)
-        sleft_sizer.Add(self.te_prerm, 1,wx.EXPAND)
-        sleft_sizer.Add(self.te_postrm, 1, wx.EXPAND)
+        sleft_sizer = wxBoxSizer(wxVERTICAL)
+        sleft_sizer.Add(srb_sizer, 0, wxEXPAND|wxBOTTOM, 5)
+        sleft_sizer.Add(self.te_preinst, 1, wxEXPAND)
+        sleft_sizer.Add(self.te_postinst, 1, wxEXPAND)
+        sleft_sizer.Add(self.te_prerm, 1,wxEXPAND)
+        sleft_sizer.Add(self.te_postrm, 1, wxEXPAND)
         
         # Auto-Link options
         # Executable list - generate button will make scripts to link to files in this list
         self.xlist = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, -1, _('Path'))
+        self.al_text = wxStaticText(self, -1, _('Path'))
         self.al_input = db.PathCtrl(self, -1, "/usr/bin", db.PATH_WARN)
         
-        #wx.EVT_KEY_UP(self.al_input, ChangeInput)
+        #wxEVT_KEY_UP(self.al_input, ChangeInput)
         
-        alpath_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        alpath_sizer.Add(self.al_text, 0, wx.ALIGN_CENTER)
-        alpath_sizer.Add(self.al_input, 1, wx.ALIGN_CENTER)
+        alpath_sizer = wxBoxSizer(wxHORIZONTAL)
+        alpath_sizer.Add(self.al_text, 0, wxALIGN_CENTER)
+        alpath_sizer.Add(self.al_input, 1, wxALIGN_CENTER)
         
         # Auto-Link executables to be linked
-        self.executables = wx.ListCtrl(self, -1, size=(200,200),
-                style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
+        self.executables = wxListCtrl(self, -1, size=(200,200),
+                style=wxBORDER_SIMPLE|wxLC_SINGLE_SEL)
         self.executables.InsertColumn(0, "")
         
         # Auto-Link import, generate and remove buttons
         self.al_import = db.ButtonImport(self, ID_Import)
-        self.al_import.SetToolTip(wx.ToolTip(_('Import executables from Files section')))
+        self.al_import.SetToolTip(wxToolTip(_('Import executables from Files section')))
         self.al_del = db.ButtonDel(self, ID_Remove)
         self.al_gen = db.ButtonBuild(self)
-        self.al_gen.SetToolTip(wx.ToolTip(_('Generate Scripts')))
+        self.al_gen.SetToolTip(wxToolTip(_('Generate Scripts')))
         
-        wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
-        wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
-        wx.EVT_BUTTON(self.al_del, ID_Remove, self.ImportExe)
+        wxEVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
+        wxEVT_BUTTON(self.al_gen, -1, self.OnGenerate)
+        wxEVT_BUTTON(self.al_del, ID_Remove, self.ImportExe)
         
-        albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        albutton_sizer.Add(self.al_import, 1)#, wx.ALIGN_CENTER|wx.RIGHT, 5)
+        albutton_sizer = wxBoxSizer(wxHORIZONTAL)
+        albutton_sizer.Add(self.al_import, 1)#, wxALIGN_CENTER|wxRIGHT, 5)
         albutton_sizer.Add(self.al_del, 1)
-        albutton_sizer.Add(self.al_gen, 1)#, wx.ALIGN_CENTER)
+        albutton_sizer.Add(self.al_gen, 1)#, wxALIGN_CENTER)
         
         # Nice border for auto-generate scripts area
-        self.autogen_border = wx.StaticBox(self, -1, _('Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
-        autogen_box = wx.StaticBoxSizer(self.autogen_border, wx.VERTICAL)
-        autogen_box.Add(alpath_sizer, 0, wx.EXPAND)
-        autogen_box.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
-        autogen_box.Add(albutton_sizer, 0, wx.EXPAND)
+        self.autogen_border = wxStaticBox(self, -1, _('Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
+        autogen_box = wxStaticBoxSizer(self.autogen_border, wxVERTICAL)
+        autogen_box.Add(alpath_sizer, 0, wxEXPAND)
+        autogen_box.Add(self.executables, 0, wxTOP|wxBOTTOM, 5)
+        autogen_box.Add(albutton_sizer, 0, wxEXPAND)
         #autogen_box.AddSpacer(5)
-        #autogen_box.Add(self.al_del, 0, wx.ALIGN_CENTER)
+        #autogen_box.Add(self.al_del, 0, wxALIGN_CENTER)
         
         # Text explaining Auto-Link
-        """self.al_text = wx.StaticText(self, -1, "How to use Auto-Link: Press the \"import\" button to \
+        """self.al_text = wxStaticText(self, -1, "How to use Auto-Link: Press the \"import\" button to \
 import any executables from the \"files\" tab.  Then press the \"generate\" button.  \"postinst\" and \"prerm\" \
 scripts will be created that will place a symbolic link to your executables in the path displayed above.")
         self.al_text.Wrap(210)"""
         
         # *** HELP *** #
         self.button_help = db.ButtonQuestion64(self)
-        self.al_help = wx.Dialog(self, -1, _('Auto-Link Help'))
+        self.al_help = wxDialog(self, -1, _('Auto-Link Help'))
         description = _('Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = _('How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
 
-        self.al_help_te = wx.TextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
-                style = wx.TE_MULTILINE|wx.TE_READONLY)
+        self.al_help_te = wxTextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
+                style = wxTE_MULTILINE|wxTE_READONLY)
         self.al_help_ok = db.ButtonConfirm(self.al_help)
         
-        al_help_sizer = wx.BoxSizer(wx.VERTICAL)
-        al_help_sizer.AddMany([ (self.al_help_te, 1, wx.EXPAND), (self.al_help_ok, 0, wx.ALIGN_RIGHT) ])
+        al_help_sizer = wxBoxSizer(wxVERTICAL)
+        al_help_sizer.AddMany([ (self.al_help_te, 1, wxEXPAND), (self.al_help_ok, 0, wxALIGN_RIGHT) ])
         self.al_help.SetSizer(al_help_sizer)
         self.al_help.Layout()
         
-        wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
+        wxEVT_BUTTON(self.button_help, wxID_HELP, self.OnHelpButton)
         
         # Sizer for right half of scripts panel
-        sright_sizer = wx.BoxSizer(wx.VERTICAL)
+        sright_sizer = wxBoxSizer(wxVERTICAL)
         sright_sizer.AddSpacer(17)
         sright_sizer.Add(autogen_box, 0)
         #sright_sizer.Add(self.al_text, 0)
-        sright_sizer.Add(self.button_help, 0, wx.ALIGN_CENTER)
+        sright_sizer.Add(self.button_help, 0, wxALIGN_CENTER)
         
         
         # ----- Layout
-        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        main_sizer.Add(sleft_sizer, 1, wx.EXPAND|wx.ALL, 5)
-        main_sizer.Add(sright_sizer, 0, wx.ALL, 5)
+        main_sizer = wxBoxSizer(wxHORIZONTAL)
+        main_sizer.Add(sleft_sizer, 1, wxEXPAND|wxALL, 5)
+        main_sizer.Add(sright_sizer, 0, wxALL, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
@@ -163,10 +170,10 @@ scripts will be created that will place a symbolic link to your executables in t
         
         
         # ----- Main page sizer
-#		page_sizer = wx.BoxSizer(wx.VERTICAL)
+#		page_sizer = wxBoxSizer(wxVERTICAL)
 #		page_sizer.AddSpacer(10)
-#		page_sizer.Add(type_border, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-#		page_sizer.Add(panel_border, 1, wx.EXPAND|wx.ALL, 5)
+#		page_sizer.Add(type_border, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
+#		page_sizer.Add(panel_border, 1, wxEXPAND|wxALL, 5)
 #		
 #		# ----- Page Layout
 #		self.SetAutoLayout(True)
@@ -272,9 +279,9 @@ scripts will be created that will place a symbolic link to your executables in t
             if os.path.isdir(link_path) == False:
                 cont = False
                 msg_path = _('Path "%s" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), _('Path Warning'),
-                    style=wx.YES_NO)
-                if link_error_dia.ShowModal() == wx.ID_YES:
+                link_error_dia = wxMessageDialog(self, msg_path % (link_path), _('Path Warning'),
+                    style=wxYES_NO)
+                if link_error_dia.ShowModal() == wxID_YES:
                     cont = True
             
             if cont:
@@ -299,7 +306,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 self.te_prerm.SetValue("#! /bin/bash -e\n\n%s" % prerm)
                 self.chk_prerm.SetValue(True)
                 
-                dia = wx.MessageDialog(self, _('post-install and pre-remove scripts generated'), _('Success'), wx.OK)
+                dia = wxMessageDialog(self, _('post-install and pre-remove scripts generated'), _('Success'), wxOK)
                 dia.ShowModal()
                 dia.Destroy()
     
