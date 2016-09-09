@@ -50,7 +50,8 @@ from wx import \
 	StatusBar as wxStatusBar, \
 	TextCtrl as wxTextCtrl, \
 	Timer as wxTimer, \
-	ToolTip as wxToolTip
+	ToolTip as wxToolTip, \
+	Yield as wxYield
 
 # wx.mixins control widgets
 from wx.lib.mixins import \
@@ -68,6 +69,7 @@ from wx import \
 	ALL as wxALL, \
 	BITMAP_TYPE_PNG as wxBITMAP_TYPE_PNG, \
 	BORDER_SIMPLE as wxBORDER_SIMPLE, \
+	BOTH as wxBOTH, \
 	BOTTOM as wxBOTTOM, \
 	CANCEL as wxCANCEL, \
 	EXPAND as wxEXPAND, \
