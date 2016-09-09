@@ -38,6 +38,10 @@ from wx import \
 	TextCtrl as wxTextCtrl, \
 	ToolTip as wxToolTip
 
+# wx.mixins control widgets
+from wx.lib.mixins import \
+	listctrl as wxMixinListCtrl
+
 # wx layout controls
 from wx import \
 	BoxSizer as wxBoxSizer, \
