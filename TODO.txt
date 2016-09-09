@@ -1,0 +1,2 @@
+- Add choice for shells on scripts page
+- Add Launchpad packages for 'yakkety' when wx 3.0 compatibility is complete
