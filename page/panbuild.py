@@ -6,10 +6,18 @@
 from wximports import \
 	wxBoxSizer, \
 	wxCheckBox, \
+	wxDefaultPosition, \
 	wxDialog, \
+	wxDirDialog, \
+	wxFileDialog, \
+	wxGauge, \
+	wxMessageDialog, \
 	wxPanel, \
 	wxStaticBox, \
 	wxStaticBoxSizer, \
+	wxStaticText, \
+	wxTextCtrl, \
+	wxTimer, \
 	wxToolTip
 
 # Functions
@@ -18,17 +26,35 @@ from wximports import \
 
 # General constants
 from wximports import \
-	wxALIGN_CENTER, \
+	wxALL, \
 	wxBOTTOM, \
 	wxEXPAND, \
 	wxHORIZONTAL, \
+	wxICON_ERROR, \
 	wxLEFT, \
+	wxOK, \
 	wxRIGHT, \
+	wxTOP, \
 	wxVERTICAL
+
+# Layout constants
+from wximports import \
+	wxALIGN_BOTTOM, \
+	wxALIGN_CENTER, \
+	wxALIGN_RIGHT
+
+# Dialog constants
+from wximports import \
+	wxCHANGE_DIR
+
+# ID constants
+from wximports import \
+	wxID_OK
 
 # Event constants
 from wximports import \
-	wxEVT_BUTTON
+	wxEVT_BUTTON, \
+	wxEVT_TIMER
 
 from common import OutputLog
 
@@ -687,7 +713,7 @@ class QuickBuild(wxDialog):
             if dia.DisplayModal() == True:
                 self.path.SetValue(dia.GetPath())
         else:
-            dia = wxDirDialog(self, _('Choose Directory'), os.getcwd(), "", style=wxCHANGE_DIR)
+            dia = wxDirDialog(self, _('Choose Directory'), os.getcwd(), wxCHANGE_DIR)
             if dia.ShowModal() == wxID_OK:
                 self.path.SetValue(dia.GetPath())
         dia.Destroy()

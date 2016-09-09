@@ -8,6 +8,7 @@ from wximports import \
 	wxCheckBox, \
 	wxChoice, \
 	wxComboBox, \
+	wxFileDialog, \
 	wxFlexGridSizer, \
 	wxListCtrl, \
 	wxPanel, \
