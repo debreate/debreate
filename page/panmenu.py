@@ -36,7 +36,6 @@ from wximports import \
 	wxBOTTOM, \
 	wxEXPAND, \
 	wxHORIZONTAL, \
-	wxLC_REPORT, \
 	wxLC_SINGLE_SEL, \
 	wxLEFT, \
 	wxRIGHT, \
@@ -195,13 +194,12 @@ class Panel(wxPanel):
 		# FIXME: wx 3.0 compat
 		if wxMAJOR_VERSION > 3:
 			self.categories = wxListCtrl(self, -1, style=wxLC_SINGLE_SEL|wxBORDER_SIMPLE)
+			self.categories.InsertColumn(0, "")
 		
 		else:
 			self.categories = wxListCtrl(self, -1)
-			self.categories.SetSingleStyle(wxLC_REPORT)
 			self.categories.SetSingleStyle(wxLC_SINGLE_SEL)
 		
-		self.categories.InsertColumn(0, "")
 		
 		wxEVT_KEY_DOWN(self.cat_choice, self.SetCategory)
 		wxEVT_KEY_DOWN(self.categories, self.SetCategory)
