@@ -2,13 +2,20 @@
 
 # Menu Page
 
+from wximports import \
+	wxNewId, wxPanel, wxToolTip, wxEVT_BUTTON, wxBoxSizer, wxHORIZONTAL, wxCheckBox, \
+	wxID_ANY, wxEVT_CHECKBOX, wxStaticText, wxTextCtrl, wxComboBox, wxChoice, wxListCtrl, \
+	wxBORDER_SIMPLE, wxLC_SINGLE_SEL, wxEVT_KEY_DOWN, wxRIGHT, wxVERTICAL, wxLEFT, wxTOP, \
+	wxBOTTOM, wxEXPAND, wxTE_MULTILINE, wxFlexGridSizer, wxStaticBox, wxStaticBoxSizer, \
+	wxALL
+
 import db, os, shutil
 
-ID = wx.NewId()
+ID = wxNewId()
 
-class Panel(wx.Panel):
+class Panel(wxPanel):
 	def __init__(self, parent, id=ID, name=_('Menu Launcher')):
-		wx.Panel.__init__(self, parent, id, name=_('Menu Launcher'))
+		wxPanel.__init__(self, parent, id, name=_('Menu Launcher'))
 		
 		# For identifying page to parent
 		#self.ID = "MENU"
@@ -17,20 +24,20 @@ class Panel(wx.Panel):
 		self.parent = parent
 		
 		# --- Tool Tips --- #
-		DF_tip = wx.ToolTip(_('Open launcher file'))
-		icon_tip = wx.ToolTip(_('Icon to be displayed for the launcher'))
-		m_name_tip = wx.ToolTip(_('Text for the launcher'))
-		#m_ver_tip = wx.ToolTip("The version of your application")
-		m_com_tip = wx.ToolTip(_('Text displayed when mouse hovers over launcher'))
-		m_exec_tip = wx.ToolTip(_('Executable to be launched'))
-		m_mime_tip = wx.ToolTip(_('Specifies the MIME types that the application can handle'))
-		#m_enc_tip = wx.ToolTip("Specifies the encoding of the desktop entry file")
-		#m_type_tip = wx.ToolTip(_('The type of launcher'))
-		m_cat_tip = wx.ToolTip("Choose which categories in which you would like your application to be displayed")
-		m_term_tip = wx.ToolTip(_('Specifies whether application should be run from a terminal'))
-		m_notify_tip = wx.ToolTip(_('Displays a notification in the system panel when launched'))
-		m_nodisp_tip = wx.ToolTip("This options means \"This application exists, but don't display it in the menus\"")
-		m_showin_tip = wx.ToolTip("Only Show In Tip")
+		DF_tip = wxToolTip(_('Open launcher file'))
+		icon_tip = wxToolTip(_('Icon to be displayed for the launcher'))
+		m_name_tip = wxToolTip(_('Text for the launcher'))
+		#m_ver_tip = wxToolTip("The version of your application")
+		m_com_tip = wxToolTip(_('Text displayed when mouse hovers over launcher'))
+		m_exec_tip = wxToolTip(_('Executable to be launched'))
+		m_mime_tip = wxToolTip(_('Specifies the MIME types that the application can handle'))
+		#m_enc_tip = wxToolTip("Specifies the encoding of the desktop entry file")
+		#m_type_tip = wxToolTip(_('The type of launcher'))
+		m_cat_tip = wxToolTip("Choose which categories in which you would like your application to be displayed")
+		m_term_tip = wxToolTip(_('Specifies whether application should be run from a terminal'))
+		m_notify_tip = wxToolTip(_('Displays a notification in the system panel when launched'))
+		m_nodisp_tip = wxToolTip("This options means \"This application exists, but don't display it in the menus\"")
+		m_showin_tip = wxToolTip("Only Show In Tip")
 		
 		# --- Main Menu Entry --- #
 		
@@ -40,68 +47,68 @@ class Panel(wx.Panel):
 		self.button_save = db.ButtonSave64(self)
 		self.button_preview = db.ButtonPreview64(self)
 		
-		self.open.Bind(wx.EVT_BUTTON, self.OpenFile)
-		wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSave)
-		wx.EVT_BUTTON(self.button_preview, wx.ID_ANY, self.OnPreview)
+		self.open.Bind(wxEVT_BUTTON, self.OpenFile)
+		wxEVT_BUTTON(self.button_save, wxID_ANY, self.OnSave)
+		wxEVT_BUTTON(self.button_preview, wxID_ANY, self.OnPreview)
 		
-		button_sizer = wx.BoxSizer(wx.HORIZONTAL)
+		button_sizer = wxBoxSizer(wxHORIZONTAL)
 		button_sizer.Add(self.open, 0)
 		button_sizer.Add(self.button_save, 0)
 		button_sizer.Add(self.button_preview, 0)
 		
 		# --- CHECKBOX
-		self.activate = wx.CheckBox(self, -1, _('Create system menu launcher'))
+		self.activate = wxCheckBox(self, -1, _('Create system menu launcher'))
 		
-		self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
+		self.activate.Bind(wxEVT_CHECKBOX, self.OnToggle)
 		
 		# --- NAME (menu)
-		self.name_text = wx.StaticText(self, -1, _('Name'))
+		self.name_text = wxStaticText(self, -1, _('Name'))
 		self.name_text.SetToolTip(m_name_tip)
-		self.name_input = wx.TextCtrl(self, -1)
+		self.name_input = wxTextCtrl(self, -1)
 #		self.name_input.SetBackgroundColour(db.Mandatory)
 		
 		# --- EXECUTABLE
-		self.exe_text = wx.StaticText(self, -1, _('Executable'))
+		self.exe_text = wxStaticText(self, -1, _('Executable'))
 		self.exe_text.SetToolTip(m_exec_tip)
-		self.exe_input = wx.TextCtrl(self, -1)
+		self.exe_input = wxTextCtrl(self, -1)
 		
 		# --- COMMENT
-		self.comm_text = wx.StaticText(self, -1, _('Comment'))
+		self.comm_text = wxStaticText(self, -1, _('Comment'))
 		self.comm_text.SetToolTip(m_com_tip)
-		self.comm_input = wx.TextCtrl(self, -1)
+		self.comm_input = wxTextCtrl(self, -1)
 		
 		# --- ICON
-		self.icon_text = wx.StaticText(self, -1, _('Icon'))
+		self.icon_text = wxStaticText(self, -1, _('Icon'))
 		self.icon_text.SetToolTip(icon_tip)
-		self.icon_input = wx.TextCtrl(self)
+		self.icon_input = wxTextCtrl(self)
 		
 		# --- TYPE
 		self.type_opt = ('Application', 'Link', 'FSDevice', 'Directory')
-		self.type_text = wx.StaticText(self, -1, _('Type'))
+		self.type_text = wxStaticText(self, -1, _('Type'))
 		#self.type_text.SetToolTip(m_type_tip)
-		self.type_choice = wx.ComboBox(self, -1, choices=self.type_opt)
+		self.type_choice = wxComboBox(self, -1, choices=self.type_opt)
 		self.type_choice.SetSelection(0)
-		#self.type_choice = wx.Choice(self, -1, choices=self.type_opt)
+		#self.type_choice = wxChoice(self, -1, choices=self.type_opt)
 		
 		# --- TERMINAL
 		self.term_opt = ('true', 'false')
-		self.term_text = wx.StaticText(self, -1, _('Terminal'))
+		self.term_text = wxStaticText(self, -1, _('Terminal'))
 		self.term_text.SetToolTip(m_term_tip)
-		self.term_choice = wx.Choice(self, -1, choices=self.term_opt)
+		self.term_choice = wxChoice(self, -1, choices=self.term_opt)
 		self.term_choice.SetSelection(1)
 		
 		# --- STARTUP NOTIFY
 		self.notify_opt = ('true', 'false')
-		self.notify_text = wx.StaticText(self, -1, _('Startup Notify'))
+		self.notify_text = wxStaticText(self, -1, _('Startup Notify'))
 		self.notify_text.SetToolTip(m_notify_tip)
-		self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
+		self.notify_choice = wxChoice(self, -1, choices=self.notify_opt)
 		
 		# --- ENCODING
 		self.enc_opt = ('UTF-1','UTF-7','UTF-8','CESU-8','UTF-EBCDIC','UTF-16','UTF-32','SCSU','BOCU-1','Punycode',
 					'GB 18030')
-		self.enc_text = wx.StaticText(self, -1, _('Encoding'))
+		self.enc_text = wxStaticText(self, -1, _('Encoding'))
 		#self.enc_text.SetToolTip(m_enc_tip)
-		self.enc_input = wx.ComboBox(self, -1, choices=self.enc_opt)
+		self.enc_input = wxComboBox(self, -1, choices=self.enc_opt)
 		self.enc_input.SetSelection(2)
 		
 		# --- CATEGORIES
@@ -116,63 +123,63 @@ class Panel(wx.Panel):
 						'VectorGraphics','Video','Viewer','WordProcessor','Wine','Wine-Programs-Accessories',
 						'X-GNOME-NetworkSettings','X-GNOME-PersonalSettings','X-GNOME-SystemSettings','X-KDE-More',
 						'X-Red-Hat-Base','X-SuSE-ControlCenter-System')
-		self.cat_text = wx.StaticText(self, -1, _('Category'))
-		self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
+		self.cat_text = wxStaticText(self, -1, _('Category'))
+		self.cat_choice = wxComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
 		self.cat_add = db.ButtonAdd(self)
 		self.cat_del = db.ButtonDel(self)
 		self.cat_clr = db.ButtonClear(self)
-		self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+		self.categories = wxListCtrl(self, -1, style=wxLC_SINGLE_SEL|wxBORDER_SIMPLE)
 		self.categories.InsertColumn(0, "")
 		
-		wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
-		wx.EVT_KEY_DOWN(self.categories, self.SetCategory)
-		wx.EVT_BUTTON(self.cat_add, -1, self.SetCategory)
-		wx.EVT_BUTTON(self.cat_del, -1, self.SetCategory)
-		wx.EVT_BUTTON(self.cat_clr, -1, self.SetCategory)
+		wxEVT_KEY_DOWN(self.cat_choice, self.SetCategory)
+		wxEVT_KEY_DOWN(self.categories, self.SetCategory)
+		wxEVT_BUTTON(self.cat_add, -1, self.SetCategory)
+		wxEVT_BUTTON(self.cat_del, -1, self.SetCategory)
+		wxEVT_BUTTON(self.cat_clr, -1, self.SetCategory)
 		
-		cat_sizer0 = wx.BoxSizer(wx.HORIZONTAL)
-		cat_sizer0.Add(self.cat_add, 0, wx.RIGHT, 5)
-		cat_sizer0.Add(self.cat_del, 0, wx.RIGHT, 5)
+		cat_sizer0 = wxBoxSizer(wxHORIZONTAL)
+		cat_sizer0.Add(self.cat_add, 0, wxRIGHT, 5)
+		cat_sizer0.Add(self.cat_del, 0, wxRIGHT, 5)
 		cat_sizer0.Add(self.cat_clr, 0)
 		
-		cat_sizer1 = wx.BoxSizer(wx.VERTICAL)
-		cat_sizer1.Add(self.cat_text, 0, wx.LEFT, 1)
-		cat_sizer1.Add(self.cat_choice, 0, wx.TOP|wx.BOTTOM, 5)
+		cat_sizer1 = wxBoxSizer(wxVERTICAL)
+		cat_sizer1.Add(self.cat_text, 0, wxLEFT, 1)
+		cat_sizer1.Add(self.cat_choice, 0, wxTOP|wxBOTTOM, 5)
 		cat_sizer1.Add(cat_sizer0, 0)
 		
-		cat_sizer2 = wx.BoxSizer(wx.HORIZONTAL)
+		cat_sizer2 = wxBoxSizer(wxHORIZONTAL)
 		cat_sizer2.Add(cat_sizer1, 0)
-		cat_sizer2.Add(self.categories, 1, wx.EXPAND|wx.LEFT, 5)
+		cat_sizer2.Add(self.categories, 1, wxEXPAND|wxLEFT, 5)
 		
 		
 		# ----- MISC
-		self.misc_text = wx.StaticText(self, -1, _('Other'))
-		self.misc = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
+		self.misc_text = wxStaticText(self, -1, _('Other'))
+		self.misc = wxTextCtrl(self, -1, style=wxTE_MULTILINE|wxBORDER_SIMPLE)
 		
-		misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
-		misc_sizer.Add(self.misc, 1, wx.EXPAND)
+		misc_sizer = wxBoxSizer(wxHORIZONTAL)
+		misc_sizer.Add(self.misc, 1, wxEXPAND)
 		
 		# Organize the widgets and create a nice border
-		sizer1 = wx.FlexGridSizer(0, 4, 5, 5)
+		sizer1 = wxFlexGridSizer(0, 4, 5, 5)
 		sizer1.AddGrowableCol(1)
 		sizer1.AddMany( [
-			(self.name_text, 0, wx.TOP, 10),(self.name_input, 0, wx.EXPAND|wx.TOP, 10),
-			(self.type_text, 0, wx.TOP, 10),(self.type_choice, 0, wx.TOP, 10),
-			(self.exe_text),(self.exe_input, 0, wx.EXPAND),
+			(self.name_text, 0, wxTOP, 10),(self.name_input, 0, wxEXPAND|wxTOP, 10),
+			(self.type_text, 0, wxTOP, 10),(self.type_choice, 0, wxTOP, 10),
+			(self.exe_text),(self.exe_input, 0, wxEXPAND),
 			(self.term_text),(self.term_choice),
-			(self.comm_text),(self.comm_input, 0, wx.EXPAND),
+			(self.comm_text),(self.comm_input, 0, wxEXPAND),
 			(self.notify_text),(self.notify_choice),
-			(self.icon_text),(self.icon_input, 0, wx.EXPAND),
-			(self.enc_text),(self.enc_input, 0, wx.EXPAND),
+			(self.icon_text),(self.icon_input, 0, wxEXPAND),
+			(self.enc_text),(self.enc_input, 0, wxEXPAND),
 			] )
 		
-		self.border = wx.StaticBox(self, -1, size=(20,20))
-		border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-		border_box.Add(sizer1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-		border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+		self.border = wxStaticBox(self, -1, size=(20,20))
+		border_box = wxStaticBoxSizer(self.border, wxVERTICAL)
+		border_box.Add(sizer1, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
+		border_box.Add(cat_sizer2, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5)
 		border_box.AddSpacer(20)
-		border_box.Add(self.misc_text, 0, wx.LEFT, 6)
-		border_box.Add(self.misc, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+		border_box.Add(self.misc_text, 0, wxLEFT, 6)
+		border_box.Add(self.misc, 1, wxEXPAND|wxLEFT|wxRIGHT, 5)
 		
 		# --- List of main menu items affected by checkbox -- used for toggling each widget
 		self.menu_list = (self.open, self.button_save, self.button_preview, self.icon_input, self.name_input,
@@ -184,12 +191,12 @@ class Panel(wx.Panel):
 		self.OnToggle(None) #Disable widgets
 		
 		# --- Page 5 Sizer --- #
-		page_sizer = wx.BoxSizer(wx.VERTICAL)
+		page_sizer = wxBoxSizer(wxVERTICAL)
 		page_sizer.AddSpacer(5)
-		page_sizer.Add(button_sizer, 0, wx.LEFT, 5)
+		page_sizer.Add(button_sizer, 0, wxLEFT, 5)
 		page_sizer.AddSpacer(10)
-		page_sizer.Add(self.activate, 0, wx.LEFT, 5)
-		page_sizer.Add(border_box, 1, wx.EXPAND|wx.ALL, 5)
+		page_sizer.Add(self.activate, 0, wxLEFT, 5)
+		page_sizer.Add(border_box, 1, wxEXPAND|wxALL, 5)
 		
 		self.SetAutoLayout(True)
 		self.SetSizer(page_sizer)
@@ -295,7 +302,7 @@ class Panel(wx.Panel):
 		desktop_list.append("Categories=%s" % ";".join(cat_list))
 		
 		# Add Misc
-		if self.misc.GetValue() != wx.EmptyString:
+		if self.misc.GetValue() != wxEmptyString:
 			desktop_list.append(self.misc.GetValue())
 		
 		return "\n".join(desktop_list)
@@ -310,17 +317,17 @@ class Panel(wx.Panel):
 		cat = cat.split()
 		cat = "".join(cat)
 		
-		if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+		if id == wxWXK_RETURN or id == wxWXK_NUMPAD_ENTER:
 			self.categories.InsertStringItem(0, cat)
 		
-		elif id == wx.WXK_DELETE:
+		elif id == wxWXK_DELETE:
 			cur_cat = self.categories.GetFirstSelected()
 			self.categories.DeleteItem(cur_cat)
 		
-		elif id == wx.WXK_ESCAPE:
-			confirm = wx.MessageDialog(self, _('Delete all categories?'), _('Confirm'),
-					wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-			if confirm.ShowModal() == wx.ID_YES:
+		elif id == wxWXK_ESCAPE:
+			confirm = wxMessageDialog(self, _('Delete all categories?'), _('Confirm'),
+					wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION)
+			if confirm.ShowModal() == wxID_YES:
 				self.categories.DeleteAllItems()
 		event.Skip()
 	
@@ -343,10 +350,10 @@ class Panel(wx.Panel):
 				cont = True
 				path = "%s/%s" % (dia.GetPath(), dia.GetFilename())
 		else:
-			dia = wx.FileDialog(self, _('Save Launcher'), os.getcwd(),
-				style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+			dia = wxFileDialog(self, _('Save Launcher'), os.getcwd(),
+				style=wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
 #			dia.SetFilename("control")
-			if dia.ShowModal() == wx.ID_OK:
+			if dia.ShowModal() == wxID_OK:
 				cont = True
 				path = dia.GetPath()
 		
@@ -369,7 +376,7 @@ class Panel(wx.Panel):
 			except UnicodeEncodeError:
 				serr = _('Save failed')
 				uni = _('Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-				UniErr = wx.MessageDialog(self, '%s\n\n%s' % (serr, uni), _('Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+				UniErr = wxMessageDialog(self, '%s\n\n%s' % (serr, uni), _('Unicode Error'), style=wxOK|wxICON_EXCLAMATION)
 				UniErr.ShowModal()
 				file.close()
 				os.remove(path)
@@ -383,9 +390,9 @@ class Panel(wx.Panel):
 			if dia.DisplayModal():
 				cont = True
 		else:
-			dia = wx.FileDialog(self, _('Open Launcher'), os.getcwd(),
-				style=wx.FD_CHANGE_DIR)
-			if dia.ShowModal() == wx.ID_OK:
+			dia = wxFileDialog(self, _('Open Launcher'), os.getcwd(),
+				style=wxFD_CHANGE_DIR)
+			if dia.ShowModal() == wxID_OK:
 				cont = True
 		
 		if cont == True:
@@ -404,12 +411,12 @@ class Panel(wx.Panel):
 		# Show a preview of the .desktop config file
 		config = self.GetMenuInfo()
 		
-		dia = wx.Dialog(self, -1, _('Preview'), size=(500,400))
-		preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+		dia = wxDialog(self, -1, _('Preview'), size=(500,400))
+		preview = wxTextCtrl(dia, -1, style=wxTE_MULTILINE|wxTE_READONLY)
 		preview.SetValue(config)
 		
-		dia_sizer = wx.BoxSizer(wx.VERTICAL)
-		dia_sizer.Add(preview, 1, wx.EXPAND)
+		dia_sizer = wxBoxSizer(wxVERTICAL)
+		dia_sizer.Add(preview, 1, wxEXPAND)
 		
 		dia.SetSizer(dia_sizer)
 		dia.Layout()
