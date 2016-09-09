@@ -2,82 +2,88 @@
 
 import db, commands
 
-ID = wx.NewId()
+from wximports import \
+	wxNewId, wxPanel, wxStaticText, wxTextCtrl, wxChoice, wxALIGN_CENTER_VERTICAL, wxALIGN_RIGHT, \
+	wxEXPAND, wxFlexGridSizer, wxTE_MULTILINE, wxStaticBox, wxStaticBoxSizer, wxVERTICAL, \
+	wxTOP, wxBOTTOM, wxRadioButton, wxRB_GROUP, wxBoxSizer, wxHORIZONTAL, wxRIGHT, wxToolTip, \
+	wxEVT_BUTTON, wxLEFT
 
-class Panel(wx.Panel):
+ID = wxNewId()
+
+class Panel(wxPanel):
     def __init__(self, parent, id=ID, name=_('Changelog')):
-        wx.Panel.__init__(self, parent, id, name=_('Changelog'))
+        wxPanel.__init__(self, parent, id, name=_('Changelog'))
         
         self.parent = parent.parent # MainWindow
         
-        self.package_text = wx.StaticText(self, -1, _('Package'))
-        self.package = wx.TextCtrl(self)
-        self.version_text = wx.StaticText(self, -1, _('Version'))
-        self.version = wx.TextCtrl(self)
-        self.distribution_text = wx.StaticText(self, -1, _('Distribution'))
-        self.distribution = wx.TextCtrl(self)
-        self.urgency_text = wx.StaticText(self, -1, _('Urgency'))
+        self.package_text = wxStaticText(self, -1, _('Package'))
+        self.package = wxTextCtrl(self)
+        self.version_text = wxStaticText(self, -1, _('Version'))
+        self.version = wxTextCtrl(self)
+        self.distribution_text = wxStaticText(self, -1, _('Distribution'))
+        self.distribution = wxTextCtrl(self)
+        self.urgency_text = wxStaticText(self, -1, _('Urgency'))
         self.urgency_opt = ("low", "HIGH")
-        self.urgency = wx.Choice(self, choices=self.urgency_opt)
-        self.maintainer_text = wx.StaticText(self, -1, _('Maintainer'))
-        self.maintainer = wx.TextCtrl(self)
-        self.email_text = wx.StaticText(self, -1, _('Email'))
-        self.email = wx.TextCtrl(self)
+        self.urgency = wxChoice(self, choices=self.urgency_opt)
+        self.maintainer_text = wxStaticText(self, -1, _('Maintainer'))
+        self.maintainer = wxTextCtrl(self)
+        self.email_text = wxStaticText(self, -1, _('Email'))
+        self.email = wxTextCtrl(self)
         
-        info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
+        info_sizer = wxFlexGridSizer(2, 6, 5, 5)
         info_sizer.AddGrowableCol(1)
         info_sizer.AddGrowableCol(3)
         info_sizer.AddGrowableCol(5)
         info_sizer.AddMany([
-            (self.package_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.package, 1, wx.EXPAND),
-            (self.version_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.version, 1, wx.EXPAND),
-            (self.distribution_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.distribution, 1, wx.EXPAND),
-            (self.urgency_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.urgency, 1, wx.EXPAND),
-            (self.maintainer_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.maintainer, 1, wx.EXPAND),
-            (self.email_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.email, 1, wx.EXPAND)
+            (self.package_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.package, 1, wxEXPAND),
+            (self.version_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.version, 1, wxEXPAND),
+            (self.distribution_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.distribution, 1, wxEXPAND),
+            (self.urgency_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.urgency, 1, wxEXPAND),
+            (self.maintainer_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.maintainer, 1, wxEXPAND),
+            (self.email_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.email, 1, wxEXPAND)
             ])
         
         # *** CHANGES DETAILS
-        self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE)
+        self.changes = wxTextCtrl(self, size=(20,150), style=wxTE_MULTILINE)
         
-        self.border_changes = wx.StaticBox(self, -1, _('Changes'), size=(20,20))
-        changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
-        changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
+        self.border_changes = wxStaticBox(self, -1, _('Changes'), size=(20,20))
+        changes_box = wxStaticBoxSizer(self.border_changes, wxVERTICAL)
+        changes_box.Add(self.changes, 1, wxEXPAND|wxTOP|wxBOTTOM, 5)
         
         # Destination of changelog
-        self.rb_dest_default = wx.RadioButton(self, -1, "/usr/share/doc/%project_name%", style=wx.RB_GROUP)
-        self.rb_dest_custom = wx.RadioButton(self)
+        self.rb_dest_default = wxRadioButton(self, -1, "/usr/share/doc/%project_name%", style=wxRB_GROUP)
+        self.rb_dest_custom = wxRadioButton(self)
         self.dest_custom = db.PathCtrl(self, -1, "/", db.PATH_WARN)
         
-        dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        dest_custom_sizer = wxBoxSizer(wxHORIZONTAL)
         dest_custom_sizer.Add(self.rb_dest_custom)
         dest_custom_sizer.Add(self.dest_custom, 1)
         
-        border_dest = wx.StaticBox(self, -1, _('Target'))
-        dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
+        border_dest = wxStaticBox(self, -1, _('Target'))
+        dest_box = wxStaticBoxSizer(border_dest, wxVERTICAL)
         dest_box.AddSpacer(5)
         dest_box.Add(self.rb_dest_default)
         dest_box.AddSpacer(5)
-        dest_box.Add(dest_custom_sizer, 0, wx.EXPAND)
+        dest_box.Add(dest_custom_sizer, 0, wxEXPAND)
         dest_box.AddSpacer(5)
         
-        details_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        details_sizer.Add(changes_box, 1, wx.EXPAND|wx.RIGHT, 5)
+        details_sizer = wxBoxSizer(wxHORIZONTAL)
+        details_sizer.Add(changes_box, 1, wxEXPAND|wxRIGHT, 5)
         details_sizer.Add(dest_box)
         
         
         self.button_import = db.ButtonImport(self)
-        self.button_import.SetToolTip(wx.ToolTip(_('Import information from Control section')))
+        self.button_import.SetToolTip(wxToolTip(_('Import information from Control section')))
         self.button_add = db.ButtonAdd(self)
         
-        wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
-        wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
+        wxEVT_BUTTON(self.button_import, -1, self.ImportInfo)
+        wxEVT_BUTTON(self.button_add, -1, self.AddInfo)
         
-        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        button_sizer = wxBoxSizer(wxHORIZONTAL)
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        self.display_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE)
+        self.display_area = wxTextCtrl(self, -1, style=wxTE_MULTILINE)
         
         # *** Widgets that Enable/Disable
 #        self.toggle_list = (
@@ -87,13 +93,13 @@ class Panel(wx.Panel):
 #            )
         
         # *** LAYOUT
-        main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
+        main_sizer = wxStaticBoxSizer(wxStaticBox(self), wxVERTICAL)
         main_sizer.AddSpacer(10)
-        main_sizer.Add(info_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(info_sizer, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
         main_sizer.AddSpacer(10)
-        main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(self.display_area, 1, wx.EXPAND, wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(details_sizer, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
+        main_sizer.Add(button_sizer, 0, wxLEFT|wxRIGHT, 5)
+        main_sizer.Add(self.display_area, 1, wxEXPAND, wxLEFT|wxRIGHT, 5)
         main_sizer.AddSpacer(5)
         
         self.SetAutoLayout(True)
@@ -122,8 +128,8 @@ class Panel(wx.Panel):
             else:
                 line = "    %s" % line
             details.append(line)
-        details.insert(0, wx.EmptyString)
-        details.append(wx.EmptyString)
+        details.insert(0, wxEmptyString)
+        details.append(wxEmptyString)
         details = "\n".join(details)
         
         maintainer = self.maintainer.GetValue()
@@ -134,7 +140,7 @@ class Panel(wx.Panel):
         info2 = " -- %s <%s>  %s" % (maintainer, email, date)
         
         entry = "\n".join((info1, details, info2))
-        self.display_area.SetValue("\n".join((entry, wx.EmptyString, self.display_area.GetValue())))
+        self.display_area.SetValue("\n".join((entry, wxEmptyString, self.display_area.GetValue())))
     
     def GetChangelog(self):
         return self.display_area.GetValue()
