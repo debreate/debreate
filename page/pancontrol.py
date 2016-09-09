@@ -2,11 +2,40 @@
 
 # This panel displays the field input of the control file
 
+
+# Control widgets
 from wximports import \
-	wxNewId, wxScrolledWindow, wxPanel, wxEVT_BUTTON, wxBoxSizer, wxHORIZONTAL, \
-	wxStaticText, wxTextCtrl, wxChoice, wxComboBox, wxTE_MULTILINE, wxFlexGridSizer, \
-	wxEXPAND, wxStaticBox, wxStaticBoxSizer, wxVERTICAL, wxALL, wxEVT_KEY_DOWN, \
-	wxEVT_SIZE, wxEVT_SHOW, wxEmptyString, wxEVT_KEY_UP
+	wxBoxSizer, \
+	wxChoice, \
+	wxComboBox, \
+	wxEmptyString, \
+	wxFlexGridSizer, \
+	wxPanel, \
+	wxScrolledWindow, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxStaticText, \
+	wxTextCtrl
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALL, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxTE_MULTILINE, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON, \
+	wxEVT_KEY_DOWN, \
+	wxEVT_KEY_UP, \
+	wxEVT_SHOW, \
+	wxEVT_SIZE
 
 import db, os
 

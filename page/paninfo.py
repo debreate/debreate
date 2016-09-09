@@ -1,7 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from wximports import wxNewId, wxPanel, wxStaticText, wxHyperlinkCtrl, wxStaticBox, wxGridSizer, \
-	wxALIGN_CENTER, wxALIGN_CENTER_VERTICAL, wxStaticBoxSizer, wxVERTICAL, wxEXPAND, wxALL
+
+# Control widgets
+from wximports import \
+	wxHyperlinkCtrl, \
+	wxGridSizer, \
+	wxNewId, \
+	wxPanel, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxStaticText
+
+# General constants
+from wximports import \
+	wxALIGN_CENTER, \
+	wxALIGN_CENTER_VERTICAL, \
+	wxALL, \
+	wxEXPAND, \
+	wxVERTICAL
+
 
 ID = wxNewId()
 
