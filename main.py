@@ -20,14 +20,81 @@
 """
 
 
-# Control widgets
-from wximports import \
-	wxFrame, \
-	wxIcon
-
-from common import *
-import os, sys, wx.lib.dialogs, db, webbrowser, language, shutil, subprocess
+# Standard Python modules
+import os, sys, shutil, subprocess
 from os.path import exists
+from urllib2 import URLError, HTTPError
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General wx imports
+from wximports import \
+	wxBitmap, \
+	wxBoxSizer, \
+	wxDefaultPosition, \
+	wxEmptyString, \
+	wxFileDialog, \
+	wxFrame, \
+	wxIcon, \
+	wxLaunchDefaultBrowser, \
+	wxMenu, \
+	wxMenuBar, \
+	wxMenuItem, \
+	wxMessageDialog, \
+	wxSafeYield, \
+	wxStatusBar
+
+# General constants
+from wximports import \
+	wxCANCEL, \
+	wxEXPAND, \
+	wxICON_ERROR, \
+	wxICON_INFORMATION, \
+	wxICON_QUESTION, \
+	wxITEM_CHECK, \
+	wxITEM_RADIO, \
+	wxNO_DEFAULT, \
+	wxOK, \
+	wxVERTICAL, \
+	wxYES_NO
+
+# ID constants
+from wximports import \
+	wxID_ABOUT, \
+	wxID_EXIT, \
+	wxID_HELP, \
+	wxID_NEW, \
+	wxID_OK, \
+	wxID_OPEN, \
+	wxID_SAVE, \
+	wxID_SAVEAS, \
+	wxID_YES
+
+# File dialog constants
+from wximports import \
+	wxFD_CHANGE_DIR, \
+	wxFD_OVERWRITE_PROMPT, \
+	wxFD_SAVE
+
+# Pixmap constants
+from wximports import \
+	wxBITMAP_TYPE_PNG
+
+# Event constants
+from wximports import \
+	wxEVT_CLOSE, \
+	wxEVT_MAXIMIZE, \
+	wxEVT_MENU
+
+# Debreate constants
+from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
+
+# Debreate functions
+from dbr.functions import GetCurrentVersion
+
+import wx.lib.dialogs, db, webbrowser, language
 
 # Pages
 from page import \
@@ -211,6 +278,10 @@ class MainWindow(wxFrame):
         self.menubar.Insert(2, self.menu_opt, _('Options'))
         self.menubar.Insert(3, self.menu_help, _('Help'))
         
+        # FIXME: QuickBuild broken
+        self.QuickBuild.SetText('Quick Build (Broken)')
+        self.QuickBuild.Enable(False)
+        
         # ***** END MENUBAR ***** #
         
         self.Wizard = db.Wizard(self) # Binary
@@ -271,13 +342,13 @@ class MainWindow(wxFrame):
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
             wxMessageDialog(self, current, _(u'Error'), wxOK|wxICON_ERROR).ShowModal()
-        elif (current > db_version):
+        elif (current > VERSION):
             current = '%s.%s.%s' % (current[0], current[1], current[2])
             l1 = _(u'Version %s is available!').decode('utf-8') % (current)
             l2 = _(u"Would you like to go to Debreate's website?").decode('utf-8')
             update = wxMessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wxYES_NO|wxICON_INFORMATION).ShowModal()
             if (update == wxID_YES):
-                wxLaunchDefaultBrowser(db_website)
+                wxLaunchDefaultBrowser(HOMEPAGE)
         else:
             wxMessageDialog(self, _(u'Debreate is up to date!'), _(u'Debreate'), wxOK|wxICON_INFORMATION).ShowModal()
     
@@ -327,48 +398,56 @@ class MainWindow(wxFrame):
     
     
     def OpenProject(self, data, filename):
+    	def ProjectError():
+    		wxMessageDialog(self, _('Not a valid Debreate project'), _('Error'),
+    			style=wxOK|wxICON_ERROR).ShowModal()
+    	
+    	if data == wxEmptyString:
+    		ProjectError()
+    		return
+    	
         lines = data.split('\n')
         app = lines[0].split('-')[0].split('[')[1]
         ver = lines[0].split('-')[1].split(']')[0]
+        
         if app != 'DEBREATE':
-            bad_file = wxMessageDialog(self, _('Not a valid Debreate project'), _('Error'),
-                    style=wxOK|wxICON_ERROR)
-            bad_file.ShowModal()
-        else: 
-            # Set title to show open project
-            #self.SetTitle('Debreate - %s' % filename)
+            ProjectError()
+            return
             
-            # *** Get Control Data *** #
-            control_data = data.split("<<CTRL>>\n")[1].split("\n<</CTRL>>")[0]
-            depends_data = self.page_control.SetFieldData(control_data)
-            self.page_depends.SetFieldData(depends_data)
-            
-            # *** Get Files Data *** #
-            files_data = data.split("<<FILES>>\n")[1].split("\n<</FILES>>")[0]
-            self.page_files.SetFieldData(files_data)
-            
-            # *** Get Scripts Data *** #
-            scripts_data = data.split("<<SCRIPTS>>\n")[1].split("\n<</SCRIPTS>>")[0]
-            self.page_scripts.SetFieldData(scripts_data)
-            
-            # *** Get Changelog Data *** #
-            clog_data = data.split("<<CHANGELOG>>\n")[1].split("\n<</CHANGELOG>>")[0]
-            self.page_clog.SetChangelog(clog_data)
-            
-            # *** Get Copyright Data *** #
-            try:
-                cpright_data = data.split("<<COPYRIGHT>>\n")[1].split("\n<</COPYRIGHT")[0]
-                self.page_cpright.SetCopyright(cpright_data)
-            except IndexError:
-                pass
-            
-            # *** Get Menu Data *** #
-            menu_data = data.split("<<MENU>>\n")[1].split("\n<</MENU>>")[0]
-            self.page_menu.SetFieldData(menu_data)
-            
-            # Get Build Data
-            build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
-            self.page_build.SetFieldData(build_data)
+        # Set title to show open project
+        #self.SetTitle('Debreate - %s' % filename)
+        
+        # *** Get Control Data *** #
+        control_data = data.split("<<CTRL>>\n")[1].split("\n<</CTRL>>")[0]
+        depends_data = self.page_control.SetFieldData(control_data)
+        self.page_depends.SetFieldData(depends_data)
+        
+        # *** Get Files Data *** #
+        files_data = data.split("<<FILES>>\n")[1].split("\n<</FILES>>")[0]
+        self.page_files.SetFieldData(files_data)
+        
+        # *** Get Scripts Data *** #
+        scripts_data = data.split("<<SCRIPTS>>\n")[1].split("\n<</SCRIPTS>>")[0]
+        self.page_scripts.SetFieldData(scripts_data)
+        
+        # *** Get Changelog Data *** #
+        clog_data = data.split("<<CHANGELOG>>\n")[1].split("\n<</CHANGELOG>>")[0]
+        self.page_clog.SetChangelog(clog_data)
+        
+        # *** Get Copyright Data *** #
+        try:
+            cpright_data = data.split("<<COPYRIGHT>>\n")[1].split("\n<</COPYRIGHT")[0]
+            self.page_cpright.SetCopyright(cpright_data)
+        except IndexError:
+            pass
+        
+        # *** Get Menu Data *** #
+        menu_data = data.split("<<MENU>>\n")[1].split("\n<</MENU>>")[0]
+        self.page_menu.SetFieldData(menu_data)
+        
+        # Get Build Data
+        build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
+        self.page_build.SetFieldData(build_data)
     
     # ----- File Menu
     def ConvertToRPM(self, event):
@@ -445,7 +524,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         about = db.AboutDialog(self, -1, _('About'))
         
         about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
-        about.SetVersion(_('Debreate'), debreate_version)
+        about.SetVersion(_('Debreate'), VERSION_STRING)
         about.SetAuthor('Jordan Irwin')
         about.SetSFWebsite('debreate.sourceforge.net', 'http://debreate.sourceforge.net/')
         about.SetGHWebsite('github.com/AntumDeluge/debreate', 'https://github.com/AntumDeluge/debreate')
@@ -525,7 +604,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
                 savefile = open(path, 'w')
                 # This try statement can be removed when unicode support is enabled
                 try:
-                    savefile.write("[DEBREATE-%s]\n%s" % (debreate_version, "\n".join(data).encode('utf-8')))
+                    savefile.write("[DEBREATE-%s]\n%s" % (VERSION_STRING, "\n".join(data).encode('utf-8')))
                     savefile.close()
                     if overwrite:
                         os.remove(backup)
