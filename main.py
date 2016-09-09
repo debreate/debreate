@@ -22,8 +22,11 @@
 from common import *
 import os, sys, wx.lib.dialogs, db, webbrowser, language, shutil, subprocess
 from os.path import exists
-import paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, panmenu, panbuild
-import pancopyright
+
+# Pages
+from page import \
+	paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, pancopyright, \
+	panmenu, panbuild
 
 ID_Dialogs = wx.NewId()
 
