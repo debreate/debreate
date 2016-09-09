@@ -34,6 +34,7 @@ from wximports import \
 	wxHORIZONTAL, \
 	wxLC_REPORT, \
 	wxLEFT, \
+	wxLIST_AUTOSIZE, \
 	wxRB_GROUP, \
 	wxRIGHT, \
 	wxVERTICAL
@@ -42,6 +43,12 @@ from wximports import \
 from wximports import \
 	wxEVT_BUTTON, \
 	wxEVT_KEY_DOWN
+
+# Input constants
+from wximports import \
+	wxWXK_ESCAPE, \
+	wxWXK_NUMPAD_ENTER, \
+	wxWXK_RETURN
 
 ID = wxNewId()
 
@@ -147,7 +154,7 @@ class Panel(wxPanel):
         self.dep_area = AutoListCtrl(self, -1)
         self.dep_area.InsertColumn(0, _('Category'), width=150)
         self.dep_area.InsertColumn(1, _('Package(s)'))
-        self.dep_area.SetColumnWidth(100, -1)
+        self.dep_area.SetColumnWidth(100, wxLIST_AUTOSIZE)
         
         wxEVT_KEY_DOWN(self.dep_area, self.SetDepends)
         
