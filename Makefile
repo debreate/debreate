@@ -53,7 +53,8 @@ FILES_DBR = \
 	dbr/__init__.py \
 	dbr/compat.py \
 	dbr/constants.py \
-	dbr/functions.py
+	dbr/functions.py \
+	dbr/templates.py
 
 FILES_EXTRA = \
 	README.md \
