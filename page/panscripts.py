@@ -38,6 +38,7 @@ from wximports import \
 	wxHORIZONTAL, \
 	wxLC_REPORT, \
 	wxLC_SINGLE_SEL, \
+	wxLIST_AUTOSIZE, \
 	wxOK, \
 	wxRB_GROUP, \
 	wxTE_MULTILINE, \
@@ -147,14 +148,14 @@ class Panel(wxPanel):
         
         # Auto-Link executables to be linked
         if wxMAJOR_VERSION < 3: # FIXME: wx 3.0 compat
-            self.executables = wxListCtrl(self, -1, size=(200,200), style=wxBORDER_SIMPLE|wxLC_SINGLE_SEL)
+            self.executables = wxListCtrl(self, -1, size=(200,200),
+            	style=wxBORDER_SIMPLE|wxLC_SINGLE_SEL)
+            self.executables.InsertColumn(0, "")
         
         else:
             self.executables = wxListCtrl(self, -1, size=(200,200))
-            self.executables.SetSingleStyle(wxLC_REPORT)
+            #self.executables.SetSingleStyle(wxLC_REPORT)
             self.executables.SetSingleStyle(wxLC_SINGLE_SEL)
-	    
-        self.executables.InsertColumn(0, "")
         
         # Auto-Link import, generate and remove buttons
         self.al_import = db.ButtonImport(self, ID_Import)
