@@ -23,7 +23,11 @@ class CharCtrl(wx.TextCtrl):
     def OnKeyUp(self, event):
         modifier = event.GetModifiers()
         keycode = event.GetKeyCode()
-        char = self.GetValue()[self.GetInsertionPoint()-1]
+        
+        char = ''
+        insert_index = self.GetInsertionPoint()
+        if insert_index > 0:
+        	char = self.GetValue()[insert_index - 1]
         
         def ReplaceChar():
             value = self.GetValue()
