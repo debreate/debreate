@@ -1,11 +1,34 @@
 # Build Page
 # -*- coding: utf-8 -*-
 
-from wximports import wxDialog, wxNewId, wxPanel, wxToolTip, \
-    wxCheckBox, wxStaticBox, wxStaticBoxSizer, wxBoxSizer, \
-    \
-    wxVERTICAL, wxHORIZONTAL, wxLEFT, wxRIGHT, wxEVT_BUTTON, \
-    wxALIGN_CENTER, wxEXPAND, wxBOTTOM
+
+# Control widgets
+from wximports import \
+	wxBoxSizer, \
+	wxCheckBox, \
+	wxDialog, \
+	wxPanel, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxToolTip
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALIGN_CENTER, \
+	wxBOTTOM, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxLEFT, \
+	wxRIGHT, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON
 
 from common import OutputLog
 

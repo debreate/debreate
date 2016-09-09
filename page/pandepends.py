@@ -2,13 +2,46 @@
 
 # Page defining dependencies
 
-import wx.lib.mixins.listctrl as LC, db
+import db
 
+
+# Control widgets
 from wximports import \
-	wxNewId, wxPanel, wxToolTip, wxListCtrl, wxRadioButton, wxRB_GROUP, wxStaticText, \
-	wxTextCtrl, wxChoice, wxFlexGridSizer, wxLEFT, wxEXPAND, wxEVT_KEY_DOWN, wxEVT_BUTTON, \
-	wxBORDER_SIMPLE, wxLC_REPORT, wxStaticBoxSizer, wxStaticBox, wxVERTICAL, wxGridSizer, \
-	wxBoxSizer, wxHORIZONTAL, wxRIGHT, wxALIGN_CENTER, wxALL
+	wxBoxSizer, \
+	wxChoice, \
+	wxFlexGridSizer, \
+	wxGridSizer, \
+	wxListCtrl, \
+	wxMixinListCtrl, \
+	wxPanel, \
+	wxRadioButton, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxStaticText, \
+	wxTextCtrl, \
+	wxToolTip
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALIGN_CENTER, \
+	wxALL, \
+	wxBORDER_SIMPLE, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxLC_REPORT, \
+	wxLEFT, \
+	wxRB_GROUP, \
+	wxRIGHT, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON, \
+	wxEVT_KEY_DOWN
 
 ID = wxNewId()
 
@@ -291,8 +324,8 @@ class Panel(wxPanel):
     
 
 
-class AutoListCtrl(wxListCtrl, LC.ListCtrlAutoWidthMixin):
+class AutoListCtrl(wxListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):
     """A ListCtrl that automatically expands columns"""
     def __init__(self, parent, id):
         wxListCtrl.__init__(self, parent, id, style=wxBORDER_SIMPLE|wxLC_REPORT)
-        LC.ListCtrlAutoWidthMixin.__init__(self)
+        wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)

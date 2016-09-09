@@ -1,16 +1,54 @@
 # -*- coding: utf-8 -*-
 
-import os, wx.lib.mixins.listctrl as LC, db
-from os.path import exists, isfile, isdir
-#from common import *
 
+# Control widgets
 from wximports import \
-	wxNewId, wxListCtrl, wxPanel, wxBORDER_SIMPLE, wxLC_REPORT, wxMenu, wxMenuItem, \
-	wxEVT_MENU, wxGenericDirCtrl, wxEVT_CONTEXT_MENU, wxEVT_BUTTON, wxRadioButton, \
-	wxRB_GROUP, wxEVT_RADIOBUTTON, wxGridSizer, wxStaticBox, wxStaticBoxSizer, \
-	wxHORIZONTAL, wxTextCtrl, wxEVT_KEY_DOWN, wxEVT_KEY_UP, wxBoxSizer, wxVERTICAL, \
-	wxEXPAND, wxALIGN_CENTER_VERTICAL, wxLEFT, wxRIGHT, wxALL, wxBOTTOM, wxFlexGridSizer, \
-	wxTOP
+	wxBoxSizer, \
+	wxFlexGridSizer, \
+	wxGenericDirCtrl, \
+	wxGridSizer, \
+	wxListCtrl, \
+	wxMenu, \
+	wxMenuItem, \
+	wxMixinListCtrl, \
+	wxPanel, \
+	wxRadioButton, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxTextCtrl
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALIGN_CENTER_VERTICAL, \
+	wxALL, \
+	wxBORDER_SIMPLE, \
+	wxBOTTOM, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxLC_REPORT, \
+	wxLEFT, \
+	wxRB_GROUP, \
+	wxRIGHT, \
+	wxTOP, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON, \
+	wxEVT_CONTEXT_MENU, \
+	wxEVT_KEY_DOWN, \
+	wxEVT_KEY_UP, \
+	wxEVT_MENU, \
+	wxEVT_RADIOBUTTON
+
+
+import os, db
+from os.path import exists, isfile, isdir
+
 
 ID = wxNewId()
 
@@ -24,12 +62,12 @@ ID_Refresh = 142
 
 home = os.getenv("HOME")
 
-class DList(wxListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
+class DList(wxListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wxMixinListCtrl.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
     def __init__(self, parent, id):
         wxListCtrl.__init__(self, parent, id, style=wxBORDER_SIMPLE|wxLC_REPORT)
-        #LC.TextEditMixin.__init__(self)
-        LC.ListCtrlAutoWidthMixin.__init__(self)
+        #wxMixinListCtrl.TextEditMixin.__init__(self)
+        wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
 
 class Panel(wxPanel):
     """Class defining controls for the "Paths" page"""
