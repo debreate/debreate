@@ -1,9 +1,25 @@
 # -*- coding: utf-8 -*-
 
-from wximports import *
+
+# wx system
+from wximports import \
+	wxMAJOR_VERSION, \
+	wxMINOR_VERSION, \
+	wxRELEASE_VERSION, \
+	wxSetDefaultPyEncoding
+
+# General wx imports
+from wximports import \
+	wxDialog, \
+	wxFileDropTarget, \
+	wxTextCtrl
+
+# Text editing constants
+from wximports import \
+	wxTE_MULTILINE, \
+	wxTE_READONLY
 
 import sys, os
-from urllib2 import urlopen, URLError, HTTPError
 from wx.lib.docview import PathOnly
 
 
@@ -14,22 +30,15 @@ import language
 if (sys.getdefaultencoding() != 'utf-8'):
     reload(sys)
     sys.setdefaultencoding('utf-8')
-SetDefaultPyEncoding('UTF-8')
+wxSetDefaultPyEncoding('UTF-8')
 
 
-RELEASE = 1
-ver_maj = 0
-ver_min = 7
-ver_rel = 11
+from dbr.constants import VERSION_STRING
 
-# For testing release
-if (not RELEASE):
-    ver_rel -= 0.5
 
-debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
-db_version = (ver_maj, ver_min, ver_rel)
+
+
 db_here = PathOnly(__file__).decode(u'utf-8')
-db_website = u'http://debreate.sourceforge.net/'
 
 maj_pyversion = sys.version_info[0]
 mid_pyversion = sys.version_info[1]
@@ -38,7 +47,7 @@ python_version = u'{}.{}.{}'.format(maj_pyversion, mid_pyversion, min_pyversion)
 
 print("Python version: {}".format(python_version))
 print("wxPython version: {}.{}.{}".format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION))
-print("Debreate version: {}.{}.{}".format(ver_maj, ver_min, ver_rel))
+print("Debreate version: {}".format(VERSION_STRING))
 
 
 
@@ -59,28 +68,6 @@ def RequirePython(version):
         raise ValueError(error)
     raise ValueError('Wrong type for argument 1 of RequirePython(version)')
 
-
-def GetCurrentVersion():
-    try:
-        request = urlopen(u'%s/current.txt' % (db_website))
-        version = request.readlines()[0]
-        version = version.split('.')
-        
-        if ('\n' in version[-1]):
-            # Remove newline character
-            version[-1] = version[-1][:-1]
-        
-        # Convert to integer
-        for v in range(0, len(version)):
-            version[v] = int(version[v])
-        
-        # Change container to tuple and return it
-        version = (version[0], version[1], version[2])
-        return version
-    
-    except URLError, err:
-        #err = unicode(err)
-        return err
 
 
 ### -*- Execute commands with sudo privileges -*- ###
