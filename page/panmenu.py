@@ -2,12 +2,49 @@
 
 # Menu Page
 
+# Control widgets
 from wximports import \
-	wxNewId, wxPanel, wxToolTip, wxEVT_BUTTON, wxBoxSizer, wxHORIZONTAL, wxCheckBox, \
-	wxID_ANY, wxEVT_CHECKBOX, wxStaticText, wxTextCtrl, wxComboBox, wxChoice, wxListCtrl, \
-	wxBORDER_SIMPLE, wxLC_SINGLE_SEL, wxEVT_KEY_DOWN, wxRIGHT, wxVERTICAL, wxLEFT, wxTOP, \
-	wxBOTTOM, wxEXPAND, wxTE_MULTILINE, wxFlexGridSizer, wxStaticBox, wxStaticBoxSizer, \
-	wxALL
+	wxBoxSizer, \
+	wxCheckBox, \
+	wxChoice, \
+	wxComboBox, \
+	wxFlexGridSizer, \
+	wxListCtrl, \
+	wxPanel, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxStaticText, \
+	wxTextCtrl, \
+	wxToolTip
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALL, \
+	wxBORDER_SIMPLE, \
+	wxBOTTOM, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxLC_SINGLE_SEL, \
+	wxLEFT, \
+	wxRIGHT, \
+	wxTE_MULTILINE, \
+	wxTOP, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON, \
+	wxEVT_CHECKBOX, \
+	wxEVT_KEY_DOWN
+
+# ID constants
+from wximports import \
+	wxID_ANY
+
 
 import db, os, shutil
 

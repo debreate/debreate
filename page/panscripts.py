@@ -2,14 +2,53 @@
 
 # Scripts Page
 
+
+# Control widgets
+from wximports import \
+	wxBoxSizer, \
+	wxCheckBox, \
+	wxDialog, \
+	wxListCtrl, \
+	wxPanel, \
+	wxRadioButton, \
+	wxStaticBox, \
+	wxStaticBoxSizer, \
+	wxStaticText, \
+	wxTextCtrl, \
+	wxToolTip
+
+# Functions
+from wximports import \
+	wxNewId
+
+# General constants
+from wximports import \
+	wxALIGN_CENTER, \
+	wxALIGN_RIGHT, \
+	wxALL, \
+	wxBORDER_SIMPLE, \
+	wxBOTTOM, \
+	wxEXPAND, \
+	wxHORIZONTAL, \
+	wxLC_SINGLE_SEL, \
+	wxRB_GROUP, \
+	wxTE_MULTILINE, \
+	wxTE_READONLY, \
+	wxTOP, \
+	wxVERTICAL
+
+# Event constants
+from wximports import \
+	wxEVT_BUTTON, \
+	wxEVT_RADIOBUTTON
+
+# ID constants
+from wximports import \
+	wxID_HELP
+
+
 import os, db
 
-from wximports import \
-	wxNewId, wxPanel, wxCheckBox, wxRadioButton, wxRB_GROUP, wxTextCtrl, wxTE_MULTILINE, \
-	wxEVT_RADIOBUTTON, wxBoxSizer, wxHORIZONTAL, wxVERTICAL, wxEXPAND, wxBOTTOM, \
-	wxStaticText, wxALIGN_CENTER, wxListCtrl, wxBORDER_SIMPLE, wxLC_SINGLE_SEL, \
-	wxToolTip, wxEVT_BUTTON, wxStaticBox, wxStaticBoxSizer, wxTOP, wxDialog, wxTE_READONLY, \
-	wxALIGN_RIGHT, wxID_HELP, wxALL
 
 ID = wxNewId()
 
