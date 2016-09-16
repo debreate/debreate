@@ -48,6 +48,7 @@ from wximports import \
 	wxID_OK
 
 import db, os
+from dbr.functions import FieldEnabled
 
 ID = wxNewId()
 
@@ -539,14 +540,18 @@ class Panel(wxScrolledWindow):
                     )
         
         for key in getvals:
-            if key[1].IsEnabled() and "".join(key[1].GetValue().split(" ")) != '':
+            key_enabled = FieldEnabled(key[1])
+            
+            if key_enabled and "".join(key[1].GetValue().split(" ")) != '':
                 if key[0] == "Package" or key[0] == "Version":
                     ctrl_list.append("%s: %s" % (key[0], "-".join(key[1].GetValue().split(' '))))
                 else:
                     ctrl_list.append("%s: %s" % (key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        if self.auth.IsEnabled and self.auth.GetValue() != '':
+        auth_enabled = FieldEnabled(self.auth)
+        
+        if auth_enabled and self.auth.GetValue() != '':
             ctrl_list.insert(3, "Maintainer: %s <%s>" % (self.auth.GetValue(), self.email.GetValue()))
         
         # Add the "choice" options
@@ -554,7 +559,9 @@ class Panel(wxScrolledWindow):
                     "Essential": (self.ess,self.ess_opt)#, "Urgency": (self.urge,self.urge_opt)
                     }
         for key in getsels:
-            if getsels[key][0].IsEnabled():
+            sel_enabled = FieldEnabled(getsels[key][0])
+            
+            if sel_enabled:
                 if key == "Essential" and self.ess.GetCurrentSelection() == 1:
                     pass
                 else:
