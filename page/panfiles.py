@@ -53,7 +53,7 @@ from wx import \
 from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
-import dbr
+import dbr, db  # FIXME: 'db' is deprecated, move classes to 'dbr'
 
 
 # Constants
