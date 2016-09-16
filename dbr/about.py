@@ -2,7 +2,7 @@
 
 
 import wx
-import dbbuttons.ButtonConfirm
+import buttons
 
 class AboutDialog(wx.Dialog):
     """Shows information about Debreate"""
@@ -101,7 +101,7 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = dbbuttons.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
+        ok = buttons.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
         #wx.EVT_BUTTON(ok, wx.OK, self.OnOk)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
