@@ -3,75 +3,57 @@
 
 
 # Control widgets
-from wximports import \
-	wxBoxSizer, \
-	wxCheckBox, \
-	wxDefaultPosition, \
-	wxDialog, \
-	wxDirDialog, \
-	wxEmptyString, \
-	wxFileDialog, \
-	wxGauge, \
-	wxMessageDialog, \
-	wxPanel, \
-	wxProgressDialog, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText, \
-	wxTextCtrl, \
-	wxTimer, \
-	wxToolTip, \
-	wxYield
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	CheckBox as wxCheckBox, \
+	DefaultPosition as wxDefaultPosition, \
+	Dialog as wxDialog, \
+	DirDialog as wxDirDialog, \
+	EmptyString as wxEmptyString, \
+	FileDialog as wxFileDialog, \
+	Gauge as wxGauge, \
+	MessageDialog as wxMessageDialog, \
+	Panel as wxPanel, \
+	ProgressDialog as wxProgressDialog, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	Timer as wxTimer, \
+	ToolTip as wxToolTip, \
+	Yield as wxYield, \
+	GetPasswordFromUser as wxGetPasswordFromUser, \
+	NewId as wxNewId
 
-# Functions
-from wximports import \
-	wxGetPasswordFromUser, \
-	wxNewId
 
-# General constants
-from wximports import \
-	wxALL, \
-	wxBOTTOM, \
-	wxEXPAND, \
-	wxHORIZONTAL, \
-	wxICON_ERROR, \
-	wxICON_EXCLAMATION, \
-	wxICON_INFORMATION, \
-	wxICON_WARNING, \
-	wxLEFT, \
-	wxOK, \
-	wxRIGHT, \
-	wxTOP, \
-	wxVERTICAL
-
-# Layout constants
-from wximports import \
-	wxALIGN_BOTTOM, \
-	wxALIGN_CENTER, \
-	wxALIGN_RIGHT
-
-# Dialog constants
-from wximports import \
-	wxCHANGE_DIR, \
-	wxFD_CHANGE_DIR, \
-	wxFD_SAVE, \
-	wxFD_OVERWRITE_PROMPT
-
-# Progress dialog constants
-from wximports import \
-	wxPD_AUTO_HIDE, \
-	wxPD_CAN_ABORT, \
-	wxPD_ELAPSED_TIME, \
-	wxPD_ESTIMATED_TIME
-
-# ID constants
-from wximports import \
-	wxID_OK
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON, \
-	wxEVT_TIMER
+from wx import \
+	ALL as wxALL, \
+	BOTTOM as wxBOTTOM, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	ICON_ERROR as wxICON_ERROR, \
+	ICON_EXCLAMATION as wxICON_EXCLAMATION, \
+	ICON_INFORMATION as wxICON_INFORMATION, \
+	ICON_WARNING as wxICON_WARNING, \
+	LEFT as wxLEFT, \
+	OK as wxOK, \
+	RIGHT as wxRIGHT, \
+	TOP as wxTOP, \
+	VERTICAL as wxVERTICAL, \
+	ALIGN_BOTTOM as wxALIGN_BOTTOM, \
+	ALIGN_CENTER as wxALIGN_CENTER, \
+	ALIGN_RIGHT as wxALIGN_RIGHT, \
+	CHANGE_DIR as wxCHANGE_DIR, \
+	FD_CHANGE_DIR as wxFD_CHANGE_DIR, \
+	FD_SAVE as wxFD_SAVE, \
+	FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
+	PD_AUTO_HIDE as wxPD_AUTO_HIDE, \
+	PD_CAN_ABORT as wxPD_CAN_ABORT, \
+	PD_ELAPSED_TIME as wxPD_ELAPSED_TIME, \
+	PD_ESTIMATED_TIME as wxPD_ESTIMATED_TIME, \
+	ID_OK as wxID_OK, \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_TIMER as wxEVT_TIMER
 
 from common import OutputLog
 
