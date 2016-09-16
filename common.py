@@ -1,28 +1,21 @@
 # -*- coding: utf-8 -*-
 
 
-# wx system
-from wximports import \
-	wxMAJOR_VERSION, \
-	wxMINOR_VERSION, \
-	wxRELEASE_VERSION, \
-	wxSetDefaultPyEncoding
-
-# General wx imports
-from wximports import \
-	wxDialog, \
-	wxFileDropTarget, \
-	wxTextCtrl
-
-# Text editing constants
-from wximports import \
-	wxTE_MULTILINE, \
-	wxTE_READONLY
-
 import sys, os
+from wx import \
+	Dialog as wxDialog, \
+	FileDropTarget as wxFileDropTarget, \
+	TextCtrl as wxTextCtrl, \
+    SetDefaultPyEncoding as wxSetDefaultPyEncoding
+from wx import \
+    MAJOR_VERSION as wxMAJOR_VERSION, \
+    MINOR_VERSION as wxMINOR_VERSION, \
+    RELEASE_VERSION as wxRELEASE_VERSION, \
+	TE_MULTILINE as wxTE_MULTILINE, \
+	TE_READONLY as wxTE_READONLY
 from wx.lib.docview import PathOnly
 
-
+from dbr.constants import VERSION_STRING
 import language
 
 
@@ -33,7 +26,6 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wxSetDefaultPyEncoding('UTF-8')
 
 
-from dbr.constants import VERSION_STRING
 
 
 
