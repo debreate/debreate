@@ -2,6 +2,7 @@
 - Change license to MIT
 - Finish wx 3.0 compatibility
 - Add system information (Python & wxPython versions) to about dialog
+- Update files list in Makefile for distribution
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
