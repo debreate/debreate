@@ -2,7 +2,6 @@
 
 
 import os
-from os.path import exists, isfile, isdir
 from wx import \
 	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
 	ALL as wxALL, \
@@ -31,7 +30,12 @@ from wx import \
 	EVT_KEY_DOWN as wxEVT_KEY_DOWN, \
 	EVT_KEY_UP as wxEVT_KEY_UP, \
 	EVT_MENU as wxEVT_MENU, \
-	EVT_RADIOBUTTON as wxEVT_RADIOBUTTON
+	EVT_RADIOBUTTON as wxEVT_RADIOBUTTON, \
+    ID_OK as wxID_OK, \
+    MOD_CONTROL as wxMOD_CONTROL, \
+    TE_MULTILINE as wxTE_MULTILINE, \
+    TE_READONLY as wxTE_READONLY, \
+    ALIGN_RIGHT as wxALIGN_RIGHT
 from wx import \
 	BoxSizer as wxBoxSizer, \
 	DirDialog as wxDirDialog, \
@@ -49,11 +53,18 @@ from wx import \
 	StaticBox as wxStaticBox, \
 	StaticBoxSizer as wxStaticBoxSizer, \
 	TextCtrl as wxTextCtrl, \
-	NewId as wxNewId
+	NewId as wxNewId, \
+    Dialog as wxDialog, \
+    StaticText as wxStaticText, \
+    Button as wxButton
 from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
 import dbr, db  # FIXME: 'db' is deprecated, move classes to 'dbr'
+
+
+from os.path import isfile, isdir
+
 
 
 # Constants
