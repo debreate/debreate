@@ -208,7 +208,8 @@ scripts will be created that will place a symbolic link to your executables in t
 #		self.Layout()
         
         self.ScriptSelect(None)
-        
+    
+    ''' FIXME: Deprecated
     def SetLanguage(self):
         # Get language pack for "Scripts" tab
         lang = languages.Scripts()
@@ -221,6 +222,7 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # Refresh widget layout
         self.Layout()
+        '''
     
     
     def ScriptSelect(self, event):
