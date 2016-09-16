@@ -1,6 +1,7 @@
 0.8.0
 - add compatibility for wx 3.0
 - made Lintian message dialog resizable
+- display build errors in dialog
 
 0.7.11
 - add template generation for copyright
