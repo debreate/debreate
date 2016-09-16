@@ -3,6 +3,7 @@
 # Menu Page
 
 
+import os, shutil
 from wx import \
 	BoxSizer as wxBoxSizer, \
 	CheckBox as wxCheckBox, \
@@ -46,7 +47,7 @@ from wx import \
 	WXK_NUMPAD_ENTER as wxWXK_NUMPAD_ENTER, \
 	WXK_RETURN as wxWXK_RETURN
 
-import os, shutil
+import dbr
 
 
 ID = wxNewId()
@@ -80,10 +81,10 @@ class Panel(wxPanel):
 		# --- Main Menu Entry --- #
 		
 		# --- Buttons to open/preview/save .desktop file
-		self.open = db.ButtonBrowse64(self)
+		self.open = dbr.ButtonBrowse64(self)
 		self.open.SetToolTip(DF_tip)
-		self.button_save = db.ButtonSave64(self)
-		self.button_preview = db.ButtonPreview64(self)
+		self.button_save = dbr.ButtonSave64(self)
+		self.button_preview = dbr.ButtonPreview64(self)
 		
 		self.open.Bind(wxEVT_BUTTON, self.OpenFile)
 		wxEVT_BUTTON(self.button_save, wxID_ANY, self.OnSave)
@@ -103,7 +104,7 @@ class Panel(wxPanel):
 		self.name_text = wxStaticText(self, -1, _('Name'))
 		self.name_text.SetToolTip(m_name_tip)
 		self.name_input = wxTextCtrl(self, -1)
-#		self.name_input.SetBackgroundColour(db.Mandatory)
+#		self.name_input.SetBackgroundColour(dbr.Mandatory)
 		
 		# --- EXECUTABLE
 		self.exe_text = wxStaticText(self, -1, _('Executable'))
@@ -163,9 +164,9 @@ class Panel(wxPanel):
 						'X-Red-Hat-Base','X-SuSE-ControlCenter-System')
 		self.cat_text = wxStaticText(self, -1, _('Category'))
 		self.cat_choice = wxComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
-		self.cat_add = db.ButtonAdd(self)
-		self.cat_del = db.ButtonDel(self)
-		self.cat_clr = db.ButtonClear(self)
+		self.cat_add = dbr.ButtonAdd(self)
+		self.cat_del = dbr.ButtonDel(self)
+		self.cat_clr = dbr.ButtonClear(self)
 		
 		# FIXME: wx 3.0 compat
 		if wxMAJOR_VERSION > 3:
@@ -282,14 +283,14 @@ class Panel(wxPanel):
 				item.Enable()
 				# Change the background color of name_input
 #				if item == self.name_input:
-#					item.SetBackgroundColour(db.Mandatory)
+#					item.SetBackgroundColour(dbr.Mandatory)
 					
 		else:
 			for item in self.menu_list:
 				item.Disable()
 				# Change background color of name_input
 #				if item == self.name_input:
-#					item.SetBackgroundColour(db.Disabled)
+#					item.SetBackgroundColour(dbr.Disabled)
 	
 	def GetMenuInfo(self):
 		# Create list to store info
@@ -390,7 +391,7 @@ class Panel(wxPanel):
 		
 		# Open a "Save Dialog"
 		if self.parent.parent.cust_dias.IsChecked():
-			dia = db.SaveFile(self, _('Save Launcher'))
+			dia = dbr.SaveFile(self, _('Save Launcher'))
 #			dia.SetFilename("control")
 			if dia.DisplayModal():
 				cont = True
@@ -432,7 +433,7 @@ class Panel(wxPanel):
 	def OpenFile(self, event):
 		cont = False
 		if self.parent.parent.cust_dias.IsChecked():
-			dia = db.OpenFile(self, _('Open Launcher'))
+			dia = dbr.OpenFile(self, _('Open Launcher'))
 			if dia.DisplayModal():
 				cont = True
 		else:
