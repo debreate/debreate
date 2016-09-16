@@ -2,24 +2,25 @@
 
 
 # Control widgets
-from wximports import \
-	wxHyperlinkCtrl, \
-	wxGridSizer, \
-	wxNewId, \
-	wxPanel, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText
+from wx import \
+	ALIGN_CENTER as wxALIGN_CENTER, \
+	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
+	ALL as wxALL, \
+	EXPAND as wxEXPAND, \
+	VERTICAL as wxVERTICAL
+from wx import \
+	HyperlinkCtrl as wxHyperlinkCtrl, \
+	GridSizer as wxGridSizer, \
+	NewId as wxNewId, \
+	Panel as wxPanel, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText
 
-# General constants
-from wximports import \
-	wxALIGN_CENTER, \
-	wxALIGN_CENTER_VERTICAL, \
-	wxALL, \
-	wxEXPAND, \
-	wxVERTICAL
+import language
 
 
+# Constatns
 ID = wxNewId()
 
 class Panel(wxPanel):
