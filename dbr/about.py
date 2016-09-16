@@ -133,24 +133,24 @@ class AboutDialog(wx.Dialog):
         self.description.SetLabel(desc)
     
     def AddDeveloper(self, name, email):
-        next = self.credits.GetItemCount()
-        self.credits.InsertStringItem(next, name)
-        self.credits.SetStringItem(next, 2, email)
-        self.credits.SetStringItem(next, 1, _(u'Developer'))
-        #self.credits.SetItemTextColour(next, (255,255,255,255))
+        next_item = self.credits.GetItemCount()
+        self.credits.InsertStringItem(next_item, name)
+        self.credits.SetStringItem(next_item, 2, email)
+        self.credits.SetStringItem(next_item, 1, _(u'Developer'))
+        #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
     def AddPackager(self, name, email):
-        next = self.credits.GetItemCount()
-        self.credits.InsertStringItem(next, name)
-        self.credits.SetStringItem(next, 2, email)
-        self.credits.SetStringItem(next, 1, _(u'Packager'))
-        #self.credits.SetItemTextColour(next, (255,255,255,255))
+        next_item = self.credits.GetItemCount()
+        self.credits.InsertStringItem(next_item, name)
+        self.credits.SetStringItem(next_item, 2, email)
+        self.credits.SetStringItem(next_item, 1, _(u'Packager'))
+        #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
     def AddJob(self, name, job, email):
-        next = self.credits.GetItemCount()
-        self.credits.InsertStringItem(next, name)
-        self.credits.SetStringItem(next, 2, email)
-        self.credits.SetStringItem(next, 1, job)
+        next_item = self.credits.GetItemCount()
+        self.credits.InsertStringItem(next_item, name)
+        self.credits.SetStringItem(next_item, 2, email)
+        self.credits.SetStringItem(next_item, 1, job)
     
     def NoResizeCol(self, event):
         event.Veto()
