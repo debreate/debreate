@@ -1,5 +1,6 @@
-0.7.12
+0.8.0
 - add compatibility for wx 3.0
+- made Lintian message dialog resizable
 
 0.7.11
 - add template generation for copyright
