@@ -3,60 +3,43 @@
 # Scripts Page
 
 
-# wx build constants
-from wximports import \
-	wxMAJOR_VERSION
-
-# Control widgets
-from wximports import \
-	wxBoxSizer, \
-	wxCheckBox, \
-	wxDialog, \
-	wxListCtrl, \
-	wxMessageDialog, \
-	wxPanel, \
-	wxRadioButton, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText, \
-	wxTextCtrl, \
-	wxToolTip
-
-# Functions
-from wximports import \
-	wxNewId
-
-# General constants
-from wximports import \
-	wxALIGN_CENTER, \
-	wxALIGN_RIGHT, \
-	wxALL, \
-	wxBORDER_SIMPLE, \
-	wxBOTH, \
-	wxBOTTOM, \
-	wxEXPAND, \
-	wxHORIZONTAL, \
-	wxLC_REPORT, \
-	wxLC_SINGLE_SEL, \
-	wxLIST_AUTOSIZE, \
-	wxOK, \
-	wxRB_GROUP, \
-	wxTE_MULTILINE, \
-	wxTE_READONLY, \
-	wxTOP, \
-	wxVERTICAL
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON, \
-	wxEVT_RADIOBUTTON
-
-# ID constants
-from wximports import \
-	wxID_HELP
-
-
-import os, db
+import os
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	CheckBox as wxCheckBox, \
+	Dialog as wxDialog, \
+	ListCtrl as wxListCtrl, \
+	MessageDialog as wxMessageDialog, \
+	Panel as wxPanel, \
+	RadioButton as wxRadioButton, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	ToolTip as wxToolTip, \
+	NewId as wxNewId
+from wx import \
+    MAJOR_VERSION as wxMAJOR_VERSION, \
+	ALIGN_CENTER as wxALIGN_CENTER, \
+	ALIGN_RIGHT as wxALIGN_RIGHT, \
+	ALL as wxALL, \
+	BORDER_SIMPLE as wxBORDER_SIMPLE, \
+	BOTH as wxBOTH, \
+	BOTTOM as wxBOTTOM, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	LC_REPORT as wxLC_REPORT, \
+	LC_SINGLE_SEL as wxLC_SINGLE_SEL, \
+	LIST_AUTOSIZE as wxLIST_AUTOSIZE, \
+	OK as wxOK, \
+	RB_GROUP as wxRB_GROUP, \
+	TE_MULTILINE as wxTE_MULTILINE, \
+	TE_READONLY as wxTE_READONLY, \
+	TOP as wxTOP, \
+	VERTICAL as wxVERTICAL, \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_RADIOBUTTON as wxEVT_RADIOBUTTON, \
+	ID_HELP as wxID_HELP
 
 
 ID = wxNewId()
