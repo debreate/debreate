@@ -13,6 +13,7 @@ class AboutDialog(wx.Dialog):
         
         # Font for the name
         bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+        sys_info_font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         
         # Create a tabbed interface
         tabs = wx.Notebook(self, -1)
@@ -102,6 +103,28 @@ class AboutDialog(wx.Dialog):
         
         license.SetSizer(license_sizer)
         license.Layout()
+        
+        
+        # System info
+        sys_info = wx.Panel(tabs, -1)
+        tabs.AddPage(sys_info, _(u'System Information'))
+        
+        self.py_info = wx.StaticText(sys_info, -1,
+                _(u'Python version: {}').format(dbr.PY_VER_STRING))
+        self.wx_info = wx.StaticText(sys_info, -1,
+                _(u'wxPython version: {}').format(dbr.WX_VER_STRING))
+        
+        self.py_info.SetFont(sys_info_font)
+        self.wx_info.SetFont(sys_info_font)
+        
+        
+        sys_info_sizer = wx.BoxSizer(wx.VERTICAL)
+        sys_info_sizer.AddSpacer(20, wx.EXPAND|wx.ALL)  # FIXME: Want to center elements on panel
+        sys_info_sizer.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
+        sys_info_sizer.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+        
+        sys_info.SetSizer(sys_info_sizer)
+        sys_info.Layout()
         
         
         # Button to close the dialog
