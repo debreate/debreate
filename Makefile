@@ -255,7 +255,7 @@ dist: debuild-clean
 	@file "$(DISTPACKAGE)"
 
 help:
-	echo "Usage:"; \
+	@echo "Usage:"; \
 	\
 	echo "\tmake [command]\n"; \
 	\
