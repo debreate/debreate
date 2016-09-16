@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import wx.combo, wx.lib.mixins.listctrl as LC, os, sys
 from os.path import exists, isdir, isfile
+import wx.combo, wx.lib.mixins.listctrl as LC, os, sys
 
-import dbbuttons
-import dbcharctrl
-import dbmessage
-import dbpathctrl
-import dbwizard
+import dbr
 
 
 ID_BIN = wx.NewId()
@@ -38,40 +34,40 @@ ICON_ERROR = "%s/bitmaps/error64.png" % application_path
 ICON_INFORMATION = "%s/bitmaps/question64.png" % application_path
 
 # Buttons
-ButtonAdd = dbbuttons.ButtonAdd
-ButtonBrowse = dbbuttons.ButtonBrowse
-ButtonBrowse64 = dbbuttons.ButtonBrowse64
-ButtonBuild = dbbuttons.ButtonBuild
-ButtonBuild64 = dbbuttons.ButtonBuild64
-ButtonCancel = dbbuttons.ButtonCancel
-ButtonClear = dbbuttons.ButtonClear
-ButtonConfirm = dbbuttons.ButtonConfirm
-ButtonDel = dbbuttons.ButtonDel
-ButtonImport = dbbuttons.ButtonImport
-ButtonPipe = dbbuttons.ButtonPipe
-ButtonPreview = dbbuttons.ButtonPreview
-ButtonPreview64 = dbbuttons.ButtonPreview64
-ButtonQuestion64 = dbbuttons.ButtonQuestion64
-ButtonSave = dbbuttons.ButtonSave
-ButtonSave64 = dbbuttons.ButtonSave64
+ButtonAdd = dbr.ButtonAdd
+ButtonBrowse = dbr.ButtonBrowse
+ButtonBrowse64 = dbr.ButtonBrowse64
+ButtonBuild = dbr.ButtonBuild
+ButtonBuild64 = dbr.ButtonBuild64
+ButtonCancel = dbr.ButtonCancel
+ButtonClear = dbr.ButtonClear
+ButtonConfirm = dbr.ButtonConfirm
+ButtonDel = dbr.ButtonDel
+ButtonImport = dbr.ButtonImport
+ButtonPipe = dbr.ButtonPipe
+ButtonPreview = dbr.ButtonPreview
+ButtonPreview64 = dbr.ButtonPreview64
+ButtonQuestion64 = dbr.ButtonQuestion64
+ButtonSave = dbr.ButtonSave
+ButtonSave64 = dbr.ButtonSave64
 
 
 # Wizard
-Wizard = dbwizard.Wizard
+Wizard = dbr.Wizard
 
 # Message Dialog
-class MessageDialog(dbmessage.MessageDialog):
+class MessageDialog(dbr.MessageDialog):
     def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=ICON_ERROR, text=wx.EmptyString,
             details=wx.EmptyString):
-        dbmessage.MessageDialog.__init__(self, parent, id, title, icon, text, details)
+        dbr.MessageDialog.__init__(self, parent, id, title, icon, text, details)
 
 # Path text controls
-PathCtrl = dbpathctrl.PathCtrl
-PATH_DEFAULT = dbpathctrl.PATH_DEFAULT
-PATH_WARN = dbpathctrl.PATH_WARN
+PathCtrl = dbr.PathCtrl
+PATH_DEFAULT = dbr.PATH_DEFAULT
+PATH_WARN = dbr.PATH_WARN
 
 # Character controls
-CharCtrl = dbcharctrl.CharCtrl
+CharCtrl = dbr.CharCtrl
 
 
 class Combo(wx.combo.ComboCtrl):
