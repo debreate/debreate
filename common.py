@@ -12,9 +12,6 @@ from wx import \
     MessageDialog as wxMessageDialog, \
     NewId as wxNewId
 from wx import \
-    MAJOR_VERSION as wxMAJOR_VERSION, \
-    MINOR_VERSION as wxMINOR_VERSION, \
-    RELEASE_VERSION as wxRELEASE_VERSION, \
 	TE_MULTILINE as wxTE_MULTILINE, \
 	TE_READONLY as wxTE_READONLY, \
     EVT_BUTTON as wxEVT_BUTTON, \
@@ -31,7 +28,8 @@ from wx import \
     ID_CANCEL as wxID_CANCEL
 from wx.lib.docview import PathOnly
 
-from dbr import GT, VERSION_STRING
+from dbr import GT
+import dbr
 
 
 ID_OVERWRITE = wxNewId()
@@ -48,11 +46,11 @@ def RequirePython(version):
     error = 'Incompatible python version'
     t = type(version)
     if t == type(''):
-        if version == python_version[0:3]:
+        if version == dbr.PY_VER_STRING[0:3]:
             return
         raise ValueError(error)
     elif t == type([]) or t == type(()):
-        if python_version[0:3] in version:
+        if dbr.PY_VER_STRING[0:3] in version:
             return
         raise ValueError(error)
     raise ValueError('Wrong type for argument 1 of RequirePython(version)')
