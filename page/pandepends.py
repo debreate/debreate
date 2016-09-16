@@ -43,6 +43,8 @@ from wx import \
 from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
+import dbr
+
 
 # Constants
 ID = wxNewId()
@@ -135,10 +137,10 @@ class Panel(wxPanel):
         wxEVT_KEY_DOWN(self.dep_ver, self.SetDepends)
         
         # Buttons to add and remove dependencies from the list
-        self.depadd = db.ButtonAdd(self)
-        self.depapp = db.ButtonPipe(self, ID_Append)
-        self.deprem = db.ButtonDel(self, ID_Delete) # Change the id from wxWXK_DELETE as workaround
-        self.depclr = db.ButtonClear(self)
+        self.depadd = dbr.ButtonAdd(self)
+        self.depapp = dbr.ButtonPipe(self, ID_Append)
+        self.deprem = dbr.ButtonDel(self, ID_Delete) # Change the id from wxWXK_DELETE as workaround
+        self.depclr = dbr.ButtonClear(self)
         
         wxEVT_BUTTON(self.depadd, -1, self.SetDepends)
         wxEVT_BUTTON(self.depapp, -1, self.SetDepends)
