@@ -15,8 +15,7 @@ from wx import \
 	TE_READONLY as wxTE_READONLY
 from wx.lib.docview import PathOnly
 
-from dbr.constants import VERSION_STRING
-import language
+from dbr import GT, VERSION_STRING
 
 
 # Set the encoding to unicode
@@ -105,12 +104,12 @@ class OutputLog(wxTextCtrl):
 
 ### -*- Dialog for overwrite prompt of a text area -*- ###
 class OverwriteDialog(wxDialog):
-    def __init__(self, parent, id=-1, title=_(u'Overwrite?'), message=u''):
+    def __init__(self, parent, id=-1, title=GT(u'Overwrite?'), message=u''):
         wxDialog.__init__(self, parent, id, title)
         self.message = wxStaticText(self, -1, message)
         
-        self.button_overwrite = wxButton(self, ID_OVERWRITE, _(u'Overwrite'))
-        self.button_append = wxButton(self, ID_APPEND, _(u'Append'))
+        self.button_overwrite = wxButton(self, ID_OVERWRITE, GT(u'Overwrite'))
+        self.button_append = wxButton(self, ID_APPEND, GT(u'Append'))
         self.button_cancel = wxButton(self, wxID_CANCEL)
         
         ### -*- Button events -*- ###
@@ -146,11 +145,11 @@ class SingleFileTextDropTarget(wxFileDropTarget):
     
     def OnDropFiles(self, x, y, filenames):
         if len(filenames) > 1:
-            raise BaseError(_(u'Too many files'))
+            raise BaseError(GT(u'Too many files'))
         text = open(filenames[0]).read()
         try:
             if (not TextIsEmpty(self.obj.GetValue())):
-                overwrite = OverwriteDialog(self.obj, message = _(u'The text area is not empty!'))
+                overwrite = OverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
                 id = overwrite.ShowModal()
                 if (id == ID_OVERWRITE):
                     self.obj.SetValue(text)
@@ -160,7 +159,7 @@ class SingleFileTextDropTarget(wxFileDropTarget):
             else:
                 self.obj.SetValue(text)
         except UnicodeDecodeError:
-            wxMessageDialog(None, _(u'Error decoding file'), _(u'Error'), wxOK).ShowModal()
+            wxMessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wxOK).ShowModal()
 
 
 ### -*- Checks if Text Control is Empty -*- ###
