@@ -1,6 +1,7 @@
 0.8.0 Release Changes:
 - Change license to MIT
 - Finish wx 3.0 compatibility
+- Add system information (Python & wxPython versions) to about dialog
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
