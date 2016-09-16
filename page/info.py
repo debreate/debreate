@@ -17,22 +17,22 @@ from wx import \
 	StaticBoxSizer as wxStaticBoxSizer, \
 	StaticText as wxStaticText
 
-import language
+from dbr import GT
 
 
 # Constatns
 ID = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=_('Information')):
-        wxPanel.__init__(self, parent, id, name=_('Information'))
+    def __init__(self, parent, id=ID, name=GT('Information')):
+        wxPanel.__init__(self, parent, id, name=GT('Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         
         # Mode Information
-        m1 = _('Welcome to Debreate!')
-        m2 = _('Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
-        m3 = _('For a video tutorial check the link below.')
+        m1 = GT('Welcome to Debreate!')
+        m2 = GT('Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
+        m3 = GT('For a video tutorial check the link below.')
         self.txt_bin = '%s\n\n%s\n\n%s' % (m1, m2, m3)
         self.txt_src = "This mode is not fully functional"
         self.txt_upd = "This mode is not fully functional"
@@ -45,7 +45,7 @@ class Panel(wxPanel):
         
         # ----- Helpful information to be displayed about each mode
         self.info = wxStaticText(self, -1)
-        self.vidlink = wxHyperlinkCtrl(self, -1, _('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        self.vidlink = wxHyperlinkCtrl(self, -1, GT('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
         self.info_border = wxStaticBox(self, -1, size=(100,100))
         info_box = wxGridSizer()
         info_box.Add(self.info, 1, wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL)
