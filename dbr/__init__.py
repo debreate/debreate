@@ -6,3 +6,4 @@ from constants import *
 from functions import *
 from wizard import Wizard
 from charctrl import CharCtrl
+from pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
