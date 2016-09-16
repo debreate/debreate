@@ -7,6 +7,10 @@
 # back to its default settings.
 
 import sys, os, main, db, shutil
+
+import wxversion
+wxversion.select(['3.0', '2.8'])
+
 from wx import \
     App as wxApp, \
     Dialog as wxDialog, \
@@ -31,6 +35,7 @@ from wx import \
     ALIGN_RIGHT as wxALIGN_RIGHT, \
     BOTTOM as wxBOTTOM, \
     TOP as wxTOP
+
 
 
 # wxWidgets
