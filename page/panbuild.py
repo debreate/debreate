@@ -551,8 +551,10 @@ class Panel(wxPanel):
                 
                 if build_status[0]:
                     # Temp dir will not be deleted if build fails
-                    wxMessageDialog(self, _('Package build failed'), _('Error'),
-                            style=wxOK|wxICON_ERROR).ShowModal()
+                    #wxMessageDialog(self, _('Package build failed'), _('Error'),
+                    #        style=wxOK|wxICON_ERROR).ShowModal()
+                    db.MessageDialog(self, -1, _('Error'), db.ICON_ERROR,
+							_('Package build failed'), build_status[1]).ShowModal()
                 else:
                     wxMessageDialog(self, _('Package created successfully'), _('Success'),
                             style=wxOK|wxICON_INFORMATION).ShowModal()
