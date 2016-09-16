@@ -3,6 +3,7 @@
 # This panel displays the field input of the control file
 
 
+import os
 from wx import \
 	ALL as wxALL, \
 	EXPAND as wxEXPAND, \
@@ -35,7 +36,6 @@ from wx import \
 	StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl
 
-import db, os
 from dbr.functions import FieldEnabled
 
 
@@ -52,11 +52,11 @@ class Panel(wxScrolledWindow):
         self.bg = wxPanel(self)
         
         # Buttons to Open, Save & Preview control file
-        button_open = db.ButtonBrowse64(self.bg)
+        button_open = dbr.buttons.ButtonBrowse64(self.bg)
         wxEVT_BUTTON(button_open, -1, self.OnBrowse)
-        button_save = db.ButtonSave64(self.bg)
+        button_save = dbr.buttons.ButtonSave64(self.bg)
         wxEVT_BUTTON(button_save, -1, self.OnSave)
-        button_preview = db.ButtonPreview64(self.bg)
+        button_preview = dbr.buttons.ButtonPreview64(self.bg)
         wxEVT_BUTTON(button_preview, -1, self.OnPreview)
         
         button_sizer = wxBoxSizer(wxHORIZONTAL)
