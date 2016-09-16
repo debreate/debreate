@@ -1,20 +1,19 @@
 # -*- coding: utf-8 -*-
 
-from about import AboutDialog
-from buttons import \
+
+from dbr.about import AboutDialog
+from dbr.buttons import \
     ButtonAdd, ButtonBrowse, ButtonBrowse64, ButtonBuild, ButtonBuild64, \
     ButtonCancel, ButtonClear, ButtonConfirm, ButtonDel, ButtonImport, \
     ButtonNext, ButtonPipe, ButtonPrev, ButtonPreview, ButtonPreview64, \
     ButtonQuestion64, ButtonSave, ButtonSave64
-from charctrl import CharCtrl
-from constants import \
+from dbr.charctrl import CharCtrl
+from dbr.constants import \
     APP_NAME, VER_MAJ, VER_MIN, VER_REL, VERSION, VERSION_STRING, \
     HOMEPAGE, gh_project, sf_project
-from functions import \
+from dbr.functions import \
     GetCurrentVersion, FieldEnabled, RunSudo
-from language import GT
-from message import MessageDialog
-from pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
-from wizard import Wizard
-
-
+from dbr.language import GT
+from dbr.message import MessageDialog
+from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
+from dbr.wizard import Wizard
