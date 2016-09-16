@@ -3,53 +3,43 @@
 # This panel displays the field input of the control file
 
 
-# Functions
-from wximports import \
-	wxNewId
-
-# Control widgets
-from wximports import \
-	wxBoxSizer, \
-	wxChoice, \
-	wxComboBox, \
-	wxDialog, \
-	wxEmptyString, \
-	wxFileDialog, \
-	wxFlexGridSizer, \
-	wxPanel, \
-	wxScrolledWindow, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText, \
-	wxTextCtrl
-
-# General constants
-from wximports import \
-	wxALL, \
-	wxEXPAND, \
-	wxFD_CHANGE_DIR, \
-	wxFD_OVERWRITE_PROMPT, \
-	wxFD_SAVE, \
-	wxHORIZONTAL, \
-	wxTE_MULTILINE, \
-	wxTE_READONLY, \
-	wxVERTICAL
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON, \
-	wxEVT_KEY_DOWN, \
-	wxEVT_KEY_UP, \
-	wxEVT_SHOW, \
-	wxEVT_SIZE
-
-# ID constants
-from wximports import \
-	wxID_OK
+from wx import \
+	ALL as wxALL, \
+	EXPAND as wxEXPAND, \
+	FD_CHANGE_DIR as wxFD_CHANGE_DIR, \
+	FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
+	FD_SAVE as wxFD_SAVE, \
+	HORIZONTAL as wxHORIZONTAL, \
+	TE_MULTILINE as wxTE_MULTILINE, \
+	TE_READONLY as wxTE_READONLY, \
+	VERTICAL as wxVERTICAL, \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_KEY_DOWN as wxEVT_KEY_DOWN, \
+	EVT_KEY_UP as wxEVT_KEY_UP, \
+	EVT_SHOW as wxEVT_SHOW, \
+	EVT_SIZE as wxEVT_SIZE, \
+	ID_OK as wxID_OK
+from wx import \
+	NewId as wxNewId, \
+	BoxSizer as wxBoxSizer, \
+	Choice as wxChoice, \
+	ComboBox as wxComboBox, \
+	Dialog as wxDialog, \
+	EmptyString as wxEmptyString, \
+	FileDialog as wxFileDialog, \
+	FlexGridSizer as wxFlexGridSizer, \
+	Panel as wxPanel, \
+	ScrolledWindow as wxScrolledWindow, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl
 
 import db, os
 from dbr.functions import FieldEnabled
 
+
+# Constants
 ID = wxNewId()
 
 class Panel(wxScrolledWindow):
