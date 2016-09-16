@@ -1,25 +1,41 @@
 # -*- coding: utf-8 -*-
 
 
-import sys, os
+import sys, os, subprocess
 from wx import \
+    BoxSizer as wxBoxSizer, \
+    Button as wxButton, \
 	Dialog as wxDialog, \
 	FileDropTarget as wxFileDropTarget, \
+    StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl, \
-    SetDefaultPyEncoding as wxSetDefaultPyEncoding
+    MessageDialog as wxMessageDialog, \
+    NewId as wxNewId
 from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
     MINOR_VERSION as wxMINOR_VERSION, \
     RELEASE_VERSION as wxRELEASE_VERSION, \
 	TE_MULTILINE as wxTE_MULTILINE, \
-	TE_READONLY as wxTE_READONLY
+	TE_READONLY as wxTE_READONLY, \
+    EVT_BUTTON as wxEVT_BUTTON, \
+    RIGHT as wxRIGHT, \
+    LEFT as wxLEFT, \
+    ALIGN_RIGHT as wxALIGN_RIGHT, \
+    ALIGN_CENTER as wxALIGN_CENTER, \
+    TOP as wxTOP, \
+    BOTTOM as wxBOTTOM, \
+    ALL as wxALL, \
+    VERTICAL as wxVERTICAL, \
+    HORIZONTAL as wxHORIZONTAL, \
+    OK as wxOK, \
+    ID_CANCEL as wxID_CANCEL
 from wx.lib.docview import PathOnly
 
 from dbr import GT, VERSION_STRING
 
 
-
-
+ID_OVERWRITE = wxNewId()
+ID_APPEND = wxNewId()
 
 db_here = PathOnly(__file__).decode(u'utf-8')
 
@@ -137,7 +153,7 @@ class SingleFileTextDropTarget(wxFileDropTarget):
     
     def OnDropFiles(self, x, y, filenames):
         if len(filenames) > 1:
-            raise BaseError(GT(u'Too many files'))
+            raise ValueError(GT(u'Too many files'))
         text = open(filenames[0]).read()
         try:
             if (not TextIsEmpty(self.obj.GetValue())):
