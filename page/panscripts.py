@@ -41,6 +41,8 @@ from wx import \
 	EVT_RADIOBUTTON as wxEVT_RADIOBUTTON, \
 	ID_HELP as wxID_HELP
 
+import dbr
+
 
 ID = wxNewId()
 
@@ -121,7 +123,7 @@ class Panel(wxPanel):
         
         # Auto-Link path for new link
         self.al_text = wxStaticText(self, -1, _('Path'))
-        self.al_input = db.PathCtrl(self, -1, "/usr/bin", db.PATH_WARN)
+        self.al_input = dbr.PathCtrl(self, -1, "/usr/bin", dbr.PATH_WARN)
         
         #wxEVT_KEY_UP(self.al_input, ChangeInput)
         
@@ -141,10 +143,10 @@ class Panel(wxPanel):
             self.executables.SetSingleStyle(wxLC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = db.ButtonImport(self, ID_Import)
+        self.al_import = dbr.ButtonImport(self, ID_Import)
         self.al_import.SetToolTip(wxToolTip(_('Import executables from Files section')))
-        self.al_del = db.ButtonDel(self, ID_Remove)
-        self.al_gen = db.ButtonBuild(self)
+        self.al_del = dbr.ButtonDel(self, ID_Remove)
+        self.al_gen = dbr.ButtonBuild(self)
         self.al_gen.SetToolTip(wxToolTip(_('Generate Scripts')))
         
         wxEVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
@@ -172,7 +174,7 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_text.Wrap(210)"""
         
         # *** HELP *** #
-        self.button_help = db.ButtonQuestion64(self)
+        self.button_help = dbr.ButtonQuestion64(self)
         
         wxEVT_BUTTON(self.button_help, wxID_HELP, self.OnHelpButton)
         
@@ -351,7 +353,7 @@ scripts will be created that will place a symbolic link to your executables in t
 
         self.al_help_te = wxTextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
                 style = wxTE_MULTILINE|wxTE_READONLY)
-        self.al_help_ok = db.ButtonConfirm(self.al_help)
+        self.al_help_ok = dbr.ButtonConfirm(self.al_help)
         
         al_help_sizer = wxBoxSizer(wxVERTICAL)
         al_help_sizer.AddMany([ (self.al_help_te, 1, wxEXPAND), (self.al_help_ok, 0, wxALIGN_RIGHT) ])
