@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Everything from wx that needs to be accessed will be imported here
-
+'''
 import wxversion
 wxversion.select(['3.0', '2.8'])
 #wxversion.select('2.8')
@@ -152,4 +152,4 @@ from wx import \
 	ID_OPEN as wxID_OPEN, \
 	ID_SAVE as wxID_SAVE, \
 	ID_SAVEAS as wxID_SAVEAS, \
-	ID_YES as wxID_YES
+	ID_YES as wxID_YES'''
