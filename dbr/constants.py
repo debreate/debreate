@@ -20,7 +20,7 @@ VERSION_STRING = u'{}.{}.{}'.format(VER_MAJ, VER_MIN, VER_REL)
 
 # Development version
 if not RELEASE:
-	VERSION_STRING = '{}-dev'.format(VERSION_STRING)
+    VERSION_STRING = '{}-dev'.format(VERSION_STRING)
 
 ### Website & hosting information ###
 HOMEPAGE = u'http://debreate.sourceforge.net/'
