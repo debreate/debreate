@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
 
-from urllib2 import urlopen
+from os import popen
+from urllib2 import urlopen, URLError
+
+from wx import \
+    MAJOR_VERSION as wxMAJOR_VERSION, \
+    SafeYield as wxSafeYield
 
 from dbr.constants import HOMEPAGE
 
@@ -28,3 +33,22 @@ def GetCurrentVersion():
         #err = unicode(err)
         return err
 
+
+# Compatibility function for wx 3.0
+def FieldEnabled(field):
+    # wx 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
+    if wxMAJOR_VERSION > 2:
+        return field.IsThisEnabled()
+    else:
+        return field.IsEnabled()
+
+
+### -*- Execute commands with sudo privileges -*- ###
+def RunSudo(password, command):
+    command = u'echo %s | sudo -S %s ; echo $?' % (password, command)
+    wxSafeYield()
+    output = popen(command).read()
+    err = int(output.split(u'\n')[-2])
+    if (err):
+        return False
+    return True
