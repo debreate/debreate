@@ -1,43 +1,34 @@
 # -*- coding: utf-8 -*-
 
 
-import db, commands
+import commands
+from wx import \
+	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
+	ALIGN_RIGHT as wxALIGN_RIGHT, \
+	BOTTOM as wxBOTTOM, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	LEFT as wxLEFT, \
+	RB_GROUP as wxRB_GROUP, \
+	RIGHT as wxRIGHT, \
+	TE_MULTILINE as wxTE_MULTILINE, \
+	TOP as wxTOP, \
+	VERTICAL as wxVERTICAL, \
+	EVT_BUTTON as wxEVT_BUTTON
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	Choice as wxChoice, \
+	EmptyString as wxEmptyString, \
+	FlexGridSizer as wxFlexGridSizer, \
+	Panel as wxPanel, \
+	RadioButton as wxRadioButton, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	ToolTip as wxToolTip, \
+	NewId as wxNewId
 
-# General wx imports
-from wximports import \
-	wxBoxSizer, \
-	wxChoice, \
-	wxEmptyString, \
-	wxFlexGridSizer, \
-	wxPanel, \
-	wxRadioButton, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText, \
-	wxTextCtrl, \
-	wxToolTip
-
-# Functions
-from wximports import \
-	wxNewId
-
-# General constants
-from wximports import \
-	wxALIGN_CENTER_VERTICAL, \
-	wxALIGN_RIGHT, \
-	wxBOTTOM, \
-	wxEXPAND, \
-	wxHORIZONTAL, \
-	wxLEFT, \
-	wxRB_GROUP, \
-	wxRIGHT, \
-	wxTE_MULTILINE, \
-	wxTOP, \
-	wxVERTICAL
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON
 
 ID = wxNewId()
 
