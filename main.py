@@ -507,7 +507,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         """Opens a dialog box with information about the program"""
         about = dbr.AboutDialog(self, -1, _('About'))
         
-        about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
+        about.SetGraphic("{}/bitmaps/debreate64.png".format(application_path))
         about.SetVersion(_('Debreate'), VERSION_STRING)
         about.SetAuthor('Jordan Irwin')
         about.SetDescription(_('A package builder for Debian based systems'))
@@ -516,9 +516,9 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         about.AddPackager("Jordan Irwin", "antumdeluge@gmail.com")
         job = _(u'Translation')
         job = job.decode(u'utf-8')
-        about.AddJob(u'Jordan Irwin', u'%s (es)' % (job), u'antumdeluge@gmail.com')
-        about.AddJob(_(u'Karim Oulad Chalha'), u'%s (ar_MA)' % (job), u'herr.linux88@gmail.com')
-        about.AddJob(_(u'Philippe Dalet'), u'%s (fr_FR)' % (job), u'philippe.dalet@ac-toulouse.fr')
+        about.AddJob(u'Jordan Irwin', u'{} (es)'.format(job), u'antumdeluge@gmail.com')
+        about.AddJob(_(u'Karim Oulad Chalha'), u'{} (ar_MA)'.format(job), u'herr.linux88@gmail.com')
+        about.AddJob(_(u'Philippe Dalet'), u'{} (fr_FR)'.format(job), u'philippe.dalet@ac-toulouse.fr')
         
         about.SetChangelog('{}/docs/changelog'.format(application_path))
         
