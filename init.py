@@ -41,6 +41,9 @@ from wx import \
 import main, dbr
 
 
+print("Python version: {}".format(dbr.PY_VER_STRING))
+print("wxPython version: {}".format(dbr.WX_VER_STRING))
+print("Debreate version: {}".format(dbr.VERSION_STRING))
 
 # Python & wxPython encoding to UTF-8
 if (sys.getdefaultencoding() != 'utf-8'):
