@@ -2,7 +2,8 @@
 
 # Wizard class for Debreate
 
-import wx, dbbuttons, wx.lib.newevent
+import wx, wx.lib.newevent
+import buttons
 
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
@@ -32,8 +33,8 @@ class Wizard(wx.Panel):
         self.title.Layout()
         
         # Previous and Next buttons
-        self.button_prev = dbbuttons.ButtonPrev(self, ID_PREV)
-        self.button_next = dbbuttons.ButtonNext(self, ID_NEXT)
+        self.button_prev = buttons.ButtonPrev(self, ID_PREV)
+        self.button_next = buttons.ButtonNext(self, ID_NEXT)
         
         wx.EVT_BUTTON(self.button_prev, -1, self.ChangePage)
         wx.EVT_BUTTON(self.button_next, -1, self.ChangePage)
