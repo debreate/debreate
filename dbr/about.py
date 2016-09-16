@@ -162,11 +162,11 @@ class AboutDialog(wx.Dialog):
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
     
-    def SetLicense(self, l_file):
-        l_data = open(l_file)
-        l_text = l_data.read()
-        l_data.close()
-        self.license.SetValue(l_text)
+    def SetLicense(self, lic_file):
+        lic_data = open(lic_file)
+        lic_text = lic_data.read()
+        lic_data.close()
+        self.license.SetValue(lic_text)
         self.license.SetInsertionPoint(0)
     
     def OnOk(self, event):
