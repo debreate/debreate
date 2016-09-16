@@ -1,7 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import wx, wx.combo, wx.lib.mixins.listctrl as LC, os, sys, language
+import wx.combo, wx.lib.mixins.listctrl as LC, os, sys
 from os.path import exists, isdir, isfile
+
+import dbbuttons
+import dbcharctrl
+import dbmessage
+import dbpathctrl
+import dbwizard
+
 
 ID_BIN = wx.NewId()
 ID_SRC = wx.NewId()
@@ -31,7 +38,6 @@ ICON_ERROR = "%s/bitmaps/error64.png" % application_path
 ICON_INFORMATION = "%s/bitmaps/question64.png" % application_path
 
 # Buttons
-import dbbuttons
 ButtonAdd = dbbuttons.ButtonAdd
 ButtonBrowse = dbbuttons.ButtonBrowse
 ButtonBrowse64 = dbbuttons.ButtonBrowse64
@@ -51,28 +57,20 @@ ButtonSave64 = dbbuttons.ButtonSave64
 
 
 # Wizard
-import dbwizard
 Wizard = dbwizard.Wizard
 
-# About Dialog
-import dbabout
-AboutDialog = dbabout.AboutDialog
-
 # Message Dialog
-import dbmessage
 class MessageDialog(dbmessage.MessageDialog):
     def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=ICON_ERROR, text=wx.EmptyString,
             details=wx.EmptyString):
         dbmessage.MessageDialog.__init__(self, parent, id, title, icon, text, details)
 
 # Path text controls
-import dbpathctrl
 PathCtrl = dbpathctrl.PathCtrl
 PATH_DEFAULT = dbpathctrl.PATH_DEFAULT
 PATH_WARN = dbpathctrl.PATH_WARN
 
 # Character controls
-import dbcharctrl
 CharCtrl = dbcharctrl.CharCtrl
 
 
