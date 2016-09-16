@@ -71,8 +71,8 @@ from wx import \
 
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
 from page import \
-	paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, pancopyright, \
-	panmenu, panbuild
+	info, control, depends, files, scripts, clog, copyright, \
+	menu, build
 
 
 import webbrowser
@@ -266,16 +266,16 @@ class MainWindow(wxFrame):
         
         self.Wizard = dbr.Wizard(self) # Binary
         
-        self.page_info = paninfo.Panel(self.Wizard, ID_INFO)
+        self.page_info = info.Panel(self.Wizard, ID_INFO)
         self.page_info.SetInfo()
-        self.page_control = pancontrol.Panel(self.Wizard, ID_CTRL)
-        self.page_depends = pandepends.Panel(self.Wizard, ID_DEPS)
-        self.page_files = panfiles.Panel(self.Wizard, ID_FILES)
-        self.page_scripts = panscripts.Panel(self.Wizard, ID_SCRIPTS)
-        self.page_clog = panclog.Panel(self.Wizard, ID_CLOG)
-        self.page_cpright = pancopyright.Panel(self.Wizard, ID_CPRIGHT)
-        self.page_menu = panmenu.Panel(self.Wizard, ID_MENU)
-        self.page_build = panbuild.Panel(self.Wizard, ID_BUILD)
+        self.page_control = control.Panel(self.Wizard, ID_CTRL)
+        self.page_depends = depends.Panel(self.Wizard, ID_DEPS)
+        self.page_files = files.Panel(self.Wizard, ID_FILES)
+        self.page_scripts = scripts.Panel(self.Wizard, ID_SCRIPTS)
+        self.page_clog = clog.Panel(self.Wizard, ID_CLOG)
+        self.page_cpright = copyright.Panel(self.Wizard, ID_CPRIGHT)
+        self.page_menu = menu.Panel(self.Wizard, ID_MENU)
+        self.page_build = build.Panel(self.Wizard, ID_BUILD)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
