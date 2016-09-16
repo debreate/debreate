@@ -21,85 +21,67 @@
 
 
 # Standard Python modules
-import os, sys, shutil, subprocess
-from os.path import exists
+import os, shutil, subprocess
 from urllib2 import URLError, HTTPError
+from wx import \
+	CANCEL as wxCANCEL, \
+	EXPAND as wxEXPAND, \
+	ICON_ERROR as wxICON_ERROR, \
+	ICON_INFORMATION as wxICON_INFORMATION, \
+	ICON_QUESTION as wxICON_QUESTION, \
+	ITEM_CHECK as wxITEM_CHECK, \
+	ITEM_RADIO as wxITEM_RADIO, \
+	NO_DEFAULT as wxNO_DEFAULT, \
+	OK as wxOK, \
+	VERTICAL as wxVERTICAL, \
+	YES_NO as wxYES_NO, \
+	ID_ABOUT as wxID_ABOUT, \
+	ID_EXIT as wxID_EXIT, \
+	ID_HELP as wxID_HELP, \
+	ID_NEW as wxID_NEW, \
+	ID_OK as wxID_OK, \
+	ID_OPEN as wxID_OPEN, \
+	ID_SAVE as wxID_SAVE, \
+	ID_SAVEAS as wxID_SAVEAS, \
+	ID_YES as wxID_YES, \
+	FD_CHANGE_DIR as wxFD_CHANGE_DIR, \
+	FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
+	FD_SAVE as wxFD_SAVE, \
+	BITMAP_TYPE_PNG as wxBITMAP_TYPE_PNG, \
+	EVT_CLOSE as wxEVT_CLOSE, \
+	EVT_MAXIMIZE as wxEVT_MAXIMIZE, \
+	EVT_MENU as wxEVT_MENU, \
+    ICON_EXCLAMATION as wxICON_EXCLAMATION
+from wx import \
+	NewId as wxNewId, \
+	Bitmap as wxBitmap, \
+	BoxSizer as wxBoxSizer, \
+	EmptyString as wxEmptyString, \
+	FileDialog as wxFileDialog, \
+	Frame as wxFrame, \
+	Icon as wxIcon, \
+	LaunchDefaultBrowser as wxLaunchDefaultBrowser, \
+	Menu as wxMenu, \
+	MenuBar as wxMenuBar, \
+	MenuItem as wxMenuItem, \
+	MessageDialog as wxMessageDialog, \
+	SafeYield as wxSafeYield, \
+	StatusBar as wxStatusBar, \
+    Yield as wxYield
 
-# Functions
-from wximports import \
-	wxNewId
-
-# General wx imports
-from wximports import \
-	wxBitmap, \
-	wxBoxSizer, \
-	wxDefaultPosition, \
-	wxEmptyString, \
-	wxFileDialog, \
-	wxFrame, \
-	wxIcon, \
-	wxLaunchDefaultBrowser, \
-	wxMenu, \
-	wxMenuBar, \
-	wxMenuItem, \
-	wxMessageDialog, \
-	wxSafeYield, \
-	wxStatusBar
-
-# General constants
-from wximports import \
-	wxCANCEL, \
-	wxEXPAND, \
-	wxICON_ERROR, \
-	wxICON_INFORMATION, \
-	wxICON_QUESTION, \
-	wxITEM_CHECK, \
-	wxITEM_RADIO, \
-	wxNO_DEFAULT, \
-	wxOK, \
-	wxVERTICAL, \
-	wxYES_NO
-
-# ID constants
-from wximports import \
-	wxID_ABOUT, \
-	wxID_EXIT, \
-	wxID_HELP, \
-	wxID_NEW, \
-	wxID_OK, \
-	wxID_OPEN, \
-	wxID_SAVE, \
-	wxID_SAVEAS, \
-	wxID_YES
-
-# File dialog constants
-from wximports import \
-	wxFD_CHANGE_DIR, \
-	wxFD_OVERWRITE_PROMPT, \
-	wxFD_SAVE
-
-# Pixmap constants
-from wximports import \
-	wxBITMAP_TYPE_PNG
-
-# Event constants
-from wximports import \
-	wxEVT_CLOSE, \
-	wxEVT_MAXIMIZE, \
-	wxEVT_MENU
-
-# Debreate constants
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
-
-# Debreate functions
 from dbr.functions import GetCurrentVersion
-
-import wx.lib.dialogs, db, webbrowser, language
-
-# Pages
 from page import \
 	paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, pancopyright, \
 	panmenu, panbuild
+
+
+# wx Constants
+# Debreate constants
+# Debreate functions
+import db, webbrowser
+
+# Pages
 
 ID_Dialogs = wxNewId()
 
@@ -449,6 +431,7 @@ class MainWindow(wxFrame):
         build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
         self.page_build.SetFieldData(build_data)
     
+    ''' DEPRECATED
     # ----- File Menu
     def ConvertToRPM(self, event):
         # This app uses alien to convert debian binary/basic packages to red had format.
@@ -457,7 +440,7 @@ class MainWindow(wxFrame):
         # if the package's file extension is anything other than ".deb", e.g. ".DEB", ".DeB".
         app = debrpm.Dialog(self, -1, _("Deb to RPM"))
         app.ShowModal()
-        app.Close()
+        app.Close()'''
     
     def OnQuit(self, event):
         """Show a dialog to confirm quit and write window settings to config file"""
