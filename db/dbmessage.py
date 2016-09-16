@@ -5,8 +5,8 @@ import wx, os, dbbuttons
 
 class MessageDialog(wx.Dialog):
     def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=wx.NullBitmap, text=wx.EmptyString,
-            details=wx.EmptyString):
-        wx.Dialog.__init__(self, parent, id, title, size=(500,500))
+            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
+        wx.Dialog.__init__(self, parent, id, title, size=(500,500), style=style)
         
         self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
         
