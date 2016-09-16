@@ -3,75 +3,51 @@
 # Menu Page
 
 
-# wx build constants
-from wximports import \
-	wxMAJOR_VERSION
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	CheckBox as wxCheckBox, \
+	Choice as wxChoice, \
+	ComboBox as wxComboBox, \
+	Dialog as wxDialog, \
+	EmptyString as wxEmptyString, \
+	FileDialog as wxFileDialog, \
+	FlexGridSizer as wxFlexGridSizer, \
+	ListCtrl as wxListCtrl, \
+	Panel as wxPanel, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	ToolTip as wxToolTip, \
+	NewId as wxNewId
+from wx import \
+    MAJOR_VERSION as wxMAJOR_VERSION, \
+	ALL as wxALL, \
+	BORDER_SIMPLE as wxBORDER_SIMPLE, \
+	BOTTOM as wxBOTTOM, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	LC_SINGLE_SEL as wxLC_SINGLE_SEL, \
+	LEFT as wxLEFT, \
+	RIGHT as wxRIGHT, \
+	TE_MULTILINE as wxTE_MULTILINE, \
+	TOP as wxTOP, \
+	VERTICAL as wxVERTICAL, \
+	FD_CHANGE_DIR as wxFD_CHANGE_DIR, \
+	FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
+	FD_SAVE as wxFD_SAVE, \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_CHECKBOX as wxEVT_CHECKBOX, \
+	EVT_KEY_DOWN as wxEVT_KEY_DOWN, \
+	ID_ANY as wxID_ANY, \
+	ID_OK as wxID_OK, \
+	TE_READONLY as wxTE_READONLY, \
+	WXK_ESCAPE as wxWXK_ESCAPE, \
+	WXK_NUMPAD_ENTER as wxWXK_NUMPAD_ENTER, \
+	WXK_RETURN as wxWXK_RETURN
 
-# Control widgets
-from wximports import \
-	wxBoxSizer, \
-	wxCheckBox, \
-	wxChoice, \
-	wxComboBox, \
-	wxDialog, \
-	wxEmptyString, \
-	wxFileDialog, \
-	wxFlexGridSizer, \
-	wxListCtrl, \
-	wxPanel, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText, \
-	wxTextCtrl, \
-	wxToolTip
+import os, shutil
 
-# Functions
-from wximports import \
-	wxNewId
-
-# General constants
-from wximports import \
-	wxALL, \
-	wxBORDER_SIMPLE, \
-	wxBOTTOM, \
-	wxEXPAND, \
-	wxHORIZONTAL, \
-	wxLC_SINGLE_SEL, \
-	wxLEFT, \
-	wxRIGHT, \
-	wxTE_MULTILINE, \
-	wxTOP, \
-	wxVERTICAL
-
-# File & directory constants
-from wximports import \
-	wxFD_CHANGE_DIR, \
-	wxFD_OVERWRITE_PROMPT, \
-	wxFD_SAVE
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON, \
-	wxEVT_CHECKBOX, \
-	wxEVT_KEY_DOWN
-
-# ID constants
-from wximports import \
-	wxID_ANY, \
-	wxID_OK
-
-# Text editing constants
-from wximports import \
-	wxTE_READONLY
-
-# Input constants
-from wximports import \
-	wxWXK_ESCAPE, \
-	wxWXK_NUMPAD_ENTER, \
-	wxWXK_RETURN
-
-
-import db, os, shutil
 
 ID = wxNewId()
 
