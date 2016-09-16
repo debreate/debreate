@@ -39,16 +39,6 @@ ID_APPEND = wxNewId()
 
 db_here = PathOnly(__file__).decode(u'utf-8')
 
-maj_pyversion = sys.version_info[0]
-mid_pyversion = sys.version_info[1]
-min_pyversion = sys.version_info[2]
-python_version = u'{}.{}.{}'.format(maj_pyversion, mid_pyversion, min_pyversion)
-
-print("Python version: {}".format(python_version))
-print("wxPython version: {}.{}.{}".format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION))
-print("Debreate version: {}".format(VERSION_STRING))
-
-
 
 ##################
 ###     FUNCTIONS       ###
