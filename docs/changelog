@@ -3,6 +3,7 @@
 - made Lintian message dialog resizable
 - display build errors in dialog
 - fixed: do not delete directory tree if build fails
+- license changed to MIT (see docs/LICENSE.txt)
 
 0.7.11
 - add template generation for copyright

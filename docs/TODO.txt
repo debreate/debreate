@@ -1,5 +1,4 @@
 0.8.0 Release Changes:
-- Change license to MIT
 - Finish wx 3.0 compatibility
 - Add system information (Python & wxPython versions) to about dialog
 - Update files list in Makefile for distribution
