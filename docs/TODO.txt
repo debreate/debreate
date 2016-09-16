@@ -3,6 +3,7 @@
 - Finish wx 3.0 compatibility
 - Add system information (Python & wxPython versions) to about dialog
 - Update files list in Makefile for distribution
+- Change format of save projects to zip archive
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
