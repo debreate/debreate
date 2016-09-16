@@ -2,30 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-# Control widgets
-from wx import \
-	BoxSizer as wxBoxSizer, \
-	CheckBox as wxCheckBox, \
-	DefaultPosition as wxDefaultPosition, \
-	Dialog as wxDialog, \
-	DirDialog as wxDirDialog, \
-	EmptyString as wxEmptyString, \
-	FileDialog as wxFileDialog, \
-	Gauge as wxGauge, \
-	MessageDialog as wxMessageDialog, \
-	Panel as wxPanel, \
-	ProgressDialog as wxProgressDialog, \
-	StaticBox as wxStaticBox, \
-	StaticBoxSizer as wxStaticBoxSizer, \
-	StaticText as wxStaticText, \
-	TextCtrl as wxTextCtrl, \
-	Timer as wxTimer, \
-	ToolTip as wxToolTip, \
-	Yield as wxYield, \
-	GetPasswordFromUser as wxGetPasswordFromUser, \
-	NewId as wxNewId
-
-
+import os, commands, shutil, db_md5, thread
+from os.path import exists
 from wx import \
 	ALL as wxALL, \
 	BOTTOM as wxBOTTOM, \
@@ -54,14 +32,31 @@ from wx import \
 	ID_OK as wxID_OK, \
 	EVT_BUTTON as wxEVT_BUTTON, \
 	EVT_TIMER as wxEVT_TIMER
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	CheckBox as wxCheckBox, \
+	DefaultPosition as wxDefaultPosition, \
+	Dialog as wxDialog, \
+	DirDialog as wxDirDialog, \
+	EmptyString as wxEmptyString, \
+	FileDialog as wxFileDialog, \
+	Gauge as wxGauge, \
+	MessageDialog as wxMessageDialog, \
+	Panel as wxPanel, \
+	ProgressDialog as wxProgressDialog, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	Timer as wxTimer, \
+	ToolTip as wxToolTip, \
+	Yield as wxYield, \
+	GetPasswordFromUser as wxGetPasswordFromUser, \
+	NewId as wxNewId
 
 from common import OutputLog
-
-
-import db, os, commands, shutil, db_md5, thread
-from os.path import exists
-
 from dbr.functions import RunSudo
+
 
 ID = wxNewId()
 
