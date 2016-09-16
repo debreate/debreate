@@ -520,10 +520,13 @@ class Panel(wxPanel):
                 if delete_tree:
                     build_progress.Update(progress, _('Removing temp directory'))
                     
-                    wxYield()
-                    # Delete the build tree
-                    if commands.getstatusoutput(('rm -r "%s"' % temp_tree).encode('utf-8'))[0]:
-                        wxMessageDialog(self, _('An error occurred when trying to delete the build tree'), _('Error'), style=wxOK|wxID_EXCLAMATION)
+                    # Don't delete build tree if build failed
+                    if not build_status[0]:
+	                    wxYield()
+	                    # Delete the build tree
+	                    if commands.getstatusoutput(('rm -r "%s"' % temp_tree).encode('utf-8'))[0]:
+	                        wxMessageDialog(self, _('An error occurred when trying to delete the build tree'),
+								_('Error'), style=wxOK|wxID_EXCLAMATION).ShowModal()
                     progress += 1
                 
                 # *** ERROR CHECK
@@ -550,9 +553,6 @@ class Panel(wxPanel):
                 build_progress.Update(progress)
                 
                 if build_status[0]:
-                    # Temp dir will not be deleted if build fails
-                    #wxMessageDialog(self, _('Package build failed'), _('Error'),
-                    #        style=wxOK|wxICON_ERROR).ShowModal()
                     db.MessageDialog(self, -1, _('Error'), db.ICON_ERROR,
 							_('Package build failed'), build_status[1]).ShowModal()
                 else:

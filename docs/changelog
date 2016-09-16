@@ -2,6 +2,7 @@
 - add compatibility for wx 3.0
 - made Lintian message dialog resizable
 - display build errors in dialog
+- fixed: do not delete directory tree if build fails
 
 0.7.11
 - add template generation for copyright
