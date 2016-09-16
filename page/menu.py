@@ -263,7 +263,7 @@ class Panel(wxPanel):
 							self.enc_text: "Enc", self.type_text: "Type", self.cat_text: "Cat",
 							self.term_text: "Term", self.notify_text: "Notify"}
 	
-	
+	''' FIXME: Deprecated
 	def SetLanguage(self):
 		# Get language pack for "Menu" tab
 		lang = languages.Menu()
@@ -276,6 +276,7 @@ class Panel(wxPanel):
 		
 		# Refresh widget layout
 		self.Layout()
+		'''
 	
 	def OnToggle(self, event):
 		if self.activate.IsChecked():
