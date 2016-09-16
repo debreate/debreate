@@ -239,6 +239,9 @@ msgstr ""
 msgid "Debreate is up to date!"
 msgstr ""
 
+msgid "This is a development version, no updates available"
+msgstr ""
+
 # ## About dialog
 msgid "Credits"
 msgstr ""
