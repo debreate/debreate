@@ -525,10 +525,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         file.close()
         about.SetChangelog(log)
         
-        file = open('%s/docs/LICENSE.txt' % application_path, 'r')
-        license = file.read()
-        file.close()
-        about.SetLicense(license)
+        about.SetLicense('{}/docs/LICENSE.txt'.format(application_path))
         
         about.ShowModal()
         about.Destroy()
