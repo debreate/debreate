@@ -199,7 +199,7 @@ class Panel(wxPanel):
         # Lists of widgets that change language
         self.setlabels = {	self.dest_browse: "Custom" }
     
-    
+    ''' FIXME: Deprecated
     def SetLanguage(self):
         # Get language pack for Files tab
         lang = languages.Files()
@@ -212,6 +212,7 @@ class Panel(wxPanel):
         
         # Refresh widget layout
         self.Layout()
+        '''
     
     
     def OnRightClick(self, event):
