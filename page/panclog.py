@@ -29,6 +29,8 @@ from wx import \
 	ToolTip as wxToolTip, \
 	NewId as wxNewId
 
+import dbr
+
 
 ID = wxNewId()
 
@@ -75,7 +77,7 @@ class Panel(wxPanel):
         # Destination of changelog
         self.rb_dest_default = wxRadioButton(self, -1, "/usr/share/doc/%project_name%", style=wxRB_GROUP)
         self.rb_dest_custom = wxRadioButton(self)
-        self.dest_custom = db.PathCtrl(self, -1, "/", db.PATH_WARN)
+        self.dest_custom = dbr.PathCtrl(self, -1, "/", dbr.PATH_WARN)
         
         dest_custom_sizer = wxBoxSizer(wxHORIZONTAL)
         dest_custom_sizer.Add(self.rb_dest_custom)
@@ -94,9 +96,9 @@ class Panel(wxPanel):
         details_sizer.Add(dest_box)
         
         
-        self.button_import = db.ButtonImport(self)
+        self.button_import = dbr.ButtonImport(self)
         self.button_import.SetToolTip(wxToolTip(_('Import information from Control section')))
-        self.button_add = db.ButtonAdd(self)
+        self.button_add = dbr.ButtonAdd(self)
         
         wxEVT_BUTTON(self.button_import, -1, self.ImportInfo)
         wxEVT_BUTTON(self.button_add, -1, self.AddInfo)
