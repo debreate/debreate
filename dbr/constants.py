@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
 
+from language import GT
+
+### App info
+APP_NAME = GT('Debreate')
+
 ### Version information ###
 RELEASE = 0
 VER_MAJ = 0
