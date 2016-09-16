@@ -76,10 +76,7 @@ from page import \
 	panmenu, panbuild
 
 
-# wx Constants
-# Debreate constants
-# Debreate functions
-import db, webbrowser
+import webbrowser
 
 # Pages
 
