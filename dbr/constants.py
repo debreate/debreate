@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from language import GT
+from dbr import GT
 
 ### App info
 APP_NAME = GT('Debreate')
