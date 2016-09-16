@@ -1,5 +1,4 @@
 0.8.0 Release Changes:
-- Add system information (Python & wxPython versions) to about dialog
 - Update files list in Makefile for distribution
 - Change format of save projects to zip archive
 
