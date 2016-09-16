@@ -7,3 +7,4 @@
 /debian/debreate.substvars
 /debian/files
 debreate_*.tar.xz
+/.pydevproject
