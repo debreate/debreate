@@ -519,11 +519,12 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         about.AddJob(u'Jordan Irwin', u'%s (es)' % (job), u'antumdeluge@gmail.com')
         about.AddJob(_(u'Karim Oulad Chalha'), u'%s (ar_MA)' % (job), u'herr.linux88@gmail.com')
         about.AddJob(_(u'Philippe Dalet'), u'%s (fr_FR)' % (job), u'philippe.dalet@ac-toulouse.fr')
-        
+        '''
         file = open('%s/docs/changelog' % (application_path), 'r')
         log = file.read()
         file.close()
-        about.SetChangelog(log)
+        about.SetChangelog(log)'''
+        about.SetChangelog('{}/docs/changelog'.format(application_path))
         
         about.SetLicense('{}/docs/LICENSE.txt'.format(application_path))
         
