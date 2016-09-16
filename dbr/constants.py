@@ -1,9 +1,18 @@
 # -*- coding: utf-8 -*-
 
 
+import sys
+
+from wx import \
+    MAJOR_VERSION as wxMAJOR_VERSION, \
+    MINOR_VERSION as wxMINOR_VERSION, \
+    RELEASE_VERSION as wxRELEASE_VERSION
+
 from dbr.language import GT
 
-### App info
+
+### *** Debreate Info *** ###
+
 APP_NAME = GT('Debreate')
 
 ### Version information ###
@@ -26,3 +35,16 @@ if not RELEASE:
 HOMEPAGE = u'http://debreate.sourceforge.net/'
 gh_project = u'https://github.com/AntumDeluge/debreate'
 sf_project = u'https://sourceforge.net/projects/debreate'
+
+
+### *** Python Info *** ###
+
+PY_VER_MAJ = sys.version_info[0]
+PY_VER_MIN = sys.version_info[1]
+PY_VER_REL = sys.version_info[2]
+PY_VER_STRING = u'{}.{}.{}'.format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
+
+
+### *** wxWidgets Info
+
+WX_VER_STRING = '{}.{}.{}'.format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION)
