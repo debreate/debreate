@@ -20,7 +20,8 @@ from wx import \
 	StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl, \
 	ToolTip as wxToolTip, \
-	NewId as wxNewId
+	NewId as wxNewId, \
+    MessageDialog as wxMessageDialog
 from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
 	ALL as wxALL, \
@@ -45,8 +46,18 @@ from wx import \
 	TE_READONLY as wxTE_READONLY, \
 	WXK_ESCAPE as wxWXK_ESCAPE, \
 	WXK_NUMPAD_ENTER as wxWXK_NUMPAD_ENTER, \
-	WXK_RETURN as wxWXK_RETURN
+	WXK_RETURN as wxWXK_RETURN, \
+    ID_YES as wxID_YES, \
+    YES_NO as wxYES_NO, \
+    NO_DEFAULT as wxNO_DEFAULT, \
+    ICON_QUESTION as wxICON_QUESTION, \
+    WXK_DELETE as wxWXK_DELETE, \
+    OK as wxOK, \
+    ICON_EXCLAMATION as wxICON_EXCLAMATION
 
+from db import \
+    SaveFile as dbSaveFile, \
+    OpenFile as dbOpenFile
 import dbr
 
 
@@ -392,7 +403,7 @@ class Panel(wxPanel):
 		
 		# Open a "Save Dialog"
 		if self.parent.parent.cust_dias.IsChecked():
-			dia = dbr.SaveFile(self, _('Save Launcher'))
+			dia = dbSaveFile(self, _('Save Launcher'))
 #			dia.SetFilename("control")
 			if dia.DisplayModal():
 				cont = True
@@ -434,7 +445,7 @@ class Panel(wxPanel):
 	def OpenFile(self, event):
 		cont = False
 		if self.parent.parent.cust_dias.IsChecked():
-			dia = dbr.OpenFile(self, _('Open Launcher'))
+			dia = dbOpenFile(self, _('Open Launcher'))
 			if dia.DisplayModal():
 				cont = True
 		else:
