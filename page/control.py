@@ -36,6 +36,12 @@ from wx import \
 	StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl
 
+from db import \
+    Optional as dbOptional, \
+    Recommended as dbRecommended, \
+    Mandatory as dbMandatory, \
+    SaveFile as dbSaveFile, \
+    OpenFile as dbOpenFile
 import dbr
 
 
@@ -397,7 +403,7 @@ class Panel(wxScrolledWindow):
         children = self.bg.GetChildren()
         for child in children:
             child.Enable()
-            child.SetBackgroundColour(db.Optional)
+            child.SetBackgroundColour(dbOptional)
     
     def SetBuildType(self, id):
         # First enable all fields that were disabled
@@ -406,11 +412,11 @@ class Panel(wxScrolledWindow):
         group = self.bins
         
         for man in group[0]:
-            man.SetBackgroundColour(db.Mandatory)
+            man.SetBackgroundColour(dbMandatory)
         for rec in group[1]:
-            rec.SetBackgroundColour(db.Recommended)
+            rec.SetBackgroundColour(dbRecommended)
         for opt in group[2]:
-            opt.SetBackgroundColour(db.Optional)
+            opt.SetBackgroundColour(dbOptional)
 #        for dis in group[3]:
 #            dis.Disable()
 #            dis.SetBackgroundColour(db.Disabled)
@@ -427,7 +433,7 @@ class Panel(wxScrolledWindow):
     def OnBrowse(self, event):
         cont = False
         if self.parent.parent.cust_dias.IsChecked():
-            dia = db.OpenFile(self)
+            dia = dbOpenFile(self)
             if dia.DisplayModal():
                 cont = True
         else:
@@ -451,7 +457,7 @@ class Panel(wxScrolledWindow):
         
         # Open a "Save Dialog"
         if self.parent.parent.cust_dias.IsChecked():
-            dia = db.SaveFile(self, _('Save Control Information'))
+            dia = dbSaveFile(self, _('Save Control Information'))
             dia.SetFilename('control')
             if dia.DisplayModal():
                 cont = True
