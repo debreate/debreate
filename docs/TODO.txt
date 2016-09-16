@@ -1,3 +1,14 @@
+0.8.0 Release Changes:
+- Change license to MIT
+- Finish wx 3.0 compatibility
+- Make Lintian message dialog resizable
+
+0.8.1 Release Changes:
+- Files page: Optional filter for hidden files & folders
+
+Misc:
 - Add choice for shells on scripts page
 - Add Launchpad packages for 'yakkety' when wx 3.0 compatibility is complete
 - Add page for creating manpage
+- Detailed documentation on files page
+- Only show exit confirmation if project has been modified
