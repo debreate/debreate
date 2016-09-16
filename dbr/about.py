@@ -155,8 +155,11 @@ class AboutDialog(wx.Dialog):
     def NoResizeCol(self, event):
         event.Veto()
     
-    def SetChangelog(self, log):
-        self.changelog.SetValue(log)
+    def SetChangelog(self, log_file):
+        log_data = open(log_file)
+        log_text = log_data.read()
+        log_data.close()
+        self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
     
     def SetLicense(self, l_file):
