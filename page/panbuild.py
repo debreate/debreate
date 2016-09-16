@@ -25,6 +25,7 @@ from wximports import \
 
 # Functions
 from wximports import \
+	wxGetPasswordFromUser, \
 	wxNewId
 
 # General constants
@@ -34,7 +35,9 @@ from wximports import \
 	wxEXPAND, \
 	wxHORIZONTAL, \
 	wxICON_ERROR, \
+	wxICON_EXCLAMATION, \
 	wxICON_INFORMATION, \
+	wxICON_WARNING, \
 	wxLEFT, \
 	wxOK, \
 	wxRIGHT, \
@@ -75,6 +78,8 @@ from common import OutputLog
 
 import db, os, commands, shutil, db_md5, thread
 from os.path import exists
+
+from dbr.functions import RunSudo
 
 ID = wxNewId()
 
@@ -526,7 +531,7 @@ class Panel(wxPanel):
 	                    # Delete the build tree
 	                    if commands.getstatusoutput(('rm -r "%s"' % temp_tree).encode('utf-8'))[0]:
 	                        wxMessageDialog(self, _('An error occurred when trying to delete the build tree'),
-								_('Error'), style=wxOK|wxID_EXCLAMATION).ShowModal()
+								_('Error'), style=wxOK|wxICON_EXCLAMATION).ShowModal()
                     progress += 1
                 
                 # *** ERROR CHECK
