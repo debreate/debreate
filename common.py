@@ -18,14 +18,6 @@ from wx.lib.docview import PathOnly
 from dbr import GT, VERSION_STRING
 
 
-# Set the encoding to unicode
-if (sys.getdefaultencoding() != 'utf-8'):
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-wxSetDefaultPyEncoding('UTF-8')
-
-
-
 
 
 

@@ -15,31 +15,38 @@ from wx import \
     App as wxApp, \
     Dialog as wxDialog, \
     TextCtrl as wxTextCtrl, \
-    BITMAP_TYPE_PNG as wxBITMAP_TYPE_PNG, \
     Icon as wxIcon, \
+    SetDefaultPyEncoding as wxSetDefaultPyEncoding, \
     StaticText as wxStaticText, \
     Bitmap as wxBitmap, \
     StaticBitmap as wxStaticBitmap, \
     StaticBox as wxStaticBox, \
     StaticBoxSizer as wxStaticBoxSizer, \
-    ALIGN_CENTER as wxALIGN_CENTER, \
-    HORIZONTAL as wxHORIZONTAL, \
-    RIGHT as wxRIGHT, \
-    VERTICAL as wxVERTICAL, \
-    EVT_BUTTON as wxEVT_BUTTON, \
     BoxSizer as wxBoxSizer, \
-    LEFT as wxLEFT, \
-    Button as wxButton, \
-    ID_OK as wxID_OK, \
-    EXPAND as wxEXPAND, \
+    Button as wxButton
+from wx import \
+    ALIGN_CENTER as wxALIGN_CENTER, \
     ALIGN_RIGHT as wxALIGN_RIGHT, \
+    BITMAP_TYPE_PNG as wxBITMAP_TYPE_PNG, \
     BOTTOM as wxBOTTOM, \
-    TOP as wxTOP
+    EVT_BUTTON as wxEVT_BUTTON, \
+    EXPAND as wxEXPAND, \
+    HORIZONTAL as wxHORIZONTAL, \
+    ID_OK as wxID_OK, \
+    LEFT as wxLEFT, \
+    RIGHT as wxRIGHT, \
+    TOP as wxTOP, \
+    VERTICAL as wxVERTICAL
 
 import main, dbr
 
 
 
+# Python & wxPython encoding to UTF-8
+if (sys.getdefaultencoding() != 'utf-8'):
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
+wxSetDefaultPyEncoding('UTF-8')
 
 # wxWidgets
 # Get command line arguments
