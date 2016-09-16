@@ -2,7 +2,9 @@
 
 
 import wx
-import buttons
+
+import dbr
+
 
 class AboutDialog(wx.Dialog):
     """Shows information about Debreate"""
@@ -103,7 +105,7 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = buttons.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
+        ok = dbr.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
         #wx.EVT_BUTTON(ok, wx.OK, self.OnOk)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -119,8 +121,8 @@ class AboutDialog(wx.Dialog):
         image.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
         self.graphic.SetBitmap(image.ConvertToBitmap())
 
-    def SetVersion(self, name, version):
-        self.app.SetLabel(u"%s %s" % (name, version))
+    def SetVersion(self, version):
+        self.app.SetLabel(u"%s %s" % (dbr.APP_NAME, version))
     
     def SetAuthor(self, author):
         self.author.SetLabel(author)
