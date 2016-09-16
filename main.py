@@ -70,7 +70,6 @@ from wx import \
     Yield as wxYield
 
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
-from dbr.functions import GetCurrentVersion
 from page import \
 	paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, pancopyright, \
 	panmenu, panbuild
@@ -319,7 +318,7 @@ class MainWindow(wxFrame):
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
         wxSafeYield()
-        current = GetCurrentVersion()
+        current = dbr.GetCurrentVersion()
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
             wxMessageDialog(self, current, _(u'Error'), wxOK|wxICON_ERROR).ShowModal()
@@ -330,6 +329,9 @@ class MainWindow(wxFrame):
             update = wxMessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wxYES_NO|wxICON_INFORMATION).ShowModal()
             if (update == wxID_YES):
                 wxLaunchDefaultBrowser(HOMEPAGE)
+        elif (current < VERSION):
+            wxMessageDialog(self, _(u'This is a development version, no updates available'),
+                    _(u'Debreate'), wxOK|wxICON_INFORMATION).ShowModal()
         else:
             wxMessageDialog(self, _(u'Debreate is up to date!'), _(u'Debreate'), wxOK|wxICON_INFORMATION).ShowModal()
     
@@ -503,13 +505,11 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
     
     def OnAbout(self, event):
         """Opens a dialog box with information about the program"""
-        about = db.AboutDialog(self, -1, _('About'))
+        about = dbr.AboutDialog(self, -1, _('About'))
         
         about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
         about.SetVersion(_('Debreate'), VERSION_STRING)
         about.SetAuthor('Jordan Irwin')
-        about.SetSFWebsite('debreate.sourceforge.net', 'http://debreate.sourceforge.net/')
-        about.SetGHWebsite('github.com/AntumDeluge/debreate', 'https://github.com/AntumDeluge/debreate')
         about.SetDescription(_('A package builder for Debian based systems'))
         
         about.AddDeveloper("Jordan Irwin", "antumdeluge@gmail.com")
