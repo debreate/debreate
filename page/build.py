@@ -26,7 +26,6 @@ from wx import \
 	FD_SAVE as wxFD_SAVE, \
 	FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
 	PD_AUTO_HIDE as wxPD_AUTO_HIDE, \
-	PD_CAN_ABORT as wxPD_CAN_ABORT, \
 	PD_ELAPSED_TIME as wxPD_ELAPSED_TIME, \
 	PD_ESTIMATED_TIME as wxPD_ESTIMATED_TIME, \
 	ID_OK as wxID_OK, \
@@ -55,6 +54,7 @@ from wx import \
 	NewId as wxNewId
 
 from common import OutputLog
+from db import ICON_INFORMATION, ICON_ERROR, SaveFile, OpenDir
 import dbr
 
 
@@ -525,7 +525,7 @@ class Panel(wxPanel):
                         error_log.write(errors)
                         error_log.close()
                         dbr.MessageDialog(self, -1,
-                        _('Lintian Errors'), dbr.ICON_INFORMATION,
+                        _('Lintian Errors'), ICON_INFORMATION,
                         '%s\n%s.lintian"' % (e1, e2),
                         errors
                         ).ShowModal()
@@ -535,7 +535,7 @@ class Panel(wxPanel):
                 build_progress.Update(progress)
                 
                 if build_status[0]:
-                    dbr.MessageDialog(self, -1, _('Error'), dbr.ICON_ERROR,
+                    dbr.MessageDialog(self, -1, _('Error'), ICON_ERROR,
 							_('Package build failed'), build_status[1]).ShowModal()
                 else:
                     wxMessageDialog(self, _('Package created successfully'), _('Success'),
@@ -582,7 +582,7 @@ class Panel(wxPanel):
             # Dialog for save destination
             ttype = _('Debian Packages')
             if self.parent.cust_dias.IsChecked():
-                save_dia = dbr.SaveFile(self)
+                save_dia = SaveFile(self)
                 save_dia.SetFilter("%s|*.deb" % ttype)
                 save_dia.SetFilename("%s_%s_%s.deb" % (pack, ver, arch))
                 if save_dia.DisplayModal():
@@ -707,7 +707,7 @@ class QuickBuild(wxDialog):
     
     def Browse(self, event):
         if self.parent.cust_dias.IsChecked():
-            dia = dbr.OpenDir(self)
+            dia = OpenDir(self)
             if dia.DisplayModal() == True:
                 self.path.SetValue(dia.GetPath())
         else:
