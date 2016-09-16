@@ -6,7 +6,7 @@
 # (~/.config/debreate/config).  If the config file already exists and is corrupted, this script will bring it
 # back to its default settings.
 
-import sys, os, main, db, shutil
+import sys, os, shutil
 
 import wxversion
 wxversion.select(['3.0', '2.8'])
@@ -35,6 +35,9 @@ from wx import \
     ALIGN_RIGHT as wxALIGN_RIGHT, \
     BOTTOM as wxBOTTOM, \
     TOP as wxTOP
+
+import main
+
 
 
 
