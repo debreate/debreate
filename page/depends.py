@@ -214,6 +214,7 @@ class Panel(wxPanel):
                             self.rep_chk: "Replaces", self.break_chk: "Breaks"}
     
     
+    ''' FIXME: deprecated
     def SetLanguage(self):
         lang = languages.Depends()
         
@@ -231,6 +232,7 @@ class Panel(wxPanel):
         
         # Refresh widget layout
         self.Layout()
+        '''
     
     def SelectAll(self):
         total_items = self.dep_area.GetItemCount()
