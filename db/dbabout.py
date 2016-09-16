@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import wx, db, wx.richtext
+
+import wx
+import dbbuttons.ButtonConfirm
 
 class AboutDialog(wx.Dialog):
     """Shows information about Debreate"""
@@ -99,7 +101,7 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = db.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
+        ok = dbbuttons.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
         #wx.EVT_BUTTON(ok, wx.OK, self.OnOk)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
