@@ -14,7 +14,9 @@ from wx import \
 	SetDefaultPyEncoding as wxSetDefaultPyEncoding
 
 # Functions
-from wx import NewId as wxNewId
+from wx import \
+    GetPasswordFromUser as wxGetPasswordFromUser, \
+    NewId as wxNewId
 
 # General wx imports
 from wx import \
@@ -75,8 +77,10 @@ from wx import \
 	EXPAND as wxEXPAND, \
 	HORIZONTAL as wxHORIZONTAL, \
 	ICON_ERROR as wxICON_ERROR, \
+    ICON_EXCLAMATION as wxICON_EXCLAMATION, \
 	ICON_INFORMATION as wxICON_INFORMATION, \
 	ICON_QUESTION as wxICON_QUESTION, \
+    ICON_WARNING as wxICON_WARNING, \
 	ITEM_CHECK as wxITEM_CHECK, \
 	ITEM_RADIO as wxITEM_RADIO, \
 	LC_REPORT as wxLC_REPORT, \
