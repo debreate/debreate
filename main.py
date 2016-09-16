@@ -78,6 +78,8 @@ from page import \
 
 import webbrowser
 
+import dbr
+
 # Pages
 
 ID_Dialogs = wxNewId()
@@ -263,7 +265,7 @@ class MainWindow(wxFrame):
         
         # ***** END MENUBAR ***** #
         
-        self.Wizard = db.Wizard(self) # Binary
+        self.Wizard = dbr.Wizard(self) # Binary
         
         self.page_info = paninfo.Panel(self.Wizard, ID_INFO)
         self.page_info.SetInfo()
