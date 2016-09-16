@@ -53,6 +53,8 @@ from wx import \
 from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
+import dbr
+
 
 # Constants
 ID = wxNewId()
