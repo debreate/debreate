@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import wx, os, dbbuttons
+import wx, os
+import buttons
 
 
 class MessageDialog(wx.Dialog):
@@ -17,7 +18,7 @@ class MessageDialog(wx.Dialog):
         
         wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
         
-        self.button_ok = dbbuttons.ButtonConfirm(self)
+        self.button_ok = buttons.ButtonConfirm(self)
         
         r_sizer = wx.BoxSizer(wx.VERTICAL)
         r_sizer.AddSpacer(10)
