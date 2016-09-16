@@ -1,78 +1,60 @@
 # -*- coding: utf-8 -*-
 
 
-# Control widgets
-from wximports import \
-	wxBoxSizer, \
-	wxDirDialog, \
-	wxEmptyString, \
-	wxFlexGridSizer, \
-	wxGenericDirCtrl, \
-	wxGridSizer, \
-	wxListCtrl, \
-	wxMenu, \
-	wxMenuItem, \
-	wxMessageDialog, \
-	wxMixinListCtrl, \
-	wxPanel, \
-	wxProgressDialog, \
-	wxRadioButton, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxTextCtrl
-
-# Functions
-from wximports import \
-	wxNewId
-
-# General constants
-from wximports import \
-	wxALIGN_CENTER_VERTICAL, \
-	wxALL, \
-	wxBORDER_SIMPLE, \
-	wxBOTTOM, \
-	wxDD_CHANGE_DIR, \
-	wxEXPAND, \
-	wxHORIZONTAL, \
-	wxICON_QUESTION, \
-	wxLC_REPORT, \
-	wxLEFT, \
-	wxNO_DEFAULT, \
-	wxRB_GROUP, \
-	wxRIGHT, \
-	wxTOP, \
-	wxVERTICAL, \
-	wxYES_NO
-
-# Progress dialog constants
-from wximports import \
-	wxPD_AUTO_HIDE, \
-	wxPD_CAN_ABORT, \
-	wxPD_ELAPSED_TIME, \
-	wxPD_ESTIMATED_TIME
-
-# Input constants
-from wximports import \
-	wxWXK_DELETE
-
-# ID constants
-from wximports import \
-	wxID_YES
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON, \
-	wxEVT_CONTEXT_MENU, \
-	wxEVT_KEY_DOWN, \
-	wxEVT_KEY_UP, \
-	wxEVT_MENU, \
-	wxEVT_RADIOBUTTON
-
-
-import os, db
+import os
 from os.path import exists, isfile, isdir
+from wx import \
+	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
+	ALL as wxALL, \
+	BORDER_SIMPLE as wxBORDER_SIMPLE, \
+	BOTTOM as wxBOTTOM, \
+	DD_CHANGE_DIR as wxDD_CHANGE_DIR, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	ICON_QUESTION as wxICON_QUESTION, \
+	LC_REPORT as wxLC_REPORT, \
+	LEFT as wxLEFT, \
+	NO_DEFAULT as wxNO_DEFAULT, \
+	RB_GROUP as wxRB_GROUP, \
+	RIGHT as wxRIGHT, \
+	TOP as wxTOP, \
+	VERTICAL as wxVERTICAL, \
+	YES_NO as wxYES_NO, \
+	PD_AUTO_HIDE as wxPD_AUTO_HIDE, \
+	PD_CAN_ABORT as wxPD_CAN_ABORT, \
+	PD_ELAPSED_TIME as wxPD_ELAPSED_TIME, \
+	PD_ESTIMATED_TIME as wxPD_ESTIMATED_TIME, \
+	WXK_DELETE as wxWXK_DELETE, \
+	ID_YES as wxID_YES, \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_CONTEXT_MENU as wxEVT_CONTEXT_MENU, \
+	EVT_KEY_DOWN as wxEVT_KEY_DOWN, \
+	EVT_KEY_UP as wxEVT_KEY_UP, \
+	EVT_MENU as wxEVT_MENU, \
+	EVT_RADIOBUTTON as wxEVT_RADIOBUTTON
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	DirDialog as wxDirDialog, \
+	EmptyString as wxEmptyString, \
+	FlexGridSizer as wxFlexGridSizer, \
+	GenericDirCtrl as wxGenericDirCtrl, \
+	GridSizer as wxGridSizer, \
+	ListCtrl as wxListCtrl, \
+	Menu as wxMenu, \
+	MenuItem as wxMenuItem, \
+	MessageDialog as wxMessageDialog, \
+	Panel as wxPanel, \
+	ProgressDialog as wxProgressDialog, \
+	RadioButton as wxRadioButton, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	TextCtrl as wxTextCtrl, \
+	NewId as wxNewId
+from wx.lib.mixins import \
+    listctrl as wxMixinListCtrl
 
 
+# Constants
 ID = wxNewId()
 
 ID_pin = 100
@@ -125,9 +107,9 @@ class Panel(wxPanel):
         wxEVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         
         # ----- Add/Remove/Clear buttons
-        path_add = db.ButtonAdd(self)
-        path_remove = db.ButtonDel(self)
-        button_clear = db.ButtonClear(self)
+        path_add = dbr.buttons.ButtonAdd(self)
+        path_remove = dbr.buttons.ButtonDel(self)
+        button_clear = dbr.buttons.ButtonClear(self)
         
         wxEVT_BUTTON(path_add, -1, self.AddPath)
         wxEVT_BUTTON(path_remove, -1, self.DelPath)
@@ -165,7 +147,7 @@ class Panel(wxPanel):
         cust_sizer = wxBoxSizer(wxVERTICAL)  # put the textctrl in own sizer so expands horizontally
         cust_sizer.Add(self.dest_cust, 1, wxEXPAND)
         
-        self.dest_browse = db.ButtonBrowse(self, ID_pout)
+        self.dest_browse = dbr.buttons.ButtonBrowse(self, ID_pout)
         
         wxEVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
         
