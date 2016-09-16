@@ -37,8 +37,10 @@ class AboutDialog(wx.Dialog):
         self.app.SetFont(bigfont)
         # Show the author & website
         self.author = wx.StaticText(about)
-        self.website = wx.HyperlinkCtrl(about, -1, '', '')
-        self.website2 = wx.HyperlinkCtrl(about, -1, '', '')
+        self.website = wx.HyperlinkCtrl(about, -1,
+                'debreate.sourceforge.net', 'http://debreate.sourceforge.net/')
+        self.website2 = wx.HyperlinkCtrl(about, -1,
+                'github.com/AntumDeluge/debreate', 'https://github.com/AntumDeluge/debreate')
         # Show a short description
         self.description = wx.StaticText(about, -1)
         
@@ -126,14 +128,6 @@ class AboutDialog(wx.Dialog):
     def SetWebsite(self, URL):
         self.website.SetLabel(URL)
         self.website.SetURL(URL)
-    
-    def SetSFWebsite(self, label, URL):
-        self.website.SetLabel(label)
-        self.website.SetURL(URL)
-    
-    def SetGHWebsite(self, label, URL):
-        self.website2.SetLabel(label)
-        self.website2.SetURL(URL)
     
     def SetDescription(self, desc):
         self.description.SetLabel(desc)
