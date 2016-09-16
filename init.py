@@ -6,13 +6,34 @@
 # (~/.config/debreate/config).  If the config file already exists and is corrupted, this script will bring it
 # back to its default settings.
 
-import sys, os, main, db, language, shutil
+import sys, os, main, db, shutil
+from wx import \
+    App as wxApp, \
+    Dialog as wxDialog, \
+    TextCtrl as wxTextCtrl, \
+    BITMAP_TYPE_PNG as wxBITMAP_TYPE_PNG, \
+    Icon as wxIcon, \
+    StaticText as wxStaticText, \
+    Bitmap as wxBitmap, \
+    StaticBitmap as wxStaticBitmap, \
+    StaticBox as wxStaticBox, \
+    StaticBoxSizer as wxStaticBoxSizer, \
+    ALIGN_CENTER as wxALIGN_CENTER, \
+    HORIZONTAL as wxHORIZONTAL, \
+    RIGHT as wxRIGHT, \
+    VERTICAL as wxVERTICAL, \
+    EVT_BUTTON as wxEVT_BUTTON, \
+    BoxSizer as wxBoxSizer, \
+    LEFT as wxLEFT, \
+    Button as wxButton, \
+    ID_OK as wxID_OK, \
+    EXPAND as wxEXPAND, \
+    ALIGN_RIGHT as wxALIGN_RIGHT, \
+    BOTTOM as wxBOTTOM, \
+    TOP as wxTOP
+
 
 # wxWidgets
-from wx import Dialog as wxDialog
-from wx import App as wxApp
-from wx import TextCtrl as wxTextCtrl
-
 # Get command line arguments
 project_file = 0 # Set project file to false
 if len(sys.argv) > 1:
@@ -49,7 +70,7 @@ workingdir=%s" % home)
 
 
 def StartFirstRun():
-    app = wx.App()
+    app = wxApp()
     frame = FirstRun(None, -1, _('Debreate First Run'))
 #	frame.SetMessage("Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
 #or if the configuration file becomes corrupted.")
@@ -130,38 +151,38 @@ def Run(pos, size, maximize, center, dias, cwd):
 class FirstRun(wxDialog):
     """Create the config file on first run or if file has been corrupted"""
     def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, size=(450,300))
+        wxDialog.__init__(self, parent, id, title, size=(450,300))
         
         # "OK" button sets to True
         self.OK = False
         
         # Set the titlebar icon
-        self.SetIcon(wx.Icon("%s/bitmaps/debreate64.png" % application_path, wx.BITMAP_TYPE_PNG))
+        self.SetIcon(wxIcon("%s/bitmaps/debreate64.png" % application_path, wxBITMAP_TYPE_PNG))
         
         # Display a message to create a config file
-        self.message = wx.StaticText(self, -1)
+        self.message = wxStaticText(self, -1)
         
         # Show the Debreate icon
-        dbicon = wx.Bitmap("%s/bitmaps/debreate64.png" % application_path, wx.BITMAP_TYPE_PNG)
-        icon = wx.StaticBitmap(self, -1, dbicon)
+        dbicon = wxBitmap("%s/bitmaps/debreate64.png" % application_path, wxBITMAP_TYPE_PNG)
+        icon = wxStaticBitmap(self, -1, dbicon)
         
         # Button to confirm
-        self.button_ok = wx.Button(self, wx.ID_OK)
+        self.button_ok = wxButton(self, wxID_OK)
         
-        wx.EVT_BUTTON(self.button_ok, -1, self.OnOk)
+        wxEVT_BUTTON(self.button_ok, -1, self.OnOk)
         
         # Nice border
-        self.border = wx.StaticBox(self, -1)
-        border_box = wx.StaticBoxSizer(self.border, wx.HORIZONTAL)
+        self.border = wxStaticBox(self, -1)
+        border_box = wxStaticBoxSizer(self.border, wxHORIZONTAL)
         border_box.AddSpacer(10)
-        border_box.Add(icon, 0, wx.ALIGN_CENTER)
+        border_box.Add(icon, 0, wxALIGN_CENTER)
         border_box.AddSpacer(10)
-        border_box.Add(self.message, 1, wx.ALIGN_CENTER)
+        border_box.Add(self.message, 1, wxALIGN_CENTER)
         
         # Set Layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
+        sizer = wxBoxSizer(wxVERTICAL)
+        sizer.Add(border_box, 1, wxEXPAND|wxLEFT|wxRIGHT, 5)
+        sizer.Add(self.button_ok, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM|wxTOP, 5)
         
         self.SetSizer(sizer)
         self.Layout()
