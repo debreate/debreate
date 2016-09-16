@@ -36,7 +36,7 @@ from wx import \
     BOTTOM as wxBOTTOM, \
     TOP as wxTOP
 
-import main
+import main, dbr
 
 
 
@@ -124,10 +124,10 @@ def Run(pos, size, maximize, center, dias, cwd):
     if darktheme:
         # This sets the colors for text controls with priorities by using a text control
         # from the control page before priority colors are applied
-        db.Mandatory = "darkred"
-        db.Recommended = "darkblue"
-    db.Optional = dummy.GetBackgroundColour()
-    db.Disabled = frame.GetBackgroundColour()
+        dbr.Mandatory = "darkred"
+        dbr.Recommended = "darkblue"
+    dbr.Optional = dummy.GetBackgroundColour()
+    dbr.Disabled = frame.GetBackgroundColour()
     # Get rid of the dummy text control
     dummy.Destroy()
     
