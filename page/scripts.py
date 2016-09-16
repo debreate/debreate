@@ -28,9 +28,7 @@ from wx import \
 	BOTTOM as wxBOTTOM, \
 	EXPAND as wxEXPAND, \
 	HORIZONTAL as wxHORIZONTAL, \
-	LC_REPORT as wxLC_REPORT, \
 	LC_SINGLE_SEL as wxLC_SINGLE_SEL, \
-	LIST_AUTOSIZE as wxLIST_AUTOSIZE, \
 	OK as wxOK, \
 	RB_GROUP as wxRB_GROUP, \
 	TE_MULTILINE as wxTE_MULTILINE, \
@@ -39,7 +37,9 @@ from wx import \
 	VERTICAL as wxVERTICAL, \
 	EVT_BUTTON as wxEVT_BUTTON, \
 	EVT_RADIOBUTTON as wxEVT_RADIOBUTTON, \
-	ID_HELP as wxID_HELP
+	ID_HELP as wxID_HELP, \
+    YES_NO as wxYES_NO, \
+    ID_YES as wxID_YES
 
 import dbr
 
