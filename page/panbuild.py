@@ -55,7 +55,7 @@ from wx import \
 	NewId as wxNewId
 
 from common import OutputLog
-from dbr.functions import RunSudo
+import dbr
 
 
 ID = wxNewId()
@@ -124,7 +124,7 @@ class Panel(wxPanel):
         #wxEVT_SHOW(self, self.SetSummary)
         
         # --- BUILD
-        self.build_button = db.ButtonBuild64(self)
+        self.build_button = dbr.ButtonBuild64(self)
         self.build_button.SetToolTip(build_tip)
         
         self.build_button.Bind(wxEVT_BUTTON, self.OnBuild)
@@ -524,8 +524,8 @@ class Panel(wxPanel):
                         error_log = open("%s/%s.lintian" % (build_path, filename), "w")
                         error_log.write(errors)
                         error_log.close()
-                        db.MessageDialog(self, -1,
-                        _('Lintian Errors'), db.ICON_INFORMATION,
+                        dbr.MessageDialog(self, -1,
+                        _('Lintian Errors'), dbr.ICON_INFORMATION,
                         '%s\n%s.lintian"' % (e1, e2),
                         errors
                         ).ShowModal()
@@ -535,7 +535,7 @@ class Panel(wxPanel):
                 build_progress.Update(progress)
                 
                 if build_status[0]:
-                    db.MessageDialog(self, -1, _('Error'), db.ICON_ERROR,
+                    dbr.MessageDialog(self, -1, _('Error'), dbr.ICON_ERROR,
 							_('Package build failed'), build_status[1]).ShowModal()
                 else:
                     wxMessageDialog(self, _('Package created successfully'), _('Success'),
@@ -553,7 +553,7 @@ class Panel(wxPanel):
                             if (password == u''):
                                 print _(u'Empty password: Cancelling')
                                 break
-                            e = RunSudo(password, u'dpkg -i %s' % (deb))
+                            e = dbr.RunSudo(password, u'dpkg -i %s' % (deb))
                             if (not e):
                                 if (tries == 2):
                                     print _(u'Authentication failure')
@@ -582,7 +582,7 @@ class Panel(wxPanel):
             # Dialog for save destination
             ttype = _('Debian Packages')
             if self.parent.cust_dias.IsChecked():
-                save_dia = db.SaveFile(self)
+                save_dia = dbr.SaveFile(self)
                 save_dia.SetFilter("%s|*.deb" % ttype)
                 save_dia.SetFilename("%s_%s_%s.deb" % (pack, ver, arch))
                 if save_dia.DisplayModal():
@@ -665,10 +665,10 @@ class QuickBuild(wxDialog):
         self.filename = wxTextCtrl(self, -1)
         path_txt = wxStaticText(self, -1, _('Path to build tree'))
         self.path = wxTextCtrl(self, -1) # Path to the root of the directory tree
-        self.get_path = db.ButtonBrowse(self)
-        self.build = db.ButtonBuild(self)
+        self.get_path = dbr.ButtonBrowse(self)
+        self.build = dbr.ButtonBuild(self)
         self.build.SetToolTip(wxToolTip(_('Start building')))
-        self.cancel = db.ButtonCancel(self)
+        self.cancel = dbr.ButtonCancel(self)
         
         wxEVT_BUTTON(self.get_path, -1, self.Browse)
         wxEVT_BUTTON(self.build, -1, self.OnBuild)
@@ -707,7 +707,7 @@ class QuickBuild(wxDialog):
     
     def Browse(self, event):
         if self.parent.cust_dias.IsChecked():
-            dia = db.OpenDir(self)
+            dia = dbr.OpenDir(self)
             if dia.DisplayModal() == True:
                 self.path.SetValue(dia.GetPath())
         else:
