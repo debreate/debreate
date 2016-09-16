@@ -23,6 +23,7 @@
 # Standard Python modules
 import os, shutil, subprocess
 from urllib2 import URLError, HTTPError
+import webbrowser
 from wx import \
 	CANCEL as wxCANCEL, \
 	EXPAND as wxEXPAND, \
@@ -69,18 +70,21 @@ from wx import \
 	StatusBar as wxStatusBar, \
     Yield as wxYield
 
+import dbr, db  # FIXME: 'db' module is deprecated, move classes to 'dbr' package
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
 from page import \
-	info, control, depends, files, scripts, clog, copyright, \
-	menu, build
+	info as InfoPage, \
+    control as ControlPage, \
+    depends as DependsPage, \
+    files as FilesPage, \
+    scripts as ScriptsPage, \
+    clog as ClogPage, \
+    copyright as CopyrightPage, \
+	menu as MenuPage, \
+    build as BuildPage
 
-
-import webbrowser
-
-import dbr, db  # FIXME: 'db' module is deprecated, move classes to 'dbr' package
 
 # Pages
-
 ID_Dialogs = wxNewId()
 
 # Debian Policy Manual IDs
@@ -266,16 +270,16 @@ class MainWindow(wxFrame):
         
         self.Wizard = dbr.Wizard(self) # Binary
         
-        self.page_info = info.Panel(self.Wizard, ID_INFO)
+        self.page_info = InfoPage.Panel(self.Wizard, ID_INFO)
         self.page_info.SetInfo()
-        self.page_control = control.Panel(self.Wizard, ID_CTRL)
-        self.page_depends = depends.Panel(self.Wizard, ID_DEPS)
-        self.page_files = files.Panel(self.Wizard, ID_FILES)
-        self.page_scripts = scripts.Panel(self.Wizard, ID_SCRIPTS)
-        self.page_clog = clog.Panel(self.Wizard, ID_CLOG)
-        self.page_cpright = copyright.Panel(self.Wizard, ID_CPRIGHT)
-        self.page_menu = menu.Panel(self.Wizard, ID_MENU)
-        self.page_build = build.Panel(self.Wizard, ID_BUILD)
+        self.page_control = ControlPage.Panel(self.Wizard, ID_CTRL)
+        self.page_depends = DependsPage.Panel(self.Wizard, ID_DEPS)
+        self.page_files = FilesPage.Panel(self.Wizard, ID_FILES)
+        self.page_scripts = ScriptsPage.Panel(self.Wizard, ID_SCRIPTS)
+        self.page_clog = ClogPage.Panel(self.Wizard, ID_CLOG)
+        self.page_cpright = CopyrightPage.Panel(self.Wizard, ID_CPRIGHT)
+        self.page_menu = MenuPage.Panel(self.Wizard, ID_MENU)
+        self.page_build = BuildPage.Panel(self.Wizard, ID_BUILD)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -508,7 +512,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         about = dbr.AboutDialog(self, -1, _('About'))
         
         about.SetGraphic("{}/bitmaps/debreate64.png".format(application_path))
-        about.SetVersion(_('Debreate'), VERSION_STRING)
+        about.SetVersion(VERSION_STRING)
         about.SetAuthor('Jordan Irwin')
         about.SetDescription(_('A package builder for Debian based systems'))
         
@@ -633,6 +637,6 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
             OnSaveAs()
     
     def OnQuickBuild(self, event):
-        QB = panbuild.QuickBuild(self)
+        QB = BuildPage.QuickBuild(self)
         QB.ShowModal()
         QB.Destroy()
