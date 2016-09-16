@@ -70,17 +70,6 @@ def RequirePython(version):
 
 
 
-### -*- Execute commands with sudo privileges -*- ###
-def RunSudo(password, command):
-    command = u'echo %s | sudo -S %s ; echo $?' % (password, command)
-    wxSafeYield()
-    output = os.popen(command).read()
-    err = int(output.split(u'\n')[-2])
-    if (err):
-        return False
-    return True
-
-
 ### -*- Function to check for installed executables -*- ###
 def CommandExists(command):
     try:
