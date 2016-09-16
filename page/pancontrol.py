@@ -36,7 +36,7 @@ from wx import \
 	StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl
 
-from dbr.functions import FieldEnabled
+import dbr
 
 
 # Constants
@@ -52,11 +52,11 @@ class Panel(wxScrolledWindow):
         self.bg = wxPanel(self)
         
         # Buttons to Open, Save & Preview control file
-        button_open = dbr.buttons.ButtonBrowse64(self.bg)
+        button_open = dbr.ButtonBrowse64(self.bg)
         wxEVT_BUTTON(button_open, -1, self.OnBrowse)
-        button_save = dbr.buttons.ButtonSave64(self.bg)
+        button_save = dbr.ButtonSave64(self.bg)
         wxEVT_BUTTON(button_save, -1, self.OnSave)
-        button_preview = dbr.buttons.ButtonPreview64(self.bg)
+        button_preview = dbr.ButtonPreview64(self.bg)
         wxEVT_BUTTON(button_preview, -1, self.OnPreview)
         
         button_sizer = wxBoxSizer(wxHORIZONTAL)
@@ -75,11 +75,11 @@ class Panel(wxScrolledWindow):
         
         # ----- Package ( B[m], SB[m] )
         self.pack_txt = wxStaticText(self.bg, -1, _('Package'))
-        self.pack = db.CharCtrl(self.bg, -1)
+        self.pack = dbr.CharCtrl(self.bg, -1)
         
         # ----- Version ( B[m], D[m], C[m] )
         self.ver_txt = wxStaticText(self.bg, -1, _('Version'))
-        self.ver = db.CharCtrl(self.bg)
+        self.ver = dbr.CharCtrl(self.bg)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
         self.auth_txt = wxStaticText(self.bg, -1, _('Maintainer'))
@@ -530,7 +530,7 @@ class Panel(wxScrolledWindow):
                     )
         
         for key in getvals:
-            key_enabled = FieldEnabled(key[1])
+            key_enabled = dbr.FieldEnabled(key[1])
             
             if key_enabled and "".join(key[1].GetValue().split(" ")) != '':
                 if key[0] == "Package" or key[0] == "Version":
@@ -539,7 +539,7 @@ class Panel(wxScrolledWindow):
                     ctrl_list.append("%s: %s" % (key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        auth_enabled = FieldEnabled(self.auth)
+        auth_enabled = dbr.FieldEnabled(self.auth)
         
         if auth_enabled and self.auth.GetValue() != '':
             ctrl_list.insert(3, "Maintainer: %s <%s>" % (self.auth.GetValue(), self.email.GetValue()))
@@ -549,7 +549,7 @@ class Panel(wxScrolledWindow):
                     "Essential": (self.ess,self.ess_opt)#, "Urgency": (self.urge,self.urge_opt)
                     }
         for key in getsels:
-            sel_enabled = FieldEnabled(getsels[key][0])
+            sel_enabled = dbr.FieldEnabled(getsels[key][0])
             
             if sel_enabled:
                 if key == "Essential" and self.ess.GetCurrentSelection() == 1:
