@@ -2,66 +2,49 @@
 
 # Page defining dependencies
 
-import db
+
+from wx import \
+	BoxSizer as wxBoxSizer, \
+	Choice as wxChoice, \
+	FlexGridSizer as wxFlexGridSizer, \
+	GridSizer as wxGridSizer, \
+	ListCtrl as wxListCtrl, \
+	MessageDialog as wxMessageDialog, \
+	Panel as wxPanel, \
+	RadioButton as wxRadioButton, \
+	StaticBox as wxStaticBox, \
+	StaticBoxSizer as wxStaticBoxSizer, \
+	StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+	ToolTip as wxToolTip, \
+	NewId as wxNewId
+from wx import \
+    MAJOR_VERSION as wxMAJOR_VERSION, \
+	ALIGN_CENTER as wxALIGN_CENTER, \
+	ALL as wxALL, \
+	BORDER_SIMPLE as wxBORDER_SIMPLE, \
+	EXPAND as wxEXPAND, \
+	HORIZONTAL as wxHORIZONTAL, \
+	ICON_QUESTION as wxICON_QUESTION, \
+	LC_REPORT as wxLC_REPORT, \
+	LEFT as wxLEFT, \
+	LIST_AUTOSIZE as wxLIST_AUTOSIZE, \
+	NO_DEFAULT as wxNO_DEFAULT, \
+	RB_GROUP as wxRB_GROUP, \
+	RIGHT as wxRIGHT, \
+	VERTICAL as wxVERTICAL, \
+	YES_NO as wxYES_NO, \
+	EVT_BUTTON as wxEVT_BUTTON, \
+	EVT_KEY_DOWN as wxEVT_KEY_DOWN, \
+	WXK_ESCAPE as wxWXK_ESCAPE, \
+	WXK_NUMPAD_ENTER as wxWXK_NUMPAD_ENTER, \
+	WXK_RETURN as wxWXK_RETURN, \
+	ID_YES as wxID_YES
+from wx.lib.mixins import \
+    listctrl as wxMixinListCtrl
 
 
-# wx build constants
-from wximports import \
-	wxMAJOR_VERSION
-
-# Control widgets
-from wximports import \
-	wxBoxSizer, \
-	wxChoice, \
-	wxFlexGridSizer, \
-	wxGridSizer, \
-	wxListCtrl, \
-	wxMessageDialog, \
-	wxMixinListCtrl, \
-	wxPanel, \
-	wxRadioButton, \
-	wxStaticBox, \
-	wxStaticBoxSizer, \
-	wxStaticText, \
-	wxTextCtrl, \
-	wxToolTip
-
-# Functions
-from wximports import \
-	wxNewId
-
-# General constants
-from wximports import \
-	wxALIGN_CENTER, \
-	wxALL, \
-	wxBORDER_SIMPLE, \
-	wxEXPAND, \
-	wxHORIZONTAL, \
-	wxICON_QUESTION, \
-	wxLC_REPORT, \
-	wxLEFT, \
-	wxLIST_AUTOSIZE, \
-	wxNO_DEFAULT, \
-	wxRB_GROUP, \
-	wxRIGHT, \
-	wxVERTICAL, \
-	wxYES_NO
-
-# Event constants
-from wximports import \
-	wxEVT_BUTTON, \
-	wxEVT_KEY_DOWN
-
-# Input constants
-from wximports import \
-	wxWXK_ESCAPE, \
-	wxWXK_NUMPAD_ENTER, \
-	wxWXK_RETURN
-
-# ID constants
-from wximports import \
-	wxID_YES
-
+# Constants
 ID = wxNewId()
 
 ID_Append = wxNewId()
