@@ -78,7 +78,7 @@ from page import \
 
 import webbrowser
 
-import dbr
+import dbr, db  # FIXME: 'db' module is deprecated, move classes to 'dbr' package
 
 # Pages
 
