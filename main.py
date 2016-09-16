@@ -514,11 +514,9 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         
         about.AddDeveloper("Jordan Irwin", "antumdeluge@gmail.com")
         about.AddPackager("Jordan Irwin", "antumdeluge@gmail.com")
-        job = _(u'Translation')
-        job = job.decode(u'utf-8')
-        about.AddJob(u'Jordan Irwin', u'{} (es)'.format(job), u'antumdeluge@gmail.com')
-        about.AddJob(_(u'Karim Oulad Chalha'), u'{} (ar_MA)'.format(job), u'herr.linux88@gmail.com')
-        about.AddJob(_(u'Philippe Dalet'), u'{} (fr_FR)'.format(job), u'philippe.dalet@ac-toulouse.fr')
+        about.AddTranslator(_(u'Karim Oulad Chalha'), u'herr.linux88@gmail.com', 'ar_MA', )
+        about.AddTranslator(_(u'Jordan Irwin'), u'antumdeluge@gmail.com', 'es')
+        about.AddTranslator(_(u'Philippe Dalet'), u'philippe.dalet@ac-toulouse.fr', 'fr_FR')
         
         about.SetChangelog('{}/docs/changelog'.format(application_path))
         

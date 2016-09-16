@@ -146,6 +146,14 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 1, _(u'Packager'))
         #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
+    def AddTranslator(self, name, email, lang):
+        job = _(u'Translation')
+        job = '{} ({})'.format(job, lang)
+        next_item = self.credits.GetItemCount()
+        self.credits.InsertStringItem(next_item, name)
+        self.credits.SetStringItem(next_item, 2, email)
+        self.credits.SetStringItem(next_item, 1, job)
+    
     def AddJob(self, name, job, email):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
