@@ -557,7 +557,7 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
         description = _('Debreate project files')
         ext_filter = '{} (.{}){}'.format(description, suffix, dbp)
         
-        file_save = dbr.GetFileSaveDialog(self, _('Save Debreate Project'),
+        file_save = dbr.GetFileSaveDialog(self, title,
                 ext_filter, suffix)
         if dbr.ShowDialog(self, file_save):
             self.saved_project = file_save.GetPath()
