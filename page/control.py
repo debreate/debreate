@@ -36,10 +36,6 @@ from wx import \
 	StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl
 
-from db import \
-    Optional as dbOptional, \
-    Recommended as dbRecommended, \
-    Mandatory as dbMandatory
 import dbr
 
 
@@ -401,7 +397,7 @@ class Panel(wxScrolledWindow):
         children = self.bg.GetChildren()
         for child in children:
             child.Enable()
-            child.SetBackgroundColour(dbOptional)
+            child.SetBackgroundColour(dbr.Optional)
     
     def SetBuildType(self, id):
         # First enable all fields that were disabled
@@ -410,11 +406,11 @@ class Panel(wxScrolledWindow):
         group = self.bins
         
         for man in group[0]:
-            man.SetBackgroundColour(dbMandatory)
+            man.SetBackgroundColour(dbr.Mandatory)
         for rec in group[1]:
-            rec.SetBackgroundColour(dbRecommended)
+            rec.SetBackgroundColour(dbr.Recommended)
         for opt in group[2]:
-            opt.SetBackgroundColour(dbOptional)
+            opt.SetBackgroundColour(dbr.Optional)
 #        for dis in group[3]:
 #            dis.Disable()
 #            dis.SetBackgroundColour(db.Disabled)
