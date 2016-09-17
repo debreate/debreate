@@ -45,6 +45,8 @@ HOMEPAGE = u'http://debreate.sourceforge.net/'
 gh_project = u'https://github.com/AntumDeluge/debreate'
 sf_project = u'https://sourceforge.net/projects/debreate'
 
+PROJECT_FILENAME_SUFFIX = 'dbpz'
+
 # Debugging
 DEBUG = True
 
