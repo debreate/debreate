@@ -63,15 +63,9 @@ if len(sys.argv) > 1:
         arg1.close()
 
 
-# Get path to folder where script resides
-application_path = main.application_path
-
-# Get the user's home directory
-home = os.getenv('HOME')
-
 # Set the path for the config file
-dbdir = "%s/.config/debreate" % (home)
-dbconfig = "%s/config" % (dbdir)
+dbdir = "{}/.config/debreate".format(dbr.homedir)
+dbconfig = "{}/config".format(dbdir)
 
 # Function to create the config file
 def MakeConfig():
@@ -83,7 +77,7 @@ size=800,650\n\
 maximize=0\n\
 center=1\n\
 dialogs=0\n\
-workingdir=%s" % home)
+workingdir={}".format(dbr.homedir))
     config.close()
 
 
@@ -102,9 +96,9 @@ def StartFirstRun():
     # Temporary message while in alpha
     m1 = _('Thank you for using Debreate.')
     m2 = _('This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
-    frame.SetMessage('%s\n\n\
-%s\n\n\
-rm -r ~/.config/debreate' % (m1, m2))
+    frame.SetMessage('{}\n\n\
+{}\n\n\
+rm -r ~/.config/debreate'.format(m1, m2))
     
     frame.ShowModal()
     if frame.OK:
@@ -175,13 +169,13 @@ class FirstRun(wxDialog):
         self.OK = False
         
         # Set the titlebar icon
-        self.SetIcon(wxIcon("%s/bitmaps/debreate64.png" % application_path, wxBITMAP_TYPE_PNG))
+        self.SetIcon(wxIcon("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG))
         
         # Display a message to create a config file
         self.message = wxStaticText(self, -1)
         
         # Show the Debreate icon
-        dbicon = wxBitmap("%s/bitmaps/debreate64.png" % application_path, wxBITMAP_TYPE_PNG)
+        dbicon = wxBitmap("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG)
         icon = wxStaticBitmap(self, -1, dbicon)
         
         # Button to confirm
@@ -224,7 +218,7 @@ def TestConfig():
     firstrun = False
     
     # Check for old config file
-    old_config = '%s/.debreate' % home
+    old_config = '{}/.debreate'.format(dbr.homedir)
     if os.path.isdir(old_config):
         print 'Found deprecated configuration, deleting...'
         shutil.rmtree(old_config)
