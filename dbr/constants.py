@@ -13,7 +13,13 @@ from wx import \
 from dbr.language import GT
 
 
-### *** Debreate Info *** ###
+### *** System Information *** ###
+
+application_path = os.path.dirname(__file__)
+homedir = os.getenv('HOME')
+
+
+### *** Debreate Information *** ###
 
 APP_NAME = GT('Debreate')
 
@@ -62,6 +68,6 @@ ID_DSC = wxNewId()
 ID_CNG = wxNewId()
 
 
-### *** System Information *** ###
-application_path = os.path.dirname(__file__)
-homedir = os.getenv('HOME')
+### *** Icons *** ###
+ICON_ERROR = "{}/bitmaps/error64.png".format(application_path)
+ICON_INFORMATION = "{}/bitmaps/question64.png".format(application_path)
