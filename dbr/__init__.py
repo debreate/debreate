@@ -20,3 +20,4 @@ from dbr.language import GT
 from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
 from dbr.wizard import Wizard
+from dbr.md5 import MD5
