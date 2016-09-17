@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-import sys, os.getenv
+import sys, os
 
 from wx import \
     NewId as wxNewId
@@ -15,7 +15,8 @@ from dbr.language import GT
 
 ### *** System Information *** ###
 
-application_path = os.path.dirname(__file__)
+# FIXME: Hack to get parent directory
+application_path = os.path.dirname(os.path.dirname(__file__))
 homedir = os.getenv('HOME')
 
 
@@ -43,6 +44,9 @@ if not RELEASE:
 HOMEPAGE = u'http://debreate.sourceforge.net/'
 gh_project = u'https://github.com/AntumDeluge/debreate'
 sf_project = u'https://sourceforge.net/projects/debreate'
+
+# Debugging
+DEBUG = True
 
 
 ### *** Python Info *** ###
