@@ -60,7 +60,7 @@ from wx import \
 from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
-import dbr, db  # FIXME: 'db' is deprecated, move classes to 'dbr'
+import dbr
 
 
 from os.path import isfile, isdir
@@ -239,7 +239,7 @@ class Panel(wxPanel):
     
     def OnBrowse(self, event):
         if self.parent.parent.cust_dias.IsChecked() == True:
-            dia = db.OpenDir(self)
+            dia = dbr.OpenDir(self)
             if dia.DisplayModal() == True:
                 self.dest_cust.SetValue(dia.GetPath())
         else:
