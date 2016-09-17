@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-import os, subprocess
 from os import popen
+import os, subprocess
 from urllib2 import urlopen, URLError
-
 from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
     SafeYield as wxSafeYield
