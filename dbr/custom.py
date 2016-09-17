@@ -642,9 +642,9 @@ class SaveFile(DBDialog):
     
     def GetPath(self):
         if os.path.isdir(self.dir_tree.GetPath()):
-            return self.dir_tree.GetPath()
+            return '{}/{}'.format(self.dir_tree.GetPath(), self.GetFilename())
         else:
-            return os.path.split(self.dir_tree.GetPath())[0]
+            return '{}/{}'.format(os.path.dirname(self.dir_tree.GetPath()), self.GetFilename())
     
     def OnButton(self, event):
         save_ids = (wx.OK, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER, 7000) # 7000 is for left mouse button d-click
