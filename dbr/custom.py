@@ -28,7 +28,7 @@ from wx import \
     NewId as wxNewId
 from wx.lib.docview import PathOnly
 
-from dbr import GT
+from dbr import GT, TextIsEmpty
 
 
 ID_OVERWRITE = wxNewId()
