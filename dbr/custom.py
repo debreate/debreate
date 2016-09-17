@@ -27,7 +27,7 @@ from wx import \
     MessageDialog as wxMessageDialog
 
 from wx.lib.docview import PathOnly
-import wx.combo.ComboCtrl
+import wx.combo.ComboCtrl, wx.lib.mixins.listctrl as wxLC
 
 from dbr.constants import ID_APPEND, ID_OVERWRITE
 from dbr.functions import TextIsEmpty
@@ -256,3 +256,46 @@ class Combo(wx.combo.ComboCtrl):
     
     def Clear(self):
         self.bg.Clear()
+
+
+# FIXME: Unused. Was used in page.control.
+class LCReport(wx.ListCtrl, wxLC.TextEditMixin, wxLC.ListCtrlAutoWidthMixin):
+    """A report style ListCtrl whose columns cannot be resized with context menu to add/delete entries"""
+    def __init__(self, parent, id=wx.ID_ANY, style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL):
+        wx.ListCtrl.__init__(self, parent, -1,
+                style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES|wx.LC_VRULES)
+        wxLC.TextEditMixin.__init__(self)
+        wxLC.ListCtrlAutoWidthMixin.__init__(self)
+        
+        wx.EVT_CONTEXT_MENU(self, self.ShowMenu)
+        wx.EVT_LIST_COL_BEGIN_DRAG(self, -1, self.NoResize)
+    
+    
+    def ShowMenu(self, event):
+        menu = wx.Menu()
+        self.ID_Add = wx.NewId()
+        self.ID_Del = wx.NewId()
+        
+        wx.EVT_MENU(self, self.ID_Add, self.OnAdd)
+        wx.EVT_MENU(self, self.ID_Del, self.OnDel)
+        
+        menu.Append(self.ID_Add, _('Add'))
+        menu.Append(self.ID_Del, _('Delete'))
+        menu.AppendSeparator()
+        menu.Append(wx.ID_COPY)
+        menu.Append(wx.ID_CUT)
+        menu.Append(wx.ID_PASTE)
+        
+        self.PopupMenu(menu)
+        menu.Destroy()
+    
+    def OnAdd(self, event):
+        self.InsertStringItem(0, "")
+        self.SetItemBackgroundColour(0, (200,255,200))
+    
+    def OnDel(self, event):
+        item = self.GetFocusedItem()
+        self.DeleteItem(item)
+    
+    def NoResize(self, event):
+        event.Veto()
