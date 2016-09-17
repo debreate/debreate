@@ -53,7 +53,7 @@ from wx import \
 	GetPasswordFromUser as wxGetPasswordFromUser, \
 	NewId as wxNewId
 
-from db import ICON_INFORMATION, ICON_ERROR, SaveFile, OpenDir
+from db import SaveFile, OpenDir
 import dbr
 
 
@@ -524,7 +524,7 @@ class Panel(wxPanel):
                         error_log.write(errors)
                         error_log.close()
                         dbr.MessageDialog(self, -1,
-                        _('Lintian Errors'), ICON_INFORMATION,
+                        _('Lintian Errors'), dbr.ICON_INFORMATION,
                         '%s\n%s.lintian"' % (e1, e2),
                         errors
                         ).ShowModal()
@@ -534,7 +534,7 @@ class Panel(wxPanel):
                 build_progress.Update(progress)
                 
                 if build_status[0]:
-                    dbr.MessageDialog(self, -1, _('Error'), ICON_ERROR,
+                    dbr.MessageDialog(self, -1, _('Error'), dbr.ICON_ERROR,
 							_('Package build failed'), build_status[1]).ShowModal()
                 else:
                     wxMessageDialog(self, _('Package created successfully'), _('Success'),
