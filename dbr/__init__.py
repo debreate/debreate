@@ -11,7 +11,8 @@ from dbr.charctrl import CharCtrl
 from dbr.constants import \
     APP_NAME, VER_MAJ, VER_MIN, VER_REL, VERSION, VERSION_STRING, \
     HOMEPAGE, gh_project, sf_project, \
-    PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING
+    PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING, \
+    ID_OVERWRITE, ID_APPEND, ID_BIN, ID_SRC, ID_DSC, ID_CNG
 from dbr.custom import \
     OutputLog, OverwriteDialog, SingleFileTextDropTarget
 from dbr.functions import \
