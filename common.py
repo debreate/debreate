@@ -57,22 +57,6 @@ def RequirePython(version):
 
 
 
-### -*- Function to check for installed executables -*- ###
-def CommandExists(command):
-    try:
-        subprocess.Popen(command.split(u' ')[0].split(u' '))
-        exists = True
-        print u'First subprocess: %s' % (exists)
-    except OSError:
-        exists = os.path.isfile(command)
-        print u'os.path: %s' % (exists)
-        if exists:
-            subprocess.Popen((command))
-            print u'Second subprocess: %s' % (exists)
-    return exists
-
-
-
 ################
 ###     CLASSES       ###
 ################
