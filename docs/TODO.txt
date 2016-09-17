@@ -12,3 +12,4 @@ Misc:
 - Detailed documentation on files page
 - Only show exit confirmation if project has been modified
 - Add debugging command line argument
+- Add a debug log window
