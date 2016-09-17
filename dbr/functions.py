@@ -82,3 +82,8 @@ def RequirePython(version):
             return
         raise ValueError(error)
     raise ValueError('Wrong type for argument 1 of RequirePython(version)')
+
+### -*- Checks if Text Control is Empty -*- ###
+def TextIsEmpty(text):
+    text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
+    return (text == u'')
