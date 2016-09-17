@@ -53,7 +53,6 @@ from wx import \
 	GetPasswordFromUser as wxGetPasswordFromUser, \
 	NewId as wxNewId
 
-from common import OutputLog
 from db import ICON_INFORMATION, ICON_ERROR, SaveFile, OpenDir
 import dbr
 
@@ -133,7 +132,7 @@ class Panel(wxPanel):
         build_sizer.Add(self.build_button, 1)
         
         # --- Display log
-        self.log = OutputLog(self)
+        self.log = dbr.OutputLog(self)
         
         # --- Page 7 Sizer --- #
         page_sizer = wxBoxSizer(wxVERTICAL)
