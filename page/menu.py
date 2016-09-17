@@ -55,9 +55,6 @@ from wx import \
     OK as wxOK, \
     ICON_EXCLAMATION as wxICON_EXCLAMATION
 
-from db import \
-    SaveFile as dbSaveFile, \
-    OpenFile as dbOpenFile
 import dbr
 
 
@@ -403,7 +400,7 @@ class Panel(wxPanel):
 		
 		# Open a "Save Dialog"
 		if self.parent.parent.cust_dias.IsChecked():
-			dia = dbSaveFile(self, _('Save Launcher'))
+			dia = dbr.SaveFile(self, _('Save Launcher'))
 #			dia.SetFilename("control")
 			if dia.DisplayModal():
 				cont = True
@@ -445,7 +442,7 @@ class Panel(wxPanel):
 	def OpenFile(self, event):
 		cont = False
 		if self.parent.parent.cust_dias.IsChecked():
-			dia = dbOpenFile(self, _('Open Launcher'))
+			dia = dbr.OpenFile(self, _('Open Launcher'))
 			if dia.DisplayModal():
 				cont = True
 		else:

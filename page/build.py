@@ -53,7 +53,6 @@ from wx import \
 	GetPasswordFromUser as wxGetPasswordFromUser, \
 	NewId as wxNewId
 
-from db import SaveFile, OpenDir
 import dbr
 
 
@@ -581,7 +580,7 @@ class Panel(wxPanel):
             # Dialog for save destination
             ttype = _('Debian Packages')
             if self.parent.cust_dias.IsChecked():
-                save_dia = SaveFile(self)
+                save_dia = dbr.SaveFile(self)
                 save_dia.SetFilter("%s|*.deb" % ttype)
                 save_dia.SetFilename("%s_%s_%s.deb" % (pack, ver, arch))
                 if save_dia.DisplayModal():
@@ -706,7 +705,7 @@ class QuickBuild(wxDialog):
     
     def Browse(self, event):
         if self.parent.cust_dias.IsChecked():
-            dia = OpenDir(self)
+            dia = dbr.OpenDir(self)
             if dia.DisplayModal() == True:
                 self.path.SetValue(dia.GetPath())
         else:

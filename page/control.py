@@ -39,9 +39,7 @@ from wx import \
 from db import \
     Optional as dbOptional, \
     Recommended as dbRecommended, \
-    Mandatory as dbMandatory, \
-    SaveFile as dbSaveFile, \
-    OpenFile as dbOpenFile
+    Mandatory as dbMandatory
 import dbr
 
 
@@ -433,7 +431,7 @@ class Panel(wxScrolledWindow):
     def OnBrowse(self, event):
         cont = False
         if self.parent.parent.cust_dias.IsChecked():
-            dia = dbOpenFile(self)
+            dia = dbr.OpenFile(self)
             if dia.DisplayModal():
                 cont = True
         else:
@@ -457,7 +455,7 @@ class Panel(wxScrolledWindow):
         
         # Open a "Save Dialog"
         if self.parent.parent.cust_dias.IsChecked():
-            dia = dbSaveFile(self, _('Save Control Information'))
+            dia = dbr.SaveFile(self, _('Save Control Information'))
             dia.SetFilename('control')
             if dia.DisplayModal():
                 cont = True
