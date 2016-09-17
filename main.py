@@ -549,28 +549,23 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
         if dbr.DEBUG:
             print('DEBUG: Saving in new project format')
         
-        dbp = '|*.dbp'
-        d = _('Debreate project files')
-        
-        '''
-        # FIXME: Should have function to return correct dialog
-        if self.cust_dias.IsChecked():
-            dbp_save = dbr.SaveFile(self, _('Save Debreate Project'), 'dbp')
-            dbp_save.SetFilter('{}{}'.format(d, dbp))
-            dbp_save.DisplayModal()
-        else:
-            dbp_save = wxFileDialog(self, _('Save Debreate Project'), os.getcwd(), '', '{}{}'.format(d, dbp),
-                    wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
-            dbp_save.ShowModal()
-        '''
-        
         title = _('Save Debreate Project')
-        ext_filter = '{}{}'.format(d, dbp)
-        file_save = dbr.GetFileSaveDialog(self, _('Save Debreate Project'), ext_filter)
+        suffix = dbr.PROJECT_FILENAME_SUFFIX
+        
+        dbp = '|*.{}'.format(suffix)
+        description = _('Debreate project files')
+        ext_filter = '{} (.{}){}'.format(description, suffix, dbp)
+        
+        file_save = dbr.GetFileSaveDialog(self, _('Save Debreate Project'),
+                ext_filter, suffix)
         if dbr.ShowDialog(self, file_save):
-            print('DEBUG: Accepted')
+            self.saved_project = file_save.GetPath()
+            
+            if dbr.DEBUG:
+                print('DEBUG: Saving file "{}"'.format(self.saved_project))
         else:
-            print('DEBUG: Cancelled')
+            if dbr.DEBUG:
+                print('DEBUG: Cancelled')
     
     def OnSaveProjectDeprecated(self, event):
         id = event.GetId()
