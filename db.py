@@ -17,10 +17,6 @@ Disabled = (246, 246, 245)
 
 
 
-# Icons
-ICON_ERROR = "{}/bitmaps/error64.png".format(dbr.application_path)
-ICON_INFORMATION = "{}/bitmaps/question64.png".format(dbr.application_path)
-
 # Buttons
 ButtonAdd = dbr.ButtonAdd
 ButtonBrowse = dbr.ButtonBrowse
@@ -45,7 +41,7 @@ Wizard = dbr.Wizard
 
 # Message Dialog
 class MessageDialog(dbr.MessageDialog):
-    def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=ICON_ERROR, text=wx.EmptyString,
+    def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=dbr.ICON_ERROR, text=wx.EmptyString,
             details=wx.EmptyString):
         dbr.MessageDialog.__init__(self, parent, id, title, icon, text, details)
 
