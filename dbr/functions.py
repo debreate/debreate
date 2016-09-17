@@ -9,7 +9,8 @@ from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
     SafeYield as wxSafeYield
 
-from dbr.constants import HOMEPAGE
+from dbr.constants import \
+    HOMEPAGE, PY_VER_STRING
 
 
 def GetCurrentVersion():
@@ -68,3 +69,17 @@ def CommandExists(command):
             subprocess.Popen((command))
             print u'Second subprocess: %s' % (exists)
     return exists
+
+# FIXME: Unused
+def RequirePython(version):
+    error = 'Incompatible python version'
+    t = type(version)
+    if t == type(''):
+        if version == PY_VER_STRING[0:3]:
+            return
+        raise ValueError(error)
+    elif t == type([]) or t == type(()):
+        if PY_VER_STRING[0:3] in version:
+            return
+        raise ValueError(error)
+    raise ValueError('Wrong type for argument 1 of RequirePython(version)')
