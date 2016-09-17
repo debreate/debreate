@@ -4,6 +4,8 @@
 import sys
 
 from wx import \
+    NewId as wxNewId
+from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
     MINOR_VERSION as wxMINOR_VERSION, \
     RELEASE_VERSION as wxRELEASE_VERSION
@@ -45,6 +47,11 @@ PY_VER_REL = sys.version_info[2]
 PY_VER_STRING = u'{}.{}.{}'.format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
 
 
-### *** wxWidgets Info
+### *** wxWidgets Info *** ###
 
 WX_VER_STRING = '{}.{}.{}'.format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION)
+
+
+### *** Custom IDs *** ###
+ID_OVERWRITE = wxNewId()
+ID_APPEND = wxNewId()
