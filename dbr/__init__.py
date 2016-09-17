@@ -13,7 +13,7 @@ from dbr.constants import \
     HOMEPAGE, gh_project, sf_project, \
     PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING
 from dbr.functions import \
-    GetCurrentVersion, FieldEnabled, RunSudo
+    GetCurrentVersion, FieldEnabled, RunSudo, CommandExists, RequirePython
 from dbr.language import GT
 from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
