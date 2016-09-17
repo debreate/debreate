@@ -1,16 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-import sys, os, subprocess
-from wx import \
-    BoxSizer as wxBoxSizer, \
-    Button as wxButton, \
-	Dialog as wxDialog, \
-	FileDropTarget as wxFileDropTarget, \
-    StaticText as wxStaticText, \
-	TextCtrl as wxTextCtrl, \
-    MessageDialog as wxMessageDialog, \
-    NewId as wxNewId
+import sys
 from wx import \
 	TE_MULTILINE as wxTE_MULTILINE, \
 	TE_READONLY as wxTE_READONLY, \
@@ -26,10 +17,18 @@ from wx import \
     HORIZONTAL as wxHORIZONTAL, \
     OK as wxOK, \
     ID_CANCEL as wxID_CANCEL
+from wx import \
+    BoxSizer as wxBoxSizer, \
+    Button as wxButton, \
+	Dialog as wxDialog, \
+	FileDropTarget as wxFileDropTarget, \
+    StaticText as wxStaticText, \
+	TextCtrl as wxTextCtrl, \
+    MessageDialog as wxMessageDialog, \
+    NewId as wxNewId
 from wx.lib.docview import PathOnly
 
 from dbr import GT
-import dbr
 
 
 ID_OVERWRITE = wxNewId()
@@ -122,9 +121,3 @@ class SingleFileTextDropTarget(wxFileDropTarget):
                 self.obj.SetValue(text)
         except UnicodeDecodeError:
             wxMessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wxOK).ShowModal()
-
-
-### -*- Checks if Text Control is Empty -*- ###
-def TextIsEmpty(text):
-    text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
-    return (text == u'')
