@@ -6,10 +6,6 @@ import wx.combo, wx.lib.mixins.listctrl as LC, os, sys
 import dbr
 
 
-ID_BIN = wx.NewId()
-ID_SRC = wx.NewId()
-ID_DSC = wx.NewId()
-ID_CNG = wx.NewId()
 
 
 # Colors depicting importance of fields

@@ -55,3 +55,8 @@ WX_VER_STRING = '{}.{}.{}'.format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VE
 ### *** Custom IDs *** ###
 ID_OVERWRITE = wxNewId()
 ID_APPEND = wxNewId()
+# FIXME: Unused IDs
+ID_BIN = wxNewId()
+ID_SRC = wxNewId()
+ID_DSC = wxNewId()
+ID_CNG = wxNewId()
