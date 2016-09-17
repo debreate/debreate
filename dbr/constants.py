@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-import sys
+import sys, os.getenv
 
 from wx import \
     NewId as wxNewId
@@ -60,3 +60,7 @@ ID_BIN = wxNewId()
 ID_SRC = wxNewId()
 ID_DSC = wxNewId()
 ID_CNG = wxNewId()
+
+
+### *** System Information *** ###
+homedir = os.getenv('HOME')
