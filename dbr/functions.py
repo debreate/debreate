@@ -99,12 +99,12 @@ def TextIsEmpty(text):
 
 
 ### *** Custom Dialogs *** ###
-def GetFileSaveDialog(main_window, title, ext_filter):
+def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
     if DEBUG:
         print('DEBUG: Getting file save dialog')
     
     if main_window.cust_dias.IsChecked():
-        file_save = dbr.custom.SaveFile(main_window, title, ext_filter)
+        file_save = dbr.custom.SaveFile(main_window, title, default_extension)
         file_save.SetFilter(ext_filter)
     else:
         file_save = wxFileDialog(main_window, title, os.getcwd(), '', ext_filter,
