@@ -27,7 +27,7 @@ from wx import \
     MessageDialog as wxMessageDialog
 
 from wx.lib.docview import PathOnly
-import wx.combo.ComboCtrl, wx.lib.mixins.listctrl as wxLC
+import wx.combo, wx.lib.mixins.listctrl as wxLC
 
 from dbr.constants import ID_APPEND, ID_OVERWRITE
 from dbr.functions import TextIsEmpty
