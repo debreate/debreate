@@ -552,6 +552,7 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
         title = _('Save Debreate Project')
         suffix = dbr.PROJECT_FILENAME_SUFFIX
         
+        # Set Displayed description & filename filter for dialog
         dbp = '|*.{}'.format(suffix)
         description = _('Debreate project files')
         ext_filter = '{} (.{}){}'.format(description, suffix, dbp)
