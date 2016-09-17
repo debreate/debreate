@@ -38,24 +38,6 @@ ID_APPEND = wxNewId()
 db_here = PathOnly(__file__).decode(u'utf-8')
 
 
-##################
-###     FUNCTIONS       ###
-##################
-
-def RequirePython(version):
-    error = 'Incompatible python version'
-    t = type(version)
-    if t == type(''):
-        if version == dbr.PY_VER_STRING[0:3]:
-            return
-        raise ValueError(error)
-    elif t == type([]) or t == type(()):
-        if dbr.PY_VER_STRING[0:3] in version:
-            return
-        raise ValueError(error)
-    raise ValueError('Wrong type for argument 1 of RequirePython(version)')
-
-
 
 ################
 ###     CLASSES       ###
