@@ -89,15 +89,10 @@ ID_QBUILD = wxNewId()
 ID_UPDATE = wxNewId()
 
 
-# Get path to folder where application resides
-application_path = os.path.dirname(__file__)
-
 
 class MainWindow(wxFrame):
     def __init__(self, parent, id, title, pos, size):
         wxFrame.__init__(self, parent, id, title, pos, size)
-        
-        self.application_path = application_path
         
         # The default title
         self.default_title = _('Debreate - Debian Package Builder')
@@ -105,7 +100,7 @@ class MainWindow(wxFrame):
         self.SetMinSize((640,400))
         
         # ----- Set Titlebar Icon
-        self.main_icon = wxIcon("%s/bitmaps/debreate64.png" % application_path, wxBITMAP_TYPE_PNG)
+        self.main_icon = wxIcon("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG)
         self.SetIcon(self.main_icon)
         
         # If window is maximized this will store last window size and position for next session
@@ -125,7 +120,7 @@ class MainWindow(wxFrame):
         # Quick Build
         self.QuickBuild = wxMenuItem(self.menu_file, ID_QBUILD,
                                          _('Quick Build'), _('Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(wxBitmap("%s/bitmaps/clock16.png" % self.application_path))
+        self.QuickBuild.SetBitmap(wxBitmap("{}/bitmaps/clock16.png".format(dbr.application_path)))
         
         self.menu_file.Append(wxID_NEW, help=_('Start a new project'))
         self.menu_file.Append(wxID_OPEN, help=_('Open a previously saved project'))
@@ -191,7 +186,7 @@ class MainWindow(wxFrame):
         # Menu with links to the Debian Policy Manual webpages
         self.Policy = wxMenu()
         
-        globe = wxBitmap("%s/bitmaps/globe16.png" % self.application_path)
+        globe = wxBitmap("{}/bitmaps/globe16.png".format(dbr.application_path))
         self.DPM = wxMenuItem(self.Policy, ID_DPM, _('Debian Policy Manual'), 'http://www.debian.org/doc/debian-policy')
         self.DPM.SetBitmap(globe)
         self.DPMCtrl = wxMenuItem(self.Policy, ID_DPMCtrl, _('Control Files'), 'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
@@ -308,10 +303,10 @@ class MainWindow(wxFrame):
             current = unicode(current)
             wxMessageDialog(self, current, _(u'Error'), wxOK|wxICON_ERROR).ShowModal()
         elif (current > VERSION):
-            current = '%s.%s.%s' % (current[0], current[1], current[2])
+            current = '{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = _(u'Version %s is available!').decode('utf-8') % (current)
             l2 = _(u"Would you like to go to Debreate's website?").decode('utf-8')
-            update = wxMessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wxYES_NO|wxICON_INFORMATION).ShowModal()
+            update = wxMessageDialog(self, u'{}\n\n{}'.format(l1, l2), _(u'Debreate'), wxYES_NO|wxICON_INFORMATION).ShowModal()
             if (update == wxID_YES):
                 wxLaunchDefaultBrowser(HOMEPAGE)
         elif (current < VERSION):
@@ -344,11 +339,11 @@ class MainWindow(wxFrame):
         d = _('Debreate project files')
         if self.cust_dias.IsChecked():
             dia = db.OpenFile(self, _('Open Debreate Project'))
-            dia.SetFilter('%s%s' % (d, dbp))
+            dia.SetFilter('{}{}'.format(d, dbp))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wxFileDialog(self, _('Open Debreate Project'), os.getcwd(), '', '%s%s' % (d, dbp), wxFD_CHANGE_DIR)
+            dia = wxFileDialog(self, _('Open Debreate Project'), os.getcwd(), '', '{}{}'.format(d, dbp), wxFD_CHANGE_DIR)
             if dia.ShowModal() == wxID_OK:
                 cont = True
         
@@ -442,9 +437,9 @@ class MainWindow(wxFrame):
                 pos = "0,0"
                 center = 1
             else:
-                size = "%s,%s" % (self.GetSize()[0], self.GetSize()[1])
+                size = "{},{}".format(self.GetSize()[0], self.GetSize()[1])
                 maximize = 0
-                pos = "%s,%s" % (self.GetPosition()[0], self.GetPosition()[1])
+                pos = "{},{}".format(self.GetPosition()[0], self.GetPosition()[1])
                 center = 0
             
             if self.cust_dias.IsChecked():
@@ -461,12 +456,12 @@ class MainWindow(wxFrame):
             config_file = open(self.dbconfig, "w")
             config_file.write("\
 [CONFIG-1.1]\n\
-position=%s\n\
-size=%s\n\
-maximize=%s\n\
-center=%s\n\
-dialogs=%s\n\
-workingdir=%s" % (pos, size, maximize, center, dias, cwd))
+position={}\n\
+size={}\n\
+maximize={}\n\
+center={}\n\
+dialogs={}\n\
+workingdir={}".format(pos, size, maximize, center, dias, cwd))
             config_file.close()
             
             self.Destroy()
@@ -492,7 +487,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         """Opens a dialog box with information about the program"""
         about = dbr.AboutDialog(self, -1, _('About'))
         
-        about.SetGraphic("{}/bitmaps/debreate64.png".format(application_path))
+        about.SetGraphic("{}/bitmaps/debreate64.png".format(dbr.application_path))
         about.SetVersion(VERSION_STRING)
         about.SetAuthor('Jordan Irwin')
         about.SetDescription(_('A package builder for Debian based systems'))
@@ -503,9 +498,9 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         about.AddTranslator(_(u'Jordan Irwin'), u'antumdeluge@gmail.com', 'es')
         about.AddTranslator(_(u'Philippe Dalet'), u'philippe.dalet@ac-toulouse.fr', 'fr_FR')
         
-        about.SetChangelog('{}/docs/changelog'.format(application_path))
+        about.SetChangelog('{}/docs/changelog'.format(dbr.application_path))
         
-        about.SetLicense('{}/docs/LICENSE.txt'.format(application_path))
+        about.SetLicense('{}/docs/LICENSE.txt'.format(dbr.application_path))
         
         about.ShowModal()
         about.Destroy()
@@ -513,10 +508,10 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
     def OnHelp(self, event):
         # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
         wxYield()
-        status = subprocess.call(['xdg-open', '%s/docs/usage.pdf' % application_path])
+        status = subprocess.call(['xdg-open', '{}/docs/usage.pdf'.format(dbr.application_path)])
         if status:
             wxYield()
-            status = subprocess.call(['xdg-open', '%s/docs/usage' % application_path])
+            status = subprocess.call(['xdg-open', '{}/docs/usage'.format(dbr.application_path)])
         if status:
             wxYield()
             webbrowser.open('http://debreate.sourceforge.net/usage')
@@ -541,7 +536,7 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
             if self.IsSaved() and title != self.default_title:
-                self.SetTitle("%s*" % title)
+                self.SetTitle("{}*".format(title))
     
     def OnSaveProject(self, event):
         id = event.GetId()
@@ -556,21 +551,21 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
                 # Create a backup of the project
                 overwrite = False
                 if os.path.isfile(path):
-                    backup = '%s.backup' % path
+                    backup = '{}.backup'.format(path)
                     shutil.copy(path, backup)
                     overwrite = True
                 
                 savefile = open(path, 'w')
                 # This try statement can be removed when unicode support is enabled
                 try:
-                    savefile.write("[DEBREATE-%s]\n%s" % (VERSION_STRING, "\n".join(data).encode('utf-8')))
+                    savefile.write("[DEBREATE-{}]\n{}".format(VERSION_STRING, "\n".join(data).encode('utf-8')))
                     savefile.close()
                     if overwrite:
                         os.remove(backup)
                 except UnicodeEncodeError:
                     serr = _('Save failed')
                     uni = _('Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                    UniErr = wxMessageDialog(self, '%s\n\n%s' % (serr, uni), _('Unicode Error'), style=wxOK|wxICON_EXCLAMATION)
+                    UniErr = wxMessageDialog(self, '{}\n\n{}'.format(serr, uni), _('Unicode Error'), style=wxOK|wxICON_EXCLAMATION)
                     UniErr.ShowModal()
                     savefile.close()
                     if overwrite:
@@ -586,22 +581,22 @@ workingdir=%s" % (pos, size, maximize, center, dias, cwd))
             cont = False
             if self.cust_dias.IsChecked():
                 dia = db.SaveFile(self, _('Save Debreate Project'), 'dbp')
-                dia.SetFilter('%s%s' % (d, dbp))
+                dia.SetFilter('{}{}'.format(d, dbp))
                 if dia.DisplayModal():
                     cont = True
                     filename = dia.GetFilename()
                     if filename.split('.')[-1] == 'dbp':
                         filename = ".".join(filename.split(".")[:-1])
-                    self.saved_project = "%s/%s.dbp" % (dia.GetPath(), filename)
+                    self.saved_project = "{}/{}.dbp".format(dia.GetPath(), filename)
             else:
-                dia = wxFileDialog(self, _('Save Debreate Project'), os.getcwd(), '', '%s%s' % (d, dbp),
+                dia = wxFileDialog(self, _('Save Debreate Project'), os.getcwd(), '', '{}{}'.format(d, dbp),
                                         wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
                 if dia.ShowModal() == wxID_OK:
                     cont = True
                     filename = dia.GetFilename()
                     if filename.split(".")[-1] == "dbp":
                         filename = ".".join(filename.split(".")[:-1])
-                    self.saved_project = "%s/%s.dbp" %(os.path.split(dia.GetPath())[0], filename)
+                    self.saved_project = "{}/{}.dbp".format(os.path.split(dia.GetPath())[0], filename)
             
             if cont:
                 SaveIt(self.saved_project)
