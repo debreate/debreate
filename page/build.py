@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import os, commands, shutil, db_md5, thread
+import os, commands, shutil, thread
 from os.path import exists
 from wx import \
 	ALL as wxALL, \
@@ -85,7 +85,7 @@ class Panel(wxPanel):
             self.chk_md5.SetToolTip(md5_tip)
         
         # For creating md5sum hashes
-        self.md5 = db_md5.MD5()
+        self.md5 = dbr.MD5()
         
         # Deletes the temporary build tree
         self.chk_del = wxCheckBox(self, -1, _('Delete build tree'))
