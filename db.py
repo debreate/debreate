@@ -19,11 +19,8 @@ Disabled = (246, 246, 245)
 # Get path to folder where script resides
 application_path = os.path.dirname(__file__)
 
-# Get Home directory
-homedir = os.getenv("HOME")
-
 # Import the db directory
-sys.path.append("%s/db" % application_path)
+#sys.path.append("%s/db" % application_path)
 
 # Icons
 ICON_ERROR = "%s/bitmaps/error64.png" % application_path
