@@ -133,7 +133,13 @@ class MainWindow(wxFrame):
         
         wxEVT_MENU(self, wxID_NEW, self.OnNewProject)
         wxEVT_MENU(self, wxID_OPEN, self.OnOpenProject)
-        wxEVT_MENU(self, wxID_SAVE, self.OnSaveProjectDeprecated)
+        
+        # Debugging
+        if dbr.DEBUG:
+            wxEVT_MENU(self, wxID_SAVE, self.SaveProject)
+        else:
+            wxEVT_MENU(self, wxID_SAVE, self.OnSaveProjectDeprecated)
+        
         wxEVT_MENU(self, wxID_SAVEAS, self.OnSaveProjectDeprecated)
         wxEVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
         wxEVT_MENU(self, wxID_EXIT, self.OnQuit)
@@ -537,6 +543,34 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
             title = self.GetTitle()
             if self.IsSaved() and title != self.default_title:
                 self.SetTitle("{}*".format(title))
+    
+    # FIXME: New format unused. Currently still using OnSaveProjectDeprecated
+    def SaveProject(self, event):
+        if dbr.DEBUG:
+            print('DEBUG: Saving in new project format')
+        
+        dbp = '|*.dbp'
+        d = _('Debreate project files')
+        
+        '''
+        # FIXME: Should have function to return correct dialog
+        if self.cust_dias.IsChecked():
+            dbp_save = dbr.SaveFile(self, _('Save Debreate Project'), 'dbp')
+            dbp_save.SetFilter('{}{}'.format(d, dbp))
+            dbp_save.DisplayModal()
+        else:
+            dbp_save = wxFileDialog(self, _('Save Debreate Project'), os.getcwd(), '', '{}{}'.format(d, dbp),
+                    wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
+            dbp_save.ShowModal()
+        '''
+        
+        title = _('Save Debreate Project')
+        ext_filter = '{}{}'.format(d, dbp)
+        file_save = dbr.GetFileSaveDialog(self, _('Save Debreate Project'), ext_filter)
+        if dbr.ShowDialog(self, file_save):
+            print('DEBUG: Accepted')
+        else:
+            print('DEBUG: Cancelled')
     
     def OnSaveProjectDeprecated(self, event):
         id = event.GetId()
