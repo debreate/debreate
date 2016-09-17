@@ -261,6 +261,15 @@ msgstr ""
 msgid "Translation"
 msgstr ""
 
+msgid "System Information"
+msgstr ""
+
+msgid "Python version: {}"
+msgstr ""
+
+msgid "wxPython version: {}"
+msgstr ""
+
 # ## Button tool tips
 msgid "Next"
 msgstr ""
