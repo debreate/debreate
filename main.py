@@ -51,7 +51,7 @@ from wx import \
 	StatusBar as wxStatusBar, \
     Yield as wxYield
 
-import dbr, db  # FIXME: 'db' module is deprecated, move classes to 'dbr' package
+import dbr
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
 from page import \
 	info as InfoPage, \
@@ -338,7 +338,7 @@ class MainWindow(wxFrame):
         dbp = '|*.dbp'
         d = _('Debreate project files')
         if self.cust_dias.IsChecked():
-            dia = db.OpenFile(self, _('Open Debreate Project'))
+            dia = dbr.OpenFile(self, _('Open Debreate Project'))
             dia.SetFilter('{}{}'.format(d, dbp))
             if dia.DisplayModal():
                 cont = True
@@ -580,7 +580,7 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
             d = _('Debreate project files')
             cont = False
             if self.cust_dias.IsChecked():
-                dia = db.SaveFile(self, _('Save Debreate Project'), 'dbp')
+                dia = dbr.SaveFile(self, _('Save Debreate Project'), 'dbp')
                 dia.SetFilter('{}{}'.format(d, dbp))
                 if dia.DisplayModal():
                     cont = True

@@ -16,7 +16,8 @@ from dbr.constants import \
     ID_OVERWRITE, ID_APPEND, ID_BIN, ID_SRC, ID_DSC, ID_CNG, \
     ICON_ERROR, ICON_INFORMATION
 from dbr.custom import \
-    OutputLog, OverwriteDialog, SingleFileTextDropTarget, Combo, LCReport
+    OutputLog, OverwriteDialog, SingleFileTextDropTarget, Combo, LCReport, \
+    OpenDir, OpenFile, SaveFile
 from dbr.functions import \
     GetCurrentVersion, FieldEnabled, RunSudo, CommandExists, RequirePython, TextIsEmpty
 from dbr.language import GT
