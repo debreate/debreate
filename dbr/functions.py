@@ -5,11 +5,19 @@ from os import popen
 import os, subprocess
 from urllib2 import urlopen, URLError
 from wx import \
+    SafeYield as wxSafeYield, \
+    FileDialog as wxFileDialog
+from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
-    SafeYield as wxSafeYield
+    FD_SAVE as wxFD_SAVE, \
+    FD_CHANGE_DIR as wxFD_CHANGE_DIR, \
+    FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
+    ID_OK as wxID_OK
 
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING
+import dbr.custom
+from dbr.constants import DEBUG
 
 
 def GetCurrentVersion():
@@ -87,3 +95,29 @@ def RequirePython(version):
 def TextIsEmpty(text):
     text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
     return (text == u'')
+
+
+
+### *** Custom Dialogs *** ###
+def GetFileSaveDialog(main_window, title, ext_filter):
+    if DEBUG:
+        print('DEBUG: Getting file save dialog')
+    
+    if main_window.cust_dias.IsChecked():
+        file_save = dbr.custom.SaveFile(main_window, title, ext_filter)
+        file_save.SetFilter(ext_filter)
+    else:
+        file_save = wxFileDialog(main_window, title, os.getcwd(), '', ext_filter,
+                wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
+    
+    return file_save
+
+
+def ShowDialog(main_window, dialog):
+    if DEBUG:
+        print('DEBUG: Showing dialog')
+    
+    if main_window.cust_dias.IsChecked():
+        return dialog.DisplayModal()
+    else:
+        return dialog.ShowModal() == wxID_OK
