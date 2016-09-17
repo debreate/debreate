@@ -133,8 +133,8 @@ class MainWindow(wxFrame):
         
         wxEVT_MENU(self, wxID_NEW, self.OnNewProject)
         wxEVT_MENU(self, wxID_OPEN, self.OnOpenProject)
-        wxEVT_MENU(self, wxID_SAVE, self.OnSaveProject)
-        wxEVT_MENU(self, wxID_SAVEAS, self.OnSaveProject)
+        wxEVT_MENU(self, wxID_SAVE, self.OnSaveProjectDeprecated)
+        wxEVT_MENU(self, wxID_SAVEAS, self.OnSaveProjectDeprecated)
         wxEVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
         wxEVT_MENU(self, wxID_EXIT, self.OnQuit)
         wxEVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
@@ -538,7 +538,7 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
             if self.IsSaved() and title != self.default_title:
                 self.SetTitle("{}*".format(title))
     
-    def OnSaveProject(self, event):
+    def OnSaveProjectDeprecated(self, event):
         id = event.GetId()
         
         def SaveIt(path):
