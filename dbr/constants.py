@@ -63,4 +63,5 @@ ID_CNG = wxNewId()
 
 
 ### *** System Information *** ###
+application_path = os.path.dirname(__file__)
 homedir = os.getenv('HOME')

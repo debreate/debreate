@@ -16,15 +16,10 @@ Unused = (200,200,200)
 Disabled = (246, 246, 245)
 
 
-# Get path to folder where script resides
-application_path = os.path.dirname(__file__)
-
-# Import the db directory
-#sys.path.append("%s/db" % application_path)
 
 # Icons
-ICON_ERROR = "%s/bitmaps/error64.png" % application_path
-ICON_INFORMATION = "%s/bitmaps/question64.png" % application_path
+ICON_ERROR = "{}/bitmaps/error64.png".format(dbr.application_path)
+ICON_INFORMATION = "{}/bitmaps/question64.png".format(dbr.application_path)
 
 # Buttons
 ButtonAdd = dbr.ButtonAdd
@@ -362,11 +357,11 @@ class DBDialog(wx.Dialog):
         # If highlighted path is folder, create new folder in path
         n = _('New Folder')
         if isdir(destination):
-            new_folder = "%s/%s" % (destination, n)
+            new_folder = "%{}{}".format(destination, n)
         # If highlighted path is file, create new folder in the same directory
         else:
             parent_dir = os.path.split(destination)[0]
-            new_folder = "%s/%s" % (parent_dir, n)
+            new_folder = "{}/{}".format(parent_dir, n)
         
         folder_number = 0
         unavailable = True
@@ -379,7 +374,7 @@ class DBDialog(wx.Dialog):
                     unavailable = False
                 elif exists(new_folder):
                     folder_number += 1
-                    new_folder = "%s/%s (%s)" % (destination, n, folder_number)
+                    new_folder = "{}/{} ({})".format(destination, n, folder_number)
             # If folder can't be created show error dialog
             except OSError:
                 unavailable = False
@@ -399,7 +394,7 @@ class DBDialog(wx.Dialog):
         parent_path = os.path.split(path)[0]
         
         # Move file to trash
-        os.system(('gvfs-trash "%s"' % path).encode('utf-8'))
+        os.system(('gvfs-trash "{}"'.format(path)).encode('utf-8'))
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(parent_path)
@@ -437,7 +432,7 @@ class DBDialog(wx.Dialog):
             path = self.dir_tree.GetPath()
             
             # Set the path and name
-            new_name = "%s/%s" % (os.path.split(path)[0], name)
+            new_name = "{}/{}".format(os.path.split(path)[0], name)
             
             if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
                 if isdir(new_name) or isfile(new_name):
@@ -621,9 +616,9 @@ class SaveFile(DBDialog):
                 # If a default file extension is set add it to the filename
                 if self.defaultExtension:
                     if self.TextCtrl.GetValue().split(".")[-1] != self.defaultExtension:
-                        self.TextCtrl.SetValue("%s.%s" % (self.TextCtrl.GetValue(), self.defaultExtension))
+                        self.TextCtrl.SetValue("{}.{}".format(self.TextCtrl.GetValue(), self.defaultExtension))
                 # Set the Dir and Filename for saving
-                savefile = "%s/%s" % (dest_path, self.TextCtrl.GetValue())
+                savefile = "{}/{}".format(dest_path, self.TextCtrl.GetValue())
                 
                 # If everything checks out OK run this function
                 def SaveIt():
