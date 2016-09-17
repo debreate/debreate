@@ -14,7 +14,8 @@ from dbr.constants import \
     HOMEPAGE, gh_project, sf_project, \
     PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING, \
     ID_OVERWRITE, ID_APPEND, ID_BIN, ID_SRC, ID_DSC, ID_CNG, \
-    ICON_ERROR, ICON_INFORMATION
+    ICON_ERROR, ICON_INFORMATION, \
+    Mandatory, Recommended, Optional, Unused, Disabled
 from dbr.custom import \
     OutputLog, OverwriteDialog, SingleFileTextDropTarget, Combo, LCReport, \
     OpenDir, OpenFile, SaveFile

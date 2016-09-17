@@ -71,3 +71,11 @@ ID_CNG = wxNewId()
 ### *** Icons *** ###
 ICON_ERROR = "{}/bitmaps/error64.png".format(application_path)
 ICON_INFORMATION = "{}/bitmaps/question64.png".format(application_path)
+
+
+### *** Colors depicting importance of fields
+Mandatory = (255,200,192)
+Recommended = (197,204,255)
+Optional = (255,255,255)
+Unused = (200,200,200)
+Disabled = (246, 246, 245)
