@@ -239,6 +239,9 @@ msgstr "¿Desea visitar al la página principal de Debreate?"
 msgid "Debreate is up to date!"
 msgstr "¡Debreate está actualizado!"
 
+msgid "This is a development version, no updates available"
+msgstr "Se trata de una versión de desarrollo, no hay actualizaciones disponibles"
+
 # ## About dialog
 msgid "Credits"
 msgstr "Reconocimiento"
@@ -257,6 +260,15 @@ msgstr "Empaque"
 
 msgid "Translation"
 msgstr "Traducción"
+
+msgid "System Information"
+msgstr "Información del Sistema"
+
+msgid "Python version: {}"
+msgstr "Versión de Python: {}"
+
+msgid "wxPython version: {}"
+msgstr "Versión de wxPython: {}"
 
 # ## Button tool tips
 msgid "Next"
