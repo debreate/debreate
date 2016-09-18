@@ -53,7 +53,7 @@ from wx import \
 
 import dbr
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
-from page import \
+'''from page import \
 	info as InfoPage, \
     control as ControlPage, \
     depends as DependsPage, \
@@ -63,6 +63,8 @@ from page import \
     copyright as CopyrightPage, \
 	menu as MenuPage, \
     build as BuildPage
+    '''
+import wiz_bin
 
 
 # Pages
@@ -252,16 +254,16 @@ class MainWindow(wxFrame):
         
         self.Wizard = dbr.Wizard(self) # Binary
         
-        self.page_info = InfoPage.Panel(self.Wizard, ID_INFO)
+        self.page_info = wiz_bin.PageInfo(self.Wizard, ID_INFO)
         self.page_info.SetInfo()
-        self.page_control = ControlPage.Panel(self.Wizard, ID_CTRL)
-        self.page_depends = DependsPage.Panel(self.Wizard, ID_DEPS)
-        self.page_files = FilesPage.Panel(self.Wizard, ID_FILES)
-        self.page_scripts = ScriptsPage.Panel(self.Wizard, ID_SCRIPTS)
-        self.page_clog = ClogPage.Panel(self.Wizard, ID_CLOG)
-        self.page_cpright = CopyrightPage.Panel(self.Wizard, ID_CPRIGHT)
-        self.page_menu = MenuPage.Panel(self.Wizard, ID_MENU)
-        self.page_build = BuildPage.Panel(self.Wizard, ID_BUILD)
+        self.page_control = wiz_bin.PageControl(self.Wizard, ID_CTRL)
+        self.page_depends = wiz_bin.PageDepends(self.Wizard, ID_DEPS)
+        self.page_files = wiz_bin.PageFiles(self.Wizard, ID_FILES)
+        self.page_scripts = wiz_bin.PageScripts(self.Wizard, ID_SCRIPTS)
+        self.page_clog = wiz_bin.PageChangelog(self.Wizard, ID_CLOG)
+        self.page_cpright = wiz_bin.PageCopyright(self.Wizard, ID_CPRIGHT)
+        self.page_menu = wiz_bin.PageMenu(self.Wizard, ID_MENU)
+        self.page_build = wiz_bin.PageBuild(self.Wizard, ID_BUILD)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -643,6 +645,6 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
             OnSaveAs()
     
     def OnQuickBuild(self, event):
-        QB = BuildPage.QuickBuild(self)
+        QB = wiz_bin.QuickBuild(self)
         QB.ShowModal()
         QB.Destroy()
