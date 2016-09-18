@@ -701,6 +701,13 @@ class QuickBuild(wxDialog):
         self.SetAutoLayout(True)
         self.SetSizer(Vmain)
         self.Layout()
+        
+        # Debugging build
+        self.build_error = (0, '"QuickBuild.build_error" still in initial state')
+        
+        # DEBUG:
+        self.filename.SetValue('blah')
+        self.path.SetValue('/media/jordan/External/Development/Debreate/test-app/build/dummy-package_0.1_all__dbp__')
     
     
     def Browse(self, event):
@@ -718,6 +725,17 @@ class QuickBuild(wxDialog):
         self.gauge.Pulse()
     
     def Build(self, path, arg2):
+        root = path[1]
+        work_dir = path[0]
+        filename = path[2]
+        os.chdir(work_dir)
+        self.build_error = commands.getstatusoutput(('fakeroot dpkg-deb -b "{}" "{}.deb"'.format(root, filename)).encode('utf-8'))
+        self.timer.Stop()
+        self.gauge.SetValue(100)
+        self.Enable()
+    
+    def OnBuild(self, event):
+        path = self.path.GetValue()
         root = os.path.split(path)[1]
         work_dir = os.path.split(path)[0]
         filename = self.filename.GetValue()
@@ -725,23 +743,32 @@ class QuickBuild(wxDialog):
             filename = root
         if filename.split('.')[-1] == 'deb':
             filename = '.'.join(filename.split('.')[:-1])
-        os.chdir(work_dir)
-        commands.getstatusoutput(('fakeroot dpkg-deb -b "%s" "%s.deb"' % (root, filename)).encode('utf-8'))
-        self.timer.Stop()
-        self.gauge.SetValue(100)
-        self.Enable()
-    
-    def OnBuild(self, event):
-        path = self.path.GetValue()
+        
         if os.path.isdir(path):
             # Disable the window so it can't be closed while working
             self.Disable()
-            thread.start_new_thread(self.Build, (path, None))
+            thread.start_new_thread(self.Build, ((root, work_dir, filename), None))
             self.timer.Start(100)
         else:
             e = _('Could not locate \"%s\"')
             e = e % (path)
             wxMessageDialog(self, e, _('Error'), wxOK|wxICON_ERROR).ShowModal()
+            return
+        
+        if not os.path.isfile('{}/{}.deb'.format(work_dir, filename)):
+            self.build_error = (1, _('An unknown error has occurred'))
+            return
+        
+        error = self.build_error[0]
+        error_output = self.build_error[1]
+        
+        if error:
+            dbr.MessageDialog(self, title=_('Error'), icon=dbr.ICON_ERROR,
+                    text=_('Package build failed'), details=error_output).ShowModal()
+        
+        else:
+            wxMessageDialog(self, _('Package created successfully'), _('Success'),
+                    style=wxOK|wxICON_INFORMATION).ShowModal()
             
     
     def OnQuit(self, event):
