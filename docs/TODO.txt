@@ -1,6 +1,7 @@
 0.8.0 Release Changes:
 - Update files list in Makefile for distribution
 - Change format of save projects to zip archive
+- Fix & re-enable QuickBuild
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
