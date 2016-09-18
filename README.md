@@ -6,6 +6,7 @@
 * [Installation](#installation)
 * [Standalone Use](#standalone-use)
 * [Links](#links)
+* [Other Pages](#other-pages)
 
 
 ### [Description](#table-of-contents)
