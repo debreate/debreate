@@ -742,6 +742,8 @@ class QuickBuild(wxDialog):
             e = _('Could not locate \"%s\"')
             e = e % (path)
             wxMessageDialog(self, e, _('Error'), wxOK|wxICON_ERROR).ShowModal()
+            
     
     def OnQuit(self, event):
         self.Close()
+        event.Skip()
