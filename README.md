@@ -1,6 +1,11 @@
 ## Debreate - Debian Package Builder
 
-#### A graphical program for building Debian (.deb) packages. Package applications, media, artwork, etc.
+### Table of Contents
+* [Description](#description)
+
+### Description
+
+Debreate is a utility to aid in creating Debian (.deb) packages. Currently it only supports binary packaging. Package applications, media, artwork, etc.
 
 (http://debreate.sourceforge.net/)
 
