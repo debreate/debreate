@@ -27,7 +27,7 @@ Debreate needs these packages installed to run:
 * [python][pkg.python]
     * Version 2.7 is supported. The goal is to port it to Python 3.
 * python-wxgtk ([wxPython][wxpython])
-    * [python-wxgtk2.8][pkg.python-wxgtk2.8] is supported by Debreate. For systems newer than Wily, backports will need to be enabled or a [Wily repository mirror][pkg-wily.python-wxgtk2.8] will have to be added to /etc/apt/sources.list.
+    * [python-wxgtk2.8][pkg.python-wxgtk2.8] is supported by Debreate. For Ubuntu systems newer than Wily (15.10), backports will need to be enabled or a [Wily repository mirror][pkg-wily.python-wxgtk2.8] will have to be added to /etc/apt/sources.list.
     * [python-wxgtk3][pkg.python-wxgtk3] support is available in the [unstable development branch][src.debreate-unstable].
 * [python-wxversion][pkg.python-wxversion]
 * [dpkg][pkg.dpkg]
