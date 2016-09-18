@@ -2,6 +2,7 @@
 - Update files list in Makefile for distribution
 - Change format of save projects to zip archive
 - Fix & re-enable QuickBuild
+- Add a 'help' button for info on each page
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
