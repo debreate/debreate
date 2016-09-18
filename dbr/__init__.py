@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## @package dbr
+#  Documentation for dbr package
+#  
+#  more details ...
+
 
 from dbr.about import AboutDialog
 from dbr.buttons import \
