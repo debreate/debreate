@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## @package wiz_bin
+#  Documentation for wiz_bin package
+#  
+#  More details for wiz_bin
+
 from wiz_bin.build import Panel as PageBuild, QuickBuild
 from wiz_bin.clog import Panel as PageChangelog
 from wiz_bin.control import Panel as PageControl
