@@ -16,3 +16,4 @@ Misc:
 - Add debugging command line argument
 - Add a debug log window
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
+- Add Doxygen documentation
