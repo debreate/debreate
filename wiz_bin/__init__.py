@@ -6,6 +6,6 @@ from wiz_bin.control import Panel as PageControl
 from wiz_bin.copyright import Panel as PageCopyright
 from wiz_bin.depends import Panel as PageDepends
 from wiz_bin.files import Panel as PageFiles
-from wiz_bin.info import Panel as PageInfo
+from wiz_bin.greeting import Panel as PageGreeting
 from wiz_bin.menu import Panel as PageMenu
 from wiz_bin.scripts import Panel as PageScripts
