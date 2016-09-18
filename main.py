@@ -254,7 +254,7 @@ class MainWindow(wxFrame):
         
         self.Wizard = dbr.Wizard(self) # Binary
         
-        self.page_info = wiz_bin.PageInfo(self.Wizard, ID_INFO)
+        self.page_info = wiz_bin.PageGreeting(self.Wizard, ID_INFO)
         self.page_info.SetInfo()
         self.page_control = wiz_bin.PageControl(self.Wizard, ID_CTRL)
         self.page_depends = wiz_bin.PageDepends(self.Wizard, ID_DEPS)
