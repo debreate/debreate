@@ -59,7 +59,6 @@ FILES_dbr = \
 FILES_docs = \
 	docs/BUGS.txt \
 	docs/changelog \
-	docs/Doxyfile \
 	docs/LICENSE.txt \
 	docs/release_notes \
 	docs/TODO.txt \
