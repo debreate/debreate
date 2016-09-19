@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 
+## \package dbr.about
+#  Dialog that shows information about the application
+
 
 import wx
 
 import dbr
 
 
+## Dialog that shows information about the application
 class AboutDialog(wx.Dialog):
-    """Shows information about Debreate"""
+    ## Constructor
+    #  
+    #  \param parent
+    #        The parent window
+    #  \param id
+    #        Window id (FIXME: Not necessary)
+    #  \param title
+    #        Text to be shown in the title bar
     def __init__(self, parent, id, title):
         wx.Dialog.__init__(self, parent, id, title, size=(400,375))
         
@@ -33,18 +44,25 @@ class AboutDialog(wx.Dialog):
         tabs.AddPage(changelog, _(u'Changelog'))
         tabs.AddPage(license, _(u'License'))
         
-        # Put a picture on the first page
+        ## Application logo
         self.graphic = wx.StaticBitmap(about)
-        # Show the name and version of the application
+        
+        ## Name & version of the application
         self.app = wx.StaticText(about, -1)
         self.app.SetFont(bigfont)
-        # Show the author & website
+        
+        ## Application author
         self.author = wx.StaticText(about)
+        
+        ## Application's homepage
         self.website = wx.HyperlinkCtrl(about, -1,
                 'debreate.sourceforge.net', 'http://debreate.sourceforge.net/')
+        
+        ## Application's secondary homepage
         self.website2 = wx.HyperlinkCtrl(about, -1,
                 'github.com/AntumDeluge/debreate', 'https://github.com/AntumDeluge/debreate')
-        # Show a short description
+        
+        ## Short description
         self.description = wx.StaticText(about, -1)
         
         link_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -64,7 +82,7 @@ class AboutDialog(wx.Dialog):
         about.SetSizer(about_sizer)
         about.Layout()
         
-        # Show the credits
+        ## List of credits
         self.credits = wx.ListCtrl(credits, -1, style=wx.LC_REPORT)
         self.credits.InsertColumn(0, _(u'Name'), width=100)
         self.credits.InsertColumn(1, _(u'Job'), width=100)
@@ -81,7 +99,7 @@ class AboutDialog(wx.Dialog):
         # Keep users from resizing columns
         #wx.EVT_LIST_COL_BEGIN_DRAG(self.credits, wx.ID_ANY, self.NoResizeCol)
         
-        # Show changelog
+        ## Changelog text area
         self.changelog = wx.TextCtrl(changelog, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         #self.changelog.SetBackgroundColour((0,0,0,0))
         #self.changelog.SetForegroundColour((255,255,255,255))
@@ -93,7 +111,7 @@ class AboutDialog(wx.Dialog):
         changelog.Layout()
         
         
-        # Show the license
+        ## Licensing information text area
         self.license = wx.TextCtrl(license, -1, style=wx.TE_READONLY|wx.TE_MULTILINE)
         #self.license.SetBackgroundColour((0,0,0,0))
         #self.license.SetForegroundColour((255,255,255,255))
@@ -109,8 +127,11 @@ class AboutDialog(wx.Dialog):
         sys_info = wx.Panel(tabs, -1)
         tabs.AddPage(sys_info, _(u'System Information'))
         
+        ## System's <a href="https://www.python.org/">Python</a> version
         self.py_info = wx.StaticText(sys_info, -1,
                 _(u'Python version: {}').format(dbr.PY_VER_STRING))
+        
+        ## System's <a href="https://wxpython.org/">wxPython</a> version
         self.wx_info = wx.StaticText(sys_info, -1,
                 _(u'wxPython version: {}').format(dbr.WX_VER_STRING))
         
@@ -139,24 +160,47 @@ class AboutDialog(wx.Dialog):
         self.Layout()
     
     
+    ## Displays logo in 'about' tab
+    #  
+    #  \param graphic
+    #        Path to image file
     def SetGraphic(self, graphic):
         image = wx.Image(graphic)
         image.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
         self.graphic.SetBitmap(image.ConvertToBitmap())
-
+    
+    ## Displays version in 'about' tab
+    #  
+    #  \param version
+    #        String to display
     def SetVersion(self, version):
         self.app.SetLabel(u"%s %s" % (dbr.APP_NAME, version))
     
+    ## Display author's name
+    #  
+    #  \param author
+    #        String to display
     def SetAuthor(self, author):
         self.author.SetLabel(author)
     
+    ## Sets a hotlink to the app's homepage
+    #  
+    #  \param URL
+    #        URL to open when link is clicked
     def SetWebsite(self, URL):
         self.website.SetLabel(URL)
         self.website.SetURL(URL)
     
+    ## Displays a description about the app on the 'about' tab
     def SetDescription(self, desc):
         self.description.SetLabel(desc)
     
+    ## Adds a developer to the list of credits
+    #  
+    #  \param name
+    #        str: Developer's name
+    #  \param email
+    #        str: Developer's email address
     def AddDeveloper(self, name, email):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
@@ -164,6 +208,12 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 1, _(u'Developer'))
         #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
+    ## Adds a packager to the list of credits
+    #  
+    #  \param name
+    #        \b \e str : Packager's name
+    #  \param email
+    #        \b \e str : Packager's email address
     def AddPackager(self, name, email):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
@@ -171,6 +221,14 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 1, _(u'Packager'))
         #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
+    ## Adds a translator to the list of credits
+    #  
+    #  \param name
+    #        \b \e str : Translator's name
+    #  \param email
+    #        \b \e str : Translator's email address
+    #  \param lang
+    #        \b \e str : Locale code for the translation
     def AddTranslator(self, name, email, lang):
         job = _(u'Translation')
         job = '{} ({})'.format(job, lang)
@@ -179,6 +237,14 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, job)
     
+    ## Adds a general job to the credits list
+    #  
+    #  \param name
+    #        \b \e str : Name of job holder
+    #  \param job
+    #        \b \e str : Job description
+    #  \param email
+    #        \b \e str : Job holder's email address
     def AddJob(self, name, job, email):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
@@ -188,6 +254,10 @@ class AboutDialog(wx.Dialog):
     def NoResizeCol(self, event):
         event.Veto()
     
+    ## Sets text to be shown on the 'Changelog' tab
+    #  
+    #  \param log_file
+    #        \b \e str : Path to changelog file on filesystem
     def SetChangelog(self, log_file):
         log_data = open(log_file)
         log_text = log_data.read()
@@ -195,6 +265,10 @@ class AboutDialog(wx.Dialog):
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
     
+    ## Sets text to be shown on the 'License' tab
+    #  
+    #  \param lic_file
+    #        \b \e : Path to license file on the filesystem
     def SetLicense(self, lic_file):
         lic_data = open(lic_file)
         lic_text = lic_data.read()
@@ -202,6 +276,11 @@ class AboutDialog(wx.Dialog):
         self.license.SetValue(lic_text)
         self.license.SetInsertionPoint(0)
     
+    ## Defines action to take when 'Ok' button is press
+    #  
+    #  Closes the dialog.
+    #  \param event
+    #        <b><em>(wx.EVT_BUTTON)</em></b>
     def OnOk(self, event):
         self.Close()
     
