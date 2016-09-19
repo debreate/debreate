@@ -145,29 +145,23 @@ class Wizard(wx.Panel):
         self.Layout()
     
     def EnableNext(self, value=True):
-        if type(value) in (type(True), type(1)):
-            if value:
-                self.button_next.Enable()
-            else:
-                self.button_next.Disable()
+        if value:
+            self.button_next.Enable()
         else:
-            raise TypeError("Must be bool or int value")
-    
+            self.button_next.Disable()
+
     def DisableNext(self):
         self.EnableNext(False)
-    
+
     def EnablePrev(self, value=True):
-        if type(value) in (type(True), type(1)):
-            if value:
-                self.button_prev.Enable()
-            else:
-                self.button_prev.Disable()
+        if value:
+            self.button_prev.Enable()
         else:
-            raise TypeError("Must be bool or int value")
-    
+            self.button_prev.Disable()
+
     def DisablePrev(self):
         self.EnablePrev(False)
-    
+
     def GetCurrentPage(self):
         for page in self.pages:
             if page.IsShown():
