@@ -235,10 +235,10 @@ def TestConfig():
     # Check if config file in right format
     else:
         # Read the config file
-        file = open(dbconfig, 'r')
-        conf = file.read()
+        config_file = open(dbconfig, 'r')
+        conf = config_file.read()
         lines = conf.split('\n')
-        file.close()
+        config_file.close()
 
         # Split the lines into categories
         found = {}
