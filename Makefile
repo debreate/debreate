@@ -311,6 +311,9 @@ help:
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system\n"; \
 	\
+	echo "\tdoc-html"; \
+	echo "\t\t- Build Doxygen HTML files in docs/doxygen.\n"; \
+	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
 	\
@@ -334,6 +337,9 @@ help:
 	echo "\tclean"; \
 	echo "\t\t- Delete Debreate binary & any compiled Python"; \
 	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
+	\
+	echo "\tdoc-clean"; \
+	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
 	\
 	echo "\tdebuild-clean"; \
 	echo "\t\t- Delete files create by `tput bold`debuild`tput sgr0`\n"; \
