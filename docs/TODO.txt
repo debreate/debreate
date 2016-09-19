@@ -16,4 +16,7 @@ Misc:
 - Add debugging command line argument
 - Add a debug log window
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
-- Add Doxygen documentation
+- Finish Doxygen documentation
+- Compile gettext locales at build time
+- Only install *.mo locale files
+- Install doc files to standard directories
