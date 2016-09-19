@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.buttons
-#  
+#
 #  Custom buttons for application
 
 import wx, os

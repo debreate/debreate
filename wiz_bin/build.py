@@ -61,20 +61,20 @@ ID = wxNewId()
 class Panel(wxPanel):
     def __init__(self, parent, id=ID, name=_('Build')):
         wxPanel.__init__(self, parent, id, name=_('Build'))
-        
+
         # For identifying page to parent
         #self.ID = "BUILD"
-        
+
         self.parent = parent.parent # allows calling of parent events
-        
+
         # --- Tool Tips --- #
         md5_tip = wxToolTip(_('Create checksums for files in package'))
         del_tip = wxToolTip(_('Delete temporary directory tree after package has been created'))
         #tip_lint = wxToolTip(_("Checks the package for errors according to lintian's specifics"))
         dest_tip = wxToolTip(_("Choose the folder where you would like the .deb to be created"))
         build_tip = wxToolTip(_('Start building'))
-        
-        
+
+
         # ----- Extra Options
         self.chk_md5 = wxCheckBox(self, -1, _('Create md5sums file'))
         if not exists("/usr/bin/md5sum"):
@@ -82,16 +82,16 @@ class Panel(wxPanel):
             self.chk_md5.SetToolTip(wxToolTip(_('(Install md5sum package for this option)')))
         else:
             self.chk_md5.SetToolTip(md5_tip)
-        
+
         # For creating md5sum hashes
         self.md5 = dbr.MD5()
-        
+
         # Deletes the temporary build tree
         self.chk_del = wxCheckBox(self, -1, _('Delete build tree'))
         self.chk_del.SetToolTip(del_tip)
         self.chk_del.SetName("DEL")
         self.chk_del.SetValue(True)
-        
+
         # Checks the output .deb for errors
         self.chk_lint = wxCheckBox(self, -1, _('Check package for errors with lintian'))
         #self.chk_lint.SetToolTip(tip_lint)
@@ -101,10 +101,10 @@ class Panel(wxPanel):
         else:
             #self.chk_lint.SetToolTip(tip_lint)
             self.chk_lint.SetValue(True)
-        
+
         # Installs the deb on the system
         self.chk_install = wxCheckBox(self, -1, _('Install package after build'))
-        
+
         options1_border = wxStaticBox(self, -1, _('Extra options')) # Nice border for the options
         options1_sizer = wxStaticBoxSizer(options1_border, wxVERTICAL)
         options1_sizer.AddMany( [
@@ -113,26 +113,26 @@ class Panel(wxPanel):
             (self.chk_lint, 0),
             (self.chk_install, 0)
             ] )
-        
+
         # --- summary
         #self.summary = wxTextCtrl(self, style=wxTE_MULTILINE|wxTE_READONLY)
         # Lines to put in the summary
         #self.summary_type = wxEmptyString
-        
+
         #wxEVT_SHOW(self, self.SetSummary)
-        
+
         # --- BUILD
         self.build_button = dbr.ButtonBuild64(self)
         self.build_button.SetToolTip(build_tip)
-        
+
         self.build_button.Bind(wxEVT_BUTTON, self.OnBuild)
-        
+
         build_sizer = wxBoxSizer(wxHORIZONTAL)
         build_sizer.Add(self.build_button, 1)
-        
+
         # --- Display log
         self.log = dbr.OutputLog(self)
-        
+
         # --- Page 7 Sizer --- #
         page_sizer = wxBoxSizer(wxVERTICAL)
         page_sizer.AddSpacer(10)
@@ -143,15 +143,15 @@ class Panel(wxPanel):
         page_sizer.Add(build_sizer, 0, wxALIGN_CENTER)
         page_sizer.Add(self.log, 1, wxEXPAND|wxLEFT|wxRIGHT|wxBOTTOM, 5)
         #page_sizer.AddStretchSpacer(10)
-        
+
         self.SetAutoLayout(True)
         self.SetSizer(page_sizer)
         self.Layout()
-        
-    
+
+
     def SetSummary(self, event):
         #page = event.GetSelection()
-        
+
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
@@ -173,9 +173,9 @@ class Panel(wxPanel):
                 scripts_to_make = '%s: %s' % (s, ', '.join(scripts_to_make))
             else:
                 scripts_to_make = '%s: 0' % (s)
-                    
+
             self.summary.SetValue("\n".join((file_count, scripts_to_make)))
-    
+
     def OnBuild(self, event):
         # Check to make sure that all required fields have values
         meta = self.parent.page_control
@@ -183,47 +183,47 @@ class Panel(wxPanel):
         if self.parent.page_menu.activate.GetValue():
             required.append(self.parent.page_menu.name_input)
         cont = True
-        
+
         for item in required:
             if item.GetValue() == wxEmptyString:
                 cont = False
-        
+
         if cont:
             # Characters that should not be in filenames
             invalid_chars = (" ", "/")
-            
+
             # Get information from control page for default filename
             pack_value = meta.pack.GetValue()
             pack_letters = pack_value.split()  # Remove whitespace
             pack = "-".join(pack_letters)  # Replace whitespace with "-"
-            
+
             ver_value = meta.ver.GetValue()
             ver_digits = ver_value.split()  # Remove whitespace
             ver = "".join(ver_digits)
-            
+
             arch_index = meta.arch.GetCurrentSelection()
             arch = meta.arch_opt[arch_index]
-            
+
             # If all required fields were met, continue to build
             def BuildIt(build_path, filename):
                 temp_tree = "%s/%s__dbp__" % (build_path, filename)
-                
+
                 deb = "\"%s/%s.deb\"" % (build_path, filename) # Actual path to new .deb
-                
+
                 # *** Pre-build operations *** #
-                
+
                 tasks = 2 # 2 Represents preparing build tree and actual build of .deb
                 progress = 0
                 prebuild_progress = wxProgressDialog(_('Preparing to build'), _('Gathering control information'), 9,
                         self, wxPD_AUTO_HIDE)
-                
+
                 # Control & Depends (string)
                 wxYield()
                 control_data = self.parent.page_control.GetCtrlInfo()
                 progress += 1
                 tasks += 1
                 prebuild_progress.Update(progress, _('Checking files'))
-                
+
                 # Files (tuple)
                 wxYield()
                 files_data = self.parent.page_files.GatherData().split("\n")[2:-1]
@@ -231,7 +231,7 @@ class Panel(wxPanel):
                 for file in files_data:
                     tasks += 1
                 prebuild_progress.Update(progress, _('Checking scripts'))
-                
+
                 # Scripts (tuple)
                 wxYield()
                 scripts_data = self.parent.page_scripts.GatherData()[1:-1]
@@ -244,7 +244,7 @@ class Panel(wxPanel):
                 scripts_temp = (preinst, postinst, prerm, postrm, )
                 # Create a list to put the actual scripts in
                 scripts = []
-                
+
                 for script in scripts_temp:
                     create_script = False
                     script_name = script[2]
@@ -254,14 +254,14 @@ class Panel(wxPanel):
                         create_script = True # Show that we are going to make the script
                     script = "\n".join(script[1:])
                     scripts.append((script_name, create_script, script))
-                
+
                 ###############################
                 ## *** RESERVED FOR DOCS *** ##
                 ###############################
-                
+
                 # *** Changelog
                 prebuild_progress.Update(progress, _('Checking changelog'))
-                
+
                 wxYield()
                 #create_docs = False
                 #doc_data = self.parent.page_docs.GatherData()
@@ -275,12 +275,12 @@ class Panel(wxPanel):
                     tasks += 1
                     changelog_dest = changelog_data[0].split("<<DEST>>")[1].split("<</DEST>>")[0]
                     changelog_data = "\n".join(changelog_data[1:])
-                    
+
                 progress += 1
-                
+
                 # *** COPYRIGHT
                 prebuild_progress.Update(progress, _('Checking copyright'))
-                
+
                 wxYield()
                 copyright = self.parent.page_cpright.GetCopyright()
                 create_copyright = False
@@ -288,51 +288,51 @@ class Panel(wxPanel):
                     create_copyright = True
                     tasks += 1
                 progress += 1
-                
+
                 # *** MENU (list)
                 prebuild_progress.Update(progress, _('Checking menu launcher'))
-                
+
                 wxYield()
                 create_menu = self.parent.page_menu.activate.GetValue()
                 if create_menu:
                     tasks += 1
                     menu_data = self.parent.page_menu.GetMenuInfo().split("\n")
                 progress += 1
-                
+
                 # *** MD5SUMS
                 prebuild_progress.Update(progress, _('Checking create md5sums'))
                 wxYield()
-                
+
                 create_md5 = self.chk_md5.GetValue()
                 if create_md5:
                     tasks += 1
                 progress += 1
-                
+
                 # *** Delete Build Tree
                 prebuild_progress.Update(progress, _('Checking delete build tree'))
                 wxYield()
-                
+
                 delete_tree = self.chk_del.GetValue()
                 if delete_tree:
                     tasks += 1
                 progress += 1
-                
+
                 # *** Check for Errors
                 prebuild_progress.Update(progress, _('Checking lintian'))
                 wxYield()
-                
+
                 error_check = self.chk_lint.GetValue()
                 if error_check:
                     tasks += 1
                 progress += 1
-                
+
                 prebuild_progress.Update(progress)
-                
+
 #                try:
                 progress = 0
                 build_progress = wxProgressDialog(_('Building'), _('Preparing build tree'), tasks, self,
                         wxPD_ELAPSED_TIME|wxPD_ESTIMATED_TIME|wxPD_AUTO_HIDE)#|wxPD_CAN_ABORT)
-                
+
                 wxYield()
                 if os.path.isdir("%s/DEBIAN" % (temp_tree)):
                     c = 'rm -r "%s"' % (temp_tree)
@@ -341,10 +341,10 @@ class Panel(wxPanel):
                 # Make a fresh build tree
                 os.makedirs("%s/DEBIAN" % (temp_tree))
                 progress += 1
-                
+
                 # *** FILES
                 build_progress.Update(progress, _('Copying files'))
-                
+
                 wxYield()
                 for file in files_data:
                     # Create new directories
@@ -371,17 +371,17 @@ class Panel(wxPanel):
                     progress += 1
                     build_progress.Update(progress)
                 #progress += 1
-                
+
                 # Make sure that the dirctory is available in which to place documentation
                 if create_changelog or create_copyright:
                     doc_dir = "%s/usr/share/doc/%s" % (temp_tree, pack)
                     if not os.path.isdir(doc_dir):
                         os.makedirs(doc_dir)
-                
+
                 # *** CHANGELOG
                 if create_changelog:
                     build_progress.Update(progress, _('Creating changelog'))
-                    
+
                     wxYield()
                     # If changelog will be installed to default directory
                     if changelog_dest == "DEFAULT":
@@ -401,21 +401,21 @@ class Panel(wxPanel):
                                 _('Error'), wxOK)
                         changelog_error.ShowModal()
                     progress += 1
-                
+
                 # *** COPYRIGHT
                 if create_copyright:
                     build_progress.Update(progress, _('Creating copyright'))
-                    
+
                     wxYield()
                     cp_file = open("%s/usr/share/doc/%s/copyright" % (temp_tree, pack), "w")
                     cp_file.write(copyright.encode('utf-8'))
                     cp_file.close()
                     progress += 1
-                
+
                 # *** MENU
                 if create_menu:
                     build_progress.Update(progress, _('Creating menu launcher'))
-                    
+
                     wxYield()
                     #if menu_data[0]:
                     # This may be changed later to set a custom directory
@@ -423,7 +423,7 @@ class Panel(wxPanel):
                     for field in menu_data:
                         if field.split("=")[0] == "Name":
                             menu_filename = "=".join(field.split("=")[1:])
-                    
+
                     # Remove invalid characters from filename
                     for char in invalid_chars:
                         menu_filename = "_".join(menu_filename.split(char)) # Replace invalid char with "underscore"
@@ -433,19 +433,19 @@ class Panel(wxPanel):
                     menu_file.write("\n".join(menu_data).encode('utf-8'))
                     menu_file.close()
                     progress += 1
-                
+
                 if create_md5:
                     build_progress.Update(progress, _('Creating md5sums'))
-                    
+
                     wxYield()
                     self.md5.WriteMd5(build_path, temp_tree)
                     progress += 1
                     build_progress.Update(progress, _('Creating control file'))
-                
+
                 # *** CONTROL
                 else:
                     build_progress.Update(progress, _('Creating control file'))
-                
+
                 wxYield()
                 # Get installed-size
                 installed_size = os.popen(("du -hsk \"%s\"" % (temp_tree)).encode('utf-8')).readlines()
@@ -461,10 +461,10 @@ class Panel(wxPanel):
                 control_file.write(control_data.encode('utf-8'))
                 control_file.close()
                 progress += 1
-                
+
                 # *** SCRIPTS
                 build_progress.Update(progress, _('Creating scripts'))
-                
+
                 wxYield()
                 for script in scripts:
                     if script[1]:
@@ -475,7 +475,7 @@ class Panel(wxPanel):
                         os.system(('chmod +x "%s/DEBIAN/%s"' % (temp_tree, script[0])).encode('utf-8'))
                         progress += 1
                         build_progress.Update(progress)
-                
+
                 # *** FINAL BUILD
                 build_progress.Update(progress, _('Running dpkg'))[0]
 #                c_tree = temp_tree.encode('utf-8')
@@ -485,21 +485,21 @@ class Panel(wxPanel):
                 working_dir = os.path.split(temp_tree)[0]
                 c_tree = os.path.split(temp_tree)[1]
                 c_deb = '%s.deb' % filename
-                
+
                 # Move the working directory becuase dpkg seems to have problems with spaces in path
                 os.chdir(working_dir)
-                            
+
                 wxYield()
 #                if subprocess.call(['fakeroot', 'dpkg', '-b', c_tree, c_deb]):
 #                    build_status = (1, 0)
 #                try:
                 build_status = commands.getstatusoutput(('fakeroot dpkg-deb -b "%s" "%s"' % (c_tree, c_deb)).encode('utf-8'))
                 progress += 1
-                
+
                 # *** DELETE BUILD TREE
                 if delete_tree:
                     build_progress.Update(progress, _('Removing temp directory'))
-                    
+
                     # Don't delete build tree if build failed
                     if not build_status[0]:
 	                    wxYield()
@@ -508,12 +508,12 @@ class Panel(wxPanel):
 	                        wxMessageDialog(self, _('An error occurred when trying to delete the build tree'),
 								_('Error'), style=wxOK|wxICON_EXCLAMATION).ShowModal()
                     progress += 1
-                
+
                 # *** ERROR CHECK
                 if error_check:
                     build_progress.Update(progress, _('Checking package for errors'))
                     wxYield()
-                    
+
                     errors = commands.getoutput(('lintian %s' % deb).encode('utf-8'))
                     e1 = _('Lintian found some issues with the package.')
                     e2 = _('Details saved to %s')
@@ -528,17 +528,17 @@ class Panel(wxPanel):
                         errors
                         ).ShowModal()
                     progress += 1
-                
+
                 # Close progress dialog
                 build_progress.Update(progress)
-                
+
                 if build_status[0]:
                     dbr.MessageDialog(self, -1, _('Error'), dbr.ICON_ERROR,
 							_('Package build failed'), build_status[1]).ShowModal()
                 else:
                     wxMessageDialog(self, _('Package created successfully'), _('Success'),
                             style=wxOK|wxICON_INFORMATION).ShowModal()
-                    
+
                     # Installing the package
                     if self.chk_install.GetValue():
                         self.log.ToggleOutput()
@@ -564,19 +564,19 @@ class Panel(wxPanel):
                                 print _(u'Authenticated')
                                 break
                             tries += 1
-                        
+
                         # Check if package installed correctly
                         if (int(os.popen(u'dpkg -L %s ; echo $?' % (pack)).read().split(u'\n')[-2]) and command_executed):
                             wxMessageDialog(self, _(u'The package failed to install'), _(u'Error'), wxOK|wxICON_ERROR).ShowModal()
                         elif (command_executed):
                             wxMessageDialog(self, _(u'The package installed successfully'), _(u'Sucess'), wxOK).ShowModal()
                         self.log.ToggleOutput()
-                
+
                	return build_status[0]
-	               	
-            
+
+
             cont = False
-            
+
             # Dialog for save destination
             ttype = _('Debian Packages')
             if self.parent.cust_dias.IsChecked():
@@ -595,19 +595,19 @@ class Panel(wxPanel):
                     cont = True
                     path = os.path.split(save_dia.GetPath())[0]
                     filename = os.path.split(save_dia.GetPath())[1].split(".deb")[0]
-            
+
             if cont:
                 for char in invalid_chars:
                     filename = "_".join(filename.split(char))
                 BuildIt(path, filename)
-        
+
         else:
             # If continue returned False, show an error dialog
             err = wxMessageDialog(self, _('One of the required fields is empty'), _("Can't Continue"),
                     wxOK|wxICON_WARNING)
             err.ShowModal()
             err.Destroy()
-    
+
     def ResetAllFields(self):
         self.chk_install.SetValue(False)
         # chk_md5 should be reset no matter
@@ -623,7 +623,7 @@ class Panel(wxPanel):
         else:
             self.chk_lint.Disable()
             self.chk_lint.SetValue(False)
-    
+
     def SetFieldData(self, data):
         self.ResetAllFields()
         build_data = data.split("\n")
@@ -632,10 +632,10 @@ class Panel(wxPanel):
         self.chk_del.SetValue(int(build_data[1]))
         if exists("usr/bin/lintian"):
             self.chk_lint.SetValue(int(build_data[2]))
-    
+
     def GatherData(self):
         build_list = []
-        
+
         if self.chk_md5.GetValue(): build_list.append("1")
         else: build_list.append("0")
         if self.chk_del.GetValue(): build_list.append("1")
@@ -652,13 +652,13 @@ class Panel(wxPanel):
 class QuickBuild(wxDialog):
     def __init__(self, parent, id=-1, title=_('Quick Build')):
         wxDialog.__init__(self, parent, id, title, wxDefaultPosition, (400,200))
-        
+
         self.parent = parent # allows calling parent events
-        
+
         # Set icon
 #        rpmicon = wxIcon("%s/bitmaps/rpm16.png" % application_path, wxBITMAP_TYPE_PNG)
 #        self.SetIcon(rpmicon)
-        
+
         filename_txt = wxStaticText(self, -1, _('Name'))
         self.filename = wxTextCtrl(self, -1)
         path_txt = wxStaticText(self, -1, _('Path to build tree'))
@@ -667,29 +667,29 @@ class QuickBuild(wxDialog):
         self.build = dbr.ButtonBuild(self)
         self.build.SetToolTip(wxToolTip(_('Start building')))
         self.cancel = dbr.ButtonCancel(self)
-        
+
         wxEVT_BUTTON(self.get_path, -1, self.Browse)
         wxEVT_BUTTON(self.build, -1, self.OnBuild)
         wxEVT_BUTTON(self.cancel, -1, self.OnQuit)
-        
+
         H0 = wxBoxSizer(wxHORIZONTAL)
         H0.Add(self.filename, 1)
-        
+
         H1 = wxBoxSizer(wxHORIZONTAL)
         H1.Add(self.path, 3, wxALIGN_CENTER)
         H1.Add(self.get_path, 0, wxALIGN_CENTER)
-        
+
         H2 = wxBoxSizer(wxHORIZONTAL)
         H2.Add(self.build, 1, wxRIGHT, 5)
         H2.Add(self.cancel, 1)
-        
+
         self.gauge = wxGauge(self, -1, 100)
-        
+
         # Create a timer for the gauge
         self.timer = wxTimer(self)
-        
+
         self.Bind(wxEVT_TIMER, self.ShowProgress, self.timer)
-        
+
         Vmain = wxBoxSizer(wxVERTICAL)
         Vmain.Add(filename_txt, 0, wxALIGN_BOTTOM|wxALIGN_RIGHT|wxLEFT|wxRIGHT|wxTOP, 5)
         Vmain.Add(H0, 2, wxEXPAND|wxALL, 5)
@@ -697,19 +697,19 @@ class QuickBuild(wxDialog):
         Vmain.Add(H1, 2, wxEXPAND|wxALL, 5)
         Vmain.Add(H2, 0, wxALIGN_CENTER|wxALL, 5)
         Vmain.Add(self.gauge, 2, wxEXPAND|wxALL, 5)
-        
+
         self.SetAutoLayout(True)
         self.SetSizer(Vmain)
         self.Layout()
-        
+
         # Debugging build
         self.build_error = (0, '"QuickBuild.build_error" still in initial state')
-        
+
         # DEBUG:
         self.filename.SetValue('blah')
         self.path.SetValue('/media/jordan/External/Development/Debreate/test-app/build/dummy-package_0.1_all__dbp__')
-    
-    
+
+
     def Browse(self, event):
         if self.parent.cust_dias.IsChecked():
             dia = dbr.OpenDir(self)
@@ -720,10 +720,10 @@ class QuickBuild(wxDialog):
             if dia.ShowModal() == wxID_OK:
                 self.path.SetValue(dia.GetPath())
         dia.Destroy()
-    
+
     def ShowProgress(self, event):
         self.gauge.Pulse()
-    
+
     def Build(self, path, arg2):
         root = path[1]
         work_dir = path[0]
@@ -733,7 +733,7 @@ class QuickBuild(wxDialog):
         self.timer.Stop()
         self.gauge.SetValue(100)
         self.Enable()
-    
+
     def OnBuild(self, event):
         path = self.path.GetValue()
         root = os.path.split(path)[1]
@@ -743,7 +743,7 @@ class QuickBuild(wxDialog):
             filename = root
         if filename.split('.')[-1] == 'deb':
             filename = '.'.join(filename.split('.')[:-1])
-        
+
         if os.path.isdir(path):
             # Disable the window so it can't be closed while working
             self.Disable()
@@ -754,23 +754,23 @@ class QuickBuild(wxDialog):
             e = e % (path)
             wxMessageDialog(self, e, _('Error'), wxOK|wxICON_ERROR).ShowModal()
             return
-        
+
         if not os.path.isfile('{}/{}.deb'.format(work_dir, filename)):
             self.build_error = (1, _('An unknown error has occurred'))
             return
-        
+
         error = self.build_error[0]
         error_output = self.build_error[1]
-        
+
         if error:
             dbr.MessageDialog(self, title=_('Error'), icon=dbr.ICON_ERROR,
                     text=_('Package build failed'), details=error_output).ShowModal()
-        
+
         else:
             wxMessageDialog(self, _('Package created successfully'), _('Success'),
                     style=wxOK|wxICON_INFORMATION).ShowModal()
-            
-    
+
+
     def OnQuit(self, event):
         self.Close()
         event.Skip()

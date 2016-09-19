@@ -7,7 +7,7 @@ class MD5():
     def __init__(self):
         #self.rootdir = rootdir # Set the working folder, same folder where deb is built
         pass
-    
+
     def IsExecutable(self, file):
         # Find out if the file is an executable
 #        executable = commands.getoutput("if [ -x %s ]\nthen echo true\nfi" % file)  #bash version
@@ -30,7 +30,7 @@ class MD5():
 #                elif not self.IsExecutable(file):
                 md5 = commands.getoutput(("md5sum -t \"%s\"" % file))
                 temp_list.append(md5)
-            
+
         for item in temp_list:
             # Remove [tempdir] from the path name in the md5sum so that it has a
             # true unix path
@@ -38,7 +38,7 @@ class MD5():
             sum_split = item.split("%s/" % tempdir)
             sum_join = "".join(sum_split)
             md5_list.append(sum_join)
-        
+
         file = open("%s/DEBIAN/md5sums" % tempdir, "w")  # Create the md5sums file in the "DEBIAN" directory
         file.write("%s\n" % "\n".join(md5_list))  # Write the final list to the file
         file.close() # Save the file

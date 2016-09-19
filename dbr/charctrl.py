@@ -7,11 +7,11 @@
 import wx
 
 ## A customized text area that disallows certain character input
-#  
+#
 #  \implements wx.TextCtrl
 class CharCtrl(wx.TextCtrl):
     ## Constructor
-    #  
+    #
     #  \param parent
     #        Parent window
     #  \param id
@@ -20,32 +20,32 @@ class CharCtrl(wx.TextCtrl):
     #        The initial text displayed (default: empty)
     def __init__(self, parent, id=wx.ID_ANY, value=wx.EmptyString):
         wx.TextCtrl.__init__(self, parent, id, value)
-        
+
         ## List of characters that cannot be entered
-        #  
+        #
         #  NOTE: 46 = ".", 47 = "/"
         self.invalid_chars = (" ", "/", "_")
-        
+
         ## List of keys that should not be affected when using the spacebar
-        #  
+        #
         #  ??? FIXME: 'spacebar' or 'shift' typo?
         self.shift_exceptions = (wx.WXK_LEFT, wx.WXK_RIGHT, wx.WXK_UP, wx.WXK_DOWN)
-        
+
         ## List of keys that should not be affected when using the Ctrl key
         self.ctrl_exceptions = ("A", "A")
-        
+
         wx.EVT_KEY_UP(self, self.OnKeyUp)
-    
+
     ## Actions to take when key is released
     def OnKeyUp(self, event):
         modifier = event.GetModifiers()
         keycode = event.GetKeyCode()
-        
+
         char = ''
         insert_index = self.GetInsertionPoint()
         if insert_index > 0:
             char = self.GetValue()[insert_index - 1]
-        
+
         def ReplaceChar():
             value = self.GetValue()
             insertion = self.GetInsertionPoint()
@@ -55,8 +55,8 @@ class CharCtrl(wx.TextCtrl):
                 if value[total_chars] in self.invalid_chars:
                     self.Replace(total_chars, total_chars+1, "-")
             self.SetInsertionPoint(insertion)
-            
-        
+
+
         if modifier == wx.MOD_SHIFT and char in self.invalid_chars:
             ReplaceChar()
         elif char in self.invalid_chars:

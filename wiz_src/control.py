@@ -16,5 +16,5 @@ ID = wxNewId()
 class Panel(wxPanel):
     def __init__(self, parent, name=_('Control')):
         wxPanel.__init__(self, parent, ID, name=name)
-        
+
         page_layout = wxBoxSizer(wxVERTICAL)

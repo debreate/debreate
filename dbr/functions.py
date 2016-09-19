@@ -25,44 +25,44 @@ from dbr.constants import DEBUG
 
 
 ## Get the current version of the application
-#  
+#
 #  The alias \p \e \b dbr.GetCurrentVersion can be used.
 #  \return
 #        Application's version tuple
-#  
+#
 #  \b Alias: \e dbr.GetCurrentVersion
 def GetCurrentVersion():
     try:
         request = urlopen(u'%s/current.txt' % (HOMEPAGE))
         version = request.readlines()[0]
         version = version.split('.')
-        
+
         if ('\n' in version[-1]):
             # Remove newline character
             version[-1] = version[-1][:-1]
-        
+
         # Convert to integer
         for v in range(0, len(version)):
             version[v] = int(version[v])
-        
+
         # Change container to tuple and return it
         version = (version[0], version[1], version[2])
         return version
-    
+
     except URLError, err:
         #err = unicode(err)
         return err
 
 
 ## Checks if a field (or widget) is enabled
-#  
+#
 #  This is used for compatibility between wx 2.8 & 3.0.
 #    3.0 uses the method 'IsThisEnabled()' rather than
 #    'IsEnabled()' to get the 'intrinsic' status of the
 #    widget.
 #  \param field
 #        The widget (wxWindow) to be checked
-#  
+#
 #  \b Alias: \e dbr.FieldEnabled
 def FieldEnabled(field):
     # wx 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
@@ -73,12 +73,12 @@ def FieldEnabled(field):
 
 
 ## Execute a command with sudo (super user) privileges
-#  
+#
 #  \param password
 #        Password of the current user's login session
 #  \param command
 #        The command to be run with elevated/super user privileges
-#  
+#
 #  \b Alias: \e dbr.RunSudo
 def RunSudo(password, command):
     command = u'echo %s | sudo -S %s ; echo $?' % (password, command)
@@ -90,12 +90,12 @@ def RunSudo(password, command):
     return True
 
 ## Checks if a specified executable can be executed on the system
-#  
+#
 #  FIXME: This function is currently not used anywhere in the code
 #  \param command:
 #        The command to be checked
 #  \rtype bool
-#  
+#
 #  \b Alias: \e dbr.CommandExists
 def CommandExists(command):
     try:
@@ -111,11 +111,11 @@ def CommandExists(command):
     return exists
 
 ## Checks if the system is using a specific version of Python
-#  
+#
 #  FIXME: This function is currently not used anywhere in the code
 #  \param version
 #        The minimal version that should be required
-#  
+#
 #  \b Alias: \e dbr.RequirePython
 def RequirePython(version):
     error = 'Incompatible python version'
@@ -131,10 +131,10 @@ def RequirePython(version):
     raise ValueError('Wrong type for argument 1 of RequirePython(version)')
 
 ## Checks if a text string is empty
-#  
+#
 #  \param text
 #        The string to be checked
-#  
+#
 #  \b Alias: \e dbr.TextIsEmpty
 def TextIsEmpty(text):
     text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
@@ -143,7 +143,7 @@ def TextIsEmpty(text):
 
 
 ## Retrieves a dialog for display
-#  
+#
 #  If 'Use custom dialogs' is selected from
 #    the main window, the a custom defined
 #    dialog is returned. Otherwise the systems
@@ -159,24 +159,24 @@ def TextIsEmpty(text):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-#  
+#
 #  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
     if DEBUG:
         print('DEBUG: Getting file save dialog')
-    
+
     if main_window.cust_dias.IsChecked():
         file_save = dbr.custom.SaveFile(main_window, title, default_extension)
         file_save.SetFilter(ext_filter)
     else:
         file_save = wxFileDialog(main_window, title, os.getcwd(), '', ext_filter,
                 wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
-    
+
     return file_save
 
 
 ## Used to display a dialog window
-#  
+#
 #  For custom dialogs, the method 'DisplayModal()' is used
 #    to display the dialog. For stock dialogs, 'ShowModal()'
 #    is used. The dialog that will be shown is determined
@@ -188,19 +188,19 @@ def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
 #  \return
 #    'True' if the dialog's return value is 'wx.ID_OK', 'False'
 #      otherwise
-#  
+#
 #  \b Alias: \e dbr.ShowDialog
 def ShowDialog(main_window, dialog):
     if DEBUG:
         print('DEBUG: Showing dialog')
-    
+
     if main_window.cust_dias.IsChecked():
         return dialog.DisplayModal()
     else:
         return dialog.ShowModal() == wxID_OK
 
 ## Retrieves the current year
-#  
+#
 #  \return
 #        String value of the current year
 def GetYear():

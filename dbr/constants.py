@@ -19,12 +19,12 @@ from dbr.language import GT
 # *** System Information *** #
 
 ## Full path to the application's directory
-#  
+#
 #  FIXME: Hack to get parent directory
 application_path = os.path.dirname(os.path.dirname(__file__))
 
 ## Root home directory where configuration is stored
-#  
+#
 #  The configuration file is set to HOME/.config/debreate/config
 homedir = os.getenv('HOME')
 
@@ -58,7 +58,7 @@ sf_project = u'https://sourceforge.net/projects/debreate'
 PROJECT_FILENAME_SUFFIX = 'dbpz'
 
 ## Enable debugging
-#  
+#
 #  If DEBUG is set to 'True', some extra code will be executed
 DEBUG = True
 

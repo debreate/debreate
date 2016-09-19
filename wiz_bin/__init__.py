@@ -2,7 +2,7 @@
 
 ## @package wiz_bin
 #  Documentation for wiz_bin package
-#  
+#
 #  More details for wiz_bin
 
 from wiz_bin.build import Panel as PageBuild, QuickBuild

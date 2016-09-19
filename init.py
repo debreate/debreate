@@ -89,20 +89,20 @@ def StartFirstRun():
     frame = FirstRun(None, -1, _('Debreate First Run'))
 #	frame.SetMessage("Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
 #or if the configuration file becomes corrupted.")
-    
+
     # Temporary message while in pre-alpha
 #	frame.SetMessage("Creating the default configuration file.  To delete this file type \
 #the following command in a terminal\n\n\
 #rm -r ~/.debreate\n\n\
 #!!--> Debreate 0.7 is still in pre-alpha.  This software is not fully functional. <--!!")
-    
+
     # Temporary message while in alpha
     m1 = _('Thank you for using Debreate.')
     m2 = _('This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
     frame.SetMessage('{}\n\n\
 {}\n\n\
 rm -r ~/.config/debreate'.format(m1, m2))
-    
+
     frame.ShowModal()
     if frame.OK:
         frame.Destroy()
@@ -118,7 +118,7 @@ def Run(pos, size, maximize, center, dias, cwd):
     app = wxApp()
     frame = main.MainWindow(None, -1, "", pos, size)
     frame.SetTitle(frame.default_title)
-    
+
     # Find out if user is using a dark theme (font will be light)
     # Then we can change the priority colors according to that theme
     darktheme = False
@@ -137,28 +137,28 @@ def Run(pos, size, maximize, center, dias, cwd):
     dbr.Disabled = frame.GetBackgroundColour()
     # Get rid of the dummy text control
     dummy.Destroy()
-    
+
     if project_file:
         frame.OpenProject(project_file, filename)
     else:
         # Change current working directory
         os.chdir(cwd)
-    
+
     if center:
         # Center the window
         frame.Center()
     if maximize:
         # Maximize the window
         frame.Maximize()
-    
+
     if dias:
         # Uses custom dialogs
         frame.cust_dias.Check()
-    
+
     # Send the configuration path to Debreate
     frame.dbdir = dbdir
     frame.dbconfig = dbconfig
-    
+
     frame.Show()
     app.MainLoop()
 
@@ -167,25 +167,25 @@ class FirstRun(wxDialog):
     """Create the config file on first run or if file has been corrupted"""
     def __init__(self, parent, id, title):
         wxDialog.__init__(self, parent, id, title, size=(450,300))
-        
+
         # "OK" button sets to True
         self.OK = False
-        
+
         # Set the titlebar icon
         self.SetIcon(wxIcon("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG))
-        
+
         # Display a message to create a config file
         self.message = wxStaticText(self, -1)
-        
+
         # Show the Debreate icon
         dbicon = wxBitmap("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG)
         icon = wxStaticBitmap(self, -1, dbicon)
-        
+
         # Button to confirm
         self.button_ok = wxButton(self, wxID_OK)
-        
+
         wxEVT_BUTTON(self.button_ok, -1, self.OnOk)
-        
+
         # Nice border
         self.border = wxStaticBox(self, -1)
         border_box = wxStaticBoxSizer(self.border, wxHORIZONTAL)
@@ -193,19 +193,19 @@ class FirstRun(wxDialog):
         border_box.Add(icon, 0, wxALIGN_CENTER)
         border_box.AddSpacer(10)
         border_box.Add(self.message, 1, wxALIGN_CENTER)
-        
+
         # Set Layout
         sizer = wxBoxSizer(wxVERTICAL)
         sizer.Add(border_box, 1, wxEXPAND|wxLEFT|wxRIGHT, 5)
         sizer.Add(self.button_ok, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM|wxTOP, 5)
-        
+
         self.SetSizer(sizer)
         self.Layout()
-    
+
     def SetMessage(self, message):
         self.message.SetLabel(message)
         #self.message.Wrap(00)
-    
+
     def OnOk(self, event):
         # See if the config file exists
         if not os.path.isdir(dbdir):
@@ -222,7 +222,7 @@ def TestConfig():
     if os.path.isdir(old_config):
         print 'Found deprecated configuration, deleting...'
         shutil.rmtree(old_config)
-    
+
     # Check if config file exists
     if not os.path.isfile(dbconfig):
         print _("Config not found, launching \"First Run\"")

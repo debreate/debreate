@@ -23,9 +23,9 @@ ID = wxNewId()
 class Panel(wxPanel):
     def __init__(self, parent, id=wxID_ANY):
         wxPanel.__init__(self, parent, id, name=_('Copyright'))
-        
+
         self.debreate = parent.parent
-        
+
         lic_options = (
         	'Apache-2.0', 'Artistic', 'BSD', 'GFDL', 'GFDL-1.2',
         	'GFDL-1.3', 'GPL', 'GPL-1', 'GPL-2', 'GPL-3', 'LGPL',
@@ -34,36 +34,36 @@ class Panel(wxPanel):
         template_btn = wxButton(self, -1, _('Generate Template'))
         self.template_lic = wxChoice(self, -1, choices=lic_options)
         self.template_lic.SetSelection(0)
-        
+
         wxEVT_BUTTON(template_btn, -1, self.GenerateTemplate)
-        
+
         template_sizer = wxBoxSizer(wxHORIZONTAL)
         template_sizer.Add(template_btn, 1)
         template_sizer.Add(self.template_lic, 1)
-        
+
         self.cp_display = wxTextCtrl(self, style=wxTE_MULTILINE)
-        
+
         main_sizer = wxBoxSizer(wxVERTICAL)
         main_sizer.Add(template_sizer, 0, wxALL, 5)
         main_sizer.Add(self.cp_display, 1, wxEXPAND|wxALL, 5)
-        
+
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
         self.Layout()
-    
+
     def GetCopyright(self):
         return self.cp_display.GetValue()
-    
+
     def GatherData(self):
         data = self.GetCopyright()
         return "<<COPYRIGHT>>\n%s\n<</COPYRIGHT>>" % data
-    
+
     def SetCopyright(self, data):
         self.cp_display.SetValue(data)
-    
+
     def ResetAllFields(self):
         self.cp_display.Clear()
-    
+
     def GenerateTemplate(self, event):
         lic_path = '/usr/share/common-licenses/{}'.format(self.template_lic.GetString(self.template_lic.GetSelection()))
         text = ''

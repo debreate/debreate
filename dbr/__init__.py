@@ -2,10 +2,10 @@
 
 ## \package dbr
 #  Documentation for \b \e dbr package
-#  
+#
 #  Most any member under a namespace can be called with
 #    directly as a module of dbr.
-#    
+#
 #    E.g: <i>dbr.<namespace>.<member></i> can be called as <i>dbr.<member></i>
 
 
