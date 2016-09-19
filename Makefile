@@ -113,6 +113,8 @@ DISTFILES = \
 	$(FILES_EXTRA) \
 	Makefile
 
+DOXYGEN_CONFIG = docs/Doxyfile
+
 
 all:
 	@echo "\n\tNothing to be done"; \
@@ -229,7 +231,17 @@ debuild-signed:
 debianize: dist
 	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(DISTPACKAGE)" -p "$(PACKAGE)_$(VERSION)" -i
 
-clean:
+doc-html: $(DOXYGEN_CONFIG)
+	@doxygen "$(DOXYGEN_CONFIG)"; \
+	echo "\nOptimizing Doxygen HTML docs for Python ...\n"; \
+	find docs/doxygen -type f -exec sed -i -e 's/def //' {} +; \
+	find docs/doxygen -type f -exec sed -i -e 's/def&#160;//' {} +; \
+	find docs/doxygen -type f -exec sed -i -e 's/class &#160;//' {} +; \
+	\
+	# Removes whitespace before parameters \
+	find docs/doxygen -type f -exec sed -i -e '/<td class="paramtype">/c\' {} +; \
+
+clean: doc-clean
 	@find ./ -type f -name "*.pyc" -print -delete; \
 	rm -vf "./bin/$(PACKAGE)"; \
 	if [ -d "./bin" ]; then \
@@ -245,6 +257,9 @@ debuild-clean:
 	debian/debhelper-build-stamp debian/debreate.debhelper.log \
 	debian/debreate.substvars debian/files"; \
 	rm -vf $${DEBUILD_FILES};
+
+doc-clean:
+	@rm -vrf docs/doxygen
 
 dist: debuild-clean
 	@echo "Creating distribution package ..."
