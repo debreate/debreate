@@ -31,8 +31,9 @@ class Panel(wxPanel):
         	'GFDL-1.3', 'GPL', 'GPL-1', 'GPL-2', 'GPL-3', 'LGPL',
         	'LGPL-2', 'LGPL-2.1', 'LGPL-3'
         )
-        template_btn = wxButton(self, -1, 'Generate Template')
+        template_btn = wxButton(self, -1, _('Generate Template'))
         self.template_lic = wxChoice(self, -1, choices=lic_options)
+        self.template_lic.SetSelection(0)
         
         wxEVT_BUTTON(template_btn, -1, self.GenerateTemplate)
         
