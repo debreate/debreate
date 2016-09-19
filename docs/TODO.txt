@@ -18,3 +18,4 @@ Misc:
 - Finish Doxygen documentation
 - Compile gettext locales at build time
 - Only install *.mo locale files
+- Add gzip support to read compressed changelog
