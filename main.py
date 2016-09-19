@@ -532,11 +532,8 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
 
     def IsNewProject(self):
         title = self.GetTitle()
-        if title == self.default_title:
-            return True
-        else:
-            return False
-    
+        return bool(title == self.default_title)
+
     def SetSavedStatus(self, status):
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
