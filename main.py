@@ -1,4 +1,4 @@
-# This script is no longer executable, use launch.py
+# This script is no longer executable, use init.py
 # -*- coding: utf-8 -*-
 
 
