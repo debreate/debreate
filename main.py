@@ -528,11 +528,8 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
     
     def IsSaved(self):
         title = self.GetTitle()
-        if title[-1] == "*":
-            return False
-        else:
-            return True
-    
+        return bool(title[-1] == "*")
+
     def IsNewProject(self):
         title = self.GetTitle()
         if title == self.default_title:
