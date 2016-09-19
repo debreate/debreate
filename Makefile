@@ -7,6 +7,7 @@ DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
+DOCDIR = $(DATAROOT)/doc/$(PACKAGE)
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -56,7 +57,7 @@ FILES_dbr = \
 	dbr/templates.py \
 	dbr/wizard.py
 
-FILES_docs = \
+FILES_doc = \
 	docs/BUGS.txt \
 	docs/changelog \
 	docs/LICENSE.txt \
@@ -64,7 +65,7 @@ FILES_docs = \
 	docs/TODO.txt \
 	docs/usage.pdf
 
-FILES_bitmaps = \
+FILES_bitmap = \
 	bitmaps/add32.png \
 	bitmaps/browse32.png \
 	bitmaps/browse64.png \
@@ -100,8 +101,8 @@ FILES_build = \
 	$(FILES_wiz_bin) \
 	$(FILES_wiz_src) \
 	$(FILES_dbr) \
-	$(FILES_docs) \
-	$(FILES_bitmaps) \
+	$(FILES_doc) \
+	$(FILES_bitmap) \
 	$(FILES_data)
 
 FILES_dist = \
@@ -137,7 +138,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_EXTRA) $(FILES_docs) $(FILES_bitmaps) $(FILES_data) $(DIRS_build)
+install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_bitmap) $(FILES_data) $(DIRS_build) install-doc
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -179,13 +180,8 @@ install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_sr
 			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_src"; \
 		done; \
 		\
-		$(MKDIR) "$${datadir}/docs"; \
-		for doc in $(FILES_docs); do \
-			$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
-		done; \
-		\
 		mkdir -vp "$${datadir}/bitmaps"; \
-		for png in $(FILES_bitmaps); do \
+		for png in $(FILES_bitmap); do \
 			$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
 		done; \
 		\
@@ -203,6 +199,39 @@ install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_sr
 		$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
 	\
 	fi; \
+	\
+	# If source code was modified, restore original; \
+	dbr_about="./dbr/about.py"; \
+	if [ -f "$${dbr_about}.orig" ]; then \
+		echo "\nRestoring original source: $${dbr_about} ..."; \
+		mv -vf "$${dbr_about}.orig" "$${dbr_about}"; \
+	fi; \
+	\
+	echo "\nInstallation complete"; \
+
+install-doc: $(FILES_doc)
+	@docdir="$(prefix)/$(DOCDIR)"; \
+	target="$(DESTDIR)$${docdir}"; \
+	\
+	echo "\nInstalling documentation ..."; \
+	mkdir -vp "$${target}"; \
+	for doc in $(FILES_doc); do \
+		$(INSTALL_DATA) "$${doc}" "$${target}"; \
+	done; \
+	\
+	#echo "\nCompressing changelog ..."; \
+	#gzip -vf9 "$${target}/changelog"; \
+	\
+	src_about="dbr/about.py"; \
+	echo "Configuring source for new changelog location ..."; \
+	log_old_line="CHANGELOG = u'{}/docs/changelog'.format(dbr.application_path)"; \
+	log_new_line="CHANGELOG = u'$${docdir}/changelog'"; \
+	sed -i.orig -e "s|$${log_old_line}|$${log_new_line}|" "$${src_about}"; \
+	\
+	echo "Configuring source for new LICENSE.txt location ..."; \
+	lic_old_line="LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)"; \
+	lic_new_line="LICENSE = u'$${docdir}/LICENSE.txt'"; \
+	sed -i -e "s|$${lic_old_line}|$${lic_new_line}|" "$${src_about}"; \
 
 uninstall:
 	@target=$(DESTDIR)$(prefix); \
@@ -210,6 +239,7 @@ uninstall:
 	datadir=$${target}/$(DATADIR); \
 	appsdir=$${target}/$(APPSDIR); \
 	pixdir=$${target}/$(PIXDIR); \
+	docdir=$${target}/$(DOCDIR); \
 	\
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
@@ -223,6 +253,13 @@ uninstall:
 			$(UNINSTALL) "$${f}"; \
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
+	fi; \
+	\
+	if [ -d "$${docdir}" ]; then \
+		for f in `find "$${docdir}" -type f`; do \
+			$(UNINSTALL) "$${f}"; \
+		done; \
+		find "$${docdir}" -type d -empty -delete; \
 	fi; \
 
 build:
@@ -312,7 +349,8 @@ help:
 	echo "\t\t  the system\n"; \
 	\
 	echo "\tdoc-html"; \
-	echo "\t\t- Build Doxygen HTML files in docs/doxygen.\n"; \
+	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
+	echo "\t\t- Requires `tput bold`doxygen`tput sgr0` command (apt install doxygen)\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
