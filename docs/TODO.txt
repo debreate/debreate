@@ -21,3 +21,4 @@ Unknown Release:
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
 - Create manpage
+- Find alternative (if necessary) to sys.setdefaultencoding
