@@ -1,3 +1,5 @@
+# Backup files
+*.orig
 
 # Eclipse project files & directories
 /.project
