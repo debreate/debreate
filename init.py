@@ -217,9 +217,6 @@ class FirstRun(wxDialog):
 
 
 def TestConfig():
-    # need to run first start program
-    firstrun = False
-    
     # Check for old config file
     old_config = '{}/.debreate'.format(dbr.homedir)
     if os.path.isdir(old_config):
@@ -248,26 +245,19 @@ def TestConfig():
                 found[cat[0]] = cat[1]
 
         # Check if categories are right type
-        try:
-            pos = tuple(int(n) for n in found['position'].split(','))
-            size = tuple(int(n) for n in found['size'].split(','))
-            maximize = int(found['maximize'])
-            center = int(found['center'])
-            dias = int(found['dialogs'])
-            cwd = found['workingdir']
-            if os.path.isdir(cwd) == False:
-                firstrun = True
-        except:
+        pos = tuple(int(n) for n in found['position'].split(','))
+        size = tuple(int(n) for n in found['size'].split(','))
+        maximize = int(found['maximize'])
+        center = int(found['center'])
+        dias = int(found['dialogs'])
+        cwd = found['workingdir']
+
+        if os.path.isdir(cwd) != False:
             print _("Error found in config file, running first start")
-            firstrun = True
-        
-        
-        if firstrun:
             StartFirstRun()
             return True # Centers the window
         else:
             # If everything check out, start Debreate
             Run(pos, size, maximize, center, dias, cwd)
-
 
 TestConfig()
