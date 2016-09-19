@@ -252,7 +252,7 @@ def TestConfig():
         dias = int(found['dialogs'])
         cwd = found['workingdir']
 
-        if os.path.isdir(cwd) != False:
+        if os.path.isdir(cwd) == False:
             print _("Error found in config file, running first start")
             StartFirstRun()
             return True # Centers the window
