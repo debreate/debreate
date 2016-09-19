@@ -29,7 +29,7 @@ from dbr.custom import \
     OpenDir, OpenFile, SaveFile
 from dbr.functions import \
     GetCurrentVersion, FieldEnabled, RunSudo, CommandExists, RequirePython, TextIsEmpty, \
-    GetFileSaveDialog, ShowDialog
+    GetFileSaveDialog, ShowDialog, GetYear
 from dbr.language import GT
 from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
