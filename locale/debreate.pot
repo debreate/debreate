@@ -1,14 +1,14 @@
-# Debreate - Debian Package Builder
-# Copyright (C) 2011 Jordan Irwin
-# This file is distributed under the same license as the debreate package.
-# Jordan Irwin <antumdeluge@gmail.com>, 2011.
+# Debreate - Debian Package Creator
+# Copyright (C) 2016 Jordan Irwin
+# This file is distributed under the same license as the debreate software, source, &/or package.
+# Jordan Irwin <antumdeluge@gmail.com>, 2016.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Debreate 0.7.6\n"
+"Project-Id-Version: Debreate 0.7.11\n"
 "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-"POT-Creation-Date: 2011-12-01 08:00-0800\n"
+"POT-Creation-Date: 2016-09-19 01:41-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,8 @@ msgstr ""
 
 # WARNING:
 # If "%s" or "{}" is in the msgid be sure to put it in the msgstr
-# or parts of Debreate will not function.
+# otherwise, text will not be displayed correctly or parts of
+# Debreate may not function.
 #
 # If you do not wish to translate a line just leave its
 # msgstr blank
@@ -530,6 +531,16 @@ msgid "Changes"
 msgstr ""
 
 msgid "Import information from Control section"
+msgstr ""
+
+# ## Copyright section
+msgid "Available Templates"
+msgstr ""
+
+msgid "Generate Template"
+msgstr ""
+
+msgid "Generate Simple Template"
 msgstr ""
 
 # ## Menu section
