@@ -256,10 +256,21 @@ class AboutDialog(wx.Dialog):
     
     ## Sets text to be shown on the 'Changelog' tab
     #  
+    #  FIXME: Change to create in class constructor
     #  \param log_file
     #        \b \e str : Path to changelog file on filesystem
-    def SetChangelog(self, log_file):
-        log_data = open(log_file)
+    def SetChangelog(self):
+        ## Defines where the changelog is located
+        #  
+        #  By default it is located in the folder 'doc'
+        #   under the applications root directory. The
+        #   install script or Makefile should change this
+        #   to reflect installed path.
+        #  
+        #  NOTE: Original value: u'{}/docs/changelog'.format(dbr.application_path)
+        CHANGELOG = u'{}/docs/changelog'.format(dbr.application_path)
+
+        log_data = open(CHANGELOG)
         log_text = log_data.read()
         log_data.close()
         self.changelog.SetValue(log_text)
@@ -269,8 +280,17 @@ class AboutDialog(wx.Dialog):
     #  
     #  \param lic_file
     #        \b \e : Path to license file on the filesystem
-    def SetLicense(self, lic_file):
-        lic_data = open(lic_file)
+    def SetLicense(self):
+        ## Defines where the LICENSE.txt is located
+        #  
+        #  By default it is located in the folder 'doc'
+        #   under the applications root directory. The
+        #   install script or Makefile should change this
+        #   to reflect installed path.
+        #  
+        #  NOTE: Original value: u'{}/docs/LICENSE.txt'.format(dbr.application_path)
+        LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)
+        lic_data = open(LICENSE)
         lic_text = lic_data.read()
         lic_data.close()
         self.license.SetValue(lic_text)

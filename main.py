@@ -506,9 +506,9 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
         about.AddTranslator(_(u'Jordan Irwin'), u'antumdeluge@gmail.com', 'es')
         about.AddTranslator(_(u'Philippe Dalet'), u'philippe.dalet@ac-toulouse.fr', 'fr_FR')
         
-        about.SetChangelog('{}/docs/changelog'.format(dbr.application_path))
+        about.SetChangelog()
         
-        about.SetLicense('{}/docs/LICENSE.txt'.format(dbr.application_path))
+        about.SetLicense()
         
         about.ShowModal()
         about.Destroy()
