@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+## \package dbr.custom
+
 
 import os, sys
 from wx import \
@@ -38,12 +40,14 @@ db_here = PathOnly(__file__).decode(u'utf-8')
 
 
 
-################
-###     CLASSES       ###
-################
-
-### -*- A very handy widget that captures stdout and stderr to a wxTextCtrl -*- ###
+## A generic display area that captures \e stdout & \e stderr
 class OutputLog(wxTextCtrl):
+    ## Constructor
+    #  
+    #  \param parent
+    #        The parent window
+    #  \param id
+    #        Window ID (FIXME: Should be set automatically from constant)
     def __init__(self, parent, id=-1):
         wxTextCtrl.__init__(self, parent, id, style=wxTE_MULTILINE|wxTE_READONLY)
         self.SetBackgroundColour(u'black')
@@ -51,6 +55,7 @@ class OutputLog(wxTextCtrl):
         self.stdout = sys.stdout
         self.stderr = sys.stderr
     
+    ## Adds test to the display area
     def write(self, string):
         self.AppendText(string)
     
@@ -63,17 +68,31 @@ class OutputLog(wxTextCtrl):
             sys.stdout = self
 
 
-### -*- Dialog for overwrite prompt of a text area -*- ###
+## Prompt for overwriting a text area
 class OverwriteDialog(wxDialog):
+    ## Constructor
+    #  
+    #  \param parent
+    #        Parent window
+    #  \param id
+    #        Window ID (FIXME: Should be set from constant)
+    #  \param title
+    #        Text to be shown in title bar
+    #  \param message
+    #        Message to display
     def __init__(self, parent, id=-1, title=GT(u'Overwrite?'), message=u''):
         wxDialog.__init__(self, parent, id, title)
         self.message = wxStaticText(self, -1, message)
         
+        ## Button to accept overwrite
         self.button_overwrite = wxButton(self, ID_OVERWRITE, GT(u'Overwrite'))
+        
         self.button_append = wxButton(self, ID_APPEND, GT(u'Append'))
+        
+        ## Button to cancel overwrite
         self.button_cancel = wxButton(self, wxID_CANCEL)
         
-        ### -*- Button events -*- ###
+        # -*- Button events -*- #
         wxEVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
         wxEVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
         
@@ -90,20 +109,38 @@ class OverwriteDialog(wxDialog):
         self.SetSizerAndFit(vsizer)
         self.Layout()
     
+    ## Defines actions to take when a button is pressed
+    #  
+    #  Get the event object & close the dialog.
+    #  \param event
+    #        wxEVT_BUTTON
     def OnButton(self, event):
         id = event.GetEventObject().GetId()
         self.EndModal(id)
     
+    ## Retrieves the message that is displayed in the dialog
     def GetMessage(self, event=None):
         return self.message.GetLabel()
 
 
-### -*- Object for Dropping Text Files -*-
+## Object for drag-&-drop text files
 class SingleFileTextDropTarget(wxFileDropTarget):
+    ## Constructor
+    #  
+    #  \param obj
+    #        ???
     def __init__(self, obj):
         wxFileDropTarget.__init__(self)
         self.obj = obj
     
+    ## Defines actions to take when a file is dropped on object
+    #  
+    #  \param x
+    #        ???
+    #  \param y
+    #        ???
+    #  \param filenames
+    #        ???
     def OnDropFiles(self, x, y, filenames):
         if len(filenames) > 1:
             raise ValueError(GT(u'Too many files'))
@@ -123,8 +160,9 @@ class SingleFileTextDropTarget(wxFileDropTarget):
             wxMessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wxOK).ShowModal()
 
 
-# A customized combo control
-# FIXME: Unused. Was used in page.control
+## A customized combo control
+#  
+#  FIXME: Unused. Was used in page.control
 class Combo(wx.combo.ComboCtrl):
     def __init__(self, parent, id=wx.ID_ANY, value="", choices=()):
         wx.combo.ComboCtrl.__init__(self, parent, id)
@@ -258,9 +296,19 @@ class Combo(wx.combo.ComboCtrl):
         self.bg.Clear()
 
 
-# FIXME: Unused. Was used in page.control.
+## A customized report style ListCtrl
+#  
+#  Columns cannot be resized with context menu to add/delete entries.
+#  FIXME: Unused. Was used in page.control.
 class LCReport(wx.ListCtrl, wxLC.TextEditMixin, wxLC.ListCtrlAutoWidthMixin):
-    """A report style ListCtrl whose columns cannot be resized with context menu to add/delete entries"""
+    ## Constructor
+    #  
+    #  \param parent
+    #        Parent window
+    #  \param id
+    #        Window ID (FIXME: Should be set from constant)
+    #  \param style
+    #        wx.ListCtrl style to use
     def __init__(self, parent, id=wx.ID_ANY, style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL):
         wx.ListCtrl.__init__(self, parent, -1,
                 style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES|wx.LC_VRULES)
@@ -270,7 +318,10 @@ class LCReport(wx.ListCtrl, wxLC.TextEditMixin, wxLC.ListCtrlAutoWidthMixin):
         wx.EVT_CONTEXT_MENU(self, self.ShowMenu)
         wx.EVT_LIST_COL_BEGIN_DRAG(self, -1, self.NoResize)
     
-    
+    ## ???
+    #  
+    #  \param event
+    #        Menu event?
     def ShowMenu(self, event):
         menu = wx.Menu()
         self.ID_Add = wx.NewId()
@@ -297,15 +348,22 @@ class LCReport(wx.ListCtrl, wxLC.TextEditMixin, wxLC.ListCtrlAutoWidthMixin):
         item = self.GetFocusedItem()
         self.DeleteItem(item)
     
+    ## Disallows resizing of columns
     def NoResize(self, event):
         event.Veto()
 
 
 
-### *** File/Folder Dialogs *** ###
+# *** File/Folder Dialogs *** #
 
+## A base class for custom file & folder dialogs
 class DBDialog(wx.Dialog):
-    """A custom dialog for opening/saving files and folders"""
+    ## Constructor
+    #  
+    #  \param parent
+    #        Parent window
+    #  \param title
+    #        Text to be displayed in title bar
     def __init__(self, parent, title):
         wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE, size=(350,450))
         
@@ -317,7 +375,7 @@ class DBDialog(wx.Dialog):
         ID_Delete = 102
         
         
-        # Context menu
+        ## Context menu
         self.menu = wx.Menu()
         self.menu.Append(ID_Folder, _('New Folder'))
         self.menu.Append(ID_Rename, _('Rename'))
@@ -334,9 +392,13 @@ class DBDialog(wx.Dialog):
 #        # Add a context menu to the dir_tree
 #        self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
         
-        # Buttons
+        ## New folder button
         self.New = wx.Button(self, ID_Folder, _('New Folder'))
+        
+        ## Confirm button
         self.Ok = wx.Button(self, wx.OK)
+        
+        ## Cancel button
         self.Cancel = wx.Button(self, wx.CANCEL, _('Cancel'))
         
         wx.EVT_BUTTON(self.New, -1, self.CreateFolder)
@@ -361,7 +423,13 @@ class DBDialog(wx.Dialog):
         self.value = False
         
     
-    
+    ## Defines type of dialog
+    #  
+    #  Dialogs can be 'open directory', 'open file', or 'save file'.
+    #  \param type
+    #        Dialoge type of either 'dir' or 'file'
+    #  \param mode
+    #        Action mode of either 'save' or 'open'
     def SetType(self, type, mode):
         if type.lower() == "file":
             try:
@@ -385,10 +453,18 @@ class DBDialog(wx.Dialog):
         # Add to main sizer
         self.main_sizer.Insert(0, self.dir_tree, 1, wx.EXPAND|wx.ALL, 20)
     
+    ## Shows the dialog window
+    #  
+    #  \return
+    #        wx.EVT_BUTTON
     def DisplayModal(self):
         self.ShowModal()
         return self.value
-        
+    
+    ## Shows a context menu
+    #  
+    #  \param event
+    #        wx.EVT_RIGHT_DOWN???
     def OnContext(self, event):
         # Get folder/file that is highlighted
         selected = self.dir_tree.GetPath()
