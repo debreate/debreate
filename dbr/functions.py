@@ -5,6 +5,7 @@
 
 
 from os import popen
+from datetime import date
 import os, subprocess
 from urllib2 import urlopen, URLError
 from wx import \
@@ -197,3 +198,10 @@ def ShowDialog(main_window, dialog):
         return dialog.DisplayModal()
     else:
         return dialog.ShowModal() == wxID_OK
+
+## Retrieves the current year
+#  
+#  \return
+#        String value of the current year
+def GetYear():
+    return date.today().year
