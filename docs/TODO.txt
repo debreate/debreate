@@ -6,7 +6,7 @@
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
 
-Misc:
+Unknown Release:
 - Add choice for shells on scripts page
 - Add Launchpad packages for 'yakkety' when wx 3.0 compatibility is complete
 - Add page for creating manpage
@@ -20,3 +20,4 @@ Misc:
 - Only install *.mo locale files
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
+- Create manpage
