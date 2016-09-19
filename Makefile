@@ -19,56 +19,53 @@ UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
 prefix=/usr/local
 
 
-FILES_EXECUTABLE = \
+FILES_executable = \
 	init.py
 
-FILES = \
-	main.py \
-	common.py \
-	db_md5.py \
-	db.py \
-	language.py \
-	wximports.py
+FILES_root = \
+	main.py
 
-FILES_PAGE = \
-	page/__init__.py \
-	page/panbuild.py \
-	page/panclog.py \
-	page/pancontrol.py \
-	page/pandepends.py \
-	page/panfiles.py \
-	page/paninfo.py \
-	page/panmenu.py \
-	page/panscripts.py
+FILES_wiz_bin = \
+	wiz_bin/__init__.py \
+	wiz_bin/build.py \
+	wiz_bin/clog.py \
+	wiz_bin/control.py \
+	wiz_bin/copyright.py \
+	wiz_bin/depends.py \
+	wiz_bin/files.py \
+	wiz_bin/greeting.py \
+	wiz_bin/menu.py \
+	wiz_bin/scripts.py
 
-FILES_DB = \
-	db/dbabout.py \
-	db/dbbuttons.py \
-	db/dbcharctrl.py \
-	db/dbmessage.py \
-	db/dbpathctrl.py \
-	db/dbwizard.py
+FILES_wiz_src = \
+	wiz_src/__init__.py \
+	wiz_src/control.py
 
-FILES_DBR = \
+FILES_dbr = \
 	dbr/__init__.py \
-	dbr/compat.py \
+	dbr/about.py \
+	dbr/buttons.py \
+	dbr/charctrl.py \
 	dbr/constants.py \
+	dbr/custom.py \
 	dbr/functions.py \
-	dbr/templates.py
+	dbr/language.py \
+	dbr/md5.py \
+	dbr/message.py \
+	dbr/pathctrl.py \
+	dbr/templates.py \
+	dbr/wizard.py
 
-FILES_EXTRA = \
-	README.md \
-	INFO \
-	TODO.txt \
-	update-version.py
-
-FILES_DOC = \
+FILES_docs = \
+	docs/BUGS.txt \
 	docs/changelog \
+	docs/Doxyfile \
 	docs/LICENSE.txt \
 	docs/release_notes \
+	docs/TODO.txt \
 	docs/usage.pdf
 
-BITMAPS = \
+FILES_bitmaps = \
 	bitmaps/add32.png \
 	bitmaps/browse32.png \
 	bitmaps/browse64.png \
@@ -95,23 +92,42 @@ BITMAPS = \
 
 MENU = debreate.desktop
 
-DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
+FILES_data = \
+	data/$(MENU)
 
-DISTDIRS = \
+FILES_build = \
+	$(FILES_executable) \
+	$(FILES_root) \
+	$(FILES_wiz_bin) \
+	$(FILES_wiz_src) \
+	$(FILES_dbr) \
+	$(FILES_docs) \
+	$(FILES_bitmaps) \
+	$(FILES_data)
+
+FILES_dist = \
+	$(FILES_executable) \
+	$(FILES_root) \
+	$(FILES_data) \
+	INFO \
+	Makefile \
+	README.md \
+	test.sh \
+	update-version.py
+
+DIRS_build = \
+	locale
+
+DIRS_dist = \
+	$(DIRS_build) \
 	bitmaps \
-	data \
-	db \
 	dbr \
+	debian \
 	docs \
-	locale \
-	debian
+	wiz_bin \
+	wiz_src
 
-DISTFILES = \
-	$(FILES_EXECUTABLE) \
-	$(FILES) \
-	$(FILES_PAGE) \
-	$(FILES_EXTRA) \
-	Makefile
+PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
 DOXYGEN_CONFIG = docs/Doxyfile
 
@@ -122,13 +138,14 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_PAGE) $(FILES_DB) $(FILES_DBR) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
+install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_EXTRA) $(FILES_docs) $(FILES_bitmaps) $(FILES_data) $(DIRS_build)
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
 		\
 		echo "\t- Please run `tput bold`make`tput sgr0`, `tput bold`make build`tput sgr0`, or `tput bold`make all`tput sgr0`"; \
 		echo "\t  to create it, then re-run `tput bold`make install`tput sgr0`\n"; \
+		exit 1; \
 	\
 	else \
 		target=$(DESTDIR)$(prefix); \
@@ -141,39 +158,41 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_PAGE) $(FILES_DB) $(FILES_DB
 		echo "Install target set to $${target}\n"; \
 		\
 		mkdir -vp "$${target}/$(DATADIR)"; \
-		for py in $(FILES_EXECUTABLE); do \
+		for py in $(FILES_executable); do \
 			$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
 		done; \
-		for py in $(FILES) $(EXTRA_FILES); do \
+		for py in $(FILES_root); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}"; \
 		done; \
 		\
-		mkdir -vp "$${datadir}/db"; \
-		for py in $(FILES_DB); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/db"; \
-		done; \
-		\
 		mkdir -vp "$${datadir}/dbr"; \
-		for py in $(FILES_DBR); do \
+		for py in $(FILES_dbr); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
 		done; \
 		\
-		$(MKDIR) "$${datadir}/page"; \
-		for page in $(FILES_PAGE); do \
-			$(INSTALL_DATA) "$${page}" "$${datadir}/page"; \
+		$(MKDIR) "$${datadir}/wiz_bin"; \
+		for py in $(FILES_wiz_bin); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
+		done; \
+		\
+		$(MKDIR) "$${datadir}/wiz_src"; \
+		for py in $(FILES_wiz_src); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_src"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/docs"; \
-		for doc in $(FILES_DOC); do \
+		for doc in $(FILES_docs); do \
 			$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
 		done; \
 		\
 		mkdir -vp "$${datadir}/bitmaps"; \
-		for png in $(BITMAPS); do \
+		for png in $(FILES_bitmaps); do \
 			$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
 		done; \
 		\
-		$(INSTALL_FOLDER) locale "$${datadir}"; \
+		for d in $(DIRS_build); do \
+			$(INSTALL_FOLDER) "$${d}" "$${datadir}"; \
+		done; \
 		\
 		$(MKDIR) "$${bindir}"; \
 		$(INSTALL_EXEC) "$${exec}" "$${bindir}"; \
@@ -229,7 +248,7 @@ debuild-signed:
 	@debuild -S -sa
 
 debianize: dist
-	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(DISTPACKAGE)" -p "$(PACKAGE)_$(VERSION)" -i
+	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i
 
 doc-html: $(DOXYGEN_CONFIG)
 	@doxygen "$(DOXYGEN_CONFIG)"; \
@@ -250,6 +269,8 @@ clean: doc-clean
 	rm -vf "./prefix"; \
 
 distclean: clean debuild-clean
+	@echo "Cleaning distribution ..."; \
+	rm -vf "$(PACKAGE_dist)";
 
 debuild-clean:
 	@rm -vrf "debian/debreate"
@@ -261,13 +282,13 @@ debuild-clean:
 doc-clean:
 	@rm -vrf docs/doxygen
 
-dist: debuild-clean
-	@echo "Creating distribution package ..."
-	@if [ -f "$(DISTPACKAGE)" ]; then \
-		rm -v "$(DISTPACKAGE)"; \
-	fi
-	@tar -cJf "$(DISTPACKAGE)" $(DISTFILES) $(DISTDIRS)
-	@file "$(DISTPACKAGE)"
+dist: debuild-clean $(FILES_dist) $(DIRS_dist)
+	@echo "Creating distribution package ..."; \
+	if [ -f "$(PACKAGE_dist)" ]; then \
+		rm -v "$(PACKAGE_dist)"; \
+	fi; \
+	tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist); \
+	file "$(PACKAGE_dist)"; \
 
 help:
 	@echo "Usage:"; \
