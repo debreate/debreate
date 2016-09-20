@@ -116,7 +116,8 @@ FILES_dist = \
 	update-version.py
 
 DIRS_build = \
-	locale
+	locale \
+	templates
 
 DIRS_dist = \
 	$(DIRS_build) \
