@@ -540,7 +540,7 @@ msgstr ""
 msgid "Generate Template"
 msgstr ""
 
-msgid "Generate Simple Template"
+msgid "Generate Linked Template"
 msgstr ""
 
 # ## Menu section
