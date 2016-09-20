@@ -176,7 +176,21 @@ class Panel(wxPanel):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
             
-            self.cp_display.LoadFile('{}/{}'.format(local_licenses_dir, license_name))
+            #self.cp_display.LoadFile('{}/{}'.format(local_licenses_dir, license_name))
+            license_data = open('{}/{}'.format(local_licenses_dir, license_name))
+            license_lines = license_data.read().split('\n')
+            license_data.close()
+            
+            delimeters = ('<year>', '<year(s)>')
+            
+            for DEL in delimeters:
+                l_index = 0
+                for LI in license_lines:
+                    if DEL in LI:
+                        license_lines[l_index] = str(dbr.GetYear()).join(LI.split(DEL))
+                    l_index += 1
+            
+            self.cp_display.SetValue('\n'.join(license_lines))
             
             self.cp_display.SetInsertionPoint(0)
         
