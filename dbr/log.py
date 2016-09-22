@@ -142,19 +142,25 @@ class DebreateLogger:
     ## Sets the level at which messages will be output to terminal & log file
     #  
     #  \param l_level
-    #        \b \e int : Level at which to print & output messages
+    #        Level at which to print & output messages
     def SetLogLevel(self, l_level):
-        # Log level can be set with an integer or string
-        if type(l_level) is int:
-            if (0 < l_level < self.log_level_list.len()):
-                self.log_level = l_level
+        log_set = False
+        
+        if l_level.isdigit():
+            l_level = int(l_level)
+        
+        if l_level in self.log_level_list:
+            self.log_level = l_level
+            log_set = True
         
         elif type(l_level) in (unicode, str):
             for L in self.log_level_list:
-                l_index = 0
-                if l_level in tuple(L):
-                    self.log_level = l_index
-                l_index += 1
+                if l_level.lower() == self.log_level_list[L].lower():
+                    self.log_level = L
+                    log_set = True
+        
+        return log_set
+    
     
     def GetLogLevel(self):
         return self.log_level
