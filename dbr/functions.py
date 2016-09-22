@@ -37,11 +37,11 @@ from dbr.constants import DEBUG, system_licenses_path
 #  \b Alias: \e dbr.GetCurrentVersion
 def GetCurrentVersion():
     try:
-        request = urlopen(u'%s/current.txt' % (HOMEPAGE))
+        request = urlopen(u'{}/current.txt'.format(HOMEPAGE))
         version = request.readlines()[0]
-        version = version.split('.')
+        version = version.split(u'.')
         
-        if ('\n' in version[-1]):
+        if (u'\n' in version[-1]):
             # Remove newline character
             version[-1] = version[-1][:-1]
         
@@ -85,7 +85,7 @@ def FieldEnabled(field):
 #  
 #  \b Alias: \e dbr.RunSudo
 def RunSudo(password, command):
-    command = u'echo %s | sudo -S %s ; echo $?' % (password, command)
+    command = u'echo {} | sudo -S {} ; echo $?'.format(password, command)
     wxSafeYield()
     output = popen(command).read()
     err = int(output.split(u'\n')[-2])
@@ -105,13 +105,13 @@ def CommandExists(command):
     try:
         subprocess.Popen(command.split(u' ')[0].split(u' '))
         exists = True
-        print u'First subprocess: %s' % (exists)
+        print u'First subprocess: {}'.format(exists)
     except OSError:
         exists = os.path.isfile(command)
-        print u'os.path: %s' % (exists)
+        print u'os.path: {}'.format(exists)
         if exists:
             subprocess.Popen((command))
-            print u'Second subprocess: %s' % (exists)
+            print u'Second subprocess: {}'.format(exists)
     return exists
 
 ## Checks if the system is using a specific version of Python
@@ -122,9 +122,9 @@ def CommandExists(command):
 #  
 #  \b Alias: \e dbr.RequirePython
 def RequirePython(version):
-    error = 'Incompatible python version'
+    error = u'Incompatible python version'
     t = type(version)
-    if t == type(''):
+    if t == type(u''):
         if version == PY_VER_STRING[0:3]:
             return
         raise ValueError(error)
@@ -132,7 +132,7 @@ def RequirePython(version):
         if PY_VER_STRING[0:3] in version:
             return
         raise ValueError(error)
-    raise ValueError('Wrong type for argument 1 of RequirePython(version)')
+    raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
 
 ## Checks if a text string is empty
 #  
@@ -168,13 +168,13 @@ def TextIsEmpty(text):
 #  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
     if DEBUG:
-        print('DEBUG: Getting file save dialog')
+        print(u'DEBUG: Getting file save dialog')
     
     if main_window.cust_dias.IsChecked():
         file_save = SaveFile(main_window, title, default_extension)
         file_save.SetFilter(ext_filter)
     else:
-        file_save = wxFileDialog(main_window, title, os.getcwd(), '', ext_filter,
+        file_save = wxFileDialog(main_window, title, os.getcwd(), u'', ext_filter,
                 wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
     
     return file_save
@@ -198,7 +198,7 @@ def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
 #  \b Alias: \e dbr.ShowDialog
 def ShowDialog(main_window, dialog):
     if DEBUG:
-        print('DEBUG: Showing dialog')
+        print(u'DEBUG: Showing dialog')
     
     if main_window.cust_dias.IsChecked():
         return dialog.DisplayModal()

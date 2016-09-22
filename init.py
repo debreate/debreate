@@ -51,8 +51,9 @@ Logger.Info(script_name, u'Debreate version: {}'.format(dbr.VERSION_STRING))
 # Python & wxPython encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
     reload(sys)
+    # FIXME: Recommended not to use
     sys.setdefaultencoding(u'utf-8')
-wxSetDefaultPyEncoding('UTF-8')
+wxSetDefaultPyEncoding(u'UTF-8')
 
 # wxWidgets
 # Get command line arguments
@@ -87,14 +88,14 @@ workingdir={}'.format(dbr.home_path))
 def StartFirstRun():
     app = wxApp()
     frame = FirstRun(None, -1, _(u'Debreate First Run'))
-#	frame.SetMessage("Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
-#or if the configuration file becomes corrupted.")
+#	frame.SetMessage(u'Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
+#or if the configuration file becomes corrupted.')
     
     # Temporary message while in pre-alpha
-#	frame.SetMessage("Creating the default configuration file.  To delete this file type \
+#	frame.SetMessage(u'Creating the default configuration file.  To delete this file type \
 #the following command in a terminal\n\n\
 #rm -r ~/.debreate\n\n\
-#!!--> Debreate 0.7 is still in pre-alpha.  This software is not fully functional. <--!!")
+#!!--> Debreate 0.7 is still in pre-alpha.  This software is not fully functional. <--!!')
     
     # Temporary message while in alpha
     m1 = _(u'Thank you for using Debreate.')
@@ -167,7 +168,7 @@ def Run(pos, size, maximize, center, dias, cwd):
 
 
 class FirstRun(wxDialog):
-    """Create the config file on first run or if file has been corrupted"""
+    '''Create the config file on first run or if file has been corrupted'''
     def __init__(self, parent, id, title):
         wxDialog.__init__(self, parent, id, title, size=(450,300))
         
@@ -246,7 +247,7 @@ def TestConfig():
         # Split the lines into categories
         found = {}
         for line in lines:
-            if '=' in line:
+            if u'=' in line:
                 cat = line.split(u'=')
                 found[cat[0]] = cat[1]
 
