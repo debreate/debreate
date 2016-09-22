@@ -24,7 +24,7 @@ from wx import \
 # Debreate imports
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING
-import dbr.custom
+from dbr.custom import SaveFile
 from dbr.constants import DEBUG, system_licenses_path
 
 
@@ -152,6 +152,7 @@ def TextIsEmpty(text):
 #    the main window, the a custom defined
 #    dialog is returned. Otherwise the systems
 #    default dialog is used.
+#    FIXME: Perhaps should be moved to dbr.custom
 #  \param main_window
 #        Debreate's main window class
 #  \param title
@@ -170,7 +171,7 @@ def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
         print('DEBUG: Getting file save dialog')
     
     if main_window.cust_dias.IsChecked():
-        file_save = dbr.custom.SaveFile(main_window, title, default_extension)
+        file_save = SaveFile(main_window, title, default_extension)
         file_save.SetFilter(ext_filter)
     else:
         file_save = wxFileDialog(main_window, title, os.getcwd(), '', ext_filter,
@@ -185,6 +186,7 @@ def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
 #    to display the dialog. For stock dialogs, 'ShowModal()'
 #    is used. The dialog that will be shown is determined
 #    from 'GetFileSaveDialog'.
+#    FIXME: Perhaps should be moved to dbr.custom
 #  \param main_window
 #    Debreate's main window class
 #  \param dialog
@@ -258,7 +260,7 @@ def FormatTime(s_time):
 def GetSystemLicensesList():
     license_list = []
     
-    for PATH, DIRS, FILES in os.walk(dbr.system_licenses_path):
+    for PATH, DIRS, FILES in os.walk(system_licenses_path):
         for F in FILES:
             if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
                 license_list.append(F)
