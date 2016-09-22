@@ -57,7 +57,8 @@ from wx import \
 import dbr
 from dbr import Logger, DebugEnabled
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
-    ID_MAN
+    ID_BUILD, ID_CHANGELOG, ID_MAN, ID_BUILD, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
+    ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU
 import wiz_bin
 
 
@@ -71,16 +72,6 @@ ID_DPMLog = wxNewId()
 ID_UPM = wxNewId()
 ID_Lintian = wxNewId()
 
-# Page IDs
-ID_INFO = wxNewId()
-ID_CTRL = wxNewId()
-ID_DEPS = wxNewId()
-ID_FILES = wxNewId()
-ID_SCRIPTS = wxNewId()
-ID_CLOG = wxNewId()
-ID_CPRIGHT = wxNewId()
-ID_MENU = wxNewId()
-ID_BUILD = wxNewId()
 ID_QBUILD = wxNewId()
 ID_UPDATE = wxNewId()
 
@@ -144,11 +135,11 @@ class MainWindow(wx.Frame):
         # ----- Page Menu
         self.menu_page = wxMenu()
         
-        self.p_info = wxMenuItem(self.menu_page, ID_INFO, _(u'Information'),
+        self.p_info = wxMenuItem(self.menu_page, ID_GREETING, _(u'Information'),
                 _(u'Go to Information section'), kind=wxITEM_RADIO)
-        self.p_ctrl = wxMenuItem(self.menu_page, ID_CTRL, _(u'Control'),
+        self.p_ctrl = wxMenuItem(self.menu_page, ID_CONTROL, _(u'Control'),
                 _(u'Go to Control section'), kind=wxITEM_RADIO)
-        self.p_deps = wxMenuItem(self.menu_page, ID_DEPS, _(u'Dependencies'),
+        self.p_deps = wxMenuItem(self.menu_page, ID_DEPENDS, _(u'Dependencies'),
                 _(u'Go to Dependencies section'), kind=wxITEM_RADIO)
         self.p_files = wxMenuItem(self.menu_page, ID_FILES, _(u'Files'),
                 _(u'Go to Files section'), kind=wxITEM_RADIO)
@@ -160,9 +151,9 @@ class MainWindow(wx.Frame):
         
         self.p_scripts = wxMenuItem(self.menu_page, ID_SCRIPTS, _(u'Scripts'),
                 _(u'Go to Scripts section'), kind=wxITEM_RADIO)
-        self.p_clog = wxMenuItem(self.menu_page, ID_CLOG, _(u'Changelog'),
+        self.p_clog = wxMenuItem(self.menu_page, ID_CHANGELOG, _(u'Changelog'),
                 _(u'Go to Changelog section'), kind=wxITEM_RADIO)
-        self.p_cpright = wxMenuItem(self.menu_page, ID_CPRIGHT, _(u'Copyright'),
+        self.p_cpright = wxMenuItem(self.menu_page, ID_COPYRIGHT, _(u'Copyright'),
                 _(u'Go to Copyright section'), kind=wxITEM_RADIO)
         self.p_menu = wxMenuItem(self.menu_page, ID_MENU, _(u'Menu Launcher'),
                 _(u'Go to Menu Launcher section'), kind=wxITEM_RADIO)
@@ -265,20 +256,20 @@ class MainWindow(wx.Frame):
         
         self.Wizard = dbr.Wizard(self) # Binary
         
-        self.page_info = wiz_bin.PageGreeting(self.Wizard, ID_INFO)
+        self.page_info = wiz_bin.PageGreeting(self.Wizard)
         self.page_info.SetInfo()
-        self.page_control = wiz_bin.PageControl(self.Wizard, ID_CTRL)
-        self.page_depends = wiz_bin.PageDepends(self.Wizard, ID_DEPS)
-        self.page_files = wiz_bin.PageFiles(self.Wizard, ID_FILES)
+        self.page_control = wiz_bin.PageControl(self.Wizard)
+        self.page_depends = wiz_bin.PageDepends(self.Wizard)
+        self.page_files = wiz_bin.PageFiles(self.Wizard)
         
         if DebugEnabled():
             self.page_man = wiz_bin.PageMan(self.Wizard)
         
-        self.page_scripts = wiz_bin.PageScripts(self.Wizard, ID_SCRIPTS)
-        self.page_clog = wiz_bin.PageChangelog(self.Wizard, ID_CLOG)
-        self.page_cpright = wiz_bin.PageCopyright(self.Wizard, ID_CPRIGHT)
-        self.page_menu = wiz_bin.PageMenu(self.Wizard, ID_MENU)
-        self.page_build = wiz_bin.PageBuild(self.Wizard, ID_BUILD)
+        self.page_scripts = wiz_bin.PageScripts(self.Wizard)
+        self.page_clog = wiz_bin.PageChangelog(self.Wizard)
+        self.page_cpright = wiz_bin.PageCopyright(self.Wizard)
+        self.page_menu = wiz_bin.PageMenu(self.Wizard)
+        self.page_build = wiz_bin.PageBuild(self.Wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,

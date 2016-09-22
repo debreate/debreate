@@ -42,9 +42,8 @@ from wx import \
     ID_YES as wxID_YES
 
 import dbr
+from dbr.constants import ID_SCRIPTS
 
-
-ID = wxNewId()
 
 ID_Import = 100
 ID_Remove = 101
@@ -55,8 +54,8 @@ ID_Prerm = wxNewId()
 ID_Postrm = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=_(u'Scripts')):
-        wxPanel.__init__(self, parent, id, name=_(u'Scripts'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_SCRIPTS, name=_(u'Scripts'))
         
         # For identifying page to parent
         #self.ID = u'SCRIPTS'

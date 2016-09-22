@@ -2,6 +2,8 @@
 
 
 import os
+from os.path import isfile, isdir
+
 from wx import \
 	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
 	ALL as wxALL, \
@@ -53,7 +55,6 @@ from wx import \
 	StaticBox as wxStaticBox, \
 	StaticBoxSizer as wxStaticBoxSizer, \
 	TextCtrl as wxTextCtrl, \
-	NewId as wxNewId, \
     Dialog as wxDialog, \
     StaticText as wxStaticText, \
     Button as wxButton
@@ -61,14 +62,8 @@ from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
 import dbr
+from dbr.constants import ID_FILES
 
-
-from os.path import isfile, isdir
-
-
-
-# Constants
-ID = wxNewId()
 
 ID_pin = 100
 ID_fin = 101
@@ -90,8 +85,8 @@ class DList(wxListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wxMixinListCtrl
 
 class Panel(wxPanel):
     """Class defining controls for the "Paths" page"""
-    def __init__(self, parent, id=ID, name=_(u'Files')):
-        wxPanel.__init__(self, parent, id, name=_(u'Files'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_FILES, name=_(u'Files'))
         
         # For identifying page to parent
         #self.ID = "FILES"
