@@ -51,19 +51,10 @@ from wx import \
 	StatusBar as wxStatusBar, \
     Yield as wxYield
 
+# Debreate imports
 import dbr
+from dbr import Logger
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
-'''from page import \
-	info as InfoPage, \
-    control as ControlPage, \
-    depends as DependsPage, \
-    files as FilesPage, \
-    scripts as ScriptsPage, \
-    clog as ClogPage, \
-    copyright as CopyrightPage, \
-	menu as MenuPage, \
-    build as BuildPage
-    '''
 import wiz_bin
 
 
@@ -137,7 +128,7 @@ class MainWindow(wxFrame):
         wxEVT_MENU(self, wxID_OPEN, self.OnOpenProject)
         
         # Debugging
-        if dbr.DEBUG:
+        if Logger.GetLogLevel() is Logger.DEBUG:
             wxEVT_MENU(self, wxID_SAVE, self.SaveProject)
         else:
             wxEVT_MENU(self, wxID_SAVE, self.OnSaveProjectDeprecated)
@@ -548,7 +539,7 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
     
     # FIXME: New format unused. Currently still using OnSaveProjectDeprecated
     def SaveProject(self, event):
-        if dbr.DEBUG:
+        if Logger.GetLogLevel() is Logger.DEBUG:
             print('DEBUG: Saving in new project format')
         
         title = _('Save Debreate Project')
@@ -564,10 +555,10 @@ workingdir={}".format(pos, size, maximize, center, dias, cwd))
         if dbr.ShowDialog(self, file_save):
             self.saved_project = file_save.GetPath()
             
-            if dbr.DEBUG:
+            if Logger.GetLogLevel() is Logger.DEBUG:
                 print('DEBUG: Saving file "{}"'.format(self.saved_project))
         else:
-            if dbr.DEBUG:
+            if Logger.GetLogLevel() is Logger.DEBUG:
                 print('DEBUG: Cancelled')
     
     def OnSaveProjectDeprecated(self, event):
