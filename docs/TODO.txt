@@ -24,3 +24,4 @@ Unknown Release:
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Install license templates into user's home directory or allow creation of
 - Change strings to unicode strings (u'string')
+- Utilize Logger more
