@@ -9,6 +9,13 @@
 #    E.g: <i>dbr.<namespace>.<member></i> can be called as <i>dbr.<member></i>
 
 
+# Logger needs to be set up first
+from dbr.log import DebreateLogger
+
+# Instantiate logger with default level & output path
+Logger = DebreateLogger()
+
+
 from dbr.about import AboutDialog
 from dbr.buttons import \
     ButtonAdd, ButtonBrowse, ButtonBrowse64, ButtonBuild, ButtonBuild64, \
@@ -41,7 +48,6 @@ from dbr.templates import \
     GetLicenseTemplateFile, GetLicenseTemplatesList
 from dbr.wizard import Wizard
 from dbr.md5 import MD5
-
 
 # Code after this does nothing. It is only used
 # to document aliases with Doxygen.
