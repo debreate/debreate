@@ -5,7 +5,11 @@
 - fixed: do not delete directory tree if build fails
 - license changed to MIT (see docs/LICENSE.txt)
 - added system information (Python & wxPython versions) to about dialog
-- license templates generating
+- license templates generation
+- license templates added:
+  - CC0
+  - MIT-X
+  - Zlib-PNG
 - began adding Doxygen documentation
 - logger added for outputting messages to text log
 
