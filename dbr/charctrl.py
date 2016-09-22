@@ -24,7 +24,7 @@ class CharCtrl(wx.TextCtrl):
         ## List of characters that cannot be entered
         #  
         #  NOTE: 46 = ".", 47 = "/"
-        self.invalid_chars = (" ", "/", "_")
+        self.invalid_chars = (u' ', u'/', u'_')
         
         ## List of keys that should not be affected when using the spacebar
         #  
@@ -32,7 +32,7 @@ class CharCtrl(wx.TextCtrl):
         self.shift_exceptions = (wx.WXK_LEFT, wx.WXK_RIGHT, wx.WXK_UP, wx.WXK_DOWN)
         
         ## List of keys that should not be affected when using the Ctrl key
-        self.ctrl_exceptions = ("A", "A")
+        self.ctrl_exceptions = (u'A', u'A')
         
         wx.EVT_KEY_UP(self, self.OnKeyUp)
     
@@ -41,7 +41,7 @@ class CharCtrl(wx.TextCtrl):
         modifier = event.GetModifiers()
         keycode = event.GetKeyCode()
         
-        char = ''
+        char = u''
         insert_index = self.GetInsertionPoint()
         if insert_index > 0:
             char = self.GetValue()[insert_index - 1]
@@ -53,7 +53,7 @@ class CharCtrl(wx.TextCtrl):
             while total_chars > 0:
                 total_chars -= 1
                 if value[total_chars] in self.invalid_chars:
-                    self.Replace(total_chars, total_chars+1, "-")
+                    self.Replace(total_chars, total_chars + 1, u'-')
             self.SetInsertionPoint(insertion)
             
         

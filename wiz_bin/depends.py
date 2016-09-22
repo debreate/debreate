@@ -54,7 +54,7 @@ ID_Delete = wxNewId()
 
 class Panel(wxPanel):
     def __init__(self, parent, id=ID):
-        wxPanel.__init__(self, parent, id, name=_('Dependencies and Conflicts'))
+        wxPanel.__init__(self, parent, id, name=_(u'Dependencies and Conflicts'))
         
         # For identifying page to parent
         #self.ID = "DEP"
@@ -63,17 +63,17 @@ class Panel(wxPanel):
         self.parent = parent
         
         # ----- Tool Tips
-        dep_tip = wxToolTip(_('Package will need to be installed'))
-        pre_tip = wxToolTip(_('Package will need to be installed and configured first'))
-        rec_tip = wxToolTip(_('Package is highly recommended and will be installed by default'))
-        sug_tip = wxToolTip(_('Package may be useful but is not necessary and will not be installed by default'))
-        enh_tip = wxToolTip(_('This package may be useful to enhanced package'))
-        con_tip = wxToolTip(_('Package will be removed from the system if it is installed'))
-        rep_tip = wxToolTip(_('Package or its files may be overwritten'))
-        break_tip = wxToolTip(_('Package conflicts and will be de-configured'))
-#        syn_tip = wxToolTip("Breifly summarize the purpose of the application")
-#        desc_tip = wxToolTip("Here you can give a more detailed explanation\n\n\
-#If you need help open \"Help/Example Control\" for details on formatting")
+        dep_tip = wxToolTip(_(u'Package will need to be installed'))
+        pre_tip = wxToolTip(_(u'Package will need to be installed and configured first'))
+        rec_tip = wxToolTip(_(u'Package is highly recommended and will be installed by default'))
+        sug_tip = wxToolTip(_(u'Package may be useful but is not necessary and will not be installed by default'))
+        enh_tip = wxToolTip(_(u'This package may be useful to enhanced package'))
+        con_tip = wxToolTip(_(u'Package will be removed from the system if it is installed'))
+        rep_tip = wxToolTip(_(u'Package or its files may be overwritten'))
+        break_tip = wxToolTip(_(u'Package conflicts and will be de-configured'))
+#        syn_tip = wxToolTip(u'Breifly summarize the purpose of the application')
+#        desc_tip = wxToolTip(u'Here you can give a more detailed explanation\n\n\
+#If you need help open "Help/Example Control" for details on formatting')
         
         
         # Display a nice title
@@ -81,43 +81,43 @@ class Panel(wxPanel):
 #		self.title.SetFont(parent.BoldFont)
         
         # --- DEPENDS
-        self.dep_chk = wxRadioButton(self, -1, _('Depends'), name='Depends', style=wxRB_GROUP)
+        self.dep_chk = wxRadioButton(self, -1, _(u'Depends'), name=u'Depends', style=wxRB_GROUP)
         self.dep_chk.SetToolTip(dep_tip)
         
         # --- PRE-DEPENDS
-        self.pre_chk = wxRadioButton(self, -1, _('Pre-Depends'), name='Pre-Depends')
+        self.pre_chk = wxRadioButton(self, -1, _(u'Pre-Depends'), name=u'Pre-Depends')
         self.pre_chk.SetToolTip(pre_tip)
         
         # --- RECOMMENDS
-        self.rec_chk = wxRadioButton(self, -1, _('Recommends'), name='Recommends')
+        self.rec_chk = wxRadioButton(self, -1, _(u'Recommends'), name=u'Recommends')
         self.rec_chk.SetToolTip(rec_tip)
         
         # --- SUGGESTS
-        self.sug_chk = wxRadioButton(self, -1, _('Suggests'), name='Suggests')
+        self.sug_chk = wxRadioButton(self, -1, _(u'Suggests'), name=u'Suggests')
         self.sug_chk.SetToolTip(sug_tip)
         
         # --- ENHANCES
-        self.enh_chk = wxRadioButton(self, -1, _('Enhances'), name='Enhances')
+        self.enh_chk = wxRadioButton(self, -1, _(u'Enhances'), name=u'Enhances')
         self.enh_chk.SetToolTip(enh_tip)
         
         # --- CONFLICTS
-        self.con_chk = wxRadioButton(self, -1, _('Conflicts'), name='Conflicts')
+        self.con_chk = wxRadioButton(self, -1, _(u'Conflicts'), name=u'Conflicts')
         self.con_chk.SetToolTip(con_tip)
         
         # --- REPLACES
-        self.rep_chk = wxRadioButton(self, -1, _('Replaces'), name='Replaces')
+        self.rep_chk = wxRadioButton(self, -1, _(u'Replaces'), name=u'Replaces')
         self.rep_chk.SetToolTip(rep_tip)
         
         # --- BREAKS
-        self.break_chk = wxRadioButton(self, -1, _('Breaks'), name='Breaks')
+        self.break_chk = wxRadioButton(self, -1, _(u'Breaks'), name=u'Breaks')
         self.break_chk.SetToolTip(break_tip)
         
         
         # Input for dependencies
-        self.pack_text = wxStaticText(self, -1, _('Package'))
+        self.pack_text = wxStaticText(self, -1, _(u'Package'))
         self.dep_name = wxTextCtrl(self, -1, size=(300,25))
-        self.oper_options = (">=", "<=", "=", ">>", "<<")
-        self.ver_text = wxStaticText(self, -1, _('Version'))
+        self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
+        self.ver_text = wxStaticText(self, -1, _(u'Version'))
         self.dep_oper = wxChoice(self, -1, choices=self.oper_options)
         self.dep_ver = wxTextCtrl(self, -1)
         
@@ -149,8 +149,8 @@ class Panel(wxPanel):
         
         # ----- List
         self.dep_area = AutoListCtrl(self, -1)
-        self.dep_area.InsertColumn(0, _('Category'), width=150)
-        self.dep_area.InsertColumn(1, _('Package(s)'))
+        self.dep_area.InsertColumn(0, _(u'Category'), width=150)
+        self.dep_area.InsertColumn(1, _(u'Package(s)'))
         # FIXME: wx 3.0
         if (wxMAJOR_VERSION < 3):
 	        self.dep_area.SetColumnWidth(100, wxLIST_AUTOSIZE)
@@ -158,7 +158,7 @@ class Panel(wxPanel):
         wxEVT_KEY_DOWN(self.dep_area, self.SetDepends)
         
         # Start some sizing
-        radio_box = wxStaticBoxSizer(wxStaticBox(self, -1, _('Categories')), wxVERTICAL)
+        radio_box = wxStaticBoxSizer(wxStaticBox(self, -1, _(u'Categories')), wxVERTICAL)
         rg1 = wxGridSizer(4, 2, 5, 5)
         rg1.AddMany( [
         (self.dep_chk, 0),
@@ -206,33 +206,13 @@ class Panel(wxPanel):
         self.Layout()
         
         # ----- List not needed anymore
-        self.setlabels = {	self.border: "Border", self.pack_text: "Pack", self.ver_text: "Ver",
-                            self.depadd: "Add", self.depapp: "App", self.deprem: "Rem"}
+        self.setlabels = {	self.border: u'Border', self.pack_text: u'Pack', self.ver_text: u'Ver',
+                            self.depadd: u'Add', self.depapp: u'App', self.deprem: u'Rem'}
         
-        self.categories = {	self.dep_chk: "Depends", self.pre_chk: "Pre-Depends", self.rec_chk: "Recommends",
-                            self.sug_chk: "Suggests", self.enh_chk: "Enhances", self.con_chk: "Conflicts",
-                            self.rep_chk: "Replaces", self.break_chk: "Breaks"}
+        self.categories = {	self.dep_chk: u'Depends', self.pre_chk: u'Pre-Depends', self.rec_chk: u'Recommends',
+                            self.sug_chk: u'Suggests', self.enh_chk: u'Enhances', self.con_chk: u'Conflicts',
+                            self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
     
-    
-    ''' FIXME: deprecated
-    def SetLanguage(self):
-        lang = languages.Depends()
-        
-        # Set to language changing to
-        if self.parent.parent.lang_en.IsChecked():
-            cur_lang = "English"
-        elif self.parent.parent.lang_es.IsChecked():
-            cur_lang = "Spanish"
-        
-        # Grab widgets from lists
-        for item in self.setlabels:
-            item.SetLabel(lang.GetLanguage(self.setlabels[item], cur_lang))
-        for item in self.categories:
-            item.SetLabel(lang.GetLanguage(self.categories[item], cur_lang))
-        
-        # Refresh widget layout
-        self.Layout()
-        '''
     
     def SelectAll(self):
         total_items = self.dep_area.GetItemCount()
@@ -242,13 +222,6 @@ class Panel(wxPanel):
             self.dep_area.Select(count)
     
     def SetDepends(self, event):
-        # Set language to display for dialog
-#		dia_lang = languages.ConfirmDialog()
-#		if self.GetGrandParent().lang_en.IsChecked():
-#			cur_lang = "English"
-#		elif self.GetGrandParent().lang_es.IsChecked():
-#			cur_lang = "Spanish"
-        
         try:
             mod = event.GetModifiers()
             id = event.GetKeyCode()
@@ -259,27 +232,27 @@ class Panel(wxPanel):
         addname = self.dep_name.GetValue()
         oper = self.oper_options[self.dep_oper.GetCurrentSelection()]
         ver = self.dep_ver.GetValue()
-        addver = "(%s%s)" % (oper, ver)
+        addver = u'(%s%s)' % (oper, ver)
             
         if id == wxWXK_RETURN or id == wxWXK_NUMPAD_ENTER:
             for item in self.categories:
                 if item.GetValue() == True:
-                    if addname != "":
+                    if addname != u'':
                         self.dep_area.InsertStringItem(0, self.categories[item])
-                        if ver == "":
+                        if ver == u'':
                             self.dep_area.SetStringItem(0, 1, addname)
                         else:
-                            self.dep_area.SetStringItem(0, 1, "%s %s" % (addname, addver))
+                            self.dep_area.SetStringItem(0, 1, u'%s %s' % (addname, addver))
         
         elif id == ID_Append:
             listrow = self.dep_area.GetFocusedItem()  # Get row of selected item
             colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
             prev_text = colitem.GetText()  # Get the text from that item
-            if addname != "":
-                if ver != "":
-                    self.dep_area.SetStringItem(listrow, 1, "%s | %s %s" % (prev_text, addname, addver))
+            if addname != u'':
+                if ver != u'':
+                    self.dep_area.SetStringItem(listrow, 1, u'%s | %s %s' % (prev_text, addname, addver))
                 else:
-                    self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
+                    self.dep_area.SetStringItem(listrow, 1, u'%s | %s' % (prev_text, addname))
         
         elif id == ID_Delete: # wxWXK_DELETE:
             selected = None
@@ -292,24 +265,10 @@ class Panel(wxPanel):
         
         elif id == wxWXK_ESCAPE:
             # Create the dialog
-#			title = dia_lang.GetLanguage("Message Title", cur_lang)
-#			text = dia_lang.GetLanguage("Message Text", cur_lang)
-            confirm = wxMessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
+            confirm = wxMessageDialog(self, _(u'Clear all dependencies?'), _(u'Confirm'),
                     wxYES_NO|wxNO_DEFAULT|wxICON_QUESTION)
             if confirm.ShowModal() == wxID_YES:
                 self.dep_area.DeleteAllItems()
-#			confirm = dialogs.Confirm(self)
-#			if cur_lang == "English":
-#				confirm.SetTitle("Confirm")
-#				confirm.SetText(lang.GetLanguage("Message Text", cur_lang))
-#				confirm.SetButtonText(lang.GetLanguage("Button Yes", cur_lang), lang.GetLanguage("Button No", cur_lang))
-#			elif cur_lang == "Spanish":
-#				confirm.SetTitle("Confirmar")
-#				confirm.SetText(lang.GetLanguage("Message Text", cur_lang))
-#				confirm.SetButtonText(lang.GetLanguage("Button Yes", cur_lang), lang.GetLanguage("Button No", cur_lang))
-#			
-#			if confirm.DisplayModal():
-#				self.dep_area.DeleteAllItems()
         
         event.Skip()
         

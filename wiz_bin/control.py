@@ -96,13 +96,13 @@ class Panel(wxScrolledWindow):
         
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
-        self.sect_opt = ("admin", "cli-mono", "comm", "database", "devel", "debug", "doc", "editors",
-            "electronics", "embedded", "fonts", "games", "gnome", "graphics", "gnu-r", "gnustep",
-            "hamradio", "haskell", "httpd", "interpreters", "java", "kde", "kernel", "libs", "libdevel",
-            "lisp", "localization", "mail", "math", 'metapackages', "misc", "net", "news", "ocaml", "oldlibs",
-            "otherosfs", "perl", "php", "python", "ruby", "science", "shells", "sound", "tex", "text",
-            "utils", "vcs", "video", "web", "x11", "xfce", "zope")
-        self.sect_txt = wxStaticText(self.bg, -1, _('Section'))
+        self.sect_opt = (u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug', u'doc', u'editors',
+            u'electronics', u'embedded', u'fonts', u'games', u'gnome', u'graphics', u'gnu-r', u'gnustep',
+            u'hamradio', u'haskell', u'httpd', u'interpreters', u'java', u'kde', u'kernel', u'libs', u'libdevel',
+            u'lisp', u'localization', u'mail', u'math', u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
+            u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
+            u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
+        self.sect_txt = wxStaticText(self.bg, -1, _(u'Section'))
         #self.sect = db.Combo(self.bg, -1, choices=self.sect_opt)
         self.sect = wxComboBox(self.bg, -1, choices=self.sect_opt)
         
@@ -523,8 +523,8 @@ class Panel(wxScrolledWindow):
         # Creat a list to store info
         ctrl_list = []
         
-        getvals = (	("Package",self.pack), ("Version",self.ver), ("Source",self.src), ("Section",self.sect),
-                    ("Homepage",self.url), #("Standards-Version",self.stdver), ("Format",self.format),
+        getvals = (	(u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
+                    (u'Homepage',self.url), #("Standards-Version",self.stdver), ("Format",self.format),
                     #("Binary",self.bin), ("Files",self.files), ("Date",self.date), ("Changes",self.changes),
                     #("Distribution",self.dist), ("Closes",self.closes) )
                     )
@@ -532,11 +532,11 @@ class Panel(wxScrolledWindow):
         for key in getvals:
             key_enabled = dbr.FieldEnabled(key[1])
             
-            if key_enabled and "".join(key[1].GetValue().split(" ")) != '':
-                if key[0] == "Package" or key[0] == "Version":
-                    ctrl_list.append("%s: %s" % (key[0], "-".join(key[1].GetValue().split(' '))))
+            if key_enabled and u''.join(key[1].GetValue().split(u' ')) != u'':
+                if key[0] == u'Package' or key[0] == u'Version':
+                    ctrl_list.append(u'%s: %s' % (key[0], "-".join(key[1].GetValue().split(u' '))))
                 else:
-                    ctrl_list.append("%s: %s" % (key[0], key[1].GetValue()))
+                    ctrl_list.append(u'%s: %s' % (key[0], key[1].GetValue()))
         
         # Add the Maintainer
         auth_enabled = dbr.FieldEnabled(self.auth)
@@ -555,7 +555,7 @@ class Panel(wxScrolledWindow):
                 if key == "Essential" and self.ess.GetCurrentSelection() == 1:
                     pass
                 else:
-                    ctrl_list.append("%s: %s" % (key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
+                    ctrl_list.append(u'%s: %s' % (key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
         
         # Get the uploaders
 #        coauths = []
@@ -579,9 +579,9 @@ class Panel(wxScrolledWindow):
         con_list = [] # Conflicts
         rep_list = [] # Replaces
         brk_list = [] # Breaks
-        all_deps = {"Depends": dep_list, "Pre-Depends": pre_list, "Recommends": rec_list,
-                    "Suggests": sug_list, "Enhances": enh_list, "Conflicts": con_list,
-                    "Replaces": rep_list, "Breaks": brk_list}
+        all_deps = {u'Depends': dep_list, u'Pre-Depends': pre_list, u'Recommends': rec_list,
+                    u'Suggests': sug_list, u'Enhances': enh_list, u'Conflicts': con_list,
+                    u'Replaces': rep_list, u'Breaks': brk_list}
         
         # Get amount of items to add
         dep_area = self.parent.parent.page_depends.dep_area
@@ -598,7 +598,7 @@ class Panel(wxScrolledWindow):
             
         for item in all_deps:
             if len(all_deps[item]) != 0:
-                ctrl_list.append("%s: %s" % (item, ", ".join(all_deps[item])))
+                ctrl_list.append(u'%s: %s' % (item, u', '.join(all_deps[item])))
         
         
         # *** Get description *** #
@@ -606,19 +606,19 @@ class Panel(wxScrolledWindow):
         desc = self.desc.GetValue()
         # Make sure synopsis isn't empty: Join spaces
         if ''.join(syn.split(' ')) != '':
-            ctrl_list.append("Description: %s" % syn)
+            ctrl_list.append(u'Description: %s' % syn)
             # Make sure description isn't empty: Join newlines and spaces
             if ''.join(''.join(desc.split(' ')).split('\n')) != '':
                 desc_temp = []
-                for line in desc.split('\n'):
-                    if ''.join(line.split(' ')) == '':
-                        desc_temp.append(" .")
+                for line in desc.split(u'\n'):
+                    if ''.join(line.split(u' ')) == u'':
+                        desc_temp.append(u' .')
                     else:
-                        desc_temp.append(" %s" % line)
-                ctrl_list.append('\n'.join(desc_temp))
+                        desc_temp.append(u' %s' % line)
+                ctrl_list.append(u'\n'.join(desc_temp))
         
-        ctrl_list.append("\n")
-        return "\n".join(ctrl_list)
+        ctrl_list.append(u'\n')
+        return u'\n'.join(ctrl_list)
     
     
     # *** Opening Project/File & Setting Fields *** "
@@ -626,30 +626,30 @@ class Panel(wxScrolledWindow):
     def SetFieldData(self, data):
         if type(data) == type(''):
             # Decode to unicode string if input is byte string
-            data = data.decode('utf-8')
-        control_data = data.split("\n")
+            data = data.decode(u'utf-8')
+        control_data = data.split(u'\n')
         # Remove newline at end of document required by dpkg
-        if control_data[-1] == "\n":
+        if control_data[-1] == u'\n':
             control_data = control_data[:-1]
         
         # Fields that use "SetValue()" function
         set_value_fields = (
-            ("Package", self.pack), ("Version", self.ver),
-            ("Source", self.src), ("Section", self.sect),
-            ("Homepage", self.url), ("Description", self.syn)
+            (u'Package', self.pack), (u'Version', self.ver),
+            (u'Source', self.src), (u'Section', self.sect),
+            (u'Homepage', self.url), (u'Description', self.syn)
             )
         
         # Fields that use "SetSelection()" function
         set_selection_fields = (
-            ("Architecture", self.arch, self.arch_opt),
-            ("Priority", self.prior, self.prior_opt),
-            ("Essential", self.ess, self.ess_opt)
+            (u'Architecture', self.arch, self.arch_opt),
+            (u'Priority', self.prior, self.prior_opt),
+            (u'Essential', self.ess, self.ess_opt)
             )
         
         # Store Dependencies
         depends_containers = (
-            ["Depends"], ["Pre-Depends"], ["Recommends"], ["Suggests"], ["Enhances"],
-            ["Conflicts"], ["Replaces"], ["Breaks"]
+            [u'Depends'], [u'Pre-Depends'], [u'Recommends'], [u'Suggests'], [u'Enhances'],
+            [u'Conflicts'], [u'Replaces'], [u'Breaks']
             )
         
         # Anything left over is dumped into this list then into the description
@@ -658,11 +658,11 @@ class Panel(wxScrolledWindow):
         author = wxEmptyString
         
         for field in control_data:
-            if ": " in field:
-                f1 = field.split(": ")[0]
-                f2 = ": ".join(field.split(": ")[1:]) # For dependency fields that have ": " in description
+            if u': ' in field:
+                f1 = field.split(u': ')[0]
+                f2 = u': '.join(field.split(u': ')[1:]) # For dependency fields that have ": " in description
                 # Catch Maintainer and put in author variable
-                if f1 == "Maintainer":
+                if f1 == u'Maintainer':
                     author = f2
                 # Set the rest of the wxTextCtrl fields
                 for setval in set_value_fields:
@@ -678,25 +678,25 @@ class Panel(wxScrolledWindow):
                 # Set dependencies
                 for container in depends_containers:
                     if f1 == container[0]:
-                        for dep in f2.split(", "):
+                        for dep in f2.split(u', '):
                             container.append(dep)
             else:
-                if field == " .":
+                if field == u' .':
                     leftovers.append(wxEmptyString) # Add a blank line for lines marked with a "."
-                elif field == "\n" or field == " " or field == wxEmptyString:
+                elif field == u'\n' or field == u' ' or field == wxEmptyString:
                     pass # Ignore empty lines
-                elif field[0] == " ":
+                elif field[0] == u' ':
                     leftovers.append(field[1:]) # Remove the first space generated in the description
                 else:
                     leftovers.append(field)
         
         # Put leftovers in long description
-        self.desc.SetValue("\n".join(leftovers))
+        self.desc.SetValue(u'\n'.join(leftovers))
         
         # Set the "Author" and "Email" fields
         if author != wxEmptyString:
-            self.auth.SetValue(author.split(" <")[0])
-            self.email.SetValue(author.split(" <")[1].split(">")[0])
+            self.auth.SetValue(author.split(u' <')[0])
+            self.email.SetValue(author.split(u' <')[1].split(u'>')[0])
         
         # Return depends data to parent to be sent to page_depends
         return depends_containers
@@ -706,7 +706,7 @@ class Panel(wxScrolledWindow):
     
     def GatherData(self):
         data = self.GetCtrlInfo()
-        return "<<CTRL>>\n%s<</CTRL>>" % data
+        return u'<<CTRL>>\n%s<</CTRL>>' % data
     
     
     # *** Determining of project is modified
