@@ -15,11 +15,12 @@ from dbr.language import GT
 #  Path to application templates stored in the system Debreate directory.
 #  <application_path>/templates
 #  FIXME: Should be stored elsewhere? /etc? /lib?
-application_templates_path = u'{}.templates'.format(application_path)
+application_templates_path = u'{}/templates'.format(application_path)
 
 ## Application licenses
 #  
 #  Path to license templates stored in the Debreate data directory
+#  FIXME: Rename to 'global_licenses_path'
 #  <application_path>/templates/li
 application_licenses_path = u'{}/licenses'.format(application_templates_path)
 
@@ -33,18 +34,20 @@ local_templates_path = u'{}/templates'.format(local_path)
 #  <templates_path>/licenses
 local_licenses_path = u'{}/licenses'.format(local_templates_path)
 
-
+# FIXME: Rename to 'global_licenses_templates'
 application_licenses_templates = []
 for PATH, DIRS, FILES in os.walk(application_licenses_path):
     for F in FILES:
         if os.path.isfile(u'{}/{}'.format(PATH, F)):
             application_licenses_templates.append(F)
+            Logger.Debug(__name__, u'Loaded global license: {}'.format(F))
 
 local_licenses_templates = []
 for PATH, DIRS, FILES in os.walk(local_licenses_path):
     for F in FILES:
         if os.path.isfile(u'{}/{}'.format(PATH, F)):
             local_licenses_templates.append(F)
+            Logger.Debug(__name__, u'Loaded local license: {}'.format(F))
 
 
 ## Retrieves the absolute path of a license template
@@ -69,10 +72,10 @@ def GetLicenseTemplateFile(l_name):
     
     
     if os.path.isfile(l_template):
-        Logger.Debug(__name__, GT(u'Loading license: {}'.format(l_template)))
+        Logger.Info(__name__, GT(u'Loading license template: {}'.format(l_template)))
     else:
-        Logger.Warning(__name__, GT(u'License file not found: {}'.format(l_template)))
-        
+        Logger.Warning(__name__, GT(u'License template not found: {}'.format(l_template)))
+    
     return l_template
 
 
@@ -83,7 +86,7 @@ def GetLicenseTemplateFile(l_name):
 #  don't already exist in local path are added.
 def GetLicenseTemplatesList():
     # Use local templates first if available
-    templates_list = local_licenses_templates
+    templates_list = local_licenses_templates[:]
     
     # Retrieve licenses that are not available from local path
     for LIC in application_licenses_templates:
