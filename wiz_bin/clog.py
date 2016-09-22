@@ -35,23 +35,23 @@ import dbr
 ID = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=_('Changelog')):
-        wxPanel.__init__(self, parent, id, name=_('Changelog'))
+    def __init__(self, parent, id=ID, name=_(u'Changelog')):
+        wxPanel.__init__(self, parent, id, name=_(u'Changelog'))
         
         self.parent = parent.parent # MainWindow
         
-        self.package_text = wxStaticText(self, -1, _('Package'))
+        self.package_text = wxStaticText(self, -1, _(u'Package'))
         self.package = wxTextCtrl(self)
-        self.version_text = wxStaticText(self, -1, _('Version'))
+        self.version_text = wxStaticText(self, -1, _(u'Version'))
         self.version = wxTextCtrl(self)
-        self.distribution_text = wxStaticText(self, -1, _('Distribution'))
+        self.distribution_text = wxStaticText(self, -1, _(u'Distribution'))
         self.distribution = wxTextCtrl(self)
-        self.urgency_text = wxStaticText(self, -1, _('Urgency'))
-        self.urgency_opt = ("low", "HIGH")
+        self.urgency_text = wxStaticText(self, -1, _(u'Urgency'))
+        self.urgency_opt = (u'low', u'HIGH')
         self.urgency = wxChoice(self, choices=self.urgency_opt)
-        self.maintainer_text = wxStaticText(self, -1, _('Maintainer'))
+        self.maintainer_text = wxStaticText(self, -1, _(u'Maintainer'))
         self.maintainer = wxTextCtrl(self)
-        self.email_text = wxStaticText(self, -1, _('Email'))
+        self.email_text = wxStaticText(self, -1, _(u'Email'))
         self.email = wxTextCtrl(self)
         
         info_sizer = wxFlexGridSizer(2, 6, 5, 5)
@@ -70,20 +70,20 @@ class Panel(wxPanel):
         # *** CHANGES DETAILS
         self.changes = wxTextCtrl(self, size=(20,150), style=wxTE_MULTILINE)
         
-        self.border_changes = wxStaticBox(self, -1, _('Changes'), size=(20,20))
+        self.border_changes = wxStaticBox(self, -1, _(u'Changes'), size=(20,20))
         changes_box = wxStaticBoxSizer(self.border_changes, wxVERTICAL)
         changes_box.Add(self.changes, 1, wxEXPAND|wxTOP|wxBOTTOM, 5)
         
         # Destination of changelog
-        self.rb_dest_default = wxRadioButton(self, -1, "/usr/share/doc/%project_name%", style=wxRB_GROUP)
+        self.rb_dest_default = wxRadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wxRB_GROUP)
         self.rb_dest_custom = wxRadioButton(self)
-        self.dest_custom = dbr.PathCtrl(self, -1, "/", dbr.PATH_WARN)
+        self.dest_custom = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)
         
         dest_custom_sizer = wxBoxSizer(wxHORIZONTAL)
         dest_custom_sizer.Add(self.rb_dest_custom)
         dest_custom_sizer.Add(self.dest_custom, 1)
         
-        border_dest = wxStaticBox(self, -1, _('Target'))
+        border_dest = wxStaticBox(self, -1, _(u'Target'))
         dest_box = wxStaticBoxSizer(border_dest, wxVERTICAL)
         dest_box.AddSpacer(5)
         dest_box.Add(self.rb_dest_default)
@@ -97,7 +97,7 @@ class Panel(wxPanel):
         
         
         self.button_import = dbr.ButtonImport(self)
-        self.button_import.SetToolTip(wxToolTip(_('Import information from Control section')))
+        self.button_import.SetToolTip(wxToolTip(_(u'Import information from Control section')))
         self.button_add = dbr.ButtonAdd(self)
         
         wxEVT_BUTTON(self.button_import, -1, self.ImportInfo)
@@ -143,41 +143,41 @@ class Panel(wxPanel):
         version = self.version.GetValue()
         distribution = self.distribution.GetValue()
         urgency = self.urgency_opt[self.urgency.GetSelection()]
-        info1 = "%s (%s) %s; urgency=%s" % (package, version, distribution, urgency)
+        info1 = u'%s (%s) %s; urgency=%s' % (package, version, distribution, urgency)
         
         details = []
-        for line in self.changes.GetValue().split("\n"):
-            if line == self.changes.GetValue().split("\n")[0]:
-                line = "  * %s" % line
+        for line in self.changes.GetValue().split(u'\n'):
+            if line == self.changes.GetValue().split(u'\n')[0]:
+                line = u'  * %s' % line
             else:
-                line = "    %s" % line
+                line = u'    %s' % line
             details.append(line)
         details.insert(0, wxEmptyString)
         details.append(wxEmptyString)
-        details = "\n".join(details)
+        details = u'\n'.join(details)
         
         maintainer = self.maintainer.GetValue()
         email = self.email.GetValue()
         #date = commands.getoutput("date +\"%a, %d %b %Y %T %z\"")
-        # A simpler way to get the date
-        date = commands.getoutput("date -R")
-        info2 = " -- %s <%s>  %s" % (maintainer, email, date)
+        # FIXME: Use methods from dbr.functions to get date & time
+        date = commands.getoutput(u'date -R')
+        info2 = u' -- %s <%s>  %s' % (maintainer, email, date)
         
-        entry = "\n".join((info1, details, info2))
-        self.display_area.SetValue("\n".join((entry, wxEmptyString, self.display_area.GetValue())))
+        entry = u'\n'.join((info1, details, info2))
+        self.display_area.SetValue(u'\n'.join((entry, wxEmptyString, self.display_area.GetValue())))
     
     def GetChangelog(self):
         return self.display_area.GetValue()
 
     def SetChangelog(self, data):
-        changelog = data.split("\n")
-        dest = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]
-        if dest == "DEFAULT":
+        changelog = data.split(u'\n')
+        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+        if dest == u'DEFAULT':
             self.rb_dest_default.SetValue(True)
         else:
             self.rb_dest_custom.SetValue(True)
             self.dest_custom.SetValue(dest)
-        self.display_area.SetValue("\n".join(changelog[1:]))
+        self.display_area.SetValue(u'\n'.join(changelog[1:]))
         #self.Toggle(True)
     
 #    def Toggle(self, value):
@@ -194,13 +194,13 @@ class Panel(wxPanel):
         self.email.Clear()
         self.changes.Clear()
         self.rb_dest_default.SetValue(True)
-        self.dest_custom.SetValue("/")
+        self.dest_custom.SetValue(u'/')
         self.display_area.Clear()
     
     def GatherData(self):
         if self.rb_dest_default.GetValue():
-            dest = "<<DEST>>DEFAULT<</DEST>>"
+            dest = u'<<DEST>>DEFAULT<</DEST>>'
         elif self.rb_dest_custom.GetValue():
-            dest = "<<DEST>>" + self.dest_custom.GetValue() + "<</DEST>>"
+            dest = u'<<DEST>>' + self.dest_custom.GetValue() + u'<</DEST>>'
         
-        return "\n".join(("<<CHANGELOG>>", dest, self.display_area.GetValue(), "<</CHANGELOG>>"))
+        return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))

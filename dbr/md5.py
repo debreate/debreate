@@ -20,28 +20,28 @@ class MD5():
             return False
     
     def WriteMd5(self, builddir, tempdir):
-        tempdir = tempdir.encode('utf-8')
+        tempdir = tempdir.encode(u'utf-8')
         os.chdir(builddir)
 
         temp_list = []
         md5_list = [] # Final list used to write the md5sum file
         for root, dirs, files in os.walk(tempdir):
             for file in files:
-                file = "%s/%s" % (root, file)
+                file = u'{}/{}'.format(root, file)
 #                if self.IsExecutable(file):
 #                    md5 = commands.getoutput("md5sum -b \"%s\"" % file)
 #                elif not self.IsExecutable(file):
-                md5 = commands.getoutput(("md5sum -t \"%s\"" % file))
+                md5 = commands.getoutput((u'md5sum -t "{}"'.format(file)))
                 temp_list.append(md5)
             
         for item in temp_list:
             # Remove [tempdir] from the path name in the md5sum so that it has a
             # true unix path
             # e.g., instead of "/myfolder_temp/usr/local/bin", "/usr/local/bin"
-            sum_split = item.split("%s/" % tempdir)
-            sum_join = "".join(sum_split)
+            sum_split = item.split(u'{}/'.format(tempdir))
+            sum_join = u''.join(sum_split)
             md5_list.append(sum_join)
         
-        file = open("%s/DEBIAN/md5sums" % tempdir, "w")  # Create the md5sums file in the "DEBIAN" directory
-        file.write("%s\n" % "\n".join(md5_list))  # Write the final list to the file
+        file = open(u'{}/DEBIAN/md5sums'.format(tempdir), u'w')  # Create the md5sums file in the "DEBIAN" directory
+        file.write(u'{}\n'.format(u'\n'.join(md5_list)))  # Write the final list to the file
         file.close() # Save the file

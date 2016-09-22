@@ -56,11 +56,11 @@ class AboutDialog(wx.Dialog):
         
         ## Application's homepage
         self.website = wx.HyperlinkCtrl(about, -1,
-                'debreate.sourceforge.net', 'http://debreate.sourceforge.net/')
+                u'debreate.sourceforge.net', u'http://debreate.sourceforge.net/')
         
         ## Application's secondary homepage
         self.website2 = wx.HyperlinkCtrl(about, -1,
-                'github.com/AntumDeluge/debreate', 'https://github.com/AntumDeluge/debreate')
+                u'github.com/AntumDeluge/debreate', u'https://github.com/AntumDeluge/debreate')
         
         ## Short description
         self.description = wx.StaticText(about, -1)
@@ -231,7 +231,7 @@ class AboutDialog(wx.Dialog):
     #        \b \e str : Locale code for the translation
     def AddTranslator(self, name, email, lang):
         job = _(u'Translation')
-        job = '{} ({})'.format(job, lang)
+        job = u'{} ({})'.format(job, lang)
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
