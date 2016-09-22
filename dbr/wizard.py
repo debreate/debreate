@@ -20,7 +20,7 @@ class Wizard(wx.Panel):
         # A Header for the wizard
         self.title = wx.Panel(self, style=wx.RAISED_BORDER)
         self.title.SetBackgroundColour((10, 47, 162))
-        self.title_txt = wx.StaticText(self.title, -1, "Title") # Text displayed from objects "name" - object.GetName()
+        self.title_txt = wx.StaticText(self.title, -1, u'Title') # Text displayed from objects "name" - object.GetName()
         self.title_txt.SetForegroundColour((255, 255, 255))
         
         headerfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD) # font to use in the header
@@ -74,7 +74,7 @@ class Wizard(wx.Panel):
         list = []
         tuple = ()
         if type(pages) not in (type(list), type(tuple)):
-            raise TypeError("Argument 2 of dbwizard.SetPages() must be List or Tuple")
+            raise TypeError(u'Argument 2 of dbwizard.SetPages() must be List or Tuple')
         
         for page in pages:
             self.pages.append(page)
@@ -151,7 +151,7 @@ class Wizard(wx.Panel):
             else:
                 self.button_next.Disable()
         else:
-            raise TypeError("Must be bool or int value")
+            raise TypeError(u'Must be bool or int value')
     
     def DisableNext(self):
         self.EnableNext(False)
@@ -163,7 +163,7 @@ class Wizard(wx.Panel):
             else:
                 self.button_prev.Disable()
         else:
-            raise TypeError("Must be bool or int value")
+            raise TypeError(u'Must be bool or int value')
     
     def DisablePrev(self):
         self.EnablePrev(False)
