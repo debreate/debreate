@@ -7,6 +7,7 @@
 - added system information (Python & wxPython versions) to about dialog
 - license templates generating
 - began adding Doxygen documentation
+- logger added for outputting messages to text log
 
 0.7.11
 - add template generation for copyright
