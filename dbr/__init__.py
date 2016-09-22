@@ -15,6 +15,8 @@ from dbr.log import DebreateLogger
 # Instantiate logger with default level & output path
 Logger = DebreateLogger()
 
+DEBUG = Logger.GetLogLevel() == Logger.DEBUG
+
 
 from dbr.language import GT
 from dbr.about import AboutDialog
@@ -43,8 +45,6 @@ from dbr.functions import \
 from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
 from dbr.templates import \
-    application_templates_path, application_licenses_path, application_licenses_templates, \
-    local_templates_path, local_licenses_path, local_licenses_templates, \
     GetLicenseTemplateFile, GetLicenseTemplatesList
 from dbr.wizard import Wizard
 from dbr.md5 import MD5
