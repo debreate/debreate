@@ -5,6 +5,8 @@
 import os, shutil, subprocess
 from urllib2 import URLError, HTTPError
 import webbrowser
+
+import wx
 from wx import \
 	CANCEL as wxCANCEL, \
 	EXPAND as wxEXPAND, \
@@ -83,9 +85,9 @@ ID_UPDATE = wxNewId()
 
 
 
-class MainWindow(wxFrame):
-    def __init__(self, parent, id, title, pos, size):
-        wxFrame.__init__(self, parent, id, title, pos, size)
+class MainWindow(wx.Frame):
+    def __init__(self, parent, title, pos, size):
+        wxFrame.__init__(self, parent, wx.ID_ANY, title, pos, size)
         
         # The default title
         self.default_title = _(u'Debreate - Debian Package Builder')
