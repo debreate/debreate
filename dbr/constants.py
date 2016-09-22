@@ -62,12 +62,6 @@ sf_project = u'https://sourceforge.net/projects/debreate'
 
 PROJECT_FILENAME_SUFFIX = u'dbpz'
 
-## Enable debugging
-#  
-#  If DEBUG is set to 'True', some extra code will be executed
-DEBUG = True
-
-
 # *** Python Info *** #
 
 PY_VER_MAJ = sys.version_info[0]
