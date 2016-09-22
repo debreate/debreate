@@ -23,5 +23,4 @@ Unknown Release:
 - Create postrm script that removes any .pyc files from data installation directory
 - Create manpage
 - Find alternative (if necessary) to sys.setdefaultencoding
-- Install license templates into user's home directory or allow creation of
 - Utilize Logger more
