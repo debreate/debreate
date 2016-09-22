@@ -53,7 +53,7 @@ if (sys.getdefaultencoding() != u'utf-8'):
     reload(sys)
     # FIXME: Recommended not to use
     sys.setdefaultencoding(u'utf-8')
-wxSetDefaultPyEncoding(u'UTF-8')
+wxSetDefaultPyEncoding('UTF-8')
 
 # wxWidgets
 # Get command line arguments
@@ -66,6 +66,10 @@ if len(sys.argv) > 1:
         project_file = arg1.read()
         arg1.close()
 
+import dbr.command_line as CL
+
+CL.ParseArguments(sys.argv[1:])
+CL.ExecuteArguments()
 
 # Set the path for the config file
 dbdir = u'{}/.config/debreate'.format(dbr.home_path)
