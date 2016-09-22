@@ -53,7 +53,7 @@ from wx import \
 
 # Debreate imports
 import dbr
-from dbr import Logger
+from dbr import Logger, DebugEnabled
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
 import wiz_bin
 
@@ -128,7 +128,7 @@ class MainWindow(wxFrame):
         wxEVT_MENU(self, wxID_OPEN, self.OnOpenProject)
         
         # Debugging
-        if Logger.GetLogLevel() is Logger.DEBUG:
+        if DebugEnabled:
             wxEVT_MENU(self, wxID_SAVE, self.SaveProject)
         else:
             wxEVT_MENU(self, wxID_SAVE, self.OnSaveProjectDeprecated)
@@ -530,7 +530,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
     
     # FIXME: New format unused. Currently still using OnSaveProjectDeprecated
     def SaveProject(self, event):
-        if Logger.GetLogLevel() is Logger.DEBUG:
+        if DebugEnabled():
             print(u'DEBUG: Saving in new project format')
         
         title = _(u'Save Debreate Project')
@@ -546,10 +546,10 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
         if dbr.ShowDialog(self, file_save):
             self.saved_project = file_save.GetPath()
             
-            if Logger.GetLogLevel() is Logger.DEBUG:
+            if DebugEnabled():
                 print(u'DEBUG: Saving file "{}"'.format(self.saved_project))
         else:
-            if Logger.GetLogLevel() is Logger.DEBUG:
+            if DebugEnabled():
                 print(u'DEBUG: Cancelled')
     
     def OnSaveProjectDeprecated(self, event):
