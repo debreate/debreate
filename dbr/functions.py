@@ -25,7 +25,8 @@ from wx import \
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING
 from dbr.custom import SaveFile
-from dbr.constants import DEBUG, system_licenses_path
+from dbr.constants import system_licenses_path
+from dbr import DebugEnabled
 
 
 ## Get the current version of the application
@@ -167,7 +168,7 @@ def TextIsEmpty(text):
 #  
 #  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
-    if DEBUG:
+    if DebugEnabled:
         print(u'DEBUG: Getting file save dialog')
     
     if main_window.cust_dias.IsChecked():
@@ -197,7 +198,7 @@ def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
 #  
 #  \b Alias: \e dbr.ShowDialog
 def ShowDialog(main_window, dialog):
-    if DEBUG:
+    if DebugEnabled():
         print(u'DEBUG: Showing dialog')
     
     if main_window.cust_dias.IsChecked():
