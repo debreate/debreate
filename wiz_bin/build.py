@@ -50,17 +50,15 @@ from wx import \
 	Timer as wxTimer, \
 	ToolTip as wxToolTip, \
 	Yield as wxYield, \
-	GetPasswordFromUser as wxGetPasswordFromUser, \
-	NewId as wxNewId
+	GetPasswordFromUser as wxGetPasswordFromUser
 
 import dbr
+from dbr.constants import ID_BUILD
 
-
-ID = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=_(u'Build')):
-        wxPanel.__init__(self, parent, id, name=_(u'Build'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_BUILD, name=_(u'Build'))
         
         # For identifying page to parent
         #self.ID = u'BUILD'

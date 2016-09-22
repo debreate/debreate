@@ -23,15 +23,12 @@ from wx import \
 	Button as wxButton, \
 	Choice as wxChoice, \
     MessageDialog as wxMessageDialog, \
-	NewId as wxNewId, \
 	Panel as wxPanel, \
     StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl
 
 import dbr
-
-
-ID = wxNewId()  # FIXME: ID will be retrieved from constants
+from dbr.constants import ID_COPYRIGHT
 
 
 # Globals
@@ -39,8 +36,8 @@ copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
 
 
 class Panel(wxPanel):
-    def __init__(self, parent, ID=ID):  # FIXME: ID unused
-        wxPanel.__init__(self, parent, ID, name=_(u'Copyright'))
+    def __init__(self, parent):  # FIXME: ID unused
+        wxPanel.__init__(self, parent, ID_COPYRIGHT, name=_(u'Copyright'))
         
         self.debreate = parent.parent
         

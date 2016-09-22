@@ -44,17 +44,15 @@ from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
 import dbr
+from dbr.constants import ID_DEPENDS
 
-
-# Constants
-ID = wxNewId()
 
 ID_Append = wxNewId()
 ID_Delete = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID):
-        wxPanel.__init__(self, parent, id, name=_(u'Dependencies and Conflicts'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_DEPENDS, name=_(u'Dependencies and Conflicts'))
         
         # For identifying page to parent
         #self.ID = "DEP"

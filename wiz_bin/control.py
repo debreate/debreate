@@ -21,7 +21,6 @@ from wx import \
 	EVT_SIZE as wxEVT_SIZE, \
 	ID_OK as wxID_OK
 from wx import \
-	NewId as wxNewId, \
 	BoxSizer as wxBoxSizer, \
 	Choice as wxChoice, \
 	ComboBox as wxComboBox, \
@@ -37,14 +36,12 @@ from wx import \
 	TextCtrl as wxTextCtrl
 
 import dbr
+from dbr.constants import ID_CONTROL
 
-
-# Constants
-ID = wxNewId()
 
 class Panel(wxScrolledWindow):
-    def __init__(self, parent, id=ID, name=_('Control')):
-        wxScrolledWindow.__init__(self, parent, id, name=_('Control'))
+    def __init__(self, parent):
+        wxScrolledWindow.__init__(self, parent, ID_CONTROL, name=_(u'Control'))
         
         self.parent = parent
         self.SetScrollbars(0, 20, 0, 0)

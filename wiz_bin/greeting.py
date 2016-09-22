@@ -18,14 +18,12 @@ from wx import \
 	StaticText as wxStaticText
 
 from dbr import GT
+from dbr.constants import ID_GREETING
 
-
-# Constatns
-ID = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=GT(u'Information')):
-        wxPanel.__init__(self, parent, id, name=GT(u'Information'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         

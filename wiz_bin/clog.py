@@ -26,17 +26,15 @@ from wx import \
 	StaticBoxSizer as wxStaticBoxSizer, \
 	StaticText as wxStaticText, \
 	TextCtrl as wxTextCtrl, \
-	ToolTip as wxToolTip, \
-	NewId as wxNewId
+	ToolTip as wxToolTip
 
 import dbr
+from dbr.constants import ID_CHANGELOG
 
-
-ID = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=_(u'Changelog')):
-        wxPanel.__init__(self, parent, id, name=_(u'Changelog'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_CHANGELOG, name=_(u'Changelog'))
         
         self.parent = parent.parent # MainWindow
         
