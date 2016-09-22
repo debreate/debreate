@@ -47,6 +47,7 @@ FILES_dbr = \
 	dbr/about.py \
 	dbr/buttons.py \
 	dbr/charctrl.py \
+	dbr/command_line.py \
 	dbr/constants.py \
 	dbr/custom.py \
 	dbr/functions.py \
