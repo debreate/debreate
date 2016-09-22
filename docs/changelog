@@ -12,6 +12,7 @@
   - Zlib-PNG
 - began adding Doxygen documentation
 - logger added for outputting messages to text log
+- users can place license templates in <HOME>/.local/share/debreate/templates/licenses
 
 0.7.11
 - add template generation for copyright
