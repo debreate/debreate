@@ -33,8 +33,8 @@ class DebreateLogger:
     def __init__(self, log_level=1, log_path=u'{}/logs'.format(local_path)):
         ## The level at which to output log messages
         #  
-        #  Default is WARNING
-        self.log_level = self.WARNING
+        #  Default is ERROR
+        self.log_level = self.ERROR
         
         # Directory where logs is written
         self.log_path = log_path
