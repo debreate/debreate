@@ -25,14 +25,19 @@ application_path = os.path.dirname(os.path.dirname(__file__))
 
 ## Root home directory where configuration is stored
 #  
-#  The configuration file is set to HOME/.config/debreate/config
-homedir = os.getenv('HOME')
+#  The configuration file is set to <HOME>/.config/debreate/config
+home_path = os.getenv(u'HOME')
+
+## Directory where local files will be stored
+#  
+#  <HOME>/.local/share/debreate
+local_path = u'{}/.local/share/debreate'.format(home_path)
 
 
 # *** Debreate Information *** #
 
 ## Application's displayed name
-APP_NAME = GT('Debreate')
+APP_NAME = GT(u'Debreate')
 
 # Version information #
 RELEASE = 0
@@ -48,14 +53,14 @@ VERSION_STRING = u'{}.{}.{}'.format(VER_MAJ, VER_MIN, VER_REL)
 
 # Development version
 if not RELEASE:
-    VERSION_STRING = '{}-dev'.format(VERSION_STRING)
+    VERSION_STRING = u'{}-dev'.format(VERSION_STRING)
 
 # Website & hosting information #
 HOMEPAGE = u'http://debreate.sourceforge.net/'
 gh_project = u'https://github.com/AntumDeluge/debreate'
 sf_project = u'https://sourceforge.net/projects/debreate'
 
-PROJECT_FILENAME_SUFFIX = 'dbpz'
+PROJECT_FILENAME_SUFFIX = u'dbpz'
 
 ## Enable debugging
 #  
@@ -73,7 +78,7 @@ PY_VER_STRING = u'{}.{}.{}'.format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
 
 # *** wxWidgets Info *** #
 
-WX_VER_STRING = '{}.{}.{}'.format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION)
+WX_VER_STRING = u'{}.{}.{}'.format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION)
 
 
 # *** Custom IDs *** #
@@ -85,10 +90,13 @@ ID_SRC = wxNewId()
 ID_DSC = wxNewId()
 ID_CNG = wxNewId()
 
+# Page IDs
+ID_COPYRIGHT = wxNewId()
+
 
 # *** Icons *** #
-ICON_ERROR = "{}/bitmaps/error64.png".format(application_path)
-ICON_INFORMATION = "{}/bitmaps/question64.png".format(application_path)
+ICON_ERROR = u'{}/bitmaps/error64.png'.format(application_path)
+ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(application_path)
 
 
 # *** Colors depicting importance of fields
@@ -97,3 +105,7 @@ Recommended = (197,204,255)
 Optional = (255,255,255)
 Unused = (200,200,200)
 Disabled = (246, 246, 245)
+
+
+## Location of common licenses installed on the system
+system_licenses_path = u'/usr/share/common-licenses'
