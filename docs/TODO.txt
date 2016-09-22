@@ -18,6 +18,7 @@ Unknown Release:
 - Finish Doxygen documentation
 - Compile gettext locales at build time
 - Only install *.mo locale files
+- Install *.mo files to system locale directory
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
 - Create manpage
