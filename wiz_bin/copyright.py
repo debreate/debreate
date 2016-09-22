@@ -14,7 +14,6 @@ from wx import \
 	VERTICAL as wxVERTICAL, \
 	EVT_BUTTON as wxEVT_BUTTON, \
     EVT_CHOICE as wxEVT_CHOICE, \
-	ID_ANY as wxID_ANY, \
     ID_NO as wxID_NO, \
     RIGHT as wxRIGHT, \
     TOP as wxTOP, \
@@ -32,40 +31,22 @@ from wx import \
 import dbr
 
 
-ID = wxNewId()
+ID = wxNewId()  # FIXME: ID will be retrieved from constants
 
 
 # Globals
-system_licenses_dir = '/usr/share/common-licenses'
-local_licenses_dir = '{}/templates/licenses'.format(dbr.application_path)
 copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
 
 
-def GetLicenses(license_type='system'):
-    if license_type not in ('system', 'local'):
-        return []
-    
-    if license_type == 'system':
-        license_path = system_licenses_dir
-    elif license_type == 'local':
-        license_path = local_licenses_dir
-    
-    if os.path.isdir(license_path):
-        for path, dirs, files in os.walk(license_path):
-            if len(files):
-                return files
-    
-    return []
-
-
 class Panel(wxPanel):
-    def __init__(self, parent, id=wxID_ANY):
-        wxPanel.__init__(self, parent, id, name=_('Copyright'))
+    def __init__(self, parent, ID=ID):  # FIXME: ID unused
+        wxPanel.__init__(self, parent, ID, name=_(u'Copyright'))
         
         self.debreate = parent.parent
         
-        license_list = GetLicenses('system')
-        self.local_licenses = GetLicenses('local')
+        license_list = dbr.GetSystemLicensesList()
+        # FIXME: Change to 'self.builtin_licenses
+        self.local_licenses = dbr.GetLicenseTemplatesList()
         
         # Do not use local licenses if already located on system
         for lic in license_list:
@@ -76,7 +57,7 @@ class Panel(wxPanel):
         for lic in self.local_licenses:
             license_list.append(lic)
         
-        license_list.sort(key=str.lower)
+        license_list.sort(key=unicode.lower)
         
         ## A list of available license templates
         self.lic_choices = wxChoice(self, -1, choices=license_list)
@@ -84,8 +65,8 @@ class Panel(wxPanel):
         
         wxEVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
         
-        template_btn = wxButton(self, -1, _('Generate Template'))
-        self.template_btn_simple = wxButton(self, -1, _('Generate Linked Template'))
+        template_btn = wxButton(self, -1, _(u'Generate Template'))
+        self.template_btn_simple = wxButton(self, -1, _(u'Generate Linked Template'))
         
         self.OnSelectTemplate(self.lic_choices)
                 
@@ -98,7 +79,7 @@ class Panel(wxPanel):
         
         sizer_V1 = wxBoxSizer(wxHORIZONTAL)
         sizer_V1.Add(
-            wxStaticText(self, -1, _('Available Templates')),
+            wxStaticText(self, -1, _(u'Available Templates')),
             0,
             wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER,
             5
@@ -122,7 +103,7 @@ class Panel(wxPanel):
     
     def GatherData(self):
         data = self.GetCopyright()
-        return "<<COPYRIGHT>>\n%s\n<</COPYRIGHT>>" % data
+        return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
     def SetCopyright(self, data):
         self.cp_display.SetValue(data)
@@ -154,11 +135,11 @@ class Panel(wxPanel):
     
     def CopyStandardLicense(self, license_name):
         if self.DestroyLicenseText():
-            license_path = '{}/{}'.format(system_licenses_dir, license_name)
+            license_path = u'{}/{}'.format(dbr.system_licenses_path, license_name)
             
             if not os.path.isfile(license_path):
                 # FIXME: Should have an error dialog pop up
-                print('ERROR: Could not locate standard license: {}'.format(license_path))
+                print(u'ERROR: Could not locate standard license: {}'.format(license_path))
                 return
             
             self.cp_display.Clear()
@@ -172,27 +153,29 @@ class Panel(wxPanel):
             
         self.cp_display.SetFocus()
     
-    def GenerateTemplate(self, license_name):
+    def GenerateTemplate(self, l_name):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
             
-            #self.cp_display.LoadFile('{}/{}'.format(local_licenses_dir, license_name))
-            license_data = open('{}/{}'.format(local_licenses_dir, license_name))
-            license_lines = license_data.read().split('\n')
-            license_data.close()
+            l_path = dbr.GetLicenseTemplateFile(l_name)
             
-            delimeters = ('<year>', '<year(s)>')
-            
-            for DEL in delimeters:
-                l_index = 0
-                for LI in license_lines:
-                    if DEL in LI:
-                        license_lines[l_index] = str(dbr.GetYear()).join(LI.split(DEL))
-                    l_index += 1
-            
-            self.cp_display.SetValue('\n'.join(license_lines))
-            
-            self.cp_display.SetInsertionPoint(0)
+            if l_path:
+                l_data = open(l_path)
+                l_lines = l_data.read().split(u'\n')
+                l_data.close()
+                
+                delimeters = (u'<year>', u'<year(s)>')
+                
+                for DEL in delimeters:
+                    l_index = 0
+                    for LI in l_lines:
+                        if DEL in LI:
+                            l_lines[l_index] = str(dbr.GetYear()).join(LI.split(DEL))
+                        l_index += 1
+                
+                self.cp_display.SetValue(u'\n'.join(l_lines))
+                
+                self.cp_display.SetInsertionPoint(0)
         
         self.cp_display.SetFocus()
     
@@ -200,7 +183,7 @@ class Panel(wxPanel):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
             
-            license_path = '{}/{}'.format(system_licenses_dir, self.lic_choices.GetString(self.lic_choices.GetSelection()))
+            license_path = u'{}/{}'.format(dbr.system_licenses_path, self.lic_choices.GetString(self.lic_choices.GetSelection()))
     
             self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
             self.cp_display.WriteText(license_path)
@@ -213,7 +196,7 @@ class Panel(wxPanel):
         empty = self.cp_display.IsEmpty()
         
         if not empty:
-            if wxMessageDialog(self.debreate, _('This will destroy all license text. Do you want to continue?'), _('Warning'),
+            if wxMessageDialog(self.debreate, _(u'This will destroy all license text. Do you want to continue?'), _(u'Warning'),
                     wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION).ShowModal() == wxID_NO:
                 return 0
         
