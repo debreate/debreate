@@ -6,7 +6,7 @@
 
 # System imports
 from os import popen
-from datetime import date, time
+from datetime import datetime, date
 import os, subprocess
 from urllib2 import urlopen, URLError
 
@@ -203,6 +203,14 @@ def ShowDialog(main_window, dialog):
     else:
         return dialog.ShowModal() == wxID_OK
 
+
+def prepend_zero(number):
+    if number < 10:
+        return str(u'0{}'.format(number))
+    
+    return str(number)
+
+
 ## Retrieves the current year
 #  
 #  \return
@@ -210,21 +218,38 @@ def ShowDialog(main_window, dialog):
 def GetYear():
     return date.today().year
 
-## Retrieves current date & time
+def GetDate():
+    yr = str(GetYear())
+    mo = prepend_zero(date.today().month)
+    da = prepend_zero(date.today().day)
+    
+    return u'{}-{}-{}'.format(yr, mo, da)
+
+
+def GetTime(formatted=False):
+    c_time = datetime.now().time()
+    hr = prepend_zero(c_time.hour)
+    mn = prepend_zero(c_time.minute)
+    se = prepend_zero(c_time.second)
+    ms = c_time.microsecond
+    
+    # FIXME: Want to show only microseconds (ms[2:])
+    ms = str(ms)
+    
+    s_time = u'{}:{}:{}:{}'.format(hr, mn, se, ms)
+    
+    if formatted:
+        s_time = s_time.replace(u':', u'.')
+    
+    return s_time
+
+
+## Formats the time for outputting to filename
 #  
-#  Gets a string of the date & time in the format
-#    of: year-mon-day_hr:min:sec.milisecond
-def GetDateTime():
-    yr = GetYear()
-    mo = date.today().month
-    da = date.today().day
-    
-    hr = time.hour
-    mn = time.minute
-    se = time.second
-    ms = time.microsecond[2:]
-    
-    return u'{}-{}-{}_{}:{}:{}.{}'.format(yr, mo, da, hr, mn, se, ms)
+#  \param s_time
+#        \b \e str : String representation of the time
+def FormatTime(s_time):
+    return s_time.replace(u':', u'.')
 
 
 ## Retrieves a list of licenses installed on the system
