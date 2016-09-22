@@ -4,10 +4,13 @@
 #  Global functions used throughout Debreate
 
 
+# System imports
 from os import popen
-from datetime import date
+from datetime import date, time
 import os, subprocess
 from urllib2 import urlopen, URLError
+
+# wx imports
 from wx import \
     SafeYield as wxSafeYield, \
     FileDialog as wxFileDialog
@@ -18,10 +21,11 @@ from wx import \
     FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
     ID_OK as wxID_OK
 
+# Debreate imports
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING
 import dbr.custom
-from dbr.constants import DEBUG
+from dbr.constants import DEBUG, system_licenses_path
 
 
 ## Get the current version of the application
@@ -205,3 +209,33 @@ def ShowDialog(main_window, dialog):
 #        String value of the current year
 def GetYear():
     return date.today().year
+
+## Retrieves current date & time
+#  
+#  Gets a string of the date & time in the format
+#    of: year-mon-day_hr:min:sec.milisecond
+def GetDateTime():
+    yr = GetYear()
+    mo = date.today().month
+    da = date.today().day
+    
+    hr = time.hour
+    mn = time.minute
+    se = time.second
+    ms = time.microsecond[2:]
+    
+    return u'{}-{}-{}_{}:{}:{}.{}'.format(yr, mo, da, hr, mn, se, ms)
+
+
+## Retrieves a list of licenses installed on the system
+#  
+#  Common system license files are located in /usr/share/common-licenses.
+def GetSystemLicensesList():
+    license_list = []
+    
+    for PATH, DIRS, FILES in os.walk(dbr.system_licenses_path):
+        for F in FILES:
+            if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
+                license_list.append(F)
+    
+    return license_list
