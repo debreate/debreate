@@ -85,7 +85,16 @@ ID_DSC = wxNewId()
 ID_CNG = wxNewId()
 
 # Page IDs
+ID_BUILD = wxNewId()
+ID_CHANGELOG = wxNewId()
+ID_CONTROL = wxNewId()
 ID_COPYRIGHT = wxNewId()
+ID_DEPENDS = wxNewId()
+ID_FILES = wxNewId()
+ID_GREETING = wxNewId()
+ID_MAN = wxNewId()
+ID_MENU = wxNewId()
+ID_SCRIPTS = wxNewId()
 
 
 # *** Icons *** #
