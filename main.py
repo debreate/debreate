@@ -56,7 +56,8 @@ from wx import \
 # Debreate imports
 import dbr
 from dbr import Logger, DebugEnabled
-from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE
+from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
+    ID_MAN
 import wiz_bin
 
 
@@ -143,22 +144,39 @@ class MainWindow(wx.Frame):
         # ----- Page Menu
         self.menu_page = wxMenu()
         
-        self.p_info = wxMenuItem(self.menu_page, ID_INFO, _(u'Information'), _(u'Go to Information section'),
-                kind=wxITEM_RADIO)
-        self.p_ctrl = wxMenuItem(self.menu_page, ID_CTRL, _(u'Control'), _(u'Go to Control section'),
-                kind=wxITEM_RADIO)
-        self.p_deps = wxMenuItem(self.menu_page, ID_DEPS, _(u'Dependencies'), _(u'Go to Dependencies section'), kind=wxITEM_RADIO)
-        self.p_files = wxMenuItem(self.menu_page, ID_FILES, _(u'Files'), _(u'Go to Files section'), kind=wxITEM_RADIO)
-        self.p_scripts = wxMenuItem(self.menu_page, ID_SCRIPTS, _(u'Scripts'), _(u'Go to Scripts section'), kind=wxITEM_RADIO)
-        self.p_clog = wxMenuItem(self.menu_page, ID_CLOG, _(u'Changelog'), _(u'Go to Changelog section'), kind=wxITEM_RADIO)
-        self.p_cpright = wxMenuItem(self.menu_page, ID_CPRIGHT, _(u'Copyright'), _(u'Go to Copyright section'), kind=wxITEM_RADIO)
-        self.p_menu = wxMenuItem(self.menu_page, ID_MENU, _(u'Menu Launcher'), _(u'Go to Menu Launcher section'), kind=wxITEM_RADIO)
-        self.p_build = wxMenuItem(self.menu_page, ID_BUILD, _(u'Build'), _(u'Go to Build section'), kind=wxITEM_RADIO)
+        self.p_info = wxMenuItem(self.menu_page, ID_INFO, _(u'Information'),
+                _(u'Go to Information section'), kind=wxITEM_RADIO)
+        self.p_ctrl = wxMenuItem(self.menu_page, ID_CTRL, _(u'Control'),
+                _(u'Go to Control section'), kind=wxITEM_RADIO)
+        self.p_deps = wxMenuItem(self.menu_page, ID_DEPS, _(u'Dependencies'),
+                _(u'Go to Dependencies section'), kind=wxITEM_RADIO)
+        self.p_files = wxMenuItem(self.menu_page, ID_FILES, _(u'Files'),
+                _(u'Go to Files section'), kind=wxITEM_RADIO)
+        
+        if DebugEnabled():
+            # FIXME: Add to Gettext locale files
+            self.p_man = wx.MenuItem(self.menu_page, ID_MAN, _(u'Manpages'),
+                    _(u'Go to Manpages section'), kind=wx.ITEM_RADIO)
+        
+        self.p_scripts = wxMenuItem(self.menu_page, ID_SCRIPTS, _(u'Scripts'),
+                _(u'Go to Scripts section'), kind=wxITEM_RADIO)
+        self.p_clog = wxMenuItem(self.menu_page, ID_CLOG, _(u'Changelog'),
+                _(u'Go to Changelog section'), kind=wxITEM_RADIO)
+        self.p_cpright = wxMenuItem(self.menu_page, ID_CPRIGHT, _(u'Copyright'),
+                _(u'Go to Copyright section'), kind=wxITEM_RADIO)
+        self.p_menu = wxMenuItem(self.menu_page, ID_MENU, _(u'Menu Launcher'),
+                _(u'Go to Menu Launcher section'), kind=wxITEM_RADIO)
+        self.p_build = wxMenuItem(self.menu_page, ID_BUILD, _(u'Build'),
+                _(u'Go to Build section'), kind=wxITEM_RADIO)
         
         self.menu_page.AppendItem(self.p_info)
         self.menu_page.AppendItem(self.p_ctrl)
         self.menu_page.AppendItem(self.p_deps)
         self.menu_page.AppendItem(self.p_files)
+        
+        if DebugEnabled():
+            self.menu_page.AppendItem(self.p_man)
+        
         self.menu_page.AppendItem(self.p_scripts)
         self.menu_page.AppendItem(self.p_clog)
         self.menu_page.AppendItem(self.p_cpright)
@@ -252,6 +270,10 @@ class MainWindow(wx.Frame):
         self.page_control = wiz_bin.PageControl(self.Wizard, ID_CTRL)
         self.page_depends = wiz_bin.PageDepends(self.Wizard, ID_DEPS)
         self.page_files = wiz_bin.PageFiles(self.Wizard, ID_FILES)
+        
+        if DebugEnabled():
+            self.page_man = wiz_bin.PageMan(self.Wizard)
+        
         self.page_scripts = wiz_bin.PageScripts(self.Wizard, ID_SCRIPTS)
         self.page_clog = wiz_bin.PageChangelog(self.Wizard, ID_CLOG)
         self.page_cpright = wiz_bin.PageCopyright(self.Wizard, ID_CPRIGHT)
@@ -263,16 +285,23 @@ class MainWindow(wx.Frame):
             self.page_clog, self.page_cpright, self.page_menu, self.page_build
             )
         
-        self.bin_pages = (
+        self.bin_pages = [
             self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
             self.page_clog, self.page_cpright, self.page_menu, self.page_build
-            )
+            ]
+        
+        if DebugEnabled():
+            self.bin_pages.insert(4, self.page_man)
         
         self.Wizard.SetPages(self.bin_pages)
         
         self.pages = {self.p_info: self.page_info, self.p_ctrl: self.page_control, self.p_deps: self.page_depends,
                 self.p_files: self.page_files, self.p_scripts: self.page_scripts, self.p_clog: self.page_clog,
                 self.p_cpright: self.page_cpright, self.p_menu: self.page_menu, self.p_build: self.page_build}
+        
+        if DebugEnabled():
+            self.pages[self.p_man] = self.page_man
+        
         for p in self.pages:
             wxEVT_MENU(self, p.GetId(), self.GoToPage)
         
