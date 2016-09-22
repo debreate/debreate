@@ -15,7 +15,8 @@ from dbr.log import DebreateLogger
 # Instantiate logger with default level & output path
 Logger = DebreateLogger()
 
-DEBUG = Logger.GetLogLevel() == Logger.DEBUG
+def DebugEnabled():
+    return Logger.GetLogLevel() == Logger.DEBUG
 
 
 from dbr.language import GT
