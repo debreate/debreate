@@ -9,7 +9,7 @@
 import sys, os, shutil
 
 import wxversion
-wxversion.select(['3.0', '2.8'])
+wxversion.select([u'3.0', u'2.8'])
 
 from wx import \
     App as wxApp, \
@@ -42,17 +42,17 @@ import main, dbr
 
 
 if dbr.DEBUG:
-    print('\nWARNING: Debugging enabled\n')
+    print(u'\nWARNING: Debugging enabled\n')
 
-print("Python version: {}".format(dbr.PY_VER_STRING))
-print("wxPython version: {}".format(dbr.WX_VER_STRING))
-print("Debreate version: {}".format(dbr.VERSION_STRING))
+print(u'Python version: {}'.format(dbr.PY_VER_STRING))
+print(u'wxPython version: {}'.format(dbr.WX_VER_STRING))
+print(u'Debreate version: {}'.format(dbr.VERSION_STRING))
 
 # Python & wxPython encoding to UTF-8
-if (sys.getdefaultencoding() != 'utf-8'):
+if (sys.getdefaultencoding() != u'utf-8'):
     reload(sys)
-    sys.setdefaultencoding('utf-8')
-wxSetDefaultPyEncoding('UTF-8')
+    sys.setdefaultencoding(u'utf-8')
+wxSetDefaultPyEncoding(u'UTF-8')
 
 # wxWidgets
 # Get command line arguments
@@ -61,32 +61,32 @@ if len(sys.argv) > 1:
     arg1 = sys.argv[1]
     filename = sys.argv[1] # Get the filename to show in window title
     if os.path.isfile(arg1):
-        arg1 = open(arg1, "r")
+        arg1 = open(arg1, u'r')
         project_file = arg1.read()
         arg1.close()
 
 
 # Set the path for the config file
-dbdir = "{}/.config/debreate".format(dbr.homedir)
-dbconfig = "{}/config".format(dbdir)
+dbdir = u'{}/.config/debreate'.format(dbr.home_path)
+dbconfig = u'{}/config'.format(dbdir)
 
 # Function to create the config file
 def MakeConfig():
     # Make Debreate's config file
-    config = open(dbconfig, 'w')
-    config.write("[CONFIG-1.1]\n\
+    config = open(dbconfig, u'w')
+    config.write(u'[CONFIG-1.1]\n\
 position=0,0\n\
 size=800,650\n\
 maximize=0\n\
 center=1\n\
 dialogs=0\n\
-workingdir={}".format(dbr.homedir))
+workingdir={}'.format(dbr.home_path))
     config.close()
 
 
 def StartFirstRun():
     app = wxApp()
-    frame = FirstRun(None, -1, _('Debreate First Run'))
+    frame = FirstRun(None, -1, _(u'Debreate First Run'))
 #	frame.SetMessage("Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
 #or if the configuration file becomes corrupted.")
     
@@ -97,9 +97,9 @@ def StartFirstRun():
 #!!--> Debreate 0.7 is still in pre-alpha.  This software is not fully functional. <--!!")
     
     # Temporary message while in alpha
-    m1 = _('Thank you for using Debreate.')
-    m2 = _('This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
-    frame.SetMessage('{}\n\n\
+    m1 = _(u'Thank you for using Debreate.')
+    m2 = _(u'This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
+    frame.SetMessage(u'{}\n\n\
 {}\n\n\
 rm -r ~/.config/debreate'.format(m1, m2))
     
@@ -116,7 +116,7 @@ rm -r ~/.config/debreate'.format(m1, m2))
 def Run(pos, size, maximize, center, dias, cwd):
     # Start the main application window
     app = wxApp()
-    frame = main.MainWindow(None, -1, "", pos, size)
+    frame = main.MainWindow(None, -1, u'', pos, size)
     frame.SetTitle(frame.default_title)
     
     # Find out if user is using a dark theme (font will be light)
@@ -131,8 +131,8 @@ def Run(pos, size, maximize, center, dias, cwd):
     if darktheme:
         # This sets the colors for text controls with priorities by using a text control
         # from the control page before priority colors are applied
-        dbr.Mandatory = "darkred"
-        dbr.Recommended = "darkblue"
+        dbr.Mandatory = u'darkred'
+        dbr.Recommended = u'darkblue'
     dbr.Optional = dummy.GetBackgroundColour()
     dbr.Disabled = frame.GetBackgroundColour()
     # Get rid of the dummy text control
@@ -172,13 +172,13 @@ class FirstRun(wxDialog):
         self.OK = False
         
         # Set the titlebar icon
-        self.SetIcon(wxIcon("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG))
+        self.SetIcon(wxIcon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wxBITMAP_TYPE_PNG))
         
         # Display a message to create a config file
         self.message = wxStaticText(self, -1)
         
         # Show the Debreate icon
-        dbicon = wxBitmap("{}/bitmaps/debreate64.png".format(dbr.application_path), wxBITMAP_TYPE_PNG)
+        dbicon = wxBitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wxBITMAP_TYPE_PNG)
         icon = wxStaticBitmap(self, -1, dbicon)
         
         # Button to confirm
@@ -221,44 +221,44 @@ def TestConfig():
     firstrun = False
     
     # Check for old config file
-    old_config = '{}/.debreate'.format(dbr.homedir)
+    old_config = u'{}/.debreate'.format(dbr.home_path)
     if os.path.isdir(old_config):
-        print 'Found deprecated configuration, deleting...'
+        print u'Found deprecated configuration, deleting...'
         shutil.rmtree(old_config)
     
     # Check if config file exists
     if not os.path.isfile(dbconfig):
-        print _("Config not found, launching \"First Run\"")
+        print _(u'Config not found, launching "First Run"')
         StartFirstRun()
         return True # Centers the window
 
     # Check if config file in right format
     else:
         # Read the config file
-        file = open(dbconfig, 'r')
+        file = open(dbconfig, u'r')
         conf = file.read()
-        lines = conf.split('\n')
+        lines = conf.split(u'\n')
         file.close()
 
         # Split the lines into categories
         found = {}
         for line in lines:
             if '=' in line:
-                cat = line.split('=')
+                cat = line.split(u'=')
                 found[cat[0]] = cat[1]
 
         # Check if categories are right type
         try:
-            pos = tuple(int(n) for n in found['position'].split(','))
-            size = tuple(int(n) for n in found['size'].split(','))
-            maximize = int(found['maximize'])
-            center = int(found['center'])
-            dias = int(found['dialogs'])
-            cwd = found['workingdir']
+            pos = tuple(int(n) for n in found[u'position'].split(u','))
+            size = tuple(int(n) for n in found[u'size'].split(u','))
+            maximize = int(found[u'maximize'])
+            center = int(found[u'center'])
+            dias = int(found[u'dialogs'])
+            cwd = found[u'workingdir']
             if os.path.isdir(cwd) == False:
                 firstrun = True
         except:
-            print _("Error found in config file, running first start")
+            print _(u'Error found in config file, running first start')
             firstrun = True
         
         
