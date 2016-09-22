@@ -20,7 +20,6 @@ from wx import \
     StaticText as wxStaticText, \
     TextCtrl as wxTextCtrl, \
     ToolTip as wxToolTip, \
-    NewId as wxNewId, \
     MessageDialog as wxMessageDialog
 from wx import \
     MAJOR_VERSION as wxMAJOR_VERSION, \
@@ -56,13 +55,12 @@ from wx import \
     ICON_EXCLAMATION as wxICON_EXCLAMATION
 
 import dbr
+from dbr.constants import ID_MENU
 
-
-ID = wxNewId()
 
 class Panel(wxPanel):
-    def __init__(self, parent, id=ID, name=_(u'Menu Launcher')):
-        wxPanel.__init__(self, parent, id, name=_(u'Menu Launcher'))
+    def __init__(self, parent):
+        wxPanel.__init__(self, parent, ID_MENU, name=_(u'Menu Launcher'))
         
         # For identifying page to parent
         #self.ID = u'MENU'
