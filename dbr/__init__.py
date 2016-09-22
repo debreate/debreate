@@ -17,11 +17,13 @@ from dbr.buttons import \
     ButtonQuestion64, ButtonSave, ButtonSave64
 from dbr.charctrl import CharCtrl
 from dbr.constants import \
-    application_path, homedir, \
+    application_path, home_path, local_path, \
+    system_licenses_path, \
     APP_NAME, VER_MAJ, VER_MIN, VER_REL, VERSION, VERSION_STRING, \
     HOMEPAGE, gh_project, sf_project, PROJECT_FILENAME_SUFFIX, DEBUG, \
     PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING, \
     ID_OVERWRITE, ID_APPEND, ID_BIN, ID_SRC, ID_DSC, ID_CNG, \
+    ID_COPYRIGHT, \
     ICON_ERROR, ICON_INFORMATION, \
     Mandatory, Recommended, Optional, Unused, Disabled
 from dbr.custom import \
@@ -29,10 +31,14 @@ from dbr.custom import \
     OpenDir, OpenFile, SaveFile
 from dbr.functions import \
     GetCurrentVersion, FieldEnabled, RunSudo, CommandExists, RequirePython, TextIsEmpty, \
-    GetFileSaveDialog, ShowDialog, GetYear
+    GetFileSaveDialog, ShowDialog, GetYear, GetDateTime, GetSystemLicensesList
 from dbr.language import GT
 from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
+from dbr.templates import \
+    application_templates_path, application_licenses_path, application_licenses_templates, \
+    local_templates_path, local_licenses_path, local_licenses_templates, \
+    GetLicenseTemplateFile, GetLicenseTemplatesList
 from dbr.wizard import Wizard
 from dbr.md5 import MD5
 
