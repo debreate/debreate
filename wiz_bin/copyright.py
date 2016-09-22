@@ -164,7 +164,14 @@ class Panel(wxPanel):
                 l_lines = l_data.read().split(u'\n')
                 l_data.close()
                 
-                delimeters = (u'<year>', u'<year(s)>')
+                delimeters = (
+                    u'<year>',
+                    u'<years>',
+                    u'<year(s)>',
+                    u'<date>',
+                    u'<dates>',
+                    u'<date(s)>',
+                )
                 
                 for DEL in delimeters:
                     l_index = 0
