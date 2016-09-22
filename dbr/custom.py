@@ -32,12 +32,15 @@ from wx.lib.docview import PathOnly
 import wx.combo, wx.lib.mixins.listctrl as wxLC
 
 from dbr.constants import ID_APPEND, ID_OVERWRITE
-from dbr.functions import TextIsEmpty
 from dbr.language import GT
 
 
 db_here = PathOnly(__file__).decode(u'utf-8')
 
+# FIXME: This should be import from dbr.functions
+def TextIsEmpty(text):
+    text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
+    return (text == u'')
 
 
 ## A generic display area that captures \e stdout & \e stderr
