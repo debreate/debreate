@@ -114,8 +114,7 @@ FILES_dist = \
 	INFO \
 	Makefile \
 	README.md \
-	test.sh \
-	update-version.py
+	test.sh
 
 DIRS_build = \
 	locale \
@@ -128,7 +127,8 @@ DIRS_dist = \
 	debian \
 	docs \
 	wiz_bin \
-	wiz_src
+	wiz_src \
+	scripts
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
