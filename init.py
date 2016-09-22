@@ -39,20 +39,20 @@ from wx import \
     VERTICAL as wxVERTICAL
 
 import main, dbr
+from dbr import Logger
 
 
-if dbr.DEBUG:
-    print(u'\nWARNING: Debugging enabled\n')
+script_name = os.path.basename(__file__)
 
-print(u'Python version: {}'.format(dbr.PY_VER_STRING))
-print(u'wxPython version: {}'.format(dbr.WX_VER_STRING))
-print(u'Debreate version: {}'.format(dbr.VERSION_STRING))
+Logger.Info(script_name, u'Python version: {}'.format(dbr.PY_VER_STRING))
+Logger.Info(script_name, u'wxPython version: {}'.format(dbr.WX_VER_STRING))
+Logger.Info(script_name, u'Debreate version: {}'.format(dbr.VERSION_STRING))
 
 # Python & wxPython encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
     reload(sys)
     sys.setdefaultencoding(u'utf-8')
-wxSetDefaultPyEncoding(u'UTF-8')
+wxSetDefaultPyEncoding('UTF-8')
 
 # wxWidgets
 # Get command line arguments
@@ -161,6 +161,9 @@ def Run(pos, size, maximize, center, dias, cwd):
     
     frame.Show()
     app.MainLoop()
+    
+    # Clean up the logger
+    Logger.OnClose()
 
 
 class FirstRun(wxDialog):
