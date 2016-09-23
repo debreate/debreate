@@ -1,43 +1,22 @@
 #! /usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
-# Script to set configurations and launch Debreate
-# First this script will see if the config file exists in ~/.debreate.  If not a file will be created
-# (~/.config/debreate/config).  If the config file already exists and is corrupted, this script will bring it
-# back to its default settings.
+## Script to set configurations and launch Debreate
+#  
+#  Checks if the config file exists in ~/.config/debreate. If
+#  not, a new file will be created (~/.config/debreate/config).
+#  If the config file already exists but is corrupted, it will
+#  reset it to its default settings.
 
-import sys, os, shutil
 
+# Modules to define required version of wx
 import wxversion
 wxversion.select([u'3.0', u'2.8'])
 
-from wx import \
-    App as wxApp, \
-    Dialog as wxDialog, \
-    TextCtrl as wxTextCtrl, \
-    Icon as wxIcon, \
-    SetDefaultPyEncoding as wxSetDefaultPyEncoding, \
-    StaticText as wxStaticText, \
-    Bitmap as wxBitmap, \
-    StaticBitmap as wxStaticBitmap, \
-    StaticBox as wxStaticBox, \
-    StaticBoxSizer as wxStaticBoxSizer, \
-    BoxSizer as wxBoxSizer, \
-    Button as wxButton
-from wx import \
-    ALIGN_CENTER as wxALIGN_CENTER, \
-    ALIGN_RIGHT as wxALIGN_RIGHT, \
-    BITMAP_TYPE_PNG as wxBITMAP_TYPE_PNG, \
-    BOTTOM as wxBOTTOM, \
-    EVT_BUTTON as wxEVT_BUTTON, \
-    EXPAND as wxEXPAND, \
-    HORIZONTAL as wxHORIZONTAL, \
-    ID_OK as wxID_OK, \
-    LEFT as wxLEFT, \
-    RIGHT as wxRIGHT, \
-    TOP as wxTOP, \
-    VERTICAL as wxVERTICAL
+# System modules
+import wx, os, sys, shutil
 
+# Local modules
 import main, dbr
 from dbr import Logger
 
@@ -45,17 +24,17 @@ from dbr import Logger
 script_name = os.path.basename(__file__)
 
 Logger.Info(script_name, u'Python version: {}'.format(dbr.PY_VER_STRING))
-Logger.Info(script_name, u'wxPython version: {}'.format(dbr.WX_VER_STRING))
+Logger.Info(script_name, u'wx.Python version: {}'.format(dbr.WX_VER_STRING))
 Logger.Info(script_name, u'Debreate version: {}'.format(dbr.VERSION_STRING))
 
-# Python & wxPython encoding to UTF-8
+# Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
     reload(sys)
     # FIXME: Recommended not to use
     sys.setdefaultencoding(u'utf-8')
-wxSetDefaultPyEncoding('UTF-8')
+wx.SetDefaultPyEncoding('UTF-8')
 
-# wxWidgets
+# wx.Widgets
 # Get command line arguments
 project_file = 0 # Set project file to false
 if len(sys.argv) > 1:
@@ -90,7 +69,7 @@ workingdir={}'.format(dbr.home_path))
 
 
 def StartFirstRun():
-    app = wxApp()
+    app = wx.App()
     frame = FirstRun(None, -1, _(u'Debreate First Run'))
 #	frame.SetMessage(u'Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
 #or if the configuration file becomes corrupted.')
@@ -120,7 +99,7 @@ rm -r ~/.config/debreate'.format(m1, m2))
 
 def Run(pos, size, maximize, center, dias, cwd):
     # Start the main application window
-    app = wxApp()
+    app = wx.App()
     frame = main.MainWindow(None, u'', pos, size)
     frame.SetTitle(frame.default_title)
     
@@ -128,7 +107,7 @@ def Run(pos, size, maximize, center, dias, cwd):
     # Then we can change the priority colors according to that theme
     darktheme = False
     # Create a dummy text control to get theme colors
-    dummy = wxTextCtrl(frame)
+    dummy = wx.TextCtrl(frame)
     fg_color = dummy.GetForegroundColour()
     for rgb in fg_color:
         if rgb > 150:
@@ -171,41 +150,41 @@ def Run(pos, size, maximize, center, dias, cwd):
     Logger.OnClose()
 
 
-class FirstRun(wxDialog):
+class FirstRun(wx.Dialog):
     '''Create the config file on first run or if file has been corrupted'''
     def __init__(self, parent, id, title):
-        wxDialog.__init__(self, parent, id, title, size=(450,300))
+        wx.Dialog.__init__(self, parent, id, title, size=(450,300))
         
         # "OK" button sets to True
         self.OK = False
         
         # Set the titlebar icon
-        self.SetIcon(wxIcon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wxBITMAP_TYPE_PNG))
+        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG))
         
         # Display a message to create a config file
-        self.message = wxStaticText(self, -1)
+        self.message = wx.StaticText(self, -1)
         
         # Show the Debreate icon
-        dbicon = wxBitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wxBITMAP_TYPE_PNG)
-        icon = wxStaticBitmap(self, -1, dbicon)
+        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG)
+        icon = wx.StaticBitmap(self, -1, dbicon)
         
         # Button to confirm
-        self.button_ok = wxButton(self, wxID_OK)
+        self.button_ok = wx.Button(self, wx.ID_OK)
         
-        wxEVT_BUTTON(self.button_ok, -1, self.OnOk)
+        wx.EVT_BUTTON(self.button_ok, -1, self.OnOk)
         
         # Nice border
-        self.border = wxStaticBox(self, -1)
-        border_box = wxStaticBoxSizer(self.border, wxHORIZONTAL)
+        self.border = wx.StaticBox(self, -1)
+        border_box = wx.StaticBoxSizer(self.border, wx.HORIZONTAL)
         border_box.AddSpacer(10)
-        border_box.Add(icon, 0, wxALIGN_CENTER)
+        border_box.Add(icon, 0, wx.ALIGN_CENTER)
         border_box.AddSpacer(10)
-        border_box.Add(self.message, 1, wxALIGN_CENTER)
+        border_box.Add(self.message, 1, wx.ALIGN_CENTER)
         
         # Set Layout
-        sizer = wxBoxSizer(wxVERTICAL)
-        sizer.Add(border_box, 1, wxEXPAND|wxLEFT|wxRIGHT, 5)
-        sizer.Add(self.button_ok, 0, wxALIGN_RIGHT|wxRIGHT|wxBOTTOM|wxTOP, 5)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
         
         self.SetSizer(sizer)
         self.Layout()
