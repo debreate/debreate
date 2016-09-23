@@ -4,8 +4,10 @@
 #  Dialog that shows information about the application
 
 
-import wx
+# System modules
+import wx, os
 
+# Local modules
 import dbr
 
 
@@ -269,10 +271,15 @@ class AboutDialog(wx.Dialog):
         #  
         #  NOTE: Original value: u'{}/docs/changelog'.format(dbr.application_path)
         CHANGELOG = u'{}/docs/changelog'.format(dbr.application_path)
-
-        log_data = open(CHANGELOG)
-        log_text = log_data.read()
-        log_data.close()
+        
+        if os.path.isfile(CHANGELOG):
+            log_data = open(CHANGELOG)
+            log_text = log_data.read()
+            log_data.close()
+        
+        else:
+            log_text = u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG)
+        
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
     
