@@ -4,30 +4,6 @@
 import os
 
 import wx
-from wx import \
-    ALIGN_CENTER as wxALIGN_CENTER, \
-	ALL as wxALL, \
-    NO_DEFAULT as wxNO_DEFAULT, \
-	EXPAND as wxEXPAND, \
-	HORIZONTAL as wxHORIZONTAL, \
-    ICON_EXCLAMATION as wxICON_EXCLAMATION, \
-    LEFT as wxLEFT, \
-	TE_MULTILINE as wxTE_MULTILINE, \
-	VERTICAL as wxVERTICAL, \
-	EVT_BUTTON as wxEVT_BUTTON, \
-    EVT_CHOICE as wxEVT_CHOICE, \
-    ID_NO as wxID_NO, \
-    RIGHT as wxRIGHT, \
-    TOP as wxTOP, \
-    YES_NO as wxYES_NO
-from wx import \
-	BoxSizer as wxBoxSizer, \
-	Button as wxButton, \
-	Choice as wxChoice, \
-    MessageDialog as wxMessageDialog, \
-	Panel as wxPanel, \
-    StaticText as wxStaticText, \
-	TextCtrl as wxTextCtrl
 
 import dbr
 from dbr.constants import ID_COPYRIGHT
@@ -41,9 +17,9 @@ FONT_SIZE_MD = 8
 FONT_SIZE_LG = 10
 
 
-class Panel(wxPanel):
+class Panel(wx.Panel):
     def __init__(self, parent):  # FIXME: ID unused
-        wxPanel.__init__(self, parent, ID_COPYRIGHT, name=_(u'Copyright'))
+        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=_(u'Copyright'))
         
         self.debreate = parent.parent
         
@@ -63,35 +39,35 @@ class Panel(wxPanel):
         license_list.sort(key=unicode.lower)
         
         ## A list of available license templates
-        self.lic_choices = wxChoice(self, -1, choices=license_list)
+        self.lic_choices = wx.Choice(self, -1, choices=license_list)
         self.lic_choices.SetSelection(0)
         
-        wxEVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
+        wx.EVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
         
-        template_btn = wxButton(self, -1, _(u'Generate Template'))
-        self.template_btn_simple = wxButton(self, -1, _(u'Generate Linked Template'))
+        template_btn = wx.Button(self, -1, _(u'Generate Template'))
+        self.template_btn_simple = wx.Button(self, -1, _(u'Generate Linked Template'))
         
         self.OnSelectTemplate(self.lic_choices)
                 
-        wxEVT_BUTTON(template_btn, -1, self.OnGenerateTemplate)
-        wxEVT_BUTTON(self.template_btn_simple, -1, self.GenerateLinkedTemplate)
+        wx.EVT_BUTTON(template_btn, -1, self.OnGenerateTemplate)
+        wx.EVT_BUTTON(self.template_btn_simple, -1, self.GenerateLinkedTemplate)
         
-        sizer_H1 = wxBoxSizer(wxHORIZONTAL)
-        sizer_H1.Add(template_btn, 1, wxTOP|wxRIGHT, 5)
-        sizer_H1.Add(self.template_btn_simple, 1, wxTOP|wxLEFT, 5)
+        sizer_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_H1.Add(template_btn, 1, wx.TOP|wx.RIGHT, 5)
+        sizer_H1.Add(self.template_btn_simple, 1, wx.TOP|wx.LEFT, 5)
         
-        sizer_V1 = wxBoxSizer(wxHORIZONTAL)
+        sizer_V1 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_V1.Add(
-            wxStaticText(self, -1, _(u'Available Templates')),
+            wx.StaticText(self, -1, _(u'Available Templates')),
             0,
-            wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER,
+            wx.TOP|wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER,
             5
         )
-        sizer_V1.Add(self.lic_choices, 0, wxTOP, 5)
-        sizer_V1.Add(sizer_H1, 1, wxLEFT, 150)
+        sizer_V1.Add(self.lic_choices, 0, wx.TOP, 5)
+        sizer_V1.Add(sizer_H1, 1, wx.LEFT, 150)
         
         ## Area where license text is displayed
-        self.cp_display = wxTextCtrl(self, style=wxTE_MULTILINE)
+        self.cp_display = wx.TextCtrl(self, style=wx.TE_MULTILINE)
         
         self.cp_display.SetFont(
             wx.Font(FONT_SIZE_LG, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL,
@@ -99,9 +75,9 @@ class Panel(wxPanel):
             )
         )
         
-        main_sizer = wxBoxSizer(wxVERTICAL)
-        main_sizer.Add(sizer_V1, 0, wxALL, 5)
-        main_sizer.Add(self.cp_display, 1, wxEXPAND|wxALL, 5)
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer.Add(sizer_V1, 0, wx.ALL, 5)
+        main_sizer.Add(self.cp_display, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
@@ -121,7 +97,7 @@ class Panel(wxPanel):
         self.cp_display.Clear()
     
     def OnSelectTemplate(self, event):
-        if type(event) != wxChoice:
+        if type(event) != wx.Choice:
             choice = event.GetEventObject()
         else:
             choice = event
@@ -212,8 +188,8 @@ class Panel(wxPanel):
         empty = self.cp_display.IsEmpty()
         
         if not empty:
-            if wxMessageDialog(self.debreate, _(u'This will destroy all license text. Do you want to continue?'), _(u'Warning'),
-                    wxYES_NO|wxNO_DEFAULT|wxICON_EXCLAMATION).ShowModal() == wxID_NO:
+            if wx.MessageDialog(self.debreate, _(u'This will destroy all license text. Do you want to continue?'), _(u'Warning'),
+                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
                 return 0
         
         return 1
