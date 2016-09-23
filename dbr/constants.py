@@ -37,6 +37,7 @@ local_path = u'{}/.local/share/debreate'.format(home_path)
 
 ## Application's displayed name
 APP_NAME = GT(u'Debreate')
+AUTHOR = u'Jordan Irwin'
 
 # Version information #
 RELEASE = 0
