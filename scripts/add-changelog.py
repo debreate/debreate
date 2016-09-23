@@ -3,7 +3,7 @@
 
 import os, sys, time
 
-cl_file = u'debian/changelog'
+cl_file = u'docs/changelog'
 info_file = u'INFO'
 
 if not os.path.isfile(info_file):
@@ -43,20 +43,22 @@ entry_string = u'{} ({}) {}; urgency={}\n\n  *\n\n'.format(package, new_version,
 entry_string += u' -- {} <{}>  {} {}'.format(packager, email, date_string, time_string)
 
 
-cl_prepend = os.path.isfile(cl_file)
+new_log = not os.path.isfile(cl_file)
 
-if cl_prepend:
+if not new_log:
     cl_data = open(cl_file, u'r')
     cl_text = cl_data.read()
     cl_data.close()
+    
+    # Check if log is empty
+    new_log = (u''.join(u''.join(cl_text.split(u' ')).split(u'\n')) == u'')
 
-    cl_text = u'{}\n\n\n{}'.format(entry_string, cl_text)
+if new_log:
+    cl_text = u'{}\n'.format(entry_string)
 
 else:
-    cl_text = u'{}\n'.format(entry_string)
+    cl_text = u'{}\n\n\n{}'.format(entry_string, cl_text)
 
 cl_data = open(cl_file, u'w')
 cl_data.write(cl_text)
 cl_data.close()
-
-
