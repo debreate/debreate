@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
-import os, wx
+# System imports
+import wx, os
 
+# Local imports
 import dbr
 from dbr.constants import ID_COPYRIGHT
 
