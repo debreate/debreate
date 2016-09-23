@@ -4,28 +4,15 @@
 #  Global functions used throughout Debreate
 
 
-# System imports
-from os import popen
+# System modules
+import wx, os, subprocess
 from datetime import datetime, date
-import os, subprocess
 from urllib2 import urlopen, URLError
 
-# wx imports
-from wx import \
-    SafeYield as wxSafeYield, \
-    FileDialog as wxFileDialog
-from wx import \
-    MAJOR_VERSION as wxMAJOR_VERSION, \
-    FD_SAVE as wxFD_SAVE, \
-    FD_CHANGE_DIR as wxFD_CHANGE_DIR, \
-    FD_OVERWRITE_PROMPT as wxFD_OVERWRITE_PROMPT, \
-    ID_OK as wxID_OK
-
-# Debreate imports
+# Local modules
+import dbr
 from dbr.constants import \
-    HOMEPAGE, PY_VER_STRING
-from dbr.custom import SaveFile
-from dbr.constants import system_licenses_path
+    HOMEPAGE, PY_VER_STRING, system_licenses_path
 
 
 ## Get the current version of the application
@@ -60,17 +47,17 @@ def GetCurrentVersion():
 
 ## Checks if a field (or widget) is enabled
 #  
-#  This is used for compatibility between wx 2.8 & 3.0.
+#  This is used for compatibility between wx. 2.8 & 3.0.
 #    3.0 uses the method 'IsThisEnabled()' rather than
 #    'IsEnabled()' to get the 'intrinsic' status of the
 #    widget.
 #  \param field
-#        The widget (wxWindow) to be checked
+#        The widget (wx.Window) to be checked
 #  
 #  \b Alias: \e dbr.FieldEnabled
 def FieldEnabled(field):
-    # wx 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
-    if wxMAJOR_VERSION > 2:
+    # wx. 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
+    if wx.MAJOR_VERSION > 2:
         return field.IsThisEnabled()
     else:
         return field.IsEnabled()
@@ -86,8 +73,8 @@ def FieldEnabled(field):
 #  \b Alias: \e dbr.RunSudo
 def RunSudo(password, command):
     command = u'echo {} | sudo -S {} ; echo $?'.format(password, command)
-    wxSafeYield()
-    output = popen(command).read()
+    wx.SafeYield()
+    output = os.popen(command).read()
     err = int(output.split(u'\n')[-2])
     if (err):
         return False
@@ -168,11 +155,11 @@ def TextIsEmpty(text):
 #  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
     if main_window.cust_dias.IsChecked():
-        file_save = SaveFile(main_window, title, default_extension)
+        file_save = dbr.SaveFile(main_window, title, default_extension)
         file_save.SetFilter(ext_filter)
     else:
-        file_save = wxFileDialog(main_window, title, os.getcwd(), u'', ext_filter,
-                wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT)
+        file_save = wx.FileDialog(main_window, title, os.getcwd(), u'', ext_filter,
+                wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
     
     return file_save
 
@@ -189,7 +176,7 @@ def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
 #  \param dialog
 #    The dialog window to be shown
 #  \return
-#    'True' if the dialog's return value is 'wx.ID_OK', 'False'
+#    'True' if the dialog's return value is 'wx..ID_OK', 'False'
 #      otherwise
 #  
 #  \b Alias: \e dbr.ShowDialog
@@ -197,7 +184,7 @@ def ShowDialog(main_window, dialog):
     if main_window.cust_dias.IsChecked():
         return dialog.DisplayModal()
     else:
-        return dialog.ShowModal() == wxID_OK
+        return dialog.ShowModal() == wx.ID_OK
 
 
 # FIXME: time.strftime can be used for all date & time functions
