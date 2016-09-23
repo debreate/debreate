@@ -297,9 +297,17 @@ class AboutDialog(wx.Dialog):
         #  
         #  NOTE: Original value: u'{}/docs/LICENSE.txt'.format(dbr.application_path)
         LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)
-        lic_data = open(LICENSE)
-        lic_text = lic_data.read()
-        lic_data.close()
+        
+        if os.path.isfile(LICENSE):
+            lic_data = open(LICENSE)
+            lic_text = lic_data.read()
+            lic_data.close()
+        
+        else:
+            lic_text = u'ERROR:\n\t\'{}\' not found'.format(LICENSE)
+            lic_text += u'\n\nCopyright © {} {}'.format(dbr.GetYear(), dbr.AUTHOR)
+            lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
+        
         self.license.SetValue(lic_text)
         self.license.SetInsertionPoint(0)
     
