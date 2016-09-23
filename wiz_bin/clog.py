@@ -1,111 +1,88 @@
 # -*- coding: utf-8 -*-
 
 
-import commands
-from wx import \
-	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
-	ALIGN_RIGHT as wxALIGN_RIGHT, \
-	BOTTOM as wxBOTTOM, \
-	EXPAND as wxEXPAND, \
-	HORIZONTAL as wxHORIZONTAL, \
-	LEFT as wxLEFT, \
-	RB_GROUP as wxRB_GROUP, \
-	RIGHT as wxRIGHT, \
-	TE_MULTILINE as wxTE_MULTILINE, \
-	TOP as wxTOP, \
-	VERTICAL as wxVERTICAL, \
-	EVT_BUTTON as wxEVT_BUTTON
-from wx import \
-	BoxSizer as wxBoxSizer, \
-	Choice as wxChoice, \
-	EmptyString as wxEmptyString, \
-	FlexGridSizer as wxFlexGridSizer, \
-	Panel as wxPanel, \
-	RadioButton as wxRadioButton, \
-	StaticBox as wxStaticBox, \
-	StaticBoxSizer as wxStaticBoxSizer, \
-	StaticText as wxStaticText, \
-	TextCtrl as wxTextCtrl, \
-	ToolTip as wxToolTip
+# System imports
+import wx, commands
 
+# Local imports
 import dbr
 from dbr.constants import ID_CHANGELOG
 
 
-class Panel(wxPanel):
+class Panel(wx.Panel):
     def __init__(self, parent):
-        wxPanel.__init__(self, parent, ID_CHANGELOG, name=_(u'Changelog'))
+        wx.Panel.__init__(self, parent, ID_CHANGELOG, name=_(u'Changelog'))
         
         self.parent = parent.parent # MainWindow
         
-        self.package_text = wxStaticText(self, -1, _(u'Package'))
-        self.package = wxTextCtrl(self)
-        self.version_text = wxStaticText(self, -1, _(u'Version'))
-        self.version = wxTextCtrl(self)
-        self.distribution_text = wxStaticText(self, -1, _(u'Distribution'))
-        self.distribution = wxTextCtrl(self)
-        self.urgency_text = wxStaticText(self, -1, _(u'Urgency'))
+        self.package_text = wx.StaticText(self, -1, _(u'Package'))
+        self.package = wx.TextCtrl(self)
+        self.version_text = wx.StaticText(self, -1, _(u'Version'))
+        self.version = wx.TextCtrl(self)
+        self.distribution_text = wx.StaticText(self, -1, _(u'Distribution'))
+        self.distribution = wx.TextCtrl(self)
+        self.urgency_text = wx.StaticText(self, -1, _(u'Urgency'))
         self.urgency_opt = (u'low', u'HIGH')
-        self.urgency = wxChoice(self, choices=self.urgency_opt)
-        self.maintainer_text = wxStaticText(self, -1, _(u'Maintainer'))
-        self.maintainer = wxTextCtrl(self)
-        self.email_text = wxStaticText(self, -1, _(u'Email'))
-        self.email = wxTextCtrl(self)
+        self.urgency = wx.Choice(self, choices=self.urgency_opt)
+        self.maintainer_text = wx.StaticText(self, -1, _(u'Maintainer'))
+        self.maintainer = wx.TextCtrl(self)
+        self.email_text = wx.StaticText(self, -1, _(u'Email'))
+        self.email = wx.TextCtrl(self)
         
-        info_sizer = wxFlexGridSizer(2, 6, 5, 5)
+        info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
         info_sizer.AddGrowableCol(1)
         info_sizer.AddGrowableCol(3)
         info_sizer.AddGrowableCol(5)
         info_sizer.AddMany([
-            (self.package_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.package, 1, wxEXPAND),
-            (self.version_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.version, 1, wxEXPAND),
-            (self.distribution_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.distribution, 1, wxEXPAND),
-            (self.urgency_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.urgency, 1, wxEXPAND),
-            (self.maintainer_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.maintainer, 1, wxEXPAND),
-            (self.email_text, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT), (self.email, 1, wxEXPAND)
+            (self.package_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.package, 1, wx.EXPAND),
+            (self.version_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.version, 1, wx.EXPAND),
+            (self.distribution_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.distribution, 1, wx.EXPAND),
+            (self.urgency_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.urgency, 1, wx.EXPAND),
+            (self.maintainer_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.maintainer, 1, wx.EXPAND),
+            (self.email_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.email, 1, wx.EXPAND)
             ])
         
         # *** CHANGES DETAILS
-        self.changes = wxTextCtrl(self, size=(20,150), style=wxTE_MULTILINE)
+        self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE)
         
-        self.border_changes = wxStaticBox(self, -1, _(u'Changes'), size=(20,20))
-        changes_box = wxStaticBoxSizer(self.border_changes, wxVERTICAL)
-        changes_box.Add(self.changes, 1, wxEXPAND|wxTOP|wxBOTTOM, 5)
+        self.border_changes = wx.StaticBox(self, -1, _(u'Changes'), size=(20,20))
+        changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
+        changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
         # Destination of changelog
-        self.rb_dest_default = wxRadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wxRB_GROUP)
-        self.rb_dest_custom = wxRadioButton(self)
+        self.rb_dest_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wx.RB_GROUP)
+        self.rb_dest_custom = wx.RadioButton(self)
         self.dest_custom = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)
         
-        dest_custom_sizer = wxBoxSizer(wxHORIZONTAL)
+        dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         dest_custom_sizer.Add(self.rb_dest_custom)
         dest_custom_sizer.Add(self.dest_custom, 1)
         
-        border_dest = wxStaticBox(self, -1, _(u'Target'))
-        dest_box = wxStaticBoxSizer(border_dest, wxVERTICAL)
+        border_dest = wx.StaticBox(self, -1, _(u'Target'))
+        dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
         dest_box.AddSpacer(5)
         dest_box.Add(self.rb_dest_default)
         dest_box.AddSpacer(5)
-        dest_box.Add(dest_custom_sizer, 0, wxEXPAND)
+        dest_box.Add(dest_custom_sizer, 0, wx.EXPAND)
         dest_box.AddSpacer(5)
         
-        details_sizer = wxBoxSizer(wxHORIZONTAL)
-        details_sizer.Add(changes_box, 1, wxEXPAND|wxRIGHT, 5)
+        details_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        details_sizer.Add(changes_box, 1, wx.EXPAND|wx.RIGHT, 5)
         details_sizer.Add(dest_box)
         
         
         self.button_import = dbr.ButtonImport(self)
-        self.button_import.SetToolTip(wxToolTip(_(u'Import information from Control section')))
+        self.button_import.SetToolTip(wx.ToolTip(_(u'Import information from Control section')))
         self.button_add = dbr.ButtonAdd(self)
         
-        wxEVT_BUTTON(self.button_import, -1, self.ImportInfo)
-        wxEVT_BUTTON(self.button_add, -1, self.AddInfo)
+        wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
+        wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
         
-        button_sizer = wxBoxSizer(wxHORIZONTAL)
+        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        self.display_area = wxTextCtrl(self, -1, style=wxTE_MULTILINE)
+        self.display_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE)
         
         # *** Widgets that Enable/Disable
 #        self.toggle_list = (
@@ -115,13 +92,13 @@ class Panel(wxPanel):
 #            )
         
         # *** LAYOUT
-        main_sizer = wxStaticBoxSizer(wxStaticBox(self), wxVERTICAL)
+        main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
         main_sizer.AddSpacer(10)
-        main_sizer.Add(info_sizer, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
+        main_sizer.Add(info_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.AddSpacer(10)
-        main_sizer.Add(details_sizer, 0, wxEXPAND|wxLEFT|wxRIGHT, 5)
-        main_sizer.Add(button_sizer, 0, wxLEFT|wxRIGHT, 5)
-        main_sizer.Add(self.display_area, 1, wxEXPAND, wxLEFT|wxRIGHT, 5)
+        main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(self.display_area, 1, wx.EXPAND, wx.LEFT|wx.RIGHT, 5)
         main_sizer.AddSpacer(5)
         
         self.SetAutoLayout(True)
@@ -150,8 +127,8 @@ class Panel(wxPanel):
             else:
                 line = u'    %s' % line
             details.append(line)
-        details.insert(0, wxEmptyString)
-        details.append(wxEmptyString)
+        details.insert(0, wx.EmptyString)
+        details.append(wx.EmptyString)
         details = u'\n'.join(details)
         
         maintainer = self.maintainer.GetValue()
@@ -162,7 +139,7 @@ class Panel(wxPanel):
         info2 = u' -- %s <%s>  %s' % (maintainer, email, date)
         
         entry = u'\n'.join((info1, details, info2))
-        self.display_area.SetValue(u'\n'.join((entry, wxEmptyString, self.display_area.GetValue())))
+        self.display_area.SetValue(u'\n'.join((entry, wx.EmptyString, self.display_area.GetValue())))
     
     def GetChangelog(self):
         return self.display_area.GetValue()
