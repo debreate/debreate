@@ -202,9 +202,9 @@ def ShowDialog(main_window, dialog):
 
 def prepend_zero(number):
     if number < 10:
-        return str(u'0{}'.format(number))
+        return unicode(u'0{}'.format(number))
     
-    return str(number)
+    return unicode(number)
 
 
 ## Retrieves the current year
