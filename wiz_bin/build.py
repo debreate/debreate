@@ -1,10 +1,13 @@
-# Build Page
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.build
 
+
+# System modules
 import wx, os, commands, shutil, thread
 from os.path import exists
 
+# Local modules
 import dbr
 from dbr.constants import ID_BUILD
 
