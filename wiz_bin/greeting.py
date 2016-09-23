@@ -1,29 +1,17 @@
 # -*- coding: utf-8 -*-
 
 
-# Control widgets
-from wx import \
-	ALIGN_CENTER as wxALIGN_CENTER, \
-	ALIGN_CENTER_VERTICAL as wxALIGN_CENTER_VERTICAL, \
-	ALL as wxALL, \
-	EXPAND as wxEXPAND, \
-	VERTICAL as wxVERTICAL
-from wx import \
-	HyperlinkCtrl as wxHyperlinkCtrl, \
-	GridSizer as wxGridSizer, \
-	NewId as wxNewId, \
-	Panel as wxPanel, \
-	StaticBox as wxStaticBox, \
-	StaticBoxSizer as wxStaticBoxSizer, \
-	StaticText as wxStaticText
+# System imports
+import wx
 
+# Local imports
 from dbr import GT
 from dbr.constants import ID_GREETING
 
 
-class Panel(wxPanel):
+class Panel(wx.Panel):
     def __init__(self, parent):
-        wxPanel.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
+        wx.Panel.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         
@@ -42,16 +30,16 @@ class Panel(wxPanel):
             )
         
         # ----- Helpful information to be displayed about each mode
-        self.info = wxStaticText(self, -1)
-        self.vidlink = wxHyperlinkCtrl(self, -1, GT(u'Building a Debian Package with Debreate'), u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
-        self.info_border = wxStaticBox(self, -1, size=(100,100))
-        info_box = wxGridSizer()
-        info_box.Add(self.info, 1, wxALIGN_CENTER|wxALIGN_CENTER_VERTICAL)
+        self.info = wx.StaticText(self, -1)
+        self.vidlink = wx.HyperlinkCtrl(self, -1, GT(u'Building a Debian Package with Debreate'), u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        self.info_border = wx.StaticBox(self, -1, size=(100,100))
+        info_box = wx.GridSizer()
+        info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
         # ----- Layout
-        mode_sizer = wxStaticBoxSizer(self.info_border, wxVERTICAL)
-        mode_sizer.Add(info_box, 4, wxEXPAND|wxALIGN_CENTER|wxALL, 10)
-        mode_sizer.Add(self.vidlink, 2, wxEXPAND|wxALIGN_CENTER)
+        mode_sizer = wx.StaticBoxSizer(self.info_border, wx.VERTICAL)
+        mode_sizer.Add(info_box, 4, wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, 10)
+        mode_sizer.Add(self.vidlink, 2, wx.EXPAND|wx.ALIGN_CENTER)
         
         self.SetAutoLayout(True)
         self.SetSizer(mode_sizer)
