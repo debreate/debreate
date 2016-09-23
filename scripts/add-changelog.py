@@ -1,7 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, date
 import os, sys, time
 
 cl_file = u'debian/changelog'
