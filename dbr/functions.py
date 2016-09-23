@@ -200,6 +200,8 @@ def ShowDialog(main_window, dialog):
         return dialog.ShowModal() == wxID_OK
 
 
+# FIXME: time.strftime can be used for all date & time functions
+
 def prepend_zero(number):
     if number < 10:
         return unicode(u'0{}'.format(number))
