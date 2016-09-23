@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.constants
-#  Global constants used throughout Debreate
+#  
+#  Global variables used throughout the application & should remain constant.
 
 
+# System imports
 import sys, os
 
-from wx import \
-    NewId as wxNewId
-from wx import \
-    MAJOR_VERSION as wxMAJOR_VERSION, \
-    MINOR_VERSION as wxMINOR_VERSION, \
-    RELEASE_VERSION as wxRELEASE_VERSION
+# wx imports
+import wx
 
+# Debreate imports
 from dbr.language import GT
 
 
@@ -72,29 +71,29 @@ PY_VER_STRING = u'{}.{}.{}'.format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
 
 # *** wxWidgets Info *** #
 
-WX_VER_STRING = u'{}.{}.{}'.format(wxMAJOR_VERSION, wxMINOR_VERSION, wxRELEASE_VERSION)
+WX_VER_STRING = u'{}.{}.{}'.format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEASE_VERSION)
 
 
 # *** Custom IDs *** #
-ID_OVERWRITE = wxNewId()
-ID_APPEND = wxNewId()
+ID_OVERWRITE = wx.NewId()
+ID_APPEND = wx.NewId()
 # FIXME: Unused IDs
-ID_BIN = wxNewId()
-ID_SRC = wxNewId()
-ID_DSC = wxNewId()
-ID_CNG = wxNewId()
+ID_BIN = wx.NewId()
+ID_SRC = wx.NewId()
+ID_DSC = wx.NewId()
+ID_CNG = wx.NewId()
 
 # Page IDs
-ID_BUILD = wxNewId()
-ID_CHANGELOG = wxNewId()
-ID_CONTROL = wxNewId()
-ID_COPYRIGHT = wxNewId()
-ID_DEPENDS = wxNewId()
-ID_FILES = wxNewId()
-ID_GREETING = wxNewId()
-ID_MAN = wxNewId()
-ID_MENU = wxNewId()
-ID_SCRIPTS = wxNewId()
+ID_BUILD = wx.NewId()
+ID_CHANGELOG = wx.NewId()
+ID_CONTROL = wx.NewId()
+ID_COPYRIGHT = wx.NewId()
+ID_DEPENDS = wx.NewId()
+ID_FILES = wx.NewId()
+ID_GREETING = wx.NewId()
+ID_MAN = wx.NewId()
+ID_MENU = wx.NewId()
+ID_SCRIPTS = wx.NewId()
 
 
 # *** Icons *** #
