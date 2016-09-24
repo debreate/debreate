@@ -5,16 +5,12 @@
 import wx, os
 
 # Local imports
-import dbr
+import dbr.font
 from dbr.constants import ID_COPYRIGHT
 
 
 # Globals
 copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
-
-FONT_SIZE_SM = 6
-FONT_SIZE_MD = 8
-FONT_SIZE_LG = 10
 
 
 class Panel(wx.Panel):
@@ -69,11 +65,7 @@ class Panel(wx.Panel):
         ## Area where license text is displayed
         self.cp_display = wx.TextCtrl(self, style=wx.TE_MULTILINE)
         
-        self.cp_display.SetFont(
-            wx.Font(FONT_SIZE_LG, wx.FONTFAMILY_TELETYPE, wx.FONTSTYLE_NORMAL,
-                    wx.FONTWEIGHT_NORMAL
-            )
-        )
+        self.cp_display.SetFont(dbr.font.MONOSPACED_LG)
         
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(sizer_V1, 0, wx.ALL, 5)
