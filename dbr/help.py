@@ -6,6 +6,9 @@
 # System modules
 import wx, os, commands
 
+# Local modules
+from dbr.constants import ID_HELP
+
 
 # FIXME: This should use a global manpage file
 #app_man = u'{}/man/debreate.1'
@@ -31,9 +34,6 @@ def ParseManpage():
     
     return help_text
 
-
-# FIXME: Should use global
-ID_HELP = wx.NewId()
 
 class HelpDialog(wx.Dialog):
     def __init__(self, parent):
