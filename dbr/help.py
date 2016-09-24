@@ -5,6 +5,7 @@
 
 # System modules
 import wx, os, commands
+from wx.richtext import RichTextCtrl, RE_READONLY
 
 # Local modules
 from dbr.constants import ID_HELP
@@ -37,4 +38,21 @@ def ParseManpage():
 
 class HelpDialog(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, ID_HELP, u'Help')
+        wx.Dialog.__init__(self, parent, ID_HELP, u'Help',
+                           style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        
+        dialog_size = wx.Size(200, 200)
+        
+        self.SetSize(wx.DefaultSize)
+        self.SetMinSize(dialog_size)
+        
+        bg = wx.Panel(self)
+        
+        help_display = RichTextCtrl(bg, style=RE_READONLY)
+        
+        sizer_v1 = wx.BoxSizer(wx.VERTICAL)
+        sizer_v1.Add(help_display, 1, wx.EXPAND)
+        
+        bg.SetSizer(sizer_v1)
+        bg.SetAutoLayout(True)
+        bg.Layout()
