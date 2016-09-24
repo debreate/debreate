@@ -8,7 +8,7 @@
 import wx, os
 
 # Local modules
-import dbr
+import dbr.font
 
 
 ## Dialog that shows information about the application
@@ -103,8 +103,7 @@ class AboutDialog(wx.Dialog):
         
         ## Changelog text area
         self.changelog = wx.TextCtrl(changelog, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        #self.changelog.SetBackgroundColour((0,0,0,0))
-        #self.changelog.SetForegroundColour((255,255,255,255))
+        self.changelog.SetFont(dbr.font.MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
         log_sizer.Add(self.changelog, 1, wx.EXPAND)
@@ -115,8 +114,7 @@ class AboutDialog(wx.Dialog):
         
         ## Licensing information text area
         self.license = wx.TextCtrl(license, -1, style=wx.TE_READONLY|wx.TE_MULTILINE)
-        #self.license.SetBackgroundColour((0,0,0,0))
-        #self.license.SetForegroundColour((255,255,255,255))
+        self.license.SetFont(dbr.font.MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)
         license_sizer.Add(self.license, 1, wx.EXPAND)
