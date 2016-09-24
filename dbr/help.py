@@ -6,9 +6,6 @@
 # System modules
 import wx, os, commands
 
-# Local modules
-#from dbr import application_path
-
 
 # FIXME: This should use a global manpage file
 #app_man = u'{}/man/debreate.1'
@@ -24,14 +21,6 @@ def ParseManpage():
     help_text = u'ERROR: Could not parse \'{}\''.format(app_man)
     
     if os.path.isfile(app_man):
-        '''
-        man_data = open(app_man)
-        man_text = man_data.read()
-        man_data.close()
-        
-        help_text = man_text
-        '''
-        
         # FIXME: Should text if application is installed on system
         c_man = u'man --manpath={} {} debreate'.format(local_manpath, man_section)
         c_output = commands.getstatusoutput(c_man)
@@ -42,9 +31,6 @@ def ParseManpage():
     
     return help_text
 
-
-#print(__name__ + u':\n')
-#print ParseManpage()
 
 # FIXME: Should use global
 ID_HELP = wx.NewId()
