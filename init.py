@@ -16,6 +16,9 @@ wxversion.select([u'3.0', u'2.8'])
 # System modules
 import wx, os, sys, shutil
 
+debreate_app = wx.App()
+
+
 # Local modules
 import main, dbr
 from dbr import Logger
@@ -99,7 +102,6 @@ rm -r ~/.config/debreate'.format(m1, m2))
 
 def Run(pos, size, maximize, center, dias, cwd):
     # Start the main application window
-    app = wx.App()
     frame = main.MainWindow(None, u'', pos, size)
     frame.SetTitle(frame.default_title)
     
@@ -144,7 +146,7 @@ def Run(pos, size, maximize, center, dias, cwd):
     frame.dbconfig = dbconfig
     
     frame.Show()
-    app.MainLoop()
+    debreate_app.MainLoop()
     
     # Clean up the logger
     Logger.OnClose()
