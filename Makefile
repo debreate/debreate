@@ -50,7 +50,9 @@ FILES_dbr = \
 	dbr/command_line.py \
 	dbr/constants.py \
 	dbr/custom.py \
+	dbr/font.py \
 	dbr/functions.py \
+	dbr/help.py \
 	dbr/language.py \
 	dbr/log.py \
 	dbr/md5.py \
