@@ -470,15 +470,19 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
         about.Destroy()
         
     def OnHelp(self, event):
-        # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
-        wx.Yield()
-        status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(dbr.application_path)])
-        if status:
+        if dbr.DebugEnabled():
+            dbr.HelpDialog(self).ShowModal()
+        
+        else:
+            # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
             wx.Yield()
-            status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(dbr.application_path)])
-        if status:
-            wx.Yield()
-            webbrowser.open(u'http://debreate.sourceforge.net/usage')
+            status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(dbr.application_path)])
+            if status:
+                wx.Yield()
+                status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(dbr.application_path)])
+            if status:
+                wx.Yield()
+                webbrowser.open(u'http://debreate.sourceforge.net/usage')
     
     # *** SAVING *** #
     
