@@ -40,6 +40,7 @@ from dbr.constants import \
 from dbr.custom import \
     OutputLog, OverwriteDialog, SingleFileTextDropTarget, Combo, LCReport, \
     OpenDir, OpenFile, SaveFile
+from dbr.help import HelpDialog
 from dbr.functions import \
     GetCurrentVersion, FieldEnabled, RunSudo, CommandExists, RequirePython, TextIsEmpty, \
     GetFileSaveDialog, ShowDialog, GetYear, GetDate, GetTime, GetSystemLicensesList
