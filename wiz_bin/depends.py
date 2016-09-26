@@ -181,18 +181,18 @@ class Panel(wx.Panel):
     
     def SetDepends(self, event):
         try:
-            mod = event.GetModifiers()
-            id = event.GetKeyCode()
+            key_mod = event.GetModifiers()
+            key_id = event.GetKeyCode()
         except AttributeError:
-            mod = None
-            id = event.GetEventObject().GetId()
+            key_mod = None
+            key_id = event.GetEventObject().GetId()
         
         addname = self.dep_name.GetValue()
         oper = self.oper_options[self.dep_oper.GetCurrentSelection()]
         ver = self.dep_ver.GetValue()
         addver = u'(%s%s)' % (oper, ver)
             
-        if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+        if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
             for item in self.categories:
                 if item.GetValue() == True:
                     if addname != u'':
@@ -202,7 +202,7 @@ class Panel(wx.Panel):
                         else:
                             self.dep_area.SetStringItem(0, 1, u'%s %s' % (addname, addver))
         
-        elif id == ID_Append:
+        elif key_id == ID_Append:
             listrow = self.dep_area.GetFocusedItem()  # Get row of selected item
             colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
             prev_text = colitem.GetText()  # Get the text from that item
@@ -212,16 +212,16 @@ class Panel(wx.Panel):
                 else:
                     self.dep_area.SetStringItem(listrow, 1, u'%s | %s' % (prev_text, addname))
         
-        elif id == ID_Delete: # wx.WXK_DELETE:
+        elif key_id == ID_Delete: # wx.WXK_DELETE:
             selected = None
             while selected != -1:
                 selected = self.dep_area.GetFirstSelected()
                 self.dep_area.DeleteItem(selected)
         
-        elif id == 65 and mod == 2:
+        elif key_id == 65 and key_mod == 2:
             self.SelectAll()
         
-        elif id == wx.WXK_ESCAPE:
+        elif key_id == wx.WXK_ESCAPE:
             # Create the dialog
             confirm = wx.MessageDialog(self, _(u'Clear all dependencies?'), _(u'Confirm'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
