@@ -307,6 +307,8 @@ class Panel(wx.ScrolledWindow):
             path = dia.GetPath()
             f_data = open(path, u'r')
             control_data = f_data.read()
+            f_data.close()
+            
             depends_data = self.SetFieldData(control_data)
             self.debreate.page_depends.SetFieldData(depends_data)
     
