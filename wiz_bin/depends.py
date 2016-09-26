@@ -20,12 +20,6 @@ class Panel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_DEPENDS, name=_(u'Dependencies and Conflicts'))
         
-        # For identifying page to parent
-        #self.ID = "DEP"
-        
-        # Allows calling parent methods
-        self.parent = parent
-        
         # ----- Tool Tips
         dep_tip = wx.ToolTip(_(u'Package will need to be installed'))
         pre_tip = wx.ToolTip(_(u'Package will need to be installed and configured first'))
