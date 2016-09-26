@@ -14,6 +14,8 @@ class Panel(wx.ScrolledWindow):
         wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=_(u'Control'))
         
         self.parent = parent
+        self.debreate = self.parent.parent
+        
         self.SetScrollbars(0, 20, 0, 0)
         
         self.bg = wx.Panel(self)
@@ -264,7 +266,8 @@ class Panel(wx.ScrolledWindow):
             child.Enable()
             child.SetBackgroundColour(dbr.Optional)
     
-    def SetBuildType(self, id):
+    # FIXME: I believe this is unused
+    def SetBuildType(self, build_id):
         # First enable all fields that were disabled
         self.EnableAll()
         
@@ -291,7 +294,7 @@ class Panel(wx.ScrolledWindow):
     
     def OnBrowse(self, event):
         cont = False
-        if self.parent.parent.cust_dias.IsChecked():
+        if self.debreate.cust_dias.IsChecked():
             dia = dbr.OpenFile(self)
             if dia.DisplayModal():
                 cont = True
@@ -302,10 +305,10 @@ class Panel(wx.ScrolledWindow):
         
         if cont:
             path = dia.GetPath()
-            file = open(path, u'r')
-            control_data = file.read()
+            f_data = open(path, u'r')
+            control_data = f_data.read()
             depends_data = self.SetFieldData(control_data)
-            self.parent.parent.page_depends.SetFieldData(depends_data)
+            self.debreate.page_depends.SetFieldData(depends_data)
     
     def OnSave(self, event):
         # Get data to write to control file
@@ -330,10 +333,10 @@ class Panel(wx.ScrolledWindow):
                 path = dia.GetPath()
         
         if cont:
-            filename = dia.GetFilename()
-            file = open(path, u'w')
-            file.write(control)
-            file.close()
+            f_name = dia.GetFilename()
+            f_data = open(path, u'w')
+            f_data.write(control)
+            f_data.close()
     
     def OnPreview(self, event):
         # Show a preview of the control file
