@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Page defining dependencies
+## \package wiz_bin.depends
 
 
 # System imports
@@ -249,8 +249,8 @@ class Panel(wx.Panel):
     
 
 
+## A ListCtrl that automatically expands columns
 class AutoListCtrl(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):
-    """A ListCtrl that automatically expands columns"""
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
