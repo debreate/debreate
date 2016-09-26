@@ -320,7 +320,7 @@ class Panel(wx.ScrolledWindow):
         cont = False
         
         # Open a "Save Dialog"
-        if self.parent.parent.cust_dias.IsChecked():
+        if self.debreate.cust_dias.IsChecked():
             dia = dbr.SaveFile(self, _(u'Save Control Information'))
             dia.SetFilename(u'control')
             if dia.DisplayModal():
@@ -456,7 +456,7 @@ class Panel(wx.ScrolledWindow):
                     u'Replaces': rep_list, u'Breaks': brk_list}
         
         # Get amount of items to add
-        dep_area = self.parent.parent.page_depends.dep_area
+        dep_area = self.debreate.page_depends.dep_area
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
@@ -592,5 +592,5 @@ class Panel(wx.ScrolledWindow):
         for widget in self.text_widgets:
             if widget.GetValue() != self.text_widgets[widget]:
                 modified = True
-        self.parent.parent.SetSavedStatus(modified)
+        self.debreate.SetSavedStatus(modified)
         event.Skip()
