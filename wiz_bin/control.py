@@ -578,6 +578,21 @@ class Panel(wx.ScrolledWindow):
         data = self.GetCtrlInfo()
         return u'<<CTRL>>\n%s<</CTRL>>' % data
     
+    ## Export all information on this & Depends page
+    #  
+    #  Will be used for new save format.
+    #  \param f_name
+    #        \b \e str : Filename to use
+    #  \param f_dir
+    #        \b \b str : Directory to export to
+    def Export(self, f_name=u'CONTROL', f_dir):
+        c_data = self.GetCtrlInfo()
+        print(u'[{}] DEBUG: Exporting control data:\n{}'.format(__file__, c_data))
+        
+        f_out = u'{}/{}'.format(f_dir, f_name)
+        f_data = open(f_out, u'w')
+        f_data.write(c_data)
+        f_data.close()
     
     # *** Determining of project is modified
     def OnKeyDown(self, event):
