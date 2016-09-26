@@ -335,7 +335,6 @@ class Panel(wx.ScrolledWindow):
                 path = dia.GetPath()
         
         if cont:
-            f_name = dia.GetFilename()
             f_data = open(path, u'w')
             f_data.write(control)
             f_data.close()
@@ -359,7 +358,6 @@ class Panel(wx.ScrolledWindow):
     
     
     def OnCtrlKey(self, event):
-        obj = event.GetEventObject()
         key = event.GetKeyCode()
         mod = event.GetModifiers()
         
