@@ -111,7 +111,7 @@ class Panel(wx.Panel):
         self.dep_area.InsertColumn(1, _(u'Package(s)'))
         # FIXME: wx. 3.0
         if (wx.MAJOR_VERSION < 3):
-	        self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
+            self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
         
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
         
