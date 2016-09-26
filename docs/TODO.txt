@@ -25,3 +25,4 @@ Unknown Release:
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
 - Use monospace font in copyright
+- Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
