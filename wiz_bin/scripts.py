@@ -188,17 +188,17 @@ scripts will be created that will place a symbolic link to your executables in t
     
     # Importing the executable for Auto-Link
     def ImportExe(self, event):
-        id = event.GetId()
-        if id == ID_Import:
+        event_id = event.GetId()
+        if event_id == ID_Import:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.xlist = []
             
             # Get executables from "files" tab
             files = self.debreate.page_files.dest_area
-            max = files.GetItemCount()  # Sets the max iterate value
+            it_max = files.GetItemCount()  # Sets the max iterate value
             count = 0
-            while count < max:
+            while count < it_max:
                 # Searches for executables (distinguished by red text)
                 if files.GetItemTextColour(count) == (255, 0, 0, 255):
                     filename = os.path.split(files.GetItemText(count))[1]  # Get the filename from the source
@@ -234,7 +234,7 @@ scripts will be created that will place a symbolic link to your executables in t
                         print(u'panscripts.py: The executables destination is not available')
                 count += 1
         
-        elif id == ID_Remove:
+        elif event_id == ID_Remove:
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
