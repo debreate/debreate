@@ -581,6 +581,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Export all information on this & Depends page
     #  
+    #  FIXME: Delete! Use method from dbr.wizard instead
     #  Will be used for new save format.
     #  \param f_name
     #        \b \e str : Filename to use
@@ -617,3 +618,12 @@ class Panel(wx.ScrolledWindow):
                 modified = True
         self.debreate.SetSavedStatus(modified)
         event.Skip()
+    
+    
+    ## Retrieves information for control file export
+    #  
+    #  FIXME: Should replace self.GetPageInfo()
+    #  \return
+    #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
+    def GetPageInfo(self):
+        return (__name__, self.GetCtrlInfo())
