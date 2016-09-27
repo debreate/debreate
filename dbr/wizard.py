@@ -2,8 +2,13 @@
 
 # Wizard class for Debreate
 
-import wx, wx.lib.newevent
-import buttons
+# System imports
+import wx, wx.lib.newevent, os
+
+# Local imports
+from dbr.buttons import ButtonNext, ButtonPrev
+from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ
+from dbr import DebugEnabled, Logger
 
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
@@ -33,8 +38,8 @@ class Wizard(wx.Panel):
         self.title.Layout()
         
         # Previous and Next buttons
-        self.button_prev = buttons.ButtonPrev(self, ID_PREV)
-        self.button_next = buttons.ButtonNext(self, ID_NEXT)
+        self.button_prev = ButtonPrev(self, ID_PREV)
+        self.button_next = ButtonNext(self, ID_NEXT)
         
         wx.EVT_BUTTON(self.button_prev, -1, self.ChangePage)
         wx.EVT_BUTTON(self.button_next, -1, self.ChangePage)
@@ -70,7 +75,7 @@ class Wizard(wx.Panel):
         
         self.ClearPages() # Remove any current pages from the wizard
         
-        # These two item are just for checking to make sure that pages is right type
+        # These two item are just for checking to make sure that page is right type
         list = []
         tuple = ()
         if type(pages) not in (type(list), type(tuple)):
@@ -172,3 +177,38 @@ class Wizard(wx.Panel):
         for page in self.pages:
             if page.IsShown():
                 return page
+    
+    
+    ## Export information from individual page
+    #  
+    #  \param page
+    #       \b \e wx.Panel : The page from which to retrieve information
+    #  \param out_dir
+    #        \b \e str : Target directory to output information text file
+    #  \param out_name
+    #        \b \e str : Filename to use for output
+    #  \return
+    #       Return code for success or failure of export
+    def ExportPageInfo(self, page, out_dir, out_name):
+        page_info = page.GetPageInfo()
+        page_name = page_info[0]
+        page_info = page_info[1]
+        
+        if not os.path.isdir(out_dir):
+            return (ERR_DIR_NOT_AVAILABLE, page_name)
+        
+        Logger.Debug(__name__, u'Exporting "{}" data:\n{}'.format(page_name, page_info))
+        
+        absolute_filename = u'{}/{}'.format(out_dir, out_name)
+        
+        output_data = open(absolute_filename, u'w')
+        if not output_data:
+            return (ERR_FILE_READ, page_name)
+        
+        output_data.write(page_info)
+        output_data.close()
+        
+        if not os.path.isfile(absolute_filename):
+            return (ERR_FILE_WRITE, page_name)
+        
+        return (0, None)
