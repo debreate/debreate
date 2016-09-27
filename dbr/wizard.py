@@ -75,10 +75,7 @@ class Wizard(wx.Panel):
         
         self.ClearPages() # Remove any current pages from the wizard
         
-        # These two item are just for checking to make sure that page is right type
-        list = []
-        tuple = ()
-        if type(pages) not in (type(list), type(tuple)):
+        if type(pages) not in (list, tuple):
             raise TypeError(u'Argument 2 of dbwizard.SetPages() must be List or Tuple')
         
         for page in pages:
@@ -92,9 +89,9 @@ class Wizard(wx.Panel):
                 self.title_txt.SetLabel(page.GetName())
         self.Layout()
     
-    def ShowPage(self, id):
+    def ShowPage(self, page_id):
         for p in self.pages:
-            if p.GetId() != id:
+            if p.GetId() != page_id:
                 p.Hide()
             else:
                 p.Show()
@@ -105,7 +102,7 @@ class Wizard(wx.Panel):
             wx.PostEvent(child, self.evt)
     
     def ChangePage(self, event):
-        id = event.GetEventObject().GetId()
+        event_id = event.GetEventObject().GetId()
         
         # Get index of currently shown page
         for page in self.pages:
