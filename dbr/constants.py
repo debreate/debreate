@@ -107,6 +107,12 @@ ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
 ERR_FILE_WRITE = wx.NewId()
 
+error_definitions = {
+    ERR_DIR_NOT_AVAILABLE: u'Directory Not Available',
+    ERR_FILE_READ: u'Could Not Read File',
+    ERR_FILE_WRITE: u'Could Not Write File',
+}
+
 
 # *** Icons *** #
 ICON_ERROR = u'{}/bitmaps/error64.png'.format(application_path)
