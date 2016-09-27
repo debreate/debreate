@@ -8,14 +8,14 @@ import wx, wx.lib.newevent, os
 # Local imports
 from dbr.buttons import ButtonNext, ButtonPrev
 from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ
-from dbr import DebugEnabled, Logger
+from dbr import Logger
 
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
 
 class Wizard(wx.Panel):
-    def __init__(self, parent, id=wx.ID_ANY, page_list=None):
-        wx.Panel.__init__(self, parent, id, page_list)
+    def __init__(self, parent, page_list=None):
+        wx.Panel.__init__(self, parent, wx.ID_ANY, page_list)
         
         self.parent = parent
         
