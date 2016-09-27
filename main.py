@@ -3,15 +3,16 @@
 
 
 # System modules
-import wx, os, shutil, subprocess, webbrowser
+import wx, os, shutil, subprocess, webbrowser, tarfile
 from urllib2 import URLError, HTTPError
 
 # Local modules
 import dbr, wiz_bin
-from dbr import Logger, DebugEnabled
+from dbr import Logger, DebugEnabled, GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
-    ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU
+    ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
+    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, error_definitions
 
 
 # Pages
@@ -133,7 +134,35 @@ class MainWindow(wx.Frame):
         self.cust_dias = wx.MenuItem(self.menu_opt, ID_Dialogs, _(u'Use Custom Dialogs'),
             _(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
+        # Project compression options
+        # FIXME: Need custom IDs
+        menu_compression = wx.Menu()
+        
+        opt_compression_uncompressed = wx.MenuItem(menu_compression, ID_ZIP_NONE,
+                GT(u'Uncompressed'), kind=wx.ITEM_RADIO)
+        opt_compression_gz = wx.MenuItem(menu_compression, ID_ZIP_GZ,
+                GT(u'Gzip'), kind=wx.ITEM_RADIO)
+        opt_compression_bz2 = wx.MenuItem(menu_compression, ID_ZIP_BZ2,
+                GT(u'Bzip2'), kind=wx.ITEM_RADIO)
+        opt_compression_xz = wx.MenuItem(menu_compression, ID_ZIP_XZ,
+                GT(u'XZ'), kind=wx.ITEM_RADIO)
+        
+        self.compression_opts = (
+            opt_compression_uncompressed,
+            opt_compression_gz,
+            opt_compression_bz2,
+            opt_compression_xz,
+        )
+        
+        for OPT in self.compression_opts:
+            menu_compression.AppendItem(OPT)
+            
+            # FIXME: Re-enable when ready
+            OPT.Enable(False)
+        
         self.menu_opt.AppendItem(self.cust_dias)
+        self.menu_opt.AppendSubMenu(menu_compression, GT(u'Project Compression'),
+                GT(u'Set the compression type for project save output'))
         
         # ----- Help Menu
         self.menu_help = wx.Menu()
@@ -206,22 +235,22 @@ class MainWindow(wx.Frame):
         
         # ***** END MENUBAR ***** #
         
-        self.Wizard = dbr.Wizard(self) # Binary
+        self.wizard = dbr.Wizard(self) # Binary
         
-        self.page_info = wiz_bin.PageGreeting(self.Wizard)
+        self.page_info = wiz_bin.PageGreeting(self.wizard)
         self.page_info.SetInfo()
-        self.page_control = wiz_bin.PageControl(self.Wizard)
-        self.page_depends = wiz_bin.PageDepends(self.Wizard)
-        self.page_files = wiz_bin.PageFiles(self.Wizard)
+        self.page_control = wiz_bin.PageControl(self.wizard)
+        self.page_depends = wiz_bin.PageDepends(self.wizard)
+        self.page_files = wiz_bin.PageFiles(self.wizard)
         
         if DebugEnabled():
-            self.page_man = wiz_bin.PageMan(self.Wizard)
+            self.page_man = wiz_bin.PageMan(self.wizard)
         
-        self.page_scripts = wiz_bin.PageScripts(self.Wizard)
-        self.page_clog = wiz_bin.PageChangelog(self.Wizard)
-        self.page_cpright = wiz_bin.PageCopyright(self.Wizard)
-        self.page_menu = wiz_bin.PageMenu(self.Wizard)
-        self.page_build = wiz_bin.PageBuild(self.Wizard)
+        self.page_scripts = wiz_bin.PageScripts(self.wizard)
+        self.page_clog = wiz_bin.PageChangelog(self.wizard)
+        self.page_cpright = wiz_bin.PageCopyright(self.wizard)
+        self.page_menu = wiz_bin.PageMenu(self.wizard)
+        self.page_build = wiz_bin.PageBuild(self.wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -236,7 +265,7 @@ class MainWindow(wx.Frame):
         if DebugEnabled():
             self.bin_pages.insert(4, self.page_man)
         
-        self.Wizard.SetPages(self.bin_pages)
+        self.wizard.SetPages(self.bin_pages)
         
         self.pages = {self.p_info: self.page_info, self.p_ctrl: self.page_control, self.p_deps: self.page_depends,
                 self.p_files: self.page_files, self.p_scripts: self.page_scripts, self.p_clog: self.page_clog,
@@ -250,7 +279,7 @@ class MainWindow(wx.Frame):
         
         # ----- Layout
         self.main_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.main_sizer.Add(self.Wizard, 1, wx.EXPAND)
+        self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(self.main_sizer)
@@ -335,14 +364,14 @@ class MainWindow(wx.Frame):
     
     
     def OpenProject(self, data, filename):
-    	def ProjectError():
-    		wx.MessageDialog(self, _(u'Not a valid Debreate project'), _(u'Error'),
-    			style=wx.OK|wx.ICON_ERROR).ShowModal()
-    	
-    	if data == wx.EmptyString:
-    		ProjectError()
-    		return
-    	
+        def ProjectError():
+            wx.MessageDialog(self, _(u'Not a valid Debreate project'), _(u'Error'),
+    		                       style=wx.OK|wx.ICON_ERROR).ShowModal()
+        
+        if data == wx.EmptyString:
+            ProjectError()
+            return
+        
         lines = data.split(u'\n')
         app = lines[0].split(u'-')[0].split(u'[')[1]
         ver = lines[0].split(u'-')[1].split(u']')[0]
@@ -439,7 +468,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
             if p.IsChecked():
                 id = p.GetId()
         
-        self.Wizard.ShowPage(id)
+        self.wizard.ShowPage(id)
     
     # ----- Help Menu
     def OpenPolicyManual(self, event):
@@ -508,8 +537,9 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
     
     # FIXME: New format unused. Currently still using OnSaveProjectDeprecated
     def SaveProject(self, event):
-        if DebugEnabled():
-            print(u'DEBUG: Saving in new project format')
+        # TODO: Add strings to GetText output
+        
+        Logger.Debug(__name__, u'Saving in new project format')
         
         title = _(u'Save Debreate Project')
         suffix = dbr.PROJECT_FILENAME_SUFFIX
@@ -524,11 +554,78 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
         if dbr.ShowDialog(self, file_save):
             self.saved_project = file_save.GetPath()
             
+            working_path = os.path.dirname(self.saved_project)
+            output_filename = os.path.basename(self.saved_project)
+            temp_path = u'{}_temp'.format(self.saved_project)
+            
+            Logger.Debug(
+                __name__,
+                u'Save project\n\tWorking path: {}\n\tFilename: {}\n\tTemp directory: {}'.format(working_path,
+                                                                                            output_filename, temp_path)
+            )
+            
+            if os.path.exists(temp_path):
+                if wx.MessageDialog(self, GT(u'Temp directory already exists.\nOverwrite?'), GT(u'Warning'),
+                                        wx.YES_NO|wx.YES_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_YES:
+                
+                    Logger.Debug(__name__, u'Overwriting temp directory: {}'.format(temp_path))
+                    shutil.rmtree(temp_path)
+                
+                else:
+                    Logger.Debug(__name__, u'Not Overwriting temp directory: {}'.format(temp_path))
+                    return 0
+            
+            os.makedirs(temp_path)
+            
+            
+            # Export information from each page
+            for P in self.page_control, self.page_files:
+                ret_code = self.wizard.ExportPageInfo(P, temp_path, P.GetName().upper())
+                ret_file = ret_code[1]
+                ret_code = ret_code[0]
+                
+                if ret_code:
+                    Logger.Error(__name__,
+                            u'Could not export information from "{}": {}'.format(ret_file, error_definitions[ret_code]))
+                    return ret_code
+            
+            
+            file_list = []
+            for PATH, DIRS, FILES in os.walk(temp_path):
+                for F in FILES:
+                    file_list.append(F)
+            
             if DebugEnabled():
-                print(u'DEBUG: Saving file "{}"'.format(self.saved_project))
-        else:
-            if DebugEnabled():
-                print(u'DEBUG: Cancelled')
+                print(u'DEBUG:')
+                print(u'Output archive: {}.dbpz'.format(output_filename))
+                print(u'Temp directory: {}'.format(temp_path))
+                print(u'Working directory: {}'.format(working_path))
+                print(u'File list: {}'.format(file_list))
+            
+            
+            p_archive = tarfile.open(u'{}.dbpz'.format(self.saved_project), u'w:bz2')
+            
+            for F in file_list:
+                if DebugEnabled():
+                    print(u'DEBUG: Adding file "{}/{}"'.format(temp_path, F))
+                
+                p_archive.add(u'{}/{}'.format(temp_path, F), arcname=F)
+            
+            p_archive.close()
+            
+            #shutil.make_archive(temp_path, u'bztar', temp_path)
+            
+            #debug_output = commands.getoutput(u'tar -cjf "{}/{}.dbpz" "{}"'.format(working_path, output_filename, temp_path))
+            
+            #print(u'DEBUG: {}'.format(debug_output))
+            
+            if os.path.isfile(u'{}.dbpz'.format(self.saved_project)):
+                #os.rename(u'{}.tar.bz2'.format(self.saved_project), u'{}.dbpz'.format(self.saved_project))
+                shutil.rmtree(temp_path)
+            
+        
+        return 0
+        
     
     def OnSaveProjectDeprecated(self, event):
         id = event.GetId()
