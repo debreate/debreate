@@ -6,7 +6,8 @@ from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
 import dbr
-from dbr.constants import ID_FILES
+from dbr.constants import ID_FILES, ERR_DIR_NOT_AVAILABLE
+from dbr import DebugEnabled
 
 
 ID_pin = 100
@@ -368,7 +369,13 @@ class Panel(wx.Panel):
                 
                 alert.ShowModal()
     
-    def GatherData(self):
+    
+    ## Retrieves information on files to be packaged
+    #  
+    #  FIXME: Deprecated
+    #  \return
+    #        \b \e str : A string of files & their targets formatted for text output
+    def GetFilesInfoDeprecated(self):
         file_list = []
         item_count = self.dest_area.GetItemCount()
         if item_count > 0:
@@ -391,12 +398,38 @@ class Panel(wx.Panel):
                 count += 1
         
             return_list = []
-            for file in file_list:
-                f0 = u'%s'.encode(u'utf-8') % file[0]
-                f1 = u'%s'.encode(u'utf-8') % file[1]
-                f2 = u'%s'.encode(u'utf-8') % file[2]
+            for F in file_list:
+                f0 = F[0]
+                f1 = F[1]
+                f2 = F[2]
                 return_list.append(u'%s -> %s -> %s' % (f0, f1, f2))
-            return u'<<FILES>>\n1\n%s\n<</FILES>>' % u'\n'.join(return_list)
+            
+            return u'\n'.join(return_list)
         else:
-            # Place a "0" in FILES field if we are not saving any files
-            return u'<<FILES>>\n0\n<</FILES>>'
+            # Not files are listed
+            return wx.EmptyString
+    
+    
+    ## Legacy project file output
+    #  
+    #  FIXME: Deprecated
+    #  Gathers info for exporting to saved project (text) file.
+    #  \return
+    #        \b \e str : Text-formatted file list
+    def GatherData(self):
+        f_info = self.GetFilesInfoDeprecated()
+        f_status = u'1'
+        
+        if f_info == wx.EmptyString:
+            f_status = u'0'
+        
+        return u'<<FILES>>\n{}\n{}\n<</FILES>>'.format(f_status, f_info)
+    
+    
+    ## Retrieves information on files to be packaged
+    #  
+    #  FIXME: Use different style formatting instead of calling self.GetFilesInfoDeprecated()
+    #  \return
+    #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
+    def GetPageInfo(self):
+        return (__name__, self.GetFilesInfoDeprecated())
