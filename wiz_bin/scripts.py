@@ -14,10 +14,17 @@ from dbr.constants import ID_SCRIPTS
 ID_Import = 100
 ID_Remove = 101
 
-ID_Preinst = wx.NewId()
-ID_Postinst = wx.NewId()
-ID_Prerm = wx.NewId()
-ID_Postrm = wx.NewId()
+ID_INST_PRE = wx.NewId()
+ID_INST_POST = wx.NewId()
+ID_RM_PRE = wx.NewId()
+ID_RM_POST = wx.NewId()
+
+id_definitions = {
+    ID_INST_PRE: u'preinst',
+    ID_INST_POST: u'postinst',
+    ID_RM_PRE: u'prerm',
+    ID_RM_POST: u'postrm',
+}
 
 class Panel(wx.Panel):
     def __init__(self, parent):
@@ -30,22 +37,22 @@ class Panel(wx.Panel):
         self.debreate = parent.parent
         
         # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_Preinst, _(u'Make this script'))
-        self.chk_postinst = wx.CheckBox(self, ID_Postinst, _(u'Make this script'))
-        self.chk_prerm = wx.CheckBox(self, ID_Prerm, _(u'Make this script'))
-        self.chk_postrm = wx.CheckBox(self, ID_Postrm, _(u'Make this script'))
+        self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, _(u'Make this script'))
+        self.chk_postinst = wx.CheckBox(self, ID_INST_POST, _(u'Make this script'))
+        self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, _(u'Make this script'))
+        self.chk_postrm = wx.CheckBox(self, ID_RM_POST, _(u'Make this script'))
         
         # Radio buttons for displaying between pre- and post- install scripts
-        self.rb_preinst = wx.RadioButton(self, ID_Preinst, _(u'Pre-Install'), style=wx.RB_GROUP)
-        self.rb_postinst = wx.RadioButton(self, ID_Postinst, _(u'Post-Install'))
-        self.rb_prerm = wx.RadioButton(self, ID_Prerm, _(u'Pre-Remove'))
-        self.rb_postrm = wx.RadioButton(self, ID_Postrm, _(u'Post-Remove'))
+        self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, _(u'Pre-Install'), style=wx.RB_GROUP)
+        self.rb_postinst = wx.RadioButton(self, ID_INST_POST, _(u'Post-Install'))
+        self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, _(u'Pre-Remove'))
+        self.rb_postrm = wx.RadioButton(self, ID_RM_POST, _(u'Post-Remove'))
         
         # Text area for each radio button
-        self.te_preinst = wx.TextCtrl(self, ID_Preinst, style=wx.TE_MULTILINE)
-        self.te_postinst = wx.TextCtrl(self, ID_Postinst, style=wx.TE_MULTILINE)
-        self.te_prerm = wx.TextCtrl(self, ID_Prerm, style=wx.TE_MULTILINE)
-        self.te_postrm = wx.TextCtrl(self, ID_Postrm, style=wx.TE_MULTILINE)
+        self.te_preinst = wx.TextCtrl(self, ID_INST_PRE, style=wx.TE_MULTILINE)
+        self.te_postinst = wx.TextCtrl(self, ID_INST_POST, style=wx.TE_MULTILINE)
+        self.te_prerm = wx.TextCtrl(self, ID_RM_PRE, style=wx.TE_MULTILINE)
+        self.te_postrm = wx.TextCtrl(self, ID_RM_POST, style=wx.TE_MULTILINE)
         
         # For testing to make sure scripts page is reset back to defaults
         #self.te_preinst.SetBackgroundColour(u'red')
