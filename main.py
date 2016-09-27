@@ -206,8 +206,8 @@ class MainWindow(wx.Frame):
                     222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
                     ID_Lintian: u'http://lintian.debian.org/tags-all.html'
                     }
-        for id in self.references:
-            wx.EVT_MENU(self, id, self.OpenPolicyManual)
+        for R_ID in self.references:
+            wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
         
         
         self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, _(u'Help'), _(u'Open a usage document'))
@@ -354,13 +354,13 @@ class MainWindow(wx.Frame):
             # Get the path and set the saved project
             self.saved_project = dia.GetPath()
             
-            file = open(self.saved_project, u'r')
-            data = file.read()
-            file.close()
+            p_data = open(self.saved_project, u'r')
+            p_text = file.read()
+            p_data.close()
             
             filename = os.path.split(self.saved_project)[1]
             
-            self.OpenProject(data, filename)
+            self.OpenProject(p_text, filename)
     
     
     def OpenProject(self, data, filename):
@@ -466,15 +466,14 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
     def GoToPage(self, event):
         for p in self.pages:
             if p.IsChecked():
-                id = p.GetId()
+                PAGE_ID = p.GetId()
         
-        self.wizard.ShowPage(id)
+        self.wizard.ShowPage(PAGE_ID)
     
     # ----- Help Menu
     def OpenPolicyManual(self, event):
-        id = event.GetId()  # Get the id for the webpage link we are opening
-        webbrowser.open(self.references[id])
-        #os.system(u'xdg-open %s' % self.references[id])  # Look in "manual" for the id and open the webpage
+        EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
+        webbrowser.open(self.references[EVENT_ID])
     
     def OnAbout(self, event):
         '''Opens a dialog box with information about the program'''
@@ -628,7 +627,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
         
     
     def OnSaveProjectDeprecated(self, event):
-        id = event.GetId()
+        EVENT_ID = event.GetId()
         
         def SaveIt(path):
                 # Gather data from different pages
@@ -690,7 +689,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
             if cont:
                 SaveIt(self.saved_project)
         
-        if id == wx.ID_SAVE:
+        if EVENT_ID == wx.ID_SAVE:
             # Define what to do if save is pressed
             # If project already exists, don't show dialog
             if not self.IsSaved() or self.saved_project == wx.EmptyString or not os.path.isfile(self.saved_project):
