@@ -602,6 +602,29 @@ class Panel(wx.Panel):
         if self.chk_lint.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
         return u'<<BUILD>>\n%s\n<</BUILD>>' % u'\n'.join(build_list)
+    
+    
+    def GetPageInfo(self):
+        # 'install after build' is not exported to project for safety
+        
+        fields = {}
+        
+        fields[u'MD5'] = unicode(self.chk_md5.GetValue())
+        fields[u'RMTREE'] = unicode(self.chk_del.GetValue())
+        fields[u'LINTIAN'] = unicode(self.chk_lint.GetValue())
+        
+        page_info = wx.EmptyString
+        
+        for F in fields:
+            if page_info == wx.EmptyString:
+                page_info = u'{}={}'.format(F, fields[F])
+            else:
+                page_info = u'{}\n{}={}'.format(page_info, F, fields[F])
+        
+        if page_info == wx.EmptyString:
+            return None
+        
+        return (__name__, page_info)
 
 
 ##########################################
