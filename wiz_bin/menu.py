@@ -291,22 +291,22 @@ class Panel(wx.Panel):
     
     def SetCategory(self, event):
         try:
-            id = event.GetKeyCode()
+            key_code = event.GetKeyCode()
         except AttributeError:
-            id = event.GetEventObject().GetId()
+            key_code = event.GetEventObject().GetId()
         
         cat = self.cat_choice.GetValue()
         cat = cat.split()
         cat = u''.join(cat)
         
-        if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+        if key_code == wx.WXK_RETURN or key_code == wx.WXK_NUMPAD_ENTER:
             self.categories.InsertStringItem(0, cat)
         
-        elif id == wx.WXK_DELETE:
+        elif key_code == wx.WXK_DELETE:
             cur_cat = self.categories.GetFirstSelected()
             self.categories.DeleteItem(cur_cat)
         
-        elif id == wx.WXK_ESCAPE:
+        elif key_code == wx.WXK_ESCAPE:
             confirm = wx.MessageDialog(self, _(u'Delete all categories?'), _(u'Confirm'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
             if confirm.ShowModal() == wx.ID_YES:
@@ -349,10 +349,10 @@ class Panel(wx.Panel):
                 shutil.copy(path, backup)
                 overwrite = True
             
-            file = open(path, u'w')
+            f_opened = open(path, u'w')
             try:
-                file.write(menu_data)
-                file.close()
+                f_opened.write(menu_data)
+                f_opened.close()
                 if overwrite:
                     os.remove(backup)
             except UnicodeEncodeError:
@@ -360,7 +360,7 @@ class Panel(wx.Panel):
                 uni = _(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
                 UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), _(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
-                file.close()
+                f_opened.close()
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)
@@ -379,9 +379,9 @@ class Panel(wx.Panel):
         
         if cont == True:
             path = dia.GetPath()
-            file = open(path, u'r')
-            text = file.read()
-            file.close()
+            f_opened = open(path, u'r')
+            text = f_opened.read()
+            f_opened.close()
             data = text.split(u'\n')
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
