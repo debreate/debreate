@@ -24,3 +24,4 @@ Unknown Release:
 - Utilize Logger more
 - Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
 - Allow making multiple .desktop menus
+- Add functionality for opening legacy project files
