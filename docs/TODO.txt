@@ -7,12 +7,10 @@
 - Files page: Optional filter for hidden files & folders
 
 Unknown Release:
-- Add choice for shells on scripts page
 - Add Launchpad packages for 'yakkety' when wx 3.0 compatibility is complete
 - Add page for creating manpage
 - Detailed documentation on files page
 - Only show exit confirmation if project has been modified
-- Add debugging command line argument
 - Add a debug log window
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Finish Doxygen documentation
@@ -24,6 +22,5 @@ Unknown Release:
 - Create manpage
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
-- Use monospace font in copyright
 - Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
 - Allow making multiple .desktop menus
