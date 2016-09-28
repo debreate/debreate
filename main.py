@@ -12,7 +12,7 @@ from dbr import Logger, DebugEnabled, GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
-    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, error_definitions
+    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats
 
 
 # Pages
@@ -136,32 +136,32 @@ class MainWindow(wx.Frame):
         
         # Project compression options
         # FIXME: Need custom IDs
-        menu_compression = wx.Menu()
+        self.menu_compression = wx.Menu()
         
-        opt_compression_uncompressed = wx.MenuItem(menu_compression, ID_ZIP_NONE,
+        opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ID_ZIP_NONE,
                 GT(u'Uncompressed'), kind=wx.ITEM_RADIO)
-        opt_compression_gz = wx.MenuItem(menu_compression, ID_ZIP_GZ,
+        opt_compression_gz = wx.MenuItem(self.menu_compression, ID_ZIP_GZ,
                 GT(u'Gzip'), kind=wx.ITEM_RADIO)
-        opt_compression_bz2 = wx.MenuItem(menu_compression, ID_ZIP_BZ2,
+        opt_compression_bz2 = wx.MenuItem(self.menu_compression, ID_ZIP_BZ2,
                 GT(u'Bzip2'), kind=wx.ITEM_RADIO)
-        opt_compression_xz = wx.MenuItem(menu_compression, ID_ZIP_XZ,
+        opt_compression_xz = wx.MenuItem(self.menu_compression, ID_ZIP_XZ,
                 GT(u'XZ'), kind=wx.ITEM_RADIO)
         
-        self.compression_opts = (
+        compression_opts = (
             opt_compression_uncompressed,
             opt_compression_gz,
             opt_compression_bz2,
             opt_compression_xz,
         )
         
-        for OPT in self.compression_opts:
-            menu_compression.AppendItem(OPT)
-            
-            # FIXME: Re-enable when ready
-            OPT.Enable(False)
+        for OPT in compression_opts:
+            self.menu_compression.AppendItem(OPT)
+        
+        # FIXME: Re-enable when ready
+        self.menu_compression.Enable(ID_ZIP_XZ, False)
         
         self.menu_opt.AppendItem(self.cust_dias)
-        self.menu_opt.AppendSubMenu(menu_compression, GT(u'Project Compression'),
+        self.menu_opt.AppendSubMenu(self.menu_compression, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
         
         # ----- Help Menu
@@ -600,7 +600,22 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
                 print(u'File list: {}'.format(file_list))
             
             
-            p_archive = tarfile.open(u'{}.dbpz'.format(self.saved_project), u'w:bz2')
+            z_format = None
+            
+            for Z in self.menu_compression.GetMenuItems():
+                Z_ID = Z.GetId()
+                if self.menu_compression.IsChecked(Z_ID):
+                    z_format = compression_formats[Z_ID]
+            
+            # Uncompressed tarball
+            if not z_format:
+                z_format = u'w'
+            else:
+                z_format = u'w:{}'.format(z_format)
+            
+            Logger.Debug(__name__, u'Output compression: {}'.format(z_format))
+            
+            p_archive = tarfile.open(u'{}.dbpz'.format(self.saved_project), z_format)
             
             for F in file_list:
                 if DebugEnabled():
