@@ -79,11 +79,21 @@ WX_VER_STRING = u'{}.{}.{}'.format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEAS
 ID_OVERWRITE = wx.NewId()
 ID_APPEND = wx.NewId()
 ID_HELP = wx.NewId()
-ID_COMPRESSION = wx.NewId()
+
+# *** Compression Format IDs *** #
+ID_COMPRESSION = wx.NewId() # FIXME: Unused?
 ID_ZIP_NONE = wx.NewId()
 ID_ZIP_GZ = wx.NewId()
 ID_ZIP_BZ2 = wx.NewId()
 ID_ZIP_XZ = wx.NewId()
+
+compression_formats = {
+    ID_ZIP_NONE: None,
+    ID_ZIP_GZ: u'gz',
+    ID_ZIP_BZ2: u'bz2',
+    ID_ZIP_XZ: u'xz',
+}
+
 # FIXME: Unused IDs
 ID_BIN = wx.NewId()
 ID_SRC = wx.NewId()
