@@ -160,6 +160,9 @@ class MainWindow(wx.Frame):
         # FIXME: Re-enable when ready
         self.menu_compression.Enable(ID_ZIP_XZ, False)
         
+        # Default compression
+        self.menu_compression.Check(ID_ZIP_BZ2, True)
+        
         self.menu_opt.AppendItem(self.cust_dias)
         self.menu_opt.AppendSubMenu(self.menu_compression, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
