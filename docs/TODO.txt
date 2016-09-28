@@ -1,13 +1,19 @@
 0.8.0 Release Changes:
 - Change format of save projects to zip archive
 - Fix & re-enable QuickBuild
+- Add functionality for opening legacy project files
+- Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
+- Create manpage
+- Only install *.mo locale files
+- Add Launchpad packages for 'yakkety'
+- Add gzip support to read compressed changelog
+- Create postrm script that removes any .pyc files from data installation directory
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
 
 Unknown Release:
-- Add Launchpad packages for 'yakkety' when wx 3.0 compatibility is complete
 - Add page for creating manpage
 - Detailed documentation on files page
 - Only show exit confirmation if project has been modified
@@ -15,13 +21,7 @@ Unknown Release:
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Finish Doxygen documentation
 - Compile gettext locales at build time
-- Only install *.mo locale files
 - Install *.mo files to system locale directory
-- Add gzip support to read compressed changelog
-- Create postrm script that removes any .pyc files from data installation directory
-- Create manpage
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
-- Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
 - Allow making multiple .desktop menus
-- Add functionality for opening legacy project files
