@@ -11,6 +11,7 @@ from dbr import Logger
 from dbr.buttons import ButtonNext, ButtonPrev
 from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ, \
     ID_SCRIPTS
+from dbr.functions import TextIsEmpty
 
 
 ID_PREV = wx.NewId()
@@ -179,52 +180,51 @@ class Wizard(wx.Panel):
                 return page
     
     
-    ## Export information from individual page
+    def ExportPages(self, page_list, out_dir):
+        for P in page_list:
+            P.Export(out_dir)
+
+
+## Parent class for wizard pages
+class WizardPage():
+    def __init__(self):
+        return
+    
+    
+    def GetPageInfo(self):
+        return None
+    
+    
+    ## 
     #  
-    #  \param page
-    #       \b \e wx.Panel : The page from which to retrieve information
-    #  \param out_dir
-    #        \b \e str : Target directory to output information text file
-    #  \param out_name
-    #        \b \e str : Filename to use for output
-    #  \return
-    #       Return code for success or failure of export
-    def ExportPageInfo(self, page, out_dir):
-        custom_exports = (ID_SCRIPTS,)
-        if page.GetId() in custom_exports:
-            return page.Export(out_dir)
+    #  Child class must define 'GetPageInfo' method.
+    def Export(self, out_dir, out_name=wx.EmptyString):
+        if not os.path.isdir(out_dir):
+            Logger.Debug(__name__, u'Directory does not exist: {}'.format(out_dir))
+            return ERR_DIR_NOT_AVAILABLE
         
-        else:
-            page_info = page.GetPageInfo()
-            
-            # Page has no data so not exported
-            if not page_info:
-                return (0, None)
-            
-            # Customize the output filename if returned tuple has third value
-            if len(page_info) > 2:
-                out_name = page_info[2].upper()
-            else:
-                out_name = page.GetName().upper()
-            
-            page_name = page_info[0]
-            page_info = page_info[1]
-            
-            if not os.path.isdir(out_dir):
-                return (ERR_DIR_NOT_AVAILABLE, page_name)
-            
-            Logger.Debug(__name__, u'Exporting "{}" data:\n{}'.format(page_name, page_info))
-            
-            absolute_filename = u'{}/{}'.format(out_dir, out_name)
-            
-            output_data = open(absolute_filename, u'w')
-            if not output_data:
-                return (ERR_FILE_READ, page_name)
-            
-            output_data.write(page_info)
-            output_data.close()
-            
-            if not os.path.isfile(absolute_filename):
-                return (ERR_FILE_WRITE, page_name)
+        if out_name == wx.EmptyString:
+            out_name = self.GetName()
         
-        return (0, None)
+        out_name = out_name.upper()
+        
+        page_info = self.GetPageInfo()
+        
+        if not page_info:
+            return 0
+        
+        page_name = page_info[0]
+        page_info = page_info[1]
+        
+        if TextIsEmpty(page_info):
+            return 0
+        
+        absolute_filename = u'{}/{}'.format(out_dir, out_name)
+        
+        Logger.Debug(page_name, u'Exporting: {}'.format(absolute_filename))
+        
+        f_opened = open(absolute_filename, u'w')
+        f_opened.write(page_info)
+        f_opened.close()
+        
+        return 0
