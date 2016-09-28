@@ -1,7 +1,7 @@
 # This is a generic Makefile. It will only work on systems with GNU make.
 
 PACKAGE = debreate
-VERSION = 0.7.11
+VERSION = 0.8.0
 BINDIR = bin
 DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
