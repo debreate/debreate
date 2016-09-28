@@ -32,9 +32,6 @@ class Panel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_SCRIPTS, name=_(u'Scripts'))
         
-        # For identifying page to parent
-        #self.ID = u'SCRIPTS'
-        
         # Allows calling parent methods
         self.debreate = parent.parent
         
@@ -55,9 +52,6 @@ class Panel(wx.Panel):
         self.te_postinst = wx.TextCtrl(self, ID_INST_POST, style=wx.TE_MULTILINE)
         self.te_prerm = wx.TextCtrl(self, ID_RM_PRE, style=wx.TE_MULTILINE)
         self.te_postrm = wx.TextCtrl(self, ID_RM_POST, style=wx.TE_MULTILINE)
-        
-        # For testing to make sure scripts page is reset back to defaults
-        #self.te_preinst.SetBackgroundColour(u'red')
         
         self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
@@ -170,17 +164,6 @@ scripts will be created that will place a symbolic link to your executables in t
         self.Layout()
         
         
-        # ----- Main page sizer
-#		page_sizer = wx.BoxSizer(wx.VERTICAL)
-#		page_sizer.AddSpacer(10)
-#		page_sizer.Add(type_border, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-#		page_sizer.Add(panel_border, 1, wx.EXPAND|wx.ALL, 5)
-#		
-#		# ----- Page Layout
-#		self.SetAutoLayout(True)
-#		self.SetSizer(page_sizer)
-#		self.Layout()
-        
         self.ScriptSelect(None)
     
     
@@ -281,7 +264,7 @@ scripts will be created that will place a symbolic link to your executables in t
                         link = u'%s/%s' % (link_path, linkname)
                     else:
                         link = u'%s/%s' % (link_path, filename)
-    #				link = u'%s/%s' % (link_path, os.path.split(self.xlist[count])[1])
+                        #link = u'%s/%s' % (link_path, os.path.split(self.xlist[count])[1])
                     postinst_list.append(u'ln -fs "%s" "%s"' % (self.xlist[count], link))
                     prerm_list.append(u'rm "%s"' % (link))
                     count += 1
