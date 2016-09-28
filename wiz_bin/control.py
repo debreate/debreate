@@ -8,11 +8,13 @@ import wx, os
 import dbr
 from dbr.constants import ID_CONTROL, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE
 from dbr import DebugEnabled
+from dbr.wizard import WizardPage
 
 
-class Panel(wx.ScrolledWindow):
+class Panel(wx.ScrolledWindow, WizardPage):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=_(u'Control'))
+        WizardPage.__init__(self)
         
         self.wizard = parent
         self.debreate = parent.parent
@@ -579,6 +581,7 @@ class Panel(wx.ScrolledWindow):
         data = self.GetCtrlInfo()
         return u'<<CTRL>>\n%s<</CTRL>>' % data
     
+    '''
     ## Export all information on this & Depends page
     #  
     #  FIXME: Delete! Use method from dbr.wizard instead
@@ -604,6 +607,7 @@ class Panel(wx.ScrolledWindow):
             return ERR_FILE_WRITE
         
         return 0
+    '''
     
     # *** Determining of project is modified
     def OnKeyDown(self, event):

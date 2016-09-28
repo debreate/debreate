@@ -9,11 +9,13 @@ import wx, os, shutil
 # Local imports
 import dbr
 from dbr.constants import ID_MENU
+from dbr.wizard import WizardPage
 
 
-class Panel(wx.Panel):
+class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_MENU, name=_(u'Menu Launcher'))
+        WizardPage.__init__(self)
         
         # Allows executing parent methods
         self.parent = parent
@@ -511,3 +513,11 @@ class Panel(wx.Panel):
             return None
         
         return(__name__, self.GetMenuInfo(), u'MENU')
+    
+    ## Override parent method
+    #  
+    #  Changes output name 'MENU'.
+    def Export(self, out_dir, out_name=wx.EmptyString):
+        out_name = u'MENU'
+        
+        return WizardPage.Export(self, out_dir, out_name)

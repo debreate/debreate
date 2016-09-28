@@ -385,35 +385,38 @@ scripts will be created that will place a symbolic link to your executables in t
         self.executables.DeleteAllItems()
     
     def SetFieldData(self, data):
-        preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
-        postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
-        prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
-        postrm = data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0]
-        
-        if int(preinst[0]):
-            self.chk_preinst.SetValue(True)
-            self.te_preinst.SetValue(preinst[2:]) # 2 removes firs line
-        else:
-            self.chk_preinst.SetValue(False)
-            self.te_preinst.Clear()
-        if int(postinst[0]):
-            self.chk_postinst.SetValue(True)
-            self.te_postinst.SetValue(postinst[2:]) # 2 removes firs line
-        else:
-            self.chk_postinst.SetValue(False)
-            self.te_postinst.Clear()
-        if int(prerm[0]):
-            self.chk_prerm.SetValue(True)
-            self.te_prerm.SetValue(prerm[2:]) # 2 removes firs line
-        else:
-            self.chk_prerm.SetValue(False)
-            self.te_prerm.Clear()
-        if int(postrm[0]):
-            self.chk_postrm.SetValue(True)
-            self.te_postrm.SetValue(postrm[2:]) # 2 removes firs line
-        else:
-            self.chk_postrm.SetValue(False)
-            self.te_postrm.Clear()
+        # FIXME: Open new project format
+        #   Need to preserve opening legacy format
+        if not DebugEnabled():
+            preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
+            postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
+            prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
+            postrm = data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0]
+            
+            if int(preinst[0]):
+                self.chk_preinst.SetValue(True)
+                self.te_preinst.SetValue(preinst[2:]) # 2 removes firs line
+            else:
+                self.chk_preinst.SetValue(False)
+                self.te_preinst.Clear()
+            if int(postinst[0]):
+                self.chk_postinst.SetValue(True)
+                self.te_postinst.SetValue(postinst[2:]) # 2 removes firs line
+            else:
+                self.chk_postinst.SetValue(False)
+                self.te_postinst.Clear()
+            if int(prerm[0]):
+                self.chk_prerm.SetValue(True)
+                self.te_prerm.SetValue(prerm[2:]) # 2 removes firs line
+            else:
+                self.chk_prerm.SetValue(False)
+                self.te_prerm.Clear()
+            if int(postrm[0]):
+                self.chk_postrm.SetValue(True)
+                self.te_postrm.SetValue(postrm[2:]) # 2 removes firs line
+            else:
+                self.chk_postrm.SetValue(False)
+                self.te_postrm.Clear()
     
     def GatherData(self):
         # Custom dictionary of scripts
