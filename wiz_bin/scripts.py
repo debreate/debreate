@@ -11,6 +11,8 @@ import dbr
 from dbr.constants import ID_SCRIPTS
 from dbr.functions import TextIsEmpty
 from dbr.language import GT
+from dbr import DebugEnabled
+from doctest import SKIP
 
 
 ID_Import = 100
@@ -30,62 +32,105 @@ id_definitions = {
 
 class Panel(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_SCRIPTS, name=_(u'Scripts'))
+        wx.Panel.__init__(self, parent, ID_SCRIPTS, name=GT(u'Scripts'))
         
         # Allows calling parent methods
         self.debreate = parent.parent
         
-        # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, _(u'Make this script'))
-        self.chk_postinst = wx.CheckBox(self, ID_INST_POST, _(u'Make this script'))
-        self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, _(u'Make this script'))
-        self.chk_postrm = wx.CheckBox(self, ID_RM_POST, _(u'Make this script'))
         
-        # Radio buttons for displaying between pre- and post- install scripts
-        self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, _(u'Pre-Install'), style=wx.RB_GROUP)
-        self.rb_postinst = wx.RadioButton(self, ID_INST_POST, _(u'Post-Install'))
-        self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, _(u'Pre-Remove'))
-        self.rb_postrm = wx.RadioButton(self, ID_RM_POST, _(u'Post-Remove'))
+        if DebugEnabled():
+            self.preinst = DebianScript(self, ID_INST_PRE)
+            self.postinst = DebianScript(self, ID_INST_POST)
+            self.prerm = DebianScript(self, ID_RM_PRE)
+            self.postrm = DebianScript(self, ID_RM_POST)
+            
+            # Radio buttons for displaying between pre- and post- install scripts
+            rb_preinst = wx.RadioButton(self, self.preinst.GetId(), self.preinst.GetName(), style=wx.RB_GROUP)
+            rb_postinst = wx.RadioButton(self, self.postinst.GetId(), self.postinst.GetName())
+            rb_prerm = wx.RadioButton(self, self.prerm.GetId(), self.prerm.GetName())
+            rb_postrm = wx.RadioButton(self, self.postrm.GetId(), self.postrm.GetName())
+            
+            self.script_objects = (
+                (self.preinst, rb_preinst),
+                (self.postinst, rb_postinst),
+                (self.prerm, rb_prerm),
+                (self.postrm, rb_postrm),
+            )
+            
+            for S, RB in self.script_objects:
+                wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
+            
+            rb_layout = wx.BoxSizer(wx.HORIZONTAL)
+            rb_layout.AddMany([
+                (rb_preinst),
+                (rb_postinst),
+                (rb_prerm),
+                (rb_postrm),
+            ])
+            
+            # Sizer for left half of scripts panel
+            layout_left = wx.BoxSizer(wx.VERTICAL)
+            
+            layout_left.Add(rb_layout, 0, wx.EXPAND|wx.BOTTOM, 5)
+            
+            for S, RB in self.script_objects:
+                layout_left.Add(S, 1, wx.EXPAND)
         
-        # Text area for each radio button
-        self.te_preinst = wx.TextCtrl(self, ID_INST_PRE, style=wx.TE_MULTILINE)
-        self.te_postinst = wx.TextCtrl(self, ID_INST_POST, style=wx.TE_MULTILINE)
-        self.te_prerm = wx.TextCtrl(self, ID_RM_PRE, style=wx.TE_MULTILINE)
-        self.te_postrm = wx.TextCtrl(self, ID_RM_POST, style=wx.TE_MULTILINE)
+        else:
+            # Text area for each radio button
+            self.te_preinst = wx.TextCtrl(self, ID_INST_PRE, style=wx.TE_MULTILINE)
+            self.te_postinst = wx.TextCtrl(self, ID_INST_POST, style=wx.TE_MULTILINE)
+            self.te_prerm = wx.TextCtrl(self, ID_RM_PRE, style=wx.TE_MULTILINE)
+            self.te_postrm = wx.TextCtrl(self, ID_RM_POST, style=wx.TE_MULTILINE)
+            
+            # Check boxes for choosing scripts
+            self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, _(u'Make this script'))
+            self.chk_postinst = wx.CheckBox(self, ID_INST_POST, _(u'Make this script'))
+            self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, _(u'Make this script'))
+            self.chk_postrm = wx.CheckBox(self, ID_RM_POST, _(u'Make this script'))
+            
+            # Radio buttons for displaying between pre- and post- install scripts
+            self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, _(u'Pre-Install'), style=wx.RB_GROUP)
+            self.rb_postinst = wx.RadioButton(self, ID_INST_POST, _(u'Post-Install'))
+            self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, _(u'Pre-Remove'))
+            self.rb_postrm = wx.RadioButton(self, ID_RM_POST, _(u'Post-Remove'))
+            
+            self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
+                                self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
+                                }
+            self.script_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
+                                self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
+            
+            for rb in self.script_te:
+                wx.EVT_RADIOBUTTON(rb, -1, self.ScriptSelectDeprecated)
+                self.script_te[rb].Hide()
+            for rb in self.script_chk:
+                self.script_chk[rb].Hide()
+            
+            # Organizing radio buttons
+            rb_layout = wx.BoxSizer(wx.HORIZONTAL)
+            rb_layout.AddMany( [
+                (self.chk_preinst),(self.chk_postinst),
+                (self.chk_prerm),(self.chk_postrm)
+                ] )
+            rb_layout.AddStretchSpacer(1)
+            rb_layout.Add(self.rb_preinst, 0)
+            rb_layout.Add(self.rb_postinst, 0)
+            rb_layout.Add(self.rb_prerm, 0)
+            rb_layout.Add(self.rb_postrm, 0)
+            
+            # Sizer for left half of scripts panel
+            layout_left = wx.BoxSizer(wx.VERTICAL)
+            
+            layout_left.Add(rb_layout, 0, wx.EXPAND|wx.BOTTOM, 5)
+            layout_left.Add(self.te_preinst, 1, wx.EXPAND)
+            layout_left.Add(self.te_postinst, 1, wx.EXPAND)
+            layout_left.Add(self.te_prerm, 1,wx.EXPAND)
+            layout_left.Add(self.te_postrm, 1, wx.EXPAND)
         
-        self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
-                            self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
-                            }
-        self.script_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
-                            self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
         
-        for rb in self.script_te:
-            wx.EVT_RADIOBUTTON(rb, -1, self.ScriptSelect)
-            self.script_te[rb].Hide()
-        for rb in self.script_chk:
-            self.script_chk[rb].Hide()
+        # *** Auto-Link options *** #
         
-        # Organizing radio buttons
-        srb_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        srb_sizer.AddMany( [
-            (self.chk_preinst),(self.chk_postinst),
-            (self.chk_prerm),(self.chk_postrm)
-            ] )
-        srb_sizer.AddStretchSpacer(1)
-        srb_sizer.Add(self.rb_preinst, 0)
-        srb_sizer.Add(self.rb_postinst, 0)
-        srb_sizer.Add(self.rb_prerm, 0)
-        srb_sizer.Add(self.rb_postrm, 0)
-        
-        # Sizer for left half of scripts panel
-        sleft_sizer = wx.BoxSizer(wx.VERTICAL)
-        sleft_sizer.Add(srb_sizer, 0, wx.EXPAND|wx.BOTTOM, 5)
-        sleft_sizer.Add(self.te_preinst, 1, wx.EXPAND)
-        sleft_sizer.Add(self.te_postinst, 1, wx.EXPAND)
-        sleft_sizer.Add(self.te_prerm, 1,wx.EXPAND)
-        sleft_sizer.Add(self.te_postrm, 1, wx.EXPAND)
-        
-        # Auto-Link options
         # Executable list - generate button will make scripts to link to files in this list
         self.xlist = []
         
@@ -147,27 +192,41 @@ scripts will be created that will place a symbolic link to your executables in t
         wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
         
         # Sizer for right half of scripts panel
-        sright_sizer = wx.BoxSizer(wx.VERTICAL)
-        sright_sizer.AddSpacer(17)
-        sright_sizer.Add(autogen_box, 0)
-        #sright_sizer.Add(self.al_text, 0)
-        sright_sizer.Add(self.button_help, 0, wx.ALIGN_CENTER)
+        layout_right = wx.BoxSizer(wx.VERTICAL)
+        layout_right.AddSpacer(17)
+        layout_right.Add(autogen_box, 0)
+        #layout_right.Add(self.al_text, 0)
+        layout_right.Add(self.button_help, 0, wx.ALIGN_CENTER)
         
         
         # ----- Layout
-        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        main_sizer.Add(sleft_sizer, 1, wx.EXPAND|wx.ALL, 5)
-        main_sizer.Add(sright_sizer, 0, wx.ALL, 5)
+        layout_main = wx.BoxSizer(wx.HORIZONTAL)
+        layout_main.Add(layout_left, 1, wx.EXPAND|wx.ALL, 5)
+        layout_main.Add(layout_right, 0, wx.ALL, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(main_sizer)
+        self.SetSizer(layout_main)
         self.Layout()
         
         
-        self.ScriptSelect(None)
+        if not DebugEnabled():
+            self.ScriptSelectDeprecated(None)
+        
+        else:
+            self.ScriptSelect(None)
     
     
     def ScriptSelect(self, event):
+        for S, RB in self.script_objects:
+            if RB.GetValue():
+                S.Show()
+            else:
+                S.Hide()
+        
+        self.Layout()
+    
+    
+    def ScriptSelectDeprecated(self, event):
         for rb in self.script_te:
             if rb.GetValue() == True:
                 self.script_te[rb].Show()
@@ -400,11 +459,9 @@ shell_descriptions = {
 #    order dictated by the naming convention:
 #    'Pre Install', 'Pre Remove/Uninstall',
 #    'Post Install', & 'Post Remove/Uninstall'.
-class DebianScript:
+class DebianScript(wx.Panel):
     def __init__(self, parent, script_id):
-        
-        ## ID used to identify the script
-        self.script_id = script_id
+        wx.Panel.__init__(self, parent, script_id)
         
         ## Filename used for exporting script
         self.script_filename = id_definitions[script_id].lower()
@@ -414,17 +471,34 @@ class DebianScript:
         self.__set_script_name()
         
         shell_options = []
-        for S in shell_descriptions:
-            shell_options.append(u'/bin/{}'.format(S))
-            
-            if S != u'sh':
-                shell_options.append(u'usr/bin/{}'.format(S))
-                shell_options.append(u'usr/bin/env {}'.format(S))
+        shell_options.append(u'/bin/sh')
+        for P in u'/bin/', u'/usr/bin/', u'/usr/bin/env ':
+            for S in sorted(shell_descriptions, key=unicode.lower):
+                if S == u'sh':
+                    pass
+                
+                else:
+                    shell_options.append(P + S)
         
-        self.shell = wx.ComboBox(parent, self.script_id, choices=shell_options)
-        self.shell.SetSelection(0)
+        self.shell = wx.ComboBox(self, self.GetId(), choices=shell_options)
+        self.shell.SetStringSelection(u'/bin/bash')
         
-        self.script_text = wx.TextCtrl(parent, self.script_id, style=wx.TE_MULTILINE)
+        shell_layout = wx.BoxSizer(wx.HORIZONTAL)
+        shell_layout.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+        shell_layout.Add(self.shell, 1)
+        
+        self.script_text = wx.TextCtrl(self, self.GetId(), style=wx.TE_MULTILINE)
+        
+        sizer_v1 = wx.BoxSizer(wx.VERTICAL)
+        sizer_v1.Add(shell_layout, 0)
+        sizer_v1.Add(self.script_text, 1, wx.EXPAND)
+        
+        self.SetSizer(sizer_v1)
+        self.SetAutoLayout(True)
+        self.Layout()
+        
+        # Scripts are hidden by default
+        self.Hide()
     
     
     ## Sets the name of the script to be displayed
@@ -439,11 +513,11 @@ class DebianScript:
         
         if u'pre' in self.script_filename:
             prefix = u'Pre'
-            suffix = self.script_filename.split(u'pre')
+            suffix = self.script_filename.split(u'pre')[1]
         
         elif u'post' in self.script_filename:
             prefix = u'Post'
-            suffix = self.script_filename.split(u'post')
+            suffix = self.script_filename.split(u'post')[1]
         
         if suffix.lower() == u'inst':
             suffix = u'Install'
@@ -452,15 +526,8 @@ class DebianScript:
             suffix = u'Uninstall'
         
         if (prefix != None) and (suffix != None):
-            self.script_name = GT(u'{} {}'.format(prefix, suffix))
+            self.script_name = GT(u'{}-{}'.format(prefix, suffix))
     
-    
-    ## Retrieves the script's ID
-    #  
-    #  \return
-    #        \b \e int : Integer representation of script ID
-    def GetId(self):
-        return self.script_id
     
     ## Retrieves the filename to use for exporting
     #  
