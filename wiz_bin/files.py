@@ -432,4 +432,9 @@ class Panel(wx.Panel):
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
     def GetPageInfo(self):
-        return (__name__, self.GetFilesInfoDeprecated())
+        page_info = self.GetFilesInfoDeprecated()
+        
+        if not page_info:
+            return None
+        
+        return (__name__, page_info)
