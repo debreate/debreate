@@ -102,7 +102,7 @@ rm -r ~/.config/debreate'.format(m1, m2))
 
 def Run(pos, size, maximize, center, dias, cwd):
     # Start the main application window
-    frame = main.MainWindow(None, u'', pos, size)
+    frame = main.MainWindow(u'', pos, size)
     frame.SetTitle(frame.default_title)
     
     # Find out if user is using a dark theme (font will be light)
