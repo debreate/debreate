@@ -194,6 +194,11 @@ class Wizard(wx.Panel):
         
         else:
             page_info = page.GetPageInfo()
+            
+            # Page has no data so not exported
+            if not page_info:
+                return (0, None)
+            
             page_name = page_info[0]
             page_info = page_info[1]
             
