@@ -494,7 +494,20 @@ class Panel(wx.Panel):
     def GatherData(self):
         if self.activate.GetValue():
             data = self.GetMenuInfo()
+            # Remove line with '[Desktop Entry]'
             data = u'\n'.join(data.split(u'\n')[1:])
             return u'<<MENU>>\n1\n%s\n<</MENU>>' % data
         else:
             return u'<<MENU>>\n0\n<</MENU>>'
+    
+    
+    ## Retrieves Desktop Entry file information
+    #  
+    #  \return
+    #        \b \e tuple(str, str, str) : File/Page name,
+    #          string formatted menu information, & filename to output
+    def GetPageInfo(self):
+        if not self.activate.GetValue():
+            return None
+        
+        return(__name__, self.GetMenuInfo(), u'MENU')
