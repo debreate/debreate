@@ -354,9 +354,9 @@ class MainWindow(wx.Frame):
             # Get the path and set the saved project
             self.saved_project = dia.GetPath()
             
-            p_data = open(self.saved_project, u'r')
-            p_text = file.read()
-            p_data.close()
+            p_open = open(self.saved_project, u'r')
+            p_text = p_open.read()
+            p_open.close()
             
             filename = os.path.split(self.saved_project)[1]
             
@@ -579,7 +579,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
             
             # Export information from each page
             for P in (self.page_control, self.page_files, self.page_scripts, self.page_clog,
-                    self.page_cpright, self.page_menu):
+                    self.page_cpright, self.page_menu, self.page_build):
                 ret_code = self.wizard.ExportPageInfo(P, temp_path)
                 ret_file = ret_code[1]
                 ret_code = ret_code[0]
