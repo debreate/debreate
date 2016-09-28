@@ -578,7 +578,8 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
             
             
             # Export information from each page
-            for P in self.page_control, self.page_files, self.page_scripts, self.page_clog:
+            for P in (self.page_control, self.page_files, self.page_scripts, self.page_clog,
+                    self.page_cpright):
                 ret_code = self.wizard.ExportPageInfo(P, temp_path)
                 ret_file = ret_code[1]
                 ret_code = ret_code[0]
