@@ -25,6 +25,8 @@ from dbr import Logger
 
 
 script_name = os.path.basename(__file__)
+if u'.py' in script_name:
+    script_name = script_name.split(u'.py')[0]
 
 Logger.Info(script_name, u'Python version: {}'.format(dbr.PY_VER_STRING))
 Logger.Info(script_name, u'wx.Python version: {}'.format(dbr.WX_VER_STRING))
