@@ -75,7 +75,7 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
         
         # Debugging
-        if DebugEnabled:
+        if DebugEnabled():
             wx.EVT_MENU(self, wx.ID_SAVE, self.SaveProject)
         else:
             wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProjectDeprecated)
