@@ -7,6 +7,7 @@ import wx, os
 # Local imports
 import dbr.font
 from dbr.constants import ID_COPYRIGHT
+from dbr.functions import TextIsEmpty
 
 
 # Globals
@@ -185,3 +186,16 @@ class Panel(wx.Panel):
                 return 0
         
         return 1
+    
+    
+    ## Retrieve copyright/license text
+    #  
+    #  \return
+    #        \b \e tuple(str, str) : Filename & copyright/license text
+    def GetPageInfo(self):
+        license_text = self.cp_display.GetValue()
+        
+        if TextIsEmpty(license_text):
+            return None
+        
+        return (__name__, license_text)
