@@ -3,13 +3,15 @@
 # Wizard class for Debreate
 
 # System imports
-import wx, wx.lib.newevent, os
+import wx, os
+from wx.lib.newevent import NewCommandEvent
 
 # Local imports
-from dbr.buttons import ButtonNext, ButtonPrev
-from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ,\
-    ID_SCRIPTS
 from dbr import Logger
+from dbr.buttons import ButtonNext, ButtonPrev
+from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ, \
+    ID_SCRIPTS
+
 
 ID_PREV = wx.NewId()
 ID_NEXT = wx.NewId()
@@ -45,7 +47,7 @@ class Wizard(wx.Panel):
         wx.EVT_BUTTON(self.button_prev, -1, self.ChangePage)
         wx.EVT_BUTTON(self.button_next, -1, self.ChangePage)
         
-        self.ChangePageEvent, self.EVT_CHANGE_PAGE = wx.lib.newevent.NewCommandEvent()
+        self.ChangePageEvent, self.EVT_CHANGE_PAGE = NewCommandEvent()
         self.evt = self.ChangePageEvent(0)
         
         # Button sizer includes header
