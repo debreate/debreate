@@ -8,11 +8,10 @@ import wx, os
 
 # Local modules
 import dbr
-from dbr.constants import ID_SCRIPTS
+from dbr.constants import ID_SCRIPTS, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE
 from dbr.functions import TextIsEmpty
 from dbr.language import GT
-from dbr import DebugEnabled
-from doctest import SKIP
+from dbr import DebugEnabled, Logger
 
 
 ID_Import = 100
@@ -437,6 +436,19 @@ scripts will be created that will place a symbolic link to your executables in t
                 
         
         return u'<<SCRIPTS>>\n%s\n<</SCRIPTS>>' % u'\n'.join(data)
+    
+    
+    def Export(self, out_dir):
+        return_code = (0, None)
+        
+        for S, O in self.script_objects:
+            if S.IsExportable():
+                return_code = S.Export(out_dir, False)
+                
+                if return_code[0]:
+                    return return_code
+        
+        return return_code
 
 
 ## Descriptions for each available pre-defined shell
@@ -448,6 +460,7 @@ shell_descriptions = {
     u'ksh' or u'pdksh': GT(u'Korn shell'),
     u'csh': GT(u'C shell'),
     u'tcsh': GT(u'Tenex C shell (Advanced C shell)'),
+    u'zsh': GT(u'Z shell'),
 }
 
 
@@ -487,11 +500,11 @@ class DebianScript(wx.Panel):
         shell_layout.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
         shell_layout.Add(self.shell, 1)
         
-        self.script_text = wx.TextCtrl(self, self.GetId(), style=wx.TE_MULTILINE)
+        self.script_body = wx.TextCtrl(self, self.GetId(), style=wx.TE_MULTILINE)
         
         sizer_v1 = wx.BoxSizer(wx.VERTICAL)
         sizer_v1.Add(shell_layout, 0)
-        sizer_v1.Add(self.script_text, 1, wx.EXPAND)
+        sizer_v1.Add(self.script_body, 1, wx.EXPAND)
         
         self.SetSizer(sizer_v1)
         self.SetAutoLayout(True)
@@ -564,14 +577,35 @@ class DebianScript(wx.Panel):
     #  \return
     #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
     def IsExportable(self):
-        return (not TextIsEmpty(self.script_text.GetValue()))
+        return (not TextIsEmpty(self.script_body.GetValue()))
     
     ## Exports the script to a text file
     #  
-    #  TODO: Finish definition
     #  \param out_dir
     #        \b \e str : Target directory to output file
     #  \param executable
     #        \b \e bool : Make file executable
     def Export(self, out_dir, executable=True):
-        return
+        if not os.path.isdir(out_dir):
+            Logger.Error(__name__, GT(u'Directory not available: {}'.format(out_dir)))
+            return (ERR_DIR_NOT_AVAILABLE, __name__)
+        
+        absolute_filename = u'{}/{}'.format(out_dir, self.script_filename)
+        script_text = u'#!{}\n\n{}'.format(self.shell.GetValue(), self.script_body.GetValue())
+        
+        #add_newline = script_text.split(u'\n')[-1] != u''
+        
+        script_w = open(absolute_filename, u'w')
+        script_w.write(script_text)
+        
+        #if add_newline:
+        #    script_w.write(u'\n\n')
+        
+        script_w.close()
+        
+        if not os.path.isfile(absolute_filename):
+            Logger.Error(__name__, GT(u'Could not write to file: {}'.format(absolute_filename)))
+            return (ERR_FILE_WRITE, __name__)
+        
+        return (0, None)
+        
