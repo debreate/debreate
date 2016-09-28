@@ -199,6 +199,12 @@ class Wizard(wx.Panel):
             if not page_info:
                 return (0, None)
             
+            # Customize the output filename if returned tuple has third value
+            if len(page_info) > 2:
+                out_name = page_info[2].upper()
+            else:
+                out_name = page.GetName().upper()
+            
             page_name = page_info[0]
             page_info = page_info[1]
             
@@ -207,7 +213,7 @@ class Wizard(wx.Panel):
             
             Logger.Debug(__name__, u'Exporting "{}" data:\n{}'.format(page_name, page_info))
             
-            absolute_filename = u'{}/{}'.format(out_dir, page.GetName().upper())
+            absolute_filename = u'{}/{}'.format(out_dir, out_name)
             
             output_data = open(absolute_filename, u'w')
             if not output_data:
