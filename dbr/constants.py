@@ -42,8 +42,8 @@ AUTHOR = u'Jordan Irwin'
 # Version information #
 RELEASE = 0
 VER_MAJ = 0
-VER_MIN = 7
-VER_REL = 11
+VER_MIN = 8
+VER_REL = 0
 
 if not RELEASE:
     VER_REL += 1
@@ -64,9 +64,9 @@ PROJECT_FILENAME_SUFFIX = u'dbpz'
 
 # *** Python Info *** #
 
-PY_VER_MAJ = sys.version_info[0]
-PY_VER_MIN = sys.version_info[1]
-PY_VER_REL = sys.version_info[2]
+VER_MAJ = 0
+VER_MIN = 8
+VER_REL = 0
 PY_VER_STRING = u'{}.{}.{}'.format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
 
 
