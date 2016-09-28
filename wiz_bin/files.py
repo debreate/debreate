@@ -8,6 +8,7 @@ from wx.lib.mixins import \
 import dbr
 from dbr.constants import ID_FILES, ERR_DIR_NOT_AVAILABLE
 from dbr import DebugEnabled
+from dbr.wizard import WizardPage
 
 
 ID_pin = 100
@@ -21,6 +22,7 @@ ID_Refresh = 142
 # FIXME: Use global from dbr.constants
 home = os.getenv(u'HOME')
 
+
 class DList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wx.MixinListCtrl.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
     def __init__(self, parent, window_id=wx.ID_ANY):
@@ -28,10 +30,12 @@ class DList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wx.MixinListCt
         #wx.MixinListCtrl.TextEditMixin.__init__(self)
         wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
 
-class Panel(wx.Panel):
+
+class Panel(wx.Panel, WizardPage):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_FILES, name=_(u'Files'))
+        WizardPage.__init__(self)
         
         # For identifying page to parent
         #self.ID = "FILES"

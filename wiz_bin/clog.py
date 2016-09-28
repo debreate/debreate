@@ -8,11 +8,13 @@ import wx, commands
 import dbr
 from dbr.constants import ID_CHANGELOG
 from dbr.functions import TextIsEmpty
+from dbr.wizard import WizardPage
 
 
-class Panel(wx.Panel):
+class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_CHANGELOG, name=_(u'Changelog'))
+        WizardPage.__init__(self)
         
         self.parent = parent.parent # MainWindow
         

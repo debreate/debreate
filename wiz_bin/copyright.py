@@ -8,15 +8,17 @@ import wx, os
 import dbr.font
 from dbr.constants import ID_COPYRIGHT
 from dbr.functions import TextIsEmpty
+from dbr.wizard import WizardPage
 
 
 # Globals
 copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
 
 
-class Panel(wx.Panel):
+class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):  # FIXME: ID unused
         wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=_(u'Copyright'))
+        WizardPage.__init__(self)
         
         self.debreate = parent.parent
         
