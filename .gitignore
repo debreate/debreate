@@ -1,5 +1,6 @@
 # Backup files
 *.orig
+*.new
 
 # Eclipse project files & directories
 /.project
