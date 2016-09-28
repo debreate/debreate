@@ -7,6 +7,7 @@ import wx, commands
 # Local imports
 import dbr
 from dbr.constants import ID_CHANGELOG
+from dbr.functions import TextIsEmpty
 
 
 class Panel(wx.Panel):
@@ -172,6 +173,9 @@ class Panel(wx.Panel):
         self.dest_custom.SetValue(u'/')
         self.display_area.Clear()
     
+    ## Deprecated
+    #  
+    #  TODO: Remove after implementing new save format
     def GatherData(self):
         if self.rb_dest_default.GetValue():
             dest = u'<<DEST>>DEFAULT<</DEST>>'
@@ -179,3 +183,23 @@ class Panel(wx.Panel):
             dest = u'<<DEST>>' + self.dest_custom.GetValue() + u'<</DEST>>'
         
         return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))
+    
+    
+    ## Retrieves changelog information
+    #  
+    #  The output is a text file that uses sections defined
+    #    by braces ([, ]).
+    #  \return
+    #        \b \e tuple(str, str) : Filename & formatted string of changelog target & body
+    def GetPageInfo(self):
+        cl_target = u'DEFAULT'
+        
+        if self.rb_dest_custom.GetValue():
+            cl_target = self.dest_custom.GetValue()
+        
+        cl_body = self.display_area.GetValue()
+        
+        if TextIsEmpty(cl_body):
+            return None
+        
+        return (__name__, u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body))
