@@ -9,6 +9,8 @@ import wx, os
 # Local modules
 import dbr
 from dbr.constants import ID_SCRIPTS
+from dbr.functions import TextIsEmpty
+from dbr.language import GT
 
 
 ID_Import = 100
@@ -393,3 +395,133 @@ scripts will be created that will place a symbolic link to your executables in t
                 
         
         return u'<<SCRIPTS>>\n%s\n<</SCRIPTS>>' % u'\n'.join(data)
+
+
+## Descriptions for each available pre-defined shell
+#  
+#  TODO: Add strings to GetText translations
+shell_descriptions = {
+    u'sh': GT(u'UNIX Bourne shell'),
+    u'bash': GT(u'GNU Bourne Again shell'),
+    u'ksh'|u'pdksh': GT(u'Korn shell'),
+    u'csh': GT(u'C shell'),
+    u'tcsh': GT(u'Tenex C shell (Advanced C shell)'),
+}
+
+
+## Class defining a Debian package script
+#  
+#  A script's filename is one of 'preinst', 'prerm',
+#    'postinst', or 'postrm'. Scripts are stored in the
+#    (FIXME: Don't remember section name) section of the package & are executed in the
+#    order dictated by the naming convention:
+#    'Pre Install', 'Pre Remove/Uninstall',
+#    'Post Install', & 'Post Remove/Uninstall'.
+class DebianScript:
+    def __init__(self, parent, script_id):
+        
+        ## ID used to identify the script
+        self.script_id = script_id
+        
+        ## Filename used for exporting script
+        self.script_filename = id_definitions[script_id].lower()
+        
+        ## String name used for display in the application
+        self.script_name = None
+        self.__set_script_name()
+        
+        shell_options = []
+        for S in shell_descriptions:
+            shell_options.append(u'/bin/{}'.format(S))
+            
+            if S != u'sh':
+                shell_options.append(u'usr/bin/{}'.format(S))
+                shell_options.append(u'usr/bin/env {}'.format(S))
+        
+        self.shell = wx.ComboBox(parent, self.script_id, choices=shell_options)
+        self.shell.SetSelection(0)
+        
+        self.script_text = wx.TextCtrl(parent, self.script_id, style=wx.TE_MULTILINE)
+    
+    
+    ## Sets the name of the script to be displayed
+    #  
+    #  Sets the displayed script name to a value of either 'Pre Install',
+    #    'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.script_filename'
+    #    is used to determine the displayed name.
+    #  TODO: Add strings to GetText translations
+    def __set_script_name(self):
+        prefix = None
+        suffix = None
+        
+        if u'pre' in self.script_filename:
+            prefix = u'Pre'
+            suffix = self.script_filename.split(u'pre')
+        
+        elif u'post' in self.script_filename:
+            prefix = u'Post'
+            suffix = self.script_filename.split(u'post')
+        
+        if suffix.lower() == u'inst':
+            suffix = u'Install'
+        
+        elif suffix.lower() == u'rm':
+            suffix = u'Uninstall'
+        
+        if (prefix != None) and (suffix != None):
+            self.script_name = GT(u'{} {}'.format(prefix, suffix))
+    
+    
+    ## Retrieves the script's ID
+    #  
+    #  \return
+    #        \b \e int : Integer representation of script ID
+    def GetId(self):
+        return self.script_id
+    
+    ## Retrieves the filename to use for exporting
+    #  
+    #  \return
+    #        \b \e str : Script filename
+    def GetFilename(self):
+        return self.script_filename
+    
+    ## Retrieves the script's name for display
+    #  
+    #  \return
+    #        \b \e str : String representation of script's name
+    def GetName(self):
+        return self.script_name
+    
+    
+    ## Retrieves the description of a shell for display
+    #  
+    #  \return
+    #        \b \e str : Description or None if using custom shell
+    def GetSelectedShellDescription(self):
+        selected_shell = self.shell.GetValue()
+        
+        if selected_shell in shell_descriptions:
+            return shell_descriptions[selected_shell]
+        
+        return None
+    
+    
+    ## Retrieves whether or not the script is used & should be exported
+    #  
+    #  The text area is checked &, if not empty, signifies that
+    #    the user want to export the script.
+    #  \return
+    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
+    def IsExportable(self):
+        return (not TextIsEmpty(self.script_text.GetValue()))
+    
+    ## Exports the script to a text file
+    #  
+    #  TODO: Finish definition
+    #  \param out_dir
+    #        \b \e str : Target directory to output file
+    #  \param executable
+    #        \b \e bool : Make file executable
+    def Export(self, out_dir, executable=True):
+        return
