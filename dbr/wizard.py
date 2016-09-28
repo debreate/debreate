@@ -110,10 +110,10 @@ class Wizard(wx.Panel):
             if page.IsShown():
                 index = self.pages.index(page)
         
-        if id == ID_PREV:
+        if event_id == ID_PREV:
             if index != 0:
                 index -= 1
-        elif id == ID_NEXT:
+        elif event_id == ID_NEXT:
             if index != len(self.pages)-1:
                 index += 1
         
