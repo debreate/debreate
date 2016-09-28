@@ -7,7 +7,8 @@ import wx, wx.lib.newevent, os
 
 # Local imports
 from dbr.buttons import ButtonNext, ButtonPrev
-from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ
+from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ,\
+    ID_SCRIPTS
 from dbr import Logger
 
 ID_PREV = wx.NewId()
@@ -186,26 +187,31 @@ class Wizard(wx.Panel):
     #        \b \e str : Filename to use for output
     #  \return
     #       Return code for success or failure of export
-    def ExportPageInfo(self, page, out_dir, out_name):
-        page_info = page.GetPageInfo()
-        page_name = page_info[0]
-        page_info = page_info[1]
+    def ExportPageInfo(self, page, out_dir):
+        custom_exports = (ID_SCRIPTS,)
+        if page.GetId() in custom_exports:
+            return page.Export(out_dir)
         
-        if not os.path.isdir(out_dir):
-            return (ERR_DIR_NOT_AVAILABLE, page_name)
-        
-        Logger.Debug(__name__, u'Exporting "{}" data:\n{}'.format(page_name, page_info))
-        
-        absolute_filename = u'{}/{}'.format(out_dir, out_name)
-        
-        output_data = open(absolute_filename, u'w')
-        if not output_data:
-            return (ERR_FILE_READ, page_name)
-        
-        output_data.write(page_info)
-        output_data.close()
-        
-        if not os.path.isfile(absolute_filename):
-            return (ERR_FILE_WRITE, page_name)
+        else:
+            page_info = page.GetPageInfo()
+            page_name = page_info[0]
+            page_info = page_info[1]
+            
+            if not os.path.isdir(out_dir):
+                return (ERR_DIR_NOT_AVAILABLE, page_name)
+            
+            Logger.Debug(__name__, u'Exporting "{}" data:\n{}'.format(page_name, page_info))
+            
+            absolute_filename = u'{}/{}'.format(out_dir, page.GetName().upper())
+            
+            output_data = open(absolute_filename, u'w')
+            if not output_data:
+                return (ERR_FILE_READ, page_name)
+            
+            output_data.write(page_info)
+            output_data.close()
+            
+            if not os.path.isfile(absolute_filename):
+                return (ERR_FILE_WRITE, page_name)
         
         return (0, None)
