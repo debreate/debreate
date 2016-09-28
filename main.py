@@ -31,8 +31,8 @@ ID_UPDATE = wx.NewId()
 
 
 class MainWindow(wx.Frame):
-    def __init__(self, parent, title, pos, size):
-        wx.Frame.__init__(self, parent, wx.ID_ANY, title, pos, size)
+    def __init__(self, title, pos, size):
+        wx.Frame.__init__(self, None, wx.ID_ANY, title, pos, size)
         
         # The default title
         self.default_title = _(u'Debreate - Debian Package Builder')
