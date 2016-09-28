@@ -538,7 +538,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
     def SaveProject(self, event):
         # TODO: Add strings to GetText output
         
-        Logger.Debug(__name__, u'Saving in new project format')
+        Logger.Debug(__name__, _(u'Saving in new project format'))
         
         title = _(u'Save Debreate Project')
         suffix = dbr.PROJECT_FILENAME_SUFFIX
@@ -578,7 +578,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
             
             
             # Export information from each page
-            for P in self.page_control, self.page_files, self.page_scripts:
+            for P in self.page_control, self.page_files, self.page_scripts, self.page_clog:
                 ret_code = self.wizard.ExportPageInfo(P, temp_path)
                 ret_file = ret_code[1]
                 ret_code = ret_code[0]
