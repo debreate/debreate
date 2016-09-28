@@ -386,7 +386,7 @@ scripts will be created that will place a symbolic link to your executables in t
 shell_descriptions = {
     u'sh': GT(u'UNIX Bourne shell'),
     u'bash': GT(u'GNU Bourne Again shell'),
-    u'ksh'|u'pdksh': GT(u'Korn shell'),
+    u'ksh' or u'pdksh': GT(u'Korn shell'),
     u'csh': GT(u'C shell'),
     u'tcsh': GT(u'Tenex C shell (Advanced C shell)'),
 }
