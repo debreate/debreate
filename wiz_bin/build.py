@@ -10,11 +10,13 @@ from os.path import exists
 # Local modules
 import dbr
 from dbr.constants import ID_BUILD
+from dbr.wizard import WizardPage
 
 
-class Panel(wx.Panel):
+class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_BUILD, name=_(u'Build'))
+        WizardPage.__init__(self)
         
         # For identifying page to parent
         #self.ID = u'BUILD'
