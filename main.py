@@ -576,19 +576,16 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
             
             os.makedirs(temp_path)
             
-            
-            # Export information from each page
-            for P in (self.page_control, self.page_files, self.page_scripts, self.page_clog,
-                    self.page_cpright, self.page_menu, self.page_build):
-                ret_code = self.wizard.ExportPageInfo(P, temp_path)
-                ret_file = ret_code[1]
-                ret_code = ret_code[0]
-                
-                if ret_code:
-                    Logger.Error(__name__,
-                            u'Could not export information from "{}": {}'.format(ret_file, error_definitions[ret_code]))
-                    return ret_code
-            
+            export_pages = (
+                self.page_control,
+                self.page_files,
+                self.page_scripts,
+                self.page_clog,
+                self.page_cpright,
+                self.page_menu,
+                self.page_build,
+            )
+            self.wizard.ExportPages(export_pages, temp_path)
             
             file_list = []
             for PATH, DIRS, FILES in os.walk(temp_path):
