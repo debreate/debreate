@@ -212,12 +212,12 @@ def TestConfig():
     # Check for old config file
     old_config = u'{}/.debreate'.format(dbr.home_path)
     if os.path.isdir(old_config):
-        print u'Found deprecated configuration, deleting...'
+        Logger.Info(__name__, _(u'Found deprecated configuration, deleting...'))
         shutil.rmtree(old_config)
     
     # Check if config file exists
     if not os.path.isfile(dbconfig):
-        print _(u'Config not found, launching "First Run"')
+        Logger.Info(__name__, _(u'Config not found, launching "First Run"'))
         StartFirstRun()
         return True # Centers the window
 
@@ -247,7 +247,7 @@ def TestConfig():
             if os.path.isdir(cwd) == False:
                 firstrun = True
         except:
-            print _(u'Error found in config file, running first start')
+            Logger.Info(__name__, _(u'Error found in config file, running first start'))
             firstrun = True
         
         
