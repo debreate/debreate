@@ -15,9 +15,6 @@ class Panel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, ID_MENU, name=_(u'Menu Launcher'))
         
-        # For identifying page to parent
-        #self.ID = u'MENU'
-        
         # Allows executing parent methods
         self.parent = parent
         
@@ -63,7 +60,7 @@ class Panel(wx.Panel):
         self.name_text = wx.StaticText(self, -1, _(u'Name'))
         self.name_text.SetToolTip(m_name_tip)
         self.name_input = wx.TextCtrl(self, -1)
-#        self.name_input.SetBackgroundColour(dbr.Mandatory)
+        #self.name_input.SetBackgroundColour(dbr.Mandatory)
         
         # --- EXECUTABLE
         self.exe_text = wx.StaticText(self, -1, _(u'Executable'))
@@ -86,7 +83,6 @@ class Panel(wx.Panel):
         #self.type_text.SetToolTip(m_type_tip)
         self.type_choice = wx.ComboBox(self, -1, choices=self.type_opt)
         self.type_choice.SetSelection(0)
-        #self.type_choice = wx.Choice(self, -1, choices=self.type_opt)
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
@@ -226,16 +222,10 @@ class Panel(wx.Panel):
         if self.activate.IsChecked():
             for item in self.menu_list:
                 item.Enable()
-                # Change the background color of name_input
-#                if item == self.name_input:
-#                    item.SetBackgroundColour(dbr.Mandatory)
                     
         else:
             for item in self.menu_list:
                 item.Disable()
-                # Change background color of name_input
-#                if item == self.name_input:
-#                    item.SetBackgroundColour(dbr.Disabled)
     
     def GetMenuInfo(self):
         # Create list to store info
