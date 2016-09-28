@@ -12,16 +12,16 @@
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
+- Add page for creating manpage
+- Finish Doxygen documentation
+- Compile gettext locales at build time
+- Install *.mo files to system locale directory
 
 Unknown Release:
-- Add page for creating manpage
 - Detailed documentation on files page
 - Only show exit confirmation if project has been modified
 - Add a debug log window
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
-- Finish Doxygen documentation
-- Compile gettext locales at build time
-- Install *.mo files to system locale directory
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
 - Allow making multiple .desktop menus
