@@ -3,34 +3,13 @@
 ## \package dbr.custom
 
 
-import os, sys
-from wx import \
-	TE_MULTILINE as wxTE_MULTILINE, \
-	TE_READONLY as wxTE_READONLY, \
-    EVT_BUTTON as wxEVT_BUTTON, \
-    RIGHT as wxRIGHT, \
-    LEFT as wxLEFT, \
-    ALIGN_RIGHT as wxALIGN_RIGHT, \
-    ALIGN_CENTER as wxALIGN_CENTER, \
-    TOP as wxTOP, \
-    BOTTOM as wxBOTTOM, \
-    ALL as wxALL, \
-    VERTICAL as wxVERTICAL, \
-    HORIZONTAL as wxHORIZONTAL, \
-    OK as wxOK, \
-    ID_CANCEL as wxID_CANCEL
-from wx import \
-    BoxSizer as wxBoxSizer, \
-    Button as wxButton, \
-	Dialog as wxDialog, \
-	FileDropTarget as wxFileDropTarget, \
-    StaticText as wxStaticText, \
-	TextCtrl as wxTextCtrl, \
-    MessageDialog as wxMessageDialog
-
+# System imports
+import wx, os, sys
 from wx.lib.docview import PathOnly
-import wx.combo, wx.lib.mixins.listctrl as wxLC
+import wx.combo, wx.lib.mixins.listctrl as LC
 
+# Local imports
+import dbr
 from dbr.constants import ID_APPEND, ID_OVERWRITE
 from dbr.language import GT
 
@@ -43,8 +22,55 @@ def TextIsEmpty(text):
     return (text == u'')
 
 
+## Dialog shown when Debreate is run for first time
+#  
+#  If configuration file is not found or corrupted
+#    this dialog is shown.
+class FirstRun(wx.Dialog):
+    def __init__(self):
+        wx.Dialog.__init__(self, None, wx.ID_ANY, _(u'Debreate First Run'), size=(450,300))
+        
+        m1 = _(u'Thank you for using Debreate.')
+        m2 = _(u'This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
+        
+        # "OK" button sets to True
+        #self.OK = False
+        
+        # Set the titlebar icon
+        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG))
+        
+        # Display a message to create a config file
+        self.message = wx.StaticText(self)
+        self.message.SetLabel(u'{}\n\n\
+{}\n\n\
+rm -r ~/.config/debreate'.format(m1, m2))
+        
+        # Show the Debreate icon
+        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG)
+        icon = wx.StaticBitmap(self, -1, dbicon)
+        
+        # Button to confirm
+        self.button_ok = wx.Button(self, wx.ID_OK)
+        
+        # Nice border
+        self.border = wx.StaticBox(self, -1)
+        border_box = wx.StaticBoxSizer(self.border, wx.HORIZONTAL)
+        border_box.AddSpacer(10)
+        border_box.Add(icon, 0, wx.ALIGN_CENTER)
+        border_box.AddSpacer(10)
+        border_box.Add(self.message, 1, wx.ALIGN_CENTER)
+        
+        # Set Layout
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
+        
+        self.SetSizer(sizer)
+        self.Layout()
+
+
 ## A generic display area that captures \e stdout & \e stderr
-class OutputLog(wxTextCtrl):
+class OutputLog(wx.TextCtrl):
     ## Constructor
     #  
     #  \param parent
@@ -52,7 +78,7 @@ class OutputLog(wxTextCtrl):
     #  \param id
     #        Window ID (FIXME: Should be set automatically from constant)
     def __init__(self, parent, id=-1):
-        wxTextCtrl.__init__(self, parent, id, style=wxTE_MULTILINE|wxTE_READONLY)
+        wx.TextCtrl.__init__(self, parent, id, style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.SetBackgroundColour(u'black')
         self.SetForegroundColour(u'white')
         self.stdout = sys.stdout
@@ -72,7 +98,7 @@ class OutputLog(wxTextCtrl):
 
 
 ## Prompt for overwriting a text area
-class OverwriteDialog(wxDialog):
+class OverwriteDialog(wx.Dialog):
     ## Constructor
     #  
     #  \param parent
@@ -84,29 +110,29 @@ class OverwriteDialog(wxDialog):
     #  \param message
     #        Message to display
     def __init__(self, parent, id=-1, title=GT(u'Overwrite?'), message=u''):
-        wxDialog.__init__(self, parent, id, title)
-        self.message = wxStaticText(self, -1, message)
+        wx.Dialog.__init__(self, parent, id, title)
+        self.message = wx.StaticText(self, -1, message)
         
         ## Button to accept overwrite
-        self.button_overwrite = wxButton(self, ID_OVERWRITE, GT(u'Overwrite'))
+        self.button_overwrite = wx.Button(self, ID_OVERWRITE, GT(u'Overwrite'))
         
-        self.button_append = wxButton(self, ID_APPEND, GT(u'Append'))
+        self.button_append = wx.Button(self, ID_APPEND, GT(u'Append'))
         
         ## Button to cancel overwrite
-        self.button_cancel = wxButton(self, wxID_CANCEL)
+        self.button_cancel = wx.Button(self, wx.ID_CANCEL)
         
         # -*- Button events -*- #
-        wxEVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
-        wxEVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
+        wx.EVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
+        wx.EVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
         
-        hsizer = wxBoxSizer(wxHORIZONTAL)
-        hsizer.Add(self.button_overwrite, 0, wxLEFT|wxRIGHT, 5)
-        hsizer.Add(self.button_append, 0, wxLEFT|wxRIGHT, 5)
-        hsizer.Add(self.button_cancel, 0, wxLEFT|wxRIGHT, 5)
+        hsizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer.Add(self.button_overwrite, 0, wx.LEFT|wx.RIGHT, 5)
+        hsizer.Add(self.button_append, 0, wx.LEFT|wx.RIGHT, 5)
+        hsizer.Add(self.button_cancel, 0, wx.LEFT|wx.RIGHT, 5)
         
-        vsizer = wxBoxSizer(wxVERTICAL)
-        vsizer.Add(self.message, 1, wxALIGN_CENTER|wxALL, 5)
-        vsizer.Add(hsizer, 0, wxALIGN_RIGHT|wxTOP|wxBOTTOM, 5)
+        vsizer = wx.BoxSizer(wx.VERTICAL)
+        vsizer.Add(self.message, 1, wx.ALIGN_CENTER|wx.ALL, 5)
+        vsizer.Add(hsizer, 0, wx.ALIGN_RIGHT|wx.TOP|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizerAndFit(vsizer)
@@ -116,7 +142,7 @@ class OverwriteDialog(wxDialog):
     #  
     #  Get the event object & close the dialog.
     #  \param event
-    #        wxEVT_BUTTON
+    #        wx.EVT_BUTTON
     def OnButton(self, event):
         id = event.GetEventObject().GetId()
         self.EndModal(id)
@@ -127,13 +153,13 @@ class OverwriteDialog(wxDialog):
 
 
 ## Object for drag-&-drop text files
-class SingleFileTextDropTarget(wxFileDropTarget):
+class SingleFileTextDropTarget(wx.FileDropTarget):
     ## Constructor
     #  
     #  \param obj
     #        ???
     def __init__(self, obj):
-        wxFileDropTarget.__init__(self)
+        wx.FileDropTarget.__init__(self)
         self.obj = obj
     
     ## Defines actions to take when a file is dropped on object
@@ -160,14 +186,14 @@ class SingleFileTextDropTarget(wxFileDropTarget):
             else:
                 self.obj.SetValue(text)
         except UnicodeDecodeError:
-            wxMessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wxOK).ShowModal()
+            wx.MessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wx.OK).ShowModal()
 
 
 ## A customized combo control
 #  
 #  FIXME: Unused. Was used in page.control
 class Combo(wx.combo.ComboCtrl):
-    def __init__(self, parent, id=wx.ID_ANY, value="", choices=()):
+    def __init__(self, parent, id=wx.ID_ANY, value=u'', choices=()):
         wx.combo.ComboCtrl.__init__(self, parent, id)
         
         self.Frame = self.GetTopLevelParent()
@@ -303,7 +329,7 @@ class Combo(wx.combo.ComboCtrl):
 #  
 #  Columns cannot be resized with context menu to add/delete entries.
 #  FIXME: Unused. Was used in page.control.
-class LCReport(wx.ListCtrl, wxLC.TextEditMixin, wxLC.ListCtrlAutoWidthMixin):
+class LCReport(wx.ListCtrl, LC.TextEditMixin, LC.ListCtrlAutoWidthMixin):
     ## Constructor
     #  
     #  \param parent
@@ -315,8 +341,8 @@ class LCReport(wx.ListCtrl, wxLC.TextEditMixin, wxLC.ListCtrlAutoWidthMixin):
     def __init__(self, parent, id=wx.ID_ANY, style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL):
         wx.ListCtrl.__init__(self, parent, -1,
                 style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES|wx.LC_VRULES)
-        wxLC.TextEditMixin.__init__(self)
-        wxLC.ListCtrlAutoWidthMixin.__init__(self)
+        LC.TextEditMixin.__init__(self)
+        LC.ListCtrlAutoWidthMixin.__init__(self)
         
         wx.EVT_CONTEXT_MENU(self, self.ShowMenu)
         wx.EVT_LIST_COL_BEGIN_DRAG(self, -1, self.NoResize)
