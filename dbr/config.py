@@ -41,6 +41,15 @@ key_types = {
     u'working_dir': unicode,
 }
 
+default_config_values = {
+    u'center': True,
+    u'dialogs': False,
+    u'maximize': False,
+    u'position': (0, 0),
+    u'size': (800, 640),
+    u'working_dir': home_path,
+}
+
 
 ## FIXME: Not used?
 def CheckValueType(key, value):
@@ -180,19 +189,23 @@ def WriteConfig(k_name, k_value, conf=default_config):
 #  \return
 #        \b \e ConfCode
 def InitializeConfig(conf=default_config):
-    default_values = {
-        u'center': True,
-        u'dialogs': False,
-        u'maximize': False,
-        u'position': (0, 0),
-        u'size': (800, 640),
-        u'working_dir': home_path,
-    }
-    
-    for V in default_values:
-        exit_code = WriteConfig(V, default_values[V], conf)
+    for V in default_config_values:
+        exit_code = WriteConfig(V, default_config_values[V], conf)
         
         if exit_code != ConfCode.SUCCESS:
             return exit_code
     
     return ConfCode.SUCCESS
+
+
+## Retrieves default configuration value for a key
+#  
+#  \param key
+#        \b \e unicode|str : Key to check
+#  \return
+#        Default value for the key or ConfCode.KEY_NO_EXIST
+def GetDefaultConfigValue(key):
+    if key in default_config_values:
+        return default_config_values[key]
+    
+    return ConfCode.KEY_NO_EXIST
