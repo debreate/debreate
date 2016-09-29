@@ -29,13 +29,12 @@ ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
 
+default_title = _(u'Debreate - Debian Package Builder')
+
 
 class MainWindow(wx.Frame):
-    def __init__(self, title, pos, size):
-        wx.Frame.__init__(self, None, wx.ID_ANY, title, pos, size)
-        
-        # The default title
-        self.default_title = _(u'Debreate - Debian Package Builder')
+    def __init__(self, pos, size):
+        wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
         
         self.SetMinSize((640,400))
         
@@ -334,7 +333,7 @@ class MainWindow(wx.Frame):
     def NewProject(self):
         for page in self.all_pages:
             page.ResetAllFields()
-        self.SetTitle(self.default_title)
+        self.SetTitle(default_title)
         
         # Reset the saved project field so we know that a project file doesn't exists
         self.saved_project = wx.EmptyString
@@ -526,7 +525,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
     
     def IsNewProject(self):
         title = self.GetTitle()
-        if title == self.default_title:
+        if title == default_title:
             return True
         else:
             return False
@@ -534,7 +533,7 @@ workingdir={}'.format(pos, size, maximize, center, dias, cwd))
     def SetSavedStatus(self, status):
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
-            if self.IsSaved() and title != self.default_title:
+            if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
     
     # FIXME: New format unused. Currently still using OnSaveProjectDeprecated
