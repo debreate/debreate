@@ -13,6 +13,7 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats
+from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
 # Pages
@@ -35,6 +36,8 @@ default_title = _(u'Debreate - Debian Package Builder')
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
+        
+        self.workingdir = None
         
         self.SetMinSize((640,400))
         
@@ -292,8 +295,22 @@ class MainWindow(wx.Frame):
         # First item is name of saved file displayed in title
         # Second item is actual path to project file
         self.saved_project = wx.EmptyString
+    
+    
+    ## Sets working directory for file open/save dialogs
+    #  
+    #  FIXME: Unused?
+    #  \param target
+    #        \b \e unicode|str : Target directory
+    def SetWorkingDirectory(self, target):
+        if target != None:
+            self.workingdir = target
+        else:
+            self.workingdir = GetDefaultConfigValue(u'workingdir')
         
-        
+        if not os.path.isdir(self.workingdir):
+            Logger.Warning(__name__, _(u'Working directory set to "{}" which is not an actual directory'.format(self.workingdir)))
+    
         
     def OnMaximize(self, event):
         # FIXME: ???
@@ -376,7 +393,7 @@ class MainWindow(wx.Frame):
         
         lines = data.split(u'\n')
         app = lines[0].split(u'-')[0].split(u'[')[1]
-        ver = lines[0].split(u'-')[1].split(u']')[0]
+        #ver = lines[0].split(u'-')[1].split(u']')[0]
         
         if app != u'DEBREATE':
             ProjectError()
@@ -418,48 +435,34 @@ class MainWindow(wx.Frame):
         self.page_build.SetFieldData(build_data)
     
     
+    ## Shows a quit dialog & exits the application
+    #  
+    #  If user confirms quit, closes main window & exits.
     def OnQuit(self, event):
-        '''Show a dialog to confirm quit and write window settings to config file'''
         confirm = wx.MessageDialog(self, _(u'You will lose any unsaved information'), _(u'Quit?'),
                                    wx.OK|wx.CANCEL|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
             confirm.Destroy()
             
+            maximized = self.IsMaximized()
+            
             # Get window attributes and save to config file
-            if self.IsMaximized():	# If window is maximized upon closing the program will set itself back to
-                size = u'800,650'		# an 800x650 window (ony when restored back down, the program will open
-                maximize = 1        # maximized)
-                pos = u'0,0'
-                center = 1
+            if maximized:	# Save default window settings if maximized
+                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
+                WriteConfig(u'center', GetDefaultConfigValue(u'center'))
+                WriteConfig(u'maximize', True)
             else:
-                size = u'{},{}'.format(self.GetSize()[0], self.GetSize()[1])
-                maximize = 0
-                pos = u'{},{}'.format(self.GetPosition()[0], self.GetPosition()[1])
-                center = 0
+                WriteConfig(u'size', (self.GetSize()[0], self.GetSize()[1]))
+                WriteConfig(u'position', (self.GetPosition()[0], self.GetPosition()[1]))
+                WriteConfig(u'center', False)
+                WriteConfig(u'maximize', False)
             
-            if self.cust_dias.IsChecked():
-                dias = 1
-            else:
-                dias = 0
-            
-            # Save current working directory for next session
-            cwd = os.getcwd()
-            
-            # Open and write new config file
-            if not os.path.isdir(self.dbdir):
-                os.mkdir (self.dbdir)
-            config_file = open(self.dbconfig, u'w')
-            config_file.write(u'\
-[CONFIG-1.1]\n\
-position={}\n\
-size={}\n\
-maximize={}\n\
-center={}\n\
-dialogs={}\n\
-workingdir={}'.format(pos, size, maximize, center, dias, cwd))
-            config_file.close()
+            WriteConfig(u'workingdir', os.getcwd())
+            WriteConfig(u'dialogs', self.cust_dias.IsChecked())
             
             self.Destroy()
+        
         else:
             confirm.Destroy()
     
