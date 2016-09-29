@@ -5,7 +5,7 @@
 
 
 # System modules
-import wx, os, subprocess
+import wx, os, subprocess, re
 from datetime import datetime, date
 from urllib2 import urlopen, URLError
 
@@ -249,3 +249,170 @@ def GetSystemLicensesList():
                 license_list.append(F)
     
     return license_list
+
+
+## Checks if a string contains any alphabetic characters
+#  
+#  \param
+#        \b \e unicode|str : String to check
+#  \return
+#        \b \e bool : Alphabet characters found
+def HasAlpha(value):
+    return (re.search(u'[a-zA-Z]', unicode(value)) != None)
+    
+## Finds integer value from a string, float, tuple, or list
+#  
+#  \param value
+#        Value to be checked for integer equivalent
+#  \return
+#        \b \e int|None
+def GetInteger(value):
+    v_type = type(value)
+    
+    if v_type in (int, float):
+        return int(value)
+    
+    # Will always use there very first value, even for nested items
+    elif v_type in (tuple, list):
+        # Recursive check lists & tuples
+        return GetInteger(value[0])
+    
+    elif v_type in (unicode, str):
+        # Convert because of unsupported methods in str class
+        value = unicode(value)
+        
+        if HasAlpha(value):
+            return None
+        
+        if value == wx.EmptyString:
+            return None
+        
+        # Check for negative
+        if value[0] == u'-':
+            if value.count(u'-') <= 1:
+                value = GetInteger(value[1:])
+                
+                if value != None:
+                    return -value
+        
+        # Check for tuple
+        elif u'.' in value:
+            value = value.split(u'.')[0]
+            return GetInteger(value)
+        
+        elif value.isnumeric() or value.isdigit():
+            return int(value)
+    
+    return None
+
+
+## Finds a boolean value from a string, integer, float, or boolean
+#  
+#  \param value
+#        Value to be checked for boolean equivalent
+#  \return
+#        \b \e bool|None
+def GetBoolean(value):
+    v_type = type(value)
+    
+    if v_type == bool:
+        return value
+    
+    elif v_type in (int, float):
+        return bool(value)
+    
+    elif v_type in (unicode, str):
+        int_value = GetInteger(value)
+        if int_value != None:
+            return bool(int_value)
+        
+        if value in (u'True', u'False'):
+            return value == u'True'
+    
+    return None
+
+
+## Finds a tuple value from a string, tuple, or list
+#  
+#  \param value
+#        Value to be checked for tuple equivalent
+#  \return
+#        \b \e tuple|None
+def GetIntTuple(value):
+    v_type = type(value)
+    
+    if (v_type in (tuple, list)) and (len(value) > 1):
+        # Convert to list in case we need to make changes
+        value = list(value)
+        
+        for I in value:
+            t_index = value.index(I)
+            
+            if type(I) in (tuple, list):
+                I = GetIntTuple(I)
+            
+            else:
+                I = GetInteger(I)
+            
+            if I == None:
+                return None
+            
+            value[t_index] = I
+            
+            '''
+            if type(I) not in (int, float):
+                return None
+            
+            # Convert float values to int
+            if type(I) == float:
+                value[t_index] = int(I)
+            '''
+        
+        return tuple(value)
+    
+    elif v_type in (unicode, str):
+        # Remove whitespace & braces
+        for D in u' ', u'(', u')':
+            value = u''.join(value.split(D))
+        
+        value = value.split(u',')
+        
+        if len(value) >= 2:
+            for S in value:
+                v_index = value.index(S)
+                
+                S = GetInteger(S)
+                
+                if S == None:
+                    return None
+                '''
+                # Check for float values
+                if u'.' in S:
+                    # Remove trailing values after 2nd period
+                    S = S.split(u'.')[:2]
+                    
+                    for C in S:
+                        if (not C.isnumeric() and (not C.isdigit())):
+                            return None
+                    
+                    S = float(u'.'.join(S))
+                
+                elif (not S.isnumeric()) and (not S.isdigit()):
+                    return None
+                '''
+                value[v_index] = S
+                
+            # Convert return value from list to tuple
+            return tuple(value)
+        
+    return None
+
+
+def IsInteger(value):
+    return GetInteger(value) != None
+
+def IsBoolean(value):
+    return GetBoolean(value) != None
+
+def IsIntTuple(value):
+    return GetIntTuple(value) != None
