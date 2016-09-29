@@ -14,23 +14,7 @@ import wxversion
 wxversion.select([u'3.0', u'2.8'])
 
 # System modules
-import wx, os, sys, shutil
-
-debreate_app = wx.App()
-
-
-# Local modules
-import main, dbr
-from dbr import Logger
-
-
-script_name = os.path.basename(__file__)
-if u'.py' in script_name:
-    script_name = script_name.split(u'.py')[0]
-
-Logger.Info(script_name, u'Python version: {}'.format(dbr.PY_VER_STRING))
-Logger.Info(script_name, u'wx.Python version: {}'.format(dbr.WX_VER_STRING))
-Logger.Info(script_name, u'Debreate version: {}'.format(dbr.VERSION_STRING))
+import wx, os, sys
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
@@ -39,7 +23,30 @@ if (sys.getdefaultencoding() != u'utf-8'):
     sys.setdefaultencoding(u'utf-8')
 wx.SetDefaultPyEncoding('UTF-8')
 
-# wx.Widgets
+
+# Initialize app before importing local modules
+debreate_app = wx.App()
+
+# Local modules
+from dbr import Logger
+from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING
+from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
+    default_config, GetDefaultConfigValue
+from dbr.custom import FirstRun
+from main import MainWindow
+import dbr.command_line as CL
+
+
+script_name = os.path.basename(__file__)
+if u'.py' in script_name:
+    script_name = script_name.split(u'.py')[0]
+
+Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
+Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
+Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_STRING))
+
+exit_now = 0
+
 # Get command line arguments
 project_file = 0 # Set project file to false
 if len(sys.argv) > 1:
@@ -50,215 +57,62 @@ if len(sys.argv) > 1:
         project_file = arg1.read()
         arg1.close()
 
-import dbr.command_line as CL
-
 CL.ParseArguments(sys.argv[1:])
 CL.ExecuteArguments()
 
-# Set the path for the config file
-dbdir = u'{}/.config/debreate'.format(dbr.home_path)
-dbconfig = u'{}/config'.format(dbdir)
 
-# Function to create the config file
-def MakeConfig():
-    # Make Debreate's config file
-    config = open(dbconfig, u'w')
-    config.write(u'[CONFIG-1.1]\n\
-position=0,0\n\
-size=800,650\n\
-maximize=0\n\
-center=1\n\
-dialogs=0\n\
-workingdir={}'.format(dbr.home_path))
-    config.close()
+# First time Debreate is run
+if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
+    #FR_app = wx.App()
+    
+    FR_dialog = FirstRun()
+    debreate_app.SetTopWindow(FR_dialog)
+    FR_dialog.ShowModal()
+    FR_dialog.Destroy()
+    
+    #FR_app.MainLoop()
+    
+    init_conf_code = InitializeConfig()
+    Logger.Debug(__name__, init_conf_code == ConfCode.SUCCESS)
+    if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
+        Logger.Error(__name__, _(u'Could not create configuration, exiting ...'))
+        exit_now = init_conf_code
+    
 
-
-def StartFirstRun():
-    app = wx.App()
-    frame = FirstRun(None, -1, _(u'Debreate First Run'))
-#	frame.SetMessage(u'Thank you for using Debreate.\n\nThis message only displays the first time you run Debreate, \
-#or if the configuration file becomes corrupted.')
-    
-    # Temporary message while in pre-alpha
-#	frame.SetMessage(u'Creating the default configuration file.  To delete this file type \
-#the following command in a terminal\n\n\
-#rm -r ~/.debreate\n\n\
-#!!--> Debreate 0.7 is still in pre-alpha.  This software is not fully functional. <--!!')
-    
-    # Temporary message while in alpha
-    m1 = _(u'Thank you for using Debreate.')
-    m2 = _(u'This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
-    frame.SetMessage(u'{}\n\n\
-{}\n\n\
-rm -r ~/.config/debreate'.format(m1, m2))
-    
-    frame.ShowModal()
-    if frame.OK:
-        frame.Destroy()
-        app.MainLoop()
-        TestConfig()
-    else:
-        frame.Destroy()
-        app.MainLoop()
+if exit_now:
+    sys.exit(exit_now)
 
 
-def Run(pos, size, maximize, center, dias, cwd):
-    # Start the main application window
-    frame = main.MainWindow(u'', pos, size)
-    frame.SetTitle(frame.default_title)
-    
-    # Find out if user is using a dark theme (font will be light)
-    # Then we can change the priority colors according to that theme
-    darktheme = False
-    # Create a dummy text control to get theme colors
-    dummy = wx.TextCtrl(frame)
-    fg_color = dummy.GetForegroundColour()
-    for rgb in fg_color:
-        if rgb > 150:
-            darktheme = True
-    if darktheme:
-        # This sets the colors for text controls with priorities by using a text control
-        # from the control page before priority colors are applied
-        dbr.Mandatory = u'darkred'
-        dbr.Recommended = u'darkblue'
-    dbr.Optional = dummy.GetBackgroundColour()
-    dbr.Disabled = frame.GetBackgroundColour()
-    # Get rid of the dummy text control
-    dummy.Destroy()
-    
-    if project_file:
-        frame.OpenProject(project_file, filename)
-    else:
-        # Change current working directory
-        os.chdir(cwd)
-    
-    if center:
-        # Center the window
-        frame.Center()
-    if maximize:
-        # Maximize the window
-        frame.Maximize()
-    
-    if dias:
-        # Uses custom dialogs
-        frame.cust_dias.Check()
-    
-    # Send the configuration path to Debreate
-    frame.dbdir = dbdir
-    frame.dbconfig = dbconfig
-    
-    frame.Show()
-    debreate_app.MainLoop()
-    
-    # Clean up the logger
-    Logger.OnClose()
+conf_values = {
+    u'center': ReadConfig(u'center'),
+    u'position': ReadConfig(u'position'),
+    u'size': ReadConfig(u'size'),
+    u'maximize': ReadConfig(u'maximize'),
+    u'dialogs': ReadConfig(u'dialogs'),
+    u'workingdir': ReadConfig(u'workingdir'),
+}
 
-
-class FirstRun(wx.Dialog):
-    '''Create the config file on first run or if file has been corrupted'''
-    def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, size=(450,300))
-        
-        # "OK" button sets to True
-        self.OK = False
-        
-        # Set the titlebar icon
-        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG))
-        
-        # Display a message to create a config file
-        self.message = wx.StaticText(self, -1)
-        
-        # Show the Debreate icon
-        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG)
-        icon = wx.StaticBitmap(self, -1, dbicon)
-        
-        # Button to confirm
-        self.button_ok = wx.Button(self, wx.ID_OK)
-        
-        wx.EVT_BUTTON(self.button_ok, -1, self.OnOk)
-        
-        # Nice border
-        self.border = wx.StaticBox(self, -1)
-        border_box = wx.StaticBoxSizer(self.border, wx.HORIZONTAL)
-        border_box.AddSpacer(10)
-        border_box.Add(icon, 0, wx.ALIGN_CENTER)
-        border_box.AddSpacer(10)
-        border_box.Add(self.message, 1, wx.ALIGN_CENTER)
-        
-        # Set Layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
-        
-        self.SetSizer(sizer)
-        self.Layout()
+for V in conf_values:
+    key = V
+    value = conf_values[V]
     
-    def SetMessage(self, message):
-        self.message.SetLabel(message)
-        #self.message.Wrap(00)
+    if value == None:
+        value = GetDefaultConfigValue(key)
     
-    def OnOk(self, event):
-        # See if the config file exists
-        if not os.path.isdir(dbdir):
-            os.mkdir(dbdir)
-        # Run function to create the config file
-        MakeConfig()
-        self.Close()
-        self.OK = True
+    Logger.Debug(__name__, _(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
 
+Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 
-def TestConfig():
-    # need to run first start program
-    firstrun = False
-    
-    # Check for old config file
-    old_config = u'{}/.debreate'.format(dbr.home_path)
-    if os.path.isdir(old_config):
-        Logger.Info(__name__, _(u'Found deprecated configuration, deleting...'))
-        shutil.rmtree(old_config)
-    
-    # Check if config file exists
-    if not os.path.isfile(dbconfig):
-        Logger.Info(__name__, _(u'Config not found, launching "First Run"'))
-        StartFirstRun()
-        return True # Centers the window
+if conf_values[u'center']:
+    Debreate.Center()
+if conf_values[u'dialogs']:
+    Debreate.cust_dias.Check()
+if conf_values[u'maximize']:
+    Debreate.Maximize()
+Debreate.SetWorkingDirectory(conf_values[u'workingdir'])
 
-    # Check if config file in right format
-    else:
-        # Read the config file
-        file = open(dbconfig, u'r')
-        conf = file.read()
-        lines = conf.split(u'\n')
-        file.close()
+debreate_app.SetTopWindow(Debreate)
+Debreate.Show(True)
+debreate_app.MainLoop()
 
-        # Split the lines into categories
-        found = {}
-        for line in lines:
-            if u'=' in line:
-                cat = line.split(u'=')
-                found[cat[0]] = cat[1]
-
-        # Check if categories are right type
-        try:
-            pos = tuple(int(n) for n in found[u'position'].split(u','))
-            size = tuple(int(n) for n in found[u'size'].split(u','))
-            maximize = int(found[u'maximize'])
-            center = int(found[u'center'])
-            dias = int(found[u'dialogs'])
-            cwd = found[u'workingdir']
-            if os.path.isdir(cwd) == False:
-                firstrun = True
-        except:
-            Logger.Info(__name__, _(u'Error found in config file, running first start'))
-            firstrun = True
-        
-        
-        if firstrun:
-            StartFirstRun()
-            return True # Centers the window
-        else:
-            # If everything check out, start Debreate
-            Run(pos, size, maximize, center, dias, cwd)
-
-
-TestConfig()
+sys.exit(0)
