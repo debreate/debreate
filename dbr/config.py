@@ -38,7 +38,7 @@ key_types = {
     u'maximize': GetBoolean,
     u'position': GetIntTuple,
     u'size': GetIntTuple,
-    u'working_dir': unicode,
+    u'workingdir': unicode,
 }
 
 default_config_values = {
@@ -47,20 +47,8 @@ default_config_values = {
     u'maximize': False,
     u'position': (0, 0),
     u'size': (800, 640),
-    u'working_dir': home_path,
+    u'workingdir': home_path,
 }
-
-
-## FIXME: Not used?
-def CheckValueType(key, value):
-    key_type = key_types[key]
-    
-    Logger.Debug(__name__,
-            u'Checking value type \'{}\' against key type \'{}\' for key \'{}\''.format(unicode(type(value)),
-                                                                                        unicode(key_type), key))
-    
-    # This should currently fail because value is a unicode string
-    return type(value) == key_type
 
 
 ## Opens configuration & searches for key
@@ -75,6 +63,10 @@ def ReadConfig(k_name, conf=default_config):
     if not os.path.isfile(conf):
         Logger.Warning(__name__, u'Configuration file does not exist: {}'.format(conf))
         return ConfCode.FILE_NOT_FOUND
+    
+    # Use the string '__test__' for test when app is initialized
+    if k_name == u'__test__':
+        return ConfCode.SUCCESS
     
     # Only read pre-defined keys
     if k_name not in key_types:
