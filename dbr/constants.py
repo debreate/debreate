@@ -139,3 +139,8 @@ Disabled = (246, 246, 245)
 
 ## Location of common licenses installed on the system
 system_licenses_path = u'/usr/share/common-licenses'
+
+
+# *** Default *** #
+DEFAULT_SIZE = (800, 650)
+DEFAULT_POS = (0, 0)
