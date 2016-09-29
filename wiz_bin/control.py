@@ -61,7 +61,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
-            u'all', u'alpha', u'amd64', u'arm', u'armeb', u'armel',
+            u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
             u'armhf', u'avr32', u'hppa', u'i386', u'ia64', u'lpia',
             u'm32r', u'm68k', u'mips', u'mipsel', u'powerpc',
             u'powerpcspe', u'ppc64', u's390', u's390x', u'sh3',
