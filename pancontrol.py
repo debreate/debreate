@@ -54,7 +54,7 @@ class Panel(wx.ScrolledWindow):
         self.email = wx.TextCtrl(self.bg, -1)
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
-        self.arch_opt = (	'all', 'alpha', 'amd64', 'arm', 'armeb', 'armel', 'armhf', 'avr32', 'hppa', 'i386', 'ia64', 'lpia',
+        self.arch_opt = (	'all', 'alpha', 'amd64', 'arm', 'arm64', 'armeb', 'armel', 'armhf', 'avr32', 'hppa', 'i386', 'ia64', 'lpia',
                             'm32r', 'm68k', 'mips', 'mipsel', 'powerpc', 'powerpcspe', 'ppc64', 's390', 's390x', 'sh3', 'sh3eb',
                             'sh4', 'sh4eb', 'sparc', 'sparc64')
         self.arch_txt = wx.StaticText(self.bg, -1, _('Architecture'))
