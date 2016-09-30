@@ -321,7 +321,7 @@ class MainWindow(wx.Frame):
     def OnCheckUpdate(self, event):
         wx.SafeYield()
         current = dbr.GetCurrentVersion()
-        if type (current) == URLError or type(current) == HTTPError:
+        if isinstance(current, URLError) or isinstance(current, HTTPError):
             current = unicode(current)
             wx.MessageDialog(self, current, _(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         elif (current > VERSION):
