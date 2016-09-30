@@ -47,7 +47,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
         
         # ----- Package ( B[m], SB[m] )
         self.pack_txt = wx.StaticText(self.bg, -1, _(u'Package'))
-        self.pack = dbr.CharCtrl(self.bg, -1)
+        self.pack = dbr.CharCtrl(self.bg)
         
         # ----- Version ( B[m], D[m], C[m] )
         self.ver_txt = wx.StaticText(self.bg, -1, _(u'Version'))
