@@ -39,7 +39,6 @@ class CharCtrl(wx.TextCtrl):
     ## Actions to take when key is released
     def OnKeyUp(self, event):
         modifier = event.GetModifiers()
-        keycode = event.GetKeyCode()
         
         char = u''
         insert_index = self.GetInsertionPoint()
