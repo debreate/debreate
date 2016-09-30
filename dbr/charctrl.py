@@ -56,10 +56,6 @@ class CharCtrl(wx.TextCtrl):
             self.SetInsertionPoint(insertion)
             
         
-        if modifier == wx.MOD_SHIFT and char in self.invalid_chars:
+        if char in self.invalid_chars:
             ReplaceChar()
-        elif char in self.invalid_chars:
-            ReplaceChar()
-        else:
-            pass
         event.Skip()
