@@ -21,8 +21,8 @@ class AboutDialog(wx.Dialog):
     #        Window id (FIXME: Not necessary)
     #  \param title
     #        Text to be shown in the title bar
-    def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, size=(400,375))
+    def __init__(self, parent):
+        wx.Dialog.__init__(self, parent, wx.ID_ABOUT, _(u'About'), size=(400,375))
         
         # Font for the name
         bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
