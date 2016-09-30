@@ -14,10 +14,8 @@ class MD5():
 #        if executable == "true":
 #        executable = stat.S_IXUSR & os.stat(file)[stat.ST_MODE]  #python version
         executable = os.access(file, os.X_OK) #another python version
-        if executable:
-            return True
-        else:
-            return False
+        
+        return bool(executable)
     
     def WriteMd5(self, builddir, tempdir):
         tempdir = tempdir.encode(u'utf-8')
