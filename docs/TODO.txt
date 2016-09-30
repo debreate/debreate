@@ -1,6 +1,6 @@
 0.8.0 Release Changes:
-- Change format of save projects to zip archive
 - Fix & re-enable QuickBuild
+- Enable opening of zip formatted projects
 - Add functionality for opening legacy project files
 - Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
 - Create manpage
