@@ -19,7 +19,7 @@ db_here = PathOnly(__file__).decode(u'utf-8')
 # FIXME: This should be import from dbr.functions
 def TextIsEmpty(text):
     text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
-    return (text == u'')
+    return text == u''
 
 
 ## Dialog shown when Debreate is run for first time
@@ -89,7 +89,7 @@ class OutputLog(wx.TextCtrl):
         self.AppendText(string)
     
     def ToggleOutput(self, event=None):
-        if (sys.stdout == self):
+        if sys.stdout == self:
             sys.stdout = self.stdout
             sys.stderr = self.stderr
         else:
@@ -175,12 +175,12 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
             raise ValueError(GT(u'Too many files'))
         text = open(filenames[0]).read()
         try:
-            if (not TextIsEmpty(self.obj.GetValue())):
+            if not TextIsEmpty(self.obj.GetValue()):
                 overwrite = OverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
                 id = overwrite.ShowModal()
-                if (id == ID_OVERWRITE):
+                if id == ID_OVERWRITE:
                     self.obj.SetValue(text)
-                elif (id == ID_APPEND):
+                elif id == ID_APPEND:
                     self.obj.SetInsertionPoint(-1)
                     self.obj.WriteText(text)
             else:
