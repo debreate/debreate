@@ -273,7 +273,7 @@ class AboutDialog(wx.Dialog):
             log_data.close()
         
         else:
-            log_text = u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG)
+            log_text = _(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
         
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
@@ -299,7 +299,7 @@ class AboutDialog(wx.Dialog):
             lic_data.close()
         
         else:
-            lic_text = u'ERROR:\n\t\'{}\' not found'.format(license_path)
+            lic_text = _(u'ERROR:\n\tLicense \'{}\' not found'.format(license_path))
             lic_text += u'\n\nCopyright © {} {}'.format(dbr.GetYear(), dbr.AUTHOR)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         
