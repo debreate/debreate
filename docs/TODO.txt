@@ -2,12 +2,11 @@
 - Fix & re-enable QuickBuild
 - Enable opening of zip formatted projects
 - Add functionality for opening legacy project files
-- Make options for different project compression formats (gzip, bzip2, xz, uncompressed)
-- Create manpage
 - Only install *.mo locale files
 - Add Launchpad packages for 'yakkety'
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
+- Update gettext locales
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -16,6 +15,7 @@
 - Finish Doxygen documentation
 - Compile gettext locales at build time
 - Install *.mo files to system locale directory
+- Create manpage
 
 Unknown Release:
 - Detailed documentation on files page
