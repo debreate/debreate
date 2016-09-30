@@ -19,7 +19,7 @@ db_here = PathOnly(__file__).decode(u'utf-8')
 # FIXME: This should be import from dbr.functions
 def TextIsEmpty(text):
     text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
-    return (text == u'')
+    return text == u''
 
 
 ## Dialog shown when Debreate is run for first time
@@ -89,7 +89,7 @@ class OutputLog(wx.TextCtrl):
         self.AppendText(string)
     
     def ToggleOutput(self, event=None):
-        if (sys.stdout == self):
+        if sys.stdout == self:
             sys.stdout = self.stdout
             sys.stderr = self.stderr
         else:
@@ -175,12 +175,12 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
             raise ValueError(GT(u'Too many files'))
         text = open(filenames[0]).read()
         try:
-            if (not TextIsEmpty(self.obj.GetValue())):
+            if not TextIsEmpty(self.obj.GetValue()):
                 overwrite = OverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
                 id = overwrite.ShowModal()
-                if (id == ID_OVERWRITE):
+                if id == ID_OVERWRITE:
                     self.obj.SetValue(text)
-                elif (id == ID_APPEND):
+                elif id == ID_APPEND:
                     self.obj.SetInsertionPoint(-1)
                     self.obj.WriteText(text)
             else:
@@ -767,23 +767,14 @@ class SaveFile(DBDialog):
             dest_path = os.path.split(self.dir_tree.GetPath())[0]
         
         if id in save_ids:
-            good_filename = True # Continue if the filename is okay
             filename = self.TextCtrl.GetValue()
             bad_filename_dia = wx.MessageDialog(self, _(u'Bad File Name'), _(u'Error'), wx.OK|wx.ICON_ERROR)
             # Check to see that the input value isn't empty
 #            if self.TextCtrl.GetValue() == wx.EmptyString:
-            if filename == wx.EmptyString or filename[0] in self.invalid_first_char:
-                good_filename = False
+            if filename == wx.EmptyString or filename[0] in self.invalid_first_char or [i for i in list(filename) if i in self.invalid_char]:
                 bad_filename_dia.ShowModal()
                 #dia.Destroy()
-            
-            if good_filename:
-                for char in filename:
-                    if char in self.invalid_char:
-                        good_filename = False
-                        bad_filename_dia.ShowModal()
-            
-            if good_filename:
+            else:
                 # If a default file extension is set add it to the filename
                 if self.defaultExtension:
                     if self.TextCtrl.GetValue().split(u'.')[-1] != self.defaultExtension:
@@ -792,21 +783,21 @@ class SaveFile(DBDialog):
                 savefile = u'{}/{}'.format(dest_path, self.TextCtrl.GetValue())
                 
                 # If everything checks out OK run this function
-                def SaveIt():
+                
+                save_file = True
+                if os.path.exists(savefile):
+                    warn = wx.MessageDialog(self, _(u'Overwrite File?'), _(u'File Exists'), wx.YES_NO|wx.NO_DEFAULT)
+                    if warn.ShowModal() == wx.ID_NO:
+                        save_file = False
+                    warn.Destroy()
+                
+                if save_file:
                     if os.path.isdir(dest_path):
                         os.chdir(dest_path)
                     else:
                         os.chdir(os.path.split(dest_path)[0])
                     self.value = True
                     self.Close()
-                
-                if os.path.exists(savefile):
-                    warn = wx.MessageDialog(self, _(u'Overwrite File?'), _(u'File Exists'), wx.YES_NO|wx.NO_DEFAULT)
-                    if warn.ShowModal() == wx.ID_YES:
-                        SaveIt()
-                    warn.Destroy()
-                else:
-                    SaveIt()
         elif id in cancel_ids:
             self.Close()
         event.Skip()
