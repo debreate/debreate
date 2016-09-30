@@ -495,7 +495,7 @@ class MainWindow(wx.Frame):
         about.AddPackager(u'Jordan Irwin', u'antumdeluge@gmail.com')
         
         about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
-        about.AddTranslator(u'Jordan Irwin', u'antumdeluge@gmail.com', u'es')
+        about.AddTranslator(u'Jordan Irwin', u'antumdeluge@gmail.com', u'es, it')
         about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
         about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
