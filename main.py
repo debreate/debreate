@@ -491,10 +491,13 @@ class MainWindow(wx.Frame):
         about.SetDescription(_(u'A package builder for Debian based systems'))
         
         about.AddDeveloper(u'Jordan Irwin', u'antumdeluge@gmail.com')
+        
         about.AddPackager(u'Jordan Irwin', u'antumdeluge@gmail.com')
-        about.AddTranslator(_(u'Karim Oulad Chalha'), u'herr.linux88@gmail.com', u'ar_MA', )
-        about.AddTranslator(_(u'Jordan Irwin'), u'antumdeluge@gmail.com', u'es')
-        about.AddTranslator(_(u'Philippe Dalet'), u'philippe.dalet@ac-toulouse.fr', u'fr_FR')
+        
+        about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
+        about.AddTranslator(u'Jordan Irwin', u'antumdeluge@gmail.com', u'es')
+        about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
+        about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
         about.SetChangelog()
         
