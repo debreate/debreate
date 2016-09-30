@@ -483,7 +483,7 @@ class MainWindow(wx.Frame):
     
     def OnAbout(self, event):
         '''Opens a dialog box with information about the program'''
-        about = dbr.AboutDialog(self, -1, _(u'About'))
+        about = dbr.AboutDialog(self)
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(dbr.application_path))
         about.SetVersion(VERSION_STRING)
