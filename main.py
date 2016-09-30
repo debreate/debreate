@@ -521,17 +521,13 @@ class MainWindow(wx.Frame):
     
     def IsSaved(self):
         title = self.GetTitle()
-        if title[-1] == u'*':
-            return False
-        else:
-            return True
+        
+        return bool(title[-1] == "*")
     
     def IsNewProject(self):
         title = self.GetTitle()
-        if title == default_title:
-            return True
-        else:
-            return False
+        
+        return bool(title == self.default_title)
     
     def SetSavedStatus(self, status):
         if status: # If status is changing to unsaved this is True
