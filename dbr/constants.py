@@ -88,7 +88,7 @@ ID_ZIP_BZ2 = wx.NewId()
 ID_ZIP_XZ = wx.NewId()
 
 compression_formats = {
-    ID_ZIP_NONE: None,
+    ID_ZIP_NONE: u'None',
     ID_ZIP_GZ: u'gz',
     ID_ZIP_BZ2: u'bz2',
     ID_ZIP_XZ: u'xz',

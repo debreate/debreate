@@ -12,8 +12,8 @@ from urllib2 import urlopen, URLError
 # Local modules
 import dbr
 from dbr.constants import \
-    HOMEPAGE, PY_VER_STRING, system_licenses_path
-
+    HOMEPAGE, PY_VER_STRING, system_licenses_path, compression_formats
+# FIXME: Can't import Logger
 
 ## Get the current version of the application
 #  
@@ -416,3 +416,13 @@ def IsBoolean(value):
 
 def IsIntTuple(value):
     return GetIntTuple(value) != None
+
+def GetCompressionId(z_value):
+    for z_id in compression_formats:
+        if z_value == compression_formats[z_id]:
+            return z_id
+    
+    # FIXME: Can't import Logger
+    #Logger.Debug(__name__, _(u'Compression ID not found for "{}" value'.format(z_value)))
+    
+    return None

@@ -460,6 +460,7 @@ class MainWindow(wx.Frame):
             
             WriteConfig(u'workingdir', os.getcwd())
             WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+            WriteConfig(u'compression', self.GetCompression())
             
             self.Destroy()
         
@@ -601,12 +602,7 @@ class MainWindow(wx.Frame):
                 print(u'File list: {}'.format(file_list))
             
             
-            z_format = None
-            
-            for Z in self.menu_compression.GetMenuItems():
-                Z_ID = Z.GetId()
-                if self.menu_compression.IsChecked(Z_ID):
-                    z_format = compression_formats[Z_ID]
+            z_format = self.GetCompression()
             
             # Uncompressed tarball
             if not z_format:
@@ -638,7 +634,38 @@ class MainWindow(wx.Frame):
             
         
         return 0
+    
+    
+    def GetCompression(self):
+        for Z in self.menu_compression.GetMenuItems():
+            Z_ID = Z.GetId()
+            if self.menu_compression.IsChecked(Z_ID):
+                return compression_formats[Z_ID]
         
+        default_compression = GetDefaultConfigValue(u'compression')
+        
+        Logger.Debug(__name__,
+                _(u'Setting compression to default value: {}'.format(default_compression)))
+        
+        return default_compression
+    
+    
+    def SetCompression(self, compression_id):
+        for Z in self.menu_compression.GetMenuItems():
+            Z_ID = Z.GetId()
+            
+            if compression_id == Z_ID:
+                Z.Check()
+                
+                Logger.Debug(__name__,
+                        _(u'Project compression set to "{}"'.format(compression_formats[Z_ID])))
+                
+                return
+        
+        Logger.Warning(__name__,
+                _(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
+            
+    
     
     def OnSaveProjectDeprecated(self, event):
         EVENT_ID = event.GetId()
