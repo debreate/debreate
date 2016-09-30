@@ -10,7 +10,7 @@ import wx, os
 
 # Local modules
 from dbr import Logger
-from dbr.constants import home_path
+from dbr.constants import home_path, compression_formats, ID_ZIP_BZ2
 from dbr.functions import TextIsEmpty, GetBoolean, GetInteger, GetIntTuple
 
 
@@ -39,6 +39,7 @@ key_types = {
     u'position': GetIntTuple,
     u'size': GetIntTuple,
     u'workingdir': unicode,
+    u'compression': unicode,
 }
 
 default_config_values = {
@@ -48,6 +49,7 @@ default_config_values = {
     u'position': (0, 0),
     u'size': (800, 640),
     u'workingdir': home_path,
+    u'compression': compression_formats[ID_ZIP_BZ2],
 }
 
 
