@@ -34,38 +34,38 @@ class AboutDialog(wx.Dialog):
         #tabs.SetBackgroundColour((50,50,50,50))
         
         # Pages
-        about = wx.Panel(tabs, -1)
+        t_about = wx.Panel(tabs, -1)
         #about.SetBackgroundColour((0,0,0,0))
-        credits = wx.Panel(tabs, -1)
-        changelog = wx.Panel(tabs, -1)
-        license = wx.Panel(tabs, -1)
+        t_credits = wx.Panel(tabs, -1)
+        t_changelog = wx.Panel(tabs, -1)
+        t_license = wx.Panel(tabs, -1)
         
         # Add pages to tabbed interface
-        tabs.AddPage(about, _(u'About'))
-        tabs.AddPage(credits, _(u'Credits'))
-        tabs.AddPage(changelog, _(u'Changelog'))
-        tabs.AddPage(license, _(u'License'))
+        tabs.AddPage(t_about, _(u'About'))
+        tabs.AddPage(t_credits, _(u'Credits'))
+        tabs.AddPage(t_changelog, _(u'Changelog'))
+        tabs.AddPage(t_license, _(u'License'))
         
         ## Application logo
-        self.graphic = wx.StaticBitmap(about)
+        self.graphic = wx.StaticBitmap(t_about)
         
         ## Name & version of the application
-        self.app = wx.StaticText(about, -1)
+        self.app = wx.StaticText(t_about)
         self.app.SetFont(bigfont)
         
         ## Application author
-        self.author = wx.StaticText(about)
+        self.author = wx.StaticText(t_about)
         
         ## Application's homepage
-        self.website = wx.HyperlinkCtrl(about, -1,
+        self.website = wx.HyperlinkCtrl(t_about, -1,
                 u'debreate.sourceforge.net', u'http://debreate.sourceforge.net/')
         
         ## Application's secondary homepage
-        self.website2 = wx.HyperlinkCtrl(about, -1,
+        self.website2 = wx.HyperlinkCtrl(t_about, -1,
                 u'github.com/AntumDeluge/debreate', u'https://github.com/AntumDeluge/debreate')
         
         ## Short description
-        self.description = wx.StaticText(about, -1)
+        self.description = wx.StaticText(t_about, -1)
         
         link_sizer = wx.BoxSizer(wx.VERTICAL)
         link_sizer.Add(self.website, 0, wx.ALIGN_CENTER, 10)
@@ -80,47 +80,46 @@ class AboutDialog(wx.Dialog):
             (self.description, 0, wx.ALIGN_CENTER|wx.ALL, 10)
             ] )
         
-        about.SetAutoLayout(True)
-        about.SetSizer(about_sizer)
-        about.Layout()
+        t_about.SetAutoLayout(True)
+        t_about.SetSizer(about_sizer)
+        t_about.Layout()
         
         ## List of credits
-        self.credits = wx.ListCtrl(credits, -1, style=wx.LC_REPORT)
+        self.credits = wx.ListCtrl(t_credits, -1, style=wx.LC_REPORT)
         self.credits.InsertColumn(0, _(u'Name'), width=100)
         self.credits.InsertColumn(1, _(u'Job'), width=100)
         self.credits.InsertColumn(2, _(u'Email'), width=200)
-        #self.credits.SetBackgroundColour((0,0,0,0))
         
         credits_sizer = wx.BoxSizer(wx.VERTICAL)
         credits_sizer.Add(self.credits, 1, wx.EXPAND)
         
-        credits.SetAutoLayout(True)
-        credits.SetSizer(credits_sizer)
-        credits.Layout()
+        t_credits.SetAutoLayout(True)
+        t_credits.SetSizer(credits_sizer)
+        t_credits.Layout()
         
         # Keep users from resizing columns
         #wx.EVT_LIST_COL_BEGIN_DRAG(self.credits, wx.ID_ANY, self.NoResizeCol)
         
         ## Changelog text area
-        self.changelog = wx.TextCtrl(changelog, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.changelog = wx.TextCtrl(t_changelog, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.changelog.SetFont(dbr.font.MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
         log_sizer.Add(self.changelog, 1, wx.EXPAND)
         
-        changelog.SetSizer(log_sizer)
-        changelog.Layout()
+        t_changelog.SetSizer(log_sizer)
+        t_changelog.Layout()
         
         
         ## Licensing information text area
-        self.license = wx.TextCtrl(license, -1, style=wx.TE_READONLY|wx.TE_MULTILINE)
+        self.license = wx.TextCtrl(t_license, -1, style=wx.TE_READONLY|wx.TE_MULTILINE)
         self.license.SetFont(dbr.font.MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)
         license_sizer.Add(self.license, 1, wx.EXPAND)
         
-        license.SetSizer(license_sizer)
-        license.Layout()
+        t_license.SetSizer(license_sizer)
+        t_license.Layout()
         
         
         # System info
@@ -206,7 +205,6 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, _(u'Developer'))
-        #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
     ## Adds a packager to the list of credits
     #  
@@ -219,7 +217,6 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, _(u'Packager'))
-        #self.credits.SetItemTextColour(next_item, (255,255,255,255))
     
     ## Adds a translator to the list of credits
     #  
