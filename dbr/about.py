@@ -291,15 +291,15 @@ class AboutDialog(wx.Dialog):
         #   to reflect installed path.
         #  
         #  NOTE: Original value: u'{}/docs/LICENSE.txt'.format(dbr.application_path)
-        LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)
+        license_path = u'{}/docs/LICENSE.txt'.format(dbr.application_path)
         
-        if os.path.isfile(LICENSE):
-            lic_data = open(LICENSE)
+        if os.path.isfile(license_path):
+            lic_data = open(license_path)
             lic_text = lic_data.read()
             lic_data.close()
         
         else:
-            lic_text = u'ERROR:\n\t\'{}\' not found'.format(LICENSE)
+            lic_text = u'ERROR:\n\t\'{}\' not found'.format(license_path)
             lic_text += u'\n\nCopyright © {} {}'.format(dbr.GetYear(), dbr.AUTHOR)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         
