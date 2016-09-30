@@ -35,6 +35,7 @@ from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
 from dbr.custom import FirstRun
 from main import MainWindow
 import dbr.command_line as CL
+from dbr.functions import GetCompressionId
 
 
 script_name = os.path.basename(__file__)
@@ -90,6 +91,7 @@ conf_values = {
     u'maximize': ReadConfig(u'maximize'),
     u'dialogs': ReadConfig(u'dialogs'),
     u'workingdir': ReadConfig(u'workingdir'),
+    u'compression': ReadConfig(u'compression'),
 }
 
 for V in conf_values:
@@ -110,6 +112,7 @@ if conf_values[u'dialogs']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 Debreate.SetWorkingDirectory(conf_values[u'workingdir'])
+Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
 
 debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
