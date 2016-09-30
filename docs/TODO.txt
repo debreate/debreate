@@ -7,6 +7,7 @@
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
+- Create 'stable' branch
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
