@@ -7,7 +7,7 @@
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
-- Create 'stable' branch
+- Use names 'master', 'unstable' & 'stable' for main Git branches
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -26,6 +26,13 @@ Unknown Release:
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
 - Allow making multiple .desktop menus
-- Use names 'master', 'unstable' & 'stable' for main Git branches
 - Create scripts for updating locales
 - Omit scripts directory in gettext search
+
+Tasks being considered:
+- Scripting backend
+- Plugin support for adding custom pages to wizard
+- Include ar (BSD variant) as alternative to dpkg
+- Utilize multiple build methods
+- Compile source to Python bytecode (.pyc) after install
+- Replace Makefile with CMake build system
