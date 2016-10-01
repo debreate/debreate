@@ -22,8 +22,12 @@ class AboutDialog(wx.Dialog):
     #        Window id (FIXME: Not necessary)
     #  \param title
     #        Text to be shown in the title bar
-    def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, wx.ID_ABOUT, GT(u'About'), size=(400,375))
+    def __init__(self, parent, size=(600,558)):
+        wx.Dialog.__init__(self, parent, wx.ID_ABOUT, GT(u'About'), size=size,
+                           style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        
+        self.SetMinSize(wx.Size(400, 375))
+        self.CenterOnParent()
         
         # Font for the name
         bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
@@ -87,9 +91,9 @@ class AboutDialog(wx.Dialog):
         
         ## List of credits
         self.credits = wx.ListCtrl(t_credits, -1, style=wx.LC_REPORT)
-        self.credits.InsertColumn(0, GT(u'Name'), width=100)
-        self.credits.InsertColumn(1, GT(u'Job'), width=100)
-        self.credits.InsertColumn(2, GT(u'Email'), width=200)
+        self.credits.InsertColumn(0, GT(u'Name'), width=200)
+        self.credits.InsertColumn(1, GT(u'Job'), width=150)
+        self.credits.InsertColumn(2, GT(u'Email'), width=240)
         
         credits_sizer = wx.BoxSizer(wx.VERTICAL)
         credits_sizer.Add(self.credits, 1, wx.EXPAND)
