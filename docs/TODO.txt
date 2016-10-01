@@ -1,4 +1,4 @@
-0.8.0 Release Changes:
+﻿0.8.0 Release Changes:
 - Fix & re-enable QuickBuild
 - Enable opening of zip formatted projects
 - Add functionality for opening legacy project files
@@ -17,6 +17,7 @@
 - Compile gettext locales at build time
 - Install *.mo files to system locale directory
 - Create manpage
+- Finish help dialog
 
 Unknown Release:
 - Detailed documentation on files page
@@ -28,6 +29,7 @@ Unknown Release:
 - Allow making multiple .desktop menus
 - Create scripts for updating locales
 - Omit scripts directory in gettext search
+- Create FreeBSD Port
 
 Tasks being considered:
 - Scripting backend
