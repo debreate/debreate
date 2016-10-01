@@ -6,6 +6,7 @@
 import wx, os
 
 import dbr
+from dbr.language import GT
 from dbr.constants import ID_CONTROL, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE
 from dbr import DebugEnabled
 from dbr.wizard import WizardPage
@@ -13,7 +14,7 @@ from dbr.wizard import WizardPage
 
 class Panel(wx.ScrolledWindow, WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=_(u'Control'))
+        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
         WizardPage.__init__(self)
         
         self.wizard = parent
@@ -46,17 +47,17 @@ class Panel(wx.ScrolledWindow, WizardPage):
         #      [r]- recommended
         
         # ----- Package ( B[m], SB[m] )
-        self.pack_txt = wx.StaticText(self.bg, -1, _(u'Package'))
+        self.pack_txt = wx.StaticText(self.bg, -1, GT(u'Package'))
         self.pack = dbr.CharCtrl(self.bg)
         
         # ----- Version ( B[m], D[m], C[m] )
-        self.ver_txt = wx.StaticText(self.bg, -1, _(u'Version'))
+        self.ver_txt = wx.StaticText(self.bg, -1, GT(u'Version'))
         self.ver = dbr.CharCtrl(self.bg)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
-        self.auth_txt = wx.StaticText(self.bg, -1, _(u'Maintainer'))
+        self.auth_txt = wx.StaticText(self.bg, -1, GT(u'Maintainer'))
         self.auth = wx.TextCtrl(self.bg, -1)
-        self.email_txt = wx.StaticText(self.bg, -1, _(u'Email'))
+        self.email_txt = wx.StaticText(self.bg, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self.bg, -1)
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
@@ -66,7 +67,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
             u'm32r', u'm68k', u'mips', u'mipsel', u'powerpc',
             u'powerpcspe', u'ppc64', u's390', u's390x', u'sh3',
             u'sh3eb', u'sh4', u'sh4eb', u'sparc', u'sparc64')
-        self.arch_txt = wx.StaticText(self.bg, -1, _(u'Architecture'))
+        self.arch_txt = wx.StaticText(self.bg, -1, GT(u'Architecture'))
         self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
         
         # ***** Recommended Group ***** #
@@ -77,33 +78,33 @@ class Panel(wx.ScrolledWindow, WizardPage):
             u'lisp', u'localization', u'mail', u'math', u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
             u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
             u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
-        self.sect_txt = wx.StaticText(self.bg, -1, _(u'Section'))
+        self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
         #self.sect = db.Combo(self.bg, -1, choices=self.sect_opt)
         self.sect = wx.ComboBox(self.bg, -1, choices=self.sect_opt)
         
         # ----- Priority ( B[r], S[r], SB[r] )
         self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
-        self.prior_txt = wx.StaticText(self.bg, -1, _(u'Priority'))
+        self.prior_txt = wx.StaticText(self.bg, -1, GT(u'Priority'))
         self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
         
         # ----- Description ( B[m], SB[m], C[m] )
-        self.syn_txt = wx.StaticText(self.bg, -1, _(u'Short Description'))
+        self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
         self.syn = wx.TextCtrl(self.bg)
-        self.desc_txt = wx.StaticText(self.bg, -1, _(u'Long Description'))
+        self.desc_txt = wx.StaticText(self.bg, -1, GT(u'Long Description'))
         self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
         
         # ***** Optional Group ***** #
         # ----- Source ( B, S[m], D[m], C[m] )
-        self.src_txt = wx.StaticText(self.bg, -1, _(u'Source'))
+        self.src_txt = wx.StaticText(self.bg, -1, GT(u'Source'))
         self.src = wx.TextCtrl(self.bg, -1)
         
         # ----- Homepage ( B, S, SB, D )
-        self.url_txt = wx.StaticText(self.bg, -1, _(u'Homepage'))
+        self.url_txt = wx.StaticText(self.bg, -1, GT(u'Homepage'))
         self.url = wx.TextCtrl(self.bg)
         
         # ----- Essential ( B, SB )
         self.ess_opt = (u'yes', u'no')
-        self.ess_txt = wx.StaticText(self.bg, -1, _(u'Essential'))
+        self.ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'))
         self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
         self.ess.SetSelection(1)
         
@@ -161,7 +162,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
             ])
         
         # Border box
-        self.border_info = wx.StaticBox(self.bg, -1, _(u'Required'))
+        self.border_info = wx.StaticBox(self.bg, -1, GT(u'Required'))
         bbox_info = wx.StaticBoxSizer(self.border_info, wx.VERTICAL)
         bbox_info.Add(self.box_info, 0, wx.EXPAND)
         
@@ -175,7 +176,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
         r_temp.AddSpacer(5)
         r_temp.AddMany([ (self.sect_txt), (self.sect, 0, wx.EXPAND), (self.prior_txt), (self.prior) ])
         # Border box
-        self.border_description = wx.StaticBox(self.bg, -1, _(u'Recommended'))
+        self.border_description = wx.StaticBox(self.bg, -1, GT(u'Recommended'))
         bbox_description = wx.StaticBoxSizer(self.border_description, wx.VERTICAL)
         bbox_description.AddSpacer(5)
         bbox_description.Add(r_temp, 0, wx.EXPAND)
@@ -203,7 +204,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
             ])
 
         # Border box
-        self.border_author = wx.StaticBox(self.bg, -1, _(u'Optional'))
+        self.border_author = wx.StaticBox(self.bg, -1, GT(u'Optional'))
         bbox_author = wx.StaticBoxSizer(self.border_author, wx.VERTICAL)
         bbox_author.Add(b_temp, 0, wx.EXPAND)
         
@@ -302,7 +303,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, _(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+            dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
         
@@ -324,7 +325,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
         
         # Open a "Save Dialog"
         if self.debreate.cust_dias.IsChecked():
-            dia = dbr.SaveFile(self, _(u'Save Control Information'))
+            dia = dbr.SaveFile(self, GT(u'Save Control Information'))
             dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
@@ -346,7 +347,7 @@ class Panel(wx.ScrolledWindow, WizardPage):
         # Show a preview of the control file
         control = self.GetCtrlInfo()
         
-        dia = wx.Dialog(self, -1, _(u'Preview'), size=(500,400))
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
         preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         preview.SetValue(control)
         
