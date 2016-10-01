@@ -29,6 +29,7 @@ debreate_app = wx.App()
 
 # Local modules
 from dbr import Logger
+from dbr.language import GT
 from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     default_config, GetDefaultConfigValue
@@ -76,7 +77,7 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     init_conf_code = InitializeConfig()
     Logger.Debug(__name__, init_conf_code == ConfCode.SUCCESS)
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        Logger.Error(__name__, _(u'Could not create configuration, exiting ...'))
+        Logger.Error(__name__, GT(u'Could not create configuration, exiting ...'))
         exit_now = init_conf_code
     
 
@@ -101,7 +102,7 @@ for V in conf_values:
     if value == None:
         value = GetDefaultConfigValue(key)
     
-    Logger.Debug(__name__, _(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
+    Logger.Debug(__name__, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
 
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 

@@ -5,7 +5,7 @@
 import wx
 
 # Local imports
-from dbr import GT
+from dbr.language import GT
 from dbr.constants import ID_GREETING
 
 
