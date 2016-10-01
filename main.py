@@ -491,12 +491,12 @@ class MainWindow(wx.Frame):
         about.SetAuthor(u'Jordan Irwin')
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         
-        about.AddDeveloper(u'Jordan Irwin', u'antumdeluge@gmail.com')
+        about.AddDeveloper(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com')
         
-        about.AddPackager(u'Jordan Irwin', u'antumdeluge@gmail.com')
+        about.AddPackager(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com')
         
         about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
-        about.AddTranslator(u'Jordan Irwin', u'antumdeluge@gmail.com', u'es, it')
+        about.AddTranslator(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com', u'es, it')
         about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
         about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
