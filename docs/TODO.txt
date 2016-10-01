@@ -26,3 +26,6 @@ Unknown Release:
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
 - Allow making multiple .desktop menus
+- Use names 'master', 'unstable' & 'stable' for main Git branches
+- Create scripts for updating locales
+- Omit scripts directory in gettext search
