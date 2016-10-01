@@ -423,6 +423,6 @@ def GetCompressionId(z_value):
             return z_id
     
     # FIXME: Can't import Logger
-    #Logger.Debug(__name__, _(u'Compression ID not found for "{}" value'.format(z_value)))
+    #Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
     
     return None

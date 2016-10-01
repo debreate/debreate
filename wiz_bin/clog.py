@@ -6,6 +6,7 @@ import wx, commands
 
 # Local imports
 import dbr
+from dbr.language import GT
 from dbr.constants import ID_CHANGELOG
 from dbr.functions import TextIsEmpty
 from dbr.wizard import WizardPage
@@ -13,23 +14,23 @@ from dbr.wizard import WizardPage
 
 class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_CHANGELOG, name=_(u'Changelog'))
+        wx.Panel.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
         WizardPage.__init__(self)
         
         self.parent = parent.parent # MainWindow
         
-        self.package_text = wx.StaticText(self, -1, _(u'Package'))
+        self.package_text = wx.StaticText(self, -1, GT(u'Package'))
         self.package = wx.TextCtrl(self)
-        self.version_text = wx.StaticText(self, -1, _(u'Version'))
+        self.version_text = wx.StaticText(self, -1, GT(u'Version'))
         self.version = wx.TextCtrl(self)
-        self.distribution_text = wx.StaticText(self, -1, _(u'Distribution'))
+        self.distribution_text = wx.StaticText(self, -1, GT(u'Distribution'))
         self.distribution = wx.TextCtrl(self)
-        self.urgency_text = wx.StaticText(self, -1, _(u'Urgency'))
+        self.urgency_text = wx.StaticText(self, -1, GT(u'Urgency'))
         self.urgency_opt = (u'low', u'HIGH')
         self.urgency = wx.Choice(self, choices=self.urgency_opt)
-        self.maintainer_text = wx.StaticText(self, -1, _(u'Maintainer'))
+        self.maintainer_text = wx.StaticText(self, -1, GT(u'Maintainer'))
         self.maintainer = wx.TextCtrl(self)
-        self.email_text = wx.StaticText(self, -1, _(u'Email'))
+        self.email_text = wx.StaticText(self, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self)
         
         info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
@@ -48,7 +49,7 @@ class Panel(wx.Panel, WizardPage):
         # *** CHANGES DETAILS
         self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE)
         
-        self.border_changes = wx.StaticBox(self, -1, _(u'Changes'), size=(20,20))
+        self.border_changes = wx.StaticBox(self, -1, GT(u'Changes'), size=(20,20))
         changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
         changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
@@ -61,7 +62,7 @@ class Panel(wx.Panel, WizardPage):
         dest_custom_sizer.Add(self.rb_dest_custom)
         dest_custom_sizer.Add(self.dest_custom, 1)
         
-        border_dest = wx.StaticBox(self, -1, _(u'Target'))
+        border_dest = wx.StaticBox(self, -1, GT(u'Target'))
         dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
         dest_box.AddSpacer(5)
         dest_box.Add(self.rb_dest_default)
@@ -75,7 +76,7 @@ class Panel(wx.Panel, WizardPage):
         
         
         self.button_import = dbr.ButtonImport(self)
-        self.button_import.SetToolTip(wx.ToolTip(_(u'Import information from Control section')))
+        self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control section')))
         self.button_add = dbr.ButtonAdd(self)
         
         wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)

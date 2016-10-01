@@ -10,6 +10,7 @@ import wx, os
 
 # Local modules
 from dbr import Logger
+from dbr.language import GT
 from dbr.constants import home_path, compression_formats, ID_ZIP_BZ2
 from dbr.functions import TextIsEmpty, GetBoolean, GetInteger, GetIntTuple
 
@@ -60,7 +61,7 @@ default_config_values = {
 #  \return
 #        Value of key if found, otherwise ConfCode
 def ReadConfig(k_name, conf=default_config):
-    Logger.Debug(__name__, _(u'Reading configuration file: {}'.format(conf)))
+    Logger.Debug(__name__, GT(u'Reading configuration file: {}'.format(conf)))
     
     if not os.path.isfile(conf):
         Logger.Warning(__name__, u'Configuration file does not exist: {}'.format(conf))

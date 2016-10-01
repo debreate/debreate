@@ -6,6 +6,7 @@ import wx, os
 
 # Local imports
 import dbr.font
+from dbr.language import GT
 from dbr.constants import ID_COPYRIGHT
 from dbr.functions import TextIsEmpty
 from dbr.wizard import WizardPage
@@ -17,7 +18,7 @@ copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
 
 class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):  # FIXME: ID unused
-        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=_(u'Copyright'))
+        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
         WizardPage.__init__(self)
         
         self.debreate = parent.parent
@@ -43,8 +44,8 @@ class Panel(wx.Panel, WizardPage):
         
         wx.EVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
         
-        template_btn = wx.Button(self, -1, _(u'Generate Template'))
-        self.template_btn_simple = wx.Button(self, -1, _(u'Generate Linked Template'))
+        template_btn = wx.Button(self, -1, GT(u'Generate Template'))
+        self.template_btn_simple = wx.Button(self, -1, GT(u'Generate Linked Template'))
         
         self.OnSelectTemplate(self.lic_choices)
                 
@@ -57,7 +58,7 @@ class Panel(wx.Panel, WizardPage):
         
         sizer_V1 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_V1.Add(
-            wx.StaticText(self, -1, _(u'Available Templates')),
+            wx.StaticText(self, -1, GT(u'Available Templates')),
             0,
             wx.TOP|wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER,
             5
@@ -183,7 +184,7 @@ class Panel(wx.Panel, WizardPage):
         empty = self.cp_display.IsEmpty()
         
         if not empty:
-            if wx.MessageDialog(self.debreate, _(u'This will destroy all license text. Do you want to continue?'), _(u'Warning'),
+            if wx.MessageDialog(self.debreate, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
                 return 0
         

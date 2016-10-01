@@ -8,31 +8,32 @@ import wx, os, shutil
 
 # Local imports
 import dbr
+from dbr.language import GT
 from dbr.constants import ID_MENU
 from dbr.wizard import WizardPage
 
 
 class Panel(wx.Panel, WizardPage):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_MENU, name=_(u'Menu Launcher'))
+        wx.Panel.__init__(self, parent, ID_MENU, name=GT(u'Menu Launcher'))
         WizardPage.__init__(self)
         
         # Allows executing parent methods
         self.parent = parent
         
         # --- Tool Tips --- #
-        DF_tip = wx.ToolTip(_(u'Open launcher file'))
-        icon_tip = wx.ToolTip(_(u'Icon to be displayed for the launcher'))
-        m_name_tip = wx.ToolTip(_(u'Text for the launcher'))
+        DF_tip = wx.ToolTip(GT(u'Open launcher file'))
+        icon_tip = wx.ToolTip(GT(u'Icon to be displayed for the launcher'))
+        m_name_tip = wx.ToolTip(GT(u'Text for the launcher'))
         #m_ver_tip = wx.ToolTip(u'The version of your application')
-        m_com_tip = wx.ToolTip(_(u'Text displayed when mouse hovers over launcher'))
-        m_exec_tip = wx.ToolTip(_(u'Executable to be launched'))
-        m_mime_tip = wx.ToolTip(_(u'Specifies the MIME types that the application can handle'))
+        m_com_tip = wx.ToolTip(GT(u'Text displayed when mouse hovers over launcher'))
+        m_exec_tip = wx.ToolTip(GT(u'Executable to be launched'))
+        m_mime_tip = wx.ToolTip(GT(u'Specifies the MIME types that the application can handle'))
         #m_enc_tip = wx.ToolTip(u'Specifies the encoding of the desktop entry file')
-        #m_type_tip = wx.ToolTip(_(u'The type of launcher'))
+        #m_type_tip = wx.ToolTip(GT(u'The type of launcher'))
         m_cat_tip = wx.ToolTip(u'Choose which categories in which you would like your application to be displayed')
-        m_term_tip = wx.ToolTip(_(u'Specifies whether application should be run from a terminal'))
-        m_notify_tip = wx.ToolTip(_(u'Displays a notification in the system panel when launched'))
+        m_term_tip = wx.ToolTip(GT(u'Specifies whether application should be run from a terminal'))
+        m_notify_tip = wx.ToolTip(GT(u'Displays a notification in the system panel when launched'))
         m_nodisp_tip = wx.ToolTip(u'This options means "This application exists, but don\'t display it in the menus"')
         m_showin_tip = wx.ToolTip(u'Only Show In Tip')
         
@@ -54,55 +55,55 @@ class Panel(wx.Panel, WizardPage):
         button_sizer.Add(self.button_preview, 0)
         
         # --- CHECKBOX
-        self.activate = wx.CheckBox(self, -1, _(u'Create system menu launcher'))
+        self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
         # --- NAME (menu)
-        self.name_text = wx.StaticText(self, -1, _(u'Name'))
+        self.name_text = wx.StaticText(self, -1, GT(u'Name'))
         self.name_text.SetToolTip(m_name_tip)
         self.name_input = wx.TextCtrl(self, -1)
         #self.name_input.SetBackgroundColour(dbr.Mandatory)
         
         # --- EXECUTABLE
-        self.exe_text = wx.StaticText(self, -1, _(u'Executable'))
+        self.exe_text = wx.StaticText(self, -1, GT(u'Executable'))
         self.exe_text.SetToolTip(m_exec_tip)
         self.exe_input = wx.TextCtrl(self, -1)
         
         # --- COMMENT
-        self.comm_text = wx.StaticText(self, -1, _(u'Comment'))
+        self.comm_text = wx.StaticText(self, -1, GT(u'Comment'))
         self.comm_text.SetToolTip(m_com_tip)
         self.comm_input = wx.TextCtrl(self, -1)
         
         # --- ICON
-        self.icon_text = wx.StaticText(self, -1, _(u'Icon'))
+        self.icon_text = wx.StaticText(self, -1, GT(u'Icon'))
         self.icon_text.SetToolTip(icon_tip)
         self.icon_input = wx.TextCtrl(self)
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
-        self.type_text = wx.StaticText(self, -1, _(u'Type'))
+        self.type_text = wx.StaticText(self, -1, GT(u'Type'))
         #self.type_text.SetToolTip(m_type_tip)
         self.type_choice = wx.ComboBox(self, -1, choices=self.type_opt)
         self.type_choice.SetSelection(0)
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
-        self.term_text = wx.StaticText(self, -1, _(u'Terminal'))
+        self.term_text = wx.StaticText(self, -1, GT(u'Terminal'))
         self.term_text.SetToolTip(m_term_tip)
         self.term_choice = wx.Choice(self, -1, choices=self.term_opt)
         self.term_choice.SetSelection(1)
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
-        self.notify_text = wx.StaticText(self, -1, _(u'Startup Notify'))
+        self.notify_text = wx.StaticText(self, -1, GT(u'Startup Notify'))
         self.notify_text.SetToolTip(m_notify_tip)
         self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
         
         # --- ENCODING
         self.enc_opt = (u'UTF-1',u'UTF-7',u'UTF-8',u'CESU-8',u'UTF-EBCDIC',
                 u'UTF-16',u'UTF-32',u'SCSU',u'BOCU-1',u'Punycode', u'GB 18030')
-        self.enc_text = wx.StaticText(self, -1, _(u'Encoding'))
+        self.enc_text = wx.StaticText(self, -1, GT(u'Encoding'))
         #self.enc_text.SetToolTip(m_enc_tip)
         self.enc_input = wx.ComboBox(self, -1, choices=self.enc_opt)
         self.enc_input.SetSelection(2)
@@ -119,7 +120,7 @@ class Panel(wx.Panel, WizardPage):
                         u'VectorGraphics',u'Video',u'Viewer',u'WordProcessor',u'Wine',u'Wine-Programs-Accessories',
                         u'X-GNOME-NetworkSettings',u'X-GNOME-PersonalSettings',u'X-GNOME-SystemSettings',u'X-KDE-More',
                         u'X-Red-Hat-Base',u'X-SuSE-ControlCenter-System')
-        self.cat_text = wx.StaticText(self, -1, _(u'Category'))
+        self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
         self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
         self.cat_add = dbr.ButtonAdd(self)
         self.cat_del = dbr.ButtonDel(self)
@@ -157,7 +158,7 @@ class Panel(wx.Panel, WizardPage):
         
         
         # ----- MISC
-        self.misc_text = wx.StaticText(self, -1, _(u'Other'))
+        self.misc_text = wx.StaticText(self, -1, GT(u'Other'))
         self.misc = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
         
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -309,7 +310,7 @@ class Panel(wx.Panel, WizardPage):
             self.categories.DeleteItem(cur_cat)
         
         elif key_code == wx.WXK_ESCAPE:
-            confirm = wx.MessageDialog(self, _(u'Delete all categories?'), _(u'Confirm'),
+            confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
             if confirm.ShowModal() == wx.ID_YES:
                 self.categories.DeleteAllItems()
@@ -328,13 +329,13 @@ class Panel(wx.Panel, WizardPage):
         
         # Open a u'Save Dialog'
         if self.parent.parent.cust_dias.IsChecked():
-            dia = dbr.SaveFile(self, _(u'Save Launcher'))
+            dia = dbr.SaveFile(self, GT(u'Save Launcher'))
 #            dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
                 path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
         else:
-            dia = wx.FileDialog(self, _(u'Save Launcher'), os.getcwd(),
+            dia = wx.FileDialog(self, GT(u'Save Launcher'), os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
 #            dia.SetFilename(u'control')
             if dia.ShowModal() == wx.ID_OK:
@@ -358,9 +359,9 @@ class Panel(wx.Panel, WizardPage):
                 if overwrite:
                     os.remove(backup)
             except UnicodeEncodeError:
-                serr = _(u'Save failed')
-                uni = _(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), _(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                serr = GT(u'Save failed')
+                uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
+                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
                 f_opened.close()
                 os.remove(path)
@@ -370,11 +371,11 @@ class Panel(wx.Panel, WizardPage):
     def OpenFile(self, event):
         cont = False
         if self.parent.parent.cust_dias.IsChecked():
-            dia = dbr.OpenFile(self, _(u'Open Launcher'))
+            dia = dbr.OpenFile(self, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, _(u'Open Launcher'), os.getcwd(),
+            dia = wx.FileDialog(self, GT(u'Open Launcher'), os.getcwd(),
                 style=wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
@@ -395,7 +396,7 @@ class Panel(wx.Panel, WizardPage):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
         
-        dia = wx.Dialog(self, -1, _(u'Preview'), size=(500,400))
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
         preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         preview.SetValue(config)
         
