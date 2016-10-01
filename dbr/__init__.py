@@ -19,7 +19,6 @@ def DebugEnabled():
     return Logger.GetLogLevel() == Logger.DEBUG
 
 
-from dbr.language import GT
 from dbr.about import AboutDialog
 from dbr.buttons import \
     ButtonAdd, ButtonBrowse, ButtonBrowse64, ButtonBuild, ButtonBuild64, \

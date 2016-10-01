@@ -8,7 +8,8 @@ from urllib2 import URLError, HTTPError
 
 # Local modules
 import dbr, wiz_bin
-from dbr import Logger, DebugEnabled, GT
+from dbr import Logger, DebugEnabled
+from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
