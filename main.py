@@ -1,4 +1,4 @@
-# This script is no longer executable, use init.py
+﻿# This script is no longer executable, use init.py
 # -*- coding: utf-8 -*-
 
 
@@ -492,6 +492,8 @@ class MainWindow(wx.Frame):
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         
         about.AddDeveloper(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com')
+        
+        about.AddJob(u'Hugo Posnic', u'Code Contributer', u'hugo.posnic@gmail.com')
         
         about.AddPackager(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com')
         
