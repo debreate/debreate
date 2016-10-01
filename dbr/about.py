@@ -9,6 +9,7 @@ import wx, os
 
 # Local modules
 import dbr.font
+from dbr.language import GT
 
 
 ## Dialog that shows information about the application
@@ -22,7 +23,7 @@ class AboutDialog(wx.Dialog):
     #  \param title
     #        Text to be shown in the title bar
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, wx.ID_ABOUT, _(u'About'), size=(400,375))
+        wx.Dialog.__init__(self, parent, wx.ID_ABOUT, GT(u'About'), size=(400,375))
         
         # Font for the name
         bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
@@ -41,10 +42,10 @@ class AboutDialog(wx.Dialog):
         t_license = wx.Panel(tabs, -1)
         
         # Add pages to tabbed interface
-        tabs.AddPage(t_about, _(u'About'))
-        tabs.AddPage(t_credits, _(u'Credits'))
-        tabs.AddPage(t_changelog, _(u'Changelog'))
-        tabs.AddPage(t_license, _(u'License'))
+        tabs.AddPage(t_about, GT(u'About'))
+        tabs.AddPage(t_credits, GT(u'Credits'))
+        tabs.AddPage(t_changelog, GT(u'Changelog'))
+        tabs.AddPage(t_license, GT(u'License'))
         
         ## Application logo
         self.graphic = wx.StaticBitmap(t_about)
@@ -86,9 +87,9 @@ class AboutDialog(wx.Dialog):
         
         ## List of credits
         self.credits = wx.ListCtrl(t_credits, -1, style=wx.LC_REPORT)
-        self.credits.InsertColumn(0, _(u'Name'), width=100)
-        self.credits.InsertColumn(1, _(u'Job'), width=100)
-        self.credits.InsertColumn(2, _(u'Email'), width=200)
+        self.credits.InsertColumn(0, GT(u'Name'), width=100)
+        self.credits.InsertColumn(1, GT(u'Job'), width=100)
+        self.credits.InsertColumn(2, GT(u'Email'), width=200)
         
         credits_sizer = wx.BoxSizer(wx.VERTICAL)
         credits_sizer.Add(self.credits, 1, wx.EXPAND)
@@ -124,15 +125,15 @@ class AboutDialog(wx.Dialog):
         
         # System info
         sys_info = wx.Panel(tabs, -1)
-        tabs.AddPage(sys_info, _(u'System Information'))
+        tabs.AddPage(sys_info, GT(u'System Information'))
         
         ## System's <a href="https://www.python.org/">Python</a> version
         self.py_info = wx.StaticText(sys_info, -1,
-                _(u'Python version: {}').format(dbr.PY_VER_STRING))
+                GT(u'Python version: {}').format(dbr.PY_VER_STRING))
         
         ## System's <a href="https://wxpython.org/">wxPython</a> version
         self.wx_info = wx.StaticText(sys_info, -1,
-                _(u'wxPython version: {}').format(dbr.WX_VER_STRING))
+                GT(u'wxPython version: {}').format(dbr.WX_VER_STRING))
         
         self.py_info.SetFont(sys_info_font)
         self.wx_info.SetFont(sys_info_font)
@@ -204,7 +205,7 @@ class AboutDialog(wx.Dialog):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
-        self.credits.SetStringItem(next_item, 1, _(u'Developer'))
+        self.credits.SetStringItem(next_item, 1, GT(u'Developer'))
     
     ## Adds a packager to the list of credits
     #  
@@ -216,7 +217,7 @@ class AboutDialog(wx.Dialog):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
-        self.credits.SetStringItem(next_item, 1, _(u'Packager'))
+        self.credits.SetStringItem(next_item, 1, GT(u'Packager'))
     
     ## Adds a translator to the list of credits
     #  
@@ -227,7 +228,7 @@ class AboutDialog(wx.Dialog):
     #  \param lang
     #        \b \e str : Locale code for the translation
     def AddTranslator(self, name, email, lang):
-        job = _(u'Translation')
+        job = GT(u'Translation')
         job = u'{} ({})'.format(job, lang)
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
@@ -273,7 +274,7 @@ class AboutDialog(wx.Dialog):
             log_data.close()
         
         else:
-            log_text = _(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
+            log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
         
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
@@ -299,7 +300,7 @@ class AboutDialog(wx.Dialog):
             lic_data.close()
         
         else:
-            lic_text = _(u'ERROR:\n\tLicense \'{}\' not found'.format(license_path))
+            lic_text = GT(u'ERROR:\n\tLicense \'{}\' not found'.format(license_path))
             lic_text += u'\n\nCopyright © {} {}'.format(dbr.GetYear(), dbr.AUTHOR)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         

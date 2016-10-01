@@ -83,16 +83,16 @@ class Panel(wx.Panel):
             self.te_postrm = wx.TextCtrl(self, ID_RM_POST, style=wx.TE_MULTILINE)
             
             # Check boxes for choosing scripts
-            self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, _(u'Make this script'))
-            self.chk_postinst = wx.CheckBox(self, ID_INST_POST, _(u'Make this script'))
-            self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, _(u'Make this script'))
-            self.chk_postrm = wx.CheckBox(self, ID_RM_POST, _(u'Make this script'))
+            self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'))
+            self.chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'))
+            self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, GT(u'Make this script'))
+            self.chk_postrm = wx.CheckBox(self, ID_RM_POST, GT(u'Make this script'))
             
             # Radio buttons for displaying between pre- and post- install scripts
-            self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, _(u'Pre-Install'), style=wx.RB_GROUP)
-            self.rb_postinst = wx.RadioButton(self, ID_INST_POST, _(u'Post-Install'))
-            self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, _(u'Pre-Remove'))
-            self.rb_postrm = wx.RadioButton(self, ID_RM_POST, _(u'Post-Remove'))
+            self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'), style=wx.RB_GROUP)
+            self.rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'))
+            self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, GT(u'Pre-Remove'))
+            self.rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'))
             
             self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                                 self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
@@ -134,7 +134,7 @@ class Panel(wx.Panel):
         self.xlist = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, -1, _(u'Path'))
+        self.al_text = wx.StaticText(self, -1, GT(u'Path'))
         self.al_input = dbr.PathCtrl(self, -1, u'/usr/bin', dbr.PATH_WARN)
         
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
@@ -156,10 +156,10 @@ class Panel(wx.Panel):
         
         # Auto-Link import, generate and remove buttons
         self.al_import = dbr.ButtonImport(self, ID_Import)
-        self.al_import.SetToolTip(wx.ToolTip(_(u'Import executables from Files section')))
+        self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from Files section')))
         self.al_del = dbr.ButtonDel(self, ID_Remove)
         self.al_gen = dbr.ButtonBuild(self)
-        self.al_gen.SetToolTip(wx.ToolTip(_(u'Generate Scripts')))
+        self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate Scripts')))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
@@ -171,7 +171,7 @@ class Panel(wx.Panel):
         albutton_sizer.Add(self.al_gen, 1)#, wx.ALIGN_CENTER)
         
         # Nice border for auto-generate scripts area
-        self.autogen_border = wx.StaticBox(self, -1, _(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
+        self.autogen_border = wx.StaticBox(self, -1, GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
         autogen_box = wx.StaticBoxSizer(self.autogen_border, wx.VERTICAL)
         autogen_box.Add(alpath_sizer, 0, wx.EXPAND)
         autogen_box.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
@@ -307,8 +307,8 @@ scripts will be created that will place a symbolic link to your executables in t
             # If the link path does not exist on the system post a warning message
             if os.path.isdir(link_path) == False:
                 cont = False
-                msg_path = _(u'Path "%s" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), _(u'Path Warning'),
+                msg_path = GT(u'Path "%s" does not exist. Continue?')
+                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), GT(u'Path Warning'),
                     style=wx.YES_NO)
                 if link_error_dia.ShowModal() == wx.ID_YES:
                     cont = True
@@ -335,7 +335,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 self.te_prerm.SetValue(u'#! /bin/bash -e\n\n%s' % prerm)
                 self.chk_prerm.SetValue(True)
                 
-                dia = wx.MessageDialog(self, _(u'post-install and pre-remove scripts generated'), _(u'Success'), wx.OK)
+                dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
                 dia.ShowModal()
                 dia.Destroy()
     
@@ -349,9 +349,9 @@ scripts will be created that will place a symbolic link to your executables in t
     
     # *** HELP *** #
     def OnHelpButton(self, event):
-        self.al_help = wx.Dialog(self, -1, _(u'Auto-Link Help'))
-        description = _(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
-        instructions = _(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
+        self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
+        description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
+        instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
 
         self.al_help_te = wx.TextCtrl(self.al_help, -1, u'%s\n\n%s' % (description, instructions),
                 style = wx.TE_MULTILINE|wx.TE_READONLY)

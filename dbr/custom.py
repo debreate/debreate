@@ -28,10 +28,10 @@ def TextIsEmpty(text):
 #    this dialog is shown.
 class FirstRun(wx.Dialog):
     def __init__(self):
-        wx.Dialog.__init__(self, None, wx.ID_ANY, _(u'Debreate First Run'), size=(450,300))
+        wx.Dialog.__init__(self, None, wx.ID_ANY, GT(u'Debreate First Run'), size=(450,300))
         
-        m1 = _(u'Thank you for using Debreate.')
-        m2 = _(u'This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
+        m1 = GT(u'Thank you for using Debreate.')
+        m2 = GT(u'This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
         
         # "OK" button sets to True
         #self.OK = False
@@ -359,8 +359,8 @@ class LCReport(wx.ListCtrl, LC.TextEditMixin, LC.ListCtrlAutoWidthMixin):
         wx.EVT_MENU(self, self.ID_Add, self.OnAdd)
         wx.EVT_MENU(self, self.ID_Del, self.OnDel)
         
-        menu.Append(self.ID_Add, _(u'Add'))
-        menu.Append(self.ID_Del, _(u'Delete'))
+        menu.Append(self.ID_Add, GT(u'Add'))
+        menu.Append(self.ID_Del, GT(u'Delete'))
         menu.AppendSeparator()
         menu.Append(wx.ID_COPY)
         menu.Append(wx.ID_CUT)
@@ -406,10 +406,10 @@ class DBDialog(wx.Dialog):
         
         ## Context menu
         self.menu = wx.Menu()
-        self.menu.Append(ID_Folder, _(u'New Folder'))
-        self.menu.Append(ID_Rename, _(u'Rename'))
+        self.menu.Append(ID_Folder, GT(u'New Folder'))
+        self.menu.Append(ID_Rename, GT(u'Rename'))
         self.menu.AppendSeparator()
-        self.menu.Append(ID_Delete, _(u'Move to Trash'))
+        self.menu.Append(ID_Delete, GT(u'Move to Trash'))
         
         wx.EVT_MENU(self, ID_Folder, self.CreateFolder)
         wx.EVT_MENU(self, ID_Rename, self.ShowRename)
@@ -422,13 +422,13 @@ class DBDialog(wx.Dialog):
 #        self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
         
         ## New folder button
-        self.New = wx.Button(self, ID_Folder, _(u'New Folder'))
+        self.New = wx.Button(self, ID_Folder, GT(u'New Folder'))
         
         ## Confirm button
         self.Ok = wx.Button(self, wx.OK)
         
         ## Cancel button
-        self.Cancel = wx.Button(self, wx.CANCEL, _(u'Cancel'))
+        self.Cancel = wx.Button(self, wx.CANCEL, GT(u'Cancel'))
         
         wx.EVT_BUTTON(self.New, -1, self.CreateFolder)
         wx.EVT_BUTTON(self.Ok, -1, self.OnButton)
@@ -466,16 +466,16 @@ class DBDialog(wx.Dialog):
             except OSError:
                 self.dir_tree = wx.GenericDirCtrl(self, -1, os.getenv(u'HOME'), filter=u'*', style=wx.DIRCTRL_SHOW_FILTERS)
             if mode.lower() == u'save':
-                self.Ok.SetLabel(_(u'Save'))
+                self.Ok.SetLabel(GT(u'Save'))
             elif mode.lower() == u'open':
-                self.Ok.SetLabel(_(u'Open'))
+                self.Ok.SetLabel(GT(u'Open'))
         elif type.lower() == u'dir':
             self.dir_tree = wx.GenericDirCtrl(self, -1, os.getcwd(),
                     style=wx.DIRCTRL_DIR_ONLY|wx.BORDER_SIMPLE)
             if mode.lower() == u'save':
-                self.Ok.SetLabel(_(u'Save'))
+                self.Ok.SetLabel(GT(u'Save'))
             elif mode.lower() == u'open':
-                self.Ok.SetLabel(_(u'Open'))
+                self.Ok.SetLabel(GT(u'Open'))
         
         # Add a context menu to the dir_tree
         self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
@@ -526,7 +526,7 @@ class DBDialog(wx.Dialog):
         destination = self.dir_tree.GetPath()
         
         # If highlighted path is folder, create new folder in path
-        n = _(u'New Folder')
+        n = GT(u'New Folder')
         if os.path.isdir(destination):
             new_folder = u'{}{}'.format(destination, n)
         # If highlighted path is file, create new folder in the same directory
@@ -549,7 +549,7 @@ class DBDialog(wx.Dialog):
             # If folder can't be created show error dialog
             except OSError:
                 unavailable = False
-                permission_error = wx.MessageDialog(self, _(u'Permission Denied'), _(u'Error'), wx.OK|wx.ICON_EXCLAMATION)
+                permission_error = wx.MessageDialog(self, GT(u'Permission Denied'), GT(u'Error'), wx.OK|wx.ICON_EXCLAMATION)
                 permission_error.ShowModal()
         
         # Refresh the tree so that the new folders are dislplayed
@@ -575,7 +575,7 @@ class DBDialog(wx.Dialog):
         filename = os.path.split(self.dir_tree.GetPath())[1]
         
         # Create the rename dialog
-        dia = wx.Dialog(self, -1, _(u'Rename'), size=(200,75))
+        dia = wx.Dialog(self, -1, GT(u'Rename'), size=(200,75))
         
         # Create the input area
         input = wx.TextCtrl(dia, -1, filename)
@@ -584,8 +584,8 @@ class DBDialog(wx.Dialog):
         input_sizer.Add(input, 1)
         
         # Two buttons to confirm/cancel renaming
-        button_rename = wx.Button(dia, wx.WXK_RETURN, _(u'Rename'))
-        button_cancel = wx.Button(dia, wx.WXK_ESCAPE, _(u'Cancel'))
+        button_rename = wx.Button(dia, wx.WXK_RETURN, GT(u'Rename'))
+        button_cancel = wx.Button(dia, wx.WXK_ESCAPE, GT(u'Cancel'))
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         button_sizer.AddMany([(button_rename, 0, wx.ALL, 5), (button_cancel, 0, wx.ALL, 5)])
@@ -607,7 +607,7 @@ class DBDialog(wx.Dialog):
             
             if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
                 if os.path.isdir(new_name) or os.path.isfile(new_name):
-                    direrr = wx.MessageDialog(dia, _(u'Name already used in current directory'), _(u'Error'),
+                    direrr = wx.MessageDialog(dia, GT(u'Name already used in current directory'), GT(u'Error'),
                                 wx.OK|wx.ICON_EXCLAMATION)
                     direrr.ShowModal()
                     direrr.Close()
@@ -646,7 +646,7 @@ class DBDialog(wx.Dialog):
 
 
 class OpenDir(DBDialog):
-    def __init__(self, parent, title=_(u'Choose Directory')):
+    def __init__(self, parent, title=GT(u'Choose Directory')):
         DBDialog.__init__(self, parent, title)
         
         self.SetTitle(title)
@@ -656,7 +656,7 @@ class OpenDir(DBDialog):
 
 
 class OpenFile(DBDialog):
-    def __init__(self, parent, title=_(u'Open File')):
+    def __init__(self, parent, title=GT(u'Open File')):
         DBDialog.__init__(self, parent, title)
         
         self.SetTitle(title)
@@ -700,7 +700,7 @@ class OpenFile(DBDialog):
 
 
 class SaveFile(DBDialog):
-    def __init__(self, parent, title=_(u'Save File'), defaultExtension=None):
+    def __init__(self, parent, title=GT(u'Save File'), defaultExtension=None):
         DBDialog.__init__(self, parent, title)
         
         self.defaultExtension = defaultExtension
@@ -768,7 +768,7 @@ class SaveFile(DBDialog):
         
         if id in save_ids:
             filename = self.TextCtrl.GetValue()
-            bad_filename_dia = wx.MessageDialog(self, _(u'Bad File Name'), _(u'Error'), wx.OK|wx.ICON_ERROR)
+            bad_filename_dia = wx.MessageDialog(self, GT(u'Bad File Name'), GT(u'Error'), wx.OK|wx.ICON_ERROR)
             # Check to see that the input value isn't empty
 #            if self.TextCtrl.GetValue() == wx.EmptyString:
             if filename == wx.EmptyString or filename[0] in self.invalid_first_char or [i for i in list(filename) if i in self.invalid_char]:
@@ -786,7 +786,7 @@ class SaveFile(DBDialog):
                 
                 save_file = True
                 if os.path.exists(savefile):
-                    warn = wx.MessageDialog(self, _(u'Overwrite File?'), _(u'File Exists'), wx.YES_NO|wx.NO_DEFAULT)
+                    warn = wx.MessageDialog(self, GT(u'Overwrite File?'), GT(u'File Exists'), wx.YES_NO|wx.NO_DEFAULT)
                     if warn.ShowModal() == wx.ID_NO:
                         save_file = False
                     warn.Destroy()

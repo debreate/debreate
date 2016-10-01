@@ -8,13 +8,14 @@ from wx import \
 from wx import \
     VERTICAL as wxVERTICAL
 
+from dbr.language import GT
 
 
 ID = wxNewId()
 
 
 class Panel(wxPanel):
-    def __init__(self, parent, name=_('Control')):
+    def __init__(self, parent, name=GT(u'Control')):
         wxPanel.__init__(self, parent, ID, name=name)
         
         page_layout = wxBoxSizer(wxVERTICAL)
