@@ -24,14 +24,6 @@ ID_Refresh = 142
 home = os.getenv(u'HOME')
 
 
-class DList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wx.MixinListCtrl.TextEditMixin):
-    """Creates a ListCtrl class in which every column's text can be edited"""
-    def __init__(self, parent, window_id=wx.ID_ANY):
-        wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
-        #wx.MixinListCtrl.TextEditMixin.__init__(self)
-        wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
-
-
 class Panel(wx.Panel, WizardPage):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
@@ -443,3 +435,14 @@ class Panel(wx.Panel, WizardPage):
             return None
         
         return (__name__, page_info)
+
+
+
+## An editable list
+#  
+#  Creates a ListCtrl class in which every column's text can be edited
+class DList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wx.MixinListCtrl.TextEditMixin):
+    def __init__(self, parent, window_id=wx.ID_ANY):
+        wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+        #wx.MixinListCtrl.TextEditMixin.__init__(self)
+        wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
