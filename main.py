@@ -388,10 +388,10 @@ class MainWindow(wx.Frame):
             
             filename = os.path.split(self.saved_project)[1]
             
-            self.OpenProject(p_text, filename)
+            self.OpenProjectLegacy(p_text, filename)
     
     
-    def OpenProject(self, data, filename):
+    def OpenProjectLegacy(self, data, filename):
         def ProjectError():
             wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
     		                       style=wx.OK|wx.ICON_ERROR).ShowModal()
