@@ -8,7 +8,6 @@
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
-- Fix default values for combo selectors
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -19,6 +18,8 @@
 - Install *.mo files to system locale directory
 - Create manpage
 - Finish help dialog
+- Add more tooltips
+- Option to enable/disable tooltips
 
 Unknown Release:
 - Detailed documentation on files page
