@@ -13,7 +13,8 @@ from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
-    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP
+    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
+    PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX
 from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
@@ -366,8 +367,8 @@ class MainWindow(wx.Frame):
     
     def OnOpenProject(self, event):
         cont = False
-        dbp = u'|*.dbp'
-        d = GT(u'Debreate project files')
+        dbp = u'|*.{};*.{}'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX)
+        d = GT(u'Debreate projects (*.{}, *.{})'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX))
         if self.cust_dias.IsChecked():
             dia = dbr.OpenFile(self, GT(u'Open Debreate Project'))
             dia.SetFilter(u'{}{}'.format(d, dbp))
@@ -389,6 +390,10 @@ class MainWindow(wx.Frame):
             filename = os.path.split(self.saved_project)[1]
             
             self.OpenProjectLegacy(p_text, filename)
+    
+    
+    def OpenProject(self, filename):
+        pass
     
     
     def OpenProjectLegacy(self, data, filename):
