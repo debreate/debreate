@@ -1,6 +1,16 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+# HOWTO:
+#   To add a changelog entry:
+#     - Edit the INFO file in the root directory
+#     - Change the values of AUTHOR & EMAIL
+#     - Run this script (from any location)
+#       - A new entry will be written to 'docs/changelog'
+#     - Edit 'docs/changelog' to add new changes
+#     - For Debian builds:
+#       - Copy 'docs/changelog' to 'debian/changelog'
+
 import os, sys, time
 
 cl_file = u'docs/changelog'
