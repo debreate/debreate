@@ -8,7 +8,7 @@ from wx.lib.mixins import \
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ERR_DIR_NOT_AVAILABLE
-from dbr import DebugEnabled
+from dbr import DebugEnabled, Logger
 from dbr.wizard import WizardPage
 
 
@@ -35,6 +35,7 @@ class Panel(wx.Panel, WizardPage):
         
         # Allows calling parent methods
         self.parent = parent
+        self.debreate = self.GetGrandParent()
         
         # Create a Context Menu
         self.menu = wx.Menu()
@@ -43,8 +44,8 @@ class Panel(wx.Panel, WizardPage):
         self.add_file = wx.MenuItem(self.menu, ID_AddFile, GT(u'Add File'))
         self.refresh = wx.MenuItem(self.menu, ID_Refresh, GT(u'Refresh'))
         
-        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
-        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
+        wx.EVT_MENU(self, ID_AddDir, self.AddPathDeprecated)
+        wx.EVT_MENU(self, ID_AddFile, self.AddPathDeprecated)
         wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         self.menu.AppendItem(self.add_dir)
@@ -62,7 +63,7 @@ class Panel(wx.Panel, WizardPage):
         path_remove = dbr.buttons.ButtonDel(self)
         button_clear = dbr.buttons.ButtonClear(self)
         
-        wx.EVT_BUTTON(path_add, -1, self.AddPath)
+        wx.EVT_BUTTON(path_add, -1, self.AddPathDeprecated)
         wx.EVT_BUTTON(path_remove, -1, self.DelPath)
         wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
         
@@ -113,7 +114,7 @@ class Panel(wx.Panel, WizardPage):
         
         
         # Display area for files added to list
-        self.dest_area = DList(self, -1)
+        self.dest_area = FileList(self, -1)
         
         # List that stores the actual paths to the files
         self.list_data = []
@@ -121,8 +122,11 @@ class Panel(wx.Panel, WizardPage):
         # Set the width of first column on creation
         parent_size = self.GetGrandParent().GetSize()
         parent_width = parent_size[1]
-        self.dest_area.InsertColumn(0, GT(u'File'), width=parent_width/3-10)
-        self.dest_area.InsertColumn(1, GT(u'Target'))
+        
+        # Old style list
+        if not DebugEnabled():
+            self.dest_area.InsertColumn(0, GT(u'File'), width=parent_width/3-10)
+            self.dest_area.InsertColumn(1, GT(u'Target'))
         
         wx.EVT_KEY_DOWN(self.dest_area, self.DelPath)
         
@@ -189,9 +193,20 @@ class Panel(wx.Panel, WizardPage):
             self.dest_cust.SetInsertionPoint(-1)
         event.Skip()
     
+    
     def AddPath(self, event):
+        pass
+    
+    
+    def AddPathDeprecated(self, event):
         total_files = 0
         pin = self.dir_tree.GetPath()
+        
+        target_col = 1
+        
+        if DebugEnabled():
+            source_col = 1
+            target_col = 2
         
         for item in self.radio_group:
             if self.radio_cst.GetValue() == True:
@@ -210,7 +225,7 @@ class Panel(wx.Panel, WizardPage):
                 loading = wx.ProgressDialog(GT(u'Progress'), msg_files % (pin), total_files, self,
                                             wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
                 for root, dirs, files in os.walk(pin):
-                    for file in files:
+                    for filename in files:
                         if cont == (False,False):  # If "cancel" pressed destroy the progress window
                             break
                         else:
@@ -219,24 +234,41 @@ class Panel(wx.Panel, WizardPage):
                                 # Add the sub-dir to dest
                                 dest = u'%s%s' % (pout, sub_dir)
                                 #self.list_data.insert(0, ("%s/%s" % (root, file), "%s/%s" % (sub_dir[1:], file), dest))
+                                
+                                # Hidden list
                                 self.list_data.insert(0, (u'%s/%s' % (root, file), file, dest))
-                                self.dest_area.InsertStringItem(0, file)
-                                self.dest_area.SetStringItem(0, 1, dest)
+                                
+                                if DebugEnabled():
+                                    self.dest_area.AddItem(filename, root, pout)
+                                
+                                else:
+                                    self.dest_area.InsertStringItem(0, filename)
+                                    self.dest_area.SetStringItem(0, target_col, dest)
+                            
                             else:
                                 self.list_data.insert(0, (u'%s/%s' % (root, file), file, pout))
                                 self.dest_area.InsertStringItem(0, file)
-                                self.dest_area.SetStringItem(0, 1, pout)
+                                self.dest_area.SetStringItem(0, target_col, pout)
                             count += 1
                             cont = loading.Update(count)
                             if os.access(u'%s/%s' % (root,file), os.X_OK):
                                 self.dest_area.SetItemTextColour(0, u'red')
         
         elif os.path.isfile(pin):
-            file = os.path.split(pin)[1]
-            file = file.encode(u'utf-8')
-            self.list_data.insert(0, (pin, file, pout))
-            self.dest_area.InsertStringItem(0, file)
-            self.dest_area.SetStringItem(0, 1, pout)
+            filename = os.path.basename(pin)
+            source_dir = os.path.dirname(pin)
+            
+            # Add info to unseen list
+            self.list_data.insert(0, (pin, filename, pout))
+            
+            if DebugEnabled():
+                self.dest_area.AddItem(filename, source_dir, pout)
+            
+            else:
+                self.dest_area.InsertStringItem(0, filename)
+                self.dest_area.SetStringItem(0, target_col, pout)
+            
+            # If file is executable, mark with red text
             if os.access(pin, os.X_OK):
                 self.dest_area.SetItemTextColour(0, u'red')
     
@@ -441,8 +473,55 @@ class Panel(wx.Panel, WizardPage):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class DList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):#wx.MixinListCtrl.TextEditMixin):
+class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListCtrl.TextEditMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
-        wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
-        #wx.MixinListCtrl.TextEditMixin.__init__(self)
+        wx.ListCtrl.__init__(self, parent, window_id,
+                style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
+        wxMixinListCtrl.TextEditMixin.__init__(self)
+        
+        self.debreate = parent.debreate
+        
+        
+        # DEBUG:
+        # TODO: Remove from DEBUG when finished
+        if DebugEnabled():
+            width=self.debreate.GetSize()[1]/3-10
+            
+            self.InsertColumn(0, GT(u'File'), width=width)
+            self.InsertColumn(1, GT(u'Source Directory'), width=width)
+            self.InsertColumn(2, GT(u'Staged Target'))
+            
+            wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
+    
+    
+    def OnInsertItem(self, event):
+        Logger.Debug(__name__, u'FileList item inserted')
+        
+        children = self.GetChildren()
+        
+        Logger.Debug(__name__, u'Parent ID: {}'.format(self.GetId()))
+        
+        # Looking for the list of files
+        list = None
+        
+        for x in range(0, len(children)):
+            child = children[x]
+            
+            Logger.Debug(__name__, u'Child ID: {}'.format(child.GetId()))
+            Logger.Debug(__name__, u'Child type: {}'.format(type(child)))
+            Logger.Debug(__name__, u'Child name'.format(child.GetName()))
+            
+        event.Skip()
+    
+    
+    def AddItem(self, filename, source_dir, target_dir):
+        source_col = 1
+        target_col = 2
+        
+        # FIXME: Needs to get list count first to append
+        list_index = 0
+        
+        self.InsertStringItem(list_index, filename)
+        self.SetStringItem(list_index, source_col, source_dir)
+        self.SetStringItem(list_index, target_col, target_dir)
