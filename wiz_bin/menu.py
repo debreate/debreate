@@ -99,6 +99,7 @@ class Panel(wx.Panel, WizardPage):
         self.notify_text = wx.StaticText(self, -1, GT(u'Startup Notify'))
         self.notify_text.SetToolTip(m_notify_tip)
         self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
+        self.notify_choice.SetSelection(0)
         
         # --- ENCODING
         self.enc_opt = (u'UTF-1',u'UTF-7',u'UTF-8',u'CESU-8',u'UTF-EBCDIC',
