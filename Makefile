@@ -129,9 +129,10 @@ DIRS_dist = \
 	dbr \
 	debian \
 	docs \
+	man \
+	scripts \
 	wiz_bin \
-	wiz_src \
-	scripts
+	wiz_src
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
