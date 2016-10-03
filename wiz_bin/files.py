@@ -9,7 +9,7 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM
-from dbr import Logger
+from dbr import Logger, DebugEnabled
 from dbr.wizard import WizardPage
 
 
@@ -479,12 +479,48 @@ class Panel(wx.Panel, WizardPage):
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
     def GetPageInfo(self):
-        page_info = self.GetFilesInfoDeprecated()
+        if not DebugEnabled:
+            page_info = self.GetFilesInfoDeprecated()
+            
+            if not page_info:
+                return None
+            
+            return (__name__, page_info)
         
-        if not page_info:
-            return None
+        item_count = self.dest_area.GetItemCount()
         
-        return (__name__, page_info)
+        if item_count:
+            #file_list = []
+            file_dict = {}
+            for X in range(item_count):
+                row_data = self.dest_area.GetRowData(X)
+                
+                #file_list.append(u'{}/{}; {}'.format(row_data[1], row_data[0], row_data[2]))
+                target = row_data[2]
+                source = u'{}/{}'.format(row_data[1], row_data[0])
+                
+                if target not in file_dict:
+                    file_dict[target] = []
+                
+                file_dict[target].append(source)
+            
+            # FIXME: file output
+            file_list = wx.EmptyString
+            for F in file_dict:
+                file_dict[F] = u'\n'.join(file_dict[F])
+                
+                if file_list != wx.EmptyString:
+                    file_list = u'{}\n'.format(file_list)
+                
+                if len(file_dict[F]) == 1:
+                    source = file_dict[F]
+                
+                else:
+                    source = u'\n'.join(file_dict[F])
+                
+                file_list = u'{}{}\n{}'.format(file_list, u'[{}]'.format(F), source)
+            
+            return (__name__, file_list)
 
 
 
@@ -612,6 +648,14 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             
             self.DeleteItem(current_selected)
             selected_count = self.GetSelectedItemCount()
+    
+    
+    def GetRowData(self, row):
+        filename = self.GetItem(row, self.filename_col).GetText()
+        source_dir = self.GetItem(row, self.source_col).GetText()
+        target_dir = self.GetItem(row, self.target_col).GetText()
+        
+        return (filename, source_dir, target_dir)
 
 
 ## A custom progress dialog
