@@ -64,7 +64,13 @@ class Panel(wx.Panel, WizardPage):
         button_clear = dbr.buttons.ButtonClear(self)
         
         wx.EVT_BUTTON(path_add, -1, self.AddPathDeprecated)
-        wx.EVT_BUTTON(path_remove, -1, self.DelPathDeprecated)
+        
+        if DebugEnabled():
+            wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
+        
+        else:
+            wx.EVT_BUTTON(path_remove, -1, self.DelPathDeprecated)
+        
         wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
         
         # ----- Destination path
@@ -283,14 +289,11 @@ class Panel(wx.Panel, WizardPage):
         self.dest_area.SelectAll()
     
     
-    ## Removes selected files from list
-    #  
-    #  TODO: Define
     def RemoveSelected(self, event):
-        pass
+        self.dest_area.RemoveSelected()
     
     
-    # FIXME: Deprecated; Remove with self.RemoveSelected
+    # FIXME: Deprecated; Replace with self.RemoveSelected
     def DelPathDeprecated(self, event):
         try:
             modifier = event.GetModifiers()
@@ -536,3 +539,22 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
         
         for x in range(0, file_count):
             self.Select(x)
+    
+    
+    ## Removes selected files from list
+    #  
+    #  TODO: Define
+    def RemoveSelected(self):
+        selected_total = self.GetSelectedItemCount()
+        selected_count = selected_total
+        
+        while selected_count:
+            current_selected = self.GetFirstSelected()
+            
+            Logger.Debug(__name__,
+                    GT(u'Removing selected item {} of {}'.format(selected_total - selected_count + 1,
+                                                                          selected_total
+                                                                          )))
+            
+            self.DeleteItem(current_selected)
+            selected_count = self.GetSelectedItemCount()
