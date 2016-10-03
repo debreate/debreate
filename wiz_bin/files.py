@@ -205,7 +205,6 @@ class Panel(wx.Panel, WizardPage):
         target_col = 1
         
         if DebugEnabled():
-            source_col = 1
             target_col = 2
         
         for item in self.radio_group:
