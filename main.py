@@ -10,7 +10,7 @@ from urllib2 import URLError, HTTPError
 import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
-from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, \
+from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats
@@ -488,17 +488,17 @@ class MainWindow(wx.Frame):
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(dbr.application_path))
         about.SetVersion(VERSION_STRING)
-        about.SetAuthor(u'Jordan Irwin')
+        about.SetAuthor(AUTHOR)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         
-        about.AddDeveloper(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com')
+        about.AddDeveloper(AUTHOR, u'antumdeluge@gmail.com')
         
         about.AddJob(u'Hugo Posnic', u'Code Contributer', u'hugo.posnic@gmail.com')
         
-        about.AddPackager(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com')
+        about.AddPackager(AUTHOR, u'antumdeluge@gmail.com')
         
         about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
-        about.AddTranslator(u'Jordan Irwin (AntumDeluge)', u'antumdeluge@gmail.com', u'es, it')
+        about.AddTranslator(AUTHOR, u'antumdeluge@gmail.com', u'es, it')
         about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
         about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
