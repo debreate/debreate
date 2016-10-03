@@ -7,7 +7,7 @@ from wx.lib.mixins import \
 
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_FILES
+from dbr.constants import ID_FILES, ID_CUSTOM
 from dbr import DebugEnabled, Logger
 from dbr.wizard import WizardPage
 
@@ -44,8 +44,12 @@ class Panel(wx.Panel, WizardPage):
         self.add_file = wx.MenuItem(self.menu, ID_AddFile, GT(u'Add File'))
         self.refresh = wx.MenuItem(self.menu, ID_Refresh, GT(u'Refresh'))
         
-        wx.EVT_MENU(self, ID_AddDir, self.AddPathDeprecated)
-        wx.EVT_MENU(self, ID_AddFile, self.AddPathDeprecated)
+        if DebugEnabled():
+            wx.EVT_MENU(self, ID_AddDir, self.AddPath)
+            wx.EVT_MENU(self, ID_AddFile, self.AddPath)
+        else:
+            wx.EVT_MENU(self, ID_AddDir, self.AddPathDeprecated)
+            wx.EVT_MENU(self, ID_AddFile, self.AddPathDeprecated)
         wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         self.menu.AppendItem(self.add_dir)
@@ -63,11 +67,13 @@ class Panel(wx.Panel, WizardPage):
         path_remove = dbr.buttons.ButtonDel(self)
         button_clear = dbr.buttons.ButtonClear(self)
         
-        wx.EVT_BUTTON(path_add, -1, self.AddPathDeprecated)
+        if DebugEnabled():
+            wx.EVT_BUTTON(path_add, -1, self.AddPath)
+        else:
+            wx.EVT_BUTTON(path_add, -1, self.AddPathDeprecated)
         
         if DebugEnabled():
             wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
-        
         else:
             wx.EVT_BUTTON(path_remove, -1, self.DelPathDeprecated)
         
@@ -80,7 +86,9 @@ class Panel(wx.Panel, WizardPage):
         self.radio_usrlib = wx.RadioButton(self, -1, "/usr/lib")
         self.radio_locbin = wx.RadioButton(self, -1, "/usr/local/bin")
         self.radio_loclib = wx.RadioButton(self, -1, "/usr/local/lib")
-        self.radio_cst = wx.RadioButton(self, -1, GT(u'Custom'))
+        self.radio_cst = wx.RadioButton(self, ID_CUSTOM, GT(u'Custom'))
+        
+        # Start with "Custom" selected
         self.radio_cst.SetValue(True)
         
         # group buttons together
@@ -200,8 +208,64 @@ class Panel(wx.Panel, WizardPage):
         event.Skip()
     
     
+    ## Add a selected path to the list of files
+    #  
+    #  TODO: Rename to OnAddPath
     def AddPath(self, event):
-        pass
+        # List of files tuple formatted as: filename, source
+        files = []
+        
+        source = self.dir_tree.GetPath()
+        target_dir = None
+        
+        # TODO: Change 'self.radio_group' to 'self.targets'
+        for target in self.radio_group:
+            if target.GetValue():
+                if target.GetId() == ID_CUSTOM:
+                    target_dir = self.dest_cust.GetValue()
+                
+                else:
+                    target_dir = target.GetLabel()
+                
+                break
+        
+        if target_dir == None:
+            Logger.Error(__name__, GT(u'Expected string for staging target, got None type instead'))
+        
+        if os.path.isfile(source):
+            filename = os.path.basename(source)
+            source_dir = os.path.dirname(source)
+            
+            files.append((filename, source_dir))
+        
+        elif os.path.isdir(source):
+            for PATH, DIRS, FILES in os.walk(source):
+                if DebugEnabled():
+                    for filename in FILES:
+                        files.append((filename, PATH))
+        
+        file_count = len(files)
+        efficiency_threshold = 100
+        
+        # Show a progress dialog that can be aborted
+        if file_count > efficiency_threshold:
+            task_progress = wx.ProgressDialog(GT(u'Progress'), GT(u'Getting files from {}'.format(source)),
+                    file_count, self, wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+            
+            task = 0
+            while task < file_count:
+                if task_progress.WasCancelled():
+                    task_progress.Destroy()
+                    break
+                
+                self.dest_area.AddFile(files[task][0], files[task][1], target_dir)
+                
+                task += 1
+                task_progress.Update(task)
+        
+        else:
+            for F in files:
+                self.dest_area.AddFile(F[0], F[1], target_dir)
     
     
     def AddPathDeprecated(self, event):
@@ -551,7 +615,15 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
         wxMixinListCtrl.TextEditMixin.OpenEditor(self, self.target_col, row)
     
     
-    def AddItem(self, filename, source_dir, target_dir):
+    def AddFile(self, filename, source_dir, target_dir):
+        Logger.Debug(__name__,
+            GT(u'Adding filename: {}, source: {}, target: {}'.format(
+                                                                        filename, source_dir,
+                                                                        target_dir
+                                                                    )
+            )
+        )
+        
         source_col = 1
         target_col = 2
         
