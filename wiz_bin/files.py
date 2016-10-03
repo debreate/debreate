@@ -451,7 +451,7 @@ class Panel(wx.Panel, WizardPage):
         self.dest_area.DeleteAllItems()
         self.list_data = []
     
-    def SetFieldData(self, data):
+    def SetFieldDataDeprecated(self, data):
         # Clear files list
         self.list_data = []
         self.dest_area.DeleteAllItems()
