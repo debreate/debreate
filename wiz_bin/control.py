@@ -7,8 +7,7 @@ import wx, os
 
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_CONTROL, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE
-from dbr import DebugEnabled
+from dbr.constants import ID_CONTROL
 from dbr.wizard import WizardPage
 
 
