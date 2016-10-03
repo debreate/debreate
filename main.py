@@ -3,7 +3,7 @@
 
 
 # System modules
-import wx, os, shutil, subprocess, webbrowser, tarfile
+import wx, os, shutil, subprocess, webbrowser, tarfile, magic
 from urllib2 import URLError, HTTPError
 
 # Local modules
@@ -14,7 +14,7 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
-    PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX
+    PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX, compression_mimetypes
 from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
@@ -383,17 +383,34 @@ class MainWindow(wx.Frame):
             # Get the path and set the saved project
             self.saved_project = dia.GetPath()
             
-            p_open = open(self.saved_project, u'r')
-            p_text = p_open.read()
-            p_open.close()
+            file_identifier = magic.open(magic.MAGIC_MIME)
+            file_identifier.load()
+            file_type = file_identifier.file(self.saved_project).split(u';')[0]
+            file_identifier.close()
             
-            filename = os.path.split(self.saved_project)[1]
+            if file_type == u'text/plain':
+                p_open = open(self.saved_project, u'r')
+                p_text = p_open.read()
+                p_open.close()
+                
+                filename = os.path.split(self.saved_project)[1]
+                
+                self.OpenProjectLegacy(p_text, filename)
+                
+                return
             
-            self.OpenProjectLegacy(p_text, filename)
+            self.OpenProject(self.saved_project, file_type)
     
-    
-    def OpenProject(self, filename):
-        pass
+    #  TODO: Finish defining
+    def OpenProject(self, filename, file_type):
+        if DebugEnabled():
+            print(u'Opening project: {}, Type: {}'.format(filename, file_type))
+        
+        if file_type in compression_mimetypes:
+            compression_id = compression_mimetypes[file_type]
+        
+        if DebugEnabled():
+            print(u'Compression format: {}'.format(compression_formats[compression_id]))
     
     
     def OpenProjectLegacy(self, data, filename):
@@ -624,7 +641,7 @@ class MainWindow(wx.Frame):
             z_format = self.GetCompression()
             
             # Uncompressed tarball
-            if not z_format:
+            if z_format == u'None':
                 z_format = u'w'
             else:
                 z_format = u'w:{}'.format(z_format)
