@@ -1,7 +1,6 @@
 ﻿0.8.0 Release Changes:
 - Fix & re-enable QuickBuild
 - Enable opening of zip formatted projects
-- Add functionality for opening legacy project files
 - Only install *.mo locale files
 - Add Launchpad packages for 'yakkety'
 - Add gzip support to read compressed changelog
