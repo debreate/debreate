@@ -35,6 +35,7 @@ FILES_wiz_bin = \
 	wiz_bin/depends.py \
 	wiz_bin/files.py \
 	wiz_bin/greeting.py \
+	wiz_bin/man.py \
 	wiz_bin/menu.py \
 	wiz_bin/scripts.py
 
