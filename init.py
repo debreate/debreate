@@ -9,12 +9,20 @@
 #  reset it to its default settings.
 
 
+import sys
+
 # Modules to define required version of wx
 import wxversion
-wxversion.select([u'3.0', u'2.8'])
+
+if sys.argv[1] == u'legacy':
+    wxversion.select([u'2.8'])
+
+else:
+    wxversion.select([u'3.0', u'2.8'])
+
 
 # System modules
-import wx, os, sys
+import wx, os
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
