@@ -112,6 +112,9 @@ ID_MAN = wx.NewId()
 ID_MENU = wx.NewId()
 ID_SCRIPTS = wx.NewId()
 
+# ID for custom fields
+ID_CUSTOM = wx.NewId()
+
 # Error IDs
 ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
