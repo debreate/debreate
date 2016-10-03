@@ -13,7 +13,7 @@ from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
-    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats
+    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP
 from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
@@ -138,30 +138,38 @@ class MainWindow(wx.Frame):
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         # Project compression options
-        # FIXME: Need custom IDs
         self.menu_compression = wx.Menu()
         
         opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ID_ZIP_NONE,
-                GT(u'Uncompressed'), kind=wx.ITEM_RADIO)
+                GT(u'Uncompressed'), GT(u'Use uncompressed tarball for project save format'),
+                kind=wx.ITEM_RADIO)
         opt_compression_gz = wx.MenuItem(self.menu_compression, ID_ZIP_GZ,
-                GT(u'Gzip'), kind=wx.ITEM_RADIO)
+                GT(u'Gzip'), GT(u'Use compressed Gzip tarball for project save format'),
+                kind=wx.ITEM_RADIO)
         opt_compression_bz2 = wx.MenuItem(self.menu_compression, ID_ZIP_BZ2,
-                GT(u'Bzip2'), kind=wx.ITEM_RADIO)
+                GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
+                kind=wx.ITEM_RADIO)
         opt_compression_xz = wx.MenuItem(self.menu_compression, ID_ZIP_XZ,
-                GT(u'XZ'), kind=wx.ITEM_RADIO)
+                GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
+                kind=wx.ITEM_RADIO)
+        opt_compression_zip = wx.MenuItem(self.menu_compression, ID_ZIP_ZIP,
+                GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
+                kind=wx.ITEM_RADIO)
         
         compression_opts = (
             opt_compression_uncompressed,
             opt_compression_gz,
             opt_compression_bz2,
             opt_compression_xz,
+            opt_compression_zip,
         )
         
         for OPT in compression_opts:
             self.menu_compression.AppendItem(OPT)
         
-        # FIXME: Re-enable when ready
+        # TODO: Re-enable when formats are ready for use
         self.menu_compression.Enable(ID_ZIP_XZ, False)
+        self.menu_compression.Enable(ID_ZIP_ZIP, False)
         
         # Default compression
         self.menu_compression.Check(ID_ZIP_BZ2, True)
