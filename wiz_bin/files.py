@@ -9,7 +9,7 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM
-from dbr import DebugEnabled, Logger
+from dbr import Logger
 from dbr.wizard import WizardPage
 
 
@@ -45,12 +45,8 @@ class Panel(wx.Panel, WizardPage):
         self.add_file = wx.MenuItem(self.menu, ID_AddFile, GT(u'Add File'))
         self.refresh = wx.MenuItem(self.menu, ID_Refresh, GT(u'Refresh'))
         
-        if DebugEnabled():
-            wx.EVT_MENU(self, ID_AddDir, self.AddPath)
-            wx.EVT_MENU(self, ID_AddFile, self.AddPath)
-        else:
-            wx.EVT_MENU(self, ID_AddDir, self.AddPathDeprecated)
-            wx.EVT_MENU(self, ID_AddFile, self.AddPathDeprecated)
+        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
+        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
         wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         self.menu.AppendItem(self.add_dir)
@@ -68,16 +64,8 @@ class Panel(wx.Panel, WizardPage):
         path_remove = dbr.buttons.ButtonDel(self)
         button_clear = dbr.buttons.ButtonClear(self)
         
-        if DebugEnabled():
-            wx.EVT_BUTTON(path_add, -1, self.AddPath)
-        else:
-            wx.EVT_BUTTON(path_add, -1, self.AddPathDeprecated)
-        
-        if DebugEnabled():
-            wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
-        else:
-            wx.EVT_BUTTON(path_remove, -1, self.DelPathDeprecated)
-        
+        wx.EVT_BUTTON(path_add, -1, self.AddPath)
+        wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
         wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
         
         # ----- Destination path
@@ -137,11 +125,6 @@ class Panel(wx.Panel, WizardPage):
         # Set the width of first column on creation
         parent_size = self.GetGrandParent().GetSize()
         parent_width = parent_size[1]
-        
-        # Old style list
-        if not DebugEnabled():
-            self.dest_area.InsertColumn(0, GT(u'File'), width=parent_width/3-10)
-            self.dest_area.InsertColumn(1, GT(u'Target'))
         
         wx.EVT_KEY_DOWN(self.dest_area, self.DelPathDeprecated)
         
@@ -241,9 +224,8 @@ class Panel(wx.Panel, WizardPage):
         
         elif os.path.isdir(source):
             for PATH, DIRS, FILES in os.walk(source):
-                if DebugEnabled():
-                    for filename in FILES:
-                        files.append((filename, PATH))
+                for filename in FILES:
+                    files.append((filename, PATH))
         
         file_count = len(files)
         
@@ -301,79 +283,6 @@ class Panel(wx.Panel, WizardPage):
         
             self.dest_area.Sort()
     
-    
-    def AddPathDeprecated(self, event):
-        total_files = 0
-        pin = self.dir_tree.GetPath()
-        
-        target_col = 1
-        
-        if DebugEnabled():
-            target_col = 2
-        
-        for item in self.radio_group:
-            if self.radio_cst.GetValue() == True:
-                pout = self.dest_cust.GetValue()
-            elif item.GetValue() == True:
-                pout = item.GetLabel()
-        if os.path.isdir(pin):
-            for root, dirs, files in os.walk(pin):
-                for F in files:
-                    total_files += 1
-            
-            if total_files: # Continue if files are found
-                cont = True
-                count = 0
-                msg_files = GT(u'Getting files from %s')
-                loading = wx.ProgressDialog(GT(u'Progress'), msg_files % (pin), total_files, self,
-                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                for root, dirs, files in os.walk(pin):
-                    for filename in files:
-                        if cont == (False,False):  # If "cancel" pressed destroy the progress window
-                            break
-                        else:
-                            sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
-                            absolute_filename = u'{}/{}'.format(root, F)
-                            if sub_dir != wx.EmptyString:
-                                # Add the sub-dir to dest
-                                dest = u'%s%s' % (pout, sub_dir)
-                                
-                                # Hidden list
-                                self.list_data.insert(0, (absolute_filename, F, dest))
-                                
-                                if DebugEnabled():
-                                    self.dest_area.AddItem(filename, root, pout)
-                                
-                                else:
-                                    self.dest_area.InsertStringItem(0, filename)
-                                    self.dest_area.SetStringItem(0, target_col, dest)
-                            
-                            else:
-                                self.list_data.insert(0, (absolute_filename, F, pout))
-                                self.dest_area.InsertStringItem(0, F)
-                                self.dest_area.SetStringItem(0, target_col, pout)
-                            count += 1
-                            cont = loading.Update(count)
-                            if os.access(absolute_filename, os.X_OK):
-                                self.dest_area.SetItemTextColour(0, u'red')
-        
-        elif os.path.isfile(pin):
-            filename = os.path.basename(pin)
-            source_dir = os.path.dirname(pin)
-            
-            # Add info to unseen list
-            self.list_data.insert(0, (pin, filename, pout))
-            
-            if DebugEnabled():
-                self.dest_area.AddItem(filename, source_dir, pout)
-            
-            else:
-                self.dest_area.InsertStringItem(0, filename)
-                self.dest_area.SetStringItem(0, target_col, pout)
-            
-            # If file is executable, mark with red text
-            if os.access(pin, os.X_OK):
-                self.dest_area.SetItemTextColour(0, u'red')
     
     def OnRefresh(self, event):
         path = self.dir_tree.GetPath()
@@ -470,19 +379,23 @@ class Panel(wx.Panel, WizardPage):
                 # False changes to true if src file is executable
                 if src[0][-1] == u'*':
                     src = (src[0][:-1], True) # Set executable flag and remove "*"
-                absolute_filename = files_data[files_total].split(u' -> ')[1]
+                filename = files_data[files_total].split(u' -> ')[1]
                 dest = files_data[files_total].split(u' -> ')[2]
                 
                 # Check if files still exist
                 if os.path.exists(src[0]):
-                    self.dest_area.InsertStringItem(0, absolute_filename)
-                    self.dest_area.SetStringItem(0, 1, dest)
-                    self.list_data.insert(0, (src[0], absolute_filename, dest))
+                    # Deprecated
+                    #self.dest_area.InsertStringItem(0, absolute_filename)
+                    #self.dest_area.SetStringItem(0, 1, dest)
+                    self.dest_area.AddFile(filename, os.path.dirname(src[0]), dest)
+                    self.list_data.insert(0, (src[0], filename, dest))
                     # Check if file is executable
                     if src[1]:
                         self.dest_area.SetItemTextColour(0, u'red') # Set text color to red
                 else:
                     missing_files.append(src[0])
+                
+            self.dest_area.Sort()
             
             # If files are missing show a message
             if len(missing_files):
@@ -591,16 +504,13 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         self.source_col = 1
         self.target_col = 2
         
-        # DEBUG:
-        # TODO: Remove from DEBUG when finished
-        if DebugEnabled():
-            width=self.debreate.GetSize()[1]/3-10
-            
-            self.InsertColumn(self.filename_col, GT(u'File'), width=width)
-            self.InsertColumn(self.source_col, GT(u'Source Directory'), width=width)
-            self.InsertColumn(self.target_col, GT(u'Staged Target'))
-            
-            wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
+        width=self.debreate.GetSize()[1]/3-10
+        
+        self.InsertColumn(self.filename_col, GT(u'File'), width=width)
+        self.InsertColumn(self.source_col, GT(u'Source Directory'), width=width)
+        self.InsertColumn(self.target_col, GT(u'Staged Target'))
+        
+        wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
         
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
     
