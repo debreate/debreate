@@ -21,15 +21,21 @@ class Panel(wx.Panel, WizardPage):
         
         self.package_text = wx.StaticText(self, -1, GT(u'Package'))
         self.package = wx.TextCtrl(self)
+        
         self.version_text = wx.StaticText(self, -1, GT(u'Version'))
         self.version = wx.TextCtrl(self)
+        
         self.distribution_text = wx.StaticText(self, -1, GT(u'Distribution'))
         self.distribution = wx.TextCtrl(self)
+        
         self.urgency_text = wx.StaticText(self, -1, GT(u'Urgency'))
         self.urgency_opt = (u'low', u'HIGH')
         self.urgency = wx.Choice(self, choices=self.urgency_opt)
+        self.urgency.SetSelection(0)
+        
         self.maintainer_text = wx.StaticText(self, -1, GT(u'Maintainer'))
         self.maintainer = wx.TextCtrl(self)
+        
         self.email_text = wx.StaticText(self, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self)
         
