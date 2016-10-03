@@ -418,7 +418,7 @@ class MainWindow(wx.Frame):
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        self.page_files.SetFieldData(files_data)
+        self.page_files.SetFieldDataDeprecated(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
