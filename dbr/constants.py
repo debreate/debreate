@@ -57,6 +57,7 @@ HOMEPAGE = u'http://debreate.sourceforge.net/'
 gh_project = u'https://github.com/AntumDeluge/debreate'
 sf_project = u'https://sourceforge.net/projects/debreate'
 
+PROJECT_LEGACY_SUFFIX = u'dbp'
 PROJECT_FILENAME_SUFFIX = u'dbpz'
 
 # *** Python Info *** #
