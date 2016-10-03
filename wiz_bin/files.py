@@ -3,7 +3,7 @@
 
 # System modules
 import wx, os
-from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterMixin
+from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 
 # Local modules
 import dbr
