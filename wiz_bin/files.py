@@ -298,6 +298,8 @@ class Panel(wx.Panel, WizardPage):
             else:
                 for F in files:
                     self.dest_area.AddFile(F[0], F[1], target_dir)
+        
+            self.dest_area.Sort()
     
     
     def AddPathDeprecated(self, event):
@@ -576,7 +578,7 @@ class Panel(wx.Panel, WizardPage):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterMixin):
+class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id,
                 style=wx.BORDER_SIMPLE|wx.LC_REPORT)
@@ -674,6 +676,13 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterM
         
         for x in range(file_count):
             self.Select(x)
+    
+    
+    ## Sorts listed items in target column alphabetially
+    #  
+    #  TODO: Sort listed items
+    def Sort(self):
+        pass
     
     
     ## Removes selected files from list
