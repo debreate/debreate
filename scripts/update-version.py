@@ -2,107 +2,51 @@
 # -*- coding: utf-8 -*-
 
 
-from os.path import exists
-import sys
+import os, sys, errno
+from scripts_globals import version_files, GetInfoValue
 
 
-info_file = 'INFO'
-constants_file = 'dbr/constants.py'
-makefile_file = 'Makefile'
-doxygen_file = 'docs/Doxyfile'
+for F in version_files:
+    if not os.path.isfile(version_files[F]):
+        print('[ERROR] Required file not found: {}'.format(version_files[F]))
+        sys.exit(errno.ENOENT)
 
-for I in (info_file, constants_file, makefile_file, doxygen_file):
-    if not exists(I):
-        print('ERROR: "{}" file not found, cannot update version'.format(I))
-        sys.exit(1)
 
-FILE = open(info_file)
-info_data = FILE.read().split('\n')
-FILE.close()
-
-keys = {}
-
-for l in info_data:
-    if '=' in l:
-        key = l.split('=')[0]
-        value = l.split('=')[1]
-        keys[key] = value
-
-VERSION = keys['VERSION']
+VERSION = GetInfoValue('VERSION')
 VER_MAJ = VERSION.split('.')[0]
 VER_MIN = VERSION.split('.')[1]
 VER_REL = VERSION.split('.')[2]
-RELEASE = keys['RELEASE']
+RELEASE = GetInfoValue('RELEASE')
 
 
-# Update version numbers in 'constants.py'
-FILE = open(constants_file, 'r')
-constants_data = FILE.read().split('\n')
-FILE.close()
-
-file_changed = False
-
-for l in constants_data:
-    index = constants_data.index(l)
-    line_start = l[:9]
+def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
+    l_length = len(testline)
     
-    if (line_start == 'VER_MAJ ='):
-        constants_data[index] = 'VER_MAJ = {}'.format(VER_MAJ)
-        file_changed = True
-    
-    elif (line_start == 'VER_MIN ='):
-        constants_data[index] = 'VER_MIN = {}'.format(VER_MIN)
-        file_changed = True
-    
-    elif (line_start == 'VER_REL ='):
-        constants_data[index] = 'VER_REL = {}'.format(VER_REL)
-        file_changed = True
-    
-    elif (line_start == 'RELEASE ='):
-        constants_data[index] = 'RELEASE = {}'.format(RELEASE)
-        file_changed = True
-
-if file_changed:
-    FILE = open(constants_file, 'w')
-    FILE.write('\n'.join(constants_data))
+    FILE = open(filename, 'r')
+    lines_orig = FILE.read().split('\n')
     FILE.close()
-
-
-# Update version numbers in 'Makefile'
-FILE = open(makefile_file, 'r')
-makefile_data = FILE.read().split('\n')
-FILE.close()
-
-file_changed = False
-
-for l in makefile_data:
-    index = makefile_data.index(l)
-    line_start = l[:9]
     
-    if line_start == 'VERSION =':
-        makefile_data[index] = 'VERSION = {}'.format(VERSION)
-        file_changed = True
+    lines_new = list(lines_orig)
+    
+    for l in lines_new:
+        l_index = lines_new.index(l)
+        if l[:l_length] == testline:
+            lines_new[l_index] = '{}{}{}'.format(testline, newvalue, suffix)
+            break
+    
+    if lines_new != lines_orig:
+        print('Writing new version information to {}'.format(filename))
+        
+        FILE = open(filename, 'w')
+        FILE.write('\n'.join(lines_new))
+        FILE.close()
 
-if file_changed:
-    FILE = open(makefile_file, 'w')
-    FILE.write('\n'.join(makefile_data))
-    FILE.close()
 
 
-# Update version in 'Doxyfile'
-FILE = open(doxygen_file, 'r')
-doxygen_data = FILE.read().split('\n')
-FILE.close()
-
-file_changed = False
-
-for l in doxygen_data:
-    index = doxygen_data.index(l)
-    if 'PROJECT_NUMBER         =' in l:
-        doxygen_data[index] = 'PROJECT_NUMBER         = {}'.format(VERSION)
-        file_changed = True
-
-if file_changed:
-    FILE = open(doxygen_file, 'w')
-    FILE.write('\n'.join(doxygen_data))
-    FILE.close()
+UpdateSingleLineFile(version_files['constants'], 'VER_MAJ = ', newvalue=VER_MAJ)
+UpdateSingleLineFile(version_files['constants'], 'VER_MIN = ', newvalue=VER_MIN)
+UpdateSingleLineFile(version_files['constants'], 'VER_REL = ', newvalue=VER_REL)
+UpdateSingleLineFile(version_files['constants'], 'RELEASE = ', newvalue=RELEASE)
+UpdateSingleLineFile(version_files['makefile'], 'VERSION = ')
+UpdateSingleLineFile(version_files['doxyfile'], 'PROJECT_NUMBER         = ')
+UpdateSingleLineFile(version_files['locale'], '"Project-Id-Version: Debreate ', suffix='\\n"')
