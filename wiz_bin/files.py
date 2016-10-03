@@ -527,6 +527,16 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
         event.Skip()
     
     
+    ## Defines actions to take when left-click or left-double-click event occurs
+    #  
+    #  The super method is overridden to ensure that 'event.Skip' is called.
+    #  TODO: Notify wxPython project of 'event.Skip' error
+    def OnLeftDown(self, event=None):
+        wxMixinListCtrl.TextEditMixin.OnLeftDown(self, event)
+        
+        event.Skip()
+    
+    
     ## Opens an editor for target
     #  
     #  The super method is overridden to only
