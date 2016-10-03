@@ -250,7 +250,8 @@ class Panel(wx.Panel, WizardPage):
         
         # Show a progress dialog that can be aborted
         if file_count > efficiency_threshold:
-            task_progress = wx.ProgressDialog(GT(u'Progress'), GT(u'Getting files from {}'.format(source)),
+            task_msg = GT(u'Getting files from {}'.format(source))
+            task_progress = wx.ProgressDialog(GT(u'Progress'), task_msg,
                     file_count, self, wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
             
             task = 0
@@ -259,10 +260,13 @@ class Panel(wx.Panel, WizardPage):
                     task_progress.Destroy()
                     break
                 
-                self.dest_area.AddFile(files[task][0], files[task][1], target_dir)
+                # Get the index before progress dialog is updated
+                task_index = task
                 
                 task += 1
-                task_progress.Update(task)
+                task_progress.Update(task, u'{} ({} of {})'.format(task_msg, task, file_count))
+                
+                self.dest_area.AddFile(files[task_index][0], files[task_index][1], target_dir)
         
         else:
             for F in files:
