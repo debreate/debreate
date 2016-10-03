@@ -246,31 +246,58 @@ class Panel(wx.Panel, WizardPage):
                         files.append((filename, PATH))
         
         file_count = len(files)
-        efficiency_threshold = 100
         
-        # Show a progress dialog that can be aborted
-        if file_count > efficiency_threshold:
-            task_msg = GT(u'Getting files from {}'.format(source))
-            task_progress = wx.ProgressDialog(GT(u'Progress'), task_msg,
-                    file_count, self, wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+        # Set the maximum file count to process without showing progress dialog
+        efficiency_threshold = 250
+        
+        # Set the maximum file count to process without showing warning dialog
+        warning_threshhold = 1000
+        
+        get_files = True
+        if file_count > warning_threshhold:
+            count_warnmsg = GT(u'Importing {} files'.format(file_count))
+            count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
+            count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
             
-            task = 0
-            while task < file_count:
-                if task_progress.WasCancelled():
-                    task_progress.Destroy()
-                    break
-                
-                # Get the index before progress dialog is updated
-                task_index = task
-                
-                task += 1
-                task_progress.Update(task, u'{} ({} of {})'.format(task_msg, task, file_count))
-                
-                self.dest_area.AddFile(files[task_index][0], files[task_index][1], target_dir)
+            get_files = wx.MessageDialog(self, count_warnmsg, GT(u'WARNING'),
+                    style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING).ShowModal() == wx.ID_YES
         
-        else:
-            for F in files:
-                self.dest_area.AddFile(F[0], F[1], target_dir)
+        if get_files:
+            # Show a progress dialog that can be aborted
+            if file_count > efficiency_threshold:
+                task_msg = GT(u'Getting files from {}'.format(source))
+                task_progress = wx.ProgressDialog(GT(u'Progress'), u'{}\n'.format(task_msg), file_count, self,
+                        wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                
+                # Add text to show current file number being processed
+                count_text = wx.StaticText(task_progress, wx.ID_ANY, u'0 / {}'.format(file_count))
+                tprogress_layout = task_progress.GetSizer()
+                tprogress_layout.Insert(1, count_text, -1, wx.ALIGN_CENTER)
+                
+                # Resize the dialog to fit the new text
+                tprogress_size = task_progress.GetSize()
+                task_progress.SetSize(wx.Size(tprogress_size[0], tprogress_size[1] + tprogress_size[1]/9))
+                
+                task_progress.Layout()
+                
+                task = 0
+                while task < file_count:
+                    if task_progress.WasCancelled():
+                        task_progress.Destroy()
+                        break
+                    
+                    # Get the index before progress dialog is updated
+                    task_index = task
+                    
+                    task += 1
+                    count_text.SetLabel(u'{} / {}'.format(task, file_count))
+                    task_progress.Update(task)#, u'{}\n{} / {}'.format(task_msg, task, file_count))
+                    
+                    self.dest_area.AddFile(files[task_index][0], files[task_index][1], target_dir)
+            
+            else:
+                for F in files:
+                    self.dest_area.AddFile(F[0], F[1], target_dir)
     
     
     def AddPathDeprecated(self, event):
@@ -621,6 +648,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterM
     
     
     def AddFile(self, filename, source_dir, target_dir):
+        '''
         Logger.Debug(__name__,
             GT(u'Adding filename: {}, source: {}, target: {}'.format(
                                                                         filename, source_dir,
@@ -628,6 +656,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterM
                                                                     )
             )
         )
+        '''
         
         source_col = 1
         target_col = 2
@@ -664,3 +693,62 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterM
             
             self.DeleteItem(current_selected)
             selected_count = self.GetSelectedItemCount()
+
+
+## A custom progress dialog
+class ProgressDialog(wx.Dialog):
+    def __init__(self, parent, title, message, task_count):
+        wx.Dialog.__init__(self, parent, wx.ID_ANY, title,
+                style=wx.DEFAULT_DIALOG_STYLE)
+        
+        self.task_count = task_count
+        
+        # FIXME: How to make ProgressDialog inherit wx.ProgressDialog class
+        #self.progress_dialog = wx.ProgressDialog(title, message, task_count, self, style)
+        
+        message_text = wx.StaticText(self, wx.ID_ANY, message)
+        self.count_text = wx.StaticText(self, wx.ID_ANY, u'0 / {}'.format(task_count))
+        self.progress = wx.Gauge(self, wx.ID_ANY, task_count)
+        
+        layout = wx.BoxSizer(wx.VERTICAL)
+        layout.Add(message_text, -1)
+        layout.Add(self.count_text, -1, wx.ALIGN_CENTER)
+        layout.Add(self.progress, -1, wx.ALIGN_CENTER|wx.EXPAND)
+        
+        # Resize the dialog to fit new text
+        #self.progress_size = self.progress_dialog.GetSize()
+        #self.progress_size = wx.Size(self.progress_size[0], self.progress_size[1] + self.progress_size[1]/9)
+        #self.progress_dialog.SetSize(self.progress_size)
+        
+        self.SetSizer(layout)
+        self.SetAutoLayout(True)
+        self.Layout()
+        
+        #self.progress_dialog.Bind(wx.EVT_SIZE, self.OnBorderResize)
+        
+        self.ShowModal()
+    
+    
+    def Update(self, *args, **kwargs):
+        self.count_text.SetLabel(u'{} / {}'.format(args[0], self.task_count))
+        self.progress.SetValue(args[0])
+        
+        self.count_text.Refresh()
+        self.progress.Refresh()
+        self.Refresh()
+    
+    
+    def WasCancelled(self):
+        return False
+    
+    
+    def Destroy(self):
+        self.progress_dialog.Destroy()
+        self.EndModal()
+        del(self)
+    
+    
+    def OnBorderResize(self, event=None):
+        if event != None:
+            # FIXME: Hack
+            self.SetSize(self.progress_size)
