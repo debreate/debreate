@@ -91,6 +91,15 @@ compression_formats = {
     ID_ZIP_GZ: u'gz',
     ID_ZIP_BZ2: u'bz2',
     ID_ZIP_XZ: u'xz',
+    ID_ZIP_ZIP: u'zip',
+}
+
+compression_mimetypes = {
+    u'application/x-tar': ID_ZIP_NONE,
+    u'application/gzip': ID_ZIP_GZ,
+    u'application/x-bzip2': ID_ZIP_BZ2,
+    u'application/x-xz': ID_ZIP_XZ,
+    u'application/zip': ID_ZIP_ZIP,
 }
 
 # FIXME: Unused IDs
