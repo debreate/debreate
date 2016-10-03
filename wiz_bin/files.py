@@ -64,7 +64,7 @@ class Panel(wx.Panel, WizardPage):
         button_clear = dbr.buttons.ButtonClear(self)
         
         wx.EVT_BUTTON(path_add, -1, self.AddPathDeprecated)
-        wx.EVT_BUTTON(path_remove, -1, self.DelPath)
+        wx.EVT_BUTTON(path_remove, -1, self.DelPathDeprecated)
         wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
         
         # ----- Destination path
@@ -128,7 +128,7 @@ class Panel(wx.Panel, WizardPage):
             self.dest_area.InsertColumn(0, GT(u'File'), width=parent_width/3-10)
             self.dest_area.InsertColumn(1, GT(u'Target'))
         
-        wx.EVT_KEY_DOWN(self.dest_area, self.DelPath)
+        wx.EVT_KEY_DOWN(self.dest_area, self.DelPathDeprecated)
         
         LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
         LMR_sizer.Add(self.dest_area, 1, wx.EXPAND)
@@ -286,7 +286,16 @@ class Panel(wx.Panel, WizardPage):
             count += 1
             self.dest_area.Select(count)
     
-    def DelPath(self, event):
+    
+    ## Removes selected files from list
+    #  
+    #  TODO: Define
+    def RemoveSelected(self, event):
+        pass
+    
+    
+    # FIXME: Deprecated; Remove with self.RemoveSelected
+    def DelPathDeprecated(self, event):
         try:
             modifier = event.GetModifiers()
             keycode = event.GetKeyCode()
