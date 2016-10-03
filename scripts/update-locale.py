@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# TODO: This script is incomplete
+
 
 import os, sys, errno
 from commands import getstatusoutput
