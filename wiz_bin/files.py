@@ -489,17 +489,22 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
         
         self.debreate = parent.debreate
         
+        self.filename_col = 0
+        self.source_col = 1
+        self.target_col = 2
         
         # DEBUG:
         # TODO: Remove from DEBUG when finished
         if DebugEnabled():
             width=self.debreate.GetSize()[1]/3-10
             
-            self.InsertColumn(0, GT(u'File'), width=width)
-            self.InsertColumn(1, GT(u'Source Directory'), width=width)
-            self.InsertColumn(2, GT(u'Staged Target'))
+            self.InsertColumn(self.filename_col, GT(u'File'), width=width)
+            self.InsertColumn(self.source_col, GT(u'Source Directory'), width=width)
+            self.InsertColumn(self.target_col, GT(u'Staged Target'))
             
             wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
+        
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
     
     
     def OnInsertItem(self, event):
@@ -522,6 +527,20 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
         event.Skip()
     
     
+    ## Opens an editor for target
+    #  
+    #  The super method is overridden to only
+    #  allow editing the "target" column.
+    #  
+    #  \param col
+    #    \b \e int : Column received from the
+    #                event (replaced with "target" column)
+    #  \param row
+    #    \b \e int : Row index to be edited
+    def OpenEditor(self, col, row):
+        wxMixinListCtrl.TextEditMixin.OpenEditor(self, self.target_col, row)
+    
+    
     def AddItem(self, filename, source_dir, target_dir):
         source_col = 1
         target_col = 2
@@ -537,7 +556,7 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
     def SelectAll(self):
         file_count = self.GetItemCount()
         
-        for x in range(0, file_count):
+        for x in range(file_count):
             self.Select(x)
     
     
