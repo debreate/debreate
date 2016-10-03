@@ -23,3 +23,20 @@ debreate (0.8.0) xenial; urgency=high
     Fixed bug where importing files progress dialog cannot be cancelled
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  03 Oct 2016 02:33:38 -0700
+
+
+debreate (0.7.11) xenial; urgency=low
+
+  * add template generation for copyright
+    create generic Makefile
+    increment version with 'update-version.py' script
+    change some string formatting methods (use 'string.format()')
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Tue, 06 Sep 2016 17:58:53 -0700
+
+
+debreate (0.7.10) xenial; urgency=low
+
+  * Initial debianized release
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 04 Sep 2016 02:09:46 -0700
