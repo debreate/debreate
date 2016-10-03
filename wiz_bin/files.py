@@ -214,7 +214,7 @@ class Panel(wx.Panel, WizardPage):
                 pout = item.GetLabel()
         if os.path.isdir(pin):
             for root, dirs, files in os.walk(pin):
-                for file in files:
+                for F in files:
                     total_files += 1
             
             if total_files: # Continue if files are found
@@ -229,13 +229,13 @@ class Panel(wx.Panel, WizardPage):
                             break
                         else:
                             sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
+                            absolute_filename = u'{}/{}'.format(root, F)
                             if sub_dir != wx.EmptyString:
                                 # Add the sub-dir to dest
                                 dest = u'%s%s' % (pout, sub_dir)
-                                #self.list_data.insert(0, ("%s/%s" % (root, file), "%s/%s" % (sub_dir[1:], file), dest))
                                 
                                 # Hidden list
-                                self.list_data.insert(0, (u'%s/%s' % (root, file), file, dest))
+                                self.list_data.insert(0, (absolute_filename, F, dest))
                                 
                                 if DebugEnabled():
                                     self.dest_area.AddItem(filename, root, pout)
@@ -245,12 +245,12 @@ class Panel(wx.Panel, WizardPage):
                                     self.dest_area.SetStringItem(0, target_col, dest)
                             
                             else:
-                                self.list_data.insert(0, (u'%s/%s' % (root, file), file, pout))
-                                self.dest_area.InsertStringItem(0, file)
+                                self.list_data.insert(0, (absolute_filename, F, pout))
+                                self.dest_area.InsertStringItem(0, F)
                                 self.dest_area.SetStringItem(0, target_col, pout)
                             count += 1
                             cont = loading.Update(count)
-                            if os.access(u'%s/%s' % (root,file), os.X_OK):
+                            if os.access(absolute_filename, os.X_OK):
                                 self.dest_area.SetItemTextColour(0, u'red')
         
         elif os.path.isfile(pin):
@@ -308,9 +308,9 @@ class Panel(wx.Panel, WizardPage):
             for path in selected:
                 # Remove the item from the invisible list
                 for item in self.list_data:
-                    file = self.dest_area.GetItemText(path)
+                    filename = self.dest_area.GetItemText(path)
                     dest = self.dest_area.GetItem(path, 1).GetText()
-                    if file.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
+                    if filename.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
                         toremove.append(item)
                     
                 self.dest_area.DeleteItem(path) # Remove the item from the visible list
@@ -364,14 +364,14 @@ class Panel(wx.Panel, WizardPage):
                 # False changes to true if src file is executable
                 if src[0][-1] == u'*':
                     src = (src[0][:-1], True) # Set executable flag and remove "*"
-                file = files_data[files_total].split(u' -> ')[1]
+                absolute_filename = files_data[files_total].split(u' -> ')[1]
                 dest = files_data[files_total].split(u' -> ')[2]
                 
                 # Check if files still exist
                 if os.path.exists(src[0]):
-                    self.dest_area.InsertStringItem(0, file)
+                    self.dest_area.InsertStringItem(0, absolute_filename)
                     self.dest_area.SetStringItem(0, 1, dest)
-                    self.list_data.insert(0, (src[0], file, dest))
+                    self.list_data.insert(0, (src[0], absolute_filename, dest))
                     # Check if file is executable
                     if src[1]:
                         self.dest_area.SetItemTextColour(0, u'red') # Set text color to red
