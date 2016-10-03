@@ -280,11 +280,7 @@ class Panel(wx.Panel, WizardPage):
         self.dir_tree.SetPath(path)
     
     def SelectAll(self):
-        total_items = self.dest_area.GetItemCount()
-        count = -1
-        while count < total_items:
-            count += 1
-            self.dest_area.Select(count)
+        self.dest_area.SelectAll()
     
     
     ## Removes selected files from list
@@ -533,3 +529,10 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
         self.InsertStringItem(list_index, filename)
         self.SetStringItem(list_index, source_col, source_dir)
         self.SetStringItem(list_index, target_col, target_dir)
+    
+    
+    def SelectAll(self):
+        file_count = self.GetItemCount()
+        
+        for x in range(0, file_count):
+            self.Select(x)
