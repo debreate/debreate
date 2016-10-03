@@ -78,6 +78,7 @@ class Panel(wx.Panel):
         self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
         self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
         self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
+        self.dep_oper.SetSelection(0)
         self.dep_ver = wx.TextCtrl(self, -1)
         
         depH1 = wx.FlexGridSizer(2, 3, hgap=5)
