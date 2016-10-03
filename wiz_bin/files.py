@@ -7,7 +7,7 @@ from wx.lib.mixins import \
 
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_FILES, ERR_DIR_NOT_AVAILABLE
+from dbr.constants import ID_FILES
 from dbr import DebugEnabled, Logger
 from dbr.wizard import WizardPage
 
