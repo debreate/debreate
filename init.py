@@ -14,7 +14,7 @@ import sys
 # Modules to define required version of wx
 import wxversion
 
-if sys.argv[1] == u'legacy':
+if len(sys.argv) > 1 and sys.argv[1] == u'legacy':
     wxversion.select([u'2.8'])
 
 else:
