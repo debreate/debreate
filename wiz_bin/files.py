@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 
+# System modules
 import wx, os
-from wx.lib.mixins import \
-    listctrl as wxMixinListCtrl
+from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterMixin
 
+# Local modules
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM
@@ -544,12 +545,12 @@ class Panel(wx.Panel, WizardPage):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListCtrl.TextEditMixin):
+class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin, ColumnSorterMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id,
                 style=wx.BORDER_SIMPLE|wx.LC_REPORT)
-        wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
-        wxMixinListCtrl.TextEditMixin.__init__(self)
+        ListCtrlAutoWidthMixin.__init__(self)
+        TextEditMixin.__init__(self)
         
         self.debreate = parent.debreate
         
@@ -596,7 +597,7 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
     #  The super method is overridden to ensure that 'event.Skip' is called.
     #  TODO: Notify wxPython project of 'event.Skip' error
     def OnLeftDown(self, event=None):
-        wxMixinListCtrl.TextEditMixin.OnLeftDown(self, event)
+        TextEditMixin.OnLeftDown(self, event)
         
         event.Skip()
     
@@ -612,7 +613,7 @@ class FileList(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin, wxMixinListC
     #  \param row
     #    \b \e int : Row index to be edited
     def OpenEditor(self, col, row):
-        wxMixinListCtrl.TextEditMixin.OpenEditor(self, self.target_col, row)
+        TextEditMixin.OpenEditor(self, self.target_col, row)
     
     
     def AddFile(self, filename, source_dir, target_dir):
