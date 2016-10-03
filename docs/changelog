@@ -8,11 +8,18 @@ debreate (0.8.0) xenial; urgency=high
     Added system information (Python & wxPython versions) to about dialog
     License templates generation
     License templates added:
+    - BSD-2-Clause
+    - BSD-4-Clause
+    - BSL
     - CC0
+    - EPL-1.0
+    - ISC
     - MIT-X
+    - OFL-1.1
     - Zlib-PNG
     Began adding Doxygen documentation
     Logger added for outputting messages to text log
     Users can place license templates in <HOME>/.local/share/debreate/templates/licenses
+    Fixed bug where importing files progress dialog cannot be cancelled
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 23 Sep 2016 16:14:38 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  03 Oct 2016 02:33:38 -0700
