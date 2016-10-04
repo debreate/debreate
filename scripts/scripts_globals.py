@@ -14,6 +14,8 @@ file_MAKEFILE = '{}/Makefile'.format(root_dir)
 file_DOXYFILE = '{}/docs/Doxyfile'.format(root_dir)
 file_LOCALE = '{}/locale/debreate.pot'.format(root_dir)
 
+file_CHANGELOG = '{}/docs/changelog'.format(root_dir)
+
 if not os.path.isfile(file_INFO):
     print('[ERROR] Required file not found: {}'.format(file_INFO))
     sys.exit(errno.ENOENT)
@@ -25,12 +27,15 @@ f_opened.close()
 keys_INFO = {}
 
 for L in data_INFO:
-    if '=' in L:
-        key = L.split('=')
-        value = key[1]
-        key = key[0].upper()
-        
-        keys_INFO[key] = value
+    if len(L):
+        # Skip lines that begin with hashtag or whitespace
+        if L[0] not in ('#', ' '):
+            if '=' in L:
+                key = L.split('=')
+                value = key[1]
+                key = key[0].upper()
+                
+                keys_INFO[key] = value
 
 
 def GetInfoValue(key):
