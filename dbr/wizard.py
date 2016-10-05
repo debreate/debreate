@@ -9,8 +9,7 @@ from wx.lib.newevent import NewCommandEvent
 # Local imports
 from dbr import Logger
 from dbr.buttons import ButtonNext, ButtonPrev
-from dbr.constants import ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE, ERR_FILE_READ, \
-    ID_SCRIPTS
+from dbr.constants import ERR_DIR_NOT_AVAILABLE
 from dbr.functions import TextIsEmpty
 
 
