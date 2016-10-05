@@ -7,9 +7,10 @@ import wx, os
 from wx.lib.newevent import NewCommandEvent
 
 # Local imports
-from dbr import Logger
+from dbr import Logger, DebugEnabled
+from dbr.language import GT
 from dbr.buttons import ButtonNext, ButtonPrev
-from dbr.constants import ERR_DIR_NOT_AVAILABLE
+from dbr.constants import ERR_DIR_NOT_AVAILABLE, page_ids
 from dbr.functions import TextIsEmpty
 
 
@@ -24,6 +25,8 @@ class Wizard(wx.Panel):
         
         # List of pages available in the wizard
         self.pages = []
+        
+        self.pages_ids = {}
         
         # A Header for the wizard
         self.title = wx.Panel(self, style=wx.RAISED_BORDER)
@@ -83,6 +86,7 @@ class Wizard(wx.Panel):
         
         for page in pages:
             self.pages.append(page)
+            self.pages_ids[page.GetId()] = page.GetName().upper()
             self.sizer.Insert(1, page, 1, wx.EXPAND)
             # Show the first page
             if page != pages[0]:
@@ -182,12 +186,32 @@ class Wizard(wx.Panel):
     def ExportPages(self, page_list, out_dir):
         for P in page_list:
             P.Export(out_dir)
+    
+    
+    ## Fills information for each page when project file is opened
+    #  
+    #  \param files_dir
+    #        \b \e unicode|str : Path to directory where project files have been extracted
+    def ImportPagesInfo(self, files_dir):
+        for PATH, DIRS, FILES in os.walk(files_dir):
+            for F in FILES:
+                for page in self.pages:
+                    page_name = page_ids[page.GetId()].upper()
+                    n_index = len(page_name)
+                    
+                    if F[:n_index] == page_name:
+                        Logger.Debug(__name__,
+                                GT(u'Project file {} matches page {}'.format(F, page_name)))
+                        
+                        page.ImportPageInfo(u'{}/{}'.format(PATH, F))
 
 
 ## Parent class for wizard pages
-class WizardPage():
-    def __init__(self):
-        return
+class WizardPage(wx.ScrolledWindow):
+    def __init__(self, parent, page_id):
+        wx.ScrolledWindow.__init__(self, parent, page_id)
+        
+        self.SetName(page_ids[self.GetId()])
     
     
     def GetPageInfo(self):
@@ -203,9 +227,7 @@ class WizardPage():
             return ERR_DIR_NOT_AVAILABLE
         
         if out_name == wx.EmptyString:
-            out_name = self.GetName()
-        
-        out_name = out_name.upper()
+            out_name = page_ids[self.GetId()].upper()
         
         page_info = self.GetPageInfo()
         
@@ -227,3 +249,7 @@ class WizardPage():
         f_opened.close()
         
         return 0
+    
+    
+    def ImportPageInfo(self, filename):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportPageInfo'.format(self.GetName())))
