@@ -16,10 +16,10 @@ from dbr.wizard import WizardPage
 copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
 
 
-class Panel(wx.Panel, WizardPage):
+class Panel(WizardPage):
     def __init__(self, parent):  # FIXME: ID unused
-        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
-        WizardPage.__init__(self)
+        #wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
+        WizardPage.__init__(self, parent, ID_COPYRIGHT)
         
         self.debreate = parent.parent
         

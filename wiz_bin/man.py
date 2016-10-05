@@ -4,12 +4,13 @@ import wx
 
 from dbr.language import GT
 from dbr.constants import ID_MAN
+from dbr.wizard import WizardPage
 
 
-class Panel(wx.Panel):
+class Panel(WizardPage):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
-        wx.Panel.__init__(self, parent, ID_MAN, name=GT(u'Manpages'))
+        WizardPage.__init__(self, parent, ID_MAN)
         
         self.parent = parent
     

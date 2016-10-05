@@ -12,14 +12,16 @@ from wx.lib.mixins import \
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_DEPENDS
+from dbr.wizard import WizardPage
 
 
 ID_Append = wx.NewId()
 ID_Delete = wx.NewId()
 
-class Panel(wx.Panel):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        #wx.Panel.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        WizardPage.__init__(self, parent, ID_DEPENDS)
         
         # ----- Tool Tips
         dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))
