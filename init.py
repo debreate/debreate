@@ -83,9 +83,9 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     #FR_app.MainLoop()
     
     init_conf_code = InitializeConfig()
-    Logger.Debug(__name__, init_conf_code == ConfCode.SUCCESS)
+    Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        Logger.Error(__name__, GT(u'Could not create configuration, exiting ...'))
+        Logger.Error(script_name, GT(u'Could not create configuration, exiting ...'))
         exit_now = init_conf_code
     
 
@@ -110,7 +110,7 @@ for V in conf_values:
     if value == None:
         value = GetDefaultConfigValue(key)
     
-    Logger.Debug(__name__, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
+    Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
 
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 
