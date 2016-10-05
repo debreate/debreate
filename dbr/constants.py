@@ -5,13 +5,10 @@
 #  Global variables used throughout the application & should remain constant.
 
 
-# System imports
-import sys, os
+# System modules
+import wx, os, sys, errno
 
-# wx imports
-import wx
-
-# Debreate imports
+# Local modules
 from dbr.language import GT
 
 
@@ -109,16 +106,33 @@ ID_DSC = wx.NewId()
 ID_CNG = wx.NewId()
 
 # Page IDs
-ID_BUILD = wx.NewId()
-ID_CHANGELOG = wx.NewId()
-ID_CONTROL = wx.NewId()
-ID_COPYRIGHT = wx.NewId()
-ID_DEPENDS = wx.NewId()
-ID_FILES = wx.NewId()
-ID_GREETING = wx.NewId()
-ID_MAN = wx.NewId()
-ID_MENU = wx.NewId()
-ID_SCRIPTS = wx.NewId()
+next_page_id = 1000
+page_ids = {}
+def NewPageId(page_name=None):
+    global next_page_id
+    
+    this_page_id = next_page_id
+    next_page_id += 1
+    
+    page_ids[this_page_id] = page_name
+    
+    print(u'Adding page ID: {}'.format(this_page_id))
+    
+    return this_page_id
+
+ID_GREETING = NewPageId(GT(u'Greeting'))
+ID_CONTROL = NewPageId(GT(u'Control'))
+ID_DEPENDS = NewPageId(GT(u'Depends'))
+ID_FILES = NewPageId(GT(u'Files'))
+ID_MAN = NewPageId(GT(u'Man'))
+ID_SCRIPTS = NewPageId(GT(u'Scripts'))
+ID_CHANGELOG = NewPageId(GT(u'Changelog'))
+ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
+ID_MENU = NewPageId(GT(u'Menu'))
+ID_BUILD = NewPageId(GT(u'Build'))
+
+for ID in page_ids:
+    print(u'{}: {}'.format(ID, page_ids[ID]))
 
 # ID for custom fields
 ID_CUSTOM = wx.NewId()
@@ -155,3 +169,25 @@ system_licenses_path = u'/usr/share/common-licenses'
 # *** Default *** #
 DEFAULT_SIZE = (800, 650)
 DEFAULT_POS = (0, 0)
+
+
+# *** Define some new error codes *** #
+custom_errno = errno
+current_code = errno.errorcode.keys()[-1]
+
+current_code += 1
+custom_errno.EBADFT = current_code
+custom_errno.errorcode[custom_errno.EBADFT] = u'EBADFT'
+'''
+class custom_errno:
+    errorcode = errno.errorcode
+    
+    current_code = errorcode.keys()[-1]
+    
+    # Bad file type
+    current_code += 1
+    EBADFT = current_code
+    errorcode[EBADFT] = u'EBADFT'
+    
+    def __init__(self):
+        self = errno'''
