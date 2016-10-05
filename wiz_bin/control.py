@@ -11,10 +11,10 @@ from dbr.constants import ID_CONTROL
 from dbr.wizard import WizardPage
 
 
-class Panel(wx.ScrolledWindow, WizardPage):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
-        WizardPage.__init__(self)
+        WizardPage.__init__(self, parent, ID_CONTROL)
+        #wx.ScrolledWindow.__init__(self, parent=parent)
         
         self.wizard = parent
         self.debreate = parent.parent
