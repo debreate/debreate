@@ -172,7 +172,7 @@ class AboutDialog(wx.Dialog):
     #  \param version
     #        String to display
     def SetVersion(self, version):
-        self.app.SetLabel(u"%s %s" % (dbr.APP_NAME, version))
+        self.app.SetLabel(u'{} {}'.format(dbr.APP_NAME, version))
     
     ## Display author's name
     #  
