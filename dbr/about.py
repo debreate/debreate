@@ -74,8 +74,8 @@ class AboutDialog(wx.Dialog):
         link_sizer.Add(self.website, 0, wx.ALIGN_CENTER, 10)
         link_sizer.Add(self.website2, 0, wx.ALIGN_CENTER, 10)
         
-        about_sizer = wx.BoxSizer(wx.VERTICAL)
-        about_sizer.AddMany( [
+        self.about_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.about_sizer.AddMany( [
             (self.graphic, 0, wx.ALIGN_CENTER|wx.ALL, 10),
             (self.app, 0, wx.ALIGN_CENTER|wx.ALL, 10),
             (self.author, 0, wx.ALIGN_CENTER|wx.ALL, 10),
@@ -84,7 +84,7 @@ class AboutDialog(wx.Dialog):
             ] )
         
         t_about.SetAutoLayout(True)
-        t_about.SetSizer(about_sizer)
+        t_about.SetSizer(self.about_sizer)
         t_about.Layout()
         
         ## List of credits
