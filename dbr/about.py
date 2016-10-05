@@ -10,6 +10,7 @@ import wx, os
 # Local modules
 import dbr.font
 from dbr.language import GT
+from dbr import Logger
 
 
 ## Dialog that shows information about the application
@@ -253,6 +254,23 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, job)
     
+    
+    def AddJobs(self, name, jobs, email=wx.EmptyString):
+        if isinstance(jobs, str) or isinstance(jobs, unicode):
+            Logger.Debug(__name__, GT(u'Converting string argument "jobs" to tuple'))
+            jobs = (jobs,)
+        
+        for x in range(len(jobs)):
+            next_item = self.credits.GetItemCount()
+            if x == 0:
+                self.credits.InsertStringItem(next_item, name)
+                self.credits.SetStringItem(next_item, 2, email)
+            else:
+                self.credits.InsertStringItem(next_item, wx.EmptyString)
+            
+            self.credits.SetStringItem(next_item, 1, jobs[x])
+    
+    # FIXME: Unused?
     def NoResizeCol(self, event):
         event.Veto()
     
