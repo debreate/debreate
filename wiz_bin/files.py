@@ -25,11 +25,10 @@ ID_Refresh = 142
 home = os.getenv(u'HOME')
 
 
-class Panel(wx.Panel, WizardPage):
+class Panel(WizardPage):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_FILES, name=GT(u'Files'))
-        WizardPage.__init__(self)
+        WizardPage.__init__(self, parent, ID_FILES)
         
         # For identifying page to parent
         #self.ID = "FILES"

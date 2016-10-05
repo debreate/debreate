@@ -7,11 +7,12 @@ import wx
 # Local imports
 from dbr.language import GT
 from dbr.constants import ID_GREETING
+from dbr.wizard import WizardPage
 
 
-class Panel(wx.Panel):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
+        WizardPage.__init__(self, parent, ID_GREETING)
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         
