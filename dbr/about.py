@@ -243,7 +243,7 @@ class AboutDialog(wx.Dialog):
     ## Adds a general job to the credits list
     #  
     #  \param name
-    #        \b \e str : Name of job holder
+    #        \b \e str : Contributer's name
     #  \param job
     #        \b \e str : Job description
     #  \param email
@@ -255,6 +255,12 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 1, job)
     
     
+    ## Adds list of jobs for single contributer
+    #
+    #  \param name
+    #        \b \e list|tuple|str|unicode : Contributer's name
+    #  \param email
+    #        \b \e unicode|str : Optional contributer's email address
     def AddJobs(self, name, jobs, email=wx.EmptyString):
         if isinstance(jobs, str) or isinstance(jobs, unicode):
             Logger.Debug(__name__, GT(u'Converting string argument "jobs" to tuple'))
