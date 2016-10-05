@@ -51,7 +51,7 @@ if not RELEASE:
     VERSION_STRING = u'{}-dev'.format(VERSION_STRING)
 
 # Website & hosting information #
-HOMEPAGE = u'http://debreate.sourceforge.net/'
+HOMEPAGE = u'https://antumdeluge.github.io/debreate-web/'
 gh_project = u'https://github.com/AntumDeluge/debreate'
 sf_project = u'https://sourceforge.net/projects/debreate'
 
