@@ -248,17 +248,21 @@ class AboutDialog(wx.Dialog):
     #        \b \e str : Job description
     #  \param email
     #        \b \e str : Job holder's email address
-    def AddJob(self, name, job, email):
+    def AddJob(self, name, job, email=wx.EmptyString):
         next_item = self.credits.GetItemCount()
         self.credits.InsertStringItem(next_item, name)
-        self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, job)
+        
+        if email != wx.EmptyString:
+            self.credits.SetStringItem(next_item, 2, email)
     
     
     ## Adds list of jobs for single contributer
     #
     #  \param name
-    #        \b \e list|tuple|str|unicode : Contributer's name
+    #        \b \e unicode|str : Contributer's name
+    #  \param jobs
+    #        \b \e string \b \e list|tuple : Contributer's jobs
     #  \param email
     #        \b \e unicode|str : Optional contributer's email address
     def AddJobs(self, name, jobs, email=wx.EmptyString):
@@ -270,7 +274,8 @@ class AboutDialog(wx.Dialog):
             next_item = self.credits.GetItemCount()
             if x == 0:
                 self.credits.InsertStringItem(next_item, name)
-                self.credits.SetStringItem(next_item, 2, email)
+                if email != wx.EmptyString:
+                    self.credits.SetStringItem(next_item, 2, email)
             else:
                 self.credits.InsertStringItem(next_item, wx.EmptyString)
             
