@@ -92,8 +92,8 @@ class AboutDialog(wx.Dialog):
         
         ## List of credits
         self.credits = wx.ListCtrl(t_credits, -1, style=wx.LC_REPORT)
-        self.credits.InsertColumn(0, GT(u'Name'), width=200)
-        self.credits.InsertColumn(1, GT(u'Job'), width=150)
+        self.credits.InsertColumn(0, GT(u'Name'), width=150)
+        self.credits.InsertColumn(1, GT(u'Job'), width=200)
         self.credits.InsertColumn(2, GT(u'Email'), width=240)
         
         credits_sizer = wx.BoxSizer(wx.VERTICAL)
