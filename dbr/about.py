@@ -103,9 +103,6 @@ class AboutDialog(wx.Dialog):
         t_credits.SetSizer(credits_sizer)
         t_credits.Layout()
         
-        # Keep users from resizing columns
-        #wx.EVT_LIST_COL_BEGIN_DRAG(self.credits, wx.ID_ANY, self.NoResizeCol)
-        
         ## Changelog text area
         self.changelog = wx.TextCtrl(t_changelog, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.changelog.SetFont(dbr.font.MONOSPACED_MD)
