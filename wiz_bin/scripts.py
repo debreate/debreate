@@ -8,10 +8,12 @@ import wx, os
 
 # Local modules
 import dbr
-from dbr.constants import ID_SCRIPTS, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE
+from dbr.constants import ID_SCRIPTS, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE,\
+    page_ids
 from dbr.functions import TextIsEmpty
 from dbr.language import GT
 from dbr import DebugEnabled, Logger
+from dbr.wizard import WizardPage
 
 
 ID_Import = 100
@@ -29,9 +31,9 @@ id_definitions = {
     ID_RM_POST: u'postrm',
 }
 
-class Panel(wx.Panel):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_SCRIPTS, name=GT(u'Scripts'))
+        WizardPage.__init__(self, parent, ID_SCRIPTS)
         
         # Allows calling parent methods
         self.debreate = parent.parent
@@ -479,6 +481,8 @@ class DebianScript(wx.Panel):
     def __init__(self, parent, script_id):
         wx.Panel.__init__(self, parent, script_id)
         
+        self.parent = parent
+        
         ## Filename used for exporting script
         self.script_filename = id_definitions[script_id].lower()
         
@@ -593,7 +597,7 @@ class DebianScript(wx.Panel):
             Logger.Error(__name__, GT(u'Directory not available: {}'.format(out_dir)))
             return (ERR_DIR_NOT_AVAILABLE, __name__)
         
-        absolute_filename = u'{}/{}'.format(out_dir, self.script_filename)
+        absolute_filename = u'{}/{}-{}'.format(out_dir, page_ids[self.parent.GetId()].upper(), self.script_filename)
         script_text = u'#!{}\n\n{}'.format(self.shell.GetValue(), self.script_body.GetValue())
         
         #add_newline = script_text.split(u'\n')[-1] != u''
