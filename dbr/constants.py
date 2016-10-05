@@ -52,8 +52,8 @@ if not RELEASE:
 
 # Website & hosting information #
 HOMEPAGE = u'https://antumdeluge.github.io/debreate-web/'
-gh_project = u'https://github.com/AntumDeluge/debreate'
-sf_project = u'https://sourceforge.net/projects/debreate'
+PROJECT_HOME_GH = u'https://github.com/AntumDeluge/debreate'
+PROJECT_HOME_SF = u'https://sourceforge.net/projects/debreate'
 
 PROJECT_LEGACY_SUFFIX = u'dbp'
 PROJECT_FILENAME_SUFFIX = u'dbpz'
