@@ -12,10 +12,10 @@ from dbr.functions import TextIsEmpty
 from dbr.wizard import WizardPage
 
 
-class Panel(wx.Panel, WizardPage):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
-        WizardPage.__init__(self)
+        #wx.Panel.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
+        WizardPage.__init__(self, parent, ID_CHANGELOG)
         
         self.parent = parent.parent # MainWindow
         

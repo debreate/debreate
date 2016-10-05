@@ -14,7 +14,8 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
-    PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX, compression_mimetypes
+    PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX, compression_mimetypes, \
+    custom_errno
 from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
@@ -406,11 +407,55 @@ class MainWindow(wx.Frame):
         if DebugEnabled():
             print(u'Opening project: {}, Type: {}'.format(filename, file_type))
         
-        if file_type in compression_mimetypes:
-            compression_id = compression_mimetypes[file_type]
+        if file_type not in compression_mimetypes:
+            Logger.Error(__name__, GT(u'Cannot open project with compression mime type "{}"'.format(file_type)))
+            return custom_errno.EBADFT
+        
+        compression_id = compression_mimetypes[file_type]
+        
+        z_format = compression_formats[compression_id]
+        
+        if z_format == u'None':
+            z_format = u'r'
+        else:
+            z_format = u'r:{}'.format(z_format)
         
         if DebugEnabled():
-            print(u'Compression format: {}'.format(compression_formats[compression_id]))
+            print(u'Opening tarfile with "{}" format'.format(z_format))
+        
+        p_archive = tarfile.open(filename, z_format)
+        
+        if DebugEnabled():
+            print(p_archive.getmembers())
+            print(p_archive.getnames())
+        
+        # FIXME: This should be a global
+        temp_dir = u'/tmp'
+        temp_suffix = u'debreate_{}_temp'.format(VERSION_STRING)
+        
+        if os.access(temp_dir, os.W_OK):
+            temp_dir = u'{}/{}'.format(temp_dir, temp_suffix)
+        
+        else:
+            temp_dir = u'{}/{}'.format(os.getcwd(), temp_suffix)
+        
+        if os.path.isdir(temp_dir):
+            shutil.rmtree(temp_dir)
+        
+        os.makedirs(temp_dir)
+        
+        if os.access(temp_dir, os.W_OK):
+            p_archive.extractall(temp_dir)
+            p_archive.close()
+            
+            ret_code = self.wizard.ImportPagesInfo(temp_dir)
+            
+            shutil.rmtree(temp_dir)
+            
+            return ret_code
+        
+        Logger.Error(__name__, GT(u'Could not get permission to write temporary directory'))
+        return custom_errno.EACCES
     
     
     def OpenProjectLegacy(self, data, filename):
@@ -572,10 +617,15 @@ class MainWindow(wx.Frame):
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
     
-    # FIXME: New format unused. Currently still using OnSaveProjectDeprecated
+    
+    ## Saves project in archive format
+    #  
+    #  Supported uncompressed formats are unix tarball.
+    #  Supported compressed formats are Gzip & Bzip2
+    #    tarballs.
+    #  Proposed formats are xz compressed tarball &
+    #    zip compressed file.
     def SaveProject(self, event):
-        # TODO: Add strings to GetText output
-        
         Logger.Debug(__name__, GT(u'Saving in new project format'))
         
         title = GT(u'Save Debreate Project')
