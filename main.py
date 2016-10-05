@@ -15,7 +15,7 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
     PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX, compression_mimetypes, \
-    custom_errno
+    custom_errno, EMAIL
 from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
@@ -566,14 +566,26 @@ class MainWindow(wx.Frame):
         about.SetAuthor(AUTHOR)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         
-        about.AddDeveloper(AUTHOR, u'antumdeluge@gmail.com')
+        about.AddJobs(
+            AUTHOR,
+            (
+                GT(u'Head Developer'),
+                GT(u'Packager'),
+                u'{} (es, it)'.format(GT(u'Translation')),
+            ),
+            EMAIL
+        )
         
-        about.AddJob(u'Hugo Posnic', u'Code Contributer', u'hugo.posnic@gmail.com')
-        
-        about.AddPackager(AUTHOR, u'antumdeluge@gmail.com')
+        about.AddJobs(
+            u'Hugo Posnic',
+            (
+                GT(u'Code Contributer'),
+                GT(u'Website Designer & Author'),
+            ),
+            u'hugo.posnic@gmail.com'
+        )
         
         about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
-        about.AddTranslator(AUTHOR, u'antumdeluge@gmail.com', u'es, it')
         about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
         about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
@@ -583,7 +595,8 @@ class MainWindow(wx.Frame):
         
         about.ShowModal()
         about.Destroy()
-        
+    
+    
     def OnHelp(self, event):
         if dbr.DebugEnabled():
             dbr.HelpDialog(self).ShowModal()
