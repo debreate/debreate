@@ -36,12 +36,9 @@ class AboutDialog(wx.Dialog):
         
         # Create a tabbed interface
         tabs = wx.Notebook(self, -1)
-        #tabs.SetForegroundColour((255,255,255,255))
-        #tabs.SetBackgroundColour((50,50,50,50))
         
         # Pages
         t_about = wx.Panel(tabs, -1)
-        #about.SetBackgroundColour((0,0,0,0))
         t_credits = wx.Panel(tabs, -1)
         t_changelog = wx.Panel(tabs, -1)
         t_license = wx.Panel(tabs, -1)
@@ -151,8 +148,7 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = dbr.ButtonConfirm(self)#wx.Button(self, wx.OK, "Ok")
-        #wx.EVT_BUTTON(ok, wx.OK, self.OnOk)
+        ok = dbr.ButtonConfirm(self)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
