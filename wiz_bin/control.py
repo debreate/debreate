@@ -26,20 +26,11 @@ class Panel(WizardPage):
         
         # Buttons to Open, Save & Preview control file
         button_open = dbr.ButtonBrowse64(self.bg)
-        
-        if DebugEnabled():
-            wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
-        else:
-            wx.EVT_BUTTON(button_open, -1, self.OnBrowseDeprecated)
-        
         button_save = dbr.ButtonSave64(self.bg)
-        
-        if DebugEnabled():
-            wx.EVT_BUTTON(button_save, -1, self.OnSave)
-        else:
-            wx.EVT_BUTTON(button_save, -1, self.OnSaveDeprecated)
-        
         button_preview = dbr.ButtonPreview64(self.bg)
+        
+        wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
+        wx.EVT_BUTTON(button_save, -1, self.OnSave)
         wx.EVT_BUTTON(button_preview, -1, self.OnPreview)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -320,27 +311,6 @@ class Panel(WizardPage):
             self.ImportPageInfo(file_path)
     
     
-    def OnBrowseDeprecated(self, event):
-        cont = False
-        if self.debreate.cust_dias.IsChecked():
-            dia = dbr.OpenFile(self)
-            if dia.DisplayModal():
-                cont = True
-        else:
-            dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        
-        if cont:
-            path = dia.GetPath()
-            f_data = open(path, u'r')
-            control_data = f_data.read()
-            f_data.close()
-            
-            depends_data = self.SetFieldData(control_data)
-            self.debreate.page_depends.SetFieldData(depends_data)
-    
-    
     def OnSave(self, event):
         wildcards = (
             GT(u'All files'), u'*',
@@ -351,33 +321,6 @@ class Panel(WizardPage):
             file_path = save_dialog.GetPath()
             self.Export(os.path.dirname(file_path), os.path.basename(file_path))
     
-    
-    def OnSaveDeprecated(self, event):
-        # Get data to write to control file
-        control = self.GetCtrlInfo().encode(u'utf-8')
-        
-        # Saving?
-        cont = False
-        
-        # Open a "Save Dialog"
-        if self.debreate.cust_dias.IsChecked():
-            dia = dbr.SaveFile(self, GT(u'Save Control Information'))
-            dia.SetFilename(u'control')
-            if dia.DisplayModal():
-                cont = True
-                path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
-        else:
-            dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-            dia.SetFilename(u'control')
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-                path = dia.GetPath()
-        
-        if cont:
-            f_data = open(path, u'w')
-            f_data.write(control)
-            f_data.close()
     
     def OnPreview(self, event):
         # Show a preview of the control file
