@@ -7,7 +7,7 @@ import wx, os
 
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_CONTROL, custom_errno
+from dbr.constants import ID_CONTROL, custom_errno, ID_DEPENDS
 from dbr.wizard import WizardPage
 from dbr import Logger, DebugEnabled
 from dbr.functions import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
@@ -591,6 +591,12 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return custom_errno.ENOENT
         
+        # Dependencies
+        depends_page = None
+        for child in self.wizard.GetChildren():
+            if child.GetId() == ID_DEPENDS:
+                depends_page = child
+        
         def set_choice(choice_object, value, label):
             choices = choice_object.GetStrings()
             for L in choices:
@@ -614,6 +620,16 @@ class Panel(WizardPage):
             u'Homepage': self.url.SetValue,
             u'Essential': self.ess,
         }
+        
+        dependencies = (
+            u'Depends',
+            u'Pre-Depends',
+            u'Recommends',
+            u'Suggests',
+            u'Conflicts',
+            u'Replaces',
+            u'Breaks',
+        )
         
         FILE = open(filename)
         control_data = FILE.read().split(u'\n')
@@ -661,7 +677,14 @@ class Panel(WizardPage):
                 control_defs[u'Maintainer'] = control_defs[u'Maintainer'][0]
         
         for label in control_defs:
-            if label in import_functions:
+            if label in dependencies:
+                if depends_page != None:
+                    depends_page.ImportPageInfo(label, control_defs[label])
+                
+                else:
+                    Logger.Warning(__name__, GT(u'Could not set {}: {}'.format(label, control_defs[label])))
+            
+            elif label in import_functions:
                 if isinstance(import_functions[label], wx.Choice):
                     set_choice(import_functions[label], control_defs[label], label)
                 
