@@ -12,7 +12,7 @@ class PathCtrl(wx.TextCtrl):
         self.type = type
         
         # Get the value of the textctrl so it can be restored
-        self.default = u'/'
+        self.default = value
         
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
