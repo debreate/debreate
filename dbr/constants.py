@@ -70,8 +70,8 @@ supported_suffixes = (
     u'tar',
     u'tar.gz',
     u'tar.bz2',
-    #u'tar.xz',
-    #u'zip',
+    u'tar.xz',
+    u'zip',
 )
 
 PROJ_DEF_Z = GT(u'Debreate projects')
@@ -103,30 +103,6 @@ WX_VER_STRING = u'{}.{}.{}'.format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEAS
 ID_OVERWRITE = wx.NewId()
 ID_APPEND = wx.NewId()
 ID_HELP = wx.NewId()
-
-# *** Compression Format IDs *** #
-ID_COMPRESSION = wx.NewId() # FIXME: Unused?
-ID_ZIP_NONE = wx.NewId()
-ID_ZIP_GZ = wx.NewId()
-ID_ZIP_BZ2 = wx.NewId()
-ID_ZIP_XZ = wx.NewId()
-ID_ZIP_ZIP = wx.NewId()
-
-compression_formats = {
-    ID_ZIP_NONE: u'None',
-    ID_ZIP_GZ: u'gz',
-    ID_ZIP_BZ2: u'bz2',
-    ID_ZIP_XZ: u'xz',
-    ID_ZIP_ZIP: u'zip',
-}
-
-compression_mimetypes = {
-    u'application/x-tar': ID_ZIP_NONE,
-    u'application/gzip': ID_ZIP_GZ,
-    u'application/x-bzip2': ID_ZIP_BZ2,
-    u'application/x-xz': ID_ZIP_XZ,
-    u'application/zip': ID_ZIP_ZIP,
-}
 
 # FIXME: Unused IDs
 ID_BIN = wx.NewId()
