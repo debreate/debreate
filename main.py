@@ -425,10 +425,6 @@ class MainWindow(wx.Frame):
         
         p_archive = tarfile.open(filename, z_format)
         
-        if DebugEnabled():
-            print(p_archive.getmembers())
-            print(p_archive.getnames())
-        
         # FIXME: This should be a global
         temp_dir = u'/tmp'
         temp_suffix = u'debreate_{}_temp'.format(VERSION_STRING)
