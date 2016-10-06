@@ -11,6 +11,12 @@ import wx, os
 import dbr.font
 from dbr.language import GT
 from dbr import Logger
+from dbr.constants import APP_NAME
+
+
+# Font for the name
+bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+sys_info_font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)
 
 
 ## Dialog that shows information about the application
@@ -30,62 +36,29 @@ class AboutDialog(wx.Dialog):
         self.SetMinSize(wx.Size(400, 375))
         self.CenterOnParent()
         
-        # Font for the name
-        bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
-        sys_info_font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)
-        
         # Create a tabbed interface
         tabs = wx.Notebook(self, -1)
         
         # Pages
-        t_about = wx.Panel(tabs, -1)
+        self.t_about = wx.Panel(tabs, -1)
         t_credits = wx.Panel(tabs, -1)
         t_changelog = wx.Panel(tabs, -1)
         t_license = wx.Panel(tabs, -1)
         
         # Add pages to tabbed interface
-        tabs.AddPage(t_about, GT(u'About'))
+        tabs.AddPage(self.t_about, GT(u'About'))
         tabs.AddPage(t_credits, GT(u'Credits'))
         tabs.AddPage(t_changelog, GT(u'Changelog'))
         tabs.AddPage(t_license, GT(u'License'))
         
-        ## Application logo
-        self.graphic = wx.StaticBitmap(t_about)
+        # FIXME: Center verticall on about tab
+        self.about_layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        self.about_layout_V1.AddStretchSpacer()
+        self.about_layout_V1.AddStretchSpacer()
         
-        ## Name & version of the application
-        self.app = wx.StaticText(t_about)
-        self.app.SetFont(bigfont)
-        
-        ## Application author
-        self.author = wx.StaticText(t_about)
-        
-        ## Application's homepage
-        self.website = wx.HyperlinkCtrl(t_about, -1,
-                u'debreate.sourceforge.net', u'http://debreate.sourceforge.net/')
-        
-        ## Application's secondary homepage
-        self.website2 = wx.HyperlinkCtrl(t_about, -1,
-                u'github.com/AntumDeluge/debreate', u'https://github.com/AntumDeluge/debreate')
-        
-        ## Short description
-        self.description = wx.StaticText(t_about, -1)
-        
-        link_sizer = wx.BoxSizer(wx.VERTICAL)
-        link_sizer.Add(self.website, 0, wx.ALIGN_CENTER, 10)
-        link_sizer.Add(self.website2, 0, wx.ALIGN_CENTER, 10)
-        
-        self.about_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.about_sizer.AddMany( [
-            (self.graphic, 0, wx.ALIGN_CENTER|wx.ALL, 10),
-            (self.app, 0, wx.ALIGN_CENTER|wx.ALL, 10),
-            (self.author, 0, wx.ALIGN_CENTER|wx.ALL, 10),
-            (link_sizer, 0, wx.ALIGN_CENTER|wx.ALL, 10),
-            (self.description, 0, wx.ALIGN_CENTER|wx.ALL, 10)
-            ] )
-        
-        t_about.SetAutoLayout(True)
-        t_about.SetSizer(self.about_sizer)
-        t_about.Layout()
+        self.t_about.SetAutoLayout(True)
+        self.t_about.SetSizer(self.about_layout_V1)
+        self.t_about.Layout()
         
         ## List of credits
         self.credits = wx.ListCtrl(t_credits, -1, style=wx.LC_REPORT)
@@ -101,7 +74,7 @@ class AboutDialog(wx.Dialog):
         t_credits.Layout()
         
         ## Changelog text area
-        self.changelog = wx.TextCtrl(t_changelog, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.changelog = wx.TextCtrl(t_changelog, style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.changelog.SetFont(dbr.font.MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -112,7 +85,7 @@ class AboutDialog(wx.Dialog):
         
         
         ## Licensing information text area
-        self.license = wx.TextCtrl(t_license, -1, style=wx.TE_READONLY|wx.TE_MULTILINE)
+        self.license = wx.TextCtrl(t_license, style=wx.TE_READONLY|wx.TE_MULTILINE)
         self.license.SetFont(dbr.font.MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -163,35 +136,110 @@ class AboutDialog(wx.Dialog):
     #  \param graphic
     #        Path to image file
     def SetGraphic(self, graphic):
+        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        
         image = wx.Image(graphic)
         image.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
-        self.graphic.SetBitmap(image.ConvertToBitmap())
+        
+        self.about_layout_V1.Insert(
+            insertion_point,
+            wx.StaticBitmap(self.t_about, wx.ID_ANY, image.ConvertToBitmap()),
+            0,
+            wx.ALL|wx.ALIGN_CENTER,
+            10
+        )
+        
+        self.t_about.Layout()
     
     ## Displays version in 'about' tab
     #  
     #  \param version
     #        String to display
     def SetVersion(self, version):
-        self.app.SetLabel(u'{} {}'.format(dbr.APP_NAME, version))
+        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        
+        app_label = wx.StaticText(
+            self.t_about,
+            label=u'{} {}'.format(APP_NAME, version)
+        )
+        app_label.SetFont(bigfont)
+        
+        self.about_layout_V1.Insert(
+            insertion_point,
+            app_label,
+            0,
+            wx.ALL|wx.ALIGN_CENTER,
+            10
+        )
+        
+        self.t_about.Layout()
     
     ## Display author's name
     #  
     #  \param author
     #        String to display
     def SetAuthor(self, author):
-        self.author.SetLabel(author)
+        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        
+        self.about_layout_V1.Insert(
+            insertion_point,
+            wx.StaticText(self.t_about, label=author),
+            0,
+            wx.ALL|wx.ALIGN_CENTER,
+            10
+        )
+        
+        self.t_about.Layout()
     
     ## Sets a hotlink to the app's homepage
     #  
+    #  TODO: Remove: Deprecated, unused
     #  \param URL
     #        URL to open when link is clicked
     def SetWebsite(self, URL):
         self.website.SetLabel(URL)
         self.website.SetURL(URL)
     
+    
+    ## Adds URL hotlinks to about dialog
+    #  
+    #  \param url_list
+    #        \b \e tuple : Website labels & URL definitions
+    def SetWebsites(self, url_list):
+        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        
+        link_layout = wx.BoxSizer(wx.VERTICAL)
+        for label, link in url_list:
+            link_layout.Add(
+                wx.HyperlinkCtrl(self.t_about, label=label, url=link),
+                0,
+                wx.ALIGN_CENTER,
+                10
+            )
+        
+        self.about_layout_V1.Insert(
+            insertion_point,
+            link_layout,
+            0,
+            wx.ALL|wx.ALIGN_CENTER,
+            10
+        )
+        self.t_about.Layout()
+    
     ## Displays a description about the app on the 'about' tab
     def SetDescription(self, desc):
-        self.description.SetLabel(desc)
+        # Place between spacers
+        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        
+        self.about_layout_V1.Insert(
+            insertion_point,
+            wx.StaticText(self.t_about, label=desc),
+            0,
+            wx.ALL|wx.ALIGN_CENTER,
+            10
+        )
+        
+        self.t_about.Layout()
     
     ## Adds a developer to the list of credits
     #  
