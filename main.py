@@ -322,9 +322,9 @@ class MainWindow(wx.Frame):
         if not os.path.isdir(self.workingdir):
             Logger.Warning(__name__, GT(u'Working directory set to "{}" which is not an actual directory'.format(self.workingdir)))
     
-        
+    
+    ## FIXME: Unused???
     def OnMaximize(self, event):
-        # FIXME: ???
         print(u'Maximized')
     
     
