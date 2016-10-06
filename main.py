@@ -15,7 +15,7 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
     PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX, compression_mimetypes, \
-    custom_errno, EMAIL
+    custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF
 from dbr.config import GetDefaultConfigValue, WriteConfig
 
 
@@ -557,14 +557,21 @@ class MainWindow(wx.Frame):
         EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
         webbrowser.open(self.references[EVENT_ID])
     
+    
+    ## Opens a dialog box with information about the program
     def OnAbout(self, event):
-        '''Opens a dialog box with information about the program'''
         about = dbr.AboutDialog(self)
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(dbr.application_path))
         about.SetVersion(VERSION_STRING)
-        about.SetAuthor(AUTHOR)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
+        about.SetAuthor(AUTHOR)
+        
+        about.SetWebsites((
+            (GT(u'Homepage'), HOMEPAGE),
+            (GT(u'GitHub Project Page'), PROJECT_HOME_GH),
+            (GT(u'Sourceforge Project Page'), PROJECT_HOME_SF),
+        ))
         
         about.AddJobs(
             AUTHOR,
