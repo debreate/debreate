@@ -1,12 +1,21 @@
 ﻿0.8.0 Release Changes:
 - Fix & re-enable QuickBuild
-- Enable opening of zip formatted projects
 - Only install *.mo locale files
 - Add Launchpad packages for 'yakkety'
 - Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
+- Fix importing scripts on legacy project open
+- Fix recognizing filename extension on save project
+- Fix open dialogs saving cwd
+- Fix save dialogs saving cwd
+- New method for checking for version update
+- Fix "New project"
+- Fix Save As...
+- Remove debugging from Control page for browse/save file dialogs
+- Enable opening of zip formatted projects
+- Enable opening of xz formatted projects
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
