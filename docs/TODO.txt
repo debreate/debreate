@@ -27,6 +27,7 @@
 - Finish help dialog
 - Add more tooltips
 - Option to enable/disable tooltips
+- Allow editing of dependecies list
 
 Unknown Release:
 - Detailed documentation on files page
