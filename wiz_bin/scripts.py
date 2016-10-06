@@ -425,7 +425,8 @@ class DebianScript(wx.Panel):
                     shell_options.append(P + S)
         
         self.shell = wx.ComboBox(self, self.GetId(), choices=shell_options)
-        self.shell.SetStringSelection(u'/bin/bash')
+        self.shell.default = u'/bin/bash'
+        self.shell.SetStringSelection(self.shell.default)
         
         shell_layout = wx.BoxSizer(wx.HORIZONTAL)
         shell_layout.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
@@ -547,3 +548,9 @@ class DebianScript(wx.Panel):
     #        \b \e unicode|str : Text to be displayed
     def SetValue(self, value):
         self.script_body.SetValue(value)
+    
+    
+    ## Resets all members to default values
+    def Reset(self):
+        self.shell.SetStringSelection(self.shell.default)
+        self.script_body.Clear()
