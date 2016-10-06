@@ -6,7 +6,6 @@
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
-- Fix importing scripts on legacy project open
 - Fix recognizing filename extension on save project
 - Fix open dialogs saving cwd
 - Fix save dialogs saving cwd
@@ -15,6 +14,7 @@
 - Fix Save As...
 - Disable xz compression if tar command not available
 - Override 'ImportPageInfo' method for all pages
+- Fix Desktop mimetypes
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
