@@ -13,6 +13,7 @@ import dbr
 from dbr.language import GT
 from dbr.constants import ID_DEPENDS
 from dbr.wizard import WizardPage
+from dbr import Logger
 
 
 ID_Append = wx.NewId()
@@ -250,6 +251,16 @@ class Panel(WizardPage):
                 item_count -= 1
                 self.dep_area.InsertStringItem(0, item[0])
                 self.dep_area.SetStringItem(0, 1, item[item_count])
+    
+    
+    def ImportPageInfo(self, d_type, d_string):
+        Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
+        
+        values = d_string.split(u', ')
+        
+        for V in values:
+            self.dep_area.InsertStringItem(0, d_type)
+            self.dep_area.SetStringItem(0, 1, V)
     
 
 
