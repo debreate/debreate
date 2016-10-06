@@ -111,12 +111,13 @@ class AboutDialog(wx.Dialog):
         self.wx_info.SetFont(sys_info_font)
         
         
-        sys_info_sizer = wx.BoxSizer(wx.VERTICAL)
-        sys_info_sizer.AddSpacer(20, wx.EXPAND|wx.ALL)  # FIXME: Want to center elements on panel
-        sys_info_sizer.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
-        sys_info_sizer.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+        sysinfo_layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        sysinfo_layout_V1.AddStretchSpacer()
+        sysinfo_layout_V1.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
+        sysinfo_layout_V1.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+        sysinfo_layout_V1.AddStretchSpacer()
         
-        sys_info.SetSizer(sys_info_sizer)
+        sys_info.SetSizer(sysinfo_layout_V1)
         sys_info.Layout()
         
         
