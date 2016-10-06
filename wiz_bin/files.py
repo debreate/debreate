@@ -520,6 +520,11 @@ class Panel(WizardPage):
                 file_list = u'{}{}\n{}'.format(file_list, u'[{}]'.format(F), source)
             
             return (__name__, file_list)
+    
+    
+    ## Resets all fields on page to default values
+    def ResetPageInfo(self):
+        self.dest_area.DeleteAllItems()
 
 
 
