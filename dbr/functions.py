@@ -12,8 +12,11 @@ from urllib2 import urlopen, URLError
 # Local modules
 import dbr
 from dbr.constants import \
-    HOMEPAGE, PY_VER_STRING, system_licenses_path, compression_formats,\
+    HOMEPAGE, PY_VER_STRING, system_licenses_path,\
     project_wildcards, supported_suffixes
+from dbr.compression import compression_formats
+
+
 # FIXME: Can't import Logger
 
 ## Get the current version of the application
