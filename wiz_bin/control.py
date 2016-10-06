@@ -583,34 +583,6 @@ class Panel(WizardPage):
         data = self.GetCtrlInfo()
         return u'<<CTRL>>\n%s<</CTRL>>' % data
     
-    '''
-    ## Export all information on this & Depends page
-    #  
-    #  FIXME: Delete! Use method from dbr.wizard instead
-    #  Will be used for new save format.
-    #  \param f_name
-    #        \b \e str : Filename to use
-    #  \param f_dir
-    #        \b \b str : Directory to export to
-    def Export(self, f_dir, f_name=u'CONTROL'):
-        c_data = self.GetCtrlInfo()
-        if DebugEnabled():
-            print(u'[{}] DEBUG: Exporting control data:\n{}'.format(__name__, c_data))
-        
-        f_out = u'{}/{}'.format(f_dir, f_name)
-        f_data = open(f_out, u'w')
-        f_data.write(c_data)
-        f_data.close()
-        
-        if not os.path.isdir(f_dir):
-            return ERR_DIR_NOT_AVAILABLE
-        
-        if not os.path.isfile(f_out):
-            return ERR_FILE_WRITE
-        
-        return 0
-    '''
-    
     # *** Determining of project is modified
     def OnKeyDown(self, event):
         for widget in self.text_widgets:
