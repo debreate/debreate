@@ -465,7 +465,6 @@ class MainWindow(wx.Frame):
         
         lines = data.split(u'\n')
         app = lines[0].split(u'-')[0].split(u'[')[1]
-        #ver = lines[0].split(u'-')[1].split(u']')[0]
         
         if app != u'DEBREATE':
             ProjectError()
@@ -485,7 +484,7 @@ class MainWindow(wx.Frame):
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-        self.page_scripts.SetFieldData(scripts_data)
+        self.page_scripts.SetFieldDataLegacy(scripts_data)
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
