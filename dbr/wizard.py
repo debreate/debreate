@@ -7,7 +7,7 @@ import wx, os
 from wx.lib.newevent import NewCommandEvent
 
 # Local imports
-from dbr import Logger, DebugEnabled
+from dbr import Logger
 from dbr.language import GT
 from dbr.buttons import ButtonNext, ButtonPrev
 from dbr.constants import ERR_DIR_NOT_AVAILABLE, page_ids
