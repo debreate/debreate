@@ -12,12 +12,15 @@ from dbr import Logger, DebugEnabled
 from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
-    ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
-    ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
-    PROJECT_FILENAME_SUFFIX, compression_mimetypes,\
+    ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU,\
+    PROJECT_FILENAME_SUFFIX,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L
 from dbr.config import GetDefaultConfigValue, WriteConfig
 from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards
+from dbr.compression import \
+    compression_mimetypes, compression_formats,\
+    ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
+    CompressionHandler, DEFAULT_COMPRESSION_ID
 
 
 # Pages
@@ -167,10 +170,6 @@ class MainWindow(wx.Frame):
         
         for OPT in compression_opts:
             self.menu_compression.AppendItem(OPT)
-        
-        # TODO: Re-enable when formats are ready for use
-        self.menu_compression.Enable(ID_ZIP_XZ, False)
-        self.menu_compression.Enable(ID_ZIP_ZIP, False)
         
         # Default compression
         self.menu_compression.Check(ID_ZIP_BZ2, True)
@@ -407,8 +406,7 @@ class MainWindow(wx.Frame):
     
     #  TODO: Finish defining
     def OpenProject(self, filename, file_type):
-        if DebugEnabled():
-            print(u'Opening project: {}, Type: {}'.format(filename, file_type))
+        Logger.Debug(__name__, GT(u'Opening project: {}, Type: {}'.format(filename, file_type)))
         
         if file_type not in compression_mimetypes:
             Logger.Error(__name__, GT(u'Cannot open project with compression mime type "{}"'.format(file_type)))
@@ -418,15 +416,13 @@ class MainWindow(wx.Frame):
         
         z_format = compression_formats[compression_id]
         
-        if z_format == u'None':
+        if z_format in (u'tar', u'zip'):
             z_format = u'r'
         else:
             z_format = u'r:{}'.format(z_format)
         
         if DebugEnabled():
             print(u'Opening tarfile with "{}" format'.format(z_format))
-        
-        p_archive = tarfile.open(filename, z_format)
         
         # FIXME: This should be a global
         temp_dir = u'/tmp'
@@ -443,18 +439,19 @@ class MainWindow(wx.Frame):
         
         os.makedirs(temp_dir)
         
-        if os.access(temp_dir, os.W_OK):
-            p_archive.extractall(temp_dir)
-            p_archive.close()
-            
-            ret_code = self.wizard.ImportPagesInfo(temp_dir)
-            
-            shutil.rmtree(temp_dir)
-            
-            return ret_code
+        Logger.Debug(__name__,
+            GT(u'Uncompressing project format {}: {}'.format(compression_formats[compression_id], filename)))
         
-        Logger.Error(__name__, GT(u'Could not get permission to write temporary directory'))
-        return custom_errno.EACCES
+        p_archive = CompressionHandler(compression_id)
+        ret_code = p_archive.Uncompress(filename, temp_dir)
+        
+        # FIXME: Should display an error dialog
+        if ret_code:
+            Logger.Error(__name__, GT(u'An error occurred while uncompressing project file: Error code {}'.format(ret_code)))
+            return
+        
+        self.wizard.ImportPagesInfo(temp_dir)
+        shutil.rmtree(temp_dir)
     
     
     def OpenProjectLegacy(self, data, filename):
@@ -663,6 +660,7 @@ class MainWindow(wx.Frame):
             
             working_path = os.path.dirname(self.saved_project)
             output_filename = os.path.basename(self.saved_project)
+            # TODO: Use system /tmp directory
             temp_path = u'{}_temp'.format(self.saved_project)
             
             Logger.Debug(
@@ -695,47 +693,20 @@ class MainWindow(wx.Frame):
             )
             self.wizard.ExportPages(export_pages, temp_path)
             
-            file_list = []
-            for PATH, DIRS, FILES in os.walk(temp_path):
-                for F in FILES:
-                    file_list.append(F)
+            p_archive = CompressionHandler(self.GetCompressionId())
             
-            if DebugEnabled():
-                print(u'DEBUG:')
-                print(u'Output archive: {}.dbpz'.format(output_filename))
-                print(u'Temp directory: {}'.format(temp_path))
-                print(u'Working directory: {}'.format(working_path))
-                print(u'File list: {}'.format(file_list))
+            Logger.Debug(__name__, GT(u'Compressing "{}.{}" with format: {} ({})').format
+                        (
+                            self.saved_project,
+                            PROJECT_FILENAME_SUFFIX,
+                            p_archive.GetCompressionFormat(),
+                            p_archive.GetCompressionMimetype()
+                        )
+            )
             
-            
-            z_format = self.GetCompression()
-            
-            # Uncompressed tarball
-            if z_format == u'None':
-                z_format = u'w'
-            else:
-                z_format = u'w:{}'.format(z_format)
-            
-            Logger.Debug(__name__, u'Output compression: {}'.format(z_format))
-            
-            p_archive = tarfile.open(u'{}.dbpz'.format(self.saved_project), z_format)
-            
-            for F in file_list:
-                if DebugEnabled():
-                    print(u'DEBUG: Adding file "{}/{}"'.format(temp_path, F))
-                
-                p_archive.add(u'{}/{}'.format(temp_path, F), arcname=F)
-            
-            p_archive.close()
-            
-            #shutil.make_archive(temp_path, u'bztar', temp_path)
-            
-            #debug_output = commands.getoutput(u'tar -cjf "{}/{}.dbpz" "{}"'.format(working_path, output_filename, temp_path))
-            
-            #print(u'DEBUG: {}'.format(debug_output))
+            p_archive.Compress(temp_path, u'{}.{}'.format(self.saved_project, PROJECT_FILENAME_SUFFIX))
             
             if os.path.isfile(u'{}.dbpz'.format(self.saved_project)):
-                #os.rename(u'{}.tar.bz2'.format(self.saved_project), u'{}.dbpz'.format(self.saved_project))
                 shutil.rmtree(temp_path)
             
         
@@ -754,6 +725,16 @@ class MainWindow(wx.Frame):
                 GT(u'Setting compression to default value: {}'.format(default_compression)))
         
         return default_compression
+    
+    
+    def GetCompressionId(self):
+        for Z in self.menu_compression.GetMenuItems():
+            Z_ID = Z.GetId()
+            if self.menu_compression.IsChecked(Z_ID):
+                return Z_ID
+        
+        Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
+        return DEFAULT_COMPRESSION_ID
     
     
     def SetCompression(self, compression_id):
