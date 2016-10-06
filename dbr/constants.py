@@ -117,8 +117,6 @@ def NewPageId(page_name=None):
     
     page_ids[this_page_id] = page_name
     
-    print(u'Adding page ID: {}'.format(this_page_id))
-    
     return this_page_id
 
 ID_GREETING = NewPageId(GT(u'Greeting'))
@@ -131,9 +129,6 @@ ID_CHANGELOG = NewPageId(GT(u'Changelog'))
 ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
 ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
-
-for ID in page_ids:
-    print(u'{}: {}'.format(ID, page_ids[ID]))
 
 # ID for custom fields
 ID_CUSTOM = wx.NewId()
