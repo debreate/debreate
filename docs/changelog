@@ -21,8 +21,9 @@ debreate (0.8.0) xenial; urgency=high
     Logger added for outputting messages to text log
     Users can place license templates in <HOME>/.local/share/debreate/templates/licenses
     Fixed bug where importing files progress dialog cannot be cancelled
+    Uses compressed or uncompressed archives for project save/open
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  03 Oct 2016 02:33:38 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  06 Oct 2016 03:36:38 -0700
 
 
 debreate (0.7.11) xenial; urgency=low
