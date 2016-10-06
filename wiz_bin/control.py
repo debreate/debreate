@@ -7,14 +7,15 @@ import wx, os
 
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_CONTROL
+from dbr.constants import ID_CONTROL, custom_errno
 from dbr.wizard import WizardPage
+from dbr import Logger, DebugEnabled
+from dbr.functions import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
 
 
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CONTROL)
-        #wx.ScrolledWindow.__init__(self, parent=parent)
         
         self.wizard = parent
         self.debreate = parent.parent
@@ -25,9 +26,19 @@ class Panel(WizardPage):
         
         # Buttons to Open, Save & Preview control file
         button_open = dbr.ButtonBrowse64(self.bg)
-        wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
+        
+        if DebugEnabled():
+            wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
+        else:
+            wx.EVT_BUTTON(button_open, -1, self.OnBrowseDeprecated)
+        
         button_save = dbr.ButtonSave64(self.bg)
-        wx.EVT_BUTTON(button_save, -1, self.OnSave)
+        
+        if DebugEnabled():
+            wx.EVT_BUTTON(button_save, -1, self.OnSave)
+        else:
+            wx.EVT_BUTTON(button_save, -1, self.OnSaveDeprecated)
+        
         button_preview = dbr.ButtonPreview64(self.bg)
         wx.EVT_BUTTON(button_preview, -1, self.OnPreview)
         
@@ -298,6 +309,18 @@ class Panel(WizardPage):
     # *** Open, Save & Preview control file *** #
     
     def OnBrowse(self, event):
+        wildcards = (
+            GT(u'All files'), u'*',
+            GT(u'CONTROL file'), u'CONTROL',
+        )
+        
+        browse_dialog = GetFileOpenDialog(self.debreate, GT(u'Open File'), wildcards)
+        if ShowDialog(self.debreate, browse_dialog):
+            file_path = browse_dialog.GetPath()
+            self.ImportPageInfo(file_path)
+    
+    
+    def OnBrowseDeprecated(self, event):
         cont = False
         if self.debreate.cust_dias.IsChecked():
             dia = dbr.OpenFile(self)
@@ -317,7 +340,19 @@ class Panel(WizardPage):
             depends_data = self.SetFieldData(control_data)
             self.debreate.page_depends.SetFieldData(depends_data)
     
+    
     def OnSave(self, event):
+        wildcards = (
+            GT(u'All files'), u'*',
+        )
+        
+        save_dialog = GetFileSaveDialog(self.debreate, GT(u'Save Control Information'), wildcards)
+        if ShowDialog(self.debreate, save_dialog):
+            file_path = save_dialog.GetPath()
+            self.Export(os.path.dirname(file_path), os.path.basename(file_path))
+    
+    
+    def OnSaveDeprecated(self, event):
         # Get data to write to control file
         control = self.GetCtrlInfo().encode(u'utf-8')
         
@@ -605,3 +640,90 @@ class Panel(WizardPage):
     #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
     def GetPageInfo(self):
         return (__name__, self.GetCtrlInfo())
+    
+    
+    def ImportPageInfo(self, filename):
+        Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
+        
+        if not os.path.isfile(filename):
+            return custom_errno.ENOENT
+        
+        def set_choice(choice_object, value, label):
+            choices = choice_object.GetStrings()
+            for L in choices:
+                c_index = choices.index(L)
+                if value == L:
+                    choice_object.SetSelection(c_index)
+                    return
+            
+            Logger.Warning(__name__, GT(u'{} option not availabled: {}'.format(label, value)))
+        
+        import_functions = {
+            u'Package': self.pack.SetValue,
+            u'Version': self.ver.SetValue,
+            u'Maintainer': self.auth.SetValue,
+            u'Email': self.email.SetValue,
+            u'Architecture': self.arch,
+            u'Section': self.sect.SetValue,
+            u'Priority': self.prior,
+            u'Description': self.syn.SetValue,
+            u'Source': self.src.SetValue,
+            u'Homepage': self.url.SetValue,
+            u'Essential': self.ess,
+        }
+        
+        FILE = open(filename)
+        control_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        control_defs = {}
+        remove_indexes = []
+        for LI in control_data:
+            line_index = control_data.index(LI)
+            if u': ' in LI:
+                key = LI.split(u': ')
+                control_defs[key[0]] = key[1]
+                
+                remove_indexes.append(line_index)
+            
+            elif LI == wx.EmptyString:
+                remove_indexes.append(line_index)
+            
+            else:
+                # Remove leading whitespace from lines
+                c_index = 0
+                for C in LI:
+                    if C != u' ':
+                        break
+                    
+                    c_index += 1
+                
+                control_data[line_index] = LI[c_index:]
+        
+        remove_indexes.reverse()
+        
+        for I in remove_indexes:
+            control_data.remove(control_data[I])
+        
+        for LI in control_data:
+            if LI == u'.':
+                control_data[control_data.index(LI)] = u''
+        desc = u'\n'.join(control_data)
+        
+        # Extract email from Maintainer field
+        if u'Maintainer' in control_defs:
+            if u' <' in control_defs[u'Maintainer'] and u'>' in control_defs[u'Maintainer']:
+                control_defs[u'Maintainer'] = control_defs[u'Maintainer'].split(u' <')
+                control_defs[u'Email'] = control_defs[u'Maintainer'][1].split(u'>')[0]
+                control_defs[u'Maintainer'] = control_defs[u'Maintainer'][0]
+        
+        for label in control_defs:
+            if label in import_functions:
+                if isinstance(import_functions[label], wx.Choice):
+                    set_choice(import_functions[label], control_defs[label], label)
+                
+                else:
+                    import_functions[label](control_defs[label])
+        
+        if desc != wx.EmptyString:
+            self.desc.SetValue(desc)
