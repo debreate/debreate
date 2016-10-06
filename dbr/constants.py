@@ -55,8 +55,36 @@ HOMEPAGE = u'https://antumdeluge.github.io/debreate-web/'
 PROJECT_HOME_GH = u'https://github.com/AntumDeluge/debreate'
 PROJECT_HOME_SF = u'https://sourceforge.net/projects/debreate'
 
+# Project filename
 PROJECT_LEGACY_SUFFIX = u'dbp'
 PROJECT_FILENAME_SUFFIX = u'dbpz'
+
+ID_PROJ_Z = wx.NewId()
+ID_PROJ_L = wx.NewId()
+ID_PROJ_A = wx.NewId()
+ID_PROJ_T = wx.NewId()
+
+supported_suffixes = (
+    u'dbpz',
+    u'dbp',
+    u'tar',
+    u'tar.gz',
+    u'tar.bz2',
+    #u'tar.xz',
+    #u'zip',
+)
+
+PROJ_DEF_Z = GT(u'Debreate projects')
+PROJ_DEF_L = GT(u'Legacy Debreate projects')
+PROJ_DEF_A = GT(u'All supported formats')
+PROJ_DEF_T = GT(u'Supported compressed archives')
+
+project_wildcards = {
+    ID_PROJ_Z: (PROJ_DEF_Z, (supported_suffixes[0],)),
+    ID_PROJ_L: (PROJ_DEF_L, (supported_suffixes[1],)),
+    ID_PROJ_A: (PROJ_DEF_A, supported_suffixes),
+    ID_PROJ_T: (PROJ_DEF_T, supported_suffixes[2:])
+}
 
 # *** Python Info *** #
 
@@ -174,16 +202,3 @@ current_code = errno.errorcode.keys()[-1]
 current_code += 1
 custom_errno.EBADFT = current_code
 custom_errno.errorcode[custom_errno.EBADFT] = u'EBADFT'
-'''
-class custom_errno:
-    errorcode = errno.errorcode
-    
-    current_code = errorcode.keys()[-1]
-    
-    # Bad file type
-    current_code += 1
-    EBADFT = current_code
-    errorcode[EBADFT] = u'EBADFT'
-    
-    def __init__(self):
-        self = errno'''
