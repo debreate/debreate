@@ -3,7 +3,7 @@
 
 
 # System modules
-import wx, os, shutil, subprocess, webbrowser, tarfile, magic
+import wx, os, shutil, subprocess, webbrowser, magic
 from urllib2 import URLError, HTTPError
 
 # Local modules
