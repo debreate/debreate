@@ -204,6 +204,11 @@ class Wizard(wx.Panel):
                                 GT(u'Project file {} matches page {}'.format(F, page_name)))
                         
                         page.ImportPageInfo(u'{}/{}'.format(PATH, F))
+    
+    
+    def ResetPagesInfo(self):
+        for page in self.pages:
+            page.ResetPageInfo()
 
 
 ## Parent class for wizard pages
@@ -252,4 +257,8 @@ class WizardPage(wx.ScrolledWindow):
     
     
     def ImportPageInfo(self, filename):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportPageInfo'.format(self.GetName())))
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportPageInfo').format(self.GetName()))
+    
+    
+    def ResetPageInfo(self):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ClearPageInfo').format(self.GetName()))
