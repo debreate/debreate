@@ -13,9 +13,8 @@
 - New method for checking for version update
 - Fix "New project"
 - Fix Save As...
-- Remove debugging from Control page for browse/save file dialogs
-- Enable opening of zip formatted projects
-- Enable opening of xz formatted projects
+- Disable xz compression if tar command not available
+- Override 'ImportPageInfo' method for all pages
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
