@@ -9,7 +9,7 @@ import dbr
 from dbr.language import GT
 from dbr.constants import ID_CONTROL, custom_errno, ID_DEPENDS
 from dbr.wizard import WizardPage
-from dbr import Logger, DebugEnabled
+from dbr import Logger
 from dbr.functions import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
 
 
@@ -70,7 +70,8 @@ class Panel(WizardPage):
             u'sh3eb', u'sh4', u'sh4eb', u'sparc', u'sparc64')
         self.arch_txt = wx.StaticText(self.bg, -1, GT(u'Architecture'))
         self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
-        self.arch.SetSelection(0)
+        self.arch.default = 0
+        self.arch.SetSelection(self.arch.default)
         
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
@@ -88,7 +89,8 @@ class Panel(WizardPage):
         self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
         self.prior_txt = wx.StaticText(self.bg, -1, GT(u'Priority'))
         self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
-        self.prior.SetSelection(0)
+        self.prior.default = 0
+        self.prior.SetSelection(self.prior.default)
         
         # ----- Description ( B[m], SB[m], C[m] )
         self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
@@ -109,7 +111,8 @@ class Panel(WizardPage):
         self.ess_opt = (u'yes', u'no')
         self.ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'))
         self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
-        self.ess.SetSelection(1)
+        self.ess.default = 1
+        self.ess.SetSelection(self.ess.default)
         
         # ----- Binary (Mandatory, Recommended, Optional, Not Used)
         # Not in list: Description[m], Depends[o], Installed-Size[o]
@@ -693,3 +696,15 @@ class Panel(WizardPage):
         
         if desc != wx.EmptyString:
             self.desc.SetValue(desc)
+    
+    
+    ## Resets all fields on page to default values
+    def ResetPageInfo(self):
+        for child in self.bg.GetChildren():
+            if isinstance(child, (wx.TextCtrl, wx.ComboBox)):
+                # Can't use Clear() method for wx.ComboBox
+                child.SetValue(wx.EmptyString)
+            
+            elif isinstance(child, wx.Choice):
+                # wx.Choice instances should have custom member wx.Choice.default set
+                child.SetSelection(child.default)
