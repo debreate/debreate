@@ -381,21 +381,6 @@ class MainWindow(wx.Frame):
             wc_l[0], wc_l[1],
         )
         
-        cont = False
-        '''
-        #dbp = u'|*.{};*.{}'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX)
-        #d = GT(u'Debreate projects (*.{}, *.{})'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX))
-        if self.cust_dias.IsChecked():
-            dia = dbr.OpenFile(self, GT(u'Open Debreate Project'))
-            dia.SetFilter(u'{}{}'.format(d, dbp))
-            if dia.DisplayModal():
-                cont = True
-        else:
-            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp), wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        '''
-        
         open_dialog = GetFileOpenDialog(self, GT(u'Open Debreate Project'), wildcards)
         
         if ShowDialog(self, open_dialog):
