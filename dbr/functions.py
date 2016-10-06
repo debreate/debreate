@@ -12,7 +12,8 @@ from urllib2 import urlopen, URLError
 # Local modules
 import dbr
 from dbr.constants import \
-    HOMEPAGE, PY_VER_STRING, system_licenses_path, compression_formats
+    HOMEPAGE, PY_VER_STRING, system_licenses_path, compression_formats,\
+    project_wildcards, supported_suffixes
 # FIXME: Can't import Logger
 
 ## Get the current version of the application
@@ -153,15 +154,29 @@ def TextIsEmpty(text):
 #        The dialog window to be shown
 #  
 #  \b Alias: \e dbr.GetFileSaveDialog
-def GetFileSaveDialog(main_window, title, ext_filter, default_extension=None):
+def GetFileSaveDialog(main_window, title, ext_filters, default_extension=None):
+    ext_filters = u'|'.join(ext_filters)
     if main_window.cust_dias.IsChecked():
         file_save = dbr.SaveFile(main_window, title, default_extension)
-        file_save.SetFilter(ext_filter)
+        file_save.SetFilter(ext_filters)
     else:
-        file_save = wx.FileDialog(main_window, title, os.getcwd(), u'', ext_filter,
-                wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        file_save = wx.FileDialog(main_window, title, defaultDir=os.getcwd(), wildcard=ext_filters,
+                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
     
     return file_save
+
+
+def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
+    ext_filters = u'|'.join(ext_filters)
+    if main_window.cust_dias.IsChecked():
+        file_open = dbr.OpenFile(main_window, title, default_extension)
+        file_open.SetFilter(ext_filters)
+    
+    else:
+        file_open = wx.FileDialog(main_window, title, defaultDir=os.getcwd(), wildcard=ext_filters,
+                style=wx.FD_OPEN|wx.FD_CHANGE_DIR)
+    
+    return file_open
 
 
 ## Used to display a dialog window
@@ -426,3 +441,20 @@ def GetCompressionId(z_value):
     #Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
     
     return None
+
+
+def GetDialogWildcards(ID):
+    proj_def = project_wildcards[ID][0]
+    wildcards = list(project_wildcards[ID][1])
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'.{}'.format(wildcards[X])
+    
+    # Don't show list of suffixes in dialog's description
+    if project_wildcards[ID][1] != supported_suffixes:
+        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'*{}'.format(wildcards[X])
+    
+    return (proj_def, u';'.join(wildcards))
