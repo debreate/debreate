@@ -10,13 +10,14 @@ from urllib2 import URLError, HTTPError
 import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
-from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR, \
+from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU, ID_ZIP_NONE,\
     ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, compression_formats, ID_ZIP_ZIP,\
-    PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX, compression_mimetypes, \
-    custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF
+    PROJECT_FILENAME_SUFFIX, compression_mimetypes,\
+    ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L
 from dbr.config import GetDefaultConfigValue, WriteConfig
+from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards
 
 
 # Pages
@@ -39,8 +40,6 @@ default_title = GT(u'Debreate - Debian Package Builder')
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
-        
-        self.workingdir = None
         
         self.SetMinSize((640,400))
         
@@ -315,12 +314,15 @@ class MainWindow(wx.Frame):
     #        \b \e unicode|str : Target directory
     def SetWorkingDirectory(self, target):
         if target != None:
-            self.workingdir = target
+            os.chdir(target)
         else:
-            self.workingdir = GetDefaultConfigValue(u'workingdir')
+            os.chdir(GetDefaultConfigValue(u'workingdir'))
         
-        if not os.path.isdir(self.workingdir):
-            Logger.Warning(__name__, GT(u'Working directory set to "{}" which is not an actual directory'.format(self.workingdir)))
+        Logger.Debug(__name__, GT(u'Current working directory set: {}'.format(os.getcwd())))
+        
+        if not os.path.isdir(os.getcwd()):
+            Logger.Warning(__name__,
+                    GT(u'Working directory set to "{}" which is not an actual directory'.format(os.getcwd())))
     
     
     ## FIXME: Unused???
@@ -367,9 +369,22 @@ class MainWindow(wx.Frame):
         self.saved_project = wx.EmptyString
     
     def OnOpenProject(self, event):
+        wc_z = GetDialogWildcards(ID_PROJ_Z)
+        wc_l = GetDialogWildcards(ID_PROJ_L)
+        wc_a = GetDialogWildcards(ID_PROJ_A)
+        wc_t = GetDialogWildcards(ID_PROJ_T)
+        
+        wildcards = (
+            wc_a[0], wc_a[1],
+            wc_z[0], wc_z[1],
+            wc_t[0], wc_t[1],
+            wc_l[0], wc_l[1],
+        )
+        
         cont = False
-        dbp = u'|*.{};*.{}'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX)
-        d = GT(u'Debreate projects (*.{}, *.{})'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX))
+        '''
+        #dbp = u'|*.{};*.{}'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX)
+        #d = GT(u'Debreate projects (*.{}, *.{})'.format(PROJECT_FILENAME_SUFFIX, PROJECT_LEGACY_SUFFIX))
         if self.cust_dias.IsChecked():
             dia = dbr.OpenFile(self, GT(u'Open Debreate Project'))
             dia.SetFilter(u'{}{}'.format(d, dbp))
@@ -379,10 +394,13 @@ class MainWindow(wx.Frame):
             dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp), wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
+        '''
         
-        if cont:
+        open_dialog = GetFileOpenDialog(self, GT(u'Open Debreate Project'), wildcards)
+        
+        if ShowDialog(self, open_dialog):
             # Get the path and set the saved project
-            self.saved_project = dia.GetPath()
+            self.saved_project = open_dialog.GetPath()
             
             file_identifier = magic.open(magic.MAGIC_MIME)
             file_identifier.load()
@@ -620,7 +638,7 @@ class MainWindow(wx.Frame):
     def IsSaved(self):
         title = self.GetTitle()
         
-        return bool(title[-1] == "*")
+        return bool(title[-1] == u'*')
     
     def IsNewProject(self):
         title = self.GetTitle()
@@ -645,15 +663,16 @@ class MainWindow(wx.Frame):
         Logger.Debug(__name__, GT(u'Saving in new project format'))
         
         title = GT(u'Save Debreate Project')
-        suffix = dbr.PROJECT_FILENAME_SUFFIX
         
-        # Set Displayed description & filename filter for dialog
-        dbp = u'|*.{}'.format(suffix)
         description = GT(u'Debreate project files')
-        ext_filter = u'{} (.{}){}'.format(description, suffix, dbp)
+        
+        wildcards = (
+            u'{} (.{})'.format(description, PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
+        )
         
         file_save = dbr.GetFileSaveDialog(self, title,
-                ext_filter, suffix)
+                wildcards, PROJECT_FILENAME_SUFFIX)
+        
         if dbr.ShowDialog(self, file_save):
             self.saved_project = file_save.GetPath()
             
