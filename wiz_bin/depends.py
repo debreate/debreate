@@ -234,8 +234,9 @@ class Panel(WizardPage):
                 self.dep_area.DeleteAllItems()
         
         event.Skip()
-        
-        
+    
+    
+    # FIXME: deprecated
     def ResetAllFields(self):
         self.dep_chk.SetValue(True)
         self.dep_name.Clear()
@@ -261,6 +262,11 @@ class Panel(WizardPage):
         for V in values:
             self.dep_area.InsertStringItem(0, d_type)
             self.dep_area.SetStringItem(0, 1, V)
+    
+    
+    ## Resets all fields on page to default values
+    def ResetPageInfo(self):
+        self.dep_area.DeleteAllItems()
     
 
 
