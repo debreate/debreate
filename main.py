@@ -356,9 +356,9 @@ class MainWindow(wx.Frame):
         dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
                 GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
         if dia.ShowModal() == wx.ID_YES:
-            self.NewProject()
-            #self.SetMode(None)
+            self.wizard.ResetPagesInfo()
     
+    # FIXME: Deprecated
     def NewProject(self):
         for page in self.all_pages:
             page.ResetAllFields()
@@ -382,7 +382,11 @@ class MainWindow(wx.Frame):
         
         open_dialog = GetFileOpenDialog(self, GT(u'Open Debreate Project'), wildcards)
         
+        # FIXME: Should have confirmation if current project marked "dirty"
         if ShowDialog(self, open_dialog):
+            # Remove current project
+            self.wizard.ResetPagesInfo()
+            
             # Get the path and set the saved project
             self.saved_project = open_dialog.GetPath()
             
