@@ -12,7 +12,7 @@ from dbr.constants import ID_SCRIPTS, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE,\
     page_ids
 from dbr.functions import TextIsEmpty
 from dbr.language import GT
-from dbr import DebugEnabled, Logger
+from dbr import Logger
 from dbr.wizard import WizardPage
 
 
@@ -155,12 +155,8 @@ scripts will be created that will place a symbolic link to your executables in t
         self.SetSizer(layout_main)
         self.Layout()
         
-        
-        if not DebugEnabled():
-            self.ScriptSelectDeprecated(None)
-        
-        else:
-            self.ScriptSelect(None)
+        # Initialize script display
+        self.ScriptSelect(None)
     
     
     def ScriptSelect(self, event):
@@ -170,17 +166,6 @@ scripts will be created that will place a symbolic link to your executables in t
             else:
                 S.Hide()
         
-        self.Layout()
-    
-    
-    def ScriptSelectDeprecated(self, event):
-        for rb in self.script_te:
-            if rb.GetValue() == True:
-                self.script_te[rb].Show()
-                self.script_chk[rb].Show()
-            else:
-                self.script_te[rb].Hide()
-                self.script_chk[rb].Hide()
         self.Layout()
     
     
