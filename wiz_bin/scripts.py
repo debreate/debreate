@@ -39,96 +39,42 @@ class Panel(WizardPage):
         self.debreate = parent.parent
         
         
-        if DebugEnabled():
-            self.preinst = DebianScript(self, ID_INST_PRE)
-            self.postinst = DebianScript(self, ID_INST_POST)
-            self.prerm = DebianScript(self, ID_RM_PRE)
-            self.postrm = DebianScript(self, ID_RM_POST)
-            
-            # Radio buttons for displaying between pre- and post- install scripts
-            rb_preinst = wx.RadioButton(self, self.preinst.GetId(), self.preinst.GetName(), style=wx.RB_GROUP)
-            rb_postinst = wx.RadioButton(self, self.postinst.GetId(), self.postinst.GetName())
-            rb_prerm = wx.RadioButton(self, self.prerm.GetId(), self.prerm.GetName())
-            rb_postrm = wx.RadioButton(self, self.postrm.GetId(), self.postrm.GetName())
-            
-            self.script_objects = (
-                (self.preinst, rb_preinst),
-                (self.postinst, rb_postinst),
-                (self.prerm, rb_prerm),
-                (self.postrm, rb_postrm),
-            )
-            
-            for S, RB in self.script_objects:
-                wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
-            
-            rb_layout = wx.BoxSizer(wx.HORIZONTAL)
-            rb_layout.AddMany([
-                (rb_preinst),
-                (rb_postinst),
-                (rb_prerm),
-                (rb_postrm),
-            ])
-            
-            # Sizer for left half of scripts panel
-            layout_left = wx.BoxSizer(wx.VERTICAL)
-            
-            layout_left.Add(rb_layout, 0, wx.EXPAND|wx.BOTTOM, 5)
-            
-            for S, RB in self.script_objects:
-                layout_left.Add(S, 1, wx.EXPAND)
+        self.preinst = DebianScript(self, ID_INST_PRE)
+        self.postinst = DebianScript(self, ID_INST_POST)
+        self.prerm = DebianScript(self, ID_RM_PRE)
+        self.postrm = DebianScript(self, ID_RM_POST)
         
-        else:
-            # Text area for each radio button
-            self.te_preinst = wx.TextCtrl(self, ID_INST_PRE, style=wx.TE_MULTILINE)
-            self.te_postinst = wx.TextCtrl(self, ID_INST_POST, style=wx.TE_MULTILINE)
-            self.te_prerm = wx.TextCtrl(self, ID_RM_PRE, style=wx.TE_MULTILINE)
-            self.te_postrm = wx.TextCtrl(self, ID_RM_POST, style=wx.TE_MULTILINE)
-            
-            # Check boxes for choosing scripts
-            self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'))
-            self.chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'))
-            self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, GT(u'Make this script'))
-            self.chk_postrm = wx.CheckBox(self, ID_RM_POST, GT(u'Make this script'))
-            
-            # Radio buttons for displaying between pre- and post- install scripts
-            self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'), style=wx.RB_GROUP)
-            self.rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'))
-            self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, GT(u'Pre-Remove'))
-            self.rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'))
-            
-            self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
-                                self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
-                                }
-            self.script_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
-                                self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
-            
-            for rb in self.script_te:
-                wx.EVT_RADIOBUTTON(rb, -1, self.ScriptSelectDeprecated)
-                self.script_te[rb].Hide()
-            for rb in self.script_chk:
-                self.script_chk[rb].Hide()
-            
-            # Organizing radio buttons
-            rb_layout = wx.BoxSizer(wx.HORIZONTAL)
-            rb_layout.AddMany( [
-                (self.chk_preinst),(self.chk_postinst),
-                (self.chk_prerm),(self.chk_postrm)
-                ] )
-            rb_layout.AddStretchSpacer(1)
-            rb_layout.Add(self.rb_preinst, 0)
-            rb_layout.Add(self.rb_postinst, 0)
-            rb_layout.Add(self.rb_prerm, 0)
-            rb_layout.Add(self.rb_postrm, 0)
-            
-            # Sizer for left half of scripts panel
-            layout_left = wx.BoxSizer(wx.VERTICAL)
-            
-            layout_left.Add(rb_layout, 0, wx.EXPAND|wx.BOTTOM, 5)
-            layout_left.Add(self.te_preinst, 1, wx.EXPAND)
-            layout_left.Add(self.te_postinst, 1, wx.EXPAND)
-            layout_left.Add(self.te_prerm, 1,wx.EXPAND)
-            layout_left.Add(self.te_postrm, 1, wx.EXPAND)
+        # Radio buttons for displaying between pre- and post- install scripts
+        rb_preinst = wx.RadioButton(self, self.preinst.GetId(), self.preinst.GetName(), style=wx.RB_GROUP)
+        rb_postinst = wx.RadioButton(self, self.postinst.GetId(), self.postinst.GetName())
+        rb_prerm = wx.RadioButton(self, self.prerm.GetId(), self.prerm.GetName())
+        rb_postrm = wx.RadioButton(self, self.postrm.GetId(), self.postrm.GetName())
         
+        self.script_objects = (
+            (self.preinst, rb_preinst),
+            (self.postinst, rb_postinst),
+            (self.prerm, rb_prerm),
+            (self.postrm, rb_postrm),
+        )
+        
+        for S, RB in self.script_objects:
+            wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
+        
+        rb_layout = wx.BoxSizer(wx.HORIZONTAL)
+        rb_layout.AddMany([
+            (rb_preinst),
+            (rb_postinst),
+            (rb_prerm),
+            (rb_postrm),
+        ])
+        
+        # Sizer for left half of scripts panel
+        layout_left = wx.BoxSizer(wx.VERTICAL)
+        
+        layout_left.Add(rb_layout, 0, wx.EXPAND|wx.BOTTOM, 5)
+        
+        for S, RB in self.script_objects:
+            layout_left.Add(S, 1, wx.EXPAND)
         
         # *** Auto-Link options *** #
         
@@ -386,40 +332,33 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_input.SetBackgroundColour((255, 255, 255, 255))
         self.executables.DeleteAllItems()
     
-    def SetFieldData(self, data):
-        # FIXME: Open new project format
-        #   Need to preserve opening legacy format
-        if not DebugEnabled():
-            preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
-            postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
-            prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
-            postrm = data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0]
-            
+    def SetFieldDataLegacy(self, data):
+        preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
+        postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
+        prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
+        postrm = data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0]
+        
+        def format_script(script):
+            return u'\n'.join(script.split(u'\n')[2:])  # Use '2' to remove first two lines
+        
+        if unicode(preinst[0]).isnumeric():
             if int(preinst[0]):
-                self.chk_preinst.SetValue(True)
-                self.te_preinst.SetValue(preinst[2:]) # 2 removes firs line
-            else:
-                self.chk_preinst.SetValue(False)
-                self.te_preinst.Clear()
+                self.preinst.SetValue(format_script(preinst))
+        
+        if unicode(postinst[0]).isnumeric():
             if int(postinst[0]):
-                self.chk_postinst.SetValue(True)
-                self.te_postinst.SetValue(postinst[2:]) # 2 removes firs line
-            else:
-                self.chk_postinst.SetValue(False)
-                self.te_postinst.Clear()
+                self.postinst.SetValue(format_script(postinst))
+        
+        if unicode(prerm[0]).isnumeric():
             if int(prerm[0]):
-                self.chk_prerm.SetValue(True)
-                self.te_prerm.SetValue(prerm[2:]) # 2 removes firs line
-            else:
-                self.chk_prerm.SetValue(False)
-                self.te_prerm.Clear()
+                self.prerm.SetValue(format_script(prerm))
+        
+        if unicode(postrm[0]).isnumeric():
             if int(postrm[0]):
-                self.chk_postrm.SetValue(True)
-                self.te_postrm.SetValue(postrm[2:]) # 2 removes firs line
-            else:
-                self.chk_postrm.SetValue(False)
-                self.te_postrm.Clear()
+                self.postrm.SetValue(format_script(postrm))
     
+    
+    # FIXME: Deprecated
     def GatherData(self):
         # Custom dictionary of scripts
         script_list = (
@@ -615,4 +554,11 @@ class DebianScript(wx.Panel):
             return (ERR_FILE_WRITE, __name__)
         
         return (0, None)
-        
+    
+    
+    ## Fills the script
+    #  
+    #  \param value
+    #        \b \e unicode|str : Text to be displayed
+    def SetValue(self, value):
+        self.script_body.SetValue(value)
