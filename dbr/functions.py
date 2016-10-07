@@ -5,7 +5,7 @@
 
 
 # System modules
-import wx, os, subprocess, re
+import wx, os, re
 from datetime import datetime, date
 from urllib2 import urlopen, URLError
 
