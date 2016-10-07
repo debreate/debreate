@@ -10,8 +10,9 @@ from os.path import exists
 # Local modules
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_BUILD
+from dbr.constants import ID_BUILD, custom_errno
 from dbr.wizard import WizardPage
+from dbr.functions import GetBoolean
 
 
 class Panel(WizardPage):
@@ -32,42 +33,60 @@ class Panel(WizardPage):
         build_tip = wx.ToolTip(GT(u'Start building'))
         
         
+        # Add checkable items to this list
+        self.build_options = []
+        
+        
         # ----- Extra Options
         self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
+        self.chk_md5.SetName(u'MD5')
+        self.chk_md5.default = False
+        
+        # FIXME: Use CommandExists
         if not exists(u'/usr/bin/md5sum'):
             self.chk_md5.Disable()
             self.chk_md5.SetToolTip(wx.ToolTip(GT(u'(Install md5sum package for this option)')))
         else:
             self.chk_md5.SetToolTip(md5_tip)
+            self.build_options.append(self.chk_md5)
+
         
         # For creating md5sum hashes
         self.md5 = dbr.MD5()
         
         # Deletes the temporary build tree
-        self.chk_del = wx.CheckBox(self, -1, GT(u'Delete build tree'))
-        self.chk_del.SetToolTip(del_tip)
-        self.chk_del.SetName(u'DEL')
-        self.chk_del.SetValue(True)
+        self.chk_rmtree = wx.CheckBox(self, -1, GT(u'Delete build tree'))
+        self.chk_rmtree.SetName(u'RMTREE')
+        self.chk_rmtree.SetToolTip(del_tip)
+        self.chk_rmtree.default = True
+        self.chk_rmtree.SetValue(self.chk_rmtree.default)
+        self.build_options.append(self.chk_rmtree)
         
         # Checks the output .deb for errors
         self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
+        self.chk_lint.SetName(u'LINTIAN')
+        self.chk_lint.default = True
         #self.chk_lint.SetToolTip(tip_lint)
-        # FIXME: Should use a more universal method to check for lintian executable
+        # FIXME: Use CommandExists
         if not exists(u'/usr/bin/lintian'):
             self.chk_lint.Disable()
             self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
         else:
             #self.chk_lint.SetToolTip(tip_lint)
-            self.chk_lint.SetValue(True)
+            self.chk_lint.SetValue(self.chk_lint.default)
+            self.build_options.append(self.chk_lint)
         
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(self, -1, GT(u'Install package after build'))
+        self.chk_install.SetName(u'INSTALL')
+        self.chk_install.default = False
+        self.build_options.append(self.chk_install)
         
         options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
         options1_sizer.AddMany( [
             (self.chk_md5, 0),
-            (self.chk_del, 0),
+            (self.chk_rmtree, 0),
             (self.chk_lint, 0),
             (self.chk_install, 0)
             ] )
@@ -270,7 +289,7 @@ class Panel(WizardPage):
                 prebuild_progress.Update(progress, GT(u'Checking delete build tree'))
                 wx.Yield()
                 
-                delete_tree = self.chk_del.GetValue()
+                delete_tree = self.chk_rmtree.GetValue()
                 if delete_tree:
                     tasks += 1
                 progress += 1
@@ -575,7 +594,7 @@ class Panel(WizardPage):
             self.chk_md5.Enable()
         else:
             self.chk_md5.Disable()
-        self.chk_del.SetValue(True)
+        self.chk_rmtree.SetValue(True)
         # FIXME: Should use a more universal method to check for executables
         if exists(u'/usr/bin/lintian'):
             self.chk_lint.Enable()
@@ -590,7 +609,7 @@ class Panel(WizardPage):
         # FIXME: Should use a more universal method to check for executables
         if exists(u'/usr/bin/md5sum'):
             self.chk_md5.SetValue(int(build_data[0]))
-        self.chk_del.SetValue(int(build_data[1]))
+        self.chk_rmtree.SetValue(int(build_data[1]))
         # FIXME: Should use a more universal method to check for executables
         if exists(u'usr/bin/lintian'):
             self.chk_lint.SetValue(int(build_data[2]))
@@ -600,7 +619,7 @@ class Panel(WizardPage):
         
         if self.chk_md5.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
-        if self.chk_del.GetValue(): build_list.append(u'1')
+        if self.chk_rmtree.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
         if self.chk_lint.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
@@ -611,10 +630,14 @@ class Panel(WizardPage):
         # 'install after build' is not exported to project for safety
         
         fields = {}
+        omit_options = (
+            self.chk_install,
+        )
         
-        fields[u'MD5'] = unicode(self.chk_md5.GetValue())
-        fields[u'RMTREE'] = unicode(self.chk_del.GetValue())
-        fields[u'LINTIAN'] = unicode(self.chk_lint.GetValue())
+        for O in self.build_options:
+            # Leave options out that should not be saved
+            if O not in omit_options:
+                fields[O.GetName()] = unicode(O.GetValue())
         
         page_info = wx.EmptyString
         
@@ -628,6 +651,37 @@ class Panel(WizardPage):
             return None
         
         return (__name__, page_info)
+    
+    
+    def ImportPageInfo(self, filename):
+        if not os.path.isfile(filename):
+            return custom_errno.ENOENT
+        
+        FILE = open(filename, u'r')
+        build_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        options_definitions = {}
+        
+        for L in build_data:
+            if u'=' in L:
+                key = L.split(u'=')
+                value = GetBoolean(key[-1])
+                key = key[0]
+                
+                options_definitions[key] = value
+        
+        for O in self.build_options:
+            name = O.GetName()
+            if name in options_definitions and isinstance(options_definitions[name], bool):
+                O.SetValue(options_definitions[name])
+        
+        return 0
+    
+    
+    def ResetPageInfo(self):
+        for O in self.build_options:
+            O.SetValue(O.default)
 
 
 ##########################################
