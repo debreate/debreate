@@ -58,6 +58,7 @@ FILES_dbr = \
 	dbr/help.py \
 	dbr/language.py \
 	dbr/log.py \
+	dbr/markdown.py \
 	dbr/md5.py \
 	dbr/message.py \
 	dbr/pathctrl.py \
