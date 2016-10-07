@@ -195,3 +195,5 @@ COLOR_ERROR = wx.Colour(255, 143, 115)
 
 # *** Optional system executable commands *** #
 cmd_tar = CommandExists(u'tar')
+cmd_md5sum = CommandExists(u'md5sum')
+cmd_lintian = CommandExists(u'lintian')
