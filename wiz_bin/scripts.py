@@ -14,6 +14,8 @@ from dbr.functions import TextIsEmpty
 from dbr.language import GT
 from dbr import Logger
 from dbr.wizard import WizardPage
+from dbr.markdown import MarkdownCtrl, MarkdownDialog
+from dbr.buttons import ButtonConfirm
 
 
 ID_Import = 100
@@ -169,7 +171,7 @@ scripts will be created that will place a symbolic link to your executables in t
         self.Layout()
     
     
-    # Importing the executable for Auto-Link
+    ## Imports names of executables from files page
     def ImportExe(self, event):
         event_id = event.GetId()
         if event_id == ID_Import:
@@ -177,45 +179,22 @@ scripts will be created that will place a symbolic link to your executables in t
             self.executables.DeleteAllItems()
             self.xlist = []
             
-            # Get executables from "files" tab
             files = self.debreate.page_files.dest_area
-            it_max = files.GetItemCount()  # Sets the max iterate value
-            count = 0
-            while count < it_max:
-                # Searches for executables (distinguished by red text)
-                if files.GetItemTextColour(count) == (255, 0, 0, 255):
-                    filename = os.path.split(files.GetItemText(count))[1]  # Get the filename from the source
-                    dest = files.GetItem(count, 1)  # Get the destination of executable
-                    try:
-                        # If destination doesn't start with "/" do not include executable
-                        if dest.GetText()[0] == u'/':
-                            if dest.GetText()[-1] == u'/' or dest.GetText()[-1] == u' ':
-                                # In case the full path of the destination is "/" keep going
-                                if len(dest.GetText()) == 1:
-                                    dest_path = u''
-                                else:
-                                    search = True
-                                    slashes = 1  # Set the number of spaces to remove from dest path in case of multiple "/"
-                                    while search:
-                                        # Find the number of slashes/spaces at the end of the filename
-                                        endline = slashes-1
-                                        if dest.GetText()[-slashes] == u'/' or dest.GetText()[-slashes] == u' ':
-                                            slashes += 1
-                                        else:
-                                            dest_path = dest.GetText()[:-endline]
-                                            search = False
-                            else:
-                                dest_path = dest.GetText()
-                            
-                            # Put "destination/filename" together in executable list
-                            self.xlist.insert(0, u'%s/%s' %(dest_path, filename))
-                            self.executables.InsertStringItem(0, filename)
-                            self.executables.SetItemTextColour(0, u'red')
-                        else:
-                            print(u'panscripts.py: The executables destination is not valid')
-                    except IndexError:
-                        print(u'panscripts.py: The executables destination is not available')
-                count += 1
+            
+            item_count = files.GetItemCount()
+            
+            for i_index in range(item_count):
+                file_name = files.GetFilename(i_index)
+                file_executable = files.FileIsExecutable(i_index)
+                
+                Logger.Debug(__name__, GT(u'Checking if file "{}" is executable').format(file_name))
+                if file_executable:
+                    # Where the file linked to will be installed
+                    file_target = u'{}/{}'.format(files.GetTarget(i_index), file_name)
+                    
+                    Logger.Debug(__name__, GT(u'File install target: {}').format(file_target))
+                    
+                    self.executables.InsertStringItem(self.executables.GetItemCount(), file_target)
         
         elif event_id == ID_Remove:
             exe = self.executables.GetFirstSelected()
@@ -282,18 +261,15 @@ scripts will be created that will place a symbolic link to your executables in t
     
     # *** HELP *** #
     def OnHelpButton(self, event):
-        self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
+        self.al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'))
+        #self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
-
-        self.al_help_te = wx.TextCtrl(self.al_help, -1, u'%s\n\n%s' % (description, instructions),
-                style = wx.TE_MULTILINE|wx.TE_READONLY)
-        self.al_help_ok = dbr.ButtonConfirm(self.al_help)
         
-        al_help_sizer = wx.BoxSizer(wx.VERTICAL)
-        al_help_sizer.AddMany([ (self.al_help_te, 1, wx.EXPAND), (self.al_help_ok, 0, wx.ALIGN_RIGHT) ])
-        self.al_help.SetSizer(al_help_sizer)
-        self.al_help.Layout()
+        self.al_help.SetText(u'{}\n\n{}'.format(description, instructions))
+        
+        # FIXME:
+        #self.al_help.button_ok = ButtonConfirm(self.al_help)
         
         self.al_help.ShowModal()
         self.al_help.CenterOnParent(wx.BOTH)
@@ -378,6 +354,17 @@ scripts will be created that will place a symbolic link to your executables in t
                     return return_code
         
         return return_code
+    
+    
+    ## Resets all fields on page to default values
+    def ResetPageInfo(self):
+        for S, O in self.script_objects:
+            S.Reset()
+        
+        self.al_input.Reset()
+        self.executables.DeleteAllItems()
+                
+    
 
 
 ## Descriptions for each available pre-defined shell
