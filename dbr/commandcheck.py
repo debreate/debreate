@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package functions.commandcheck
+## \package dbr.commandcheck
 
 
 import os, commands
