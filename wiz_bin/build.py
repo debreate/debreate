@@ -13,7 +13,6 @@ from dbr.language import GT
 from dbr.constants import ID_BUILD, custom_errno, cmd_md5sum, cmd_lintian
 from dbr.wizard import WizardPage
 from dbr.functions import GetBoolean
-from dbr.commandcheck import CommandExists
 
 
 class Panel(WizardPage):
