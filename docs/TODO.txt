@@ -14,6 +14,7 @@
 - Better fit columns on Files page
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
+- use wx.FileType instead of magic module
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -30,6 +31,7 @@
 - Finish Markdown parser
 - Add gzip support to read compressed changelog
 - More text output on Build page
+- Set up manpage template creation for executables in file list
 
 Unknown Release:
 - Detailed documentation on files page
