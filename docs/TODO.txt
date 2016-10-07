@@ -9,12 +9,11 @@
 - Fix open dialogs saving cwd
 - Fix save dialogs saving cwd
 - New method for checking for version update
-- Fix "New project"
 - Fix Save As...
-- Disable xz compression if tar command not available
 - Fix Desktop mimetypes
-- Fix 'Export' method in Files page
 - Better fit columns on Files page
+- Fix AutoLink executables in Files page
+- Fix copyright for Apache license template
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -30,6 +29,7 @@
 - Allow editing of dependecies list
 - Finish Markdown parser
 - Add gzip support to read compressed changelog
+- More text output on Build page
 
 Unknown Release:
 - Detailed documentation on files page
