@@ -7,18 +7,18 @@ import wx, os
 # Local imports
 import dbr.font
 from dbr.language import GT
-from dbr.constants import ID_COPYRIGHT
+from dbr.constants import ID_COPYRIGHT, custom_errno
 from dbr.functions import TextIsEmpty
 from dbr.wizard import WizardPage
+from dbr import Logger
 
 
 # Globals
-copyright_header = u'Copyright © {} <copyright holder(s)> [<email>]\n\n'
+copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]\n\n')
 
 
 class Panel(WizardPage):
-    def __init__(self, parent):  # FIXME: ID unused
-        #wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
+    def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_COPYRIGHT)
         
         self.debreate = parent.parent
@@ -202,3 +202,33 @@ class Panel(WizardPage):
             return None
         
         return (__name__, license_text)
+    
+    
+    def ImportPageInfo(self, filename):
+        if not os.path.isfile(filename):
+            return custom_errno.ENOENT
+        
+        FILE = open(filename, u'r')
+        copyright_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        # Remove preceding empty lines
+        remove_index = 0
+        for I in range(len(copyright_data)):
+            if not TextIsEmpty(copyright_data[I]):
+                break
+            
+            remove_index += 1
+        
+        for I in reversed(range(remove_index)):
+            copyright_data.remove(copyright_data[I])
+        
+        copyright_data = u'\n'.join(copyright_data)
+        
+        self.cp_display.SetValue(copyright_data)
+        
+        return 0
+    
+    
+    def ResetPageInfo(self):
+        self.cp_display.Clear()
