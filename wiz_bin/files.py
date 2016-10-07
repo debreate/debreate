@@ -8,7 +8,7 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 # Local modules
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_FILES, ID_CUSTOM
+from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs
 from dbr import Logger, DebugEnabled
 from dbr.wizard import WizardPage
 
@@ -543,16 +543,38 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         self.filename_col = 0
         self.source_col = 1
         self.target_col = 2
+        self.type_col = 3
         
         width=self.debreate.GetSize()[1]/3-10
         
         self.InsertColumn(self.filename_col, GT(u'File'), width=width)
         self.InsertColumn(self.source_col, GT(u'Source Directory'), width=width)
         self.InsertColumn(self.target_col, GT(u'Staged Target'))
+        self.InsertColumn(self.type_col, GT(u'File Type'))
         
         wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
         
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
+    
+    
+    ## Retrivies is the item at 'i_index' is executable
+    def FileIsExecutable(self, i_index):
+        if self.GetItemText(i_index, self.type_col) == file_types_defs[FTYPE_EXE]:
+            return True
+        
+        return False
+    
+    
+    def GetFilename(self, i_index):
+        return self.GetItemText(i_index)
+    
+    
+    def GetSource(self, i_index):
+        return self.GetItemText(i_index, self.source_col)
+    
+    
+    def GetTarget(self, i_index):
+        return self.GetItemText(i_index, self.target_col)
     
     
     def OnInsertItem(self, event):
@@ -561,9 +583,6 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         children = self.GetChildren()
         
         Logger.Debug(__name__, u'Parent ID: {}'.format(self.GetId()))
-        
-        # Looking for the list of files
-        list = None
         
         for x in range(0, len(children)):
             child = children[x]
@@ -600,25 +619,18 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     
     
     def AddFile(self, filename, source_dir, target_dir):
-        '''
-        Logger.Debug(__name__,
-            GT(u'Adding filename: {}, source: {}, target: {}'.format(
-                                                                        filename, source_dir,
-                                                                        target_dir
-                                                                    )
-            )
-        )
-        '''
-        
-        source_col = 1
-        target_col = 2
-        
         # FIXME: Needs to get list count first to append
         list_index = 0
         
+        Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
+        
         self.InsertStringItem(list_index, filename)
-        self.SetStringItem(list_index, source_col, source_dir)
-        self.SetStringItem(list_index, target_col, target_dir)
+        self.SetStringItem(list_index, self.source_col, source_dir)
+        self.SetStringItem(list_index, self.target_col, target_dir)
+        
+        # FIXME: Use 'magic' module to determine file type
+        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK):
+            self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
     
     
     def SelectAll(self):
@@ -652,6 +664,13 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             
             self.DeleteItem(current_selected)
             selected_count = self.GetSelectedItemCount()
+    
+    
+    ## Toggles executable flag for selected list items
+    #  
+    #  TODO: Define & execute with context menu
+    def ToggleExecutable(self):
+        pass
     
     
     def GetRowData(self, row):
