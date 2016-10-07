@@ -17,7 +17,7 @@ import os, commands
 #  \param cmd
 #        \b \e unicode|str : Command to check for
 #  \return
-#        \b \e tuple : Tuple containing True/False value &, if True, the string location of the command
+#        \b \e unicode|str|None : A string path to executable or None if not found
 def CommandExists(cmd):
     locations = commands.getoutput(u'whereis {}'.format(cmd)).split(u':'.format(cmd))[-1]
     
@@ -30,6 +30,6 @@ def CommandExists(cmd):
             
             if not os.path.isdir(L) and os.access(L, os.X_OK):
                 # Use the first instance found
-                return (True, L)
+                return L
     
-    return (False, None)
+    return None
