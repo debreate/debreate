@@ -2,22 +2,22 @@
 
 
 # System imports
-import wx, commands
+import wx, os, commands
 
 # Local imports
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_CHANGELOG
+from dbr.constants import ID_CHANGELOG, custom_errno
 from dbr.functions import TextIsEmpty
 from dbr.wizard import WizardPage
+from dbr import Logger
 
 
 class Panel(WizardPage):
     def __init__(self, parent):
-        #wx.Panel.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
         WizardPage.__init__(self, parent, ID_CHANGELOG)
         
-        self.parent = parent.parent # MainWindow
+        self.debreate = parent.parent # MainWindow
         
         self.package_text = wx.StaticText(self, -1, GT(u'Package'))
         self.package = wx.TextCtrl(self)
@@ -60,18 +60,18 @@ class Panel(WizardPage):
         changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
         # Destination of changelog
-        self.rb_dest_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wx.RB_GROUP)
-        self.rb_dest_custom = wx.RadioButton(self)
-        self.dest_custom = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)
+        self.target_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wx.RB_GROUP)
+        self.target_custom = wx.RadioButton(self)
+        self.target = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dest_custom_sizer.Add(self.rb_dest_custom)
-        dest_custom_sizer.Add(self.dest_custom, 1)
+        dest_custom_sizer.Add(self.target_custom)
+        dest_custom_sizer.Add(self.target, 1)
         
         border_dest = wx.StaticBox(self, -1, GT(u'Target'))
         dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
         dest_box.AddSpacer(5)
-        dest_box.Add(self.rb_dest_default)
+        dest_box.Add(self.target_default)
         dest_box.AddSpacer(5)
         dest_box.Add(dest_custom_sizer, 0, wx.EXPAND)
         dest_box.AddSpacer(5)
@@ -97,7 +97,7 @@ class Panel(WizardPage):
         # *** Widgets that Enable/Disable
 #        self.toggle_list = (
 #            self.package, self.version, self.distribution, self.urgency, self.maintainer, self.email,
-#            self.changes, self.rb_dest_default, self.rb_dest_custom, self.dest_custom,
+#            self.changes, self.target_default, self.target_custom, self.target,
 #            self.button_import, self.button_add, self.display_area
 #            )
         
@@ -118,10 +118,11 @@ class Panel(WizardPage):
     
     def ImportInfo(self, event):
         # Import package name and version from the control page
-        self.package.SetValue(self.parent.page_control.pack.GetValue())
-        self.version.SetValue(self.parent.page_control.ver.GetValue())
-        self.maintainer.SetValue(self.parent.page_control.auth.GetValue())
-        self.email.SetValue(self.parent.page_control.email.GetValue())
+        # FIXME: Should use a safer method
+        self.package.SetValue(self.debreate.page_control.pack.GetValue())
+        self.version.SetValue(self.debreate.page_control.ver.GetValue())
+        self.maintainer.SetValue(self.debreate.page_control.auth.GetValue())
+        self.email.SetValue(self.debreate.page_control.email.GetValue())
     
     def AddInfo(self, event):
         package = self.package.GetValue()
@@ -158,10 +159,10 @@ class Panel(WizardPage):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         if dest == u'DEFAULT':
-            self.rb_dest_default.SetValue(True)
+            self.target_default.SetValue(True)
         else:
-            self.rb_dest_custom.SetValue(True)
-            self.dest_custom.SetValue(dest)
+            self.target_custom.SetValue(True)
+            self.target.SetValue(dest)
         self.display_area.SetValue(u'\n'.join(changelog[1:]))
         #self.Toggle(True)
     
@@ -178,18 +179,18 @@ class Panel(WizardPage):
         self.maintainer.Clear()
         self.email.Clear()
         self.changes.Clear()
-        self.rb_dest_default.SetValue(True)
-        self.dest_custom.SetValue(u'/')
+        self.target_default.SetValue(True)
+        self.target.SetValue(u'/')
         self.display_area.Clear()
     
     ## Deprecated
     #  
     #  TODO: Remove after implementing new save format
     def GatherData(self):
-        if self.rb_dest_default.GetValue():
+        if self.target_default.GetValue():
             dest = u'<<DEST>>DEFAULT<</DEST>>'
-        elif self.rb_dest_custom.GetValue():
-            dest = u'<<DEST>>' + self.dest_custom.GetValue() + u'<</DEST>>'
+        elif self.target_custom.GetValue():
+            dest = u'<<DEST>>' + self.target.GetValue() + u'<</DEST>>'
         
         return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))
     
@@ -203,8 +204,8 @@ class Panel(WizardPage):
     def GetPageInfo(self):
         cl_target = u'DEFAULT'
         
-        if self.rb_dest_custom.GetValue():
-            cl_target = self.dest_custom.GetValue()
+        if self.target_custom.GetValue():
+            cl_target = self.target.GetValue()
         
         cl_body = self.display_area.GetValue()
         
@@ -212,3 +213,75 @@ class Panel(WizardPage):
             return None
         
         return (__name__, u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body))
+    
+    
+    def ImportPageInfo(self, filename):
+        if not os.path.isfile(filename):
+            return custom_errno.ENOENT
+        
+        FILE = open(filename, u'r')
+        clog_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        sections = {}
+        
+        def parse_section(key, lines):
+            value = u'\n'.join(lines).split(u'\n[')[0]
+            
+            if u'=' in key:
+                key = key.split(u'=')
+                value = (key[-1], value)
+                key = key[0]
+            
+            sections[key] = value
+        
+        # NOTE: This would need to be changed were more sections added to project file
+        for L in clog_data:
+            line_index = clog_data.index(L)
+            
+            if not TextIsEmpty(L) and u'[' in L and u']' in L:
+                L = L.split(u'[')[-1].split(u']')[0]
+                parse_section(L, clog_data[line_index+1:])
+        '''
+        if u'BODY' in sections:
+            self.display_area.SetValue(sections[u'BODY'])
+        '''
+        
+        for S in sections:
+            Logger.Debug(__name__, GT(u'Changelog section: "{}", Value:\n{}').format(S, sections[S]))
+            
+            if type(sections[S]) in (tuple, list):
+                value_index = 0
+                for I in sections[S]:
+                    Logger.Debug(__name__, GT(u'Value {}: {}').format(value_index, I))
+                    value_index += 1
+            
+            if S == u'TARGET':
+                Logger.Debug(__name__, u'SECTION TARGET FOUND')
+                
+                if sections[S][0] == u'DEFAULT':
+                    Logger.Debug(__name__, u'Using default target')
+                    
+                    self.target_default.SetValue(True)
+                
+                else:
+                    Logger.Debug(__name__, GT(u'Using custom target: {}').format(sections[S][0]))
+                    
+                    self.target_custom.SetValue(True)
+                    self.target.SetValue(sections[S][0])
+                
+                continue
+            
+            if S == u'BODY':
+                Logger.Debug(__name__, u'SECTION BODY FOUND')
+                
+                self.display_area.SetValue(sections[S])
+                
+                continue
+        
+        return 0
+    
+    
+    def ResetPageInfo(self):
+        self.target.Reset()
+        self.display_area.Clear()
