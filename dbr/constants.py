@@ -178,3 +178,11 @@ current_code = errno.errorcode.keys()[-1]
 current_code += 1
 custom_errno.EBADFT = current_code
 custom_errno.errorcode[custom_errno.EBADFT] = u'EBADFT'
+
+
+# *** File Types *** #
+FTYPE_EXE = wx.NewId()
+
+file_types_defs = {
+    FTYPE_EXE: GT(u'script/executable'),
+}
