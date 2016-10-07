@@ -2,7 +2,6 @@
 - Fix & re-enable QuickBuild
 - Only install *.mo locale files
 - Add Launchpad packages for 'yakkety'
-- Add gzip support to read compressed changelog
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
@@ -13,9 +12,9 @@
 - Fix "New project"
 - Fix Save As...
 - Disable xz compression if tar command not available
-- Override 'ImportPageInfo' method for all pages
 - Fix Desktop mimetypes
-- Clear all fields when opening a new project
+- Fix 'Export' method in Files page
+- Better fit columns on Files page
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -29,6 +28,8 @@
 - Add more tooltips
 - Option to enable/disable tooltips
 - Allow editing of dependecies list
+- Finish Markdown parser
+- Add gzip support to read compressed changelog
 
 Unknown Release:
 - Detailed documentation on files page
@@ -49,3 +50,4 @@ Tasks being considered:
 - Utilize multiple build methods
 - Compile source to Python bytecode (.pyc) after install
 - Replace Makefile with CMake build system
+- Add Makefile rule for signing binary debuild package
