@@ -14,7 +14,8 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
     ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU,\
     PROJECT_FILENAME_SUFFIX,\
-    ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L
+    ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
+    cmd_tar
 from dbr.config import GetDefaultConfigValue, WriteConfig
 from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards
 from dbr.compression import \
@@ -153,20 +154,22 @@ class MainWindow(wx.Frame):
         opt_compression_bz2 = wx.MenuItem(self.menu_compression, ID_ZIP_BZ2,
                 GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_xz = wx.MenuItem(self.menu_compression, ID_ZIP_XZ,
-                GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
-                kind=wx.ITEM_RADIO)
         opt_compression_zip = wx.MenuItem(self.menu_compression, ID_ZIP_ZIP,
                 GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
                 kind=wx.ITEM_RADIO)
         
-        compression_opts = (
+        compression_opts = [
             opt_compression_uncompressed,
             opt_compression_gz,
             opt_compression_bz2,
-            opt_compression_xz,
             opt_compression_zip,
-        )
+        ]
+        
+        if cmd_tar != None:
+            opt_compression_xz = wx.MenuItem(self.menu_compression, ID_ZIP_XZ,
+                    GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
+                    kind=wx.ITEM_RADIO)
+            compression_opts.insert(3, opt_compression_xz)
         
         for OPT in compression_opts:
             self.menu_compression.AppendItem(OPT)
