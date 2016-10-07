@@ -84,27 +84,6 @@ def RunSudo(password, command):
         return False
     return True
 
-## Checks if a specified executable can be executed on the system
-#  
-#  FIXME: This function is currently not used anywhere in the code
-#  \param command:
-#        The command to be checked
-#  \rtype bool
-#  
-#  \b Alias: \e dbr.CommandExists
-def CommandExists(command):
-    try:
-        subprocess.Popen(command.split(u' ')[0].split(u' '))
-        exists = True
-        print u'First subprocess: {}'.format(exists)
-    except OSError:
-        exists = os.path.isfile(command)
-        print u'os.path: {}'.format(exists)
-        if exists:
-            subprocess.Popen((command))
-            print u'Second subprocess: {}'.format(exists)
-    return exists
-
 ## Checks if the system is using a specific version of Python
 #  
 #  FIXME: This function is currently not used anywhere in the code

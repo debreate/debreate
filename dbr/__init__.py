@@ -42,7 +42,7 @@ from dbr.custom import \
     OpenDir, OpenFile, SaveFile
 from dbr.help import HelpDialog
 from dbr.functions import \
-    GetCurrentVersion, FieldEnabled, RunSudo, CommandExists, RequirePython, TextIsEmpty, \
+    GetCurrentVersion, FieldEnabled, RunSudo, RequirePython, TextIsEmpty, \
     GetFileSaveDialog, ShowDialog, GetYear, GetDate, GetTime, GetSystemLicensesList
 from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
@@ -56,7 +56,4 @@ from dbr.md5 import MD5
 if 0:
     ## Alias of dbr.functions.GetCurrentVersion
     def GetCurrentVersion():
-        return 0
-    ## Alias of dbr.functions.CommandExists
-    def CommandExists(command):
         return 0
