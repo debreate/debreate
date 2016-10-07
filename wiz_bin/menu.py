@@ -344,8 +344,9 @@ class Panel(WizardPage):
             desktop_list.append(u'Categories={}'.format(u';'.join(cat_list)))
         
         # Add Misc
-        if self.other.GetValue() != wx.EmptyString:
-            desktop_list.append(self.other.GetValue())
+        other = self.other.GetValue()
+        if not TextIsEmpty(other):
+            desktop_list.append(other)
         
         return u'\n'.join(desktop_list)
     
@@ -587,7 +588,11 @@ class Panel(WizardPage):
         menu_data = FILE.read().split(u'\n')
         FILE.close()
         
+        if menu_data[0] == u'[Desktop Entry]':
+            menu_data.remove(menu_data[0])
+        
         menu_definitions = {}
+        unused_raw_lines = []
         
         for L in menu_data:
             if u'=' in L:
@@ -596,6 +601,11 @@ class Panel(WizardPage):
                 key = key[0]
                 
                 menu_definitions[key] = value
+                
+                continue
+            
+            # Any unrecognizable lines will be added to "Other" section
+            unused_raw_lines.append(L)
         
         
         def set_value(option):
@@ -646,6 +656,7 @@ class Panel(WizardPage):
             if key not in categories_used and key not in bypass_unused:
                 categories_unused.append(u'{}={}'.format(key, menu_definitions[key]))
         
+        categories_unused += unused_raw_lines
         if len(categories_unused):
             categories_unused = u'\n'.join(categories_unused)
             
