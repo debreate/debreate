@@ -356,6 +356,49 @@ scripts will be created that will place a symbolic link to your executables in t
         return return_code
     
     
+    def ImportPageInfo(self, filename):
+        Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
+        
+        script_name = filename.split(u'-')[-1]
+        script_object = None
+        
+        for S, O in self.script_objects:
+            if script_name == S.GetFilename():
+                script_object = S
+                break
+        
+        # Loading the actual text
+        # FIXME: Should be done in class method
+        if script_object != None:
+            FILE = open(filename)
+            script_data = FILE.read().split(u'\n')
+            FILE.close()
+            
+            # FIXME: this should be global variable
+            shebang = u'/bin/bash'
+            
+            remove_indexes = 0
+            
+            if u'#!' == script_data[0][:2]:
+                shebang = script_data[0][2:]
+                script_data.remove(script_data[0])
+            
+            # Remove empty lines from beginning of script
+            print(script_data)
+            for L in script_data:
+                if not TextIsEmpty(L):
+                    break
+                
+                remove_indexes += 1
+            
+            for I in reversed(range(remove_indexes)):
+                script_data.remove(script_data[I])
+            script_data = u'\n'.join(script_data)
+            
+            script_object.SetShell(shebang, True)
+            script_object.SetValue(script_data)
+    
+    
     ## Resets all fields on page to default values
     def ResetPageInfo(self):
         for S, O in self.script_objects:
@@ -529,12 +572,23 @@ class DebianScript(wx.Panel):
         return (0, None)
     
     
+    def SetShell(self, shell, forced=False):
+        if forced:
+            self.shell.SetValue(shell)
+            return
+        
+        self.shell.SetStringSelection(shell)
+    
+    
     ## Fills the script
     #  
     #  \param value
     #        \b \e unicode|str : Text to be displayed
     def SetValue(self, value):
         self.script_body.SetValue(value)
+    
+    def SetScript(self, value):
+        self.SetValue(value)
     
     
     ## Resets all members to default values
