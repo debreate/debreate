@@ -460,11 +460,11 @@ class Panel(WizardPage):
                     
                     # Don't delete build tree if build failed
                     if not build_status[0]:
-	                    wx.Yield()
-	                    # Delete the build tree
-	                    if commands.getstatusoutput((u'rm -r "%s"' % temp_tree).encode(u'utf-8'))[0]:
-	                        wx.MessageDialog(self, GT(u'An error occurred when trying to delete the build tree'),
-								_(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
+                        wx.Yield()
+                        # Delete the build tree
+                        if commands.getstatusoutput((u'rm -r "%s"' % temp_tree).encode(u'utf-8'))[0]:
+                            wx.MessageDialog(self, GT(u'An error occurred when trying to delete the build tree'),
+                                _(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
                     progress += 1
                 
                 # *** ERROR CHECK
@@ -492,7 +492,7 @@ class Panel(WizardPage):
                 
                 if build_status[0]:
                     dbr.MessageDialog(self, -1, GT(u'Error'), dbr.ICON_ERROR,
-							_(u'Package build failed'), build_status[1]).ShowModal()
+                            _(u'Package build failed'), build_status[1]).ShowModal()
                 else:
                     wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
                             style=wx.OK|wx.ICON_INFORMATION).ShowModal()
@@ -530,8 +530,8 @@ class Panel(WizardPage):
                             wx.MessageDialog(self, GT(u'The package installed successfully'), GT(u'Sucess'), wx.OK).ShowModal()
                         self.log.ToggleOutput()
                 
-               	return build_status[0]
-	               	
+                return build_status[0]
+            
             
             cont = False
             
