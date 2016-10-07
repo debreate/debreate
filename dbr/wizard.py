@@ -201,7 +201,7 @@ class Wizard(wx.Panel):
                     
                     if F[:n_index] == page_name:
                         Logger.Debug(__name__,
-                                GT(u'Project file {} matches page {}'.format(F, page_name)))
+                                GT(u'Imported project file {} matches page {}'.format(F, page_name)))
                         
                         page.ImportPageInfo(u'{}/{}'.format(PATH, F))
     
@@ -261,4 +261,4 @@ class WizardPage(wx.ScrolledWindow):
     
     
     def ResetPageInfo(self):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ClearPageInfo').format(self.GetName()))
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ResetPageInfo').format(self.GetName()))
