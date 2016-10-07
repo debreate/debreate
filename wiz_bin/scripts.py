@@ -384,7 +384,6 @@ scripts will be created that will place a symbolic link to your executables in t
                 script_data.remove(script_data[0])
             
             # Remove empty lines from beginning of script
-            print(script_data)
             for L in script_data:
                 if not TextIsEmpty(L):
                     break
