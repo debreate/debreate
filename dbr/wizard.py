@@ -216,6 +216,9 @@ class WizardPage(wx.ScrolledWindow):
     def __init__(self, parent, page_id):
         wx.ScrolledWindow.__init__(self, parent, page_id)
         
+        self.wizard = parent
+        self.debreate = parent.parent
+        
         self.SetName(page_ids[self.GetId()])
     
     
