@@ -54,4 +54,9 @@ class Panel(WizardPage):
         self.info.Wrap(600) # Keep characters within the width of the window
         
         # Refresh widget layout
-        self.Layout()		
+        self.Layout()
+    
+    
+    ## Override Wizard.ResetPageInfo & do nothing
+    def ResetPageInfo(self):
+        pass

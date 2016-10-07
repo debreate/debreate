@@ -20,3 +20,11 @@ class Panel(WizardPage):
     #  TODO: Nothing here yet
     def GetPageInfo(self):
         return wx.EmptyString
+    
+    
+    def ImportPageInfo(self, filename):
+        pass
+    
+    
+    def ResetPageInfo(self):
+        pass
