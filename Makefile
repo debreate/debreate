@@ -65,6 +65,9 @@ FILES_dbr = \
 	dbr/templates.py \
 	dbr/wizard.py
 
+FILES_functions = \
+	functions/commandcheck.py
+
 FILES_doc = \
 	docs/BUGS.txt \
 	docs/changelog \
@@ -109,6 +112,7 @@ FILES_build = \
 	$(FILES_wiz_bin) \
 	$(FILES_wiz_src) \
 	$(FILES_dbr) \
+	$(FILES_functions) \
 	$(FILES_doc) \
 	$(FILES_bitmap) \
 	$(FILES_data)
@@ -132,6 +136,7 @@ DIRS_dist = \
 	dbr \
 	debian \
 	docs \
+	functions \
 	man \
 	scripts \
 	wiz_bin \
@@ -148,7 +153,8 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_bitmap) $(FILES_data) $(DIRS_build) install-doc
+#install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_bitmap) $(FILES_data) $(DIRS_build) install-doc
+install: build $(FILES_build) $(DIRS_build) install-doc
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -178,6 +184,10 @@ install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_sr
 		mkdir -vp "$${datadir}/dbr"; \
 		for py in $(FILES_dbr); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
+		done; \
+		mkdir -vp "$${datadir}/functions"; \
+		for py in $(FILES_functions); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/functions"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/wiz_bin"; \
