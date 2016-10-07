@@ -15,6 +15,7 @@
 - Disable xz compression if tar command not available
 - Override 'ImportPageInfo' method for all pages
 - Fix Desktop mimetypes
+- Clear all fields when opening a new project
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
