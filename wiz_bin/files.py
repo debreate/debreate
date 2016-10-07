@@ -8,9 +8,12 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 # Local modules
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs
+from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
+    custom_errno, COLOR_ERROR, ICON_ERROR
 from dbr import Logger, DebugEnabled
 from dbr.wizard import WizardPage
+from dbr.functions import TextIsEmpty
+from dbr.message import MessageDialog
 
 
 ID_pin = 100
@@ -522,7 +525,66 @@ class Panel(WizardPage):
             return (__name__, file_list)
     
     
+    ## 
+    #  
+    #  \override dbr.wizard.Wizard.ImportPageInfo
+    def ImportPageInfo(self, filename):
+        Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
+        
+        if not os.path.isfile(filename):
+            return custom_errno.ENOENT
+        
+        FILE = open(filename)
+        files_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        # Lines beginning with these characters will be ignored
+        ignore_characters = (
+            u'',
+            u' ',
+            u'#',
+        )
+        
+        target = None
+        targets_list = []
+        
+        for L in files_data:
+            if not TextIsEmpty(L) and L[0] not in ignore_characters:
+                if u'[' in L and u']' in L:
+                    target = L.split(u'[')[-1].split(u']')[0]
+                    continue
+                
+                if target:
+                    executable = (len(L) > 1 and L[-2:] == u' *')
+                    if executable:
+                        L = L[:-2]
+                    Logger.Debug(__name__, GT(u'Executable ({}): {}').format(L[-2:], executable))
+                    
+                    targets_list.append((target, L, executable))
+        
+        missing_files = []
+        
+        for T in targets_list:
+            if not os.path.isfile(T[1]):
+                missing_files.append(T[1])
+            
+            source_file = os.path.basename(T[1])
+            source_dir = os.path.dirname(T[1])
+            
+            self.dest_area.AddFile(source_file, source_dir, T[0], executable=T[2])
+        
+        if len(missing_files):
+            err_line1 = GT(u'The following files are missing from the filesystem.')
+            err_line2 = GT(u'They will be highlighted on the Files page.')
+            MessageDialog(self.debreate, title=GT(u'Warning'), icon=ICON_ERROR,
+                    text=u'\n'.join((err_line1, err_line2)),
+                    details=u'\n'.join(missing_files)).ShowModal()
+        
+        return 0
+    
     ## Resets all fields on page to default values
+    #  
+    #  \override dbr.wizard.Wizard.ImportPageInfo
     def ResetPageInfo(self):
         self.dest_area.DeleteAllItems()
 
@@ -618,9 +680,14 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         TextEditMixin.OpenEditor(self, self.target_col, row)
     
     
-    def AddFile(self, filename, source_dir, target_dir):
-        # FIXME: Needs to get list count first to append
-        list_index = 0
+    def AddFile(self, filename, source_dir, target_dir=None, executable=False):
+        list_index = self.GetItemCount()
+        
+        # Method can be called with two argements: absolute filename & target directory
+        if target_dir == None:
+            target_dir = source_dir
+            source_dir = os.path.dirname(filename)
+            filename = os.path.basename(filename)
         
         Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
         
@@ -629,8 +696,11 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         self.SetStringItem(list_index, self.target_col, target_dir)
         
         # FIXME: Use 'magic' module to determine file type
-        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK):
+        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
             self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
+        
+        if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
+            self.SetItemBackgroundColour(list_index, COLOR_ERROR)
     
     
     def SelectAll(self):
