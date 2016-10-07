@@ -9,8 +9,10 @@ import wx, os, shutil
 # Local imports
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_MENU
+from dbr.constants import ID_MENU, custom_errno
 from dbr.wizard import WizardPage
+from dbr import Logger
+from dbr.functions import TextIsEmpty
 
 
 class Panel(WizardPage):
@@ -38,75 +40,107 @@ class Panel(WizardPage):
         
         # --- Main Menu Entry --- #
         
-        # --- Buttons to open/preview/save .desktop file
-        self.open = dbr.ButtonBrowse64(self)
-        self.open.SetToolTip(DF_tip)
-        self.button_save = dbr.ButtonSave64(self)
-        self.button_preview = dbr.ButtonPreview64(self)
+        self.options_button = []
+        self.options_input = []
+        self.options_choice = []
+        self.options_list = []
         
-        self.open.Bind(wx.EVT_BUTTON, self.OpenFile)
-        wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSave)
-        wx.EVT_BUTTON(self.button_preview, wx.ID_ANY, self.OnPreview)
+        # --- Buttons to open/preview/save .desktop file
+        self.btn_open = dbr.ButtonBrowse64(self)
+        self.btn_open.SetToolTip(DF_tip)
+        self.options_button.append(self.btn_open)
+        
+        self.btn_save = dbr.ButtonSave64(self)
+        self.options_button.append(self.btn_save)
+        
+        self.btn_preview = dbr.ButtonPreview64(self)
+        self.options_button.append(self.btn_preview)
+        
+        self.btn_open.Bind(wx.EVT_BUTTON, self.OpenFile)
+        wx.EVT_BUTTON(self.btn_save, wx.ID_ANY, self.OnSave)
+        wx.EVT_BUTTON(self.btn_preview, wx.ID_ANY, self.OnPreview)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(self.open, 0)
-        button_sizer.Add(self.button_save, 0)
-        button_sizer.Add(self.button_preview, 0)
+        button_sizer.Add(self.btn_open, 0)
+        button_sizer.Add(self.btn_save, 0)
+        button_sizer.Add(self.btn_preview, 0)
         
         # --- CHECKBOX
         self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
+        self.activate.default = False
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
         # --- NAME (menu)
         self.name_text = wx.StaticText(self, -1, GT(u'Name'))
         self.name_text.SetToolTip(m_name_tip)
-        self.name_input = wx.TextCtrl(self, -1)
-        #self.name_input.SetBackgroundColour(dbr.Mandatory)
+        
+        self.name_input = wx.TextCtrl(self, name=u'Name')
+        self.name_input.default = wx.EmptyString
+        self.options_input.append(self.name_input)
         
         # --- EXECUTABLE
         self.exe_text = wx.StaticText(self, -1, GT(u'Executable'))
         self.exe_text.SetToolTip(m_exec_tip)
-        self.exe_input = wx.TextCtrl(self, -1)
+        
+        self.exe_input = wx.TextCtrl(self, name=u'Exec')
+        self.exe_input.default = wx.EmptyString
+        self.options_input.append(self.exe_input)
         
         # --- COMMENT
         self.comm_text = wx.StaticText(self, -1, GT(u'Comment'))
         self.comm_text.SetToolTip(m_com_tip)
-        self.comm_input = wx.TextCtrl(self, -1)
+        
+        self.comm_input = wx.TextCtrl(self, name=u'Comment')
+        self.comm_input.default = wx.EmptyString
+        self.options_input.append(self.comm_input)
         
         # --- ICON
         self.icon_text = wx.StaticText(self, -1, GT(u'Icon'))
         self.icon_text.SetToolTip(icon_tip)
-        self.icon_input = wx.TextCtrl(self)
+        
+        self.icon_input = wx.TextCtrl(self, name=u'Icon')
+        self.icon_input.default = wx.EmptyString
+        self.options_input.append(self.icon_input)
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
         self.type_text = wx.StaticText(self, -1, GT(u'Type'))
         #self.type_text.SetToolTip(m_type_tip)
-        self.type_choice = wx.ComboBox(self, -1, choices=self.type_opt)
-        self.type_choice.SetSelection(0)
+        
+        self.type_choice = wx.ComboBox(self, -1, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
+        self.type_choice.default = self.type_choice.GetValue()
+        self.options_input.append(self.type_choice)
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
         self.term_text = wx.StaticText(self, -1, GT(u'Terminal'))
         self.term_text.SetToolTip(m_term_tip)
-        self.term_choice = wx.Choice(self, -1, choices=self.term_opt)
-        self.term_choice.SetSelection(1)
+        
+        self.term_choice = wx.Choice(self, -1, choices=self.term_opt, name=u'Terminal')
+        self.term_choice.default = 1
+        self.term_choice.SetSelection(self.term_choice.default)
+        self.options_choice.append(self.term_choice)
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
         self.notify_text = wx.StaticText(self, -1, GT(u'Startup Notify'))
         self.notify_text.SetToolTip(m_notify_tip)
-        self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
-        self.notify_choice.SetSelection(0)
+        
+        self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt, name=u'StartupNotify')
+        self.notify_choice.default = 0
+        self.notify_choice.SetSelection(self.notify_choice.default)
+        self.options_choice.append(self.notify_choice)
         
         # --- ENCODING
         self.enc_opt = (u'UTF-1',u'UTF-7',u'UTF-8',u'CESU-8',u'UTF-EBCDIC',
                 u'UTF-16',u'UTF-32',u'SCSU',u'BOCU-1',u'Punycode', u'GB 18030')
         self.enc_text = wx.StaticText(self, -1, GT(u'Encoding'))
         #self.enc_text.SetToolTip(m_enc_tip)
-        self.enc_input = wx.ComboBox(self, -1, choices=self.enc_opt)
-        self.enc_input.SetSelection(2)
+        
+        self.enc_input = wx.ComboBox(self, -1, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
+        self.enc_input.default = self.enc_input.GetValue()
+        self.options_input.append(self.enc_input)
         
         # --- CATEGORIES
         self.cat_opt = (u'2DGraphics',u'Accessibility',u'Application',u'ArcadeGame',u'Archiving',u'Audio',u'AudioVideo',
@@ -121,10 +155,19 @@ class Panel(WizardPage):
                         u'X-GNOME-NetworkSettings',u'X-GNOME-PersonalSettings',u'X-GNOME-SystemSettings',u'X-KDE-More',
                         u'X-Red-Hat-Base',u'X-SuSE-ControlCenter-System')
         self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
-        self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
+        
+        # This option does not get set by importing a new project
+        self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt,
+                name=self.cat_text.GetLabel())
+        self.cat_choice.default = self.cat_choice.GetValue()
+        self.options_input.append(self.cat_choice)
+        
         self.cat_add = dbr.ButtonAdd(self)
         self.cat_del = dbr.ButtonDel(self)
         self.cat_clr = dbr.ButtonClear(self)
+        
+        for B in self.cat_add, self.cat_del, self.cat_clr:
+            self.options_button.append(B)
         
         # FIXME: wx. 3.0 compat
         if wx.MAJOR_VERSION > 3:
@@ -134,6 +177,11 @@ class Panel(WizardPage):
         else:
             self.categories = wx.ListCtrl(self, -1)
             self.categories.SetSingleStyle(wx.LC_SINGLE_SEL)
+        
+        # For manually setting background color after enable/disable
+        self.categories.default_color = self.categories.GetBackgroundColour()
+        self.categories.SetName(u'Categories')
+        self.options_list.append(self.categories)
         
         
         wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
@@ -158,11 +206,14 @@ class Panel(WizardPage):
         
         
         # ----- MISC
-        self.misc_text = wx.StaticText(self, -1, GT(u'Other'))
-        self.misc = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
+        self.other_text = wx.StaticText(self, -1, GT(u'Other'))
+        
+        self.other = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
+        self.other.default = wx.EmptyString
+        self.options_input.append(self.other)
         
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        misc_sizer.Add(self.misc, 1, wx.EXPAND)
+        misc_sizer.Add(self.other, 1, wx.EXPAND)
         
         # Organize the widgets and create a nice border
         sizer1 = wx.FlexGridSizer(0, 4, 5, 5)
@@ -183,17 +234,11 @@ class Panel(WizardPage):
         border_box.Add(sizer1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
         border_box.AddSpacer(20)
-        border_box.Add(self.misc_text, 0, wx.LEFT, 6)
-        border_box.Add(self.misc, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.Add(self.other_text, 0, wx.LEFT, 6)
+        border_box.Add(self.other, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         
-        # --- List of main menu items affected by checkbox -- used for toggling each widget
-        self.menu_list = (self.open, self.button_save, self.button_preview, self.icon_input, self.name_input,
-                        self.comm_input, self.exe_input, self.enc_input, self.type_choice, self.cat_choice,
-                        self.categories, self.cat_add, self.cat_del, self.cat_clr, self.term_choice,
-                        self.notify_choice, self.misc)
-                        #, self.m_nodisp_widg, self.m_showin_widg)
         
-        self.OnToggle(None) #Disable widgets
+        self.OnToggle()  # Initially disable widgets
         
         # --- Page 5 Sizer --- #
         page_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -208,6 +253,7 @@ class Panel(WizardPage):
         self.Layout()
         
         # List of entries in a standard .desktop file
+        # FIXME: Deprecated???
         self.standards = {    u'name': self.name_input, u'type': self.type_choice, u'exec': self.exe_input,
                             u'comment': self.comm_input, u'terminal': self.term_choice,
                             u'startupnotify': self.notify_choice, u'encoding': self.enc_input,
@@ -215,20 +261,29 @@ class Panel(WizardPage):
                             }
         
         # Lists of widgets that change language
-        self.setlabels = {    self.activate: u'Menu', self.open: u'Open', self.border: u'Border',
+        # FIXME: deprecated???
+        self.setlabels = {    self.activate: u'Menu', self.btn_open: u'Open', self.border: u'Border',
                             self.icon_text: u'Icon',
                             self.name_text: u'Name', self.comm_text: u'Comm', self.exe_text: u'Exec',
                             self.enc_text: u'Enc', self.type_text: u'Type', self.cat_text: u'Cat',
                             self.term_text: u'Term', self.notify_text: u'Notify'}
     
-    def OnToggle(self, event):
-        if self.activate.IsChecked():
-            for item in self.menu_list:
-                item.Enable()
-                    
-        else:
-            for item in self.menu_list:
-                item.Disable()
+    def OnToggle(self, event=None):
+        enable = self.activate.IsChecked()
+        
+        listctrl_bgcolor_defs = {
+            True: self.categories.default_color,
+            False: wx.Colour(214, 214, 214),
+        }
+        
+        for group in self.options_button, self.options_choice, self.options_input, self.options_list:
+            for O in group:
+                O.Enable(enable)
+                
+                # Small hack to gray-out ListCtrl when disabled
+                if isinstance(O, wx.ListCtrl):
+                    O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
+    
     
     def GetMenuInfo(self):
         # Create list to store info
@@ -287,8 +342,8 @@ class Panel(WizardPage):
         desktop_list.append(u'Categories=%s' % u';'.join(cat_list))
         
         # Add Misc
-        if self.misc.GetValue() != wx.EmptyString:
-            desktop_list.append(self.misc.GetValue())
+        if self.other.GetValue() != wx.EmptyString:
+            desktop_list.append(self.other.GetValue())
         
         return u'\n'.join(desktop_list)
     
@@ -409,6 +464,7 @@ class Panel(WizardPage):
         dia.ShowModal()
         dia.Destroy()
     
+    # FIXME: Deprecated???
     def ResetAllFields(self):
         self.name_input.Clear()
         self.exe_input.Clear()
@@ -419,10 +475,11 @@ class Panel(WizardPage):
         self.notify_choice.SetSelection(0)
         self.enc_input.SetSelection(2)
         self.categories.DeleteAllItems()
-        self.misc.Clear()
+        self.other.Clear()
         self.activate.SetValue(False)
         self.OnToggle(None)
     
+    # FIXME: Deprecated???
     def SetFieldData(self, data):
         # Clear all fields first
         self.ResetAllFields()
@@ -491,9 +548,10 @@ class Panel(WizardPage):
                         cat_count -= 1
                         self.categories.InsertStringItem(0, categories[cat_count])
             if len(leftovers) > 0:
-                self.misc.SetValue(u'\n'.join(leftovers))
+                self.other.SetValue(u'\n'.join(leftovers))
         self.OnToggle(None)
     
+    # FIXME: Deprecated???
     def GatherData(self):
         if self.activate.GetValue():
             data = self.GetMenuInfo()
@@ -514,3 +572,97 @@ class Panel(WizardPage):
             return None
         
         return(__name__, self.GetMenuInfo(), u'MENU')
+    
+    
+    def ImportPageInfo(self, filename):
+        Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
+        
+        if not os.path.isfile(filename):
+            return custom_errno.ENOENT
+        
+        FILE = open(filename, u'r')
+        menu_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        menu_definitions = {}
+        
+        for L in menu_data:
+            if u'=' in L:
+                key = L.split(u'=')
+                value = key[-1]
+                key = key[0]
+                
+                menu_definitions[key] = value
+        
+        
+        def set_value(option):
+            key = option.GetName()
+            value = None
+            
+            if key in menu_definitions:
+                value = menu_definitions[key]
+                
+                if not TextIsEmpty(value):
+                    if option in self.options_input:
+                        option.SetValue(value)
+                        return True
+                    
+                    elif option in self.options_choice:
+                        if option.SetStringSelection(value):
+                            return True
+                    
+                    elif option in self.options_list:
+                        if key == self.categories.GetName():
+                            value = value.split(u';')
+                            
+                            if len(value):
+                                for X in range(len(value)):
+                                    self.categories.InsertStringItem(X, value[X])
+                                return True
+            
+            return False
+                    
+        
+        categories_used = []
+        menu_changed = False
+        
+        for group in self.options_input, self.options_choice, self.options_list:
+            for O in group:
+                if set_value(O):
+                    menu_changed = True
+                    categories_used.append(O.GetName())
+        
+        
+        # List of keys that can be ignored if unused
+        bypass_unused = (
+            u'Version',
+        )
+        
+        categories_unused = []
+        for key in menu_definitions:
+            if key not in categories_used and key not in bypass_unused:
+                categories_unused.append(u'{}={}'.format(key, menu_definitions[key]))
+        
+        if len(categories_unused):
+            categories_unused = u'\n'.join(categories_unused)
+            
+            self.other.SetValue(categories_unused)
+        
+        self.activate.SetValue(menu_changed)
+        self.OnToggle()
+        
+        return 0
+    
+    
+    def ResetPageInfo(self):
+        self.activate.SetValue(self.activate.default)
+        self.OnToggle()
+        
+        for O in self.options_input:
+            O.SetValue(O.default)
+        
+        for O in self.options_choice:
+            O.SetSelection(O.default)
+        
+        for O in self.options_list:
+            O.DeleteAllItems()
