@@ -49,6 +49,7 @@ FILES_dbr = \
 	dbr/buttons.py \
 	dbr/charctrl.py \
 	dbr/command_line.py \
+	dbr/command_check.py \
 	dbr/compression.py \
 	dbr/config.py \
 	dbr/constants.py \
@@ -64,9 +65,6 @@ FILES_dbr = \
 	dbr/pathctrl.py \
 	dbr/templates.py \
 	dbr/wizard.py
-
-FILES_functions = \
-	functions/commandcheck.py
 
 FILES_doc = \
 	docs/BUGS.txt \
@@ -112,7 +110,6 @@ FILES_build = \
 	$(FILES_wiz_bin) \
 	$(FILES_wiz_src) \
 	$(FILES_dbr) \
-	$(FILES_functions) \
 	$(FILES_doc) \
 	$(FILES_bitmap) \
 	$(FILES_data)
@@ -184,10 +181,6 @@ install: build $(FILES_build) $(DIRS_build) install-doc
 		mkdir -vp "$${datadir}/dbr"; \
 		for py in $(FILES_dbr); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
-		done; \
-		mkdir -vp "$${datadir}/functions"; \
-		for py in $(FILES_functions); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/functions"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/wiz_bin"; \
