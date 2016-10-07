@@ -10,6 +10,7 @@ import wx, os, sys, errno
 
 # Local modules
 from dbr.language import GT
+from dbr.commandcheck import CommandExists
 
 
 # *** System Information *** #
@@ -190,3 +191,7 @@ file_types_defs = {
 
 # *** Colors *** #
 COLOR_ERROR = wx.Colour(255, 143, 115)
+
+
+# *** Optional system executable commands *** #
+cmd_tar = CommandExists(u'tar')
