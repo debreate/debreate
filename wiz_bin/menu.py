@@ -291,43 +291,43 @@ class Panel(WizardPage):
         
         # Add Name
         name = self.name_input.GetValue()
-        desktop_list.append(u'Name=%s' % name)
+        if not TextIsEmpty(name):
+            desktop_list.append(u'Name={}'.format(name))
         
         # Add Version
         desktop_list.append(u'Version=1.0')
         
         # Add Executable
         exe = self.exe_input.GetValue()
-        desktop_list.append(u'Exec=%s' % exe)
+        if not TextIsEmpty(exe):
+            desktop_list.append(u'Exec={}'.format(exe))
         
         # Add Comment
         comm = self.comm_input.GetValue()
-        desktop_list.append(u'Comment=%s' % comm)
+        if not TextIsEmpty(comm):
+            desktop_list.append(u'Comment={}'.format(comm))
         
         # Add Icon
         icon = self.icon_input.GetValue()
-        desktop_list.append(u'Icon=%s' % icon)
+        if not TextIsEmpty(icon):
+            desktop_list.append(u'Icon={}'.format(icon))
         
         # Add Type
         #type = self.type_opt[self.type_choice.GetSelection()]
-        _type = self.type_choice.GetValue()
-        desktop_list.append(u'Type=%s' % _type)
+        m_type = self.type_choice.GetValue()
+        if not TextIsEmpty(m_type):
+            desktop_list.append(u'Type={}'.format(m_type))
         
         # Add Terminal
-        if self.term_choice.GetSelection() == 0:
-            desktop_list.append(u'Terminal=true')
-        else:
-            desktop_list.append(u'Terminal=false')
+        desktop_list.append(u'Terminal={}'.format(unicode(self.term_choice.GetSelection() == 0).lower()))
         
         # Add Startup Notify
-        if self.notify_choice.GetSelection() == 0:
-            desktop_list.append(u'StartupNotify=true')
-        else:
-            desktop_list.append(u'StartupNotify=false')
+        desktop_list.append(u'StartupNotify={}'.format(unicode(self.notify_choice.GetSelection() == 0).lower()))
         
         # Add Encoding
         enc = self.enc_input.GetValue()
-        desktop_list.append(u'Encoding=%s' % enc)
+        if not TextIsEmpty(enc):
+            desktop_list.append(u'Encoding={}'.format(enc))
         
         # Add Categories
         cat_list = []
@@ -336,16 +336,19 @@ class Panel(WizardPage):
         while count < cat_total:
             cat_list.append(self.categories.GetItemText(count))
             count += 1
-        # Add a final semi-colon if categories is not empty
-        if cat_list != []:
+        
+        if len(cat_list):
+            # Add a final semi-colon if categories is not empty
             cat_list[-1] = u'%s;' % cat_list[-1]
-        desktop_list.append(u'Categories=%s' % u';'.join(cat_list))
+            
+            desktop_list.append(u'Categories={}'.format(u';'.join(cat_list)))
         
         # Add Misc
         if self.other.GetValue() != wx.EmptyString:
             desktop_list.append(self.other.GetValue())
         
         return u'\n'.join(desktop_list)
+    
     
     def SetCategory(self, event):
         try:
