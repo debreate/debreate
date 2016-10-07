@@ -13,6 +13,7 @@ from dbr.language import GT
 from dbr.constants import ID_BUILD, custom_errno
 from dbr.wizard import WizardPage
 from dbr.functions import GetBoolean
+from functions.commandcheck import CommandExists
 
 
 class Panel(WizardPage):
@@ -33,23 +34,24 @@ class Panel(WizardPage):
         build_tip = wx.ToolTip(GT(u'Start building'))
         
         
+        # Commands that can be used during the build process
+        self.cmd_md5sum = CommandExists(u'md5sum')
+        self.cmd_lintian = CommandExists(u'lintian')
+        
         # Add checkable items to this list
         self.build_options = []
-        
         
         # ----- Extra Options
         self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = False
         
-        # FIXME: Use CommandExists
-        if not exists(u'/usr/bin/md5sum'):
+        if not self.cmd_md5sum:
             self.chk_md5.Disable()
-            self.chk_md5.SetToolTip(wx.ToolTip(GT(u'(Install md5sum package for this option)')))
+            self.chk_md5.SetToolTip(wx.ToolTip(GT(u'Install md5sum package for this option')))
         else:
             self.chk_md5.SetToolTip(md5_tip)
             self.build_options.append(self.chk_md5)
-
         
         # For creating md5sum hashes
         self.md5 = dbr.MD5()
@@ -68,7 +70,7 @@ class Panel(WizardPage):
         self.chk_lint.default = True
         #self.chk_lint.SetToolTip(tip_lint)
         # FIXME: Use CommandExists
-        if not exists(u'/usr/bin/lintian'):
+        if not self.cmd_lintian:
             self.chk_lint.Disable()
             self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
         else:
