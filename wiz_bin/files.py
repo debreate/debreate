@@ -481,48 +481,39 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
     def GetPageInfo(self):
-        if not DebugEnabled:
-            page_info = self.GetFilesInfoDeprecated()
-            
-            if not page_info:
-                return None
-            
-            return (__name__, page_info)
-        
         item_count = self.dest_area.GetItemCount()
         
         if item_count:
             #file_list = []
-            file_dict = {}
+            files_definitions = {}
             for X in range(item_count):
                 row_data = self.dest_area.GetRowData(X)
-                
-                #file_list.append(u'{}/{}; {}'.format(row_data[1], row_data[0], row_data[2]))
+                filename = u'{}/{}'.format(row_data[1], row_data[0])
                 target = row_data[2]
-                source = u'{}/{}'.format(row_data[1], row_data[0])
+                executable = row_data[3]
                 
-                if target not in file_dict:
-                    file_dict[target] = []
+                if executable:
+                    # Use asterix to mark executables (file that may not be actual executables on the filesystem)
+                    filename = u'{} *'.format(filename)
                 
-                file_dict[target].append(source)
+                if target in files_definitions:
+                    files_definitions[target].append(filename)
+                    continue
+                
+                files_definitions[target] = [filename,]
             
-            # FIXME: file output
-            file_list = wx.EmptyString
-            for F in file_dict:
-                file_dict[F] = u'\n'.join(file_dict[F])
+            files_data = []
+            for D in files_definitions:
+                files_data.append(u'[{}]'.format(D))
                 
-                if file_list != wx.EmptyString:
-                    file_list = u'{}\n'.format(file_list)
-                
-                if len(file_dict[F]) == 1:
-                    source = file_dict[F]
-                
-                else:
-                    source = u'\n'.join(file_dict[F])
-                
-                file_list = u'{}{}\n{}'.format(file_list, u'[{}]'.format(F), source)
+                for F in files_definitions[D]:
+                    files_data.append(F)
             
-            return (__name__, file_list)
+            files_data = u'\n'.join(files_data)
+            
+            return (__name__, files_data)
+        
+        return None
     
     
     ## 
@@ -558,7 +549,6 @@ class Panel(WizardPage):
                     executable = (len(L) > 1 and L[-2:] == u' *')
                     if executable:
                         L = L[:-2]
-                    Logger.Debug(__name__, GT(u'Executable ({}): {}').format(L[-2:], executable))
                     
                     targets_list.append((target, L, executable))
         
@@ -747,8 +737,9 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         filename = self.GetItem(row, self.filename_col).GetText()
         source_dir = self.GetItem(row, self.source_col).GetText()
         target_dir = self.GetItem(row, self.target_col).GetText()
+        executable = self.GetItem(row, self.type_col).GetText() == file_types_defs[FTYPE_EXE]
         
-        return (filename, source_dir, target_dir)
+        return (filename, source_dir, target_dir, executable)
 
 
 ## A custom progress dialog
