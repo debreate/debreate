@@ -214,8 +214,8 @@ class Panel(WizardPage):
         
         # Remove preceding empty lines
         remove_index = 0
-        for I in range(len(copyright_data)):
-            if not TextIsEmpty(copyright_data[I]):
+        for I in copyright_data:
+            if not TextIsEmpty(I):
                 break
             
             remove_index += 1
