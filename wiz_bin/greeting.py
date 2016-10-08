@@ -8,13 +8,14 @@ import wx
 from dbr.language import GT
 from dbr.constants import ID_GREETING
 from dbr.wizard import WizardPage
+from dbr.custom import Hyperlink
 
 
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_GREETING)
         
-        self.parent = parent # 3rd level) Allows executing 2st level methods
+        self.parent = parent
         
         # Mode Information
         m1 = GT(u'Welcome to Debreate!')
@@ -31,16 +32,21 @@ class Panel(WizardPage):
             )
         
         # ----- Helpful information to be displayed about each mode
-        self.info = wx.StaticText(self, -1)
-        self.vidlink = wx.HyperlinkCtrl(self, -1, GT(u'Building a Debian Package with Debreate'), u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        self.info = wx.StaticText(self)
+        self.vidlink = Hyperlink(
+                self, -1,
+                GT(u'Building a Debian Package with Debreate'),
+                u'http://www.youtube.com/watch?v=kx4D5eL6HKE'
+        )
         self.info_border = wx.StaticBox(self, -1, size=(100,100))
+        
         info_box = wx.GridSizer()
         info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
         # ----- Layout
         mode_sizer = wx.StaticBoxSizer(self.info_border, wx.VERTICAL)
-        mode_sizer.Add(info_box, 4, wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, 10)
-        mode_sizer.Add(self.vidlink, 2, wx.EXPAND|wx.ALIGN_CENTER)
+        mode_sizer.Add(info_box, 4, wx.ALIGN_CENTER|wx.ALL, 10)
+        mode_sizer.Add(self.vidlink, 2, wx.ALIGN_CENTER)
         
         self.SetAutoLayout(True)
         self.SetSizer(mode_sizer)
