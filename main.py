@@ -17,7 +17,8 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
     cmd_tar
 from dbr.config import GetDefaultConfigValue, WriteConfig
-from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards
+from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards,\
+    GetFileSaveDialog
 from dbr.compression import \
     compression_mimetypes, compression_formats,\
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
@@ -82,13 +83,8 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
         
-        # Debugging
-        if DebugEnabled():
-            wx.EVT_MENU(self, wx.ID_SAVE, self.SaveProject)
-        else:
-            wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProjectDeprecated)
-        
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectDeprecated)
+        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
+        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
         wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
@@ -307,6 +303,9 @@ class MainWindow(wx.Frame):
         # First item is name of saved file displayed in title
         # Second item is actual path to project file
         self.saved_project = wx.EmptyString
+        self.project = None
+        
+        self.dirty = True
     
     
     ## Sets working directory for file open/save dialogs
@@ -638,6 +637,48 @@ class MainWindow(wx.Frame):
             title = self.GetTitle()
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
+    
+    
+    ## Checks if a project is loaded
+    def ProjectLoaded(self):
+        return self.project != None
+    
+    
+    ## Checks if current project is dirty
+    def IsDirty(self):
+        return self.dirty
+    
+    
+    ## Checks if saved project is dirty
+    def OnSaveProject(self, event=None):
+        if not self.ProjectLoaded():
+            self.OnSaveProjectAs(event)
+            
+            return
+    
+    Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
+    
+    
+    def OnSaveProjectAs(self, event=None):
+        wildcards = (
+            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
+        )
+        
+        save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
+                PROJECT_FILENAME_SUFFIX)
+        
+        if ShowDialog(save_dialog):
+            project_path = save_dialog.GetPath()
+            project_filename = save_dialog.GetFilename()
+            project_extension = save_dialog.GetExtension()
+            
+            Logger.Debug(__name__, GT(u'Project path: {}').format(project_path))
+            Logger.Debug(__name__, GT(u'Project filename: {}').format(project_filename))
+            Logger.Debug(__name__, GT(u'Project extension: {}').format(project_extension))
+            
+            return
+        
+        Logger.Debug(__name__, GT(u'Not saving project'))
     
     
     ## Saves project in archive format
