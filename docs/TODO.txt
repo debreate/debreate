@@ -15,6 +15,7 @@
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
 - use wx.FileType instead of magic module
+- Highlight hyperlinks
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
