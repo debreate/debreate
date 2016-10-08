@@ -345,7 +345,7 @@ def GetIntTuple(value):
         for I in value:
             t_index = value.index(I)
             
-            if type(I) in (tuple, list):
+            if isinstance(I, (tuple, list)):
                 I = GetIntTuple(I)
             
             else:
