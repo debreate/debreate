@@ -807,16 +807,45 @@ class SaveFile(DBDialog):
 #  
 #  wx.HyperlinkCtrl seems to have some issues in wx 3.0,
 #    so this class is used instead.
-class Hyperlink(wx.StaticText):
+class Hyperlink(wx.Panel):
     def __init__(self, parent, ID, label, url):
-        wx.StaticText.__init__(self, parent, ID, label)
+        wx.Panel.__init__(self, parent, ID)
+        
+        self.parent = parent
         
         self.url = url
+        self.text_bg = wx.Panel(self)
+        self.text = wx.StaticText(self.text_bg, label=label)
         
-        wx.EVT_LEFT_DOWN(self, self.OnLeftClick)
+        wx.EVT_LEFT_DOWN(self.text, self.OnLeftClick)
+        wx.EVT_ENTER_WINDOW(self.text_bg, self.OnMouseOver)
+        wx.EVT_LEAVE_WINDOW(self.text_bg, self.OnMouseOut)
+        
+        self.text.SetForegroundColour(wx.Colour(0, 0, 255))
+        
+        layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        layout_V1.AddSpacer(1, wx.EXPAND)
+        layout_V1.Add(self.text_bg, 0, wx.ALIGN_CENTER)
+        layout_V1.AddSpacer(1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(layout_V1)
+        self.Layout()
     
     
     def OnLeftClick(self, event=None):
+        webbrowser.open(self.url)
+        
         if event:
-            webbrowser.open(self.url)
+            event.Skip(True)
+    
+    
+    def OnMouseOut(self, event):
+        self.text.SetForegroundColour(wx.Colour(0, 0, 255))
+    
+    
+    def OnMouseOver(self, event):
+        self.text.SetForegroundColour(wx.Colour(255, 0, 0))
+        
+        if event:
             event.Skip(True)
