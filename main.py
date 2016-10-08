@@ -672,9 +672,9 @@ class MainWindow(wx.Frame):
             project_filename = save_dialog.GetFilename()
             project_extension = save_dialog.GetExtension()
             
-            Logger.Debug(__name__, GT(u'Project path: {}').format(project_path))
-            Logger.Debug(__name__, GT(u'Project filename: {}').format(project_filename))
-            Logger.Debug(__name__, GT(u'Project extension: {}').format(project_extension))
+            Logger.Debug(__name__, GT(u'Project save path: {}').format(project_path))
+            Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
+            Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
             return
         
@@ -879,3 +879,7 @@ class MainWindow(wx.Frame):
         QB = wiz_bin.QuickBuild(self)
         QB.ShowModal()
         QB.Destroy()
+    
+    
+    def GetDebreateWindow(self):
+        return self
