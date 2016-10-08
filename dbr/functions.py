@@ -15,6 +15,7 @@ from dbr.constants import \
     HOMEPAGE, PY_VER_STRING, system_licenses_path,\
     project_wildcards, supported_suffixes
 from dbr.compression import compression_formats
+from dbr.dialogs import StandardFileSaveDialog
 
 
 # FIXME: Can't import Logger
@@ -136,14 +137,14 @@ def TextIsEmpty(text):
 #        The dialog window to be shown
 #  
 #  \b Alias: \e dbr.GetFileSaveDialog
-def GetFileSaveDialog(main_window, title, ext_filters, default_extension=None):
+def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
     ext_filters = u'|'.join(ext_filters)
     if main_window.cust_dias.IsChecked():
-        file_save = dbr.SaveFile(main_window, title, default_extension)
+        file_save = dbr.SaveFile(main_window, title, extension)
         file_save.SetFilter(ext_filters)
     else:
-        file_save = wx.FileDialog(main_window, title, defaultDir=os.getcwd(), wildcard=ext_filters,
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        file_save = StandardFileSaveDialog(main_window, title, default_extension=extension,
+                wildcard=ext_filters)
     
     return file_save
 
@@ -155,7 +156,7 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
         file_open.SetFilter(ext_filters)
     
     else:
-        file_open = wx.FileDialog(main_window, title, defaultDir=os.getcwd(), wildcard=ext_filters,
+        file_open = wx.FileDialog(main_window, title, os.getcwd(), wildcard=ext_filters, defaultFile=u'blah.BLAHBLAH',
                 style=wx.FD_OPEN|wx.FD_CHANGE_DIR)
     
     return file_open
@@ -177,8 +178,11 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
 #      otherwise
 #  
 #  \b Alias: \e dbr.ShowDialog
-def ShowDialog(main_window, dialog):
-    if main_window.cust_dias.IsChecked():
+def ShowDialog(dialog):
+    # Dialog's parent should be set to main window
+    debreate = dialog.GetParent()
+    
+    if debreate.cust_dias.IsChecked():
         return dialog.DisplayModal()
     else:
         return dialog.ShowModal() == wx.ID_OK
