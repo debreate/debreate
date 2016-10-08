@@ -480,7 +480,7 @@ class Panel(WizardPage):
     # *** Opening Project/File & Setting Fields ***
     
     def SetFieldData(self, data):
-        if type(data) == str:
+        if isinstance(data, str):
             # Decode to unicode string if input is byte string
             data = data.decode(u'utf-8')
         control_data = data.split(u'\n')
