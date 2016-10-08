@@ -54,6 +54,7 @@ FILES_dbr = \
 	dbr/config.py \
 	dbr/constants.py \
 	dbr/custom.py \
+	dbr/dialogs.py \
 	dbr/font.py \
 	dbr/functions.py \
 	dbr/help.py \
