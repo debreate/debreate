@@ -149,7 +149,7 @@ class CompressionHandler:
             prev_dir = os.getcwd()
             os.chdir(target_dir)
             
-            tar_output = commands.getstatusoutput(u'tar -xJf "{}"'.format(source_file, target_dir))
+            tar_output = commands.getstatusoutput(u'tar -xJf "{} {}"'.format(source_file, target_dir))
             
             os.chdir(prev_dir)
             
