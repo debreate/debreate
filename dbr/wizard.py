@@ -154,7 +154,7 @@ class Wizard(wx.Panel):
         self.Layout()
     
     def EnableNext(self, value=True):
-        if type(value) in (type(True), type(1)):
+        if isinstance(value, int):
             if value:
                 self.button_next.Enable()
             else:
@@ -166,7 +166,7 @@ class Wizard(wx.Panel):
         self.EnableNext(False)
     
     def EnablePrev(self, value=True):
-        if type(value) in (type(True), type(1)):
+        if isinstance(value, int):
             if value:
                 self.button_prev.Enable()
             else:
