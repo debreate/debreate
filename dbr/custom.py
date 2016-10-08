@@ -4,7 +4,7 @@
 
 
 # System imports
-import wx, os, sys
+import wx, os, sys, webbrowser
 from wx.lib.docview import PathOnly
 import wx.combo, wx.lib.mixins.listctrl as LC
 
@@ -801,3 +801,22 @@ class SaveFile(DBDialog):
         elif id in cancel_ids:
             self.Close()
         event.Skip()
+
+
+## Control for opening a webpage with a mouse click
+#  
+#  wx.HyperlinkCtrl seems to have some issues in wx 3.0,
+#    so this class is used instead.
+class Hyperlink(wx.StaticText):
+    def __init__(self, parent, ID, label, url):
+        wx.StaticText.__init__(self, parent, ID, label)
+        
+        self.url = url
+        
+        wx.EVT_LEFT_DOWN(self, self.OnLeftClick)
+    
+    
+    def OnLeftClick(self, event=None):
+        if event:
+            webbrowser.open(self.url)
+            event.Skip(True)
