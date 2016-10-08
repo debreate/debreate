@@ -37,6 +37,7 @@ local_path = u'{}/.local/share/debreate'.format(home_path)
 APP_NAME = GT(u'Debreate')
 AUTHOR = u'Jordan Irwin'
 EMAIL = u'antumdeluge@gmail.com'
+MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(application_path), wx.BITMAP_TYPE_PNG)
 
 # Version information #
 RELEASE = 0
