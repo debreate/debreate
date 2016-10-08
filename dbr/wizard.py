@@ -209,6 +209,10 @@ class Wizard(wx.Panel):
     def ResetPagesInfo(self):
         for page in self.pages:
             page.ResetPageInfo()
+    
+    
+    def GetDebreateWindow(self):
+        return self.parent.GetDebreateWindow()
 
 
 ## Parent class for wizard pages
