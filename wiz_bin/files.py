@@ -641,7 +641,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             
             Logger.Debug(__name__, u'Child ID: {}'.format(child.GetId()))
             Logger.Debug(__name__, u'Child type: {}'.format(type(child)))
-            Logger.Debug(__name__, u'Child name'.format(child.GetName()))
+            Logger.Debug(__name__, u'Child name: {}'.format(child.GetName()))
             
         event.Skip()
     
