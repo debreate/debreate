@@ -91,7 +91,7 @@ class DebreateLogger:
             return l_level
         
         # Check if l_level is a string value of 'info', 'warning', 'error', 'debug'
-        if type(l_level) in (unicode, str):
+        if isinstance(l_level, (unicode, str)):
             for L in self.log_level_list:
                 if l_level.lower() == self.log_level_list[L].lower():
                     return L
