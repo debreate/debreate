@@ -64,6 +64,10 @@ class StandardFileSaveDialog(wx.FileDialog):
         path = self.GetPath()
         if os.path.isfile(path):
             overwrite = OverwriteDialog(self, path).ShowModal()
+            
+            if overwrite == wx.ID_YES:
+                self.EndModal(wx.ID_OK)
+            
             return
         
-        print(u'Path does not exist')
+        self.EndModal(wx.ID_OK)
