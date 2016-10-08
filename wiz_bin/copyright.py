@@ -93,10 +93,10 @@ class Panel(WizardPage):
         self.cp_display.Clear()
     
     def OnSelectTemplate(self, event):
-        if type(event) != wx.Choice:
-            choice = event.GetEventObject()
-        else:
+        if isinstance(event, wx.Choice):
             choice = event
+        else:
+            choice = event.GetEventObject()
         
         template = choice.GetString(choice.GetSelection())
         
