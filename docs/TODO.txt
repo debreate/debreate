@@ -5,7 +5,6 @@
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
-- Fix recognizing filename extension on save project
 - Fix open dialogs saving cwd
 - Fix save dialogs saving cwd
 - New method for checking for version update
@@ -16,6 +15,7 @@
 - Fix copyright for Apache license template
 - use wx.FileType instead of magic module
 - Highlight hyperlinks
+- Test custom dialogs
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
