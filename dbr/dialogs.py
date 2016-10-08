@@ -15,6 +15,8 @@ class OverwriteDialog(wx.MessageDialog):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
                 style=wx.ICON_QUESTION|wx.YES_NO|wx.YES_DEFAULT)
         
+        self.parent = parent
+        
         self.SetYesNoLabels(GT(u'Replace'), GT(u'Cancel'))
         
         filename = os.path.basename(path)
@@ -35,22 +37,46 @@ class StandardFileSaveDialog(wx.FileDialog):
             style=wx.FD_SAVE|wx.FD_CHANGE_DIR):
         wx.FileDialog.__init__(self, parent, title, default_dir, wildcard=wildcard, style=style)
         
+        self.parent = parent
+        
         self.extension = default_extension
         
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnAccept)
     
     
+    def GetDebreateWindow(self):
+        return self.parent.GetDebreateWindow()
+    
+    
+    ## FIXME: Seems to be being called 3 times
     def GetFilename(self, *args, **kwargs):
         filename = wx.FileDialog.GetFilename(self, *args, **kwargs)
         
-        if not filename.split(u'.')[-1] == self.extension:
-            filename = u'{}.{}'.format(filename, self.extension)
+        # Allow users to manually set filename extension
+        if not self.HasExtension(filename):
+            if not filename.split(u'.')[-1] == self.extension:
+                filename = u'{}.{}'.format(filename, self.extension)
         
         return filename
     
     
+    ## Fixme: Seems to be being called twice
     def GetPath(self, *args, **kwargs):
         path = wx.FileDialog.GetPath(self, *args, **kwargs)
+        
+        if len(path):
+            if path[-1] == u'.':
+                #wx.MessageDialog(self, GT(u'Filename cannot end with "{}"').format(path[-1]), GT(u'Error'),
+                #        style=wx.ICON_ERROR|wx.OK).ShowModal()
+                name_error = wx.MessageDialog(self.GetDebreateWindow(), GT(u'Error'),
+                        style=wx.ICON_ERROR|wx.OK)
+                
+                name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
+                # FIXME: Setting icon causes segfault
+                #name_error.SetIcon(MAIN_ICON)
+                name_error.ShowModal()
+                
+                return None
         
         out_dir = os.path.dirname(path)
         return u'{}/{}'.format(out_dir, self.GetFilename())
@@ -60,14 +86,25 @@ class StandardFileSaveDialog(wx.FileDialog):
         return self.extension
     
     
+    def HasExtension(self, path):
+        if u'.' in path:
+            if path.split(u'.')[-1] != u'':
+                return True
+        
+        return False
+    
+    
     def OnAccept(self, event=None):
         path = self.GetPath()
-        if os.path.isfile(path):
-            overwrite = OverwriteDialog(self, path).ShowModal()
-            
-            if overwrite == wx.ID_YES:
-                self.EndModal(wx.ID_OK)
-            
-            return
         
-        self.EndModal(wx.ID_OK)
+        if path:
+            if os.path.isfile(path):
+                overwrite = OverwriteDialog(self.GetDebreateWindow(), path).ShowModal()
+                
+                if overwrite == wx.ID_YES:
+                    os.remove(path)
+                    self.EndModal(wx.ID_OK)
+                
+                return
+            
+            self.EndModal(wx.ID_OK)
