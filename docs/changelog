@@ -22,6 +22,7 @@ debreate (0.8.0) xenial; urgency=high
     Users can place license templates in <HOME>/.local/share/debreate/templates/licenses
     Fixed bug where importing files progress dialog cannot be cancelled
     Uses compressed or uncompressed archives for project save/open
+    Files list shows source directory as well as target
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  06 Oct 2016 03:36:38 -0700
 
