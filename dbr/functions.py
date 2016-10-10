@@ -5,7 +5,7 @@
 
 
 # System modules
-import wx, os, re
+import wx, os, re, commands
 from datetime import datetime, date
 from urllib2 import urlopen, URLError
 
@@ -444,3 +444,12 @@ def GetDialogWildcards(ID):
         wildcards[X] = u'*{}'.format(wildcards[X])
     
     return (proj_def, u';'.join(wildcards))
+
+
+def GetFileMimeType(file_name):
+    output = commands.getstatusoutput(u'file --mime-type "{}"'.format(file_name))
+    
+    if output[0]:
+        return (output[0], output[1])
+    
+    return output[1].split(u': ')[-1]
