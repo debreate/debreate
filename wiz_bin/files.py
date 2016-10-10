@@ -9,7 +9,7 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
-    custom_errno, COLOR_ERROR, ICON_ERROR
+    custom_errno, COLOR_ERROR, ICON_ERROR, home_path
 from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
@@ -23,9 +23,6 @@ ID_pout = 102
 ID_AddDir = 140
 ID_AddFile = 141
 ID_Refresh = 142
-
-# FIXME: Use global from dbr.constants
-home = os.getenv(u'HOME')
 
 
 class Panel(WizardPage):
@@ -54,7 +51,7 @@ class Panel(WizardPage):
         self.menu.AppendItem(self.refresh)
         
         # Directory listing for importing files and folders
-        self.dir_tree = wx.GenericDirCtrl(self, -1, home, size=(300,20))
+        self.dir_tree = wx.GenericDirCtrl(self, -1, home_path, size=(300,20))
         
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         
