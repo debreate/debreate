@@ -118,10 +118,6 @@ class Panel(WizardPage):
         # List that stores the actual paths to the files
         self.list_data = []
         
-        # Set the width of first column on creation
-        parent_size = self.GetGrandParent().GetSize()
-        parent_width = parent_size[1]
-        
         wx.EVT_KEY_DOWN(self.dest_area, self.DelPathDeprecated)
         
         LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
