@@ -13,7 +13,6 @@
 - Better fit columns on Files page
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
-- use wx.FileType instead of magic module
 - Highlight hyperlinks
 - Test custom dialogs
 

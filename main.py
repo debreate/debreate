@@ -3,7 +3,7 @@
 
 
 # System modules
-import wx, os, shutil, subprocess, webbrowser, magic
+import wx, os, shutil, subprocess, webbrowser
 from urllib2 import URLError, HTTPError
 
 # Local modules
@@ -18,7 +18,7 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     cmd_tar
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards,\
-    GetFileSaveDialog
+    GetFileSaveDialog, GetFileMimeType
 from dbr.compression import \
     compression_mimetypes, compression_formats,\
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
@@ -411,19 +411,18 @@ class MainWindow(wx.Frame):
         open_dialog = GetFileOpenDialog(self, GT(u'Open Debreate Project'), wildcards)
         
         # FIXME: Should have confirmation if current project marked "dirty"
-        if ShowDialog(self, open_dialog):
+        if ShowDialog(open_dialog):
             # Remove current project
             self.wizard.ResetPagesInfo()
             
             # Get the path and set the saved project
             self.saved_project = open_dialog.GetPath()
+            mime_type = GetFileMimeType(self.saved_project)
             
-            file_identifier = magic.open(magic.MAGIC_MIME)
-            file_identifier.load()
-            file_type = file_identifier.file(self.saved_project).split(u';')[0]
-            file_identifier.close()
+            Logger.Debug(__name__, GT(u'Opening project: {}').format(self.saved_project))
+            Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
             
-            if file_type == u'text/plain':
+            if mime_type == u'text/plain':
                 p_open = open(self.saved_project, u'r')
                 p_text = p_open.read()
                 p_open.close()
@@ -434,11 +433,11 @@ class MainWindow(wx.Frame):
                 
                 return
             
-            self.OpenProject(self.saved_project, file_type)
+            self.OpenProject(self.saved_project, mime_type)
     
     #  TODO: Finish defining
     def OpenProject(self, filename, file_type):
-        Logger.Debug(__name__, GT(u'Opening project: {}, Type: {}'.format(filename, file_type)))
+        Logger.Debug(__name__, GT(u'Compressed project archive detected'))
         
         if file_type not in compression_mimetypes:
             Logger.Error(__name__, GT(u'Cannot open project with compression mime type "{}"'.format(file_type)))
@@ -453,8 +452,7 @@ class MainWindow(wx.Frame):
         else:
             z_format = u'r:{}'.format(z_format)
         
-        if DebugEnabled():
-            print(u'Opening tarfile with "{}" format'.format(z_format))
+        Logger.Debug(__name__, GT(u'Opening compressed project with "{}" format').format(z_format))
         
         # FIXME: This should be a global
         temp_dir = u'/tmp'
@@ -472,14 +470,15 @@ class MainWindow(wx.Frame):
         os.makedirs(temp_dir)
         
         Logger.Debug(__name__,
-            GT(u'Uncompressing project format {}: {}'.format(compression_formats[compression_id], filename)))
+                GT(u'Uncompressing project format {}: {}').format(compression_formats[compression_id], filename))
         
         p_archive = CompressionHandler(compression_id)
         ret_code = p_archive.Uncompress(filename, temp_dir)
         
         # FIXME: Should display an error dialog
         if ret_code:
-            Logger.Error(__name__, GT(u'An error occurred while uncompressing project file: Error code {}'.format(ret_code)))
+            Logger.Error(__name__,
+                    GT(u'An error occurred while uncompressing project file: Error code {}').format(ret_code))
             return
         
         self.wizard.ImportPagesInfo(temp_dir)
@@ -487,6 +486,7 @@ class MainWindow(wx.Frame):
     
     
     def OpenProjectLegacy(self, data, filename):
+        Logger.Debug(__name__, GT(u'Legacy project format (text) detected'))
         def ProjectError():
             wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
     		                       style=wx.OK|wx.ICON_ERROR).ShowModal()
