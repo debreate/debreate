@@ -313,7 +313,7 @@ class AboutDialog(wx.Dialog):
             Logger.Debug(__name__, GT(u'Converting string argument "jobs" to tuple'))
             jobs = (jobs,)
         
-        for value in jobs:
+        for x, value in enumerate(jobs):
             next_item = self.credits.GetItemCount()
             if x == 0:
                 self.credits.InsertStringItem(next_item, name)

@@ -81,7 +81,7 @@ class Wizard(wx.Panel):
         
         self.ClearPages() # Remove any current pages from the wizard
         
-        if isinstance(pages, (list, tuple)):
+        if not isinstance(pages, (list, tuple)):
             raise TypeError(u'Argument 2 of dbwizard.SetPages() must be List or Tuple')
         
         for page in pages:

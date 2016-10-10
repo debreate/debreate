@@ -153,7 +153,7 @@ class DebreateLogger:
             self.log_level = l_level
             log_set = True
         
-        elif isinstance(l_level, (unicode, str))
+        elif isinstance(l_level, (unicode, str)):
             for L in self.log_level_list:
                 if l_level.lower() == self.log_level_list[L].lower():
                     self.log_level = L
