@@ -675,13 +675,6 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             self.SetColumnWidth(C, self.GetSize()[0] / 4)
     
     
-    def OnShow(self, event=None):
-        print(u'Showing')
-        
-        if event:
-            event.Skip(True)
-    
-    
     ## Opens an editor for target
     #  
     #  The super method is overridden to only
