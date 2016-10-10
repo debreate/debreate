@@ -10,7 +10,7 @@ import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
     custom_errno, COLOR_ERROR, ICON_ERROR
-from dbr import Logger, DebugEnabled
+from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
 from dbr.message import MessageDialog
