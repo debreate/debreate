@@ -43,6 +43,7 @@ key_types = {
     u'size': GetIntTuple,
     u'workingdir': unicode,
     u'compression': unicode,
+    u'tooltips': GetBoolean,
 }
 
 default_config_values = {
@@ -53,6 +54,7 @@ default_config_values = {
     u'size': (800, 640),
     u'workingdir': home_path,
     u'compression': compression_formats[DEFAULT_COMPRESSION_ID],
+    u'tooltips': True,
 }
 
 
