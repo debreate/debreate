@@ -12,6 +12,7 @@ import dbr.font
 from dbr.language import GT
 from dbr import Logger
 from dbr.constants import APP_NAME
+from dbr.custom import Hyperlink
 
 
 # Font for the name
@@ -212,7 +213,7 @@ class AboutDialog(wx.Dialog):
         link_layout = wx.BoxSizer(wx.VERTICAL)
         for label, link in url_list:
             link_layout.Add(
-                wx.HyperlinkCtrl(self.t_about, label=label, url=link),
+                Hyperlink(self.t_about, wx.ID_ANY, label=label, url=link),
                 0,
                 wx.ALIGN_CENTER,
                 10
