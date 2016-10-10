@@ -662,14 +662,15 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         if event:
             event.Skip(True)
         
-        # FIXME: Hack to get filelist to resize
-        P_width = self.parent.GetSize()[0]
-        L_width = self.dir_tree.GetSize()[0]
-        R_width = P_width - L_width - 15
-        
-        current_size = self.GetSize()
-        
-        self.SetSize(wx.Size(R_width, current_size[1]))
+        # NOTE: Hack to get filelist to resize in wx 3.0
+        if wx.MAJOR_VERSION >= 3:
+            P_width = self.parent.GetSize()[0]
+            L_width = self.dir_tree.GetSize()[0]
+            R_width = P_width - L_width - 15
+            
+            current_size = self.GetSize()
+            
+            self.SetSize(wx.Size(R_width, current_size[1]))
         
         for C in range(3):
             self.SetColumnWidth(C, self.GetSize()[0] / 4)
