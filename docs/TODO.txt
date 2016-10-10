@@ -13,8 +13,8 @@
 - Better fit columns on Files page
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
-- Highlight hyperlinks
 - Test custom dialogs
+- Fix dependency list not resizing correctly
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
