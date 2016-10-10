@@ -66,11 +66,11 @@ class Panel(WizardPage):
         
         # ----- Destination path
         # choices of destination
-        self.radio_bin = wx.RadioButton(self, -1, "/bin", style=wx.RB_GROUP)
-        self.radio_usrbin = wx.RadioButton(self, -1, "/usr/bin")
-        self.radio_usrlib = wx.RadioButton(self, -1, "/usr/lib")
-        self.radio_locbin = wx.RadioButton(self, -1, "/usr/local/bin")
-        self.radio_loclib = wx.RadioButton(self, -1, "/usr/local/lib")
+        self.radio_bin = wx.RadioButton(self, -1, u'/bin', style=wx.RB_GROUP)
+        self.radio_usrbin = wx.RadioButton(self, -1, u'/usr/bin')
+        self.radio_usrlib = wx.RadioButton(self, -1, u'/usr/lib')
+        self.radio_locbin = wx.RadioButton(self, -1, u'/usr/local/bin')
+        self.radio_loclib = wx.RadioButton(self, -1, u'/usr/local/lib')
         self.radio_cst = wx.RadioButton(self, ID_CUSTOM, GT(u'Custom'))
         
         # Start with "Custom" selected
@@ -91,7 +91,7 @@ class Panel(WizardPage):
         radio_box = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
         radio_box.Add(radio_sizer, 0)
         
-        self.prev_dest_value = "/usr/bin"
+        self.prev_dest_value = u'/usr/bin'
         self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value)
         wx.EVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
         wx.EVT_KEY_UP(self.dest_cust, self.CheckDest)
