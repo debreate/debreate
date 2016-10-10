@@ -817,6 +817,12 @@ class Hyperlink(wx.Panel):
         self.text_bg = wx.Panel(self)
         self.text = wx.StaticText(self.text_bg, label=label)
         
+        self.clicked = False
+        
+        self.FONT_DEFAULT = self.text.GetFont()
+        self.FONT_HIGHLIGHT = self.text.GetFont()
+        self.FONT_HIGHLIGHT.SetUnderlined(True)
+        
         wx.EVT_LEFT_DOWN(self.text, self.OnLeftClick)
         wx.EVT_ENTER_WINDOW(self.text_bg, self.OnMouseOver)
         wx.EVT_LEAVE_WINDOW(self.text_bg, self.OnMouseOut)
@@ -836,16 +842,30 @@ class Hyperlink(wx.Panel):
     def OnLeftClick(self, event=None):
         webbrowser.open(self.url)
         
+        if not self.clicked:
+            self.text.SetForegroundColour(u'purple')
+            self.clicked = True
+        
         if event:
             event.Skip(True)
     
     
     def OnMouseOut(self, event):
-        self.text.SetForegroundColour(wx.Colour(0, 0, 255))
+        self.SetCursor(wx.NullCursor)
+        self.text.SetFont(self.FONT_DEFAULT)
     
     
     def OnMouseOver(self, event):
-        self.text.SetForegroundColour(wx.Colour(255, 0, 0))
+        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.text.SetFont(self.FONT_HIGHLIGHT)
         
         if event:
             event.Skip(True)
+    
+    
+    def SetDefaultFont(self, font):
+        self.FONT_DEFAULT = font
+    
+    
+    def SetHighlightFont(self, font):
+        self.FONT_HIGHLIGHT = font
