@@ -587,23 +587,28 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         ListCtrlAutoWidthMixin.__init__(self)
         TextEditMixin.__init__(self)
         
+        self.parent = parent
         self.debreate = parent.debreate
+        self.dir_tree = parent.dir_tree
         
         self.filename_col = 0
         self.source_col = 1
         self.target_col = 2
         self.type_col = 3
         
-        width=self.debreate.GetSize()[1]/3-10
+        #width=self.debreate.GetSize()[1]/3-10
+        col_width = self.GetSize()[0] / 4
         
-        self.InsertColumn(self.filename_col, GT(u'File'), width=width)
-        self.InsertColumn(self.source_col, GT(u'Source Directory'), width=width)
-        self.InsertColumn(self.target_col, GT(u'Staged Target'))
-        self.InsertColumn(self.type_col, GT(u'File Type'))
+        self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
+        self.InsertColumn(self.source_col, GT(u'Source Directory'), width=col_width)
+        self.InsertColumn(self.target_col, GT(u'Staged Target'), width=col_width)
+        self.InsertColumn(self.type_col, GT(u'File Type'), width=col_width)
         
         wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
         
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
+        
+        wx.EVT_SIZE(self, self.OnResize)
     
     
     ## Retrivies is the item at 'i_index' is executable
@@ -651,6 +656,30 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         TextEditMixin.OnLeftDown(self, event)
         
         event.Skip()
+    
+    
+    def OnResize(self, event=None):
+        if event:
+            event.Skip(True)
+        
+        # FIXME: Hack to get filelist to resize
+        P_width = self.parent.GetSize()[0]
+        L_width = self.dir_tree.GetSize()[0]
+        R_width = P_width - L_width - 15
+        
+        current_size = self.GetSize()
+        
+        self.SetSize(wx.Size(R_width, current_size[1]))
+        
+        for C in range(3):
+            self.SetColumnWidth(C, self.GetSize()[0] / 4)
+    
+    
+    def OnShow(self, event=None):
+        print(u'Showing')
+        
+        if event:
+            event.Skip(True)
     
     
     ## Opens an editor for target
