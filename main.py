@@ -570,8 +570,8 @@ class MainWindow(wx.Frame):
         
         about.SetWebsites((
             (GT(u'Homepage'), HOMEPAGE),
-            (GT(u'GitHub Project Page'), PROJECT_HOME_GH),
-            (GT(u'Sourceforge Project Page'), PROJECT_HOME_SF),
+            (GT(u'GitHub Project'), PROJECT_HOME_GH),
+            (GT(u'Sourceforge Project'), PROJECT_HOME_SF),
         ))
         
         about.AddJobs(
