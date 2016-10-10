@@ -682,7 +682,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         self.SetStringItem(list_index, self.source_col, source_dir)
         self.SetStringItem(list_index, self.target_col, target_dir)
         
-        # FIXME: Use 'magic' module to determine file type
+        # TODO: Use 'GetFileMimeType' module to determine file type
         if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
             self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
         
