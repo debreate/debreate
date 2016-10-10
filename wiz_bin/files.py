@@ -33,9 +33,6 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_FILES)
         
-        # For identifying page to parent
-        #self.ID = "FILES"
-        
         # Allows calling parent methods
         self.parent = parent
         self.debreate = self.GetGrandParent()
