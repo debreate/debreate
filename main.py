@@ -16,7 +16,7 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     PROJECT_FILENAME_SUFFIX,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
     cmd_tar
-from dbr.config import GetDefaultConfigValue, WriteConfig
+from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards,\
     GetFileSaveDialog
 from dbr.compression import \
@@ -25,8 +25,9 @@ from dbr.compression import \
     CompressionHandler, DEFAULT_COMPRESSION_ID
 
 
-# Pages
+# Options menu
 ID_Dialogs = wx.NewId()
+ID_MENU_TT = wx.NewId()
 
 # Debian Policy Manual IDs
 ID_DPM = wx.NewId()
@@ -102,7 +103,7 @@ class MainWindow(wx.Frame):
                 GT(u'Go to Files section'), kind=wx.ITEM_RADIO)
         
         if DebugEnabled():
-            # FIXME: Add to Gettext locale files
+            # TODO: Finish manpage page
             self.p_man = wx.MenuItem(self.menu_page, ID_MAN, GT(u'Manpages'),
                     GT(u'Go to Manpages section'), kind=wx.ITEM_RADIO)
         
@@ -133,6 +134,20 @@ class MainWindow(wx.Frame):
         
         # ----- Options Menu
         self.menu_opt = wx.Menu()
+        
+        # Show/Hide tooltips
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
+                GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
+        wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
+        self.menu_opt.AppendItem(self.opt_tooltips)
+        
+        show_tooltips = ReadConfig(u'tooltips')
+        if show_tooltips != ConfCode.KEY_NO_EXIST:
+            self.opt_tooltips.Check(show_tooltips)
+        
+        else:
+            self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+        self.OnToggleToolTips()
         
         # Dialogs options
         self.cust_dias = wx.MenuItem(self.menu_opt, ID_Dialogs, GT(u'Use Custom Dialogs'),
@@ -359,6 +374,17 @@ class MainWindow(wx.Frame):
                 GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
         if dia.ShowModal() == wx.ID_YES:
             self.wizard.ResetPagesInfo()
+    
+    
+    ## Shows or hides tooltips
+    def OnToggleToolTips(self, event=None):
+        enabled = self.opt_tooltips.IsChecked()
+        wx.ToolTip.Enable(enabled)
+        
+        # Update configuration in realtime
+        # TODO: Use realtime for more or all options
+        WriteConfig(u'tooltips', enabled)
+    
     
     # FIXME: Deprecated
     def NewProject(self):
