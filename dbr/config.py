@@ -131,7 +131,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
         return ConfCode.WRONG_TYPE
     
     # tuple is the only type we need to format
-    if type(k_value) == tuple:
+    if isinstance(k_value, tuple):
         k_value = u'{},{}'.format(unicode(k_value[0]), unicode(k_value[1]))
     else:
         k_value = unicode(k_value)

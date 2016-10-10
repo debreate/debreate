@@ -81,7 +81,7 @@ class Wizard(wx.Panel):
         
         self.ClearPages() # Remove any current pages from the wizard
         
-        if type(pages) not in (list, tuple):
+        if not isinstance(pages, (list, tuple)):
             raise TypeError(u'Argument 2 of dbwizard.SetPages() must be List or Tuple')
         
         for page in pages:
@@ -154,7 +154,7 @@ class Wizard(wx.Panel):
         self.Layout()
     
     def EnableNext(self, value=True):
-        if type(value) in (type(True), type(1)):
+        if isinstance(value, int):
             if value:
                 self.button_next.Enable()
             else:
@@ -166,7 +166,7 @@ class Wizard(wx.Panel):
         self.EnableNext(False)
     
     def EnablePrev(self, value=True):
-        if type(value) in (type(True), type(1)):
+        if isinstance(value, int):
             if value:
                 self.button_prev.Enable()
             else:

@@ -250,7 +250,7 @@ class Panel(WizardPage):
         for S in sections:
             Logger.Debug(__name__, GT(u'Changelog section: "{}", Value:\n{}').format(S, sections[S]))
             
-            if type(sections[S]) in (tuple, list):
+            if isinstance(sections[S], (tuple, list)):
                 value_index = 0
                 for I in sections[S]:
                     Logger.Debug(__name__, GT(u'Value {}: {}').format(value_index, I))
