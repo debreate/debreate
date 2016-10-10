@@ -628,9 +628,9 @@ class Panel(WizardPage):
                         if key == self.categories.GetName():
                             value = value.split(u';')
                             
-                            if len(value):
-                                for X in range(len(value)):
-                                    self.categories.InsertStringItem(X, value[X])
+                            if value:
+                                for X, val in enumerate(value):
+                                    self.categories.InsertStringItem(X, val)
                                 return True
             
             return False
