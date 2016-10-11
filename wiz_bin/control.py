@@ -309,7 +309,7 @@ class Panel(WizardPage):
         )
         
         browse_dialog = GetFileOpenDialog(self.debreate, GT(u'Open File'), wildcards)
-        if ShowDialog(self.debreate, browse_dialog):
+        if ShowDialog(browse_dialog):
             file_path = browse_dialog.GetPath()
             self.ImportPageInfo(file_path)
     
@@ -320,7 +320,7 @@ class Panel(WizardPage):
         )
         
         save_dialog = GetFileSaveDialog(self.debreate, GT(u'Save Control Information'), wildcards)
-        if ShowDialog(self.debreate, save_dialog):
+        if ShowDialog(save_dialog):
             file_path = save_dialog.GetPath()
             self.Export(os.path.dirname(file_path), os.path.basename(file_path))
     
