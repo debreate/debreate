@@ -162,6 +162,13 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
     return file_open
 
 
+def GetDirDialog(main_window, title):
+    dir_open = wx.DirDialog(main_window, title, os.getcwd(),
+            style=wx.DD_CHANGE_DIR|wx.DD_NEW_DIR_BUTTON|wx.DD_DIR_MUST_EXIST)
+    
+    return dir_open
+
+
 ## Used to display a dialog window
 #  
 #  For custom dialogs, the method 'DisplayModal()' is used
@@ -453,3 +460,12 @@ def GetFileMimeType(file_name):
         return (output[0], output[1])
     
     return output[1].split(u': ')[-1]
+
+
+def SetToolTip(control, tooltip):
+    control.SetToolTip(wx.ToolTip(tooltip))
+
+
+def SetToolTips(control_list):
+    for C in control_list:
+        SetToolTip(C[0], C[1])
