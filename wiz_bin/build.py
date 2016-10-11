@@ -553,7 +553,7 @@ class Panel(WizardPage):
             
             # Dialog for save destination
             ttype = GT(u'Debian Packages')
-            if self.parent.cust_dias.IsChecked():
+            if False: #self.parent.cust_dias.IsChecked():
                 save_dia = dbr.SaveFile(self)
                 save_dia.SetFilter(u'%s|*.deb' % ttype)
                 save_dia.SetFilename(u'%s_%s_%s.deb' % (pack, ver, arch))
@@ -747,7 +747,7 @@ class QuickBuild(wx.Dialog):
     
     
     def Browse(self, event):
-        if self.parent.cust_dias.IsChecked():
+        if False: #self.parent.cust_dias.IsChecked():
             dia = dbr.OpenDir(self)
             if dia.DisplayModal() == True:
                 self.path.SetValue(dia.GetPath())

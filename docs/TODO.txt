@@ -13,7 +13,6 @@
 - Better fit columns on Files page
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
-- Test custom dialogs
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -52,3 +51,4 @@ Tasks being considered:
 - Compile source to Python bytecode (.pyc) after install
 - Replace Makefile with CMake build system
 - Add Makefile rule for signing binary debuild package
+- Rework custom dialogs

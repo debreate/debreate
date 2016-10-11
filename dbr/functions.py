@@ -139,7 +139,7 @@ def TextIsEmpty(text):
 #  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
     ext_filters = u'|'.join(ext_filters)
-    if main_window.cust_dias.IsChecked():
+    if False: #main_window.cust_dias.IsChecked():
         file_save = dbr.SaveFile(main_window, title, extension)
         file_save.SetFilter(ext_filters)
     else:
@@ -151,8 +151,8 @@ def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
 
 def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
     ext_filters = u'|'.join(ext_filters)
-    if main_window.cust_dias.IsChecked():
-        file_open = dbr.OpenFile(main_window, title, default_extension)
+    if False: #main_window.cust_dias.IsChecked():
+        file_open = dbr.OpenFile(main_window, title)
         file_open.SetFilter(ext_filters)
     
     else:
@@ -180,9 +180,9 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
 #  \b Alias: \e dbr.ShowDialog
 def ShowDialog(dialog):
     # Dialog's parent should be set to main window
-    debreate = dialog.GetParent()
+    #debreate = dialog.GetParent()
     
-    if debreate.cust_dias.IsChecked():
+    if False: #debreate.cust_dias.IsChecked():
         return dialog.DisplayModal()
     else:
         return dialog.ShowModal() == wx.ID_OK
