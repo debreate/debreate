@@ -387,7 +387,7 @@ class Panel(WizardPage):
         cont = False
         
         # Open a u'Save Dialog'
-        if self.parent.parent.cust_dias.IsChecked():
+        if False: #self.parent.parent.cust_dias.IsChecked():
             dia = dbr.SaveFile(self, GT(u'Save Launcher'))
 #            dia.SetFilename(u'control')
             if dia.DisplayModal():
@@ -429,7 +429,7 @@ class Panel(WizardPage):
     
     def OpenFile(self, event):
         cont = False
-        if self.parent.parent.cust_dias.IsChecked():
+        if False: #self.parent.parent.cust_dias.IsChecked():
             dia = dbr.OpenFile(self, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
