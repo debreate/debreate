@@ -21,7 +21,6 @@ ID_Delete = wx.NewId()
 
 class Panel(WizardPage):
     def __init__(self, parent):
-        #wx.Panel.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
         WizardPage.__init__(self, parent, ID_DEPENDS)
         
         # ----- Tool Tips
@@ -111,7 +110,7 @@ class Panel(WizardPage):
         wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
         
         # ----- List
-        self.dep_area = AutoListCtrl(self, -1)
+        self.dep_area = AutoListCtrl(self)
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         # FIXME: wx. 3.0
@@ -275,3 +274,17 @@ class AutoListCtrl(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
+        
+        self.prev_width = self.Size[0]
+        
+        if wx.MAJOR_VERSION == 3 and wx.MINOR_VERSION == 0:
+            wx.EVT_SIZE(self, self.OnResize)
+    
+    
+    ## Fixes sizing problems with ListCtrl in wx 3.0
+    def OnResize(self, event):
+        if event:
+            event.Skip(True)
+        
+        # FIXME: -10 should be a dynamic number set by the sizer's padding
+        self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
