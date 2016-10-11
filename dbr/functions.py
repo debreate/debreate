@@ -156,7 +156,7 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
         file_open.SetFilter(ext_filters)
     
     else:
-        file_open = wx.FileDialog(main_window, title, os.getcwd(), wildcard=ext_filters, defaultFile=u'blah.BLAHBLAH',
+        file_open = wx.FileDialog(main_window, title, os.getcwd(), wildcard=ext_filters,
                 style=wx.FD_OPEN|wx.FD_CHANGE_DIR)
     
     return file_open
