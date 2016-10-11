@@ -589,19 +589,30 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         self.target_col = 2
         self.type_col = 3
         
-        #width=self.debreate.GetSize()[1]/3-10
         col_width = self.GetSize()[0] / 4
         
         self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
         self.InsertColumn(self.source_col, GT(u'Source Directory'), width=col_width)
         self.InsertColumn(self.target_col, GT(u'Staged Target'), width=col_width)
-        self.InsertColumn(self.type_col, GT(u'File Type'), width=col_width)
+        # Last column is automatcially stretched to fill remaining size
+        self.InsertColumn(self.type_col, GT(u'File Type'))
+        
+        # Legacy versions of wx don't set sizes correctly in constructor
+        if wx.MAJOR_VERSION < 3:
+            for col in range(3):
+                if col == 0:
+                    self.SetColumnWidth(col, 100)
+                    continue
+                
+                self.SetColumnWidth(col, 200)
         
         wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
         
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
         
-        wx.EVT_SIZE(self, self.OnResize)
+        # Resize bug hack
+        if wx.MAJOR_VERSION == 3 and wx.MINOR_VERSION == 0:
+            wx.EVT_SIZE(self, self.OnResize)
     
     
     ## Retrivies is the item at 'i_index' is executable
@@ -651,22 +662,29 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         event.Skip()
     
     
+    ## Works around resize bug in wx 3.0
+    #  
+    #  Uses parent width & its children to determine
+    #    desired width.
+    #  FIXME: Unknown if this bug persists in wx 3.1
     def OnResize(self, event=None):
         if event:
             event.Skip(True)
         
-        # NOTE: Hack to get filelist to resize in wx 3.0
-        if wx.MAJOR_VERSION >= 3:
-            P_width = self.parent.GetSize()[0]
-            L_width = self.dir_tree.GetSize()[0]
-            R_width = P_width - L_width - 15
-            
-            current_size = self.GetSize()
-            
-            self.SetSize(wx.Size(R_width, current_size[1]))
+        width = self.GetSize()
+        height = width[1]
+        width = width[0]
         
-        for C in range(3):
-            self.SetColumnWidth(C, self.GetSize()[0] / 4)
+        # Use the parent window & its children to determine desired width
+        target_width = self.parent.GetSize()[0] - self.parent.dir_tree.GetSize()[0] - 15
+        
+        if width > 0 and target_width > 0:
+            if width != target_width:
+                
+                Logger.Warning(__name__,
+                        GT(u'File list failed to resize. Forcing manual resize to target width: {}').format(target_width))
+                
+                self.SetSize(wx.Size(target_width, height))
     
     
     ## Opens an editor for target
