@@ -152,6 +152,7 @@ class MainWindow(wx.Frame):
         # Dialogs options
         self.cust_dias = wx.MenuItem(self.menu_opt, ID_Dialogs, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
+        #self.menu_opt.AppendItem(self.cust_dias)
         
         # Project compression options
         self.menu_compression = wx.Menu()
@@ -188,7 +189,6 @@ class MainWindow(wx.Frame):
         # Default compression
         self.menu_compression.Check(ID_ZIP_BZ2, True)
         
-        self.menu_opt.AppendItem(self.cust_dias)
         self.menu_opt.AppendSubMenu(self.menu_compression, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
         
@@ -476,9 +476,9 @@ class MainWindow(wx.Frame):
         ret_code = p_archive.Uncompress(filename, temp_dir)
         
         # FIXME: Should display an error dialog
-        if ret_code:
+        if isinstance(ret_code, tuple) and ret_code[0]:
             Logger.Error(__name__,
-                    GT(u'An error occurred while uncompressing project file: Error code {}').format(ret_code))
+                    GT(u'Project load error {}: "{}"').format(ret_code[0], ret_code[1]))
             return
         
         self.wizard.ImportPagesInfo(temp_dir)
@@ -562,7 +562,7 @@ class MainWindow(wx.Frame):
                 WriteConfig(u'maximize', False)
             
             WriteConfig(u'workingdir', os.getcwd())
-            WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+            #WriteConfig(u'dialogs', self.cust_dias.IsChecked())
             WriteConfig(u'compression', self.GetCompression())
             
             self.Destroy()
@@ -868,7 +868,7 @@ class MainWindow(wx.Frame):
             dbp = u'|*.dbp'
             d = GT(u'Debreate project files')
             cont = False
-            if self.cust_dias.IsChecked():
+            if False: #self.cust_dias.IsChecked():
                 dia = dbr.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
                 dia.SetFilter(u'{}{}'.format(d, dbp))
                 if dia.DisplayModal():

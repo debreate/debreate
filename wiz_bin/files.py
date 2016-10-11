@@ -155,7 +155,7 @@ class Panel(WizardPage):
         self.dir_tree.PopupMenu(self.menu)
     
     def OnBrowse(self, event):
-        if self.parent.parent.cust_dias.IsChecked() == True:
+        if False: #self.parent.parent.cust_dias.IsChecked() == True:
             dia = dbr.OpenDir(self)
             if dia.DisplayModal() == True:
                 self.dest_cust.SetValue(dia.GetPath())
@@ -163,10 +163,6 @@ class Panel(WizardPage):
             dia = wx.DirDialog(self, GT(u'Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 self.dest_cust.SetValue(dia.GetPath())
-#		if dia.GetPath() == True:
-#			self.dest_cust.SetValue(dia.GetPath())
-#		if dia.Open == True:
-#			self.dest_cust.SetValue(dia.GetPath())
     
     def GetDestValue(self, event):
         if self.dest_cust.GetValue() != wx.EmptyString:

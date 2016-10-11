@@ -116,8 +116,8 @@ Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 
 if conf_values[u'center']:
     Debreate.Center()
-if conf_values[u'dialogs']:
-    Debreate.cust_dias.Check()
+#if conf_values[u'dialogs']:
+#    Debreate.cust_dias.Check()
 if conf_values[u'maximize']:
     Debreate.Maximize()
 Debreate.SetWorkingDirectory(conf_values[u'workingdir'])
