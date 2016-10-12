@@ -154,6 +154,7 @@ class MainWindow(wx.Frame):
         
         for OPT in compression_opts:
             self.menu_compression.AppendItem(OPT)
+            wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
         
         # Default compression
         self.menu_compression.Check(ID_ZIP_BZ2, True)
@@ -528,7 +529,7 @@ class MainWindow(wx.Frame):
             
             WriteConfig(u'workingdir', os.getcwd())
             #WriteConfig(u'dialogs', self.cust_dias.IsChecked())
-            WriteConfig(u'compression', self.GetCompression())
+            #WriteConfig(u'compression', self.GetCompression())
             
             self.Destroy()
         
@@ -788,6 +789,25 @@ class MainWindow(wx.Frame):
         return DEFAULT_COMPRESSION_ID
     
     
+    ## Writes compression value to config in real time
+    def OnSetCompression(self, event=None):
+        if event:
+            event_id = event.GetId()
+            Logger.Debug(__name__, GT(u'OnSetCompression; Event ID: {}').format(event_id))
+            Logger.Debug(__name__, GT(u'OnSetCompression; Compression from event ID: {}').format(compression_formats[event_id]))
+            
+            if event_id in compression_formats:
+                WriteConfig(u'compression', compression_formats[event_id])
+                return
+        
+        Logger.Warning(__name__,
+                GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
+                
+    
+    ## Sets compression in the main menu
+    #  
+    #  \param compression_id
+    #        \b \e int : Compression ID to search for in menu iteration
     def SetCompression(self, compression_id):
         for Z in self.menu_compression.GetMenuItems():
             Z_ID = Z.GetId()
