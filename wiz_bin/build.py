@@ -163,89 +163,8 @@ class Panel(WizardPage):
                     
                     elif page_id == ID_BUILD:
                         Logger.Debug(__name__, page_label)
-            
-            # Add steps for preparing build tree & actual build
-            #steps_count += 2
-            #current_step = 0
-            
-            #Logger.Debug(__name__, GT(u'{} tasks').format(steps_count))
         
         return
-        
-        # FIXME: This should be done in build-prep
-        '''
-        try:
-            msg_label1 = GT(u'Processing page "{}"')
-            msg_label2 = GT(u'Step {}/{}')
-            msg_label = u'{} ({})'.format(msg_label1, msg_label2)
-            
-            build_progress = wx.ProgressDialog(GT(u'Build'), msg_label2.format(current_step, steps_count),
-                    steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
-            
-            for I in pages_info:
-                if build_progress.WasCancelled():
-                    break
-                
-                page_id = I[0]
-                page_label = I[1]
-                page_data = I[2]
-                
-                Logger.Debug(__name__, msg_label.format(page_label, current_step+1, steps_count))
-                
-                wx.Yield()
-                build_progress.Update(current_step, msg_label.format(page_label, current_step+1, steps_count))
-                
-                # Action here
-                time.sleep(1)
-                
-                current_step += 1
-            
-            msg_label = u'{} ({})'
-            
-            if not build_progress.WasCancelled():
-                #msg_label = u'{} ({})'.format(GT(u'Setting up directory build, tree'),
-                #        msg_label2.format(current_step, steps_count))
-                wx.Yield()
-                build_progress.Update(current_step,
-                        msg_label.format(GT(u'Setting up directory build, tree'),
-                                msg_label2.format(current_step+1, steps_count)))
-                
-                time.sleep(1)
-                
-                current_step += 1
-            
-            if not build_progress.WasCancelled():
-                wx.Yield()
-                build_progress.Update(current_step,
-                        msg_label.format(GT(u'Building Debian package'),
-                                msg_label2.format(current_step+1, steps_count)))
-                
-                time.sleep(1)
-                
-                current_step += 1
-            
-            if not build_progress.WasCancelled():
-                build_progress.Update(current_step, GT(u'Finished'))
-                time.sleep(1)
-        
-            build_progress.Destroy()
-            
-        except:
-            build_progress.Destroy()
-            
-            err_traceback = traceback.format_exc()
-            
-            err_title = GT(u'Error occured during pre-build')
-            Logger.Error(__name__, u'{}:\n{}'.format(err_title, err_traceback))
-            
-            err_dialog = ErrorDialog(self, err_title)
-            err_dialog.SetDetails(err_traceback)
-            err_dialog.ShowModal()
-            
-            # Cleanup
-            err_dialog.Destroy()
-            del err_title
-        '''
         
         try:
             # FIXME: Should use a naming standard
@@ -344,35 +263,6 @@ class Panel(WizardPage):
                 # Show finished dialog for short period
                 time.sleep(0.5)
             
-            '''
-            msg_label = u'{} ({})'
-            
-            if not build_progress.WasCancelled():
-                #msg_label = u'{} ({})'.format(GT(u'Setting up directory build, tree'),
-                #        msg_label2.format(current_step, steps_count))
-                wx.Yield()
-                build_progress.Update(current_step,
-                        msg_label.format(GT(u'Setting up directory build, tree'),
-                                msg_label2.format(current_step+1, steps_count)))
-                
-                time.sleep(1)
-                
-                current_step += 1
-            
-            if not build_progress.WasCancelled():
-                wx.Yield()
-                build_progress.Update(current_step,
-                        msg_label.format(GT(u'Building Debian package'),
-                                msg_label2.format(current_step+1, steps_count)))
-                
-                time.sleep(1)
-                
-                current_step += 1
-            
-            if not build_progress.WasCancelled():
-                build_progress.Update(current_step, GT(u'Finished'))
-                time.sleep(1)
-            '''
             prep_progress.Destroy()
             
             return build_page_ids
@@ -443,6 +333,7 @@ class Panel(WizardPage):
             self.Build(save_dialog.GetPath())
     
     
+    # FIXME: Deprecated, delete
     def OnBuildDeprecated(self, event):
         # Check to make sure that all required fields have values
         meta = self.debreate.page_control
