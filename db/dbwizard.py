@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # Wizard class for my Debreate
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+
 import wx, dbbuttons, wx.lib.newevent
 
 ID_PREV = wx.NewId()

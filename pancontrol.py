@@ -2,8 +2,6 @@
 
 # This panel displays the field input of the control file
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
 import wx, db, os
 
 ID = wx.NewId()
@@ -59,6 +57,7 @@ class Panel(wx.ScrolledWindow):
                             'sh4', 'sh4eb', 'sparc', 'sparc64')
         self.arch_txt = wx.StaticText(self.bg, -1, _('Architecture'))
         self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
+        self.arch.SetSelection(0)
         
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
@@ -76,6 +75,7 @@ class Panel(wx.ScrolledWindow):
         self.prior_opt = ('optional', 'standard', 'important', 'required', 'extra')
         self.prior_txt = wx.StaticText(self.bg, -1, _('Priority'))
         self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
+        self.prior.SetSelection(0)
         
         # ----- Description ( B[m], SB[m], C[m] )
         self.syn_txt = wx.StaticText(self.bg, -1, _('Short Description'))

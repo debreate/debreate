@@ -7,7 +7,7 @@
 # back to its default settings.
 
 import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+wxversion.select(['3.0', '2.8'])
 
 import wx, sys, os, main, db, language, shutil
 

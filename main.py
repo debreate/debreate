@@ -1,4 +1,3 @@
-# This script is no longer executable, use launch.py
 # -*- coding: utf-8 -*-
 
 """

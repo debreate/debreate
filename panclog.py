@@ -1,5 +1,5 @@
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+# -*- coding: utf-8 -*-
+
 import wx, db, commands
 
 ID = wx.NewId()
@@ -19,6 +19,7 @@ class Panel(wx.Panel):
         self.urgency_text = wx.StaticText(self, -1, _('Urgency'))
         self.urgency_opt = ("low", "HIGH")
         self.urgency = wx.Choice(self, choices=self.urgency_opt)
+        self.urgency.SetSelection(0)
         self.maintainer_text = wx.StaticText(self, -1, _('Maintainer'))
         self.maintainer = wx.TextCtrl(self)
         self.email_text = wx.StaticText(self, -1, _('Email'))

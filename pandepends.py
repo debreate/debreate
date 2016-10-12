@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
+
 # Page defining dependencies
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
 import wx, wx.lib.mixins.listctrl as LC, db
 
 ID = wx.NewId()
@@ -76,6 +76,7 @@ class Panel(wx.Panel):
         self.oper_options = (">=", "<=", "=", ">>", "<<")
         self.ver_text = wx.StaticText(self, -1, _('Version'))
         self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
+        self.dep_oper.SetSelection(0)
         self.dep_ver = wx.TextCtrl(self, -1)
         
         depH1 = wx.FlexGridSizer(2, 3, hgap=5)
@@ -108,7 +109,7 @@ class Panel(wx.Panel):
         self.dep_area = AutoListCtrl(self, -1)
         self.dep_area.InsertColumn(0, _('Category'), width=150)
         self.dep_area.InsertColumn(1, _('Package(s)'))
-        self.dep_area.SetColumnWidth(100, -1)
+        self.dep_area.SetColumnWidth(0, 100)
         
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
         

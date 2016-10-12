@@ -1,5 +1,5 @@
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
+# -*- coding: utf-8 -*-
+
 import wx
 
 ID = wx.NewId()
@@ -17,6 +17,7 @@ class Panel(wx.Panel):
         )
         template_btn = wx.Button(self, -1, 'Generate Template')
         self.template_lic = wx.Choice(self, -1, choices=lic_options)
+        self.template_lic.SetSelection(0)
         
         wx.EVT_BUTTON(template_btn, -1, self.GenerateTemplate)
         

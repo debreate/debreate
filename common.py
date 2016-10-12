@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import sys, os
+import sys, os, subprocess
 from urllib2 import urlopen, URLError, HTTPError
 from wx.lib.docview import PathOnly
 
 
-import wxversion
-wxversion.select(['2.6', '2.7', '2.8'])
 import wx
 
 import language
@@ -137,6 +135,10 @@ class OutputLog(wx.TextCtrl):
             sys.stdout = self
 
 
+ID_APPEND = wx.NewId()
+ID_OVERWRITE = wx.NewId()
+
+
 ### -*- Dialog for overwrite prompt of a text area -*- ###
 class OverwriteDialog(wx.Dialog):
     def __init__(self, parent, id=-1, title=_(u'Overwrite?'), message=u''):
@@ -180,7 +182,7 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
     
     def OnDropFiles(self, x, y, filenames):
         if len(filenames) > 1:
-            raise BaseError(_(u'Too many files'))
+            raise StandardError(_(u'Too many files'))
         text = open(filenames[0]).read()
         try:
             if (not TextIsEmpty(self.obj.GetValue())):
