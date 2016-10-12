@@ -581,10 +581,14 @@ class Panel(WizardPage):
     
     ## Retrieves information for control file export
     #  
-    #  FIXME: Should replace self.GetPageInfo()
+    #  \param string_format
+    #        \b \e bool : If True, only string-formatted info is returned
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
-    def GetPageInfo(self):
+    def GetPageInfo(self, string_format=False):
+        if string_format:
+            return self.GetCtrlInfo()
+        
         return (__name__, self.GetCtrlInfo())
     
     
