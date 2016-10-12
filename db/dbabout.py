@@ -35,8 +35,8 @@ class AboutDialog(wx.Dialog):
         self.app.SetFont(bigfont)
         # Show the author & website
         self.author = wx.StaticText(about)
-        self.website = wx.HyperlinkCtrl(about, -1, '', '')
-        self.website2 = wx.HyperlinkCtrl(about, -1, '', '')
+        self.website = wx.HyperlinkCtrl(about, -1, 'Null', 'Null')
+        self.website2 = wx.HyperlinkCtrl(about, -1, 'Null', 'Null')
         # Show a short description
         self.description = wx.StaticText(about, -1)
         
