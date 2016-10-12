@@ -17,16 +17,18 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
-RELEASE = 1
+RELEASE = 0
 ver_maj = 0
 ver_min = 7
 ver_rel = 12
 
-# For testing release
-if (not RELEASE):
-    ver_rel -= 0.5
-
 debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
+
+if not RELEASE:
+    # Increment this for every development release
+    ver_dev = 1
+    debreate_version = u'{}-dev{}'.format(debreate_version, ver_dev)
+
 db_version = (ver_maj, ver_min, ver_rel)
 db_here = PathOnly(__file__).decode(u'utf-8')
 db_website = u'http://debreate.sourceforge.net/'
