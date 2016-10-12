@@ -9,6 +9,7 @@ import wx, os
 from dbr.language import GT
 from dbr.buttons import ButtonConfirm
 from dbr.constants import ICON_ERROR
+from dbr.custom import TextIsEmpty
 
 
 
@@ -133,6 +134,9 @@ class DetailedMessageDialog(wx.Dialog):
         wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
         wx.EVT_BUTTON(self.btn_copy_details, wx.ID_ANY, self.OnCopyDetails)
         
+        if TextIsEmpty(details):
+            self.button_details.Hide()
+            
         LH_buttons1 = wx.BoxSizer(wx.HORIZONTAL)
         LH_buttons1.Add(self.button_details, 1)
         LH_buttons1.Add(self.btn_copy_details, 1)
@@ -148,12 +152,13 @@ class DetailedMessageDialog(wx.Dialog):
         r_sizer.AddSpacer(20)
         r_sizer.Add(LH_buttons1)
         r_sizer.Add(self.details, 1, wx.EXPAND)
-        r_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT)
+        #r_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM)
         
         self.main_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.main_sizer.Add(self.icon, 0, wx.ALL, 20)
         self.main_sizer.Add(r_sizer, 1, wx.EXPAND)
         self.main_sizer.AddSpacer(10)
+        self.main_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.ToggleDetails()
@@ -197,6 +202,9 @@ class DetailedMessageDialog(wx.Dialog):
         self.details.SetValue(details)
         self.details.SetSize(self.details.GetBestSize())
         
+        if not self.button_details.IsShown():
+            self.button_details.Show()
+        
         self.Layout()
     
     
@@ -216,6 +224,14 @@ class ErrorDialog(DetailedMessageDialog):
     def __init__(self, parent, text=wx.EmptyString, details=wx.EmptyString):
         DetailedMessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
         
-        self.btn_copy_details.Show()
+        if not TextIsEmpty(details):
+            self.btn_copy_details.Show()
         
         self.Layout()
+    
+    
+    def SetDetails(self, details):
+        if not self.btn_copy_details.IsShown():
+            self.btn_copy_details.Show()
+        
+        DetailedMessageDialog.SetDetails(self, details)
