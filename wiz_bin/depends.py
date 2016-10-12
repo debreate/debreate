@@ -23,6 +23,9 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_DEPENDS)
         
+        # Bypass checking this page for build
+        self.prebuild_check = False
+        
         # ----- Tool Tips
         dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))
         pre_tip = wx.ToolTip(GT(u'Package will need to be installed and configured first'))
