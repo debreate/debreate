@@ -255,7 +255,15 @@ class Panel(WizardPage):
         for widget in self.text_widgets:
             wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
-        
+    
+    
+    ## Tells the build script whether page should be built
+    #  
+    #  \override dbr.wizard.WizardPage.IsExportable
+    def IsExportable(self):
+        # Build page must always be built
+        return True
+    
     
     def OnResize(self, event):
         #self.ReLayout()

@@ -116,6 +116,10 @@ class Panel(WizardPage):
         self.Layout()
     
     
+    def IsExportable(self):
+        return not TextIsEmpty(self.display_area.GetValue())
+    
+    
     def ImportInfo(self, event):
         # Import package name and version from the control page
         # FIXME: Should use a safer method

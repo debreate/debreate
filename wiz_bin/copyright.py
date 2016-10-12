@@ -230,5 +230,9 @@ class Panel(WizardPage):
         return 0
     
     
+    def IsExportable(self):
+        return not TextIsEmpty(self.cp_display.GetValue())
+    
+    
     def ResetPageInfo(self):
         self.cp_display.Clear()
