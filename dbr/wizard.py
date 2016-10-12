@@ -221,7 +221,6 @@ class WizardPage(wx.ScrolledWindow):
         wx.ScrolledWindow.__init__(self, parent, page_id)
         
         self.wizard = parent
-        self.debreate = parent.parent
         
         self.SetName(page_ids[self.GetId()])
     
@@ -261,6 +260,10 @@ class WizardPage(wx.ScrolledWindow):
         f_opened.close()
         
         return 0
+    
+    
+    def GetDebreateWindow(self):
+        return self.wizard.GetDebreateWindow()
     
     
     def ImportPageInfo(self, filename):
