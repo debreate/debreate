@@ -6,10 +6,11 @@ from dbr.language import GT
 
 
 # FIXME: Crashes if icon is wx.NullBitmap
+# TODO: Move to dbr.dialogs, maybe
 class MessageDialog(wx.Dialog):
-    def __init__(self, parent, id=wx.ID_ANY, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
+    def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
-        wx.Dialog.__init__(self, parent, id, title, size=(500,500), style=style)
+        wx.Dialog.__init__(self, parent, wx.ID_ANY, title, size=(500,500), style=style)
         
         self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
         
@@ -36,14 +37,24 @@ class MessageDialog(wx.Dialog):
         self.main_sizer.AddSpacer(10)
         
         self.SetAutoLayout(True)
-        self.ToggleDetails(None)
+        self.ToggleDetails()
         
         self.details.Hide()
     
-    def ToggleDetails(self, event):
+    
+    def SetDetails(self, details):
+        self.details.SetValue(details)
+        self.details.SetSize(self.details.GetBestSize())
+        
+        #self.Layout()
+    
+    
+    def ToggleDetails(self, event=None):
         if self.button_details.GetValue():
             self.details.Show()
+        
         else:
             self.details.Hide()
+        
         self.SetSizerAndFit(self.main_sizer)
         self.Layout()
