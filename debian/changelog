@@ -1,3 +1,10 @@
+debreate (0.7.12) xenial; urgency=HIGH
+
+  * fixes for wx 3.0 compatibility
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 12 Oct 2016 08:31:30 -0700
+
+
 debreate (0.7.11) xenial; urgency=low
 
   * add template generation for copyright
