@@ -8,6 +8,7 @@ import wx, os
 #from dbr import Logger
 from dbr.language import GT
 from dbr.buttons import ButtonConfirm
+from dbr.constants import ICON_ERROR
 
 
 
@@ -168,3 +169,9 @@ class MessageDialog(wx.Dialog):
         
         self.SetSizerAndFit(self.main_sizer)
         self.Layout()
+
+
+## Message dialog that shows an error & details
+class ErrorDialog(MessageDialog):
+    def __init__(self, parent, text=wx.EmptyString, details=wx.EmptyString):
+        MessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
