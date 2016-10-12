@@ -23,6 +23,7 @@ from dbr.compression import \
     compression_mimetypes, compression_formats,\
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
     CompressionHandler, DEFAULT_COMPRESSION_ID
+from dbr.quickbuild import QuickBuild
 
 
 # Options menu
@@ -80,6 +81,10 @@ class MainWindow(wx.Frame):
         self.menu_file.AppendItem(self.QuickBuild)
         self.menu_file.AppendSeparator()
         self.menu_file.Append(wx.ID_EXIT)
+        
+        # FIXME: QuickBuild broken
+        self.QuickBuild.SetText(u'Quick Build (Broken)')
+        self.QuickBuild.Enable(False)
         
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
@@ -256,10 +261,6 @@ class MainWindow(wx.Frame):
         self.menubar.Insert(1, self.menu_page, GT(u'Page'))
         self.menubar.Insert(2, self.menu_opt, GT(u'Options'))
         self.menubar.Insert(3, self.menu_help, GT(u'Help'))
-        
-        # FIXME: QuickBuild broken
-        self.QuickBuild.SetText(u'Quick Build (Broken)')
-        self.QuickBuild.Enable(False)
         
         # ***** END MENUBAR ***** #
         
@@ -827,6 +828,7 @@ class MainWindow(wx.Frame):
             
     
     
+    # FIXME: Delete, deprecated
     def OnSaveProjectDeprecated(self, event):
         EVENT_ID = event.GetId()
         
@@ -902,7 +904,7 @@ class MainWindow(wx.Frame):
             OnSaveAs()
     
     def OnQuickBuild(self, event):
-        QB = wiz_bin.QuickBuild(self)
+        QB = QuickBuild(self)
         QB.ShowModal()
         QB.Destroy()
     
