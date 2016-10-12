@@ -486,6 +486,12 @@ class Panel(wx.ScrolledWindow):
     # *** Gathering Page Data *** #
     
     def GetCtrlInfo(self):
+        def Enabled(object):
+            if wx.MAJOR_VERSION > 2:
+                return object.IsThisEnabled()
+            
+            return object.IsEnabled()
+            
         # Creat a list to store info
         ctrl_list = []
         
@@ -496,14 +502,14 @@ class Panel(wx.ScrolledWindow):
                     )
         
         for key in getvals:
-            if key[1].IsEnabled() and "".join(key[1].GetValue().split(" ")) != '':
+            if Enabled(key[1]) and "".join(key[1].GetValue().split(" ")) != '':
                 if key[0] == "Package" or key[0] == "Version":
                     ctrl_list.append("%s: %s" % (key[0], "-".join(key[1].GetValue().split(' '))))
                 else:
                     ctrl_list.append("%s: %s" % (key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        if self.auth.IsEnabled and self.auth.GetValue() != '':
+        if Enabled(self.auth) and self.auth.GetValue() != '':
             ctrl_list.insert(3, "Maintainer: %s <%s>" % (self.auth.GetValue(), self.email.GetValue()))
         
         # Add the "choice" options
@@ -511,7 +517,7 @@ class Panel(wx.ScrolledWindow):
                     "Essential": (self.ess,self.ess_opt)#, "Urgency": (self.urge,self.urge_opt)
                     }
         for key in getsels:
-            if getsels[key][0].IsEnabled():
+            if Enabled(getsels[key][0]):
                 if key == "Essential" and self.ess.GetCurrentSelection() == 1:
                     pass
                 else:
