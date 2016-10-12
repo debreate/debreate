@@ -104,7 +104,6 @@ class QuickBuild(wx.Dialog):
     ## Closes the Quick Build dialog & destroys instance
     def OnClose(self, event=None):
         self.EndModal(True)
-        self.Destroy()
     
     
     ## Updates the progress bar
