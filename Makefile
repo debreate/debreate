@@ -65,7 +65,8 @@ FILES_dbr = \
 	dbr/pathctrl.py \
 	dbr/quickbuild.py \
 	dbr/templates.py \
-	dbr/wizard.py
+	dbr/wizard.py \
+	dbr/workingdir.py
 
 FILES_doc = \
 	docs/BUGS.txt \
