@@ -1,5 +1,6 @@
 0.7.12
 - fixes for wx 3.0 compatibility
+- disabled broken Quick Build
 
 0.7.11
 - add template generation for copyright

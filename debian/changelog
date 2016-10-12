@@ -1,6 +1,7 @@
 debreate (0.7.12) xenial; urgency=HIGH
 
-  * fixes for wx 3.0 compatibility
+  * Fixes for wx 3.0 compatibility
+    Disabled broken Quick Build
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 12 Oct 2016 08:31:30 -0700
 
