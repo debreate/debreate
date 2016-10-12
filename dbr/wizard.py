@@ -223,6 +223,9 @@ class WizardPage(wx.ScrolledWindow):
         self.wizard = parent
         
         self.SetName(page_ids[self.GetId()])
+        
+        # Is added to prebuild check list
+        self.prebuild_check = True
     
     
     def GetPageInfo(self):
