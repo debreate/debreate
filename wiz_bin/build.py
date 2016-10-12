@@ -15,7 +15,7 @@ from dbr.constants import ID_BUILD, custom_errno, cmd_md5sum, cmd_lintian,\
     ICON_ERROR, ICON_INFORMATION, VERSION_STRING
 from dbr.wizard import WizardPage
 from dbr.functions import GetBoolean, GetFileSaveDialog, ShowDialog,\
-    BuildDebianPackageFromTree
+    BuildBinaryPackageFromTree
 from dbr import Logger, DebugEnabled
 
 
@@ -139,7 +139,7 @@ class Panel(WizardPage):
         
         os.makedirs(temp_dir)
         
-        build_ret = BuildDebianPackageFromTree(temp_dir, out_file)
+        build_ret = BuildBinaryPackageFromTree(temp_dir, out_file)
         
         if build_ret == custom_errno.ENOENT:
             ErrorDialog(self.GetDebreateWindow(), GT(u'Cannot build from non-existent directory')).ShowModal()

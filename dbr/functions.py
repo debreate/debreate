@@ -473,7 +473,7 @@ def SetToolTips(control_list):
         SetToolTip(C[0], C[1])
 
 
-def BuildDebianPackageFromTree(root_dir, filename):
+def BuildBinaryPackageFromTree(root_dir, filename):
     if not os.path.isdir(root_dir):
         return custom_errno.ENOENT
     
