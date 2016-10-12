@@ -118,7 +118,7 @@ class StandardFileSaveDialog(wx.FileDialog):
 ## Displays a dialog with message & details
 #  
 #  FIXME: Crashes if icon is wx.NullBitmap
-class MessageDialog(wx.Dialog):
+class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, size=(500,500), style=style)
@@ -126,11 +126,19 @@ class MessageDialog(wx.Dialog):
         self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
         
         self.text = wx.StaticText(self, -1, text)
+        
         self.button_details = wx.ToggleButton(self, -1, GT(u'Details'))
-        self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
-        self.details.SetSize(self.details.GetBestSize())
+        self.btn_copy_details = wx.Button(self, label=GT(u'Copy details'))
         
         wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
+        wx.EVT_BUTTON(self.btn_copy_details, wx.ID_ANY, self.OnCopyDetails)
+        
+        LH_buttons1 = wx.BoxSizer(wx.HORIZONTAL)
+        LH_buttons1.Add(self.button_details, 1)
+        LH_buttons1.Add(self.btn_copy_details, 1)
+        
+        self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.details.SetSize(self.details.GetBestSize())
         
         self.button_ok = ButtonConfirm(self)
         
@@ -138,7 +146,7 @@ class MessageDialog(wx.Dialog):
         r_sizer.AddSpacer(10)
         r_sizer.Add(self.text)
         r_sizer.AddSpacer(20)
-        r_sizer.Add(self.button_details)
+        r_sizer.Add(LH_buttons1)
         r_sizer.Add(self.details, 1, wx.EXPAND)
         r_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT)
         
@@ -150,14 +158,46 @@ class MessageDialog(wx.Dialog):
         self.SetAutoLayout(True)
         self.ToggleDetails()
         
+        self.btn_copy_details.Hide()
         self.details.Hide()
+    
+    
+    # FIXME:
+    def OnCopyDetails(self, event=None):
+        print(u'DEBUG: Copying details to clipboard ...')
+        
+        cb_set = False
+        
+        clipboard = wx.Clipboard()
+        if clipboard.Open():
+            print(u'DEBUG: Clipboard opened')
+            
+            details = wx.TextDataObject(self.details.GetValue())
+            print(u'DEBUG: Details set to:\n{}'.format(details.GetText()))
+            
+            clipboard.Clear()
+            print(u'DEBUG: Clipboard cleared')
+            
+            cb_set = clipboard.SetData(details)
+            print(u'DEBUG: Clipboard data set')
+            
+            clipboard.Flush()
+            print(u'DEBUG: Clipboard flushed')
+            
+            clipboard.Close()
+            print(u'DEBUG: Clipboard cloased')
+        
+        del clipboard
+        print(u'DEBUG: Clipboard object deleted')
+        
+        wx.MessageBox(GT(u'FIXME: Details not copied to clipboard'), GT(u'Debug'))
     
     
     def SetDetails(self, details):
         self.details.SetValue(details)
         self.details.SetSize(self.details.GetBestSize())
         
-        #self.Layout()
+        self.Layout()
     
     
     def ToggleDetails(self, event=None):
@@ -172,6 +212,10 @@ class MessageDialog(wx.Dialog):
 
 
 ## Message dialog that shows an error & details
-class ErrorDialog(MessageDialog):
+class ErrorDialog(DetailedMessageDialog):
     def __init__(self, parent, text=wx.EmptyString, details=wx.EmptyString):
-        MessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
+        DetailedMessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
+        
+        self.btn_copy_details.Show()
+        
+        self.Layout()
