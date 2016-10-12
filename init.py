@@ -73,14 +73,10 @@ CL.ExecuteArguments()
 
 # First time Debreate is run
 if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
-    #FR_app = wx.App()
-    
     FR_dialog = FirstRun()
     debreate_app.SetTopWindow(FR_dialog)
     FR_dialog.ShowModal()
     FR_dialog.Destroy()
-    
-    #FR_app.MainLoop()
     
     init_conf_code = InitializeConfig()
     Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
