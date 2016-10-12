@@ -24,6 +24,9 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_BUILD)
         
+        # Bypass build prep check
+        self.prebuild_check = False
+        
         self.debreate = parent.GetDebreateWindow()
         
         # --- Tool Tips --- #
@@ -132,37 +135,111 @@ class Panel(WizardPage):
         
         if pages_build_ids != None:
             steps_count = len(pages_build_ids)
+            current_step = 0
             
-            for P in self.wizard.pages:
-                page_id = P.GetId()
+            # Steps from build page
+            for chk in self.chk_md5, self.chk_lint, self.chk_rmtree:
+                if chk.IsChecked():
+                    steps_count += 1
+            
+            # FIXME: Enable PD_CAN_ABORT
+            build_progress = wx.ProgressDialog(GT(u'Building'), GT(u'Starting build'),
+                    steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+            wx.Yield()
+            
+            time.sleep(3)
+            
+            try:
+                for P in self.wizard.pages:
+                    if build_progress.WasCancelled():
+                        break
+                    
+                    page_id = P.GetId()
+                    
+                    if P.GetId() in pages_build_ids:
+                        page_label = P.GetLabel()
+                        
+                        # FIXME: Progress bar not updating
+                        wx.Yield()
+                        build_progress.Update(current_step,
+                                GT(u'Processing page "{}" ({}/{})').format(page_label, current_step+1, steps_count))
+                        # TODO: Remove
+                        time.sleep(1)
+                        
+                        if page_id == ID_CONTROL:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_FILES:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_MAN:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_SCRIPTS:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_CHANGELOG:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_COPYRIGHT:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_MENU:
+                            Logger.Debug(__name__, page_label)
+                        
+                        elif page_id == ID_BUILD:
+                            Logger.Debug(__name__, page_label)
+                        
+                        current_step += 1
                 
-                if P.GetId() in pages_build_ids:
-                    page_label = P.GetLabel()
+                if not build_progress.WasCancelled():
+                    if self.chk_md5.IsChecked():
+                        wx.Yield()
+                        build_progress.Update(current_step,
+                                GT(u'Creating MD5 checksum ({}/{})').format(current_step+1, steps_count))
+                        
+                        self.CreateMD5Sum(u'Null dir')
+                        
+                        current_step += 1
+                
+                if not build_progress.WasCancelled():
+                    if self.chk_lint.IsChecked():
+                        wx.Yield()
+                        build_progress.Update(current_step,
+                                GT(u'Checking package with lintian ({}/{})').format(current_step+1, steps_count))
+                        
+                        self.CheckPackageLintian(u'Null package')
+                        
+                        current_step += 1
+                
+                if not build_progress.WasCancelled():
+                    if self.chk_rmtree.IsChecked():
+                        wx.Yield()
+                        build_progress.Update(current_step,
+                                GT(u'Removing staged build tree ({}/{})').format(current_step+1, steps_count))
+                        
+                        current_step += 1
+                
+                if not build_progress.WasCancelled():
+                    wx.Yield()
+                    build_progress.Update(steps_count, GT(u'Build finished'))
                     
-                    
-                    if page_id == ID_CONTROL:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_FILES:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_MAN:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_SCRIPTS:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_CHANGELOG:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_COPYRIGHT:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_MENU:
-                        Logger.Debug(__name__, page_label)
-                    
-                    elif page_id == ID_BUILD:
-                        Logger.Debug(__name__, page_label)
+                    # Show finished dialog for short moment
+                    time.sleep(1)
+                
+                build_progress.Destroy()
+            
+            except:
+                build_progress.Destroy()
+                
+                err_msg = GT(u'Error occurred during build')
+                Logger.Error(__name__, u'{}:\n{}'.format(err_msg, traceback.format_exc()))
+                
+                err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
+                err_dialog.SetDetails(traceback.format_exc())
+                err_dialog.ShowModal()
+                
+                err_dialog.Destroy()
         
         return
         
@@ -258,10 +335,11 @@ class Panel(WizardPage):
                     current_step += 1
                 
             if not prep_progress.WasCancelled():
+                wx.Yield()
                 prep_progress.Update(current_step, GT(u'Prepping finished'))
                 
                 # Show finished dialog for short period
-                time.sleep(0.5)
+                time.sleep(1)
             
             prep_progress.Destroy()
             
@@ -286,11 +364,13 @@ class Panel(WizardPage):
         return None
     
     
+    # TODO: Finish defining
     def CheckPackageLintian(self, package):
         Logger.Debug(__name__,
                 GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(package)))
     
     
+    # TODO: Finish defining
     def CreateMD5Sum(self, directory):
         Logger.Debug(__name__,
                 GT(u'Creating MD5sum file in {}').format(directory))
