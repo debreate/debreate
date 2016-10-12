@@ -77,7 +77,7 @@ def ReadConfig(k_name, conf=default_config):
     
     # Only read pre-defined keys
     if k_name not in key_types:
-        Logger.Warning(__name__, u'Cannot read from config, key not defined: {}'.format(k_name))
+        Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
     conf_opened = open(conf, u'r')
@@ -96,7 +96,11 @@ def ReadConfig(k_name, conf=default_config):
                 Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
                 return value
     
-    Logger.Warning(__name__, u'Configuration does not contain key: {}'.format(k_name))
+    if k_name in default_config_values:
+        Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
+        
+        return default_config_values[k_name]
+    
     return ConfCode.KEY_NO_EXIST
 
 
