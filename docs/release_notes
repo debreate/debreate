@@ -1,4 +1,6 @@
-Debreate 0.7.10 Release Notes
+Debreate 0.7.12 Release Notes
+
+This is a release to enable support for wx 3.0. No new features or bug fixes are available.
 
 Known Bugs:
     *) Auto-Link Help only re-centers if "check" button is pressed
@@ -6,6 +8,7 @@ Known Bugs:
     *) Custom dialogs are buggy
 
 New Features:
+    *) wx 3.0 support
 
 Tasks:
     *) Add support for manpages
