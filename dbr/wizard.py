@@ -95,7 +95,7 @@ class Wizard(wx.Panel):
                 page.Hide()
             else:
                 page.Show()
-                self.title_txt.SetLabel(page.GetName())
+                self.title_txt.SetLabel(page.GetLabel())
             
             # Add pages to main menu
             debreate.menu_page.AppendItem(
@@ -110,7 +110,7 @@ class Wizard(wx.Panel):
                 p.Hide()
             else:
                 p.Show()
-                self.title_txt.SetLabel(p.GetName())
+                self.title_txt.SetLabel(p.GetLabel())
                 
         self.Layout()
         for child in self.GetChildren():
@@ -228,6 +228,9 @@ class WizardPage(wx.ScrolledWindow):
         
         self.SetName(page_ids[self.GetId()])
         
+        ## Label to show in title & menu
+        self.label = None
+        
         # Is added to prebuild check list
         self.prebuild_check = True
     
@@ -267,6 +270,13 @@ class WizardPage(wx.ScrolledWindow):
     
     def GetDebreateWindow(self):
         return self.wizard.GetDebreateWindow()
+    
+    
+    def GetLabel(self):
+        if self.label == None:
+            return self.GetName()
+        
+        return self.label
     
     
     def GetPageInfo(self, string_format=False):
