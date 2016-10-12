@@ -44,7 +44,7 @@ from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
 from dbr.custom import FirstRun
 from main import MainWindow
 import dbr.command_line as CL
-from dbr.functions import GetCompressionId
+from dbr.compression import GetCompressionId
 
 
 script_name = os.path.basename(__file__)
