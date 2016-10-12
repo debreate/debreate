@@ -13,9 +13,11 @@ from urllib2 import urlopen, URLError
 import dbr
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING, system_licenses_path,\
-    project_wildcards, supported_suffixes, custom_errno
+    project_wildcards, supported_suffixes, custom_errno, APP_NAME,\
+    VERSION_STRING
 from dbr.compression import compression_formats
 from dbr.dialogs import StandardFileSaveDialog
+import shutil
 
 
 # FIXME: Can't import Logger
@@ -477,10 +479,33 @@ def BuildBinaryPackageFromTree(root_dir, filename):
     if not os.path.isdir(root_dir):
         return custom_errno.ENOENT
     
-    #output = commands.getstatusoutput(u'fakeroot dpkg-deb -b "{}" "{}"'.format(root_dir, filename))
-    
     # DEBUG
-    cmd = u'fakeroot dpkg-deb -b "{}" "{}"'.format(root_dir, filename)
+    cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
     print(u'DEBUG: Issuing command: {}'.format(cmd))
     
+    #output = commands.getstatusoutput(cmd)
+    
     return 0
+
+
+def CreateTempDirectory():
+    temp_dir = u'/tmp'
+    
+    # Check if we can write to /tmp
+    if not os.access(temp_dir, os.W_OK):
+        temp_dir = os.getcwd()
+    
+    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_NAME).lower(), VERSION_STRING)
+    
+    print(u'DEBUG: Temporary directory: {}'.format(temp_dir))
+    
+    if os.access(os.path.dirname(temp_dir), os.W_OK):
+        os.makedirs(temp_dir)
+        return temp_dir
+    
+    return custom_errno.EACCES
+
+
+def RemoveTempDirectory(temp_dir):
+    if os.access(temp_dir, os.W_OK):
+        shutil.rmtree(temp_dir)
