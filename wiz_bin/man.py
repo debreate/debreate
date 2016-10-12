@@ -13,6 +13,9 @@ class Panel(WizardPage, wx.Notebook):
         # TODO: Add to Gettext locale files
         WizardPage.__init__(self, parent, ID_MAN)
         
+        ## Override default label
+        self.label = GT(u'Manpages')
+        
         button_add = wx.Button(self, label=GT(u'Add manpage'))
         wx.EVT_BUTTON(button_add, wx.ID_ANY, self.OnAddManpage)
         

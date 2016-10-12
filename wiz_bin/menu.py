@@ -22,6 +22,9 @@ class Panel(WizardPage):
         # Allows executing parent methods
         self.parent = parent
         
+        ## Override default label
+        self.label = GT(u'Menu Launcher')
+        
         # --- Tool Tips --- #
         DF_tip = wx.ToolTip(GT(u'Open launcher file'))
         icon_tip = wx.ToolTip(GT(u'Icon to be displayed for the launcher'))
