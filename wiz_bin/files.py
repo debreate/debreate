@@ -104,24 +104,29 @@ class Panel(WizardPage):
         
         self.path_dict = {ID_pout: self.dest_cust}
         
+        # TODO: Make custom button
+        btn_refresh = wx.Button(self, label=GT(u'Refresh'))
+        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
+        
         path_add_sizer = wx.BoxSizer(wx.HORIZONTAL)
         path_add_sizer.Add(path_add, 0)
         path_add_sizer.Add(path_remove, 0)
         path_add_sizer.Add(button_clear, 0, wx.ALIGN_CENTER_VERTICAL)
         path_add_sizer.Add(cust_sizer, 1, wx.ALIGN_CENTER_VERTICAL)
         path_add_sizer.Add(self.dest_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
+        path_add_sizer.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
         
         
         # Display area for files added to list
-        self.dest_area = FileList(self, -1)
+        self.file_list = FileList(self, -1)
         
         # List that stores the actual paths to the files
         self.list_data = []
         
-        wx.EVT_KEY_DOWN(self.dest_area, self.DelPathDeprecated)
+        wx.EVT_KEY_DOWN(self.file_list, self.DelPathDeprecated)
         
         LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        LMR_sizer.Add(self.dest_area, 1, wx.EXPAND)
+        LMR_sizer.Add(self.file_list, 1, wx.EXPAND)
         
         page_sizer = wx.BoxSizer(wx.VERTICAL)
         page_sizer.AddSpacer(10)
@@ -144,7 +149,11 @@ class Panel(WizardPage):
     
     
     def IsExportable(self):
-        return not self.dest_area.IsEmpty()
+        return not self.file_list.IsEmpty()
+    
+    
+    def OnRefreshFileList(self, event=None):
+        self.file_list.Refresh()
     
     
     def OnRightClick(self, event):
@@ -267,13 +276,13 @@ class Panel(WizardPage):
                     count_text.SetLabel(u'{} / {}'.format(task, file_count))
                     task_progress.Update(task)#, u'{}\n{} / {}'.format(task_msg, task, file_count))
                     
-                    self.dest_area.AddFile(files[task_index][0], files[task_index][1], target_dir)
+                    self.file_list.AddFile(files[task_index][0], files[task_index][1], target_dir)
             
             else:
                 for F in files:
-                    self.dest_area.AddFile(F[0], F[1], target_dir)
+                    self.file_list.AddFile(F[0], F[1], target_dir)
         
-            self.dest_area.Sort()
+            self.file_list.Sort()
     
     
     def OnRefresh(self, event):
@@ -285,11 +294,11 @@ class Panel(WizardPage):
         self.dir_tree.SetPath(path)
     
     def SelectAll(self):
-        self.dest_area.SelectAll()
+        self.file_list.SelectAll()
     
     
     def RemoveSelected(self, event):
-        self.dest_area.RemoveSelected()
+        self.file_list.RemoveSelected()
     
     
     # FIXME: Deprecated; Replace with self.RemoveSelected
@@ -303,24 +312,24 @@ class Panel(WizardPage):
         if keycode == wx.WXK_DELETE:
             selected = [] # Items to remove from visible list
             toremove = [] # Items to remove from invisible list
-            total = self.dest_area.GetSelectedItemCount()
-            current = self.dest_area.GetFirstSelected()
+            total = self.file_list.GetSelectedItemCount()
+            current = self.file_list.GetFirstSelected()
             if current != -1:
                 selected.insert(0, current)
                 while total > 1:
                     total = total - 1
                     prev = current
-                    current = self.dest_area.GetNextSelected(prev)
+                    current = self.file_list.GetNextSelected(prev)
                     selected.insert(0, current)
             for path in selected:
                 # Remove the item from the invisible list
                 for item in self.list_data:
-                    filename = self.dest_area.GetItemText(path)
-                    dest = self.dest_area.GetItem(path, 1).GetText()
+                    filename = self.file_list.GetItemText(path)
+                    dest = self.file_list.GetItem(path, 1).GetText()
                     if filename.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
                         toremove.append(item)
                     
-                self.dest_area.DeleteItem(path) # Remove the item from the visible list
+                self.file_list.DeleteItem(path) # Remove the item from the visible list
             
             for item in toremove:
                 self.list_data.remove(item)
@@ -332,7 +341,7 @@ class Panel(WizardPage):
     def ClearAll(self, event):
         confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_YES:
-            self.dest_area.DeleteAllItems()
+            self.file_list.DeleteAllItems()
             self.list_data = []
     
     def SetDestination(self, event):
@@ -349,13 +358,13 @@ class Panel(WizardPage):
         self.radio_cst.SetValue(True)
         self.SetDestination(None)
         self.dest_cust.SetValue(u'/usr/bin')
-        self.dest_area.DeleteAllItems()
+        self.file_list.DeleteAllItems()
         self.list_data = []
     
     def SetFieldDataDeprecated(self, data):
         # Clear files list
         self.list_data = []
-        self.dest_area.DeleteAllItems()
+        self.file_list.DeleteAllItems()
         files_data = data.split(u'\n')
         if int(files_data[0]):
             # Get file count from list minus first item "1"
@@ -377,17 +386,17 @@ class Panel(WizardPage):
                 # Check if files still exist
                 if os.path.exists(src[0]):
                     # Deprecated
-                    #self.dest_area.InsertStringItem(0, absolute_filename)
-                    #self.dest_area.SetStringItem(0, 1, dest)
-                    self.dest_area.AddFile(filename, os.path.dirname(src[0]), dest)
+                    #self.file_list.InsertStringItem(0, absolute_filename)
+                    #self.file_list.SetStringItem(0, 1, dest)
+                    self.file_list.AddFile(filename, os.path.dirname(src[0]), dest)
                     self.list_data.insert(0, (src[0], filename, dest))
                     # Check if file is executable
                     if src[1]:
-                        self.dest_area.SetItemTextColour(0, u'red') # Set text color to red
+                        self.file_list.SetItemTextColour(0, u'red') # Set text color to red
                 else:
                     missing_files.append(src[0])
                 
-            self.dest_area.Sort()
+            self.file_list.Sort()
             
             # If files are missing show a message
             if len(missing_files):
@@ -416,12 +425,12 @@ class Panel(WizardPage):
     #        \b \e str : A string of files & their targets formatted for text output
     def GetFilesInfoDeprecated(self):
         file_list = []
-        item_count = self.dest_area.GetItemCount()
+        item_count = self.file_list.GetItemCount()
         if item_count > 0:
             count = 0
             while count < item_count:
-                item_file = self.dest_area.GetItemText(count)
-                item_dest = self.dest_area.GetItem(count, 1).GetText()
+                item_file = self.file_list.GetItemText(count)
+                item_dest = self.file_list.GetItem(count, 1).GetText()
                 for item in self.list_data:
                     # Decode to unicode
                     i0 = item[0].encode(u'utf-8')
@@ -430,7 +439,7 @@ class Panel(WizardPage):
                     if i1 == item_file and i2.decode(u'utf-8') == item_dest:
                         item_src = i0
                 # Populate list with tuples of ("src", "file", "dest")
-                if self.dest_area.GetItemTextColour(count) == (255, 0, 0):
+                if self.file_list.GetItemTextColour(count) == (255, 0, 0):
                     file_list.append((u'%s*' % item_src, item_file, item_dest))
                 else:
                     file_list.append((item_src, item_file, item_dest))
@@ -471,13 +480,13 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
     def GetPageInfo(self, string_format=False):
-        item_count = self.dest_area.GetItemCount()
+        item_count = self.file_list.GetItemCount()
         
         if item_count:
             #file_list = []
             files_definitions = {}
             for X in range(item_count):
-                row_data = self.dest_area.GetRowData(X)
+                row_data = self.file_list.GetRowData(X)
                 filename = u'{}/{}'.format(row_data[1], row_data[0])
                 target = row_data[2]
                 executable = row_data[3]
@@ -554,7 +563,7 @@ class Panel(WizardPage):
             source_file = os.path.basename(T[1])
             source_dir = os.path.dirname(T[1])
             
-            self.dest_area.AddFile(source_file, source_dir, T[0], executable=T[2])
+            self.file_list.AddFile(source_file, source_dir, T[0], executable=T[2])
         
         if len(missing_files):
             err_line1 = GT(u'The following files are missing from the filesystem.')
@@ -569,7 +578,7 @@ class Panel(WizardPage):
     #  
     #  \override dbr.wizard.Wizard.ImportPageInfo
     def ResetPageInfo(self):
-        self.dest_area.DeleteAllItems()
+        self.file_list.DeleteAllItems()
 
 
 
@@ -586,6 +595,8 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         self.parent = parent
         self.debreate = parent.debreate
         self.dir_tree = parent.dir_tree
+        
+        self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
         
         self.filename_col = 0
         self.source_col = 1
@@ -671,6 +682,21 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         event.Skip()
     
     
+    ## Refresh file list
+    #  
+    #  Missing files are marked with a distinct color.
+    #  TODO: Update executable status
+    def Refresh(self):
+        for R in range(self.GetItemCount()):
+            item_color = self.DEFAULT_BG_COLOR
+            row_defs = self.GetRowDefs(R)
+            
+            if not os.path.isfile(u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])):
+                item_color = COLOR_ERROR
+            
+            self.SetItemBackgroundColour(R, item_color)
+    
+    
     ## Works around resize bug in wx 3.0
     #  
     #  Uses parent width & its children to determine
@@ -729,6 +755,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
             self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
         
+        #self.Refresh()
         if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
             self.SetItemBackgroundColour(list_index, COLOR_ERROR)
     
@@ -780,6 +807,19 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         executable = self.GetItem(row, self.type_col).GetText() == file_types_defs[FTYPE_EXE]
         
         return (filename, source_dir, target_dir, executable)
+    
+    
+    def GetRowDefs(self, row):
+        row_data = self.GetRowData(row)
+        
+        row_defs = {
+            u'filename': row_data[0],
+            u'source': row_data[1],
+            u'target': row_data[2],
+            u'executable': row_data[3],
+        }
+        
+        return row_defs
 
 
 ## A custom progress dialog
