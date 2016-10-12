@@ -143,6 +143,10 @@ class Panel(WizardPage):
         self.setlabels = {	self.dest_browse: u'Custom' }
     
     
+    def IsExportable(self):
+        return not self.dest_area.IsEmpty()
+    
+    
     def OnRightClick(self, event):
         # Show a context menu for adding files and folders
         path = self.dir_tree.GetPath()
@@ -632,6 +636,12 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     
     def GetTarget(self, i_index):
         return self.GetItemText(i_index, self.target_col)
+    
+    
+    def IsEmpty(self):
+        item_count = self.GetItemCount()
+        Logger.Debug(__name__, GT(u'File list is empty ({} files): {}').format(item_count, not item_count))
+        return not item_count
     
     
     def OnInsertItem(self, event):

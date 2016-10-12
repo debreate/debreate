@@ -161,6 +161,12 @@ scripts will be created that will place a symbolic link to your executables in t
         self.ScriptSelect(None)
     
     
+    def IsExportable(self):
+        for S, RB in self.script_objects:
+            if S.IsExportable():
+                return True
+    
+    
     def ScriptSelect(self, event):
         for S, RB in self.script_objects:
             if RB.GetValue():
