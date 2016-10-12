@@ -128,9 +128,15 @@ class Panel(WizardPage):
     
     
     ## Method that builds the actual Debian package
+    #  
+    #  TODO: Create temp stage directory tree
+    #  TODO: Delete temp stage directory tree
+    #  TODO: Run dpkg-deb command
+    #  TODO: Test for errors when building deb package with other filename extension
+    #  TODO: Remove deprecated methods that this one replaces
+    #  \param out_file
+    #        \b \e str|unicode : Absolute path to target file
     def Build(self, out_file):
-        # TODO: Test for errors when building deb package with other filename extension
-        
         pages_build_ids = self.BuildPrep()
         
         if pages_build_ids != None:
@@ -403,7 +409,7 @@ class Panel(WizardPage):
                     
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
     
-    
+    # TODO: Check required fields before build
     def OnBuild(self, event):
         ttype = GT(u'Debian Packages')
         save_dialog = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Build Package'),
