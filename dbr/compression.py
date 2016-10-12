@@ -36,10 +36,15 @@ compression_mimetypes = {
 }
 
 
-# Use shutil for supported formats
-
-
-# Use OS commands for other formats
+def GetCompressionId(z_value):
+    for z_id in compression_formats:
+        if z_value == compression_formats[z_id]:
+            return z_id
+    
+    # FIXME: Can't import Logger
+    #Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
+    
+    return None
 
 
 class CompressionHandler:
