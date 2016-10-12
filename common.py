@@ -17,10 +17,10 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
-RELEASE = 1
+RELEASE = 0
 ver_maj = 0
 ver_min = 7
-ver_rel = 11
+ver_rel = 12
 
 # For testing release
 if (not RELEASE):
