@@ -13,7 +13,7 @@ from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
 from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
-from dbr.message import MessageDialog
+from dbr.dialogs import DetailedMessageDialog
 
 
 ID_pin = 100
@@ -552,7 +552,7 @@ class Panel(WizardPage):
         if len(missing_files):
             err_line1 = GT(u'The following files are missing from the filesystem.')
             err_line2 = GT(u'They will be highlighted on the Files page.')
-            MessageDialog(self.debreate, title=GT(u'Warning'), icon=ICON_ERROR,
+            DetailedMessageDialog(self.debreate, title=GT(u'Warning'), icon=ICON_ERROR,
                     text=u'\n'.join((err_line1, err_line2)),
                     details=u'\n'.join(missing_files)).ShowModal()
         
