@@ -289,27 +289,128 @@ class MainWindow(wx.Frame):
         self.dirty = True
     
     
-    ## Sets working directory for file open/save dialogs
-    #  
-    #  FIXME: Unused?
-    #  \param target
-    #        \b \e unicode|str : Target directory
-    def SetWorkingDirectory(self, target):
-        if target != None:
-            os.chdir(target)
+    def GetCompression(self):
+        for Z in self.menu_compression.GetMenuItems():
+            Z_ID = Z.GetId()
+            if self.menu_compression.IsChecked(Z_ID):
+                return compression_formats[Z_ID]
+        
+        default_compression = GetDefaultConfigValue(u'compression')
+        
+        Logger.Debug(__name__,
+                GT(u'Setting compression to default value: {}'.format(default_compression)))
+        
+        return default_compression
+    
+    
+    def GetCompressionId(self):
+        for Z in self.menu_compression.GetMenuItems():
+            Z_ID = Z.GetId()
+            if self.menu_compression.IsChecked(Z_ID):
+                return Z_ID
+        
+        Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
+        return DEFAULT_COMPRESSION_ID
+    
+    
+    ## Retrieves the main Debreate window
+    def GetDebreateWindow(self):
+        return self
+    
+    
+    ## Changes wizard page from menu
+    def GoToPage(self, event=None):
+        page_id = None
+        
+        if event:
+            page_id = event.GetId()
+            Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
+        
         else:
-            os.chdir(GetDefaultConfigValue(u'workingdir'))
+            for M in self.menu_page.GetMenuItems():
+                if M.IsChecked():
+                    page_id = M.GetId()
+                    Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
+                    break
         
-        Logger.Debug(__name__, GT(u'Current working directory set: {}'.format(os.getcwd())))
+        if page_id == None:
+            Logger.Error(__name__, GT(u'Could not get page ID'))
+            return
         
-        if not os.path.isdir(os.getcwd()):
-            Logger.Warning(__name__,
-                    GT(u'Working directory set to "{}" which is not an actual directory'.format(os.getcwd())))
+        self.wizard.ShowPage(page_id)
     
     
-    ## FIXME: Unused???
-    def OnMaximize(self, event):
-        print(u'Maximized')
+    ## Checks if current project is dirty
+    def IsDirty(self):
+        return self.dirty
+    
+    
+    def IsNewProject(self):
+        title = self.GetTitle()
+        
+        return bool(title == self.default_title)
+    
+    
+    def IsSaved(self):
+        title = self.GetTitle()
+        
+        return bool(title[-1] == u'*')
+    
+    
+    # FIXME: Deprecated
+    def NewProject(self):
+        for page in self.all_pages:
+            page.ResetAllFields()
+        self.SetTitle(default_title)
+        
+        # Reset the saved project field so we know that a project file doesn't exists
+        self.saved_project = wx.EmptyString
+    
+    
+    ## Opens a dialog box with information about the program
+    def OnAbout(self, event):
+        about = dbr.AboutDialog(self)
+        
+        about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(dbr.application_path))
+        about.SetVersion(VERSION_STRING)
+        about.SetDescription(GT(u'A package builder for Debian based systems'))
+        about.SetAuthor(AUTHOR)
+        
+        about.SetWebsites((
+            (GT(u'Homepage'), HOMEPAGE),
+            (GT(u'GitHub Project'), PROJECT_HOME_GH),
+            (GT(u'Sourceforge Project'), PROJECT_HOME_SF),
+        ))
+        
+        about.AddJobs(
+            AUTHOR,
+            (
+                GT(u'Head Developer'),
+                GT(u'Packager'),
+                u'{} (es, it)'.format(GT(u'Translation')),
+            ),
+            EMAIL
+        )
+        
+        about.AddJobs(
+            u'Hugo Posnic',
+            (
+                GT(u'Code Contributer'),
+                GT(u'Website Designer & Author'),
+            ),
+            u'hugo.posnic@gmail.com'
+        )
+        
+        about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
+        about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
+        about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
+        
+        about.SetChangelog()
+        
+        about.SetLicense()
+        
+        about.ShowModal()
+        about.Destroy()
     
     
     ### ***** Check for New Version ***** ###
@@ -333,6 +434,27 @@ class MainWindow(wx.Frame):
             wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
     
     
+    def OnHelp(self, event):
+        if dbr.DebugEnabled():
+            dbr.HelpDialog(self).ShowModal()
+        
+        else:
+            # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
+            wx.Yield()
+            status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(dbr.application_path)])
+            if status:
+                wx.Yield()
+                status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(dbr.application_path)])
+            if status:
+                wx.Yield()
+                webbrowser.open(u'http://debreate.sourceforge.net/usage')
+    
+    
+    ## FIXME: Unused???
+    def OnMaximize(self, event):
+        print(u'Maximized')
+    
+    
     ### ***** Menu Handlers ***** ###
     
     def OnNewProject(self, event):
@@ -341,25 +463,6 @@ class MainWindow(wx.Frame):
         if dia.ShowModal() == wx.ID_YES:
             self.wizard.ResetPagesInfo()
     
-    
-    ## Shows or hides tooltips
-    def OnToggleToolTips(self, event=None):
-        enabled = self.opt_tooltips.IsChecked()
-        wx.ToolTip.Enable(enabled)
-        
-        # Update configuration in realtime
-        # TODO: Use realtime for more or all options
-        WriteConfig(u'tooltips', enabled)
-    
-    
-    # FIXME: Deprecated
-    def NewProject(self):
-        for page in self.all_pages:
-            page.ResetAllFields()
-        self.SetTitle(default_title)
-        
-        # Reset the saved project field so we know that a project file doesn't exists
-        self.saved_project = wx.EmptyString
     
     def OnOpenProject(self, event):
         wc_z = GetDialogWildcards(ID_PROJ_Z)
@@ -400,6 +503,185 @@ class MainWindow(wx.Frame):
                 return
             
             self.OpenProject(self.saved_project, mime_type)
+    
+    
+    def OnQuickBuild(self, event):
+        QB = QuickBuild(self)
+        QB.ShowModal()
+        QB.Destroy()
+    
+    
+    ## Shows a quit dialog & exits the application
+    #  
+    #  If user confirms quit, closes main window & exits.
+    def OnQuit(self, event):
+        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
+                                   wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+        if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
+            confirm.Destroy()
+            
+            maximized = self.IsMaximized()
+            
+            # Get window attributes and save to config file
+            if maximized:    # Save default window settings if maximized
+                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
+                WriteConfig(u'center', GetDefaultConfigValue(u'center'))
+                WriteConfig(u'maximize', True)
+            else:
+                WriteConfig(u'size', (self.GetSize()[0], self.GetSize()[1]))
+                WriteConfig(u'position', (self.GetPosition()[0], self.GetPosition()[1]))
+                WriteConfig(u'center', False)
+                WriteConfig(u'maximize', False)
+            
+            WriteConfig(u'workingdir', os.getcwd())
+            #WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+            #WriteConfig(u'compression', self.GetCompression())
+            
+            self.Destroy()
+        
+        else:
+            confirm.Destroy()
+    
+    
+    ## Checks if saved project is dirty
+    def OnSaveProject(self, event=None):
+        if not self.ProjectLoaded():
+            self.OnSaveProjectAs(event)
+            
+            return
+    
+    Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
+    
+    
+    def OnSaveProjectAs(self, event=None):
+        wildcards = (
+            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
+        )
+        
+        save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
+                PROJECT_FILENAME_SUFFIX)
+        
+        if ShowDialog(save_dialog):
+            project_path = save_dialog.GetPath()
+            project_filename = save_dialog.GetFilename()
+            project_extension = save_dialog.GetExtension()
+            
+            Logger.Debug(__name__, GT(u'Project save path: {}').format(project_path))
+            Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
+            Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
+            
+            return
+        
+        Logger.Debug(__name__, GT(u'Not saving project'))
+    
+    
+    # FIXME: Delete, deprecated
+    def OnSaveProjectDeprecated(self, event):
+        EVENT_ID = event.GetId()
+        
+        def SaveIt(path):
+                # Gather data from different pages
+                data = (self.page_control.GatherData(), self.page_files.GatherData(),
+                        self.page_scripts.GatherData(), self.page_clog.GatherData(),
+                        self.page_cpright.GatherData(), self.page_menu.GatherData(),
+                        self.page_build.GatherData())
+                
+                # Create a backup of the project
+                overwrite = False
+                if os.path.isfile(path):
+                    backup = u'{}.backup'.format(path)
+                    shutil.copy(path, backup)
+                    overwrite = True
+                
+                savefile = open(path, u'w')
+                # This try statement can be removed when unicode support is enabled
+                try:
+                    savefile.write(u'[DEBREATE-{}]\n{}'.format(VERSION_STRING, u'\n'.join(data).encode(u'utf-8')))
+                    savefile.close()
+                    if overwrite:
+                        os.remove(backup)
+                except UnicodeEncodeError:
+                    serr = GT(u'Save failed')
+                    uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
+                    UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                    UniErr.ShowModal()
+                    savefile.close()
+                    if overwrite:
+                        os.remove(path)
+                        # Restore project backup
+                        shutil.move(backup, path)
+                # Change the titlebar to show name of project file
+                #self.SetTitle(u'Debreate - %s' % os.path.split(path)[1])
+        
+        def OnSaveAs():
+            dbp = u'|*.dbp'
+            d = GT(u'Debreate project files')
+            cont = False
+            if False: #self.cust_dias.IsChecked():
+                dia = dbr.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
+                dia.SetFilter(u'{}{}'.format(d, dbp))
+                if dia.DisplayModal():
+                    cont = True
+                    filename = dia.GetFilename()
+                    if filename.split(u'.')[-1] == u'dbp':
+                        filename = u'.'.join(filename.split(u'.')[:-1])
+                    self.saved_project = u'{}/{}.dbp'.format(dia.GetPath(), filename)
+            else:
+                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
+                                        wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+                if dia.ShowModal() == wx.ID_OK:
+                    cont = True
+                    filename = dia.GetFilename()
+                    if filename.split(u'.')[-1] == u'dbp':
+                        filename = u'.'.join(filename.split(u'.')[:-1])
+                    self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
+            
+            if cont:
+                SaveIt(self.saved_project)
+        
+        if EVENT_ID == wx.ID_SAVE:
+            # Define what to do if save is pressed
+            # If project already exists, don't show dialog
+            if not self.IsSaved() or self.saved_project == wx.EmptyString or not os.path.isfile(self.saved_project):
+                OnSaveAs()
+            else:
+                SaveIt(self.saved_project)
+        else:
+            # If save as is press, show the save dialog
+            OnSaveAs()
+    
+    
+    ## Writes compression value to config in real time
+    def OnSetCompression(self, event=None):
+        if event:
+            event_id = event.GetId()
+            Logger.Debug(__name__, GT(u'OnSetCompression; Event ID: {}').format(event_id))
+            Logger.Debug(__name__, GT(u'OnSetCompression; Compression from event ID: {}').format(compression_formats[event_id]))
+            
+            if event_id in compression_formats:
+                WriteConfig(u'compression', compression_formats[event_id])
+                return
+        
+        Logger.Warning(__name__,
+                GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
+                
+    
+    ## Shows or hides tooltips
+    def OnToggleToolTips(self, event=None):
+        enabled = self.opt_tooltips.IsChecked()
+        wx.ToolTip.Enable(enabled)
+        
+        # Update configuration in realtime
+        # TODO: Use realtime for more or all options
+        WriteConfig(u'tooltips', enabled)
+    
+    
+    # ----- Help Menu
+    def OpenPolicyManual(self, event):
+        EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
+        webbrowser.open(self.references[EVENT_ID])
+    
     
     #  TODO: Finish defining
     def OpenProject(self, filename, file_type):
@@ -504,186 +786,9 @@ class MainWindow(wx.Frame):
         self.page_build.SetFieldData(build_data)
     
     
-    ## Shows a quit dialog & exits the application
-    #  
-    #  If user confirms quit, closes main window & exits.
-    def OnQuit(self, event):
-        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
-                                   wx.OK|wx.CANCEL|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
-            confirm.Destroy()
-            
-            maximized = self.IsMaximized()
-            
-            # Get window attributes and save to config file
-            if maximized:	# Save default window settings if maximized
-                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
-                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
-                WriteConfig(u'center', GetDefaultConfigValue(u'center'))
-                WriteConfig(u'maximize', True)
-            else:
-                WriteConfig(u'size', (self.GetSize()[0], self.GetSize()[1]))
-                WriteConfig(u'position', (self.GetPosition()[0], self.GetPosition()[1]))
-                WriteConfig(u'center', False)
-                WriteConfig(u'maximize', False)
-            
-            WriteConfig(u'workingdir', os.getcwd())
-            #WriteConfig(u'dialogs', self.cust_dias.IsChecked())
-            #WriteConfig(u'compression', self.GetCompression())
-            
-            self.Destroy()
-        
-        else:
-            confirm.Destroy()
-    
-    
-    ## Changes wizard page from menu
-    def GoToPage(self, event=None):
-        page_id = None
-        
-        if event:
-            page_id = event.GetId()
-            Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
-        
-        else:
-            for M in self.menu_page.GetMenuItems():
-                if M.IsChecked():
-                    page_id = M.GetId()
-                    Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
-                    break
-        
-        if page_id == None:
-            Logger.Error(__name__, GT(u'Could not get page ID'))
-            return
-        
-        self.wizard.ShowPage(page_id)
-    
-    # ----- Help Menu
-    def OpenPolicyManual(self, event):
-        EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
-        webbrowser.open(self.references[EVENT_ID])
-    
-    
-    ## Opens a dialog box with information about the program
-    def OnAbout(self, event):
-        about = dbr.AboutDialog(self)
-        
-        about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(dbr.application_path))
-        about.SetVersion(VERSION_STRING)
-        about.SetDescription(GT(u'A package builder for Debian based systems'))
-        about.SetAuthor(AUTHOR)
-        
-        about.SetWebsites((
-            (GT(u'Homepage'), HOMEPAGE),
-            (GT(u'GitHub Project'), PROJECT_HOME_GH),
-            (GT(u'Sourceforge Project'), PROJECT_HOME_SF),
-        ))
-        
-        about.AddJobs(
-            AUTHOR,
-            (
-                GT(u'Head Developer'),
-                GT(u'Packager'),
-                u'{} (es, it)'.format(GT(u'Translation')),
-            ),
-            EMAIL
-        )
-        
-        about.AddJobs(
-            u'Hugo Posnic',
-            (
-                GT(u'Code Contributer'),
-                GT(u'Website Designer & Author'),
-            ),
-            u'hugo.posnic@gmail.com'
-        )
-        
-        about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
-        about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
-        about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
-        
-        about.SetChangelog()
-        
-        about.SetLicense()
-        
-        about.ShowModal()
-        about.Destroy()
-    
-    
-    def OnHelp(self, event):
-        if dbr.DebugEnabled():
-            dbr.HelpDialog(self).ShowModal()
-        
-        else:
-            # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
-            wx.Yield()
-            status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(dbr.application_path)])
-            if status:
-                wx.Yield()
-                status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(dbr.application_path)])
-            if status:
-                wx.Yield()
-                webbrowser.open(u'http://debreate.sourceforge.net/usage')
-    
-    # *** SAVING *** #
-    
-    def IsSaved(self):
-        title = self.GetTitle()
-        
-        return bool(title[-1] == u'*')
-    
-    def IsNewProject(self):
-        title = self.GetTitle()
-        
-        return bool(title == self.default_title)
-    
-    def SetSavedStatus(self, status):
-        if status: # If status is changing to unsaved this is True
-            title = self.GetTitle()
-            if self.IsSaved() and title != default_title:
-                self.SetTitle(u'{}*'.format(title))
-    
-    
     ## Checks if a project is loaded
     def ProjectLoaded(self):
         return self.project != None
-    
-    
-    ## Checks if current project is dirty
-    def IsDirty(self):
-        return self.dirty
-    
-    
-    ## Checks if saved project is dirty
-    def OnSaveProject(self, event=None):
-        if not self.ProjectLoaded():
-            self.OnSaveProjectAs(event)
-            
-            return
-    
-    Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
-    
-    
-    def OnSaveProjectAs(self, event=None):
-        wildcards = (
-            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
-        )
-        
-        save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
-                PROJECT_FILENAME_SUFFIX)
-        
-        if ShowDialog(save_dialog):
-            project_path = save_dialog.GetPath()
-            project_filename = save_dialog.GetFilename()
-            project_extension = save_dialog.GetExtension()
-            
-            Logger.Debug(__name__, GT(u'Project save path: {}').format(project_path))
-            Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
-            Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
-            
-            return
-        
-        Logger.Debug(__name__, GT(u'Not saving project'))
     
     
     ## Saves project in archive format
@@ -765,44 +870,30 @@ class MainWindow(wx.Frame):
         return 0
     
     
-    def GetCompression(self):
-        for Z in self.menu_compression.GetMenuItems():
-            Z_ID = Z.GetId()
-            if self.menu_compression.IsChecked(Z_ID):
-                return compression_formats[Z_ID]
-        
-        default_compression = GetDefaultConfigValue(u'compression')
-        
-        Logger.Debug(__name__,
-                GT(u'Setting compression to default value: {}'.format(default_compression)))
-        
-        return default_compression
+    def SetSavedStatus(self, status):
+        if status: # If status is changing to unsaved this is True
+            title = self.GetTitle()
+            if self.IsSaved() and title != default_title:
+                self.SetTitle(u'{}*'.format(title))
     
     
-    def GetCompressionId(self):
-        for Z in self.menu_compression.GetMenuItems():
-            Z_ID = Z.GetId()
-            if self.menu_compression.IsChecked(Z_ID):
-                return Z_ID
+    ## Sets working directory for file open/save dialogs
+    #  
+    #  FIXME: Unused?
+    #  \param target
+    #        \b \e unicode|str : Target directory
+    def SetWorkingDirectory(self, target):
+        if target != None:
+            os.chdir(target)
+        else:
+            os.chdir(GetDefaultConfigValue(u'workingdir'))
         
-        Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
-        return DEFAULT_COMPRESSION_ID
-    
-    
-    ## Writes compression value to config in real time
-    def OnSetCompression(self, event=None):
-        if event:
-            event_id = event.GetId()
-            Logger.Debug(__name__, GT(u'OnSetCompression; Event ID: {}').format(event_id))
-            Logger.Debug(__name__, GT(u'OnSetCompression; Compression from event ID: {}').format(compression_formats[event_id]))
-            
-            if event_id in compression_formats:
-                WriteConfig(u'compression', compression_formats[event_id])
-                return
+        Logger.Debug(__name__, GT(u'Current working directory set: {}'.format(os.getcwd())))
         
-        Logger.Warning(__name__,
-                GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
-                
+        if not os.path.isdir(os.getcwd()):
+            Logger.Warning(__name__,
+                    GT(u'Working directory set to "{}" which is not an actual directory'.format(os.getcwd())))
+    
     
     ## Sets compression in the main menu
     #  
@@ -822,89 +913,3 @@ class MainWindow(wx.Frame):
         
         Logger.Warning(__name__,
                 GT(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
-            
-    
-    
-    # FIXME: Delete, deprecated
-    def OnSaveProjectDeprecated(self, event):
-        EVENT_ID = event.GetId()
-        
-        def SaveIt(path):
-                # Gather data from different pages
-                data = (self.page_control.GatherData(), self.page_files.GatherData(),
-                        self.page_scripts.GatherData(), self.page_clog.GatherData(),
-                        self.page_cpright.GatherData(), self.page_menu.GatherData(),
-                        self.page_build.GatherData())
-                
-                # Create a backup of the project
-                overwrite = False
-                if os.path.isfile(path):
-                    backup = u'{}.backup'.format(path)
-                    shutil.copy(path, backup)
-                    overwrite = True
-                
-                savefile = open(path, u'w')
-                # This try statement can be removed when unicode support is enabled
-                try:
-                    savefile.write(u'[DEBREATE-{}]\n{}'.format(VERSION_STRING, u'\n'.join(data).encode(u'utf-8')))
-                    savefile.close()
-                    if overwrite:
-                        os.remove(backup)
-                except UnicodeEncodeError:
-                    serr = GT(u'Save failed')
-                    uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                    UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-                    UniErr.ShowModal()
-                    savefile.close()
-                    if overwrite:
-                        os.remove(path)
-                        # Restore project backup
-                        shutil.move(backup, path)
-                # Change the titlebar to show name of project file
-                #self.SetTitle(u'Debreate - %s' % os.path.split(path)[1])
-        
-        def OnSaveAs():
-            dbp = u'|*.dbp'
-            d = GT(u'Debreate project files')
-            cont = False
-            if False: #self.cust_dias.IsChecked():
-                dia = dbr.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
-                dia.SetFilter(u'{}{}'.format(d, dbp))
-                if dia.DisplayModal():
-                    cont = True
-                    filename = dia.GetFilename()
-                    if filename.split(u'.')[-1] == u'dbp':
-                        filename = u'.'.join(filename.split(u'.')[:-1])
-                    self.saved_project = u'{}/{}.dbp'.format(dia.GetPath(), filename)
-            else:
-                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
-                                        wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-                if dia.ShowModal() == wx.ID_OK:
-                    cont = True
-                    filename = dia.GetFilename()
-                    if filename.split(u'.')[-1] == u'dbp':
-                        filename = u'.'.join(filename.split(u'.')[:-1])
-                    self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
-            
-            if cont:
-                SaveIt(self.saved_project)
-        
-        if EVENT_ID == wx.ID_SAVE:
-            # Define what to do if save is pressed
-            # If project already exists, don't show dialog
-            if not self.IsSaved() or self.saved_project == wx.EmptyString or not os.path.isfile(self.saved_project):
-                OnSaveAs()
-            else:
-                SaveIt(self.saved_project)
-        else:
-            # If save as is press, show the save dialog
-            OnSaveAs()
-    
-    def OnQuickBuild(self, event):
-        QB = QuickBuild(self)
-        QB.ShowModal()
-        QB.Destroy()
-    
-    
-    def GetDebreateWindow(self):
-        return self
