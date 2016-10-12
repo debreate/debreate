@@ -101,45 +101,6 @@ class MainWindow(wx.Frame):
         # ----- Page Menu
         self.menu_page = wx.Menu()
         
-        self.p_info = wx.MenuItem(self.menu_page, ID_GREETING, GT(u'Information'),
-                GT(u'Go to Information section'), kind=wx.ITEM_RADIO)
-        self.p_ctrl = wx.MenuItem(self.menu_page, ID_CONTROL, GT(u'Control'),
-                GT(u'Go to Control section'), kind=wx.ITEM_RADIO)
-        self.p_deps = wx.MenuItem(self.menu_page, ID_DEPENDS, GT(u'Dependencies'),
-                GT(u'Go to Dependencies section'), kind=wx.ITEM_RADIO)
-        self.p_files = wx.MenuItem(self.menu_page, ID_FILES, GT(u'Files'),
-                GT(u'Go to Files section'), kind=wx.ITEM_RADIO)
-        
-        if DebugEnabled():
-            # TODO: Finish manpage page
-            self.p_man = wx.MenuItem(self.menu_page, ID_MAN, GT(u'Manpages'),
-                    GT(u'Go to Manpages section'), kind=wx.ITEM_RADIO)
-        
-        self.p_scripts = wx.MenuItem(self.menu_page, ID_SCRIPTS, GT(u'Scripts'),
-                GT(u'Go to Scripts section'), kind=wx.ITEM_RADIO)
-        self.p_clog = wx.MenuItem(self.menu_page, ID_CHANGELOG, GT(u'Changelog'),
-                GT(u'Go to Changelog section'), kind=wx.ITEM_RADIO)
-        self.p_cpright = wx.MenuItem(self.menu_page, ID_COPYRIGHT, GT(u'Copyright'),
-                GT(u'Go to Copyright section'), kind=wx.ITEM_RADIO)
-        self.p_menu = wx.MenuItem(self.menu_page, ID_MENU, GT(u'Menu Launcher'),
-                GT(u'Go to Menu Launcher section'), kind=wx.ITEM_RADIO)
-        self.p_build = wx.MenuItem(self.menu_page, ID_BUILD, GT(u'Build'),
-                GT(u'Go to Build section'), kind=wx.ITEM_RADIO)
-        
-        self.menu_page.AppendItem(self.p_info)
-        self.menu_page.AppendItem(self.p_ctrl)
-        self.menu_page.AppendItem(self.p_deps)
-        self.menu_page.AppendItem(self.p_files)
-        
-        if DebugEnabled():
-            self.menu_page.AppendItem(self.p_man)
-        
-        self.menu_page.AppendItem(self.p_scripts)
-        self.menu_page.AppendItem(self.p_clog)
-        self.menu_page.AppendItem(self.p_cpright)
-        self.menu_page.AppendItem(self.p_menu)
-        self.menu_page.AppendItem(self.p_build)
-        
         # ----- Options Menu
         self.menu_opt = wx.Menu()
         
@@ -305,15 +266,9 @@ class MainWindow(wx.Frame):
         
         self.wizard.SetPages(self.bin_pages)
         
-        self.pages = {self.p_info: self.page_info, self.p_ctrl: self.page_control, self.p_deps: self.page_depends,
-                self.p_files: self.page_files, self.p_scripts: self.page_scripts, self.p_clog: self.page_clog,
-                self.p_cpright: self.page_cpright, self.p_menu: self.page_menu, self.p_build: self.page_build}
-        
-        if DebugEnabled():
-            self.pages[self.p_man] = self.page_man
-        
-        for p in self.pages:
-            wx.EVT_MENU(self, p.GetId(), self.GoToPage)
+        for M in self.menu_page.GetMenuItems():
+            Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
+            wx.EVT_MENU(self, M.GetId(), self.GoToPage)
         
         # ----- Layout
         self.main_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -581,13 +536,26 @@ class MainWindow(wx.Frame):
             confirm.Destroy()
     
     
-    # ----- Page Menu
-    def GoToPage(self, event):
-        for p in self.pages:
-            if p.IsChecked():
-                PAGE_ID = p.GetId()
+    ## Changes wizard page from menu
+    def GoToPage(self, event=None):
+        page_id = None
         
-        self.wizard.ShowPage(PAGE_ID)
+        if event:
+            page_id = event.GetId()
+            Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
+        
+        else:
+            for M in self.menu_page.GetMenuItems():
+                if M.IsChecked():
+                    page_id = M.GetId()
+                    Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
+                    break
+        
+        if page_id == None:
+            Logger.Error(__name__, GT(u'Could not get page ID'))
+            return
+        
+        self.wizard.ShowPage(page_id)
     
     # ----- Help Menu
     def OpenPolicyManual(self, event):

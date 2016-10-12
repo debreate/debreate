@@ -73,6 +73,8 @@ class Wizard(wx.Panel):
         self.permanent_children = (self.title, self.button_prev, self.button_next)
     
     def SetPages(self, pages):
+        debreate = self.GetDebreateWindow()
+        
         # Make sure all pages are hidden
         children = self.GetChildren()
         for child in children:
@@ -94,6 +96,12 @@ class Wizard(wx.Panel):
             else:
                 page.Show()
                 self.title_txt.SetLabel(page.GetName())
+            
+            # Add pages to main menu
+            debreate.menu_page.AppendItem(
+                wx.MenuItem(debreate.menu_page, page.GetId(), page.GetName(),
+                kind=wx.ITEM_RADIO))
+            
         self.Layout()
     
     def ShowPage(self, page_id):
@@ -109,6 +117,8 @@ class Wizard(wx.Panel):
             wx.PostEvent(child, self.evt)
     
     def ChangePage(self, event):
+        debreate = self.GetDebreateWindow()
+        
         event_id = event.GetEventObject().GetId()
         
         # Get index of currently shown page
@@ -123,23 +133,17 @@ class Wizard(wx.Panel):
             if index != len(self.pages)-1:
                 index += 1
         
-        # Show the indexed page
-        self.ShowPage(self.pages[index].GetId())
+        page_id = self.pages[index].GetId()
         
-        # Check current page in "pages menu"
-        for p in self.parent.pages:
-            if self.pages[index].GetId() == p.GetId():
-                p.Check()
-#        for page in self.pages:
-#            if page != self.pages[index]:
-#                page.Hide()
-#            else:
-#                page.Show()
-#                self.title_txt.SetLabel(page.GetName())
-#        
-#        self.Layout()
-#        for child in self.GetChildren():
-#            wx.PostEvent(child, self.evt)
+        # Show the indexed page
+        self.ShowPage(page_id)
+        
+        # Update "pages menu"
+        for M in debreate.menu_page.GetMenuItems():
+            if M.GetId() == page_id:
+                M.Check()
+                break
+    
     
     def ClearPages(self):
         for page in self.pages:
