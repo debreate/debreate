@@ -99,7 +99,7 @@ class Wizard(wx.Panel):
             
             # Add pages to main menu
             debreate.menu_page.AppendItem(
-                wx.MenuItem(debreate.menu_page, page.GetId(), page.GetName(),
+                wx.MenuItem(debreate.menu_page, page.GetId(), page.GetLabel(),
                 kind=wx.ITEM_RADIO))
             
         self.Layout()
