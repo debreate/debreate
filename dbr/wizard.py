@@ -235,6 +235,12 @@ class WizardPage(wx.ScrolledWindow):
         self.prebuild_check = True
     
     
+    def IsExportable(self):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method IsExportable').format(self.GetName()))
+        
+        return False
+    
+    
     ## 
     #  
     #  Child class must define 'GetPageInfo' method.
