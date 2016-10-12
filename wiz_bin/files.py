@@ -466,7 +466,7 @@ class Panel(WizardPage):
     #  FIXME: Use different style formatting instead of calling self.GetFilesInfoDeprecated()
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
-    def GetPageInfo(self):
+    def GetPageInfo(self, string_format=False):
         item_count = self.dest_area.GetItemCount()
         
         if item_count:
@@ -496,6 +496,9 @@ class Panel(WizardPage):
                     files_data.append(F)
             
             files_data = u'\n'.join(files_data)
+            
+            if string_format:
+                return files_data
             
             return (__name__, files_data)
         
