@@ -77,6 +77,10 @@ class MainWindow(wx.Frame):
         self.menu_file.AppendSeparator()
         self.menu_file.Append(wx.ID_EXIT)
         
+        # Quick build broken
+        self.QuickBuild.SetText(_('Quick Build (broken)'))
+        self.QuickBuild.Enable(False)
+        
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
         wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
