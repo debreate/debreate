@@ -48,6 +48,9 @@ class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
         
+        if DebugEnabled():
+            self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
+        
         self.SetMinSize((640,400))
         
         # ----- Set Titlebar Icon
@@ -261,6 +264,12 @@ class MainWindow(wx.Frame):
         self.menubar.Insert(1, self.menu_page, GT(u'Page'))
         self.menubar.Insert(2, self.menu_opt, GT(u'Options'))
         self.menubar.Insert(3, self.menu_help, GT(u'Help'))
+        
+        # Menu for running test
+        if DebugEnabled():
+            menu_tests = wx.Menu()
+            
+            self.menubar.Append(menu_tests, GT(u'Tests'))
         
         # ***** END MENUBAR ***** #
         
