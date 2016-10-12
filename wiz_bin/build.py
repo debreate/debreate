@@ -4,7 +4,7 @@
 
 
 # System modules
-import wx, os, commands, shutil, thread, traceback
+import wx, os, commands, shutil, thread, traceback, time
 from os.path import exists
 
 # Local modules
@@ -12,10 +12,11 @@ import dbr
 from dbr.dialogs import DetailedMessageDialog, ErrorDialog
 from dbr.language import GT
 from dbr.constants import ID_BUILD, custom_errno, cmd_md5sum, cmd_lintian,\
-    ICON_ERROR, ICON_INFORMATION, VERSION_STRING
+    ICON_ERROR, ICON_INFORMATION, VERSION_STRING, page_ids, ID_CONTROL, ID_FILES,\
+    ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
 from dbr.wizard import WizardPage
 from dbr.functions import GetBoolean, GetFileSaveDialog, ShowDialog,\
-    BuildBinaryPackageFromTree
+    BuildBinaryPackageFromTree, CreateTempDirectory, RemoveTempDirectory
 from dbr import Logger, DebugEnabled
 
 
@@ -127,25 +128,283 @@ class Panel(WizardPage):
     def Build(self, out_file):
         # TODO: Test for errors when building deb package with other filename extension
         
-        Logger.Debug(__name__, GT(u'Build prep'))
+        pages_build_ids = self.BuildPrep()
+        
+        if pages_build_ids != None:
+            steps_count = len(pages_build_ids)
+            
+            for P in self.wizard.pages:
+                page_id = P.GetId()
+                
+                if P.GetId() in pages_build_ids:
+                    page_label = P.GetLabel()
+                    
+                    
+                    if page_id == ID_CONTROL:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_FILES:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_MAN:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_SCRIPTS:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_CHANGELOG:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_COPYRIGHT:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_MENU:
+                        Logger.Debug(__name__, page_label)
+                    
+                    elif page_id == ID_BUILD:
+                        Logger.Debug(__name__, page_label)
+            
+            # Add steps for preparing build tree & actual build
+            #steps_count += 2
+            #current_step = 0
+            
+            #Logger.Debug(__name__, GT(u'{} tasks').format(steps_count))
+        
+        return
+        
+        # FIXME: This should be done in build-prep
+        '''
+        try:
+            msg_label1 = GT(u'Processing page "{}"')
+            msg_label2 = GT(u'Step {}/{}')
+            msg_label = u'{} ({})'.format(msg_label1, msg_label2)
+            
+            build_progress = wx.ProgressDialog(GT(u'Build'), msg_label2.format(current_step, steps_count),
+                    steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+            
+            for I in pages_info:
+                if build_progress.WasCancelled():
+                    break
+                
+                page_id = I[0]
+                page_label = I[1]
+                page_data = I[2]
+                
+                Logger.Debug(__name__, msg_label.format(page_label, current_step+1, steps_count))
+                
+                wx.Yield()
+                build_progress.Update(current_step, msg_label.format(page_label, current_step+1, steps_count))
+                
+                # Action here
+                time.sleep(1)
+                
+                current_step += 1
+            
+            msg_label = u'{} ({})'
+            
+            if not build_progress.WasCancelled():
+                #msg_label = u'{} ({})'.format(GT(u'Setting up directory build, tree'),
+                #        msg_label2.format(current_step, steps_count))
+                wx.Yield()
+                build_progress.Update(current_step,
+                        msg_label.format(GT(u'Setting up directory build, tree'),
+                                msg_label2.format(current_step+1, steps_count)))
+                
+                time.sleep(1)
+                
+                current_step += 1
+            
+            if not build_progress.WasCancelled():
+                wx.Yield()
+                build_progress.Update(current_step,
+                        msg_label.format(GT(u'Building Debian package'),
+                                msg_label2.format(current_step+1, steps_count)))
+                
+                time.sleep(1)
+                
+                current_step += 1
+            
+            if not build_progress.WasCancelled():
+                build_progress.Update(current_step, GT(u'Finished'))
+                time.sleep(1)
+        
+            build_progress.Destroy()
+            
+        except:
+            build_progress.Destroy()
+            
+            err_traceback = traceback.format_exc()
+            
+            err_title = GT(u'Error occured during pre-build')
+            Logger.Error(__name__, u'{}:\n{}'.format(err_title, err_traceback))
+            
+            err_dialog = ErrorDialog(self, err_title)
+            err_dialog.SetDetails(err_traceback)
+            err_dialog.ShowModal()
+            
+            # Cleanup
+            err_dialog.Destroy()
+            del err_title
+        '''
+        
+        try:
+            # FIXME: Should use a naming standard
+            temp_dir = CreateTempDirectory()
+            
+            if temp_dir != custom_errno.EACCES:
+                Logger.Debug(__name__, GT(u'Temporary directory: {}').format(temp_dir))
+                
+                # Create DEBIAN sub-directory
+                os.makedirs(u'{}/DEBIAN'.format(temp_dir))
+                
+                if self.chk_md5.IsChecked():
+                    self.CreateMD5Sum(temp_dir)
+                
+                if self.chk_lint.IsChecked():
+                    self.CheckPackageLintian(u'Null package')
+                
+                if self.chk_rmtree.IsChecked():
+                    RemoveTempDirectory(temp_dir)
+                
+                return
+            
+            # FIXME: Throw exception or show error dialog here, temp_dir was not created
+        
+        except:
+            err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
+            err_dialog.SetDetails(traceback.format_exc())
+            err_dialog.ShowModal()
+            
+            err_dialog.Destroy()
+        
+        return
+        
         
         filename = os.path.basename(out_file)
         target_dir = os.path.dirname(out_file)
         
         Logger.Debug(__name__, GT(u'Building package {} in {}').format(filename, target_dir))
         
-        # FIXME: Should use a naming standard
-        temp_dir = u'/tmp/debreate-{}_temp'.format(VERSION_STRING)
-        
-        os.makedirs(temp_dir)
-        
         build_ret = BuildBinaryPackageFromTree(temp_dir, out_file)
         
         if build_ret == custom_errno.ENOENT:
             ErrorDialog(self.GetDebreateWindow(), GT(u'Cannot build from non-existent directory')).ShowModal()
         
+        # TODO: Make sure temp directory is deleted
         shutil.rmtree(temp_dir)
+    
+    
+    ## 
+    #  
+    #  \return
+    #        \b \e tuple containing data & label for each page
+    def BuildPrep(self):
+        prep_ids = []
         
+        for P in self.wizard.pages:
+            if P.prebuild_check:
+                Logger.Debug(__name__, GT(u'Pre-build check for page "{}"'.format(P.GetName())))
+                prep_ids.append(P.GetId())
+        
+        try:
+            # List of page IDs to process during build
+            build_page_ids = []
+            
+            steps_count = len(prep_ids)
+            current_step = 0
+            
+            msg_label1 = GT(u'Prepping page "{}"')
+            msg_label2 = GT(u'Step {}/{}')
+            msg_label = u'{} ({})'.format(msg_label1, msg_label2)
+            
+            prep_progress = wx.ProgressDialog(GT(u'Preparing Build'), msg_label2.format(current_step, steps_count),
+                    steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+            
+            for P in self.wizard.pages:
+                if prep_progress.WasCancelled():
+                    break
+                
+                page_id = P.GetId()
+                page_label = P.GetLabel()
+                
+                if page_id in prep_ids:
+                    Logger.Debug(__name__, msg_label.format(page_label, current_step+1, steps_count))
+                    
+                    wx.Yield()
+                    prep_progress.Update(current_step, msg_label.format(page_label, current_step+1, steps_count))
+                    
+                    if P.IsExportable():
+                        build_page_ids.append(page_id)
+                    
+                    current_step += 1
+                
+            if not prep_progress.WasCancelled():
+                prep_progress.Update(current_step, GT(u'Prepping finished'))
+                
+                # Show finished dialog for short period
+                time.sleep(0.5)
+            
+            '''
+            msg_label = u'{} ({})'
+            
+            if not build_progress.WasCancelled():
+                #msg_label = u'{} ({})'.format(GT(u'Setting up directory build, tree'),
+                #        msg_label2.format(current_step, steps_count))
+                wx.Yield()
+                build_progress.Update(current_step,
+                        msg_label.format(GT(u'Setting up directory build, tree'),
+                                msg_label2.format(current_step+1, steps_count)))
+                
+                time.sleep(1)
+                
+                current_step += 1
+            
+            if not build_progress.WasCancelled():
+                wx.Yield()
+                build_progress.Update(current_step,
+                        msg_label.format(GT(u'Building Debian package'),
+                                msg_label2.format(current_step+1, steps_count)))
+                
+                time.sleep(1)
+                
+                current_step += 1
+            
+            if not build_progress.WasCancelled():
+                build_progress.Update(current_step, GT(u'Finished'))
+                time.sleep(1)
+            '''
+            prep_progress.Destroy()
+            
+            return build_page_ids
+            
+        except:
+            prep_progress.Destroy()
+            
+            err_traceback = traceback.format_exc()
+            
+            err_title = GT(u'Error occured during pre-build')
+            Logger.Error(__name__, u'{}:\n{}'.format(err_title, err_traceback))
+            
+            err_dialog = ErrorDialog(self, err_title)
+            err_dialog.SetDetails(err_traceback)
+            err_dialog.ShowModal()
+            
+            # Cleanup
+            err_dialog.Destroy()
+            del err_title
+        
+        return None
+    
+    
+    def CheckPackageLintian(self, package):
+        Logger.Debug(__name__,
+                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(package)))
+    
+    
+    def CreateMD5Sum(self, directory):
+        Logger.Debug(__name__,
+                GT(u'Creating MD5sum file in {}').format(directory))
+    
     
     def SetSummary(self, event):
         #page = event.GetSelection()
