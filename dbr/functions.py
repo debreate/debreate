@@ -13,7 +13,7 @@ from urllib2 import urlopen, URLError
 import dbr
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING, system_licenses_path,\
-    project_wildcards, supported_suffixes
+    project_wildcards, supported_suffixes, custom_errno
 from dbr.compression import compression_formats
 from dbr.dialogs import StandardFileSaveDialog
 
@@ -138,7 +138,9 @@ def TextIsEmpty(text):
 #  
 #  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
-    ext_filters = u'|'.join(ext_filters)
+    if isinstance(ext_filters, (list, tuple)):
+        ext_filters = u'|'.join(ext_filters)
+    
     if False: #main_window.cust_dias.IsChecked():
         file_save = dbr.SaveFile(main_window, title, extension)
         file_save.SetFilter(ext_filters)
@@ -469,3 +471,16 @@ def SetToolTip(control, tooltip):
 def SetToolTips(control_list):
     for C in control_list:
         SetToolTip(C[0], C[1])
+
+
+def BuildDebianPackageFromTree(root_dir, filename):
+    if not os.path.isdir(root_dir):
+        return custom_errno.ENOENT
+    
+    #output = commands.getstatusoutput(u'fakeroot dpkg-deb -b "{}" "{}"'.format(root_dir, filename))
+    
+    # DEBUG
+    cmd = u'fakeroot dpkg-deb -b "{}" "{}"'.format(root_dir, filename)
+    print(u'DEBUG: Issuing command: {}'.format(cmd))
+    
+    return 0
