@@ -243,6 +243,11 @@ class MainWindow(wx.Frame):
     
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
+        if u'-dev' in debreate_version:
+            wx.MessageDialog(self, _(u'Update checking not supported in development versions'),
+                    _(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            return
+        
         wx.SafeYield()
         current = GetCurrentVersion()
         if type (current) == URLError or type(current) == HTTPError:
