@@ -62,8 +62,8 @@ FILES_dbr = \
 	dbr/log.py \
 	dbr/markdown.py \
 	dbr/md5.py \
-	dbr/message.py \
 	dbr/pathctrl.py \
+	dbr/quickbuild.py \
 	dbr/templates.py \
 	dbr/wizard.py
 
