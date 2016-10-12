@@ -26,6 +26,7 @@ def TextIsEmpty(text):
 #  
 #  If configuration file is not found or corrupted
 #    this dialog is shown.
+#  TODO: Move to dbr.dialogs
 class FirstRun(wx.Dialog):
     def __init__(self):
         wx.Dialog.__init__(self, None, wx.ID_ANY, GT(u'Debreate First Run'), size=(450,300))
@@ -98,6 +99,8 @@ class OutputLog(wx.TextCtrl):
 
 
 ## Prompt for overwriting a text area
+#  
+#  TODO: Delete; Deprecated, moved to dbr.dialogs
 class OverwriteDialog(wx.Dialog):
     ## Constructor
     #  
