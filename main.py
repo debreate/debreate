@@ -357,16 +357,6 @@ class MainWindow(wx.Frame):
         return bool(title[-1] == u'*')
     
     
-    # FIXME: Deprecated
-    def NewProject(self):
-        for page in self.all_pages:
-            page.ResetAllFields()
-        self.SetTitle(default_title)
-        
-        # Reset the saved project field so we know that a project file doesn't exists
-        self.saved_project = wx.EmptyString
-    
-    
     ## Opens a dialog box with information about the program
     def OnAbout(self, event):
         about = dbr.AboutDialog(self)
@@ -574,82 +564,6 @@ class MainWindow(wx.Frame):
             return
         
         Logger.Debug(__name__, GT(u'Not saving project'))
-    
-    
-    # FIXME: Delete, deprecated
-    def OnSaveProjectDeprecated(self, event):
-        EVENT_ID = event.GetId()
-        
-        def SaveIt(path):
-                # Gather data from different pages
-                data = (self.page_control.GatherData(), self.page_files.GatherData(),
-                        self.page_scripts.GatherData(), self.page_clog.GatherData(),
-                        self.page_cpright.GatherData(), self.page_menu.GatherData(),
-                        self.page_build.GatherData())
-                
-                # Create a backup of the project
-                overwrite = False
-                if os.path.isfile(path):
-                    backup = u'{}.backup'.format(path)
-                    shutil.copy(path, backup)
-                    overwrite = True
-                
-                savefile = open(path, u'w')
-                # This try statement can be removed when unicode support is enabled
-                try:
-                    savefile.write(u'[DEBREATE-{}]\n{}'.format(VERSION_STRING, u'\n'.join(data).encode(u'utf-8')))
-                    savefile.close()
-                    if overwrite:
-                        os.remove(backup)
-                except UnicodeEncodeError:
-                    serr = GT(u'Save failed')
-                    uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                    UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-                    UniErr.ShowModal()
-                    savefile.close()
-                    if overwrite:
-                        os.remove(path)
-                        # Restore project backup
-                        shutil.move(backup, path)
-                # Change the titlebar to show name of project file
-                #self.SetTitle(u'Debreate - %s' % os.path.split(path)[1])
-        
-        def OnSaveAs():
-            dbp = u'|*.dbp'
-            d = GT(u'Debreate project files')
-            cont = False
-            if False: #self.cust_dias.IsChecked():
-                dia = dbr.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
-                dia.SetFilter(u'{}{}'.format(d, dbp))
-                if dia.DisplayModal():
-                    cont = True
-                    filename = dia.GetFilename()
-                    if filename.split(u'.')[-1] == u'dbp':
-                        filename = u'.'.join(filename.split(u'.')[:-1])
-                    self.saved_project = u'{}/{}.dbp'.format(dia.GetPath(), filename)
-            else:
-                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
-                                        wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-                if dia.ShowModal() == wx.ID_OK:
-                    cont = True
-                    filename = dia.GetFilename()
-                    if filename.split(u'.')[-1] == u'dbp':
-                        filename = u'.'.join(filename.split(u'.')[:-1])
-                    self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
-            
-            if cont:
-                SaveIt(self.saved_project)
-        
-        if EVENT_ID == wx.ID_SAVE:
-            # Define what to do if save is pressed
-            # If project already exists, don't show dialog
-            if not self.IsSaved() or self.saved_project == wx.EmptyString or not os.path.isfile(self.saved_project):
-                OnSaveAs()
-            else:
-                SaveIt(self.saved_project)
-        else:
-            # If save as is press, show the save dialog
-            OnSaveAs()
     
     
     ## Writes compression value to config in real time
@@ -875,24 +789,6 @@ class MainWindow(wx.Frame):
             title = self.GetTitle()
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
-    
-    
-    ## Sets working directory for file open/save dialogs
-    #  
-    #  FIXME: Unused?
-    #  \param target
-    #        \b \e unicode|str : Target directory
-    def SetWorkingDirectory(self, target):
-        if target != None:
-            os.chdir(target)
-        else:
-            os.chdir(GetDefaultConfigValue(u'workingdir'))
-        
-        Logger.Debug(__name__, GT(u'Current working directory set: {}'.format(os.getcwd())))
-        
-        if not os.path.isdir(os.getcwd()):
-            Logger.Warning(__name__,
-                    GT(u'Working directory set to "{}" which is not an actual directory'.format(os.getcwd())))
     
     
     ## Sets compression in the main menu
