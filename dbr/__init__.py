@@ -44,7 +44,6 @@ from dbr.help import HelpDialog
 from dbr.functions import \
     GetCurrentVersion, FieldEnabled, RunSudo, RequirePython, TextIsEmpty, \
     GetFileSaveDialog, ShowDialog, GetYear, GetDate, GetTime, GetSystemLicensesList
-from dbr.message import MessageDialog
 from dbr.pathctrl import PathCtrl, PATH_DEFAULT, PATH_WARN
 from dbr.templates import \
     GetLicenseTemplateFile, GetLicenseTemplatesList
