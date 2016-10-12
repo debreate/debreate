@@ -228,10 +228,6 @@ class WizardPage(wx.ScrolledWindow):
         self.prebuild_check = True
     
     
-    def GetPageInfo(self):
-        return None
-    
-    
     ## 
     #  
     #  Child class must define 'GetPageInfo' method.
@@ -267,6 +263,10 @@ class WizardPage(wx.ScrolledWindow):
     
     def GetDebreateWindow(self):
         return self.wizard.GetDebreateWindow()
+    
+    
+    def GetPageInfo(self, string_format=False):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method GetPageInfo').format(self.GetName()))
     
     
     def ImportPageInfo(self, filename):
