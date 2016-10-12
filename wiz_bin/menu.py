@@ -271,6 +271,11 @@ class Panel(WizardPage):
                             self.enc_text: u'Enc', self.type_text: u'Type', self.cat_text: u'Cat',
                             self.term_text: u'Term', self.notify_text: u'Notify'}
     
+    
+    def IsExportable(self):
+        return self.activate.IsChecked()
+    
+    
     def OnToggle(self, event=None):
         enable = self.activate.IsChecked()
         
