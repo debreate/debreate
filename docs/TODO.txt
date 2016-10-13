@@ -1,7 +1,6 @@
 ﻿0.8.0 Release Changes:
 - Fix & re-enable QuickBuild
 - Add Launchpad packages for 'yakkety'
-- Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
 - New method for checking for version update
@@ -10,6 +9,7 @@
 - Fix error dialog layout
 - Mark projects dirty when changed
 - Finish debug log window
+- Make icon(s) for project mimetypes
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
