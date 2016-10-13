@@ -15,7 +15,8 @@ from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
     cmd_tar
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
-from dbr.functions import GetFileMimeType
+from dbr.functions import GetFileMimeType, CreateTempDirectory,\
+    RemoveTempDirectory
 from dbr.dialogs import GetFileOpenDialog, GetFileSaveDialog, ShowDialog,\
     GetDialogWildcards
 from dbr.compression import \
@@ -283,8 +284,8 @@ class MainWindow(wx.Frame):
         # First item is name of saved file displayed in title
         # Second item is actual path to project file
         self.saved_project = wx.EmptyString
-        self.project = None
         
+        self.loaded_project = None
         self.dirty = True
     
     
@@ -450,7 +451,15 @@ class MainWindow(wx.Frame):
         dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
                 GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
         if dia.ShowModal() == wx.ID_YES:
+            Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectLoaded()))
+            
             self.wizard.ResetPagesInfo()
+            self.loaded_project = None
+            
+            Logger.Debug(__name__, GT(u'Project loaded after OnNewProject: {}').format(self.ProjectLoaded()))
+            
+            if DebugEnabled() and self.ProjectLoaded():
+                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
     def OnOpenProject(self, event):
@@ -480,6 +489,7 @@ class MainWindow(wx.Frame):
             Logger.Debug(__name__, GT(u'Opening project: {}').format(self.saved_project))
             Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
             
+            project_opened = None
             if mime_type == u'text/plain':
                 p_open = open(self.saved_project, u'r')
                 p_text = p_open.read()
@@ -487,11 +497,20 @@ class MainWindow(wx.Frame):
                 
                 filename = os.path.split(self.saved_project)[1]
                 
-                self.OpenProjectLegacy(p_text, filename)
+                project_opened = self.OpenProjectLegacy(p_text, filename)
                 
-                return
+            else:
+                project_opened = self.OpenProject(self.saved_project, mime_type)
             
-            self.OpenProject(self.saved_project, mime_type)
+            Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectLoaded()))
+            
+            if project_opened == custom_errno.SUCCESS:
+                self.loaded_project = self.saved_project
+            
+            Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectLoaded()))
+            
+            if DebugEnabled() and self.ProjectLoaded():
+                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
     def OnQuickBuild(self, event):
@@ -563,6 +582,7 @@ class MainWindow(wx.Frame):
             Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
             Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
+            self.SaveProject(project_path)
             return
         
         Logger.Debug(__name__, GT(u'Not saving project'))
@@ -647,6 +667,9 @@ class MainWindow(wx.Frame):
         
         self.wizard.ImportPagesInfo(temp_dir)
         shutil.rmtree(temp_dir)
+        
+        # Mark project as loaded
+        return custom_errno.SUCCESS
     
     
     def OpenProjectLegacy(self, data, filename):
@@ -700,11 +723,14 @@ class MainWindow(wx.Frame):
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
         self.page_build.SetFieldData(build_data)
+        
+        # Mark project loaded
+        return custom_errno.SUCCESS
     
     
     ## Checks if a project is loaded
     def ProjectLoaded(self):
-        return self.project != None
+        return self.loaded_project != None
     
     
     ## Saves project in archive format
@@ -714,76 +740,64 @@ class MainWindow(wx.Frame):
     #    tarballs.
     #  Proposed formats are xz compressed tarball &
     #    zip compressed file.
-    def SaveProject(self, event):
+    def SaveProject(self, path):
         Logger.Debug(__name__, GT(u'Saving in new project format'))
+        Logger.Debug(__name__, GT(u'Saving to file {}').format(path))
         
-        title = GT(u'Save Debreate Project')
+        temp_dir = CreateTempDirectory()
         
-        description = GT(u'Debreate project files')
+        if not os.path.exists(temp_dir) or temp_dir == custom_errno.EACCES:
+            # FIXME: Show error dialog
+            Logger.Error(__name__, GT(u'Could not create staging directory: {}').format(temp_dir))
+            return
         
-        wildcards = (
-            u'{} (.{})'.format(description, PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
+        Logger.Debug(__name__, GT(u'Temp dir created: {}').format(temp_dir))
+        
+        self.saved_project = path
+        
+        working_path = os.path.dirname(self.saved_project)
+        output_filename = os.path.basename(self.saved_project)
+        
+        Logger.Debug(
+            __name__,
+            u'Save project\n\tWorking path: {}\n\tFilename: {}\n\tTemp directory: {}'.format(working_path,
+                                                                                        output_filename, temp_dir)
         )
         
-        file_save = GetFileSaveDialog(self, title,
-                wildcards, PROJECT_FILENAME_SUFFIX)
+        export_pages = (
+            self.page_control,
+            self.page_files,
+            self.page_scripts,
+            self.page_clog,
+            self.page_cpright,
+            self.page_menu,
+            self.page_build,
+        )
+        self.wizard.ExportPages(export_pages, temp_dir)
         
-        if ShowDialog(self, file_save):
-            self.saved_project = file_save.GetPath()
-            
-            working_path = os.path.dirname(self.saved_project)
-            output_filename = os.path.basename(self.saved_project)
-            # TODO: Use system /tmp directory
-            temp_path = u'{}_temp'.format(self.saved_project)
-            
-            Logger.Debug(
+        p_archive = CompressionHandler(self.GetCompressionId())
+        
+        Logger.Debug(
                 __name__,
-                u'Save project\n\tWorking path: {}\n\tFilename: {}\n\tTemp directory: {}'.format(working_path,
-                                                                                            output_filename, temp_path)
-            )
-            
-            if os.path.exists(temp_path):
-                if wx.MessageDialog(self, GT(u'Temp directory already exists.\nOverwrite?'), GT(u'Warning'),
-                                        wx.YES_NO|wx.YES_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_YES:
-                
-                    Logger.Debug(__name__, u'Overwriting temp directory: {}'.format(temp_path))
-                    shutil.rmtree(temp_path)
-                
-                else:
-                    Logger.Debug(__name__, u'Not Overwriting temp directory: {}'.format(temp_path))
-                    return 0
-            
-            os.makedirs(temp_path)
-            
-            export_pages = (
-                self.page_control,
-                self.page_files,
-                self.page_scripts,
-                self.page_clog,
-                self.page_cpright,
-                self.page_menu,
-                self.page_build,
-            )
-            self.wizard.ExportPages(export_pages, temp_path)
-            
-            p_archive = CompressionHandler(self.GetCompressionId())
-            
-            Logger.Debug(__name__, GT(u'Compressing "{}.{}" with format: {} ({})').format
-                        (
-                            self.saved_project,
-                            PROJECT_FILENAME_SUFFIX,
-                            p_archive.GetCompressionFormat(),
-                            p_archive.GetCompressionMimetype()
-                        )
-            )
-            
-            p_archive.Compress(temp_path, u'{}.{}'.format(self.saved_project, PROJECT_FILENAME_SUFFIX))
-            
-            if os.path.isfile(u'{}.dbpz'.format(self.saved_project)):
-                shutil.rmtree(temp_path)
-            
+                GT(u'Compressing "{}" with format: {} ({})').format
+                    (
+                        self.saved_project,
+                        p_archive.GetCompressionFormat(),
+                        p_archive.GetCompressionMimetype()
+                    )
+        )
         
-        return 0
+        p_archive.Compress(temp_dir, u'{}'.format(self.saved_project))
+        
+        if os.path.isfile(self.saved_project):
+            Logger.Debug(__name__, GT(u'Project saved: {}').format(self.saved_project))
+            
+            RemoveTempDirectory(temp_dir)
+            
+            return 0
+        
+        # FIXME: Show error dialog
+        Logger.Debug(__name__, GT(u'Project save failed: {}').format(self.saved_project))
     
     
     def SetSavedStatus(self, status):
