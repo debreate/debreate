@@ -172,6 +172,13 @@ class StandardFileOpenDialog(StandardFileDialog):
         # Initialize parent class
         StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
                 wildcard=wildcard, style=style)
+    
+    
+    def OnAccept(self, event=None):
+        # File & directory dialogs should call this function
+        ChangeWorkingDirectory(self.GetDirectory())
+        
+        self.EndModal(wx.ID_OK)
 
 
 
@@ -331,8 +338,7 @@ def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
 def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
     ext_filters = u'|'.join(ext_filters)
     
-    file_open = StandardFileDialog(main_window, title, wildcard=ext_filters,
-            style=wx.FD_OPEN)
+    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
     
     return file_open
 
