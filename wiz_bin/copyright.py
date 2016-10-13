@@ -8,7 +8,7 @@ import wx, os
 import dbr.font
 from dbr.language import GT
 from dbr.constants import ID_COPYRIGHT, custom_errno
-from dbr.functions import TextIsEmpty
+from dbr.functions import TextIsEmpty, RemovePreWhitespace
 from dbr.wizard import WizardPage
 from dbr import Logger
 
@@ -123,10 +123,12 @@ class Panel(WizardPage):
                 print(u'ERROR: Could not locate standard license: {}'.format(license_path))
                 return
             
-            self.cp_display.Clear()
-            self.cp_display.LoadFile(license_path)
+            FILE = open(license_path, u'r')
+            license_text = FILE.read()
+            FILE.close()
             
-            # FIXME: Need to clear empty lines & beginning of document
+            self.cp_display.Clear()
+            self.cp_display.SetValue(RemovePreWhitespace(license_text))
             
             add_header = (
                 u'Artistic',

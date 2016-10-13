@@ -7,7 +7,6 @@
 - New method for checking for version update
 - Fix Desktop mimetypes
 - Fix AutoLink executables in Files page
-- Fix copyright for Apache license template
 - Fix error dialog layout
 - Mark projects dirty when changed
 - Finish debug log window
