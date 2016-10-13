@@ -4,11 +4,14 @@
 
 
 # System imports
-import os
+import wx, os, thread
 
 # Debreate imports
-from dbr.constants import local_path
+from dbr.constants import local_path, ID_DEBUG, MAIN_ICON, ID_LOG
 from dbr.functions import GetDate, GetTime
+from dbr.language import GT
+import time
+from dbr.font import GetMonospacedFont
 
 
 ## A log class for outputting messages
@@ -164,3 +167,229 @@ class DebreateLogger:
     
     def GetLogLevel(self):
         return self.log_level
+    
+    
+    def GetLogFile(self):
+        return self.log_file
+
+
+## Window displaying Logger messages
+#  
+#  FIXME: Creates separate task list window on initialization
+#  TODO: Watch for changes in log file
+class LogWindow(wx.Dialog):
+    def __init__(self, parent, log_file):
+        wx.Dialog.__init__(self, parent, ID_DEBUG, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        
+        self.SetIcon(MAIN_ICON)
+        
+        self.log_file = log_file
+        
+        self.SetTitle(self.log_file)
+        
+        self.log = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.log.font_size = 8
+        self.log.SetFont(GetMonospacedFont(self.log.font_size))
+        
+        btn_open = wx.Button(self, wx.ID_OPEN)
+        wx.EVT_BUTTON(self, wx.ID_OPEN, self.OnOpenLogFile)
+        
+        btn_font = wx.Button(self, wx.ID_PREVIEW_ZOOM, GT(u'Font Size'))
+        wx.EVT_BUTTON(self, wx.ID_PREVIEW_ZOOM, self.OnChangeFont)
+        
+        btn_refresh = wx.Button(self, wx.ID_REFRESH)
+        wx.EVT_BUTTON(self, wx.ID_REFRESH, self.LoadLog)
+        
+        btn_hide = wx.Button(self, wx.ID_CLOSE, GT(u'Hide'))
+        wx.EVT_BUTTON(self, wx.ID_CLOSE, self.OnClose)
+        
+        layout_btnH1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_btnH1.Add(btn_open, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        layout_btnH1.AddSpacer(1, wx.EXPAND)
+        layout_btnH1.Add(btn_font, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_btnH1.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_btnH1.Add(btn_hide, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        
+        layout_mainV1 = wx.BoxSizer(wx.VERTICAL)
+        layout_mainV1.Add(self.log, 1, wx.ALL|wx.EXPAND, 5)
+        layout_mainV1.Add(layout_btnH1, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(layout_mainV1)
+        self.Layout()
+        
+        wx.EVT_CLOSE(self, self.OnClose)
+        wx.EVT_SHOW(self, self.OnShow)
+        
+        self.SetMinSize(self.GetSize())
+        
+        self.AlignWithMainWindow()
+        
+        # Make sure log window is not shown at initialization
+        self.Show(False)
+        
+        self.log_timestamp = os.stat(self.log_file).st_mtime
+    
+    
+    ## Positions the log window relative to the main window
+    def AlignWithMainWindow(self):
+        debreate_pos = self.GetParent().GetDebreateWindow().GetPosition()
+        width = self.GetSize()[0]
+        posX = debreate_pos[0] - width
+        posY = debreate_pos[1]
+        
+        self.SetPosition(wx.Point(posX, posY))
+    
+    
+    ## Hides the log window
+    def HideLog(self):
+        self.Show(False)
+        self.log.Clear()
+    
+    
+    ## Fills log with text file contents
+    def LoadLog(self, event=None):
+        if os.path.isfile(self.log_file):
+            FILE = open(self.log_file)
+            log_data = FILE.read()
+            FILE.close()
+            
+            if not self.log.IsEmpty():
+                self.log.Clear()
+            
+            self.log.SetValue(log_data)
+            
+            # Yield here to make sure last line is displayed
+            wx.Yield()
+            self.log.ShowPosition(self.log.GetLastPosition())
+    
+    
+    ## Changes the font size
+    def OnChangeFont(self, event=None):
+        '''
+        fonts = {
+            MONOSPACED_MS: MONOSPACED_MD,
+            MONOSPACED_MD: MONOSPACED_LG,
+            MONOSPACED_LG: MONOSPACED_MS,
+        }
+        '''
+        
+        font_sizes = {
+            7: 8,
+            8: 10,
+            10: 7,
+        }
+        
+        current_font_size = self.log.font_size
+        
+        for S in font_sizes:
+            if S == current_font_size:
+                self.log.SetFont(GetMonospacedFont(font_sizes[S]))
+                self.log.font_size = font_sizes[S]
+                
+                return
+        
+        print(GT(u'Error: Can\'t change log window font'))
+    
+    
+    ## Hides the log window when close event occurs
+    def OnClose(self, event=None):
+        self.HideLog()
+    
+    
+    ## Opens a new log file
+    def OnOpenLogFile(self, event=None):
+        log_select = wx.FileDialog(self.GetParent().GetDebreateWindow(), GT(u'Open Log'),
+                os.getcwd(), style=wx.FD_OPEN|wx.FD_CHANGE_DIR|wx.FD_FILE_MUST_EXIST)
+        
+        if log_select.ShowModal() == wx.ID_OK:
+            log_file = log_select.GetPath()
+            
+            if os.path.isfile(log_file):
+                self.SetLogFile(log_file)
+                return
+            
+            # FIXME: Show error dialog here
+            print(GT(u'Error: File does not exits: {}').format(log_file))
+    
+    
+    ## Guarantess that menu item is synched with window's shown status
+    def OnShow(self, event=None):
+        debreate = self.GetParent().GetDebreateWindow()
+        
+        window_shown = self.IsShown()
+        menu_checked = debreate.menu_debug.IsChecked(ID_LOG)
+        
+        if menu_checked != window_shown:
+            debreate.menu_debug.Check(ID_LOG, window_shown)
+    
+    
+    ## Toggles the log window shown or hidden
+    def OnToggleWindow(self, event=None):
+        debreate = self.GetParent().GetDebreateWindow()
+        show = debreate.menu_debug.IsChecked(ID_LOG)
+        
+        if show:
+            self.ShowLog()
+            return
+        
+        self.HideLog()
+        
+        if event:
+            event.Skip(True)
+    
+    
+    ## Creates a thread that polls for changes in log file
+    def PollLogFile(self, args=None):
+        previous_timestamp = os.stat(self.log_file).st_mtime
+        iteration = 0
+        while self.IsShown():
+            time.sleep(5)
+            iteration += 1
+            
+            current_timestamp = os.stat(self.log_file).st_mtime
+            
+            print(u'Polling log (iteration {})'.format(iteration))
+            print(u'Polling log (Current: {}; Previous: {})'.format(current_timestamp, previous_timestamp))
+            
+            if current_timestamp != previous_timestamp:
+                print(u'Log timestamp changed, loading new log ...')
+                
+                # FIXME: Segfault, send signal to main thread?
+                #self.LoadLog()
+                
+                # FIXME: Segfault, would prefer to use self.LoadLog
+                '''
+                FILE = open(self.log_file)
+                log_text = FILE.read()
+                FILE.close()
+                
+                if not self.log.IsEmpty():
+                    self.log.Clear()
+                
+                self.log.SetValue(log_text)
+                self.log.ShowPosition(self.log.GetLastPosition())
+                '''
+                
+                previous_timestamp = current_timestamp
+    
+    
+    ## Changes the file to be loaded & displayed
+    #  
+    #  \param log_file
+    #        \b \e unicode|str : File to load
+    def SetLogFile(self, log_file):
+        self.log_file = log_file
+        self.LoadLog()
+        self.SetTitle(self.log_file)
+    
+    
+    ## Shows the log window
+    #  
+    #  FIXME: Creates separate task list window on initialization
+    def ShowLog(self):
+        self.LoadLog()
+        self.Show(True)
+        
+        # FIXME: Re-enable when threading fixed
+        #thread.start_new_thread(self.PollLogFile, ())
