@@ -706,23 +706,7 @@ class MainWindow(wx.Frame):
         
         Logger.Debug(__name__, GT(u'Opening compressed project with "{}" format').format(z_format))
         
-        # FIXME: This should be a global
-        temp_dir = u'/tmp'
-        temp_suffix = u'debreate_{}_temp'.format(VERSION_STRING)
-        
-        if os.access(temp_dir, os.W_OK):
-            temp_dir = u'{}/{}'.format(temp_dir, temp_suffix)
-        
-        else:
-            temp_dir = u'{}/{}'.format(os.getcwd(), temp_suffix)
-        
-        if os.path.isdir(temp_dir):
-            shutil.rmtree(temp_dir)
-        
-        os.makedirs(temp_dir)
-        
-        Logger.Debug(__name__,
-                GT(u'Uncompressing project format {}: {}').format(compression_formats[compression_id], filename))
+        temp_dir = CreateTempDirectory()
         
         p_archive = CompressionHandler(compression_id)
         ret_code = p_archive.Uncompress(filename, temp_dir)
@@ -734,7 +718,7 @@ class MainWindow(wx.Frame):
             return
         
         self.wizard.ImportPagesInfo(temp_dir)
-        shutil.rmtree(temp_dir)
+        RemoveTempDirectory(temp_dir)
         
         # Mark project as loaded
         return custom_errno.SUCCESS
