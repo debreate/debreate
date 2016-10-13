@@ -21,6 +21,7 @@
 /debian/debreate.substvars
 /debian/files
 /debian/postrm
+/debian/debreate.*.debhelper
 
 # Distrubution archives
 *.tar.*
