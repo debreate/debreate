@@ -398,11 +398,13 @@ class MainWindow(wx.Frame):
         about.AddJobs(
             u'Hugo Posnic',
             (
-                GT(u'Code Contributer'),
+                GT(u'Code Contributor'),
                 GT(u'Website Designer & Author'),
             ),
             u'hugo.posnic@gmail.com'
         )
+        
+        about.AddJob(u'Lander Usategui San Juan', GT(u'General Contributor'), u'lander@erlerobotics.com')
         
         about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
         about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
