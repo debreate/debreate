@@ -13,7 +13,7 @@ from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
 from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
-from dbr.dialogs import DetailedMessageDialog
+from dbr.dialogs import DetailedMessageDialog, GetDirDialog, ShowDialog
 
 
 ID_pin = 100
@@ -168,14 +168,9 @@ class Panel(WizardPage):
         self.dir_tree.PopupMenu(self.menu)
     
     def OnBrowse(self, event):
-        if False: #self.parent.parent.cust_dias.IsChecked() == True:
-            dia = dbr.OpenDir(self)
-            if dia.DisplayModal() == True:
-                self.dest_cust.SetValue(dia.GetPath())
-        else:
-            dia = wx.DirDialog(self, GT(u'Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                self.dest_cust.SetValue(dia.GetPath())
+        dia = GetDirDialog(self.GetDebreateWindow(), GT(u'Choose Target Directory'))
+        if ShowDialog(dia):
+            self.dest_cust.SetValue(dia.GetPath())
     
     def GetDestValue(self, event):
         if self.dest_cust.GetValue() != wx.EmptyString:

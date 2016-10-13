@@ -9,12 +9,12 @@
 import wx, os
 
 # Local modules
-from dbr import Logger
-from dbr.language import GT
+# FIXME Can't import Logger
+#from dbr import Logger
+#from dbr.language import GT
 from dbr.constants import home_path
 from dbr.functions import TextIsEmpty, GetBoolean, GetIntTuple
-from dbr.compression import compression_formats, ID_ZIP_BZ2,\
-    DEFAULT_COMPRESSION_ID
+from dbr.compression import compression_formats, DEFAULT_COMPRESSION_ID
 
 
 ## Configuration codes
@@ -65,10 +65,10 @@ default_config_values = {
 #  \return
 #        Value of key if found, otherwise ConfCode
 def ReadConfig(k_name, conf=default_config):
-    Logger.Debug(__name__, GT(u'Reading configuration file: {}'.format(conf)))
+    #Logger.Debug(__name__, GT(u'Reading configuration file: {}'.format(conf)))
     
     if not os.path.isfile(conf):
-        Logger.Warning(__name__, u'Configuration file does not exist: {}'.format(conf))
+        #Logger.Warning(__name__, u'Configuration file does not exist: {}'.format(conf))
         return ConfCode.FILE_NOT_FOUND
     
     # Use the string '__test__' for test when app is initialized
@@ -77,7 +77,7 @@ def ReadConfig(k_name, conf=default_config):
     
     # Only read pre-defined keys
     if k_name not in key_types:
-        Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
+        #Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
     conf_opened = open(conf, u'r')
@@ -93,11 +93,11 @@ def ReadConfig(k_name, conf=default_config):
             if k_name == key:
                 value = key_types[key](value)
                 
-                Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
+                #Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
                 return value
     
     if k_name in default_config_values:
-        Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
+        #Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
         
         return default_config_values[k_name]
     
@@ -117,21 +117,21 @@ def WriteConfig(k_name, k_value, conf=default_config):
     
     if not os.path.isdir(conf_dir):
         if os.path.exists(conf_dir):
-            Logger.Error(__name__, u'Cannot create config directory, file exists: {}'.format(conf_dir))
+            #Logger.Error(__name__, u'Cannot create config directory, file exists: {}'.format(conf_dir))
             return ConfCode.ERR_WRITE
         
         os.makedirs(conf_dir)
     
     # Only write pre-defined keys
     if k_name not in key_types:
-        Logger.Warning(__name__, u'Cannot write to config, key not defined: {}'.format(k_name))
+        #Logger.Warning(__name__, u'Cannot write to config, key not defined: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
     # Make sure we are writing the correct type
     k_value = key_types[k_name](k_value)
     
     if k_value == None:
-        Logger.Warning(__name__, u'Value is of wrong type for key "{}"'.format(k_name))
+        #Logger.Warning(__name__, u'Value is of wrong type for key "{}"'.format(k_name))
         return ConfCode.WRONG_TYPE
     
     # tuple is the only type we need to format
@@ -145,7 +145,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
     # Save current config to buffer
     if os.path.exists(conf):
         if not os.path.isfile(conf):
-            Logger.Error(__name__, u'Cannot open config for writing, directory exists: {}'.format(conf))
+            #Logger.Error(__name__, u'Cannot open config for writing, directory exists: {}'.format(conf))
             return ConfCode.ERR_WRITE
         
         conf_opened = open(conf, u'r')
@@ -174,7 +174,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
     conf_text = u'\n'.join(conf_lines)
     
     if TextIsEmpty(conf_text):
-        Logger.Warning(__name__, u'Not writing empty text to configuration')
+        #Logger.Warning(__name__, u'Not writing empty text to configuration')
         return ConfCode.ERR_WRITE
     
     # Actual writing to configuration
