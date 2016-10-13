@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Script to clean up residual files that might be left behind after uninstall
+
+prefix=<prefix>
+datadir="${prefix}/share/debreate"
+
+if [ -d "${datadir}" ]; then
+	echo "Removing files & directories from ${datadir} ...";
+	for f in $(find "${datadir}" -type f); do
+		rm -vf "${f}";
+	done;
+	find "${datadir}" -type d -empty -delete;
+fi
