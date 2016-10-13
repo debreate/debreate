@@ -280,13 +280,11 @@ class MainWindow(wx.Frame):
         self.Layout()
         
         
-        # Saving
-        # First item is name of saved file displayed in title
-        # Second item is actual path to project file
-        self.saved_project = wx.EmptyString
-        
         self.loaded_project = None
-        self.dirty = True
+        self.dirty = False
+        
+        # Debugging
+        self.SetProjectDirty(True)
     
     
     def GetCompression(self):
@@ -483,29 +481,30 @@ class MainWindow(wx.Frame):
             self.wizard.ResetPagesInfo()
             
             # Get the path and set the saved project
-            self.saved_project = open_dialog.GetPath()
-            mime_type = GetFileMimeType(self.saved_project)
+            opened_path = open_dialog.GetPath()
+            mime_type = GetFileMimeType(opened_path)
             
-            Logger.Debug(__name__, GT(u'Opening project: {}').format(self.saved_project))
+            Logger.Debug(__name__, GT(u'Opening project: {}').format(opened_path))
             Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
             
             project_opened = None
             if mime_type == u'text/plain':
-                p_open = open(self.saved_project, u'r')
+                p_open = open(opened_path, u'r')
                 p_text = p_open.read()
                 p_open.close()
                 
-                filename = os.path.split(self.saved_project)[1]
+                filename = os.path.split(opened_path)[1]
                 
+                # Legacy projects should return None since we can't save in that format
                 project_opened = self.OpenProjectLegacy(p_text, filename)
                 
             else:
-                project_opened = self.OpenProject(self.saved_project, mime_type)
+                project_opened = self.OpenProject(opened_path, mime_type)
             
             Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectLoaded()))
             
             if project_opened == custom_errno.SUCCESS:
-                self.loaded_project = self.saved_project
+                self.loaded_project = opened_path
             
             Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectLoaded()))
             
@@ -555,14 +554,18 @@ class MainWindow(wx.Frame):
             confirm.Destroy()
     
     
-    ## Checks if saved project is dirty
     def OnSaveProject(self, event=None):
         if not self.ProjectLoaded():
             self.OnSaveProjectAs(event)
-            
             return
-    
-    Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
+        
+        # Only save if changes have been made
+        if self.dirty:
+            Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
+            
+            # Saving over currently loaded project
+            if self.SaveProject(self.loaded_project) == custom_errno.SUCCESS:
+                self.SetProjectDirty(False)
     
     
     def OnSaveProjectAs(self, event=None):
@@ -582,7 +585,9 @@ class MainWindow(wx.Frame):
             Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
             Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
-            self.SaveProject(project_path)
+            if self.SaveProject(project_path) == custom_errno.SUCCESS:
+                self.SetProjectDirty(False)
+            
             return
         
         Logger.Debug(__name__, GT(u'Not saving project'))
@@ -723,9 +728,6 @@ class MainWindow(wx.Frame):
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
         self.page_build.SetFieldData(build_data)
-        
-        # Mark project loaded
-        return custom_errno.SUCCESS
     
     
     ## Checks if a project is loaded
@@ -740,9 +742,9 @@ class MainWindow(wx.Frame):
     #    tarballs.
     #  Proposed formats are xz compressed tarball &
     #    zip compressed file.
-    def SaveProject(self, path):
+    def SaveProject(self, target_path):
         Logger.Debug(__name__, GT(u'Saving in new project format'))
-        Logger.Debug(__name__, GT(u'Saving to file {}').format(path))
+        Logger.Debug(__name__, GT(u'Saving to file {}').format(target_path))
         
         temp_dir = CreateTempDirectory()
         
@@ -753,10 +755,8 @@ class MainWindow(wx.Frame):
         
         Logger.Debug(__name__, GT(u'Temp dir created: {}').format(temp_dir))
         
-        self.saved_project = path
-        
-        working_path = os.path.dirname(self.saved_project)
-        output_filename = os.path.basename(self.saved_project)
+        working_path = os.path.dirname(target_path)
+        output_filename = os.path.basename(target_path)
         
         Logger.Debug(
             __name__,
@@ -781,23 +781,51 @@ class MainWindow(wx.Frame):
                 __name__,
                 GT(u'Compressing "{}" with format: {} ({})').format
                     (
-                        self.saved_project,
+                        target_path,
                         p_archive.GetCompressionFormat(),
                         p_archive.GetCompressionMimetype()
                     )
         )
         
-        p_archive.Compress(temp_dir, u'{}'.format(self.saved_project))
+        if os.path.isfile(target_path) or target_path == self.loaded_project:
+            Logger.Debug(__name__, GT(u'Overwriting old project file: {}').format(target_path))
         
-        if os.path.isfile(self.saved_project):
-            Logger.Debug(__name__, GT(u'Project saved: {}').format(self.saved_project))
+        p_archive.Compress(temp_dir, u'{}'.format(target_path))
+        
+        if os.path.isfile(target_path):
+            Logger.Debug(__name__, GT(u'Project saved: {}').format(target_path))
             
             RemoveTempDirectory(temp_dir)
             
-            return 0
+            return custom_errno.SUCCESS
         
         # FIXME: Show error dialog
-        Logger.Debug(__name__, GT(u'Project save failed: {}').format(self.saved_project))
+        Logger.Debug(__name__, GT(u'Project save failed: {}').format(target_path))
+    
+    
+    def SetProjectDirty(self, dirty=True):
+        # Don't do anything if status isn't changing
+        if not dirty == self.dirty:
+            self.dirty = dirty
+            self.menu_file.Enable(wx.ID_SAVE, dirty)
+            
+            delim = u' ({})'.format(GT(u'unsaved'))
+            title = self.GetTitle()
+            t_end = title[-len(delim):]
+            
+            Logger.Debug(__name__, GT(u'SetProjectDirty; Title: {}').format(title))
+            Logger.Debug(__name__, GT(u'End of title: {}').format(t_end))
+            
+            if dirty and t_end != delim:
+                self.SetTitle(u'{}{}'.format(title, delim))
+            
+            else:
+                if t_end == delim:
+                    self.SetTitle(u'{}'.format(title[:-len(delim)]))
+            
+            return
+        
+        Logger.Debug(__name__, GT(u'Dirty status not changing'))
     
     
     def SetSavedStatus(self, status):
