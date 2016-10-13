@@ -123,13 +123,11 @@ FILES_dist = \
 	$(FILES_data) \
 	INFO \
 	Makefile \
-	README.md \
-	test.sh
+	README.md
 
 DIR_locale = locale
 
 DIRS_build = \
-#	locale \
 	templates
 
 DIRS_dist = \
@@ -155,7 +153,6 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-#install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_bitmap) $(FILES_data) $(DIRS_build) install-doc
 install: build $(FILES_build) $(DIRS_build) install-doc install-locale
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
@@ -294,7 +291,7 @@ build:
 	@exec=bin/$(PACKAGE); \
 	echo "\nprefix set to \"$(prefix)\""; \
 	\
-	exec_script=\#"!/bin/sh \n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py"; \
+	exec_script=\#"!/bin/sh \n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py \$$@"; \
 	\
 	mkdir -vp "bin"; \
 	echo "Creating executable \"$${exec}\" ..."; \
