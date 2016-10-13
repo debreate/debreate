@@ -5,11 +5,14 @@
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
 - New method for checking for version update
-- Fix Save As...
 - Fix Desktop mimetypes
-- Better fit columns on Files page
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
+- Fix save dialog asking for overwrite confirmation twice with explicit extension
+- Fix opening projects
+- Fix error dialog layout
+- Mark projects dirty when changed
+- Finish debug log window
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -31,7 +34,6 @@
 Unknown Release:
 - Detailed documentation on files page
 - Only show exit confirmation if project has been modified
-- Add a debug log window
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Utilize Logger more
