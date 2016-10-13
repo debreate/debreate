@@ -3,12 +3,19 @@
 PACKAGE = debreate
 VERSION = 0.8.0
 BINDIR = bin
+LIBDIR = lib
+MIMEDIR = $(LIBDIR)/mime/packages
 DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
 DOCDIR = $(DATAROOT)/doc/$(PACKAGE)
 LOCALEDIR = $(DATADIR)/locale
+ICONSDIR = $(DATAROOT)/icons/$(PACKAGE)
+MIMEICONSDIR = $(ICONSDIR)/64x64/mimetypes
+
+SUBDIRS = \
+	data
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -102,8 +109,6 @@ FILES_bitmap = \
 	bitmaps/save32.png \
 	bitmaps/save64.png
 
-MENU = debreate.desktop
-
 FILES_data = \
 	data/$(MENU)
 
@@ -120,7 +125,6 @@ FILES_build = \
 FILES_dist = \
 	$(FILES_executable) \
 	$(FILES_root) \
-	$(FILES_data) \
 	INFO \
 	Makefile \
 	README.md
@@ -134,6 +138,7 @@ DIRS_dist = \
 	$(DIRS_build) \
 	$(DIR_locale) \
 	bitmaps \
+	data \
 	dbr \
 	debian \
 	docs \
@@ -144,6 +149,9 @@ DIRS_dist = \
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
+MENU = debreate.desktop
+LOGO = bitmaps/debreate64.png
+MIMEFILE = data/debreate.mime
 DOXYGEN_CONFIG = docs/Doxyfile
 
 
@@ -153,7 +161,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_build) $(DIRS_build) install-doc install-locale
+install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-mime
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -258,7 +266,34 @@ install-locale: $(DIR_locale)
 		$(INSTALL_DATA) "$${mo}" "$${td}"; \
 	done; \
 
-uninstall:
+install-icons: $(LOGO)
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(MIMEICONSDIR)"; \
+	$(MKDIR) "$${icons_dir}"; \
+	$(INSTALL_DATA) "$(LOGO)" "$${icons_dir}/application-x-dbp.png"; \
+	$(INSTALL_DATA) "$(LOGO)" "$${icons_dir}/application-x-dbpz.png"; \
+
+install-mime: $(MIMEFILE) install-icons
+	@target="$(DESTDIR)$(prefix)"; \
+	mime_dir="$${target}/$(MIMEDIR)"; \
+	$(MKDIR) "$${mime_dir}"; \
+	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}/$(PACKAGE)"; \
+
+uninstall-icons:
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(ICONSDIR)"; \
+	if [ -d "$${icons_dir}" ]; then \
+		for f in `find "$${icons_dir}" -type f`; do \
+			$(UNINSTALL) "$${f}"; \
+		done; \
+		find "$${icons_dir}" -type d -empty -delete; \
+	fi; \
+
+uninstall-mime: uninstall-icons
+	@target="$(DESTDIR)$(prefix)"; \
+	rm -vf "$${target}/$(MIMEDIR)/$(PACKAGE)"; \
+
+uninstall: uninstall-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -372,11 +407,37 @@ help:
 	\
 	echo "\tinstall"; \
 	echo "\t\t- Install `tput bold`debreate`tput sgr0` executable & data files onto"; \
-	echo "\t\t  the system\n"; \
+	echo "\t\t  the system"; \
+	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`, &"; \
+	echo "\t\t  `tput bold`install-mime`tput sgr0`\n"; \
+	\
+	echo "\tinstall-doc"; \
+	echo "\t\t- Install documentation files\n"; \
+	\
+	echo "\tinstall-locale"; \
+	echo "\t\t- Install gettext locale translations\n"; \
+	\
+	echo "\tinstall-mime"; \
+	echo "\t\t- Register MimeType information for Debreate"; \
+	echo "\t\t  projects"; \
+	echo "\t\t- Calls `tput bold`install-icons`tput sgr0`\n"; \
+	\
+	echo "\tinstall-icons"; \
+	echo "\t\t- Install icons for Debreate projects MimeType"; \
+	echo "\t\t  registration\n"; \
 	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
-	echo "\t\t  the system\n"; \
+	echo "\t\t  the system"; \
+	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`\n"; \
+	\
+	echo "\tuninstall-mime"; \
+	echo "\t\t- Unregister Debreate project MimeType"; \
+	echo "\t\t  information"; \
+	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
+	\
+	echo "\tuninstall-icons"; \
+	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
 	\
 	echo "\tdoc-html"; \
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
@@ -384,6 +445,9 @@ help:
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
+	\
+	echo "\tdebian-prep"; \
+	echo "\t\t- Copies the changelog to debian/changelog\n"; \
 	\
 	echo "\tdebianize"; \
 	echo "\t\t- Configure source for building a Debian package"; \
