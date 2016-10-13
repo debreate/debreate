@@ -49,7 +49,7 @@ FILES_dbr = \
 	dbr/buttons.py \
 	dbr/charctrl.py \
 	dbr/command_line.py \
-	dbr/command_check.py \
+	dbr/commandcheck.py \
 	dbr/compression.py \
 	dbr/config.py \
 	dbr/constants.py \
@@ -289,13 +289,18 @@ build:
 	\
 	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
-debuild:
+#.PHONY: debian
+debian-prep:
+	@echo "Copying changelog to debian directory ..."; \
+	cp -vf "docs/changelog" "debian/changelog";
+
+debuild: debuild-clean debian-prep
 	@debuild -b -uc -us
 
-debuild-source:
+debuild-source: debuild-clean debian-prep
 	@debuild -S -uc -us
 
-debuild-signed:
+debuild-signed: debuild-clean debian-prep
 	@debuild -S -sa
 
 debianize: dist
@@ -319,16 +324,16 @@ clean: doc-clean
 	fi; \
 	rm -vf "./prefix"; \
 
-distclean: clean debuild-clean
+distclean: clean
 	@echo "Cleaning distribution ..."; \
-	rm -vf "$(PACKAGE_dist)";
+	rm -vf "$(PACKAGE_dist)"; \
 
 debuild-clean:
 	@rm -vrf "debian/debreate"
 	@DEBUILD_FILES="\
 	debian/debhelper-build-stamp debian/debreate.debhelper.log \
-	debian/debreate.substvars debian/files"; \
-	rm -vf $${DEBUILD_FILES};
+	debian/debreate.substvars debian/files debian/changelog"; \
+	rm -vf $${DEBUILD_FILES}; \
 
 doc-clean:
 	@rm -vrf docs/doxygen
