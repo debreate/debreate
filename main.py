@@ -281,10 +281,11 @@ class MainWindow(wx.Frame):
         
         
         self.loaded_project = None
-        self.dirty = False
+        self.dirty = None
         
-        # Debugging
-        self.SetProjectDirty(True)
+        # Initialize with clean project
+        # TODO: This can be bypassed if opening a project from command line
+        self.SetProjectDirty(False)
     
     
     def GetCompression(self):
