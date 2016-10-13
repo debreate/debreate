@@ -13,7 +13,7 @@ from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     PROJECT_FILENAME_SUFFIX,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
-    cmd_tar
+    cmd_tar, ID_DEBUG, ID_LOG
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
@@ -24,6 +24,7 @@ from dbr.compression import \
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
     CompressionHandler, DEFAULT_COMPRESSION_ID
 from dbr.quickbuild import QuickBuild
+from dbr.log import LogWindow
 
 
 # Options menu
@@ -227,14 +228,6 @@ class MainWindow(wx.Frame):
         self.menubar.Insert(2, self.menu_opt, GT(u'Options'))
         self.menubar.Insert(3, self.menu_help, GT(u'Help'))
         
-        # Menu for running test
-        if DebugEnabled():
-            menu_tests = wx.Menu()
-            
-            self.menubar.Append(menu_tests, GT(u'Tests'))
-        
-        # ***** END MENUBAR ***** #
-        
         self.wizard = dbr.Wizard(self) # Binary
         
         self.page_info = wiz_bin.PageGreeting(self.wizard)
@@ -243,6 +236,7 @@ class MainWindow(wx.Frame):
         self.page_depends = wiz_bin.PageDepends(self.wizard)
         self.page_files = wiz_bin.PageFiles(self.wizard)
         
+        # TODO: finish manpage section
         if DebugEnabled():
             self.page_man = wiz_bin.PageMan(self.wizard)
         
@@ -278,6 +272,26 @@ class MainWindow(wx.Frame):
         self.SetAutoLayout(True)
         self.SetSizer(self.main_sizer)
         self.Layout()
+        
+        
+        # Menu for debugging & running tests
+        if DebugEnabled():
+            self.menu_debug = wx.Menu()
+            
+            self.menubar.Append(self.menu_debug, GT(u'Debug'))
+            
+            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ID_LOG, GT(u'Show log'),
+                    GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
+            
+            self.log_window = LogWindow(self, Logger.GetLogFile())
+            
+            wx.EVT_MENU(self, ID_LOG, self.log_window.OnToggleWindow)
+            
+            self.log_window.ShowLog()
+            
+            # Create the log window
+            #self.log_window = LogWindow(self, Logger.GetLogFile())
+            #self.ShowLogWindow(True)
         
         
         self.loaded_project = None
@@ -646,6 +660,15 @@ class MainWindow(wx.Frame):
                 GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
                 
     
+    def OnToggleLogWindow(self, event=None):
+        Logger.Debug(__name__, GT(u'Toggling log window'))
+        
+        if event != None:
+            self.ShowLogWindow(self.menu_debug.IsChecked(ID_DEBUG))
+            return
+        
+        self.menu_debug.Check(ID_DEBUG, self.log_window.IsShown())
+    
     ## Shows or hides tooltips
     def OnToggleToolTips(self, event=None):
         enabled = self.opt_tooltips.IsChecked()
@@ -891,3 +914,12 @@ class MainWindow(wx.Frame):
         
         Logger.Warning(__name__,
                 GT(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
+    
+    
+    def ShowLogWindow(self, show=True):
+        Logger.Debug(__name__, GT(u'Show log window: {}').format(show))
+        
+        self.log_window.Show(show)
+        
+        if self.menu_debug.IsChecked(ID_DEBUG) != show:
+            self.menu_debug.Check(ID_DEBUG, show)
