@@ -115,7 +115,7 @@ if conf_values[u'center']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
-# Set working directory
+# Set working directory (Not necessary to call ChangeWorkingDirectory here)
 os.chdir(conf_values[u'workingdir'])
 
 # Set project compression

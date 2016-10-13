@@ -10,13 +10,10 @@ from datetime import datetime, date
 from urllib2 import urlopen, URLError
 
 # Local modules
-import dbr
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING, system_licenses_path,\
-    project_wildcards, supported_suffixes, custom_errno, APP_NAME,\
+    custom_errno, APP_NAME,\
     VERSION_STRING
-from dbr.compression import compression_formats
-from dbr.dialogs import StandardFileSaveDialog
 import shutil
 
 
@@ -116,87 +113,6 @@ def RequirePython(version):
 def TextIsEmpty(text):
     text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
     return (text == u'')
-
-
-
-## Retrieves a dialog for display
-#  
-#  If 'Use custom dialogs' is selected from
-#    the main window, the a custom defined
-#    dialog is returned. Otherwise the systems
-#    default dialog is used.
-#    FIXME: Perhaps should be moved to dbr.custom
-#  \param main_window
-#        Debreate's main window class
-#  \param title
-#        Text to be shown in the dialogs's title bar
-#  \param ext_filter
-#        Wildcard to be used to filter filenames
-#  \param default_extension
-#        The default filename extension to use when opening or closing a file
-#          Only applies to custom dialogs
-#  \return
-#        The dialog window to be shown
-#  
-#  \b Alias: \e dbr.GetFileSaveDialog
-def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
-    
-    if False: #main_window.cust_dias.IsChecked():
-        file_save = dbr.SaveFile(main_window, title, extension)
-        file_save.SetFilter(ext_filters)
-    else:
-        file_save = StandardFileSaveDialog(main_window, title, default_extension=extension,
-                wildcard=ext_filters)
-    
-    return file_save
-
-
-def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
-    ext_filters = u'|'.join(ext_filters)
-    if False: #main_window.cust_dias.IsChecked():
-        file_open = dbr.OpenFile(main_window, title)
-        file_open.SetFilter(ext_filters)
-    
-    else:
-        file_open = wx.FileDialog(main_window, title, os.getcwd(), wildcard=ext_filters,
-                style=wx.FD_OPEN|wx.FD_CHANGE_DIR)
-    
-    return file_open
-
-
-def GetDirDialog(main_window, title):
-    dir_open = wx.DirDialog(main_window, title, os.getcwd(),
-            style=wx.DD_CHANGE_DIR|wx.DD_NEW_DIR_BUTTON|wx.DD_DIR_MUST_EXIST)
-    
-    return dir_open
-
-
-## Used to display a dialog window
-#  
-#  For custom dialogs, the method 'DisplayModal()' is used
-#    to display the dialog. For stock dialogs, 'ShowModal()'
-#    is used. The dialog that will be shown is determined
-#    from 'GetFileSaveDialog'.
-#    FIXME: Perhaps should be moved to dbr.custom
-#  \param main_window
-#    Debreate's main window class
-#  \param dialog
-#    The dialog window to be shown
-#  \return
-#    'True' if the dialog's return value is 'wx..ID_OK', 'False'
-#      otherwise
-#  
-#  \b Alias: \e dbr.ShowDialog
-def ShowDialog(dialog):
-    # Dialog's parent should be set to main window
-    #debreate = dialog.GetParent()
-    
-    if False: #debreate.cust_dias.IsChecked():
-        return dialog.DisplayModal()
-    else:
-        return dialog.ShowModal() == wx.ID_OK
 
 
 # FIXME: time.strftime can be used for all date & time functions
@@ -428,24 +344,6 @@ def IsBoolean(value):
 
 def IsIntTuple(value):
     return GetIntTuple(value) != None
-
-
-
-def GetDialogWildcards(ID):
-    proj_def = project_wildcards[ID][0]
-    wildcards = list(project_wildcards[ID][1])
-    
-    for X in range(len(wildcards)):
-        wildcards[X] = u'.{}'.format(wildcards[X])
-    
-    # Don't show list of suffixes in dialog's description
-    if project_wildcards[ID][1] != supported_suffixes:
-        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
-    
-    for X in range(len(wildcards)):
-        wildcards[X] = u'*{}'.format(wildcards[X])
-    
-    return (proj_def, u';'.join(wildcards))
 
 
 def GetFileMimeType(file_name):

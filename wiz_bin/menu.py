@@ -13,6 +13,7 @@ from dbr.constants import ID_MENU, custom_errno
 from dbr.wizard import WizardPage
 from dbr import Logger
 from dbr.functions import TextIsEmpty
+from dbr.dialogs import GetFileSaveDialog, GetFileOpenDialog, ShowDialog
 
 
 class Panel(WizardPage):
@@ -395,19 +396,10 @@ class Panel(WizardPage):
         cont = False
         
         # Open a u'Save Dialog'
-        if False: #self.parent.parent.cust_dias.IsChecked():
-            dia = dbr.SaveFile(self, GT(u'Save Launcher'))
-#            dia.SetFilename(u'control')
-            if dia.DisplayModal():
-                cont = True
-                path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
-        else:
-            dia = wx.FileDialog(self, GT(u'Save Launcher'), os.getcwd(),
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-#            dia.SetFilename(u'control')
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-                path = dia.GetPath()
+        dia = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Save Launcher'), u'All files|*')
+        if ShowDialog(dia):
+            cont = True
+            path = dia.GetPath()
         
         if cont:
             filename = dia.GetFilename()
@@ -437,15 +429,10 @@ class Panel(WizardPage):
     
     def OpenFile(self, event):
         cont = False
-        if False: #self.parent.parent.cust_dias.IsChecked():
-            dia = dbr.OpenFile(self, GT(u'Open Launcher'))
-            if dia.DisplayModal():
-                cont = True
-        else:
-            dia = wx.FileDialog(self, GT(u'Open Launcher'), os.getcwd(),
-                style=wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
+        
+        dia = GetFileOpenDialog(self.GetDebreateWindow(), GT(u'Open Launcher'), u'All files|*')
+        if ShowDialog(dia):
+            cont = True
         
         if cont == True:
             path = dia.GetPath()

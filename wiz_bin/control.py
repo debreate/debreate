@@ -10,7 +10,7 @@ from dbr.language import GT
 from dbr.constants import ID_CONTROL, custom_errno, ID_DEPENDS
 from dbr.wizard import WizardPage
 from dbr import Logger
-from dbr.functions import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
+from dbr.dialogs import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
 
 
 class Panel(WizardPage):
