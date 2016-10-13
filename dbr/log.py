@@ -223,6 +223,8 @@ class LogWindow(wx.Dialog):
         
         self.SetMinSize(self.GetSize())
         
+        self.SetSize(wx.Size(600, 600))
+        
         self.AlignWithMainWindow()
         
         # Make sure log window is not shown at initialization
