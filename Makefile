@@ -156,6 +156,7 @@ MIMEFILE = data/debreate.mime
 DOXYGEN_CONFIG = docs/Doxyfile
 
 TEMPLATES_scripts = \
+	data/postinst.in \
 	data/postrm.in
 
 
