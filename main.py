@@ -453,6 +453,7 @@ class MainWindow(wx.Frame):
             
             self.wizard.ResetPagesInfo()
             self.loaded_project = None
+            self.SetProjectDirty(False)
             
             Logger.Debug(__name__, GT(u'Project loaded after OnNewProject: {}').format(self.ProjectLoaded()))
             
