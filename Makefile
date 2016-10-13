@@ -8,6 +8,7 @@ DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
 DOCDIR = $(DATAROOT)/doc/$(PACKAGE)
+LOCALEDIR = $(DATADIR)/locale
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -125,12 +126,15 @@ FILES_dist = \
 	README.md \
 	test.sh
 
+DIR_locale = locale
+
 DIRS_build = \
-	locale \
+#	locale \
 	templates
 
 DIRS_dist = \
 	$(DIRS_build) \
+	$(DIR_locale) \
 	bitmaps \
 	dbr \
 	debian \
@@ -153,7 +157,7 @@ all:
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
 #install: build $(FILES_executable) $(FILES_root) $(FILES_wiz_bin) $(FILES_wiz_src) $(FILES_dbr) $(FILES_bitmap) $(FILES_data) $(DIRS_build) install-doc
-install: build $(FILES_build) $(DIRS_build) install-doc
+install: build $(FILES_build) $(DIRS_build) install-doc install-locale
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -247,6 +251,16 @@ install-doc: $(FILES_doc)
 	lic_old_line="LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)"; \
 	lic_new_line="LICENSE = u'$${docdir}/LICENSE.txt'"; \
 	sed -i -e "s|$${lic_old_line}|$${lic_new_line}|" "$${src_about}"; \
+
+install-locale: $(DIR_locale)
+	@locale_dir="$(DESTDIR)$(prefix)/$(LOCALEDIR)"; \
+	echo "Installing locale files ..."; \
+	$(MKDIR) "$${locale_dir}"; \
+	for mo in `find $(DIR_locale) -type f -name "*.mo"`; do \
+		td="$${locale_dir}/`dirname \"$${mo}\"`"; \
+		$(MKDIR) "$${td}"; \
+		$(INSTALL_DATA) "$${mo}" "$${td}"; \
+	done; \
 
 uninstall:
 	@target=$(DESTDIR)$(prefix); \
