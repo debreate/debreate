@@ -12,14 +12,15 @@
 
 # Build output files & directories
 /bin
+
+# Debian dist files
+/debian/changelog
 /debian/debreate
 /debian/debhelper-build-stamp
 /debian/debreate.debhelper.log
 /debian/debreate.substvars
 /debian/files
-
-# Temp Debian changelog
-/debian/changelog
+/debian/postrm
 
 # Distrubution archives
 *.tar.*
