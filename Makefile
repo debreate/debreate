@@ -151,8 +151,12 @@ PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
 MENU = debreate.desktop
 LOGO = bitmaps/debreate64.png
+CHANGELOG = docs/changelog
 MIMEFILE = data/debreate.mime
 DOXYGEN_CONFIG = docs/Doxyfile
+
+TEMPLATES_scripts = \
+	data/postrm.in
 
 
 all:
@@ -326,7 +330,7 @@ build:
 	@exec=bin/$(PACKAGE); \
 	echo "\nprefix set to \"$(prefix)\""; \
 	\
-	exec_script=\#"!/bin/sh \n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py \$$@"; \
+	exec_script=\#"!/bin/sh\n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py \$$@"; \
 	\
 	mkdir -vp "bin"; \
 	echo "Creating executable \"$${exec}\" ..."; \
@@ -335,17 +339,27 @@ build:
 	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
 #.PHONY: debian
-debian-prep:
+debian-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 	@echo "Copying changelog to debian directory ..."; \
-	cp -vf "docs/changelog" "debian/changelog";
+	cp -vf "$(CHANGELOG)" "debian/changelog"; \
+	\
+	echo "Creating Debian scripts ..."; \
+	for f in $(TEMPLATES_scripts); do \
+		name=$$(echo "$${f}" | sed -e 's:^.....::g' -e 's:...$$::g'); \
+		echo "Copying data/$${name}.in to debian/$${name} ..."; \
+		cp -vf "data/$${name}.in" "debian/$${name}"; \
+		echo "Modifying script debian/$${name} ..."; \
+		sed -i -e "s|<prefix>|$(prefix)|" "debian/$${name}"; \
+		chmod -v 0755 "debian/$${name}"; \
+	done; \
 
-debuild: debuild-clean debian-prep
+debian-bin: debian-clean debian-prep
 	@debuild -b -uc -us
 
-debuild-source: debuild-clean debian-prep
+debian-src: debian-clean debian-prep
 	@debuild -S -uc -us
 
-debuild-signed: debuild-clean debian-prep
+debian-src-signed: debian-clean debian-prep
 	@debuild -S -sa
 
 debianize: dist
@@ -373,17 +387,20 @@ distclean: clean
 	@echo "Cleaning distribution ..."; \
 	rm -vf "$(PACKAGE_dist)"; \
 
-debuild-clean:
+debian-clean:
 	@rm -vrf "debian/debreate"
 	@DEBUILD_FILES="\
 	debian/debhelper-build-stamp debian/debreate.debhelper.log \
 	debian/debreate.substvars debian/files debian/changelog"; \
 	rm -vf $${DEBUILD_FILES}; \
+	for f in preinst postinst prerm postrm; do \
+		rm -vf "debian/$${f}"; \
+	done; \
 
 doc-clean:
 	@rm -vrf docs/doxygen
 
-dist: debuild-clean $(FILES_dist) $(DIRS_dist)
+dist: debian-clean $(FILES_dist) $(DIRS_dist)
 	@echo "Creating distribution package ..."; \
 	if [ -f "$(PACKAGE_dist)" ]; then \
 		rm -v "$(PACKAGE_dist)"; \
@@ -447,22 +464,23 @@ help:
 	echo "\t\t- Create a source distribution package\n"; \
 	\
 	echo "\tdebian-prep"; \
-	echo "\t\t- Copies the changelog to debian/changelog\n"; \
+	echo "\t\t- Prepares debian directory for build &"; \
+	echo "\t\t  distribution\n"; \
 	\
 	echo "\tdebianize"; \
 	echo "\t\t- Configure source for building a Debian package"; \
 	echo "\t\t  (not necessary, should already be configured)"; \
 	echo "\t\t- Uses `tput bold`dh_make`tput sgr0` command (apt install dh-make)\n"; \
 	\
-	echo "\tdebuild"; \
+	echo "\tdebian-bin"; \
 	echo "\t\t- Build a Debian (.deb) package for installation"; \
-	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
+	echo "\t\t- Uses `tput bold`debian-bin`tput sgr0` command (apt install devscripts)\n"; \
 	\
-	echo "\tdebuild-source"; \
+	echo "\tdebian-src"; \
 	echo "\t\t- Create a source distribution package with"; \
 	echo "\t\t  Debian .dsc, .build, & .changes files\n"; \
 	\
-	echo "\tdebuild-signed"; \
+	echo "\tdebian-src-signed"; \
 	echo "\t\t- Create a source distribution package & sign"; \
 	echo "\t\t  it for upload to a repository\n"; \
 	\
@@ -473,11 +491,11 @@ help:
 	echo "\tdoc-clean"; \
 	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
 	\
-	echo "\tdebuild-clean"; \
-	echo "\t\t- Delete files create by `tput bold`debuild`tput sgr0`\n"; \
+	echo "\tdebian-clean"; \
+	echo "\t\t- Delete files create by `tput bold`debian-bin`tput sgr0`\n"; \
 	\
 	echo "\tdistclean"; \
-	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`debuild-clean`tput sgr0`\n"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`debian-clean`tput sgr0`\n"; \
 	\
 	echo "Environment Variables:"; \
 	\
