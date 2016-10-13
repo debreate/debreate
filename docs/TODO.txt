@@ -1,6 +1,5 @@
 ﻿0.8.0 Release Changes:
 - Fix & re-enable QuickBuild
-- Only install *.mo locale files
 - Add Launchpad packages for 'yakkety'
 - Create postrm script that removes any .pyc files from data installation directory
 - Update gettext locales
