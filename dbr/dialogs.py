@@ -8,8 +8,9 @@ import wx, os
 #from dbr import Logger
 from dbr.language import GT
 from dbr.buttons import ButtonConfirm
-from dbr.constants import ICON_ERROR
+from dbr.constants import project_wildcards, supported_suffixes, ICON_ERROR
 from dbr.custom import TextIsEmpty
+from dbr.workingdir import ChangeWorkingDirectory
 
 
 
@@ -34,21 +35,63 @@ class OverwriteDialog(wx.MessageDialog):
         )
 
 
-class StandardFileSaveDialog(wx.FileDialog):
-    def __init__(self, parent, title, default_dir=os.getcwd(), default_extension=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr,
-            style=wx.FD_SAVE|wx.FD_CHANGE_DIR):
-        wx.FileDialog.__init__(self, parent, title, default_dir, wildcard=wildcard, style=style)
+class StandardDirDialog(wx.DirDialog):
+    def __init__(self, parent, title, style=wx.DD_DEFAULT_STYLE):
+        
+        # Setting os.getcwd() causes dialog to always be opened in working directory
+        wx.DirDialog.__init__(self, parent, title, os.getcwd(),
+                style=style|wx.DD_DIR_MUST_EXIST|wx.DD_NEW_DIR_BUTTON|wx.DD_CHANGE_DIR)
+        
+        # FIXME: Find inherited bound event
+        wx.EVT_BUTTON(self, wx.ID_OPEN, self.OnAccept)
+        
+        self.CenterOnParent()
+    
+    
+    def OnAccept(self, event=None):
+        path = self.GetPath()
+        
+        if os.path.isdir(path):
+            self.EndModal(wx.ID_OK)
+            return
+        
+        print(u'DEBUG: [dbr.dialogs] Path is not a directory: {}'.format(path))
+
+
+class StandardFileDialog(wx.FileDialog):
+    def __init__(self, parent, title, default_extension=wx.EmptyString,
+                wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
+        
+        # Setting os.getcwd() causes dialog to always be opened in working directory
+        wx.FileDialog.__init__(self, parent, title, os.getcwd(), wildcard=wildcard, style=style)
         
         self.parent = parent
         
         self.extension = default_extension
         
+        # FIXME: Should use ID_SAVE & ID_OPEN
         wx.EVT_BUTTON(self, wx.ID_OK, self.OnAccept)
+        
+        self.CenterOnParent()
     
     
     def GetDebreateWindow(self):
         return self.parent.GetDebreateWindow()
+    
+    
+    def GetDirectory(self, directory=None):
+        if directory == None:
+            directory = self.GetPath()
+        
+        # Recursively check for first directory in hierarchy
+        if not os.path.isdir(directory):
+            return self.GetDirectory(os.path.dirname(directory))
+        
+        return directory
+    
+    
+    def GetExtension(self):
+        return self.extension
     
     
     ## FIXME: Seems to be being called 3 times
@@ -85,10 +128,6 @@ class StandardFileSaveDialog(wx.FileDialog):
         return u'{}/{}'.format(out_dir, self.GetFilename())
     
     
-    def GetExtension(self):
-        return self.extension
-    
-    
     def HasExtension(self, path):
         if u'.' in path:
             if path.split(u'.')[-1] != u'':
@@ -104,13 +143,35 @@ class StandardFileSaveDialog(wx.FileDialog):
             if os.path.isfile(path):
                 overwrite = OverwriteDialog(self.GetDebreateWindow(), path).ShowModal()
                 
-                if overwrite == wx.ID_YES:
-                    os.remove(path)
-                    self.EndModal(wx.ID_OK)
+                if overwrite != wx.ID_YES:
+                    return
                 
-                return
+                os.remove(path)
+            
+            # File & directory dialogs should call this function
+            ChangeWorkingDirectory(self.GetDirectory())
             
             self.EndModal(wx.ID_OK)
+
+
+# FIXME: Unneeded?
+class StandardFileSaveDialog(StandardFileDialog):
+    def __init__(self, parent, title, default_extension=wx.EmptyString,
+            wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_SAVE):
+        
+        # Initialize parent class
+        StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
+                wildcard=wildcard, style=style)
+
+
+# FIXME: Unneded?
+class StandardFileOpenDialog(StandardFileDialog):
+    def __init__(self, parent, title, default_extension=wx.EmptyString,
+            wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_OPEN):
+        
+        # Initialize parent class
+        StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
+                wildcard=wildcard, style=style)
 
 
 
@@ -235,3 +296,91 @@ class ErrorDialog(DetailedMessageDialog):
             self.btn_copy_details.Show()
         
         DetailedMessageDialog.SetDetails(self, details)
+
+
+## Retrieves a dialog for display
+#  
+#  If 'Use custom dialogs' is selected from
+#    the main window, the a custom defined
+#    dialog is returned. Otherwise the systems
+#    default dialog is used.
+#    FIXME: Perhaps should be moved to dbr.custom
+#  \param main_window
+#        Debreate's main window class
+#  \param title
+#        Text to be shown in the dialogs's title bar
+#  \param ext_filter
+#        Wildcard to be used to filter filenames
+#  \param default_extension
+#        The default filename extension to use when opening or closing a file
+#          Only applies to custom dialogs
+#  \return
+#        The dialog window to be shown
+#  
+#  \b Alias: \e dbr.GetFileSaveDialog
+def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
+    if isinstance(ext_filters, (list, tuple)):
+        ext_filters = u'|'.join(ext_filters)
+    
+    file_save = StandardFileDialog(main_window, title, default_extension=extension,
+            wildcard=ext_filters, style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
+    
+    return file_save
+
+
+def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
+    ext_filters = u'|'.join(ext_filters)
+    
+    file_open = StandardFileDialog(main_window, title, wildcard=ext_filters,
+            style=wx.FD_OPEN)
+    
+    return file_open
+
+
+def GetDirDialog(main_window, title):
+    dir_open = StandardDirDialog(main_window, title)
+    
+    return dir_open
+
+
+## Used to display a dialog window
+#  
+#  For custom dialogs, the method 'DisplayModal()' is used
+#    to display the dialog. For stock dialogs, 'ShowModal()'
+#    is used. The dialog that will be shown is determined
+#    from 'GetFileSaveDialog'.
+#    FIXME: Perhaps should be moved to dbr.custom
+#  \param main_window
+#    Debreate's main window class
+#  \param dialog
+#    The dialog window to be shown
+#  \return
+#    'True' if the dialog's return value is 'wx..ID_OK', 'False'
+#      otherwise
+#  
+#  \b Alias: \e dbr.ShowDialog
+def ShowDialog(dialog):
+    # Dialog's parent should be set to main window
+    #debreate = dialog.GetParent()
+    
+    if False: #debreate.cust_dias.IsChecked():
+        return dialog.DisplayModal()
+    else:
+        return dialog.ShowModal() == wx.ID_OK
+
+
+def GetDialogWildcards(ID):
+    proj_def = project_wildcards[ID][0]
+    wildcards = list(project_wildcards[ID][1])
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'.{}'.format(wildcards[X])
+    
+    # Don't show list of suffixes in dialog's description
+    if project_wildcards[ID][1] != supported_suffixes:
+        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'*{}'.format(wildcards[X])
+    
+    return (proj_def, u';'.join(wildcards))

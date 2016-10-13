@@ -9,14 +9,15 @@ from os.path import exists
 
 # Local modules
 import dbr
-from dbr.dialogs import DetailedMessageDialog, ErrorDialog
+from dbr.dialogs import DetailedMessageDialog, ErrorDialog, StandardFileDialog
 from dbr.language import GT
 from dbr.constants import ID_BUILD, custom_errno, cmd_md5sum, cmd_lintian,\
-    ICON_ERROR, ICON_INFORMATION, VERSION_STRING, page_ids, ID_CONTROL, ID_FILES,\
+    ICON_ERROR, ICON_INFORMATION, ID_CONTROL, ID_FILES,\
     ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
 from dbr.wizard import WizardPage
-from dbr.functions import GetBoolean, GetFileSaveDialog, ShowDialog,\
-    BuildBinaryPackageFromTree, CreateTempDirectory, RemoveTempDirectory
+from dbr.functions import GetBoolean, BuildBinaryPackageFromTree,\
+    CreateTempDirectory, RemoveTempDirectory
+from dbr.dialogs import GetFileSaveDialog, ShowDialog
 from dbr import Logger, DebugEnabled
 
 
@@ -847,22 +848,12 @@ class Panel(WizardPage):
             
             # Dialog for save destination
             ttype = GT(u'Debian Packages')
-            if False: #self.debreate.cust_dias.IsChecked():
-                save_dia = dbr.SaveFile(self)
-                save_dia.SetFilter(u'%s|*.deb' % ttype)
-                save_dia.SetFilename(u'%s_%s_%s.deb' % (pack, ver, arch))
-                if save_dia.DisplayModal():
-                    cont = True
-                    path = save_dia.GetPath()
-                    filename = save_dia.GetFilename().split(u'.deb')[0]
-            else:
-                save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'%s|*.deb' % ttype,
-                        wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
-                save_dia.SetFilename(u'%s_%s_%s.deb' % (pack, ver, arch))
-                if save_dia.ShowModal() == wx.ID_OK:
-                    cont = True
-                    path = os.path.split(save_dia.GetPath())[0]
-                    filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
+            save_dia = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Save'), u'{}|*.deb'.format(ttype))
+            save_dia.SetFilename(u'%s_%s_%s.deb' % (pack, ver, arch))
+            if ShowDialog(save_dia):
+                cont = True
+                path = os.path.split(save_dia.GetPath())[0]
+                filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
             
             if cont:
                 for char in invalid_chars:

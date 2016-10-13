@@ -9,7 +9,7 @@ import wx, os
 # Local modules
 from dbr.language import GT
 from dbr.buttons import ButtonBrowse, ButtonBuild, ButtonCancel
-from dbr.functions import GetDirDialog, ShowDialog
+from dbr.dialogs import GetDirDialog, ShowDialog
 
 
 class QuickBuild(wx.Dialog):

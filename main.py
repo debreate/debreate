@@ -11,14 +11,13 @@ import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
-    ID_BUILD, ID_CHANGELOG, ID_MAN, ID_CONTROL, ID_COPYRIGHT, ID_DEPENDS,\
-    ID_GREETING, ID_FILES, ID_SCRIPTS, ID_MENU,\
     PROJECT_FILENAME_SUFFIX,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
     cmd_tar
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
-from dbr.functions import GetFileOpenDialog, ShowDialog, GetDialogWildcards,\
-    GetFileSaveDialog, GetFileMimeType
+from dbr.functions import GetFileMimeType
+from dbr.dialogs import GetFileOpenDialog, GetFileSaveDialog, ShowDialog,\
+    GetDialogWildcards
 from dbr.compression import \
     compression_mimetypes, compression_formats,\
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
@@ -524,9 +523,12 @@ class MainWindow(wx.Frame):
                 WriteConfig(u'center', False)
                 WriteConfig(u'maximize', False)
             
-            WriteConfig(u'workingdir', os.getcwd())
-            #WriteConfig(u'dialogs', self.cust_dias.IsChecked())
-            #WriteConfig(u'compression', self.GetCompression())
+            config_wdir = ReadConfig(u'workingdir')
+            current_wdir = os.getcwd()
+            
+            # Workaround for issues with some dialogs not writing to config
+            if config_wdir != current_wdir:
+                WriteConfig(u'workingdir', current_wdir)
             
             self.Destroy()
         
@@ -723,10 +725,10 @@ class MainWindow(wx.Frame):
             u'{} (.{})'.format(description, PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
         )
         
-        file_save = dbr.GetFileSaveDialog(self, title,
+        file_save = GetFileSaveDialog(self, title,
                 wildcards, PROJECT_FILENAME_SUFFIX)
         
-        if dbr.ShowDialog(self, file_save):
+        if ShowDialog(self, file_save):
             self.saved_project = file_save.GetPath()
             
             working_path = os.path.dirname(self.saved_project)
