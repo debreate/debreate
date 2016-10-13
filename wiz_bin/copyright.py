@@ -128,9 +128,16 @@ class Panel(WizardPage):
             
             # FIXME: Need to clear empty lines & beginning of document
             
+            add_header = (
+                u'Artistic',
+                u'BSD',
+            )
+            
             self.cp_display.SetInsertionPoint(0)
-            self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
-            self.cp_display.SetInsertionPoint(0)
+            
+            if license_name in add_header:
+                self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
+                self.cp_display.SetInsertionPoint(0)
             
         self.cp_display.SetFocus()
     
