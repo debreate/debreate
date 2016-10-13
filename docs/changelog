@@ -27,6 +27,7 @@ debreate (0.8.0) xenial; urgency=high
     Disabled custom dialogs
     Use system '/tmp' directory as default for temporary files
     File list can be refreshed to update missing files
+    Fixes for dialogs & saving working directory
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  06 Oct 2016 03:36:38 -0700
 
