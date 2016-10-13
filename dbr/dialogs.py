@@ -157,21 +157,21 @@ class StandardFileDialog(wx.FileDialog):
 # FIXME: Unneeded?
 class StandardFileSaveDialog(StandardFileDialog):
     def __init__(self, parent, title, default_extension=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_SAVE):
+            wildcard=wx.FileSelectorDefaultWildcardStr):
         
         # Initialize parent class
         StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
-                wildcard=wildcard, style=style)
+                wildcard=wildcard, style=wx.FD_SAVE)
 
 
 # FIXME: Unneded?
 class StandardFileOpenDialog(StandardFileDialog):
     def __init__(self, parent, title, default_extension=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_OPEN):
+            wildcard=wx.FileSelectorDefaultWildcardStr):
         
         # Initialize parent class
         StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
-                wildcard=wildcard, style=style)
+                wildcard=wildcard, style=wx.FD_OPEN)
     
     
     def OnAccept(self, event=None):
@@ -329,8 +329,8 @@ def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
     
-    file_save = StandardFileDialog(main_window, title, default_extension=extension,
-            wildcard=ext_filters, style=wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT)
+    file_save = StandardFileSaveDialog(main_window, title, default_extension=extension,
+            wildcard=ext_filters)
     
     return file_save
 
