@@ -405,3 +405,17 @@ def CreateTempDirectory():
 def RemoveTempDirectory(temp_dir):
     if os.access(temp_dir, os.W_OK):
         shutil.rmtree(temp_dir)
+
+
+def RemovePreWhitespace(text):
+    text_lines = text.split(u'\n')
+    
+    remove_lines = 0
+    
+    for L in text_lines:
+        if not TextIsEmpty(L):
+            break
+        
+        remove_lines += 1
+    
+    return u'\n'.join(text_lines[remove_lines:])
