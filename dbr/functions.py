@@ -389,6 +389,13 @@ def CreateTempDirectory():
     print(u'DEBUG: Temporary directory: {}'.format(temp_dir))
     
     if os.access(os.path.dirname(temp_dir), os.W_OK):
+        # Start with fresh directory
+        if os.path.isdir(temp_dir):
+            shutil.rmtree(temp_dir)
+        
+        elif os.path.isfile(temp_dir):
+            return custom_errno.EACCES
+        
         os.makedirs(temp_dir)
         return temp_dir
     
