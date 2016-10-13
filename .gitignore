@@ -18,6 +18,9 @@
 /debian/debreate.substvars
 /debian/files
 
+# Temp Debian changelog
+/debian/changelog
+
 # Distrubution archives
 *.tar.*
 
