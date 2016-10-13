@@ -139,7 +139,6 @@ DIRS_dist = \
 	dbr \
 	debian \
 	docs \
-	functions \
 	man \
 	scripts \
 	wiz_bin \
