@@ -8,8 +8,6 @@
 - Fix Desktop mimetypes
 - Fix AutoLink executables in Files page
 - Fix copyright for Apache license template
-- Fix save dialog asking for overwrite confirmation twice with explicit extension
-- Fix opening projects
 - Fix error dialog layout
 - Mark projects dirty when changed
 - Finish debug log window
@@ -41,6 +39,7 @@ Unknown Release:
 - Create scripts for updating locales
 - Omit scripts directory in gettext search
 - Create FreeBSD Port
+- Save monospaced font size for text areas using it
 
 Tasks being considered:
 - Scripting backend
