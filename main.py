@@ -18,7 +18,7 @@ from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
 from dbr.dialogs import GetFileOpenDialog, GetFileSaveDialog, ShowDialog,\
-    GetDialogWildcards
+    GetDialogWildcards, ErrorDialog
 from dbr.compression import \
     compression_mimetypes, compression_formats,\
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
@@ -462,6 +462,42 @@ class MainWindow(wx.Frame):
     
     
     def OnOpenProject(self, event):
+        if self.IsDirty():
+            Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
+            
+            ignore_dirty = wx.MessageDialog(self.GetDebreateWindow(),
+                    GT(u'{} is unsaved, any changes will be lost').format(self.loaded_project),
+                    GT(u'Confirm Open New Project'),
+                    style=wx.YES_NO|wx.CANCEL|wx.CANCEL_DEFAULT|wx.ICON_WARNING)
+                    
+            ignore_dirty.SetExtendedMessage(GT(u'Continue without saving?'))
+            ignore_dirty.SetYesNoLabels(GT(u'Continue'), GT(u'Save'))
+            overwrite_dirty = ignore_dirty.ShowModal()
+            
+            if overwrite_dirty == wx.ID_CANCEL:
+                Logger.Debug(__name__, GT(u'OnOpenProject; Cancelling open over dirty project'))
+                return
+            
+            elif overwrite_dirty == wx.ID_NO:
+                # ID_NO is save & continue
+                
+                if self.loaded_project == None:
+                    err_msg = GT(u'No project loaded, cannot save')
+                    Logger.Error(__name__, u'OnOpenProject; {}'.format(err_msg))
+                    
+                    err_dialog = ErrorDialog(self.GetDebreateWindow(), err_msg)
+                    err_dialog.ShowModal()
+                    
+                    return
+                
+                Logger.Debug(__name__, GT(u'OnOpenProject; Saving dirty project & continuing'))
+                
+                # Save & continue
+                self.SaveProject(self.loaded_project)
+            
+            else:
+                Logger.Debug(__name__, GT(u'OnOpenProject; Destroying changes of dirty project'))
+        
         wc_z = GetDialogWildcards(ID_PROJ_Z)
         wc_l = GetDialogWildcards(ID_PROJ_L)
         wc_a = GetDialogWildcards(ID_PROJ_A)
