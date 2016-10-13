@@ -20,6 +20,9 @@
 /debian/debreate.debhelper.log
 /debian/debreate.substvars
 /debian/files
+/debian/preinst
+/debian/postinst
+/debian/prerm
 /debian/postrm
 /debian/debreate.*.debhelper
 
