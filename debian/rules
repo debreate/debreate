@@ -11,6 +11,8 @@ export PYBUILD_NAME=debreate
 override_dh_auto_install:
 	dh_auto_install -- prefix=/usr
 
+override_dh_auto_test:
+
 # If you need to rebuild the Sphinx documentation
 # Add spinxdoc to the dh --with line
 #override_dh_auto_build:
