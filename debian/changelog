@@ -1,3 +1,11 @@
+debreate (0.7.12-dev2) xenial; urgency=low
+
+  * Import modules from 'unstable' branch
+    Fix first run window not closing
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 14 Oct 2016 08:00:52 -0700
+
+
 debreate (0.7.12-dev1) xenial; urgency=low
 
   * Fixes for wx 3.0 compatibility
