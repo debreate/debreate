@@ -109,6 +109,9 @@ FILES_bitmap = \
 	bitmaps/save32.png \
 	bitmaps/save64.png
 
+FILES_man = \
+	man/man1/debreate.1
+
 FILES_data = \
 	data/$(MENU)
 
@@ -166,7 +169,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-mime
+install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -284,6 +287,18 @@ install-mime: $(MIMEFILE) install-icons
 	$(MKDIR) "$${mime_dir}"; \
 	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}/$(PACKAGE)"; \
 
+install-man: $(FILES_man)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_root="$${target}/$(DATAROOT)"; \
+	for f in $(FILES_man); do \
+		filename=$$(basename "$${f}") && mandir="$${data_root}/$$(dirname $${f})"; \
+		if [ ! -d "$${mandir}" ]; then \
+			$(MKDIR) "$${mandir}"; \
+		fi; \
+		$(INSTALL_DATA) "$${f}" "$${mandir}"; \
+		gzip -vf9 "$${mandir}/$${filename}"; \
+	done; \
+
 uninstall-icons:
 	@target="$(DESTDIR)$(prefix)"; \
 	icons_dir="$${target}/$(ICONSDIR)"; \
@@ -298,7 +313,13 @@ uninstall-mime: uninstall-icons
 	@target="$(DESTDIR)$(prefix)"; \
 	rm -vf "$${target}/$(MIMEDIR)/$(PACKAGE)"; \
 
-uninstall: uninstall-mime
+uninstall-man:
+	@target="$(DESTDIR)$(prefix)"; \
+	man_dir="$${target}/$(DATAROOT)/man"; \
+	echo "Manual dir: $${man_dir}"; \
+	find "$${man_dir}/man1" -type f -name "debreate\.1\.gz" -delete; \
+
+uninstall: uninstall-mime uninstall-man
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -426,8 +447,8 @@ help:
 	echo "\tinstall"; \
 	echo "\t\t- Install `tput bold`debreate`tput sgr0` executable & data files onto"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`, &"; \
-	echo "\t\t  `tput bold`install-mime`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`,"; \
+	echo "\t\t  `tput bold`install-mime`tput sgr0`, & `tput bold`install-man`tput sgr0`\n"; \
 	\
 	echo "\tinstall-doc"; \
 	echo "\t\t- Install documentation files\n"; \
@@ -444,10 +465,13 @@ help:
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
 	echo "\t\t  registration\n"; \
 	\
+	echo "\tinstall-man"; \
+	echo "\t\t- Install & compress Manpage files\n"; \
+	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0` & `tput bold`uninstall-man`tput sgr0`\n"; \
 	\
 	echo "\tuninstall-mime"; \
 	echo "\t\t- Unregister Debreate project MimeType"; \
@@ -456,6 +480,9 @@ help:
 	\
 	echo "\tuninstall-icons"; \
 	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
+	\
+	echo "\tuninstall-man"; \
+	echo "\t\t- Remove Debreate Manpages from system\n"; \
 	\
 	echo "\tdoc-html"; \
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
