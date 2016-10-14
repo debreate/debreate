@@ -13,7 +13,7 @@ from dbr.language import GT
 from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
     PROJECT_FILENAME_SUFFIX,\
     ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
-    cmd_tar, ID_DEBUG, ID_LOG
+    cmd_tar, ID_DEBUG, ID_LOG, ID_THEME
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
@@ -288,6 +288,12 @@ class MainWindow(wx.Frame):
             wx.EVT_MENU(self, ID_LOG, self.log_window.OnToggleWindow)
             
             self.log_window.ShowLog()
+            
+            # Window colors
+            self.menu_debug.AppendItem(
+                wx.MenuItem(self.menu_debug, ID_THEME, GT(u'Toggle window colors')))
+            
+            wx.EVT_MENU(self, ID_THEME, self.OnToggleTheme)
             
             # Create the log window
             #self.log_window = LogWindow(self, Logger.GetLogFile())
@@ -671,6 +677,11 @@ class MainWindow(wx.Frame):
         
         self.menu_debug.Check(ID_DEBUG, self.log_window.IsShown())
     
+    
+    def OnToggleTheme(self, event=None):
+        self.ToggleTheme(self)
+    
+    
     ## Shows or hides tooltips
     def OnToggleToolTips(self, event=None):
         enabled = self.opt_tooltips.IsChecked()
@@ -909,3 +920,14 @@ class MainWindow(wx.Frame):
         
         if self.menu_debug.IsChecked(ID_DEBUG) != show:
             self.menu_debug.Check(ID_DEBUG, show)
+    
+    
+    def ToggleTheme(self, window):
+        for C in window.GetChildren():
+            self.ToggleTheme(C)
+    
+        bg_color = window.GetBackgroundColour()
+        fg_color = window.GetForegroundColour()
+        
+        window.SetBackgroundColour(fg_color)
+        window.SetForegroundColour(bg_color)

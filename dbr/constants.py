@@ -136,6 +136,7 @@ ID_APPEND = wx.NewId()
 ID_HELP = wx.NewId()
 ID_DEBUG = wx.NewId()
 ID_LOG = wx.NewId()
+ID_THEME = wx.NewId()
 
 # FIXME: Unused IDs
 ID_BIN = wx.NewId()
