@@ -11,6 +11,8 @@
 - Finish debug log window
 - Make icon(s) for project mimetypes
 - Finish manpage
+- Add contributers file to docs dir
+- Test that locales are working
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders

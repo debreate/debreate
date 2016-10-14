@@ -19,7 +19,7 @@ debreate (0.8.0) xenial; urgency=high
     - Zlib-PNG
     Began adding Doxygen documentation
     Logger added for outputting messages to text log
-    Users can place license templates in <HOME>/.local/share/debreate/templates/licenses
+    License templates can be placed in HOME .local directory
     Fixed bug where importing files progress dialog cannot be cancelled
     Uses compressed or uncompressed archives for project save/open
     Files list shows source directory as well as target
@@ -29,7 +29,7 @@ debreate (0.8.0) xenial; urgency=high
     File list can be refreshed to update missing files
     Fixes for dialogs & saving working directory
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Mon,  06 Oct 2016 03:36:38 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Thu,  13 Oct 2016 17:35:47 -0700
 
 
 debreate (0.7.11) xenial; urgency=low
