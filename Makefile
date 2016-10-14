@@ -252,8 +252,8 @@ install-doc: $(FILES_doc) $(LICENSE)
 		$(INSTALL_DATA) "$${doc}" "$${doc_dir}"; \
 	done; \
 	\
-	#echo "\nCompressing changelog ..."; \
-	#gzip -vf9 "$${doc_dir}/changelog"; \
+	echo "\nCompressing changelog ..."; \
+	gzip -vf "$${doc_dir}/changelog"; \
 	\
 	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
 
