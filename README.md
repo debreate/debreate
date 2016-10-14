@@ -1,4 +1,4 @@
-## Debreate - Debian Package Builder
+## ![Debreate icon][icon] Debreate - Debian Package Builder
 
 
 ### Table of Contents
@@ -64,6 +64,7 @@ To run, launch the file named "init.py" (it should execute via mouse-click as we
 
 
 
+[icon]: bitmaps/debreate64.png
 
 [launchpad]: https://launchpad.net/
 [wxpython]: https://wxpython.org/
