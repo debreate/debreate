@@ -157,6 +157,7 @@ CHANGELOG = docs/changelog
 LICENSE = docs/LICENSE.txt
 MIMEFILE = data/$(PACKAGE).mime
 DOXYGEN_CONFIG = docs/Doxyfile
+INSTALLED = INSTALLED
 
 TEMPLATES_scripts = \
 	data/postinst.in \
@@ -169,7 +170,15 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
+install-data: $(INSTALLED)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	$(INSTALL_DATA) "$(INSTALLED)" "$${data_dir}"; \
+
+install: build install-data $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`$(PACKAGE)`tput sgr0` executable not present\n"; \
@@ -364,6 +373,9 @@ build:
 	echo "Creating executable \"$${exec}\" ..."; \
 	echo "$${exec_script}\n" > "$${exec}"; \
 	\
+	echo "Creating \"$(INSTALLED)\" file ..."; \
+	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
+	\
 	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
 #.PHONY: debian
@@ -409,7 +421,8 @@ clean: doc-clean
 	if [ -d "./bin" ]; then \
 		$(UNINSTALL_FOLDER) "./bin"; \
 	fi; \
-	rm -vf "./prefix"; \
+	#rm -vf "./prefix"; \
+	rm -vf "$(INSTALLED)"; \
 
 distclean: clean
 	@echo "Cleaning distribution ..."; \
@@ -455,6 +468,9 @@ help:
 	echo "\t\t  the system"; \
 	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`,"; \
 	echo "\t\t  `tput bold`install-mime`tput sgr0`, & `tput bold`install-man`tput sgr0`\n"; \
+	\
+	echo "\tinstall-data"; \
+	echo "\t\t- Install misc. data files onto the system\n"; \
 	\
 	echo "\tinstall-doc"; \
 	echo "\t\t- Install documentation files\n"; \
