@@ -33,6 +33,35 @@ local_path = u'{}/.local/share/debreate'.format(home_path)
 
 # *** Debreate Information *** #
 
+## Determins if the application is running as portable or installed
+INSTALLED = False
+if os.path.isfile(u'{}/INSTALLED'.format(application_path)):
+    INSTALLED = True
+
+def GetPrefix():
+    global application_path, INSTALLED
+    
+    if not INSTALLED:
+        return application_path
+    
+    FILE = open(u'{}/INSTALLED'.format(application_path))
+    lines = FILE.read().split(u'\n')
+    FILE.close()
+    
+    for L in lines:
+        if u'=' in L:
+            key = L.split(u'=')
+            value = key[1]
+            key = key[0]
+            
+            if key.lower() == u'prefix':
+                return value
+    
+    return application_path
+
+
+PREFIX = GetPrefix()
+
 ## Application's displayed name
 APP_NAME = GT(u'Debreate')
 AUTHOR = u'Jordan Irwin'
