@@ -6,6 +6,7 @@ import os, sys, wx.lib.dialogs, db, webbrowser, language, shutil, subprocess
 from os.path import exists
 import paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, panmenu, panbuild
 import pancopyright
+from dbr.config import WriteConfig, GetDefaultConfigValue
 
 ID_Dialogs = wx.NewId()
 
@@ -35,8 +36,8 @@ application_path = os.path.dirname(__file__)
 
 
 class MainWindow(wx.Frame):
-    def __init__(self, parent, id, title, pos, size):
-        wx.Frame.__init__(self, parent, id, title, pos, size)
+    def __init__(self, pos, size):
+        wx.Frame.__init__(self, None, wx.ID_ANY, _('Debreate - Debian Package Builder'), pos, size)
         
         self.application_path = application_path
         
@@ -369,39 +370,21 @@ class MainWindow(wx.Frame):
         if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
             confirm.Destroy()
             
-            # Get window attributes and save to config file
-            if self.IsMaximized():	# If window is maximized upon closing the program will set itself back to
-                size = "800,650"		# an 800x650 window (ony when restored back down, the program will open
-                maximize = 1        # maximized)
-                pos = "0,0"
-                center = 1
+            maximized = self.IsMaximized()
+            WriteConfig(u'maximize', self.IsMaximized())
+            
+            if maximized:
+                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
+                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+            
             else:
-                size = "%s,%s" % (self.GetSize()[0], self.GetSize()[1])
-                maximize = 0
-                pos = "%s,%s" % (self.GetPosition()[0], self.GetPosition()[1])
-                center = 0
+                WriteConfig(u'position', self.GetPosition())
+                WriteConfig(u'size', self.GetSize())
             
-            if self.cust_dias.IsChecked():
-                dias = 1
-            else:
-                dias = 0
-            
-            # Save current working directory for next session
-            cwd = os.getcwd()
-            
-            # Open and write new config file
-            if not os.path.isdir(self.dbdir):
-                os.mkdir (self.dbdir)
-            config_file = open(self.dbconfig, "w")
-            config_file.write("\
-[CONFIG-1.1]\n\
-position=%s\n\
-size=%s\n\
-maximize=%s\n\
-center=%s\n\
-dialogs=%s\n\
-workingdir=%s" % (pos, size, maximize, center, dias, cwd))
-            config_file.close()
+            # FIXME: Window not positioning correctly
+            WriteConfig(u'center', True)
+            WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+            WriteConfig(u'workingdir', os.getcwd())
             
             self.Destroy()
         else:
