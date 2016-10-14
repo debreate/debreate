@@ -79,7 +79,6 @@ FILES_dbr = \
 FILES_doc = \
 	docs/BUGS.txt \
 	docs/changelog \
-	docs/LICENSE.txt \
 	docs/release_notes \
 	docs/TODO.txt \
 	docs/usage.pdf
@@ -94,7 +93,7 @@ FILES_bitmap = \
 	bitmaps/clear32.png \
 	bitmaps/clock16.png \
 	bitmaps/confirm32.png \
-	bitmaps/debreate64.png \
+	bitmaps/$(PACKAGE)64.png \
 	bitmaps/del32.png \
 	bitmaps/error64.png \
 	bitmaps/exit32.png \
@@ -110,7 +109,7 @@ FILES_bitmap = \
 	bitmaps/save64.png
 
 FILES_man = \
-	man/man1/debreate.1
+	man/man1/$(PACKAGE).1
 
 FILES_data = \
 	data/$(MENU)
@@ -152,10 +151,11 @@ DIRS_dist = \
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
-MENU = debreate.desktop
-LOGO = bitmaps/debreate64.png
+MENU = $(PACKAGE).desktop
+LOGO = bitmaps/$(PACKAGE)64.png
 CHANGELOG = docs/changelog
-MIMEFILE = data/debreate.mime
+LICENSE = docs/LICENSE.txt
+MIMEFILE = data/$(PACKAGE).mime
 DOXYGEN_CONFIG = docs/Doxyfile
 
 TEMPLATES_scripts = \
@@ -172,7 +172,7 @@ all:
 install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
-		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
+		echo "\n\tERROR: ./bin/`tput bold`$(PACKAGE)`tput sgr0` executable not present\n"; \
 		\
 		echo "\t- Please run `tput bold`make`tput sgr0`, `tput bold`make build`tput sgr0`, or `tput bold`make all`tput sgr0`"; \
 		echo "\t  to create it, then re-run `tput bold`make install`tput sgr0`\n"; \
@@ -180,54 +180,54 @@ install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-m
 	\
 	else \
 		target=$(DESTDIR)$(prefix); \
-		bindir=$${target}/$(BINDIR); \
-		datadir=$${target}/$(DATADIR); \
-		appsdir=$${target}/$(APPSDIR); \
-		pixdir=$${target}/$(PIXDIR); \
+		bin_dir=$${target}/$(BINDIR); \
+		data_dir=$${target}/$(DATADIR); \
+		apps_dir=$${target}/$(APPSDIR); \
+		pix_dir=$${target}/$(PIXDIR); \
 		\
 		echo "\nprefix set to $(prefix)"; \
 		echo "Install target set to $${target}\n"; \
 		\
 		mkdir -vp "$${target}/$(DATADIR)"; \
 		for py in $(FILES_executable); do \
-			$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
+			$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
 		done; \
 		for py in $(FILES_root); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
 		done; \
 		\
-		mkdir -vp "$${datadir}/dbr"; \
+		mkdir -vp "$${data_dir}/dbr"; \
 		for py in $(FILES_dbr); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}/dbr"; \
 		done; \
 		\
-		$(MKDIR) "$${datadir}/wiz_bin"; \
+		$(MKDIR) "$${data_dir}/wiz_bin"; \
 		for py in $(FILES_wiz_bin); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_bin"; \
 		done; \
 		\
-		$(MKDIR) "$${datadir}/wiz_src"; \
+		$(MKDIR) "$${data_dir}/wiz_src"; \
 		for py in $(FILES_wiz_src); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_src"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_src"; \
 		done; \
 		\
-		mkdir -vp "$${datadir}/bitmaps"; \
+		mkdir -vp "$${data_dir}/bitmaps"; \
 		for png in $(FILES_bitmap); do \
-			$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
+			$(INSTALL_DATA) "$${png}" "$${data_dir}/bitmaps"; \
 		done; \
 		\
 		for d in $(DIRS_build); do \
-			$(INSTALL_FOLDER) "$${d}" "$${datadir}"; \
+			$(INSTALL_FOLDER) "$${d}" "$${data_dir}"; \
 		done; \
 		\
-		$(MKDIR) "$${bindir}"; \
-		$(INSTALL_EXEC) "$${exec}" "$${bindir}"; \
+		$(MKDIR) "$${bin_dir}"; \
+		$(INSTALL_EXEC) "$${exec}" "$${bin_dir}"; \
 		\
-		$(MKDIR) "$${pixdir}"; \
-		$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
+		$(MKDIR) "$${pix_dir}"; \
+		$(INSTALL_DATA) "bitmaps/$(PACKAGE)64.png" "$${pix_dir}/$(PACKAGE).png"; \
 		\
-		$(MKDIR) "$${appsdir}"; \
-		$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
+		$(MKDIR) "$${apps_dir}"; \
+		$(INSTALL_EXEC) "data/$(MENU)" "$${apps_dir}"; \
 	\
 	fi; \
 	\
@@ -240,28 +240,30 @@ install: build $(FILES_build) $(DIRS_build) install-doc install-locale install-m
 	\
 	echo "\nInstallation complete"; \
 
-install-doc: $(FILES_doc)
-	@docdir="$(prefix)/$(DOCDIR)"; \
-	target="$(DESTDIR)$${docdir}"; \
+install-doc: $(FILES_doc) $(LICENSE)
+	@target="$(DESTDIR)$(prefix)"; \
+	doc_dir="$${target}/$(DOCDIR)"; \
 	\
 	echo "\nInstalling documentation ..."; \
-	mkdir -vp "$${target}"; \
+	mkdir -vp "$${doc_dir}"; \
 	for doc in $(FILES_doc); do \
-		$(INSTALL_DATA) "$${doc}" "$${target}"; \
+		$(INSTALL_DATA) "$${doc}" "$${doc_dir}"; \
 	done; \
 	\
 	#echo "\nCompressing changelog ..."; \
-	#gzip -vf9 "$${target}/changelog"; \
+	#gzip -vf9 "$${doc_dir}/changelog"; \
+	\
+	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
 	\
 	src_about="dbr/about.py"; \
 	echo "Configuring source for new changelog location ..."; \
 	log_old_line="CHANGELOG = u'{}/docs/changelog'.format(dbr.application_path)"; \
-	log_new_line="CHANGELOG = u'$${docdir}/changelog'"; \
+	log_new_line="CHANGELOG = u'$${doc_dir}/changelog'"; \
 	sed -i.orig -e "s|$${log_old_line}|$${log_new_line}|" "$${src_about}"; \
 	\
 	echo "Configuring source for new LICENSE.txt location ..."; \
 	lic_old_line="LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)"; \
-	lic_new_line="LICENSE = u'$${docdir}/LICENSE.txt'"; \
+	lic_new_line="LICENSE = u'$${doc_dir}/copyright'"; \
 	sed -i -e "s|$${lic_old_line}|$${lic_new_line}|" "$${src_about}"; \
 
 install-locale: $(DIR_locale)
@@ -317,36 +319,40 @@ uninstall-man:
 	@target="$(DESTDIR)$(prefix)"; \
 	man_dir="$${target}/$(DATAROOT)/man"; \
 	echo "Manual dir: $${man_dir}"; \
-	find "$${man_dir}/man1" -type f -name "debreate\.1\.gz" -delete; \
+	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
 
-uninstall: uninstall-mime uninstall-man
-	@target=$(DESTDIR)$(prefix); \
-	bindir=$${target}/$(BINDIR); \
-	datadir=$${target}/$(DATADIR); \
-	appsdir=$${target}/$(APPSDIR); \
-	pixdir=$${target}/$(PIXDIR); \
-	docdir=$${target}/$(DOCDIR); \
+uninstall-doc:
+	@target="$(DESTDIR)$(prefix)"; \
+	doc_dir="$${target}/$(DOCDIR)"; \
+	\
+	if [ -d "$${doc_dir}" ]; then \
+		for f in `find "$${doc_dir}" -type f`; do \
+			$(UNINSTALL) "$${f}"; \
+		done; \
+		find "$${doc_dir}" -type d -empty -delete; \
+	fi; \
+
+uninstall: uninstall-mime uninstall-man uninstall-doc
+	@target="$(DESTDIR)$(prefix)"; \
+	bin_dir="$${target}/$(BINDIR)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	apps_dir="$${target}/$(APPSDIR)"; \
+	pix_dir="$${target}/$(PIXDIR)"; \
 	\
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
 	\
-	$(UNINSTALL) "$${appsdir}/$(MENU)"; \
-	$(UNINSTALL) "$${pixdir}/debreate.png"; \
-	$(UNINSTALL) "$${bindir}/$(PACKAGE)"; \
+	$(UNINSTALL) "$${apps_dir}/$(MENU)"; \
+	$(UNINSTALL) "$${pix_dir}/$(PACKAGE).png"; \
+	$(UNINSTALL) "$${bin_dir}/$(PACKAGE)"; \
 	\
-	if [ -d "$${datadir}" ]; then \
-		for f in `find "$${datadir}" -type f`; do \
+	if [ -d "$${data_dir}" ]; then \
+		for f in `find "$${data_dir}" -type f`; do \
 			$(UNINSTALL) "$${f}"; \
 		done; \
-		find "$${datadir}" -type d -empty -delete; \
+		find "$${data_dir}" -type d -empty -delete; \
 	fi; \
 	\
-	if [ -d "$${docdir}" ]; then \
-		for f in `find "$${docdir}" -type f`; do \
-			$(UNINSTALL) "$${f}"; \
-		done; \
-		find "$${docdir}" -type d -empty -delete; \
-	fi; \
 
 build:
 	@exec=bin/$(PACKAGE); \
@@ -410,10 +416,10 @@ distclean: clean
 	rm -vf "$(PACKAGE_dist)"; \
 
 debian-clean:
-	@rm -vrf "debian/debreate"
+	@rm -vrf "debian/$(PACKAGE)"
 	@DEBUILD_FILES="\
-	debian/debhelper-build-stamp debian/debreate.debhelper.log \
-	debian/debreate.substvars debian/files debian/changelog"; \
+	debian/debhelper-build-stamp debian/$(PACKAGE).debhelper.log \
+	debian/$(PACKAGE).substvars debian/files debian/changelog"; \
 	rm -vf $${DEBUILD_FILES}; \
 	for f in preinst postinst prerm postrm; do \
 		rm -vf "debian/$${f}"; \
@@ -441,11 +447,11 @@ help:
 	echo "\t\t- Show this help dialog\n"; \
 	\
 	echo "\tall|build"; \
-	echo "\t\t- Create `tput bold`debreate`tput sgr0` executable (same as invoking"; \
+	echo "\t\t- Create `tput bold`$(PACKAGE)`tput sgr0` executable (same as invoking"; \
 	echo "\t\t  `tput bold`make`tput sgr0` with no arguments)\n"; \
 	\
 	echo "\tinstall"; \
-	echo "\t\t- Install `tput bold`debreate`tput sgr0` executable & data files onto"; \
+	echo "\t\t- Install `tput bold`$(PACKAGE)`tput sgr0` executable & data files onto"; \
 	echo "\t\t  the system"; \
 	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`,"; \
 	echo "\t\t  `tput bold`install-mime`tput sgr0`, & `tput bold`install-man`tput sgr0`\n"; \
@@ -471,7 +477,8 @@ help:
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0` & `tput bold`uninstall-man`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`, `tput bold`uninstall-man`tput sgr0` &"; \
+	echo "\t\t  `tput bold`uninstall-doc`tput sgr0`\n"; \
 	\
 	echo "\tuninstall-mime"; \
 	echo "\t\t- Unregister Debreate project MimeType"; \
@@ -483,6 +490,10 @@ help:
 	\
 	echo "\tuninstall-man"; \
 	echo "\t\t- Remove Debreate Manpages from system\n"; \
+	\
+	echo "\tuninstall-doc"; \
+	echo "\t\t- Remove Debreate documentation files from"; \
+	echo "\t\t  system\n"; \
 	\
 	echo "\tdoc-html"; \
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
@@ -534,7 +545,7 @@ help:
 	echo "\tDESTDIR"; \
 	echo "\t\t- Prepends a target directory to prefix"; \
 	echo "\t\t- Files will be installed under DESTDIR\prefix"; \
-	echo "\t\t- DESTDIR is not written to the `tput bold`debreate`tput sgr0`"; \
+	echo "\t\t- DESTDIR is not written to the `tput bold`$(PACKAGE)`tput sgr0`"; \
 	echo "\t\t  executable so it will not be able to find the"; \
 	echo "\t\t  `tput bold`init.py`tput sgr0` script"; \
 	echo "\t\t- If used with `tput bold`uninstall`tput sgr0` it must match that of"; \
