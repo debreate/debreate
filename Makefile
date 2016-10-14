@@ -10,7 +10,7 @@ DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
 DOCDIR = $(DATAROOT)/doc/$(PACKAGE)
-LOCALEDIR = $(DATADIR)/locale
+LOCALEDIR = $(DATAROOT)/locale
 ICONSDIR = $(DATAROOT)/icons/$(PACKAGE)
 MIMEICONSDIR = $(ICONSDIR)/64x64/mimetypes
 
@@ -258,13 +258,20 @@ install-doc: $(FILES_doc) $(LICENSE)
 	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
 
 install-locale: $(DIR_locale)
-	@locale_dir="$(DESTDIR)$(prefix)/$(LOCALEDIR)"; \
+	@target="$(DESTDIR)$(prefix)"; \
+	locale_dir="$${target}/$(LOCALEDIR)"; \
 	echo "Installing locale files ..."; \
-	$(MKDIR) "$${locale_dir}"; \
+	if [ ! -d "$${locale_dir}" ]; then \
+		$(MKDIR) "$${locale_dir}"; \
+	fi; \
 	for mo in `find $(DIR_locale) -type f -name "*.mo"`; do \
-		td="$${locale_dir}/`dirname \"$${mo}\"`"; \
-		$(MKDIR) "$${td}"; \
-		$(INSTALL_DATA) "$${mo}" "$${td}"; \
+		mo=$$(echo "$${mo}" | sed -e 's:^.......::'); \
+		modir="$${locale_dir}/$$(dirname $${mo})"; \
+		#td="$${locale_dir}/`dirname \"$${mo}\"`"; \
+		if [ ! -d "$${modir}" ]; then \
+			$(MKDIR) "$${modir}"; \
+		fi; \
+		$(INSTALL_DATA) "locale/$${mo}" "$${modir}"; \
 	done; \
 
 install-icons: $(LOGO)
@@ -323,7 +330,13 @@ uninstall-doc:
 		find "$${doc_dir}" -type d -empty -delete; \
 	fi; \
 
-uninstall: uninstall-mime uninstall-man uninstall-doc
+uninstall-locale:
+	@target="$(DESTDIR)$(prefix)"; \
+	locale_dir="$${target}/$(LOCALEDIR)"; \
+	echo "Uninstalling locale files ..."; \
+	find "$${locale_dir}" -type f -name "$(PACKAGE)\.mo" -delete; \
+
+uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	@target="$(DESTDIR)$(prefix)"; \
 	bin_dir="$${target}/$(BINDIR)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -475,8 +488,8 @@ help:
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`, `tput bold`uninstall-man`tput sgr0` &"; \
-	echo "\t\t  `tput bold`uninstall-doc`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`, `tput bold`uninstall-man`tput sgr0`,"; \
+	echo "\t\t  `tput bold`uninstall-doc`tput sgr0`, & `tput bold`uninstall-locale`tput sgr0`\n"; \
 	\
 	echo "\tuninstall-mime"; \
 	echo "\t\t- Unregister Debreate project MimeType"; \
@@ -492,6 +505,9 @@ help:
 	echo "\tuninstall-doc"; \
 	echo "\t\t- Remove Debreate documentation files from"; \
 	echo "\t\t  system\n"; \
+	\
+	echo "\tuninstall-locale"; \
+	echo "\t\t- Remove Gettext translation files from system\n"; \
 	\
 	echo "\tdoc-html"; \
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
