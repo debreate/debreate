@@ -240,13 +240,6 @@ install: build install-data $(FILES_build) $(DIRS_build) install-doc install-loc
 	\
 	fi; \
 	\
-	# If source code was modified, restore original; \
-	dbr_about="./dbr/about.py"; \
-	if [ -f "$${dbr_about}.orig" ]; then \
-		echo "\nRestoring original source: $${dbr_about} ..."; \
-		mv -vf "$${dbr_about}.orig" "$${dbr_about}"; \
-	fi; \
-	\
 	echo "\nInstallation complete"; \
 
 install-doc: $(FILES_doc) $(LICENSE)
@@ -263,17 +256,6 @@ install-doc: $(FILES_doc) $(LICENSE)
 	#gzip -vf9 "$${doc_dir}/changelog"; \
 	\
 	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
-	\
-	src_about="dbr/about.py"; \
-	echo "Configuring source for new changelog location ..."; \
-	log_old_line="CHANGELOG = u'{}/docs/changelog'.format(dbr.application_path)"; \
-	log_new_line="CHANGELOG = u'$${doc_dir}/changelog'"; \
-	sed -i.orig -e "s|$${log_old_line}|$${log_new_line}|" "$${src_about}"; \
-	\
-	echo "Configuring source for new LICENSE.txt location ..."; \
-	lic_old_line="LICENSE = u'{}/docs/LICENSE.txt'.format(dbr.application_path)"; \
-	lic_new_line="LICENSE = u'$${doc_dir}/copyright'"; \
-	sed -i -e "s|$${lic_old_line}|$${lic_new_line}|" "$${src_about}"; \
 
 install-locale: $(DIR_locale)
 	@locale_dir="$(DESTDIR)$(prefix)/$(LOCALEDIR)"; \
