@@ -12,6 +12,7 @@
 
 # Build output files & directories
 /bin
+/INSTALLED
 
 # Debian dist files
 /debian/changelog
