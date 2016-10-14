@@ -11,7 +11,8 @@ import wx, os
 import dbr.font
 from dbr.language import GT
 from dbr import Logger
-from dbr.constants import APP_NAME
+from dbr.constants import APP_NAME, PREFIX, INSTALLED, EMAIL,\
+    AUTHOR
 from dbr.custom import Hyperlink
 
 
@@ -108,6 +109,10 @@ class AboutDialog(wx.Dialog):
         self.wx_info = wx.StaticText(sys_info, -1,
                 GT(u'wxPython version: {}').format(dbr.WX_VER_STRING))
         
+        ## Debreate's installation prefix
+        install_prefix = wx.StaticText(sys_info, -1,
+                GT(u'Installation prefix: {}').format(PREFIX))
+        
         self.py_info.SetFont(sys_info_font)
         self.wx_info.SetFont(sys_info_font)
         
@@ -116,6 +121,7 @@ class AboutDialog(wx.Dialog):
         sysinfo_layout_V1.AddStretchSpacer()
         sysinfo_layout_V1.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
         sysinfo_layout_V1.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+        sysinfo_layout_V1.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP, 5)
         sysinfo_layout_V1.AddStretchSpacer()
         
         sys_info.SetSizer(sysinfo_layout_V1)
@@ -340,9 +346,12 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
-        #  
-        #  NOTE: Original value: u'{}/docs/changelog'.format(dbr.application_path)
-        CHANGELOG = u'{}/docs/changelog'.format(dbr.application_path)
+        if INSTALLED:
+            # FIXME: Read compressed .gz changelog
+            CHANGELOG = u'{}/share/doc/debreate/changelog'.format(PREFIX)
+        
+        else:
+            CHANGELOG = u'{}/docs/changelog'.format(PREFIX)
         
         if os.path.isfile(CHANGELOG):
             log_data = open(CHANGELOG)
@@ -366,9 +375,11 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
-        #  
-        #  NOTE: Original value: u'{}/docs/LICENSE.txt'.format(dbr.application_path)
-        license_path = u'{}/docs/LICENSE.txt'.format(dbr.application_path)
+        if INSTALLED:
+            license_path = u'{}/share/doc/debreate/copyright'.format(PREFIX)
+        
+        else:
+            license_path = u'{}/docs/LICENSE.txt'.format(PREFIX)
         
         if os.path.isfile(license_path):
             lic_data = open(license_path)
@@ -376,8 +387,8 @@ class AboutDialog(wx.Dialog):
             lic_data.close()
         
         else:
-            lic_text = GT(u'ERROR:\n\tLicense \'{}\' not found'.format(license_path))
-            lic_text += u'\n\nCopyright © {} {}'.format(dbr.GetYear(), dbr.AUTHOR)
+            lic_text = GT(u'ERROR: Could not locate license file:\n\t\'{}\' not found'.format(license_path))
+            lic_text += u'\n\nCopyright © {} {} <{}>'.format(dbr.GetYear(), AUTHOR, EMAIL)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         
         self.license.SetValue(lic_text)
