@@ -12,8 +12,12 @@ import dbr.font
 from dbr.language import GT
 from dbr import Logger
 from dbr.constants import APP_NAME, PREFIX, INSTALLED, EMAIL,\
-    AUTHOR
+    AUTHOR, cmd_gzip
 from dbr.custom import Hyperlink
+from dbr.functions import GetFileMimeType, CreateTempDirectory,\
+    RemoveTempDirectory
+import shutil
+import commands
 
 
 # Font for the name
@@ -348,15 +352,55 @@ class AboutDialog(wx.Dialog):
         #   to reflect installed path.
         if INSTALLED:
             # FIXME: Read compressed .gz changelog
-            CHANGELOG = u'{}/share/doc/debreate/changelog'.format(PREFIX)
+            CHANGELOG = u'{}/share/doc/debreate/changelog.gz'.format(PREFIX)
         
         else:
             CHANGELOG = u'{}/docs/changelog'.format(PREFIX)
         
         if os.path.isfile(CHANGELOG):
-            log_data = open(CHANGELOG)
-            log_text = log_data.read()
-            log_data.close()
+            changelog_mimetype = GetFileMimeType(CHANGELOG)
+            
+            Logger.Debug(__name__, GT(u'Changelog mimetype: {}').format(changelog_mimetype))
+            
+            # Set log text in case of read error
+            log_text = GT(u'Error reading changelog: {}\n\t').format(CHANGELOG)
+            log_text = u'{}{}'.format(log_text,
+                                      GT(u'Cannot decode, unrecognized mimetype: {}').format(changelog_mimetype))
+            
+            if changelog_mimetype == u'application/gzip':
+                temp_dir = CreateTempDirectory()
+                
+                shutil.copy(CHANGELOG, temp_dir)
+                
+                if cmd_gzip:
+                    prev_dir = os.getcwd()
+                    os.chdir(temp_dir)
+                    
+                    gzip_output = commands.getstatusoutput(u'{} -fd {}'.format(cmd_gzip, os.path.basename(CHANGELOG)))
+                    
+                    Logger.Debug(__name__,
+                            GT(u'gzip decompress; Code: {}, Output: {}').format(gzip_output[0], gzip_output[1]))
+                    
+                    os.chdir(prev_dir)
+                
+                changelog_file = os.path.basename(CHANGELOG).split(u'.')[0]
+                changelog_file = u'{}/{}'.format(temp_dir, changelog_file)
+                
+                if os.path.isfile(changelog_file):
+                    FILE = open(changelog_file)
+                    log_text = FILE.read()
+                    FILE.close()
+                
+                RemoveTempDirectory(temp_dir)
+            
+            elif changelog_mimetype == u'text/plain':
+                log_data = open(CHANGELOG)
+                log_text = log_data.read()
+                log_data.close()
+            
+            else:
+                # FIXME: Should display an error dialog
+                Logger.Error(__name__, log_text)
         
         else:
             log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))

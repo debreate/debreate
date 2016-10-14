@@ -20,13 +20,10 @@
 - Add page for creating manpage
 - Finish Doxygen documentation
 - Compile gettext locales at build time
-- Install *.mo files to system locale directory
 - Finish help dialog
 - Add more tooltips
-- Option to enable/disable tooltips
 - Allow editing of dependecies list
 - Finish Markdown parser
-- Add gzip support to read compressed changelog
 - More text output on Build page
 - Set up manpage template creation for executables in file list
 
