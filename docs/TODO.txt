@@ -10,6 +10,7 @@
 - Mark projects dirty when changed
 - Finish debug log window
 - Make icon(s) for project mimetypes
+- Finish manpage
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -18,7 +19,6 @@
 - Finish Doxygen documentation
 - Compile gettext locales at build time
 - Install *.mo files to system locale directory
-- Create manpage
 - Finish help dialog
 - Add more tooltips
 - Option to enable/disable tooltips
