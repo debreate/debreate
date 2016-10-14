@@ -22,7 +22,7 @@ else:
 
 
 # System modules
-import wx, os
+import wx, os, gettext
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
@@ -37,14 +37,20 @@ debreate_app = wx.App()
 
 # Local modules
 from dbr import Logger
-from dbr.language import GT
-from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING
+from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
+from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
+    INSTALLED, PREFIX
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     default_config, GetDefaultConfigValue
 from dbr.custom import FirstRun
 from main import MainWindow
 import dbr.command_line as CL
 from dbr.compression import GetCompressionId
+
+# FIXME: How to check of text domain is set correctly?
+if INSTALLED:
+    LOCALE_DIR = u'{}/share/locale'.format(PREFIX)
+    gettext.install(TRANSLATION_DOMAIN, LOCALE_DIR, unicode=True)
 
 
 script_name = os.path.basename(__file__)
