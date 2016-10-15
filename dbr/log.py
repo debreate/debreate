@@ -13,6 +13,7 @@ from dbr.functions import GetDate, GetTime
 from dbr.language import GT
 import time
 from dbr.font import GetMonospacedFont
+from dbr.command_line import parsed_args_v
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
@@ -191,8 +192,16 @@ class LogWindow(wx.Dialog):
         
         self.SetTitle(self.log_file)
         
+        self.main_process_id = os.getpid()
+        self.log_poll_thread = None
+        self.THREAD_ID = None
+        self.MAIN_THREAD_ID = thread.get_ident()
+        
         # How often the log window will be refreshed
-        self.refresh_interval = 5
+        self.refresh_interval = 1
+        if u'log-interval' in parsed_args_v:
+            if unicode(parsed_args_v[u'log-interval']).isnumeric():
+                self.refresh_interval = int(parsed_args_v[u'log-interval'])
         
         self.evt_refresh_log = RefreshLogEvent(0)
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
@@ -243,6 +252,14 @@ class LogWindow(wx.Dialog):
         self.log_timestamp = os.stat(self.log_file).st_mtime
     
     
+    ## Destructor
+    def __del__(self):
+        print(u'FIXME: [dbr.log] How to kill log polling thread?; Thread ID: {}'.format(self.THREAD_ID))
+        
+        # FIXME: PyDeadObjectError
+        #        How to exit thread?
+    
+    
     ## Positions the log window relative to the main window
     def AlignWithMainWindow(self):
         debreate_pos = self.GetParent().GetDebreateWindow().GetPosition()
@@ -261,14 +278,6 @@ class LogWindow(wx.Dialog):
     
     ## Changes the font size
     def OnChangeFont(self, event=None):
-        '''
-        fonts = {
-            MONOSPACED_MS: MONOSPACED_MD,
-            MONOSPACED_MD: MONOSPACED_LG,
-            MONOSPACED_LG: MONOSPACED_MS,
-        }
-        '''
-        
         font_sizes = {
             7: 8,
             8: 10,
@@ -341,38 +350,18 @@ class LogWindow(wx.Dialog):
     ## Creates a thread that polls for changes in log file
     def PollLogFile(self, args=None):
         previous_timestamp = os.stat(self.log_file).st_mtime
-        iteration = 0
         while self.IsShown():
-            time.sleep(self.refresh_interval)
-            iteration += 1
-            
             current_timestamp = os.stat(self.log_file).st_mtime
-            
-            print(u'Polling log (iteration {})'.format(iteration))
-            print(u'Polling log (Current: {}; Previous: {})'.format(current_timestamp, previous_timestamp))
             
             if current_timestamp != previous_timestamp:
                 print(u'Log timestamp changed, loading new log ...')
                 
-                # FIXME: Segfault, send signal to main thread?
-                #self.RefreshLog()
-                
-                # FIXME: Segfault, would prefer to use self.RefreshLog
-                '''
-                FILE = open(self.log_file)
-                log_text = FILE.read()
-                FILE.close()
-                
-                if not self.log.IsEmpty():
-                    self.log.Clear()
-                
-                self.log.SetValue(log_text)
-                self.log.ShowPosition(self.log.GetLastPosition())
-                '''
-                
                 wx.PostEvent(self, self.evt_refresh_log)
                 
                 previous_timestamp = current_timestamp
+            
+            time.sleep(self.refresh_interval)
+            
     
     
     ## Fills log with text file contents
@@ -410,4 +399,4 @@ class LogWindow(wx.Dialog):
         self.Show(True)
         
         # FIXME: Re-enable when threading fixed
-        thread.start_new_thread(self.PollLogFile, ())
+        self.log_poll_thread = thread.start_new_thread(self.PollLogFile, ())
