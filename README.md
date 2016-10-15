@@ -24,13 +24,13 @@ The source uses a generic Makefile for "building" (because I don't know how to u
 
 #### Generating the Makefile
 
-A 'setup.py' file is to generate the Makefile (this is not the same type of 'setup.py' that is used with [distutils][]). A python interpreter must be installed to run the script. From a terminal execute './setup.py' from the source root dirctory then follow the prompts. If you want to bypass prompting & use the default settings execute './setup.py defaults'. The Makefile will be generated in same directory.
+A 'setup.py' script is used to generate the Makefile (this is not the same type of 'setup.py' that is used with [distutils][]). A python interpreter must be installed to run the script. From a terminal execute './setup.py' from the source root dirctory then follow the prompts. If you want to bypass prompting & use the default settings execute './setup.py defaults'. The Makefile will be generated in the same directory.
 
 #### Using the Makefile
 
-Open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'. To uninstall type 'make uninstall'. For help & more options type 'make help'.
+Open a terminal in the root directory & execute 'make install'. To create a distribution package execute 'make dist'. To uninstall execute 'make uninstall'. For help & more options use 'make help'.
 
-If you have [debuild][pkg.devscripts] installed, you can run 'make debuild' from the command line to build the debian package (.deb).
+If you have [debuild][pkg.devscripts] installed, you can run 'make deb-bin' from the command line to build the debian package (.deb).
 
 
 Debreate needs these packages installed to run:
