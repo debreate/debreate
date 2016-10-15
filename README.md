@@ -1,4 +1,6 @@
-## ![Debreate icon][icon] Debreate - Debian Package Builder
+![][icon]
+
+## Debreate - Debian Package Builder
 
 
 ### Table of Contents
