@@ -129,6 +129,12 @@ os.chdir(conf_values[u'workingdir'])
 # Set project compression
 Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
 
+if len(sys.argv) > 1 and os.path.isfile(sys.argv[-1]):
+    project_file = sys.argv[-1]
+    Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
+    
+    Debreate.OpenProject(project_file)
+
 debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
 debreate_app.MainLoop()
