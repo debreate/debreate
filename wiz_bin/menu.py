@@ -81,6 +81,7 @@ class Panel(WizardPage):
         
         self.name_input = wx.TextCtrl(self, name=u'Name')
         self.name_input.default = wx.EmptyString
+        self.name_input.SetName(u'Name')
         self.options_input.append(self.name_input)
         
         # --- EXECUTABLE

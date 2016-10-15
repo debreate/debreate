@@ -229,6 +229,7 @@ class MainWindow(wx.Frame):
         self.menubar.Insert(3, self.menu_help, GT(u'Help'))
         
         self.wizard = dbr.Wizard(self) # Binary
+        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
         
         self.page_info = wiz_bin.PageGreeting(self.wizard)
         self.page_info.SetInfo()
@@ -570,6 +571,14 @@ class MainWindow(wx.Frame):
             
             if DebugEnabled() and self.ProjectLoaded():
                 Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
+    
+    
+    def OnPageChanged(self, event):
+        ID = self.wizard.GetCurrentPageId()
+        Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
+        
+        if not self.menu_page.IsChecked(ID):
+            self.menu_page.Check(ID, True)
     
     
     def OnQuickBuild(self, event):

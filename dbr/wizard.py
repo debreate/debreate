@@ -50,6 +50,7 @@ class Wizard(wx.Panel):
         wx.EVT_BUTTON(self.button_prev, -1, self.ChangePage)
         wx.EVT_BUTTON(self.button_next, -1, self.ChangePage)
         
+        # FIXME: Should be global
         self.ChangePageEvent, self.EVT_CHANGE_PAGE = NewCommandEvent()
         self.evt = self.ChangePageEvent(0)
         
@@ -113,8 +114,12 @@ class Wizard(wx.Panel):
                 self.title_txt.SetLabel(p.GetLabel())
                 
         self.Layout()
+        '''
         for child in self.GetChildren():
             wx.PostEvent(child, self.evt)
+        '''
+        
+        wx.PostEvent(self.GetDebreateWindow(), self.evt)
     
     def ChangePage(self, event):
         debreate = self.GetDebreateWindow()
@@ -181,10 +186,10 @@ class Wizard(wx.Panel):
     def DisablePrev(self):
         self.EnablePrev(False)
     
-    def GetCurrentPage(self):
+    def GetCurrentPageId(self):
         for page in self.pages:
             if page.IsShown():
-                return page
+                return page.GetId()
     
     
     def ExportPages(self, page_list, out_dir):
