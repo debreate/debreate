@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-import os, sys, errno, shutil
+import os, sys, errno
 
 
 required_files = (
@@ -51,7 +51,7 @@ prefix_default = '/usr/local'
 
 build_definitions = {}
 build_definitions['prefix'] = prefix_default
-build_definitions['package'] = GetKeyValue('INFO', 'NAME').lower()
+#build_definitions['package'] = GetKeyValue('INFO', 'NAME').lower()
 build_definitions['version'] = GetKeyValue('INFO', 'VERSION')
 
 

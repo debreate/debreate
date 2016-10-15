@@ -3,7 +3,7 @@
 
 prefix = <prefix>
 
-PACKAGE = <package>
+PACKAGE = debreate
 VERSION = <version>
 BINDIR = bin
 LIBDIR = lib
