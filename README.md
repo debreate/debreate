@@ -35,10 +35,9 @@ If you have [debuild][pkg.devscripts] installed, you can run 'make deb-bin' from
 
 Debreate needs these packages installed to run:
 * [python][pkg.python]
-    * Version 2.7 is supported. The goal is to port it to Python 3.
-* python-wxgtk ([wxPython][wxpython])
-    * [python-wxgtk2.8][pkg.python-wxgtk2.8] is supported by Debreate. For Ubuntu systems newer than Wily (15.10), backports will need to be enabled or a [Wily repository mirror][pkg-wily.python-wxgtk2.8] will have to be added to /etc/apt/sources.list.
-    * [python-wxgtk3][pkg.python-wxgtk3] support is available in the [unstable development branch][src.debreate-unstable].
+    * Version 2.7 is supported. The goal is to port it to Python 3 once supported by [wxPython][wxpython].
+* python-wxgtk (wxPython)
+    * [python-wxgtk2.8][pkg.python-wxgtk2.8] & [python-wxgtk3][pkg.python-wxgtk3] are supported.
 * [python-wxversion][pkg.python-wxversion]
 * [dpkg][pkg.dpkg]
     * If you are running a Debian/Ubuntu based system, then this is most likely already installed.
@@ -56,8 +55,8 @@ It is recommended to build the .deb package with 'make debuild' & install via th
 
 ### [Standalone Use](#table-of-contents)
 
-To run, launch the file named "init.py" (it should execute via mouse-click as well):
-* './init.py' or 'python init.py'
+To run, launch the file named "init.py":
+* './init.py' or 'python init.py' (NOTE: Python 3.x is currently not supported)
 
 
 ### [Links](#table-of-contents)
