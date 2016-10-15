@@ -4,7 +4,7 @@
 
 
 # System modules
-import sys
+import os, sys
 
 # Local modules
 from dbr.language import GT
@@ -32,6 +32,10 @@ def CheckArg():
 
 def ParseArguments(arg_list):
     for arg_index in range(len(arg_list)):
+        # HACK: Allow loading project files
+        if os.path.isfile(arg_list[arg_index]):
+            continue
+        
         key = arg_list[arg_index]
         value = None
         
