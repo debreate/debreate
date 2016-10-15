@@ -46,6 +46,7 @@ from dbr.custom import FirstRun
 from main import MainWindow
 import dbr.command_line as CL
 from dbr.compression import GetCompressionId
+from dbr.command_line import parsed_args_v
 
 # FIXME: How to check of text domain is set correctly?
 if INSTALLED:
@@ -74,7 +75,8 @@ if len(sys.argv) > 1:
         arg1.close()
 
 CL.ParseArguments(sys.argv[1:])
-CL.ExecuteArguments()
+if u'log-level' in parsed_args_v:
+    Logger.SetLogLevel(parsed_args_v[u'log-level'])
 
 
 # First time Debreate is run
