@@ -1,63 +1,21 @@
 # -*- coding: utf-8 -*-
 
-import getopt
+## \package dbr.command_line
 
-'''
-arguments_s = (
-    (u'h', u'help'),
-    (u'v', u'version'),
-)
 
-arguments_v = (
-    (u'g', u'log-level'),
-)'''
+# System modules
+import sys
+
+# Local modules
+from dbr.language import GT
+import errno
+
 
 parsed_args_s = []
 parsed_args_v = {}
 
-'''
-## Try to set an argument
-def SetArgument(arg):
-    arg_type = 0
-    # Solo arguments
-    for A in arguments_s:
-        if arg in A:
-            parsed_args_s.append(A[1])
-            return True
-    
-    if u'=' in arg:
-        arg = arg.split(u'=')
-        value = arg[1]
-        arg = arg[0]
-        for A in arguments_v:
-            if arg[0] in A:
-                parsed_args_v[arg] = value
-                return True
-    
-    print(u'Invalid argument: {}'.format(arg))
-    return False
-'''
-'''
-def ParseArguments(arg_list):
-    for A in arg_list:
-        #print(u'ARG: {}'.format(A))
-        if A[:2] == u'--':
-            print(u'Long arg: {}'.format(A))
-            arg = A[2:]
-            print(arg in arguments_s)
-            SetArgument(arg)
-        elif A[0] == u'-':
-            print(u'Short arg: {}'.format(A))
-            arg = A[1:]
-            print(arg in arguments_v)
-            SetArgument(arg)
-    
-    print(u'Parsed args S: {}'.format(parsed_args_s))
-    print(u'Parsed args V: {}'.format(parsed_args_v))
-'''
-
-short_args = u'hvg:'
-long_args = [u'help', u'version', u'log-level=', u'log-interval=']
+#short_args = u'hvg:'
+#long_args = [u'help', u'version', u'log-level=', u'log-interval=']
 
 solo_args = (
     (u'h', u'help'),
@@ -73,9 +31,7 @@ def CheckArg():
     return
 
 def ParseArguments(arg_list):
-    arg_index = 0
-    
-    while arg_index < len(arg_list):
+    for arg_index in range(len(arg_list)):
         key = arg_list[arg_index]
         value = None
         
@@ -92,6 +48,33 @@ def ParseArguments(arg_list):
                 break
         
         key = key[key_index:]
+        
+        
+        # Check for bad arguments
+        arg_ok = False
+        if long_arg:
+            for S, L in solo_args:
+                if key == L:
+                    arg_ok = True
+            
+            for S, L, in value_args:
+                if key == L:
+                    arg_ok = True
+        
+        else:
+            for S, L in solo_args:
+                if key == S:
+                    arg_ok = True
+            
+            for S, L in value_args:
+                if key == S:
+                    arg_ok = True
+        
+        if not arg_ok:
+            print(GT(u'ERROR: Unrecognized argument: {}').format(key))
+            
+            sys.exit(errno.EINVAL)
+        
         
         if u'=' in key:
             value = key.split(u'=')[1]
