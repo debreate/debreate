@@ -15,7 +15,7 @@ PIXDIR = $(DATAROOT)/pixmaps
 DOCDIR = $(DATAROOT)/doc/$(PACKAGE)
 LOCALEDIR = $(DATAROOT)/locale
 ICONSDIR = $(DATAROOT)/icons/$(PACKAGE)
-MIMEICONSDIR = $(ICONSDIR)/64x64/mimetypes
+MIMEICONSDIR = $(ICONSDIR)/scalable/mimetypes
 
 SUBDIRS = \
 	data
@@ -159,6 +159,13 @@ MIMEFILE = data/$(PACKAGE).mime
 DOXYGEN_CONFIG = docs/Doxyfile
 INSTALLED = INSTALLED
 
+MIME_DBP = application-x-dbp
+MIME_DBPZ = $(MIME_DBP)z
+
+ICONS = \
+	data/svg/$(MIME_DBP).svg \
+	data/svg/$(MIME_DBPZ).svg
+
 TEMPLATES_scripts = \
 	data/postinst.in \
 	data/postrm.in
@@ -274,12 +281,13 @@ install-locale: $(DIR_locale)
 		$(INSTALL_DATA) "locale/$${mo}" "$${modir}"; \
 	done; \
 
-install-icons: $(LOGO)
+install-icons: $(ICONS)
 	@target="$(DESTDIR)$(prefix)"; \
 	icons_dir="$${target}/$(MIMEICONSDIR)"; \
 	$(MKDIR) "$${icons_dir}"; \
-	$(INSTALL_DATA) "$(LOGO)" "$${icons_dir}/application-x-dbp.png"; \
-	$(INSTALL_DATA) "$(LOGO)" "$${icons_dir}/application-x-dbpz.png"; \
+	for i in $(ICONS); do \
+		$(INSTALL_DATA) "$${i}" "$${icons_dir}"; \
+	done; \
 
 install-mime: $(MIMEFILE) install-icons
 	@target="$(DESTDIR)$(prefix)"; \
