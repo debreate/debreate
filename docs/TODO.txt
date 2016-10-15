@@ -8,7 +8,6 @@
 - Fix AutoLink executables in Files page
 - Fix error dialog layout
 - Mark projects dirty when changed
-- Finish debug log window
 - Make icon(s) for project mimetypes
 - Finish manpage
 - Test that locales are working

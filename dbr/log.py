@@ -222,16 +222,17 @@ class LogWindow(wx.Dialog):
         btn_hide = wx.Button(self, wx.ID_CLOSE, GT(u'Hide'))
         wx.EVT_BUTTON(self, wx.ID_CLOSE, self.OnClose)
         
-        layout_btnH1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_btnH1.Add(btn_open, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        layout_btnH1.AddSpacer(1, wx.EXPAND)
-        layout_btnH1.Add(btn_font, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        layout_btnH1.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        layout_btnH1.Add(btn_hide, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_btnF1 = wx.FlexGridSizer(cols=5)
+        layout_btnF1.AddGrowableCol(1, 1)
+        layout_btnF1.Add(btn_open, 0, wx.LEFT, 5)
+        layout_btnF1.AddStretchSpacer(1)
+        layout_btnF1.Add(btn_font, 0, wx.RIGHT, 5)
+        layout_btnF1.Add(btn_refresh, 0, wx.RIGHT, 5)
+        layout_btnF1.Add(btn_hide, 0, wx.RIGHT, 5)
         
         layout_mainV1 = wx.BoxSizer(wx.VERTICAL)
         layout_mainV1.Add(self.log, 1, wx.ALL|wx.EXPAND, 5)
-        layout_mainV1.Add(layout_btnH1, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
+        layout_mainV1.Add(layout_btnF1, 0, wx.EXPAND|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(layout_mainV1)
@@ -239,6 +240,7 @@ class LogWindow(wx.Dialog):
         
         wx.EVT_CLOSE(self, self.OnClose)
         wx.EVT_SHOW(self, self.OnShow)
+        wx.EVT_SHOW(parent.GetDebreateWindow(), self.OnShowMainWindow)
         
         self.SetMinSize(self.GetSize())
         
@@ -330,6 +332,17 @@ class LogWindow(wx.Dialog):
         
         if menu_checked != window_shown:
             debreate.menu_debug.Check(ID_LOG, window_shown)
+    
+    
+    ## Use an event to show the log window
+    #  
+    #  By waiting until the main window emits a show event
+    #    a separate item is not added in the system window
+    #    list for the log.
+    def OnShowMainWindow(self, event=None):
+        # Make sure the main window has not been destroyed
+        if self.GetParent().GetDebreateWindow().IsShown():
+            self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
