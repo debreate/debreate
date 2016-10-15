@@ -374,7 +374,7 @@ build:
 	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
 #.PHONY: debian
-debian-prep: $(CHANGELOG) $(TEMPLATES_scripts)
+deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 	@echo "Copying changelog to debian directory ..."; \
 	cp -vf "$(CHANGELOG)" "debian/changelog"; \
 	\
@@ -388,13 +388,13 @@ debian-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 		chmod -v 0755 "debian/$${name}"; \
 	done; \
 
-debian-bin: debian-clean debian-prep
+deb-bin: deb-clean deb-prep
 	@debuild -b -uc -us
 
-debian-src: debian-clean debian-prep
+deb-src: deb-clean deb-prep
 	@debuild -S -uc -us
 
-debian-src-signed: debian-clean debian-prep
+deb-src-signed: deb-clean deb-prep
 	@debuild -S -sa
 
 debianize: dist
@@ -423,7 +423,7 @@ distclean: clean
 	@echo "Cleaning distribution ..."; \
 	rm -vf "$(PACKAGE_dist)"; \
 
-debian-clean:
+deb-clean:
 	@rm -vrf "debian/$(PACKAGE)"
 	@DEBUILD_FILES="\
 	debian/debhelper-build-stamp debian/$(PACKAGE).debhelper.log \
@@ -436,7 +436,7 @@ debian-clean:
 doc-clean:
 	@rm -vrf docs/doxygen
 
-dist: debian-clean $(FILES_dist) $(DIRS_dist)
+dist: deb-clean $(FILES_dist) $(DIRS_dist)
 	@echo "Creating distribution package ..."; \
 	if [ -f "$(PACKAGE_dist)" ]; then \
 		rm -v "$(PACKAGE_dist)"; \
@@ -516,7 +516,7 @@ help:
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
 	\
-	echo "\tdebian-prep"; \
+	echo "\tdeb-prep"; \
 	echo "\t\t- Prepares debian directory for build &"; \
 	echo "\t\t  distribution\n"; \
 	\
@@ -525,15 +525,15 @@ help:
 	echo "\t\t  (not necessary, should already be configured)"; \
 	echo "\t\t- Uses `tput bold`dh_make`tput sgr0` command (apt install dh-make)\n"; \
 	\
-	echo "\tdebian-bin"; \
+	echo "\tdeb-bin"; \
 	echo "\t\t- Build a Debian (.deb) package for installation"; \
-	echo "\t\t- Uses `tput bold`debian-bin`tput sgr0` command (apt install devscripts)\n"; \
+	echo "\t\t- Uses `tput bold`deb-bin`tput sgr0` command (apt install devscripts)\n"; \
 	\
-	echo "\tdebian-src"; \
+	echo "\tdeb-src"; \
 	echo "\t\t- Create a source distribution package with"; \
 	echo "\t\t  Debian .dsc, .build, & .changes files\n"; \
 	\
-	echo "\tdebian-src-signed"; \
+	echo "\tdeb-src-signed"; \
 	echo "\t\t- Create a source distribution package & sign"; \
 	echo "\t\t  it for upload to a repository\n"; \
 	\
@@ -544,11 +544,11 @@ help:
 	echo "\tdoc-clean"; \
 	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
 	\
-	echo "\tdebian-clean"; \
-	echo "\t\t- Delete files create by `tput bold`debian-bin`tput sgr0`\n"; \
+	echo "\tdeb-clean"; \
+	echo "\t\t- Delete files create by `tput bold`deb-bin`tput sgr0`\n"; \
 	\
 	echo "\tdistclean"; \
-	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`debian-clean`tput sgr0`\n"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`deb-clean`tput sgr0`\n"; \
 	\
 	echo "Environment Variables:"; \
 	\
