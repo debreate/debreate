@@ -2,8 +2,6 @@
 
 import getopt
 
-from dbr import Logger, DebugEnabled
-
 '''
 arguments_s = (
     (u'h', u'help'),
@@ -59,7 +57,7 @@ def ParseArguments(arg_list):
 '''
 
 short_args = u'hvg:'
-long_args = [u'help', u'version', u'log-level=']
+long_args = [u'help', u'version', u'log-level=', u'log-interval=']
 
 solo_args = (
     (u'h', u'help'),
@@ -68,6 +66,7 @@ solo_args = (
 
 value_args = (
     (u'g', u'log-level'),
+    (u'i', u'log-interval'),
 )
 
 def CheckArg():
@@ -123,17 +122,3 @@ def ParseArguments(arg_list):
                 print(u'ERROR: Argument found after argument requiring value')
         
         arg_index += 1
-        
-
-def ExecuteArguments():
-    if u'log-level' in parsed_args_v:
-        Logger.SetLogLevel(parsed_args_v[u'log-level'])
-    
-    if DebugEnabled():
-        print(u'Solo args:')
-        for S in parsed_args_s:
-            print(u'\t{}'.format(S))
-        
-        print(u'Value args:')
-        for V in parsed_args_v:
-            print(u'\t{}: {}'.format(V, parsed_args_v[V]))
