@@ -64,16 +64,6 @@ Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_STRING))
 
 exit_now = 0
 
-# Get command line arguments
-project_file = 0 # Set project file to false
-if len(sys.argv) > 1:
-    arg1 = sys.argv[1]
-    filename = sys.argv[1] # Get the filename to show in window title
-    if os.path.isfile(arg1):
-        arg1 = open(arg1, u'r')
-        project_file = arg1.read()
-        arg1.close()
-
 CL.ParseArguments(sys.argv[1:])
 if u'log-level' in parsed_args_v:
     Logger.SetLogLevel(parsed_args_v[u'log-level'])
