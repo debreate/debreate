@@ -29,7 +29,7 @@ class Panel(WizardPage):
         self.distribution = wx.TextCtrl(self)
         
         self.urgency_text = wx.StaticText(self, -1, GT(u'Urgency'))
-        self.urgency_opt = (u'low', u'HIGH')
+        self.urgency_opt = (u'low', u'high')
         self.urgency = wx.Choice(self, choices=self.urgency_opt)
         self.urgency.SetSelection(0)
         
