@@ -11,8 +11,8 @@
 - Finish debug log window
 - Make icon(s) for project mimetypes
 - Finish manpage
-- Add contributers file to docs dir
 - Test that locales are working
+- Fix build
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -38,6 +38,7 @@ Unknown Release:
 - Omit scripts directory in gettext search
 - Create FreeBSD Port
 - Save monospaced font size for text areas using it
+- Add contributers file to docs dir
 
 Tasks being considered:
 - Scripting backend
