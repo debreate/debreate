@@ -1,2 +1,0 @@
-application/x-dbp; debreate '%s'; description="Debreate Project"; nametemplate=%s.dbp; test=test -n "$DISPLAY"; priority=1
-application/x-dbpz; debreate '%s'; description="Debreate Legacy Project"; nametemplate=%s.dbpz; test=test -n "$DISPLAY"; priority=1

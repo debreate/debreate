@@ -4,21 +4,19 @@
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
 - New method for checking for version update
-- Fix Desktop mimetypes
 - Fix AutoLink executables in Files page
-- Fix error dialog layout
 - Mark projects dirty when changed
-- Make icon(s) for project mimetypes
 - Finish manpage
 - Test that locales are working
-- Fix build
+- Fix final build
+- Compile gettext locales at build time
+- Fix mimetype icons not working
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
-- Add page for creating manpage
+- Finish page for creating manpage
 - Finish Doxygen documentation
-- Compile gettext locales at build time
 - Finish help dialog
 - Add more tooltips
 - Allow editing of dependecies list
@@ -31,7 +29,6 @@ Unknown Release:
 - Only show exit confirmation if project has been modified
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Find alternative (if necessary) to sys.setdefaultencoding
-- Utilize Logger more
 - Allow making multiple .desktop menus
 - Create scripts for updating locales
 - Omit scripts directory in gettext search
