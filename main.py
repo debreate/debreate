@@ -288,8 +288,6 @@ class MainWindow(wx.Frame):
             
             wx.EVT_MENU(self, ID_LOG, self.log_window.OnToggleWindow)
             
-            self.log_window.ShowLog()
-            
             # Window colors
             self.menu_debug.AppendItem(
                 wx.MenuItem(self.menu_debug, ID_THEME, GT(u'Toggle window colors')))
