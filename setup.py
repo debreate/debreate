@@ -5,6 +5,14 @@
 import os, sys, errno
 
 
+if len(sys.argv) > 1 and sys.argv[1].lower() == 'clean':
+    print('Removing Makefile')
+    
+    if os.path.isfile('Makefile'):
+        os.remove('Makefile')
+    
+    sys.exit(0)
+
 required_files = (
     'Makefile.in',
     'INFO',
