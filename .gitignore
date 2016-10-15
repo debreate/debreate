@@ -11,6 +11,7 @@
 *.pyc
 
 # Build output files & directories
+Makefile
 /bin
 /INSTALLED
 
