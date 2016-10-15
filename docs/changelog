@@ -28,8 +28,9 @@ debreate (0.8.0) xenial; urgency=high
     Use system '/tmp' directory as default for temporary files
     File list can be refreshed to update missing files
     Fixes for dialogs & saving working directory
+    Uses 'setup.py' to generate Makefile
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Thu,  13 Oct 2016 17:35:47 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Sat,  15 Oct 2016 06:27:21 -0700
 
 
 debreate (0.7.11) xenial; urgency=low
