@@ -20,7 +20,15 @@ The definition of Debian source packages may be a little confusing (as it was fo
 
 ### [Installation](#table-of-contents)
 
-The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built, but the Makefile simply installs the scripts onto the system. Just open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'. To uninstall type 'make uninstall'.
+The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built, but the Makefile simply installs the scripts onto the system.
+
+## Generating the Makefile
+
+A 'setup.py' file is to generate the Makefile (this is not the same type of 'setup.py' that is used with [distutils][]). A python interpreter must be installed to run the script. From a terminal execute './setup.py' from the source root dirctory then follow the prompts. If you want to bypass prompting & use the default settings execute './setup.py defaults'. The Makefile will be generated in same directory.
+
+## Using the Makefile
+
+Open a terminal in the root directory & type 'make install'. To create a distribution package type 'make dist'. To uninstall type 'make uninstall'. For help & more options type 'make help'.
 
 If you have [debuild][pkg.devscripts] installed, you can run 'make debuild' from the command line to build the debian package (.deb).
 
@@ -93,4 +101,5 @@ To run, launch the file named "init.py" (it should execute via mouse-click as we
 [pkg-wily.python-wxgtk2.8]: http://packages.ubuntu.com/wily/python-wxgtk2.8
 
 [cmake]: https://cmake.org/
+[distutils]: https://wiki.python.org/moin/Distutils
 [gnu-autotools]: https://en.wikipedia.org/wiki/GNU_Build_System

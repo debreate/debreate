@@ -1,7 +1,10 @@
-# This is a generic Makefile. It will only work on systems with GNU make.
+# This is a template Makefile
+# Use "setup.py" to create actual Makefile
 
-PACKAGE = debreate
-VERSION = 0.8.0
+prefix = <prefix>
+
+PACKAGE = <package>
+VERSION = <version>
 BINDIR = bin
 LIBDIR = lib
 MIMEDIR = $(LIBDIR)/mime/packages
@@ -23,9 +26,6 @@ INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
 UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
-
-# This is written to 'prefix' in 'build' rule, then read in 'install'
-prefix=/usr/local
 
 
 FILES_executable = \
