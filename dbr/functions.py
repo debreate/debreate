@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.functions
+#  
 #  Global functions used throughout Debreate
 
 
@@ -385,8 +386,6 @@ def CreateTempDirectory():
         temp_dir = os.getcwd()
     
     temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_NAME).lower(), VERSION_STRING)
-    
-    print(u'DEBUG: Temporary directory: {}'.format(temp_dir))
     
     if os.access(os.path.dirname(temp_dir), os.W_OK):
         # Start with fresh directory
