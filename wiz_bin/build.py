@@ -9,14 +9,14 @@ from os.path import exists
 
 # Local modules
 import dbr
-from dbr.dialogs import DetailedMessageDialog, ErrorDialog, StandardFileDialog
+from dbr.dialogs import DetailedMessageDialog, ErrorDialog
 from dbr.language import GT
 from dbr.constants import ID_BUILD, custom_errno, cmd_md5sum, cmd_lintian,\
     ICON_ERROR, ICON_INFORMATION, ID_CONTROL, ID_FILES,\
     ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
 from dbr.wizard import WizardPage
 from dbr.functions import GetBoolean, BuildBinaryPackageFromTree,\
-    CreateTempDirectory, RemoveTempDirectory
+    CreateTempDirectory, RemoveTempDirectory, TextIsEmpty
 from dbr.dialogs import GetFileSaveDialog, ShowDialog
 from dbr import Logger, DebugEnabled
 
@@ -412,6 +412,35 @@ class Panel(WizardPage):
     
     # TODO: Check required fields before build
     def OnBuild(self, event):
+        meta = self.debreate.page_control
+        required_fields = {
+            GT(u'Control'): (meta.pack, meta.ver, meta.auth, meta.email,),
+        }
+        
+        if self.debreate.page_menu.activate.GetValue():
+            #required_fields.append(self.debreate.page_menu.name_input)
+            required_fields[GT(u'Menu Launcher')] = (self.debreate.page_menu.name_input,)
+        
+        for page_name in required_fields:
+            for F in required_fields[page_name]:
+                if TextIsEmpty(F.GetValue()):
+                    field_name = F.GetName()
+                    
+                    Logger.Debug(__name__,
+                            u'{}: {} ➜ {}'.format(GT(u'A required field is empty'), page_name, field_name))
+                    
+                    err_dialog = wx.MessageDialog(self.GetDebreateWindow(), GT(u'A required field is empty'),
+                            GT(u'Error'), style=wx.OK|wx.ICON_ERROR)
+                    err_dialog.SetExtendedMessage(u'{} ➜ {}'.format(page_name, field_name))
+                    err_dialog.ShowModal()
+                    
+                    for P in self.wizard.pages:
+                        if P.GetLabel() == page_name:
+                            self.wizard.ShowPage(P.GetId())
+                    
+                    return
+        
+        
         ttype = GT(u'Debian Packages')
         save_dialog = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
