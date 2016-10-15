@@ -22,7 +22,7 @@ else:
 
 
 # System modules
-import wx, os, gettext
+import wx, os, gettext, commands
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
@@ -39,14 +39,14 @@ debreate_app = wx.App()
 from dbr import Logger
 from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
 from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
-    INSTALLED, PREFIX
+    INSTALLED, PREFIX, APP_NAME, application_path
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     default_config, GetDefaultConfigValue
 from dbr.custom import FirstRun
 from main import MainWindow
 import dbr.command_line as CL
 from dbr.compression import GetCompressionId
-from dbr.command_line import parsed_args_v
+from dbr.command_line import parsed_args_v, parsed_args_s
 
 # FIXME: How to check of text domain is set correctly?
 if INSTALLED:
@@ -58,16 +58,45 @@ script_name = os.path.basename(__file__)
 if u'.py' in script_name:
     script_name = script_name.split(u'.py')[0]
 
-Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
-Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
-Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_STRING))
-
 exit_now = 0
 
+
+# *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
+
+if u'version' in parsed_args_s:
+    print(u'{} {}'.format(APP_NAME, VERSION_STRING))
+    
+    sys.exit(0)
+
+
+if u'help' in parsed_args_s:
+    if INSTALLED:
+        help_output = commands.getstatusoutput(u'man debreate')
+    
+    else:
+        help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(application_path))
+    
+    
+    if help_output[0]:
+        print(u'ERROR: Could not locate manpage')
+        
+        sys.exit(help_output[0])
+    
+    
+    help_output = unicode(help_output[1])
+    print(u'\n'.join(help_output.split(u'\n')[2:-1]))
+    
+    sys.exit(0)
+
+
 if u'log-level' in parsed_args_v:
     Logger.SetLogLevel(parsed_args_v[u'log-level'])
 
+
+Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
+Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
+Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_STRING))
 
 # First time Debreate is run
 if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
