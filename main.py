@@ -483,7 +483,7 @@ class MainWindow(wx.Frame):
                 Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
-    def OnOpenProject(self, event):
+    def OnOpenProject(self, event=None):
         if self.IsDirty():
             Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
             
@@ -541,34 +541,8 @@ class MainWindow(wx.Frame):
             
             # Get the path and set the saved project
             opened_path = open_dialog.GetPath()
-            mime_type = GetFileMimeType(opened_path)
             
-            Logger.Debug(__name__, GT(u'Opening project: {}').format(opened_path))
-            Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
-            
-            project_opened = None
-            if mime_type == u'text/plain':
-                p_open = open(opened_path, u'r')
-                p_text = p_open.read()
-                p_open.close()
-                
-                filename = os.path.split(opened_path)[1]
-                
-                # Legacy projects should return None since we can't save in that format
-                project_opened = self.OpenProjectLegacy(p_text, filename)
-                
-            else:
-                project_opened = self.OpenProject(opened_path, mime_type)
-            
-            Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectLoaded()))
-            
-            if project_opened == custom_errno.SUCCESS:
-                self.loaded_project = opened_path
-            
-            Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectLoaded()))
-            
-            if DebugEnabled() and self.ProjectLoaded():
-                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
+            self.OpenProject(opened_path)
     
     
     def OnPageChanged(self, event):
@@ -705,8 +679,42 @@ class MainWindow(wx.Frame):
         webbrowser.open(self.references[EVENT_ID])
     
     
-    #  TODO: Finish defining
-    def OpenProject(self, filename, file_type):
+    ## Tests project type & calls correct method to read project file
+    #  
+    #  \param project_file
+    #    \b \e unicode|str : Path to project file
+    def OpenProject(self, project_file):
+        mime_type = GetFileMimeType(project_file)
+        
+        Logger.Debug(__name__, GT(u'Opening project: {}').format(project_file))
+        Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
+        
+        project_opened = None
+        if mime_type == u'text/plain':
+            p_open = open(project_file, u'r')
+            p_text = p_open.read()
+            p_open.close()
+            
+            filename = os.path.split(project_file)[1]
+            
+            # Legacy projects should return None since we can't save in that format
+            project_opened = self.OpenProjectLegacy(p_text, filename)
+            
+        else:
+            project_opened = self.OpenProjectArchive(project_file, mime_type)
+        
+        Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectLoaded()))
+        
+        if project_opened == custom_errno.SUCCESS:
+            self.loaded_project = project_file
+        
+        Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectLoaded()))
+        
+        if DebugEnabled() and self.ProjectLoaded():
+            Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
+    
+    
+    def OpenProjectArchive(self, filename, file_type):
         Logger.Debug(__name__, GT(u'Compressed project archive detected'))
         
         if file_type not in compression_mimetypes:
