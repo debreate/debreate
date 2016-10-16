@@ -10,7 +10,7 @@
 - Test that locales are working
 - Fix final build
 - Compile gettext locales at build time
-- Fix mimetype icons not working
+- Only show exit confirmation if project has been modified
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
@@ -21,12 +21,11 @@
 - Add more tooltips
 - Allow editing of dependecies list
 - Finish Markdown parser
-- More text output on Build page
+- Text output on Build page
 - Set up manpage template creation for executables in file list
 
 Unknown Release:
 - Detailed documentation on files page
-- Only show exit confirmation if project has been modified
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Find alternative (if necessary) to sys.setdefaultencoding
 - Allow making multiple .desktop menus
