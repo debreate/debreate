@@ -11,15 +11,21 @@
 
 import sys
 
+import command_line as CL
+from command_line import parsed_commands, parsed_args_s, parsed_args_v,\
+    GetParsedPath
+
+# *** Command line arguments
+CL.ParseArguments(sys.argv[1:])
+
 # Modules to define required version of wx
 import wxversion
 
-if len(sys.argv) > 1 and sys.argv[1] == u'legacy':
+if u'legacy' in parsed_commands:
     wxversion.select([u'2.8'])
 
 else:
     wxversion.select([u'3.0', u'2.8'])
-
 
 # System modules
 import wx, os, gettext, commands
@@ -44,9 +50,15 @@ from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     default_config, GetDefaultConfigValue
 from dbr.custom import FirstRun
 from main import MainWindow
-import dbr.command_line as CL
 from dbr.compression import GetCompressionId
-from dbr.command_line import parsed_args_v, parsed_args_s
+
+
+# Log window refresh interval
+if u'log-interval' in parsed_args_v:
+    from dbr.log import SetLogWindowRefreshInterval
+    if unicode(parsed_args_v[u'log-interval']).isnumeric():
+        SetLogWindowRefreshInterval(int(parsed_args_v[u'log-interval']))
+
 
 # FIXME: How to check of text domain is set correctly?
 if INSTALLED:
@@ -59,10 +71,6 @@ if u'.py' in script_name:
     script_name = script_name.split(u'.py')[0]
 
 exit_now = 0
-
-
-# *** Command line arguments
-CL.ParseArguments(sys.argv[1:])
 
 if u'version' in parsed_args_s:
     print(u'{} {}'.format(APP_NAME, VERSION_STRING))
@@ -148,8 +156,10 @@ os.chdir(conf_values[u'workingdir'])
 # Set project compression
 Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
 
-if len(sys.argv) > 1 and os.path.isfile(sys.argv[-1]):
-    project_file = sys.argv[-1]
+parsed_path = GetParsedPath()
+print(u'PARSED PATH: {}'.format(parsed_path))
+if parsed_path:
+    project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
     
     Debreate.OpenProject(project_file)
