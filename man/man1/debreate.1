@@ -20,20 +20,27 @@
 Debreate \- Debian package builder
 .SH SYNOPSIS
 .B debreate
-.RI file
-.br
-.B debreate
-.RI <option>
+.RI [commands] | [options] | [project]
 .SH DESCRIPTION
 A utility to aid in creating Debian packages for distribution.
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
 .\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
+.SH COMMANDS
+.TP
+.B legacy
+- Forces using version 2.8 of wxPython instead of 3.0.
 .SH OPTIONS
 .TP
-.B \-h, \-\-help
+.B \-h|\-\-help
 Show this help summary.
 .TP
-.B \-v, \-\-version
+.B \-v|\-\-version
 Show version of program.
+.TP
+.B \-g=|\-\-log-level=<value>
+Set the log output level. Posibble values are 'info', 'warning', 'error', & 'debug'.
+.TP
+.B \-i=|\-\-log-interval=<value>
+Set the integer value refresh rate for the log window when debugging is enabled.
 .SH "SEE ALSO"
