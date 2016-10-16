@@ -18,6 +18,7 @@ from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
 import shutil
 import commands
+from dbr.error import ShowError
 
 
 # Font for the name
@@ -400,7 +401,7 @@ class AboutDialog(wx.Dialog):
             
             else:
                 # FIXME: Should display an error dialog
-                Logger.Error(__name__, log_text)
+                ShowError(self.GetParent().GetDebreateWindow(), log_text)
         
         else:
             log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
