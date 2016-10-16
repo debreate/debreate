@@ -26,6 +26,15 @@ class ConfCode:
     WRONG_TYPE = wx.NewId()
     KEY_NO_EXIST = wx.NewId()
     KEY_NOT_DEFINED = wx.NewId()
+    
+    string = {
+        ERR_READ: u'ERR_READ',
+        ERR_WRITE: u'ERR_WRITE',
+        FILE_NOT_FOUND: u'FILE_NOT_FOUND',
+        WRONG_TYPE: u'WRONG_TYPE',
+        KEY_NO_EXIST: u'KEY_NO_EXIST',
+        KEY_NOT_DEFINED: u'KEY_NOT_DEFINED',
+    }
 
 # Version of configuration to use
 config_version = (1, 1)
@@ -34,27 +43,17 @@ config_version = (1, 1)
 default_config_dir = u'{}/.config/debreate'.format(home_path)
 default_config = u'{}/config'.format(default_config_dir)
 
-# Key type definitions
-key_types = {
-    u'center': GetBoolean,
-    u'dialogs': GetBoolean,
-    u'maximize': GetBoolean,
-    u'position': GetIntTuple,
-    u'size': GetIntTuple,
-    u'workingdir': unicode,
-    u'compression': unicode,
-    u'tooltips': GetBoolean,
-}
-
+# name = (function, default value)
 default_config_values = {
-    u'center': True,
-    u'dialogs': False,
-    u'maximize': False,
-    u'position': (0, 0),
-    u'size': (800, 640),
-    u'workingdir': home_path,
-    u'compression': compression_formats[DEFAULT_COMPRESSION_ID],
-    u'tooltips': True,
+    u'center': (GetBoolean, True),
+    u'dialogs': (GetBoolean, False),
+    u'maximize': (GetBoolean, False),
+    u'position': (GetIntTuple, (0, 0)),
+    u'size': (GetIntTuple, (800, 640)),
+    u'workingdir': (unicode, home_path),
+    u'compression': (unicode, compression_formats[DEFAULT_COMPRESSION_ID]),
+    u'tooltips': (GetBoolean, True),
+    u'hiddenfiles': (GetBoolean, True),
 }
 
 
@@ -76,7 +75,7 @@ def ReadConfig(k_name, conf=default_config):
         return ConfCode.SUCCESS
     
     # Only read pre-defined keys
-    if k_name not in key_types:
+    if k_name not in default_config_values:
         #Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
@@ -91,7 +90,7 @@ def ReadConfig(k_name, conf=default_config):
             key = key[0]
             
             if k_name == key:
-                value = key_types[key](value)
+                value = default_config_values[key][0](value)
                 
                 #Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
                 return value
@@ -99,7 +98,7 @@ def ReadConfig(k_name, conf=default_config):
     if k_name in default_config_values:
         #Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
         
-        return default_config_values[k_name]
+        return GetDefaultConfigValue(k_name)
     
     return ConfCode.KEY_NO_EXIST
 
@@ -123,12 +122,12 @@ def WriteConfig(k_name, k_value, conf=default_config):
         os.makedirs(conf_dir)
     
     # Only write pre-defined keys
-    if k_name not in key_types:
+    if k_name not in default_config_values:
         #Logger.Warning(__name__, u'Cannot write to config, key not defined: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
     # Make sure we are writing the correct type
-    k_value = key_types[k_name](k_value)
+    k_value = default_config_values[k_name][0](k_value)
     
     if k_value == None:
         #Logger.Warning(__name__, u'Value is of wrong type for key "{}"'.format(k_name))
@@ -193,7 +192,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
 #        \b \e ConfCode
 def InitializeConfig(conf=default_config):
     for V in default_config_values:
-        exit_code = WriteConfig(V, default_config_values[V], conf)
+        exit_code = WriteConfig(V, default_config_values[V][1], conf)
         
         if exit_code != ConfCode.SUCCESS:
             return exit_code
@@ -208,7 +207,7 @@ def InitializeConfig(conf=default_config):
 #  \return
 #        Default value for the key or ConfCode.KEY_NO_EXIST
 def GetDefaultConfigValue(key):
-    if key in default_config_values:
-        return default_config_values[key]
+    if key in default_config:
+        return default_config_values[key][1]
     
     return ConfCode.KEY_NO_EXIST
