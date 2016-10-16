@@ -179,6 +179,21 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
+build:
+	@exec=bin/$(PACKAGE); \
+	echo "\nprefix set to \"$(prefix)\""; \
+	\
+	exec_script=\#"!/bin/sh\n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py \$$@"; \
+	\
+	mkdir -vp "bin"; \
+	echo "Creating executable \"$${exec}\" ..."; \
+	echo "$${exec_script}\n" > "$${exec}"; \
+	\
+	echo "Creating \"$(INSTALLED)\" file ..."; \
+	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
+	\
+	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
+
 install-data: $(INSTALLED)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -315,9 +330,9 @@ uninstall-icons:
 	@target="$(DESTDIR)$(prefix)"; \
 	icons_dir="$${target}/$(ICONTHEME)"; \
 	if [ -d "$${icons_dir}" ]; then \
-		for f in `find "$${icons_dir}" -type f`; do \
-			$(UNINSTALL) "$${f}"; \
-		done; \
+		mime_dbp="$(MIME_prefix)-$(MIME_dbp)"; \
+		#$(UNINSTALL) "$${mime_dbp}.svg" "$${mime_dbp}z.svg"; \
+		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*\\.svg" -delete; \
 		find "$${icons_dir}" -type d -empty -delete; \
 	fi; \
 
@@ -371,21 +386,6 @@ uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	fi; \
 	\
 
-build:
-	@exec=bin/$(PACKAGE); \
-	echo "\nprefix set to \"$(prefix)\""; \
-	\
-	exec_script=\#"!/bin/sh\n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py \$$@"; \
-	\
-	mkdir -vp "bin"; \
-	echo "Creating executable \"$${exec}\" ..."; \
-	echo "$${exec_script}\n" > "$${exec}"; \
-	\
-	echo "Creating \"$(INSTALLED)\" file ..."; \
-	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
-	\
-	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
-
 #.PHONY: debian
 deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 	@echo "Copying changelog to debian directory ..."; \
@@ -403,6 +403,9 @@ deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 
 deb-bin: deb-clean deb-prep
 	@debuild -b -uc -us
+
+deb-bin-signed: deb-clean deb-prep
+	@debuild -b -sa
 
 deb-src: deb-clean deb-prep
 	@debuild -S -uc -us
