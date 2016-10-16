@@ -28,6 +28,7 @@ class ConfCode:
     KEY_NOT_DEFINED = wx.NewId()
     
     string = {
+        SUCCESS: u'SUCCESS',
         ERR_READ: u'ERR_READ',
         ERR_WRITE: u'ERR_WRITE',
         FILE_NOT_FOUND: u'FILE_NOT_FOUND',
