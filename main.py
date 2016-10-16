@@ -25,6 +25,7 @@ from dbr.compression import \
     CompressionHandler, DEFAULT_COMPRESSION_ID
 from dbr.quickbuild import QuickBuild
 from dbr.log import LogWindow
+from dbr.error import ShowError
 
 
 # Options menu
@@ -737,10 +738,8 @@ class MainWindow(wx.Frame):
         p_archive = CompressionHandler(compression_id)
         ret_code = p_archive.Uncompress(filename, temp_dir)
         
-        # FIXME: Should display an error dialog
         if isinstance(ret_code, tuple) and ret_code[0]:
-            Logger.Error(__name__,
-                    GT(u'Project load error {}: "{}"').format(ret_code[0], ret_code[1]))
+            ShowError(self, u'{}: {}'.format(GT(u'Project load error'), ret_code[1]), ret_code[0])
             return
         
         self.wizard.ImportPagesInfo(temp_dir)
@@ -822,8 +821,7 @@ class MainWindow(wx.Frame):
         temp_dir = CreateTempDirectory()
         
         if not os.path.exists(temp_dir) or temp_dir == custom_errno.EACCES:
-            # FIXME: Show error dialog
-            Logger.Error(__name__, GT(u'Could not create staging directory: {}').format(temp_dir))
+            ShowError(self, u'{}: {}'.format(GT(u'Could not create staging directory'), temp_dir))
             return
         
         Logger.Debug(__name__, GT(u'Temp dir created: {}').format(temp_dir))
@@ -872,8 +870,7 @@ class MainWindow(wx.Frame):
             
             return custom_errno.SUCCESS
         
-        # FIXME: Show error dialog
-        Logger.Debug(__name__, GT(u'Project save failed: {}').format(target_path))
+        ShowError(self, u'{}: {}'.format(GT(u'Project save failed'), target_path))
     
     
     def SetProjectDirty(self, dirty=True):
