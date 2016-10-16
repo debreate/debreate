@@ -32,6 +32,7 @@ FILES_executable = \
 	init.py
 
 FILES_root = \
+	command_line.py \
 	main.py
 
 FILES_wiz_bin = \
@@ -56,7 +57,6 @@ FILES_dbr = \
 	dbr/about.py \
 	dbr/buttons.py \
 	dbr/charctrl.py \
-	dbr/command_line.py \
 	dbr/commandcheck.py \
 	dbr/compression.py \
 	dbr/config.py \

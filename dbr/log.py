@@ -13,7 +13,7 @@ from dbr.functions import GetDate, GetTime
 from dbr.language import GT
 import time
 from dbr.font import GetMonospacedFont
-from dbr.command_line import parsed_args_v
+#from dbr.command_line import parsed_args_v
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
@@ -178,6 +178,18 @@ class DebreateLogger:
         return self.log_file
 
 
+
+# How often the log window will be refreshed
+LOG_WINDOW_REFRESH_INTERVAL = 1
+
+def SetLogWindowRefreshInterval(value):
+    global LOG_WINDOW_REFRESH_INTERVAL
+    LOG_WINDOW_REFRESH_INTERVAL = value
+
+def GetLogWindowRefreshInterval():
+    return LOG_WINDOW_REFRESH_INTERVAL
+
+
 ## Window displaying Logger messages
 #  
 #  FIXME: Creates separate task list window on initialization
@@ -196,12 +208,6 @@ class LogWindow(wx.Dialog):
         self.log_poll_thread = None
         self.THREAD_ID = None
         self.MAIN_THREAD_ID = thread.get_ident()
-        
-        # How often the log window will be refreshed
-        self.refresh_interval = 1
-        if u'log-interval' in parsed_args_v:
-            if unicode(parsed_args_v[u'log-interval']).isnumeric():
-                self.refresh_interval = int(parsed_args_v[u'log-interval'])
         
         self.evt_refresh_log = RefreshLogEvent(0)
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
@@ -373,7 +379,7 @@ class LogWindow(wx.Dialog):
                 
                 previous_timestamp = current_timestamp
             
-            time.sleep(self.refresh_interval)
+            time.sleep(LOG_WINDOW_REFRESH_INTERVAL)
             
     
     
