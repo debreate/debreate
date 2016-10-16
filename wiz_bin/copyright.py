@@ -11,6 +11,7 @@ from dbr.constants import ID_COPYRIGHT, custom_errno
 from dbr.functions import TextIsEmpty, RemovePreWhitespace
 from dbr.wizard import WizardPage
 from dbr import Logger
+from dbr.error import ShowError
 
 
 # Globals
@@ -119,8 +120,7 @@ class Panel(WizardPage):
             license_path = u'{}/{}'.format(dbr.system_licenses_path, license_name)
             
             if not os.path.isfile(license_path):
-                # FIXME: Should have an error dialog pop up
-                print(u'ERROR: Could not locate standard license: {}'.format(license_path))
+                ShowError(self.GetDebreateWindow(), u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
                 return
             
             FILE = open(license_path, u'r')
