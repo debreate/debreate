@@ -46,10 +46,11 @@ from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
 from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
     INSTALLED, PREFIX, APP_NAME, application_path
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
-    default_config, GetDefaultConfigValue
+    GetDefaultConfigValue, default_config
 from dbr.custom import FirstRun
 from main import MainWindow
 from dbr.compression import GetCompressionId
+from dbr.error import ShowError
 
 
 # Log window refresh interval
@@ -110,14 +111,19 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     FR_dialog = FirstRun()
     debreate_app.SetTopWindow(FR_dialog)
     FR_dialog.ShowModal()
-    FR_dialog.Destroy()
     
     init_conf_code = InitializeConfig()
     Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
+        fr_error = GT(u'Could not create configuration, exiting ...')
+        ShowError(FR_dialog, fr_error, ConfCode.string[init_conf_code])
+        '''
         Logger.Error(script_name,
                 u'[ERROR: {}] {}'.format(ConfCode.string[init_conf_code], GT(u'Could not create configuration, exiting ...')))
+        '''
         exit_now = init_conf_code
+    
+    FR_dialog.Destroy()
     
 
 if exit_now:
