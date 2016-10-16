@@ -16,7 +16,7 @@ Makefile
 /INSTALLED
 
 # Debian dist files
-/debian/changelog
+#/debian/changelog
 /debian/debreate
 /debian/debhelper-build-stamp
 /debian/debreate.debhelper.log
