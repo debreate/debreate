@@ -462,7 +462,7 @@ deb-clean:
 	@rm -vrf "debian/$(PACKAGE)"
 	@DEBUILD_FILES="\
 	debian/debhelper-build-stamp debian/$(PACKAGE).debhelper.log \
-	debian/$(PACKAGE).substvars debian/files debian/changelog"; \
+	debian/$(PACKAGE).substvars debian/files"; \
 	rm -vf $${DEBUILD_FILES}; \
 	for f in preinst postinst prerm postrm; do \
 		rm -vf "debian/$${f}"; \
