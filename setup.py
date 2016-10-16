@@ -55,13 +55,52 @@ def GetKeyValue(target_file, key_name):
 
 # *** Default settings *** #
 
-prefix_default = '/usr/local'
+default_prefix = '/usr/local'
+default_icon_theme = '$(DATAROOT)/icons/gnome'.format(default_prefix)
 
-build_definitions = {}
-build_definitions['prefix'] = prefix_default
-#build_definitions['package'] = GetKeyValue('INFO', 'NAME').lower()
-build_definitions['version'] = GetKeyValue('INFO', 'VERSION')
+build_definitions = {
+    'prefix': default_prefix,
+    #'package': GetKeyValue('INFO', 'NAME').lower(),
+    'version': GetKeyValue('INFO', 'VERSION'),
+    'icon-theme': default_icon_theme,
+}
 
+string_replacements = {
+    '$(DATAROOT)': '<prefix>/share',
+}
+
+
+def SetVariable(key, default_value, value_type='path'):
+    global build_definitions, string_replacements
+    
+    display_value = default_value
+    
+    for S in string_replacements:
+        if S in display_value:
+            display_value = display_value.replace(S, string_replacements[S])
+    
+    while True:
+        print('Set {} ...'.format(key))
+        input_var = raw_input('default [{}] : '.format(display_value))
+        
+        if input_var in ('exit', 'quit', 'abort'):
+            print('Aborting ...')
+            sys.exit(0)
+        
+        if not input_var:
+            # Default value is used
+            break
+        
+        elif not input_var.strip():
+            print('ERROR: Value cannot be empty')
+            continue
+        
+        if value_type == 'path' and input_var[0] not in ('/', '$',):
+            print('ERROR: Invalid path: {}'.format(input_var))
+            continue
+        
+        build_definitions[key] = input_var
+        break
 
 # *** User defined setup *** #
 
@@ -74,12 +113,16 @@ if not use_defaults:
     unfinished = True
     while unfinished:
         
+        SetVariable('prefix', default_prefix)
+        SetVariable('icon-theme', default_icon_theme)
+        
+        '''
         while True:
             print('\nSet prefix ...')
-            input_prefix = raw_input('(default: [{}]) : '.format(prefix_default)).strip()
+            input_prefix = raw_input('(default: [{}]) : '.format(default_prefix)).strip()
             
             if not input_prefix:
-                input_prefix = prefix_default
+                input_prefix = default_prefix
             
             if input_prefix in ('exit', 'quit', 'abort'):
                 print('Aborting ...')
@@ -94,9 +137,19 @@ if not use_defaults:
             break
         
         while True:
+            print('\nSet icon theme path ...')
+            input_icon_theme = raw_input('default [{}] : '.format(default_icon_theme))
+        '''
+        
+        while True:
             print('\nPlease check the following build settings:')
             for D in build_definitions:
-                print('\t{}: {}'.format(D, build_definitions[D]))
+                display_definition = build_definitions[D]
+                for S in string_replacements:
+                    if S in display_definition:
+                        display_definition = display_definition.replace(S, string_replacements[S])
+                
+                print('\t{}: {}'.format(D, display_definition))
             
             correct = raw_input('\nIs this correct [YES|no] : ').strip()
             
