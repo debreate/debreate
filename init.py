@@ -23,7 +23,6 @@ import wxversion
 
 if u'legacy' in parsed_commands:
     wxversion.select([u'2.8'])
-
 else:
     wxversion.select([u'3.0', u'2.8'])
 
@@ -116,7 +115,8 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     init_conf_code = InitializeConfig()
     Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        Logger.Error(script_name, GT(u'Could not create configuration, exiting ...'))
+        Logger.Error(script_name,
+                u'[ERROR: {}] {}'.format(ConfCode.string[init_conf_code], GT(u'Could not create configuration, exiting ...')))
         exit_now = init_conf_code
     
 
@@ -157,7 +157,6 @@ os.chdir(conf_values[u'workingdir'])
 Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
 
 parsed_path = GetParsedPath()
-print(u'PARSED PATH: {}'.format(parsed_path))
 if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
