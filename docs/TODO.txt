@@ -9,7 +9,6 @@
 - Finish manpage
 - Test that locales are working
 - Fix final build
-- Compile gettext locales at build time
 - Only show exit confirmation if project has been modified
 
 0.8.1 Release Changes:
