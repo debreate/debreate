@@ -13,9 +13,9 @@ APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
 DOCDIR = $(DATAROOT)/doc/$(PACKAGE)
 LOCALEDIR = $(DATAROOT)/locale
-ICONSDIR = $(DATAROOT)/icons/$(PACKAGE)
+ICONTHEME = <icon-theme>
 MIMEDIR = $(DATAROOT)/mime/packages
-MIMEICONSDIR = $(ICONSDIR)/scalable/mimetypes
+MIMEICONSDIR = $(ICONTHEME)/scalable/mimetypes
 
 SUBDIRS = \
 	data
@@ -129,7 +129,8 @@ FILES_dist = \
 	$(FILES_root) \
 	INFO \
 	Makefile \
-	README.md
+	README.md \
+	setup.py
 
 DIR_locale = locale
 
@@ -312,7 +313,7 @@ install-man: $(FILES_man)
 
 uninstall-icons:
 	@target="$(DESTDIR)$(prefix)"; \
-	icons_dir="$${target}/$(ICONSDIR)"; \
+	icons_dir="$${target}/$(ICONTHEME)"; \
 	if [ -d "$${icons_dir}" ]; then \
 		for f in `find "$${icons_dir}" -type f`; do \
 			$(UNINSTALL) "$${f}"; \
