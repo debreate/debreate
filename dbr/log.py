@@ -13,6 +13,7 @@ from dbr.functions import GetDate, GetTime
 from dbr.language import GT
 import time
 from dbr.font import GetMonospacedFont
+from dbr.error import ShowError
 #from dbr.command_line import parsed_args_v
 
 
@@ -325,8 +326,8 @@ class LogWindow(wx.Dialog):
                 self.SetLogFile(log_file)
                 return
             
-            # FIXME: Show error dialog here
-            print(GT(u'Error: File does not exits: {}').format(log_file))
+            ShowError(self.GetParent().GetDebreateWindow(),
+                    u'{}: {}'.format(GT(u'File does not exist'), log_file))
     
     
     ## Guarantess that menu item is synched with window's shown status
