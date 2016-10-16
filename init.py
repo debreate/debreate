@@ -117,10 +117,7 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
         fr_error = GT(u'Could not create configuration, exiting ...')
         ShowError(FR_dialog, fr_error, ConfCode.string[init_conf_code])
-        '''
-        Logger.Error(script_name,
-                u'[ERROR: {}] {}'.format(ConfCode.string[init_conf_code], GT(u'Could not create configuration, exiting ...')))
-        '''
+        
         exit_now = init_conf_code
     
     FR_dialog.Destroy()
