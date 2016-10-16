@@ -10,6 +10,7 @@
    <mime-type type="application/x-dbp">
      <comment>Debreate legacy project</comment>
      <generic-icon name="application-x-dbp"/>
+     <sub-class-of type="text/plain"/>
      <glob pattern="*.dbp"/>
    </mime-type>
 </mime-info>
