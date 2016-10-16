@@ -400,7 +400,6 @@ class AboutDialog(wx.Dialog):
                 log_data.close()
             
             else:
-                # FIXME: Should display an error dialog
                 ShowError(self.GetParent().GetDebreateWindow(), log_text)
         
         else:
