@@ -179,7 +179,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-build:
+build: locale
 	@exec=bin/$(PACKAGE); \
 	echo "\nprefix set to \"$(prefix)\""; \
 	\
@@ -193,6 +193,25 @@ build:
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 	\
 	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
+
+# FIXME: May need to make adjustments
+.PHONY: locale
+locale:
+	@echo "Building gettext locales ..."; \
+	locale_dir="$$(pwd)/locale"; \
+	#echo "$${locale_dir}"; \
+	for f in $$(find "$${locale_dir}" -type f -name "*.po"); do \
+		lc_dir=$$(dirname "$${f}")/LC_MESSAGES; \
+		echo "$${lc_dir}"; \
+		if [ ! -d "$${lc_dir}" ]; then \
+			$(MKDIR) "$${lc_dir}"; \
+		fi; \
+		msgfmt -v "$${f}" -o "$${lc_dir}/$(PACKAGE).mo"; \
+	done; \
+
+locale-clean:
+	@find locale -type f -name "*\.mo" -delete; \
+	find locale -type d -empty -delete; \
 
 install-data: $(INSTALLED)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -426,7 +445,7 @@ doc-html: $(DOXYGEN_CONFIG)
 	# Removes whitespace before parameters \
 	find docs/doxygen -type f -exec sed -i -e '/<td class="paramtype">/c\' {} +; \
 
-clean: doc-clean
+clean: doc-clean locale-clean
 	@find ./ -type f -name "*.pyc" -print -delete; \
 	rm -vf "./bin/$(PACKAGE)"; \
 	if [ -d "./bin" ]; then \
@@ -543,7 +562,11 @@ help:
 	\
 	echo "\tdeb-bin"; \
 	echo "\t\t- Build a Debian (.deb) package for installation"; \
-	echo "\t\t- Uses `tput bold`deb-bin`tput sgr0` command (apt install devscripts)\n"; \
+	echo "\t\t- Uses `tput bold`debbuild`tput sgr0` command (apt install devscripts)\n"; \
+	\
+	echo "\tdeb-bin-signed"; \
+	echo "\t\t- Build a Debian (.deb) package for installation"; \
+	echo "\t\t  & sign the .changes file\n"; \
 	\
 	echo "\tdeb-src"; \
 	echo "\t\t- Create a source distribution package with"; \
@@ -551,7 +574,7 @@ help:
 	\
 	echo "\tdeb-src-signed"; \
 	echo "\t\t- Create a source distribution package & sign"; \
-	echo "\t\t  it for upload to a repository\n"; \
+	echo "\t\t  the .changes file for upload to a repository\n"; \
 	\
 	echo "\tclean"; \
 	echo "\t\t- Delete Debreate binary & any compiled Python"; \
