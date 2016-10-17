@@ -20,7 +20,6 @@ from dbr.custom         import OverwriteDialog
 from dbr.custom         import SaveFile
 from dbr.custom         import SingleFileTextDropTarget
 from dbr.functions      import FieldEnabled
-from dbr.functions      import GetCurrentVersion
 from dbr.functions      import GetDate
 from dbr.functions      import GetSystemLicensesList
 from dbr.functions      import GetTime
