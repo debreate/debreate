@@ -8,7 +8,7 @@ import wx, os
 
 # Local modules
 import dbr
-from dbr.constants import ID_SCRIPTS, ERR_DIR_NOT_AVAILABLE, ERR_FILE_WRITE,\
+from dbr.constants import ID_SCRIPTS,\
     page_ids
 from dbr.functions import TextIsEmpty
 from dbr.language import GT
@@ -16,6 +16,8 @@ from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.markdown import MarkdownCtrl, MarkdownDialog
 from dbr.buttons import ButtonConfirm
+from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
+from globals.errorcodes import ERR_FILE_WRITE
 
 
 ID_Import = 100
