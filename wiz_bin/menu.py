@@ -5,7 +5,12 @@
 
 import wx, os, shutil
 
-import dbr
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonBrowse64
+from dbr.buttons        import ButtonClear
+from dbr.buttons        import ButtonDel
+from dbr.buttons        import ButtonPreview64
+from dbr.buttons        import ButtonSave64
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
@@ -51,14 +56,14 @@ class Panel(WizardPage):
         self.options_list = []
         
         # --- Buttons to open/preview/save .desktop file
-        self.btn_open = dbr.ButtonBrowse64(self)
+        self.btn_open = ButtonBrowse64(self)
         self.btn_open.SetToolTip(DF_tip)
         self.options_button.append(self.btn_open)
         
-        self.btn_save = dbr.ButtonSave64(self)
+        self.btn_save = ButtonSave64(self)
         self.options_button.append(self.btn_save)
         
-        self.btn_preview = dbr.ButtonPreview64(self)
+        self.btn_preview = ButtonPreview64(self)
         self.options_button.append(self.btn_preview)
         
         self.btn_open.Bind(wx.EVT_BUTTON, self.OpenFile)
@@ -168,9 +173,9 @@ class Panel(WizardPage):
         self.cat_choice.default = self.cat_choice.GetValue()
         self.options_input.append(self.cat_choice)
         
-        self.cat_add = dbr.ButtonAdd(self)
-        self.cat_del = dbr.ButtonDel(self)
-        self.cat_clr = dbr.ButtonClear(self)
+        self.cat_add = ButtonAdd(self)
+        self.cat_del = ButtonDel(self)
+        self.cat_clr = ButtonClear(self)
         
         for B in self.cat_add, self.cat_del, self.cat_clr:
             self.options_button.append(B)

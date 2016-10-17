@@ -8,7 +8,7 @@
 import os, shutil, commands
 import wx
 
-from dbr.log                import font
+from dbr                    import font
 from dbr.buttons            import ButtonConfirm
 from dbr.custom             import Hyperlink
 from dbr.error              import ShowError

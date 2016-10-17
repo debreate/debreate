@@ -51,6 +51,16 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
+from wiz_bin.greeting       import Panel as PageGreeting
+from wiz_bin.control        import Panel as PageControl
+from wiz_bin.build          import Panel as PageBuild
+from wiz_bin.scripts        import Panel as PageScripts
+from wiz_bin.menu           import Panel as PageMenu
+from wiz_bin.man            import Panel as PageMan
+from wiz_bin.files          import Panel as PageFiles
+from wiz_bin.depends        import Panel as PageDepends
+from wiz_bin.copyright      import Panel as PageCopyright
+from wiz_bin.clog           import Panel as PageChangelog
 
 
 # Options menu
@@ -471,7 +481,7 @@ class MainWindow(wx.Frame):
     
     
     def OnHelp(self, event):
-        if dbr.DebugEnabled():
+        if DebugEnabled():
             dbr.HelpDialog(self).ShowModal()
         
         else:

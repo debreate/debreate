@@ -10,24 +10,6 @@
 
 
 from dbr.about          import AboutDialog
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonBrowse
-from dbr.buttons        import ButtonBrowse64
-from dbr.buttons        import ButtonBuild
-from dbr.buttons        import ButtonBuild64
-from dbr.buttons        import ButtonCancel
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonConfirm
-from dbr.buttons        import ButtonDel
-from dbr.buttons        import ButtonImport
-from dbr.buttons        import ButtonNext
-from dbr.buttons        import ButtonPipe
-from dbr.buttons        import ButtonPrev
-from dbr.buttons        import ButtonPreview
-from dbr.buttons        import ButtonPreview64
-from dbr.buttons        import ButtonQuestion64
-from dbr.buttons        import ButtonSave
-from dbr.buttons        import ButtonSave64
 from dbr.charctrl       import CharCtrl
 from dbr.custom         import Combo
 from dbr.custom         import LCReport

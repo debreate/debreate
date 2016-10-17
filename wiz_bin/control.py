@@ -6,6 +6,9 @@
 import wx, os
 
 import dbr
+from dbr.buttons        import ButtonBrowse64
+from dbr.buttons        import ButtonPreview64
+from dbr.buttons        import ButtonSave64
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
@@ -29,9 +32,9 @@ class Panel(WizardPage):
         self.bg = wx.Panel(self)
         
         # Buttons to Open, Save & Preview control file
-        button_open = dbr.ButtonBrowse64(self.bg)
-        button_save = dbr.ButtonSave64(self.bg)
-        button_preview = dbr.ButtonPreview64(self.bg)
+        button_open = ButtonBrowse64(self.bg)
+        button_save = ButtonSave64(self.bg)
+        button_preview = ButtonPreview64(self.bg)
         
         wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
         wx.EVT_BUTTON(button_save, -1, self.OnSave)
