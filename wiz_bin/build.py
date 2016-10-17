@@ -36,7 +36,6 @@ from globals.ident      import ID_FILES
 from globals.ident      import ID_MAN
 from globals.ident      import ID_MENU
 from globals.ident      import ID_SCRIPTS
-from globals.tooltips   import TT_chk_build
 from globals.tooltips   import TT_chk_del
 from globals.tooltips   import TT_chk_lint
 from globals.tooltips   import TT_chk_md5
@@ -113,7 +112,7 @@ class Panel(WizardPage):
         
         # --- BUILD
         self.build_button = ButtonBuild64(self)
-        self.build_button.SetToolTip(TT_chk_build)
+        self.build_button.SetToolTip(wx.ToolTip(GT(u'Start building')))
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
         
