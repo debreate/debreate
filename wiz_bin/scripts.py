@@ -3,23 +3,26 @@
 ## \package wiz_bin.scripts
 
 
-# System modules
 import wx, os
 
-# Local modules
-import dbr
-from dbr.constants import ID_SCRIPTS,\
-    page_ids
-from dbr.functions import TextIsEmpty
-from dbr.language import GT
-from dbr import Logger
-from dbr.wizard import WizardPage
-from dbr.markdown import MarkdownCtrl, MarkdownDialog
-from dbr.buttons import ButtonConfirm
+from dbr                import Logger
+from dbr.buttons        import ButtonBuild
+from dbr.buttons        import ButtonDel
+from dbr.buttons        import ButtonImport
+from dbr.buttons        import ButtonQuestion64
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.markdown       import MarkdownDialog
+from dbr.pathctrl       import PATH_WARN
+from dbr.pathctrl       import PathCtrl
+from dbr.wizard         import WizardPage
 from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes import ERR_FILE_WRITE
+from globals.ident      import ID_SCRIPTS
+from globals.ident      import page_ids
 
 
+#import dbr
 ID_Import = 100
 ID_Remove = 101
 
@@ -87,7 +90,7 @@ class Panel(WizardPage):
         
         # Auto-Link path for new link
         self.al_text = wx.StaticText(self, -1, GT(u'Path'))
-        self.al_input = dbr.PathCtrl(self, -1, u'/usr/bin', dbr.PATH_WARN)
+        self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
         
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
         
@@ -107,10 +110,10 @@ class Panel(WizardPage):
             self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = dbr.ButtonImport(self, ID_Import)
+        self.al_import = ButtonImport(self, ID_Import)
         self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from Files section')))
-        self.al_del = dbr.ButtonDel(self, ID_Remove)
-        self.al_gen = dbr.ButtonBuild(self)
+        self.al_del = ButtonDel(self, ID_Remove)
+        self.al_gen = ButtonBuild(self)
         self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate Scripts')))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
@@ -138,7 +141,7 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_text.Wrap(210)'''
         
         # *** HELP *** #
-        self.button_help = dbr.ButtonQuestion64(self)
+        self.button_help = ButtonQuestion64(self)
         
         wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
         

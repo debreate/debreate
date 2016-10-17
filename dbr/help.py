@@ -3,14 +3,14 @@
 ## \package dbr.help
 
 
-# System modules
-import wx, os, commands
-from wx.richtext import RichTextCtrl, RE_READONLY
+import os, commands
+from wx import ID_HELP
+import wx
+from wx.richtext import RE_READONLY
+from wx.richtext import RichTextCtrl
+
 
 # Local modules
-from dbr.constants import ID_HELP
-
-
 # FIXME: This should use a global manpage file
 #app_man = u'{}/man/debreate.1'
 app_man = u'man/man1/debreate.1'
