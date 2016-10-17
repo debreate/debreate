@@ -43,7 +43,7 @@ debreate_app = wx.App()
 # Local modules
 from dbr import Logger
 from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
-from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
+from dbr.constants import PY_VER_STRING, WX_VER_STRING,\
     INSTALLED, PREFIX
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     GetDefaultConfigValue, default_config
@@ -52,8 +52,9 @@ from main import MainWindow
 from dbr.compression import GetCompressionId
 from dbr.error import ShowError
 
-from globals import APP_name
-from globals import PATH_app
+from globals.application import APP_name
+from globals.application import VERSION_string
+from globals.paths import PATH_app
 
 
 # Log window refresh interval
@@ -76,7 +77,7 @@ if u'.py' in script_name:
 exit_now = 0
 
 if u'version' in parsed_args_s:
-    print(u'{} {}'.format(APP_name, VERSION_STRING))
+    print(u'{} {}'.format(APP_name, VERSION_string))
     
     sys.exit(0)
 
@@ -107,7 +108,7 @@ if u'log-level' in parsed_args_v:
 
 Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
 Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
-Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_STRING))
+Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
 
 # First time Debreate is run
 if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:

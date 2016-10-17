@@ -7,8 +7,8 @@ import os
 # Local modules
 from dbr import Logger
 from dbr.language import GT
-from globals import PATH_app
-from globals import PATH_local
+from globals.paths import PATH_app
+from globals.paths import PATH_local
 
 
 ## Application templates

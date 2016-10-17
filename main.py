@@ -10,9 +10,8 @@ from urllib2 import URLError, HTTPError
 import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
-from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE,\
-    PROJECT_FILENAME_SUFFIX,\
-    ID_PROJ_A, ID_PROJ_T, custom_errno, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
+from dbr.constants import \
+    ID_PROJ_A, ID_PROJ_T, custom_errno, ID_PROJ_Z, ID_PROJ_L,\
     cmd_tar, ID_DEBUG, ID_LOG, ID_THEME
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
@@ -27,10 +26,14 @@ from dbr.quickbuild import QuickBuild
 from dbr.log import LogWindow
 from dbr.error import ShowError
 
-from globals import AUTHOR_email
-from globals import AUTHOR_name
-from globals import PATH_app
-
+from globals.application    import APP_homepage, VERSION_tuple
+from globals.application    import APP_project_gh
+from globals.application    import APP_project_sf
+from globals.application    import AUTHOR_email
+from globals.application    import AUTHOR_name
+from globals.application    import VERSION_string
+from globals.paths          import PATH_app
+from globals.project        import PROJECT_ext
 
 # Options menu
 ID_Dialogs = wx.NewId()
@@ -385,14 +388,14 @@ class MainWindow(wx.Frame):
         about = dbr.AboutDialog(self)
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
-        about.SetVersion(VERSION_STRING)
+        about.SetVersion(VERSION_string)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         about.SetAuthor(AUTHOR_name)
         
         about.SetWebsites((
-            (GT(u'Homepage'), HOMEPAGE),
-            (GT(u'GitHub Project'), PROJECT_HOME_GH),
-            (GT(u'Sourceforge Project'), PROJECT_HOME_SF),
+            (GT(u'Homepage'), APP_homepage),
+            (GT(u'GitHub Project'), APP_project_gh),
+            (GT(u'Sourceforge Project'), APP_project_sf),
         ))
         
         about.AddJobs(
@@ -435,14 +438,14 @@ class MainWindow(wx.Frame):
         if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
             wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-        elif (current > VERSION):
+        elif (current > VERSION_tuple):
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = GT(u'Version %s is available!').decode(u'utf-8') % (current)
             l2 = GT(u'Would you like to go to Debreate\'s website?').decode(u'utf-8')
             update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
-                wx.LaunchDefaultBrowser(HOMEPAGE)
-        elif (current < VERSION):
+                wx.LaunchDefaultBrowser(APP_homepage)
+        elif (current < VERSION_tuple):
             wx.MessageDialog(self, GT(u'This is a development version, no updates available'),
                     GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
         else:
@@ -616,11 +619,11 @@ class MainWindow(wx.Frame):
     
     def OnSaveProjectAs(self, event=None):
         wildcards = (
-            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_FILENAME_SUFFIX), u'*.{}'.format(PROJECT_FILENAME_SUFFIX),
+            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext), u'*.{}'.format(PROJECT_ext),
         )
         
         save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
-                PROJECT_FILENAME_SUFFIX)
+                PROJECT_ext)
         
         if ShowDialog(save_dialog):
             project_path = save_dialog.GetPath()

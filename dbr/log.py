@@ -14,8 +14,8 @@ from dbr.language import GT
 import time
 from dbr.font import GetMonospacedFont
 #from dbr.command_line import parsed_args_v
-from globals import APP_logo
-from globals import PATH_local
+from globals.application import APP_logo
+from globals.paths import PATH_local
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()

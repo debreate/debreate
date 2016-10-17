@@ -2,6 +2,7 @@
 # Use "setup.py" to create actual Makefile
 
 prefix = <prefix>
+TARGET = $(DESTDIR)$(prefix)
 
 PACKAGE = debreate
 VERSION = <version>
@@ -33,7 +34,6 @@ FILES_executable = \
 
 FILES_root = \
 	command_line.py \
-	globals.py \
 	main.py
 
 FILES_wiz_bin = \
@@ -115,6 +115,12 @@ FILES_man = \
 
 FILES_data = \
 	data/$(MENU)
+
+PACKAGE_globals = \
+	globals/*.py
+
+DATA_packages = \
+	$(PACKAGE_globals)
 
 FILES_build = \
 	$(FILES_executable) \
@@ -286,6 +292,15 @@ install: build install-data $(FILES_build) $(DIRS_build) install-doc install-loc
 	fi; \
 	\
 	echo "\nInstallation complete"; \
+
+install-packages: $(DATA_packages)
+	@pac_globals="$(TARGET)/$(DATADIR)/globals"; \
+	if [ ! -d "$${pac_globals}" ]; then \
+		$(MKDIR) "$${pac_globals}"; \
+	fi; \
+	for f in $(PACKAGE_globals); do \
+		$(INSTALL_DATA) "$${f}" "$${pac_globals}"; \
+	done; \
 
 install-doc: $(FILES_doc) $(LICENSE)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -521,6 +536,10 @@ help:
 	\
 	echo "\tinstall-man"; \
 	echo "\t\t- Install & compress Manpage files\n"; \
+	\
+	echo "\tinstall-packages"; \
+	echo "\t\t- Install Debreate's sub-packages"; \
+	echo "\t\t- Called by `tput bold`install`tput sgr0`\n"; \
 	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
