@@ -7,11 +7,12 @@ import wx, os
 # Local imports
 import dbr.font
 from dbr.language import GT
-from dbr.constants import ID_COPYRIGHT, custom_errno
+from dbr.constants import ID_COPYRIGHT
 from dbr.functions import TextIsEmpty, RemovePreWhitespace
 from dbr.wizard import WizardPage
 from dbr import Logger
 from dbr.error import ShowError
+from globals.errorcodes import errno
 
 
 # Globals
@@ -215,7 +216,7 @@ class Panel(WizardPage):
     
     def ImportPageInfo(self, filename):
         if not os.path.isfile(filename):
-            return custom_errno.ENOENT
+            return errno.ENOENT
         
         FILE = open(filename, u'r')
         copyright_data = FILE.read().split(u'\n')

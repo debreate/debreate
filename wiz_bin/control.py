@@ -7,10 +7,11 @@ import wx, os
 
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_CONTROL, custom_errno, ID_DEPENDS
+from dbr.constants import ID_CONTROL, ID_DEPENDS
 from dbr.wizard import WizardPage
 from dbr import Logger
 from dbr.dialogs import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
+from globals.errorcodes import dbrerrno
 
 
 class Panel(WizardPage):
@@ -609,7 +610,7 @@ class Panel(WizardPage):
         Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         
         if not os.path.isfile(filename):
-            return custom_errno.ENOENT
+            return dbrerrno.ENOENT
         
         # Dependencies
         depends_page = None

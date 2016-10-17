@@ -7,7 +7,7 @@
 import wx, os, tarfile, zipfile, commands
 
 # local modules
-from dbr.constants          import custom_errno
+from globals.errorcodes import errno
 
 
 # *** Compression Format IDs *** #
@@ -108,9 +108,9 @@ class CompressionHandler:
                 return tar_output[0]
             
             else:
-                return custom_errno.ENOEXEC
+                return errno.ENOEXEC
         
-        return custom_errno.ENOENT
+        return errno.ENOENT
     
     
     def GetCompressionFormat(self):
@@ -125,10 +125,10 @@ class CompressionHandler:
     
     def Uncompress(self, source_file, target_dir):
         if not os.path.isfile(source_file):
-            return custom_errno.ENOENT
+            return errno.ENOENT
         
         if not os.access(target_dir, os.W_OK):
-            return custom_errno.EACCES
+            return errno.EACCES
         
         z_format = u'r'
         
@@ -161,4 +161,4 @@ class CompressionHandler:
             
             return tar_output
         
-        return custom_errno.ENOEXEC
+        return errno.ENOEXEC

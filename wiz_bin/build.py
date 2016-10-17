@@ -11,7 +11,7 @@ from os.path import exists
 import dbr
 from dbr.dialogs import DetailedMessageDialog, ErrorDialog
 from dbr.language import GT
-from dbr.constants import ID_BUILD, custom_errno,\
+from dbr.constants import ID_BUILD,\
     ICON_ERROR, ICON_INFORMATION, ID_CONTROL, ID_FILES,\
     ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
 from dbr.wizard import WizardPage
@@ -19,8 +19,9 @@ from dbr.functions import GetBoolean, BuildBinaryPackageFromTree,\
     CreateTempDirectory, RemoveTempDirectory, TextIsEmpty
 from dbr.dialogs import GetFileSaveDialog, ShowDialog
 from dbr import Logger, DebugEnabled
-from globals.commands import CMD_lintian
-from globals.commands import CMD_md5sum
+from globals.commands   import CMD_lintian
+from globals.commands   import CMD_md5sum
+from globals.errorcodes import errno
 
 
 class Panel(WizardPage):
@@ -255,7 +256,7 @@ class Panel(WizardPage):
         try:
             temp_dir = CreateTempDirectory()
             
-            if temp_dir != custom_errno.EACCES:
+            if temp_dir != errno.EACCES:
                 Logger.Debug(__name__, GT(u'Temporary directory: {}').format(temp_dir))
                 
                 # Create DEBIAN sub-directory
@@ -291,7 +292,7 @@ class Panel(WizardPage):
         
         build_ret = BuildBinaryPackageFromTree(temp_dir, out_file)
         
-        if build_ret == custom_errno.ENOENT:
+        if build_ret == errno.ENOENT:
             ErrorDialog(self.GetDebreateWindow(), GT(u'Cannot build from non-existent directory')).ShowModal()
         
         # TODO: Make sure temp directory is deleted
@@ -967,7 +968,7 @@ class Panel(WizardPage):
     
     def ImportPageInfo(self, filename):
         if not os.path.isfile(filename):
-            return custom_errno.ENOENT
+            return errno.ENOENT
         
         FILE = open(filename, u'r')
         build_data = FILE.read().split(u'\n')

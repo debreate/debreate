@@ -7,10 +7,11 @@ import wx, os, commands
 # Local imports
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_CHANGELOG, custom_errno
+from dbr.constants import ID_CHANGELOG
 from dbr.functions import TextIsEmpty
 from dbr.wizard import WizardPage
 from dbr import Logger
+from globals.errorcodes import dbrerrno
 
 
 class Panel(WizardPage):
@@ -221,7 +222,7 @@ class Panel(WizardPage):
     
     def ImportPageInfo(self, filename):
         if not os.path.isfile(filename):
-            return custom_errno.ENOENT
+            return dbrerrno.ENOENT
         
         FILE = open(filename, u'r')
         clog_data = FILE.read().split(u'\n')
