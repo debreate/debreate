@@ -3,18 +3,19 @@
 ## \package wiz_bin.menu
 
 
-# System imports
-import wx, os, shutil
+import os, shutil
+import wx
 
-# Local imports
+from dbr                import Logger
 import dbr
-from dbr.language import GT
-from dbr.constants import ID_MENU
-from dbr.wizard import WizardPage
-from dbr import Logger
-from dbr.functions import TextIsEmpty
-from dbr.dialogs import GetFileSaveDialog, GetFileOpenDialog, ShowDialog
+from dbr.dialogs        import GetFileOpenDialog
+from dbr.dialogs        import GetFileSaveDialog
+from dbr.dialogs        import ShowDialog
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
+from globals.ident      import ID_MENU
 
 
 class Panel(WizardPage):

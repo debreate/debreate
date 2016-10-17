@@ -2,27 +2,35 @@
 # -*- coding: utf-8 -*-
 
 
-# System modules
-import wx, os, subprocess, webbrowser
+import os, subprocess, webbrowser
 from urllib2 import URLError, HTTPError
+import wx
 
-# Local modules
-import dbr, wiz_bin
-from dbr import Logger, DebugEnabled
-from dbr.language import GT
-from dbr.constants import \
-    ID_DEBUG, ID_LOG, ID_THEME
-from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
-from dbr.functions import GetFileMimeType, CreateTempDirectory,\
-    RemoveTempDirectory
-from dbr.dialogs import GetFileOpenDialog, GetFileSaveDialog, ShowDialog,\
-    GetDialogWildcards, ErrorDialog
-from dbr.compression import \
-    compression_mimetypes, compression_formats,\
-    ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
-    CompressionHandler, DEFAULT_COMPRESSION_ID
-
+from dbr                    import Logger, DebugEnabled
+import dbr
+from dbr.compression        import CompressionHandler
+from dbr.compression        import DEFAULT_COMPRESSION_ID
+from dbr.compression        import ID_ZIP_BZ2
+from dbr.compression        import ID_ZIP_GZ
+from dbr.compression        import ID_ZIP_NONE
+from dbr.compression        import ID_ZIP_XZ
+from dbr.compression        import ID_ZIP_ZIP
+from dbr.compression        import compression_formats
+from dbr.compression        import compression_mimetypes
+from dbr.config             import ConfCode
+from dbr.config             import GetDefaultConfigValue
+from dbr.config             import ReadConfig
+from dbr.config             import WriteConfig
+from dbr.dialogs            import ErrorDialog
+from dbr.dialogs            import GetDialogWildcards
+from dbr.dialogs            import GetFileOpenDialog
+from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import ShowDialog
 from dbr.error              import ShowError
+from dbr.functions          import CreateTempDirectory
+from dbr.functions          import GetFileMimeType
+from dbr.functions          import RemoveTempDirectory
+from dbr.language           import GT
 from dbr.log                import LogWindow
 from dbr.quickbuild         import QuickBuild
 from globals.application    import APP_homepage, VERSION_tuple
@@ -33,12 +41,16 @@ from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.commands       import CMD_tar
 from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_DEBUG
+from globals.ident          import ID_LOG
+from globals.ident          import ID_THEME
 from globals.paths          import PATH_app
 from globals.project        import ID_PROJ_A
 from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
+
 
 # Options menu
 ID_Dialogs = wx.NewId()
@@ -244,21 +256,21 @@ class MainWindow(wx.Frame):
         self.wizard = dbr.Wizard(self) # Binary
         self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
         
-        self.page_info = wiz_bin.PageGreeting(self.wizard)
+        self.page_info = PageGreeting(self.wizard)
         self.page_info.SetInfo()
-        self.page_control = wiz_bin.PageControl(self.wizard)
-        self.page_depends = wiz_bin.PageDepends(self.wizard)
-        self.page_files = wiz_bin.PageFiles(self.wizard)
+        self.page_control = PageControl(self.wizard)
+        self.page_depends = PageDepends(self.wizard)
+        self.page_files = PageFiles(self.wizard)
         
         # TODO: finish manpage section
         if DebugEnabled():
-            self.page_man = wiz_bin.PageMan(self.wizard)
+            self.page_man = PageMan(self.wizard)
         
-        self.page_scripts = wiz_bin.PageScripts(self.wizard)
-        self.page_clog = wiz_bin.PageChangelog(self.wizard)
-        self.page_cpright = wiz_bin.PageCopyright(self.wizard)
-        self.page_menu = wiz_bin.PageMenu(self.wizard)
-        self.page_build = wiz_bin.PageBuild(self.wizard)
+        self.page_scripts = PageScripts(self.wizard)
+        self.page_clog = PageChangelog(self.wizard)
+        self.page_cpright = PageCopyright(self.wizard)
+        self.page_menu = PageMenu(self.wizard)
+        self.page_build = PageBuild(self.wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,

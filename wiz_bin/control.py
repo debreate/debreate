@@ -5,13 +5,16 @@
 
 import wx, os
 
+from dbr                import Logger
 import dbr
-from dbr.language import GT
-from dbr.constants import ID_CONTROL, ID_DEPENDS
-from dbr.wizard import WizardPage
-from dbr import Logger
-from dbr.dialogs import GetFileOpenDialog, ShowDialog, GetFileSaveDialog
+from dbr.dialogs        import GetFileOpenDialog
+from dbr.dialogs        import GetFileSaveDialog
+from dbr.dialogs        import ShowDialog
+from dbr.language       import GT
+from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
+from globals.ident      import ID_CONTROL
+from globals.ident      import ID_DEPENDS
 
 
 class Panel(WizardPage):

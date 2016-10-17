@@ -3,27 +3,35 @@
 ## \package wiz_bin.build
 
 
-# System modules
-import wx, os, commands, shutil, thread, traceback, time
-from os.path import exists
+import os, commands, shutil, thread, traceback, time
+import wx
 
-# Local modules
+from dbr                import Logger, DebugEnabled
 import dbr
-from dbr.dialogs import DetailedMessageDialog, ErrorDialog
-from dbr.language import GT
-from dbr.constants import ID_BUILD,\
-    ID_CONTROL, ID_FILES,\
-    ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
-from dbr.wizard import WizardPage
-from dbr.functions import GetBoolean, BuildBinaryPackageFromTree,\
-    CreateTempDirectory, RemoveTempDirectory, TextIsEmpty
-from dbr.dialogs import GetFileSaveDialog, ShowDialog
-from dbr import Logger, DebugEnabled
+from dbr.dialogs        import DetailedMessageDialog
+from dbr.dialogs        import ErrorDialog
+from dbr.dialogs        import GetFileSaveDialog
+from dbr.dialogs        import ShowDialog
+from dbr.functions      import BuildBinaryPackageFromTree
+from dbr.functions      import CreateTempDirectory
+from dbr.functions      import GetBoolean
+from dbr.functions      import RemoveTempDirectory
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.wizard         import WizardPage
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_INFORMATION
 from globals.commands   import CMD_lintian
 from globals.commands   import CMD_md5sum
 from globals.errorcodes import errno
+from globals.ident      import ID_BUILD
+from globals.ident      import ID_CHANGELOG
+from globals.ident      import ID_CONTROL
+from globals.ident      import ID_COPYRIGHT
+from globals.ident      import ID_FILES
+from globals.ident      import ID_MAN
+from globals.ident      import ID_MENU
+from globals.ident      import ID_SCRIPTS
 
 
 class Panel(WizardPage):
@@ -905,13 +913,13 @@ class Panel(WizardPage):
         # chk_md5 should be reset no matter
         self.chk_md5.SetValue(False)
         # FIXME: Should use a more universal method to check for executables
-        if exists(u'/usr/bin/md5sum'):
+        if os.path.exists(u'/usr/bin/md5sum'):
             self.chk_md5.Enable()
         else:
             self.chk_md5.Disable()
         self.chk_rmtree.SetValue(True)
         # FIXME: Should use a more universal method to check for executables
-        if exists(u'/usr/bin/lintian'):
+        if os.path.exists(u'/usr/bin/lintian'):
             self.chk_lint.Enable()
             self.chk_lint.SetValue(True)
         else:
@@ -922,11 +930,11 @@ class Panel(WizardPage):
         self.ResetAllFields()
         build_data = data.split(u'\n')
         # FIXME: Should use a more universal method to check for executables
-        if exists(u'/usr/bin/md5sum'):
+        if os.path.exists(u'/usr/bin/md5sum'):
             self.chk_md5.SetValue(int(build_data[0]))
         self.chk_rmtree.SetValue(int(build_data[1]))
         # FIXME: Should use a more universal method to check for executables
-        if exists(u'usr/bin/lintian'):
+        if os.path.exists(u'usr/bin/lintian'):
             self.chk_lint.SetValue(int(build_data[2]))
     
     def GatherData(self):
