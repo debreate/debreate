@@ -88,15 +88,22 @@ class Panel(WizardPage):
         self.radio_cst.SetValue(True)
         
         # group buttons together
-        self.radio_group = (self.radio_bin, self.radio_usrbin, self.radio_usrlib, self.radio_locbin, self.radio_loclib, self.radio_cst)
+        self.targets = (
+            self.radio_bin,
+            self.radio_usrbin,
+            self.radio_usrlib,
+            self.radio_locbin,
+            self.radio_loclib,
+            self.radio_cst,
+            )
         
         # create an event to enable/disable custom widget
-        for item in self.radio_group:
+        for item in self.targets:
             wx.EVT_RADIOBUTTON(item, -1, self.SetDestination)
         
         # make them look pretty
         radio_sizer = wx.GridSizer(3, 2, 5, 5)
-        for item in self.radio_group:
+        for item in self.targets:
             radio_sizer.Add(item, 0)
         self.radio_border = wx.StaticBox(self, -1, GT(u'Target'), size=(20,20))
         radio_box = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
@@ -209,8 +216,7 @@ class Panel(WizardPage):
         source = self.dir_tree.GetPath()
         target_dir = None
         
-        # TODO: Change 'self.radio_group' to 'self.targets'
-        for target in self.radio_group:
+        for target in self.targets:
             if target.GetValue():
                 if target.GetId() == ID_CUSTOM:
                     target_dir = self.dest_cust.GetValue()
