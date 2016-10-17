@@ -8,12 +8,13 @@ import wx, os, thread
 from wx.lib.newevent import NewCommandEvent
 
 # Debreate imports
-from dbr.constants import ID_DEBUG, MAIN_ICON, ID_LOG
+from dbr.constants import ID_DEBUG, ID_LOG
 from dbr.functions import GetDate, GetTime
 from dbr.language import GT
 import time
 from dbr.font import GetMonospacedFont
 #from dbr.command_line import parsed_args_v
+from globals import APP_logo
 from globals import PATH_local
 
 
@@ -199,7 +200,7 @@ class LogWindow(wx.Dialog):
     def __init__(self, parent, log_file):
         wx.Dialog.__init__(self, parent, ID_DEBUG, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
         
-        self.SetIcon(MAIN_ICON)
+        self.SetIcon(APP_logo)
         
         self.log_file = log_file
         

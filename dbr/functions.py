@@ -6,16 +6,16 @@
 
 
 # System modules
-import wx, os, re, commands
+import wx, os, re, commands, shutil
 from datetime import datetime, date
 from urllib2 import urlopen, URLError
 
 # Local modules
 from dbr.constants import \
     HOMEPAGE, PY_VER_STRING, system_licenses_path,\
-    custom_errno, APP_NAME,\
+    custom_errno,\
     VERSION_STRING
-import shutil
+from globals import APP_name
 
 
 # FIXME: Can't import Logger
@@ -385,7 +385,7 @@ def CreateTempDirectory():
     if not os.access(temp_dir, os.W_OK):
         temp_dir = os.getcwd()
     
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_NAME).lower(), VERSION_STRING)
+    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_name).lower(), VERSION_STRING)
     
     if os.access(os.path.dirname(temp_dir), os.W_OK):
         # Start with fresh directory

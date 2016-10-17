@@ -49,11 +49,7 @@ def GetPrefix():
 
 PREFIX = GetPrefix()
 
-## Application's displayed name
-APP_NAME = GT(u'Debreate')
-AUTHOR = u'Jordan Irwin'
-EMAIL = u'antumdeluge@gmail.com'
-MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
+#MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
 
 # Version information #
 RELEASE = 0
