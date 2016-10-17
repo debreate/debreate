@@ -10,8 +10,9 @@ from wx.lib.newevent import NewCommandEvent
 from dbr import Logger
 from dbr.language import GT
 from dbr.buttons import ButtonNext, ButtonPrev
-from dbr.constants import ERR_DIR_NOT_AVAILABLE, page_ids
+from dbr.constants import page_ids
 from dbr.functions import TextIsEmpty
+from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
 
 
 ID_PREV = wx.NewId()
