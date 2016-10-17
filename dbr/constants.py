@@ -12,19 +12,10 @@ import wx, os, sys, errno
 from dbr.commandcheck import CommandExists
 from dbr.language import GT
 from globals import PATH_app
+from globals import PATH_home
 
 
 # *** System Information *** #
-
-## Root home directory where configuration is stored
-#  
-#  The configuration file is set to <HOME>/.config/debreate/config
-home_path = os.getenv(u'HOME')
-
-## Directory where local files will be stored
-#  
-#  <HOME>/.local/share/debreate
-local_path = u'{}/.local/share/debreate'.format(home_path)
 
 
 # *** Debreate Information *** #

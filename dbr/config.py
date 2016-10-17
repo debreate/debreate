@@ -12,9 +12,9 @@ import wx, os
 # FIXME Can't import Logger
 #from dbr import Logger
 #from dbr.language import GT
-from dbr.constants import home_path
 from dbr.functions import TextIsEmpty, GetBoolean, GetIntTuple
 from dbr.compression import compression_formats, DEFAULT_COMPRESSION_ID
+from globals import PATH_home
 
 
 ## Configuration codes
@@ -41,7 +41,7 @@ class ConfCode:
 config_version = (1, 1)
 
 # Default configuration
-default_config_dir = u'{}/.config/debreate'.format(home_path)
+default_config_dir = u'{}/.config/debreate'.format(PATH_home)
 default_config = u'{}/config'.format(default_config_dir)
 
 # name = (function, default value)
@@ -51,7 +51,7 @@ default_config_values = {
     u'maximize': (GetBoolean, False),
     u'position': (GetIntTuple, (0, 0)),
     u'size': (GetIntTuple, (800, 640)),
-    u'workingdir': (unicode, home_path),
+    u'workingdir': (unicode, PATH_home),
     u'compression': (unicode, compression_formats[DEFAULT_COMPRESSION_ID]),
     u'tooltips': (GetBoolean, True),
     u'hiddenfiles': (GetBoolean, True),
