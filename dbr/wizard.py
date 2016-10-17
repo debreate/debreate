@@ -13,6 +13,8 @@ from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
 from globals.ident      import ID_NEXT
 from globals.ident      import ID_PREV
 from globals.ident      import page_ids
+from globals.tooltips   import TT_wiz_prev
+from globals.tooltips   import TT_wiz_next
 
 
 class Wizard(wx.Panel):
@@ -43,7 +45,9 @@ class Wizard(wx.Panel):
         
         # Previous and Next buttons
         self.button_prev = ButtonPrev(self)
+        self.button_prev.SetToolTip(TT_wiz_prev)
         self.button_next = ButtonNext(self)
+        self.button_next.SetToolTip(TT_wiz_next)
         
         wx.EVT_BUTTON(self.button_prev, -1, self.ChangePage)
         wx.EVT_BUTTON(self.button_next, -1, self.ChangePage)
