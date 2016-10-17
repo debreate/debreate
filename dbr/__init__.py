@@ -31,7 +31,6 @@ from dbr.constants import \
     PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING, \
     ID_OVERWRITE, ID_APPEND, ID_BIN, ID_SRC, ID_DSC, ID_CNG, \
     ID_COPYRIGHT, \
-    ICON_ERROR, ICON_INFORMATION, \
     Mandatory, Recommended, Optional, Unused, Disabled, \
     DEFAULT_SIZE, DEFAULT_POS
 from dbr.custom import \

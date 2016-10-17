@@ -12,13 +12,15 @@ import dbr
 from dbr.dialogs import DetailedMessageDialog, ErrorDialog
 from dbr.language import GT
 from dbr.constants import ID_BUILD,\
-    ICON_ERROR, ICON_INFORMATION, ID_CONTROL, ID_FILES,\
+    ID_CONTROL, ID_FILES,\
     ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
 from dbr.wizard import WizardPage
 from dbr.functions import GetBoolean, BuildBinaryPackageFromTree,\
     CreateTempDirectory, RemoveTempDirectory, TextIsEmpty
 from dbr.dialogs import GetFileSaveDialog, ShowDialog
 from dbr import Logger, DebugEnabled
+from globals.bitmaps    import ICON_ERROR
+from globals.bitmaps    import ICON_INFORMATION
 from globals.commands   import CMD_lintian
 from globals.commands   import CMD_md5sum
 from globals.errorcodes import errno

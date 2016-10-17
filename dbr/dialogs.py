@@ -8,9 +8,10 @@ import wx, os
 #from dbr import Logger
 from dbr.language import GT
 from dbr.buttons import ButtonConfirm
-from dbr.constants import project_wildcards, supported_suffixes, ICON_ERROR
+from dbr.constants import project_wildcards, supported_suffixes
 from dbr.custom import TextIsEmpty
 from dbr.workingdir import ChangeWorkingDirectory
+from globals.bitmaps import ICON_ERROR
 
 
 
@@ -187,12 +188,22 @@ class StandardFileOpenDialog(StandardFileDialog):
 ## Displays a dialog with message & details
 #  
 #  FIXME: Crashes if icon is wx.NullBitmap
+#  \param parent
+#        \b \e wx.Window : The parent window
+#  \param title
+#        \b \e unicode|str : Text to display in title bar
+#  \param icon
+#        \b \e wx.Bitmap|unicode|str : Image to display
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, size=(500,500), style=style)
         
-        self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
+        # Allow using strings for 'icon' argument
+        if isinstance(icon, (unicode, str)):
+            icon = wx.Bitmap(icon)
+        
+        self.icon = wx.StaticBitmap(self, -1, icon)
         
         self.text = wx.StaticText(self, -1, text)
         

@@ -139,11 +139,11 @@ error_definitions = {
     ERR_FILE_WRITE: u'Could Not Write File',
 }
 
-
+'''
 # *** Icons *** #
 ICON_ERROR = u'{}/bitmaps/error64.png'.format(PATH_app)
 ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(PATH_app)
-
+'''
 
 # *** Colors depicting importance of fields
 Mandatory = (255,200,192)
