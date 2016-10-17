@@ -11,7 +11,7 @@ from os.path import exists
 import dbr
 from dbr.dialogs import DetailedMessageDialog, ErrorDialog
 from dbr.language import GT
-from dbr.constants import ID_BUILD, custom_errno, cmd_md5sum, cmd_lintian,\
+from dbr.constants import ID_BUILD, custom_errno,\
     ICON_ERROR, ICON_INFORMATION, ID_CONTROL, ID_FILES,\
     ID_MAN, ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU
 from dbr.wizard import WizardPage
@@ -19,6 +19,8 @@ from dbr.functions import GetBoolean, BuildBinaryPackageFromTree,\
     CreateTempDirectory, RemoveTempDirectory, TextIsEmpty
 from dbr.dialogs import GetFileSaveDialog, ShowDialog
 from dbr import Logger, DebugEnabled
+from globals.commands import CMD_lintian
+from globals.commands import CMD_md5sum
 
 
 class Panel(WizardPage):
@@ -46,7 +48,7 @@ class Panel(WizardPage):
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = False
         
-        if not cmd_md5sum:
+        if not CMD_md5sum:
             self.chk_md5.Disable()
             self.chk_md5.SetToolTip(wx.ToolTip(GT(u'Install md5sum package for this option')))
         else:
@@ -69,8 +71,7 @@ class Panel(WizardPage):
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
         #self.chk_lint.SetToolTip(tip_lint)
-        # FIXME: Use CommandExists
-        if not cmd_lintian:
+        if not CMD_lintian:
             self.chk_lint.Disable()
             self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
         else:
@@ -252,7 +253,6 @@ class Panel(WizardPage):
         return
         
         try:
-            # FIXME: Should use a naming standard
             temp_dir = CreateTempDirectory()
             
             if temp_dir != custom_errno.EACCES:
@@ -411,7 +411,7 @@ class Panel(WizardPage):
                     
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
     
-    # TODO: Check required fields before build
+    # TODO: Finish defining
     def OnBuild(self, event):
         meta = self.debreate.page_control
         required_fields = {
