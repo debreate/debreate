@@ -3,16 +3,16 @@
 
 
 # System modules
-import wx, os, shutil, subprocess, webbrowser
+import wx, os, subprocess, webbrowser
 from urllib2 import URLError, HTTPError
 
 # Local modules
 import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
-from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE, AUTHOR,\
+from dbr.constants import VERSION, VERSION_STRING, HOMEPAGE,\
     PROJECT_FILENAME_SUFFIX,\
-    ID_PROJ_A, ID_PROJ_T, custom_errno, EMAIL, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
+    ID_PROJ_A, ID_PROJ_T, custom_errno, PROJECT_HOME_GH, PROJECT_HOME_SF, ID_PROJ_Z, ID_PROJ_L,\
     cmd_tar, ID_DEBUG, ID_LOG, ID_THEME
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
@@ -27,6 +27,8 @@ from dbr.quickbuild import QuickBuild
 from dbr.log import LogWindow
 from dbr.error import ShowError
 
+from globals import AUTHOR_email
+from globals import AUTHOR_name
 from globals import PATH_app
 
 
@@ -385,7 +387,7 @@ class MainWindow(wx.Frame):
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
         about.SetVersion(VERSION_STRING)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
-        about.SetAuthor(AUTHOR)
+        about.SetAuthor(AUTHOR_name)
         
         about.SetWebsites((
             (GT(u'Homepage'), HOMEPAGE),
@@ -394,13 +396,13 @@ class MainWindow(wx.Frame):
         ))
         
         about.AddJobs(
-            AUTHOR,
+            AUTHOR_name,
             (
                 GT(u'Head Developer'),
                 GT(u'Packager'),
                 u'{} (es, it)'.format(GT(u'Translation')),
             ),
-            EMAIL
+            AUTHOR_email
         )
         
         about.AddJobs(
