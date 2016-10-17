@@ -9,9 +9,6 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 
 from dbr                import Logger
 import dbr
-from dbr.constants      import COLOR_ERROR
-from dbr.constants      import FTYPE_EXE
-from dbr.constants      import file_types_defs
 from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
@@ -19,6 +16,9 @@ from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.wizard         import WizardPage
 from globals.bitmaps    import ICON_ERROR
+from globals.constants  import COLOR_ERROR
+from globals.constants  import file_types_defs
+from globals.constants  import FTYPE_EXE
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CUSTOM
 from globals.ident      import ID_FILES

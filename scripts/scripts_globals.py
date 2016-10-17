@@ -9,7 +9,7 @@ root_dir = os.path.split(scripts_dir)[0]
 
 file_INFO = '{}/INFO'.format(root_dir)
 
-file_CONSTANTS = '{}/dbr/constants.py'.format(root_dir)
+file_CONSTANTS = '{}/globals.constants.py'.format(root_dir)
 file_MAKEFILE = '{}/Makefile'.format(root_dir)
 file_DOXYFILE = '{}/docs/Doxyfile'.format(root_dir)
 file_LOCALE = '{}/locale/debreate.pot'.format(root_dir)
