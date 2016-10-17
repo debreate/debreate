@@ -14,7 +14,7 @@ from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
 from dbr.dialogs import DetailedMessageDialog, GetDirDialog, ShowDialog
-from globals import PATH_home
+from globals.paths import PATH_home
 
 
 ID_pin = 100

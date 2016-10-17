@@ -28,8 +28,6 @@ from dbr.buttons import \
 from dbr.charctrl import CharCtrl
 from dbr.constants import \
     system_licenses_path, \
-    VER_MAJ, VER_MIN, VER_REL, VERSION, VERSION_STRING, \
-    PROJECT_FILENAME_SUFFIX, \
     PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING, \
     ID_OVERWRITE, ID_APPEND, ID_BIN, ID_SRC, ID_DSC, ID_CNG, \
     ID_COPYRIGHT, \

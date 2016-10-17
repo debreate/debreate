@@ -12,7 +12,7 @@ import wx.combo, wx.lib.mixins.listctrl as LC
 import dbr
 from dbr.constants import ID_APPEND, ID_OVERWRITE
 from dbr.language import GT
-from globals import PATH_app
+from globals.paths import PATH_app
 
 
 db_here = PathOnly(__file__).decode(u'utf-8')

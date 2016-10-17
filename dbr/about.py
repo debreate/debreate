@@ -17,9 +17,9 @@ from dbr.custom import Hyperlink
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
 from dbr.error import ShowError
-from globals import APP_name
-from globals import AUTHOR_email
-from globals import AUTHOR_name
+from globals.application import APP_name
+from globals.application import AUTHOR_email
+from globals.application import AUTHOR_name
 
 
 # Font for the name

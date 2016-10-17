@@ -11,7 +11,7 @@ import wx, os, sys, errno
 # Local modules
 from dbr.commandcheck import CommandExists
 from dbr.language import GT
-from globals import PATH_app
+from globals.paths import PATH_app
 
 
 # *** System Information *** #
@@ -48,8 +48,7 @@ def GetPrefix():
 
 PREFIX = GetPrefix()
 
-#MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
-
+'''
 # Version information #
 RELEASE = 0
 VER_MAJ = 0
@@ -71,6 +70,7 @@ PROJECT_HOME_SF = u'https://sourceforge.net/projects/debreate'
 # Project filename
 PROJECT_LEGACY_SUFFIX = u'dbp'
 PROJECT_FILENAME_SUFFIX = u'dbpz'
+'''
 
 ID_PROJ_Z = wx.NewId()
 ID_PROJ_L = wx.NewId()

@@ -12,10 +12,11 @@ from urllib2 import urlopen, URLError
 
 # Local modules
 from dbr.constants import \
-    HOMEPAGE, PY_VER_STRING, system_licenses_path,\
-    custom_errno,\
-    VERSION_STRING
-from globals import APP_name
+    PY_VER_STRING, system_licenses_path,\
+    custom_errno
+from globals.application import APP_homepage
+from globals.application import APP_name
+from globals.application import VERSION_string
 
 
 # FIXME: Can't import Logger
@@ -29,7 +30,7 @@ from globals import APP_name
 #  \b Alias: \e dbr.GetCurrentVersion
 def GetCurrentVersion():
     try:
-        request = urlopen(u'{}/current.txt'.format(HOMEPAGE))
+        request = urlopen(u'{}/current.txt'.format(APP_homepage))
         version = request.readlines()[0]
         version = version.split(u'.')
         
@@ -385,7 +386,7 @@ def CreateTempDirectory():
     if not os.access(temp_dir, os.W_OK):
         temp_dir = os.getcwd()
     
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_name).lower(), VERSION_STRING)
+    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_name).lower(), VERSION_string)
     
     if os.access(os.path.dirname(temp_dir), os.W_OK):
         # Start with fresh directory

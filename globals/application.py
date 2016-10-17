@@ -1,26 +1,15 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.globals
-#  
-#  Global variables & settings
+## \package globals.application
+
+# MIT licensing; See: docs/LICENSE.txt
 
 
 # System modules
-import wx, os
+import wx
 
-
-# *** System paths *** #
-
-## Directory where app is installed
-PATH_app = os.path.dirname(__file__)
-
-## User's home directory
-#  
-#  Used to set config directory.
-PATH_home = os.getenv(u'HOME')
-
-## Local folder to store files such as custom templates
-PATH_local = u'{}/.local/share/debreate'.format(PATH_home)
+# Local modules
+from globals.paths import PATH_app
 
 
 # *** Application information *** #
@@ -41,6 +30,20 @@ APP_logo = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE
 APP_name = u'Debreate'
 
 
+# *** Version information *** #
+
+VERSION_maj = 0
+VERSION_min = 8
+VERSION_rel = 0
+VERSION_tuple = (VERSION_maj, VERSION_min, VERSION_rel)
+VERSION_string = u'{}.{}.{}'.format(VERSION_maj, VERSION_min, VERSION_rel)
+
+# Development version
+RELEASE = 0
+if not RELEASE:
+    VERSION_string = u'{}-dev'.format(VERSION_string)
+
+
 # *** Author information *** #
 
 ## Author's email
@@ -48,17 +51,3 @@ AUTHOR_email = u'antumdeluge@gmail.com'
 
 ## Application's author
 AUTHOR_name = u'Jordan Irwin'
-
-
-# *** Version information *** #
-
-VERSION_maj = 0
-VERSION_min = 8
-VERSION_rel = 0
-VERSION_tuple = (VERSION_maj, VERSION_min, VERSION_rel)
-VERSION_string = u'.'.join(VERSION_tuple)
-
-# Development version
-RELEASE = 0
-if not RELEASE:
-    VERSION_string = u'{}-dev'.format(VERSION_string)

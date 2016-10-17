@@ -6,11 +6,11 @@
 
 
 # System modules
-import wx, os
+import wx
 
 # Local modules
-from globals import PATH_app
 from dbr.language import GT
+from globals.paths import PATH_app
 
 
 # *** Buttons *** #

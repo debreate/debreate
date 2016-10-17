@@ -3,10 +3,11 @@
 ## \package dbr.compression
 
 
-import wx, os, subprocess, tarfile, zipfile
-from dbr.constants import custom_errno, VERSION_STRING
-import commands
-import shutil
+# system modules
+import wx, os, tarfile, zipfile, commands
+
+# local modules
+from dbr.constants          import custom_errno
 
 
 # *** Compression Format IDs *** #
