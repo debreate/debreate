@@ -12,7 +12,6 @@ import wx, os, sys, errno
 from dbr.commandcheck import CommandExists
 from dbr.language import GT
 from globals import PATH_app
-from globals import PATH_home
 
 
 # *** System Information *** #
