@@ -12,8 +12,10 @@
 import sys
 
 import command_line as CL
-from command_line import parsed_commands, parsed_args_s, parsed_args_v,\
-    GetParsedPath
+from command_line import parsed_commands
+from command_line import parsed_args_s
+from command_line import parsed_args_v
+from command_line import GetParsedPath
 
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
@@ -40,21 +42,26 @@ wx.SetDefaultPyEncoding('UTF-8')
 # Initialize app before importing local modules
 debreate_app = wx.App()
 
-# Local modules
-from dbr import Logger
-from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
-from dbr.constants import PY_VER_STRING, WX_VER_STRING,\
-    INSTALLED, PREFIX
-from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
-    GetDefaultConfigValue, default_config
-from dbr.custom import FirstRun
-from main import MainWindow
-from dbr.compression import GetCompressionId
-from dbr.error import ShowError
-
-from globals.application import APP_name
-from globals.application import VERSION_string
-from globals.paths import PATH_app
+from dbr                    import Logger
+from dbr.config             import ConfCode
+from dbr.config             import default_config
+from dbr.config             import GetDefaultConfigValue
+from dbr.config             import InitializeConfig
+from dbr.config             import ReadConfig
+from dbr.constants          import INSTALLED
+from dbr.constants          import PREFIX
+from dbr.compression        import GetCompressionId
+from dbr.custom             import FirstRun
+from dbr.error              import ShowError
+from dbr.language           import GT
+from dbr.language           import LOCALE_DIR
+from dbr.language           import TRANSLATION_DOMAIN
+from globals.application    import APP_name
+from globals.application    import VERSION_string
+from globals.paths          import PATH_app
+from globals.system         import PY_VER_STRING
+from globals.system         import WX_VER_STRING
+from main                   import MainWindow
 
 
 # Log window refresh interval

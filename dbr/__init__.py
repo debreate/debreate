@@ -28,7 +28,6 @@ from dbr.buttons import \
 from dbr.charctrl import CharCtrl
 from dbr.constants import \
     system_licenses_path, \
-    PY_VER_MAJ, PY_VER_MIN, PY_VER_REL, PY_VER_STRING, WX_VER_STRING, \
     Mandatory, Recommended, Optional, Unused, Disabled, \
     DEFAULT_SIZE, DEFAULT_POS
 from dbr.custom import \
