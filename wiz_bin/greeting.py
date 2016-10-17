@@ -40,8 +40,9 @@ class Panel(WizardPage):
                 GT(u'Building a Debian Package with Debreate'),
                 u'http://www.youtube.com/watch?v=kx4D5eL6HKE'
         )
-        self.info_border = wx.StaticBox(self, -1, size=(100,100))
+        self.vidlink.SetToolTip(wx.ToolTip(self.vidlink.url))
         
+        self.info_border = wx.StaticBox(self, -1, size=(100,100))
         info_box = wx.GridSizer()
         info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
