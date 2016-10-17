@@ -6,7 +6,6 @@ import os, subprocess, webbrowser
 from urllib2 import URLError, HTTPError
 import wx
 
-from dbr                    import Logger, DebugEnabled
 import dbr
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
@@ -31,7 +30,9 @@ from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
+from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
+from dbr.log                import Logger
 from dbr.quickbuild         import QuickBuild
 from globals.application    import APP_homepage, VERSION_tuple
 from globals.application    import APP_project_gh

@@ -2,14 +2,13 @@
 
 # Wizard class for Debreate
 
-import os
-import wx
+import wx, os
 from wx.lib.newevent import NewCommandEvent
 
-from dbr                import Logger
 from dbr.buttons        import ButtonNext, ButtonPrev
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.log            import Logger
 from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
 from globals.ident      import page_ids
 

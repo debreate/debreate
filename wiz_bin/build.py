@@ -3,10 +3,8 @@
 ## \package wiz_bin.build
 
 
-import os, commands, shutil, thread, traceback, time
-import wx
+import wx, os, commands, shutil, thread, traceback, time
 
-from dbr                import Logger, DebugEnabled
 import dbr
 from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import ErrorDialog
@@ -18,6 +16,8 @@ from dbr.functions      import GetBoolean
 from dbr.functions      import RemoveTempDirectory
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.log            import DebugEnabled
+from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_INFORMATION
