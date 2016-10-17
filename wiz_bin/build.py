@@ -36,6 +36,10 @@ from globals.ident      import ID_FILES
 from globals.ident      import ID_MAN
 from globals.ident      import ID_MENU
 from globals.ident      import ID_SCRIPTS
+from globals.tooltips   import TT_chk_build
+from globals.tooltips   import TT_chk_del
+from globals.tooltips   import TT_chk_lint
+from globals.tooltips   import TT_chk_md5
 
 
 class Panel(WizardPage):
@@ -46,14 +50,6 @@ class Panel(WizardPage):
         self.prebuild_check = False
         
         self.debreate = parent.GetDebreateWindow()
-        
-        # --- Tool Tips --- #
-        md5_tip = wx.ToolTip(GT(u'Create checksums for files in package'))
-        del_tip = wx.ToolTip(GT(u'Delete temporary directory tree after package has been created'))
-        #tip_lint = wx.ToolTip(GT(u'Checks the package for errors according to lintian's specifics'))
-        dest_tip = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
-        build_tip = wx.ToolTip(GT(u'Start building'))
-        
         
         # Add checkable items to this list
         self.build_options = []
@@ -67,7 +63,7 @@ class Panel(WizardPage):
             self.chk_md5.Disable()
             self.chk_md5.SetToolTip(wx.ToolTip(GT(u'Install md5sum package for this option')))
         else:
-            self.chk_md5.SetToolTip(md5_tip)
+            self.chk_md5.SetToolTip(TT_chk_md5)
             self.build_options.append(self.chk_md5)
         
         # For creating md5sum hashes
@@ -76,7 +72,7 @@ class Panel(WizardPage):
         # Deletes the temporary build tree
         self.chk_rmtree = wx.CheckBox(self, -1, GT(u'Delete build tree'))
         self.chk_rmtree.SetName(u'RMTREE')
-        self.chk_rmtree.SetToolTip(del_tip)
+        self.chk_rmtree.SetToolTip(TT_chk_del)
         self.chk_rmtree.default = True
         self.chk_rmtree.SetValue(self.chk_rmtree.default)
         self.build_options.append(self.chk_rmtree)
@@ -85,14 +81,13 @@ class Panel(WizardPage):
         self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
-        #self.chk_lint.SetToolTip(tip_lint)
         if not CMD_lintian:
             self.chk_lint.Disable()
             self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
         else:
-            #self.chk_lint.SetToolTip(tip_lint)
             self.chk_lint.SetValue(self.chk_lint.default)
             self.build_options.append(self.chk_lint)
+            self.chk_lint.SetToolTip(TT_chk_lint)
         
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(self, -1, GT(u'Install package after build'))
@@ -118,7 +113,7 @@ class Panel(WizardPage):
         
         # --- BUILD
         self.build_button = ButtonBuild64(self)
-        self.build_button.SetToolTip(build_tip)
+        self.build_button.SetToolTip(TT_chk_build)
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
         
