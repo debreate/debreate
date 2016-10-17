@@ -17,6 +17,9 @@ from globals.paths import PATH_app
 ## Debreate's main homepage
 APP_homepage = u'https://antumdeluge.github.io/debreate-web/'
 
+## The old SF homepage
+APP_homepage_sf = u'http://debreate.sourceforge.net/'
+
 ## GitHub project page
 APP_project_gh = u'https://github.com/AntumDeluge/debreate'
 

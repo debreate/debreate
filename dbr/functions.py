@@ -11,7 +11,7 @@ from datetime   import datetime
 from urllib2    import URLError
 from urllib2    import urlopen
 
-from globals.application    import APP_homepage
+from globals.application    import APP_homepage_sf
 from globals.application    import APP_name
 from globals.application    import VERSION_string
 from globals.constants      import system_licenses_path
@@ -28,7 +28,7 @@ from globals.system         import PY_VER_STRING
 #  \b Alias: \e dbr.GetCurrentVersion
 def GetCurrentVersion():
     try:
-        request = urlopen(u'{}/current.txt'.format(APP_homepage))
+        request = urlopen(u'{}/current.txt'.format(APP_homepage_sf))
         version = request.readlines()[0]
         version = version.split(u'.')
         
