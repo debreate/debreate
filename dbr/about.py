@@ -1,25 +1,30 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.about
+#  
 #  Dialog that shows information about the application
 
 
-# System modules
-import wx, os, shutil, commands
+import os, shutil, commands
+import wx
 
-# Local modules
-import dbr.font
-from dbr.language import GT
-from dbr import Logger
-from dbr.constants import PREFIX, INSTALLED
-from dbr.custom import Hyperlink
-from dbr.functions import GetFileMimeType, CreateTempDirectory,\
-    RemoveTempDirectory
-from dbr.error import ShowError
+from dbr                    import Logger, font
+from dbr.buttons            import ButtonConfirm
+from dbr.constants          import INSTALLED
+from dbr.constants          import PREFIX
+from dbr.custom             import Hyperlink
+from dbr.error              import ShowError
+from dbr.functions          import CreateTempDirectory
+from dbr.functions          import GetFileMimeType
+from dbr.functions          import GetYear
+from dbr.functions          import RemoveTempDirectory
+from dbr.language           import GT
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.commands       import CMD_gzip
+from globals.system         import PY_VER_STRING
+from globals.system         import WX_VER_STRING
 
 
 # Font for the name
@@ -83,7 +88,7 @@ class AboutDialog(wx.Dialog):
         
         ## Changelog text area
         self.changelog = wx.TextCtrl(t_changelog, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        self.changelog.SetFont(dbr.font.MONOSPACED_MD)
+        self.changelog.SetFont(font.MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
         log_sizer.Add(self.changelog, 1, wx.EXPAND)
@@ -94,7 +99,7 @@ class AboutDialog(wx.Dialog):
         
         ## Licensing information text area
         self.license = wx.TextCtrl(t_license, style=wx.TE_READONLY|wx.TE_MULTILINE)
-        self.license.SetFont(dbr.font.MONOSPACED_MD)
+        self.license.SetFont(font.MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)
         license_sizer.Add(self.license, 1, wx.EXPAND)
@@ -109,11 +114,11 @@ class AboutDialog(wx.Dialog):
         
         ## System's <a href="https://www.python.org/">Python</a> version
         self.py_info = wx.StaticText(sys_info, -1,
-                GT(u'Python version: {}').format(dbr.PY_VER_STRING))
+                GT(u'Python version: {}').format(PY_VER_STRING))
         
         ## System's <a href="https://wxpython.org/">wxPython</a> version
         self.wx_info = wx.StaticText(sys_info, -1,
-                GT(u'wxPython version: {}').format(dbr.WX_VER_STRING))
+                GT(u'wxPython version: {}').format(WX_VER_STRING))
         
         ## Debreate's installation prefix
         install_prefix = wx.StaticText(sys_info, -1,
@@ -135,7 +140,7 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = dbr.ButtonConfirm(self)
+        ok = ButtonConfirm(self)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
@@ -433,7 +438,7 @@ class AboutDialog(wx.Dialog):
         
         else:
             lic_text = GT(u'ERROR: Could not locate license file:\n\t\'{}\' not found'.format(license_path))
-            lic_text += u'\n\nCopyright © {} {} <{}>'.format(dbr.GetYear(), AUTHOR_name, AUTHOR_email)
+            lic_text += u'\n\nCopyright © {} {} <{}>'.format(GetYear(), AUTHOR_name, AUTHOR_email)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         
         self.license.SetValue(lic_text)
