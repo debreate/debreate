@@ -2,17 +2,16 @@
 
 # Wizard class for Debreate
 
-# System imports
-import wx, os
+import os
+import wx
 from wx.lib.newevent import NewCommandEvent
 
-# Local imports
-from dbr import Logger
-from dbr.language import GT
-from dbr.buttons import ButtonNext, ButtonPrev
-from dbr.constants import page_ids
-from dbr.functions import TextIsEmpty
+from dbr                import Logger
+from dbr.buttons        import ButtonNext, ButtonPrev
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
 from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
+from globals.ident      import page_ids
 
 
 ID_PREV = wx.NewId()
