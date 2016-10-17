@@ -12,7 +12,7 @@ from dbr import Logger, DebugEnabled
 from dbr.language import GT
 from dbr.constants import \
     ID_PROJ_A, ID_PROJ_T, custom_errno, ID_PROJ_Z, ID_PROJ_L,\
-    cmd_tar, ID_DEBUG, ID_LOG, ID_THEME
+    ID_DEBUG, ID_LOG, ID_THEME
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
@@ -32,6 +32,7 @@ from globals.application    import APP_project_sf
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
+from globals.commands       import CMD_tar
 from globals.paths          import PATH_app
 from globals.project        import PROJECT_ext
 
@@ -155,7 +156,7 @@ class MainWindow(wx.Frame):
             opt_compression_zip,
         ]
         
-        if cmd_tar != None:
+        if CMD_tar != None:
             opt_compression_xz = wx.MenuItem(self.menu_compression, ID_ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)

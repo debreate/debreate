@@ -11,15 +11,15 @@ import wx, os, shutil, commands
 import dbr.font
 from dbr.language import GT
 from dbr import Logger
-from dbr.constants import PREFIX, INSTALLED, \
-    cmd_gzip
+from dbr.constants import PREFIX, INSTALLED
 from dbr.custom import Hyperlink
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
 from dbr.error import ShowError
-from globals.application import APP_name
-from globals.application import AUTHOR_email
-from globals.application import AUTHOR_name
+from globals.application    import APP_name
+from globals.application    import AUTHOR_email
+from globals.application    import AUTHOR_name
+from globals.commands       import CMD_gzip
 
 
 # Font for the name
@@ -374,11 +374,11 @@ class AboutDialog(wx.Dialog):
                 
                 shutil.copy(CHANGELOG, temp_dir)
                 
-                if cmd_gzip:
+                if CMD_gzip:
                     prev_dir = os.getcwd()
                     os.chdir(temp_dir)
                     
-                    gzip_output = commands.getstatusoutput(u'{} -fd {}'.format(cmd_gzip, os.path.basename(CHANGELOG)))
+                    gzip_output = commands.getstatusoutput(u'{} -fd {}'.format(CMD_gzip, os.path.basename(CHANGELOG)))
                     
                     Logger.Debug(__name__,
                             GT(u'gzip decompress; Code: {}, Output: {}').format(gzip_output[0], gzip_output[1]))
