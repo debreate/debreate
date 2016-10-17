@@ -10,13 +10,13 @@
 - Test that locales are working
 - Fix final build
 - Only show exit confirmation if project has been modified
+- Finish help dialog
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
 - Finish page for creating manpage
 - Finish Doxygen documentation
-- Finish help dialog
 - Add more tooltips
 - Allow editing of dependecies list
 - Finish Markdown parser
