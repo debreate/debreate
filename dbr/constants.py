@@ -5,19 +5,14 @@
 #  Global variables used throughout the application & should remain constant.
 
 
-# System modules
 import wx, os, sys
 
+from dbr.language   import GT
+from globals.paths  import PATH_app
+
+
 # Local modules
-from dbr.language import GT
-from globals.paths import PATH_app
-
-
-# *** System Information *** #
-
-
 # *** Debreate Information *** #
-
 ## Determins if the application is running as portable or installed
 INSTALLED = False
 if os.path.isfile(u'{}/INSTALLED'.format(PATH_app)):
@@ -47,32 +42,6 @@ def GetPrefix():
 
 PREFIX = GetPrefix()
 
-ID_PROJ_Z = wx.NewId()
-ID_PROJ_L = wx.NewId()
-ID_PROJ_A = wx.NewId()
-ID_PROJ_T = wx.NewId()
-
-supported_suffixes = (
-    u'dbpz',
-    u'dbp',
-    u'tar',
-    u'tar.gz',
-    u'tar.bz2',
-    u'tar.xz',
-    u'zip',
-)
-
-PROJ_DEF_Z = GT(u'Debreate projects')
-PROJ_DEF_L = GT(u'Legacy Debreate projects')
-PROJ_DEF_A = GT(u'All supported formats')
-PROJ_DEF_T = GT(u'Supported compressed archives')
-
-project_wildcards = {
-    ID_PROJ_Z: (PROJ_DEF_Z, (supported_suffixes[0],)),
-    ID_PROJ_L: (PROJ_DEF_L, (supported_suffixes[1],)),
-    ID_PROJ_A: (PROJ_DEF_A, supported_suffixes),
-    ID_PROJ_T: (PROJ_DEF_T, supported_suffixes[2:])
-}
 
 # *** Python Info *** #
 

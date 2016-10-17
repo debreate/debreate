@@ -3,15 +3,19 @@
 ## \package dbr.dialogs
 
 
+# System modules
 import wx, os
+
+# Local modules
 # FIXME: Can't import Logger
 #from dbr import Logger
-from dbr.language import GT
-from dbr.buttons import ButtonConfirm
-from dbr.constants import project_wildcards, supported_suffixes
-from dbr.custom import TextIsEmpty
-from dbr.workingdir import ChangeWorkingDirectory
-from globals.bitmaps import ICON_ERROR
+from dbr.buttons        import ButtonConfirm
+from dbr.custom         import TextIsEmpty
+from dbr.language       import GT
+from dbr.workingdir     import ChangeWorkingDirectory
+from globals.bitmaps    import ICON_ERROR
+from globals.project    import project_wildcards
+from globals.project    import supported_suffixes
 
 
 
