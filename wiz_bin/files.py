@@ -9,11 +9,12 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
-    custom_errno, COLOR_ERROR, ICON_ERROR, home_path
+    custom_errno, COLOR_ERROR, ICON_ERROR
 from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
 from dbr.dialogs import DetailedMessageDialog, GetDirDialog, ShowDialog
+from globals import PATH_home
 
 
 ID_pin = 100
@@ -51,7 +52,7 @@ class Panel(WizardPage):
         self.menu.AppendItem(self.refresh)
         
         # Directory listing for importing files and folders
-        self.dir_tree = wx.GenericDirCtrl(self, -1, home_path, size=(300,20))
+        self.dir_tree = wx.GenericDirCtrl(self, -1, PATH_home, size=(300,20))
         
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         

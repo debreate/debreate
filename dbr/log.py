@@ -8,12 +8,13 @@ import wx, os, thread
 from wx.lib.newevent import NewCommandEvent
 
 # Debreate imports
-from dbr.constants import local_path, ID_DEBUG, MAIN_ICON, ID_LOG
+from dbr.constants import ID_DEBUG, MAIN_ICON, ID_LOG
 from dbr.functions import GetDate, GetTime
 from dbr.language import GT
 import time
 from dbr.font import GetMonospacedFont
 #from dbr.command_line import parsed_args_v
+from globals import PATH_local
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
@@ -38,7 +39,7 @@ class DebreateLogger:
         DEBUG: u'debug',
     }
     
-    def __init__(self, log_level=1, log_path=u'{}/logs'.format(local_path)):
+    def __init__(self, log_level=1, log_path=u'{}/logs'.format(PATH_local)):
         ## The level at which to output log messages
         #  
         #  Default is ERROR
@@ -122,8 +123,8 @@ class DebreateLogger:
             print(message)
             
             # Message is output to log file
-            if not os.path.isdir(local_path):
-                os.makedirs(local_path)
+            if not os.path.isdir(PATH_local):
+                os.makedirs(PATH_local)
             
             # Open log for writing
             l_file = open(self.log_file, u'a')
