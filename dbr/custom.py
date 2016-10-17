@@ -12,6 +12,7 @@ import wx.combo, wx.lib.mixins.listctrl as LC
 import dbr
 from dbr.constants import ID_APPEND, ID_OVERWRITE
 from dbr.language import GT
+from globals import PATH_app
 
 
 db_here = PathOnly(__file__).decode(u'utf-8')
@@ -38,7 +39,7 @@ class FirstRun(wx.Dialog):
         #self.OK = False
         
         # Set the titlebar icon
-        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG))
+        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG))
         
         # Display a message to create a config file
         self.message = wx.StaticText(self)
@@ -47,7 +48,7 @@ class FirstRun(wx.Dialog):
 rm -r ~/.config/debreate'.format(m1, m2))
         
         # Show the Debreate icon
-        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG)
+        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
         icon = wx.StaticBitmap(self, -1, dbicon)
         
         # Button to confirm

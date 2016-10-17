@@ -27,7 +27,7 @@ from dbr.buttons import \
     ButtonQuestion64, ButtonSave, ButtonSave64
 from dbr.charctrl import CharCtrl
 from dbr.constants import \
-    application_path, home_path, local_path, \
+    home_path, local_path, \
     system_licenses_path, AUTHOR, \
     APP_NAME, VER_MAJ, VER_MIN, VER_REL, VERSION, VERSION_STRING, \
     PROJECT_FILENAME_SUFFIX, \
