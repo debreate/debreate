@@ -9,7 +9,6 @@
 import wx, os, sys, errno
 
 # Local modules
-from dbr.commandcheck import CommandExists
 from dbr.language import GT
 from globals.paths import PATH_app
 
@@ -47,30 +46,6 @@ def GetPrefix():
 
 
 PREFIX = GetPrefix()
-
-'''
-# Version information #
-RELEASE = 0
-VER_MAJ = 0
-VER_MIN = 8
-VER_REL = 0
-
-VERSION = (VER_MAJ, VER_MIN, VER_REL)
-VERSION_STRING = u'{}.{}.{}'.format(VER_MAJ, VER_MIN, VER_REL)
-
-# Development version
-if not RELEASE:
-    VERSION_STRING = u'{}-dev'.format(VERSION_STRING)
-
-# Website & hosting information #
-HOMEPAGE = u'https://antumdeluge.github.io/debreate-web/'
-PROJECT_HOME_GH = u'https://github.com/AntumDeluge/debreate'
-PROJECT_HOME_SF = u'https://sourceforge.net/projects/debreate'
-
-# Project filename
-PROJECT_LEGACY_SUFFIX = u'dbp'
-PROJECT_FILENAME_SUFFIX = u'dbpz'
-'''
 
 ID_PROJ_Z = wx.NewId()
 ID_PROJ_L = wx.NewId()
@@ -208,10 +183,3 @@ file_types_defs = {
 
 # *** Colors *** #
 COLOR_ERROR = wx.Colour(255, 143, 115)
-
-
-# *** Optional system executable commands *** #
-cmd_tar = CommandExists(u'tar')
-cmd_md5sum = CommandExists(u'md5sum')
-cmd_lintian = CommandExists(u'lintian')
-cmd_gzip = CommandExists(u'gzip')
