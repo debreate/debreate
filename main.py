@@ -27,6 +27,7 @@ from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
 from dbr.error              import ShowError
 from dbr.functions          import CreateTempDirectory
+from dbr.functions          import UsingDevelopmentVersion
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
@@ -462,8 +463,14 @@ class MainWindow(wx.Frame):
     
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
-        wx.SafeYield()
+        if UsingDevelopmentVersion():
+            wx.MessageDialog(self, GT(u'This is a development version. Update checking is disabled. '),
+                    GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            
+            return
+        
         current = GetCurrentVersion()
+        wx.SafeYield()
         if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
             wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
@@ -474,9 +481,6 @@ class MainWindow(wx.Frame):
             update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
-        elif (current < VERSION_tuple):
-            wx.MessageDialog(self, GT(u'This is a development version, no updates available'),
-                    GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
         else:
             wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
     

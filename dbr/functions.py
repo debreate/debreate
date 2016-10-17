@@ -13,6 +13,7 @@ from urllib2    import urlopen
 
 from globals.application    import APP_homepage_sf
 from globals.application    import APP_name
+from globals.application    import RELEASE
 from globals.application    import VERSION_string
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
@@ -417,3 +418,7 @@ def RemovePreWhitespace(text):
         remove_lines += 1
     
     return u'\n'.join(text_lines[remove_lines:])
+
+
+def UsingDevelopmentVersion():
+    return not RELEASE
