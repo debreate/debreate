@@ -11,7 +11,6 @@ import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
 from dbr.constants import \
-    ID_PROJ_A, ID_PROJ_T, ID_PROJ_Z, ID_PROJ_L,\
     ID_DEBUG, ID_LOG, ID_THEME
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
@@ -22,20 +21,24 @@ from dbr.compression import \
     compression_mimetypes, compression_formats,\
     ID_ZIP_NONE, ID_ZIP_GZ, ID_ZIP_BZ2, ID_ZIP_XZ, ID_ZIP_ZIP,\
     CompressionHandler, DEFAULT_COMPRESSION_ID
-from dbr.quickbuild import QuickBuild
-from dbr.log import LogWindow
-from dbr.error import ShowError
 
-from globals.application import APP_homepage, VERSION_tuple
-from globals.application import APP_project_gh
-from globals.application import APP_project_sf
-from globals.application import AUTHOR_email
-from globals.application import AUTHOR_name
-from globals.application import VERSION_string
-from globals.commands    import CMD_tar
-from globals.errorcodes  import dbrerrno
-from globals.paths       import PATH_app
-from globals.project     import PROJECT_ext
+from dbr.error              import ShowError
+from dbr.log                import LogWindow
+from dbr.quickbuild         import QuickBuild
+from globals.application    import APP_homepage, VERSION_tuple
+from globals.application    import APP_project_gh
+from globals.application    import APP_project_sf
+from globals.application    import AUTHOR_email
+from globals.application    import AUTHOR_name
+from globals.application    import VERSION_string
+from globals.commands       import CMD_tar
+from globals.errorcodes     import dbrerrno
+from globals.paths          import PATH_app
+from globals.project        import ID_PROJ_A
+from globals.project        import ID_PROJ_L
+from globals.project        import ID_PROJ_T
+from globals.project        import ID_PROJ_Z
+from globals.project        import PROJECT_ext
 
 # Options menu
 ID_Dialogs = wx.NewId()
