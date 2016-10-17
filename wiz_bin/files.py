@@ -3,11 +3,13 @@
 ## \package wiz_bin.files
 
 
-import os
-import wx
+import wx, os
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 
-import dbr
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonBrowse
+from dbr.buttons        import ButtonClear
+from dbr.buttons        import ButtonDel
 from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
@@ -65,9 +67,9 @@ class Panel(WizardPage):
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         
         # ----- Add/Remove/Clear buttons
-        path_add = dbr.buttons.ButtonAdd(self)
-        path_remove = dbr.buttons.ButtonDel(self)
-        button_clear = dbr.buttons.ButtonClear(self)
+        path_add = ButtonAdd(self)
+        path_remove = ButtonDel(self)
+        button_clear = ButtonClear(self)
         
         wx.EVT_BUTTON(path_add, -1, self.AddPath)
         wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
@@ -107,7 +109,7 @@ class Panel(WizardPage):
         cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
         cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
         
-        self.dest_browse = dbr.buttons.ButtonBrowse(self, ID_pout)
+        self.dest_browse = ButtonBrowse(self, ID_pout)
         
         wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
         

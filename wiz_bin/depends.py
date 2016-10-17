@@ -6,15 +6,16 @@
 import wx
 from wx.lib.mixins import listctrl as wxMixinListCtrl
 
-import dbr
+from dbr.buttons    import ButtonAdd
+from dbr.buttons    import ButtonClear
+from dbr.buttons    import ButtonDel
+from dbr.buttons    import ButtonPipe
 from dbr.language   import GT
 from dbr.log        import Logger
 from dbr.wizard     import WizardPage
-from globals.ident  import ID_DEPENDS
+from globals.ident  import ID_DEPENDS, ID_APPEND
+from wx import ID_DELETE
 
-
-ID_Append = wx.NewId()
-ID_Delete = wx.NewId()
 
 class Panel(WizardPage):
     def __init__(self, parent):
@@ -99,10 +100,10 @@ class Panel(WizardPage):
         wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
         
         # Buttons to add and remove dependencies from the list
-        self.depadd = dbr.ButtonAdd(self)
-        self.depapp = dbr.ButtonPipe(self, ID_Append)
-        self.deprem = dbr.ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
-        self.depclr = dbr.ButtonClear(self)
+        self.depadd = ButtonAdd(self)
+        self.depapp = ButtonPipe(self)
+        self.deprem = ButtonDel(self, ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
+        self.depclr = ButtonClear(self)
         
         wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
         wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
@@ -206,7 +207,7 @@ class Panel(WizardPage):
                         else:
                             self.dep_area.SetStringItem(0, 1, u'%s %s' % (addname, addver))
         
-        elif key_id == ID_Append:
+        elif key_id == ID_APPEND:
             listrow = self.dep_area.GetFocusedItem()  # Get row of selected item
             colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
             prev_text = colitem.GetText()  # Get the text from that item
@@ -216,7 +217,7 @@ class Panel(WizardPage):
                 else:
                     self.dep_area.SetStringItem(listrow, 1, u'%s | %s' % (prev_text, addname))
         
-        elif key_id == ID_Delete: # wx.WXK_DELETE:
+        elif key_id == ID_DELETE: # wx.WXK_DELETE:
             selected = None
             while selected != -1:
                 selected = self.dep_area.GetFirstSelected()

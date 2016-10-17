@@ -6,6 +6,8 @@ import os, commands
 import wx
 
 import dbr
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonImport
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -83,9 +85,9 @@ class Panel(WizardPage):
         details_sizer.Add(dest_box)
         
         
-        self.button_import = dbr.ButtonImport(self)
+        self.button_import = ButtonImport(self)
         self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control section')))
-        self.button_add = dbr.ButtonAdd(self)
+        self.button_add = ButtonAdd(self)
         
         wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
         wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)

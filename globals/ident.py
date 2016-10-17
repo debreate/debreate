@@ -47,3 +47,7 @@ ID_BUILD = NewPageId(GT(u'Build'))
 
 # ID for custom fields
 ID_CUSTOM = wx.NewId()
+
+# *** Button IDs *** #
+ID_PREV = wx.NewId()
+ID_NEXT = wx.NewId()
