@@ -7,11 +7,11 @@ import wx
 from wx.lib.mixins import \
     listctrl as wxMixinListCtrl
 
+from dbr            import Logger
 import dbr
-from dbr.language       import GT
-from globals.constants  import ID_DEPENDS
-from dbr.wizard         import WizardPage
-from dbr                import Logger
+from dbr.language   import GT
+from dbr.wizard     import WizardPage
+from globals.ident  import ID_DEPENDS
 
 
 ID_Append = wx.NewId()
