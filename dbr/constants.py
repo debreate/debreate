@@ -128,24 +128,7 @@ ID_BUILD = NewPageId(GT(u'Build'))
 # ID for custom fields
 ID_CUSTOM = wx.NewId()
 
-# Error IDs
-ERR_DIR_NOT_AVAILABLE = wx.NewId()
-ERR_FILE_READ = wx.NewId()
-ERR_FILE_WRITE = wx.NewId()
-
-error_definitions = {
-    ERR_DIR_NOT_AVAILABLE: u'Directory Not Available',
-    ERR_FILE_READ: u'Could Not Read File',
-    ERR_FILE_WRITE: u'Could Not Write File',
-}
-
-'''
-# *** Icons *** #
-ICON_ERROR = u'{}/bitmaps/error64.png'.format(PATH_app)
-ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(PATH_app)
-'''
-
-# *** Colors depicting importance of fields
+# *** FIXME: Deprecated??? Colors depicting importance of fields
 Mandatory = (255,200,192)
 Recommended = (197,204,255)
 Optional = (255,255,255)

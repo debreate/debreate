@@ -8,24 +8,33 @@
 # See: docs/LICENSE.txt
 
 
-import errno
+import wx, errno
+
+# TODO: Convert thest to dbrerror
+ERR_DIR_NOT_AVAILABLE = wx.NewId()
+ERR_FILE_READ = wx.NewId()
+ERR_FILE_WRITE = wx.NewId()
+
+error_definitions = {
+    ERR_DIR_NOT_AVAILABLE: u'Directory Not Available',
+    ERR_FILE_READ: u'Could Not Read File',
+    ERR_FILE_WRITE: u'Could Not Write File',
+}
 
 
-class dbrerrno:
-    def __init__(self):
-        self = errno
-        
-        self.current_code = self.errorcode.keys()[-1]
-        
-        # ???: Should this be 0
-        self.SUCCESS = -1
-        self.errorcode[self.SUCCESS] = u'SUCCESS'
-        
-        self.EBADFT = self.AddNewCode(u'EBADFT')
+current_code = errno.errorcode.keys()[-1]
+def AddNewCode(code_def):
+    global current_code
     
+    current_code += 1
+    errno.errorcode[current_code] = code_def
     
-    def AddNewCode(self, code_def):
-        self.current_code += 1
-        self.errorcode[self.current_code] = code_def
-        
-        return self.current_code
+    return current_code
+
+dbrerrno = errno
+
+# ???: Should this be 0
+dbrerrno.SUCCESS = -1
+dbrerrno.errorcode[dbrerrno.SUCCESS] = u'SUCCESS'
+
+dbrerrno.EBADFT = AddNewCode(u'EBADFT')
