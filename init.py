@@ -44,7 +44,7 @@ debreate_app = wx.App()
 from dbr import Logger
 from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
 from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
-    INSTALLED, PREFIX, APP_NAME
+    INSTALLED, PREFIX
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     GetDefaultConfigValue, default_config
 from dbr.custom import FirstRun
@@ -52,6 +52,7 @@ from main import MainWindow
 from dbr.compression import GetCompressionId
 from dbr.error import ShowError
 
+from globals import APP_name
 from globals import PATH_app
 
 
@@ -75,7 +76,7 @@ if u'.py' in script_name:
 exit_now = 0
 
 if u'version' in parsed_args_s:
-    print(u'{} {}'.format(APP_NAME, VERSION_STRING))
+    print(u'{} {}'.format(APP_name, VERSION_STRING))
     
     sys.exit(0)
 

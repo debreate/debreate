@@ -5,20 +5,21 @@
 
 
 # System modules
-import wx, os
+import wx, os, shutil, commands
 
 # Local modules
 import dbr.font
 from dbr.language import GT
 from dbr import Logger
-from dbr.constants import APP_NAME, PREFIX, INSTALLED, EMAIL,\
-    AUTHOR, cmd_gzip
+from dbr.constants import PREFIX, INSTALLED, \
+    cmd_gzip
 from dbr.custom import Hyperlink
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
     RemoveTempDirectory
-import shutil
-import commands
 from dbr.error import ShowError
+from globals import APP_name
+from globals import AUTHOR_email
+from globals import AUTHOR_name
 
 
 # Font for the name
@@ -173,7 +174,7 @@ class AboutDialog(wx.Dialog):
         
         app_label = wx.StaticText(
             self.t_about,
-            label=u'{} {}'.format(APP_NAME, version)
+            label=u'{} {}'.format(APP_name, version)
         )
         app_label.SetFont(bigfont)
         
@@ -432,7 +433,7 @@ class AboutDialog(wx.Dialog):
         
         else:
             lic_text = GT(u'ERROR: Could not locate license file:\n\t\'{}\' not found'.format(license_path))
-            lic_text += u'\n\nCopyright © {} {} <{}>'.format(dbr.GetYear(), AUTHOR, EMAIL)
+            lic_text += u'\n\nCopyright © {} {} <{}>'.format(dbr.GetYear(), AUTHOR_name, AUTHOR_email)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         
         self.license.SetValue(lic_text)
