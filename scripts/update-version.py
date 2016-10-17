@@ -43,10 +43,10 @@ def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
 
 
 
-UpdateSingleLineFile(version_files['constants'], 'VER_MAJ = ', newvalue=VER_MAJ)
-UpdateSingleLineFile(version_files['constants'], 'VER_MIN = ', newvalue=VER_MIN)
-UpdateSingleLineFile(version_files['constants'], 'VER_REL = ', newvalue=VER_REL)
-UpdateSingleLineFile(version_files['constants'], 'RELEASE = ', newvalue=RELEASE)
+UpdateSingleLineFile(version_files['application'], 'VERSION_maj = ', newvalue=VER_MAJ)
+UpdateSingleLineFile(version_files['application'], 'VERSION_min = ', newvalue=VER_MIN)
+UpdateSingleLineFile(version_files['application'], 'VERSION_rel = ', newvalue=VER_REL)
+UpdateSingleLineFile(version_files['application'], 'RELEASE = ', newvalue=RELEASE)
 UpdateSingleLineFile(version_files['makefile'], 'VERSION = ')
 UpdateSingleLineFile(version_files['doxyfile'], 'PROJECT_NUMBER         = ')
 UpdateSingleLineFile(version_files['locale'], '"Project-Id-Version: Debreate ', suffix='\\n"')
