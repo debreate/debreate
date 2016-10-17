@@ -27,6 +27,7 @@ from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
 from dbr.error              import ShowError
 from dbr.functions          import CreateTempDirectory
+from dbr.functions          import GetCurrentVersion
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
@@ -51,16 +52,16 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
-from wiz_bin.greeting       import Panel as PageGreeting
-from wiz_bin.control        import Panel as PageControl
 from wiz_bin.build          import Panel as PageBuild
-from wiz_bin.scripts        import Panel as PageScripts
-from wiz_bin.menu           import Panel as PageMenu
-from wiz_bin.man            import Panel as PageMan
-from wiz_bin.files          import Panel as PageFiles
-from wiz_bin.depends        import Panel as PageDepends
-from wiz_bin.copyright      import Panel as PageCopyright
 from wiz_bin.clog           import Panel as PageChangelog
+from wiz_bin.control        import Panel as PageControl
+from wiz_bin.copyright      import Panel as PageCopyright
+from wiz_bin.depends        import Panel as PageDepends
+from wiz_bin.files          import Panel as PageFiles
+from wiz_bin.greeting       import Panel as PageGreeting
+from wiz_bin.man            import Panel as PageMan
+from wiz_bin.menu           import Panel as PageMenu
+from wiz_bin.scripts        import Panel as PageScripts
 
 
 # Options menu
@@ -462,7 +463,7 @@ class MainWindow(wx.Frame):
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
         wx.SafeYield()
-        current = dbr.GetCurrentVersion()
+        current = GetCurrentVersion()
         if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
             wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
