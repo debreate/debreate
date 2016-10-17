@@ -3,12 +3,10 @@
 ## \package dbr.error
 
 
-# System modules
 import wx
 
-# Local modules
-from dbr import Logger
-from dbr.language import GT
+from dbr.language   import GT
+from dbr.log        import Logger
 
 
 def ShowError(window, message, error_id=None):

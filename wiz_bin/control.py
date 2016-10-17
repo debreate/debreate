@@ -5,12 +5,12 @@
 
 import wx, os
 
-from dbr                import Logger
 import dbr
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
 from dbr.language       import GT
+from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CONTROL

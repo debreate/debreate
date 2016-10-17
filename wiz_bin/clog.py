@@ -5,10 +5,10 @@
 import os, commands
 import wx
 
-from dbr                import Logger
 import dbr
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CHANGELOG
