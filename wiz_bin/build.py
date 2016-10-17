@@ -6,6 +6,10 @@
 import wx, os, commands, shutil, thread, traceback, time
 
 import dbr
+from dbr.buttons        import ButtonBrowse
+from dbr.buttons        import ButtonBuild
+from dbr.buttons        import ButtonBuild64
+from dbr.buttons        import ButtonCancel
 from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import ErrorDialog
 from dbr.dialogs        import GetFileSaveDialog
@@ -113,7 +117,7 @@ class Panel(WizardPage):
         #wx.EVT_SHOW(self, self.SetSummary)
         
         # --- BUILD
-        self.build_button = dbr.ButtonBuild64(self)
+        self.build_button = ButtonBuild64(self)
         self.build_button.SetToolTip(build_tip)
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
@@ -1025,10 +1029,10 @@ class QuickBuild(wx.Dialog):
         self.filename = wx.TextCtrl(self, -1)
         path_txt = wx.StaticText(self, -1, GT(u'Path to build tree'))
         self.path = wx.TextCtrl(self, -1) # Path to the root of the directory tree
-        self.get_path = dbr.ButtonBrowse(self)
-        self.build = dbr.ButtonBuild(self)
+        self.get_path = ButtonBrowse(self)
+        self.build = ButtonBuild(self)
         self.build.SetToolTip(wx.ToolTip(GT(u'Start building')))
-        self.cancel = dbr.ButtonCancel(self)
+        self.cancel = ButtonCancel(self)
         
         wx.EVT_BUTTON(self.get_path, -1, self.Browse)
         wx.EVT_BUTTON(self.build, -1, self.OnBuild)

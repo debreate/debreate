@@ -10,11 +10,10 @@ from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
+from globals.ident      import ID_NEXT
+from globals.ident      import ID_PREV
 from globals.ident      import page_ids
 
-
-ID_PREV = wx.NewId()
-ID_NEXT = wx.NewId()
 
 class Wizard(wx.Panel):
     def __init__(self, parent, page_list=None):
@@ -43,8 +42,8 @@ class Wizard(wx.Panel):
         self.title.Layout()
         
         # Previous and Next buttons
-        self.button_prev = ButtonPrev(self, ID_PREV)
-        self.button_next = ButtonNext(self, ID_NEXT)
+        self.button_prev = ButtonPrev(self)
+        self.button_next = ButtonNext(self)
         
         wx.EVT_BUTTON(self.button_prev, -1, self.ChangePage)
         wx.EVT_BUTTON(self.button_next, -1, self.ChangePage)
