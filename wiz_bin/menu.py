@@ -9,11 +9,12 @@ import wx, os, shutil
 # Local imports
 import dbr
 from dbr.language import GT
-from dbr.constants import ID_MENU, custom_errno
+from dbr.constants import ID_MENU
 from dbr.wizard import WizardPage
 from dbr import Logger
 from dbr.functions import TextIsEmpty
 from dbr.dialogs import GetFileSaveDialog, GetFileOpenDialog, ShowDialog
+from globals.errorcodes import dbrerrno
 
 
 class Panel(WizardPage):
@@ -578,7 +579,7 @@ class Panel(WizardPage):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         
         if not os.path.isfile(filename):
-            return custom_errno.ENOENT
+            return dbrerrno.ENOENT
         
         FILE = open(filename, u'r')
         menu_data = FILE.read().split(u'\n')

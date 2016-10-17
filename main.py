@@ -11,7 +11,7 @@ import dbr, wiz_bin
 from dbr import Logger, DebugEnabled
 from dbr.language import GT
 from dbr.constants import \
-    ID_PROJ_A, ID_PROJ_T, custom_errno, ID_PROJ_Z, ID_PROJ_L,\
+    ID_PROJ_A, ID_PROJ_T, ID_PROJ_Z, ID_PROJ_L,\
     ID_DEBUG, ID_LOG, ID_THEME
 from dbr.config import GetDefaultConfigValue, WriteConfig, ReadConfig, ConfCode
 from dbr.functions import GetFileMimeType, CreateTempDirectory,\
@@ -26,15 +26,16 @@ from dbr.quickbuild import QuickBuild
 from dbr.log import LogWindow
 from dbr.error import ShowError
 
-from globals.application    import APP_homepage, VERSION_tuple
-from globals.application    import APP_project_gh
-from globals.application    import APP_project_sf
-from globals.application    import AUTHOR_email
-from globals.application    import AUTHOR_name
-from globals.application    import VERSION_string
-from globals.commands       import CMD_tar
-from globals.paths          import PATH_app
-from globals.project        import PROJECT_ext
+from globals.application import APP_homepage, VERSION_tuple
+from globals.application import APP_project_gh
+from globals.application import APP_project_sf
+from globals.application import AUTHOR_email
+from globals.application import AUTHOR_name
+from globals.application import VERSION_string
+from globals.commands    import CMD_tar
+from globals.errorcodes  import dbrerrno
+from globals.paths       import PATH_app
+from globals.project     import PROJECT_ext
 
 # Options menu
 ID_Dialogs = wx.NewId()
@@ -614,7 +615,7 @@ class MainWindow(wx.Frame):
             Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
             
             # Saving over currently loaded project
-            if self.SaveProject(self.loaded_project) == custom_errno.SUCCESS:
+            if self.SaveProject(self.loaded_project) == dbrerrno.SUCCESS:
                 self.SetProjectDirty(False)
     
     
@@ -635,7 +636,7 @@ class MainWindow(wx.Frame):
             Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
             Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
-            if self.SaveProject(project_path) == custom_errno.SUCCESS:
+            if self.SaveProject(project_path) == dbrerrno.SUCCESS:
                 self.SetProjectDirty(False)
             
             return
@@ -714,7 +715,7 @@ class MainWindow(wx.Frame):
         
         Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectLoaded()))
         
-        if project_opened == custom_errno.SUCCESS:
+        if project_opened == dbrerrno.SUCCESS:
             self.loaded_project = project_file
         
         Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectLoaded()))
@@ -728,7 +729,7 @@ class MainWindow(wx.Frame):
         
         if file_type not in compression_mimetypes:
             Logger.Error(__name__, GT(u'Cannot open project with compression mime type "{}"'.format(file_type)))
-            return custom_errno.EBADFT
+            return dbrerrno.EBADFT
         
         compression_id = compression_mimetypes[file_type]
         
@@ -754,7 +755,7 @@ class MainWindow(wx.Frame):
         RemoveTempDirectory(temp_dir)
         
         # Mark project as loaded
-        return custom_errno.SUCCESS
+        return dbrerrno.SUCCESS
     
     
     def OpenProjectLegacy(self, data, filename):
@@ -828,7 +829,7 @@ class MainWindow(wx.Frame):
         
         temp_dir = CreateTempDirectory()
         
-        if not os.path.exists(temp_dir) or temp_dir == custom_errno.EACCES:
+        if not os.path.exists(temp_dir) or temp_dir == dbrerrno.EACCES:
             ShowError(self, u'{}: {}'.format(GT(u'Could not create staging directory'), temp_dir))
             return
         
@@ -876,7 +877,7 @@ class MainWindow(wx.Frame):
             
             RemoveTempDirectory(temp_dir)
             
-            return custom_errno.SUCCESS
+            return dbrerrno.SUCCESS
         
         ShowError(self, u'{}: {}'.format(GT(u'Project save failed'), target_path))
     
