@@ -33,6 +33,7 @@ FILES_executable = \
 
 FILES_root = \
 	command_line.py \
+	globals.py \
 	main.py
 
 FILES_wiz_bin = \

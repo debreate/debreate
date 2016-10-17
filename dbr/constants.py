@@ -9,16 +9,12 @@
 import wx, os, sys, errno
 
 # Local modules
-from dbr.language import GT
 from dbr.commandcheck import CommandExists
+from dbr.language import GT
+from globals import PATH_app
 
 
 # *** System Information *** #
-
-## Full path to the application's directory
-#  
-#  FIXME: Hack to get parent directory
-application_path = os.path.dirname(os.path.dirname(__file__))
 
 ## Root home directory where configuration is stored
 #  
@@ -35,16 +31,16 @@ local_path = u'{}/.local/share/debreate'.format(home_path)
 
 ## Determins if the application is running as portable or installed
 INSTALLED = False
-if os.path.isfile(u'{}/INSTALLED'.format(application_path)):
+if os.path.isfile(u'{}/INSTALLED'.format(PATH_app)):
     INSTALLED = True
 
 def GetPrefix():
-    global application_path, INSTALLED
+    global PATH_app, INSTALLED
     
     if not INSTALLED:
-        return application_path
+        return PATH_app
     
-    FILE = open(u'{}/INSTALLED'.format(application_path))
+    FILE = open(u'{}/INSTALLED'.format(PATH_app))
     lines = FILE.read().split(u'\n')
     FILE.close()
     
@@ -57,7 +53,7 @@ def GetPrefix():
             if key.lower() == u'prefix':
                 return value
     
-    return application_path
+    return PATH_app
 
 
 PREFIX = GetPrefix()
@@ -66,7 +62,7 @@ PREFIX = GetPrefix()
 APP_NAME = GT(u'Debreate')
 AUTHOR = u'Jordan Irwin'
 EMAIL = u'antumdeluge@gmail.com'
-MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(application_path), wx.BITMAP_TYPE_PNG)
+MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
 
 # Version information #
 RELEASE = 0
@@ -184,8 +180,8 @@ error_definitions = {
 
 
 # *** Icons *** #
-ICON_ERROR = u'{}/bitmaps/error64.png'.format(application_path)
-ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(application_path)
+ICON_ERROR = u'{}/bitmaps/error64.png'.format(PATH_app)
+ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(PATH_app)
 
 
 # *** Colors depicting importance of fields
