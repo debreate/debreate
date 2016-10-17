@@ -12,10 +12,10 @@ from urllib2    import URLError
 from urllib2    import urlopen
 import wx
 
-from dbr.constants          import system_licenses_path
 from globals.application    import APP_homepage
 from globals.application    import APP_name
 from globals.application    import VERSION_string
+from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
 

@@ -10,8 +10,6 @@ import wx
 
 from dbr                    import Logger, font
 from dbr.buttons            import ButtonConfirm
-from dbr.constants          import INSTALLED
-from dbr.constants          import PREFIX
 from dbr.custom             import Hyperlink
 from dbr.error              import ShowError
 from dbr.functions          import CreateTempDirectory
@@ -22,6 +20,8 @@ from dbr.language           import GT
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
+from globals.constants      import INSTALLED
+from globals.constants      import PREFIX
 from globals.commands       import CMD_gzip
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING

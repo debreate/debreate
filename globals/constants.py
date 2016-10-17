@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.constants
+## \package globals.constants
 #  
 #  Global variables used throughout the application & should remain constant.
+#  TODO: Rename or delete
 
 
-import wx, os
+import os
+import wx
 
 from dbr.language   import GT
 from globals.paths  import PATH_app

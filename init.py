@@ -48,8 +48,6 @@ from dbr.config             import default_config
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import InitializeConfig
 from dbr.config             import ReadConfig
-from dbr.constants          import INSTALLED
-from dbr.constants          import PREFIX
 from dbr.compression        import GetCompressionId
 from dbr.custom             import FirstRun
 from dbr.error              import ShowError
@@ -58,6 +56,8 @@ from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
 from globals.application    import APP_name
 from globals.application    import VERSION_string
+from globals.constants      import INSTALLED
+from globals.constants      import PREFIX
 from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
