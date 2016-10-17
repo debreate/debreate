@@ -2,7 +2,7 @@
 
 ## \package globals.tooltips
 #  
-#  Tooltip definitions
+#  Defines tooltips that have longer texts
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -26,4 +26,3 @@ TT_chk_del = wx.ToolTip(GT(u'Delete staged directory tree after package has been
 TT_chk_lint = wx.ToolTip(GT(u'Checks the package for warnings & errors according to lintian\'s specifics\n\
 (See: Help {0} Reference {0} Lintian Tags Explanation)').format(ARROW_RIGHT))
 TT_chk_dest = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
-TT_chk_build = wx.ToolTip(GT(u'Start building'))
