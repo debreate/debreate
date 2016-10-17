@@ -14,7 +14,7 @@ import wx, os
 #from dbr.language import GT
 from dbr.functions import TextIsEmpty, GetBoolean, GetIntTuple
 from dbr.compression import compression_formats, DEFAULT_COMPRESSION_ID
-from globals import PATH_home
+from globals.paths import PATH_home
 
 
 ## Configuration codes

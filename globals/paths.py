@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+
+## \package globals.paths
+#  
+#  Global paths used in the app
+
+
+# System modules
+import os
+
+
+# *** System paths *** #
+
+## Directory where app is installed
+#  HACK: test
+#  HACK: Call os.path.dirname twice to get root directory.
+#        This is necessary because this variable is
+#        declared from a sub-directory.
+PATH_app = os.path.dirname(os.path.dirname(__file__))
+
+## User's home directory
+#  
+#  Used to set config directory.
+PATH_home = os.getenv(u'HOME')
+
+## Local folder to store files such as custom templates
+PATH_local = u'{}/.local/share/debreate'.format(PATH_home)
