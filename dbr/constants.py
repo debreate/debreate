@@ -6,7 +6,7 @@
 
 
 # System modules
-import wx, os, sys, errno
+import wx, os, sys
 
 # Local modules
 from dbr.language import GT
@@ -161,17 +161,6 @@ system_licenses_path = u'/usr/share/common-licenses'
 DEFAULT_SIZE = (800, 650)
 DEFAULT_POS = (0, 0)
 
-
-# *** Define some new error codes *** #
-custom_errno = errno
-current_code = errno.errorcode.keys()[-1]
-
-custom_errno.SUCCESS = -1
-custom_errno.errorcode[custom_errno.SUCCESS] = u'SUCCESS'
-
-current_code += 1
-custom_errno.EBADFT = current_code
-custom_errno.errorcode[custom_errno.EBADFT] = u'EBADFT'
 
 # *** File Types *** #
 FTYPE_EXE = wx.NewId()

@@ -9,12 +9,13 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 import dbr
 from dbr.language import GT
 from dbr.constants import ID_FILES, ID_CUSTOM, FTYPE_EXE, file_types_defs,\
-    custom_errno, COLOR_ERROR, ICON_ERROR
+    COLOR_ERROR, ICON_ERROR
 from dbr import Logger
 from dbr.wizard import WizardPage
 from dbr.functions import TextIsEmpty
 from dbr.dialogs import DetailedMessageDialog, GetDirDialog, ShowDialog
-from globals.paths import PATH_home
+from globals.errorcodes import dbrerrno
+from globals.paths      import PATH_home
 
 
 ID_pin = 100
@@ -521,7 +522,7 @@ class Panel(WizardPage):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         
         if not os.path.isfile(filename):
-            return custom_errno.ENOENT
+            return dbrerrno.ENOENT
         
         FILE = open(filename)
         files_data = FILE.read().split(u'\n')

@@ -12,11 +12,11 @@ from urllib2 import urlopen, URLError
 
 # Local modules
 from dbr.constants import \
-    PY_VER_STRING, system_licenses_path,\
-    custom_errno
-from globals.application import APP_homepage
-from globals.application import APP_name
-from globals.application import VERSION_string
+    PY_VER_STRING, system_licenses_path
+from globals.application    import APP_homepage
+from globals.application    import APP_name
+from globals.application    import VERSION_string
+from globals.errorcodes     import dbrerrno
 
 
 # FIXME: Can't import Logger
@@ -368,7 +368,7 @@ def SetToolTips(control_list):
 
 def BuildBinaryPackageFromTree(root_dir, filename):
     if not os.path.isdir(root_dir):
-        return custom_errno.ENOENT
+        return dbrerrno.ENOENT
     
     # DEBUG
     cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
@@ -394,12 +394,12 @@ def CreateTempDirectory():
             shutil.rmtree(temp_dir)
         
         elif os.path.isfile(temp_dir):
-            return custom_errno.EACCES
+            return dbrerrno.EACCES
         
         os.makedirs(temp_dir)
         return temp_dir
     
-    return custom_errno.EACCES
+    return dbrerrno.EACCES
 
 
 def RemoveTempDirectory(temp_dir):
