@@ -2,10 +2,9 @@
 
 import wx
 
-from dbr.language import GT
-from dbr.constants import ID_MAN
-from dbr.wizard import WizardPage
-from dbr import Logger
+from dbr.language   import GT
+from dbr.wizard     import  WizardPage
+from globals.ident import ID_MAN
 
 
 class Panel(WizardPage, wx.Notebook):

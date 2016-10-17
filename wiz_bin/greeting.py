@@ -4,11 +4,10 @@
 # System imports
 import wx
 
-# Local imports
-from dbr.language import GT
-from dbr.constants import ID_GREETING
-from dbr.wizard import WizardPage
-from dbr.custom import Hyperlink
+from dbr.custom     import Hyperlink
+from dbr.language   import GT
+from dbr.wizard     import WizardPage
+from globals.ident  import ID_GREETING
 
 
 class Panel(WizardPage):

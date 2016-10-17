@@ -3,19 +3,18 @@
 ## \package dbr.log
 
 
-# System imports
-import wx, os, thread
+import os, thread, time
+import wx
 from wx.lib.newevent import NewCommandEvent
 
-# Debreate imports
-from dbr.constants import ID_DEBUG, ID_LOG
-from dbr.functions import GetDate, GetTime
-from dbr.language import GT
-import time
-from dbr.font import GetMonospacedFont
 #from dbr.command_line import parsed_args_v
-from globals.application import APP_logo
-from globals.paths import PATH_local
+from dbr.font               import GetMonospacedFont
+from dbr.functions          import GetDate, GetTime
+from dbr.language           import GT
+from globals.application    import APP_logo
+from globals.ident          import ID_DEBUG
+from globals.ident          import ID_LOG
+from globals.paths          import PATH_local
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()

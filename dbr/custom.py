@@ -4,17 +4,17 @@
 
 
 # System imports
-import wx, os, sys, webbrowser
-from wx.lib.docview import PathOnly
+import os, sys, webbrowser
 import wx.combo, wx.lib.mixins.listctrl as LC
+from wx.lib.docview import PathOnly
+
+from dbr.language   import GT
+from globals.ident  import ID_APPEND
+from globals.ident  import ID_OVERWRITE
+from globals.paths  import PATH_app
+
 
 # Local imports
-import dbr
-from dbr.constants import ID_APPEND, ID_OVERWRITE
-from dbr.language import GT
-from globals.paths import PATH_app
-
-
 db_here = PathOnly(__file__).decode(u'utf-8')
 
 # FIXME: This should be import from dbr.functions

@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.copyright
 
-# System imports
-import wx, os
 
-# Local imports
+import os
+import wx
+
+from dbr.error          import ShowError
 import dbr.font
-from dbr.language import GT
-from dbr.constants import ID_COPYRIGHT
-from dbr.functions import TextIsEmpty, RemovePreWhitespace
-from dbr.wizard import WizardPage
-from dbr import Logger
-from dbr.error import ShowError
+from dbr.functions      import RemovePreWhitespace
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.wizard         import WizardPage
 from globals.errorcodes import errno
+from globals.ident      import ID_COPYRIGHT
 
 
 # Globals

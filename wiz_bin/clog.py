@@ -2,18 +2,19 @@
 
 
 # System imports
-import wx, os, commands
+import os, commands
+import wx
+
+from dbr                import Logger
+import dbr
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.wizard         import WizardPage
+from globals.errorcodes import dbrerrno
+from globals.ident      import ID_CHANGELOG
+
 
 # Local imports
-import dbr
-from dbr.language import GT
-from dbr.constants import ID_CHANGELOG
-from dbr.functions import TextIsEmpty
-from dbr.wizard import WizardPage
-from dbr import Logger
-from globals.errorcodes import dbrerrno
-
-
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CHANGELOG)
