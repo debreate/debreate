@@ -27,6 +27,8 @@ from dbr.quickbuild import QuickBuild
 from dbr.log import LogWindow
 from dbr.error import ShowError
 
+from globals import PATH_app
+
 
 # Options menu
 ID_Dialogs = wx.NewId()
@@ -56,7 +58,7 @@ class MainWindow(wx.Frame):
         self.SetMinSize((640,400))
         
         # ----- Set Titlebar Icon
-        self.main_icon = wx.Icon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG)
+        self.main_icon = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.main_icon)
         
         # If window is maximized this will store last window size and position for next session
@@ -76,7 +78,7 @@ class MainWindow(wx.Frame):
         # Quick Build
         self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD,
                                          GT(u'Quick Build'), GT(u'Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(dbr.application_path)))
+        self.QuickBuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
         
         self.menu_file.Append(wx.ID_NEW, help=GT(u'Start a new project'))
         self.menu_file.Append(wx.ID_OPEN, help=GT(u'Open a previously saved project'))
@@ -177,7 +179,7 @@ class MainWindow(wx.Frame):
         # Menu with links to the Debian Policy Manual webpages
         self.Policy = wx.Menu()
         
-        globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(dbr.application_path))
+        globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
         self.DPM = wx.MenuItem(self.Policy, ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         self.DPM.SetBitmap(globe)
         self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
@@ -380,7 +382,7 @@ class MainWindow(wx.Frame):
     def OnAbout(self, event):
         about = dbr.AboutDialog(self)
         
-        about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(dbr.application_path))
+        about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
         about.SetVersion(VERSION_STRING)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         about.SetAuthor(AUTHOR)
@@ -452,10 +454,10 @@ class MainWindow(wx.Frame):
         else:
             # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
             wx.Yield()
-            status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(dbr.application_path)])
+            status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
             if status:
                 wx.Yield()
-                status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(dbr.application_path)])
+                status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
             if status:
                 wx.Yield()
                 webbrowser.open(u'http://debreate.sourceforge.net/usage')

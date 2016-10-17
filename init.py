@@ -44,13 +44,15 @@ debreate_app = wx.App()
 from dbr import Logger
 from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
 from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
-    INSTALLED, PREFIX, APP_NAME, application_path
+    INSTALLED, PREFIX, APP_NAME
 from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
     GetDefaultConfigValue, default_config
 from dbr.custom import FirstRun
 from main import MainWindow
 from dbr.compression import GetCompressionId
 from dbr.error import ShowError
+
+from globals import PATH_app
 
 
 # Log window refresh interval
@@ -83,7 +85,7 @@ if u'help' in parsed_args_s:
         help_output = commands.getstatusoutput(u'man debreate')
     
     else:
-        help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(application_path))
+        help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(PATH_app))
     
     
     if help_output[0]:
