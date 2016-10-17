@@ -3,10 +3,10 @@
 ## \package dbr.compression
 
 
-# system modules
 import wx, os, tarfile, zipfile, commands
 
-# local modules
+from dbr.language       import GT
+from dbr.log            import Logger
 from globals.errorcodes import errno
 
 
@@ -42,8 +42,7 @@ def GetCompressionId(z_value):
         if z_value == compression_formats[z_id]:
             return z_id
     
-    # FIXME: Can't import Logger
-    #Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
+    Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
     
     return None
 

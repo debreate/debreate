@@ -4,13 +4,13 @@
 # System modules
 import os
 
+from dbr.language   import GT
+from dbr.log        import Logger
+from globals.paths  import PATH_app
+from globals.paths  import PATH_local
+
+
 # Local modules
-from dbr import Logger
-from dbr.language import GT
-from globals.paths import PATH_app
-from globals.paths import PATH_local
-
-
 ## Application templates
 #  
 #  Path to application templates stored in the system Debreate directory.

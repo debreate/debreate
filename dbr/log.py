@@ -179,9 +179,14 @@ class DebreateLogger:
         return self.log_file
 
 
+# Instantiate logger with default level & output path
+Logger = DebreateLogger()
 
 # How often the log window will be refreshed
 LOG_WINDOW_REFRESH_INTERVAL = 1
+
+def DebugEnabled():
+    return Logger.GetLogLevel() == Logger.DEBUG
 
 def SetLogWindowRefreshInterval(value):
     global LOG_WINDOW_REFRESH_INTERVAL

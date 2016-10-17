@@ -4,12 +4,11 @@
 
 
 import wx
-from wx.lib.mixins import \
-    listctrl as wxMixinListCtrl
+from wx.lib.mixins import listctrl as wxMixinListCtrl
 
-from dbr            import Logger
 import dbr
 from dbr.language   import GT
+from dbr.log        import Logger
 from dbr.wizard     import WizardPage
 from globals.ident  import ID_DEPENDS
 

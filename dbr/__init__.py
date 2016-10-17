@@ -65,14 +65,6 @@ from globals.constants  import Unused
 from globals.constants  import system_licenses_path
 
 
-# Instantiate logger with default level & output path
-Logger = DebreateLogger()
-
-def DebugEnabled():
-    return Logger.GetLogLevel() == Logger.DEBUG
-
-
-
 
 # Code after this does nothing. It is only used
 # to document aliases with Doxygen.

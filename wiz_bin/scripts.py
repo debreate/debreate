@@ -5,13 +5,13 @@
 
 import wx, os
 
-from dbr                import Logger
 from dbr.buttons        import ButtonBuild
 from dbr.buttons        import ButtonDel
 from dbr.buttons        import ButtonImport
 from dbr.buttons        import ButtonQuestion64
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.log            import Logger
 from dbr.markdown       import MarkdownDialog
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl

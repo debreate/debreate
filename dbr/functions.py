@@ -5,12 +5,11 @@
 #  Global functions used throughout Debreate
 
 
+import wx, os, re, commands, shutil
 from datetime   import date
 from datetime   import datetime
-import os, re, commands, shutil
 from urllib2    import URLError
 from urllib2    import urlopen
-import wx
 
 from globals.application    import APP_homepage
 from globals.application    import APP_name
@@ -20,7 +19,6 @@ from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
 
 
-# FIXME: Can't import Logger
 ## Get the current version of the application
 #  
 #  The alias \p \e \b dbr.GetCurrentVersion can be used.
