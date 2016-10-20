@@ -168,7 +168,7 @@ class Panel(WizardPage):
                             self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
         
         
-        SetPageToolTips(self.GetId(), self.GetChildren())
+        SetPageToolTips(self)
     
     
     def SelectAll(self):

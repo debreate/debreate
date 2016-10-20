@@ -176,7 +176,7 @@ class Panel(WizardPage):
         self.Layout()
         
         
-        SetPageToolTips(self.GetId(), self.GetChildren())
+        SetPageToolTips(self)
     
     
     def IsExportable(self):

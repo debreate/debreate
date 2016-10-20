@@ -12,9 +12,15 @@ import wx
 
 from dbr.language       import GT
 from globals.characters import ARROW_RIGHT
+from globals.ident      import ID_BUILD
+from globals.ident      import ID_CHANGELOG
 from globals.ident      import ID_CONTROL
+from globals.ident      import ID_COPYRIGHT
 from globals.ident      import ID_DEPENDS
 from globals.ident      import ID_FILES
+from globals.ident      import ID_MAN
+from globals.ident      import ID_MENU
+from globals.ident      import ID_SCRIPTS
 
 
 # *** Wizard buttons ***#
@@ -66,6 +72,30 @@ TT_files = {
     u'refresh': GT(u'Update files\' executable status & availability'),
 }
 
+TT_manpages = {
+    
+}
+
+TT_scripts = {
+    
+}
+
+TT_changelog = {
+    
+}
+
+TT_copyright = {
+    
+}
+
+TT_launchers = {
+    
+}
+
+TT_build = {
+    
+}
+
 # *** Build page *** #
 
 TT_chk_md5 = wx.ToolTip(GT(u'Creates a checksums in the package for all packaged files'))
@@ -79,6 +109,12 @@ TT_pages = {
     ID_CONTROL: TT_control,
     ID_DEPENDS: TT_depends,
     ID_FILES: TT_files,
+    ID_MAN: TT_manpages,
+    ID_SCRIPTS: TT_scripts,
+    ID_CHANGELOG: TT_changelog,
+    ID_COPYRIGHT: TT_copyright,
+    ID_MENU: TT_launchers,
+    ID_BUILD: TT_build,
 }
 
 
@@ -103,7 +139,20 @@ def SetToolTips(tooltip, control_list, required=False):
         SetToolTip(tooltip, C, required)
 
 
-def SetPageToolTips(page_id, control_list):
+def SetPageToolTips(parent, page_id=None):
+    control_list = []
+    
+    if not page_id:
+        page_id = parent.GetId()
+    
+    # Recursively set tooltips for children
+    for C in parent.GetChildren():
+        control_list.append(C)
+        
+        sub_children = C.GetChildren()
+        if sub_children:
+            SetPageToolTips(C, page_id)
+    
     if page_id in TT_pages:
         for C in control_list:
             name = C.GetName().lower()
@@ -112,7 +161,6 @@ def SetPageToolTips(page_id, control_list):
             if name and name[-1] == u'*':
                 name = name[:-1]
                 required = True
-                
             
             if name in TT_pages[page_id]:
                 tooltip = TT_pages[page_id][name]
