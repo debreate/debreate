@@ -546,6 +546,9 @@ class Panel(WizardPage):
         data = self.GetCtrlInfo()
         return u'<<CTRL>>\n%s<</CTRL>>' % data
     
+    def GetPackageName(self):
+        return self.pack.GetValue()
+    
     # *** Determining of project is modified
     def OnKeyDown(self, event):
         for widget in self.text_widgets:
