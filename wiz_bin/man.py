@@ -6,6 +6,7 @@ from dbr.language   import GT
 from dbr.wizard     import  WizardPage
 from globals.ident import ID_MAN
 from globals.tooltips import SetPageToolTips
+from dbr.buttons import ButtonAdd
 
 
 class Panel(WizardPage, wx.Notebook):
@@ -16,7 +17,9 @@ class Panel(WizardPage, wx.Notebook):
         ## Override default label
         self.label = GT(u'Manpages')
         
-        button_add = wx.Button(self, label=GT(u'Add manpage'))
+        button_add = ButtonAdd(self)
+        button_add.SetName(u'add')
+        
         wx.EVT_BUTTON(button_add, wx.ID_ANY, self.OnAddManpage)
         
         self.tabs = wx.Notebook(self)
