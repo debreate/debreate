@@ -116,7 +116,33 @@ TT_copyright = {
 }
 
 TT_launchers = {
-    
+    u'open': GT(u'Open launcher file'),
+    u'export': GT(u'Export launcher to text file'),
+    u'preview': GT(u'Preview launcher'),
+    u'name': GT(u'Text for the launcher'),
+    u'exec': GT(u'Executable to be launched'),
+    u'comment': GT(u'Comment text displayed'),
+    u'icon': GT(u'Icon to be displayed for the launcher'),
+    u'type': (
+        GT(u'Type of launcher'), u'',
+        GT(u'Application:'), u'\t{}'.format(GT(u'Executes an application')),
+        GT(u'Link:'), u'\t{}'.format(GT(u'???')),
+        GT(u'FSDevice:'), u'\t{}'.format(GT(u'???')),
+        GT(u'Directory:'), u'\t{}'.format(GT(u'Opens a target directory in the system file manager')),
+        ),
+    u'terminal': GT(u'Specifies whether application should be run in a terminal'),
+    u'startupnotify': GT(u'Displays a notification in the system panel when launched'),
+    u'encoding': GT(u'Sets the encoding that should be used in order to read the launcher'),
+    u'category': GT(u'Categories dictate where the launcher will be located in the system menu'),
+    u'add category': GT(u'Append current category to list'),
+    u'rm category': GT(u'Remove selected categories from list'),
+    u'clear categories': GT(u'Clear category list'),
+    u'categories': GT(u'Categories dictate where the launcher will be located in the system menu'),
+    u'other': (
+        GT(u'Miscellaneous fields not available above'), u'',
+        GT(u'Warning:'),
+        u'\t{}'.format(GT(u'Improperly formatted text may cause launcher to be unusable')),
+        )
 }
 
 TT_build = {
