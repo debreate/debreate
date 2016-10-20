@@ -30,6 +30,9 @@ debreate (0.8.0) xenial; urgency=high
     Fixes for dialogs & saving working directory
     Uses 'setup.py' to generate Makefile
     Support for legacy project files
+    Log window when debugging enabled
+    Parses command line
+    Creates mimetypes for project files
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Sat,  15 Oct 2016 19:44:21 -0700
 
