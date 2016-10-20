@@ -18,9 +18,7 @@ from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CONTROL
 from globals.ident      import ID_DEPENDS
-from globals.tooltips   import SetToolTips
-from globals.tooltips   import TT_control_btn
-from globals.tooltips   import TT_control_input
+from globals.tooltips   import SetPageToolTips
 
 
 class Panel(WizardPage):
@@ -35,9 +33,12 @@ class Panel(WizardPage):
         self.bg = wx.Panel(self)
         
         # Buttons to Open, Save & Preview control file
-        button_open = ButtonBrowse64(self.bg, tooltip=TT_control_btn[u'browse'])
-        button_save = ButtonSave64(self.bg, tooltip=TT_control_btn[u'save'])
-        button_preview = ButtonPreview64(self.bg, tooltip=TT_control_btn[u'preview'])
+        button_open = ButtonBrowse64(self.bg)
+        button_open.SetName(u'open')
+        button_save = ButtonSave64(self.bg)
+        button_save.SetName(u'save')
+        button_preview = ButtonPreview64(self.bg)
+        button_preview.SetName(u'preview')
         
         wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
         wx.EVT_BUTTON(button_save, -1, self.OnSave)
@@ -49,36 +50,22 @@ class Panel(WizardPage):
         button_sizer.Add(button_preview, 0)
         
         
-        # ***** Required Group ***** #
-        # Key:  B - Binary
-        #       S - Source
-        #       D - Debian Source Control (*.dsc)
-        #       C - Changes
-        #      [m]- mandatory
-        #      [r]- recommended
-        
         # ----- Package ( B[m], SB[m] )
-        self.pack_txt = wx.StaticText(self.bg, -1, GT(u'Package'))
+        pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package*')
         self.pack = dbr.CharCtrl(self.bg)
-        self.pack.SetName(GT(u'Package'))
-        SetToolTips(TT_control_input[u'package'], (self.pack_txt, self.pack,), True)
+        self.pack.SetName(pack_txt.Name)
         
         # ----- Version ( B[m], D[m], C[m] )
-        self.ver_txt = wx.StaticText(self.bg, -1, GT(u'Version'))
+        ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version*')
         self.ver = dbr.CharCtrl(self.bg)
-        self.ver.SetName(GT(u'Version'))
-        SetToolTips(TT_control_input[u'version'], (self.ver_txt, self.ver,), True)
+        self.ver.SetName(ver_txt.Name)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
-        self.auth_txt = wx.StaticText(self.bg, -1, GT(u'Maintainer'))
-        self.auth = wx.TextCtrl(self.bg, -1)
-        self.auth.SetName(GT(u'Maintainer'))
-        SetToolTips(TT_control_input[u'maint'], (self.auth_txt, self.auth,), True)
+        auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'), name=u'maintainer*')
+        self.auth = wx.TextCtrl(self.bg, -1, name=auth_txt.Name)
         
-        self.email_txt = wx.StaticText(self.bg, -1, GT(u'Email'))
-        self.email = wx.TextCtrl(self.bg, -1)
-        self.email.SetName(GT(u'Email'))
-        SetToolTips(TT_control_input[u'email'], (self.email_txt, self.email,), True)
+        email_txt = wx.StaticText(self.bg, label=GT(u'Email'), name=u'email*')
+        self.email = wx.TextCtrl(self.bg, name=email_txt.Name)
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
@@ -87,59 +74,53 @@ class Panel(WizardPage):
             u'm32r', u'm68k', u'mips', u'mipsel', u'powerpc',
             u'powerpcspe', u'ppc64', u's390', u's390x', u'sh3',
             u'sh3eb', u'sh4', u'sh4eb', u'sparc', u'sparc64')
-        self.arch_txt = wx.StaticText(self.bg, -1, GT(u'Architecture'))
-        self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
+        arch_txt = wx.StaticText(self.bg, label=GT(u'Architecture'), name=u'arch')
+        self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt, name=arch_txt.Name)
         self.arch.default = 0
         self.arch.SetSelection(self.arch.default)
-        SetToolTips(TT_control_input[u'arch'], (self.arch_txt, self.arch,))
         
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
-        self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
         self.sect_opt = (u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug', u'doc', u'editors',
             u'electronics', u'embedded', u'fonts', u'games', u'gnome', u'graphics', u'gnu-r', u'gnustep',
             u'hamradio', u'haskell', u'httpd', u'interpreters', u'java', u'kde', u'kernel', u'libs', u'libdevel',
             u'lisp', u'localization', u'mail', u'math', u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
             u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
             u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
-        self.sect = wx.ComboBox(self.bg, -1, choices=self.sect_opt)
-        SetToolTips(TT_control_input[u'section'], (self.sect_txt, self.sect,))
+        
+        sect_txt = wx.StaticText(self.bg, label=GT(u'Section'), name=u'section')
+        self.sect = wx.ComboBox(self.bg, -1, choices=self.sect_opt, name=sect_txt.Name)
         
         # ----- Priority ( B[r], S[r], SB[r] )
         self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
-        self.prior_txt = wx.StaticText(self.bg, -1, GT(u'Priority'))
-        self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
+        
+        prior_txt = wx.StaticText(self.bg, label=GT(u'Priority'), name=u'priority')
+        self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt, name=prior_txt.Name)
         self.prior.default = 0
         self.prior.SetSelection(self.prior.default)
-        SetToolTips(TT_control_input[u'priority'], (self.prior_txt, self.prior,))
         
         # ----- Description ( B[m], SB[m], C[m] )
-        self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
-        self.syn = wx.TextCtrl(self.bg)
-        SetToolTips(TT_control_input[u'desc-short'], (self.syn_txt, self.syn,))
+        syn_txt = wx.StaticText(self.bg, label=GT(u'Short Description'), name=u'synopsis')
+        self.syn = wx.TextCtrl(self.bg, name=syn_txt.Name)
         
-        self.desc_txt = wx.StaticText(self.bg, -1, GT(u'Long Description'))
-        self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
-        SetToolTips(TT_control_input[u'desc-long'], (self.desc_txt, self.desc,))
+        desc_txt = wx.StaticText(self.bg, label=GT(u'Long Description'), name=u'description')
+        self.desc = wx.TextCtrl(self.bg, name=desc_txt.Name, style=wx.TE_MULTILINE)
         
         # ***** Optional Group ***** #
         # ----- Source ( B, S[m], D[m], C[m] )
-        self.src_txt = wx.StaticText(self.bg, -1, GT(u'Source'))
-        self.src = wx.TextCtrl(self.bg, -1)
-        SetToolTips(TT_control_input[u'source'], (self.src_txt, self.src,))
+        src_txt = wx.StaticText(self.bg, label=GT(u'Source'), name=u'source')
+        self.src = wx.TextCtrl(self.bg, name=src_txt.Name)
         
         # ----- Homepage ( B, S, SB, D )
-        self.url_txt = wx.StaticText(self.bg, -1, GT(u'Homepage'))
-        self.url = wx.TextCtrl(self.bg)
-        SetToolTips(TT_control_input[u'homepage'], (self.url_txt, self.url,))
+        url_txt = wx.StaticText(self.bg, label=GT(u'Homepage'), name=u'homepage')
+        self.url = wx.TextCtrl(self.bg, name=url_txt.Name)
         
         # ----- Essential ( B, SB )
         self.ess_opt = (u'yes', u'no')
-        self.ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'))
-        self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
+        ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'), name=u'essential')
+        self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt, name=ess_txt.Name)
         self.ess.default = 1
         self.ess.SetSelection(self.ess.default)
-        SetToolTips(TT_control_input[u'essential'], (self.ess_txt, self.ess,))
         
         # ----- Binary (Mandatory, Recommended, Optional, Not Used)
         # Not in list: Description[m], Depends[o], Installed-Size[o]
@@ -150,36 +131,6 @@ class Panel(WizardPage):
                         #self.eemail, self.changes, self.dist, self.urge, self.closes)
                         )
         
-        # ----- Source (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Build-Depends[o]
-#        self.srcs = (	(self.src, self.auth, self.email, self.pack, self.arch),
-#                        (self.sect, self.prior, self.stdver, self.sect, self.prior),
-#                        (self.coauth, self.url, self.ess),
-#                        (self.ver, self.format, self.bin, self.files, self.date, self.editor, self.eemail,
-#                        self.changes, self.dist, self.urge, self.closes)
-#                        )
-        
-        # ----- Debian Source Control (.dsc) (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Build-Depends
-#        self.dscs = (	(self.src, self.auth, self.email, self.ver, self.format, self.files),
-#                        [self.stdver],
-#                        (self.coauth, self.url, self.arch, self.bin),
-#                        (self.pack, self.sect, self.prior, self.ess, self.syn, self.desc, self.date, self.editor,
-#                        self.eemail, self.changes, self.dist, self.urge, self.closes)
-#                        )
-
-        # ----- Changes (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Description
-#        self.chngs = (	(self.src, self.auth, self.email, self.arch, self.ver, self.format, self.bin, self.files,
-#                         self.date, self.dist, self.changes),
-#                        [self.urge],
-#                        (self.editor, self.closes),
-#                        (self.pack, self.sect, self.prior, self.url, self.ess, self.stdver, self.coauth)
-#                        )
-        
-        
-        # Divide the fields into different groups (Info, Description, Authors, and Other)
-        
         # ----- Changed to "Required"
         self.box_info = wx.FlexGridSizer(0, 4, 5, 5)
         self.box_info.AddGrowableCol(1)
@@ -189,14 +140,14 @@ class Panel(WizardPage):
         self.box_info.AddSpacer(5)
         self.box_info.AddSpacer(5)
         self.box_info.AddMany([
-            (self.pack_txt), (self.pack, 0, wx.EXPAND), (self.ver_txt), (self.ver, 0, wx.EXPAND),
-            (self.auth_txt), (self.auth, 0, wx.EXPAND), (self.email_txt), (self.email, 0, wx.EXPAND),
-            self.arch_txt, (self.arch)
+            (pack_txt), (self.pack, 0, wx.EXPAND), (ver_txt), (self.ver, 0, wx.EXPAND),
+            (auth_txt), (self.auth, 0, wx.EXPAND), (email_txt), (self.email, 0, wx.EXPAND),
+            arch_txt, (self.arch)
             ])
         
         # Border box
-        self.border_info = wx.StaticBox(self.bg, -1, GT(u'Required'))
-        bbox_info = wx.StaticBoxSizer(self.border_info, wx.VERTICAL)
+        border_info = wx.StaticBox(self.bg, label=GT(u'Required'))
+        bbox_info = wx.StaticBoxSizer(border_info, wx.VERTICAL)
         bbox_info.Add(self.box_info, 0, wx.EXPAND)
         
         # ----- Changed to "Recommended"
@@ -207,20 +158,20 @@ class Panel(WizardPage):
         r_temp.AddSpacer(5)
         r_temp.AddSpacer(5)
         r_temp.AddSpacer(5)
-        r_temp.AddMany([ (self.sect_txt), (self.sect, 0, wx.EXPAND), (self.prior_txt), (self.prior) ])
+        r_temp.AddMany([ (sect_txt), (self.sect, 0, wx.EXPAND), (prior_txt), (self.prior) ])
         # Border box
-        self.border_description = wx.StaticBox(self.bg, -1, GT(u'Recommended'))
-        bbox_description = wx.StaticBoxSizer(self.border_description, wx.VERTICAL)
+        border_description = wx.StaticBox(self.bg, label=GT(u'Recommended'))
+        bbox_description = wx.StaticBoxSizer(border_description, wx.VERTICAL)
         bbox_description.AddSpacer(5)
         bbox_description.Add(r_temp, 0, wx.EXPAND)
         bbox_description.AddSpacer(5)
         bbox_description.AddMany([
-            (self.syn_txt, 0),
+            (syn_txt, 0),
             (self.syn, 0, wx.EXPAND)
             ])
         bbox_description.AddSpacer(5)
         bbox_description.AddMany([
-            (self.desc_txt, 0),
+            (desc_txt, 0),
             (self.desc, 1, wx.EXPAND)
             ])
         
@@ -232,13 +183,13 @@ class Panel(WizardPage):
         b_temp.AddSpacer(5)
         b_temp.AddSpacer(5)
         b_temp.AddMany([
-            (self.src_txt), (self.src, 0, wx.EXPAND), (self.url_txt), (self.url, 0, wx.EXPAND),
-            (self.ess_txt), (self.ess, 1)
+            (src_txt), (self.src, 0, wx.EXPAND), (url_txt), (self.url, 0, wx.EXPAND),
+            (ess_txt), (self.ess, 1)
             ])
 
         # Border box
-        self.border_author = wx.StaticBox(self.bg, -1, GT(u'Optional'))
-        bbox_author = wx.StaticBoxSizer(self.border_author, wx.VERTICAL)
+        border_author = wx.StaticBox(self.bg, label=GT(u'Optional'))
+        bbox_author = wx.StaticBoxSizer(border_author, wx.VERTICAL)
         bbox_author.Add(b_temp, 0, wx.EXPAND)
         
         
@@ -261,14 +212,7 @@ class Panel(WizardPage):
         self.SetSizer(scroll_sizer)
         self.Layout()
         
-        # Set Ctrl+P hotkey to show preview of control file
-        children = self.bg.GetChildren()
-        for child in children:
-            wx.EVT_KEY_DOWN(child, self.OnCtrlKey)
-        
-        
         # These are used for controlling the column width/size in the co-authors field
-        #self.ReLayout()
         wx.EVT_SIZE(self, self.OnResize)
         
         # Defines fields to be accessed
@@ -282,6 +226,9 @@ class Panel(WizardPage):
         for widget in self.text_widgets:
             wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
+        
+        
+        SetPageToolTips(self.GetId(), self.bg.GetChildren())
     
     
     ## Tells the build script whether page should be built

@@ -12,31 +12,27 @@ import wx
 
 from dbr.language       import GT
 from globals.characters import ARROW_RIGHT
-from globals.ident import ID_DEPENDS
+from globals.ident      import ID_CONTROL
+from globals.ident      import ID_DEPENDS
 
 
 # *** Wizard buttons ***#
-
 TT_wiz_prev = wx.ToolTip(GT(u'Previous page'))
 TT_wiz_next = wx.ToolTip(GT(u'Next page'))
 
-# *** Control page *** #
-TT_control_btn = {
-    u'browse': GT(u'Open pre-formatted control text'),
+TT_control = {
+    u'open': GT(u'Open pre-formatted control text'),
     u'save': GT(u'Save control information to text'),
     u'preview': GT(u'Preview control file'),
-}
-
-TT_control_input = {
     u'package': GT(u'Name that the package will be listed under'),
     u'version': GT(u'Version of release'),
-    u'maint': GT(u'Name of person who maintains packaging'),
+    u'maintainer': GT(u'Name of person who maintains packaging'),
     u'email': GT(u'Package maintainer\'s email address'),
     u'arch': (GT(u'Platform supported by this package/software'), GT(u'all=platform independent'),),
     u'section': GT(u'Section under which package managers will list this package'),
     u'priority': GT(u'Urgency of this package update'),
-    u'desc-short': GT(u'Package synopsys'),
-    u'desc-long': GT(u'More detailed description'),
+    u'synopsis': GT(u'Package synopsys'),
+    u'description': GT(u'More detailed description'),
     u'source': GT(u'Name of upstream source package'),
     u'homepage': GT(u'Upstream source homepage'),
     u'essential': GT(u'Whether this package is essential to the system'),
@@ -73,6 +69,7 @@ TT_chk_dest = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to
 
 
 TT_pages = {
+    ID_CONTROL: TT_control,
     ID_DEPENDS: TT_depends,
 }
 
@@ -98,17 +95,17 @@ def SetToolTips(tooltip, control_list, required=False):
         SetToolTip(tooltip, C, required)
 
 
-def SetToolTipByName(control, group):
-    name = control.GetName().lower()
-    if name in group:
-        SetToolTip(group[control], control)
-
-
 def SetPageToolTips(page_id, control_list):
     if page_id in TT_pages:
         for C in control_list:
             name = C.GetName().lower()
+            
+            required = False
+            if name and name[-1] == u'*':
+                name = name[:-1]
+                required = True
+                
+            
             if name in TT_pages[page_id]:
                 tooltip = TT_pages[page_id][name]
-                SetToolTip(tooltip, C)
-                print(u'Tooltip: {}'.format(tooltip))
+                SetToolTip(tooltip, C, required)
