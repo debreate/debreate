@@ -281,6 +281,29 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    def Export(self, out_dir, out_name=wx.EmptyString, executable=False):
+        ret_code = WizardPage.Export(self, out_dir, out_name=out_name)
+        
+        absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
+        if executable:
+            os.chmod(absolute_filename, 0755)
+        
+        return ret_code
+    
+    
+    def ExportBuild(self, stage):
+        stage = u'{}/usr/share/applications'.format(stage).replace(u'//', u'/')
+        
+        if not os.path.isdir(stage):
+            os.makedirs(stage)
+        
+        ret_code = self.Export(stage, u'{}.desktop'.format(self.name_input.GetValue()), True)
+        if ret_code:
+            return (ret_code, GT(u'Could not export menu launcher'))
+        
+        return (0, None)
+    
+    
     def IsExportable(self):
         return self.activate.IsChecked()
     
