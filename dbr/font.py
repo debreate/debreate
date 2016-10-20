@@ -32,3 +32,8 @@ MONOSPACED_SM.name = u'monospaced_sm'
 MONOSPACED_MS.name = u'monospaced_ms'
 MONOSPACED_MD.name = u'monospaced_md'
 MONOSPACED_LG.name = u'monospaced_lg'
+
+
+# Tooltip font
+FONT_tt = wx.Font(SIZE_MD, wx.FONTFAMILY_DEFAULT,
+        wx.FONTSTYLE_ITALIC, wx.FONTWEIGHT_NORMAL)
