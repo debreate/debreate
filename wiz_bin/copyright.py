@@ -3,14 +3,15 @@
 ## \package wiz_bin.copyright
 
 
-import os
-import wx
+import wx, os
 
+import dbr
 from dbr.error          import ShowError
-import dbr.font
 from dbr.functions      import RemovePreWhitespace
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.monotext       import MT_BTN_BR
+from dbr.monotext       import MonospaceTextCtrl
 from dbr.wizard         import WizardPage
 from globals.errorcodes import errno
 from globals.ident      import ID_COPYRIGHT
@@ -70,9 +71,7 @@ class Panel(WizardPage):
         sizer_V1.Add(sizer_H1, 1, wx.LEFT, 150)
         
         ## Area where license text is displayed
-        self.cp_display = wx.TextCtrl(self, style=wx.TE_MULTILINE)
-        
-        self.cp_display.SetFont(dbr.font.MONOSPACED_LG)
+        self.cp_display = MonospaceTextCtrl(self, button=MT_BTN_BR)
         
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(sizer_V1, 0, wx.ALL, 5)
@@ -192,7 +191,7 @@ class Panel(WizardPage):
         self.cp_display.SetFocus()
     
     def DestroyLicenseText(self):
-        empty = self.cp_display.IsEmpty()
+        empty = TextIsEmpty(self.cp_display.GetValue())
         
         if not empty:
             if wx.MessageDialog(self.debreate, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
