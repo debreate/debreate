@@ -20,6 +20,7 @@ ID_APPEND = wx.NewId()
 ID_DEBUG = wx.NewId()
 ID_LOG = wx.NewId()
 ID_THEME = wx.NewId()
+ID_IMPORT = wx.NewId()
 
 # Page IDs
 next_page_id = 1000
