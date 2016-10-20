@@ -18,6 +18,9 @@ from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CONTROL
 from globals.ident      import ID_DEPENDS
+from globals.tooltips   import SetToolTips
+from globals.tooltips   import TT_control_btn
+from globals.tooltips   import TT_control_input
 
 
 class Panel(WizardPage):
@@ -32,9 +35,9 @@ class Panel(WizardPage):
         self.bg = wx.Panel(self)
         
         # Buttons to Open, Save & Preview control file
-        button_open = ButtonBrowse64(self.bg)
-        button_save = ButtonSave64(self.bg)
-        button_preview = ButtonPreview64(self.bg)
+        button_open = ButtonBrowse64(self.bg, tooltip=TT_control_btn[u'browse'])
+        button_save = ButtonSave64(self.bg, tooltip=TT_control_btn[u'save'])
+        button_preview = ButtonPreview64(self.bg, tooltip=TT_control_btn[u'preview'])
         
         wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
         wx.EVT_BUTTON(button_save, -1, self.OnSave)
@@ -58,20 +61,24 @@ class Panel(WizardPage):
         self.pack_txt = wx.StaticText(self.bg, -1, GT(u'Package'))
         self.pack = dbr.CharCtrl(self.bg)
         self.pack.SetName(GT(u'Package'))
+        SetToolTips(TT_control_input[u'package'], (self.pack_txt, self.pack,), True)
         
         # ----- Version ( B[m], D[m], C[m] )
         self.ver_txt = wx.StaticText(self.bg, -1, GT(u'Version'))
         self.ver = dbr.CharCtrl(self.bg)
         self.ver.SetName(GT(u'Version'))
+        SetToolTips(TT_control_input[u'version'], (self.ver_txt, self.ver,), True)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
         self.auth_txt = wx.StaticText(self.bg, -1, GT(u'Maintainer'))
         self.auth = wx.TextCtrl(self.bg, -1)
         self.auth.SetName(GT(u'Maintainer'))
+        SetToolTips(TT_control_input[u'maint'], (self.auth_txt, self.auth,), True)
         
         self.email_txt = wx.StaticText(self.bg, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self.bg, -1)
         self.email.SetName(GT(u'Email'))
+        SetToolTips(TT_control_input[u'email'], (self.email_txt, self.email,), True)
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
@@ -84,18 +91,19 @@ class Panel(WizardPage):
         self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
         self.arch.default = 0
         self.arch.SetSelection(self.arch.default)
+        SetToolTips(TT_control_input[u'arch'], (self.arch_txt, self.arch,))
         
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
+        self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
         self.sect_opt = (u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug', u'doc', u'editors',
             u'electronics', u'embedded', u'fonts', u'games', u'gnome', u'graphics', u'gnu-r', u'gnustep',
             u'hamradio', u'haskell', u'httpd', u'interpreters', u'java', u'kde', u'kernel', u'libs', u'libdevel',
             u'lisp', u'localization', u'mail', u'math', u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
             u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
             u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
-        self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
-        #self.sect = db.Combo(self.bg, -1, choices=self.sect_opt)
         self.sect = wx.ComboBox(self.bg, -1, choices=self.sect_opt)
+        SetToolTips(TT_control_input[u'section'], (self.sect_txt, self.sect,))
         
         # ----- Priority ( B[r], S[r], SB[r] )
         self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
@@ -103,21 +111,27 @@ class Panel(WizardPage):
         self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
         self.prior.default = 0
         self.prior.SetSelection(self.prior.default)
+        SetToolTips(TT_control_input[u'priority'], (self.prior_txt, self.prior,))
         
         # ----- Description ( B[m], SB[m], C[m] )
         self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
         self.syn = wx.TextCtrl(self.bg)
+        SetToolTips(TT_control_input[u'desc-short'], (self.syn_txt, self.syn,))
+        
         self.desc_txt = wx.StaticText(self.bg, -1, GT(u'Long Description'))
         self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
+        SetToolTips(TT_control_input[u'desc-long'], (self.desc_txt, self.desc,))
         
         # ***** Optional Group ***** #
         # ----- Source ( B, S[m], D[m], C[m] )
         self.src_txt = wx.StaticText(self.bg, -1, GT(u'Source'))
         self.src = wx.TextCtrl(self.bg, -1)
+        SetToolTips(TT_control_input[u'source'], (self.src_txt, self.src,))
         
         # ----- Homepage ( B, S, SB, D )
         self.url_txt = wx.StaticText(self.bg, -1, GT(u'Homepage'))
         self.url = wx.TextCtrl(self.bg)
+        SetToolTips(TT_control_input[u'homepage'], (self.url_txt, self.url,))
         
         # ----- Essential ( B, SB )
         self.ess_opt = (u'yes', u'no')
@@ -125,6 +139,7 @@ class Panel(WizardPage):
         self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
         self.ess.default = 1
         self.ess.SetSelection(self.ess.default)
+        SetToolTips(TT_control_input[u'essential'], (self.ess_txt, self.ess,))
         
         # ----- Binary (Mandatory, Recommended, Optional, Not Used)
         # Not in list: Description[m], Depends[o], Installed-Size[o]
