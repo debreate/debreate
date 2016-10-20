@@ -90,6 +90,17 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    def ExportBuild(self, stage):
+        debreate = self.GetDebreateWindow()
+        
+        stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
+        
+        # FIXME: Should be error check
+        self.Export(stage, u'copyright')
+        
+        return (0, None)
+    
+    
     def GetCopyright(self):
         return self.cp_display.GetValue()
     
