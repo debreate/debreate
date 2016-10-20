@@ -12,27 +12,7 @@ import wx
 
 from dbr.language       import GT
 from globals.characters import ARROW_RIGHT
-
-
-## Universal function for setting window/control tooltips
-def SetToolTip(tooltip, control, required=False):
-    if isinstance(tooltip, wx.ToolTip):
-        tooltip = tooltip.GetTip()
-    
-    elif isinstance(tooltip, (tuple, list)):
-        tooltip = u'\n'.join(tooltip)
-    
-    if tooltip:
-        if required:
-            tooltip = u'{}\n\n{}'.format(tooltip, GT(u'Required'))
-        
-        control.SetToolTipString(tooltip)
-
-
-## Sets multiple tooltips at once
-def SetToolTips(tooltip, control_list, required=False):
-    for C in control_list:
-        SetToolTip(tooltip, C, required)
+from globals.ident import ID_DEPENDS
 
 
 # *** Wizard buttons ***#
@@ -62,6 +42,24 @@ TT_control_input = {
     u'essential': GT(u'Whether this package is essential to the system'),
 }
 
+TT_depends = {
+    u'package': GT(u'Package that this depends on'),
+    u'version': GT(u'Minimum version that this package supports'),
+    u'add': GT(u'Add dependency package to list'),
+    u'append': GT(u'Append to selected dependency package in list'),
+    u'remove': GT(u'Remove selected dependency package from list'),
+    u'clear': GT(u'Clear the list of dependency packages'),
+    u'depends': GT(u'Package will need to be installed'),
+    u'pre-depends': GT(u'Package will need to be installed and configured first'),
+    u'recommends': GT(u'Package is highly recommended and will be installed by default'),
+    u'suggests': GT(u'Package may be useful but is not necessary and will not be installed by default'),
+    u'enhances': GT(u'This package may be useful to enhanced package'),
+    u'conflicts': GT(u'Package will be removed from the system if it is installed'),
+    u'replaces': GT(u'Package or its files may be overwritten'),
+    u'breaks': GT(u'Package conflicts and will be de-configured'),
+    u'list': GT(u'Dependencies to be added'),
+}
+
 # *** Files page *** #
 TT_files_refresh = wx.ToolTip(GT(u'Update files\' executable status & availability'))
 
@@ -72,3 +70,45 @@ TT_chk_del = wx.ToolTip(GT(u'Delete staged directory tree after package has been
 TT_chk_lint = wx.ToolTip(GT(u'Checks the package for warnings & errors according to lintian\'s specifics\n\
 (See: Help {0} Reference {0} Lintian Tags Explanation)').format(ARROW_RIGHT))
 TT_chk_dest = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
+
+
+TT_pages = {
+    ID_DEPENDS: TT_depends,
+}
+
+
+## Universal function for setting window/control tooltips
+def SetToolTip(tooltip, control, required=False):
+    if isinstance(tooltip, wx.ToolTip):
+        tooltip = tooltip.GetTip()
+    
+    elif isinstance(tooltip, (tuple, list)):
+        tooltip = u'\n'.join(tooltip)
+    
+    if tooltip:
+        if required:
+            tooltip = u'{}\n\n{}'.format(tooltip, GT(u'Required'))
+        
+        control.SetToolTipString(tooltip)
+
+
+## Sets multiple tooltips at once
+def SetToolTips(tooltip, control_list, required=False):
+    for C in control_list:
+        SetToolTip(tooltip, C, required)
+
+
+def SetToolTipByName(control, group):
+    name = control.GetName().lower()
+    if name in group:
+        SetToolTip(group[control], control)
+
+
+def SetPageToolTips(page_id, control_list):
+    if page_id in TT_pages:
+        for C in control_list:
+            name = C.GetName().lower()
+            if name in TT_pages[page_id]:
+                tooltip = TT_pages[page_id][name]
+                SetToolTip(tooltip, C)
+                print(u'Tooltip: {}'.format(tooltip))
