@@ -118,7 +118,8 @@ class Panel(WizardPage):
         cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
         cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
         
-        self.dest_browse = ButtonBrowse(self, ID_pout)
+        self.dest_browse = ButtonBrowse(self)
+        self.dest_browse.SetId(ID_pout)
         
         wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
         
