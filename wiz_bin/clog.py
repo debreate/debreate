@@ -15,6 +15,7 @@ from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CHANGELOG
 from globals.tooltips   import SetPageToolTips
+from dbr.monotext       import MonospaceTextCtrl
 
 
 # Local imports
@@ -101,13 +102,14 @@ class Panel(WizardPage):
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        self.display_area = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
+        #self.log = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
+        self.log = MonospaceTextCtrl(self, name=u'log')
         
         # *** Widgets that Enable/Disable
 #        self.toggle_list = (
 #            self.package, self.version, self.distribution, self.urgency, self.maintainer, self.email,
 #            self.changes, self.target_default, self.target_custom, self.target,
-#            self.button_import, self.button_add, self.display_area
+#            self.button_import, self.button_add, self.log
 #            )
         
         # *** LAYOUT
@@ -117,7 +119,7 @@ class Panel(WizardPage):
         main_sizer.AddSpacer(10)
         main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(self.display_area, 1, wx.EXPAND, wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(self.log, 1, wx.EXPAND, wx.LEFT|wx.RIGHT, 5)
         main_sizer.AddSpacer(5)
         
         self.SetAutoLayout(True)
@@ -129,7 +131,7 @@ class Panel(WizardPage):
     
     
     def IsExportable(self):
-        return not TextIsEmpty(self.display_area.GetValue())
+        return not TextIsEmpty(self.log.GetValue())
     
     
     def ImportInfo(self, event):
@@ -141,19 +143,29 @@ class Panel(WizardPage):
         self.email.SetValue(self.debreate.page_control.email.GetValue())
     
     def AddInfo(self, event):
+        changes = self.changes.GetValue()
+        if TextIsEmpty(changes):
+            wx.MessageDialog(self.GetDebreateWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
+                    style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
+            return
+        
         package = self.package.GetValue()
         version = self.version.GetValue()
         distribution = self.distribution.GetValue()
         urgency = self.urgency_opt[self.urgency.GetSelection()]
-        info1 = u'%s (%s) %s; urgency=%s' % (package, version, distribution, urgency)
+        info1 = u'{} ({}) {}; urgency={}'.format(package, version, distribution, urgency)
         
         details = []
-        for line in self.changes.GetValue().split(u'\n'):
-            if line == self.changes.GetValue().split(u'\n')[0]:
-                line = u'  * %s' % line
-            else:
-                line = u'    %s' % line
-            details.append(line)
+        for line in changes.split(u'\n'):
+            line = line.strip()
+            
+            # Strip empty lines
+            if not TextIsEmpty(line):
+                if not details:
+                    details.append(u'  * {}'.format(line))
+                else:
+                    details.append(u'    {}'.format(line))
+        
         details.insert(0, wx.EmptyString)
         details.append(wx.EmptyString)
         details = u'\n'.join(details)
@@ -166,10 +178,10 @@ class Panel(WizardPage):
         info2 = u' -- %s <%s>  %s' % (maintainer, email, date)
         
         entry = u'\n'.join((info1, details, info2))
-        self.display_area.SetValue(u'\n'.join((entry, wx.EmptyString, self.display_area.GetValue())))
+        self.log.SetValue(u'\n'.join((entry, wx.EmptyString, self.log.GetValue())))
     
     def GetChangelog(self):
-        return self.display_area.GetValue()
+        return self.log.GetValue()
 
     def SetChangelog(self, data):
         changelog = data.split(u'\n')
@@ -179,7 +191,7 @@ class Panel(WizardPage):
         else:
             self.target_custom.SetValue(True)
             self.target.SetValue(dest)
-        self.display_area.SetValue(u'\n'.join(changelog[1:]))
+        self.log.SetValue(u'\n'.join(changelog[1:]))
         #self.Toggle(True)
     
 #    def Toggle(self, value):
@@ -197,7 +209,7 @@ class Panel(WizardPage):
         self.changes.Clear()
         self.target_default.SetValue(True)
         self.target.SetValue(u'/')
-        self.display_area.Clear()
+        self.log.Clear()
     
     ## Deprecated
     #  
@@ -208,7 +220,7 @@ class Panel(WizardPage):
         elif self.target_custom.GetValue():
             dest = u'<<DEST>>' + self.target.GetValue() + u'<</DEST>>'
         
-        return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))
+        return u'\n'.join((u'<<CHANGELOG>>', dest, self.log.GetValue(), u'<</CHANGELOG>>'))
     
     
     ## Retrieves changelog information
@@ -223,7 +235,7 @@ class Panel(WizardPage):
         if self.target_custom.GetValue():
             cl_target = self.target.GetValue()
         
-        cl_body = self.display_area.GetValue()
+        cl_body = self.log.GetValue()
         
         if TextIsEmpty(cl_body):
             return None
@@ -260,7 +272,7 @@ class Panel(WizardPage):
                 parse_section(L, clog_data[line_index+1:])
         '''
         if u'BODY' in sections:
-            self.display_area.SetValue(sections[u'BODY'])
+            self.log.SetValue(sections[u'BODY'])
         '''
         
         for S in sections:
@@ -291,7 +303,7 @@ class Panel(WizardPage):
             if S == u'BODY':
                 Logger.Debug(__name__, u'SECTION BODY FOUND')
                 
-                self.display_area.SetValue(sections[S])
+                self.log.SetValue(sections[S])
                 
                 continue
         
@@ -300,4 +312,4 @@ class Panel(WizardPage):
     
     def ResetPageInfo(self):
         self.target.Reset()
-        self.display_area.Clear()
+        self.log.Clear()
