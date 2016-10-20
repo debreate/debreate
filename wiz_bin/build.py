@@ -111,8 +111,7 @@ class Panel(WizardPage):
         #wx.EVT_SHOW(self, self.SetSummary)
         
         # --- BUILD
-        self.build_button = ButtonBuild64(self)
-        self.build_button.SetToolTip(wx.ToolTip(GT(u'Start building')))
+        self.build_button = ButtonBuild64(self, tooltip=GT(u'Start building'))
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
         
@@ -421,7 +420,10 @@ class Panel(WizardPage):
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
     
     # TODO: Finish defining
-    def OnBuild(self, event):
+    def OnBuild(self, event=None):
+        if event:
+            event.Skip()
+        
         meta = self.debreate.page_control
         required_fields = {
             GT(u'Control'): (meta.pack, meta.ver, meta.auth, meta.email,),
