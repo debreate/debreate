@@ -18,7 +18,6 @@ from wx import WXK_RETURN
 import wx
 
 from dbr.language   import GT
-from dbr.log        import Logger
 from globals.ident  import ID_APPEND
 from globals.ident  import ID_BUILD
 from globals.ident  import ID_IMPORT
@@ -37,8 +36,6 @@ class ToolTipButton(wx.BitmapButton):
         wx.BitmapButton.__init__(self, parent, ID, bitmap, style=wx.NO_BORDER)
         
         if tooltip:
-            Logger.Debug(__name__, GT(u'ToolTip type: {}').format(type(tooltip)))
-            
             if isinstance(tooltip, (unicode, str)):
                 tooltip = wx.ToolTip(tooltip)
             
