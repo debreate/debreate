@@ -22,6 +22,7 @@ from globals.ident      import ID_MAN
 from globals.ident      import ID_MENU
 from globals.ident      import ID_SCRIPTS
 from dbr.templates      import local_templates_path
+from dbr.functions      import FieldEnabled
 
 
 # *** Wizard buttons ***#
@@ -146,16 +147,17 @@ TT_launchers = {
 }
 
 TT_build = {
-    
+    u'md5': GT(u'Creates a checksum for all staged files within the package'),
+    u'md5_disabled': GT(u'Install md5sum package for this option'),
+    u'rmtree': GT(u'Delete staged directory tree after package has been created'),
+    u'lintian': (
+        GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
+        GT(u'See: Help {0} Reference {0} Lintian Tags Explanation').format(ARROW_RIGHT),
+        ),
+    u'lintian_disabled': GT(u'Install lintian package for this option'),
+    u'build': GT(u'Start Build'),
+    u'install': GT(u'Uses the system package manager to install .deb')
 }
-
-# *** Build page *** #
-
-TT_chk_md5 = wx.ToolTip(GT(u'Creates a checksums in the package for all packaged files'))
-TT_chk_del = wx.ToolTip(GT(u'Delete staged directory tree after package has been created'))
-TT_chk_lint = wx.ToolTip(GT(u'Checks the package for warnings & errors according to lintian\'s specifics\n\
-(See: Help {0} Reference {0} Lintian Tags Explanation)').format(ARROW_RIGHT))
-TT_chk_dest = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
 
 
 TT_pages = {
@@ -208,12 +210,23 @@ def SetPageToolTips(parent, page_id=None):
     
     if page_id in TT_pages:
         for C in control_list:
-            name = C.GetName().lower()
+            try:
+                name = C.tt_name.lower()
+            except AttributeError:
+                name = C.GetName().lower()
             
             required = False
-            if name and name[-1] == u'*':
-                name = name[:-1]
-                required = True
+            if name:
+                if u'*' in name[-2:]:
+                    #name = name[:name.index(u'*')]
+                    required = True
+                
+                # The » character causes a different tooltip to be set for disabled fields
+                if u'»' in name[-2:] and not FieldEnabled(C):
+                    name = u'{}_disabled'.format(name)
+                
+                name = name.replace(u'*', u'')
+                name = name.replace(u'»', u'')
             
             if name in TT_pages[page_id]:
                 tooltip = TT_pages[page_id][name]

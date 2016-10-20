@@ -36,9 +36,7 @@ from globals.ident      import ID_FILES
 from globals.ident      import ID_MAN
 from globals.ident      import ID_MENU
 from globals.ident      import ID_SCRIPTS
-from globals.tooltips   import TT_chk_del
-from globals.tooltips   import TT_chk_lint
-from globals.tooltips   import TT_chk_md5
+from globals.tooltips   import SetPageToolTips
 
 
 class Panel(WizardPage):
@@ -54,47 +52,45 @@ class Panel(WizardPage):
         self.build_options = []
         
         # ----- Extra Options
-        self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
+        self.chk_md5 = wx.CheckBox(self, label=GT(u'Create md5sums file'))
+        # The » character denotes that an alternate tooltip should be shown if the control is disabled
+        self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = False
         
         if not CMD_md5sum:
             self.chk_md5.Disable()
-            self.chk_md5.SetToolTip(wx.ToolTip(GT(u'Install md5sum package for this option')))
         else:
-            self.chk_md5.SetToolTip(TT_chk_md5)
             self.build_options.append(self.chk_md5)
         
         # For creating md5sum hashes
         self.md5 = dbr.MD5()
         
         # Deletes the temporary build tree
-        self.chk_rmtree = wx.CheckBox(self, -1, GT(u'Delete build tree'))
+        self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete build tree'))
         self.chk_rmtree.SetName(u'RMTREE')
-        self.chk_rmtree.SetToolTip(TT_chk_del)
         self.chk_rmtree.default = True
         self.chk_rmtree.SetValue(self.chk_rmtree.default)
         self.build_options.append(self.chk_rmtree)
         
         # Checks the output .deb for errors
-        self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
+        self.chk_lint = wx.CheckBox(self, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
         if not CMD_lintian:
             self.chk_lint.Disable()
-            self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
         else:
             self.chk_lint.SetValue(self.chk_lint.default)
             self.build_options.append(self.chk_lint)
-            self.chk_lint.SetToolTip(TT_chk_lint)
         
         # Installs the deb on the system
-        self.chk_install = wx.CheckBox(self, -1, GT(u'Install package after build'))
+        self.chk_install = wx.CheckBox(self, label=GT(u'Install package after build'))
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
         self.build_options.append(self.chk_install)
         
-        options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
+        options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
         options1_sizer.AddMany( [
             (self.chk_md5, 0),
@@ -111,7 +107,8 @@ class Panel(WizardPage):
         #wx.EVT_SHOW(self, self.SetSummary)
         
         # --- BUILD
-        self.build_button = ButtonBuild64(self, tooltip=GT(u'Start building'))
+        self.build_button = ButtonBuild64(self)
+        self.build_button.SetName(u'build')
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
         
@@ -135,6 +132,9 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(page_sizer)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
     
     
     ## Method that builds the actual Debian package
