@@ -356,21 +356,6 @@ def GetFileMimeType(file_name):
     return output[1].split(u': ')[-1]
 
 
-## Universal function for setting window/control tooltips
-def SetToolTip(control, tooltip):
-    if isinstance(tooltip, (unicode, str)) and tooltip != wx.EmptyString:
-        control.SetToolTipString(tooltip)
-    
-    elif isinstance(tooltip, wx.ToolTip) and tooltip.GetTip() != wx.EmptyString:
-        control.SetToolTip(tooltip)
-
-
-## Sets multip tooltips at once
-def SetToolTips(control_list):
-    for C in control_list:
-        SetToolTip(C[0], C[1])
-
-
 def BuildBinaryPackageFromTree(root_dir, filename):
     if not os.path.isdir(root_dir):
         return dbrerrno.ENOENT
