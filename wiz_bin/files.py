@@ -10,6 +10,7 @@ from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse
 from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonDel
+from dbr.buttons        import ButtonRefresh
 from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
@@ -25,6 +26,7 @@ from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
+from globals.tooltips   import TT_files_refresh
 
 
 ID_pin = 100
@@ -123,7 +125,7 @@ class Panel(WizardPage):
         self.path_dict = {ID_pout: self.dest_cust}
         
         # TODO: Make custom button
-        btn_refresh = wx.Button(self, label=GT(u'Refresh'))
+        btn_refresh = ButtonRefresh(self, tooltip=TT_files_refresh)
         btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
         path_add_sizer = wx.BoxSizer(wx.HORIZONTAL)
