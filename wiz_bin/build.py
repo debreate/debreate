@@ -245,7 +245,8 @@ class Panel(WizardPage):
                 
                 if not build_progress.WasCancelled():
                     wx.SafeYield()
-                    build_progress.Update(steps_count, GT(u'Build finished'))
+                    #build_progress.Update(steps_count, GT(u'Build complete'))
+                    build_progress.Update(steps_count, GT(u'Build incomplete (in development)'))
                     
                     # Show finished dialog for short moment
                     time.sleep(1)
