@@ -16,7 +16,7 @@ from dbr.markdown       import MarkdownDialog
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl
 from dbr.wizard         import WizardPage
-from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
+from globals.errorcodes import ERR_DIR_NOT_AVAILABLE, dbrerrno
 from globals.errorcodes import ERR_FILE_WRITE
 from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
@@ -173,6 +173,21 @@ scripts will be created that will place a symbolic link to your executables in t
         
         
         SetPageToolTips(self)
+    
+    
+    def ExportBuild(self, stage):
+        stage = u'{}/DEBIAN'.format(stage).replace(u'//', u'/')
+        
+        if not os.path.isdir(stage):
+            os.makedirs(stage)
+        
+        # FIXME: Should have error check
+        for S, RB in self.script_objects:
+            if S.IsExportable():
+                S.Export(stage, build=True)
+        
+        return (dbrerrno.SUCCESS, None)
+                
     
     
     def IsExportable(self):
@@ -581,12 +596,18 @@ class DebianScript(wx.Panel):
     #        \b \e str : Target directory to output file
     #  \param executable
     #        \b \e bool : Make file executable
-    def Export(self, out_dir, executable=True):
+    #  \param build
+    #        \b \e bool : Format output for final build
+    def Export(self, out_dir, executable=True, build=False):
         if not os.path.isdir(out_dir):
             Logger.Error(__name__, GT(u'Directory not available: {}'.format(out_dir)))
             return (ERR_DIR_NOT_AVAILABLE, __name__)
         
-        absolute_filename = u'{}/{}-{}'.format(out_dir, page_ids[self.parent.GetId()].upper(), self.script_filename)
+        if build:
+            absolute_filename = u'{}/{}'.format(out_dir, self.script_filename).replace(u'//', u'/')
+        else:
+            absolute_filename = u'{}/{}-{}'.format(out_dir, page_ids[self.parent.GetId()].upper(), self.script_filename)
+        
         script_text = u'#!{}\n\n{}'.format(self.shell.GetValue(), self.script_body.GetValue())
         
         #add_newline = script_text.split(u'\n')[-1] != u''
@@ -602,6 +623,9 @@ class DebianScript(wx.Panel):
         if not os.path.isfile(absolute_filename):
             Logger.Error(__name__, GT(u'Could not write to file: {}'.format(absolute_filename)))
             return (ERR_FILE_WRITE, __name__)
+        
+        if executable:
+            os.chmod(absolute_filename, 0755)
         
         return (0, None)
     
