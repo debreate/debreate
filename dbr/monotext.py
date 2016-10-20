@@ -39,10 +39,10 @@ class MonospaceTextCtrl(wx.Panel):
         if button:
             btn_font = wx.Button(self, label=GT(u'Text Size'))
             if button in (MT_BTN_TL, MT_BTN_TR):
-                layout_V1.Insert(0, btn_font, 0, button_H_pos[button])
+                layout_V1.Insert(0, btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
             
             else:
-                layout_V1.Add(btn_font, 0, button_H_pos[button])
+                layout_V1.Add(btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
             
             btn_font.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
         
@@ -55,11 +55,22 @@ class MonospaceTextCtrl(wx.Panel):
         self.text_area.Clear()
     
     
+    def GetInsertionPoint(self):
+        return self.text_area.GetInsertionPoint()
+    
+    
     def GetValue(self):
         return self.text_area.GetValue()
     
     
+    def IsEmpty(self):
+        return self.text_area.IsEmpty()
+    
+    
     def OnToggleTextSize(self, event=None):
+        # Save insertion point
+        insertion = self.text_area.GetInsertionPoint()
+        
         sizes = {
             7: 8,
             8: 10,
@@ -72,7 +83,21 @@ class MonospaceTextCtrl(wx.Panel):
         font.SetPointSize(new_size)
         
         self.text_area.SetFont(font)
+        self.text_area.SetInsertionPoint(insertion)
+        self.text_area.SetFocus()
+    
+    
+    def SetInsertionPoint(self, point):
+        self.text_area.SetInsertionPoint(point)
+    
+    
+    def SetInsertionPointEnd(self):
+        self.text_area.SetInsertionPointEnd()
     
     
     def SetValue(self, value):
         self.text_area.SetValue(value)
+    
+    
+    def WriteText(self, text):
+        self.text_area.WriteText(text)
