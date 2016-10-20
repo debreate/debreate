@@ -66,7 +66,7 @@ class Panel(WizardPage):
         changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
         # Destination of changelog
-        self.target_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%',
+        self.target_default = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
                 name=u'target', style=wx.RB_GROUP)
         self.target_custom = wx.RadioButton(self, name=self.target_default.Name)
         self.target = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)

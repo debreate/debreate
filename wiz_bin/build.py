@@ -144,8 +144,6 @@ class Panel(WizardPage):
     
     ## Method that builds the actual Debian package
     #  
-    #  TODO: Create temp stage directory tree
-    #  TODO: Delete temp stage directory tree
     #  TODO: Run dpkg-deb command
     #  TODO: Test for errors when building deb package with other filename extension
     #  TODO: Remove deprecated methods that this one replaces
@@ -154,6 +152,7 @@ class Panel(WizardPage):
     def Build(self, out_file):
         pages_build_ids = self.BuildPrep()
         
+        # FIXME: Control file should be skipped here & processed last
         if pages_build_ids != None:
             steps_count = len(pages_build_ids)
             current_step = 0
@@ -163,59 +162,51 @@ class Panel(WizardPage):
                 if chk.IsChecked():
                     steps_count += 1
             
+            # .deb build step
+            steps_count += 1
+            
+            stage = CreateTempDirectory()
+            
             # FIXME: Enable PD_CAN_ABORT
             build_progress = wx.ProgressDialog(GT(u'Building'), GT(u'Starting build'),
                     steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
-            wx.Yield()
-            
-            time.sleep(3)
+            wx.SafeYield()
             
             try:
+                # NOTE: Control page should be last processed to get install size
                 for P in self.wizard.pages:
                     if build_progress.WasCancelled():
                         break
-                    
-                    page_id = P.GetId()
                     
                     if P.GetId() in pages_build_ids:
                         page_label = P.GetLabel()
                         
                         # FIXME: Progress bar not updating
-                        wx.Yield()
+                        wx.SafeYield()
                         build_progress.Update(current_step,
                                 GT(u'Processing page "{}" ({}/{})').format(page_label, current_step+1, steps_count))
-                        # TODO: Remove
-                        time.sleep(1)
                         
-                        if page_id == ID_CONTROL:
-                            Logger.Debug(__name__, page_label)
+                        ret_code, ret_value = P.ExportBuild(stage)
                         
-                        elif page_id == ID_FILES:
-                            Logger.Debug(__name__, page_label)
-                        
-                        elif page_id == ID_MAN:
-                            Logger.Debug(__name__, page_label)
-                        
-                        elif page_id == ID_SCRIPTS:
-                            Logger.Debug(__name__, page_label)
-                        
-                        elif page_id == ID_CHANGELOG:
-                            Logger.Debug(__name__, page_label)
-                        
-                        elif page_id == ID_COPYRIGHT:
-                            Logger.Debug(__name__, page_label)
-                        
-                        elif page_id == ID_MENU:
-                            Logger.Debug(__name__, page_label)
-                        
-                        elif page_id == ID_BUILD:
-                            Logger.Debug(__name__, page_label)
+                        if ret_code > 0:
+                            build_progress.Destroy()
+                            
+                            err_msg = GT(u'Error occurred during build')
+                            Logger.Error(__name__, u'{}:\n{}'.format(err_msg, ret_value))
+                            
+                            err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
+                            err_dialog.SetDetails(ret_value)
+                            err_dialog.ShowModal()
+                            
+                            err_dialog.Destroy()
+                            
+                            return
                         
                         current_step += 1
                 
                 if not build_progress.WasCancelled():
                     if self.chk_md5.IsChecked():
-                        wx.Yield()
+                        wx.SafeYield()
                         build_progress.Update(current_step,
                                 GT(u'Creating MD5 checksum ({}/{})').format(current_step+1, steps_count))
                         
@@ -223,9 +214,19 @@ class Panel(WizardPage):
                         
                         current_step += 1
                 
+                # Building .deb from stage
+                if not build_progress.WasCancelled():
+                    wx.SafeYield()
+                    build_progress.Update(current_step,
+                            GT(u'Creating .deb package ({}/{}').format(current_step+1, steps_count))
+                    
+                    # TODO: Function to build deb
+                    
+                    current_step += 1
+                
                 if not build_progress.WasCancelled():
                     if self.chk_lint.IsChecked():
-                        wx.Yield()
+                        wx.SafeYield()
                         build_progress.Update(current_step,
                                 GT(u'Checking package with lintian ({}/{})').format(current_step+1, steps_count))
                         
@@ -235,14 +236,15 @@ class Panel(WizardPage):
                 
                 if not build_progress.WasCancelled():
                     if self.chk_rmtree.IsChecked():
-                        wx.Yield()
+                        wx.SafeYield()
                         build_progress.Update(current_step,
                                 GT(u'Removing staged build tree ({}/{})').format(current_step+1, steps_count))
                         
+                        RemoveTempDirectory(stage)
                         current_step += 1
                 
                 if not build_progress.WasCancelled():
-                    wx.Yield()
+                    wx.SafeYield()
                     build_progress.Update(steps_count, GT(u'Build finished'))
                     
                     # Show finished dialog for short moment
@@ -443,7 +445,7 @@ class Panel(WizardPage):
                 if TextIsEmpty(F.GetValue()):
                     field_name = F.GetName()
                     
-                    Logger.Debug(__name__,
+                    Logger.Warning(__name__,
                             u'{}: {} ➜ {}'.format(GT(u'A required field is empty'), page_name, field_name))
                     
                     err_dialog = wx.MessageDialog(self.GetDebreateWindow(), GT(u'A required field is empty'),
@@ -456,6 +458,18 @@ class Panel(WizardPage):
                             self.wizard.ShowPage(P.GetId())
                     
                     return
+        
+        if self.debreate.page_files.file_list.MissingFiles():
+            Logger.Warning(__name__, GT(u'Files are missing in file list'))
+            
+            err_dialog = ErrorDialog(self.debreate, GT(u'Warning'), GT(u'Files are missing in file list'))
+            err_dialog.ShowModal()
+            
+            err_dialog.Destroy()
+            
+            self.wizard.ShowPage(ID_FILES)
+            
+            return
         
         
         ttype = GT(u'Debian Packages')
