@@ -21,6 +21,7 @@ from globals.errorcodes import ERR_FILE_WRITE
 from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
 from globals.ident      import page_ids
+from globals.tooltips import SetPageToolTips
 
 
 ID_INST_PRE = wx.NewId()
@@ -49,10 +50,15 @@ class Panel(WizardPage):
         self.postrm = DebianScript(self, ID_RM_POST)
         
         # Radio buttons for displaying between pre- and post- install scripts
-        rb_preinst = wx.RadioButton(self, self.preinst.GetId(), self.preinst.GetName(), style=wx.RB_GROUP)
-        rb_postinst = wx.RadioButton(self, self.postinst.GetId(), self.postinst.GetName())
-        rb_prerm = wx.RadioButton(self, self.prerm.GetId(), self.prerm.GetName())
-        rb_postrm = wx.RadioButton(self, self.postrm.GetId(), self.postrm.GetName())
+        # FIXME: Names settings for tooltips are confusing
+        rb_preinst = wx.RadioButton(self, self.preinst.GetId(), self.preinst.GetName(),
+                name=self.preinst.script_filename, style=wx.RB_GROUP)
+        rb_postinst = wx.RadioButton(self, self.postinst.GetId(), self.postinst.GetName(),
+                name=self.postinst.script_filename)
+        rb_prerm = wx.RadioButton(self, self.prerm.GetId(), self.prerm.GetName(),
+                name=self.prerm.script_filename)
+        rb_postrm = wx.RadioButton(self, self.postrm.GetId(), self.postrm.GetName(),
+                name=self.postrm.script_filename)
         
         self.script_objects = (
             (self.preinst, rb_preinst),
@@ -86,8 +92,9 @@ class Panel(WizardPage):
         self.xlist = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, -1, GT(u'Path'))
+        self.al_text = wx.StaticText(self, label=GT(u'Path'), name=u'target')
         self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
+        self.al_input.SetName(u'target')
         
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
         
@@ -107,9 +114,12 @@ class Panel(WizardPage):
             self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = ButtonImport(self, tooltip=GT(u'Import executables from Files section'))
+        self.al_import = ButtonImport(self)
+        self.al_import.SetName(u'import')
         self.al_del = ButtonDel(self)
-        self.al_gen = ButtonBuild(self, tooltip=GT(u'Generate Scripts'))
+        self.al_del.SetName(u'Remove')
+        self.al_gen = ButtonBuild(self)
+        self.al_gen.SetName(u'Generate')
         
         wx.EVT_BUTTON(self.al_import, ID_IMPORT, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
@@ -137,6 +147,7 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # *** HELP *** #
         self.button_help = ButtonQuestion64(self)
+        self.button_help.SetName(u'help')
         
         wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
         
@@ -159,6 +170,9 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # Initialize script display
         self.ScriptSelect(None)
+        
+        
+        SetPageToolTips(self)
     
     
     def IsExportable(self):
@@ -185,18 +199,19 @@ scripts will be created that will place a symbolic link to your executables in t
             self.executables.DeleteAllItems()
             self.xlist = []
             
-            files = self.debreate.page_files.dest_area
+            file_list = self.debreate.page_files.file_list
             
-            item_count = files.GetItemCount()
+            item_count = file_list.GetItemCount()
             
             for i_index in range(item_count):
-                file_name = files.GetFilename(i_index)
-                file_executable = files.FileIsExecutable(i_index)
+                file_name = file_list.GetFilename(i_index)
                 
                 Logger.Debug(__name__, GT(u'Checking if file "{}" is executable').format(file_name))
+                file_executable = file_list.FileIsExecutable(i_index)
+                
                 if file_executable:
                     # Where the file linked to will be installed
-                    file_target = u'{}/{}'.format(files.GetTarget(i_index), file_name)
+                    file_target = u'{}/{}'.format(file_list.GetTarget(i_index), file_name)
                     
                     Logger.Debug(__name__, GT(u'File install target: {}').format(file_target))
                     
@@ -210,6 +225,19 @@ scripts will be created that will place a symbolic link to your executables in t
     
     
     def OnGenerate(self, event):
+        for S in self.postinst, self.prerm:
+            if not TextIsEmpty(S.GetValue()):
+                confirm = wx.MessageDialog(self.GetParent().GetDebreateWindow(),
+                        GT(u'The {} script is not empty').format(S.script_name), GT(u'Warning'),
+                        style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION)
+                confirm.SetYesNoLabels(u'Continue', u'Cancel')
+                confirm.SetExtendedMessage(GT(u'Do you want to overwrite the contents of this script?'))
+                if confirm.ShowModal() == wx.ID_NO:
+                    Logger.Debug(__name__, GT(u'Cancelling'))
+                    return
+                
+                Logger.Debug(__name__, GT(u'Continuing'))
+    
         # Create the scripts to link the executables
         
         # Create a list of commands to put into the script
@@ -248,9 +276,9 @@ scripts will be created that will place a symbolic link to your executables in t
                 postinst = u'\n\n'.join(postinst_list)
                 prerm = u'\n\n'.join(prerm_list)
                 
-                self.te_postinst.SetValue(u'#! /bin/bash -e\n\n%s' % postinst)
+                #self.te_postinst.SetValue(u'#! /bin/bash -e\n\n%s' % postinst)
                 self.chk_postinst.SetValue(True)
-                self.te_prerm.SetValue(u'#! /bin/bash -e\n\n%s' % prerm)
+                #self.te_prerm.SetValue(u'#! /bin/bash -e\n\n%s' % prerm)
                 self.chk_prerm.SetValue(True)
                 
                 dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
@@ -546,6 +574,7 @@ class DebianScript(wx.Panel):
     def IsExportable(self):
         return (not TextIsEmpty(self.script_body.GetValue()))
     
+    
     ## Exports the script to a text file
     #  
     #  \param out_dir
@@ -575,6 +604,10 @@ class DebianScript(wx.Panel):
             return (ERR_FILE_WRITE, __name__)
         
         return (0, None)
+    
+    
+    def GetValue(self):
+        return self.script_body.GetValue()
     
     
     def SetShell(self, shell, forced=False):
