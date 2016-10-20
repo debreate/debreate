@@ -73,7 +73,7 @@ TT_files = {
 }
 
 TT_manpages = {
-    
+    u'add': GT(u'Add manpage'),
 }
 
 TT_scripts = {
