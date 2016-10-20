@@ -14,6 +14,7 @@ from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CHANGELOG
+from globals.tooltips   import SetPageToolTips
 
 
 # Local imports
@@ -23,25 +24,25 @@ class Panel(WizardPage):
         
         self.debreate = parent.parent # MainWindow
         
-        self.package_text = wx.StaticText(self, -1, GT(u'Package'))
-        self.package = wx.TextCtrl(self)
+        self.package_text = wx.StaticText(self, label=GT(u'Package'), name=u'package')
+        self.package = wx.TextCtrl(self, name=self.package_text.Name)
         
-        self.version_text = wx.StaticText(self, -1, GT(u'Version'))
-        self.version = wx.TextCtrl(self)
+        self.version_text = wx.StaticText(self, label=GT(u'Version'), name=u'version')
+        self.version = wx.TextCtrl(self, name=self.version_text.Name)
         
-        self.distribution_text = wx.StaticText(self, -1, GT(u'Distribution'))
-        self.distribution = wx.TextCtrl(self)
+        self.distribution_text = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
+        self.distribution = wx.TextCtrl(self, name=self.distribution_text.Name)
         
-        self.urgency_text = wx.StaticText(self, -1, GT(u'Urgency'))
+        self.urgency_text = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
         self.urgency_opt = (u'low', u'high')
-        self.urgency = wx.Choice(self, choices=self.urgency_opt)
+        self.urgency = wx.Choice(self, choices=self.urgency_opt, name=self.urgency_text.Name)
         self.urgency.SetSelection(0)
         
-        self.maintainer_text = wx.StaticText(self, -1, GT(u'Maintainer'))
-        self.maintainer = wx.TextCtrl(self)
+        self.maintainer_text = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
+        self.maintainer = wx.TextCtrl(self, name=self.maintainer_text.Name)
         
-        self.email_text = wx.StaticText(self, -1, GT(u'Email'))
-        self.email = wx.TextCtrl(self)
+        self.email_text = wx.StaticText(self, label=GT(u'Email'), name=u'email')
+        self.email = wx.TextCtrl(self, name=self.email_text.Name)
         
         info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
         info_sizer.AddGrowableCol(1)
@@ -57,22 +58,24 @@ class Panel(WizardPage):
             ])
         
         # *** CHANGES DETAILS
-        self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE)
+        self.changes = wx.TextCtrl(self, size=(20,150), name=u'changes', style=wx.TE_MULTILINE)
         
-        self.border_changes = wx.StaticBox(self, -1, GT(u'Changes'), size=(20,20))
+        self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
         changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
         changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
         # Destination of changelog
-        self.target_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wx.RB_GROUP)
-        self.target_custom = wx.RadioButton(self)
+        self.target_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%',
+                name=u'target', style=wx.RB_GROUP)
+        self.target_custom = wx.RadioButton(self, name=self.target_default.Name)
         self.target = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)
+        self.target.SetName(self.target_default.Name)
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         dest_custom_sizer.Add(self.target_custom)
         dest_custom_sizer.Add(self.target, 1)
         
-        border_dest = wx.StaticBox(self, -1, GT(u'Target'))
+        border_dest = wx.StaticBox(self, label=GT(u'Target'))
         dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
         dest_box.AddSpacer(5)
         dest_box.Add(self.target_default)
@@ -86,8 +89,10 @@ class Panel(WizardPage):
         
         
         self.button_import = ButtonImport(self)
-        self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control section')))
+        self.button_import.SetName(u'import')
+        #self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control section')))
         self.button_add = ButtonAdd(self)
+        self.button_add.SetName(u'add')
         
         wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
         wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
@@ -96,7 +101,7 @@ class Panel(WizardPage):
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        self.display_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE)
+        self.display_area = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
         
         # *** Widgets that Enable/Disable
 #        self.toggle_list = (
@@ -118,6 +123,9 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
     
     
     def IsExportable(self):

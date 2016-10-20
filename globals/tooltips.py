@@ -89,7 +89,17 @@ TT_scripts = {
 }
 
 TT_changelog = {
-    
+    u'package': TT_control[u'package'],
+    u'version': TT_control[u'version'],
+    u'dist': GT(u'Name of Debian/Ubuntu/etc. target distribution'),
+    u'urgency': GT(u'Update urgency'),
+    u'maintainer': TT_control[u'maintainer'],
+    u'email': TT_control[u'email'],
+    u'changes': GT(u'List new changes here, separated one per line'),
+    u'target': GT(u'Target to install changelog file'),
+    u'import': GT(u'Import information from Control section'),
+    u'add': GT(u'Prepend above changes as new log entry'),
+    u'log': GT(u'Log contents'),
 }
 
 TT_copyright = {
