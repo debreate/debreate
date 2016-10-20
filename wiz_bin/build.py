@@ -25,7 +25,7 @@ from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_INFORMATION
-from globals.commands   import CMD_lintian
+from globals.commands   import CMD_lintian, CMD_system_installer
 from globals.commands   import CMD_md5sum
 from globals.errorcodes import errno
 from globals.ident      import ID_BUILD
@@ -86,9 +86,14 @@ class Panel(WizardPage):
         
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(self, label=GT(u'Install package after build'))
+        self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
-        self.build_options.append(self.chk_install)
+        
+        if not CMD_system_installer:
+            self.chk_install.Disable()
+        else:
+            self.build_options.append(self.chk_install)
         
         options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)

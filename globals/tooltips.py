@@ -23,6 +23,7 @@ from globals.ident      import ID_MENU
 from globals.ident      import ID_SCRIPTS
 from dbr.templates      import local_templates_path
 from dbr.functions      import FieldEnabled
+from globals.commands import CMD_system_installer
 
 
 # *** Wizard buttons ***#
@@ -156,7 +157,14 @@ TT_build = {
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
     u'build': GT(u'Start Build'),
-    u'install': GT(u'Uses the system package manager to install .deb')
+    u'install': (
+        GT(u'Uses the system package manager to install .deb'), u'',
+        u'{} {}'.format(GT(u'System installer set to:'), CMD_system_installer),
+        ),
+    u'install_disabled': (
+        GT(u'Installation requires one of the following utilities:'), u'',
+        GT(u'gdebi, dpkg, bsdar, or ar'),
+        ),
 }
 
 
