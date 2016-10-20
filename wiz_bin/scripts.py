@@ -18,13 +18,10 @@ from dbr.pathctrl       import PathCtrl
 from dbr.wizard         import WizardPage
 from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes import ERR_FILE_WRITE
+from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
 from globals.ident      import page_ids
 
-
-#import dbr
-ID_Import = 100
-ID_Remove = 101
 
 ID_INST_PRE = wx.NewId()
 ID_INST_POST = wx.NewId()
@@ -110,15 +107,13 @@ class Panel(WizardPage):
             self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = ButtonImport(self, ID_Import)
-        self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from Files section')))
-        self.al_del = ButtonDel(self, ID_Remove)
-        self.al_gen = ButtonBuild(self)
-        self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate Scripts')))
+        self.al_import = ButtonImport(self, tooltip=GT(u'Import executables from Files section'))
+        self.al_del = ButtonDel(self)
+        self.al_gen = ButtonBuild(self, tooltip=GT(u'Generate Scripts'))
         
-        wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
+        wx.EVT_BUTTON(self.al_import, ID_IMPORT, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
-        wx.EVT_BUTTON(self.al_del, ID_Remove, self.ImportExe)
+        wx.EVT_BUTTON(self.al_del, wx.WXK_DELETE, self.ImportExe)
         
         albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
         albutton_sizer.Add(self.al_import, 1)#, wx.ALIGN_CENTER|wx.RIGHT, 5)
@@ -185,7 +180,7 @@ scripts will be created that will place a symbolic link to your executables in t
     ## Imports names of executables from files page
     def ImportExe(self, event):
         event_id = event.GetId()
-        if event_id == ID_Import:
+        if event_id == ID_IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.xlist = []
@@ -207,7 +202,7 @@ scripts will be created that will place a symbolic link to your executables in t
                     
                     self.executables.InsertStringItem(self.executables.GetItemCount(), file_target)
         
-        elif event_id == ID_Remove:
+        elif event_id == wx.ID_DELETE:
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
