@@ -128,10 +128,8 @@ class ButtonQuestion64(ToolTipButton):
 #  
 #  TODO: Use wx.BitmapButton
 class ButtonRefresh(wx.Button):
-    def __init__(self, parent, tooltip=GT(u'Refresh')):
+    def __init__(self, parent, name=u'refresh'):
         wx.Button.__init__(self, parent, ID_REFRESH)
-        
-        self.SetToolTip(tooltip)
 
 
 class ButtonSave(ToolTipButton):
