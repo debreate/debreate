@@ -228,7 +228,7 @@ class Panel(WizardPage):
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
         
         
-        SetPageToolTips(self.GetId(), self.bg.GetChildren())
+        SetPageToolTips(self)
     
     
     ## Tells the build script whether page should be built
