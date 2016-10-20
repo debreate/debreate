@@ -77,7 +77,15 @@ TT_manpages = {
 }
 
 TT_scripts = {
-    
+    u'preinst': GT(u'Script run before package install begins'),
+    u'postinst': GT(u'Scrtipt run after package install completes'),
+    u'prerm': GT(u'Script run before package uninstall begins'),
+    u'postrm': GT(u'Script run after package uninstall completes'),
+    u'target': GT(u'FIXME: Description???'),
+    u'import': GT(u'Import files marked as executable from Files page into Auto-Link list'),
+    u'remove': GT(u'Remove the selected executable from the Auto-Link list'),
+    u'generate': GT(u'Generate Scripts'),
+    u'help': GT(u'How to use Auto-Link'),
 }
 
 TT_changelog = {
