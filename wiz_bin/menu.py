@@ -20,6 +20,7 @@ from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_MENU
+from globals.tooltips   import SetPageToolTips
 
 
 class Panel(WizardPage):
@@ -32,22 +33,6 @@ class Panel(WizardPage):
         ## Override default label
         self.label = GT(u'Menu Launcher')
         
-        # --- Tool Tips --- #
-        DF_tip = wx.ToolTip(GT(u'Open launcher file'))
-        icon_tip = wx.ToolTip(GT(u'Icon to be displayed for the launcher'))
-        m_name_tip = wx.ToolTip(GT(u'Text for the launcher'))
-        #m_ver_tip = wx.ToolTip(u'The version of your application')
-        m_com_tip = wx.ToolTip(GT(u'Text displayed when mouse hovers over launcher'))
-        m_exec_tip = wx.ToolTip(GT(u'Executable to be launched'))
-        m_mime_tip = wx.ToolTip(GT(u'Specifies the MIME types that the application can handle'))
-        #m_enc_tip = wx.ToolTip(u'Specifies the encoding of the desktop entry file')
-        #m_type_tip = wx.ToolTip(GT(u'The type of launcher'))
-        m_cat_tip = wx.ToolTip(u'Choose which categories in which you would like your application to be displayed')
-        m_term_tip = wx.ToolTip(GT(u'Specifies whether application should be run from a terminal'))
-        m_notify_tip = wx.ToolTip(GT(u'Displays a notification in the system panel when launched'))
-        m_nodisp_tip = wx.ToolTip(u'This options means "This application exists, but don\'t display it in the menus"')
-        m_showin_tip = wx.ToolTip(u'Only Show In Tip')
-        
         # --- Main Menu Entry --- #
         
         self.options_button = []
@@ -57,13 +42,15 @@ class Panel(WizardPage):
         
         # --- Buttons to open/preview/save .desktop file
         self.btn_open = ButtonBrowse64(self)
-        self.btn_open.SetToolTip(DF_tip)
+        self.btn_open.SetName(u'open')
         self.options_button.append(self.btn_open)
         
         self.btn_save = ButtonSave64(self)
+        self.btn_save.SetName(u'export')
         self.options_button.append(self.btn_save)
         
         self.btn_preview = ButtonPreview64(self)
+        self.btn_preview.SetName(u'preview')
         self.options_button.append(self.btn_preview)
         
         self.btn_open.Bind(wx.EVT_BUTTON, self.OpenFile)
@@ -82,33 +69,28 @@ class Panel(WizardPage):
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
         # --- NAME (menu)
-        self.name_text = wx.StaticText(self, -1, GT(u'Name'))
-        self.name_text.SetToolTip(m_name_tip)
+        self.name_text = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         
         self.name_input = wx.TextCtrl(self, name=u'Name')
         self.name_input.default = wx.EmptyString
-        self.name_input.SetName(u'Name')
         self.options_input.append(self.name_input)
         
         # --- EXECUTABLE
-        self.exe_text = wx.StaticText(self, -1, GT(u'Executable'))
-        self.exe_text.SetToolTip(m_exec_tip)
+        self.exe_text = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
         
         self.exe_input = wx.TextCtrl(self, name=u'Exec')
         self.exe_input.default = wx.EmptyString
         self.options_input.append(self.exe_input)
         
         # --- COMMENT
-        self.comm_text = wx.StaticText(self, -1, GT(u'Comment'))
-        self.comm_text.SetToolTip(m_com_tip)
+        self.comm_text = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
         
         self.comm_input = wx.TextCtrl(self, name=u'Comment')
         self.comm_input.default = wx.EmptyString
         self.options_input.append(self.comm_input)
         
         # --- ICON
-        self.icon_text = wx.StaticText(self, -1, GT(u'Icon'))
-        self.icon_text.SetToolTip(icon_tip)
+        self.icon_text = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         
         self.icon_input = wx.TextCtrl(self, name=u'Icon')
         self.icon_input.default = wx.EmptyString
@@ -116,8 +98,7 @@ class Panel(WizardPage):
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
-        self.type_text = wx.StaticText(self, -1, GT(u'Type'))
-        #self.type_text.SetToolTip(m_type_tip)
+        self.type_text = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         
         self.type_choice = wx.ComboBox(self, -1, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
         self.type_choice.default = self.type_choice.GetValue()
@@ -125,8 +106,7 @@ class Panel(WizardPage):
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
-        self.term_text = wx.StaticText(self, -1, GT(u'Terminal'))
-        self.term_text.SetToolTip(m_term_tip)
+        self.term_text = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
         
         self.term_choice = wx.Choice(self, -1, choices=self.term_opt, name=u'Terminal')
         self.term_choice.default = 1
@@ -135,10 +115,9 @@ class Panel(WizardPage):
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
-        self.notify_text = wx.StaticText(self, -1, GT(u'Startup Notify'))
-        self.notify_text.SetToolTip(m_notify_tip)
+        self.notify_text = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
         
-        self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt, name=u'StartupNotify')
+        self.notify_choice = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
         self.notify_choice.default = 0
         self.notify_choice.SetSelection(self.notify_choice.default)
         self.options_choice.append(self.notify_choice)
@@ -146,26 +125,42 @@ class Panel(WizardPage):
         # --- ENCODING
         self.enc_opt = (u'UTF-1',u'UTF-7',u'UTF-8',u'CESU-8',u'UTF-EBCDIC',
                 u'UTF-16',u'UTF-32',u'SCSU',u'BOCU-1',u'Punycode', u'GB 18030')
-        self.enc_text = wx.StaticText(self, -1, GT(u'Encoding'))
-        #self.enc_text.SetToolTip(m_enc_tip)
+        self.enc_text = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         
         self.enc_input = wx.ComboBox(self, -1, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
         self.enc_input.default = self.enc_input.GetValue()
         self.options_input.append(self.enc_input)
         
         # --- CATEGORIES
-        self.cat_opt = (u'2DGraphics',u'Accessibility',u'Application',u'ArcadeGame',u'Archiving',u'Audio',u'AudioVideo',
-                        u'BlocksGame',u'BoardGame',u'Calculator',u'Calendar',u'CardGame',u'Compression',
-                        u'ContactManagement',u'Core',u'DesktopSettings',u'Development',u'Dictionary',u'DiscBurning',
-                        u'Documentation',u'Email',u'FileManager',u'FileTransfer',u'Game',u'GNOME',u'Graphics',u'GTK',
-                        u'HardwareSettings',u'InstantMessaging',u'KDE',u'LogicGame',u'Math',u'Monitor',u'Network',u'OCR',
-                        u'Office',u'P2P',u'PackageManager',u'Photography',u'Player',u'Presentation',u'Printing',u'Qt',
-                        u'RasterGraphics',u'Recorder',u'RemoteAccess',u'Scanning',u'Screensaver',u'Security',u'Settings',
-                        u'Spreadsheet',u'System',u'Telephony',u'TerminalEmulator',u'TextEditor',u'Utility',
-                        u'VectorGraphics',u'Video',u'Viewer',u'WordProcessor',u'Wine',u'Wine-Programs-Accessories',
-                        u'X-GNOME-NetworkSettings',u'X-GNOME-PersonalSettings',u'X-GNOME-SystemSettings',u'X-KDE-More',
-                        u'X-Red-Hat-Base',u'X-SuSE-ControlCenter-System')
-        self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
+        self.cat_opt = (
+            u'2DGraphics',
+            u'Accessibility', u'Application', u'ArcadeGame', u'Archiving', u'Audio', u'AudioVideo',
+            u'BlocksGame', u'BoardGame',
+            u'Calculator', u'Calendar', u'CardGame', u'Compression', u'ContactManagement', u'Core',
+            u'DesktopSettings', u'Development', u'Dictionary', u'DiscBurning', u'Documentation',
+            u'Email',
+            u'FileManager', u'FileTransfer',
+            u'Game', u'GNOME', u'Graphics', u'GTK',
+            u'HardwareSettings',
+            u'InstantMessaging',
+            u'KDE',
+            u'LogicGame',
+            u'Math', u'Monitor',
+            u'Network',
+            u'OCR', u'Office',
+            u'P2P', u'PackageManager', u'Photography', u'Player', u'Presentation', u'Printing',
+            u'Qt',
+            u'RasterGraphics', u'Recorder', u'RemoteAccess',
+            u'Scanning', u'Screensaver', u'Security', u'Settings', u'Spreadsheet', u'System',
+            u'Telephony', u'TerminalEmulator', u'TextEditor',
+            u'Utility',
+            u'VectorGraphics', u'Video', u'Viewer',
+            u'WordProcessor', u'Wine', u'Wine-Programs-Accessories',
+            u'X-GNOME-NetworkSettings', u'X-GNOME-PersonalSettings', u'X-GNOME-SystemSettings',
+            u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
+            )
+        
+        self.cat_text = wx.StaticText(self, label=GT(u'Category'), name=u'category')
         
         # This option does not get set by importing a new project
         self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt,
@@ -174,13 +169,16 @@ class Panel(WizardPage):
         self.options_input.append(self.cat_choice)
         
         self.cat_add = ButtonAdd(self)
+        self.cat_add.SetName(u'add category')
         self.cat_del = ButtonDel(self)
+        self.cat_del.SetName(u'rm category')
         self.cat_clr = ButtonClear(self)
+        self.cat_clr.SetName(u'clear categories')
         
         for B in self.cat_add, self.cat_del, self.cat_clr:
             self.options_button.append(B)
         
-        # FIXME: wx. 3.0 compat
+        # NOTE: wx. 3.0 compat
         if wx.MAJOR_VERSION > 3:
             self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
             self.categories.InsertColumn(0, u'')
@@ -217,9 +215,9 @@ class Panel(WizardPage):
         
         
         # ----- MISC
-        self.other_text = wx.StaticText(self, -1, GT(u'Other'))
+        self.other_text = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         
-        self.other = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
+        self.other = wx.TextCtrl(self, name=self.other_text.Name, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
         self.other.default = wx.EmptyString
         self.options_input.append(self.other)
         
@@ -278,6 +276,9 @@ class Panel(WizardPage):
                             self.name_text: u'Name', self.comm_text: u'Comm', self.exe_text: u'Exec',
                             self.enc_text: u'Enc', self.type_text: u'Type', self.cat_text: u'Cat',
                             self.term_text: u'Term', self.notify_text: u'Notify'}
+        
+        
+        SetPageToolTips(self)
     
     
     def IsExportable(self):
