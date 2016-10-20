@@ -5,6 +5,7 @@ import wx
 from dbr.language   import GT
 from dbr.wizard     import  WizardPage
 from globals.ident import ID_MAN
+from globals.tooltips import SetPageToolTips
 
 
 class Panel(WizardPage, wx.Notebook):
@@ -27,6 +28,9 @@ class Panel(WizardPage, wx.Notebook):
         self.SetAutoLayout(True)
         self.SetSizer(layout_V1)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
     
     
     def AddManpage(self, name=u'manual'):
