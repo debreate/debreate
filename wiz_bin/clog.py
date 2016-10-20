@@ -16,6 +16,7 @@ from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CHANGELOG
 from globals.tooltips   import SetPageToolTips
 from dbr.monotext       import MonospaceTextCtrl
+from globals.commands import CMD_gzip
 
 
 # Local imports
@@ -128,6 +129,34 @@ class Panel(WizardPage):
         
         
         SetPageToolTips(self)
+    
+    
+    def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
+        ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
+        
+        absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
+        
+        if compress and CMD_gzip:
+            commands.getstatusoutput(u'{} "{}"'.format(CMD_gzip, absolute_filename))
+        
+        return ret_value
+    
+    
+    def ExportBuild(self, stage):
+        debreate = self.GetDebreateWindow()
+        
+        if self.target_default.GetValue():
+            stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
+        else:
+            stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
+        
+        if not os.path.isdir(stage):
+            os.makedirs(stage)
+        
+        # FIXME: Allow user to set filename
+        self.Export(stage, u'changelog', True)
+        
+        return(0, None)
     
     
     def IsExportable(self):
