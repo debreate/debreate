@@ -7,14 +7,13 @@ import wx
 from wx.lib.mixins import listctrl as wxMixinListCtrl
 
 from dbr.buttons    import ButtonAdd
+from dbr.buttons    import ButtonAppend
 from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonDel
-from dbr.buttons    import ButtonPipe
 from dbr.language   import GT
 from dbr.log        import Logger
 from dbr.wizard     import WizardPage
 from globals.ident  import ID_DEPENDS, ID_APPEND
-from wx import ID_DELETE
 
 
 class Panel(WizardPage):
@@ -101,8 +100,8 @@ class Panel(WizardPage):
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
-        self.depapp = ButtonPipe(self)
-        self.deprem = ButtonDel(self, ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
+        self.depapp = ButtonAppend(self)
+        self.deprem = ButtonDel(self)
         self.depclr = ButtonClear(self)
         
         wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
@@ -217,7 +216,7 @@ class Panel(WizardPage):
                 else:
                     self.dep_area.SetStringItem(listrow, 1, u'%s | %s' % (prev_text, addname))
         
-        elif key_id == ID_DELETE: # wx.WXK_DELETE:
+        elif key_id == wx.ID_DELETE: # wx.WXK_DELETE:
             selected = None
             while selected != -1:
                 selected = self.dep_area.GetFirstSelected()
