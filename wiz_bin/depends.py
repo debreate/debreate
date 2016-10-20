@@ -6,14 +6,15 @@
 import wx
 from wx.lib.mixins import listctrl as wxMixinListCtrl
 
-from dbr.buttons    import ButtonAdd
-from dbr.buttons    import ButtonAppend
-from dbr.buttons    import ButtonClear
-from dbr.buttons    import ButtonDel
-from dbr.language   import GT
-from dbr.log        import Logger
-from dbr.wizard     import WizardPage
-from globals.ident  import ID_DEPENDS, ID_APPEND
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonAppend
+from dbr.buttons        import ButtonClear
+from dbr.buttons        import ButtonDel
+from dbr.language       import GT
+from dbr.log            import Logger
+from dbr.wizard         import WizardPage
+from globals.ident      import ID_DEPENDS, ID_APPEND
+from globals.tooltips   import SetPageToolTips
 
 
 class Panel(WizardPage):
@@ -23,65 +24,51 @@ class Panel(WizardPage):
         # Bypass checking this page for build
         self.prebuild_check = False
         
-        # ----- Tool Tips
-        dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))
-        pre_tip = wx.ToolTip(GT(u'Package will need to be installed and configured first'))
-        rec_tip = wx.ToolTip(GT(u'Package is highly recommended and will be installed by default'))
-        sug_tip = wx.ToolTip(GT(u'Package may be useful but is not necessary and will not be installed by default'))
-        enh_tip = wx.ToolTip(GT(u'This package may be useful to enhanced package'))
-        con_tip = wx.ToolTip(GT(u'Package will be removed from the system if it is installed'))
-        rep_tip = wx.ToolTip(GT(u'Package or its files may be overwritten'))
-        break_tip = wx.ToolTip(GT(u'Package conflicts and will be de-configured'))
-#        syn_tip = wx.ToolTip(u'Breifly summarize the purpose of the application')
-#        desc_tip = wx.ToolTip(u'Here you can give a more detailed explanation\n\n\
-#If you need help open "Help/Example Control" for details on formatting')
-        
-        
-        # Display a nice title
-#		self.title = wx.StaticText(self, -1) #Title for dependencies and conflictions
-#		self.title.SetFont(parent.BoldFont)
-        
         # --- DEPENDS
         self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        self.dep_chk.SetToolTip(dep_tip)
+        #self.dep_chk.SetToolTip(dep_tip)
+        #SetToolTip(TT_depends[u'depends'], self.dep_chk)
         
         # --- PRE-DEPENDS
         self.pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
-        self.pre_chk.SetToolTip(pre_tip)
+        #self.pre_chk.SetToolTip(pre_tip)
         
         # --- RECOMMENDS
         self.rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
-        self.rec_chk.SetToolTip(rec_tip)
+        #self.rec_chk.SetToolTip(rec_tip)
         
         # --- SUGGESTS
         self.sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
-        self.sug_chk.SetToolTip(sug_tip)
+        #self.sug_chk.SetToolTip(sug_tip)
         
         # --- ENHANCES
         self.enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
-        self.enh_chk.SetToolTip(enh_tip)
+        #self.enh_chk.SetToolTip(enh_tip)
         
         # --- CONFLICTS
         self.con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
-        self.con_chk.SetToolTip(con_tip)
+        #self.con_chk.SetToolTip(con_tip)
         
         # --- REPLACES
         self.rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
-        self.rep_chk.SetToolTip(rep_tip)
+        #self.rep_chk.SetToolTip(rep_tip)
         
         # --- BREAKS
         self.break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
-        self.break_chk.SetToolTip(break_tip)
+        #self.break_chk.SetToolTip(break_tip)
         
         
         # Input for dependencies
-        self.pack_text = wx.StaticText(self, -1, GT(u'Package'))
-        self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
+        self.ver_text = wx.StaticText(self, -1, GT(u'Version'), name=u'version')
+        self.pack_text = wx.StaticText(self, -1, GT(u'Package'), name=u'package')
+        
+        self.dep_name = wx.TextCtrl(self, -1, size=(300,25), name=u'package')
+        
         self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
         self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
         self.dep_oper.SetSelection(0)
-        self.dep_ver = wx.TextCtrl(self, -1)
+        
+        self.dep_ver = wx.TextCtrl(self, -1, name=u'version')
         
         depH1 = wx.FlexGridSizer(2, 3, hgap=5)
         depH1.AddGrowableCol(2)
@@ -100,9 +87,13 @@ class Panel(WizardPage):
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
+        self.depadd.SetName(u'add')
         self.depapp = ButtonAppend(self)
+        self.depapp.SetName(u'append')
         self.deprem = ButtonDel(self)
+        self.deprem.SetName(u'remove')
         self.depclr = ButtonClear(self)
+        self.depclr.SetName(u'clear')
         
         wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
         wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
@@ -111,6 +102,7 @@ class Panel(WizardPage):
         
         # ----- List
         self.dep_area = AutoListCtrl(self)
+        self.dep_area.SetName(u'list')
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         # FIXME: wx. 3.0
@@ -174,6 +166,9 @@ class Panel(WizardPage):
         self.categories = {	self.dep_chk: u'Depends', self.pre_chk: u'Pre-Depends', self.rec_chk: u'Recommends',
                             self.sug_chk: u'Suggests', self.enh_chk: u'Enhances', self.con_chk: u'Conflicts',
                             self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
+        
+        
+        SetPageToolTips(self.GetId(), self.GetChildren())
     
     
     def SelectAll(self):
