@@ -17,7 +17,6 @@
 - Add a 'help' button for info on each page
 - Finish page for creating manpage
 - Finish Doxygen documentation
-- Add more tooltips
 - Allow editing of dependecies list
 - Finish Markdown parser
 - Text output on Build page
