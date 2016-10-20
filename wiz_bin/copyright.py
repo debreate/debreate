@@ -7,7 +7,7 @@ import wx, os
 
 import dbr
 from dbr.error          import ShowError
-from dbr.functions      import RemovePreWhitespace
+from dbr.functions      import RemovePreWhitespace, FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.monotext       import MT_BTN_BR
@@ -15,6 +15,10 @@ from dbr.monotext       import MonospaceTextCtrl
 from dbr.wizard         import WizardPage
 from globals.errorcodes import errno
 from globals.ident      import ID_COPYRIGHT
+from globals.tooltips import SetPageToolTips
+from globals.constants import system_licenses_path
+from dbr.templates import local_licenses_path, application_licenses_path
+from dbr.log import Logger
 
 
 # Globals
@@ -27,8 +31,9 @@ class Panel(WizardPage):
         
         self.debreate = parent.parent
         
+        # FIXME: Ignore symbolic links
         license_list = dbr.GetSystemLicensesList()
-        # FIXME: Change to 'self.builtin_licenses
+        # FIXME: Change variable name to 'self.builtin_licenses
         self.local_licenses = dbr.GetLicenseTemplatesList()
         
         # Do not use local licenses if already located on system
@@ -48,8 +53,8 @@ class Panel(WizardPage):
         
         wx.EVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
         
-        template_btn = wx.Button(self, -1, GT(u'Generate Template'))
-        self.template_btn_simple = wx.Button(self, -1, GT(u'Generate Linked Template'))
+        template_btn = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
+        self.template_btn_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link')
         
         self.OnSelectTemplate(self.lic_choices)
                 
@@ -71,7 +76,7 @@ class Panel(WizardPage):
         sizer_V1.Add(sizer_H1, 1, wx.LEFT, 150)
         
         ## Area where license text is displayed
-        self.cp_display = MonospaceTextCtrl(self, button=MT_BTN_BR)
+        self.cp_display = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
         
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(sizer_V1, 0, wx.ALL, 5)
@@ -80,6 +85,10 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
+    
     
     def GetCopyright(self):
         return self.cp_display.GetValue()
@@ -88,8 +97,37 @@ class Panel(WizardPage):
         data = self.GetCopyright()
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
+    
+    def GetLicensePath(self, template_name):
+        # User templates have priority
+        license_path = u'{}/{}'.format(local_licenses_path, template_name)
+        if os.path.isfile(license_path):
+            return license_path
+        
+        license_path = u'{}/{}'.format(system_licenses_path, template_name)
+        if os.path.isfile(license_path):
+            return license_path
+        
+        license_path = u'{}/{}'.format(application_licenses_path, template_name)
+        if os.path.isfile(license_path):
+            return license_path
+        
+        return None
+    
+    
     def SetCopyright(self, data):
         self.cp_display.SetValue(data)
+    
+    
+    def SetTemplateToolTip(self):
+        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
+        license_path = self.GetLicensePath(license_name)
+        
+        if license_path:
+            self.lic_choices.SetToolTip(wx.ToolTip(license_path))
+            return
+        
+        self.lic_choices.SetToolTip(None)
     
     def ResetAllFields(self):
         self.cp_display.Clear()
@@ -106,6 +144,8 @@ class Panel(WizardPage):
             self.template_btn_simple.Disable()
         else:
             self.template_btn_simple.Enable()
+        
+        self.SetTemplateToolTip()
     
     def OnGenerateTemplate(self, event):
         license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
