@@ -14,6 +14,7 @@ from dbr.language       import GT
 from globals.characters import ARROW_RIGHT
 from globals.ident      import ID_CONTROL
 from globals.ident      import ID_DEPENDS
+from globals.ident      import ID_FILES
 
 
 # *** Wizard buttons ***#
@@ -56,8 +57,14 @@ TT_depends = {
     u'list': GT(u'Dependencies to be added'),
 }
 
-# *** Files page *** #
-TT_files_refresh = wx.ToolTip(GT(u'Update files\' executable status & availability'))
+TT_files = {
+    u'add': GT(u'Add selected file/folder'),
+    u'remove': GT(u'Remove selected file from list'),
+    u'clear': GT(u'Clear file list'),
+    u'target': GT(u'Target destination for file(s)'),
+    u'browse': GT(u'Browse for target destination'),
+    u'refresh': GT(u'Update files\' executable status & availability'),
+}
 
 # *** Build page *** #
 
@@ -71,6 +78,7 @@ TT_chk_dest = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to
 TT_pages = {
     ID_CONTROL: TT_control,
     ID_DEPENDS: TT_depends,
+    ID_FILES: TT_files,
 }
 
 

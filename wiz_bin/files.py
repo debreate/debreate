@@ -26,7 +26,7 @@ from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
-from globals.tooltips   import TT_files_refresh
+from globals.tooltips   import SetPageToolTips
 
 
 ID_pin = 100
@@ -70,8 +70,11 @@ class Panel(WizardPage):
         
         # ----- Add/Remove/Clear buttons
         path_add = ButtonAdd(self)
+        path_add.SetName(u'add')
         path_remove = ButtonDel(self)
+        path_remove.SetName(u'remove')
         button_clear = ButtonClear(self)
+        button_clear.SetName(u'clear')
         
         wx.EVT_BUTTON(path_add, -1, self.AddPath)
         wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
@@ -112,13 +115,16 @@ class Panel(WizardPage):
         radio_box.Add(radio_sizer, 0)
         
         self.prev_dest_value = u'/usr/bin'
-        self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value)
+        self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
+        
         wx.EVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
         wx.EVT_KEY_UP(self.dest_cust, self.CheckDest)
+        
         cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
         cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
         
         self.dest_browse = ButtonBrowse(self)
+        self.dest_browse.SetName(u'browse')
         self.dest_browse.SetId(ID_pout)
         
         wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
@@ -126,7 +132,9 @@ class Panel(WizardPage):
         self.path_dict = {ID_pout: self.dest_cust}
         
         # TODO: Make custom button
-        btn_refresh = ButtonRefresh(self, tooltip=TT_files_refresh)
+        btn_refresh = ButtonRefresh(self)
+        btn_refresh.SetName(u'refresh')
+        
         btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
         path_add_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -139,9 +147,11 @@ class Panel(WizardPage):
         
         
         # Display area for files added to list
-        self.file_list = FileList(self, -1)
+        self.file_list = FileList(self)
+        self.file_list.SetName(u'filelist')
         
         # List that stores the actual paths to the files
+        # FIXME: Deprecated???
         self.list_data = []
         
         wx.EVT_KEY_DOWN(self.file_list, self.DelPathDeprecated)
@@ -165,8 +175,8 @@ class Panel(WizardPage):
         self.SetSizer(sizer)
         self.Layout()
         
-        # Lists of widgets that change language
-        self.setlabels = {	self.dest_browse: u'Custom' }
+        
+        SetPageToolTips(self.GetId(), self.GetChildren())
     
     
     def IsExportable(self):
