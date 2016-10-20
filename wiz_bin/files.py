@@ -27,6 +27,7 @@ from globals.ident      import ID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
 from globals.tooltips   import SetPageToolTips
+import shutil
 
 
 ID_pin = 100
@@ -177,6 +178,38 @@ class Panel(WizardPage):
         
         
         SetPageToolTips(self)
+    
+    
+    def ExportBuild(self, target):
+        if not os.path.isdir(target):
+            return (dbrerrno.ENOENT, GT(u'Target directory does not exist: {}').format(target))
+        
+        if self.file_list.MissingFiles():
+            return (dbrerrno.ENOENT, GT(u'Missing files in file list'))
+        
+        file_count = self.file_list.GetItemCount()
+        for R in range(file_count):
+            filename, source_dir, stage_dir, executable = self.file_list.GetRowData(R)
+            
+            stage_dir = u'{}/{}'.format(target, stage_dir).replace(u'//', u'/')
+            staged_file = u'{}/{}'.format(stage_dir, filename).replace(u'//', u'/')
+            
+            filename = u'{}/{}'.format(source_dir, filename).replace(u'//', u'/')
+            Logger.Debug(__name__,
+                    GT(u'Coppying file: {} -> {}').format(filename, stage_dir))
+            
+            if not os.path.isdir(stage_dir):
+                os.makedirs(stage_dir)
+            
+            shutil.copy(filename, stage_dir)
+            
+            if executable:
+                os.chmod(staged_file, 0755)
+            
+            if not os.path.isfile(staged_file):
+                return(dbrerrno.ENOENT, GT(u'File was not copied to stage: {}').format(staged_file))
+        
+        return (dbrerrno.SUCCESS, None)
     
     
     def IsExportable(self):
@@ -711,15 +744,25 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     #  
     #  Missing files are marked with a distinct color.
     #  TODO: Update executable status
+    #  \return
+    #        \b \e bool : True if files are missing, False if all okay
     def Refresh(self):
+        dirty = False
         for R in range(self.GetItemCount()):
             item_color = self.DEFAULT_BG_COLOR
             row_defs = self.GetRowDefs(R)
             
             if not os.path.isfile(u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])):
                 item_color = COLOR_ERROR
+                dirty = True
             
             self.SetItemBackgroundColour(R, item_color)
+        
+        return dirty
+    
+    
+    def MissingFiles(self):
+        return self.Refresh()
     
     
     ## Works around resize bug in wx 3.0

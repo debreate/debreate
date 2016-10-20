@@ -1,1 +1,2 @@
 - QuickBuild broken
+- Cannot use Ctrl+A on Files page

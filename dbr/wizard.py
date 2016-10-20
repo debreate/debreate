@@ -9,7 +9,7 @@ from dbr.buttons        import ButtonNext, ButtonPrev
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
-from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
+from globals.errorcodes import ERR_DIR_NOT_AVAILABLE, dbrerrno
 from globals.ident      import ID_NEXT
 from globals.ident      import ID_PREV
 from globals.ident      import page_ids
@@ -279,6 +279,13 @@ class WizardPage(wx.ScrolledWindow):
         f_opened.close()
         
         return 0
+    
+    
+    ## Exports data for the build process
+    def ExportBuild(self, target):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ExportBuild').format(self.GetName()))
+        
+        return (dbrerrno.SUCCESS, None)
     
     
     def GetDebreateWindow(self):
