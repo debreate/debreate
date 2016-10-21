@@ -21,7 +21,7 @@ from globals.errorcodes import ERR_FILE_WRITE
 from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
 from globals.ident      import page_ids
-from globals.tooltips import SetPageToolTips
+from globals.tooltips   import SetPageToolTips
 
 
 ID_INST_PRE = wx.NewId()
@@ -103,7 +103,7 @@ class Panel(WizardPage):
         alpath_sizer.Add(self.al_input, 1, wx.ALIGN_CENTER)
         
         # Auto-Link executables to be linked
-        if wx.MAJOR_VERSION < 3: # FIXME: wx. 3.0 compat
+        if wx.MAJOR_VERSION < 3: # NOTE: wx. 3.0 compat
             self.executables = wx.ListCtrl(self, -1, size=(200,200),
             	style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
             self.executables.InsertColumn(0, u'')
@@ -175,6 +175,7 @@ scripts will be created that will place a symbolic link to your executables in t
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def ExportBuild(self, stage):
         stage = u'{}/DEBIAN'.format(stage).replace(u'//', u'/')
         
@@ -189,13 +190,14 @@ scripts will be created that will place a symbolic link to your executables in t
         return (dbrerrno.SUCCESS, None)
                 
     
-    
+    ## TODO: Doxygen
     def IsExportable(self):
         for S, RB in self.script_objects:
             if S.IsExportable():
                 return True
     
     
+    ## TODO: Doxygen
     def ScriptSelect(self, event):
         for S, RB in self.script_objects:
             if RB.GetValue():
@@ -239,6 +241,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 self.xlist.remove(self.xlist[exe])
     
     
+    ## TODO: Doxygen
     def OnGenerate(self, event):
         for S in self.postinst, self.prerm:
             if not TextIsEmpty(S.GetValue()):
@@ -300,15 +303,8 @@ scripts will be created that will place a symbolic link to your executables in t
                 dia.ShowModal()
                 dia.Destroy()
     
-    def ChangeBG(self, exists):
-        if self.al_input.GetValue() == u'':
-            self.al_input.SetValue(u'/')
-        elif exists == False:
-            self.al_input.SetBackgroundColour((255, 0, 0, 255))
-        else:
-            self.al_input.SetBackgroundColour((255, 255, 255, 255))
     
-    # *** HELP *** #
+    ## TODO: Doxygen
     def OnHelpButton(self, event):
         self.al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'))
         #self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
@@ -325,23 +321,7 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_help.Close()
     
     
-    def ResetAllFields(self):
-        for rb in self.script_chk:
-            self.script_chk[rb].SetValue(False)
-        for rb in self.script_te:
-            self.script_te[rb].Clear()
-#			# Reset to show Preinstall script as default
-#			if rb == self.rb_preinst:
-#				self.script_te[rb].Show()
-#			else:
-#				self.script_te[rb].Hide()
-        self.rb_preinst.SetValue(True)
-        self.ScriptSelect(None)
-        
-        self.al_input.SetValue(u'/usr/bin')
-        self.al_input.SetBackgroundColour((255, 255, 255, 255))
-        self.executables.DeleteAllItems()
-    
+    ## TODO: Doxygen
     def SetFieldDataLegacy(self, data):
         preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
         postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
@@ -368,30 +348,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 self.postrm.SetValue(format_script(postrm))
     
     
-    # FIXME: Deprecated
-    def GatherData(self):
-        # Custom dictionary of scripts
-        script_list = (
-            (self.chk_preinst, self.te_preinst, u'PREINST'),
-            (self.chk_postinst, self.te_postinst, u'POSTINST'),
-            (self.chk_prerm, self.te_prerm, u'PRERM'),
-            (self.chk_postrm, self.te_postrm, u'POSTRM')
-        )
-        
-        # Create a list to return the data
-        data = []
-        #make_scripts = False # Return empty script section
-        for group in script_list:
-            if group[0].GetValue():
-                #make_scripts = True
-                data.append(u'<<%s>>\n1\n%s\n<</%s>>' % (group[2], group[1].GetValue(), group[2]))
-            else:
-                data.append(u'<<%s>>\n0\n<</%s>>' % (group[2], group[2]))
-                
-        
-        return u'<<SCRIPTS>>\n%s\n<</SCRIPTS>>' % u'\n'.join(data)
-    
-    
+    ## TODO: Doxygen
     def Export(self, out_dir):
         return_code = (0, None)
         
@@ -405,6 +362,7 @@ scripts will be created that will place a symbolic link to your executables in t
         return return_code
     
     
+    ## TODO: Doxygen
     def ImportPageInfo(self, filename):
         Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
         
@@ -559,6 +517,7 @@ class DebianScript(wx.Panel):
     def GetFilename(self):
         return self.script_filename
     
+    
     ## Retrieves the script's name for display
     #  
     #  \return
@@ -630,10 +589,12 @@ class DebianScript(wx.Panel):
         return (0, None)
     
     
+    ## TODO: Doxygen
     def GetValue(self):
         return self.script_body.GetValue()
     
     
+    ## TODO: Doxygen
     def SetShell(self, shell, forced=False):
         if forced:
             self.shell.SetValue(shell)
@@ -649,6 +610,8 @@ class DebianScript(wx.Panel):
     def SetValue(self, value):
         self.script_body.SetValue(value)
     
+    
+    ## TODO: Doxygen
     def SetScript(self, value):
         self.SetValue(value)
     
