@@ -1,5 +1,6 @@
-# Writing the md5sums file
 # -*- coding: utf-8 -*-
+# Writing the md5sums file
+# FIXME: Deprecated; remove
 
 import os, stat, commands
 
