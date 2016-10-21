@@ -11,7 +11,7 @@ from dbr.buttons        import ButtonImport
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
-from dbr.monotext       import MonospaceTextCtrl
+from dbr.textinput      import MonospaceTextCtrl
 from dbr.wizard         import WizardPage
 from globals.commands   import CMD_gzip
 from globals.errorcodes import dbrerrno
