@@ -56,19 +56,23 @@ class Panel(WizardPage):
         # ----- Package ( B[m], SB[m] )
         pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package*')
         self.pack = dbr.CharCtrl(self.bg)
+        self.pack.req = True
         self.pack.SetName(pack_txt.Name)
         
         # ----- Version ( B[m], D[m], C[m] )
         ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version*')
         self.ver = dbr.CharCtrl(self.bg)
+        self.ver.req = True
         self.ver.SetName(ver_txt.Name)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
         auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'), name=u'maintainer*')
         self.auth = wx.TextCtrl(self.bg, -1, name=auth_txt.Name)
+        self.auth.req = True
         
         email_txt = wx.StaticText(self.bg, label=GT(u'Email'), name=u'email*')
         self.email = wx.TextCtrl(self.bg, name=email_txt.Name)
+        self.email.req = True
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
