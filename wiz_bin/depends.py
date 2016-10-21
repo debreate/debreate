@@ -17,6 +17,7 @@ from globals.ident      import ID_DEPENDS, ID_APPEND
 from globals.tooltips   import SetPageToolTips
 
 
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_DEPENDS)
@@ -171,6 +172,7 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def SelectAll(self):
         total_items = self.dep_area.GetItemCount()
         count = -1
@@ -178,6 +180,8 @@ class Panel(WizardPage):
             count += 1
             self.dep_area.Select(count)
     
+    
+    ## TODO: Doxygen
     def SetDepends(self, event):
         try:
             key_mod = event.GetModifiers()
@@ -230,14 +234,10 @@ class Panel(WizardPage):
         event.Skip()
     
     
-    # FIXME: deprecated
-    def ResetAllFields(self):
-        self.dep_chk.SetValue(True)
-        self.dep_name.Clear()
-        self.dep_oper.SetSelection(0)
-        self.dep_ver.Clear()
-        self.dep_area.DeleteAllItems()
     
+    ## TODO: Rename to SetFieldDataLegacy
+    #  
+    #  TODO: Doxygen
     def SetFieldData(self, data):
         self.dep_area.DeleteAllItems()
         for item in data:
@@ -248,6 +248,7 @@ class Panel(WizardPage):
                 self.dep_area.SetStringItem(0, 1, item[item_count])
     
     
+    ## TODO: Doxygen
     def ImportPageInfo(self, d_type, d_string):
         Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
         
@@ -261,7 +262,7 @@ class Panel(WizardPage):
     ## Resets all fields on page to default values
     def ResetPageInfo(self):
         self.dep_area.DeleteAllItems()
-    
+
 
 
 ## A ListCtrl that automatically expands columns
