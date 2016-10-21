@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ## \package wiz_bin.menu
+#  
+#  TODO: Rename to wiz_bin.launchers
 
 
 import wx, os, shutil
@@ -309,29 +311,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsExportable(self):
-        return self.activate.IsChecked()
-    
-    
-    ## TODO: Doxygen
-    def OnToggle(self, event=None):
-        enable = self.activate.IsChecked()
-        
-        listctrl_bgcolor_defs = {
-            True: self.categories.default_color,
-            False: wx.Colour(214, 214, 214),
-        }
-        
-        for group in self.options_button, self.options_choice, self.options_input, self.options_list:
-            for O in group:
-                O.Enable(enable)
-                
-                # Small hack to gray-out ListCtrl when disabled
-                if isinstance(O, wx.ListCtrl):
-                    O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
-    
-    
-    ## TODO: Doxygen
     def GetMenuInfo(self):
         # Create list to store info
         desktop_list = [u'[Desktop Entry]']
@@ -396,189 +375,6 @@ class Panel(WizardPage):
             desktop_list.append(other)
         
         return u'\n'.join(desktop_list)
-    
-    
-    ## TODO: Doxygen
-    def SetCategory(self, event):
-        try:
-            key_code = event.GetKeyCode()
-        except AttributeError:
-            key_code = event.GetEventObject().GetId()
-        
-        cat = self.cat_choice.GetValue()
-        cat = cat.split()
-        cat = u''.join(cat)
-        
-        if key_code == wx.WXK_RETURN or key_code == wx.WXK_NUMPAD_ENTER:
-            self.categories.InsertStringItem(0, cat)
-        
-        elif key_code == wx.WXK_DELETE:
-            cur_cat = self.categories.GetFirstSelected()
-            self.categories.DeleteItem(cur_cat)
-        
-        elif key_code == wx.WXK_ESCAPE:
-            confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-            if confirm.ShowModal() == wx.ID_YES:
-                self.categories.DeleteAllItems()
-        event.Skip()
-    
-    
-    
-    ## TODO: Doxygen
-    def OnSave(self, event):
-        # Get data to write to control file
-        menu_data = self.GetMenuInfo().encode(u'utf-8')
-        menu_data = menu_data.split(u'\n')
-        menu_data = u'\n'.join(menu_data[1:])
-        
-        # Saving?
-        cont = False
-        
-        # Open a u'Save Dialog'
-        dia = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Save Launcher'), u'All files|*')
-        if ShowDialog(dia):
-            cont = True
-            path = dia.GetPath()
-        
-        if cont:
-            filename = dia.GetFilename()
-            
-            # Create a backup file
-            overwrite = False
-            if os.path.isfile(path):
-                backup = u'%s.backup' % path
-                shutil.copy(path, backup)
-                overwrite = True
-            
-            f_opened = open(path, u'w')
-            try:
-                f_opened.write(menu_data)
-                f_opened.close()
-                if overwrite:
-                    os.remove(backup)
-            except UnicodeEncodeError:
-                serr = GT(u'Save failed')
-                uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-                UniErr.ShowModal()
-                f_opened.close()
-                os.remove(path)
-                # Restore from backup
-                shutil.move(backup, path)
-    
-    
-    ## TODO: Doxygen
-    def OpenFile(self, event):
-        cont = False
-        
-        dia = GetFileOpenDialog(self.GetDebreateWindow(), GT(u'Open Launcher'), u'All files|*')
-        if ShowDialog(dia):
-            cont = True
-        
-        if cont == True:
-            path = dia.GetPath()
-            f_opened = open(path, u'r')
-            text = f_opened.read()
-            f_opened.close()
-            data = text.split(u'\n')
-            if data[0] == u'[Desktop Entry]':
-                data = data[1:]
-                # First line needs to be changed to '1'
-            data.insert(0, u'1')
-            self.SetFieldDataLegacy(u'\n'.join(data))
-    
-    
-    ## TODO: Doxygen
-    def OnPreview(self, event):
-        # Show a preview of the .desktop config file
-        config = self.GetMenuInfo()
-        
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        preview.SetValue(config)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
-        
-        dia.ShowModal()
-        dia.Destroy()
-    
-    
-    ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
-        # Clear all fields first
-        self.ResetPageInfo()
-        self.activate.SetValue(False)
-        
-        if int(data[0]):
-            self.activate.SetValue(True)
-            # Fields using SetValue() function
-            set_value_fields = (
-                (u'Name', self.name_input), (u'Exec', self.exe_input), (u'Comment', self.comm_input),
-                (u'Icon', self.icon_input)
-                )
-            
-            # Fields using SetSelection() function
-            set_selection_fields = (
-                (u'Terminal', self.term_choice, self.term_opt),
-                (u'StartupNotify', self.notify_choice, self.notify_opt)
-                )
-            
-            # Fields using either SetSelection() or SetValue()
-            set_either_fields = (
-                (u'Type', self.type_choice, self.type_opt),
-                (u'Encoding', self.enc_input, self.enc_opt)
-                )
-            
-            lines = data.split(u'\n')
-            
-            # Leave leftover text in this list to dump into misc field
-            leftovers = lines[:]
-            
-            # Remove 1st line (1) from leftovers
-            leftovers = leftovers[1:]
-            
-            # Remove Version field since is not done below
-            try:
-                leftovers.remove(u'Version=1.0')
-            except ValueError:
-                pass
-            
-            for line in lines:
-                f1 = line.split(u'=')[0]
-                f2 = u'='.join(line.split(u'=')[1:])
-                for setval in set_value_fields:
-                    if f1 == setval[0]:
-                        setval[1].SetValue(f2)
-                        leftovers.remove(line) # Remove the field so it's not dumped into misc
-                for setsel in set_selection_fields:
-                    if f1 == setsel[0]:
-                        setsel[1].SetSelection(setsel[2].index(f2))
-                        leftovers.remove(line)
-                for either in set_either_fields:
-                    if f1 == either[0]:
-                        # If the value is in the predefined options we will set the field data to show
-                        # the option so that the mouse wheel works when hovering over field
-                        if f2 in either[2]:
-                            either[1].SetSelection(either[2].index(f2))
-                        else:
-                            either[1].SetValue(f2)
-                        leftovers.remove(line)
-                # Categories
-                if f1 == u'Categories':
-                    leftovers.remove(line)
-                    categories = f2.split(u';')
-                    cat_count = len(categories)-1
-                    while cat_count > 0:
-                        cat_count -= 1
-                        self.categories.InsertStringItem(0, categories[cat_count])
-            if len(leftovers) > 0:
-                self.other.SetValue(u'\n'.join(leftovers))
-        self.OnToggle(None)
     
     
     ## Retrieves Desktop Entry file information
@@ -685,6 +481,114 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    def IsExportable(self):
+        return self.activate.IsChecked()
+    
+    
+    ## TODO: Doxygen
+    def OnPreview(self, event):
+        # Show a preview of the .desktop config file
+        config = self.GetMenuInfo()
+        
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
+        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview.SetValue(config)
+        
+        dia_sizer = wx.BoxSizer(wx.VERTICAL)
+        dia_sizer.Add(preview, 1, wx.EXPAND)
+        
+        dia.SetSizer(dia_sizer)
+        dia.Layout()
+        
+        dia.ShowModal()
+        dia.Destroy()
+    
+    
+    ## TODO: Doxygen
+    def OnSave(self, event):
+        # Get data to write to control file
+        menu_data = self.GetMenuInfo().encode(u'utf-8')
+        menu_data = menu_data.split(u'\n')
+        menu_data = u'\n'.join(menu_data[1:])
+        
+        # Saving?
+        cont = False
+        
+        # Open a u'Save Dialog'
+        dia = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Save Launcher'), u'All files|*')
+        if ShowDialog(dia):
+            cont = True
+            path = dia.GetPath()
+        
+        if cont:
+            filename = dia.GetFilename()
+            
+            # Create a backup file
+            overwrite = False
+            if os.path.isfile(path):
+                backup = u'%s.backup' % path
+                shutil.copy(path, backup)
+                overwrite = True
+            
+            f_opened = open(path, u'w')
+            try:
+                f_opened.write(menu_data)
+                f_opened.close()
+                if overwrite:
+                    os.remove(backup)
+            except UnicodeEncodeError:
+                serr = GT(u'Save failed')
+                uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
+                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                UniErr.ShowModal()
+                f_opened.close()
+                os.remove(path)
+                # Restore from backup
+                shutil.move(backup, path)
+    
+    
+    ## TODO: Doxygen
+    def OnToggle(self, event=None):
+        enable = self.activate.IsChecked()
+        
+        listctrl_bgcolor_defs = {
+            True: self.categories.default_color,
+            False: wx.Colour(214, 214, 214),
+        }
+        
+        for group in self.options_button, self.options_choice, self.options_input, self.options_list:
+            for O in group:
+                O.Enable(enable)
+                
+                # Small hack to gray-out ListCtrl when disabled
+                if isinstance(O, wx.ListCtrl):
+                    O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  TODO: Rename to OnOpenFile or similar
+    def OpenFile(self, event):
+        cont = False
+        
+        dia = GetFileOpenDialog(self.GetDebreateWindow(), GT(u'Open Launcher'), u'All files|*')
+        if ShowDialog(dia):
+            cont = True
+        
+        if cont == True:
+            path = dia.GetPath()
+            f_opened = open(path, u'r')
+            text = f_opened.read()
+            f_opened.close()
+            data = text.split(u'\n')
+            if data[0] == u'[Desktop Entry]':
+                data = data[1:]
+                # First line needs to be changed to '1'
+            data.insert(0, u'1')
+            self.SetFieldDataLegacy(u'\n'.join(data))
+    
+    
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         self.activate.SetValue(self.activate.default)
         self.OnToggle()
@@ -697,3 +601,103 @@ class Panel(WizardPage):
         
         for O in self.options_list:
             O.DeleteAllItems()
+    
+    
+    ## TODO: Doxygen
+    def SetCategory(self, event):
+        try:
+            key_code = event.GetKeyCode()
+        except AttributeError:
+            key_code = event.GetEventObject().GetId()
+        
+        cat = self.cat_choice.GetValue()
+        cat = cat.split()
+        cat = u''.join(cat)
+        
+        if key_code == wx.WXK_RETURN or key_code == wx.WXK_NUMPAD_ENTER:
+            self.categories.InsertStringItem(0, cat)
+        
+        elif key_code == wx.WXK_DELETE:
+            cur_cat = self.categories.GetFirstSelected()
+            self.categories.DeleteItem(cur_cat)
+        
+        elif key_code == wx.WXK_ESCAPE:
+            confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
+                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+            if confirm.ShowModal() == wx.ID_YES:
+                self.categories.DeleteAllItems()
+        event.Skip()
+    
+    
+    
+    ## TODO: Doxygen
+    def SetFieldDataLegacy(self, data):
+        # Clear all fields first
+        self.ResetPageInfo()
+        self.activate.SetValue(False)
+        
+        if int(data[0]):
+            self.activate.SetValue(True)
+            # Fields using SetValue() function
+            set_value_fields = (
+                (u'Name', self.name_input), (u'Exec', self.exe_input), (u'Comment', self.comm_input),
+                (u'Icon', self.icon_input)
+                )
+            
+            # Fields using SetSelection() function
+            set_selection_fields = (
+                (u'Terminal', self.term_choice, self.term_opt),
+                (u'StartupNotify', self.notify_choice, self.notify_opt)
+                )
+            
+            # Fields using either SetSelection() or SetValue()
+            set_either_fields = (
+                (u'Type', self.type_choice, self.type_opt),
+                (u'Encoding', self.enc_input, self.enc_opt)
+                )
+            
+            lines = data.split(u'\n')
+            
+            # Leave leftover text in this list to dump into misc field
+            leftovers = lines[:]
+            
+            # Remove 1st line (1) from leftovers
+            leftovers = leftovers[1:]
+            
+            # Remove Version field since is not done below
+            try:
+                leftovers.remove(u'Version=1.0')
+            except ValueError:
+                pass
+            
+            for line in lines:
+                f1 = line.split(u'=')[0]
+                f2 = u'='.join(line.split(u'=')[1:])
+                for setval in set_value_fields:
+                    if f1 == setval[0]:
+                        setval[1].SetValue(f2)
+                        leftovers.remove(line) # Remove the field so it's not dumped into misc
+                for setsel in set_selection_fields:
+                    if f1 == setsel[0]:
+                        setsel[1].SetSelection(setsel[2].index(f2))
+                        leftovers.remove(line)
+                for either in set_either_fields:
+                    if f1 == either[0]:
+                        # If the value is in the predefined options we will set the field data to show
+                        # the option so that the mouse wheel works when hovering over field
+                        if f2 in either[2]:
+                            either[1].SetSelection(either[2].index(f2))
+                        else:
+                            either[1].SetValue(f2)
+                        leftovers.remove(line)
+                # Categories
+                if f1 == u'Categories':
+                    leftovers.remove(line)
+                    categories = f2.split(u';')
+                    cat_count = len(categories)-1
+                    while cat_count > 0:
+                        cat_count -= 1
+                        self.categories.InsertStringItem(0, categories[cat_count])
+            if len(leftovers) > 0:
+                self.other.SetValue(u'\n'.join(leftovers))
+        self.OnToggle(None)
