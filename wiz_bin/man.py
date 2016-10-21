@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.man
+
+
 import wx
 
 from dbr.language   import GT
@@ -9,6 +12,7 @@ from globals.tooltips import SetPageToolTips
 from dbr.buttons import ButtonAdd
 
 
+## TODO: Doxygen
 class Panel(WizardPage, wx.Notebook):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
@@ -36,11 +40,25 @@ class Panel(WizardPage, wx.Notebook):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def AddManpage(self, name=u'manual'):
         newman = ManPage(self.tabs, name)
         self.tabs.AddPage(newman, name)
     
     
+    ## Retrieves manpages info for text output
+    #  
+    #  TODO: Nothing here yet
+    def GetPageInfo(self):
+        return wx.EmptyString
+    
+    
+    ## TODO: Doxygen
+    def ImportPageInfo(self, filename):
+        pass
+    
+    
+    ## TODO: Doxygen
     def OnAddManpage(self, event=None):
         getname = wx.TextEntryDialog(self.debreate, GT(u'Name for new manpage'))
         
@@ -65,22 +83,13 @@ class Panel(WizardPage, wx.Notebook):
             invalid_name = False
     
     
-    ## Retrieves manpages info for text output
-    #  
-    #  TODO: Nothing here yet
-    def GetPageInfo(self):
-        return wx.EmptyString
-    
-    
-    def ImportPageInfo(self, filename):
-        pass
-    
-    
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         pass
 
 
 
+## TODO: Doxygen
 class ManPage(wx.NotebookPage):
     def __init__(self, parent, name=u'manual'):
         wx.NotebookPage.__init__(self, parent, name=name)
@@ -127,6 +136,7 @@ class ManPage(wx.NotebookPage):
         self.bg.Layout()
     
     
+    ## TODO: Doxygen
     def OnSetSection(self, event=None):
         self.section_definition.SetLabel(self.sections[self.section.GetStringSelection()])
         print(u'Setting section to {}'.format(self.section.GetStringSelection()))
