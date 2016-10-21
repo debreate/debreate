@@ -16,6 +16,7 @@ from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
 from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
+from dbr.log import Logger
 
 
 
@@ -224,8 +225,8 @@ class DetailedMessageDialog(wx.Dialog):
         layout_btn_H1.Add(self.button_details, 1)
         layout_btn_H1.Add(self.btn_copy_details, 1)
         
-        self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
-        self.details.SetSize(self.details.GetBestSize())
+        self.details = wx.TextCtrl(self, value=details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
+        #self.details.SetSize(self.details.GetBestSize())
         
         self.button_ok = ButtonConfirm(self)
         
@@ -242,11 +243,17 @@ class DetailedMessageDialog(wx.Dialog):
         self.main_sizer.Add(layout_RV, 1, wx.EXPAND)
         self.main_sizer.AddSpacer(10)
         
+        #self.SetInitialSize()
+        
         self.SetAutoLayout(True)
         self.ToggleDetails()
         
         self.btn_copy_details.Hide()
         self.details.Hide()
+        
+        
+        if details != wx.EmptyString:
+            self.SetBestWidth()
     
     
     # FIXME:
@@ -280,6 +287,23 @@ class DetailedMessageDialog(wx.Dialog):
         wx.MessageBox(GT(u'FIXME: Details not copied to clipboard'), GT(u'Debug'))
     
     
+    ## Sets the minimum width of the details text area
+    #  
+    #  FIXME: Doesn't work
+    def SetBestWidth(self):
+        W, H = self.details.GetSize()
+        
+        for L in self.details.GetValue().split(u'\n'):
+            line_length = len(L)
+            if line_length > W:
+                W = line_length
+        
+        Logger.Debug(__name__, GT(u'Longest line in details: {}').format(W))
+        
+        self.details.SetMinSize(wx.Size(W, H))
+        self.Layout()
+    
+    
     def SetDetails(self, details):
         self.details.SetValue(details)
         self.details.SetSize(self.details.GetBestSize())
@@ -287,6 +311,7 @@ class DetailedMessageDialog(wx.Dialog):
         if not self.button_details.IsShown():
             self.button_details.Show()
         
+        #self.SetBestFittingSize()
         self.Layout()
     
     
