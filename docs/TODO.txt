@@ -11,6 +11,8 @@
 - Fix final build
 - Only show exit confirmation if project has been modified
 - Finish help dialog
+- Refactor & organize error messages on build
+- Fix md5sum binary read bug
 
 0.8.1 Release Changes:
 - Files page: Optional filter for hidden files & folders
