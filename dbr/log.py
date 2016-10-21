@@ -407,7 +407,8 @@ class LogWindow(wx.Dialog):
             self.log.SetValue(log_data)
             
             # Yield here to make sure last line is displayed
-            wx.Yield()
+            # FIXME: Causes delay when debug enabled
+            wx.SafeYield()
             self.log.ShowPosition(self.log.GetLastPosition())
     
     
