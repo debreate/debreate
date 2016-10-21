@@ -220,28 +220,27 @@ class DetailedMessageDialog(wx.Dialog):
         if TextIsEmpty(details):
             self.button_details.Hide()
             
-        LH_buttons1 = wx.BoxSizer(wx.HORIZONTAL)
-        LH_buttons1.Add(self.button_details, 1)
-        LH_buttons1.Add(self.btn_copy_details, 1)
+        layout_btn_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_btn_H1.Add(self.button_details, 1)
+        layout_btn_H1.Add(self.btn_copy_details, 1)
         
         self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.details.SetSize(self.details.GetBestSize())
         
         self.button_ok = ButtonConfirm(self)
         
-        r_sizer = wx.BoxSizer(wx.VERTICAL)
-        r_sizer.AddSpacer(10)
-        r_sizer.Add(self.text)
-        r_sizer.AddSpacer(20)
-        r_sizer.Add(LH_buttons1)
-        r_sizer.Add(self.details, 1, wx.EXPAND)
-        #r_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM)
+        layout_RV = wx.BoxSizer(wx.VERTICAL)
+        layout_RV.AddSpacer(10)
+        layout_RV.Add(self.text)
+        layout_RV.AddSpacer(20)
+        layout_RV.Add(layout_btn_H1)
+        layout_RV.Add(self.details, 1, wx.EXPAND)
+        layout_RV.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.BOTTOM, 5)
         
         self.main_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.main_sizer.Add(self.icon, 0, wx.ALL, 20)
-        self.main_sizer.Add(r_sizer, 1, wx.EXPAND)
+        self.main_sizer.Add(layout_RV, 1, wx.EXPAND)
         self.main_sizer.AddSpacer(10)
-        self.main_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.ToggleDetails()
