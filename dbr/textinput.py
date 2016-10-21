@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.monotext
+## \package dbr.textinput
 
 # MIT licensing
 # See: docs/LICENSE.txt
