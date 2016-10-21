@@ -91,86 +91,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ExportBuild(self, stage):
-        debreate = self.GetDebreateWindow()
-        
-        stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
-        
-        # FIXME: Should be error check
-        self.Export(stage, u'copyright')
-        
-        return (0, None)
-    
-    
-    ## TODO: Doxygen
-    def GetCopyright(self):
-        return self.cp_display.GetValue()
-    
-    
-    ## TODO: Doxygen
-    def GetLicensePath(self, template_name):
-        # User templates have priority
-        license_path = u'{}/{}'.format(local_licenses_path, template_name)
-        if os.path.isfile(license_path):
-            return license_path
-        
-        license_path = u'{}/{}'.format(system_licenses_path, template_name)
-        if os.path.isfile(license_path):
-            return license_path
-        
-        license_path = u'{}/{}'.format(application_licenses_path, template_name)
-        if os.path.isfile(license_path):
-            return license_path
-        
-        return None
-    
-    
-    ## TODO: Doxygen
-    def SetCopyright(self, data):
-        self.cp_display.SetValue(data)
-    
-    
-    ## TODO: Doxygen
-    def SetTemplateToolTip(self):
-        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
-        license_path = self.GetLicensePath(license_name)
-        
-        if license_path:
-            self.lic_choices.SetToolTip(wx.ToolTip(license_path))
-            return
-        
-        self.lic_choices.SetToolTip(None)
-    
-    
-    ## TODO: Doxygen
-    def OnSelectTemplate(self, event):
-        if isinstance(event, wx.Choice):
-            choice = event
-        else:
-            choice = event.GetEventObject()
-        
-        template = choice.GetString(choice.GetSelection())
-        
-        if template in self.local_licenses:
-            self.template_btn_simple.Disable()
-        else:
-            self.template_btn_simple.Enable()
-        
-        self.SetTemplateToolTip()
-    
-    
-    ## TODO: Doxygen
-    def OnGenerateTemplate(self, event):
-        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
-        
-        if dbr.FieldEnabled(self.template_btn_simple):
-            self.CopyStandardLicense(license_name)
-        
-        else:
-            self.GenerateTemplate(license_name)
-    
-    
-    ## TODO: Doxygen
     def CopyStandardLicense(self, license_name):
         if self.DestroyLicenseText():
             license_path = u'{}/{}'.format(dbr.system_licenses_path, license_name)
@@ -196,6 +116,45 @@ class Panel(WizardPage):
             if license_name in add_header:
                 self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
                 self.cp_display.SetInsertionPoint(0)
+            
+        self.cp_display.SetFocus()
+    
+    
+    ## TODO: Doxygen
+    def DestroyLicenseText(self):
+        empty = TextIsEmpty(self.cp_display.GetValue())
+        
+        if not empty:
+            if wx.MessageDialog(self.debreate, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
+                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
+                return 0
+        
+        return 1
+    
+    
+    ## TODO: Doxygen
+    def ExportBuild(self, stage):
+        debreate = self.GetDebreateWindow()
+        
+        stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
+        
+        # FIXME: Should be error check
+        self.Export(stage, u'copyright')
+        
+        return (0, None)
+    
+    
+    ## TODO: Doxygen
+    def GenerateLinkedTemplate(self, event):
+        if self.DestroyLicenseText():
+            self.cp_display.Clear()
+            
+            license_path = u'{}/{}'.format(dbr.system_licenses_path, self.lic_choices.GetString(self.lic_choices.GetSelection()))
+    
+            self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
+            self.cp_display.WriteText(license_path)
+            
+            self.cp_display.SetInsertionPoint(0)
             
         self.cp_display.SetFocus()
     
@@ -236,30 +195,26 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GenerateLinkedTemplate(self, event):
-        if self.DestroyLicenseText():
-            self.cp_display.Clear()
-            
-            license_path = u'{}/{}'.format(dbr.system_licenses_path, self.lic_choices.GetString(self.lic_choices.GetSelection()))
-    
-            self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
-            self.cp_display.WriteText(license_path)
-            
-            self.cp_display.SetInsertionPoint(0)
-            
-        self.cp_display.SetFocus()
+    def GetCopyright(self):
+        return self.cp_display.GetValue()
     
     
     ## TODO: Doxygen
-    def DestroyLicenseText(self):
-        empty = TextIsEmpty(self.cp_display.GetValue())
+    def GetLicensePath(self, template_name):
+        # User templates have priority
+        license_path = u'{}/{}'.format(local_licenses_path, template_name)
+        if os.path.isfile(license_path):
+            return license_path
         
-        if not empty:
-            if wx.MessageDialog(self.debreate, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
-                return 0
+        license_path = u'{}/{}'.format(system_licenses_path, template_name)
+        if os.path.isfile(license_path):
+            return license_path
         
-        return 1
+        license_path = u'{}/{}'.format(application_licenses_path, template_name)
+        if os.path.isfile(license_path):
+            return license_path
+        
+        return None
     
     
     ## Retrieve copyright/license text
@@ -308,5 +263,50 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    def OnGenerateTemplate(self, event):
+        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
+        
+        if dbr.FieldEnabled(self.template_btn_simple):
+            self.CopyStandardLicense(license_name)
+        
+        else:
+            self.GenerateTemplate(license_name)
+    
+    
+    ## TODO: Doxygen
+    def OnSelectTemplate(self, event):
+        if isinstance(event, wx.Choice):
+            choice = event
+        else:
+            choice = event.GetEventObject()
+        
+        template = choice.GetString(choice.GetSelection())
+        
+        if template in self.local_licenses:
+            self.template_btn_simple.Disable()
+        else:
+            self.template_btn_simple.Enable()
+        
+        self.SetTemplateToolTip()
+    
+    
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         self.cp_display.Clear()
+    
+    
+    ## TODO: Doxygen
+    def SetCopyright(self, data):
+        self.cp_display.SetValue(data)
+    
+    
+    ## TODO: Doxygen
+    def SetTemplateToolTip(self):
+        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
+        license_path = self.GetLicensePath(license_name)
+        
+        if license_path:
+            self.lic_choices.SetToolTip(wx.ToolTip(license_path))
+            return
+        
+        self.lic_choices.SetToolTip(None)
