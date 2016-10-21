@@ -5,8 +5,7 @@
 #  Dialog that shows information about the application
 
 
-import os, shutil, commands
-import wx
+import wx, os, shutil, commands
 
 from dbr                    import font
 from dbr.buttons            import ButtonConfirm
@@ -18,6 +17,7 @@ from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.textinput          import MultilineTextCtrlPanel
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
@@ -88,7 +88,7 @@ class AboutDialog(wx.Dialog):
         t_credits.Layout()
         
         ## Changelog text area
-        self.changelog = wx.TextCtrl(t_changelog, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.changelog = MultilineTextCtrlPanel(t_changelog, style=wx.TE_READONLY)
         self.changelog.SetFont(font.MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -99,7 +99,7 @@ class AboutDialog(wx.Dialog):
         
         
         ## Licensing information text area
-        self.license = wx.TextCtrl(t_license, style=wx.TE_READONLY|wx.TE_MULTILINE)
+        self.license = MultilineTextCtrlPanel(t_license, style=wx.TE_READONLY)
         self.license.SetFont(font.MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)

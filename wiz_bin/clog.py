@@ -12,6 +12,7 @@ from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.textinput      import MonospaceTextCtrl
+from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.wizard         import WizardPage
 from globals.commands   import CMD_gzip
 from globals.errorcodes import dbrerrno
@@ -61,7 +62,7 @@ class Panel(WizardPage):
             ])
         
         # *** CHANGES DETAILS
-        self.changes = wx.TextCtrl(self, size=(20,150), name=u'changes', style=wx.TE_MULTILINE)
+        self.changes = MultilineTextCtrlPanel(self, size=(20,150), name=u'changes')
         
         self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
         changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
@@ -104,7 +105,6 @@ class Panel(WizardPage):
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        #self.log = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
         self.log = MonospaceTextCtrl(self, name=u'log')
         
         # *** Widgets that Enable/Disable

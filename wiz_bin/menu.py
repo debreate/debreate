@@ -19,6 +19,7 @@ from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_MENU
@@ -221,7 +222,7 @@ class Panel(WizardPage):
         # ----- MISC
         self.other_text = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         
-        self.other = wx.TextCtrl(self, name=self.other_text.Name, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
+        self.other = MultilineTextCtrlPanel(self, name=self.other_text.Name, style=wx.BORDER_SIMPLE)
         self.other.default = wx.EmptyString
         self.options_input.append(self.other)
         
@@ -491,7 +492,7 @@ class Panel(WizardPage):
         config = self.GetMenuInfo()
         
         dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview = MultilineTextCtrlPanel(dia, -1, style=wx.TE_READONLY)
         preview.SetValue(config)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)

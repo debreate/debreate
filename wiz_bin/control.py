@@ -12,14 +12,15 @@ from dbr.buttons        import ButtonSave64
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
+from dbr.help           import HelpButton
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CONTROL
 from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
-from dbr.help           import HelpButton
 
 
 ## TODO: Doxygen
@@ -117,7 +118,7 @@ class Panel(WizardPage):
         self.syn = wx.TextCtrl(self.bg, name=syn_txt.Name)
         
         desc_txt = wx.StaticText(self.bg, label=GT(u'Long Description'), name=u'description')
-        self.desc = wx.TextCtrl(self.bg, name=desc_txt.Name, style=wx.TE_MULTILINE)
+        self.desc = MultilineTextCtrlPanel(self.bg, name=desc_txt.Name)
         
         # ***** Optional Group ***** #
         # ----- Source ( B, S[m], D[m], C[m] )
@@ -559,7 +560,7 @@ class Panel(WizardPage):
         control = self.GetCtrlInfo()
         
         dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview = MultilineTextCtrlPanel(dia, -1, style=wx.TE_READONLY)
         preview.SetValue(control)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)

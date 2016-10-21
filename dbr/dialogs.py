@@ -6,20 +6,20 @@
 # System modules
 import wx, os
 
-# Local modules
-# FIXME: Can't import Logger
-#from dbr import Logger
 from dbr.buttons        import ButtonConfirm
 from dbr.custom         import TextIsEmpty
 from dbr.language       import GT
+from dbr.log            import Logger
+from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
 from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
-from dbr.log import Logger
 
 
-
+# Local modules
+# FIXME: Can't import Logger
+#from dbr import Logger
 class OverwriteDialog(wx.MessageDialog):
     def __init__(self, parent, path):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
@@ -225,7 +225,7 @@ class DetailedMessageDialog(wx.Dialog):
         layout_btn_H1.Add(self.button_details, 1)
         layout_btn_H1.Add(self.btn_copy_details, 1)
         
-        self.details = wx.TextCtrl(self, value=details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.details = MultilineTextCtrlPanel(self, value=details, size=(300,150), style=wx.TE_READONLY)
         #self.details.SetSize(self.details.GetBestSize())
         
         self.button_ok = ButtonConfirm(self)
