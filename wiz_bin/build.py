@@ -3,37 +3,37 @@
 ## \package wiz_bin.build
 
 
-import wx, os, commands, shutil, thread, traceback, time
+import wx, os, commands, shutil, thread, traceback, time, math
 
 import dbr
-from dbr.buttons        import ButtonBrowse
-from dbr.buttons        import ButtonBuild
-from dbr.buttons        import ButtonBuild64
-from dbr.buttons        import ButtonCancel
-from dbr.dialogs        import DetailedMessageDialog
-from dbr.dialogs        import ErrorDialog
-from dbr.dialogs        import GetFileSaveDialog
-from dbr.dialogs        import ShowDialog
-from dbr.functions      import BuildBinaryPackageFromTree
-from dbr.functions      import CreateTempDirectory
-from dbr.functions      import GetBoolean
-from dbr.functions      import RemoveTempDirectory
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.log            import DebugEnabled
-from dbr.log            import Logger
-from dbr.wizard         import WizardPage
-from globals.bitmaps    import ICON_ERROR
-from globals.bitmaps    import ICON_INFORMATION
-from globals.commands   import CMD_lintian
-from globals.commands   import CMD_md5sum
-from globals.commands   import CMD_system_installer
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_BUILD, ID_CONTROL
-from globals.ident      import ID_FILES
-from globals.tooltips   import SetPageToolTips
-import math
-from globals.application import AUTHOR_email
+from dbr.buttons            import ButtonBrowse
+from dbr.buttons            import ButtonBuild
+from dbr.buttons            import ButtonBuild64
+from dbr.buttons            import ButtonCancel
+from dbr.dialogs            import DetailedMessageDialog
+from dbr.dialogs            import ErrorDialog
+from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import ShowDialog
+from dbr.functions          import BuildBinaryPackageFromTree
+from dbr.functions          import CreateTempDirectory
+from dbr.functions          import GetBoolean
+from dbr.functions          import RemoveTempDirectory
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import DebugEnabled
+from dbr.log                import Logger
+from dbr.wizard             import WizardPage
+from globals.application    import AUTHOR_email
+from globals.bitmaps        import ICON_ERROR
+from globals.bitmaps        import ICON_INFORMATION
+from globals.commands       import CMD_lintian
+from globals.commands       import CMD_md5sum
+from globals.commands       import CMD_system_installer
+from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_BUILD, ID_CONTROL
+from globals.ident          import ID_FILES
+from globals.paths          import ConcatPaths
+from globals.tooltips       import SetPageToolTips
 
 
 class Panel(WizardPage):
@@ -170,7 +170,6 @@ class Panel(WizardPage):
                     steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
             
             try:
-                # NOTE: Control page should be last processed to get install size
                 for P in self.wizard.pages:
                     if build_progress.WasCancelled():
                         break
@@ -178,7 +177,7 @@ class Panel(WizardPage):
                     if P.GetId() in pages_build_ids:
                         page_label = P.GetLabel()
                         
-                        # FIXME: Progress bar not updating
+                        # FIXME: Progress bar not updating???
                         wx.YieldIfNeeded()
                         build_progress.Update(current_step,
                                 GT(u'Processing page "{}" ({}/{})').format(page_label, current_step+1, steps_count))
@@ -201,17 +200,7 @@ class Panel(WizardPage):
                         
                         current_step += 1
                 
-                if not build_progress.WasCancelled():
-                    if self.chk_md5.IsChecked():
-                        wx.YieldIfNeeded()
-                        build_progress.Update(current_step,
-                                GT(u'Creating MD5 checksum ({}/{})').format(current_step+1, steps_count))
-                        
-                        self.CreateMD5Sum(u'Null dir')
-                        
-                        current_step += 1
-                
-                # Control step
+                # Control file
                 if not build_progress.WasCancelled():
                     wx.YieldIfNeeded()
                     
@@ -242,7 +231,23 @@ class Panel(WizardPage):
                     
                     current_step += 1
                 
-                # Building .deb from stage
+                # MD5 checksum
+                if not build_progress.WasCancelled():
+                    if self.chk_md5.IsChecked():
+                        log_msg = GT(u'Creating MD5 checksum')
+                        step = u'{}/{}'.format(current_step+1, steps_count)
+                        
+                        Logger.Debug(__name__, u'{} ({})'.format(log_msg, step))
+                        
+                        wx.YieldIfNeeded()
+                        build_progress.Update(current_step,
+                                u'{} ({})'.format(log_msg, step))
+                        
+                        self.OnBuildMD5Sum(stage)
+                        
+                        current_step += 1
+                
+                # Create .deb from stage
                 if not build_progress.WasCancelled():
                     wx.YieldIfNeeded()
                     build_progress.Update(current_step,
@@ -420,12 +425,6 @@ class Panel(WizardPage):
     def CheckPackageLintian(self, package):
         Logger.Debug(__name__,
                 GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(package)))
-    
-    
-    # TODO: Finish defining
-    def CreateMD5Sum(self, directory):
-        Logger.Debug(__name__,
-                GT(u'Creating MD5sum file in {}').format(directory))
     
     
     def SetSummary(self, event):
@@ -957,46 +956,6 @@ class Panel(WizardPage):
             err.ShowModal()
             err.Destroy()
     
-    def ResetAllFields(self):
-        self.chk_install.SetValue(False)
-        # chk_md5 should be reset no matter
-        self.chk_md5.SetValue(False)
-        # FIXME: Should use a more universal method to check for executables
-        if os.path.exists(u'/usr/bin/md5sum'):
-            self.chk_md5.Enable()
-        else:
-            self.chk_md5.Disable()
-        self.chk_rmtree.SetValue(True)
-        # FIXME: Should use a more universal method to check for executables
-        if os.path.exists(u'/usr/bin/lintian'):
-            self.chk_lint.Enable()
-            self.chk_lint.SetValue(True)
-        else:
-            self.chk_lint.Disable()
-            self.chk_lint.SetValue(False)
-    
-    def SetFieldData(self, data):
-        self.ResetAllFields()
-        build_data = data.split(u'\n')
-        # FIXME: Should use a more universal method to check for executables
-        if os.path.exists(u'/usr/bin/md5sum'):
-            self.chk_md5.SetValue(int(build_data[0]))
-        self.chk_rmtree.SetValue(int(build_data[1]))
-        # FIXME: Should use a more universal method to check for executables
-        if os.path.exists(u'usr/bin/lintian'):
-            self.chk_lint.SetValue(int(build_data[2]))
-    
-    def GatherData(self):
-        build_list = []
-        
-        if self.chk_md5.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        if self.chk_rmtree.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        if self.chk_lint.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        return u'<<BUILD>>\n%s\n<</BUILD>>' % u'\n'.join(build_list)
-    
     
     ## Retrieves total size of directory contents
     #  
@@ -1021,6 +980,99 @@ class Panel(WizardPage):
             installed_size = int(math.ceil(float(installed_size) / float(1024)))
         
         return installed_size
+    
+    
+    ## 
+    # 
+    # FIXME: Hashes for .png images (binary files???) is not the same as those
+    #        produced by debuild
+    # TODO:  Create global md5 function???
+    def OnBuildMD5Sum(self, target_dir):
+        Logger.Debug(__name__,
+                GT(u'Creating MD5sum file in {}').format(target_dir))
+        
+        md5_list = []
+        #md5hash_size = 32
+        debian_dir = u'{}/DEBIAN'.format(target_dir).replace(u'//', u'/')
+        text_formats = (u'text', u'script',)
+        
+        for ROOT, DIRS, FILES in os.walk(target_dir):
+            for F in FILES:
+                if ROOT != debian_dir:
+                    F = ConcatPaths((ROOT, F,))
+                    Logger.Debug(__name__, GT(u'Retrieving md5 for {}').format(F))
+                    
+                    read_format = u't'
+                    '''
+                    # Read binary by default
+                    read_format = u'b'
+                    for T in text_formats:
+                        if T in GetFileMimeType(F):
+                            read_format = u't'
+                            break
+                    '''
+                    
+                    md5 = commands.getoutput(u'{} -{} "{}"'.format(CMD_md5sum, read_format, F))
+                    
+                    # Need to remove stage dir from file path
+                    md5 = md5.replace(u'{}/'.format(target_dir), u'')
+                    md5_list.append(md5)
+        
+        if not md5_list:
+            return (dbrerrno.ENOENT, GT(u'Could not create md5sums'))
+        
+        if not os.path.isdir(debian_dir):
+            os.makedirs(debian_dir)
+        
+        md5_file = ConcatPaths((debian_dir, u'md5sums'))
+        FILE = open(md5_file, u'w')
+        FILE.write(u'\n'.join(md5_list))
+        FILE.close()
+        
+        return (dbrerrno.SUCCESS, None)
+    
+    
+    def ResetAllFields(self):
+        self.chk_install.SetValue(False)
+        # chk_md5 should be reset no matter
+        self.chk_md5.SetValue(False)
+        # FIXME: Should use a more universal method to check for executables
+        if os.path.exists(u'/usr/bin/md5sum'):
+            self.chk_md5.Enable()
+        else:
+            self.chk_md5.Disable()
+        self.chk_rmtree.SetValue(True)
+        # FIXME: Should use a more universal method to check for executables
+        if os.path.exists(u'/usr/bin/lintian'):
+            self.chk_lint.Enable()
+            self.chk_lint.SetValue(True)
+        else:
+            self.chk_lint.Disable()
+            self.chk_lint.SetValue(False)
+    
+    
+    def SetFieldData(self, data):
+        self.ResetAllFields()
+        build_data = data.split(u'\n')
+        # FIXME: Should use a more universal method to check for executables
+        if os.path.exists(u'/usr/bin/md5sum'):
+            self.chk_md5.SetValue(int(build_data[0]))
+        self.chk_rmtree.SetValue(int(build_data[1]))
+        # FIXME: Should use a more universal method to check for executables
+        if os.path.exists(u'usr/bin/lintian'):
+            self.chk_lint.SetValue(int(build_data[2]))
+    
+    
+    def GatherData(self):
+        build_list = []
+        
+        if self.chk_md5.GetValue(): build_list.append(u'1')
+        else: build_list.append(u'0')
+        if self.chk_rmtree.GetValue(): build_list.append(u'1')
+        else: build_list.append(u'0')
+        if self.chk_lint.GetValue(): build_list.append(u'1')
+        else: build_list.append(u'0')
+        return u'<<BUILD>>\n%s\n<</BUILD>>' % u'\n'.join(build_list)
     
     
     def GetPageInfo(self):
