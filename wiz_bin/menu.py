@@ -72,6 +72,7 @@ class Panel(WizardPage):
         self.name_text = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         
         self.name_input = wx.TextCtrl(self, name=u'Name')
+        self.name_input.req = True
         self.name_input.default = wx.EmptyString
         self.options_input.append(self.name_input)
         
