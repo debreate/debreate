@@ -235,10 +235,8 @@ class Panel(WizardPage):
     
     
     
-    ## TODO: Rename to SetFieldDataLegacy
-    #  
-    #  TODO: Doxygen
-    def SetFieldData(self, data):
+    ## TODO: Doxygen
+    def SetFieldDataLegacy(self, data):
         self.dep_area.DeleteAllItems()
         for item in data:
             item_count = len(item)

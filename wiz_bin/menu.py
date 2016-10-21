@@ -486,7 +486,7 @@ class Panel(WizardPage):
                 data = data[1:]
                 # First line needs to be changed to '1'
             data.insert(0, u'1')
-            self.SetFieldData(u'\n'.join(data))
+            self.SetFieldDataLegacy(u'\n'.join(data))
     
     
     ## TODO: Doxygen
@@ -508,10 +508,8 @@ class Panel(WizardPage):
         dia.Destroy()
     
     
-    ## TODO: Rename to SetFieldDataLegacy
-    #  
-    #  TODO: Doxygen
-    def SetFieldData(self, data):
+    ## TODO: Doxygen
+    def SetFieldDataLegacy(self, data):
         # Clear all fields first
         self.ResetPageInfo()
         self.activate.SetValue(False)
