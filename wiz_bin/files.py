@@ -63,15 +63,11 @@ class Panel(WizardPage):
         # Directory listing for importing files and folders
         self.dir_tree = wx.GenericDirCtrl(self, -1, PATH_home, size=(300,20))
         
-        # ----- Add/Remove/Clear buttons
-        path_add = ButtonAdd(self)
-        path_add.SetName(u'add')
-        path_remove = ButtonDel(self)
-        path_remove.SetName(u'remove')
-        button_clear = ButtonClear(self)
-        button_clear.SetName(u'clear')
+        btn_help = HelpButton(self)
         
-        # ----- Destination path
+        # ----- Target path
+        target_border = wx.StaticBox(self, label=GT(u'Target'))
+        
         # choices of destination
         self.radio_bin = wx.RadioButton(self, -1, u'/bin', style=wx.RB_GROUP)
         self.radio_usrbin = wx.RadioButton(self, -1, u'/usr/bin')
@@ -94,7 +90,13 @@ class Panel(WizardPage):
             self.radio_cst,
             )
         
-        btn_help = HelpButton(self)
+        # ----- Add/Remove/Clear buttons
+        btn_add = ButtonAdd(self)
+        btn_add.SetName(u'add')
+        btn_remove = ButtonDel(self)
+        btn_remove.SetName(u'remove')
+        btn_clear = ButtonClear(self)
+        btn_clear.SetName(u'clear')
         
         self.prev_dest_value = u'/usr/bin'
         self.input_target = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
@@ -124,44 +126,37 @@ class Panel(WizardPage):
         for item in self.targets:
             layout_target.Add(item, 0)
         
-        self.radio_border = wx.StaticBox(self, -1, GT(u'Target'), size=(20,20))
-        layoutBOX_target = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
-        layoutBOX_target.Add(layout_target, 0)
+        # Border around radio buttons
+        layout_target_border = wx.StaticBoxSizer(target_border, wx.VERTICAL)
+        layout_target_border.Add(layout_target, 0, wx.TOP, 5)
         
-        # FIXME: Help button lower on this page than others
-        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H1.Add(layoutBOX_target, 0)
-        layout_H1.AddStretchSpacer(1)
-        layout_H1.Add(btn_help, 0, wx.ALIGN_TOP)
+        # Put text input in its own sizer to force expand
+        layout_input = wx.BoxSizer(wx.HORIZONTAL)
+        layout_input.Add(self.input_target, 1, wx.ALIGN_CENTER_VERTICAL)
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)  # FIXME: Put the textctrl in own sizer so expands horizontally
-        layout_V1.Add(self.input_target, 1, wx.EXPAND)
+        layout_buttons = wx.FlexGridSizer(cols=6)
+        layout_buttons.SetFlexibleDirection(wx.HORIZONTAL)
+        layout_buttons.AddGrowableCol(3)
         
-        layout_path = wx.BoxSizer(wx.HORIZONTAL)
-        layout_path.Add(path_add, 0)
-        layout_path.Add(path_remove, 0)
-        layout_path.Add(button_clear, 0, wx.ALIGN_CENTER_VERTICAL)
-        layout_path.Add(layout_V1, 1, wx.ALIGN_CENTER_VERTICAL)
-        layout_path.Add(self.btn_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
-        layout_path.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_buttons.Add(btn_add, 0, wx.RIGHT, 5)
+        layout_buttons.Add(btn_remove, 0, wx.RIGHT, 5)
+        layout_buttons.Add(btn_clear, 0, wx.RIGHT, 5)
+        layout_buttons.Add(layout_input, 0, wx.EXPAND|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_buttons.Add(self.btn_browse, 0, wx.RIGHT, 5)
+        layout_buttons.Add(btn_refresh, 0)
         
-        layout_list = wx.BoxSizer(wx.HORIZONTAL)
-        layout_list.Add(self.file_list, 1, wx.EXPAND)
+        layout_Vright = wx.BoxSizer(wx.VERTICAL)
+        layout_Vright.Add(btn_help, 0, wx.ALIGN_RIGHT|wx.TOP, 5)
+        layout_Vright.Add(layout_target_border, 0, wx.TOP|wx.BOTTOM, 5)
+        layout_Vright.Add(layout_buttons, 0, wx.EXPAND)
+        layout_Vright.Add(self.file_list, 1, wx.EXPAND, wx.TOP, 5)
         
-        layout_V2 = wx.BoxSizer(wx.VERTICAL)
-        layout_V2.AddSpacer(10)
-        layout_V2.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
-        layout_V2.Add(layout_path, 0, wx.EXPAND|wx.ALL, 5)
-        layout_V2.Add(layout_list, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        
-        layout_Fmain = wx.FlexGridSizer(1, 2)
-        layout_Fmain.AddGrowableRow(0)
-        layout_Fmain.AddGrowableCol(1, 2)
-        layout_Fmain.Add(self.dir_tree, 1, wx.EXPAND|wx.LEFT|wx.TOP|wx.BOTTOM, 5)
-        layout_Fmain.Add(layout_V1, 1, wx.EXPAND)
+        layout_Hmain = wx.BoxSizer(wx.HORIZONTAL)
+        layout_Hmain.Add(self.dir_tree, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
+        layout_Hmain.Add(layout_Vright, 1, wx.EXPAND|wx.RIGHT, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_Fmain)
+        self.SetSizer(layout_Hmain)
         self.Layout()
         
         
@@ -181,9 +176,9 @@ class Panel(WizardPage):
         wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         # Button events
-        wx.EVT_BUTTON(path_add, -1, self.AddPath)
-        wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
-        wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
+        wx.EVT_BUTTON(btn_add, -1, self.AddPath)
+        wx.EVT_BUTTON(btn_remove, -1, self.RemoveSelected)
+        wx.EVT_BUTTON(btn_clear, -1, self.ClearAll)
         wx.EVT_BUTTON(self.btn_browse, -1, self.OnBrowse)
         btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
