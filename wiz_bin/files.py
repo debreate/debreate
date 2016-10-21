@@ -15,6 +15,7 @@ from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
+from dbr.help           import HelpButton
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.wizard         import WizardPage
@@ -54,10 +55,6 @@ class Panel(WizardPage):
         self.add_file = wx.MenuItem(self.menu, ID_AddFile, GT(u'Add File'))
         self.refresh = wx.MenuItem(self.menu, ID_Refresh, GT(u'Refresh'))
         
-        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
-        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
-        wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
-        
         self.menu.AppendItem(self.add_dir)
         self.menu.AppendItem(self.add_file)
         self.menu.AppendSeparator()
@@ -66,8 +63,6 @@ class Panel(WizardPage):
         # Directory listing for importing files and folders
         self.dir_tree = wx.GenericDirCtrl(self, -1, PATH_home, size=(300,20))
         
-        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
-        
         # ----- Add/Remove/Clear buttons
         path_add = ButtonAdd(self)
         path_add.SetName(u'add')
@@ -75,10 +70,6 @@ class Panel(WizardPage):
         path_remove.SetName(u'remove')
         button_clear = ButtonClear(self)
         button_clear.SetName(u'clear')
-        
-        wx.EVT_BUTTON(path_add, -1, self.AddPath)
-        wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
-        wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
         
         # ----- Destination path
         # choices of destination
@@ -93,6 +84,7 @@ class Panel(WizardPage):
         self.radio_cst.SetValue(True)
         
         # group buttons together
+        # FIXME: Unnecessary???
         self.targets = (
             self.radio_bin,
             self.radio_usrbin,
@@ -101,10 +93,6 @@ class Panel(WizardPage):
             self.radio_loclib,
             self.radio_cst,
             )
-        
-        # create an event to enable/disable custom widget
-        for item in self.targets:
-            wx.EVT_RADIOBUTTON(item, -1, self.SetDestination)
         
         # make them look pretty
         radio_sizer = wx.GridSizer(3, 2, 5, 5)
@@ -115,34 +103,27 @@ class Panel(WizardPage):
         radio_box.Add(radio_sizer, 0)
         
         self.prev_dest_value = u'/usr/bin'
-        self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
+        self.input_target = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
         
-        wx.EVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
-        wx.EVT_KEY_UP(self.dest_cust, self.CheckDest)
+        cust_sizer = wx.BoxSizer(wx.VERTICAL)  # FIXME: Put the textctrl in own sizer so expands horizontally
+        cust_sizer.Add(self.input_target, 1, wx.EXPAND)
         
-        cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
-        cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
+        self.btn_browse = ButtonBrowse(self)
+        self.btn_browse.SetName(u'browse')
+        self.btn_browse.SetId(ID_pout)
         
-        self.dest_browse = ButtonBrowse(self)
-        self.dest_browse.SetName(u'browse')
-        self.dest_browse.SetId(ID_pout)
-        
-        wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
-        
-        self.path_dict = {ID_pout: self.dest_cust}
+        self.path_dict = {ID_pout: self.input_target}
         
         # TODO: Make custom button
         btn_refresh = ButtonRefresh(self)
         btn_refresh.SetName(u'refresh')
-        
-        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
         path_add_sizer = wx.BoxSizer(wx.HORIZONTAL)
         path_add_sizer.Add(path_add, 0)
         path_add_sizer.Add(path_remove, 0)
         path_add_sizer.Add(button_clear, 0, wx.ALIGN_CENTER_VERTICAL)
         path_add_sizer.Add(cust_sizer, 1, wx.ALIGN_CENTER_VERTICAL)
-        path_add_sizer.Add(self.dest_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
+        path_add_sizer.Add(self.btn_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
         path_add_sizer.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
         
         
@@ -153,8 +134,6 @@ class Panel(WizardPage):
         # List that stores the actual paths to the files
         # FIXME: Deprecated???
         self.list_data = []
-        
-        wx.EVT_KEY_DOWN(self.file_list, self.DelPathDeprecated)
         
         LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
         LMR_sizer.Add(self.file_list, 1, wx.EXPAND)
@@ -177,6 +156,33 @@ class Panel(WizardPage):
         
         
         SetPageToolTips(self)
+        
+        
+        # *** Events *** #
+        
+        # create an event to enable/disable custom widget
+        for item in self.targets:
+            wx.EVT_RADIOBUTTON(item, -1, self.SetDestination)
+        
+        # Context menu events for directory tree
+        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
+        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
+        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
+        wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
+        
+        # Button events
+        wx.EVT_BUTTON(path_add, -1, self.AddPath)
+        wx.EVT_BUTTON(path_remove, -1, self.RemoveSelected)
+        wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
+        wx.EVT_BUTTON(self.btn_browse, -1, self.OnBrowse)
+        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
+        
+        # ???: Not sure what these do
+        wx.EVT_KEY_DOWN(self.input_target, self.GetDestValue)
+        wx.EVT_KEY_UP(self.input_target, self.CheckDest)
+        
+        # Key events for file list
+        wx.EVT_KEY_DOWN(self.file_list, self.DelPathDeprecated)
     
     
     ## Add a selected path to the list of files
@@ -192,7 +198,7 @@ class Panel(WizardPage):
         for target in self.targets:
             if target.GetValue():
                 if target.GetId() == ID_CUSTOM:
-                    target_dir = self.dest_cust.GetValue()
+                    target_dir = self.input_target.GetValue()
                 
                 else:
                     target_dir = target.GetLabel()
@@ -272,12 +278,12 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def CheckDest(self, event):
-        if self.dest_cust.GetValue() == wx.EmptyString:
-            self.dest_cust.SetValue(self.prev_dest_value)
-            self.dest_cust.SetInsertionPoint(-1)
-        elif self.dest_cust.GetValue()[0] != u'/':
-            self.dest_cust.SetValue(self.prev_dest_value)
-            self.dest_cust.SetInsertionPoint(-1)
+        if self.input_target.GetValue() == wx.EmptyString:
+            self.input_target.SetValue(self.prev_dest_value)
+            self.input_target.SetInsertionPoint(-1)
+        elif self.input_target.GetValue()[0] != u'/':
+            self.input_target.SetValue(self.prev_dest_value)
+            self.input_target.SetInsertionPoint(-1)
         event.Skip()
     
     
@@ -361,9 +367,9 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def GetDestValue(self, event):
-        if self.dest_cust.GetValue() != wx.EmptyString:
-            if self.dest_cust.GetValue()[0] == u'/':
-                self.prev_dest_value = self.dest_cust.GetValue()
+        if self.input_target.GetValue() != wx.EmptyString:
+            if self.input_target.GetValue()[0] == u'/':
+                self.prev_dest_value = self.input_target.GetValue()
         event.Skip()
     
     
@@ -476,7 +482,7 @@ class Panel(WizardPage):
     def OnBrowse(self, event):
         dia = GetDirDialog(self.GetDebreateWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
-            self.dest_cust.SetValue(dia.GetPath())
+            self.input_target.SetValue(dia.GetPath())
     
     
     ## TODO: Doxygen
@@ -530,11 +536,11 @@ class Panel(WizardPage):
     def SetDestination(self, event):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.radio_cst.GetValue() == True:
-            self.dest_cust.Enable()
-            self.dest_browse.Enable()
+            self.input_target.Enable()
+            self.btn_browse.Enable()
         else:
-            self.dest_cust.Disable()
-            self.dest_browse.Disable()
+            self.input_target.Disable()
+            self.btn_browse.Disable()
     
     
     ## TODO: Doxygen
