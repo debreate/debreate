@@ -61,14 +61,13 @@ class Panel(WizardPage):
         self.menu.AppendItem(self.refresh)
         
         # Directory listing for importing files and folders
-        self.dir_tree = wx.GenericDirCtrl(self, -1, PATH_home, size=(300,20))
+        self.dir_tree = wx.GenericDirCtrl(self, dir=PATH_home, size=(300,20),
+                style=wx.BORDER_THEME)
         
         btn_help = HelpButton(self)
         
         # ----- Target path
-        #target_border = wx.StaticBox(self, label=GT(u'Target'))
-        
-        target_panel = wx.Panel(self, style=wx.SIMPLE_BORDER)
+        target_panel = wx.Panel(self, style=wx.BORDER_THEME)
         
         # choices of destination
         self.radio_bin = wx.RadioButton(target_panel, label=u'/bin', style=wx.RB_GROUP)
@@ -131,10 +130,6 @@ class Panel(WizardPage):
         target_panel.SetAutoLayout(True)
         target_panel.SetSizer(layout_target)
         target_panel.Layout()
-        
-        # Border around radio buttons
-        #layout_target_border = wx.StaticBoxSizer(target_border, wx.VERTICAL)
-        #layout_target_border.Add(layout_target, 0, wx.TOP, 5)
         
         # Put text input in its own sizer to force expand
         layout_input = wx.BoxSizer(wx.HORIZONTAL)
@@ -620,7 +615,7 @@ class Panel(WizardPage):
 class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id,
-                style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+                style=wx.BORDER_SUNKEN|wx.LC_REPORT)
         ListCtrlAutoWidthMixin.__init__(self)
         TextEditMixin.__init__(self)
         
