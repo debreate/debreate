@@ -854,7 +854,7 @@ class MainWindow(wx.Frame):
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
-        self.page_build.SetFieldData(build_data)
+        self.page_build.SetFieldDataLegacy(build_data)
     
     
     ## Checks if a project is loaded
