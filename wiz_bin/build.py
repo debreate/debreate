@@ -412,32 +412,58 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetSummary(self, event):
-        #page = event.GetSelection()
+    def GetPageInfo(self):
+        # 'install after build' is not exported to project for safety
         
-        # Make sure the page is not destroyed so no error is thrown
-        if self:
-            # Set summary when "Build" page is shown
-            # Get the file count
-            files_total = self.debreate.page_files.dest_area.GetItemCount()
-            f = GT(u'File Count')
-            file_count = u'%s: %s' % (f, files_total)
-            # Scripts to make
-            scripts_to_make = []
-            scripts = ((u'preinst', self.debreate.page_scripts.chk_preinst),
-                (u'postinst', self.debreate.page_scripts.chk_postinst),
-                (u'prerm', self.debreate.page_scripts.chk_prerm),
-                (u'postrm', self.debreate.page_scripts.chk_postrm))
-            for script in scripts:
-                if script[1].IsChecked():
-                    scripts_to_make.append(script[0])
-            s = GT(u'Scripts')
-            if len(scripts_to_make):
-                scripts_to_make = u'%s: %s' % (s, u', '.join(scripts_to_make))
+        fields = {}
+        omit_options = (
+            self.chk_install,
+        )
+        
+        for O in self.build_options:
+            # Leave options out that should not be saved
+            if O not in omit_options:
+                fields[O.GetName()] = unicode(O.GetValue())
+        
+        page_info = wx.EmptyString
+        
+        for F in fields:
+            if page_info == wx.EmptyString:
+                page_info = u'{}={}'.format(F, fields[F])
             else:
-                scripts_to_make = u'%s: 0' % (s)
-                    
-            self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
+                page_info = u'{}\n{}={}'.format(page_info, F, fields[F])
+        
+        if page_info == wx.EmptyString:
+            return None
+        
+        return (__name__, page_info)
+    
+    
+    ## TODO: Doxygen
+    def ImportPageInfo(self, filename):
+        if not os.path.isfile(filename):
+            return dbrerrno.ENOENT
+        
+        FILE = open(filename, u'r')
+        build_data = FILE.read().split(u'\n')
+        FILE.close()
+        
+        options_definitions = {}
+        
+        for L in build_data:
+            if u'=' in L:
+                key = L.split(u'=')
+                value = GetBoolean(key[-1])
+                key = key[0]
+                
+                options_definitions[key] = value
+        
+        for O in self.build_options:
+            name = O.GetName()
+            if name in options_definitions and isinstance(options_definitions[name], bool):
+                O.SetValue(options_definitions[name])
+        
+        return 0
     
     
     ## TODO: Doxygen
@@ -617,6 +643,12 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    def ResetPageInfo(self):
+        for O in self.build_options:
+            O.SetValue(O.default)
+    
+    
+    ## TODO: Doxygen
     def SetFieldDataLegacy(self, data):
         self.ResetPageInfo()
         build_data = data.split(u'\n')
@@ -631,74 +663,39 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GetPageInfo(self):
-        # 'install after build' is not exported to project for safety
+    def SetSummary(self, event):
+        #page = event.GetSelection()
         
-        fields = {}
-        omit_options = (
-            self.chk_install,
-        )
-        
-        for O in self.build_options:
-            # Leave options out that should not be saved
-            if O not in omit_options:
-                fields[O.GetName()] = unicode(O.GetValue())
-        
-        page_info = wx.EmptyString
-        
-        for F in fields:
-            if page_info == wx.EmptyString:
-                page_info = u'{}={}'.format(F, fields[F])
+        # Make sure the page is not destroyed so no error is thrown
+        if self:
+            # Set summary when "Build" page is shown
+            # Get the file count
+            files_total = self.debreate.page_files.dest_area.GetItemCount()
+            f = GT(u'File Count')
+            file_count = u'%s: %s' % (f, files_total)
+            # Scripts to make
+            scripts_to_make = []
+            scripts = ((u'preinst', self.debreate.page_scripts.chk_preinst),
+                (u'postinst', self.debreate.page_scripts.chk_postinst),
+                (u'prerm', self.debreate.page_scripts.chk_prerm),
+                (u'postrm', self.debreate.page_scripts.chk_postrm))
+            for script in scripts:
+                if script[1].IsChecked():
+                    scripts_to_make.append(script[0])
+            s = GT(u'Scripts')
+            if len(scripts_to_make):
+                scripts_to_make = u'%s: %s' % (s, u', '.join(scripts_to_make))
             else:
-                page_info = u'{}\n{}={}'.format(page_info, F, fields[F])
-        
-        if page_info == wx.EmptyString:
-            return None
-        
-        return (__name__, page_info)
-    
-    
-    ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
-        if not os.path.isfile(filename):
-            return dbrerrno.ENOENT
-        
-        FILE = open(filename, u'r')
-        build_data = FILE.read().split(u'\n')
-        FILE.close()
-        
-        options_definitions = {}
-        
-        for L in build_data:
-            if u'=' in L:
-                key = L.split(u'=')
-                value = GetBoolean(key[-1])
-                key = key[0]
-                
-                options_definitions[key] = value
-        
-        for O in self.build_options:
-            name = O.GetName()
-            if name in options_definitions and isinstance(options_definitions[name], bool):
-                O.SetValue(options_definitions[name])
-        
-        return 0
-    
-    
-    ## TODO: Doxygen
-    def ResetPageInfo(self):
-        for O in self.build_options:
-            O.SetValue(O.default)
+                scripts_to_make = u'%s: 0' % (s)
+                    
+            self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
 
 
-##########################################
-## *** BUIDING FROM PREEXISTING FILE SYSTEM TREE **  ##
-##########################################
 
 ## FIXME: Deprecated; Moved to dbr
 class QuickBuild(wx.Dialog):
-    def __init__(self, parent, id=-1, title=GT(u'Quick Build')):
-        wx.Dialog.__init__(self, parent, id, title, wx.DefaultPosition, (400,200))
+    def __init__(self, parent, ID=wx.ID_ANY, title=GT(u'Quick Build')):
+        wx.Dialog.__init__(self, parent, ID, title, wx.DefaultPosition, (400,200))
         
         self.parent = parent # allows calling parent events
         
@@ -768,8 +765,6 @@ class QuickBuild(wx.Dialog):
                 self.path.SetValue(dia.GetPath())
         dia.Destroy()
     
-    def ShowProgress(self, event):
-        self.gauge.Pulse()
     
     def Build(self, path, arg2):
         root = path[1]
@@ -780,6 +775,7 @@ class QuickBuild(wx.Dialog):
         self.timer.Stop()
         self.gauge.SetValue(100)
         self.Enable()
+    
     
     def OnBuild(self, event):
         path = self.path.GetValue()
@@ -816,8 +812,12 @@ class QuickBuild(wx.Dialog):
         else:
             wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
                     style=wx.OK|wx.ICON_INFORMATION).ShowModal()
-            
+    
     
     def OnQuit(self, event):
         self.Close()
         event.Skip()
+    
+    
+    def ShowProgress(self, event):
+        self.gauge.Pulse()
