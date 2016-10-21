@@ -1,4 +1,4 @@
-﻿0.8.0 Release Changes:
+﻿0.8.0 Release:
 - Fix & re-enable QuickBuild
 - Add Launchpad packages for 'yakkety'
 - Update gettext locales
@@ -9,12 +9,15 @@
 - Finish manpage
 - Test that locales are working
 - Fix final build
+  - Fix md5sum binary read bug
+  - Organize md5sums list
+  - Enable lintian checking
 - Only show exit confirmation if project has been modified
 - Finish help dialog
 - Refactor & organize error messages on build
-- Fix md5sum binary read bug
+- Fix bugs in docs/BUGS.txt
 
-0.8.1 Release Changes:
+0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
 - Finish page for creating manpage
