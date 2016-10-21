@@ -21,6 +21,7 @@ from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
 
 
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CONTROL)
@@ -222,9 +223,6 @@ class Panel(WizardPage):
         # These are used for controlling the column width/size in the co-authors field
         wx.EVT_SIZE(self, self.OnResize)
         
-        # Defines fields to be accessed
-        wx.EVT_SHOW(self, self.OnShow)
-        
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.text_widgets = {
@@ -238,6 +236,7 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def ExportBuild(self, target, installed_size=0):
         self.Export(target, u'control')
         
@@ -272,51 +271,21 @@ class Panel(WizardPage):
         return True
     
     
+    ## FIXME: Define
     def OnResize(self, event):
         #self.ReLayout()
         pass
     
+    
+    ## TODO: Doxygen
+    ## FIXME: Unfinished???
     def ReLayout(self):
         # Organize all widgets correctly
         lc_width = self.coauth.GetSize()[0]
         self.coauth.SetColumnWidth(0, lc_width/2)
         
     
-    # *** Setting Field Priority *** #
-    
-    def EnableAll(self):
-        # Reset all widgets to be enabled
-        children = self.bg.GetChildren()
-        for child in children:
-            child.Enable()
-            child.SetBackgroundColour(dbr.Optional)
-    
-    # FIXME: I believe this is unused
-    def SetBuildType(self, build_id):
-        # First enable all fields that were disabled
-        self.EnableAll()
-        
-        group = self.bins
-        
-        for man in group[0]:
-            man.SetBackgroundColour(dbr.Mandatory)
-        for rec in group[1]:
-            rec.SetBackgroundColour(dbr.Recommended)
-        for opt in group[2]:
-            opt.SetBackgroundColour(dbr.Optional)
-#        for dis in group[3]:
-#            dis.Disable()
-#            dis.SetBackgroundColour(db.Disabled)
-        
-        self.Layout()
-    
-    def OnShow(self, event):
-        pass
-        #self.SetBuildType(db.ID_BIN)
-    
-    
-    # *** Open, Save & Preview control file *** #
-    
+    ## TODO: Doxygen
     def OnBrowse(self, event):
         wildcards = (
             GT(u'All files'), u'*',
@@ -329,6 +298,7 @@ class Panel(WizardPage):
             self.ImportPageInfo(file_path)
     
     
+    ## TODO: Doxygen
     def OnSave(self, event):
         wildcards = (
             GT(u'All files'), u'*',
@@ -340,6 +310,7 @@ class Panel(WizardPage):
             self.Export(os.path.dirname(file_path), os.path.basename(file_path))
     
     
+    ## TODO: Doxygen
     def OnPreview(self, event):
         # Show a preview of the control file
         control = self.GetCtrlInfo()
@@ -358,6 +329,7 @@ class Panel(WizardPage):
         dia.Destroy()
     
     
+    ## TODO: Doxygen
     def OnCtrlKey(self, event):
         key = event.GetKeyCode()
         mod = event.GetModifiers()
@@ -368,26 +340,8 @@ class Panel(WizardPage):
         event.Skip()
     
     
-    # *** Clearing All Fields for New Project *** #
-    
-    def ResetAllFields(self):
-        self.pack.Clear()
-        self.ver.Clear()
-        self.arch.SetSelection(0)
-        self.src.Clear()
-        self.sect.Clear()
-        self.prior.SetSelection(0)
-        self.url.Clear()
-        self.ess.SetSelection(1)
-        #self.stdver.Clear()
-        self.syn.Clear()
-        self.desc.Clear()
-        self.auth.Clear()
-        self.email.Clear()
-    
-    
-    # *** Gathering Page Data *** #
-    
+    ## TODO: Doxygen
+    ## FIXME: Deprecated???
     def GetCtrlInfo(self):
         # Creat a list to store info
         ctrl_list = []
@@ -492,8 +446,8 @@ class Panel(WizardPage):
         return u'\n'.join(ctrl_list)
     
     
-    # *** Opening Project/File & Setting Fields ***
-    
+    ## TODO: Doxygen
+    ## FIXME: Deprecated???
     def SetFieldData(self, data):
         if isinstance(data, str):
             # Decode to unicode string if input is byte string
@@ -573,21 +527,21 @@ class Panel(WizardPage):
         return depends_containers
     
     
-    # *** Saving Project *** #
-    
-    def GatherData(self):
-        data = self.GetCtrlInfo()
-        return u'<<CTRL>>\n%s<</CTRL>>' % data
-    
+    ## TODO: Doxygen
     def GetPackageName(self):
         return self.pack.GetValue()
     
-    # *** Determining of project is modified
+    
+    ## Determining of project is modified
+    #  
+    #  TODO: Doxygen
     def OnKeyDown(self, event):
         for widget in self.text_widgets:
             self.text_widgets[widget] = widget.GetValue()
         event.Skip()
     
+    
+    ## TODO: Doxygen
     def OnKeyUp(self, event):
         modified = False
         for widget in self.text_widgets:
