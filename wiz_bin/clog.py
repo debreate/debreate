@@ -229,9 +229,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    #  
-    #  FIXME: Legacy
-    def SetChangelog(self, data):
+    def SetChangelogLegacy(self, data):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         if dest == u'DEFAULT':
