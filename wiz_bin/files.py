@@ -3,7 +3,7 @@
 ## \package wiz_bin.files
 
 
-import wx, os
+import wx, os, shutil
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
 
 from dbr.buttons        import ButtonAdd
@@ -27,7 +27,6 @@ from globals.ident      import ID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
 from globals.tooltips   import SetPageToolTips
-import shutil
 
 
 ID_pin = 100
