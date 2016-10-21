@@ -7,7 +7,7 @@ import wx, os
 
 import dbr
 from dbr.error          import ShowError
-from dbr.functions      import RemovePreWhitespace, FieldEnabled
+from dbr.functions      import RemovePreWhitespace
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.monotext       import MT_BTN_BR
@@ -18,7 +18,6 @@ from globals.ident      import ID_COPYRIGHT
 from globals.tooltips import SetPageToolTips
 from globals.constants import system_licenses_path
 from dbr.templates import local_licenses_path, application_licenses_path
-from dbr.log import Logger
 
 
 # Globals
