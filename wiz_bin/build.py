@@ -25,18 +25,15 @@ from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_INFORMATION
-from globals.commands   import CMD_lintian, CMD_system_installer
+from globals.commands   import CMD_lintian
 from globals.commands   import CMD_md5sum
-from globals.errorcodes import errno
-from globals.ident      import ID_BUILD
-from globals.ident      import ID_CHANGELOG
-from globals.ident      import ID_CONTROL
-from globals.ident      import ID_COPYRIGHT
+from globals.commands   import CMD_system_installer
+from globals.errorcodes import dbrerrno
+from globals.ident      import ID_BUILD, ID_CONTROL
 from globals.ident      import ID_FILES
-from globals.ident      import ID_MAN
-from globals.ident      import ID_MENU
-from globals.ident      import ID_SCRIPTS
 from globals.tooltips   import SetPageToolTips
+import math
+from globals.application import AUTHOR_email
 
 
 class Panel(WizardPage):
@@ -162,15 +159,15 @@ class Panel(WizardPage):
                 if chk.IsChecked():
                     steps_count += 1
             
-            # .deb build step
-            steps_count += 1
+            # Control file & .deb build step
+            steps_count += 2
             
             stage = CreateTempDirectory()
             
+            wx.YieldIfNeeded()
             # FIXME: Enable PD_CAN_ABORT
             build_progress = wx.ProgressDialog(GT(u'Building'), GT(u'Starting build'),
                     steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
-            wx.SafeYield()
             
             try:
                 # NOTE: Control page should be last processed to get install size
@@ -182,7 +179,7 @@ class Panel(WizardPage):
                         page_label = P.GetLabel()
                         
                         # FIXME: Progress bar not updating
-                        wx.SafeYield()
+                        wx.YieldIfNeeded()
                         build_progress.Update(current_step,
                                 GT(u'Processing page "{}" ({}/{})').format(page_label, current_step+1, steps_count))
                         
@@ -206,7 +203,7 @@ class Panel(WizardPage):
                 
                 if not build_progress.WasCancelled():
                     if self.chk_md5.IsChecked():
-                        wx.SafeYield()
+                        wx.YieldIfNeeded()
                         build_progress.Update(current_step,
                                 GT(u'Creating MD5 checksum ({}/{})').format(current_step+1, steps_count))
                         
@@ -214,9 +211,40 @@ class Panel(WizardPage):
                         
                         current_step += 1
                 
+                # Control step
+                if not build_progress.WasCancelled():
+                    wx.YieldIfNeeded()
+                    
+                    log_msg = GT(u'Creating control file')
+                    step = u'{}/{}'.format(current_step+1, steps_count)
+                    build_progress.Update(current_step,
+                            u'{} ({})'.format(log_msg, step))
+                    
+                    Logger.Debug(__name__, u'{} ({})'.format(log_msg, step))
+                    
+                    # Retrieve control page
+                    control_page = self.wizard.GetPage(ID_CONTROL)
+                    if not control_page:
+                        Logger.Error(__name__, GT(u'Could not retrieve control page'))
+                        build_progress.Destroy()
+                        err_msg = ErrorDialog(self.GetDebreateWindow(), GT(u'Fatal Error'),
+                                GT(u'Could not retrieve control page'))
+                        err_msg.SetDetails(GT(u'Please contact the developer: {}').format(AUTHOR_email))
+                        err_msg.ShowModal()
+                        
+                        return
+                    
+                    installed_size = self.OnBuildGetInstallSize(stage)
+                    
+                    Logger.Debug(__name__, GT(u'Installed size: {}').format(installed_size))
+                    
+                    control_page.ExportBuild(u'{}/DEBIAN'.format(stage).replace(u'//', u'/'), installed_size)
+                    
+                    current_step += 1
+                
                 # Building .deb from stage
                 if not build_progress.WasCancelled():
-                    wx.SafeYield()
+                    wx.YieldIfNeeded()
                     build_progress.Update(current_step,
                             GT(u'Creating .deb package ({}/{}').format(current_step+1, steps_count))
                     
@@ -226,7 +254,7 @@ class Panel(WizardPage):
                 
                 if not build_progress.WasCancelled():
                     if self.chk_lint.IsChecked():
-                        wx.SafeYield()
+                        wx.YieldIfNeeded()
                         build_progress.Update(current_step,
                                 GT(u'Checking package with lintian ({}/{})').format(current_step+1, steps_count))
                         
@@ -236,7 +264,7 @@ class Panel(WizardPage):
                 
                 if not build_progress.WasCancelled():
                     if self.chk_rmtree.IsChecked():
-                        wx.SafeYield()
+                        wx.YieldIfNeeded()
                         build_progress.Update(current_step,
                                 GT(u'Removing staged build tree ({}/{})').format(current_step+1, steps_count))
                         
@@ -244,7 +272,7 @@ class Panel(WizardPage):
                         current_step += 1
                 
                 if not build_progress.WasCancelled():
-                    wx.SafeYield()
+                    wx.YieldIfNeeded()
                     #build_progress.Update(steps_count, GT(u'Build complete'))
                     build_progress.Update(steps_count, GT(u'Build incomplete (in development)'))
                     
@@ -271,7 +299,7 @@ class Panel(WizardPage):
         try:
             temp_dir = CreateTempDirectory()
             
-            if temp_dir != errno.EACCES:
+            if temp_dir != dbrerrno.EACCES:
                 Logger.Debug(__name__, GT(u'Temporary directory: {}').format(temp_dir))
                 
                 # Create DEBIAN sub-directory
@@ -307,7 +335,7 @@ class Panel(WizardPage):
         
         build_ret = BuildBinaryPackageFromTree(temp_dir, out_file)
         
-        if build_ret == errno.ENOENT:
+        if build_ret == dbrerrno.ENOENT:
             ErrorDialog(self.GetDebreateWindow(), GT(u'Cannot build from non-existent directory')).ShowModal()
         
         # TODO: Make sure temp directory is deleted
@@ -427,7 +455,8 @@ class Panel(WizardPage):
                     
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
     
-    # TODO: Finish defining
+    
+    ##
     def OnBuild(self, event=None):
         if event:
             event.Skip()
@@ -969,6 +998,31 @@ class Panel(WizardPage):
         return u'<<BUILD>>\n%s\n<</BUILD>>' % u'\n'.join(build_list)
     
     
+    ## Retrieves total size of directory contents
+    #  
+    #  TODO: Move this method to control page
+    #  
+    #  \param stage
+    #        \b \e unicode|str : Directory to scan
+    #  \return
+    #        \b \e int : Integer representing installed size
+    def OnBuildGetInstallSize(self, stage):
+        Logger.Debug(__name__, GT(u'Retrieving installed size for {}').format(stage))
+        
+        installed_size = 0
+        for ROOT, DIRS, FILES in os.walk(stage):
+            for F in FILES:
+                if ROOT != u'{}/DEBIAN'.format(stage).replace(u'//', u'/'):
+                    F = u'{}/{}'.format(ROOT, F).replace(u'//', u'/')
+                    installed_size += os.stat(F).st_size
+            
+        # Convert to kilobytes & round up
+        if installed_size:
+            installed_size = int(math.ceil(float(installed_size) / float(1024)))
+        
+        return installed_size
+    
+    
     def GetPageInfo(self):
         # 'install after build' is not exported to project for safety
         
@@ -998,7 +1052,7 @@ class Panel(WizardPage):
     
     def ImportPageInfo(self, filename):
         if not os.path.isfile(filename):
-            return errno.ENOENT
+            return dbrerrno.ENOENT
         
         FILE = open(filename, u'r')
         build_data = FILE.read().split(u'\n')
