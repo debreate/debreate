@@ -188,6 +188,15 @@ class Wizard(wx.Panel):
     def DisablePrev(self):
         self.EnablePrev(False)
     
+    
+    def GetPage(self, page_id):
+        for P in self.pages:
+            if P.GetId() == page_id:
+                return P
+        
+        return None
+    
+    
     def GetCurrentPageId(self):
         for page in self.pages:
             if page.IsShown():
