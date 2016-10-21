@@ -95,12 +95,21 @@ class Panel(WizardPage):
             )
         
         # make them look pretty
-        radio_sizer = wx.GridSizer(3, 2, 5, 5)
+        layout_G1 = wx.GridSizer(3, 2, 5, 5)
         for item in self.targets:
-            radio_sizer.Add(item, 0)
+            layout_G1.Add(item, 0)
+        
         self.radio_border = wx.StaticBox(self, -1, GT(u'Target'), size=(20,20))
-        radio_box = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
-        radio_box.Add(radio_sizer, 0)
+        layout_BOX1 = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
+        layout_BOX1.Add(layout_G1, 0)
+        
+        btn_help = HelpButton(self)
+        
+        # FIXME: Help button lower on this page than others
+        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H1.Add(layout_BOX1, 0)
+        layout_H1.AddStretchSpacer(1)
+        layout_H1.Add(btn_help, 0, wx.ALIGN_TOP)
         
         self.prev_dest_value = u'/usr/bin'
         self.input_target = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
@@ -138,20 +147,20 @@ class Panel(WizardPage):
         LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
         LMR_sizer.Add(self.file_list, 1, wx.EXPAND)
         
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(10)
-        page_sizer.Add(radio_box, 0, wx.ALL, 5)
-        page_sizer.Add(path_add_sizer, 0, wx.EXPAND|wx.ALL, 5)
-        page_sizer.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        layout_V1.AddSpacer(10)
+        layout_V1.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
+        layout_V1.Add(path_add_sizer, 0, wx.EXPAND|wx.ALL, 5)
+        layout_V1.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
-        sizer = wx.FlexGridSizer(1, 2)
-        sizer.AddGrowableRow(0)
-        sizer.AddGrowableCol(1, 2)
-        sizer.Add(self.dir_tree, 1, wx.EXPAND|wx.LEFT|wx.TOP|wx.BOTTOM, 5)
-        sizer.Add(page_sizer, 1, wx.EXPAND)
+        layout_Fmain = wx.FlexGridSizer(1, 2)
+        layout_Fmain.AddGrowableRow(0)
+        layout_Fmain.AddGrowableCol(1, 2)
+        layout_Fmain.Add(self.dir_tree, 1, wx.EXPAND|wx.LEFT|wx.TOP|wx.BOTTOM, 5)
+        layout_Fmain.Add(layout_V1, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
-        self.SetSizer(sizer)
+        self.SetSizer(layout_Fmain)
         self.Layout()
         
         
