@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg1"
+   sodipodi:docname="btn-round-blue.svg"
+   viewBox="0 0 128 128"
+   sodipodi:version="0.32"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   width="128"
+   height="128">
+  <title
+     id="title4154">Blue Button</title>
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient1697">
+      <stop
+         id="stop1698"
+         style="stop-color:#0e56db"
+         offset="0" />
+      <stop
+         id="stop1699"
+         style="stop-color:#071176"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1076"
+       y2="466.28"
+       xlink:href="#linearGradient1697"
+       gradientUnits="userSpaceOnUse"
+       x2="520.57001"
+       y1="506.29001"
+       x1="520.57001"
+       inkscape:collect="always"
+       gradientTransform="matrix(2.9814595,0,0,2.9814595,-1357.1494,-1248.7817)" />
+    <linearGradient
+       id="linearGradient1077"
+       y2="505.07999"
+       xlink:href="#linearGradient1697"
+       gradientUnits="userSpaceOnUse"
+       x2="522.94"
+       y1="469.5"
+       x1="522.94"
+       inkscape:collect="always"
+       gradientTransform="matrix(2.9814595,0,0,2.9814595,-1357.1494,-1248.7817)" />
+    <linearGradient
+       id="linearGradient1078"
+       y2="463.47"
+       gradientUnits="userSpaceOnUse"
+       y1="183.48"
+       gradientTransform="matrix(0.50570776,0,0,0.20943637,94.199064,106.71009)"
+       x2="214.59"
+       x1="213.83"
+       inkscape:collect="always">
+      <stop
+         id="stop1703"
+         style="stop-color:#ffffff;stop-opacity:.69072"
+         offset="0" />
+      <stop
+         id="stop1704"
+         style="stop-color:#ffffff;stop-opacity:0"
+         offset="1" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="0"
+     pagecolor="#ffffff"
+     inkscape:window-maximized="1"
+     inkscape:window-width="1600"
+     inkscape:zoom="4"
+     inkscape:window-x="1366"
+     showgrid="false"
+     borderopacity="1.0"
+     inkscape:current-layer="layer1"
+     inkscape:cx="-31.25"
+     inkscape:cy="74.571297"
+     inkscape:window-height="949"
+     inkscape:pageopacity="0.0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <g
+     id="layer1"
+     inkscape:label="Main"
+     inkscape:groupmode="layer"
+     transform="translate(-138.99649,-139.37474)"
+     style="display:inline">
+    <circle
+       r="61.9659"
+       cy="203.37474"
+       cx="202.99649"
+       id="path1070"
+       style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:4.06820154;stroke-linecap:round;stroke-linejoin:round"
+       inkscape:label="Background" />
+    <g
+       id="g3792"
+       style="fill:#bb1e00;fill-opacity:1;image-rendering:auto"
+       transform="matrix(2,0,0,2,-1408.4321,-1592.7782)">
+      <g
+         id="g3636"
+         style="fill:#bb1e00;fill-opacity:1">
+        <g
+           id="g3624"
+           style="fill:#bb1e00;fill-opacity:1" />
+        <g
+           id="g3632"
+           style="fill:#bb1e00;fill-opacity:1" />
+      </g>
+    </g>
+    <rect
+       y="139.37474"
+       x="138.99649"
+       height="128"
+       width="128"
+       id="rect3454"
+       style="display:inline;fill:none;fill-opacity:1;image-rendering:auto" />
+    <rect
+       y="139.37474"
+       x="138.99649"
+       height="128"
+       width="128"
+       id="rect3494"
+       style="display:inline;fill:none;fill-opacity:1;image-rendering:auto" />
+    <rect
+       style="display:inline;fill:none;fill-opacity:1;image-rendering:auto"
+       id="rect4191"
+       width="128"
+       height="128"
+       x="138.99649"
+       y="139.37474" />
+    <rect
+       y="139.37474"
+       x="138.99649"
+       height="128"
+       width="128"
+       id="rect3470"
+       style="display:inline;fill:none;fill-opacity:1;image-rendering:auto" />
+    <rect
+       y="139.37474"
+       x="138.99649"
+       height="128"
+       width="128"
+       id="rect3482"
+       style="display:inline;fill:none;fill-opacity:1;image-rendering:auto" />
+    <path
+       id="path1713"
+       style="opacity:0.9;fill:url(#linearGradient1078);fill-rule:evenodd"
+       d="m 248.00006,187.05901 c 14.43996,-0.31568 -4.03551,-40.08171 -44.15627,-40.29325 -43.79177,-0.2213 -52.75125,36.11129 -45.79651,36.7752 0,0 11.99913,1.64675 23.41246,4.8361 18.37783,5.18433 40.85952,-4.25356 49.71811,-5.62693 9.87398,-1.52633 15.41629,5.01184 16.82221,4.30888 z"
+       sodipodi:nodetypes="cccccc"
+       inkscape:connector-curvature="0"
+       inkscape:label="Shine">
+      <title
+         id="title3379">Shine</title>
+    </path>
+  </g>
+  <metadata
+     id="metadata16">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>OpenClipart Library</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>Blue Button</dc:title>
+        <dc:source>https://openclipart.org/detail/26191/button-blue</dc:source>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
