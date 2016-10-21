@@ -23,6 +23,7 @@ from globals.ident      import ID_MENU
 from globals.tooltips   import SetPageToolTips
 
 
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_MENU)
@@ -282,6 +283,7 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def Export(self, out_dir, out_name=wx.EmptyString, executable=False):
         ret_code = WizardPage.Export(self, out_dir, out_name=out_name)
         
@@ -292,6 +294,7 @@ class Panel(WizardPage):
         return ret_code
     
     
+    ## TODO: Doxygen
     def ExportBuild(self, stage):
         stage = u'{}/usr/share/applications'.format(stage).replace(u'//', u'/')
         
@@ -305,10 +308,12 @@ class Panel(WizardPage):
         return (0, None)
     
     
+    ## TODO: Doxygen
     def IsExportable(self):
         return self.activate.IsChecked()
     
     
+    ## TODO: Doxygen
     def OnToggle(self, event=None):
         enable = self.activate.IsChecked()
         
@@ -326,6 +331,7 @@ class Panel(WizardPage):
                     O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
     
     
+    ## TODO: Doxygen
     def GetMenuInfo(self):
         # Create list to store info
         desktop_list = [u'[Desktop Entry]']
@@ -392,6 +398,7 @@ class Panel(WizardPage):
         return u'\n'.join(desktop_list)
     
     
+    ## TODO: Doxygen
     def SetCategory(self, event):
         try:
             key_code = event.GetKeyCode()
@@ -417,7 +424,8 @@ class Panel(WizardPage):
         event.Skip()
     
     
-    # *** OPEN/SAVE *** #
+    
+    ## TODO: Doxygen
     def OnSave(self, event):
         # Get data to write to control file
         menu_data = self.GetMenuInfo().encode(u'utf-8')
@@ -459,6 +467,8 @@ class Panel(WizardPage):
                 # Restore from backup
                 shutil.move(backup, path)
     
+    
+    ## TODO: Doxygen
     def OpenFile(self, event):
         cont = False
         
@@ -477,7 +487,9 @@ class Panel(WizardPage):
                 # First line needs to be changed to '1'
             data.insert(0, u'1')
             self.SetFieldData(u'\n'.join(data))
-        
+    
+    
+    ## TODO: Doxygen
     def OnPreview(self, event):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
@@ -495,25 +507,13 @@ class Panel(WizardPage):
         dia.ShowModal()
         dia.Destroy()
     
-    # FIXME: Deprecated???
-    def ResetAllFields(self):
-        self.name_input.Clear()
-        self.exe_input.Clear()
-        self.comm_input.Clear()
-        self.icon_input.Clear()
-        self.type_choice.SetSelection(0)
-        self.term_choice.SetSelection(1)
-        self.notify_choice.SetSelection(0)
-        self.enc_input.SetSelection(2)
-        self.categories.DeleteAllItems()
-        self.other.Clear()
-        self.activate.SetValue(False)
-        self.OnToggle(None)
     
-    # FIXME: Deprecated???
+    ## TODO: Rename to SetFieldDataLegacy
+    #  
+    #  TODO: Doxygen
     def SetFieldData(self, data):
         # Clear all fields first
-        self.ResetAllFields()
+        self.ResetPageInfo()
         self.activate.SetValue(False)
         
         if int(data[0]):
@@ -582,16 +582,6 @@ class Panel(WizardPage):
                 self.other.SetValue(u'\n'.join(leftovers))
         self.OnToggle(None)
     
-    # FIXME: Deprecated???
-    def GatherData(self):
-        if self.activate.GetValue():
-            data = self.GetMenuInfo()
-            # Remove line with '[Desktop Entry]'
-            data = u'\n'.join(data.split(u'\n')[1:])
-            return u'<<MENU>>\n1\n%s\n<</MENU>>' % data
-        else:
-            return u'<<MENU>>\n0\n<</MENU>>'
-    
     
     ## Retrieves Desktop Entry file information
     #  
@@ -605,6 +595,7 @@ class Panel(WizardPage):
         return(__name__, self.GetMenuInfo(), u'MENU')
     
     
+    ## TODO: Doxygen
     def ImportPageInfo(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         
@@ -695,6 +686,7 @@ class Panel(WizardPage):
         return 0
     
     
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         self.activate.SetValue(self.activate.default)
         self.OnToggle()
