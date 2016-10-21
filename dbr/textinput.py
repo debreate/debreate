@@ -55,6 +55,11 @@ class MultilineTextCtrlPanel(wx.Panel):
         return self.textarea.GetInsertionPoint()
     
     
+    ## TODO: Doxygen
+    def GetLastPosition(self):
+        return self.textarea.GetLastPosition()
+    
+    
     ## Retrieves the text area object
     def GetTextCtrl(self):
         return self.textarea
@@ -63,6 +68,11 @@ class MultilineTextCtrlPanel(wx.Panel):
     ## Retrieves text from text input
     def GetValue(self):
         return self.textarea.GetValue()
+    
+    
+    ## Returns True if text area is empty
+    def IsEmpty(self):
+        return self.textarea.IsEmpty()
     
     
     ## Sets font in text area
@@ -83,6 +93,11 @@ class MultilineTextCtrlPanel(wx.Panel):
     ## Sets text in text area
     def SetValue(self, text):
         self.textarea.SetValue(text)
+    
+    
+    ## TODO: Doxygen
+    def ShowPosition(self, pos):
+        return self.textarea.ShowPosition(pos)
     
     
     ## Writes to the text area
