@@ -66,15 +66,17 @@ class Panel(WizardPage):
         btn_help = HelpButton(self)
         
         # ----- Target path
-        target_border = wx.StaticBox(self, label=GT(u'Target'))
+        #target_border = wx.StaticBox(self, label=GT(u'Target'))
+        
+        target_panel = wx.Panel(self, style=wx.SIMPLE_BORDER)
         
         # choices of destination
-        self.radio_bin = wx.RadioButton(self, -1, u'/bin', style=wx.RB_GROUP)
-        self.radio_usrbin = wx.RadioButton(self, -1, u'/usr/bin')
-        self.radio_usrlib = wx.RadioButton(self, -1, u'/usr/lib')
-        self.radio_locbin = wx.RadioButton(self, -1, u'/usr/local/bin')
-        self.radio_loclib = wx.RadioButton(self, -1, u'/usr/local/lib')
-        self.radio_cst = wx.RadioButton(self, ID_CUSTOM, GT(u'Custom'))
+        self.radio_bin = wx.RadioButton(target_panel, label=u'/bin', style=wx.RB_GROUP)
+        self.radio_usrbin = wx.RadioButton(target_panel, label=u'/usr/bin')
+        self.radio_usrlib = wx.RadioButton(target_panel, label=u'/usr/lib')
+        self.radio_locbin = wx.RadioButton(target_panel, label=u'/usr/local/bin')
+        self.radio_loclib = wx.RadioButton(target_panel, label=u'/usr/local/lib')
+        self.radio_cst = wx.RadioButton(target_panel, ID_CUSTOM, GT(u'Custom'))
         
         # Start with "Custom" selected
         self.radio_cst.SetValue(True)
@@ -124,11 +126,15 @@ class Panel(WizardPage):
         
         layout_target = wx.GridSizer(3, 2, 5, 5)
         for item in self.targets:
-            layout_target.Add(item, 0)
+            layout_target.Add(item, 0, wx.LEFT|wx.RIGHT, 5)
+        
+        target_panel.SetAutoLayout(True)
+        target_panel.SetSizer(layout_target)
+        target_panel.Layout()
         
         # Border around radio buttons
-        layout_target_border = wx.StaticBoxSizer(target_border, wx.VERTICAL)
-        layout_target_border.Add(layout_target, 0, wx.TOP, 5)
+        #layout_target_border = wx.StaticBoxSizer(target_border, wx.VERTICAL)
+        #layout_target_border.Add(layout_target, 0, wx.TOP, 5)
         
         # Put text input in its own sizer to force expand
         layout_input = wx.BoxSizer(wx.HORIZONTAL)
@@ -147,7 +153,8 @@ class Panel(WizardPage):
         
         layout_Vright = wx.BoxSizer(wx.VERTICAL)
         layout_Vright.Add(btn_help, 0, wx.ALIGN_RIGHT|wx.TOP, 5)
-        layout_Vright.Add(layout_target_border, 0, wx.TOP|wx.BOTTOM, 5)
+        layout_Vright.Add(wx.StaticText(self, label=GT(u'Target')), 0)
+        layout_Vright.Add(target_panel, 0)
         layout_Vright.Add(layout_buttons, 0, wx.EXPAND)
         layout_Vright.Add(self.file_list, 1, wx.EXPAND, wx.TOP, 5)
         
