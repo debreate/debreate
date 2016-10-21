@@ -451,14 +451,18 @@ class Panel(WizardPage):
         menu_page = self.wizard.GetPage(ID_MENU)
         
         required_fields = {
-            GT(u'Control'): (control_page.pack, control_page.ver, control_page.auth, control_page.email,),
+            GT(u'Control'): control_page.GetRequiredFields(),
         }
         
         if menu_page.activate.GetValue():
-            #required_fields.append(self.debreate.page_menu.name_input)
-            required_fields[GT(u'Menu Launcher')] = (menu_page.name_input,)
+            #required_fields[GT(u'Menu Launcher')] = (menu_page.name_input,)
+            required_fields[GT(u'Menu Launcher')] = menu_page.GetRequiredFields()
+            
+            for RF in required_fields[GT(u'Menu Launcher')]:
+                Logger.Debug(__name__, GT(u'Required field (Menu Launcher): {}').format(RF.GetName()))
         
         for page_name in required_fields:
+            Logger.Debug(__name__, GT(u'Page name: {}').format(page_name))
             for F in required_fields[page_name]:
                 if TextIsEmpty(F.GetValue()):
                     field_name = F.GetName()
@@ -473,6 +477,7 @@ class Panel(WizardPage):
                     
                     for P in self.wizard.pages:
                         if P.GetLabel() == page_name:
+                            Logger.Debug(__name__, GT(u'Showing page with required field: {}').format(page_name))
                             self.wizard.ShowPage(P.GetId())
                     
                     return
