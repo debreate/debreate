@@ -263,90 +263,13 @@ class Panel(WizardPage):
         return GT(u'Control file created: {}').format(absolute_filename)
     
     
-    ## Tells the build script whether page should be built
-    #  
-    #  \override dbr.wizard.WizardPage.IsExportable
-    def IsExportable(self):
-        # Build page must always be built
-        return True
-    
-    
-    ## FIXME: Define
-    def OnResize(self, event):
-        #self.ReLayout()
-        pass
-    
-    
-    ## TODO: Doxygen
-    ## FIXME: Unfinished???
-    def ReLayout(self):
-        # Organize all widgets correctly
-        lc_width = self.coauth.GetSize()[0]
-        self.coauth.SetColumnWidth(0, lc_width/2)
-        
-    
-    ## TODO: Doxygen
-    def OnBrowse(self, event):
-        wildcards = (
-            GT(u'All files'), u'*',
-            GT(u'CONTROL file'), u'CONTROL',
-        )
-        
-        browse_dialog = GetFileOpenDialog(self.debreate, GT(u'Open File'), wildcards)
-        if ShowDialog(browse_dialog):
-            file_path = browse_dialog.GetPath()
-            self.ImportPageInfo(file_path)
-    
-    
-    ## TODO: Doxygen
-    def OnSave(self, event):
-        wildcards = (
-            GT(u'All files'), u'*',
-        )
-        
-        save_dialog = GetFileSaveDialog(self.debreate, GT(u'Save Control Information'), wildcards)
-        if ShowDialog(save_dialog):
-            file_path = save_dialog.GetPath()
-            self.Export(os.path.dirname(file_path), os.path.basename(file_path))
-    
-    
-    ## TODO: Doxygen
-    def OnPreview(self, event):
-        # Show a preview of the control file
-        control = self.GetCtrlInfo()
-        
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        preview.SetValue(control)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
-        
-        dia.ShowModal()
-        dia.Destroy()
-    
-    
-    ## TODO: Doxygen
-    def OnCtrlKey(self, event):
-        key = event.GetKeyCode()
-        mod = event.GetModifiers()
-        
-        if mod == 2 and key == 80:
-            self.OnPreview(None)
-        
-        event.Skip()
-    
-    
     ## TODO: Doxygen
     ## FIXME: Deprecated???
     def GetCtrlInfo(self):
         # Creat a list to store info
         ctrl_list = []
         
-        getvals = (	(u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
+        getvals = (    (u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
                     (u'Homepage',self.url), #(u'Standards-Version',self.stdver), (u'Format',self.format),
                     #(u'Binary',self.bin), (u'Files',self.files), (u'Date',self.date), (u'Changes',self.changes),
                     #(u'Distribution',self.dist), (u'Closes',self.closes) )
@@ -447,120 +370,8 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
-        if isinstance(data, str):
-            # Decode to unicode string if input is byte string
-            data = data.decode(u'utf-8')
-        control_data = data.split(u'\n')
-        # Remove newline at end of document required by dpkg
-        if control_data[-1] == u'\n':
-            control_data = control_data[:-1]
-        
-        # Fields that use "SetValue()" function
-        set_value_fields = (
-            (u'Package', self.pack), (u'Version', self.ver),
-            (u'Source', self.src), (u'Section', self.sect),
-            (u'Homepage', self.url), (u'Description', self.syn)
-            )
-        
-        # Fields that use "SetSelection()" function
-        set_selection_fields = (
-            (u'Architecture', self.arch, self.arch_opt),
-            (u'Priority', self.prior, self.prior_opt),
-            (u'Essential', self.ess, self.ess_opt)
-            )
-        
-        # Store Dependencies
-        depends_containers = (
-            [u'Depends'], [u'Pre-Depends'], [u'Recommends'], [u'Suggests'], [u'Enhances'],
-            [u'Conflicts'], [u'Replaces'], [u'Breaks']
-            )
-        
-        # Anything left over is dumped into this list then into the description
-        leftovers = []
-        # Separate Maintainer for later since is divided by Author/Email
-        author = wx.EmptyString
-        
-        for field in control_data:
-            if u': ' in field:
-                f1 = field.split(u': ')[0]
-                f2 = u': '.join(field.split(u': ')[1:]) # For dependency fields that have ": " in description
-                # Catch Maintainer and put in author variable
-                if f1 == u'Maintainer':
-                    author = f2
-                # Set the rest of the wx.TextCtrl fields
-                for setval in set_value_fields:
-                    if f1 == setval[0]:
-                        setval[1].SetValue(f2)
-                # Set the wx.Choice fields
-                for setsel in set_selection_fields:
-                    if f1 == setsel[0]:
-                        try:
-                            setsel[1].SetSelection(setsel[2].index(f2))
-                        except ValueError:
-                            pass
-                # Set dependencies
-                for container in depends_containers:
-                    if f1 == container[0]:
-                        for dep in f2.split(u', '):
-                            container.append(dep)
-            else:
-                if field == u' .':
-                    leftovers.append(wx.EmptyString) # Add a blank line for lines marked with a "."
-                elif field == u'\n' or field == u' ' or field == wx.EmptyString:
-                    pass # Ignore empty lines
-                elif field[0] == u' ':
-                    leftovers.append(field[1:]) # Remove the first space generated in the description
-                else:
-                    leftovers.append(field)
-        
-        # Put leftovers in long description
-        self.desc.SetValue(u'\n'.join(leftovers))
-        
-        # Set the "Author" and "Email" fields
-        if author != wx.EmptyString:
-            self.auth.SetValue(author.split(u' <')[0])
-            self.email.SetValue(author.split(u' <')[1].split(u'>')[0])
-        
-        # Return depends data to parent to be sent to page_depends
-        return depends_containers
-    
-    
-    ## TODO: Doxygen
     def GetPackageName(self):
         return self.pack.GetValue()
-    
-    
-    ## Determining of project is modified
-    #  
-    #  TODO: Doxygen
-    def OnKeyDown(self, event):
-        for widget in self.text_widgets:
-            self.text_widgets[widget] = widget.GetValue()
-        event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def OnKeyUp(self, event):
-        modified = False
-        for widget in self.text_widgets:
-            if widget.GetValue() != self.text_widgets[widget]:
-                modified = True
-        self.debreate.SetSavedStatus(modified)
-        event.Skip()
-    
-    
-    ## Retrieves information for control file export
-    #  
-    #  \param string_format
-    #        \b \e bool : If True, only string-formatted info is returned
-    #  \return
-    #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
-    def GetPageInfo(self, string_format=False):
-        if string_format:
-            return self.GetCtrlInfo()
-        
-        return (__name__, self.GetCtrlInfo())
     
     
     def ImportPageInfo(self, filename):
@@ -673,6 +484,115 @@ class Panel(WizardPage):
             self.desc.SetValue(desc)
     
     
+    ## Tells the build script whether page should be built
+    #  
+    #  \override dbr.wizard.WizardPage.IsExportable
+    def IsExportable(self):
+        # Build page must always be built
+        return True
+    
+    
+    ## Retrieves information for control file export
+    #  
+    #  \param string_format
+    #        \b \e bool : If True, only string-formatted info is returned
+    #  \return
+    #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
+    def GetPageInfo(self, string_format=False):
+        if string_format:
+            return self.GetCtrlInfo()
+        
+        return (__name__, self.GetCtrlInfo())
+    
+    
+    ## TODO: Doxygen
+    def OnBrowse(self, event):
+        wildcards = (
+            GT(u'All files'), u'*',
+            GT(u'CONTROL file'), u'CONTROL',
+        )
+        
+        browse_dialog = GetFileOpenDialog(self.debreate, GT(u'Open File'), wildcards)
+        if ShowDialog(browse_dialog):
+            file_path = browse_dialog.GetPath()
+            self.ImportPageInfo(file_path)
+    
+    
+    ## TODO: Doxygen
+    def OnCtrlKey(self, event):
+        key = event.GetKeyCode()
+        mod = event.GetModifiers()
+        
+        if mod == 2 and key == 80:
+            self.OnPreview(None)
+        
+        event.Skip()
+    
+    
+    ## Determining of project is modified
+    #  
+    #  TODO: Doxygen
+    def OnKeyDown(self, event):
+        for widget in self.text_widgets:
+            self.text_widgets[widget] = widget.GetValue()
+        event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def OnKeyUp(self, event):
+        modified = False
+        for widget in self.text_widgets:
+            if widget.GetValue() != self.text_widgets[widget]:
+                modified = True
+        self.debreate.SetSavedStatus(modified)
+        event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def OnPreview(self, event):
+        # Show a preview of the control file
+        control = self.GetCtrlInfo()
+        
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
+        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview.SetValue(control)
+        
+        dia_sizer = wx.BoxSizer(wx.VERTICAL)
+        dia_sizer.Add(preview, 1, wx.EXPAND)
+        
+        dia.SetSizer(dia_sizer)
+        dia.Layout()
+        
+        dia.ShowModal()
+        dia.Destroy()
+    
+    
+    ## FIXME: Define
+    def OnResize(self, event):
+        #self.ReLayout()
+        pass
+    
+    
+    ## TODO: Doxygen
+    def OnSave(self, event):
+        wildcards = (
+            GT(u'All files'), u'*',
+        )
+        
+        save_dialog = GetFileSaveDialog(self.debreate, GT(u'Save Control Information'), wildcards)
+        if ShowDialog(save_dialog):
+            file_path = save_dialog.GetPath()
+            self.Export(os.path.dirname(file_path), os.path.basename(file_path))
+    
+    
+    ## TODO: Doxygen
+    ## FIXME: Unfinished???
+    def ReLayout(self):
+        # Organize all widgets correctly
+        lc_width = self.coauth.GetSize()[0]
+        self.coauth.SetColumnWidth(0, lc_width/2)
+    
+    
     ## Resets all fields on page to default values
     def ResetPageInfo(self):
         for child in self.bg.GetChildren():
@@ -683,3 +603,83 @@ class Panel(WizardPage):
             elif isinstance(child, wx.Choice):
                 # wx.Choice instances should have custom member wx.Choice.default set
                 child.SetSelection(child.default)
+        
+    
+    ## TODO: Doxygen
+    def SetFieldDataLegacy(self, data):
+        if isinstance(data, str):
+            # Decode to unicode string if input is byte string
+            data = data.decode(u'utf-8')
+        control_data = data.split(u'\n')
+        # Remove newline at end of document required by dpkg
+        if control_data[-1] == u'\n':
+            control_data = control_data[:-1]
+        
+        # Fields that use "SetValue()" function
+        set_value_fields = (
+            (u'Package', self.pack), (u'Version', self.ver),
+            (u'Source', self.src), (u'Section', self.sect),
+            (u'Homepage', self.url), (u'Description', self.syn)
+            )
+        
+        # Fields that use "SetSelection()" function
+        set_selection_fields = (
+            (u'Architecture', self.arch, self.arch_opt),
+            (u'Priority', self.prior, self.prior_opt),
+            (u'Essential', self.ess, self.ess_opt)
+            )
+        
+        # Store Dependencies
+        depends_containers = (
+            [u'Depends'], [u'Pre-Depends'], [u'Recommends'], [u'Suggests'], [u'Enhances'],
+            [u'Conflicts'], [u'Replaces'], [u'Breaks']
+            )
+        
+        # Anything left over is dumped into this list then into the description
+        leftovers = []
+        # Separate Maintainer for later since is divided by Author/Email
+        author = wx.EmptyString
+        
+        for field in control_data:
+            if u': ' in field:
+                f1 = field.split(u': ')[0]
+                f2 = u': '.join(field.split(u': ')[1:]) # For dependency fields that have ": " in description
+                # Catch Maintainer and put in author variable
+                if f1 == u'Maintainer':
+                    author = f2
+                # Set the rest of the wx.TextCtrl fields
+                for setval in set_value_fields:
+                    if f1 == setval[0]:
+                        setval[1].SetValue(f2)
+                # Set the wx.Choice fields
+                for setsel in set_selection_fields:
+                    if f1 == setsel[0]:
+                        try:
+                            setsel[1].SetSelection(setsel[2].index(f2))
+                        except ValueError:
+                            pass
+                # Set dependencies
+                for container in depends_containers:
+                    if f1 == container[0]:
+                        for dep in f2.split(u', '):
+                            container.append(dep)
+            else:
+                if field == u' .':
+                    leftovers.append(wx.EmptyString) # Add a blank line for lines marked with a "."
+                elif field == u'\n' or field == u' ' or field == wx.EmptyString:
+                    pass # Ignore empty lines
+                elif field[0] == u' ':
+                    leftovers.append(field[1:]) # Remove the first space generated in the description
+                else:
+                    leftovers.append(field)
+        
+        # Put leftovers in long description
+        self.desc.SetValue(u'\n'.join(leftovers))
+        
+        # Set the "Author" and "Email" fields
+        if author != wx.EmptyString:
+            self.auth.SetValue(author.split(u' <')[0])
+            self.email.SetValue(author.split(u' <')[1].split(u'>')[0])
+        
+        # Return depends data to parent to be sent to page_depends
+        return depends_containers
