@@ -10,14 +10,15 @@ from dbr.error          import ShowError
 from dbr.functions      import RemovePreWhitespace
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
-from dbr.monotext       import MT_BTN_BR
-from dbr.monotext       import MonospaceTextCtrl
+from dbr.templates      import application_licenses_path
+from dbr.templates      import local_licenses_path
+from dbr.textinput      import MT_BTN_BR
+from dbr.textinput      import MonospaceTextCtrl
 from dbr.wizard         import WizardPage
 from globals.errorcodes import errno
 from globals.ident      import ID_COPYRIGHT
-from globals.tooltips import SetPageToolTips
-from globals.constants import system_licenses_path
-from dbr.templates import local_licenses_path, application_licenses_path
+from globals.tooltips   import SetPageToolTips
+from globals.constants  import system_licenses_path
 
 
 # Globals
