@@ -431,7 +431,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetFieldDataDeprecated(self, data):
+    def SetFieldDataLegacy(self, data):
         # Clear files list
         self.list_data = []
         self.file_list.DeleteAllItems()

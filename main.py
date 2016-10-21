@@ -826,13 +826,12 @@ class MainWindow(wx.Frame):
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-        depends_data = self.page_control.SetFieldData(control_data)
-        self.page_depends.SetFieldData(depends_data)
+        depends_data = self.page_control.SetFieldDataLegacy(control_data)
+        self.page_depends.SetFieldDataLegacy(depends_data)
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        # TODO: Rename to SetFieldDataLegacy
-        self.page_files.SetFieldDataDeprecated(files_data)
+        self.page_files.SetFieldDataLegacy(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
@@ -851,7 +850,7 @@ class MainWindow(wx.Frame):
         
         # *** Get Menu Data *** #
         menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-        self.page_menu.SetFieldData(menu_data)
+        self.page_menu.SetFieldDataLegacy(menu_data)
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
