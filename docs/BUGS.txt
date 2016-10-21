@@ -1,2 +1,4 @@
+Known Bugs:
 - QuickBuild broken
 - Cannot use Ctrl+A on Files page
+- md5sum produces different hash for binary files than debuild
