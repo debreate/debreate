@@ -36,6 +36,8 @@ id_definitions = {
     ID_RM_POST: u'postrm',
 }
 
+
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_SCRIPTS)
@@ -176,6 +178,20 @@ scripts will be created that will place a symbolic link to your executables in t
     
     
     ## TODO: Doxygen
+    def Export(self, out_dir):
+        return_code = (0, None)
+        
+        for S, O in self.script_objects:
+            if S.IsExportable():
+                return_code = S.Export(out_dir, False)
+                
+                if return_code[0]:
+                    return return_code
+        
+        return return_code
+    
+    
+    ## TODO: Doxygen
     def ExportBuild(self, stage):
         stage = u'{}/DEBIAN'.format(stage).replace(u'//', u'/')
         
@@ -189,24 +205,6 @@ scripts will be created that will place a symbolic link to your executables in t
         
         return (dbrerrno.SUCCESS, None)
                 
-    
-    ## TODO: Doxygen
-    def IsExportable(self):
-        for S, RB in self.script_objects:
-            if S.IsExportable():
-                return True
-    
-    
-    ## TODO: Doxygen
-    def ScriptSelect(self, event):
-        for S, RB in self.script_objects:
-            if RB.GetValue():
-                S.Show()
-            else:
-                S.Hide()
-        
-        self.Layout()
-    
     
     ## Imports names of executables from files page
     def ImportExe(self, event):
@@ -239,6 +237,56 @@ scripts will be created that will place a symbolic link to your executables in t
             if exe != -1:
                 self.executables.DeleteItem(exe)
                 self.xlist.remove(self.xlist[exe])
+    
+    
+    ## TODO: Doxygen
+    def ImportPageInfo(self, filename):
+        Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
+        
+        script_name = filename.split(u'-')[-1]
+        script_object = None
+        
+        for S, O in self.script_objects:
+            if script_name == S.GetFilename():
+                script_object = S
+                break
+        
+        # Loading the actual text
+        # FIXME: Should be done in class method
+        if script_object != None:
+            FILE = open(filename)
+            script_data = FILE.read().split(u'\n')
+            FILE.close()
+            
+            # FIXME: this should be global variable
+            shebang = u'/bin/bash'
+            
+            remove_indexes = 0
+            
+            if u'#!' == script_data[0][:2]:
+                shebang = script_data[0][2:]
+                script_data.remove(script_data[0])
+            
+            # Remove empty lines from beginning of script
+            for L in script_data:
+                if not TextIsEmpty(L):
+                    break
+                
+                remove_indexes += 1
+            
+            for I in reversed(range(remove_indexes)):
+                script_data.remove(script_data[I])
+            script_data = u'\n'.join(script_data)
+            
+            script_object.SetShell(shebang, True)
+            script_object.SetValue(script_data)
+    
+    
+    ## TODO: Doxygen
+    def IsExportable(self):
+        for S, RB in self.script_objects:
+            if S.IsExportable():
+                return True
     
     
     ## TODO: Doxygen
@@ -321,6 +369,26 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_help.Close()
     
     
+    ## Resets all fields on page to default values
+    def ResetPageInfo(self):
+        for S, O in self.script_objects:
+            S.Reset()
+        
+        self.al_input.Reset()
+        self.executables.DeleteAllItems()
+    
+    
+    ## TODO: Doxygen
+    def ScriptSelect(self, event):
+        for S, RB in self.script_objects:
+            if RB.GetValue():
+                S.Show()
+            else:
+                S.Hide()
+        
+        self.Layout()
+    
+    
     ## TODO: Doxygen
     def SetFieldDataLegacy(self, data):
         preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
@@ -346,74 +414,7 @@ scripts will be created that will place a symbolic link to your executables in t
         if unicode(postrm[0]).isnumeric():
             if int(postrm[0]):
                 self.postrm.SetValue(format_script(postrm))
-    
-    
-    ## TODO: Doxygen
-    def Export(self, out_dir):
-        return_code = (0, None)
-        
-        for S, O in self.script_objects:
-            if S.IsExportable():
-                return_code = S.Export(out_dir, False)
-                
-                if return_code[0]:
-                    return return_code
-        
-        return return_code
-    
-    
-    ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
-        Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
-        
-        script_name = filename.split(u'-')[-1]
-        script_object = None
-        
-        for S, O in self.script_objects:
-            if script_name == S.GetFilename():
-                script_object = S
-                break
-        
-        # Loading the actual text
-        # FIXME: Should be done in class method
-        if script_object != None:
-            FILE = open(filename)
-            script_data = FILE.read().split(u'\n')
-            FILE.close()
-            
-            # FIXME: this should be global variable
-            shebang = u'/bin/bash'
-            
-            remove_indexes = 0
-            
-            if u'#!' == script_data[0][:2]:
-                shebang = script_data[0][2:]
-                script_data.remove(script_data[0])
-            
-            # Remove empty lines from beginning of script
-            for L in script_data:
-                if not TextIsEmpty(L):
-                    break
-                
-                remove_indexes += 1
-            
-            for I in reversed(range(remove_indexes)):
-                script_data.remove(script_data[I])
-            script_data = u'\n'.join(script_data)
-            
-            script_object.SetShell(shebang, True)
-            script_object.SetValue(script_data)
-    
-    
-    ## Resets all fields on page to default values
-    def ResetPageInfo(self):
-        for S, O in self.script_objects:
-            S.Reset()
-        
-        self.al_input.Reset()
-        self.executables.DeleteAllItems()
-                
-    
+
 
 
 ## Descriptions for each available pre-defined shell
@@ -510,45 +511,6 @@ class DebianScript(wx.Panel):
             self.script_name = GT(u'{}-{}'.format(prefix, suffix))
     
     
-    ## Retrieves the filename to use for exporting
-    #  
-    #  \return
-    #        \b \e str : Script filename
-    def GetFilename(self):
-        return self.script_filename
-    
-    
-    ## Retrieves the script's name for display
-    #  
-    #  \return
-    #        \b \e str : String representation of script's name
-    def GetName(self):
-        return self.script_name
-    
-    
-    ## Retrieves the description of a shell for display
-    #  
-    #  \return
-    #        \b \e str : Description or None if using custom shell
-    def GetSelectedShellDescription(self):
-        selected_shell = self.shell.GetValue()
-        
-        if selected_shell in shell_descriptions:
-            return shell_descriptions[selected_shell]
-        
-        return None
-    
-    
-    ## Retrieves whether or not the script is used & should be exported
-    #  
-    #  The text area is checked &, if not empty, signifies that
-    #    the user want to export the script.
-    #  \return
-    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
-    def IsExportable(self):
-        return (not TextIsEmpty(self.script_body.GetValue()))
-    
-    
     ## Exports the script to a text file
     #  
     #  \param out_dir
@@ -589,9 +551,59 @@ class DebianScript(wx.Panel):
         return (0, None)
     
     
+    ## Retrieves the filename to use for exporting
+    #  
+    #  \return
+    #        \b \e str : Script filename
+    def GetFilename(self):
+        return self.script_filename
+    
+    
+    ## Retrieves the script's name for display
+    #  
+    #  \return
+    #        \b \e str : String representation of script's name
+    def GetName(self):
+        return self.script_name
+    
+    
+    ## Retrieves the description of a shell for display
+    #  
+    #  \return
+    #        \b \e str : Description or None if using custom shell
+    def GetSelectedShellDescription(self):
+        selected_shell = self.shell.GetValue()
+        
+        if selected_shell in shell_descriptions:
+            return shell_descriptions[selected_shell]
+        
+        return None
+    
+    
     ## TODO: Doxygen
     def GetValue(self):
         return self.script_body.GetValue()
+    
+    
+    ## Retrieves whether or not the script is used & should be exported
+    #  
+    #  The text area is checked &, if not empty, signifies that
+    #    the user want to export the script.
+    #  \return
+    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
+    def IsExportable(self):
+        return (not TextIsEmpty(self.script_body.GetValue()))
+    
+    
+    ## Resets all members to default values
+    def Reset(self):
+        self.shell.SetStringSelection(self.shell.default)
+        self.script_body.Clear()
+    
+    
+    ## TODO: Doxygen
+    def SetScript(self, value):
+        self.SetValue(value)
     
     
     ## TODO: Doxygen
@@ -609,14 +621,3 @@ class DebianScript(wx.Panel):
     #        \b \e unicode|str : Text to be displayed
     def SetValue(self, value):
         self.script_body.SetValue(value)
-    
-    
-    ## TODO: Doxygen
-    def SetScript(self, value):
-        self.SetValue(value)
-    
-    
-    ## Resets all members to default values
-    def Reset(self):
-        self.shell.SetStringSelection(self.shell.default)
-        self.script_body.Clear()
