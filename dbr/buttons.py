@@ -24,6 +24,7 @@ from globals.ident  import ID_IMPORT
 from globals.ident  import ID_NEXT
 from globals.ident  import ID_PREV
 from globals.paths  import PATH_app
+from globals.bitmaps import BUTTON_REFRESH
 
 
 class ToolTipButton(wx.BitmapButton):
@@ -40,8 +41,16 @@ class ToolTipButton(wx.BitmapButton):
                 tooltip = wx.ToolTip(tooltip)
             
             self.SetToolTip(tooltip)
+
+
+## The same as wx.BitmapButton but defaults to style=wx.NO_BORDER
+class BitmapButton(wx.BitmapButton):
+    def __init__(self, parent, bitmap, ID=wx.ID_ANY, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=wx.NO_BORDER, validator=wx.DefaultValidator,
+            name=wx.ButtonNameStr):
         
-        
+        wx.BitmapButton.__init__(self, parent, ID, bitmap, pos, size, style|wx.NO_BORDER,
+                validator, name)
 
 
 class ButtonAdd(ToolTipButton):
@@ -127,9 +136,9 @@ class ButtonQuestion64(ToolTipButton):
 ## Button for refreshing displayed controls
 #  
 #  TODO: Use wx.BitmapButton
-class ButtonRefresh(wx.Button):
+class ButtonRefresh(BitmapButton):
     def __init__(self, parent, name=u'refresh'):
-        wx.Button.__init__(self, parent, ID_REFRESH)
+        BitmapButton.__init__(self, parent, BUTTON_REFRESH, ID_REFRESH, name=name)
 
 
 class ButtonSave(ToolTipButton):
