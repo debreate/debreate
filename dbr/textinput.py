@@ -12,6 +12,14 @@ from dbr.font       import MONOSPACED_LG
 from dbr.language   import GT
 
 
+## A text control that is multiline & uses a themed border
+class MultilineTextCtrl(wx.TextCtrl):
+    def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+        wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE|wx.BORDER_THEME,
+                validator, name)
+
+
 MT_NO_BTN = 0
 MT_BTN_TL = 1
 MT_BTN_TR = 2
@@ -25,6 +33,7 @@ button_H_pos = {
     MT_BTN_BR: wx.ALIGN_RIGHT,
 }
 
+# TODO: Derive from MultilineTextCtrl
 class MonospaceTextCtrl(wx.Panel):
     def __init__(self, parent, ID=wx.ID_ANY, button=MT_NO_BTN, name=wx.EmptyString, style=wx.TE_MULTILINE):
         wx.Panel.__init__(self, parent, ID)
