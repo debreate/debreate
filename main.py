@@ -137,8 +137,18 @@ class MainWindow(wx.Frame):
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
-        # ----- Page Menu
+        # *** Page Menu *** #
+        ## This menu is filled from dbr.wizard.Wizard
         self.menu_page = wx.Menu()
+        
+        # *** Action Menu *** #
+        self.menu_action = wx.Menu()
+        
+        # FIXME: Use global ID???
+        action_build = wx.MenuItem(self.menu_action, wx.NewId(), GT(u'Build'),
+                GT(u'Start building .deb package'))
+        
+        self.menu_action.AppendItem(action_build)
         
         # ----- Options Menu
         self.menu_opt = wx.Menu()
@@ -261,10 +271,11 @@ class MainWindow(wx.Frame):
         self.menubar = wx.MenuBar()
         self.SetMenuBar(self.menubar)
         
-        self.menubar.Insert(0, self.menu_file, GT(u'File'))
-        self.menubar.Insert(1, self.menu_page, GT(u'Page'))
-        self.menubar.Insert(2, self.menu_opt, GT(u'Options'))
-        self.menubar.Insert(3, self.menu_help, GT(u'Help'))
+        self.menubar.Append(self.menu_file, GT(u'File'))
+        self.menubar.Append(self.menu_page, GT(u'Page'))
+        self.menubar.Append(self.menu_action, GT(u'Action'))
+        self.menubar.Append(self.menu_opt, GT(u'Options'))
+        self.menubar.Append(self.menu_help, GT(u'Help'))
         
         self.wizard = dbr.Wizard(self) # Binary
         self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
@@ -311,6 +322,10 @@ class MainWindow(wx.Frame):
         self.SetAutoLayout(True)
         self.SetSizer(self.main_sizer)
         self.Layout()
+        
+        
+        # Action menu events
+        wx.EVT_MENU(self, action_build.GetId(), self.page_build.OnBuild)
         
         
         # Menu for debugging & running tests
