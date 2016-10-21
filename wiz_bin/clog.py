@@ -132,6 +132,7 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
         ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
         
@@ -143,6 +144,7 @@ class Panel(WizardPage):
         return ret_value
     
     
+    ## TODO: Doxygen
     def ExportBuild(self, stage):
         debreate = self.GetDebreateWindow()
         
@@ -166,10 +168,12 @@ class Panel(WizardPage):
         return(0, export_summary)
     
     
+    ## TODO: Doxygen
     def IsExportable(self):
         return not TextIsEmpty(self.log.GetValue())
     
     
+    ## TODO: Doxygen
     def ImportInfo(self, event):
         # Import package name and version from the control page
         # FIXME: Should use a safer method
@@ -178,6 +182,8 @@ class Panel(WizardPage):
         self.maintainer.SetValue(self.debreate.page_control.auth.GetValue())
         self.email.SetValue(self.debreate.page_control.email.GetValue())
     
+    
+    ## TODO: Doxygen
     def AddInfo(self, event):
         changes = self.changes.GetValue()
         if TextIsEmpty(changes):
@@ -216,9 +222,15 @@ class Panel(WizardPage):
         entry = u'\n'.join((info1, details, info2))
         self.log.SetValue(u'\n'.join((entry, wx.EmptyString, self.log.GetValue())))
     
+    
+    ## TODO: Doxygen
     def GetChangelog(self):
         return self.log.GetValue()
-
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  FIXME: Legacy
     def SetChangelog(self, data):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
@@ -228,13 +240,9 @@ class Panel(WizardPage):
             self.target_custom.SetValue(True)
             self.target.SetValue(dest)
         self.log.SetValue(u'\n'.join(changelog[1:]))
-        #self.Toggle(True)
     
-#    def Toggle(self, value):
-#        # Enable/Disable all fields
-#        for item in self.toggle_list:
-#            item.Enable(value)
     
+    ## TODO: Doxygen
     def ResetAllFields(self):
         self.package.Clear()
         self.version.Clear()
@@ -246,17 +254,6 @@ class Panel(WizardPage):
         self.target_default.SetValue(True)
         self.target.SetValue(u'/')
         self.log.Clear()
-    
-    ## Deprecated
-    #  
-    #  TODO: Remove after implementing new save format
-    def GatherData(self):
-        if self.target_default.GetValue():
-            dest = u'<<DEST>>DEFAULT<</DEST>>'
-        elif self.target_custom.GetValue():
-            dest = u'<<DEST>>' + self.target.GetValue() + u'<</DEST>>'
-        
-        return u'\n'.join((u'<<CHANGELOG>>', dest, self.log.GetValue(), u'<</CHANGELOG>>'))
     
     
     ## Retrieves changelog information
@@ -279,6 +276,7 @@ class Panel(WizardPage):
         return (__name__, u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body))
     
     
+    ## TODO: Doxygen
     def ImportPageInfo(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -346,6 +344,7 @@ class Panel(WizardPage):
         return 0
     
     
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         self.target.Reset()
         self.log.Clear()
