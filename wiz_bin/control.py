@@ -19,6 +19,7 @@ from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CONTROL
 from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
+from dbr.help           import HelpButton
 
 
 ## TODO: Doxygen
@@ -44,6 +45,8 @@ class Panel(WizardPage):
         button_preview = ButtonPreview64(self.bg)
         button_preview.SetName(u'preview')
         
+        button_help = HelpButton(self.bg)
+        
         wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
         wx.EVT_BUTTON(button_save, -1, self.OnSave)
         wx.EVT_BUTTON(button_preview, -1, self.OnPreview)
@@ -52,6 +55,8 @@ class Panel(WizardPage):
         button_sizer.Add(button_open, 0)
         button_sizer.Add(button_save, 0)
         button_sizer.Add(button_preview, 0)
+        button_sizer.AddStretchSpacer(1)
+        button_sizer.Add(button_help, 0)
         
         
         # ----- Package ( B[m], SB[m] )
@@ -203,7 +208,7 @@ class Panel(WizardPage):
         
         # Main Layout
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-        main_sizer.Add(button_sizer, 0, wx.ALL, 5)
+        main_sizer.Add(button_sizer, 0, wx.EXPAND|wx.ALL, 5)
         main_sizer.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
         main_sizer.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
         main_sizer.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
