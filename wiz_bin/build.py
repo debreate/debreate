@@ -148,6 +148,9 @@ class Panel(WizardPage):
     #  \param out_file
     #        \b \e str|unicode : Absolute path to target file
     def Build(self, out_file):
+        def log_message(msg, current_step, total_steps):
+            return u'{} ({}/{})'.format(msg, current_step, total_steps)
+        
         pages_build_ids = self.BuildPrep()
         
         # FIXME: Control file should be skipped here & processed last
@@ -168,10 +171,14 @@ class Panel(WizardPage):
             
             stage = CreateTempDirectory()
             
+            log_msg = GT(u'Starting build')
+            
             wx.YieldIfNeeded()
             # FIXME: Enable PD_CAN_ABORT
-            build_progress = wx.ProgressDialog(GT(u'Building'), GT(u'Starting build'),
+            build_progress = wx.ProgressDialog(GT(u'Building'), log_msg,
                     steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+            
+            build_summary.append(u'{}:'.format(log_msg))
             
             try:
                 for P in self.wizard.pages:
@@ -181,18 +188,22 @@ class Panel(WizardPage):
                     if P.GetId() in pages_build_ids:
                         page_label = P.GetLabel()
                         
+                        log_msg = log_message(
+                            GT(u'Processing page "{}"').format(page_label), current_step+1, steps_count)
+                        
                         # FIXME: Progress bar not updating???
                         wx.YieldIfNeeded()
-                        build_progress.Update(current_step,
-                                GT(u'Processing page "{}" ({}/{})').format(page_label, current_step+1, steps_count))
+                        build_progress.Update(current_step, log_msg)
                         
                         ret_code, ret_value = P.ExportBuild(stage)
+                        
+                        build_summary.append(u'\n{}:\n{}'.format(log_msg, ret_value))
                         
                         if ret_code > 0:
                             build_progress.Destroy()
                             
                             err_msg = GT(u'Error occurred during build')
-                            Logger.Error(__name__, u'{}:\n{}'.format(err_msg, ret_value))
+                            Logger.Error(__name__, u'\n{}:\n{}'.format(err_msg, ret_value))
                             
                             err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
                             err_dialog.SetDetails(ret_value)
@@ -208,12 +219,10 @@ class Panel(WizardPage):
                 if not build_progress.WasCancelled():
                     wx.YieldIfNeeded()
                     
-                    log_msg = GT(u'Creating control file')
-                    step = u'{}/{}'.format(current_step+1, steps_count)
-                    build_progress.Update(current_step,
-                            u'{} ({})'.format(log_msg, step))
+                    log_msg = log_message(GT(u'Creating control file'), current_step+1, steps_count)
+                    build_progress.Update(current_step, log_msg)
                     
-                    Logger.Debug(__name__, u'{} ({})'.format(log_msg, step))
+                    Logger.Debug(__name__, log_msg)
                     
                     # Retrieve control page
                     control_page = self.wizard.GetPage(ID_CONTROL)
@@ -231,44 +240,51 @@ class Panel(WizardPage):
                     
                     Logger.Debug(__name__, GT(u'Installed size: {}').format(installed_size))
                     
-                    control_page.ExportBuild(u'{}/DEBIAN'.format(stage).replace(u'//', u'/'), installed_size)
+                    build_summary.append(u'\n{}:'.format(log_msg))
+                    build_summary.append(
+                        control_page.ExportBuild(u'{}/DEBIAN'.format(stage).replace(u'//', u'/'), installed_size)
+                        )
                     
                     current_step += 1
                 
                 # *** MD5 Checksum *** #
                 if not build_progress.WasCancelled():
                     if self.chk_md5.IsChecked():
-                        log_msg = GT(u'Creating MD5 checksum')
-                        step = u'{}/{}'.format(current_step+1, steps_count)
+                        log_msg = log_message(GT(u'Creating MD5 checksum'), current_step+1, steps_count)
+                        #log_msg = GT(u'Creating MD5 checksum')
+                        #step = u'{}/{}'.format(current_step+1, steps_count)
                         
-                        Logger.Debug(__name__, u'{} ({})'.format(log_msg, step))
+                        Logger.Debug(__name__, log_msg)
                         
                         wx.YieldIfNeeded()
-                        build_progress.Update(current_step,
-                                u'{} ({})'.format(log_msg, step))
+                        build_progress.Update(current_step, log_msg)
                         
-                        self.OnBuildMD5Sum(stage)
+                        build_summary.append(u'\n{}:'.format(log_msg))
+                        build_summary.append(self.OnBuildMD5Sum(stage))
                         
                         current_step += 1
                 
                 # *** Create .deb from Stage *** #
                 if not build_progress.WasCancelled():
-                    wx.YieldIfNeeded()
-                    build_progress.Update(current_step,
-                            GT(u'Creating .deb package ({}/{}').format(current_step+1, steps_count))
+                    log_msg = log_message(GT(u'Creating .deb package'), current_step+1, steps_count)
                     
-                    self.OnBuildCreatePackage(stage, out_file)
+                    wx.YieldIfNeeded()
+                    build_progress.Update(current_step, log_msg)
+                    
+                    build_summary.append(u'\n{}:'.format(log_msg))
+                    build_summary.append(self.OnBuildCreatePackage(stage, out_file))
                     
                     current_step += 1
                 
                 # *** Lintian *** #
                 if not build_progress.WasCancelled():
                     if self.chk_lint.IsChecked():
-                        wx.YieldIfNeeded()
-                        build_progress.Update(current_step,
-                                GT(u'Checking package with lintian ({}/{})').format(current_step+1, steps_count))
+                        log_msg = log_message(GT(u'Checking package with lintian'), current_step+1, steps_count)
                         
-                        build_summary.append(u'\n{}'.format(u'Lintian check:'))
+                        wx.YieldIfNeeded()
+                        build_progress.Update(current_step, log_msg)
+                        
+                        build_summary.append(u'\n{}:'.format(log_msg))
                         build_summary.append(self.OnBuildCheckPackage(out_file))
                         
                         current_step += 1
@@ -276,20 +292,29 @@ class Panel(WizardPage):
                 # *** Delete Stage *** #
                 if not build_progress.WasCancelled():
                     if self.chk_rmtree.IsChecked():
-                        wx.YieldIfNeeded()
-                        build_progress.Update(current_step,
-                                GT(u'Removing staged build tree ({}/{})').format(current_step+1, steps_count))
+                        log_msg = log_message(GT(u'Removing staged build tree'), current_step+1, steps_count)
                         
+                        wx.YieldIfNeeded()
+                        build_progress.Update(current_step, log_msg)
+                        
+                        build_summary.append(u'\n{}:'.format(log_msg))
                         RemoveTempDirectory(stage)
+                        
+                        if not os.path.isdir(stage):
+                            build_summary.append(GT(u'Staged build tree removed successfully'))
+                        else:
+                            build_summary.append(GT(u'Failed to remove staged build tree'))
+                        
                         current_step += 1
                 
                 # *** Show Completion Status *** #
                 wx.YieldIfNeeded()
-                #build_progress.Update(steps_count, GT(u'Build complete'))
-                build_progress.Update(steps_count, GT(u'Build incomplete (in development)'))
+                build_progress.Update(steps_count, GT(u'Build completed'))
                 
                 # Show finished dialog for short moment
                 time.sleep(1)
+                
+                # TODO: Add error cound to build summary
                 
                 build_progress.Destroy()
                 
@@ -961,7 +986,7 @@ class Panel(WizardPage):
         
         Logger.Debug(__name__, GT(u'Build output: {}').format(output))
         
-        return (dbrerrno.SUCCESS, None)
+        return output
     
     
     ## Retrieves total size of directory contents
@@ -1026,7 +1051,7 @@ class Panel(WizardPage):
                     md5_list.append(md5)
         
         if not md5_list:
-            return (dbrerrno.ENOENT, GT(u'Could not create md5sums'))
+            return GT(u'Could not create md5sums')
         
         if not os.path.isdir(debian_dir):
             os.makedirs(debian_dir)
@@ -1036,7 +1061,7 @@ class Panel(WizardPage):
         FILE.write(u'\n'.join(md5_list))
         FILE.close()
         
-        return (dbrerrno.SUCCESS, None)
+        return GT(u'md5sums created: {}').format(md5_file)
     
     
     ## FIXME: Deprecated???
