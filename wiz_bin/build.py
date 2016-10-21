@@ -25,7 +25,7 @@ from dbr.wizard             import WizardPage
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_fakeroot, CMD_lintian
+from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
