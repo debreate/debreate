@@ -179,90 +179,6 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
-    ## TODO: Doxygen
-    def ExportBuild(self, target):
-        if not os.path.isdir(target):
-            return (dbrerrno.ENOENT, GT(u'Target directory does not exist: {}').format(target))
-        
-        if self.file_list.MissingFiles():
-            return (dbrerrno.ENOENT, GT(u'Missing files in file list'))
-        
-        file_count = self.file_list.GetItemCount()
-        for R in range(file_count):
-            filename, source_dir, stage_dir, executable = self.file_list.GetRowData(R)
-            
-            stage_dir = u'{}/{}'.format(target, stage_dir).replace(u'//', u'/')
-            staged_file = u'{}/{}'.format(stage_dir, filename).replace(u'//', u'/')
-            
-            filename = u'{}/{}'.format(source_dir, filename).replace(u'//', u'/')
-            Logger.Debug(__name__,
-                    GT(u'Coppying file: {} -> {}').format(filename, stage_dir))
-            
-            if not os.path.isdir(stage_dir):
-                os.makedirs(stage_dir)
-            
-            shutil.copy(filename, stage_dir)
-            
-            if executable:
-                os.chmod(staged_file, 0755)
-            
-            if not os.path.isfile(staged_file):
-                return(dbrerrno.ENOENT, GT(u'File was not copied to stage: {}').format(staged_file))
-        
-        return (dbrerrno.SUCCESS, None)
-    
-    
-    ## TODO: Doxygen
-    def IsExportable(self):
-        return not self.file_list.IsEmpty()
-    
-    
-    ## TODO: Doxygen
-    def OnRefreshFileList(self, event=None):
-        self.file_list.Refresh()
-    
-    
-    ## TODO: Doxygen
-    #  
-    #  FIXME: Rename to OnRightClickTree or similar
-    def OnRightClick(self, event):
-        # Show a context menu for adding files and folders
-        path = self.dir_tree.GetPath()
-        if os.path.isdir(path):
-            self.add_dir.Enable(True)
-            self.add_file.Enable(False)
-        elif os.path.isfile(path):
-            self.add_dir.Enable(False)
-            self.add_file.Enable(True)
-        self.dir_tree.PopupMenu(self.menu)
-    
-    
-    ## TODO: Doxygen
-    def OnBrowse(self, event):
-        dia = GetDirDialog(self.GetDebreateWindow(), GT(u'Choose Target Directory'))
-        if ShowDialog(dia):
-            self.dest_cust.SetValue(dia.GetPath())
-    
-    
-    ## TODO: Doxygen
-    def GetDestValue(self, event):
-        if self.dest_cust.GetValue() != wx.EmptyString:
-            if self.dest_cust.GetValue()[0] == u'/':
-                self.prev_dest_value = self.dest_cust.GetValue()
-        event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def CheckDest(self, event):
-        if self.dest_cust.GetValue() == wx.EmptyString:
-            self.dest_cust.SetValue(self.prev_dest_value)
-            self.dest_cust.SetInsertionPoint(-1)
-        elif self.dest_cust.GetValue()[0] != u'/':
-            self.dest_cust.SetValue(self.prev_dest_value)
-            self.dest_cust.SetInsertionPoint(-1)
-        event.Skip()
-    
-    
     ## Add a selected path to the list of files
     #  
     #  TODO: Rename to OnAddPath
@@ -355,23 +271,22 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnRefresh(self, event):
-        path = self.dir_tree.GetPath()
-#		if isfile(path):
-#			path = os.path.split(path)[0]
-        
-        self.dir_tree.ReCreateTree()
-        self.dir_tree.SetPath(path)
+    def CheckDest(self, event):
+        if self.dest_cust.GetValue() == wx.EmptyString:
+            self.dest_cust.SetValue(self.prev_dest_value)
+            self.dest_cust.SetInsertionPoint(-1)
+        elif self.dest_cust.GetValue()[0] != u'/':
+            self.dest_cust.SetValue(self.prev_dest_value)
+            self.dest_cust.SetInsertionPoint(-1)
+        event.Skip()
     
     
     ## TODO: Doxygen
-    def SelectAll(self):
-        self.file_list.SelectAll()
-    
-    
-    ## TODO: Doxygen
-    def RemoveSelected(self, event):
-        self.file_list.RemoveSelected()
+    def ClearAll(self, event):
+        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+        if confirm.ShowModal() == wx.ID_YES:
+            self.file_list.DeleteAllItems()
+            self.list_data = []
     
     
     # FIXME: Deprecated; Replace with self.OnKeyDelete|self.OnKeyDown
@@ -412,80 +327,44 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ClearAll(self, event):
-        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_YES:
-            self.file_list.DeleteAllItems()
-            self.list_data = []
+    def ExportBuild(self, target):
+        if not os.path.isdir(target):
+            return (dbrerrno.ENOENT, GT(u'Target directory does not exist: {}').format(target))
+        
+        if self.file_list.MissingFiles():
+            return (dbrerrno.ENOENT, GT(u'Missing files in file list'))
+        
+        file_count = self.file_list.GetItemCount()
+        for R in range(file_count):
+            filename, source_dir, stage_dir, executable = self.file_list.GetRowData(R)
+            
+            stage_dir = u'{}/{}'.format(target, stage_dir).replace(u'//', u'/')
+            staged_file = u'{}/{}'.format(stage_dir, filename).replace(u'//', u'/')
+            
+            filename = u'{}/{}'.format(source_dir, filename).replace(u'//', u'/')
+            Logger.Debug(__name__,
+                    GT(u'Coppying file: {} -> {}').format(filename, stage_dir))
+            
+            if not os.path.isdir(stage_dir):
+                os.makedirs(stage_dir)
+            
+            shutil.copy(filename, stage_dir)
+            
+            if executable:
+                os.chmod(staged_file, 0755)
+            
+            if not os.path.isfile(staged_file):
+                return(dbrerrno.ENOENT, GT(u'File was not copied to stage: {}').format(staged_file))
+        
+        return (dbrerrno.SUCCESS, None)
     
     
     ## TODO: Doxygen
-    def SetDestination(self, event):
-        # Event handler that disables the custom destination if the corresponding radio button isn't selected
-        if self.radio_cst.GetValue() == True:
-            self.dest_cust.Enable()
-            self.dest_browse.Enable()
-        else:
-            self.dest_cust.Disable()
-            self.dest_browse.Disable()
-    
-    
-    ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
-        # Clear files list
-        self.list_data = []
-        self.file_list.DeleteAllItems()
-        files_data = data.split(u'\n')
-        if int(files_data[0]):
-            # Get file count from list minus first item "1"
-            files_total = len(files_data)
-            
-            # Store missing files here
-            missing_files = []
-            
-            while files_total > 1:
-                files_total -= 1
-                src = (files_data[files_total].split(u' -> ')[0], False)
-                
-                # False changes to true if src file is executable
-                if src[0][-1] == u'*':
-                    src = (src[0][:-1], True) # Set executable flag and remove "*"
-                filename = files_data[files_total].split(u' -> ')[1]
-                dest = files_data[files_total].split(u' -> ')[2]
-                
-                # Check if files still exist
-                if os.path.exists(src[0]):
-                    # Deprecated
-                    #self.file_list.InsertStringItem(0, absolute_filename)
-                    #self.file_list.SetStringItem(0, 1, dest)
-                    self.file_list.AddFile(filename, os.path.dirname(src[0]), dest)
-                    self.list_data.insert(0, (src[0], filename, dest))
-                    # Check if file is executable
-                    if src[1]:
-                        self.file_list.SetItemTextColour(0, u'red') # Set text color to red
-                else:
-                    missing_files.append(src[0])
-                
-            self.file_list.Sort()
-            
-            # If files are missing show a message
-            if len(missing_files):
-                alert = wx.Dialog(self, -1, GT(u'Missing Files'))
-                alert_text = wx.StaticText(alert, -1, GT(u'Could not locate the following files:'))
-                alert_list = wx.TextCtrl(alert, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-                alert_list.SetValue(u'\n'.join(missing_files))
-                button_ok = wx.Button(alert, wx.ID_OK)
-                
-                alert_sizer = wx.BoxSizer(wx.VERTICAL)
-                alert_sizer.AddSpacer(5)
-                alert_sizer.Add(alert_text, 1)
-                alert_sizer.Add(alert_list, 3, wx.EXPAND)
-                alert_sizer.Add(button_ok, 0, wx.ALIGN_RIGHT)
-                
-                alert.SetSizerAndFit(alert_sizer)
-                alert.Layout()
-                
-                alert.ShowModal()
+    def GetDestValue(self, event):
+        if self.dest_cust.GetValue() != wx.EmptyString:
+            if self.dest_cust.GetValue()[0] == u'/':
+                self.prev_dest_value = self.dest_cust.GetValue()
+        event.Skip()
     
     
     ## Retrieves information on files to be packaged
@@ -587,11 +466,133 @@ class Panel(WizardPage):
         
         return 0
     
+    
+    ## TODO: Doxygen
+    def IsExportable(self):
+        return not self.file_list.IsEmpty()
+    
+    
+    ## TODO: Doxygen
+    def OnBrowse(self, event):
+        dia = GetDirDialog(self.GetDebreateWindow(), GT(u'Choose Target Directory'))
+        if ShowDialog(dia):
+            self.dest_cust.SetValue(dia.GetPath())
+    
+    
+    ## TODO: Doxygen
+    def OnRefreshFileList(self, event=None):
+        self.file_list.Refresh()
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  FIXME: Rename to OnRightClickTree or similar
+    def OnRightClick(self, event):
+        # Show a context menu for adding files and folders
+        path = self.dir_tree.GetPath()
+        if os.path.isdir(path):
+            self.add_dir.Enable(True)
+            self.add_file.Enable(False)
+        elif os.path.isfile(path):
+            self.add_dir.Enable(False)
+            self.add_file.Enable(True)
+        self.dir_tree.PopupMenu(self.menu)
+    
+    
+    ## TODO: Doxygen
+    def OnRefresh(self, event):
+        path = self.dir_tree.GetPath()
+#		if isfile(path):
+#			path = os.path.split(path)[0]
+        
+        self.dir_tree.ReCreateTree()
+        self.dir_tree.SetPath(path)
+    
+    
+    ## TODO: Doxygen
+    def RemoveSelected(self, event):
+        self.file_list.RemoveSelected()
+    
+    
     ## Resets all fields on page to default values
     #  
     #  \override dbr.wizard.Wizard.ImportPageInfo
     def ResetPageInfo(self):
         self.file_list.DeleteAllItems()
+    
+    
+    ## TODO: Doxygen
+    def SelectAll(self):
+        self.file_list.SelectAll()
+    
+    
+    ## TODO: Doxygen
+    def SetDestination(self, event):
+        # Event handler that disables the custom destination if the corresponding radio button isn't selected
+        if self.radio_cst.GetValue() == True:
+            self.dest_cust.Enable()
+            self.dest_browse.Enable()
+        else:
+            self.dest_cust.Disable()
+            self.dest_browse.Disable()
+    
+    
+    ## TODO: Doxygen
+    def SetFieldDataLegacy(self, data):
+        # Clear files list
+        self.list_data = []
+        self.file_list.DeleteAllItems()
+        files_data = data.split(u'\n')
+        if int(files_data[0]):
+            # Get file count from list minus first item "1"
+            files_total = len(files_data)
+            
+            # Store missing files here
+            missing_files = []
+            
+            while files_total > 1:
+                files_total -= 1
+                src = (files_data[files_total].split(u' -> ')[0], False)
+                
+                # False changes to true if src file is executable
+                if src[0][-1] == u'*':
+                    src = (src[0][:-1], True) # Set executable flag and remove "*"
+                filename = files_data[files_total].split(u' -> ')[1]
+                dest = files_data[files_total].split(u' -> ')[2]
+                
+                # Check if files still exist
+                if os.path.exists(src[0]):
+                    # Deprecated
+                    #self.file_list.InsertStringItem(0, absolute_filename)
+                    #self.file_list.SetStringItem(0, 1, dest)
+                    self.file_list.AddFile(filename, os.path.dirname(src[0]), dest)
+                    self.list_data.insert(0, (src[0], filename, dest))
+                    # Check if file is executable
+                    if src[1]:
+                        self.file_list.SetItemTextColour(0, u'red') # Set text color to red
+                else:
+                    missing_files.append(src[0])
+                
+            self.file_list.Sort()
+            
+            # If files are missing show a message
+            if len(missing_files):
+                alert = wx.Dialog(self, -1, GT(u'Missing Files'))
+                alert_text = wx.StaticText(alert, -1, GT(u'Could not locate the following files:'))
+                alert_list = wx.TextCtrl(alert, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+                alert_list.SetValue(u'\n'.join(missing_files))
+                button_ok = wx.Button(alert, wx.ID_OK)
+                
+                alert_sizer = wx.BoxSizer(wx.VERTICAL)
+                alert_sizer.AddSpacer(5)
+                alert_sizer.Add(alert_text, 1)
+                alert_sizer.Add(alert_list, 3, wx.EXPAND)
+                alert_sizer.Add(button_ok, 0, wx.ALIGN_RIGHT)
+                
+                alert.SetSizerAndFit(alert_sizer)
+                alert.Layout()
+                
+                alert.ShowModal()
 
 
 
@@ -642,6 +643,31 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             wx.EVT_SIZE(self, self.OnResize)
     
     
+    ## TODO: Doxygen
+    def AddFile(self, filename, source_dir, target_dir=None, executable=False):
+        list_index = self.GetItemCount()
+        
+        # Method can be called with two argements: absolute filename & target directory
+        if target_dir == None:
+            target_dir = source_dir
+            source_dir = os.path.dirname(filename)
+            filename = os.path.basename(filename)
+        
+        Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
+        
+        self.InsertStringItem(list_index, filename)
+        self.SetStringItem(list_index, self.source_col, source_dir)
+        self.SetStringItem(list_index, self.target_col, target_dir)
+        
+        # TODO: Use 'GetFileMimeType' module to determine file type
+        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
+            self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
+        
+        #self.Refresh()
+        if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
+            self.SetItemBackgroundColour(list_index, COLOR_ERROR)
+    
+    
     ## Retrivies is the item at 'i_index' is executable
     #  
     #  TODO: Doxygen
@@ -655,6 +681,30 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     ## TODO: Doxygen
     def GetFilename(self, i_index):
         return self.GetItemText(i_index)
+    
+    
+    ## TODO: Doxygen
+    def GetRowData(self, row):
+        filename = self.GetItem(row, self.filename_col).GetText()
+        source_dir = self.GetItem(row, self.source_col).GetText()
+        target_dir = self.GetItem(row, self.target_col).GetText()
+        executable = self.GetItem(row, self.type_col).GetText() == file_types_defs[FTYPE_EXE]
+        
+        return (filename, source_dir, target_dir, executable)
+    
+    
+    ## TODO: Doxygen
+    def GetRowDefs(self, row):
+        row_data = self.GetRowData(row)
+        
+        row_defs = {
+            u'filename': row_data[0],
+            u'source': row_data[1],
+            u'target': row_data[2],
+            u'executable': row_data[3],
+        }
+        
+        return row_defs
     
     
     ## TODO: Doxygen
@@ -672,6 +722,11 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         item_count = self.GetItemCount()
         Logger.Debug(__name__, GT(u'File list is empty ({} files): {}').format(item_count, not item_count))
         return not item_count
+    
+    
+    ## TODO: Doxygen
+    def MissingFiles(self):
+        return self.Refresh()
     
     
     ## TODO: Doxygen
@@ -700,32 +755,6 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         TextEditMixin.OnLeftDown(self, event)
         
         event.Skip()
-    
-    
-    ## Refresh file list
-    #  
-    #  Missing files are marked with a distinct color.
-    #  TODO: Update executable status
-    #  \return
-    #        \b \e bool : True if files are missing, False if all okay
-    def Refresh(self):
-        dirty = False
-        for R in range(self.GetItemCount()):
-            item_color = self.DEFAULT_BG_COLOR
-            row_defs = self.GetRowDefs(R)
-            
-            if not os.path.isfile(u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])):
-                item_color = COLOR_ERROR
-                dirty = True
-            
-            self.SetItemBackgroundColour(R, item_color)
-        
-        return dirty
-    
-    
-    ## TODO: Doxygen
-    def MissingFiles(self):
-        return self.Refresh()
     
     
     ## Works around resize bug in wx 3.0
@@ -767,44 +796,25 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         TextEditMixin.OpenEditor(self, self.target_col, row)
     
     
-    ## TODO: Doxygen
-    def AddFile(self, filename, source_dir, target_dir=None, executable=False):
-        list_index = self.GetItemCount()
-        
-        # Method can be called with two argements: absolute filename & target directory
-        if target_dir == None:
-            target_dir = source_dir
-            source_dir = os.path.dirname(filename)
-            filename = os.path.basename(filename)
-        
-        Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
-        
-        self.InsertStringItem(list_index, filename)
-        self.SetStringItem(list_index, self.source_col, source_dir)
-        self.SetStringItem(list_index, self.target_col, target_dir)
-        
-        # TODO: Use 'GetFileMimeType' module to determine file type
-        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
-            self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
-        
-        #self.Refresh()
-        if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
-            self.SetItemBackgroundColour(list_index, COLOR_ERROR)
-    
-    
-    ## TODO: Doxygen
-    def SelectAll(self):
-        file_count = self.GetItemCount()
-        
-        for x in range(file_count):
-            self.Select(x)
-    
-    
-    ## Sorts listed items in target column alphabetially
+    ## Refresh file list
     #  
-    #  TODO: Sort listed items
-    def Sort(self):
-        pass
+    #  Missing files are marked with a distinct color.
+    #  TODO: Update executable status
+    #  \return
+    #        \b \e bool : True if files are missing, False if all okay
+    def Refresh(self):
+        dirty = False
+        for R in range(self.GetItemCount()):
+            item_color = self.DEFAULT_BG_COLOR
+            row_defs = self.GetRowDefs(R)
+            
+            if not os.path.isfile(u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])):
+                item_color = COLOR_ERROR
+                dirty = True
+            
+            self.SetItemBackgroundColour(R, item_color)
+        
+        return dirty
     
     
     ## Removes selected files from list
@@ -826,35 +836,27 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             selected_count = self.GetSelectedItemCount()
     
     
+    ## TODO: Doxygen
+    def SelectAll(self):
+        file_count = self.GetItemCount()
+        
+        for x in range(file_count):
+            self.Select(x)
+    
+    
+    ## Sorts listed items in target column alphabetially
+    #  
+    #  TODO: Sort listed items
+    def Sort(self):
+        pass
+    
+    
     ## Toggles executable flag for selected list items
     #  
     #  TODO: Define & execute with context menu
     def ToggleExecutable(self):
         pass
-    
-    
-    ## TODO: Doxygen
-    def GetRowData(self, row):
-        filename = self.GetItem(row, self.filename_col).GetText()
-        source_dir = self.GetItem(row, self.source_col).GetText()
-        target_dir = self.GetItem(row, self.target_col).GetText()
-        executable = self.GetItem(row, self.type_col).GetText() == file_types_defs[FTYPE_EXE]
-        
-        return (filename, source_dir, target_dir, executable)
-    
-    
-    ## TODO: Doxygen
-    def GetRowDefs(self, row):
-        row_data = self.GetRowData(row)
-        
-        row_defs = {
-            u'filename': row_data[0],
-            u'source': row_data[1],
-            u'target': row_data[2],
-            u'executable': row_data[3],
-        }
-        
-        return row_defs
+
 
 
 ## A custom progress dialog
@@ -893,6 +895,18 @@ class ProgressDialog(wx.Dialog):
         self.ShowModal()
     
     
+    def Destroy(self):
+        self.progress_dialog.Destroy()
+        self.EndModal()
+        del(self)
+    
+    
+    def OnBorderResize(self, event=None):
+        if event != None:
+            # FIXME: Hack
+            self.SetSize(self.progress_size)
+    
+    
     def Update(self, *args, **kwargs):
         self.count_text.SetLabel(u'{} / {}'.format(args[0], self.task_count))
         self.progress.SetValue(args[0])
@@ -904,15 +918,3 @@ class ProgressDialog(wx.Dialog):
     
     def WasCancelled(self):
         return False
-    
-    
-    def Destroy(self):
-        self.progress_dialog.Destroy()
-        self.EndModal()
-        del(self)
-    
-    
-    def OnBorderResize(self, event=None):
-        if event != None:
-            # FIXME: Hack
-            self.SetSize(self.progress_size)
