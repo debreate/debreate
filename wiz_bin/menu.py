@@ -222,7 +222,7 @@ class Panel(WizardPage):
         # ----- MISC
         self.other_text = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         
-        self.other = MultilineTextCtrlPanel(self, name=self.other_text.Name, style=wx.BORDER_SIMPLE)
+        self.other = MultilineTextCtrlPanel(self, name=self.other_text.Name)
         self.other.default = wx.EmptyString
         self.options_input.append(self.other)
         
