@@ -94,28 +94,10 @@ class Panel(WizardPage):
             self.radio_cst,
             )
         
-        # make them look pretty
-        layout_G1 = wx.GridSizer(3, 2, 5, 5)
-        for item in self.targets:
-            layout_G1.Add(item, 0)
-        
-        self.radio_border = wx.StaticBox(self, -1, GT(u'Target'), size=(20,20))
-        layout_BOX1 = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
-        layout_BOX1.Add(layout_G1, 0)
-        
         btn_help = HelpButton(self)
-        
-        # FIXME: Help button lower on this page than others
-        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H1.Add(layout_BOX1, 0)
-        layout_H1.AddStretchSpacer(1)
-        layout_H1.Add(btn_help, 0, wx.ALIGN_TOP)
         
         self.prev_dest_value = u'/usr/bin'
         self.input_target = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
-        
-        cust_sizer = wx.BoxSizer(wx.VERTICAL)  # FIXME: Put the textctrl in own sizer so expands horizontally
-        cust_sizer.Add(self.input_target, 1, wx.EXPAND)
         
         self.btn_browse = ButtonBrowse(self)
         self.btn_browse.SetName(u'browse')
@@ -127,15 +109,6 @@ class Panel(WizardPage):
         btn_refresh = ButtonRefresh(self)
         btn_refresh.SetName(u'refresh')
         
-        path_add_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        path_add_sizer.Add(path_add, 0)
-        path_add_sizer.Add(path_remove, 0)
-        path_add_sizer.Add(button_clear, 0, wx.ALIGN_CENTER_VERTICAL)
-        path_add_sizer.Add(cust_sizer, 1, wx.ALIGN_CENTER_VERTICAL)
-        path_add_sizer.Add(self.btn_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
-        path_add_sizer.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        
-        
         # Display area for files added to list
         self.file_list = FileList(self)
         self.file_list.SetName(u'filelist')
@@ -144,14 +117,42 @@ class Panel(WizardPage):
         # FIXME: Deprecated???
         self.list_data = []
         
-        LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        LMR_sizer.Add(self.file_list, 1, wx.EXPAND)
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
-        layout_V1.AddSpacer(10)
-        layout_V1.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
-        layout_V1.Add(path_add_sizer, 0, wx.EXPAND|wx.ALL, 5)
-        layout_V1.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        # *** Layout *** #
+        
+        layout_target = wx.GridSizer(3, 2, 5, 5)
+        for item in self.targets:
+            layout_target.Add(item, 0)
+        
+        self.radio_border = wx.StaticBox(self, -1, GT(u'Target'), size=(20,20))
+        layoutBOX_target = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
+        layoutBOX_target.Add(layout_target, 0)
+        
+        # FIXME: Help button lower on this page than others
+        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H1.Add(layoutBOX_target, 0)
+        layout_H1.AddStretchSpacer(1)
+        layout_H1.Add(btn_help, 0, wx.ALIGN_TOP)
+        
+        layout_V1 = wx.BoxSizer(wx.VERTICAL)  # FIXME: Put the textctrl in own sizer so expands horizontally
+        layout_V1.Add(self.input_target, 1, wx.EXPAND)
+        
+        layout_path = wx.BoxSizer(wx.HORIZONTAL)
+        layout_path.Add(path_add, 0)
+        layout_path.Add(path_remove, 0)
+        layout_path.Add(button_clear, 0, wx.ALIGN_CENTER_VERTICAL)
+        layout_path.Add(layout_V1, 1, wx.ALIGN_CENTER_VERTICAL)
+        layout_path.Add(self.btn_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
+        layout_path.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        
+        layout_list = wx.BoxSizer(wx.HORIZONTAL)
+        layout_list.Add(self.file_list, 1, wx.EXPAND)
+        
+        layout_V2 = wx.BoxSizer(wx.VERTICAL)
+        layout_V2.AddSpacer(10)
+        layout_V2.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
+        layout_V2.Add(layout_path, 0, wx.EXPAND|wx.ALL, 5)
+        layout_V2.Add(layout_list, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         layout_Fmain = wx.FlexGridSizer(1, 2)
         layout_Fmain.AddGrowableRow(0)
