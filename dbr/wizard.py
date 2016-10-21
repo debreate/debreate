@@ -312,6 +312,33 @@ class WizardPage(wx.ScrolledWindow):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method GetPageInfo').format(self.GetName()))
     
     
+    ## Retrieves all fields that cannot be left blank for build
+    #  
+    #  \param children
+    #        \b \e list|tuple : The controls to be checked
+    #  \return
+    #        \b \e tuple : List of controls marked as required
+    def GetRequiredFields(self, children=None):
+        required_fields = []
+        
+        if children == None:
+            children = self.GetChildren()
+        
+        for C in children:
+            for RF in self.GetRequiredFields(C.GetChildren()):
+                required_fields.append(RF)
+            
+            # FIXME: Better way to mark fields as required???
+            try:
+                if C.req:
+                    required_fields.append(C)
+            except AttributeError:
+                pass
+        
+        return tuple(required_fields)
+        
+    
+    
     def ImportPageInfo(self, filename):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportPageInfo').format(self.GetName()))
     
