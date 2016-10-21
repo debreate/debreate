@@ -16,8 +16,78 @@ from dbr.language   import GT
 class MultilineTextCtrl(wx.TextCtrl):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
-        wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE|wx.BORDER_THEME,
+        wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE|wx.BORDER_NONE,
                 validator, name)
+
+
+## Somewhat of a hack to attemtp to get rounded corners on text control border
+class MultilineTextCtrlPanel(wx.Panel):
+    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+                style=wx.TAB_TRAVERSAL, name=wx.TextCtrlNameStr):
+        wx.Panel.__init__(self, parent, ID, pos, size, style|wx.TAB_TRAVERSAL|wx.BORDER_THEME,
+                name)
+        
+        self.textarea = MultilineTextCtrl(self)
+        
+        # Match panel color to text control
+        self.SetBackgroundColour(self.textarea.GetBackgroundColour())
+        
+        layout_V1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_V1.Add(self.textarea, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(layout_V1)
+        self.Layout()
+    
+    
+    ## Clears all text in the text area
+    def Clear(self):
+        self.textarea.Clear()
+    
+    
+    ## Retrieves font that text area is using
+    def GetFont(self):
+        return self.textarea.GetFont()
+    
+    
+    ## Retrieves carat position
+    def GetInsertionPoint(self):
+        return self.textarea.GetInsertionPoint()
+    
+    
+    ## Retrieves the text area object
+    def GetTextCtrl(self):
+        return self.textarea
+    
+    
+    ## Retrieves text from text input
+    def GetValue(self):
+        return self.textarea.GetValue()
+    
+    
+    ## Sets font in text area
+    def SetFont(self, font):
+        self.textarea.SetFont(font)
+    
+    
+    ## Places carat to position in text area
+    def SetInsertionPoint(self, point):
+        self.textarea.SetInsertionPoint(point)
+    
+    
+    ## Places carat at end of text area
+    def SetInsertionPointEnd(self):
+        self.textarea.SetInsertionPointEnd()
+    
+    
+    ## Sets text in text area
+    def SetValue(self, text):
+        self.textarea.SetValue(text)
+    
+    
+    ## Writes to the text area
+    def Write(self, text):
+        self.textarea.Write(text)
 
 
 MT_NO_BTN = 0
