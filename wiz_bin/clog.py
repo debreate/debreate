@@ -16,7 +16,8 @@ from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CHANGELOG
 from globals.tooltips   import SetPageToolTips
 from dbr.monotext       import MonospaceTextCtrl
-from globals.commands import CMD_gzip
+from globals.commands   import CMD_gzip
+from globals.paths import ConcatPaths
 
 
 # Local imports
@@ -156,7 +157,13 @@ class Panel(WizardPage):
         # FIXME: Allow user to set filename
         self.Export(stage, u'changelog', True)
         
-        return(0, None)
+        export_summary = GT(u'Changelog export failed')
+        changelog = ConcatPaths(stage, u'changelog.gz')
+        
+        if os.path.isfile(changelog):
+            export_summary = GT(u'Changelog export to: {}').format(changelog)
+        
+        return(0, export_summary)
     
     
     def IsExportable(self):
