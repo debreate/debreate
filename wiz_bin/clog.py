@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.clog
 
-# System imports
-import os, commands
-import wx
+
+import wx, os, commands
 
 import dbr
 from dbr.buttons        import ButtonAdd
@@ -11,16 +11,16 @@ from dbr.buttons        import ButtonImport
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.monotext       import MonospaceTextCtrl
 from dbr.wizard         import WizardPage
+from globals.commands   import CMD_gzip
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_CHANGELOG
+from globals.paths      import ConcatPaths
 from globals.tooltips   import SetPageToolTips
-from dbr.monotext       import MonospaceTextCtrl
-from globals.commands   import CMD_gzip
-from globals.paths import ConcatPaths
 
 
-# Local imports
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CHANGELOG)
