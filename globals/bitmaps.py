@@ -8,10 +8,13 @@
 
 import wx
 
-from globals.paths import PATH_app
+from globals.paths import PATH_app, ConcatPaths
 
 
-ICON_ERROR = u'{}/bitmaps/error64.png'.format(PATH_app)
-ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(PATH_app)
+PATH_bitmaps = u'{}/bitmaps'.format(PATH_app)
 
-BUTTON_HELP = wx.Bitmap(u'{}/bitmaps/question32.png'.format(PATH_app))
+ICON_ERROR = ConcatPaths((PATH_bitmaps, u'error64.png'))
+ICON_INFORMATION = ConcatPaths((PATH_bitmaps, u'question64.png'))
+
+BUTTON_HELP = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'question32.png')))
+BUTTON_REFRESH = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'btn-refresh32.png')))
