@@ -24,6 +24,7 @@ from dbr.templates import local_licenses_path, application_licenses_path
 copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]\n\n')
 
 
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_COPYRIGHT)
@@ -89,6 +90,7 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def ExportBuild(self, stage):
         debreate = self.GetDebreateWindow()
         
@@ -100,14 +102,12 @@ class Panel(WizardPage):
         return (0, None)
     
     
+    ## TODO: Doxygen
     def GetCopyright(self):
         return self.cp_display.GetValue()
     
-    def GatherData(self):
-        data = self.GetCopyright()
-        return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
-    
+    ## TODO: Doxygen
     def GetLicensePath(self, template_name):
         # User templates have priority
         license_path = u'{}/{}'.format(local_licenses_path, template_name)
@@ -125,10 +125,12 @@ class Panel(WizardPage):
         return None
     
     
+    ## TODO: Doxygen
     def SetCopyright(self, data):
         self.cp_display.SetValue(data)
     
     
+    ## TODO: Doxygen
     def SetTemplateToolTip(self):
         license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
         license_path = self.GetLicensePath(license_name)
@@ -139,9 +141,8 @@ class Panel(WizardPage):
         
         self.lic_choices.SetToolTip(None)
     
-    def ResetAllFields(self):
-        self.cp_display.Clear()
     
+    ## TODO: Doxygen
     def OnSelectTemplate(self, event):
         if isinstance(event, wx.Choice):
             choice = event
@@ -157,6 +158,8 @@ class Panel(WizardPage):
         
         self.SetTemplateToolTip()
     
+    
+    ## TODO: Doxygen
     def OnGenerateTemplate(self, event):
         license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
         
@@ -166,6 +169,8 @@ class Panel(WizardPage):
         else:
             self.GenerateTemplate(license_name)
     
+    
+    ## TODO: Doxygen
     def CopyStandardLicense(self, license_name):
         if self.DestroyLicenseText():
             license_path = u'{}/{}'.format(dbr.system_licenses_path, license_name)
@@ -194,6 +199,8 @@ class Panel(WizardPage):
             
         self.cp_display.SetFocus()
     
+    
+    ## TODO: Doxygen
     def GenerateTemplate(self, l_name):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
@@ -227,6 +234,8 @@ class Panel(WizardPage):
         
         self.cp_display.SetFocus()
     
+    
+    ## TODO: Doxygen
     def GenerateLinkedTemplate(self, event):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
@@ -240,6 +249,8 @@ class Panel(WizardPage):
             
         self.cp_display.SetFocus()
     
+    
+    ## TODO: Doxygen
     def DestroyLicenseText(self):
         empty = TextIsEmpty(self.cp_display.GetValue())
         
@@ -264,6 +275,7 @@ class Panel(WizardPage):
         return (__name__, license_text)
     
     
+    ## TODO: Doxygen
     def ImportPageInfo(self, filename):
         if not os.path.isfile(filename):
             return errno.ENOENT
@@ -290,9 +302,11 @@ class Panel(WizardPage):
         return 0
     
     
+    ## TODO: Doxygen
     def IsExportable(self):
         return not TextIsEmpty(self.cp_display.GetValue())
     
     
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         self.cp_display.Clear()
