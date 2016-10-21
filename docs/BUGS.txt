@@ -2,3 +2,12 @@ Known Bugs:
 - QuickBuild broken
 - Cannot use Ctrl+A on Files page
 - md5sum produces different hash for binary files than debuild
+- Lintian reports:
+  - changelog-not-compressed-with-max-compression changelog.gz
+  - no-section-field
+  - package-contains-timestamped-gzip usr/share/doc/debreate/changelog.gz
+  - md5sums-lists-nonexistent-file usr/share/debreate/bitmaps/browse64.pn
+  - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
+  - executable-desktop-file usr/share/applications/Debreate.desktop 0755
+  - executable-not-elf-or-script usr/share/applications/Debreate.desktop
+  - maintainer-script-ignores-errors
