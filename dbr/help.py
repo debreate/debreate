@@ -3,11 +3,10 @@
 ## \package dbr.help
 
 
-import os, commands
-from wx import ID_HELP
-import wx
+import wx, os, commands
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
+from globals.bitmaps import BUTTON_HELP
 
 
 # Local modules
@@ -16,6 +15,7 @@ from wx.richtext import RichTextCtrl
 app_man = u'man/man1/debreate.1'
 local_manpath = u'man'
 man_section = u'1'
+
 
 ## Parses & returns Debreate's manpage as RichText
 #  
@@ -36,9 +36,17 @@ def ParseManpage():
     return help_text
 
 
+## TODO: Doxygen
+class HelpButton(wx.BitmapButton):
+    def __init__(self, parent):
+        wx.BitmapButton.__init__(self, parent, wx.ID_HELP, BUTTON_HELP,
+                style=wx.NO_BORDER)
+
+
+## TODO: Doxygen
 class HelpDialog(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, ID_HELP, u'Help',
+        wx.Dialog.__init__(self, parent, wx.ID_HELP, u'Help',
                            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
         
         dialog_size = wx.Size(200, 200)
