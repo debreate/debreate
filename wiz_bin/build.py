@@ -25,7 +25,7 @@ from dbr.wizard             import WizardPage
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_fakeroot
+from globals.commands       import CMD_fakeroot, CMD_lintian
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
@@ -152,6 +152,9 @@ class Panel(WizardPage):
         
         # FIXME: Control file should be skipped here & processed last
         if pages_build_ids != None:
+            # Reported at the end of build
+            build_summary = []
+            
             steps_count = len(pages_build_ids)
             current_step = 0
             
@@ -201,7 +204,7 @@ class Panel(WizardPage):
                         
                         current_step += 1
                 
-                # Control file
+                # *** Control File *** #
                 if not build_progress.WasCancelled():
                     wx.YieldIfNeeded()
                     
@@ -232,7 +235,7 @@ class Panel(WizardPage):
                     
                     current_step += 1
                 
-                # MD5 checksum
+                # *** MD5 Checksum *** #
                 if not build_progress.WasCancelled():
                     if self.chk_md5.IsChecked():
                         log_msg = GT(u'Creating MD5 checksum')
@@ -248,27 +251,29 @@ class Panel(WizardPage):
                         
                         current_step += 1
                 
-                # Create .deb from stage
+                # *** Create .deb from Stage *** #
                 if not build_progress.WasCancelled():
                     wx.YieldIfNeeded()
                     build_progress.Update(current_step,
                             GT(u'Creating .deb package ({}/{}').format(current_step+1, steps_count))
                     
-                    # TODO: Function to build deb
                     self.OnBuildCreatePackage(stage, out_file)
                     
                     current_step += 1
                 
+                # *** Lintian *** #
                 if not build_progress.WasCancelled():
                     if self.chk_lint.IsChecked():
                         wx.YieldIfNeeded()
                         build_progress.Update(current_step,
                                 GT(u'Checking package with lintian ({}/{})').format(current_step+1, steps_count))
                         
-                        self.OnBuildCheckPackage(out_file)
+                        build_summary.append(u'\n{}'.format(u'Lintian check:'))
+                        build_summary.append(self.OnBuildCheckPackage(out_file))
                         
                         current_step += 1
                 
+                # *** Delete Stage *** #
                 if not build_progress.WasCancelled():
                     if self.chk_rmtree.IsChecked():
                         wx.YieldIfNeeded()
@@ -278,15 +283,20 @@ class Panel(WizardPage):
                         RemoveTempDirectory(stage)
                         current_step += 1
                 
-                if not build_progress.WasCancelled():
-                    wx.YieldIfNeeded()
-                    #build_progress.Update(steps_count, GT(u'Build complete'))
-                    build_progress.Update(steps_count, GT(u'Build incomplete (in development)'))
-                    
-                    # Show finished dialog for short moment
-                    time.sleep(1)
+                # *** Show Completion Status *** #
+                wx.YieldIfNeeded()
+                #build_progress.Update(steps_count, GT(u'Build complete'))
+                build_progress.Update(steps_count, GT(u'Build incomplete (in development)'))
+                
+                # Show finished dialog for short moment
+                time.sleep(1)
                 
                 build_progress.Destroy()
+                
+                build_summary = u'\n'.join(build_summary)
+                summary_dialog = DetailedMessageDialog(self.GetDebreateWindow(), GT(u'Build Summary'),
+                        ICON_INFORMATION, GT(u'Build completed'), build_summary)
+                summary_dialog.ShowModal()
             
             except:
                 build_progress.Destroy()
@@ -917,9 +927,18 @@ class Panel(WizardPage):
     
     
     # TODO: Finish defining
-    def OnBuildCheckPackage(self, package):
+    def OnBuildCheckPackage(self, target_package):
         Logger.Debug(__name__,
-                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(package)))
+                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(target_package)))
+        
+        # Reference
+        #errors = commands.getoutput((u'lintian %s' % deb).encode(u'utf-8'))
+        
+        #output = subprocess.Popen([CMD_lintian, target_package], stderr=subprocess.STDOUT)
+        # FIXME: commands module deprecated?
+        output = commands.getoutput(u'{} {}'.format(CMD_lintian, target_package))
+        
+        return output
     
     
     ## TODO: Doxygen & finish defining
