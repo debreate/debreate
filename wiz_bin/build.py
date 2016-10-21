@@ -3,7 +3,7 @@
 ## \package wiz_bin.build
 
 
-import wx, os, commands, shutil, thread, traceback, time, math
+import wx, os, commands, shutil, thread, traceback, time, math, subprocess
 
 import dbr
 from dbr.buttons            import ButtonBrowse
@@ -14,7 +14,6 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ErrorDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
-from dbr.functions          import BuildBinaryPackageFromTree
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
@@ -26,16 +25,16 @@ from dbr.wizard             import WizardPage
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_lintian, CMD_system_packager,\
-    CMD_fakeroot
+from globals.commands       import CMD_fakeroot
+from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
+from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
 from globals.ident          import ID_BUILD, ID_CONTROL, ID_MENU
 from globals.ident          import ID_FILES
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
-import subprocess
 
 
 class Panel(WizardPage):
@@ -256,7 +255,7 @@ class Panel(WizardPage):
                             GT(u'Creating .deb package ({}/{}').format(current_step+1, steps_count))
                     
                     # TODO: Function to build deb
-                    self.OnBuildCreateDeb(stage, out_file)
+                    self.OnBuildCreatePackage(stage, out_file)
                     
                     current_step += 1
                 
@@ -266,7 +265,7 @@ class Panel(WizardPage):
                         build_progress.Update(current_step,
                                 GT(u'Checking package with lintian ({}/{})').format(current_step+1, steps_count))
                         
-                        self.CheckPackageLintian(u'Null package')
+                        self.OnBuildCheckPackage(out_file)
                         
                         current_step += 1
                 
@@ -303,52 +302,6 @@ class Panel(WizardPage):
                 err_dialog.Destroy()
         
         return
-        '''
-        try:
-            temp_dir = CreateTempDirectory()
-            
-            if temp_dir != dbrerrno.EACCES:
-                Logger.Debug(__name__, GT(u'Temporary directory: {}').format(temp_dir))
-                
-                # Create DEBIAN sub-directory
-                os.makedirs(u'{}/DEBIAN'.format(temp_dir))
-                
-                if self.chk_md5.IsChecked():
-                    self.CreateMD5Sum(temp_dir)
-                
-                if self.chk_lint.IsChecked():
-                    self.CheckPackageLintian(u'Null package')
-                
-                if self.chk_rmtree.IsChecked():
-                    RemoveTempDirectory(temp_dir)
-                
-                return
-            
-            # FIXME: Throw exception or show error dialog here, temp_dir was not created
-        
-        except:
-            err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
-            err_dialog.SetDetails(traceback.format_exc())
-            err_dialog.ShowModal()
-            
-            err_dialog.Destroy()
-        
-        return
-        
-        
-        filename = os.path.basename(out_file)
-        target_dir = os.path.dirname(out_file)
-        
-        Logger.Debug(__name__, GT(u'Building package {} in {}').format(filename, target_dir))
-        
-        build_ret = BuildBinaryPackageFromTree(temp_dir, out_file)
-        
-        if build_ret == dbrerrno.ENOENT:
-            ErrorDialog(self.GetDebreateWindow(), GT(u'Cannot build from non-existent directory')).ShowModal()
-        
-        # TODO: Make sure temp directory is deleted
-        shutil.rmtree(temp_dir)
-        '''
     
     
     ## 
@@ -423,12 +376,6 @@ class Panel(WizardPage):
             del err_title
         
         return None
-    
-    
-    # TODO: Finish defining
-    def CheckPackageLintian(self, package):
-        Logger.Debug(__name__,
-                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(package)))
     
     
     def SetSummary(self, event):
@@ -969,12 +916,15 @@ class Panel(WizardPage):
             err.Destroy()
     
     
+    # TODO: Finish defining
+    def OnBuildCheckPackage(self, package):
+        Logger.Debug(__name__,
+                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(package)))
+    
+    
     ## TODO: Doxygen & finish defining
-    def OnBuildCreateDeb(self, stage, target_file):
+    def OnBuildCreatePackage(self, stage, target_file):
         Logger.Debug(__name__, GT(u'Creating {} from {}').format(target_file, stage))
-        
-        # Reference
-        #commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}.deb"'.format(root, filename)).encode(u'utf-8'))
         
         packager = CMD_system_packager
         if not CMD_fakeroot or not packager:
@@ -1070,6 +1020,7 @@ class Panel(WizardPage):
         return (dbrerrno.SUCCESS, None)
     
     
+    ## FIXME: Deprecated???
     def ResetAllFields(self):
         self.chk_install.SetValue(False)
         # chk_md5 should be reset no matter
