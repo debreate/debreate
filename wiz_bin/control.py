@@ -25,6 +25,9 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CONTROL)
         
+        # Bypass checking this page for build
+        self.prebuild_check = False
+        
         self.wizard = parent
         self.debreate = parent.parent
         
@@ -229,6 +232,32 @@ class Panel(WizardPage):
         
         
         SetPageToolTips(self)
+    
+    
+    def ExportBuild(self, target, installed_size=0):
+        ret_val = self.Export(target, u'control')
+        
+        absolute_file = u'{}/control'.format(target).replace(u'//', u'/')
+        
+        if not os.path.isfile(absolute_file):
+            return (dbrerrno.ENOENT, GT(u'Control file was not created'))
+        
+        if installed_size:
+            FILE = open(absolute_file, u'r')
+            control_data = FILE.read().split(u'\n')
+            FILE.close()
+            
+            size_line = u'Installed-Size: {}'.format(installed_size)
+            if len(control_data) > 3:
+                control_data.insert(3, size_line)
+            else:
+                control_data.append(size_line)
+            
+            FILE = open(absolute_file, u'w')
+            FILE.write(u'\n'.join(control_data))
+            FILE.close()
+        
+        return (dbrerrno.SUCCESS, None)
     
     
     ## Tells the build script whether page should be built
