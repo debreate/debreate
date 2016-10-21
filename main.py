@@ -831,6 +831,7 @@ class MainWindow(wx.Frame):
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
+        # TODO: Rename to SetFieldDataLegacy
         self.page_files.SetFieldDataDeprecated(files_data)
         
         # *** Get Scripts Data *** #
@@ -839,7 +840,7 @@ class MainWindow(wx.Frame):
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-        self.page_clog.SetChangelog(clog_data)
+        self.page_clog.SetChangelogLegacy(clog_data)
         
         # *** Get Copyright Data *** #
         try:
