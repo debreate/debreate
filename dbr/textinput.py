@@ -32,11 +32,11 @@ class MultilineTextCtrlPanel(wx.Panel):
         # Match panel color to text control
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
         
-        layout_V1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_V1.Add(self.textarea, 1, wx.EXPAND)
+        self.layout_V1 = wx.BoxSizer(wx.HORIZONTAL)
+        self.layout_V1.Add(self.textarea, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_V1)
+        self.SetSizer(self.layout_V1)
         self.Layout()
     
     
@@ -118,52 +118,31 @@ button_H_pos = {
     MT_BTN_BR: wx.ALIGN_RIGHT,
 }
 
-# TODO: Derive from MultilineTextCtrl
-class MonospaceTextCtrl(wx.Panel):
-    def __init__(self, parent, ID=wx.ID_ANY, button=MT_NO_BTN, name=wx.EmptyString, style=wx.TE_MULTILINE):
-        wx.Panel.__init__(self, parent, ID)
+
+## TODO: Doxygen
+#  
+#  TODO: Remove button & toggle text from external buttons
+class MonospaceTextCtrl(MultilineTextCtrlPanel):
+    def __init__(self, parent, ID=wx.ID_ANY, button=MT_NO_BTN, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=wx.TAB_TRAVERSAL, name=wx.TextCtrlNameStr):
+        MultilineTextCtrlPanel.__init__(self, parent, ID, pos, size, style, name)
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
-        
-        self.text_area = wx.TextCtrl(self, ID, name=name, style=style|wx.TE_MULTILINE)
-        self.text_area.SetFont(MONOSPACED_LG)
-        
-        layout_V1.Add(self.text_area, 1, wx.EXPAND|wx.ALL, 5)
+        self.textarea.SetFont(MONOSPACED_LG)
         
         if button:
             btn_font = wx.Button(self, label=GT(u'Text Size'))
             if button in (MT_BTN_TL, MT_BTN_TR):
-                layout_V1.Insert(0, btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
+                self.layout_V1.Insert(0, btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
             
             else:
-                layout_V1.Add(btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
+                self.layout_V1.Add(btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
             
             btn_font.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(layout_V1)
-        self.Layout()
-    
-    
-    def Clear(self):
-        self.text_area.Clear()
-    
-    
-    def GetInsertionPoint(self):
-        return self.text_area.GetInsertionPoint()
-    
-    
-    def GetValue(self):
-        return self.text_area.GetValue()
-    
-    
-    def IsEmpty(self):
-        return self.text_area.IsEmpty()
     
     
     def OnToggleTextSize(self, event=None):
         # Save insertion point
-        insertion = self.text_area.GetInsertionPoint()
+        insertion = self.textarea.GetInsertionPoint()
         
         sizes = {
             7: 8,
@@ -172,26 +151,10 @@ class MonospaceTextCtrl(wx.Panel):
             11: 7,
         }
         
-        font = self.text_area.GetFont()
+        font = self.textarea.GetFont()
         new_size = sizes[font.GetPointSize()]
         font.SetPointSize(new_size)
         
-        self.text_area.SetFont(font)
-        self.text_area.SetInsertionPoint(insertion)
-        self.text_area.SetFocus()
-    
-    
-    def SetInsertionPoint(self, point):
-        self.text_area.SetInsertionPoint(point)
-    
-    
-    def SetInsertionPointEnd(self):
-        self.text_area.SetInsertionPointEnd()
-    
-    
-    def SetValue(self, value):
-        self.text_area.SetValue(value)
-    
-    
-    def WriteText(self, text):
-        self.text_area.WriteText(text)
+        self.textarea.SetFont(font)
+        self.textarea.SetInsertionPoint(insertion)
+        self.textarea.SetFocus()
