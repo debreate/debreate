@@ -3,20 +3,20 @@
 ## \package dbr.log
 
 
-import os, thread, time
-import wx
+import wx, os, thread, time
 from wx.lib.newevent import NewCommandEvent
 
-#from dbr.command_line import parsed_args_v
 from dbr.font               import GetMonospacedFont
 from dbr.functions          import GetDate, GetTime
 from dbr.language           import GT
+from dbr.textinput          import MultilineTextCtrlPanel
 from globals.application    import APP_logo
 from globals.ident          import ID_DEBUG
 from globals.ident          import ID_LOG
 from globals.paths          import PATH_local
 
 
+#from dbr.command_line import parsed_args_v
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 
@@ -218,7 +218,7 @@ class LogWindow(wx.Dialog):
         self.evt_refresh_log = RefreshLogEvent(0)
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
         
-        self.log = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.log = MultilineTextCtrlPanel(self, style=wx.TE_READONLY)
         self.log.font_size = 8
         self.log.SetFont(GetMonospacedFont(self.log.font_size))
         

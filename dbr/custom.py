@@ -9,6 +9,7 @@ import wx.combo, wx.lib.mixins.listctrl as LC
 from wx.lib.docview import PathOnly
 
 from dbr.language   import GT
+from dbr.textinput  import MultilineTextCtrlPanel
 from globals.ident  import ID_APPEND
 from globals.ident  import ID_OVERWRITE
 from globals.paths  import PATH_app
@@ -72,15 +73,13 @@ rm -r ~/.config/debreate'.format(m1, m2))
 
 
 ## A generic display area that captures \e stdout & \e stderr
-class OutputLog(wx.TextCtrl):
+class OutputLog(MultilineTextCtrlPanel):
     ## Constructor
     #  
     #  \param parent
     #        The parent window
-    #  \param id
-    #        Window ID (FIXME: Should be set automatically from constant)
-    def __init__(self, parent, id=-1):
-        wx.TextCtrl.__init__(self, parent, id, style=wx.TE_MULTILINE|wx.TE_READONLY)
+    def __init__(self, parent):
+        MultilineTextCtrlPanel.__init__(self, parent, style=wx.TE_READONLY)
         self.SetBackgroundColour(u'black')
         self.SetForegroundColour(u'white')
         self.stdout = sys.stdout

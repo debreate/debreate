@@ -103,7 +103,7 @@ class Panel(WizardPage):
             ] )
         
         # --- summary
-        #self.summary = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        #self.summary = MultilineTextCtrlPanel(self, style=wx.TE_READONLY)
         # Lines to put in the summary
         #self.summary_type = wx.EmptyString
         
