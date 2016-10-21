@@ -15,6 +15,7 @@ from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.ident      import ID_DEPENDS, ID_APPEND
 from globals.tooltips   import SetPageToolTips
+from dbr.help           import HelpButton
 
 
 ## TODO: Doxygen
@@ -27,64 +28,65 @@ class Panel(WizardPage):
         
         # --- DEPENDS
         self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        #self.dep_chk.SetToolTip(dep_tip)
-        #SetToolTip(TT_depends[u'depends'], self.dep_chk)
         
         # --- PRE-DEPENDS
         self.pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
-        #self.pre_chk.SetToolTip(pre_tip)
         
         # --- RECOMMENDS
         self.rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
-        #self.rec_chk.SetToolTip(rec_tip)
         
         # --- SUGGESTS
         self.sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
-        #self.sug_chk.SetToolTip(sug_tip)
         
         # --- ENHANCES
         self.enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
-        #self.enh_chk.SetToolTip(enh_tip)
         
         # --- CONFLICTS
         self.con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
-        #self.con_chk.SetToolTip(con_tip)
         
         # --- REPLACES
         self.rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
-        #self.rep_chk.SetToolTip(rep_tip)
         
         # --- BREAKS
         self.break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
-        #self.break_chk.SetToolTip(break_tip)
         
         
         # Input for dependencies
-        self.ver_text = wx.StaticText(self, -1, GT(u'Version'), name=u'version')
-        self.pack_text = wx.StaticText(self, -1, GT(u'Package'), name=u'package')
+        self.txt_version = wx.StaticText(self, label=GT(u'Package Version'), name=u'version')
+        self.txt_package = wx.StaticText(self, label=GT(u'Package Name'), name=u'package')
         
-        self.dep_name = wx.TextCtrl(self, -1, size=(300,25), name=u'package')
+        self.input_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
-        self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
-        self.dep_oper.SetSelection(0)
+        version_options = (u'>=', u'<=', u'=', u'>>', u'<<')
+        self.operator = wx.Choice(self, choices=version_options)
+        self.operator.SetSelection(0)
         
-        self.dep_ver = wx.TextCtrl(self, -1, name=u'version')
+        self.input_version = wx.TextCtrl(self, name=u'version')
         
-        depH1 = wx.FlexGridSizer(2, 3, hgap=5)
-        depH1.AddGrowableCol(2)
-        depH1.Add(self.pack_text, 0, wx.LEFT, 2)
-        depH1.AddSpacer(0)
-        depH1.Add(self.ver_text, 1, wx.EXPAND|wx.LEFT, 2)
-        depH1.Add(self.dep_name)
-        depH1.Add(self.dep_oper)
-        depH1.Add(self.dep_ver, 1, wx.EXPAND)
+        # Button to display help information about this page
+        btn_help = HelpButton(self)
         
-        self.dep_name.SetSize((100,50))
+        layout_G1 = wx.GridBagSizer()
+        
+        # Row 1
+        layout_G1.Add(self.txt_package, pos=(0, 0), flag=wx.ALIGN_BOTTOM, border=0)
+        layout_G1.Add(self.txt_version, pos=(0, 2), flag=wx.ALIGN_BOTTOM)
+        
+        # Row 2
+        layout_G1.Add(self.input_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        layout_G1.Add(self.operator, pos=(1, 1))
+        layout_G1.Add(self.input_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        
+        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H1.Add(layout_G1, 0, wx.ALIGN_BOTTOM)
+        layout_H1.AddStretchSpacer(1)
+        layout_H1.Add(btn_help)
+        
+        self.input_package.SetSize((100,50))
         
         # Add KEY_DOWN events to text areas
-        wx.EVT_KEY_DOWN(self.dep_name, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
@@ -127,46 +129,43 @@ class Panel(WizardPage):
         
         radio_box.Add(rg1, 0)
         
-        depH2 = wx.BoxSizer(wx.HORIZONTAL)
-        depH2.Add(radio_box, 0, wx.RIGHT, 5)
-        depH2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H2.Add(radio_box, 0, wx.RIGHT, 5)
+        layout_H2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
         
+        '''
         self.border = wx.StaticBox(self, -1)
         border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        border_box.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        border_box.AddSpacer(5)
-        border_box.Add(depH2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.Add(depH1, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        #border_box.AddSpacer(5)
+        border_box.Add(layout_H2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        '''
         
-        depH3 = wx.BoxSizer(wx.HORIZONTAL)
-        depH3.Add(self.dep_area, 1, wx.EXPAND)
+        layout_H3 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H3.Add(self.dep_area, 1, wx.EXPAND)
         
         # ----- Main Sizer
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(10)
-#		page_sizer.Add(self.title, 0, wx.ALIGN_CENTER)
-#		page_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND)
-#		page_sizer.AddSpacer(10)
-#		page_sizer.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-#		page_sizer.AddSpacer(5)
-#		page_sizer.Add(depH2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        page_sizer.Add(border_box, 0, wx.LEFT, 5)
-        page_sizer.Add(depH3, 1, wx.EXPAND|wx.ALL, 5)
+        layout_Vmain = wx.BoxSizer(wx.VERTICAL)
+        layout_Vmain.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
+        layout_Vmain.Add(layout_H2, 0, wx.ALL, 5)
+        layout_Vmain.Add(layout_H3, 1, wx.ALL, 5)
         
         # ----- Layout
         self.SetAutoLayout(True)
-        self.SetSizer(page_sizer)
+        self.SetSizer(layout_Vmain)
         self.Layout()
-        
+        '''
         # ----- List not needed anymore
-        self.setlabels = {	self.border: u'Border', self.pack_text: u'Pack', self.ver_text: u'Ver',
+        self.setlabels = {	self.border: u'Border', self.txt_package: u'Pack', self.txt_version: u'Ver',
                             self.depadd: u'Add', self.depapp: u'App', self.deprem: u'Rem'}
         
         self.categories = {	self.dep_chk: u'Depends', self.pre_chk: u'Pre-Depends', self.rec_chk: u'Recommends',
                             self.sug_chk: u'Suggests', self.enh_chk: u'Enhances', self.con_chk: u'Conflicts',
                             self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
+        '''
         
         
         SetPageToolTips(self)
@@ -206,9 +205,9 @@ class Panel(WizardPage):
             key_mod = None
             key_id = event.GetEventObject().GetId()
         
-        addname = self.dep_name.GetValue()
-        oper = self.oper_options[self.dep_oper.GetCurrentSelection()]
-        ver = self.dep_ver.GetValue()
+        addname = self.input_package.GetValue()
+        oper = self.operator.GetStringSelection()
+        ver = self.input_version.GetValue()
         addver = u'(%s%s)' % (oper, ver)
             
         if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
