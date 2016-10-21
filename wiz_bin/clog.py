@@ -240,20 +240,6 @@ class Panel(WizardPage):
         self.log.SetValue(u'\n'.join(changelog[1:]))
     
     
-    ## TODO: Doxygen
-    def ResetAllFields(self):
-        self.package.Clear()
-        self.version.Clear()
-        self.distribution.Clear()
-        self.urgency.SetSelection(0)
-        self.maintainer.Clear()
-        self.email.Clear()
-        self.changes.Clear()
-        self.target_default.SetValue(True)
-        self.target.SetValue(u'/')
-        self.log.Clear()
-    
-    
     ## Retrieves changelog information
     #  
     #  The output is a text file that uses sections defined
