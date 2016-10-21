@@ -447,8 +447,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    ## FIXME: Deprecated???
-    def SetFieldData(self, data):
+    def SetFieldDataLegacy(self, data):
         if isinstance(data, str):
             # Decode to unicode string if input is byte string
             data = data.decode(u'utf-8')
