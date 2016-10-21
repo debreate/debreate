@@ -235,15 +235,15 @@ class Panel(WizardPage):
     
     
     def ExportBuild(self, target, installed_size=0):
-        ret_val = self.Export(target, u'control')
+        self.Export(target, u'control')
         
-        absolute_file = u'{}/control'.format(target).replace(u'//', u'/')
+        absolute_filename = u'{}/control'.format(target).replace(u'//', u'/')
         
-        if not os.path.isfile(absolute_file):
-            return (dbrerrno.ENOENT, GT(u'Control file was not created'))
+        if not os.path.isfile(absolute_filename):
+            return GT(u'Control file was not created')
         
         if installed_size:
-            FILE = open(absolute_file, u'r')
+            FILE = open(absolute_filename, u'r')
             control_data = FILE.read().split(u'\n')
             FILE.close()
             
@@ -253,11 +253,11 @@ class Panel(WizardPage):
             else:
                 control_data.append(size_line)
             
-            FILE = open(absolute_file, u'w')
+            FILE = open(absolute_filename, u'w')
             FILE.write(u'\n'.join(control_data))
             FILE.close()
         
-        return (dbrerrno.SUCCESS, None)
+        return GT(u'Control file created: {}').format(absolute_filename)
     
     
     ## Tells the build script whether page should be built
