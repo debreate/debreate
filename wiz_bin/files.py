@@ -38,8 +38,8 @@ ID_AddFile = 141
 ID_Refresh = 142
 
 
+## TODO: Doxygen
 class Panel(WizardPage):
-    """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_FILES)
         
@@ -179,6 +179,7 @@ class Panel(WizardPage):
         SetPageToolTips(self)
     
     
+    ## TODO: Doxygen
     def ExportBuild(self, target):
         if not os.path.isdir(target):
             return (dbrerrno.ENOENT, GT(u'Target directory does not exist: {}').format(target))
@@ -211,14 +212,19 @@ class Panel(WizardPage):
         return (dbrerrno.SUCCESS, None)
     
     
+    ## TODO: Doxygen
     def IsExportable(self):
         return not self.file_list.IsEmpty()
     
     
+    ## TODO: Doxygen
     def OnRefreshFileList(self, event=None):
         self.file_list.Refresh()
     
     
+    ## TODO: Doxygen
+    #  
+    #  FIXME: Rename to OnRightClickTree or similar
     def OnRightClick(self, event):
         # Show a context menu for adding files and folders
         path = self.dir_tree.GetPath()
@@ -230,17 +236,23 @@ class Panel(WizardPage):
             self.add_file.Enable(True)
         self.dir_tree.PopupMenu(self.menu)
     
+    
+    ## TODO: Doxygen
     def OnBrowse(self, event):
         dia = GetDirDialog(self.GetDebreateWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.dest_cust.SetValue(dia.GetPath())
     
+    
+    ## TODO: Doxygen
     def GetDestValue(self, event):
         if self.dest_cust.GetValue() != wx.EmptyString:
             if self.dest_cust.GetValue()[0] == u'/':
                 self.prev_dest_value = self.dest_cust.GetValue()
         event.Skip()
     
+    
+    ## TODO: Doxygen
     def CheckDest(self, event):
         if self.dest_cust.GetValue() == wx.EmptyString:
             self.dest_cust.SetValue(self.prev_dest_value)
@@ -342,6 +354,7 @@ class Panel(WizardPage):
             self.file_list.Sort()
     
     
+    ## TODO: Doxygen
     def OnRefresh(self, event):
         path = self.dir_tree.GetPath()
 #		if isfile(path):
@@ -350,15 +363,18 @@ class Panel(WizardPage):
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(path)
     
+    
+    ## TODO: Doxygen
     def SelectAll(self):
         self.file_list.SelectAll()
     
     
+    ## TODO: Doxygen
     def RemoveSelected(self, event):
         self.file_list.RemoveSelected()
     
     
-    # FIXME: Deprecated; Replace with self.RemoveSelected
+    # FIXME: Deprecated; Replace with self.OnKeyDelete|self.OnKeyDown
     def DelPathDeprecated(self, event):
         try:
             modifier = event.GetModifiers()
@@ -395,12 +411,15 @@ class Panel(WizardPage):
             self.SelectAll()
     
     
+    ## TODO: Doxygen
     def ClearAll(self, event):
         confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_YES:
             self.file_list.DeleteAllItems()
             self.list_data = []
     
+    
+    ## TODO: Doxygen
     def SetDestination(self, event):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.radio_cst.GetValue() == True:
@@ -411,13 +430,7 @@ class Panel(WizardPage):
             self.dest_browse.Disable()
     
     
-    def ResetAllFields(self):
-        self.radio_cst.SetValue(True)
-        self.SetDestination(None)
-        self.dest_cust.SetValue(u'/usr/bin')
-        self.file_list.DeleteAllItems()
-        self.list_data = []
-    
+    ## TODO: Doxygen
     def SetFieldDataDeprecated(self, data):
         # Clear files list
         self.list_data = []
@@ -477,63 +490,6 @@ class Panel(WizardPage):
     
     ## Retrieves information on files to be packaged
     #  
-    #  FIXME: Deprecated
-    #  \return
-    #        \b \e str : A string of files & their targets formatted for text output
-    def GetFilesInfoDeprecated(self):
-        file_list = []
-        item_count = self.file_list.GetItemCount()
-        if item_count > 0:
-            count = 0
-            while count < item_count:
-                item_file = self.file_list.GetItemText(count)
-                item_dest = self.file_list.GetItem(count, 1).GetText()
-                for item in self.list_data:
-                    # Decode to unicode
-                    i0 = item[0].encode(u'utf-8')
-                    i1 = item[1].decode(u'utf-8')
-                    i2 = item[2].encode(u'utf-8')
-                    if i1 == item_file and i2.decode(u'utf-8') == item_dest:
-                        item_src = i0
-                # Populate list with tuples of ("src", "file", "dest")
-                if self.file_list.GetItemTextColour(count) == (255, 0, 0):
-                    file_list.append((u'%s*' % item_src, item_file, item_dest))
-                else:
-                    file_list.append((item_src, item_file, item_dest))
-                count += 1
-        
-            return_list = []
-            for F in file_list:
-                f0 = F[0]
-                f1 = F[1]
-                f2 = F[2]
-                return_list.append(u'%s -> %s -> %s' % (f0, f1, f2))
-            
-            return u'\n'.join(return_list)
-        else:
-            # Not files are listed
-            return wx.EmptyString
-    
-    
-    ## Legacy project file output
-    #  
-    #  FIXME: Deprecated
-    #  Gathers info for exporting to saved project (text) file.
-    #  \return
-    #        \b \e str : Text-formatted file list
-    def GatherData(self):
-        f_info = self.GetFilesInfoDeprecated()
-        f_status = u'1'
-        
-        if f_info == wx.EmptyString:
-            f_status = u'0'
-        
-        return u'<<FILES>>\n{}\n{}\n<</FILES>>'.format(f_status, f_info)
-    
-    
-    ## Retrieves information on files to be packaged
-    #  
-    #  FIXME: Use different style formatting instead of calling self.GetFilesInfoDeprecated()
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
     def GetPageInfo(self, string_format=False):
@@ -575,7 +531,7 @@ class Panel(WizardPage):
         return None
     
     
-    ## 
+    ## TODO: Doxygen
     #  
     #  \override dbr.wizard.Wizard.ImportPageInfo
     def ImportPageInfo(self, filename):
@@ -687,6 +643,8 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
     
     
     ## Retrivies is the item at 'i_index' is executable
+    #  
+    #  TODO: Doxygen
     def FileIsExecutable(self, i_index):
         if self.GetItemText(i_index, self.type_col) == file_types_defs[FTYPE_EXE]:
             return True
@@ -694,24 +652,29 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         return False
     
     
+    ## TODO: Doxygen
     def GetFilename(self, i_index):
         return self.GetItemText(i_index)
     
     
+    ## TODO: Doxygen
     def GetSource(self, i_index):
         return self.GetItemText(i_index, self.source_col)
     
     
+    ## TODO: Doxygen
     def GetTarget(self, i_index):
         return self.GetItemText(i_index, self.target_col)
     
     
+    ## TODO: Doxygen
     def IsEmpty(self):
         item_count = self.GetItemCount()
         Logger.Debug(__name__, GT(u'File list is empty ({} files): {}').format(item_count, not item_count))
         return not item_count
     
     
+    ## TODO: Doxygen
     def OnInsertItem(self, event):
         Logger.Debug(__name__, u'FileList item inserted')
         
@@ -760,6 +723,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         return dirty
     
     
+    ## TODO: Doxygen
     def MissingFiles(self):
         return self.Refresh()
     
@@ -803,6 +767,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         TextEditMixin.OpenEditor(self, self.target_col, row)
     
     
+    ## TODO: Doxygen
     def AddFile(self, filename, source_dir, target_dir=None, executable=False):
         list_index = self.GetItemCount()
         
@@ -827,6 +792,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
             self.SetItemBackgroundColour(list_index, COLOR_ERROR)
     
     
+    ## TODO: Doxygen
     def SelectAll(self):
         file_count = self.GetItemCount()
         
@@ -867,6 +833,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         pass
     
     
+    ## TODO: Doxygen
     def GetRowData(self, row):
         filename = self.GetItem(row, self.filename_col).GetText()
         source_dir = self.GetItem(row, self.source_col).GetText()
@@ -876,6 +843,7 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
         return (filename, source_dir, target_dir, executable)
     
     
+    ## TODO: Doxygen
     def GetRowDefs(self, row):
         row_data = self.GetRowData(row)
         
@@ -890,6 +858,8 @@ class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
 
 
 ## A custom progress dialog
+#  
+#  FIXME: Not working; Remove???
 class ProgressDialog(wx.Dialog):
     def __init__(self, parent, title, message, task_count):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title,
