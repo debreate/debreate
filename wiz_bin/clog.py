@@ -133,57 +133,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
-        ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
-        
-        absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
-        
-        if compress and CMD_gzip:
-            commands.getstatusoutput(u'{} "{}"'.format(CMD_gzip, absolute_filename))
-        
-        return ret_value
-    
-    
-    ## TODO: Doxygen
-    def ExportBuild(self, stage):
-        debreate = self.GetDebreateWindow()
-        
-        if self.target_default.GetValue():
-            stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
-        else:
-            stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
-        
-        if not os.path.isdir(stage):
-            os.makedirs(stage)
-        
-        # FIXME: Allow user to set filename
-        self.Export(stage, u'changelog', True)
-        
-        export_summary = GT(u'Changelog export failed')
-        changelog = ConcatPaths(stage, u'changelog.gz')
-        
-        if os.path.isfile(changelog):
-            export_summary = GT(u'Changelog export to: {}').format(changelog)
-        
-        return(0, export_summary)
-    
-    
-    ## TODO: Doxygen
-    def IsExportable(self):
-        return not TextIsEmpty(self.log.GetValue())
-    
-    
-    ## TODO: Doxygen
-    def ImportInfo(self, event):
-        # Import package name and version from the control page
-        # FIXME: Should use a safer method
-        self.package.SetValue(self.debreate.page_control.pack.GetValue())
-        self.version.SetValue(self.debreate.page_control.ver.GetValue())
-        self.maintainer.SetValue(self.debreate.page_control.auth.GetValue())
-        self.email.SetValue(self.debreate.page_control.email.GetValue())
-    
-    
-    ## TODO: Doxygen
     def AddInfo(self, event):
         changes = self.changes.GetValue()
         if TextIsEmpty(changes):
@@ -224,20 +173,44 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GetChangelog(self):
-        return self.log.GetValue()
+    def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
+        ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
+        
+        absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
+        
+        if compress and CMD_gzip:
+            commands.getstatusoutput(u'{} "{}"'.format(CMD_gzip, absolute_filename))
+        
+        return ret_value
     
     
     ## TODO: Doxygen
-    def SetChangelogLegacy(self, data):
-        changelog = data.split(u'\n')
-        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
-        if dest == u'DEFAULT':
-            self.target_default.SetValue(True)
+    def ExportBuild(self, stage):
+        debreate = self.GetDebreateWindow()
+        
+        if self.target_default.GetValue():
+            stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
         else:
-            self.target_custom.SetValue(True)
-            self.target.SetValue(dest)
-        self.log.SetValue(u'\n'.join(changelog[1:]))
+            stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
+        
+        if not os.path.isdir(stage):
+            os.makedirs(stage)
+        
+        # FIXME: Allow user to set filename
+        self.Export(stage, u'changelog', True)
+        
+        export_summary = GT(u'Changelog export failed')
+        changelog = ConcatPaths(stage, u'changelog.gz')
+        
+        if os.path.isfile(changelog):
+            export_summary = GT(u'Changelog export to: {}').format(changelog)
+        
+        return(0, export_summary)
+    
+    
+    ## TODO: Doxygen
+    def GetChangelog(self):
+        return self.log.GetValue()
     
     
     ## Retrieves changelog information
@@ -258,6 +231,18 @@ class Panel(WizardPage):
             return None
         
         return (__name__, u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body))
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  FIXME: Rename to OnImportFromControl
+    def ImportInfo(self, event):
+        # Import package name and version from the control page
+        # FIXME: Should use a safer method
+        self.package.SetValue(self.debreate.page_control.pack.GetValue())
+        self.version.SetValue(self.debreate.page_control.ver.GetValue())
+        self.maintainer.SetValue(self.debreate.page_control.auth.GetValue())
+        self.email.SetValue(self.debreate.page_control.email.GetValue())
     
     
     ## TODO: Doxygen
@@ -329,6 +314,23 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    def IsExportable(self):
+        return not TextIsEmpty(self.log.GetValue())
+    
+    
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         self.target.Reset()
         self.log.Clear()
+    
+    
+    ## TODO: Doxygen
+    def SetChangelogLegacy(self, data):
+        changelog = data.split(u'\n')
+        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+        if dest == u'DEFAULT':
+            self.target_default.SetValue(True)
+        else:
+            self.target_custom.SetValue(True)
+            self.target.SetValue(dest)
+        self.log.SetValue(u'\n'.join(changelog[1:]))
