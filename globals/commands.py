@@ -13,6 +13,7 @@ from dbr.commandcheck import CommandExists
 CMD_ar = CommandExists(u'ar')
 CMD_bsdar = CommandExists(u'bsdar')
 CMD_dpkg = CommandExists(u'dpkg')
+CMD_dpkgdeb = CommandExists(u'dpkg-deb')
 CMD_fakeroot = CommandExists(u'fakeroot')
 CMD_gdebi = CommandExists(u'gdebi')
 CMD_gzip = CommandExists(u'gzip')
@@ -38,7 +39,7 @@ CMD_system_packager = None
 
 # Order in priority
 CMDS_packagers = (
-    CMD_dpkg,
+    CMD_dpkgdeb,
     CMD_bsdar,
     CMD_ar,
 )
