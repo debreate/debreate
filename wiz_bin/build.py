@@ -26,14 +26,16 @@ from dbr.wizard             import WizardPage
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_lintian
+from globals.commands       import CMD_lintian, CMD_system_packager,\
+    CMD_fakeroot
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_BUILD, ID_CONTROL
+from globals.ident          import ID_BUILD, ID_CONTROL, ID_MENU
 from globals.ident          import ID_FILES
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
+import subprocess
 
 
 class Panel(WizardPage):
@@ -254,6 +256,7 @@ class Panel(WizardPage):
                             GT(u'Creating .deb package ({}/{}').format(current_step+1, steps_count))
                     
                     # TODO: Function to build deb
+                    self.OnBuildCreateDeb(stage, out_file)
                     
                     current_step += 1
                 
@@ -300,7 +303,7 @@ class Panel(WizardPage):
                 err_dialog.Destroy()
         
         return
-        
+        '''
         try:
             temp_dir = CreateTempDirectory()
             
@@ -345,6 +348,7 @@ class Panel(WizardPage):
         
         # TODO: Make sure temp directory is deleted
         shutil.rmtree(temp_dir)
+        '''
     
     
     ## 
@@ -460,14 +464,17 @@ class Panel(WizardPage):
         if event:
             event.Skip()
         
-        meta = self.debreate.page_control
+        control_page = self.wizard.GetPage(ID_CONTROL)
+        files_page = self.wizard.GetPage(ID_FILES)
+        menu_page = self.wizard.GetPage(ID_MENU)
+        
         required_fields = {
-            GT(u'Control'): (meta.pack, meta.ver, meta.auth, meta.email,),
+            GT(u'Control'): (control_page.pack, control_page.ver, control_page.auth, control_page.email,),
         }
         
-        if self.debreate.page_menu.activate.GetValue():
+        if menu_page.activate.GetValue():
             #required_fields.append(self.debreate.page_menu.name_input)
-            required_fields[GT(u'Menu Launcher')] = (self.debreate.page_menu.name_input,)
+            required_fields[GT(u'Menu Launcher')] = (menu_page.name_input,)
         
         for page_name in required_fields:
             for F in required_fields[page_name]:
@@ -488,7 +495,7 @@ class Panel(WizardPage):
                     
                     return
         
-        if self.debreate.page_files.file_list.MissingFiles():
+        if files_page.file_list.MissingFiles():
             Logger.Warning(__name__, GT(u'Files are missing in file list'))
             
             err_dialog = ErrorDialog(self.debreate, GT(u'Warning'), GT(u'Files are missing in file list'))
@@ -504,6 +511,11 @@ class Panel(WizardPage):
         ttype = GT(u'Debian Packages')
         save_dialog = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
+        
+        package = control_page.pack.GetValue()
+        version = control_page.ver.GetValue()
+        arch = control_page.arch.GetStringSelection()
+        save_dialog.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
         
         if ShowDialog(save_dialog):
             self.Build(save_dialog.GetPath())
@@ -955,6 +967,32 @@ class Panel(WizardPage):
                     wx.OK|wx.ICON_WARNING)
             err.ShowModal()
             err.Destroy()
+    
+    
+    ## TODO: Doxygen & finish defining
+    def OnBuildCreateDeb(self, stage, target_file):
+        Logger.Debug(__name__, GT(u'Creating {} from {}').format(target_file, stage))
+        
+        # Reference
+        #commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}.deb"'.format(root, filename)).encode(u'utf-8'))
+        
+        packager = CMD_system_packager
+        if not CMD_fakeroot or not packager:
+            return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg'))
+        
+        packager = os.path.basename(packager)
+        
+        Logger.Debug(__name__, GT(u'System packager: {}').format(packager))
+        
+        # DEBUG:
+        cmd = u'{} {} -b "{}" "{}"'.format(CMD_fakeroot, packager, stage, target_file)
+        Logger.Debug(__name__, GT(u'Executing: {}').format(cmd))
+        
+        output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage, target_file], stderr=subprocess.STDOUT)
+        
+        Logger.Debug(__name__, GT(u'Build output: {}').format(output))
+        
+        return (dbrerrno.SUCCESS, None)
     
     
     ## Retrieves total size of directory contents
