@@ -11,3 +11,4 @@ Known Bugs:
   - executable-desktop-file usr/share/applications/Debreate.desktop 0755
   - executable-not-elf-or-script usr/share/applications/Debreate.desktop
   - maintainer-script-ignores-errors
+- File list columns don't size correctly
