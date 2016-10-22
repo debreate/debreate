@@ -24,6 +24,7 @@ from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
 from globals.ident      import page_ids
 from globals.tooltips   import SetPageToolTips
+from dbr.listinput import ListCtrlPanel
 
 
 ID_INST_PRE = wx.NewId()
@@ -108,12 +109,12 @@ class Panel(WizardPage):
         
         # Auto-Link executables to be linked
         if wx.MAJOR_VERSION < 3: # NOTE: wx. 3.0 compat
-            self.executables = wx.ListCtrl(self, -1, size=(200,200),
+            self.executables = ListCtrlPanel(self, size=(200,200),
             	style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
             self.executables.InsertColumn(0, u'')
         
         else:
-            self.executables = wx.ListCtrl(self, -1, size=(200,200))
+            self.executables = ListCtrlPanel(self, size=(200,200))
             #self.executables.SetSingleStyle(wx.LC_REPORT)
             self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
