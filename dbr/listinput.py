@@ -121,6 +121,10 @@ class ListCtrlPanel(wx.Panel):
         self.listarea.SetItemBackgroundColour(item, color)
     
     
+    def SetSingleStyle(self, style, add=True):
+        self.listarea.SetSingleStyle(style, add)
+    
+    
     ## TODO: Doxygen
     #  
     #  FIXME: imageId unused; Unknown purpose, not documented
