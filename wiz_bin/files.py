@@ -17,6 +17,7 @@ from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
 from dbr.help           import HelpButton
 from dbr.language       import GT
+from dbr.listinput      import ListCtrlPanel
 from dbr.log            import Logger
 from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.wizard         import WizardPage
@@ -613,10 +614,9 @@ class Panel(WizardPage):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(wx.ListCtrl, ListCtrlAutoWidthMixin, TextEditMixin):
+class FileList(ListCtrlPanel, ListCtrlAutoWidthMixin, TextEditMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
-        wx.ListCtrl.__init__(self, parent, window_id,
-                style=wx.BORDER_SUNKEN|wx.LC_REPORT)
+        ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT)
         ListCtrlAutoWidthMixin.__init__(self)
         TextEditMixin.__init__(self)
         
