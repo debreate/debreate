@@ -1,3 +1,7 @@
+0.7.12-dev3
+- Use new about dialog
+- Use custom hyperlink controls
+
 0.7.12-dev2
 - Import modules from 'unstable' branch
 - Fix first run window not closing
