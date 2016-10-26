@@ -9,6 +9,7 @@
 import wx
 
 from dbr.font       import MONOSPACED_LG
+from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
 
 
@@ -22,12 +23,14 @@ class MultilineTextCtrl(wx.TextCtrl):
 
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
 class MultilineTextCtrlPanel(wx.Panel):
-    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-                style=wx.TAB_TRAVERSAL, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=wx.TAB_TRAVERSAL, name=wx.TextCtrlNameStr):
         wx.Panel.__init__(self, parent, ID, pos, size, style|wx.TAB_TRAVERSAL|wx.BORDER_THEME,
                 name)
         
         self.textarea = MultilineTextCtrl(self)
+        if not TextIsEmpty(value):
+            self.textarea.SetValue(value)
         
         # Match panel color to text control
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
@@ -123,9 +126,10 @@ button_H_pos = {
 #  
 #  TODO: Remove button & toggle text from external buttons
 class MonospaceTextCtrl(MultilineTextCtrlPanel):
-    def __init__(self, parent, ID=wx.ID_ANY, button=MT_NO_BTN, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=wx.TAB_TRAVERSAL, name=wx.TextCtrlNameStr):
-        MultilineTextCtrlPanel.__init__(self, parent, ID, pos, size, style, name)
+    def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, button=MT_NO_BTN,
+                pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL,
+                name=wx.TextCtrlNameStr):
+        MultilineTextCtrlPanel.__init__(self, parent, ID, value, pos, size, style, name)
         
         self.textarea.SetFont(MONOSPACED_LG)
         
