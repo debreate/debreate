@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 
 
-from common import *
-import os, sys, wx.lib.dialogs, db, webbrowser, language, shutil, subprocess
-from os.path import exists
-import paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, panmenu, panbuild
-import pancopyright
-from dbr.config import WriteConfig, GetDefaultConfigValue
+import os, db, webbrowser, shutil, subprocess, wx
+from urllib2 import HTTPError
+from urllib2 import URLError
+
+from common     import GetCurrentVersion
+from common     import db_version
+from common     import db_website
+from common     import debreate_version
+from dbr.about  import AboutDialog
+from dbr.config import GetDefaultConfigValue
+from dbr.config import WriteConfig
+import pancopyright, paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, panmenu, panbuild
+
 
 ID_Dialogs = wx.NewId()
 
@@ -353,15 +360,6 @@ class MainWindow(wx.Frame):
             build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
             self.page_build.SetFieldData(build_data)
     
-    # ----- File Menu
-    def ConvertToRPM(self, event):
-        # This app uses alien to convert debian binary/basic packages to red had format.
-        # The acutal command is "fakeroot alien -rck [package_name].deb"
-        # alien cannot convert packages that are in a path with spaces in it, and it will also fail
-        # if the package's file extension is anything other than ".deb", e.g. ".DEB", ".DeB".
-        app = debrpm.Dialog(self, -1, _("Deb to RPM"))
-        app.ShowModal()
-        app.Close()
     
     def OnQuit(self, event):
         """Show a dialog to confirm quit and write window settings to config file"""
@@ -407,14 +405,17 @@ class MainWindow(wx.Frame):
     
     def OnAbout(self, event):
         """Opens a dialog box with information about the program"""
-        about = db.AboutDialog(self, -1, _('About'))
+        about = AboutDialog(self)
         
         about.SetGraphic("%s/bitmaps/debreate64.png" % application_path)
-        about.SetVersion(_('Debreate'), debreate_version)
-        about.SetAuthor('Jordan Irwin')
-        about.SetSFWebsite('debreate.sourceforge.net', 'http://debreate.sourceforge.net/')
-        about.SetGHWebsite('github.com/AntumDeluge/debreate', 'https://github.com/AntumDeluge/debreate')
+        about.SetVersion(debreate_version)
         about.SetDescription(_('A package builder for Debian based systems'))
+        about.SetAuthor('Jordan Irwin')
+        about.SetWebsites((
+            (u'Homepage', u'https://antumdeluge.github.io/debreate-web/'),
+            (u'GitHub project page', u'https://github.com/AntumDeluge/debreate'),
+            (u'Sourceforge project page', u'https://sourceforge.net/projects/debreate'),
+        ))
         
         about.AddDeveloper("Jordan Irwin", "antumdeluge@gmail.com")
         about.AddPackager("Jordan Irwin", "antumdeluge@gmail.com")
@@ -424,15 +425,9 @@ class MainWindow(wx.Frame):
         about.AddJob(_(u'Karim Oulad Chalha'), u'%s (ar_MA)' % (job), u'herr.linux88@gmail.com')
         about.AddJob(_(u'Philippe Dalet'), u'%s (fr_FR)' % (job), u'philippe.dalet@ac-toulouse.fr')
         
-        file = open('%s/docs/changelog' % (application_path), 'r')
-        log = file.read()
-        file.close()
-        about.SetChangelog(log)
+        about.SetChangelog()
         
-        file = open('%s/docs/LICENSE.txt' % application_path, 'r')
-        license = file.read()
-        file.close()
-        about.SetLicense(license)
+        about.SetLicense()
         
         about.ShowModal()
         about.Destroy()
