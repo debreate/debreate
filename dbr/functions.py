@@ -5,16 +5,18 @@
 #  Global functions used throughout Debreate
 
 
-import wx, os, re, commands, shutil
+import commands, wx, os, re, shutil, subprocess
 from datetime   import date
 from datetime   import datetime
 from urllib2    import URLError
 from urllib2    import urlopen
 
+from dbr.language           import GT
 from globals.application    import APP_homepage_sf
 from globals.application    import APP_name
 from globals.application    import RELEASE
 from globals.application    import VERSION_string
+from globals.commands       import CMD_system_packager, CMD_fakeroot
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
@@ -413,3 +415,17 @@ def RemovePreWhitespace(text):
 
 def UsingDevelopmentVersion():
     return not RELEASE
+
+
+def BuildDebPackage(stage_dir, target_file):
+    packager = CMD_system_packager
+    
+    if not CMD_fakeroot or not packager:
+        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg'))
+    
+    packager = os.path.basename(packager)
+    
+    output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+    
+    # FIXME: Error checking/handling
+    return (dbrerrno.SUCCESS, output)
