@@ -19,6 +19,8 @@ ID_OVERWRITE = wx.NewId()
 ID_APPEND = wx.NewId()
 ID_DEBUG = wx.NewId()
 ID_LOG = wx.NewId()
+ID_STAGE = wx.NewId()
+ID_TARGET = wx.NewId()
 ID_THEME = wx.NewId()
 ID_IMPORT = wx.NewId()
 
