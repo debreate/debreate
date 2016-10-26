@@ -350,12 +350,14 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
+        '''
         if INSTALLED:
             # FIXME: Read compressed .gz changelog
             CHANGELOG = u'{}/share/doc/debreate/changelog.gz'.format(PREFIX)
         
         else:
-            CHANGELOG = u'{}/docs/changelog'.format(PREFIX)
+        '''
+        CHANGELOG = u'{}/docs/changelog'.format(PREFIX)
         
         if os.path.isfile(CHANGELOG):
             changelog_mimetype = GetFileMimeType(CHANGELOG)
@@ -419,11 +421,13 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
+        '''
         if INSTALLED:
             license_path = u'{}/share/doc/debreate/copyright'.format(PREFIX)
         
         else:
-            license_path = u'{}/docs/LICENSE.txt'.format(PREFIX)
+        '''
+        license_path = u'{}/docs/LICENSE.txt'.format(PREFIX)
         
         if os.path.isfile(license_path):
             lic_data = open(license_path)
