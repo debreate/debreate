@@ -60,9 +60,9 @@ To run, launch the file named "init.py":
 
 
 ### [Links](#table-of-contents)
-* [Homepage](http://debreate.sourceforge.net/)
-* [Sourceforge Project](https://sourceforge.net/projects/debreate)
-* [GitHub Project](https://github.com/AntumDeluge/debreate)
+* [Homepage](https://antumdeluge.github.io/debreate-web)
+* [GitHub project page](https://github.com/AntumDeluge/debreate)
+* [Sourceforge project page](https://sourceforge.net/projects/debreate)
 * [PPA][ppa.main] ([Old PPA][ppa-old.debreate])
 
 
