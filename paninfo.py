@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
+
 import wx
+
+from dbr.constants  import ID_GREETING
+from dbr.custom     import Hyperlink
+
 
 ID = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID, name=_('Information')):
-        wx.Panel.__init__(self, parent, id, name=_('Information'))
+    def __init__(self, parent, name=_('Information')):
+        wx.Panel.__init__(self, parent, ID_GREETING, name=_('Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         
@@ -26,7 +31,7 @@ class Panel(wx.Panel):
         
         # ----- Helpful information to be displayed about each mode
         self.info = wx.StaticText(self, -1)
-        self.vidlink = wx.HyperlinkCtrl(self, -1, _('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        self.vidlink = Hyperlink(self, wx.ID_ANY, _('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
         self.info_border = wx.StaticBox(self, -1, size=(100,100))
         info_box = wx.GridSizer()
         info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
