@@ -64,8 +64,8 @@ class ButtonAppend(ToolTipButton):
                 u'{}/bitmaps/pipe32.png'.format(PATH_app), tooltip)
 
 class ButtonBrowse(ToolTipButton):
-    def __init__(self, parent, tooltip=GT(u'Browse')):
-        ToolTipButton.__init__(self, parent, ID_OPEN,
+    def __init__(self, parent, ID=ID_OPEN, tooltip=GT(u'Browse')):
+        ToolTipButton.__init__(self, parent, ID,
                 u'{}/bitmaps/browse32.png'.format(PATH_app), tooltip)
 
 class ButtonBrowse64(ToolTipButton):
@@ -134,8 +134,6 @@ class ButtonQuestion64(ToolTipButton):
                 u'{}/bitmaps/question64.png'.format(PATH_app), tooltip)
 
 ## Button for refreshing displayed controls
-#  
-#  TODO: Use wx.BitmapButton
 class ButtonRefresh(BitmapButton):
     def __init__(self, parent, name=u'refresh'):
         BitmapButton.__init__(self, parent, BUTTON_REFRESH, ID_REFRESH, name=name)
