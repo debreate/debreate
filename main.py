@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-import os, subprocess, webbrowser
+import os, subprocess, webbrowser, wx
 from urllib2 import URLError, HTTPError
-import wx
 
 import dbr
 from dbr.compression        import CompressionHandler
@@ -123,10 +122,6 @@ class MainWindow(wx.Frame):
         self.menu_file.AppendItem(self.QuickBuild)
         self.menu_file.AppendSeparator()
         self.menu_file.Append(wx.ID_EXIT)
-        
-        # FIXME: QuickBuild broken
-        self.QuickBuild.SetText(u'Quick Build (Broken)')
-        self.QuickBuild.Enable(False)
         
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
