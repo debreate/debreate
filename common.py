@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import sys, os, subprocess
-from urllib2 import urlopen, URLError, HTTPError
+import sys, os, subprocess, wx
+from urllib2        import URLError
+from urllib2        import urlopen
 from wx.lib.docview import PathOnly
-
-
-import wx
-
-import language
 
 
 # Set the encoding to unicode
@@ -26,7 +22,7 @@ debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
 
 if not RELEASE:
     # Increment this for every development release
-    ver_dev = 2
+    ver_dev = 3
     debreate_version = u'{}-dev{}'.format(debreate_version, ver_dev)
 
 db_version = (ver_maj, ver_min, ver_rel)
