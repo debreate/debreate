@@ -200,7 +200,7 @@ class Panel(WizardPage):
         self.Export(stage, u'changelog', True)
         
         export_summary = GT(u'Changelog export failed')
-        changelog = ConcatPaths(stage, u'changelog.gz')
+        changelog = ConcatPaths((stage, u'changelog.gz'))
         
         if os.path.isfile(changelog):
             export_summary = GT(u'Changelog export to: {}').format(changelog)
