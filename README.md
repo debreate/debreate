@@ -20,7 +20,7 @@ The definition of Debian source packages may be a little confusing (as it was fo
 
 ### [Installation](#table-of-contents)
 
-The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built, but the Makefile simply installs the scripts onto the system.
+The source uses a generic Makefile for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well). The source is not actually built, but the Makefile simply installs the scripts onto the system. The plan is to eventually switch to the CMake build system, unless a better alternative is decided upon.
 
 #### Generating the Makefile
 
@@ -37,7 +37,7 @@ Debreate needs these packages installed to run:
 * [python][pkg.python]
     * Version 2.7 is supported. The goal is to port it to Python 3 once supported by [wxPython][wxpython].
 * python-wxgtk (wxPython)
-    * [python-wxgtk2.8][pkg.python-wxgtk2.8] & [python-wxgtk3][pkg.python-wxgtk3] are supported.
+    * [python-wxgtk2.8][pkg.python-wxgtk2.8] & [python-wxgtk3][pkg.python-wxgtk3] are currently supported (2.8 support will eventually be dropped).
 * [python-wxversion][pkg.python-wxversion]
 * [dpkg][pkg.dpkg]
     * If you are running a Debian/Ubuntu based system, then this is most likely already installed.
@@ -50,7 +50,7 @@ These packages are recommended & enable some features:
 * [lintian][pkg.lintian]
 
 
-It is recommended to build the .deb package with 'make debuild' & install via the system's package manager.
+It is recommended to build the .deb package with 'make deb-bin' & install via the system's package manager.
 
 
 ### [Standalone Use](#table-of-contents)
@@ -63,7 +63,7 @@ To run, launch the file named "init.py":
 * [Homepage](http://debreate.sourceforge.net/)
 * [Sourceforge Project](https://sourceforge.net/projects/debreate)
 * [GitHub Project](https://github.com/AntumDeluge/debreate)
-* [PPA][ppa.debreate]
+* [PPA][ppa.main] ([Old PPA][ppa-old.debreate])
 
 
 ### [Other Pages](#table-of-contents)
@@ -83,7 +83,8 @@ To run, launch the file named "init.py":
 
 [src.debreate-unstable]: https://github.com/AntumDeluge/debreate/tree/unstable
 
-[ppa.debreate]: https://launchpad.net/~antumdeluge/+archive/ubuntu/debreate
+[ppa.main]: https://launchpad.net/~antumdeluge/+archive/ubuntu/main
+[ppa-old.debreate]: https://launchpad.net/~antumdeluge/+archive/ubuntu/debreate
 
 [pkg.coreutils]: http://packages.ubuntu.com/coreutils
 [pkg.devscripts]: http://packages.ubuntu.com/devscripts
