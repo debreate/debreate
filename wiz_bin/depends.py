@@ -10,12 +10,13 @@ from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
 from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonDel
+from dbr.help           import HelpButton
 from dbr.language       import GT
+from dbr.listinput      import ListCtrlPanel
 from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.ident      import ID_DEPENDS, ID_APPEND
 from globals.tooltips   import SetPageToolTips
-from dbr.help           import HelpButton
 
 
 ## TODO: Doxygen
@@ -27,28 +28,34 @@ class Panel(WizardPage):
         self.prebuild_check = False
         
         # --- DEPENDS
-        self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
+        dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
         
         # --- PRE-DEPENDS
-        self.pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
+        pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
         
         # --- RECOMMENDS
-        self.rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
+        rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
         
         # --- SUGGESTS
-        self.sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
+        sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
         
         # --- ENHANCES
-        self.enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
+        enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
         
         # --- CONFLICTS
-        self.con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
+        con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
         
         # --- REPLACES
-        self.rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
+        rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
         
         # --- BREAKS
-        self.break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
+        break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
+        
+        self.radio_opts = (
+            dep_chk, pre_chk, rec_chk,
+            sug_chk, enh_chk, con_chk,
+            rep_chk, break_chk,
+        )
         
         
         # Input for dependencies
@@ -104,11 +111,12 @@ class Panel(WizardPage):
         wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
         
         # ----- List
-        self.dep_area = AutoListCtrl(self)
+        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT)
         self.dep_area.SetName(u'list')
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
-        # FIXME: wx. 3.0
+        
+        # FIXME: wx. 3.0 Columns not sizing correctly
         if (wx.MAJOR_VERSION < 3):
             self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
         
@@ -116,18 +124,11 @@ class Panel(WizardPage):
         
         # Start some sizing
         radio_box = wx.StaticBoxSizer(wx.StaticBox(self, -1, GT(u'Categories')), wx.VERTICAL)
-        rg1 = wx.GridSizer(4, 2, 5, 5)
-        rg1.AddMany( [
-        (self.dep_chk, 0),
-        (self.pre_chk, 0),
-        (self.rec_chk, 0),
-        (self.sug_chk, 0),
-        (self.enh_chk, 0),
-        (self.con_chk, 0),
-        (self.rep_chk, 0),
-        (self.break_chk, 0) ])
+        self.rg1 = wx.GridSizer(4, 2, 5, 5)
+        for R in self.radio_opts:
+            self.rg1.Add(R, 0)
         
-        radio_box.Add(rg1, 0)
+        radio_box.Add(self.rg1, 0)
         
         layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
         layout_H2.Add(radio_box, 0, wx.RIGHT, 5)
@@ -151,7 +152,7 @@ class Panel(WizardPage):
         layout_Vmain = wx.BoxSizer(wx.VERTICAL)
         layout_Vmain.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
         layout_Vmain.Add(layout_H2, 0, wx.ALL, 5)
-        layout_Vmain.Add(layout_H3, 1, wx.ALL, 5)
+        layout_Vmain.Add(layout_H3, 1, wx.EXPAND|wx.ALL, 5)
         
         # ----- Layout
         self.SetAutoLayout(True)
@@ -208,17 +209,17 @@ class Panel(WizardPage):
         addname = self.input_package.GetValue()
         oper = self.operator.GetStringSelection()
         ver = self.input_version.GetValue()
-        addver = u'(%s%s)' % (oper, ver)
+        addver = u'({}{})'.format(oper, ver)
             
         if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
-            for item in self.categories:
-                if item.GetValue() == True:
+            for R in self.radio_opts:
+                if R.GetValue() == True:
                     if addname != u'':
-                        self.dep_area.InsertStringItem(0, self.categories[item])
+                        self.dep_area.InsertStringItem(0, R.GetName())
                         if ver == u'':
                             self.dep_area.SetStringItem(0, 1, addname)
                         else:
-                            self.dep_area.SetStringItem(0, 1, u'%s %s' % (addname, addver))
+                            self.dep_area.SetStringItem(0, 1, u'{} {}'.format(addname, addver))
         
         elif key_id == ID_APPEND:
             listrow = self.dep_area.GetFocusedItem()  # Get row of selected item
@@ -226,9 +227,9 @@ class Panel(WizardPage):
             prev_text = colitem.GetText()  # Get the text from that item
             if addname != u'':
                 if ver != u'':
-                    self.dep_area.SetStringItem(listrow, 1, u'%s | %s %s' % (prev_text, addname, addver))
+                    self.dep_area.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
                 else:
-                    self.dep_area.SetStringItem(listrow, 1, u'%s | %s' % (prev_text, addname))
+                    self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
         elif key_id == wx.ID_DELETE: # wx.WXK_DELETE:
             selected = None
@@ -263,6 +264,8 @@ class Panel(WizardPage):
 
 
 ## A ListCtrl that automatically expands columns
+#  
+#  FIXME: Deprecated
 class AutoListCtrl(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
