@@ -25,6 +25,12 @@ from globals.application    import AUTHOR_name
 from globals.commands       import CMD_gzip
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
+from globals.system         import OS_codename
+from globals.system         import OS_name
+from globals.system         import OS_upstream_codename
+from globals.system         import OS_upstream_name
+from globals.system         import OS_upstream_version
+from globals.system         import OS_version
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 
@@ -134,8 +140,34 @@ class AboutDialog(wx.Dialog):
         sysinfo_layout_V1.AddStretchSpacer()
         sysinfo_layout_V1.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
         sysinfo_layout_V1.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+        sysinfo_layout_V1.AddSpacer(20)
         sysinfo_layout_V1.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP, 5)
         sysinfo_layout_V1.AddStretchSpacer()
+        
+        if OS_name:
+            os_info = wx.StaticText(sys_info, label=OS_name)
+            os_info.SetFont(sys_info_font)
+            
+            if OS_version:
+                os_info.SetLabel(u'{} {}'.format(os_info.LabelText, OS_version))
+            
+            if OS_codename:
+                os_info.SetLabel(u'{} {}'.format(os_info.LabelText, OS_codename))
+            
+            sysinfo_layout_V1.Insert(1, os_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
+            sysinfo_layout_V1.InsertSpacer(2, 20)
+            
+            if OS_upstream_name:
+                os_upstream_info = wx.StaticText(sys_info, label=OS_upstream_name)
+                
+                if OS_upstream_version:
+                    os_upstream_info.SetLabel(u'{} {}'.format(os_upstream_info.LabelText, OS_upstream_version))
+                
+                if OS_upstream_codename:
+                    os_upstream_info.SetLabel(u'{} {}'.format(os_upstream_info.LabelText, OS_upstream_codename))
+                
+                sysinfo_layout_V1.Insert(2, os_upstream_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
+                
         
         sys_info.SetSizer(sysinfo_layout_V1)
         sys_info.Layout()
