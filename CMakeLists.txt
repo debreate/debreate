@@ -1,16 +1,18 @@
+
 cmake_minimum_required(VERSION 3.5)
 project(Debreate NONE)
-#include(FindPythonInterp)
-#include(FindGettext)
 
 find_package(PythonInterp 2.7 REQUIRED)
-find_package(Gettext)
+#include(FindPythonInterp)
+#find_package(Gettext)
+include(FindGettext)
 
-set(DATA_DIR share/debreate)
-set(APPS_DIR share/applications)
-set(BITMAPS_DIR share/bitmaps)
-set(LOCALE_DIR share/locale)
+set(DATA_ROOT "share")
+set(DATA_DIR "${DATA_ROOT}/debreate")
+set(APPS_DIR "${DATA_ROOT}/applications")
+set(BITMAPS_DIR "${DATA_ROOT}/bitmaps")
 
+# Make Python interpreter alterable
 if(PYTHONINTERP_FOUND)
     set(PYTHON_EXE ${PYTHON_EXECUTABLE})
     unset(PYTHON_EXECUTABLE CACHE)
@@ -55,6 +57,7 @@ install(
     PATTERN *.py
 )
 
+# FIXME: Not all docs should be installed
 install(
     DIRECTORY bitmaps docs templates
     DESTINATION ${DATA_DIR}
@@ -99,9 +102,10 @@ else()
     message("CONFIGURE_MIME_TYPES:\tOFF")
 endif()
 
+# Write the Debreate executable
 file(
     WRITE "${CMAKE_BINARY_DIR}/bin/debreate"
-    "#!/bin/bash -e"
+    "#!/bin/sh"
     "\n\n${CMAKE_INSTALL_PREFIX}/${DATA_DIR}/init.py $@"
 )
 
@@ -109,4 +113,17 @@ install(
     FILES "${CMAKE_BINARY_DIR}/bin/debreate"
     DESTINATION bin
     PERMISSIONS ${EXECUTABLE_PERMISSIONS}
+)
+
+# Write the "INSTALLED" file
+set(FILE_installed "${CMAKE_BINARY_DIR}/data/INSTALLED")
+
+file(
+    WRITE "${FILE_installed}"
+    "prefix=${CMAKE_INSTALL_PREFIX}"
+)
+
+install(
+    FILES "${FILE_installed}"
+    DESTINATION "${DATA_DIR}"
 )
