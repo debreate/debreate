@@ -6,8 +6,9 @@
 # See: docs/LICENSE.txt
 
 
-import wx, os
-from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin, TextEditMixin
+import os, wx
+from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
+from wx.lib.mixins.listctrl import TextEditMixin
 
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -17,11 +18,12 @@ from globals.constants  import file_types_defs
 
 
 ## A list control with no border
-class ListCtrl(wx.ListCtrl):
+class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         wx.ListCtrl.__init__(self, parent, ID, pos, size, wx.BORDER_NONE|style,
                 validator, name)
+        ListCtrlAutoWidthMixin.__init__(self)
 
 
 ## Hack to make list control border have rounded edges
@@ -42,6 +44,8 @@ class ListCtrlPanel(wx.Panel):
         self.SetAutoLayout(True)
         self.SetSizer(self.layout_V1)
         self.Layout()
+        
+        wx.EVT_SIZE(self, self.OnResize)
     
     
     def AppendColumn(self, heading, fmt=wx.LIST_FORMAT_LEFT, width=-1):
@@ -84,6 +88,10 @@ class ListCtrlPanel(wx.Panel):
         return self.listarea.GetFirstSelected()
     
     
+    def GetFocusedItem(self):
+        return self.listarea.GetFocusedItem()
+    
+    
     def GetItem(self, row, col):
         return self.listarea.GetItem(row, col)
     
@@ -119,6 +127,43 @@ class ListCtrlPanel(wx.Panel):
         self.listarea.InsertStringItem(index, label)
     
     
+    ## Some workarounds for resizing the list & its columns
+    #  
+    #  The last column is automatically expanded to fill
+    #  the remaining space.
+    def OnResize(self, event=None):
+        if wx.MAJOR_VERSION > 2:
+            # Workaround for wx 3.0
+            # FIXME: -10 should be a dynamic number set by the sizer's padding
+            self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
+        
+        # TODO: This should not be needed with ListCtrlAutoWidthMixin
+        '''
+        col_count = self.listarea.GetColumnCount()
+        if col_count:
+            Logger.Debug(__name__, GT(u'Resizing ...; Size: {}').format(self.GetSize()))
+            
+            Logger.Debug(__name__, GT(u'Column count: {}').format(col_count))
+            last_column = col_count
+            if col_count > 0:
+                last_column -= 1
+            
+            width = self.listarea.GetSize()[0]
+            
+            col_widths = 0
+            for C in range(col_count):
+                if C != last_column:
+                    col_widths += self.listarea.GetColumnWidth(C)
+            
+            width -= col_widths
+            
+            self.listarea.SetColumnWidth(last_column, width)
+            '''
+        
+        if event:
+            event.Skip()
+    
+    
     def SetColumnWidth(self, col, width):
         self.listarea.SetColumnWidth(col, width)
         self.listarea.Layout()
@@ -143,10 +188,9 @@ class ListCtrlPanel(wx.Panel):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(ListCtrlPanel, ListCtrlAutoWidthMixin, TextEditMixin):
+class FileList(ListCtrlPanel, TextEditMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT)
-        ListCtrlAutoWidthMixin.__init__(self)
         TextEditMixin.__init__(self)
         
         self.parent = parent
