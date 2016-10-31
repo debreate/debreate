@@ -532,7 +532,7 @@ class DebianScript(wx.Panel):
         else:
             absolute_filename = u'{}/{}-{}'.format(out_dir, page_ids[self.parent.GetId()].upper(), self.script_filename)
         
-        script_text = u'#!{}\n\n{}'.format(self.shell.GetValue(), self.script_body.GetValue())
+        script_text = u'{}\n\n{}'.format(self.GetShebang(), self.script_body.GetValue())
         
         #add_newline = script_text.split(u'\n')[-1] != u''
         
@@ -581,6 +581,18 @@ class DebianScript(wx.Panel):
             return shell_descriptions[selected_shell]
         
         return None
+    
+    
+    ## TODO: Doxygen
+    def GetShebang(self):
+        shell = self.shell.GetValue()
+        
+        if shell.startswith(u'/usr/bin/env '):
+            shell = u'#!{}\nset -e'.format(shell)
+        else:
+            shell = u'#!{} -e'.format(shell)
+        
+        return shell
     
     
     ## TODO: Doxygen
