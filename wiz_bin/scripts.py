@@ -4,6 +4,7 @@
 
 
 import wx, os
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonBuild
 from dbr.buttons        import ButtonDel
@@ -11,6 +12,7 @@ from dbr.buttons        import ButtonImport
 from dbr.buttons        import ButtonQuestion64
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.listinput      import ListCtrlPanel
 from dbr.log            import Logger
 from dbr.markdown       import MarkdownDialog
 from dbr.pathctrl       import PATH_WARN
@@ -24,7 +26,6 @@ from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
 from globals.ident      import page_ids
 from globals.tooltips   import SetPageToolTips
-from dbr.listinput import ListCtrlPanel
 
 
 ID_INST_PRE = wx.NewId()
@@ -464,7 +465,7 @@ class DebianScript(wx.Panel):
                 else:
                     shell_options.append(P + S)
         
-        self.shell = wx.ComboBox(self, self.GetId(), choices=shell_options)
+        self.shell = OwnerDrawnComboBox(self, self.GetId(), choices=shell_options)
         self.shell.default = u'/bin/bash'
         self.shell.SetStringSelection(self.shell.default)
         

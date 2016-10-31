@@ -6,6 +6,7 @@
 
 
 import wx, os, shutil
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse64
@@ -105,7 +106,7 @@ class Panel(WizardPage):
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
         self.type_text = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         
-        self.type_choice = wx.ComboBox(self, -1, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
+        self.type_choice = OwnerDrawnComboBox(self, -1, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
         self.type_choice.default = self.type_choice.GetValue()
         self.options_input.append(self.type_choice)
         
@@ -132,7 +133,7 @@ class Panel(WizardPage):
                 u'UTF-16',u'UTF-32',u'SCSU',u'BOCU-1',u'Punycode', u'GB 18030')
         self.enc_text = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         
-        self.enc_input = wx.ComboBox(self, -1, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
+        self.enc_input = OwnerDrawnComboBox(self, -1, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
         self.enc_input.default = self.enc_input.GetValue()
         self.options_input.append(self.enc_input)
         
@@ -234,7 +235,7 @@ class Panel(WizardPage):
         sizer1.AddGrowableCol(1)
         sizer1.AddMany( [
             (self.name_text, 0, wx.TOP, 10),(self.name_input, 0, wx.EXPAND|wx.TOP, 10),
-            (self.type_text, 0, wx.TOP, 10),(self.type_choice, 0, wx.TOP, 10),
+            (self.type_text, 0, wx.TOP, 10),(self.type_choice, 0, wx.EXPAND|wx.TOP, 10),
             (self.exe_text),(self.exe_input, 0, wx.EXPAND),
             (self.term_text),(self.term_choice),
             (self.comm_text),(self.comm_input, 0, wx.EXPAND),
