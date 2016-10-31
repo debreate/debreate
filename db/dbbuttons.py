@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import wx, os
+import wx
 
-application_path = "%s/.." % os.path.dirname(__file__)
+from common import application_path
+
 
 # *** Buttons *** #
-
 class ButtonAdd(wx.BitmapButton):
     def __init__(self, parent, id=wx.WXK_RETURN):
         wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/add32.png" % application_path),

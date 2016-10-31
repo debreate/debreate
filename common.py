@@ -13,6 +13,10 @@ if (sys.getdefaultencoding() != 'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
+# Get path to folder where script resides
+application_path = os.path.dirname(__file__)
+
+
 RELEASE = 0
 ver_maj = 0
 ver_min = 7
