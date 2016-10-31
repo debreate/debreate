@@ -341,7 +341,7 @@ class Panel(wx.Panel):
                     changelog_file = open("%s/changelog" % (changelog_dest), "w")
                     changelog_file.write(changelog_data.encode('utf-8'))
                     changelog_file.close()
-                    c = 'gzip --best "%s/changelog"' % (changelog_dest)
+                    c = 'gzip -n --best "%s/changelog"' % (changelog_dest)
                     clog_status = commands.getstatusoutput(c.encode('utf-8'))
                     if clog_status[0]:
                         clog_error = _("Couldn't create changelog")
