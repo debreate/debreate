@@ -7,13 +7,6 @@ from urllib2        import urlopen
 from wx.lib.docview import PathOnly
 
 
-# Set the encoding to unicode
-if (sys.getdefaultencoding() != 'utf-8'):
-    reload(sys)
-    sys.setdefaultencoding('utf-8')
-wx.SetDefaultPyEncoding('UTF-8')
-
-
 # Get path to folder where script resides
 application_path = os.path.dirname(__file__)
 
