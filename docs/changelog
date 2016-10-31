@@ -1,6 +1,7 @@
 0.7.12-dev3
 - Use new about dialog
 - Use custom hyperlink controls
+- Use os.chmod module in build rather than system chmod command
 
 0.7.12-dev2
 - Import modules from 'unstable' branch
