@@ -53,3 +53,4 @@ Tasks being considered:
 - Replace Makefile with CMake build system
 - Add Makefile rule for signing binary debuild package
 - Rework custom dialogs
+- Optionally strip binaries
