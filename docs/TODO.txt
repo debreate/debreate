@@ -39,6 +39,7 @@ Unknown Release:
 - Create FreeBSD Port
 - Save monospaced font size for text areas using it
 - Add contributers file to docs dir
+- Option to create lintian overrides file
 
 Tasks being considered:
 - Scripting backend
