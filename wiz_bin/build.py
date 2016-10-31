@@ -539,7 +539,7 @@ class Panel(WizardPage):
                 GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(target_package)))
         
         # FIXME: commands module deprecated?
-        output = commands.getoutput(u'{} {}'.format(CMD_lintian, target_package))
+        output = commands.getoutput(u'{} "{}"'.format(CMD_lintian, target_package))
         
         return output
     
