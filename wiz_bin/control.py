@@ -343,7 +343,7 @@ class Panel(WizardPage):
         count = 0
         while count < dep_count:
             # Get each item from dependencied page
-            dep_type = dep_area.GetItem(count).GetText()
+            dep_type = dep_area.GetItem(count, 0).GetText()
             dep_val = dep_area.GetItem(count, 1).GetText()
             for item in all_deps:
                 if dep_type == item:
