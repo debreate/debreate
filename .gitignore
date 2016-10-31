@@ -3,6 +3,7 @@
 *.pyc
 /.project
 /bin
+/build
 /debian/debreate
 /debian/debhelper-build-stamp
 /debian/debreate.debhelper.log
