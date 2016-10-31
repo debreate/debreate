@@ -179,7 +179,7 @@ class Panel(WizardPage):
         absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
         
         if compress and CMD_gzip:
-            commands.getstatusoutput(u'{} "{}"'.format(CMD_gzip, absolute_filename))
+            commands.getstatusoutput(u'{} -n9 "{}"'.format(CMD_gzip, absolute_filename))
         
         return ret_value
     
