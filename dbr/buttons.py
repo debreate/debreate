@@ -1,121 +1,115 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.buttons
-#  
-#  Custom buttons for application
+import wx
 
-import wx, os
-
-from dbr.language import GT
-from dbr.constants import application_path
+from common import application_path
 
 
 # *** Buttons *** #
-
 class ButtonAdd(wx.BitmapButton):
     def __init__(self, parent, id=wx.WXK_RETURN):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/add32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/add32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Add')))
+        self.SetToolTip(wx.ToolTip(_('Add')))
 
 class ButtonBrowse(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/browse32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/browse32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Browse')))
+        self.SetToolTip(wx.ToolTip(_('Browse')))
 
 class ButtonBrowse64(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/browse64.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/browse64.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Browse')))
+        self.SetToolTip(wx.ToolTip(_('Browse')))
 
 class ButtonBuild(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/build32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/build32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Build')))
+        self.SetToolTip(wx.ToolTip(_('Build')))
 
 class ButtonBuild64(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/build64.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/build64.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Build')))
+        self.SetToolTip(wx.ToolTip(_('Build')))
 
 class ButtonCancel(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_CANCEL):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/cancel32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/cancel32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Cancel')))
+        self.SetToolTip(wx.ToolTip(_('Cancel')))
 
 class ButtonClear(wx.BitmapButton):
     def __init__(self, parent, id=wx.WXK_ESCAPE):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/clear32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/clear32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Clear')))
+        self.SetToolTip(wx.ToolTip(_('Clear')))
 
 class ButtonConfirm(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_OK):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/confirm32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/confirm32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Ok')))
+        self.SetToolTip(wx.ToolTip(_('Ok')))
 
 class ButtonDel(wx.BitmapButton):
     def __init__(self, parent, id=wx.WXK_DELETE):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/del32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/del32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Remove')))
+        self.SetToolTip(wx.ToolTip(_('Remove')))
 
 class ButtonImport(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/import32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/import32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Import')))
+        self.SetToolTip(wx.ToolTip(_('Import')))
 
 class ButtonNext(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/next32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/next32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Next')))
+        self.SetToolTip(wx.ToolTip(_('Next')))
 
 class ButtonPipe(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/pipe32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/pipe32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Append')))
+        self.SetToolTip(wx.ToolTip(_('Append')))
 
 class ButtonPrev(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/prev32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/prev32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Previous')))
+        self.SetToolTip(wx.ToolTip(_('Previous')))
 
 class ButtonPreview(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/preview32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/preview32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Preview')))
+        self.SetToolTip(wx.ToolTip(_('Preview')))
 
 class ButtonPreview64(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_ANY):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/preview64.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/preview64.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Preview')))
+        self.SetToolTip(wx.ToolTip(_('Preview')))
 
 class ButtonQuestion64(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_HELP):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/question64.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/question64.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Help')))
+        self.SetToolTip(wx.ToolTip(_('Help')))
 
 class ButtonSave(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_SAVE):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/save32.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/save32.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Save')))
+        self.SetToolTip(wx.ToolTip(_('Save')))
 
 class ButtonSave64(wx.BitmapButton):
     def __init__(self, parent, id=wx.ID_SAVE):
-        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap(u'{}/bitmaps/save64.png'.format(application_path)),
+        wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/save64.png" % application_path),
                 style=wx.NO_BORDER)
-        self.SetToolTip(wx.ToolTip(GT(u'Save')))
+        self.SetToolTip(wx.ToolTip(_('Save')))

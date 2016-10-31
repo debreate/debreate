@@ -12,6 +12,7 @@ from common     import debreate_version
 from dbr.about  import AboutDialog
 from dbr.config import GetDefaultConfigValue
 from dbr.config import WriteConfig
+from dbr.wizard import Wizard
 import pancopyright, paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, panmenu, panbuild
 
 
@@ -198,7 +199,7 @@ class MainWindow(wx.Frame):
         
         # ***** END MENUBAR ***** #
         
-        self.Wizard = db.Wizard(self) # Binary
+        self.Wizard = Wizard(self) # Binary
         
         self.page_info = paninfo.Panel(self.Wizard, ID_INFO)
         self.page_info.SetInfo()

@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import wx, db, commands
+
+import commands, wx
+
+import db
+from dbr.buttons import ButtonImport, ButtonAdd
+
 
 ID = wx.NewId()
 
@@ -67,9 +72,9 @@ class Panel(wx.Panel):
         details_sizer.Add(dest_box)
         
         
-        self.button_import = db.ButtonImport(self)
+        self.button_import = ButtonImport(self)
         self.button_import.SetToolTip(wx.ToolTip(_('Import information from Control section')))
-        self.button_add = db.ButtonAdd(self)
+        self.button_add = ButtonAdd(self)
         
         wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
         wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)

@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import wx.combo, wx.lib.mixins.listctrl as LC, os, sys
-from os.path import exists, isdir, isfile
-from common import application_path
+
+import os, sys
+import wx.combo, wx.lib.mixins.listctrl as LC
+
+from common         import application_path
+from dbr.message    import MessageDialog
+from dbr.pathctrl   import PATH_DEFAULT
+from dbr.pathctrl   import PATH_WARN
+from dbr.pathctrl   import PathCtrl
+
 
 # Import the db directory
 sys.path.append("{}/db".format(application_path))
 
-import dbabout
-import dbbuttons
-import dbcharctrl
-import dbmessage
-import dbpathctrl
-import dbwizard
 
 
 ID_BIN = wx.NewId()
@@ -36,44 +37,17 @@ homedir = os.getenv("HOME")
 ICON_ERROR = "%s/bitmaps/error64.png" % application_path
 ICON_INFORMATION = "%s/bitmaps/question64.png" % application_path
 
-# Buttons
-ButtonAdd = dbbuttons.ButtonAdd
-ButtonBrowse = dbbuttons.ButtonBrowse
-ButtonBrowse64 = dbbuttons.ButtonBrowse64
-ButtonBuild = dbbuttons.ButtonBuild
-ButtonBuild64 = dbbuttons.ButtonBuild64
-ButtonCancel = dbbuttons.ButtonCancel
-ButtonClear = dbbuttons.ButtonClear
-ButtonConfirm = dbbuttons.ButtonConfirm
-ButtonDel = dbbuttons.ButtonDel
-ButtonImport = dbbuttons.ButtonImport
-ButtonPipe = dbbuttons.ButtonPipe
-ButtonPreview = dbbuttons.ButtonPreview
-ButtonPreview64 = dbbuttons.ButtonPreview64
-ButtonQuestion64 = dbbuttons.ButtonQuestion64
-ButtonSave = dbbuttons.ButtonSave
-ButtonSave64 = dbbuttons.ButtonSave64
-
-
-# Wizard
-Wizard = dbwizard.Wizard
-
-# About Dialog
-AboutDialog = dbabout.AboutDialog
 
 # Message Dialog
-class MessageDialog(dbmessage.MessageDialog):
+class MessageDialog(MessageDialog):
     def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=ICON_ERROR, text=wx.EmptyString,
             details=wx.EmptyString):
-        dbmessage.MessageDialog.__init__(self, parent, id, title, icon, text, details)
+        MessageDialog.__init__(self, parent, id, title, icon, text, details)
 
 # Path text controls
-PathCtrl = dbpathctrl.PathCtrl
-PATH_DEFAULT = dbpathctrl.PATH_DEFAULT
-PATH_WARN = dbpathctrl.PATH_WARN
-
-# Character controls
-CharCtrl = dbcharctrl.CharCtrl
+PathCtrl = PathCtrl
+PATH_DEFAULT = PATH_DEFAULT
+PATH_WARN = PATH_WARN
 
 
 class Combo(wx.combo.ComboCtrl):
@@ -357,7 +331,7 @@ class DBDialog(wx.Dialog):
         dest_path = self.dir_tree.GetPath()
         
         if id == wx.OK:
-            if isdir(dest_path):
+            if os.path.isdir(dest_path):
                 os.chdir(dest_path)
             else:
                 os.chdir(os.path.split(dest_path)[0])
@@ -374,7 +348,7 @@ class DBDialog(wx.Dialog):
         
         # If highlighted path is folder, create new folder in path
         n = _('New Folder')
-        if isdir(destination):
+        if os.path.isdir(destination):
             new_folder = "%s/%s" % (destination, n)
         # If highlighted path is file, create new folder in the same directory
         else:
@@ -387,10 +361,10 @@ class DBDialog(wx.Dialog):
             # First check to see if "New Folder" already exists in target path
             # If it does exist, create folders with numerical value "1", "2", etc.
             try:
-                if not exists(new_folder):
+                if not os.path.exists(new_folder):
                     os.mkdir(new_folder)
                     unavailable = False
-                elif exists(new_folder):
+                elif os.path.exists(new_folder):
                     folder_number += 1
                     new_folder = "%s/%s (%s)" % (destination, n, folder_number)
             # If folder can't be created show error dialog
@@ -453,7 +427,7 @@ class DBDialog(wx.Dialog):
             new_name = "%s/%s" % (os.path.split(path)[0], name)
             
             if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
-                if isdir(new_name) or isfile(new_name):
+                if os.path.isdir(new_name) or os.path.isfile(new_name):
                     direrr = wx.MessageDialog(dia, _('Name already used in current directory'), _('Error'),
                                 wx.OK|wx.ICON_EXCLAMATION)
                     direrr.ShowModal()
@@ -518,7 +492,7 @@ class OpenFile(DBDialog):
     
     def OnDClick(self, event):
         path = self.dir_tree.GetPath()
-        if isfile(path):
+        if os.path.isfile(path):
             self.OnButton(wx.OK)
         event.Skip()
         
@@ -535,11 +509,11 @@ class OpenFile(DBDialog):
         
         if id == wx.OK:
             # If the selected path is a file, confirm and close, otherwise try to expand the path
-            if isfile(path):
+            if os.path.isfile(path):
                 os.chdir(parent_path)
                 self.value = True
                 self.Close()
-            elif isdir(path):
+            elif os.path.isdir(path):
                 self.dir_tree.ExpandPath(path)
         # If cancel is pressed, just close the dialog
         else:
@@ -577,7 +551,7 @@ class SaveFile(DBDialog):
         
         def OnLMouseButton(event):
             path = self.dir_tree.GetPath()
-            if isfile(path):
+            if os.path.isfile(path):
                 self.SetFilename(self.dir_tree.GetPath())
             event.Skip()
         wx.EVT_LEFT_UP(self.dir_tree.GetChildren()[0], OnLMouseButton)
@@ -593,7 +567,7 @@ class SaveFile(DBDialog):
         return self.TextCtrl.GetValue()
     
     def GetPath(self):
-        if isdir(self.dir_tree.GetPath()):
+        if os.path.isdir(self.dir_tree.GetPath()):
             return self.dir_tree.GetPath()
         else:
             return os.path.split(self.dir_tree.GetPath())[0]
@@ -607,7 +581,7 @@ class SaveFile(DBDialog):
             id = event.GetEventObject().GetId()
         
         # Find out if the selected path is a file or directory
-        if isdir(self.dir_tree.GetPath()):
+        if os.path.isdir(self.dir_tree.GetPath()):
             dest_path = self.dir_tree.GetPath()
         else:
             # If the path is a file, set dest_path to dir where file resides
@@ -640,14 +614,14 @@ class SaveFile(DBDialog):
                 
                 # If everything checks out OK run this function
                 def SaveIt():
-                    if isdir(dest_path):
+                    if os.path.isdir(dest_path):
                         os.chdir(dest_path)
                     else:
                         os.chdir(os.path.split(dest_path)[0])
                     self.value = True
                     self.Close()
                 
-                if exists(savefile):
+                if os.path.exists(savefile):
                     warn = wx.MessageDialog(self, _('Overwrite File?'), _('File Exists'), wx.YES_NO|wx.NO_DEFAULT)
                     if warn.ShowModal() == wx.ID_YES:
                         SaveIt()

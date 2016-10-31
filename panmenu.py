@@ -2,7 +2,16 @@
 
 # Menu Page
 
-import wx, db, os, shutil
+import os, shutil, wx
+
+import db
+from dbr.buttons import ButtonAdd
+from dbr.buttons import ButtonBrowse64
+from dbr.buttons import ButtonClear
+from dbr.buttons import ButtonDel
+from dbr.buttons import ButtonPreview64
+from dbr.buttons import ButtonSave64
+
 
 ID = wx.NewId()
 
@@ -35,10 +44,10 @@ class Panel(wx.Panel):
         # --- Main Menu Entry --- #
         
         # --- Buttons to open/preview/save .desktop file
-        self.open = db.ButtonBrowse64(self)
+        self.open = ButtonBrowse64(self)
         self.open.SetToolTip(DF_tip)
-        self.button_save = db.ButtonSave64(self)
-        self.button_preview = db.ButtonPreview64(self)
+        self.button_save = ButtonSave64(self)
+        self.button_preview = ButtonPreview64(self)
         
         self.open.Bind(wx.EVT_BUTTON, self.OpenFile)
         wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSave)
@@ -119,9 +128,9 @@ class Panel(wx.Panel):
                         'X-Red-Hat-Base','X-SuSE-ControlCenter-System')
         self.cat_text = wx.StaticText(self, -1, _('Category'))
         self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
-        self.cat_add = db.ButtonAdd(self)
-        self.cat_del = db.ButtonDel(self)
-        self.cat_clr = db.ButtonClear(self)
+        self.cat_add = ButtonAdd(self)
+        self.cat_del = ButtonDel(self)
+        self.cat_clr = ButtonClear(self)
         
         if wx.MAJOR_VERSION > 2:
             self.categories = wx.ListCtrl(self, -1)
@@ -216,19 +225,6 @@ class Panel(wx.Panel):
                             self.enc_text: "Enc", self.type_text: "Type", self.cat_text: "Cat",
                             self.term_text: "Term", self.notify_text: "Notify"}
     
-    
-    def SetLanguage(self):
-        # Get language pack for "Menu" tab
-        lang = languages.Menu()
-        
-        # Set language to change to
-        cur_lang = self.parent.parent.GetLanguage()
-        
-        for item in self.setlabels:
-            item.SetLabel(lang.GetLanguage(self.setlabels[item], cur_lang))
-        
-        # Refresh widget layout
-        self.Layout()
     
     def OnToggle(self, event):
         if self.activate.IsChecked():

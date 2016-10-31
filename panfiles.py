@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import wx, os, wx.lib.mixins.listctrl as LC, db
-from os.path import exists, isfile, isdir
-from common import *
+
+import os, wx, wx.lib.mixins.listctrl as LC
+
+import db
+from dbr.buttons import ButtonAdd
+from dbr.buttons import ButtonBrowse
+from dbr.buttons import ButtonClear
+from dbr.buttons import ButtonDel
+
 
 ID = wx.NewId()
 
@@ -56,9 +62,9 @@ class Panel(wx.Panel):
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         
         # ----- Add/Remove/Clear buttons
-        path_add = db.ButtonAdd(self)
-        path_remove = db.ButtonDel(self)
-        button_clear = db.ButtonClear(self)
+        path_add = ButtonAdd(self)
+        path_remove = ButtonDel(self)
+        button_clear = ButtonClear(self)
         
         wx.EVT_BUTTON(path_add, -1, self.AddPath)
         wx.EVT_BUTTON(path_remove, -1, self.DelPath)
@@ -96,7 +102,7 @@ class Panel(wx.Panel):
         cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
         cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
         
-        self.dest_browse = db.ButtonBrowse(self, ID_pout)
+        self.dest_browse = ButtonBrowse(self, ID_pout)
         
         wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
         
@@ -147,27 +153,13 @@ class Panel(wx.Panel):
         self.setlabels = {	self.dest_browse: "Custom" }
     
     
-    def SetLanguage(self):
-        # Get language pack for Files tab
-        lang = languages.Files()
-        
-        # Grandparent has language settings
-        cur_lang = self.GetGrandParent().GetLanguage()
-        
-        for item in self.setlabels:
-            item.SetLabel(lang.GetLanguage(self.setlabels[item], cur_lang))
-        
-        # Refresh widget layout
-        self.Layout()
-    
-    
     def OnRightClick(self, event):
         # Show a context menu for adding files and folders
         path = self.dir_tree.GetPath()
-        if isdir(path):
+        if os.path.isdir(path):
             self.add_dir.Enable(True)
             self.add_file.Enable(False)
-        elif isfile(path):
+        elif os.path.isfile(path):
             self.add_dir.Enable(False)
             self.add_file.Enable(True)
         self.dir_tree.PopupMenu(self.menu)
@@ -210,7 +202,7 @@ class Panel(wx.Panel):
                 pout = self.dest_cust.GetValue()
             elif item.GetValue() == True:
                 pout = item.GetLabel()
-        if isdir(pin):
+        if os.path.isdir(pin):
             for root, dirs, files in os.walk(pin):
                 for file in files:
                     total_files += 1
@@ -243,7 +235,7 @@ class Panel(wx.Panel):
                             if os.access("%s/%s" % (root,file), os.X_OK):
                                 self.dest_area.SetItemTextColour(0, "red")
         
-        elif isfile(pin):
+        elif os.path.isfile(pin):
             file = os.path.split(pin)[1]
             file = file.encode('utf-8')
             self.list_data.insert(0, (pin, file, pout))

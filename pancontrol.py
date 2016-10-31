@@ -2,7 +2,14 @@
 
 # This panel displays the field input of the control file
 
-import wx, db, os
+import os, wx
+
+import db
+from dbr.buttons import ButtonBrowse64
+from dbr.buttons import ButtonPreview64
+from dbr.buttons import ButtonSave64
+from dbr.charctrl import CharCtrl
+
 
 ID = wx.NewId()
 
@@ -16,11 +23,11 @@ class Panel(wx.ScrolledWindow):
         self.bg = wx.Panel(self)
         
         # Buttons to Open, Save & Preview control file
-        button_open = db.ButtonBrowse64(self.bg)
+        button_open = ButtonBrowse64(self.bg)
         wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
-        button_save = db.ButtonSave64(self.bg)
+        button_save = ButtonSave64(self.bg)
         wx.EVT_BUTTON(button_save, -1, self.OnSave)
-        button_preview = db.ButtonPreview64(self.bg)
+        button_preview = ButtonPreview64(self.bg)
         wx.EVT_BUTTON(button_preview, -1, self.OnPreview)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -39,11 +46,11 @@ class Panel(wx.ScrolledWindow):
         
         # ----- Package ( B[m], SB[m] )
         self.pack_txt = wx.StaticText(self.bg, -1, _('Package'))
-        self.pack = db.CharCtrl(self.bg, -1)
+        self.pack = CharCtrl(self.bg, -1)
         
         # ----- Version ( B[m], D[m], C[m] )
         self.ver_txt = wx.StaticText(self.bg, -1, _('Version'))
-        self.ver = db.CharCtrl(self.bg)
+        self.ver = CharCtrl(self.bg)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
         self.auth_txt = wx.StaticText(self.bg, -1, _('Maintainer'))

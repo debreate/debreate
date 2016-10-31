@@ -3,15 +3,14 @@
 ## \package dbr.custom
 
 
-# System imports
-import wx, os, sys, webbrowser
+import os, sys, webbrowser, wx, wx.lib.mixins.listctrl as LC
+from wx.combo       import ComboCtrl
 from wx.lib.docview import PathOnly
-import wx.combo, wx.lib.mixins.listctrl as LC
 
-# Local imports
 import dbr
-from dbr.constants import ID_APPEND, ID_OVERWRITE
-from dbr.language import GT
+from dbr.constants  import ID_APPEND
+from dbr.constants  import ID_OVERWRITE
+from dbr.language   import GT
 
 
 db_here = PathOnly(__file__).decode(u'utf-8')
@@ -207,9 +206,9 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
 ## A customized combo control
 #  
 #  FIXME: Unused. Was used in page.control
-class Combo(wx.combo.ComboCtrl):
+class Combo(ComboCtrl):
     def __init__(self, parent, id=wx.ID_ANY, value=u'', choices=()):
-        wx.combo.ComboCtrl.__init__(self, parent, id)
+        ComboCtrl.__init__(self, parent, id)
         
         self.Frame = self.GetTopLevelParent()
         self.parent = parent

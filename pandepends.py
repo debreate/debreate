@@ -2,7 +2,13 @@
 
 # Page defining dependencies
 
-import wx, wx.lib.mixins.listctrl as LC, db
+import wx, wx.lib.mixins.listctrl as LC
+
+from dbr.buttons import ButtonAdd
+from dbr.buttons import ButtonClear
+from dbr.buttons import ButtonDel
+from dbr.buttons import ButtonPipe
+
 
 ID = wx.NewId()
 
@@ -95,10 +101,10 @@ class Panel(wx.Panel):
         wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
         
         # Buttons to add and remove dependencies from the list
-        self.depadd = db.ButtonAdd(self)
-        self.depapp = db.ButtonPipe(self, ID_Append)
-        self.deprem = db.ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
-        self.depclr = db.ButtonClear(self)
+        self.depadd = ButtonAdd(self)
+        self.depapp = ButtonPipe(self, ID_Append)
+        self.deprem = ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
+        self.depclr = ButtonClear(self)
         
         wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
         wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
@@ -169,24 +175,6 @@ class Panel(wx.Panel):
                             self.sug_chk: "Suggests", self.enh_chk: "Enhances", self.con_chk: "Conflicts",
                             self.rep_chk: "Replaces", self.break_chk: "Breaks"}
     
-    
-    def SetLanguage(self):
-        lang = languages.Depends()
-        
-        # Set to language changing to
-        if self.parent.parent.lang_en.IsChecked():
-            cur_lang = "English"
-        elif self.parent.parent.lang_es.IsChecked():
-            cur_lang = "Spanish"
-        
-        # Grab widgets from lists
-        for item in self.setlabels:
-            item.SetLabel(lang.GetLanguage(self.setlabels[item], cur_lang))
-        for item in self.categories:
-            item.SetLabel(lang.GetLanguage(self.categories[item], cur_lang))
-        
-        # Refresh widget layout
-        self.Layout()
     
     def SelectAll(self):
         total_items = self.dep_area.GetItemCount()

@@ -2,7 +2,16 @@
 
 # Scripts Page
 
-import wx, os, db
+
+import os, wx
+
+import db
+from dbr.buttons import ButtonBuild
+from dbr.buttons import ButtonConfirm
+from dbr.buttons import ButtonDel
+from dbr.buttons import ButtonImport
+from dbr.buttons import ButtonQuestion64
+
 
 ID = wx.NewId()
 
@@ -102,10 +111,10 @@ class Panel(wx.Panel):
         self.executables.InsertColumn(0, "")
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = db.ButtonImport(self, ID_Import)
+        self.al_import = ButtonImport(self, ID_Import)
         self.al_import.SetToolTip(wx.ToolTip(_('Import executables from Files section')))
-        self.al_del = db.ButtonDel(self, ID_Remove)
-        self.al_gen = db.ButtonBuild(self)
+        self.al_del = ButtonDel(self, ID_Remove)
+        self.al_gen = ButtonBuild(self)
         self.al_gen.SetToolTip(wx.ToolTip(_('Generate Scripts')))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
@@ -133,14 +142,14 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_text.Wrap(210)"""
         
         # *** HELP *** #
-        self.button_help = db.ButtonQuestion64(self)
+        self.button_help = ButtonQuestion64(self)
         self.al_help = wx.Dialog(self, -1, _('Auto-Link Help'))
         description = _('Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = _('How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
 
         self.al_help_te = wx.TextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
                 style = wx.TE_MULTILINE|wx.TE_READONLY)
-        self.al_help_ok = db.ButtonConfirm(self.al_help)
+        self.al_help_ok = ButtonConfirm(self.al_help)
         
         al_help_sizer = wx.BoxSizer(wx.VERTICAL)
         al_help_sizer.AddMany([ (self.al_help_te, 1, wx.EXPAND), (self.al_help_ok, 0, wx.ALIGN_RIGHT) ])
@@ -179,19 +188,6 @@ scripts will be created that will place a symbolic link to your executables in t
 #		self.Layout()
         
         self.ScriptSelect(None)
-        
-    def SetLanguage(self):
-        # Get language pack for "Scripts" tab
-        lang = languages.Scripts()
-        
-        # Set language to change to
-        cur_lang = self.debreate.GetLanguage()
-        
-        for item in self.setlabels:
-            item.SetLabel(lang.GetLanguage(self.setlabels[item], cur_lang))
-        
-        # Refresh widget layout
-        self.Layout()
     
     
     def ScriptSelect(self, event):

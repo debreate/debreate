@@ -1,9 +1,18 @@
-# Build Page
 # -*- coding: utf-8 -*-
 
-from common import *
-import db, os, commands, shutil, db_md5, thread
-from os.path import exists
+# Build Page
+
+
+import commands, os, shutil, thread, wx
+
+import db, db_md5
+from dbr.buttons    import ButtonBrowse
+from dbr.buttons    import ButtonBuild
+from dbr.buttons    import ButtonBuild64
+from dbr.buttons    import ButtonCancel
+from dbr.custom     import OutputLog
+from dbr.functions  import RunSudo
+
 
 ID = wx.NewId()
 
@@ -26,7 +35,7 @@ class Panel(wx.Panel):
         
         # ----- Extra Options
         self.chk_md5 = wx.CheckBox(self, -1, _('Create md5sums file'))
-        if not exists("/usr/bin/md5sum"):
+        if not os.path.isfile("/usr/bin/md5sum"):
             self.chk_md5.Disable()
             self.chk_md5.SetToolTip(wx.ToolTip(_('(Install md5sum package for this option)')))
         else:
@@ -44,7 +53,7 @@ class Panel(wx.Panel):
         # Checks the output .deb for errors
         self.chk_lint = wx.CheckBox(self, -1, _('Check package for errors with lintian'))
         #self.chk_lint.SetToolTip(tip_lint)
-        if not exists("/usr/bin/lintian"):
+        if not os.path.isfile("/usr/bin/lintian"):
             self.chk_lint.Disable()
             self.chk_lint.SetToolTip(wx.ToolTip(_('Install lintian package for this option')))
         else:
@@ -71,7 +80,7 @@ class Panel(wx.Panel):
         #wx.EVT_SHOW(self, self.SetSummary)
         
         # --- BUILD
-        self.build_button = db.ButtonBuild64(self)
+        self.build_button = ButtonBuild64(self)
         self.build_button.SetToolTip(build_tip)
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
@@ -451,7 +460,8 @@ class Panel(wx.Panel):
                     wx.Yield()
                     # Delete the build tree
                     if commands.getstatusoutput(('rm -r "%s"' % temp_tree).encode('utf-8'))[0]:
-                        wx.MessageDialog(self, _('An error occurred when trying to delete the build tree'), _('Error'), style=wx.OK|wx.ID_EXCLAMATION)
+                        wx.MessageDialog(self, _('An error occurred when trying to delete the build tree'),
+                                _('Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                     progress += 1
                 
                 # *** ERROR CHECK
@@ -557,12 +567,12 @@ class Panel(wx.Panel):
         self.chk_install.SetValue(False)
         # chk_md5 should be reset no matter
         self.chk_md5.SetValue(False)
-        if exists("/usr/bin/md5sum"):
+        if os.path.isfile("/usr/bin/md5sum"):
             self.chk_md5.Enable()
         else:
             self.chk_md5.Disable()
         self.chk_del.SetValue(True)
-        if exists("/usr/bin/lintian"):
+        if os.path.isfile("/usr/bin/lintian"):
             self.chk_lint.Enable()
             self.chk_lint.SetValue(True)
         else:
@@ -572,10 +582,10 @@ class Panel(wx.Panel):
     def SetFieldData(self, data):
         self.ResetAllFields()
         build_data = data.split("\n")
-        if exists("/usr/bin/md5sum"):
+        if os.path.isfile("/usr/bin/md5sum"):
             self.chk_md5.SetValue(int(build_data[0]))
         self.chk_del.SetValue(int(build_data[1]))
-        if exists("usr/bin/lintian"):
+        if os.path.isfile("usr/bin/lintian"):
             self.chk_lint.SetValue(int(build_data[2]))
     
     def GatherData(self):
@@ -608,10 +618,10 @@ class QuickBuild(wx.Dialog):
         self.filename = wx.TextCtrl(self, -1)
         path_txt = wx.StaticText(self, -1, _('Path to build tree'))
         self.path = wx.TextCtrl(self, -1) # Path to the root of the directory tree
-        self.get_path = db.ButtonBrowse(self)
-        self.build = db.ButtonBuild(self)
+        self.get_path = ButtonBrowse(self)
+        self.build = ButtonBuild(self)
         self.build.SetToolTip(wx.ToolTip(_('Start building')))
-        self.cancel = db.ButtonCancel(self)
+        self.cancel = ButtonCancel(self)
         
         wx.EVT_BUTTON(self.get_path, -1, self.Browse)
         wx.EVT_BUTTON(self.build, -1, self.OnBuild)

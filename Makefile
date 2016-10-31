@@ -38,13 +38,13 @@ FILES = \
 FILES_EXECUTABLE = \
 	init.py
 
-FILES_DB = \
-	db/dbabout.py \
-	db/dbbuttons.py \
-	db/dbcharctrl.py \
-	db/dbmessage.py \
-	db/dbpathctrl.py \
-	db/dbwizard.py
+FILES_DBR = \
+	dbr/about.py \
+	dbr/buttons.py \
+	dbr/charctrl.py \
+	dbr/message.py \
+	dbr/pathctrl.py \
+	dbr/wizard.py
 
 FILES_EXTRA = \
 	README.md \
@@ -91,8 +91,7 @@ DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
 DISTDIRS = \
 	bitmaps \
 	data \
-	db \
-	dbr \
+	$(DBR_DIR) \
 	docs \
 	locale \
 	debian
@@ -110,7 +109,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU) $(DBR_DIR)
+install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU) $(DBR_DIR)
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -137,7 +136,7 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DB) $(FILES_EXTRA) $(FILES_D
 		done; \
 		\
 		mkdir -vp "$${datadir}/db"; \
-		for py in $(FILES_DB); do \
+		for py in $(FILES_DBR); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/db"; \
 		done; \
 		\

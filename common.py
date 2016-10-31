@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 import sys, os, subprocess, wx
 from urllib2        import URLError
 from urllib2        import urlopen
@@ -85,17 +86,6 @@ def GetCurrentVersion():
         return err
 
 
-### -*- Execute commands with sudo privileges -*- ###
-def RunSudo(password, command):
-    command = u'echo %s | sudo -S %s ; echo $?' % (password, command)
-    wx.SafeYield()
-    output = os.popen(command).read()
-    err = int(output.split(u'\n')[-2])
-    if (err):
-        return False
-    return True
-
-
 ### -*- Function to check for installed executables -*- ###
 def CommandExists(command):
     try:
@@ -109,32 +99,6 @@ def CommandExists(command):
             subprocess.Popen((command))
             print u'Second subprocess: %s' % (exists)
     return exists
-
-
-
-################
-###     CLASSES       ###
-################
-
-### -*- A very handy widget that captures stdout and stderr to a wx.TextCtrl -*- ###
-class OutputLog(wx.TextCtrl):
-    def __init__(self, parent, id=-1):
-        wx.TextCtrl.__init__(self, parent, id, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        self.SetBackgroundColour(u'black')
-        self.SetForegroundColour(u'white')
-        self.stdout = sys.stdout
-        self.stderr = sys.stderr
-    
-    def write(self, string):
-        self.AppendText(string)
-    
-    def ToggleOutput(self, event=None):
-        if (sys.stdout == self):
-            sys.stdout = self.stdout
-            sys.stderr = self.stderr
-        else:
-            sys.stdout = self
-            sys.stdout = self
 
 
 ID_APPEND = wx.NewId()
