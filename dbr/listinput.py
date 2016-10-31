@@ -173,6 +173,10 @@ class ListCtrlPanel(wx.Panel):
         self.listarea.SetItemBackgroundColour(item, color)
     
     
+    def SetItemTextColour(self, item, color):
+        self.listarea.SetItemTextColour(item, color)
+    
+    
     def SetSingleStyle(self, style, add=True):
         self.listarea.SetSingleStyle(style, add)
     
