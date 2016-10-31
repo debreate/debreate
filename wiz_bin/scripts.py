@@ -455,7 +455,7 @@ class DebianScript(wx.Panel):
         self.__set_script_name()
         
         shell_options = []
-        shell_options.append(u'/bin/sh')
+        shell_options.append(u'/bin/sh')  # Place /bin/sh as first item
         for P in u'/bin/', u'/usr/bin/', u'/usr/bin/env ':
             for S in sorted(shell_descriptions, key=unicode.lower):
                 if S == u'sh':
