@@ -313,11 +313,9 @@ class Panel(wx.Panel):
                     shutil.copy(file, copy_path)
                     # Set file permissions
                     if exe:
-                        c = 'chmod 0755 %s' % (copy_path)
-                        commands.getoutput(c.encode('utf-8'))
+                        os.chmod(copy_path, 0755)
                     else:
-                        c = 'chmod 0644 %s' % (copy_path)
-                        commands.getoutput(c.encode('utf-8'))
+                        os.chmod(copy_path, 0644)
                     progress += 1
                     build_progress.Update(progress)
                 #progress += 1
