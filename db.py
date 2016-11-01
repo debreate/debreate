@@ -5,7 +5,6 @@ import os, sys
 import wx.combo, wx.lib.mixins.listctrl as LC
 
 from common         import application_path
-from dbr.message    import MessageDialog
 from dbr.pathctrl   import PATH_DEFAULT
 from dbr.pathctrl   import PATH_WARN
 from dbr.pathctrl   import PathCtrl
@@ -37,12 +36,6 @@ homedir = os.getenv("HOME")
 ICON_ERROR = "%s/bitmaps/error64.png" % application_path
 ICON_INFORMATION = "%s/bitmaps/question64.png" % application_path
 
-
-# Message Dialog
-class MessageDialog(MessageDialog):
-    def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=ICON_ERROR, text=wx.EmptyString,
-            details=wx.EmptyString):
-        MessageDialog.__init__(self, parent, id, title, icon, text, details)
 
 # Path text controls
 PathCtrl = PathCtrl

@@ -12,6 +12,7 @@ from dbr.buttons    import ButtonBuild64
 from dbr.buttons    import ButtonCancel
 from dbr.custom     import OutputLog
 from dbr.functions  import RunSudo
+from dbr.message    import MessageDialog
 
 
 ID = wx.NewId()
@@ -477,7 +478,7 @@ class Panel(wx.Panel):
                         error_log = open("%s/%s.lintian" % (build_path, filename), "w")
                         error_log.write(errors)
                         error_log.close()
-                        db.MessageDialog(self, -1,
+                        MessageDialog(self, -1,
                         _('Lintian Errors'), db.ICON_INFORMATION,
                         '%s\n%s.lintian"' % (e1, e2),
                         errors
