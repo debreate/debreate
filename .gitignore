@@ -1,13 +1,39 @@
-/.pydevproject
-/.settings
-*.pyc
+# Backup files
 *.orig
+*.new
+
+# Eclipse project files & directories
 /.project
+/.pydevproject
+/.settings/
+
+# Compiled Python bytecode
+*.pyc
+
+# Compiled Gettext locales
+*.mo
+
+# Build output files & directories
+Makefile
 /bin
 /build
+/INSTALLED
+
+# Debian dist files
+#/debian/changelog
 /debian/debreate
 /debian/debhelper-build-stamp
 /debian/debreate.debhelper.log
 /debian/debreate.substvars
 /debian/files
-debreate_*.tar.xz
+/debian/preinst
+/debian/postinst
+/debian/prerm
+/debian/postrm
+/debian/debreate.*.debhelper
+
+# Distrubution archives
+*.tar.*
+
+# Doxygen documentation output
+docs/doxygen
