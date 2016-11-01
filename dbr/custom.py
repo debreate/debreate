@@ -3,16 +3,19 @@
 ## \package dbr.custom
 
 
-import os, sys, webbrowser, wx, wx.lib.mixins.listctrl as LC
-from wx.combo       import ComboCtrl
+# System imports
+import os, sys, webbrowser
+import wx.combo, wx.lib.mixins.listctrl as LC
 from wx.lib.docview import PathOnly
 
-import dbr
-from dbr.constants  import ID_APPEND
-from dbr.constants  import ID_OVERWRITE
 from dbr.language   import GT
+from dbr.textinput  import MultilineTextCtrlPanel
+from globals.ident  import ID_APPEND
+from globals.ident  import ID_OVERWRITE
+from globals.paths  import PATH_app
 
 
+# Local imports
 db_here = PathOnly(__file__).decode(u'utf-8')
 
 # FIXME: This should be import from dbr.functions
@@ -30,35 +33,23 @@ class FirstRun(wx.Dialog):
     def __init__(self):
         wx.Dialog.__init__(self, None, wx.ID_ANY, GT(u'Debreate First Run'), size=(450,300))
         
-        m2 = GT(u'This message only displays on the first run, or if\nthe configuration file becomes corrupted.')
-        m3 = GT(u'The default configuration file will now be created.')
-        m4 = GT(u'To delete this file, type the following command in a\nterminal:')
+        m1 = GT(u'Thank you for using Debreate.')
+        m2 = GT(u'This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:')
         
         # "OK" button sets to True
         #self.OK = False
         
-        message1 = GT(u'Thank you for using Debreate.')
-        message1 = u'{}\n\n{}'.format(message1, m2)
-        
-        message2 = m3
-        message2 = u'{}\n{}'.format(message2, m4)
-        
         # Set the titlebar icon
-        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG))
+        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG))
         
         # Display a message to create a config file
-        text1 = wx.StaticText(self, label=message1)
-        text2 = wx.StaticText(self, label=message2)
-        
-        rm_cmd = wx.StaticText(self, label=u'rm -r ~/.config/debreate')
-        
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
-        layout_V1.Add(text1, 1)
-        layout_V1.Add(text2, 1, wx.TOP, 15)
-        layout_V1.Add(rm_cmd, 0, wx.TOP, 10)
+        self.message = wx.StaticText(self)
+        self.message.SetLabel(u'{}\n\n\
+{}\n\n\
+rm -r ~/.config/debreate'.format(m1, m2))
         
         # Show the Debreate icon
-        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(dbr.application_path), wx.BITMAP_TYPE_PNG)
+        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
         icon = wx.StaticBitmap(self, -1, dbicon)
         
         # Button to confirm
@@ -70,7 +61,7 @@ class FirstRun(wx.Dialog):
         border_box.AddSpacer(10)
         border_box.Add(icon, 0, wx.ALIGN_CENTER)
         border_box.AddSpacer(10)
-        border_box.Add(layout_V1, 1, wx.ALIGN_CENTER)
+        border_box.Add(self.message, 1, wx.ALIGN_CENTER)
         
         # Set Layout
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -82,15 +73,13 @@ class FirstRun(wx.Dialog):
 
 
 ## A generic display area that captures \e stdout & \e stderr
-class OutputLog(wx.TextCtrl):
+class OutputLog(MultilineTextCtrlPanel):
     ## Constructor
     #  
     #  \param parent
     #        The parent window
-    #  \param id
-    #        Window ID (FIXME: Should be set automatically from constant)
-    def __init__(self, parent, id=-1):
-        wx.TextCtrl.__init__(self, parent, id, style=wx.TE_MULTILINE|wx.TE_READONLY)
+    def __init__(self, parent):
+        MultilineTextCtrlPanel.__init__(self, parent, style=wx.TE_READONLY)
         self.SetBackgroundColour(u'black')
         self.SetForegroundColour(u'white')
         self.stdout = sys.stdout
@@ -206,9 +195,9 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
 ## A customized combo control
 #  
 #  FIXME: Unused. Was used in page.control
-class Combo(ComboCtrl):
+class Combo(wx.combo.ComboCtrl):
     def __init__(self, parent, id=wx.ID_ANY, value=u'', choices=()):
-        ComboCtrl.__init__(self, parent, id)
+        wx.combo.ComboCtrl.__init__(self, parent, id)
         
         self.Frame = self.GetTopLevelParent()
         self.parent = parent
