@@ -9,16 +9,6 @@
 #    E.g: <i>dbr.<namespace>.<member></i> can be called as <i>dbr.<member></i>
 
 
-# Logger needs to be set up first
-from dbr.log import DebreateLogger
-
-# Instantiate logger with default level & output path
-Logger = DebreateLogger()
-
-def DebugEnabled():
-    return Logger.GetLogLevel() == Logger.DEBUG
-
-
 from dbr.about import AboutDialog
 from dbr.buttons import \
     ButtonAdd, ButtonBrowse, ButtonBrowse64, ButtonBuild, ButtonBuild64, \

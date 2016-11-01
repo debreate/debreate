@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-
-import getopt
-
-from dbr import Logger, DebugEnabled
-
 '''
 arguments_s = (
     (u'h', u'help'),
@@ -13,6 +8,10 @@ arguments_s = (
 arguments_v = (
     (u'g', u'log-level'),
 )'''
+
+from dbr.log import Logger
+from dbr.log import DebugEnabled
+
 
 parsed_args_s = []
 parsed_args_v = {}
