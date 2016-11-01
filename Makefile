@@ -33,6 +33,8 @@ FILES_WIZ_BIN = wiz_bin/*.py
 
 FILES_DBR = dbr/*.py
 
+FILES_GLOBALS = globals/*.py
+
 FILES_EXTRA = \
 	README.md \
 	INFO \
@@ -88,6 +90,15 @@ DISTFILES = \
 	$(FILES_EXTRA) \
 	Makefile
 
+FILES_BUILD = \
+	$(FILES) \
+	$(FILES_DBR) \
+	$(FILES_DOC) \
+	$(FILES_EXECUTABLE) \
+	$(FILES_EXTRA) \
+	$(FILES_GLOBALS) \
+	$(FILES_WIZ_BIN)
+
 
 all:
 	@echo "\n\tNothing to be done"; \
@@ -95,7 +106,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_WIZ_BIN) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
+install: build $(FILES_BUILD) $(BITMAPS) locale data/$(MENU)
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -129,6 +140,11 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_WIZ_BIN) $(FILE
 		mkdir -vp "$${datadir}/wiz_bin"; \
 		for py in $(FILES_WIZ_BIN); do \
 			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
+		done; \
+		\
+		mkdir -vp "$${datadir}/globals"; \
+		for py in $(FILES_GLOBALS); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/globals"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/docs"; \
