@@ -3,10 +3,11 @@
 ## \package dbr.compression
 
 
-import wx, os, subprocess, tarfile, zipfile
-from dbr.constants import custom_errno, VERSION_STRING
-import commands
-import shutil
+import wx, os, tarfile, zipfile, commands
+
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.errorcodes import errno
 
 
 # *** Compression Format IDs *** #
@@ -41,8 +42,7 @@ def GetCompressionId(z_value):
         if z_value == compression_formats[z_id]:
             return z_id
     
-    # FIXME: Can't import Logger
-    #Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
+    Logger.Debug(__name__, GT(u'Compression ID not found for "{}" value'.format(z_value)))
     
     return None
 
@@ -107,9 +107,9 @@ class CompressionHandler:
                 return tar_output[0]
             
             else:
-                return custom_errno.ENOEXEC
+                return errno.ENOEXEC
         
-        return custom_errno.ENOENT
+        return errno.ENOENT
     
     
     def GetCompressionFormat(self):
@@ -124,10 +124,10 @@ class CompressionHandler:
     
     def Uncompress(self, source_file, target_dir):
         if not os.path.isfile(source_file):
-            return custom_errno.ENOENT
+            return errno.ENOENT
         
         if not os.access(target_dir, os.W_OK):
-            return custom_errno.EACCES
+            return errno.EACCES
         
         z_format = u'r'
         
@@ -160,4 +160,4 @@ class CompressionHandler:
             
             return tar_output
         
-        return custom_errno.ENOEXEC
+        return errno.ENOEXEC
