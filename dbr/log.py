@@ -3,15 +3,21 @@
 ## \package dbr.log
 
 
-# System imports
-import wx, os, thread
+import wx, os, thread, time
+from wx.lib.newevent import NewCommandEvent
 
-# Debreate imports
-from dbr.constants import local_path, ID_DEBUG, MAIN_ICON, ID_LOG
-from dbr.functions import GetDate, GetTime
-from dbr.language import GT
-import time
-from dbr.font import GetMonospacedFont
+from dbr.font               import GetMonospacedFont
+from dbr.functions          import GetDate, GetTime
+from dbr.language           import GT
+from dbr.textinput          import MultilineTextCtrlPanel
+from globals.application    import APP_logo
+from globals.ident          import ID_DEBUG
+from globals.ident          import ID_LOG
+from globals.paths          import PATH_local
+
+
+#from dbr.command_line import parsed_args_v
+RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 
 ## A log class for outputting messages
@@ -33,7 +39,7 @@ class DebreateLogger:
         DEBUG: u'debug',
     }
     
-    def __init__(self, log_level=1, log_path=u'{}/logs'.format(local_path)):
+    def __init__(self, log_level=1, log_path=u'{}/logs'.format(PATH_local)):
         ## The level at which to output log messages
         #  
         #  Default is ERROR
@@ -117,8 +123,8 @@ class DebreateLogger:
             print(message)
             
             # Message is output to log file
-            if not os.path.isdir(local_path):
-                os.makedirs(local_path)
+            if not os.path.isdir(PATH_local):
+                os.makedirs(PATH_local)
             
             # Open log for writing
             l_file = open(self.log_file, u'a')
@@ -173,6 +179,23 @@ class DebreateLogger:
         return self.log_file
 
 
+# Instantiate logger with default level & output path
+Logger = DebreateLogger()
+
+# How often the log window will be refreshed
+LOG_WINDOW_REFRESH_INTERVAL = 1
+
+def DebugEnabled():
+    return Logger.GetLogLevel() == Logger.DEBUG
+
+def SetLogWindowRefreshInterval(value):
+    global LOG_WINDOW_REFRESH_INTERVAL
+    LOG_WINDOW_REFRESH_INTERVAL = value
+
+def GetLogWindowRefreshInterval():
+    return LOG_WINDOW_REFRESH_INTERVAL
+
+
 ## Window displaying Logger messages
 #  
 #  FIXME: Creates separate task list window on initialization
@@ -181,13 +204,21 @@ class LogWindow(wx.Dialog):
     def __init__(self, parent, log_file):
         wx.Dialog.__init__(self, parent, ID_DEBUG, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
         
-        self.SetIcon(MAIN_ICON)
+        self.SetIcon(APP_logo)
         
         self.log_file = log_file
         
         self.SetTitle(self.log_file)
         
-        self.log = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.main_process_id = os.getpid()
+        self.log_poll_thread = None
+        self.THREAD_ID = None
+        self.MAIN_THREAD_ID = thread.get_ident()
+        
+        self.evt_refresh_log = RefreshLogEvent(0)
+        EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
+        
+        self.log = MultilineTextCtrlPanel(self, style=wx.TE_READONLY)
         self.log.font_size = 8
         self.log.SetFont(GetMonospacedFont(self.log.font_size))
         
@@ -198,21 +229,22 @@ class LogWindow(wx.Dialog):
         wx.EVT_BUTTON(self, wx.ID_PREVIEW_ZOOM, self.OnChangeFont)
         
         btn_refresh = wx.Button(self, wx.ID_REFRESH)
-        wx.EVT_BUTTON(self, wx.ID_REFRESH, self.LoadLog)
+        wx.EVT_BUTTON(self, wx.ID_REFRESH, self.RefreshLog)
         
         btn_hide = wx.Button(self, wx.ID_CLOSE, GT(u'Hide'))
         wx.EVT_BUTTON(self, wx.ID_CLOSE, self.OnClose)
         
-        layout_btnH1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_btnH1.Add(btn_open, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        layout_btnH1.AddSpacer(1, wx.EXPAND)
-        layout_btnH1.Add(btn_font, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        layout_btnH1.Add(btn_refresh, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        layout_btnH1.Add(btn_hide, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_btnF1 = wx.FlexGridSizer(cols=5)
+        layout_btnF1.AddGrowableCol(1, 1)
+        layout_btnF1.Add(btn_open, 0, wx.LEFT, 5)
+        layout_btnF1.AddStretchSpacer(1)
+        layout_btnF1.Add(btn_font, 0, wx.RIGHT, 5)
+        layout_btnF1.Add(btn_refresh, 0, wx.RIGHT, 5)
+        layout_btnF1.Add(btn_hide, 0, wx.RIGHT, 5)
         
         layout_mainV1 = wx.BoxSizer(wx.VERTICAL)
         layout_mainV1.Add(self.log, 1, wx.ALL|wx.EXPAND, 5)
-        layout_mainV1.Add(layout_btnH1, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
+        layout_mainV1.Add(layout_btnF1, 0, wx.EXPAND|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(layout_mainV1)
@@ -220,6 +252,7 @@ class LogWindow(wx.Dialog):
         
         wx.EVT_CLOSE(self, self.OnClose)
         wx.EVT_SHOW(self, self.OnShow)
+        wx.EVT_SHOW(parent.GetDebreateWindow(), self.OnShowMainWindow)
         
         self.SetMinSize(self.GetSize())
         
@@ -231,6 +264,14 @@ class LogWindow(wx.Dialog):
         self.Show(False)
         
         self.log_timestamp = os.stat(self.log_file).st_mtime
+    
+    
+    ## Destructor
+    def __del__(self):
+        print(u'FIXME: [dbr.log] How to kill log polling thread?; Thread ID: {}'.format(self.THREAD_ID))
+        
+        # FIXME: PyDeadObjectError
+        #        How to exit thread?
     
     
     ## Positions the log window relative to the main window
@@ -249,33 +290,8 @@ class LogWindow(wx.Dialog):
         self.log.Clear()
     
     
-    ## Fills log with text file contents
-    def LoadLog(self, event=None):
-        if os.path.isfile(self.log_file):
-            FILE = open(self.log_file)
-            log_data = FILE.read()
-            FILE.close()
-            
-            if not self.log.IsEmpty():
-                self.log.Clear()
-            
-            self.log.SetValue(log_data)
-            
-            # Yield here to make sure last line is displayed
-            wx.Yield()
-            self.log.ShowPosition(self.log.GetLastPosition())
-    
-    
     ## Changes the font size
     def OnChangeFont(self, event=None):
-        '''
-        fonts = {
-            MONOSPACED_MS: MONOSPACED_MD,
-            MONOSPACED_MD: MONOSPACED_LG,
-            MONOSPACED_LG: MONOSPACED_MS,
-        }
-        '''
-        
         font_sizes = {
             7: 8,
             8: 10,
@@ -299,6 +315,10 @@ class LogWindow(wx.Dialog):
         self.HideLog()
     
     
+    def OnLogTimestampChanged(self, event=None):
+        self.RefreshLog()
+    
+    
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
         log_select = wx.FileDialog(self.GetParent().GetDebreateWindow(), GT(u'Open Log'),
@@ -311,8 +331,13 @@ class LogWindow(wx.Dialog):
                 self.SetLogFile(log_file)
                 return
             
-            # FIXME: Show error dialog here
-            print(GT(u'Error: File does not exits: {}').format(log_file))
+            # NOTE: Cannot import error module because it imports this one
+            wx.MessageDialog(
+                    self.GetParent().GetDebreateWindow(),
+                    u'{}: {}'.format(GT(u'File does not exist'), log_file),
+                    GT(u'Error'),
+                    style=wx.OK|wx.ICON_ERROR
+                    ).ShowModal()
     
     
     ## Guarantess that menu item is synched with window's shown status
@@ -324,6 +349,17 @@ class LogWindow(wx.Dialog):
         
         if menu_checked != window_shown:
             debreate.menu_debug.Check(ID_LOG, window_shown)
+    
+    
+    ## Use an event to show the log window
+    #  
+    #  By waiting until the main window emits a show event
+    #    a separate item is not added in the system window
+    #    list for the log.
+    def OnShowMainWindow(self, event=None):
+        # Make sure the main window has not been destroyed
+        if self.GetParent().GetDebreateWindow().IsShown():
+            self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
@@ -344,36 +380,36 @@ class LogWindow(wx.Dialog):
     ## Creates a thread that polls for changes in log file
     def PollLogFile(self, args=None):
         previous_timestamp = os.stat(self.log_file).st_mtime
-        iteration = 0
         while self.IsShown():
-            time.sleep(5)
-            iteration += 1
-            
             current_timestamp = os.stat(self.log_file).st_mtime
-            
-            print(u'Polling log (iteration {})'.format(iteration))
-            print(u'Polling log (Current: {}; Previous: {})'.format(current_timestamp, previous_timestamp))
             
             if current_timestamp != previous_timestamp:
                 print(u'Log timestamp changed, loading new log ...')
                 
-                # FIXME: Segfault, send signal to main thread?
-                #self.LoadLog()
-                
-                # FIXME: Segfault, would prefer to use self.LoadLog
-                '''
-                FILE = open(self.log_file)
-                log_text = FILE.read()
-                FILE.close()
-                
-                if not self.log.IsEmpty():
-                    self.log.Clear()
-                
-                self.log.SetValue(log_text)
-                self.log.ShowPosition(self.log.GetLastPosition())
-                '''
+                wx.PostEvent(self, self.evt_refresh_log)
                 
                 previous_timestamp = current_timestamp
+            
+            time.sleep(LOG_WINDOW_REFRESH_INTERVAL)
+            
+    
+    
+    ## Fills log with text file contents
+    def RefreshLog(self, event=None):
+        if os.path.isfile(self.log_file):
+            FILE = open(self.log_file)
+            log_data = FILE.read()
+            FILE.close()
+            
+            if not self.log.IsEmpty():
+                self.log.Clear()
+            
+            self.log.SetValue(log_data)
+            
+            # Yield here to make sure last line is displayed
+            # FIXME: Causes delay when debug enabled
+            wx.SafeYield()
+            self.log.ShowPosition(self.log.GetLastPosition())
     
     
     ## Changes the file to be loaded & displayed
@@ -382,7 +418,7 @@ class LogWindow(wx.Dialog):
     #        \b \e unicode|str : File to load
     def SetLogFile(self, log_file):
         self.log_file = log_file
-        self.LoadLog()
+        self.RefreshLog()
         self.SetTitle(self.log_file)
     
     
@@ -390,8 +426,8 @@ class LogWindow(wx.Dialog):
     #  
     #  FIXME: Creates separate task list window on initialization
     def ShowLog(self):
-        self.LoadLog()
+        self.RefreshLog()
         self.Show(True)
         
         # FIXME: Re-enable when threading fixed
-        #thread.start_new_thread(self.PollLogFile, ())
+        self.log_poll_thread = thread.start_new_thread(self.PollLogFile, ())
