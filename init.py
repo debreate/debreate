@@ -11,18 +11,25 @@
 
 import sys
 
+import command_line as CL
+from command_line import parsed_commands
+from command_line import parsed_args_s
+from command_line import parsed_args_v
+from command_line import GetParsedPath
+
+# *** Command line arguments
+CL.ParseArguments(sys.argv[1:])
+
 # Modules to define required version of wx
 import wxversion
 
-if len(sys.argv) > 1 and sys.argv[1] == u'legacy':
+if u'legacy' in parsed_commands:
     wxversion.select([u'2.8'])
-
 else:
     wxversion.select([u'3.0', u'2.8'])
 
-
 # System modules
-import wx, os, gettext
+import wx, os, gettext, commands
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
@@ -35,17 +42,33 @@ wx.SetDefaultPyEncoding('UTF-8')
 # Initialize app before importing local modules
 debreate_app = wx.App()
 
-# Local modules
-from dbr import Logger
-from dbr.language import GT, TRANSLATION_DOMAIN, LOCALE_DIR
-from dbr.constants import PY_VER_STRING, WX_VER_STRING, VERSION_STRING,\
-    INSTALLED, PREFIX
-from dbr.config import ReadConfig, ConfCode, InitializeConfig,\
-    default_config, GetDefaultConfigValue
-from dbr.custom import FirstRun
-from main import MainWindow
-import dbr.command_line as CL
-from dbr.compression import GetCompressionId
+from dbr.config             import ConfCode
+from dbr.config             import default_config
+from dbr.config             import GetDefaultConfigValue
+from dbr.config             import InitializeConfig
+from dbr.config             import ReadConfig
+from dbr.custom             import FirstRun
+from dbr.error              import ShowError
+from dbr.language           import GT
+from dbr.language           import LOCALE_DIR
+from dbr.language           import TRANSLATION_DOMAIN
+from dbr.log                import Logger
+from globals.application    import APP_name
+from globals.application    import VERSION_string
+from globals.constants      import INSTALLED
+from globals.constants      import PREFIX
+from globals.paths          import PATH_app
+from globals.system         import PY_VER_STRING
+from globals.system         import WX_VER_STRING
+from main                   import MainWindow
+
+
+# Log window refresh interval
+if u'log-interval' in parsed_args_v:
+    from dbr.log import SetLogWindowRefreshInterval
+    if unicode(parsed_args_v[u'log-interval']).isnumeric():
+        SetLogWindowRefreshInterval(int(parsed_args_v[u'log-interval']))
+
 
 # FIXME: How to check of text domain is set correctly?
 if INSTALLED:
@@ -57,38 +80,57 @@ script_name = os.path.basename(__file__)
 if u'.py' in script_name:
     script_name = script_name.split(u'.py')[0]
 
-Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
-Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
-Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_STRING))
-
 exit_now = 0
 
-# Get command line arguments
-project_file = 0 # Set project file to false
-if len(sys.argv) > 1:
-    arg1 = sys.argv[1]
-    filename = sys.argv[1] # Get the filename to show in window title
-    if os.path.isfile(arg1):
-        arg1 = open(arg1, u'r')
-        project_file = arg1.read()
-        arg1.close()
+if u'version' in parsed_args_s:
+    print(u'{} {}'.format(APP_name, VERSION_string))
+    
+    sys.exit(0)
 
-CL.ParseArguments(sys.argv[1:])
-CL.ExecuteArguments()
 
+if u'help' in parsed_args_s:
+    if INSTALLED:
+        help_output = commands.getstatusoutput(u'man debreate')
+    
+    else:
+        help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(PATH_app))
+    
+    
+    if help_output[0]:
+        print(u'ERROR: Could not locate manpage')
+        
+        sys.exit(help_output[0])
+    
+    
+    help_output = unicode(help_output[1])
+    print(u'\n'.join(help_output.split(u'\n')[2:-1]))
+    
+    sys.exit(0)
+
+
+if u'log-level' in parsed_args_v:
+    Logger.SetLogLevel(parsed_args_v[u'log-level'])
+
+
+Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
+Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
+Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
 
 # First time Debreate is run
 if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     FR_dialog = FirstRun()
     debreate_app.SetTopWindow(FR_dialog)
     FR_dialog.ShowModal()
-    FR_dialog.Destroy()
     
     init_conf_code = InitializeConfig()
     Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        Logger.Error(script_name, GT(u'Could not create configuration, exiting ...'))
+        fr_error = GT(u'Could not create configuration, exiting ...')
+        ShowError(FR_dialog, fr_error, ConfCode.string[init_conf_code])
+        
         exit_now = init_conf_code
+    
+    FR_dialog.Destroy()
     
 
 if exit_now:
@@ -102,7 +144,6 @@ conf_values = {
     u'maximize': ReadConfig(u'maximize'),
     u'dialogs': ReadConfig(u'dialogs'),
     u'workingdir': ReadConfig(u'workingdir'),
-#    u'compression': ReadConfig(u'compression'),
 }
 
 for V in conf_values:
@@ -124,8 +165,12 @@ if conf_values[u'maximize']:
 # Set working directory (Not necessary to call ChangeWorkingDirectory here)
 os.chdir(conf_values[u'workingdir'])
 
-# Set project compression
-#Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
+parsed_path = GetParsedPath()
+if parsed_path:
+    project_file = parsed_path
+    Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
+    
+    Debreate.OpenProject(project_file)
 
 debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
