@@ -1,6 +1,7 @@
 /.pydevproject
 /.settings
 *.pyc
+*.orig
 /.project
 /bin
 /build
