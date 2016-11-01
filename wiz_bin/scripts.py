@@ -244,9 +244,9 @@ scripts will be created that will place a symbolic link to your executables in t
                             self.executables.InsertStringItem(0, filename)
                             self.executables.SetItemTextColour(0, "red")
                         else:
-                            print "panscripts.py: The executables destination is not valid"
+                            print "{}: The executables destination is not valid".format(__name__)
                     except IndexError:
-                        print "panscripts.py: The executables destination is not available"
+                        print "{}: The executables destination is not available".format(__name__)
                 count += 1
         
         elif id == ID_Remove:

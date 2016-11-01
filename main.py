@@ -5,15 +5,24 @@ import os, db, webbrowser, shutil, subprocess, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
-from common     import GetCurrentVersion
-from common     import db_version
-from common     import db_website
-from common     import debreate_version
-from dbr.about  import AboutDialog
-from dbr.config import GetDefaultConfigValue
-from dbr.config import WriteConfig
-from dbr.wizard import Wizard
-import pancopyright, paninfo, pancontrol, pandepends, panfiles, panscripts, panclog, panmenu, panbuild
+from common             import GetCurrentVersion
+from common             import db_version
+from common             import db_website
+from common             import debreate_version
+from dbr.about          import AboutDialog
+from dbr.config         import GetDefaultConfigValue
+from dbr.config         import WriteConfig
+from dbr.wizard         import Wizard
+from wiz_bin.build      import Panel as PanelBuild
+from wiz_bin.build      import QuickBuild
+from wiz_bin.clog       import Panel as PanelChangelog
+from wiz_bin.control    import Panel as PanelControl
+from wiz_bin.copyright  import Panel as PanelCopyright
+from wiz_bin.depends    import Panel as PanelDepends
+from wiz_bin.files      import Panel as PanelFiles
+from wiz_bin.info       import Panel as PanelInfo
+from wiz_bin.menu       import Panel as PanelMenu
+from wiz_bin.scripts    import Panel as PanelScripts
 
 
 ID_Dialogs = wx.NewId()
@@ -201,16 +210,16 @@ class MainWindow(wx.Frame):
         
         self.Wizard = Wizard(self) # Binary
         
-        self.page_info = paninfo.Panel(self.Wizard, ID_INFO)
+        self.page_info = PanelInfo(self.Wizard, ID_INFO)
         self.page_info.SetInfo()
-        self.page_control = pancontrol.Panel(self.Wizard, ID_CTRL)
-        self.page_depends = pandepends.Panel(self.Wizard, ID_DEPS)
-        self.page_files = panfiles.Panel(self.Wizard, ID_FILES)
-        self.page_scripts = panscripts.Panel(self.Wizard, ID_SCRIPTS)
-        self.page_clog = panclog.Panel(self.Wizard, ID_CLOG)
-        self.page_cpright = pancopyright.Panel(self.Wizard, ID_CPRIGHT)
-        self.page_menu = panmenu.Panel(self.Wizard, ID_MENU)
-        self.page_build = panbuild.Panel(self.Wizard, ID_BUILD)
+        self.page_control = PanelControl(self.Wizard, ID_CTRL)
+        self.page_depends = PanelDepends(self.Wizard, ID_DEPS)
+        self.page_files = PanelFiles(self.Wizard, ID_FILES)
+        self.page_scripts = PanelScripts(self.Wizard, ID_SCRIPTS)
+        self.page_clog = PanelChangelog(self.Wizard, ID_CLOG)
+        self.page_cpright = PanelCopyright(self.Wizard, ID_CPRIGHT)
+        self.page_menu = PanelMenu(self.Wizard, ID_MENU)
+        self.page_build = PanelBuild(self.Wizard, ID_BUILD)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -541,6 +550,6 @@ class MainWindow(wx.Frame):
             OnSaveAs()
     
     def OnQuickBuild(self, event):
-        QB = panbuild.QuickBuild(self)
+        QB = QuickBuild(self)
         QB.ShowModal()
         QB.Destroy()

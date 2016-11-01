@@ -24,27 +24,14 @@ FILES = \
 	common.py \
 	db_md5.py \
 	db.py \
-	language.py \
-	panbuild.py \
-	panclog.py \
-	pancontrol.py \
-	pancopyright.py \
-	pandepends.py \
-	panfiles.py \
-	paninfo.py \
-	panmenu.py \
-	panscripts.py
+	language.py
 
 FILES_EXECUTABLE = \
 	init.py
 
-FILES_DBR = \
-	dbr/about.py \
-	dbr/buttons.py \
-	dbr/charctrl.py \
-	dbr/message.py \
-	dbr/pathctrl.py \
-	dbr/wizard.py
+FILES_WIZ_BIN = wiz_bin/*.py
+
+FILES_DBR = dbr/*.py
 
 FILES_EXTRA = \
 	README.md \
@@ -82,19 +69,18 @@ BITMAPS = \
 	bitmaps/save32.png \
 	bitmaps/save64.png
 
-DBR_DIR = dbr
-
 MENU = debreate.desktop
 
 DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
 
 DISTDIRS = \
 	bitmaps \
+	dbr \
 	data \
-	$(DBR_DIR) \
 	docs \
 	locale \
-	debian
+	debian \
+	wiz_bin
 
 DISTFILES = \
 	$(FILES_EXECUTABLE) \
@@ -109,7 +95,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU) $(DBR_DIR)
+install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_WIZ_BIN) $(FILES_EXTRA) $(FILES_DOC) $(BITMAPS) locale data/$(MENU)
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
@@ -135,9 +121,14 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_EXTRA) $(FILES_
 			$(INSTALL_DATA) "$${py}" "$${datadir}"; \
 		done; \
 		\
-		mkdir -vp "$${datadir}/db"; \
+		mkdir -vp "$${datadir}/dbr"; \
 		for py in $(FILES_DBR); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/db"; \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
+		done; \
+		\
+		mkdir -vp "$${datadir}/wiz_bin"; \
+		for py in $(FILES_WIZ_BIN); do \
+			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
 		done; \
 		\
 		$(MKDIR) "$${datadir}/docs"; \
@@ -160,8 +151,6 @@ install: build $(FILES_EXECUTABLE) $(FILES) $(FILES_DBR) $(FILES_EXTRA) $(FILES_
 		\
 		$(MKDIR) "$${appsdir}"; \
 		$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
-		\
-		$(INSTALL_FOLDER) "$(DBR_DIR)" "$${datadir}"; \
 	\
 	fi; \
 
