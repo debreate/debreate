@@ -4,24 +4,25 @@
 # System imports
 import os
 
+from dbr.constants  import local_path
+from dbr.language   import GT
+from dbr.log        import Logger
+from globals.paths  import PATH_app
+
+
 # Debreate imports
-from dbr import Logger
-from dbr.constants import local_path, application_path
-from dbr.language import GT
-
-
 ## Application templates
 #  
 #  Path to application templates stored in the system Debreate directory.
-#  <application_path>/templates
+#  <PATH_app>/templates
 #  FIXME: Should be stored elsewhere? /etc? /lib?
-application_templates_path = u'{}/templates'.format(application_path)
+application_templates_path = u'{}/templates'.format(PATH_app)
 
 ## Application licenses
 #  
 #  Path to license templates stored in the Debreate data directory
 #  FIXME: Rename to 'global_licenses_path'
-#  <application_path>/templates/li
+#  <PATH_app>/templates/li
 application_licenses_path = u'{}/licenses'.format(application_templates_path)
 
 ## Local templates directory
@@ -55,7 +56,7 @@ for PATH, DIRS, FILES in os.walk(local_licenses_path):
 #  Templates are checked for first in local directory
 #    (<HOME>/.local/share/debreate/templates/licenses)
 #    then in the application's directory
-#    (<application_path>/templates/licenses).
+#    (<PATH_app>/templates/licenses).
 #  \param l_name
 #        The filename of the template
 #  \return
@@ -82,7 +83,7 @@ def GetLicenseTemplateFile(l_name):
 ## Function to retrieve available license templates
 #  
 #  Licenses are retrieved first from <HOME>/.local/share/debreate/templates/licenses.
-#  Then retrieved from <application_path>/templates/licenses. Only files that
+#  Then retrieved from <PATH_app>/templates/licenses. Only files that
 #  don't already exist in local path are added.
 def GetLicenseTemplatesList():
     # Use local templates first if available

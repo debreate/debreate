@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-import os, sys
+import os
 import wx.combo, wx.lib.mixins.listctrl as LC
 
-from common         import application_path
 from dbr.pathctrl   import PATH_DEFAULT
 from dbr.pathctrl   import PATH_WARN
 from dbr.pathctrl   import PathCtrl
-
-
-# Import the db directory
-sys.path.append("{}/db".format(application_path))
-
+from globals.paths  import PATH_app
 
 
 ID_BIN = wx.NewId()
@@ -33,8 +28,8 @@ Disabled = (246, 246, 245)
 homedir = os.getenv("HOME")
 
 # Icons
-ICON_ERROR = "%s/bitmaps/error64.png" % application_path
-ICON_INFORMATION = "%s/bitmaps/question64.png" % application_path
+ICON_ERROR = "%s/bitmaps/error64.png" % PATH_app
+ICON_INFORMATION = "%s/bitmaps/question64.png" % PATH_app
 
 
 # Path text controls
