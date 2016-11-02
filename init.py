@@ -162,15 +162,22 @@ if conf_values[u'center']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
-# Set working directory (Not necessary to call ChangeWorkingDirectory here)
-os.chdir(conf_values[u'workingdir'])
-
 parsed_path = GetParsedPath()
 if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
     
-    Debreate.OpenProject(project_file)
+    FILE = open(project_file, u'r')
+    project_data = FILE.read()
+    FILE.close()
+    
+    Debreate.OpenProject(project_data, project_file)
+    
+    os.chdir(os.path.dirname(project_file))
+else:
+    # Set working directory (Not necessary to call ChangeWorkingDirectory here)
+    os.chdir(conf_values[u'workingdir'])
+
 
 debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
