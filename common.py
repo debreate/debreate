@@ -28,10 +28,6 @@ mid_pyversion = sys.version_info[1]
 min_pyversion = sys.version_info[2]
 python_version = u'{}.{}.{}'.format(maj_pyversion, mid_pyversion, min_pyversion)
 
-print("Python version: {}".format(python_version))
-print("wxPython version: {}.{}.{}".format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEASE_VERSION))
-print("Debreate version: {}.{}.{}".format(ver_maj, ver_min, ver_rel))
-
 
 
 ##################
