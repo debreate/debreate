@@ -1,3 +1,13 @@
+debreate (0.7.12-dev4) xenial; urgency=low
+
+  *  Fixed opening projects from command line
+     Cleaned up code
+     Removed some unused & deprecated modules & classes
+     Added fixed & updated modules from unstable branch
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 02 Nov 2016 16:54:27 -0700
+
+
 debreate (0.7.12-dev3) xenial; urgency=low
 
   * Use new about dialog
