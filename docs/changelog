@@ -1,3 +1,9 @@
+0.7.12-dev4
+- Fixed opening projects from command line
+- Cleaned up code
+- Removed some unused & deprecated modules & classes
+- Added fixed & updated modules from unstable branch
+
 0.7.12-dev3
 - Use new about dialog
 - Use custom hyperlink controls
