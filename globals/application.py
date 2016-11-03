@@ -36,15 +36,17 @@ APP_name = u'Debreate'
 # *** Version information *** #
 
 VERSION_maj = 0
-VERSION_min = 8
-VERSION_rel = 0
+VERSION_min = 7
+VERSION_rel = 12
 VERSION_tuple = (VERSION_maj, VERSION_min, VERSION_rel)
 VERSION_string = u'{}.{}.{}'.format(VERSION_maj, VERSION_min, VERSION_rel)
 
 # Development version
 RELEASE = 0
 if not RELEASE:
-    VERSION_string = u'{}-dev'.format(VERSION_string)
+    # Increment this for every development release
+    VERSION_dev = 5
+    VERSION_string = u'{}-dev{}'.format(VERSION_string, VERSION_dev)
 
 
 # *** Author information *** #

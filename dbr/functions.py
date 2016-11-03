@@ -4,21 +4,19 @@
 #  Global functions used throughout Debreate
 
 
-# System modules
-import wx, os, re, commands
 from datetime import datetime, date
 from urllib2 import urlopen, URLError
+import wx, os, re, commands, shutil
 
-# Local modules
-from dbr.constants import \
-    HOMEPAGE, PY_VER_STRING, system_licenses_path,\
-    custom_errno, APP_NAME,\
-    VERSION_STRING
-import shutil
+from dbr.constants          import APP_NAME
+from dbr.constants          import PY_VER_STRING
+from dbr.constants          import custom_errno
+from dbr.constants          import system_licenses_path
+from globals.application    import APP_homepage_sf
+from globals.application    import VERSION_string
 
 
 # FIXME: Can't import Logger
-
 ## Get the current version of the application
 #  
 #  The alias \p \e \b dbr.GetCurrentVersion can be used.
@@ -28,7 +26,8 @@ import shutil
 #  \b Alias: \e dbr.GetCurrentVersion
 def GetCurrentVersion():
     try:
-        request = urlopen(u'{}/current.txt'.format(HOMEPAGE))
+        # FIXME: Need to use new homepage to get current version
+        request = urlopen(u'{}/current.txt'.format(APP_homepage_sf))
         version = request.readlines()[0]
         version = version.split(u'.')
         
@@ -384,7 +383,7 @@ def CreateTempDirectory():
     if not os.access(temp_dir, os.W_OK):
         temp_dir = os.getcwd()
     
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_NAME).lower(), VERSION_STRING)
+    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_NAME).lower(), VERSION_string)
     
     print(u'DEBUG: Temporary directory: {}'.format(temp_dir))
     

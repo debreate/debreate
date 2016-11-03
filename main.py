@@ -5,25 +5,25 @@ import os, db, webbrowser, shutil, subprocess, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
-from dbr.about          import AboutDialog
-from dbr.config         import GetDefaultConfigValue
-from dbr.config         import WriteConfig
-from dbr.constants      import HOMEPAGE
-from dbr.constants      import VERSION
-from dbr.constants      import VERSION_STRING
-from dbr.functions      import GetCurrentVersion
-from dbr.wizard         import Wizard
-from globals.paths      import PATH_app
-from wiz_bin.build      import Panel as PanelBuild
-from wiz_bin.build      import QuickBuild
-from wiz_bin.clog       import Panel as PanelChangelog
-from wiz_bin.control    import Panel as PanelControl
-from wiz_bin.copyright  import Panel as PanelCopyright
-from wiz_bin.depends    import Panel as PanelDepends
-from wiz_bin.files      import Panel as PanelFiles
-from wiz_bin.info       import Panel as PanelInfo
-from wiz_bin.menu       import Panel as PanelMenu
-from wiz_bin.scripts    import Panel as PanelScripts
+from dbr.about              import AboutDialog
+from dbr.config             import GetDefaultConfigValue
+from dbr.config             import WriteConfig
+from dbr.functions          import GetCurrentVersion
+from dbr.wizard             import Wizard
+from globals.application    import APP_homepage
+from globals.application    import VERSION_string
+from globals.application    import VERSION_tuple
+from globals.paths          import PATH_app
+from wiz_bin.build          import Panel as PanelBuild
+from wiz_bin.build          import QuickBuild
+from wiz_bin.clog           import Panel as PanelChangelog
+from wiz_bin.control        import Panel as PanelControl
+from wiz_bin.copyright      import Panel as PanelCopyright
+from wiz_bin.depends        import Panel as PanelDepends
+from wiz_bin.files          import Panel as PanelFiles
+from wiz_bin.info           import Panel as PanelInfo
+from wiz_bin.menu           import Panel as PanelMenu
+from wiz_bin.scripts        import Panel as PanelScripts
 
 
 ID_Dialogs = wx.NewId()
@@ -256,7 +256,7 @@ class MainWindow(wx.Frame):
     
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
-        if u'-dev' in VERSION_STRING:
+        if u'-dev' in VERSION_string:
             wx.MessageDialog(self, _(u'Update checking not supported in development versions'),
                     _(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
             return
@@ -266,13 +266,13 @@ class MainWindow(wx.Frame):
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
             wx.MessageDialog(self, current, _(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-        elif (current > VERSION):
+        elif (current > VERSION_tuple):
             current = '%s.%s.%s' % (current[0], current[1], current[2])
             l1 = _(u'Version %s is available!').decode('utf-8') % (current)
             l2 = _(u"Would you like to go to Debreate's website?").decode('utf-8')
             update = wx.MessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
-                wx.LaunchDefaultBrowser(HOMEPAGE)
+                wx.LaunchDefaultBrowser(APP_homepage)
         else:
             wx.MessageDialog(self, _(u'Debreate is up to date!'), _(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
     
@@ -413,7 +413,7 @@ class MainWindow(wx.Frame):
         about = AboutDialog(self)
         
         about.SetGraphic("%s/bitmaps/debreate64.png" % PATH_app)
-        about.SetVersion(VERSION_STRING)
+        about.SetVersion(VERSION_string)
         about.SetDescription(_('A package builder for Debian based systems'))
         about.SetAuthor('Jordan Irwin')
         about.SetWebsites((
@@ -490,7 +490,7 @@ class MainWindow(wx.Frame):
                 savefile = open(path, 'w')
                 # This try statement can be removed when unicode support is enabled
                 try:
-                    savefile.write("[DEBREATE-%s]\n%s" % (VERSION_STRING, "\n".join(data).encode('utf-8')))
+                    savefile.write("[DEBREATE-%s]\n%s" % (VERSION_string, "\n".join(data).encode('utf-8')))
                     savefile.close()
                     if overwrite:
                         os.remove(backup)
