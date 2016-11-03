@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Debreate
 Version=1.0
-Exec=debreate
+Exec=debreate %f
 Comment=Build Debian packages
 Icon=debreate
 Type=Application
@@ -9,7 +9,7 @@ Terminal=false
 StartupNotify=true
 Encoding=UTF-8
 Categories=Development;
-MimeType=text/debreate;
+MimeType=application/x-dbp;
 #Comment[aa]=
 #Comment[ab]=
 #Comment[ace]=
