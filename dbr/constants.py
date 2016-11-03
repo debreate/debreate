@@ -64,26 +64,6 @@ AUTHOR = u'Jordan Irwin'
 EMAIL = u'antumdeluge@gmail.com'
 MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
 
-# Version information #
-RELEASE = 0
-VER_MAJ = 0
-VER_MIN = 7
-VER_REL = 12
-
-VERSION = (VER_MAJ, VER_MIN, VER_REL)
-VERSION_STRING = u'{}.{}.{}'.format(VER_MAJ, VER_MIN, VER_REL)
-
-# Development version
-if not RELEASE:
-    # Increment this for every development release
-    VER_DEV = 5
-    VERSION_STRING = u'{}-dev{}'.format(VERSION_STRING, VER_DEV)
-
-# Website & hosting information #
-HOMEPAGE = u'https://antumdeluge.github.io/debreate-web/'
-PROJECT_HOME_GH = u'https://github.com/AntumDeluge/debreate'
-PROJECT_HOME_SF = u'https://sourceforge.net/projects/debreate'
-
 # Project filename
 PROJECT_LEGACY_SUFFIX = u'dbp'
 PROJECT_FILENAME_SUFFIX = u'dbpz'
