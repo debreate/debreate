@@ -4,24 +4,7 @@
 import sys, os, subprocess, wx
 from urllib2        import URLError
 from urllib2        import urlopen
-from wx.lib.docview import PathOnly
 
-
-RELEASE = 0
-ver_maj = 0
-ver_min = 7
-ver_rel = 12
-
-debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
-
-if not RELEASE:
-    # Increment this for every development release
-    ver_dev = 5
-    debreate_version = u'{}-dev{}'.format(debreate_version, ver_dev)
-
-db_version = (ver_maj, ver_min, ver_rel)
-db_here = PathOnly(__file__).decode(u'utf-8')
-db_website = u'http://debreate.sourceforge.net/'
 
 maj_pyversion = sys.version_info[0]
 mid_pyversion = sys.version_info[1]
@@ -46,29 +29,6 @@ def RequirePython(version):
             return
         raise ValueError(error)
     raise ValueError('Wrong type for argument 1 of RequirePython(version)')
-
-
-def GetCurrentVersion():
-    try:
-        request = urlopen(u'%s/current.txt' % (db_website))
-        version = request.readlines()[0]
-        version = version.split('.')
-        
-        if ('\n' in version[-1]):
-            # Remove newline character
-            version[-1] = version[-1][:-1]
-        
-        # Convert to integer
-        for v in range(0, len(version)):
-            version[v] = int(version[v])
-        
-        # Change container to tuple and return it
-        version = (version[0], version[1], version[2])
-        return version
-    
-    except URLError, err:
-        #err = unicode(err)
-        return err
 
 
 ### -*- Function to check for installed executables -*- ###
