@@ -18,6 +18,7 @@
 - Fix bugs in docs/BUGS.txt
 - Heavy code cleanup & testing
 - Fix "Install package after build"
+- Fix menu launcher name
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
