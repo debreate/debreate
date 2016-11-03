@@ -7,6 +7,9 @@ DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
+ICONTHEME = $(DATAROOT)/icons/gnome
+MIMEDIR = $(DATAROOT)/mime/packages
+MIMEICONSDIR = $(ICONTHEME)/scalable/mimetypes
 
 INSTALL_DATA = install -vm 0644
 INSTALL_EXEC = install -vm 0755
@@ -98,6 +101,9 @@ FILES_BUILD = \
 	$(FILES_GLOBALS) \
 	$(FILES_WIZ_BIN)
 
+MIMEFILE = data/mime/$(PACKAGE).xml
+MIME_icons = data/svg/application-x-dbp.svg
+
 
 all:
 	@echo "\n\tNothing to be done"; \
@@ -105,7 +111,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU)
+install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) install-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -159,7 +165,23 @@ install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU)
 	$(MKDIR) "$${appsdir}"; \
 	$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
 
-uninstall:
+install-icons: $(MIME_icons)
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(MIMEICONSDIR)"; \
+	$(MKDIR) "$${icons_dir}"; \
+	for i in $(MIME_icons); do \
+		$(INSTALL_DATA) "$${i}" "$${icons_dir}"; \
+	done; \
+
+install-mime: $(MIMEFILE) install-icons
+	@target="$(DESTDIR)$(prefix)"; \
+	mime_dir="$${target}/$(MIMEDIR)"; \
+	if [ ! -d "$${mime_dir}" ]; then \
+		$(MKDIR) "$${mime_dir}"; \
+	fi; \
+	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
+
+uninstall: uninstall-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -179,6 +201,19 @@ uninstall:
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
+
+uninstall-icons:
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(ICONTHEME)"; \
+	if [ -d "$${icons_dir}" ]; then \
+		find "$${icons_dir}" -type f -name "application-x-dbp*" -print -delete; \
+		find "$${icons_dir}" -type d -empty -print -delete; \
+	fi; \
+
+uninstall-mime: uninstall-icons
+	@target="$(DESTDIR)$(prefix)"; \
+	mime_dir="$${target}/$(MIMEDIR)"; \
+	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
 
 debuild:
 	@debuild -b -uc -us
