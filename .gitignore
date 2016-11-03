@@ -11,7 +11,7 @@
 *.pyc
 
 # Compiled Gettext locales
-*.mo
+#*.mo
 
 # Build output files & directories
 Makefile
