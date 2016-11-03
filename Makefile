@@ -21,10 +21,10 @@ prefix=/usr/local
 
 FILES = \
 	main.py \
+	command_line.py \
 	common.py \
 	db_md5.py \
-	db.py \
-	language.py
+	db.py
 
 FILES_EXECUTABLE = \
 	init.py
