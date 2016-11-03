@@ -12,9 +12,9 @@ from urllib2    import URLError
 from urllib2    import urlopen
 
 from dbr.language           import GT
-from globals.application    import APP_homepage_sf
 from globals.application    import APP_name
 from globals.application    import RELEASE
+from globals.application    import APP_project_gh
 from globals.application    import VERSION_string
 from globals.commands       import CMD_system_packager, CMD_fakeroot
 from globals.constants      import system_licenses_path
@@ -24,31 +24,34 @@ from globals.system         import PY_VER_STRING
 
 ## Get the current version of the application
 #  
-#  The alias \p \e \b dbr.GetCurrentVersion can be used.
 #  \return
 #        Application's version tuple
-#  
-#  \b Alias: \e dbr.GetCurrentVersion
 def GetCurrentVersion():
     try:
-        request = urlopen(u'{}/current.txt'.format(APP_homepage_sf))
-        version = request.readlines()[0]
+        version = os.path.basename(urlopen(u'{}/releases/latest'.format(APP_project_gh)).geturl())
+        
+        if u'-' in version:
+            version = version.split(u'-')[0]
         version = version.split(u'.')
         
-        if (u'\n' in version[-1]):
-            # Remove newline character
-            version[-1] = version[-1][:-1]
+        cutoff_index = 0
+        for C in version[0]:
+            if not C.isdigit():
+                cutoff_index += 1
+                continue
+            
+            break
         
-        # Convert to integer
-        for v in range(0, len(version)):
-            version[v] = int(version[v])
+        version[0] = version[0][cutoff_index:]
+        for V in version:
+            if not V.isdigit():
+                return u'Cannot parse release: {}'.format(tuple(version))
+            
+            version[version.index(V)] = int(V)
         
-        # Change container to tuple and return it
-        version = (version[0], version[1], version[2])
-        return version
-    
+        return tuple(version)
+        
     except URLError, err:
-        #err = unicode(err)
         return err
 
 

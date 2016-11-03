@@ -1,4 +1,3 @@
-﻿# This script is no longer executable, use init.py
 # -*- coding: utf-8 -*-
 
 
@@ -481,18 +480,31 @@ class MainWindow(wx.Frame):
         
         current = GetCurrentVersion()
         wx.SafeYield()
+        Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
         if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
             wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-        elif (current > VERSION_tuple):
+        elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
-            l1 = GT(u'Version %s is available!').decode(u'utf-8') % (current)
-            l2 = GT(u'Would you like to go to Debreate\'s website?').decode(u'utf-8')
+            l1 = GT(u'Version {} is available!').format(current)
+            l2 = GT(u'Would you like to go to Debreate\'s website?')
             update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
+        elif isinstance(current, (unicode, str)):
+            err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
+            err_msg = u'{}\n\n{}'.format(err_msg, current)
+            
+            Logger.Error(__name__, err_msg)
+            
+            err = wx.MessageDialog(self, err_msg,
+                    GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
+            err.CenterOnParent()
+            err.ShowModal()
         else:
-            wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
+            err.CenterOnParent()
+            err.ShowModal()
     
     
     def OnHelp(self, event):
