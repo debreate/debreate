@@ -15,9 +15,8 @@ If you have [debuild][] installed, you can run 'make debuild' from the command l
 Debreate needs these packages installed to run:
 * [python][]
     * Version 2.7 is supported. The goal is to port it to Python 3.
-* [wxpython (python-wxgtk)][python-wxgtk2.8]
-    * python-wxgtk2.8 is supported by Debreate. For systems newer than [wily][ubu.wily.python-wxgtk] backports will need to be enabled or a wily repository mirror will have to be added to /etc/apt/sources.list.
-    * It is planned to port it to [python-wxgtk3][]
+* [wxpython (python-wxgtk)][python-wxgtk3]
+    * python-wxgtk3 & [python-wxgtk2.8][] are supported.
 * [python-wxversion][]
 * [dpkg][]
     * If you are running a Debian/Ubuntu based system, then this is most likely already installed.
