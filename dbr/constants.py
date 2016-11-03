@@ -67,15 +67,17 @@ MAIN_ICON = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYP
 # Version information #
 RELEASE = 0
 VER_MAJ = 0
-VER_MIN = 8
-VER_REL = 0
+VER_MIN = 7
+VER_REL = 12
 
 VERSION = (VER_MAJ, VER_MIN, VER_REL)
 VERSION_STRING = u'{}.{}.{}'.format(VER_MAJ, VER_MIN, VER_REL)
 
 # Development version
 if not RELEASE:
-    VERSION_STRING = u'{}-dev'.format(VERSION_STRING)
+    # Increment this for every development release
+    VER_DEV = 5
+    VERSION_STRING = u'{}-dev{}'.format(VERSION_STRING, VER_DEV)
 
 # Website & hosting information #
 HOMEPAGE = u'https://antumdeluge.github.io/debreate-web/'
