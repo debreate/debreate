@@ -1,5 +1,6 @@
 0.7.12-dev
 - Add Russian Gettext translation
+- Use GitHub URL the check for updates
 
 0.7.12-dev5
 - Add mimetype info & icons for system "Open with..."

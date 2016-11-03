@@ -9,6 +9,8 @@ from dbr.about              import AboutDialog
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import WriteConfig
 from dbr.functions          import GetCurrentVersion
+from dbr.language           import GT
+from dbr.log                import Logger
 from dbr.wizard             import Wizard
 from globals.application    import APP_homepage
 from globals.application    import VERSION_string
@@ -263,18 +265,31 @@ class MainWindow(wx.Frame):
         
         wx.SafeYield()
         current = GetCurrentVersion()
+        Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
             wx.MessageDialog(self, current, _(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-        elif (current > VERSION_tuple):
+        elif isinstance(current, tuple) and current > VERSION_tuple:
             current = '%s.%s.%s' % (current[0], current[1], current[2])
             l1 = _(u'Version %s is available!').decode('utf-8') % (current)
             l2 = _(u"Would you like to go to Debreate's website?").decode('utf-8')
             update = wx.MessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
+        elif isinstance(current, (unicode, str)):
+            err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
+            err_msg = u'{}\n\n{}'.format(err_msg, current)
+            
+            Logger.Error(__name__, err_msg)
+            
+            err = wx.MessageDialog(self, err_msg,
+                    GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
+            err.CenterOnParent()
+            err.ShowModal()
         else:
-            wx.MessageDialog(self, _(u'Debreate is up to date!'), _(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            err = wx.MessageDialog(self, _(u'Debreate is up to date!'), _(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
+            err.CenterOnParent()
+            err.ShowModal()
     
     
     ### ***** Menu Handlers ***** ###
