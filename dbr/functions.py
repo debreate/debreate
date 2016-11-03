@@ -13,10 +13,11 @@ from urllib2    import urlopen
 
 from dbr.language           import GT
 from globals.application    import APP_name
-from globals.application    import RELEASE
 from globals.application    import APP_project_gh
+from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
-from globals.commands       import CMD_system_packager, CMD_fakeroot
+from globals.commands       import CMD_fakeroot
+from globals.commands       import CMD_system_packager
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
@@ -417,7 +418,7 @@ def RemovePreWhitespace(text):
 
 
 def UsingDevelopmentVersion():
-    return not RELEASE
+    return VERSION_dev != 0
 
 
 def BuildDebPackage(stage_dir, target_file):
