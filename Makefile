@@ -105,69 +105,59 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: build $(FILES_BUILD) $(BITMAPS) locale data/$(MENU)
-	@exec=bin/$(PACKAGE); \
-	if [ ! -f "$${exec}" ]; then \
-		echo "\n\tERROR: ./bin/`tput bold`debreate`tput sgr0` executable not present\n"; \
-		\
-		echo "\t- Please run `tput bold`make`tput sgr0`, `tput bold`make build`tput sgr0`, or `tput bold`make all`tput sgr0`"; \
-		echo "\t  to create it, then re-run `tput bold`make install`tput sgr0`\n"; \
+install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU)
+	@target=$(DESTDIR)$(prefix); \
+	bindir=$${target}/$(BINDIR); \
+	datadir=$${target}/$(DATADIR); \
+	appsdir=$${target}/$(APPSDIR); \
+	pixdir=$${target}/$(PIXDIR); \
 	\
-	else \
-		target=$(DESTDIR)$(prefix); \
-		bindir=$${target}/$(BINDIR); \
-		datadir=$${target}/$(DATADIR); \
-		appsdir=$${target}/$(APPSDIR); \
-		pixdir=$${target}/$(PIXDIR); \
-		\
-		echo "\nprefix set to $(prefix)"; \
-		echo "Install target set to $${target}\n"; \
-		\
-		mkdir -vp "$${target}/$(DATADIR)"; \
-		for py in $(FILES_EXECUTABLE); do \
-			$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
-		done; \
-		for py in $(FILES) $(EXTRA_FILES); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}"; \
-		done; \
-		\
-		mkdir -vp "$${datadir}/dbr"; \
-		for py in $(FILES_DBR); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
-		done; \
-		\
-		mkdir -vp "$${datadir}/wiz_bin"; \
-		for py in $(FILES_WIZ_BIN); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
-		done; \
-		\
-		mkdir -vp "$${datadir}/globals"; \
-		for py in $(FILES_GLOBALS); do \
-			$(INSTALL_DATA) "$${py}" "$${datadir}/globals"; \
-		done; \
-		\
-		$(MKDIR) "$${datadir}/docs"; \
-		for doc in $(FILES_DOC); do \
-			$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
-		done; \
-		\
-		mkdir -vp "$${datadir}/bitmaps"; \
-		for png in $(BITMAPS); do \
-			$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
-		done; \
-		\
-		$(INSTALL_FOLDER) locale "$${datadir}"; \
-		\
-		$(MKDIR) "$${bindir}"; \
-		$(INSTALL_EXEC) "$${exec}" "$${bindir}"; \
-		\
-		$(MKDIR) "$${pixdir}"; \
-		$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
-		\
-		$(MKDIR) "$${appsdir}"; \
-		$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
+	echo "\nprefix set to $(prefix)"; \
+	echo "Install target set to $${target}\n"; \
 	\
-	fi; \
+	mkdir -vp "$${target}/$(DATADIR)"; \
+	for py in $(FILES_EXECUTABLE); do \
+		$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
+	done; \
+	for py in $(FILES) $(EXTRA_FILES); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/dbr"; \
+	for py in $(FILES_DBR); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/wiz_bin"; \
+	for py in $(FILES_WIZ_BIN); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/globals"; \
+	for py in $(FILES_GLOBALS); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}/globals"; \
+	done; \
+	\
+	$(MKDIR) "$${datadir}/docs"; \
+	for doc in $(FILES_DOC); do \
+		$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/bitmaps"; \
+	for png in $(BITMAPS); do \
+		$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
+	done; \
+	\
+	$(INSTALL_FOLDER) locale "$${datadir}"; \
+	\
+	$(MKDIR) "$${bindir}"; \
+	ln -vfs "$${datadir}/init.py" "$${bindir}/$(PACKAGE)"; \
+	\
+	$(MKDIR) "$${pixdir}"; \
+	$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
+	\
+	$(MKDIR) "$${appsdir}"; \
+	$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
 
 uninstall:
 	@target=$(DESTDIR)$(prefix); \
@@ -189,18 +179,6 @@ uninstall:
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
-
-build: clean
-	@exec=bin/$(PACKAGE); \
-	echo "\nprefix set to \"$(prefix)\""; \
-	\
-	exec_script=\#"!/bin/sh \n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py"; \
-	\
-	mkdir -vp "bin"; \
-	echo "Creating executable \"$${exec}\" ..."; \
-	echo "$${exec_script}\n" > "$${exec}"; \
-	\
-	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
 debuild:
 	@debuild -b -uc -us
