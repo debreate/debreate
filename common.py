@@ -16,7 +16,7 @@ debreate_version = u'{}.{}.{}'.format(ver_maj, ver_min, ver_rel)
 
 if not RELEASE:
     # Increment this for every development release
-    ver_dev = 4
+    ver_dev = 5
     debreate_version = u'{}-dev{}'.format(debreate_version, ver_dev)
 
 db_version = (ver_maj, ver_min, ver_rel)
