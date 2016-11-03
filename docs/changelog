@@ -1,3 +1,7 @@
+0.7.12-dev5
+- Add mimetype info & icons for system "Open with..."
+- Removed some old code for version information
+
 0.7.12-dev4
 - Fixed opening projects from command line
 - Cleaned up code
