@@ -45,7 +45,7 @@ VERSION_string = u'{}.{}.{}'.format(VERSION_maj, VERSION_min, VERSION_rel)
 RELEASE = 0
 if not RELEASE:
     # Increment this for every development release
-    VERSION_dev = 5
+    VERSION_dev = 0
     VERSION_string = u'{}-dev{}'.format(VERSION_string, VERSION_dev)
 
 
