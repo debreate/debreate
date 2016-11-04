@@ -9,7 +9,6 @@ root_dir = os.path.split(scripts_dir)[0]
 
 file_INFO = '{}/INFO'.format(root_dir)
 
-file_DOXYFILE = '{}/docs/Doxyfile'.format(root_dir)
 file_LOCALE = '{}/locale/debreate.pot'.format(root_dir)
 py_APP = '{}/globals/application.py'.format(root_dir)
 
@@ -46,6 +45,5 @@ required_locale_files = (
 
 version_files = {
     'application': py_APP,
-    'doxyfile': file_DOXYFILE,
     'locale': file_LOCALE,
 }
