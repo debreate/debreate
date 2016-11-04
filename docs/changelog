@@ -34,7 +34,29 @@ debreate (0.8.0) xenial; urgency=high
     Parses command line
     Creates mimetypes for project files
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Sat,  15 Oct 2016 19:44:21 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 03 Nov 2016 17:25:31 -0700
+
+
+debreate (0.7.12) xenial; urgency=high
+
+  * Add Russian Gettext translation
+    Use GitHub URL the check for updates
+    Add mimetype info & icons for system "Open with..."
+    Removed some old code for version information
+    Fixed opening projects from command line
+    Cleaned up code
+    Removed some unused & deprecated modules & classes
+    Added fixed & updated modules from unstable branch
+    Added maintainer scripts postinst & prerm
+    Use new about dialog
+    Use custom hyperlink controls
+    Use os.chmod module in build rather than system chmod command
+    Import modules from 'unstable' branch
+    Fix first run window not closing
+    fixes for wx 3.0 compatibility
+    disabled broken Quick Build
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 03 Nov 2016 17:23:48 -0700
 
 
 debreate (0.7.11) xenial; urgency=low
