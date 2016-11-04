@@ -41,11 +41,9 @@ VERSION_rel = 12
 VERSION_tuple = (VERSION_maj, VERSION_min, VERSION_rel)
 VERSION_string = u'{}.{}.{}'.format(VERSION_maj, VERSION_min, VERSION_rel)
 
-# Development version
-RELEASE = 0
-if not RELEASE:
-    # Increment this for every development release
-    VERSION_dev = 0
+# Development version: Increment for every development release
+VERSION_dev = 0
+if VERSION_dev:
     VERSION_string = u'{}-dev{}'.format(VERSION_string, VERSION_dev)
 
 
