@@ -1,45 +1,23 @@
-debreate (0.7.12-dev5-1) xenial; urgency=low
+debreate (0.7.12) xenial; urgency=low
 
-  *  Add mimetype info & icons for system "Open with..."
-     Removed some old code for version information
-
- -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 02 Nov 2016 20:51:51 -0700
-
-
-debreate (0.7.12-dev4) xenial; urgency=low
-
-  *  Fixed opening projects from command line
-     Cleaned up code
-     Removed some unused & deprecated modules & classes
-     Added fixed & updated modules from unstable branch
-     Added maintainer scripts postinst & prerm
-
- -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 02 Nov 2016 16:54:27 -0700
-
-
-debreate (0.7.12-dev3) xenial; urgency=low
-
-  * Use new about dialog
+  * Add Russian Gettext translation
+    Use GitHub URL the check for updates
+    Add mimetype info & icons for system "Open with..."
+    Removed some old code for version information
+    Fixed opening projects from command line
+    Cleaned up code
+    Removed some unused & deprecated modules & classes
+    Added fixed & updated modules from unstable branch
+    Added maintainer scripts postinst & prerm
+    Use new about dialog
     Use custom hyperlink controls
     Use os.chmod module in build rather than system chmod command
-
- -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 30 Oct 2016 22:18:20 -0700
-
-
-debreate (0.7.12-dev2) xenial; urgency=low
-
-  * Import modules from 'unstable' branch
+    Import modules from 'unstable' branch
     Fix first run window not closing
+    fixes for wx 3.0 compatibility
+    disabled broken Quick Build
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 14 Oct 2016 08:00:52 -0700
-
-
-debreate (0.7.12-dev1) xenial; urgency=low
-
-  * Fixes for wx 3.0 compatibility
-    Disabled broken Quick Build
-
- -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 12 Oct 2016 08:31:30 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 04 Nov 2016 15:00:03 -0700
 
 
 debreate (0.7.11) xenial; urgency=low
