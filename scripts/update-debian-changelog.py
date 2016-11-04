@@ -22,8 +22,19 @@ changelog_data = TEMP.read().split(u'\n')
 TEMP.close()
 
 # Extract version number
-#version_string = changelog_data[0]
+version_string = changelog_data[0]
 #changelog_data = changelog_data[1:]
+
+# Check for same version entry
+entry_exists = False
+TEMP = open(FILE_changelog_debian, u'r')
+if u' ({})'.format(version_string) in TEMP.read():
+    entry_exists = True
+TEMP.close()
+
+if entry_exists:
+    print(u'There is already an entry for version {}, exiting ...'.format(version_string))
+    sys.exit(0)
 
 cutoff_index = 0
 for L in changelog_data:
@@ -35,11 +46,17 @@ for L in changelog_data:
 version_data = changelog_data[:cutoff_index]
 
 # Format new entry
-version_data[0] = u'debreate ({}) {}; urgency={}'.format(version_data[0], release, urgency)
+version_data[0] = u'debreate ({}) {}; urgency={}'.format(version_string, release, urgency)
 
 for L in version_data:
     if L.startswith(u'- '):
-        version_data[changelog_data.index(L)] = u'    {}'.format(L[1:])
+        version_data[changelog_data.index(L)] = u'    {}'.format(L[2:])
+    
+    # Indented lines
+    else:
+        S = L.strip(u' ')
+        if S.startswith(u'- '):
+            version_data[changelog_data.index(L)] = u'    {}'.format(S)
 
 version_data[1] = version_data[1].replace(u'    ', u'  * ')
 
