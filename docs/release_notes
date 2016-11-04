@@ -1,6 +1,6 @@
 Debreate 0.7.12 Release Notes
 
-This is a release to enable support for wx 3.0. No new features or bug fixes are available.
+This is a release to enable support for wx 3.0.
 
 Known Bugs:
     *) Auto-Link Help only re-centers if "check" button is pressed
@@ -9,6 +9,7 @@ Known Bugs:
 
 New Features:
     *) wx 3.0 support
+    *) Debreate Mimetype application/x-dbp created
 
 Tasks:
     *) Add support for manpages

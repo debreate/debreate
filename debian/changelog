@@ -14,8 +14,9 @@ debreate (0.7.12) xenial; urgency=low
     Use os.chmod module in build rather than system chmod command
     Import modules from 'unstable' branch
     Fix first run window not closing
-    fixes for wx 3.0 compatibility
-    disabled broken Quick Build
+    Fixes for wx 3.0 compatibility
+    Disabled broken Quick Build
+    Added arm64 to archituctures
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 04 Nov 2016 15:00:03 -0700
 
