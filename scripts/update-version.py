@@ -1,56 +1,48 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-FILE = open('INFO')
-info = FILE.read().split('\n')
-FILE.close()
 
-keys = {}
-
-for l in info:
-	if '=' in l:
-		key = l.split('=')[0]
-		value = l.split('=')[1]
-		keys[key] = value
-
-ver = keys['VERSION']
-ver_maj = ver.split('.')[0]
-ver_min = ver.split('.')[1]
-ver_rel = ver.split('.')[2]
-release = keys['RELEASE']
+import os, sys, errno
+from scripts_globals import version_files, GetInfoValue
 
 
-# Update version numbers in 'common.py'
-FILE = open('common.py', 'r')
-common = FILE.read().split('\n')
-FILE.close()
-
-for l in common:
-	index = common.index(l)
-	if ('ver_maj =' in l):
-		common[index] = 'ver_maj = {}'.format(ver_maj)
-	elif ('ver_min =' in l):
-		common[index] = 'ver_min = {}'.format(ver_min)
-	elif ('ver_rel =' in l):
-		common[index] = 'ver_rel = {}'.format(ver_rel)
-	elif ('RELEASE =' in l):
-		common[index] = 'RELEASE = {}'.format(release)
-
-FILE = open('common.py', 'w')
-FILE.write('\n'.join(common))
-FILE.close()
+for F in version_files:
+    if not os.path.isfile(version_files[F]):
+        print('[ERROR] Required file not found: {}'.format(version_files[F]))
+        sys.exit(errno.ENOENT)
 
 
-# Update version numbers in 'Makefile'
-FILE = open('Makefile', 'r')
-makefile = FILE.read().split('\n')
-FILE.close()
+VERSION = GetInfoValue('VERSION')
+VER_MAJ = VERSION.split('.')[0]
+VER_MIN = VERSION.split('.')[1]
+VER_REL = VERSION.split('.')[2]
+VERSION_dev = GetInfoValue('VERSION_dev')
 
-for l in makefile:
-	index = makefile.index(l)
-	if ('VERSION =' in l or 'VERSION=' in l):
-		makefile[index] = 'VERSION = {}'.format(ver)
 
-FILE = open('Makefile', 'w')
-FILE.write('\n'.join(makefile))
-FILE.close()
+def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
+    FILE = open(filename, 'r')
+    lines_orig = FILE.read().split('\n')
+    FILE.close()
+    
+    lines_new = list(lines_orig)
+    
+    for l in lines_new:
+        l_index = lines_new.index(l)
+        if l.startswith(testline):
+            lines_new[l_index] = '{}{}{}'.format(testline, newvalue, suffix)
+            break
+    
+    if lines_new != lines_orig:
+        print('Writing new version information to {}'.format(filename))
+        
+        FILE = open(filename, 'w')
+        FILE.write('\n'.join(lines_new))
+        FILE.close()
+
+
+UpdateSingleLineFile(version_files['application'], 'VERSION_maj = ', newvalue=VER_MAJ)
+UpdateSingleLineFile(version_files['application'], 'VERSION_min = ', newvalue=VER_MIN)
+UpdateSingleLineFile(version_files['application'], 'VERSION_rel = ', newvalue=VER_REL)
+UpdateSingleLineFile(version_files['application'], 'VERSION_dev = ', newvalue=VERSION_dev)
+UpdateSingleLineFile(version_files['doxyfile'], 'PROJECT_NUMBER         = ')
+UpdateSingleLineFile(version_files['locale'], '"Project-Id-Version: Debreate ', suffix='\\n"')
