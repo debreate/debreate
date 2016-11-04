@@ -13,6 +13,10 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.wizard             import Wizard
 from globals.application    import APP_homepage
+from globals.application    import APP_project_gh
+from globals.application    import APP_project_sf
+from globals.application    import AUTHOR_email
+from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
 from globals.paths          import PATH_app
@@ -423,27 +427,46 @@ class MainWindow(wx.Frame):
         webbrowser.open(self.references[id])
         #os.system("xdg-open %s" % self.references[id])  # Look in "manual" for the id and open the webpage
     
+    
+    ## Opens a dialog box with information about the program
     def OnAbout(self, event):
-        """Opens a dialog box with information about the program"""
         about = AboutDialog(self)
         
-        about.SetGraphic("%s/bitmaps/debreate64.png" % PATH_app)
+        about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
         about.SetVersion(VERSION_string)
-        about.SetDescription(_('A package builder for Debian based systems'))
-        about.SetAuthor('Jordan Irwin')
+        about.SetDescription(GT(u'A package builder for Debian based systems'))
+        about.SetAuthor(AUTHOR_name)
+        
         about.SetWebsites((
-            (u'Homepage', u'https://antumdeluge.github.io/debreate-web/'),
-            (u'GitHub project page', u'https://github.com/AntumDeluge/debreate'),
-            (u'Sourceforge project page', u'https://sourceforge.net/projects/debreate'),
+            (GT(u'Homepage'), APP_homepage),
+            (GT(u'GitHub Project'), APP_project_gh),
+            (GT(u'Sourceforge Project'), APP_project_sf),
         ))
         
-        about.AddDeveloper("Jordan Irwin", "antumdeluge@gmail.com")
-        about.AddPackager("Jordan Irwin", "antumdeluge@gmail.com")
-        job = _(u'Translation')
-        job = job.decode(u'utf-8')
-        about.AddJob(u'Jordan Irwin', u'%s (es)' % (job), u'antumdeluge@gmail.com')
-        about.AddJob(_(u'Karim Oulad Chalha'), u'%s (ar_MA)' % (job), u'herr.linux88@gmail.com')
-        about.AddJob(_(u'Philippe Dalet'), u'%s (fr_FR)' % (job), u'philippe.dalet@ac-toulouse.fr')
+        about.AddJobs(
+            AUTHOR_name,
+            (
+                GT(u'Head Developer'),
+                GT(u'Packager'),
+                u'{} (es, it)'.format(GT(u'Translation')),
+            ),
+            AUTHOR_email
+        )
+        
+        about.AddJobs(
+            u'Hugo Posnic',
+            (
+                GT(u'Code Contributor'),
+                GT(u'Website Designer & Author'),
+            ),
+            u'hugo.posnic@gmail.com'
+        )
+        
+        about.AddJob(u'Lander Usategui San Juan', GT(u'General Contributor'), u'lander@erlerobotics.com')
+        
+        about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
+        about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
+        about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
         about.SetChangelog()
         
@@ -451,7 +474,8 @@ class MainWindow(wx.Frame):
         
         about.ShowModal()
         about.Destroy()
-        
+    
+    
     def OnHelp(self, event):
         # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
         wx.Yield()
