@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
@@ -16,12 +16,10 @@ VERSION = GetInfoValue('VERSION')
 VER_MAJ = VERSION.split('.')[0]
 VER_MIN = VERSION.split('.')[1]
 VER_REL = VERSION.split('.')[2]
-RELEASE = GetInfoValue('RELEASE')
+VERSION_dev = GetInfoValue('VERSION_dev')
 
 
 def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
-    l_length = len(testline)
-    
     FILE = open(filename, 'r')
     lines_orig = FILE.read().split('\n')
     FILE.close()
@@ -30,7 +28,7 @@ def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
     
     for l in lines_new:
         l_index = lines_new.index(l)
-        if l[:l_length] == testline:
+        if l.startswith(testline):
             lines_new[l_index] = '{}{}{}'.format(testline, newvalue, suffix)
             break
     
@@ -42,11 +40,9 @@ def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
         FILE.close()
 
 
-
 UpdateSingleLineFile(version_files['application'], 'VERSION_maj = ', newvalue=VER_MAJ)
 UpdateSingleLineFile(version_files['application'], 'VERSION_min = ', newvalue=VER_MIN)
 UpdateSingleLineFile(version_files['application'], 'VERSION_rel = ', newvalue=VER_REL)
-UpdateSingleLineFile(version_files['application'], 'RELEASE = ', newvalue=RELEASE)
-UpdateSingleLineFile(version_files['makefile'], 'VERSION = ')
+UpdateSingleLineFile(version_files['application'], 'VERSION_dev = ', newvalue=VERSION_dev)
 UpdateSingleLineFile(version_files['doxyfile'], 'PROJECT_NUMBER         = ')
 UpdateSingleLineFile(version_files['locale'], '"Project-Id-Version: Debreate ', suffix='\\n"')
