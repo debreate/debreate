@@ -40,8 +40,7 @@ FILES_GLOBALS = globals/*.py
 
 FILES_EXTRA = \
 	README.md \
-	INFO \
-	update-version.py
+	INFO
 
 FILES_DOC = \
 	docs/changelog \
@@ -80,9 +79,10 @@ DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
 
 DISTDIRS = \
 	bitmaps \
-	dbr \
 	data \
+	dbr \
 	docs \
+	globals \
 	locale \
 	debian \
 	wiz_bin
