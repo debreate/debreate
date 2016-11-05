@@ -21,7 +21,12 @@ debreate (0.8.0) xenial; urgency=high
     Logger added for outputting messages to text log
     License templates can be placed in HOME .local directory
     Fixed bug where importing files progress dialog cannot be cancelled
-    Uses compressed or uncompressed archives for project save/open
+    Uses archive file for project save/open format
+    - Uncompressed tar archive
+    - Gzip tar archive
+    - Bzip2 tar archive
+    - XZ tar archive
+    - Zip archive
     Files list shows source directory as well as target
     Option to enable/disable tooltips
     Disabled custom dialogs
@@ -34,7 +39,7 @@ debreate (0.8.0) xenial; urgency=high
     Parses command line
     Creates mimetypes for project files
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Sat,  15 Oct 2016 19:44:21 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 04 Nov 2016 18:09:38 -0700
 
 
 debreate (0.7.11) xenial; urgency=low

@@ -20,7 +20,12 @@
 - Logger added for outputting messages to text log
 - License templates can be placed in HOME .local directory
 - Fixed bug where importing files progress dialog cannot be cancelled
-- Uses compressed or uncompressed archives for project save/open
+- Uses archive file for project save/open format
+  - Uncompressed tar archive
+  - Gzip tar archive
+  - Bzip2 tar archive
+  - XZ tar archive
+  - Zip archive
 - Files list shows source directory as well as target
 - Option to enable/disable tooltips
 - Disabled custom dialogs
