@@ -17,7 +17,7 @@ solo_args = (
 )
 
 value_args = (
-    (u'g', u'log-level'),
+    (u'l', u'log-level'),
     (u'i', u'log-interval'),
 )
 
