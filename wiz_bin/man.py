@@ -20,7 +20,7 @@ class Panel(WizardPage, wx.Notebook):
         WizardPage.__init__(self, parent, ID_MAN)
         
         ## Override default label
-        self.label = GT(u'Manpages')
+        self.label = GT(u'Man Pages')
         
         button_add = ButtonAdd(self)
         button_add.SetName(u'add')
