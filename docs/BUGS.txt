@@ -12,3 +12,4 @@ Known Bugs:
   - executable-not-elf-or-script usr/share/applications/Debreate.desktop
   - maintainer-script-ignores-errors
 - File list columns don't size correctly
+- Log window has some issues with wx.Yield

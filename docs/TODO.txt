@@ -3,7 +3,6 @@
 - Add Launchpad packages for 'yakkety'
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
-- New method for checking for version update
 - Fix AutoLink executables in Files page
 - Mark projects dirty when changed
 - Finish manpage
@@ -19,6 +18,8 @@
 - Heavy code cleanup & testing
 - Fix "Install package after build"
 - Fix menu launcher name
+- Add option to open/view logs folder
+- Add option to clear logs folder
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
