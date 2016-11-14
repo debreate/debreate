@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wiz_bin.menu
-#  
-#  TODO: Rename to wiz_bin.launchers
+## \package wiz_bin.launchers
 
 
 import wx, os, shutil
