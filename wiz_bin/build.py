@@ -3,13 +3,14 @@
 ## \package wiz_bin.build
 
 
-import wx, os, commands, thread, traceback, time, math, subprocess
+import commands, math, os, subprocess, thread, time, traceback, wx
 
 import dbr
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonBuild64
 from dbr.buttons            import ButtonCancel
+from dbr.checklist          import CheckListDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ErrorDialog
 from dbr.dialogs            import GetFileSaveDialog
@@ -19,7 +20,8 @@ from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
-from dbr.log                import Logger, DebugEnabled
+from dbr.log                import DebugEnabled
+from dbr.log                import Logger
 from dbr.wizard             import WizardPage
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_ERROR
@@ -30,12 +32,12 @@ from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_BUILD, ID_CONTROL, ID_MENU
+from globals.ident          import ID_BUILD
+from globals.ident          import ID_CONTROL
 from globals.ident          import ID_FILES
+from globals.ident          import ID_MENU
 from globals.paths          import ConcatPaths, PATH_app
 from globals.tooltips       import SetPageToolTips
-from dbr.checklist import CheckList, CheckListDialog
-from gi import overrides
 
 
 ## TODO: Doxygen
