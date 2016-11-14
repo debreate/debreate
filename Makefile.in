@@ -39,47 +39,8 @@ FILES_root = \
 	command_line.py \
 	main.py
 
-FILES_wiz_bin = \
-	wiz_bin/__init__.py \
-	wiz_bin/build.py \
-	wiz_bin/clog.py \
-	wiz_bin/control.py \
-	wiz_bin/copyright.py \
-	wiz_bin/depends.py \
-	wiz_bin/files.py \
-	wiz_bin/greeting.py \
-	wiz_bin/man.py \
-	wiz_bin/menu.py \
-	wiz_bin/scripts.py
-
-FILES_wiz_src = \
-	wiz_src/__init__.py \
-	wiz_src/control.py
-
-FILES_dbr = \
-	dbr/__init__.py \
-	dbr/about.py \
-	dbr/buttons.py \
-	dbr/charctrl.py \
-	dbr/commandcheck.py \
-	dbr/compression.py \
-	dbr/config.py \
-	dbr/constants.py \
-	dbr/custom.py \
-	dbr/dialogs.py \
-	dbr/error.py \
-	dbr/font.py \
-	dbr/functions.py \
-	dbr/help.py \
-	dbr/language.py \
-	dbr/log.py \
-	dbr/markdown.py \
-	dbr/md5.py \
-	dbr/pathctrl.py \
-	dbr/quickbuild.py \
-	dbr/templates.py \
-	dbr/wizard.py \
-	dbr/workingdir.py
+FILES_wiz_bin = wiz_bin/*.py
+FILES_wiz_src = wiz_src/*.py
 
 FILES_doc = \
 	docs/BUGS.txt \
@@ -88,30 +49,7 @@ FILES_doc = \
 	docs/TODO.txt \
 	docs/usage.pdf
 
-FILES_bitmap = \
-	bitmaps/add32.png \
-	bitmaps/browse32.png \
-	bitmaps/browse64.png \
-	bitmaps/build32.png \
-	bitmaps/build64.png \
-	bitmaps/cancel32.png \
-	bitmaps/clear32.png \
-	bitmaps/clock16.png \
-	bitmaps/confirm32.png \
-	bitmaps/$(PACKAGE)64.png \
-	bitmaps/del32.png \
-	bitmaps/error64.png \
-	bitmaps/exit32.png \
-	bitmaps/globe16.png \
-	bitmaps/import32.png \
-	bitmaps/next32.png \
-	bitmaps/pipe32.png \
-	bitmaps/prev32.png \
-	bitmaps/preview32.png \
-	bitmaps/preview64.png \
-	bitmaps/question64.png \
-	bitmaps/save32.png \
-	bitmaps/save64.png
+FILES_bitmap = bitmaps/*.png
 
 FILES_man = \
 	man/man1/$(PACKAGE).1
@@ -132,7 +70,6 @@ FILES_build = \
 	$(FILES_root) \
 	$(FILES_wiz_bin) \
 	$(FILES_wiz_src) \
-#	$(FILES_dbr) \
 	$(FILES_doc) \
 	$(FILES_bitmap) \
 	$(FILES_data)
@@ -262,11 +199,6 @@ install: build locale install-packages install-data $(FILES_build) $(DIRS_build)
 			$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
 		done; \
 		\
-#		mkdir -vp "$${data_dir}/dbr"; \
-#		for py in $(FILES_dbr); do \
-#			$(INSTALL_DATA) "$${py}" "$${data_dir}/dbr"; \
-#		done; \
-#		\
 		$(MKDIR) "$${data_dir}/wiz_bin"; \
 		for py in $(FILES_wiz_bin); do \
 			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_bin"; \
