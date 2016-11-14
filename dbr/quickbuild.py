@@ -3,24 +3,30 @@
 ## \package dbr.quickbuild
 
 
-import wx, os
+import os, thread, time, traceback, wx
 
-from dbr.buttons    import ButtonBrowse
-from dbr.buttons    import ButtonBuild
-from dbr.buttons    import ButtonCancel
-from dbr.dialogs    import GetDirDialog, GetFileSaveDialog, ErrorDialog
-from dbr.dialogs    import ShowDialog
-from dbr.language   import GT
-from globals.ident  import ID_STAGE
-from globals.ident  import ID_TARGET
-from dbr.log import Logger
-from dbr.functions import BuildDebPackage
+from dbr.buttons        import ButtonBrowse
+from dbr.buttons        import ButtonBuild
+from dbr.buttons        import ButtonCancel
+from dbr.dialogs        import ErrorDialog
+from dbr.dialogs        import GetDirDialog
+from dbr.dialogs        import GetFileSaveDialog
+from dbr.dialogs        import ShowDialog
+from dbr.dialogs        import ShowErrorDialog
+from dbr.functions      import BuildDebPackage
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.errorcodes import dbrerrno
+from globals.ident      import ID_STAGE
+from globals.ident      import ID_TARGET
 
 
 class QuickBuild(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, title=GT(u'Quick Build'), pos=wx.DefaultPosition,
                 size=wx.Size(400,260))
+        
+        self.title = self.GetTitle()
         
         self.debreate = parent.GetDebreateWindow()
         
@@ -95,6 +101,38 @@ class QuickBuild(wx.Dialog):
         self.CenterOnParent()
     
     
+    def Build(self, stage, target):
+        #error_details = None
+        #completed_status = (0, GT(u'errors'))
+        
+        output = BuildDebPackage(stage, target)
+        completed_status = (100, GT(u'finished'))
+        
+        '''
+        try:
+            output = BuildDebPackage(stage, target)
+            completed_status = (100, GT(u'finished'))
+        except:
+            error_details = traceback.format_exc()
+            
+            error_lines = (
+                GT(u'Could not build .deb package'),
+                GT(u'Is the staged directory formatted correctly?'),
+                stage,
+            )
+            
+            ShowErrorDialog(error_lines, error_details, __name__)
+            #wx.MessageDialog(self.GetParent().GetDebreateWindow(), GT(u'Dialog test'), GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+        '''
+        self.timer.Stop()
+        self.gauge.SetValue(completed_status[0])
+        self.SetTitle(u'{} ({})'.format(self.title, completed_status[1]))
+        self.Enable()
+        
+        if output[0] != dbrerrno.SUCCESS:
+            ErrorDialog(self, GT(u'An error occurred'), output[1]).ShowModal()
+    
+    
     def OnBrowse(self, event=None):
         if event:
             debreate = self.GetParent().GetDebreateWindow()
@@ -138,7 +176,13 @@ class QuickBuild(wx.Dialog):
             
             return
         
-        BuildDebPackage(stage, target)
+        self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
+        
+        # Don't allow dialog to be closed while build in progress
+        self.Disable()
+        self.timer.Start(100)
+        
+        self.build_thread = thread.start_new_thread(self.Build, (stage, target))
     
     
     ## Closes the Quick Build dialog & destroys instance
