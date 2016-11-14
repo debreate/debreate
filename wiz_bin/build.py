@@ -19,7 +19,7 @@ from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
-from dbr.log                import Logger
+from dbr.log                import Logger, DebugEnabled
 from dbr.wizard             import WizardPage
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_ERROR
@@ -32,8 +32,10 @@ from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
 from globals.ident          import ID_BUILD, ID_CONTROL, ID_MENU
 from globals.ident          import ID_FILES
-from globals.paths          import ConcatPaths
+from globals.paths          import ConcatPaths, PATH_app
 from globals.tooltips       import SetPageToolTips
+from dbr.checklist import CheckList, CheckListDialog
+from gi import overrides
 
 
 ## TODO: Doxygen
@@ -102,6 +104,14 @@ class Panel(WizardPage):
             (self.chk_install, 0)
             ] )
         
+        # *** Lintian Overrides *** #
+        
+        if DebugEnabled():
+            # FIXME: Move next to lintian check box
+            self.lint_overrides = []
+            btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
+            btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
+        
         # --- summary
         #self.summary = MultilineTextCtrlPanel(self, style=wx.TE_READONLY)
         # Lines to put in the summary
@@ -125,11 +135,14 @@ class Panel(WizardPage):
         page_sizer = wx.BoxSizer(wx.VERTICAL)
         page_sizer.AddSpacer(10)
         page_sizer.Add(options1_sizer, 0, wx.LEFT, 5)
-#        page_sizer.AddSpacer(5)
-#        page_sizer.Add(self.summary, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        page_sizer.AddSpacer(5)
+        if DebugEnabled():
+            #page_sizer.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
+            page_sizer.Add(btn_lint_overrides, 0, wx.LEFT, 5)
+        #page_sizer.Add(self.summary, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         page_sizer.AddSpacer(5)
         page_sizer.Add(build_sizer, 0, wx.ALIGN_CENTER)
-        page_sizer.Add(self.log, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        page_sizer.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         #page_sizer.AddStretchSpacer(10)
         
         self.SetAutoLayout(True)
@@ -640,6 +653,47 @@ class Panel(WizardPage):
         FILE.close()
         
         return GT(u'md5sums created: {}').format(md5_file)
+    
+    
+    ## TODO: Doxygen
+    def OnSetLintOverrides(self, event=None):
+        Logger.Debug(__name__, GT(u'Setting Lintian overrides...'))
+        
+        lintian_tags_file = u'{}/data/lintian/tags'.format(PATH_app)
+        
+        if os.path.isfile(lintian_tags_file):
+            FILE = open(lintian_tags_file, u'r')
+            lint_lines = FILE.read().split(u'\n')
+            FILE.close()
+            
+            lint_tags = []
+            for L in lint_lines:
+                if not TextIsEmpty(L):
+                    lint_tags.append(L)
+            
+            if lint_tags:
+                # Create the dialog
+                overrides_dialog = CheckListDialog(self, title=GT(u'Lintian Overrides'),
+                        allow_custom=True)
+                overrides_dialog.InitCheckList(tuple(lint_tags))
+                
+                for T in lint_tags:
+                    if T in self.lint_overrides:
+                        overrides_dialog.SetItemCheckedByLabel(T)
+                        self.lint_overrides.remove(T)
+                
+                # Remaining tags should be custom entries
+                if lint_tags:
+                    for T in lint_tags:
+                        overrides_dialog.AddItem(T, True)
+                
+                if overrides_dialog.ShowModal() == wx.ID_OK:
+                    # Remove old overrides
+                    self.lint_overrides = []
+                    for L in overrides_dialog.GetCheckedLabels():
+                        Logger.Debug(__name__, GT(u'Adding Lintian override: {}').format(L))
+                        
+                        self.lint_overrides.append(L)
     
     
     ## TODO: Doxygen
