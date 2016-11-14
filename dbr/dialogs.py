@@ -345,6 +345,39 @@ class ErrorDialog(DetailedMessageDialog):
         DetailedMessageDialog.SetDetails(self, details)
 
 
+## Displays an instance of ErrorDialog class
+#  
+#  \param text
+#        \b \e str|unicode: Explanation of error
+#  \param details
+#        \b \e str|unicode: Extended details of error
+#  \param module
+#        \b \e str|unicode: Module where error was caught (used for Logger output)
+def ShowErrorDialog(text, details=None, module=None):
+    if isinstance(text, (tuple, list)):
+        logger_text = u'; '.join(text)
+        text = u'\n'.join(text)
+        
+        if details:
+            logger_text = u'{}:\n{}'.format(logger_text, details)
+        
+    else:
+        logger_text = text
+    
+    main_window = wx.GetApp().GetTopWindow()
+    
+    if not module:
+        module = main_window.__name__
+    
+    Logger.Error(module, logger_text)
+    
+    error_dialog = ErrorDialog(main_window, text)
+    if details:
+        error_dialog.SetDetails(details)
+    
+    error_dialog.ShowModal()
+
+
 ## Retrieves a dialog for display
 #  
 #  If 'Use custom dialogs' is selected from
