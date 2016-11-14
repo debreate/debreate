@@ -5,7 +5,7 @@
 #  Global functions used throughout Debreate
 
 
-import commands, wx, os, re, shutil, subprocess
+import commands, os, re, shutil, subprocess, wx
 from datetime   import date
 from datetime   import datetime
 from urllib2    import URLError
