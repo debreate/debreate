@@ -25,10 +25,10 @@ from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
 from dbr.error              import ShowError
 from dbr.functions          import CreateTempDirectory
-from dbr.functions          import UsingDevelopmentVersion
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
+from dbr.functions          import UsingDevelopmentVersion
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
@@ -52,7 +52,7 @@ from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
 from wiz_bin.build          import Panel as PageBuild
-from wiz_bin.clog           import Panel as PageChangelog
+from wiz_bin.changelog      import Panel as PageChangelog
 from wiz_bin.control        import Panel as PageControl
 from wiz_bin.copyright      import Panel as PageCopyright
 from wiz_bin.depends        import Panel as PageDepends

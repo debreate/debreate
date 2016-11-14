@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wiz_bin.clog
+## \package wiz_bin.changelog
 
 
 import wx, os, commands
