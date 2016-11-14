@@ -303,7 +303,7 @@ class Panel(WizardPage):
         if not os.path.isdir(stage):
             os.makedirs(stage)
         
-        ret_code = self.Export(stage, u'{}.desktop'.format(self.name_input.GetValue()), True)
+        ret_code = self.Export(stage, u'{}.desktop'.format(self.name_input.GetValue()))
         if ret_code:
             return (ret_code, GT(u'Could not export menu launcher'))
         
