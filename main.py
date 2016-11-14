@@ -59,7 +59,7 @@ from wiz_bin.depends        import Panel as PageDepends
 from wiz_bin.files          import Panel as PageFiles
 from wiz_bin.greeting       import Panel as PageGreeting
 from wiz_bin.man            import Panel as PageMan
-from wiz_bin.menu           import Panel as PageMenu
+from wiz_bin.launchers      import Panel as PageLaunchers
 from wiz_bin.scripts        import Panel as PageScripts
 
 
@@ -297,17 +297,17 @@ class MainWindow(wx.Frame):
         self.page_scripts = PageScripts(self.wizard)
         self.page_clog = PageChangelog(self.wizard)
         self.page_cpright = PageCopyright(self.wizard)
-        self.page_menu = PageMenu(self.wizard)
+        self.page_launchers = PageLaunchers(self.wizard)
         self.page_build = PageBuild(self.wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
-            self.page_clog, self.page_cpright, self.page_menu, self.page_build
+            self.page_clog, self.page_cpright, self.page_launchers, self.page_build
             )
         
         self.bin_pages = [
             self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
-            self.page_clog, self.page_cpright, self.page_menu, self.page_build
+            self.page_clog, self.page_cpright, self.page_launchers, self.page_build
             ]
         
         if DebugEnabled():
@@ -867,7 +867,7 @@ class MainWindow(wx.Frame):
         
         # *** Get Menu Data *** #
         menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-        self.page_menu.SetFieldDataLegacy(menu_data)
+        self.page_launchers.SetFieldDataLegacy(menu_data)
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
@@ -913,7 +913,7 @@ class MainWindow(wx.Frame):
             self.page_scripts,
             self.page_clog,
             self.page_cpright,
-            self.page_menu,
+            self.page_launchers,
             self.page_build,
         )
         self.wizard.ExportPages(export_pages, temp_dir)
