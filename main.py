@@ -72,7 +72,8 @@ ID_DPM = wx.NewId()
 ID_DPMCtrl = wx.NewId()
 ID_DPMLog = wx.NewId()
 ID_UPM = wx.NewId()
-ID_Lintian = wx.NewId()
+ID_LINT_TAGS = wx.NewId()
+ID_LINT_OVERRIDE = wx.NewId()
 
 ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
@@ -223,14 +224,21 @@ class MainWindow(wx.Frame):
         self.DPM.SetBitmap(globe)
         self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         self.DPMCtrl.SetBitmap(globe)
-        self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, GT(u'Changelog'), u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
+        self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, GT(u'Changelog'),
+                u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         self.DPMLog.SetBitmap(globe)
-        self.UPM = wx.MenuItem(self.Policy, ID_UPM, GT(u'Ubuntu Policy Manual'), u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
+        self.UPM = wx.MenuItem(self.Policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
+                u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         self.UPM.SetBitmap(globe)
-        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from Source'), u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
+        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from Source'),
+                u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         self.DebFrmSrc.SetBitmap(globe)
-        self.LintianTags = wx.MenuItem(self.Policy, ID_Lintian, GT(u'Lintian Tags Explanation'), u'http://lintian.debian.org/tags-all.html')
+        self.LintianTags = wx.MenuItem(self.Policy, ID_LINT_TAGS, GT(u'Lintian Tags Explanation'),
+                u'http://lintian.debian.org/tags-all.html')
         self.LintianTags.SetBitmap(globe)
+        self.LintOverrides = wx.MenuItem(self.Policy, ID_LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+                u'https://lintian.debian.org/manual/section-2.4.html')
+        self.LintOverrides.SetBitmap(globe)
         
         self.Policy.AppendItem(self.DPM)
         self.Policy.AppendItem(self.DPMCtrl)
@@ -238,6 +246,7 @@ class MainWindow(wx.Frame):
         self.Policy.AppendItem(self.UPM)
         self.Policy.AppendItem(self.DebFrmSrc)
         self.Policy.AppendItem(self.LintianTags)
+        self.Policy.AppendItem(self.LintOverrides)
         
         self.references = {
                     ID_DPM: u'http://www.debian.org/doc/debian-policy',
@@ -245,7 +254,8 @@ class MainWindow(wx.Frame):
                     ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
                     ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
                     222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-                    ID_Lintian: u'http://lintian.debian.org/tags-all.html'
+                    ID_LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
+                    ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
                     }
         for R_ID in self.references:
             wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
