@@ -226,7 +226,6 @@ class DetailedMessageDialog(wx.Dialog):
         layout_btn_H1.Add(self.btn_copy_details, 1)
         
         self.details = MultilineTextCtrlPanel(self, value=details, size=(300,150), style=wx.TE_READONLY)
-        #self.details.SetSize(self.details.GetBestSize())
         
         self.button_ok = ButtonConfirm(self)
         
@@ -254,6 +253,8 @@ class DetailedMessageDialog(wx.Dialog):
         
         if details != wx.EmptyString:
             self.SetBestWidth()
+        
+        self.CenterOnParent()
     
     
     # FIXME:
