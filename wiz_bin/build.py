@@ -69,7 +69,7 @@ class Panel(WizardPage):
         self.md5 = dbr.MD5()
         
         # Deletes the temporary build tree
-        self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete build tree'))
+        self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete stage directory'))
         self.chk_rmtree.SetName(u'RMTREE')
         self.chk_rmtree.default = True
         self.chk_rmtree.SetValue(self.chk_rmtree.default)
