@@ -34,18 +34,21 @@ from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
 from dbr.quickbuild         import QuickBuild
-from globals.application    import APP_homepage, VERSION_tuple
+from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
 from globals.application    import APP_project_sf
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
+from globals.application    import VERSION_tuple
 from globals.commands       import CMD_tar
+from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
 from globals.ident          import ID_DEBUG
 from globals.ident          import ID_LOG
 from globals.ident          import ID_THEME
 from globals.paths          import PATH_app
+from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
 from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
@@ -58,14 +61,15 @@ from wiz_bin.copyright      import Panel as PageCopyright
 from wiz_bin.depends        import Panel as PageDepends
 from wiz_bin.files          import Panel as PageFiles
 from wiz_bin.greeting       import Panel as PageGreeting
-from wiz_bin.man            import Panel as PageMan
 from wiz_bin.launchers      import Panel as PageLaunchers
+from wiz_bin.man            import Panel as PageMan
 from wiz_bin.scripts        import Panel as PageScripts
 
 
 # Options menu
 ID_Dialogs = wx.NewId()
 ID_MENU_TT = wx.NewId()
+ID_LOG_DIR_OPEN = wx.NewId()
 
 # Debian Policy Manual IDs
 ID_DPM = wx.NewId()
@@ -205,6 +209,15 @@ class MainWindow(wx.Frame):
         
         self.menu_opt.AppendSubMenu(self.menu_compression, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
+        
+        
+        # *** Option Menu: open logs directory *** #
+        
+        if CMD_xdg_open:
+            opt_logs_open = wx.MenuItem(self.menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
+            self.menu_opt.AppendItem(opt_logs_open)
+            
+            wx.EVT_MENU(self.menu_opt, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
         
         # ----- Help Menu
         self.menu_help = wx.Menu()
@@ -531,6 +544,13 @@ class MainWindow(wx.Frame):
             if status:
                 wx.Yield()
                 webbrowser.open(u'http://debreate.sourceforge.net/usage')
+    
+    
+    ## Opens the logs directory in the system's default file manager
+    def OnLogDirOpen(self, event=None):
+        Logger.Debug(__name__, GT(u'Opening log directory ...'))
+        
+        subprocess.check_output([CMD_xdg_open, u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
     
     
     ## FIXME: Unused???
