@@ -3,7 +3,6 @@
 ## \package dbr.dialogs
 
 
-# System modules
 import wx, os
 
 from dbr.buttons        import ButtonConfirm
@@ -18,9 +17,6 @@ from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
 
 
-# Local modules
-# FIXME: Can't import Logger
-#from dbr import Logger
 class OverwriteDialog(wx.MessageDialog):
     def __init__(self, parent, path):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
@@ -82,8 +78,9 @@ class StandardFileDialog(wx.FileDialog):
         self.CenterOnParent()
     
     
+    ## FIXME: Remove & replace calls with wx.GetApp().GetTopWindow()
     def GetDebreateWindow(self):
-        return self.parent.GetDebreateWindow()
+        return wx.GetApp().GetTopWindow()
     
     
     def GetDirectory(self, directory=None):
