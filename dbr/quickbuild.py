@@ -33,8 +33,6 @@ class QuickBuild(wx.Dialog):
         
         self.title = self.GetTitle()
         
-        self.debreate = parent.GetDebreateWindow()
-        
         label_stage = wx.StaticText(self, label=GT(u'Staged directory tree'))
         self.input_stage = wx.TextCtrl(self)
         self.input_stage.SetToolTip(wx.ToolTip(GT(u'Root directory of build tree')))
@@ -134,19 +132,19 @@ class QuickBuild(wx.Dialog):
     
     def OnBrowse(self, event=None):
         if event:
-            debreate = self.GetParent().GetDebreateWindow()
+            main_window = wx.GetApp().GetTopWindow()
             
             button_id = event.GetEventObject().GetId()
             
             if button_id == ID_STAGE:
-                stage = GetDirDialog(debreate, GT(u'Choose Directory'))
+                stage = GetDirDialog(main_window, GT(u'Choose Directory'))
                 stage.CenterOnParent()
                 
                 if (ShowDialog(stage)):
                     self.input_stage.SetValue(stage.GetPath())
             
             elif button_id == ID_TARGET:
-                target = GetFileSaveDialog(debreate, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'), u'deb')
+                target = GetFileSaveDialog(main_window, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'), u'deb')
                 target.CenterOnParent()
                 
                 if (ShowDialog(target)):
