@@ -1,5 +1,4 @@
 ﻿0.8.0 Release:
-- Fix & re-enable QuickBuild
 - Add Launchpad packages for 'yakkety'
 - Update gettext locales
 - Use names 'master', 'unstable' & 'stable' for main Git branches
@@ -10,7 +9,6 @@
 - Fix final build
   - Fix md5sum binary read bug
   - Organize md5sums list
-  - Enable lintian checking
 - Only show exit confirmation if project has been modified
 - Finish help dialog
 - Refactor & organize error messages on build
@@ -20,6 +18,7 @@
 - Fix menu launcher name
 - Add option to open/view logs folder
 - Add option to clear logs folder
+- Use wx.GetApp().GetTopWindow() instead of GetDebreateWindow()
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
