@@ -13,6 +13,7 @@ from dbr.log            import Logger
 from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
+from globals.bitmaps    import ICON_INFORMATION
 from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
 
@@ -456,6 +457,29 @@ def ShowErrorDialog(text, details=None, module=None, warn=False):
         error_dialog.SetDetails(details)
     
     error_dialog.ShowModal()
+
+
+## A function that displays a modal message dialog on the main window
+def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
+    main_window = wx.GetApp().GetTopWindow()
+    if not module:
+        module = main_window.__name__
+    
+    logger_text = text
+    if isinstance(text, (tuple, list)):
+        logger_text = u'; '.join(text)
+        text = u'\n'.join(text)
+    
+    if details:
+        logger_text = u'{}:\n{}'.format(logger_text, details)
+    
+    message_dialog = DetailedMessageDialog(main_window, title, ICON_INFORMATION, text)
+    if details:
+        message_dialog.SetDetails(details)
+    
+    Logger.Debug(module, logger_text)
+    
+    message_dialog.ShowModal()
 
 
 def GetDialogWildcards(ID):
