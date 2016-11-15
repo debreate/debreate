@@ -14,7 +14,7 @@
 - Import modules from 'unstable' branch
 - Fix first run window not closing
 - Fixes for wx 3.0 compatibility
-- Disabled broken Quick Build
+- Fixed Quick Build
 - Added arm64 to archituctures
 
 0.7.11
