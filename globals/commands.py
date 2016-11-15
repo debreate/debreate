@@ -20,6 +20,7 @@ CMD_gzip = CommandExists(u'gzip')
 CMD_lintian = CommandExists(u'lintian')
 CMD_md5sum = CommandExists(u'md5sum')
 CMD_tar = CommandExists(u'tar')
+CMD_xdg_open = CommandExists(u'xdg-open')
 
 CMD_system_installer = None
 
