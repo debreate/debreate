@@ -345,49 +345,6 @@ class ErrorDialog(DetailedMessageDialog):
         DetailedMessageDialog.SetDetails(self, details)
 
 
-## Displays an instance of ErrorDialog class
-#  
-#  \param text
-#        \b \e str|unicode: Explanation of error
-#  \param details
-#        \b \e str|unicode: Extended details of error
-#  \param module
-#        \b \e str|unicode: Module where error was caught (used for Logger output)
-#  \param warn
-#        \b \e bool: Show log message as warning instead of error
-def ShowErrorDialog(text, details=None, module=None, warn=False):
-    Logger.Debug(__name__, GT(u'Text: {}').format(text))
-    Logger.Debug(__name__, GT(u'Details: {}').format(details))
-    Logger.Debug(__name__, GT(u'Module: {}').format(module))
-    Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
-    
-    PrintLogMessage = Logger.Error
-    if warn:
-        PrintLogMessage = Logger.Warning
-    
-    logger_text = text
-    
-    if isinstance(text, (tuple, list)):
-        logger_text = u'; '.join(text)
-        text = u'\n'.join(text)
-    
-    if details:
-        logger_text = u'{}:\n{}'.format(logger_text, details)
-    
-    main_window = wx.GetApp().GetTopWindow()
-    
-    if not module:
-        module = main_window.__name__
-    
-    PrintLogMessage(module, logger_text)
-    
-    error_dialog = ErrorDialog(main_window, text)
-    if details:
-        error_dialog.SetDetails(details)
-    
-    error_dialog.ShowModal()
-
-
 ## Retrieves a dialog for display
 #  
 #  If 'Use custom dialogs' is selected from
@@ -456,6 +413,49 @@ def ShowDialog(dialog):
         return dialog.DisplayModal()
     else:
         return dialog.ShowModal() == wx.ID_OK
+
+
+## Displays an instance of ErrorDialog class
+#  
+#  \param text
+#        \b \e str|unicode: Explanation of error
+#  \param details
+#        \b \e str|unicode: Extended details of error
+#  \param module
+#        \b \e str|unicode: Module where error was caught (used for Logger output)
+#  \param warn
+#        \b \e bool: Show log message as warning instead of error
+def ShowErrorDialog(text, details=None, module=None, warn=False):
+    Logger.Debug(__name__, GT(u'Text: {}').format(text))
+    Logger.Debug(__name__, GT(u'Details: {}').format(details))
+    Logger.Debug(__name__, GT(u'Module: {}').format(module))
+    Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
+    
+    PrintLogMessage = Logger.Error
+    if warn:
+        PrintLogMessage = Logger.Warning
+    
+    logger_text = text
+    
+    if isinstance(text, (tuple, list)):
+        logger_text = u'; '.join(text)
+        text = u'\n'.join(text)
+    
+    if details:
+        logger_text = u'{}:\n{}'.format(logger_text, details)
+    
+    main_window = wx.GetApp().GetTopWindow()
+    
+    if not module:
+        module = main_window.__name__
+    
+    PrintLogMessage(module, logger_text)
+    
+    error_dialog = ErrorDialog(main_window, text)
+    if details:
+        error_dialog.SetDetails(details)
+    
+    error_dialog.ShowModal()
 
 
 def GetDialogWildcards(ID):
