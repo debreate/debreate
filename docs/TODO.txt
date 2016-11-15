@@ -16,8 +16,6 @@
 - Heavy code cleanup & testing
 - Fix "Install package after build"
 - Fix menu launcher name
-- Add option to open/view logs folder
-- Add option to clear logs folder
 - Use wx.GetApp().GetTopWindow() instead of GetDebreateWindow()
 
 0.8.1 Release:
@@ -55,3 +53,4 @@ Tasks being considered:
 - Add Makefile rule for signing binary debuild package
 - Rework custom dialogs
 - Optionally strip binaries
+- Add option to clear logs folder
