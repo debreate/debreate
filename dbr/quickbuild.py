@@ -3,22 +3,27 @@
 ## \package dbr.quickbuild
 
 
-import os, thread, time, traceback, wx
+import os, thread, wx
 
 from dbr.buttons        import ButtonBrowse
 from dbr.buttons        import ButtonBuild
 from dbr.buttons        import ButtonCancel
-from dbr.dialogs        import ErrorDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
 from dbr.dialogs        import ShowErrorDialog
+from dbr.dialogs        import ShowMessageDialog
 from dbr.functions      import BuildDebPackage
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.timer          import DebreateTimer
+from dbr.timer          import EVT_TIMER_STOP
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_STAGE
 from globals.ident      import ID_TARGET
+
+
+GAUGE_MAX = 100
 
 
 class QuickBuild(wx.Dialog):
@@ -52,11 +57,11 @@ class QuickBuild(wx.Dialog):
         btn_cancel.SetToolTip(wx.ToolTip(GT(u'Cancel build')))
         btn_cancel.Bind(wx.EVT_BUTTON, self.OnClose)
         
-        self.gauge = wx.Gauge(self, 100)
+        self.gauge = wx.Gauge(self, GAUGE_MAX)
         
-        self.ID_TIMER = wx.NewId()
-        self.timer = wx.Timer(self, self.ID_TIMER)
-        wx.EVT_TIMER(self, self.ID_TIMER, self.OnUpdateProgress)
+        self.timer = DebreateTimer(self)
+        self.Bind(wx.EVT_TIMER, self.OnUpdateProgress)
+        self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
         
         
         # *** Layout *** #
@@ -99,38 +104,32 @@ class QuickBuild(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         
         self.CenterOnParent()
+        
+        
+        # For showing error dialog after build thread exits
+        self.build_error = None
     
     
+    ## TODO: Doxygen
     def Build(self, stage, target):
-        #error_details = None
-        #completed_status = (0, GT(u'errors'))
+        completed_status = (0, GT(u'errors'))
         
         output = BuildDebPackage(stage, target)
-        completed_status = (100, GT(u'finished'))
+        if output[0] == dbrerrno.SUCCESS:
+            completed_status = (GAUGE_MAX, GT(u'finished'))
         
-        '''
-        try:
-            output = BuildDebPackage(stage, target)
-            completed_status = (100, GT(u'finished'))
-        except:
-            error_details = traceback.format_exc()
-            
-            error_lines = (
+        else:
+            self.build_error = (
                 GT(u'Could not build .deb package'),
                 GT(u'Is the staged directory formatted correctly?'),
                 stage,
+                output[1],
             )
-            
-            ShowErrorDialog(error_lines, error_details, __name__)
-            #wx.MessageDialog(self.GetParent().GetDebreateWindow(), GT(u'Dialog test'), GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-        '''
+        
         self.timer.Stop()
         self.gauge.SetValue(completed_status[0])
         self.SetTitle(u'{} ({})'.format(self.title, completed_status[1]))
         self.Enable()
-        
-        if output[0] != dbrerrno.SUCCESS:
-            ErrorDialog(self, GT(u'An error occurred'), output[1]).ShowModal()
     
     
     def OnBrowse(self, event=None):
@@ -154,26 +153,27 @@ class QuickBuild(wx.Dialog):
                     self.input_target.SetValue(target.GetPath())
     
     
+    ## TODO: Doxygen
+    #  
+    #  TODO: Show error if not using .deb extension
+    #  TODO: Show error if stage not formatted correctly
+    #  TODO: Show success message
+    #  TODO: Check timestamp of created .deb package (should be done for main build as well)
     def OnBuild(self, event=None):
-        debreate = self.GetParent().GetDebreateWindow()
         stage = self.input_stage.GetValue()
         target = self.input_target.GetValue()
         
         if not os.path.isdir(stage):
-            err_msg = GT(u'Invalid stage directory')
-            
-            Logger.Warning(__name__, u'{}: {}'.format(err_msg, stage))
-            ErrorDialog(debreate, err_msg, target).ShowModal()
-            
+            ShowErrorDialog(GT(u'Stage directory does not exist'), stage, __name__, warn=True)
             return
         
         target_path = os.path.dirname(target)
-        if not os.access(target_path, os.W_OK):
-            err_msg = GT(u'No write access to target path')
-            
-            Logger.Warning(__name__, u'{}: {}'.format(err_msg, target_path))
-            ErrorDialog(debreate, err_msg, target_path).ShowModal()
-            
+        if not os.path.isdir(target_path):
+            ShowErrorDialog(GT(u'Target directory does not exist'), target_path, __name__, warn=True)
+            return
+        
+        elif not os.access(target_path, os.W_OK):
+            ShowErrorDialog(GT(u'No write access to target directory'), target_path, __name__, warn=True)
             return
         
         self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
@@ -190,6 +190,45 @@ class QuickBuild(wx.Dialog):
         self.EndModal(True)
     
     
+    ## TODO: Doxygen
+    def OnTimerStop(self, event=None):
+        Logger.Debug(__name__, u'OnTimerStop')
+        
+        if not self.timer.IsRunning():
+            Logger.Debug(__name__, GT(u'Timer is stopped'))
+        
+        else:
+            Logger.Debug(__name__, GT(u'Timer is running'))
+        
+        if self.build_error:
+            error_lines = self.build_error[:-1]
+            error_output = self.build_error[-1]
+            
+            ShowErrorDialog(error_lines, error_output, __name__)
+            
+            # Needs to be reset or error dialog will successively show
+            self.build_error = None
+            
+            return
+        
+        msg_lines = (
+            GT(u'Quick build complete'),
+            self.input_target.GetValue(),
+        )
+        ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
+    
+    
     ## Updates the progress bar
     def OnUpdateProgress(self, event=None):
+        if event:
+            if isinstance(event, wx.TimerEvent):
+                Logger.Debug(__name__, GT(u'wx.TimerEvent ID: {}').format(event.GetId()))
+                Logger.Debug(__name__, GT(u'wx.TimerEvent type: {}').format(event.GetEventType()))
+                
+                if not self.timer.IsRunning():
+                    Logger.Debug(__name__, GT(u'Timer stopped. Stopping gauge ...'))
+                    
+                    #self.gauge.SetValue(GAUGE_MAX)
+                    return
+        
         self.gauge.Pulse()
