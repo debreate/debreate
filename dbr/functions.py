@@ -5,7 +5,7 @@
 #  Global functions used throughout Debreate
 
 
-import commands, os, re, shutil, subprocess, wx
+import commands, os, re, shutil, traceback, subprocess, wx
 from datetime   import date
 from datetime   import datetime
 from urllib2    import URLError
@@ -429,7 +429,9 @@ def BuildDebPackage(stage_dir, target_file):
     
     packager = os.path.basename(packager)
     
-    output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+    try:
+        output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+    except:
+        return (dbrerrno.EAGAIN, traceback.format_exc())
     
-    # FIXME: Error checking/handling
     return (dbrerrno.SUCCESS, output)
