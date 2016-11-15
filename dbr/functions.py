@@ -1,19 +1,26 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.functions
+#  
 #  Global functions used throughout Debreate
 
 
-from datetime import datetime, date
-from urllib2 import urlopen, URLError
-import wx, os, re, commands, shutil
+import commands, os, re, shutil, traceback, subprocess, wx
+from datetime   import date
+from datetime   import datetime
+from urllib2    import URLError
+from urllib2    import urlopen
 
-from dbr.constants          import APP_NAME
-from dbr.constants          import PY_VER_STRING
-from dbr.constants          import custom_errno
-from dbr.constants          import system_licenses_path
+from dbr.language           import GT
+from globals.application    import APP_name
 from globals.application    import APP_project_gh
+from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
+from globals.commands       import CMD_fakeroot
+from globals.commands       import CMD_system_packager
+from globals.constants      import system_licenses_path
+from globals.errorcodes     import dbrerrno
+from globals.system         import PY_VER_STRING
 
 
 ## Get the current version of the application
@@ -355,18 +362,9 @@ def GetFileMimeType(file_name):
     return output[1].split(u': ')[-1]
 
 
-def SetToolTip(control, tooltip):
-    control.SetToolTip(wx.ToolTip(tooltip))
-
-
-def SetToolTips(control_list):
-    for C in control_list:
-        SetToolTip(C[0], C[1])
-
-
 def BuildBinaryPackageFromTree(root_dir, filename):
     if not os.path.isdir(root_dir):
-        return custom_errno.ENOENT
+        return dbrerrno.ENOENT
     
     # DEBUG
     cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
@@ -384,9 +382,7 @@ def CreateTempDirectory():
     if not os.access(temp_dir, os.W_OK):
         temp_dir = os.getcwd()
     
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_NAME).lower(), VERSION_string)
-    
-    print(u'DEBUG: Temporary directory: {}'.format(temp_dir))
+    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_name).lower(), VERSION_string)
     
     if os.access(os.path.dirname(temp_dir), os.W_OK):
         # Start with fresh directory
@@ -394,12 +390,12 @@ def CreateTempDirectory():
             shutil.rmtree(temp_dir)
         
         elif os.path.isfile(temp_dir):
-            return custom_errno.EACCES
+            return dbrerrno.EACCES
         
         os.makedirs(temp_dir)
         return temp_dir
     
-    return custom_errno.EACCES
+    return dbrerrno.EACCES
 
 
 def RemoveTempDirectory(temp_dir):
@@ -419,3 +415,23 @@ def RemovePreWhitespace(text):
         remove_lines += 1
     
     return u'\n'.join(text_lines[remove_lines:])
+
+
+def UsingDevelopmentVersion():
+    return VERSION_dev != 0
+
+
+def BuildDebPackage(stage_dir, target_file):
+    packager = CMD_system_packager
+    
+    if not CMD_fakeroot or not packager:
+        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg'))
+    
+    packager = os.path.basename(packager)
+    
+    try:
+        output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+    except:
+        return (dbrerrno.EAGAIN, traceback.format_exc())
+    
+    return (dbrerrno.SUCCESS, output)
