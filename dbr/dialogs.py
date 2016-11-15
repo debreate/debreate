@@ -4,14 +4,17 @@
 
 
 import wx, os
-# FIXME: Can't import Logger
-#from dbr import Logger
-from dbr.language import GT
-from dbr.buttons import ButtonConfirm
-from dbr.constants import project_wildcards, supported_suffixes, ICON_ERROR
-from dbr.custom import TextIsEmpty
-from dbr.workingdir import ChangeWorkingDirectory
 
+from dbr.buttons        import ButtonConfirm
+from dbr.custom         import TextIsEmpty
+from dbr.language       import GT
+from dbr.log            import Logger
+from dbr.textinput      import MultilineTextCtrlPanel
+from dbr.workingdir     import ChangeWorkingDirectory
+from globals.bitmaps    import ICON_ERROR
+from globals.bitmaps    import ICON_INFORMATION
+from globals.project    import project_wildcards
+from globals.project    import supported_suffixes
 
 
 class OverwriteDialog(wx.MessageDialog):
@@ -187,12 +190,22 @@ class StandardFileOpenDialog(StandardFileDialog):
 ## Displays a dialog with message & details
 #  
 #  FIXME: Crashes if icon is wx.NullBitmap
+#  \param parent
+#        \b \e wx.Window : The parent window
+#  \param title
+#        \b \e unicode|str : Text to display in title bar
+#  \param icon
+#        \b \e wx.Bitmap|unicode|str : Image to display
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, size=(500,500), style=style)
         
-        self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
+        # Allow using strings for 'icon' argument
+        if isinstance(icon, (unicode, str)):
+            icon = wx.Bitmap(icon)
+        
+        self.icon = wx.StaticBitmap(self, -1, icon)
         
         self.text = wx.StaticText(self, -1, text)
         
@@ -205,34 +218,40 @@ class DetailedMessageDialog(wx.Dialog):
         if TextIsEmpty(details):
             self.button_details.Hide()
             
-        LH_buttons1 = wx.BoxSizer(wx.HORIZONTAL)
-        LH_buttons1.Add(self.button_details, 1)
-        LH_buttons1.Add(self.btn_copy_details, 1)
+        layout_btn_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_btn_H1.Add(self.button_details, 1)
+        layout_btn_H1.Add(self.btn_copy_details, 1)
         
-        self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
-        self.details.SetSize(self.details.GetBestSize())
+        self.details = MultilineTextCtrlPanel(self, value=details, size=(300,150), style=wx.TE_READONLY)
         
         self.button_ok = ButtonConfirm(self)
         
-        r_sizer = wx.BoxSizer(wx.VERTICAL)
-        r_sizer.AddSpacer(10)
-        r_sizer.Add(self.text)
-        r_sizer.AddSpacer(20)
-        r_sizer.Add(LH_buttons1)
-        r_sizer.Add(self.details, 1, wx.EXPAND)
-        #r_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM)
+        layout_RV = wx.BoxSizer(wx.VERTICAL)
+        layout_RV.AddSpacer(10)
+        layout_RV.Add(self.text)
+        layout_RV.AddSpacer(20)
+        layout_RV.Add(layout_btn_H1)
+        layout_RV.Add(self.details, 1, wx.EXPAND)
+        layout_RV.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.BOTTOM, 5)
         
         self.main_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.main_sizer.Add(self.icon, 0, wx.ALL, 20)
-        self.main_sizer.Add(r_sizer, 1, wx.EXPAND)
+        self.main_sizer.Add(layout_RV, 1, wx.EXPAND)
         self.main_sizer.AddSpacer(10)
-        self.main_sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.BOTTOM, 5)
+        
+        #self.SetInitialSize()
         
         self.SetAutoLayout(True)
         self.ToggleDetails()
         
         self.btn_copy_details.Hide()
         self.details.Hide()
+        
+        
+        if details != wx.EmptyString:
+            self.SetBestWidth()
+        
+        self.CenterOnParent()
     
     
     # FIXME:
@@ -266,6 +285,23 @@ class DetailedMessageDialog(wx.Dialog):
         wx.MessageBox(GT(u'FIXME: Details not copied to clipboard'), GT(u'Debug'))
     
     
+    ## Sets the minimum width of the details text area
+    #  
+    #  FIXME: Doesn't work
+    def SetBestWidth(self):
+        W, H = self.details.GetSize()
+        
+        for L in self.details.GetValue().split(u'\n'):
+            line_length = len(L)
+            if line_length > W:
+                W = line_length
+        
+        Logger.Debug(__name__, GT(u'Longest line in details: {}').format(W))
+        
+        self.details.SetMinSize(wx.Size(W, H))
+        self.Layout()
+    
+    
     def SetDetails(self, details):
         self.details.SetValue(details)
         self.details.SetSize(self.details.GetBestSize())
@@ -273,6 +309,7 @@ class DetailedMessageDialog(wx.Dialog):
         if not self.button_details.IsShown():
             self.button_details.Show()
         
+        #self.SetBestFittingSize()
         self.Layout()
     
     
@@ -373,6 +410,72 @@ def ShowDialog(dialog):
         return dialog.DisplayModal()
     else:
         return dialog.ShowModal() == wx.ID_OK
+
+
+## Displays an instance of ErrorDialog class
+#  
+#  \param text
+#        \b \e str|unicode: Explanation of error
+#  \param details
+#        \b \e str|unicode: Extended details of error
+#  \param module
+#        \b \e str|unicode: Module where error was caught (used for Logger output)
+#  \param warn
+#        \b \e bool: Show log message as warning instead of error
+def ShowErrorDialog(text, details=None, module=None, warn=False):
+    Logger.Debug(__name__, GT(u'Text: {}').format(text))
+    Logger.Debug(__name__, GT(u'Details: {}').format(details))
+    Logger.Debug(__name__, GT(u'Module: {}').format(module))
+    Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
+    
+    PrintLogMessage = Logger.Error
+    if warn:
+        PrintLogMessage = Logger.Warning
+    
+    logger_text = text
+    
+    if isinstance(text, (tuple, list)):
+        logger_text = u'; '.join(text)
+        text = u'\n'.join(text)
+    
+    if details:
+        logger_text = u'{}:\n{}'.format(logger_text, details)
+    
+    main_window = wx.GetApp().GetTopWindow()
+    
+    if not module:
+        module = main_window.__name__
+    
+    PrintLogMessage(module, logger_text)
+    
+    error_dialog = ErrorDialog(main_window, text)
+    if details:
+        error_dialog.SetDetails(details)
+    
+    error_dialog.ShowModal()
+
+
+## A function that displays a modal message dialog on the main window
+def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
+    main_window = wx.GetApp().GetTopWindow()
+    if not module:
+        module = main_window.__name__
+    
+    logger_text = text
+    if isinstance(text, (tuple, list)):
+        logger_text = u'; '.join(text)
+        text = u'\n'.join(text)
+    
+    if details:
+        logger_text = u'{}:\n{}'.format(logger_text, details)
+    
+    message_dialog = DetailedMessageDialog(main_window, title, ICON_INFORMATION, text)
+    if details:
+        message_dialog.SetDetails(details)
+    
+    Logger.Debug(module, logger_text)
+    
+    message_dialog.ShowModal()
 
 
 def GetDialogWildcards(ID):
