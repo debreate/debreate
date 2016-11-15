@@ -353,23 +353,33 @@ class ErrorDialog(DetailedMessageDialog):
 #        \b \e str|unicode: Extended details of error
 #  \param module
 #        \b \e str|unicode: Module where error was caught (used for Logger output)
-def ShowErrorDialog(text, details=None, module=None):
+#  \param warn
+#        \b \e bool: Show log message as warning instead of error
+def ShowErrorDialog(text, details=None, module=None, warn=False):
+    Logger.Debug(__name__, GT(u'Text: {}').format(text))
+    Logger.Debug(__name__, GT(u'Details: {}').format(details))
+    Logger.Debug(__name__, GT(u'Module: {}').format(module))
+    Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
+    
+    PrintLogMessage = Logger.Error
+    if warn:
+        PrintLogMessage = Logger.Warning
+    
+    logger_text = text
+    
     if isinstance(text, (tuple, list)):
         logger_text = u'; '.join(text)
         text = u'\n'.join(text)
-        
-        if details:
-            logger_text = u'{}:\n{}'.format(logger_text, details)
-        
-    else:
-        logger_text = text
+    
+    if details:
+        logger_text = u'{}:\n{}'.format(logger_text, details)
     
     main_window = wx.GetApp().GetTopWindow()
     
     if not module:
         module = main_window.__name__
     
-    Logger.Error(module, logger_text)
+    PrintLogMessage(module, logger_text)
     
     error_dialog = ErrorDialog(main_window, text)
     if details:
