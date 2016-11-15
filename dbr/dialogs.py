@@ -78,8 +78,9 @@ class StandardFileDialog(wx.FileDialog):
         self.CenterOnParent()
     
     
+    ## FIXME: Remove & replace calls with wx.GetApp().GetTopWindow()
     def GetDebreateWindow(self):
-        return self.parent.GetDebreateWindow()
+        return wx.GetApp().GetTopWindow()
     
     
     def GetDirectory(self, directory=None):
