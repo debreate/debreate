@@ -3,13 +3,27 @@
 ## \package dbr.quickbuild
 
 
-# System modules
-import wx, os
+import os, thread, wx
 
-# Local modules
-from dbr.language import GT
-from dbr.buttons import ButtonBrowse, ButtonBuild, ButtonCancel
-from dbr.dialogs import GetDirDialog, ShowDialog
+from dbr.buttons        import ButtonBrowse
+from dbr.buttons        import ButtonBuild
+from dbr.buttons        import ButtonCancel
+from dbr.dialogs        import GetDirDialog
+from dbr.dialogs        import GetFileSaveDialog
+from dbr.dialogs        import ShowDialog
+from dbr.dialogs        import ShowErrorDialog
+from dbr.dialogs        import ShowMessageDialog
+from dbr.functions      import BuildDebPackage
+from dbr.language       import GT
+from dbr.log            import Logger
+from dbr.timer          import DebreateTimer
+from dbr.timer          import EVT_TIMER_STOP
+from globals.errorcodes import dbrerrno
+from globals.ident      import ID_STAGE
+from globals.ident      import ID_TARGET
+
+
+GAUGE_MAX = 100
 
 
 class QuickBuild(wx.Dialog):
@@ -17,38 +31,23 @@ class QuickBuild(wx.Dialog):
         wx.Dialog.__init__(self, parent, title=GT(u'Quick Build'), pos=wx.DefaultPosition,
                 size=wx.Size(400,260))
         
+        self.title = self.GetTitle()
+        
         self.debreate = parent.GetDebreateWindow()
         
-        label_filename = wx.StaticText(self, label=GT(u'Name'))
-        self.filename = wx.TextCtrl(self)
-        self.filename.SetToolTip(wx.ToolTip(GT(u'Name to use for output file')))
+        label_stage = wx.StaticText(self, label=GT(u'Staged directory tree'))
+        self.input_stage = wx.TextCtrl(self)
+        self.input_stage.SetToolTip(wx.ToolTip(GT(u'Root directory of build tree')))
         
-        Lname_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        Lname_H1.Add(label_filename, 1, wx.ALIGN_BOTTOM)
+        btn_browse_stage = ButtonBrowse(self, ID_STAGE)
+        btn_browse_stage.Bind(wx.EVT_BUTTON, self.OnBrowse)
         
-        Lname_H2 = wx.BoxSizer(wx.HORIZONTAL)
-        Lname_H2.Add(self.filename, 1, wx.ALIGN_TOP)
+        label_target = wx.StaticText(self, label=GT(u'Target file'))
+        self.input_target = wx.TextCtrl(self)
+        self.input_target.SetToolTip(wx.ToolTip(GT(u'Target output file')))
         
-        #Lname_V1 = wx.BoxSizer(wx.VERTICAL)
-        #Lname_V1.Add(self.filename, 1, wx.ALIGN_TOP)
-        
-        label_path = wx.StaticText(self, label=GT(u'Path to build tree'))
-        self.path = wx.TextCtrl(self)
-        self.path.SetToolTip(wx.ToolTip(GT(u'Root directory of build tree')))
-        
-        Lpath_V1 = wx.BoxSizer(wx.VERTICAL)
-        Lpath_V1.Add(label_path, 0, wx.ALIGN_LEFT)
-        Lpath_V1.Add(self.path, 1, wx.EXPAND)
-        
-        btn_browse = ButtonBrowse(self)
-        btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
-        
-        Lpath_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        Lpath_H1.Add(Lpath_V1, 3, wx.ALIGN_TOP)
-        Lpath_H1.Add(btn_browse, 0, wx.ALIGN_TOP|wx.TOP, 7)
-        
-        Lpath_V2 = wx.BoxSizer(wx.VERTICAL)
-        Lpath_V2.Add(Lpath_H1, 1, wx.ALIGN_TOP|wx.EXPAND)
+        btn_browse_target = ButtonBrowse(self, ID_TARGET)
+        btn_browse_target.Bind(wx.EVT_BUTTON, self.OnBrowse)
         
         btn_build = ButtonBuild(self)
         btn_build.SetToolTip(wx.ToolTip(GT(u'Start building')))
@@ -58,24 +57,42 @@ class QuickBuild(wx.Dialog):
         btn_cancel.SetToolTip(wx.ToolTip(GT(u'Cancel build')))
         btn_cancel.Bind(wx.EVT_BUTTON, self.OnClose)
         
+        self.gauge = wx.Gauge(self, GAUGE_MAX)
+        
+        self.timer = DebreateTimer(self)
+        self.Bind(wx.EVT_TIMER, self.OnUpdateProgress)
+        self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
+        
+        
+        # *** Layout *** #
+        
+        Lstage_V1 = wx.BoxSizer(wx.VERTICAL)
+        Lstage_V1.Add(label_stage, 0, wx.ALIGN_LEFT)
+        Lstage_V1.Add(self.input_stage, 1, wx.EXPAND)
+        
+        Lstage_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        Lstage_H1.Add(Lstage_V1, 3, wx.ALIGN_TOP)
+        Lstage_H1.Add(btn_browse_stage, 0, wx.ALIGN_TOP|wx.TOP, 7)
+        
+        Ltarget_V1 = wx.BoxSizer(wx.VERTICAL)
+        Ltarget_V1.Add(label_target, 0, wx.ALIGN_LEFT)
+        Ltarget_V1.Add(self.input_target, 1, wx.EXPAND)
+        
+        Ltarget_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        Ltarget_H1.Add(Ltarget_V1, 3, wx.ALIGN_TOP)
+        Ltarget_H1.Add(btn_browse_target, 0, wx.ALIGN_TOP|wx.TOP, 7)
+        
         Lbtn_H1 = wx.BoxSizer(wx.HORIZONTAL)
         Lbtn_H1.Add(btn_build, 1, wx.ALIGN_BOTTOM|wx.RIGHT, 2)
         Lbtn_H1.Add(btn_cancel, 1, wx.ALIGN_BOTTOM|wx.LEFT, 2)
         
-        self.gauge = wx.Gauge(self, 100)
-        
         Lguage_H1 = wx.BoxSizer(wx.HORIZONTAL)
         Lguage_H1.Add(self.gauge, 1, wx.LEFT|wx.RIGHT, 5)
         
-        self.ID_TIMER = wx.NewId()
-        self.timer = wx.Timer(self, self.ID_TIMER)
-        wx.EVT_TIMER(self, self.ID_TIMER, self.OnUpdateProgress)
-        
         Lmain_V = wx.BoxSizer(wx.VERTICAL)
         Lmain_V.AddSpacer(1, wx.EXPAND)
-        Lmain_V.Add(Lname_H1, -1, wx.ALIGN_LEFT|wx.LEFT|wx.RIGHT, 5)
-        Lmain_V.Add(Lname_H2, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        Lmain_V.Add(Lpath_V2, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        Lmain_V.Add(Lstage_H1, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        Lmain_V.Add(Ltarget_H1, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         Lmain_V.Add(Lbtn_H1, -1, wx.ALIGN_CENTER|wx.ALL, 5)
         Lmain_V.Add(Lguage_H1, -1, wx.EXPAND|wx.ALL, 5)
         Lmain_V.AddSpacer(1, wx.EXPAND)
@@ -87,18 +104,85 @@ class QuickBuild(wx.Dialog):
         self.Bind(wx.EVT_CLOSE, self.OnClose)
         
         self.CenterOnParent()
+        
+        
+        # For showing error dialog after build thread exits
+        self.build_error = None
+    
+    
+    ## TODO: Doxygen
+    def Build(self, stage, target):
+        completed_status = (0, GT(u'errors'))
+        
+        output = BuildDebPackage(stage, target)
+        if output[0] == dbrerrno.SUCCESS:
+            completed_status = (GAUGE_MAX, GT(u'finished'))
+        
+        else:
+            self.build_error = (
+                GT(u'Could not build .deb package'),
+                GT(u'Is the staged directory formatted correctly?'),
+                stage,
+                output[1],
+            )
+        
+        self.timer.Stop()
+        self.gauge.SetValue(completed_status[0])
+        self.SetTitle(u'{} ({})'.format(self.title, completed_status[1]))
+        self.Enable()
     
     
     def OnBrowse(self, event=None):
-        source = GetDirDialog(self.debreate, GT(u'Choose Directory'))
-        source.CenterOnParent()
-        
-        if (ShowDialog(source)):
-            self.path.SetValue(source.GetPath())
+        if event:
+            debreate = self.GetParent().GetDebreateWindow()
+            
+            button_id = event.GetEventObject().GetId()
+            
+            if button_id == ID_STAGE:
+                stage = GetDirDialog(debreate, GT(u'Choose Directory'))
+                stage.CenterOnParent()
+                
+                if (ShowDialog(stage)):
+                    self.input_stage.SetValue(stage.GetPath())
+            
+            elif button_id == ID_TARGET:
+                target = GetFileSaveDialog(debreate, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'), u'deb')
+                target.CenterOnParent()
+                
+                if (ShowDialog(target)):
+                    self.input_target.SetValue(target.GetPath())
     
     
+    ## TODO: Doxygen
+    #  
+    #  TODO: Show error if not using .deb extension
+    #  TODO: Show error if stage not formatted correctly
+    #  TODO: Show success message
+    #  TODO: Check timestamp of created .deb package (should be done for main build as well)
     def OnBuild(self, event=None):
-        print(u'Building ...')
+        stage = self.input_stage.GetValue()
+        target = self.input_target.GetValue()
+        
+        if not os.path.isdir(stage):
+            ShowErrorDialog(GT(u'Stage directory does not exist'), stage, __name__, warn=True)
+            return
+        
+        target_path = os.path.dirname(target)
+        if not os.path.isdir(target_path):
+            ShowErrorDialog(GT(u'Target directory does not exist'), target_path, __name__, warn=True)
+            return
+        
+        elif not os.access(target_path, os.W_OK):
+            ShowErrorDialog(GT(u'No write access to target directory'), target_path, __name__, warn=True)
+            return
+        
+        self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
+        
+        # Don't allow dialog to be closed while build in progress
+        self.Disable()
+        self.timer.Start(100)
+        
+        self.build_thread = thread.start_new_thread(self.Build, (stage, target))
     
     
     ## Closes the Quick Build dialog & destroys instance
@@ -106,6 +190,45 @@ class QuickBuild(wx.Dialog):
         self.EndModal(True)
     
     
+    ## TODO: Doxygen
+    def OnTimerStop(self, event=None):
+        Logger.Debug(__name__, u'OnTimerStop')
+        
+        if not self.timer.IsRunning():
+            Logger.Debug(__name__, GT(u'Timer is stopped'))
+        
+        else:
+            Logger.Debug(__name__, GT(u'Timer is running'))
+        
+        if self.build_error:
+            error_lines = self.build_error[:-1]
+            error_output = self.build_error[-1]
+            
+            ShowErrorDialog(error_lines, error_output, __name__)
+            
+            # Needs to be reset or error dialog will successively show
+            self.build_error = None
+            
+            return
+        
+        msg_lines = (
+            GT(u'Quick build complete'),
+            self.input_target.GetValue(),
+        )
+        ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
+    
+    
     ## Updates the progress bar
     def OnUpdateProgress(self, event=None):
+        if event:
+            if isinstance(event, wx.TimerEvent):
+                Logger.Debug(__name__, GT(u'wx.TimerEvent ID: {}').format(event.GetId()))
+                Logger.Debug(__name__, GT(u'wx.TimerEvent type: {}').format(event.GetEventType()))
+                
+                if not self.timer.IsRunning():
+                    Logger.Debug(__name__, GT(u'Timer stopped. Stopping gauge ...'))
+                    
+                    #self.gauge.SetValue(GAUGE_MAX)
+                    return
+        
         self.gauge.Pulse()
