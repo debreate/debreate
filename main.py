@@ -11,6 +11,7 @@ from dbr.config             import WriteConfig
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.quickbuild         import QuickBuild
 from dbr.wizard             import Wizard
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
@@ -21,7 +22,6 @@ from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
 from globals.paths          import PATH_app
 from wiz_bin.build          import Panel as PanelBuild
-from wiz_bin.build          import QuickBuild
 from wiz_bin.clog           import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl
 from wiz_bin.copyright      import Panel as PanelCopyright
@@ -81,30 +81,26 @@ class MainWindow(wx.Frame):
         
         # ----- File Menu
         self.menu_file = wx.Menu()
-        '''
+        
         # Quick Build
         self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD,
                                          _('Quick Build'), _('Build a package from an existing build tree'))
         self.QuickBuild.SetBitmap(wx.Bitmap("%s/bitmaps/clock16.png" % PATH_app))
-        '''
+        
         self.menu_file.Append(wx.ID_NEW, help=_('Start a new project'))
         self.menu_file.Append(wx.ID_OPEN, help=_('Open a previously saved project'))
         self.menu_file.Append(wx.ID_SAVE, help=_('Save current project'))
         self.menu_file.Append(wx.ID_SAVEAS, help=_('Save current project with a new filename'))
-        #self.menu_file.AppendSeparator()
-        #self.menu_file.AppendItem(self.QuickBuild)
+        self.menu_file.AppendSeparator()
+        self.menu_file.AppendItem(self.QuickBuild)
         self.menu_file.AppendSeparator()
         self.menu_file.Append(wx.ID_EXIT)
-        '''
-        # Quick build broken
-        self.QuickBuild.SetText(_('Quick Build (broken)'))
-        self.QuickBuild.Enable(False)
-        '''
+        
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
         wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
         wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProject)
-        #wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
