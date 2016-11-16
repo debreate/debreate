@@ -71,7 +71,7 @@ class Panel(wx.Panel):
             I.SetToolTip(wx.ToolTip(_('Custom filename to use for launcher')))
         
         self.chk_filename.SetToolTip(
-                wx.ToolTip(_('If checked, the lowercase value of the "Name" field will be used for the filename'))
+                wx.ToolTip(_('If checked, the value of the "Name" field will be used for the filename'))
             )
         
         # --- NAME (menu)
@@ -284,44 +284,32 @@ class Panel(wx.Panel):
         desktop_list = ["[Desktop Entry]"]
         
         # Add Name
-        name = self.name_input.GetValue()
-        desktop_list.append("Name=%s" % name)
+        desktop_list.append("Name={}".format(self.name_input.GetValue()))
         
         # Add Version
         desktop_list.append("Version=1.0")
         
         # Add Executable
-        exe = self.exe_input.GetValue()
-        desktop_list.append("Exec=%s" % exe)
+        desktop_list.append("Exec={}".format(self.exe_input.GetValue()))
         
         # Add Comment
-        comm = self.comm_input.GetValue()
-        desktop_list.append("Comment=%s" % comm)
+        desktop_list.append("Comment={}".format(self.comm_input.GetValue()))
         
         # Add Icon
-        icon = self.icon_input.GetValue()
-        desktop_list.append("Icon=%s" % icon)
+        desktop_list.append("Icon={}".format(self.icon_input.GetValue()))
         
         # Add Type
-        #type = self.type_opt[self.type_choice.GetSelection()]
-        _type = self.type_choice.GetValue()
-        desktop_list.append("Type=%s" % _type)
+        desktop_list.append("Type={}".format(self.type_choice.GetValue()))
         
         # Add Terminal
-        if self.term_choice.GetSelection() == 0:
-            desktop_list.append("Terminal=true")
-        else:
-            desktop_list.append("Terminal=false")
+        desktop_list.append("Terminal={}".format(self.term_choice.GetStringSelection()))
         
         # Add Startup Notify
-        if self.notify_choice.GetSelection() == 0:
-            desktop_list.append("StartupNotify=true")
-        else:
-            desktop_list.append("StartupNotify=false")
+        desktop_list.append("StartupNotify={}".format(self.notify_choice.GetStringSelection()))
         
         # Add Encoding
         enc = self.enc_input.GetValue()
-        desktop_list.append("Encoding=%s" % enc)
+        desktop_list.append("Encoding={}".format(self.enc_input.GetValue()))
         
         # Add Categories
         cat_list = []
@@ -332,8 +320,8 @@ class Panel(wx.Panel):
             count += 1
         # Add a final semi-colon if categories is not empty
         if cat_list != []:
-            cat_list[-1] = "%s;" % cat_list[-1]
-        desktop_list.append("Categories=%s" % ";".join(cat_list))
+            cat_list[-1] = "{};".format(cat_list[-1])
+        desktop_list.append("Categories={}".format(";".join(cat_list)))
         
         # Add Misc
         if self.misc.GetValue() != wx.EmptyString:
@@ -456,7 +444,7 @@ class Panel(wx.Panel):
                 # First line needs to be changed to "1"
             data.insert(0, '1')
             self.SetFieldData("\n".join(data))
-        
+    
     def OnPreview(self, event):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
@@ -565,7 +553,7 @@ class Panel(wx.Panel):
             data = "\n".join(data.split("\n")[1:])
             
             if not self.chk_filename.GetValue():
-                data = "[Filename={}]\n{}".format(self.input_filename.GetValue(), data)
+                data = "[FILENAME={}]\n{}".format(self.input_filename.GetValue(), data)
             
             return "<<MENU>>\n1\n%s\n<</MENU>>" % data
         
