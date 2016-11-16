@@ -390,7 +390,7 @@ class Panel(wx.Panel):
 #            dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
-                path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
+                path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
         else:
             dia = wx.FileDialog(self, GT(u'Save Launcher'), os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
@@ -405,7 +405,7 @@ class Panel(wx.Panel):
             # Create a backup file
             overwrite = False
             if os.path.isfile(path):
-                backup = u'%s.backup' % path
+                backup = u'{}.backup'.format(path)
                 shutil.copy(path, backup)
                 overwrite = True
             
@@ -418,7 +418,7 @@ class Panel(wx.Panel):
             except UnicodeEncodeError:
                 serr = GT(u'Save failed')
                 uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
                 file.close()
                 os.remove(path)
@@ -576,7 +576,7 @@ class Panel(wx.Panel):
             if not self.chk_filename.GetValue():
                 data = u'[FILENAME={}]\n{}'.format(self.input_filename.GetValue(), data)
             
-            return u'<<MENU>>\n1\n%s\n<</MENU>>' % data
+            return u'<<MENU>>\n1\n{}\n<</MENU>>'.format(data)
         
         else:
             return u'<<MENU>>\n0\n<</MENU>>'
