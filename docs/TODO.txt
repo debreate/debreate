@@ -1,7 +1,13 @@
-﻿0.8.0 Release:
-- Add Launchpad packages for 'yakkety'
+﻿0.7.12
+- Fix menu launcher name
 - Update gettext locales
+- Test that locales are working
+- Fix "Install package after build"
+
+0.8.0 Release:
+- Add Launchpad packages for 'yakkety'
 - Use names 'master', 'unstable' & 'stable' for main Git branches
+- Update gettext locales
 - Fix AutoLink executables in Files page
 - Mark projects dirty when changed
 - Finish manpage
@@ -14,8 +20,6 @@
 - Refactor & organize error messages on build
 - Fix bugs in docs/BUGS.txt
 - Heavy code cleanup & testing
-- Fix "Install package after build"
-- Fix menu launcher name
 - Use wx.GetApp().GetTopWindow() instead of GetDebreateWindow()
 
 0.8.1 Release:
