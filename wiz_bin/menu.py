@@ -238,7 +238,7 @@ class Panel(wx.Panel):
         
         # --- List of main menu items affected by checkbox -- used for toggling each widget
         self.menu_list = (
-            self.open, self.button_save, self.button_preview, self.chk_filename, self.icon_input,
+            self.button_save, self.button_preview, self.chk_filename, self.icon_input,
             self.name_input, self.comm_input, self.exe_input, self.enc_input, self.type_choice,
             self.cat_choice, self.categories, self.cat_add, self.cat_del, self.cat_clr,
             self.term_choice, self.notify_choice, self.misc,
