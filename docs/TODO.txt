@@ -3,6 +3,7 @@
 - Update gettext locales
 - Test that locales are working
 - Fix "Install package after build"
+- Fix size & position not being saved/loaded
 
 0.8.0 Release:
 - Add Launchpad packages for 'yakkety'
