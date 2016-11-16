@@ -17,27 +17,27 @@ from dbr.language   import GT
 ID = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID, name=GT('Menu Launcher')):
-        wx.Panel.__init__(self, parent, id, name=GT('Menu Launcher'))
+    def __init__(self, parent, id=ID, name=GT(u'Menu Launcher')):
+        wx.Panel.__init__(self, parent, id, name=GT(u'Menu Launcher'))
         
         # Allows executing parent methods
         self.parent = parent
         
         # --- Tool Tips --- #
-        DF_tip = wx.ToolTip(GT('Open launcher file'))
-        icon_tip = wx.ToolTip(GT('Icon to be displayed for the launcher'))
-        m_name_tip = wx.ToolTip(GT('Text for the launcher'))
-        #m_ver_tip = wx.ToolTip("The version of your application")
-        m_com_tip = wx.ToolTip(GT('Text displayed when mouse hovers over launcher'))
-        m_exec_tip = wx.ToolTip(GT('Executable to be launched'))
-        m_mime_tip = wx.ToolTip(GT('Specifies the MIME types that the application can handle'))
-        #m_enc_tip = wx.ToolTip("Specifies the encoding of the desktop entry file")
-        #m_type_tip = wx.ToolTip(GT('The type of launcher'))
-        m_cat_tip = wx.ToolTip("Choose which categories in which you would like your application to be displayed")
-        m_term_tip = wx.ToolTip(GT('Specifies whether application should be run from a terminal'))
-        m_notify_tip = wx.ToolTip(GT('Displays a notification in the system panel when launched'))
-        m_nodisp_tip = wx.ToolTip("This options means \"This application exists, but don't display it in the menus\"")
-        m_showin_tip = wx.ToolTip("Only Show In Tip")
+        DF_tip = wx.ToolTip(GT(u'Open launcher file'))
+        icon_tip = wx.ToolTip(GT(u'Icon to be displayed for the launcher'))
+        m_name_tip = wx.ToolTip(GT(u'Text for the launcher'))
+        #m_ver_tip = wx.ToolTip(GT(u'The version of your application'))
+        m_com_tip = wx.ToolTip(GT(u'Text displayed when mouse hovers over launcher'))
+        m_exec_tip = wx.ToolTip(GT(u'Executable to be launched'))
+        m_mime_tip = wx.ToolTip(GT(u'Specifies the MIME types that the application can handle'))
+        #m_enc_tip = wx.ToolTip(GT(u'Specifies the encoding of the desktop entry file'))
+        #m_type_tip = wx.ToolTip(GT(u'The type of launcher'))
+        m_cat_tip = wx.ToolTip(GT(u'Choose which categories in which you would like your application to be displayed'))
+        m_term_tip = wx.ToolTip(GT(u'Specifies whether application should be run from a terminal'))
+        m_notify_tip = wx.ToolTip(GT(u'Displays a notification in the system panel when launched'))
+        m_nodisp_tip = wx.ToolTip(GT(u'This options means "This application exists, but don\'t display it in the menus"'))
+        m_showin_tip = wx.ToolTip(GT(u'Only Show In Tip'))
         
         # --- Main Menu Entry --- #
         
@@ -57,87 +57,93 @@ class Panel(wx.Panel):
         button_sizer.Add(self.button_preview, 0)
         
         # --- CHECKBOX
-        self.activate = wx.CheckBox(self, -1, GT('Create system menu launcher'))
+        self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
-        self.txt_filename = wx.StaticText(self, label=GT('Filename'))
+        self.txt_filename = wx.StaticText(self, label=GT(u'Filename'))
         self.input_filename = wx.TextCtrl(self)
-        self.chk_filename = wx.CheckBox(self, label=GT('Use "Name" as output filename (<name>.desktop)'))
+        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<name>.desktop)'))
         self.chk_filename.SetValue(True)
         
         self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
         
         for I in self.txt_filename, self.input_filename:
-            I.SetToolTip(wx.ToolTip(GT('Custom filename to use for launcher')))
+            I.SetToolTip(wx.ToolTip(GT(u'Custom filename to use for launcher')))
         
         self.chk_filename.SetToolTip(
-                wx.ToolTip(GT('If checked, the value of the "Name" field will be used for the filename'))
+                wx.ToolTip(GT(u'If checked, the value of the "Name" field will be used for the filename'))
             )
         
         # --- NAME (menu)
-        self.name_text = wx.StaticText(self, -1, GT('Name'))
+        self.name_text = wx.StaticText(self, -1, GT(u'Name'))
         self.name_text.SetToolTip(m_name_tip)
         self.name_input = wx.TextCtrl(self, -1)
         
         # --- EXECUTABLE
-        self.exe_text = wx.StaticText(self, -1, GT('Executable'))
+        self.exe_text = wx.StaticText(self, -1, GT(u'Executable'))
         self.exe_text.SetToolTip(m_exec_tip)
         self.exe_input = wx.TextCtrl(self, -1)
         
         # --- COMMENT
-        self.comm_text = wx.StaticText(self, -1, GT('Comment'))
+        self.comm_text = wx.StaticText(self, -1, GT(u'Comment'))
         self.comm_text.SetToolTip(m_com_tip)
         self.comm_input = wx.TextCtrl(self, -1)
         
         # --- ICON
-        self.icon_text = wx.StaticText(self, -1, GT('Icon'))
+        self.icon_text = wx.StaticText(self, -1, GT(u'Icon'))
         self.icon_text.SetToolTip(icon_tip)
         self.icon_input = wx.TextCtrl(self)
         
         # --- TYPE
-        self.type_opt = ('Application', 'Link', 'FSDevice', 'Directory')
-        self.type_text = wx.StaticText(self, -1, GT('Type'))
+        self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
+        self.type_text = wx.StaticText(self, -1, GT(u'Type'))
         #self.type_text.SetToolTip(m_type_tip)
         self.type_choice = wx.ComboBox(self, -1, choices=self.type_opt)
         self.type_choice.SetSelection(0)
         #self.type_choice = wx.Choice(self, -1, choices=self.type_opt)
         
         # --- TERMINAL
-        self.term_opt = ('true', 'false')
-        self.term_text = wx.StaticText(self, -1, GT('Terminal'))
+        self.term_opt = (u'true', u'false')
+        self.term_text = wx.StaticText(self, -1, GT(u'Terminal'))
         self.term_text.SetToolTip(m_term_tip)
         self.term_choice = wx.Choice(self, -1, choices=self.term_opt)
         self.term_choice.SetSelection(1)
         
         # --- STARTUP NOTIFY
-        self.notify_opt = ('true', 'false')
-        self.notify_text = wx.StaticText(self, -1, GT('Startup Notify'))
+        self.notify_opt = (u'true', u'false')
+        self.notify_text = wx.StaticText(self, -1, GT(u'Startup Notify'))
         self.notify_text.SetToolTip(m_notify_tip)
         self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
         self.notify_choice.SetSelection(0)
         
         # --- ENCODING
-        self.enc_opt = ('UTF-1','UTF-7','UTF-8','CESU-8','UTF-EBCDIC','UTF-16','UTF-32','SCSU','BOCU-1','Punycode',
-                    'GB 18030')
-        self.enc_text = wx.StaticText(self, -1, GT('Encoding'))
+        self.enc_opt = (
+            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC', u'UTF-16', u'UTF-32',
+            u'SCSU', u'BOCU-1', u'Punycode', u'GB 18030'
+            )
+        self.enc_text = wx.StaticText(self, -1, GT(u'Encoding'))
         #self.enc_text.SetToolTip(m_enc_tip)
         self.enc_input = wx.ComboBox(self, -1, choices=self.enc_opt)
         self.enc_input.SetSelection(2)
         
         # --- CATEGORIES
-        self.cat_opt = ('2DGraphics','Accessibility','Application','ArcadeGame','Archiving','Audio','AudioVideo',
-                        'BlocksGame','BoardGame','Calculator','Calendar','CardGame','Compression',
-                        'ContactManagement','Core','DesktopSettings','Development','Dictionary','DiscBurning',
-                        'Documentation','Email','FileManager','FileTransfer','Game','GNOME','Graphics','GTK',
-                        'HardwareSettings','InstantMessaging','KDE','LogicGame','Math','Monitor','Network','OCR',
-                        'Office','P2P','PackageManager','Photography','Player','Presentation','Printing','Qt',
-                        'RasterGraphics','Recorder','RemoteAccess','Scanning','Screensaver','Security','Settings',
-                        'Spreadsheet','System','Telephony','TerminalEmulator','TextEditor','Utility',
-                        'VectorGraphics','Video','Viewer','WordProcessor','Wine','Wine-Programs-Accessories',
-                        'X-GNOME-NetworkSettings','X-GNOME-PersonalSettings','X-GNOME-SystemSettings','X-KDE-More',
-                        'X-Red-Hat-Base','X-SuSE-ControlCenter-System')
-        self.cat_text = wx.StaticText(self, -1, GT('Category'))
+        self.cat_opt = (
+            u'2DGraphics', u'Accessibility', u'Application', u'ArcadeGame', u'Archiving', u'Audio',
+            u'AudioVideo', u'BlocksGame', u'BoardGame', u'Calculator', u'Calendar', u'CardGame',
+            u'Compression', u'ContactManagement', u'Core', u'DesktopSettings', u'Development',
+            u'Dictionary', u'DiscBurning', u'Documentation', u'Email', u'FileManager',
+            u'FileTransfer', u'Game', u'GNOME', u'Graphics', u'GTK', u'HardwareSettings',
+            u'InstantMessaging', u'KDE', u'LogicGame', u'Math', u'Monitor', u'Network', u'OCR',
+            u'Office', u'P2P', u'PackageManager', u'Photography', u'Player', u'Presentation',
+            u'Printing', u'Qt', u'RasterGraphics', u'Recorder', u'RemoteAccess', u'Scanning',
+            u'Screensaver', u'Security', u'Settings', u'Spreadsheet', u'System', u'Telephony',
+            u'TerminalEmulator', u'TextEditor', u'Utility', u'VectorGraphics', u'Video', u'Viewer',
+            u'WordProcessor', u'Wine', u'Wine-Programs-Accessories', u'X-GNOME-NetworkSettings',
+            u'X-GNOME-PersonalSettings', u'X-GNOME-SystemSettings', u'X-KDE-More', u'X-Red-Hat-Base',
+            u'X-SuSE-ControlCenter-System',
+            )
+        self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
         self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
         self.cat_add = ButtonAdd(self)
         self.cat_del = ButtonDel(self)
@@ -149,7 +155,7 @@ class Panel(wx.Panel):
         else:
             self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
         
-        self.categories.InsertColumn(0, "")
+        self.categories.InsertColumn(0, u'')
         
         wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
         wx.EVT_KEY_DOWN(self.categories, self.SetCategory)
@@ -173,7 +179,7 @@ class Panel(wx.Panel):
         
         
         # ----- MISC
-        self.misc_text = wx.StaticText(self, -1, GT('Other'))
+        self.misc_text = wx.StaticText(self, -1, GT(u'Other'))
         self.misc = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
         
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -254,18 +260,32 @@ class Panel(wx.Panel):
         self.Layout()
         
         # List of entries in a standard .desktop file
-        self.standards = {    "name": self.name_input, "type": self.type_choice, "exec": self.exe_input,
-                            "comment": self.comm_input, "terminal": self.term_choice,
-                            "startupnotify": self.notify_choice, "encoding": self.enc_input,
-                            "categories": self.categories
-                            }
+        self.standards = {
+            u'name': self.name_input,
+            u'type': self.type_choice,
+            u'exec': self.exe_input,
+            u'comment': self.comm_input,
+            u'terminal': self.term_choice,
+            u'startupnotify': self.notify_choice,
+            u'encoding': self.enc_input,
+            u'categories': self.categories,
+            }
         
         # Lists of widgets that change language
-        self.setlabels = {    self.activate: "Menu", self.open: "Open", self.border: "Border",
-                            self.icon_text: "Icon",
-                            self.name_text: "Name", self.comm_text: "Comm", self.exe_text: "Exec",
-                            self.enc_text: "Enc", self.type_text: "Type", self.cat_text: "Cat",
-                            self.term_text: "Term", self.notify_text: "Notify"}
+        self.setlabels = {
+            self.activate: u'Menu',
+            self.open: u'Open',
+            self.border: u'Border',
+            self.icon_text: u'Icon',
+            self.name_text: u'Name',
+            self.comm_text: u'Comm',
+            self.exe_text: u'Exec',
+            self.enc_text: u'Enc',
+            self.type_text: u'Type',
+            self.cat_text: u'Cat',
+            self.term_text: u'Term',
+            self.notify_text: u'Notify',
+            }
     
     
     def OnToggle(self, event):
@@ -282,35 +302,35 @@ class Panel(wx.Panel):
     
     def GetMenuInfo(self):
         # Create list to store info
-        desktop_list = ["[Desktop Entry]"]
+        desktop_list = [u'[Desktop Entry]']
         
         # Add Name
-        desktop_list.append("Name={}".format(self.name_input.GetValue()))
+        desktop_list.append(u'Name={}'.format(self.name_input.GetValue()))
         
         # Add Version
-        desktop_list.append("Version=1.0")
+        desktop_list.append(u'Version=1.0')
         
         # Add Executable
-        desktop_list.append("Exec={}".format(self.exe_input.GetValue()))
+        desktop_list.append(u'Exec={}'.format(self.exe_input.GetValue()))
         
         # Add Comment
-        desktop_list.append("Comment={}".format(self.comm_input.GetValue()))
+        desktop_list.append(u'Comment={}'.format(self.comm_input.GetValue()))
         
         # Add Icon
-        desktop_list.append("Icon={}".format(self.icon_input.GetValue()))
+        desktop_list.append(u'Icon={}'.format(self.icon_input.GetValue()))
         
         # Add Type
-        desktop_list.append("Type={}".format(self.type_choice.GetValue()))
+        desktop_list.append(u'Type={}'.format(self.type_choice.GetValue()))
         
         # Add Terminal
-        desktop_list.append("Terminal={}".format(self.term_choice.GetStringSelection()))
+        desktop_list.append(u'Terminal={}'.format(self.term_choice.GetStringSelection()))
         
         # Add Startup Notify
-        desktop_list.append("StartupNotify={}".format(self.notify_choice.GetStringSelection()))
+        desktop_list.append(u'StartupNotify={}'.format(self.notify_choice.GetStringSelection()))
         
         # Add Encoding
         enc = self.enc_input.GetValue()
-        desktop_list.append("Encoding={}".format(self.enc_input.GetValue()))
+        desktop_list.append(u'Encoding={}'.format(self.enc_input.GetValue()))
         
         # Add Categories
         cat_list = []
@@ -321,14 +341,14 @@ class Panel(wx.Panel):
             count += 1
         # Add a final semi-colon if categories is not empty
         if cat_list != []:
-            cat_list[-1] = "{};".format(cat_list[-1])
-        desktop_list.append("Categories={}".format(";".join(cat_list)))
+            cat_list[-1] = u'{};'.format(cat_list[-1])
+        desktop_list.append(u'Categories={}'.format(u';'.join(cat_list)))
         
         # Add Misc
         if self.misc.GetValue() != wx.EmptyString:
             desktop_list.append(self.misc.GetValue())
         
-        return "\n".join(desktop_list)
+        return u'\n'.join(desktop_list)
     
     
     def SetCategory(self, event):
@@ -339,7 +359,7 @@ class Panel(wx.Panel):
         
         cat = self.cat_choice.GetValue()
         cat = cat.split()
-        cat = "".join(cat)
+        cat = u''.join(cat)
         
         if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
             self.categories.InsertStringItem(0, cat)
@@ -349,7 +369,7 @@ class Panel(wx.Panel):
             self.categories.DeleteItem(cur_cat)
         
         elif id == wx.WXK_ESCAPE:
-            confirm = wx.MessageDialog(self, GT('Delete all categories?'), GT('Confirm'),
+            confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
             if confirm.ShowModal() == wx.ID_YES:
                 self.categories.DeleteAllItems()
@@ -359,22 +379,22 @@ class Panel(wx.Panel):
     # *** OPEN/SAVE *** #
     def OnSave(self, event):
         # Get data to write to control file
-        menu_data = self.GetMenuInfo().encode('utf-8')
+        menu_data = self.GetMenuInfo().encode(u'utf-8')
         
         # Saving?
         cont = False
         
         # Open a "Save Dialog"
         if self.parent.parent.cust_dias.IsChecked():
-            dia = db.SaveFile(self, GT('Save Launcher'))
-#            dia.SetFilename("control")
+            dia = db.SaveFile(self, GT(u'Save Launcher'))
+#            dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
-                path = "%s/%s" % (dia.GetPath(), dia.GetFilename())
+                path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
         else:
-            dia = wx.FileDialog(self, GT('Save Launcher'), os.getcwd(),
+            dia = wx.FileDialog(self, GT(u'Save Launcher'), os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-#            dia.SetFilename("control")
+#            dia.SetFilename(u'control')
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
                 path = dia.GetPath()
@@ -385,20 +405,20 @@ class Panel(wx.Panel):
             # Create a backup file
             overwrite = False
             if os.path.isfile(path):
-                backup = '%s.backup' % path
+                backup = u'%s.backup' % path
                 shutil.copy(path, backup)
                 overwrite = True
             
-            file = open(path, "w")
+            file = open(path, u'w')
             try:
                 file.write(menu_data)
                 file.close()
                 if overwrite:
                     os.remove(backup)
             except UnicodeEncodeError:
-                serr = GT('Save failed')
-                uni = GT('Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, '%s\n\n%s' % (serr, uni), GT('Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                serr = GT(u'Save failed')
+                uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
+                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
                 file.close()
                 os.remove(path)
@@ -425,32 +445,32 @@ class Panel(wx.Panel):
     def OpenFile(self, event):
         cont = False
         if self.parent.parent.cust_dias.IsChecked():
-            dia = db.OpenFile(self, GT('Open Launcher'))
+            dia = db.OpenFile(self, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, GT('Open Launcher'), os.getcwd(),
+            dia = wx.FileDialog(self, GT(u'Open Launcher'), os.getcwd(),
                 style=wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
         
         if cont == True:
             path = dia.GetPath()
-            file = open(path, "r")
+            file = open(path, u'r')
             text = file.read()
             file.close()
-            data = text.split("\n")
-            if data[0] == "[Desktop Entry]":
+            data = text.split(u'\n')
+            if data[0] == u'[Desktop Entry]':
                 data = data[1:]
                 # First line needs to be changed to "1"
-            data.insert(0, '1')
-            self.SetFieldData("\n".join(data))
+            data.insert(0, u'1')
+            self.SetFieldData(u'\n'.join(data))
     
     def OnPreview(self, event):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
         
-        dia = wx.Dialog(self, -1, GT('Preview'), size=(500,400))
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
         preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         preview.SetValue(config)
         
@@ -486,23 +506,23 @@ class Panel(wx.Panel):
             self.activate.SetValue(True)
             # Fields using SetValue() function
             set_value_fields = (
-                ("Name", self.name_input), ("Exec", self.exe_input), ("Comment", self.comm_input),
-                ("Icon", self.icon_input)
+                (u'Name', self.name_input), (u'Exec', self.exe_input), (u'Comment', self.comm_input),
+                (u'Icon', self.icon_input)
                 )
             
             # Fields using SetSelection() function
             set_selection_fields = (
-                ("Terminal", self.term_choice, self.term_opt),
-                ("StartupNotify", self.notify_choice, self.notify_opt)
+                (u'Terminal', self.term_choice, self.term_opt),
+                (u'StartupNotify', self.notify_choice, self.notify_opt)
                 )
             
             # Fields using either SetSelection() or SetValue()
             set_either_fields = (
-                ("Type", self.type_choice, self.type_opt),
-                ("Encoding", self.enc_input, self.enc_opt)
+                (u'Type', self.type_choice, self.type_opt),
+                (u'Encoding', self.enc_input, self.enc_opt)
                 )
             
-            lines = data.split("\n")
+            lines = data.split(u'\n')
             
             # Leave leftover text in this list to dump into misc field
             leftovers = lines[:]
@@ -512,13 +532,13 @@ class Panel(wx.Panel):
             
             # Remove Version field since is not done below
             try:
-                leftovers.remove("Version=1.0")
+                leftovers.remove(u'Version=1.0')
             except ValueError:
                 pass
             
             for line in lines:
-                f1 = line.split("=")[0]
-                f2 = "=".join(line.split("=")[1:])
+                f1 = line.split(u'=')[0]
+                f2 = u'='.join(line.split(u'=')[1:])
                 for setval in set_value_fields:
                     if f1 == setval[0]:
                         setval[1].SetValue(f2)
@@ -537,26 +557,26 @@ class Panel(wx.Panel):
                             either[1].SetValue(f2)
                         leftovers.remove(line)
                 # Categories
-                if f1 == "Categories":
+                if f1 == u'Categories':
                     leftovers.remove(line)
-                    categories = f2.split(";")
+                    categories = f2.split(u';')
                     cat_count = len(categories)-1
                     while cat_count > 0:
                         cat_count -= 1
                         self.categories.InsertStringItem(0, categories[cat_count])
             if len(leftovers) > 0:
-                self.misc.SetValue("\n".join(leftovers))
+                self.misc.SetValue(u'\n'.join(leftovers))
         self.OnToggle(None)
     
     def GatherData(self):
         if self.activate.GetValue():
             data = self.GetMenuInfo()
-            data = "\n".join(data.split("\n")[1:])
+            data = u'\n'.join(data.split(u'\n')[1:])
             
             if not self.chk_filename.GetValue():
-                data = "[FILENAME={}]\n{}".format(self.input_filename.GetValue(), data)
+                data = u'[FILENAME={}]\n{}'.format(self.input_filename.GetValue(), data)
             
-            return "<<MENU>>\n1\n%s\n<</MENU>>" % data
+            return u'<<MENU>>\n1\n%s\n<</MENU>>' % data
         
         else:
-            return "<<MENU>>\n0\n<</MENU>>"
+            return u'<<MENU>>\n0\n<</MENU>>'
