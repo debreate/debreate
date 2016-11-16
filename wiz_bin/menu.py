@@ -21,9 +21,6 @@ class Panel(wx.ScrolledWindow):
     def __init__(self, parent, id=ID, name=GT(u'Menu Launcher')):
         wx.ScrolledWindow.__init__(self, parent, id, name=GT(u'Menu Launcher'))
         
-        # Allows executing parent methods
-        self.parent = parent
-        
         self.SetScrollbars(0, 20, 0, 0)
         
         # --- Tool Tips --- #
@@ -51,8 +48,8 @@ class Panel(wx.ScrolledWindow):
         self.button_preview = ButtonPreview64(self)
         
         self.open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
-        wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSave)
-        wx.EVT_BUTTON(self.button_preview, wx.ID_ANY, self.OnPreview)
+        wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSaveLauncher)
+        wx.EVT_BUTTON(self.button_preview, wx.ID_ANY, self.OnPreviewLauncher)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         button_sizer.Add(self.open, 0)
@@ -379,8 +376,8 @@ class Panel(wx.ScrolledWindow):
         event.Skip()
     
     
-    # *** OPEN/SAVE *** #
-    def OnSave(self, event):
+    ## Saves launcher information to file
+    def OnSaveLauncher(self, event):
         # Get data to write to control file
         menu_data = self.GetMenuInfo().encode(u'utf-8')
         
@@ -388,16 +385,15 @@ class Panel(wx.ScrolledWindow):
         cont = False
         
         # Open a "Save Dialog"
-        if self.parent.parent.cust_dias.IsChecked():
+        if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
             dia = db.SaveFile(self, GT(u'Save Launcher'))
-#            dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
                 path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
+        
         else:
             dia = wx.FileDialog(self, GT(u'Save Launcher'), os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-#            dia.SetFilename(u'control')
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
                 path = dia.GetPath()
@@ -412,18 +408,19 @@ class Panel(wx.ScrolledWindow):
                 shutil.copy(path, backup)
                 overwrite = True
             
-            file = open(path, u'w')
+            FILE_BUFFER = open(path, u'w')
             try:
-                file.write(menu_data)
-                file.close()
+                FILE_BUFFER.write(menu_data)
+                FILE_BUFFER.close()
                 if overwrite:
                     os.remove(backup)
+            
             except UnicodeEncodeError:
                 serr = GT(u'Save failed')
                 uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
                 UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
-                file.close()
+                FILE_BUFFER.close()
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)
@@ -472,7 +469,7 @@ class Panel(wx.ScrolledWindow):
             self.SetLauncherData(u'\n'.join(data), enabled=True)
     
     
-    def OnPreview(self, event):
+    def OnPreviewLauncher(self, event):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
         
