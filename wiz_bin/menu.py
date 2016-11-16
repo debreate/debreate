@@ -17,12 +17,14 @@ from dbr.language   import GT
 
 ID = wx.NewId()
 
-class Panel(wx.Panel):
+class Panel(wx.ScrolledWindow):
     def __init__(self, parent, id=ID, name=GT(u'Menu Launcher')):
-        wx.Panel.__init__(self, parent, id, name=GT(u'Menu Launcher'))
+        wx.ScrolledWindow.__init__(self, parent, id, name=GT(u'Menu Launcher'))
         
         # Allows executing parent methods
         self.parent = parent
+        
+        self.SetScrollbars(0, 20, 0, 0)
         
         # --- Tool Tips --- #
         DF_tip = wx.ToolTip(GT(u'Open launcher file'))
