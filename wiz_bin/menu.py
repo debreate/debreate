@@ -220,12 +220,12 @@ class Panel(wx.Panel):
         
         self.border = wx.StaticBox(self, -1, size=(20,20))
         border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        #border_box.Add(layout_filename, 0, wx.EXPAND)
-        border_box.Add(sizer1, 0, wx.EXPAND)
+        
+        border_box.Add(sizer1, 0, wx.EXPAND|wx.BOTTOM, 5)
         border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        border_box.AddSpacer(20)
-        border_box.Add(self.misc_text, 0, wx.LEFT, 6)
-        border_box.Add(self.misc, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.AddSpacer(5)
+        border_box.Add(self.misc_text, 0)
+        border_box.Add(self.misc, 1, wx.EXPAND)
         
         # --- List of main menu items affected by checkbox -- used for toggling each widget
         self.menu_list = (
