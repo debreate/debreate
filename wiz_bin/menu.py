@@ -19,9 +19,6 @@ class Panel(wx.Panel):
     def __init__(self, parent, id=ID, name=_('Menu Launcher')):
         wx.Panel.__init__(self, parent, id, name=_('Menu Launcher'))
         
-        # For identifying page to parent
-        #self.ID = "MENU"
-        
         # Allows executing parent methods
         self.parent = parent
         
@@ -63,11 +60,22 @@ class Panel(wx.Panel):
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
+        self.txt_filename = wx.StaticText(self, label=_('Filename'))
+        self.input_filename = wx.TextCtrl(self)
+        self.chk_filename = wx.CheckBox(self, label=_('Use "Name" as output filename (<name>.desktop)'))
+        self.chk_filename.SetValue(True)
+        '''
+        layout_filename = wx.BoxSizer(wx.HORIZONTAL)
+        layout_filename.Add(self.txt_filename, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_filename.Add(self.input_filename, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
+        layout_filename.Add(self.chk_filename, 0, wx.ALIGN_CENTER_VERTICAL)
+        '''
+        self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
+        
         # --- NAME (menu)
         self.name_text = wx.StaticText(self, -1, _('Name'))
         self.name_text.SetToolTip(m_name_tip)
         self.name_input = wx.TextCtrl(self, -1)
-#        self.name_input.SetBackgroundColour(db.Mandatory)
         
         # --- EXECUTABLE
         self.exe_text = wx.StaticText(self, -1, _('Executable'))
@@ -168,34 +176,64 @@ class Panel(wx.Panel):
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
         misc_sizer.Add(self.misc, 1, wx.EXPAND)
         
+        
+        # GridBagSizer flags
+        CENTER = wx.ALIGN_CENTER_VERTICAL
+        CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
+        CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
+        
         # Organize the widgets and create a nice border
-        sizer1 = wx.FlexGridSizer(0, 4, 5, 5)
+        sizer1 = wx.GridBagSizer(5, 5)
+        #sizer1 = wx.FlexGridSizer(0, 4, 5, 5)
+        sizer1.SetCols(4)
         sizer1.AddGrowableCol(1)
-        sizer1.AddMany( [
-            (self.name_text, 0, wx.TOP, 10),(self.name_input, 0, wx.EXPAND|wx.TOP, 10),
-            (self.type_text, 0, wx.TOP, 10),(self.type_choice, 0, wx.TOP, 10),
-            (self.exe_text),(self.exe_input, 0, wx.EXPAND),
-            (self.term_text),(self.term_choice),
-            (self.comm_text),(self.comm_input, 0, wx.EXPAND),
-            (self.notify_text),(self.notify_choice),
-            (self.icon_text),(self.icon_input, 0, wx.EXPAND),
-            (self.enc_text),(self.enc_input, 0, wx.EXPAND),
-            ] )
+        
+        # Row 1
+        sizer1.Add(self.txt_filename, (0, 0), flag=CENTER)
+        sizer1.Add(self.input_filename, pos=(0, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
+        
+        # Row 2
+        sizer1.Add(self.name_text, (1, 0), flag=CENTER)
+        sizer1.Add(self.name_input, (1, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.type_text, (1, 2), flag=CENTER)
+        sizer1.Add(self.type_choice, (1, 3), flag=CENTER)
+        
+        # Row 3
+        sizer1.Add(self.exe_text, (2, 0), flag=CENTER)
+        sizer1.Add(self.exe_input, (2, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.term_text, (2, 2), flag=CENTER)
+        sizer1.Add(self.term_choice, (2, 3), flag=CENTER)
+        
+        # Row 4
+        sizer1.Add(self.comm_text, (3, 0), flag=CENTER)
+        sizer1.Add(self.comm_input, (3, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.notify_text, (3, 2), flag=CENTER)
+        sizer1.Add(self.notify_choice, (3, 3), flag=CENTER)
+        
+        # Row 5
+        sizer1.Add(self.icon_text, (4, 0), flag=CENTER)
+        sizer1.Add(self.icon_input, (4, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.enc_text, (4, 2), flag=CENTER)
+        sizer1.Add(self.enc_input, (4, 3), flag=CENTER)
+        
         
         self.border = wx.StaticBox(self, -1, size=(20,20))
         border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        border_box.Add(sizer1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        #border_box.Add(layout_filename, 0, wx.EXPAND)
+        border_box.Add(sizer1, 0, wx.EXPAND)
         border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
         border_box.AddSpacer(20)
         border_box.Add(self.misc_text, 0, wx.LEFT, 6)
         border_box.Add(self.misc, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         
         # --- List of main menu items affected by checkbox -- used for toggling each widget
-        self.menu_list = (self.open, self.button_save, self.button_preview, self.icon_input, self.name_input,
-                        self.comm_input, self.exe_input, self.enc_input, self.type_choice, self.cat_choice,
-                        self.categories, self.cat_add, self.cat_del, self.cat_clr, self.term_choice,
-                        self.notify_choice, self.misc)
-                        #, self.m_nodisp_widg, self.m_showin_widg)
+        self.menu_list = (
+            self.open, self.button_save, self.button_preview, self.chk_filename, self.icon_input,
+            self.name_input, self.comm_input, self.exe_input, self.enc_input, self.type_choice,
+            self.cat_choice, self.categories, self.cat_add, self.cat_del, self.cat_clr,
+            self.term_choice, self.notify_choice, self.misc,
+            )
         
         self.OnToggle(None) #Disable widgets
         
@@ -205,6 +243,7 @@ class Panel(wx.Panel):
         page_sizer.Add(button_sizer, 0, wx.LEFT, 5)
         page_sizer.AddSpacer(10)
         page_sizer.Add(self.activate, 0, wx.LEFT, 5)
+        #page_sizer.Add(layout_filename, 0, wx.TOP|wx.LEFT|wx.RIGHT, 5)
         page_sizer.Add(border_box, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
@@ -230,16 +269,13 @@ class Panel(wx.Panel):
         if self.activate.IsChecked():
             for item in self.menu_list:
                 item.Enable()
-                # Change the background color of name_input
-#                if item == self.name_input:
-#                    item.SetBackgroundColour(db.Mandatory)
-                    
+        
         else:
             for item in self.menu_list:
                 item.Disable()
-                # Change background color of name_input
-#                if item == self.name_input:
-#                    item.SetBackgroundColour(db.Disabled)
+        
+        self.OnSetCustomFilename(None)
+    
     
     def GetMenuInfo(self):
         # Create list to store info
@@ -378,6 +414,23 @@ class Panel(wx.Panel):
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)
+    
+    
+    ## TODO: Doxygen
+    def OnSetCustomFilename(self, event=None):
+        if not self.chk_filename.IsEnabled():
+            self.txt_filename.Enable(False)
+            self.input_filename.Enable(False)
+            return
+        
+        if self.chk_filename.GetValue():
+            self.txt_filename.Enable(False)
+            self.input_filename.Enable(False)
+            return
+        
+        self.txt_filename.Enable(True)
+        self.input_filename.Enable(True)
+    
     
     def OpenFile(self, event):
         cont = False
