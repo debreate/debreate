@@ -11,6 +11,7 @@ from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonDel
 from dbr.buttons    import ButtonPreview64
 from dbr.buttons    import ButtonSave64
+from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
 
 
@@ -584,7 +585,15 @@ class Panel(wx.Panel):
         for K in data_defs:
             if K not in (u'Version',):
                 self.misc.WriteText(u'{}={}'.format(K, data_defs[K]))
-            
+        
+        if misc_defs:
+            for K in misc_defs:
+                value = misc_defs[K]
+                if not TextIsEmpty(value):
+                    if K == u'FILENAME':
+                        self.input_filename.SetValue(value)
+                        self.chk_filename.SetValue(False)
+        
         self.OnToggle(None)
     
     
