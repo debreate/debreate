@@ -564,6 +564,11 @@ class Panel(wx.Panel):
         if self.activate.GetValue():
             data = self.GetMenuInfo()
             data = "\n".join(data.split("\n")[1:])
+            
+            if not self.chk_filename.GetValue():
+                data = "[Filename={}]\n{}".format(self.input_filename.GetValue(), data)
+            
             return "<<MENU>>\n1\n%s\n<</MENU>>" % data
+        
         else:
             return "<<MENU>>\n0\n<</MENU>>"
