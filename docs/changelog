@@ -35,5 +35,5 @@
 - Uses 'setup.py' to generate Makefile
 - Support for legacy project files
 - Log window when debugging enabled
-- Parses command line
-- Creates mimetypes for project files
+- Better support for command line parsing
+- Mimetypes application/x-dbpz & application/x-dbp for project files
