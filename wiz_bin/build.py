@@ -256,7 +256,7 @@ class Panel(wx.Panel):
                 create_menu = self.parent.page_menu.activate.GetValue()
                 if create_menu:
                     tasks += 1
-                    menu_data = self.parent.page_menu.GetMenuInfo().split("\n")
+                    menu_data = self.parent.page_menu.GetLauncherInfo().split("\n")
                 progress += 1
                 
                 # *** MD5SUMS

@@ -300,49 +300,61 @@ class Panel(wx.ScrolledWindow):
         self.OnSetCustomFilename(None)
     
     
-    def GetMenuInfo(self):
-        # Create list to store info
+    ## Formats the launcher information for export
+    def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
         
-        # Add Name
-        desktop_list.append(u'Name={}'.format(self.name_input.GetValue()))
+        name = self.name_input.GetValue()
+        if not TextIsEmpty(name):
+            desktop_list.append(u'Name={}'.format(name))
         
-        # Add Version
         desktop_list.append(u'Version=1.0')
         
-        # Add Executable
-        desktop_list.append(u'Exec={}'.format(self.exe_input.GetValue()))
+        executable = self.exe_input.GetValue()
+        if not TextIsEmpty(executable):
+            desktop_list.append(u'Exec={}'.format(executable))
         
-        # Add Comment
-        desktop_list.append(u'Comment={}'.format(self.comm_input.GetValue()))
+        comment = self.comm_input.GetValue()
+        if not TextIsEmpty(comment):
+            desktop_list.append(u'Comment={}'.format(comment))
         
-        # Add Icon
-        desktop_list.append(u'Icon={}'.format(self.icon_input.GetValue()))
+        icon = self.icon_input.GetValue()
+        if not TextIsEmpty(icon):
+            desktop_list.append(u'Icon={}'.format(icon))
         
-        # Add Type
-        desktop_list.append(u'Type={}'.format(self.type_choice.GetValue()))
+        launcher_type = self.type_choice.GetValue()
+        if not TextIsEmpty(launcher_type):
+            desktop_list.append(u'Type={}'.format(launcher_type))
         
-        # Add Terminal
-        desktop_list.append(u'Terminal={}'.format(self.term_choice.GetStringSelection()))
+        terminal = self.term_choice.GetStringSelection()
+        if not TextIsEmpty(terminal):
+            desktop_list.append(u'Terminal={}'.format(terminal))
         
-        # Add Startup Notify
-        desktop_list.append(u'StartupNotify={}'.format(self.notify_choice.GetStringSelection()))
+        startup_notify = self.notify_choice.GetStringSelection()
+        if not TextIsEmpty(startup_notify):
+            desktop_list.append(u'StartupNotify={}'.format(startup_notify))
         
-        # Add Encoding
-        enc = self.enc_input.GetValue()
-        desktop_list.append(u'Encoding={}'.format(self.enc_input.GetValue()))
+        encoding = self.enc_input.GetValue()
+        if not TextIsEmpty(encoding):
+            desktop_list.append(u'Encoding={}'.format(encoding))
         
-        # Add Categories
-        cat_list = []
+        categories = []
         cat_total = self.categories.GetItemCount()
         count = 0
         while count < cat_total:
-            cat_list.append(self.categories.GetItemText(count))
+            C = self.categories.GetItemText(count)
+            if not TextIsEmpty(C):
+                categories.append(self.categories.GetItemText(count))
+            
             count += 1
+        
         # Add a final semi-colon if categories is not empty
-        if cat_list != []:
-            cat_list[-1] = u'{};'.format(cat_list[-1])
-        desktop_list.append(u'Categories={}'.format(u';'.join(cat_list)))
+        if categories:
+            categories = u';'.join(categories)
+            if categories[-1] != u';':
+                categories = u'{};'.format(categories)
+            
+            desktop_list.append(u'Categories={}'.format(categories))
         
         # Add Misc
         if self.misc.GetValue() != wx.EmptyString:
@@ -379,7 +391,7 @@ class Panel(wx.ScrolledWindow):
     ## Saves launcher information to file
     def OnSaveLauncher(self, event):
         # Get data to write to control file
-        menu_data = self.GetMenuInfo().encode(u'utf-8')
+        menu_data = self.GetLauncherInfo().encode(u'utf-8')
         
         # Saving?
         cont = False
@@ -471,7 +483,7 @@ class Panel(wx.ScrolledWindow):
     
     def OnPreviewLauncher(self, event):
         # Show a preview of the .desktop config file
-        config = self.GetMenuInfo()
+        config = self.GetLauncherInfo()
         
         dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
         preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
@@ -550,7 +562,7 @@ class Panel(wx.ScrolledWindow):
                     control.SetValue(data_defs[label])
                     data_defs_remove.append(label)
                 
-                except ValueError:
+                except KeyError:
                     pass
             
             # Fields using SetSelection() function
@@ -564,7 +576,7 @@ class Panel(wx.ScrolledWindow):
                     control.SetStringSelection(data_defs[label].lower())
                     data_defs_remove.append(label)
                 
-                except ValueError:
+                except KeyError:
                     pass
             
             try:
@@ -573,7 +585,7 @@ class Panel(wx.ScrolledWindow):
                     self.categories.InsertStringItem(self.categories.GetItemCount(), C)
                 data_defs_remove.append(u'Categories')
             
-            except ValueError:
+            except KeyError:
                 pass
         
         for K in data_defs_remove:
@@ -598,7 +610,7 @@ class Panel(wx.ScrolledWindow):
     
     def GatherData(self):
         if self.activate.GetValue():
-            data = self.GetMenuInfo()
+            data = self.GetLauncherInfo()
             data = u'\n'.join(data.split(u'\n')[1:])
             
             if not self.chk_filename.GetValue():
