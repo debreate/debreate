@@ -64,13 +64,15 @@ class Panel(wx.Panel):
         self.input_filename = wx.TextCtrl(self)
         self.chk_filename = wx.CheckBox(self, label=_('Use "Name" as output filename (<name>.desktop)'))
         self.chk_filename.SetValue(True)
-        '''
-        layout_filename = wx.BoxSizer(wx.HORIZONTAL)
-        layout_filename.Add(self.txt_filename, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        layout_filename.Add(self.input_filename, 0, wx.ALIGN_CENTER_VERTICAL|wx.RIGHT, 5)
-        layout_filename.Add(self.chk_filename, 0, wx.ALIGN_CENTER_VERTICAL)
-        '''
+        
         self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
+        
+        for I in self.txt_filename, self.input_filename:
+            I.SetToolTip(wx.ToolTip(_('Custom filename to use for launcher')))
+        
+        self.chk_filename.SetToolTip(
+                wx.ToolTip(_('If checked, the lowercase value of the "Name" field will be used for the filename'))
+            )
         
         # --- NAME (menu)
         self.name_text = wx.StaticText(self, -1, _('Name'))
