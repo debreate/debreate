@@ -374,17 +374,21 @@ class Panel(wx.ScrolledWindow):
         cat = u''.join(cat)
         
         if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
-            self.categories.InsertStringItem(0, cat)
+            self.categories.InsertStringItem(self.categories.GetItemCount(), cat)
         
         elif id == wx.WXK_DELETE:
-            cur_cat = self.categories.GetFirstSelected()
-            self.categories.DeleteItem(cur_cat)
+            if self.categories.GetItemCount() and self.categories.GetSelectedItemCount():
+                cur_cat = self.categories.GetFirstSelected()
+                self.categories.DeleteItem(cur_cat)
         
         elif id == wx.WXK_ESCAPE:
-            confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-            if confirm.ShowModal() == wx.ID_YES:
-                self.categories.DeleteAllItems()
+            if self.categories.GetItemCount():
+                confirm = wx.MessageDialog(self, GT(u'Clear categories?'), GT(u'Confirm'),
+                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+                
+                if confirm.ShowModal() == wx.ID_YES:
+                    self.categories.DeleteAllItems()
+        
         event.Skip()
     
     
