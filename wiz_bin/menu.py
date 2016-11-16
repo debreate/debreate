@@ -47,7 +47,7 @@ class Panel(wx.Panel):
         self.button_save = ButtonSave64(self)
         self.button_preview = ButtonPreview64(self)
         
-        self.open.Bind(wx.EVT_BUTTON, self.OpenFile)
+        self.open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
         wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSave)
         wx.EVT_BUTTON(self.button_preview, wx.ID_ANY, self.OnPreview)
         
@@ -288,7 +288,7 @@ class Panel(wx.Panel):
             }
     
     
-    def OnToggle(self, event):
+    def OnToggle(self, event=None):
         if self.activate.IsChecked():
             for item in self.menu_list:
                 item.Enable()
@@ -442,9 +442,10 @@ class Panel(wx.Panel):
         self.input_filename.Enable(True)
     
     
-    def OpenFile(self, event):
+    ## Loads a .desktop launcher's data
+    def OnLoadLauncher(self, event=None):
         cont = False
-        if self.parent.parent.cust_dias.IsChecked():
+        if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
             dia = db.OpenFile(self, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
@@ -456,15 +457,17 @@ class Panel(wx.Panel):
         
         if cont == True:
             path = dia.GetPath()
-            file = open(path, u'r')
-            text = file.read()
-            file.close()
-            data = text.split(u'\n')
+            
+            FILE_BUFFER = open(path, u'r')
+            data = FILE_BUFFER.read().split(u'\n')
+            FILE_BUFFER.close()
+            
+            # Remove unneeded lines
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
-                # First line needs to be changed to "1"
-            data.insert(0, u'1')
-            self.SetFieldData(u'\n'.join(data))
+            
+            self.SetLauncherData(u'\n'.join(data), enabled=True)
+    
     
     def OnPreview(self, event):
         # Show a preview of the .desktop config file
@@ -497,76 +500,93 @@ class Panel(wx.Panel):
         self.activate.SetValue(False)
         self.OnToggle(None)
     
-    def SetFieldData(self, data):
+    
+    ## Fills out launcher information from loaded file
+    def SetLauncherData(self, data, enabled=True):
+        
+        # Make sure we are dealing with a list
+        if isinstance(data, (unicode, str)):
+            data = data.split(u'\n')
+        
         # Clear all fields first
         self.ResetAllFields()
         self.activate.SetValue(False)
         
-        if int(data[0]):
+        if enabled:
             self.activate.SetValue(True)
+            
+            data_defs = {}
+            data_defs_remove = []
+            misc_defs = {}
+            
+            for L in data:
+                if u'=' in L:
+                    if L[0] == u'[' and L[-1] == u']':
+                        key = L[1:-1].split(u'=')
+                        value = key[1]
+                        key = key[0]
+                        
+                        misc_defs[key] = value
+                    
+                    else:
+                        key = L.split(u'=')
+                        value = key[1]
+                        key = key[0]
+                        
+                        data_defs[key] = value
+            
             # Fields using SetValue() function
             set_value_fields = (
-                (u'Name', self.name_input), (u'Exec', self.exe_input), (u'Comment', self.comm_input),
-                (u'Icon', self.icon_input)
+                (u'Name', self.name_input),
+                (u'Exec', self.exe_input),
+                (u'Comment', self.comm_input),
+                (u'Icon', self.icon_input),
+                (u'Type', self.type_choice),
+                (u'Encoding', self.enc_input),
                 )
+            
+            for label, control in set_value_fields:
+                try:
+                    control.SetValue(data_defs[label])
+                    data_defs_remove.append(label)
+                
+                except ValueError:
+                    pass
             
             # Fields using SetSelection() function
             set_selection_fields = (
-                (u'Terminal', self.term_choice, self.term_opt),
-                (u'StartupNotify', self.notify_choice, self.notify_opt)
+                (u'Terminal', self.term_choice), #, self.term_opt),
+                (u'StartupNotify', self.notify_choice), #, self.notify_opt)
                 )
             
-            # Fields using either SetSelection() or SetValue()
-            set_either_fields = (
-                (u'Type', self.type_choice, self.type_opt),
-                (u'Encoding', self.enc_input, self.enc_opt)
-                )
+            for label, control in set_selection_fields:
+                try:
+                    control.SetStringSelection(data_defs[label].lower())
+                    data_defs_remove.append(label)
+                
+                except ValueError:
+                    pass
             
-            lines = data.split(u'\n')
-            
-            # Leave leftover text in this list to dump into misc field
-            leftovers = lines[:]
-            
-            # Remove 1st line (1) from leftovers
-            leftovers = leftovers[1:]
-            
-            # Remove Version field since is not done below
             try:
-                leftovers.remove(u'Version=1.0')
+                categories = tuple(data_defs[u'Categories'].split(u';'))
+                for C in categories:
+                    self.categories.InsertStringItem(self.categories.GetItemCount(), C)
+                data_defs_remove.append(u'Categories')
+            
             except ValueError:
                 pass
+        
+        for K in data_defs_remove:
+            if K in data_defs:
+                del data_defs[K]
+        
+        # Add any leftover keys to misc/other
+        for K in data_defs:
+            if K not in (u'Version',):
+                self.misc.WriteText(u'{}={}'.format(K, data_defs[K]))
             
-            for line in lines:
-                f1 = line.split(u'=')[0]
-                f2 = u'='.join(line.split(u'=')[1:])
-                for setval in set_value_fields:
-                    if f1 == setval[0]:
-                        setval[1].SetValue(f2)
-                        leftovers.remove(line) # Remove the field so it's not dumped into misc
-                for setsel in set_selection_fields:
-                    if f1 == setsel[0]:
-                        setsel[1].SetSelection(setsel[2].index(f2))
-                        leftovers.remove(line)
-                for either in set_either_fields:
-                    if f1 == either[0]:
-                        # If the value is in the predefined options we will set the field data to show
-                        # the option so that the mouse wheel works when hovering over field
-                        if f2 in either[2]:
-                            either[1].SetSelection(either[2].index(f2))
-                        else:
-                            either[1].SetValue(f2)
-                        leftovers.remove(line)
-                # Categories
-                if f1 == u'Categories':
-                    leftovers.remove(line)
-                    categories = f2.split(u';')
-                    cat_count = len(categories)-1
-                    while cat_count > 0:
-                        cat_count -= 1
-                        self.categories.InsertStringItem(0, categories[cat_count])
-            if len(leftovers) > 0:
-                self.misc.SetValue(u'\n'.join(leftovers))
         self.OnToggle(None)
+    
     
     def GatherData(self):
         if self.activate.GetValue():
