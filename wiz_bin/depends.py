@@ -262,8 +262,8 @@ class Panel(wx.Panel):
     
 
 
-class AutoListCtrl(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):
+class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
     """A ListCtrl that automatically expands columns"""
     def __init__(self, parent, id):
-        wx.ListCtrl.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+        wx.ListView.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         LC.ListCtrlAutoWidthMixin.__init__(self)
