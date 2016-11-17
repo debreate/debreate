@@ -162,6 +162,8 @@ if conf_values[u'center']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
+Debreate.cust_dias.Check(conf_values[u'dialogs'])
+
 parsed_path = GetParsedPath()
 if parsed_path:
     project_file = parsed_path
