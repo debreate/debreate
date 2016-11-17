@@ -156,6 +156,8 @@ class MainWindow(wx.Frame):
         self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, _('Use Custom Dialogs'),
             _('Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
+        wx.EVT_MENU(self, ID_DIALOGS, self.OnEnableCustomDialogs)
+        
         self.menu_opt.AppendItem(self.cust_dias)
         
         # ----- Help Menu
@@ -306,7 +308,10 @@ class MainWindow(wx.Frame):
             err.ShowModal()
     
     
-    ### ***** Menu Handlers ***** ###
+    ## Writes dialog settings to config
+    def OnEnableCustomDialogs(self, event=None):
+        WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+    
     
     def OnNewProject(self, event):
         dia = wx.MessageDialog(self, _('You will lose any unsaved information\n\nContinue?'),
@@ -423,7 +428,6 @@ class MainWindow(wx.Frame):
                 WriteConfig(u'size', self.GetSizeTuple())
                 WriteConfig(u'center', False)
             
-            WriteConfig(u'dialogs', self.cust_dias.IsChecked())
             WriteConfig(u'workingdir', os.getcwd())
             
             self.Destroy()
