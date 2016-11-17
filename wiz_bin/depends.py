@@ -2,13 +2,15 @@
 
 # Page defining dependencies
 
-import wx, wx.lib.mixins.listctrl as LC
+import wx
+import wx.lib.mixins.listctrl as LC
 
-from dbr.buttons import ButtonAdd
-from dbr.buttons import ButtonClear
-from dbr.buttons import ButtonDel
-from dbr.buttons import ButtonPipe
-from dbr.functions import TextIsEmpty
+from dbr.buttons    import ButtonAdd
+from dbr.buttons    import ButtonClear
+from dbr.buttons    import ButtonDel
+from dbr.buttons    import ButtonPipe
+from dbr.functions  import TextIsEmpty
+from dbr.language   import GT
 
 
 ID = wx.NewId()
@@ -18,60 +20,60 @@ ID_Delete = wx.NewId()
 
 class Panel(wx.Panel):
     def __init__(self, parent, id=ID):
-        wx.Panel.__init__(self, parent, id, name=_('Dependencies and Conflicts'))
+        wx.Panel.__init__(self, parent, id, name=GT(u'Dependencies and Conflicts'))
         
         # ----- Tool Tips
-        dep_tip = wx.ToolTip(_('Package will need to be installed'))
-        pre_tip = wx.ToolTip(_('Package will need to be installed and configured first'))
-        rec_tip = wx.ToolTip(_('Package is highly recommended and will be installed by default'))
-        sug_tip = wx.ToolTip(_('Package may be useful but is not necessary and will not be installed by default'))
-        enh_tip = wx.ToolTip(_('This package may be useful to enhanced package'))
-        con_tip = wx.ToolTip(_('Package will be removed from the system if it is installed'))
-        rep_tip = wx.ToolTip(_('Package or its files may be overwritten'))
-        break_tip = wx.ToolTip(_('Package conflicts and will be de-configured'))
-#        syn_tip = wx.ToolTip("Breifly summarize the purpose of the application")
-#        desc_tip = wx.ToolTip("Here you can give a more detailed explanation\n\n\
-#If you need help open \"Help/Example Control\" for details on formatting")
+        dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))
+        pre_tip = wx.ToolTip(GT(u'Package will need to be installed and configured first'))
+        rec_tip = wx.ToolTip(GT(u'Package is highly recommended and will be installed by default'))
+        sug_tip = wx.ToolTip(GT(u'Package may be useful but is not necessary and will not be installed by default'))
+        enh_tip = wx.ToolTip(GT(u'This package may be useful to enhanced package'))
+        con_tip = wx.ToolTip(GT(u'Package will be removed from the system if it is installed'))
+        rep_tip = wx.ToolTip(GT(u'Package or its files may be overwritten'))
+        break_tip = wx.ToolTip(GT(u'Package conflicts and will be de-configured'))
+#        syn_tip = wx.ToolTip(GT(u'Breifly summarize the purpose of the application'))
+#        desc_tip = wx.ToolTip(GT(u'Here you can give a more detailed explanation\n\n\
+#If you need help open "Help/Example Control" for details on formatting'))
         
         
         # --- DEPENDS
-        self.dep_chk = wx.RadioButton(self, -1, _('Depends'), name='Depends', style=wx.RB_GROUP)
+        self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
         self.dep_chk.SetToolTip(dep_tip)
         
         # --- PRE-DEPENDS
-        self.pre_chk = wx.RadioButton(self, -1, _('Pre-Depends'), name='Pre-Depends')
+        self.pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
         self.pre_chk.SetToolTip(pre_tip)
         
         # --- RECOMMENDS
-        self.rec_chk = wx.RadioButton(self, -1, _('Recommends'), name='Recommends')
+        self.rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
         self.rec_chk.SetToolTip(rec_tip)
         
         # --- SUGGESTS
-        self.sug_chk = wx.RadioButton(self, -1, _('Suggests'), name='Suggests')
+        self.sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
         self.sug_chk.SetToolTip(sug_tip)
         
         # --- ENHANCES
-        self.enh_chk = wx.RadioButton(self, -1, _('Enhances'), name='Enhances')
+        self.enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
         self.enh_chk.SetToolTip(enh_tip)
         
         # --- CONFLICTS
-        self.con_chk = wx.RadioButton(self, -1, _('Conflicts'), name='Conflicts')
+        self.con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
         self.con_chk.SetToolTip(con_tip)
         
         # --- REPLACES
-        self.rep_chk = wx.RadioButton(self, -1, _('Replaces'), name='Replaces')
+        self.rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
         self.rep_chk.SetToolTip(rep_tip)
         
         # --- BREAKS
-        self.break_chk = wx.RadioButton(self, -1, _('Breaks'), name='Breaks')
+        self.break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
         self.break_chk.SetToolTip(break_tip)
         
         
         # Input for dependencies
-        self.pack_text = wx.StaticText(self, -1, _('Package'))
+        self.pack_text = wx.StaticText(self, -1, GT(u'Package'))
         self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
-        self.oper_options = (">=", "<=", "=", ">>", "<<")
-        self.ver_text = wx.StaticText(self, -1, _('Version'))
+        self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
+        self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
         self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
         self.dep_oper.SetSelection(0)
         self.dep_ver = wx.TextCtrl(self, -1)
@@ -104,14 +106,14 @@ class Panel(wx.Panel):
         
         # ----- List
         self.dep_area = AutoListCtrl(self, -1)
-        self.dep_area.InsertColumn(0, _('Category'), width=150)
-        self.dep_area.InsertColumn(1, _('Package(s)'))
+        self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
+        self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         self.dep_area.SetColumnWidth(0, 100)
         
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
         
         # Start some sizing
-        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, -1, _('Categories')), wx.VERTICAL)
+        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, -1, GT(u'Categories')), wx.VERTICAL)
         rg1 = wx.GridSizer(4, 2, 5, 5)
         rg1.AddMany( [
         (self.dep_chk, 0),
@@ -159,12 +161,12 @@ class Panel(wx.Panel):
         self.Layout()
         
         # ----- List not needed anymore
-        self.setlabels = {	self.border: "Border", self.pack_text: "Pack", self.ver_text: "Ver",
-                            self.depadd: "Add", self.depapp: "App", self.deprem: "Rem"}
+        self.setlabels = {	self.border: u'Border', self.pack_text: u'Pack', self.ver_text: u'Ver',
+                            self.depadd: u'Add', self.depapp: u'App', self.deprem: u'Rem'}
         
-        self.categories = {	self.dep_chk: "Depends", self.pre_chk: "Pre-Depends", self.rec_chk: "Recommends",
-                            self.sug_chk: "Suggests", self.enh_chk: "Enhances", self.con_chk: "Conflicts",
-                            self.rep_chk: "Replaces", self.break_chk: "Breaks"}
+        self.categories = {	self.dep_chk: u'Depends', self.pre_chk: u'Pre-Depends', self.rec_chk: u'Recommends',
+                            self.sug_chk: u'Suggests', self.enh_chk: u'Enhances', self.con_chk: u'Conflicts',
+                            self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
     
     
     def GetDefaultCategory(self):
@@ -181,7 +183,7 @@ class Panel(wx.Panel):
         addname = self.dep_name.GetValue()
         oper = self.oper_options[self.dep_oper.GetCurrentSelection()]
         ver = self.dep_ver.GetValue()
-        addver = "(%s%s)" % (oper, ver)
+        addver = u'({}{})'.format(oper, ver)
             
         if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
             if TextIsEmpty(addname):
@@ -214,17 +216,17 @@ class Panel(wx.Panel):
                     prev_text = colitem.GetText()  # Get the text from that item
                     
                     if not TextIsEmpty(ver):
-                        self.dep_area.SetStringItem(listrow, 1, "%s | %s %s" % (prev_text, addname, addver))
+                        self.dep_area.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
                     
                     else:
-                        self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
+                        self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
         elif key_id == ID_Delete:
             self.dep_area.RemoveSelected()
         
         elif key_id == wx.ID_CLEAR:
             if self.dep_area.GetItemCount():
-                confirm = wx.MessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
+                confirm = wx.MessageDialog(self, GT(u'Clear all dependencies?'), GT(u'Confirm'),
                         wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
                 if confirm.ShowModal() == wx.ID_YES:
                     self.dep_area.DeleteAllItems()
