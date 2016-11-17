@@ -363,6 +363,17 @@ class Panel(wx.ScrolledWindow):
         return u'\n'.join(desktop_list)
     
     
+    ## Retrieves the filename to be used for the menu launcher
+    def GetOutputFilename(self):
+        if not self.chk_filename.GetValue():
+            filename = self.input_filename.GetValue().replace(u' ', u'_')
+            if not TextIsEmpty(filename):
+                return filename
+        
+        return self.name_input.GetValue().replace(u' ', u'_')
+            
+    
+    
     def SetCategory(self, event):
         try:
             id = event.GetKeyCode()
