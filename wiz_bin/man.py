@@ -61,7 +61,9 @@ class Panel(WizardPage, wx.Notebook):
     
     ## TODO: Doxygen
     def OnAddManpage(self, event=None):
-        getname = wx.TextEntryDialog(self.debreate, GT(u'Name for new manpage'))
+        main_window = wx.GetApp().GetTopWindow()
+        
+        getname = wx.TextEntryDialog(main_window, GT(u'Name for new manpage'))
         
         # FIXME: Better way to do this?
         invalid_name = True
@@ -74,7 +76,7 @@ class Panel(WizardPage, wx.Notebook):
                 for C in name:
                     if not C.isalnum():
                         invalid_name = True
-                        wx.MessageDialog(self.debreate, GT(u'Invalid characters found in name'), GT(u'Error'),
+                        wx.MessageDialog(main_window, GT(u'Invalid characters found in name'), GT(u'Error'),
                             style=wx.OK|wx.ICON_ERROR).ShowModal()
                         break
                 

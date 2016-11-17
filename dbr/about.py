@@ -440,7 +440,7 @@ class AboutDialog(wx.Dialog):
                 log_data.close()
             
             else:
-                ShowError(self.GetParent().GetDebreateWindow(), log_text)
+                ShowError(wx.GetApp().GetTopWindow(), log_text)
         
         else:
             log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))

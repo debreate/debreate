@@ -26,8 +26,6 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CHANGELOG)
         
-        self.debreate = parent.parent # MainWindow
-        
         self.package_text = wx.StaticText(self, label=GT(u'Package'), name=u'package')
         self.package = wx.TextCtrl(self, name=self.package_text.Name)
         
@@ -136,7 +134,7 @@ class Panel(WizardPage):
     def AddInfo(self, event):
         changes = self.changes.GetValue()
         if TextIsEmpty(changes):
-            wx.MessageDialog(self.GetDebreateWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
+            wx.MessageDialog(wx.GetApp().GetTopWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
                     style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
             return
         
@@ -186,10 +184,9 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        debreate = self.GetDebreateWindow()
-        
         if self.target_default.GetValue():
-            stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
+            stage = u'{}/usr/share/doc/{}'.format(stage,
+                    wx.GetApp().GetTopWindow().page_control.GetPackageName()).replace(u'//', u'/')
         else:
             stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
         
@@ -237,12 +234,14 @@ class Panel(WizardPage):
     #  
     #  FIXME: Rename to OnImportFromControl
     def ImportInfo(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Import package name and version from the control page
         # FIXME: Should use a safer method
-        self.package.SetValue(self.debreate.page_control.pack.GetValue())
-        self.version.SetValue(self.debreate.page_control.ver.GetValue())
-        self.maintainer.SetValue(self.debreate.page_control.auth.GetValue())
-        self.email.SetValue(self.debreate.page_control.email.GetValue())
+        self.package.SetValue(main_window.page_control.pack.GetValue())
+        self.version.SetValue(main_window.page_control.ver.GetValue())
+        self.maintainer.SetValue(main_window.page_control.auth.GetValue())
+        self.email.SetValue(main_window.page_control.email.GetValue())
     
     
     ## TODO: Doxygen

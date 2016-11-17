@@ -30,8 +30,6 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_COPYRIGHT)
         
-        self.debreate = parent.parent
-        
         # FIXME: Ignore symbolic links
         license_list = dbr.GetSystemLicensesList()
         # FIXME: Change variable name to 'self.builtin_licenses
@@ -93,11 +91,13 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def CopyStandardLicense(self, license_name):
+        main_window = wx.GetApp().GetTopWindow()
+        
         if self.DestroyLicenseText():
             license_path = u'{}/{}'.format(dbr.system_licenses_path, license_name)
             
             if not os.path.isfile(license_path):
-                ShowError(self.GetDebreateWindow(), u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
+                ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
                 return
             
             FILE = open(license_path, u'r')
@@ -123,10 +123,12 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def DestroyLicenseText(self):
+        main_window = wx.GetApp().GetTopWindow()
+        
         empty = TextIsEmpty(self.cp_display.GetValue())
         
         if not empty:
-            if wx.MessageDialog(self.debreate, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
+            if wx.MessageDialog(main_window, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
                 return 0
         
@@ -135,9 +137,9 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        debreate = self.GetDebreateWindow()
+        main_window = wx.GetApp().GetTopWindow()
         
-        stage = u'{}/usr/share/doc/{}'.format(stage, debreate.page_control.GetPackageName()).replace(u'//', u'/')
+        stage = u'{}/usr/share/doc/{}'.format(stage, main_window.page_control.GetPackageName()).replace(u'//', u'/')
         
         # FIXME: Should be error check
         self.Export(stage, u'copyright')
