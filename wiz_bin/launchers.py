@@ -15,6 +15,7 @@ from dbr.buttons        import ButtonSave64
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
+from dbr.functions      import FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -22,6 +23,7 @@ from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.wizard         import WizardPage
 from globals.errorcodes import dbrerrno
 from globals.ident      import ID_MENU
+from globals.ident      import page_ids
 from globals.tooltips   import SetPageToolTips
 
 
@@ -46,7 +48,6 @@ class Panel(WizardPage):
         # --- Buttons to open/preview/save .desktop file
         self.btn_open = ButtonBrowse64(self)
         self.btn_open.SetName(u'open')
-        self.options_button.append(self.btn_open)
         
         self.btn_save = ButtonSave64(self)
         self.btn_save.SetName(u'export')
@@ -70,6 +71,22 @@ class Panel(WizardPage):
         self.activate.default = False
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
+        
+        # --- Custom output filename
+        self.txt_filename = wx.StaticText(self, label=GT(u'Filename'))
+        self.input_filename = wx.TextCtrl(self)
+        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'))
+        self.chk_filename.default = True
+        self.chk_filename.SetValue(self.chk_filename.default)
+        
+        self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
+        
+        for I in self.txt_filename, self.input_filename:
+            I.SetToolTip(wx.ToolTip(GT(u'Custom filename to use for launcher')))
+        
+        self.chk_filename.SetToolTip(
+                wx.ToolTip(GT(u'If checked, the value of the "Name" field will be used for the filename'))
+            )
         
         # --- NAME (menu)
         self.name_text = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
@@ -183,13 +200,13 @@ class Panel(WizardPage):
             self.options_button.append(B)
         
         # NOTE: wx. 3.0 compat
-        if wx.MAJOR_VERSION > 3:
-            self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
-            self.categories.InsertColumn(0, u'')
-        
-        else:
+        if wx.MAJOR_VERSION > 2:
             self.categories = wx.ListCtrl(self, -1)
             self.categories.SetSingleStyle(wx.LC_SINGLE_SEL)
+        
+        else:
+            self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+            self.categories.InsertColumn(0, u'')
         
         # For manually setting background color after enable/disable
         self.categories.default_color = self.categories.GetBackgroundColour()
@@ -228,27 +245,53 @@ class Panel(WizardPage):
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
         misc_sizer.Add(self.other, 1, wx.EXPAND)
         
-        # Organize the widgets and create a nice border
-        sizer1 = wx.FlexGridSizer(0, 4, 5, 5)
+        # GridBagSizer flags
+        CENTER = wx.ALIGN_CENTER_VERTICAL
+        CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
+        CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
+        
+        sizer1 = wx.GridBagSizer(5, 5)
+        sizer1.SetCols(4)
         sizer1.AddGrowableCol(1)
-        sizer1.AddMany( [
-            (self.name_text, 0, wx.TOP, 10),(self.name_input, 0, wx.EXPAND|wx.TOP, 10),
-            (self.type_text, 0, wx.TOP, 10),(self.type_choice, 0, wx.EXPAND|wx.TOP, 10),
-            (self.exe_text),(self.exe_input, 0, wx.EXPAND),
-            (self.term_text),(self.term_choice),
-            (self.comm_text),(self.comm_input, 0, wx.EXPAND),
-            (self.notify_text),(self.notify_choice),
-            (self.icon_text),(self.icon_input, 0, wx.EXPAND),
-            (self.enc_text),(self.enc_input, 0, wx.EXPAND),
-            ] )
+        
+        # Row 1
+        sizer1.Add(self.txt_filename, (0, 0), flag=CENTER)
+        sizer1.Add(self.input_filename, pos=(0, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
+        
+        # Row 2
+        sizer1.Add(self.name_text, (1, 0), flag=CENTER)
+        sizer1.Add(self.name_input, (1, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.type_text, (1, 2), flag=CENTER)
+        sizer1.Add(self.type_choice, (1, 3), flag=CENTER)
+        
+        # Row 3
+        sizer1.Add(self.exe_text, (2, 0), flag=CENTER)
+        sizer1.Add(self.exe_input, (2, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.term_text, (2, 2), flag=CENTER)
+        sizer1.Add(self.term_choice, (2, 3), flag=CENTER)
+        
+        # Row 4
+        sizer1.Add(self.comm_text, (3, 0), flag=CENTER)
+        sizer1.Add(self.comm_input, (3, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.notify_text, (3, 2), flag=CENTER)
+        sizer1.Add(self.notify_choice, (3, 3), flag=CENTER)
+        
+        # Row 5
+        sizer1.Add(self.icon_text, (4, 0), flag=CENTER)
+        sizer1.Add(self.icon_input, (4, 1), flag=CENTER_EXPAND)
+        sizer1.Add(self.enc_text, (4, 2), flag=CENTER)
+        sizer1.Add(self.enc_input, (4, 3), flag=CENTER)
+        
         
         self.border = wx.StaticBox(self, -1, size=(20,20))
         border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        border_box.Add(sizer1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        
+        border_box.Add(sizer1, 0, wx.EXPAND|wx.BOTTOM, 5)
         border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        border_box.AddSpacer(20)
-        border_box.Add(self.other_text, 0, wx.LEFT, 6)
-        border_box.Add(self.other, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.AddSpacer(5)
+        border_box.Add(self.other_text, 0)
+        border_box.Add(self.other, 1, wx.EXPAND)
         
         
         self.OnToggle()  # Initially disable widgets
@@ -287,11 +330,22 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def Export(self, out_dir, out_name=wx.EmptyString, executable=False):
-        ret_code = WizardPage.Export(self, out_dir, out_name=out_name)
+        if out_name == wx.EmptyString:
+            out_name = page_ids[self.GetId()].upper()
+        
+        if FieldEnabled(self.chk_filename) and not self.chk_filename.GetValue():
+            if not TextIsEmpty(self.input_filename.GetValue()):
+                suffix = self.GetOutputFilename()
+                if not TextIsEmpty(suffix):
+                    out_name = u'{}-{}'.format(out_name, suffix)
+        
+        ret_code = WizardPage.Export(self, out_dir, out_name)
         
         absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
         if executable:
             os.chmod(absolute_filename, 0755)
+        
+        Logger.Debug(__name__, GT(u'Output filename: {}').format(out_name))
         
         return ret_code
     
@@ -303,7 +357,7 @@ class Panel(WizardPage):
         if not os.path.isdir(stage):
             os.makedirs(stage)
         
-        ret_code = self.Export(stage, u'{}.desktop'.format(self.name_input.GetValue()))
+        ret_code = self.Export(stage, u'{}.desktop'.format(self.GetOutputFilename()))
         if ret_code:
             return (ret_code, GT(u'Could not export menu launcher'))
         
@@ -389,6 +443,16 @@ class Panel(WizardPage):
         return(__name__, self.GetMenuInfo(), u'MENU')
     
     
+    ## Retrieves the filename to be used for the menu launcher
+    def GetOutputFilename(self):
+        if not self.chk_filename.GetValue():
+            filename = self.input_filename.GetValue().replace(u' ', u'_')
+            if not TextIsEmpty(filename):
+                return filename
+        
+        return self.name_input.GetValue().replace(u' ', u'_')
+    
+    
     ## TODO: Doxygen
     def ImportPageInfo(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
@@ -396,11 +460,18 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
         
+        custom_filename = os.path.basename(filename)
+        if u'-' in custom_filename:
+            custom_filename = custom_filename.split(u'-')[1]
+            if not TextIsEmpty(custom_filename):
+                self.chk_filename.SetValue(False)
+                self.input_filename.SetValue(custom_filename)
+        
         FILE = open(filename, u'r')
         menu_data = FILE.read().split(u'\n')
         FILE.close()
         
-        if menu_data[0] == u'[Desktop Entry]':
+        if u'[Desktop Entry]' in menu_data[0]:
             menu_data.remove(menu_data[0])
         
         menu_definitions = {}
@@ -505,6 +576,22 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    def OnSetCustomFilename(self, event=None):
+        if not self.chk_filename.IsEnabled():
+            self.txt_filename.Enable(False)
+            self.input_filename.Enable(False)
+            return
+        
+        if self.chk_filename.GetValue():
+            self.txt_filename.Enable(False)
+            self.input_filename.Enable(False)
+            return
+        
+        self.txt_filename.Enable(True)
+        self.input_filename.Enable(True)
+    
+    
+    ## TODO: Doxygen
     def OnSave(self, event):
         # Get data to write to control file
         menu_data = self.GetMenuInfo().encode(u'utf-8')
@@ -563,6 +650,9 @@ class Panel(WizardPage):
                 # Small hack to gray-out ListCtrl when disabled
                 if isinstance(O, wx.ListCtrl):
                     O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
+        
+        self.chk_filename.Enable(enable)
+        self.OnSetCustomFilename()
     
     
     ## TODO: Doxygen
@@ -590,8 +680,8 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ResetPageInfo(self):
-        self.activate.SetValue(self.activate.default)
-        self.OnToggle()
+        self.chk_filename.SetValue(self.chk_filename.default)
+        self.input_filename.Clear()
         
         for O in self.options_input:
             O.SetValue(O.default)
@@ -601,6 +691,9 @@ class Panel(WizardPage):
         
         for O in self.options_list:
             O.DeleteAllItems()
+        
+        self.activate.SetValue(self.activate.default)
+        self.OnToggle()
     
     
     ## TODO: Doxygen
@@ -636,8 +729,12 @@ class Panel(WizardPage):
         self.ResetPageInfo()
         self.activate.SetValue(False)
         
+        # TODO: Check for error with first character not being integer
+        Logger.Debug(__name__, GT(u'Importing legacy project; First character (should be "0" or "1"): {}').format(data[0]))
+        
         if int(data[0]):
             self.activate.SetValue(True)
+            
             # Fields using SetValue() function
             set_value_fields = (
                 (u'Name', self.name_input), (u'Exec', self.exe_input), (u'Comment', self.comm_input),
@@ -673,6 +770,23 @@ class Panel(WizardPage):
             for line in lines:
                 f1 = line.split(u'=')[0]
                 f2 = u'='.join(line.split(u'=')[1:])
+                
+                # Extracting "Filename" value
+                if f1.startswith(u'['):
+                    f1 = f1[1:]
+                    
+                    if f2.endswith(u']'):
+                        f2 = f2[:-1]
+                        
+                        if f1 == u'FILENAME' and not TextIsEmpty(f2):
+                            Logger.Debug(__name__, GT(u'Setting filename field: {}').format(f2))
+                            
+                            leftovers.remove(line)
+                            self.chk_filename.SetValue(False)
+                            self.input_filename.SetValue(f2)
+                            
+                            continue
+                
                 for setval in set_value_fields:
                     if f1 == setval[0]:
                         setval[1].SetValue(f2)
@@ -690,6 +804,7 @@ class Panel(WizardPage):
                         else:
                             either[1].SetValue(f2)
                         leftovers.remove(line)
+                
                 # Categories
                 if f1 == u'Categories':
                     leftovers.remove(line)
@@ -698,6 +813,8 @@ class Panel(WizardPage):
                     while cat_count > 0:
                         cat_count -= 1
                         self.categories.InsertStringItem(0, categories[cat_count])
+            
             if len(leftovers) > 0:
                 self.other.SetValue(u'\n'.join(leftovers))
+        
         self.OnToggle(None)
