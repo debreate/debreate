@@ -252,7 +252,7 @@ class LogWindow(wx.Dialog):
         
         wx.EVT_CLOSE(self, self.OnClose)
         wx.EVT_SHOW(self, self.OnShow)
-        wx.EVT_SHOW(parent.GetDebreateWindow(), self.OnShowMainWindow)
+        wx.EVT_SHOW(wx.GetApp().GetTopWindow(), self.OnShowMainWindow)
         
         self.SetMinSize(self.GetSize())
         
@@ -276,7 +276,7 @@ class LogWindow(wx.Dialog):
     
     ## Positions the log window relative to the main window
     def AlignWithMainWindow(self):
-        debreate_pos = self.GetParent().GetDebreateWindow().GetPosition()
+        debreate_pos = wx.GetApp().GetTopWindow().GetPosition()
         width = self.GetSize()[0]
         posX = debreate_pos[0] - width
         posY = debreate_pos[1]
@@ -321,7 +321,7 @@ class LogWindow(wx.Dialog):
     
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
-        log_select = wx.FileDialog(self.GetParent().GetDebreateWindow(), GT(u'Open Log'),
+        log_select = wx.FileDialog(wx.GetApp().GetTopWindow(), GT(u'Open Log'),
                 os.getcwd(), style=wx.FD_OPEN|wx.FD_CHANGE_DIR|wx.FD_FILE_MUST_EXIST)
         
         if log_select.ShowModal() == wx.ID_OK:
@@ -333,7 +333,7 @@ class LogWindow(wx.Dialog):
             
             # NOTE: Cannot import error module because it imports this one
             wx.MessageDialog(
-                    self.GetParent().GetDebreateWindow(),
+                    wx.GetApp().GetTopWindow(),
                     u'{}: {}'.format(GT(u'File does not exist'), log_file),
                     GT(u'Error'),
                     style=wx.OK|wx.ICON_ERROR
@@ -342,13 +342,13 @@ class LogWindow(wx.Dialog):
     
     ## Guarantess that menu item is synched with window's shown status
     def OnShow(self, event=None):
-        debreate = self.GetParent().GetDebreateWindow()
+        main_window = wx.GetApp().GetTopWindow()
         
         window_shown = self.IsShown()
-        menu_checked = debreate.menu_debug.IsChecked(ID_LOG)
+        menu_checked = main_window.menu_debug.IsChecked(ID_LOG)
         
         if menu_checked != window_shown:
-            debreate.menu_debug.Check(ID_LOG, window_shown)
+            main_window.menu_debug.Check(ID_LOG, window_shown)
     
     
     ## Use an event to show the log window
@@ -358,14 +358,13 @@ class LogWindow(wx.Dialog):
     #    list for the log.
     def OnShowMainWindow(self, event=None):
         # Make sure the main window has not been destroyed
-        if self.GetParent().GetDebreateWindow().IsShown():
+        if wx.GetApp().GetTopWindow().IsShown():
             self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        debreate = self.GetParent().GetDebreateWindow()
-        show = debreate.menu_debug.IsChecked(ID_LOG)
+        show = wx.GetApp().GetTopWindow().menu_debug.IsChecked(ID_LOG)
         
         if show:
             self.ShowLog()

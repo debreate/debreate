@@ -605,6 +605,8 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnSave(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Get data to write to control file
         menu_data = self.GetMenuInfo().encode(u'utf-8')
         menu_data = menu_data.split(u'\n')
@@ -614,7 +616,7 @@ class Panel(WizardPage):
         cont = False
         
         # Open a u'Save Dialog'
-        dia = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Save Launcher'), u'All files|*')
+        dia = GetFileSaveDialog(main_window, GT(u'Save Launcher'), u'All files|*')
         if ShowDialog(dia):
             cont = True
             path = dia.GetPath()
@@ -673,7 +675,7 @@ class Panel(WizardPage):
     def OpenFile(self, event):
         cont = False
         
-        dia = GetFileOpenDialog(self.GetDebreateWindow(), GT(u'Open Launcher'), u'All files|*')
+        dia = GetFileOpenDialog(wx.GetApp().GetTopWindow(), GT(u'Open Launcher'), u'All files|*')
         if ShowDialog(dia):
             cont = True
         

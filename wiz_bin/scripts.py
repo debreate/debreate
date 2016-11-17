@@ -46,10 +46,6 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_SCRIPTS)
         
-        # Allows calling parent methods
-        self.debreate = parent.parent
-        
-        
         self.preinst = DebianScript(self, ID_INST_PRE)
         self.postinst = DebianScript(self, ID_INST_POST)
         self.prerm = DebianScript(self, ID_RM_PRE)
@@ -212,13 +208,15 @@ scripts will be created that will place a symbolic link to your executables in t
     
     ## Imports names of executables from files page
     def ImportExe(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         event_id = event.GetId()
         if event_id == ID_IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.xlist = []
             
-            file_list = self.debreate.page_files.file_list
+            file_list = main_window.page_files.file_list
             
             item_count = file_list.GetItemCount()
             
@@ -297,7 +295,7 @@ scripts will be created that will place a symbolic link to your executables in t
     def OnGenerate(self, event):
         for S in self.postinst, self.prerm:
             if not TextIsEmpty(S.GetValue()):
-                confirm = wx.MessageDialog(self.GetParent().GetDebreateWindow(),
+                confirm = wx.MessageDialog(wx.GetApp().GetTopWindow(),
                         GT(u'The {} script is not empty').format(S.script_name), GT(u'Warning'),
                         style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION)
                 confirm.SetYesNoLabels(u'Continue', u'Cancel')

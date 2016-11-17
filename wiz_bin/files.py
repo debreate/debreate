@@ -44,7 +44,6 @@ class Panel(WizardPage):
         
         # Allows calling parent methods
         self.parent = parent
-        self.debreate = self.GetGrandParent()
         
         # Create a Context Menu
         self.menu = wx.Menu()
@@ -469,9 +468,11 @@ class Panel(WizardPage):
             self.file_list.AddFile(source_file, source_dir, T[0], executable=T[2])
         
         if len(missing_files):
+            main_window = wx.GetApp().GetTopWindow()
+            
             err_line1 = GT(u'The following files are missing from the filesystem.')
             err_line2 = GT(u'They will be highlighted on the Files page.')
-            DetailedMessageDialog(self.debreate, title=GT(u'Warning'), icon=ICON_ERROR,
+            DetailedMessageDialog(main_window, title=GT(u'Warning'), icon=ICON_ERROR,
                     text=u'\n'.join((err_line1, err_line2)),
                     details=u'\n'.join(missing_files)).ShowModal()
         
@@ -485,7 +486,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event):
-        dia = GetDirDialog(self.GetDebreateWindow(), GT(u'Choose Target Directory'))
+        dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.input_target.SetValue(dia.GetPath())
     

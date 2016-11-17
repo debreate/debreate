@@ -32,7 +32,6 @@ class Panel(WizardPage):
         self.prebuild_check = False
         
         self.wizard = parent
-        self.debreate = parent.parent
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -272,6 +271,8 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     ## FIXME: Deprecated???
     def GetCtrlInfo(self):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Creat a list to store info
         ctrl_list = []
         
@@ -338,7 +339,7 @@ class Panel(WizardPage):
                     u'Replaces': rep_list, u'Breaks': brk_list}
         
         # Get amount of items to add
-        dep_area = self.debreate.page_depends.dep_area
+        dep_area = main_window.page_depends.dep_area
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
@@ -513,12 +514,14 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         wildcards = (
             GT(u'All files'), u'*',
             GT(u'CONTROL file'), u'CONTROL',
         )
         
-        browse_dialog = GetFileOpenDialog(self.debreate, GT(u'Open File'), wildcards)
+        browse_dialog = GetFileOpenDialog(main_window, GT(u'Open File'), wildcards)
         if ShowDialog(browse_dialog):
             file_path = browse_dialog.GetPath()
             self.ImportPageInfo(file_path)
@@ -546,11 +549,13 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnKeyUp(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         modified = False
         for widget in self.text_widgets:
             if widget.GetValue() != self.text_widgets[widget]:
                 modified = True
-        self.debreate.SetSavedStatus(modified)
+        main_window.SetSavedStatus(modified)
         event.Skip()
     
     
@@ -581,11 +586,13 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnSave(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         wildcards = (
             GT(u'All files'), u'*',
         )
         
-        save_dialog = GetFileSaveDialog(self.debreate, GT(u'Save Control Information'), wildcards)
+        save_dialog = GetFileSaveDialog(main_window, GT(u'Save Control Information'), wildcards)
         if ShowDialog(save_dialog):
             file_path = save_dialog.GetPath()
             self.Export(os.path.dirname(file_path), os.path.basename(file_path))
