@@ -17,6 +17,7 @@ from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals.ident      import ID_DEPENDS, ID_APPEND
 from globals.tooltips   import SetPageToolTips
+from dbr.functions      import TextIsEmpty
 
 
 ## TODO: Doxygen
@@ -163,6 +164,11 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    def GetDefaultCategory(self):
+        return GT(u'Depends')
+    
+    
+    ## TODO: Doxygen
     def ImportPageInfo(self, d_type, d_string):
         Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
         
@@ -176,15 +182,6 @@ class Panel(WizardPage):
     ## Resets all fields on page to default values
     def ResetPageInfo(self):
         self.dep_area.DeleteAllItems()
-    
-    
-    ## TODO: Doxygen
-    def SelectAll(self):
-        total_items = self.dep_area.GetItemCount()
-        count = -1
-        while count < total_items:
-            count += 1
-            self.dep_area.Select(count)
     
     
     ## TODO: Doxygen
@@ -202,40 +199,50 @@ class Panel(WizardPage):
         addver = u'({}{})'.format(oper, ver)
             
         if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
+            if TextIsEmpty(addname):
+                return
+            
+            category = self.GetDefaultCategory()
             for R in self.radio_opts:
-                if R.GetValue() == True:
-                    if addname != u'':
-                        self.dep_area.InsertStringItem(0, R.GetName())
-                        if ver == u'':
-                            self.dep_area.SetStringItem(0, 1, addname)
-                        else:
-                            self.dep_area.SetStringItem(0, 1, u'{} {}'.format(addname, addver))
+                if R.GetValue():
+                    category = R.GetName()
+                    break
+            
+            if TextIsEmpty(ver):
+                self.dep_area.AppendStringItem((category, addname))
+            
+            else:
+                self.dep_area.AppendStringItem((category, u'{} {}'.format(addname, addver)))
         
         elif key_id == ID_APPEND:
-            listrow = self.dep_area.GetFocusedItem()  # Get row of selected item
-            colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
-            prev_text = colitem.GetText()  # Get the text from that item
-            if addname != u'':
-                if ver != u'':
-                    self.dep_area.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
-                else:
-                    self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
+            selected_count = self.dep_area.GetSelectedItemCount()
+            if not TextIsEmpty(addname) and self.dep_area.GetItemCount() and selected_count:
+                listrow = None
+                for X in range(selected_count):
+                    if listrow == None:
+                        listrow = self.dep_area.GetFirstSelected()
+                    
+                    else:
+                        listrow = self.dep_area.GetNextSelected(listrow)
+                    
+                    colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
+                    prev_text = colitem.GetText()  # Get the text from that item
+                    
+                    if not TextIsEmpty(ver):
+                        self.dep_area.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
+                    
+                    else:
+                        self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
         elif key_id == wx.ID_DELETE: # wx.WXK_DELETE:
-            selected = None
-            while selected != -1:
-                selected = self.dep_area.GetFirstSelected()
-                self.dep_area.DeleteItem(selected)
+            self.dep_area.RemoveSelected()
         
-        elif key_id == 65 and key_mod == 2:
-            self.SelectAll()
-        
-        elif key_id == wx.WXK_ESCAPE:
-            # Create the dialog
-            confirm = wx.MessageDialog(self, GT(u'Clear all dependencies?'), GT(u'Confirm'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-            if confirm.ShowModal() == wx.ID_YES:
-                self.dep_area.DeleteAllItems()
+        elif key_id == wx.ID_CLEAR:
+            if self.dep_area.GetItemCount():
+                confirm = wx.MessageDialog(self, GT(u'Clear all dependencies?'), GT(u'Confirm'),
+                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+                if confirm.ShowModal() == wx.ID_YES:
+                    self.dep_area.DeleteAllItems()
         
         event.Skip()
     
