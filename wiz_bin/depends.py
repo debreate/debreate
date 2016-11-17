@@ -232,7 +232,7 @@ class Panel(wx.Panel):
         elif id == 65 and mod == 2:
             self.SelectAll()
         
-        elif id == wx.WXK_ESCAPE:
+        elif id == wx.ID_CLEAR:
             # Create the dialog
 #			title = dia_lang.GetLanguage("Message Title", cur_lang)
 #			text = dia_lang.GetLanguage("Message Text", cur_lang)
