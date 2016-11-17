@@ -503,6 +503,8 @@ class Panel(wx.ScrolledWindow):
         dia.Destroy()
     
     def ResetAllFields(self):
+        self.input_filename.Clear()
+        self.chk_filename.SetValue(True)
         self.name_input.Clear()
         self.exe_input.Clear()
         self.comm_input.Clear()
