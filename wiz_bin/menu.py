@@ -381,7 +381,7 @@ class Panel(wx.ScrolledWindow):
                 cur_cat = self.categories.GetFirstSelected()
                 self.categories.DeleteItem(cur_cat)
         
-        elif id == wx.WXK_ESCAPE:
+        elif id == wx.ID_CLEAR:
             if self.categories.GetItemCount():
                 confirm = wx.MessageDialog(self, GT(u'Clear categories?'), GT(u'Confirm'),
                         wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
