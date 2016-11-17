@@ -384,7 +384,8 @@ class Panel(wx.Panel):
                     
                     # Remove invalid characters from filename
                     for char in invalid_chars:
-                        menu_filename = "_".join(menu_filename.split(char)) # Replace invalid char with "underscore"
+                        menu_filename = menu_filename.replace(char, u'_')
+                    
                     if not os.path.isdir(menu_dir):
                         os.makedirs(menu_dir)
                     menu_file = open("%s/%s.desktop" % (menu_dir, menu_filename), "w")
