@@ -3,6 +3,9 @@
 - Test that locales are working
 - Fix "Install package after build"
 - Fix size & position not being saved/loaded
+- Replace all string instances with unicode strings
+- Replace "_(" with "GT("
+- Replaced "%s" string formatting with ".format()" method
 
 0.8.0 Release:
 - Add Launchpad packages for 'yakkety'
