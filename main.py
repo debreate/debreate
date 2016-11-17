@@ -22,7 +22,7 @@ from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
 from globals.paths          import PATH_app
 from wiz_bin.build          import Panel as PanelBuild
-from wiz_bin.clog           import Panel as PanelChangelog
+from wiz_bin.changelog      import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl
 from wiz_bin.copyright      import Panel as PanelCopyright
 from wiz_bin.depends        import Panel as PanelDepends
