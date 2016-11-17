@@ -11,6 +11,7 @@ from dbr.buttons    import ButtonConfirm
 from dbr.buttons    import ButtonDel
 from dbr.buttons    import ButtonImport
 from dbr.buttons    import ButtonQuestion64
+from dbr.language   import GT
 from globals.ident  import ID_SCRIPTS
 
 
@@ -24,19 +25,19 @@ ID_Postrm = wx.NewId()
 
 class Panel(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_SCRIPTS, name=_('Scripts'))
+        wx.Panel.__init__(self, parent, ID_SCRIPTS, name=GT(u'Scripts'))
         
         # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_Preinst, _('Make this script'))
-        self.chk_postinst = wx.CheckBox(self, ID_Postinst, _('Make this script'))
-        self.chk_prerm = wx.CheckBox(self, ID_Prerm, _('Make this script'))
-        self.chk_postrm = wx.CheckBox(self, ID_Postrm, _('Make this script'))
+        self.chk_preinst = wx.CheckBox(self, ID_Preinst, GT(u'Make this script'))
+        self.chk_postinst = wx.CheckBox(self, ID_Postinst, GT(u'Make this script'))
+        self.chk_prerm = wx.CheckBox(self, ID_Prerm, GT(u'Make this script'))
+        self.chk_postrm = wx.CheckBox(self, ID_Postrm, GT(u'Make this script'))
         
         # Radio buttons for displaying between pre- and post- install scripts
-        self.rb_preinst = wx.RadioButton(self, ID_Preinst, _('Pre-Install'), style=wx.RB_GROUP)
-        self.rb_postinst = wx.RadioButton(self, ID_Postinst, _('Post-Install'))
-        self.rb_prerm = wx.RadioButton(self, ID_Prerm, _('Pre-Remove'))
-        self.rb_postrm = wx.RadioButton(self, ID_Postrm, _('Post-Remove'))
+        self.rb_preinst = wx.RadioButton(self, ID_Preinst, GT(u'Pre-Install'), style=wx.RB_GROUP)
+        self.rb_postinst = wx.RadioButton(self, ID_Postinst, GT(u'Post-Install'))
+        self.rb_prerm = wx.RadioButton(self, ID_Prerm, GT(u'Pre-Remove'))
+        self.rb_postrm = wx.RadioButton(self, ID_Postrm, GT(u'Post-Remove'))
         
         # Text area for each radio button
         self.te_preinst = wx.TextCtrl(self, ID_Preinst, style=wx.TE_MULTILINE)
@@ -45,7 +46,7 @@ class Panel(wx.Panel):
         self.te_postrm = wx.TextCtrl(self, ID_Postrm, style=wx.TE_MULTILINE)
         
         # For testing to make sure scripts page is reset back to defaults
-        #self.te_preinst.SetBackgroundColour("red")
+        #self.te_preinst.SetBackgroundColour(u'red')
         
         self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
@@ -84,8 +85,8 @@ class Panel(wx.Panel):
         self.xlist = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, -1, _('Path'))
-        self.al_input = db.PathCtrl(self, -1, "/usr/bin", db.PATH_WARN)
+        self.al_text = wx.StaticText(self, -1, GT(u'Path'))
+        self.al_input = db.PathCtrl(self, -1, u'/usr/bin', db.PATH_WARN)
         
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
         
@@ -101,14 +102,14 @@ class Panel(wx.Panel):
             self.executables = wx.ListCtrl(self, -1, size=(200,200),
                     style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
         
-        self.executables.InsertColumn(0, "")
+        self.executables.InsertColumn(0, u'')
         
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_Import)
-        self.al_import.SetToolTip(wx.ToolTip(_('Import executables from Files section')))
+        self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from Files section')))
         self.al_del = ButtonDel(self, ID_Remove)
         self.al_gen = ButtonBuild(self)
-        self.al_gen.SetToolTip(wx.ToolTip(_('Generate Scripts')))
+        self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate Scripts')))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
@@ -120,7 +121,7 @@ class Panel(wx.Panel):
         albutton_sizer.Add(self.al_gen, 1)#, wx.ALIGN_CENTER)
         
         # Nice border for auto-generate scripts area
-        self.autogen_border = wx.StaticBox(self, -1, _('Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
+        self.autogen_border = wx.StaticBox(self, -1, GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
         autogen_box = wx.StaticBoxSizer(self.autogen_border, wx.VERTICAL)
         autogen_box.Add(alpath_sizer, 0, wx.EXPAND)
         autogen_box.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
@@ -129,18 +130,20 @@ class Panel(wx.Panel):
         #autogen_box.Add(self.al_del, 0, wx.ALIGN_CENTER)
         
         # Text explaining Auto-Link
-        """self.al_text = wx.StaticText(self, -1, "How to use Auto-Link: Press the \"import\" button to \
-import any executables from the \"files\" tab.  Then press the \"generate\" button.  \"postinst\" and \"prerm\" \
-scripts will be created that will place a symbolic link to your executables in the path displayed above.")
-        self.al_text.Wrap(210)"""
+        '''
+        self.al_text = wx.StaticText(self, -1, u'How to use Auto-Link: Press the "import" button to \
+import any executables from the "files" tab.  Then press the "generate" button.  "postinst" and "prerm" \
+scripts will be created that will place a symbolic link to your executables in the path displayed above.')
+        self.al_text.Wrap(210)
+        '''
         
         # *** HELP *** #
         self.button_help = ButtonQuestion64(self)
-        self.al_help = wx.Dialog(self, -1, _('Auto-Link Help'))
-        description = _('Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
-        instructions = _('How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
+        self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
+        description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
+        instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
 
-        self.al_help_te = wx.TextCtrl(self.al_help, -1, '%s\n\n%s' % (description, instructions),
+        self.al_help_te = wx.TextCtrl(self.al_help, -1, u'%s\n\n%s' % (description, instructions),
                 style = wx.TE_MULTILINE|wx.TE_READONLY)
         self.al_help_ok = ButtonConfirm(self.al_help)
         
@@ -213,18 +216,18 @@ scripts will be created that will place a symbolic link to your executables in t
                     dest = files.GetItem(count, 1)  # Get the destination of executable
                     try:
                         # If destination doesn't start with "/" do not include executable
-                        if dest.GetText()[0] == "/":
-                            if dest.GetText()[-1] == "/" or dest.GetText()[-1] == " ":
+                        if dest.GetText()[0] == u'/':
+                            if dest.GetText()[-1] == u'/' or dest.GetText()[-1] == u' ':
                                 # In case the full path of the destination is "/" keep going
                                 if len(dest.GetText()) == 1:
-                                    dest_path = ""
+                                    dest_path = u''
                                 else:
                                     search = True
                                     slashes = 1  # Set the number of spaces to remove from dest path in case of multiple "/"
                                     while search:
                                         # Find the number of slashes/spaces at the end of the filename
                                         endline = slashes-1
-                                        if dest.GetText()[-slashes] == "/" or dest.GetText()[-slashes] == " ":
+                                        if dest.GetText()[-slashes] == u'/' or dest.GetText()[-slashes] == u' ':
                                             slashes += 1
                                         else:
                                             dest_path = dest.GetText()[:-endline]
@@ -233,13 +236,13 @@ scripts will be created that will place a symbolic link to your executables in t
                                 dest_path = dest.GetText()
                             
                             # Put "destination/filename" together in executable list
-                            self.xlist.insert(0, "%s/%s" %(dest_path, filename))
+                            self.xlist.insert(0, u'%s/%s' % (dest_path, filename))
                             self.executables.InsertStringItem(0, filename)
-                            self.executables.SetItemTextColour(0, "red")
+                            self.executables.SetItemTextColour(0, u'red')
                         else:
-                            print "{}: The executables destination is not valid".format(__name__)
+                            print(u'{}: The executables destination is not valid'.format(__name__))
                     except IndexError:
-                        print "{}: The executables destination is not available".format(__name__)
+                        print(u'{}: The executables destination is not available'.format(__name__))
                 count += 1
         
         elif id == ID_Remove:
@@ -265,8 +268,8 @@ scripts will be created that will place a symbolic link to your executables in t
             # If the link path does not exist on the system post a warning message
             if os.path.isdir(link_path) == False:
                 cont = False
-                msg_path = _('Path "%s" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), _('Path Warning'),
+                msg_path = GT(u'Path "%s" does not exist. Continue?')
+                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), GT(u'Path Warning'),
                     style=wx.YES_NO)
                 if link_error_dia.ShowModal() == wx.ID_YES:
                     cont = True
@@ -275,31 +278,31 @@ scripts will be created that will place a symbolic link to your executables in t
                 count = 0
                 while count < total:
                     filename = os.path.split(self.xlist[count])[1]
-                    if "." in filename:
-                        linkname = ".".join(filename.split(".")[:-1])
-                        link = "%s/%s" % (link_path, linkname)
+                    if u'.' in filename:
+                        linkname = u'.'.join(filename.split(u'.')[:-1])
+                        link = u'%s/%s' % (link_path, linkname)
                     else:
-                        link = "%s/%s" % (link_path, filename)
-    #				link = "%s/%s" % (link_path, os.path.split(self.xlist[count])[1])
-                    postinst_list.append("ln -fs \"%s\" \"%s\"" % (self.xlist[count], link))
-                    prerm_list.append("rm \"%s\"" % (link))
+                        link = u'%s/%s' % (link_path, filename)
+                    #link = u'%s/%s' % (link_path, os.path.split(self.xlist[count])[1])
+                    postinst_list.append(u'ln -fs "%s" "%s"' % (self.xlist[count], link))
+                    prerm_list.append(u'rm "%s"' % (link))
                     count += 1
                 
-                postinst = "\n\n".join(postinst_list)
-                prerm = "\n\n".join(prerm_list)
+                postinst = u'\n\n'.join(postinst_list)
+                prerm = u'\n\n'.join(prerm_list)
                 
-                self.te_postinst.SetValue("#! /bin/bash -e\n\n%s" % postinst)
+                self.te_postinst.SetValue(u'#! /bin/bash -e\n\n%s' % postinst)
                 self.chk_postinst.SetValue(True)
-                self.te_prerm.SetValue("#! /bin/bash -e\n\n%s" % prerm)
+                self.te_prerm.SetValue(u'#! /bin/bash -e\n\n%s' % prerm)
                 self.chk_prerm.SetValue(True)
                 
-                dia = wx.MessageDialog(self, _('post-install and pre-remove scripts generated'), _('Success'), wx.OK)
+                dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
                 dia.ShowModal()
                 dia.Destroy()
     
     def ChangeBG(self, exists):
-        if self.al_input.GetValue() == "":
-            self.al_input.SetValue("/")
+        if self.al_input.GetValue() == u'':
+            self.al_input.SetValue(u'/')
         elif exists == False:
             self.al_input.SetBackgroundColour((255, 0, 0, 255))
         else:
@@ -325,15 +328,15 @@ scripts will be created that will place a symbolic link to your executables in t
         self.rb_preinst.SetValue(True)
         self.ScriptSelect(None)
         
-        self.al_input.SetValue("/usr/bin")
+        self.al_input.SetValue(u'/usr/bin')
         self.al_input.SetBackgroundColour((255, 255, 255, 255))
         self.executables.DeleteAllItems()
     
     def SetFieldData(self, data):
-        preinst = data.split("<<PREINST>>\n")[1].split("\n<</PREINST>>")[0]
-        postinst = data.split("<<POSTINST>>\n")[1].split("\n<</POSTINST>>")[0]
-        prerm = data.split("<<PRERM>>\n")[1].split("\n<</PRERM>>")[0]
-        postrm = data.split("<<POSTRM>>\n")[1].split("\n<</POSTRM>>")[0]
+        preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
+        postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
+        prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
+        postrm = data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0]
         
         if int(preinst[0]):
             self.chk_preinst.SetValue(True)
@@ -363,10 +366,10 @@ scripts will be created that will place a symbolic link to your executables in t
     def GatherData(self):
         # Custom dictionary of scripts
         script_list = (
-            (self.chk_preinst, self.te_preinst, "PREINST"),
-            (self.chk_postinst, self.te_postinst, "POSTINST"),
-            (self.chk_prerm, self.te_prerm, "PRERM"),
-            (self.chk_postrm, self.te_postrm, "POSTRM")
+            (self.chk_preinst, self.te_preinst, u'PREINST'),
+            (self.chk_postinst, self.te_postinst, u'POSTINST'),
+            (self.chk_prerm, self.te_prerm, u'PRERM'),
+            (self.chk_postrm, self.te_postrm, u'POSTRM')
         )
         
         # Create a list to return the data
@@ -375,9 +378,9 @@ scripts will be created that will place a symbolic link to your executables in t
         for group in script_list:
             if group[0].GetValue():
                 #make_scripts = True
-                data.append("<<%s>>\n1\n%s\n<</%s>>" % (group[2], group[1].GetValue(), group[2]))
+                data.append(u'<<%s>>\n1\n%s\n<</%s>>' % (group[2], group[1].GetValue(), group[2]))
             else:
-                data.append("<<%s>>\n0\n<</%s>>" % (group[2], group[2]))
+                data.append(u'<<%s>>\n0\n<</%s>>' % (group[2], group[2]))
                 
         
-        return "<<SCRIPTS>>\n%s\n<</SCRIPTS>>" % "\n".join(data)
+        return u'<<SCRIPTS>>\n%s\n<</SCRIPTS>>' % u'\n'.join(data)

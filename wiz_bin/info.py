@@ -4,32 +4,33 @@
 import wx
 
 from dbr.custom     import Hyperlink
+from dbr.language   import GT
 from globals.ident  import ID_GREETING
 
 
 class Panel(wx.Panel):
-    def __init__(self, parent, name=_('Information')):
-        wx.Panel.__init__(self, parent, ID_GREETING, name=_('Information'))
+    def __init__(self, parent, name=GT(u'Information')):
+        wx.Panel.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         
         # Mode Information
-        m1 = _('Welcome to Debreate!')
-        m2 = _('Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
-        m3 = _('For a video tutorial check the link below.')
-        self.txt_bin = '%s\n\n%s\n\n%s' % (m1, m2, m3)
-        self.txt_src = "This mode is not fully functional"
-        self.txt_upd = "This mode is not fully functional"
+        m1 = GT(u'Welcome to Debreate!')
+        m2 = GT(u'Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
+        m3 = GT(u'For a video tutorial check the link below.')
+        self.txt_bin = u'%s\n\n%s\n\n%s' % (m1, m2, m3)
+        self.txt_src = u'This mode is not fully functional'
+        self.txt_upd = u'This mode is not fully functional'
         
         self.mode_info = (
-            (0, "Build Package from Precompiled Files", self.txt_bin),
-            (1, "Build Debian Source Package", self.txt_src),
-            (2, "Update a Package", self.txt_upd)
+            (0, u'Build Package from Precompiled Files', self.txt_bin),
+            (1, u'Build Debian Source Package', self.txt_src),
+            (2, u'Update a Package', self.txt_upd)
             )
         
         # ----- Helpful information to be displayed about each mode
         self.info = wx.StaticText(self, -1)
-        self.vidlink = Hyperlink(self, wx.ID_ANY, _('Building a Debian Package with Debreate'), 'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        self.vidlink = Hyperlink(self, wx.ID_ANY, GT(u'Building a Debian Package with Debreate'), u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
         self.info_border = wx.StaticBox(self, -1, size=(100,100))
         info_box = wx.GridSizer()
         info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
@@ -45,7 +46,7 @@ class Panel(wx.Panel):
         
         
     def SetInfo(self):
-        self.parent.SetTitle('Testing')
+        self.parent.SetTitle(u'Testing')
         self.info.SetLabel(self.txt_bin)
         
         self.info.Wrap(600) # Keep characters within the width of the window

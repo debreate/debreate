@@ -9,6 +9,7 @@ from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonBrowse
 from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonDel
+from dbr.language   import GT
 from globals.ident  import ID_FILES
 
 
@@ -20,7 +21,7 @@ ID_AddDir = 140
 ID_AddFile = 141
 ID_Refresh = 142
 
-home = os.getenv("HOME")
+home = os.getenv(u'HOME')
 
 class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
@@ -32,10 +33,10 @@ class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
 class Panel(wx.Panel):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_FILES, name=_('Files'))
+        wx.Panel.__init__(self, parent, ID_FILES, name=GT(u'Files'))
         
         # For identifying page to parent
-        #self.ID = "FILES"
+        #self.ID = u'FILES'
         
         # Allows calling parent methods
         self.parent = parent
@@ -43,9 +44,9 @@ class Panel(wx.Panel):
         # Create a Context Menu
         self.menu = wx.Menu()
         
-        self.add_dir = wx.MenuItem(self.menu, ID_AddDir, _('Add Folder'))
-        self.add_file = wx.MenuItem(self.menu, ID_AddFile, _('Add File'))
-        self.refresh = wx.MenuItem(self.menu, ID_Refresh, _('Refresh'))
+        self.add_dir = wx.MenuItem(self.menu, ID_AddDir, GT(u'Add Folder'))
+        self.add_file = wx.MenuItem(self.menu, ID_AddFile, GT(u'Add File'))
+        self.refresh = wx.MenuItem(self.menu, ID_Refresh, GT(u'Refresh'))
         
         wx.EVT_MENU(self, ID_AddDir, self.AddPath)
         wx.EVT_MENU(self, ID_AddFile, self.AddPath)
@@ -72,12 +73,12 @@ class Panel(wx.Panel):
         
         # ----- Destination path
         # choices of destination
-        self.radio_bin = wx.RadioButton(self, -1, "/bin", style=wx.RB_GROUP)
-        self.radio_usrbin = wx.RadioButton(self, -1, "/usr/bin")
-        self.radio_usrlib = wx.RadioButton(self, -1, "/usr/lib")
-        self.radio_locbin = wx.RadioButton(self, -1, "/usr/local/bin")
-        self.radio_loclib = wx.RadioButton(self, -1, "/usr/local/lib")
-        self.radio_cst = wx.RadioButton(self, -1, _('Custom'))
+        self.radio_bin = wx.RadioButton(self, -1, u'/bin', style=wx.RB_GROUP)
+        self.radio_usrbin = wx.RadioButton(self, -1, u'/usr/bin')
+        self.radio_usrlib = wx.RadioButton(self, -1, u'/usr/lib')
+        self.radio_locbin = wx.RadioButton(self, -1, u'/usr/local/bin')
+        self.radio_loclib = wx.RadioButton(self, -1, u'/usr/local/lib')
+        self.radio_cst = wx.RadioButton(self, -1, GT(u'Custom'))
         self.radio_cst.SetValue(True)
         
         # group buttons together
@@ -91,11 +92,11 @@ class Panel(wx.Panel):
         radio_sizer = wx.GridSizer(3, 2, 5, 5)
         for item in self.radio_group:
             radio_sizer.Add(item, 0)
-        self.radio_border = wx.StaticBox(self, -1, _('Target'), size=(20,20))
+        self.radio_border = wx.StaticBox(self, -1, GT(u'Target'), size=(20,20))
         radio_box = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
         radio_box.Add(radio_sizer, 0)
         
-        self.prev_dest_value = "/usr/bin"
+        self.prev_dest_value = u'/usr/bin'
         self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value)
         wx.EVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
         wx.EVT_KEY_UP(self.dest_cust, self.CheckDest)
@@ -125,8 +126,8 @@ class Panel(wx.Panel):
         # Set the width of first column on creation
         parent_size = self.GetGrandParent().GetSize()
         parent_width = parent_size[1]
-        self.dest_area.InsertColumn(0, _('File'), width=parent_width/3-10)
-        self.dest_area.InsertColumn(1, _('Target'))
+        self.dest_area.InsertColumn(0, GT(u'File'), width=parent_width/3-10)
+        self.dest_area.InsertColumn(1, GT(u'Target'))
         
         wx.EVT_KEY_DOWN(self.dest_area, self.DelPath)
         
@@ -150,7 +151,7 @@ class Panel(wx.Panel):
         self.Layout()
         
         # Lists of widgets that change language
-        self.setlabels = {	self.dest_browse: "Custom" }
+        self.setlabels = {	self.dest_browse: u'Custom' }
     
     
     def OnRightClick(self, event):
@@ -170,7 +171,7 @@ class Panel(wx.Panel):
             if dia.DisplayModal() == True:
                 self.dest_cust.SetValue(dia.GetPath())
         else:
-            dia = wx.DirDialog(self, _('Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
+            dia = wx.DirDialog(self, GT(u'Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 self.dest_cust.SetValue(dia.GetPath())
 #		if dia.GetPath() == True:
@@ -180,7 +181,7 @@ class Panel(wx.Panel):
     
     def GetDestValue(self, event):
         if self.dest_cust.GetValue() != wx.EmptyString:
-            if self.dest_cust.GetValue()[0] == "/":
+            if self.dest_cust.GetValue()[0] == u'/':
                 self.prev_dest_value = self.dest_cust.GetValue()
         event.Skip()
     
@@ -188,7 +189,7 @@ class Panel(wx.Panel):
         if self.dest_cust.GetValue() == wx.EmptyString:
             self.dest_cust.SetValue(self.prev_dest_value)
             self.dest_cust.SetInsertionPoint(-1)
-        elif self.dest_cust.GetValue()[0] != "/":
+        elif self.dest_cust.GetValue()[0] != u'/':
             self.dest_cust.SetValue(self.prev_dest_value)
             self.dest_cust.SetInsertionPoint(-1)
         event.Skip()
@@ -210,8 +211,8 @@ class Panel(wx.Panel):
             if total_files: # Continue if files are found
                 cont = True
                 count = 0
-                msg_files = _('Getting files from %s')
-                loading = wx.ProgressDialog(_('Progress'), msg_files % (pin), total_files, self,
+                msg_files = GT(u'Getting files from %s')
+                loading = wx.ProgressDialog(GT(u'Progress'), msg_files % (pin), total_files, self,
                                             wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
                 for root, dirs, files in os.walk(pin):
                     for file in files:
@@ -221,8 +222,8 @@ class Panel(wx.Panel):
                             sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
                             if sub_dir != wx.EmptyString:
                                 # Add the sub-dir to dest
-                                dest = "%s%s" % (pout, sub_dir)
-                                #self.list_data.insert(0, ("%s/%s" % (root, file), "%s/%s" % (sub_dir[1:], file), dest))
+                                dest = u'%s%s' % (pout, sub_dir)
+                                #self.list_data.insert(0, (u'%s/%s' % (root, file), u'%s/%s' % (sub_dir[1:], file), dest))
                                 self.list_data.insert(0, (u'%s/%s' % (root, file), file, dest))
                                 self.dest_area.InsertStringItem(0, file)
                                 self.dest_area.SetStringItem(0, 1, dest)
@@ -232,17 +233,17 @@ class Panel(wx.Panel):
                                 self.dest_area.SetStringItem(0, 1, pout)
                             count += 1
                             cont = loading.Update(count)
-                            if os.access("%s/%s" % (root,file), os.X_OK):
-                                self.dest_area.SetItemTextColour(0, "red")
+                            if os.access(u'%s/%s' % (root,file), os.X_OK):
+                                self.dest_area.SetItemTextColour(0, u'red')
         
         elif os.path.isfile(pin):
             file = os.path.split(pin)[1]
-            file = file.encode('utf-8')
+            file = file.encode(u'utf-8')
             self.list_data.insert(0, (pin, file, pout))
             self.dest_area.InsertStringItem(0, file)
             self.dest_area.SetStringItem(0, 1, pout)
             if os.access(pin, os.X_OK):
-                self.dest_area.SetItemTextColour(0, "red")
+                self.dest_area.SetItemTextColour(0, u'red')
     
     def OnRefresh(self, event):
         path = self.dir_tree.GetPath()
@@ -283,7 +284,7 @@ class Panel(wx.Panel):
                 for item in self.list_data:
                     file = self.dest_area.GetItemText(path)
                     dest = self.dest_area.GetItem(path, 1).GetText()
-                    if file.encode('utf-8') == item[1].decode('utf-8') and dest.encode('utf-8') == item[2].decode('utf-8'):
+                    if file.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
                         toremove.append(item)
                     
                 self.dest_area.DeleteItem(path) # Remove the item from the visible list
@@ -296,7 +297,7 @@ class Panel(wx.Panel):
     
     
     def ClearAll(self, event):
-        confirm = wx.MessageDialog(self, _('Clear all files?'), _('Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_YES:
             self.dest_area.DeleteAllItems()
             self.list_data = []
@@ -314,7 +315,7 @@ class Panel(wx.Panel):
     def ResetAllFields(self):
         self.radio_cst.SetValue(True)
         self.SetDestination(None)
-        self.dest_cust.SetValue("/usr/bin")
+        self.dest_cust.SetValue(u'/usr/bin')
         self.dest_area.DeleteAllItems()
         self.list_data = []
     
@@ -322,7 +323,7 @@ class Panel(wx.Panel):
         # Clear files list
         self.list_data = []
         self.dest_area.DeleteAllItems()
-        files_data = data.split("\n")
+        files_data = data.split(u'\n')
         if int(files_data[0]):
             # Get file count from list minus first item "1"
             files_total = len(files_data)
@@ -332,13 +333,13 @@ class Panel(wx.Panel):
             
             while files_total > 1:
                 files_total -= 1
-                src = (files_data[files_total].split(" -> ")[0], False)
+                src = (files_data[files_total].split(u' -> ')[0], False)
                 
                 # False changes to true if src file is executable
-                if src[0][-1] == "*":
+                if src[0][-1] == u'*':
                     src = (src[0][:-1], True) # Set executable flag and remove "*"
-                file = files_data[files_total].split(" -> ")[1]
-                dest = files_data[files_total].split(" -> ")[2]
+                file = files_data[files_total].split(u' -> ')[1]
+                dest = files_data[files_total].split(u' -> ')[2]
                 
                 # Check if files still exist
                 if os.path.exists(src[0]):
@@ -347,16 +348,16 @@ class Panel(wx.Panel):
                     self.list_data.insert(0, (src[0], file, dest))
                     # Check if file is executable
                     if src[1]:
-                        self.dest_area.SetItemTextColour(0, "red") # Set text color to red
+                        self.dest_area.SetItemTextColour(0, u'red') # Set text color to red
                 else:
                     missing_files.append(src[0])
             
             # If files are missing show a message
             if len(missing_files):
-                alert = wx.Dialog(self, -1, _('Missing Files'))
-                alert_text = wx.StaticText(alert, -1, _('Could not locate the following files:'))
+                alert = wx.Dialog(self, -1, GT(u'Missing Files'))
+                alert_text = wx.StaticText(alert, -1, GT(u'Could not locate the following files:'))
                 alert_list = wx.TextCtrl(alert, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-                alert_list.SetValue("\n".join(missing_files))
+                alert_list.SetValue(u'\n'.join(missing_files))
                 button_ok = wx.Button(alert, wx.ID_OK)
                 
                 alert_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -380,25 +381,25 @@ class Panel(wx.Panel):
                 item_dest = self.dest_area.GetItem(count, 1).GetText()
                 for item in self.list_data:
                     # Decode to unicode
-                    i0 = item[0].encode('utf-8')
-                    i1 = item[1].decode('utf-8')
-                    i2 = item[2].encode('utf-8')
-                    if i1 == item_file and i2.decode('utf-8') == item_dest:
+                    i0 = item[0].encode(u'utf-8')
+                    i1 = item[1].decode(u'utf-8')
+                    i2 = item[2].encode(u'utf-8')
+                    if i1 == item_file and i2.decode(u'utf-8') == item_dest:
                         item_src = i0
-                # Populate list with tuples of ("src", "file", "dest")
+                # Populate list with tuples of ('src', 'file', 'dest')
                 if self.dest_area.GetItemTextColour(count) == (255, 0, 0):
-                    file_list.append(("%s*" % item_src, item_file, item_dest))
+                    file_list.append((u'%s*' % item_src, item_file, item_dest))
                 else:
                     file_list.append((item_src, item_file, item_dest))
                 count += 1
         
             return_list = []
             for file in file_list:
-                f0 = u'%s'.encode('utf-8') % file[0]
-                f1 = u'%s'.encode('utf-8') % file[1]
-                f2 = u'%s'.encode('utf-8') % file[2]
+                f0 = u'%s'.encode(u'utf-8') % file[0]
+                f1 = u'%s'.encode(u'utf-8') % file[1]
+                f2 = u'%s'.encode(u'utf-8') % file[2]
                 return_list.append(u'%s -> %s -> %s' % (f0, f1, f2))
-            return "<<FILES>>\n1\n%s\n<</FILES>>" % "\n".join(return_list)
+            return u'<<FILES>>\n1\n%s\n<</FILES>>' % u'\n'.join(return_list)
         else:
             # Place a "0" in FILES field if we are not saving any files
-            return "<<FILES>>\n0\n<</FILES>>"
+            return u'<<FILES>>\n0\n<</FILES>>'

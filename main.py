@@ -59,15 +59,15 @@ ID_UPDATE = wx.NewId()
 
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
-        wx.Frame.__init__(self, None, wx.ID_ANY, _('Debreate - Debian Package Builder'), pos, size)
+        wx.Frame.__init__(self, None, wx.ID_ANY, GT(u'Debreate - Debian Package Builder'), pos, size)
         
         # The default title
-        self.default_title = _('Debreate - Debian Package Builder')
+        self.default_title = GT(u'Debreate - Debian Package Builder')
         
         self.SetMinSize((640,400))
         
         # ----- Set Titlebar Icon
-        self.main_icon = wx.Icon("%s/bitmaps/debreate64.png" % PATH_app, wx.BITMAP_TYPE_PNG)
+        self.main_icon = wx.Icon(u'%s/bitmaps/debreate64.png' % PATH_app, wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.main_icon)
         
         # ----- Status Bar
@@ -82,14 +82,14 @@ class MainWindow(wx.Frame):
         self.menu_file = wx.Menu()
         
         # Quick Build
-        self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD, _('Quick Build'),
-                _('Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(wx.Bitmap("%s/bitmaps/clock16.png" % PATH_app))
+        self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD, GT(u'Quick Build'),
+                GT(u'Build a package from an existing build tree'))
+        self.QuickBuild.SetBitmap(wx.Bitmap(u'%s/bitmaps/clock16.png' % PATH_app))
         
-        self.menu_file.Append(wx.ID_NEW, help=_('Start a new project'))
-        self.menu_file.Append(wx.ID_OPEN, help=_('Open a previously saved project'))
-        self.menu_file.Append(wx.ID_SAVE, help=_('Save current project'))
-        self.menu_file.Append(wx.ID_SAVEAS, help=_('Save current project with a new filename'))
+        self.menu_file.Append(wx.ID_NEW, help=GT(u'Start a new project'))
+        self.menu_file.Append(wx.ID_OPEN, help=GT(u'Open a previously saved project'))
+        self.menu_file.Append(wx.ID_SAVE, help=GT(u'Save current project'))
+        self.menu_file.Append(wx.ID_SAVEAS, help=GT(u'Save current project with a new filename'))
         self.menu_file.AppendSeparator()
         self.menu_file.AppendItem(self.QuickBuild)
         self.menu_file.AppendSeparator()
@@ -106,24 +106,24 @@ class MainWindow(wx.Frame):
         # ----- Page Menu
         self.menu_page = wx.Menu()
         
-        self.p_info = wx.MenuItem(self.menu_page, ID_GREETING, _('Information'),
-                _('Go to Information section'), kind=wx.ITEM_RADIO)
-        self.p_ctrl = wx.MenuItem(self.menu_page, ID_CONTROL, _('Control'),
-                _('Go to Control section'), kind=wx.ITEM_RADIO)
-        self.p_deps = wx.MenuItem(self.menu_page, ID_DEPENDS, _('Dependencies'),
-                _('Go to Dependencies section'), kind=wx.ITEM_RADIO)
-        self.p_files = wx.MenuItem(self.menu_page, ID_FILES, _('Files'),
-                _('Go to Files section'), kind=wx.ITEM_RADIO)
-        self.p_scripts = wx.MenuItem(self.menu_page, ID_SCRIPTS, _('Scripts'),
-                _('Go to Scripts section'), kind=wx.ITEM_RADIO)
-        self.p_clog = wx.MenuItem(self.menu_page, ID_CHANGELOG, _('Changelog'),
-                _('Go to Changelog section'), kind=wx.ITEM_RADIO)
-        self.p_cpright = wx.MenuItem(self.menu_page, ID_COPYRIGHT, _('Copyright'),
-                _('Go to Copyright section'), kind=wx.ITEM_RADIO)
-        self.p_menu = wx.MenuItem(self.menu_page, ID_MENU, _('Menu Launcher'),
-                _('Go to Menu Launcher section'), kind=wx.ITEM_RADIO)
-        self.p_build = wx.MenuItem(self.menu_page, ID_BUILD, _('Build'),
-                _('Go to Build section'), kind=wx.ITEM_RADIO)
+        self.p_info = wx.MenuItem(self.menu_page, ID_GREETING, GT(u'Information'),
+                GT(u'Go to Information section'), kind=wx.ITEM_RADIO)
+        self.p_ctrl = wx.MenuItem(self.menu_page, ID_CONTROL, GT(u'Control'),
+                GT(u'Go to Control section'), kind=wx.ITEM_RADIO)
+        self.p_deps = wx.MenuItem(self.menu_page, ID_DEPENDS, GT(u'Dependencies'),
+                GT(u'Go to Dependencies section'), kind=wx.ITEM_RADIO)
+        self.p_files = wx.MenuItem(self.menu_page, ID_FILES, GT(u'Files'),
+                GT(u'Go to Files section'), kind=wx.ITEM_RADIO)
+        self.p_scripts = wx.MenuItem(self.menu_page, ID_SCRIPTS, GT(u'Scripts'),
+                GT(u'Go to Scripts section'), kind=wx.ITEM_RADIO)
+        self.p_clog = wx.MenuItem(self.menu_page, ID_CHANGELOG, GT(u'Changelog'),
+                GT(u'Go to Changelog section'), kind=wx.ITEM_RADIO)
+        self.p_cpright = wx.MenuItem(self.menu_page, ID_COPYRIGHT, GT(u'Copyright'),
+                GT(u'Go to Copyright section'), kind=wx.ITEM_RADIO)
+        self.p_menu = wx.MenuItem(self.menu_page, ID_MENU, GT(u'Menu Launcher'),
+                GT(u'Go to Menu Launcher section'), kind=wx.ITEM_RADIO)
+        self.p_build = wx.MenuItem(self.menu_page, ID_BUILD, GT(u'Build'),
+                GT(u'Go to Build section'), kind=wx.ITEM_RADIO)
         
         self.menu_page.AppendItem(self.p_info)
         self.menu_page.AppendItem(self.p_ctrl)
@@ -153,8 +153,8 @@ class MainWindow(wx.Frame):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, _('Use Custom Dialogs'),
-            _('Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
+        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use Custom Dialogs'),
+            GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         wx.EVT_MENU(self, ID_DIALOGS, self.OnEnableCustomDialogs)
         
@@ -164,7 +164,7 @@ class MainWindow(wx.Frame):
         self.menu_help = wx.Menu()
         
         # ----- Version update
-        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, _('Check for Update'))
+        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for Update'))
         self.menu_help.AppendItem(self.version_check)
         self.menu_help.AppendSeparator()
         
@@ -173,18 +173,18 @@ class MainWindow(wx.Frame):
         # Menu with links to the Debian Policy Manual webpages
         self.Policy = wx.Menu()
         
-        globe = wx.Bitmap("%s/bitmaps/globe16.png" % PATH_app)
-        self.DPM = wx.MenuItem(self.Policy, ID_DPM, _('Debian Policy Manual'), 'http://www.debian.org/doc/debian-policy')
+        globe = wx.Bitmap(u'%s/bitmaps/globe16.png' % PATH_app)
+        self.DPM = wx.MenuItem(self.Policy, ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         self.DPM.SetBitmap(globe)
-        self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, _('Control Files'), 'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
+        self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         self.DPMCtrl.SetBitmap(globe)
-        self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, _('Changelog'), 'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
+        self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, GT(u'Changelog'), u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         self.DPMLog.SetBitmap(globe)
-        self.UPM = wx.MenuItem(self.Policy, ID_UPM, _('Ubuntu Policy Manual'), 'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
+        self.UPM = wx.MenuItem(self.Policy, ID_UPM, GT(u'Ubuntu Policy Manual'), u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         self.UPM.SetBitmap(globe)
-        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, _('Building debs from Source'), 'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
+        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from Source'), u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         self.DebFrmSrc.SetBitmap(globe)
-        self.LintianTags = wx.MenuItem(self.Policy, ID_Lintian, _('Lintian Tags Explanation'), 'http://lintian.debian.org/tags-all.html')
+        self.LintianTags = wx.MenuItem(self.Policy, ID_Lintian, GT(u'Lintian Tags Explanation'), u'http://lintian.debian.org/tags-all.html')
         self.LintianTags.SetBitmap(globe)
         
         self.Policy.AppendItem(self.DPM)
@@ -195,21 +195,21 @@ class MainWindow(wx.Frame):
         self.Policy.AppendItem(self.LintianTags)
         
         self.references = {
-                    ID_DPM: 'http://www.debian.org/doc/debian-policy',
-                    ID_DPMCtrl: 'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
-                    ID_DPMLog: 'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
-                    ID_UPM: 'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
-                    222: 'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-                    ID_Lintian: 'http://lintian.debian.org/tags-all.html'
+                    ID_DPM: u'http://www.debian.org/doc/debian-policy',
+                    ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
+                    ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
+                    ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
+                    222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
+                    ID_Lintian: u'http://lintian.debian.org/tags-all.html'
                     }
         for ID in self.references:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
         
-        self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, _('Help'), _('Open a usage document'))
-        self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, _('About'), _('About Debreate'))
+        self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+        self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
-        self.menu_help.AppendMenu(-1, _('Reference'), self.Policy)
+        self.menu_help.AppendMenu(-1, GT(u'Reference'), self.Policy)
         self.menu_help.AppendSeparator()
         self.menu_help.AppendItem(self.Help)
         self.menu_help.AppendItem(self.About)
@@ -220,10 +220,10 @@ class MainWindow(wx.Frame):
         self.menubar = wx.MenuBar()
         self.SetMenuBar(self.menubar)
         
-        self.menubar.Insert(0, self.menu_file, _('File'))
-        self.menubar.Insert(1, self.menu_page, _('Page'))
-        self.menubar.Insert(2, self.menu_opt, _('Options'))
-        self.menubar.Insert(3, self.menu_help, _('Help'))
+        self.menubar.Insert(0, self.menu_file, GT(u'File'))
+        self.menubar.Insert(1, self.menu_page, GT(u'Page'))
+        self.menubar.Insert(2, self.menu_opt, GT(u'Options'))
+        self.menubar.Insert(3, self.menu_help, GT(u'Help'))
         
         # ***** END MENUBAR ***** #
         
@@ -286,9 +286,9 @@ class MainWindow(wx.Frame):
             current = unicode(current)
             wx.MessageDialog(self, current, _(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         elif isinstance(current, tuple) and current > VERSION_tuple:
-            current = '%s.%s.%s' % (current[0], current[1], current[2])
-            l1 = _(u'Version %s is available!').decode('utf-8') % (current)
-            l2 = _(u"Would you like to go to Debreate's website?").decode('utf-8')
+            current = u'%s.%s.%s' % (current[0], current[1], current[2])
+            l1 = _(u'Version %s is available!') % (current)
+            l2 = _(u'Would you like to go to Debreate\'s website?')
             update = wx.MessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
@@ -314,8 +314,8 @@ class MainWindow(wx.Frame):
     
     
     def OnNewProject(self, event):
-        dia = wx.MessageDialog(self, _('You will lose any unsaved information\n\nContinue?'),
-                _('Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
+        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
+                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
         if dia.ShowModal() == wx.ID_YES:
             self.NewProject()
             #self.SetMode(None)
@@ -330,15 +330,15 @@ class MainWindow(wx.Frame):
     
     def OnOpenProject(self, event):
         cont = False
-        dbp = '|*.dbp'
-        d = _('Debreate project files')
+        dbp = u'|*.dbp'
+        d = GT(u'Debreate project files')
         if self.cust_dias.IsChecked():
-            dia = db.OpenFile(self, _('Open Debreate Project'))
-            dia.SetFilter('%s%s' % (d, dbp))
+            dia = db.OpenFile(self, GT(u'Open Debreate Project'))
+            dia.SetFilter(u'%s%s' % (d, dbp))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, _('Open Debreate Project'), os.getcwd(), '', '%s%s' % (d, dbp), wx.FD_CHANGE_DIR)
+            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'', u'%s%s' % (d, dbp), wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
         
@@ -346,7 +346,7 @@ class MainWindow(wx.Frame):
             # Get the path and set the saved project
             self.saved_project = dia.GetPath()
             
-            file = open(self.saved_project, 'r')
+            file = open(self.saved_project, u'r')
             data = file.read()
             file.close()
             
@@ -364,53 +364,53 @@ class MainWindow(wx.Frame):
     
     
     def OpenProject(self, data, filename):
-        lines = data.split('\n')
-        app = lines[0].split('-')[0].split('[')[1]
-        ver = lines[0].split('-')[1].split(']')[0]
-        if app != 'DEBREATE':
-            bad_file = wx.MessageDialog(self, _('Not a valid Debreate project'), _('Error'),
+        lines = data.split(u'\n')
+        app = lines[0].split(u'-')[0].split(u'[')[1]
+        ver = lines[0].split(u'-')[1].split(u']')[0]
+        if app != u'DEBREATE':
+            bad_file = wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
                     style=wx.OK|wx.ICON_ERROR)
             bad_file.ShowModal()
         else: 
             # Set title to show open project
-            #self.SetTitle('Debreate - %s' % filename)
+            #self.SetTitle(u'Debreate - %s' % filename)
             
             # *** Get Control Data *** #
-            control_data = data.split("<<CTRL>>\n")[1].split("\n<</CTRL>>")[0]
+            control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
             depends_data = self.page_control.SetFieldData(control_data)
             self.page_depends.SetFieldData(depends_data)
             
             # *** Get Files Data *** #
-            files_data = data.split("<<FILES>>\n")[1].split("\n<</FILES>>")[0]
+            files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
             self.page_files.SetFieldData(files_data)
             
             # *** Get Scripts Data *** #
-            scripts_data = data.split("<<SCRIPTS>>\n")[1].split("\n<</SCRIPTS>>")[0]
+            scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
             self.page_scripts.SetFieldData(scripts_data)
             
             # *** Get Changelog Data *** #
-            clog_data = data.split("<<CHANGELOG>>\n")[1].split("\n<</CHANGELOG>>")[0]
+            clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
             self.page_clog.SetChangelog(clog_data)
             
             # *** Get Copyright Data *** #
             try:
-                cpright_data = data.split("<<COPYRIGHT>>\n")[1].split("\n<</COPYRIGHT")[0]
+                cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
                 self.page_cpright.SetCopyright(cpright_data)
             except IndexError:
                 pass
             
             # *** Get Menu Data *** #
-            menu_data = data.split("<<MENU>>\n")[1].split("\n<</MENU>>")[0]
+            menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
             self.page_menu.SetLauncherData(menu_data, enabled=True)
             
             # Get Build Data
-            build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
+            build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
             self.page_build.SetFieldData(build_data)
     
     
     def OnQuit(self, event):
-        """Show a dialog to confirm quit and write window settings to config file"""
-        confirm = wx.MessageDialog(self, _('You will lose any unsaved information'), _('Quit?'),
+        '''Show a dialog to confirm quit and write window settings to config file'''
+        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
                                    wx.OK|wx.CANCEL|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
             confirm.Destroy()
@@ -452,7 +452,7 @@ class MainWindow(wx.Frame):
     def OpenPolicyManual(self, event):
         id = event.GetId()  # Get the id for the webpage link we are opening
         webbrowser.open(self.references[id])
-        #os.system("xdg-open %s" % self.references[id])  # Look in "manual" for the id and open the webpage
+        #os.system(u'xdg-open %s' % self.references[id])  # Look in 'manual' for the id and open the webpage
     
     
     ## Opens a dialog box with information about the program
@@ -506,19 +506,19 @@ class MainWindow(wx.Frame):
     def OnHelp(self, event):
         # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
         wx.Yield()
-        status = subprocess.call(['xdg-open', '%s/docs/usage.pdf' % PATH_app])
+        status = subprocess.call([u'xdg-open', u'%s/docs/usage.pdf' % PATH_app])
         if status:
             wx.Yield()
-            status = subprocess.call(['xdg-open', '%s/docs/usage' % PATH_app])
+            status = subprocess.call([u'xdg-open', u'%s/docs/usage' % PATH_app])
         if status:
             wx.Yield()
-            webbrowser.open('http://debreate.sourceforge.net/usage')
+            webbrowser.open(u'http://debreate.sourceforge.net/usage')
     
     # *** SAVING *** #
     
     def IsSaved(self):
         title = self.GetTitle()
-        if title[-1] == "*":
+        if title[-1] == u'*':
             return False
         else:
             return True
@@ -534,7 +534,7 @@ class MainWindow(wx.Frame):
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
             if self.IsSaved() and title != self.default_title:
-                self.SetTitle("%s*" % title)
+                self.SetTitle(u'%s*' % title)
     
     def OnSaveProject(self, event):
         id = event.GetId()
@@ -549,21 +549,21 @@ class MainWindow(wx.Frame):
                 # Create a backup of the project
                 overwrite = False
                 if os.path.isfile(path):
-                    backup = '%s.backup' % path
+                    backup = u'%s.backup' % path
                     shutil.copy(path, backup)
                     overwrite = True
                 
-                savefile = open(path, 'w')
+                savefile = open(path, u'w')
                 # This try statement can be removed when unicode support is enabled
                 try:
-                    savefile.write("[DEBREATE-%s]\n%s" % (VERSION_string, "\n".join(data).encode('utf-8')))
+                    savefile.write(u'[DEBREATE-%s]\n%s' % (VERSION_string, u'\n'.join(data)))
                     savefile.close()
                     if overwrite:
                         os.remove(backup)
                 except UnicodeEncodeError:
-                    serr = _('Save failed')
-                    uni = _('Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                    UniErr = wx.MessageDialog(self, '%s\n\n%s' % (serr, uni), _('Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                    serr = GT(u'Save failed')
+                    uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
+                    UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                     UniErr.ShowModal()
                     savefile.close()
                     if overwrite:
@@ -571,30 +571,30 @@ class MainWindow(wx.Frame):
                         # Restore project backup
                         shutil.move(backup, path)
                 # Change the titlebar to show name of project file
-                #self.SetTitle("Debreate - %s" % os.path.split(path)[1])
+                #self.SetTitle(u'Debreate - %s' % os.path.split(path)[1])
         
         def OnSaveAs():
-            dbp = '|*.dbp'
-            d = _('Debreate project files')
+            dbp = u'|*.dbp'
+            d = GT(u'Debreate project files')
             cont = False
             if self.cust_dias.IsChecked():
-                dia = db.SaveFile(self, _('Save Debreate Project'), 'dbp')
-                dia.SetFilter('%s%s' % (d, dbp))
+                dia = db.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
+                dia.SetFilter(u'%s%s' % (d, dbp))
                 if dia.DisplayModal():
                     cont = True
                     filename = dia.GetFilename()
-                    if filename.split('.')[-1] == 'dbp':
-                        filename = ".".join(filename.split(".")[:-1])
-                    self.saved_project = "%s/%s.dbp" % (dia.GetPath(), filename)
+                    if filename.split(u'.')[-1] == u'dbp':
+                        filename = u'.'.join(filename.split(u'.')[:-1])
+                    self.saved_project = u'%s/%s.dbp' % (dia.GetPath(), filename)
             else:
-                dia = wx.FileDialog(self, _('Save Debreate Project'), os.getcwd(), '', '%s%s' % (d, dbp),
+                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'%s%s' % (d, dbp),
                                         wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
                 if dia.ShowModal() == wx.ID_OK:
                     cont = True
                     filename = dia.GetFilename()
-                    if filename.split(".")[-1] == "dbp":
-                        filename = ".".join(filename.split(".")[:-1])
-                    self.saved_project = "%s/%s.dbp" %(os.path.split(dia.GetPath())[0], filename)
+                    if filename.split(u'.')[-1] == u'dbp':
+                        filename = u'.'.join(filename.split(u'.')[:-1])
+                    self.saved_project = u'%s/%s.dbp' % (os.path.split(dia.GetPath())[0], filename)
             
             if cont:
                 SaveIt(self.saved_project)

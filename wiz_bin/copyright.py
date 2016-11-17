@@ -3,19 +3,20 @@
 
 import wx
 
-from globals.ident import ID_COPYRIGHT
+from dbr.language   import GT
+from globals.ident  import ID_COPYRIGHT
 
 
 class Panel(wx.Panel):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=_('Copyright'))
+        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
         
         lic_options = (
-        	'Apache-2.0', 'Artistic', 'BSD', 'GFDL', 'GFDL-1.2',
-        	'GFDL-1.3', 'GPL', 'GPL-1', 'GPL-2', 'GPL-3', 'LGPL',
-        	'LGPL-2', 'LGPL-2.1', 'LGPL-3'
+            u'Apache-2.0', u'Artistic', u'BSD', u'GFDL', u'GFDL-1.2',
+            u'GFDL-1.3', u'GPL', u'GPL-1', u'GPL-2', u'GPL-3', u'LGPL',
+            u'LGPL-2', u'LGPL-2.1', u'LGPL-3'
         )
-        template_btn = wx.Button(self, -1, 'Generate Template')
+        template_btn = wx.Button(self, -1, u'Generate Template')
         self.template_lic = wx.Choice(self, -1, choices=lic_options)
         self.template_lic.SetSelection(0)
         
@@ -40,7 +41,7 @@ class Panel(wx.Panel):
     
     def GatherData(self):
         data = self.GetCopyright()
-        return "<<COPYRIGHT>>\n%s\n<</COPYRIGHT>>" % data
+        return u'<<COPYRIGHT>>\n%s\n<</COPYRIGHT>>' % data
     
     def SetCopyright(self, data):
         self.cp_display.SetValue(data)
@@ -49,11 +50,11 @@ class Panel(wx.Panel):
         self.cp_display.Clear()
     
     def GenerateTemplate(self, event):
-        lic_path = '/usr/share/common-licenses/{}'.format(self.template_lic.GetString(self.template_lic.GetSelection()))
-        text = ''
+        lic_path = u'/usr/share/common-licenses/{}'.format(self.template_lic.GetString(self.template_lic.GetSelection()))
+        text = u''
         if (not self.cp_display.IsEmpty()):
-            text = '\n{}'.format(self.cp_display.GetValue())
+            text = u'\n{}'.format(self.cp_display.GetValue())
             self.cp_display.Clear()
-        copyright = 'Copyright: <year> <copyright holder> <email>'
-        text = '{}\n\n{}\n{}'.format(copyright, lic_path, text)
+        copyright = u'Copyright: <year> <copyright holder> <email>'
+        text = u'{}\n\n{}\n{}'.format(copyright, lic_path, text)
         self.cp_display.SetValue(text)

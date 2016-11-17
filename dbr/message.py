@@ -3,18 +3,19 @@
 
 import wx
 
-from dbr.buttons import ButtonConfirm
+from dbr.buttons    import ButtonConfirm
+from dbr.language   import GT
 
 
 class MessageDialog(wx.Dialog):
-    def __init__(self, parent, id=wx.ID_ANY, title="Message", icon=wx.NullBitmap, text=wx.EmptyString,
+    def __init__(self, parent, id=wx.ID_ANY, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString):
         wx.Dialog.__init__(self, parent, id, title, size=(500,500))
         
         self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
         
         self.text = wx.StaticText(self, -1, text)
-        self.button_details = wx.ToggleButton(self, -1, "Details")
+        self.button_details = wx.ToggleButton(self, -1, u'Details')
         self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
         self.details.SetSize(self.details.GetBestSize())
         

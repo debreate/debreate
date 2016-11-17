@@ -406,7 +406,7 @@ class Panel(wx.ScrolledWindow):
     ## Saves launcher information to file
     def OnSaveLauncher(self, event):
         # Get data to write to control file
-        menu_data = self.GetLauncherInfo().encode(u'utf-8')
+        menu_data = self.GetLauncherInfo()
         
         # Saving?
         cont = False

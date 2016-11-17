@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-import sys, os, subprocess, wx
-from urllib2        import URLError
-from urllib2        import urlopen
+import os, subprocess, sys, wx
+
+from dbr.language import GT
 
 
 maj_pyversion = sys.version_info[0]
@@ -18,9 +18,9 @@ python_version = u'{}.{}.{}'.format(maj_pyversion, mid_pyversion, min_pyversion)
 ##################
 
 def RequirePython(version):
-    error = 'Incompatible python version'
+    error = u'Incompatible python version'
     t = type(version)
-    if t == type(''):
+    if t == type(u''):
         if version == python_version[0:3]:
             return
         raise ValueError(error)
@@ -28,7 +28,7 @@ def RequirePython(version):
         if python_version[0:3] in version:
             return
         raise ValueError(error)
-    raise ValueError('Wrong type for argument 1 of RequirePython(version)')
+    raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
 
 
 ### -*- Function to check for installed executables -*- ###
@@ -52,12 +52,12 @@ ID_OVERWRITE = wx.NewId()
 
 ### -*- Dialog for overwrite prompt of a text area -*- ###
 class OverwriteDialog(wx.Dialog):
-    def __init__(self, parent, id=-1, title=_(u'Overwrite?'), message=u''):
+    def __init__(self, parent, id=-1, title=GT(u'Overwrite?'), message=u''):
         wx.Dialog.__init__(self, parent, id, title)
         self.message = wx.StaticText(self, -1, message)
         
-        self.button_overwrite = wx.Button(self, ID_OVERWRITE, _(u'Overwrite'))
-        self.button_append = wx.Button(self, ID_APPEND, _(u'Append'))
+        self.button_overwrite = wx.Button(self, ID_OVERWRITE, GT(u'Overwrite'))
+        self.button_append = wx.Button(self, ID_APPEND, GT(u'Append'))
         self.button_cancel = wx.Button(self, wx.ID_CANCEL)
         
         ### -*- Button events -*- ###
@@ -93,11 +93,11 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
     
     def OnDropFiles(self, x, y, filenames):
         if len(filenames) > 1:
-            raise StandardError(_(u'Too many files'))
+            raise StandardError(GT(u'Too many files'))
         text = open(filenames[0]).read()
         try:
             if (not TextIsEmpty(self.obj.GetValue())):
-                overwrite = OverwriteDialog(self.obj, message = _(u'The text area is not empty!'))
+                overwrite = OverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
                 id = overwrite.ShowModal()
                 if (id == ID_OVERWRITE):
                     self.obj.SetValue(text)
@@ -107,7 +107,7 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
             else:
                 self.obj.SetValue(text)
         except UnicodeDecodeError:
-            wx.MessageDialog(None, _(u'Error decoding file'), _(u'Error'), wx.OK).ShowModal()
+            wx.MessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wx.OK).ShowModal()
 
 
 ### -*- Checks if Text Control is Empty -*- ###

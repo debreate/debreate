@@ -2,7 +2,9 @@
 
 # This script is used for field data that cannot use certain characters
 
+
 import wx
+
 
 class CharCtrl(wx.TextCtrl):
     def __init__(self, parent, id=wx.ID_ANY, value=wx.EmptyString):
@@ -10,13 +12,13 @@ class CharCtrl(wx.TextCtrl):
         
         # List of characters that connot be used in the field
         # 46 = ".", 47 = "/"
-        self.invalid_chars = (" ", "/", "_")
+        self.invalid_chars = (u' ', u'/', u'_')
         
         # A list of keys that should not be affected when using the spacebar
         self.shift_exceptions = (wx.WXK_LEFT, wx.WXK_RIGHT, wx.WXK_UP, wx.WXK_DOWN)
         
         # A list of keys that should not be affected when using the Ctrl key
-        self.ctrl_exceptions = ("A", "A")
+        self.ctrl_exceptions = (u'A', u'A')
         
         wx.EVT_KEY_UP(self, self.OnKeyUp)
     
@@ -32,7 +34,7 @@ class CharCtrl(wx.TextCtrl):
             while total_chars > 0:
                 total_chars -= 1
                 if value[total_chars] in self.invalid_chars:
-                    self.Replace(total_chars, total_chars+1, "-")
+                    self.Replace(total_chars, total_chars+1, u'-')
             self.SetInsertionPoint(insertion)
             
         

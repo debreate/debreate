@@ -9,12 +9,13 @@ from dbr.buttons    import ButtonBrowse64
 from dbr.buttons    import ButtonPreview64
 from dbr.buttons    import ButtonSave64
 from dbr.charctrl   import CharCtrl
+from dbr.language   import GT
 from globals.ident  import ID_CONTROL
 
 
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=_('Control'))
+        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
         
         self.parent = parent
         self.SetScrollbars(0, 20, 0, 0)
@@ -44,81 +45,81 @@ class Panel(wx.ScrolledWindow):
         #      [r]- recommended
         
         # ----- Package ( B[m], SB[m] )
-        self.pack_txt = wx.StaticText(self.bg, -1, _('Package'))
+        self.pack_txt = wx.StaticText(self.bg, -1, GT(u'Package'))
         self.pack = CharCtrl(self.bg, -1)
         
         # ----- Version ( B[m], D[m], C[m] )
-        self.ver_txt = wx.StaticText(self.bg, -1, _('Version'))
+        self.ver_txt = wx.StaticText(self.bg, -1, GT(u'Version'))
         self.ver = CharCtrl(self.bg)
         
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
-        self.auth_txt = wx.StaticText(self.bg, -1, _('Maintainer'))
+        self.auth_txt = wx.StaticText(self.bg, -1, GT(u'Maintainer'))
         self.auth = wx.TextCtrl(self.bg, -1)
-        self.email_txt = wx.StaticText(self.bg, -1, _('Email'))
+        self.email_txt = wx.StaticText(self.bg, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self.bg, -1)
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
-            'all', 'alpha', 'amd64', 'arm', 'arm64', 'armeb', 'armel', 'armhf',
-            'avr32', 'hppa', 'i386', 'ia64', 'lpia', 'm32r', 'm68k', 'mips',
-            'mipsel', 'powerpc', 'powerpcspe', 'ppc64', 's390', 's390x', 'sh3',
-            'sh3eb', 'sh4', 'sh4eb', 'sparc', 'sparc64'
+            u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel', u'armhf',
+            u'avr32', u'hppa', u'i386', u'ia64', u'lpia', u'm32r', u'm68k', u'mips',
+            u'mipsel', u'powerpc', u'powerpcspe', u'ppc64', u's390', u's390x', u'sh3',
+            u'sh3eb', u'sh4', u'sh4eb', u'sparc', u'sparc64'
             )
-        self.arch_txt = wx.StaticText(self.bg, -1, _('Architecture'))
+        self.arch_txt = wx.StaticText(self.bg, -1, GT(u'Architecture'))
         self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
         self.arch.SetSelection(0)
         
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
-        self.sect_opt = ("admin", "cli-mono", "comm", "database", "devel", "debug", "doc", "editors",
-            "electronics", "embedded", "fonts", "games", "gnome", "graphics", "gnu-r", "gnustep",
-            "hamradio", "haskell", "httpd", "interpreters", "java", "kde", "kernel", "libs", "libdevel",
-            "lisp", "localization", "mail", "math", 'metapackages', "misc", "net", "news", "ocaml", "oldlibs",
-            "otherosfs", "perl", "php", "python", "ruby", "science", "shells", "sound", "tex", "text",
-            "utils", "vcs", "video", "web", "x11", "xfce", "zope")
-        self.sect_txt = wx.StaticText(self.bg, -1, _('Section'))
+        self.sect_opt = (u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug', u'doc', u'editors',
+            u'electronics', u'embedded', u'fonts', u'games', u'gnome', u'graphics', u'gnu-r', u'gnustep',
+            u'hamradio', u'haskell', u'httpd', u'interpreters', u'java', u'kde', u'kernel', u'libs', u'libdevel',
+            u'lisp', u'localization', u'mail', u'math', u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
+            u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
+            u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
+        self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
         #self.sect = db.Combo(self.bg, -1, choices=self.sect_opt)
         self.sect = wx.ComboBox(self.bg, -1, choices=self.sect_opt)
         
         # ----- Priority ( B[r], S[r], SB[r] )
-        self.prior_opt = ('optional', 'standard', 'important', 'required', 'extra')
-        self.prior_txt = wx.StaticText(self.bg, -1, _('Priority'))
+        self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
+        self.prior_txt = wx.StaticText(self.bg, -1, GT(u'Priority'))
         self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
         self.prior.SetSelection(0)
         
         # ----- Description ( B[m], SB[m], C[m] )
-        self.syn_txt = wx.StaticText(self.bg, -1, _('Short Description'))
+        self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
         self.syn = wx.TextCtrl(self.bg)
-        self.desc_txt = wx.StaticText(self.bg, -1, _('Long Description'))
+        self.desc_txt = wx.StaticText(self.bg, -1, GT(u'Long Description'))
         self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
         
         # ***** Optional Group ***** #
         # ----- Source ( B, S[m], D[m], C[m] )
-        self.src_txt = wx.StaticText(self.bg, -1, _('Source'))
+        self.src_txt = wx.StaticText(self.bg, -1, GT(u'Source'))
         self.src = wx.TextCtrl(self.bg, -1)
         
         # ----- Homepage ( B, S, SB, D )
-        self.url_txt = wx.StaticText(self.bg, -1, _('Homepage'))
+        self.url_txt = wx.StaticText(self.bg, -1, GT(u'Homepage'))
         self.url = wx.TextCtrl(self.bg)
         
         # ----- Essential ( B, SB )
-        self.ess_opt = ('yes', 'no')
-        self.ess_txt = wx.StaticText(self.bg, -1, _('Essential'))
+        self.ess_opt = (u'yes', u'no')
+        self.ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'))
         self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
         self.ess.SetSelection(1)
         
         # ----- Standards-Version ( S[r], D[r] )
-        #self.stdver_txt = wx.StaticText(self.bg, -1, "Standards-Version")
+        #self.stdver_txt = wx.StaticText(self.bg, -1, u'Standards-Version')
         #self.stdver = wx.TextCtrl(self.bg)
         
         
         
         # ----- Uploaders ( S, D )
-        #self.coauth_txt = wx.StaticText(self.bg, -1, "Uploaders/Co-Maintainers")
+        #self.coauth_txt = wx.StaticText(self.bg, -1, u'Uploaders/Co-Maintainers')
         #self.coauth = db.LCReport(self.bg, -1)
-        #self.coauth.InsertColumn(0, "Maintainer")
-        #self.coauth.InsertColumn(1, "Email")
-        #self.coauth.SetToolTip(wx.ToolTip("Right-click to add"))
+        #self.coauth.InsertColumn(0, u'Maintainer')
+        #self.coauth.InsertColumn(1, u'Email')
+        #self.coauth.SetToolTip(wx.ToolTip(u'Right-click to add'))
         
         
         # ----- Build-Depends ( S, D ) (Will be done on different panel)
@@ -128,42 +129,42 @@ class Panel(wx.ScrolledWindow):
         
         # ***** Other group ***** #
         # ----- Format ( D[m], C[m] )
-        #self.format_txt = wx.StaticText(self.bg, -1, "Format")
+        #self.format_txt = wx.StaticText(self.bg, -1, u'Format')
         #self.format = wx.TextCtrl(self.bg)
         
         # ----- Binary ( D, C[m] )
-        #self.bin_txt = wx.StaticText(self.bg, -1, "Binary")
+        #self.bin_txt = wx.StaticText(self.bg, -1, u'Binary')
         #self.bin = wx.TextCtrl(self.bg)
         
         # ----- Files ( D[m], C[m] )
-        #self.files_txt = wx.StaticText(self.bg, -1, "Files")
+        #self.files_txt = wx.StaticText(self.bg, -1, u'Files')
         #self.files = wx.TextCtrl(self.bg)
         
         # ----- Date ( C[m] )
-        #self.date_txt = wx.StaticText(self.bg, -1, "Date")
+        #self.date_txt = wx.StaticText(self.bg, -1, u'Date')
         #self.date = wx.TextCtrl(self.bg)
         
         # ----- Changed-By ( C )
-        #self.editor_txt = wx.StaticText(self.bg, -1, "Changed-By")
+        #self.editor_txt = wx.StaticText(self.bg, -1, u'Changed-By')
         #self.editor = wx.TextCtrl(self.bg)
-        #self.eemail_txt = wx.StaticText(self.bg, -1, "Email")
+        #self.eemail_txt = wx.StaticText(self.bg, -1, u'Email')
         #self.eemail = wx.TextCtrl(self.bg)
         
         # ----- Changes ( C[m] )
-        #self.changes_txt = wx.StaticText(self.bg, -1, "Changes")
+        #self.changes_txt = wx.StaticText(self.bg, -1, u'Changes')
         #self.changes = wx.TextCtrl(self.bg)
         
         # ----- Distribution ( C[m] )
-        #self.dist_txt = wx.StaticText(self.bg, -1, "Distribution")
+        #self.dist_txt = wx.StaticText(self.bg, -1, u'Distribution')
         #self.dist = wx.TextCtrl(self.bg)
         
         # ----- Urgency ( C[r] )
-        #self.urge_opt = ('low', 'medium', 'high', 'emergency', 'critical')
-        #self.urge_txt = wx.StaticText(self.bg, -1, "Urgency")
+        #self.urge_opt = (u'low', u'medium', u'high', u'emergency', u'critical')
+        #self.urge_txt = wx.StaticText(self.bg, -1, u'Urgency')
         #self.urge = wx.Choice(self.bg, -1, choices=self.urge_opt)
         
         # ----- Closes ( C )
-        #self.closes_txt = wx.StaticText(self.bg, -1, "Closes")
+        #self.closes_txt = wx.StaticText(self.bg, -1, u'Closes')
         #self.closes = wx.TextCtrl(self.bg)
         
         
@@ -226,7 +227,7 @@ class Panel(wx.ScrolledWindow):
 #            ])
         
         # Border box
-        self.border_info = wx.StaticBox(self.bg, -1, _('Required'))
+        self.border_info = wx.StaticBox(self.bg, -1, GT(u'Required'))
         bbox_info = wx.StaticBoxSizer(self.border_info, wx.VERTICAL)
         bbox_info.Add(self.box_info, 0, wx.EXPAND)
         
@@ -240,7 +241,7 @@ class Panel(wx.ScrolledWindow):
         r_temp.AddSpacer(5)
         r_temp.AddMany([ (self.sect_txt), (self.sect, 0, wx.EXPAND), (self.prior_txt), (self.prior) ])
         # Border box
-        self.border_description = wx.StaticBox(self.bg, -1, _('Recommended'))
+        self.border_description = wx.StaticBox(self.bg, -1, GT(u'Recommended'))
         bbox_description = wx.StaticBoxSizer(self.border_description, wx.VERTICAL)
         bbox_description.AddSpacer(5)
         bbox_description.Add(r_temp, 0, wx.EXPAND)
@@ -255,7 +256,7 @@ class Panel(wx.ScrolledWindow):
             (self.desc, 1, wx.EXPAND)
             ])
         
-        # ----- Changed to "Optional
+        # ----- Changed to "Optional"
 #        self.box_author = wx.BoxSizer(wx.HORIZONTAL)
 #        self.box_author.AddMany([
 #            (self.auth_txt), (self.auth, 1),
@@ -275,7 +276,7 @@ class Panel(wx.ScrolledWindow):
             ])
 
         # Border box
-        self.border_author = wx.StaticBox(self.bg, -1, _('Optional'))
+        self.border_author = wx.StaticBox(self.bg, -1, GT(u'Optional'))
         bbox_author = wx.StaticBoxSizer(self.border_author, wx.VERTICAL)
         bbox_author.Add(b_temp, 0, wx.EXPAND)
 #        bbox_author.AddSpacer(5)
@@ -302,7 +303,7 @@ class Panel(wx.ScrolledWindow):
 #            (self.urge_txt), (self.urge), (self.closes_txt), (self.closes, 0, wx.EXPAND)
 #            ])
 #        
-#        self.border_other = wx.StaticBox(self.bg, -1, "Other")
+#        self.border_other = wx.StaticBox(self.bg, -1, u'Other')
 #        bbox_other = wx.StaticBoxSizer(self.border_other, wx.VERTICAL)
 #        bbox_other.Add(self.box_other, 0, wx.EXPAND)
         
@@ -406,42 +407,42 @@ class Panel(wx.ScrolledWindow):
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, _('Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+            dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
         
         if cont:
             path = dia.GetPath()
-            file = open(path, 'r')
+            file = open(path, u'r')
             control_data = file.read()
             depends_data = self.SetFieldData(control_data)
             self.parent.parent.page_depends.SetFieldData(depends_data)
     
     def OnSave(self, event):
         # Get data to write to control file
-        control = self.GetCtrlInfo().encode('utf-8')
+        control = self.GetCtrlInfo().encode(u'utf-8')
         
         # Saving?
         cont = False
         
         # Open a "Save Dialog"
         if self.parent.parent.cust_dias.IsChecked():
-            dia = db.SaveFile(self, _('Save Control Information'))
-            dia.SetFilename('control')
+            dia = db.SaveFile(self, GT(u'Save Control Information'))
+            dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
-                path = "%s/%s" % (dia.GetPath(), dia.GetFilename())
+                path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
         else:
-            dia = wx.FileDialog(self, 'Save Control Information', os.getcwd(),
+            dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-            dia.SetFilename('control')
+            dia.SetFilename(u'control')
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
                 path = dia.GetPath()
         
         if cont:
             filename = dia.GetFilename()
-            file = open(path, 'w')
+            file = open(path, u'w')
             file.write(control)
             file.close()
     
@@ -449,7 +450,7 @@ class Panel(wx.ScrolledWindow):
         # Show a preview of the control file
         control = self.GetCtrlInfo()
         
-        dia = wx.Dialog(self, -1, _('Preview'), size=(500,400))
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
         preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
         preview.SetValue(control)
         
@@ -504,33 +505,34 @@ class Panel(wx.ScrolledWindow):
         # Creat a list to store info
         ctrl_list = []
         
-        getvals = (	("Package",self.pack), ("Version",self.ver), ("Source",self.src), ("Section",self.sect),
-                    ("Homepage",self.url), #("Standards-Version",self.stdver), ("Format",self.format),
-                    #("Binary",self.bin), ("Files",self.files), ("Date",self.date), ("Changes",self.changes),
-                    #("Distribution",self.dist), ("Closes",self.closes) )
+        getvals = (	(u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
+                    (u'Homepage',self.url), #(u'Standards-Version',self.stdver), (u'Format',self.format),
+                    #(u'Binary',self.bin), (u'Files',self.files), (u'Date',self.date), (u'Changes',self.changes),
+                    #(u'Distribution',self.dist), (u'Closes',self.closes) )
                     )
         
         for key in getvals:
-            if Enabled(key[1]) and "".join(key[1].GetValue().split(" ")) != '':
-                if key[0] == "Package" or key[0] == "Version":
-                    ctrl_list.append("%s: %s" % (key[0], "-".join(key[1].GetValue().split(' '))))
+            if Enabled(key[1]) and u''.join(key[1].GetValue().split(u' ')) != u'':
+                if key[0] == u'Package' or key[0] == u'Version':
+                    ctrl_list.append(u'%s: %s' % (key[0], u'-'.join(key[1].GetValue().split(u' '))))
                 else:
-                    ctrl_list.append("%s: %s" % (key[0], key[1].GetValue()))
+                    ctrl_list.append(u'%s: %s' % (key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        if Enabled(self.auth) and self.auth.GetValue() != '':
-            ctrl_list.insert(3, "Maintainer: %s <%s>" % (self.auth.GetValue(), self.email.GetValue()))
+        if Enabled(self.auth) and self.auth.GetValue() != u'':
+            ctrl_list.insert(3, u'Maintainer: %s <%s>' % (self.auth.GetValue(), self.email.GetValue()))
         
         # Add the "choice" options
-        getsels = {	"Architecture": (self.arch,self.arch_opt), "Priority": (self.prior,self.prior_opt),
-                    "Essential": (self.ess,self.ess_opt)#, "Urgency": (self.urge,self.urge_opt)
-                    }
+        getsels = {
+            u'Architecture': (self.arch,self.arch_opt), u'Priority': (self.prior,self.prior_opt),
+            u'Essential': (self.ess,self.ess_opt)#, u'Urgency': (self.urge,self.urge_opt)
+            }
         for key in getsels:
             if Enabled(getsels[key][0]):
-                if key == "Essential" and self.ess.GetCurrentSelection() == 1:
+                if key == u'Essential' and self.ess.GetCurrentSelection() == 1:
                     pass
                 else:
-                    ctrl_list.append("%s: %s" % (key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
+                    ctrl_list.append(u'%s: %s' % (key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
         
         # Get the uploaders
 #        coauths = []
@@ -540,9 +542,9 @@ class Panel(wx.ScrolledWindow):
 #            while cocount != cototal:
 #                auth = self.coauth.GetItem(cocount)
 #                email = self.coauth.GetItem(cocount, 1)
-#                coauths.append("%s <%s>" % (auth.GetText(), email.GetText()))
+#                coauths.append(u'%s <%s>' % (auth.GetText(), email.GetText()))
 #                cocount += 1
-#            ctrl_list.append("Uploaders: %s" % "; ".join(coauths))
+#            ctrl_list.append(u'Uploaders: %s' % u'; '.join(coauths))
         
         
         # *** Get dependencies *** #
@@ -554,9 +556,11 @@ class Panel(wx.ScrolledWindow):
         con_list = [] # Conflicts
         rep_list = [] # Replaces
         brk_list = [] # Breaks
-        all_deps = {"Depends": dep_list, "Pre-Depends": pre_list, "Recommends": rec_list,
-                    "Suggests": sug_list, "Enhances": enh_list, "Conflicts": con_list,
-                    "Replaces": rep_list, "Breaks": brk_list}
+        all_deps = {
+            u'Depends': dep_list, u'Pre-Depends': pre_list, u'Recommends': rec_list,
+            u'Suggests': sug_list, u'Enhances': enh_list, u'Conflicts': con_list,
+            u'Replaces': rep_list, u'Breaks': brk_list,
+            }
         
         # Get amount of items to add
         dep_area = self.parent.parent.page_depends.dep_area
@@ -573,58 +577,58 @@ class Panel(wx.ScrolledWindow):
             
         for item in all_deps:
             if len(all_deps[item]) != 0:
-                ctrl_list.append("%s: %s" % (item, ", ".join(all_deps[item])))
+                ctrl_list.append(u'%s: %s' % (item, u', '.join(all_deps[item])))
         
         
         # *** Get description *** #
         syn = self.syn.GetValue()
         desc = self.desc.GetValue()
         # Make sure synopsis isn't empty: Join spaces
-        if ''.join(syn.split(' ')) != '':
-            ctrl_list.append("Description: %s" % syn)
+        if u''.join(syn.split(u' ')) != u'':
+            ctrl_list.append(u'Description: %s' % syn)
             # Make sure description isn't empty: Join newlines and spaces
-            if ''.join(''.join(desc.split(' ')).split('\n')) != '':
+            if u''.join(u''.join(desc.split(u' ')).split(u'\n')) != u'':
                 desc_temp = []
-                for line in desc.split('\n'):
-                    if ''.join(line.split(' ')) == '':
-                        desc_temp.append(" .")
+                for line in desc.split(u'\n'):
+                    if u''.join(line.split(u' ')) == u'':
+                        desc_temp.append(u' .')
                     else:
-                        desc_temp.append(" %s" % line)
-                ctrl_list.append('\n'.join(desc_temp))
+                        desc_temp.append(u' %s' % line)
+                ctrl_list.append(u'\n'.join(desc_temp))
         
-        ctrl_list.append("\n")
-        return "\n".join(ctrl_list)
+        ctrl_list.append(u'\n')
+        return u'\n'.join(ctrl_list)
     
     
-    # *** Opening Project/File & Setting Fields *** "
+    # *** Opening Project/File & Setting Fields ***
     
     def SetFieldData(self, data):
-        if type(data) == type(''):
+        if type(data) == type(u''):
             # Decode to unicode string if input is byte string
-            data = data.decode('utf-8')
-        control_data = data.split("\n")
+            data = data.decode(u'utf-8')
+        control_data = data.split(u'\n')
         # Remove newline at end of document required by dpkg
-        if control_data[-1] == "\n":
+        if control_data[-1] == u'\n':
             control_data = control_data[:-1]
         
         # Fields that use "SetValue()" function
         set_value_fields = (
-            ("Package", self.pack), ("Version", self.ver),
-            ("Source", self.src), ("Section", self.sect),
-            ("Homepage", self.url), ("Description", self.syn)
+            (u'Package', self.pack), (u'Version', self.ver),
+            (u'Source', self.src), (u'Section', self.sect),
+            (u'Homepage', self.url), (u'Description', self.syn)
             )
         
         # Fields that use "SetSelection()" function
         set_selection_fields = (
-            ("Architecture", self.arch, self.arch_opt),
-            ("Priority", self.prior, self.prior_opt),
-            ("Essential", self.ess, self.ess_opt)
+            (u'Architecture', self.arch, self.arch_opt),
+            (u'Priority', self.prior, self.prior_opt),
+            (u'Essential', self.ess, self.ess_opt)
             )
         
         # Store Dependencies
         depends_containers = (
-            ["Depends"], ["Pre-Depends"], ["Recommends"], ["Suggests"], ["Enhances"],
-            ["Conflicts"], ["Replaces"], ["Breaks"]
+            [u'Depends'], [u'Pre-Depends'], [u'Recommends'], [u'Suggests'], [u'Enhances'],
+            [u'Conflicts'], [u'Replaces'], [u'Breaks']
             )
         
         # Anything left over is dumped into this list then into the description
@@ -633,11 +637,11 @@ class Panel(wx.ScrolledWindow):
         author = wx.EmptyString
         
         for field in control_data:
-            if ": " in field:
-                f1 = field.split(": ")[0]
-                f2 = ": ".join(field.split(": ")[1:]) # For dependency fields that have ": " in description
+            if u': ' in field:
+                f1 = field.split(u': ')[0]
+                f2 = u': '.join(field.split(u': ')[1:]) # For dependency fields that have ": " in description
                 # Catch Maintainer and put in author variable
-                if f1 == "Maintainer":
+                if f1 == u'Maintainer':
                     author = f2
                 # Set the rest of the wx.TextCtrl fields
                 for setval in set_value_fields:
@@ -653,25 +657,25 @@ class Panel(wx.ScrolledWindow):
                 # Set dependencies
                 for container in depends_containers:
                     if f1 == container[0]:
-                        for dep in f2.split(", "):
+                        for dep in f2.split(u', '):
                             container.append(dep)
             else:
-                if field == " .":
+                if field == u' .':
                     leftovers.append(wx.EmptyString) # Add a blank line for lines marked with a "."
-                elif field == "\n" or field == " " or field == wx.EmptyString:
+                elif field == u'\n' or field == u' ' or field == wx.EmptyString:
                     pass # Ignore empty lines
-                elif field[0] == " ":
+                elif field[0] == u' ':
                     leftovers.append(field[1:]) # Remove the first space generated in the description
                 else:
                     leftovers.append(field)
         
         # Put leftovers in long description
-        self.desc.SetValue("\n".join(leftovers))
+        self.desc.SetValue(u'\n'.join(leftovers))
         
         # Set the "Author" and "Email" fields
         if author != wx.EmptyString:
-            self.auth.SetValue(author.split(" <")[0])
-            self.email.SetValue(author.split(" <")[1].split(">")[0])
+            self.auth.SetValue(author.split(u' <')[0])
+            self.email.SetValue(author.split(u' <')[1].split(u'>')[0])
         
         # Return depends data to parent to be sent to page_depends
         return depends_containers
@@ -681,7 +685,7 @@ class Panel(wx.ScrolledWindow):
     
     def GatherData(self):
         data = self.GetCtrlInfo()
-        return "<<CTRL>>\n%s<</CTRL>>" % data
+        return u'<<CTRL>>\n%s<</CTRL>>' % data
     
     
     # *** Determining of project is modified

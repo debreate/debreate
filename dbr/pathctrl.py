@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import wx, os
+
+import os, wx
+
 
 PATH_DEFAULT = wx.NewId()
 PATH_WARN = wx.NewId()
@@ -12,7 +14,7 @@ class PathCtrl(wx.TextCtrl):
         self.type = type
         
         # Get the value of the textctrl so it can be restored
-        self.default = "/"
+        self.default = u'/'
         
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
@@ -20,8 +22,8 @@ class PathCtrl(wx.TextCtrl):
     def OnKeyUp(self, event):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
-        if value == wx.EmptyString or value[0] != "/":
-            self.SetValue("/%s" % value)
+        if value == wx.EmptyString or value[0] != u'/':
+            self.SetValue(u'/%s' % value)
             self.SetInsertionPoint(insertion_point)
         
         # If PathCtrl is set to warn on non-existent paths, change background color to red when path
@@ -29,7 +31,7 @@ class PathCtrl(wx.TextCtrl):
         value = self.GetValue()
         if self.type == PATH_WARN:
             if not os.path.exists(value):
-                self.SetBackgroundColour("red")
+                self.SetBackgroundColour(u'red')
             else:
-                self.SetBackgroundColour("white")
+                self.SetBackgroundColour(u'white')
         event.Skip()

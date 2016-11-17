@@ -1,7 +1,10 @@
-# Writing the md5sums file
 # -*- coding: utf-8 -*-
 
-import os, stat, commands
+# Writing the md5sums file
+
+
+import commands, os
+
 
 class MD5():
     def __init__(self):
@@ -10,8 +13,8 @@ class MD5():
     
     def IsExecutable(self, file):
         # Find out if the file is an executable
-#        executable = commands.getoutput("if [ -x %s ]\nthen echo true\nfi" % file)  #bash version
-#        if executable == "true":
+#        executable = commands.getoutput(u'if [ -x %s ]\nthen echo true\nfi' % file)  #bash version
+#        if executable == u'true':
 #        executable = stat.S_IXUSR & os.stat(file)[stat.ST_MODE]  #python version
         executable = os.access(file, os.X_OK) #another python version
         
@@ -27,7 +30,7 @@ class MD5():
             for file in files:
                 file = u'{}/{}'.format(root, file)
 #                if self.IsExecutable(file):
-#                    md5 = commands.getoutput("md5sum -b \"%s\"" % file)
+#                    md5 = commands.getoutput(u'md5sum -b "%s"' % file)
 #                elif not self.IsExecutable(file):
                 md5 = commands.getoutput((u'md5sum -t "{}"'.format(file)))
                 temp_list.append(md5)
