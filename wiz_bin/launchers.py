@@ -74,7 +74,7 @@ class Panel(WizardPage):
         
         # --- Custom output filename
         self.txt_filename = wx.StaticText(self, label=GT(u'Filename'))
-        self.input_filename = wx.TextCtrl(self)
+        self.input_filename = wx.TextCtrl(self, name=self.txt_filename.GetLabel())
         self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'))
         self.chk_filename.default = True
         self.chk_filename.SetValue(self.chk_filename.default)
@@ -451,6 +451,18 @@ class Panel(WizardPage):
             return None
         
         return(__name__, self.GetMenuInfo(), u'MENU')
+    
+    
+    ## Overrides dbr.wizard.GetRequiredField
+    #  
+    #  Optionally adds "Filename" to required fields
+    def GetRequiredFields(self, children=None):
+        required_fields = list(WizardPage.GetRequiredFields(self, children=children))
+        
+        if not self.chk_filename.GetValue():
+            required_fields.append(self.input_filename)
+        
+        return tuple(required_fields)
     
     
     ## TODO: Doxygen
