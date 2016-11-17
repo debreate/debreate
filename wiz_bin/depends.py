@@ -173,13 +173,15 @@ class Panel(wx.Panel):
                             self.rep_chk: "Replaces", self.break_chk: "Breaks"}
     
     
+    def GetDefaultCategory(self):
+        return self.dep_chk.GetName()
+    
+    
     def SetDepends(self, event):
         try:
-            mod = event.GetModifiers()
             id = event.GetKeyCode()
         
         except AttributeError:
-            mod = None
             id = event.GetEventObject().GetId()
         
         addname = self.dep_name.GetValue()
@@ -188,14 +190,20 @@ class Panel(wx.Panel):
         addver = "(%s%s)" % (oper, ver)
             
         if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
-            for item in self.categories:
-                if item.GetValue() == True:
-                    if addname != "":
-                        self.dep_area.InsertStringItem(0, self.categories[item])
-                        if ver == "":
-                            self.dep_area.SetStringItem(0, 1, addname)
-                        else:
-                            self.dep_area.SetStringItem(0, 1, "%s %s" % (addname, addver))
+            if TextIsEmpty(addname):
+                return
+            
+            category = self.GetDefaultCategory()
+            for C in self.categories:
+                if C.GetValue():
+                    category = C.GetName()
+                    break
+            
+            if TextIsEmpty(ver):
+                self.dep_area.AppendDependency(category, addname)
+            
+            else:
+                self.dep_area.AppendDependency(category, u'{} {}'.format(addname, addver))
         
         elif id == ID_Append:
             selected_count = self.dep_area.GetSelectedItemCount()
@@ -255,6 +263,26 @@ class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
         LC.ListCtrlAutoWidthMixin.__init__(self)
         
         wx.EVT_KEY_DOWN(self, self.OnSelectAll)
+    
+    
+    ## Add a category & dependency to end of list
+    #  
+    #  \param category
+    #        \b \e unicode|str : Category label
+    #  \param value
+    #        \b \e unicode|str : Dependency value
+    def AppendDependency(self, category, value):
+        row_index = self.GetItemCount()
+        self.InsertStringItem(row_index, category)
+        self.SetStringItem(row_index, 1, value)
+    
+    
+    ## Adds an item to the end of the list
+    #  
+    #  \param item
+    #        \b \e unicode|str : String item to append
+    def AppendStringItem(self, item):
+        self.InsertStringItem(self.GetItemCount(), item)
     
     
     def GetSelectedIndexes(self):
