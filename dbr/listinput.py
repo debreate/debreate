@@ -207,7 +207,8 @@ class FileList(ListCtrlPanel, TextEditMixin):
         self.target_col = 2
         self.type_col = 3
         
-        col_width = self.GetSize()[0] / 4
+        # FIXME: Way to do this dynamically?
+        col_width = 150  # self.GetSize()[0] / 4
         
         self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
         self.InsertColumn(self.source_col, GT(u'Source Directory'), width=col_width)
