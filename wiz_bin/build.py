@@ -375,9 +375,8 @@ class Panel(wx.Panel):
                     #if menu_data[0]:
                     # This may be changed later to set a custom directory
                     menu_dir = "%s/usr/share/applications" % (temp_tree)
-                    for field in menu_data:
-                        if field.split("=")[0] == "Name":
-                            menu_filename = "=".join(field.split("=")[1:])
+                    
+                    menu_filename = main_window.page_menu.GetOutputFilename()
                     
                     # Remove invalid characters from filename
                     for char in invalid_chars:
