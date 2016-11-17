@@ -27,12 +27,6 @@ class Panel(wx.Panel):
     def __init__(self, parent, id=ID, name=_('Scripts')):
         wx.Panel.__init__(self, parent, id, name=_('Scripts'))
         
-        # For identifying page to parent
-        #self.ID = "SCRIPTS"
-        
-        # Allows calling parent methods
-        self.debreate = parent.parent
-        
         # Check boxes for choosing scripts
         self.chk_preinst = wx.CheckBox(self, ID_Preinst, _('Make this script'))
         self.chk_postinst = wx.CheckBox(self, ID_Postinst, _('Make this script'))
@@ -210,7 +204,7 @@ scripts will be created that will place a symbolic link to your executables in t
             self.xlist = []
             
             # Get executables from "files" tab
-            files = self.debreate.page_files.dest_area
+            files = wx.GetApp().GetTopWindow().page_files.dest_area
             max = files.GetItemCount()  # Sets the max iterate value
             count = 0
             while count < max:

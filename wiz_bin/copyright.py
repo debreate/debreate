@@ -8,8 +8,6 @@ class Panel(wx.Panel):
     def __init__(self, parent, id=wx.ID_ANY):
         wx.Panel.__init__(self, parent, id, name=_('Copyright'))
         
-        self.debreate = parent.parent
-        
         lic_options = (
         	'Apache-2.0', 'Artistic', 'BSD', 'GFDL', 'GFDL-1.2',
         	'GFDL-1.3', 'GPL', 'GPL-1', 'GPL-2', 'GPL-3', 'LGPL',
