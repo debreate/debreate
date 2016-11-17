@@ -5,26 +5,16 @@
 #  Custom buttons for application
 
 
-from wx import ID_CANCEL
-from wx import ID_DELETE
-from wx import ID_HELP
-from wx import ID_OK
-from wx import ID_OPEN
-from wx import ID_PREVIEW
-from wx import ID_REFRESH
-from wx import ID_SAVE
-from wx import WXK_ESCAPE
-from wx import WXK_RETURN
 import wx
 
-from dbr.language   import GT
-from globals.ident  import ID_APPEND
-from globals.ident  import ID_BUILD
-from globals.ident  import ID_IMPORT
-from globals.ident  import ID_NEXT
-from globals.ident  import ID_PREV
-from globals.paths  import PATH_app
-from globals.bitmaps import BUTTON_REFRESH
+from dbr.language       import GT
+from globals.bitmaps    import BUTTON_REFRESH
+from globals.ident      import ID_APPEND
+from globals.ident      import ID_BUILD
+from globals.ident      import ID_IMPORT
+from globals.ident      import ID_NEXT
+from globals.ident      import ID_PREV
+from globals.paths      import PATH_app
 
 
 class ToolTipButton(wx.BitmapButton):
@@ -55,7 +45,7 @@ class BitmapButton(wx.BitmapButton):
 
 class ButtonAdd(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Add')):
-        ToolTipButton.__init__(self, parent, WXK_RETURN,
+        ToolTipButton.__init__(self, parent, wx.WXK_RETURN,
                 u'{}/bitmaps/add32.png'.format(PATH_app), tooltip)
 
 class ButtonAppend(ToolTipButton):
@@ -64,13 +54,13 @@ class ButtonAppend(ToolTipButton):
                 u'{}/bitmaps/pipe32.png'.format(PATH_app), tooltip)
 
 class ButtonBrowse(ToolTipButton):
-    def __init__(self, parent, ID=ID_OPEN, tooltip=GT(u'Browse')):
+    def __init__(self, parent, ID=wx.ID_OPEN, tooltip=GT(u'Browse')):
         ToolTipButton.__init__(self, parent, ID,
                 u'{}/bitmaps/browse32.png'.format(PATH_app), tooltip)
 
 class ButtonBrowse64(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Browse')):
-        ToolTipButton.__init__(self, parent, ID_OPEN,
+        ToolTipButton.__init__(self, parent, wx.ID_OPEN,
                 u'{}/bitmaps/browse64.png'.format(PATH_app), tooltip)
 
 class ButtonBuild(ToolTipButton):
@@ -85,22 +75,22 @@ class ButtonBuild64(ToolTipButton):
 
 class ButtonCancel(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Cancel')):
-        ToolTipButton.__init__(self, parent, ID_CANCEL,
+        ToolTipButton.__init__(self, parent, wx.ID_CANCEL,
                 u'{}/bitmaps/cancel32.png'.format(PATH_app), tooltip)
 
 class ButtonClear(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Clear')):
-        ToolTipButton.__init__(self, parent, WXK_ESCAPE,
+        ToolTipButton.__init__(self, parent, wx.ID_CLEAR,
                 u'{}/bitmaps/clear32.png'.format(PATH_app), tooltip)
 
 class ButtonConfirm(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Ok')):
-        ToolTipButton.__init__(self, parent, ID_OK,
+        ToolTipButton.__init__(self, parent, wx.ID_OK,
                 u'{}/bitmaps/confirm32.png'.format(PATH_app), tooltip)
 
 class ButtonDel(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Remove')):
-        ToolTipButton.__init__(self, parent, ID_DELETE,
+        ToolTipButton.__init__(self, parent, wx.ID_DELETE,
                 u'{}/bitmaps/del32.png'.format(PATH_app), tooltip)
 
 class ButtonImport(ToolTipButton):
@@ -120,32 +110,32 @@ class ButtonPrev(ToolTipButton):
 
 class ButtonPreview(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Preview')):
-        ToolTipButton.__init__(self, parent, ID_PREVIEW,
+        ToolTipButton.__init__(self, parent, wx.ID_PREVIEW,
                 u'{}/bitmaps/preview32.png'.format(PATH_app), tooltip)
 
 class ButtonPreview64(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Preview')):
-        ToolTipButton.__init__(self, parent, ID_PREVIEW,
+        ToolTipButton.__init__(self, parent, wx.ID_PREVIEW,
                 u'{}/bitmaps/preview64.png'.format(PATH_app), tooltip)
 
 class ButtonQuestion64(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Help')):
-        ToolTipButton.__init__(self, parent, ID_HELP,
+        ToolTipButton.__init__(self, parent, wx.ID_HELP,
                 u'{}/bitmaps/question64.png'.format(PATH_app), tooltip)
 
 ## Button for refreshing displayed controls
 class ButtonRefresh(BitmapButton):
     def __init__(self, parent, name=u'refresh'):
-        BitmapButton.__init__(self, parent, BUTTON_REFRESH, ID_REFRESH, name=name)
+        BitmapButton.__init__(self, parent, BUTTON_REFRESH, wx.ID_REFRESH, name=name)
 
 
 class ButtonSave(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Save')):
-        wx.BitmapButton.__init__(self, parent, ID_SAVE, wx.Bitmap(u'{}/bitmaps/save32.png'.format(PATH_app)),
+        wx.BitmapButton.__init__(self, parent, wx.ID_SAVE, wx.Bitmap(u'{}/bitmaps/save32.png'.format(PATH_app)),
                 style=wx.NO_BORDER)
         self.SetToolTip(wx.ToolTip(tooltip))
 
 class ButtonSave64(ToolTipButton):
     def __init__(self, parent, tooltip=GT(u'Save')):
-        ToolTipButton.__init__(self, parent, ID_SAVE,
+        ToolTipButton.__init__(self, parent, wx.ID_SAVE,
                 u'{}/bitmaps/save64.png'.format(PATH_app), tooltip)

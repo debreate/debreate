@@ -729,7 +729,7 @@ class Panel(WizardPage):
             cur_cat = self.categories.GetFirstSelected()
             self.categories.DeleteItem(cur_cat)
         
-        elif key_code == wx.WXK_ESCAPE:
+        elif key_code == wx.ID_CLEAR:
             confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
             if confirm.ShowModal() == wx.ID_YES:
