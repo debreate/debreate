@@ -5,16 +5,15 @@
 #  Parsing & writing configuration.
 
 
-# System modules
-import wx, os
+import os, wx
 
-# Local modules
-# FIXME Can't import Logger
-#from dbr import Logger
-#from dbr.language import GT
-from dbr.functions import TextIsEmpty, GetBoolean, GetIntTuple
-from dbr.compression import compression_formats, DEFAULT_COMPRESSION_ID
-from globals.paths import PATH_home
+from dbr.compression    import compression_formats
+from dbr.compression    import DEFAULT_COMPRESSION_ID
+from dbr.functions      import TextIsEmpty
+from dbr.functions      import GetBoolean
+from dbr.functions      import GetIntTuple
+from dbr.language       import GT
+from globals.paths      import PATH_home
 
 
 ## Configuration codes
@@ -117,21 +116,21 @@ def WriteConfig(k_name, k_value, conf=default_config):
     
     if not os.path.isdir(conf_dir):
         if os.path.exists(conf_dir):
-            #Logger.Error(__name__, u'Cannot create config directory, file exists: {}'.format(conf_dir))
+            print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Cannot create config directory, file exists'), conf_dir))
             return ConfCode.ERR_WRITE
         
         os.makedirs(conf_dir)
     
     # Only write pre-defined keys
     if k_name not in default_config_values:
-        #Logger.Warning(__name__, u'Cannot write to config, key not defined: {}'.format(k_name))
+        print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Configuration key not found'), k_name))
         return ConfCode.KEY_NOT_DEFINED
     
     # Make sure we are writing the correct type
     k_value = default_config_values[k_name][0](k_value)
     
     if k_value == None:
-        #Logger.Warning(__name__, u'Value is of wrong type for key "{}"'.format(k_name))
+        print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Wrong value type for configuration key'), k_name))
         return ConfCode.WRONG_TYPE
     
     # tuple is the only type we need to format
@@ -145,7 +144,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
     # Save current config to buffer
     if os.path.exists(conf):
         if not os.path.isfile(conf):
-            #Logger.Error(__name__, u'Cannot open config for writing, directory exists: {}'.format(conf))
+            print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Cannot open config for writing, directory exists'), conf))
             return ConfCode.ERR_WRITE
         
         conf_opened = open(conf, u'r')
@@ -174,7 +173,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
     conf_text = u'\n'.join(conf_lines)
     
     if TextIsEmpty(conf_text):
-        #Logger.Warning(__name__, u'Not writing empty text to configuration')
+        print(u'{}: {}'.format(GT(u'Warning'), GT(u'Not writing empty text to configuration')))
         return ConfCode.ERR_WRITE
     
     # Actual writing to configuration
