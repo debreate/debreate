@@ -8,3 +8,4 @@ Known Bugs:
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
 - Log window has some issues with wx.Yield
 - Information page doesn't refresh correctly when accessed via menu (0.7)
+- Appending to multiple dependencies fails (0.8)
