@@ -45,8 +45,6 @@ class Panel(WizardPage):
         # Bypass build prep check
         self.prebuild_check = False
         
-        self.debreate = parent.GetDebreateWindow()
-        
         # Add checkable items to this list
         self.build_options = []
         
@@ -156,6 +154,8 @@ class Panel(WizardPage):
         pages_build_ids = self.BuildPrep()
         
         if pages_build_ids != None:
+            main_window = wx.GetApp().GetTopWindow()
+            
             # Reported at the end of build
             build_summary = []
             
@@ -177,7 +177,7 @@ class Panel(WizardPage):
             wx.YieldIfNeeded()
             # FIXME: Enable PD_CAN_ABORT
             build_progress = wx.ProgressDialog(GT(u'Building'), log_msg,
-                    steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+                    steps_count, main_window, wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
             
             build_summary.append(u'{}:'.format(log_msg))
             
@@ -206,7 +206,7 @@ class Panel(WizardPage):
                             err_msg = GT(u'Error occurred during build')
                             Logger.Error(__name__, u'\n{}:\n{}'.format(err_msg, ret_value))
                             
-                            err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
+                            err_dialog = ErrorDialog(main_window, GT(u'Error occured during build'))
                             err_dialog.SetDetails(ret_value)
                             err_dialog.ShowModal()
                             
@@ -230,7 +230,7 @@ class Panel(WizardPage):
                     if not control_page:
                         Logger.Error(__name__, GT(u'Could not retrieve control page'))
                         build_progress.Destroy()
-                        err_msg = ErrorDialog(self.GetDebreateWindow(), GT(u'Fatal Error'),
+                        err_msg = ErrorDialog(main_window, GT(u'Fatal Error'),
                                 GT(u'Could not retrieve control page'))
                         err_msg.SetDetails(GT(u'Please contact the developer: {}').format(AUTHOR_email))
                         err_msg.ShowModal()
@@ -320,7 +320,7 @@ class Panel(WizardPage):
                 build_progress.Destroy()
                 
                 build_summary = u'\n'.join(build_summary)
-                summary_dialog = DetailedMessageDialog(self.GetDebreateWindow(), GT(u'Build Summary'),
+                summary_dialog = DetailedMessageDialog(main_window, GT(u'Build Summary'),
                         ICON_INFORMATION, GT(u'Build completed'), build_summary)
                 summary_dialog.ShowModal()
             
@@ -331,7 +331,7 @@ class Panel(WizardPage):
                 err_msg = GT(u'Error occurred during build')
                 Logger.Error(__name__, u'{}:\n{}'.format(err_msg, traceback.format_exc()))
                 
-                err_dialog = ErrorDialog(self.GetDebreateWindow(), GT(u'Error occured during build'))
+                err_dialog = ErrorDialog(main_window, GT(u'Error occured during build'))
                 err_dialog.SetDetails(traceback.format_exc())
                 err_dialog.ShowModal()
                 
@@ -353,6 +353,8 @@ class Panel(WizardPage):
                 prep_ids.append(P.GetId())
         
         try:
+            main_window = wx.GetApp().GetTopWindow()
+            
             # List of page IDs to process during build
             build_page_ids = []
             
@@ -364,7 +366,7 @@ class Panel(WizardPage):
             msg_label = u'{} ({})'.format(msg_label1, msg_label2)
             
             prep_progress = wx.ProgressDialog(GT(u'Preparing Build'), msg_label2.format(current_step, steps_count),
-                    steps_count, self.GetDebreateWindow(), wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+                    steps_count, main_window, wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
             
             for P in self.wizard.pages:
                 if prep_progress.WasCancelled():
@@ -474,6 +476,8 @@ class Panel(WizardPage):
         if event:
             event.Skip()
         
+        main_window = wx.GetApp().GetTopWindow()
+        
         control_page = self.wizard.GetPage(ID_CONTROL)
         files_page = self.wizard.GetPage(ID_FILES)
         menu_page = self.wizard.GetPage(ID_MENU)
@@ -497,7 +501,7 @@ class Panel(WizardPage):
                     Logger.Warning(__name__,
                             u'{}: {} ➜ {}'.format(GT(u'A required field is empty'), page_name, field_name))
                     
-                    err_dialog = wx.MessageDialog(self.GetDebreateWindow(), GT(u'A required field is empty'),
+                    err_dialog = wx.MessageDialog(main_window, GT(u'A required field is empty'),
                             GT(u'Error'), style=wx.OK|wx.ICON_ERROR)
                     err_dialog.SetExtendedMessage(u'{} ➜ {}'.format(page_name, field_name))
                     err_dialog.ShowModal()
@@ -510,9 +514,11 @@ class Panel(WizardPage):
                     return
         
         if files_page.file_list.MissingFiles():
+            main_window = wx.GetApp().GetTopWindow()
+            
             Logger.Warning(__name__, GT(u'Files are missing in file list'))
             
-            err_dialog = ErrorDialog(self.debreate, GT(u'Warning'), GT(u'Files are missing in file list'))
+            err_dialog = ErrorDialog(main_window, GT(u'Warning'), GT(u'Files are missing in file list'))
             err_dialog.ShowModal()
             
             err_dialog.Destroy()
@@ -523,7 +529,7 @@ class Panel(WizardPage):
         
         
         ttype = GT(u'Debian Packages')
-        save_dialog = GetFileSaveDialog(self.GetDebreateWindow(), GT(u'Build Package'),
+        save_dialog = GetFileSaveDialog(main_window, GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
         package = control_page.pack.GetValue()
@@ -707,19 +713,21 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def SetSummary(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
             # Get the file count
-            files_total = self.debreate.page_files.dest_area.GetItemCount()
+            files_total = main_window.page_files.dest_area.GetItemCount()
             f = GT(u'File Count')
             file_count = u'%s: %s' % (f, files_total)
             # Scripts to make
             scripts_to_make = []
-            scripts = ((u'preinst', self.debreate.page_scripts.chk_preinst),
-                (u'postinst', self.debreate.page_scripts.chk_postinst),
-                (u'prerm', self.debreate.page_scripts.chk_prerm),
-                (u'postrm', self.debreate.page_scripts.chk_postrm))
+            scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
+                (u'postinst', main_window.page_scripts.chk_postinst),
+                (u'prerm', main_window.page_scripts.chk_prerm),
+                (u'postrm', main_window.page_scripts.chk_postrm))
             for script in scripts:
                 if script[1].IsChecked():
                     scripts_to_make.append(script[0])

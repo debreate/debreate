@@ -78,11 +78,6 @@ class StandardFileDialog(wx.FileDialog):
         self.CenterOnParent()
     
     
-    ## FIXME: Remove & replace calls with wx.GetApp().GetTopWindow()
-    def GetDebreateWindow(self):
-        return wx.GetApp().GetTopWindow()
-    
-    
     def GetDirectory(self, directory=None):
         if directory == None:
             directory = self.GetPath()
@@ -118,7 +113,7 @@ class StandardFileDialog(wx.FileDialog):
             if path[-1] == u'.':
                 #wx.MessageDialog(self, GT(u'Filename cannot end with "{}"').format(path[-1]), GT(u'Error'),
                 #        style=wx.ICON_ERROR|wx.OK).ShowModal()
-                name_error = wx.MessageDialog(self.GetDebreateWindow(), GT(u'Error'),
+                name_error = wx.MessageDialog(wx.GetApp().GetTopWindow(), GT(u'Error'),
                         style=wx.ICON_ERROR|wx.OK)
                 
                 name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
@@ -145,7 +140,7 @@ class StandardFileDialog(wx.FileDialog):
         
         if path:
             if os.path.isfile(path):
-                overwrite = OverwriteDialog(self.GetDebreateWindow(), path).ShowModal()
+                overwrite = OverwriteDialog(wx.GetApp().GetTopWindow(), path).ShowModal()
                 
                 if overwrite != wx.ID_YES:
                     return

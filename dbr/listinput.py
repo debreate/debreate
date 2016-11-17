@@ -198,7 +198,6 @@ class FileList(ListCtrlPanel, TextEditMixin):
         TextEditMixin.__init__(self)
         
         self.parent = parent
-        self.debreate = parent.debreate
         self.dir_tree = parent.dir_tree
         
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()

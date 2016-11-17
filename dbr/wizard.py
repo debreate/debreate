@@ -75,8 +75,10 @@ class Wizard(wx.Panel):
         # These widgets are put into a list so that they are not automatically hidden
         self.permanent_children = (self.title, self.button_prev, self.button_next)
     
+    
+    ## TODO: Doxygen
     def SetPages(self, pages):
-        debreate = self.GetDebreateWindow()
+        main_window = wx.GetApp().GetTopWindow()
         
         # Make sure all pages are hidden
         children = self.GetChildren()
@@ -101,12 +103,14 @@ class Wizard(wx.Panel):
                 self.title_txt.SetLabel(page.GetLabel())
             
             # Add pages to main menu
-            debreate.menu_page.AppendItem(
-                wx.MenuItem(debreate.menu_page, page.GetId(), page.GetLabel(),
+            main_window.menu_page.AppendItem(
+                wx.MenuItem(main_window.menu_page, page.GetId(), page.GetLabel(),
                 kind=wx.ITEM_RADIO))
             
         self.Layout()
     
+    
+    ## TODO: Doxygen
     def ShowPage(self, page_id):
         for p in self.pages:
             if p.GetId() != page_id:
@@ -116,16 +120,12 @@ class Wizard(wx.Panel):
                 self.title_txt.SetLabel(p.GetLabel())
                 
         self.Layout()
-        '''
-        for child in self.GetChildren():
-            wx.PostEvent(child, self.evt)
-        '''
         
-        wx.PostEvent(self.GetDebreateWindow(), self.evt)
+        wx.PostEvent(wx.GetApp().GetTopWindow(), self.evt)
     
+    
+    ## TODO: Doxygen
     def ChangePage(self, event):
-        debreate = self.GetDebreateWindow()
-        
         event_id = event.GetEventObject().GetId()
         
         # Get index of currently shown page
@@ -146,12 +146,13 @@ class Wizard(wx.Panel):
         self.ShowPage(page_id)
         
         # Update "pages menu"
-        for M in debreate.menu_page.GetMenuItems():
+        for M in wx.GetApp().GetTopWindow().menu_page.GetMenuItems():
             if M.GetId() == page_id:
                 M.Check()
                 break
     
     
+    ## TODO: Doxygen
     def ClearPages(self):
         for page in self.pages:
             self.sizer.Remove(page)
@@ -226,13 +227,10 @@ class Wizard(wx.Panel):
                         page.ImportPageInfo(u'{}/{}'.format(PATH, F))
     
     
+    ## TODO: Doxygen
     def ResetPagesInfo(self):
         for page in self.pages:
             page.ResetPageInfo()
-    
-    
-    def GetDebreateWindow(self):
-        return self.parent.GetDebreateWindow()
 
 
 ## Parent class for wizard pages
@@ -297,10 +295,7 @@ class WizardPage(wx.ScrolledWindow):
         return (dbrerrno.SUCCESS, None)
     
     
-    def GetDebreateWindow(self):
-        return self.wizard.GetDebreateWindow()
-    
-    
+    ## TODO: Doxygen
     def GetLabel(self):
         if self.label == None:
             return self.GetName()
@@ -308,6 +303,7 @@ class WizardPage(wx.ScrolledWindow):
         return self.label
     
     
+    ## TODO: Doxygen
     def GetPageInfo(self, string_format=False):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method GetPageInfo').format(self.GetName()))
     
@@ -338,10 +334,11 @@ class WizardPage(wx.ScrolledWindow):
         return tuple(required_fields)
         
     
-    
+    ## TODO: Doxygen
     def ImportPageInfo(self, filename):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportPageInfo').format(self.GetName()))
     
     
+    ## TODO: Doxygen
     def ResetPageInfo(self):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method ResetPageInfo').format(self.GetName()))

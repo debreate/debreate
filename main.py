@@ -401,11 +401,6 @@ class MainWindow(wx.Frame):
         return DEFAULT_COMPRESSION_ID
     
     
-    ## Retrieves the main Debreate window
-    def GetDebreateWindow(self):
-        return self
-    
-    
     ## Changes wizard page from menu
     def GoToPage(self, event=None):
         page_id = None
@@ -580,7 +575,7 @@ class MainWindow(wx.Frame):
         if self.IsDirty():
             Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
             
-            ignore_dirty = wx.MessageDialog(self.GetDebreateWindow(),
+            ignore_dirty = wx.MessageDialog(self,
                     GT(u'{} is unsaved, any changes will be lost').format(self.loaded_project),
                     GT(u'Confirm Open New Project'),
                     style=wx.YES_NO|wx.CANCEL|wx.CANCEL_DEFAULT|wx.ICON_WARNING)
@@ -600,7 +595,7 @@ class MainWindow(wx.Frame):
                     err_msg = GT(u'No project loaded, cannot save')
                     Logger.Error(__name__, u'OnOpenProject; {}'.format(err_msg))
                     
-                    err_dialog = ErrorDialog(self.GetDebreateWindow(), err_msg)
+                    err_dialog = ErrorDialog(self, err_msg)
                     err_dialog.ShowModal()
                     
                     return
