@@ -173,14 +173,6 @@ class Panel(wx.Panel):
                             self.rep_chk: "Replaces", self.break_chk: "Breaks"}
     
     
-    def SelectAll(self):
-        total_items = self.dep_area.GetItemCount()
-        count = -1
-        while count < total_items:
-            count += 1
-            self.dep_area.Select(count)
-    
-    
     def SetDepends(self, event):
         try:
             mod = event.GetModifiers()
@@ -231,9 +223,6 @@ class Panel(wx.Panel):
                 selected = self.dep_area.GetFirstSelected()
                 self.dep_area.DeleteItem(selected)
         
-        elif id == 65 and mod == 2:
-            self.SelectAll()
-        
         elif id == wx.ID_CLEAR:
             if self.dep_area.GetItemCount():
                 confirm = wx.MessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
@@ -267,3 +256,16 @@ class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
     def __init__(self, parent, id):
         wx.ListView.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         LC.ListCtrlAutoWidthMixin.__init__(self)
+        
+        wx.EVT_KEY_DOWN(self, self.OnSelectAll)
+    
+    
+    def OnSelectAll(self, event=None):
+        select_all = False
+        if isinstance(event, wx.KeyEvent):
+            if event.GetKeyCode() == 65 and event.GetModifiers() == 2:
+                select_all = True
+        
+        if select_all:
+            for X in range(self.GetItemCount()):
+                self.Select(X)
