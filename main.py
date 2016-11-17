@@ -374,7 +374,7 @@ class MainWindow(wx.Frame):
             
             # *** Get Menu Data *** #
             menu_data = data.split("<<MENU>>\n")[1].split("\n<</MENU>>")[0]
-            self.page_menu.SetFieldData(menu_data)
+            self.page_menu.SetLauncherData(menu_data, enabled=True)
             
             # Get Build Data
             build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
