@@ -1,5 +1,4 @@
 ﻿0.7.12
-- Fix menu launcher name
 - Update gettext locales
 - Test that locales are working
 - Fix "Install package after build"
