@@ -16,6 +16,7 @@
 - Fixes for wx 3.0 compatibility
 - Fixed Quick Build
 - Added arm64 to archituctures
+- Optionally use custom filename for menu launcher
 
 0.7.11
 - Add template generation for copyright
