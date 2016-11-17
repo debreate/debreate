@@ -11,13 +11,12 @@ from dbr.custom     import OutputLog
 from dbr.functions  import RunSudo
 from dbr.functions  import TextIsEmpty
 from dbr.message    import MessageDialog
+from globals.ident  import ID_BUILD
 
-
-ID = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID, name=_('Build')):
-        wx.Panel.__init__(self, parent, id, name=_('Build'))
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, ID_BUILD, name=_('Build'))
         
         # --- Tool Tips --- #
         md5_tip = wx.ToolTip(_('Create checksums for files in package'))

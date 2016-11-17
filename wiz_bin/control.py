@@ -5,17 +5,16 @@
 import os, wx
 
 import db
-from dbr.buttons import ButtonBrowse64
-from dbr.buttons import ButtonPreview64
-from dbr.buttons import ButtonSave64
-from dbr.charctrl import CharCtrl
+from dbr.buttons    import ButtonBrowse64
+from dbr.buttons    import ButtonPreview64
+from dbr.buttons    import ButtonSave64
+from dbr.charctrl   import CharCtrl
+from globals.ident  import ID_CONTROL
 
-
-ID = wx.NewId()
 
 class Panel(wx.ScrolledWindow):
-    def __init__(self, parent, id=ID, name=_('Control')):
-        wx.ScrolledWindow.__init__(self, parent, id, name=_('Control'))
+    def __init__(self, parent):
+        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=_('Control'))
         
         self.parent = parent
         self.SetScrollbars(0, 20, 0, 0)

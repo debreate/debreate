@@ -4,14 +4,14 @@
 import commands, wx
 
 import db
-from dbr.buttons import ButtonImport, ButtonAdd
+from dbr.buttons    import ButtonAdd
+from dbr.buttons    import ButtonImport
+from globals.ident  import ID_CHANGELOG
 
-
-ID = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID, name=_('Changelog')):
-        wx.Panel.__init__(self, parent, id, name=_('Changelog'))
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, ID_CHANGELOG, name=_('Changelog'))
         
         self.parent = parent.parent # MainWindow
         

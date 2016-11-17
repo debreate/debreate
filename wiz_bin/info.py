@@ -3,11 +3,9 @@
 
 import wx
 
-from dbr.constants  import ID_GREETING
 from dbr.custom     import Hyperlink
+from globals.ident  import ID_GREETING
 
-
-ID = wx.NewId()
 
 class Panel(wx.Panel):
     def __init__(self, parent, name=_('Information')):

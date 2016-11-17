@@ -2,6 +2,7 @@
 
 # Menu Page
 
+
 import os, shutil, wx
 
 import db
@@ -13,13 +14,12 @@ from dbr.buttons    import ButtonPreview64
 from dbr.buttons    import ButtonSave64
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
+from globals.ident  import ID_MENU
 
-
-ID = wx.NewId()
 
 class Panel(wx.ScrolledWindow):
-    def __init__(self, parent, id=ID, name=GT(u'Menu Launcher')):
-        wx.ScrolledWindow.__init__(self, parent, id, name=GT(u'Menu Launcher'))
+    def __init__(self, parent):
+        wx.ScrolledWindow.__init__(self, parent, ID_MENU, name=GT(u'Menu Launcher'))
         
         self.SetScrollbars(0, 20, 0, 0)
         

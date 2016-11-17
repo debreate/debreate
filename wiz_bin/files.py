@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 
-import os, wx, wx.lib.mixins.listctrl as LC
+import os, wx
+from wx.lib.mixins import listctrl as LC
 
 import db
-from dbr.buttons import ButtonAdd
-from dbr.buttons import ButtonBrowse
-from dbr.buttons import ButtonClear
-from dbr.buttons import ButtonDel
+from dbr.buttons    import ButtonAdd
+from dbr.buttons    import ButtonBrowse
+from dbr.buttons    import ButtonClear
+from dbr.buttons    import ButtonDel
+from globals.ident  import ID_FILES
 
-
-ID = wx.NewId()
 
 ID_pin = 100
 ID_fin = 101
@@ -31,8 +31,8 @@ class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
 
 class Panel(wx.Panel):
     """Class defining controls for the "Paths" page"""
-    def __init__(self, parent, id=ID, name=_('Files')):
-        wx.Panel.__init__(self, parent, id, name=_('Files'))
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, ID_FILES, name=_('Files'))
         
         # For identifying page to parent
         #self.ID = "FILES"

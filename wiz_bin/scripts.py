@@ -6,14 +6,13 @@
 import os, wx
 
 import db
-from dbr.buttons import ButtonBuild
-from dbr.buttons import ButtonConfirm
-from dbr.buttons import ButtonDel
-from dbr.buttons import ButtonImport
-from dbr.buttons import ButtonQuestion64
+from dbr.buttons    import ButtonBuild
+from dbr.buttons    import ButtonConfirm
+from dbr.buttons    import ButtonDel
+from dbr.buttons    import ButtonImport
+from dbr.buttons    import ButtonQuestion64
+from globals.ident  import ID_SCRIPTS
 
-
-ID = wx.NewId()
 
 ID_Import = 100
 ID_Remove = 101
@@ -24,8 +23,8 @@ ID_Prerm = wx.NewId()
 ID_Postrm = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID, name=_('Scripts')):
-        wx.Panel.__init__(self, parent, id, name=_('Scripts'))
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, ID_SCRIPTS, name=_('Scripts'))
         
         # Check boxes for choosing scripts
         self.chk_preinst = wx.CheckBox(self, ID_Preinst, _('Make this script'))

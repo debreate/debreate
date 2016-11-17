@@ -3,7 +3,7 @@
 # Page defining dependencies
 
 import wx
-import wx.lib.mixins.listctrl as LC
+from wx.lib.mixins import listctrl as LC
 
 from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonClear
@@ -11,16 +11,15 @@ from dbr.buttons    import ButtonDel
 from dbr.buttons    import ButtonPipe
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
+from globals.ident  import ID_DEPENDS
 
-
-ID = wx.NewId()
 
 ID_Append = wx.NewId()
 ID_Delete = wx.NewId()
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=ID):
-        wx.Panel.__init__(self, parent, id, name=GT(u'Dependencies and Conflicts'))
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
         
         # ----- Tool Tips
         dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))

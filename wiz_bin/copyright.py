@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
+
 import wx
 
-ID = wx.NewId()
+from globals.ident import ID_COPYRIGHT
+
 
 class Panel(wx.Panel):
-    def __init__(self, parent, id=wx.ID_ANY):
-        wx.Panel.__init__(self, parent, id, name=_('Copyright'))
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=_('Copyright'))
         
         lic_options = (
         	'Apache-2.0', 'Artistic', 'BSD', 'GFDL', 'GFDL-1.2',

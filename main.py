@@ -30,6 +30,8 @@ from wiz_bin.files          import Panel as PanelFiles
 from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
+from globals.ident import ID_GREETING, ID_CONTROL, ID_DEPENDS, ID_FILES,\
+    ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU, ID_BUILD
 
 
 ID_Dialogs = wx.NewId()
@@ -41,16 +43,7 @@ ID_DPMLog = wx.NewId()
 ID_UPM = wx.NewId()
 ID_Lintian = wx.NewId()
 
-# Page IDs
-ID_INFO = wx.NewId()
-ID_CTRL = wx.NewId()
-ID_DEPS = wx.NewId()
-ID_FILES = wx.NewId()
-ID_SCRIPTS = wx.NewId()
-ID_CLOG = wx.NewId()
-ID_CPRIGHT = wx.NewId()
-ID_MENU = wx.NewId()
-ID_BUILD = wx.NewId()
+# Misc. IDs
 ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
@@ -107,17 +100,24 @@ class MainWindow(wx.Frame):
         # ----- Page Menu
         self.menu_page = wx.Menu()
         
-        self.p_info = wx.MenuItem(self.menu_page, ID_INFO, _('Information'), _('Go to Information section'),
-                kind=wx.ITEM_RADIO)
-        self.p_ctrl = wx.MenuItem(self.menu_page, ID_CTRL, _('Control'), _('Go to Control section'),
-                kind=wx.ITEM_RADIO)
-        self.p_deps = wx.MenuItem(self.menu_page, ID_DEPS, _('Dependencies'), _('Go to Dependencies section'), kind=wx.ITEM_RADIO)
-        self.p_files = wx.MenuItem(self.menu_page, ID_FILES, _('Files'), _('Go to Files section'), kind=wx.ITEM_RADIO)
-        self.p_scripts = wx.MenuItem(self.menu_page, ID_SCRIPTS, _('Scripts'), _('Go to Scripts section'), kind=wx.ITEM_RADIO)
-        self.p_clog = wx.MenuItem(self.menu_page, ID_CLOG, _('Changelog'), _('Go to Changelog section'), kind=wx.ITEM_RADIO)
-        self.p_cpright = wx.MenuItem(self.menu_page, ID_CPRIGHT, _('Copyright'), _('Go to Copyright section'), kind=wx.ITEM_RADIO)
-        self.p_menu = wx.MenuItem(self.menu_page, ID_MENU, _('Menu Launcher'), _('Go to Menu Launcher section'), kind=wx.ITEM_RADIO)
-        self.p_build = wx.MenuItem(self.menu_page, ID_BUILD, _('Build'), _('Go to Build section'), kind=wx.ITEM_RADIO)
+        self.p_info = wx.MenuItem(self.menu_page, ID_GREETING, _('Information'),
+                _('Go to Information section'), kind=wx.ITEM_RADIO)
+        self.p_ctrl = wx.MenuItem(self.menu_page, ID_CONTROL, _('Control'),
+                _('Go to Control section'), kind=wx.ITEM_RADIO)
+        self.p_deps = wx.MenuItem(self.menu_page, ID_DEPENDS, _('Dependencies'),
+                _('Go to Dependencies section'), kind=wx.ITEM_RADIO)
+        self.p_files = wx.MenuItem(self.menu_page, ID_FILES, _('Files'),
+                _('Go to Files section'), kind=wx.ITEM_RADIO)
+        self.p_scripts = wx.MenuItem(self.menu_page, ID_SCRIPTS, _('Scripts'),
+                _('Go to Scripts section'), kind=wx.ITEM_RADIO)
+        self.p_clog = wx.MenuItem(self.menu_page, ID_CHANGELOG, _('Changelog'),
+                _('Go to Changelog section'), kind=wx.ITEM_RADIO)
+        self.p_cpright = wx.MenuItem(self.menu_page, ID_COPYRIGHT, _('Copyright'),
+                _('Go to Copyright section'), kind=wx.ITEM_RADIO)
+        self.p_menu = wx.MenuItem(self.menu_page, ID_MENU, _('Menu Launcher'),
+                _('Go to Menu Launcher section'), kind=wx.ITEM_RADIO)
+        self.p_build = wx.MenuItem(self.menu_page, ID_BUILD, _('Build'),
+                _('Go to Build section'), kind=wx.ITEM_RADIO)
         
         self.menu_page.AppendItem(self.p_info)
         self.menu_page.AppendItem(self.p_ctrl)
@@ -207,16 +207,16 @@ class MainWindow(wx.Frame):
         
         self.Wizard = Wizard(self) # Binary
         
-        self.page_info = PanelInfo(self.Wizard, ID_INFO)
+        self.page_info = PanelInfo(self.Wizard)
         self.page_info.SetInfo()
-        self.page_control = PanelControl(self.Wizard, ID_CTRL)
-        self.page_depends = PanelDepends(self.Wizard, ID_DEPS)
-        self.page_files = PanelFiles(self.Wizard, ID_FILES)
-        self.page_scripts = PanelScripts(self.Wizard, ID_SCRIPTS)
-        self.page_clog = PanelChangelog(self.Wizard, ID_CLOG)
-        self.page_cpright = PanelCopyright(self.Wizard, ID_CPRIGHT)
-        self.page_menu = PanelMenu(self.Wizard, ID_MENU)
-        self.page_build = PanelBuild(self.Wizard, ID_BUILD)
+        self.page_control = PanelControl(self.Wizard)
+        self.page_depends = PanelDepends(self.Wizard)
+        self.page_files = PanelFiles(self.Wizard)
+        self.page_scripts = PanelScripts(self.Wizard)
+        self.page_clog = PanelChangelog(self.Wizard)
+        self.page_cpright = PanelCopyright(self.Wizard)
+        self.page_menu = PanelMenu(self.Wizard)
+        self.page_build = PanelBuild(self.Wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -409,13 +409,18 @@ class MainWindow(wx.Frame):
             confirm.Destroy()
     
     
-    # ----- Page Menu
+    ## Changes wizard page
+    #  
+    #  \param event
+    #        \b \e wx.MenuEvent|int : The event or integer to use as page ID
     def GoToPage(self, event):
-        for p in self.pages:
-            if p.IsChecked():
-                id = p.GetId()
+        if isinstance(event, int):
+            ID = event
         
-        self.Wizard.ShowPage(id)
+        else:
+            ID = event.GetId()
+        
+        self.Wizard.ShowPage(ID)
     
     # ----- Help Menu
     def OpenPolicyManual(self, event):
