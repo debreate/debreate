@@ -17,6 +17,7 @@
 - Fixed Quick Build
 - Added arm64 to archituctures
 - Optionally use custom filename for menu launcher
+- Fix problems with add/remove/delete in dependency list
 
 0.7.11
 - Add template generation for copyright
