@@ -179,17 +179,17 @@ class Panel(wx.Panel):
     
     def SetDepends(self, event):
         try:
-            id = event.GetKeyCode()
+            key_id = event.GetKeyCode()
         
         except AttributeError:
-            id = event.GetEventObject().GetId()
+            key_id = event.GetEventObject().GetId()
         
         addname = self.dep_name.GetValue()
         oper = self.oper_options[self.dep_oper.GetCurrentSelection()]
         ver = self.dep_ver.GetValue()
         addver = "(%s%s)" % (oper, ver)
             
-        if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+        if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
             if TextIsEmpty(addname):
                 return
             
@@ -205,7 +205,7 @@ class Panel(wx.Panel):
             else:
                 self.dep_area.AppendDependency(category, u'{} {}'.format(addname, addver))
         
-        elif id == ID_Append:
+        elif key_id == ID_Append:
             selected_count = self.dep_area.GetSelectedItemCount()
             if not TextIsEmpty(addname) and self.dep_area.GetItemCount() and selected_count:
                 listrow = None
@@ -225,10 +225,10 @@ class Panel(wx.Panel):
                     else:
                         self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
         
-        elif id == ID_Delete:
+        elif key_id == ID_Delete:
             self.dep_area.RemoveSelected()
         
-        elif id == wx.ID_CLEAR:
+        elif key_id == wx.ID_CLEAR:
             if self.dep_area.GetItemCount():
                 confirm = wx.MessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
                         wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
