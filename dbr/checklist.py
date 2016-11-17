@@ -8,7 +8,8 @@
 
 import wx
 
-from dbr.buttons    import ButtonCancel, ButtonClear
+from dbr.buttons    import ButtonCancel
+from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonConfirm
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
