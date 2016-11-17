@@ -11,7 +11,7 @@ from dbr.buttons    import ButtonBuild
 from dbr.buttons    import ButtonBuild64
 from dbr.buttons    import ButtonCancel
 from dbr.custom     import OutputLog
-from dbr.functions  import RunSudo
+from dbr.functions  import RunSudo, TextIsEmpty
 from dbr.message    import MessageDialog
 
 
@@ -146,7 +146,7 @@ class Panel(wx.Panel):
         required_ok = True
         
         for item in required:
-            if item.GetValue() == wx.EmptyString:
+            if TextIsEmpty(item.GetValue()):
                 required_ok = False
         
         if not required_ok:
