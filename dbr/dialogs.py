@@ -369,7 +369,8 @@ def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
 
 
 def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
-    ext_filters = u'|'.join(ext_filters)
+    if isinstance(ext_filters, (list, tuple)):
+        ext_filters = u'|'.join(ext_filters)
     
     file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
     
