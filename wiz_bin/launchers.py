@@ -617,7 +617,7 @@ class Panel(WizardPage):
         cont = False
         
         # Open a u'Save Dialog'
-        dia = GetFileSaveDialog(main_window, GT(u'Save Launcher'), u'All files|*')
+        dia = GetFileSaveDialog(main_window, GT(u'Save Launcher'), u'{}|*'.format(GT(u'All files')))
         if ShowDialog(dia):
             cont = True
             path = dia.GetPath()
@@ -676,7 +676,7 @@ class Panel(WizardPage):
     def OpenFile(self, event):
         cont = False
         
-        dia = GetFileOpenDialog(wx.GetApp().GetTopWindow(), GT(u'Open Launcher'), u'All files|*')
+        dia = GetFileOpenDialog(wx.GetApp().GetTopWindow(), GT(u'Open Launcher'), u'{}|*'.format(GT(u'All files')))
         if ShowDialog(dia):
             cont = True
         
