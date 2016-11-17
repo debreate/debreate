@@ -218,10 +218,7 @@ class Panel(wx.Panel):
                         self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
         
         elif id == ID_Delete:
-            selected = None
-            while selected != -1:
-                selected = self.dep_area.GetFirstSelected()
-                self.dep_area.DeleteItem(selected)
+            self.dep_area.RemoveSelected()
         
         elif id == wx.ID_CLEAR:
             if self.dep_area.GetItemCount():
@@ -260,6 +257,24 @@ class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
         wx.EVT_KEY_DOWN(self, self.OnSelectAll)
     
     
+    def GetSelectedIndexes(self):
+        selected_indexes = []
+        selected = None
+        for X in range(self.GetSelectedItemCount()):
+            if X == 0:
+                selected = self.GetFirstSelected()
+            
+            else:
+                selected = self.GetNextSelected(selected)
+            
+            selected_indexes.append(selected)
+        
+        if selected_indexes:
+            return tuple(sorted(selected_indexes))
+        
+        return None
+    
+    
     def OnSelectAll(self, event=None):
         select_all = False
         if isinstance(event, wx.KeyEvent):
@@ -269,3 +284,11 @@ class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
         if select_all:
             for X in range(self.GetItemCount()):
                 self.Select(X)
+    
+    
+    ## Removes all selected rows in descending order
+    def RemoveSelected(self):
+        selected_indexes = self.GetSelectedIndexes()
+        if selected_indexes != None:
+            for index in reversed(selected_indexes):
+                self.DeleteItem(index)
