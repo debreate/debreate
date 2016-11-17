@@ -18,12 +18,76 @@ from globals.constants  import file_types_defs
 
 
 ## A list control with no border
-class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
+class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
-        wx.ListCtrl.__init__(self, parent, ID, pos, size, wx.BORDER_NONE|style,
+        wx.ListView.__init__(self, parent, ID, pos, size, wx.BORDER_NONE|style,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
+        
+        wx.EVT_KEY_DOWN(self, self.OnSelectAll)
+    
+    
+    ## Add items to end of list
+    #  
+    #  \param items
+    #        String item or string items list
+    def AppendStringItem(self, items):
+        if items:
+            row_index = self.GetItemCount()
+            if isinstance(items, (unicode, str)):
+                self.InsertStringItem(row_index, items)
+            
+            elif isinstance(items, (tuple, list)):
+                self.InsertStringItem(row_index, items[0])
+                
+                if len(items) > 1:
+                    column_index = 0
+                    for I  in items[1:]:
+                        column_index += 1
+                        self.SetStringItem(row_index, column_index, I)
+    
+    
+    ## TODO: Doxygen
+    def GetSelectedIndexes(self):
+        selected_indexes = []
+        selected = None
+        for X in range(self.GetSelectedItemCount()):
+            if X == 0:
+                selected = self.GetFirstSelected()
+            
+            else:
+                selected = self.GetNextSelected(selected)
+            
+            selected_indexes.append(selected)
+        
+        if selected_indexes:
+            return tuple(sorted(selected_indexes))
+        
+        return None
+    
+    
+    ## TODO: Doxygen
+    def OnSelectAll(self, event=None):
+        select_all = False
+        if isinstance(event, wx.KeyEvent):
+            if event.GetKeyCode() == 65 and event.GetModifiers() == 2:
+                select_all = True
+        
+        if select_all:
+            for X in range(self.GetItemCount()):
+                self.Select(X)
+        
+        if event:
+            event.Skip()
+    
+    
+    ## Removes all selected rows in descending order
+    def RemoveSelected(self):
+        selected_indexes = self.GetSelectedIndexes()
+        if selected_indexes != None:
+            for index in reversed(selected_indexes):
+                self.DeleteItem(index)
 
 
 ## Hack to make list control border have rounded edges
@@ -50,6 +114,10 @@ class ListCtrlPanel(wx.Panel):
     
     def AppendColumn(self, heading, fmt=wx.LIST_FORMAT_LEFT, width=-1):
         self.listarea.AppendColumn(heading, fmt, width)
+    
+    
+    def AppendStringItem(self, items):
+        self.listarea.AppendStringItem(items)
     
     
     def Arrange(self, flag=wx.LIST_ALIGN_DEFAULT):
@@ -108,6 +176,10 @@ class ListCtrlPanel(wx.Panel):
         return self.listarea.GetNextItem(item, geometry, state)
     
     
+    def GetNextSelected(self, item):
+        self.listarea.GetNextSelected(item)
+    
+    
     def GetSelectedItemCount(self):
         return self.listarea.GetSelectedItemCount()
     
@@ -162,6 +234,10 @@ class ListCtrlPanel(wx.Panel):
         
         if event:
             event.Skip()
+    
+    
+    def RemoveSelected(self):
+        self.listarea.RemoveSelected()
     
     
     def SetColumnWidth(self, col, width):
