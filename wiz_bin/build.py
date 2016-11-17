@@ -3,15 +3,13 @@
 # Build Page
 
 
-import commands, os, shutil, thread, wx
+import commands, os, shutil, wx
 
 import db, db_md5
-from dbr.buttons    import ButtonBrowse
-from dbr.buttons    import ButtonBuild
 from dbr.buttons    import ButtonBuild64
-from dbr.buttons    import ButtonCancel
 from dbr.custom     import OutputLog
-from dbr.functions  import RunSudo, TextIsEmpty
+from dbr.functions  import RunSudo
+from dbr.functions  import TextIsEmpty
 from dbr.message    import MessageDialog
 
 
