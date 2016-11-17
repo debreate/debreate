@@ -136,8 +136,12 @@ class Panel(wx.Panel):
         # Check to make sure that all required fields have values
         meta = main_window.page_control
         required = [meta.pack, meta.ver, meta.auth, meta.email]
+        
         if main_window.page_menu.activate.GetValue():
             required.append(main_window.page_menu.name_input)
+            
+            if not main_window.page_menu.chk_filename.GetValue():
+                required.append(main_window.page_menu.input_filename)
         
         required_ok = True
         
