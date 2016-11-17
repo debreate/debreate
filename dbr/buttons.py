@@ -43,7 +43,7 @@ class ButtonCancel(wx.BitmapButton):
         self.SetToolTip(wx.ToolTip(_('Cancel')))
 
 class ButtonClear(wx.BitmapButton):
-    def __init__(self, parent, id=wx.WXK_ESCAPE):
+    def __init__(self, parent, id=wx.ID_CLEAR):
         wx.BitmapButton.__init__(self, parent, id, wx.Bitmap("%s/bitmaps/clear32.png" % PATH_app),
                 style=wx.NO_BORDER)
         self.SetToolTip(wx.ToolTip(_('Clear')))
