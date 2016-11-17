@@ -111,13 +111,6 @@ class Panel(WizardPage):
             btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
-        # --- summary
-        #self.summary = MultilineTextCtrlPanel(self, style=wx.TE_READONLY)
-        # Lines to put in the summary
-        #self.summary_type = wx.EmptyString
-        
-        #wx.EVT_SHOW(self, self.SetSummary)
-        
         # --- BUILD
         self.build_button = ButtonBuild64(self)
         self.build_button.SetName(u'build')
@@ -138,11 +131,9 @@ class Panel(WizardPage):
         if DebugEnabled():
             #page_sizer.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
             page_sizer.Add(btn_lint_overrides, 0, wx.LEFT, 5)
-        #page_sizer.Add(self.summary, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         page_sizer.AddSpacer(5)
         page_sizer.Add(build_sizer, 0, wx.ALIGN_CENTER)
         page_sizer.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        #page_sizer.AddStretchSpacer(10)
         
         self.SetAutoLayout(True)
         self.SetSizer(page_sizer)
@@ -492,7 +483,6 @@ class Panel(WizardPage):
         }
         
         if menu_page.activate.GetValue():
-            #required_fields[GT(u'Menu Launcher')] = (menu_page.name_input,)
             required_fields[GT(u'Menu Launcher')] = menu_page.GetRequiredFields()
             
             for RF in required_fields[GT(u'Menu Launcher')]:
@@ -717,8 +707,6 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def SetSummary(self, event):
-        #page = event.GetSelection()
-        
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
