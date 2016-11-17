@@ -48,8 +48,10 @@ ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
 ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
 
-# ID for custom fields
+# Misc. IDs
 ID_CUSTOM = wx.NewId()
+ID_DIALOGS = wx.NewId()
+ID_MENU_TT = wx.NewId()
 
 # *** Button IDs *** #
 ID_PREV = wx.NewId()
