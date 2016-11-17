@@ -21,11 +21,6 @@ class Panel(wx.Panel):
     def __init__(self, parent, id=ID, name=_('Build')):
         wx.Panel.__init__(self, parent, id, name=_('Build'))
         
-        # For identifying page to parent
-        #self.ID = "BUILD"
-        
-        self.parent = parent.parent # allows calling of parent events
-        
         # --- Tool Tips --- #
         md5_tip = wx.ToolTip(_('Create checksums for files in package'))
         del_tip = wx.ToolTip(_('Delete temporary directory tree after package has been created'))
@@ -109,21 +104,21 @@ class Panel(wx.Panel):
         
     
     def SetSummary(self, event):
-        #page = event.GetSelection()
+        main_window = wx.GetApp().GetTopWindow()
         
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
             # Get the file count
-            files_total = self.parent.page_files.dest_area.GetItemCount()
+            files_total = main_window.page_files.dest_area.GetItemCount()
             f = _('File Count')
             file_count = '%s: %s' % (f, files_total)
             # Scripts to make
             scripts_to_make = []
-            scripts = (("preinst", self.parent.page_scripts.chk_preinst),
-                ("postinst", self.parent.page_scripts.chk_postinst),
-                ("prerm", self.parent.page_scripts.chk_prerm),
-                ("postrm", self.parent.page_scripts.chk_postrm))
+            scripts = (("preinst", main_window.page_scripts.chk_preinst),
+                ("postinst", main_window.page_scripts.chk_postinst),
+                ("prerm", main_window.page_scripts.chk_prerm),
+                ("postrm", main_window.page_scripts.chk_postrm))
             for script in scripts:
                 if script[1].IsChecked():
                     scripts_to_make.append(script[0])
@@ -136,11 +131,13 @@ class Panel(wx.Panel):
             self.summary.SetValue("\n".join((file_count, scripts_to_make)))
     
     def OnBuild(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Check to make sure that all required fields have values
-        meta = self.parent.page_control
+        meta = main_window.page_control
         required = [meta.pack, meta.ver, meta.auth, meta.email]
-        if self.parent.page_menu.activate.GetValue():
-            required.append(self.parent.page_menu.name_input)
+        if main_window.page_menu.activate.GetValue():
+            required.append(main_window.page_menu.name_input)
         cont = True
         
         for item in required:
@@ -179,14 +176,14 @@ class Panel(wx.Panel):
                 
                 # Control & Depends (string)
                 wx.Yield()
-                control_data = self.parent.page_control.GetCtrlInfo()
+                control_data = main_window.page_control.GetCtrlInfo()
                 progress += 1
                 tasks += 1
                 prebuild_progress.Update(progress, _('Checking files'))
                 
                 # Files (tuple)
                 wx.Yield()
-                files_data = self.parent.page_files.GatherData().split("\n")[2:-1]
+                files_data = main_window.page_files.GatherData().split("\n")[2:-1]
                 progress += 1
                 for file in files_data:
                     tasks += 1
@@ -194,7 +191,7 @@ class Panel(wx.Panel):
                 
                 # Scripts (tuple)
                 wx.Yield()
-                scripts_data = self.parent.page_scripts.GatherData()[1:-1]
+                scripts_data = main_window.page_scripts.GatherData()[1:-1]
                 progress += 1
                 # Separate the scripts
                 preinst = ("<<PREINST>>\n", "\n<</PREINST>>", "preinst")
@@ -224,12 +221,12 @@ class Panel(wx.Panel):
                 
                 wx.Yield()
                 #create_docs = False
-                #doc_data = self.parent.page_docs.GatherData()
+                #doc_data = main_window.page_docs.GatherData()
                 # Changelog (list)
-                changelog_data = self.parent.page_clog.GatherData()
+                changelog_data = main_window.page_clog.GatherData()
                 changelog_data = changelog_data.split("<<CHANGELOG>>\n")[1].split("\n<</CHANGELOG>>")[0].split("\n")
                 create_changelog = False
-                if self.parent.page_clog.GetChangelog() != wx.EmptyString:
+                if main_window.page_clog.GetChangelog() != wx.EmptyString:
                     create_changelog = True
                 if create_changelog:
                     tasks += 1
@@ -242,7 +239,7 @@ class Panel(wx.Panel):
                 prebuild_progress.Update(progress, _('Checking copyright'))
                 
                 wx.Yield()
-                copyright = self.parent.page_cpright.GetCopyright()
+                copyright = main_window.page_cpright.GetCopyright()
                 create_copyright = False
                 if copyright != wx.EmptyString:
                     create_copyright = True
@@ -253,10 +250,10 @@ class Panel(wx.Panel):
                 prebuild_progress.Update(progress, _('Checking menu launcher'))
                 
                 wx.Yield()
-                create_menu = self.parent.page_menu.activate.GetValue()
+                create_menu = main_window.page_menu.activate.GetValue()
                 if create_menu:
                     tasks += 1
-                    menu_data = self.parent.page_menu.GetLauncherInfo().split("\n")
+                    menu_data = main_window.page_menu.GetLauncherInfo().split("\n")
                 progress += 1
                 
                 # *** MD5SUMS
@@ -536,7 +533,7 @@ class Panel(wx.Panel):
             
             # Dialog for save destination
             ttype = _('Debian Packages')
-            if self.parent.cust_dias.IsChecked():
+            if main_window.cust_dias.IsChecked():
                 save_dia = db.SaveFile(self)
                 save_dia.SetFilter("%s|*.deb" % ttype)
                 save_dia.SetFilename("%s_%s_%s.deb" % (pack, ver, arch))
