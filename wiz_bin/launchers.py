@@ -332,12 +332,13 @@ class Panel(WizardPage):
     def Export(self, out_dir, out_name=wx.EmptyString, executable=False):
         if out_name == wx.EmptyString:
             out_name = page_ids[self.GetId()].upper()
-        
-        if FieldEnabled(self.chk_filename) and not self.chk_filename.GetValue():
-            if not TextIsEmpty(self.input_filename.GetValue()):
-                suffix = self.GetOutputFilename()
-                if not TextIsEmpty(suffix):
-                    out_name = u'{}-{}'.format(out_name, suffix)
+            
+            # Add suffix when saving project
+            if FieldEnabled(self.chk_filename) and not self.chk_filename.GetValue():
+                if not TextIsEmpty(self.input_filename.GetValue()):
+                    suffix = self.GetOutputFilename()
+                    if not TextIsEmpty(suffix):
+                        out_name = u'{}-{}'.format(out_name, suffix)
         
         ret_code = WizardPage.Export(self, out_dir, out_name)
         
