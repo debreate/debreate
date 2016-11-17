@@ -7,3 +7,4 @@ Known Bugs:
   - md5sums-lists-nonexistent-file usr/share/debreate/bitmaps/browse64.pn
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
 - Log window has some issues with wx.Yield
+- Information page doesn't refresh correctly when accessed via menu (0.7)
