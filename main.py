@@ -6,7 +6,9 @@ from urllib2 import HTTPError
 from urllib2 import URLError
 
 from dbr.about              import AboutDialog
+from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
+from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
@@ -20,6 +22,17 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
+from globals.ident          import ID_BUILD
+from globals.ident          import ID_CHANGELOG
+from globals.ident          import ID_CONTROL
+from globals.ident          import ID_COPYRIGHT
+from globals.ident          import ID_DEPENDS
+from globals.ident          import ID_DIALOGS
+from globals.ident          import ID_FILES
+from globals.ident          import ID_GREETING
+from globals.ident          import ID_MENU
+from globals.ident          import ID_MENU_TT
+from globals.ident          import ID_SCRIPTS
 from globals.paths          import PATH_app
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
@@ -30,11 +43,7 @@ from wiz_bin.files          import Panel as PanelFiles
 from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
-from globals.ident import ID_GREETING, ID_CONTROL, ID_DEPENDS, ID_FILES,\
-    ID_SCRIPTS, ID_CHANGELOG, ID_COPYRIGHT, ID_MENU, ID_BUILD
 
-
-ID_Dialogs = wx.NewId()
 
 # Debian Policy Manual IDs
 ID_DPM = wx.NewId()
@@ -76,8 +85,8 @@ class MainWindow(wx.Frame):
         self.menu_file = wx.Menu()
         
         # Quick Build
-        self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD,
-                                         _('Quick Build'), _('Build a package from an existing build tree'))
+        self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD, _('Quick Build'),
+                _('Build a package from an existing build tree'))
         self.QuickBuild.SetBitmap(wx.Bitmap("%s/bitmaps/clock16.png" % PATH_app))
         
         self.menu_file.Append(wx.ID_NEW, help=_('Start a new project'))
@@ -132,8 +141,22 @@ class MainWindow(wx.Frame):
         # ----- Options Menu
         self.menu_opt = wx.Menu()
         
+        # Show/Hide tooltips
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
+                GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
+        wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
+        self.menu_opt.AppendItem(self.opt_tooltips)
+        
+        show_tooltips = ReadConfig(u'tooltips')
+        if show_tooltips != ConfCode.KEY_NO_EXIST:
+            self.opt_tooltips.Check(show_tooltips)
+        
+        else:
+            self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+        self.OnToggleToolTips()
+        
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.menu_opt, ID_Dialogs, _('Use Custom Dialogs'),
+        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, _('Use Custom Dialogs'),
             _('Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         self.menu_opt.AppendItem(self.cust_dias)
@@ -180,8 +203,8 @@ class MainWindow(wx.Frame):
                     222: 'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
                     ID_Lintian: 'http://lintian.debian.org/tags-all.html'
                     }
-        for id in self.references:
-            wx.EVT_MENU(self, id, self.OpenPolicyManual)
+        for ID in self.references:
+            wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
         
         self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, _('Help'), _('Open a usage document'))
@@ -334,6 +357,14 @@ class MainWindow(wx.Frame):
             filename = os.path.split(self.saved_project)[1]
             
             self.OpenProject(data, filename)
+    
+    
+    ## Shows or hides tooltips
+    def OnToggleToolTips(self, event=None):
+        enabled = self.opt_tooltips.IsChecked()
+        wx.ToolTip.Enable(enabled)
+        
+        WriteConfig(u'tooltips', enabled)
     
     
     def OpenProject(self, data, filename):
