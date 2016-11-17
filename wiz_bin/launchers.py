@@ -611,7 +611,7 @@ class Panel(WizardPage):
         # Get data to write to control file
         menu_data = self.GetMenuInfo().encode(u'utf-8')
         menu_data = menu_data.split(u'\n')
-        menu_data = u'\n'.join(menu_data[1:])
+        menu_data = u'\n'.join(menu_data)
         
         # Saving?
         cont = False
