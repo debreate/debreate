@@ -233,25 +233,11 @@ class Panel(wx.Panel):
             self.SelectAll()
         
         elif id == wx.ID_CLEAR:
-            # Create the dialog
-#			title = dia_lang.GetLanguage("Message Title", cur_lang)
-#			text = dia_lang.GetLanguage("Message Text", cur_lang)
-            confirm = wx.MessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-            if confirm.ShowModal() == wx.ID_YES:
-                self.dep_area.DeleteAllItems()
-#			confirm = dialogs.Confirm(self)
-#			if cur_lang == "English":
-#				confirm.SetTitle("Confirm")
-#				confirm.SetText(lang.GetLanguage("Message Text", cur_lang))
-#				confirm.SetButtonText(lang.GetLanguage("Button Yes", cur_lang), lang.GetLanguage("Button No", cur_lang))
-#			elif cur_lang == "Spanish":
-#				confirm.SetTitle("Confirmar")
-#				confirm.SetText(lang.GetLanguage("Message Text", cur_lang))
-#				confirm.SetButtonText(lang.GetLanguage("Button Yes", cur_lang), lang.GetLanguage("Button No", cur_lang))
-#			
-#			if confirm.DisplayModal():
-#				self.dep_area.DeleteAllItems()
+            if self.dep_area.GetItemCount():
+                confirm = wx.MessageDialog(self, _('Clear all dependencies?'), _('Confirm'),
+                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+                if confirm.ShowModal() == wx.ID_YES:
+                    self.dep_area.DeleteAllItems()
         
         event.Skip()
         
