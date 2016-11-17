@@ -1,11 +1,9 @@
 Known Bugs:
 - QuickBuild
   - Successive building in same instance sessions causes app to freeze
-- Cannot use Ctrl+A on Files page
 - md5sum produces different hash for binary files than debuild
 - Lintian reports:
   - no-section-field
   - md5sums-lists-nonexistent-file usr/share/debreate/bitmaps/browse64.pn
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
-- File list columns don't size correctly
 - Log window has some issues with wx.Yield

@@ -20,6 +20,7 @@
 - Refactor & organize error messages on build
 - Fix bugs in docs/BUGS.txt
 - Heavy code cleanup & testing
+- Merge 'Dependencies' fixes from 0.7 branch
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
