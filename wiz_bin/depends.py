@@ -8,6 +8,7 @@ from dbr.buttons import ButtonAdd
 from dbr.buttons import ButtonClear
 from dbr.buttons import ButtonDel
 from dbr.buttons import ButtonPipe
+from dbr.functions import TextIsEmpty
 
 
 ID = wx.NewId()
@@ -38,10 +39,6 @@ class Panel(wx.Panel):
 #        desc_tip = wx.ToolTip("Here you can give a more detailed explanation\n\n\
 #If you need help open \"Help/Example Control\" for details on formatting")
         
-        
-        # Display a nice title
-#		self.title = wx.StaticText(self, -1) #Title for dependencies and conflictions
-#		self.title.SetFont(parent.BoldFont)
         
         # --- DEPENDS
         self.dep_chk = wx.RadioButton(self, -1, _('Depends'), name='Depends', style=wx.RB_GROUP)
@@ -183,17 +180,12 @@ class Panel(wx.Panel):
             count += 1
             self.dep_area.Select(count)
     
+    
     def SetDepends(self, event):
-        # Set language to display for dialog
-#		dia_lang = languages.ConfirmDialog()
-#		if self.GetGrandParent().lang_en.IsChecked():
-#			cur_lang = "English"
-#		elif self.GetGrandParent().lang_es.IsChecked():
-#			cur_lang = "Spanish"
-        
         try:
             mod = event.GetModifiers()
             id = event.GetKeyCode()
+        
         except AttributeError:
             mod = None
             id = event.GetEventObject().GetId()
@@ -214,16 +206,26 @@ class Panel(wx.Panel):
                             self.dep_area.SetStringItem(0, 1, "%s %s" % (addname, addver))
         
         elif id == ID_Append:
-            listrow = self.dep_area.GetFocusedItem()  # Get row of selected item
-            colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
-            prev_text = colitem.GetText()  # Get the text from that item
-            if addname != "":
-                if ver != "":
-                    self.dep_area.SetStringItem(listrow, 1, "%s | %s %s" % (prev_text, addname, addver))
-                else:
-                    self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
+            selected_count = self.dep_area.GetSelectedItemCount()
+            if not TextIsEmpty(addname) and self.dep_area.GetItemCount() and selected_count:
+                listrow = None
+                for X in range(selected_count):
+                    if listrow == None:
+                        listrow = self.dep_area.GetFirstSelected()
+                    
+                    else:
+                        listrow = self.dep_area.GetNextSelected(listrow)
+                    
+                    colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
+                    prev_text = colitem.GetText()  # Get the text from that item
+                    
+                    if not TextIsEmpty(ver):
+                        self.dep_area.SetStringItem(listrow, 1, "%s | %s %s" % (prev_text, addname, addver))
+                    
+                    else:
+                        self.dep_area.SetStringItem(listrow, 1, "%s | %s" % (prev_text, addname))
         
-        elif id == ID_Delete: # wx.WXK_DELETE:
+        elif id == ID_Delete:
             selected = None
             while selected != -1:
                 selected = self.dep_area.GetFirstSelected()
