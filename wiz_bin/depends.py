@@ -4,7 +4,7 @@
 
 
 import wx
-from wx.lib.mixins import listctrl as wxMixinListCtrl
+from wx.lib.mixins import listctrl as LC
 
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
@@ -116,7 +116,7 @@ class Panel(WizardPage):
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         
-        # FIXME: wx. 3.0 Columns not sizing correctly
+        # wx 3.0 compatibility
         if (wx.MAJOR_VERSION < 3):
             self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
         
@@ -158,16 +158,6 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(layout_Vmain)
         self.Layout()
-        '''
-        # ----- List not needed anymore
-        self.setlabels = {	self.border: u'Border', self.txt_package: u'Pack', self.txt_version: u'Ver',
-                            self.depadd: u'Add', self.depapp: u'App', self.deprem: u'Rem'}
-        
-        self.categories = {	self.dep_chk: u'Depends', self.pre_chk: u'Pre-Depends', self.rec_chk: u'Recommends',
-                            self.sug_chk: u'Suggests', self.enh_chk: u'Enhances', self.con_chk: u'Conflicts',
-                            self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
-        '''
-        
         
         SetPageToolTips(self)
     
@@ -266,10 +256,10 @@ class Panel(WizardPage):
 ## A ListCtrl that automatically expands columns
 #  
 #  FIXME: Deprecated
-class AutoListCtrl(wx.ListCtrl, wxMixinListCtrl.ListCtrlAutoWidthMixin):
+class AutoListCtrl(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):
     def __init__(self, parent, window_id=wx.ID_ANY):
         wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
-        wxMixinListCtrl.ListCtrlAutoWidthMixin.__init__(self)
+        LC.ListCtrlAutoWidthMixin.__init__(self)
         
         self.prev_width = self.Size[0]
         
