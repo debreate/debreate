@@ -431,6 +431,16 @@ class Panel(WizardPage):
         return u'\n'.join(desktop_list)
     
     
+    ## Retrieves the filename to be used for the menu launcher
+    def GetOutputFilename(self):
+        if not self.chk_filename.GetValue():
+            filename = self.input_filename.GetValue().replace(u' ', u'_')
+            if not TextIsEmpty(filename):
+                return filename
+        
+        return self.name_input.GetValue().replace(u' ', u'_')
+    
+    
     ## Retrieves Desktop Entry file information
     #  
     #  \return
@@ -441,16 +451,6 @@ class Panel(WizardPage):
             return None
         
         return(__name__, self.GetMenuInfo(), u'MENU')
-    
-    
-    ## Retrieves the filename to be used for the menu launcher
-    def GetOutputFilename(self):
-        if not self.chk_filename.GetValue():
-            filename = self.input_filename.GetValue().replace(u' ', u'_')
-            if not TextIsEmpty(filename):
-                return filename
-        
-        return self.name_input.GetValue().replace(u' ', u'_')
     
     
     ## TODO: Doxygen
