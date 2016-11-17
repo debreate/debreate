@@ -70,9 +70,6 @@ class MainWindow(wx.Frame):
         self.main_icon = wx.Icon("%s/bitmaps/debreate64.png" % PATH_app, wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.main_icon)
         
-        # If window is maximized this will store last window size and position for next session
-        wx.EVT_MAXIMIZE(self, self.OnMaximize)
-        
         # ----- Status Bar
         self.stat_bar = wx.StatusBar(self, -1)
         self.SetStatusBar(self.stat_bar)
@@ -267,16 +264,10 @@ class MainWindow(wx.Frame):
         self.SetSizer(self.main_sizer)
         self.Layout()
         
-        
         # Saving
         # First item is name of saved file displayed in title
         # Second item is actual path to project file
         self.saved_project = wx.EmptyString
-        
-        
-        
-    def OnMaximize(self, event):
-        print "Maximized"
     
     
     ### ***** Check for New Version ***** ###
@@ -420,18 +411,18 @@ class MainWindow(wx.Frame):
             confirm.Destroy()
             
             maximized = self.IsMaximized()
-            WriteConfig(u'maximize', self.IsMaximized())
+            WriteConfig(u'maximize', maximized)
             
             if maximized:
                 WriteConfig(u'position', GetDefaultConfigValue(u'position'))
                 WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+                WriteConfig(u'center', True)
             
             else:
-                WriteConfig(u'position', self.GetPosition())
-                WriteConfig(u'size', self.GetSize())
+                WriteConfig(u'position', self.GetPositionTuple())
+                WriteConfig(u'size', self.GetSizeTuple())
+                WriteConfig(u'center', False)
             
-            # FIXME: Window not positioning correctly
-            WriteConfig(u'center', True)
             WriteConfig(u'dialogs', self.cust_dias.IsChecked())
             WriteConfig(u'workingdir', os.getcwd())
             
