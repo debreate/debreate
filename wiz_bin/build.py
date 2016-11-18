@@ -26,7 +26,7 @@ class Panel(wx.ScrolledWindow):
         md5_tip = wx.ToolTip(GT(u'Create checksums for files in package'))
         del_tip = wx.ToolTip(GT(u'Delete temporary directory tree after package has been created'))
         #tip_lint = wx.ToolTip(GT(u'Checks the package for errors according to lintian's specifics'))
-        dest_tip = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
+        #dest_tip = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
         build_tip = wx.ToolTip(GT(u'Start building'))
         
         
@@ -199,7 +199,7 @@ class Panel(wx.ScrolledWindow):
             wx.Yield()
             files_data = main_window.page_files.GatherData().split(u'\n')[2:-1]
             progress += 1
-            for file in files_data:
+            for FILE in files_data:
                 tasks += 1
             prebuild_progress.Update(progress, GT(u'Checking scripts'))
             
@@ -248,9 +248,9 @@ class Panel(wx.ScrolledWindow):
             prebuild_progress.Update(progress, GT(u'Checking copyright'))
             
             wx.Yield()
-            copyright = main_window.page_cpright.GetCopyright()
+            cpright = main_window.page_cpright.GetCopyright()
             create_copyright = False
-            if copyright != wx.EmptyString:
+            if cpright != wx.EmptyString:
                 create_copyright = True
                 tasks += 1
             progress += 1
@@ -312,22 +312,22 @@ class Panel(wx.ScrolledWindow):
             build_progress.Update(progress, GT(u'Copying files'))
             
             wx.Yield()
-            for file in files_data:
+            for FILE in files_data:
                 # Create new directories
-                new_dir = u'{}{}'.format(temp_tree, file.split(u' -> ')[2])
+                new_dir = u'{}{}'.format(temp_tree, FILE.split(u' -> ')[2])
                 if not os.path.isdir(new_dir):
                     os.makedirs(new_dir)
-                # Get file path
-                file = file.split(u' -> ')[0]
+                # Get FILE path
+                FILE = FILE.split(u' -> ')[0]
                 # Remove asteriks from exectuables
                 exe = False # Used to set executable permissions
-                if file[-1] == u'*':
+                if FILE[-1] == u'*':
                     exe = True
-                    file = file[:-1]
+                    FILE = FILE[:-1]
                 # Copy files
-                copy_path = u'{}/{}'.format(new_dir, os.path.split(file)[1])
-                shutil.copy(file, copy_path)
-                # Set file permissions
+                copy_path = u'{}/{}'.format(new_dir, os.path.split(FILE)[1])
+                shutil.copy(FILE, copy_path)
+                # Set FILE permissions
                 if exe:
                     os.chmod(copy_path, 0755)
                 else:
@@ -372,7 +372,7 @@ class Panel(wx.ScrolledWindow):
                 
                 wx.Yield()
                 cp_file = open(u'{}/usr/share/doc/{}/copyright'.format(temp_tree, pack), u'w')
-                cp_file.write(copyright.encode(u'utf-8'))
+                cp_file.write(cpright.encode(u'utf-8'))
                 cp_file.close()
                 progress += 1
             
