@@ -125,6 +125,19 @@ if os.path.isfile(FILE_pot):
         FILE_BUFFER.write('\n'.join(pot_lines))
         FILE_BUFFER.close()
     
+    print('\nMerging locales ...')
+    
+    for ROOT, DIRS, FILES in os.walk('locale'):
+        for F in FILES:
+            if F.endswith('.po'):
+                F = '{}/{}'.format(ROOT, F)
+                language = F.split('/')[1]
+                
+                print('\nLanguage: {}'.format(language))
+                print('File: {}'.format(F))
+                
+                commands.getstatusoutput('msgmerge -U -i -s --no-location --no-wrap --backup=none "{}" "{}"'.format(F, FILE_pot))
+    
     print('\nFinished\n')
     
     sys.exit(0)
