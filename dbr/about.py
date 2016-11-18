@@ -1,25 +1,26 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.about
+#  
 #  Dialog that shows information about the application
 
 
-# System modules
-import commands
-import shutil
-import wx, os
+import commands, os, shutil, wx
 
-from dbr.constants import APP_NAME, PREFIX, EMAIL, \
-    AUTHOR, cmd_gzip
-from dbr.custom import Hyperlink
 import dbr.font
-from dbr.functions import GetFileMimeType, CreateTempDirectory, \
-    RemoveTempDirectory
-from dbr.language import GT
-from dbr.log import Logger
+from dbr.constants  import APP_NAME
+from dbr.constants  import AUTHOR
+from dbr.constants  import EMAIL
+from dbr.constants  import PREFIX
+from dbr.constants  import cmd_gzip
+from dbr.custom     import Hyperlink
+from dbr.functions  import CreateTempDirectory
+from dbr.functions  import GetFileMimeType
+from dbr.functions  import RemoveTempDirectory
+from dbr.language   import GT
+from dbr.log        import Logger
 
 
-# Local modules
 # Font for the name
 bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
 sys_info_font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)
