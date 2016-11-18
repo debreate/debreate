@@ -3,14 +3,15 @@
 ## \package wiz_bin.changelog
 
 
-import wx, os, commands
+import commands, os, wx
 
-import dbr
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonImport
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.pathctrl       import PATH_WARN
+from dbr.pathctrl       import PathCtrl
 from dbr.textinput      import MonospaceTextCtrl
 from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.wizard         import WizardPage
@@ -70,7 +71,7 @@ class Panel(WizardPage):
         self.target_default = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
                 name=u'target', style=wx.RB_GROUP)
         self.target_custom = wx.RadioButton(self, name=self.target_default.Name)
-        self.target = dbr.PathCtrl(self, -1, u'/', dbr.PATH_WARN)
+        self.target = PathCtrl(self, -1, u'/', PATH_WARN)
         self.target.SetName(self.target_default.Name)
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)

@@ -5,9 +5,9 @@
 
 import commands, math, os, subprocess, time, traceback, wx
 
-import dbr
 from dbr.buttons            import ButtonBuild64
 from dbr.checklist          import CheckListDialog
+from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ErrorDialog
 from dbr.dialogs            import GetFileSaveDialog
@@ -116,7 +116,7 @@ class Panel(WizardPage):
         build_sizer.Add(self.build_button, 1)
         
         # --- Display log
-        self.log = dbr.OutputLog(self)
+        self.log = OutputLog(self)
         
         # --- Page 7 Sizer --- #
         page_sizer = wx.BoxSizer(wx.VERTICAL)
