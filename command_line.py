@@ -39,8 +39,8 @@ def ArgOK(arg, group):
 
 def ArgIsDefined(arg, a_type):
     for group in (solo_args, value_args):
-        for set in group:
-            for A in set:
+        for S in group:
+            for A in S:
                 if arg == A:
                     return True
     
