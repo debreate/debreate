@@ -6,35 +6,31 @@
 import commands, os
 
 
-class MD5():
+## Object for creating MD5 hashes
+class MD5Hasher:
     def __init__(self):
-        #self.rootdir = rootdir # Set the working folder, same folder where deb is built
         pass
     
-    def IsExecutable(self, file):
+    
+    def IsExecutable(self, filename):
         # Find out if the file is an executable
-#        executable = commands.getoutput(u'if [ -x {} ]\nthen echo true\nfi'.format(file))  #bash version
-#        if executable == u'true':
-#        executable = stat.S_IXUSR & os.stat(file)[stat.ST_MODE]  #python version
-        executable = os.access(file, os.X_OK) #another python version
+        executable = os.access(filename, os.X_OK) #another python version
         
         return bool(executable)
+    
     
     def WriteMd5(self, builddir, tempdir):
         tempdir = tempdir.encode(u'utf-8')
         os.chdir(builddir)
-
+        
         temp_list = []
         md5_list = [] # Final list used to write the md5sum file
-        for root, dirs, files in os.walk(tempdir):
-            for file in files:
-                file = u'{}/{}'.format(root, file)
-#                if self.IsExecutable(file):
-#                    md5 = commands.getoutput(u'md5sum -b "{}"'.format(file))
-#                elif not self.IsExecutable(file):
-                md5 = commands.getoutput((u'md5sum -t "{}"'.format(file)))
+        for ROOT, DIRS, FILES in os.walk(tempdir):
+            for F in FILES:
+                F = u'{}/{}'.format(ROOT, F)
+                md5 = commands.getoutput((u'md5sum -t "{}"'.format(F)))
                 temp_list.append(md5)
-            
+        
         for item in temp_list:
             # Remove [tempdir] from the path name in the md5sum so that it has a
             # true unix path
@@ -43,6 +39,6 @@ class MD5():
             sum_join = u''.join(sum_split)
             md5_list.append(sum_join)
         
-        file = open(u'{}/DEBIAN/md5sums'.format(tempdir), u'w')  # Create the md5sums file in the "DEBIAN" directory
-        file.write(u'{}\n'.format(u'\n'.join(md5_list)))  # Write the final list to the file
-        file.close() # Save the file
+        FILE_BUFFER = open(u'{}/DEBIAN/md5sums'.format(tempdir), u'w')  # Create the md5sums file in the "DEBIAN" directory
+        FILE_BUFFER.write(u'{}\n'.format(u'\n'.join(md5_list)))  # Write the final list to the file
+        FILE_BUFFER.close() # Save the file
