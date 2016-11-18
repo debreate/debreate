@@ -30,14 +30,14 @@ class Panel(wx.ScrolledWindow):
         #m_ver_tip = wx.ToolTip(GT(u'The version of your application'))
         m_com_tip = wx.ToolTip(GT(u'Text displayed when mouse hovers over launcher'))
         m_exec_tip = wx.ToolTip(GT(u'Executable to be launched'))
-        m_mime_tip = wx.ToolTip(GT(u'Specifies the MIME types that the application can handle'))
+        #m_mime_tip = wx.ToolTip(GT(u'Specifies the MIME types that the application can handle'))
         #m_enc_tip = wx.ToolTip(GT(u'Specifies the encoding of the desktop entry file'))
         #m_type_tip = wx.ToolTip(GT(u'The type of launcher'))
-        m_cat_tip = wx.ToolTip(GT(u'Choose which categories in which you would like your application to be displayed'))
+        #m_cat_tip = wx.ToolTip(GT(u'Choose which categories in which you would like your application to be displayed'))
         m_term_tip = wx.ToolTip(GT(u'Specifies whether application should be run from a terminal'))
         m_notify_tip = wx.ToolTip(GT(u'Displays a notification in the system panel when launched'))
-        m_nodisp_tip = wx.ToolTip(GT(u'This options means "This application exists, but don\'t display it in the menus"'))
-        m_showin_tip = wx.ToolTip(GT(u'Only Show In Tip'))
+        #m_nodisp_tip = wx.ToolTip(GT(u'This options means "This application exists, but don\'t display it in the menus"'))
+        #m_showin_tip = wx.ToolTip(GT(u'Only Show In Tip'))
         
         # --- Main Menu Entry --- #
         
@@ -373,26 +373,26 @@ class Panel(wx.ScrolledWindow):
         return self.name_input.GetValue().replace(u' ', u'_')
             
     
-    
+    ## TODO: Doxygen
     def SetCategory(self, event):
         try:
-            id = event.GetKeyCode()
+            ID = event.GetKeyCode()
         except AttributeError:
-            id = event.GetEventObject().GetId()
+            ID = event.GetEventObject().GetId()
         
         cat = self.cat_choice.GetValue()
         cat = cat.split()
         cat = u''.join(cat)
         
-        if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+        if ID == wx.WXK_RETURN or ID == wx.WXK_NUMPAD_ENTER:
             self.categories.InsertStringItem(self.categories.GetItemCount(), cat)
         
-        elif id == wx.WXK_DELETE:
+        elif ID == wx.WXK_DELETE:
             if self.categories.GetItemCount() and self.categories.GetSelectedItemCount():
                 cur_cat = self.categories.GetFirstSelected()
                 self.categories.DeleteItem(cur_cat)
         
-        elif id == wx.ID_CLEAR:
+        elif ID == wx.ID_CLEAR:
             if self.categories.GetItemCount():
                 confirm = wx.MessageDialog(self, GT(u'Clear categories?'), GT(u'Confirm'),
                         wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
