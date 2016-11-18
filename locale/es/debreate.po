@@ -13,8 +13,8 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-11-18 01:37-0800\n"
-        "PO-Revision-Date: 2016-11-18 01:50-0800\n"
+        "POT-Creation-Date: 2016-11-18 02:30-0800\n"
+        "PO-Revision-Date: 2016-11-18 02:50-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Spanish <antumdeluge@gmail.com>\n"
         "Language: es\n"
@@ -44,10 +44,6 @@ msgid   "Add Folder"
 msgstr  "Añadir Directorio"
 
 msgid   "All supported formats"
-msgstr  ""
-
-msgid   "An Error Occurred:\n"
-        "Could not delete \"{}\""
 msgstr  ""
 
 msgid   "An error occurred attempting to retrieve version from remote website:"
@@ -101,14 +97,17 @@ msgstr  "Construyendo un Paquete de Debian con Debreate"
 msgid   "Building debs from Source"
 msgstr  "Empaquetar deb de la Fuente"
 
-msgid   "Can't Continue"
-msgstr  "No Se Puede Continuar"
-
 msgid   "Cancel"
 msgstr  "Cancelar"
 
 msgid   "Cancel build"
 msgstr  ""
+
+msgid   "Cannot Continue"
+msgstr  "No Se Puede Continuar"
+
+msgid   "Cannot continue:"
+msgstr  "No se puede continuar"
 
 msgid   "Cannot create config directory, file exists"
 msgstr  ""
@@ -233,7 +232,13 @@ msgstr  "Derecho de Autor"
 msgid   "Could not build .deb package"
 msgstr  ""
 
+msgid   "Could not create changelog"
+msgstr  ""
+
 msgid   "Could not create configuration, exiting ..."
+msgstr  ""
+
+msgid   "Could not delete staged directory: {}"
 msgstr  ""
 
 msgid   "Could not install {}"
@@ -241,9 +246,6 @@ msgstr  "No se pudo instalar {}"
 
 msgid   "Could not locate the following files:"
 msgstr  "Los archivos siguientes no se encuentran:"
-
-msgid   "Couldn't create changelog"
-msgstr  ""
 
 msgid   "Create checksums for files in package"
 msgstr  "Crear suma de comprobación para los archivos en el paquete"
@@ -282,13 +284,13 @@ msgid   "Custom filename to use for launcher"
 msgstr  ""
 
 msgid   "Debian Packages"
-msgstr  "Paquetes de Debian"
+msgstr  "Paquetes Debian"
 
 msgid   "Debian Policy Manual"
 msgstr  "Manual de Normas de Debian"
 
 msgid   "Debian packages"
-msgstr  ""
+msgstr  "Paquetes Debian"
 
 msgid   "Debreate"
 msgstr  ""
@@ -312,7 +314,7 @@ msgid   "Debreate project files"
 msgstr  "Archivos de proyecto de Debreate"
 
 msgid   "Debreate projects"
-msgstr  ""
+msgstr  "Proyectos Debreate"
 
 msgid   "Debug"
 msgstr  ""
@@ -336,13 +338,13 @@ msgid   "Depends"
 msgstr  "Depende de"
 
 msgid   "Details"
-msgstr  ""
+msgstr  "Detalles"
 
 msgid   "Details saved to {}"
 msgstr  "Se guardó unas detalles a {}"
 
 msgid   "Details: {}"
-msgstr  ""
+msgstr  "Detalles: {}"
 
 msgid   "Developer"
 msgstr  "Desarrollo"
@@ -414,16 +416,16 @@ msgid   "File Exists"
 msgstr  "Archivo Existe"
 
 msgid   "File does not exist"
-msgstr  ""
+msgstr  "No existe el archivo"
 
 msgid   "Filename"
-msgstr  ""
+msgstr  "Nombre del archivo"
 
 msgid   "Files"
 msgstr  "Archivos"
 
 msgid   "Font Size"
-msgstr  ""
+msgstr  "Tamaño de Fuente"
 
 msgid   "For a video tutorial check the link below."
 msgstr  "Para un video instructivo de hacer clic en el enlace mas abajo."
@@ -432,10 +434,10 @@ msgid   "Gathering control information"
 msgstr  "Recogiendo la información de control"
 
 msgid   "General Contributor"
-msgstr  ""
+msgstr  "Colaborador General"
 
-msgid   "Generate Scripts"
-msgstr  ""
+msgid   "Generate scripts"
+msgstr  "Producir scripts"
 
 msgid   "Getting administrative privileges from user"
 msgstr  "Obtener privilegios administrativos de usuario"
@@ -444,7 +446,7 @@ msgid   "Getting files from {}"
 msgstr  "Recogiendo archivos de {}"
 
 msgid   "GitHub Project"
-msgstr  ""
+msgstr  "Página del Proyecto en GitHub"
 
 msgid   "Go to Build section"
 msgstr  "Pasar a la sección del Empaquetar"
@@ -474,16 +476,16 @@ msgid   "Go to Scripts section"
 msgstr  "Pasar a la sección de Scripts"
 
 msgid   "Greeting"
-msgstr  ""
+msgstr  "Salutación"
 
 msgid   "Head Developer"
-msgstr  ""
+msgstr  "Desarrollador Principal"
 
 msgid   "Help"
 msgstr  "Ayuda"
 
 msgid   "Hide"
-msgstr  ""
+msgstr  "Ocultar"
 
 msgid   "Homepage"
 msgstr  "Página Principal"
@@ -534,7 +536,7 @@ msgid   "Job"
 msgstr  "Tarea"
 
 msgid   "Legacy Debreate projects"
-msgstr  ""
+msgstr  "Proyectos Debreate obsoletos"
 
 msgid   "License"
 msgstr  "Licencia"
@@ -579,7 +581,7 @@ msgid   "Menu Launcher"
 msgstr  "Acceso Directo del Menú"
 
 msgid   "Message"
-msgstr  ""
+msgstr  "Mensaje"
 
 msgid   "Missing Files"
 msgstr  "Archivos Ausentes"
@@ -602,7 +604,6 @@ msgstr  ""
 msgid   "New Folder"
 msgstr  "Carpeta Nueva"
 
-# ## Button tool tips
 msgid   "Next"
 msgstr  "Adelante"
 
@@ -613,7 +614,7 @@ msgid   "Not a valid Debreate project"
 msgstr  "No es proyecto válido de Debreate"
 
 msgid   "Not writing empty text to configuration"
-msgstr  ""
+msgstr  "No se escribe texto vacío a la configuración"
 
 msgid   "Ok"
 msgstr  "Aceptar"
@@ -622,28 +623,28 @@ msgid   "One of the required fields is empty"
 msgstr  "Un campo obligatorio está vacío"
 
 msgid   "Open"
-msgstr  "Abrir"
+msgstr  "Importar"
 
 msgid   "Open Debreate Project"
-msgstr  "Abrir Proyecto de Debreate"
+msgstr  "Importar Proyecto de Debreate"
 
 msgid   "Open File"
-msgstr  "Abrir Archivo"
+msgstr  "Importar Archivo"
 
 msgid   "Open Launcher"
 msgstr  "Importar un Acceso"
 
 msgid   "Open Log"
-msgstr  ""
+msgstr  "Importar Registro"
 
 msgid   "Open a previously saved project"
-msgstr  "Abrir proyecto previamente guardado"
+msgstr  "Importar proyecto previamente guardado"
 
 msgid   "Open a usage document"
 msgstr  "Abrir un documento de uso"
 
 msgid   "Open launcher file"
-msgstr  "Abrir archivo de acceso directo"
+msgstr  "Importar archivo de acceso directo"
 
 msgid   "Opening project from argument: {}"
 msgstr  ""
@@ -658,13 +659,13 @@ msgid   "Other"
 msgstr  "Cualquier demas"
 
 msgid   "Overwrite"
-msgstr  ""
+msgstr  "Sobrescribir"
 
 msgid   "Overwrite File?"
 msgstr  "¿Sobrescribir el Archivo?"
 
 msgid   "Overwrite?"
-msgstr  ""
+msgstr  "¿Sobrescribir?"
 
 msgid   "Package"
 msgstr  "Paquete"
@@ -790,7 +791,7 @@ msgid   "Rename"
 msgstr  "Renombrar"
 
 msgid   "Replace"
-msgstr  ""
+msgstr  "Reemplazar"
 
 msgid   "Replaces"
 msgstr  "Reemplaza a"
@@ -838,25 +839,25 @@ msgid   "Short Description"
 msgstr  "Descripción Breve"
 
 msgid   "Show or hide tooltips"
-msgstr  ""
+msgstr  "Mostrar o ocultar información sobre herramientas"
 
 msgid   "Show tooltips"
-msgstr  ""
+msgstr  "Mostrar información sobre herramientas"
 
 msgid   "Source"
 msgstr  "Fuente"
 
 msgid   "Sourceforge Project"
-msgstr  ""
+msgstr  "Página del Proyecto en Sourceforge"
 
 msgid   "Specifies whether application should be run from a terminal"
 msgstr  "Especifica si el programa se inicia de un terminal"
 
 msgid   "Stage directory does not exist"
-msgstr  ""
+msgstr  "No existe el directorio formateado"
 
 msgid   "Staged directory tree"
-msgstr  ""
+msgstr  "El directorio formateado"
 
 msgid   "Start New Project"
 msgstr  "Iniciar Proyecto Nuevo"
@@ -873,35 +874,32 @@ msgstr  "Notificación del inicio"
 msgid   "Success"
 msgstr  "Éxito"
 
-msgid   "Sucess"
-msgstr  ""
-
 msgid   "Suggests"
 msgstr  "Sugiere"
 
 msgid   "Supported compressed archives"
-msgstr  ""
+msgstr  "Archivos comprimidos compatibles"
 
 msgid   "System Information"
-msgstr  ""
+msgstr  "Información del Sistema"
 
 msgid   "Target"
 msgstr  "Directorio de destino"
 
 msgid   "Target directory does not exist"
-msgstr  ""
+msgstr  "No existe el directorio de destino"
 
 msgid   "Target file"
-msgstr  ""
+msgstr  "Nombre de archivo de destino"
 
 msgid   "Target output file"
-msgstr  ""
+msgstr  "Nombre de archivo de destino"
 
 msgid   "Terminal"
 msgstr  ""
 
 msgid   "Text Size"
-msgstr  ""
+msgstr  "Tamaño del Texto"
 
 msgid   "Text displayed when mouse hovers over launcher"
 msgstr  "Descripción emergente del acceso"
@@ -916,7 +914,7 @@ msgid   "Thank you for using Debreate."
 msgstr  "Gracias por usar Debreate"
 
 msgid   "The default configuration file will now be created."
-msgstr  ""
+msgstr  "Se creará el archivo de configuración por defecto."
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
 msgstr  ""
@@ -938,10 +936,10 @@ msgid   "This package may be useful to enhanced package"
 msgstr  "Este paquete será útil para el mejorado"
 
 msgid   "Timer is running"
-msgstr  ""
+msgstr  "El temporizador está en marcha"
 
 msgid   "Timer is stopped"
-msgstr  ""
+msgstr  "El temporizador se detiene"
 
 msgid   "Timer stopped. Stopping gauge ..."
 msgstr  ""
@@ -951,7 +949,7 @@ msgid   "To delete this file, type the following command in a\n"
 msgstr  ""
 
 msgid   "Too many files"
-msgstr  ""
+msgstr  "Demasiados archivos"
 
 msgid   "Translation"
 msgstr  "Traducción"
@@ -969,13 +967,13 @@ msgid   "Unfortunately Debreate does not support unicode yet. Remove any non-ASC
 msgstr  ""
 
 msgid   "Unicode Error"
-msgstr  ""
+msgstr  "Error de Unicode"
 
 msgid   "Update"
-msgstr  ""
+msgstr  "Actualizar"
 
 msgid   "Update checking not supported in development versions"
-msgstr  ""
+msgstr  "Comprobación de la actualización no admitida en las versiones de desarrollo"
 
 msgid   "Urgency"
 msgstr  "Urgencia"
@@ -984,7 +982,7 @@ msgid   "Use \"Name\" as output filename (<name>.desktop)"
 msgstr  ""
 
 msgid   "Use Custom Dialogs"
-msgstr  "Utilizar Diálogos Adaptados"
+msgstr  "Utilizar Diálogos Personalizados"
 
 msgid   "Use System or Custom Save/Open Dialogs"
 msgstr  "Utilizar Dialogos del Systema o Personalizados"
@@ -996,10 +994,10 @@ msgid   "Version {} is available!"
 msgstr  "¡Está disponible la versión {}!"
 
 msgid   "Warning"
-msgstr  ""
+msgstr  "Advertencia"
 
 msgid   "Website Designer & Author"
-msgstr  ""
+msgstr  "Diseñador y Autor del Sitio Web"
 
 msgid   "Welcome to Debreate!"
 msgstr  "¡Bienvenido a Debreate!"
@@ -1022,10 +1020,10 @@ msgid   "You will lose any unsaved information\n"
 msgstr  ""
 
 msgid   "errors"
-msgstr  ""
+msgstr  "errores"
 
 msgid   "finished"
-msgstr  ""
+msgstr  "se ha completado"
 
 msgid   "gzip decompress; Code: {}, Output: {}"
 msgstr  ""
@@ -1034,7 +1032,7 @@ msgid   "in progress"
 msgstr  ""
 
 msgid   "post-install and pre-remove scripts generated"
-msgstr  "Los scripts de de post-instalación y pre-desinstalación se producieron"
+msgstr  "Los scripts de post-instalación y pre-desinstalación se producieron"
 
 msgid   "script/executable"
 msgstr  ""
@@ -1050,9 +1048,6 @@ msgstr  ""
 
 #~ msgid        "Could not locate \"%s\""
 #~ msgstr       "No se encuentra \"%s\""
-
-#~ msgid        "Generate scripts"
-#~ msgstr       "Producir scripts"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Ruta al directorio del construyo"
