@@ -4,7 +4,7 @@
 import os, subprocess, webbrowser, wx
 from urllib2 import URLError, HTTPError
 
-import dbr
+from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
 from dbr.compression        import ID_ZIP_BZ2
@@ -29,11 +29,13 @@ from dbr.functions          import GetCurrentVersion
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
 from dbr.functions          import UsingDevelopmentVersion
+from dbr.help               import HelpDialog
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
 from dbr.quickbuild         import QuickBuild
+from dbr.wizard             import Wizard
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
 from globals.application    import APP_project_sf
@@ -294,7 +296,7 @@ class MainWindow(wx.Frame):
         self.menubar.Append(self.menu_opt, GT(u'Options'))
         self.menubar.Append(self.menu_help, GT(u'Help'))
         
-        self.wizard = dbr.Wizard(self) # Binary
+        self.wizard = Wizard(self) # Binary
         self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
         
         self.page_info = PageGreeting(self.wizard)
@@ -442,7 +444,7 @@ class MainWindow(wx.Frame):
     
     ## Opens a dialog box with information about the program
     def OnAbout(self, event):
-        about = dbr.AboutDialog(self)
+        about = AboutDialog(self)
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
         about.SetVersion(VERSION_string)
@@ -527,7 +529,7 @@ class MainWindow(wx.Frame):
     
     def OnHelp(self, event):
         if DebugEnabled():
-            dbr.HelpDialog(self).ShowModal()
+            HelpDialog(self).ShowModal()
         
         else:
             # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage

@@ -64,8 +64,6 @@ def GetCurrentVersion():
 #    widget.
 #  \param field
 #        The widget (wx.Window) to be checked
-#  
-#  \b Alias: \e dbr.FieldEnabled
 def FieldEnabled(field):
     # wx. 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
     if wx.MAJOR_VERSION > 2:
@@ -80,8 +78,6 @@ def FieldEnabled(field):
 #        Password of the current user's login session
 #  \param command
 #        The command to be run with elevated/super user privileges
-#  
-#  \b Alias: \e dbr.RunSudo
 def RunSudo(password, command):
     command = u'echo {} | sudo -S {} ; echo $?'.format(password, command)
     wx.SafeYield()
@@ -91,13 +87,12 @@ def RunSudo(password, command):
         return False
     return True
 
+
 ## Checks if the system is using a specific version of Python
 #  
 #  FIXME: This function is currently not used anywhere in the code
 #  \param version
 #        The minimal version that should be required
-#  
-#  \b Alias: \e dbr.RequirePython
 def RequirePython(version):
     error = u'Incompatible python version'
     t = type(version)
@@ -115,8 +110,6 @@ def RequirePython(version):
 #  
 #  \param text
 #        The string to be checked
-#  
-#  \b Alias: \e dbr.TextIsEmpty
 def TextIsEmpty(text):
     text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
     return (text == u'')
@@ -194,7 +187,8 @@ def GetSystemLicensesList():
 #        \b \e bool : Alphabet characters found
 def HasAlpha(value):
     return (re.search(u'[a-zA-Z]', unicode(value)) != None)
-    
+
+
 ## Finds integer value from a string, float, tuple, or list
 #  
 #  \param value
@@ -346,8 +340,10 @@ def GetIntTuple(value):
 def IsInteger(value):
     return GetInteger(value) != None
 
+
 def IsBoolean(value):
     return GetBoolean(value) != None
+
 
 def IsIntTuple(value):
     return GetIntTuple(value) != None

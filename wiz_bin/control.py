@@ -5,13 +5,14 @@
 
 import wx, os
 
-import dbr
 from dbr.buttons        import ButtonBrowse64
 from dbr.buttons        import ButtonPreview64
 from dbr.buttons        import ButtonSave64
+from dbr.charctrl       import CharCtrl
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
 from dbr.dialogs        import ShowDialog
+from dbr.functions      import FieldEnabled
 from dbr.help           import HelpButton
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -61,13 +62,13 @@ class Panel(WizardPage):
         
         # ----- Package ( B[m], SB[m] )
         pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package*')
-        self.pack = dbr.CharCtrl(self.bg)
+        self.pack = CharCtrl(self.bg)
         self.pack.req = True
         self.pack.SetName(pack_txt.Name)
         
         # ----- Version ( B[m], D[m], C[m] )
         ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version*')
-        self.ver = dbr.CharCtrl(self.bg)
+        self.ver = CharCtrl(self.bg)
         self.ver.req = True
         self.ver.SetName(ver_txt.Name)
         
@@ -283,7 +284,7 @@ class Panel(WizardPage):
                     )
         
         for key in getvals:
-            key_enabled = dbr.FieldEnabled(key[1])
+            key_enabled = FieldEnabled(key[1])
             
             if key_enabled and u''.join(key[1].GetValue().split(u' ')) != u'':
                 if key[0] == u'Package' or key[0] == u'Version':
@@ -292,7 +293,7 @@ class Panel(WizardPage):
                     ctrl_list.append(u'{}: {}'.format(key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        auth_enabled = dbr.FieldEnabled(self.auth)
+        auth_enabled = FieldEnabled(self.auth)
         
         if auth_enabled and self.auth.GetValue() != u'':
             ctrl_list.insert(3, u'Maintainer: {} <{}>'.format(self.auth.GetValue(), self.email.GetValue()))
@@ -304,7 +305,7 @@ class Panel(WizardPage):
             u'Essential': (self.ess,self.ess_opt)#, u'Urgency': (self.urge,self.urge_opt)
         }
         for key in getsels:
-            sel_enabled = dbr.FieldEnabled(getsels[key][0])
+            sel_enabled = FieldEnabled(getsels[key][0])
             
             if sel_enabled:
                 if key == u'Essential' and self.ess.GetCurrentSelection() == 1:
