@@ -177,7 +177,6 @@ if parsed_path:
     
     Debreate.OpenProject(project_file)
 
-debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
 debreate_app.MainLoop()
 
