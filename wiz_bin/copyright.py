@@ -57,6 +57,6 @@ class Panel(wx.ScrolledWindow):
         if (not self.cp_display.IsEmpty()):
             text = u'\n{}'.format(self.cp_display.GetValue())
             self.cp_display.Clear()
-        copyright = u'Copyright: <year> <copyright holder> <email>'
-        text = u'{}\n\n{}\n{}'.format(copyright, lic_path, text)
+        cpright = u'Copyright: <year> <copyright holder> <email>'
+        text = u'{}\n\n{}\n{}'.format(cpright, lic_path, text)
         self.cp_display.SetValue(text)
