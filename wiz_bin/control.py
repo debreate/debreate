@@ -431,7 +431,7 @@ class Panel(wx.ScrolledWindow):
             dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
-                path = u'%s/%s' % (dia.GetPath(), dia.GetFilename())
+                path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
         else:
             dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
@@ -514,13 +514,13 @@ class Panel(wx.ScrolledWindow):
         for key in getvals:
             if Enabled(key[1]) and u''.join(key[1].GetValue().split(u' ')) != u'':
                 if key[0] == u'Package' or key[0] == u'Version':
-                    ctrl_list.append(u'%s: %s' % (key[0], u'-'.join(key[1].GetValue().split(u' '))))
+                    ctrl_list.append(u'{}: {}'.format(key[0], u'-'.join(key[1].GetValue().split(u' '))))
                 else:
-                    ctrl_list.append(u'%s: %s' % (key[0], key[1].GetValue()))
+                    ctrl_list.append(u'{}: {}'.format(key[0], key[1].GetValue()))
         
         # Add the Maintainer
         if Enabled(self.auth) and self.auth.GetValue() != u'':
-            ctrl_list.insert(3, u'Maintainer: %s <%s>' % (self.auth.GetValue(), self.email.GetValue()))
+            ctrl_list.insert(3, u'Maintainer: {} <{}>'.format(self.auth.GetValue(), self.email.GetValue()))
         
         # Add the "choice" options
         getsels = {
@@ -532,7 +532,7 @@ class Panel(wx.ScrolledWindow):
                 if key == u'Essential' and self.ess.GetCurrentSelection() == 1:
                     pass
                 else:
-                    ctrl_list.append(u'%s: %s' % (key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
+                    ctrl_list.append(u'{}: {}'.format(key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
         
         # Get the uploaders
 #        coauths = []
@@ -542,9 +542,9 @@ class Panel(wx.ScrolledWindow):
 #            while cocount != cototal:
 #                auth = self.coauth.GetItem(cocount)
 #                email = self.coauth.GetItem(cocount, 1)
-#                coauths.append(u'%s <%s>' % (auth.GetText(), email.GetText()))
+#                coauths.append(u'{} <{}>'.format(auth.GetText(), email.GetText()))
 #                cocount += 1
-#            ctrl_list.append(u'Uploaders: %s' % u'; '.join(coauths))
+#            ctrl_list.append(u'Uploaders: {}'.format(u'; '.join(coauths)))
         
         
         # *** Get dependencies *** #
@@ -577,7 +577,7 @@ class Panel(wx.ScrolledWindow):
             
         for item in all_deps:
             if len(all_deps[item]) != 0:
-                ctrl_list.append(u'%s: %s' % (item, u', '.join(all_deps[item])))
+                ctrl_list.append(u'{}: {}'.format(item, u', '.join(all_deps[item])))
         
         
         # *** Get description *** #
@@ -585,7 +585,7 @@ class Panel(wx.ScrolledWindow):
         desc = self.desc.GetValue()
         # Make sure synopsis isn't empty: Join spaces
         if u''.join(syn.split(u' ')) != u'':
-            ctrl_list.append(u'Description: %s' % syn)
+            ctrl_list.append(u'Description: {}'.format(syn))
             # Make sure description isn't empty: Join newlines and spaces
             if u''.join(u''.join(desc.split(u' ')).split(u'\n')) != u'':
                 desc_temp = []
@@ -593,7 +593,7 @@ class Panel(wx.ScrolledWindow):
                     if u''.join(line.split(u' ')) == u'':
                         desc_temp.append(u' .')
                     else:
-                        desc_temp.append(u' %s' % line)
+                        desc_temp.append(u' {}'.format(line))
                 ctrl_list.append(u'\n'.join(desc_temp))
         
         ctrl_list.append(u'\n')
@@ -685,7 +685,7 @@ class Panel(wx.ScrolledWindow):
     
     def GatherData(self):
         data = self.GetCtrlInfo()
-        return u'<<CTRL>>\n%s<</CTRL>>' % data
+        return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
     
     
     # *** Determining of project is modified

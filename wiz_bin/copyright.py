@@ -41,7 +41,7 @@ class Panel(wx.Panel):
     
     def GatherData(self):
         data = self.GetCopyright()
-        return u'<<COPYRIGHT>>\n%s\n<</COPYRIGHT>>' % data
+        return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
     def SetCopyright(self, data):
         self.cp_display.SetValue(data)

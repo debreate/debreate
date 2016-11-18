@@ -143,7 +143,7 @@ scripts will be created that will place a symbolic link to your executables in t
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
 
-        self.al_help_te = wx.TextCtrl(self.al_help, -1, u'%s\n\n%s' % (description, instructions),
+        self.al_help_te = wx.TextCtrl(self.al_help, -1, u'{}\n\n{}'.format(description, instructions),
                 style = wx.TE_MULTILINE|wx.TE_READONLY)
         self.al_help_ok = ButtonConfirm(self.al_help)
         
@@ -236,7 +236,7 @@ scripts will be created that will place a symbolic link to your executables in t
                                 dest_path = dest.GetText()
                             
                             # Put "destination/filename" together in executable list
-                            self.xlist.insert(0, u'%s/%s' % (dest_path, filename))
+                            self.xlist.insert(0, u'{}/{}'.format(dest_path, filename))
                             self.executables.InsertStringItem(0, filename)
                             self.executables.SetItemTextColour(0, u'red')
                         else:
@@ -268,8 +268,8 @@ scripts will be created that will place a symbolic link to your executables in t
             # If the link path does not exist on the system post a warning message
             if os.path.isdir(link_path) == False:
                 cont = False
-                msg_path = GT(u'Path "%s" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), GT(u'Path Warning'),
+                msg_path = GT(u'Path "{}" does not exist. Continue?')
+                link_error_dia = wx.MessageDialog(self, msg_path.format(link_path), GT(u'Path Warning'),
                     style=wx.YES_NO)
                 if link_error_dia.ShowModal() == wx.ID_YES:
                     cont = True
@@ -280,20 +280,20 @@ scripts will be created that will place a symbolic link to your executables in t
                     filename = os.path.split(self.xlist[count])[1]
                     if u'.' in filename:
                         linkname = u'.'.join(filename.split(u'.')[:-1])
-                        link = u'%s/%s' % (link_path, linkname)
+                        link = u'{}/{}'.format(link_path, linkname)
                     else:
-                        link = u'%s/%s' % (link_path, filename)
-                    #link = u'%s/%s' % (link_path, os.path.split(self.xlist[count])[1])
-                    postinst_list.append(u'ln -fs "%s" "%s"' % (self.xlist[count], link))
-                    prerm_list.append(u'rm "%s"' % (link))
+                        link = u'{}/{}'.format(link_path, filename)
+                    #link = u'{}/{}'.format(link_path, os.path.split(self.xlist[count])[1])
+                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.xlist[count], link))
+                    prerm_list.append(u'rm "{}"'.format(link))
                     count += 1
                 
                 postinst = u'\n\n'.join(postinst_list)
                 prerm = u'\n\n'.join(prerm_list)
                 
-                self.te_postinst.SetValue(u'#! /bin/bash -e\n\n%s' % postinst)
+                self.te_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
                 self.chk_postinst.SetValue(True)
-                self.te_prerm.SetValue(u'#! /bin/bash -e\n\n%s' % prerm)
+                self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
                 self.chk_prerm.SetValue(True)
                 
                 dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
@@ -378,9 +378,9 @@ scripts will be created that will place a symbolic link to your executables in t
         for group in script_list:
             if group[0].GetValue():
                 #make_scripts = True
-                data.append(u'<<%s>>\n1\n%s\n<</%s>>' % (group[2], group[1].GetValue(), group[2]))
+                data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[1].GetValue(), group[2]))
             else:
-                data.append(u'<<%s>>\n0\n<</%s>>' % (group[2], group[2]))
+                data.append(u'<<{}>>\n0\n<</{}>>'.format(group[2], group[2]))
                 
         
-        return u'<<SCRIPTS>>\n%s\n<</SCRIPTS>>' % u'\n'.join(data)
+        return u'<<SCRIPTS>>\n{}\n<</SCRIPTS>>'.format(u'\n'.join(data))

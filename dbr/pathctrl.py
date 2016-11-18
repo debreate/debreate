@@ -23,7 +23,7 @@ class PathCtrl(wx.TextCtrl):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
         if value == wx.EmptyString or value[0] != u'/':
-            self.SetValue(u'/%s' % value)
+            self.SetValue(u'/{}'.format(value))
             self.SetInsertionPoint(insertion_point)
         
         # If PathCtrl is set to warn on non-existent paths, change background color to red when path

@@ -211,8 +211,8 @@ class Panel(wx.Panel):
             if total_files: # Continue if files are found
                 cont = True
                 count = 0
-                msg_files = GT(u'Getting files from %s')
-                loading = wx.ProgressDialog(GT(u'Progress'), msg_files % (pin), total_files, self,
+                msg_files = GT(u'Getting files from {}')
+                loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
                                             wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
                 for root, dirs, files in os.walk(pin):
                     for file in files:
@@ -222,18 +222,18 @@ class Panel(wx.Panel):
                             sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
                             if sub_dir != wx.EmptyString:
                                 # Add the sub-dir to dest
-                                dest = u'%s%s' % (pout, sub_dir)
-                                #self.list_data.insert(0, (u'%s/%s' % (root, file), u'%s/%s' % (sub_dir[1:], file), dest))
-                                self.list_data.insert(0, (u'%s/%s' % (root, file), file, dest))
+                                dest = u'{}{}'.format(pout, sub_dir)
+                                #self.list_data.insert(0, (u'{}/{}'.format(root, file), u'{}/{}'.format(sub_dir[1:], file), dest))
+                                self.list_data.insert(0, (u'{}/{}'.format(root, file), file, dest))
                                 self.dest_area.InsertStringItem(0, file)
                                 self.dest_area.SetStringItem(0, 1, dest)
                             else:
-                                self.list_data.insert(0, (u'%s/%s' % (root, file), file, pout))
+                                self.list_data.insert(0, (u'{}/{}'.format(root, file), file, pout))
                                 self.dest_area.InsertStringItem(0, file)
                                 self.dest_area.SetStringItem(0, 1, pout)
                             count += 1
                             cont = loading.Update(count)
-                            if os.access(u'%s/%s' % (root,file), os.X_OK):
+                            if os.access(u'{}/{}'.format(root,file), os.X_OK):
                                 self.dest_area.SetItemTextColour(0, u'red')
         
         elif os.path.isfile(pin):
@@ -388,18 +388,18 @@ class Panel(wx.Panel):
                         item_src = i0
                 # Populate list with tuples of ('src', 'file', 'dest')
                 if self.dest_area.GetItemTextColour(count) == (255, 0, 0):
-                    file_list.append((u'%s*' % item_src, item_file, item_dest))
+                    file_list.append((u'{}*'.format(item_src), item_file, item_dest))
                 else:
                     file_list.append((item_src, item_file, item_dest))
                 count += 1
         
             return_list = []
             for file in file_list:
-                f0 = u'%s'.encode(u'utf-8') % file[0]
-                f1 = u'%s'.encode(u'utf-8') % file[1]
-                f2 = u'%s'.encode(u'utf-8') % file[2]
-                return_list.append(u'%s -> %s -> %s' % (f0, f1, f2))
-            return u'<<FILES>>\n1\n%s\n<</FILES>>' % u'\n'.join(return_list)
+                f0 = u'{}'.encode(u'utf-8').format(file[0])
+                f1 = u'{}'.encode(u'utf-8').format(file[1])
+                f2 = u'{}'.encode(u'utf-8').format(file[2])
+                return_list.append(u'{} -> {} -> {}'.format(f0, f1, f2))
+            return u'<<FILES>>\n1\n{}\n<</FILES>>'.format(u'\n'.join(return_list))
         else:
             # Place a "0" in FILES field if we are not saving any files
             return u'<<FILES>>\n0\n<</FILES>>'

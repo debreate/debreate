@@ -13,7 +13,7 @@ class MD5():
     
     def IsExecutable(self, file):
         # Find out if the file is an executable
-#        executable = commands.getoutput(u'if [ -x %s ]\nthen echo true\nfi' % file)  #bash version
+#        executable = commands.getoutput(u'if [ -x {} ]\nthen echo true\nfi'.format(file))  #bash version
 #        if executable == u'true':
 #        executable = stat.S_IXUSR & os.stat(file)[stat.ST_MODE]  #python version
         executable = os.access(file, os.X_OK) #another python version
@@ -30,7 +30,7 @@ class MD5():
             for file in files:
                 file = u'{}/{}'.format(root, file)
 #                if self.IsExecutable(file):
-#                    md5 = commands.getoutput(u'md5sum -b "%s"' % file)
+#                    md5 = commands.getoutput(u'md5sum -b "{}"'.format(file))
 #                elif not self.IsExecutable(file):
                 md5 = commands.getoutput((u'md5sum -t "{}"'.format(file)))
                 temp_list.append(md5)

@@ -36,13 +36,13 @@ def CommandExists(command):
     try:
         subprocess.Popen(command.split(u' ')[0].split(u' '))
         exists = True
-        print u'First subprocess: %s' % (exists)
+        print u'First subprocess: {}'.format(exists)
     except OSError:
         exists = os.path.isfile(command)
-        print u'os.path: %s' % (exists)
+        print u'os.path: {}'.format(exists)
         if exists:
             subprocess.Popen((command))
-            print u'Second subprocess: %s' % (exists)
+            print u'Second subprocess: {}'.format(exists)
     return exists
 
 

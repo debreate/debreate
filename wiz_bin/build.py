@@ -110,7 +110,7 @@ class Panel(wx.Panel):
             # Get the file count
             files_total = main_window.page_files.dest_area.GetItemCount()
             f = GT(u'File Count')
-            file_count = u'%s: %s' % (f, files_total)
+            file_count = u'{}: {}'.format(f, files_total)
             # Scripts to make
             scripts_to_make = []
             scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
@@ -122,9 +122,9 @@ class Panel(wx.Panel):
                     scripts_to_make.append(script[0])
             s = GT(u'Scripts')
             if len(scripts_to_make):
-                scripts_to_make = u'%s: %s' % (s, u', '.join(scripts_to_make))
+                scripts_to_make = u'{}: {}'.format(s, u', '.join(scripts_to_make))
             else:
-                scripts_to_make = u'%s: 0' % (s)
+                scripts_to_make = u'{}: 0'.format(s)
                     
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
     
@@ -174,9 +174,9 @@ class Panel(wx.Panel):
         # If all required fields were met, continue to build
         def BuildIt(build_path, filename):
             
-            temp_tree = u'%s/%s__dbp__' % (build_path, filename)
+            temp_tree = u'{}/{}__dbp__'.format(build_path, filename)
             
-            deb = u'"%s/%s.deb"' % (build_path, filename) # Actual path to new .deb
+            deb = u'"{}/{}.deb"'.format(build_path, filename) # Actual path to new .deb
             
             # *** Pre-build operations *** #
             
@@ -297,12 +297,12 @@ class Panel(wx.Panel):
                     wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_AUTO_HIDE)#|wx.PD_CAN_ABORT)
             
             wx.Yield()
-            if os.path.isdir(u'%s/DEBIAN' % (temp_tree)):
-                c = u'rm -r "%s"' % (temp_tree)
+            if os.path.isdir(u'{}/DEBIAN'.format(temp_tree)):
+                c = u'rm -r "{}"'.format(temp_tree)
                 if commands.getstatusoutput(c.encode(u'utf-8'))[0]:
-                    wx.MessageDialog(self, GT(u'An Error Occurred:\nCould not delete "%s"') % (temp_tree), GT(u'Can\'t Continue'), style=wx.OK|wx.ICON_ERROR).ShowModal()
+                    wx.MessageDialog(self, GT(u'An Error Occurred:\nCould not delete "{}"').format(temp_tree), GT(u'Can\'t Continue'), style=wx.OK|wx.ICON_ERROR).ShowModal()
             # Make a fresh build tree
-            os.makedirs(u'%s/DEBIAN' % (temp_tree))
+            os.makedirs(u'{}/DEBIAN'.format(temp_tree))
             progress += 1
             
             # *** FILES
@@ -311,7 +311,7 @@ class Panel(wx.Panel):
             wx.Yield()
             for file in files_data:
                 # Create new directories
-                new_dir = u'%s%s' % (temp_tree, file.split(u' -> ')[2])
+                new_dir = u'{}{}'.format(temp_tree, file.split(u' -> ')[2])
                 if not os.path.isdir(new_dir):
                     os.makedirs(new_dir)
                 # Get file path
@@ -322,7 +322,7 @@ class Panel(wx.Panel):
                     exe = True
                     file = file[:-1]
                 # Copy files
-                copy_path = u'%s/%s' % (new_dir, os.path.split(file)[1])
+                copy_path = u'{}/{}'.format(new_dir, os.path.split(file)[1])
                 shutil.copy(file, copy_path)
                 # Set file permissions
                 if exe:
@@ -335,7 +335,7 @@ class Panel(wx.Panel):
             
             # Make sure that the dirctory is available in which to place documentation
             if create_changelog or create_copyright:
-                doc_dir = u'%s/usr/share/doc/%s' % (temp_tree, pack)
+                doc_dir = u'{}/usr/share/doc/{}'.format(temp_tree, pack)
                 if not os.path.isdir(doc_dir):
                     os.makedirs(doc_dir)
             
@@ -346,19 +346,19 @@ class Panel(wx.Panel):
                 wx.Yield()
                 # If changelog will be installed to default directory
                 if changelog_dest == u'DEFAULT':
-                    changelog_dest = u'%s/usr/share/doc/%s' % (temp_tree, pack)
+                    changelog_dest = u'{}/usr/share/doc/{}'.format(temp_tree, pack)
                 else:
-                    changelog_dest = u'%s%s' % (temp_tree, changelog_dest)
+                    changelog_dest = u'{}{}'.format(temp_tree, changelog_dest)
                 if not os.path.isdir(changelog_dest):
                     os.makedirs(changelog_dest)
-                changelog_file = open(u'%s/changelog' % (changelog_dest), u'w')
+                changelog_file = open(u'{}/changelog'.format(changelog_dest), u'w')
                 changelog_file.write(changelog_data.encode(u'utf-8'))
                 changelog_file.close()
-                c = u'gzip -n --best "%s/changelog"' % (changelog_dest)
+                c = u'gzip -n --best "{}/changelog"'.format(changelog_dest)
                 clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
                 if clog_status[0]:
                     clog_error = GT(u'Couldn\'t create changelog')
-                    changelog_error = wx.MessageDialog(self, u'%s\n\n%s' % (clog_error, clog_status[1]),
+                    changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
                             GT(u'Error'), wx.OK)
                     changelog_error.ShowModal()
                 progress += 1
@@ -368,7 +368,7 @@ class Panel(wx.Panel):
                 build_progress.Update(progress, GT(u'Creating copyright'))
                 
                 wx.Yield()
-                cp_file = open(u'%s/usr/share/doc/%s/copyright' % (temp_tree, pack), u'w')
+                cp_file = open(u'{}/usr/share/doc/{}/copyright'.format(temp_tree, pack), u'w')
                 cp_file.write(copyright.encode(u'utf-8'))
                 cp_file.close()
                 progress += 1
@@ -380,7 +380,7 @@ class Panel(wx.Panel):
                 wx.Yield()
                 #if menu_data[0]:
                 # This may be changed later to set a custom directory
-                menu_dir = u'%s/usr/share/applications' % (temp_tree)
+                menu_dir = u'{}/usr/share/applications'.format(temp_tree)
                 
                 menu_filename = main_window.page_menu.GetOutputFilename()
                 
@@ -390,7 +390,7 @@ class Panel(wx.Panel):
                 
                 if not os.path.isdir(menu_dir):
                     os.makedirs(menu_dir)
-                menu_file = open(u'%s/%s.desktop' % (menu_dir, menu_filename), u'w')
+                menu_file = open(u'{}/{}.desktop'.format(menu_dir, menu_filename), u'w')
                 menu_file.write(u'\n'.join(menu_data).encode(u'utf-8'))
                 menu_file.close()
                 progress += 1
@@ -409,16 +409,16 @@ class Panel(wx.Panel):
             
             wx.Yield()
             # Get installed-size
-            installed_size = os.popen((u'du -hsk "%s"' % (temp_tree)).encode(u'utf-8')).readlines()
+            installed_size = os.popen((u'du -hsk "{}"'.format(temp_tree)).encode(u'utf-8')).readlines()
             installed_size = installed_size[0].split(u'\t')
             installed_size = installed_size[0]
             # Insert Installed-Size into control file
             control_data = control_data.split(u'\n')
-            control_data.insert(2, u'Installed-Size: %s' % (installed_size))
+            control_data.insert(2, u'Installed-Size: {}'.format(installed_size))
             # dpkg fails if there is no newline at end of file
             control_data.append(u'\n')
             control_data = u'\n'.join(control_data)
-            control_file = open(u'%s/DEBIAN/control' % (temp_tree), u'w')
+            control_file = open(u'{}/DEBIAN/control'.format(temp_tree), u'w')
             control_file.write(control_data.encode(u'utf-8'))
             control_file.close()
             progress += 1
@@ -429,11 +429,11 @@ class Panel(wx.Panel):
             wx.Yield()
             for script in scripts:
                 if script[1]:
-                    script_file = open(u'%s/DEBIAN/%s' % (temp_tree, script[0]), u'w')
+                    script_file = open(u'{}/DEBIAN/{}'.format(temp_tree, script[0]), u'w')
                     script_file.write(script[2].encode(u'utf-8'))
                     script_file.close()
                     # Make sure scipt path is wrapped in quotes to avoid whitespace errors
-                    os.system((u'chmod +x "%s/DEBIAN/%s"' % (temp_tree, script[0])).encode(u'utf-8'))
+                    os.system((u'chmod +x "{}/DEBIAN/{}"'.format(temp_tree, script[0])).encode(u'utf-8'))
                     progress += 1
                     build_progress.Update(progress)
             
@@ -445,7 +445,7 @@ class Panel(wx.Panel):
 #                print c_deb
             working_dir = os.path.split(temp_tree)[0]
             c_tree = os.path.split(temp_tree)[1]
-            c_deb = u'%s.deb' % filename
+            c_deb = u'{}.deb'.format(filename)
             
             # Move the working directory becuase dpkg seems to have problems with spaces in path
             os.chdir(working_dir)
@@ -454,7 +454,7 @@ class Panel(wx.Panel):
 #                if subprocess.call([u'fakeroot', u'dpkg', u'-b', c_tree, c_deb]):
 #                    build_status = (1, 0)
 #                try:
-            build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "%s" "%s"' % (c_tree, c_deb)).encode(u'utf-8'))
+            build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}"'.format(c_tree, c_deb)).encode(u'utf-8'))
             progress += 1
             
             # *** DELETE BUILD TREE
@@ -463,7 +463,7 @@ class Panel(wx.Panel):
                 
                 wx.Yield()
                 # Delete the build tree
-                if commands.getstatusoutput((u'rm -r "%s"' % temp_tree).encode(u'utf-8'))[0]:
+                if commands.getstatusoutput((u'rm -r "{}"'.format(temp_tree)).encode(u'utf-8'))[0]:
                     wx.MessageDialog(self, GT(u'An error occurred when trying to delete the build tree'),
                             GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 progress += 1
@@ -473,17 +473,17 @@ class Panel(wx.Panel):
                 build_progress.Update(progress, GT(u'Checking package for errors'))
                 wx.Yield()
                 
-                errors = commands.getoutput((u'lintian %s' % deb).encode(u'utf-8'))
+                errors = commands.getoutput((u'lintian {}'.format(deb)).encode(u'utf-8'))
                 e1 = GT(u'Lintian found some issues with the package.')
-                e2 = GT(u'Details saved to %s')
-                e2 = e2 % (filename)
+                e2 = GT(u'Details saved to {}')
+                e2 = e2.format(filename)
                 if errors.decode(u'utf-8') != wx.EmptyString:
-                    error_log = open(u'%s/%s.lintian' % (build_path, filename), u'w')
+                    error_log = open(u'{}/{}.lintian'.format(build_path, filename), u'w')
                     error_log.write(errors)
                     error_log.close()
                     MessageDialog(self, -1,
                     GT(u'Lintian Errors'), db.ICON_INFORMATION,
-                    u'%s\n%s.lintian"' % (e1, e2),
+                    u'{}\n{}.lintian"'.format(e1, e2),
                     errors
                     ).ShowModal()
                 progress += 1
@@ -511,12 +511,12 @@ class Panel(wx.Panel):
                         if (password == u''):
                             print GT(u'Empty password: Cancelling')
                             break
-                        e = RunSudo(password, u'dpkg -i %s' % (deb))
+                        e = RunSudo(password, u'dpkg -i {}'.format(deb))
                         if (not e):
                             if (tries == 2):
                                 print GT(u'Authentication failure')
-                                install_fail = GT(u'Could not install %s')
-                                print install_fail % (deb)
+                                install_fail = GT(u'Could not install {}')
+                                print(install_fail.format(deb))
                             else:
                                 print GT(u'Password mismatch, try again')
                         else:
@@ -526,7 +526,7 @@ class Panel(wx.Panel):
                         tries += 1
                     
                     # Check if package installed correctly
-                    if (int(os.popen(u'dpkg -L %s ; echo $?' % (pack)).read().split(u'\n')[-2]) and command_executed):
+                    if (int(os.popen(u'dpkg -L {} ; echo $?'.format(pack)).read().split(u'\n')[-2]) and command_executed):
                         wx.MessageDialog(self, GT(u'The package failed to install'), GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
                     elif (command_executed):
                         wx.MessageDialog(self, GT(u'The package installed successfully'), GT(u'Sucess'), wx.OK).ShowModal()
@@ -540,16 +540,16 @@ class Panel(wx.Panel):
         ttype = GT(u'Debian Packages')
         if main_window.cust_dias.IsChecked():
             save_dia = db.SaveFile(self)
-            save_dia.SetFilter(u'%s|*.deb' % ttype)
-            save_dia.SetFilename(u'%s_%s_%s.deb' % (pack, ver, arch))
+            save_dia.SetFilter(u'{}|*.deb'.format(ttype))
+            save_dia.SetFilename(u'{}_{}_{}.deb'.format(pack, ver, arch))
             if save_dia.DisplayModal():
                 cont = True
                 path = save_dia.GetPath()
                 filename = save_dia.GetFilename().split(u'.deb')[0]
         else:
-            save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'%s|*.deb' % ttype,
+            save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'{}|*.deb'.format(ttype),
                     wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
-            save_dia.SetFilename(u'%s_%s_%s.deb' % (pack, ver, arch))
+            save_dia.SetFilename(u'{}_{}_{}.deb'.format(pack, ver, arch))
             if save_dia.ShowModal() == wx.ID_OK:
                 cont = True
                 path = os.path.split(save_dia.GetPath())[0]
@@ -595,4 +595,4 @@ class Panel(wx.Panel):
         else: build_list.append(u'0')
         if self.chk_lint.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
-        return u'<<BUILD>>\n%s\n<</BUILD>>' % u'\n'.join(build_list)
+        return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))

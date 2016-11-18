@@ -120,14 +120,14 @@ class Panel(wx.Panel):
         version = self.version.GetValue()
         distribution = self.distribution.GetValue()
         urgency = self.urgency_opt[self.urgency.GetSelection()]
-        info1 = u'%s (%s) %s; urgency=%s' % (package, version, distribution, urgency)
+        info1 = u'{} ({}) {}; urgency={}'.format(package, version, distribution, urgency)
         
         details = []
         for line in self.changes.GetValue().split(u'\n'):
             if line == self.changes.GetValue().split(u'\n')[0]:
-                line = u'  * %s' % line
+                line = u'  * {}'.format(line)
             else:
-                line = u'    %s' % line
+                line = u'    {}'.format(line)
             details.append(line)
         details.insert(0, wx.EmptyString)
         details.append(wx.EmptyString)
@@ -138,7 +138,7 @@ class Panel(wx.Panel):
         #date = commands.getoutput(u'date +"%a, %d %b %Y %T %z"')
         # A simpler way to get the date
         date = commands.getoutput(u'date -R')
-        info2 = u' -- %s <%s>  %s' % (maintainer, email, date)
+        info2 = u' -- {} <{}>  {}'.format(maintainer, email, date)
         
         entry = u'\n'.join((info1, details, info2))
         self.display_area.SetValue(u'\n'.join((entry, wx.EmptyString, self.display_area.GetValue())))

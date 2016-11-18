@@ -67,7 +67,7 @@ class MainWindow(wx.Frame):
         self.SetMinSize((640,400))
         
         # ----- Set Titlebar Icon
-        self.main_icon = wx.Icon(u'%s/bitmaps/debreate64.png' % PATH_app, wx.BITMAP_TYPE_PNG)
+        self.main_icon = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.main_icon)
         
         # ----- Status Bar
@@ -84,7 +84,7 @@ class MainWindow(wx.Frame):
         # Quick Build
         self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(wx.Bitmap(u'%s/bitmaps/clock16.png' % PATH_app))
+        self.QuickBuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
         
         self.menu_file.Append(wx.ID_NEW, help=GT(u'Start a new project'))
         self.menu_file.Append(wx.ID_OPEN, help=GT(u'Open a previously saved project'))
@@ -173,7 +173,7 @@ class MainWindow(wx.Frame):
         # Menu with links to the Debian Policy Manual webpages
         self.Policy = wx.Menu()
         
-        globe = wx.Bitmap(u'%s/bitmaps/globe16.png' % PATH_app)
+        globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
         self.DPM = wx.MenuItem(self.Policy, ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         self.DPM.SetBitmap(globe)
         self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
@@ -286,10 +286,10 @@ class MainWindow(wx.Frame):
             current = unicode(current)
             wx.MessageDialog(self, current, _(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         elif isinstance(current, tuple) and current > VERSION_tuple:
-            current = u'%s.%s.%s' % (current[0], current[1], current[2])
-            l1 = _(u'Version %s is available!') % (current)
+            current = u'{}.{}.{}'.format(current[0], current[1], current[2])
+            l1 = _(u'Version {} is available!').format(current)
             l2 = _(u'Would you like to go to Debreate\'s website?')
-            update = wx.MessageDialog(self, u'%s\n\n%s' % (l1, l2), _(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
+            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), _(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
         elif isinstance(current, (unicode, str)):
@@ -334,11 +334,11 @@ class MainWindow(wx.Frame):
         d = GT(u'Debreate project files')
         if self.cust_dias.IsChecked():
             dia = db.OpenFile(self, GT(u'Open Debreate Project'))
-            dia.SetFilter(u'%s%s' % (d, dbp))
+            dia.SetFilter(u'{}{}'.format(d, dbp))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'', u'%s%s' % (d, dbp), wx.FD_CHANGE_DIR)
+            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp), wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
         
@@ -373,7 +373,7 @@ class MainWindow(wx.Frame):
             bad_file.ShowModal()
         else: 
             # Set title to show open project
-            #self.SetTitle(u'Debreate - %s' % filename)
+            #self.SetTitle(u'Debreate - {}'.format(filename))
             
             # *** Get Control Data *** #
             control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
@@ -452,7 +452,7 @@ class MainWindow(wx.Frame):
     def OpenPolicyManual(self, event):
         id = event.GetId()  # Get the id for the webpage link we are opening
         webbrowser.open(self.references[id])
-        #os.system(u'xdg-open %s' % self.references[id])  # Look in 'manual' for the id and open the webpage
+        #os.system(u'xdg-open {}'.format(self.references[id]))  # Look in 'manual' for the id and open the webpage
     
     
     ## Opens a dialog box with information about the program
@@ -506,10 +506,10 @@ class MainWindow(wx.Frame):
     def OnHelp(self, event):
         # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
         wx.Yield()
-        status = subprocess.call([u'xdg-open', u'%s/docs/usage.pdf' % PATH_app])
+        status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
         if status:
             wx.Yield()
-            status = subprocess.call([u'xdg-open', u'%s/docs/usage' % PATH_app])
+            status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
         if status:
             wx.Yield()
             webbrowser.open(u'http://debreate.sourceforge.net/usage')
@@ -534,7 +534,7 @@ class MainWindow(wx.Frame):
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
             if self.IsSaved() and title != self.default_title:
-                self.SetTitle(u'%s*' % title)
+                self.SetTitle(u'{}*'.format(title))
     
     def OnSaveProject(self, event):
         id = event.GetId()
@@ -549,21 +549,21 @@ class MainWindow(wx.Frame):
                 # Create a backup of the project
                 overwrite = False
                 if os.path.isfile(path):
-                    backup = u'%s.backup' % path
+                    backup = u'{}.backup'.format(path)
                     shutil.copy(path, backup)
                     overwrite = True
                 
                 savefile = open(path, u'w')
                 # This try statement can be removed when unicode support is enabled
                 try:
-                    savefile.write(u'[DEBREATE-%s]\n%s' % (VERSION_string, u'\n'.join(data)))
+                    savefile.write(u'[DEBREATE-{}]\n{}'.format(VERSION_string, u'\n'.join(data)))
                     savefile.close()
                     if overwrite:
                         os.remove(backup)
                 except UnicodeEncodeError:
                     serr = GT(u'Save failed')
                     uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                    UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                    UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                     UniErr.ShowModal()
                     savefile.close()
                     if overwrite:
@@ -571,7 +571,7 @@ class MainWindow(wx.Frame):
                         # Restore project backup
                         shutil.move(backup, path)
                 # Change the titlebar to show name of project file
-                #self.SetTitle(u'Debreate - %s' % os.path.split(path)[1])
+                #self.SetTitle(u'Debreate - {}'.format(os.path.split(path)[1]))
         
         def OnSaveAs():
             dbp = u'|*.dbp'
@@ -579,22 +579,22 @@ class MainWindow(wx.Frame):
             cont = False
             if self.cust_dias.IsChecked():
                 dia = db.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
-                dia.SetFilter(u'%s%s' % (d, dbp))
+                dia.SetFilter(u'{}{}'.format(d, dbp))
                 if dia.DisplayModal():
                     cont = True
                     filename = dia.GetFilename()
                     if filename.split(u'.')[-1] == u'dbp':
                         filename = u'.'.join(filename.split(u'.')[:-1])
-                    self.saved_project = u'%s/%s.dbp' % (dia.GetPath(), filename)
+                    self.saved_project = u'{}/{}.dbp'.format(dia.GetPath(), filename)
             else:
-                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'%s%s' % (d, dbp),
+                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
                                         wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
                 if dia.ShowModal() == wx.ID_OK:
                     cont = True
                     filename = dia.GetFilename()
                     if filename.split(u'.')[-1] == u'dbp':
                         filename = u'.'.join(filename.split(u'.')[:-1])
-                    self.saved_project = u'%s/%s.dbp' % (os.path.split(dia.GetPath())[0], filename)
+                    self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
             
             if cont:
                 SaveIt(self.saved_project)
