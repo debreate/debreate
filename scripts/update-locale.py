@@ -50,8 +50,7 @@ gt_directory = '--directory="{}"'.format(root_dir)
 gt_output = '-i -o {}'.format(FILE_pot)
 
 # Misc
-gt_other = '--no-location --no-wrap --sort-output'
-#gt_other = '--no-wrap --sort-output'
+gt_other = '--no-wrap --sort-output'
 
 
 args_format = ' '.join((gt_language, gt_keyword))
