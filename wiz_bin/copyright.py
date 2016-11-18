@@ -3,22 +3,26 @@
 ## \package wiz_bin.copyright
 
 
-import wx, os
+import os, wx
 
-import dbr
 from dbr.error          import ShowError
+from dbr.functions      import FieldEnabled
+from dbr.functions      import GetSystemLicensesList
+from dbr.functions      import GetYear
 from dbr.functions      import RemovePreWhitespace
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.templates      import GetLicenseTemplateFile
+from dbr.templates      import GetLicenseTemplatesList
 from dbr.templates      import application_licenses_path
 from dbr.templates      import local_licenses_path
 from dbr.textinput      import MT_BTN_BR
 from dbr.textinput      import MonospaceTextCtrl
 from dbr.wizard         import WizardPage
+from globals.constants  import system_licenses_path
 from globals.errorcodes import errno
 from globals.ident      import ID_COPYRIGHT
 from globals.tooltips   import SetPageToolTips
-from globals.constants  import system_licenses_path
 
 
 # Globals
@@ -31,9 +35,9 @@ class Panel(WizardPage):
         WizardPage.__init__(self, parent, ID_COPYRIGHT)
         
         # FIXME: Ignore symbolic links
-        license_list = dbr.GetSystemLicensesList()
+        license_list = GetSystemLicensesList()
         # FIXME: Change variable name to 'self.builtin_licenses
-        self.local_licenses = dbr.GetLicenseTemplatesList()
+        self.local_licenses = GetLicenseTemplatesList()
         
         # Do not use local licenses if already located on system
         for lic in license_list:
@@ -94,7 +98,7 @@ class Panel(WizardPage):
         main_window = wx.GetApp().GetTopWindow()
         
         if self.DestroyLicenseText():
-            license_path = u'{}/{}'.format(dbr.system_licenses_path, license_name)
+            license_path = u'{}/{}'.format(system_licenses_path, license_name)
             
             if not os.path.isfile(license_path):
                 ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
@@ -115,7 +119,7 @@ class Panel(WizardPage):
             self.cp_display.SetInsertionPoint(0)
             
             if license_name in add_header:
-                self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
+                self.cp_display.WriteText(copyright_header.format(GetYear()))
                 self.cp_display.SetInsertionPoint(0)
             
         self.cp_display.SetFocus()
@@ -152,9 +156,9 @@ class Panel(WizardPage):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
             
-            license_path = u'{}/{}'.format(dbr.system_licenses_path, self.lic_choices.GetString(self.lic_choices.GetSelection()))
+            license_path = u'{}/{}'.format(system_licenses_path, self.lic_choices.GetString(self.lic_choices.GetSelection()))
     
-            self.cp_display.WriteText(copyright_header.format(dbr.GetYear()))
+            self.cp_display.WriteText(copyright_header.format(GetYear()))
             self.cp_display.WriteText(license_path)
             
             self.cp_display.SetInsertionPoint(0)
@@ -167,7 +171,7 @@ class Panel(WizardPage):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
             
-            l_path = dbr.GetLicenseTemplateFile(l_name)
+            l_path = GetLicenseTemplateFile(l_name)
             
             if l_path:
                 l_data = open(l_path)
@@ -187,7 +191,7 @@ class Panel(WizardPage):
                     l_index = 0
                     for LI in l_lines:
                         if DEL in LI:
-                            l_lines[l_index] = str(dbr.GetYear()).join(LI.split(DEL))
+                            l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
                         l_index += 1
                 
                 self.cp_display.SetValue(u'\n'.join(l_lines))
@@ -269,7 +273,7 @@ class Panel(WizardPage):
     def OnGenerateTemplate(self, event):
         license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
         
-        if dbr.FieldEnabled(self.template_btn_simple):
+        if FieldEnabled(self.template_btn_simple):
             self.CopyStandardLicense(license_name)
         
         else:
