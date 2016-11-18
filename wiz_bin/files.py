@@ -37,7 +37,7 @@ class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_FILES, name=GT(u'Files'))
         
-        self.SetScrollbars(0, 20, 0, 0)
+        self.SetScrollbars(20, 20, 0, 0)
         
         # Allows calling parent methods
         self.parent = parent
