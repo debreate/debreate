@@ -356,8 +356,6 @@ class ErrorDialog(DetailedMessageDialog):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-#  
-#  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)

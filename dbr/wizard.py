@@ -78,7 +78,7 @@ class Wizard(wx.Panel):
         list = []
         tuple = ()
         if type(pages) not in (type(list), type(tuple)):
-            raise TypeError(u'Argument 2 of dbr.Wizard.SetPages() must be List or Tuple')
+            raise TypeError(u'Argument 2 of Wizard.SetPages() must be List or Tuple')
         
         for page in pages:
             self.pages.append(page)
