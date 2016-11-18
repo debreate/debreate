@@ -5,6 +5,7 @@
 
 import os, sys, webbrowser, wx
 
+from dbr.dialogs    import TextOverwriteDialog
 from dbr.language   import GT
 from dbr.textinput  import MultilineTextCtrlPanel
 from globals.ident  import ID_APPEND
@@ -44,55 +45,6 @@ class OutputLog(MultilineTextCtrlPanel):
             sys.stdout = self
 
 
-## Prompt for overwriting a text area
-#  
-#  TODO: Delete; Deprecated, moved to dbr.dialogs
-class OverwriteDialog(wx.Dialog):
-    def __init__(self, parent, ID=wx.ID_ANY, title=GT(u'Overwrite?'), message=u''):
-        wx.Dialog.__init__(self, parent, ID, title)
-        self.message = wx.StaticText(self, -1, message)
-        
-        ## Button to accept overwrite
-        self.button_overwrite = wx.Button(self, ID_OVERWRITE, GT(u'Overwrite'))
-        
-        self.button_append = wx.Button(self, ID_APPEND, GT(u'Append'))
-        
-        ## Button to cancel overwrite
-        self.button_cancel = wx.Button(self, wx.ID_CANCEL)
-        
-        # -*- Button events -*- #
-        wx.EVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
-        wx.EVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
-        
-        hsizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer.Add(self.button_overwrite, 0, wx.LEFT|wx.RIGHT, 5)
-        hsizer.Add(self.button_append, 0, wx.LEFT|wx.RIGHT, 5)
-        hsizer.Add(self.button_cancel, 0, wx.LEFT|wx.RIGHT, 5)
-        
-        vsizer = wx.BoxSizer(wx.VERTICAL)
-        vsizer.Add(self.message, 1, wx.ALIGN_CENTER|wx.ALL, 5)
-        vsizer.Add(hsizer, 0, wx.ALIGN_RIGHT|wx.TOP|wx.BOTTOM, 5)
-        
-        self.SetAutoLayout(True)
-        self.SetSizerAndFit(vsizer)
-        self.Layout()
-    
-    
-    ## Defines actions to take when a button is pressed
-    #  
-    #  Get the event object & close the dialog.
-    #  \param event
-    #        wx.EVT_BUTTON
-    def OnButton(self, event):
-        button_id = event.GetEventObject().GetId()
-        self.EndModal(button_id)
-    
-    
-    ## Retrieves the message that is displayed in the dialog
-    def GetMessage(self, event=None):
-        return self.message.GetLabel()
-
-
 ## Object for drag-&-drop text files
 class SingleFileTextDropTarget(wx.FileDropTarget):
     def __init__(self, obj):
@@ -115,7 +67,7 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
         text = open(filenames[0]).read()
         try:
             if not TextIsEmpty(self.obj.GetValue()):
-                overwrite = OverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
+                overwrite = TextOverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
                 ID = overwrite.ShowModal()
                 if ID == ID_OVERWRITE:
                     self.obj.SetValue(text)

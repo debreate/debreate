@@ -13,11 +13,14 @@ from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_INFORMATION
+from globals.ident      import ID_APPEND
+from globals.ident      import ID_OVERWRITE
 from globals.paths      import PATH_app
 from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
 
 
+## TODO: Doxygen
 class OverwriteDialog(wx.MessageDialog):
     def __init__(self, parent, path):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
@@ -39,6 +42,54 @@ class OverwriteDialog(wx.MessageDialog):
         )
 
 
+## Prompt for overwriting a text area
+class TextOverwriteDialog(wx.Dialog):
+    def __init__(self, parent, ID=wx.ID_ANY, title=GT(u'Overwrite?'), message=u''):
+        wx.Dialog.__init__(self, parent, ID, title)
+        self.message = wx.StaticText(self, -1, message)
+        
+        ## Button to accept overwrite
+        self.button_overwrite = wx.Button(self, ID_OVERWRITE, GT(u'Overwrite'))
+        
+        self.button_append = wx.Button(self, ID_APPEND, GT(u'Append'))
+        
+        ## Button to cancel overwrite
+        self.button_cancel = wx.Button(self, wx.ID_CANCEL)
+        
+        # -*- Button events -*- #
+        wx.EVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
+        wx.EVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
+        
+        hsizer = wx.BoxSizer(wx.HORIZONTAL)
+        hsizer.Add(self.button_overwrite, 0, wx.LEFT|wx.RIGHT, 5)
+        hsizer.Add(self.button_append, 0, wx.LEFT|wx.RIGHT, 5)
+        hsizer.Add(self.button_cancel, 0, wx.LEFT|wx.RIGHT, 5)
+        
+        vsizer = wx.BoxSizer(wx.VERTICAL)
+        vsizer.Add(self.message, 1, wx.ALIGN_CENTER|wx.ALL, 5)
+        vsizer.Add(hsizer, 0, wx.ALIGN_RIGHT|wx.TOP|wx.BOTTOM, 5)
+        
+        self.SetAutoLayout(True)
+        self.SetSizerAndFit(vsizer)
+        self.Layout()
+    
+    
+    ## Defines actions to take when a button is pressed
+    #  
+    #  Get the event object & close the dialog.
+    #  \param event
+    #        wx.EVT_BUTTON
+    def OnButton(self, event):
+        button_id = event.GetEventObject().GetId()
+        self.EndModal(button_id)
+    
+    
+    ## Retrieves the message that is displayed in the dialog
+    def GetMessage(self, event=None):
+        return self.message.GetLabel()
+
+
+## TODO: Doxygen
 class StandardDirDialog(wx.DirDialog):
     def __init__(self, parent, title, style=wx.DD_DEFAULT_STYLE):
         
