@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 
-import os, db, webbrowser, shutil, subprocess, wx
+import os, shutil, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
+import db
 from dbr.about              import AboutDialog
 from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
