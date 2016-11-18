@@ -80,6 +80,15 @@ print('\nGettext scan complete')
 if os.path.isfile(FILE_pot):
     print('\nExamining file contents ...')
     
+    NOTES = '#\n\
+# NOTES:\n\
+#   If "%s" or "{}" is in the msgid, be sure to put it in\n\
+#   the msgstr or parts of Debreate will not function.\n\
+#\n\
+#   If you do not wish to translate a line just leave its\n\
+#   msgstr blank'
+
+    
     FILE_BUFFER = open(FILE_pot, 'r')
     pot_lines = FILE_BUFFER.read().split('\n')
     FILE_BUFFER.close()
@@ -107,14 +116,7 @@ if os.path.isfile(FILE_pot):
             language_line = True
             continue
     
-    pot_lines.insert(4,
-'#\n\
-# NOTES:\n\
-#   If "%s" or "{}" is in the msgid, be sure to put it in\n\
-#   the msgstr or parts of Debreate will not function.\n\
-#\n\
-#   If you do not wish to translate a line just leave its\n\
-#   msgstr blank')
+    pot_lines.insert(4, NOTES)
     
     if tuple(pot_lines) != pot_lines_orig:
         print('\nMaking some adjustments ...')
@@ -135,6 +137,34 @@ if os.path.isfile(FILE_pot):
                 print('File: {}'.format(F))
                 
                 commands.getstatusoutput('msgmerge -U -i -s -N --no-location --no-wrap --backup=none "{}" "{}"'.format(F, FILE_pot))
+                
+                FILE_BUFFER = open(F, 'r')
+                po_data = FILE_BUFFER.read()
+                FILE_BUFFER.close()
+                
+                if 'Project-Id-Version: Debreate' in po_data:
+                    po_lines = po_data.split('\n')
+                    po_lines_orig = tuple(po_lines)
+                    
+                    for L in po_lines:
+                        line_index = po_lines.index(L)
+                        if 'Project-Id-Version: Debreate' in L:
+                            L = L.split(' ')
+                            L[-1] = '{}\\n"'.format(VERSION)
+                            L = ' '.join(L)
+                            
+                            po_lines[line_index] = L
+                            
+                            # No need to continue checking lines
+                            break
+                    
+                    if NOTES not in '\n'.join(po_lines):
+                        po_lines.insert(4, NOTES)
+                    
+                    if tuple(po_lines) != po_lines_orig:
+                        FILE_BUFFER = open(F, 'w')
+                        FILE_BUFFER.write('\n'.join(po_lines))
+                        FILE_BUFFER.close()
     
     print('\nFinished\n')
     
