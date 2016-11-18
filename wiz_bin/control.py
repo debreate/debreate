@@ -2,6 +2,7 @@
 
 # This panel displays the field input of the control file
 
+
 import os, wx
 
 import db
@@ -363,10 +364,8 @@ class Panel(wx.ScrolledWindow):
         # Organize all widgets correctly
         lc_width = self.coauth.GetSize()[0]
         self.coauth.SetColumnWidth(0, lc_width/2)
-#		self.coauth.SetColumnWidth(1, lc_width/2-25)
-        
+        #self.coauth.SetColumnWidth(1, lc_width/2-25)
     
-    # *** Setting Field Priority *** #
     
     def EnableAll(self):
         # Reset all widgets to be enabled
@@ -375,7 +374,8 @@ class Panel(wx.ScrolledWindow):
             child.Enable()
             child.SetBackgroundColour(db.Optional)
     
-    def SetBuildType(self, id):
+    
+    def SetBuildType(self, ID):
         # First enable all fields that were disabled
         self.EnableAll()
         
@@ -413,8 +413,8 @@ class Panel(wx.ScrolledWindow):
         
         if cont:
             path = dia.GetPath()
-            file = open(path, u'r')
-            control_data = file.read()
+            FILE = open(path, u'r')
+            control_data = FILE.read()
             depends_data = self.SetFieldData(control_data)
             self.parent.parent.page_depends.SetFieldData(depends_data)
     
@@ -442,9 +442,9 @@ class Panel(wx.ScrolledWindow):
         
         if cont:
             filename = dia.GetFilename()
-            file = open(path, u'w')
-            file.write(control)
-            file.close()
+            FILE = open(path, u'w')
+            FILE.write(control)
+            FILE.close()
     
     def OnPreview(self, event):
         # Show a preview of the control file
@@ -496,11 +496,11 @@ class Panel(wx.ScrolledWindow):
     # *** Gathering Page Data *** #
     
     def GetCtrlInfo(self):
-        def Enabled(object):
+        def Enabled(obj):
             if wx.MAJOR_VERSION > 2:
-                return object.IsThisEnabled()
+                return obj.IsThisEnabled()
             
-            return object.IsEnabled()
+            return obj.IsEnabled()
             
         # Creat a list to store info
         ctrl_list = []
