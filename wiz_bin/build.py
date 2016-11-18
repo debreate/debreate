@@ -60,9 +60,6 @@ class Panel(WizardPage):
         else:
             self.build_options.append(self.chk_md5)
         
-        # For creating md5sum hashes
-        self.md5 = dbr.MD5()
-        
         # Deletes the temporary build tree
         self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete stage directory'))
         self.chk_rmtree.SetName(u'RMTREE')
