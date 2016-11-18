@@ -721,7 +721,7 @@ class Panel(WizardPage):
             # Get the file count
             files_total = main_window.page_files.dest_area.GetItemCount()
             f = GT(u'File Count')
-            file_count = u'%s: %s' % (f, files_total)
+            file_count = u'{}: {}'.format(f, files_total)
             # Scripts to make
             scripts_to_make = []
             scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
@@ -733,8 +733,8 @@ class Panel(WizardPage):
                     scripts_to_make.append(script[0])
             s = GT(u'Scripts')
             if len(scripts_to_make):
-                scripts_to_make = u'%s: %s' % (s, u', '.join(scripts_to_make))
+                scripts_to_make = u'{}: {}'.format(s, u', '.join(scripts_to_make))
             else:
-                scripts_to_make = u'%s: 0' % (s)
+                scripts_to_make = u'{}: 0'.format(s)
                     
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))

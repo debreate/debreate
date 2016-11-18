@@ -420,7 +420,7 @@ class Panel(WizardPage):
         
         if len(cat_list):
             # Add a final semi-colon if categories is not empty
-            cat_list[-1] = u'%s;' % cat_list[-1]
+            cat_list[-1] = u'{};'.format(cat_list[-1])
             
             desktop_list.append(u'Categories={}'.format(u';'.join(cat_list)))
         
@@ -628,7 +628,7 @@ class Panel(WizardPage):
             # Create a backup file
             overwrite = False
             if os.path.isfile(path):
-                backup = u'%s.backup' % path
+                backup = u'{}.backup'.format(path)
                 shutil.copy(path, backup)
                 overwrite = True
             
@@ -641,7 +641,7 @@ class Panel(WizardPage):
             except UnicodeEncodeError:
                 serr = GT(u'Save failed')
                 uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, u'%s\n\n%s' % (serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
                 f_opened.close()
                 os.remove(path)
