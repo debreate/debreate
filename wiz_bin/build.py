@@ -537,7 +537,7 @@ class Panel(wx.ScrolledWindow):
                     if (int(os.popen(u'dpkg -L {} ; echo $?'.format(pack)).read().split(u'\n')[-2]) and command_executed):
                         wx.MessageDialog(self, GT(u'The package failed to install'), GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
                     elif (command_executed):
-                        wx.MessageDialog(self, GT(u'The package installed successfully'), GT(u'Sucess'), wx.OK).ShowModal()
+                        wx.MessageDialog(self, GT(u'The package installed successfully'), GT(u'Success'), wx.OK).ShowModal()
                     self.log.ToggleOutput()
             
             return build_status[0]
