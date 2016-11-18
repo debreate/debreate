@@ -100,7 +100,7 @@ class Panel(wx.Panel):
         main_sizer.AddSpacer(10)
         main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(self.display_area, 1, wx.EXPAND, wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(self.display_area, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.AddSpacer(5)
         
         self.SetAutoLayout(True)
