@@ -255,8 +255,8 @@ class Panel(wx.ScrolledWindow):
 
 class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
     """A ListCtrl that automatically expands columns"""
-    def __init__(self, parent, id):
-        wx.ListView.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+    def __init__(self, parent, ID=wx.ID_ANY):
+        wx.ListView.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         LC.ListCtrlAutoWidthMixin.__init__(self)
         
         wx.EVT_KEY_DOWN(self, self.OnSelectAll)
