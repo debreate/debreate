@@ -11,7 +11,6 @@
 
 from dbr.about          import AboutDialog
 from dbr.charctrl       import CharCtrl
-from dbr.custom         import Combo
 from dbr.custom         import OpenDir
 from dbr.custom         import OpenFile
 from dbr.custom         import OutputLog
