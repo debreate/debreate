@@ -23,6 +23,7 @@ ID_Refresh = 142
 
 home = os.getenv(u'HOME')
 
+
 class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
     def __init__(self, parent, id):
@@ -30,13 +31,13 @@ class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
         #LC.TextEditMixin.__init__(self)
         LC.ListCtrlAutoWidthMixin.__init__(self)
 
-class Panel(wx.Panel):
+
+class Panel(wx.ScrolledWindow):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_FILES, name=GT(u'Files'))
+        wx.ScrolledWindow.__init__(self, parent, ID_FILES, name=GT(u'Files'))
         
-        # For identifying page to parent
-        #self.ID = u'FILES'
+        self.SetScrollbars(0, 20, 0, 0)
         
         # Allows calling parent methods
         self.parent = parent

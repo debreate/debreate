@@ -16,9 +16,11 @@ from dbr.message    import MessageDialog
 from globals.ident  import ID_BUILD
 
 
-class Panel(wx.Panel):
+class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_BUILD, name=GT(u'Build'))
+        wx.ScrolledWindow.__init__(self, parent, ID_BUILD, name=GT(u'Build'))
+        
+        self.SetScrollbars(0, 20, 0, 0)
         
         # --- Tool Tips --- #
         md5_tip = wx.ToolTip(GT(u'Create checksums for files in package'))

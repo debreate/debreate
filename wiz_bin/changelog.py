@@ -10,9 +10,11 @@ from dbr.language   import GT
 from globals.ident  import ID_CHANGELOG
 
 
-class Panel(wx.Panel):
+class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
+        wx.ScrolledWindow.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
+        
+        self.SetScrollbars(0, 20, 0, 0)
         
         self.parent = parent.parent # MainWindow
         

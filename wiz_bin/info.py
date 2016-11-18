@@ -8,9 +8,11 @@ from dbr.language   import GT
 from globals.ident  import ID_GREETING
 
 
-class Panel(wx.Panel):
+class Panel(wx.ScrolledWindow):
     def __init__(self, parent, name=GT(u'Information')):
-        wx.Panel.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
+        wx.ScrolledWindow.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
+        
+        self.SetScrollbars(0, 20, 0, 0)
         
         self.parent = parent # 3rd level) Allows executing 2st level methods
         

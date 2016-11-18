@@ -17,9 +17,11 @@ from globals.ident  import ID_DEPENDS
 ID_Append = wx.NewId()
 ID_Delete = wx.NewId()
 
-class Panel(wx.Panel):
+class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        wx.ScrolledWindow.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        
+        self.SetScrollbars(0, 20, 0, 0)
         
         # ----- Tool Tips
         dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))

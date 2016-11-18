@@ -7,9 +7,11 @@ from dbr.language   import GT
 from globals.ident  import ID_COPYRIGHT
 
 
-class Panel(wx.Panel):
+class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.Panel.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
+        wx.ScrolledWindow.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
+        
+        self.SetScrollbars(0, 20, 0, 0)
         
         lic_options = (
             u'Apache-2.0', u'Artistic', u'BSD', u'GFDL', u'GFDL-1.2',
