@@ -136,7 +136,7 @@ if os.path.isfile(FILE_pot):
                 print('\nLanguage: {}'.format(language))
                 print('File: {}'.format(F))
                 
-                commands.getstatusoutput('msgmerge -U -i -s -N --no-location --no-wrap --backup=none "{}" "{}"'.format(F, FILE_pot))
+                commands.getstatusoutput('msgmerge -U -i -s -N --no-location --no-wrap --backup=none --previous "{}" "{}"'.format(F, FILE_pot))
                 
                 FILE_BUFFER = open(F, 'r')
                 po_data = FILE_BUFFER.read()
