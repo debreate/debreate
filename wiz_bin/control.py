@@ -287,15 +287,15 @@ class Panel(WizardPage):
             
             if key_enabled and u''.join(key[1].GetValue().split(u' ')) != u'':
                 if key[0] == u'Package' or key[0] == u'Version':
-                    ctrl_list.append(u'%s: %s' % (key[0], u'-'.join(key[1].GetValue().split(u' '))))
+                    ctrl_list.append(u'{}: {}'.format(key[0], u'-'.join(key[1].GetValue().split(u' '))))
                 else:
-                    ctrl_list.append(u'%s: %s' % (key[0], key[1].GetValue()))
+                    ctrl_list.append(u'{}: {}'.format(key[0], key[1].GetValue()))
         
         # Add the Maintainer
         auth_enabled = dbr.FieldEnabled(self.auth)
         
         if auth_enabled and self.auth.GetValue() != u'':
-            ctrl_list.insert(3, u'Maintainer: %s <%s>' % (self.auth.GetValue(), self.email.GetValue()))
+            ctrl_list.insert(3, u'Maintainer: {} <{}>'.format(self.auth.GetValue(), self.email.GetValue()))
         
         # Add the "choice" options
         getsels = {
@@ -310,7 +310,7 @@ class Panel(WizardPage):
                 if key == u'Essential' and self.ess.GetCurrentSelection() == 1:
                     pass
                 else:
-                    ctrl_list.append(u'%s: %s' % (key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
+                    ctrl_list.append(u'{}: {}'.format(key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
         
         # Get the uploaders
 #        coauths = []
@@ -320,9 +320,9 @@ class Panel(WizardPage):
 #            while cocount != cototal:
 #                auth = self.coauth.GetItem(cocount)
 #                email = self.coauth.GetItem(cocount, 1)
-#                coauths.append(u'%s <%s>' % (auth.GetText(), email.GetText()))
+#                coauths.append(u'{} <{}>'.format(auth.GetText(), email.GetText()))
 #                cocount += 1
-#            ctrl_list.append(u'Uploaders: %s' % u'; '.join(coauths))
+#            ctrl_list.append(u'Uploaders: {}'.format(u'; '.join(coauths)))
         
         
         # *** Get dependencies *** #
@@ -353,7 +353,7 @@ class Panel(WizardPage):
             
         for item in all_deps:
             if len(all_deps[item]) != 0:
-                ctrl_list.append(u'%s: %s' % (item, u', '.join(all_deps[item])))
+                ctrl_list.append(u'{}: {}'.format(item, u', '.join(all_deps[item])))
         
         
         # *** Get description *** #
@@ -361,7 +361,7 @@ class Panel(WizardPage):
         desc = self.desc.GetValue()
         # Make sure synopsis isn't empty: Join spaces
         if u''.join(syn.split(u' ')) != u'':
-            ctrl_list.append(u'Description: %s' % syn)
+            ctrl_list.append(u'Description: {}'.format(syn))
             # Make sure description isn't empty: Join newlines and spaces
             if u''.join(u''.join(desc.split(u' ')).split(u'\n')) != u'':
                 desc_temp = []
@@ -369,7 +369,7 @@ class Panel(WizardPage):
                     if u''.join(line.split(u' ')) == u'':
                         desc_temp.append(u' .')
                     else:
-                        desc_temp.append(u' %s' % line)
+                        desc_temp.append(u' {}'.format(line))
                 ctrl_list.append(u'\n'.join(desc_temp))
         
         ctrl_list.append(u'\n')

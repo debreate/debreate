@@ -321,8 +321,8 @@ scripts will be created that will place a symbolic link to your executables in t
             # If the link path does not exist on the system post a warning message
             if os.path.isdir(link_path) == False:
                 cont = False
-                msg_path = GT(u'Path "%s" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path % (link_path), GT(u'Path Warning'),
+                msg_path = GT(u'Path "{}" does not exist. Continue?')
+                link_error_dia = wx.MessageDialog(self, msg_path.format(link_path), GT(u'Path Warning'),
                     style=wx.YES_NO)
                 if link_error_dia.ShowModal() == wx.ID_YES:
                     cont = True
@@ -333,20 +333,20 @@ scripts will be created that will place a symbolic link to your executables in t
                     filename = os.path.split(self.xlist[count])[1]
                     if u'.' in filename:
                         linkname = u'.'.join(filename.split(u'.')[:-1])
-                        link = u'%s/%s' % (link_path, linkname)
+                        link = u'{}/{}'.format(link_path, linkname)
                     else:
-                        link = u'%s/%s' % (link_path, filename)
-                        #link = u'%s/%s' % (link_path, os.path.split(self.xlist[count])[1])
-                    postinst_list.append(u'ln -fs "%s" "%s"' % (self.xlist[count], link))
-                    prerm_list.append(u'rm "%s"' % (link))
+                        link = u'{}/{}'.format(link_path, filename)
+                        #link = u'{}/{}'.format(link_path, os.path.split(self.xlist[count])[1])
+                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.xlist[count], link))
+                    prerm_list.append(u'rm "{}"'.format(link))
                     count += 1
                 
                 postinst = u'\n\n'.join(postinst_list)
                 prerm = u'\n\n'.join(prerm_list)
                 
-                #self.te_postinst.SetValue(u'#! /bin/bash -e\n\n%s' % postinst)
+                #self.te_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
                 self.chk_postinst.SetValue(True)
-                #self.te_prerm.SetValue(u'#! /bin/bash -e\n\n%s' % prerm)
+                #self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
                 self.chk_prerm.SetValue(True)
                 
                 dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)

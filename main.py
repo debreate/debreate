@@ -854,7 +854,7 @@ class MainWindow(wx.Frame):
             return
             
         # Set title to show open project
-        #self.SetTitle(u'Debreate - %s' % filename)
+        #self.SetTitle(u'Debreate - {}'.format(filename))
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]

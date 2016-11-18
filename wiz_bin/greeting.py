@@ -23,7 +23,7 @@ class Panel(WizardPage):
         m1 = GT(u'Welcome to Debreate!')
         m2 = GT(u'Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
         m3 = GT(u'For a video tutorial check the link below.')
-        self.txt_bin = u'%s\n\n%s\n\n%s' % (m1, m2, m3)
+        self.txt_bin = u'{}\n\n{}\n\n{}'.format(m1, m2, m3)
         self.txt_src = u'This mode is not fully functional'
         self.txt_upd = u'This mode is not fully functional'
         

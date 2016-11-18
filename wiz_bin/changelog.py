@@ -164,7 +164,7 @@ class Panel(WizardPage):
         #date = commands.getoutput("date +\"%a, %d %b %Y %T %z\"")
         # FIXME: Use methods from dbr.functions to get date & time
         date = commands.getoutput(u'date -R')
-        info2 = u' -- %s <%s>  %s' % (maintainer, email, date)
+        info2 = u' -- {} <{}>  {}'.format(maintainer, email, date)
         
         entry = u'\n'.join((info1, details, info2))
         self.log.SetValue(u'\n'.join((entry, wx.EmptyString, self.log.GetValue())))
