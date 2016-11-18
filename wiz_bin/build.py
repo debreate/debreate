@@ -152,7 +152,7 @@ class Panel(wx.ScrolledWindow):
         
         if not required_ok:
             # If required_ok returned False, show an error dialog
-            err = wx.MessageDialog(self, GT(u'One of the required fields is empty'), GT(u'Can\'t Continue'),
+            err = wx.MessageDialog(self, GT(u'One of the required fields is empty'), GT(u'Cannot Continue'),
                     wx.OK|wx.ICON_WARNING)
             err.ShowModal()
             err.Destroy()
@@ -294,7 +294,6 @@ class Panel(wx.ScrolledWindow):
             
             prebuild_progress.Update(progress)
             
-#                try:
             progress = 0
             build_progress = wx.ProgressDialog(GT(u'Building'), GT(u'Preparing build tree'), tasks, self,
                     wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_AUTO_HIDE)#|wx.PD_CAN_ABORT)
@@ -303,7 +302,13 @@ class Panel(wx.ScrolledWindow):
             if os.path.isdir(u'{}/DEBIAN'.format(temp_tree)):
                 c = u'rm -r "{}"'.format(temp_tree)
                 if commands.getstatusoutput(c.encode(u'utf-8'))[0]:
-                    wx.MessageDialog(self, GT(u'An Error Occurred:\nCould not delete "{}"').format(temp_tree), GT(u'Can\'t Continue'), style=wx.OK|wx.ICON_ERROR).ShowModal()
+                    err_msg1 = GT(u'Cannot continue:')
+                    err_msg2 = GT(u'Could not delete staged directory: {}').format(temp_tree)
+                    wx.MessageDialog(self, u'{}\n{}'.format(err_msg1, err_msg2),
+                            GT(u'Error'), style=wx.OK|wx.ICON_ERROR).ShowModal()
+                    
+                    return
+            
             # Make a fresh build tree
             os.makedirs(u'{}/DEBIAN'.format(temp_tree))
             progress += 1
@@ -360,7 +365,7 @@ class Panel(wx.ScrolledWindow):
                 c = u'gzip -n --best "{}/changelog"'.format(changelog_dest)
                 clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
                 if clog_status[0]:
-                    clog_error = GT(u'Couldn\'t create changelog')
+                    clog_error = GT(u'Could not create changelog')
                     changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
                             GT(u'Error'), wx.OK)
                     changelog_error.ShowModal()
