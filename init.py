@@ -181,7 +181,6 @@ else:
     os.chdir(conf_values[u'workingdir'])
 
 
-debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
 debreate_app.MainLoop()
 

@@ -19,6 +19,7 @@ from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
+from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
@@ -67,15 +68,23 @@ ID_Launchers = wx.NewId()
 ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
+default_title = GT(u'Debreate - Debian Package Builder')
+
 
 ## TODO: Doxygen
 class MainWindow(wx.Frame, ModuleAccessCtrl):
     def __init__(self, pos, size):
-        wx.Frame.__init__(self, None, wx.ID_ANY, GT(u'Debreate - Debian Package Builder'), pos, size)
+        wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
         ModuleAccessCtrl.__init__(self, __name__)
         
-        # The default title
-        self.default_title = GT(u'Debreate - Debian Package Builder')
+        # Make sure that this frame is set as the top window
+        if not wx.GetApp().GetTopWindow() == self:
+            Logger.Debug(__name__, GT(u'Not set as top window'))
+            
+            wx.GetApp().SetTopWindow(self)
+        
+        if DebugEnabled():
+            self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
         
         self.SetMinSize((640,400))
         
@@ -328,7 +337,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## TODO: Doxygen
     def IsNewProject(self):
         title = self.GetTitle()
-        if title == self.default_title:
+        if title == default_title:
             return True
         
         else:
@@ -349,7 +358,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def NewProject(self):
         for page in self.all_pages:
             page.ResetAllFields()
-        self.SetTitle(self.default_title)
+        self.SetTitle(default_title)
         
         # Reset the saved project field so we know that a project file doesn't exists
         self.saved_project = wx.EmptyString
@@ -682,5 +691,5 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def SetSavedStatus(self, status):
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
-            if self.IsSaved() and title != self.default_title:
+            if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
