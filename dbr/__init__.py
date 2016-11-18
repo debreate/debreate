@@ -29,7 +29,6 @@ from dbr.functions      import RunSudo
 from dbr.functions      import TextIsEmpty
 from dbr.help           import HelpDialog
 from dbr.log            import DebreateLogger
-from dbr.md5            import MD5
 from dbr.pathctrl       import PATH_DEFAULT
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl
