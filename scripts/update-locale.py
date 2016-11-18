@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# TODO: This script is incomplete
-
 
 import commands, errno, os, sys, time
 
@@ -136,7 +134,7 @@ if os.path.isfile(FILE_pot):
                 print('\nLanguage: {}'.format(language))
                 print('File: {}'.format(F))
                 
-                commands.getstatusoutput('msgmerge -U -i -s --no-location --no-wrap --backup=none "{}" "{}"'.format(F, FILE_pot))
+                commands.getstatusoutput('msgmerge -U -i -s -N --no-location --no-wrap --backup=none "{}" "{}"'.format(F, FILE_pot))
     
     print('\nFinished\n')
     
