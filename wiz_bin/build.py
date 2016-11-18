@@ -34,7 +34,7 @@ class Panel(wx.ScrolledWindow):
         self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
         if not os.path.isfile(u'/usr/bin/md5sum'):
             self.chk_md5.Disable()
-            self.chk_md5.SetToolTip(wx.ToolTip(GT(u'(Install md5sum package for this option)')))
+            self.chk_md5.SetToolTip(wx.ToolTip(GT(u'Install md5sum package for this option')))
         else:
             self.chk_md5.SetToolTip(md5_tip)
         
