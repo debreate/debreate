@@ -275,8 +275,8 @@ class MainWindow(wx.Frame):
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
         if u'-dev' in VERSION_string:
-            wx.MessageDialog(self, _(u'Update checking not supported in development versions'),
-                    _(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            wx.MessageDialog(self, GT(u'Update checking not supported in development versions'),
+                    GT(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
             return
         
         wx.SafeYield()
@@ -284,12 +284,12 @@ class MainWindow(wx.Frame):
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
-            wx.MessageDialog(self, current, _(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+            wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
-            l1 = _(u'Version {} is available!').format(current)
-            l2 = _(u'Would you like to go to Debreate\'s website?')
-            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), _(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
+            l1 = GT(u'Version {} is available!').format(current)
+            l2 = GT(u'Would you like to go to Debreate\'s website?')
+            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
         elif isinstance(current, (unicode, str)):
@@ -303,7 +303,7 @@ class MainWindow(wx.Frame):
             err.CenterOnParent()
             err.ShowModal()
         else:
-            err = wx.MessageDialog(self, _(u'Debreate is up to date!'), _(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
+            err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
             err.CenterOnParent()
             err.ShowModal()
     
