@@ -26,8 +26,8 @@ home = os.getenv(u'HOME')
 
 class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
-    def __init__(self, parent, id):
-        wx.ListCtrl.__init__(self, parent, id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+    def __init__(self, parent, ID=wx.ID_ANY):
+        wx.ListCtrl.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         #LC.TextEditMixin.__init__(self)
         LC.ListCtrlAutoWidthMixin.__init__(self)
 
@@ -206,7 +206,7 @@ class Panel(wx.ScrolledWindow):
                 pout = item.GetLabel()
         if os.path.isdir(pin):
             for root, dirs, files in os.walk(pin):
-                for file in files:
+                for FILE in files:
                     total_files += 1
             
             if total_files: # Continue if files are found
@@ -216,7 +216,7 @@ class Panel(wx.ScrolledWindow):
                 loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
                                             wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
                 for root, dirs, files in os.walk(pin):
-                    for file in files:
+                    for FILE in files:
                         if cont == (False,False):  # If "cancel" pressed destroy the progress window
                             break
                         else:
@@ -224,24 +224,24 @@ class Panel(wx.ScrolledWindow):
                             if sub_dir != wx.EmptyString:
                                 # Add the sub-dir to dest
                                 dest = u'{}{}'.format(pout, sub_dir)
-                                #self.list_data.insert(0, (u'{}/{}'.format(root, file), u'{}/{}'.format(sub_dir[1:], file), dest))
-                                self.list_data.insert(0, (u'{}/{}'.format(root, file), file, dest))
-                                self.dest_area.InsertStringItem(0, file)
+                                #self.list_data.insert(0, (u'{}/{}'.format(root, FILE), u'{}/{}'.format(sub_dir[1:], FILE), dest))
+                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, dest))
+                                self.dest_area.InsertStringItem(0, FILE)
                                 self.dest_area.SetStringItem(0, 1, dest)
                             else:
-                                self.list_data.insert(0, (u'{}/{}'.format(root, file), file, pout))
-                                self.dest_area.InsertStringItem(0, file)
+                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, pout))
+                                self.dest_area.InsertStringItem(0, FILE)
                                 self.dest_area.SetStringItem(0, 1, pout)
                             count += 1
                             cont = loading.Update(count)
-                            if os.access(u'{}/{}'.format(root,file), os.X_OK):
+                            if os.access(u'{}/{}'.format(root,FILE), os.X_OK):
                                 self.dest_area.SetItemTextColour(0, u'red')
         
         elif os.path.isfile(pin):
-            file = os.path.split(pin)[1]
-            file = file.encode(u'utf-8')
-            self.list_data.insert(0, (pin, file, pout))
-            self.dest_area.InsertStringItem(0, file)
+            FILE = os.path.split(pin)[1]
+            FILE = FILE.encode(u'utf-8')
+            self.list_data.insert(0, (pin, FILE, pout))
+            self.dest_area.InsertStringItem(0, FILE)
             self.dest_area.SetStringItem(0, 1, pout)
             if os.access(pin, os.X_OK):
                 self.dest_area.SetItemTextColour(0, u'red')
@@ -283,9 +283,9 @@ class Panel(wx.ScrolledWindow):
             for path in selected:
                 # Remove the item from the invisible list
                 for item in self.list_data:
-                    file = self.dest_area.GetItemText(path)
+                    FILE = self.dest_area.GetItemText(path)
                     dest = self.dest_area.GetItem(path, 1).GetText()
-                    if file.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
+                    if FILE.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
                         toremove.append(item)
                     
                 self.dest_area.DeleteItem(path) # Remove the item from the visible list
@@ -339,14 +339,14 @@ class Panel(wx.ScrolledWindow):
                 # False changes to true if src file is executable
                 if src[0][-1] == u'*':
                     src = (src[0][:-1], True) # Set executable flag and remove "*"
-                file = files_data[files_total].split(u' -> ')[1]
+                FILE = files_data[files_total].split(u' -> ')[1]
                 dest = files_data[files_total].split(u' -> ')[2]
                 
                 # Check if files still exist
                 if os.path.exists(src[0]):
-                    self.dest_area.InsertStringItem(0, file)
+                    self.dest_area.InsertStringItem(0, FILE)
                     self.dest_area.SetStringItem(0, 1, dest)
-                    self.list_data.insert(0, (src[0], file, dest))
+                    self.list_data.insert(0, (src[0], FILE, dest))
                     # Check if file is executable
                     if src[1]:
                         self.dest_area.SetItemTextColour(0, u'red') # Set text color to red
@@ -395,10 +395,10 @@ class Panel(wx.ScrolledWindow):
                 count += 1
         
             return_list = []
-            for file in file_list:
-                f0 = u'{}'.encode(u'utf-8').format(file[0])
-                f1 = u'{}'.encode(u'utf-8').format(file[1])
-                f2 = u'{}'.encode(u'utf-8').format(file[2])
+            for FILE in file_list:
+                f0 = u'{}'.encode(u'utf-8').format(FILE[0])
+                f1 = u'{}'.encode(u'utf-8').format(FILE[1])
+                f2 = u'{}'.encode(u'utf-8').format(FILE[2])
                 return_list.append(u'{} -> {} -> {}'.format(f0, f1, f2))
             return u'<<FILES>>\n1\n{}\n<</FILES>>'.format(u'\n'.join(return_list))
         else:
