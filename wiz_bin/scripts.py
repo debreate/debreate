@@ -111,7 +111,7 @@ class Panel(wx.ScrolledWindow):
         self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from Files section')))
         self.al_del = ButtonDel(self, ID_Remove)
         self.al_gen = ButtonBuild(self)
-        self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate Scripts')))
+        self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate scripts')))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
