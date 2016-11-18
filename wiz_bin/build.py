@@ -5,12 +5,13 @@
 
 import commands, os, shutil, wx
 
-import db, db_md5
+import db
 from dbr.buttons    import ButtonBuild64
 from dbr.custom     import OutputLog
 from dbr.functions  import RunSudo
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
+from dbr.md5        import MD5Hasher
 from dbr.message    import MessageDialog
 from globals.ident  import ID_BUILD
 
@@ -36,7 +37,7 @@ class Panel(wx.Panel):
             self.chk_md5.SetToolTip(md5_tip)
         
         # For creating md5sum hashes
-        self.md5 = db_md5.MD5()
+        self.md5 = MD5Hasher()
         
         # Deletes the temporary build tree
         self.chk_del = wx.CheckBox(self, -1, GT(u'Delete build tree'))
