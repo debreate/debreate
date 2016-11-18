@@ -8,7 +8,7 @@
 ## wiz_bin.PageGreeting
 #  
 #  Imported class from wiz_bin.greeting
-from wiz_bin import PageGreeting
+#from wiz_bin import PageGreeting
 
 ## wiz_src.PageControl
 #  
