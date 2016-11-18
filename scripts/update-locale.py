@@ -23,6 +23,14 @@ for F in required_locale_files:
 FILE_pot = 'locale/debreate.pot'
 YEAR = time.strftime('%Y')
 
+# Make sure we are using a clean slate
+if os.path.isfile(FILE_pot):
+    if not os.access(FILE_pot, os.W_OK):
+        print('ERROR: .pot file exists & is not writable: {}'.format(FILE_pot))
+        sys.exit(1)
+    
+    os.remove(FILE_pot)
+
 PACKAGE = GetInfoValue('NAME')
 AUTHOR = GetInfoValue('AUTHOR')
 EMAIL = GetInfoValue('EMAIL')

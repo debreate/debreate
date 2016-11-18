@@ -1,740 +1,1049 @@
 # Debreate - Debian Package Builder
-# Copyright (C) 2011 Jordan Irwin
-# This file is distributed under the same license as the debreate package.
-# Jordan Irwin <antumdeluge@gmail.com>, 2011.
+# Copyright © 2016 Jordan Irwin
+# This file is distributed under the same license as the Debreate package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# NOTES:
+#   If "%s" or "{}" is in the msgid, be sure to put it in
+#   the msgstr or parts of Debreate will not function.
+#
+#   If you do not wish to translate a line just leave its
+#   msgstr blank
 #
 #, fuzzy
-msgid ""
-msgstr ""
-"Project-Id-Version: Debreate 0.7.12\n"
-"Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-"POT-Creation-Date: 2011-12-01 08:00-0800\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: LANGUAGE"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
-"Content-Transfer-Encoding: 8bit\n"
+msgid   ""
+msgstr  "Project-Id-Version: Debreate 0.7.12\n"
+        "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
+        "POT-Creation-Date: 2016-11-17 21:57-0800\n"
+        "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+        "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+        "Language-Team: LANGUAGE <LL@li.org>\n"
+        "Language: LANGUAGE\n"
+        "MIME-Version: 1.0\n"
+        "Content-Type: text/plain; charset=CHARSET\n"
+        "Content-Transfer-Encoding: 8bit\n"
 
-# WARNING:
-# If "%s" or "{}" is in the msgid be sure to put it in the msgstr
-# or parts of Debreate will not function.
-#
-# If you do not wish to translate a line just leave its
-# msgstr blank
-#
-# ## Program name
-msgid "Debreate"
-msgstr ""
+msgid   "(Install md5sum package for this option)"
+msgstr  ""
 
-# ## Title bar
-msgid "Debreate - Debian Package Builder"
-msgstr ""
+msgid   "A file named \"{}\" already exists. Do you want to replace it?"
+msgstr  ""
 
-# ## First run message
-msgid "Debreate First Run"
-msgstr ""
+msgid   "A package builder for Debian based systems"
+msgstr  ""
 
-msgid "Thank you for using Debreate."
-msgstr ""
+msgid   "About"
+msgstr  ""
 
-msgid "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
-msgstr ""
+msgid   "About Debreate"
+msgstr  ""
 
-# ## Menu and Status bars
-msgid "File"
-msgstr ""
+msgid   "Add"
+msgstr  ""
 
-msgid "Page"
-msgstr ""
+msgid   "Add File"
+msgstr  ""
 
-msgid "Options"
-msgstr ""
+msgid   "Add Folder"
+msgstr  ""
 
-msgid "Help"
-msgstr ""
+msgid   "All supported formats"
+msgstr  ""
 
-msgid "Start a new project"
-msgstr ""
+msgid   "An Error Occurred:\n"
+        "Could not delete \"{}\""
+msgstr  ""
 
-msgid "Open"
-msgstr ""
+msgid   "An error occurred attempting to retrieve version from remote website:"
+msgstr  ""
 
-msgid "Open a previously saved project"
-msgstr ""
+msgid   "An error occurred when trying to delete the build tree"
+msgstr  ""
 
-msgid "Save current project"
-msgstr ""
+msgid   "Append"
+msgstr  ""
 
-msgid "Save current project with a new filename"
-msgstr ""
+msgid   "Architecture"
+msgstr  ""
 
-msgid "Quick Build"
-msgstr ""
+msgid   "Authenticated"
+msgstr  ""
 
-msgid "Build a package from an existing build tree"
-msgstr ""
+msgid   "Authentication failure"
+msgstr  ""
 
-msgid "Information"
-msgstr ""
+msgid   "Auto-Link Executables"
+msgstr  ""
 
-msgid "Go to Information section"
-msgstr ""
+msgid   "Auto-Link Help"
+msgstr  ""
 
-msgid "Control"
-msgstr ""
+msgid   "Bad File Name"
+msgstr  ""
 
-msgid "Go to Control section"
-msgstr ""
+msgid   "Breaks"
+msgstr  ""
 
-msgid "Dependencies"
-msgstr ""
+msgid   "Browse"
+msgstr  ""
 
-msgid "Go to Dependencies section"
-msgstr ""
+msgid   "Build"
+msgstr  ""
 
-msgid "Files"
-msgstr ""
+msgid   "Build Complete"
+msgstr  ""
 
-msgid "Go to Files section"
-msgstr ""
+msgid   "Build a package from an existing build tree"
+msgstr  ""
 
-msgid "Scripts"
-msgstr ""
+msgid   "Building"
+msgstr  ""
 
-msgid "Go to Scripts section"
-msgstr ""
+msgid   "Building a Debian Package with Debreate"
+msgstr  ""
 
-msgid "Changelog"
-msgstr ""
+msgid   "Building debs from Source"
+msgstr  ""
 
-msgid "Go to Changelog section"
-msgstr ""
+msgid   "Can't Continue"
+msgstr  ""
 
-msgid "Copyright"
-msgstr ""
+msgid   "Cancel"
+msgstr  ""
 
-msgid "Go to Copyright section"
-msgstr ""
+msgid   "Cancel build"
+msgstr  ""
 
-msgid "Menu Launcher"
-msgstr ""
+msgid   "Cannot create config directory, file exists"
+msgstr  ""
 
-msgid "Go to Menu Launcher section"
-msgstr ""
+msgid   "Cannot decode, unrecognized mimetype: {}"
+msgstr  ""
 
-msgid "Build"
-msgstr ""
+msgid   "Cannot open config for writing, directory exists"
+msgstr  ""
 
-msgid "Go to Build section"
-msgstr ""
+msgid   "Cannot run \"fakeroot dpkg"
+msgstr  ""
 
-msgid "Use Custom Dialogs"
-msgstr ""
+msgid   "Categories"
+msgstr  ""
 
-msgid "Use System or Custom Save/Open Dialogs"
-msgstr ""
+msgid   "Category"
+msgstr  ""
 
-msgid "Check for Update"
-msgstr ""
+msgid   "Changelog"
+msgstr  ""
 
-msgid "Reference"
-msgstr ""
+msgid   "Changelog mimetype: {}"
+msgstr  ""
 
-msgid "Open a usage document"
-msgstr ""
+msgid   "Changes"
+msgstr  ""
 
-msgid "About"
-msgstr ""
+msgid   "Check for Update"
+msgstr  ""
 
-msgid "About Debreate"
-msgstr ""
+msgid   "Check package for errors with lintian"
+msgstr  ""
 
-msgid "Debian Policy Manual"
-msgstr ""
+msgid   "Checking changelog"
+msgstr  ""
 
-msgid "Control Files"
-msgstr ""
+msgid   "Checking copyright"
+msgstr  ""
 
-msgid "Ubuntu Policy Manual"
-msgstr ""
+msgid   "Checking create md5sums"
+msgstr  ""
 
-msgid "Building debs from Source"
-msgstr ""
+msgid   "Checking delete build tree"
+msgstr  ""
 
-msgid "Lintian Tags Explanation"
-msgstr ""
+msgid   "Checking files"
+msgstr  ""
 
-# ## Dialogs
-msgid "Start New Project"
-msgstr ""
+msgid   "Checking lintian"
+msgstr  ""
 
-msgid "You will lose any unsaved information"
-msgstr ""
+msgid   "Checking menu launcher"
+msgstr  ""
 
-msgid "Open File"
-msgstr ""
+msgid   "Checking package for errors"
+msgstr  ""
 
-msgid "Open Debreate Project"
-msgstr ""
+msgid   "Checking scripts"
+msgstr  ""
 
-msgid "Save Debreate Project"
-msgstr ""
+msgid   "Choose Directory"
+msgstr  ""
 
-msgid "Debreate project files"
-msgstr ""
+msgid   "Choose Filename"
+msgstr  ""
 
-msgid "Not a valid Debreate project"
-msgstr ""
+msgid   "Choose Target Directory"
+msgstr  ""
 
-msgid "Error"
-msgstr ""
+msgid   "Clear"
+msgstr  ""
 
-msgid "Save failed"
-msgstr ""
+msgid   "Clear all dependencies?"
+msgstr  ""
 
-msgid "Quit?"
-msgstr ""
+msgid   "Clear all files?"
+msgstr  ""
 
-msgid "A package builder for Debian based systems"
-msgstr ""
+msgid   "Clear categories?"
+msgstr  ""
 
-msgid "New Folder"
-msgstr ""
+msgid   "Code Contributor"
+msgstr  ""
 
-msgid "Rename"
-msgstr ""
+msgid   "Comment"
+msgstr  ""
 
-msgid "Move to Trash"
-msgstr ""
+msgid   "Compression ID not found for \"{}\" value"
+msgstr  ""
 
-msgid "Permission Denied"
-msgstr ""
+msgid   "Configuration key \"{}\" = \"{}\", type: {}"
+msgstr  ""
 
-msgid "Name already used in current directory"
-msgstr ""
+msgid   "Configuration key not found"
+msgstr  ""
 
-msgid "Choose Directory"
-msgstr ""
+msgid   "Confirm"
+msgstr  ""
 
-msgid "Save File"
-msgstr ""
+msgid   "Conflicts"
+msgstr  ""
 
-msgid "Bad File Name"
-msgstr ""
+msgid   "Control"
+msgstr  ""
 
-msgid "File Exists"
-msgstr ""
+msgid   "Control Files"
+msgstr  ""
 
-msgid "Overwrite File?"
-msgstr ""
+msgid   "Converting string argument \"jobs\" to tuple"
+msgstr  ""
 
-msgid "Version %s is available!"
-msgstr ""
+msgid   "Copy details"
+msgstr  ""
 
-msgid "Would you like to go to Debreate's website?"
-msgstr ""
+msgid   "Copying files"
+msgstr  ""
 
-msgid "Debreate is up to date!"
-msgstr ""
+msgid   "Copyright"
+msgstr  ""
 
-# ## About dialog
-msgid "Credits"
-msgstr ""
+msgid   "Could not build .deb package"
+msgstr  ""
 
-msgid "Job"
-msgstr ""
+msgid   "Could not create configuration, exiting ..."
+msgstr  ""
 
-msgid "License"
-msgstr ""
+msgid   "Could not install {}"
+msgstr  ""
 
-msgid "Developer"
-msgstr ""
+msgid   "Could not locate the following files:"
+msgstr  ""
 
-msgid "Packager"
-msgstr ""
+msgid   "Couldn't create changelog"
+msgstr  ""
 
-msgid "Translation"
-msgstr ""
+msgid   "Create checksums for files in package"
+msgstr  ""
 
-# ## Button tool tips
-msgid "Next"
-msgstr ""
+msgid   "Create md5sums file"
+msgstr  ""
 
-msgid "Previous"
-msgstr ""
+msgid   "Create system menu launcher"
+msgstr  ""
 
-msgid "Add"
-msgstr ""
+msgid   "Creating changelog"
+msgstr  ""
 
-msgid "Remove"
-msgstr ""
+msgid   "Creating control file"
+msgstr  ""
 
-msgid "Clear"
-msgstr ""
+msgid   "Creating copyright"
+msgstr  ""
 
-msgid "Append"
-msgstr ""
+msgid   "Creating md5sums"
+msgstr  ""
 
-msgid "Import"
-msgstr ""
+msgid   "Creating menu launcher"
+msgstr  ""
 
-msgid "Browse"
-msgstr ""
+msgid   "Creating scripts"
+msgstr  ""
 
-msgid "Ok"
-msgstr ""
+msgid   "Credits"
+msgstr  ""
 
-msgid "Cancel"
-msgstr ""
+msgid   "Custom"
+msgstr  ""
 
-msgid "Preview"
-msgstr ""
+msgid   "Custom filename to use for launcher"
+msgstr  ""
 
-msgid "Save"
-msgstr ""
+msgid   "Debian Packages"
+msgstr  ""
 
-# ## Information section
-msgid "Welcome to Debreate!"
-msgstr ""
+msgid   "Debian Policy Manual"
+msgstr  ""
 
-msgid "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
-msgstr ""
+msgid   "Debian packages"
+msgstr  ""
 
-msgid "For a video tutorial check the link below."
-msgstr ""
+msgid   "Debreate"
+msgstr  ""
 
-msgid "Building a Debian Package with Debreate"
-msgstr ""
+msgid   "Debreate - Debian Package Builder"
+msgstr  ""
 
-# ## Control section
-msgid "Required"
-msgstr ""
+msgid   "Debreate First Run"
+msgstr  ""
 
-msgid "Package"
-msgstr ""
+msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
+msgstr  ""
 
-msgid "Version"
-msgstr ""
+msgid   "Debreate is up to date!"
+msgstr  ""
 
-msgid "Maintainer"
-msgstr ""
+msgid   "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
+msgstr  ""
 
-msgid "Email"
-msgstr ""
+msgid   "Debreate project files"
+msgstr  ""
 
-msgid "Architecture"
-msgstr ""
+msgid   "Debreate projects"
+msgstr  ""
 
-msgid "Recommended"
-msgstr ""
+msgid   "Debug"
+msgstr  ""
 
-msgid "Section"
-msgstr ""
+msgid   "Delete"
+msgstr  ""
 
-msgid "Priority"
-msgstr ""
+msgid   "Delete build tree"
+msgstr  ""
 
-msgid "Short Description"
-msgstr ""
+msgid   "Delete temporary directory tree after package has been created"
+msgstr  ""
 
-msgid "Long Description"
-msgstr ""
+msgid   "Dependencies"
+msgstr  ""
 
-msgid "Optional"
-msgstr ""
+msgid   "Dependencies and Conflicts"
+msgstr  ""
 
-msgid "Source"
-msgstr ""
+msgid   "Depends"
+msgstr  ""
 
-msgid "Homepage"
-msgstr ""
+msgid   "Details"
+msgstr  ""
 
-msgid "Essential"
-msgstr ""
+msgid   "Details saved to {}"
+msgstr  ""
 
-msgid "Save Control Information"
-msgstr ""
+msgid   "Details: {}"
+msgstr  ""
 
-# ## Dependencies and Conflicts section
-msgid "Dependencies and Conflicts"
-msgstr ""
+msgid   "Developer"
+msgstr  ""
 
-msgid "Categories"
-msgstr ""
+msgid   "Displays a notification in the system panel when launched"
+msgstr  ""
 
-msgid "Depends"
-msgstr ""
+msgid   "Distribution"
+msgstr  ""
 
-msgid "Package will need to be installed"
-msgstr ""
+msgid   "ERROR: Could not locate changelog file:\n"
+        "\t'{}' not found"
+msgstr  ""
 
-msgid "Pre-Depends"
-msgstr ""
+msgid   "ERROR: Could not locate license file:\n"
+        "\t'{}' not found"
+msgstr  ""
 
-msgid "Package will need to be installed and configured first"
-msgstr ""
+msgid   "Email"
+msgstr  ""
 
-msgid "Recommends"
-msgstr ""
+msgid   "Empty password: Cancelling"
+msgstr  ""
 
-msgid "Package is highly recommended and will be installed by default"
-msgstr ""
+msgid   "Encoding"
+msgstr  ""
 
-msgid "Suggests"
-msgstr ""
+msgid   "Enhances"
+msgstr  ""
 
-msgid "Package may be useful but is not necessary and will not be installed by default"
-msgstr ""
+msgid   "Error"
+msgstr  ""
 
-msgid "Enhances"
-msgstr ""
+msgid   "Error ID"
+msgstr  ""
 
-msgid "This package may be useful to enhanced package"
-msgstr ""
+msgid   "Error decoding file"
+msgstr  ""
 
-msgid "Conflicts"
-msgstr ""
+msgid   "Error reading changelog: {}\n"
+        "\t"
+msgstr  ""
 
-msgid "Package will be removed from the system if it is installed"
-msgstr ""
+msgid   "Error: Can't change log window font"
+msgstr  ""
 
-msgid "Replaces"
-msgstr ""
+msgid   "Essential"
+msgstr  ""
 
-msgid "Package or its files may be overwritten"
-msgstr ""
+msgid   "Executable"
+msgstr  ""
 
-msgid "Breaks"
-msgstr ""
+msgid   "Executable to be launched"
+msgstr  ""
 
-msgid "Package conflicts and will be de-configured"
-msgstr ""
+msgid   "Extra options"
+msgstr  ""
 
-msgid "Category"
-msgstr ""
+msgid   "FIXME: Details not copied to clipboard"
+msgstr  ""
 
-msgid "Package(s)"
-msgstr ""
+msgid   "File"
+msgstr  ""
 
-msgid "Confirm"
-msgstr ""
+msgid   "File Count"
+msgstr  ""
 
-msgid "Clear all dependencies?"
-msgstr ""
+msgid   "File Exists"
+msgstr  ""
 
-# ## Files section
-msgid "Add Folder"
-msgstr ""
+msgid   "File does not exist"
+msgstr  ""
 
-msgid "Add File"
-msgstr ""
+msgid   "Filename"
+msgstr  ""
 
-msgid "Refresh"
-msgstr ""
+msgid   "Files"
+msgstr  ""
 
-msgid "Target"
-msgstr ""
+msgid   "Font Size"
+msgstr  ""
 
-msgid "Custom"
-msgstr ""
+msgid   "For a video tutorial check the link below."
+msgstr  ""
 
-msgid "Choose Target Directory"
-msgstr ""
+msgid   "Gathering control information"
+msgstr  ""
 
-msgid "Progress"
-msgstr ""
+msgid   "General Contributor"
+msgstr  ""
 
-msgid "Getting files from %s"
-msgstr ""
+msgid   "Generate Scripts"
+msgstr  ""
 
-msgid "Clear all files?"
-msgstr ""
+msgid   "Getting administrative privileges from user"
+msgstr  ""
 
-msgid "Missing Files"
-msgstr ""
+msgid   "Getting files from {}"
+msgstr  ""
 
-msgid "Could not locate the following files:"
-msgstr ""
+msgid   "GitHub Project"
+msgstr  ""
 
-# ## Scripts section
-msgid "Make this script"
-msgstr ""
+msgid   "Go to Build section"
+msgstr  ""
 
-msgid "Pre-Install"
-msgstr ""
+msgid   "Go to Changelog section"
+msgstr  ""
 
-msgid "Post-Install"
-msgstr ""
+msgid   "Go to Control section"
+msgstr  ""
 
-msgid "Pre-Remove"
-msgstr ""
+msgid   "Go to Copyright section"
+msgstr  ""
 
-msgid "Post-Remove"
-msgstr ""
+msgid   "Go to Dependencies section"
+msgstr  ""
 
-msgid "Auto-Link Executables"
-msgstr ""
+msgid   "Go to Files section"
+msgstr  ""
 
-msgid "Path"
-msgstr ""
+msgid   "Go to Information section"
+msgstr  ""
 
-msgid "Import executables from Files section"
-msgstr ""
+msgid   "Go to Menu Launcher section"
+msgstr  ""
 
-msgid "Generate scripts"
-msgstr ""
+msgid   "Go to Scripts section"
+msgstr  ""
 
-msgid "Path Warning"
-msgstr ""
+msgid   "Greeting"
+msgstr  ""
 
-msgid "Path %s does not exist. Continue?"
-msgstr ""
+msgid   "Head Developer"
+msgstr  ""
 
-msgid "Success"
-msgstr ""
+msgid   "Help"
+msgstr  ""
 
-msgid "post-install and pre-remove scripts generated"
-msgstr ""
+msgid   "Hide"
+msgstr  ""
 
-msgid "Auto-Link Help"
-msgstr ""
+msgid   "Homepage"
+msgstr  ""
 
-msgid "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
-msgstr ""
+msgid   "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
+msgstr  ""
 
-msgid "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
-msgstr ""
+msgid   "Icon"
+msgstr  ""
 
-# ## Changelog section
-msgid "Distribution"
-msgstr ""
+msgid   "Icon to be displayed for the launcher"
+msgstr  ""
 
-msgid "Urgency"
-msgstr ""
+msgid   "If checked, the value of the \"Name\" field will be used for the filename"
+msgstr  ""
 
-msgid "Changes"
-msgstr ""
+msgid   "Import"
+msgstr  ""
 
-msgid "Import information from Control section"
-msgstr ""
+msgid   "Import executables from Files section"
+msgstr  ""
 
-# ## Menu section
-msgid "Open launcher file"
-msgstr ""
+msgid   "Import information from Control section"
+msgstr  ""
 
-msgid "Create system menu launcher"
-msgstr ""
+msgid   "Information"
+msgstr  ""
 
-msgid "Name"
-msgstr ""
+msgid   "Install lintian package for this option"
+msgstr  ""
 
-msgid "Text for the launcher"
-msgstr ""
+msgid   "Install package after build"
+msgstr  ""
 
-msgid "Executable"
-msgstr ""
+msgid   "Installation prefix: {}"
+msgstr  ""
 
-msgid "Executable to be launched"
-msgstr ""
+msgid   "Installing Package"
+msgstr  ""
 
-msgid "Comment"
-msgstr ""
+msgid   "Is the staged directory formatted correctly?"
+msgstr  ""
 
-msgid "Text displayed when mouse hovers over launcher"
-msgstr ""
+msgid   "Job"
+msgstr  ""
 
-msgid "Icon"
-msgstr ""
+msgid   "Legacy Debreate projects"
+msgstr  ""
 
-msgid "Icon to be displayed for the launcher"
-msgstr ""
+msgid   "License"
+msgstr  ""
 
-msgid "Type"
-msgstr ""
+msgid   "License template not found: {}"
+msgstr  ""
 
-msgid "Terminal"
-msgstr ""
+msgid   "Lintian Errors"
+msgstr  ""
 
-msgid "Specifies whether application should be run from a terminal"
-msgstr ""
+msgid   "Lintian Tags Explanation"
+msgstr  ""
 
-msgid "Startup Notify"
-msgstr ""
+msgid   "Lintian found some issues with the package."
+msgstr  ""
 
-msgid "Displays a notification in the system panel when launched"
-msgstr ""
+msgid   "Loading license template: {}"
+msgstr  ""
 
-msgid "Encoding"
-msgstr ""
+msgid   "Logger warning instead of error: {}"
+msgstr  ""
 
-msgid "Other"
-msgstr ""
+msgid   "Long Description"
+msgstr  ""
 
-msgid "Delete all categories?"
-msgstr ""
+msgid   "Longest line in details: {}"
+msgstr  ""
 
-msgid "Save Launcher"
-msgstr ""
+msgid   "Maintainer"
+msgstr  ""
 
-msgid "Open Launcher"
-msgstr ""
+msgid   "Make this script"
+msgstr  ""
 
-# ## Build section
-msgid "Extra options"
-msgstr ""
+msgid   "Man"
+msgstr  ""
 
-msgid "Create md5sums file"
-msgstr ""
+msgid   "Menu"
+msgstr  ""
 
-msgid "Install md5sum package for this option"
-msgstr ""
+msgid   "Menu Launcher"
+msgstr  ""
 
-msgid "Create checksums for files in package"
-msgstr ""
+msgid   "Message"
+msgstr  ""
 
-msgid "Delete build tree"
-msgstr ""
+msgid   "Missing Files"
+msgstr  ""
 
-msgid "Delete temporary directory tree after package has been created"
-msgstr ""
+msgid   "Module: {}"
+msgstr  ""
 
-msgid "Check package for errors with lintian"
-msgstr ""
+msgid   "Move to Trash"
+msgstr  ""
 
-msgid "Install lintian package for this option"
-msgstr ""
+msgid   "Name"
+msgstr  ""
 
-msgid "Install package after build"
-msgstr ""
+msgid   "Name already used in current directory"
+msgstr  ""
 
-msgid "Start building"
-msgstr ""
+msgid   "Name cannot end with \"{}\""
+msgstr  ""
 
-msgid "Can't Continue"
-msgstr ""
+msgid   "New Folder"
+msgstr  ""
 
-msgid "One of the required fields is empty"
-msgstr ""
+msgid   "Next"
+msgstr  ""
 
-msgid "Debian Packages"
-msgstr ""
+msgid   "No write access to target directory"
+msgstr  ""
 
-msgid "Preparing to build"
-msgstr ""
+msgid   "Not a valid Debreate project"
+msgstr  ""
 
-msgid "Gathering control information"
-msgstr ""
+msgid   "Not writing empty text to configuration"
+msgstr  ""
 
-msgid "Checking files"
-msgstr ""
+msgid   "Ok"
+msgstr  ""
 
-msgid "Checking scripts"
-msgstr ""
+msgid   "One of the required fields is empty"
+msgstr  ""
 
-msgid "Checking changelog"
-msgstr ""
+msgid   "Open"
+msgstr  ""
 
-msgid "Checking copyright"
-msgstr ""
+msgid   "Open Debreate Project"
+msgstr  ""
 
-msgid "Checking menu launcher"
-msgstr ""
+msgid   "Open File"
+msgstr  ""
 
-msgid "Checking create md5sums"
-msgstr ""
+msgid   "Open Launcher"
+msgstr  ""
 
-msgid "Checking delete build tree"
-msgstr ""
+msgid   "Open Log"
+msgstr  ""
 
-msgid "Checking lintian"
-msgstr ""
+msgid   "Open a previously saved project"
+msgstr  ""
 
-msgid "Building"
-msgstr ""
+msgid   "Open a usage document"
+msgstr  ""
 
-msgid "Preparing build tree"
-msgstr ""
+msgid   "Open launcher file"
+msgstr  ""
 
-msgid "Copying files"
-msgstr ""
+msgid   "Opening project from argument: {}"
+msgstr  ""
 
-msgid "Creating changelog"
-msgstr ""
+msgid   "Optional"
+msgstr  ""
 
-msgid "Creating copyright"
-msgstr ""
+msgid   "Options"
+msgstr  ""
 
-msgid "Creating menu launcher"
-msgstr ""
+msgid   "Other"
+msgstr  ""
 
-msgid "Creating md5sums"
-msgstr ""
+msgid   "Overwrite"
+msgstr  ""
 
-msgid "Creating control file"
-msgstr ""
+msgid   "Overwrite File?"
+msgstr  ""
 
-msgid "Creating scripts"
-msgstr ""
+msgid   "Overwrite?"
+msgstr  ""
 
-msgid "Running dpkg"
-msgstr ""
+msgid   "Package"
+msgstr  ""
 
-msgid "Removing temp directory"
-msgstr ""
+msgid   "Package build failed"
+msgstr  ""
 
-msgid "An error occurred when trying to delete the build tree"
-msgstr ""
+msgid   "Package conflicts and will be de-configured"
+msgstr  ""
 
-msgid "Checking package for errors"
-msgstr ""
+msgid   "Package created successfully"
+msgstr  ""
 
-msgid "Lintian Errors"
-msgstr ""
+msgid   "Package is highly recommended and will be installed by default"
+msgstr  ""
 
-msgid "Lintian found some issues with the package."
-msgstr ""
+msgid   "Package may be useful but is not necessary and will not be installed by default"
+msgstr  ""
 
-msgid "Details saved to %s"
-msgstr ""
+msgid   "Package or its files may be overwritten"
+msgstr  ""
 
-msgid "Package created successfully"
-msgstr ""
+msgid   "Package will be removed from the system if it is installed"
+msgstr  ""
 
-msgid "Getting administrative privileges from user"
-msgstr ""
+msgid   "Package will need to be installed"
+msgstr  ""
 
-msgid "Password"
-msgstr ""
+msgid   "Package will need to be installed and configured first"
+msgstr  ""
 
-msgid "Installing Package"
-msgstr ""
+msgid   "Package(s)"
+msgstr  ""
 
-msgid "Empty password: Cancelling"
-msgstr ""
+msgid   "Packager"
+msgstr  ""
 
-msgid "Authentication failure"
-msgstr ""
+msgid   "Page"
+msgstr  ""
 
-msgid "Could not install %s"
-msgstr ""
+msgid   "Password"
+msgstr  ""
 
-msgid "Password mismatch, try again"
-msgstr ""
+msgid   "Password mismatch, try again"
+msgstr  ""
 
-msgid "Authenticated"
-msgstr ""
+msgid   "Path"
+msgstr  ""
 
-msgid "The package failed to install"
-msgstr ""
+msgid   "Path \"{}\" does not exist. Continue?"
+msgstr  ""
 
-msgid "The package installed successfully"
-msgstr ""
+msgid   "Path Warning"
+msgstr  ""
 
-# ## Quick build
-msgid "Path to build tree"
-msgstr ""
+msgid   "Permission Denied"
+msgstr  ""
 
-msgid "Could not locate \"%s\""
-msgstr ""
+msgid   "Post-Install"
+msgstr  ""
+
+msgid   "Post-Remove"
+msgstr  ""
+
+msgid   "Pre-Depends"
+msgstr  ""
+
+msgid   "Pre-Install"
+msgstr  ""
+
+msgid   "Pre-Remove"
+msgstr  ""
+
+msgid   "Preparing build tree"
+msgstr  ""
+
+msgid   "Preparing to build"
+msgstr  ""
+
+msgid   "Preview"
+msgstr  ""
+
+msgid   "Previous"
+msgstr  ""
+
+msgid   "Priority"
+msgstr  ""
+
+msgid   "Progress"
+msgstr  ""
+
+msgid   "Python version: {}"
+msgstr  ""
+
+msgid   "Quick Build"
+msgstr  ""
+
+msgid   "Quick build complete"
+msgstr  ""
+
+msgid   "Quit?"
+msgstr  ""
+
+msgid   "Recommended"
+msgstr  ""
+
+msgid   "Recommends"
+msgstr  ""
+
+msgid   "Reference"
+msgstr  ""
+
+msgid   "Refresh"
+msgstr  ""
+
+msgid   "Remove"
+msgstr  ""
+
+msgid   "Removing temp directory"
+msgstr  ""
+
+msgid   "Rename"
+msgstr  ""
+
+msgid   "Replace"
+msgstr  ""
+
+msgid   "Replaces"
+msgstr  ""
+
+msgid   "Required"
+msgstr  ""
+
+msgid   "Root directory of build tree"
+msgstr  ""
+
+msgid   "Running dpkg"
+msgstr  ""
+
+msgid   "Save"
+msgstr  ""
+
+msgid   "Save Control Information"
+msgstr  ""
+
+msgid   "Save Debreate Project"
+msgstr  ""
+
+msgid   "Save File"
+msgstr  ""
+
+msgid   "Save Launcher"
+msgstr  ""
+
+msgid   "Save current project"
+msgstr  ""
+
+msgid   "Save current project with a new filename"
+msgstr  ""
+
+msgid   "Save failed"
+msgstr  ""
+
+msgid   "Scripts"
+msgstr  ""
+
+msgid   "Section"
+msgstr  ""
+
+msgid   "Short Description"
+msgstr  ""
+
+msgid   "Show or hide tooltips"
+msgstr  ""
+
+msgid   "Show tooltips"
+msgstr  ""
+
+msgid   "Source"
+msgstr  ""
+
+msgid   "Sourceforge Project"
+msgstr  ""
+
+msgid   "Specifies whether application should be run from a terminal"
+msgstr  ""
+
+msgid   "Stage directory does not exist"
+msgstr  ""
+
+msgid   "Staged directory tree"
+msgstr  ""
+
+msgid   "Start New Project"
+msgstr  ""
+
+msgid   "Start a new project"
+msgstr  ""
+
+msgid   "Start building"
+msgstr  ""
+
+msgid   "Startup Notify"
+msgstr  ""
+
+msgid   "Success"
+msgstr  ""
+
+msgid   "Sucess"
+msgstr  ""
+
+msgid   "Suggests"
+msgstr  ""
+
+msgid   "Supported compressed archives"
+msgstr  ""
+
+msgid   "System Information"
+msgstr  ""
+
+msgid   "Target"
+msgstr  ""
+
+msgid   "Target directory does not exist"
+msgstr  ""
+
+msgid   "Target file"
+msgstr  ""
+
+msgid   "Target output file"
+msgstr  ""
+
+msgid   "Terminal"
+msgstr  ""
+
+msgid   "Text Size"
+msgstr  ""
+
+msgid   "Text displayed when mouse hovers over launcher"
+msgstr  ""
+
+msgid   "Text for the launcher"
+msgstr  ""
+
+msgid   "Text: {}"
+msgstr  ""
+
+msgid   "Thank you for using Debreate."
+msgstr  ""
+
+msgid   "The default configuration file will now be created."
+msgstr  ""
+
+msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "The package failed to install"
+msgstr  ""
+
+msgid   "The package installed successfully"
+msgstr  ""
+
+msgid   "The text area is not empty!"
+msgstr  ""
+
+msgid   "This message only displays on the first run, or if\n"
+        "the configuration file becomes corrupted."
+msgstr  ""
+
+msgid   "This package may be useful to enhanced package"
+msgstr  ""
+
+msgid   "Timer is running"
+msgstr  ""
+
+msgid   "Timer is stopped"
+msgstr  ""
+
+msgid   "Timer stopped. Stopping gauge ..."
+msgstr  ""
+
+msgid   "To delete this file, type the following command in a\n"
+        "terminal:"
+msgstr  ""
+
+msgid   "Too many files"
+msgstr  ""
+
+msgid   "Translation"
+msgstr  ""
+
+msgid   "Type"
+msgstr  ""
+
+msgid   "URL request result: {}"
+msgstr  ""
+
+msgid   "Ubuntu Policy Manual"
+msgstr  ""
+
+msgid   "Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project."
+msgstr  ""
+
+msgid   "Unicode Error"
+msgstr  ""
+
+msgid   "Update"
+msgstr  ""
+
+msgid   "Update checking not supported in development versions"
+msgstr  ""
+
+msgid   "Urgency"
+msgstr  ""
+
+msgid   "Use \"Name\" as output filename (<name>.desktop)"
+msgstr  ""
+
+msgid   "Use Custom Dialogs"
+msgstr  ""
+
+msgid   "Use System or Custom Save/Open Dialogs"
+msgstr  ""
+
+msgid   "Version"
+msgstr  ""
+
+msgid   "Version {} is available!"
+msgstr  ""
+
+msgid   "Warning"
+msgstr  ""
+
+msgid   "Website Designer & Author"
+msgstr  ""
+
+msgid   "Welcome to Debreate!"
+msgstr  ""
+
+msgid   "Window ID"
+msgstr  ""
+
+msgid   "Would you like to go to Debreate's website?"
+msgstr  ""
+
+msgid   "Wrong value type for configuration key"
+msgstr  ""
+
+msgid   "You will lose any unsaved information"
+msgstr  ""
+
+msgid   "You will lose any unsaved information\n"
+        "\n"
+        "Continue?"
+msgstr  ""
+
+msgid   "errors"
+msgstr  ""
+
+msgid   "finished"
+msgstr  ""
+
+msgid   "gzip decompress; Code: {}, Output: {}"
+msgstr  ""
+
+msgid   "in progress"
+msgstr  ""
+
+msgid   "post-install and pre-remove scripts generated"
+msgstr  ""
+
+msgid   "script/executable"
+msgstr  ""
+
+msgid   "wx.TimerEvent ID: {}"
+msgstr  ""
+
+msgid   "wx.TimerEvent type: {}"
+msgstr  ""
+
+msgid   "wxPython version: {}"
+msgstr  ""
