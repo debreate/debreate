@@ -67,10 +67,10 @@ class Panel(wx.ScrolledWindow):
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(self, -1, GT(u'Install package after build'))
         
-        if not CMD_system_installer:
+        if not CMD_gdebi_gui:
             self.chk_install.Enable(False)
             self.chk_install.SetToolTip(
-                wx.ToolTip(GT(u'Installing package requires either gdebi or dpkg to be available on the system'))
+                wx.ToolTip(GT(u'Installing package requires gdebi to be available on the system'))
                 )
         
         options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
