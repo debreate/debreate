@@ -44,6 +44,7 @@ from wiz_bin.files          import Panel as PanelFiles
 from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
+from __builtin__ import __name__
 
 
 # Debian Policy Manual IDs
@@ -61,6 +62,8 @@ ID_UPDATE = wx.NewId()
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, GT(u'Debreate - Debian Package Builder'), pos, size)
+        
+        self.__name__ = __name__
         
         # The default title
         self.default_title = GT(u'Debreate - Debian Package Builder')
