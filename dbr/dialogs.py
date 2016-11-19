@@ -4,6 +4,7 @@
 
 
 import wx, os
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonConfirm
 from dbr.custom         import TextIsEmpty
@@ -473,6 +474,16 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     message_dialog.ShowModal()
 
 
+## TODO: Doxygen
+class SuperUserDialog(wx.Dialog):
+    def __init__(self, ID=wx.ID_ANY):
+        wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
+        
+        # User selector
+        self.users = OwnerDrawnComboBox(self)
+
+
+## TODO: Doxygen
 def GetDialogWildcards(ID):
     proj_def = project_wildcards[ID][0]
     wildcards = list(project_wildcards[ID][1])
