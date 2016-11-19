@@ -339,6 +339,15 @@ class ErrorDialog(DetailedMessageDialog):
         DetailedMessageDialog.SetDetails(self, details)
 
 
+## TODO: Doxygen
+class SuperUserDialog(wx.Dialog):
+    def __init__(self, ID=wx.ID_ANY):
+        wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
+        
+        # User selector
+        self.users = OwnerDrawnComboBox(self)
+
+
 ## Retrieves a dialog for display
 #  
 #  If 'Use custom dialogs' is selected from
@@ -472,15 +481,6 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     Logger.Debug(module, logger_text)
     
     message_dialog.ShowModal()
-
-
-## TODO: Doxygen
-class SuperUserDialog(wx.Dialog):
-    def __init__(self, ID=wx.ID_ANY):
-        wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
-        
-        # User selector
-        self.users = OwnerDrawnComboBox(self)
 
 
 ## TODO: Doxygen
