@@ -3,17 +3,23 @@
 # Build Page
 
 
-import commands, os, shutil, wx
+import commands, os, shutil, subprocess, wx
 
 import db
-from dbr.buttons    import ButtonBuild64
-from dbr.custom     import OutputLog
-from dbr.functions  import RunSudo
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
-from dbr.md5        import MD5Hasher
-from dbr.message    import MessageDialog
-from globals.ident  import ID_BUILD
+from dbr.buttons        import ButtonBuild64
+from dbr.custom         import OutputLog
+from dbr.dialogs        import ShowErrorDialog
+from dbr.dialogs        import ShowMessageDialog
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.log            import Logger
+from dbr.md5            import MD5Hasher
+from dbr.message        import MessageDialog
+from globals.commands   import CMD_dpkg
+from globals.commands   import CMD_gdebi
+from globals.commands   import CMD_gdebi_gtk
+from globals.commands   import CMD_system_installer
+from globals.ident      import ID_BUILD
 
 
 class Panel(wx.ScrolledWindow):
@@ -131,6 +137,80 @@ class Panel(wx.ScrolledWindow):
                     
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
     
+    
+    ## Installs the built .deb package onto the system
+    #  
+    #  Uses the system's package installer:
+    #    gdebi if available or dpkg
+    #  
+    #  Shows a success dialog if installed. Otherwise shows an
+    #  error dialog.
+    #  \param package
+    #        \b \e unicode|str : Path to package to be installed
+    def InstallPackage(self, package):
+        if not CMD_system_installer:
+            ShowErrorDialog(
+                GT(u'Cannot install package'),
+                GT(u'A compatible package manager could not be found on the system'),
+                __name__,
+                warn=True
+                )
+            
+            return
+        
+        Logger.Info(__name__, GT(u'Attempting to install package: {}').format(package))
+        Logger.Info(__name__, GT(u'Installing with {}').format(CMD_system_installer))
+        
+        install_output = None
+        install_cmd = (CMD_system_installer, package,)
+        
+        wx.Yield()
+        if CMD_system_installer == CMD_gdebi_gtk:
+            install_output = subprocess.Popen(install_cmd)
+            #install_output.wait()
+        
+        elif CMD_system_installer == CMD_gdebi:
+            pass
+        
+        elif CMD_system_installer == CMD_dpkg:
+            pass
+        
+        
+        # Command appears to not have been executed correctly
+        if install_output == None:
+            ShowErrorDialog(
+                GT(u'Could not install package: {}'),
+                GT(u'An unknonw error occurred'),
+                __name__
+                )
+            
+            return
+        
+        # Command executed but did not return success code
+        if install_output.returncode:
+            err_details = (
+                GT(u'Process returned code {}').format(install_output.returncode),
+                GT(u'Command executed: {}').format(u' '.join(install_cmd)),
+                )
+            
+            ShowErrorDialog(
+                GT(u'An error occurred during installation'),
+                u'\n'.join(err_details),
+                __name__
+                )
+            
+            return
+        
+        # Gdebi Gtk uses a GUI so no need to show a dialog of our own
+        if CMD_system_installer != CMD_gdebi_gtk:
+            # Command executed & return successfully
+            ShowMessageDialog(
+                GT(u'Package was installed to system'),
+                GT(u'Success')
+                )
+    
+    
+    ## TODO: Doxygen
     def OnBuild(self, event):
         main_window = wx.GetApp().GetTopWindow()
         
@@ -509,6 +589,8 @@ class Panel(wx.ScrolledWindow):
                 
                 # Installing the package
                 if self.chk_install.GetValue():
+                    self.InstallPackage(c_deb)
+                    '''
                     self.log.ToggleOutput()
                     print GT(u'Getting administrative privileges from user')
                     pshow = GT(u'Password')
@@ -539,6 +621,7 @@ class Panel(wx.ScrolledWindow):
                     elif (command_executed):
                         wx.MessageDialog(self, GT(u'The package installed successfully'), GT(u'Success'), wx.OK).ShowModal()
                     self.log.ToggleOutput()
+                    '''
             
             return build_status[0]
         
