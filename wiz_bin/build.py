@@ -10,6 +10,7 @@ from dbr.buttons        import ButtonBuild64
 from dbr.custom         import OutputLog
 from dbr.dialogs        import ShowErrorDialog
 from dbr.dialogs        import ShowMessageDialog
+from dbr.functions      import FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -65,6 +66,12 @@ class Panel(wx.ScrolledWindow):
         
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(self, -1, GT(u'Install package after build'))
+        
+        if not CMD_system_installer:
+            self.chk_install.Enable(False)
+            self.chk_install.SetToolTip(
+                wx.ToolTip(GT(u'Installing package requires either gdebi or dpkg to be available on the system'))
+                )
         
         options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
@@ -588,7 +595,7 @@ class Panel(wx.ScrolledWindow):
                         style=wx.OK|wx.ICON_INFORMATION).ShowModal()
                 
                 # Installing the package
-                if self.chk_install.GetValue():
+                if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
                     self.InstallPackage(c_deb)
                     '''
                     self.log.ToggleOutput()
