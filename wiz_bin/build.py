@@ -18,7 +18,7 @@ from dbr.md5            import MD5Hasher
 from dbr.message        import MessageDialog
 from globals.commands   import CMD_dpkg
 from globals.commands   import CMD_gdebi
-from globals.commands   import CMD_gdebi_gtk
+from globals.commands   import CMD_gdebi_gui
 from globals.commands   import CMD_system_installer
 from globals.ident      import ID_BUILD
 
@@ -172,7 +172,7 @@ class Panel(wx.ScrolledWindow):
         install_cmd = (CMD_system_installer, package,)
         
         wx.Yield()
-        if CMD_system_installer == CMD_gdebi_gtk:
+        if CMD_system_installer == CMD_gdebi_gui:
             install_output = subprocess.Popen(install_cmd)
             #install_output.wait()
         
@@ -209,7 +209,7 @@ class Panel(wx.ScrolledWindow):
             return
         
         # Gdebi Gtk uses a GUI so no need to show a dialog of our own
-        if CMD_system_installer != CMD_gdebi_gtk:
+        if CMD_system_installer != CMD_gdebi_gui:
             # Command executed & return successfully
             ShowMessageDialog(
                 GT(u'Package was installed to system'),
