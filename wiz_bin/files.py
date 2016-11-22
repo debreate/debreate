@@ -4,11 +4,11 @@
 import os, wx
 from wx.lib.mixins import listctrl as LC
 
-import db
 from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonBrowse
 from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonDel
+from dbr.custom import OpenDir
 from dbr.language   import GT
 from globals.ident  import ID_FILES
 
@@ -169,7 +169,7 @@ class Panel(wx.ScrolledWindow):
         main_window = wx.GetApp().GetTopWindow()
         
         if main_window.cust_dias.IsChecked() == True:
-            dia = db.OpenDir(self)
+            dia = OpenDir(self)
             if dia.DisplayModal() == True:
                 self.dest_cust.SetValue(dia.GetPath())
         else:

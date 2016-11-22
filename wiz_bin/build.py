@@ -5,9 +5,9 @@
 
 import commands, os, shutil, subprocess, wx
 
-import db
 from dbr.buttons        import ButtonBuild64
 from dbr.custom         import OutputLog
+from dbr.custom         import SaveFile
 from dbr.dialogs        import ShowErrorDialog
 from dbr.dialogs        import ShowMessageDialog
 from dbr.functions      import FieldEnabled
@@ -16,6 +16,7 @@ from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.md5            import MD5Hasher
 from dbr.message        import MessageDialog
+from globals.bitmaps    import ICON_INFORMATION
 from globals.commands   import CMD_dpkg
 from globals.commands   import CMD_gdebi
 from globals.commands   import CMD_gdebi_gui
@@ -577,7 +578,7 @@ class Panel(wx.ScrolledWindow):
                     error_log.write(errors)
                     error_log.close()
                     MessageDialog(self, -1,
-                    GT(u'Lintian Errors'), db.ICON_INFORMATION,
+                    GT(u'Lintian Errors'), ICON_INFORMATION,
                     u'{}\n{}.lintian"'.format(e1, e2),
                     errors
                     ).ShowModal()
@@ -637,7 +638,7 @@ class Panel(wx.ScrolledWindow):
         # Dialog for save destination
         ttype = GT(u'Debian Packages')
         if main_window.cust_dias.IsChecked():
-            save_dia = db.SaveFile(self)
+            save_dia = SaveFile(self)
             save_dia.SetFilter(u'{}|*.deb'.format(ttype))
             save_dia.SetFilename(u'{}_{}_{}.deb'.format(pack, ver, arch))
             if save_dia.DisplayModal():

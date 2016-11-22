@@ -115,12 +115,6 @@ ID_HELP = wx.NewId()
 ID_DEBUG = wx.NewId()
 ID_LOG = wx.NewId()
 
-# FIXME: Unused IDs
-ID_BIN = wx.NewId()
-ID_SRC = wx.NewId()
-ID_DSC = wx.NewId()
-ID_CNG = wx.NewId()
-
 # Error IDs
 ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
@@ -131,19 +125,6 @@ error_definitions = {
     ERR_FILE_READ: u'Could Not Read File',
     ERR_FILE_WRITE: u'Could Not Write File',
 }
-
-
-# *** Icons *** #
-ICON_ERROR = u'{}/bitmaps/error64.png'.format(PATH_app)
-ICON_INFORMATION = u'{}/bitmaps/question64.png'.format(PATH_app)
-
-
-# *** Colors depicting importance of fields
-Mandatory = (255,200,192)
-Recommended = (197,204,255)
-Optional = (255,255,255)
-Unused = (200,200,200)
-Disabled = (246, 246, 245)
 
 
 ## Location of common licenses installed on the system

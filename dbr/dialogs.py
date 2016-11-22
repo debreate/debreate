@@ -108,8 +108,6 @@ class StandardFileDialog(wx.FileDialog):
         
         if len(path):
             if path[-1] == u'.':
-                #wx.MessageDialog(self, GT(u'Filename cannot end with "{}"').format(path[-1]), GT(u'Error'),
-                #        style=wx.ICON_ERROR|wx.OK).ShowModal()
                 name_error = wx.MessageDialog(wx.GetApp().GetTopWindow(), GT(u'Error'),
                         style=wx.ICON_ERROR|wx.OK)
                 

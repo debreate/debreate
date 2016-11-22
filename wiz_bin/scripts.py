@@ -5,13 +5,14 @@
 
 import os, wx
 
-import db
 from dbr.buttons    import ButtonBuild
 from dbr.buttons    import ButtonConfirm
 from dbr.buttons    import ButtonDel
 from dbr.buttons    import ButtonImport
 from dbr.buttons    import ButtonQuestion64
 from dbr.language   import GT
+from dbr.pathctrl   import PATH_WARN
+from dbr.pathctrl   import PathCtrl
 from globals.ident  import ID_SCRIPTS
 
 
@@ -88,7 +89,7 @@ class Panel(wx.ScrolledWindow):
         
         # Auto-Link path for new link
         self.al_text = wx.StaticText(self, -1, GT(u'Path'))
-        self.al_input = db.PathCtrl(self, -1, u'/usr/bin', db.PATH_WARN)
+        self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
         
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
         

@@ -5,11 +5,12 @@
 
 import os, wx
 
-import db
 from dbr.buttons    import ButtonBrowse64
 from dbr.buttons    import ButtonPreview64
 from dbr.buttons    import ButtonSave64
 from dbr.charctrl   import CharCtrl
+from dbr.custom     import OpenFile
+from dbr.custom     import SaveFile
 from dbr.language   import GT
 from globals.ident  import ID_CONTROL
 
@@ -233,35 +234,8 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def EnableAll(self):
-        # Reset all widgets to be enabled
-        children = self.bg.GetChildren()
-        for child in children:
-            child.Enable()
-            child.SetBackgroundColour(db.Optional)
-    
-    
-    ## TODO: Doxygen
-    def SetBuildType(self, ID):
-        # First enable all fields that were disabled
-        self.EnableAll()
-        
-        group = self.bins
-        
-        for man in group[0]:
-            man.SetBackgroundColour(db.Mandatory)
-        for rec in group[1]:
-            rec.SetBackgroundColour(db.Recommended)
-        for opt in group[2]:
-            opt.SetBackgroundColour(db.Optional)
-        
-        self.Layout()
-    
-    
-    ## TODO: Doxygen
     def OnShow(self, event):
         pass
-        #self.SetBuildType(db.ID_BIN)
     
     
     ## TODO: Doxygen
@@ -270,7 +244,7 @@ class Panel(wx.ScrolledWindow):
         
         cont = False
         if main_window.cust_dias.IsChecked():
-            dia = db.OpenFile(self)
+            dia = OpenFile(self)
             if dia.DisplayModal():
                 cont = True
         
@@ -299,7 +273,7 @@ class Panel(wx.ScrolledWindow):
         
         # Open a "Save Dialog"
         if main_window.cust_dias.IsChecked():
-            dia = db.SaveFile(self, GT(u'Save Control Information'))
+            dia = SaveFile(self, GT(u'Save Control Information'))
             dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True

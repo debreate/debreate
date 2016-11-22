@@ -5,12 +5,13 @@ import os, shutil, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
-import db
 from dbr.about              import AboutDialog
 from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
+from dbr.custom             import OpenFile
+from dbr.custom             import SaveFile
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -44,7 +45,6 @@ from wiz_bin.files          import Panel as PanelFiles
 from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
-from __builtin__ import __name__
 
 
 # Debian Policy Manual IDs
@@ -337,7 +337,7 @@ class MainWindow(wx.Frame):
         dbp = u'|*.dbp'
         d = GT(u'Debreate project files')
         if self.cust_dias.IsChecked():
-            dia = db.OpenFile(self, GT(u'Open Debreate Project'))
+            dia = OpenFile(self, GT(u'Open Debreate Project'))
             dia.SetFilter(u'{}{}'.format(d, dbp))
             if dia.DisplayModal():
                 cont = True
@@ -582,7 +582,7 @@ class MainWindow(wx.Frame):
             d = GT(u'Debreate project files')
             cont = False
             if self.cust_dias.IsChecked():
-                dia = db.SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
+                dia = SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
                 dia.SetFilter(u'{}{}'.format(d, dbp))
                 if dia.DisplayModal():
                     cont = True

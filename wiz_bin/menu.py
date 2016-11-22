@@ -5,13 +5,14 @@
 
 import os, shutil, wx
 
-import db
 from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonBrowse64
 from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonDel
 from dbr.buttons    import ButtonPreview64
 from dbr.buttons    import ButtonSave64
+from dbr.custom     import OpenFile
+from dbr.custom     import SaveFile
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
 from globals.ident  import ID_MENU
@@ -413,7 +414,7 @@ class Panel(wx.ScrolledWindow):
         
         # Open a "Save Dialog"
         if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
-            dia = db.SaveFile(self, GT(u'Save Launcher'))
+            dia = SaveFile(self, GT(u'Save Launcher'))
             if dia.DisplayModal():
                 cont = True
                 path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
@@ -473,7 +474,7 @@ class Panel(wx.ScrolledWindow):
     def OnLoadLauncher(self, event=None):
         cont = False
         if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
-            dia = db.OpenFile(self, GT(u'Open Launcher'))
+            dia = OpenFile(self, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
         else:

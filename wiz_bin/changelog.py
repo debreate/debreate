@@ -3,10 +3,11 @@
 
 import commands, wx
 
-import db
 from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonImport
 from dbr.language   import GT
+from dbr.pathctrl   import PATH_WARN
+from dbr.pathctrl   import PathCtrl
 from globals.ident  import ID_CHANGELOG
 
 
@@ -55,7 +56,7 @@ class Panel(wx.ScrolledWindow):
         # Destination of changelog
         self.rb_dest_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wx.RB_GROUP)
         self.rb_dest_custom = wx.RadioButton(self)
-        self.dest_custom = db.PathCtrl(self, -1, u'/', db.PATH_WARN)
+        self.dest_custom = PathCtrl(self, -1, u'/', PATH_WARN)
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         dest_custom_sizer.Add(self.rb_dest_custom)
