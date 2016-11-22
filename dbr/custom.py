@@ -4,8 +4,7 @@
 
 
 # System imports
-import os, sys, webbrowser
-import wx.combo, wx.lib.mixins.listctrl as LC
+import os, sys, webbrowser, wx
 from wx.lib.docview import PathOnly
 
 from dbr.language   import GT
@@ -202,64 +201,6 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
                 self.obj.SetValue(text)
         except UnicodeDecodeError:
             wx.MessageDialog(None, GT(u'Error decoding file'), GT(u'Error'), wx.OK).ShowModal()
-
-
-## A customized report style ListCtrl
-#  
-#  Columns cannot be resized with context menu to add/delete entries.
-#  FIXME: Unused. Was used in page.control.
-class LCReport(wx.ListCtrl, LC.TextEditMixin, LC.ListCtrlAutoWidthMixin):
-    ## Constructor
-    #  
-    #  \param parent
-    #        Parent window
-    #  \param id
-    #        Window ID (FIXME: Should be set from constant)
-    #  \param style
-    #        wx.ListCtrl style to use
-    def __init__(self, parent, id=wx.ID_ANY, style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL):
-        wx.ListCtrl.__init__(self, parent, -1,
-                style=wx.LC_REPORT|wx.SIMPLE_BORDER|wx.LC_SINGLE_SEL|wx.LC_HRULES|wx.LC_VRULES)
-        LC.TextEditMixin.__init__(self)
-        LC.ListCtrlAutoWidthMixin.__init__(self)
-        
-        wx.EVT_CONTEXT_MENU(self, self.ShowMenu)
-        wx.EVT_LIST_COL_BEGIN_DRAG(self, -1, self.NoResize)
-    
-    ## ???
-    #  
-    #  \param event
-    #        Menu event?
-    def ShowMenu(self, event):
-        menu = wx.Menu()
-        self.ID_Add = wx.NewId()
-        self.ID_Del = wx.NewId()
-        
-        wx.EVT_MENU(self, self.ID_Add, self.OnAdd)
-        wx.EVT_MENU(self, self.ID_Del, self.OnDel)
-        
-        menu.Append(self.ID_Add, GT(u'Add'))
-        menu.Append(self.ID_Del, GT(u'Delete'))
-        menu.AppendSeparator()
-        menu.Append(wx.ID_COPY)
-        menu.Append(wx.ID_CUT)
-        menu.Append(wx.ID_PASTE)
-        
-        self.PopupMenu(menu)
-        menu.Destroy()
-    
-    def OnAdd(self, event):
-        self.InsertStringItem(0, u'')
-        self.SetItemBackgroundColour(0, (200,255,200))
-    
-    def OnDel(self, event):
-        item = self.GetFocusedItem()
-        self.DeleteItem(item)
-    
-    ## Disallows resizing of columns
-    def NoResize(self, event):
-        event.Veto()
-
 
 
 # *** File/Folder Dialogs *** #
