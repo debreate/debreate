@@ -108,102 +108,10 @@ class Panel(wx.ScrolledWindow):
         self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
         self.ess.SetSelection(1)
         
-        # ----- Standards-Version ( S[r], D[r] )
-        #self.stdver_txt = wx.StaticText(self.bg, -1, u'Standards-Version')
-        #self.stdver = wx.TextCtrl(self.bg)
-        
-        
-        
-        # ----- Uploaders ( S, D )
-        #self.coauth_txt = wx.StaticText(self.bg, -1, u'Uploaders/Co-Maintainers')
-        #self.coauth = db.LCReport(self.bg, -1)
-        #self.coauth.InsertColumn(0, u'Maintainer')
-        #self.coauth.InsertColumn(1, u'Email')
-        #self.coauth.SetToolTip(wx.ToolTip(u'Right-click to add'))
-        
-        
-        # ----- Build-Depends ( S, D ) (Will be done on different panel)
-        # ----- Depends ( B, SB ) (This is done in another panel)
-        # ----- Installed-Size ( B ) (This is done automaticlly)
-        
-        
-        # ***** Other group ***** #
-        # ----- Format ( D[m], C[m] )
-        #self.format_txt = wx.StaticText(self.bg, -1, u'Format')
-        #self.format = wx.TextCtrl(self.bg)
-        
-        # ----- Binary ( D, C[m] )
-        #self.bin_txt = wx.StaticText(self.bg, -1, u'Binary')
-        #self.bin = wx.TextCtrl(self.bg)
-        
-        # ----- Files ( D[m], C[m] )
-        #self.files_txt = wx.StaticText(self.bg, -1, u'Files')
-        #self.files = wx.TextCtrl(self.bg)
-        
-        # ----- Date ( C[m] )
-        #self.date_txt = wx.StaticText(self.bg, -1, u'Date')
-        #self.date = wx.TextCtrl(self.bg)
-        
-        # ----- Changed-By ( C )
-        #self.editor_txt = wx.StaticText(self.bg, -1, u'Changed-By')
-        #self.editor = wx.TextCtrl(self.bg)
-        #self.eemail_txt = wx.StaticText(self.bg, -1, u'Email')
-        #self.eemail = wx.TextCtrl(self.bg)
-        
-        # ----- Changes ( C[m] )
-        #self.changes_txt = wx.StaticText(self.bg, -1, u'Changes')
-        #self.changes = wx.TextCtrl(self.bg)
-        
-        # ----- Distribution ( C[m] )
-        #self.dist_txt = wx.StaticText(self.bg, -1, u'Distribution')
-        #self.dist = wx.TextCtrl(self.bg)
-        
-        # ----- Urgency ( C[r] )
-        #self.urge_opt = (u'low', u'medium', u'high', u'emergency', u'critical')
-        #self.urge_txt = wx.StaticText(self.bg, -1, u'Urgency')
-        #self.urge = wx.Choice(self.bg, -1, choices=self.urge_opt)
-        
-        # ----- Closes ( C )
-        #self.closes_txt = wx.StaticText(self.bg, -1, u'Closes')
-        #self.closes = wx.TextCtrl(self.bg)
-        
-        
-        # ----- Binary (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Description[m], Depends[o], Installed-Size[o]
         self.bins = (	(self.pack, self.arch, self.ver, self.auth, self.email),
                         (self.sect, self.prior),
                         (self.src, self.url, self.ess),
-                        #(self.stdver, self.coauth, self.format, self.bin, self.files, self.date, self.editor,
-                        #self.eemail, self.changes, self.dist, self.urge, self.closes)
                         )
-        
-        # ----- Source (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Build-Depends[o]
-#        self.srcs = (	(self.src, self.auth, self.email, self.pack, self.arch),
-#                        (self.sect, self.prior, self.stdver, self.sect, self.prior),
-#                        (self.coauth, self.url, self.ess),
-#                        (self.ver, self.format, self.bin, self.files, self.date, self.editor, self.eemail,
-#                        self.changes, self.dist, self.urge, self.closes)
-#                        )
-        
-        # ----- Debian Source Control (.dsc) (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Build-Depends
-#        self.dscs = (	(self.src, self.auth, self.email, self.ver, self.format, self.files),
-#                        [self.stdver],
-#                        (self.coauth, self.url, self.arch, self.bin),
-#                        (self.pack, self.sect, self.prior, self.ess, self.syn, self.desc, self.date, self.editor,
-#                        self.eemail, self.changes, self.dist, self.urge, self.closes)
-#                        )
-
-        # ----- Changes (Mandatory, Recommended, Optional, Not Used)
-        # Not in list: Description
-#        self.chngs = (	(self.src, self.auth, self.email, self.arch, self.ver, self.format, self.bin, self.files,
-#                         self.date, self.dist, self.changes),
-#                        [self.urge],
-#                        (self.editor, self.closes),
-#                        (self.pack, self.sect, self.prior, self.url, self.ess, self.stdver, self.coauth)
-#                        )
-        
         
         # Divide the fields into different groups (Info, Description, Authors, and Other)
         
@@ -220,11 +128,6 @@ class Panel(wx.ScrolledWindow):
             (self.auth_txt), (self.auth, 0, wx.EXPAND), (self.email_txt), (self.email, 0, wx.EXPAND),
             self.arch_txt, (self.arch)
             ])
-#            (self.arch_txt), (self.arch), (self.src_txt), (self.src, 0, wx.EXPAND),
-#            (self.sect_txt), (self.sect, 0, wx.EXPAND), (self.prior_txt), (self.prior),
-#            (self.url_txt), (self.url, 0, wx.EXPAND), (self.ess_txt), (self.ess),
-#            #(self.stdver_txt), (self.stdver, 0, wx.EXPAND)
-#            ])
         
         # Border box
         self.border_info = wx.StaticBox(self.bg, -1, GT(u'Required'))
@@ -256,13 +159,6 @@ class Panel(wx.ScrolledWindow):
             (self.desc, 1, wx.EXPAND)
             ])
         
-        # ----- Changed to "Optional"
-#        self.box_author = wx.BoxSizer(wx.HORIZONTAL)
-#        self.box_author.AddMany([
-#            (self.auth_txt), (self.auth, 1),
-#            (self.email_txt), (self.email, 1)
-#            ])
-        
         b_temp = wx.FlexGridSizer(0, 4, 5, 5)
         b_temp.AddGrowableCol(1)
         b_temp.AddGrowableCol(3)
@@ -279,46 +175,13 @@ class Panel(wx.ScrolledWindow):
         self.border_author = wx.StaticBox(self.bg, -1, GT(u'Optional'))
         bbox_author = wx.StaticBoxSizer(self.border_author, wx.VERTICAL)
         bbox_author.Add(b_temp, 0, wx.EXPAND)
-#        bbox_author.AddSpacer(5)
-#        bbox_author.Add(self.box_author, 0, wx.EXPAND)
-#        bbox_author.AddSpacer(5)
-#        bbox_author.AddMany([
-#            (self.coauth_txt, 0, wx.ALIGN_CENTER),
-#            (self.coauth, 1, wx.EXPAND)
-#            ])
-        
-        # ----- Other
-#        self.box_other = wx.FlexGridSizer(0, 4, 5, 5)
-#        self.box_other.AddGrowableCol(1)
-#        self.box_other.AddGrowableCol(3)
-#        self.box_other.AddSpacer(5)
-#        self.box_other.AddSpacer(5)
-#        self.box_other.AddSpacer(5)
-#        self.box_other.AddSpacer(5)
-#        self.box_other.AddMany([
-#            (self.format_txt), (self.format, 0, wx.EXPAND), (self.bin_txt), (self.bin, 0, wx.EXPAND),
-#            (self.files_txt), (self.files, 0, wx.EXPAND), (self.date_txt), (self.date, 0, wx.EXPAND),
-#            (self.editor_txt), (self.editor, 0, wx.EXPAND), (self.eemail_txt), (self.eemail, 0, wx.EXPAND),
-#            (self.changes_txt), (self.changes, 0, wx.EXPAND), (self.dist_txt), (self.dist, 0, wx.EXPAND),
-#            (self.urge_txt), (self.urge), (self.closes_txt), (self.closes, 0, wx.EXPAND)
-#            ])
-#        
-#        self.border_other = wx.StaticBox(self.bg, -1, u'Other')
-#        bbox_other = wx.StaticBoxSizer(self.border_other, wx.VERTICAL)
-#        bbox_other.Add(self.box_other, 0, wx.EXPAND)
-        
         
         # Main Layout
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(button_sizer, 0, wx.ALL, 5)
-        #main_sizer.AddSpacer(10)
         main_sizer.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
-        #main_sizer.AddSpacer(10)
         main_sizer.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
-        #main_sizer.AddSpacer(10)
         main_sizer.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
-        #main_sizer.AddSpacer(10)
-        #main_sizer.Add(bbox_other, 0, wx.EXPAND|wx.ALL, 5)
         
         self.bg.SetAutoLayout(True)
         self.bg.SetSizer(main_sizer)
@@ -355,10 +218,13 @@ class Panel(wx.ScrolledWindow):
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
         
     
+    ## TODO: Doxygen
     def OnResize(self, event):
         #self.ReLayout()
         pass
     
+    
+    ## TODO: Doxygen
     def ReLayout(self):
         # Organize all widgets correctly
         lc_width = self.coauth.GetSize()[0]
@@ -366,6 +232,7 @@ class Panel(wx.ScrolledWindow):
         #self.coauth.SetColumnWidth(1, lc_width/2-25)
     
     
+    ## TODO: Doxygen
     def EnableAll(self):
         # Reset all widgets to be enabled
         children = self.bg.GetChildren()
@@ -374,6 +241,7 @@ class Panel(wx.ScrolledWindow):
             child.SetBackgroundColour(db.Optional)
     
     
+    ## TODO: Doxygen
     def SetBuildType(self, ID):
         # First enable all fields that were disabled
         self.EnableAll()
@@ -386,9 +254,6 @@ class Panel(wx.ScrolledWindow):
             rec.SetBackgroundColour(db.Recommended)
         for opt in group[2]:
             opt.SetBackgroundColour(db.Optional)
-#        for dis in group[3]:
-#            dis.Disable()
-#            dis.SetBackgroundColour(db.Disabled)
         
         self.Layout()
     
@@ -544,19 +409,6 @@ class Panel(wx.ScrolledWindow):
                     pass
                 else:
                     ctrl_list.append(u'{}: {}'.format(key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
-        
-        # Get the uploaders
-#        coauths = []
-#        cototal = self.coauth.GetItemCount()
-#        cocount = 0
-#        if cototal > 0:
-#            while cocount != cototal:
-#                auth = self.coauth.GetItem(cocount)
-#                email = self.coauth.GetItem(cocount, 1)
-#                coauths.append(u'{} <{}>'.format(auth.GetText(), email.GetText()))
-#                cocount += 1
-#            ctrl_list.append(u'Uploaders: {}'.format(u'; '.join(coauths)))
-        
         
         # *** Get dependencies *** #
         dep_list = [] # Depends
