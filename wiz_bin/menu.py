@@ -4,6 +4,7 @@
 
 
 import os, shutil, wx
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonBrowse64
@@ -100,7 +101,7 @@ class Panel(wx.ScrolledWindow):
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
         self.type_text = wx.StaticText(self, -1, GT(u'Type'))
         #self.type_text.SetToolTip(m_type_tip)
-        self.type_choice = wx.ComboBox(self, -1, choices=self.type_opt)
+        self.type_choice = OwnerDrawnComboBox(self, choices=self.type_opt)
         self.type_choice.SetSelection(0)
         #self.type_choice = wx.Choice(self, -1, choices=self.type_opt)
         
@@ -125,7 +126,7 @@ class Panel(wx.ScrolledWindow):
             )
         self.enc_text = wx.StaticText(self, -1, GT(u'Encoding'))
         #self.enc_text.SetToolTip(m_enc_tip)
-        self.enc_input = wx.ComboBox(self, -1, choices=self.enc_opt)
+        self.enc_input = OwnerDrawnComboBox(self, choices=self.enc_opt)
         self.enc_input.SetSelection(2)
         
         # --- CATEGORIES
@@ -145,7 +146,7 @@ class Panel(wx.ScrolledWindow):
             u'X-SuSE-ControlCenter-System',
             )
         self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
-        self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt)
+        self.cat_choice = OwnerDrawnComboBox(self, value=self.cat_opt[0], choices=self.cat_opt)
         self.cat_add = ButtonAdd(self)
         self.cat_del = ButtonDel(self)
         self.cat_clr = ButtonClear(self)
@@ -207,7 +208,7 @@ class Panel(wx.ScrolledWindow):
         sizer1.Add(self.name_text, (1, 0), flag=CENTER)
         sizer1.Add(self.name_input, (1, 1), flag=CENTER_EXPAND)
         sizer1.Add(self.type_text, (1, 2), flag=CENTER)
-        sizer1.Add(self.type_choice, (1, 3), flag=CENTER)
+        sizer1.Add(self.type_choice, (1, 3), flag=CENTER_EXPAND)
         
         # Row 3
         sizer1.Add(self.exe_text, (2, 0), flag=CENTER)
@@ -225,7 +226,7 @@ class Panel(wx.ScrolledWindow):
         sizer1.Add(self.icon_text, (4, 0), flag=CENTER)
         sizer1.Add(self.icon_input, (4, 1), flag=CENTER_EXPAND)
         sizer1.Add(self.enc_text, (4, 2), flag=CENTER)
-        sizer1.Add(self.enc_input, (4, 3), flag=CENTER)
+        sizer1.Add(self.enc_input, (4, 3), flag=CENTER_EXPAND)
         
         
         self.border = wx.StaticBox(self, -1, size=(20,20))

@@ -4,6 +4,7 @@
 
 
 import os, wx
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons    import ButtonBrowse64
 from dbr.buttons    import ButtonPreview64
@@ -79,8 +80,7 @@ class Panel(wx.ScrolledWindow):
             u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
             u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
         self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
-        #self.sect = db.Combo(self.bg, -1, choices=self.sect_opt)
-        self.sect = wx.ComboBox(self.bg, -1, choices=self.sect_opt)
+        self.sect = OwnerDrawnComboBox(self.bg, choices=self.sect_opt)
         
         # ----- Priority ( B[r], S[r], SB[r] )
         self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
