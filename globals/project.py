@@ -25,5 +25,5 @@ supported_suffixes = (
 PROJ_DEF_L = GT(u'Debreate projects')
 
 project_wildcards = {
-    ID_PROJ_L: (PROJ_DEF_L, (supported_suffixes[1],)),
+    ID_PROJ_L: (PROJ_DEF_L, (supported_suffixes[0],)),
 }
