@@ -19,6 +19,7 @@
 - Optionally use custom filename for menu launcher
 - Fix problems with add/remove/delete in dependency list
 - Option to enable/disable tooltips
+- Install packages after build with gdebi
 
 0.7.11
 - Add template generation for copyright
