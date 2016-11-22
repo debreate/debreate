@@ -10,13 +10,12 @@ from dbr.language   import GT
 from globals.ident  import ID_CHANGELOG
 
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
         
         self.SetScrollbars(0, 20, 0, 0)
-        
-        self.parent = parent.parent # MainWindow
         
         self.package_text = wx.StaticText(self, -1, GT(u'Package'))
         self.package = wx.TextCtrl(self)
@@ -110,13 +109,18 @@ class Panel(wx.ScrolledWindow):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def ImportInfo(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Import package name and version from the control page
-        self.package.SetValue(self.parent.page_control.pack.GetValue())
-        self.version.SetValue(self.parent.page_control.ver.GetValue())
-        self.maintainer.SetValue(self.parent.page_control.auth.GetValue())
-        self.email.SetValue(self.parent.page_control.email.GetValue())
+        self.package.SetValue(main_window.page_control.pack.GetValue())
+        self.version.SetValue(main_window.page_control.ver.GetValue())
+        self.maintainer.SetValue(main_window.page_control.auth.GetValue())
+        self.email.SetValue(main_window.page_control.email.GetValue())
     
+    
+    ## TODO: Doxygen
     def AddInfo(self, event):
         package = self.package.GetValue()
         version = self.version.GetValue()
@@ -145,9 +149,13 @@ class Panel(wx.ScrolledWindow):
         entry = u'\n'.join((info1, details, info2))
         self.display_area.SetValue(u'\n'.join((entry, wx.EmptyString, self.display_area.GetValue())))
     
+    
+    ## TODO: Doxygen.
     def GetChangelog(self):
         return self.display_area.GetValue()
-
+    
+    
+    ## TODO: Doxygen
     def SetChangelog(self, data):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
@@ -164,6 +172,8 @@ class Panel(wx.ScrolledWindow):
 #        for item in self.toggle_list:
 #            item.Enable(value)
     
+    
+    ## TODO: Doxygen
     def ResetAllFields(self):
         self.package.Clear()
         self.version.Clear()
@@ -176,6 +186,8 @@ class Panel(wx.ScrolledWindow):
         self.dest_custom.SetValue(u'/')
         self.display_area.Clear()
     
+    
+    ## TODO: Doxygen
     def GatherData(self):
         if self.rb_dest_default.GetValue():
             dest = u'<<DEST>>DEFAULT<</DEST>>'

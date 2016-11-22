@@ -44,7 +44,6 @@ class Combo(wx.combo.ComboCtrl):
         wx.combo.ComboCtrl.__init__(self, parent, id)
         
         self.Frame = self.GetTopLevelParent()
-        self.parent = parent
         
         wx.EVT_LEFT_DOWN(self.Frame, self.HideItems)
         wx.EVT_LEFT_DOWN(parent, self.HideItems)
@@ -61,7 +60,7 @@ class Combo(wx.combo.ComboCtrl):
         wx.EVT_KEY_DOWN(self.bg, self.OnNavigate)
         
         # List to show when button pressed
-        self.lb = wx.ListCtrl(self.parent, style=wx.LC_REPORT|wx.LC_NO_HEADER|wx.LC_SINGLE_SEL)
+        self.lb = wx.ListCtrl(parent, style=wx.LC_REPORT|wx.LC_NO_HEADER|wx.LC_SINGLE_SEL)
         self.lb.InsertColumn(0, u'')
         for item in choices:
             self.lb.InsertStringItem(0, item)

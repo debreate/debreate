@@ -18,7 +18,6 @@ class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
         
-        self.parent = parent
         self.SetScrollbars(0, 20, 0, 0)
         
         self.bg = wx.Panel(self)
@@ -393,19 +392,23 @@ class Panel(wx.ScrolledWindow):
         
         self.Layout()
     
+    
+    ## TODO: Doxygen
     def OnShow(self, event):
         pass
         #self.SetBuildType(db.ID_BIN)
     
     
-    # *** Open, Save & Preview control file *** #
-    
+    ## TODO: Doxygen
     def OnBrowse(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         cont = False
-        if self.parent.parent.cust_dias.IsChecked():
+        if main_window.cust_dias.IsChecked():
             dia = db.OpenFile(self)
             if dia.DisplayModal():
                 cont = True
+        
         else:
             dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
@@ -416,9 +419,13 @@ class Panel(wx.ScrolledWindow):
             FILE = open(path, u'r')
             control_data = FILE.read()
             depends_data = self.SetFieldData(control_data)
-            self.parent.parent.page_depends.SetFieldData(depends_data)
+            main_window.page_depends.SetFieldData(depends_data)
     
+    
+    ## TODO: Doxygen
     def OnSave(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         # Get data to write to control file
         control = self.GetCtrlInfo().encode(u'utf-8')
         
@@ -426,7 +433,7 @@ class Panel(wx.ScrolledWindow):
         cont = False
         
         # Open a "Save Dialog"
-        if self.parent.parent.cust_dias.IsChecked():
+        if main_window.cust_dias.IsChecked():
             dia = db.SaveFile(self, GT(u'Save Control Information'))
             dia.SetFilename(u'control')
             if dia.DisplayModal():
@@ -446,6 +453,8 @@ class Panel(wx.ScrolledWindow):
             FILE.write(control)
             FILE.close()
     
+    
+    ## TODO: Doxygen
     def OnPreview(self, event):
         # Show a preview of the control file
         control = self.GetCtrlInfo()
@@ -464,6 +473,7 @@ class Panel(wx.ScrolledWindow):
         dia.Destroy()
     
     
+    ## TODO: Doxygen
     def OnCtrlKey(self, event):
         obj = event.GetEventObject()
         key = event.GetKeyCode()
@@ -475,8 +485,7 @@ class Panel(wx.ScrolledWindow):
         event.Skip()
     
     
-    # *** Clearing All Fields for New Project *** #
-    
+    ## TODO: Doxygen
     def ResetAllFields(self):
         self.pack.Clear()
         self.ver.Clear()
@@ -493,9 +502,10 @@ class Panel(wx.ScrolledWindow):
         self.email.Clear()
     
     
-    # *** Gathering Page Data *** #
-    
+    ## TODO: Doxygen
     def GetCtrlInfo(self):
+        main_window = wx.GetApp().GetTopWindow()
+        
         def Enabled(obj):
             if wx.MAJOR_VERSION > 2:
                 return obj.IsThisEnabled()
@@ -515,6 +525,7 @@ class Panel(wx.ScrolledWindow):
             if Enabled(key[1]) and u''.join(key[1].GetValue().split(u' ')) != u'':
                 if key[0] == u'Package' or key[0] == u'Version':
                     ctrl_list.append(u'{}: {}'.format(key[0], u'-'.join(key[1].GetValue().split(u' '))))
+                
                 else:
                     ctrl_list.append(u'{}: {}'.format(key[0], key[1].GetValue()))
         
@@ -563,7 +574,7 @@ class Panel(wx.ScrolledWindow):
             }
         
         # Get amount of items to add
-        dep_area = self.parent.parent.page_depends.dep_area
+        dep_area = main_window.page_depends.dep_area
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
@@ -600,8 +611,7 @@ class Panel(wx.ScrolledWindow):
         return u'\n'.join(ctrl_list)
     
     
-    # *** Opening Project/File & Setting Fields ***
-    
+    ## Opening Project/File & Setting Fields
     def SetFieldData(self, data):
         if type(data) == type(u''):
             # Decode to unicode string if input is byte string
@@ -681,23 +691,27 @@ class Panel(wx.ScrolledWindow):
         return depends_containers
     
     
-    # *** Saving Project *** #
-    
+    ## Saving project
     def GatherData(self):
         data = self.GetCtrlInfo()
         return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
     
     
-    # *** Determining of project is modified
+    ## Determins if project is modified
     def OnKeyDown(self, event):
         for widget in self.text_widgets:
             self.text_widgets[widget] = widget.GetValue()
         event.Skip()
     
+    
+    ## TODO: Doxygen
     def OnKeyUp(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         modified = False
         for widget in self.text_widgets:
             if widget.GetValue() != self.text_widgets[widget]:
                 modified = True
-        self.parent.parent.SetSavedStatus(modified)
+        
+        main_window.SetSavedStatus(modified)
         event.Skip()

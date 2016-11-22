@@ -39,9 +39,6 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(20, 20, 0, 0)
         
-        # Allows calling parent methods
-        self.parent = parent
-        
         # Create a Context Menu
         self.menu = wx.Menu()
         
@@ -166,8 +163,12 @@ class Panel(wx.ScrolledWindow):
             self.add_file.Enable(True)
         self.dir_tree.PopupMenu(self.menu)
     
+    
+    ## TODO: Doxygen
     def OnBrowse(self, event):
-        if self.parent.parent.cust_dias.IsChecked() == True:
+        main_window = wx.GetApp().GetTopWindow()
+        
+        if main_window.cust_dias.IsChecked() == True:
             dia = db.OpenDir(self)
             if dia.DisplayModal() == True:
                 self.dest_cust.SetValue(dia.GetPath())
@@ -175,17 +176,17 @@ class Panel(wx.ScrolledWindow):
             dia = wx.DirDialog(self, GT(u'Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 self.dest_cust.SetValue(dia.GetPath())
-#		if dia.GetPath() == True:
-#			self.dest_cust.SetValue(dia.GetPath())
-#		if dia.Open == True:
-#			self.dest_cust.SetValue(dia.GetPath())
     
+    
+    ## TODO: Doxygen
     def GetDestValue(self, event):
         if self.dest_cust.GetValue() != wx.EmptyString:
             if self.dest_cust.GetValue()[0] == u'/':
                 self.prev_dest_value = self.dest_cust.GetValue()
         event.Skip()
     
+    
+    ## TODO: Doxygen
     def CheckDest(self, event):
         if self.dest_cust.GetValue() == wx.EmptyString:
             self.dest_cust.SetValue(self.prev_dest_value)
@@ -195,6 +196,8 @@ class Panel(wx.ScrolledWindow):
             self.dest_cust.SetInsertionPoint(-1)
         event.Skip()
     
+    
+    ## TODO: Doxygen
     def AddPath(self, event):
         total_files = 0
         pin = self.dir_tree.GetPath()
@@ -246,6 +249,8 @@ class Panel(wx.ScrolledWindow):
             if os.access(pin, os.X_OK):
                 self.dest_area.SetItemTextColour(0, u'red')
     
+    
+    ## TODO: Doxygen
     def OnRefresh(self, event):
         path = self.dir_tree.GetPath()
 #		if isfile(path):
@@ -254,6 +259,8 @@ class Panel(wx.ScrolledWindow):
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(path)
     
+    
+    ## TODO: Doxygen
     def SelectAll(self):
         total_items = self.dest_area.GetItemCount()
         count = -1
@@ -261,6 +268,8 @@ class Panel(wx.ScrolledWindow):
             count += 1
             self.dest_area.Select(count)
     
+    
+    ## TODO: Doxygen
     def DelPath(self, event):
         try:
             modifier = event.GetModifiers()
@@ -297,12 +306,15 @@ class Panel(wx.ScrolledWindow):
             self.SelectAll()
     
     
+    ## TODO: Doxygen
     def ClearAll(self, event):
         confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_YES:
             self.dest_area.DeleteAllItems()
             self.list_data = []
     
+    
+    ## TODO: Doxygen
     def SetDestination(self, event):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.radio_cst.GetValue() == True:
@@ -313,6 +325,7 @@ class Panel(wx.ScrolledWindow):
             self.dest_browse.Disable()
     
     
+    ## TODO: Doxygen
     def ResetAllFields(self):
         self.radio_cst.SetValue(True)
         self.SetDestination(None)
@@ -320,6 +333,8 @@ class Panel(wx.ScrolledWindow):
         self.dest_area.DeleteAllItems()
         self.list_data = []
     
+    
+    ## TODO: Doxygen
     def SetFieldData(self, data):
         # Clear files list
         self.list_data = []
@@ -372,6 +387,8 @@ class Panel(wx.ScrolledWindow):
                 
                 alert.ShowModal()
     
+    
+    ## TODO: Doxygen
     def GatherData(self):
         file_list = []
         item_count = self.dest_area.GetItemCount()

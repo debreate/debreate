@@ -16,8 +16,6 @@ class Wizard(wx.Panel):
     def __init__(self, parent, id=wx.ID_ANY, page_list=None):
         wx.Panel.__init__(self, parent, id, page_list)
         
-        self.parent = parent
-        
         # List of pages available in the wizard
         self.pages = []
         
@@ -103,7 +101,11 @@ class Wizard(wx.Panel):
         for child in self.GetChildren():
             wx.PostEvent(child, self.evt)
     
+    
+    ## TODO: Doxygen
     def ChangePage(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
         id = event.GetEventObject().GetId()
         
         # Get index of currently shown page
@@ -122,7 +124,7 @@ class Wizard(wx.Panel):
         self.ShowPage(self.pages[index].GetId())
         
         # Check current page in "pages menu"
-        for p in self.parent.pages:
+        for p in main_window.pages:
             if self.pages[index].GetId() == p.GetId():
                 p.Check()
 #        for page in self.pages:

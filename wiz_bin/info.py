@@ -8,13 +8,12 @@ from dbr.language   import GT
 from globals.ident  import ID_GREETING
 
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent, name=GT(u'Information')):
         wx.ScrolledWindow.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
         
         self.SetScrollbars(0, 20, 0, 0)
-        
-        self.parent = parent # 3rd level) Allows executing 2st level methods
         
         # Mode Information
         m1 = GT(u'Welcome to Debreate!')
@@ -45,13 +44,16 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(mode_sizer)
         self.Layout()
-        
-        
+    
+    
+    ## TODO: Doxgen
     def SetInfo(self):
-        self.parent.SetTitle(u'Testing')
+        wizard = self.GetParent()
+        
+        wizard.SetTitle(u'Testing')
         self.info.SetLabel(self.txt_bin)
         
         self.info.Wrap(600) # Keep characters within the width of the window
         
         # Refresh widget layout
-        self.Layout()		
+        self.Layout()

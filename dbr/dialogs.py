@@ -23,8 +23,6 @@ class OverwriteDialog(wx.MessageDialog):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
                 style=wx.ICON_QUESTION|wx.YES_NO|wx.YES_DEFAULT)
         
-        self.parent = parent
-        
         self.SetYesNoLabels(GT(u'Replace'), GT(u'Cancel'))
         
         filename = os.path.basename(path)
@@ -68,8 +66,6 @@ class StandardFileDialog(wx.FileDialog):
         
         # Setting os.getcwd() causes dialog to always be opened in working directory
         wx.FileDialog.__init__(self, parent, title, os.getcwd(), wildcard=wildcard, style=style)
-        
-        self.parent = parent
         
         self.extension = default_extension
         
