@@ -7,22 +7,22 @@
 
 import commands, os, shutil, wx
 
-from dbr.buttons    import ButtonConfirm
-from dbr.constants  import APP_NAME
-from dbr.constants  import AUTHOR
-from dbr.constants  import EMAIL
-from dbr.constants  import PREFIX
-from dbr.constants  import cmd_gzip
-from dbr.custom     import Hyperlink
-from dbr.font       import MONOSPACED_MD
-from dbr.functions  import CreateTempDirectory
-from dbr.functions  import GetFileMimeType
-from dbr.functions  import GetYear
-from dbr.functions  import RemoveTempDirectory
-from dbr.language   import GT
-from dbr.log        import Logger
-from globals.system import PY_VER_STRING
-from globals.system import WX_VER_STRING
+from dbr.buttons            import ButtonConfirm
+from dbr.custom             import Hyperlink
+from dbr.font               import MONOSPACED_MD
+from dbr.functions          import CreateTempDirectory
+from dbr.functions          import GetFileMimeType
+from dbr.functions          import GetYear
+from dbr.functions          import RemoveTempDirectory
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.application    import APP_name
+from globals.application    import AUTHOR_email
+from globals.application    import AUTHOR_name
+from globals.commands       import CMD_gzip
+from globals.constants      import PREFIX
+from globals.system         import PY_VER_STRING
+from globals.system         import WX_VER_STRING
 
 
 # Font for the name
@@ -168,6 +168,7 @@ class AboutDialog(wx.Dialog):
         
         self.t_about.Layout()
     
+    
     ## Displays version in 'about' tab
     #  
     #  \param version
@@ -177,7 +178,7 @@ class AboutDialog(wx.Dialog):
         
         app_label = wx.StaticText(
             self.t_about,
-            label=u'{} {}'.format(APP_NAME, version)
+            label=u'{} {}'.format(APP_name, version)
         )
         app_label.SetFont(bigfont)
         
@@ -190,6 +191,7 @@ class AboutDialog(wx.Dialog):
         )
         
         self.t_about.Layout()
+    
     
     ## Display author's name
     #  
@@ -207,6 +209,7 @@ class AboutDialog(wx.Dialog):
         )
         
         self.t_about.Layout()
+    
     
     ## Sets a hotlink to the app's homepage
     #  
@@ -243,6 +246,7 @@ class AboutDialog(wx.Dialog):
         )
         self.t_about.Layout()
     
+    
     ## Displays a description about the app on the 'about' tab
     def SetDescription(self, desc):
         # Place between spacers
@@ -258,6 +262,7 @@ class AboutDialog(wx.Dialog):
         
         self.t_about.Layout()
     
+    
     ## Adds a developer to the list of credits
     #  
     #  \param name
@@ -270,6 +275,7 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, GT(u'Developer'))
     
+    
     ## Adds a packager to the list of credits
     #  
     #  \param name
@@ -281,6 +287,7 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, GT(u'Packager'))
+    
     
     ## Adds a translator to the list of credits
     #  
@@ -297,6 +304,7 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, job)
+    
     
     ## Adds a general job to the credits list
     #  
@@ -343,6 +351,7 @@ class AboutDialog(wx.Dialog):
     def NoResizeCol(self, event):
         event.Veto()
     
+    
     ## Sets text to be shown on the 'Changelog' tab
     #  
     #  FIXME: Change to create in class constructor
@@ -355,13 +364,6 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
-        '''
-        if INSTALLED:
-            # FIXME: Read compressed .gz changelog
-            CHANGELOG = u'{}/share/doc/debreate/changelog.gz'.format(PREFIX)
-        
-        else:
-        '''
         CHANGELOG = u'{}/docs/changelog'.format(PREFIX)
         
         if os.path.isfile(CHANGELOG):
@@ -379,11 +381,11 @@ class AboutDialog(wx.Dialog):
                 
                 shutil.copy(CHANGELOG, temp_dir)
                 
-                if cmd_gzip:
+                if CMD_gzip:
                     prev_dir = os.getcwd()
                     os.chdir(temp_dir)
                     
-                    gzip_output = commands.getstatusoutput(u'{} -fd {}'.format(cmd_gzip, os.path.basename(CHANGELOG)))
+                    gzip_output = commands.getstatusoutput(u'{} -fd {}'.format(CMD_gzip, os.path.basename(CHANGELOG)))
                     
                     Logger.Debug(__name__,
                             GT(u'gzip decompress; Code: {}, Output: {}').format(gzip_output[0], gzip_output[1]))
@@ -415,6 +417,7 @@ class AboutDialog(wx.Dialog):
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
     
+    
     ## Sets text to be shown on the 'License' tab
     #  
     #  \param lic_file
@@ -426,12 +429,6 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
-        '''
-        if INSTALLED:
-            license_path = u'{}/share/doc/debreate/copyright'.format(PREFIX)
-        
-        else:
-        '''
         license_path = u'{}/docs/LICENSE.txt'.format(PREFIX)
         
         if os.path.isfile(license_path):
@@ -441,11 +438,12 @@ class AboutDialog(wx.Dialog):
         
         else:
             lic_text = GT(u'ERROR: Could not locate license file:\n\t\'{}\' not found'.format(license_path))
-            lic_text += u'\n\nCopyright © {} {} <{}>'.format(GetYear(), AUTHOR, EMAIL)
+            lic_text += u'\n\nCopyright © {} {} <{}>'.format(GetYear(), AUTHOR_name, AUTHOR_email)
             lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
         
         self.license.SetValue(lic_text)
         self.license.SetInsertionPoint(0)
+    
     
     ## Defines action to take when 'Ok' button is press
     #  
@@ -454,4 +452,3 @@ class AboutDialog(wx.Dialog):
     #        <b><em>(wx.EVT_BUTTON)</em></b>
     def OnOk(self, event):
         self.Close()
-    

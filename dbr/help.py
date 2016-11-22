@@ -3,12 +3,9 @@
 ## \package dbr.help
 
 
-# System modules
-import wx, os, commands
-from wx.richtext import RichTextCtrl, RE_READONLY
-
-# Local modules
-from dbr.constants import ID_HELP
+import commands, os, wx
+from wx.richtext import RE_READONLY
+from wx.richtext import RichTextCtrl
 
 
 # FIXME: This should use a global manpage file
@@ -38,7 +35,7 @@ def ParseManpage():
 
 class HelpDialog(wx.Dialog):
     def __init__(self, parent):
-        wx.Dialog.__init__(self, parent, ID_HELP, u'Help',
+        wx.Dialog.__init__(self, parent, wx.ID_HELP, u'Help',
                            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
         
         dialog_size = wx.Size(200, 200)

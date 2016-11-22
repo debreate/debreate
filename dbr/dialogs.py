@@ -112,8 +112,6 @@ class StandardFileDialog(wx.FileDialog):
                         style=wx.ICON_ERROR|wx.OK)
                 
                 name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
-                # FIXME: Setting icon causes segfault
-                #name_error.SetIcon(MAIN_ICON)
                 name_error.ShowModal()
                 
                 return None

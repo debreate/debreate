@@ -4,10 +4,9 @@
 # System imports
 import os
 
-from dbr.constants  import local_path
 from dbr.language   import GT
 from dbr.log        import Logger
-from globals.paths  import PATH_app
+from globals.paths  import PATH_app, PATH_local
 
 
 # Debreate imports
@@ -27,8 +26,8 @@ application_licenses_path = u'{}/licenses'.format(application_templates_path)
 
 ## Local templates directory
 #  
-#  <local_path>/templates
-local_templates_path = u'{}/templates'.format(local_path)
+#  <PATH_local>/templates
+local_templates_path = u'{}/templates'.format(PATH_local)
 
 ## License templates directory
 #  
