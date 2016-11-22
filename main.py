@@ -45,6 +45,7 @@ from wiz_bin.files          import Panel as PanelFiles
 from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
+from globals.project import PROJECT_ext, PROJECT_txt
 
 
 # Debian Policy Manual IDs
@@ -334,15 +335,17 @@ class MainWindow(wx.Frame):
     
     def OnOpenProject(self, event):
         cont = False
-        dbp = u'|*.dbp'
+        #dbp = u'|*.dbp'
+        projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
         d = GT(u'Debreate project files')
         if self.cust_dias.IsChecked():
             dia = OpenFile(self, GT(u'Open Debreate Project'))
-            dia.SetFilter(u'{}{}'.format(d, dbp))
+            dia.SetFilter(u'{}{}'.format(d, projects_filter))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp), wx.FD_CHANGE_DIR)
+            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
+                    u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
         
