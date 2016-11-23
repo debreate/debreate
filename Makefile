@@ -24,9 +24,7 @@ prefix=/usr/local
 
 FILES = \
 	main.py \
-	command_line.py \
-	common.py \
-	db.py
+	command_line.py
 
 FILES_EXECUTABLE = \
 	init.py
