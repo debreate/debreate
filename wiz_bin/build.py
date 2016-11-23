@@ -24,80 +24,69 @@ from globals.commands   import CMD_lintian
 from globals.commands   import CMD_md5sum
 from globals.commands   import CMD_system_installer
 from globals.ident      import ID_BUILD
+from globals.tooltips   import SetPageToolTips
 
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_BUILD, name=GT(u'Build'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        # --- Tool Tips --- #
-        md5_tip = GT(u'Create checksums for files in package')
-        del_tip = GT(u'Delete temporary directory tree after package has been created')
-        tip_lint = GT(u'Checks the package for errors according to lintian\'s specifics')
-        #dest_tip = GT(u'Choose the folder where you would like the .deb to be created')
-        build_tip = GT(u'Start building')
-        install_tip = GT(u'Install package using a system installer after build')
-        
-        
         # ----- Extra Options
-        self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
+        self.chk_md5 = wx.CheckBox(self, label=GT(u'Create md5sums file'))
+        # The » character denotes that an alternate tooltip should be shown if the control is disabled
+        self.chk_md5.tt_name = u'md5»'
+        self.chk_md5.SetName(u'MD5')
+        self.chk_md5.default = False
+        
         if not CMD_md5sum:
             self.chk_md5.Disable()
-            self.chk_md5.SetToolTipString(GT(u'Install md5sum package for this option'))
-        else:
-            self.chk_md5.SetToolTipString(md5_tip)
         
         # For creating md5sum hashes
         self.md5 = MD5Hasher()
         
         # Deletes the temporary build tree
-        self.chk_del = wx.CheckBox(self, -1, GT(u'Delete build tree'))
-        self.chk_del.SetToolTipString(del_tip)
-        self.chk_del.SetName(u'DEL')
-        self.chk_del.SetValue(True)
+        self.chk_rmstage = wx.CheckBox(self, label=GT(u'Delete build tree'))
+        self.chk_rmstage.SetName(u'rmstage')
+        self.chk_rmstage.default = True
+        self.chk_rmstage.SetValue(self.chk_rmstage.default)
         
         # Checks the output .deb for errors
-        self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
+        self.chk_lint = wx.CheckBox(self, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint.tt_name = u'lintian»'
+        self.chk_lint.SetName(u'LINTIAN')
+        self.chk_lint.default = True
+        
         if not CMD_lintian:
             self.chk_lint.Disable()
-            self.chk_lint.SetToolTipString(GT(u'Install lintian package for this option'))
         
         else:
-            self.chk_lint.SetToolTipString(tip_lint)
-            self.chk_lint.SetValue(True)
+            self.chk_lint.SetValue(self.chk_lint.default)
         
         # Installs the deb on the system
-        self.chk_install = wx.CheckBox(self, -1, GT(u'Install package after build'))
+        self.chk_install = wx.CheckBox(self, label=GT(u'Install package after build'))
+        self.chk_install.tt_name = u'install»'
+        self.chk_install.SetName(u'INSTALL')
+        self.chk_install.default = False
         
         if not CMD_gdebi_gui:
             self.chk_install.Enable(False)
-            self.chk_install.SetToolTipString(
-                GT(u'Installing package requires gdebi to be available on the system'))
         
-        else:
-            self.chk_install.SetToolTipString(install_tip)
-        
-        options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
+        options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
         options1_sizer.AddMany( [
             (self.chk_md5, 0),
-            (self.chk_del, 0),
+            (self.chk_rmstage, 0),
             (self.chk_lint, 0),
             (self.chk_install, 0)
             ] )
         
-        # --- summary
-        #self.summary = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        # Lines to put in the summary
-        #self.summary_type = wx.EmptyString
-        
-        #wx.EVT_SHOW(self, self.SetSummary)
         
         # --- BUILD
         self.build_button = ButtonBuild64(self)
-        self.build_button.SetToolTipString(build_tip)
+        self.build_button.SetName(u'build')
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
         
@@ -111,17 +100,18 @@ class Panel(wx.ScrolledWindow):
         page_sizer = wx.BoxSizer(wx.VERTICAL)
         page_sizer.AddSpacer(10)
         page_sizer.Add(options1_sizer, 0, wx.LEFT, 5)
-#        page_sizer.AddSpacer(5)
-#        page_sizer.Add(self.summary, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        page_sizer.AddSpacer(5)
         page_sizer.AddSpacer(5)
         page_sizer.Add(build_sizer, 0, wx.ALIGN_CENTER)
-        page_sizer.Add(self.log, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        #page_sizer.AddStretchSpacer(10)
+        page_sizer.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(page_sizer)
         self.Layout()
         
+        
+        SetPageToolTips(self)
+    
     
     def SetSummary(self, event):
         main_window = wx.GetApp().GetTopWindow()
@@ -371,7 +361,7 @@ class Panel(wx.ScrolledWindow):
             prebuild_progress.Update(progress, GT(u'Checking delete build tree'))
             wx.Yield()
             
-            delete_tree = self.chk_del.GetValue()
+            delete_tree = self.chk_rmstage.GetValue()
             if delete_tree:
                 tasks += 1
             progress += 1
@@ -675,7 +665,7 @@ class Panel(wx.ScrolledWindow):
         else:
             self.chk_md5.Disable()
         
-        self.chk_del.SetValue(True)
+        self.chk_rmstage.SetValue(True)
         if CMD_lintian:
             self.chk_lint.Enable()
             self.chk_lint.SetValue(True)
@@ -691,7 +681,7 @@ class Panel(wx.ScrolledWindow):
         if CMD_md5sum:
             self.chk_md5.SetValue(int(build_data[0]))
         
-        self.chk_del.SetValue(int(build_data[1]))
+        self.chk_rmstage.SetValue(int(build_data[1]))
         if CMD_lintian:
             self.chk_lint.SetValue(int(build_data[2]))
     
@@ -701,7 +691,7 @@ class Panel(wx.ScrolledWindow):
         
         if self.chk_md5.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
-        if self.chk_del.GetValue(): build_list.append(u'1')
+        if self.chk_rmstage.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
         if self.chk_lint.GetValue(): build_list.append(u'1')
         else: build_list.append(u'0')
