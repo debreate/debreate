@@ -141,17 +141,6 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ImportInfo(self, event):
-        main_window = wx.GetApp().GetTopWindow()
-        
-        # Import package name and version from the control page
-        self.package.SetValue(main_window.page_control.pack.GetValue())
-        self.version.SetValue(main_window.page_control.ver.GetValue())
-        self.maintainer.SetValue(main_window.page_control.auth.GetValue())
-        self.email.SetValue(main_window.page_control.email.GetValue())
-    
-    
-    ## TODO: Doxygen
     def AddInfo(self, event):
         package = self.package.GetValue()
         version = self.version.GetValue()
@@ -181,27 +170,30 @@ class Panel(wx.ScrolledWindow):
         self.display_area.SetValue(u'\n'.join((entry, wx.EmptyString, self.display_area.GetValue())))
     
     
+    ## TODO: Doxygen
+    def GatherData(self):
+        if self.rb_dest_default.GetValue():
+            dest = u'<<DEST>>DEFAULT<</DEST>>'
+        elif self.rb_dest_custom.GetValue():
+            dest = u'<<DEST>>' + self.dest_custom.GetValue() + u'<</DEST>>'
+        
+        return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))
+    
+    
     ## TODO: Doxygen.
     def GetChangelog(self):
         return self.display_area.GetValue()
     
     
     ## TODO: Doxygen
-    def SetChangelog(self, data):
-        changelog = data.split(u'\n')
-        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
-        if dest == u'DEFAULT':
-            self.rb_dest_default.SetValue(True)
-        else:
-            self.rb_dest_custom.SetValue(True)
-            self.dest_custom.SetValue(dest)
-        self.display_area.SetValue(u'\n'.join(changelog[1:]))
-        #self.Toggle(True)
-    
-#    def Toggle(self, value):
-#        # Enable/Disable all fields
-#        for item in self.toggle_list:
-#            item.Enable(value)
+    def ImportInfo(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
+        # Import package name and version from the control page
+        self.package.SetValue(main_window.page_control.pack.GetValue())
+        self.version.SetValue(main_window.page_control.ver.GetValue())
+        self.maintainer.SetValue(main_window.page_control.auth.GetValue())
+        self.email.SetValue(main_window.page_control.email.GetValue())
     
     
     ## TODO: Doxygen
@@ -219,10 +211,12 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GatherData(self):
-        if self.rb_dest_default.GetValue():
-            dest = u'<<DEST>>DEFAULT<</DEST>>'
-        elif self.rb_dest_custom.GetValue():
-            dest = u'<<DEST>>' + self.dest_custom.GetValue() + u'<</DEST>>'
-        
-        return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))
+    def SetChangelog(self, data):
+        changelog = data.split(u'\n')
+        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+        if dest == u'DEFAULT':
+            self.rb_dest_default.SetValue(True)
+        else:
+            self.rb_dest_custom.SetValue(True)
+            self.dest_custom.SetValue(dest)
+        self.display_area.SetValue(u'\n'.join(changelog[1:]))
