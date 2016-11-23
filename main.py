@@ -199,7 +199,7 @@ class MainWindow(wx.Frame):
                 u'http://lintian.debian.org/tags-all.html')
         self.LintianTags.SetBitmap(globe)
         self.Launchers = wx.MenuItem(self.Policy, ID_Launchers, GT(u'Launchers / Desktop Entries'),
-                u'https://specifications.freedesktop.org/desktop-entry-spec/latest/')
+                u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
         self.Launchers.SetBitmap(globe)
         
         self.Policy.AppendItem(self.DPM)
@@ -217,7 +217,7 @@ class MainWindow(wx.Frame):
                     ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
                     222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
                     ID_Lintian: u'http://lintian.debian.org/tags-all.html',
-                    ID_Launchers: u'https://specifications.freedesktop.org/desktop-entry-spec/latest/',
+                    ID_Launchers: u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',
                     }
         for ID in self.references:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
