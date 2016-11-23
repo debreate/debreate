@@ -7,6 +7,7 @@ from dbr.language   import GT
 from globals.ident  import ID_COPYRIGHT
 
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
@@ -40,19 +41,14 @@ class Panel(wx.ScrolledWindow):
         self.SetSizer(main_sizer)
         self.Layout()
     
-    def GetCopyright(self):
-        return self.cp_display.GetValue()
     
+    ## TODO: Doxygen
     def GatherData(self):
         data = self.GetCopyright()
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
-    def SetCopyright(self, data):
-        self.cp_display.SetValue(data)
     
-    def ResetAllFields(self):
-        self.cp_display.Clear()
-    
+    ## TODO: Doxygen
     def GenerateTemplate(self, event):
         lic_path = u'/usr/share/common-licenses/{}'.format(self.template_lic.GetString(self.template_lic.GetSelection()))
         text = u''
@@ -62,3 +58,18 @@ class Panel(wx.ScrolledWindow):
         cpright = u'Copyright: <year> <copyright holder> <email>'
         text = u'{}\n\n{}\n{}'.format(cpright, lic_path, text)
         self.cp_display.SetValue(text)
+    
+    
+    ## TODO: Doxygen
+    def GetCopyright(self):
+        return self.cp_display.GetValue()
+    
+    
+    ## TODO: Doxygen
+    def ResetAllFields(self):
+        self.cp_display.Clear()
+    
+    
+    ## TODO: Doxygen
+    def SetCopyright(self, data):
+        self.cp_display.SetValue(data)
