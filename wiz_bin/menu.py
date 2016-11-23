@@ -44,21 +44,23 @@ class Panel(wx.ScrolledWindow):
         # --- Main Menu Entry --- #
         
         # --- Buttons to open/preview/save .desktop file
-        self.open = ButtonBrowse64(self)
-        self.open.SetToolTipString(DF_tip)
-        self.button_save = ButtonSave64(self)
-        self.button_save.SetToolTipString(GT(u'Export launcher to file'))
-        self.button_preview = ButtonPreview64(self)
-        self.button_preview.SetToolTipString(GT(u'Preview launcher text'))
+        self.btn_open = ButtonBrowse64(self)
+        self.btn_open.SetToolTipString(DF_tip)
         
-        self.open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
-        wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSaveLauncher)
-        wx.EVT_BUTTON(self.button_preview, wx.ID_ANY, self.OnPreviewLauncher)
+        self.btn_save = ButtonSave64(self)
+        self.btn_save.SetToolTipString(GT(u'Export launcher to file'))
+        
+        self.btn_preview = ButtonPreview64(self)
+        self.btn_preview.SetToolTipString(GT(u'Preview launcher text'))
+        
+        self.btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
+        wx.EVT_BUTTON(self.btn_save, wx.ID_ANY, self.OnSaveLauncher)
+        wx.EVT_BUTTON(self.btn_preview, wx.ID_ANY, self.OnPreviewLauncher)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(self.open, 0)
-        button_sizer.Add(self.button_save, 0)
-        button_sizer.Add(self.button_preview, 0)
+        button_sizer.Add(self.btn_open, 0)
+        button_sizer.Add(self.btn_save, 0)
+        button_sizer.Add(self.btn_preview, 0)
         
         # --- CHECKBOX
         self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
@@ -266,7 +268,7 @@ class Panel(wx.ScrolledWindow):
         
         # --- List of main menu items affected by checkbox -- used for toggling each widget
         self.menu_list = (
-            self.button_save, self.button_preview, self.chk_filename, self.icon_input,
+            self.btn_save, self.btn_preview, self.chk_filename, self.icon_input,
             self.name_input, self.comm_input, self.exe_input, self.enc_input, self.type_choice,
             self.cat_choice, self.categories, self.cat_add, self.cat_del, self.cat_clr,
             self.term_choice, self.notify_choice, self.misc,
@@ -302,7 +304,7 @@ class Panel(wx.ScrolledWindow):
         # Lists of widgets that change language
         self.setlabels = {
             self.activate: u'Menu',
-            self.open: u'Open',
+            self.btn_open: u'Open',
             self.border: u'Border',
             self.icon_text: u'Icon',
             self.name_text: u'Name',
