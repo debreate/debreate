@@ -150,7 +150,7 @@ TT_launchers = {
 TT_build = {
     u'md5': GT(u'Creates a checksum for all staged files within the package'),
     u'md5_disabled': GT(u'Install md5sum package for this option'),
-    u'rmtree': GT(u'Delete staged directory tree after package has been created'),
+    u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
         GT(u'See: Help {0} Reference {0} Lintian Tags Explanation').format(ARROW_RIGHT),
