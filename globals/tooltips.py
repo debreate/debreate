@@ -106,15 +106,8 @@ TT_changelog = {
 }
 
 TT_copyright = {
-    u'full': (
-        u'{}\n'.format(GT(u'Copies a full system, app, or local license')),
-        GT(u'SYSTEM:'), u'\t{}'.format(GT(u'Copies text from a license stored in')),
-        u'\t/usr/share/common-licenses',
-        GT(u'APP:'), u'\t{}'.format(GT(u'Copies a template distributed with Debreate')),
-        GT(u'LOCAL:'), u'\t{}'.format(GT(u'Copies a user-defined template from')),
-        u'\t{}'.format(local_templates_path),
-        ),
-    u'link': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
+    u'full': GT(u'Creates a simple license that references the system\'s common license path'),
+    u'list': GT(u'Select license to reference'),
 }
 
 TT_menu = {
