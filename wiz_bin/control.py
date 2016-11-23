@@ -16,6 +16,7 @@ from dbr.language   import GT
 from globals.ident  import ID_CONTROL
 
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
@@ -256,11 +257,6 @@ class Panel(wx.ScrolledWindow):
         for child in children:
             wx.EVT_KEY_DOWN(child, self.OnCtrlKey)
         
-        
-        # These are used for controlling the column width/size in the co-authors field
-        #self.ReLayout()
-        wx.EVT_SIZE(self, self.OnResize)
-        
         # Defines fields to be accessed
         wx.EVT_SHOW(self, self.OnShow)
         
@@ -274,126 +270,10 @@ class Panel(wx.ScrolledWindow):
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
     
     
-    ## TODO: Doxygen
-    def OnResize(self, event):
-        #self.ReLayout()
-        pass
-    
-    
-    ## TODO: Doxygen
-    def ReLayout(self):
-        # Organize all widgets correctly
-        lc_width = self.coauth.GetSize()[0]
-        self.coauth.SetColumnWidth(0, lc_width/2)
-        #self.coauth.SetColumnWidth(1, lc_width/2-25)
-    
-    
-    ## TODO: Doxygen
-    def OnShow(self, event):
-        pass
-    
-    
-    ## TODO: Doxygen
-    def OnBrowse(self, event):
-        main_window = wx.GetApp().GetTopWindow()
-        
-        cont = False
-        if main_window.cust_dias.IsChecked():
-            dia = OpenFile(self)
-            if dia.DisplayModal():
-                cont = True
-        
-        else:
-            dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        
-        if cont:
-            path = dia.GetPath()
-            FILE = open(path, u'r')
-            control_data = FILE.read()
-            depends_data = self.SetFieldData(control_data)
-            main_window.page_depends.SetFieldData(depends_data)
-    
-    
-    ## TODO: Doxygen
-    def OnSave(self, event):
-        main_window = wx.GetApp().GetTopWindow()
-        
-        # Get data to write to control file
-        control = self.GetCtrlInfo().encode(u'utf-8')
-        
-        # Saving?
-        cont = False
-        
-        # Open a "Save Dialog"
-        if main_window.cust_dias.IsChecked():
-            dia = SaveFile(self, GT(u'Save Control Information'))
-            dia.SetFilename(u'control')
-            if dia.DisplayModal():
-                cont = True
-                path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
-        else:
-            dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-            dia.SetFilename(u'control')
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-                path = dia.GetPath()
-        
-        if cont:
-            filename = dia.GetFilename()
-            FILE = open(path, u'w')
-            FILE.write(control)
-            FILE.close()
-    
-    
-    ## TODO: Doxygen
-    def OnPreview(self, event):
-        # Show a preview of the control file
-        control = self.GetCtrlInfo()
-        
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        preview.SetValue(control)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
-        
-        dia.ShowModal()
-        dia.Destroy()
-    
-    
-    ## TODO: Doxygen
-    def OnCtrlKey(self, event):
-        obj = event.GetEventObject()
-        key = event.GetKeyCode()
-        mod = event.GetModifiers()
-        
-        if mod == 2 and key == 80:
-            self.OnPreview(None)
-        
-        event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def ResetAllFields(self):
-        self.pack.Clear()
-        self.ver.Clear()
-        self.arch.SetSelection(0)
-        self.src.Clear()
-        self.sect.Clear()
-        self.prior.SetSelection(0)
-        self.url.Clear()
-        self.ess.SetSelection(1)
-        #self.stdver.Clear()
-        self.syn.Clear()
-        self.desc.Clear()
-        self.auth.Clear()
-        self.email.Clear()
+    ## Saving project
+    def GatherData(self):
+        data = self.GetCtrlInfo()
+        return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
     
     
     ## TODO: Doxygen
@@ -409,7 +289,7 @@ class Panel(wx.ScrolledWindow):
         # Creat a list to store info
         ctrl_list = []
         
-        getvals = (	(u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
+        getvals = (    (u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
                     (u'Homepage',self.url), #(u'Standards-Version',self.stdver), (u'Format',self.format),
                     #(u'Binary',self.bin), (u'Files',self.files), (u'Date',self.date), (u'Changes',self.changes),
                     #(u'Distribution',self.dist), (u'Closes',self.closes) )
@@ -492,6 +372,142 @@ class Panel(wx.ScrolledWindow):
         return u'\n'.join(ctrl_list)
     
     
+    ## TODO: Doxygen
+    def OnBrowse(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
+        cont = False
+        if main_window.cust_dias.IsChecked():
+            dia = OpenFile(self)
+            if dia.DisplayModal():
+                cont = True
+        
+        else:
+            dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+            if dia.ShowModal() == wx.ID_OK:
+                cont = True
+        
+        if cont:
+            path = dia.GetPath()
+            FILE = open(path, u'r')
+            control_data = FILE.read()
+            depends_data = self.SetFieldData(control_data)
+            main_window.page_depends.SetFieldData(depends_data)
+    
+    
+    ## TODO: Doxygen
+    def OnCtrlKey(self, event):
+        obj = event.GetEventObject()
+        key = event.GetKeyCode()
+        mod = event.GetModifiers()
+        
+        if mod == 2 and key == 80:
+            self.OnPreview(None)
+        
+        event.Skip()
+    
+    
+    ## Determins if project is modified
+    def OnKeyDown(self, event):
+        for widget in self.text_widgets:
+            self.text_widgets[widget] = widget.GetValue()
+        event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def OnKeyUp(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
+        modified = False
+        for widget in self.text_widgets:
+            if widget.GetValue() != self.text_widgets[widget]:
+                modified = True
+        
+        main_window.SetSavedStatus(modified)
+        event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def OnPreview(self, event):
+        # Show a preview of the control file
+        control = self.GetCtrlInfo()
+        
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
+        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview.SetValue(control)
+        
+        dia_sizer = wx.BoxSizer(wx.VERTICAL)
+        dia_sizer.Add(preview, 1, wx.EXPAND)
+        
+        dia.SetSizer(dia_sizer)
+        dia.Layout()
+        
+        dia.ShowModal()
+        dia.Destroy()
+    
+    
+    ## TODO: Doxygen
+    def OnSave(self, event):
+        main_window = wx.GetApp().GetTopWindow()
+        
+        # Get data to write to control file
+        control = self.GetCtrlInfo().encode(u'utf-8')
+        
+        # Saving?
+        cont = False
+        
+        # Open a "Save Dialog"
+        if main_window.cust_dias.IsChecked():
+            dia = SaveFile(self, GT(u'Save Control Information'))
+            dia.SetFilename(u'control')
+            if dia.DisplayModal():
+                cont = True
+                path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
+        else:
+            dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
+                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+            dia.SetFilename(u'control')
+            if dia.ShowModal() == wx.ID_OK:
+                cont = True
+                path = dia.GetPath()
+        
+        if cont:
+            filename = dia.GetFilename()
+            FILE = open(path, u'w')
+            FILE.write(control)
+            FILE.close()
+    
+    
+    ## TODO: Doxygen
+    def OnShow(self, event):
+        pass
+    
+    
+    ## TODO: Doxygen
+    def ReLayout(self):
+        # Organize all widgets correctly
+        lc_width = self.coauth.GetSize()[0]
+        self.coauth.SetColumnWidth(0, lc_width/2)
+        #self.coauth.SetColumnWidth(1, lc_width/2-25)
+    
+    
+    ## TODO: Doxygen
+    def ResetAllFields(self):
+        self.pack.Clear()
+        self.ver.Clear()
+        self.arch.SetSelection(0)
+        self.src.Clear()
+        self.sect.Clear()
+        self.prior.SetSelection(0)
+        self.url.Clear()
+        self.ess.SetSelection(1)
+        #self.stdver.Clear()
+        self.syn.Clear()
+        self.desc.Clear()
+        self.auth.Clear()
+        self.email.Clear()
+    
+    
     ## Opening Project/File & Setting Fields
     def SetFieldData(self, data):
         if type(data) == type(u''):
@@ -570,29 +586,3 @@ class Panel(wx.ScrolledWindow):
         
         # Return depends data to parent to be sent to page_depends
         return depends_containers
-    
-    
-    ## Saving project
-    def GatherData(self):
-        data = self.GetCtrlInfo()
-        return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
-    
-    
-    ## Determins if project is modified
-    def OnKeyDown(self, event):
-        for widget in self.text_widgets:
-            self.text_widgets[widget] = widget.GetValue()
-        event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def OnKeyUp(self, event):
-        main_window = wx.GetApp().GetTopWindow()
-        
-        modified = False
-        for widget in self.text_widgets:
-            if widget.GetValue() != self.text_widgets[widget]:
-                modified = True
-        
-        main_window.SetSavedStatus(modified)
-        event.Skip()
