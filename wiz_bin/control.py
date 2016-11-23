@@ -397,7 +397,6 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnCtrlKey(self, event):
-        obj = event.GetEventObject()
         key = event.GetKeyCode()
         mod = event.GetModifiers()
         
@@ -472,7 +471,6 @@ class Panel(wx.ScrolledWindow):
                 path = dia.GetPath()
         
         if cont:
-            filename = dia.GetFilename()
             FILE = open(path, u'w')
             FILE.write(control)
             FILE.close()
