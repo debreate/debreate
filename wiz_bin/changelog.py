@@ -93,7 +93,7 @@ class Panel(WizardPage):
         
         self.button_import = ButtonImport(self)
         self.button_import.SetName(u'import')
-        #self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control section')))
+        
         self.button_add = ButtonAdd(self)
         self.button_add.SetName(u'add')
         
@@ -106,13 +106,6 @@ class Panel(WizardPage):
         
         self.log = MonospaceTextCtrl(self, name=u'log')
         
-        # *** Widgets that Enable/Disable
-#        self.toggle_list = (
-#            self.package, self.version, self.distribution, self.urgency, self.maintainer, self.email,
-#            self.changes, self.target_default, self.target_custom, self.target,
-#            self.button_import, self.button_add, self.log
-#            )
-        
         # *** LAYOUT
         main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
         main_sizer.AddSpacer(10)
@@ -120,7 +113,7 @@ class Panel(WizardPage):
         main_sizer.AddSpacer(10)
         main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(self.log, 1, wx.EXPAND, wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(self.log, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.AddSpacer(5)
         
         self.SetAutoLayout(True)
