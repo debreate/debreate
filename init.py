@@ -185,4 +185,6 @@ debreate_app.SetTopWindow(Debreate)
 Debreate.Show(True)
 debreate_app.MainLoop()
 
+Logger.OnClose()
+
 sys.exit(0)
