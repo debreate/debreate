@@ -117,13 +117,15 @@ TT_copyright = {
     u'link': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
 }
 
-TT_launchers = {
-    u'open': GT(u'Open launcher file'),
+TT_menu = {
+    u'open': GT(u'Import launcher from file'),
     u'export': GT(u'Export launcher to text file'),
-    u'preview': GT(u'Preview launcher'),
-    u'name': GT(u'Text for the launcher'),
+    u'preview': GT(u'Preview launcher text'),
+    u'filename': GT(u'Custom filename to use for launcher'),
+    u'filename chk': GT(u'Unless checked, the value of "Filename" will be used for the launcher\'s output filename'),
+    u'name': GT(u'Name to be displayed for the launcher'),
     u'exec': GT(u'Executable to be launched'),
-    u'comment': GT(u'Comment text displayed'),
+    u'comment': GT(u'Text displayed when cursor hovers over launcher'),
     u'icon': GT(u'Icon to be displayed for the launcher'),
     u'type': (
         GT(u'Type of launcher'), u'',
@@ -134,14 +136,17 @@ TT_launchers = {
         ),
     u'terminal': GT(u'Specifies whether application should be run in a terminal'),
     u'startupnotify': GT(u'Displays a notification in the system panel when launched'),
-    u'encoding': GT(u'Sets the encoding that should be used in order to read the launcher'),
+    u'encoding': GT(u'Sets the encoding that should be used to read the launcher'),
     u'category': GT(u'Categories dictate where the launcher will be located in the system menu'),
     u'add category': GT(u'Append current category to list'),
     u'rm category': GT(u'Remove selected categories from list'),
     u'clear categories': GT(u'Clear category list'),
     u'categories': GT(u'Categories dictate where the launcher will be located in the system menu'),
+    u'no disp': GT(u'This options means "This application exists, but don\'t display it in the menus"'),
+    u'show in': GT(u'Launcher is only shown when options are satisfied'),
     u'other': (
         GT(u'Miscellaneous fields not available above'), u'',
+        GT(u'See "Help ➜ Reference ➜ Launchers / Dekstop Entries" for more available options'), u'',
         GT(u'Warning:'),
         u'\t{}'.format(GT(u'Improperly formatted text may cause launcher to be unusable')),
         )
@@ -176,7 +181,7 @@ TT_pages = {
     ID_SCRIPTS: TT_scripts,
     ID_CHANGELOG: TT_changelog,
     ID_COPYRIGHT: TT_copyright,
-    ID_MENU: TT_launchers,
+    ID_MENU: TT_menu,
     ID_BUILD: TT_build,
 }
 
