@@ -28,15 +28,22 @@ class Panel(wx.ScrolledWindow):
         
         # --- Main Menu Entry --- #
         
+        self.options_button = []
+        self.options_input = []
+        self.options_choice = []
+        self.options_list = []
+        
         # --- Buttons to open/preview/save .desktop file
         self.btn_open = ButtonBrowse64(self)
         self.btn_open.SetName(u'open')
         
         self.btn_save = ButtonSave64(self)
         self.btn_save.SetName(u'export')
+        self.options_button.append(self.btn_save)
         
         self.btn_preview = ButtonPreview64(self)
         self.btn_preview.SetName(u'preview')
+        self.options_button.append(self.btn_preview)
         
         self.btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
         wx.EVT_BUTTON(self.btn_save, wx.ID_ANY, self.OnSaveLauncher)
@@ -48,7 +55,7 @@ class Panel(wx.ScrolledWindow):
         button_sizer.Add(self.btn_preview, 0)
         
         # --- CHECKBOX
-        self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
+        self.activate = wx.CheckBox(self, label=GT(u'Create system menu launcher'))
         self.activate.default = False
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
@@ -70,24 +77,28 @@ class Panel(wx.ScrolledWindow):
         self.name_input = wx.TextCtrl(self, name=u'Name')
         self.name_input.req = True
         self.name_input.default = wx.EmptyString
+        self.options_input.append(self.name_input)
         
         # --- EXECUTABLE
         self.exe_text = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
         
         self.exe_input = wx.TextCtrl(self, name=u'Exec')
         self.exe_input.default = wx.EmptyString
+        self.options_input.append(self.exe_input)
         
         # --- COMMENT
         self.comm_text = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
         
         self.comm_input = wx.TextCtrl(self, name=u'Comment')
         self.comm_input.default = wx.EmptyString
+        self.options_input.append(self.comm_input)
         
         # --- ICON
         self.icon_text = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         
         self.icon_input = wx.TextCtrl(self, name=u'Icon')
         self.icon_input.default = wx.EmptyString
+        self.options_input.append(self.icon_input)
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
@@ -95,6 +106,7 @@ class Panel(wx.ScrolledWindow):
         
         self.type_choice = OwnerDrawnComboBox(self, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
         self.type_choice.default = self.type_choice.GetValue()
+        self.options_input.append(self.type_choice)
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
@@ -103,6 +115,7 @@ class Panel(wx.ScrolledWindow):
         self.term_choice = wx.Choice(self, choices=self.term_opt, name=u'Terminal')
         self.term_choice.default = 1
         self.term_choice.SetSelection(self.term_choice.default)
+        self.options_choice.append(self.term_choice)
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
@@ -111,6 +124,7 @@ class Panel(wx.ScrolledWindow):
         self.notify_choice = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
         self.notify_choice.default = 0
         self.notify_choice.SetSelection(self.notify_choice.default)
+        self.options_choice.append(self.notify_choice)
         
         # --- ENCODING
         self.enc_opt = (
@@ -122,6 +136,7 @@ class Panel(wx.ScrolledWindow):
         
         self.enc_input = OwnerDrawnComboBox(self, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
         self.enc_input.default = self.enc_input.GetValue()
+        self.options_input.append(self.enc_input)
         
         # --- CATEGORIES
         self.cat_opt = (
@@ -158,6 +173,7 @@ class Panel(wx.ScrolledWindow):
         self.cat_choice = OwnerDrawnComboBox(self, value=self.cat_opt[0], choices=self.cat_opt,
                 name=u'Category')
         self.cat_choice.default = self.cat_choice.GetValue()
+        self.options_input.append(self.cat_choice)
         
         self.cat_add = ButtonAdd(self)
         self.cat_add.SetName(u'add category')
@@ -165,6 +181,9 @@ class Panel(wx.ScrolledWindow):
         self.cat_del.SetName(u'rm category')
         self.cat_clr = ButtonClear(self)
         self.cat_clr.SetName(u'clear categories')
+        
+        for B in self.cat_add, self.cat_del, self.cat_clr:
+            self.options_button.append(B)
         
         # NOTE: wx 3.0 compat
         if wx.MAJOR_VERSION > 2:
@@ -177,6 +196,7 @@ class Panel(wx.ScrolledWindow):
         # For manually setting background color after enable/disable
         self.categories.default_color = self.categories.GetBackgroundColour()
         self.categories.SetName(u'Categories')
+        self.options_list.append(self.categories)
         
         
         wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
@@ -206,19 +226,17 @@ class Panel(wx.ScrolledWindow):
         self.other = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE,
                 name=self.other_text.Name)
         self.other.default = wx.EmptyString
+        self.options_input.append(self.other)
         
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
         misc_sizer.Add(self.other, 1, wx.EXPAND)
-        
         
         # GridBagSizer flags
         CENTER = wx.ALIGN_CENTER_VERTICAL
         CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
         CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
         
-        # Organize the widgets and create a nice border
         sizer1 = wx.GridBagSizer(5, 5)
-        #sizer1 = wx.FlexGridSizer(0, 4, 5, 5)
         sizer1.SetCols(4)
         sizer1.AddGrowableCol(1)
         
@@ -261,15 +279,8 @@ class Panel(wx.ScrolledWindow):
         border_box.Add(self.other_text, 0)
         border_box.Add(self.other, 1, wx.EXPAND)
         
-        # --- List of main menu items affected by checkbox -- used for toggling each widget
-        self.menu_list = (
-            self.btn_save, self.btn_preview, self.chk_filename, self.icon_input,
-            self.name_input, self.comm_input, self.exe_input, self.enc_input, self.type_choice,
-            self.cat_choice, self.categories, self.cat_add, self.cat_del, self.cat_clr,
-            self.term_choice, self.notify_choice, self.other,
-            )
         
-        self.OnToggle(None) #Disable widgets
+        self.OnToggle()
         
         # --- Page 5 Sizer --- #
         page_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -277,7 +288,6 @@ class Panel(wx.ScrolledWindow):
         page_sizer.Add(button_sizer, 0, wx.LEFT, 5)
         page_sizer.AddSpacer(10)
         page_sizer.Add(self.activate, 0, wx.LEFT, 5)
-        #page_sizer.Add(layout_filename, 0, wx.TOP|wx.LEFT|wx.RIGHT, 5)
         page_sizer.Add(border_box, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
@@ -316,16 +326,18 @@ class Panel(wx.ScrolledWindow):
         SetPageToolTips(self)
     
     
-    def OnToggle(self, event=None):
-        if self.activate.IsChecked():
-            for item in self.menu_list:
-                item.Enable()
+    def GatherData(self):
+        if self.activate.GetValue():
+            data = self.GetLauncherInfo()
+            data = u'\n'.join(data.split(u'\n')[1:])
+            
+            if not self.chk_filename.GetValue():
+                data = u'[FILENAME={}]\n{}'.format(self.input_filename.GetValue(), data)
+            
+            return u'<<MENU>>\n1\n{}\n<</MENU>>'.format(data)
         
         else:
-            for item in self.menu_list:
-                item.Disable()
-        
-        self.OnSetCustomFilename(None)
+            return u'<<MENU>>\n0\n<</MENU>>'
     
     
     ## Formats the launcher information for export
@@ -354,13 +366,9 @@ class Panel(wx.ScrolledWindow):
         if not TextIsEmpty(launcher_type):
             desktop_list.append(u'Type={}'.format(launcher_type))
         
-        terminal = self.term_choice.GetStringSelection()
-        if not TextIsEmpty(terminal):
-            desktop_list.append(u'Terminal={}'.format(terminal))
+        desktop_list.append(u'Terminal={}'.format(unicode(self.term_choice.GetSelection() == 0).lower()))
         
-        startup_notify = self.notify_choice.GetStringSelection()
-        if not TextIsEmpty(startup_notify):
-            desktop_list.append(u'StartupNotify={}'.format(startup_notify))
+        desktop_list.append(u'StartupNotify={}'.format(unicode(self.notify_choice.GetSelection() == 0).lower()))
         
         encoding = self.enc_input.GetValue()
         if not TextIsEmpty(encoding):
@@ -384,9 +392,9 @@ class Panel(wx.ScrolledWindow):
             
             desktop_list.append(u'Categories={}'.format(categories))
         
-        # Add Misc
-        if self.other.GetValue() != wx.EmptyString:
-            desktop_list.append(self.other.GetValue())
+        other = self.other.GetValue()
+        if not TextIsEmpty(other):
+            desktop_list.append(other)
         
         return u'\n'.join(desktop_list)
     
@@ -394,41 +402,56 @@ class Panel(wx.ScrolledWindow):
     ## Retrieves the filename to be used for the menu launcher
     def GetOutputFilename(self):
         if not self.chk_filename.GetValue():
-            filename = self.input_filename.GetValue().replace(u' ', u'_')
+            filename = self.input_filename.GetValue().strip(u' ').replace(u' ', u'_')
             if not TextIsEmpty(filename):
                 return filename
         
-        return self.name_input.GetValue().replace(u' ', u'_')
-            
+        return self.name_input.GetValue().strip(u' ').replace(u' ', u'_')
     
-    ## TODO: Doxygen
-    def SetCategory(self, event):
-        try:
-            ID = event.GetKeyCode()
-        except AttributeError:
-            ID = event.GetEventObject().GetId()
+    
+    ## Loads a .desktop launcher's data
+    def OnLoadLauncher(self, event=None):
+        cont = False
+        if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
+            dia = OpenFile(self, GT(u'Open Launcher'))
+            if dia.DisplayModal():
+                cont = True
+        else:
+            dia = wx.FileDialog(self, GT(u'Open Launcher'), os.getcwd(),
+                style=wx.FD_CHANGE_DIR)
+            if dia.ShowModal() == wx.ID_OK:
+                cont = True
         
-        cat = self.cat_choice.GetValue()
-        cat = cat.split()
-        cat = u''.join(cat)
+        if cont == True:
+            path = dia.GetPath()
+            
+            FILE_BUFFER = open(path, u'r')
+            data = FILE_BUFFER.read().split(u'\n')
+            FILE_BUFFER.close()
+            
+            # Remove unneeded lines
+            if data[0] == u'[Desktop Entry]':
+                data = data[1:]
+            
+            self.SetLauncherData(u'\n'.join(data), enabled=True)
+    
+    
+    def OnPreviewLauncher(self, event):
+        # Show a preview of the .desktop config file
+        config = self.GetLauncherInfo()
         
-        if ID == wx.WXK_RETURN or ID == wx.WXK_NUMPAD_ENTER:
-            self.categories.InsertStringItem(self.categories.GetItemCount(), cat)
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
+        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview.SetValue(config)
         
-        elif ID == wx.WXK_DELETE:
-            if self.categories.GetItemCount() and self.categories.GetSelectedItemCount():
-                cur_cat = self.categories.GetFirstSelected()
-                self.categories.DeleteItem(cur_cat)
+        dia_sizer = wx.BoxSizer(wx.VERTICAL)
+        dia_sizer.Add(preview, 1, wx.EXPAND)
         
-        elif ID == wx.ID_CLEAR:
-            if self.categories.GetItemCount():
-                confirm = wx.MessageDialog(self, GT(u'Clear categories?'), GT(u'Confirm'),
-                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-                
-                if confirm.ShowModal() == wx.ID_YES:
-                    self.categories.DeleteAllItems()
+        dia.SetSizer(dia_sizer)
+        dia.Layout()
         
-        event.Skip()
+        dia.ShowModal()
+        dia.Destroy()
     
     
     ## Saves launcher information to file
@@ -497,49 +520,26 @@ class Panel(wx.ScrolledWindow):
         self.input_filename.Enable(True)
     
     
-    ## Loads a .desktop launcher's data
-    def OnLoadLauncher(self, event=None):
-        cont = False
-        if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
-            dia = OpenFile(self, GT(u'Open Launcher'))
-            if dia.DisplayModal():
-                cont = True
-        else:
-            dia = wx.FileDialog(self, GT(u'Open Launcher'), os.getcwd(),
-                style=wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
+    ## TODO: Doxygen
+    def OnToggle(self, event=None):
+        enable = self.activate.IsChecked()
         
-        if cont == True:
-            path = dia.GetPath()
-            
-            FILE_BUFFER = open(path, u'r')
-            data = FILE_BUFFER.read().split(u'\n')
-            FILE_BUFFER.close()
-            
-            # Remove unneeded lines
-            if data[0] == u'[Desktop Entry]':
-                data = data[1:]
-            
-            self.SetLauncherData(u'\n'.join(data), enabled=True)
+        listctrl_bgcolor_defs = {
+            True: self.categories.default_color,
+            False: wx.Colour(214, 214, 214),
+        }
+        
+        for group in self.options_button, self.options_choice, self.options_input, self.options_list:
+            for O in group:
+                O.Enable(enable)
+                
+                # Small hack to gray-out ListCtrl when disabled
+                if isinstance(O, wx.ListCtrl):
+                    O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
+        
+        self.chk_filename.Enable(enable)
+        self.OnSetCustomFilename()
     
-    
-    def OnPreviewLauncher(self, event):
-        # Show a preview of the .desktop config file
-        config = self.GetLauncherInfo()
-        
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
-        preview.SetValue(config)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
-        
-        dia.ShowModal()
-        dia.Destroy()
     
     def ResetAllFields(self):
         self.input_filename.Clear()
@@ -554,8 +554,38 @@ class Panel(wx.ScrolledWindow):
         self.enc_input.SetSelection(2)
         self.categories.DeleteAllItems()
         self.other.Clear()
-        self.activate.SetValue(False)
-        self.OnToggle(None)
+        self.activate.SetValue(self.activate.default)
+        self.OnToggle()
+    
+    
+    ## TODO: Doxygen
+    def SetCategory(self, event):
+        try:
+            ID = event.GetKeyCode()
+        except AttributeError:
+            ID = event.GetEventObject().GetId()
+        
+        cat = self.cat_choice.GetValue()
+        cat = cat.split()
+        cat = u''.join(cat)
+        
+        if ID == wx.WXK_RETURN or ID == wx.WXK_NUMPAD_ENTER:
+            self.categories.InsertStringItem(self.categories.GetItemCount(), cat)
+        
+        elif ID == wx.WXK_DELETE:
+            if self.categories.GetItemCount() and self.categories.GetSelectedItemCount():
+                cur_cat = self.categories.GetFirstSelected()
+                self.categories.DeleteItem(cur_cat)
+        
+        elif ID == wx.ID_CLEAR:
+            if self.categories.GetItemCount():
+                confirm = wx.MessageDialog(self, GT(u'Clear categories?'), GT(u'Confirm'),
+                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+                
+                if confirm.ShowModal() == wx.ID_YES:
+                    self.categories.DeleteAllItems()
+        
+        event.Skip()
     
     
     ## Fills out launcher information from loaded file
@@ -650,18 +680,4 @@ class Panel(wx.ScrolledWindow):
                         self.input_filename.SetValue(value)
                         self.chk_filename.SetValue(False)
         
-        self.OnToggle(None)
-    
-    
-    def GatherData(self):
-        if self.activate.GetValue():
-            data = self.GetLauncherInfo()
-            data = u'\n'.join(data.split(u'\n')[1:])
-            
-            if not self.chk_filename.GetValue():
-                data = u'[FILENAME={}]\n{}'.format(self.input_filename.GetValue(), data)
-            
-            return u'<<MENU>>\n1\n{}\n<</MENU>>'.format(data)
-        
-        else:
-            return u'<<MENU>>\n0\n<</MENU>>'
+        self.OnToggle()
