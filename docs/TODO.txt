@@ -1,0 +1,3 @@
+0.7.12
+- Update gettext locales
+- Test that locales are working
