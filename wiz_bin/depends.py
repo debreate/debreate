@@ -17,6 +17,8 @@ from globals.ident  import ID_DEPENDS
 ID_Append = wx.NewId()
 ID_Delete = wx.NewId()
 
+
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
@@ -184,10 +186,21 @@ class Panel(wx.ScrolledWindow):
                             self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
     
     
+    ## TODO: Doxygen
     def GetDefaultCategory(self):
         return self.dep_chk.GetName()
     
     
+    ## TODO: Doxygen
+    def ResetAllFields(self):
+        self.dep_chk.SetValue(True)
+        self.dep_name.Clear()
+        self.dep_oper.SetSelection(0)
+        self.dep_ver.Clear()
+        self.dep_area.DeleteAllItems()
+    
+    
+    ## TODO: Doxygen
     def SetDepends(self, event):
         try:
             key_id = event.GetKeyCode()
@@ -247,15 +260,9 @@ class Panel(wx.ScrolledWindow):
                     self.dep_area.DeleteAllItems()
         
         event.Skip()
-        
-        
-    def ResetAllFields(self):
-        self.dep_chk.SetValue(True)
-        self.dep_name.Clear()
-        self.dep_oper.SetSelection(0)
-        self.dep_ver.Clear()
-        self.dep_area.DeleteAllItems()
     
+    
+    ## TODO: Doxygen
     def SetFieldData(self, data):
         self.dep_area.DeleteAllItems()
         for item in data:
@@ -264,11 +271,10 @@ class Panel(wx.ScrolledWindow):
                 item_count -= 1
                 self.dep_area.InsertStringItem(0, item[0])
                 self.dep_area.SetStringItem(0, 1, item[item_count])
-    
 
 
+## A ListCtrl that automatically expands columns
 class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
-    """A ListCtrl that automatically expands columns"""
     def __init__(self, parent, ID=wx.ID_ANY):
         wx.ListView.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
         LC.ListCtrlAutoWidthMixin.__init__(self)
@@ -296,6 +302,7 @@ class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
         self.InsertStringItem(self.GetItemCount(), item)
     
     
+    ## TODO: Doxygen
     def GetSelectedIndexes(self):
         selected_indexes = []
         selected = None
@@ -314,6 +321,7 @@ class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
         return None
     
     
+    ## TODO: Doxygen
     def OnSelectAll(self, event=None):
         select_all = False
         if isinstance(event, wx.KeyEvent):
