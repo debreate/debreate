@@ -3,8 +3,9 @@
 
 import wx
 
-from dbr.language   import GT
-from globals.ident  import ID_COPYRIGHT
+from dbr.language       import GT
+from globals.ident      import ID_COPYRIGHT
+from globals.tooltips   import SetPageToolTips
 
 
 ## TODO: Doxygen
@@ -19,11 +20,11 @@ class Panel(wx.ScrolledWindow):
             u'GFDL-1.3', u'GPL', u'GPL-1', u'GPL-2', u'GPL-3', u'LGPL',
             u'LGPL-2', u'LGPL-2.1', u'LGPL-3'
         )
-        template_btn = wx.Button(self, -1, u'Generate Template')
-        template_btn.SetToolTip(wx.ToolTip(GT(u'Creates a simple license that references the system\'s common license path')))
-        self.template_lic = wx.Choice(self, -1, choices=lic_options)
+        
+        template_btn = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
+        
+        self.template_lic = wx.Choice(self, choices=lic_options, name=u'list')
         self.template_lic.SetSelection(0)
-        self.template_lic.SetToolTip(wx.ToolTip(GT(u'Select license to reference')))
         
         wx.EVT_BUTTON(template_btn, -1, self.GenerateTemplate)
         
@@ -40,6 +41,9 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
     
     
     ## TODO: Doxygen
