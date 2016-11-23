@@ -20,6 +20,8 @@ from globals.bitmaps    import ICON_INFORMATION
 from globals.commands   import CMD_dpkg
 from globals.commands   import CMD_gdebi
 from globals.commands   import CMD_gdebi_gui
+from globals.commands   import CMD_lintian
+from globals.commands   import CMD_md5sum
 from globals.commands   import CMD_system_installer
 from globals.ident      import ID_BUILD
 
@@ -41,7 +43,7 @@ class Panel(wx.ScrolledWindow):
         
         # ----- Extra Options
         self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
-        if not os.path.isfile(u'/usr/bin/md5sum'):
+        if not CMD_md5sum:
             self.chk_md5.Disable()
             self.chk_md5.SetToolTipString(GT(u'Install md5sum package for this option'))
         else:
@@ -58,7 +60,7 @@ class Panel(wx.ScrolledWindow):
         
         # Checks the output .deb for errors
         self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
-        if not os.path.isfile(u'/usr/bin/lintian'):
+        if not CMD_lintian:
             self.chk_lint.Disable()
             self.chk_lint.SetToolTipString(GT(u'Install lintian package for this option'))
         
@@ -667,26 +669,32 @@ class Panel(wx.ScrolledWindow):
         self.chk_install.SetValue(False)
         # chk_md5 should be reset no matter
         self.chk_md5.SetValue(False)
-        if os.path.isfile(u'/usr/bin/md5sum'):
+        if CMD_md5sum:
             self.chk_md5.Enable()
+        
         else:
             self.chk_md5.Disable()
+        
         self.chk_del.SetValue(True)
-        if os.path.isfile(u'/usr/bin/lintian'):
+        if CMD_lintian:
             self.chk_lint.Enable()
             self.chk_lint.SetValue(True)
+        
         else:
             self.chk_lint.Disable()
             self.chk_lint.SetValue(False)
     
+    
     def SetFieldData(self, data):
         self.ResetAllFields()
         build_data = data.split(u'\n')
-        if os.path.isfile(u'/usr/bin/md5sum'):
+        if CMD_md5sum:
             self.chk_md5.SetValue(int(build_data[0]))
+        
         self.chk_del.SetValue(int(build_data[1]))
-        if os.path.isfile(u'usr/bin/lintian'):
+        if CMD_lintian:
             self.chk_lint.SetValue(int(build_data[2]))
+    
     
     def GatherData(self):
         build_list = []
