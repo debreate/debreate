@@ -129,10 +129,9 @@ TT_menu = {
     u'icon': GT(u'Icon to be displayed for the launcher'),
     u'type': (
         GT(u'Type of launcher'), u'',
-        GT(u'Application:'), u'\t{}'.format(GT(u'Executes an application')),
-        GT(u'Link:'), u'\t{}'.format(GT(u'???')),
-        GT(u'FSDevice:'), u'\t{}'.format(GT(u'???')),
-        GT(u'Directory:'), u'\t{}'.format(GT(u'Opens a target directory in the system file manager')),
+        GT(u'Application:'), u'\t{}'.format(GT(u'Shortcut to an application')),
+        GT(u'Link:'), u'\t{}'.format(GT(u'Shortcut to a web URL')),
+        GT(u'Directory:'), u'\t{}'.format(GT(u'Container of meta data of a menu entry')),
         ),
     u'terminal': GT(u'Specifies whether application should be run in a terminal'),
     u'startupnotify': GT(u'Displays a notification in the system panel when launched'),
