@@ -1,8 +1,4 @@
-﻿0.7.12
-- Update gettext locales
-- Test that locales are working
-
-0.8.0 Release:
+﻿0.8.0 Release:
 - Add Launchpad packages for 'yakkety'
 - Use names 'master', 'unstable' & 'stable' for main Git branches
 - Update gettext locales
