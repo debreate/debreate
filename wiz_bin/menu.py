@@ -101,7 +101,7 @@ class Panel(wx.ScrolledWindow):
         self.options_input.append(self.icon_input)
         
         # --- TYPE
-        self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
+        self.type_opt = (u'Application', u'Link', u'Directory')
         self.type_text = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         
         self.type_choice = OwnerDrawnComboBox(self, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
