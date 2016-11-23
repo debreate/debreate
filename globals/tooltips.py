@@ -14,7 +14,7 @@ from dbr.functions      import FieldEnabled
 from dbr.language       import GT
 from dbr.templates      import local_templates_path
 from globals.characters import ARROW_RIGHT
-from globals.commands   import CMD_system_installer
+from globals.commands   import CMD_gdebi_gui
 from globals.ident      import ID_BUILD
 from globals.ident      import ID_CHANGELOG
 from globals.ident      import ID_CONTROL
@@ -156,14 +156,14 @@ TT_build = {
         GT(u'See: Help {0} Reference {0} Lintian Tags Explanation').format(ARROW_RIGHT),
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
-    u'build': GT(u'Start Build'),
+    u'build': GT(u'Start building'),
     u'install': (
-        GT(u'Uses the system package manager to install .deb'), u'',
-        u'{} {}'.format(GT(u'System installer set to:'), CMD_system_installer),
+        GT(u'Install package using a system installer after build'), u'',
+        u'{} {}'.format(GT(u'System installer set to:'), CMD_gdebi_gui),
         ),
     u'install_disabled': (
         GT(u'Installation requires one of the following utilities:'), u'',
-        GT(u'gdebi, dpkg, bsdar, or ar'),
+        GT(u'gdebi-gtk, gdebi-kde'),
         ),
 }
 
