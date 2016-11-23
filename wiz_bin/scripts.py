@@ -37,7 +37,7 @@ class Panel(wx.ScrolledWindow):
         self.chk_postrm = wx.CheckBox(self, ID_Postrm, GT(u'Make this script'), name=GT(u'Post-Remove'))
         
         for S in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
-            S.SetToolTip(wx.ToolTip(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below'))))
+            S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
         
         # Radio buttons for displaying between pre- and post- install scripts
         self.rb_preinst = wx.RadioButton(self, ID_Preinst, GT(u'Pre-Install'), style=wx.RB_GROUP)
@@ -52,7 +52,7 @@ class Panel(wx.ScrolledWindow):
         self.te_postrm = wx.TextCtrl(self, ID_Postrm, style=wx.TE_MULTILINE)
         
         for S in self.te_preinst, self.te_postinst, self.te_prerm, self.te_postrm:
-            S.SetToolTip(wx.ToolTip(GT(u'Script text body')))
+            S.SetToolTipString(GT(u'Script text body'))
         
         self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
@@ -94,9 +94,9 @@ class Panel(wx.ScrolledWindow):
         self.al_text = wx.StaticText(self, -1, GT(u'Path'))
         self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
         
-        tt_alpath = wx.ToolTip(GT(u'Directory where scripts should create symlinks'))
-        self.al_text.SetToolTip(tt_alpath)
-        self.al_input.SetToolTip(tt_alpath)
+        tt_alpath = GT(u'Directory where scripts should create symlinks')
+        self.al_text.SetToolTipString(tt_alpath)
+        self.al_input.SetToolTipString(tt_alpath)
         
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
         
@@ -108,21 +108,21 @@ class Panel(wx.ScrolledWindow):
         if wx.MAJOR_VERSION > 2:
             self.executables = wx.ListCtrl(self, -1, size=(200,200))
             self.executables.SetSingleStyle(wx.LC_REPORT)
+            self.executables.InsertColumn(0, u'')
+        
         else:
             self.executables = wx.ListCtrl(self, -1, size=(200,200),
                     style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
         
-        self.executables.InsertColumn(0, u'')
-        
-        self.executables.SetToolTip(wx.ToolTip(GT(u'Executables from file list to be linked against')))
+        self.executables.SetToolTipString(GT(u'Executables from file list to be linked against'))
         
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_Import)
-        self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from file list')))
+        self.al_import.SetToolTipString(GT(u'Import executables from file list'))
         self.al_del = ButtonDel(self, ID_Remove)
-        self.al_del.SetToolTip(wx.ToolTip(GT(u'Remove selected executables from list')))
+        self.al_del.SetToolTipString(GT(u'Remove selected executables from list'))
         self.al_gen = ButtonBuild(self)
-        self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate scripts')))
+        self.al_gen.SetToolTipString(GT(u'Generate scripts'))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
@@ -152,7 +152,7 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # *** HELP *** #
         self.button_help = ButtonQuestion64(self)
-        self.button_help.SetToolTip(wx.ToolTip(GT(u'How to use Auto-Link')))
+        self.button_help.SetToolTipString(GT(u'How to use Auto-Link'))
         self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')

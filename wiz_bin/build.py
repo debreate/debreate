@@ -31,28 +31,28 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(0, 20, 0, 0)
         
         # --- Tool Tips --- #
-        md5_tip = wx.ToolTip(GT(u'Create checksums for files in package'))
-        del_tip = wx.ToolTip(GT(u'Delete temporary directory tree after package has been created'))
-        tip_lint = wx.ToolTip(GT(u'Checks the package for errors according to lintian\'s specifics'))
-        #dest_tip = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
-        build_tip = wx.ToolTip(GT(u'Start building'))
-        install_tip = wx.ToolTip(GT(u'Install package using a system installer after build'))
+        md5_tip = GT(u'Create checksums for files in package')
+        del_tip = GT(u'Delete temporary directory tree after package has been created')
+        tip_lint = GT(u'Checks the package for errors according to lintian\'s specifics')
+        #dest_tip = GT(u'Choose the folder where you would like the .deb to be created')
+        build_tip = GT(u'Start building')
+        install_tip = GT(u'Install package using a system installer after build')
         
         
         # ----- Extra Options
         self.chk_md5 = wx.CheckBox(self, -1, GT(u'Create md5sums file'))
         if not os.path.isfile(u'/usr/bin/md5sum'):
             self.chk_md5.Disable()
-            self.chk_md5.SetToolTip(wx.ToolTip(GT(u'Install md5sum package for this option')))
+            self.chk_md5.SetToolTipString(GT(u'Install md5sum package for this option'))
         else:
-            self.chk_md5.SetToolTip(md5_tip)
+            self.chk_md5.SetToolTipString(md5_tip)
         
         # For creating md5sum hashes
         self.md5 = MD5Hasher()
         
         # Deletes the temporary build tree
         self.chk_del = wx.CheckBox(self, -1, GT(u'Delete build tree'))
-        self.chk_del.SetToolTip(del_tip)
+        self.chk_del.SetToolTipString(del_tip)
         self.chk_del.SetName(u'DEL')
         self.chk_del.SetValue(True)
         
@@ -60,10 +60,10 @@ class Panel(wx.ScrolledWindow):
         self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
         if not os.path.isfile(u'/usr/bin/lintian'):
             self.chk_lint.Disable()
-            self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
+            self.chk_lint.SetToolTipString(GT(u'Install lintian package for this option'))
         
         else:
-            self.chk_lint.SetToolTip(tip_lint)
+            self.chk_lint.SetToolTipString(tip_lint)
             self.chk_lint.SetValue(True)
         
         # Installs the deb on the system
@@ -71,12 +71,11 @@ class Panel(wx.ScrolledWindow):
         
         if not CMD_gdebi_gui:
             self.chk_install.Enable(False)
-            self.chk_install.SetToolTip(
-                wx.ToolTip(GT(u'Installing package requires gdebi to be available on the system'))
-                )
+            self.chk_install.SetToolTipString(
+                GT(u'Installing package requires gdebi to be available on the system'))
         
         else:
-            self.chk_install.SetToolTip(install_tip)
+            self.chk_install.SetToolTipString(install_tip)
         
         options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
@@ -96,7 +95,7 @@ class Panel(wx.ScrolledWindow):
         
         # --- BUILD
         self.build_button = ButtonBuild64(self)
-        self.build_button.SetToolTip(build_tip)
+        self.build_button.SetToolTipString(build_tip)
         
         self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
         

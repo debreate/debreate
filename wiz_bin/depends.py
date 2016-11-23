@@ -24,23 +24,23 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(20, 20, 0, 0)
         
         # ----- Tool Tips
-        dep_tip = wx.ToolTip(GT(u'Package will need to be installed'))
-        pre_tip = wx.ToolTip(GT(u'Package will need to be installed and configured first'))
-        rec_tip = wx.ToolTip(GT(u'Package is highly recommended and will be installed by default'))
-        sug_tip = wx.ToolTip(GT(u'Package may be useful but is not necessary and will not be installed by default'))
-        enh_tip = wx.ToolTip(GT(u'This package may be useful to enhanced package'))
-        con_tip = wx.ToolTip(GT(u'Package will be removed from the system if it is installed'))
-        rep_tip = wx.ToolTip(GT(u'Package or its files may be overwritten'))
-        break_tip = wx.ToolTip(GT(u'Package conflicts and will be de-configured'))
+        dep_tip = GT(u'Package will need to be installed')
+        pre_tip = GT(u'Package will need to be installed and configured first')
+        rec_tip = GT(u'Package is highly recommended and will be installed by default')
+        sug_tip = GT(u'Package may be useful but is not necessary and will not be installed by default')
+        enh_tip = GT(u'This package may be useful to enhanced package')
+        con_tip = GT(u'Package will be removed from the system if it is installed')
+        rep_tip = GT(u'Package or its files may be overwritten')
+        break_tip = GT(u'Package conflicts and will be de-configured')
         
         
         # Input for dependencies
         self.pack_text = wx.StaticText(self, -1, GT(u'Dependency/Conflict Package Name'))
         self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
         
-        tt_pack = wx.ToolTip(GT(u'Name of dependency/conflicting package'))
-        self.pack_text.SetToolTip(tt_pack)
-        self.dep_name.SetToolTip(tt_pack)
+        tt_pack = GT(u'Name of dependency/conflicting package')
+        self.pack_text.SetToolTipString(tt_pack)
+        self.dep_name.SetToolTipString(tt_pack)
         
         self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
         self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
@@ -48,12 +48,12 @@ class Panel(wx.ScrolledWindow):
         self.dep_oper.SetSelection(0)
         self.dep_ver = wx.TextCtrl(self, -1)
         
-        tt_oper = wx.ToolTip(GT(u'Operator'))
-        self.dep_oper.SetToolTip(tt_oper)
+        tt_oper = GT(u'Operator')
+        self.dep_oper.SetToolTipString(tt_oper)
         
-        tt_ver = wx.ToolTip(GT(u'Version corresponing to package name and operator'))
-        self.ver_text.SetToolTip(tt_ver)
-        self.dep_ver.SetToolTip(tt_ver)
+        tt_ver = GT(u'Version corresponing to package name and operator')
+        self.ver_text.SetToolTipString(tt_ver)
+        self.dep_ver.SetToolTipString(tt_ver)
         
         depH1 = wx.FlexGridSizer(2, 3, hgap=5)
         depH1.AddGrowableCol(2)
@@ -72,35 +72,35 @@ class Panel(wx.ScrolledWindow):
         
         # --- DEPENDS
         self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        self.dep_chk.SetToolTip(dep_tip)
+        self.dep_chk.SetToolTipString(dep_tip)
         
         # --- PRE-DEPENDS
         self.pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
-        self.pre_chk.SetToolTip(pre_tip)
+        self.pre_chk.SetToolTipString(pre_tip)
         
         # --- RECOMMENDS
         self.rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
-        self.rec_chk.SetToolTip(rec_tip)
+        self.rec_chk.SetToolTipString(rec_tip)
         
         # --- SUGGESTS
         self.sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
-        self.sug_chk.SetToolTip(sug_tip)
+        self.sug_chk.SetToolTipString(sug_tip)
         
         # --- ENHANCES
         self.enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
-        self.enh_chk.SetToolTip(enh_tip)
+        self.enh_chk.SetToolTipString(enh_tip)
         
         # --- CONFLICTS
         self.con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
-        self.con_chk.SetToolTip(con_tip)
+        self.con_chk.SetToolTipString(con_tip)
         
         # --- REPLACES
         self.rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
-        self.rep_chk.SetToolTip(rep_tip)
+        self.rep_chk.SetToolTipString(rep_tip)
         
         # --- BREAKS
         self.break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
-        self.break_chk.SetToolTip(break_tip)
+        self.break_chk.SetToolTipString(break_tip)
         
         
         # Buttons to add and remove dependencies from the list
@@ -109,10 +109,10 @@ class Panel(wx.ScrolledWindow):
         self.deprem = ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
         self.depclr = ButtonClear(self)
         
-        self.depadd.SetToolTip(wx.ToolTip(GT(u'Add to package list')))
-        self.depapp.SetToolTip(wx.ToolTip(GT(u'Add as alternative to selected packages in list')))
-        self.deprem.SetToolTip(wx.ToolTip(GT(u'Remove selected packages from list')))
-        self.depclr.SetToolTip(wx.ToolTip(GT(u'Clear package list')))
+        self.depadd.SetToolTipString(GT(u'Add to package list'))
+        self.depapp.SetToolTipString(GT(u'Add as alternative to selected packages in list'))
+        self.deprem.SetToolTipString(GT(u'Remove selected packages from list'))
+        self.depclr.SetToolTipString(GT(u'Clear package list'))
         
         wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
         wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)

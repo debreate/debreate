@@ -26,30 +26,30 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(0, 20, 0, 0)
         
         # --- Tool Tips --- #
-        DF_tip = wx.ToolTip(GT(u'Import launcher from file'))
-        icon_tip = wx.ToolTip(GT(u'Icon to be displayed for the launcher'))
-        m_name_tip = wx.ToolTip(GT(u'Name to be displayed for the launcher'))
-        m_com_tip = wx.ToolTip(GT(u'Text displayed when mouse hovers over launcher'))
-        m_exec_tip = wx.ToolTip(GT(u'Executable to be launched'))
-        #m_mime_tip = wx.ToolTip(GT(u'Specifies the MIME types that the application can handle'))
-        m_enc_tip = wx.ToolTip(GT(u'Specifies the encoding of the desktop entry file'))
-        m_type_tip = wx.ToolTip(GT(u'The type of launcher'))
-        m_cat_tip = wx.ToolTip(GT(u'Categories under which the launcher will be displayed from the system menu'))
-        m_term_tip = wx.ToolTip(GT(u'Specifies whether application should be run from a terminal'))
-        m_notify_tip = wx.ToolTip(GT(u'Displays a notification in the system panel when launched'))
-        #m_nodisp_tip = wx.ToolTip(GT(u'This options means "This application exists, but don\'t display it in the menus"'))
-        #m_showin_tip = wx.ToolTip(GT(u'Only Show In Tip'))
-        m_misc_tip = wx.ToolTip(GT(u'See "Help -> Reference -> Launchers / Dekstop Entries" for more available options'))
+        DF_tip = GT(u'Import launcher from file')
+        icon_tip = GT(u'Icon to be displayed for the launcher')
+        m_name_tip = GT(u'Name to be displayed for the launcher')
+        m_com_tip = GT(u'Text displayed when mouse hovers over launcher')
+        m_exec_tip = GT(u'Executable to be launched')
+        #m_mime_tip = GT(u'Specifies the MIME types that the application can handle')
+        m_enc_tip = GT(u'Specifies the encoding of the desktop entry file')
+        m_type_tip = GT(u'The type of launcher')
+        m_cat_tip = GT(u'Categories under which the launcher will be displayed from the system menu')
+        m_term_tip = GT(u'Specifies whether application should be run from a terminal')
+        m_notify_tip = GT(u'Displays a notification in the system panel when launched')
+        #m_nodisp_tip = GT(u'This options means "This application exists, but don\'t display it in the menus"')
+        #m_showin_tip = GT(u'Only Show In Tip')
+        m_misc_tip = GT(u'See "Help -> Reference -> Launchers / Dekstop Entries" for more available options')
         
         # --- Main Menu Entry --- #
         
         # --- Buttons to open/preview/save .desktop file
         self.open = ButtonBrowse64(self)
-        self.open.SetToolTip(DF_tip)
+        self.open.SetToolTipString(DF_tip)
         self.button_save = ButtonSave64(self)
-        self.button_save.SetToolTip(wx.ToolTip(GT(u'Export launcher to file')))
+        self.button_save.SetToolTipString(GT(u'Export launcher to file'))
         self.button_preview = ButtonPreview64(self)
-        self.button_preview.SetToolTip(wx.ToolTip(GT(u'Preview launcher text')))
+        self.button_preview.SetToolTipString(GT(u'Preview launcher text'))
         
         self.open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
         wx.EVT_BUTTON(self.button_save, wx.ID_ANY, self.OnSaveLauncher)
@@ -73,39 +73,38 @@ class Panel(wx.ScrolledWindow):
         self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
         
         for I in self.txt_filename, self.input_filename:
-            I.SetToolTip(wx.ToolTip(GT(u'Custom filename to use for launcher')))
+            I.SetToolTipString(GT(u'Custom filename to use for launcher'))
         
-        self.chk_filename.SetToolTip(
-                wx.ToolTip(GT(u'Unless checked, the value of "Filename" will be used for the launcher\'s output filename'))
-            )
+        self.chk_filename.SetToolTipString(
+                GT(u'Unless checked, the value of "Filename" will be used for the launcher\'s output filename'))
         
         # --- NAME (menu)
         self.name_text = wx.StaticText(self, -1, GT(u'Name'))
         self.name_input = wx.TextCtrl(self, -1)
         
-        self.name_text.SetToolTip(m_name_tip)
-        self.name_input.SetToolTip(m_name_tip)
+        self.name_text.SetToolTipString(m_name_tip)
+        self.name_input.SetToolTipString(m_name_tip)
         
         # --- EXECUTABLE
         self.exe_text = wx.StaticText(self, -1, GT(u'Executable'))
         self.exe_input = wx.TextCtrl(self, -1)
         
-        self.exe_text.SetToolTip(m_exec_tip)
-        self.exe_input.SetToolTip(m_exec_tip)
+        self.exe_text.SetToolTipString(m_exec_tip)
+        self.exe_input.SetToolTipString(m_exec_tip)
         
         # --- COMMENT
         self.comm_text = wx.StaticText(self, -1, GT(u'Comment'))
         self.comm_input = wx.TextCtrl(self, -1)
         
-        self.comm_text.SetToolTip(m_com_tip)
-        self.comm_input.SetToolTip(m_com_tip)
+        self.comm_text.SetToolTipString(m_com_tip)
+        self.comm_input.SetToolTipString(m_com_tip)
         
         # --- ICON
         self.icon_text = wx.StaticText(self, -1, GT(u'Icon'))
         self.icon_input = wx.TextCtrl(self)
         
-        self.icon_text.SetToolTip(icon_tip)
-        self.icon_input.SetToolTip(icon_tip)
+        self.icon_text.SetToolTipString(icon_tip)
+        self.icon_input.SetToolTipString(icon_tip)
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
@@ -113,8 +112,8 @@ class Panel(wx.ScrolledWindow):
         self.type_choice = OwnerDrawnComboBox(self, choices=self.type_opt)
         self.type_choice.SetSelection(0)
         
-        self.type_text.SetToolTip(m_type_tip)
-        self.type_choice.SetToolTip(m_type_tip)
+        self.type_text.SetToolTipString(m_type_tip)
+        self.type_choice.SetToolTipString(m_type_tip)
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
@@ -122,8 +121,8 @@ class Panel(wx.ScrolledWindow):
         self.term_choice = wx.Choice(self, -1, choices=self.term_opt)
         self.term_choice.SetSelection(1)
         
-        self.term_text.SetToolTip(m_term_tip)
-        self.term_choice.SetToolTip(m_term_tip)
+        self.term_text.SetToolTipString(m_term_tip)
+        self.term_choice.SetToolTipString(m_term_tip)
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
@@ -131,8 +130,8 @@ class Panel(wx.ScrolledWindow):
         self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
         self.notify_choice.SetSelection(0)
         
-        self.notify_text.SetToolTip(m_notify_tip)
-        self.notify_choice.SetToolTip(m_notify_tip)
+        self.notify_text.SetToolTipString(m_notify_tip)
+        self.notify_choice.SetToolTipString(m_notify_tip)
         
         # --- ENCODING
         self.enc_opt = (
@@ -143,8 +142,8 @@ class Panel(wx.ScrolledWindow):
         self.enc_input = OwnerDrawnComboBox(self, choices=self.enc_opt)
         self.enc_input.SetSelection(2)
         
-        self.enc_text.SetToolTip(m_enc_tip)
-        self.enc_input.SetToolTip(m_enc_tip)
+        self.enc_text.SetToolTipString(m_enc_tip)
+        self.enc_input.SetToolTipString(m_enc_tip)
         
         # --- CATEGORIES
         self.cat_opt = (
@@ -165,23 +164,23 @@ class Panel(wx.ScrolledWindow):
         self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
         self.cat_choice = OwnerDrawnComboBox(self, value=self.cat_opt[0], choices=self.cat_opt)
         
-        self.cat_text.SetToolTip(m_cat_tip)
-        self.cat_choice.SetToolTip(m_cat_tip)
+        self.cat_text.SetToolTipString(m_cat_tip)
+        self.cat_choice.SetToolTipString(m_cat_tip)
         
         self.cat_add = ButtonAdd(self)
-        self.cat_add.SetToolTip(wx.ToolTip(GT(u'Add current category to list')))
+        self.cat_add.SetToolTipString(GT(u'Add current category to list'))
         self.cat_del = ButtonDel(self)
-        self.cat_del.SetToolTip(wx.ToolTip(GT(u'Remove selected categories from list')))
+        self.cat_del.SetToolTipString(GT(u'Remove selected categories from list'))
         self.cat_clr = ButtonClear(self)
-        self.cat_clr.SetToolTip(wx.ToolTip(GT(u'Clear categories list')))
+        self.cat_clr.SetToolTipString(GT(u'Clear categories list'))
         
         if wx.MAJOR_VERSION > 2:
             self.categories = wx.ListCtrl(self, -1)
             self.categories.SetSingleStyle(wx.LC_SINGLE_SEL|wx.LC_REPORT)
+            self.categories.InsertColumn(0, u'')
+        
         else:
             self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
-        
-        self.categories.InsertColumn(0, u'')
         
         wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
         wx.EVT_KEY_DOWN(self.categories, self.SetCategory)
@@ -208,8 +207,8 @@ class Panel(wx.ScrolledWindow):
         self.misc_text = wx.StaticText(self, -1, GT(u'Other'))
         self.misc = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
         
-        self.misc_text.SetToolTip(m_misc_tip)
-        self.misc.SetToolTip(m_misc_tip)
+        self.misc_text.SetToolTipString(m_misc_tip)
+        self.misc.SetToolTipString(m_misc_tip)
         
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
         misc_sizer.Add(self.misc, 1, wx.EXPAND)
