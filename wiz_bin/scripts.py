@@ -5,15 +5,16 @@
 
 import os, wx
 
-from dbr.buttons    import ButtonBuild
-from dbr.buttons    import ButtonConfirm
-from dbr.buttons    import ButtonDel
-from dbr.buttons    import ButtonImport
-from dbr.buttons    import ButtonQuestion64
-from dbr.language   import GT
-from dbr.pathctrl   import PATH_WARN
-from dbr.pathctrl   import PathCtrl
-from globals.ident  import ID_SCRIPTS
+from dbr.buttons        import ButtonBuild
+from dbr.buttons        import ButtonConfirm
+from dbr.buttons        import ButtonDel
+from dbr.buttons        import ButtonImport
+from dbr.buttons        import ButtonQuestion64
+from dbr.language       import GT
+from dbr.pathctrl       import PATH_WARN
+from dbr.pathctrl       import PathCtrl
+from globals.ident      import ID_SCRIPTS
+from globals.tooltips   import SetPageToolTips
 
 
 ID_Import = 100
@@ -80,20 +81,20 @@ class Panel(wx.ScrolledWindow):
         srb_sizer.Add(self.rb_postrm, 0)
         
         # Sizer for left half of scripts panel
-        sleft_sizer = wx.BoxSizer(wx.VERTICAL)
-        sleft_sizer.Add(srb_sizer, 0, wx.EXPAND|wx.BOTTOM, 5)
-        sleft_sizer.Add(self.te_preinst, 1, wx.EXPAND)
-        sleft_sizer.Add(self.te_postinst, 1, wx.EXPAND)
-        sleft_sizer.Add(self.te_prerm, 1,wx.EXPAND)
-        sleft_sizer.Add(self.te_postrm, 1, wx.EXPAND)
+        layout_left = wx.BoxSizer(wx.VERTICAL)
+        layout_left.Add(srb_sizer, 0, wx.EXPAND|wx.BOTTOM, 5)
+        layout_left.Add(self.te_preinst, 1, wx.EXPAND)
+        layout_left.Add(self.te_postinst, 1, wx.EXPAND)
+        layout_left.Add(self.te_prerm, 1,wx.EXPAND)
+        layout_left.Add(self.te_postrm, 1, wx.EXPAND)
         
-        # Auto-Link options
         # Executable list - generate button will make scripts to link to files in this list
         self.xlist = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, -1, GT(u'Path'))
+        self.al_text = wx.StaticText(self, label=GT(u'Path'), name=u'target')
         self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
+        self.al_input.SetName(u'target')
         
         tt_alpath = GT(u'Directory where scripts should create symlinks')
         self.al_text.SetToolTipString(tt_alpath)
@@ -119,10 +120,13 @@ class Panel(wx.ScrolledWindow):
         
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_Import)
+        self.al_import.SetName(u'import')
         self.al_import.SetToolTipString(GT(u'Import executables from file list'))
         self.al_del = ButtonDel(self, ID_Remove)
+        self.al_del.SetName(u'Remove')
         self.al_del.SetToolTipString(GT(u'Remove selected executables from list'))
         self.al_gen = ButtonBuild(self)
+        self.al_gen.SetName(u'Generate')
         self.al_gen.SetToolTipString(GT(u'Generate scripts'))
         
         wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
@@ -153,7 +157,8 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # *** HELP *** #
         self.button_help = ButtonQuestion64(self)
-        self.button_help.SetToolTipString(GT(u'How to use Auto-Link'))
+        self.button_help.SetName(u'help')
+        #self.button_help.SetToolTipString(GT(u'How to use Auto-Link'))
         self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
@@ -170,24 +175,27 @@ scripts will be created that will place a symbolic link to your executables in t
         wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
         
         # Sizer for right half of scripts panel
-        sright_sizer = wx.BoxSizer(wx.VERTICAL)
-        sright_sizer.AddSpacer(17)
-        sright_sizer.Add(autogen_box, 0)
-        #sright_sizer.Add(self.al_text, 0)
-        sright_sizer.Add(self.button_help, 0, wx.ALIGN_CENTER)
+        layout_right = wx.BoxSizer(wx.VERTICAL)
+        layout_right.AddSpacer(17)
+        layout_right.Add(autogen_box, 0)
+        #layout_right.Add(self.al_text, 0)
+        layout_right.Add(self.button_help, 0, wx.ALIGN_CENTER)
         
         
         # ----- Layout
-        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        main_sizer.Add(sleft_sizer, 1, wx.EXPAND|wx.ALL, 5)
-        main_sizer.Add(sright_sizer, 0, wx.ALL, 5)
+        layout_main = wx.BoxSizer(wx.HORIZONTAL)
+        layout_main.Add(layout_left, 1, wx.EXPAND|wx.ALL, 5)
+        layout_main.Add(layout_right, 0, wx.ALL, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(main_sizer)
+        self.SetSizer(layout_main)
         self.Layout()
         
-        
+        # Initialize script display
         self.ScriptSelect(None)
+        
+        
+        SetPageToolTips(self)
     
     
     ## TODO: Doxygen
