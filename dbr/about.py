@@ -120,7 +120,7 @@ class AboutDialog(wx.Dialog):
         
         ## Debreate's installation prefix
         install_prefix = wx.StaticText(sys_info, -1,
-                GT(u'Installation prefix: {}').format(PREFIX))
+                GT(u'Installed to: {}').format(PREFIX))
         
         self.py_info.SetFont(sys_info_font)
         self.wx_info.SetFont(sys_info_font)
