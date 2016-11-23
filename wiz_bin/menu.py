@@ -482,8 +482,6 @@ class Panel(wx.ScrolledWindow):
                 path = dia.GetPath()
         
         if cont:
-            filename = dia.GetFilename()
-            
             # Create a backup file
             overwrite = False
             if os.path.isfile(path):
