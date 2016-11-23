@@ -15,10 +15,14 @@ debreate (0.7.12) xenial; urgency=low
     Import modules from 'unstable' branch
     Fix first run window not closing
     Fixes for wx 3.0 compatibility
-    Disabled broken Quick Build
+    Fixed Quick Build
     Added arm64 to archituctures
+    Optionally use custom filename for menu launcher
+    Fix problems with add/remove/delete in dependency list
+    Option to enable/disable tooltips
+    Install packages after build with gdebi
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 04 Nov 2016 15:00:03 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Tue, 22 Nov 2016 21:39:34 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
