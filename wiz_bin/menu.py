@@ -438,6 +438,7 @@ class Panel(wx.ScrolledWindow):
             self.SetLauncherData(u'\n'.join(data), enabled=True)
     
     
+    ## TODO: Doxygen
     def OnPreviewLauncher(self, event):
         # Show a preview of the .desktop config file
         config = self.GetLauncherInfo()
@@ -545,19 +546,20 @@ class Panel(wx.ScrolledWindow):
         self.OnSetCustomFilename()
     
     
+    ## TODO: Doxygen
     def ResetAllFields(self):
+        self.chk_filename.SetValue(self.chk_filename.default)
         self.input_filename.Clear()
-        self.chk_filename.SetValue(True)
-        self.name_input.Clear()
-        self.exe_input.Clear()
-        self.comm_input.Clear()
-        self.icon_input.Clear()
-        self.type_choice.SetSelection(0)
-        self.term_choice.SetSelection(1)
-        self.notify_choice.SetSelection(0)
-        self.enc_input.SetSelection(2)
-        self.categories.DeleteAllItems()
-        self.other.Clear()
+        
+        for O in self.options_input:
+            O.SetValue(O.default)
+        
+        for O in self.options_choice:
+            O.SetSelection(O.default)
+        
+        for O in self.options_list:
+            O.DeleteAllItems()
+        
         self.activate.SetValue(self.activate.default)
         self.OnToggle()
     
