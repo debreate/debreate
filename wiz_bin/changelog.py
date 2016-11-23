@@ -3,12 +3,13 @@
 
 import commands, wx
 
-from dbr.buttons    import ButtonAdd
-from dbr.buttons    import ButtonImport
-from dbr.language   import GT
-from dbr.pathctrl   import PATH_WARN
-from dbr.pathctrl   import PathCtrl
-from globals.ident  import ID_CHANGELOG
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonImport
+from dbr.language       import GT
+from dbr.pathctrl       import PATH_WARN
+from dbr.pathctrl       import PathCtrl
+from globals.ident      import ID_CHANGELOG
+from globals.tooltips   import SetPageToolTips
 
 
 ## TODO: Doxygen
@@ -18,49 +19,25 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        self.package_text = wx.StaticText(self, -1, GT(u'Package'))
-        self.package = wx.TextCtrl(self)
+        self.package_text = wx.StaticText(self, label=GT(u'Package'), name=u'package')
+        self.package = wx.TextCtrl(self, name=self.package_text.Name)
         
-        tt_package = GT(u'Name of the package/software')
-        self.package_text.SetToolTipString(tt_package)
-        self.package.SetToolTipString(tt_package)
+        self.version_text = wx.StaticText(self, label=GT(u'Version'), name=u'version')
+        self.version = wx.TextCtrl(self, name=self.version_text.Name)
         
-        self.version_text = wx.StaticText(self, -1, GT(u'Version'))
-        self.version = wx.TextCtrl(self)
+        self.distribution_text = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
+        self.distribution = wx.TextCtrl(self, name=self.distribution_text.Name)
         
-        tt_version = GT(u'Package/Software release version')
-        self.version_text.SetToolTipString(tt_version)
-        self.version.SetToolTipString(tt_version)
-        
-        self.distribution_text = wx.StaticText(self, -1, GT(u'Distribution'))
-        self.distribution = wx.TextCtrl(self)
-        
-        tt_dist = GT(u'Target distribution for Debian/Ubuntu')
-        self.distribution_text.SetToolTipString(tt_dist)
-        self.distribution.SetToolTipString(tt_dist)
-        
-        self.urgency_text = wx.StaticText(self, -1, GT(u'Urgency'))
-        self.urgency_opt = (u'low', u'HIGH')
-        self.urgency = wx.Choice(self, choices=self.urgency_opt)
+        self.urgency_text = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
+        self.urgency_opt = (u'low', u'high')
+        self.urgency = wx.Choice(self, choices=self.urgency_opt, name=self.urgency_text.Name)
         self.urgency.SetSelection(0)
         
-        tt_urgency = GT(u'Urgency of this update')
-        self.urgency_text.SetToolTipString(tt_urgency)
-        self.urgency.SetToolTipString(tt_urgency)
+        self.maintainer_text = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
+        self.maintainer = wx.TextCtrl(self, name=self.maintainer_text.Name)
         
-        self.maintainer_text = wx.StaticText(self, -1, GT(u'Maintainer'))
-        self.maintainer = wx.TextCtrl(self)
-        
-        tt_maintaner = GT(u'Package/Software maintainer\'s full name')
-        self.maintainer_text.SetToolTipString(tt_maintaner)
-        self.maintainer.SetToolTipString(tt_maintaner)
-        
-        self.email_text = wx.StaticText(self, -1, GT(u'Email'))
-        self.email = wx.TextCtrl(self)
-        
-        tt_email = GT(u'Package/Software maintaner\'s email address')
-        self.email_text.SetToolTipString(tt_email)
-        self.email.SetToolTipString(tt_email)
+        self.email_text = wx.StaticText(self, label=GT(u'Email'), name=u'email')
+        self.email = wx.TextCtrl(self, name=self.email_text.Name)
         
         info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
         info_sizer.AddGrowableCol(1)
@@ -76,30 +53,27 @@ class Panel(wx.ScrolledWindow):
             ])
         
         # *** CHANGES DETAILS
-        self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE)
+        self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE, name=u'changes')
         
-        self.changes.SetToolTipString(GT(u'Enter one change per line'))
-        
-        self.border_changes = wx.StaticBox(self, -1, GT(u'Changes'), size=(20,20))
+        self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
         changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
         changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
         # Destination of changelog
-        self.rb_dest_default = wx.RadioButton(self, -1, u'/usr/share/doc/<package>', style=wx.RB_GROUP)
-        self.rb_dest_custom = wx.RadioButton(self)
-        self.dest_custom = PathCtrl(self, -1, u'/', PATH_WARN)
-        
-        self.rb_dest_default.SetToolTipString(GT(u'Install changelog to standard directory'))
-        self.rb_dest_custom.SetToolTipString(GT(u'Install changelog to custom directory'))
+        self.target_default = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
+                name=u'target default', style=wx.RB_GROUP)
+        self.target_custom = wx.RadioButton(self, name=self.target_default.Name)
+        self.target = PathCtrl(self, -1, u'/', PATH_WARN)
+        self.target.SetName(u'target custom')
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dest_custom_sizer.Add(self.rb_dest_custom)
-        dest_custom_sizer.Add(self.dest_custom, 1)
+        dest_custom_sizer.Add(self.target_custom)
+        dest_custom_sizer.Add(self.target, 1)
         
-        border_dest = wx.StaticBox(self, -1, GT(u'Target'))
+        border_dest = wx.StaticBox(self, label=GT(u'Target'))
         dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
         dest_box.AddSpacer(5)
-        dest_box.Add(self.rb_dest_default)
+        dest_box.Add(self.target_default)
         dest_box.AddSpacer(5)
         dest_box.Add(dest_custom_sizer, 0, wx.EXPAND)
         dest_box.AddSpacer(5)
@@ -110,9 +84,10 @@ class Panel(wx.ScrolledWindow):
         
         
         self.button_import = ButtonImport(self)
-        self.button_import.SetToolTipString(GT(u'Import information from Control page'))
+        self.button_import.SetName(u'import')
+        
         self.button_add = ButtonAdd(self)
-        self.button_add.SetToolTipString(GT(u'Prepend above changes to changelog'))
+        self.button_add.SetName(u'add')
         
         wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
         wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
@@ -121,9 +96,7 @@ class Panel(wx.ScrolledWindow):
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        self.display_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE)
-        self.display_area.SetToolTipString(GT(u'Formatted changelog (editable)'))
-        
+        self.log = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
         
         # *** LAYOUT
         main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
@@ -132,12 +105,15 @@ class Panel(wx.ScrolledWindow):
         main_sizer.AddSpacer(10)
         main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(self.display_area, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        main_sizer.Add(self.log, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         main_sizer.AddSpacer(5)
         
         self.SetAutoLayout(True)
         self.SetSizer(main_sizer)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
     
     
     ## TODO: Doxygen
@@ -167,22 +143,22 @@ class Panel(wx.ScrolledWindow):
         info2 = u' -- {} <{}>  {}'.format(maintainer, email, date)
         
         entry = u'\n'.join((info1, details, info2))
-        self.display_area.SetValue(u'\n'.join((entry, wx.EmptyString, self.display_area.GetValue())))
+        self.log.SetValue(u'\n'.join((entry, wx.EmptyString, self.log.GetValue())))
     
     
     ## TODO: Doxygen
     def GatherData(self):
-        if self.rb_dest_default.GetValue():
+        if self.target_default.GetValue():
             dest = u'<<DEST>>DEFAULT<</DEST>>'
-        elif self.rb_dest_custom.GetValue():
-            dest = u'<<DEST>>' + self.dest_custom.GetValue() + u'<</DEST>>'
+        elif self.target_custom.GetValue():
+            dest = u'<<DEST>>' + self.target.GetValue() + u'<</DEST>>'
         
-        return u'\n'.join((u'<<CHANGELOG>>', dest, self.display_area.GetValue(), u'<</CHANGELOG>>'))
+        return u'\n'.join((u'<<CHANGELOG>>', dest, self.log.GetValue(), u'<</CHANGELOG>>'))
     
     
     ## TODO: Doxygen.
     def GetChangelog(self):
-        return self.display_area.GetValue()
+        return self.log.GetValue()
     
     
     ## TODO: Doxygen
@@ -205,9 +181,9 @@ class Panel(wx.ScrolledWindow):
         self.maintainer.Clear()
         self.email.Clear()
         self.changes.Clear()
-        self.rb_dest_default.SetValue(True)
-        self.dest_custom.SetValue(u'/')
-        self.display_area.Clear()
+        self.target_default.SetValue(True)
+        self.target.SetValue(u'/')
+        self.log.Clear()
     
     
     ## TODO: Doxygen
@@ -215,8 +191,8 @@ class Panel(wx.ScrolledWindow):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         if dest == u'DEFAULT':
-            self.rb_dest_default.SetValue(True)
+            self.target_default.SetValue(True)
         else:
-            self.rb_dest_custom.SetValue(True)
-            self.dest_custom.SetValue(dest)
-        self.display_area.SetValue(u'\n'.join(changelog[1:]))
+            self.target_custom.SetValue(True)
+            self.target.SetValue(dest)
+        self.log.SetValue(u'\n'.join(changelog[1:]))
