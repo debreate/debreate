@@ -6,17 +6,18 @@
 import os, shutil, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.buttons    import ButtonAdd
-from dbr.buttons    import ButtonBrowse64
-from dbr.buttons    import ButtonClear
-from dbr.buttons    import ButtonDel
-from dbr.buttons    import ButtonPreview64
-from dbr.buttons    import ButtonSave64
-from dbr.custom     import OpenFile
-from dbr.custom     import SaveFile
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
-from globals.ident  import ID_MENU
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonBrowse64
+from dbr.buttons        import ButtonClear
+from dbr.buttons        import ButtonDel
+from dbr.buttons        import ButtonPreview64
+from dbr.buttons        import ButtonSave64
+from dbr.custom         import OpenFile
+from dbr.custom         import SaveFile
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from globals.ident      import ID_MENU
+from globals.tooltips   import SetPageToolTips
 
 
 class Panel(wx.ScrolledWindow):
@@ -25,33 +26,17 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        # --- Tool Tips --- #
-        DF_tip = GT(u'Import launcher from file')
-        icon_tip = GT(u'Icon to be displayed for the launcher')
-        m_name_tip = GT(u'Name to be displayed for the launcher')
-        m_com_tip = GT(u'Text displayed when mouse hovers over launcher')
-        m_exec_tip = GT(u'Executable to be launched')
-        #m_mime_tip = GT(u'Specifies the MIME types that the application can handle')
-        m_enc_tip = GT(u'Specifies the encoding of the desktop entry file')
-        m_type_tip = GT(u'The type of launcher')
-        m_cat_tip = GT(u'Categories under which the launcher will be displayed from the system menu')
-        m_term_tip = GT(u'Specifies whether application should be run from a terminal')
-        m_notify_tip = GT(u'Displays a notification in the system panel when launched')
-        #m_nodisp_tip = GT(u'This options means "This application exists, but don\'t display it in the menus"')
-        #m_showin_tip = GT(u'Only Show In Tip')
-        m_misc_tip = GT(u'See "Help -> Reference -> Launchers / Dekstop Entries" for more available options')
-        
         # --- Main Menu Entry --- #
         
         # --- Buttons to open/preview/save .desktop file
         self.btn_open = ButtonBrowse64(self)
-        self.btn_open.SetToolTipString(DF_tip)
+        self.btn_open.SetName(u'open')
         
         self.btn_save = ButtonSave64(self)
-        self.btn_save.SetToolTipString(GT(u'Export launcher to file'))
+        self.btn_save.SetName(u'export')
         
         self.btn_preview = ButtonPreview64(self)
-        self.btn_preview.SetToolTipString(GT(u'Preview launcher text'))
+        self.btn_preview.SetName(u'preview')
         
         self.btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
         wx.EVT_BUTTON(self.btn_save, wx.ID_ANY, self.OnSaveLauncher)
@@ -64,125 +49,135 @@ class Panel(wx.ScrolledWindow):
         
         # --- CHECKBOX
         self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
+        self.activate.default = False
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
-        self.txt_filename = wx.StaticText(self, label=GT(u'Filename'))
-        self.input_filename = wx.TextCtrl(self)
-        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<name>.desktop)'))
-        self.chk_filename.SetValue(True)
+        # --- Custom output filename
+        self.txt_filename = wx.StaticText(self, label=GT(u'Filename'), name=u'filename')
+        self.input_filename = wx.TextCtrl(self, name=u'filename')
+        
+        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'),
+                name=u'filename chk')
+        self.chk_filename.default = True
+        self.chk_filename.SetValue(self.chk_filename.default)
         
         self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
         
-        for I in self.txt_filename, self.input_filename:
-            I.SetToolTipString(GT(u'Custom filename to use for launcher'))
-        
-        self.chk_filename.SetToolTipString(
-                GT(u'Unless checked, the value of "Filename" will be used for the launcher\'s output filename'))
-        
         # --- NAME (menu)
-        self.name_text = wx.StaticText(self, -1, GT(u'Name'))
-        self.name_input = wx.TextCtrl(self, -1)
+        self.name_text = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         
-        self.name_text.SetToolTipString(m_name_tip)
-        self.name_input.SetToolTipString(m_name_tip)
+        self.name_input = wx.TextCtrl(self, name=u'Name')
+        self.name_input.req = True
+        self.name_input.default = wx.EmptyString
         
         # --- EXECUTABLE
-        self.exe_text = wx.StaticText(self, -1, GT(u'Executable'))
-        self.exe_input = wx.TextCtrl(self, -1)
+        self.exe_text = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
         
-        self.exe_text.SetToolTipString(m_exec_tip)
-        self.exe_input.SetToolTipString(m_exec_tip)
+        self.exe_input = wx.TextCtrl(self, name=u'Exec')
+        self.exe_input.default = wx.EmptyString
         
         # --- COMMENT
-        self.comm_text = wx.StaticText(self, -1, GT(u'Comment'))
-        self.comm_input = wx.TextCtrl(self, -1)
+        self.comm_text = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
         
-        self.comm_text.SetToolTipString(m_com_tip)
-        self.comm_input.SetToolTipString(m_com_tip)
+        self.comm_input = wx.TextCtrl(self, name=u'Comment')
+        self.comm_input.default = wx.EmptyString
         
         # --- ICON
-        self.icon_text = wx.StaticText(self, -1, GT(u'Icon'))
-        self.icon_input = wx.TextCtrl(self)
+        self.icon_text = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         
-        self.icon_text.SetToolTipString(icon_tip)
-        self.icon_input.SetToolTipString(icon_tip)
+        self.icon_input = wx.TextCtrl(self, name=u'Icon')
+        self.icon_input.default = wx.EmptyString
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
-        self.type_text = wx.StaticText(self, -1, GT(u'Type'))
-        self.type_choice = OwnerDrawnComboBox(self, choices=self.type_opt)
-        self.type_choice.SetSelection(0)
+        self.type_text = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         
-        self.type_text.SetToolTipString(m_type_tip)
-        self.type_choice.SetToolTipString(m_type_tip)
+        self.type_choice = OwnerDrawnComboBox(self, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
+        self.type_choice.default = self.type_choice.GetValue()
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
-        self.term_text = wx.StaticText(self, -1, GT(u'Terminal'))
-        self.term_choice = wx.Choice(self, -1, choices=self.term_opt)
-        self.term_choice.SetSelection(1)
+        self.term_text = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
         
-        self.term_text.SetToolTipString(m_term_tip)
-        self.term_choice.SetToolTipString(m_term_tip)
+        self.term_choice = wx.Choice(self, choices=self.term_opt, name=u'Terminal')
+        self.term_choice.default = 1
+        self.term_choice.SetSelection(self.term_choice.default)
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
-        self.notify_text = wx.StaticText(self, -1, GT(u'Startup Notify'))
-        self.notify_choice = wx.Choice(self, -1, choices=self.notify_opt)
-        self.notify_choice.SetSelection(0)
+        self.notify_text = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
         
-        self.notify_text.SetToolTipString(m_notify_tip)
-        self.notify_choice.SetToolTipString(m_notify_tip)
+        self.notify_choice = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
+        self.notify_choice.default = 0
+        self.notify_choice.SetSelection(self.notify_choice.default)
         
         # --- ENCODING
         self.enc_opt = (
-            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC', u'UTF-16', u'UTF-32',
-            u'SCSU', u'BOCU-1', u'Punycode', u'GB 18030'
+            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
+            u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
+            u'GB 18030',
             )
-        self.enc_text = wx.StaticText(self, -1, GT(u'Encoding'))
-        self.enc_input = OwnerDrawnComboBox(self, choices=self.enc_opt)
-        self.enc_input.SetSelection(2)
+        self.enc_text = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         
-        self.enc_text.SetToolTipString(m_enc_tip)
-        self.enc_input.SetToolTipString(m_enc_tip)
+        self.enc_input = OwnerDrawnComboBox(self, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
+        self.enc_input.default = self.enc_input.GetValue()
         
         # --- CATEGORIES
         self.cat_opt = (
-            u'2DGraphics', u'Accessibility', u'Application', u'ArcadeGame', u'Archiving', u'Audio',
-            u'AudioVideo', u'BlocksGame', u'BoardGame', u'Calculator', u'Calendar', u'CardGame',
-            u'Compression', u'ContactManagement', u'Core', u'DesktopSettings', u'Development',
-            u'Dictionary', u'DiscBurning', u'Documentation', u'Email', u'FileManager',
-            u'FileTransfer', u'Game', u'GNOME', u'Graphics', u'GTK', u'HardwareSettings',
-            u'InstantMessaging', u'KDE', u'LogicGame', u'Math', u'Monitor', u'Network', u'OCR',
-            u'Office', u'P2P', u'PackageManager', u'Photography', u'Player', u'Presentation',
-            u'Printing', u'Qt', u'RasterGraphics', u'Recorder', u'RemoteAccess', u'Scanning',
-            u'Screensaver', u'Security', u'Settings', u'Spreadsheet', u'System', u'Telephony',
-            u'TerminalEmulator', u'TextEditor', u'Utility', u'VectorGraphics', u'Video', u'Viewer',
-            u'WordProcessor', u'Wine', u'Wine-Programs-Accessories', u'X-GNOME-NetworkSettings',
-            u'X-GNOME-PersonalSettings', u'X-GNOME-SystemSettings', u'X-KDE-More', u'X-Red-Hat-Base',
-            u'X-SuSE-ControlCenter-System',
+            u'2DGraphics',
+            u'Accessibility', u'Application', u'ArcadeGame', u'Archiving', u'Audio', u'AudioVideo',
+            u'BlocksGame', u'BoardGame',
+            u'Calculator', u'Calendar', u'CardGame', u'Compression', u'ContactManagement', u'Core',
+            u'DesktopSettings', u'Development', u'Dictionary', u'DiscBurning', u'Documentation',
+            u'Email',
+            u'FileManager', u'FileTransfer',
+            u'Game', u'GNOME', u'Graphics', u'GTK',
+            u'HardwareSettings',
+            u'InstantMessaging',
+            u'KDE',
+            u'LogicGame',
+            u'Math', u'Monitor',
+            u'Network',
+            u'OCR', u'Office',
+            u'P2P', u'PackageManager', u'Photography', u'Player', u'Presentation', u'Printing',
+            u'Qt',
+            u'RasterGraphics', u'Recorder', u'RemoteAccess',
+            u'Scanning', u'Screensaver', u'Security', u'Settings', u'Spreadsheet', u'System',
+            u'Telephony', u'TerminalEmulator', u'TextEditor',
+            u'Utility',
+            u'VectorGraphics', u'Video', u'Viewer',
+            u'WordProcessor', u'Wine', u'Wine-Programs-Accessories',
+            u'X-GNOME-NetworkSettings', u'X-GNOME-PersonalSettings', u'X-GNOME-SystemSettings',
+            u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
             )
-        self.cat_text = wx.StaticText(self, -1, GT(u'Category'))
-        self.cat_choice = OwnerDrawnComboBox(self, value=self.cat_opt[0], choices=self.cat_opt)
         
-        self.cat_text.SetToolTipString(m_cat_tip)
-        self.cat_choice.SetToolTipString(m_cat_tip)
+        self.cat_text = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        
+        # This option does not get set by importing a new project
+        self.cat_choice = OwnerDrawnComboBox(self, value=self.cat_opt[0], choices=self.cat_opt,
+                name=u'Category')
+        self.cat_choice.default = self.cat_choice.GetValue()
         
         self.cat_add = ButtonAdd(self)
-        self.cat_add.SetToolTipString(GT(u'Add current category to list'))
+        self.cat_add.SetName(u'add category')
         self.cat_del = ButtonDel(self)
-        self.cat_del.SetToolTipString(GT(u'Remove selected categories from list'))
+        self.cat_del.SetName(u'rm category')
         self.cat_clr = ButtonClear(self)
-        self.cat_clr.SetToolTipString(GT(u'Clear categories list'))
+        self.cat_clr.SetName(u'clear categories')
         
+        # NOTE: wx 3.0 compat
         if wx.MAJOR_VERSION > 2:
-            self.categories = wx.ListCtrl(self, -1)
-            self.categories.SetSingleStyle(wx.LC_SINGLE_SEL|wx.LC_REPORT)
-            self.categories.InsertColumn(0, u'')
+            self.categories = wx.ListCtrl(self)
+            self.categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         else:
-            self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+            self.categories = wx.ListCtrl(self, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+        
+        # For manually setting background color after enable/disable
+        self.categories.default_color = self.categories.GetBackgroundColour()
+        self.categories.SetName(u'Categories')
+        
         
         wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
         wx.EVT_KEY_DOWN(self.categories, self.SetCategory)
@@ -206,14 +201,14 @@ class Panel(wx.ScrolledWindow):
         
         
         # ----- MISC
-        self.misc_text = wx.StaticText(self, -1, GT(u'Other'))
-        self.misc = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE)
+        self.other_text = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         
-        self.misc_text.SetToolTipString(m_misc_tip)
-        self.misc.SetToolTipString(m_misc_tip)
+        self.other = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE,
+                name=self.other_text.Name)
+        self.other.default = wx.EmptyString
         
         misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        misc_sizer.Add(self.misc, 1, wx.EXPAND)
+        misc_sizer.Add(self.other, 1, wx.EXPAND)
         
         
         # GridBagSizer flags
@@ -263,15 +258,15 @@ class Panel(wx.ScrolledWindow):
         border_box.Add(sizer1, 0, wx.EXPAND|wx.BOTTOM, 5)
         border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
         border_box.AddSpacer(5)
-        border_box.Add(self.misc_text, 0)
-        border_box.Add(self.misc, 1, wx.EXPAND)
+        border_box.Add(self.other_text, 0)
+        border_box.Add(self.other, 1, wx.EXPAND)
         
         # --- List of main menu items affected by checkbox -- used for toggling each widget
         self.menu_list = (
             self.btn_save, self.btn_preview, self.chk_filename, self.icon_input,
             self.name_input, self.comm_input, self.exe_input, self.enc_input, self.type_choice,
             self.cat_choice, self.categories, self.cat_add, self.cat_del, self.cat_clr,
-            self.term_choice, self.notify_choice, self.misc,
+            self.term_choice, self.notify_choice, self.other,
             )
         
         self.OnToggle(None) #Disable widgets
@@ -316,6 +311,9 @@ class Panel(wx.ScrolledWindow):
             self.term_text: u'Term',
             self.notify_text: u'Notify',
             }
+        
+        
+        SetPageToolTips(self)
     
     
     def OnToggle(self, event=None):
@@ -387,8 +385,8 @@ class Panel(wx.ScrolledWindow):
             desktop_list.append(u'Categories={}'.format(categories))
         
         # Add Misc
-        if self.misc.GetValue() != wx.EmptyString:
-            desktop_list.append(self.misc.GetValue())
+        if self.other.GetValue() != wx.EmptyString:
+            desktop_list.append(self.other.GetValue())
         
         return u'\n'.join(desktop_list)
     
@@ -555,7 +553,7 @@ class Panel(wx.ScrolledWindow):
         self.notify_choice.SetSelection(0)
         self.enc_input.SetSelection(2)
         self.categories.DeleteAllItems()
-        self.misc.Clear()
+        self.other.Clear()
         self.activate.SetValue(False)
         self.OnToggle(None)
     
@@ -642,7 +640,7 @@ class Panel(wx.ScrolledWindow):
         # Add any leftover keys to misc/other
         for K in data_defs:
             if K not in (u'Version',):
-                self.misc.WriteText(u'{}={}'.format(K, data_defs[K]))
+                self.other.WriteText(u'{}={}'.format(K, data_defs[K]))
         
         if misc_defs:
             for K in misc_defs:
