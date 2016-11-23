@@ -24,6 +24,7 @@ ID_Postinst = wx.NewId()
 ID_Prerm = wx.NewId()
 ID_Postrm = wx.NewId()
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_SCRIPTS, name=GT(u'Scripts'))
@@ -189,18 +190,41 @@ scripts will be created that will place a symbolic link to your executables in t
         self.ScriptSelect(None)
     
     
-    def ScriptSelect(self, event):
-        for rb in self.script_te:
-            if rb.GetValue() == True:
-                self.script_te[rb].Show()
-                self.script_chk[rb].Show()
+    ## TODO: Doxygen
+    def ChangeBG(self, exists):
+        if self.al_input.GetValue() == u'':
+            self.al_input.SetValue(u'/')
+        elif exists == False:
+            self.al_input.SetBackgroundColour((255, 0, 0, 255))
+        else:
+            self.al_input.SetBackgroundColour((255, 255, 255, 255))
+    
+    
+    ## TODO: Doxygen
+    def GatherData(self):
+        # Custom dictionary of scripts
+        script_list = (
+            (self.chk_preinst, self.te_preinst, u'PREINST'),
+            (self.chk_postinst, self.te_postinst, u'POSTINST'),
+            (self.chk_prerm, self.te_prerm, u'PRERM'),
+            (self.chk_postrm, self.te_postrm, u'POSTRM')
+        )
+        
+        # Create a list to return the data
+        data = []
+        #make_scripts = False # Return empty script section
+        for group in script_list:
+            if group[0].GetValue():
+                #make_scripts = True
+                data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[1].GetValue(), group[2]))
             else:
-                self.script_te[rb].Hide()
-                self.script_chk[rb].Hide()
-        self.Layout()
+                data.append(u'<<{}>>\n0\n<</{}>>'.format(group[2], group[2]))
+                
+        
+        return u'<<SCRIPTS>>\n{}\n<</SCRIPTS>>'.format(u'\n'.join(data))
     
     
-    # Importing the executable for Auto-Link
+    ## Imports executables for Auto-Link
     def ImportExe(self, event):
         ID = event.GetId()
         if ID == ID_Import:
@@ -255,6 +279,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 self.xlist.remove(self.xlist[exe])
     
     
+    ## TODO: Doxygen
     def OnGenerate(self, event):
         # Create the scripts to link the executables
         
@@ -303,21 +328,15 @@ scripts will be created that will place a symbolic link to your executables in t
                 dia.ShowModal()
                 dia.Destroy()
     
-    def ChangeBG(self, exists):
-        if self.al_input.GetValue() == u'':
-            self.al_input.SetValue(u'/')
-        elif exists == False:
-            self.al_input.SetBackgroundColour((255, 0, 0, 255))
-        else:
-            self.al_input.SetBackgroundColour((255, 255, 255, 255))
     
-    # *** HELP *** #
+    ## TODO: Doxygen
     def OnHelpButton(self, event):
         self.al_help.CenterOnParent()
         self.al_help.ShowModal()
         self.al_help.Close()
     
     
+    ## TODO: Doxygen
     def ResetAllFields(self):
         for rb in self.script_chk:
             self.script_chk[rb].SetValue(False)
@@ -335,6 +354,20 @@ scripts will be created that will place a symbolic link to your executables in t
         self.al_input.SetBackgroundColour((255, 255, 255, 255))
         self.executables.DeleteAllItems()
     
+    
+    ## TODO: Doxygen
+    def ScriptSelect(self, event):
+        for rb in self.script_te:
+            if rb.GetValue() == True:
+                self.script_te[rb].Show()
+                self.script_chk[rb].Show()
+            else:
+                self.script_te[rb].Hide()
+                self.script_chk[rb].Hide()
+        self.Layout()
+    
+    
+    ## TODO: Doxygen
     def SetFieldData(self, data):
         preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
         postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
@@ -365,25 +398,3 @@ scripts will be created that will place a symbolic link to your executables in t
         else:
             self.chk_postrm.SetValue(False)
             self.te_postrm.Clear()
-    
-    def GatherData(self):
-        # Custom dictionary of scripts
-        script_list = (
-            (self.chk_preinst, self.te_preinst, u'PREINST'),
-            (self.chk_postinst, self.te_postinst, u'POSTINST'),
-            (self.chk_prerm, self.te_prerm, u'PRERM'),
-            (self.chk_postrm, self.te_postrm, u'POSTRM')
-        )
-        
-        # Create a list to return the data
-        data = []
-        #make_scripts = False # Return empty script section
-        for group in script_list:
-            if group[0].GetValue():
-                #make_scripts = True
-                data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[1].GetValue(), group[2]))
-            else:
-                data.append(u'<<{}>>\n0\n<</{}>>'.format(group[2], group[2]))
-                
-        
-        return u'<<SCRIPTS>>\n{}\n<</SCRIPTS>>'.format(u'\n'.join(data))
