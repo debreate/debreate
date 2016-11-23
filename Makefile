@@ -45,30 +45,7 @@ FILES_DOC = \
 	docs/release_notes \
 	docs/usage.pdf
 
-BITMAPS = \
-	bitmaps/add32.png \
-	bitmaps/browse32.png \
-	bitmaps/browse64.png \
-	bitmaps/build32.png \
-	bitmaps/build64.png \
-	bitmaps/cancel32.png \
-	bitmaps/clear32.png \
-	bitmaps/clock16.png \
-	bitmaps/confirm32.png \
-	bitmaps/debreate64.png \
-	bitmaps/del32.png \
-	bitmaps/error64.png \
-	bitmaps/exit32.png \
-	bitmaps/globe16.png \
-	bitmaps/import32.png \
-	bitmaps/next32.png \
-	bitmaps/pipe32.png \
-	bitmaps/prev32.png \
-	bitmaps/preview32.png \
-	bitmaps/preview64.png \
-	bitmaps/question64.png \
-	bitmaps/save32.png \
-	bitmaps/save64.png
+BITMAPS = bitmaps/*.png
 
 MENU = debreate.desktop
 
