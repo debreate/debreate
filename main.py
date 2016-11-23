@@ -36,6 +36,8 @@ from globals.ident          import ID_MENU
 from globals.ident          import ID_MENU_TT
 from globals.ident          import ID_SCRIPTS
 from globals.paths          import PATH_app
+from globals.project        import PROJECT_ext
+from globals.project        import PROJECT_txt
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl
@@ -45,7 +47,6 @@ from wiz_bin.files          import Panel as PanelFiles
 from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
-from globals.project import PROJECT_ext, PROJECT_txt
 
 
 # Debian Policy Manual IDs
@@ -450,6 +451,7 @@ class MainWindow(wx.Frame):
             WriteConfig(u'workingdir', os.getcwd())
             
             self.Destroy()
+            
         else:
             confirm.Destroy()
     
