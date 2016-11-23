@@ -65,6 +65,10 @@ class Panel(wx.ScrolledWindow):
         path_remove = ButtonDel(self)
         button_clear = ButtonClear(self)
         
+        path_add.SetToolTip(wx.ToolTip(GT(u'Add selected files to list')))
+        path_remove.SetToolTip(wx.ToolTip(GT(u'Remove selected files from list')))
+        button_clear.SetToolTip(wx.ToolTip(GT(u'Clear file list')))
+        
         wx.EVT_BUTTON(path_add, -1, self.AddPath)
         wx.EVT_BUTTON(path_remove, -1, self.DelPath)
         wx.EVT_BUTTON(button_clear, -1, self.ClearAll)
@@ -96,12 +100,18 @@ class Panel(wx.ScrolledWindow):
         
         self.prev_dest_value = u'/usr/bin'
         self.dest_cust = wx.TextCtrl(self, -1, self.prev_dest_value)
+        
+        self.dest_cust.SetToolTip(wx.ToolTip(GT(u'Installation target directory')))
+        
         wx.EVT_KEY_DOWN(self.dest_cust, self.GetDestValue)
         wx.EVT_KEY_UP(self.dest_cust, self.CheckDest)
+        
         cust_sizer = wx.BoxSizer(wx.VERTICAL)  # put the textctrl in own sizer so expands horizontally
         cust_sizer.Add(self.dest_cust, 1, wx.EXPAND)
         
         self.dest_browse = ButtonBrowse(self, ID_pout)
+        
+        self.dest_browse.SetToolTip(wx.ToolTip(GT(u'Browse for installation target')))
         
         wx.EVT_BUTTON(self.dest_browse, -1, self.OnBrowse)
         

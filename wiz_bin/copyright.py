@@ -19,8 +19,10 @@ class Panel(wx.ScrolledWindow):
             u'LGPL-2', u'LGPL-2.1', u'LGPL-3'
         )
         template_btn = wx.Button(self, -1, u'Generate Template')
+        template_btn.SetToolTip(wx.ToolTip(GT(u'Creates a simple license that references the system\'s common license path')))
         self.template_lic = wx.Choice(self, -1, choices=lic_options)
         self.template_lic.SetSelection(0)
+        self.template_lic.SetToolTip(wx.ToolTip(GT(u'Select license to reference')))
         
         wx.EVT_BUTTON(template_btn, -1, self.GenerateTemplate)
         

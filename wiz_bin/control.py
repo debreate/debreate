@@ -26,10 +26,15 @@ class Panel(wx.ScrolledWindow):
         
         # Buttons to Open, Save & Preview control file
         button_open = ButtonBrowse64(self.bg)
+        button_open.SetToolTip(wx.ToolTip(GT(u'Import a control file')))
         wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
+        
         button_save = ButtonSave64(self.bg)
+        button_save.SetToolTip(wx.ToolTip(GT(u'Export control file')))
         wx.EVT_BUTTON(button_save, -1, self.OnSave)
+        
         button_preview = ButtonPreview64(self.bg)
+        button_preview.SetToolTip(wx.ToolTip(GT(u'Preview control file')))
         wx.EVT_BUTTON(button_preview, -1, self.OnPreview)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -50,15 +55,32 @@ class Panel(wx.ScrolledWindow):
         self.pack_txt = wx.StaticText(self.bg, -1, GT(u'Package'))
         self.pack = CharCtrl(self.bg, -1)
         
+        tt_pack = wx.ToolTip(GT(u'Name of the package/software'))
+        self.pack_txt.SetToolTip(tt_pack)
+        self.pack.SetToolTip(tt_pack)
+        
         # ----- Version ( B[m], D[m], C[m] )
         self.ver_txt = wx.StaticText(self.bg, -1, GT(u'Version'))
         self.ver = CharCtrl(self.bg)
         
+        tt_ver = wx.ToolTip(GT(u'Package/Software release version'))
+        self.ver_txt.SetToolTip(tt_ver)
+        self.ver.SetToolTip(tt_ver)
+        
         # ----- Maintainer ( B[m], S[m], D[m], C[m] )
         self.auth_txt = wx.StaticText(self.bg, -1, GT(u'Maintainer'))
         self.auth = wx.TextCtrl(self.bg, -1)
+        
+        tt_auth = wx.ToolTip(GT(u'Package/Software maintainer\'s full name'))
+        self.auth_txt.SetToolTip(tt_auth)
+        self.auth.SetToolTip(tt_auth)
+        
         self.email_txt = wx.StaticText(self.bg, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self.bg, -1)
+        
+        tt_email = wx.ToolTip(GT(u'Package/Software maintaner\'s email address'))
+        self.email_txt.SetToolTip(tt_email)
+        self.email.SetToolTip(tt_email)
         
         # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
@@ -71,6 +93,12 @@ class Panel(wx.ScrolledWindow):
         self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
         self.arch.SetSelection(0)
         
+        tt_arch = wx.ToolTip(
+            u'{}\n\n{}'.format(GT(u'Architecture on which software is designed to run'), GT(u'all = platform independent'))
+            )
+        self.arch_txt.SetToolTip(tt_arch)
+        self.arch.SetToolTip(tt_arch)
+        
         # ***** Recommended Group ***** #
         # ----- Section ( B[r], S[r], SB[r] )
         self.sect_opt = (u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug', u'doc', u'editors',
@@ -82,32 +110,61 @@ class Panel(wx.ScrolledWindow):
         self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
         self.sect = OwnerDrawnComboBox(self.bg, choices=self.sect_opt)
         
+        tt_sect = wx.ToolTip(GT(u'Section under which package managers will categorize package'))
+        self.sect_txt.SetToolTip(tt_sect)
+        self.sect.SetToolTip(tt_sect)
+        
         # ----- Priority ( B[r], S[r], SB[r] )
         self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
         self.prior_txt = wx.StaticText(self.bg, -1, GT(u'Priority'))
         self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
         self.prior.SetSelection(0)
         
+        tt_prior = wx.ToolTip(GT(u'Priority of the package on the target system'))
+        self.prior_txt.SetToolTip(tt_prior)
+        self.prior.SetToolTip(tt_prior)
+        
         # ----- Description ( B[m], SB[m], C[m] )
         self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
         self.syn = wx.TextCtrl(self.bg)
+        
+        tt_syn = wx.ToolTip(GT(u'Synopsis or one-line description'))
+        self.syn_txt.SetToolTip(tt_syn)
+        self.syn.SetToolTip(tt_syn)
+        
         self.desc_txt = wx.StaticText(self.bg, -1, GT(u'Long Description'))
         self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
+        
+        tt_desc = wx.ToolTip(GT(u'Longer, multi-line description'))
+        self.desc_txt.SetToolTip(tt_desc)
+        self.desc.SetToolTip(tt_desc)
         
         # ***** Optional Group ***** #
         # ----- Source ( B, S[m], D[m], C[m] )
         self.src_txt = wx.StaticText(self.bg, -1, GT(u'Source'))
         self.src = wx.TextCtrl(self.bg, -1)
         
+        tt_src = wx.ToolTip(GT(u'Name of upstream source package'))
+        self.src_txt.SetToolTip(tt_src)
+        self.src.SetToolTip(tt_src)
+        
         # ----- Homepage ( B, S, SB, D )
         self.url_txt = wx.StaticText(self.bg, -1, GT(u'Homepage'))
         self.url = wx.TextCtrl(self.bg)
+        
+        tt_url = wx.ToolTip(GT(u'Software\'s/Package\'s homepage URL'))
+        self.url_txt.SetToolTip(tt_url)
+        self.url.SetToolTip(tt_url)
         
         # ----- Essential ( B, SB )
         self.ess_opt = (u'yes', u'no')
         self.ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'))
         self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
         self.ess.SetSelection(1)
+        
+        tt_ess = wx.ToolTip(GT(u'Whether or not the package is essential to the system for stability/functionality'))
+        self.ess_txt.SetToolTip(tt_ess)
+        self.ess.SetToolTip(tt_ess)
         
         self.bins = (	(self.pack, self.arch, self.ver, self.auth, self.email),
                         (self.sect, self.prior),

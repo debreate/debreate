@@ -31,10 +31,13 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(20, 20, 0, 0)
         
         # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_Preinst, GT(u'Make this script'))
-        self.chk_postinst = wx.CheckBox(self, ID_Postinst, GT(u'Make this script'))
-        self.chk_prerm = wx.CheckBox(self, ID_Prerm, GT(u'Make this script'))
-        self.chk_postrm = wx.CheckBox(self, ID_Postrm, GT(u'Make this script'))
+        self.chk_preinst = wx.CheckBox(self, ID_Preinst, GT(u'Make this script'), name=GT(u'Pre-Install'))
+        self.chk_postinst = wx.CheckBox(self, ID_Postinst, GT(u'Make this script'), name=GT(u'Post-Install'))
+        self.chk_prerm = wx.CheckBox(self, ID_Prerm, GT(u'Make this script'), name=GT(u'Pre-Remove'))
+        self.chk_postrm = wx.CheckBox(self, ID_Postrm, GT(u'Make this script'), name=GT(u'Post-Remove'))
+        
+        for S in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
+            S.SetToolTip(wx.ToolTip(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below'))))
         
         # Radio buttons for displaying between pre- and post- install scripts
         self.rb_preinst = wx.RadioButton(self, ID_Preinst, GT(u'Pre-Install'), style=wx.RB_GROUP)
@@ -48,8 +51,8 @@ class Panel(wx.ScrolledWindow):
         self.te_prerm = wx.TextCtrl(self, ID_Prerm, style=wx.TE_MULTILINE)
         self.te_postrm = wx.TextCtrl(self, ID_Postrm, style=wx.TE_MULTILINE)
         
-        # For testing to make sure scripts page is reset back to defaults
-        #self.te_preinst.SetBackgroundColour(u'red')
+        for S in self.te_preinst, self.te_postinst, self.te_prerm, self.te_postrm:
+            S.SetToolTip(wx.ToolTip(GT(u'Script text body')))
         
         self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
@@ -91,6 +94,10 @@ class Panel(wx.ScrolledWindow):
         self.al_text = wx.StaticText(self, -1, GT(u'Path'))
         self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
         
+        tt_alpath = wx.ToolTip(GT(u'Directory where scripts should create symlinks'))
+        self.al_text.SetToolTip(tt_alpath)
+        self.al_input.SetToolTip(tt_alpath)
+        
         #wx.EVT_KEY_UP(self.al_input, ChangeInput)
         
         alpath_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -107,10 +114,13 @@ class Panel(wx.ScrolledWindow):
         
         self.executables.InsertColumn(0, u'')
         
+        self.executables.SetToolTip(wx.ToolTip(GT(u'Executables from file list to be linked against')))
+        
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_Import)
-        self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from Files section')))
+        self.al_import.SetToolTip(wx.ToolTip(GT(u'Import executables from file list')))
         self.al_del = ButtonDel(self, ID_Remove)
+        self.al_del.SetToolTip(wx.ToolTip(GT(u'Remove selected executables from list')))
         self.al_gen = ButtonBuild(self)
         self.al_gen.SetToolTip(wx.ToolTip(GT(u'Generate scripts')))
         
@@ -119,9 +129,9 @@ class Panel(wx.ScrolledWindow):
         wx.EVT_BUTTON(self.al_del, ID_Remove, self.ImportExe)
         
         albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        albutton_sizer.Add(self.al_import, 1)#, wx.ALIGN_CENTER|wx.RIGHT, 5)
+        albutton_sizer.Add(self.al_import, 1)
         albutton_sizer.Add(self.al_del, 1)
-        albutton_sizer.Add(self.al_gen, 1)#, wx.ALIGN_CENTER)
+        albutton_sizer.Add(self.al_gen, 1)
         
         # Nice border for auto-generate scripts area
         self.autogen_border = wx.StaticBox(self, -1, GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
@@ -142,10 +152,11 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # *** HELP *** #
         self.button_help = ButtonQuestion64(self)
+        self.button_help.SetToolTip(wx.ToolTip(GT(u'How to use Auto-Link')))
         self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
-
+        
         self.al_help_te = wx.TextCtrl(self.al_help, -1, u'{}\n\n{}'.format(description, instructions),
                 style = wx.TE_MULTILINE|wx.TE_READONLY)
         self.al_help_ok = ButtonConfirm(self.al_help)
@@ -174,17 +185,6 @@ scripts will be created that will place a symbolic link to your executables in t
         self.SetSizer(main_sizer)
         self.Layout()
         
-        
-        # ----- Main page sizer
-#		page_sizer = wx.BoxSizer(wx.VERTICAL)
-#		page_sizer.AddSpacer(10)
-#		page_sizer.Add(type_border, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-#		page_sizer.Add(panel_border, 1, wx.EXPAND|wx.ALL, 5)
-#		
-#		# ----- Page Layout
-#		self.SetAutoLayout(True)
-#		self.SetSizer(page_sizer)
-#		self.Layout()
         
         self.ScriptSelect(None)
     

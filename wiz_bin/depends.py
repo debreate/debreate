@@ -32,10 +32,43 @@ class Panel(wx.ScrolledWindow):
         con_tip = wx.ToolTip(GT(u'Package will be removed from the system if it is installed'))
         rep_tip = wx.ToolTip(GT(u'Package or its files may be overwritten'))
         break_tip = wx.ToolTip(GT(u'Package conflicts and will be de-configured'))
-#        syn_tip = wx.ToolTip(GT(u'Breifly summarize the purpose of the application'))
-#        desc_tip = wx.ToolTip(GT(u'Here you can give a more detailed explanation\n\n\
-#If you need help open "Help/Example Control" for details on formatting'))
         
+        
+        # Input for dependencies
+        self.pack_text = wx.StaticText(self, -1, GT(u'Dependency/Conflict Package Name'))
+        self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
+        
+        tt_pack = wx.ToolTip(GT(u'Name of dependency/conflicting package'))
+        self.pack_text.SetToolTip(tt_pack)
+        self.dep_name.SetToolTip(tt_pack)
+        
+        self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
+        self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
+        self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
+        self.dep_oper.SetSelection(0)
+        self.dep_ver = wx.TextCtrl(self, -1)
+        
+        tt_oper = wx.ToolTip(GT(u'Operator'))
+        self.dep_oper.SetToolTip(tt_oper)
+        
+        tt_ver = wx.ToolTip(GT(u'Version corresponing to package name and operator'))
+        self.ver_text.SetToolTip(tt_ver)
+        self.dep_ver.SetToolTip(tt_ver)
+        
+        depH1 = wx.FlexGridSizer(2, 3, hgap=5)
+        depH1.AddGrowableCol(2)
+        depH1.Add(self.pack_text, 0, wx.LEFT, 2)
+        depH1.AddSpacer(0)
+        depH1.Add(self.ver_text, 1, wx.EXPAND|wx.LEFT, 2)
+        depH1.Add(self.dep_name)
+        depH1.Add(self.dep_oper)
+        depH1.Add(self.dep_ver, 1, wx.EXPAND)
+        
+        self.dep_name.SetSize((100,50))
+        
+        # Add KEY_DOWN events to text areas
+        wx.EVT_KEY_DOWN(self.dep_name, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
         
         # --- DEPENDS
         self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
@@ -70,35 +103,16 @@ class Panel(wx.ScrolledWindow):
         self.break_chk.SetToolTip(break_tip)
         
         
-        # Input for dependencies
-        self.pack_text = wx.StaticText(self, -1, GT(u'Package'))
-        self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
-        self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
-        self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
-        self.dep_oper.SetSelection(0)
-        self.dep_ver = wx.TextCtrl(self, -1)
-        
-        depH1 = wx.FlexGridSizer(2, 3, hgap=5)
-        depH1.AddGrowableCol(2)
-        depH1.Add(self.pack_text, 0, wx.LEFT, 2)
-        depH1.AddSpacer(0)
-        depH1.Add(self.ver_text, 1, wx.EXPAND|wx.LEFT, 2)
-        depH1.Add(self.dep_name)
-        depH1.Add(self.dep_oper)
-        depH1.Add(self.dep_ver, 1, wx.EXPAND)
-        
-        self.dep_name.SetSize((100,50))
-        
-        # Add KEY_DOWN events to text areas
-        wx.EVT_KEY_DOWN(self.dep_name, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
-        
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
         self.depapp = ButtonPipe(self, ID_Append)
         self.deprem = ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
         self.depclr = ButtonClear(self)
+        
+        self.depadd.SetToolTip(wx.ToolTip(GT(u'Add to package list')))
+        self.depapp.SetToolTip(wx.ToolTip(GT(u'Add as alternative to selected packages in list')))
+        self.deprem.SetToolTip(wx.ToolTip(GT(u'Remove selected packages from list')))
+        self.depclr.SetToolTip(wx.ToolTip(GT(u'Clear package list')))
         
         wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
         wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)

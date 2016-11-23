@@ -33,9 +33,10 @@ class Panel(wx.ScrolledWindow):
         # --- Tool Tips --- #
         md5_tip = wx.ToolTip(GT(u'Create checksums for files in package'))
         del_tip = wx.ToolTip(GT(u'Delete temporary directory tree after package has been created'))
-        #tip_lint = wx.ToolTip(GT(u'Checks the package for errors according to lintian's specifics'))
+        tip_lint = wx.ToolTip(GT(u'Checks the package for errors according to lintian\'s specifics'))
         #dest_tip = wx.ToolTip(GT(u'Choose the folder where you would like the .deb to be created'))
         build_tip = wx.ToolTip(GT(u'Start building'))
+        install_tip = wx.ToolTip(GT(u'Install package using a system installer after build'))
         
         
         # ----- Extra Options
@@ -57,12 +58,12 @@ class Panel(wx.ScrolledWindow):
         
         # Checks the output .deb for errors
         self.chk_lint = wx.CheckBox(self, -1, GT(u'Check package for errors with lintian'))
-        #self.chk_lint.SetToolTip(tip_lint)
         if not os.path.isfile(u'/usr/bin/lintian'):
             self.chk_lint.Disable()
             self.chk_lint.SetToolTip(wx.ToolTip(GT(u'Install lintian package for this option')))
+        
         else:
-            #self.chk_lint.SetToolTip(tip_lint)
+            self.chk_lint.SetToolTip(tip_lint)
             self.chk_lint.SetValue(True)
         
         # Installs the deb on the system
@@ -73,6 +74,9 @@ class Panel(wx.ScrolledWindow):
             self.chk_install.SetToolTip(
                 wx.ToolTip(GT(u'Installing package requires gdebi to be available on the system'))
                 )
+        
+        else:
+            self.chk_install.SetToolTip(install_tip)
         
         options1_border = wx.StaticBox(self, -1, GT(u'Extra options')) # Nice border for the options
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)

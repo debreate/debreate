@@ -20,18 +20,47 @@ class Panel(wx.ScrolledWindow):
         
         self.package_text = wx.StaticText(self, -1, GT(u'Package'))
         self.package = wx.TextCtrl(self)
+        
+        tt_package = wx.ToolTip(GT(u'Name of the package/software'))
+        self.package_text.SetToolTip(tt_package)
+        self.package.SetToolTip(tt_package)
+        
         self.version_text = wx.StaticText(self, -1, GT(u'Version'))
         self.version = wx.TextCtrl(self)
+        
+        tt_version = wx.ToolTip(GT(u'Package/Software release version'))
+        self.version_text.SetToolTip(tt_version)
+        self.version.SetToolTip(tt_version)
+        
         self.distribution_text = wx.StaticText(self, -1, GT(u'Distribution'))
         self.distribution = wx.TextCtrl(self)
+        
+        tt_dist = wx.ToolTip(GT(u'Target distribution for Debian/Ubuntu'))
+        self.distribution_text.SetToolTip(tt_dist)
+        self.distribution.SetToolTip(tt_dist)
+        
         self.urgency_text = wx.StaticText(self, -1, GT(u'Urgency'))
         self.urgency_opt = (u'low', u'HIGH')
         self.urgency = wx.Choice(self, choices=self.urgency_opt)
         self.urgency.SetSelection(0)
+        
+        tt_urgency = wx.ToolTip(GT(u'Urgency of this update'))
+        self.urgency_text.SetToolTip(tt_urgency)
+        self.urgency.SetToolTip(tt_urgency)
+        
         self.maintainer_text = wx.StaticText(self, -1, GT(u'Maintainer'))
         self.maintainer = wx.TextCtrl(self)
+        
+        tt_maintaner = wx.ToolTip(GT(u'Package/Software maintainer\'s full name'))
+        self.maintainer_text.SetToolTip(tt_maintaner)
+        self.maintainer.SetToolTip(tt_maintaner)
+        
         self.email_text = wx.StaticText(self, -1, GT(u'Email'))
         self.email = wx.TextCtrl(self)
+        
+        tt_email = wx.ToolTip(GT(u'Package/Software maintaner\'s email address'))
+        self.email_text.SetToolTip(tt_email)
+        self.email.SetToolTip(tt_email)
         
         info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
         info_sizer.AddGrowableCol(1)
@@ -49,14 +78,19 @@ class Panel(wx.ScrolledWindow):
         # *** CHANGES DETAILS
         self.changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE)
         
+        self.changes.SetToolTip(wx.ToolTip(GT(u'Enter one change per line')))
+        
         self.border_changes = wx.StaticBox(self, -1, GT(u'Changes'), size=(20,20))
         changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
         changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
         
         # Destination of changelog
-        self.rb_dest_default = wx.RadioButton(self, -1, u'/usr/share/doc/%project_name%', style=wx.RB_GROUP)
+        self.rb_dest_default = wx.RadioButton(self, -1, u'/usr/share/doc/<package>', style=wx.RB_GROUP)
         self.rb_dest_custom = wx.RadioButton(self)
         self.dest_custom = PathCtrl(self, -1, u'/', PATH_WARN)
+        
+        self.rb_dest_default.SetToolTip(wx.ToolTip(GT(u'Install changelog to standard directory')))
+        self.rb_dest_custom.SetToolTip(wx.ToolTip(GT(u'Install changelog to custom directory')))
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         dest_custom_sizer.Add(self.rb_dest_custom)
@@ -76,8 +110,9 @@ class Panel(wx.ScrolledWindow):
         
         
         self.button_import = ButtonImport(self)
-        self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control section')))
+        self.button_import.SetToolTip(wx.ToolTip(GT(u'Import information from Control page')))
         self.button_add = ButtonAdd(self)
+        self.button_add.SetToolTip(wx.ToolTip(GT(u'Prepend above changes to changelog')))
         
         wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
         wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
@@ -87,13 +122,8 @@ class Panel(wx.ScrolledWindow):
         button_sizer.Add(self.button_add)
         
         self.display_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE)
+        self.display_area.SetToolTip(wx.ToolTip(GT(u'Formatted changelog (editable)')))
         
-        # *** Widgets that Enable/Disable
-#        self.toggle_list = (
-#            self.package, self.version, self.distribution, self.urgency, self.maintainer, self.email,
-#            self.changes, self.rb_dest_default, self.rb_dest_custom, self.dest_custom,
-#            self.button_import, self.button_add, self.display_area
-#            )
         
         # *** LAYOUT
         main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
