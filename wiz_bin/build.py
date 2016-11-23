@@ -113,32 +113,17 @@ class Panel(wx.ScrolledWindow):
         SetPageToolTips(self)
     
     
-    def SetSummary(self, event):
-        main_window = wx.GetApp().GetTopWindow()
+    ## TODO: Doxygen
+    def GatherData(self):
+        build_list = []
         
-        # Make sure the page is not destroyed so no error is thrown
-        if self:
-            # Set summary when "Build" page is shown
-            # Get the file count
-            files_total = main_window.page_files.dest_area.GetItemCount()
-            f = GT(u'File Count')
-            file_count = u'{}: {}'.format(f, files_total)
-            # Scripts to make
-            scripts_to_make = []
-            scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
-                (u'postinst', main_window.page_scripts.chk_postinst),
-                (u'prerm', main_window.page_scripts.chk_prerm),
-                (u'postrm', main_window.page_scripts.chk_postrm))
-            for script in scripts:
-                if script[1].IsChecked():
-                    scripts_to_make.append(script[0])
-            s = GT(u'Scripts')
-            if len(scripts_to_make):
-                scripts_to_make = u'{}: {}'.format(s, u', '.join(scripts_to_make))
-            else:
-                scripts_to_make = u'{}: 0'.format(s)
-                    
-            self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
+        if self.chk_md5.GetValue(): build_list.append(u'1')
+        else: build_list.append(u'0')
+        if self.chk_rmstage.GetValue(): build_list.append(u'1')
+        else: build_list.append(u'0')
+        if self.chk_lint.GetValue(): build_list.append(u'1')
+        else: build_list.append(u'0')
+        return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))
     
     
     ## Installs the built .deb package onto the system
@@ -655,6 +640,7 @@ class Panel(wx.ScrolledWindow):
             BuildIt(path, filename)
     
     
+    ## TODO: Doxygen
     def ResetAllFields(self):
         self.chk_install.SetValue(False)
         # chk_md5 should be reset no matter
@@ -675,6 +661,7 @@ class Panel(wx.ScrolledWindow):
             self.chk_lint.SetValue(False)
     
     
+    ## TODO: Doxygen
     def SetFieldData(self, data):
         self.ResetAllFields()
         build_data = data.split(u'\n')
@@ -686,13 +673,30 @@ class Panel(wx.ScrolledWindow):
             self.chk_lint.SetValue(int(build_data[2]))
     
     
-    def GatherData(self):
-        build_list = []
+    ## TODO: Doxygen
+    def SetSummary(self, event):
+        main_window = wx.GetApp().GetTopWindow()
         
-        if self.chk_md5.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        if self.chk_rmstage.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        if self.chk_lint.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))
+        # Make sure the page is not destroyed so no error is thrown
+        if self:
+            # Set summary when "Build" page is shown
+            # Get the file count
+            files_total = main_window.page_files.dest_area.GetItemCount()
+            f = GT(u'File Count')
+            file_count = u'{}: {}'.format(f, files_total)
+            # Scripts to make
+            scripts_to_make = []
+            scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
+                (u'postinst', main_window.page_scripts.chk_postinst),
+                (u'prerm', main_window.page_scripts.chk_prerm),
+                (u'postrm', main_window.page_scripts.chk_postrm))
+            for script in scripts:
+                if script[1].IsChecked():
+                    scripts_to_make.append(script[0])
+            s = GT(u'Scripts')
+            if len(scripts_to_make):
+                scripts_to_make = u'{}: {}'.format(s, u', '.join(scripts_to_make))
+            else:
+                scripts_to_make = u'{}: 0'.format(s)
+                    
+            self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
