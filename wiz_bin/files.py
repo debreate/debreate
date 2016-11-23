@@ -24,6 +24,7 @@ ID_Refresh = 142
 home = os.getenv(u'HOME')
 
 
+## TODO: Doxygen
 class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
     """Creates a ListCtrl class in which every column's text can be edited"""
     def __init__(self, parent, ID=wx.ID_ANY):
@@ -32,6 +33,7 @@ class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
         LC.ListCtrlAutoWidthMixin.__init__(self)
 
 
+## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     """Class defining controls for the "Paths" page"""
     def __init__(self, parent):
@@ -162,16 +164,170 @@ class Panel(wx.ScrolledWindow):
         self.setlabels = {	self.dest_browse: u'Custom' }
     
     
-    def OnRightClick(self, event):
-        # Show a context menu for adding files and folders
-        path = self.dir_tree.GetPath()
-        if os.path.isdir(path):
-            self.add_dir.Enable(True)
-            self.add_file.Enable(False)
-        elif os.path.isfile(path):
-            self.add_dir.Enable(False)
-            self.add_file.Enable(True)
-        self.dir_tree.PopupMenu(self.menu)
+    ## TODO: Doxygen
+    def AddPath(self, event):
+        total_files = 0
+        pin = self.dir_tree.GetPath()
+        
+        for item in self.radio_group:
+            if self.radio_cst.GetValue() == True:
+                pout = self.dest_cust.GetValue()
+            
+            elif item.GetValue() == True:
+                pout = item.GetLabel()
+        
+        if os.path.isdir(pin):
+            for root, dirs, files in os.walk(pin):
+                for FILE in files:
+                    total_files += 1
+            
+            if total_files: # Continue if files are found
+                cont = True
+                count = 0
+                msg_files = GT(u'Getting files from {}')
+                loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
+                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                for root, dirs, files in os.walk(pin):
+                    for FILE in files:
+                        if cont == (False,False):  # If "cancel" pressed destroy the progress window
+                            break
+                        
+                        else:
+                            sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
+                            if sub_dir != wx.EmptyString:
+                                # Add the sub-dir to dest
+                                dest = u'{}{}'.format(pout, sub_dir)
+                                #self.list_data.insert(0, (u'{}/{}'.format(root, FILE), u'{}/{}'.format(sub_dir[1:], FILE), dest))
+                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, dest))
+                                self.dest_area.InsertStringItem(0, FILE)
+                                self.dest_area.SetStringItem(0, 1, dest)
+                            
+                            else:
+                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, pout))
+                                self.dest_area.InsertStringItem(0, FILE)
+                                self.dest_area.SetStringItem(0, 1, pout)
+                            
+                            count += 1
+                            cont = loading.Update(count)
+                            if os.access(u'{}/{}'.format(root,FILE), os.X_OK):
+                                self.dest_area.SetItemTextColour(0, u'red')
+        
+        elif os.path.isfile(pin):
+            FILE = os.path.split(pin)[1]
+            FILE = FILE.encode(u'utf-8')
+            self.list_data.insert(0, (pin, FILE, pout))
+            self.dest_area.InsertStringItem(0, FILE)
+            self.dest_area.SetStringItem(0, 1, pout)
+            if os.access(pin, os.X_OK):
+                self.dest_area.SetItemTextColour(0, u'red')
+    
+    
+    ## TODO: Doxygen
+    def CheckDest(self, event):
+        if self.dest_cust.GetValue() == wx.EmptyString:
+            self.dest_cust.SetValue(self.prev_dest_value)
+            self.dest_cust.SetInsertionPoint(-1)
+        
+        elif self.dest_cust.GetValue()[0] != u'/':
+            self.dest_cust.SetValue(self.prev_dest_value)
+            self.dest_cust.SetInsertionPoint(-1)
+        
+        event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def ClearAll(self, event):
+        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+        if confirm.ShowModal() == wx.ID_YES:
+            self.dest_area.DeleteAllItems()
+            self.list_data = []
+    
+    
+    ## TODO: Doxygen
+    def DelPath(self, event):
+        try:
+            modifier = event.GetModifiers()
+            keycode = event.GetKeyCode()
+        
+        except AttributeError:
+            keycode = event.GetEventObject().GetId()
+        
+        if keycode == wx.WXK_DELETE:
+            selected = [] # Items to remove from visible list
+            toremove = [] # Items to remove from invisible list
+            total = self.dest_area.GetSelectedItemCount()
+            current = self.dest_area.GetFirstSelected()
+            if current != -1:
+                selected.insert(0, current)
+                while total > 1:
+                    total = total - 1
+                    prev = current
+                    current = self.dest_area.GetNextSelected(prev)
+                    selected.insert(0, current)
+            
+            for path in selected:
+                # Remove the item from the invisible list
+                for item in self.list_data:
+                    FILE = self.dest_area.GetItemText(path)
+                    dest = self.dest_area.GetItem(path, 1).GetText()
+                    if FILE.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
+                        toremove.append(item)
+                
+                self.dest_area.DeleteItem(path) # Remove the item from the visible list
+            
+            for item in toremove:
+                self.list_data.remove(item)
+            
+        elif keycode == 65 and modifier == wx.MOD_CONTROL:
+            self.SelectAll()
+    
+    
+    ## TODO: Doxygen
+    def GatherData(self):
+        file_list = []
+        item_count = self.dest_area.GetItemCount()
+        if item_count > 0:
+            count = 0
+            while count < item_count:
+                item_file = self.dest_area.GetItemText(count)
+                item_dest = self.dest_area.GetItem(count, 1).GetText()
+                for item in self.list_data:
+                    # Decode to unicode
+                    i0 = item[0].encode(u'utf-8')
+                    i1 = item[1].decode(u'utf-8')
+                    i2 = item[2].encode(u'utf-8')
+                    if i1 == item_file and i2.decode(u'utf-8') == item_dest:
+                        item_src = i0
+                
+                # Populate list with tuples of ('src', 'file', 'dest')
+                if self.dest_area.GetItemTextColour(count) == (255, 0, 0):
+                    file_list.append((u'{}*'.format(item_src), item_file, item_dest))
+                
+                else:
+                    file_list.append((item_src, item_file, item_dest))
+                
+                count += 1
+        
+            return_list = []
+            for FILE in file_list:
+                f0 = u'{}'.encode(u'utf-8').format(FILE[0])
+                f1 = u'{}'.encode(u'utf-8').format(FILE[1])
+                f2 = u'{}'.encode(u'utf-8').format(FILE[2])
+                return_list.append(u'{} -> {} -> {}'.format(f0, f1, f2))
+            
+            return u'<<FILES>>\n1\n{}\n<</FILES>>'.format(u'\n'.join(return_list))
+        
+        else:
+            # Place a "0" in FILES field if we are not saving any files
+            return u'<<FILES>>\n0\n<</FILES>>'
+    
+    
+    ## TODO: Doxygen
+    def GetDestValue(self, event):
+        if self.dest_cust.GetValue() != wx.EmptyString:
+            if self.dest_cust.GetValue()[0] == u'/':
+                self.prev_dest_value = self.dest_cust.GetValue()
+        event.Skip()
     
     
     ## TODO: Doxygen
@@ -189,85 +345,35 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GetDestValue(self, event):
-        if self.dest_cust.GetValue() != wx.EmptyString:
-            if self.dest_cust.GetValue()[0] == u'/':
-                self.prev_dest_value = self.dest_cust.GetValue()
-        event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def CheckDest(self, event):
-        if self.dest_cust.GetValue() == wx.EmptyString:
-            self.dest_cust.SetValue(self.prev_dest_value)
-            self.dest_cust.SetInsertionPoint(-1)
-        elif self.dest_cust.GetValue()[0] != u'/':
-            self.dest_cust.SetValue(self.prev_dest_value)
-            self.dest_cust.SetInsertionPoint(-1)
-        event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def AddPath(self, event):
-        total_files = 0
-        pin = self.dir_tree.GetPath()
-        
-        for item in self.radio_group:
-            if self.radio_cst.GetValue() == True:
-                pout = self.dest_cust.GetValue()
-            elif item.GetValue() == True:
-                pout = item.GetLabel()
-        if os.path.isdir(pin):
-            for root, dirs, files in os.walk(pin):
-                for FILE in files:
-                    total_files += 1
-            
-            if total_files: # Continue if files are found
-                cont = True
-                count = 0
-                msg_files = GT(u'Getting files from {}')
-                loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
-                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                for root, dirs, files in os.walk(pin):
-                    for FILE in files:
-                        if cont == (False,False):  # If "cancel" pressed destroy the progress window
-                            break
-                        else:
-                            sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
-                            if sub_dir != wx.EmptyString:
-                                # Add the sub-dir to dest
-                                dest = u'{}{}'.format(pout, sub_dir)
-                                #self.list_data.insert(0, (u'{}/{}'.format(root, FILE), u'{}/{}'.format(sub_dir[1:], FILE), dest))
-                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, dest))
-                                self.dest_area.InsertStringItem(0, FILE)
-                                self.dest_area.SetStringItem(0, 1, dest)
-                            else:
-                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, pout))
-                                self.dest_area.InsertStringItem(0, FILE)
-                                self.dest_area.SetStringItem(0, 1, pout)
-                            count += 1
-                            cont = loading.Update(count)
-                            if os.access(u'{}/{}'.format(root,FILE), os.X_OK):
-                                self.dest_area.SetItemTextColour(0, u'red')
-        
-        elif os.path.isfile(pin):
-            FILE = os.path.split(pin)[1]
-            FILE = FILE.encode(u'utf-8')
-            self.list_data.insert(0, (pin, FILE, pout))
-            self.dest_area.InsertStringItem(0, FILE)
-            self.dest_area.SetStringItem(0, 1, pout)
-            if os.access(pin, os.X_OK):
-                self.dest_area.SetItemTextColour(0, u'red')
-    
-    
-    ## TODO: Doxygen
     def OnRefresh(self, event):
         path = self.dir_tree.GetPath()
-#		if isfile(path):
-#			path = os.path.split(path)[0]
+        #if isfile(path):
+            #path = os.path.split(path)[0]
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(path)
+    
+    
+    ## TODO: Doxygen
+    def OnRightClick(self, event):
+        # Show a context menu for adding files and folders
+        path = self.dir_tree.GetPath()
+        if os.path.isdir(path):
+            self.add_dir.Enable(True)
+            self.add_file.Enable(False)
+        elif os.path.isfile(path):
+            self.add_dir.Enable(False)
+            self.add_file.Enable(True)
+        self.dir_tree.PopupMenu(self.menu)
+    
+    
+    ## TODO: Doxygen
+    def ResetAllFields(self):
+        self.radio_cst.SetValue(True)
+        self.SetDestination(None)
+        self.dest_cust.SetValue(u'/usr/bin')
+        self.dest_area.DeleteAllItems()
+        self.list_data = []
     
     
     ## TODO: Doxygen
@@ -280,51 +386,6 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def DelPath(self, event):
-        try:
-            modifier = event.GetModifiers()
-            keycode = event.GetKeyCode()
-        except AttributeError:
-            keycode = event.GetEventObject().GetId()
-        
-        if keycode == wx.WXK_DELETE:
-            selected = [] # Items to remove from visible list
-            toremove = [] # Items to remove from invisible list
-            total = self.dest_area.GetSelectedItemCount()
-            current = self.dest_area.GetFirstSelected()
-            if current != -1:
-                selected.insert(0, current)
-                while total > 1:
-                    total = total - 1
-                    prev = current
-                    current = self.dest_area.GetNextSelected(prev)
-                    selected.insert(0, current)
-            for path in selected:
-                # Remove the item from the invisible list
-                for item in self.list_data:
-                    FILE = self.dest_area.GetItemText(path)
-                    dest = self.dest_area.GetItem(path, 1).GetText()
-                    if FILE.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
-                        toremove.append(item)
-                    
-                self.dest_area.DeleteItem(path) # Remove the item from the visible list
-            
-            for item in toremove:
-                self.list_data.remove(item)
-            
-        elif keycode == 65 and modifier == wx.MOD_CONTROL:
-            self.SelectAll()
-    
-    
-    ## TODO: Doxygen
-    def ClearAll(self, event):
-        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_YES:
-            self.dest_area.DeleteAllItems()
-            self.list_data = []
-    
-    
-    ## TODO: Doxygen
     def SetDestination(self, event):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.radio_cst.GetValue() == True:
@@ -333,15 +394,6 @@ class Panel(wx.ScrolledWindow):
         else:
             self.dest_cust.Disable()
             self.dest_browse.Disable()
-    
-    
-    ## TODO: Doxygen
-    def ResetAllFields(self):
-        self.radio_cst.SetValue(True)
-        self.SetDestination(None)
-        self.dest_cust.SetValue(u'/usr/bin')
-        self.dest_area.DeleteAllItems()
-        self.list_data = []
     
     
     ## TODO: Doxygen
@@ -396,38 +448,3 @@ class Panel(wx.ScrolledWindow):
                 alert.Layout()
                 
                 alert.ShowModal()
-    
-    
-    ## TODO: Doxygen
-    def GatherData(self):
-        file_list = []
-        item_count = self.dest_area.GetItemCount()
-        if item_count > 0:
-            count = 0
-            while count < item_count:
-                item_file = self.dest_area.GetItemText(count)
-                item_dest = self.dest_area.GetItem(count, 1).GetText()
-                for item in self.list_data:
-                    # Decode to unicode
-                    i0 = item[0].encode(u'utf-8')
-                    i1 = item[1].decode(u'utf-8')
-                    i2 = item[2].encode(u'utf-8')
-                    if i1 == item_file and i2.decode(u'utf-8') == item_dest:
-                        item_src = i0
-                # Populate list with tuples of ('src', 'file', 'dest')
-                if self.dest_area.GetItemTextColour(count) == (255, 0, 0):
-                    file_list.append((u'{}*'.format(item_src), item_file, item_dest))
-                else:
-                    file_list.append((item_src, item_file, item_dest))
-                count += 1
-        
-            return_list = []
-            for FILE in file_list:
-                f0 = u'{}'.encode(u'utf-8').format(FILE[0])
-                f1 = u'{}'.encode(u'utf-8').format(FILE[1])
-                f2 = u'{}'.encode(u'utf-8').format(FILE[2])
-                return_list.append(u'{} -> {} -> {}'.format(f0, f1, f2))
-            return u'<<FILES>>\n1\n{}\n<</FILES>>'.format(u'\n'.join(return_list))
-        else:
-            # Place a "0" in FILES field if we are not saving any files
-            return u'<<FILES>>\n0\n<</FILES>>'
