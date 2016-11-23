@@ -411,13 +411,15 @@ class Panel(wx.ScrolledWindow):
     
     ## Loads a .desktop launcher's data
     def OnLoadLauncher(self, event=None):
+        main_window = wx.GetApp().GetTopWindow()
         cont = False
-        if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
-            dia = OpenFile(self, GT(u'Open Launcher'))
+        
+        if main_window.cust_dias.IsChecked():
+            dia = OpenFile(main_window, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
         else:
-            dia = wx.FileDialog(self, GT(u'Open Launcher'), os.getcwd(),
+            dia = wx.FileDialog(main_window, GT(u'Open Launcher'), os.getcwd(),
                 style=wx.FD_CHANGE_DIR)
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
