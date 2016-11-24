@@ -62,7 +62,7 @@ class Panel(WizardPage):
         
         # Deletes the temporary build tree
         self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete stage directory'))
-        self.chk_rmtree.SetName(u'RMTREE')
+        self.chk_rmtree.SetName(u'RMSTAGE')
         self.chk_rmtree.default = True
         self.chk_rmtree.SetValue(self.chk_rmtree.default)
         self.build_options.append(self.chk_rmtree)
