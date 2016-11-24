@@ -72,6 +72,7 @@ TT_files = {
     u'target': GT(u'Target installation directory for file(s)'),
     u'browse': GT(u'Browse for target installation directory'),
     u'refresh': GT(u'Update files\' executable status & availability'),
+    u'filelist': GT(u'Files to be added to package & their target directories')
 }
 
 TT_manpages = {
