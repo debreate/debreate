@@ -94,13 +94,11 @@ class Panel(WizardPage):
         btn_clear.SetName(u'clear')
         
         self.prev_dest_value = u'/usr/bin'
-        self.input_target = wx.TextCtrl(self, -1, self.prev_dest_value, name=u'target')
+        self.input_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
         
         self.btn_browse = ButtonBrowse(self)
         self.btn_browse.SetName(u'browse')
         self.btn_browse.SetId(ID_pout)
-        
-        self.path_dict = {ID_pout: self.input_target}
         
         # TODO: Make custom button
         btn_refresh = ButtonRefresh(self)
@@ -147,12 +145,12 @@ class Panel(WizardPage):
         layout_Vright.Add(layout_buttons, 0, wx.EXPAND)
         layout_Vright.Add(self.file_list, 1, wx.EXPAND, wx.TOP, 5)
         
-        layout_Hmain = wx.BoxSizer(wx.HORIZONTAL)
-        layout_Hmain.Add(self.dir_tree, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
-        layout_Hmain.Add(layout_Vright, 1, wx.EXPAND|wx.RIGHT, 5)
+        layout_main = wx.BoxSizer(wx.HORIZONTAL)
+        layout_main.Add(self.dir_tree, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
+        layout_main.Add(layout_Vright, 1, wx.EXPAND|wx.RIGHT, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_Hmain)
+        self.SetSizer(layout_main)
         self.Layout()
         
         
@@ -163,19 +161,19 @@ class Panel(WizardPage):
         
         # create an event to enable/disable custom widget
         for item in self.targets:
-            wx.EVT_RADIOBUTTON(item, -1, self.SetDestination)
+            wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.SetDestination)
         
         # Context menu events for directory tree
-        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
-        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
-        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
+        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClickTree)
+        wx.EVT_MENU(self, ID_AddDir, self.OnAddPath)
+        wx.EVT_MENU(self, ID_AddFile, self.OnAddPath)
         wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         # Button events
-        wx.EVT_BUTTON(btn_add, -1, self.AddPath)
-        wx.EVT_BUTTON(btn_remove, -1, self.RemoveSelected)
-        wx.EVT_BUTTON(btn_clear, -1, self.ClearAll)
-        wx.EVT_BUTTON(self.btn_browse, -1, self.OnBrowse)
+        btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
+        btn_remove.Bind(wx.EVT_BUTTON, self.RemoveSelected)
+        btn_clear.Bind(wx.EVT_BUTTON, self.ClearAll)
+        self.btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
         btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
         # ???: Not sure what these do
@@ -187,9 +185,7 @@ class Panel(WizardPage):
     
     
     ## Add a selected path to the list of files
-    #  
-    #  TODO: Rename to OnAddPath
-    def AddPath(self, event):
+    def OnAddPath(self, event=None):
         # List of files tuple formatted as: filename, source
         files = []
         
@@ -273,23 +269,26 @@ class Panel(WizardPage):
             else:
                 for F in files:
                     self.file_list.AddFile(F[0], F[1], target_dir)
-        
+            
             self.file_list.Sort()
     
     
     ## TODO: Doxygen
-    def CheckDest(self, event):
-        if self.input_target.GetValue() == wx.EmptyString:
+    def CheckDest(self, event=None):
+        if TextIsEmpty(self.input_target.GetValue()):
             self.input_target.SetValue(self.prev_dest_value)
             self.input_target.SetInsertionPoint(-1)
+        
         elif self.input_target.GetValue()[0] != u'/':
             self.input_target.SetValue(self.prev_dest_value)
             self.input_target.SetInsertionPoint(-1)
-        event.Skip()
+        
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
-    def ClearAll(self, event):
+    def ClearAll(self, event=None):
         confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_YES:
             self.file_list.DeleteAllItems()
@@ -297,10 +296,11 @@ class Panel(WizardPage):
     
     
     # FIXME: Deprecated; Replace with self.OnKeyDelete|self.OnKeyDown
-    def DelPathDeprecated(self, event):
+    def DelPathDeprecated(self, event=None):
         try:
             modifier = event.GetModifiers()
             keycode = event.GetKeyCode()
+        
         except AttributeError:
             keycode = event.GetEventObject().GetId()
         
@@ -316,6 +316,7 @@ class Panel(WizardPage):
                     prev = current
                     current = self.file_list.GetNextSelected(prev)
                     selected.insert(0, current)
+            
             for path in selected:
                 # Remove the item from the invisible list
                 for item in self.list_data:
@@ -323,12 +324,12 @@ class Panel(WizardPage):
                     dest = self.file_list.GetItem(path, 1).GetText()
                     if filename.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
                         toremove.append(item)
-                    
+                
                 self.file_list.DeleteItem(path) # Remove the item from the visible list
             
             for item in toremove:
                 self.list_data.remove(item)
-            
+        
         elif keycode == 65 and modifier == wx.MOD_CONTROL:
             self.SelectAll()
     
@@ -367,11 +368,13 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GetDestValue(self, event):
-        if self.input_target.GetValue() != wx.EmptyString:
+    def GetDestValue(self, event=None):
+        if not TextIsEmpty(self.input_target.GetValue()):
             if self.input_target.GetValue()[0] == u'/':
                 self.prev_dest_value = self.input_target.GetValue()
-        event.Skip()
+        
+        if event:
+            event.Skip()
     
     
     ## Retrieves information on files to be packaged
@@ -482,7 +485,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnBrowse(self, event):
+    def OnBrowse(self, event=None):
         dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.input_target.SetValue(dia.GetPath())
@@ -494,32 +497,30 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    #  
-    #  FIXME: Rename to OnRightClickTree or similar
-    def OnRightClick(self, event):
+    def OnRightClickTree(self, event=None):
         # Show a context menu for adding files and folders
         path = self.dir_tree.GetPath()
         if os.path.isdir(path):
             self.add_dir.Enable(True)
             self.add_file.Enable(False)
+        
         elif os.path.isfile(path):
             self.add_dir.Enable(False)
             self.add_file.Enable(True)
+        
         self.dir_tree.PopupMenu(self.menu)
     
     
     ## TODO: Doxygen
-    def OnRefresh(self, event):
+    def OnRefresh(self, event=None):
         path = self.dir_tree.GetPath()
-#		if isfile(path):
-#			path = os.path.split(path)[0]
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(path)
     
     
     ## TODO: Doxygen
-    def RemoveSelected(self, event):
+    def RemoveSelected(self, event=None):
         self.file_list.RemoveSelected()
     
     
@@ -536,11 +537,12 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetDestination(self, event):
+    def SetDestination(self, event=None):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.radio_cst.GetValue() == True:
             self.input_target.Enable()
             self.btn_browse.Enable()
+        
         else:
             self.input_target.Disable()
             self.btn_browse.Disable()
@@ -571,17 +573,15 @@ class Panel(WizardPage):
                 
                 # Check if files still exist
                 if os.path.exists(src[0]):
-                    # Deprecated
-                    #self.file_list.InsertStringItem(0, absolute_filename)
-                    #self.file_list.SetStringItem(0, 1, dest)
                     self.file_list.AddFile(filename, os.path.dirname(src[0]), dest)
                     self.list_data.insert(0, (src[0], filename, dest))
                     # Check if file is executable
                     if src[1]:
                         self.file_list.SetItemTextColour(0, u'red') # Set text color to red
+                
                 else:
                     missing_files.append(src[0])
-                
+            
             self.file_list.Sort()
             
             # If files are missing show a message
@@ -602,7 +602,6 @@ class Panel(WizardPage):
                 alert.Layout()
                 
                 alert.ShowModal()
-
 
 
 ## A custom progress dialog
@@ -641,18 +640,21 @@ class ProgressDialog(wx.Dialog):
         self.ShowModal()
     
     
+    ## TODO: Doxygen
     def Destroy(self):
         self.progress_dialog.Destroy()
         self.EndModal()
         del(self)
     
     
+    ## TODO: Doxygen
     def OnBorderResize(self, event=None):
         if event != None:
             # FIXME: Hack
             self.SetSize(self.progress_size)
     
     
+    ## TODO: Doxygen
     def Update(self, *args, **kwargs):
         self.count_text.SetLabel(u'{} / {}'.format(args[0], self.task_count))
         self.progress.SetValue(args[0])
@@ -662,5 +664,8 @@ class ProgressDialog(wx.Dialog):
         self.Refresh()
     
     
+    ## TODO: Doxygen
+    #  
+    #  TODO: Define
     def WasCancelled(self):
         return False
