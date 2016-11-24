@@ -8,9 +8,10 @@ from dbr.buttons    import ButtonAdd
 from dbr.buttons    import ButtonBrowse
 from dbr.buttons    import ButtonClear
 from dbr.buttons    import ButtonDel
-from dbr.custom import OpenDir
+from dbr.custom     import OpenDir
 from dbr.language   import GT
 from globals.ident  import ID_FILES
+from globals.paths  import PATH_home
 
 
 ID_pin = 100
@@ -20,8 +21,6 @@ ID_pout = 102
 ID_AddDir = 140
 ID_AddFile = 141
 ID_Refresh = 142
-
-home = os.getenv(u'HOME')
 
 
 ## TODO: Doxygen
@@ -58,7 +57,7 @@ class Panel(wx.ScrolledWindow):
         self.menu.AppendItem(self.refresh)
         
         # Directory listing for importing files and folders
-        self.dir_tree = wx.GenericDirCtrl(self, -1, home, size=(300,20))
+        self.dir_tree = wx.GenericDirCtrl(self, dir=PATH_home, size=(300,20))
         
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
         
