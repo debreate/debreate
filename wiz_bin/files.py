@@ -163,7 +163,7 @@ class Panel(wx.ScrolledWindow):
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClickTree)
         wx.EVT_MENU(self, ID_AddDir, self.OnAddPath)
         wx.EVT_MENU(self, ID_AddFile, self.OnAddPath)
-        wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
+        wx.EVT_MENU(self, ID_Refresh, self.OnRefreshTree)
         
         # Button events
         btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
@@ -362,7 +362,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnRefresh(self, event):
+    def OnRefreshTree(self, event):
         path = self.dir_tree.GetPath()
         
         self.dir_tree.ReCreateTree()
