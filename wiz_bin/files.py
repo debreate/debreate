@@ -90,13 +90,13 @@ class Panel(wx.ScrolledWindow):
         
         self.prev_dest_value = u'/usr/bin'
         self.input_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
-        self.input_target.SetToolTipString(GT(u'Installation target directory'))
         
         self.btn_browse = ButtonBrowse(self, ID_pout)
-        self.btn_browse.SetToolTipString(GT(u'Browse for installation target'))
+        self.btn_browse.SetName(u'browse')
         
         # Display area for files added to list
         self.file_list = DList(self)
+        self.file_list.SetName(u'filelist')
         
         # Set the width of first column on creation
         parent_size = self.GetGrandParent().GetSize()
@@ -148,6 +148,9 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(layout_main)
         self.Layout()
+        
+        
+        SetPageToolTips(self)
         
         
         # *** Events *** #
@@ -361,8 +364,6 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def OnRefresh(self, event):
         path = self.dir_tree.GetPath()
-        #if isfile(path):
-            #path = os.path.split(path)[0]
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(path)
