@@ -84,10 +84,12 @@ TT_scripts = {
     u'postinst': GT(u'Scrtipt run after package install completes'),
     u'prerm': GT(u'Script run before package uninstall begins'),
     u'postrm': GT(u'Script run after package uninstall completes'),
-    u'target': GT(u'FIXME: Description???'),
-    u'import': GT(u'Import files marked as executable from Files page into Auto-Link list'),
-    u'remove': GT(u'Remove the selected executable from the Auto-Link list'),
-    u'generate': GT(u'Generate Scripts'),
+    u'script body': GT(u'Script text body'),
+    u'target': GT(u'Directory where scripts should create symlinks'),
+    u'al list': GT(u'Executables from file list to be linked against'),
+    u'import': GT(u'Import files marked as executable from Files page'),
+    u'remove': GT(u'Remove selected executables from list'),
+    u'generate': GT(u'Generate scripts'),
     u'help': GT(u'How to use Auto-Link'),
 }
 
