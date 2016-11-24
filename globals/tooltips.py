@@ -10,8 +10,10 @@
 
 import wx
 
+from dbr.functions      import FieldEnabled
 from dbr.language       import GT
-from globals.characters import ARROW_RIGHT
+from dbr.templates      import local_templates_path
+from globals.commands   import CMD_system_installer
 from globals.ident      import ID_BUILD
 from globals.ident      import ID_CHANGELOG
 from globals.ident      import ID_CONTROL
@@ -21,9 +23,6 @@ from globals.ident      import ID_FILES
 from globals.ident      import ID_MAN
 from globals.ident      import ID_MENU
 from globals.ident      import ID_SCRIPTS
-from dbr.templates      import local_templates_path
-from dbr.functions      import FieldEnabled
-from globals.commands import CMD_system_installer
 
 
 # *** Wizard buttons ***#
@@ -34,10 +33,10 @@ TT_control = {
     u'open': GT(u'Open pre-formatted control text'),
     u'save': GT(u'Save control information to text'),
     u'preview': GT(u'Preview control file'),
-    u'package': GT(u'Name that the package will be listed under'),
-    u'version': GT(u'Version of release'),
-    u'maintainer': GT(u'Name of person who maintains packaging'),
-    u'email': GT(u'Package maintainer\'s email address'),
+    u'package': GT(u'Name of the package/software'),
+    u'version': GT(u'Package/Software release version'),
+    u'maintainer': GT(u'Package/Software maintainer\'s full name'),
+    u'email': GT(u'Package/Software maintainer\'s email address'),
     u'arch': (GT(u'Platform supported by this package/software'), GT(u'all=platform independent'),),
     u'section': GT(u'Section under which package managers will list this package'),
     u'priority': GT(u'Urgency of this package update'),
@@ -67,11 +66,11 @@ TT_depends = {
 }
 
 TT_files = {
-    u'add': GT(u'Add selected file/folder'),
-    u'remove': GT(u'Remove selected file from list'),
+    u'add': GT(u'Add selected file/folder to list'),
+    u'remove': GT(u'Remove selected files from list'),
     u'clear': GT(u'Clear file list'),
-    u'target': GT(u'Target destination for file(s)'),
-    u'browse': GT(u'Browse for target destination'),
+    u'target': GT(u'Target installation directory for file(s)'),
+    u'browse': GT(u'Browse for target installation directory'),
     u'refresh': GT(u'Update files\' executable status & availability'),
 }
 
@@ -84,10 +83,11 @@ TT_scripts = {
     u'postinst': GT(u'Scrtipt run after package install completes'),
     u'prerm': GT(u'Script run before package uninstall begins'),
     u'postrm': GT(u'Script run after package uninstall completes'),
-    u'target': GT(u'FIXME: Description???'),
-    u'import': GT(u'Import files marked as executable from Files page into Auto-Link list'),
-    u'remove': GT(u'Remove the selected executable from the Auto-Link list'),
-    u'generate': GT(u'Generate Scripts'),
+    u'target': GT(u'Directory where scripts should create symlinks'),
+    u'al list': GT(u'Executables from file list to be linked against'),
+    u'import': GT(u'Import files marked as executable from Files page'),
+    u'remove': GT(u'Remove selected executables from list'),
+    u'generate': GT(u'Generate scripts'),
     u'help': GT(u'How to use Auto-Link'),
 }
 
@@ -95,14 +95,16 @@ TT_changelog = {
     u'package': TT_control[u'package'],
     u'version': TT_control[u'version'],
     u'dist': GT(u'Name of Debian/Ubuntu/etc. target distribution'),
-    u'urgency': GT(u'Update urgency'),
+    u'urgency': GT(u'Urgency of this update'),
     u'maintainer': TT_control[u'maintainer'],
     u'email': TT_control[u'email'],
     u'changes': GT(u'List new changes here, separated one per line'),
     u'target': GT(u'Target to install changelog file'),
-    u'import': GT(u'Import information from Control section'),
+    u'target default': GT(u'Install changelog to standard directory'),
+    u'target custom': GT(u'Install changelog to custom directory'),
+    u'import': GT(u'Import information from Control page'),
     u'add': GT(u'Prepend above changes as new log entry'),
-    u'log': GT(u'Log contents'),
+    u'log': GT(u'Formatted changelog entries (editable)'),
 }
 
 TT_copyright = {
@@ -118,30 +120,34 @@ TT_copyright = {
 }
 
 TT_launchers = {
-    u'open': GT(u'Open launcher file'),
+    u'open': GT(u'Import launcher from file'),
     u'export': GT(u'Export launcher to text file'),
-    u'preview': GT(u'Preview launcher'),
-    u'name': GT(u'Text for the launcher'),
+    u'preview': GT(u'Preview launcher text'),
+    u'filename': GT(u'Custom filename to use for launcher'),
+    u'filename chk': GT(u'Unless checked, the value of "Filename" will be used for the launcher\'s output filename'),
+    u'name': GT(u'Name to be displayed for the launcher'),
     u'exec': GT(u'Executable to be launched'),
-    u'comment': GT(u'Comment text displayed'),
+    u'comment': GT(u'Text displayed when cursor hovers over launcher'),
     u'icon': GT(u'Icon to be displayed for the launcher'),
     u'type': (
         GT(u'Type of launcher'), u'',
-        GT(u'Application:'), u'\t{}'.format(GT(u'Executes an application')),
-        GT(u'Link:'), u'\t{}'.format(GT(u'???')),
-        GT(u'FSDevice:'), u'\t{}'.format(GT(u'???')),
-        GT(u'Directory:'), u'\t{}'.format(GT(u'Opens a target directory in the system file manager')),
+        GT(u'Application:'), u'\t{}'.format(GT(u'Shortcut to an application')),
+        GT(u'Link:'), u'\t{}'.format(GT(u'Shortcut to a web URL')),
+        GT(u'Directory:'), u'\t{}'.format(GT(u'Container of meta data of a menu entry')),
         ),
     u'terminal': GT(u'Specifies whether application should be run in a terminal'),
     u'startupnotify': GT(u'Displays a notification in the system panel when launched'),
-    u'encoding': GT(u'Sets the encoding that should be used in order to read the launcher'),
+    u'encoding': GT(u'Sets the encoding that should be used to read the launcher'),
     u'category': GT(u'Categories dictate where the launcher will be located in the system menu'),
     u'add category': GT(u'Append current category to list'),
     u'rm category': GT(u'Remove selected categories from list'),
     u'clear categories': GT(u'Clear category list'),
     u'categories': GT(u'Categories dictate where the launcher will be located in the system menu'),
+    u'no disp': GT(u'This options means "This application exists, but don\'t display it in the menus"'),
+    u'show in': GT(u'Launcher is only shown when options are satisfied'),
     u'other': (
         GT(u'Miscellaneous fields not available above'), u'',
+        GT(u'See "Help ➜ Reference ➜ Launchers / Dekstop Entries" for more available options'), u'',
         GT(u'Warning:'),
         u'\t{}'.format(GT(u'Improperly formatted text may cause launcher to be unusable')),
         )
@@ -150,20 +156,20 @@ TT_launchers = {
 TT_build = {
     u'md5': GT(u'Creates a checksum for all staged files within the package'),
     u'md5_disabled': GT(u'Install md5sum package for this option'),
-    u'rmtree': GT(u'Delete staged directory tree after package has been created'),
+    u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
-        GT(u'See: Help {0} Reference {0} Lintian Tags Explanation').format(ARROW_RIGHT),
+        GT(u'See "Help ➜ Reference ➜ Lintian Tags Explanation"'),
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
-    u'build': GT(u'Start Build'),
+    u'build': GT(u'Start building'),
     u'install': (
-        GT(u'Uses the system package manager to install .deb'), u'',
+        GT(u'Install package using a system installer after build'), u'',
         u'{} {}'.format(GT(u'System installer set to:'), CMD_system_installer),
         ),
     u'install_disabled': (
         GT(u'Installation requires one of the following utilities:'), u'',
-        GT(u'gdebi, dpkg, bsdar, or ar'),
+        GT(u'gdebi, gdebi-gtk, gdebi-kde, dpkg'),
         ),
 }
 
