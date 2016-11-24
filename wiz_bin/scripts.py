@@ -18,10 +18,18 @@ from globals.ident      import ID_SCRIPTS
 from globals.tooltips   import SetPageToolTips
 
 
-ID_Preinst = wx.NewId()
-ID_Postinst = wx.NewId()
-ID_Prerm = wx.NewId()
-ID_Postrm = wx.NewId()
+ID_INST_PRE = wx.NewId()
+ID_INST_POST = wx.NewId()
+ID_RM_PRE = wx.NewId()
+ID_RM_POST = wx.NewId()
+
+id_definitions = {
+    ID_INST_PRE: u'preinst',
+    ID_INST_POST: u'postinst',
+    ID_RM_PRE: u'prerm',
+    ID_RM_POST: u'postrm',
+}
+
 
 ## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
@@ -31,28 +39,33 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(20, 20, 0, 0)
         
         # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_Preinst, GT(u'Make this script'), name=GT(u'Pre-Install'))
-        self.chk_postinst = wx.CheckBox(self, ID_Postinst, GT(u'Make this script'), name=GT(u'Post-Install'))
-        self.chk_prerm = wx.CheckBox(self, ID_Prerm, GT(u'Make this script'), name=GT(u'Pre-Remove'))
-        self.chk_postrm = wx.CheckBox(self, ID_Postrm, GT(u'Make this script'), name=GT(u'Post-Remove'))
+        self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
+        self.chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
+        self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
+        self.chk_postrm = wx.CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
         
         for S in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
             S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
         
         # Radio buttons for displaying between pre- and post- install scripts
-        self.rb_preinst = wx.RadioButton(self, ID_Preinst, GT(u'Pre-Install'), style=wx.RB_GROUP)
-        self.rb_postinst = wx.RadioButton(self, ID_Postinst, GT(u'Post-Install'))
-        self.rb_prerm = wx.RadioButton(self, ID_Prerm, GT(u'Pre-Remove'))
-        self.rb_postrm = wx.RadioButton(self, ID_Postrm, GT(u'Post-Remove'))
+        self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'),
+                name=u'preinst', style=wx.RB_GROUP)
+        self.rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'),
+                name=u'postinst')
+        self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, GT(u'Pre-Remove'),
+                name=u'prerm')
+        self.rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'),
+                name=u'postrm')
         
         # Text area for each radio button
-        self.te_preinst = wx.TextCtrl(self, ID_Preinst, style=wx.TE_MULTILINE)
-        self.te_postinst = wx.TextCtrl(self, ID_Postinst, style=wx.TE_MULTILINE)
-        self.te_prerm = wx.TextCtrl(self, ID_Prerm, style=wx.TE_MULTILINE)
-        self.te_postrm = wx.TextCtrl(self, ID_Postrm, style=wx.TE_MULTILINE)
-        
-        for S in self.te_preinst, self.te_postinst, self.te_prerm, self.te_postrm:
-            S.SetToolTipString(GT(u'Script text body'))
+        self.te_preinst = wx.TextCtrl(self, ID_INST_PRE, name=u'script body',
+                style=wx.TE_MULTILINE)
+        self.te_postinst = wx.TextCtrl(self, ID_INST_POST, name=u'script body',
+                style=wx.TE_MULTILINE)
+        self.te_prerm = wx.TextCtrl(self, ID_RM_PRE, name=u'script body',
+                style=wx.TE_MULTILINE)
+        self.te_postrm = wx.TextCtrl(self, ID_RM_POST, name=u'script body',
+                style=wx.TE_MULTILINE)
         
         self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
@@ -61,8 +74,9 @@ class Panel(wx.ScrolledWindow):
                             self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
         
         for rb in self.script_te:
-            wx.EVT_RADIOBUTTON(rb, -1, self.ScriptSelect)
+            wx.EVT_RADIOBUTTON(rb, wx.ID_ANY, self.ScriptSelect)
             self.script_te[rb].Hide()
+        
         for rb in self.script_chk:
             self.script_chk[rb].Hide()
         
@@ -94,38 +108,25 @@ class Panel(wx.ScrolledWindow):
         self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
         self.al_input.SetName(u'target')
         
-        tt_alpath = GT(u'Directory where scripts should create symlinks')
-        self.al_text.SetToolTipString(tt_alpath)
-        self.al_input.SetToolTipString(tt_alpath)
-        
-        #wx.EVT_KEY_UP(self.al_input, ChangeInput)
-        
         alpath_sizer = wx.BoxSizer(wx.HORIZONTAL)
         alpath_sizer.Add(self.al_text, 0, wx.ALIGN_CENTER)
         alpath_sizer.Add(self.al_input, 1, wx.ALIGN_CENTER)
         
         # Auto-Link executables to be linked
-        if wx.MAJOR_VERSION > 2:
-            self.executables = wx.ListCtrl(self, -1, size=(200,200))
-            self.executables.SetSingleStyle(wx.LC_REPORT)
-            self.executables.InsertColumn(0, u'')
-        
-        else:
-            self.executables = wx.ListCtrl(self, -1, size=(200,200),
+        if wx.MAJOR_VERSION < 3:
+            self.executables = wx.ListCtrl(self, size=(200,200), name=u'al list',
                     style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
         
-        self.executables.SetToolTipString(GT(u'Executables from file list to be linked against'))
+        else:
+            self.executables = wx.ListCtrl(self, size=(200,200), name=u'al list')
         
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_IMPORT)
         self.al_import.SetName(u'import')
-        self.al_import.SetToolTipString(GT(u'Import executables from file list'))
         self.al_del = ButtonDel(self)
         self.al_del.SetName(u'Remove')
-        self.al_del.SetToolTipString(GT(u'Remove selected executables from list'))
         self.al_gen = ButtonBuild(self)
         self.al_gen.SetName(u'Generate')
-        self.al_gen.SetToolTipString(GT(u'Generate scripts'))
         
         wx.EVT_BUTTON(self.al_import, ID_IMPORT, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
@@ -137,26 +138,15 @@ class Panel(wx.ScrolledWindow):
         albutton_sizer.Add(self.al_gen, 1)
         
         # Nice border for auto-generate scripts area
-        self.autogen_border = wx.StaticBox(self, -1, GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
+        self.autogen_border = wx.StaticBox(self, label=GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
         autogen_box = wx.StaticBoxSizer(self.autogen_border, wx.VERTICAL)
         autogen_box.Add(alpath_sizer, 0, wx.EXPAND)
         autogen_box.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
         autogen_box.Add(albutton_sizer, 0, wx.EXPAND)
-        #autogen_box.AddSpacer(5)
-        #autogen_box.Add(self.al_del, 0, wx.ALIGN_CENTER)
-        
-        # Text explaining Auto-Link
-        '''
-        self.al_text = wx.StaticText(self, -1, u'How to use Auto-Link: Press the "import" button to \
-import any executables from the "files" tab.  Then press the "generate" button.  "postinst" and "prerm" \
-scripts will be created that will place a symbolic link to your executables in the path displayed above.')
-        self.al_text.Wrap(210)
-        '''
         
         # *** HELP *** #
         self.button_help = ButtonQuestion64(self)
         self.button_help.SetName(u'help')
-        #self.button_help.SetToolTipString(GT(u'How to use Auto-Link'))
         
         wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
         
@@ -164,7 +154,6 @@ scripts will be created that will place a symbolic link to your executables in t
         layout_right = wx.BoxSizer(wx.VERTICAL)
         layout_right.AddSpacer(17)
         layout_right.Add(autogen_box, 0)
-        #layout_right.Add(self.al_text, 0)
         layout_right.Add(self.button_help, 0, wx.ALIGN_CENTER)
         
         
@@ -206,14 +195,12 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # Create a list to return the data
         data = []
-        #make_scripts = False # Return empty script section
         for group in script_list:
             if group[0].GetValue():
-                #make_scripts = True
                 data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[1].GetValue(), group[2]))
+            
             else:
                 data.append(u'<<{}>>\n0\n<</{}>>'.format(group[2], group[2]))
-                
         
         return u'<<SCRIPTS>>\n{}\n<</SCRIPTS>>'.format(u'\n'.join(data))
     
@@ -242,6 +229,7 @@ scripts will be created that will place a symbolic link to your executables in t
                                 # In case the full path of the destination is "/" keep going
                                 if len(dest.GetText()) == 1:
                                     dest_path = u''
+                                
                                 else:
                                     search = True
                                     slashes = 1  # Set the number of spaces to remove from dest path in case of multiple "/"
@@ -250,9 +238,11 @@ scripts will be created that will place a symbolic link to your executables in t
                                         endline = slashes-1
                                         if dest.GetText()[-slashes] == u'/' or dest.GetText()[-slashes] == u' ':
                                             slashes += 1
+                                        
                                         else:
                                             dest_path = dest.GetText()[:-endline]
                                             search = False
+                            
                             else:
                                 dest_path = dest.GetText()
                             
@@ -260,10 +250,13 @@ scripts will be created that will place a symbolic link to your executables in t
                             self.xlist.insert(0, u'{}/{}'.format(dest_path, filename))
                             self.executables.InsertStringItem(0, filename)
                             self.executables.SetItemTextColour(0, u'red')
+                        
                         else:
                             print(u'{}: The executables destination is not valid'.format(__name__))
+                    
                     except IndexError:
                         print(u'{}: The executables destination is not available'.format(__name__))
+                
                 count += 1
         
         elif ID == wx.WXK_DELETE:
@@ -303,6 +296,7 @@ scripts will be created that will place a symbolic link to your executables in t
                     if u'.' in filename:
                         linkname = u'.'.join(filename.split(u'.')[:-1])
                         link = u'{}/{}'.format(link_path, linkname)
+                    
                     else:
                         link = u'{}/{}'.format(link_path, filename)
                     #link = u'{}/{}'.format(link_path, os.path.split(self.xlist[count])[1])
@@ -343,13 +337,10 @@ scripts will be created that will place a symbolic link to your executables in t
     def ResetAllFields(self):
         for rb in self.script_chk:
             self.script_chk[rb].SetValue(False)
+        
         for rb in self.script_te:
             self.script_te[rb].Clear()
-#			# Reset to show Preinstall script as default
-#			if rb == self.rb_preinst:
-#				self.script_te[rb].Show()
-#			else:
-#				self.script_te[rb].Hide()
+        
         self.rb_preinst.SetValue(True)
         self.ScriptSelect(None)
         
@@ -364,9 +355,11 @@ scripts will be created that will place a symbolic link to your executables in t
             if rb.GetValue() == True:
                 self.script_te[rb].Show()
                 self.script_chk[rb].Show()
+            
             else:
                 self.script_te[rb].Hide()
                 self.script_chk[rb].Hide()
+        
         self.Layout()
     
     
@@ -380,24 +373,31 @@ scripts will be created that will place a symbolic link to your executables in t
         if int(preinst[0]):
             self.chk_preinst.SetValue(True)
             self.te_preinst.SetValue(preinst[2:]) # 2 removes firs line
+        
         else:
             self.chk_preinst.SetValue(False)
             self.te_preinst.Clear()
+        
         if int(postinst[0]):
             self.chk_postinst.SetValue(True)
             self.te_postinst.SetValue(postinst[2:]) # 2 removes firs line
+        
         else:
             self.chk_postinst.SetValue(False)
             self.te_postinst.Clear()
+        
         if int(prerm[0]):
             self.chk_prerm.SetValue(True)
             self.te_prerm.SetValue(prerm[2:]) # 2 removes firs line
+        
         else:
             self.chk_prerm.SetValue(False)
             self.te_prerm.Clear()
+        
         if int(postrm[0]):
             self.chk_postrm.SetValue(True)
             self.te_postrm.SetValue(postrm[2:]) # 2 removes firs line
+        
         else:
             self.chk_postrm.SetValue(False)
             self.te_postrm.Clear()
