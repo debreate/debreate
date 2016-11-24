@@ -180,7 +180,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def CheckDest(self, event):
+    def CheckDest(self, event=None):
         if TextIsEmpty(self.input_target.GetValue()):
             self.input_target.SetValue(self.prev_dest_value)
             self.input_target.SetInsertionPoint(-1)
@@ -189,11 +189,12 @@ class Panel(wx.ScrolledWindow):
             self.input_target.SetValue(self.prev_dest_value)
             self.input_target.SetInsertionPoint(-1)
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
-    def ClearAll(self, event):
+    def ClearAll(self, event=None):
         confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
         if confirm.ShowModal() == wx.ID_YES:
             self.file_list.DeleteAllItems()
@@ -201,7 +202,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def DelPath(self, event):
+    def DelPath(self, event=None):
         try:
             modifier = event.GetModifiers()
             keycode = event.GetKeyCode()
@@ -280,16 +281,17 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GetDestValue(self, event):
+    def GetDestValue(self, event=None):
         if not TextIsEmpty(self.input_target.GetValue()):
             if self.input_target.GetValue()[0] == u'/':
                 self.prev_dest_value = self.input_target.GetValue()
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
     ## Add a selected path to the list of files
-    def OnAddPath(self, event):
+    def OnAddPath(self, event=None):
         total_files = 0
         pin = self.dir_tree.GetPath()
         
@@ -347,7 +349,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnBrowse(self, event):
+    def OnBrowse(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         if main_window.cust_dias.IsChecked() == True:
@@ -362,7 +364,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnRefreshTree(self, event):
+    def OnRefreshTree(self, event=None):
         path = self.dir_tree.GetPath()
         
         self.dir_tree.ReCreateTree()
@@ -370,7 +372,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnRightClickTree(self, event):
+    def OnRightClickTree(self, event=None):
         # Show a context menu for adding files and folders
         path = self.dir_tree.GetPath()
         if os.path.isdir(path):
@@ -403,7 +405,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def SetDestination(self, event):
+    def SetDestination(self, event=None):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.radio_custom.GetValue() == True:
             self.input_target.Enable()
@@ -451,9 +453,9 @@ class Panel(wx.ScrolledWindow):
             
             # If files are missing show a message
             if len(missing_files):
-                alert = wx.Dialog(self, -1, GT(u'Missing Files'))
-                alert_text = wx.StaticText(alert, -1, GT(u'Could not locate the following files:'))
-                alert_list = wx.TextCtrl(alert, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+                alert = wx.Dialog(self, title=GT(u'Missing Files'))
+                alert_text = wx.StaticText(alert, label=GT(u'Could not locate the following files:'))
+                alert_list = wx.TextCtrl(alert, style=wx.TE_MULTILINE|wx.TE_READONLY)
                 alert_list.SetValue(u'\n'.join(missing_files))
                 button_ok = wx.Button(alert, wx.ID_OK)
                 
