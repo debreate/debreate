@@ -69,10 +69,10 @@ class Panel(WizardPage):
         
         # Destination of changelog
         self.target_default = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
-                name=u'target', style=wx.RB_GROUP)
-        self.target_custom = wx.RadioButton(self, name=self.target_default.Name)
+                name=u'target default', style=wx.RB_GROUP)
+        self.target_custom = wx.RadioButton(self, name=u'target custom')
         self.target = PathCtrl(self, -1, u'/', PATH_WARN)
-        self.target.SetName(self.target_default.Name)
+        self.target.SetName(self.target_custom.Name)
         
         dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         dest_custom_sizer.Add(self.target_custom)
