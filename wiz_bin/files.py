@@ -167,7 +167,7 @@ class Panel(WizardPage):
         wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClickTree)
         wx.EVT_MENU(self, ID_AddDir, self.OnAddPath)
         wx.EVT_MENU(self, ID_AddFile, self.OnAddPath)
-        wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
+        wx.EVT_MENU(self, ID_Refresh, self.OnRefreshTree)
         
         # Button events
         btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
@@ -182,95 +182,6 @@ class Panel(WizardPage):
         
         # Key events for file list
         wx.EVT_KEY_DOWN(self.file_list, self.DelPathDeprecated)
-    
-    
-    ## Add a selected path to the list of files
-    def OnAddPath(self, event=None):
-        # List of files tuple formatted as: filename, source
-        files = []
-        
-        source = self.dir_tree.GetPath()
-        target_dir = None
-        
-        for target in self.targets:
-            if target.GetValue():
-                if target.GetId() == ID_CUSTOM:
-                    target_dir = self.input_target.GetValue()
-                
-                else:
-                    target_dir = target.GetLabel()
-                
-                break
-        
-        if target_dir == None:
-            Logger.Error(__name__, GT(u'Expected string for staging target, got None type instead'))
-        
-        if os.path.isfile(source):
-            filename = os.path.basename(source)
-            source_dir = os.path.dirname(source)
-            
-            files.append((filename, source_dir))
-        
-        elif os.path.isdir(source):
-            for PATH, DIRS, FILES in os.walk(source):
-                for filename in FILES:
-                    files.append((filename, PATH))
-        
-        file_count = len(files)
-        
-        # Set the maximum file count to process without showing progress dialog
-        efficiency_threshold = 250
-        
-        # Set the maximum file count to process without showing warning dialog
-        warning_threshhold = 1000
-        
-        get_files = True
-        if file_count > warning_threshhold:
-            count_warnmsg = GT(u'Importing {} files'.format(file_count))
-            count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
-            count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
-            
-            get_files = wx.MessageDialog(self, count_warnmsg, GT(u'WARNING'),
-                    style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING).ShowModal() == wx.ID_YES
-        
-        if get_files:
-            # Show a progress dialog that can be aborted
-            if file_count > efficiency_threshold:
-                task_msg = GT(u'Getting files from {}'.format(source))
-                task_progress = wx.ProgressDialog(GT(u'Progress'), u'{}\n'.format(task_msg), file_count, self,
-                        wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                
-                # Add text to show current file number being processed
-                count_text = wx.StaticText(task_progress, wx.ID_ANY, u'0 / {}'.format(file_count))
-                tprogress_layout = task_progress.GetSizer()
-                tprogress_layout.Insert(1, count_text, -1, wx.ALIGN_CENTER)
-                
-                # Resize the dialog to fit the new text
-                tprogress_size = task_progress.GetSize()
-                task_progress.SetSize(wx.Size(tprogress_size[0], tprogress_size[1] + tprogress_size[1]/9))
-                
-                task_progress.Layout()
-                
-                task = 0
-                while task < file_count:
-                    if task_progress.WasCancelled():
-                        task_progress.Destroy()
-                        break
-                    
-                    # Get the index before progress dialog is updated
-                    task_index = task
-                    
-                    task += 1
-                    count_text.SetLabel(u'{} / {}'.format(task, file_count))
-                    task_progress.Update(task)#, u'{}\n{} / {}'.format(task_msg, task, file_count))
-                    
-                    self.file_list.AddFile(files[task_index][0], files[task_index][1], target_dir)
-            
-            else:
-                for F in files:
-                    self.file_list.AddFile(F[0], F[1], target_dir)
-            
-            self.file_list.Sort()
     
     
     ## TODO: Doxygen
@@ -484,6 +395,95 @@ class Panel(WizardPage):
         return not self.file_list.IsEmpty()
     
     
+    ## Add a selected path to the list of files
+    def OnAddPath(self, event=None):
+        # List of files tuple formatted as: filename, source
+        files = []
+        
+        source = self.dir_tree.GetPath()
+        target_dir = None
+        
+        for target in self.targets:
+            if target.GetValue():
+                if target.GetId() == ID_CUSTOM:
+                    target_dir = self.input_target.GetValue()
+                
+                else:
+                    target_dir = target.GetLabel()
+                
+                break
+        
+        if target_dir == None:
+            Logger.Error(__name__, GT(u'Expected string for staging target, got None type instead'))
+        
+        if os.path.isfile(source):
+            filename = os.path.basename(source)
+            source_dir = os.path.dirname(source)
+            
+            files.append((filename, source_dir))
+        
+        elif os.path.isdir(source):
+            for PATH, DIRS, FILES in os.walk(source):
+                for filename in FILES:
+                    files.append((filename, PATH))
+        
+        file_count = len(files)
+        
+        # Set the maximum file count to process without showing progress dialog
+        efficiency_threshold = 250
+        
+        # Set the maximum file count to process without showing warning dialog
+        warning_threshhold = 1000
+        
+        get_files = True
+        if file_count > warning_threshhold:
+            count_warnmsg = GT(u'Importing {} files'.format(file_count))
+            count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
+            count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
+            
+            get_files = wx.MessageDialog(self, count_warnmsg, GT(u'WARNING'),
+                    style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING).ShowModal() == wx.ID_YES
+        
+        if get_files:
+            # Show a progress dialog that can be aborted
+            if file_count > efficiency_threshold:
+                task_msg = GT(u'Getting files from {}'.format(source))
+                task_progress = wx.ProgressDialog(GT(u'Progress'), u'{}\n'.format(task_msg), file_count, self,
+                        wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                
+                # Add text to show current file number being processed
+                count_text = wx.StaticText(task_progress, wx.ID_ANY, u'0 / {}'.format(file_count))
+                tprogress_layout = task_progress.GetSizer()
+                tprogress_layout.Insert(1, count_text, -1, wx.ALIGN_CENTER)
+                
+                # Resize the dialog to fit the new text
+                tprogress_size = task_progress.GetSize()
+                task_progress.SetSize(wx.Size(tprogress_size[0], tprogress_size[1] + tprogress_size[1]/9))
+                
+                task_progress.Layout()
+                
+                task = 0
+                while task < file_count:
+                    if task_progress.WasCancelled():
+                        task_progress.Destroy()
+                        break
+                    
+                    # Get the index before progress dialog is updated
+                    task_index = task
+                    
+                    task += 1
+                    count_text.SetLabel(u'{} / {}'.format(task, file_count))
+                    task_progress.Update(task)#, u'{}\n{} / {}'.format(task_msg, task, file_count))
+                    
+                    self.file_list.AddFile(files[task_index][0], files[task_index][1], target_dir)
+            
+            else:
+                for F in files:
+                    self.file_list.AddFile(F[0], F[1], target_dir)
+            
+            self.file_list.Sort()
+    
+    
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
         dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
@@ -494,6 +494,14 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnRefreshFileList(self, event=None):
         self.file_list.Refresh()
+    
+    
+    ## TODO: Doxygen
+    def OnRefreshTree(self, event=None):
+        path = self.dir_tree.GetPath()
+        
+        self.dir_tree.ReCreateTree()
+        self.dir_tree.SetPath(path)
     
     
     ## TODO: Doxygen
@@ -509,14 +517,6 @@ class Panel(WizardPage):
             self.add_file.Enable(True)
         
         self.dir_tree.PopupMenu(self.menu)
-    
-    
-    ## TODO: Doxygen
-    def OnRefresh(self, event=None):
-        path = self.dir_tree.GetPath()
-        
-        self.dir_tree.ReCreateTree()
-        self.dir_tree.SetPath(path)
     
     
     ## TODO: Doxygen
