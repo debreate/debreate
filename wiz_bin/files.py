@@ -37,13 +37,10 @@ ID_AddFile = 141
 ID_Refresh = 142
 
 
-## TODO: Doxygen
+## Class defining controls for the "Paths" page
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_FILES)
-        
-        # Allows calling parent methods
-        self.parent = parent
         
         # Create a Context Menu
         self.menu = wx.Menu()
