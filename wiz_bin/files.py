@@ -69,10 +69,10 @@ class Panel(WizardPage):
         self.radio_usrlib = wx.RadioButton(target_panel, label=u'/usr/lib')
         self.radio_locbin = wx.RadioButton(target_panel, label=u'/usr/local/bin')
         self.radio_loclib = wx.RadioButton(target_panel, label=u'/usr/local/lib')
-        self.radio_cst = wx.RadioButton(target_panel, ID_CUSTOM, GT(u'Custom'))
+        self.radio_custom = wx.RadioButton(target_panel, ID_CUSTOM, GT(u'Custom'))
         
         # Start with "Custom" selected
-        self.radio_cst.SetValue(True)
+        self.radio_custom.SetValue(True)
         
         # group buttons together
         # FIXME: Unnecessary???
@@ -82,7 +82,7 @@ class Panel(WizardPage):
             self.radio_usrlib,
             self.radio_locbin,
             self.radio_loclib,
-            self.radio_cst,
+            self.radio_custom,
             )
         
         # ----- Add/Remove/Clear buttons
@@ -539,7 +539,7 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def SetDestination(self, event=None):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
-        if self.radio_cst.GetValue() == True:
+        if self.radio_custom.GetValue() == True:
             self.input_target.Enable()
             self.btn_browse.Enable()
         
