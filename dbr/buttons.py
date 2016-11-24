@@ -7,6 +7,15 @@ from dbr.language   import GT
 from globals.paths  import PATH_app
 
 
+## The same as wx.BitmapButton but defaults to style=wx.NO_BORDER
+class BitmapButton(wx.BitmapButton):
+    def __init__(self, parent, bitmap, ID=wx.ID_ANY, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=wx.NO_BORDER, validator=wx.DefaultValidator,
+            name=wx.ButtonNameStr):
+        wx.BitmapButton.__init__(self, parent, ID, bitmap, pos, size, style|wx.NO_BORDER,
+                validator, name)
+
+
 # *** Buttons *** #
 class ButtonAdd(wx.BitmapButton):
     def __init__(self, parent, ID=wx.WXK_RETURN):
