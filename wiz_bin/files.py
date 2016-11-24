@@ -65,10 +65,10 @@ class Panel(wx.ScrolledWindow):
         self.radio_usrlib = wx.RadioButton(target_panel, label=u'/usr/lib')
         self.radio_locbin = wx.RadioButton(target_panel, label=u'/usr/local/bin')
         self.radio_loclib = wx.RadioButton(target_panel, label=u'/usr/local/lib')
-        self.radio_cst = wx.RadioButton(target_panel, ID_CUSTOM, GT(u'Custom'))
+        self.radio_custom = wx.RadioButton(target_panel, ID_CUSTOM, GT(u'Custom'))
         
         # Start with "Custom" selected
-        self.radio_cst.SetValue(True)
+        self.radio_custom.SetValue(True)
         
         # group buttons together
         self.targets = (
@@ -77,7 +77,7 @@ class Panel(wx.ScrolledWindow):
             self.radio_usrlib,
             self.radio_locbin,
             self.radio_loclib,
-            self.radio_cst,
+            self.radio_custom,
             )
         
         # ----- Add/Remove/Clear buttons
@@ -114,9 +114,9 @@ class Panel(wx.ScrolledWindow):
         for item in self.targets:
             layout_target.Add(item, 0)
         
-        self.radio_border = wx.StaticBox(self, label=GT(u'Target'), size=(20,20))
-        radio_box = wx.StaticBoxSizer(self.radio_border, wx.HORIZONTAL)
-        radio_box.Add(layout_target, 0)
+        target_panel.SetAutoLayout(True)
+        target_panel.SetSizer(layout_target)
+        target_panel.Layout()
         
         LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
         LMR_sizer.Add(self.file_list, 1, wx.EXPAND)
@@ -132,17 +132,18 @@ class Panel(wx.ScrolledWindow):
         layout_buttons.Add(layout_input, 1, wx.ALIGN_CENTER_VERTICAL)
         layout_buttons.Add(self.btn_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
         
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(10)
-        page_sizer.Add(radio_box, 0, wx.ALL, 5)
-        page_sizer.Add(layout_buttons, 0, wx.EXPAND|wx.ALL, 5)
-        page_sizer.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        layout_Vright = wx.BoxSizer(wx.VERTICAL)
+        layout_Vright.AddSpacer(10)
+        layout_Vright.Add(wx.StaticText(self, label=GT(u'Target')), 0, wx.LEFT, 5)
+        layout_Vright.Add(target_panel, 0, wx.LEFT, 5)
+        layout_Vright.Add(layout_buttons, 0, wx.EXPAND|wx.ALL, 5)
+        layout_Vright.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         layout_main = wx.FlexGridSizer(1, 2)
         layout_main.AddGrowableRow(0)
         layout_main.AddGrowableCol(1, 2)
         layout_main.Add(self.dir_tree, 1, wx.EXPAND|wx.LEFT|wx.TOP|wx.BOTTOM, 5)
-        layout_main.Add(page_sizer, 1, wx.EXPAND)
+        layout_main.Add(layout_Vright, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(layout_main)
@@ -156,13 +157,13 @@ class Panel(wx.ScrolledWindow):
             wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.SetDestination)
         
         # Context menu events for directory tree
-        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClick)
-        wx.EVT_MENU(self, ID_AddDir, self.AddPath)
-        wx.EVT_MENU(self, ID_AddFile, self.AddPath)
+        wx.EVT_CONTEXT_MENU(self.dir_tree, self.OnRightClickTree)
+        wx.EVT_MENU(self, ID_AddDir, self.OnAddPath)
+        wx.EVT_MENU(self, ID_AddFile, self.OnAddPath)
         wx.EVT_MENU(self, ID_Refresh, self.OnRefresh)
         
         # Button events
-        btn_add.Bind(wx.EVT_BUTTON, self.AddPath)
+        btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
         btn_remove.Bind(wx.EVT_BUTTON, self.DelPath)
         btn_clear.Bind(wx.EVT_BUTTON, self.ClearAll)
         self.btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
@@ -173,66 +174,6 @@ class Panel(wx.ScrolledWindow):
         
         # Key events for file list
         wx.EVT_KEY_DOWN(self.file_list, self.DelPath)
-    
-    
-    ## Add a selected path to the list of files
-    #  
-    #  TODO: Rename to OnAddPath
-    def AddPath(self, event):
-        total_files = 0
-        pin = self.dir_tree.GetPath()
-        
-        for item in self.targets:
-            if self.radio_cst.GetValue() == True:
-                pout = self.input_target.GetValue()
-            
-            elif item.GetValue() == True:
-                pout = item.GetLabel()
-        
-        if os.path.isdir(pin):
-            for root, dirs, files in os.walk(pin):
-                for FILE in files:
-                    total_files += 1
-            
-            if total_files: # Continue if files are found
-                cont = True
-                count = 0
-                msg_files = GT(u'Getting files from {}')
-                loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
-                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                for root, dirs, files in os.walk(pin):
-                    for FILE in files:
-                        if cont == (False,False):  # If "cancel" pressed destroy the progress window
-                            break
-                        
-                        else:
-                            sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
-                            if sub_dir != wx.EmptyString:
-                                # Add the sub-dir to dest
-                                dest = u'{}{}'.format(pout, sub_dir)
-                                #self.list_data.insert(0, (u'{}/{}'.format(root, FILE), u'{}/{}'.format(sub_dir[1:], FILE), dest))
-                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, dest))
-                                self.file_list.InsertStringItem(0, FILE)
-                                self.file_list.SetStringItem(0, 1, dest)
-                            
-                            else:
-                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, pout))
-                                self.file_list.InsertStringItem(0, FILE)
-                                self.file_list.SetStringItem(0, 1, pout)
-                            
-                            count += 1
-                            cont = loading.Update(count)
-                            if os.access(u'{}/{}'.format(root,FILE), os.X_OK):
-                                self.file_list.SetItemTextColour(0, u'red')
-        
-        elif os.path.isfile(pin):
-            FILE = os.path.split(pin)[1]
-            FILE = FILE.encode(u'utf-8')
-            self.list_data.insert(0, (pin, FILE, pout))
-            self.file_list.InsertStringItem(0, FILE)
-            self.file_list.SetStringItem(0, 1, pout)
-            if os.access(pin, os.X_OK):
-                self.file_list.SetItemTextColour(0, u'red')
     
     
     ## TODO: Doxygen
@@ -281,16 +222,16 @@ class Panel(wx.ScrolledWindow):
             for path in selected:
                 # Remove the item from the invisible list
                 for item in self.list_data:
-                    FILE = self.file_list.GetItemText(path)
+                    filename = self.file_list.GetItemText(path)
                     dest = self.file_list.GetItem(path, 1).GetText()
-                    if FILE.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
+                    if filename.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
                         toremove.append(item)
                 
                 self.file_list.DeleteItem(path) # Remove the item from the visible list
             
             for item in toremove:
                 self.list_data.remove(item)
-            
+        
         elif keycode == 65 and modifier == wx.MOD_CONTROL:
             self.SelectAll()
     
@@ -344,6 +285,64 @@ class Panel(wx.ScrolledWindow):
         event.Skip()
     
     
+    ## Add a selected path to the list of files
+    def OnAddPath(self, event):
+        total_files = 0
+        pin = self.dir_tree.GetPath()
+        
+        for item in self.targets:
+            if self.radio_custom.GetValue() == True:
+                pout = self.input_target.GetValue()
+            
+            elif item.GetValue() == True:
+                pout = item.GetLabel()
+        
+        if os.path.isdir(pin):
+            for root, dirs, files in os.walk(pin):
+                for FILE in files:
+                    total_files += 1
+            
+            if total_files: # Continue if files are found
+                cont = True
+                count = 0
+                msg_files = GT(u'Getting files from {}')
+                loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
+                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                for root, dirs, files in os.walk(pin):
+                    for FILE in files:
+                        if cont == (False,False):  # If "cancel" pressed destroy the progress window
+                            break
+                        
+                        else:
+                            sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
+                            if sub_dir != wx.EmptyString:
+                                # Add the sub-dir to dest
+                                dest = u'{}{}'.format(pout, sub_dir)
+                                #self.list_data.insert(0, (u'{}/{}'.format(root, FILE), u'{}/{}'.format(sub_dir[1:], FILE), dest))
+                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, dest))
+                                self.file_list.InsertStringItem(0, FILE)
+                                self.file_list.SetStringItem(0, 1, dest)
+                            
+                            else:
+                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, pout))
+                                self.file_list.InsertStringItem(0, FILE)
+                                self.file_list.SetStringItem(0, 1, pout)
+                            
+                            count += 1
+                            cont = loading.Update(count)
+                            if os.access(u'{}/{}'.format(root,FILE), os.X_OK):
+                                self.file_list.SetItemTextColour(0, u'red')
+        
+        elif os.path.isfile(pin):
+            FILE = os.path.split(pin)[1]
+            FILE = FILE.encode(u'utf-8')
+            self.list_data.insert(0, (pin, FILE, pout))
+            self.file_list.InsertStringItem(0, FILE)
+            self.file_list.SetStringItem(0, 1, pout)
+            if os.access(pin, os.X_OK):
+                self.file_list.SetItemTextColour(0, u'red')
+    
+    
     ## TODO: Doxygen
     def OnBrowse(self, event):
         main_window = wx.GetApp().GetTopWindow()
@@ -370,7 +369,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnRightClick(self, event):
+    def OnRightClickTree(self, event):
         # Show a context menu for adding files and folders
         path = self.dir_tree.GetPath()
         if os.path.isdir(path):
@@ -386,7 +385,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def ResetAllFields(self):
-        self.radio_cst.SetValue(True)
+        self.radio_custom.SetValue(True)
         self.SetDestination(None)
         self.input_target.SetValue(u'/usr/bin')
         self.file_list.DeleteAllItems()
@@ -405,7 +404,7 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def SetDestination(self, event):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
-        if self.radio_cst.GetValue() == True:
+        if self.radio_custom.GetValue() == True:
             self.input_target.Enable()
             self.btn_browse.Enable()
         
