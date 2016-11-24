@@ -13,12 +13,10 @@ from dbr.language       import GT
 from dbr.markdown       import MarkdownDialog
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl
+from globals.ident      import ID_IMPORT
 from globals.ident      import ID_SCRIPTS
 from globals.tooltips   import SetPageToolTips
 
-
-ID_Import = 100
-ID_Remove = 101
 
 ID_Preinst = wx.NewId()
 ID_Postinst = wx.NewId()
@@ -119,19 +117,19 @@ class Panel(wx.ScrolledWindow):
         self.executables.SetToolTipString(GT(u'Executables from file list to be linked against'))
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = ButtonImport(self, ID_Import)
+        self.al_import = ButtonImport(self, ID_IMPORT)
         self.al_import.SetName(u'import')
         self.al_import.SetToolTipString(GT(u'Import executables from file list'))
-        self.al_del = ButtonDel(self, ID_Remove)
+        self.al_del = ButtonDel(self)
         self.al_del.SetName(u'Remove')
         self.al_del.SetToolTipString(GT(u'Remove selected executables from list'))
         self.al_gen = ButtonBuild(self)
         self.al_gen.SetName(u'Generate')
         self.al_gen.SetToolTipString(GT(u'Generate scripts'))
         
-        wx.EVT_BUTTON(self.al_import, ID_Import, self.ImportExe)
+        wx.EVT_BUTTON(self.al_import, ID_IMPORT, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
-        wx.EVT_BUTTON(self.al_del, ID_Remove, self.ImportExe)
+        wx.EVT_BUTTON(self.al_del, wx.WXK_DELETE, self.ImportExe)
         
         albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
         albutton_sizer.Add(self.al_import, 1)
@@ -223,7 +221,7 @@ scripts will be created that will place a symbolic link to your executables in t
     ## Imports executables for Auto-Link
     def ImportExe(self, event):
         ID = event.GetId()
-        if ID == ID_Import:
+        if ID == ID_IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.xlist = []
@@ -268,7 +266,7 @@ scripts will be created that will place a symbolic link to your executables in t
                         print(u'{}: The executables destination is not available'.format(__name__))
                 count += 1
         
-        elif ID == ID_Remove:
+        elif ID == wx.WXK_DELETE:
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
