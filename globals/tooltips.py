@@ -67,11 +67,11 @@ TT_depends = {
 }
 
 TT_files = {
-    u'add': GT(u'Add selected file/folder'),
-    u'remove': GT(u'Remove selected file from list'),
+    u'add': GT(u'Add selected file/folder to list'),
+    u'remove': GT(u'Remove selected files from list'),
     u'clear': GT(u'Clear file list'),
-    u'target': GT(u'Target destination for file(s)'),
-    u'browse': GT(u'Browse for target destination'),
+    u'target': GT(u'Target installation directory for file(s)'),
+    u'browse': GT(u'Browse for target installation directory'),
     u'refresh': GT(u'Update files\' executable status & availability'),
 }
 
