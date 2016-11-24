@@ -12,7 +12,6 @@ import wx
 
 from dbr.functions      import FieldEnabled
 from dbr.language       import GT
-from dbr.templates      import local_templates_path
 from globals.characters import ARROW_RIGHT
 from globals.commands   import CMD_gdebi_gui
 from globals.ident      import ID_BUILD
