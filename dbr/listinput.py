@@ -13,8 +13,6 @@ from wx.lib.mixins.listctrl import TextEditMixin
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals.constants  import COLOR_ERROR
-from globals.constants  import FTYPE_EXE
-from globals.constants  import file_types_defs
 
 
 ## A list control with no border
@@ -172,6 +170,10 @@ class ListCtrlPanel(wx.Panel):
         return self.listarea.GetItemText(item, col)
     
     
+    def GetItemTextColour(self, item):
+        return self.listarea.GetItemTextColour(item)
+    
+    
     def GetNextItem(self, item, geometry=wx.LIST_NEXT_ALL, state=wx.LIST_STATE_DONTCARE):
         return self.listarea.GetNextItem(item, geometry, state)
     
@@ -251,24 +253,21 @@ class FileList(ListCtrlPanel, TextEditMixin):
                 name=name)
         TextEditMixin.__init__(self)
         
-        self.parent = parent
-        self.dir_tree = parent.dir_tree
-        
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
+        self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
         
         self.filename_col = 0
-        self.source_col = 1
-        self.target_col = 2
-        self.type_col = 3
+        self.target_col = 1
+        
+        # Stores the information for file sources paths
+        self.sources_list = []
         
         # FIXME: Way to do this dynamically?
         col_width = 150  # self.GetSize()[0] / 4
         
         self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
-        self.InsertColumn(self.source_col, GT(u'Source Directory'), width=col_width)
-        self.InsertColumn(self.target_col, GT(u'Staged Target'), width=col_width)
         # Last column is automatcially stretched to fill remaining size
-        self.InsertColumn(self.type_col, GT(u'File Type'))
+        self.InsertColumn(self.target_col, GT(u'Staged Target'))
         
         # Legacy versions of wx don't set sizes correctly in constructor
         if wx.MAJOR_VERSION < 3:
@@ -279,8 +278,6 @@ class FileList(ListCtrlPanel, TextEditMixin):
                 
                 self.SetColumnWidth(col, 200)
         
-        wx.EVT_LIST_INSERT_ITEM(self.GetChildren()[1], self.GetId(), self.OnInsertItem)
-        
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
         
         # Resize bug hack
@@ -289,6 +286,15 @@ class FileList(ListCtrlPanel, TextEditMixin):
     
     
     ## TODO: Doxygen
+    #  
+    #  \param filename
+    #        \b \e unicode|str : Basename of file
+    #  \param source_dir
+    #        \b \e unicode|str : Directory where file is located
+    #  \param target_dir
+    #        \b \e unicode|str : Target directory where file will ultimately be installed
+    #  \param executable
+    #        \b \e bool : Whether or not the file should be marked as executable
     def AddFile(self, filename, source_dir, target_dir=None, executable=False):
         list_index = self.GetItemCount()
         
@@ -301,39 +307,39 @@ class FileList(ListCtrlPanel, TextEditMixin):
         Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
         
         self.InsertStringItem(list_index, filename)
-        self.SetStringItem(list_index, self.source_col, source_dir)
         self.SetStringItem(list_index, self.target_col, target_dir)
         
-        # TODO: Use 'GetFileMimeType' module to determine file type
-        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
-            self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
+        self.sources_list.insert(list_index, source_dir)
         
-        #self.Refresh()
+        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
+            self.SetItemTextColour(list_index, wx.RED)
+        
         if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
             self.SetItemBackgroundColour(list_index, COLOR_ERROR)
     
     
     ## Retrivies is the item at 'i_index' is executable
     #  
-    #  TODO: Doxygen
+    #  \param i_index
+    #        \b \e int : The list row to check
     def FileIsExecutable(self, i_index):
-        if self.GetItemText(i_index, self.type_col) == file_types_defs[FTYPE_EXE]:
-            return True
-        
-        return False
+        return self.GetItemTextColour(i_index) == wx.RED
     
     
     ## TODO: Doxygen
+    #  
+    #  \param i_index
+    #        \b \e int : The list row
     def GetFilename(self, i_index):
         return self.GetItemText(i_index)
     
     
     ## TODO: Doxygen
     def GetRowData(self, row):
-        filename = self.GetItem(row, self.filename_col).GetText()
-        source_dir = self.GetItem(row, self.source_col).GetText()
-        target_dir = self.GetItem(row, self.target_col).GetText()
-        executable = self.GetItem(row, self.type_col).GetText() == file_types_defs[FTYPE_EXE]
+        filename = self.GetFilename(row)
+        source_dir = self.GetSource(row)
+        target_dir = self.GetTarget(row)
+        executable = self.FileIsExecutable(row)
         
         return (filename, source_dir, target_dir, executable)
     
@@ -353,8 +359,11 @@ class FileList(ListCtrlPanel, TextEditMixin):
     
     
     ## TODO: Doxygen
+    #  
+    #  \param i_index
+    #        \b \e int : List row
     def GetSource(self, i_index):
-        return self.GetItemText(i_index, self.source_col)
+        return self.sources_list[i_index]
     
     
     ## TODO: Doxygen
@@ -362,34 +371,14 @@ class FileList(ListCtrlPanel, TextEditMixin):
         return self.GetItemText(i_index, self.target_col)
     
     
-    ## TODO: Doxygen
+    ## Checks if the file list is empty
     def IsEmpty(self):
-        item_count = self.GetItemCount()
-        Logger.Debug(__name__, GT(u'File list is empty ({} files): {}').format(item_count, not item_count))
-        return not item_count
+        return not self.GetItemCount()
     
     
     ## TODO: Doxygen
     def MissingFiles(self):
         return self.Refresh()
-    
-    
-    ## TODO: Doxygen
-    def OnInsertItem(self, event):
-        Logger.Debug(__name__, u'FileList item inserted')
-        
-        children = self.GetChildren()
-        
-        Logger.Debug(__name__, u'Parent ID: {}'.format(self.GetId()))
-        
-        for x in range(0, len(children)):
-            child = children[x]
-            
-            Logger.Debug(__name__, u'Child ID: {}'.format(child.GetId()))
-            Logger.Debug(__name__, u'Child type: {}'.format(type(child)))
-            Logger.Debug(__name__, u'Child name: {}'.format(child.GetName()))
-            
-        event.Skip()
     
     
     ## Defines actions to take when left-click or left-double-click event occurs
@@ -411,17 +400,19 @@ class FileList(ListCtrlPanel, TextEditMixin):
         if event:
             event.Skip(True)
         
+        parent = self.GetParent()
+        
         width = self.GetSize()
         height = width[1]
         width = width[0]
         
         # Use the parent window & its children to determine desired width
-        target_width = self.parent.GetSize()[0] - self.parent.dir_tree.GetSize()[0] - 15
+        target_width = parent.GetSize()[0] - parent.dir_tree.GetSize()[0] - 15
         
         if width > 0 and target_width > 0:
             if width != target_width:
                 
-                Logger.Warning(__name__,
+                Logger.Debug(__name__,
                         GT(u'File list failed to resize. Forcing manual resize to target width: {}').format(target_width))
                 
                 self.SetSize(wx.Size(target_width, height))
@@ -449,22 +440,28 @@ class FileList(ListCtrlPanel, TextEditMixin):
     #        \b \e bool : True if files are missing, False if all okay
     def Refresh(self):
         dirty = False
-        for R in range(self.GetItemCount()):
+        for row in range(self.GetItemCount()):
             item_color = self.DEFAULT_BG_COLOR
-            row_defs = self.GetRowDefs(R)
+            text_color = self.DEFAULT_TEXT_COLOR
+            row_defs = self.GetRowDefs(row)
             
-            if not os.path.isfile(u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])):
+            absolute_filename = u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])
+            
+            if not os.path.isfile(absolute_filename):
                 item_color = COLOR_ERROR
                 dirty = True
             
-            self.SetItemBackgroundColour(R, item_color)
+            self.SetItemBackgroundColour(row, item_color)
+            
+            if os.access(absolute_filename, os.X_OK):
+                text_color = wx.RED
+            
+            self.SetItemTextColour(row, text_color)
         
         return dirty
     
     
     ## Removes selected files from list
-    #  
-    #  TODO: Define
     def RemoveSelected(self):
         selected_total = self.GetSelectedItemCount()
         selected_count = selected_total
