@@ -48,12 +48,9 @@ TT_control = {
 }
 
 TT_depends = {
-    u'package': GT(u'Package that this depends on'),
-    u'version': GT(u'Minimum version that this package supports'),
-    u'add': GT(u'Add dependency package to list'),
-    u'append': GT(u'Append to selected dependency package in list'),
-    u'remove': GT(u'Remove selected dependency package from list'),
-    u'clear': GT(u'Clear the list of dependency packages'),
+    u'package': GT(u'Name of dependency/conflicting package'),
+    u'operator': GT(u'Operator'),
+    u'version': GT(u'Version corresponing to package name and operator'),
     u'depends': GT(u'Package will need to be installed'),
     u'pre-depends': GT(u'Package will need to be installed and configured first'),
     u'recommends': GT(u'Package is highly recommended and will be installed by default'),
@@ -62,6 +59,10 @@ TT_depends = {
     u'conflicts': GT(u'Package will be removed from the system if it is installed'),
     u'replaces': GT(u'Package or its files may be overwritten'),
     u'breaks': GT(u'Package conflicts and will be de-configured'),
+    u'btn add': GT(u'Add dependency package to list'),
+    u'btn append': GT(u'Add as alternative to selected dependency packages in list'),
+    u'btn remove': GT(u'Remove selected dependency package from list'),
+    u'btn clear': GT(u'Clear the list of dependency packages'),
     u'list': GT(u'Dependencies to be added'),
 }
 
