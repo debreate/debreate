@@ -33,19 +33,20 @@ class Panel(wx.ScrolledWindow):
         break_tip = GT(u'Package conflicts and will be de-configured')
         
         
-        txt_version = wx.StaticText(self, label=GT(u'Version'))
-        txt_pack = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'))
+        txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
+        txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         
-        self.input_pack = wx.TextCtrl(self, size=(300,25))
+        self.input_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
         tt_pack = GT(u'Name of dependency/conflicting package')
-        txt_pack.SetToolTipString(tt_pack)
-        self.input_pack.SetToolTipString(tt_pack)
+        txt_package.SetToolTipString(tt_pack)
+        self.input_package.SetToolTipString(tt_pack)
         
         opts_oper = (u'>=', u'<=', u'=', u'>>', u'<<')
         self.select_oper = wx.Choice(self, choices=opts_oper)
         self.select_oper.SetSelection(0)
-        self.input_version = wx.TextCtrl(self)
+        
+        self.input_version = wx.TextCtrl(self, name=u'version')
         
         tt_oper = GT(u'Operator')
         self.select_oper.SetToolTipString(tt_oper)
@@ -54,16 +55,7 @@ class Panel(wx.ScrolledWindow):
         txt_version.SetToolTipString(tt_ver)
         self.input_version.SetToolTipString(tt_ver)
         
-        depH1 = wx.FlexGridSizer(2, 3, hgap=5)
-        depH1.AddGrowableCol(2)
-        depH1.Add(txt_pack, 0, wx.LEFT, 2)
-        depH1.AddSpacer(0)
-        depH1.Add(txt_version, 1, wx.EXPAND|wx.LEFT, 2)
-        depH1.Add(self.input_pack)
-        depH1.Add(self.select_oper)
-        depH1.Add(self.input_version, 1, wx.EXPAND)
-        
-        self.input_pack.SetSize((100,50))
+        self.input_package.SetSize((100,50))
         
         # --- DEPENDS
         self.rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
@@ -121,10 +113,21 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
-        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
-        rg1 = wx.GridSizer(4, 2, 5, 5)
+        layout_G1 = wx.GridBagSizer()
         
-        rg1.AddMany( [
+        # Row 1
+        layout_G1.Add(txt_package, (0, 0), flag=wx.ALIGN_BOTTOM)
+        layout_G1.Add(txt_version, (0, 2), flag=wx.ALIGN_BOTTOM)
+        
+        # Row 2
+        layout_G1.Add(self.input_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        layout_G1.Add(self.select_oper, (1, 1))
+        layout_G1.Add(self.input_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        
+        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
+        layout_categories = wx.GridSizer(4, 2, 5, 5)
+        
+        layout_categories.AddMany( (
         (self.rb_dep, 0),
         (self.rb_pre, 0),
         (self.rb_rec, 0),
@@ -132,31 +135,40 @@ class Panel(wx.ScrolledWindow):
         (self.rb_enh, 0),
         (self.rb_con, 0),
         (self.rb_rep, 0),
-        (self.rb_break, 0)
-        ] )
+        (self.rb_break, 0),
+        ) )
         
-        radio_box.Add(rg1, 0)
+        radio_box.Add(layout_categories, 0)
         
-        layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H2.Add(radio_box, 0, wx.RIGHT, 5)
-        layout_H2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        layout_H2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        layout_H2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        layout_H2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        
+        layout_buttons.AddMany( (
+            (self.depadd, 0, wx.ALIGN_CENTER_VERTICAL),
+            (self.depapp, 0, wx.ALIGN_CENTER_VERTICAL),
+            (self.deprem, 0, wx.ALIGN_CENTER_VERTICAL),
+            (self.depclr, 0, wx.ALIGN_CENTER_VERTICAL),
+            ) )
+        
+        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H1.Add(radio_box, 0, wx.RIGHT, 5)
+        layout_H1.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H1.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H1.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H1.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
         
         self.border = wx.StaticBox(self)
         border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        border_box.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.Add(layout_G1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         border_box.AddSpacer(5)
-        border_box.Add(layout_H2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.Add(layout_H1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         
-        layout_H3 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H3.Add(self.dep_area, 1, wx.EXPAND)
+        layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H2.Add(self.dep_area, 1, wx.EXPAND)
         
         layout_main = wx.BoxSizer(wx.VERTICAL)
         layout_main.AddSpacer(10)
         layout_main.Add(border_box, 0, wx.LEFT, 5)
-        layout_main.Add(layout_H3, 1, wx.EXPAND|wx.ALL, 5)
+        layout_main.Add(layout_H2, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(layout_main)
@@ -164,7 +176,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Events *** #
         
-        wx.EVT_KEY_DOWN(self.input_pack, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
         
         self.depadd.Bind(wx.EVT_BUTTON, self.SetDepends)
@@ -193,7 +205,7 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ResetAllFields(self):
         self.rb_dep.SetValue(True)
-        self.input_pack.Clear()
+        self.input_package.Clear()
         self.select_oper.SetSelection(0)
         self.input_version.Clear()
         self.dep_area.DeleteAllItems()
@@ -207,7 +219,7 @@ class Panel(wx.ScrolledWindow):
         except AttributeError:
             key_id = event.GetEventObject().GetId()
         
-        addname = self.input_pack.GetValue()
+        addname = self.input_package.GetValue()
         oper = self.select_oper.GetStringSelection()
         ver = self.input_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
