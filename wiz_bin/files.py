@@ -253,14 +253,15 @@ class Panel(wx.ScrolledWindow):
                 cont = True
                 count = 0
                 msg_files = GT(u'Getting files from {}')
-                loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
+                task_progress = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
                                             wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
                 
                 for source_dir, DIRS, FILES in os.walk(pin):
                     for filename in FILES:
                         # If "cancel" pressed destroy the progress window
                         if cont == (False, False):
-                            break
+                            task_progress.Destroy()
+                            return
                         
                         else:
                             # Remove full path to insert into listctrl
@@ -275,7 +276,9 @@ class Panel(wx.ScrolledWindow):
                                 self.file_list.AddFile(filename, source_dir, pout)
                             
                             count += 1
-                            cont = loading.Update(count)
+                            cont = task_progress.Update(count)
+                
+                task_progress.Destroy()
         
         elif os.path.isfile(pin):
             filename = os.path.basename(pin)
