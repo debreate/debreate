@@ -46,6 +46,23 @@ class Panel(WizardPage):
         
         self.input_package.SetSize((100,50))
         
+        categories_panel = wx.Panel(self, style=wx.BORDER_THEME)
+        
+        rb_dep = wx.RadioButton(categories_panel, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
+        rb_pre = wx.RadioButton(categories_panel, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
+        rb_rec = wx.RadioButton(categories_panel, label=GT(u'Recommends'), name=u'Recommends')
+        rb_sug = wx.RadioButton(categories_panel, label=GT(u'Suggests'), name=u'Suggests')
+        rb_enh = wx.RadioButton(categories_panel, label=GT(u'Enhances'), name=u'Enhances')
+        rb_con = wx.RadioButton(categories_panel, label=GT(u'Conflicts'), name=u'Conflicts')
+        rb_rep = wx.RadioButton(categories_panel, label=GT(u'Replaces'), name=u'Replaces')
+        rb_break = wx.RadioButton(categories_panel, label=GT(u'Breaks'), name=u'Breaks')
+        
+        self.categories = (
+            rb_dep, rb_pre, rb_rec,
+            rb_sug, rb_enh, rb_con,
+            rb_rep, rb_break,
+        )
+        
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
         self.depadd.SetName(u'add')
@@ -55,21 +72,6 @@ class Panel(WizardPage):
         self.deprem.SetName(u'remove')
         self.depclr = ButtonClear(self)
         self.depclr.SetName(u'clear')
-        
-        rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        rb_pre = wx.RadioButton(self, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
-        rb_rec = wx.RadioButton(self, label=GT(u'Recommends'), name=u'Recommends')
-        rb_sug = wx.RadioButton(self, label=GT(u'Suggests'), name=u'Suggests')
-        rb_enh = wx.RadioButton(self, label=GT(u'Enhances'), name=u'Enhances')
-        rb_con = wx.RadioButton(self, label=GT(u'Conflicts'), name=u'Conflicts')
-        rb_rep = wx.RadioButton(self, label=GT(u'Replaces'), name=u'Replaces')
-        rb_break = wx.RadioButton(self, label=GT(u'Breaks'), name=u'Breaks')
-        
-        self.categories = (
-            rb_dep, rb_pre, rb_rec,
-            rb_sug, rb_enh, rb_con,
-            rb_rep, rb_break,
-        )
         
         # ----- List
         self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT, name=u'list')
@@ -100,31 +102,41 @@ class Panel(WizardPage):
         layout_H1.AddStretchSpacer(1)
         layout_H1.Add(btn_help)
         
-        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
         layout_categories = wx.GridSizer(4, 2, 5, 5)
         
         for C in self.categories:
             layout_categories.Add(C, 0)
         
-        radio_box.Add(layout_categories, 0)
+        categories_panel.SetSizer(layout_categories)
+        categories_panel.SetAutoLayout(True)
+        categories_panel.Layout()
         
-        layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H2.Add(radio_box, 0, wx.RIGHT, 5)
-        layout_H2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        layout_H2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        layout_H2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        layout_H2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        
+        layout_buttons.AddMany( (
+            (self.depadd, 0, wx.ALIGN_CENTER_VERTICAL),
+            (self.depapp, 0, wx.ALIGN_CENTER_VERTICAL),
+            (self.deprem, 0, wx.ALIGN_CENTER_VERTICAL),
+            (self.depclr, 0, wx.ALIGN_CENTER_VERTICAL),
+            ) )
+        
+        layout_G2 = wx.GridBagSizer(5, 5)
+        layout_G2.SetCols(2)
+        
+        layout_G2.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1))
+        layout_G2.Add(categories_panel, (1, 0), flag=wx.RIGHT, border=5)
+        layout_G2.Add(layout_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
         layout_H3 = wx.BoxSizer(wx.HORIZONTAL)
         layout_H3.Add(self.dep_area, 1, wx.EXPAND)
         
-        layout_Vmain = wx.BoxSizer(wx.VERTICAL)
-        layout_Vmain.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
-        layout_Vmain.Add(layout_H2, 0, wx.ALL, 5)
-        layout_Vmain.Add(layout_H3, 1, wx.EXPAND|wx.ALL, 5)
+        layout_main = wx.BoxSizer(wx.VERTICAL)
+        layout_main.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
+        layout_main.Add(layout_G2, 0, wx.ALL, 5)
+        layout_main.Add(layout_H3, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_Vmain)
+        self.SetSizer(layout_main)
         self.Layout()
         
         # *** Events *** #
@@ -132,10 +144,10 @@ class Panel(WizardPage):
         wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
         
-        wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.deprem, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
+        self.depadd.Bind(wx.EVT_BUTTON, self.SetDepends)
+        self.depapp.Bind(wx.EVT_BUTTON, self.SetDepends)
+        self.deprem.Bind(wx.EVT_BUTTON, self.SetDepends)
+        self.depclr.Bind(wx.EVT_BUTTON, self.SetDepends)
         
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
     
