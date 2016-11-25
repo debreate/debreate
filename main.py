@@ -90,7 +90,7 @@ ID_UPDATE = wx.NewId()
 default_title = GT(u'Debreate - Debian Package Builder')
 
 
-    ## TODO: Doxygen
+## TODO: Doxygen
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
@@ -110,11 +110,8 @@ class MainWindow(wx.Frame):
         self.main_icon = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
         self.SetIcon(self.main_icon)
         
-        # If window is maximized this will store last window size and position for next session
-        wx.EVT_MAXIMIZE(self, self.OnMaximize)
-        
         # ----- Status Bar
-        self.stat_bar = wx.StatusBar(self, -1)
+        self.stat_bar = wx.StatusBar(self)
         self.SetStatusBar(self.stat_bar)
         
         
@@ -166,7 +163,9 @@ class MainWindow(wx.Frame):
         # Show/Hide tooltips
         self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
+        
         wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
+        
         self.menu_opt.AppendItem(self.opt_tooltips)
         
         show_tooltips = ReadConfig(u'tooltips')
@@ -175,11 +174,14 @@ class MainWindow(wx.Frame):
         
         else:
             self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+        
         self.OnToggleToolTips()
         
         # Dialogs options
         self.cust_dias = wx.MenuItem(self.menu_opt, ID_Dialogs, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
+        
+        # FIXME: Disabled until fixed
         #self.menu_opt.AppendItem(self.cust_dias)
         
         # Project compression options
@@ -273,17 +275,17 @@ class MainWindow(wx.Frame):
         self.Policy.AppendItem(self.LintOverrides)
         
         self.references = {
-                    ID_DPM: u'http://www.debian.org/doc/debian-policy',
-                    ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
-                    ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
-                    ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
-                    222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-                    ID_LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
-                    ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
-                    }
+            ID_DPM: u'http://www.debian.org/doc/debian-policy',
+            ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
+            ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
+            ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
+            222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
+            ID_LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
+            ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
+            }
+        
         for R_ID in self.references:
             wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
-        
         
         self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
@@ -305,7 +307,8 @@ class MainWindow(wx.Frame):
         self.menubar.Append(self.menu_opt, GT(u'Options'))
         self.menubar.Append(self.menu_help, GT(u'Help'))
         
-        self.wizard = Wizard(self) # Binary
+        self.wizard = Wizard(self)
+        
         self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
         
         self.page_info = PageGreeting(self.wizard)
@@ -374,11 +377,6 @@ class MainWindow(wx.Frame):
                 wx.MenuItem(self.menu_debug, ID_THEME, GT(u'Toggle window colors')))
             
             wx.EVT_MENU(self, ID_THEME, self.OnToggleTheme)
-            
-            # Create the log window
-            #self.log_window = LogWindow(self, Logger.GetLogFile())
-            #self.ShowLogWindow(True)
-        
         
         self.loaded_project = None
         self.dirty = None
@@ -411,6 +409,7 @@ class MainWindow(wx.Frame):
                 return Z_ID
         
         Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
+        
         return DEFAULT_COMPRESSION_ID
     
     
@@ -464,7 +463,7 @@ class MainWindow(wx.Frame):
     
     
     ## Opens a dialog box with information about the program
-    def OnAbout(self, event):
+    def OnAbout(self, event=None):
         about = AboutDialog(self)
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
@@ -512,7 +511,7 @@ class MainWindow(wx.Frame):
     
     
     ## Checks for new release availability
-    def OnCheckUpdate(self, event):
+    def OnCheckUpdate(self, event=None):
         if UsingDevelopmentVersion():
             wx.MessageDialog(self, GT(u'This is a development version. Update checking is disabled. '),
                     GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
@@ -521,10 +520,13 @@ class MainWindow(wx.Frame):
         
         current = GetCurrentVersion()
         wx.SafeYield()
+        
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
+        
         if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
             wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+        
         elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = GT(u'Version {} is available!').format(current)
@@ -532,6 +534,7 @@ class MainWindow(wx.Frame):
             update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
             if (update == wx.ID_YES):
                 wx.LaunchDefaultBrowser(APP_homepage)
+        
         elif isinstance(current, (unicode, str)):
             err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
             err_msg = u'{}\n\n{}'.format(err_msg, current)
@@ -542,6 +545,7 @@ class MainWindow(wx.Frame):
                     GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
             err.CenterOnParent()
             err.ShowModal()
+        
         else:
             err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
             err.CenterOnParent()
@@ -549,7 +553,9 @@ class MainWindow(wx.Frame):
     
     
     ## TODO: Doxygen
-    def OnHelp(self, event):
+    #  
+    #  FIXME: Appears to have errors
+    def OnHelp(self, event=None):
         if DebugEnabled():
             HelpDialog(self).ShowModal()
         
@@ -560,6 +566,7 @@ class MainWindow(wx.Frame):
             if status:
                 wx.Yield()
                 status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
+            
             if status:
                 wx.Yield()
                 webbrowser.open(u'http://debreate.sourceforge.net/usage')
@@ -572,15 +579,11 @@ class MainWindow(wx.Frame):
         subprocess.check_output([CMD_xdg_open, u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
     
     
-    ## FIXME: Unused???
-    def OnMaximize(self, event):
-        print(u'Maximized')
-    
-    
     ## TODO: Doxygen
-    def OnNewProject(self, event):
+    def OnNewProject(self, event=None):
         dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
                 GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
+        
         if dia.ShowModal() == wx.ID_YES:
             Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectLoaded()))
             
@@ -603,7 +606,7 @@ class MainWindow(wx.Frame):
                     GT(u'{} is unsaved, any changes will be lost').format(self.loaded_project),
                     GT(u'Confirm Open New Project'),
                     style=wx.YES_NO|wx.CANCEL|wx.CANCEL_DEFAULT|wx.ICON_WARNING)
-                    
+            
             ignore_dirty.SetExtendedMessage(GT(u'Continue without saving?'))
             ignore_dirty.SetYesNoLabels(GT(u'Continue'), GT(u'Save'))
             overwrite_dirty = ignore_dirty.ShowModal()
@@ -612,9 +615,8 @@ class MainWindow(wx.Frame):
                 Logger.Debug(__name__, GT(u'OnOpenProject; Cancelling open over dirty project'))
                 return
             
+            # wx.ID_NO means save & continue
             elif overwrite_dirty == wx.ID_NO:
-                # ID_NO is save & continue
-                
                 if self.loaded_project == None:
                     err_msg = GT(u'No project loaded, cannot save')
                     Logger.Error(__name__, u'OnOpenProject; {}'.format(err_msg))
@@ -626,7 +628,6 @@ class MainWindow(wx.Frame):
                 
                 Logger.Debug(__name__, GT(u'OnOpenProject; Saving dirty project & continuing'))
                 
-                # Save & continue
                 self.SaveProject(self.loaded_project)
             
             else:
@@ -658,7 +659,7 @@ class MainWindow(wx.Frame):
     
     
     ## TODO: Doxygen
-    def OnPageChanged(self, event):
+    def OnPageChanged(self, event=None):
         ID = self.wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
         
@@ -667,7 +668,7 @@ class MainWindow(wx.Frame):
     
     
     ## TODO: Doxygen
-    def OnQuickBuild(self, event):
+    def OnQuickBuild(self, event=None):
         QB = QuickBuild(self)
         QB.ShowModal()
         QB.Destroy()
@@ -676,20 +677,25 @@ class MainWindow(wx.Frame):
     ## Shows a quit dialog & exits the application
     #  
     #  If user confirms quit, closes main window & exits.
-    def OnQuit(self, event):
+    def OnQuit(self, event=None):
         confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
                                    wx.OK|wx.CANCEL|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
+        
+        if confirm.ShowModal() == wx.ID_OK:
             confirm.Destroy()
             
             maximized = self.IsMaximized()
             
             # Get window attributes and save to config file
-            if maximized:    # Save default window settings if maximized
+            
+            # Save default window settings if maximized
+            # FIXME: Better solution?
+            if maximized:
                 WriteConfig(u'size', GetDefaultConfigValue(u'size'))
                 WriteConfig(u'position', GetDefaultConfigValue(u'position'))
                 WriteConfig(u'center', GetDefaultConfigValue(u'center'))
                 WriteConfig(u'maximize', True)
+            
             else:
                 WriteConfig(u'size', (self.GetSize()[0], self.GetSize()[1]))
                 WriteConfig(u'position', (self.GetPosition()[0], self.GetPosition()[1]))
@@ -727,7 +733,8 @@ class MainWindow(wx.Frame):
     ## TODO: Doxygen
     def OnSaveProjectAs(self, event=None):
         wildcards = (
-            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext), u'*.{}'.format(PROJECT_ext),
+            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext),
+            u'*.{}'.format(PROJECT_ext),
         )
         
         save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
@@ -763,7 +770,7 @@ class MainWindow(wx.Frame):
         
         Logger.Warning(__name__,
                 GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
-                
+    
     
     ## TODO: Doxygen
     def OnToggleLogWindow(self, event=None):
@@ -792,7 +799,7 @@ class MainWindow(wx.Frame):
     
     
     ## Opens a help menu link
-    def OpenPolicyManual(self, event):
+    def OpenPolicyManual(self, event=None):
         EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
         webbrowser.open(self.references[EVENT_ID])
     
@@ -846,6 +853,7 @@ class MainWindow(wx.Frame):
         
         if z_format in (u'tar', u'zip'):
             z_format = u'r'
+        
         else:
             z_format = u'r:{}'.format(z_format)
         
@@ -870,6 +878,7 @@ class MainWindow(wx.Frame):
     ## TODO: Doxygen
     def OpenProjectLegacy(self, data, filename):
         Logger.Debug(__name__, GT(u'Legacy project format (text) detected'))
+        
         def ProjectError():
             wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
     		                       style=wx.OK|wx.ICON_ERROR).ShowModal()
@@ -884,8 +893,9 @@ class MainWindow(wx.Frame):
         if app != u'DEBREATE':
             ProjectError()
             return
-            
+        
         # Set title to show open project
+        # FIXME:
         #self.SetTitle(u'Debreate - {}'.format(filename))
         
         # *** Get Control Data *** #
@@ -909,6 +919,7 @@ class MainWindow(wx.Frame):
         try:
             cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
             self.page_cpright.SetCopyright(cpright_data)
+        
         except IndexError:
             pass
         
@@ -952,7 +963,7 @@ class MainWindow(wx.Frame):
             __name__,
             u'Save project\n\tWorking path: {}\n\tFilename: {}\n\tTemp directory: {}'.format(working_path,
                                                                                         output_filename, temp_dir)
-        )
+            )
         
         export_pages = (
             self.page_control,
@@ -963,6 +974,7 @@ class MainWindow(wx.Frame):
             self.page_launchers,
             self.page_build,
         )
+        
         self.wizard.ExportPages(export_pages, temp_dir)
         
         p_archive = CompressionHandler(self.GetCompressionId())
@@ -1060,7 +1072,7 @@ class MainWindow(wx.Frame):
     def ToggleTheme(self, window):
         for C in window.GetChildren():
             self.ToggleTheme(C)
-    
+        
         bg_color = window.GetBackgroundColour()
         fg_color = window.GetForegroundColour()
         
