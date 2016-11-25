@@ -10,6 +10,7 @@ from dbr.buttons        import ButtonDel
 from dbr.buttons        import ButtonImport
 from dbr.buttons        import ButtonQuestion64
 from dbr.language       import GT
+from dbr.listinput      import ListCtrlPanel
 from dbr.markdown       import MarkdownDialog
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl
@@ -114,11 +115,11 @@ class Panel(wx.ScrolledWindow):
         
         # Auto-Link executables to be linked
         if wx.MAJOR_VERSION < 3:
-            self.executables = wx.ListCtrl(self, size=(200,200), name=u'al list',
+            self.executables = ListCtrlPanel(self, size=(200,200), name=u'al list',
                     style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
         
         else:
-            self.executables = wx.ListCtrl(self, size=(200,200), name=u'al list')
+            self.executables = ListCtrlPanel(self, size=(200,200), name=u'al list')
         
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_IMPORT)
