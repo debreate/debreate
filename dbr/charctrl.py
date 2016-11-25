@@ -18,8 +18,8 @@ class CharCtrl(wx.TextCtrl):
     #        Window id (FIXME: Not necessary)
     #  \param value
     #        The initial text displayed (default: empty)
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString):
-        wx.TextCtrl.__init__(self, parent, ctrl_id, value)
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, name=wx.TextCtrlNameStr):
+        wx.TextCtrl.__init__(self, parent, ctrl_id, value, name=name)
         
         ## List of characters that cannot be entered
         #  
