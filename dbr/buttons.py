@@ -4,6 +4,11 @@
 import wx
 
 from dbr.language   import GT
+from globals.ident  import ID_APPEND
+from globals.ident  import ID_BROWSE
+from globals.ident  import ID_BUILD
+from globals.ident  import ID_NEXT
+from globals.ident  import ID_PREV
 from globals.paths  import PATH_app
 
 
@@ -29,7 +34,7 @@ class ButtonAdd(BitmapButton):
 
 
 class ButtonBrowse(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn browse'):
+    def __init__(self, parent, ID=ID_BROWSE, name=u'btn browse'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -37,7 +42,7 @@ class ButtonBrowse(BitmapButton):
 
 
 class ButtonBrowse64(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn browse'):
+    def __init__(self, parent, ID=ID_BROWSE, name=u'btn browse'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse64.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -45,7 +50,7 @@ class ButtonBrowse64(BitmapButton):
 
 
 class ButtonBuild(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn build'):
+    def __init__(self, parent, ID=ID_BUILD, name=u'btn build'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/build32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -53,7 +58,7 @@ class ButtonBuild(BitmapButton):
 
 
 class ButtonBuild64(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn build'):
+    def __init__(self, parent, ID=ID_BUILD, name=u'btn build'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/build64.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -92,7 +97,7 @@ class ButtonDel(BitmapButton):
 
 
 class ButtonImport(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn import'):
+    def __init__(self, parent, ID=wx.ID_OPEN, name=u'btn import'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/import32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -100,7 +105,7 @@ class ButtonImport(BitmapButton):
 
 
 class ButtonNext(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn next'):
+    def __init__(self, parent, ID=ID_NEXT, name=u'btn next'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/next32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -108,7 +113,7 @@ class ButtonNext(BitmapButton):
 
 
 class ButtonPipe(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn append'):
+    def __init__(self, parent, ID=ID_APPEND, name=u'btn append'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/pipe32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -116,7 +121,7 @@ class ButtonPipe(BitmapButton):
 
 
 class ButtonPrev(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn previous'):
+    def __init__(self, parent, ID=ID_PREV, name=u'btn previous'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/prev32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -124,7 +129,7 @@ class ButtonPrev(BitmapButton):
 
 
 class ButtonPreview(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn preview'):
+    def __init__(self, parent, ID=wx.ID_PREVIEW, name=u'btn preview'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/preview32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -132,7 +137,7 @@ class ButtonPreview(BitmapButton):
 
 
 class ButtonPreview64(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_ANY, name=u'btn preview'):
+    def __init__(self, parent, ID=wx.ID_PREVIEW, name=u'btn preview'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/preview64.png'.format(PATH_app)),
                 ID=ID, name=name)
         
