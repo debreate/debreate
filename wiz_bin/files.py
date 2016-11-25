@@ -17,10 +17,6 @@ from globals.paths      import PATH_home
 from globals.tooltips   import SetPageToolTips
 
 
-ID_pin = 100
-ID_fin = 101
-ID_pout = 102
-
 ID_AddDir = 140
 ID_AddFile = 141
 ID_Refresh = 142
@@ -28,8 +24,9 @@ ID_Refresh = 142
 
 ## Creates a ListCtrl class in which every column's text can be edited
 class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
-    def __init__(self, parent, ID=wx.ID_ANY):
-        wx.ListCtrl.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
+    def __init__(self, parent, ID=wx.ID_ANY, name=wx.ListCtrlNameStr):
+        wx.ListCtrl.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT,
+                name=name)
         LC.ListCtrlAutoWidthMixin.__init__(self)
 
 
@@ -91,12 +88,11 @@ class Panel(wx.ScrolledWindow):
         self.prev_dest_value = u'/usr/bin'
         self.input_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
         
-        self.btn_browse = ButtonBrowse(self, ID_pout)
+        self.btn_browse = ButtonBrowse(self)
         self.btn_browse.SetName(u'browse')
         
         # Display area for files added to list
-        self.file_list = DList(self)
-        self.file_list.SetName(u'filelist')
+        self.file_list = DList(self, name=u'filelist')
         
         # Set the width of first column on creation
         parent_size = self.GetGrandParent().GetSize()
@@ -112,38 +108,37 @@ class Panel(wx.ScrolledWindow):
         
         layout_target = wx.GridSizer(3, 2, 5, 5)
         for item in self.targets:
-            layout_target.Add(item, 0)
+            layout_target.Add(item, 0, wx.LEFT|wx.RIGHT, 5)
         
         target_panel.SetAutoLayout(True)
         target_panel.SetSizer(layout_target)
         target_panel.Layout()
         
-        LMR_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        LMR_sizer.Add(self.file_list, 1, wx.EXPAND)
-        
         # Put text input in its own sizer to force expand
-        layout_input = wx.BoxSizer(wx.VERTICAL)
-        layout_input.Add(self.input_target, 1, wx.EXPAND)
+        layout_input = wx.BoxSizer(wx.HORIZONTAL)
+        layout_input.Add(self.input_target, 1, wx.ALIGN_CENTER_VERTICAL)
         
         layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        
         layout_buttons.Add(btn_add, 0)
         layout_buttons.Add(btn_remove, 0)
-        layout_buttons.Add(btn_clear, 0, wx.ALIGN_CENTER_VERTICAL)
+        layout_buttons.Add(btn_clear, 0)
         layout_buttons.Add(layout_input, 1, wx.ALIGN_CENTER_VERTICAL)
-        layout_buttons.Add(self.btn_browse, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT|wx.RIGHT, 5)
+        layout_buttons.Add(self.btn_browse, 0)
         
         layout_Vright = wx.BoxSizer(wx.VERTICAL)
         layout_Vright.AddSpacer(10)
-        layout_Vright.Add(wx.StaticText(self, label=GT(u'Target')), 0, wx.LEFT, 5)
-        layout_Vright.Add(target_panel, 0, wx.LEFT, 5)
-        layout_Vright.Add(layout_buttons, 0, wx.EXPAND|wx.ALL, 5)
-        layout_Vright.Add(LMR_sizer, 5, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        layout_Vright.Add(wx.StaticText(self, label=GT(u'Target')), 0)
+        layout_Vright.Add(target_panel, 0)
+        layout_Vright.Add(layout_buttons, 0, wx.EXPAND)
+        layout_Vright.Add(self.file_list, 5, wx.EXPAND|wx.TOP, 5)
         
         layout_main = wx.FlexGridSizer(1, 2)
         layout_main.AddGrowableRow(0)
         layout_main.AddGrowableCol(1, 2)
-        layout_main.Add(self.dir_tree, 1, wx.EXPAND|wx.LEFT|wx.TOP|wx.BOTTOM, 5)
-        layout_main.Add(layout_Vright, 1, wx.EXPAND)
+        
+        layout_main.Add(self.dir_tree, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
+        layout_main.Add(layout_Vright, 1, wx.EXPAND|wx.RIGHT, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(layout_main)
