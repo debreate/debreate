@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+## \package main
+
 
 import os, subprocess, webbrowser, wx
-from urllib2 import URLError, HTTPError
+from urllib2 import HTTPError
+from urllib2 import URLError
 
 from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
@@ -84,10 +87,10 @@ ID_LINT_OVERRIDE = wx.NewId()
 ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
-
 default_title = GT(u'Debreate - Debian Package Builder')
 
 
+    ## TODO: Doxygen
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
@@ -385,6 +388,7 @@ class MainWindow(wx.Frame):
         self.SetProjectDirty(False)
     
     
+    ## TODO: Doxygen
     def GetCompression(self):
         for Z in self.menu_compression.GetMenuItems():
             Z_ID = Z.GetId()
@@ -399,6 +403,7 @@ class MainWindow(wx.Frame):
         return default_compression
     
     
+    ## TODO: Doxygen
     def GetCompressionId(self):
         for Z in self.menu_compression.GetMenuItems():
             Z_ID = Z.GetId()
@@ -407,6 +412,14 @@ class MainWindow(wx.Frame):
         
         Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
         return DEFAULT_COMPRESSION_ID
+    
+    
+    ## Retrieves the Wizard instance
+    #  
+    #  \return
+    #        dbr.wizard.Wizard
+    def GetWizard(self):
+        return self.wizard
     
     
     ## Changes wizard page from menu
@@ -436,12 +449,14 @@ class MainWindow(wx.Frame):
         return self.dirty
     
     
+    ## TODO: Doxygen
     def IsNewProject(self):
         title = self.GetTitle()
         
         return bool(title == self.default_title)
     
     
+    ## TODO: Doxygen
     def IsSaved(self):
         title = self.GetTitle()
         
@@ -496,7 +511,7 @@ class MainWindow(wx.Frame):
         about.Destroy()
     
     
-    ### ***** Check for New Version ***** ###
+    ## Checks for new release availability
     def OnCheckUpdate(self, event):
         if UsingDevelopmentVersion():
             wx.MessageDialog(self, GT(u'This is a development version. Update checking is disabled. '),
@@ -533,6 +548,7 @@ class MainWindow(wx.Frame):
             err.ShowModal()
     
     
+    ## TODO: Doxygen
     def OnHelp(self, event):
         if DebugEnabled():
             HelpDialog(self).ShowModal()
@@ -561,8 +577,7 @@ class MainWindow(wx.Frame):
         print(u'Maximized')
     
     
-    ### ***** Menu Handlers ***** ###
-    
+    ## TODO: Doxygen
     def OnNewProject(self, event):
         dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
                 GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
@@ -579,6 +594,7 @@ class MainWindow(wx.Frame):
                 Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
+    ## TODO: Doxygen
     def OnOpenProject(self, event=None):
         if self.IsDirty():
             Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
@@ -641,6 +657,7 @@ class MainWindow(wx.Frame):
             self.OpenProject(opened_path)
     
     
+    ## TODO: Doxygen
     def OnPageChanged(self, event):
         ID = self.wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
@@ -649,6 +666,7 @@ class MainWindow(wx.Frame):
             self.menu_page.Check(ID, True)
     
     
+    ## TODO: Doxygen
     def OnQuickBuild(self, event):
         QB = QuickBuild(self)
         QB.ShowModal()
@@ -691,6 +709,7 @@ class MainWindow(wx.Frame):
             confirm.Destroy()
     
     
+    ## TODO: Doxygen
     def OnSaveProject(self, event=None):
         if not self.ProjectLoaded():
             self.OnSaveProjectAs(event)
@@ -705,6 +724,7 @@ class MainWindow(wx.Frame):
                 self.SetProjectDirty(False)
     
     
+    ## TODO: Doxygen
     def OnSaveProjectAs(self, event=None):
         wildcards = (
             u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext), u'*.{}'.format(PROJECT_ext),
@@ -745,6 +765,7 @@ class MainWindow(wx.Frame):
                 GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
                 
     
+    ## TODO: Doxygen
     def OnToggleLogWindow(self, event=None):
         Logger.Debug(__name__, GT(u'Toggling log window'))
         
@@ -755,6 +776,7 @@ class MainWindow(wx.Frame):
         self.menu_debug.Check(ID_DEBUG, self.log_window.IsShown())
     
     
+    ## TODO: Doxygen
     def OnToggleTheme(self, event=None):
         self.ToggleTheme(self)
     
@@ -769,7 +791,7 @@ class MainWindow(wx.Frame):
         WriteConfig(u'tooltips', enabled)
     
     
-    # ----- Help Menu
+    ## Opens a help menu link
     def OpenPolicyManual(self, event):
         EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
         webbrowser.open(self.references[EVENT_ID])
@@ -810,6 +832,7 @@ class MainWindow(wx.Frame):
             Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
+    ## TODO: Doxygen
     def OpenProjectArchive(self, filename, file_type):
         Logger.Debug(__name__, GT(u'Compressed project archive detected'))
         
@@ -844,6 +867,7 @@ class MainWindow(wx.Frame):
         return dbrerrno.SUCCESS
     
     
+    ## TODO: Doxygen
     def OpenProjectLegacy(self, data, filename):
         Logger.Debug(__name__, GT(u'Legacy project format (text) detected'))
         def ProjectError():
@@ -968,6 +992,7 @@ class MainWindow(wx.Frame):
         ShowError(self, u'{}: {}'.format(GT(u'Project save failed'), target_path))
     
     
+    ## TODO: Doxygen
     def SetProjectDirty(self, dirty=True):
         # Don't do anything if status isn't changing
         if not dirty == self.dirty:
@@ -993,6 +1018,7 @@ class MainWindow(wx.Frame):
         Logger.Debug(__name__, GT(u'Dirty status not changing'))
     
     
+    ## TODO: Doxygen
     def SetSavedStatus(self, status):
         if status: # If status is changing to unsaved this is True
             title = self.GetTitle()
@@ -1020,6 +1046,7 @@ class MainWindow(wx.Frame):
                 GT(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
     
     
+    ## TODO: Doxygen
     def ShowLogWindow(self, show=True):
         Logger.Debug(__name__, GT(u'Show log window: {}').format(show))
         
@@ -1029,6 +1056,7 @@ class MainWindow(wx.Frame):
             self.menu_debug.Check(ID_DEBUG, show)
     
     
+    ## TODO: Doxygen
     def ToggleTheme(self, window):
         for C in window.GetChildren():
             self.ToggleTheme(C)
