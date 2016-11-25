@@ -153,8 +153,12 @@ class Panel(WizardPage):
         self.options_choice.append(self.notify_choice)
         
         # --- ENCODING
-        self.enc_opt = (u'UTF-1',u'UTF-7',u'UTF-8',u'CESU-8',u'UTF-EBCDIC',
-                u'UTF-16',u'UTF-32',u'SCSU',u'BOCU-1',u'Punycode', u'GB 18030')
+        self.enc_opt = (
+            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
+            u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
+            u'GB 18030',
+            )
+        
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         self.labels.append(txt_enc)
         
