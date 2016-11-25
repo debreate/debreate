@@ -10,14 +10,15 @@ from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
 from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonDel
+from dbr.functions      import TextIsEmpty
 from dbr.help           import HelpButton
 from dbr.language       import GT
 from dbr.listinput      import ListCtrlPanel
 from dbr.log            import Logger
 from dbr.wizard         import WizardPage
-from globals.ident      import ID_DEPENDS, ID_APPEND
+from globals.ident      import ID_APPEND
+from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
-from dbr.functions      import TextIsEmpty
 
 
 ## TODO: Doxygen
@@ -28,73 +29,22 @@ class Panel(WizardPage):
         # Bypass checking this page for build
         self.prebuild_check = False
         
-        # --- DEPENDS
-        dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
         
-        # --- PRE-DEPENDS
-        pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
-        
-        # --- RECOMMENDS
-        rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
-        
-        # --- SUGGESTS
-        sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
-        
-        # --- ENHANCES
-        enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
-        
-        # --- CONFLICTS
-        con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
-        
-        # --- REPLACES
-        rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
-        
-        # --- BREAKS
-        break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
-        
-        self.radio_opts = (
-            dep_chk, pre_chk, rec_chk,
-            sug_chk, enh_chk, con_chk,
-            rep_chk, break_chk,
-        )
-        
-        
-        # Input for dependencies
-        self.txt_version = wx.StaticText(self, label=GT(u'Package Version'), name=u'version')
-        self.txt_package = wx.StaticText(self, label=GT(u'Package Name'), name=u'package')
+        txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
+        txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         
         self.input_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
-        version_options = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.operator = wx.Choice(self, choices=version_options)
-        self.operator.SetSelection(0)
+        opts_oper = (u'>=', u'<=', u'=', u'>>', u'<<')
+        self.select_oper = wx.Choice(self, choices=opts_oper)
+        self.select_oper.SetSelection(0)
         
         self.input_version = wx.TextCtrl(self, name=u'version')
         
         # Button to display help information about this page
         btn_help = HelpButton(self)
         
-        layout_G1 = wx.GridBagSizer()
-        
-        # Row 1
-        layout_G1.Add(self.txt_package, pos=(0, 0), flag=wx.ALIGN_BOTTOM, border=0)
-        layout_G1.Add(self.txt_version, pos=(0, 2), flag=wx.ALIGN_BOTTOM)
-        
-        # Row 2
-        layout_G1.Add(self.input_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        layout_G1.Add(self.operator, pos=(1, 1))
-        layout_G1.Add(self.input_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
-        
-        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H1.Add(layout_G1, 0, wx.ALIGN_BOTTOM)
-        layout_H1.AddStretchSpacer(1)
-        layout_H1.Add(btn_help)
-        
         self.input_package.SetSize((100,50))
-        
-        # Add KEY_DOWN events to text areas
-        wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
@@ -106,30 +56,57 @@ class Panel(WizardPage):
         self.depclr = ButtonClear(self)
         self.depclr.SetName(u'clear')
         
-        wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.deprem, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
+        rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
+        rb_pre = wx.RadioButton(self, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
+        rb_rec = wx.RadioButton(self, label=GT(u'Recommends'), name=u'Recommends')
+        rb_sug = wx.RadioButton(self, label=GT(u'Suggests'), name=u'Suggests')
+        rb_enh = wx.RadioButton(self, label=GT(u'Enhances'), name=u'Enhances')
+        rb_con = wx.RadioButton(self, label=GT(u'Conflicts'), name=u'Conflicts')
+        rb_rep = wx.RadioButton(self, label=GT(u'Replaces'), name=u'Replaces')
+        rb_break = wx.RadioButton(self, label=GT(u'Breaks'), name=u'Breaks')
+        
+        self.categories = (
+            rb_dep, rb_pre, rb_rec,
+            rb_sug, rb_enh, rb_con,
+            rb_rep, rb_break,
+        )
         
         # ----- List
-        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT)
-        self.dep_area.SetName(u'list')
+        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT, name=u'list')
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         
         # wx 3.0 compatibility
-        if (wx.MAJOR_VERSION < 3):
+        if wx.MAJOR_VERSION < 3:
             self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
         
-        wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
+        SetPageToolTips(self)
         
-        # Start some sizing
-        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, -1, GT(u'Categories')), wx.VERTICAL)
-        self.rg1 = wx.GridSizer(4, 2, 5, 5)
-        for R in self.radio_opts:
-            self.rg1.Add(R, 0)
+        # *** Layout *** #
         
-        radio_box.Add(self.rg1, 0)
+        layout_G1 = wx.GridBagSizer()
+        
+        # Row 1
+        layout_G1.Add(txt_package, pos=(0, 0), flag=wx.ALIGN_BOTTOM, border=0)
+        layout_G1.Add(txt_version, pos=(0, 2), flag=wx.ALIGN_BOTTOM)
+        
+        # Row 2
+        layout_G1.Add(self.input_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        layout_G1.Add(self.select_oper, pos=(1, 1))
+        layout_G1.Add(self.input_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        
+        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H1.Add(layout_G1, 0, wx.ALIGN_BOTTOM)
+        layout_H1.AddStretchSpacer(1)
+        layout_H1.Add(btn_help)
+        
+        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
+        layout_categories = wx.GridSizer(4, 2, 5, 5)
+        
+        for C in self.categories:
+            layout_categories.Add(C, 0)
+        
+        radio_box.Add(layout_categories, 0)
         
         layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
         layout_H2.Add(radio_box, 0, wx.RIGHT, 5)
@@ -138,29 +115,29 @@ class Panel(WizardPage):
         layout_H2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
         layout_H2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
         
-        '''
-        self.border = wx.StaticBox(self, -1)
-        border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        border_box.Add(depH1, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        #border_box.AddSpacer(5)
-        border_box.Add(layout_H2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        '''
-        
         layout_H3 = wx.BoxSizer(wx.HORIZONTAL)
         layout_H3.Add(self.dep_area, 1, wx.EXPAND)
         
-        # ----- Main Sizer
         layout_Vmain = wx.BoxSizer(wx.VERTICAL)
         layout_Vmain.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
         layout_Vmain.Add(layout_H2, 0, wx.ALL, 5)
         layout_Vmain.Add(layout_H3, 1, wx.EXPAND|wx.ALL, 5)
         
-        # ----- Layout
         self.SetAutoLayout(True)
         self.SetSizer(layout_Vmain)
         self.Layout()
         
-        SetPageToolTips(self)
+        # *** Events *** #
+        
+        wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
+        
+        wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
+        wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
+        wx.EVT_BUTTON(self.deprem, -1, self.SetDepends)
+        wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
+        
+        wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
     
     
     ## TODO: Doxygen
@@ -185,16 +162,15 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetDepends(self, event):
+    def SetDepends(self, event=None):
         try:
-            key_mod = event.GetModifiers()
             key_id = event.GetKeyCode()
+        
         except AttributeError:
-            key_mod = None
             key_id = event.GetEventObject().GetId()
         
         addname = self.input_package.GetValue()
-        oper = self.operator.GetStringSelection()
+        oper = self.select_oper.GetStringSelection()
         ver = self.input_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
             
@@ -203,16 +179,16 @@ class Panel(WizardPage):
                 return
             
             category = self.GetDefaultCategory()
-            for R in self.radio_opts:
-                if R.GetValue():
-                    category = R.GetName()
+            for C in self.categories:
+                if C.GetValue():
+                    category = C.GetName()
                     break
             
             if TextIsEmpty(ver):
-                self.dep_area.AppendStringItem((category, addname))
+                self.AppendDependency(category, addname)
             
             else:
-                self.dep_area.AppendStringItem((category, u'{} {}'.format(addname, addver)))
+                self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
         elif key_id == ID_APPEND:
             selected_count = self.dep_area.GetSelectedItemCount()
@@ -234,7 +210,7 @@ class Panel(WizardPage):
                     else:
                         self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
-        elif key_id == wx.ID_DELETE: # wx.WXK_DELETE:
+        elif key_id == wx.ID_DELETE:
             self.dep_area.RemoveSelected()
         
         elif key_id == wx.ID_CLEAR:
@@ -244,8 +220,8 @@ class Panel(WizardPage):
                 if confirm.ShowModal() == wx.ID_YES:
                     self.dep_area.DeleteAllItems()
         
-        event.Skip()
-    
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
