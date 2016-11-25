@@ -246,8 +246,9 @@ class ListCtrlPanel(wx.Panel):
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
 class FileList(ListCtrlPanel, TextEditMixin):
-    def __init__(self, parent, window_id=wx.ID_ANY):
-        ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT)
+    def __init__(self, parent, window_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
+        ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT,
+                name=name)
         TextEditMixin.__init__(self)
         
         self.parent = parent
