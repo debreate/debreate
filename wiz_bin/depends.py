@@ -30,26 +30,29 @@ class Panel(wx.ScrolledWindow):
         
         opts_oper = (u'>=', u'<=', u'=', u'>>', u'<<')
         self.select_oper = wx.Choice(self, choices=opts_oper, name=u'operator')
-        self.select_oper.SetSelection(0)
+        self.select_oper.default = 0
+        self.select_oper.SetSelection(self.select_oper.default)
         
         self.input_version = wx.TextCtrl(self, name=u'version')
         
         self.input_package.SetSize((100,50))
         
-        self.rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        self.rb_pre = wx.RadioButton(self, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
-        self.rb_rec = wx.RadioButton(self, label=GT(u'Recommends'), name=u'Recommends')
-        self.rb_sug = wx.RadioButton(self, label=GT(u'Suggests'), name=u'Suggests')
-        self.rb_enh = wx.RadioButton(self, label=GT(u'Enhances'), name=u'Enhances')
-        self.rb_con = wx.RadioButton(self, label=GT(u'Conflicts'), name=u'Conflicts')
-        self.rb_rep = wx.RadioButton(self, label=GT(u'Replaces'), name=u'Replaces')
-        self.rb_break = wx.RadioButton(self, label=GT(u'Breaks'), name=u'Breaks')
+        self.default_category = u'Depends'
         
-        self.categories = {
-            self.rb_dep: u'Depends', self.rb_pre: u'Pre-Depends', self.rb_rec: u'Recommends',
-            self.rb_sug: u'Suggests', self.rb_enh: u'Enhances', self.rb_con: u'Conflicts',
-            self.rb_rep: u'Replaces', self.rb_break: u'Breaks',
-            }
+        rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=self.default_category, style=wx.RB_GROUP)
+        rb_pre = wx.RadioButton(self, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
+        rb_rec = wx.RadioButton(self, label=GT(u'Recommends'), name=u'Recommends')
+        rb_sug = wx.RadioButton(self, label=GT(u'Suggests'), name=u'Suggests')
+        rb_enh = wx.RadioButton(self, label=GT(u'Enhances'), name=u'Enhances')
+        rb_con = wx.RadioButton(self, label=GT(u'Conflicts'), name=u'Conflicts')
+        rb_rep = wx.RadioButton(self, label=GT(u'Replaces'), name=u'Replaces')
+        rb_break = wx.RadioButton(self, label=GT(u'Breaks'), name=u'Breaks')
+        
+        self.categories = (
+            rb_dep, rb_pre, rb_rec,
+            rb_sug, rb_enh, rb_con,
+            rb_rep, rb_break,
+        )
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
@@ -84,16 +87,8 @@ class Panel(wx.ScrolledWindow):
         radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
         layout_categories = wx.GridSizer(4, 2, 5, 5)
         
-        layout_categories.AddMany( (
-        (self.rb_dep, 0),
-        (self.rb_pre, 0),
-        (self.rb_rec, 0),
-        (self.rb_sug, 0),
-        (self.rb_enh, 0),
-        (self.rb_con, 0),
-        (self.rb_rep, 0),
-        (self.rb_break, 0),
-        ) )
+        for C in self.categories:
+            layout_categories.Add(C, 0)
         
         radio_box.Add(layout_categories, 0)
         
@@ -156,14 +151,18 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GetDefaultCategory(self):
-        return self.rb_dep.GetName()
+        return self.default_category
     
     
     ## TODO: Doxygen
     def ResetAllFields(self):
-        self.rb_dep.SetValue(True)
+        for C in self.categories:
+            if C.GetName() == self.default_category:
+                C.SetValue(True)
+                break
+        
         self.input_package.Clear()
-        self.select_oper.SetSelection(0)
+        self.select_oper.SetSelection(self.select_oper.default)
         self.input_version.Clear()
         self.dep_area.DeleteAllItems()
     
