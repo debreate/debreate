@@ -6,9 +6,9 @@
 import os, wx
 
 from dbr.buttons        import ButtonBuild
-from dbr.buttons        import ButtonDel
 from dbr.buttons        import ButtonImport
 from dbr.buttons        import ButtonQuestion64
+from dbr.buttons        import ButtonRemove
 from dbr.language       import GT
 from dbr.listinput      import ListCtrlPanel
 from dbr.markdown       import MarkdownDialog
@@ -124,7 +124,7 @@ class Panel(wx.ScrolledWindow):
         # Auto-Link import, generate and remove buttons
         self.al_import = ButtonImport(self, ID_IMPORT)
         self.al_import.SetName(u'import')
-        self.al_del = ButtonDel(self)
+        self.al_del = ButtonRemove(self)
         self.al_del.SetName(u'Remove')
         self.al_gen = ButtonBuild(self)
         self.al_gen.SetName(u'Generate')

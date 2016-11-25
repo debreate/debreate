@@ -6,8 +6,8 @@ import os, wx
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse
 from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonDel
 from dbr.buttons        import ButtonRefresh
+from dbr.buttons        import ButtonRemove
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
@@ -74,7 +74,7 @@ class Panel(wx.ScrolledWindow):
         # ----- Add/Remove/Clear buttons
         btn_add = ButtonAdd(self)
         btn_add.SetName(u'add')
-        btn_remove = ButtonDel(self)
+        btn_remove = ButtonRemove(self)
         btn_remove.SetName(u'remove')
         btn_clear = ButtonClear(self)
         btn_clear.SetName(u'clear')

@@ -9,8 +9,8 @@ from wx.combo import OwnerDrawnComboBox
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse64
 from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonDel
 from dbr.buttons        import ButtonPreview64
+from dbr.buttons        import ButtonRemove
 from dbr.buttons        import ButtonSave64
 from dbr.custom         import OpenFile
 from dbr.custom         import SaveFile
@@ -177,7 +177,7 @@ class Panel(wx.ScrolledWindow):
         
         self.cat_add = ButtonAdd(self)
         self.cat_add.SetName(u'add category')
-        self.cat_del = ButtonDel(self)
+        self.cat_del = ButtonRemove(self)
         self.cat_del.SetName(u'rm category')
         self.cat_clr = ButtonClear(self)
         self.cat_clr.SetName(u'clear categories')
