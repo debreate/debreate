@@ -8,7 +8,8 @@
 
 import wx
 
-from globals.paths import PATH_app, ConcatPaths
+from globals.paths import ConcatPaths
+from globals.paths import PATH_app
 
 
 PATH_bitmaps = u'{}/bitmaps'.format(PATH_app)
