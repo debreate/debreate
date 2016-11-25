@@ -39,6 +39,9 @@ class BitmapButton(wx.BitmapButton):
             size=wx.DefaultSize, style=wx.NO_BORDER, validator=wx.DefaultValidator,
             name=wx.ButtonNameStr):
         
+        if not isinstance(bitmap, wx.Bitmap):
+            bitmap = wx.Bitmap(bitmap)
+        
         wx.BitmapButton.__init__(self, parent, ID, bitmap, pos, size, style|wx.NO_BORDER,
                 validator, name)
 
