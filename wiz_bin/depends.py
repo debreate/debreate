@@ -11,6 +11,7 @@ from dbr.buttons    import ButtonDel
 from dbr.buttons    import ButtonPipe
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
+from dbr.listinput  import ListCtrlPanel
 from globals.ident  import ID_DEPENDS
 
 
@@ -122,7 +123,7 @@ class Panel(wx.ScrolledWindow):
         wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
         
         # ----- List
-        self.dep_area = AutoListCtrl(self, -1)
+        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT)
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         self.dep_area.SetColumnWidth(0, 100)
@@ -186,6 +187,16 @@ class Panel(wx.ScrolledWindow):
                             self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
     
     
+    ## Add a category & dependency to end of list
+    #  
+    #  \param category
+    #        \b \e unicode|str : Category label
+    #  \param value
+    #        \b \e unicode|str : Dependency value
+    def AppendDependency(self, category, value):
+        self.dep_area.AppendStringItem((category, value))
+    
+    
     ## TODO: Doxygen
     def GetDefaultCategory(self):
         return self.dep_chk.GetName()
@@ -224,10 +235,10 @@ class Panel(wx.ScrolledWindow):
                     break
             
             if TextIsEmpty(ver):
-                self.dep_area.AppendDependency(category, addname)
+                self.AppendDependency(category, addname)
             
             else:
-                self.dep_area.AppendDependency(category, u'{} {}'.format(addname, addver))
+                self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
         elif key_id == ID_Append:
             selected_count = self.dep_area.GetSelectedItemCount()
@@ -271,71 +282,3 @@ class Panel(wx.ScrolledWindow):
                 item_count -= 1
                 self.dep_area.InsertStringItem(0, item[0])
                 self.dep_area.SetStringItem(0, 1, item[item_count])
-
-
-## A ListCtrl that automatically expands columns
-class AutoListCtrl(wx.ListView, LC.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID=wx.ID_ANY):
-        wx.ListView.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
-        LC.ListCtrlAutoWidthMixin.__init__(self)
-        
-        wx.EVT_KEY_DOWN(self, self.OnSelectAll)
-    
-    
-    ## Add a category & dependency to end of list
-    #  
-    #  \param category
-    #        \b \e unicode|str : Category label
-    #  \param value
-    #        \b \e unicode|str : Dependency value
-    def AppendDependency(self, category, value):
-        row_index = self.GetItemCount()
-        self.InsertStringItem(row_index, category)
-        self.SetStringItem(row_index, 1, value)
-    
-    
-    ## Adds an item to the end of the list
-    #  
-    #  \param item
-    #        \b \e unicode|str : String item to append
-    def AppendStringItem(self, item):
-        self.InsertStringItem(self.GetItemCount(), item)
-    
-    
-    ## TODO: Doxygen
-    def GetSelectedIndexes(self):
-        selected_indexes = []
-        selected = None
-        for X in range(self.GetSelectedItemCount()):
-            if X == 0:
-                selected = self.GetFirstSelected()
-            
-            else:
-                selected = self.GetNextSelected(selected)
-            
-            selected_indexes.append(selected)
-        
-        if selected_indexes:
-            return tuple(sorted(selected_indexes))
-        
-        return None
-    
-    
-    ## TODO: Doxygen
-    def OnSelectAll(self, event=None):
-        select_all = False
-        if isinstance(event, wx.KeyEvent):
-            if event.GetKeyCode() == 65 and event.GetModifiers() == 2:
-                select_all = True
-        
-        if select_all:
-            for X in range(self.GetItemCount()):
-                self.Select(X)
-    
-    
-    ## Removes all selected rows in descending order
-    def RemoveSelected(self):
-        selected_indexes = self.GetSelectedIndexes()
-        if selected_indexes != None:
-            for index in reversed(selected_indexes):
-                self.DeleteItem(index)
