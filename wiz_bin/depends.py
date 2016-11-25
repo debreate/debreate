@@ -4,15 +4,16 @@
 
 import wx
 
-from dbr.buttons    import ButtonAdd
-from dbr.buttons    import ButtonClear
-from dbr.buttons    import ButtonDel
-from dbr.buttons    import ButtonPipe
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
-from dbr.listinput  import ListCtrlPanel
-from globals.ident  import ID_APPEND
-from globals.ident  import ID_DEPENDS
+from dbr.buttons        import ButtonAdd
+from dbr.buttons        import ButtonAppend
+from dbr.buttons        import ButtonClear
+from dbr.buttons        import ButtonRemove
+from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from dbr.listinput      import ListCtrlPanel
+from globals.ident      import ID_APPEND
+from globals.ident      import ID_DEPENDS
+from globals.tooltips   import SetPageToolTips
 
 
 ## TODO: Doxygen
@@ -22,94 +23,50 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(20, 20, 0, 0)
         
-        # ----- Tool Tips
-        dep_tip = GT(u'Package will need to be installed')
-        pre_tip = GT(u'Package will need to be installed and configured first')
-        rec_tip = GT(u'Package is highly recommended and will be installed by default')
-        sug_tip = GT(u'Package may be useful but is not necessary and will not be installed by default')
-        enh_tip = GT(u'This package may be useful to enhanced package')
-        con_tip = GT(u'Package will be removed from the system if it is installed')
-        rep_tip = GT(u'Package or its files may be overwritten')
-        break_tip = GT(u'Package conflicts and will be de-configured')
-        
-        
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         
         self.input_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
-        tt_pack = GT(u'Name of dependency/conflicting package')
-        txt_package.SetToolTipString(tt_pack)
-        self.input_package.SetToolTipString(tt_pack)
-        
         opts_oper = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.select_oper = wx.Choice(self, choices=opts_oper)
+        self.select_oper = wx.Choice(self, choices=opts_oper, name=u'operator')
         self.select_oper.SetSelection(0)
         
         self.input_version = wx.TextCtrl(self, name=u'version')
         
-        tt_oper = GT(u'Operator')
-        self.select_oper.SetToolTipString(tt_oper)
-        
-        tt_ver = GT(u'Version corresponing to package name and operator')
-        txt_version.SetToolTipString(tt_ver)
-        self.input_version.SetToolTipString(tt_ver)
-        
         self.input_package.SetSize((100,50))
         
-        # --- DEPENDS
         self.rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        self.rb_dep.SetToolTipString(dep_tip)
-        
-        # --- PRE-DEPENDS
         self.rb_pre = wx.RadioButton(self, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
-        self.rb_pre.SetToolTipString(pre_tip)
-        
-        # --- RECOMMENDS
         self.rb_rec = wx.RadioButton(self, label=GT(u'Recommends'), name=u'Recommends')
-        self.rb_rec.SetToolTipString(rec_tip)
-        
-        # --- SUGGESTS
         self.rb_sug = wx.RadioButton(self, label=GT(u'Suggests'), name=u'Suggests')
-        self.rb_sug.SetToolTipString(sug_tip)
-        
-        # --- ENHANCES
         self.rb_enh = wx.RadioButton(self, label=GT(u'Enhances'), name=u'Enhances')
-        self.rb_enh.SetToolTipString(enh_tip)
-        
-        # --- CONFLICTS
         self.rb_con = wx.RadioButton(self, label=GT(u'Conflicts'), name=u'Conflicts')
-        self.rb_con.SetToolTipString(con_tip)
-        
-        # --- REPLACES
         self.rb_rep = wx.RadioButton(self, label=GT(u'Replaces'), name=u'Replaces')
-        self.rb_rep.SetToolTipString(rep_tip)
-        
-        # --- BREAKS
         self.rb_break = wx.RadioButton(self, label=GT(u'Breaks'), name=u'Breaks')
-        self.rb_break.SetToolTipString(break_tip)
         
+        self.categories = {
+            self.rb_dep: u'Depends', self.rb_pre: u'Pre-Depends', self.rb_rec: u'Recommends',
+            self.rb_sug: u'Suggests', self.rb_enh: u'Enhances', self.rb_con: u'Conflicts',
+            self.rb_rep: u'Replaces', self.rb_break: u'Breaks',
+            }
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
-        self.depapp = ButtonPipe(self)
-        self.deprem = ButtonDel(self, wx.ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
+        self.depapp = ButtonAppend(self)
+        self.deprem = ButtonRemove(self, wx.ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
         self.depclr = ButtonClear(self)
         
-        self.depadd.SetToolTipString(GT(u'Add to package list'))
-        self.depapp.SetToolTipString(GT(u'Add as alternative to selected packages in list'))
-        self.deprem.SetToolTipString(GT(u'Remove selected packages from list'))
-        self.depclr.SetToolTipString(GT(u'Clear package list'))
-        
         # ----- List
-        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT)
+        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT, name=u'list')
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
-        self.dep_area.SetColumnWidth(0, 100)
         
-        self.categories = {	self.rb_dep: u'Depends', self.rb_pre: u'Pre-Depends', self.rb_rec: u'Recommends',
-                            self.rb_sug: u'Suggests', self.rb_enh: u'Enhances', self.rb_con: u'Conflicts',
-                            self.rb_rep: u'Replaces', self.rb_break: u'Breaks'}
+        # wx 3.0 compatibility
+        if wx.MAJOR_VERSION < 3:
+            self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
+        
+        SetPageToolTips(self)
         
         # *** Layout *** #
         
