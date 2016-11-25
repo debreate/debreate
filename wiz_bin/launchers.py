@@ -45,6 +45,8 @@ class Panel(WizardPage):
         self.options_choice = []
         self.options_list = []
         
+        self.labels = []
+        
         # --- Buttons to open/preview/save .desktop file
         self.btn_open = ButtonBrowse64(self)
         self.btn_open.SetName(u'open')
@@ -67,7 +69,7 @@ class Panel(WizardPage):
         button_sizer.Add(self.btn_preview, 0)
         
         # --- CHECKBOX
-        self.activate = wx.CheckBox(self, -1, GT(u'Create system menu launcher'))
+        self.activate = wx.CheckBox(self, label=GT(u'Create system menu launcher'))
         self.activate.default = False
         
         self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
@@ -89,7 +91,8 @@ class Panel(WizardPage):
             )
         
         # --- NAME (menu)
-        self.name_text = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
+        txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
+        self.labels.append(txt_name)
         
         self.name_input = wx.TextCtrl(self, name=u'Name')
         self.name_input.req = True
@@ -97,21 +100,24 @@ class Panel(WizardPage):
         self.options_input.append(self.name_input)
         
         # --- EXECUTABLE
-        self.exe_text = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
+        txt_exe = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
+        self.labels.append(txt_exe)
         
         self.exe_input = wx.TextCtrl(self, name=u'Exec')
         self.exe_input.default = wx.EmptyString
         self.options_input.append(self.exe_input)
         
         # --- COMMENT
-        self.comm_text = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
+        txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
+        self.labels.append(txt_comm)
         
         self.comm_input = wx.TextCtrl(self, name=u'Comment')
         self.comm_input.default = wx.EmptyString
         self.options_input.append(self.comm_input)
         
         # --- ICON
-        self.icon_text = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
+        txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
+        self.labels.append(txt_icon)
         
         self.icon_input = wx.TextCtrl(self, name=u'Icon')
         self.icon_input.default = wx.EmptyString
@@ -119,7 +125,8 @@ class Panel(WizardPage):
         
         # --- TYPE
         self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
-        self.type_text = wx.StaticText(self, label=GT(u'Type'), name=u'type')
+        txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
+        self.labels.append(txt_type)
         
         self.type_choice = OwnerDrawnComboBox(self, -1, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
         self.type_choice.default = self.type_choice.GetValue()
@@ -127,7 +134,8 @@ class Panel(WizardPage):
         
         # --- TERMINAL
         self.term_opt = (u'true', u'false')
-        self.term_text = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
+        txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
+        self.labels.append(txt_term)
         
         self.term_choice = wx.Choice(self, -1, choices=self.term_opt, name=u'Terminal')
         self.term_choice.default = 1
@@ -136,7 +144,8 @@ class Panel(WizardPage):
         
         # --- STARTUP NOTIFY
         self.notify_opt = (u'true', u'false')
-        self.notify_text = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
+        txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
+        self.labels.append(txt_notify)
         
         self.notify_choice = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
         self.notify_choice.default = 0
@@ -146,7 +155,8 @@ class Panel(WizardPage):
         # --- ENCODING
         self.enc_opt = (u'UTF-1',u'UTF-7',u'UTF-8',u'CESU-8',u'UTF-EBCDIC',
                 u'UTF-16',u'UTF-32',u'SCSU',u'BOCU-1',u'Punycode', u'GB 18030')
-        self.enc_text = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
+        txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
+        self.labels.append(txt_enc)
         
         self.enc_input = OwnerDrawnComboBox(self, -1, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
         self.enc_input.default = self.enc_input.GetValue()
@@ -181,11 +191,12 @@ class Panel(WizardPage):
             u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
             )
         
-        self.cat_text = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        txt_cat = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        self.labels.append(txt_cat)
         
         # This option does not get set by importing a new project
         self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt,
-                name=self.cat_text.GetLabel())
+                name=txt_cat.GetLabel())
         self.cat_choice.default = self.cat_choice.GetValue()
         self.options_input.append(self.cat_choice)
         
@@ -226,7 +237,7 @@ class Panel(WizardPage):
         cat_sizer0.Add(self.cat_clr, 0)
         
         cat_sizer1 = wx.BoxSizer(wx.VERTICAL)
-        cat_sizer1.Add(self.cat_text, 0, wx.LEFT, 1)
+        cat_sizer1.Add(txt_cat, 0, wx.LEFT, 1)
         cat_sizer1.Add(self.cat_choice, 0, wx.TOP|wx.BOTTOM, 5)
         cat_sizer1.Add(cat_sizer0, 0)
         
@@ -236,9 +247,10 @@ class Panel(WizardPage):
         
         
         # ----- MISC
-        self.other_text = wx.StaticText(self, label=GT(u'Other'), name=u'other')
+        txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
+        self.labels.append(txt_other)
         
-        self.other = MultilineTextCtrlPanel(self, name=self.other_text.Name)
+        self.other = MultilineTextCtrlPanel(self, name=txt_other.Name)
         self.other.default = wx.EmptyString
         self.options_input.append(self.other)
         
@@ -260,27 +272,27 @@ class Panel(WizardPage):
         sizer1.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
         
         # Row 2
-        sizer1.Add(self.name_text, (1, 0), flag=CENTER)
+        sizer1.Add(txt_name, (1, 0), flag=CENTER)
         sizer1.Add(self.name_input, (1, 1), flag=CENTER_EXPAND)
-        sizer1.Add(self.type_text, (1, 2), flag=CENTER)
+        sizer1.Add(txt_type, (1, 2), flag=CENTER)
         sizer1.Add(self.type_choice, (1, 3), flag=CENTER)
         
         # Row 3
-        sizer1.Add(self.exe_text, (2, 0), flag=CENTER)
+        sizer1.Add(txt_exe, (2, 0), flag=CENTER)
         sizer1.Add(self.exe_input, (2, 1), flag=CENTER_EXPAND)
-        sizer1.Add(self.term_text, (2, 2), flag=CENTER)
+        sizer1.Add(txt_term, (2, 2), flag=CENTER)
         sizer1.Add(self.term_choice, (2, 3), flag=CENTER)
         
         # Row 4
-        sizer1.Add(self.comm_text, (3, 0), flag=CENTER)
+        sizer1.Add(txt_comm, (3, 0), flag=CENTER)
         sizer1.Add(self.comm_input, (3, 1), flag=CENTER_EXPAND)
-        sizer1.Add(self.notify_text, (3, 2), flag=CENTER)
+        sizer1.Add(txt_notify, (3, 2), flag=CENTER)
         sizer1.Add(self.notify_choice, (3, 3), flag=CENTER)
         
         # Row 5
-        sizer1.Add(self.icon_text, (4, 0), flag=CENTER)
+        sizer1.Add(txt_icon, (4, 0), flag=CENTER)
         sizer1.Add(self.icon_input, (4, 1), flag=CENTER_EXPAND)
-        sizer1.Add(self.enc_text, (4, 2), flag=CENTER)
+        sizer1.Add(txt_enc, (4, 2), flag=CENTER)
         sizer1.Add(self.enc_input, (4, 3), flag=CENTER)
         
         
@@ -290,7 +302,7 @@ class Panel(WizardPage):
         border_box.Add(sizer1, 0, wx.EXPAND|wx.BOTTOM, 5)
         border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
         border_box.AddSpacer(5)
-        border_box.Add(self.other_text, 0)
+        border_box.Add(txt_other, 0)
         border_box.Add(self.other, 1, wx.EXPAND)
         
         
@@ -319,10 +331,10 @@ class Panel(WizardPage):
         # Lists of widgets that change language
         # FIXME: deprecated???
         self.setlabels = {    self.activate: u'Menu', self.btn_open: u'Open', self.border: u'Border',
-                            self.icon_text: u'Icon',
-                            self.name_text: u'Name', self.comm_text: u'Comm', self.exe_text: u'Exec',
-                            self.enc_text: u'Enc', self.type_text: u'Type', self.cat_text: u'Cat',
-                            self.term_text: u'Term', self.notify_text: u'Notify'}
+                            txt_icon: u'Icon',
+                            txt_name: u'Name', txt_comm: u'Comm', txt_exe: u'Exec',
+                            txt_enc: u'Enc', txt_type: u'Type', txt_cat: u'Cat',
+                            txt_term: u'Term', txt_notify: u'Notify'}
         
         
         SetPageToolTips(self)
@@ -658,7 +670,8 @@ class Panel(WizardPage):
             False: wx.Colour(214, 214, 214),
         }
         
-        for group in self.options_button, self.options_choice, self.options_input, self.options_list:
+        for group in self.options_button, self.options_choice, self.options_input, \
+                self.options_list, self.labels:
             for O in group:
                 O.Enable(enable)
                 
