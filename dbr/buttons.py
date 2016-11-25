@@ -3,13 +3,14 @@
 
 import wx
 
-from dbr.language   import GT
-from globals.ident  import ID_APPEND
-from globals.ident  import ID_BROWSE
-from globals.ident  import ID_BUILD
-from globals.ident  import ID_NEXT
-from globals.ident  import ID_PREV
-from globals.paths  import PATH_app
+from dbr.language       import GT
+from globals.bitmaps    import BUTTON_REFRESH
+from globals.ident      import ID_APPEND
+from globals.ident      import ID_BROWSE
+from globals.ident      import ID_BUILD
+from globals.ident      import ID_NEXT
+from globals.ident      import ID_PREV
+from globals.paths      import PATH_app
 
 
 ## The same as wx.BitmapButton but defaults to style=wx.NO_BORDER
@@ -150,6 +151,13 @@ class ButtonQuestion64(BitmapButton):
                 ID=ID, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Help')))
+
+
+## Button for refreshing displayed controls
+class ButtonRefresh(BitmapButton):
+    def __init__(self, parent, ID=wx.ID_REFRESH, name=u'refresh'):
+        BitmapButton.__init__(self, parent, BUTTON_REFRESH,
+                ID=ID, name=name)
 
 
 class ButtonSave(BitmapButton):
