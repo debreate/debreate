@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# This panel displays the field input of the control file
+## \package wiz_bin.control
 
 
 import wx, os
@@ -24,15 +24,13 @@ from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
 
 
-## TODO: Doxygen
+## This panel displays the field input of the control file
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_CONTROL)
         
         # Bypass checking this page for build
         self.prebuild_check = False
-        
-        self.wizard = parent
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -390,7 +388,7 @@ class Panel(WizardPage):
         
         # Dependencies
         depends_page = None
-        for child in self.wizard.GetChildren():
+        for child in self.GetParent().GetChildren():
             if child.GetId() == ID_DEPENDS:
                 depends_page = child
         
