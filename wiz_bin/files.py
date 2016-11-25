@@ -2,15 +2,17 @@
 
 
 import os, wx
-from wx.lib.mixins import listctrl as LC
 
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse
 from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonDel
-from dbr.custom         import OpenDir
+from dbr.buttons        import ButtonRefresh
+from dbr.dialogs        import GetDirDialog
+from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.listinput      import FileList
 from globals.ident      import ID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
@@ -20,14 +22,6 @@ from globals.tooltips   import SetPageToolTips
 ID_AddDir = 140
 ID_AddFile = 141
 ID_Refresh = 142
-
-
-## Creates a ListCtrl class in which every column's text can be edited
-class DList(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):#LC.TextEditMixin):
-    def __init__(self, parent, ID=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        wx.ListCtrl.__init__(self, parent, ID, style=wx.BORDER_SIMPLE|wx.LC_REPORT,
-                name=name)
-        LC.ListCtrlAutoWidthMixin.__init__(self)
 
 
 ## Class defining controls for the "Paths" page
@@ -87,22 +81,16 @@ class Panel(wx.ScrolledWindow):
         
         self.prev_dest_value = u'/usr/bin'
         self.input_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
+        self.input_target.default = u'/usr/bin'
         
         self.btn_browse = ButtonBrowse(self)
         self.btn_browse.SetName(u'browse')
         
+        btn_refresh = ButtonRefresh(self)
+        btn_refresh.SetName(u'refresh')
+        
         # Display area for files added to list
-        self.file_list = DList(self, name=u'filelist')
-        
-        # Set the width of first column on creation
-        parent_size = self.GetGrandParent().GetSize()
-        parent_width = parent_size[1]
-        self.file_list.InsertColumn(0, GT(u'File'), width=parent_width/3-10)
-        self.file_list.InsertColumn(1, GT(u'Target'))
-        
-        # List that stores the actual paths to the files
-        self.list_data = []
-        
+        self.file_list = FileList(self, name=u'filelist')
         
         # *** Layout *** #
         
@@ -125,6 +113,7 @@ class Panel(wx.ScrolledWindow):
         layout_buttons.Add(btn_clear, 0)
         layout_buttons.Add(layout_input, 1, wx.ALIGN_CENTER_VERTICAL)
         layout_buttons.Add(self.btn_browse, 0)
+        layout_buttons.Add(btn_refresh, 0)
         
         layout_Vright = wx.BoxSizer(wx.VERTICAL)
         layout_Vright.AddSpacer(10)
@@ -162,16 +151,17 @@ class Panel(wx.ScrolledWindow):
         
         # Button events
         btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
-        btn_remove.Bind(wx.EVT_BUTTON, self.DelPath)
-        btn_clear.Bind(wx.EVT_BUTTON, self.ClearAll)
+        btn_remove.Bind(wx.EVT_BUTTON, self.OnRemoveSelected)
+        btn_clear.Bind(wx.EVT_BUTTON, self.OnClearFileList)
         self.btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
+        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
         # ???: Not sure what these do
         wx.EVT_KEY_DOWN(self.input_target, self.GetDestValue)
         wx.EVT_KEY_UP(self.input_target, self.CheckDest)
         
         # Key events for file list
-        wx.EVT_KEY_DOWN(self.file_list, self.DelPath)
+        wx.EVT_KEY_DOWN(self.file_list, self.OnRemoveSelected)
     
     
     ## TODO: Doxygen
@@ -186,53 +176,6 @@ class Panel(wx.ScrolledWindow):
         
         if event:
             event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def ClearAll(self, event=None):
-        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_YES:
-            self.file_list.DeleteAllItems()
-            self.list_data = []
-    
-    
-    ## TODO: Doxygen
-    def DelPath(self, event=None):
-        try:
-            modifier = event.GetModifiers()
-            keycode = event.GetKeyCode()
-        
-        except AttributeError:
-            keycode = event.GetEventObject().GetId()
-        
-        if keycode == wx.WXK_DELETE:
-            selected = [] # Items to remove from visible list
-            toremove = [] # Items to remove from invisible list
-            total = self.file_list.GetSelectedItemCount()
-            current = self.file_list.GetFirstSelected()
-            if current != -1:
-                selected.insert(0, current)
-                while total > 1:
-                    total = total - 1
-                    prev = current
-                    current = self.file_list.GetNextSelected(prev)
-                    selected.insert(0, current)
-            
-            for path in selected:
-                # Remove the item from the invisible list
-                for item in self.list_data:
-                    filename = self.file_list.GetItemText(path)
-                    dest = self.file_list.GetItem(path, 1).GetText()
-                    if filename.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
-                        toremove.append(item)
-                
-                self.file_list.DeleteItem(path) # Remove the item from the visible list
-            
-            for item in toremove:
-                self.list_data.remove(item)
-        
-        elif keycode == 65 and modifier == wx.MOD_CONTROL:
-            self.SelectAll()
     
     
     ## TODO: Doxygen
@@ -293,9 +236,13 @@ class Panel(wx.ScrolledWindow):
         for item in self.targets:
             if self.radio_custom.GetValue() == True:
                 pout = self.input_target.GetValue()
+                
+                break
             
             elif item.GetValue() == True:
                 pout = item.GetLabel()
+                
+                break
         
         if os.path.isdir(pin):
             for root, dirs, files in os.walk(pin):
@@ -308,54 +255,52 @@ class Panel(wx.ScrolledWindow):
                 msg_files = GT(u'Getting files from {}')
                 loading = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
                                             wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                for root, dirs, files in os.walk(pin):
-                    for FILE in files:
-                        if cont == (False,False):  # If "cancel" pressed destroy the progress window
+                
+                for source_dir, DIRS, FILES in os.walk(pin):
+                    for filename in FILES:
+                        # If "cancel" pressed destroy the progress window
+                        if cont == (False, False):
                             break
                         
                         else:
-                            sub_dir = root.split(pin)[1] # remove full path to insert into listctrl
-                            if sub_dir != wx.EmptyString:
+                            # Remove full path to insert into listctrl
+                            target_dir = source_dir.split(pin)[1]
+                            if not TextIsEmpty(target_dir):
                                 # Add the sub-dir to dest
-                                dest = u'{}{}'.format(pout, sub_dir)
-                                #self.list_data.insert(0, (u'{}/{}'.format(root, FILE), u'{}/{}'.format(sub_dir[1:], FILE), dest))
-                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, dest))
-                                self.file_list.InsertStringItem(0, FILE)
-                                self.file_list.SetStringItem(0, 1, dest)
+                                target_dir = u'{}{}'.format(pout, target_dir)
+                                
+                                self.file_list.AddFile(filename, source_dir, target_dir)
                             
                             else:
-                                self.list_data.insert(0, (u'{}/{}'.format(root, FILE), FILE, pout))
-                                self.file_list.InsertStringItem(0, FILE)
-                                self.file_list.SetStringItem(0, 1, pout)
+                                self.file_list.AddFile(filename, source_dir, pout)
                             
                             count += 1
                             cont = loading.Update(count)
-                            if os.access(u'{}/{}'.format(root,FILE), os.X_OK):
-                                self.file_list.SetItemTextColour(0, u'red')
         
         elif os.path.isfile(pin):
-            FILE = os.path.split(pin)[1]
-            FILE = FILE.encode(u'utf-8')
-            self.list_data.insert(0, (pin, FILE, pout))
-            self.file_list.InsertStringItem(0, FILE)
-            self.file_list.SetStringItem(0, 1, pout)
-            if os.access(pin, os.X_OK):
-                self.file_list.SetItemTextColour(0, u'red')
+            filename = os.path.basename(pin)
+            source_dir = os.path.dirname(pin)
+            
+            self.file_list.AddFile(filename, source_dir, pout)
     
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
-        
-        if main_window.cust_dias.IsChecked() == True:
-            dia = OpenDir(self)
-            if dia.DisplayModal() == True:
-                self.input_target.SetValue(dia.GetPath())
-        
-        else:
-            dia = wx.DirDialog(self, GT(u'Choose Target Directory'), os.getcwd(), wx.DD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                self.input_target.SetValue(dia.GetPath())
+        dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
+        if ShowDialog(dia):
+            self.input_target.SetValue(dia.GetPath())
+    
+    
+    ## TODO: Doxygen
+    def OnClearFileList(self, event=None):
+        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
+        if confirm.ShowModal() == wx.ID_YES:
+            self.file_list.DeleteAllItems()
+    
+    
+    ## TODO: Doxygen
+    def OnRefreshFileList(self, event=None):
+        self.file_list.RefreshFileList()
     
     
     ## TODO: Doxygen
@@ -364,6 +309,22 @@ class Panel(wx.ScrolledWindow):
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(path)
+    
+    
+    ## TODO: Doxygen
+    def OnRemoveSelected(self, event=None):
+        try:
+            modifier = event.GetModifiers()
+            keycode = event.GetKeyCode()
+        
+        except AttributeError:
+            keycode = event.GetEventObject().GetId()
+        
+        if keycode == wx.WXK_DELETE:
+            self.file_list.RemoveSelected()
+        
+        elif keycode == 65 and modifier == wx.MOD_CONTROL:
+            self.file_list.SelectAll()
     
     
     ## TODO: Doxygen
@@ -382,21 +343,16 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetAllFields(self):
-        self.radio_custom.SetValue(True)
-        self.SetDestination(None)
-        self.input_target.SetValue(u'/usr/bin')
-        self.file_list.DeleteAllItems()
-        self.list_data = []
+    def RemoveSelected(self, event=None):
+        self.file_list.RemoveSelected()
     
     
     ## TODO: Doxygen
-    def SelectAll(self):
-        total_items = self.file_list.GetItemCount()
-        count = -1
-        while count < total_items:
-            count += 1
-            self.file_list.Select(count)
+    def ResetAllFields(self):
+        self.radio_custom.SetValue(True)
+        self.SetDestination(None)
+        self.input_target.SetValue(self.input_target.default)
+        self.file_list.DeleteAllItems()
     
     
     ## TODO: Doxygen
@@ -414,7 +370,6 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def SetFieldData(self, data):
         # Clear files list
-        self.list_data = []
         self.file_list.DeleteAllItems()
         files_data = data.split(u'\n')
         if int(files_data[0]):
@@ -426,25 +381,24 @@ class Panel(wx.ScrolledWindow):
             
             while files_total > 1:
                 files_total -= 1
-                src = (files_data[files_total].split(u' -> ')[0], False)
+                executable = False
                 
-                # False changes to true if src file is executable
-                if src[0][-1] == u'*':
-                    src = (src[0][:-1], True) # Set executable flag and remove "*"
-                FILE = files_data[files_total].split(u' -> ')[1]
-                dest = files_data[files_total].split(u' -> ')[2]
+                absolute_filename = files_data[files_total].split(u' -> ')[0]
+                
+                if absolute_filename[-1] == u'*':
+                    # Set executable flag and remove "*"
+                    executable = True
+                    absolute_filename = absolute_filename[:-1]
+                
+                filename = os.path.basename(absolute_filename)
+                source_dir = os.path.dirname(absolute_filename)
+                target_dir = files_data[files_total].split(u' -> ')[2]
+                
+                self.file_list.AddFile(filename, source_dir, target_dir, executable)
                 
                 # Check if files still exist
-                if os.path.exists(src[0]):
-                    self.file_list.InsertStringItem(0, FILE)
-                    self.file_list.SetStringItem(0, 1, dest)
-                    self.list_data.insert(0, (src[0], FILE, dest))
-                    # Check if file is executable
-                    if src[1]:
-                        self.file_list.SetItemTextColour(0, u'red') # Set text color to red
-                
-                else:
-                    missing_files.append(src[0])
+                if not os.path.exists(absolute_filename):
+                    missing_files.append(absolute_filename)
             
             # If files are missing show a message
             if len(missing_files):
