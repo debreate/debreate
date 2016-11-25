@@ -11,11 +11,8 @@ from dbr.buttons    import ButtonPipe
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
 from dbr.listinput  import ListCtrlPanel
+from globals.ident  import ID_APPEND
 from globals.ident  import ID_DEPENDS
-
-
-ID_Append = wx.NewId()
-ID_Delete = wx.NewId()
 
 
 ## TODO: Doxygen
@@ -36,79 +33,75 @@ class Panel(wx.ScrolledWindow):
         break_tip = GT(u'Package conflicts and will be de-configured')
         
         
-        # Input for dependencies
-        self.pack_text = wx.StaticText(self, -1, GT(u'Dependency/Conflict Package Name'))
-        self.dep_name = wx.TextCtrl(self, -1, size=(300,25))
+        txt_version = wx.StaticText(self, label=GT(u'Version'))
+        txt_pack = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'))
+        
+        self.input_pack = wx.TextCtrl(self, size=(300,25))
         
         tt_pack = GT(u'Name of dependency/conflicting package')
-        self.pack_text.SetToolTipString(tt_pack)
-        self.dep_name.SetToolTipString(tt_pack)
+        txt_pack.SetToolTipString(tt_pack)
+        self.input_pack.SetToolTipString(tt_pack)
         
-        self.oper_options = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.ver_text = wx.StaticText(self, -1, GT(u'Version'))
-        self.dep_oper = wx.Choice(self, -1, choices=self.oper_options)
-        self.dep_oper.SetSelection(0)
-        self.dep_ver = wx.TextCtrl(self, -1)
+        opts_oper = (u'>=', u'<=', u'=', u'>>', u'<<')
+        self.select_oper = wx.Choice(self, choices=opts_oper)
+        self.select_oper.SetSelection(0)
+        self.input_version = wx.TextCtrl(self)
         
         tt_oper = GT(u'Operator')
-        self.dep_oper.SetToolTipString(tt_oper)
+        self.select_oper.SetToolTipString(tt_oper)
         
         tt_ver = GT(u'Version corresponing to package name and operator')
-        self.ver_text.SetToolTipString(tt_ver)
-        self.dep_ver.SetToolTipString(tt_ver)
+        txt_version.SetToolTipString(tt_ver)
+        self.input_version.SetToolTipString(tt_ver)
         
         depH1 = wx.FlexGridSizer(2, 3, hgap=5)
         depH1.AddGrowableCol(2)
-        depH1.Add(self.pack_text, 0, wx.LEFT, 2)
+        depH1.Add(txt_pack, 0, wx.LEFT, 2)
         depH1.AddSpacer(0)
-        depH1.Add(self.ver_text, 1, wx.EXPAND|wx.LEFT, 2)
-        depH1.Add(self.dep_name)
-        depH1.Add(self.dep_oper)
-        depH1.Add(self.dep_ver, 1, wx.EXPAND)
+        depH1.Add(txt_version, 1, wx.EXPAND|wx.LEFT, 2)
+        depH1.Add(self.input_pack)
+        depH1.Add(self.select_oper)
+        depH1.Add(self.input_version, 1, wx.EXPAND)
         
-        self.dep_name.SetSize((100,50))
-        
-        # Add KEY_DOWN events to text areas
-        wx.EVT_KEY_DOWN(self.dep_name, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.dep_ver, self.SetDepends)
+        self.input_pack.SetSize((100,50))
         
         # --- DEPENDS
-        self.dep_chk = wx.RadioButton(self, -1, GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        self.dep_chk.SetToolTipString(dep_tip)
+        self.rb_dep = wx.RadioButton(self, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
+        self.rb_dep.SetToolTipString(dep_tip)
         
         # --- PRE-DEPENDS
-        self.pre_chk = wx.RadioButton(self, -1, GT(u'Pre-Depends'), name=u'Pre-Depends')
-        self.pre_chk.SetToolTipString(pre_tip)
+        self.rb_pre = wx.RadioButton(self, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
+        self.rb_pre.SetToolTipString(pre_tip)
         
         # --- RECOMMENDS
-        self.rec_chk = wx.RadioButton(self, -1, GT(u'Recommends'), name=u'Recommends')
-        self.rec_chk.SetToolTipString(rec_tip)
+        self.rb_rec = wx.RadioButton(self, label=GT(u'Recommends'), name=u'Recommends')
+        self.rb_rec.SetToolTipString(rec_tip)
         
         # --- SUGGESTS
-        self.sug_chk = wx.RadioButton(self, -1, GT(u'Suggests'), name=u'Suggests')
-        self.sug_chk.SetToolTipString(sug_tip)
+        self.rb_sug = wx.RadioButton(self, label=GT(u'Suggests'), name=u'Suggests')
+        self.rb_sug.SetToolTipString(sug_tip)
         
         # --- ENHANCES
-        self.enh_chk = wx.RadioButton(self, -1, GT(u'Enhances'), name=u'Enhances')
-        self.enh_chk.SetToolTipString(enh_tip)
+        self.rb_enh = wx.RadioButton(self, label=GT(u'Enhances'), name=u'Enhances')
+        self.rb_enh.SetToolTipString(enh_tip)
         
         # --- CONFLICTS
-        self.con_chk = wx.RadioButton(self, -1, GT(u'Conflicts'), name=u'Conflicts')
-        self.con_chk.SetToolTipString(con_tip)
+        self.rb_con = wx.RadioButton(self, label=GT(u'Conflicts'), name=u'Conflicts')
+        self.rb_con.SetToolTipString(con_tip)
         
         # --- REPLACES
-        self.rep_chk = wx.RadioButton(self, -1, GT(u'Replaces'), name=u'Replaces')
-        self.rep_chk.SetToolTipString(rep_tip)
+        self.rb_rep = wx.RadioButton(self, label=GT(u'Replaces'), name=u'Replaces')
+        self.rb_rep.SetToolTipString(rep_tip)
         
         # --- BREAKS
-        self.break_chk = wx.RadioButton(self, -1, GT(u'Breaks'), name=u'Breaks')
-        self.break_chk.SetToolTipString(break_tip)
+        self.rb_break = wx.RadioButton(self, label=GT(u'Breaks'), name=u'Breaks')
+        self.rb_break.SetToolTipString(break_tip)
         
         
         # Buttons to add and remove dependencies from the list
         self.depadd = ButtonAdd(self)
-        self.depapp = ButtonPipe(self, ID_Append)
-        self.deprem = ButtonDel(self, ID_Delete) # Change the id from wx.WXK_DELETE as workaround
+        self.depapp = ButtonPipe(self)
+        self.deprem = ButtonDel(self, wx.ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
         self.depclr = ButtonClear(self)
         
         self.depadd.SetToolTipString(GT(u'Add to package list'))
@@ -116,74 +109,70 @@ class Panel(wx.ScrolledWindow):
         self.deprem.SetToolTipString(GT(u'Remove selected packages from list'))
         self.depclr.SetToolTipString(GT(u'Clear package list'))
         
-        wx.EVT_BUTTON(self.depadd, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depapp, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.deprem, -1, self.SetDepends)
-        wx.EVT_BUTTON(self.depclr, -1, self.SetDepends)
-        
         # ----- List
         self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT)
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         self.dep_area.SetColumnWidth(0, 100)
         
-        wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
+        self.categories = {	self.rb_dep: u'Depends', self.rb_pre: u'Pre-Depends', self.rb_rec: u'Recommends',
+                            self.rb_sug: u'Suggests', self.rb_enh: u'Enhances', self.rb_con: u'Conflicts',
+                            self.rb_rep: u'Replaces', self.rb_break: u'Breaks'}
         
-        # Start some sizing
-        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, -1, GT(u'Categories')), wx.VERTICAL)
+        # *** Layout *** #
+        
+        radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
         rg1 = wx.GridSizer(4, 2, 5, 5)
+        
         rg1.AddMany( [
-        (self.dep_chk, 0),
-        (self.pre_chk, 0),
-        (self.rec_chk, 0),
-        (self.sug_chk, 0),
-        (self.enh_chk, 0),
-        (self.con_chk, 0),
-        (self.rep_chk, 0),
-        (self.break_chk, 0) ])
+        (self.rb_dep, 0),
+        (self.rb_pre, 0),
+        (self.rb_rec, 0),
+        (self.rb_sug, 0),
+        (self.rb_enh, 0),
+        (self.rb_con, 0),
+        (self.rb_rep, 0),
+        (self.rb_break, 0)
+        ] )
         
         radio_box.Add(rg1, 0)
         
-        depH2 = wx.BoxSizer(wx.HORIZONTAL)
-        depH2.Add(radio_box, 0, wx.RIGHT, 5)
-        depH2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
-        depH2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H2.Add(radio_box, 0, wx.RIGHT, 5)
+        layout_H2.Add(self.depadd, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2.Add(self.depapp, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2.Add(self.deprem, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
+        layout_H2.Add(self.depclr, 0, wx.ALIGN_CENTER|wx.LEFT, 5)
         
-        self.border = wx.StaticBox(self, -1)
+        self.border = wx.StaticBox(self)
         border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
         border_box.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         border_box.AddSpacer(5)
-        border_box.Add(depH2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        border_box.Add(layout_H2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         
-        depH3 = wx.BoxSizer(wx.HORIZONTAL)
-        depH3.Add(self.dep_area, 1, wx.EXPAND)
+        layout_H3 = wx.BoxSizer(wx.HORIZONTAL)
+        layout_H3.Add(self.dep_area, 1, wx.EXPAND)
         
-        # ----- Main Sizer
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(10)
-#		page_sizer.Add(self.title, 0, wx.ALIGN_CENTER)
-#		page_sizer.Add(wx.StaticLine(self, -1), 0, wx.EXPAND)
-#		page_sizer.AddSpacer(10)
-#		page_sizer.Add(depH1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-#		page_sizer.AddSpacer(5)
-#		page_sizer.Add(depH2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        page_sizer.Add(border_box, 0, wx.LEFT, 5)
-        page_sizer.Add(depH3, 1, wx.EXPAND|wx.ALL, 5)
+        layout_main = wx.BoxSizer(wx.VERTICAL)
+        layout_main.AddSpacer(10)
+        layout_main.Add(border_box, 0, wx.LEFT, 5)
+        layout_main.Add(layout_H3, 1, wx.EXPAND|wx.ALL, 5)
         
-        # ----- Layout
         self.SetAutoLayout(True)
-        self.SetSizer(page_sizer)
+        self.SetSizer(layout_main)
         self.Layout()
         
-        # ----- List not needed anymore
-        self.setlabels = {	self.border: u'Border', self.pack_text: u'Pack', self.ver_text: u'Ver',
-                            self.depadd: u'Add', self.depapp: u'App', self.deprem: u'Rem'}
+        # *** Events *** #
         
-        self.categories = {	self.dep_chk: u'Depends', self.pre_chk: u'Pre-Depends', self.rec_chk: u'Recommends',
-                            self.sug_chk: u'Suggests', self.enh_chk: u'Enhances', self.con_chk: u'Conflicts',
-                            self.rep_chk: u'Replaces', self.break_chk: u'Breaks'}
+        wx.EVT_KEY_DOWN(self.input_pack, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
+        
+        self.depadd.Bind(wx.EVT_BUTTON, self.SetDepends)
+        self.depapp.Bind(wx.EVT_BUTTON, self.SetDepends)
+        self.deprem.Bind(wx.EVT_BUTTON, self.SetDepends)
+        self.depclr.Bind(wx.EVT_BUTTON, self.SetDepends)
+        
+        wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
     
     
     ## Add a category & dependency to end of list
@@ -198,29 +187,29 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GetDefaultCategory(self):
-        return self.dep_chk.GetName()
+        return self.rb_dep.GetName()
     
     
     ## TODO: Doxygen
     def ResetAllFields(self):
-        self.dep_chk.SetValue(True)
-        self.dep_name.Clear()
-        self.dep_oper.SetSelection(0)
-        self.dep_ver.Clear()
+        self.rb_dep.SetValue(True)
+        self.input_pack.Clear()
+        self.select_oper.SetSelection(0)
+        self.input_version.Clear()
         self.dep_area.DeleteAllItems()
     
     
     ## TODO: Doxygen
-    def SetDepends(self, event):
+    def SetDepends(self, event=None):
         try:
             key_id = event.GetKeyCode()
         
         except AttributeError:
             key_id = event.GetEventObject().GetId()
         
-        addname = self.dep_name.GetValue()
-        oper = self.oper_options[self.dep_oper.GetCurrentSelection()]
-        ver = self.dep_ver.GetValue()
+        addname = self.input_pack.GetValue()
+        oper = self.select_oper.GetStringSelection()
+        ver = self.input_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
             
         if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
@@ -239,7 +228,7 @@ class Panel(wx.ScrolledWindow):
             else:
                 self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
-        elif key_id == ID_Append:
+        elif key_id == ID_APPEND:
             selected_count = self.dep_area.GetSelectedItemCount()
             if not TextIsEmpty(addname) and self.dep_area.GetItemCount() and selected_count:
                 listrow = None
@@ -259,7 +248,7 @@ class Panel(wx.ScrolledWindow):
                     else:
                         self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
-        elif key_id == ID_Delete:
+        elif key_id == wx.ID_DELETE:
             self.dep_area.RemoveSelected()
         
         elif key_id == wx.ID_CLEAR:
@@ -269,7 +258,8 @@ class Panel(wx.ScrolledWindow):
                 if confirm.ShowModal() == wx.ID_YES:
                     self.dep_area.DeleteAllItems()
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
