@@ -327,6 +327,12 @@ class FileList(ListCtrlPanel, TextEditMixin):
     
     
     ## TODO: Doxygen
+    def DeleteAllItems(self):
+        ListCtrlPanel.DeleteAllItems(self)
+        self.sources_list = []
+    
+    
+    ## TODO: Doxygen
     #  
     #  \param i_index
     #        \b \e int : The list row
@@ -378,7 +384,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
     
     ## TODO: Doxygen
     def MissingFiles(self):
-        return self.Refresh()
+        return self.RefreshFileList()
     
     
     ## Defines actions to take when left-click or left-double-click event occurs
@@ -438,7 +444,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
     #  TODO: Update executable status
     #  \return
     #        \b \e bool : True if files are missing, False if all okay
-    def Refresh(self):
+    def RefreshFileList(self):
         dirty = False
         for row in range(self.GetItemCount()):
             item_color = self.DEFAULT_BG_COLOR
@@ -475,6 +481,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
                                                                           )))
             
             self.DeleteItem(current_selected)
+            self.sources_list.pop(current_selected)
             selected_count = self.GetSelectedItemCount()
     
     
