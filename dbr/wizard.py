@@ -71,10 +71,10 @@ class Wizard(wx.Panel):
         layout_buttons.Add(self.button_next)
         layout_buttons.AddSpacer(5)
         
-        self.layout_main = wx.BoxSizer(wx.VERTICAL)
-        self.layout_main.Add(layout_buttons, 0, wx.EXPAND)
+        layout_main = wx.BoxSizer(wx.VERTICAL)
+        layout_main.Add(layout_buttons, 0, wx.EXPAND)
         
-        self.SetSizer(self.layout_main)
+        self.SetSizer(layout_main)
         self.SetAutoLayout(True)
         self.Layout()
         
@@ -114,7 +114,7 @@ class Wizard(wx.Panel):
     ## TODO: Doxygen
     def ClearPages(self):
         for page in self.pages:
-            self.layout_main.Remove(page)
+            self.GetSizer().Remove(page)
         
         self.pages = []
         
@@ -227,7 +227,7 @@ class Wizard(wx.Panel):
         for page in pages:
             self.pages.append(page)
             self.pages_ids[page.GetId()] = page.GetName().upper()
-            self.layout_main.Insert(1, page, 1, wx.EXPAND)
+            self.GetSizer().Insert(1, page, 1, wx.EXPAND)
             
             # Show the first page
             if page != pages[0]:
