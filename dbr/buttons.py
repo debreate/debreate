@@ -34,6 +34,14 @@ class ButtonAdd(BitmapButton):
         self.SetToolTip(wx.ToolTip(GT(u'Add')))
 
 
+class ButtonAppend(BitmapButton):
+    def __init__(self, parent, ID=ID_APPEND, name=u'btn append'):
+        BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/pipe32.png'.format(PATH_app)),
+                ID=ID, name=name)
+        
+        self.SetToolTip(wx.ToolTip(GT(u'Append')))
+
+
 class ButtonBrowse(BitmapButton):
     def __init__(self, parent, ID=ID_BROWSE, name=u'btn browse'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse32.png'.format(PATH_app)),
@@ -103,14 +111,6 @@ class ButtonNext(BitmapButton):
                 ID=ID, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Next')))
-
-
-class ButtonPipe(BitmapButton):
-    def __init__(self, parent, ID=ID_APPEND, name=u'btn append'):
-        BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/pipe32.png'.format(PATH_app)),
-                ID=ID, name=name)
-        
-        self.SetToolTip(wx.ToolTip(GT(u'Append')))
 
 
 class ButtonPrev(BitmapButton):
