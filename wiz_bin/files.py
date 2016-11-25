@@ -117,7 +117,7 @@ class Panel(wx.ScrolledWindow):
         
         layout_Vright = wx.BoxSizer(wx.VERTICAL)
         layout_Vright.AddSpacer(10)
-        layout_Vright.Add(wx.StaticText(self, label=GT(u'Target')), 0)
+        layout_Vright.Add(wx.StaticText(self, label=GT(u'Target')), 0, wx.BOTTOM, 5)
         layout_Vright.Add(target_panel, 0)
         layout_Vright.Add(layout_buttons, 0, wx.EXPAND)
         layout_Vright.Add(self.file_list, 5, wx.EXPAND|wx.TOP, 5)
