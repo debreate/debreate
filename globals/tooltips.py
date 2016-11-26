@@ -30,7 +30,7 @@ TT_wiz_prev = wx.ToolTip(GT(u'Previous page'))
 TT_wiz_next = wx.ToolTip(GT(u'Next page'))
 
 TT_control = {
-    u'btn open': GT(u'Open pre-formatted control text'),
+    u'btn browse': GT(u'Open pre-formatted control text'),
     u'btn save': GT(u'Save control information to text'),
     u'btn preview': GT(u'Preview control file'),
     u'package': GT(u'Name of the package/software'),
