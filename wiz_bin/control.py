@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# This panel displays the field input of the control file
+## \package wiz_bin.control
 
 
 import os, wx
@@ -14,6 +14,10 @@ from dbr.custom         import OpenFile
 from dbr.custom         import SaveFile
 from dbr.functions      import FieldEnabled
 from dbr.language       import GT
+from globals.ident      import FID_EMAIL
+from globals.ident      import FID_MAINTAINER
+from globals.ident      import FID_NAME
+from globals.ident      import FID_VERSION
 from globals.ident      import ID_CONTROL
 from globals.tooltips   import SetPageToolTips
 
@@ -34,22 +38,22 @@ class Panel(wx.ScrolledWindow):
         
         pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package')
         pack_txt.req = True
-        self.pack = CharCtrl(self.bg, name=pack_txt.Name)
+        self.pack = CharCtrl(self.bg, FID_NAME, name=pack_txt.Name)
         self.pack.req = True
         
         ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version')
         ver_txt.req = True
-        self.ver = CharCtrl(self.bg, name=ver_txt.Name)
+        self.ver = CharCtrl(self.bg, FID_VERSION, name=ver_txt.Name)
         self.ver.req = True
         
         auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'), name=u'maintainer')
         auth_txt.req = True
-        self.auth = wx.TextCtrl(self.bg, name=auth_txt.Name)
+        self.auth = wx.TextCtrl(self.bg, FID_MAINTAINER, name=auth_txt.Name)
         self.auth.req = True
         
         email_txt = wx.StaticText(self.bg, label=GT(u'Email'), name=u'email')
         email_txt.req = True
-        self.email = wx.TextCtrl(self.bg, name=email_txt.Name)
+        self.email = wx.TextCtrl(self.bg, FID_EMAIL, name=email_txt.Name)
         self.email.req = True
         
         self.arch_opt = (
