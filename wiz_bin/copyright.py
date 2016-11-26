@@ -3,6 +3,7 @@
 
 import wx
 
+from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from globals.ident      import ID_COPYRIGHT
 from globals.tooltips   import SetPageToolTips
@@ -44,6 +45,20 @@ class Panel(wx.ScrolledWindow):
         
         
         SetPageToolTips(self)
+    
+    
+    ## TODO: Doxygen
+    def DestroyLicenseText(self):
+        main_window = wx.GetApp().GetTopWindow()
+        
+        empty = TextIsEmpty(self.cp_display.GetValue())
+        
+        if not empty:
+            if wx.MessageDialog(main_window, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
+                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
+                return 0
+        
+        return 1
     
     
     ## TODO: Doxygen
