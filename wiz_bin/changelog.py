@@ -5,21 +5,27 @@
 
 import commands, os, wx
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonImport
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.pathctrl       import PATH_WARN
-from dbr.pathctrl       import PathCtrl
-from dbr.textinput      import MonospaceTextCtrl
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.wizard         import WizardPage
-from globals.commands   import CMD_gzip
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_CHANGELOG
-from globals.paths      import ConcatPaths
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonImport
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.pathctrl           import PATH_WARN
+from dbr.pathctrl           import PathCtrl
+from dbr.textinput          import MonospaceTextCtrl
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.wizard             import WizardPage
+from globals.commands       import CMD_gzip
+from globals.errorcodes     import dbrerrno
+from globals.ident          import FID_EMAIL
+from globals.ident          import FID_MAINTAINER
+from globals.ident          import FID_NAME
+from globals.ident          import FID_VERSION
+from globals.ident          import ID_CHANGELOG
+from globals.ident          import ID_CONTROL
+from globals.paths          import ConcatPaths
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetFieldValue, ErrorTuple
 
 
 ## TODO: Doxygen
@@ -97,7 +103,7 @@ class Panel(WizardPage):
         self.button_add = ButtonAdd(self)
         self.button_add.SetName(u'add')
         
-        wx.EVT_BUTTON(self.button_import, -1, self.ImportInfo)
+        wx.EVT_BUTTON(self.button_import, -1, self.OnImportFromControl)
         wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -225,17 +231,26 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    #  
-    #  FIXME: Rename to OnImportFromControl
-    def ImportInfo(self, event):
-        main_window = wx.GetApp().GetTopWindow()
+    def OnImportFromControl(self, event):
+        fields = (
+            (self.package, FID_NAME),
+            (self.version, FID_VERSION),
+            (self.maintainer, FID_MAINTAINER),
+            (self.email, FID_EMAIL),
+            )
         
-        # Import package name and version from the control page
-        # FIXME: Should use a safer method
-        self.package.SetValue(main_window.page_control.pack.GetValue())
-        self.version.SetValue(main_window.page_control.ver.GetValue())
-        self.maintainer.SetValue(main_window.page_control.auth.GetValue())
-        self.email.SetValue(main_window.page_control.email.GetValue())
+        for F, FID in fields:
+            field_value = GetFieldValue(ID_CONTROL, FID)
+            
+            if isinstance(field_value, ErrorTuple):
+                err_msg1 = GT(u'Got error when attempting to retrieve field value')
+                err_msg2 = u'\tError code: {}\n\tError message: {}'.format(field_value.GetCode(), field_value.GetString())
+                Logger.Error(__name__, u'{}:\n{}'.format(err_msg1, err_msg2))
+                
+                continue
+            
+            if not TextIsEmpty(field_value):
+                F.SetValue(field_value)
     
     
     ## TODO: Doxygen
