@@ -30,21 +30,24 @@ TT_wiz_prev = wx.ToolTip(GT(u'Previous page'))
 TT_wiz_next = wx.ToolTip(GT(u'Next page'))
 
 TT_control = {
-    u'open': GT(u'Open pre-formatted control text'),
-    u'save': GT(u'Save control information to text'),
-    u'preview': GT(u'Preview control file'),
+    u'btn open': GT(u'Open pre-formatted control text'),
+    u'btn save': GT(u'Save control information to text'),
+    u'btn preview': GT(u'Preview control file'),
     u'package': GT(u'Name of the package/software'),
     u'version': GT(u'Package/Software release version'),
     u'maintainer': GT(u'Package/Software maintainer\'s full name'),
     u'email': GT(u'Package/Software maintainer\'s email address'),
-    u'arch': (GT(u'Platform supported by this package/software'), GT(u'all=platform independent'),),
+    u'arch': (GT(u'Platform on which package/software is meant to run'), GT(u'all=platform independent'),),
     u'section': GT(u'Section under which package managers will list this package'),
     u'priority': GT(u'Urgency of this package update'),
-    u'synopsis': GT(u'Package synopsys'),
-    u'description': GT(u'More detailed description'),
+    u'synopsis': GT(u'One line descriptions/synopsys'),
+    u'description': (
+        GT(u'More detailed description'), u'',
+        GT(u'Multiple lines can be used here, but lintian will complain if they are too long')
+        ),
     u'source': GT(u'Name of upstream source package'),
-    u'homepage': GT(u'Upstream source homepage'),
-    u'essential': GT(u'Whether this package is essential to the system'),
+    u'homepage': GT(u'Upstream source homepage URL'),
+    u'essential': GT(u'Whether this package is essential for system\'s stability'),
 }
 
 TT_depends = {
