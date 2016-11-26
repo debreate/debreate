@@ -8,3 +8,4 @@ Known Bugs:
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
 - Log window has some issues with wx.Yield
 - Appending to multiple dependencies fails (0.8)
+- Cannot open control (and possible launcher & other) files without  extension using GetFileDialog functions
