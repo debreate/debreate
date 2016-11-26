@@ -55,3 +55,10 @@ ID_CHANGELOG = NewPageId(GT(u'Changelog'))
 ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
 ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
+
+# Field/Control IDs
+FID_EMAIL = wx.NewId()
+FID_MAINTAINER = wx.NewId()
+# FIXME: Rename to FID_PACKAGE???
+FID_NAME = wx.NewId()
+FID_VERSION = wx.NewId()
