@@ -2,6 +2,9 @@
 
 ## \package wiz_bin.scripts
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
@@ -10,7 +13,6 @@ from dbr.buttons        import ButtonImport
 from dbr.buttons        import ButtonQuestion64
 from dbr.buttons        import ButtonRemove
 from dbr.language       import GT
-from dbr.listinput      import ListCtrlPanel
 from dbr.markdown       import MarkdownDialog
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl
@@ -68,120 +70,128 @@ class Panel(wx.ScrolledWindow):
         self.te_postrm = wx.TextCtrl(self, ID_RM_POST, name=u'script body',
                 style=wx.TE_MULTILINE)
         
-        self.script_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
+        self.grp_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
                             }
-        self.script_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
+        
+        self.grp_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
                             self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
         
-        for rb in self.script_te:
-            wx.EVT_RADIOBUTTON(rb, wx.ID_ANY, self.ScriptSelect)
-            self.script_te[rb].Hide()
+        for rb in self.grp_te:
+            self.grp_te[rb].Hide()
         
-        for rb in self.script_chk:
-            self.script_chk[rb].Hide()
-        
-        # Organizing radio buttons
-        srb_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        srb_sizer.AddMany( [
-            (self.chk_preinst),(self.chk_postinst),
-            (self.chk_prerm),(self.chk_postrm)
-            ] )
-        srb_sizer.AddStretchSpacer(1)
-        srb_sizer.Add(self.rb_preinst, 0)
-        srb_sizer.Add(self.rb_postinst, 0)
-        srb_sizer.Add(self.rb_prerm, 0)
-        srb_sizer.Add(self.rb_postrm, 0)
-        
-        # Sizer for left half of scripts panel
-        layout_left = wx.BoxSizer(wx.VERTICAL)
-        layout_left.Add(srb_sizer, 0, wx.EXPAND|wx.BOTTOM, 5)
-        layout_left.Add(self.te_preinst, 1, wx.EXPAND)
-        layout_left.Add(self.te_postinst, 1, wx.EXPAND)
-        layout_left.Add(self.te_prerm, 1,wx.EXPAND)
-        layout_left.Add(self.te_postrm, 1, wx.EXPAND)
+        for rb in self.grp_chk:
+            self.grp_chk[rb].Hide()
         
         # Executable list - generate button will make scripts to link to files in this list
-        self.xlist = []
+        self.lst_executables = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, label=GT(u'Path'), name=u'target')
-        self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
-        self.al_input.SetName(u'target')
-        
-        alpath_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        alpath_sizer.Add(self.al_text, 0, wx.ALIGN_CENTER)
-        alpath_sizer.Add(self.al_input, 1, wx.ALIGN_CENTER)
+        txt_autolink = wx.StaticText(self, label=GT(u'Path'), name=u'target')
+        self.ti_autolink = PathCtrl(self, value=u'/usr/bin', type=PATH_WARN)
+        self.ti_autolink.SetName(u'target')
         
         # Auto-Link executables to be linked
         if wx.MAJOR_VERSION < 3:
-            self.executables = ListCtrlPanel(self, size=(200,200), name=u'al list',
-                    style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
+            # FIXME: List should be multi-select/delete
+            self.executables = wx.ListView(self, size=(200,200), name=u'al list',
+                    style=wx.LC_SINGLE_SEL)
         
         else:
-            self.executables = ListCtrlPanel(self, size=(200,200), name=u'al list')
+            self.executables = wx.ListView(self, size=(200,200), name=u'al list')
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = ButtonImport(self, ID_IMPORT)
-        self.al_import.SetName(u'import')
-        self.al_del = ButtonRemove(self)
-        self.al_del.SetName(u'Remove')
-        self.al_gen = ButtonBuild(self)
-        self.al_gen.SetName(u'Generate')
-        
-        wx.EVT_BUTTON(self.al_import, ID_IMPORT, self.ImportExe)
-        wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
-        wx.EVT_BUTTON(self.al_del, wx.WXK_DELETE, self.ImportExe)
-        
-        albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        albutton_sizer.Add(self.al_import, 1)
-        albutton_sizer.Add(self.al_del, 1)
-        albutton_sizer.Add(self.al_gen, 1)
-        
-        # Nice border for auto-generate scripts area
-        self.autogen_border = wx.StaticBox(self, label=GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
-        autogen_box = wx.StaticBoxSizer(self.autogen_border, wx.VERTICAL)
-        autogen_box.Add(alpath_sizer, 0, wx.EXPAND)
-        autogen_box.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
-        autogen_box.Add(albutton_sizer, 0, wx.EXPAND)
+        btn_al_import = ButtonImport(self, ID_IMPORT)
+        btn_al_remove = ButtonRemove(self)
+        btn_al_generate = ButtonBuild(self)
         
         # *** HELP *** #
-        self.button_help = ButtonQuestion64(self)
-        self.button_help.SetName(u'help')
-        
-        wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
-        
-        # Sizer for right half of scripts panel
-        layout_right = wx.BoxSizer(wx.VERTICAL)
-        layout_right.AddSpacer(17)
-        layout_right.Add(autogen_box, 0)
-        layout_right.Add(self.button_help, 0, wx.ALIGN_CENTER)
-        
-        
-        # ----- Layout
-        layout_main = wx.BoxSizer(wx.HORIZONTAL)
-        layout_main.Add(layout_left, 1, wx.EXPAND|wx.ALL, 5)
-        layout_main.Add(layout_right, 0, wx.ALL, 5)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(layout_main)
-        self.Layout()
+        btn_help = ButtonQuestion64(self)
         
         # Initialize script display
         self.ScriptSelect(None)
         
-        
         SetPageToolTips(self)
+        
+        # *** Layout *** #
+        
+        # Organizing radio buttons
+        lyt_sel_script = wx.BoxSizer(wx.HORIZONTAL)
+        
+        lyt_sel_script.AddMany((
+            (self.chk_preinst),(self.chk_postinst),
+            (self.chk_prerm),(self.chk_postrm)
+            ))
+        lyt_sel_script.AddStretchSpacer(1)
+        lyt_sel_script.Add(self.rb_preinst, 0)
+        lyt_sel_script.Add(self.rb_postinst, 0)
+        lyt_sel_script.Add(self.rb_prerm, 0)
+        lyt_sel_script.Add(self.rb_postrm, 0)
+        
+        # Sizer for left half of scripts panel
+        lyt_left = wx.BoxSizer(wx.VERTICAL)
+        
+        lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
+        lyt_left.Add(self.te_preinst, 1, wx.EXPAND)
+        lyt_left.Add(self.te_postinst, 1, wx.EXPAND)
+        lyt_left.Add(self.te_prerm, 1,wx.EXPAND)
+        lyt_left.Add(self.te_postrm, 1, wx.EXPAND)
+        
+        # Auto-Link/Right side
+        lyt_ti_autolink = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_ti_autolink.Add(txt_autolink, 0, wx.ALIGN_CENTER)
+        lyt_ti_autolink.Add(self.ti_autolink, 1, wx.ALIGN_CENTER)
+        
+        lyt_btn_autolink = wx.BoxSizer(wx.HORIZONTAL)
+        
+        lyt_btn_autolink.Add(btn_al_import, 1)
+        lyt_btn_autolink.Add(btn_al_remove, 1)
+        lyt_btn_autolink.Add(btn_al_generate, 1)
+        
+        # Nice border for auto-generate scripts area
+        box_autogen = wx.StaticBox(self, label=GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
+        lyt_autogen = wx.StaticBoxSizer(box_autogen, wx.VERTICAL)
+        
+        lyt_autogen.Add(lyt_ti_autolink, 0, wx.EXPAND)
+        lyt_autogen.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
+        lyt_autogen.Add(lyt_btn_autolink, 0, wx.EXPAND)
+        
+        lyt_right = wx.BoxSizer(wx.VERTICAL)
+        
+        lyt_right.AddSpacer(17)
+        lyt_right.Add(lyt_autogen, 0)
+        lyt_right.Add(btn_help, 0, wx.ALIGN_CENTER)
+        
+        lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        
+        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main.Add(lyt_right, 0, wx.ALL, 5)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
+        
+        # *** Event handlers *** #
+        
+        for rb in self.grp_te:
+            rb.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
+        
+        wx.EVT_BUTTON(btn_al_import, ID_IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
+        wx.EVT_BUTTON(btn_al_remove, wx.WXK_DELETE, self.ImportExe)
+        wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
     
     
     ## TODO: Doxygen
     def ChangeBG(self, exists):
-        if self.al_input.GetValue() == u'':
-            self.al_input.SetValue(u'/')
+        if self.ti_autolink.GetValue() == u'':
+            self.ti_autolink.SetValue(u'/')
+        
         elif exists == False:
-            self.al_input.SetBackgroundColour((255, 0, 0, 255))
+            self.ti_autolink.SetBackgroundColour((255, 0, 0, 255))
+        
         else:
-            self.al_input.SetBackgroundColour((255, 255, 255, 255))
+            self.ti_autolink.SetBackgroundColour((255, 255, 255, 255))
     
     
     ## TODO: Doxygen
@@ -212,7 +222,7 @@ class Panel(wx.ScrolledWindow):
         if ID == ID_IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
-            self.xlist = []
+            self.lst_executables = []
             
             # Get executables from "files" tab
             files = wx.GetApp().GetTopWindow().page_files.dest_area
@@ -233,10 +243,11 @@ class Panel(wx.ScrolledWindow):
                                 
                                 else:
                                     search = True
-                                    slashes = 1  # Set the number of spaces to remove from dest path in case of multiple "/"
+                                    # Set the number of spaces to remove from dest path in case of multiple "/"
+                                    slashes = 1
                                     while search:
                                         # Find the number of slashes/spaces at the end of the filename
-                                        endline = slashes-1
+                                        endline = slashes - 1
                                         if dest.GetText()[-slashes] == u'/' or dest.GetText()[-slashes] == u' ':
                                             slashes += 1
                                         
@@ -248,7 +259,7 @@ class Panel(wx.ScrolledWindow):
                                 dest_path = dest.GetText()
                             
                             # Put "destination/filename" together in executable list
-                            self.xlist.insert(0, u'{}/{}'.format(dest_path, filename))
+                            self.lst_executables.insert(0, u'{}/{}'.format(dest_path, filename))
                             self.executables.InsertStringItem(0, filename)
                             self.executables.SetItemTextColour(0, u'red')
                         
@@ -264,19 +275,17 @@ class Panel(wx.ScrolledWindow):
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
-                self.xlist.remove(self.xlist[exe])
+                self.lst_executables.remove(self.lst_executables[exe])
     
     
-    ## TODO: Doxygen
+    ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
-        # Create the scripts to link the executables
-        
         # Create a list of commands to put into the script
         postinst_list = []
         prerm_list = []
         
-        link_path = self.al_input.GetValue() # Get destination for link from Auto-Link input textctrl
-        total = len(self.xlist)  # Get the amount of links to be created
+        link_path = self.ti_autolink.GetValue() # Get destination for link from Auto-Link input textctrl
+        total = len(self.lst_executables)  # Get the amount of links to be created
         
         if total > 0:
             cont = True
@@ -293,15 +302,15 @@ class Panel(wx.ScrolledWindow):
             if cont:
                 count = 0
                 while count < total:
-                    filename = os.path.split(self.xlist[count])[1]
+                    filename = os.path.split(self.lst_executables[count])[1]
                     if u'.' in filename:
                         linkname = u'.'.join(filename.split(u'.')[:-1])
                         link = u'{}/{}'.format(link_path, linkname)
                     
                     else:
                         link = u'{}/{}'.format(link_path, filename)
-                    #link = u'{}/{}'.format(link_path, os.path.split(self.xlist[count])[1])
-                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.xlist[count], link))
+                    
+                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
                     prerm_list.append(u'rm "{}"'.format(link))
                     count += 1
                 
@@ -326,9 +335,6 @@ class Panel(wx.ScrolledWindow):
         
         al_help.SetText(u'{}\n\n{}'.format(description, instructions))
         
-        # FIXME:
-        #al_help.button_ok = ButtonConfirm(self.al_help)
-        
         al_help.ShowModal()
         al_help.CenterOnParent(wx.BOTH)
         al_help.Close()
@@ -336,30 +342,30 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def ResetAllFields(self):
-        for rb in self.script_chk:
-            self.script_chk[rb].SetValue(False)
+        for rb in self.grp_chk:
+            self.grp_chk[rb].SetValue(False)
         
-        for rb in self.script_te:
-            self.script_te[rb].Clear()
+        for rb in self.grp_te:
+            self.grp_te[rb].Clear()
         
         self.rb_preinst.SetValue(True)
         self.ScriptSelect(None)
         
-        self.al_input.SetValue(u'/usr/bin')
-        self.al_input.SetBackgroundColour((255, 255, 255, 255))
+        self.ti_autolink.SetValue(u'/usr/bin')
+        self.ti_autolink.SetBackgroundColour((255, 255, 255, 255))
         self.executables.DeleteAllItems()
     
     
     ## TODO: Doxygen
     def ScriptSelect(self, event=None):
-        for rb in self.script_te:
+        for rb in self.grp_te:
             if rb.GetValue() == True:
-                self.script_te[rb].Show()
-                self.script_chk[rb].Show()
+                self.grp_te[rb].Show()
+                self.grp_chk[rb].Show()
             
             else:
-                self.script_te[rb].Hide()
-                self.script_chk[rb].Hide()
+                self.grp_te[rb].Hide()
+                self.grp_chk[rb].Hide()
         
         self.Layout()
     

@@ -94,10 +94,10 @@ TT_scripts = {
     u'script body': GT(u'Script text body'),
     u'target': GT(u'Directory where scripts should create symlinks'),
     u'al list': GT(u'Executables from file list to be linked against'),
-    u'import': GT(u'Import files marked as executable from Files page'),
-    u'remove': GT(u'Remove selected executables from list'),
-    u'generate': GT(u'Generate scripts'),
-    u'help': GT(u'How to use Auto-Link'),
+    u'btn import': GT(u'Import files marked as executable from Files page'),
+    u'btn remove': GT(u'Remove selected executables from list'),
+    u'btn build': GT(u'Generate scripts'),
+    u'btn help': GT(u'How to use Auto-Link'),
 }
 
 TT_changelog = {
