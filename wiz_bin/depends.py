@@ -86,13 +86,11 @@ class Panel(wx.ScrolledWindow):
         layout_G1.Add(self.select_oper, (1, 1))
         layout_G1.Add(self.input_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
         
-        #radio_box = wx.StaticBoxSizer(wx.StaticBox(self, label=GT(u'Categories')), wx.VERTICAL)
         layout_categories = wx.GridSizer(4, 2, 5, 5)
         
         for C in self.categories:
             layout_categories.Add(C, 0)
         
-        #radio_box.Add(layout_categories, 0)
         categories_panel.SetSizer(layout_categories)
         categories_panel.SetAutoLayout(True)
         categories_panel.Layout()
@@ -106,12 +104,10 @@ class Panel(wx.ScrolledWindow):
             (self.depclr, 0, wx.ALIGN_CENTER_VERTICAL),
             ) )
         
-        #self.border = wx.StaticBox(self)
-        #border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
         layout_G2 = wx.GridBagSizer(5, 5)
         layout_G2.SetCols(2)
         
-        layout_G2.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1))
+        layout_G2.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), wx.ALIGN_BOTTOM)
         layout_G2.Add(categories_panel, (1, 0), flag=wx.RIGHT, border=5)
         layout_G2.Add(layout_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
@@ -120,7 +116,6 @@ class Panel(wx.ScrolledWindow):
         
         layout_main = wx.BoxSizer(wx.VERTICAL)
         layout_main.AddSpacer(10)
-        #layout_main.Add(border_box, 0, wx.LEFT, 5)
         layout_main.Add(layout_G1, 0, wx.EXPAND|wx.ALL, 5)
         layout_main.Add(layout_G2, 0, wx.ALL, 5)
         layout_main.Add(layout_H1, 1, wx.EXPAND|wx.ALL, 5)
@@ -210,8 +205,10 @@ class Panel(wx.ScrolledWindow):
                     else:
                         listrow = self.dep_area.GetNextSelected(listrow)
                     
-                    colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
-                    prev_text = colitem.GetText()  # Get the text from that item
+                    # Get item from second column
+                    colitem = self.dep_area.GetItem(listrow, 1)
+                    # Get the text from that item
+                    prev_text = colitem.GetText()
                     
                     if not TextIsEmpty(ver):
                         self.dep_area.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
