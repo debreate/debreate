@@ -191,17 +191,16 @@ class Panel(wx.ScrolledWindow):
         layout_recommend = wx.GridBagSizer(5, 5)
         layout_recommend.SetCols(4)
         layout_recommend.AddGrowableCol(1)
-        layout_recommend.AddGrowableCol(3)
-        layout_recommend.AddGrowableRow(4)
+        layout_recommend.AddGrowableRow(3)
         
-        layout_recommend.Add(txt_section, (0, 0), flag=TEXT_FLAG|wx.LEFT|wx.TOP, border=5)
-        layout_recommend.Add(inp_section, (0, 1), flag=wx.TOP, border=5)
-        layout_recommend.Add(txt_priority, (0, 2), flag=TEXT_FLAG|wx.TOP, border=5)
-        layout_recommend.Add(sel_priority, (0, 3), flag=wx.TOP, border=5)
-        layout_recommend.Add(txt_synopsis, (1, 0), (1, 2), wx.ALIGN_BOTTOM|wx.LEFT, 5)
-        layout_recommend.Add(inp_synopsis, (2, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
-        layout_recommend.Add(txt_description, (3, 0), (1, 2), wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        layout_recommend.Add(self.inp_description, (4, 0), (1, 4),
+        layout_recommend.Add(txt_section, (0, 2), flag=TEXT_FLAG|wx.TOP, border=5)
+        layout_recommend.Add(inp_section, (0, 3), flag=wx.RIGHT|wx.TOP, border=5)
+        layout_recommend.Add(txt_synopsis, (0, 0), (1, 2), wx.ALIGN_BOTTOM|wx.LEFT, 5)
+        layout_recommend.Add(inp_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
+        layout_recommend.Add(txt_priority, (1, 2), flag=TEXT_FLAG)
+        layout_recommend.Add(sel_priority, (1, 3), flag=wx.RIGHT, border=5)
+        layout_recommend.Add(txt_description, (2, 0), (1, 2), wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        layout_recommend.Add(self.inp_description, (3, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         panel_recommend.SetSizer(layout_recommend)
