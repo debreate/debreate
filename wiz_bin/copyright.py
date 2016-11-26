@@ -69,14 +69,15 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GenerateTemplate(self, event):
+        if not self.DestroyLicenseText():
+            return
+        
+        self.cp_display.Clear()
+        
         lic_path = u'/usr/share/common-licenses/{}'.format(self.template_lic.GetString(self.template_lic.GetSelection()))
-        text = u''
-        if (not self.cp_display.IsEmpty()):
-            text = u'\n{}'.format(self.cp_display.GetValue())
-            self.cp_display.Clear()
         cpright = u'Copyright: <year> <copyright holder> <email>'
-        text = u'{}\n\n{}\n{}'.format(cpright, lic_path, text)
-        self.cp_display.SetValue(text)
+        
+        self.cp_display.SetValue(u'{}\n\n{}'.format(cpright, lic_path))
     
     
     ## TODO: Doxygen
