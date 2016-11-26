@@ -37,9 +37,9 @@ TT_control = {
     u'version': GT(u'Package/Software release version'),
     u'maintainer': GT(u'Package/Software maintainer\'s full name'),
     u'email': GT(u'Package/Software maintainer\'s email address'),
-    u'arch': (
+    u'architecture': (
         GT(u'Platform on which package/software is meant to run'), u'',
-        GT(u'all=platform independent'),
+        GT(u'all = platform independent'),
         ),
     u'section': GT(u'Section under which package managers will list this package'),
     u'priority': GT(u'Urgency of this package update'),
