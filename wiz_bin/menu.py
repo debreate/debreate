@@ -448,7 +448,7 @@ class Panel(wx.ScrolledWindow):
         preview.SetValue(config)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
+        dia_sizer.Add(preview, 1, wx.EXPAND|wx.ALL, 5)
         
         dia.SetSizer(dia_sizer)
         dia.Layout()
