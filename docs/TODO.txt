@@ -1,7 +1,6 @@
 0.7.12
 - Update gettext locales
 - Test that locales are working
-- Add more tooltips
-- Overwrite full text in copyright/license page
 - Use styled panel in place of static boxes
 - Code cleanup & heavy testing
+- Retrieve list of licenses from standard path
