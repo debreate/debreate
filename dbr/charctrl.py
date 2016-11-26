@@ -2,26 +2,34 @@
 
 # This script is used for field data that cannot use certain characters
 
+## \package dbr.charctrl
 
 import wx
 
-
+## A customized text area that disallows certain character input
+#  
+#  \implements wx.TextCtrl
 class CharCtrl(wx.TextCtrl):
-    def __init__(self, parent, id=wx.ID_ANY, value=wx.EmptyString):
-        wx.TextCtrl.__init__(self, parent, id, value)
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, name=wx.TextCtrlNameStr):
+        wx.TextCtrl.__init__(self, parent, ctrl_id, value, name=name)
         
-        # List of characters that connot be used in the field
-        # 46 = ".", 47 = "/"
+        ## List of characters that cannot be entered
+        #  
+        #  NOTE: 46 = ".", 47 = "/"
         self.invalid_chars = (u' ', u'/', u'_')
         
-        # A list of keys that should not be affected when using the spacebar
+        ## List of keys that should not be affected when using the spacebar
+        #  
+        #  ??? FIXME: 'spacebar' or 'shift' typo?
         self.shift_exceptions = (wx.WXK_LEFT, wx.WXK_RIGHT, wx.WXK_UP, wx.WXK_DOWN)
         
-        # A list of keys that should not be affected when using the Ctrl key
+        ## List of keys that should not be affected when using the Ctrl key
         self.ctrl_exceptions = (u'A', u'A')
         
         wx.EVT_KEY_UP(self, self.OnKeyUp)
     
+    
+    ## Actions to take when key is released
     def OnKeyUp(self, event):
         modifier = event.GetModifiers()
         keycode = event.GetKeyCode()
@@ -35,13 +43,17 @@ class CharCtrl(wx.TextCtrl):
                 total_chars -= 1
                 if value[total_chars] in self.invalid_chars:
                     self.Replace(total_chars, total_chars+1, u'-')
-            self.SetInsertionPoint(insertion)
             
+            self.SetInsertionPoint(insertion)
+        
         
         if modifier == wx.MOD_SHIFT and char in self.invalid_chars:
             ReplaceChar()
+        
         elif char in self.invalid_chars:
             ReplaceChar()
+        
         else:
             pass
+        
         event.Skip()
