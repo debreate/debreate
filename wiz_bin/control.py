@@ -44,23 +44,23 @@ class Panel(wx.ScrolledWindow):
         
         txt_package = wx.StaticText(panel_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        self.inp_package = CharCtrl(panel_require, FID_NAME, name=txt_package.Name)
-        self.inp_package.req = True
+        inp_package = CharCtrl(panel_require, FID_NAME, name=txt_package.Name)
+        inp_package.req = True
         
         txt_version = wx.StaticText(panel_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        self.inp_version = CharCtrl(panel_require, FID_VERSION, name=txt_version.Name)
-        self.inp_version.req = True
+        inp_version = CharCtrl(panel_require, FID_VERSION, name=txt_version.Name)
+        inp_version.req = True
         
         txt_maintainer = wx.StaticText(panel_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        self.inp_maintainer = wx.TextCtrl(panel_require, FID_MAINTAINER, name=txt_maintainer.Name)
-        self.inp_maintainer.req = True
+        inp_maintainer = wx.TextCtrl(panel_require, FID_MAINTAINER, name=txt_maintainer.Name)
+        inp_maintainer.req = True
         
         txt_email = wx.StaticText(panel_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        self.inp_email = wx.TextCtrl(panel_require, FID_EMAIL, name=txt_email.Name)
-        self.inp_email.req = True
+        inp_email = wx.TextCtrl(panel_require, FID_EMAIL, name=txt_email.Name)
+        inp_email.req = True
         
         self.opts_arch = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
@@ -71,15 +71,15 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_arch = wx.StaticText(panel_require, label=GT(u'Architecture'), name=u'architecture')
-        self.sel_arch = wx.Choice(panel_require, choices=self.opts_arch, name=txt_arch.Name)
-        self.sel_arch.default = 0
-        self.sel_arch.SetSelection(self.sel_arch.default)
+        sel_arch = wx.Choice(panel_require, choices=self.opts_arch, name=txt_arch.Name)
+        sel_arch.default = 0
+        sel_arch.SetSelection(sel_arch.default)
         
         # *** Recommended fields *** #
         
         panel_recommend = wx.Panel(self.bg, style=wx.BORDER_THEME)
         
-        self.inp_section_opt = (
+        inp_section_opt = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
             u'doc', u'editors', u'electronics', u'embedded', u'fonts', u'games',
             u'gnome', u'graphics', u'gnu-r', u'gnustep', u'hamradio', u'haskell',
@@ -91,66 +91,66 @@ class Panel(wx.ScrolledWindow):
             u'web', u'x11', u'xfce', u'zope',
             )
         
-        sect_txt = wx.StaticText(panel_recommend, label=GT(u'Section'), name=u'section')
-        self.inp_section = OwnerDrawnComboBox(panel_recommend, choices=self.inp_section_opt, name=sect_txt.Name)
+        txt_section = wx.StaticText(panel_recommend, label=GT(u'Section'), name=u'section')
+        inp_section = OwnerDrawnComboBox(panel_recommend, choices=inp_section_opt, name=txt_section.Name)
         
         self.opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
             )
         
-        prior_txt = wx.StaticText(panel_recommend, label=GT(u'Priority'), name=u'priority')
-        self.sel_priority = wx.Choice(panel_recommend, choices=self.opts_priority, name=prior_txt.Name)
-        self.sel_priority.default = 0
-        self.sel_priority.SetSelection(self.sel_priority.default)
+        txt_priority = wx.StaticText(panel_recommend, label=GT(u'Priority'), name=u'priority')
+        sel_priority = wx.Choice(panel_recommend, choices=self.opts_priority, name=txt_priority.Name)
+        sel_priority.default = 0
+        sel_priority.SetSelection(sel_priority.default)
         
-        syn_txt = wx.StaticText(panel_recommend, label=GT(u'Short Description'), name=u'synopsis')
-        self.inp_synopsis = wx.TextCtrl(panel_recommend, name=syn_txt.Name)
+        txt_synopsis = wx.StaticText(panel_recommend, label=GT(u'Short Description'), name=u'synopsis')
+        inp_synopsis = wx.TextCtrl(panel_recommend, name=txt_synopsis.Name)
         
-        desc_txt = wx.StaticText(panel_recommend, label=GT(u'Long Description'), name=u'description')
-        self.inp_description = wx.TextCtrl(panel_recommend, style=wx.TE_MULTILINE, name=desc_txt.Name)
+        txt_description = wx.StaticText(panel_recommend, label=GT(u'Long Description'), name=u'description')
+        self.inp_description = wx.TextCtrl(panel_recommend, style=wx.TE_MULTILINE, name=txt_description.Name)
         
         # *** Optional fields *** #
         
         panel_option = wx.Panel(self.bg, style=wx.BORDER_THEME)
         
-        src_txt = wx.StaticText(panel_option, label=GT(u'Source'), name=u'source')
-        self.inp_source = wx.TextCtrl(panel_option, name=src_txt.Name)
+        txt_source = wx.StaticText(panel_option, label=GT(u'Source'), name=u'source')
+        inp_source = wx.TextCtrl(panel_option, name=txt_source.Name)
         
-        url_txt = wx.StaticText(panel_option, label=GT(u'Homepage'), name=u'homepage')
-        self.inp_homepage = wx.TextCtrl(panel_option, name=url_txt.Name)
+        txt_homepage = wx.StaticText(panel_option, label=GT(u'Homepage'), name=u'homepage')
+        inp_homepage = wx.TextCtrl(panel_option, name=txt_homepage.Name)
         
         self.opts_essential = (
             u'yes', u'no',
             )
         
-        ess_txt = wx.StaticText(panel_option, label=GT(u'Essential'), name=u'essential')
-        self.sel_essential = wx.Choice(panel_option, choices=self.opts_essential, name=ess_txt.Name)
-        self.sel_essential.default = 1
-        self.sel_essential.SetSelection(self.sel_essential.default)
+        txt_essential = wx.StaticText(panel_option, label=GT(u'Essential'), name=u'essential')
+        sel_essential = wx.Choice(panel_option, choices=self.opts_essential, name=txt_essential.Name)
+        sel_essential.default = 1
+        sel_essential.SetSelection(sel_essential.default)
         
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.text_widgets = {
-            self.inp_package: wx.EmptyString,
-            self.inp_version: wx.EmptyString,
+            inp_package: wx.EmptyString,
+            inp_version: wx.EmptyString,
             }
         
         self.grp_input = (
-            self.inp_package,
-            self.inp_version,
-            self.inp_maintainer,  # Maintainer must be listed before email
-            self.inp_email,
-            self.inp_section,
-            self.inp_source,
-            self.inp_homepage,
-            self.inp_synopsis,
+            inp_package,
+            inp_version,
+            inp_maintainer,  # Maintainer must be listed before email
+            inp_email,
+            inp_section,
+            inp_source,
+            inp_homepage,
+            inp_synopsis,
             self.inp_description,
             )
         
         self.grp_select = (
-            self.sel_arch,
-            self.sel_priority,
-            self.sel_essential,
+            sel_arch,
+            sel_priority,
+            sel_essential,
             )
         
         SetPageToolTips(self)
@@ -172,15 +172,15 @@ class Panel(wx.ScrolledWindow):
         
         layout_require.AddMany((
             (txt_package, 0, TEXT_FLAG|wx.LEFT|wx.TOP, 5),
-            (self.inp_package, 0, wx.EXPAND|wx.TOP, 5),
+            (inp_package, 0, wx.EXPAND|wx.TOP, 5),
             (txt_version, 0, TEXT_FLAG|wx.TOP, 5),
-            (self.inp_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
+            (inp_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
             (txt_maintainer, 0, TEXT_FLAG|wx.LEFT, 5),
-            (self.inp_maintainer, 0, wx.EXPAND),
+            (inp_maintainer, 0, wx.EXPAND),
             (txt_email, 0, TEXT_FLAG),
-            (self.inp_email, 0, wx.EXPAND|wx.RIGHT, 5),
+            (inp_email, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_arch, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
-            (self.sel_arch, 0, wx.BOTTOM, 5),
+            (sel_arch, 0, wx.BOTTOM, 5),
             ))
         
         panel_require.SetSizer(layout_require)
@@ -194,13 +194,13 @@ class Panel(wx.ScrolledWindow):
         layout_recommend.AddGrowableCol(3)
         layout_recommend.AddGrowableRow(4)
         
-        layout_recommend.Add(sect_txt, (0, 0), flag=TEXT_FLAG|wx.LEFT|wx.TOP, border=5)
-        layout_recommend.Add(self.inp_section, (0, 1), flag=wx.TOP, border=5)
-        layout_recommend.Add(prior_txt, (0, 2), flag=TEXT_FLAG|wx.TOP, border=5)
-        layout_recommend.Add(self.sel_priority, (0, 3), flag=wx.TOP, border=5)
-        layout_recommend.Add(syn_txt, (1, 0), (1, 2), wx.ALIGN_BOTTOM|wx.LEFT, 5)
-        layout_recommend.Add(self.inp_synopsis, (2, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
-        layout_recommend.Add(desc_txt, (3, 0), (1, 2), wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        layout_recommend.Add(txt_section, (0, 0), flag=TEXT_FLAG|wx.LEFT|wx.TOP, border=5)
+        layout_recommend.Add(inp_section, (0, 1), flag=wx.TOP, border=5)
+        layout_recommend.Add(txt_priority, (0, 2), flag=TEXT_FLAG|wx.TOP, border=5)
+        layout_recommend.Add(sel_priority, (0, 3), flag=wx.TOP, border=5)
+        layout_recommend.Add(txt_synopsis, (1, 0), (1, 2), wx.ALIGN_BOTTOM|wx.LEFT, 5)
+        layout_recommend.Add(inp_synopsis, (2, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
+        layout_recommend.Add(txt_description, (3, 0), (1, 2), wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         layout_recommend.Add(self.inp_description, (4, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
@@ -218,23 +218,18 @@ class Panel(wx.ScrolledWindow):
         layout_option.AddSpacer(5)
         layout_option.AddSpacer(5)
         layout_option.AddMany((
-            (src_txt, 0, TEXT_FLAG|wx.LEFT, 5),
-            (self.inp_source, 0, wx.EXPAND),
-            (url_txt, 0, TEXT_FLAG),
-            (self.inp_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
-            (ess_txt, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
-            (self.sel_essential, 1, wx.BOTTOM, 5),
+            (txt_source, 0, TEXT_FLAG|wx.LEFT, 5),
+            (inp_source, 0, wx.EXPAND),
+            (txt_homepage, 0, TEXT_FLAG),
+            (inp_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
+            (txt_essential, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
+            (sel_essential, 1, wx.BOTTOM, 5),
             ))
         
         panel_option.SetSizer(layout_option)
         panel_option.SetAutoLayout(True)
         panel_option.Layout()
-        '''
-        border_option = wx.StaticBox(self.bg, label=GT(u'Optional'))
-        bbox_option = wx.StaticBoxSizer(border_option, wx.VERTICAL)
         
-        bbox_option.Add(layout_option, 0, wx.EXPAND)
-        '''
         # Main background panel sizer
         # FIXME: Is background panel (self.bg) necessary
         layout_bg = wx.BoxSizer(wx.VERTICAL)
