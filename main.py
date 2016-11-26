@@ -248,7 +248,6 @@ class MainWindow(wx.Frame):
         self.Wizard = Wizard(self) # Binary
         
         self.page_info = PanelInfo(self.Wizard)
-        self.page_info.SetInfo()
         self.page_control = PanelControl(self.Wizard)
         self.page_depends = PanelDepends(self.Wizard)
         self.page_files = PanelFiles(self.Wizard)
