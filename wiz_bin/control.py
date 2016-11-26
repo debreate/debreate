@@ -388,7 +388,9 @@ class Panel(wx.ScrolledWindow):
             if description:
                 ctrl_list.append(description)
         
-        # FIXME: dpkg requires empty newline at end of control file???
+        # dpkg requires empty newline at end of file
+        ctrl_list.append(u'\n')
+        
         return u'\n'.join(ctrl_list)
     
     
@@ -470,7 +472,7 @@ class Panel(wx.ScrolledWindow):
         main_window = wx.GetApp().GetTopWindow()
         
         # Get data to write to control file
-        control = self.GetCtrlInfo().encode(u'utf-8')
+        control = self.GetCtrlInfo()
         
         cont = False
         
