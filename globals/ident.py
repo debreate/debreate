@@ -14,15 +14,19 @@ import wx
 from dbr.language import GT
 
 
+# *** Button IDs *** #
+ID_PREV = wx.NewId()
+ID_NEXT = wx.NewId()
+
 # *** Custom IDs *** #
-ID_OVERWRITE = wx.NewId()
 ID_APPEND = wx.NewId()
 ID_DEBUG = wx.NewId()
+ID_IMPORT = wx.NewId()
 ID_LOG = wx.NewId()
+ID_OVERWRITE = wx.NewId()
 ID_STAGE = wx.NewId()
 ID_TARGET = wx.NewId()
 ID_THEME = wx.NewId()
-ID_IMPORT = wx.NewId()
 
 # Page IDs
 next_page_id = 1000
@@ -51,6 +55,9 @@ ID_BUILD = NewPageId(GT(u'Build'))
 # ID for custom fields
 ID_CUSTOM = wx.NewId()
 
-# *** Button IDs *** #
-ID_PREV = wx.NewId()
-ID_NEXT = wx.NewId()
+# Field/Control IDs
+FID_EMAIL = wx.NewId()
+FID_MAINTAINER = wx.NewId()
+# FIXME: Rename to FID_PACKAGE???
+FID_NAME = wx.NewId()
+FID_VERSION = wx.NewId()
