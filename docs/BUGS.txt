@@ -1,0 +1,5 @@
+Known Bugs:
+- QuickBuild
+  - Successive building in same instance sessions causes app to freeze
+- Control page preview shows multiple empty lines at end of file
+- Copyright text is not cleared when generated a new template
