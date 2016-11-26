@@ -4,4 +4,4 @@
 - Add more tooltips
 - Overwrite full text in copyright/license page
 - Use styled panel in place of static boxes
-- Add padding in control & launcher/menu previews
+- Add padding in launcher/menu preview
