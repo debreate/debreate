@@ -37,18 +37,18 @@ class Panel(wx.ScrolledWindow):
         
         self.inp_package.SetSize((100,50))
         
-        pan_categories = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_categories = wx.Panel(self, style=wx.BORDER_THEME)
         
         self.default_category = u'Depends'
         
-        rb_dep = wx.RadioButton(pan_categories, label=GT(u'Depends'), name=self.default_category, style=wx.RB_GROUP)
-        rb_pre = wx.RadioButton(pan_categories, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
-        rb_rec = wx.RadioButton(pan_categories, label=GT(u'Recommends'), name=u'Recommends')
-        rb_sug = wx.RadioButton(pan_categories, label=GT(u'Suggests'), name=u'Suggests')
-        rb_enh = wx.RadioButton(pan_categories, label=GT(u'Enhances'), name=u'Enhances')
-        rb_con = wx.RadioButton(pan_categories, label=GT(u'Conflicts'), name=u'Conflicts')
-        rb_rep = wx.RadioButton(pan_categories, label=GT(u'Replaces'), name=u'Replaces')
-        rb_break = wx.RadioButton(pan_categories, label=GT(u'Breaks'), name=u'Breaks')
+        rb_dep = wx.RadioButton(pnl_categories, label=GT(u'Depends'), name=self.default_category, style=wx.RB_GROUP)
+        rb_pre = wx.RadioButton(pnl_categories, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
+        rb_rec = wx.RadioButton(pnl_categories, label=GT(u'Recommends'), name=u'Recommends')
+        rb_sug = wx.RadioButton(pnl_categories, label=GT(u'Suggests'), name=u'Suggests')
+        rb_enh = wx.RadioButton(pnl_categories, label=GT(u'Enhances'), name=u'Enhances')
+        rb_con = wx.RadioButton(pnl_categories, label=GT(u'Conflicts'), name=u'Conflicts')
+        rb_rep = wx.RadioButton(pnl_categories, label=GT(u'Replaces'), name=u'Replaces')
+        rb_break = wx.RadioButton(pnl_categories, label=GT(u'Breaks'), name=u'Breaks')
         
         self.categories = (
             rb_dep, rb_pre, rb_rec,
@@ -91,9 +91,9 @@ class Panel(wx.ScrolledWindow):
         for C in self.categories:
             layt_categories.Add(C, 0)
         
-        pan_categories.SetSizer(layt_categories)
-        pan_categories.SetAutoLayout(True)
-        pan_categories.Layout()
+        pnl_categories.SetSizer(layt_categories)
+        pnl_categories.SetAutoLayout(True)
+        pnl_categories.Layout()
         
         layt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
@@ -108,7 +108,7 @@ class Panel(wx.ScrolledWindow):
         layt_categories.SetCols(2)
         
         layt_categories.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), wx.ALIGN_BOTTOM)
-        layt_categories.Add(pan_categories, (1, 0), flag=wx.RIGHT, border=5)
+        layt_categories.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
         layt_categories.Add(layt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
         layt_list = wx.BoxSizer(wx.HORIZONTAL)
@@ -124,7 +124,7 @@ class Panel(wx.ScrolledWindow):
         self.SetSizer(layt_main)
         self.Layout()
         
-        # *** Events *** #
+        # *** Event handlers *** #
         
         wx.EVT_KEY_DOWN(self.inp_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.inp_version, self.SetDepends)
