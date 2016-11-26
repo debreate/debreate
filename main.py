@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+## \package main
+
 
 import os, shutil, subprocess, webbrowser, wx
 from urllib2 import HTTPError
@@ -62,6 +64,7 @@ ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
 
 
+## TODO: Doxygen
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, GT(u'Debreate - Debian Package Builder'), pos, size)
@@ -223,7 +226,6 @@ class MainWindow(wx.Frame):
         for ID in self.references:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
-        
         self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
@@ -245,39 +247,48 @@ class MainWindow(wx.Frame):
         
         # ***** END MENUBAR ***** #
         
-        self.Wizard = Wizard(self) # Binary
+        self.wizard = Wizard(self) # Binary
         
-        self.page_info = PanelInfo(self.Wizard)
-        self.page_control = PanelControl(self.Wizard)
-        self.page_depends = PanelDepends(self.Wizard)
-        self.page_files = PanelFiles(self.Wizard)
-        self.page_scripts = PanelScripts(self.Wizard)
-        self.page_clog = PanelChangelog(self.Wizard)
-        self.page_cpright = PanelCopyright(self.Wizard)
-        self.page_menu = PanelMenu(self.Wizard)
-        self.page_build = PanelBuild(self.Wizard)
+        self.page_info = PanelInfo(self.wizard)
+        self.page_control = PanelControl(self.wizard)
+        self.page_depends = PanelDepends(self.wizard)
+        self.page_files = PanelFiles(self.wizard)
+        self.page_scripts = PanelScripts(self.wizard)
+        self.page_clog = PanelChangelog(self.wizard)
+        self.page_cpright = PanelCopyright(self.wizard)
+        self.page_menu = PanelMenu(self.wizard)
+        self.page_build = PanelBuild(self.wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
             self.page_clog, self.page_cpright, self.page_menu, self.page_build
             )
         
-        self.bin_pages = (
+        bin_pages = (
             self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
             self.page_clog, self.page_cpright, self.page_menu, self.page_build
             )
         
-        self.Wizard.SetPages(self.bin_pages)
+        self.wizard.SetPages(bin_pages)
         
-        self.pages = {self.p_info: self.page_info, self.p_ctrl: self.page_control, self.p_deps: self.page_depends,
-                self.p_files: self.page_files, self.p_scripts: self.page_scripts, self.p_clog: self.page_clog,
-                self.p_cpright: self.page_cpright, self.p_menu: self.page_menu, self.p_build: self.page_build}
+        self.pages = {
+            self.p_info: self.page_info,
+            self.p_ctrl: self.page_control,
+            self.p_deps: self.page_depends,
+                self.p_files: self.page_files,
+                self.p_scripts: self.page_scripts,
+                self.p_clog: self.page_clog,
+                self.p_cpright: self.page_cpright,
+                self.p_menu: self.page_menu,
+                self.p_build: self.page_build,
+                }
+        
         for p in self.pages:
             wx.EVT_MENU(self, p.GetId(), self.GoToPage)
         
         # ----- Layout
         self.main_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.main_sizer.Add(self.Wizard, 1, wx.EXPAND)
+        self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(self.main_sizer)
@@ -294,57 +305,44 @@ class MainWindow(wx.Frame):
     #  \return
     #        dbr.wizard.Wizard
     def GetWizard(self):
-        return self.Wizard
+        return self.wizard
     
     
-    ### ***** Check for New Version ***** ###
-    def OnCheckUpdate(self, event):
-        if u'-dev' in VERSION_string:
-            wx.MessageDialog(self, GT(u'Update checking not supported in development versions'),
-                    GT(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
-            return
+    ## Changes wizard page
+    #  
+    #  \param event
+    #        \b \e wx.MenuEvent|int : The event or integer to use as page ID
+    def GoToPage(self, event=None):
+        if isinstance(event, int):
+            event_id = event
         
-        wx.SafeYield()
-        current = GetCurrentVersion()
-        Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
-        if type (current) == URLError or type(current) == HTTPError:
-            current = unicode(current)
-            wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-        elif isinstance(current, tuple) and current > VERSION_tuple:
-            current = u'{}.{}.{}'.format(current[0], current[1], current[2])
-            l1 = GT(u'Version {} is available!').format(current)
-            l2 = GT(u'Would you like to go to Debreate\'s website?')
-            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
-            if (update == wx.ID_YES):
-                wx.LaunchDefaultBrowser(APP_homepage)
-        elif isinstance(current, (unicode, str)):
-            err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
-            err_msg = u'{}\n\n{}'.format(err_msg, current)
-            
-            Logger.Error(__name__, err_msg)
-            
-            err = wx.MessageDialog(self, err_msg,
-                    GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
-            err.CenterOnParent()
-            err.ShowModal()
         else:
-            err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
-            err.CenterOnParent()
-            err.ShowModal()
+            event_id = event.GetId()
+        
+        self.wizard.ShowPage(event_id)
     
     
-    ## Writes dialog settings to config
-    def OnEnableCustomDialogs(self, event=None):
-        WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+    ## TODO: Doxygen
+    def IsNewProject(self):
+        title = self.GetTitle()
+        if title == self.default_title:
+            return True
+        
+        else:
+            return False
     
     
-    def OnNewProject(self, event):
-        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
-                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
-        if dia.ShowModal() == wx.ID_YES:
-            self.NewProject()
-            #self.SetMode(None)
+    ## TODO: Doxygen
+    def IsSaved(self):
+        title = self.GetTitle()
+        if title[-1] == u'*':
+            return False
+        
+        else:
+            return True
     
+    
+    ## TODO: Doxygen
     def NewProject(self):
         for page in self.all_pages:
             page.ResetAllFields()
@@ -353,138 +351,9 @@ class MainWindow(wx.Frame):
         # Reset the saved project field so we know that a project file doesn't exists
         self.saved_project = wx.EmptyString
     
-    def OnOpenProject(self, event):
-        cont = False
-        #dbp = u'|*.dbp'
-        projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
-        d = GT(u'Debreate project files')
-        if self.cust_dias.IsChecked():
-            dia = OpenFile(self, GT(u'Open Debreate Project'))
-            dia.SetFilter(u'{}{}'.format(d, projects_filter))
-            if dia.DisplayModal():
-                cont = True
-        else:
-            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
-                    u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        
-        if cont:
-            # Get the path and set the saved project
-            self.saved_project = dia.GetPath()
-            
-            file = open(self.saved_project, u'r')
-            data = file.read()
-            file.close()
-            
-            filename = os.path.split(self.saved_project)[1]
-            
-            self.OpenProject(data, filename)
-    
-    
-    ## Shows or hides tooltips
-    def OnToggleToolTips(self, event=None):
-        enabled = self.opt_tooltips.IsChecked()
-        wx.ToolTip.Enable(enabled)
-        
-        WriteConfig(u'tooltips', enabled)
-    
-    
-    def OpenProject(self, data, filename):
-        lines = data.split(u'\n')
-        app = lines[0].split(u'-')[0].split(u'[')[1]
-        ver = lines[0].split(u'-')[1].split(u']')[0]
-        if app != u'DEBREATE':
-            bad_file = wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
-                    style=wx.OK|wx.ICON_ERROR)
-            bad_file.ShowModal()
-        else: 
-            # Set title to show open project
-            #self.SetTitle(u'Debreate - {}'.format(filename))
-            
-            # *** Get Control Data *** #
-            control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-            depends_data = self.page_control.SetFieldData(control_data)
-            self.page_depends.SetFieldData(depends_data)
-            
-            # *** Get Files Data *** #
-            files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-            self.page_files.SetFieldData(files_data)
-            
-            # *** Get Scripts Data *** #
-            scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-            self.page_scripts.SetFieldData(scripts_data)
-            
-            # *** Get Changelog Data *** #
-            clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-            self.page_clog.SetChangelog(clog_data)
-            
-            # *** Get Copyright Data *** #
-            try:
-                cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
-                self.page_cpright.SetCopyright(cpright_data)
-            except IndexError:
-                pass
-            
-            # *** Get Menu Data *** #
-            menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-            self.page_menu.SetLauncherData(menu_data, enabled=True)
-            
-            # Get Build Data
-            build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
-            self.page_build.SetFieldData(build_data)
-    
-    
-    def OnQuit(self, event):
-        '''Show a dialog to confirm quit and write window settings to config file'''
-        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
-                                   wx.OK|wx.CANCEL|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_OK: # Show a dialog to confirm quit
-            confirm.Destroy()
-            
-            maximized = self.IsMaximized()
-            WriteConfig(u'maximize', maximized)
-            
-            if maximized:
-                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
-                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
-                WriteConfig(u'center', True)
-            
-            else:
-                WriteConfig(u'position', self.GetPositionTuple())
-                WriteConfig(u'size', self.GetSizeTuple())
-                WriteConfig(u'center', False)
-            
-            WriteConfig(u'workingdir', os.getcwd())
-            
-            self.Destroy()
-            
-        else:
-            confirm.Destroy()
-    
-    
-    ## Changes wizard page
-    #  
-    #  \param event
-    #        \b \e wx.MenuEvent|int : The event or integer to use as page ID
-    def GoToPage(self, event):
-        if isinstance(event, int):
-            ID = event
-        
-        else:
-            ID = event.GetId()
-        
-        self.Wizard.ShowPage(ID)
-    
-    # ----- Help Menu
-    def OpenPolicyManual(self, event):
-        id = event.GetId()  # Get the id for the webpage link we are opening
-        webbrowser.open(self.references[id])
-        #os.system(u'xdg-open {}'.format(self.references[id]))  # Look in 'manual' for the id and open the webpage
-    
     
     ## Opens a dialog box with information about the program
-    def OnAbout(self, event):
+    def OnAbout(self, event=None):
         about = AboutDialog(self)
         
         about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
@@ -531,41 +400,143 @@ class MainWindow(wx.Frame):
         about.Destroy()
     
     
-    def OnHelp(self, event):
-        # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
+    ## Checks for new release availability
+    def OnCheckUpdate(self, event=None):
+        if u'-dev' in VERSION_string:
+            wx.MessageDialog(self, GT(u'Update checking not supported in development versions'),
+                    GT(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            return
+        
+        wx.SafeYield()
+        current = GetCurrentVersion()
+        Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
+        if type (current) == URLError or type(current) == HTTPError:
+            current = unicode(current)
+            wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+        
+        elif isinstance(current, tuple) and current > VERSION_tuple:
+            current = u'{}.{}.{}'.format(current[0], current[1], current[2])
+            l1 = GT(u'Version {} is available!').format(current)
+            l2 = GT(u'Would you like to go to Debreate\'s website?')
+            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
+            if (update == wx.ID_YES):
+                wx.LaunchDefaultBrowser(APP_homepage)
+        
+        elif isinstance(current, (unicode, str)):
+            err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
+            err_msg = u'{}\n\n{}'.format(err_msg, current)
+            
+            Logger.Error(__name__, err_msg)
+            
+            err = wx.MessageDialog(self, err_msg,
+                    GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
+            err.CenterOnParent()
+            err.ShowModal()
+        
+        else:
+            err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
+            err.CenterOnParent()
+            err.ShowModal()
+    
+    
+    ## Writes dialog settings to config
+    def OnEnableCustomDialogs(self, event=None):
+        WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+    
+    
+    ## Action to take when 'Help' is selected from the help menu
+    #  
+    #  First tries to open pdf help file. If fails tries
+    #  to open html help file. If fails opens debreate usage
+    #  webpage
+    def OnHelp(self, event=None):
         wx.Yield()
         status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
         if status:
             wx.Yield()
             status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
+        
         if status:
             wx.Yield()
             webbrowser.open(u'http://debreate.sourceforge.net/usage')
     
-    # *** SAVING *** #
     
-    def IsSaved(self):
-        title = self.GetTitle()
-        if title[-1] == u'*':
-            return False
+    ## TODO: Doxygen
+    def OnNewProject(self, event=None):
+        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
+                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
+        if dia.ShowModal() == wx.ID_YES:
+            self.NewProject()
+    
+    
+    ## TODO: Doxygen
+    def OnOpenProject(self, event=None):
+        cont = False
+        projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
+        d = GT(u'Debreate project files')
+        if self.cust_dias.IsChecked():
+            dia = OpenFile(self, GT(u'Open Debreate Project'))
+            dia.SetFilter(u'{}{}'.format(d, projects_filter))
+            if dia.DisplayModal():
+                cont = True
+        
         else:
-            return True
+            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
+                    u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
+            if dia.ShowModal() == wx.ID_OK:
+                cont = True
+        
+        if cont:
+            # Get the path and set the saved project
+            self.saved_project = dia.GetPath()
+            
+            FILE_BUFFER = open(self.saved_project, u'r')
+            data = FILE_BUFFER.read()
+            FILE_BUFFER.close()
+            
+            filename = os.path.split(self.saved_project)[1]
+            
+            self.OpenProject(data, filename)
     
-    def IsNewProject(self):
-        title = self.GetTitle()
-        if title == self.default_title:
-            return True
+    
+    ## TODO: Doxygen
+    def OnQuickBuild(self, event=None):
+        QB = QuickBuild(self)
+        QB.ShowModal()
+        QB.Destroy()
+    
+    
+    ## Shows a dialog to confirm quit and write window settings to config file
+    def OnQuit(self, event=None):
+        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
+                                   wx.OK|wx.CANCEL|wx.ICON_QUESTION)
+        if confirm.ShowModal() == wx.ID_OK:
+            confirm.Destroy()
+            
+            maximized = self.IsMaximized()
+            WriteConfig(u'maximize', maximized)
+            
+            if maximized:
+                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
+                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+                WriteConfig(u'center', True)
+            
+            else:
+                WriteConfig(u'position', self.GetPositionTuple())
+                WriteConfig(u'size', self.GetSizeTuple())
+                WriteConfig(u'center', False)
+            
+            WriteConfig(u'workingdir', os.getcwd())
+            
+            self.Destroy()
+        
         else:
-            return False
+            confirm.Destroy()
     
-    def SetSavedStatus(self, status):
-        if status: # If status is changing to unsaved this is True
-            title = self.GetTitle()
-            if self.IsSaved() and title != self.default_title:
-                self.SetTitle(u'{}*'.format(title))
     
-    def OnSaveProject(self, event):
-        id = event.GetId()
+    ## TODO: Doxygen
+    def OnSaveProject(self, event=None):
+        event_id = event.GetId()
         
         def SaveIt(path):
                 # Gather data from different pages
@@ -582,12 +553,14 @@ class MainWindow(wx.Frame):
                     overwrite = True
                 
                 savefile = open(path, u'w')
+                
                 # This try statement can be removed when unicode support is enabled
                 try:
                     savefile.write(u'[DEBREATE-{}]\n{}'.format(VERSION_string, u'\n'.join(data)))
                     savefile.close()
                     if overwrite:
                         os.remove(backup)
+                
                 except UnicodeEncodeError:
                     serr = GT(u'Save failed')
                     uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
@@ -598,9 +571,9 @@ class MainWindow(wx.Frame):
                         os.remove(path)
                         # Restore project backup
                         shutil.move(backup, path)
-                # Change the titlebar to show name of project file
-                #self.SetTitle(u'Debreate - {}'.format(os.path.split(path)[1]))
         
+        
+        ## TODO: Doxygen
         def OnSaveAs():
             dbp = u'|*.dbp'
             d = GT(u'Debreate project files')
@@ -613,7 +586,9 @@ class MainWindow(wx.Frame):
                     filename = dia.GetFilename()
                     if filename.split(u'.')[-1] == u'dbp':
                         filename = u'.'.join(filename.split(u'.')[:-1])
+                    
                     self.saved_project = u'{}/{}.dbp'.format(dia.GetPath(), filename)
+            
             else:
                 dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
                                         wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
@@ -622,23 +597,87 @@ class MainWindow(wx.Frame):
                     filename = dia.GetFilename()
                     if filename.split(u'.')[-1] == u'dbp':
                         filename = u'.'.join(filename.split(u'.')[:-1])
+                    
                     self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
             
             if cont:
                 SaveIt(self.saved_project)
         
-        if id == wx.ID_SAVE:
+        if event_id == wx.ID_SAVE:
             # Define what to do if save is pressed
             # If project already exists, don't show dialog
             if not self.IsSaved() or self.saved_project == wx.EmptyString or not os.path.isfile(self.saved_project):
                 OnSaveAs()
+            
             else:
                 SaveIt(self.saved_project)
+        
         else:
             # If save as is press, show the save dialog
             OnSaveAs()
     
-    def OnQuickBuild(self, event):
-        QB = QuickBuild(self)
-        QB.ShowModal()
-        QB.Destroy()
+    
+    ## Shows or hides tooltips
+    def OnToggleToolTips(self, event=None):
+        enabled = self.opt_tooltips.IsChecked()
+        wx.ToolTip.Enable(enabled)
+        
+        WriteConfig(u'tooltips', enabled)
+    
+    
+    ## Opens web links from the help menu
+    def OpenPolicyManual(self, event=None):
+        event_id = event.GetId()  # Get the id for the webpage link we are opening
+        webbrowser.open(self.references[event_id])
+    
+    
+    ## TODO: Doxygen
+    def OpenProject(self, data, filename):
+        lines = data.split(u'\n')
+        app = lines[0].split(u'-')[0].split(u'[')[1]
+        if app != u'DEBREATE':
+            bad_file = wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
+                    style=wx.OK|wx.ICON_ERROR)
+            bad_file.ShowModal()
+        
+        else: 
+            # *** Get Control Data *** #
+            control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
+            depends_data = self.page_control.SetFieldData(control_data)
+            self.page_depends.SetFieldData(depends_data)
+            
+            # *** Get Files Data *** #
+            files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
+            self.page_files.SetFieldData(files_data)
+            
+            # *** Get Scripts Data *** #
+            scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
+            self.page_scripts.SetFieldData(scripts_data)
+            
+            # *** Get Changelog Data *** #
+            clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
+            self.page_clog.SetChangelog(clog_data)
+            
+            # *** Get Copyright Data *** #
+            try:
+                cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
+                self.page_cpright.SetCopyright(cpright_data)
+            
+            except IndexError:
+                pass
+            
+            # *** Get Menu Data *** #
+            menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
+            self.page_menu.SetLauncherData(menu_data, enabled=True)
+            
+            # Get Build Data
+            build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
+            self.page_build.SetFieldData(build_data)
+    
+    
+    ## TODO: Doxygen
+    def SetSavedStatus(self, status):
+        if status: # If status is changing to unsaved this is True
+            title = self.GetTitle()
+            if self.IsSaved() and title != self.default_title:
+                self.SetTitle(u'{}*'.format(title))
