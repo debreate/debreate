@@ -133,9 +133,7 @@ class Panel(wx.ScrolledWindow):
         self.SetSizer(layout_main)
         self.Layout()
         
-        
         SetPageToolTips(self)
-        
         
         # *** Events *** #
         
