@@ -83,30 +83,34 @@ class Panel(wx.ScrolledWindow):
         for rb in self.grp_chk:
             self.grp_chk[rb].Hide()
         
+        # *** Auto-Link *** #
+        
+        pnl_autolink = wx.Panel(self, style=wx.BORDER_THEME)
+        
         # Executable list - generate button will make scripts to link to files in this list
         self.lst_executables = []
         
         # Auto-Link path for new link
-        txt_autolink = wx.StaticText(self, label=GT(u'Path'), name=u'target')
-        self.ti_autolink = PathCtrl(self, value=u'/usr/bin', type=PATH_WARN)
+        txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
+        self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', type=PATH_WARN)
         self.ti_autolink.SetName(u'target')
         
         # Auto-Link executables to be linked
         if wx.MAJOR_VERSION < 3:
             # FIXME: List should be multi-select/delete
-            self.executables = wx.ListView(self, size=(200,200), name=u'al list',
+            self.executables = wx.ListView(pnl_autolink, size=(200,200), name=u'al list',
                     style=wx.LC_SINGLE_SEL)
         
         else:
-            self.executables = wx.ListView(self, size=(200,200), name=u'al list')
+            self.executables = wx.ListView(pnl_autolink, size=(200,200), name=u'al list')
         
         # Auto-Link import, generate and remove buttons
-        btn_al_import = ButtonImport(self, ID_IMPORT)
-        btn_al_remove = ButtonRemove(self)
-        btn_al_generate = ButtonBuild(self)
+        btn_al_import = ButtonImport(pnl_autolink, ID_IMPORT)
+        btn_al_remove = ButtonRemove(pnl_autolink)
+        btn_al_generate = ButtonBuild(pnl_autolink)
         
-        # *** HELP *** #
-        btn_help = ButtonQuestion64(self)
+        # Auto-Link help
+        btn_help = ButtonQuestion64(pnl_autolink)
         
         # Initialize script display
         self.ScriptSelect(None)
@@ -148,18 +152,24 @@ class Panel(wx.ScrolledWindow):
         lyt_btn_autolink.Add(btn_al_remove, 1)
         lyt_btn_autolink.Add(btn_al_generate, 1)
         
-        # Nice border for auto-generate scripts area
-        box_autogen = wx.StaticBox(self, label=GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
-        lyt_autogen = wx.StaticBoxSizer(box_autogen, wx.VERTICAL)
+        lyt_autolink = wx.BoxSizer(wx.VERTICAL)
         
-        lyt_autogen.Add(lyt_ti_autolink, 0, wx.EXPAND)
-        lyt_autogen.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
-        lyt_autogen.Add(lyt_btn_autolink, 0, wx.EXPAND)
+        lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND)
+        lyt_autolink.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
+        lyt_autolink.Add(lyt_btn_autolink, 0, wx.EXPAND)
+        
+        pnl_autolink.SetSizer(lyt_autolink)
+        pnl_autolink.SetAutoLayout(True)
+        pnl_autolink.Layout()
         
         lyt_right = wx.BoxSizer(wx.VERTICAL)
         
         lyt_right.AddSpacer(17)
-        lyt_right.Add(lyt_autogen, 0)
+        lyt_right.Add(
+            wx.StaticText(self, label=GT(u'Auto-Link Executables')),
+            0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+            )
+        lyt_right.Add(pnl_autolink, 0)
         lyt_right.Add(btn_help, 0, wx.ALIGN_CENTER)
         
         lyt_main = wx.BoxSizer(wx.HORIZONTAL)
