@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 
-# This script is used for field data that cannot use certain characters
-
 ## \package dbr.charctrl
+#  
+#  This script is used for field data that cannot use certain characters
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
+
 
 ## A customized text area that disallows certain character input
 #  
@@ -30,7 +35,7 @@ class CharCtrl(wx.TextCtrl):
     
     
     ## Actions to take when key is released
-    def OnKeyUp(self, event):
+    def OnKeyUp(self, event=None):
         modifier = event.GetModifiers()
         keycode = event.GetKeyCode()
         char = self.GetValue()[self.GetInsertionPoint()-1]
@@ -56,4 +61,5 @@ class CharCtrl(wx.TextCtrl):
         else:
             pass
         
-        event.Skip()
+        if event:
+            event.Skip()

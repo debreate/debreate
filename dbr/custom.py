@@ -2,6 +2,9 @@
 
 ## \package dbr.custom
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 # System imports
 import os, sys, webbrowser, wx
@@ -9,8 +12,6 @@ from wx.lib.docview import PathOnly
 
 from dbr.language   import GT
 from dbr.textinput  import MultilineTextCtrlPanel
-from globals.ident  import ID_APPEND
-from globals.ident  import ID_OVERWRITE
 from globals.paths  import PATH_app
 
 
@@ -220,7 +221,7 @@ class DBDialog(wx.Dialog):
     #  
     #  \param event
     #        wx.EVT_RIGHT_DOWN???
-    def OnContext(self, event):
+    def OnContext(self, event=None):
         # Get folder/file that is highlighted
         selected = self.dir_tree.GetPath()
         
@@ -230,7 +231,7 @@ class DBDialog(wx.Dialog):
     def GetPath(self):
         return self.dir_tree.GetPath()
         
-    def OnButton(self, event):
+    def OnButton(self, event=None):
         id = event.GetEventObject().GetId()
         
         dest_path = self.dir_tree.GetPath()
@@ -247,7 +248,7 @@ class DBDialog(wx.Dialog):
         self.dir_tree.SetFilter(filter)
         self.dir_tree.ReCreateTree()
     
-    def CreateFolder(self, event):
+    def CreateFolder(self, event=None):
         # Creates a new folder in the highlighted path
         destination = self.dir_tree.GetPath()
         
@@ -284,7 +285,7 @@ class DBDialog(wx.Dialog):
         self.dir_tree.SetPath(new_folder)
 
     
-    def Delete(self, event):
+    def Delete(self, event=None):
         path = self.dir_tree.GetPath()
         
         # Get the parent dir of the file/folder being deleted
@@ -296,7 +297,7 @@ class DBDialog(wx.Dialog):
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(parent_path)
     
-    def ShowRename(self, event):
+    def ShowRename(self, event=None):
         # Get the filename to be placed in the textarea
         filename = os.path.split(self.dir_tree.GetPath())[1]
         
@@ -317,7 +318,7 @@ class DBDialog(wx.Dialog):
         button_sizer.AddMany([(button_rename, 0, wx.ALL, 5), (button_cancel, 0, wx.ALL, 5)])
         
         # If button_rename pressed, rename file, otherwise leave as is, and close dialog
-        def Rename(event):
+        def Rename(event=None):
             try:
                 id = event.GetKeyCode()
             except:
@@ -346,7 +347,9 @@ class DBDialog(wx.Dialog):
                     dia.Close()
             elif id == wx.WXK_ESCAPE:
                 dia.Close()
-            event.Skip()
+            
+            if event:
+                event.Skip()
         
         
         wx.EVT_BUTTON(button_rename, wx.WXK_RETURN, Rename)
@@ -395,13 +398,15 @@ class OpenFile(DBDialog):
         # Add an event handler to the tree for opening files on double-click
         wx.EVT_LEFT_DCLICK(self.tree, self.OnDClick)
     
-    def OnDClick(self, event):
+    def OnDClick(self, event=None):
         path = self.dir_tree.GetPath()
         if os.path.isfile(path):
             self.OnButton(wx.OK)
-        event.Skip()
         
-    def OnButton(self, event):
+        if event:
+            event.Skip()
+        
+    def OnButton(self, event=None):
         try:
             id = event.GetEventObject().GetId()  # Get the button that was pressed
         except AttributeError:
@@ -454,14 +459,18 @@ class SaveFile(DBDialog):
         
         self.main_sizer.Insert(1, self.TextCtrl, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 20)
         
-        def OnLMouseButton(event):
+        def OnLMouseButton(event=None):
             path = self.dir_tree.GetPath()
             if os.path.isfile(path):
                 self.SetFilename(self.dir_tree.GetPath())
-            event.Skip()
+            
+            if event:
+                event.Skip()
+        
         wx.EVT_LEFT_UP(self.dir_tree.GetChildren()[0], OnLMouseButton)
     
-    def OnSelfShow(self, event):
+    
+    def OnSelfShow(self, event=None):
         self.TextCtrl.SetFocus()
     
     def SetFilename(self, path):
@@ -477,7 +486,7 @@ class SaveFile(DBDialog):
         else:
             return u'{}/{}'.format(os.path.dirname(self.dir_tree.GetPath()), self.GetFilename())
     
-    def OnButton(self, event):
+    def OnButton(self, event=None):
         save_ids = (wx.OK, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER, 7000) # 7000 is for left mouse button d-click
         cancel_ids = (wx.CANCEL, wx.WXK_ESCAPE)
         try:
@@ -526,7 +535,9 @@ class SaveFile(DBDialog):
                     self.Close()
         elif id in cancel_ids:
             self.Close()
-        event.Skip()
+        
+        if event:
+            event.Skip()
 
 
 ## Control for opening a webpage with a mouse click
@@ -574,12 +585,12 @@ class Hyperlink(wx.Panel):
             event.Skip(True)
     
     
-    def OnMouseOut(self, event):
+    def OnMouseOut(self, event=None):
         self.SetCursor(wx.NullCursor)
         self.text.SetFont(self.FONT_DEFAULT)
     
     
-    def OnMouseOver(self, event):
+    def OnMouseOver(self, event=None):
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         self.text.SetFont(self.FONT_HIGHLIGHT)
         

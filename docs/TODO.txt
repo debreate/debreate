@@ -4,3 +4,4 @@
 - Use styled panel in place of static boxes
 - Code cleanup & heavy testing
 - Retrieve list of licenses from standard path
+- Make some class member variables non-member

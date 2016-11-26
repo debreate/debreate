@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Menu Page
+## \package wiz_bin.menu
 
 
 import os, shutil, wx
@@ -20,6 +20,7 @@ from globals.ident      import ID_MENU
 from globals.tooltips   import SetPageToolTips
 
 
+## Menu page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_MENU, name=GT(u'Menu Launcher'))
@@ -439,7 +440,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnPreviewLauncher(self, event):
+    def OnPreviewLauncher(self, event=None):
         # Show a preview of the .desktop config file
         config = self.GetLauncherInfo()
         
@@ -458,7 +459,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Saves launcher information to file
-    def OnSaveLauncher(self, event):
+    def OnSaveLauncher(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         # Get data to write to control file
@@ -563,7 +564,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def SetCategory(self, event):
+    def SetCategory(self, event=None):
         try:
             ID = event.GetKeyCode()
         except AttributeError:
@@ -589,7 +590,8 @@ class Panel(wx.ScrolledWindow):
                 if confirm.ShowModal() == wx.ID_YES:
                     self.categories.DeleteAllItems()
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
     ## Fills out launcher information from loaded file

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.copyright
+
 
 import wx
 
@@ -9,7 +11,7 @@ from globals.ident      import ID_COPYRIGHT
 from globals.tooltips   import SetPageToolTips
 
 
-## TODO: Doxygen
+## Copyright page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
@@ -68,7 +70,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GenerateTemplate(self, event):
+    def GenerateTemplate(self, event=None):
         if not self.DestroyLicenseText():
             return
         

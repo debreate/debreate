@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Build Page
+## \package wiz_bin.build
 
 
 import commands, os, shutil, subprocess, wx
@@ -27,7 +27,7 @@ from globals.ident      import ID_BUILD
 from globals.tooltips   import SetPageToolTips
 
 
-## TODO: Doxygen
+## Build page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_BUILD, name=GT(u'Build'))
@@ -199,7 +199,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnBuild(self, event):
+    def OnBuild(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         # Check to make sure that all required fields have values
@@ -674,7 +674,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def SetSummary(self, event):
+    def SetSummary(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         # Make sure the page is not destroyed so no error is thrown

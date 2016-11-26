@@ -392,9 +392,10 @@ class FileList(ListCtrlPanel, TextEditMixin):
     #  The super method is overridden to ensure that 'event.Skip' is called.
     #  TODO: Notify wxPython project of 'event.Skip' error
     def OnLeftDown(self, event=None):
-        TextEditMixin.OnLeftDown(self, event)
+        TextEditMixin.OnLeftDown(self, event=None)
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
     ## Works around resize bug in wx 3.0

@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## \package dbr.message
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
 
@@ -7,6 +12,7 @@ from dbr.buttons    import ButtonConfirm
 from dbr.language   import GT
 
 
+## TODO: Doxygen
 class MessageDialog(wx.Dialog):
     def __init__(self, parent, id=wx.ID_ANY, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString):
@@ -41,7 +47,7 @@ class MessageDialog(wx.Dialog):
         
         self.details.Hide()
     
-    def ToggleDetails(self, event):
+    def ToggleDetails(self, event=None):
         if self.button_details.GetValue():
             self.details.Show()
         else:

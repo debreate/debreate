@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scripts Page
+## \package wiz_bin.scripts
 
 
 import os, wx
@@ -32,7 +32,7 @@ id_definitions = {
 }
 
 
-## TODO: Doxygen
+## Scripts page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_SCRIPTS, name=GT(u'Scripts'))
@@ -207,7 +207,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Imports executables for Auto-Link
-    def ImportExe(self, event):
+    def ImportExe(self, event=None):
         ID = event.GetId()
         if ID == ID_IMPORT:
             # First clear the Auto-Link display and the executable list
@@ -268,7 +268,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnGenerate(self, event):
+    def OnGenerate(self, event=None):
         # Create the scripts to link the executables
         
         # Create a list of commands to put into the script
@@ -351,7 +351,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ScriptSelect(self, event):
+    def ScriptSelect(self, event=None):
         for rb in self.script_te:
             if rb.GetValue() == True:
                 self.script_te[rb].Show()

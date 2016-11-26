@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## \package dbr.pathctrl
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
@@ -7,6 +12,8 @@ import os, wx
 PATH_DEFAULT = wx.NewId()
 PATH_WARN = wx.NewId()
 
+
+## TODO: Doxygen
 class PathCtrl(wx.TextCtrl):
     def __init__(self, parent, id=wx.ID_ANY, value=wx.EmptyString, type=PATH_DEFAULT):
         wx.TextCtrl.__init__(self, parent, id, value)
@@ -19,7 +26,7 @@ class PathCtrl(wx.TextCtrl):
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
     
-    def OnKeyUp(self, event):
+    def OnKeyUp(self, event=None):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
         if value == wx.EmptyString or value[0] != u'/':
@@ -34,4 +41,6 @@ class PathCtrl(wx.TextCtrl):
                 self.SetBackgroundColour(u'red')
             else:
                 self.SetBackgroundColour(u'white')
-        event.Skip()
+        
+        if event:
+            event.Skip()

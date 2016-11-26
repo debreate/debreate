@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.about
-#  
-#  Dialog that shows information about the application
+
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
 import commands, os, shutil, wx
@@ -348,8 +349,9 @@ class AboutDialog(wx.Dialog):
             self.credits.SetStringItem(next_item, 1, value)
     
     # FIXME: Unused?
-    def NoResizeCol(self, event):
-        event.Veto()
+    def NoResizeCol(self, event=None):
+        if event:
+            event.Veto()
     
     
     ## Sets text to be shown on the 'Changelog' tab
@@ -450,5 +452,5 @@ class AboutDialog(wx.Dialog):
     #  Closes the dialog.
     #  \param event
     #        <b><em>(wx.EVT_BUTTON)</em></b>
-    def OnOk(self, event):
+    def OnOk(self, event=None):
         self.Close()

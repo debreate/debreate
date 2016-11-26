@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.changelog
+
 
 import commands, wx
 
@@ -21,7 +23,7 @@ from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 
 
-## TODO: Doxygen
+## Changelog page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
@@ -126,7 +128,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def AddInfo(self, event):
+    def AddInfo(self, event=None):
         package = self.package.GetValue()
         version = self.version.GetValue()
         distribution = self.distribution.GetValue()
@@ -171,7 +173,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnImportFromControl(self, event):
+    def OnImportFromControl(self, event=None):
         fields = (
             (self.package, FID_NAME),
             (self.version, FID_VERSION),
