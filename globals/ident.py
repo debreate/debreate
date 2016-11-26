@@ -57,6 +57,7 @@ ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
 
 # Field/Control IDs
+FID_CUSTOM = wx.NewId()
 FID_EMAIL = wx.NewId()
 FID_MAINTAINER = wx.NewId()
 # FIXME: Rename to FID_PACKAGE???
