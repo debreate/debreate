@@ -31,16 +31,16 @@ class Panel(wx.ScrolledWindow):
         lnk_video = Hyperlink(self, wx.ID_ANY, GT(u'Building a Debian Package with Debreate'),
                 u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
         
-        layout_info = wx.GridSizer()
+        layt_info = wx.GridSizer()
         
-        layout_info.Add(txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        layt_info.Add(txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
         # *** Layout *** #
         
-        layout_main = wx.BoxSizer(wx.VERTICAL)
-        layout_main.Add(layout_info, 4, wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, 10)
-        layout_main.Add(lnk_video, 2, wx.EXPAND|wx.ALIGN_CENTER)
+        layt_main = wx.BoxSizer(wx.VERTICAL)
+        layt_main.Add(layt_info, 4, wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, 10)
+        layt_main.Add(lnk_video, 2, wx.EXPAND|wx.ALIGN_CENTER)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_main)
+        self.SetSizer(layt_main)
         self.Layout()
