@@ -6,15 +6,16 @@
 import os, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.buttons    import ButtonBrowse64
-from dbr.buttons    import ButtonPreview64
-from dbr.buttons    import ButtonSave64
-from dbr.charctrl   import CharCtrl
-from dbr.custom     import OpenFile
-from dbr.custom     import SaveFile
-from dbr.functions  import FieldEnabled
-from dbr.language   import GT
-from globals.ident  import ID_CONTROL
+from dbr.buttons        import ButtonBrowse64
+from dbr.buttons        import ButtonPreview64
+from dbr.buttons        import ButtonSave64
+from dbr.charctrl       import CharCtrl
+from dbr.custom         import OpenFile
+from dbr.custom         import SaveFile
+from dbr.functions      import FieldEnabled
+from dbr.language       import GT
+from globals.ident      import ID_CONTROL
+from globals.tooltips   import SetPageToolTips
 
 
 ## This panel displays the field input of the control file
@@ -28,47 +29,28 @@ class Panel(wx.ScrolledWindow):
         
         # Buttons to open, save, & preview control file
         btn_open = ButtonBrowse64(self.bg)
-        btn_open.SetToolTipString(GT(u'Import a control file'))
         btn_save = ButtonSave64(self.bg)
-        btn_save.SetToolTipString(GT(u'Export control file'))
         btn_preview = ButtonPreview64(self.bg)
-        btn_preview.SetToolTipString(GT(u'Preview control file'))
         
-        pack_txt = wx.StaticText(self.bg, label=GT(u'Package'))
+        pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package')
         pack_txt.req = True
-        self.pack = CharCtrl(self.bg)
+        self.pack = CharCtrl(self.bg, name=pack_txt.Name)
         self.pack.req = True
         
-        tt_pack = GT(u'Name of the package/software')
-        pack_txt.SetToolTipString(tt_pack)
-        self.pack.SetToolTipString(tt_pack)
-        
-        ver_txt = wx.StaticText(self.bg, label=GT(u'Version'))
+        ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version')
         ver_txt.req = True
-        self.ver = CharCtrl(self.bg)
+        self.ver = CharCtrl(self.bg, name=ver_txt.Name)
         self.ver.req = True
         
-        tt_ver = GT(u'Package/Software release version')
-        ver_txt.SetToolTipString(tt_ver)
-        self.ver.SetToolTipString(tt_ver)
-        
-        auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'))
+        auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'), name=u'maintainer')
         auth_txt.req = True
-        self.auth = wx.TextCtrl(self.bg)
+        self.auth = wx.TextCtrl(self.bg, name=auth_txt.Name)
         self.auth.req = True
         
-        tt_auth = GT(u'Package/Software maintainer\'s full name')
-        auth_txt.SetToolTipString(tt_auth)
-        self.auth.SetToolTipString(tt_auth)
-        
-        email_txt = wx.StaticText(self.bg, label=GT(u'Email'))
+        email_txt = wx.StaticText(self.bg, label=GT(u'Email'), name=u'email')
         email_txt.req = True
-        self.email = wx.TextCtrl(self.bg)
+        self.email = wx.TextCtrl(self.bg, name=email_txt.Name)
         self.email.req = True
-        
-        tt_email = GT(u'Package/Software maintaner\'s email address')
-        email_txt.SetToolTipString(tt_email)
-        self.email.SetToolTipString(tt_email)
         
         self.arch_opt = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
@@ -78,14 +60,10 @@ class Panel(wx.ScrolledWindow):
             u'sparc64',
             )
         
-        arch_txt = wx.StaticText(self.bg, label=GT(u'Architecture'))
-        self.arch = wx.Choice(self.bg, choices=self.arch_opt)
+        arch_txt = wx.StaticText(self.bg, label=GT(u'Architecture'), name=u'arch')
+        self.arch = wx.Choice(self.bg, choices=self.arch_opt, name=arch_txt.Name)
         self.arch.default = 0
         self.arch.SetSelection(self.arch.default)
-        
-        tt_arch = u'{}\n\n{}'.format(GT(u'Architecture on which software is designed to run'), GT(u'all = platform independent'))
-        arch_txt.SetToolTipString(tt_arch)
-        self.arch.SetToolTipString(tt_arch)
         
         # ***** Recommended Group ***** #
         self.sect_opt = (
@@ -100,66 +78,39 @@ class Panel(wx.ScrolledWindow):
             u'web', u'x11', u'xfce', u'zope',
             )
         
-        sect_txt = wx.StaticText(self.bg, label=GT(u'Section'))
-        self.sect = OwnerDrawnComboBox(self.bg, choices=self.sect_opt)
-        
-        tt_sect = GT(u'Section under which package managers will categorize package')
-        sect_txt.SetToolTipString(tt_sect)
-        self.sect.SetToolTipString(tt_sect)
+        sect_txt = wx.StaticText(self.bg, label=GT(u'Section'), name=u'section')
+        self.sect = OwnerDrawnComboBox(self.bg, choices=self.sect_opt, name=sect_txt.Name)
         
         self.prior_opt = (
             u'optional', u'standard', u'important', u'required', u'extra',
             )
         
-        prior_txt = wx.StaticText(self.bg, label=GT(u'Priority'))
-        self.prior = wx.Choice(self.bg, choices=self.prior_opt)
-        self.prior.SetSelection(0)
+        prior_txt = wx.StaticText(self.bg, label=GT(u'Priority'), name=u'priority')
+        self.prior = wx.Choice(self.bg, choices=self.prior_opt, name=prior_txt.Name)
+        self.prior.default = 0
+        self.prior.SetSelection(self.prior.default)
         
-        tt_prior = GT(u'Priority of the package on the target system')
-        prior_txt.SetToolTipString(tt_prior)
-        self.prior.SetToolTipString(tt_prior)
+        syn_txt = wx.StaticText(self.bg, label=GT(u'Short Description'), name=u'synopsis')
+        self.syn = wx.TextCtrl(self.bg, name=syn_txt.Name)
         
-        syn_txt = wx.StaticText(self.bg, label=GT(u'Short Description'))
-        self.syn = wx.TextCtrl(self.bg)
-        
-        tt_syn = GT(u'Synopsis or one-line description')
-        syn_txt.SetToolTipString(tt_syn)
-        self.syn.SetToolTipString(tt_syn)
-        
-        desc_txt = wx.StaticText(self.bg, label=GT(u'Long Description'))
-        self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
-        
-        tt_desc = GT(u'Longer, multi-line description')
-        desc_txt.SetToolTipString(tt_desc)
-        self.desc.SetToolTipString(tt_desc)
+        desc_txt = wx.StaticText(self.bg, label=GT(u'Long Description'), name=u'description')
+        self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE, name=desc_txt.Name)
         
         # ***** Optional Group ***** #
-        src_txt = wx.StaticText(self.bg, label=GT(u'Source'))
-        self.src = wx.TextCtrl(self.bg)
+        src_txt = wx.StaticText(self.bg, label=GT(u'Source'), name=u'source')
+        self.src = wx.TextCtrl(self.bg, name=src_txt.Name)
         
-        tt_src = GT(u'Name of upstream source package')
-        src_txt.SetToolTipString(tt_src)
-        self.src.SetToolTipString(tt_src)
-        
-        url_txt = wx.StaticText(self.bg, label=GT(u'Homepage'))
-        self.url = wx.TextCtrl(self.bg)
-        
-        tt_url = GT(u'Software\'s/Package\'s homepage URL')
-        url_txt.SetToolTipString(tt_url)
-        self.url.SetToolTipString(tt_url)
+        url_txt = wx.StaticText(self.bg, label=GT(u'Homepage'), name=u'homepage')
+        self.url = wx.TextCtrl(self.bg, name=url_txt.Name)
         
         self.ess_opt = (
             u'yes', u'no',
             )
         
-        ess_txt = wx.StaticText(self.bg, label=GT(u'Essential'))
-        self.ess = wx.Choice(self.bg, choices=self.ess_opt)
+        ess_txt = wx.StaticText(self.bg, label=GT(u'Essential'), name=u'essential')
+        self.ess = wx.Choice(self.bg, choices=self.ess_opt, name=ess_txt.Name)
         self.ess.default = 1
         self.ess.SetSelection(self.ess.default)
-        
-        tt_ess = GT(u'Whether or not the package is essential to the system for stability/functionality')
-        ess_txt.SetToolTipString(tt_ess)
-        self.ess.SetToolTipString(tt_ess)
         
         self.bins = (
             (self.pack, self.arch, self.ver, self.auth, self.email),
@@ -172,6 +123,8 @@ class Panel(wx.ScrolledWindow):
         self.text_widgets = {
             self.pack: wx.EmptyString, self.ver: wx.EmptyString
             }
+        
+        SetPageToolTips(self)
         
         # *** Layout *** #
         
