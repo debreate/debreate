@@ -290,6 +290,14 @@ class MainWindow(wx.Frame):
         self.saved_project = wx.EmptyString
     
     
+    ## Retrieves the Wizard instance
+    #  
+    #  \return
+    #        dbr.wizard.Wizard
+    def GetWizard(self):
+        return self.Wizard
+    
+    
     ### ***** Check for New Version ***** ###
     def OnCheckUpdate(self, event):
         if u'-dev' in VERSION_string:
