@@ -158,6 +158,15 @@ class Wizard(wx.Panel):
     
     
     ## TODO: Doxygen
+    def GetPage(self, page_id):
+        for P in self.pages:
+            if P.GetId() == page_id:
+                return P
+        
+        return None
+    
+    
+    ## TODO: Doxygen
     def SetPages(self, pages):
         # Make sure all pages are hidden
         children = self.GetChildren()
