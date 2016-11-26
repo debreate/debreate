@@ -57,10 +57,10 @@ class Panel(wx.ScrolledWindow):
         )
         
         # Buttons to add and remove dependencies from the list
-        self.depadd = ButtonAdd(self)
-        self.depapp = ButtonAppend(self)
-        self.deprem = ButtonRemove(self, wx.ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
-        self.depclr = ButtonClear(self)
+        btn_add = ButtonAdd(self)
+        btn_append = ButtonAppend(self)
+        btn_remove = ButtonRemove(self, wx.ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
+        btn_clear = ButtonClear(self)
         
         # ----- List
         self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT, name=u'list')
@@ -98,10 +98,10 @@ class Panel(wx.ScrolledWindow):
         layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
         layout_buttons.AddMany( (
-            (self.depadd, 0, wx.ALIGN_CENTER_VERTICAL),
-            (self.depapp, 0, wx.ALIGN_CENTER_VERTICAL),
-            (self.deprem, 0, wx.ALIGN_CENTER_VERTICAL),
-            (self.depclr, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_add, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_append, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_remove, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_clear, 0, wx.ALIGN_CENTER_VERTICAL),
             ) )
         
         layout_G2 = wx.GridBagSizer(5, 5)
@@ -129,10 +129,10 @@ class Panel(wx.ScrolledWindow):
         wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
         
-        self.depadd.Bind(wx.EVT_BUTTON, self.SetDepends)
-        self.depapp.Bind(wx.EVT_BUTTON, self.SetDepends)
-        self.deprem.Bind(wx.EVT_BUTTON, self.SetDepends)
-        self.depclr.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_add.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_append.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_remove.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_clear.Bind(wx.EVT_BUTTON, self.SetDepends)
         
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
     
