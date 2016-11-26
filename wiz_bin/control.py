@@ -12,11 +12,12 @@ from dbr.buttons    import ButtonSave64
 from dbr.charctrl   import CharCtrl
 from dbr.custom     import OpenFile
 from dbr.custom     import SaveFile
+from dbr.functions  import FieldEnabled
 from dbr.language   import GT
 from globals.ident  import ID_CONTROL
 
 
-## TODO: Doxygen
+## This panel displays the field input of the control file
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
@@ -25,246 +26,266 @@ class Panel(wx.ScrolledWindow):
         
         self.bg = wx.Panel(self)
         
-        # Buttons to Open, Save & Preview control file
-        button_open = ButtonBrowse64(self.bg)
-        button_open.SetToolTipString(GT(u'Import a control file'))
-        wx.EVT_BUTTON(button_open, -1, self.OnBrowse)
+        # Buttons to open, save, & preview control file
+        btn_open = ButtonBrowse64(self.bg)
+        btn_open.SetToolTipString(GT(u'Import a control file'))
+        btn_save = ButtonSave64(self.bg)
+        btn_save.SetToolTipString(GT(u'Export control file'))
+        btn_preview = ButtonPreview64(self.bg)
+        btn_preview.SetToolTipString(GT(u'Preview control file'))
         
-        button_save = ButtonSave64(self.bg)
-        button_save.SetToolTipString(GT(u'Export control file'))
-        wx.EVT_BUTTON(button_save, -1, self.OnSave)
-        
-        button_preview = ButtonPreview64(self.bg)
-        button_preview.SetToolTipString(GT(u'Preview control file'))
-        wx.EVT_BUTTON(button_preview, -1, self.OnPreview)
-        
-        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(button_open, 0)
-        button_sizer.Add(button_save, 0)
-        button_sizer.Add(button_preview, 0)
-        
-        
-        # ***** Required Group ***** #
-        # Key:  B - Binary
-        #       S - Source
-        #       D - Debian Source Control (*.dsc)
-        #       C - Changes
-        #      [m]- mandatory
-        #      [r]- recommended
-        
-        # ----- Package ( B[m], SB[m] )
-        self.pack_txt = wx.StaticText(self.bg, -1, GT(u'Package'))
-        self.pack = CharCtrl(self.bg, -1)
+        pack_txt = wx.StaticText(self.bg, label=GT(u'Package'))
+        pack_txt.req = True
+        self.pack = CharCtrl(self.bg)
+        self.pack.req = True
         
         tt_pack = GT(u'Name of the package/software')
-        self.pack_txt.SetToolTipString(tt_pack)
+        pack_txt.SetToolTipString(tt_pack)
         self.pack.SetToolTipString(tt_pack)
         
-        # ----- Version ( B[m], D[m], C[m] )
-        self.ver_txt = wx.StaticText(self.bg, -1, GT(u'Version'))
+        ver_txt = wx.StaticText(self.bg, label=GT(u'Version'))
+        ver_txt.req = True
         self.ver = CharCtrl(self.bg)
+        self.ver.req = True
         
         tt_ver = GT(u'Package/Software release version')
-        self.ver_txt.SetToolTipString(tt_ver)
+        ver_txt.SetToolTipString(tt_ver)
         self.ver.SetToolTipString(tt_ver)
         
-        # ----- Maintainer ( B[m], S[m], D[m], C[m] )
-        self.auth_txt = wx.StaticText(self.bg, -1, GT(u'Maintainer'))
-        self.auth = wx.TextCtrl(self.bg, -1)
+        auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'))
+        auth_txt.req = True
+        self.auth = wx.TextCtrl(self.bg)
+        self.auth.req = True
         
         tt_auth = GT(u'Package/Software maintainer\'s full name')
-        self.auth_txt.SetToolTipString(tt_auth)
+        auth_txt.SetToolTipString(tt_auth)
         self.auth.SetToolTipString(tt_auth)
         
-        self.email_txt = wx.StaticText(self.bg, -1, GT(u'Email'))
-        self.email = wx.TextCtrl(self.bg, -1)
+        email_txt = wx.StaticText(self.bg, label=GT(u'Email'))
+        email_txt.req = True
+        self.email = wx.TextCtrl(self.bg)
+        self.email.req = True
         
         tt_email = GT(u'Package/Software maintaner\'s email address')
-        self.email_txt.SetToolTipString(tt_email)
+        email_txt.SetToolTipString(tt_email)
         self.email.SetToolTipString(tt_email)
         
-        # ----- Architecture ( B[m], SB[m], D, C[m] )
         self.arch_opt = (
-            u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel', u'armhf',
-            u'avr32', u'hppa', u'i386', u'ia64', u'lpia', u'm32r', u'm68k', u'mips',
-            u'mipsel', u'powerpc', u'powerpcspe', u'ppc64', u's390', u's390x', u'sh3',
-            u'sh3eb', u'sh4', u'sh4eb', u'sparc', u'sparc64'
+            u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
+            u'armhf', u'avr32', u'hppa', u'i386', u'ia64', u'lpia', u'm32r',
+            u'm68k', u'mips', u'mipsel', u'powerpc', u'powerpcspe', u'ppc64',
+            u's390', u's390x', u'sh3', u'sh3eb', u'sh4', u'sh4eb', u'sparc',
+            u'sparc64',
             )
-        self.arch_txt = wx.StaticText(self.bg, -1, GT(u'Architecture'))
-        self.arch = wx.Choice(self.bg, -1, choices=self.arch_opt)
-        self.arch.SetSelection(0)
+        
+        arch_txt = wx.StaticText(self.bg, label=GT(u'Architecture'))
+        self.arch = wx.Choice(self.bg, choices=self.arch_opt)
+        self.arch.default = 0
+        self.arch.SetSelection(self.arch.default)
         
         tt_arch = u'{}\n\n{}'.format(GT(u'Architecture on which software is designed to run'), GT(u'all = platform independent'))
-        self.arch_txt.SetToolTipString(tt_arch)
+        arch_txt.SetToolTipString(tt_arch)
         self.arch.SetToolTipString(tt_arch)
         
         # ***** Recommended Group ***** #
-        # ----- Section ( B[r], S[r], SB[r] )
-        self.sect_opt = (u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug', u'doc', u'editors',
-            u'electronics', u'embedded', u'fonts', u'games', u'gnome', u'graphics', u'gnu-r', u'gnustep',
-            u'hamradio', u'haskell', u'httpd', u'interpreters', u'java', u'kde', u'kernel', u'libs', u'libdevel',
-            u'lisp', u'localization', u'mail', u'math', u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
-            u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science', u'shells', u'sound', u'tex', u'text',
-            u'utils', u'vcs', u'video', u'web', u'x11', u'xfce', u'zope')
-        self.sect_txt = wx.StaticText(self.bg, -1, GT(u'Section'))
+        self.sect_opt = (
+            u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
+            u'doc', u'editors', u'electronics', u'embedded', u'fonts', u'games',
+            u'gnome', u'graphics', u'gnu-r', u'gnustep', u'hamradio', u'haskell',
+            u'httpd', u'interpreters', u'java', u'kde', u'kernel', u'libs',
+            u'libdevel', u'lisp', u'localization', u'mail', u'math',
+            u'metapackages', u'misc', u'net', u'news', u'ocaml', u'oldlibs',
+            u'otherosfs', u'perl', u'php', u'python', u'ruby', u'science',
+            u'shells', u'sound', u'tex', u'text', u'utils', u'vcs', u'video',
+            u'web', u'x11', u'xfce', u'zope',
+            )
+        
+        sect_txt = wx.StaticText(self.bg, label=GT(u'Section'))
         self.sect = OwnerDrawnComboBox(self.bg, choices=self.sect_opt)
         
         tt_sect = GT(u'Section under which package managers will categorize package')
-        self.sect_txt.SetToolTipString(tt_sect)
+        sect_txt.SetToolTipString(tt_sect)
         self.sect.SetToolTipString(tt_sect)
         
-        # ----- Priority ( B[r], S[r], SB[r] )
-        self.prior_opt = (u'optional', u'standard', u'important', u'required', u'extra')
-        self.prior_txt = wx.StaticText(self.bg, -1, GT(u'Priority'))
-        self.prior = wx.Choice(self.bg, -1, choices=self.prior_opt)
+        self.prior_opt = (
+            u'optional', u'standard', u'important', u'required', u'extra',
+            )
+        
+        prior_txt = wx.StaticText(self.bg, label=GT(u'Priority'))
+        self.prior = wx.Choice(self.bg, choices=self.prior_opt)
         self.prior.SetSelection(0)
         
         tt_prior = GT(u'Priority of the package on the target system')
-        self.prior_txt.SetToolTipString(tt_prior)
+        prior_txt.SetToolTipString(tt_prior)
         self.prior.SetToolTipString(tt_prior)
         
-        # ----- Description ( B[m], SB[m], C[m] )
-        self.syn_txt = wx.StaticText(self.bg, -1, GT(u'Short Description'))
+        syn_txt = wx.StaticText(self.bg, label=GT(u'Short Description'))
         self.syn = wx.TextCtrl(self.bg)
         
         tt_syn = GT(u'Synopsis or one-line description')
-        self.syn_txt.SetToolTipString(tt_syn)
+        syn_txt.SetToolTipString(tt_syn)
         self.syn.SetToolTipString(tt_syn)
         
-        self.desc_txt = wx.StaticText(self.bg, -1, GT(u'Long Description'))
+        desc_txt = wx.StaticText(self.bg, label=GT(u'Long Description'))
         self.desc = wx.TextCtrl(self.bg, style=wx.TE_MULTILINE)
         
         tt_desc = GT(u'Longer, multi-line description')
-        self.desc_txt.SetToolTipString(tt_desc)
+        desc_txt.SetToolTipString(tt_desc)
         self.desc.SetToolTipString(tt_desc)
         
         # ***** Optional Group ***** #
-        # ----- Source ( B, S[m], D[m], C[m] )
-        self.src_txt = wx.StaticText(self.bg, -1, GT(u'Source'))
-        self.src = wx.TextCtrl(self.bg, -1)
+        src_txt = wx.StaticText(self.bg, label=GT(u'Source'))
+        self.src = wx.TextCtrl(self.bg)
         
         tt_src = GT(u'Name of upstream source package')
-        self.src_txt.SetToolTipString(tt_src)
+        src_txt.SetToolTipString(tt_src)
         self.src.SetToolTipString(tt_src)
         
-        # ----- Homepage ( B, S, SB, D )
-        self.url_txt = wx.StaticText(self.bg, -1, GT(u'Homepage'))
+        url_txt = wx.StaticText(self.bg, label=GT(u'Homepage'))
         self.url = wx.TextCtrl(self.bg)
         
         tt_url = GT(u'Software\'s/Package\'s homepage URL')
-        self.url_txt.SetToolTipString(tt_url)
+        url_txt.SetToolTipString(tt_url)
         self.url.SetToolTipString(tt_url)
         
-        # ----- Essential ( B, SB )
-        self.ess_opt = (u'yes', u'no')
-        self.ess_txt = wx.StaticText(self.bg, -1, GT(u'Essential'))
-        self.ess = wx.Choice(self.bg, -1, choices=self.ess_opt)
-        self.ess.SetSelection(1)
+        self.ess_opt = (
+            u'yes', u'no',
+            )
+        
+        ess_txt = wx.StaticText(self.bg, label=GT(u'Essential'))
+        self.ess = wx.Choice(self.bg, choices=self.ess_opt)
+        self.ess.default = 1
+        self.ess.SetSelection(self.ess.default)
         
         tt_ess = GT(u'Whether or not the package is essential to the system for stability/functionality')
-        self.ess_txt.SetToolTipString(tt_ess)
+        ess_txt.SetToolTipString(tt_ess)
         self.ess.SetToolTipString(tt_ess)
         
-        self.bins = (	(self.pack, self.arch, self.ver, self.auth, self.email),
-                        (self.sect, self.prior),
-                        (self.src, self.url, self.ess),
-                        )
-        
-        # Divide the fields into different groups (Info, Description, Authors, and Other)
-        
-        # ----- Changed to "Required"
-        self.box_info = wx.FlexGridSizer(0, 4, 5, 5)
-        self.box_info.AddGrowableCol(1)
-        self.box_info.AddGrowableCol(3)
-        self.box_info.AddSpacer(5)
-        self.box_info.AddSpacer(5)
-        self.box_info.AddSpacer(5)
-        self.box_info.AddSpacer(5)
-        self.box_info.AddMany([
-            (self.pack_txt), (self.pack, 0, wx.EXPAND), (self.ver_txt), (self.ver, 0, wx.EXPAND),
-            (self.auth_txt), (self.auth, 0, wx.EXPAND), (self.email_txt), (self.email, 0, wx.EXPAND),
-            self.arch_txt, (self.arch)
-            ])
-        
-        # Border box
-        self.border_info = wx.StaticBox(self.bg, -1, GT(u'Required'))
-        bbox_info = wx.StaticBoxSizer(self.border_info, wx.VERTICAL)
-        bbox_info.Add(self.box_info, 0, wx.EXPAND)
-        
-        # ----- Changed to "Recommended"
-        r_temp = wx.FlexGridSizer(0, 4, 5, 5)
-        r_temp.AddGrowableCol(1)
-        r_temp.AddGrowableCol(3)
-        r_temp.AddSpacer(5)
-        r_temp.AddSpacer(5)
-        r_temp.AddSpacer(5)
-        r_temp.AddSpacer(5)
-        r_temp.AddMany([ (self.sect_txt), (self.sect, 0, wx.EXPAND), (self.prior_txt), (self.prior) ])
-        # Border box
-        self.border_description = wx.StaticBox(self.bg, -1, GT(u'Recommended'))
-        bbox_description = wx.StaticBoxSizer(self.border_description, wx.VERTICAL)
-        bbox_description.AddSpacer(5)
-        bbox_description.Add(r_temp, 0, wx.EXPAND)
-        bbox_description.AddSpacer(5)
-        bbox_description.AddMany([
-            (self.syn_txt, 0),
-            (self.syn, 0, wx.EXPAND)
-            ])
-        bbox_description.AddSpacer(5)
-        bbox_description.AddMany([
-            (self.desc_txt, 0),
-            (self.desc, 1, wx.EXPAND)
-            ])
-        
-        b_temp = wx.FlexGridSizer(0, 4, 5, 5)
-        b_temp.AddGrowableCol(1)
-        b_temp.AddGrowableCol(3)
-        b_temp.AddSpacer(5)
-        b_temp.AddSpacer(5)
-        b_temp.AddSpacer(5)
-        b_temp.AddSpacer(5)
-        b_temp.AddMany([
-            (self.src_txt), (self.src, 0, wx.EXPAND), (self.url_txt), (self.url, 0, wx.EXPAND),
-            (self.ess_txt), (self.ess, 1)
-            ])
-
-        # Border box
-        self.border_author = wx.StaticBox(self.bg, -1, GT(u'Optional'))
-        bbox_author = wx.StaticBoxSizer(self.border_author, wx.VERTICAL)
-        bbox_author.Add(b_temp, 0, wx.EXPAND)
-        
-        # Main Layout
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-        main_sizer.Add(button_sizer, 0, wx.ALL, 5)
-        main_sizer.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
-        main_sizer.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
-        main_sizer.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
-        
-        self.bg.SetAutoLayout(True)
-        self.bg.SetSizer(main_sizer)
-        self.bg.Layout()
-        
-        
-        scroll_sizer = wx.BoxSizer(wx.VERTICAL)
-        scroll_sizer.Add(self.bg, 1, wx.EXPAND)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(scroll_sizer)
-        self.Layout()
-        
-        # Set Ctrl+P hotkey to show preview of control file
-        children = self.bg.GetChildren()
-        for child in children:
-            wx.EVT_KEY_DOWN(child, self.OnCtrlKey)
-        
-        # Defines fields to be accessed
-        wx.EVT_SHOW(self, self.OnShow)
+        self.bins = (
+            (self.pack, self.arch, self.ver, self.auth, self.email),
+            (self.sect, self.prior),
+            (self.src, self.url, self.ess),
+            )
         
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.text_widgets = {
             self.pack: wx.EmptyString, self.ver: wx.EmptyString
             }
+        
+        # *** Layout *** #
+        
+        # Buttons
+        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        layout_buttons.Add(btn_open, 0)
+        layout_buttons.Add(btn_save, 0)
+        layout_buttons.Add(btn_preview, 0)
+        
+        # Required fields
+        layout_required = wx.FlexGridSizer(0, 4, 5, 5)
+        layout_required.AddGrowableCol(1)
+        layout_required.AddGrowableCol(3)
+        
+        layout_required.AddSpacer(5)
+        layout_required.AddSpacer(5)
+        layout_required.AddSpacer(5)
+        layout_required.AddSpacer(5)
+        layout_required.AddMany((
+            (pack_txt), (self.pack, 0, wx.EXPAND), (ver_txt), (self.ver, 0, wx.EXPAND),
+            (auth_txt), (self.auth, 0, wx.EXPAND), (email_txt), (self.email, 0, wx.EXPAND),
+            arch_txt, (self.arch)
+            ))
+        
+        border_info = wx.StaticBox(self.bg, label=GT(u'Required'))
+        bbox_info = wx.StaticBoxSizer(border_info, wx.VERTICAL)
+        
+        bbox_info.Add(layout_required, 0, wx.EXPAND)
+        
+        # Recommended fields
+        r_temp = wx.FlexGridSizer(0, 4, 5, 5)
+        r_temp.AddGrowableCol(1)
+        r_temp.AddGrowableCol(3)
+        
+        r_temp.AddSpacer(5)
+        r_temp.AddSpacer(5)
+        r_temp.AddSpacer(5)
+        r_temp.AddSpacer(5)
+        r_temp.AddMany((
+            (sect_txt),
+            (self.sect, 0, wx.EXPAND),
+            (prior_txt),
+            (self.prior),
+            ))
+        
+        border_description = wx.StaticBox(self.bg, label=GT(u'Recommended'))
+        bbox_description = wx.StaticBoxSizer(border_description, wx.VERTICAL)
+        
+        bbox_description.AddSpacer(5)
+        bbox_description.Add(r_temp, 0, wx.EXPAND)
+        bbox_description.AddSpacer(5)
+        bbox_description.AddMany((
+            (syn_txt, 0),
+            (self.syn, 0, wx.EXPAND),
+            ))
+        bbox_description.AddSpacer(5)
+        bbox_description.AddMany((
+            (desc_txt, 0),
+            (self.desc, 1, wx.EXPAND),
+            ))
+        
+        # Optional fields
+        b_temp = wx.FlexGridSizer(0, 4, 5, 5)
+        
+        b_temp.AddGrowableCol(1)
+        b_temp.AddGrowableCol(3)
+        b_temp.AddSpacer(5)
+        b_temp.AddSpacer(5)
+        b_temp.AddSpacer(5)
+        b_temp.AddSpacer(5)
+        b_temp.AddMany((
+            (src_txt), (self.src, 0, wx.EXPAND),
+            (url_txt), (self.url, 0, wx.EXPAND),
+            (ess_txt), (self.ess, 1),
+            ))
+        
+        border_author = wx.StaticBox(self.bg, label=GT(u'Optional'))
+        bbox_author = wx.StaticBoxSizer(border_author, wx.VERTICAL)
+        
+        bbox_author.Add(b_temp, 0, wx.EXPAND)
+        
+        # Main background panel sizer
+        # FIXME: Is background panel (self.bg) necessary
+        layout_bg = wx.BoxSizer(wx.VERTICAL)
+        layout_bg.Add(layout_buttons, 0, wx.ALL, 5)
+        layout_bg.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
+        layout_bg.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
+        layout_bg.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
+        
+        self.bg.SetAutoLayout(True)
+        self.bg.SetSizer(layout_bg)
+        self.bg.Layout()
+        
+        # Page's main sizer
+        layout_main = wx.BoxSizer(wx.VERTICAL)
+        layout_main.Add(self.bg, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(layout_main)
+        self.Layout()
+        
+        # *** Event Handlers *** #
+        
+        btn_open.Bind(wx.EVT_BUTTON, self.OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreview)
+        
+        # Set Ctrl+P hotkey to show preview of control file
+        for child in self.bg.GetChildren():
+            wx.EVT_KEY_DOWN(child, self.OnCtrlKey)
+        
+        # Defines fields to be accessed
+        wx.EVT_SHOW(self, self.OnShow)
+        
         for widget in self.text_widgets:
             wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
@@ -280,23 +301,21 @@ class Panel(wx.ScrolledWindow):
     def GetCtrlInfo(self):
         main_window = wx.GetApp().GetTopWindow()
         
-        def Enabled(obj):
-            if wx.MAJOR_VERSION > 2:
-                return obj.IsThisEnabled()
-            
-            return obj.IsEnabled()
-            
         # Creat a list to store info
         ctrl_list = []
         
-        getvals = (    (u'Package',self.pack), (u'Version',self.ver), (u'Source',self.src), (u'Section',self.sect),
-                    (u'Homepage',self.url), #(u'Standards-Version',self.stdver), (u'Format',self.format),
-                    #(u'Binary',self.bin), (u'Files',self.files), (u'Date',self.date), (u'Changes',self.changes),
-                    #(u'Distribution',self.dist), (u'Closes',self.closes) )
-                    )
+        getvals = (
+            (u'Package', self.pack),
+            (u'Version', self.ver),
+            (u'Source', self.src),
+            (u'Section', self.sect),
+            (u'Homepage', self.url),
+            )
         
         for key in getvals:
-            if Enabled(key[1]) and u''.join(key[1].GetValue().split(u' ')) != u'':
+            key_enabled = FieldEnabled(key[1])
+            
+            if key_enabled and u''.join(key[1].GetValue().split(u' ')) != u'':
                 if key[0] == u'Package' or key[0] == u'Version':
                     ctrl_list.append(u'{}: {}'.format(key[0], u'-'.join(key[1].GetValue().split(u' '))))
                 
@@ -304,18 +323,25 @@ class Panel(wx.ScrolledWindow):
                     ctrl_list.append(u'{}: {}'.format(key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        if Enabled(self.auth) and self.auth.GetValue() != u'':
+        auth_enabled = FieldEnabled(self.auth)
+        
+        if auth_enabled and self.auth.GetValue() != u'':
             ctrl_list.insert(3, u'Maintainer: {} <{}>'.format(self.auth.GetValue(), self.email.GetValue()))
         
         # Add the "choice" options
         getsels = {
-            u'Architecture': (self.arch,self.arch_opt), u'Priority': (self.prior,self.prior_opt),
-            u'Essential': (self.ess,self.ess_opt)#, u'Urgency': (self.urge,self.urge_opt)
+            u'Architecture': (self.arch,self.arch_opt),
+            u'Priority': (self.prior,self.prior_opt),
+            u'Essential': (self.ess,self.ess_opt),
             }
+        
         for key in getsels:
-            if Enabled(getsels[key][0]):
+            sel_enabled = FieldEnabled(getsels[key][0])
+            
+            if sel_enabled:
                 if key == u'Essential' and self.ess.GetCurrentSelection() == 1:
                     pass
+                
                 else:
                     ctrl_list.append(u'{}: {}'.format(key, getsels[key][1][getsels[key][0].GetCurrentSelection()]))
         
@@ -328,10 +354,16 @@ class Panel(wx.ScrolledWindow):
         con_list = [] # Conflicts
         rep_list = [] # Replaces
         brk_list = [] # Breaks
+        
         all_deps = {
-            u'Depends': dep_list, u'Pre-Depends': pre_list, u'Recommends': rec_list,
-            u'Suggests': sug_list, u'Enhances': enh_list, u'Conflicts': con_list,
-            u'Replaces': rep_list, u'Breaks': brk_list,
+            u'Depends': dep_list,
+            u'Pre-Depends': pre_list,
+            u'Recommends': rec_list,
+            u'Suggests': sug_list,
+            u'Enhances': enh_list,
+            u'Conflicts': con_list,
+            u'Replaces': rep_list,
+            u'Breaks': brk_list,
             }
         
         # Get amount of items to add
@@ -339,18 +371,18 @@ class Panel(wx.ScrolledWindow):
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
-            # Get each item from dependencied page
-            dep_type = dep_area.GetItem(count).GetText()
+            # Get each item from dependencies page
+            dep_type = dep_area.GetItem(count, 0).GetText()
             dep_val = dep_area.GetItem(count, 1).GetText()
             for item in all_deps:
                 if dep_type == item:
                     all_deps[item].append(dep_val)
-            count += 1
             
+            count += 1
+        
         for item in all_deps:
             if len(all_deps[item]) != 0:
                 ctrl_list.append(u'{}: {}'.format(item, u', '.join(all_deps[item])))
-        
         
         # *** Get description *** #
         syn = self.syn.GetValue()
@@ -364,8 +396,10 @@ class Panel(wx.ScrolledWindow):
                 for line in desc.split(u'\n'):
                     if u''.join(line.split(u' ')) == u'':
                         desc_temp.append(u' .')
+                    
                     else:
                         desc_temp.append(u' {}'.format(line))
+                
                 ctrl_list.append(u'\n'.join(desc_temp))
         
         ctrl_list.append(u'\n')
@@ -373,7 +407,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnBrowse(self, event):
+    def OnBrowse(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         cont = False
@@ -388,33 +422,39 @@ class Panel(wx.ScrolledWindow):
                 cont = True
         
         if cont:
-            path = dia.GetPath()
-            FILE = open(path, u'r')
-            control_data = FILE.read()
+            file_path = dia.GetPath()
+            
+            FILE_BUFFER = open(file_path, u'r')
+            control_data = FILE_BUFFER.read()
+            FILE_BUFFER.close()
+            
             depends_data = self.SetFieldData(control_data)
             main_window.page_depends.SetFieldData(depends_data)
     
     
     ## TODO: Doxygen
-    def OnCtrlKey(self, event):
+    def OnCtrlKey(self, event=None):
         key = event.GetKeyCode()
         mod = event.GetModifiers()
         
         if mod == 2 and key == 80:
             self.OnPreview(None)
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
-    ## Determins if project is modified
-    def OnKeyDown(self, event):
+    ## Determins if project has been modified
+    def OnKeyDown(self, event=None):
         for widget in self.text_widgets:
             self.text_widgets[widget] = widget.GetValue()
-        event.Skip()
+        
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
-    def OnKeyUp(self, event):
+    def OnKeyUp(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         modified = False
@@ -423,16 +463,18 @@ class Panel(wx.ScrolledWindow):
                 modified = True
         
         main_window.SetSavedStatus(modified)
-        event.Skip()
+        
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
-    def OnPreview(self, event):
+    def OnPreview(self, event=None):
         # Show a preview of the control file
         control = self.GetCtrlInfo()
         
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        dia = wx.Dialog(self, title=GT(u'Preview'), size=(500,400))
+        preview = wx.TextCtrl(dia, style=wx.TE_MULTILINE|wx.TE_READONLY)
         preview.SetValue(control)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -446,7 +488,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def OnSave(self, event):
+    def OnSave(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         
         # Get data to write to control file
@@ -462,31 +504,36 @@ class Panel(wx.ScrolledWindow):
             if dia.DisplayModal():
                 cont = True
                 path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
+        
         else:
             dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
             dia.SetFilename(u'control')
+            
             if dia.ShowModal() == wx.ID_OK:
                 cont = True
                 path = dia.GetPath()
         
         if cont:
-            FILE = open(path, u'w')
-            FILE.write(control)
-            FILE.close()
+            FILE_BUFFER = open(path, u'w')
+            FILE_BUFFER.write(control)
+            FILE_BUFFER.close()
     
     
     ## TODO: Doxygen
-    def OnShow(self, event):
+    #  
+    #  TODO: Define
+    def OnShow(self, event=None):
         pass
     
     
     ## TODO: Doxygen
+    #  
+    #  FIXME: Unfinished???
     def ReLayout(self):
         # Organize all widgets correctly
         lc_width = self.coauth.GetSize()[0]
         self.coauth.SetColumnWidth(0, lc_width/2)
-        #self.coauth.SetColumnWidth(1, lc_width/2-25)
     
     
     ## TODO: Doxygen
@@ -499,7 +546,6 @@ class Panel(wx.ScrolledWindow):
         self.prior.SetSelection(0)
         self.url.Clear()
         self.ess.SetSelection(1)
-        #self.stdver.Clear()
         self.syn.Clear()
         self.desc.Clear()
         self.auth.Clear()
@@ -511,7 +557,9 @@ class Panel(wx.ScrolledWindow):
         if type(data) == type(u''):
             # Decode to unicode string if input is byte string
             data = data.decode(u'utf-8')
+        
         control_data = data.split(u'\n')
+        
         # Remove newline at end of document required by dpkg
         if control_data[-1] == u'\n':
             control_data = control_data[:-1]
@@ -520,24 +568,25 @@ class Panel(wx.ScrolledWindow):
         set_value_fields = (
             (u'Package', self.pack), (u'Version', self.ver),
             (u'Source', self.src), (u'Section', self.sect),
-            (u'Homepage', self.url), (u'Description', self.syn)
+            (u'Homepage', self.url), (u'Description', self.syn),
             )
         
         # Fields that use "SetSelection()" function
         set_selection_fields = (
             (u'Architecture', self.arch, self.arch_opt),
             (u'Priority', self.prior, self.prior_opt),
-            (u'Essential', self.ess, self.ess_opt)
+            (u'Essential', self.ess, self.ess_opt),
             )
         
         # Store Dependencies
         depends_containers = (
-            [u'Depends'], [u'Pre-Depends'], [u'Recommends'], [u'Suggests'], [u'Enhances'],
-            [u'Conflicts'], [u'Replaces'], [u'Breaks']
+            [u'Depends'], [u'Pre-Depends'], [u'Recommends'], [u'Suggests'],
+            [u'Enhances'], [u'Conflicts'], [u'Replaces'], [u'Breaks'],
             )
         
         # Anything left over is dumped into this list then into the description
         leftovers = []
+        
         # Separate Maintainer for later since is divided by Author/Email
         author = wx.EmptyString
         
@@ -548,29 +597,40 @@ class Panel(wx.ScrolledWindow):
                 # Catch Maintainer and put in author variable
                 if f1 == u'Maintainer':
                     author = f2
+                
                 # Set the rest of the wx.TextCtrl fields
                 for setval in set_value_fields:
                     if f1 == setval[0]:
                         setval[1].SetValue(f2)
+                
                 # Set the wx.Choice fields
                 for setsel in set_selection_fields:
                     if f1 == setsel[0]:
                         try:
                             setsel[1].SetSelection(setsel[2].index(f2))
+                        
                         except ValueError:
                             pass
+                
                 # Set dependencies
                 for container in depends_containers:
                     if f1 == container[0]:
                         for dep in f2.split(u', '):
                             container.append(dep)
+            
             else:
                 if field == u' .':
-                    leftovers.append(wx.EmptyString) # Add a blank line for lines marked with a "."
+                    # Add a blank line for lines marked with a "."
+                    leftovers.append(wx.EmptyString)
+                
                 elif field == u'\n' or field == u' ' or field == wx.EmptyString:
-                    pass # Ignore empty lines
+                    # Ignore empty lines
+                    pass
+                
                 elif field[0] == u' ':
-                    leftovers.append(field[1:]) # Remove the first space generated in the description
+                    # Remove the first space generated in the description
+                    leftovers.append(field[1:])
+                
                 else:
                     leftovers.append(field)
         
