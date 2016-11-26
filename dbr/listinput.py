@@ -413,7 +413,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
         width = width[0]
         
         # Use the parent window & its children to determine desired width
-        target_width = parent.GetSize()[0] - parent.dir_tree.GetSize()[0] - 15
+        target_width = parent.GetSize()[0] - parent.tree_directories.GetSize()[0] - 15
         
         if width > 0 and target_width > 0:
             if width != target_width:

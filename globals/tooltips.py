@@ -73,12 +73,12 @@ TT_depends = {
 }
 
 TT_files = {
-    u'add': GT(u'Add selected file/folder to list'),
-    u'remove': GT(u'Remove selected files from list'),
-    u'clear': GT(u'Clear file list'),
+    u'btn add': GT(u'Add selected file/folder to list'),
+    u'btn remove': GT(u'Remove selected files from list'),
+    u'btn clear': GT(u'Clear file list'),
+    u'btn browse': GT(u'Browse for target installation directory'),
+    u'btn refresh': GT(u'Update files\' executable status & availability'),
     u'target': GT(u'Target installation directory for file(s)'),
-    u'browse': GT(u'Browse for target installation directory'),
-    u'refresh': GT(u'Update files\' executable status & availability'),
     u'filelist': GT(u'Files to be added to package & their target directories')
 }
 
