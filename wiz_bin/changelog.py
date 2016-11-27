@@ -166,6 +166,11 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def AddInfo(self, event=None):
+        new_changes = self.ti_changes.GetValue()
+        
+        if TextIsEmpty(new_changes):
+            return
+        
         package = self.ti_package.GetValue()
         version = self.ti_version.GetValue()
         distribution = self.ti_dist.GetValue()
@@ -173,14 +178,19 @@ class Panel(wx.ScrolledWindow):
         info1 = u'{} ({}) {}; urgency={}'.format(package, version, distribution, urgency)
         
         details = []
-        for line in self.ti_changes.GetValue().split(u'\n'):
-            if line == self.ti_changes.GetValue().split(u'\n')[0]:
-                line = u'  * {}'.format(line)
-            
-            else:
-                line = u'    {}'.format(line)
-            
-            details.append(line)
+        for line in new_changes.split(u'\n'):
+            if not TextIsEmpty(line):
+                # Strip leading & trailing whitespace
+                line = line.strip(u' \t')
+                
+                # Empty list denotes adding first line
+                if not details:
+                    line = u'  * {}'.format(line)
+                
+                else:
+                    line = u'    {}'.format(line)
+                
+                details.append(line)
         
         details.insert(0, wx.EmptyString)
         details.append(wx.EmptyString)
