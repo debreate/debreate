@@ -255,7 +255,7 @@ class Panel(wx.ScrolledWindow):
         lyt_border = wx.BoxSizer(wx.VERTICAL)
         
         lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.RIGHT|wx.TOP, 5)
+        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.TOP, 5)
         lyt_border.AddSpacer(5)
         lyt_border.Add(txt_other, 0)
         lyt_border.Add(self.ti_other, 1, wx.EXPAND)
