@@ -20,8 +20,6 @@ from dbr.log            import Logger
 from dbr.md5            import MD5Hasher
 from dbr.message        import MessageDialog
 from globals.bitmaps    import ICON_INFORMATION
-from globals.commands   import CMD_dpkg
-from globals.commands   import CMD_gdebi
 from globals.commands   import CMD_gdebi_gui
 from globals.commands   import CMD_lintian
 from globals.commands   import CMD_md5sum
@@ -38,7 +36,10 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(0, 20, 0, 0)
         
         # ----- Extra Options
-        self.chk_md5 = wx.CheckBox(self, label=GT(u'Create md5sums file'))
+        
+        pnl_options = wx.Panel(self, style=wx.BORDER_THEME)
+        
+        self.chk_md5 = wx.CheckBox(pnl_options, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
@@ -51,13 +52,13 @@ class Panel(wx.ScrolledWindow):
         self.md5 = MD5Hasher()
         
         # Deletes the temporary build tree
-        self.chk_rmstage = wx.CheckBox(self, label=GT(u'Delete build tree'))
+        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete build tree'))
         self.chk_rmstage.SetName(u'rmstage')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
         
         # Checks the output .deb for errors
-        self.chk_lint = wx.CheckBox(self, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint = wx.CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
@@ -69,7 +70,7 @@ class Panel(wx.ScrolledWindow):
             self.chk_lint.SetValue(self.chk_lint.default)
         
         # Installs the deb on the system
-        self.chk_install = wx.CheckBox(self, label=GT(u'Install package after build'))
+        self.chk_install = wx.CheckBox(pnl_options, label=GT(u'Install package after build'))
         self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
@@ -87,22 +88,26 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
-        # Nice border for the options
-        box_options = wx.StaticBox(self, label=GT(u'Extra options'))
-        lyt_options = wx.StaticBoxSizer(box_options, wx.VERTICAL)
+        lyt_options = wx.BoxSizer(wx.VERTICAL)
         lyt_options.AddMany((
-            (self.chk_md5, 0),
-            (self.chk_rmstage, 0),
-            (self.chk_lint, 0),
-            (self.chk_install, 0)
+            (self.chk_md5, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_rmstage, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_lint, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_install, 0, wx.LEFT|wx.RIGHT, 5)
             ))
+        
+        pnl_options.SetSizer(lyt_options)
+        pnl_options.SetAutoLayout(True)
+        pnl_options.Layout()
         
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_build, 1)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_options, 0, wx.LEFT, 5)
+        lyt_main.Add(wx.StaticText(self, label=GT(u'Extra Options')), 0,
+                wx.ALIGN_LEFT|wx.ALIGN_BOTTOM|wx.LEFT, 5)
+        lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
