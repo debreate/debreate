@@ -181,7 +181,7 @@ def GetSystemLicensesList():
             if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
                 license_list.append(F)
     
-    return license_list
+    return sorted(license_list)
 
 
 ## Checks if a string contains any alphabetic characters
