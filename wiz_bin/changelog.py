@@ -2,7 +2,6 @@
 
 ## \package wiz_bin.changelog
 
-
 # MIT licensing
 # See: docs/LICENSE.txt
 
