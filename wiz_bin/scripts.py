@@ -121,7 +121,6 @@ class Panel(wx.ScrolledWindow):
         
         # Organizing radio buttons
         lyt_sel_script = wx.BoxSizer(wx.HORIZONTAL)
-        
         lyt_sel_script.AddMany((
             (self.chk_preinst),(self.chk_postinst),
             (self.chk_prerm),(self.chk_postrm)
@@ -134,7 +133,6 @@ class Panel(wx.ScrolledWindow):
         
         # Sizer for left half of scripts panel
         lyt_left = wx.BoxSizer(wx.VERTICAL)
-        
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
         lyt_left.Add(self.te_preinst, 1, wx.EXPAND)
         lyt_left.Add(self.te_postinst, 1, wx.EXPAND)
@@ -147,35 +145,29 @@ class Panel(wx.ScrolledWindow):
         lyt_ti_autolink.Add(self.ti_autolink, 1, wx.ALIGN_CENTER)
         
         lyt_btn_autolink = wx.BoxSizer(wx.HORIZONTAL)
-        
-        lyt_btn_autolink.Add(btn_al_import, 1)
-        lyt_btn_autolink.Add(btn_al_remove, 1)
-        lyt_btn_autolink.Add(btn_al_generate, 1)
+        lyt_btn_autolink.Add(btn_al_import, 0)
+        lyt_btn_autolink.Add(btn_al_remove, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_btn_autolink.Add(btn_al_generate, 0)
         
         lyt_autolink = wx.BoxSizer(wx.VERTICAL)
-        
-        lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND)
-        lyt_autolink.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
-        lyt_autolink.Add(lyt_btn_autolink, 0, wx.EXPAND)
+        lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
+        lyt_autolink.Add(self.executables, 0, wx.TOP|wx.LEFT|wx.RIGHT, 5)
+        lyt_autolink.Add(lyt_btn_autolink, 0, wx.ALIGN_CENTER_HORIZONTAL)
+        lyt_autolink.Add(btn_help, 0, wx.ALIGN_CENTER)
         
         pnl_autolink.SetSizer(lyt_autolink)
         pnl_autolink.SetAutoLayout(True)
         pnl_autolink.Layout()
         
         lyt_right = wx.BoxSizer(wx.VERTICAL)
-        
-        lyt_right.AddSpacer(17)
-        lyt_right.Add(
-            wx.StaticText(self, label=GT(u'Auto-Link Executables')),
-            0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
-            )
+        lyt_right.AddSpacer(30)
+        lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
+                0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
         lyt_right.Add(pnl_autolink, 0)
-        lyt_right.Add(btn_help, 0, wx.ALIGN_CENTER)
         
         lyt_main = wx.BoxSizer(wx.HORIZONTAL)
-        
-        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.ALL, 5)
-        lyt_main.Add(lyt_right, 0, wx.ALL, 5)
+        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_main.Add(lyt_right, 0, wx.RIGHT, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
