@@ -58,8 +58,8 @@ class Panel(wx.ScrolledWindow):
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
         self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
         
-        self.button_import = ButtonImport(self)
-        self.button_import.SetName(u'import')
+        btn_import = ButtonImport(self)
+        btn_import.SetName(u'import')
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
         
         # Changes input
@@ -82,8 +82,8 @@ class Panel(wx.ScrolledWindow):
         self.ti_target = PathCtrl(pnl_target, -1, u'/', PATH_WARN)
         self.ti_target.SetName(u'target custom')
         
-        self.button_add = ButtonAdd(self)
-        self.button_add.SetName(u'add')
+        self.btn_add = ButtonAdd(self)
+        self.btn_add.SetName(u'add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.dsp_changes = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
@@ -130,13 +130,13 @@ class Panel(wx.ScrolledWindow):
         lyt_details.SetCols(3)
         lyt_details.AddGrowableCol(1)
         
-        lyt_details.Add(self.button_import, (0, 0))
+        lyt_details.Add(btn_import, (0, 0))
         lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
         lyt_details.Add(wx.StaticText(self, label=GT(u'Changes')), (1, 0), flag=LEFT_BOTTOM)
         lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
         lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
         lyt_details.Add(pnl_target, (2, 2))
-        lyt_details.Add(self.button_add, (3, 0))
+        lyt_details.Add(self.btn_add, (3, 0))
         lyt_details.Add(txt_add, (3, 1), flag=LEFT_CENTER)
         
         lyt_main = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
@@ -156,8 +156,8 @@ class Panel(wx.ScrolledWindow):
         
         # *** Event handlers *** #
         
-        self.button_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
-        self.button_add.Bind(wx.EVT_BUTTON, self.AddInfo)
+        btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
+        self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
     
     
     ## TODO: Doxygen
