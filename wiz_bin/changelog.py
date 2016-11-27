@@ -200,10 +200,15 @@ class Panel(wx.ScrolledWindow):
         email = self.ti_email.GetValue()
         # FIXME: Use GetDate method
         date = commands.getoutput(u'date -R')
-        info2 = u' -- {} <{}>  {}'.format(maintainer, email, date)
+        # The '\n' makes sure that there is always at least one empty line at end of file
+        info2 = u' -- {} <{}>  {}\n'.format(maintainer, email, date)
+        info3 = self.dsp_changes.GetValue()
         
-        entry = u'\n'.join((info1, details, info2))
-        self.dsp_changes.SetValue(u'\n'.join((entry, wx.EmptyString, self.dsp_changes.GetValue())))
+        # Only append newlines if log isn't already empty
+        if not TextIsEmpty(info3):
+            info2 = u'{}\n\n{}'.format(info2, info3)
+        
+        self.dsp_changes.SetValue(u'\n'.join((info1, details, info2)))
     
     
     ## TODO: Doxygen
