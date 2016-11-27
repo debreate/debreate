@@ -8,24 +8,36 @@
 
 import commands, os, shutil, subprocess, wx
 
-from dbr.buttons        import ButtonBuild64
-from dbr.custom         import OutputLog
-from dbr.custom         import SaveFile
-from dbr.dialogs        import ShowErrorDialog
-from dbr.dialogs        import ShowMessageDialog
-from dbr.functions      import FieldEnabled
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.md5            import MD5Hasher
-from dbr.message        import MessageDialog
-from globals.bitmaps    import ICON_INFORMATION
-from globals.commands   import CMD_gdebi_gui
-from globals.commands   import CMD_lintian
-from globals.commands   import CMD_md5sum
-from globals.commands   import CMD_system_installer
-from globals.ident      import ID_BUILD
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonBuild64
+from dbr.custom             import OutputLog
+from dbr.custom             import SaveFile
+from dbr.dialogs            import ShowErrorDialog
+from dbr.dialogs            import ShowMessageDialog
+from dbr.functions          import FieldEnabled
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.md5                import MD5Hasher
+from dbr.message            import MessageDialog
+from globals.bitmaps        import ICON_INFORMATION
+from globals.commands       import CMD_gdebi_gui
+from globals.commands       import CMD_lintian
+from globals.commands       import CMD_md5sum
+from globals.commands       import CMD_system_installer
+from globals.ident          import FID_ARCH
+from globals.ident          import FID_EMAIL
+from globals.ident          import FID_MAINTAINER
+from globals.ident          import FID_PACKAGE
+from globals.ident          import FID_VERSION
+from globals.ident          import ID_BUILD
+from globals.ident          import ID_CHANGELOG
+from globals.ident          import ID_CONTROL
+from globals.ident          import ID_COPYRIGHT
+from globals.ident          import ID_FILES
+from globals.ident          import ID_MENU
+from globals.ident          import ID_SCRIPTS
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetField
 
 
 ## Build page
@@ -215,16 +227,33 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def OnBuild(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
+        wizard = main_window.GetWizard()
+        
+        pg_control = wizard.GetPage(ID_CONTROL)
+        pg_files = wizard.GetPage(ID_FILES)
+        pg_scripts = wizard.GetPage(ID_SCRIPTS)
+        pg_clog = wizard.GetPage(ID_CHANGELOG)
+        pg_copyright = wizard.GetPage(ID_COPYRIGHT)
+        pg_menu = wizard.GetPage(ID_MENU)
+        
+        fld_package = GetField(pg_control, FID_PACKAGE)
+        fld_version = GetField(pg_control, FID_VERSION)
+        fld_maint = GetField(pg_control, FID_MAINTAINER)
+        fld_email = GetField(pg_control, FID_EMAIL)
         
         # Check to make sure that all required fields have values
-        meta = main_window.page_control
-        required = [meta.pack, meta.ver, meta.auth, meta.email]
+        required = [
+            fld_package,
+            fld_version,
+            fld_maint,
+            fld_email,
+            ]
         
-        if main_window.page_menu.activate.GetValue():
-            required.append(main_window.page_menu.name_input)
+        if pg_menu.chk_enable.GetValue():
+            required.append(pg_menu.ti_name)
             
-            if not main_window.page_menu.chk_filename.GetValue():
-                required.append(main_window.page_menu.input_filename)
+            if not pg_menu.chk_filename.GetValue():
+                required.append(pg_menu.ti_filename)
         
         required_ok = True
         
@@ -245,16 +274,15 @@ class Panel(wx.ScrolledWindow):
         invalid_chars = (u' ', u'/')
         
         # Get information from control page for default filename
-        pack_value = meta.pack.GetValue()
+        pack_value = fld_package.GetValue()
         pack_letters = pack_value.split()  # Remove whitespace
         pack = u'-'.join(pack_letters)  # Replace whitespace with "-"
         
-        ver_value = meta.ver.GetValue()
+        ver_value = fld_version.GetValue()
         ver_digits = ver_value.split()  # Remove whitespace
         ver = u''.join(ver_digits)
         
-        arch_index = meta.arch.GetCurrentSelection()
-        arch = meta.arch_opt[arch_index]
+        arch = GetField(pg_control, FID_ARCH).GetStringSelection()
         
         # If all required fields were met, continue to build
         def BuildIt(build_path, filename):
@@ -272,14 +300,14 @@ class Panel(wx.ScrolledWindow):
             
             # Control & Depends (string)
             wx.Yield()
-            control_data = main_window.page_control.GetCtrlInfo()
+            control_data = pg_control.GetCtrlInfo()
             progress += 1
             tasks += 1
             prebuild_progress.Update(progress, GT(u'Checking files'))
             
             # Files (tuple)
             wx.Yield()
-            files_data = main_window.page_files.GatherData().split(u'\n')[2:-1]
+            files_data = pg_files.GatherData().split(u'\n')[2:-1]
             progress += 1
             for FILE in files_data:
                 tasks += 1
@@ -288,7 +316,7 @@ class Panel(wx.ScrolledWindow):
             
             # Scripts (tuple)
             wx.Yield()
-            scripts_data = main_window.page_scripts.GatherData()[1:-1]
+            scripts_data = pg_scripts.GatherData()[1:-1]
             progress += 1
             # Separate the scripts
             preinst = (u'<<PREINST>>\n', u'\n<</PREINST>>', u'preinst')
@@ -316,11 +344,11 @@ class Panel(wx.ScrolledWindow):
             wx.Yield()
             
             # Changelog (list)
-            changelog_data = main_window.page_clog.GatherData()
+            changelog_data = pg_clog.GatherData()
             changelog_data = changelog_data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0].split(u'\n')
             create_changelog = False
             
-            if main_window.page_clog.GetChangelog() != wx.EmptyString:
+            if pg_clog.GetChangelog() != wx.EmptyString:
                 create_changelog = True
             
             if create_changelog:
@@ -334,7 +362,7 @@ class Panel(wx.ScrolledWindow):
             prebuild_progress.Update(progress, GT(u'Checking copyright'))
             wx.Yield()
             
-            cpright = main_window.page_cpright.GetCopyright()
+            cpright = pg_copyright.GetCopyright()
             create_copyright = False
             if cpright != wx.EmptyString:
                 create_copyright = True
@@ -346,10 +374,10 @@ class Panel(wx.ScrolledWindow):
             prebuild_progress.Update(progress, GT(u'Checking menu launcher'))
             wx.Yield()
             
-            create_menu = main_window.page_menu.activate.GetValue()
+            create_menu = pg_menu.activate.GetValue()
             if create_menu:
                 tasks += 1
-                menu_data = main_window.page_menu.GetLauncherInfo().split(u'\n')
+                menu_data = pg_menu.GetLauncherInfo().split(u'\n')
             
             progress += 1
             
@@ -490,7 +518,7 @@ class Panel(wx.ScrolledWindow):
                 # This may be changed later to set a custom directory
                 menu_dir = u'{}/usr/share/applications'.format(temp_tree)
                 
-                menu_filename = main_window.page_menu.GetOutputFilename()
+                menu_filename = pg_menu.GetOutputFilename()
                 
                 # Remove invalid characters from filename
                 for char in invalid_chars:
