@@ -8,6 +8,7 @@
 
 import wx
 
+from dbr.functions      import GetSystemLicensesList
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from globals.ident      import ID_COPYRIGHT
@@ -21,11 +22,9 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        opts_licenses = (
-            u'Apache-2.0', u'Artistic', u'BSD', u'GFDL', u'GFDL-1.2',
-            u'GFDL-1.3', u'GPL', u'GPL-1', u'GPL-2', u'GPL-3', u'LGPL',
-            u'LGPL-2', u'LGPL-2.1', u'LGPL-3'
-        )
+        opts_licenses = GetSystemLicensesList()
+        for O in opts_licenses:
+            print(u'System license: {}'.format(O))
         
         btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
         
