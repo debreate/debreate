@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.files
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
@@ -77,8 +82,8 @@ class Panel(wx.ScrolledWindow):
         btn_clear = ButtonClear(self)
         
         self.prev_dest_value = u'/usr/bin'
-        self.inp_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
-        self.inp_target.default = u'/usr/bin'
+        self.ti_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
+        self.ti_target.default = u'/usr/bin'
         
         self.btn_browse = ButtonBrowse(self)
         
@@ -102,7 +107,7 @@ class Panel(wx.ScrolledWindow):
         
         # Put text input in its own sizer to force expand
         lyt_input = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_input.Add(self.inp_target, 1, wx.ALIGN_CENTER_VERTICAL)
+        lyt_input.Add(self.ti_target, 1, wx.ALIGN_CENTER_VERTICAL)
         
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
@@ -153,8 +158,8 @@ class Panel(wx.ScrolledWindow):
         btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
         
         # ???: Not sure what these do
-        wx.EVT_KEY_DOWN(self.inp_target, self.GetDestValue)
-        wx.EVT_KEY_UP(self.inp_target, self.CheckDest)
+        wx.EVT_KEY_DOWN(self.ti_target, self.GetDestValue)
+        wx.EVT_KEY_UP(self.ti_target, self.CheckDest)
         
         # Key events for file list
         wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
@@ -162,13 +167,13 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def CheckDest(self, event=None):
-        if TextIsEmpty(self.inp_target.GetValue()):
-            self.inp_target.SetValue(self.prev_dest_value)
-            self.inp_target.SetInsertionPoint(-1)
+        if TextIsEmpty(self.ti_target.GetValue()):
+            self.ti_target.SetValue(self.prev_dest_value)
+            self.ti_target.SetInsertionPoint(-1)
         
-        elif self.inp_target.GetValue()[0] != u'/':
-            self.inp_target.SetValue(self.prev_dest_value)
-            self.inp_target.SetInsertionPoint(-1)
+        elif self.ti_target.GetValue()[0] != u'/':
+            self.ti_target.SetValue(self.prev_dest_value)
+            self.ti_target.SetInsertionPoint(-1)
         
         if event:
             event.Skip()
@@ -216,9 +221,9 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GetDestValue(self, event=None):
-        if not TextIsEmpty(self.inp_target.GetValue()):
-            if self.inp_target.GetValue()[0] == u'/':
-                self.prev_dest_value = self.inp_target.GetValue()
+        if not TextIsEmpty(self.ti_target.GetValue()):
+            if self.ti_target.GetValue()[0] == u'/':
+                self.prev_dest_value = self.ti_target.GetValue()
         
         if event:
             event.Skip()
@@ -230,7 +235,7 @@ class Panel(wx.ScrolledWindow):
         pin = self.tree_directories.GetPath()
         
         if self.rb_custom.GetValue():
-            pout = self.inp_target.GetValue()
+            pout = self.ti_target.GetValue()
         
         else:
             for item in self.grp_targets:
@@ -286,7 +291,7 @@ class Panel(wx.ScrolledWindow):
     def OnBrowse(self, event=None):
         dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
-            self.inp_target.SetValue(dia.GetPath())
+            self.ti_target.SetValue(dia.GetPath())
     
     
     ## TODO: Doxygen
@@ -349,7 +354,7 @@ class Panel(wx.ScrolledWindow):
     def ResetAllFields(self):
         self.rb_custom.SetValue(self.rb_custom.default)
         self.SetDestination(None)
-        self.inp_target.SetValue(self.inp_target.default)
+        self.ti_target.SetValue(self.ti_target.default)
         self.lst_files.DeleteAllItems()
     
     
@@ -357,11 +362,11 @@ class Panel(wx.ScrolledWindow):
     def SetDestination(self, event=None):
         # Event handler that disables the custom destination if the corresponding radio button isn't selected
         if self.rb_custom.GetValue() == True:
-            self.inp_target.Enable()
+            self.ti_target.Enable()
             self.btn_browse.Enable()
         
         else:
-            self.inp_target.Disable()
+            self.ti_target.Disable()
             self.btn_browse.Disable()
     
     

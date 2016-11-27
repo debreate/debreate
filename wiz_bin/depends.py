@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Page defining dependencies
+## \package wiz_bin.depends
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
 
@@ -16,7 +20,7 @@ from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
 
 
-## TODO: Doxygen
+## Page defining dependencies
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
         wx.ScrolledWindow.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
@@ -26,16 +30,16 @@ class Panel(wx.ScrolledWindow):
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         
-        self.inp_package = wx.TextCtrl(self, size=(300,25), name=u'package')
+        self.ti_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
         opts_operator = (u'>=', u'<=', u'=', u'>>', u'<<')
         self.sel_operator = wx.Choice(self, choices=opts_operator, name=u'operator')
         self.sel_operator.default = 0
         self.sel_operator.SetSelection(self.sel_operator.default)
         
-        self.inp_version = wx.TextCtrl(self, name=u'version')
+        self.ti_version = wx.TextCtrl(self, name=u'version')
         
-        self.inp_package.SetSize((100,50))
+        self.ti_package.SetSize((100,50))
         
         pnl_categories = wx.Panel(self, style=wx.BORDER_THEME)
         
@@ -82,9 +86,9 @@ class Panel(wx.ScrolledWindow):
         layt_labels.Add(txt_version, (0, 2), flag=wx.ALIGN_BOTTOM)
         
         # Row 2
-        layt_labels.Add(self.inp_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        layt_labels.Add(self.ti_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
         layt_labels.Add(self.sel_operator, (1, 1))
-        layt_labels.Add(self.inp_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        layt_labels.Add(self.ti_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
         
         layt_categories = wx.GridSizer(4, 2, 5, 5)
         
@@ -126,8 +130,8 @@ class Panel(wx.ScrolledWindow):
         
         # *** Event handlers *** #
         
-        wx.EVT_KEY_DOWN(self.inp_package, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.inp_version, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
         
         btn_add.Bind(wx.EVT_BUTTON, self.SetDepends)
         btn_append.Bind(wx.EVT_BUTTON, self.SetDepends)
@@ -159,9 +163,9 @@ class Panel(wx.ScrolledWindow):
                 C.SetValue(True)
                 break
         
-        self.inp_package.Clear()
+        self.ti_package.Clear()
         self.sel_operator.SetSelection(self.sel_operator.default)
-        self.inp_version.Clear()
+        self.ti_version.Clear()
         self.lst_deps.DeleteAllItems()
     
     
@@ -173,9 +177,9 @@ class Panel(wx.ScrolledWindow):
         except AttributeError:
             key_id = event.GetEventObject().GetId()
         
-        addname = self.inp_package.GetValue()
+        addname = self.ti_package.GetValue()
         oper = self.sel_operator.GetStringSelection()
-        ver = self.inp_version.GetValue()
+        ver = self.ti_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
             
         if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:

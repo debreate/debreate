@@ -2,6 +2,9 @@
 
 ## \package wiz_bin.control
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 from wx.combo import OwnerDrawnComboBox
@@ -44,23 +47,23 @@ class Panel(wx.ScrolledWindow):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        inp_package = CharCtrl(pnl_require, FID_NAME, name=txt_package.Name)
-        inp_package.req = True
+        ti_package = CharCtrl(pnl_require, FID_NAME, name=txt_package.Name)
+        ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        inp_version = CharCtrl(pnl_require, FID_VERSION, name=txt_version.Name)
-        inp_version.req = True
+        ti_version = CharCtrl(pnl_require, FID_VERSION, name=txt_version.Name)
+        ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        inp_maintainer = wx.TextCtrl(pnl_require, FID_MAINTAINER, name=txt_maintainer.Name)
-        inp_maintainer.req = True
+        ti_maintainer = wx.TextCtrl(pnl_require, FID_MAINTAINER, name=txt_maintainer.Name)
+        ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        inp_email = wx.TextCtrl(pnl_require, FID_EMAIL, name=txt_email.Name)
-        inp_email.req = True
+        ti_email = wx.TextCtrl(pnl_require, FID_EMAIL, name=txt_email.Name)
+        ti_email.req = True
         
         opts_arch = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
@@ -79,7 +82,7 @@ class Panel(wx.ScrolledWindow):
         
         pnl_recommend = wx.Panel(pnl_bg, style=wx.BORDER_THEME)
         
-        inp_section_opt = (
+        ti_section_opt = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
             u'doc', u'editors', u'electronics', u'embedded', u'fonts', u'games',
             u'gnome', u'graphics', u'gnu-r', u'gnustep', u'hamradio', u'haskell',
@@ -92,7 +95,7 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
-        inp_section = OwnerDrawnComboBox(pnl_recommend, choices=inp_section_opt, name=txt_section.Name)
+        ti_section = OwnerDrawnComboBox(pnl_recommend, choices=ti_section_opt, name=txt_section.Name)
         
         opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
@@ -104,20 +107,20 @@ class Panel(wx.ScrolledWindow):
         sel_priority.SetSelection(sel_priority.default)
         
         txt_synopsis = wx.StaticText(pnl_recommend, label=GT(u'Short Description'), name=u'synopsis')
-        inp_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
+        ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.inp_description = wx.TextCtrl(pnl_recommend, style=wx.TE_MULTILINE, name=txt_description.Name)
+        self.ti_description = wx.TextCtrl(pnl_recommend, style=wx.TE_MULTILINE, name=txt_description.Name)
         
         # *** Optional fields *** #
         
         pnl_option = wx.Panel(pnl_bg, style=wx.BORDER_THEME)
         
         txt_source = wx.StaticText(pnl_option, label=GT(u'Source'), name=u'source')
-        inp_source = wx.TextCtrl(pnl_option, name=txt_source.Name)
+        ti_source = wx.TextCtrl(pnl_option, name=txt_source.Name)
         
         txt_homepage = wx.StaticText(pnl_option, label=GT(u'Homepage'), name=u'homepage')
-        inp_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
+        ti_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
         
         opts_essential = (
             u'yes', u'no',
@@ -131,20 +134,20 @@ class Panel(wx.ScrolledWindow):
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.grp_keypress = {
-            inp_package: wx.EmptyString,
-            inp_version: wx.EmptyString,
+            ti_package: wx.EmptyString,
+            ti_version: wx.EmptyString,
             }
         
         self.grp_input = (
-            inp_package,
-            inp_version,
-            inp_maintainer,  # Maintainer must be listed before email
-            inp_email,
-            inp_section,
-            inp_source,
-            inp_homepage,
-            inp_synopsis,
-            self.inp_description,
+            ti_package,
+            ti_version,
+            ti_maintainer,  # Maintainer must be listed before email
+            ti_email,
+            ti_section,
+            ti_source,
+            ti_homepage,
+            ti_synopsis,
+            self.ti_description,
             )
         
         self.grp_select = (
@@ -172,13 +175,13 @@ class Panel(wx.ScrolledWindow):
         
         layt_require.AddMany((
             (txt_package, 0, TEXT_FLAG|wx.LEFT|wx.TOP, 5),
-            (inp_package, 0, wx.EXPAND|wx.TOP, 5),
+            (ti_package, 0, wx.EXPAND|wx.TOP, 5),
             (txt_version, 0, TEXT_FLAG|wx.TOP, 5),
-            (inp_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
+            (ti_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
             (txt_maintainer, 0, TEXT_FLAG|wx.LEFT, 5),
-            (inp_maintainer, 0, wx.EXPAND),
+            (ti_maintainer, 0, wx.EXPAND),
             (txt_email, 0, TEXT_FLAG),
-            (inp_email, 0, wx.EXPAND|wx.RIGHT, 5),
+            (ti_email, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_arch, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
             (sel_arch, 0, wx.BOTTOM, 5),
             ))
@@ -194,13 +197,13 @@ class Panel(wx.ScrolledWindow):
         layt_recommend.AddGrowableRow(3)
         
         layt_recommend.Add(txt_section, (0, 2), flag=TEXT_FLAG|wx.TOP, border=5)
-        layt_recommend.Add(inp_section, (0, 3), flag=wx.RIGHT|wx.TOP, border=5)
+        layt_recommend.Add(ti_section, (0, 3), flag=wx.RIGHT|wx.TOP, border=5)
         layt_recommend.Add(txt_synopsis, (0, 0), (1, 2), wx.ALIGN_BOTTOM|wx.LEFT, 5)
-        layt_recommend.Add(inp_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
+        layt_recommend.Add(ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
         layt_recommend.Add(txt_priority, (1, 2), flag=TEXT_FLAG)
         layt_recommend.Add(sel_priority, (1, 3), flag=wx.RIGHT, border=5)
         layt_recommend.Add(txt_description, (2, 0), (1, 2), wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        layt_recommend.Add(self.inp_description, (3, 0), (1, 4),
+        layt_recommend.Add(self.ti_description, (3, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         pnl_recommend.SetSizer(layt_recommend)
@@ -218,9 +221,9 @@ class Panel(wx.ScrolledWindow):
         layt_option.AddSpacer(5)
         layt_option.AddMany((
             (txt_source, 0, TEXT_FLAG|wx.LEFT, 5),
-            (inp_source, 0, wx.EXPAND),
+            (ti_source, 0, wx.EXPAND),
             (txt_homepage, 0, TEXT_FLAG),
-            (inp_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
+            (ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_essential, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
             (sel_essential, 1, wx.BOTTOM, 5),
             ))
@@ -615,7 +618,7 @@ class Panel(wx.ScrolledWindow):
                     description.append(line)
         
         # Put leftovers in long description
-        self.inp_description.SetValue(u'\n'.join(description))
+        self.ti_description.SetValue(u'\n'.join(description))
         
         # Return depends data to parent to be sent to page_depends
         return depends_containers
