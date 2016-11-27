@@ -68,6 +68,7 @@ def FieldEnabled(field):
     # wx. 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
     if wx.MAJOR_VERSION > 2:
         return field.IsThisEnabled()
+    
     else:
         return field.IsEnabled()
 
@@ -85,7 +86,9 @@ def RunSudo(password, command):
     err = int(output.split(u'\n')[-2])
     if (err):
         return False
+    
     return True
+
 
 ## Checks if the system is using a specific version of Python
 #  
@@ -98,24 +101,27 @@ def RequirePython(version):
     if t == type(u''):
         if version == PY_VER_STRING[0:3]:
             return
+        
         raise ValueError(error)
+    
     elif t == type([]) or t == type(()):
         if PY_VER_STRING[0:3] in version:
             return
+        
         raise ValueError(error)
+    
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
+
 
 ## Checks if a text string is empty
 #  
 #  \param text
 #        The string to be checked
 def TextIsEmpty(text):
-    text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
-    return (text == u'')
+    return text.strip(u' \t\n') == wx.EmptyString
 
 
-# FIXME: time.strftime can be used for all date & time functions
-
+## TODO: Doxygen
 def prepend_zero(number):
     if number < 10:
         return unicode(u'0{}'.format(number))
@@ -186,7 +192,8 @@ def GetSystemLicensesList():
 #        \b \e bool : Alphabet characters found
 def HasAlpha(value):
     return (re.search(u'[a-zA-Z]', unicode(value)) != None)
-    
+
+
 ## Finds integer value from a string, float, tuple, or list
 #  
 #  \param value
@@ -285,15 +292,6 @@ def GetIntTuple(value):
                 return None
             
             value[t_index] = I
-            
-            '''
-            if type(I) not in (int, float):
-                return None
-            
-            # Convert float values to int
-            if type(I) == float:
-                value[t_index] = int(I)
-            '''
         
         return tuple(value)
     
@@ -312,21 +310,7 @@ def GetIntTuple(value):
                 
                 if S == None:
                     return None
-                '''
-                # Check for float values
-                if u'.' in S:
-                    # Remove trailing values after 2nd period
-                    S = S.split(u'.')[:2]
-                    
-                    for C in S:
-                        if (not C.isnumeric() and (not C.isdigit())):
-                            return None
-                    
-                    S = float(u'.'.join(S))
                 
-                elif (not S.isnumeric()) and (not S.isdigit()):
-                    return None
-                '''
                 value[v_index] = S
                 
             # Convert return value from list to tuple
@@ -338,8 +322,10 @@ def GetIntTuple(value):
 def IsInteger(value):
     return GetInteger(value) != None
 
+
 def IsBoolean(value):
     return GetBoolean(value) != None
+
 
 def IsIntTuple(value):
     return GetIntTuple(value) != None

@@ -6,7 +6,6 @@
 # See: docs/LICENSE.txt
 
 
-# System imports
 import os, sys, webbrowser, wx
 from wx.lib.docview import PathOnly
 
@@ -15,13 +14,11 @@ from dbr.textinput  import MultilineTextCtrlPanel
 from globals.paths  import PATH_app
 
 
-# Local imports
 db_here = PathOnly(__file__).decode(u'utf-8')
 
 # FIXME: This should be import from dbr.functions
 def TextIsEmpty(text):
-    text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
-    return text == u''
+    return text.strip(u' \t\n') == wx.EmptyString
 
 
 ## Dialog shown when Debreate is run for first time
