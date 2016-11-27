@@ -15,6 +15,7 @@ from dbr.buttons        import ButtonRemove
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import ListCtrlPanel
+from globals.ident      import FID_LIST
 from globals.ident      import ID_APPEND
 from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
@@ -67,7 +68,7 @@ class Panel(wx.ScrolledWindow):
         btn_clear = ButtonClear(self)
         
         # ----- List
-        self.lst_deps = ListCtrlPanel(self, style=wx.LC_REPORT, name=u'list')
+        self.lst_deps = ListCtrlPanel(self, FID_LIST, style=wx.LC_REPORT, name=u'list')
         self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
         self.lst_deps.InsertColumn(1, GT(u'Package(s)'))
         

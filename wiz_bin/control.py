@@ -9,24 +9,26 @@
 import os, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.buttons        import ButtonBrowse64
-from dbr.buttons        import ButtonPreview64
-from dbr.buttons        import ButtonSave64
-from dbr.charctrl       import CharCtrl
-from dbr.custom         import OpenFile
-from dbr.custom         import SaveFile
-from dbr.functions      import FieldEnabled
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.ident      import FID_ARCH
-from globals.ident      import FID_EMAIL
-from globals.ident      import FID_MAINTAINER
-from globals.ident      import FID_PACKAGE
-from globals.ident      import FID_VERSION
-from globals.ident      import ID_CONTROL
-from globals.ident      import ID_DEPENDS
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonBrowse64
+from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonSave64
+from dbr.charctrl           import CharCtrl
+from dbr.custom             import OpenFile
+from dbr.custom             import SaveFile
+from dbr.functions          import FieldEnabled
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.ident          import FID_ARCH
+from globals.ident          import FID_EMAIL
+from globals.ident          import FID_LIST
+from globals.ident          import FID_MAINTAINER
+from globals.ident          import FID_PACKAGE
+from globals.ident          import FID_VERSION
+from globals.ident          import ID_CONTROL
+from globals.ident          import ID_DEPENDS
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetField
 
 
 ## This panel displays the field input of the control file
@@ -276,7 +278,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GetCtrlInfo(self):
-        main_window = wx.GetApp().GetTopWindow()
+        pg_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ID_DEPENDS)
         
         ctrl_list = []
         synopsis = None
@@ -374,7 +376,7 @@ class Panel(wx.ScrolledWindow):
             }
         
         # Get amount of items to add
-        dep_area = main_window.page_depends.dep_area
+        dep_area = GetField(pg_depends, FID_LIST)
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
