@@ -110,8 +110,8 @@ TT_changelog = {
     u'changes': GT(u'List new changes here, separated one per line'),
     u'target default': GT(u'Install changelog to standard directory'),
     u'target custom': GT(u'Install changelog to custom directory'),
-    u'import': GT(u'Import information from Control page'),
-    u'add': GT(u'Prepend above changes as new log entry'),
+    u'btn import': GT(u'Import information from Control page'),
+    u'btn add': GT(u'Prepend above changes as new log entry'),
     u'log': GT(u'Formatted changelog entries (editable)'),
 }
 

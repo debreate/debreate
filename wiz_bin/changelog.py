@@ -59,7 +59,6 @@ class Panel(wx.ScrolledWindow):
         self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
         
         btn_import = ButtonImport(self)
-        btn_import.SetName(u'import')
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
         
         # Changes input
@@ -83,7 +82,6 @@ class Panel(wx.ScrolledWindow):
         self.ti_target.SetName(u'target custom')
         
         self.btn_add = ButtonAdd(self)
-        self.btn_add.SetName(u'add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.dsp_changes = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
