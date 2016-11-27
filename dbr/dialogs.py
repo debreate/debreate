@@ -2,6 +2,9 @@
 
 ## \package dbr.dialogs
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx, os
 from wx.combo import OwnerDrawnComboBox
@@ -18,6 +21,7 @@ from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
 
 
+## TODO: Doxygen
 class OverwriteDialog(wx.MessageDialog):
     def __init__(self, parent, path):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
@@ -37,6 +41,7 @@ class OverwriteDialog(wx.MessageDialog):
         )
 
 
+## TODO: Doxygen
 class StandardDirDialog(wx.DirDialog):
     def __init__(self, parent, title, style=wx.DD_DEFAULT_STYLE):
         
@@ -45,11 +50,12 @@ class StandardDirDialog(wx.DirDialog):
                 style=style|wx.DD_DIR_MUST_EXIST|wx.DD_NEW_DIR_BUTTON|wx.DD_CHANGE_DIR)
         
         # FIXME: Find inherited bound event
-        wx.EVT_BUTTON(self, wx.ID_OPEN, self.OnAccept)
+        self.Bind(wx.EVT_BUTTON, self.OnAccept)
         
         self.CenterOnParent()
     
     
+    ## TODO: Doxygen
     def OnAccept(self, event=None):
         path = self.GetPath()
         
@@ -57,9 +63,11 @@ class StandardDirDialog(wx.DirDialog):
             self.EndModal(wx.ID_OK)
             return
         
+        # FIXME: Use Logger
         print(u'DEBUG: [dbr.dialogs] Path is not a directory: {}'.format(path))
 
 
+## TODO: Doxygen
 class StandardFileDialog(wx.FileDialog):
     def __init__(self, parent, title, default_extension=wx.EmptyString,
                 wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
@@ -70,11 +78,12 @@ class StandardFileDialog(wx.FileDialog):
         self.extension = default_extension
         
         # FIXME: Should use ID_SAVE & ID_OPEN
-        wx.EVT_BUTTON(self, wx.ID_OK, self.OnAccept)
+        self.Bind(wx.EVT_BUTTON, self.OnAccept)
         
         self.CenterOnParent()
     
     
+    ## TODO: Doxygen
     def GetDirectory(self, directory=None):
         if directory == None:
             directory = self.GetPath()
@@ -86,6 +95,7 @@ class StandardFileDialog(wx.FileDialog):
         return directory
     
     
+    ## TODO: Doxygen
     def GetExtension(self):
         return self.extension
     
@@ -120,6 +130,7 @@ class StandardFileDialog(wx.FileDialog):
         return u'{}/{}'.format(out_dir, self.GetFilename())
     
     
+    ## TODO: Doxygen
     def HasExtension(self, path):
         if u'.' in path:
             if path.split(u'.')[-1] != u'':
@@ -128,6 +139,7 @@ class StandardFileDialog(wx.FileDialog):
         return False
     
     
+    ## TODO: Doxygen
     def OnAccept(self, event=None):
         path = self.GetPath()
         
@@ -166,12 +178,12 @@ class StandardFileOpenDialog(StandardFileDialog):
                 wildcard=wildcard, style=wx.FD_OPEN)
     
     
+    ## TODO: Doxygen
     def OnAccept(self, event=None):
         # File & directory dialogs should call this function
         ChangeWorkingDirectory(self.GetDirectory())
         
         self.EndModal(wx.ID_OK)
-
 
 
 # *** MESSAGE & ERROR *** #
@@ -194,19 +206,19 @@ class DetailedMessageDialog(wx.Dialog):
         if isinstance(icon, (unicode, str)):
             icon = wx.Bitmap(icon)
         
-        self.icon = wx.StaticBitmap(self, -1, icon)
+        self.icon = wx.StaticBitmap(self, wx.ID_ANY, icon)
         
-        self.text = wx.StaticText(self, -1, text)
+        self.text = wx.StaticText(self, label=text)
         
-        self.button_details = wx.ToggleButton(self, -1, GT(u'Details'))
+        self.button_details = wx.ToggleButton(self, label=GT(u'Details'))
         #self.btn_copy_details = wx.Button(self, label=GT(u'Copy details'))
         
-        wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
-        #wx.EVT_BUTTON(self.btn_copy_details, wx.ID_ANY, self.OnCopyDetails)
+        self.button_details.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleDetails)
+        #self.btn_copy_details.Bind(wx.EVT_BUTTON, self.OnCopyDetails)
         
         if TextIsEmpty(details):
             self.button_details.Hide()
-            
+        
         layout_btn_H1 = wx.BoxSizer(wx.HORIZONTAL)
         layout_btn_H1.Add(self.button_details, 1)
         #layout_btn_H1.Add(self.btn_copy_details, 1)
@@ -244,7 +256,10 @@ class DetailedMessageDialog(wx.Dialog):
         self.CenterOnParent()
     
     
-    # FIXME:
+    ## TODO: Doxygen
+    #  
+    #  FIXME: Layout initially wrong
+    #  TODO: Allow copying details to clipboard
     def OnCopyDetails(self, event=None):
         print(u'DEBUG: Copying details to clipboard ...')
         
@@ -292,6 +307,7 @@ class DetailedMessageDialog(wx.Dialog):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def SetDetails(self, details):
         self.details.SetValue(details)
         self.details.SetSize(self.details.GetBestSize())
@@ -303,6 +319,7 @@ class DetailedMessageDialog(wx.Dialog):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def ToggleDetails(self, event=None):
         if self.button_details.GetValue():
             self.details.Show()
@@ -326,6 +343,7 @@ class ErrorDialog(DetailedMessageDialog):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def SetDetails(self, details):
         '''
         if not self.btn_copy_details.IsShown():
@@ -341,6 +359,41 @@ class SuperUserDialog(wx.Dialog):
         
         # User selector
         self.users = OwnerDrawnComboBox(self)
+
+
+## TODO: Doxygen
+def GetDialogWildcards(ID):
+    proj_def = project_wildcards[ID][0]
+    wildcards = list(project_wildcards[ID][1])
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'.{}'.format(wildcards[X])
+    
+    # Don't show list of suffixes in dialog's description
+    if project_wildcards[ID][1] != supported_suffixes:
+        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'*{}'.format(wildcards[X])
+    
+    return (proj_def, u';'.join(wildcards))
+
+
+## TODO: Doxygen
+def GetDirDialog(main_window, title):
+    dir_open = StandardDirDialog(main_window, title)
+    
+    return dir_open
+
+
+## TODO: Doxygen
+def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
+    if isinstance(ext_filters, (list, tuple)):
+        ext_filters = u'|'.join(ext_filters)
+    
+    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
+    
+    return file_open
 
 
 ## Retrieves a dialog for display
@@ -371,21 +424,6 @@ def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
     return file_save
 
 
-def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
-    
-    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
-    
-    return file_open
-
-
-def GetDirDialog(main_window, title):
-    dir_open = StandardDirDialog(main_window, title)
-    
-    return dir_open
-
-
 ## Used to display a dialog window
 #  
 #  For custom dialogs, the method 'DisplayModal()' is used
@@ -408,6 +446,7 @@ def ShowDialog(dialog):
     
     if False: #debreate.cust_dias.IsChecked():
         return dialog.DisplayModal()
+    
     else:
         return dialog.ShowModal() == wx.ID_OK
 
@@ -428,6 +467,7 @@ def ShowErrorDialog(text, details=None, module=None, warn=False):
     Logger.Debug(__name__, GT(u'Module: {}').format(module))
     Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
     
+    # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
         PrintLogMessage = Logger.Warning
@@ -476,21 +516,3 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     Logger.Debug(module, logger_text)
     
     message_dialog.ShowModal()
-
-
-## TODO: Doxygen
-def GetDialogWildcards(ID):
-    proj_def = project_wildcards[ID][0]
-    wildcards = list(project_wildcards[ID][1])
-    
-    for X in range(len(wildcards)):
-        wildcards[X] = u'.{}'.format(wildcards[X])
-    
-    # Don't show list of suffixes in dialog's description
-    if project_wildcards[ID][1] != supported_suffixes:
-        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
-    
-    for X in range(len(wildcards)):
-        wildcards[X] = u'*{}'.format(wildcards[X])
-    
-    return (proj_def, u';'.join(wildcards))
