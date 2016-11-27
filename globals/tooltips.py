@@ -14,6 +14,7 @@ from dbr.functions      import FieldEnabled
 from dbr.language       import GT
 from globals.characters import ARROW_RIGHT
 from globals.commands   import CMD_gdebi_gui
+from globals.constants  import system_licenses_path
 from globals.ident      import ID_BUILD
 from globals.ident      import ID_CHANGELOG
 from globals.ident      import ID_CONTROL
@@ -115,9 +116,12 @@ TT_changelog = {
     u'log': GT(u'Formatted changelog entries (editable)'),
 }
 
+no_sys_licenses = GT(u'No system licenses found in {}').format(system_licenses_path)
 TT_copyright = {
-    u'full': GT(u'Creates a simple license that references the system\'s common license path'),
+    u'gen': GT(u'Creates a simple license that references the system\'s common license path'),
     u'list': GT(u'Select license to reference'),
+    u'gen_disabled': no_sys_licenses,
+    u'list_disabled': no_sys_licenses,
 }
 
 TT_menu = {
