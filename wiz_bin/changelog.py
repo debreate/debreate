@@ -11,6 +11,7 @@ import commands, wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
+from dbr.functions          import FieldEnabled
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -84,6 +85,9 @@ class Panel(wx.ScrolledWindow):
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
+        # Initially disable 'add' button
+        self.ToggleAddButton()
+        
         self.dsp_changes = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
         
         SetPageToolTips(self)
@@ -156,6 +160,8 @@ class Panel(wx.ScrolledWindow):
         
         btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
         self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
+        
+        wx.EVT_KEY_UP(self.ti_changes, self.ToggleAddButton)
     
     
     ## TODO: Doxygen
@@ -241,6 +247,9 @@ class Panel(wx.ScrolledWindow):
         self.rb_target_standard.SetValue(self.rb_target_standard.default)
         self.ti_target.SetValue(u'/')
         self.dsp_changes.Clear()
+        
+        # Reset 'add' button's enabled status
+        self.ToggleAddButton()
     
     
     ## TODO: Doxygen
@@ -256,3 +265,18 @@ class Panel(wx.ScrolledWindow):
             self.ti_target.SetValue(dest)
         
         self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
+    
+    
+    ## Toggles 'add' button on/off depending on value of text input
+    def ToggleAddButton(self, event=None):
+        changes = self.ti_changes.GetValue()
+        
+        if FieldEnabled(self.btn_add) and TextIsEmpty(changes):
+            self.btn_add.Enable(False)
+        
+        # Don't use 'else' here so that both tests must be evaluated
+        elif not FieldEnabled(self.btn_add) and not TextIsEmpty(changes):
+            self.btn_add.Enable(True)
+        
+        if event:
+            event.Skip()
