@@ -19,6 +19,7 @@ from dbr.functions      import FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals.ident      import FID_ARCH
 from globals.ident      import FID_EMAIL
 from globals.ident      import FID_MAINTAINER
 from globals.ident      import FID_PACKAGE
@@ -75,7 +76,7 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
-        sel_arch = wx.Choice(pnl_require, choices=opts_arch, name=txt_arch.Name)
+        sel_arch = wx.Choice(pnl_require, FID_ARCH, choices=opts_arch, name=txt_arch.Name)
         sel_arch.default = 0
         sel_arch.SetSelection(sel_arch.default)
         
