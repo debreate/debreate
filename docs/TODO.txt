@@ -2,6 +2,8 @@
 - Update gettext locales
 - Test that locales are working
 - Use styled panel in place of static boxes
-- Code cleanup & heavy testing
+- Code cleanup
 - Retrieve list of licenses from standard path
 - Make some class member variables non-member
+- Heavy testing for both wx 3.0 & 2.8
+- Rename text input objects from 'inp_*' or 'te_* to 'ti_*'
