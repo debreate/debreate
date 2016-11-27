@@ -15,10 +15,10 @@ PATH_WARN = wx.NewId()
 
 ## TODO: Doxygen
 class PathCtrl(wx.TextCtrl):
-    def __init__(self, parent, id=wx.ID_ANY, value=wx.EmptyString, type=PATH_DEFAULT):
-        wx.TextCtrl.__init__(self, parent, id, value)
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT):
+        wx.TextCtrl.__init__(self, parent, ctrl_id, value)
         
-        self.type = type
+        self.ctrl_type = ctrl_type
         
         # Get the value of the textctrl so it can be restored
         self.default = u'/'
@@ -36,7 +36,7 @@ class PathCtrl(wx.TextCtrl):
         # If PathCtrl is set to warn on non-existent paths, change background color to red when path
         # doesn't exist
         value = self.GetValue()
-        if self.type == PATH_WARN:
+        if self.ctrl_type == PATH_WARN:
             if not os.path.exists(value):
                 self.SetBackgroundColour(u'red')
             else:

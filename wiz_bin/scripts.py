@@ -92,7 +92,7 @@ class Panel(wx.ScrolledWindow):
         
         # Auto-Link path for new link
         txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
-        self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', type=PATH_WARN)
+        self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', ctrl_type=PATH_WARN)
         self.ti_autolink.SetName(u'target')
         
         # Auto-Link executables to be linked
