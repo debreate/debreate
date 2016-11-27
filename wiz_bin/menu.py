@@ -196,18 +196,20 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_open, 0)
         lyt_buttons.Add(btn_save, 0)
         lyt_buttons.Add(btn_preview, 0)
         
         lyt_cat_btn = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_cat_btn.Add(btn_catadd, 0, wx.RIGHT, 5)
-        lyt_cat_btn.Add(btn_catdel, 0, wx.RIGHT, 5)
+        lyt_cat_btn.Add(btn_catadd, 0)
+        lyt_cat_btn.Add(btn_catdel, 0)
         lyt_cat_btn.Add(btn_catclr, 0)
         
         lyt_cat_input = wx.BoxSizer(wx.VERTICAL)
-        lyt_cat_input.Add(txt_category, 0, wx.LEFT, 1)
+        lyt_cat_input.Add(txt_category, 0, LEFT_BOTTOM)
         lyt_cat_input.Add(self.ti_category, 0, wx.TOP|wx.BOTTOM, 5)
         lyt_cat_input.Add(lyt_cat_btn, 0)
         
@@ -257,7 +259,7 @@ class Panel(wx.ScrolledWindow):
         lyt_border = wx.StaticBoxSizer(box_border, wx.VERTICAL)
         
         lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.RIGHT|wx.TOP, 5)
         lyt_border.AddSpacer(5)
         lyt_border.Add(txt_other, 0)
         lyt_border.Add(self.ti_other, 1, wx.EXPAND)
