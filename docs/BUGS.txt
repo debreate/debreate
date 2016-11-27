@@ -1,3 +1,3 @@
 Known Bugs:
 - Control page preview shows multiple empty lines at end of file
-- dbr.dialogs.DetailedMessageDialog.OnCopyDetails() error when trying to copy to clipboard
+- Layout for dbr.dialogs.DetailedMessageDialog is initially wrong
