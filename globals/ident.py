@@ -57,6 +57,7 @@ ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
 
 # Field/Control IDs
+FID_ARCH = wx.NewId()
 FID_CUSTOM = wx.NewId()
 FID_EMAIL = wx.NewId()
 FID_MAINTAINER = wx.NewId()
