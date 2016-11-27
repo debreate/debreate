@@ -199,17 +199,17 @@ class DetailedMessageDialog(wx.Dialog):
         self.text = wx.StaticText(self, -1, text)
         
         self.button_details = wx.ToggleButton(self, -1, GT(u'Details'))
-        self.btn_copy_details = wx.Button(self, label=GT(u'Copy details'))
+        #self.btn_copy_details = wx.Button(self, label=GT(u'Copy details'))
         
         wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
-        wx.EVT_BUTTON(self.btn_copy_details, wx.ID_ANY, self.OnCopyDetails)
+        #wx.EVT_BUTTON(self.btn_copy_details, wx.ID_ANY, self.OnCopyDetails)
         
         if TextIsEmpty(details):
             self.button_details.Hide()
             
         layout_btn_H1 = wx.BoxSizer(wx.HORIZONTAL)
         layout_btn_H1.Add(self.button_details, 1)
-        layout_btn_H1.Add(self.btn_copy_details, 1)
+        #layout_btn_H1.Add(self.btn_copy_details, 1)
         
         self.details = MultilineTextCtrlPanel(self, value=details, size=(300,150), style=wx.TE_READONLY)
         
@@ -231,9 +231,10 @@ class DetailedMessageDialog(wx.Dialog):
         #self.SetInitialSize()
         
         self.SetAutoLayout(True)
+        self.SetSizer(self.main_sizer)
         self.ToggleDetails()
         
-        self.btn_copy_details.Hide()
+        #self.btn_copy_details.Hide()
         self.details.Hide()
         
         
@@ -309,7 +310,8 @@ class DetailedMessageDialog(wx.Dialog):
         else:
             self.details.Hide()
         
-        self.SetSizerAndFit(self.main_sizer)
+        #self.SetSizerAndFit(self.main_sizer)
+        self.Fit()
         self.Layout()
 
 
@@ -317,17 +319,18 @@ class DetailedMessageDialog(wx.Dialog):
 class ErrorDialog(DetailedMessageDialog):
     def __init__(self, parent, text=wx.EmptyString, details=wx.EmptyString):
         DetailedMessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
-        
+        '''
         if not TextIsEmpty(details):
             self.btn_copy_details.Show()
-        
+        '''
         self.Layout()
     
     
     def SetDetails(self, details):
+        '''
         if not self.btn_copy_details.IsShown():
             self.btn_copy_details.Show()
-        
+        '''
         DetailedMessageDialog.SetDetails(self, details)
 
 
