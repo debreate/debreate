@@ -58,27 +58,33 @@ class Panel(wx.ScrolledWindow):
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
         self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
         
+        self.button_import = ButtonImport(self)
+        self.button_import.SetName(u'import')
+        txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
+        
         # Changes input
         self.ti_changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE, name=u'changes')
         
+        # *** Target installation directory
+        
+        pnl_target = wx.Panel(self, style=wx.BORDER_THEME)
+        
         # Standard destination of changelog
-        self.rb_target_standard = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
+        self.rb_target_standard = wx.RadioButton(pnl_target, label=u'/usr/share/doc/<package>',
                 name=u'target default', style=wx.RB_GROUP)
         self.rb_target_standard.default = True
         self.rb_target_standard.SetValue(self.rb_target_standard.default)
         
         # Custom destination of changelog
         # FIXME: Should not use same name as default destination???
-        self.rb_target_custom = wx.RadioButton(self, name=self.rb_target_standard.Name)
+        self.rb_target_custom = wx.RadioButton(pnl_target, name=self.rb_target_standard.Name)
         
-        self.ti_target = PathCtrl(self, -1, u'/', PATH_WARN)
+        self.ti_target = PathCtrl(pnl_target, -1, u'/', PATH_WARN)
         self.ti_target.SetName(u'target custom')
-        
-        self.button_import = ButtonImport(self)
-        self.button_import.SetName(u'import')
         
         self.button_add = ButtonAdd(self)
         self.button_add.SetName(u'add')
+        txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.dsp_changes = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
         
@@ -105,8 +111,7 @@ class Panel(wx.ScrolledWindow):
         lyt_target_custom.Add(self.rb_target_custom, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_target_custom.Add(self.ti_target, 1)
         
-        box_target = wx.StaticBox(self, label=GT(u'Target'))
-        lyt_target = wx.StaticBoxSizer(box_target, wx.VERTICAL)
+        lyt_target = wx.BoxSizer(wx.VERTICAL)
         
         lyt_target.AddSpacer(5)
         lyt_target.Add(self.rb_target_standard)
@@ -114,20 +119,25 @@ class Panel(wx.ScrolledWindow):
         lyt_target.Add(lyt_target_custom, 0, wx.EXPAND)
         lyt_target.AddSpacer(5)
         
-        lyt_changes = wx.BoxSizer(wx.VERTICAL)
+        pnl_target.SetSizer(lyt_target)
+        pnl_target.SetAutoLayout(True)
+        pnl_target.Layout()
         
-        lyt_changes.Add(wx.StaticText(self, label=GT(u'Changes')), 0, wx.ALIGN_BOTTOM)
-        lyt_changes.Add(self.ti_changes, 1, wx.EXPAND)
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         
-        lyt_details = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_details = wx.GridBagSizer()
+        lyt_details.SetCols(3)
+        lyt_details.AddGrowableCol(1)
         
-        lyt_details.Add(lyt_changes, 1, wx.EXPAND|wx.RIGHT, 5)
-        lyt_details.Add(lyt_target)
-        
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        
-        lyt_buttons.Add(self.button_import)
-        lyt_buttons.Add(self.button_add)
+        lyt_details.Add(self.button_import, (0, 0))
+        lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
+        lyt_details.Add(wx.StaticText(self, label=GT(u'Changes')), (1, 0), flag=LEFT_BOTTOM)
+        lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
+        lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+        lyt_details.Add(pnl_target, (2, 2))
+        lyt_details.Add(self.button_add, (3, 0))
+        lyt_details.Add(txt_add, (3, 1), flag=LEFT_CENTER)
         
         lyt_main = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
         
@@ -135,7 +145,6 @@ class Panel(wx.ScrolledWindow):
         lyt_main.Add(lyt_info, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_details, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_LEFT|wx.LEFT, 5)
         lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
                 0, wx.ALIGN_BOTTOM|wx.LEFT, 5)
         lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
