@@ -1,3 +1,2 @@
 Known Bugs:
-- Control page preview shows multiple empty lines at end of file
 - Layout for dbr.dialogs.DetailedMessageDialog is initially wrong

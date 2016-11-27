@@ -460,10 +460,12 @@ class Panel(wx.ScrolledWindow):
             event.Skip()
     
     
-    ## TODO: Doxygen
+    ## Show a preview of the control file
     def OnPreview(self, event=None):
-        # Show a preview of the control file
         control = self.GetCtrlInfo()
+        
+        # Ensure only one empty newline at end of preview (same as actual output)
+        control = control.rstrip(u'\n') + u'\n'
         
         dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500,400))
         preview = wx.TextCtrl(dia, style=wx.TE_MULTILINE|wx.TE_READONLY)
