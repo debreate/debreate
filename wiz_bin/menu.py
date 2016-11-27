@@ -252,8 +252,7 @@ class Panel(wx.ScrolledWindow):
         lyt_grid.Add(txt_enc, (4, 2), flag=CENTER)
         lyt_grid.Add(self.ti_enc, (4, 3), flag=CENTER_EXPAND)
         
-        box_border = wx.StaticBox(self, -1, size=(20,20))
-        lyt_border = wx.StaticBoxSizer(box_border, wx.VERTICAL)
+        lyt_border = wx.BoxSizer(wx.VERTICAL)
         
         lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
         lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.RIGHT|wx.TOP, 5)
