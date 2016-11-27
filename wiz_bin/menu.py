@@ -159,12 +159,9 @@ class Panel(wx.ScrolledWindow):
         self.ti_category.default = self.ti_category.GetValue()
         self.opts_input.append(self.ti_category)
         
-        btn_catadd = ButtonAdd(self)
-        btn_catadd.SetName(u'add category')
-        btn_catdel = ButtonRemove(self)
-        btn_catdel.SetName(u'rm category')
-        btn_catclr = ButtonClear(self)
-        btn_catclr.SetName(u'clear categories')
+        btn_catadd = ButtonAdd(self, name=u'add category')
+        btn_catdel = ButtonRemove(self, name=u'rm category')
+        btn_catclr = ButtonClear(self, name=u'clear categories')
         
         for B in btn_catadd, btn_catdel, btn_catclr:
             self.opts_button.append(B)
