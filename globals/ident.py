@@ -60,6 +60,6 @@ ID_BUILD = NewPageId(GT(u'Build'))
 FID_CUSTOM = wx.NewId()
 FID_EMAIL = wx.NewId()
 FID_MAINTAINER = wx.NewId()
-# FIXME: Rename to FID_PACKAGE???
 FID_NAME = wx.NewId()
+FID_PACKAGE = wx.NewId()
 FID_VERSION = wx.NewId()

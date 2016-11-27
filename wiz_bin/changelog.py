@@ -18,7 +18,7 @@ from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_MAINTAINER
-from globals.ident          import FID_NAME
+from globals.ident          import FID_PACKAGE
 from globals.ident          import FID_VERSION
 from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
@@ -229,7 +229,7 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
-            (self.ti_package, FID_NAME),
+            (self.ti_package, FID_PACKAGE),
             (self.ti_version, FID_VERSION),
             (self.ti_maintainer, FID_MAINTAINER),
             (self.ti_email, FID_EMAIL),

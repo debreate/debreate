@@ -19,11 +19,12 @@ from dbr.functions      import FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
-from globals.ident      import FID_EMAIL, ID_DEPENDS
+from globals.ident      import FID_EMAIL
 from globals.ident      import FID_MAINTAINER
-from globals.ident      import FID_NAME
+from globals.ident      import FID_PACKAGE
 from globals.ident      import FID_VERSION
 from globals.ident      import ID_CONTROL
+from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
 
 
@@ -47,7 +48,7 @@ class Panel(wx.ScrolledWindow):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        ti_package = CharCtrl(pnl_require, FID_NAME, name=txt_package.Name)
+        ti_package = CharCtrl(pnl_require, FID_PACKAGE, name=txt_package.Name)
         ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
