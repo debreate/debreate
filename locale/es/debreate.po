@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-11-18 02:30-0800\n"
+        "POT-Creation-Date: 2016-11-26 23:03-0800\n"
         "PO-Revision-Date: 2016-11-18 02:50-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Spanish <antumdeluge@gmail.com>\n"
@@ -21,6 +21,9 @@ msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "MIME-Version: 1.0\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
+
+msgid   "A compatible package manager could not be found on the system"
+msgstr  ""
 
 msgid   "A file named \"{}\" already exists. Do you want to replace it?"
 msgstr  "Ya existe un nombre de archivo \"{}\". ¿Sobrescribirlo?"
@@ -43,26 +46,47 @@ msgstr  "Añadir Archivo"
 msgid   "Add Folder"
 msgstr  "Añadir Directorio"
 
-msgid   "All supported formats"
+msgid   "Add as alternative to selected dependency packages in list"
+msgstr  ""
+
+msgid   "Add dependency package to list"
+msgstr  ""
+
+msgid   "Add manpage"
+msgstr  ""
+
+msgid   "Add selected file/folder to list"
+msgstr  ""
+
+msgid   "Adding file: {}/{}"
 msgstr  ""
 
 msgid   "An error occurred attempting to retrieve version from remote website:"
 msgstr  ""
 
+msgid   "An error occurred during installation"
+msgstr  ""
+
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Se occurió un error al intentar eliminar la ruta provisional"
+
+msgid   "An unknonw error occurred"
+msgstr  ""
 
 msgid   "Append"
 msgstr  "Adjuntar"
 
+msgid   "Append current category to list"
+msgstr  ""
+
+msgid   "Application:"
+msgstr  ""
+
 msgid   "Architecture"
 msgstr  "Arquitectura"
 
-msgid   "Authenticated"
-msgstr  "Autenticado"
-
-msgid   "Authentication failure"
-msgstr  "Error de autenticación"
+msgid   "Attempting to install package: {}"
+msgstr  ""
 
 msgid   "Auto-Link Executables"
 msgstr  "Enlaces de Ejecutables"
@@ -78,6 +102,9 @@ msgstr  "Rompe"
 
 msgid   "Browse"
 msgstr  "Buscar"
+
+msgid   "Browse for target installation directory"
+msgstr  ""
 
 msgid   "Build"
 msgstr  "Empaquetar"
@@ -115,14 +142,17 @@ msgstr  ""
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  ""
 
+msgid   "Cannot install package"
+msgstr  ""
+
 msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
 msgid   "Cannot run \"fakeroot dpkg"
 msgstr  ""
 
-msgid   "Categories"
-msgstr  "Categorías"
+msgid   "Categories dictate where the launcher will be located in the system menu"
+msgstr  ""
 
 msgid   "Category"
 msgstr  "Categoría"
@@ -169,6 +199,9 @@ msgstr  "Comprobando el paquete para errores"
 msgid   "Checking scripts"
 msgstr  "Comprobando los scrips"
 
+msgid   "Checks the package for warnings & errors according to lintian specifications"
+msgstr  ""
+
 msgid   "Choose Directory"
 msgstr  "Elegir un Directorio"
 
@@ -190,7 +223,19 @@ msgstr  "¿Vaciar de todos los archivos?"
 msgid   "Clear categories?"
 msgstr  "¿Eliminar todas las categorías?"
 
+msgid   "Clear category list"
+msgstr  ""
+
+msgid   "Clear file list"
+msgstr  ""
+
+msgid   "Clear the list of dependency packages"
+msgstr  ""
+
 msgid   "Code Contributor"
+msgstr  ""
+
+msgid   "Command executed: {}"
 msgstr  ""
 
 msgid   "Comment"
@@ -211,7 +256,13 @@ msgstr  "Confirmar"
 msgid   "Conflicts"
 msgstr  "En Conflicto de"
 
+msgid   "Container of meta data of a menu entry"
+msgstr  ""
+
 msgid   "Control"
+msgstr  ""
+
+msgid   "Control File Preview"
 msgstr  ""
 
 msgid   "Control Files"
@@ -241,20 +292,23 @@ msgstr  ""
 msgid   "Could not delete staged directory: {}"
 msgstr  ""
 
-msgid   "Could not install {}"
-msgstr  "No se pudo instalar {}"
+msgid   "Could not install package: {}"
+msgstr  ""
 
 msgid   "Could not locate the following files:"
 msgstr  "Los archivos siguientes no se encuentran:"
-
-msgid   "Create checksums for files in package"
-msgstr  "Crear suma de comprobación para los archivos en el paquete"
 
 msgid   "Create md5sums file"
 msgstr  "Crear archivo de md5sums"
 
 msgid   "Create system menu launcher"
 msgstr  "Crear un acceso directo del menú del sistema"
+
+msgid   "Creates a checksum for all staged files within the package"
+msgstr  ""
+
+msgid   "Creates a simple license that references the system's common license path"
+msgstr  ""
 
 msgid   "Creating changelog"
 msgstr  "Creando el registro de cambios"
@@ -319,20 +373,23 @@ msgstr  "Proyectos Debreate"
 msgid   "Debug"
 msgstr  ""
 
-msgid   "Delete"
-msgstr  ""
-
 msgid   "Delete build tree"
 msgstr  "Eliminar la ruta provisional"
 
-msgid   "Delete temporary directory tree after package has been created"
-msgstr  "Elimanar la ruta provisional despeus de construir el paquete"
+msgid   "Delete staged directory tree after package has been created"
+msgstr  ""
 
 msgid   "Dependencies"
 msgstr  "Dependencias"
 
 msgid   "Dependencies and Conflicts"
 msgstr  "Dependencias y Conflictos"
+
+msgid   "Dependencies to be added"
+msgstr  ""
+
+msgid   "Dependency/Conflict Package Name"
+msgstr  ""
 
 msgid   "Depends"
 msgstr  "Depende de"
@@ -348,6 +405,12 @@ msgstr  "Detalles: {}"
 
 msgid   "Developer"
 msgstr  "Desarrollo"
+
+msgid   "Directory where scripts should create symlinks"
+msgstr  ""
+
+msgid   "Directory:"
+msgstr  ""
 
 msgid   "Displays a notification in the system panel when launched"
 msgstr  "Demuestra una notificación en el panel del system al iniciarse"
@@ -366,8 +429,8 @@ msgstr  ""
 msgid   "Email"
 msgstr  "Correo"
 
-msgid   "Empty password: Cancelling"
-msgstr  "Contraseña vacía: Cancelar"
+msgid   "Empty password"
+msgstr  ""
 
 msgid   "Encoding"
 msgstr  "Codificación"
@@ -379,9 +442,6 @@ msgid   "Error"
 msgstr  ""
 
 msgid   "Error ID"
-msgstr  ""
-
-msgid   "Error decoding file"
 msgstr  ""
 
 msgid   "Error reading changelog: {}\n"
@@ -400,10 +460,22 @@ msgstr  "Ejecutable"
 msgid   "Executable to be launched"
 msgstr  "Archivo ejecutable de estar iniciado"
 
-msgid   "Extra options"
-msgstr  "Opciones Adicionales"
+msgid   "Executables from file list to be linked against"
+msgstr  ""
+
+msgid   "Export launcher to text file"
+msgstr  ""
+
+msgid   "Exporting {} field"
+msgstr  ""
+
+msgid   "Extra Options"
+msgstr  ""
 
 msgid   "FIXME: Details not copied to clipboard"
+msgstr  ""
+
+msgid   "Field ID does not exist or match any fields: {}"
 msgstr  ""
 
 msgid   "File"
@@ -418,11 +490,17 @@ msgstr  "Archivo Existe"
 msgid   "File does not exist"
 msgstr  "No existe el archivo"
 
+msgid   "File list failed to resize. Forcing manual resize to target width: {}"
+msgstr  ""
+
 msgid   "Filename"
 msgstr  "Nombre del archivo"
 
 msgid   "Files"
 msgstr  "Archivos"
+
+msgid   "Files to be added to package & their target directories"
+msgstr  ""
 
 msgid   "Font Size"
 msgstr  "Tamaño de Fuente"
@@ -430,17 +508,20 @@ msgstr  "Tamaño de Fuente"
 msgid   "For a video tutorial check the link below."
 msgstr  "Para un video instructivo de hacer clic en el enlace mas abajo."
 
+msgid   "Formatted changelog entries (editable)"
+msgstr  ""
+
 msgid   "Gathering control information"
 msgstr  "Recogiendo la información de control"
 
 msgid   "General Contributor"
 msgstr  "Colaborador General"
 
+msgid   "Generate Template"
+msgstr  ""
+
 msgid   "Generate scripts"
 msgstr  "Producir scripts"
-
-msgid   "Getting administrative privileges from user"
-msgstr  "Obtener privilegios administrativos de usuario"
 
 msgid   "Getting files from {}"
 msgstr  "Recogiendo archivos de {}"
@@ -475,6 +556,9 @@ msgstr  "Pasar a la sección Acceso Directo"
 msgid   "Go to Scripts section"
 msgstr  "Pasar a la sección de Scripts"
 
+msgid   "Got error when attempting to retrieve field value"
+msgstr  ""
+
 msgid   "Greeting"
 msgstr  "Salutación"
 
@@ -490,6 +574,9 @@ msgstr  "Ocultar"
 msgid   "Homepage"
 msgstr  "Página Principal"
 
+msgid   "How to use Auto-Link"
+msgstr  ""
+
 msgid   "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
 msgstr  "Como usar Enlace Automático: Presione el botón IMPORTAR para importar cualquier ejecutable desde la sección de Archivos. Presione el botón GENERAR. Scripts anteriores y posteriores a la instalación se crea secuencias de comandos que colocará enlaces simbólicos a los ejecutables en la ruta que aparece arriba."
 
@@ -499,20 +586,32 @@ msgstr  "Icono"
 msgid   "Icon to be displayed for the launcher"
 msgstr  "Icono del acceso"
 
-msgid   "If checked, the value of the \"Name\" field will be used for the filename"
-msgstr  ""
-
 msgid   "Import"
 msgstr  "Importar"
 
-msgid   "Import executables from Files section"
-msgstr  "Importar los Ejecutables de la sección de Archivos"
+msgid   "Import files marked as executable from Files page"
+msgstr  ""
 
-msgid   "Import information from Control section"
-msgstr  "Importar la información de la seccion de Control"
+msgid   "Import information from Control page"
+msgstr  ""
+
+msgid   "Import launcher from file"
+msgstr  ""
+
+msgid   "Improperly formatted text may cause launcher to be unusable"
+msgstr  ""
 
 msgid   "Information"
 msgstr  "Información"
+
+msgid   "Insert new changelog entry"
+msgstr  ""
+
+msgid   "Install changelog to custom directory"
+msgstr  ""
+
+msgid   "Install changelog to standard directory"
+msgstr  ""
 
 msgid   "Install lintian package for this option"
 msgstr  "Instalar el paquete lintian para esta opción"
@@ -523,11 +622,17 @@ msgstr  "Instalar el paquete md5sum para esta opción"
 msgid   "Install package after build"
 msgstr  "¿Instalar el paquete despues de construir?"
 
-msgid   "Installation prefix: {}"
+msgid   "Install package using a system installer after build"
 msgstr  ""
 
-msgid   "Installing Package"
-msgstr  "Instalar el Paquete"
+msgid   "Installation requires one of the following utilities:"
+msgstr  ""
+
+msgid   "Installed to: {}"
+msgstr  ""
+
+msgid   "Installing with {}"
+msgstr  ""
 
 msgid   "Is the staged directory formatted correctly?"
 msgstr  ""
@@ -535,13 +640,19 @@ msgstr  ""
 msgid   "Job"
 msgstr  "Tarea"
 
-msgid   "Legacy Debreate projects"
-msgstr  "Proyectos Debreate obsoletos"
+msgid   "Launcher is only shown when options are satisfied"
+msgstr  ""
+
+msgid   "Launchers / Desktop Entries"
+msgstr  ""
 
 msgid   "License"
 msgstr  "Licencia"
 
 msgid   "License template not found: {}"
+msgstr  ""
+
+msgid   "Link:"
 msgstr  ""
 
 msgid   "Lintian Errors"
@@ -552,6 +663,9 @@ msgstr  "Explicación de los Etiquetas de Lintian"
 
 msgid   "Lintian found some issues with the package."
 msgstr  "Encontró lintian a unas problemas con el paquete."
+
+msgid   "List new changes here, separated one per line"
+msgstr  ""
 
 msgid   "Loading license template: {}"
 msgstr  ""
@@ -583,14 +697,23 @@ msgstr  "Acceso Directo del Menú"
 msgid   "Message"
 msgstr  "Mensaje"
 
+msgid   "Miscellaneous fields not available above"
+msgstr  ""
+
 msgid   "Missing Files"
 msgstr  "Archivos Ausentes"
 
 msgid   "Module: {}"
 msgstr  ""
 
+msgid   "More detailed description"
+msgstr  ""
+
 msgid   "Move to Trash"
 msgstr  "Mudar a la Papelera"
+
+msgid   "Multiple lines can be used here, but lintian will complain if they are too long"
+msgstr  ""
 
 msgid   "Name"
 msgstr  "Nombre"
@@ -601,11 +724,32 @@ msgstr  "Ya está en uso el nombre en directorio actual"
 msgid   "Name cannot end with \"{}\""
 msgstr  ""
 
+msgid   "Name of Debian/Ubuntu/etc. target distribution"
+msgstr  ""
+
+msgid   "Name of dependency/conflicting package"
+msgstr  ""
+
+msgid   "Name of the package/software"
+msgstr  ""
+
+msgid   "Name of upstream source package"
+msgstr  ""
+
+msgid   "Name to be displayed for the launcher"
+msgstr  ""
+
 msgid   "New Folder"
 msgstr  "Carpeta Nueva"
 
 msgid   "Next"
 msgstr  "Adelante"
+
+msgid   "Next page"
+msgstr  ""
+
+msgid   "No system licenses found in {}"
+msgstr  ""
 
 msgid   "No write access to target directory"
 msgstr  ""
@@ -618,6 +762,9 @@ msgstr  "No se escribe texto vacío a la configuración"
 
 msgid   "Ok"
 msgstr  "Aceptar"
+
+msgid   "One line descriptions/synopsys"
+msgstr  ""
 
 msgid   "One of the required fields is empty"
 msgstr  "Un campo obligatorio está vacío"
@@ -643,10 +790,13 @@ msgstr  "Importar proyecto previamente guardado"
 msgid   "Open a usage document"
 msgstr  "Abrir un documento de uso"
 
-msgid   "Open launcher file"
-msgstr  "Importar archivo de acceso directo"
+msgid   "Open pre-formatted control text"
+msgstr  ""
 
 msgid   "Opening project from argument: {}"
+msgstr  ""
+
+msgid   "Operator"
 msgstr  ""
 
 msgid   "Optional"
@@ -658,14 +808,8 @@ msgstr  "Opciónes"
 msgid   "Other"
 msgstr  "Cualquier demas"
 
-msgid   "Overwrite"
-msgstr  "Sobrescribir"
-
 msgid   "Overwrite File?"
 msgstr  "¿Sobrescribir el Archivo?"
-
-msgid   "Overwrite?"
-msgstr  "¿Sobrescribir?"
 
 msgid   "Package"
 msgstr  "Paquete"
@@ -688,6 +832,9 @@ msgstr  "Será útil el paqueta sin ser obligatario y no se instalará"
 msgid   "Package or its files may be overwritten"
 msgstr  "Puede que el paquete o sus archivos se sobrescriben"
 
+msgid   "Package was installed to system"
+msgstr  ""
+
 msgid   "Package will be removed from the system if it is installed"
 msgstr  "El Paquete se desinstalará de la systema si está instalado"
 
@@ -700,17 +847,23 @@ msgstr  "Se necesita instalar de antemano el paquete"
 msgid   "Package(s)"
 msgstr  "Paquete(s)"
 
+msgid   "Package/Software maintainer's email address"
+msgstr  ""
+
+msgid   "Package/Software maintainer's full name"
+msgstr  ""
+
+msgid   "Package/Software release version"
+msgstr  ""
+
 msgid   "Packager"
 msgstr  "Empaque"
 
 msgid   "Page"
 msgstr  "Página"
 
-msgid   "Password"
-msgstr  "Contraseña"
-
-msgid   "Password mismatch, try again"
-msgstr  "Contraseña no coincide, vuelva a intentarlo"
+msgid   "Page retrieved from page_id ({}) was not instance of a window/widget"
+msgstr  ""
 
 msgid   "Path"
 msgstr  "Ruta"
@@ -723,6 +876,9 @@ msgstr  "Aviso de la Ruta"
 
 msgid   "Permission Denied"
 msgstr  "Permiso Negado"
+
+msgid   "Platform on which package/software is meant to run"
+msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "Post-Instalar"
@@ -745,14 +901,29 @@ msgstr  "Preparando la ruta provisional"
 msgid   "Preparing to build"
 msgstr  "Preparando la construcción"
 
+msgid   "Prepend above changes as new log entry"
+msgstr  ""
+
 msgid   "Preview"
 msgstr  "Previsualización"
+
+msgid   "Preview control file"
+msgstr  ""
+
+msgid   "Preview launcher text"
+msgstr  ""
 
 msgid   "Previous"
 msgstr  "Atrás"
 
+msgid   "Previous page"
+msgstr  ""
+
 msgid   "Priority"
 msgstr  "Prioridad"
+
+msgid   "Process returned code {}"
+msgstr  ""
 
 msgid   "Progress"
 msgstr  "Progreso completo"
@@ -783,6 +954,21 @@ msgstr  "Regenerar"
 
 msgid   "Remove"
 msgstr  "Quitar"
+
+msgid   "Remove selected categories from list"
+msgstr  ""
+
+msgid   "Remove selected dependency package from list"
+msgstr  ""
+
+msgid   "Remove selected executables from list"
+msgstr  ""
+
+msgid   "Remove selected files from list"
+msgstr  ""
+
+msgid   "Removing selected item {} of {}"
+msgstr  ""
 
 msgid   "Removing temp directory"
 msgstr  "Eliminando la ruta provisional"
@@ -820,6 +1006,9 @@ msgstr  "Guardar Archivo"
 msgid   "Save Launcher"
 msgstr  "Guardar el Acceso"
 
+msgid   "Save control information to text"
+msgstr  ""
+
 msgid   "Save current project"
 msgstr  "Guardar proyecto actual"
 
@@ -829,14 +1018,51 @@ msgstr  "Guardar proyecto actual con nombre nuevo"
 msgid   "Save failed"
 msgstr  "Al guardar se falló"
 
+msgid   "Script run after package uninstall completes"
+msgstr  ""
+
+msgid   "Script run before package install begins"
+msgstr  ""
+
+msgid   "Script run before package uninstall begins"
+msgstr  ""
+
+msgid   "Script text body"
+msgstr  ""
+
 msgid   "Scripts"
+msgstr  ""
+
+msgid   "Scrtipt run after package install completes"
 msgstr  ""
 
 msgid   "Section"
 msgstr  "Sección"
 
+msgid   "Section under which package managers will list this package"
+msgstr  ""
+
+msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
+msgstr  ""
+
+#, python-brace-format
+msgid   "See: Help {0} Reference {0} Lintian Tags Explanation"
+msgstr  ""
+
+msgid   "Select license to reference"
+msgstr  ""
+
+msgid   "Sets the encoding that should be used to read the launcher"
+msgstr  ""
+
 msgid   "Short Description"
 msgstr  "Descripción Breve"
+
+msgid   "Shortcut to a web URL"
+msgstr  ""
+
+msgid   "Shortcut to an application"
+msgstr  ""
 
 msgid   "Show or hide tooltips"
 msgstr  "Mostrar o ocultar información sobre herramientas"
@@ -850,11 +1076,14 @@ msgstr  "Fuente"
 msgid   "Sourceforge Project"
 msgstr  "Página del Proyecto en Sourceforge"
 
-msgid   "Specifies whether application should be run from a terminal"
-msgstr  "Especifica si el programa se inicia de un terminal"
+msgid   "Specifies whether application should be run in a terminal"
+msgstr  ""
 
 msgid   "Stage directory does not exist"
 msgstr  "No existe el directorio formateado"
+
+msgid   "Staged Target"
+msgstr  ""
 
 msgid   "Staged directory tree"
 msgstr  "El directorio formateado"
@@ -877,11 +1106,14 @@ msgstr  "Éxito"
 msgid   "Suggests"
 msgstr  "Sugiere"
 
-msgid   "Supported compressed archives"
-msgstr  "Archivos comprimidos compatibles"
+msgid   "Super user command (sudo) not available"
+msgstr  ""
 
 msgid   "System Information"
 msgstr  "Información del Sistema"
+
+msgid   "System installer set to:"
+msgstr  ""
 
 msgid   "Target"
 msgstr  "Directorio de destino"
@@ -892,6 +1124,9 @@ msgstr  "No existe el directorio de destino"
 msgid   "Target file"
 msgstr  "Nombre de archivo de destino"
 
+msgid   "Target installation directory for file(s)"
+msgstr  ""
+
 msgid   "Target output file"
 msgstr  "Nombre de archivo de destino"
 
@@ -901,11 +1136,8 @@ msgstr  ""
 msgid   "Text Size"
 msgstr  "Tamaño del Texto"
 
-msgid   "Text displayed when mouse hovers over launcher"
-msgstr  "Descripción emergente del acceso"
-
-msgid   "Text for the launcher"
-msgstr  "Texto del acceso"
+msgid   "Text displayed when cursor hovers over launcher"
+msgstr  ""
 
 msgid   "Text: {}"
 msgstr  ""
@@ -919,21 +1151,18 @@ msgstr  "Se creará el archivo de configuración por defecto."
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
 msgstr  ""
 
-msgid   "The package failed to install"
-msgstr  "Error al instalar el paquete"
-
-msgid   "The package installed successfully"
-msgstr  "El paquete se instaló con éxito"
-
-msgid   "The text area is not empty!"
-msgstr  ""
-
 msgid   "This message only displays on the first run, or if\n"
         "the configuration file becomes corrupted."
 msgstr  ""
 
+msgid   "This options means \"This application exists, but don't display it in the menus\""
+msgstr  ""
+
 msgid   "This package may be useful to enhanced package"
 msgstr  "Este paquete será útil para el mejorado"
+
+msgid   "This will destroy all license text. Do you want to continue?"
+msgstr  ""
 
 msgid   "Timer is running"
 msgstr  "El temporizador está en marcha"
@@ -944,18 +1173,21 @@ msgstr  "El temporizador se detiene"
 msgid   "Timer stopped. Stopping gauge ..."
 msgstr  ""
 
+msgid   "Title"
+msgstr  ""
+
 msgid   "To delete this file, type the following command in a\n"
         "terminal:"
 msgstr  ""
-
-msgid   "Too many files"
-msgstr  "Demasiados archivos"
 
 msgid   "Translation"
 msgstr  "Traducción"
 
 msgid   "Type"
 msgstr  "Tipo"
+
+msgid   "Type of launcher"
+msgstr  ""
 
 msgid   "URL request result: {}"
 msgstr  ""
@@ -969,16 +1201,34 @@ msgstr  ""
 msgid   "Unicode Error"
 msgstr  "Error de Unicode"
 
+msgid   "Unless checked, the value of \"Filename\" will be used for the launcher's output filename"
+msgstr  ""
+
+msgid   "Unrecognized field type: {} (ID: {})"
+msgstr  ""
+
 msgid   "Update"
 msgstr  "Actualizar"
 
 msgid   "Update checking not supported in development versions"
 msgstr  "Comprobación de la actualización no admitida en las versiones de desarrollo"
 
+msgid   "Update files' executable status & availability"
+msgstr  ""
+
+msgid   "Upstream source homepage URL"
+msgstr  ""
+
 msgid   "Urgency"
 msgstr  "Urgencia"
 
-msgid   "Use \"Name\" as output filename (<name>.desktop)"
+msgid   "Urgency of this package update"
+msgstr  ""
+
+msgid   "Urgency of this update"
+msgstr  ""
+
+msgid   "Use \"Name\" as output filename (<Name>.desktop)"
 msgstr  ""
 
 msgid   "Use Custom Dialogs"
@@ -990,17 +1240,26 @@ msgstr  "Utilizar Dialogos del Systema o Personalizados"
 msgid   "Version"
 msgstr  "Versión"
 
+msgid   "Version corresponing to package name and operator"
+msgstr  ""
+
 msgid   "Version {} is available!"
 msgstr  "¡Está disponible la versión {}!"
 
 msgid   "Warning"
 msgstr  "Advertencia"
 
+msgid   "Warning:"
+msgstr  ""
+
 msgid   "Website Designer & Author"
 msgstr  "Diseñador y Autor del Sitio Web"
 
 msgid   "Welcome to Debreate!"
 msgstr  "¡Bienvenido a Debreate!"
+
+msgid   "Whether this package is essential for system's stability"
+msgstr  ""
 
 msgid   "Window ID"
 msgstr  ""
@@ -1019,11 +1278,17 @@ msgid   "You will lose any unsaved information\n"
         "Continue?"
 msgstr  ""
 
+msgid   "all = platform independent"
+msgstr  ""
+
 msgid   "errors"
 msgstr  "errores"
 
 msgid   "finished"
 msgstr  "se ha completado"
+
+msgid   "gdebi-gtk, gdebi-kde"
+msgstr  ""
 
 msgid   "gzip decompress; Code: {}, Output: {}"
 msgstr  ""
@@ -1033,6 +1298,9 @@ msgstr  ""
 
 msgid   "post-install and pre-remove scripts generated"
 msgstr  "Los scripts de post-instalación y pre-desinstalación se producieron"
+
+msgid   "script will be created from text below"
+msgstr  ""
 
 msgid   "script/executable"
 msgstr  ""
@@ -1046,11 +1314,86 @@ msgstr  ""
 msgid   "wxPython version: {}"
 msgstr  ""
 
+#~ msgid        "Authenticated"
+#~ msgstr       "Autenticado"
+
+#~ msgid        "Authentication failure"
+#~ msgstr       "Error de autenticación"
+
+#~ msgid        "Categories"
+#~ msgstr       "Categorías"
+
+#~ msgid        "Could not install {}"
+#~ msgstr       "No se pudo instalar {}"
+
 #~ msgid        "Could not locate \"%s\""
 #~ msgstr       "No se encuentra \"%s\""
+
+#~ msgid        "Create checksums for files in package"
+#~ msgstr       "Crear suma de comprobación para los archivos en el paquete"
+
+#~ msgid        "Delete temporary directory tree after package has been created"
+#~ msgstr       "Elimanar la ruta provisional despeus de construir el paquete"
+
+#~ msgid        "Empty password: Cancelling"
+#~ msgstr       "Contraseña vacía: Cancelar"
+
+#~ msgid        "Extra options"
+#~ msgstr       "Opciones Adicionales"
+
+#~ msgid        "Getting administrative privileges from user"
+#~ msgstr       "Obtener privilegios administrativos de usuario"
+
+#~ msgid        "Import executables from Files section"
+#~ msgstr       "Importar los Ejecutables de la sección de Archivos"
+
+#~ msgid        "Import information from Control section"
+#~ msgstr       "Importar la información de la seccion de Control"
+
+#~ msgid        "Installing Package"
+#~ msgstr       "Instalar el Paquete"
+
+#~ msgid        "Legacy Debreate projects"
+#~ msgstr       "Proyectos Debreate obsoletos"
+
+#~ msgid        "Open launcher file"
+#~ msgstr       "Importar archivo de acceso directo"
+
+#~ msgid        "Overwrite"
+#~ msgstr       "Sobrescribir"
+
+#~ msgid        "Overwrite?"
+#~ msgstr       "¿Sobrescribir?"
+
+#~ msgid        "Password"
+#~ msgstr       "Contraseña"
+
+#~ msgid        "Password mismatch, try again"
+#~ msgstr       "Contraseña no coincide, vuelva a intentarlo"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Ruta al directorio del construyo"
 
+#~ msgid        "Specifies whether application should be run from a terminal"
+#~ msgstr       "Especifica si el programa se inicia de un terminal"
+
+#~ msgid        "Supported compressed archives"
+#~ msgstr       "Archivos comprimidos compatibles"
+
+#~ msgid        "Text displayed when mouse hovers over launcher"
+#~ msgstr       "Descripción emergente del acceso"
+
+#~ msgid        "Text for the launcher"
+#~ msgstr       "Texto del acceso"
+
+#~ msgid        "The package failed to install"
+#~ msgstr       "Error al instalar el paquete"
+
+#~ msgid        "The package installed successfully"
+#~ msgstr       "El paquete se instaló con éxito"
+
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "Este mensaje se demuestra al ejecución primera, o si el archivo de configuración se desarregla. La configuración predeterminada ya será creado. Para eliminar este archivo, ejecutar la orden siguiente:"
+
+#~ msgid        "Too many files"
+#~ msgstr       "Demasiados archivos"

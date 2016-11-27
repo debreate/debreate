@@ -1,5 +1,3 @@
 0.7.12
-- Update gettext locales
 - Test that locales are working
-- Code cleanup
 - Heavy testing for both wx 3.0 & 2.8

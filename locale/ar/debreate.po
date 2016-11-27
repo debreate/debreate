@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-11-18 02:30-0800\n"
+        "POT-Creation-Date: 2016-11-26 23:03-0800\n"
         "PO-Revision-Date: \n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Arabic <herr.linux88@gmail.com>\n"
@@ -23,6 +23,9 @@ msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Poedit-Language: Arabic\n"
         "X-Poedit-Country: Morocco\n"
+
+msgid   "A compatible package manager could not be found on the system"
+msgstr  ""
 
 msgid   "A file named \"{}\" already exists. Do you want to replace it?"
 msgstr  ""
@@ -46,26 +49,47 @@ msgstr  "أضف ملف"
 msgid   "Add Folder"
 msgstr  "أضف مجلد"
 
-msgid   "All supported formats"
+msgid   "Add as alternative to selected dependency packages in list"
+msgstr  ""
+
+msgid   "Add dependency package to list"
+msgstr  ""
+
+msgid   "Add manpage"
+msgstr  ""
+
+msgid   "Add selected file/folder to list"
+msgstr  ""
+
+msgid   "Adding file: {}/{}"
 msgstr  ""
 
 msgid   "An error occurred attempting to retrieve version from remote website:"
 msgstr  ""
 
+msgid   "An error occurred during installation"
+msgstr  ""
+
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "حدث خطأ ما عند محاولة حذف شجرة الإنشاء"
+
+msgid   "An unknonw error occurred"
+msgstr  ""
 
 msgid   "Append"
 msgstr  "إلحاق"
 
+msgid   "Append current category to list"
+msgstr  ""
+
+msgid   "Application:"
+msgstr  ""
+
 msgid   "Architecture"
 msgstr  "بنية"
 
-msgid   "Authenticated"
-msgstr  "موثق"
-
-msgid   "Authentication failure"
-msgstr  "فشل المصادقة"
+msgid   "Attempting to install package: {}"
+msgstr  ""
 
 msgid   "Auto-Link Executables"
 msgstr  "الوصل الذاتي للملفات التنفيدية"
@@ -81,6 +105,9 @@ msgstr  "مكسورة"
 
 msgid   "Browse"
 msgstr  "تصفح"
+
+msgid   "Browse for target installation directory"
+msgstr  ""
 
 msgid   "Build"
 msgstr  "يناء"
@@ -118,14 +145,17 @@ msgstr  ""
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  ""
 
+msgid   "Cannot install package"
+msgstr  ""
+
 msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
 msgid   "Cannot run \"fakeroot dpkg"
 msgstr  ""
 
-msgid   "Categories"
-msgstr  "صنف"
+msgid   "Categories dictate where the launcher will be located in the system menu"
+msgstr  ""
 
 msgid   "Category"
 msgstr  "أصناف"
@@ -172,6 +202,9 @@ msgstr  "فحص الحزمة من الأخطاء"
 msgid   "Checking scripts"
 msgstr  "فحص السكربتات"
 
+msgid   "Checks the package for warnings & errors according to lintian specifications"
+msgstr  ""
+
 msgid   "Choose Directory"
 msgstr  "إختر دليل"
 
@@ -193,7 +226,19 @@ msgstr  "محو كل الملفات؟"
 msgid   "Clear categories?"
 msgstr  ""
 
+msgid   "Clear category list"
+msgstr  ""
+
+msgid   "Clear file list"
+msgstr  ""
+
+msgid   "Clear the list of dependency packages"
+msgstr  ""
+
 msgid   "Code Contributor"
+msgstr  ""
+
+msgid   "Command executed: {}"
 msgstr  ""
 
 msgid   "Comment"
@@ -214,8 +259,14 @@ msgstr  "تأكيد"
 msgid   "Conflicts"
 msgstr  "تعاردات"
 
+msgid   "Container of meta data of a menu entry"
+msgstr  ""
+
 msgid   "Control"
 msgstr  "تحكم"
+
+msgid   "Control File Preview"
+msgstr  ""
 
 msgid   "Control Files"
 msgstr  "ملف التحكم"
@@ -244,20 +295,23 @@ msgstr  ""
 msgid   "Could not delete staged directory: {}"
 msgstr  ""
 
-msgid   "Could not install {}"
+msgid   "Could not install package: {}"
 msgstr  ""
 
 msgid   "Could not locate the following files:"
 msgstr  "لا يمكن تحديد موقع الملفات التالية:"
-
-msgid   "Create checksums for files in package"
-msgstr  "إنشاء checksums للملفات في الحزمة"
 
 msgid   "Create md5sums file"
 msgstr  "أنشئ ملف md5sums"
 
 msgid   "Create system menu launcher"
 msgstr  "إنشاءsystem menu launcher"
+
+msgid   "Creates a checksum for all staged files within the package"
+msgstr  ""
+
+msgid   "Creates a simple license that references the system's common license path"
+msgstr  ""
 
 msgid   "Creating changelog"
 msgstr  "إنشاء سجل التغييرات"
@@ -334,14 +388,11 @@ msgstr  ""
 msgid   "Debug"
 msgstr  ""
 
-msgid   "Delete"
-msgstr  ""
-
 msgid   "Delete build tree"
 msgstr  "حذف شجرة الإنشاء"
 
-msgid   "Delete temporary directory tree after package has been created"
-msgstr  "حذف شجرة دليل المؤقت قبل إنشاء الحزمة"
+msgid   "Delete staged directory tree after package has been created"
+msgstr  ""
 
 msgid   "Dependencies"
 msgstr  "إعتماديات"
@@ -349,6 +400,12 @@ msgstr  "إعتماديات"
 # ## Dependencies and Conflicts section
 msgid   "Dependencies and Conflicts"
 msgstr  "إعتماديات وتضادات"
+
+msgid   "Dependencies to be added"
+msgstr  ""
+
+msgid   "Dependency/Conflict Package Name"
+msgstr  ""
 
 msgid   "Depends"
 msgstr  "تبعية"
@@ -364,6 +421,12 @@ msgstr  ""
 
 msgid   "Developer"
 msgstr  "مطور"
+
+msgid   "Directory where scripts should create symlinks"
+msgstr  ""
+
+msgid   "Directory:"
+msgstr  ""
 
 msgid   "Displays a notification in the system panel when launched"
 msgstr  "إظهار إشعار في شريط النظام عند الإطلاق"
@@ -383,8 +446,8 @@ msgstr  ""
 msgid   "Email"
 msgstr  "بريد إلكتروني"
 
-msgid   "Empty password: Cancelling"
-msgstr  "فارغ كلمة السر : إلغاء"
+msgid   "Empty password"
+msgstr  ""
 
 msgid   "Encoding"
 msgstr  "ترميز"
@@ -396,9 +459,6 @@ msgid   "Error"
 msgstr  "خطأ"
 
 msgid   "Error ID"
-msgstr  ""
-
-msgid   "Error decoding file"
 msgstr  ""
 
 msgid   "Error reading changelog: {}\n"
@@ -417,11 +477,22 @@ msgstr  "تنفيذي"
 msgid   "Executable to be launched"
 msgstr  "تنفيدي لإطلاقه"
 
-# ## Build section
-msgid   "Extra options"
-msgstr  "خيارات إضافية"
+msgid   "Executables from file list to be linked against"
+msgstr  ""
+
+msgid   "Export launcher to text file"
+msgstr  ""
+
+msgid   "Exporting {} field"
+msgstr  ""
+
+msgid   "Extra Options"
+msgstr  ""
 
 msgid   "FIXME: Details not copied to clipboard"
+msgstr  ""
+
+msgid   "Field ID does not exist or match any fields: {}"
 msgstr  ""
 
 # ## Menu and Status bars
@@ -437,11 +508,17 @@ msgstr  "الملف موجود"
 msgid   "File does not exist"
 msgstr  ""
 
+msgid   "File list failed to resize. Forcing manual resize to target width: {}"
+msgstr  ""
+
 msgid   "Filename"
 msgstr  ""
 
 msgid   "Files"
 msgstr  "ملفات"
+
+msgid   "Files to be added to package & their target directories"
+msgstr  ""
 
 msgid   "Font Size"
 msgstr  ""
@@ -449,17 +526,20 @@ msgstr  ""
 msgid   "For a video tutorial check the link below."
 msgstr  "إضغط على الرابط تحت لمشاهدة فيديو تعليمي."
 
+msgid   "Formatted changelog entries (editable)"
+msgstr  ""
+
 msgid   "Gathering control information"
 msgstr  "جمع معلومات التحكم"
 
 msgid   "General Contributor"
 msgstr  ""
 
+msgid   "Generate Template"
+msgstr  ""
+
 msgid   "Generate scripts"
 msgstr  "تكوين السكربت"
-
-msgid   "Getting administrative privileges from user"
-msgstr  "الحصول على امتيازات إدارية من المستخدم"
 
 msgid   "Getting files from {}"
 msgstr  ""
@@ -494,6 +574,9 @@ msgstr  "ذهاب إلى قسم Menu Launcher"
 msgid   "Go to Scripts section"
 msgstr  "ذهاب إلى قسم السكربتات"
 
+msgid   "Got error when attempting to retrieve field value"
+msgstr  ""
+
 msgid   "Greeting"
 msgstr  ""
 
@@ -509,6 +592,9 @@ msgstr  ""
 msgid   "Homepage"
 msgstr  "صفحة الوب"
 
+msgid   "How to use Auto-Link"
+msgstr  ""
+
 msgid   "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
 msgstr  "كيفية إستعمال الوصل الذاتي: إضغط على زر إستيراد لإستيراد أي ملف تنفيذي من قسم الملفات. تم إضغط زر تكوين. سيتم إنشاء سكربت بعد التثبيت و قبل الحذف هذا مكان الوصلات الرمزية للملفات التنفيذية في المسار الموجود أعلاه."
 
@@ -518,20 +604,32 @@ msgstr  "أيقونة"
 msgid   "Icon to be displayed for the launcher"
 msgstr  "أيقونة لإظهارها في المطلقة"
 
-msgid   "If checked, the value of the \"Name\" field will be used for the filename"
-msgstr  ""
-
 msgid   "Import"
 msgstr  "إستورد"
 
-msgid   "Import executables from Files section"
-msgstr  "إستيراد ملف تنفيذي من قسم الملفات"
+msgid   "Import files marked as executable from Files page"
+msgstr  ""
 
-msgid   "Import information from Control section"
-msgstr  "إستيراد معلومات من ملف التحكم"
+msgid   "Import information from Control page"
+msgstr  ""
+
+msgid   "Import launcher from file"
+msgstr  ""
+
+msgid   "Improperly formatted text may cause launcher to be unusable"
+msgstr  ""
 
 msgid   "Information"
 msgstr  "معلومات"
+
+msgid   "Insert new changelog entry"
+msgstr  ""
+
+msgid   "Install changelog to custom directory"
+msgstr  ""
+
+msgid   "Install changelog to standard directory"
+msgstr  ""
 
 msgid   "Install lintian package for this option"
 msgstr  "تثبيت حزمة lintian لهذا الخيار"
@@ -542,11 +640,17 @@ msgstr  "تثبيت حزمة md5sum لهذا الخيار"
 msgid   "Install package after build"
 msgstr  "بعد بنائه تثبيت حزمة"
 
-msgid   "Installation prefix: {}"
+msgid   "Install package using a system installer after build"
 msgstr  ""
 
-msgid   "Installing Package"
-msgstr  "حزمة تركيب"
+msgid   "Installation requires one of the following utilities:"
+msgstr  ""
+
+msgid   "Installed to: {}"
+msgstr  ""
+
+msgid   "Installing with {}"
+msgstr  ""
 
 msgid   "Is the staged directory formatted correctly?"
 msgstr  ""
@@ -554,13 +658,19 @@ msgstr  ""
 msgid   "Job"
 msgstr  "عمل"
 
-msgid   "Legacy Debreate projects"
+msgid   "Launcher is only shown when options are satisfied"
+msgstr  ""
+
+msgid   "Launchers / Desktop Entries"
 msgstr  ""
 
 msgid   "License"
 msgstr  "الترخيص"
 
 msgid   "License template not found: {}"
+msgstr  ""
+
+msgid   "Link:"
 msgstr  ""
 
 msgid   "Lintian Errors"
@@ -571,6 +681,9 @@ msgstr  "تعليل Lintian العلامات"
 
 msgid   "Lintian found some issues with the package."
 msgstr  "Lintian العثور على بعض القضايا مع الحزمة."
+
+msgid   "List new changes here, separated one per line"
+msgstr  ""
 
 msgid   "Loading license template: {}"
 msgstr  ""
@@ -603,14 +716,23 @@ msgstr  "القائمة الرئيسية قاذفة"
 msgid   "Message"
 msgstr  ""
 
+msgid   "Miscellaneous fields not available above"
+msgstr  ""
+
 msgid   "Missing Files"
 msgstr  "ملفات مفقودة"
 
 msgid   "Module: {}"
 msgstr  ""
 
+msgid   "More detailed description"
+msgstr  ""
+
 msgid   "Move to Trash"
 msgstr  "نقل إلى المهملات"
+
+msgid   "Multiple lines can be used here, but lintian will complain if they are too long"
+msgstr  ""
 
 msgid   "Name"
 msgstr  "إسم"
@@ -621,12 +743,33 @@ msgstr  "إسم حاليا مستعمل في هذا الدليل"
 msgid   "Name cannot end with \"{}\""
 msgstr  ""
 
+msgid   "Name of Debian/Ubuntu/etc. target distribution"
+msgstr  ""
+
+msgid   "Name of dependency/conflicting package"
+msgstr  ""
+
+msgid   "Name of the package/software"
+msgstr  ""
+
+msgid   "Name of upstream source package"
+msgstr  ""
+
+msgid   "Name to be displayed for the launcher"
+msgstr  ""
+
 msgid   "New Folder"
 msgstr  "مجلد جديد"
 
 # ## Button tool tips
 msgid   "Next"
 msgstr  "تالي"
+
+msgid   "Next page"
+msgstr  ""
+
+msgid   "No system licenses found in {}"
+msgstr  ""
 
 msgid   "No write access to target directory"
 msgstr  ""
@@ -639,6 +782,9 @@ msgstr  ""
 
 msgid   "Ok"
 msgstr  "نعم"
+
+msgid   "One line descriptions/synopsys"
+msgstr  ""
 
 msgid   "One of the required fields is empty"
 msgstr  "واحد من الحقول المطلوبة فارغ"
@@ -664,11 +810,13 @@ msgstr  "فتح مشروح تم حفظه سابقا"
 msgid   "Open a usage document"
 msgstr  "فتح وثيقة الإستعمال"
 
-# ## Menu section
-msgid   "Open launcher file"
-msgstr  "فتح ملف المطلقة"
+msgid   "Open pre-formatted control text"
+msgstr  ""
 
 msgid   "Opening project from argument: {}"
+msgstr  ""
+
+msgid   "Operator"
 msgstr  ""
 
 msgid   "Optional"
@@ -680,14 +828,8 @@ msgstr  "خيارات"
 msgid   "Other"
 msgstr  "أخرى"
 
-msgid   "Overwrite"
-msgstr  ""
-
 msgid   "Overwrite File?"
 msgstr  "كتابة فوق الملف؟"
-
-msgid   "Overwrite?"
-msgstr  ""
 
 msgid   "Package"
 msgstr  "حزمة"
@@ -710,6 +852,9 @@ msgstr  "حزمة يمكن إستعمالها لكنها ليست ضرورية �
 msgid   "Package or its files may be overwritten"
 msgstr  "قد يتم الكتابة فوق الحزمة أو ملفاتها "
 
+msgid   "Package was installed to system"
+msgstr  ""
+
 msgid   "Package will be removed from the system if it is installed"
 msgstr  "الحزمة سيتم حذفها من النظام إذا تم تثبيتها"
 
@@ -722,17 +867,23 @@ msgstr  "حزمة تحتاج للتثبيت و الإعداد أولا"
 msgid   "Package(s)"
 msgstr  "حزم(ة)"
 
+msgid   "Package/Software maintainer's email address"
+msgstr  ""
+
+msgid   "Package/Software maintainer's full name"
+msgstr  ""
+
+msgid   "Package/Software release version"
+msgstr  ""
+
 msgid   "Packager"
 msgstr  "منشء حزم"
 
 msgid   "Page"
 msgstr  "صفحة"
 
-msgid   "Password"
-msgstr  "كلمة السر"
-
-msgid   "Password mismatch, try again"
-msgstr  "عدم تطابق كلمة المرور ، حاول مرة أخرى"
+msgid   "Page retrieved from page_id ({}) was not instance of a window/widget"
+msgstr  ""
 
 msgid   "Path"
 msgstr  "مسار"
@@ -745,6 +896,9 @@ msgstr  "مسار التحذير"
 
 msgid   "Permission Denied"
 msgstr  "صلاحيات غير كافية"
+
+msgid   "Platform on which package/software is meant to run"
+msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "بعد التثبيت"
@@ -767,14 +921,29 @@ msgstr  "تهيئ شجرة الإنشاء"
 msgid   "Preparing to build"
 msgstr  "تهيئ للإنشاء"
 
+msgid   "Prepend above changes as new log entry"
+msgstr  ""
+
 msgid   "Preview"
 msgstr  "سابق"
+
+msgid   "Preview control file"
+msgstr  ""
+
+msgid   "Preview launcher text"
+msgstr  ""
 
 msgid   "Previous"
 msgstr  "سابق"
 
+msgid   "Previous page"
+msgstr  ""
+
 msgid   "Priority"
 msgstr  "أولوية"
+
+msgid   "Process returned code {}"
+msgstr  ""
 
 msgid   "Progress"
 msgstr  "تقدم"
@@ -805,6 +974,21 @@ msgstr  "أنعش"
 
 msgid   "Remove"
 msgstr  "حذف"
+
+msgid   "Remove selected categories from list"
+msgstr  ""
+
+msgid   "Remove selected dependency package from list"
+msgstr  ""
+
+msgid   "Remove selected executables from list"
+msgstr  ""
+
+msgid   "Remove selected files from list"
+msgstr  ""
+
+msgid   "Removing selected item {} of {}"
+msgstr  ""
 
 msgid   "Removing temp directory"
 msgstr  "حذف الدليل المؤقت"
@@ -843,6 +1027,9 @@ msgstr  "حفظ الملف"
 msgid   "Save Launcher"
 msgstr  "حفظ المطلقة"
 
+msgid   "Save control information to text"
+msgstr  ""
+
 msgid   "Save current project"
 msgstr  "خفظ المشروع الحالي"
 
@@ -852,14 +1039,51 @@ msgstr  "حفظ المشروع الحالي بإسم ملف جديد"
 msgid   "Save failed"
 msgstr  "فشل الحفظ"
 
+msgid   "Script run after package uninstall completes"
+msgstr  ""
+
+msgid   "Script run before package install begins"
+msgstr  ""
+
+msgid   "Script run before package uninstall begins"
+msgstr  ""
+
+msgid   "Script text body"
+msgstr  ""
+
 msgid   "Scripts"
 msgstr  "سكربت"
+
+msgid   "Scrtipt run after package install completes"
+msgstr  ""
 
 msgid   "Section"
 msgstr  "قسم"
 
+msgid   "Section under which package managers will list this package"
+msgstr  ""
+
+msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
+msgstr  ""
+
+#, python-brace-format
+msgid   "See: Help {0} Reference {0} Lintian Tags Explanation"
+msgstr  ""
+
+msgid   "Select license to reference"
+msgstr  ""
+
+msgid   "Sets the encoding that should be used to read the launcher"
+msgstr  ""
+
 msgid   "Short Description"
 msgstr  "وصف قصير"
+
+msgid   "Shortcut to a web URL"
+msgstr  ""
+
+msgid   "Shortcut to an application"
+msgstr  ""
 
 msgid   "Show or hide tooltips"
 msgstr  ""
@@ -873,10 +1097,13 @@ msgstr  "مصدر"
 msgid   "Sourceforge Project"
 msgstr  ""
 
-msgid   "Specifies whether application should be run from a terminal"
-msgstr  "تحديد هل يجب تشغيل التطبيق من الطرفية"
+msgid   "Specifies whether application should be run in a terminal"
+msgstr  ""
 
 msgid   "Stage directory does not exist"
+msgstr  ""
+
+msgid   "Staged Target"
 msgstr  ""
 
 msgid   "Staged directory tree"
@@ -901,10 +1128,13 @@ msgstr  "تم بنجاح"
 msgid   "Suggests"
 msgstr  "مقترحات"
 
-msgid   "Supported compressed archives"
+msgid   "Super user command (sudo) not available"
 msgstr  ""
 
 msgid   "System Information"
+msgstr  ""
+
+msgid   "System installer set to:"
 msgstr  ""
 
 msgid   "Target"
@@ -916,6 +1146,9 @@ msgstr  ""
 msgid   "Target file"
 msgstr  ""
 
+msgid   "Target installation directory for file(s)"
+msgstr  ""
+
 msgid   "Target output file"
 msgstr  ""
 
@@ -925,11 +1158,8 @@ msgstr  "طرفية"
 msgid   "Text Size"
 msgstr  ""
 
-msgid   "Text displayed when mouse hovers over launcher"
-msgstr  "إظهار النص عند مرور الفأرة فوق المطلقة"
-
-msgid   "Text for the launcher"
-msgstr  "نص للمطلقة"
+msgid   "Text displayed when cursor hovers over launcher"
+msgstr  ""
 
 msgid   "Text: {}"
 msgstr  ""
@@ -943,21 +1173,18 @@ msgstr  ""
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
 msgstr  ""
 
-msgid   "The package failed to install"
-msgstr  "فشل لتثبيت حزمة"
-
-msgid   "The package installed successfully"
-msgstr  "بنجاح تثبيت الحزمة"
-
-msgid   "The text area is not empty!"
-msgstr  ""
-
 msgid   "This message only displays on the first run, or if\n"
         "the configuration file becomes corrupted."
 msgstr  ""
 
+msgid   "This options means \"This application exists, but don't display it in the menus\""
+msgstr  ""
+
 msgid   "This package may be useful to enhanced package"
 msgstr  "حزمة المحسنة قد تستفيد من هذا واحد"
+
+msgid   "This will destroy all license text. Do you want to continue?"
+msgstr  ""
 
 msgid   "Timer is running"
 msgstr  ""
@@ -968,11 +1195,11 @@ msgstr  ""
 msgid   "Timer stopped. Stopping gauge ..."
 msgstr  ""
 
-msgid   "To delete this file, type the following command in a\n"
-        "terminal:"
+msgid   "Title"
 msgstr  ""
 
-msgid   "Too many files"
+msgid   "To delete this file, type the following command in a\n"
+        "terminal:"
 msgstr  ""
 
 msgid   "Translation"
@@ -980,6 +1207,9 @@ msgstr  "الترجمة"
 
 msgid   "Type"
 msgstr  "نوع"
+
+msgid   "Type of launcher"
+msgstr  ""
 
 msgid   "URL request result: {}"
 msgstr  ""
@@ -993,16 +1223,34 @@ msgstr  ""
 msgid   "Unicode Error"
 msgstr  "خطأ في الـ إنكود"
 
+msgid   "Unless checked, the value of \"Filename\" will be used for the launcher's output filename"
+msgstr  ""
+
+msgid   "Unrecognized field type: {} (ID: {})"
+msgstr  ""
+
 msgid   "Update"
 msgstr  ""
 
 msgid   "Update checking not supported in development versions"
 msgstr  ""
 
+msgid   "Update files' executable status & availability"
+msgstr  ""
+
+msgid   "Upstream source homepage URL"
+msgstr  ""
+
 msgid   "Urgency"
 msgstr  "عاجل"
 
-msgid   "Use \"Name\" as output filename (<name>.desktop)"
+msgid   "Urgency of this package update"
+msgstr  ""
+
+msgid   "Urgency of this update"
+msgstr  ""
+
+msgid   "Use \"Name\" as output filename (<Name>.desktop)"
 msgstr  ""
 
 msgid   "Use Custom Dialogs"
@@ -1014,10 +1262,16 @@ msgstr  "إستعمال نظام أو تخصيص حوارات حفظ/فتح"
 msgid   "Version"
 msgstr  "إصدار"
 
+msgid   "Version corresponing to package name and operator"
+msgstr  ""
+
 msgid   "Version {} is available!"
 msgstr  ""
 
 msgid   "Warning"
+msgstr  ""
+
+msgid   "Warning:"
 msgstr  ""
 
 msgid   "Website Designer & Author"
@@ -1026,6 +1280,9 @@ msgstr  ""
 # ## Information section
 msgid   "Welcome to Debreate!"
 msgstr  "مرحبا بكم في Debreate!"
+
+msgid   "Whether this package is essential for system's stability"
+msgstr  ""
 
 msgid   "Window ID"
 msgstr  ""
@@ -1044,10 +1301,16 @@ msgid   "You will lose any unsaved information\n"
         "Continue?"
 msgstr  ""
 
+msgid   "all = platform independent"
+msgstr  ""
+
 msgid   "errors"
 msgstr  ""
 
 msgid   "finished"
+msgstr  ""
+
+msgid   "gdebi-gtk, gdebi-kde"
 msgstr  ""
 
 msgid   "gzip decompress; Code: {}, Output: {}"
@@ -1058,6 +1321,9 @@ msgstr  ""
 
 msgid   "post-install and pre-remove scripts generated"
 msgstr  "تكوين سكربتات بعد التثبيت و قبل الحذف"
+
+msgid   "script will be created from text below"
+msgstr  ""
 
 msgid   "script/executable"
 msgstr  ""
@@ -1071,8 +1337,17 @@ msgstr  ""
 msgid   "wxPython version: {}"
 msgstr  ""
 
+#~ msgid        "Authenticated"
+#~ msgstr       "موثق"
+
+#~ msgid        "Authentication failure"
+#~ msgstr       "فشل المصادقة"
+
 #~ msgid        "Can't Continue"
 #~ msgstr       "لا يمكن الإستمرار"
+
+#~ msgid        "Categories"
+#~ msgstr       "صنف"
 
 #~ msgid        "Could not install %s"
 #~ msgstr       "فشلت التثبيت %s"
@@ -1080,24 +1355,74 @@ msgstr  ""
 #~ msgid        "Could not locate \"%s\""
 #~ msgstr       "لا يمكن تحديد موقع \"%s\""
 
+#~ msgid        "Create checksums for files in package"
+#~ msgstr       "إنشاء checksums للملفات في الحزمة"
+
 #~ msgid        "Delete all categories?"
 #~ msgstr       "حذف كل الأصناف؟"
+
+#~ msgid        "Delete temporary directory tree after package has been created"
+#~ msgstr       "حذف شجرة دليل المؤقت قبل إنشاء الحزمة"
 
 #~ msgid        "Details saved to %s"
 #~ msgstr       "حفظ التفاصيل إلى *"
 
+#~ msgid        "Empty password: Cancelling"
+#~ msgstr       "فارغ كلمة السر : إلغاء"
+
+# ## Build section
+#~ msgid        "Extra options"
+#~ msgstr       "خيارات إضافية"
+
+#~ msgid        "Getting administrative privileges from user"
+#~ msgstr       "الحصول على امتيازات إدارية من المستخدم"
+
 #~ msgid        "Getting files from %s"
 #~ msgstr       "حصول على الملفات من %s"
+
+#~ msgid        "Import executables from Files section"
+#~ msgstr       "إستيراد ملف تنفيذي من قسم الملفات"
+
+#~ msgid        "Import information from Control section"
+#~ msgstr       "إستيراد معلومات من ملف التحكم"
+
+#~ msgid        "Installing Package"
+#~ msgstr       "حزمة تركيب"
 
 # ## Credits
 #~ msgid        "Karim Oulad Chalha"
 #~ msgstr       "كريم أولاد الشلحة"
+
+# ## Menu section
+#~ msgid        "Open launcher file"
+#~ msgstr       "فتح ملف المطلقة"
+
+#~ msgid        "Password"
+#~ msgstr       "كلمة السر"
+
+#~ msgid        "Password mismatch, try again"
+#~ msgstr       "عدم تطابق كلمة المرور ، حاول مرة أخرى"
 
 #~ msgid        "Path %s does not exist. Continue?"
 #~ msgstr       "المسار %s غير موجود. الإستمرار؟"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "المسار إلى المجلد المؤقت"
+
+#~ msgid        "Specifies whether application should be run from a terminal"
+#~ msgstr       "تحديد هل يجب تشغيل التطبيق من الطرفية"
+
+#~ msgid        "Text displayed when mouse hovers over launcher"
+#~ msgstr       "إظهار النص عند مرور الفأرة فوق المطلقة"
+
+#~ msgid        "Text for the launcher"
+#~ msgstr       "نص للمطلقة"
+
+#~ msgid        "The package failed to install"
+#~ msgstr       "فشل لتثبيت حزمة"
+
+#~ msgid        "The package installed successfully"
+#~ msgstr       "بنجاح تثبيت الحزمة"
 
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "هذه الرسالة يعرض أول مرة يتم تشغيل البرنامج ، أو معطوبة إذا يصبح التكوين. سيتم الآن ملف التكوين الافتراضي يتم إنشاؤه. لحذف هذا الملف ، استخدم الأمر التالي :"
