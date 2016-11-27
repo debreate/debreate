@@ -23,13 +23,15 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(0, 20, 0, 0)
         
         opts_licenses = GetSystemLicensesList()
-        for O in opts_licenses:
-            print(u'System license: {}'.format(O))
         
-        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
+        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'gen»')
         
-        self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list')
+        self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list»')
         self.sel_templates.SetSelection(0)
+        
+        if not self.sel_templates.GetCount():
+            btn_template.Enable(False)
+            self.sel_templates.Enable(False)
         
         template_sizer = wx.BoxSizer(wx.HORIZONTAL)
         template_sizer.Add(btn_template, 1)
