@@ -24,11 +24,11 @@ class MultilineTextCtrl(wx.TextCtrl):
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
 class MultilineTextCtrlPanel(wx.Panel):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=wx.TAB_TRAVERSAL, name=wx.TextCtrlNameStr):
-        wx.Panel.__init__(self, parent, ID, pos, size, style|wx.TAB_TRAVERSAL|wx.BORDER_THEME,
+                size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
+        wx.Panel.__init__(self, parent, ID, pos, size, wx.TAB_TRAVERSAL|wx.BORDER_THEME,
                 name)
         
-        self.textarea = MultilineTextCtrl(self)
+        self.textarea = MultilineTextCtrl(self, style=style)
         if not TextIsEmpty(value):
             self.textarea.SetValue(value)
         
