@@ -2,6 +2,9 @@
 
 ## \package wiz_bin.build
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import commands, os, shutil, subprocess, wx
 
@@ -74,55 +77,68 @@ class Panel(wx.ScrolledWindow):
         if not CMD_gdebi_gui:
             self.chk_install.Enable(False)
         
-        options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
-        options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
-        options1_sizer.AddMany( [
+        btn_build = ButtonBuild64(self)
+        btn_build.SetName(u'build')
+        
+        # Display log
+        dsp_log = OutputLog(self)
+        
+        SetPageToolTips(self)
+        
+        # *** Layout *** #
+        
+        # Nice border for the options
+        box_options = wx.StaticBox(self, label=GT(u'Extra options'))
+        lyt_options = wx.StaticBoxSizer(box_options, wx.VERTICAL)
+        lyt_options.AddMany((
             (self.chk_md5, 0),
             (self.chk_rmstage, 0),
             (self.chk_lint, 0),
             (self.chk_install, 0)
-            ] )
+            ))
         
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_build, 1)
         
-        # --- BUILD
-        self.build_button = ButtonBuild64(self)
-        self.build_button.SetName(u'build')
-        
-        self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
-        
-        build_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        build_sizer.Add(self.build_button, 1)
-        
-        # --- Display log
-        self.log = OutputLog(self)
-        
-        # --- Page 7 Sizer --- #
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(10)
-        page_sizer.Add(options1_sizer, 0, wx.LEFT, 5)
-        page_sizer.AddSpacer(5)
-        page_sizer.AddSpacer(5)
-        page_sizer.Add(build_sizer, 0, wx.ALIGN_CENTER)
-        page_sizer.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.AddSpacer(10)
+        lyt_main.Add(lyt_options, 0, wx.LEFT, 5)
+        lyt_main.AddSpacer(5)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
+        lyt_main.Add(dsp_log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(page_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
+        # *** Event handlers *** #
         
-        SetPageToolTips(self)
+        btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
     
     
     ## TODO: Doxygen
     def GatherData(self):
         build_list = []
         
-        if self.chk_md5.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        if self.chk_rmstage.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
-        if self.chk_lint.GetValue(): build_list.append(u'1')
-        else: build_list.append(u'0')
+        if self.chk_md5.GetValue():
+            build_list.append(u'1')
+        
+        else:
+            build_list.append(u'0')
+        
+        if self.chk_rmstage.GetValue():
+            build_list.append(u'1')
+        
+        else:
+            build_list.append(u'0')
+        
+        if self.chk_lint.GetValue():
+            build_list.append(u'1')
+        
+        else:
+            build_list.append(u'0')
+        
         return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))
     
     
@@ -155,14 +171,6 @@ class Panel(wx.ScrolledWindow):
         wx.Yield()
         if CMD_system_installer == CMD_gdebi_gui:
             install_output = subprocess.Popen(install_cmd)
-            #install_output.wait()
-        
-        elif CMD_system_installer == CMD_gdebi:
-            pass
-        
-        elif CMD_system_installer == CMD_dpkg:
-            pass
-        
         
         # Command appears to not have been executed correctly
         if install_output == None:
@@ -189,9 +197,10 @@ class Panel(wx.ScrolledWindow):
             
             return
         
+        # TODO: This code is kept for future purposes
         # Gdebi Gtk uses a GUI so no need to show a dialog of our own
         if CMD_system_installer != CMD_gdebi_gui:
-            # Command executed & return successfully
+            # Command executed & returned successfully
             ShowMessageDialog(
                 GT(u'Package was installed to system'),
                 GT(u'Success')
@@ -269,6 +278,7 @@ class Panel(wx.ScrolledWindow):
             progress += 1
             for FILE in files_data:
                 tasks += 1
+            
             prebuild_progress.Update(progress, GT(u'Checking scripts'))
             
             # Scripts (tuple)
@@ -290,47 +300,52 @@ class Panel(wx.ScrolledWindow):
                 script = scripts_data.split(script[0])[1].split(script[1])[0].split(u'\n')
                 if int(script[0]):
                     tasks += 1
-                    create_script = True # Show that we are going to make the script
+                    # Show that we are going to make the script
+                    create_script = True
+                
                 script = u'\n'.join(script[1:])
                 scripts.append((script_name, create_script, script))
             
             # *** Changelog
             prebuild_progress.Update(progress, GT(u'Checking changelog'))
-            
             wx.Yield()
             
             # Changelog (list)
             changelog_data = main_window.page_clog.GatherData()
             changelog_data = changelog_data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0].split(u'\n')
             create_changelog = False
+            
             if main_window.page_clog.GetChangelog() != wx.EmptyString:
                 create_changelog = True
+            
             if create_changelog:
                 tasks += 1
                 changelog_dest = changelog_data[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
                 changelog_data = u'\n'.join(changelog_data[1:])
-                
+            
             progress += 1
             
             # *** COPYRIGHT
             prebuild_progress.Update(progress, GT(u'Checking copyright'))
-            
             wx.Yield()
+            
             cpright = main_window.page_cpright.GetCopyright()
             create_copyright = False
             if cpright != wx.EmptyString:
                 create_copyright = True
                 tasks += 1
+            
             progress += 1
             
             # *** MENU (list)
             prebuild_progress.Update(progress, GT(u'Checking menu launcher'))
-            
             wx.Yield()
+            
             create_menu = main_window.page_menu.activate.GetValue()
             if create_menu:
                 tasks += 1
                 menu_data = main_window.page_menu.GetLauncherInfo().split(u'\n')
+            
             progress += 1
             
             # *** MD5SUMS
@@ -340,6 +355,7 @@ class Panel(wx.ScrolledWindow):
             create_md5 = self.chk_md5.GetValue()
             if create_md5:
                 tasks += 1
+            
             progress += 1
             
             # *** Delete Build Tree
@@ -349,6 +365,7 @@ class Panel(wx.ScrolledWindow):
             delete_tree = self.chk_rmstage.GetValue()
             if delete_tree:
                 tasks += 1
+            
             progress += 1
             
             # *** Check for Errors
@@ -358,6 +375,7 @@ class Panel(wx.ScrolledWindow):
             error_check = self.chk_lint.GetValue()
             if error_check:
                 tasks += 1
+            
             progress += 1
             
             prebuild_progress.Update(progress)
@@ -390,24 +408,29 @@ class Panel(wx.ScrolledWindow):
                 new_dir = u'{}{}'.format(temp_tree, FILE.split(u' -> ')[2])
                 if not os.path.isdir(new_dir):
                     os.makedirs(new_dir)
+                
                 # Get FILE path
                 FILE = FILE.split(u' -> ')[0]
+                
                 # Remove asteriks from exectuables
                 exe = False # Used to set executable permissions
                 if FILE[-1] == u'*':
                     exe = True
                     FILE = FILE[:-1]
+                
                 # Copy files
                 copy_path = u'{}/{}'.format(new_dir, os.path.split(FILE)[1])
                 shutil.copy(FILE, copy_path)
+                
                 # Set FILE permissions
                 if exe:
                     os.chmod(copy_path, 0755)
+                
                 else:
                     os.chmod(copy_path, 0644)
+                
                 progress += 1
                 build_progress.Update(progress)
-            #progress += 1
             
             # Make sure that the dirctory is available in which to place documentation
             if create_changelog or create_copyright:
@@ -423,10 +446,13 @@ class Panel(wx.ScrolledWindow):
                 # If changelog will be installed to default directory
                 if changelog_dest == u'DEFAULT':
                     changelog_dest = u'{}/usr/share/doc/{}'.format(temp_tree, pack)
+                
                 else:
                     changelog_dest = u'{}{}'.format(temp_tree, changelog_dest)
+                
                 if not os.path.isdir(changelog_dest):
                     os.makedirs(changelog_dest)
+                
                 changelog_file = open(u'{}/changelog'.format(changelog_dest), u'w')
                 changelog_file.write(changelog_data.encode(u'utf-8'))
                 changelog_file.close()
@@ -437,6 +463,7 @@ class Panel(wx.ScrolledWindow):
                     changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
                             GT(u'Error'), wx.OK)
                     changelog_error.ShowModal()
+                
                 progress += 1
             
             # *** COPYRIGHT
@@ -466,6 +493,7 @@ class Panel(wx.ScrolledWindow):
                 
                 if not os.path.isdir(menu_dir):
                     os.makedirs(menu_dir)
+                
                 menu_file = open(u'{}/{}.desktop'.format(menu_dir, menu_filename), u'w')
                 menu_file.write(u'\n'.join(menu_data).encode(u'utf-8'))
                 menu_file.close()
@@ -515,10 +543,6 @@ class Panel(wx.ScrolledWindow):
             
             # *** FINAL BUILD
             build_progress.Update(progress, GT(u'Running dpkg'))[0]
-#                c_tree = temp_tree.encode(u'utf-8')
-#                print c_tree
-#                c_deb = deb.encode(u'utf-8')
-#                print c_deb
             working_dir = os.path.split(temp_tree)[0]
             c_tree = os.path.split(temp_tree)[1]
             c_deb = u'{}.deb'.format(filename)
@@ -527,9 +551,6 @@ class Panel(wx.ScrolledWindow):
             os.chdir(working_dir)
                         
             wx.Yield()
-#                if subprocess.call([u'fakeroot', u'dpkg', u'-b', c_tree, c_deb]):
-#                    build_status = (1, 0)
-#                try:
             build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}"'.format(c_tree, c_deb)).encode(u'utf-8'))
             progress += 1
             
@@ -538,10 +559,10 @@ class Panel(wx.ScrolledWindow):
                 build_progress.Update(progress, GT(u'Removing temp directory'))
                 
                 wx.Yield()
-                # Delete the build tree
                 if commands.getstatusoutput((u'rm -r "{}"'.format(temp_tree)).encode(u'utf-8'))[0]:
                     wx.MessageDialog(self, GT(u'An error occurred when trying to delete the build tree'),
                             GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                
                 progress += 1
             
             # *** ERROR CHECK
@@ -557,11 +578,10 @@ class Panel(wx.ScrolledWindow):
                     error_log = open(u'{}/{}.lintian'.format(build_path, filename), u'w')
                     error_log.write(errors)
                     error_log.close()
-                    MessageDialog(self, -1,
-                    GT(u'Lintian Errors'), ICON_INFORMATION,
-                    u'{}\n{}.lintian"'.format(e1, e2),
-                    errors
-                    ).ShowModal()
+                    
+                    MessageDialog(self, wx.ID_ANY, GT(u'Lintian Errors'), ICON_INFORMATION,
+                            u'{}\n{}.lintian"'.format(e1, e2), errors).ShowModal()
+                
                 progress += 1
             
             # Close progress dialog
@@ -571,6 +591,7 @@ class Panel(wx.ScrolledWindow):
                 # Temp dir will not be deleted if build fails
                 wx.MessageDialog(self, GT(u'Package build failed'), GT(u'Error'),
                         style=wx.OK|wx.ICON_ERROR).ShowModal()
+            
             else:
                 wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
                         style=wx.OK|wx.ICON_INFORMATION).ShowModal()
@@ -578,38 +599,6 @@ class Panel(wx.ScrolledWindow):
                 # Installing the package
                 if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
                     self.InstallPackage(c_deb)
-                    '''
-                    self.log.ToggleOutput()
-                    print GT(u'Getting administrative privileges from user')
-                    pshow = GT(u'Password')
-                    command_executed = False
-                    tries = 0
-                    while (tries < 3):
-                        password = wx.GetPasswordFromUser(pshow, GT(u'Installing Package'))
-                        if (password == u''):
-                            print GT(u'Empty password: Cancelling')
-                            break
-                        e = RunSudo(password, u'dpkg -i {}'.format(deb))
-                        if (not e):
-                            if (tries == 2):
-                                print GT(u'Authentication failure')
-                                install_fail = GT(u'Could not install {}')
-                                print(install_fail.format(deb))
-                            else:
-                                print GT(u'Password mismatch, try again')
-                        else:
-                            command_executed = True
-                            print GT(u'Authenticated')
-                            break
-                        tries += 1
-                    
-                    # Check if package installed correctly
-                    if (int(os.popen(u'dpkg -L {} ; echo $?'.format(pack)).read().split(u'\n')[-2]) and command_executed):
-                        wx.MessageDialog(self, GT(u'The package failed to install'), GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
-                    elif (command_executed):
-                        wx.MessageDialog(self, GT(u'The package installed successfully'), GT(u'Success'), wx.OK).ShowModal()
-                    self.log.ToggleOutput()
-                    '''
             
             return build_status[0]
         
@@ -625,6 +614,7 @@ class Panel(wx.ScrolledWindow):
                 cont = True
                 path = save_dia.GetPath()
                 filename = save_dia.GetFilename().split(u'.deb')[0]
+        
         else:
             save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'{}|*.deb'.format(ttype),
                     wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
@@ -690,13 +680,16 @@ class Panel(wx.ScrolledWindow):
                 (u'postinst', main_window.page_scripts.chk_postinst),
                 (u'prerm', main_window.page_scripts.chk_prerm),
                 (u'postrm', main_window.page_scripts.chk_postrm))
+            
             for script in scripts:
                 if script[1].IsChecked():
                     scripts_to_make.append(script[0])
+            
             s = GT(u'Scripts')
             if len(scripts_to_make):
                 scripts_to_make = u'{}: {}'.format(s, u', '.join(scripts_to_make))
+            
             else:
                 scripts_to_make = u'{}: 0'.format(s)
-                    
+            
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
