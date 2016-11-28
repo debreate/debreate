@@ -17,6 +17,7 @@ from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
+from dbr.custom             import StatusBar
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -93,12 +94,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetIcon(self.main_icon)
         
         # ----- Status Bar
-        self.stat_bar = wx.StatusBar(self, -1)
-        self.SetStatusBar(self.stat_bar)
-        
-        
-        
-        # ***** Menu Bar ***** #
+        self.stat_bar = StatusBar(self)
         
         # ----- File Menu
         self.menu_file = wx.Menu()
