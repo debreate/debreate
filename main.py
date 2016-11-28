@@ -349,11 +349,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Layout *** #
         
-        self.main_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(self.wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
-        self.SetSizer(self.main_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         # *** Event handlers *** #
