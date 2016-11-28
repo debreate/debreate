@@ -36,6 +36,8 @@ class Panel(wx.ScrolledWindow):
         self.opts_choice = []
         self.opts_list = []
         
+        self.labels = []
+        
         # --- Buttons to open/preview/save .desktop file
         btn_open = ButtonBrowse64(self)
         btn_open.SetName(u'open')
@@ -54,7 +56,7 @@ class Panel(wx.ScrolledWindow):
         
         # --- Custom output filename
         self.txt_filename = wx.StaticText(self, label=GT(u'Filename'), name=u'filename')
-        self.ti_filename = wx.TextCtrl(self, name=u'filename')
+        self.ti_filename = wx.TextCtrl(self, name=self.txt_filename.Name)
         
         self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'),
                 name=u'filename chk')
@@ -63,6 +65,7 @@ class Panel(wx.ScrolledWindow):
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
+        self.labels.append(txt_name)
         self.ti_name = wx.TextCtrl(self, name=u'Name')
         self.ti_name.req = True
         self.ti_name.default = wx.EmptyString
@@ -70,18 +73,24 @@ class Panel(wx.ScrolledWindow):
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
+        self.labels.append(txt_exec)
+        
         self.ti_exec = wx.TextCtrl(self, name=u'Exec')
         self.ti_exec.default = wx.EmptyString
         self.opts_input.append(self.ti_exec)
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
+        self.labels.append(txt_comm)
+        
         self.ti_comm = wx.TextCtrl(self, name=u'Comment')
         self.ti_comm.default = wx.EmptyString
         self.opts_input.append(self.ti_comm)
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
+        self.labels.append(txt_icon)
+        
         self.ti_icon = wx.TextCtrl(self, name=u'Icon')
         self.ti_icon.default = wx.EmptyString
         self.opts_input.append(self.ti_icon)
@@ -90,6 +99,8 @@ class Panel(wx.ScrolledWindow):
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
+        self.labels.append(txt_type)
+        
         self.ti_type = OwnerDrawnComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
         self.ti_type.default = self.ti_type.GetValue()
         self.opts_input.append(self.ti_type)
@@ -98,6 +109,8 @@ class Panel(wx.ScrolledWindow):
         opts_term = (u'true', u'false',)
         
         txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
+        self.labels.append(txt_term)
+        
         self.sel_term = wx.Choice(self, choices=opts_term, name=u'Terminal')
         self.sel_term.default = 1
         self.sel_term.SetSelection(self.sel_term.default)
@@ -107,6 +120,8 @@ class Panel(wx.ScrolledWindow):
         self.notify_opt = (u'true', u'false',)
         
         txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
+        self.labels.append(txt_notify)
+        
         self.sel_notify = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
         self.sel_notify.default = 0
         self.sel_notify.SetSelection(self.sel_notify.default)
@@ -120,6 +135,8 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
+        self.labels.append(txt_enc)
+        
         self.ti_enc = OwnerDrawnComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
         self.ti_enc.default = self.ti_enc.GetValue()
         self.opts_input.append(self.ti_enc)
@@ -154,9 +171,11 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_category = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        self.labels.append(txt_category)
+        
         # This option does not get set by importing a new project
         self.ti_category = OwnerDrawnComboBox(self, value=opts_category[0], choices=opts_category,
-                name=u'Category')
+                name=txt_category.Name)
         self.ti_category.default = self.ti_category.GetValue()
         self.opts_input.append(self.ti_category)
         
@@ -182,8 +201,9 @@ class Panel(wx.ScrolledWindow):
         
         # ----- MISC
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
+        self.labels.append(txt_other)
         
-        self.ti_other = MultilineTextCtrlPanel(self, style=wx.BORDER_SIMPLE, name=txt_other.Name)
+        self.ti_other = MultilineTextCtrlPanel(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.opts_input.append(self.ti_other)
         
@@ -495,7 +515,8 @@ class Panel(wx.ScrolledWindow):
             False: wx.Colour(214, 214, 214),
         }
         
-        for group in self.opts_button, self.opts_choice, self.opts_input, self.opts_list:
+        for group in self.opts_button, self.opts_choice, self.opts_input, \
+                self.opts_list, self.labels:
             for O in group:
                 O.Enable(enable)
                 
