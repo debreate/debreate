@@ -95,7 +95,7 @@ default_title = GT(u'Debreate - Debian Package Builder')
 
 
 ## TODO: Doxygen
-class MainWindow(wx.Frame):
+class MainWindow(wx.Frame, ModuleAccessCtrl):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
         ModuleAccessCtrl.__init__(self, __name__)
