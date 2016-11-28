@@ -26,6 +26,7 @@ from globals.bitmaps    import ICON_EXCLAMATION
 from globals.ident      import FID_CUSTOM
 from globals.ident      import FID_LIST
 from globals.ident      import ID_FILES
+from globals.paths      import ConcatPaths
 from globals.paths      import PATH_home
 from globals.tooltips   import SetPageToolTips
 
@@ -190,33 +191,34 @@ class Panel(wx.ScrolledWindow):
     def GatherData(self):
         file_list = []
         item_count = self.lst_files.GetItemCount()
+        
+        if item_count != len(self.lst_files.sources_list):
+            warn_msg1 = GT(u'Exporting file list:')
+            warn_msg2 = GT(u'Length of file list & source directories does not match')
+            Logger.Warning(__name__, u'{}: {}'.format(warn_msg1, warn_msg2))
+        
         if item_count > 0:
             count = 0
             while count < item_count:
-                item_file = self.lst_files.GetItemText(count)
-                item_dest = self.lst_files.GetItem(count, 1).GetText()
-                for item in self.list_data:
-                    # Decode to unicode
-                    i0 = item[0].encode(u'utf-8')
-                    i1 = item[1].decode(u'utf-8')
-                    i2 = item[2].encode(u'utf-8')
-                    if i1 == item_file and i2.decode(u'utf-8') == item_dest:
-                        item_src = i0
+                filename = self.lst_files.GetItemText(count)
+                target = self.lst_files.GetItem(count, 1).GetText()
+                absolute_filename = ConcatPaths((self.lst_files.sources_list[count], filename))
                 
                 # Populate list with tuples of ('src', 'file', 'dest')
                 if self.lst_files.GetItemTextColour(count) == (255, 0, 0):
-                    file_list.append((u'{}*'.format(item_src), item_file, item_dest))
+                    # Mark file as executable
+                    file_list.append((u'{}*'.format(absolute_filename), filename, target))
                 
                 else:
-                    file_list.append((item_src, item_file, item_dest))
+                    file_list.append((absolute_filename, filename, target))
                 
                 count += 1
             
             return_list = []
-            for FILE in file_list:
-                f0 = u'{}'.encode(u'utf-8').format(FILE[0])
-                f1 = u'{}'.encode(u'utf-8').format(FILE[1])
-                f2 = u'{}'.encode(u'utf-8').format(FILE[2])
+            for F in file_list:
+                f0 = u'{}'.encode(u'utf-8').format(F[0])
+                f1 = u'{}'.encode(u'utf-8').format(F[1])
+                f2 = u'{}'.encode(u'utf-8').format(F[2])
                 return_list.append(u'{} -> {} -> {}'.format(f0, f1, f2))
             
             return u'<<FILES>>\n1\n{}\n<</FILES>>'.format(u'\n'.join(return_list))
@@ -253,10 +255,13 @@ class Panel(wx.ScrolledWindow):
         
         if os.path.isdir(pin):
             for root, dirs, files in os.walk(pin):
-                for FILE in files:
+                Logger.Debug(__name__, u'Total files: {}'.format(len(files)))
+                for F in files:
                     total_files += 1
+                    Logger.Debug(__name__, u'Added files: {}'.format(total_files))
             
-            if total_files: # Continue if files are found
+            # Continue if files are found
+            if total_files:
                 cont = True
                 count = 0
                 msg_files = GT(u'Getting files from {}')
