@@ -2,8 +2,11 @@
 
 ## \package wiz_bin.launchers
 
+# MIT licensing
+# See: docs/LICENSE.txt
 
-import wx, os, shutil
+
+import os, shutil, wx
 from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonAdd
@@ -27,133 +30,112 @@ from globals.ident      import page_ids
 from globals.tooltips   import SetPageToolTips
 
 
-## TODO: Doxygen
+## Page for creating a system menu launcher
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ID_MENU)
         
-        # Allows executing parent methods
-        self.parent = parent
-        
         ## Override default label
         self.label = GT(u'Menu Launcher')
         
-        # --- Main Menu Entry --- #
-        
-        self.options_button = []
-        self.options_input = []
-        self.options_choice = []
-        self.options_list = []
+        self.opts_button = []
+        self.opts_input = []
+        self.opts_choice = []
+        self.opts_list = []
         
         self.labels = []
         
         # --- Buttons to open/preview/save .desktop file
-        self.btn_open = ButtonBrowse64(self)
-        self.btn_open.SetName(u'open')
+        btn_open = ButtonBrowse64(self)
+        btn_open.SetName(u'open')
         
-        self.btn_save = ButtonSave64(self)
-        self.btn_save.SetName(u'export')
-        self.options_button.append(self.btn_save)
+        btn_save = ButtonSave64(self)
+        btn_save.SetName(u'export')
+        self.opts_button.append(btn_save)
         
-        self.btn_preview = ButtonPreview64(self)
-        self.btn_preview.SetName(u'preview')
-        self.options_button.append(self.btn_preview)
-        
-        self.btn_open.Bind(wx.EVT_BUTTON, self.OpenFile)
-        wx.EVT_BUTTON(self.btn_save, wx.ID_ANY, self.OnSave)
-        wx.EVT_BUTTON(self.btn_preview, wx.ID_ANY, self.OnPreview)
-        
-        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(self.btn_open, 0)
-        button_sizer.Add(self.btn_save, 0)
-        button_sizer.Add(self.btn_preview, 0)
+        btn_preview = ButtonPreview64(self)
+        btn_preview.SetName(u'preview')
+        self.opts_button.append(btn_preview)
         
         # --- CHECKBOX
-        self.activate = wx.CheckBox(self, label=GT(u'Create system menu launcher'))
-        self.activate.default = False
-        
-        self.activate.Bind(wx.EVT_CHECKBOX, self.OnToggle)
+        self.chk_enable = wx.CheckBox(self, label=GT(u'Create system menu launcher'))
+        self.chk_enable.default = False
         
         # --- Custom output filename
-        self.txt_filename = wx.StaticText(self, label=GT(u'Filename'))
-        self.input_filename = wx.TextCtrl(self, name=self.txt_filename.GetLabel())
-        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'))
+        self.txt_filename = wx.StaticText(self, label=GT(u'Filename'), name=u'filename')
+        self.ti_filename = wx.TextCtrl(self, name=self.txt_filename.Name)
+        
+        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'),
+                name=u'filename chk')
         self.chk_filename.default = True
         self.chk_filename.SetValue(self.chk_filename.default)
-        
-        self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
-        
-        for I in self.txt_filename, self.input_filename:
-            I.SetToolTip(wx.ToolTip(GT(u'Custom filename to use for launcher')))
-        
-        self.chk_filename.SetToolTip(
-                wx.ToolTip(GT(u'If checked, the value of the "Name" field will be used for the filename'))
-            )
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         self.labels.append(txt_name)
-        
-        self.name_input = wx.TextCtrl(self, name=u'Name')
-        self.name_input.req = True
-        self.name_input.default = wx.EmptyString
-        self.options_input.append(self.name_input)
+        self.ti_name = wx.TextCtrl(self, name=u'Name')
+        self.ti_name.req = True
+        self.ti_name.default = wx.EmptyString
+        self.opts_input.append(self.ti_name)
         
         # --- EXECUTABLE
-        txt_exe = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-        self.labels.append(txt_exe)
+        txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
+        self.labels.append(txt_exec)
         
-        self.exe_input = wx.TextCtrl(self, name=u'Exec')
-        self.exe_input.default = wx.EmptyString
-        self.options_input.append(self.exe_input)
+        self.ti_exec = wx.TextCtrl(self, name=u'Exec')
+        self.ti_exec.default = wx.EmptyString
+        self.opts_input.append(self.ti_exec)
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
         self.labels.append(txt_comm)
         
-        self.comm_input = wx.TextCtrl(self, name=u'Comment')
-        self.comm_input.default = wx.EmptyString
-        self.options_input.append(self.comm_input)
+        self.ti_comm = wx.TextCtrl(self, name=u'Comment')
+        self.ti_comm.default = wx.EmptyString
+        self.opts_input.append(self.ti_comm)
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         self.labels.append(txt_icon)
         
-        self.icon_input = wx.TextCtrl(self, name=u'Icon')
-        self.icon_input.default = wx.EmptyString
-        self.options_input.append(self.icon_input)
+        self.ti_icon = wx.TextCtrl(self, name=u'Icon')
+        self.ti_icon.default = wx.EmptyString
+        self.opts_input.append(self.ti_icon)
         
         # --- TYPE
-        self.type_opt = (u'Application', u'Link', u'FSDevice', u'Directory')
+        opts_type = (u'Application', u'Link', u'Directory',)
+        
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         self.labels.append(txt_type)
         
-        self.type_choice = OwnerDrawnComboBox(self, -1, value=self.type_opt[0], choices=self.type_opt, name=u'Type')
-        self.type_choice.default = self.type_choice.GetValue()
-        self.options_input.append(self.type_choice)
+        self.ti_type = OwnerDrawnComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
+        self.ti_type.default = self.ti_type.GetValue()
+        self.opts_input.append(self.ti_type)
         
         # --- TERMINAL
-        self.term_opt = (u'true', u'false')
+        opts_term = (u'true', u'false',)
+        
         txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
         self.labels.append(txt_term)
         
-        self.term_choice = wx.Choice(self, -1, choices=self.term_opt, name=u'Terminal')
-        self.term_choice.default = 1
-        self.term_choice.SetSelection(self.term_choice.default)
-        self.options_choice.append(self.term_choice)
+        self.sel_term = wx.Choice(self, choices=opts_term, name=u'Terminal')
+        self.sel_term.default = 1
+        self.sel_term.SetSelection(self.sel_term.default)
+        self.opts_choice.append(self.sel_term)
         
         # --- STARTUP NOTIFY
-        self.notify_opt = (u'true', u'false')
+        self.notify_opt = (u'true', u'false',)
+        
         txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
         self.labels.append(txt_notify)
         
-        self.notify_choice = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
-        self.notify_choice.default = 0
-        self.notify_choice.SetSelection(self.notify_choice.default)
-        self.options_choice.append(self.notify_choice)
+        self.sel_notify = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
+        self.sel_notify.default = 0
+        self.sel_notify.SetSelection(self.sel_notify.default)
+        self.opts_choice.append(self.sel_notify)
         
         # --- ENCODING
-        self.enc_opt = (
+        opts_enc = (
             u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
             u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
             u'GB 18030',
@@ -162,12 +144,12 @@ class Panel(WizardPage):
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         self.labels.append(txt_enc)
         
-        self.enc_input = OwnerDrawnComboBox(self, -1, value=self.enc_opt[2], choices=self.enc_opt, name=u'Encoding')
-        self.enc_input.default = self.enc_input.GetValue()
-        self.options_input.append(self.enc_input)
+        self.ti_enc = OwnerDrawnComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
+        self.ti_enc.default = self.ti_enc.GetValue()
+        self.opts_input.append(self.ti_enc)
         
         # --- CATEGORIES
-        self.cat_opt = (
+        opts_category = (
             u'2DGraphics',
             u'Accessibility', u'Application', u'ArcadeGame', u'Archiving', u'Audio', u'AudioVideo',
             u'BlocksGame', u'BoardGame',
@@ -195,153 +177,142 @@ class Panel(WizardPage):
             u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
             )
         
-        txt_cat = wx.StaticText(self, label=GT(u'Category'), name=u'category')
-        self.labels.append(txt_cat)
+        txt_category = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
-        self.cat_choice = wx.ComboBox(self, -1, value=self.cat_opt[0], choices=self.cat_opt,
-                name=txt_cat.GetLabel())
-        self.cat_choice.default = self.cat_choice.GetValue()
-        self.options_input.append(self.cat_choice)
+        self.ti_category = OwnerDrawnComboBox(self, value=opts_category[0], choices=opts_category,
+                name=txt_category.Name)
+        self.ti_category.default = self.ti_category.GetValue()
+        self.opts_input.append(self.ti_category)
         
-        self.cat_add = ButtonAdd(self)
-        self.cat_add.SetName(u'add category')
-        self.cat_del = ButtonDel(self)
-        self.cat_del.SetName(u'rm category')
-        self.cat_clr = ButtonClear(self)
-        self.cat_clr.SetName(u'clear categories')
+        btn_catadd = ButtonAdd(self, name=u'add category')
+        btn_catdel = ButtonDel(self, name=u'rm category')
+        btn_catclr = ButtonClear(self, name=u'clear categories')
         
-        for B in self.cat_add, self.cat_del, self.cat_clr:
-            self.options_button.append(B)
+        for B in btn_catadd, btn_catdel, btn_catclr:
+            self.opts_button.append(B)
         
-        # NOTE: wx. 3.0 compat
+        # NOTE: wx 3.0 compat
         if wx.MAJOR_VERSION > 2:
-            self.categories = wx.ListCtrl(self, -1)
-            self.categories.SetSingleStyle(wx.LC_SINGLE_SEL)
+            self.lst_categories = wx.ListCtrl(self)
+            self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         else:
-            self.categories = wx.ListCtrl(self, -1, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
-            self.categories.InsertColumn(0, u'')
+            self.lst_categories = wx.ListCtrl(self, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
         
         # For manually setting background color after enable/disable
-        self.categories.default_color = self.categories.GetBackgroundColour()
-        self.categories.SetName(u'Categories')
-        self.options_list.append(self.categories)
-        
-        
-        wx.EVT_KEY_DOWN(self.cat_choice, self.SetCategory)
-        wx.EVT_KEY_DOWN(self.categories, self.SetCategory)
-        wx.EVT_BUTTON(self.cat_add, -1, self.SetCategory)
-        wx.EVT_BUTTON(self.cat_del, -1, self.SetCategory)
-        wx.EVT_BUTTON(self.cat_clr, -1, self.SetCategory)
-        
-        cat_sizer0 = wx.BoxSizer(wx.HORIZONTAL)
-        cat_sizer0.Add(self.cat_add, 0, wx.RIGHT, 5)
-        cat_sizer0.Add(self.cat_del, 0, wx.RIGHT, 5)
-        cat_sizer0.Add(self.cat_clr, 0)
-        
-        cat_sizer1 = wx.BoxSizer(wx.VERTICAL)
-        cat_sizer1.Add(txt_cat, 0, wx.LEFT, 1)
-        cat_sizer1.Add(self.cat_choice, 0, wx.TOP|wx.BOTTOM, 5)
-        cat_sizer1.Add(cat_sizer0, 0)
-        
-        cat_sizer2 = wx.BoxSizer(wx.HORIZONTAL)
-        cat_sizer2.Add(cat_sizer1, 0)
-        cat_sizer2.Add(self.categories, 1, wx.EXPAND|wx.LEFT, 5)
-        
+        self.lst_categories.default_color = self.lst_categories.GetBackgroundColour()
+        self.lst_categories.SetName(u'Categories')
+        self.opts_list.append(self.lst_categories)
         
         # ----- MISC
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         self.labels.append(txt_other)
         
-        self.other = MultilineTextCtrlPanel(self, name=txt_other.Name)
-        self.other.default = wx.EmptyString
-        self.options_input.append(self.other)
+        self.ti_other = MultilineTextCtrlPanel(self, name=txt_other.Name)
+        self.ti_other.default = wx.EmptyString
+        self.opts_input.append(self.ti_other)
         
-        misc_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        misc_sizer.Add(self.other, 1, wx.EXPAND)
+        self.OnToggle()
         
-        # GridBagSizer flags
+        SetPageToolTips(self)
+        
+        # *** Layout *** #
+        
         CENTER = wx.ALIGN_CENTER_VERTICAL
         CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
         CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
+        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
         
-        sizer1 = wx.GridBagSizer(5, 5)
-        sizer1.SetCols(4)
-        sizer1.AddGrowableCol(1)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_open, 0)
+        lyt_buttons.Add(btn_save, 0)
+        lyt_buttons.Add(btn_preview, 0)
+        
+        lyt_cat_btn = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_cat_btn.Add(btn_catadd, 0)
+        lyt_cat_btn.Add(btn_catdel, 0)
+        lyt_cat_btn.Add(btn_catclr, 0)
+        
+        lyt_cat_input = wx.BoxSizer(wx.VERTICAL)
+        lyt_cat_input.Add(txt_category, 0, LEFT_BOTTOM)
+        lyt_cat_input.Add(self.ti_category, 0, wx.TOP|wx.BOTTOM, 5)
+        lyt_cat_input.Add(lyt_cat_btn, 0)
+        
+        lyt_cat_main = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_cat_main.Add(lyt_cat_input, 0)
+        lyt_cat_main.Add(self.lst_categories, 1, wx.EXPAND|wx.LEFT, 5)
+        
+        lyt_grid = wx.GridBagSizer(5, 5)
+        lyt_grid.SetCols(4)
+        lyt_grid.AddGrowableCol(1)
         
         # Row 1
-        sizer1.Add(self.txt_filename, (0, 0), flag=CENTER)
-        sizer1.Add(self.input_filename, pos=(0, 1), flag=CENTER_EXPAND)
-        sizer1.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
+        lyt_grid.Add(self.txt_filename, (0, 0), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_filename, pos=(0, 1), flag=CENTER_EXPAND)
+        lyt_grid.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
         
         # Row 2
-        sizer1.Add(txt_name, (1, 0), flag=CENTER)
-        sizer1.Add(self.name_input, (1, 1), flag=CENTER_EXPAND)
-        sizer1.Add(txt_type, (1, 2), flag=CENTER)
-        sizer1.Add(self.type_choice, (1, 3), flag=CENTER)
+        lyt_grid.Add(txt_name, (1, 0), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_name, (1, 1), flag=CENTER_EXPAND)
+        lyt_grid.Add(txt_type, (1, 2), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_type, (1, 3), flag=CENTER_EXPAND)
         
         # Row 3
-        sizer1.Add(txt_exe, (2, 0), flag=CENTER)
-        sizer1.Add(self.exe_input, (2, 1), flag=CENTER_EXPAND)
-        sizer1.Add(txt_term, (2, 2), flag=CENTER)
-        sizer1.Add(self.term_choice, (2, 3), flag=CENTER)
+        lyt_grid.Add(txt_exec, (2, 0), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_exec, (2, 1), flag=CENTER_EXPAND)
+        lyt_grid.Add(txt_term, (2, 2), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.sel_term, (2, 3), flag=LEFT_CENTER)
         
         # Row 4
-        sizer1.Add(txt_comm, (3, 0), flag=CENTER)
-        sizer1.Add(self.comm_input, (3, 1), flag=CENTER_EXPAND)
-        sizer1.Add(txt_notify, (3, 2), flag=CENTER)
-        sizer1.Add(self.notify_choice, (3, 3), flag=CENTER)
+        lyt_grid.Add(txt_comm, (3, 0), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_comm, (3, 1), flag=CENTER_EXPAND)
+        lyt_grid.Add(txt_notify, (3, 2), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.sel_notify, (3, 3), flag=LEFT_CENTER)
         
         # Row 5
-        sizer1.Add(txt_icon, (4, 0), flag=CENTER)
-        sizer1.Add(self.icon_input, (4, 1), flag=CENTER_EXPAND)
-        sizer1.Add(txt_enc, (4, 2), flag=CENTER)
-        sizer1.Add(self.enc_input, (4, 3), flag=CENTER)
+        lyt_grid.Add(txt_icon, (4, 0), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_icon, (4, 1), flag=CENTER_EXPAND)
+        lyt_grid.Add(txt_enc, (4, 2), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.ti_enc, (4, 3), flag=CENTER_EXPAND)
         
+        lyt_border = wx.BoxSizer(wx.VERTICAL)
         
-        self.border = wx.StaticBox(self, -1, size=(20,20))
-        border_box = wx.StaticBoxSizer(self.border, wx.VERTICAL)
-        
-        border_box.Add(sizer1, 0, wx.EXPAND|wx.BOTTOM, 5)
-        border_box.Add(cat_sizer2, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        border_box.AddSpacer(5)
-        border_box.Add(txt_other, 0)
-        border_box.Add(self.other, 1, wx.EXPAND)
-        
-        
-        self.OnToggle()  # Initially disable widgets
+        lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
+        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.TOP, 5)
+        lyt_border.AddSpacer(5)
+        lyt_border.Add(txt_other, 0)
+        lyt_border.Add(self.ti_other, 1, wx.EXPAND)
         
         # --- Page 5 Sizer --- #
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(5)
-        page_sizer.Add(button_sizer, 0, wx.LEFT, 5)
-        page_sizer.AddSpacer(10)
-        page_sizer.Add(self.activate, 0, wx.LEFT, 5)
-        page_sizer.Add(border_box, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.AddSpacer(10)
+        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_LEFT|wx.LEFT|wx.BOTTOM, 5)
+        lyt_main.Add(self.chk_enable, 0, wx.LEFT, 5)
+        lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(page_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
-        # List of entries in a standard .desktop file
-        # FIXME: Deprecated???
-        self.standards = {    u'name': self.name_input, u'type': self.type_choice, u'exec': self.exe_input,
-                            u'comment': self.comm_input, u'terminal': self.term_choice,
-                            u'startupnotify': self.notify_choice, u'encoding': self.enc_input,
-                            u'categories': self.categories
-                            }
+        # *** Event handlers *** #
         
-        # Lists of widgets that change language
-        # FIXME: deprecated???
-        self.setlabels = {    self.activate: u'Menu', self.btn_open: u'Open', self.border: u'Border',
-                            txt_icon: u'Icon',
-                            txt_name: u'Name', txt_comm: u'Comm', txt_exe: u'Exec',
-                            txt_enc: u'Enc', txt_type: u'Type', txt_cat: u'Cat',
-                            txt_term: u'Term', txt_notify: u'Notify'}
+        btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
+        btn_save.Bind(wx.EVT_BUTTON, self.OnSaveLauncher)
+        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewLauncher)
         
+        self.chk_enable.Bind(wx.EVT_CHECKBOX, self.OnToggle)
         
-        SetPageToolTips(self)
+        self.chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
+        
+        wx.EVT_KEY_DOWN(self.ti_category, self.SetCategory)
+        wx.EVT_KEY_DOWN(self.lst_categories, self.SetCategory)
+        btn_catadd.Bind(wx.EVT_BUTTON, self.SetCategory)
+        btn_catdel.Bind(wx.EVT_BUTTON, self.SetCategory)
+        btn_catclr.Bind(wx.EVT_BUTTON, self.SetCategory)
     
     
     ## TODO: Doxygen
@@ -351,7 +322,7 @@ class Panel(WizardPage):
             
             # Add suffix when saving project
             if FieldEnabled(self.chk_filename) and not self.chk_filename.GetValue():
-                if not TextIsEmpty(self.input_filename.GetValue()):
+                if not TextIsEmpty(self.ti_filename.GetValue()):
                     suffix = self.GetOutputFilename()
                     if not TextIsEmpty(suffix):
                         out_name = u'{}-{}'.format(out_name, suffix)
@@ -381,67 +352,59 @@ class Panel(WizardPage):
         return (0, None)
     
     
-    ## TODO: Doxygen
+    ## Formats the launcher information for export
     def GetMenuInfo(self):
-        # Create list to store info
         desktop_list = [u'[Desktop Entry]']
         
-        # Add Name
-        name = self.name_input.GetValue()
+        name = self.ti_name.GetValue()
         if not TextIsEmpty(name):
             desktop_list.append(u'Name={}'.format(name))
         
-        # Add Version
         desktop_list.append(u'Version=1.0')
         
-        # Add Executable
-        exe = self.exe_input.GetValue()
-        if not TextIsEmpty(exe):
-            desktop_list.append(u'Exec={}'.format(exe))
+        executable = self.ti_exec.GetValue()
+        if not TextIsEmpty(executable):
+            desktop_list.append(u'Exec={}'.format(executable))
         
-        # Add Comment
-        comm = self.comm_input.GetValue()
-        if not TextIsEmpty(comm):
-            desktop_list.append(u'Comment={}'.format(comm))
+        comment = self.ti_comm.GetValue()
+        if not TextIsEmpty(comment):
+            desktop_list.append(u'Comment={}'.format(comment))
         
-        # Add Icon
-        icon = self.icon_input.GetValue()
+        icon = self.ti_icon.GetValue()
         if not TextIsEmpty(icon):
             desktop_list.append(u'Icon={}'.format(icon))
         
-        # Add Type
-        #type = self.type_opt[self.type_choice.GetSelection()]
-        m_type = self.type_choice.GetValue()
-        if not TextIsEmpty(m_type):
-            desktop_list.append(u'Type={}'.format(m_type))
+        launcher_type = self.ti_type.GetValue()
+        if not TextIsEmpty(launcher_type):
+            desktop_list.append(u'Type={}'.format(launcher_type))
         
-        # Add Terminal
-        desktop_list.append(u'Terminal={}'.format(unicode(self.term_choice.GetSelection() == 0).lower()))
+        desktop_list.append(u'Terminal={}'.format(unicode(self.sel_term.GetSelection() == 0).lower()))
         
-        # Add Startup Notify
-        desktop_list.append(u'StartupNotify={}'.format(unicode(self.notify_choice.GetSelection() == 0).lower()))
+        desktop_list.append(u'StartupNotify={}'.format(unicode(self.sel_notify.GetSelection() == 0).lower()))
         
-        # Add Encoding
-        enc = self.enc_input.GetValue()
-        if not TextIsEmpty(enc):
-            desktop_list.append(u'Encoding={}'.format(enc))
+        encoding = self.ti_enc.GetValue()
+        if not TextIsEmpty(encoding):
+            desktop_list.append(u'Encoding={}'.format(encoding))
         
-        # Add Categories
-        cat_list = []
-        cat_total = self.categories.GetItemCount()
+        categories = []
+        cat_total = self.lst_categories.GetItemCount()
         count = 0
         while count < cat_total:
-            cat_list.append(self.categories.GetItemText(count))
+            C = self.lst_categories.GetItemText(count)
+            if not TextIsEmpty(C):
+                categories.append(self.lst_categories.GetItemText(count))
+            
             count += 1
         
-        if len(cat_list):
-            # Add a final semi-colon if categories is not empty
-            cat_list[-1] = u'{};'.format(cat_list[-1])
+        # Add a final semi-colon if categories is not empty
+        if categories:
+            categories = u';'.join(categories)
+            if categories[-1] != u';':
+                categories = u'{};'.format(categories)
             
-            desktop_list.append(u'Categories={}'.format(u';'.join(cat_list)))
+            desktop_list.append(u'Categories={}'.format(categories))
         
-        # Add Misc
-        other = self.other.GetValue()
+        other = self.ti_other.GetValue()
         if not TextIsEmpty(other):
             desktop_list.append(other)
         
@@ -451,11 +414,11 @@ class Panel(WizardPage):
     ## Retrieves the filename to be used for the menu launcher
     def GetOutputFilename(self):
         if not self.chk_filename.GetValue():
-            filename = self.input_filename.GetValue().strip(u' ').replace(u' ', u'_')
+            filename = self.ti_filename.GetValue().strip(u' ').replace(u' ', u'_')
             if not TextIsEmpty(filename):
                 return filename
         
-        return self.name_input.GetValue().strip(u' ').replace(u' ', u'_')
+        return self.ti_name.GetValue().strip(u' ').replace(u' ', u'_')
     
     
     ## Retrieves Desktop Entry file information
@@ -464,7 +427,7 @@ class Panel(WizardPage):
     #        \b \e tuple(str, str, str) : File/Page name,
     #          string formatted menu information, & filename to output
     def GetPageInfo(self):
-        if not self.activate.GetValue():
+        if not self.chk_enable.GetValue():
             return None
         
         return(__name__, self.GetMenuInfo(), u'MENU')
@@ -477,7 +440,7 @@ class Panel(WizardPage):
         required_fields = list(WizardPage.GetRequiredFields(self, children=children))
         
         if not self.chk_filename.GetValue():
-            required_fields.append(self.input_filename)
+            required_fields.append(self.ti_filename)
         
         return tuple(required_fields)
     
@@ -494,7 +457,7 @@ class Panel(WizardPage):
             custom_filename = custom_filename.split(u'-')[1]
             if not TextIsEmpty(custom_filename):
                 self.chk_filename.SetValue(False)
-                self.input_filename.SetValue(custom_filename)
+                self.ti_filename.SetValue(custom_filename)
         
         FILE = open(filename, u'r')
         menu_data = FILE.read().split(u'\n')
@@ -528,21 +491,21 @@ class Panel(WizardPage):
                 value = menu_definitions[key]
                 
                 if not TextIsEmpty(value):
-                    if option in self.options_input:
+                    if option in self.opts_input:
                         option.SetValue(value)
                         return True
                     
-                    elif option in self.options_choice:
+                    elif option in self.opts_choice:
                         if option.SetStringSelection(value):
                             return True
                     
-                    elif option in self.options_list:
-                        if key == self.categories.GetName():
+                    elif option in self.opts_list:
+                        if key == self.lst_categories.GetName():
                             value = value.split(u';')
                             
                             if value:
                                 for X, val in enumerate(value):
-                                    self.categories.InsertStringItem(X, val)
+                                    self.lst_categories.InsertStringItem(X, val)
                                 return True
             
             return False
@@ -551,7 +514,7 @@ class Panel(WizardPage):
         categories_used = []
         menu_changed = False
         
-        for group in self.options_input, self.options_choice, self.options_list:
+        for group in self.opts_input, self.opts_choice, self.opts_list:
             for O in group:
                 if set_value(O):
                     menu_changed = True
@@ -572,9 +535,9 @@ class Panel(WizardPage):
         if len(categories_unused):
             categories_unused = u'\n'.join(categories_unused)
             
-            self.other.SetValue(categories_unused)
+            self.ti_other.SetValue(categories_unused)
         
-        self.activate.SetValue(menu_changed)
+        self.chk_enable.SetValue(menu_changed)
         self.OnToggle()
         
         return 0
@@ -582,11 +545,11 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def IsExportable(self):
-        return self.activate.IsChecked()
+        return self.chk_enable.IsChecked()
     
     
     ## TODO: Doxygen
-    def OnPreview(self, event):
+    def OnPreviewLauncher(self, event):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
         
@@ -608,20 +571,20 @@ class Panel(WizardPage):
     def OnSetCustomFilename(self, event=None):
         if not self.chk_filename.IsEnabled():
             self.txt_filename.Enable(False)
-            self.input_filename.Enable(False)
+            self.ti_filename.Enable(False)
             return
         
         if self.chk_filename.GetValue():
             self.txt_filename.Enable(False)
-            self.input_filename.Enable(False)
+            self.ti_filename.Enable(False)
             return
         
         self.txt_filename.Enable(True)
-        self.input_filename.Enable(True)
+        self.ti_filename.Enable(True)
     
     
     ## TODO: Doxygen
-    def OnSave(self, event):
+    def OnSaveLauncher(self, event):
         main_window = wx.GetApp().GetTopWindow()
         
         # Get data to write to control file
@@ -667,15 +630,15 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnToggle(self, event=None):
-        enable = self.activate.IsChecked()
+        enable = self.chk_enable.IsChecked()
         
         listctrl_bgcolor_defs = {
-            True: self.categories.default_color,
+            True: self.lst_categories.default_color,
             False: wx.Colour(214, 214, 214),
         }
         
-        for group in self.options_button, self.options_choice, self.options_input, \
-                self.options_list, self.labels:
+        for group in self.opts_button, self.opts_choice, self.opts_input, \
+                self.opts_list, self.labels:
             for O in group:
                 O.Enable(enable)
                 
@@ -688,9 +651,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    #  
-    #  TODO: Rename to OnOpenFile or similar
-    def OpenFile(self, event):
+    def OnLoadLauncher(self, event):
         cont = False
         
         dia = GetFileOpenDialog(wx.GetApp().GetTopWindow(), GT(u'Open Launcher'), u'{}|*'.format(GT(u'All files')))
@@ -713,18 +674,18 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def ResetPageInfo(self):
         self.chk_filename.SetValue(self.chk_filename.default)
-        self.input_filename.Clear()
+        self.ti_filename.Clear()
         
-        for O in self.options_input:
+        for O in self.opts_input:
             O.SetValue(O.default)
         
-        for O in self.options_choice:
+        for O in self.opts_choice:
             O.SetSelection(O.default)
         
-        for O in self.options_list:
+        for O in self.opts_list:
             O.DeleteAllItems()
         
-        self.activate.SetValue(self.activate.default)
+        self.chk_enable.SetValue(self.chk_enable.default)
         self.OnToggle()
     
     
@@ -735,118 +696,118 @@ class Panel(WizardPage):
         except AttributeError:
             key_code = event.GetEventObject().GetId()
         
-        cat = self.cat_choice.GetValue()
+        cat = self.ti_category.GetValue()
         cat = cat.split()
         cat = u''.join(cat)
         
         if key_code == wx.WXK_RETURN or key_code == wx.WXK_NUMPAD_ENTER:
-            self.categories.InsertStringItem(0, cat)
+            self.lst_categories.InsertStringItem(0, cat)
         
         elif key_code == wx.WXK_DELETE:
-            cur_cat = self.categories.GetFirstSelected()
-            self.categories.DeleteItem(cur_cat)
+            cur_cat = self.lst_categories.GetFirstSelected()
+            self.lst_categories.DeleteItem(cur_cat)
         
         elif key_code == wx.ID_CLEAR:
             confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
             if confirm.ShowModal() == wx.ID_YES:
-                self.categories.DeleteAllItems()
+                self.lst_categories.DeleteAllItems()
         event.Skip()
     
     
-    
-    ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
+    ## Fills out launcher information from loaded file
+    def SetFieldDataLegacy(self, data, enabled=True):
+        
+        # Make sure we are dealing with a list
+        if isinstance(data, (unicode, str)):
+            data = data.split(u'\n')
+        
         # Clear all fields first
         self.ResetPageInfo()
-        self.activate.SetValue(False)
+        self.chk_enable.SetValue(False)
         
         # TODO: Check for error with first character not being integer
         Logger.Debug(__name__, GT(u'Importing legacy project; First character (should be "0" or "1"): {}').format(data[0]))
         
-        if int(data[0]):
-            self.activate.SetValue(True)
+        if enabled:
+            self.chk_enable.SetValue(True)
+            
+            data_defs = {}
+            data_defs_remove = []
+            misc_defs = {}
+            
+            for L in data:
+                if u'=' in L:
+                    if L[0] == u'[' and L[-1] == u']':
+                        key = L[1:-1].split(u'=')
+                        value = key[1]
+                        key = key[0]
+                        
+                        misc_defs[key] = value
+                    
+                    else:
+                        key = L.split(u'=')
+                        value = key[1]
+                        key = key[0]
+                        
+                        data_defs[key] = value
             
             # Fields using SetValue() function
             set_value_fields = (
-                (u'Name', self.name_input), (u'Exec', self.exe_input), (u'Comment', self.comm_input),
-                (u'Icon', self.icon_input)
+                (u'Name', self.ti_name),
+                (u'Exec', self.ti_exec),
+                (u'Comment', self.ti_comm),
+                (u'Icon', self.ti_icon),
+                (u'Type', self.ti_type),
+                (u'Encoding', self.ti_enc),
                 )
+            
+            for label, control in set_value_fields:
+                try:
+                    control.SetValue(data_defs[label])
+                    data_defs_remove.append(label)
+                
+                except KeyError:
+                    pass
             
             # Fields using SetSelection() function
             set_selection_fields = (
-                (u'Terminal', self.term_choice, self.term_opt),
-                (u'StartupNotify', self.notify_choice, self.notify_opt)
+                (u'Terminal', self.sel_term),
+                (u'StartupNotify', self.sel_notify),
                 )
             
-            # Fields using either SetSelection() or SetValue()
-            set_either_fields = (
-                (u'Type', self.type_choice, self.type_opt),
-                (u'Encoding', self.enc_input, self.enc_opt)
-                )
+            for label, control in set_selection_fields:
+                try:
+                    control.SetStringSelection(data_defs[label].lower())
+                    data_defs_remove.append(label)
+                
+                except KeyError:
+                    pass
             
-            lines = data.split(u'\n')
-            
-            # Leave leftover text in this list to dump into misc field
-            leftovers = lines[:]
-            
-            # Remove 1st line (1) from leftovers
-            leftovers = leftovers[1:]
-            
-            # Remove Version field since is not done below
             try:
-                leftovers.remove(u'Version=1.0')
-            except ValueError:
+                categories = tuple(data_defs[u'Categories'].split(u';'))
+                for C in categories:
+                    self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
+                data_defs_remove.append(u'Categories')
+            
+            except KeyError:
                 pass
-            
-            for line in lines:
-                f1 = line.split(u'=')[0]
-                f2 = u'='.join(line.split(u'=')[1:])
-                
-                # Extracting "Filename" value
-                if f1.startswith(u'['):
-                    f1 = f1[1:]
-                    
-                    if f2.endswith(u']'):
-                        f2 = f2[:-1]
-                        
-                        if f1 == u'FILENAME' and not TextIsEmpty(f2):
-                            Logger.Debug(__name__, GT(u'Setting filename field: {}').format(f2))
-                            
-                            leftovers.remove(line)
-                            self.chk_filename.SetValue(False)
-                            self.input_filename.SetValue(f2)
-                            
-                            continue
-                
-                for setval in set_value_fields:
-                    if f1 == setval[0]:
-                        setval[1].SetValue(f2)
-                        leftovers.remove(line) # Remove the field so it's not dumped into misc
-                for setsel in set_selection_fields:
-                    if f1 == setsel[0]:
-                        setsel[1].SetSelection(setsel[2].index(f2))
-                        leftovers.remove(line)
-                for either in set_either_fields:
-                    if f1 == either[0]:
-                        # If the value is in the predefined options we will set the field data to show
-                        # the option so that the mouse wheel works when hovering over field
-                        if f2 in either[2]:
-                            either[1].SetSelection(either[2].index(f2))
-                        else:
-                            either[1].SetValue(f2)
-                        leftovers.remove(line)
-                
-                # Categories
-                if f1 == u'Categories':
-                    leftovers.remove(line)
-                    categories = f2.split(u';')
-                    cat_count = len(categories)-1
-                    while cat_count > 0:
-                        cat_count -= 1
-                        self.categories.InsertStringItem(0, categories[cat_count])
-            
-            if len(leftovers) > 0:
-                self.other.SetValue(u'\n'.join(leftovers))
         
-        self.OnToggle(None)
+        for K in data_defs_remove:
+            if K in data_defs:
+                del data_defs[K]
+        
+        # Add any leftover keys to misc/other
+        for K in data_defs:
+            if K not in (u'Version',):
+                self.ti_other.WriteText(u'{}={}'.format(K, data_defs[K]))
+        
+        if misc_defs:
+            for K in misc_defs:
+                value = misc_defs[K]
+                if not TextIsEmpty(value):
+                    if K == u'FILENAME':
+                        self.ti_filename.SetValue(value)
+                        self.chk_filename.SetValue(False)
+        
+        self.OnToggle()
