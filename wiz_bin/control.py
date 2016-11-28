@@ -533,7 +533,12 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ResetAllFields(self):
         for I in self.grp_input:
-            I.Clear()
+            # Calling 'Clear' on ComboBox removes all options
+            if isinstance(I, OwnerDrawnComboBox):
+                I.SetValue(wx.EmptyString)
+            
+            else:
+                I.Clear()
         
         for S in self.grp_select:
             S.SetSelection(S.default)
