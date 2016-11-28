@@ -32,6 +32,10 @@ class MultilineTextCtrlPanel(BorderedPanel):
         if not TextIsEmpty(value):
             self.textarea.SetValue(value)
         
+        # For setting color of disabled panel
+        self.clr_disabled = self.GetBackgroundColour()
+        self.clr_enabled = self.textarea.GetBackgroundColour()
+        
         # Match panel color to text control
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
         
@@ -46,6 +50,32 @@ class MultilineTextCtrlPanel(BorderedPanel):
     ## Clears all text in the text area
     def Clear(self):
         self.textarea.Clear()
+    
+    
+    ## Disables self & text area
+    def Disable(self):
+        return self.Enable(False)
+    
+    
+    ## Disables or enables self & text area
+    def Enable(self, *args, **kwargs):
+        return_value = BorderedPanel.Enable(self, *args, **kwargs)
+        
+        if self.IsEnabled():
+            self.SetBackgroundColour(self.clr_enabled)
+        
+            # Older versions of wx do not change color of disabled multiline text control
+            if wx.MAJOR_VERSION < 3:
+                self.textarea.SetBackgroundColour(self.clr_enabled)
+        
+        else:
+            self.SetBackgroundColour(self.clr_disabled)
+        
+            # Older versions of wx do not change color of disabled multiline text control
+            if wx.MAJOR_VERSION < 3:
+                self.textarea.SetBackgroundColour(self.clr_disabled)
+        
+        return return_value
     
     
     ## Retrieves font that text area is using
