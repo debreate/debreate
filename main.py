@@ -194,7 +194,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_help = wx.Menu()
         
         # ----- Version update
-        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for update'))
+        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for update'),
+                GT(u'Check if a new version is available for download'))
         self.menu_help.AppendItem(self.version_check)
         self.menu_help.AppendSeparator()
         
