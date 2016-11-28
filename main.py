@@ -2,6 +2,9 @@
 
 ## \package main
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, subprocess, webbrowser, wx
 from urllib2 import HTTPError
@@ -37,6 +40,7 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
+from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
 from dbr.wizard             import Wizard
 from globals.application    import APP_homepage
@@ -94,6 +98,7 @@ default_title = GT(u'Debreate - Debian Package Builder')
 class MainWindow(wx.Frame):
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
+        ModuleAccessCtrl.__init__(self, __name__)
         
         # Make sure that this frame is set as the top window
         if not wx.GetApp().GetTopWindow() == self:
