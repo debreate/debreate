@@ -32,6 +32,7 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
+from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.ident          import ID_BUILD
 from globals.ident          import ID_CHANGELOG
@@ -112,7 +113,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Quick Build
         self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
+        self.QuickBuild.SetBitmap(ICON_CLOCK)
         
         mitm_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
                 help=GT(u'Exit Debreate'))

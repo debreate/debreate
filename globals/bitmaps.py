@@ -19,6 +19,7 @@ ICON_EXCLAMATION = ICON_ERROR
 ICON_QUESTION = ConcatPaths((PATH_bitmaps, u'question64.png'))
 ICON_INFORMATION = ICON_QUESTION
 
+ICON_CLOCK = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'clock16.png')))
 ICON_GLOBE = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'globe16.png')))
 
 BUTTON_HELP = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'question32.png')))
