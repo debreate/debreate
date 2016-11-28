@@ -131,8 +131,9 @@ class Panel(wx.ScrolledWindow):
         lyt_main.AddGrowableRow(0)
         lyt_main.AddGrowableCol(1, 2)
         
-        lyt_main.Add(self.tree_directories, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
-        lyt_main.Add(lyt_right, 1, wx.EXPAND|wx.RIGHT, 5)
+        lyt_main.Add(self.tree_directories, 0,
+                wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_right, 1, wx.EXPAND|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
