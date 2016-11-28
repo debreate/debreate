@@ -146,8 +146,8 @@ class MultilineTextCtrlPanel(BorderedPanel):
     
     
     ## Writes to the text area
-    def Write(self, text):
-        self.textarea.Write(text)
+    def WriteText(self, text):
+        self.textarea.WriteText(text)
 
 
 MT_NO_BTN = 0
