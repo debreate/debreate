@@ -207,6 +207,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     kind=wx.ITEM_RADIO)
             compression_opts.insert(3, opt_compression_xz)
         
+        for OPT in compression_opts:
+            self.menu_compression.AppendItem(OPT)
+            wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
+        
         # Default compression
         self.menu_compression.Check(ID_ZIP_BZ2, True)
         
@@ -368,10 +372,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
         wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
-        
-        for OPT in compression_opts:
-            self.menu_compression.AppendItem(OPT)
-            wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
         
         wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
         
