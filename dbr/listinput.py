@@ -167,7 +167,10 @@ class ListCtrlPanel(BorderedPanel):
     
     
     def GetItemText(self, item, col=0):
-        return self.listarea.GetItemText(item, col)
+        if wx.MAJOR_VERSION > 2:
+            return self.listarea.GetItemText(item, col)
+        
+        return self.listarea.GetItem(item, col).GetText()
     
     
     def GetItemTextColour(self, item):
