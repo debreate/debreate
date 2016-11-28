@@ -151,7 +151,6 @@ class Panel(wx.ScrolledWindow):
         lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
                 0, wx.ALIGN_BOTTOM|wx.LEFT, 5)
         lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_main.AddSpacer(5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
