@@ -12,6 +12,7 @@ from wx.lib.mixins.listctrl import TextEditMixin
 
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.panel          import BorderedPanel
 from globals.constants  import COLOR_ERROR
 
 
@@ -89,11 +90,10 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
 
 
 ## Hack to make list control border have rounded edges
-class ListCtrlPanel(wx.Panel):
+class ListCtrlPanel(BorderedPanel):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
-        wx.Panel.__init__(self, parent, ID, pos, size, wx.TAB_TRAVERSAL|wx.BORDER_THEME,
-                name)
+        BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
         self.listarea = ListCtrl(self, style=style, validator=validator)
         
