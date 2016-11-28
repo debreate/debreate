@@ -166,7 +166,8 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
-        TEXT_FLAG = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT
         
         # Buttons
         layt_buttons = wx.BoxSizer(wx.HORIZONTAL)
@@ -180,15 +181,15 @@ class Panel(wx.ScrolledWindow):
         layt_require.AddGrowableCol(3)
         
         layt_require.AddMany((
-            (txt_package, 0, TEXT_FLAG|wx.LEFT|wx.TOP, 5),
+            (txt_package, 0, RIGHT_CENTER|wx.LEFT|wx.TOP, 5),
             (ti_package, 0, wx.EXPAND|wx.TOP, 5),
-            (txt_version, 0, TEXT_FLAG|wx.TOP, 5),
+            (txt_version, 0, RIGHT_CENTER|wx.TOP, 5),
             (ti_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
-            (txt_maintainer, 0, TEXT_FLAG|wx.LEFT, 5),
+            (txt_maintainer, 0, RIGHT_CENTER|wx.LEFT, 5),
             (ti_maintainer, 0, wx.EXPAND),
-            (txt_email, 0, TEXT_FLAG),
+            (txt_email, 0, RIGHT_CENTER, 5),
             (ti_email, 0, wx.EXPAND|wx.RIGHT, 5),
-            (txt_arch, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
+            (txt_arch, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
             (sel_arch, 0, wx.BOTTOM, 5),
             ))
         
@@ -197,18 +198,19 @@ class Panel(wx.ScrolledWindow):
         pnl_require.Layout()
         
         # Recommended fields
-        layt_recommend = wx.GridBagSizer(5, 5)
+        layt_recommend = wx.GridBagSizer()
         layt_recommend.SetCols(4)
         layt_recommend.AddGrowableCol(1)
         layt_recommend.AddGrowableRow(3)
         
-        layt_recommend.Add(txt_section, (0, 2), flag=TEXT_FLAG|wx.TOP, border=5)
-        layt_recommend.Add(ti_section, (0, 3), flag=wx.RIGHT|wx.TOP, border=5)
-        layt_recommend.Add(txt_synopsis, (0, 0), (1, 2), wx.ALIGN_BOTTOM|wx.LEFT, 5)
-        layt_recommend.Add(ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT, 5)
-        layt_recommend.Add(txt_priority, (1, 2), flag=TEXT_FLAG)
-        layt_recommend.Add(sel_priority, (1, 3), flag=wx.RIGHT, border=5)
-        layt_recommend.Add(txt_description, (2, 0), (1, 2), wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        layt_recommend.Add(txt_section, (0, 2), flag=RIGHT_CENTER|wx.TOP|wx.BOTTOM, border=5)
+        layt_recommend.Add(ti_section, (0, 3),
+                flag=wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
+        layt_recommend.Add(txt_synopsis, (0, 0), (1, 2), LEFT_BOTTOM|wx.LEFT, 5)
+        layt_recommend.Add(ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        layt_recommend.Add(txt_priority, (1, 2), flag=RIGHT_CENTER, border=5)
+        layt_recommend.Add(sel_priority, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+        layt_recommend.Add(txt_description, (2, 0), (1, 2), LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
         layt_recommend.Add(self.ti_description, (3, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
@@ -226,11 +228,11 @@ class Panel(wx.ScrolledWindow):
         layt_option.AddSpacer(5)
         layt_option.AddSpacer(5)
         layt_option.AddMany((
-            (txt_source, 0, TEXT_FLAG|wx.LEFT, 5),
+            (txt_source, 0, RIGHT_CENTER|wx.LEFT, 5),
             (ti_source, 0, wx.EXPAND),
-            (txt_homepage, 0, TEXT_FLAG),
+            (txt_homepage, 0, RIGHT_CENTER, 5),
             (ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
-            (txt_essential, 0, TEXT_FLAG|wx.LEFT|wx.BOTTOM, 5),
+            (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
             (sel_essential, 1, wx.BOTTOM, 5),
             ))
         
