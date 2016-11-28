@@ -13,9 +13,11 @@ from dbr.buttons        import ButtonConfirm
 from dbr.custom         import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.moduleaccess   import ModuleAccessCtrl
 from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
+from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
@@ -200,60 +202,83 @@ class StandardFileOpenDialog(StandardFileDialog):
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
-        wx.Dialog.__init__(self, parent, wx.ID_ANY, title, size=(500,500), style=style)
+        wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
         if isinstance(icon, (unicode, str)):
             icon = wx.Bitmap(icon)
         
-        self.icon = wx.StaticBitmap(self, wx.ID_ANY, icon)
+        icon = wx.StaticBitmap(self, wx.ID_ANY, icon)
         
-        self.text = wx.StaticText(self, label=text)
+        txt_message = wx.StaticText(self, label=text)
         
-        self.button_details = wx.ToggleButton(self, label=GT(u'Details'))
-        #self.btn_copy_details = wx.Button(self, label=GT(u'Copy details'))
+        btn_confirm = ButtonConfirm(self)
         
-        self.button_details.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleDetails)
-        #self.btn_copy_details.Bind(wx.EVT_BUTTON, self.OnCopyDetails)
+        # self.details needs to be empty for constructor
+        self.details = wx.EmptyString
+        details = details
         
-        if TextIsEmpty(details):
-            self.button_details.Hide()
+        # *** Layout *** #
         
-        layout_btn_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_btn_H1.Add(self.button_details, 1)
-        #layout_btn_H1.Add(self.btn_copy_details, 1)
-        
-        self.details = MultilineTextCtrlPanel(self, value=details, size=(300,150), style=wx.TE_READONLY)
-        
-        self.button_ok = ButtonConfirm(self)
-        
-        layout_RV = wx.BoxSizer(wx.VERTICAL)
-        layout_RV.AddSpacer(10)
-        layout_RV.Add(self.text)
-        layout_RV.AddSpacer(20)
-        layout_RV.Add(layout_btn_H1)
-        layout_RV.Add(self.details, 1, wx.EXPAND)
-        layout_RV.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.BOTTOM, 5)
-        
-        self.main_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.main_sizer.Add(self.icon, 0, wx.ALL, 20)
-        self.main_sizer.Add(layout_RV, 1, wx.EXPAND)
-        self.main_sizer.AddSpacer(10)
-        
-        #self.SetInitialSize()
+        lyt_main = wx.GridBagSizer(5, 5)
+        lyt_main.SetCols(3)
+        lyt_main.AddGrowableRow(2)
+        lyt_main.AddGrowableCol(2)
+        lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
+        lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
+        lyt_main.Add(btn_confirm, (3, 2),
+                flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(self.main_sizer)
-        self.ToggleDetails()
+        self.SetSizer(lyt_main)
         
-        #self.btn_copy_details.Hide()
-        self.details.Hide()
+        if not TextIsEmpty(details):
+            # self.details will be set here
+            self.CreateDetailedView(details)
         
-        
-        if details != wx.EmptyString:
-            self.SetBestWidth()
+        else:
+            self.Layout()
+            
+            self.Fit()
+            self.SetMinSize(self.GetSize())
         
         self.CenterOnParent()
+    
+    
+    ## Adds buttons & details text to dialog
+    #  
+    #  \param details
+    #        \b \e unicode|str : Detailed text to show in dialog
+    def CreateDetailedView(self, details):
+        # Controls have not been constructed yet
+        if TextIsEmpty(self.details):
+            self.btn_details = wx.ToggleButton(self, label=GT(u'Details'))
+            #btn_copy = wx.Button(self, label=GT(u'Copy details'))
+            
+            self.dsp_details = MultilineTextCtrlPanel(self, value=details,
+                    style=wx.TE_READONLY)
+            
+            # *** Event handlers *** #
+            
+            self.btn_details.Bind(wx.EVT_TOGGLEBUTTON, self.ToggleDetails)
+            #btn_copy.Bind(wx.EVT_BUTTON, self.OnCopyDetails)
+            
+            layout = self.GetSizer()
+            layout.Add(self.btn_details, (1, 1))
+            #layout.Add(btn_copy, (1, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
+            layout.Add(self.dsp_details, (2, 1), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+            
+            self.ToggleDetails()
+        
+        if not TextIsEmpty(details):
+            for C in self.GetChildren():
+                if isinstance(C, MultilineTextCtrlPanel):
+                    self.details = details
+                    C.SetValue(self.details)
+                    
+                    return True
+        
+        return False
     
     
     ## TODO: Doxygen
@@ -263,13 +288,17 @@ class DetailedMessageDialog(wx.Dialog):
     def OnCopyDetails(self, event=None):
         print(u'DEBUG: Copying details to clipboard ...')
         
+        DetailedMessageDialog(self, u'FIXME', ICON_EXCLAMATION,
+                u'Copying details to clipboard not functional').ShowModal()
+        return
+        
         cb_set = False
         
         clipboard = wx.Clipboard()
         if clipboard.Open():
             print(u'DEBUG: Clipboard opened')
             
-            details = wx.TextDataObject(self.details.GetValue())
+            details = wx.TextDataObject(self.dsp_details.GetValue())
             print(u'DEBUG: Details set to:\n{}'.format(details.GetText()))
             
             clipboard.Clear()
@@ -290,66 +319,41 @@ class DetailedMessageDialog(wx.Dialog):
         wx.MessageBox(GT(u'FIXME: Details not copied to clipboard'), GT(u'Debug'))
     
     
-    ## Sets the minimum width of the details text area
-    #  
-    #  FIXME: Doesn't work
-    def SetBestWidth(self):
-        W, H = self.details.GetSize()
-        
-        for L in self.details.GetValue().split(u'\n'):
-            line_length = len(L)
-            if line_length > W:
-                W = line_length
-        
-        Logger.Debug(__name__, GT(u'Longest line in details: {}').format(W))
-        
-        self.details.SetMinSize(wx.Size(W, H))
-        self.Layout()
-    
-    
     ## TODO: Doxygen
     def SetDetails(self, details):
-        self.details.SetValue(details)
-        self.details.SetSize(self.details.GetBestSize())
-        
-        if not self.button_details.IsShown():
-            self.button_details.Show()
-        
-        #self.SetBestFittingSize()
-        self.Layout()
+        return self.CreateDetailedView(details)
     
     
     ## TODO: Doxygen
     def ToggleDetails(self, event=None):
-        if self.button_details.GetValue():
-            self.details.Show()
+        try:
+            if self.btn_details.GetValue():
+                self.dsp_details.Show()
+            
+            else:
+                self.dsp_details.Hide()
+            
+            self.Layout()
+            self.Fit()
+            self.SetMinSize(self.GetSize())
+            
+            return True
         
-        else:
-            self.details.Hide()
-        
-        #self.SetSizerAndFit(self.main_sizer)
-        self.Fit()
-        self.Layout()
+        except AttributeError:
+            # Disable toggling details
+            self.btn_details.Hide()
+            
+            self.Layout()
+            self.Fit()
+            self.SetMinSize(self.GetSize())
+            
+            return False
 
 
 ## Message dialog that shows an error & details
 class ErrorDialog(DetailedMessageDialog):
-    def __init__(self, parent, text=wx.EmptyString, details=wx.EmptyString):
+    def __init__(self, parent, text, details=wx.EmptyString):
         DetailedMessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
-        '''
-        if not TextIsEmpty(details):
-            self.btn_copy_details.Show()
-        '''
-        self.Layout()
-    
-    
-    ## TODO: Doxygen
-    def SetDetails(self, details):
-        '''
-        if not self.btn_copy_details.IsShown():
-            self.btn_copy_details.Show()
-        '''
-        DetailedMessageDialog.SetDetails(self, details)
 
 
 ## TODO: Doxygen
@@ -461,12 +465,7 @@ def ShowDialog(dialog):
 #        \b \e str|unicode: Module where error was caught (used for Logger output)
 #  \param warn
 #        \b \e bool: Show log message as warning instead of error
-def ShowErrorDialog(text, details=None, module=None, warn=False):
-    Logger.Debug(__name__, GT(u'Text: {}').format(text))
-    Logger.Debug(__name__, GT(u'Details: {}').format(details))
-    Logger.Debug(__name__, GT(u'Module: {}').format(module))
-    Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
-    
+def ShowErrorDialog(text, details=None, parent=False, warn=False):
     # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
@@ -481,14 +480,18 @@ def ShowErrorDialog(text, details=None, module=None, warn=False):
     if details:
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
-    main_window = wx.GetApp().GetTopWindow()
+    if not parent:
+        parent = wx.GetApp().GetTopWindow()
     
-    if not module:
-        module = main_window.__name__
+    if isinstance(parent, ModuleAccessCtrl):
+        module_name = parent.GetModuleName()
     
-    PrintLogMessage(module, logger_text)
+    else:
+        module_name = parent.GetName()
     
-    error_dialog = ErrorDialog(main_window, text)
+    PrintLogMessage(module_name, logger_text)
+    
+    error_dialog = ErrorDialog(parent, text)
     if details:
         error_dialog.SetDetails(details)
     
