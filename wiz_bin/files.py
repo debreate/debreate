@@ -96,6 +96,10 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
+        lyt_left = wx.BoxSizer(wx.VERTICAL)
+        lyt_left.AddSpacer(10)
+        lyt_left.Add(self.tree_directories, -1)
+        
         lyt_target = wx.GridSizer(3, 2, 5, 5)
         
         for item in self.grp_targets:
@@ -112,7 +116,6 @@ class Panel(wx.ScrolledWindow):
         lyt_input.Add(self.ti_target, 1, wx.ALIGN_CENTER_VERTICAL)
         
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        
         lyt_buttons.Add(btn_add, 0)
         lyt_buttons.Add(btn_remove, 0)
         lyt_buttons.Add(btn_clear, 0)
@@ -130,9 +133,7 @@ class Panel(wx.ScrolledWindow):
         lyt_main = wx.FlexGridSizer(1, 2)
         lyt_main.AddGrowableRow(0)
         lyt_main.AddGrowableCol(1, 2)
-        
-        lyt_main.Add(self.tree_directories, 0,
-                wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_left, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(lyt_right, 1, wx.EXPAND|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
