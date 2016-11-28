@@ -89,7 +89,7 @@ class Panel(wx.ScrolledWindow):
         
         pnl_recommend = BorderedPanel(pnl_bg)
         
-        ti_section_opt = (
+        opts_section = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
             u'doc', u'editors', u'electronics', u'embedded', u'fonts', u'games',
             u'gnome', u'graphics', u'gnu-r', u'gnustep', u'hamradio', u'haskell',
@@ -102,7 +102,7 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
-        ti_section = OwnerDrawnComboBox(pnl_recommend, choices=ti_section_opt, name=txt_section.Name)
+        ti_section = OwnerDrawnComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
