@@ -829,7 +829,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             # Legacy projects should return None since we can't save in that format
             project_opened = self.OpenProjectLegacy(p_text, filename)
-            
+        
         else:
             project_opened = self.OpenProjectArchive(project_file, mime_type)
         
@@ -1009,6 +1009,26 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ShowError(self, u'{}: {}'.format(GT(u'Project save failed'), target_path))
     
     
+    ## Sets compression in the main menu
+    #  
+    #  \param compression_id
+    #        \b \e int : Compression ID to search for in menu iteration
+    def SetCompression(self, compression_id):
+        for Z in self.menu_compression.GetMenuItems():
+            Z_ID = Z.GetId()
+            
+            if compression_id == Z_ID:
+                Z.Check()
+                
+                Logger.Debug(__name__,
+                        GT(u'Project compression set to "{}"'.format(compression_formats[Z_ID])))
+                
+                return
+        
+        Logger.Warning(__name__,
+                GT(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
+    
+    
     ## TODO: Doxygen
     def SetProjectDirty(self, dirty=True):
         # Don't do anything if status isn't changing
@@ -1041,26 +1061,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             title = self.GetTitle()
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
-    
-    
-    ## Sets compression in the main menu
-    #  
-    #  \param compression_id
-    #        \b \e int : Compression ID to search for in menu iteration
-    def SetCompression(self, compression_id):
-        for Z in self.menu_compression.GetMenuItems():
-            Z_ID = Z.GetId()
-            
-            if compression_id == Z_ID:
-                Z.Check()
-                
-                Logger.Debug(__name__,
-                        GT(u'Project compression set to "{}"'.format(compression_formats[Z_ID])))
-                
-                return
-        
-        Logger.Warning(__name__,
-                GT(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
     
     
     ## TODO: Doxygen
