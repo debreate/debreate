@@ -34,6 +34,7 @@ from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
+from globals.bitmaps        import ICON_LOGO
 from globals.ident          import ID_BUILD
 from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
@@ -199,6 +200,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # ----- Version update
         self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for update'),
                 GT(u'Check if a new version is available for download'))
+        self.version_check.SetBitmap(ICON_LOGO)
+        
         self.menu_help.AppendItem(self.version_check)
         self.menu_help.AppendSeparator()
         
