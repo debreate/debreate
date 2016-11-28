@@ -1,1 +1,12 @@
-Known Bugs:
+-- Known Bugs --
+
+Must be fixed before release:
+- Tooltips do not get disabled (wx 2.8)
+- Files page: Not all fields reset when opening a project file (wx 2.8)
+- Executables don't import on scripts page (2.8)
+- Section list is empty on Control page
+
+Low priority:
+- Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
+  - Always occurs with wx 3.0
+  - Only occurs when using 'WriteText' method in wx 2.8
