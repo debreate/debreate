@@ -13,14 +13,16 @@ from dbr.buttons        import ButtonBrowse
 from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonRefresh
 from dbr.buttons        import ButtonRemove
+from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import FileList
+from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
 from dbr.panel          import PANEL_BORDER
-from dbr.textinput      import MultilineTextCtrlPanel
+from globals.bitmaps    import ICON_EXCLAMATION
 from globals.ident      import FID_CUSTOM
 from globals.ident      import FID_LIST
 from globals.ident      import ID_FILES
@@ -398,27 +400,15 @@ class Panel(wx.ScrolledWindow):
                 source_dir = os.path.dirname(absolute_filename)
                 target_dir = files_data[files_total].split(u' -> ')[2]
                 
-                self.lst_files.AddFile(filename, source_dir, target_dir, executable)
-                
-                # Check if files still exist
-                if not os.path.exists(absolute_filename):
+                if not self.lst_files.AddFile(filename, source_dir, target_dir, executable):
+                    Logger.Warning(__name__, GT(u'File not found: {}').format(absolute_filename))
                     missing_files.append(absolute_filename)
             
+            Logger.Debug(__name__, u'Missing file count: {}'.format(len(missing_files)))
+            
             # If files are missing show a message
-            if len(missing_files):
-                alert = wx.Dialog(self, title=GT(u'Missing Files'))
-                alert_text = wx.StaticText(alert, label=GT(u'Could not locate the following files:'))
-                alert_list = MultilineTextCtrlPanel(alert, style=wx.TE_READONLY)
-                alert_list.SetValue(u'\n'.join(missing_files))
-                button_ok = wx.Button(alert, wx.ID_OK)
-                
-                alert_sizer = wx.BoxSizer(wx.VERTICAL)
-                alert_sizer.AddSpacer(5)
-                alert_sizer.Add(alert_text, 1)
-                alert_sizer.Add(alert_list, 3, wx.EXPAND)
-                alert_sizer.Add(button_ok, 0, wx.ALIGN_RIGHT)
-                
-                alert.SetSizerAndFit(alert_sizer)
-                alert.Layout()
-                
+            if missing_files:
+                alert = DetailedMessageDialog(wx.GetApp().GetTopWindow(), GT(u'Missing Files'),
+                        ICON_EXCLAMATION, GT(u'Could not locate the following files:'),
+                        u'\n'.join(missing_files))
                 alert.ShowModal()
