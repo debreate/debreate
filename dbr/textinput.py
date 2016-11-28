@@ -108,9 +108,21 @@ class MultilineTextCtrlPanel(BorderedPanel):
         return self.textarea.IsEmpty()
     
     
+    ## TODO: Doxygen
+    def SetBackgroundColour(self, *args, **kwargs):
+        self.textarea.SetBackgroundColour(*args, **kwargs)
+        return BorderedPanel.SetBackgroundColour(self, *args, **kwargs)
+    
+    
     ## Sets font in text area
     def SetFont(self, font):
         self.textarea.SetFont(font)
+    
+    
+    ## TODO: Doxygen
+    def SetForegroundColour(self, *args, **kwargs):
+        self.textarea.SetForegroundColour(*args, **kwargs)
+        return BorderedPanel.SetForegroundColour(self, *args, **kwargs)
     
     
     ## Places carat to position in text area
