@@ -112,7 +112,7 @@ class Panel(wx.ScrolledWindow):
             (btn_clear, 0, wx.ALIGN_CENTER_VERTICAL),
             ))
         
-        layt_top = wx.GridBagSizer(5, 5)
+        layt_top = wx.GridBagSizer()
         layt_top.SetCols(2)
         
         layt_top.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), LEFT_BOTTOM)
@@ -123,10 +123,10 @@ class Panel(wx.ScrolledWindow):
         layt_list.Add(self.lst_deps, 1, wx.EXPAND)
         
         layt_main = wx.BoxSizer(wx.VERTICAL)
-        # Spacer on this page is half because text is aligned to bottom
-        layt_main.AddSpacer(5)
-        layt_main.Add(layt_labels, 0, wx.EXPAND|wx.ALL, 5)
-        layt_main.Add(layt_top, 0, wx.ALL, 5)
+        # Spacer is less on this page because text is aligned to bottom
+        layt_main.AddSpacer(7)
+        layt_main.Add(layt_labels, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        layt_main.Add(layt_top, 0, wx.LEFT|wx.RIGHT, 5)
         layt_main.Add(layt_list, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
