@@ -247,7 +247,7 @@ class Panel(wx.ScrolledWindow):
         layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP|wx.LEFT, 5)
         layt_bg.Add(pnl_recommend, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Optional')), 0, wx.TOP|wx.LEFT, 5)
-        layt_bg.Add(pnl_option, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        layt_bg.Add(pnl_option, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         pnl_bg.SetAutoLayout(True)
         pnl_bg.SetSizer(layt_bg)
