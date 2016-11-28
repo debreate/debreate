@@ -56,6 +56,14 @@ def GetCurrentVersion():
         return err
 
 
+## TODO: Doxygen
+def GetContainerItemCount(container):
+    if wx.MAJOR_VERSION > 2:
+        return container.GetItemCount()
+    
+    return len(container.GetChildren())
+
+
 ## Checks if a field (or widget) is enabled
 #  
 #  This is used for compatibility between wx. 2.8 & 3.0.
