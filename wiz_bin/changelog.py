@@ -116,9 +116,9 @@ class Panel(wx.ScrolledWindow):
         lyt_target = wx.BoxSizer(wx.VERTICAL)
         
         lyt_target.AddSpacer(5)
-        lyt_target.Add(self.rb_target_standard)
+        lyt_target.Add(self.rb_target_standard, 0, wx.RIGHT, 5)
         lyt_target.AddSpacer(5)
-        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND)
+        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND|wx.RIGHT, 5)
         lyt_target.AddSpacer(5)
         
         pnl_target.SetSizer(lyt_target)
