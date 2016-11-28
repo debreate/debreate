@@ -164,8 +164,8 @@ class Panel(wx.ScrolledWindow):
         lyt_right.Add(pnl_autolink, 0)
         
         lyt_main = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_main.Add(lyt_right, 0, wx.RIGHT, 5)
+        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
+        lyt_main.Add(lyt_right, 0, wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
