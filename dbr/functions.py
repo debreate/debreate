@@ -64,6 +64,11 @@ def GetContainerItemCount(container):
     return len(container.GetChildren())
 
 
+## TODO: Doxygen
+def GetPage(page_id):
+    return wx.GetApp().GetTopWindow().GetWizard().GetPage(page_id)
+
+
 ## Checks if a field (or widget) is enabled
 #  
 #  This is used for compatibility between wx. 2.8 & 3.0.
