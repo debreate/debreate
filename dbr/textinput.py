@@ -11,6 +11,7 @@ import wx
 from dbr.font       import MONOSPACED_LG
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
+from dbr.panel      import BorderedPanel
 
 
 ## A text control that is multiline & uses a themed border
@@ -22,11 +23,10 @@ class MultilineTextCtrl(wx.TextCtrl):
 
 
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
-class MultilineTextCtrlPanel(wx.Panel):
+class MultilineTextCtrlPanel(BorderedPanel):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
-        wx.Panel.__init__(self, parent, ID, pos, size, wx.TAB_TRAVERSAL|wx.BORDER_THEME,
-                name)
+        BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
         self.textarea = MultilineTextCtrl(self, style=style)
         if not TextIsEmpty(value):
@@ -36,7 +36,7 @@ class MultilineTextCtrlPanel(wx.Panel):
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
         
         self.layout_V1 = wx.BoxSizer(wx.HORIZONTAL)
-        self.layout_V1.Add(self.textarea, 1, wx.EXPAND)
+        self.layout_V1.Add(self.textarea, 1, wx.EXPAND|wx.ALL, 2)
         
         self.SetAutoLayout(True)
         self.SetSizer(self.layout_V1)
