@@ -95,18 +95,28 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
-        lyt_info = wx.FlexGridSizer(2, 6, 5, 5)
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
+        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
+        
+        lyt_info = wx.FlexGridSizer(2, 6)
         
         lyt_info.AddGrowableCol(1)
         lyt_info.AddGrowableCol(3)
         lyt_info.AddGrowableCol(5)
         lyt_info.AddMany((
-            (txt_package, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_package, 1, wx.EXPAND),
-            (txt_version, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_version, 1, wx.EXPAND),
-            (txt_dist, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_dist, 1, wx.EXPAND),
-            (txt_urgency, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.sel_urgency, 1, wx.EXPAND),
-            (txt_maintainer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_maintainer, 1, wx.EXPAND),
-            (txt_email, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_email, 1, wx.EXPAND)
+            (txt_package, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_package, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
+            (txt_version, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_version, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
+            (txt_dist, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_dist, 1, wx.EXPAND|wx.BOTTOM, 5),
+            (txt_urgency, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.sel_urgency, 1, wx.EXPAND|wx.RIGHT, 5),
+            (txt_maintainer, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_maintainer, 1, wx.EXPAND|wx.RIGHT, 5),
+            (txt_email, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_email, 1, wx.EXPAND)
             ))
         
         lyt_target_custom = wx.BoxSizer(wx.HORIZONTAL)
@@ -126,9 +136,6 @@ class Panel(wx.ScrolledWindow):
         pnl_target.SetAutoLayout(True)
         pnl_target.Layout()
         
-        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
-        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
-        
         lyt_details = wx.GridBagSizer()
         lyt_details.SetCols(3)
         lyt_details.AddGrowableCol(1)
@@ -142,15 +149,14 @@ class Panel(wx.ScrolledWindow):
         lyt_details.Add(self.btn_add, (3, 0))
         lyt_details.Add(txt_add, (3, 1), flag=LEFT_CENTER)
         
-        lyt_main = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
-        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_info, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_details, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
-                0, wx.ALIGN_BOTTOM|wx.LEFT, 5)
-        lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+                0, LEFT_BOTTOM|wx.LEFT, 5)
+        lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
