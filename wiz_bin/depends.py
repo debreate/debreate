@@ -15,6 +15,7 @@ from dbr.buttons        import ButtonRemove
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import ListCtrlPanel
+from dbr.panel          import BorderedPanel
 from globals.ident      import FID_LIST
 from globals.ident      import ID_APPEND
 from globals.ident      import ID_DEPENDS
@@ -42,7 +43,7 @@ class Panel(wx.ScrolledWindow):
         
         self.ti_package.SetSize((100,50))
         
-        pnl_categories = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_categories = BorderedPanel(self)
         
         self.default_category = u'Depends'
         

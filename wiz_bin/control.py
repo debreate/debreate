@@ -19,6 +19,7 @@ from dbr.functions          import FieldEnabled
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
 from globals.ident          import FID_ARCH
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_LIST
@@ -47,7 +48,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Required fields *** #
         
-        pnl_require = wx.Panel(pnl_bg, style=wx.BORDER_THEME)
+        pnl_require = BorderedPanel(pnl_bg)
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
@@ -84,7 +85,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Recommended fields *** #
         
-        pnl_recommend = wx.Panel(pnl_bg, style=wx.BORDER_THEME)
+        pnl_recommend = BorderedPanel(pnl_bg)
         
         ti_section_opt = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
@@ -118,7 +119,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Optional fields *** #
         
-        pnl_option = wx.Panel(pnl_bg, style=wx.BORDER_THEME)
+        pnl_option = BorderedPanel(pnl_bg)
         
         txt_source = wx.StaticText(pnl_option, label=GT(u'Source'), name=u'source')
         ti_source = wx.TextCtrl(pnl_option, name=txt_source.Name)

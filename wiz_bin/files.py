@@ -18,6 +18,7 @@ from dbr.dialogs        import ShowDialog
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import FileList
+from dbr.panel          import BorderedPanel
 from globals.ident      import FID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
@@ -53,7 +54,7 @@ class Panel(wx.ScrolledWindow):
                 style=wx.BORDER_THEME)
         
         # ----- Target path
-        pnl_target = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_target = BorderedPanel(self)
         
         # choices of destination
         rb_bin = wx.RadioButton(pnl_target, label=u'/bin', style=wx.RB_GROUP)

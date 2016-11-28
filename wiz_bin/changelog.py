@@ -14,6 +14,7 @@ from dbr.functions          import FieldEnabled
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from globals.ident          import FID_EMAIL
@@ -66,7 +67,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Target installation directory
         
-        pnl_target = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_target = BorderedPanel(self)
         
         # Standard destination of changelog
         self.rb_target_standard = wx.RadioButton(pnl_target, label=u'/usr/share/doc/<package>',

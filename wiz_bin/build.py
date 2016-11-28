@@ -19,6 +19,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.md5                import MD5Hasher
 from dbr.message            import MessageDialog
+from dbr.panel              import BorderedPanel
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_gdebi_gui
 from globals.commands       import CMD_lintian
@@ -49,7 +50,7 @@ class Panel(wx.ScrolledWindow):
         
         # ----- Extra Options
         
-        pnl_options = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_options = BorderedPanel(self)
         
         self.chk_md5 = wx.CheckBox(pnl_options, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled

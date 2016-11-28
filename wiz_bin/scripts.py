@@ -14,6 +14,7 @@ from dbr.buttons        import ButtonQuestion64
 from dbr.buttons        import ButtonRemove
 from dbr.language       import GT
 from dbr.markdown       import MarkdownDialog
+from dbr.panel          import BorderedPanel
 from dbr.pathctrl       import PATH_WARN
 from dbr.pathctrl       import PathCtrl
 from globals.ident      import ID_IMPORT
@@ -85,7 +86,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Auto-Link *** #
         
-        pnl_autolink = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_autolink = BorderedPanel(self)
         
         # Executable list - generate button will make scripts to link to files in this list
         self.lst_executables = []
