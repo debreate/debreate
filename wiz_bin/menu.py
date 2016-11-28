@@ -193,7 +193,11 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
+        CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
+        CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
+        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
         
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_open, 0)
@@ -214,42 +218,37 @@ class Panel(wx.ScrolledWindow):
         lyt_cat_main.Add(lyt_cat_input, 0)
         lyt_cat_main.Add(self.lst_categories, 1, wx.EXPAND|wx.LEFT, 5)
         
-        # GridBagSizer flags
-        CENTER = wx.ALIGN_CENTER_VERTICAL
-        CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
-        CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
-        
         lyt_grid = wx.GridBagSizer(5, 5)
         lyt_grid.SetCols(4)
         lyt_grid.AddGrowableCol(1)
         
         # Row 1
-        lyt_grid.Add(self.txt_filename, (0, 0), flag=CENTER)
+        lyt_grid.Add(self.txt_filename, (0, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_filename, pos=(0, 1), flag=CENTER_EXPAND)
         lyt_grid.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
         
         # Row 2
-        lyt_grid.Add(txt_name, (1, 0), flag=CENTER)
+        lyt_grid.Add(txt_name, (1, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_name, (1, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_type, (1, 2), flag=CENTER)
+        lyt_grid.Add(txt_type, (1, 2), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_type, (1, 3), flag=CENTER_EXPAND)
         
         # Row 3
-        lyt_grid.Add(txt_exec, (2, 0), flag=CENTER)
+        lyt_grid.Add(txt_exec, (2, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_exec, (2, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_term, (2, 2), flag=CENTER)
-        lyt_grid.Add(self.sel_term, (2, 3), flag=CENTER)
+        lyt_grid.Add(txt_term, (2, 2), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.sel_term, (2, 3), flag=LEFT_CENTER)
         
         # Row 4
-        lyt_grid.Add(txt_comm, (3, 0), flag=CENTER)
+        lyt_grid.Add(txt_comm, (3, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_comm, (3, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_notify, (3, 2), flag=CENTER)
-        lyt_grid.Add(self.sel_notify, (3, 3), flag=CENTER)
+        lyt_grid.Add(txt_notify, (3, 2), flag=RIGHT_CENTER)
+        lyt_grid.Add(self.sel_notify, (3, 3), flag=LEFT_CENTER)
         
         # Row 5
-        lyt_grid.Add(txt_icon, (4, 0), flag=CENTER)
+        lyt_grid.Add(txt_icon, (4, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_icon, (4, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_enc, (4, 2), flag=CENTER)
+        lyt_grid.Add(txt_enc, (4, 2), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_enc, (4, 3), flag=CENTER_EXPAND)
         
         lyt_border = wx.BoxSizer(wx.VERTICAL)
