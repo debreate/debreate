@@ -32,6 +32,7 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
+from globals.bitmaps        import ICON_GLOBE
 from globals.ident          import ID_BUILD
 from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
@@ -205,29 +206,28 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Menu with links to the Debian Policy Manual webpages
         self.menu_policy = wx.Menu()
         
-        globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
         self.DPM = wx.MenuItem(self.menu_policy, ID_DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
-        self.DPM.SetBitmap(globe)
+        self.DPM.SetBitmap(ICON_GLOBE)
         self.DPMCtrl = wx.MenuItem(self.menu_policy, ID_DPMCtrl, GT(u'Control files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
-        self.DPMCtrl.SetBitmap(globe)
+        self.DPMCtrl.SetBitmap(ICON_GLOBE)
         self.DPMLog = wx.MenuItem(self.menu_policy, ID_DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
-        self.DPMLog.SetBitmap(globe)
+        self.DPMLog.SetBitmap(ICON_GLOBE)
         self.UPM = wx.MenuItem(self.menu_policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
-        self.UPM.SetBitmap(globe)
+        self.UPM.SetBitmap(ICON_GLOBE)
         # FIXME: Use wx.NewId()
         self.DebFrmSrc = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
-        self.DebFrmSrc.SetBitmap(globe)
+        self.DebFrmSrc.SetBitmap(ICON_GLOBE)
         self.LintianTags = wx.MenuItem(self.menu_policy, ID_Lintian, GT(u'Lintian tags explanation'),
                 u'http://lintian.debian.org/tags-all.html')
-        self.LintianTags.SetBitmap(globe)
+        self.LintianTags.SetBitmap(ICON_GLOBE)
         self.Launchers = wx.MenuItem(self.menu_policy, ID_Launchers, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
-        self.Launchers.SetBitmap(globe)
+        self.Launchers.SetBitmap(ICON_GLOBE)
         
         self.menu_policy.AppendItem(self.DPM)
         self.menu_policy.AppendItem(self.DPMCtrl)
