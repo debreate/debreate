@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Tooltips do not get disabled (wx 2.8)
 - Files page: Not all fields reset when opening a project file (wx 2.8)
 - Executables don't import on scripts page (2.8)
 

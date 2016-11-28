@@ -175,7 +175,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.opt_tooltips = wx.MenuItem(menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
-        menu_opt.AppendItem(self.opt_tooltips)
+        
+        # A bug with wx 2.8 does not allow tooltips to be toggled off
+        if wx.MAJOR_VERSION > 2:
+            menu_opt.AppendItem(self.opt_tooltips)
         
         show_tooltips = ReadConfig(u'tooltips')
         if show_tooltips != ConfCode.KEY_NO_EXIST:
