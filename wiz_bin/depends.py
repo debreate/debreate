@@ -69,7 +69,8 @@ class Panel(wx.ScrolledWindow):
         btn_clear = ButtonClear(self)
         
         # ----- List
-        self.lst_deps = ListCtrlPanel(self, FID_LIST, style=wx.LC_REPORT, name=u'list')
+        self.lst_deps = ListCtrlPanel(self, FID_LIST, name=u'list')
+        self.lst_deps.SetSingleStyle(wx.LC_REPORT)
         self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
         self.lst_deps.InsertColumn(1, GT(u'Package(s)'))
         

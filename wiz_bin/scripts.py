@@ -13,6 +13,7 @@ from dbr.buttons        import ButtonImport
 from dbr.buttons        import ButtonQuestion64
 from dbr.buttons        import ButtonRemove
 from dbr.language       import GT
+from dbr.listinput      import ListCtrlPanel
 from dbr.markdown       import MarkdownDialog
 from dbr.panel          import BorderedPanel
 from dbr.pathctrl       import PATH_WARN
@@ -94,13 +95,8 @@ class Panel(wx.ScrolledWindow):
         self.ti_autolink.SetName(u'target')
         
         # Auto-Link executables to be linked
-        if wx.MAJOR_VERSION < 3:
-            # FIXME: List should be multi-select/delete
-            self.executables = wx.ListView(pnl_autolink, size=(200,200), name=u'al list',
-                    style=wx.LC_SINGLE_SEL)
-        
-        else:
-            self.executables = wx.ListView(pnl_autolink, size=(200,200), name=u'al list')
+        self.executables = ListCtrlPanel(pnl_autolink, size=(200,200), name=u'al list')
+        self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
         btn_al_import = ButtonImport(pnl_autolink, ID_IMPORT)
@@ -149,9 +145,9 @@ class Panel(wx.ScrolledWindow):
         
         lyt_autolink = wx.BoxSizer(wx.VERTICAL)
         lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
-        lyt_autolink.Add(self.executables, 0, wx.TOP|wx.LEFT|wx.RIGHT, 5)
+        lyt_autolink.Add(self.executables, 3, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
         lyt_autolink.Add(lyt_btn_autolink, 0, wx.ALIGN_CENTER_HORIZONTAL)
-        lyt_autolink.Add(btn_help, 0, wx.ALIGN_CENTER)
+        lyt_autolink.Add(btn_help, 1, wx.ALIGN_CENTER)
         
         pnl_autolink.SetSizer(lyt_autolink)
         pnl_autolink.SetAutoLayout(True)
@@ -161,7 +157,7 @@ class Panel(wx.ScrolledWindow):
         lyt_right.AddSpacer(30)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
                 0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
-        lyt_right.Add(pnl_autolink, 0)
+        lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
         
         lyt_main = wx.BoxSizer(wx.HORIZONTAL)
         lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
