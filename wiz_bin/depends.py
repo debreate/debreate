@@ -81,11 +81,13 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        
         layt_labels = wx.GridBagSizer()
         
         # Row 1
-        layt_labels.Add(txt_package, (0, 0), flag=wx.ALIGN_BOTTOM)
-        layt_labels.Add(txt_version, (0, 2), flag=wx.ALIGN_BOTTOM)
+        layt_labels.Add(txt_package, (0, 0), flag=LEFT_BOTTOM)
+        layt_labels.Add(txt_version, (0, 2), flag=LEFT_BOTTOM)
         
         # Row 2
         layt_labels.Add(self.ti_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
@@ -97,33 +99,34 @@ class Panel(wx.ScrolledWindow):
         for C in self.categories:
             layt_categories.Add(C, 0)
         
-        pnl_categories.SetSizer(layt_categories)
         pnl_categories.SetAutoLayout(True)
+        pnl_categories.SetSizer(layt_categories)
         pnl_categories.Layout()
         
         layt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
-        layt_buttons.AddMany( (
+        layt_buttons.AddMany((
             (btn_add, 0, wx.ALIGN_CENTER_VERTICAL),
             (btn_append, 0, wx.ALIGN_CENTER_VERTICAL),
             (btn_remove, 0, wx.ALIGN_CENTER_VERTICAL),
             (btn_clear, 0, wx.ALIGN_CENTER_VERTICAL),
-            ) )
+            ))
         
-        layt_categories = wx.GridBagSizer(5, 5)
-        layt_categories.SetCols(2)
+        layt_top = wx.GridBagSizer(5, 5)
+        layt_top.SetCols(2)
         
-        layt_categories.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), wx.ALIGN_BOTTOM)
-        layt_categories.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
-        layt_categories.Add(layt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
+        layt_top.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), LEFT_BOTTOM)
+        layt_top.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
+        layt_top.Add(layt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
         layt_list = wx.BoxSizer(wx.HORIZONTAL)
         layt_list.Add(self.lst_deps, 1, wx.EXPAND)
         
         layt_main = wx.BoxSizer(wx.VERTICAL)
-        layt_main.AddSpacer(10)
+        # Spacer on this page is half because text is aligned to bottom
+        layt_main.AddSpacer(5)
         layt_main.Add(layt_labels, 0, wx.EXPAND|wx.ALL, 5)
-        layt_main.Add(layt_categories, 0, wx.ALL, 5)
+        layt_main.Add(layt_top, 0, wx.ALL, 5)
         layt_main.Add(layt_list, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
