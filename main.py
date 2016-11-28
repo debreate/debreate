@@ -140,15 +140,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_file.AppendSeparator()
         self.menu_file.Append(wx.ID_EXIT)
         
-        wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
-        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
-        
-        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
-        wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
-        wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
-        wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
-        
         # *** Page Menu *** #
         ## This menu is filled from dbr.wizard.Wizard
         self.menu_page = wx.Menu()
@@ -168,8 +159,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Show/Hide tooltips
         self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
-        
-        wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
         
         self.menu_opt.AppendItem(self.opt_tooltips)
         
@@ -218,10 +207,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     kind=wx.ITEM_RADIO)
             compression_opts.insert(3, opt_compression_xz)
         
-        for OPT in compression_opts:
-            self.menu_compression.AppendItem(OPT)
-            wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
-        
         # Default compression
         self.menu_compression.Check(ID_ZIP_BZ2, True)
         
@@ -244,8 +229,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for Update'))
         self.menu_help.AppendItem(self.version_check)
         self.menu_help.AppendSeparator()
-        
-        wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
         
         # Menu with links to the Debian Policy Manual webpages
         self.Policy = wx.Menu()
@@ -289,9 +272,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
             }
         
-        for R_ID in self.references:
-            wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
-        
         self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
@@ -299,9 +279,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_help.AppendSeparator()
         self.menu_help.AppendItem(self.Help)
         self.menu_help.AppendItem(self.About)
-        
-        wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
-        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
         self.menubar = wx.MenuBar()
         self.SetMenuBar(self.menubar)
@@ -313,8 +290,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menubar.Append(self.menu_help, GT(u'Help'))
         
         self.wizard = Wizard(self)
-        
-        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
         
         self.page_info = PageGreeting(self.wizard)
         self.page_info.SetInfo()
@@ -347,23 +322,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.wizard.SetPages(self.bin_pages)
         
-        for M in self.menu_page.GetMenuItems():
-            Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
-            wx.EVT_MENU(self, M.GetId(), self.GoToPage)
-        
-        # ----- Layout
-        self.main_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(self.main_sizer)
-        self.Layout()
-        
-        
-        # Action menu events
-        wx.EVT_MENU(self, action_build.GetId(), self.page_build.OnBuild)
-        
-        
         # Menu for debugging & running tests
         if DebugEnabled():
             self.menu_debug = wx.Menu()
@@ -375,12 +333,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             self.log_window = LogWindow(self, Logger.GetLogFile())
             
-            wx.EVT_MENU(self, ID_LOG, self.log_window.OnToggleWindow)
-            
             # Window colors
             self.menu_debug.AppendItem(
                 wx.MenuItem(self.menu_debug, ID_THEME, GT(u'Toggle window colors')))
             
+            wx.EVT_MENU(self, ID_LOG, self.log_window.OnToggleWindow)
             wx.EVT_MENU(self, ID_THEME, self.OnToggleTheme)
         
         self.loaded_project = None
@@ -389,6 +346,49 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Initialize with clean project
         # TODO: This can be bypassed if opening a project from command line
         self.SetProjectDirty(False)
+        
+        # *** Layout *** #
+        
+        self.main_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(self.main_sizer)
+        self.Layout()
+        
+        # *** Event handlers *** #
+        
+        wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
+        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
+        
+        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
+        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
+        wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
+        wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
+        
+        wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
+        
+        for OPT in compression_opts:
+            self.menu_compression.AppendItem(OPT)
+            wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
+        
+        wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
+        
+        for R_ID in self.references:
+            wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
+        
+        wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
+        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
+        
+        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
+        
+        for M in self.menu_page.GetMenuItems():
+            Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
+            wx.EVT_MENU(self, M.GetId(), self.GoToPage)
+        
+        # Action menu events
+        wx.EVT_MENU(self, action_build.GetId(), self.page_build.OnBuild)
     
     
     ## TODO: Doxygen
