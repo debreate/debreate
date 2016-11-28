@@ -17,6 +17,7 @@ from dbr.functions          import GetFileMimeType
 from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.application    import APP_name
@@ -75,7 +76,8 @@ class AboutDialog(wx.Dialog):
         self.t_about.Layout()
         
         ## List of credits
-        self.credits = wx.ListCtrl(t_credits, -1, style=wx.LC_REPORT)
+        self.credits = ListCtrlPanel(t_credits)
+        self.credits.SetSingleStyle(wx.LC_REPORT)
         self.credits.InsertColumn(0, GT(u'Name'), width=150)
         self.credits.InsertColumn(1, GT(u'Job'), width=200)
         self.credits.InsertColumn(2, GT(u'Email'), width=240)
