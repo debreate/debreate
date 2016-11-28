@@ -241,13 +241,13 @@ class Panel(wx.ScrolledWindow):
         # Main background panel sizer
         # FIXME: Is background panel (pnl_bg) necessary
         layt_bg = wx.BoxSizer(wx.VERTICAL)
-        layt_bg.Add(layt_buttons, 0, wx.ALL, 5)
-        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0, wx.LEFT, 5)
-        layt_bg.Add(pnl_require, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP|wx.LEFT, 5)
-        layt_bg.Add(pnl_recommend, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Optional')), 0, wx.TOP|wx.LEFT, 5)
-        layt_bg.Add(pnl_option, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        layt_bg.Add(layt_buttons, 0, wx.BOTTOM, 5)
+        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0)
+        layt_bg.Add(pnl_require, 0, wx.EXPAND)
+        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
+        layt_bg.Add(pnl_recommend, 1, wx.EXPAND)
+        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Optional')), 0, wx.TOP, 5)
+        layt_bg.Add(pnl_option, 0, wx.EXPAND)
         
         pnl_bg.SetAutoLayout(True)
         pnl_bg.SetSizer(layt_bg)
@@ -255,7 +255,8 @@ class Panel(wx.ScrolledWindow):
         
         # Page's main sizer
         layt_main = wx.BoxSizer(wx.VERTICAL)
-        layt_main.Add(pnl_bg, 1, wx.EXPAND)
+        layt_main.AddSpacer(10)
+        layt_main.Add(pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(layt_main)
