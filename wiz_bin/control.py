@@ -585,17 +585,19 @@ class Panel(WizardPage):
             event.Skip()
     
     
-    ## TODO: Doxygen
+    ## Show a preview of the control file
     def OnPreview(self, event=None):
-        # Show a preview of the control file
         control = self.GetCtrlInfo()
         
-        dia = wx.Dialog(self, title=GT(u'Preview'), size=(500,400))
+        # Ensure only one empty newline at end of preview (same as actual output)
+        control = control.rstrip(u'\n') + u'\n'
+        
+        dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500,400))
         preview = MultilineTextCtrlPanel(dia, style=wx.TE_READONLY)
         preview.SetValue(control)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
+        dia_sizer.Add(preview, 1, wx.EXPAND|wx.ALL, 5)
         
         dia.SetSizer(dia_sizer)
         dia.Layout()
