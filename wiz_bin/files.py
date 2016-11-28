@@ -19,6 +19,7 @@ from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import FileList
 from dbr.panel          import BorderedPanel
+from dbr.panel          import PANEL_BORDER
 from dbr.textinput      import MultilineTextCtrlPanel
 from globals.ident      import FID_CUSTOM
 from globals.ident      import ID_FILES
@@ -51,8 +52,8 @@ class Panel(wx.ScrolledWindow):
         self.mnu_tree.AppendItem(mitm_refresh)
         
         # Directory listing for importing files and folders
-        self.tree_directories = wx.GenericDirCtrl(self, dir=PATH_home, size=(300,20),
-                style=wx.BORDER_THEME)
+        self.tree_directories = wx.GenericDirCtrl(self, dir=PATH_home, size=(300, 20),
+                style=PANEL_BORDER)
         
         # ----- Target path
         pnl_target = BorderedPanel(self)
