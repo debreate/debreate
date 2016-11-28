@@ -78,6 +78,7 @@ class Panel(wx.ScrolledWindow):
             rb_usrlib,
             rb_locbin,
             rb_loclib,
+            self.rb_custom,
             )
         
         # ----- Add/Remove/Clear buttons
@@ -106,8 +107,6 @@ class Panel(wx.ScrolledWindow):
         
         for item in self.grp_targets:
             lyt_target.Add(item, 0, wx.LEFT|wx.RIGHT, 5)
-        
-        lyt_target.Add(self.rb_custom, 0, wx.LEFT|wx.RIGHT, 5)
         
         pnl_target.SetAutoLayout(True)
         pnl_target.SetSizer(lyt_target)
@@ -148,7 +147,7 @@ class Panel(wx.ScrolledWindow):
         
         # create an event to enable/disable custom widget
         for item in self.grp_targets:
-            wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.SetDestination)
+            wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
         
         # Context menu events for directory tree
         wx.EVT_CONTEXT_MENU(self.tree_directories, self.OnRightClickTree)
@@ -359,21 +358,17 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ResetAllFields(self):
         self.rb_custom.SetValue(self.rb_custom.default)
-        self.SetDestination(None)
+        self.OnSetDestination()
         self.ti_target.SetValue(self.ti_target.default)
         self.lst_files.DeleteAllItems()
     
     
-    ## TODO: Doxygen
-    def SetDestination(self, event=None):
-        # Event handler that disables the custom destination if the corresponding radio button isn't selected
-        if self.rb_custom.GetValue() == True:
-            self.ti_target.Enable()
-            self.btn_browse.Enable()
+    ## Event handler that disables the custom destination if the corresponding radio button isn't selected
+    def OnSetDestination(self, event=None):
+        enable = self.rb_custom.GetValue()
         
-        else:
-            self.ti_target.Disable()
-            self.btn_browse.Disable()
+        self.ti_target.Enable(enable)
+        self.btn_browse.Enable(enable)
     
     
     ## TODO: Doxygen
