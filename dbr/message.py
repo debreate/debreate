@@ -10,19 +10,20 @@ import wx
 
 from dbr.buttons    import ButtonConfirm
 from dbr.language   import GT
+from dbr.textinput  import MultilineTextCtrlPanel
 
 
 ## TODO: Doxygen
 class MessageDialog(wx.Dialog):
-    def __init__(self, parent, id=wx.ID_ANY, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
+    def __init__(self, parent, ID=wx.ID_ANY, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
             details=wx.EmptyString):
-        wx.Dialog.__init__(self, parent, id, title, size=(500,500))
+        wx.Dialog.__init__(self, parent, ID, title, size=(500,500))
         
         self.icon = wx.StaticBitmap(self, -1, wx.Bitmap(icon))
         
-        self.text = wx.StaticText(self, -1, text)
+        self.text = wx.StaticText(self, label=text)
         self.button_details = wx.ToggleButton(self, -1, u'Details')
-        self.details = wx.TextCtrl(self, -1, details, size=(300,150), style=wx.TE_MULTILINE|wx.TE_READONLY)
+        self.details = MultilineTextCtrlPanel(self, label=details, size=(300,150), style=wx.TE_READONLY)
         self.details.SetSize(self.details.GetBestSize())
         
         wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
@@ -47,9 +48,12 @@ class MessageDialog(wx.Dialog):
         
         self.details.Hide()
     
+    
+    ## TODO: Doxygen
     def ToggleDetails(self, event=None):
         if self.button_details.GetValue():
             self.details.Show()
+        
         else:
             self.details.Hide()
         self.SetSizerAndFit(self.main_sizer)

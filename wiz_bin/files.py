@@ -19,6 +19,7 @@ from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import FileList
 from dbr.panel          import BorderedPanel
+from dbr.textinput      import MultilineTextCtrlPanel
 from globals.ident      import FID_CUSTOM
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
@@ -408,7 +409,7 @@ class Panel(wx.ScrolledWindow):
             if len(missing_files):
                 alert = wx.Dialog(self, title=GT(u'Missing Files'))
                 alert_text = wx.StaticText(alert, label=GT(u'Could not locate the following files:'))
-                alert_list = wx.TextCtrl(alert, style=wx.TE_MULTILINE|wx.TE_READONLY)
+                alert_list = MultilineTextCtrlPanel(alert, style=wx.TE_READONLY)
                 alert_list.SetValue(u'\n'.join(missing_files))
                 button_ok = wx.Button(alert, wx.ID_OK)
                 

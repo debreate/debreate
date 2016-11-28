@@ -11,6 +11,7 @@ import wx
 from dbr.functions      import GetSystemLicensesList
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.textinput      import MultilineTextCtrlPanel
 from globals.ident      import ID_COPYRIGHT
 from globals.tooltips   import SetPageToolTips
 
@@ -37,7 +38,7 @@ class Panel(wx.ScrolledWindow):
         template_sizer.Add(btn_template, 1)
         template_sizer.Add(self.sel_templates, 1)
         
-        self.dsp_copyright = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.dsp_copyright = MultilineTextCtrlPanel(self)
         
         SetPageToolTips(self)
         

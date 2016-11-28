@@ -17,6 +17,7 @@ from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
+from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_MAINTAINER
 from globals.ident          import FID_PACKAGE
@@ -63,7 +64,7 @@ class Panel(wx.ScrolledWindow):
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
         
         # Changes input
-        self.ti_changes = wx.TextCtrl(self, size=(20,150), style=wx.TE_MULTILINE, name=u'changes')
+        self.ti_changes = MultilineTextCtrlPanel(self, size=(20,150), name=u'changes')
         
         # *** Target installation directory
         
@@ -88,7 +89,7 @@ class Panel(wx.ScrolledWindow):
         # Initially disable 'add' button
         self.ToggleAddButton()
         
-        self.dsp_changes = wx.TextCtrl(self, name=u'log', style=wx.TE_MULTILINE)
+        self.dsp_changes = MultilineTextCtrlPanel(self, name=u'log')
         
         SetPageToolTips(self)
         

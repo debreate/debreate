@@ -20,6 +20,7 @@ from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
+from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import FID_ARCH
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_LIST
@@ -115,7 +116,7 @@ class Panel(wx.ScrolledWindow):
         ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.ti_description = wx.TextCtrl(pnl_recommend, style=wx.TE_MULTILINE, name=txt_description.Name)
+        self.ti_description = MultilineTextCtrlPanel(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         
@@ -469,7 +470,7 @@ class Panel(wx.ScrolledWindow):
         control = control.rstrip(u'\n') + u'\n'
         
         dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview = MultilineTextCtrlPanel(dia, style=wx.TE_READONLY)
         preview.SetValue(control)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)

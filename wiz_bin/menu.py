@@ -19,6 +19,7 @@ from dbr.custom         import OpenFile
 from dbr.custom         import SaveFile
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.textinput      import MultilineTextCtrlPanel
 from globals.ident      import ID_MENU
 from globals.tooltips   import SetPageToolTips
 
@@ -182,8 +183,7 @@ class Panel(wx.ScrolledWindow):
         # ----- MISC
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         
-        self.ti_other = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.BORDER_SIMPLE,
-                name=txt_other.Name)
+        self.ti_other = MultilineTextCtrlPanel(self, style=wx.BORDER_SIMPLE, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.opts_input.append(self.ti_other)
         
@@ -409,7 +409,7 @@ class Panel(wx.ScrolledWindow):
         config = self.GetLauncherInfo()
         
         dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = wx.TextCtrl(dia, -1, style=wx.TE_MULTILINE|wx.TE_READONLY)
+        preview = MultilineTextCtrlPanel(dia, style=wx.TE_READONLY)
         preview.SetValue(config)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)
