@@ -7,7 +7,6 @@
 
 
 import os, shutil, wx
-from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse64
@@ -15,6 +14,7 @@ from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonPreview64
 from dbr.buttons        import ButtonRemove
 from dbr.buttons        import ButtonSave64
+from dbr.custom         import ComboBox
 from dbr.custom         import OpenFile
 from dbr.custom         import SaveFile
 from dbr.functions      import TextIsEmpty
@@ -101,7 +101,7 @@ class Panel(wx.ScrolledWindow):
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         self.labels.append(txt_type)
         
-        self.ti_type = OwnerDrawnComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
+        self.ti_type = ComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
         self.ti_type.default = self.ti_type.GetValue()
         self.opts_input.append(self.ti_type)
         
@@ -137,7 +137,7 @@ class Panel(wx.ScrolledWindow):
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         self.labels.append(txt_enc)
         
-        self.ti_enc = OwnerDrawnComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
+        self.ti_enc = ComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
         self.ti_enc.default = self.ti_enc.GetValue()
         self.opts_input.append(self.ti_enc)
         
@@ -174,7 +174,7 @@ class Panel(wx.ScrolledWindow):
         self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
-        self.ti_category = OwnerDrawnComboBox(self, value=opts_category[0], choices=opts_category,
+        self.ti_category = ComboBox(self, value=opts_category[0], choices=opts_category,
                 name=txt_category.Name)
         self.ti_category.default = self.ti_category.GetValue()
         self.opts_input.append(self.ti_category)
