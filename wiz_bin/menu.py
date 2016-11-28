@@ -660,7 +660,7 @@ class Panel(wx.ScrolledWindow):
         # Add any leftover keys to misc/other
         for K in data_defs:
             if K not in (u'Version',):
-                self.ti_other.WriteText(u'{}={}'.format(K, data_defs[K]))
+                self.ti_other.SetValue(u'{}={}'.format(K, data_defs[K]))
         
         if misc_defs:
             for K in misc_defs:
