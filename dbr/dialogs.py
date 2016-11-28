@@ -2,6 +2,9 @@
 
 ## \package dbr.dialogs
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 from wx.combo import OwnerDrawnComboBox
@@ -26,8 +29,6 @@ class OverwriteDialog(wx.MessageDialog):
     def __init__(self, parent, path):
         wx.MessageDialog.__init__(self, parent, wx.EmptyString,
                 style=wx.ICON_QUESTION|wx.YES_NO|wx.YES_DEFAULT)
-        
-        self.parent = parent
         
         self.SetYesNoLabels(GT(u'Replace'), GT(u'Cancel'))
         
@@ -99,11 +100,12 @@ class StandardDirDialog(wx.DirDialog):
                 style=style|wx.DD_DIR_MUST_EXIST|wx.DD_NEW_DIR_BUTTON|wx.DD_CHANGE_DIR)
         
         # FIXME: Find inherited bound event
-        wx.EVT_BUTTON(self, wx.ID_OPEN, self.OnAccept)
+        self.Bind(wx.EVT_BUTTON, self.OnAccept)
         
         self.CenterOnParent()
     
     
+    ## TODO: Doxygen
     def OnAccept(self, event=None):
         path = self.GetPath()
         
@@ -111,9 +113,11 @@ class StandardDirDialog(wx.DirDialog):
             self.EndModal(wx.ID_OK)
             return
         
+        # FIXME: Use Logger
         print(u'DEBUG: [dbr.dialogs] Path is not a directory: {}'.format(path))
 
 
+## TODO: Doxygen
 class StandardFileDialog(wx.FileDialog):
     def __init__(self, parent, title, default_extension=wx.EmptyString,
                 wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
@@ -121,16 +125,15 @@ class StandardFileDialog(wx.FileDialog):
         # Setting os.getcwd() causes dialog to always be opened in working directory
         wx.FileDialog.__init__(self, parent, title, os.getcwd(), wildcard=wildcard, style=style)
         
-        self.parent = parent
-        
         self.extension = default_extension
         
         # FIXME: Should use ID_SAVE & ID_OPEN
-        wx.EVT_BUTTON(self, wx.ID_OK, self.OnAccept)
+        self.Bind(wx.EVT_BUTTON, self.OnAccept)
         
         self.CenterOnParent()
     
     
+    ## TODO: Doxygen
     def GetDirectory(self, directory=None):
         if directory == None:
             directory = self.GetPath()
@@ -142,6 +145,7 @@ class StandardFileDialog(wx.FileDialog):
         return directory
     
     
+    ## TODO: Doxygen
     def GetExtension(self):
         return self.extension
     
@@ -164,14 +168,10 @@ class StandardFileDialog(wx.FileDialog):
         
         if len(path):
             if path[-1] == u'.':
-                #wx.MessageDialog(self, GT(u'Filename cannot end with "{}"').format(path[-1]), GT(u'Error'),
-                #        style=wx.ICON_ERROR|wx.OK).ShowModal()
                 name_error = wx.MessageDialog(wx.GetApp().GetTopWindow(), GT(u'Error'),
                         style=wx.ICON_ERROR|wx.OK)
                 
                 name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
-                # FIXME: Setting icon causes segfault
-                #name_error.SetIcon(MAIN_ICON)
                 name_error.ShowModal()
                 
                 return None
@@ -180,6 +180,7 @@ class StandardFileDialog(wx.FileDialog):
         return u'{}/{}'.format(out_dir, self.GetFilename())
     
     
+    ## TODO: Doxygen
     def HasExtension(self, path):
         if u'.' in path:
             if path.split(u'.')[-1] != u'':
@@ -188,6 +189,7 @@ class StandardFileDialog(wx.FileDialog):
         return False
     
     
+    ## TODO: Doxygen
     def OnAccept(self, event=None):
         path = self.GetPath()
         
@@ -226,12 +228,12 @@ class StandardFileOpenDialog(StandardFileDialog):
                 wildcard=wildcard, style=wx.FD_OPEN)
     
     
+    ## TODO: Doxygen
     def OnAccept(self, event=None):
         # File & directory dialogs should call this function
         ChangeWorkingDirectory(self.GetDirectory())
         
         self.EndModal(wx.ID_OK)
-
 
 
 # *** MESSAGE & ERROR *** #
@@ -303,7 +305,9 @@ class DetailedMessageDialog(wx.Dialog):
         self.CenterOnParent()
     
     
-    # FIXME:
+    ## TODO: Doxygen
+    #  
+    #  TODO: Allow copying details to clipboard
     def OnCopyDetails(self, event=None):
         print(u'DEBUG: Copying details to clipboard ...')
         
@@ -351,6 +355,7 @@ class DetailedMessageDialog(wx.Dialog):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def SetDetails(self, details):
         self.details.SetValue(details)
         self.details.SetSize(self.details.GetBestSize())
@@ -362,6 +367,7 @@ class DetailedMessageDialog(wx.Dialog):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def ToggleDetails(self, event=None):
         if self.button_details.GetValue():
             self.details.Show()
@@ -384,11 +390,21 @@ class ErrorDialog(DetailedMessageDialog):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def SetDetails(self, details):
         if not self.btn_copy_details.IsShown():
             self.btn_copy_details.Show()
         
         DetailedMessageDialog.SetDetails(self, details)
+
+
+## TODO: Doxygen
+class SuperUserDialog(wx.Dialog):
+    def __init__(self, ID=wx.ID_ANY):
+        wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
+        
+        # User selector
+        self.users = OwnerDrawnComboBox(self)
 
 
 ## Dialog shown when Debreate is run for first time
@@ -447,6 +463,41 @@ class FirstRun(wx.Dialog):
         self.Layout()
 
 
+## TODO: Doxygen
+def GetDialogWildcards(ID):
+    proj_def = project_wildcards[ID][0]
+    wildcards = list(project_wildcards[ID][1])
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'.{}'.format(wildcards[X])
+    
+    # Don't show list of suffixes in dialog's description
+    if project_wildcards[ID][1] != supported_suffixes:
+        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
+    
+    for X in range(len(wildcards)):
+        wildcards[X] = u'*{}'.format(wildcards[X])
+    
+    return (proj_def, u';'.join(wildcards))
+
+
+## TODO: Doxygen
+def GetDirDialog(main_window, title):
+    dir_open = StandardDirDialog(main_window, title)
+    
+    return dir_open
+
+
+## TODO: Doxygen
+def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
+    if isinstance(ext_filters, (list, tuple)):
+        ext_filters = u'|'.join(ext_filters)
+    
+    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
+    
+    return file_open
+
+
 ## Retrieves a dialog for display
 #  
 #  If 'Use custom dialogs' is selected from
@@ -465,8 +516,6 @@ class FirstRun(wx.Dialog):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-#  
-#  \b Alias: \e dbr.GetFileSaveDialog
 def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
@@ -475,21 +524,6 @@ def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
             wildcard=ext_filters)
     
     return file_save
-
-
-def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
-    
-    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
-    
-    return file_open
-
-
-def GetDirDialog(main_window, title):
-    dir_open = StandardDirDialog(main_window, title)
-    
-    return dir_open
 
 
 ## Used to display a dialog window
@@ -514,6 +548,7 @@ def ShowDialog(dialog):
     
     if False: #debreate.cust_dias.IsChecked():
         return dialog.DisplayModal()
+    
     else:
         return dialog.ShowModal() == wx.ID_OK
 
@@ -529,11 +564,7 @@ def ShowDialog(dialog):
 #  \param warn
 #        \b \e bool: Show log message as warning instead of error
 def ShowErrorDialog(text, details=None, module=None, warn=False):
-    Logger.Debug(__name__, GT(u'Text: {}').format(text))
-    Logger.Debug(__name__, GT(u'Details: {}').format(details))
-    Logger.Debug(__name__, GT(u'Module: {}').format(module))
-    Logger.Debug(__name__, GT(u'Logger warning instead of error: {}').format(warn))
-    
+    # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
         PrintLogMessage = Logger.Warning
@@ -582,30 +613,3 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     Logger.Debug(module, logger_text)
     
     message_dialog.ShowModal()
-
-
-## TODO: Doxygen
-class SuperUserDialog(wx.Dialog):
-    def __init__(self, ID=wx.ID_ANY):
-        wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
-        
-        # User selector
-        self.users = OwnerDrawnComboBox(self)
-
-
-## TODO: Doxygen
-def GetDialogWildcards(ID):
-    proj_def = project_wildcards[ID][0]
-    wildcards = list(project_wildcards[ID][1])
-    
-    for X in range(len(wildcards)):
-        wildcards[X] = u'.{}'.format(wildcards[X])
-    
-    # Don't show list of suffixes in dialog's description
-    if project_wildcards[ID][1] != supported_suffixes:
-        proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
-    
-    for X in range(len(wildcards)):
-        wildcards[X] = u'*{}'.format(wildcards[X])
-    
-    return (proj_def, u';'.join(wildcards))
