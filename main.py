@@ -99,19 +99,31 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # ----- File Menu
         self.menu_file = wx.Menu()
         
+        mitm_new = wx.MenuItem(self.menu_file, wx.ID_NEW, GT(u'New project'),
+                help=GT(u'Start a new project'))
+        mitm_open = wx.MenuItem(self.menu_file, wx.ID_OPEN, GT(u'Open'),
+                help=GT(u'Open a previously saved project'))
+        mitm_save = wx.MenuItem(self.menu_file, wx.ID_SAVE, GT(u'Save'),
+                help=GT(u'Save current project'))
+        mitm_saveas = wx.MenuItem(self.menu_file, wx.ID_SAVEAS, GT(u'Save as'),
+                help=GT(u'Save current project with a new filename'))
+        
         # Quick Build
         self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
         self.QuickBuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
         
-        self.menu_file.Append(wx.ID_NEW, help=GT(u'Start a new project'))
-        self.menu_file.Append(wx.ID_OPEN, help=GT(u'Open a previously saved project'))
-        self.menu_file.Append(wx.ID_SAVE, help=GT(u'Save current project'))
-        self.menu_file.Append(wx.ID_SAVEAS, help=GT(u'Save current project with a new filename'))
+        mitm_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
+                help=GT(u'Exit Debreate'))
+        
+        self.menu_file.AppendItem(mitm_new)
+        self.menu_file.AppendItem(mitm_open)
+        self.menu_file.AppendItem(mitm_save)
+        self.menu_file.AppendItem(mitm_saveas)
         self.menu_file.AppendSeparator()
         self.menu_file.AppendItem(self.QuickBuild)
         self.menu_file.AppendSeparator()
-        self.menu_file.Append(wx.ID_EXIT)
+        self.menu_file.AppendItem(mitm_quit)
         
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
