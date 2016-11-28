@@ -83,14 +83,8 @@ class FirstRun(wx.Dialog):
 
 ## A generic display area that captures \e stdout & \e stderr
 class OutputLog(MultilineTextCtrlPanel):
-    ## Constructor
-    #  
-    #  \param parent
-    #        The parent window
     def __init__(self, parent):
         MultilineTextCtrlPanel.__init__(self, parent, style=wx.TE_READONLY)
-        self.SetBackgroundColour(u'black')
-        self.SetForegroundColour(u'white')
         self.stdout = sys.stdout
         self.stderr = sys.stderr
     
