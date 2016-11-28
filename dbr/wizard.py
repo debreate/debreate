@@ -82,6 +82,8 @@ class Wizard(wx.Panel):
         for page in self.pages:
             if page.IsShown():
                 index = self.pages.index(page)
+                
+                break
         
         if event_id == ID_PREV:
             if index != 0:
@@ -91,13 +93,12 @@ class Wizard(wx.Panel):
             if index != len(self.pages) - 1:
                 index += 1
         
-        # Show the indexed page
-        self.ShowPage(self.pages[index].GetId())
+        page_id = self.pages[index].GetId()
         
-        # Check current page in "pages menu"
-        for p in wx.GetApp().GetTopWindow().pages:
-            if self.pages[index].GetId() == p.GetId():
-                p.Check()
+        # Show the indexed page
+        self.ShowPage(page_id)
+        
+        wx.GetApp().GetTopWindow().menu_page.Check(page_id, True)
     
     
     ## TODO: Doxygen
