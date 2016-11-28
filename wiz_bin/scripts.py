@@ -8,20 +8,24 @@
 
 import os, wx
 
-from dbr.buttons        import ButtonBuild
-from dbr.buttons        import ButtonImport
-from dbr.buttons        import ButtonQuestion64
-from dbr.buttons        import ButtonRemove
-from dbr.language       import GT
-from dbr.listinput      import ListCtrlPanel
-from dbr.markdown       import MarkdownDialog
-from dbr.panel          import BorderedPanel
-from dbr.pathctrl       import PATH_WARN
-from dbr.pathctrl       import PathCtrl
-from dbr.textinput      import MultilineTextCtrlPanel
-from globals.ident      import ID_IMPORT
-from globals.ident      import ID_SCRIPTS
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonBuild
+from dbr.buttons            import ButtonImport
+from dbr.buttons            import ButtonQuestion64
+from dbr.buttons            import ButtonRemove
+from dbr.functions          import GetPage
+from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
+from dbr.markdown           import MarkdownDialog
+from dbr.panel              import BorderedPanel
+from dbr.pathctrl           import PATH_WARN
+from dbr.pathctrl           import PathCtrl
+from dbr.textinput          import MultilineTextCtrlPanel
+from globals.ident          import FID_LIST
+from globals.ident          import ID_FILES
+from globals.ident          import ID_IMPORT
+from globals.ident          import ID_SCRIPTS
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetField
 
 
 ID_INST_PRE = wx.NewId()
@@ -221,7 +225,8 @@ class Panel(wx.ScrolledWindow):
             self.lst_executables = []
             
             # Get executables from "files" tab
-            files = wx.GetApp().GetTopWindow().page_files.dest_area
+            #files = wx.GetApp().GetTopWindow().page_files.dest_area
+            files = GetField(GetPage(ID_FILES), FID_LIST)
             MAX = files.GetItemCount()  # Sets the max iterate value
             count = 0
             while count < MAX:

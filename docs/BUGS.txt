@@ -2,7 +2,6 @@
 
 Must be fixed before release:
 - Files page: Not all fields reset when opening a project file (wx 2.8)
-- Executables don't import on scripts page (2.8)
 
 Low priority:
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported

@@ -22,6 +22,7 @@ from dbr.panel          import BorderedPanel
 from dbr.panel          import PANEL_BORDER
 from dbr.textinput      import MultilineTextCtrlPanel
 from globals.ident      import FID_CUSTOM
+from globals.ident      import FID_LIST
 from globals.ident      import ID_FILES
 from globals.paths      import PATH_home
 from globals.tooltips   import SetPageToolTips
@@ -93,7 +94,7 @@ class Panel(wx.ScrolledWindow):
         btn_refresh = ButtonRefresh(self)
         
         # Display area for files added to list
-        self.lst_files = FileList(self, name=u'filelist')
+        self.lst_files = FileList(self, FID_LIST, name=u'filelist')
         
         # *** Layout *** #
         
