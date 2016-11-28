@@ -19,6 +19,7 @@ from dbr.custom         import OpenFile
 from dbr.custom         import SaveFile
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from dbr.textinput      import MonospaceTextCtrl
 from dbr.textinput      import MultilineTextCtrlPanel
 from globals.ident      import ID_MENU
 from globals.tooltips   import SetPageToolTips
@@ -426,8 +427,10 @@ class Panel(wx.ScrolledWindow):
         # Show a preview of the .desktop config file
         config = self.GetLauncherInfo()
         
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = MultilineTextCtrlPanel(dia, style=wx.TE_READONLY)
+        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500, 400),
+                style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        dia.SetMinSize(wx.Size(250, 200))
+        preview = MonospaceTextCtrl(dia, style=wx.TE_READONLY)
         preview.SetValue(config)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)

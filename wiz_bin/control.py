@@ -20,6 +20,7 @@ from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
+from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import FID_ARCH
 from globals.ident          import FID_EMAIL
@@ -268,7 +269,7 @@ class Panel(wx.ScrolledWindow):
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnBrowse)
         btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreview)
+        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
         
         for widget in self.grp_keypress:
             wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
@@ -466,14 +467,16 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Show a preview of the control file
-    def OnPreview(self, event=None):
+    def OnPreviewControl(self, event=None):
         control = self.GetCtrlInfo()
         
         # Ensure only one empty newline at end of preview (same as actual output)
         control = control.rstrip(u'\n') + u'\n'
         
-        dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500,400))
-        preview = MultilineTextCtrlPanel(dia, style=wx.TE_READONLY)
+        dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500, 400),
+                style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        dia.SetMinSize(wx.Size(250, 200))
+        preview = MonospaceTextCtrl(dia, style=wx.TE_READONLY)
         preview.SetValue(control)
         
         dia_sizer = wx.BoxSizer(wx.VERTICAL)
