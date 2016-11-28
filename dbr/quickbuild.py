@@ -2,6 +2,9 @@
 
 ## \package dbr.quickbuild
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, thread, wx
 
@@ -16,6 +19,7 @@ from dbr.dialogs        import ShowMessageDialog
 from dbr.functions      import BuildDebPackage
 from dbr.language       import GT
 from dbr.log            import Logger
+from dbr.moduleaccess   import ModuleAccessCtrl
 from dbr.timer          import DebreateTimer
 from dbr.timer          import EVT_TIMER_STOP
 from globals.errorcodes import dbrerrno
@@ -26,10 +30,11 @@ from globals.ident      import ID_TARGET
 GAUGE_MAX = 100
 
 
-class QuickBuild(wx.Dialog):
+class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, title=GT(u'Quick Build'), pos=wx.DefaultPosition,
                 size=wx.Size(400,260))
+        ModuleAccessCtrl.__init__(self, __name__)
         
         self.title = self.GetTitle()
         
@@ -60,7 +65,6 @@ class QuickBuild(wx.Dialog):
         self.timer = DebreateTimer(self)
         self.Bind(wx.EVT_TIMER, self.OnUpdateProgress)
         self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
-        
         
         # *** Layout *** #
         
@@ -130,6 +134,7 @@ class QuickBuild(wx.Dialog):
         self.Enable()
     
     
+    ## TODO: Doxygen
     def OnBrowse(self, event=None):
         if event:
             main_window = wx.GetApp().GetTopWindow()
@@ -154,7 +159,6 @@ class QuickBuild(wx.Dialog):
     ## TODO: Doxygen
     #  
     #  TODO: Show error if not using .deb extension
-    #  TODO: Show error if stage not formatted correctly
     #  TODO: Show success message
     #  TODO: Check timestamp of created .deb package (should be done for main build as well)
     def OnBuild(self, event=None):
@@ -162,16 +166,16 @@ class QuickBuild(wx.Dialog):
         target = self.input_target.GetValue()
         
         if not os.path.isdir(stage):
-            ShowErrorDialog(GT(u'Stage directory does not exist'), stage, __name__, warn=True)
+            ShowErrorDialog(GT(u'Stage directory does not exist'), stage, self, True)
             return
         
         target_path = os.path.dirname(target)
         if not os.path.isdir(target_path):
-            ShowErrorDialog(GT(u'Target directory does not exist'), target_path, __name__, warn=True)
+            ShowErrorDialog(GT(u'Target directory does not exist'), target_path, self, True)
             return
         
         elif not os.access(target_path, os.W_OK):
-            ShowErrorDialog(GT(u'No write access to target directory'), target_path, __name__, warn=True)
+            ShowErrorDialog(GT(u'No write access to target directory'), target_path, self, True)
             return
         
         self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
@@ -226,7 +230,6 @@ class QuickBuild(wx.Dialog):
                 if not self.timer.IsRunning():
                     Logger.Debug(__name__, GT(u'Timer stopped. Stopping gauge ...'))
                     
-                    #self.gauge.SetValue(GAUGE_MAX)
                     return
         
         self.gauge.Pulse()
