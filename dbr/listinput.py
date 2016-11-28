@@ -298,6 +298,8 @@ class FileList(ListCtrlPanel, TextEditMixin):
     #        \b \e unicode|str : Target directory where file will ultimately be installed
     #  \param executable
     #        \b \e bool : Whether or not the file should be marked as executable
+    #  \return
+    #        \b \e bool : True if file exists on the filesystem
     def AddFile(self, filename, source_dir, target_dir=None, executable=False):
         list_index = self.GetItemCount()
         
@@ -319,6 +321,11 @@ class FileList(ListCtrlPanel, TextEditMixin):
         
         if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
             self.SetItemBackgroundColour(list_index, COLOR_ERROR)
+            
+            # File was added but does not exist on filesystem
+            return False
+        
+        return True
     
     
     ## Retrivies is the item at 'i_index' is executable
