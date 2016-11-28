@@ -151,7 +151,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.p_cpright = wx.MenuItem(self.menu_page, ID_COPYRIGHT, GT(u'Copyright'),
                 GT(u'Go to Copyright section'), kind=wx.ITEM_RADIO)
         self.p_menu = wx.MenuItem(self.menu_page, ID_MENU, GT(u'Menu Launcher'),
-                GT(u'Go to Menu Launcher section'), kind=wx.ITEM_RADIO)
+                GT(u'Go to Menu launcher section'), kind=wx.ITEM_RADIO)
         self.p_build = wx.MenuItem(self.menu_page, ID_BUILD, GT(u'Build'),
                 GT(u'Go to Build section'), kind=wx.ITEM_RADIO)
         
@@ -183,8 +183,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use Custom Dialogs'),
-            GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
+        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use custom dialogs'),
+            GT(u'Use system or custom save/open dialogs'), kind=wx.ITEM_CHECK)
         
         wx.EVT_MENU(self, ID_DIALOGS, self.OnEnableCustomDialogs)
         
@@ -194,7 +194,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_help = wx.Menu()
         
         # ----- Version update
-        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for Update'))
+        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for update'))
         self.menu_help.AppendItem(self.version_check)
         self.menu_help.AppendSeparator()
         
@@ -207,7 +207,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.DPM = wx.MenuItem(self.Policy, ID_DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
         self.DPM.SetBitmap(globe)
-        self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control Files'),
+        self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         self.DPMCtrl.SetBitmap(globe)
         self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, GT(u'Changelog'),
@@ -216,13 +216,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.UPM = wx.MenuItem(self.Policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         self.UPM.SetBitmap(globe)
-        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from Source'),
+        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         self.DebFrmSrc.SetBitmap(globe)
-        self.LintianTags = wx.MenuItem(self.Policy, ID_Lintian, GT(u'Lintian Tags Explanation'),
+        self.LintianTags = wx.MenuItem(self.Policy, ID_Lintian, GT(u'Lintian tags explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         self.LintianTags.SetBitmap(globe)
-        self.Launchers = wx.MenuItem(self.Policy, ID_Launchers, GT(u'Launchers / Desktop Entries'),
+        self.Launchers = wx.MenuItem(self.Policy, ID_Launchers, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
         self.Launchers.SetBitmap(globe)
         
