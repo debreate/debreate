@@ -180,6 +180,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         else:
             self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+        
         self.OnToggleToolTips()
         
         # Dialogs options
@@ -202,55 +203,57 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
         
         # Menu with links to the Debian Policy Manual webpages
-        self.Policy = wx.Menu()
+        self.menu_policy = wx.Menu()
         
         globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
-        self.DPM = wx.MenuItem(self.Policy, ID_DPM, GT(u'Debian Policy Manual'),
+        self.DPM = wx.MenuItem(self.menu_policy, ID_DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
         self.DPM.SetBitmap(globe)
-        self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control files'),
+        self.DPMCtrl = wx.MenuItem(self.menu_policy, ID_DPMCtrl, GT(u'Control files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         self.DPMCtrl.SetBitmap(globe)
-        self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, GT(u'Changelog'),
+        self.DPMLog = wx.MenuItem(self.menu_policy, ID_DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         self.DPMLog.SetBitmap(globe)
-        self.UPM = wx.MenuItem(self.Policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
+        self.UPM = wx.MenuItem(self.menu_policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         self.UPM.SetBitmap(globe)
-        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from source'),
+        # FIXME: Use wx.NewId()
+        self.DebFrmSrc = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         self.DebFrmSrc.SetBitmap(globe)
-        self.LintianTags = wx.MenuItem(self.Policy, ID_Lintian, GT(u'Lintian tags explanation'),
+        self.LintianTags = wx.MenuItem(self.menu_policy, ID_Lintian, GT(u'Lintian tags explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         self.LintianTags.SetBitmap(globe)
-        self.Launchers = wx.MenuItem(self.Policy, ID_Launchers, GT(u'Launchers / Desktop entries'),
+        self.Launchers = wx.MenuItem(self.menu_policy, ID_Launchers, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
         self.Launchers.SetBitmap(globe)
         
-        self.Policy.AppendItem(self.DPM)
-        self.Policy.AppendItem(self.DPMCtrl)
-        self.Policy.AppendItem(self.DPMLog)
-        self.Policy.AppendItem(self.UPM)
-        self.Policy.AppendItem(self.DebFrmSrc)
-        self.Policy.AppendItem(self.LintianTags)
-        self.Policy.AppendItem(self.Launchers)
+        self.menu_policy.AppendItem(self.DPM)
+        self.menu_policy.AppendItem(self.DPMCtrl)
+        self.menu_policy.AppendItem(self.DPMLog)
+        self.menu_policy.AppendItem(self.UPM)
+        self.menu_policy.AppendItem(self.DebFrmSrc)
+        self.menu_policy.AppendItem(self.LintianTags)
+        self.menu_policy.AppendItem(self.Launchers)
         
-        self.references = {
-                    ID_DPM: u'http://www.debian.org/doc/debian-policy',
-                    ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
-                    ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
-                    ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
-                    222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-                    ID_Lintian: u'http://lintian.debian.org/tags-all.html',
-                    ID_Launchers: u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',
-                    }
-        for ID in self.references:
+        lst_policy_ids = (
+            ID_DPM,
+            ID_DPMCtrl,
+            ID_DPMLog,
+            ID_UPM,
+            222,
+            ID_Lintian,
+            ID_Launchers,
+            )
+        
+        for ID in lst_policy_ids:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
         self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
-        self.menu_help.AppendMenu(-1, GT(u'Reference'), self.Policy)
+        self.menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
         self.menu_help.AppendSeparator()
         self.menu_help.AppendItem(self.Help)
         self.menu_help.AppendItem(self.About)
@@ -648,8 +651,20 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Opens web links from the help menu
     def OpenPolicyManual(self, event=None):
-        event_id = event.GetId()  # Get the id for the webpage link we are opening
-        webbrowser.open(self.references[event_id])
+        if isinstance(event, wx.CommandEvent):
+            event_id = event.GetId()
+        
+        elif isinstance(event, int):
+            event_id = event
+        
+        else:
+            Logger.Error(__name__,
+                    u'Cannot open policy manual link with object type {}'.format(type(event)))
+            
+            return
+        
+        url = self.menu_policy.GetHelpString(event_id)
+        webbrowser.open(url)
     
     
     ## TODO: Doxygen
