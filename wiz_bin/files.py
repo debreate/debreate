@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import os, time, wx
 
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse
@@ -17,6 +17,7 @@ from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
 from dbr.functions      import FieldEnabled
+from dbr.functions      import GetTopWindow
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import FileList
@@ -24,6 +25,7 @@ from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
 from dbr.panel          import PANEL_BORDER
 from dbr.progress       import ProgressDialog
+from dbr.timer          import DebreateTimer
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.ident      import FID_CUSTOM
 from globals.ident      import FID_LIST
@@ -102,6 +104,10 @@ class Panel(wx.ScrolledWindow):
         # Display area for files added to list
         self.lst_files = FileList(self, FID_LIST, name=u'filelist')
         
+        # This is for use in the add files method
+        self.progress_gauge = None
+        self.progress_timer = DebreateTimer(self)
+        
         # *** Layout *** #
         
         lyt_left = wx.BoxSizer(wx.VERTICAL)
@@ -173,6 +179,9 @@ class Panel(wx.ScrolledWindow):
         
         # Key events for file list
         wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
+        
+        # Timer event for progress dialogs
+        self.Bind(wx.EVT_TIMER, self.OnTimerCount)
     
     
     ## TODO: Doxygen
@@ -187,6 +196,12 @@ class Panel(wx.ScrolledWindow):
         
         if event:
             event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def CountFiles(self, args=None):
+        if args and isinstance(args, (tuple, list)) and len(args) > 1:
+            walk_directory = args[0]
     
     
     ## TODO: Doxygen
@@ -267,9 +282,32 @@ class Panel(wx.ScrolledWindow):
             flist.append((filename, source_dir))
         
         elif os.path.isdir(source):
+            prg_prep = ProgressDialog(self, GT(u'Processing Files'),
+                    style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+            
+            self.progress_gauge = prg_prep.GetGauge()
+            
+            #self.progress_timer.Start()
+            #active_threads.append(thread.start_new_thread(self.OnTimerStart, (None,)))
+            
+            # Only update the gauge every 100 files (hack until I figure out time)
+            file_count_max = 2500
+            count = 0
             for ROOT, DIRS, FILES in os.walk(source):
+                # Enable cancelling dialog
+                if prg_prep.WasCancelled():
+                    prg_prep.Destroy()
+                    return
+                
                 for filename in FILES:
                     flist.append((filename, ROOT))
+                    count += 1
+                    if count >= file_count_max:
+                        prg_prep.Pulse()
+                        count = 0
+            
+            self.progress_gauge = None
+            prg_prep.Destroy()
         
         file_count = len(flist)
         
@@ -285,9 +323,10 @@ class Panel(wx.ScrolledWindow):
             count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
             count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
             
-            get_files = wx.MessageDialog(self, count_warnmsg, GT(u'WARNING'),
+            get_files = wx.MessageDialog(GetTopWindow(), count_warnmsg, GT(u'WARNING'),
                     style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING).ShowModal() == wx.ID_YES
         
+        # FIXME: More efficient way to update progress dialog???
         if get_files:
             # Show a progress dialog that can be aborted
             if file_count > efficiency_threshold:
@@ -326,8 +365,6 @@ class Panel(wx.ScrolledWindow):
                 for F in flist:
                     # (filename, source_dir, target)
                     self.lst_files.AddFile(F[0], F[1], target_dir)
-            
-            self.lst_files.Sort()
     
     
     ## TODO: Doxygen
@@ -388,6 +425,38 @@ class Panel(wx.ScrolledWindow):
         self.tree_directories.PopupMenu(self.mnu_tree)
     
     
+    ## Event handler that disables the custom destination if the corresponding radio button isn't selected
+    def OnSetDestination(self, event=None):
+        enable = self.rb_custom.GetValue()
+        
+        self.ti_target.Enable(enable)
+        self.btn_browse.Enable(enable)
+    
+    
+    ## TODO: Doxygen
+    def OnTimerCount(self, event=None):
+        Logger.Debug(__name__, u'Timer count ...')
+        if self.progress_gauge:
+            if event:
+                if isinstance(event, wx.TimerEvent):
+                    # Don't update guage if timer is stopped
+                    if not self.progress_timer.IsRunning():
+                        return
+            
+            self.progress_gauge.Pulse()
+            return
+        
+        Logger.Warning(__name__, GT(u'Timer event occurred but no progress gauge available'))
+    
+    
+    ## TODO: Doxygen
+    def OnTimerStart(self, args=None):
+        while self.progress_gauge:
+            time.sleep(1)
+        
+        self.progress_timer.Stop()
+    
+    
     ## TODO: Doxygen
     def RemoveSelected(self, event=None):
         self.lst_files.RemoveSelected()
@@ -399,14 +468,6 @@ class Panel(wx.ScrolledWindow):
         self.OnSetDestination()
         self.ti_target.SetValue(self.ti_target.default)
         self.lst_files.DeleteAllItems()
-    
-    
-    ## Event handler that disables the custom destination if the corresponding radio button isn't selected
-    def OnSetDestination(self, event=None):
-        enable = self.rb_custom.GetValue()
-        
-        self.ti_target.Enable(enable)
-        self.btn_browse.Enable(enable)
     
     
     ## TODO: Doxygen
