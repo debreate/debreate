@@ -104,10 +104,6 @@ class Panel(wx.ScrolledWindow):
         # Display area for files added to list
         self.lst_files = FileList(self, FID_LIST, name=u'filelist')
         
-        # This is for use in the add files method
-        self.progress_gauge = None
-        self.progress_timer = DebreateTimer(self)
-        
         # *** Layout *** #
         
         lyt_left = wx.BoxSizer(wx.VERTICAL)
@@ -179,9 +175,6 @@ class Panel(wx.ScrolledWindow):
         
         # Key events for file list
         wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
-        
-        # Timer event for progress dialogs
-        self.Bind(wx.EVT_TIMER, self.OnTimerCount)
     
     
     ## TODO: Doxygen
@@ -196,12 +189,6 @@ class Panel(wx.ScrolledWindow):
         
         if event:
             event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def CountFiles(self, args=None):
-        if args and isinstance(args, (tuple, list)) and len(args) > 1:
-            walk_directory = args[0]
     
     
     ## TODO: Doxygen
@@ -285,11 +272,6 @@ class Panel(wx.ScrolledWindow):
             prg_prep = ProgressDialog(self, GT(u'Processing Files'),
                     style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
             
-            self.progress_gauge = prg_prep.GetGauge()
-            
-            #self.progress_timer.Start()
-            #active_threads.append(thread.start_new_thread(self.OnTimerStart, (None,)))
-            
             # Only update the gauge every 100 files (hack until I figure out time)
             file_count_max = 2500
             count = 0
@@ -303,10 +285,10 @@ class Panel(wx.ScrolledWindow):
                     flist.append((filename, ROOT))
                     count += 1
                     if count >= file_count_max:
+                        wx.Yield()
                         prg_prep.Pulse()
                         count = 0
             
-            self.progress_gauge = None
             prg_prep.Destroy()
         
         file_count = len(flist)
@@ -431,30 +413,6 @@ class Panel(wx.ScrolledWindow):
         
         self.ti_target.Enable(enable)
         self.btn_browse.Enable(enable)
-    
-    
-    ## TODO: Doxygen
-    def OnTimerCount(self, event=None):
-        Logger.Debug(__name__, u'Timer count ...')
-        if self.progress_gauge:
-            if event:
-                if isinstance(event, wx.TimerEvent):
-                    # Don't update guage if timer is stopped
-                    if not self.progress_timer.IsRunning():
-                        return
-            
-            self.progress_gauge.Pulse()
-            return
-        
-        Logger.Warning(__name__, GT(u'Timer event occurred but no progress gauge available'))
-    
-    
-    ## TODO: Doxygen
-    def OnTimerStart(self, args=None):
-        while self.progress_gauge:
-            time.sleep(1)
-        
-        self.progress_timer.Stop()
     
     
     ## TODO: Doxygen
