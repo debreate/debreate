@@ -64,11 +64,6 @@ def GetContainerItemCount(container):
     return len(container.GetChildren())
 
 
-## TODO: Doxygen
-def GetPage(page_id):
-    return wx.GetApp().GetTopWindow().GetWizard().GetPage(page_id)
-
-
 ## Checks if a field (or widget) is enabled
 #  
 #  This is used for compatibility between wx. 2.8 & 3.0.
@@ -84,6 +79,21 @@ def FieldEnabled(field):
     
     else:
         return field.IsEnabled()
+
+
+## TODO: Doxygen
+def GetPage(page_id):
+    return GetWizard().GetPage(page_id)
+
+
+## TODO: Doxygen
+def GetTopWindow():
+    return wx.GetApp().GetTopWindow()
+
+
+## TODO: Doxygen
+def GetWizard():
+    return GetTopWindow().GetWizard()
 
 
 ## Execute a command with sudo (super user) privileges
