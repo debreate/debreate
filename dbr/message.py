@@ -23,7 +23,7 @@ class MessageDialog(wx.Dialog):
         
         self.text = wx.StaticText(self, label=text)
         self.button_details = wx.ToggleButton(self, -1, u'Details')
-        self.details = MultilineTextCtrlPanel(self, label=details, size=(300,150), style=wx.TE_READONLY)
+        self.details = MultilineTextCtrlPanel(self, value=details, size=(300,150), style=wx.TE_READONLY)
         self.details.SetSize(self.details.GetBestSize())
         
         wx.EVT_TOGGLEBUTTON(self.button_details, -1, self.ToggleDetails)
