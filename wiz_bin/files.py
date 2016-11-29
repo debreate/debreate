@@ -16,6 +16,7 @@ from dbr.buttons        import ButtonRemove
 from dbr.dialogs        import DetailedMessageDialog
 from dbr.dialogs        import GetDirDialog
 from dbr.dialogs        import ShowDialog
+from dbr.functions      import FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.listinput      import FileList
@@ -240,63 +241,92 @@ class Panel(wx.ScrolledWindow):
     
     ## Add a selected path to the list of files
     def OnAddPath(self, event=None):
-        total_files = 0
-        pin = self.tree_directories.GetPath()
+        # List of files tuple formatted as: filename, source
+        flist = []
         
-        if self.rb_custom.GetValue():
-            pout = self.ti_target.GetValue()
+        source = self.tree_directories.GetPath()
+        target_dir = None
+        
+        if FieldEnabled(self.ti_target):
+            target_dir = self.ti_target.GetValue()
         
         else:
-            for item in self.grp_targets:
-                if item.GetValue() == True:
-                    pout = item.GetLabel()
-                    
+            for target in self.grp_targets:
+                if target.GetId() != FID_CUSTOM and target.GetValue():
+                    target_dir = target.GetLabel()
                     break
         
-        if os.path.isdir(pin):
-            for root, dirs, files in os.walk(pin):
-                Logger.Debug(__name__, u'Total files: {}'.format(len(files)))
-                for F in files:
-                    total_files += 1
-                    Logger.Debug(__name__, u'Added files: {}'.format(total_files))
-            
-            # Continue if files are found
-            if total_files:
-                cont = True
-                count = 0
-                msg_files = GT(u'Getting files from {}')
-                task_progress = wx.ProgressDialog(GT(u'Progress'), msg_files.format(pin), total_files, self,
-                                            wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                
-                for source_dir, DIRS, FILES in os.walk(pin):
-                    for filename in FILES:
-                        # If "cancel" pressed destroy the progress window
-                        if cont == (False, False):
-                            task_progress.Destroy()
-                            return
-                        
-                        else:
-                            # Remove full path to insert into listctrl
-                            target_dir = source_dir.split(pin)[1]
-                            if not TextIsEmpty(target_dir):
-                                # Add the sub-dir to dest
-                                target_dir = u'{}{}'.format(pout, target_dir)
-                                
-                                self.lst_files.AddFile(filename, source_dir, target_dir)
-                            
-                            else:
-                                self.lst_files.AddFile(filename, source_dir, pout)
-                            
-                            count += 1
-                            cont = task_progress.Update(count)
-                
-                task_progress.Destroy()
+        if not isinstance(target_dir, (unicode, str)):
+            Logger.Error(__name__, GT(u'Expected string for staging target, instead got').format(type(target_dir)))
         
-        elif os.path.isfile(pin):
-            filename = os.path.basename(pin)
-            source_dir = os.path.dirname(pin)
+        if os.path.isfile(source):
+            filename = os.path.basename(source)
+            source_dir = os.path.dirname(source)
             
-            self.lst_files.AddFile(filename, source_dir, pout)
+            flist.append((filename, source_dir))
+        
+        elif os.path.isdir(source):
+            for ROOT, DIRS, FILES in os.walk(source):
+                for filename in FILES:
+                    flist.append((filename, ROOT))
+        
+        file_count = len(flist)
+        
+        # Set the maximum file count to process without showing progress dialog
+        efficiency_threshold = 250
+        
+        # Set the maximum file count to process without showing warning dialog
+        warning_threshhold = 1000
+        
+        get_files = True
+        if file_count > warning_threshhold:
+            count_warnmsg = GT(u'Importing {} files'.format(file_count))
+            count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
+            count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
+            
+            get_files = wx.MessageDialog(self, count_warnmsg, GT(u'WARNING'),
+                    style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING).ShowModal() == wx.ID_YES
+        
+        if get_files:
+            # Show a progress dialog that can be aborted
+            if file_count > efficiency_threshold:
+                task_msg = GT(u'Getting files from {}'.format(source))
+                task_progress = wx.ProgressDialog(GT(u'Progress'), u'{}\n'.format(task_msg), file_count, self,
+                        wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                
+                # Add text to show current file number being processed
+                count_text = wx.StaticText(task_progress, wx.ID_ANY, u'0 / {}'.format(file_count))
+                tprogress_layout = task_progress.GetSizer()
+                tprogress_layout.Insert(1, count_text, -1, wx.ALIGN_CENTER)
+                
+                # Resize the dialog to fit the new text
+                tprogress_size = task_progress.GetSize()
+                task_progress.SetSize(wx.Size(tprogress_size[0], tprogress_size[1] + tprogress_size[1]/9))
+                
+                task_progress.Layout()
+                
+                task = 0
+                while task < file_count:
+                    if task_progress.WasCancelled():
+                        task_progress.Destroy()
+                        break
+                    
+                    # Get the index before progress dialog is updated
+                    task_index = task
+                    
+                    task += 1
+                    count_text.SetLabel(u'{} / {}'.format(task, file_count))
+                    task_progress.Update(task)
+                    
+                    self.lst_files.AddFile(flist[task_index][0], flist[task_index][1], target_dir)
+            
+            else:
+                Logger.Debug(__name__, flist)
+                for F in flist:
+                    # (filename, source_dir, target)
+                    self.lst_files.AddFile(F[0], F[1], target_dir)
+            
+            self.lst_files.Sort()
     
     
     ## TODO: Doxygen
