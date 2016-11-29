@@ -23,6 +23,7 @@ from dbr.listinput      import FileList
 from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
 from dbr.panel          import PANEL_BORDER
+from dbr.progress       import ProgressDialog
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.ident      import FID_CUSTOM
 from globals.ident      import FID_LIST
@@ -291,8 +292,8 @@ class Panel(wx.ScrolledWindow):
             # Show a progress dialog that can be aborted
             if file_count > efficiency_threshold:
                 task_msg = GT(u'Getting files from {}'.format(source))
-                task_progress = wx.ProgressDialog(GT(u'Progress'), u'{}\n'.format(task_msg), file_count, self,
-                        wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
+                task_progress = ProgressDialog(self, message=task_msg, maximum=file_count,
+                        style=wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
                 
                 # Add text to show current file number being processed
                 count_text = wx.StaticText(task_progress, wx.ID_ANY, u'0 / {}'.format(file_count))
