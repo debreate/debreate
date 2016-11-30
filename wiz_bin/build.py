@@ -15,11 +15,14 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import FieldEnabled
+from dbr.functions          import GetTopWindow
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.md5                import MD5Hasher
 from dbr.panel              import BorderedPanel
+from dbr.progress           import PD_DEFAULT_STYLE
+from dbr.progress           import ProgressDialog
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_gdebi_gui
 from globals.commands       import CMD_lintian
@@ -298,8 +301,8 @@ class Panel(wx.ScrolledWindow):
             
             tasks = 2 # 2 Represents preparing build tree and actual build of .deb
             progress = 0
-            prebuild_progress = wx.ProgressDialog(GT(u'Preparing to build'), GT(u'Gathering control information'), 9,
-                    self, wx.PD_AUTO_HIDE)
+            prebuild_progress = ProgressDialog(GetTopWindow(), GT(u'Preparing to build'),
+                    GT(u'Gathering control information'), 9)
             
             # Control & Depends (string)
             wx.Yield()
@@ -416,8 +419,8 @@ class Panel(wx.ScrolledWindow):
             prebuild_progress.Update(progress)
             
             progress = 0
-            build_progress = wx.ProgressDialog(GT(u'Building'), GT(u'Preparing build tree'), tasks, self,
-                    wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_AUTO_HIDE)#|wx.PD_CAN_ABORT)
+            build_progress = ProgressDialog(GetTopWindow(), GT(u'Building'), GT(u'Preparing build tree'),
+                    tasks, PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
             
             wx.Yield()
             if os.path.isdir(u'{}/DEBIAN'.format(temp_tree)):
