@@ -28,6 +28,7 @@ from globals.commands       import CMD_gdebi_gui
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
+from globals.errorcodes     import dbrerrno
 from globals.ident          import FID_ARCH
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_MAINTAINER
@@ -297,7 +298,7 @@ class Panel(wx.ScrolledWindow):
         #  \param filename
         #        \b \e unicode|str : Basename of output file without .deb extension
         #  \return
-        #        \b \e bool : True if build completed successfully
+        #        \b \e dbrerror : SUCCESS if build completed successfully
         def BuildIt(build_path, filename):
             
             temp_tree = u'{}/{}__dbp__'.format(build_path, filename)
@@ -446,7 +447,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # *** FILES
             build_progress.Update(progress, GT(u'Copying files'))
@@ -483,7 +484,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # Make sure that the dirctory is available in which to place documentation
             if create_changelog or create_copyright:
@@ -521,7 +522,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # *** COPYRIGHT
             if create_copyright:
@@ -535,7 +536,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # *** MENU
             if create_launcher:
@@ -562,7 +563,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             if create_md5:
                 build_progress.Update(progress, GT(u'Creating md5sums'))
@@ -578,7 +579,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             wx.Yield()
             # Get installed-size
@@ -598,7 +599,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # *** SCRIPTS
             build_progress.Update(progress, GT(u'Creating scripts'))
@@ -616,7 +617,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # *** FINAL BUILD
             build_progress.Update(progress, GT(u'Running dpkg'))[0]
@@ -644,7 +645,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return False
+                return dbrerrno.ECNCLD
             
             # *** ERROR CHECK
             if error_check:
@@ -683,9 +684,9 @@ class Panel(wx.ScrolledWindow):
                     self.InstallPackage(c_deb)
                 
                 # Build completed successfully
-                return True
+                return dbrerrno.SUCCESS
             
-            return False
+            return build_status[0]
         
         cont = False
         
