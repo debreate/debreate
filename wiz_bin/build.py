@@ -11,6 +11,7 @@ import commands, os, shutil, subprocess, wx
 from dbr.buttons            import ButtonBuild64
 from dbr.custom             import OutputLog
 from dbr.custom             import SaveFile
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import FieldEnabled
@@ -18,7 +19,6 @@ from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.md5                import MD5Hasher
-from dbr.message            import MessageDialog
 from dbr.panel              import BorderedPanel
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_gdebi_gui
@@ -584,7 +584,7 @@ class Panel(wx.ScrolledWindow):
             
             # Move the working directory becuase dpkg seems to have problems with spaces in path
             os.chdir(working_dir)
-                        
+            
             wx.Yield()
             build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}"'.format(c_tree, c_deb)).encode(u'utf-8'))
             progress += 1
@@ -614,8 +614,8 @@ class Panel(wx.ScrolledWindow):
                     error_log.write(errors)
                     error_log.close()
                     
-                    MessageDialog(self, wx.ID_ANY, GT(u'Lintian Errors'), ICON_INFORMATION,
-                            u'{}\n{}.lintian"'.format(e1, e2), errors).ShowModal()
+                    DetailedMessageDialog(wx.GetApp().GetTopWindow(), GT(u'Lintian Errors'),
+                            ICON_INFORMATION, u'{}\n{}.lintian'.format(e1, e2), errors).ShowModal()
                 
                 progress += 1
             
