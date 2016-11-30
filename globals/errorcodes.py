@@ -10,7 +10,7 @@
 
 import wx, errno
 
-# TODO: Convert thest to dbrerror
+# TODO: Convert these to dbrerror
 ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
 ERR_FILE_WRITE = wx.NewId()
