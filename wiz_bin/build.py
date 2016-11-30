@@ -290,7 +290,14 @@ class Panel(wx.ScrolledWindow):
         
         arch = GetField(pg_control, FID_ARCH).GetStringSelection()
         
-        # If all required fields were met, continue to build
+        ## The actual build process
+        #  
+        #  \param build_path
+        #        \b \e unicode|str : Directory where .deb will be output
+        #  \param filename
+        #        \b \e unicode|str : Basename of output file without .deb extension
+        #  \return
+        #        \b \e bool : True if build completed successfully
         def BuildIt(build_path, filename):
             
             temp_tree = u'{}/{}__dbp__'.format(build_path, filename)
@@ -437,6 +444,10 @@ class Panel(wx.ScrolledWindow):
             os.makedirs(u'{}/DEBIAN'.format(temp_tree))
             progress += 1
             
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
+            
             # *** FILES
             build_progress.Update(progress, GT(u'Copying files'))
             
@@ -469,6 +480,10 @@ class Panel(wx.ScrolledWindow):
                 
                 progress += 1
                 build_progress.Update(progress)
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
             
             # Make sure that the dirctory is available in which to place documentation
             if create_changelog or create_copyright:
@@ -504,6 +519,10 @@ class Panel(wx.ScrolledWindow):
                 
                 progress += 1
             
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
+            
             # *** COPYRIGHT
             if create_copyright:
                 build_progress.Update(progress, GT(u'Creating copyright'))
@@ -513,6 +532,10 @@ class Panel(wx.ScrolledWindow):
                 cp_file.write(cpright.encode(u'utf-8'))
                 cp_file.close()
                 progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
             
             # *** MENU
             if create_launcher:
@@ -537,6 +560,10 @@ class Panel(wx.ScrolledWindow):
                 menu_file.close()
                 progress += 1
             
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
+            
             if create_md5:
                 build_progress.Update(progress, GT(u'Creating md5sums'))
                 
@@ -548,6 +575,10 @@ class Panel(wx.ScrolledWindow):
             # *** CONTROL
             else:
                 build_progress.Update(progress, GT(u'Creating control file'))
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
             
             wx.Yield()
             # Get installed-size
@@ -565,6 +596,10 @@ class Panel(wx.ScrolledWindow):
             control_file.close()
             progress += 1
             
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
+            
             # *** SCRIPTS
             build_progress.Update(progress, GT(u'Creating scripts'))
             
@@ -578,6 +613,10 @@ class Panel(wx.ScrolledWindow):
                     os.system((u'chmod +x "{}/DEBIAN/{}"'.format(temp_tree, script[0])).encode(u'utf-8'))
                     progress += 1
                     build_progress.Update(progress)
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
             
             # *** FINAL BUILD
             build_progress.Update(progress, GT(u'Running dpkg'))[0]
@@ -603,6 +642,10 @@ class Panel(wx.ScrolledWindow):
                 
                 progress += 1
             
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return False
+            
             # *** ERROR CHECK
             if error_check:
                 build_progress.Update(progress, GT(u'Checking package for errors'))
@@ -624,6 +667,7 @@ class Panel(wx.ScrolledWindow):
             
             # Close progress dialog
             build_progress.Update(progress)
+            build_progress.Destroy()
             
             if build_status[0]:
                 # Temp dir will not be deleted if build fails
@@ -637,8 +681,11 @@ class Panel(wx.ScrolledWindow):
                 # Installing the package
                 if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
                     self.InstallPackage(c_deb)
+                
+                # Build completed successfully
+                return True
             
-            return build_status[0]
+            return False
         
         cont = False
         
@@ -663,6 +710,7 @@ class Panel(wx.ScrolledWindow):
                 filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
         
         if cont:
+            # FIXME: Obsolete?
             for char in invalid_chars:
                 filename = u'_'.join(filename.split(char))
             BuildIt(path, filename)
