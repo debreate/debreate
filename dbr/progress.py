@@ -11,10 +11,13 @@ import wx
 from dbr.language import GT
 
 
+PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
+
+
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
     def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, maximum=100,
-            style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE):
+            style=PD_DEFAULT_STYLE):
         wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
         
         self.active = None
