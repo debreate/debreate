@@ -38,3 +38,4 @@ dbrerrno.SUCCESS = -1
 dbrerrno.errorcode[dbrerrno.SUCCESS] = u'SUCCESS'
 
 dbrerrno.EBADFT = AddNewCode(u'EBADFT')
+dbrerrno.ECNCLD = AddNewCode(u'ECNCLD')
