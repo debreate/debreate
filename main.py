@@ -373,16 +373,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return True
     
     
-    ## TODO: Doxygen
-    def NewProject(self):
-        for page in self.all_pages:
-            page.ResetAllFields()
-        self.SetTitle(default_title)
-        
-        # Reset the saved project field so we know that a project file doesn't exists
-        self.saved_project = wx.EmptyString
-    
-    
     ## Opens a dialog box with information about the program
     def OnAbout(self, event=None):
         about = AboutDialog(self)
@@ -494,10 +484,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def OnNewProject(self, event=None):
-        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
-                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
-        if dia.ShowModal() == wx.ID_YES:
-            self.NewProject()
+        self.ResetPages()
     
     
     ## TODO: Doxygen
@@ -716,6 +703,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             # Get Build Data
             build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
             self.page_build.SetFieldData(build_data)
+    
+    
+    ## TODO: Doxygen
+    def ResetPages(self):
+        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
+                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
+        if dia.ShowModal() == wx.ID_YES:
+            for page in self.all_pages:
+                page.ResetAllFields()
+            self.SetTitle(default_title)
+            
+            # Reset the saved project field so we know that a project file doesn't exists
+            self.saved_project = wx.EmptyString
+            
+            return True
+        
+        return False
     
     
     ## TODO: Doxygen
