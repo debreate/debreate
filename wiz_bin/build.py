@@ -439,7 +439,7 @@ class Panel(wx.ScrolledWindow):
                     wx.MessageDialog(self, u'{}\n{}'.format(err_msg1, err_msg2),
                             GT(u'Error'), style=wx.OK|wx.ICON_ERROR).ShowModal()
                     
-                    return
+                    return (dbrerrno.EEXIST, None)
             
             # Make a fresh build tree
             os.makedirs(u'{}/DEBIAN'.format(temp_tree))
@@ -447,7 +447,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # *** FILES
             build_progress.Update(progress, GT(u'Copying files'))
@@ -484,7 +484,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # Make sure that the dirctory is available in which to place documentation
             if create_changelog or create_copyright:
@@ -522,7 +522,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # *** COPYRIGHT
             if create_copyright:
@@ -536,7 +536,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # *** MENU
             if create_launcher:
@@ -563,7 +563,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             if create_md5:
                 build_progress.Update(progress, GT(u'Creating md5sums'))
@@ -579,7 +579,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             wx.Yield()
             # Get installed-size
@@ -599,7 +599,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # *** SCRIPTS
             build_progress.Update(progress, GT(u'Creating scripts'))
@@ -617,19 +617,19 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # *** FINAL BUILD
             build_progress.Update(progress, GT(u'Running dpkg'))[0]
             working_dir = os.path.split(temp_tree)[0]
             c_tree = os.path.split(temp_tree)[1]
-            c_deb = u'{}.deb'.format(filename)
+            deb_package = u'{}.deb'.format(filename)
             
             # Move the working directory becuase dpkg seems to have problems with spaces in path
             os.chdir(working_dir)
             
             wx.Yield()
-            build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}"'.format(c_tree, c_deb)).encode(u'utf-8'))
+            build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}"'.format(c_tree, deb_package)).encode(u'utf-8'))
             progress += 1
             
             # *** DELETE BUILD TREE
@@ -645,7 +645,7 @@ class Panel(wx.ScrolledWindow):
             
             if build_progress.WasCancelled():
                 build_progress.Destroy()
-                return dbrerrno.ECNCLD
+                return (dbrerrno.ECNCLD, None)
             
             # *** ERROR CHECK
             if error_check:
@@ -672,14 +672,10 @@ class Panel(wx.ScrolledWindow):
             
             # Build completed successfullly
             if not build_status[0]:
-                # Installing the package
-                if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
-                    self.InstallPackage(c_deb)
-                
-                return dbrerrno.SUCCESS
+                return (dbrerrno.SUCCESS, deb_package)
             
             # Build failed
-            return build_status[0]
+            return (build_status[0], None)
         
         cont = False
         
@@ -708,9 +704,14 @@ class Panel(wx.ScrolledWindow):
             for char in invalid_chars:
                 filename = u'_'.join(filename.split(char))
             
-            if BuildIt(path, filename) == dbrerrno.SUCCESS:
+            ret_code, deb_package = BuildIt(path, filename)
+            if ret_code == dbrerrno.SUCCESS:
                 wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
                         style=wx.OK|wx.ICON_INFORMATION).ShowModal()
+                
+                # Installing the package
+                if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
+                    self.InstallPackage(deb_package)
                 
                 return
             
