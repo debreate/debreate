@@ -16,6 +16,7 @@ from dbr.charctrl           import CharCtrl
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.functions          import FieldEnabled
+from dbr.functions          import GetPage
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -129,14 +130,9 @@ class Panel(wx.ScrolledWindow):
         txt_homepage = wx.StaticText(pnl_option, label=GT(u'Homepage'), name=u'homepage')
         ti_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
         
-        opts_essential = (
-            u'yes', u'no',
-            )
-        
         txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
-        sel_essential = wx.Choice(pnl_option, choices=opts_essential, name=txt_essential.Name)
-        sel_essential.default = 1
-        sel_essential.SetSelection(sel_essential.default)
+        self.chk_essential = wx.CheckBox(pnl_option, name=u'essential')
+        self.chk_essential.default = False
         
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
@@ -160,7 +156,6 @@ class Panel(wx.ScrolledWindow):
         self.grp_select = (
             sel_arch,
             sel_priority,
-            sel_essential,
             )
         
         SetPageToolTips(self)
@@ -234,8 +229,8 @@ class Panel(wx.ScrolledWindow):
             (txt_homepage, 0, RIGHT_CENTER, 5),
             (ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
-            (sel_essential, 1, wx.BOTTOM, 5),
             ))
+        layt_option.Add(self.chk_essential, 0, wx.BOTTOM, 5),
         
         pnl_option.SetSizer(layt_option)
         pnl_option.SetAutoLayout(True)
@@ -284,7 +279,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GetCtrlInfo(self):
-        pg_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ID_DEPENDS)
+        pg_depends = GetPage(ID_DEPENDS)
         
         ctrl_list = []
         synopsis = None
@@ -359,6 +354,10 @@ class Panel(wx.ScrolledWindow):
                 field_value = field_value.strip(u' \t\n')
                 
                 ctrl_list.append(u'{}: {}'.format(field_name, field_value))
+        
+        
+        if self.chk_essential.GetValue():
+            ctrl_list.append(u'Essential: yes')
         
         # Dependencies & conflicts
         dep_list = [] # Depends
@@ -542,6 +541,8 @@ class Panel(wx.ScrolledWindow):
         
         for S in self.grp_select:
             S.SetSelection(S.default)
+        
+        self.chk_essential.SetValue(self.chk_essential.default)
     
     
     ## Opening Project/File & Setting Fields
@@ -576,6 +577,9 @@ class Panel(wx.ScrolledWindow):
                 key = key[0]
                 
                 Logger.Debug(__name__, u'Found key: {}'.format(key))
+                
+                if key == self.chk_essential.GetName().title() and value.lower() in (u'yes', u'true'):
+                    self.chk_essential.SetValue(True)
                 
                 # Catch Maintainer
                 if key == u'Maintainer':

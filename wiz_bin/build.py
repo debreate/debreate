@@ -250,7 +250,9 @@ class Panel(wx.ScrolledWindow):
             fld_email,
             ]
         
-        if pg_menu.chk_enable.GetValue():
+        create_launcher = pg_menu.chk_enable.GetValue()
+        
+        if create_launcher:
             required.append(pg_menu.ti_name)
             
             if not pg_menu.chk_filename.GetValue():
@@ -375,8 +377,7 @@ class Panel(wx.ScrolledWindow):
             prebuild_progress.Update(progress, GT(u'Checking menu launcher'))
             wx.Yield()
             
-            create_menu = pg_menu.activate.GetValue()
-            if create_menu:
+            if create_launcher:
                 tasks += 1
                 menu_data = pg_menu.GetLauncherInfo().split(u'\n')
             
@@ -511,7 +512,7 @@ class Panel(wx.ScrolledWindow):
                 progress += 1
             
             # *** MENU
-            if create_menu:
+            if create_launcher:
                 build_progress.Update(progress, GT(u'Creating menu launcher'))
                 
                 wx.Yield()
