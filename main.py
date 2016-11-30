@@ -505,6 +505,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 cont = True
         
         if cont:
+            # Abort
+            if self.saved_project and not self.ResetPages():
+                return
+            
             # Get the path and set the saved project
             self.saved_project = dia.GetPath()
             
