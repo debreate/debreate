@@ -670,22 +670,15 @@ class Panel(wx.ScrolledWindow):
             build_progress.Update(progress)
             build_progress.Destroy()
             
-            if build_status[0]:
-                # Temp dir will not be deleted if build fails
-                wx.MessageDialog(self, GT(u'Package build failed'), GT(u'Error'),
-                        style=wx.OK|wx.ICON_ERROR).ShowModal()
-            
-            else:
-                wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
-                        style=wx.OK|wx.ICON_INFORMATION).ShowModal()
-                
+            # Build completed successfullly
+            if not build_status[0]:
                 # Installing the package
                 if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
                     self.InstallPackage(c_deb)
                 
-                # Build completed successfully
                 return dbrerrno.SUCCESS
             
+            # Build failed
             return build_status[0]
         
         cont = False
@@ -714,7 +707,15 @@ class Panel(wx.ScrolledWindow):
             # FIXME: Obsolete?
             for char in invalid_chars:
                 filename = u'_'.join(filename.split(char))
-            BuildIt(path, filename)
+            
+            if BuildIt(path, filename) == dbrerrno.SUCCESS:
+                wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
+                        style=wx.OK|wx.ICON_INFORMATION).ShowModal()
+                
+                return
+            
+            wx.MessageDialog(self, GT(u'Package build failed'), GT(u'Error'),
+                    style=wx.OK|wx.ICON_ERROR).ShowModal()
     
     
     ## TODO: Doxygen
