@@ -86,6 +86,14 @@ def GetPage(page_id):
     return GetWizard().GetPage(page_id)
 
 
+## Retrieves the full list of page IDs from the wizard
+#  
+#  \return
+#        \b e\ tuple : List of all active wizard page IDs
+def GetPagesIdList():
+    return GetWizard().GetPagesIdList()
+
+
 ## TODO: Doxygen
 def GetTopWindow():
     return wx.GetApp().GetTopWindow()
