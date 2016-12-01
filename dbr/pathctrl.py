@@ -15,17 +15,26 @@ PATH_WARN = wx.NewId()
 
 ## TODO: Doxygen
 class PathCtrl(wx.TextCtrl):
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT):
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
+                default=wx.EmptyString):
         wx.TextCtrl.__init__(self, parent, ctrl_id, value)
         
         self.ctrl_type = ctrl_type
         
         # Get the value of the textctrl so it can be restored
-        self.default = u'/'
+        self.default = default
+        self.clr_default = self.GetBackgroundColour()
         
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
     
+    
+    ## TODO: Doxygen
+    def GetDefaultValue(self):
+        return self.default
+    
+    
+    ## TODO: Doxygen
     def OnKeyUp(self, event=None):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
@@ -39,8 +48,21 @@ class PathCtrl(wx.TextCtrl):
         if self.ctrl_type == PATH_WARN:
             if not os.path.exists(value):
                 self.SetBackgroundColour(u'red')
+                
             else:
-                self.SetBackgroundColour(u'white')
+                self.SetBackgroundColour(self.clr_default)
         
         if event:
             event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def Reset(self):
+        self.SetBackgroundColour(self.clr_default)
+        self.SetValue(self.default)
+        self.SetInsertionPointEnd()
+    
+    
+    ## TODO: Doxygen
+    def SetDefaultValue(self, default):
+        self.default = default
