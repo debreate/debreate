@@ -392,6 +392,11 @@ class Panel(wx.ScrolledWindow):
         return self.ti_name.GetValue().strip(u' ').replace(u' ', u'_')
     
     
+    ## TODO: Doxygen
+    def IsBuildExportable(self):
+        return self.chk_enable.GetValue()
+    
+    
     ## Loads a .desktop launcher's data
     def OnLoadLauncher(self, event=None):
         main_window = wx.GetApp().GetTopWindow()

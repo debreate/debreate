@@ -241,6 +241,11 @@ class Panel(wx.ScrolledWindow):
             event.Skip()
     
     
+    ## TODO: Doxygen
+    def IsBuildExportable(self):
+        return not self.lst_files.IsEmpty()
+    
+    
     ## Add a selected path to the list of files
     def OnAddPath(self, event=None):
         # List of files tuple formatted as: filename, source

@@ -99,6 +99,11 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def IsBuildExportable(self):
+        return not TextIsEmpty(self.dsp_copyright.GetValue())
+    
+    
+    ## TODO: Doxygen
     def ResetAllFields(self):
         self.dsp_copyright.Clear()
     

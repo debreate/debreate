@@ -279,6 +279,15 @@ class Panel(wx.ScrolledWindow):
                 self.lst_executables.remove(self.lst_executables[exe])
     
     
+    ## TODO: Doxygen
+    def IsBuildExportable(self):
+        for chk in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
+            if chk.GetValue():
+                return True
+        
+        return False
+    
+    
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
         # Create a list of commands to put into the script

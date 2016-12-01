@@ -234,6 +234,11 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def IsBuildExportable(self):
+        return not TextIsEmpty(self.dsp_changes.GetValue())
+    
+    
+    ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
             (self.ti_package, FID_PACKAGE),
