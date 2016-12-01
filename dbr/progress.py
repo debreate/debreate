@@ -45,6 +45,18 @@ class ProgressDialog(wx.ProgressDialog):
     
     
     ## TODO: Doxygen
+    def GetMessage(self, *args, **kwargs):
+        if wx.MAJOR_VERSION < 3:
+            for C in self.GetChildren():
+                if isinstance(C, wx.StaticText):
+                    return C.GetLabel()
+            
+            return
+        
+        return wx.ProgressDialog.GetMessage(self, *args, **kwargs)
+    
+    
+    ## TODO: Doxygen
     def GetRange(self, *args, **kwargs):
         if wx.MAJOR_VERSION < 3:
             return self.GetGauge().GetRange()
@@ -91,6 +103,45 @@ class ProgressDialog(wx.ProgressDialog):
             self.active = True
         
         return wx.ProgressDialog.ShowModal(self, *args, **kwargs)
+    
+    
+    ## TODO: Doxygen
+    def Update(self, *args, **kwargs):
+        update_value = wx.ProgressDialog.Update(self, *args, **kwargs)
+        
+        self.UpdateSize()
+        wx.Yield()
+        
+        return update_value
+    
+    
+    ## Currently only updates width
+    #  
+    #  FIXME: Window updates immediately, but children do not
+    def UpdateSize(self):
+        children = self.GetChildren()
+        target_width = 0
+        
+        for C in children:
+            child_width = C.GetSizeTuple()[0]
+            if child_width > target_width:
+                target_width = child_width
+        
+        if children:
+            padding_x = children[0].GetPositionTuple()[0]
+            
+            # Add padding
+            target_width += (padding_x * 2)
+            
+            width = self.GetSize()
+            height = width[1]
+            width = width[0]
+            
+            if target_width > width:
+                self.SetSize((target_width, height))
+                
+                if self.GetParent():
+                    self.CenterOnParent()
     
     
     ## Override WasCancelled method for compatibility wx older wx versions
