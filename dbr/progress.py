@@ -35,7 +35,18 @@ class ProgressDialog(wx.ProgressDialog):
             self.CenterOnParent()
     
     
-    ## TODO: Doxygen
+    ## Sets the active status to False
+    #  
+    #  Calls dbr.progress.ProgressDialog.OnAbort
+    def Cancel(self):
+        self.OnAbort()
+    
+    
+    ## Closes & destroys the dialog
+    #  
+    #  Method for compatibility between wx 3.0 & older versions
+    #  For 3.0 & newer, simply overrides wx.ProgressDialog.Destroy
+    #  For older versions, calls dbr.progress.ProgressDialog.EndModal
     def Destroy(self, *args, **kwargs):
         if wx.MAJOR_VERSION < 3:
             self.EndModal(0)
@@ -43,14 +54,21 @@ class ProgressDialog(wx.ProgressDialog):
         return wx.ProgressDialog.Destroy(self, *args, **kwargs)
     
     
-    ## TODO: Doxygen
+    ## Retrieves the wx.Gauge child object
+    #  
+    #  Mostly for compatibility with wx versions older than 3.0
+    #  Older versions do not have many of methods for access & manipulation of the gauge
     def GetGauge(self):
         for C in self.GetChildren():
             if isinstance(C, wx.Gauge):
                 return C
     
     
-    ## TODO: Doxygen
+    ## Retrieves the message shown on the dialog
+    #  
+    #  Method for compatibility between wx 3.0 & older versions
+    #  For wx 3.0 & newer, simply overrides wx.ProgressDialog.GetMessage
+    #  For older versions, finds the child wx.StaticText object & returns the label
     def GetMessage(self, *args, **kwargs):
         if wx.MAJOR_VERSION < 3:
             for C in self.GetChildren():
@@ -62,7 +80,11 @@ class ProgressDialog(wx.ProgressDialog):
         return wx.ProgressDialog.GetMessage(self, *args, **kwargs)
     
     
-    ## TODO: Doxygen
+    ## Retrieves the range, or maximum value of the gauge
+    #  
+    #  Method for compatibility between wx 3.0 & older versions
+    #  For 3.0 & newer, simply overrides wx.ProgressDialog.GetRange
+    #  For older versions, calls GetRange on the child gauge object
     def GetRange(self, *args, **kwargs):
         if wx.MAJOR_VERSION < 3:
             return self.GetGauge().GetRange()
@@ -70,7 +92,11 @@ class ProgressDialog(wx.ProgressDialog):
         return wx.ProgressDialog.GetRange(self, *args, **kwargs)
     
     
-    ## TODO: Doxgen
+    ## Retrieves the current value of the gauge
+    #  
+    #  Method for compatibility between wx 3.0 & older versions
+    #  for 3.0 & newer, simply overrides wx.ProgressDialog.GetValue
+    #  For older versions, calls GetValue() on the child wx.Gauge object
     def GetValue(self, *args, **kwargs):
         if wx.MAJOR_VERSION < 3:
             return self.GetGauge().GetValue()
@@ -78,7 +104,9 @@ class ProgressDialog(wx.ProgressDialog):
         return wx.ProgressDialog.GetValue(self, *args, **kwargs)
     
     
-    ## TODO: Doxygen
+    ## Sets the active status to False
+    #  
+    #  The dialog will be destroyed when dbr.progress.ProgressDialog.WasCancelled is called
     def OnAbort(self, event=None):
         self.active = False
         
@@ -149,12 +177,16 @@ class ProgressDialog(wx.ProgressDialog):
                     self.CenterOnParent()
     
     
-    ## Override WasCancelled method for compatibility wx older wx versions
+    ## Override wx.ProgressDialog.WasCancelled method for compatibility wx older wx versions
     def WasCancelled(self, *args, **kwargs):
         if wx.MAJOR_VERSION < 3:
             if self.active == None:
                 return False
             
             return not self.active
+        
+        # Failsafe for compatibility between wx 3.0 & older versions
+        if self.active == False:
+            return True
         
         return wx.ProgressDialog.WasCancelled(self, *args, **kwargs)
