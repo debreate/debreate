@@ -12,7 +12,6 @@ from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
-from dbr.functions          import GetPage
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.markdown           import MarkdownDialog
@@ -26,6 +25,7 @@ from globals.ident          import ID_IMPORT
 from globals.ident          import ID_SCRIPTS
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
+from globals.wizardhelper   import GetPage
 
 
 ID_INST_PRE = wx.NewId()

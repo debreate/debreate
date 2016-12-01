@@ -15,8 +15,6 @@ from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
-from dbr.functions          import FieldEnabled
-from dbr.functions          import GetPage
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -32,7 +30,9 @@ from globals.ident          import FID_VERSION
 from globals.ident          import ID_CONTROL
 from globals.ident          import ID_DEPENDS
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
+from globals.wizardhelper   import GetPage
 
 
 ## This panel displays the field input of the control file

@@ -10,7 +10,6 @@ import commands, wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
-from dbr.functions          import FieldEnabled
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -26,6 +25,7 @@ from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
+from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetFieldValue
 
 

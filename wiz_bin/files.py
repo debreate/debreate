@@ -6,33 +6,32 @@
 # See: docs/LICENSE.txt
 
 
-import os, time, wx
+import os, wx
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonBrowse
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonRefresh
-from dbr.buttons        import ButtonRemove
-from dbr.dialogs        import DetailedMessageDialog
-from dbr.dialogs        import GetDirDialog
-from dbr.dialogs        import ShowDialog
-from dbr.functions      import FieldEnabled
-from dbr.functions      import GetTopWindow
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.listinput      import FileList
-from dbr.log            import Logger
-from dbr.panel          import BorderedPanel
-from dbr.panel          import PANEL_BORDER
-from dbr.progress       import ProgressDialog
-from dbr.timer          import DebreateTimer
-from globals.bitmaps    import ICON_EXCLAMATION
-from globals.ident      import FID_CUSTOM
-from globals.ident      import FID_LIST
-from globals.ident      import ID_FILES
-from globals.paths      import ConcatPaths
-from globals.paths      import PATH_home
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonBrowse
+from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonRefresh
+from dbr.buttons            import ButtonRemove
+from dbr.dialogs            import DetailedMessageDialog
+from dbr.dialogs            import GetDirDialog
+from dbr.dialogs            import ShowDialog
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.listinput          import FileList
+from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
+from dbr.panel              import PANEL_BORDER
+from dbr.progress           import ProgressDialog
+from globals.bitmaps        import ICON_EXCLAMATION
+from globals.ident          import FID_CUSTOM
+from globals.ident          import FID_LIST
+from globals.ident          import ID_FILES
+from globals.paths          import ConcatPaths
+from globals.paths          import PATH_home
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 ID_AddDir = 140
