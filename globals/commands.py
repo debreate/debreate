@@ -19,6 +19,10 @@ CMD_bsdar = CommandExists(u'bsdar')
 CMD_dpkg = CommandExists(u'dpkg')
 CMD_dpkgdeb = CommandExists(u'dpkg-deb')
 CMD_fakeroot = CommandExists(u'fakeroot')
+
+if not CMD_fakeroot:
+    CMD_fakeroot = CommandExists(u'fakeroot-sysv')
+
 CMD_gdebi = CommandExists(u'gdebi')
 CMD_gdebi_gui = CommandExists(u'gdebi-gtk')
 CMD_gzip = CommandExists(u'gzip')
