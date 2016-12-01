@@ -281,9 +281,9 @@ class DetailedMessageDialog(wx.Dialog):
             #btn_copy.Bind(wx.EVT_BUTTON, self.OnCopyDetails)
             
             layout = self.GetSizer()
-            layout.Add(self.btn_details, (1, 1))
+            layout.Add(self.btn_details, (2, 1))
+            #layout.Add(btn_copy, (2, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
             layout.Add(self.dsp_details, (3, 1), (1, 2), wx.EXPAND|wx.RIGHT, 5)
-            #layout.Add(btn_copy, (3, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
             
             self.ToggleDetails()
         
