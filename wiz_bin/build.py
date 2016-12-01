@@ -22,6 +22,8 @@ from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
 from globals.bitmaps        import ICON_INFORMATION
+from globals.commands       import CMD_dpkgdeb
+from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_gdebi_gui
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
@@ -404,7 +406,7 @@ class Panel(wx.ScrolledWindow):
         
         # Move the working directory becuase dpkg seems to have problems with spaces in path
         os.chdir(working_dir)
-        build_status = commands.getstatusoutput((u'fakeroot dpkg-deb -b "{}" "{}"'.format(c_tree, deb_package)))
+        build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(CMD_fakeroot, CMD_dpkgdeb, c_tree, deb_package)))
         
         progress += 1
         
