@@ -10,7 +10,7 @@ X-Python-Version: >= 2.6
 Package: debreate
 Architecture: all
 Depends: ${misc:Depends}, python2.7, python-wxgtk3.0|python-wxgtk2.8
-Suggests: 
+Suggests: gdebi|gdebi-kde
 Description: Debian package builder
  Debreate - Debian package builder
  .
