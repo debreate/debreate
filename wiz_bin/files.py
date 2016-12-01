@@ -279,7 +279,7 @@ class Panel(wx.ScrolledWindow):
             flist.append((filename, source_dir))
         
         elif os.path.isdir(source):
-            prg_prep = ProgressDialog(self, GT(u'Processing Files'),
+            prg_prep = ProgressDialog(GetTopWindow(), GT(u'Processing Files'),
                     style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
             
             # Only update the gauge every 100 files (hack until I figure out time)
