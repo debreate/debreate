@@ -1,6 +1,8 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- Files page: Progress dialog not showing for wx 2.8
+- Staged build directory isn't deleted
 
 Low priority:
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
