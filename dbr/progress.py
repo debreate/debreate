@@ -16,7 +16,7 @@ PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
-    def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, maximum=100,
+    def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
             style=PD_DEFAULT_STYLE):
         wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
         
@@ -27,6 +27,12 @@ class ProgressDialog(wx.ProgressDialog):
             for C in self.GetChildren():
                 if isinstance(C, wx.Button) and C.GetId() == wx.ID_CANCEL:
                     C.Bind(wx.EVT_BUTTON, self.OnAbort)
+        
+        if size:
+            self.SetSize(size)
+        
+        if parent:
+            self.CenterOnParent()
     
     
     ## TODO: Doxygen
