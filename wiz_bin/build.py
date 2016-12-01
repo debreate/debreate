@@ -70,7 +70,7 @@ class Panel(wx.ScrolledWindow):
             self.chk_md5.Disable()
         
         # For creating md5sum hashes
-        self.md5 = MD5Hasher()
+        self.md5 = MD5Hasher(self.chk_md5)
         
         # Deletes the temporary build tree
         self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete build tree'))
@@ -327,7 +327,10 @@ class Panel(wx.ScrolledWindow):
             wx.Yield()
             build_progress.Update(progress, GT(u'Creating md5sums'))
             
-            self.md5.WriteMd5(build_path, stage_dir)
+            if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
+                # Couldn't call md5sum command
+                build_progress.Cancel()
+            
             progress += 1
         
         if build_progress.WasCancelled():
