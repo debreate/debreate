@@ -143,11 +143,11 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = ButtonConfirm(self)
+        btn_confirm = ButtonConfirm(self)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
-        sizer.Add(ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP, 5)
+        sizer.Add(btn_confirm, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
         
         self.SetSizer(sizer)
         self.Layout()
