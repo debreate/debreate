@@ -596,6 +596,8 @@ class Panel(wx.ScrolledWindow):
         prep_task_count = len(page_checks) + len(other_checks)
         
         progress = 0
+        
+        wx.Yield()
         prebuild_progress = ProgressDialog(GetTopWindow(), GT(u'Preparing to build'),
                 maximum=prep_task_count)
         
