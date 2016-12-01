@@ -490,7 +490,6 @@ class Panel(wx.ScrolledWindow):
         required = list(fields_control)
         
         if pg_launcher.IsBuildExportable():
-            #task_list.append(u'launcher')
             task_list[u'launcher'] = pg_launcher.ExportPage()
             
             required.append(pg_launcher.ti_name)
