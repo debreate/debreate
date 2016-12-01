@@ -75,6 +75,11 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def ExportPage(self):
+        return self.GetCopyright()
+    
+    
+    ## TODO: Doxygen
     def GatherData(self):
         data = self.GetCopyright()
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)

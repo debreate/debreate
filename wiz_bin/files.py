@@ -191,6 +191,12 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def ExportPage(self):
+        # Remove section delimeters & first line which is just an integer
+        return self.GatherData().split(u'\n')[2:-1]
+    
+    
+    ## TODO: Doxygen
     def GatherData(self):
         file_list = []
         item_count = self.lst_files.GetItemCount()

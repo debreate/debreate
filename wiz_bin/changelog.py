@@ -218,6 +218,18 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    #  
+    #  \return
+    #        \b \e tuple : Changelog target dir & text
+    def ExportPage(self):
+        target = u'STANDARD'
+        if self.rb_target_custom.GetValue():
+            target = self.ti_target.GetValue()
+        
+        return (target, self.GetChangelog())
+    
+    
+    ## TODO: Doxygen
     def GatherData(self):
         if self.rb_target_standard.GetValue():
             dest = u'<<DEST>>DEFAULT<</DEST>>'

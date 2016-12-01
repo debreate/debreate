@@ -195,6 +195,25 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def ExportPage(self):
+        script_controls = {
+            u'preinst': (self.chk_preinst, self.te_preinst,),
+            u'postinst': (self.chk_postinst, self.te_postinst,),
+            u'prerm': (self.chk_prerm, self.te_prerm),
+            u'postrm': (self.chk_postrm, self.te_postrm),
+        }
+        
+        script_list = []
+        
+        for S in script_controls:
+            chk, te = script_controls[S]
+            if chk.GetValue():
+                script_list.append((S, te.GetValue()))
+        
+        return tuple(script_list)
+    
+    
+    ## TODO: Doxygen
     def GatherData(self):
         # Custom dictionary of scripts
         script_list = (

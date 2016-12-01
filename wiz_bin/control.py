@@ -271,6 +271,11 @@ class Panel(wx.ScrolledWindow):
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
     
     
+    ## TODO: Doxygen
+    def ExportPage(self):
+        return self.GetCtrlInfo()
+    
+    
     ## Saving project
     def GatherData(self):
         data = self.GetCtrlInfo()

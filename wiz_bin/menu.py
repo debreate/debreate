@@ -309,6 +309,11 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def ExportPage(self):
+        return self.GetLauncherInfo()
+    
+    
+    ## TODO: Doxygen
     def GatherData(self):
         if self.chk_enable.GetValue():
             data = self.GetLauncherInfo()
