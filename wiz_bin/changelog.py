@@ -80,7 +80,7 @@ class Panel(wx.ScrolledWindow):
         # FIXME: Should not use same name as default destination???
         self.rb_target_custom = wx.RadioButton(pnl_target, name=self.rb_target_standard.Name)
         
-        self.ti_target = PathCtrl(pnl_target, value=u'/', ctrl_type=PATH_WARN)
+        self.ti_target = PathCtrl(pnl_target, value=u'/', default=u'/')
         self.ti_target.SetName(u'target custom')
         
         self.btn_add = ButtonAdd(self)
@@ -283,7 +283,7 @@ class Panel(wx.ScrolledWindow):
         self.ti_email.Clear()
         self.ti_changes.Clear()
         self.rb_target_standard.SetValue(self.rb_target_standard.default)
-        self.ti_target.SetValue(u'/')
+        self.ti_target.Reset()
         self.dsp_changes.Clear()
         
         # Reset 'add' button's enabled status
