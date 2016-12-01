@@ -16,6 +16,7 @@ from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
+from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.md5                import MD5Hasher
 from dbr.panel              import BorderedPanel
@@ -154,10 +155,25 @@ class Panel(wx.ScrolledWindow):
     #  \return
     #        \b \e dbrerror : SUCCESS if build completed successfully
     def Build(self, task_list, build_path, filename):
+        # Other mandatory tasks that will be processed
+        mandatory_tasks = (
+            u'stage',
+            u'install_size',
+            u'control',
+            u'build',
+            )
+        
+        # Add other mandatory tasks
+        for T in mandatory_tasks:
+            task_list[T] = None
+        
         task_count = len(task_list)
         
-        # Other tasks: stage, install_size, & build
-        task_count += 3
+        if DebugEnabled():
+            task_msg = GT(u'Total tasks: {}').format(task_count)
+            print(u'DEBUG: [{}] {}'.format(__name__, task_msg))
+            for T in task_list:
+                print(u'\t{}'.format(T))
         
         create_changelog = u'changelog' in task_list
         create_copyright = u'copyright' in task_list
@@ -181,7 +197,12 @@ class Panel(wx.ScrolledWindow):
         deb = u'"{}/{}.deb"'.format(build_path, filename)
         
         progress = 0
-        build_progress = ProgressDialog(GetTopWindow(), GT(u'Building'), GT(u'Preparing build tree'),
+        
+        task_msg = GT(u'Preparing build tree')
+        Logger.Debug(__name__, task_msg)
+        
+        wx.Yield()
+        build_progress = ProgressDialog(GetTopWindow(), GT(u'Building'), task_msg,
                 maximum=task_count,
                 style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
         
@@ -193,12 +214,20 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        # *** FILES
-        # FIXME: Update progress dialog for each file
-        wx.Yield()
-        build_progress.Update(progress, GT(u'Copying files'))
+        def UpdateProgress(current_task, message):
+            task_eval = u'{}/{}'.format(current_task, task_count)
+            
+            Logger.Debug(__name__, u'{} ({})'.format(message, task_eval))
+            
+            message = u'{}\n{}'.format(message, task_eval)
+            wx.Yield()
+            build_progress.Update(current_task, message)
         
+        # *** Files *** #
         if u'files' in task_list:
+            # FIXME: Update progress dialog for each file
+            UpdateProgress(progress, GT(u'Copying files'))
+            
             # FIXME: Get this in pre build
             files_data = task_list[u'files']
             for FILE in files_data:
@@ -244,10 +273,9 @@ class Panel(wx.ScrolledWindow):
             if not os.path.isdir(doc_dir):
                 os.makedirs(doc_dir)
         
-        # *** CHANGELOG
+        # *** Changelog *** #
         if create_changelog:
-            wx.Yield()
-            build_progress.Update(progress, GT(u'Creating changelog'))
+            UpdateProgress(progress, GT(u'Creating changelog'))
             
             # If changelog will be installed to default directory
             changelog_target = task_list[u'changelog'][0]
@@ -278,10 +306,9 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        # *** COPYRIGHT
+        # *** Copyright *** #
         if create_copyright:
-            wx.Yield()
-            build_progress.Update(progress, GT(u'Creating copyright'))
+            UpdateProgress(progress, GT(u'Creating copyright'))
             
             FILE_BUFFER = open(u'{}/usr/share/doc/{}/copyright'.format(stage_dir, package), u'w')
             FILE_BUFFER.write(task_list[u'copyright'].encode(u'utf-8'))
@@ -296,10 +323,9 @@ class Panel(wx.ScrolledWindow):
         # Characters that should not be in filenames
         invalid_chars = (u' ', u'/')
         
-        # *** MENU
+        # *** Menu launcher *** #
         if u'launcher' in task_list:
-            wx.Yield()
-            build_progress.Update(progress, GT(u'Creating menu launcher'))
+            UpdateProgress(progress, GT(u'Creating menu launcher'))
             
             # This might be changed later to set a custom directory
             menu_dir = u'{}/usr/share/applications'.format(stage_dir)
@@ -323,25 +349,10 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        if u'md5sums' in task_list:
-            wx.Yield()
-            build_progress.Update(progress, GT(u'Creating md5sums'))
-            
-            if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
-                # Couldn't call md5sum command
-                build_progress.Cancel()
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** SCRIPTS
+        # *** Scripts *** #
         # FIXME: Update progress dialog for each script
         if u'scripts' in task_list:
-            wx.Yield()
-            build_progress.Update(progress, GT(u'Creating scripts'))
+            UpdateProgress(progress, GT(u'Creating scripts'))
             
             scripts = task_list[u'scripts']
             for script_name, script_text in scripts:
@@ -361,9 +372,8 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        # *** CONTROL
-        wx.Yield()
-        build_progress.Update(progress, GT(u'Getting installed size'))
+        # *** Control file *** #
+        UpdateProgress(progress, GT(u'Getting installed size'))
         
         # Get installed-size
         installed_size = os.popen((u'du -hsk "{}"'.format(stage_dir))).readlines()
@@ -380,8 +390,8 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        wx.Yield()
-        build_progress.Update(progress, GT(u'Creating control file'))
+        # Create final control file
+        UpdateProgress(progress, GT(u'Creating control file'))
         
         # dpkg fails if there is no newline at end of file
         if control_data and control_data[-1] != u'\n':
@@ -399,9 +409,23 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        # *** FINAL BUILD
-        wx.Yield()
-        build_progress.Update(progress, GT(u'Running dpkg'))[0]
+        # *** md5sums file *** #
+        # Should be the last task before building package
+        if u'md5sums' in task_list:
+            UpdateProgress(progress, GT(u'Creating md5sums'))
+            
+            if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
+                # Couldn't call md5sum command
+                build_progress.Cancel()
+            
+            progress += 1
+        
+        if build_progress.WasCancelled():
+            build_progress.Destroy()
+            return (dbrerrno.ECNCLD, None)
+        
+        # *** Final build *** #
+        UpdateProgress(progress, GT(u'Running dpkg'))
         
         working_dir = os.path.split(stage_dir)[0]
         c_tree = os.path.split(stage_dir)[1]
@@ -417,13 +441,18 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        # *** DELETE BUILD TREE
-        if u'rmtree' in task_list:
+        # *** Delete staged directory *** #
+        if u'rmstage' in task_list:
+            UpdateProgress(progress, GT(u'Removing temp directory'))
+            '''
+            Logger.Debug(__name__, task_msg)
+            
             wx.Yield()
-            build_progress.Update(progress, GT(u'Removing temp directory'))
+            build_progress.Update(progress, task_msg)
+            '''
             
             if commands.getstatusoutput((u'rm -r "{}"'.format(stage_dir)).encode(u'utf-8'))[0]:
-                wx.MessageDialog(self, GT(u'An error occurred when trying to delete the build tree'),
+                wx.MessageDialog(build_progress, GT(u'An error occurred when trying to delete the build tree'),
                         GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
             
             progress += 1
@@ -434,21 +463,19 @@ class Panel(wx.ScrolledWindow):
         
         # *** ERROR CHECK
         if u'lintian' in task_list:
-            wx.Yield()
-            build_progress.Update(progress, GT(u'Checking package for errors'))
+            UpdateProgress(progress, GT(u'Checking package for errors'))
             
             errors = commands.getoutput((u'{} {}'.format(CMD_lintian, deb)))
             
             if errors != wx.EmptyString:
                 e1 = GT(u'Lintian found some issues with the package.')
-                e2 = GT(u'Details saved to {}')
-                e2 = e2.format(filename)
+                e2 = GT(u'Details saved to {}').format(filename)
                 
                 FILE_BUFFER = open(u'{}/{}.lintian'.format(build_path, filename), u'w')
                 FILE_BUFFER.write(errors.encode(u'utf-8'))
                 FILE_BUFFER.close()
                 
-                DetailedMessageDialog(wx.GetApp().GetTopWindow(), GT(u'Lintian Errors'),
+                DetailedMessageDialog(build_progress, GT(u'Lintian Errors'),
                         ICON_INFORMATION, u'{}\n{}.lintian'.format(e1, e2), errors).ShowModal()
             
             progress += 1
