@@ -169,6 +169,14 @@ class Panel(wx.ScrolledWindow):
         
         task_count = len(task_list)
         
+        # Add each file for updating progress dialog
+        if u'files' in task_list:
+            task_count += len(task_list[u'files'])
+        
+        # Add each script for updating progress dialog
+        if u'scripts' in task_list:
+            task_count += len(task_list[u'scripts'])
+        
         if DebugEnabled():
             task_msg = GT(u'Total tasks: {}').format(task_count)
             print(u'DEBUG: [{}] {}'.format(__name__, task_msg))
@@ -214,12 +222,18 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        def UpdateProgress(current_task, message):
-            task_eval = u'{}/{}'.format(current_task, task_count)
+        def UpdateProgress(current_task, message=None):
+            task_eval = u'{} / {}'.format(current_task, task_count)
             
-            Logger.Debug(__name__, u'{} ({})'.format(message, task_eval))
+            if message:
+                Logger.Debug(__name__, u'{} ({})'.format(message, task_eval))
+            
+            else:
+                # Get the first line of the previous message
+                message = build_progress.GetMessage().split(u'\n')[0]
             
             message = u'{}\n{}'.format(message, task_eval)
+            
             wx.Yield()
             build_progress.Update(current_task, message)
         
@@ -256,9 +270,11 @@ class Panel(wx.ScrolledWindow):
                 else:
                     os.chmod(copy_path, 0644)
                 
-                #progress += 1
-                #build_progress.Update(progress)
+                # Individual files
+                progress += 1
+                UpdateProgress(progress)
             
+            # Entire file task
             progress += 1
         
         if build_progress.WasCancelled():
@@ -365,7 +381,12 @@ class Panel(wx.ScrolledWindow):
                 # Make sure scipt path is wrapped in quotes to avoid whitespace errors
                 os.chmod(script_filename, 0755)
                 os.system((u'chmod +x "{}"'.format(script_filename)))
+                
+                # Individual scripts
+                progress += 1
+                UpdateProgress(progress)
             
+            # Entire script task
             progress += 1
         
         if build_progress.WasCancelled():
