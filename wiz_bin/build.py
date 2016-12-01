@@ -227,15 +227,14 @@ class Panel(wx.ScrolledWindow):
             
             if message:
                 Logger.Debug(__name__, u'{} ({})'.format(message, task_eval))
-            
-            else:
-                # Get the first line of the previous message
-                message = build_progress.GetMessage().split(u'\n')[0]
-            
-            message = u'{}\n{}'.format(message, task_eval)
+                
+                wx.Yield()
+                build_progress.Update(current_task, message)
+                
+                return
             
             wx.Yield()
-            build_progress.Update(current_task, message)
+            build_progress.Update(current_task)
         
         # *** Files *** #
         if u'files' in task_list:
