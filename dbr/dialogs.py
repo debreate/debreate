@@ -10,6 +10,7 @@ import wx, os
 from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonConfirm
+from dbr.custom         import Hyperlink
 from dbr.custom         import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -220,13 +221,16 @@ class DetailedMessageDialog(wx.Dialog):
         
         # *** Layout *** #
         
+        self.lyt_urls = wx.BoxSizer(wx.VERTICAL)
+        
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
         lyt_main.AddGrowableRow(2)
         lyt_main.AddGrowableCol(2)
         lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
         lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
-        lyt_main.Add(btn_confirm, (3, 2),
+        lyt_main.Add(self.lyt_urls, (1, 1), (1, 2), wx.RIGHT, 5)
+        lyt_main.Add(btn_confirm, (4, 2),
                 flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         
         self.SetAutoLayout(True)
@@ -242,6 +246,19 @@ class DetailedMessageDialog(wx.Dialog):
             self.Fit()
             self.SetMinSize(self.GetSize())
         
+        self.CenterOnParent()
+    
+    
+    ## Adds a clickable link to the dialog
+    def AddURL(self, url):
+        if not isinstance(url, Hyperlink):
+            url = Hyperlink(self, wx.ID_ANY, label=url, url=url)
+        
+        self.lyt_urls.Add(url, 0, wx.ALIGN_CENTER_VERTICAL)
+        
+        self.Layout()
+        self.Fit()
+        self.SetMinSize(self.GetSize())
         self.CenterOnParent()
     
     
@@ -265,8 +282,8 @@ class DetailedMessageDialog(wx.Dialog):
             
             layout = self.GetSizer()
             layout.Add(self.btn_details, (1, 1))
-            #layout.Add(btn_copy, (1, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
-            layout.Add(self.dsp_details, (2, 1), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+            layout.Add(self.dsp_details, (3, 1), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+            #layout.Add(btn_copy, (3, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
             
             self.ToggleDetails()
         
