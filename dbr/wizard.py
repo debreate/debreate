@@ -167,6 +167,19 @@ class Wizard(wx.Panel):
         return None
     
     
+    ## Retrieves the full list of page IDs
+    #  
+    #  \return
+    #        \b e\ tuple : List of all page IDs
+    def GetPagesIdList(self):
+        page_ids = []
+        
+        for P in self.pages:
+            page_ids.append(P.GetId())
+        
+        return tuple(page_ids)
+    
+    
     ## TODO: Doxygen
     def SetPages(self, pages):
         # Make sure all pages are hidden
