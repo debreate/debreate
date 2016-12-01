@@ -116,7 +116,6 @@ class ProgressDialog(wx.ProgressDialog):
         update_value = wx.ProgressDialog.Update(self, *args, **kwargs)
         
         self.UpdateSize()
-        wx.Yield()
         
         return update_value
     
