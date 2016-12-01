@@ -1,4 +1,8 @@
 0.7.12
 - Heavy testing for both wx 3.0 & 2.8
+- Change ProgressDialog to optionally show tasks counting
+
+0.8.0
+- Option to preview/edit control file at build time
 - Changelog page: Add distribution automatically (drop-down box)
 - Replace wx.MessageDialog with DetailedMessageDialog
