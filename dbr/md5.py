@@ -5,6 +5,8 @@
 
 import commands, os
 
+from globals.commands import CMD_md5sum
+
 
 ## Object for creating MD5 hashes
 class MD5Hasher:
@@ -28,7 +30,7 @@ class MD5Hasher:
         for ROOT, DIRS, FILES in os.walk(tempdir):
             for F in FILES:
                 F = u'{}/{}'.format(ROOT, F)
-                md5 = commands.getoutput((u'md5sum -t "{}"'.format(F)))
+                md5 = commands.getoutput((u'{} -t "{}"'.format(CMD_md5sum, F)))
                 temp_list.append(md5)
         
         for item in temp_list:
