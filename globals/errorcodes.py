@@ -33,8 +33,7 @@ def AddNewCode(code_def):
 
 dbrerrno = errno
 
-# ???: Should this be 0
-dbrerrno.SUCCESS = -1
+dbrerrno.SUCCESS = 0
 dbrerrno.errorcode[dbrerrno.SUCCESS] = u'SUCCESS'
 
 dbrerrno.EBADFT = AddNewCode(u'EBADFT')
