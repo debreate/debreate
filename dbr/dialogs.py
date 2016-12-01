@@ -225,7 +225,7 @@ class DetailedMessageDialog(wx.Dialog):
         
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
-        lyt_main.AddGrowableRow(2)
+        lyt_main.AddGrowableRow(3)
         lyt_main.AddGrowableCol(2)
         lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
         lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
