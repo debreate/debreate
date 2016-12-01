@@ -323,19 +323,9 @@ class Panel(wx.ScrolledWindow):
             # Show a progress dialog that can be aborted
             if file_count > efficiency_threshold:
                 task_msg = GT(u'Getting files from {}'.format(source))
-                task_progress = ProgressDialog(self, message=task_msg, maximum=file_count,
-                        style=wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-                
-                # Add text to show current file number being processed
-                count_text = wx.StaticText(task_progress, wx.ID_ANY, u'0 / {}'.format(file_count))
-                tprogress_layout = task_progress.GetSizer()
-                tprogress_layout.Insert(1, count_text, -1, wx.ALIGN_CENTER)
-                
-                # Resize the dialog to fit the new text
-                tprogress_size = task_progress.GetSize()
-                task_progress.SetSize(wx.Size(tprogress_size[0], tprogress_size[1] + tprogress_size[1]/9))
-                
-                task_progress.Layout()
+                task_progress = ProgressDialog(GetTopWindow(), message=task_msg, maximum=file_count,
+                        style=wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT,
+                        detailed=True)
                 
                 task = 0
                 while task < file_count:
@@ -347,7 +337,6 @@ class Panel(wx.ScrolledWindow):
                     task_index = task
                     
                     task += 1
-                    count_text.SetLabel(u'{} / {}'.format(task, file_count))
                     task_progress.Update(task)
                     
                     self.lst_files.AddFile(flist[task_index][0], flist[task_index][1], target_dir)
