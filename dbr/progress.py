@@ -17,7 +17,7 @@ PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
     def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
-            style=PD_DEFAULT_STYLE):
+            style=PD_DEFAULT_STYLE, detailed=False):
         wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
         
         self.active = None
@@ -30,6 +30,36 @@ class ProgressDialog(wx.ProgressDialog):
         
         if size:
             self.SetSize(size)
+        
+        self.detailed = detailed
+        self.txt_tasks = None
+        if detailed:
+            lyt_main = self.GetSizer()
+            
+            self.txt_tasks = wx.StaticText(self, label=u'{} / {}'.format(0, maximum))
+            
+            children = self.GetChildren()
+            
+            t_index = None
+            for X in children:
+                if isinstance(X, wx.StaticText):
+                    t_index = children.index(X)
+                    #lyt_main.Detach(X)
+                    break
+            
+            if t_index != None:
+                lyt_main.Insert(t_index+1, self.txt_tasks, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+                lyt_main.Layout()
+                
+                dimensions_original = self.GetSizeTuple()
+                
+                self.Fit()
+                
+                dimensions_new = self.GetSizeTuple()
+                
+                # Preserve original width
+                self.SetSize(wx.Size(dimensions_original[0], dimensions_new[1]))
+                wx.Yield()
         
         if parent:
             self.CenterOnParent()
@@ -143,6 +173,9 @@ class ProgressDialog(wx.ProgressDialog):
     def Update(self, *args, **kwargs):
         update_value = wx.ProgressDialog.Update(self, *args, **kwargs)
         
+        if self.detailed:
+            self.txt_tasks.SetLabel(u'{} / {}'.format(args[0], self.GetRange()))
+        
         self.UpdateSize()
         
         return update_value
@@ -175,6 +208,8 @@ class ProgressDialog(wx.ProgressDialog):
                 
                 if self.GetParent():
                     self.CenterOnParent()
+        
+        self.GetSizer().Layout()
     
     
     ## Override wx.ProgressDialog.WasCancelled method for compatibility wx older wx versions
