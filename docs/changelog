@@ -23,6 +23,7 @@
 - Replace some selection controls with check boxes
 - Show which required fields are empty in build dialog
 - Fix cancelling progress dialogs
+- Progress dialogs optionally show task count
 
 0.7.11
 - Add template generation for copyright
