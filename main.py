@@ -35,6 +35,7 @@ from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
+from globals.commands       import CMD_xdg_open
 from globals.ident          import ID_BUILD
 from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
@@ -47,6 +48,7 @@ from globals.ident          import ID_MENU
 from globals.ident          import ID_MENU_TT
 from globals.ident          import ID_SCRIPTS
 from globals.paths          import PATH_app
+from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
 from globals.project        import PROJECT_txt
 from wiz_bin.build          import Panel as PanelBuild
@@ -59,6 +61,9 @@ from wiz_bin.info           import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
 
+
+# Options menu
+ID_LOG_DIR_OPEN = wx.NewId()
 
 # Debian Policy Manual IDs
 ID_DPM = wx.NewId()
@@ -196,6 +201,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, ID_DIALOGS, self.OnEnableCustomDialogs)
         
         menu_opt.AppendItem(self.cust_dias)
+        
+        # *** Option Menu: open logs directory *** #
+        
+        if CMD_xdg_open:
+            opt_logs_open = wx.MenuItem(menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
+            menu_opt.AppendItem(opt_logs_open)
+            
+            wx.EVT_MENU(self, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
         
         # ----- Help Menu
         menu_help = wx.Menu()
@@ -480,6 +493,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if status:
             wx.Yield()
             webbrowser.open(u'http://debreate.sourceforge.net/usage')
+    
+    
+    ## Opens the logs directory in the system's default file manager
+    def OnLogDirOpen(self, event=None):
+        Logger.Debug(__name__, GT(u'Opening log directory ...'))
+        
+        subprocess.check_output([CMD_xdg_open, u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
     
     
     ## TODO: Doxygen
