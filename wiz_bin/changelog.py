@@ -16,6 +16,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
+from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.ident          import FID_EMAIL
@@ -26,7 +27,6 @@ from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
-from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetTopWindow
 
@@ -88,7 +88,7 @@ class Panel(wx.ScrolledWindow):
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
-        self.dsp_changes = MultilineTextCtrlPanel(self, name=u'log')
+        self.dsp_changes = MonospaceTextCtrl(self, name=u'log')
         
         SetPageToolTips(self)
         
