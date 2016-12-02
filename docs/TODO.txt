@@ -14,6 +14,10 @@
 - Refactor & organize error messages on build
 - Fix bugs in docs/BUGS.txt
 - Heavy code cleanup & testing
+- Option to preview/edit control file at build time
+- Changelog page: Add distribution automatically (drop-down box)
+- Replace wx.MessageDialog with DetailedMessageDialog
+- Add custom field option to Control
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
