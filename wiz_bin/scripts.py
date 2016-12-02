@@ -18,7 +18,7 @@ from dbr.markdown           import MarkdownDialog
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import MonospaceTextCtrl
 from globals.ident          import FID_LIST
 from globals.ident          import ID_FILES
 from globals.ident          import ID_IMPORT
@@ -68,10 +68,10 @@ class Panel(wx.ScrolledWindow):
                 name=u'postrm')
         
         # Text area for each radio button
-        self.te_preinst = MultilineTextCtrlPanel(self, ID_INST_PRE, name=u'script body')
-        self.te_postinst = MultilineTextCtrlPanel(self, ID_INST_POST, name=u'script body')
-        self.te_prerm = MultilineTextCtrlPanel(self, ID_RM_PRE, name=u'script body')
-        self.te_postrm = MultilineTextCtrlPanel(self, ID_RM_POST, name=u'script body')
+        self.te_preinst = MonospaceTextCtrl(self, ID_INST_PRE, name=u'script body')
+        self.te_postinst = MonospaceTextCtrl(self, ID_INST_POST, name=u'script body')
+        self.te_prerm = MonospaceTextCtrl(self, ID_RM_PRE, name=u'script body')
+        self.te_postrm = MonospaceTextCtrl(self, ID_RM_POST, name=u'script body')
         
         self.grp_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
                             self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
