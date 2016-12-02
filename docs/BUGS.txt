@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- "Insert new changelog entry" button not enabling
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
