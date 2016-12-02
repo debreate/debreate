@@ -12,17 +12,21 @@ debreate (0.7.12) xenial; urgency=low
     Use new about dialog
     Use custom hyperlink controls
     Use os.chmod module in build rather than system chmod command
-    Import modules from 'unstable' branch
+    Import some modules from 'unstable' branch
     Fix first run window not closing
     Fixes for wx 3.0 compatibility
     Fixed Quick Build
     Added arm64 to archituctures
     Optionally use custom filename for menu launcher
     Fix problems with add/remove/delete in dependency list
-    Option to enable/disable tooltips
+    Option to enable/disable tooltips (wx 3.0 only)
     Install packages after build with gdebi
+    Replace some selection controls with check boxes
+    Show which required fields are empty in build dialog
+    Fix cancelling progress dialogs
+    Progress dialogs optionally show task count
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Tue, 22 Nov 2016 21:39:34 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 01 Dec 2016 16:15:30 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
