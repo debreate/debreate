@@ -24,6 +24,7 @@ from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.commands       import CMD_gzip
+from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
@@ -126,7 +127,10 @@ class AboutDialog(wx.Dialog):
         
         ## Debreate's installation prefix
         install_prefix = wx.StaticText(sys_info, -1,
-                GT(u'Installed to: {}').format(PREFIX))
+                GT(u'App location: {}').format(PATH_app))
+        
+        if INSTALLED:
+            install_prefix.SetLabel(GT(u'Installation prefix: {}').format(PREFIX))
         
         self.py_info.SetFont(sys_info_font)
         self.wx_info.SetFont(sys_info_font)
