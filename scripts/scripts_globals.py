@@ -7,19 +7,20 @@ import os, sys, errno
 scripts_dir = os.path.dirname(__file__)
 root_dir = os.path.split(scripts_dir)[0]
 
-file_INFO = '{}/INFO'.format(root_dir)
+FILE_info = '{}/INFO'.format(root_dir)
 
-file_LOCALE = '{}/locale/debreate.pot'.format(root_dir)
-py_APP = '{}/globals/application.py'.format(root_dir)
-
-file_MAKE = '{}/Makefile'.format(root_dir)
-file_CHANGELOG = '{}/docs/changelog'.format(root_dir)
-
-if not os.path.isfile(file_INFO):
-    print('[ERROR] Required file not found: {}'.format(file_INFO))
+if not os.path.isfile(FILE_info):
+    print('[ERROR] Required file not found: {}'.format(FILE_info))
     sys.exit(errno.ENOENT)
 
-f_opened = open(file_INFO)
+FILE_locale = '{}/locale/debreate.pot'.format(root_dir)
+PY_app = '{}/globals/application.py'.format(root_dir)
+
+FILE_make = '{}/Makefile'.format(root_dir)
+FILE_changelog = '{}/docs/changelog'.format(root_dir)
+FILE_changelog_debian = 'debian/changelog'
+
+f_opened = open(FILE_info)
 data_INFO = f_opened.read().split('\n')
 f_opened.close()
 
@@ -45,7 +46,12 @@ required_locale_files = (
 )
 
 version_files = {
-    'application': py_APP,
-    'locale': file_LOCALE,
-    'makefile': file_MAKE,
+    'application': PY_app,
+    'locale': FILE_locale,
+    'makefile': FILE_make,
 }
+
+debian_files = {
+    'changelog': FILE_changelog,
+    'changelog debian': FILE_changelog_debian,
+    }
