@@ -2,11 +2,14 @@
 # -*- coding: utf-8 -*-
 
 
-import commands, errno, os, sys, time
+import commands, errno, os, subprocess, sys, time
 
 from scripts_globals import GetInfoValue
 from scripts_globals import required_locale_files
 from scripts_globals import root_dir
+
+
+# FIXME: This script used the deprecated module 'commands'
 
 
 for F in required_locale_files:
@@ -26,6 +29,39 @@ DIR_locale = ConcatPaths(source_root, 'locale')
 if not os.path.isdir(DIR_locale):
     print('ERROR: Locale directory does not exist: {}'.format(DIR_locale))
     sys.exit(1)
+
+
+# This is done by Makefile in version 0.8
+if sys.argv[1:]:
+    cmd = sys.argv[1]
+    if cmd.lower() == 'compile':
+        print('\nCompiling locales ...')
+        
+        #gt_sources = []
+        for ROOT, DIRS, FILES in os.walk(DIR_locale):
+            for source_file in FILES:
+                if source_file.endswith('.po'):
+                    base_name = source_file.rstrip('.po')
+                    
+                    target_dir = ConcatPaths(ROOT, 'LC_MESSAGES')
+                    
+                    source_file = ConcatPaths(ROOT, source_file)
+                    
+                    target_file = ConcatPaths(target_dir, '{}.mo'.format(base_name))
+                    
+                    if os.path.isfile(source_file):
+                        if not os.path.isdir(target_dir):
+                            os.makedirs(target_dir)
+                        
+                        print('\nCompiling: {} -> {}'.format(source_file, target_file))
+                        fmt_output = subprocess.Popen(['msgfmt', source_file, '-o', target_file])
+        
+        print
+        sys.exit(0)
+    
+    print('ERROR: Unknown command: {}'.format(cmd))
+    sys.exit(1)
+
 
 FILE_pot = ConcatPaths(DIR_locale, 'debreate.pot')
 YEAR = time.strftime('%Y')
