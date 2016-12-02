@@ -78,6 +78,7 @@ FILES_BUILD = \
 	$(FILES_GLOBALS) \
 	$(FILES_WIZ_BIN)
 
+INSTALLED = INSTALLED
 MIMEFILE = data/mime/$(PACKAGE).xml
 MIME_icons = data/svg/application-x-dbp.svg
 
@@ -88,7 +89,11 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) install-mime install-man
+$(INSTALLED)_file:
+	@echo "Creating \"$(INSTALLED)\" file ..."; \
+	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
+
+install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) $(INSTALLED)_file install-mime install-man
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -141,6 +146,8 @@ install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) install-mime install-man
 	\
 	$(MKDIR) "$${appsdir}"; \
 	$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
+	\
+	$(INSTALL_DATA) "$(INSTALLED)" "$${datadir}"; \
 
 uninstall: uninstall-mime uninstall-man
 	@target=$(DESTDIR)$(prefix); \
@@ -229,6 +236,7 @@ clean:
 		$(UNINSTALL_FOLDER) "./bin"; \
 	fi; \
 	rm -vf "./prefix"; \
+	rm -vf "$(INSTALLED)"; \
 
 distclean: clean debuild-clean
 	@rm -vf "$(DISTPACKAGE)"

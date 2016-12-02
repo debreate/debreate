@@ -1,7 +1,6 @@
 0.7.12
 - Heavy testing for both wx 3.0 & 2.8
 - Update locales
-- Use system manpage for --help command line argument
 
 0.8.0
 - Option to preview/edit control file at build time
