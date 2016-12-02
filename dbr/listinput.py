@@ -187,8 +187,28 @@ class ListCtrlPanel(BorderedPanel):
         self.listarea.GetNextSelected(item)
     
     
+    ## TODO: Doxygen
+    def GetPanelStyle(self, *args, **kwargs):
+        return BorderedPanel.GetWindowStyle(self, *args, **kwargs)
+    
+    
+    ## TODO: Doxygen
+    def GetPanelStyleFlag(self, *args, **kwargs):
+        return BorderedPanel.GetWindowStyleFlag(self, *args, **kwargs)
+    
+    
     def GetSelectedItemCount(self):
         return self.listarea.GetSelectedItemCount()
+    
+    
+    ## TODO: Doxygen
+    def GetWindowStyle(self):
+        return self.listarea.GetWindowStyle()
+    
+    
+    ## TODO: Doxygen
+    def GetWindowStyleFlag(self):
+        return self.listarea.GetWindowStyleFlag()
     
     
     def HitTest(self, point, flags, ptrSubItem=None):
@@ -236,6 +256,16 @@ class ListCtrlPanel(BorderedPanel):
         self.listarea.SetItemTextColour(item, color)
     
     
+    ## TODO: Doxygen
+    def SetPanelStyle(self, *args, **kwargs):
+        return BorderedPanel.SetWindowStyle(self, *args, **kwargs)
+    
+    
+    ## TODO: Doxygen
+    def SetPanelStyleFlag(self, *args, **kwargs):
+        return BorderedPanel.SetWindowStyleFlag(self, *args, **kwargs)
+    
+    
     def SetSingleStyle(self, style, add=True):
         self.listarea.SetSingleStyle(style, add)
     
@@ -245,6 +275,16 @@ class ListCtrlPanel(BorderedPanel):
     #  FIXME: imageId unused; Unknown purpose, not documented
     def SetStringItem(self, index, col, label, imageId=None):
         self.listarea.SetStringItem(index, col, label)
+    
+    
+    ## TODO: Doxygen
+    def SetWindowStyle(self, *args, **kwargs):
+        return self.listarea.SetWindowStyle(*args, **kwargs)
+    
+    
+    ## TODO: Doxygen
+    def SetWindowStyleFlag(self, *args, **kwargs):
+        return self.listarea.SetWindowStyleFlag(*args, **kwargs)
 
 
 
