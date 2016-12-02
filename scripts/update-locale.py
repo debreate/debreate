@@ -9,10 +9,6 @@ from scripts_globals import required_locale_files
 from scripts_globals import root_dir
 
 
-# Updates the 'locale/debreate.pot' file
-def UpdateMain():
-    pass
-
 for F in required_locale_files:
     if not os.path.isfile(F):
         print('[ERROR] Required file not found: {}'.format(F))
