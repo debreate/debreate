@@ -1,4 +1,4 @@
-debreate (0.7.12-dev6-2) xenial; urgency=high
+debreate (0.7.12-dev6-3) xenial; urgency=high
 
   * Add Russian Gettext translation
     Use GitHub URL the check for updates
