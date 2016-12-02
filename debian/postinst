@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-ln -vfs /usr/share/debreate/init.py /usr/bin/debreate
