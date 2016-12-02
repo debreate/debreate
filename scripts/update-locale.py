@@ -18,7 +18,20 @@ for F in required_locale_files:
         print('[ERROR] Required file not found: {}'.format(F))
         sys.exit(errno.ENOENT)
 
-FILE_pot = 'locale/debreate.pot'
+def ConcatPaths(root, tail):
+    if not root:
+        return tail.replace('//', '/')
+    
+    return '{}/{}'.format(root, tail).replace('//', '/')
+
+source_root = os.path.dirname(os.path.dirname(__file__))
+DIR_locale = ConcatPaths(source_root, 'locale')
+
+if not os.path.isdir(DIR_locale):
+    print('ERROR: Locale directory does not exist: {}'.format(DIR_locale))
+    sys.exit(1)
+
+FILE_pot = ConcatPaths(DIR_locale, 'debreate.pot')
 YEAR = time.strftime('%Y')
 
 # Make sure we are using a clean slate
@@ -126,7 +139,7 @@ if os.path.isfile(FILE_pot):
     
     print('\nMerging locales ...')
     
-    for ROOT, DIRS, FILES in os.walk('locale'):
+    for ROOT, DIRS, FILES in os.walk(DIR_locale):
         for F in FILES:
             if F.endswith('.po'):
                 F = '{}/{}'.format(ROOT, F)
