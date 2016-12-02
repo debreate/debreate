@@ -25,7 +25,6 @@ TEMP.close()
 
 # Extract version number
 version_string = changelog_data[0]
-#changelog_data = changelog_data[1:]
 
 # Check for same version entry
 entry_exists = False
@@ -52,14 +51,14 @@ version_data[0] = 'debreate ({}) {}; urgency={}'.format(version_string, DIST, UR
 
 for L in version_data:
     if L.startswith('- '):
-        version_data[changelog_data.index(L)] = '    {}'.format(L[2:])
+        version_data[changelog_data.index(L)] = '    {}'.format(L[2:]).rstrip(' \t')
+        continue
     
-    # Indented lines
-    else:
-        S = L.strip(' ')
-        if S.startswith('- '):
-            version_data[changelog_data.index(L)] = '    {}'.format(S)
+    # Preserve formatting/indentation of other lines (must begin with '- ', '* ', or '+ ')
+    if L.strip(' \t')[:2] in ('- ', '* ', '+ '):
+        version_data[changelog_data.index(L)] = '  {}'.format(L).rstrip(' \t')
 
+# Add an asterix to first listed change
 version_data[1] = version_data[1].replace('    ', '  * ')
 
 version_data.insert(1, '')
