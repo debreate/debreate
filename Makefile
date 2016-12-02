@@ -249,7 +249,7 @@ dist: debuild-clean
 	@file "$(DISTPACKAGE)"
 
 help:
-	echo "Usage:"; \
+	@echo "Usage:"; \
 	\
 	echo "\tmake [command]\n"; \
 	\
@@ -258,23 +258,42 @@ help:
 	echo "\thelp"; \
 	echo "\t\t- Show this help dialog\n"; \
 	\
-	echo "\tall|build"; \
-	echo "\t\t- Create `tput bold`debreate`tput sgr0` executable (same as invoking"; \
+	echo "\tall"; \
+	echo "\t\t- Create `tput bold`$(PACKAGE)`tput sgr0` executable (same as invoking"; \
 	echo "\t\t  `tput bold`make`tput sgr0` with no arguments)\n"; \
 	\
 	echo "\tinstall"; \
-	echo "\t\t- Install `tput bold`debreate`tput sgr0` executable & data files onto"; \
-	echo "\t\t  the system\n"; \
+	echo "\t\t- Install `tput bold`$(PACKAGE)`tput sgr0` executable & data files onto"; \
+	echo "\t\t  the system"; \
+	echo "\t\t- Calls `tput bold`install-mime`tput sgr0` & `tput bold`install-man`tput sgr0`\n"; \
+	\
+	echo "\tuninstall"; \
+	echo "\t\t- Remove all installed Debreate files from"; \
+	echo "\t\t  the system"; \
+	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0` & `tput bold`uninstall-man`tput sgr0`\n"; \
+	\
+	echo "\tinstall-icons"; \
+	echo "\t\t- Install icons for Debreate projects MimeType"; \
+	echo "\t\t  registration\n"; \
+	\
+	echo "\tuninstall-icons"; \
+	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
 	\
 	echo "\tinstall-man"; \
 	echo "\t\t- Install & compress Manpage files\n"; \
 	\
-	echo "\tuninstall"; \
-	echo "\t\t- Remove all installed Debreate files from"; \
-	echo "\t\t  the system\n"; \
-	\
 	echo "\tuninstall-man"; \
 	echo "\t\t- Remove Debreate Manpages from system\n"; \
+	\
+	echo "\tinstall-mime"; \
+	echo "\t\t- Register MimeType information for Debreate"; \
+	echo "\t\t  projects"; \
+	echo "\t\t- Calls `tput bold`install-icons`tput sgr0`\n"; \
+	\
+	echo "\tuninstall-mime"; \
+	echo "\t\t- Unregister Debreate project MimeType"; \
+	echo "\t\t  information"; \
+	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
