@@ -705,7 +705,7 @@ class Panel(wx.ScrolledWindow):
         if install_output == None:
             ShowErrorDialog(
                 GT(u'Could not install package: {}'),
-                GT(u'An unknonw error occurred'),
+                GT(u'An unknown error occurred'),
                 __name__
                 )
             
