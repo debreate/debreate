@@ -104,7 +104,7 @@ TT_changelog = {
     u'package': TT_control[u'package'],
     u'version': TT_control[u'version'],
     u'dist': GT(u'Name of Debian/Ubuntu/etc. target distribution'),
-    u'urgency': GT(u'Urgency of this update'),
+    u'urgency': TT_control[u'priority'],
     u'maintainer': TT_control[u'maintainer'],
     u'email': TT_control[u'email'],
     u'changes': GT(u'List new changes here, separated one per line'),
