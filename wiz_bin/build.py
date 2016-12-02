@@ -565,7 +565,7 @@ class Panel(wx.ScrolledWindow):
         cont = False
         
         # Dialog for save destination
-        ttype = GT(u'Debian Packages')
+        ttype = GT(u'Debian packages')
         if UseCustomDialogs():
             save_dia = SaveFile(self)
             save_dia.SetFilter(u'{}|*.deb'.format(ttype))
