@@ -42,6 +42,8 @@
     - wx 2.8 compatibility is retained
 - Misc:
   - Added Debian maintainer scripts for (un)installation
+    - postinst: Creates a symbolic link to executable
+    - prerm: Deletes the symbolic when when package is uninstalled
     - postrm: Cleans up any residual files in /usr/share/debreate
   - Added/Altered some helper scripts for source management
     - 'add-changes' adds new changes to changelog
