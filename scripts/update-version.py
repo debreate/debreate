@@ -52,3 +52,4 @@ UpdateSingleLineFile(version_files['application'], 'VERSION_min = ', newvalue=VE
 UpdateSingleLineFile(version_files['application'], 'VERSION_rel = ', newvalue=VER_REL)
 UpdateSingleLineFile(version_files['application'], 'VERSION_dev = ', newvalue=VERSION_dev)
 UpdateSingleLineFile(version_files['locale'], '"Project-Id-Version: Debreate ', suffix='\\n"')
+UpdateSingleLineFile(version_files['makefile'], 'VERSION = ', newvalue=VERSION)
