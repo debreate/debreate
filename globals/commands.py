@@ -25,6 +25,7 @@ if not CMD_fakeroot:
 
 CMD_gdebi = CommandExists(u'gdebi')
 CMD_gdebi_gui = CommandExists(u'gdebi-gtk')
+CMD_gvfs_trash = CommandExists(u'gvfs-trash')
 CMD_gzip = CommandExists(u'gzip')
 CMD_lintian = CommandExists(u'lintian')
 CMD_md5sum = CommandExists(u'md5sum')
