@@ -1,7 +1,7 @@
 # Debreate - Debian Package Builder
-# Copyright (C) 2011 Jordan Irwin
-# This file is distributed under the same license as the debreate package.
-# Jordan Irwin <antumdeluge@gmail.com>, 2011.
+# Copyright © 2016 Jordan Irwin
+# This file is distributed under the same license as the Debreate package.
+# Jordan Irwin <antumdeluge@gmail.com>, 2016.
 #
 # NOTES:
 #   If "%s" or "{}" is in the msgid, be sure to put it in
@@ -14,7 +14,7 @@ msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
         "POT-Creation-Date: 2016-12-02 02:56-0800\n"
-        "PO-Revision-Date: 2016-11-18 02:50-0800\n"
+        "PO-Revision-Date: 2016-12-02 07:58-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Spanish <antumdeluge@gmail.com>\n"
         "Language: es\n"
@@ -23,7 +23,7 @@ msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Content-Transfer-Encoding: 8bit\n"
 
 msgid   "A compatible package manager could not be found on the system"
-msgstr  ""
+msgstr  "No se encontró un administrador de paquetes compatible en el sistema"
 
 msgid   "A file named \"{}\" already exists. Do you want to replace it?"
 msgstr  "Ya existe un nombre de archivo \"{}\". ¿Sobrescribirlo?"
@@ -44,55 +44,55 @@ msgid   "Add File"
 msgstr  "Añadir Archivo"
 
 msgid   "Add Folder"
-msgstr  "Añadir Directorio"
+msgstr  "Añadir Carpeta"
 
 msgid   "Add as alternative to selected dependency packages in list"
-msgstr  ""
+msgstr  "Añadir como alternativas a los paquetes de dependencias seleccionados"
 
 msgid   "Add dependency package to list"
-msgstr  ""
+msgstr  "Añadir de paquete de dependencia a la lista"
 
 msgid   "Add manpage"
-msgstr  ""
+msgstr  "Añadir de manpage"
 
 msgid   "Add selected file/folder to list"
-msgstr  ""
+msgstr  "Añadir de archivo/carpeta a la lista"
 
 msgid   "Adding file: {}/{}"
-msgstr  ""
+msgstr  "Añadir de archivo: {}/{}"
 
 msgid   "An error occurred attempting to contact remote website:"
-msgstr  ""
+msgstr  "Se ocurrió un error al intentar ponerse en contacto con el sitio web remoto:"
 
 msgid   "An error occurred during installation"
-msgstr  ""
+msgstr  "Se ocurrió un error durante la instalación"
 
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Se occurió un error al intentar eliminar la ruta provisional"
 
 msgid   "An unknown error occurred"
-msgstr  ""
+msgstr  "Se ocurrió un error desconocido"
 
 msgid   "App location: {}"
-msgstr  ""
+msgstr  "Instalado en: {}"
 
 msgid   "Append"
-msgstr  "Adjuntar"
+msgstr  "Agregar"
 
 msgid   "Append current category to list"
-msgstr  ""
+msgstr  "Agregar la categoría seleccionada a la lista"
 
 msgid   "Application:"
-msgstr  ""
+msgstr  "Aplicación:"
 
 msgid   "Architecture"
 msgstr  "Arquitectura"
 
 msgid   "Are you sure you want to continue?"
-msgstr  ""
+msgstr  "¿Seguro qué deseas continuar?"
 
 msgid   "Attempting to install package: {}"
-msgstr  ""
+msgstr  "Intentando instalar el paquete: {}"
 
 msgid   "Auto-Link Executables"
 msgstr  "Enlaces de Ejecutables"
@@ -101,61 +101,61 @@ msgid   "Auto-Link Help"
 msgstr  "Ayuda de Enlaces"
 
 msgid   "Bad File Name"
-msgstr  "Nombre del Archivo Mal"
+msgstr  "Nombre de Archivo Malformateado"
 
 msgid   "Breaks"
 msgstr  "Rompe"
 
 msgid   "Browse"
-msgstr  "Buscar"
+msgstr  "Navegar"
 
 msgid   "Browse for target installation directory"
-msgstr  ""
+msgstr  "Navegar por el directorio de destino"
 
 msgid   "Build"
 msgstr  "Empaquetar"
 
 msgid   "Build Complete"
-msgstr  ""
+msgstr  "Empaquetar Completada"
 
 msgid   "Build a package from an existing build tree"
-msgstr  "Construir un paquete de una ruta existente"
+msgstr  "Construir un paquete de una directorio formateado existente"
 
 msgid   "Building"
-msgstr  "Construyendo"
+msgstr  "Empaquetando"
 
 msgid   "Building a Debian Package with Debreate"
-msgstr  "Construyendo un Paquete de Debian con Debreate"
+msgstr  "Empaquetar un Paquete de Debian con Debreate"
 
 msgid   "Building debs from source"
-msgstr  "Empaquetar deb de la fuente"
+msgstr  "Empaquetar paquetes deb de la fuente"
 
 msgid   "Cancel"
 msgstr  "Cancelar"
 
 msgid   "Cancel build"
-msgstr  ""
+msgstr  "Cancelar empaquetar"
 
 msgid   "Cannot Continue"
-msgstr  "No Se Puede Continuar"
+msgstr  "No se Puede Continuar"
 
 msgid   "Cannot create config directory, file exists"
-msgstr  ""
+msgstr  "No se puede crear el directorio de configuración, ya existe un archivo"
 
 msgid   "Cannot decode, unrecognized mimetype: {}"
-msgstr  ""
+msgstr  "No se puede descifrar, tipo MIME no reconocido: {}"
 
 msgid   "Cannot install package"
-msgstr  ""
+msgstr  "No se puede instalar el paquete"
 
 msgid   "Cannot open config for writing, directory exists"
-msgstr  ""
+msgstr  "No se puede abrir el archivo de configuración para editar, ya existe directorio"
 
 msgid   "Cannot run \"fakeroot dpkg\""
-msgstr  ""
+msgstr  "No se puede ejecutar \"fakeroot dpkg\""
 
 msgid   "Categories dictate where the launcher will be located in the system menu"
-msgstr  ""
+msgstr  "Las categorías determinan dónde se ubicará el lanzador en el menú del sistema"
 
 msgid   "Category"
 msgstr  "Categoría"
@@ -164,7 +164,7 @@ msgid   "Changelog"
 msgstr  "Registro de Cambios"
 
 msgid   "Changelog mimetype: {}"
-msgstr  ""
+msgstr  "Tipo MIME del registro de cambios: {}"
 
 msgid   "Changes"
 msgstr  "Cambios"
@@ -173,28 +173,28 @@ msgid   "Check for update"
 msgstr  "Verificación de actualización"
 
 msgid   "Check if a new version is available for download"
-msgstr  ""
+msgstr  "Comprobar si hay una versión actualizada disponible"
 
 msgid   "Check package for errors with lintian"
-msgstr  "Comprobar al paquete con lintian"
+msgstr  "Comprobar si hay errores en el paquete con lintian"
 
 msgid   "Checking package for errors"
 msgstr  "Comprobando el paquete para errores"
 
 msgid   "Checking {}"
-msgstr  ""
+msgstr  "Comprobando {}"
 
 msgid   "Checks the package for warnings & errors according to lintian specifications"
-msgstr  ""
+msgstr  "Comprueba el paquete de advertencias y errores según las especificaciones de lintian"
 
 msgid   "Choose Directory"
-msgstr  "Elegir un Directorio"
+msgstr  "Seleccionar Directorio"
 
 msgid   "Choose Filename"
-msgstr  ""
+msgstr  "Seleccionar Nombre de Archivo"
 
 msgid   "Choose Target Directory"
-msgstr  "Eligir un Directorio de Destino"
+msgstr  "Seleccionar Directorio de Destino"
 
 msgid   "Clear"
 msgstr  "Vaciar"
@@ -209,19 +209,19 @@ msgid   "Clear categories?"
 msgstr  "¿Eliminar todas las categorías?"
 
 msgid   "Clear category list"
-msgstr  ""
+msgstr  "Vaciar la lista de categorías"
 
 msgid   "Clear file list"
-msgstr  ""
+msgstr  "Vaciar la lista de archivos"
 
 msgid   "Clear the list of dependency packages"
-msgstr  ""
+msgstr  "Vaciar la lista de paquetes de dependencia"
 
 msgid   "Code Contributor"
-msgstr  ""
+msgstr  "Contribuidor del Código"
 
 msgid   "Command executed: {}"
-msgstr  ""
+msgstr  "Comando ejecutado: {}"
 
 msgid   "Comment"
 msgstr  "Comentario"
@@ -248,10 +248,10 @@ msgid   "Control"
 msgstr  ""
 
 msgid   "Control File Preview"
-msgstr  ""
+msgstr  "Previsualizar del Archivo Control"
 
 msgid   "Control files"
-msgstr  "Archivos de control"
+msgstr  "Archivos control"
 
 msgid   "Converting string argument \"jobs\" to tuple"
 msgstr  ""
@@ -263,20 +263,19 @@ msgid   "Copyright"
 msgstr  "Derecho de Autor"
 
 msgid   "Could not build .deb package"
-msgstr  ""
+msgstr  "No se pudo construir el paquete .deb"
 
 msgid   "Could not create changelog"
-msgstr  ""
+msgstr  "No se pudo construir el registro de cambios"
 
 msgid   "Could not create configuration, exiting ..."
-msgstr  ""
+msgstr  "No se pudo construir el archivo de configuración, saliendo ..."
 
 msgid   "Could not free stage directory: {}"
-msgstr  ""
+msgstr  "No se pudo liberar el directorio temporario: {}"
 
-#, fuzzy
 msgid   "Could not install package: {}"
-msgstr  "No se pudo instalar {}"
+msgstr  "No se pudo instalar paquete: {}"
 
 msgid   "Could not locate the following files:"
 msgstr  "Los archivos siguientes no se encuentran:"
@@ -348,14 +347,14 @@ msgid   "Debreate project files"
 msgstr  "Archivos de proyecto de Debreate"
 
 msgid   "Debug"
-msgstr  ""
+msgstr  "Depurar"
 
 msgid   "Delete build tree"
-msgstr  "Eliminar la ruta provisional"
+msgstr  "Eliminar la directorio temporario"
 
 #, fuzzy
 msgid   "Delete staged directory tree after package has been created"
-msgstr  "Elimanar la ruta provisional despeus de construir el paquete"
+msgstr  "Elimanar la directorio temporario despeus de construir el paquete"
 
 msgid   "Dependencies"
 msgstr  "Dependencias"
@@ -367,7 +366,7 @@ msgid   "Dependencies to be added"
 msgstr  ""
 
 msgid   "Dependency/Conflict Package Name"
-msgstr  ""
+msgstr  "Nombre del Paquede de Dependencia/Conflicto"
 
 msgid   "Depends"
 msgstr  "Depende de"
@@ -376,16 +375,16 @@ msgid   "Details"
 msgstr  "Detalles"
 
 msgid   "Details saved to {}"
-msgstr  "Se guardó unas detalles a {}"
+msgstr  "Se guardó detalles a {}"
 
 msgid   "Developer"
-msgstr  "Desarrollo"
+msgstr  "Desarrollador"
 
 msgid   "Directory where scripts should create symlinks"
 msgstr  ""
 
 msgid   "Directory:"
-msgstr  ""
+msgstr  "Directorio"
 
 msgid   "Displays a notification in the system panel when launched"
 msgstr  "Demuestra una notificación en el panel del system al iniciarse"
@@ -405,7 +404,7 @@ msgid   "Email"
 msgstr  "Correo"
 
 msgid   "Empty password"
-msgstr  ""
+msgstr  "Contraseña vacía"
 
 msgid   "Encoding"
 msgstr  "Codificación"
@@ -417,11 +416,12 @@ msgid   "Error"
 msgstr  ""
 
 msgid   "Error ID"
-msgstr  ""
+msgstr  "ID de Error"
 
 msgid   "Error reading changelog: {}\n"
         "\t"
-msgstr  ""
+msgstr  "Error al cargar el registro de cambios: {}\n"
+        "\t"
 
 msgid   "Error: Can't change log window font"
 msgstr  ""
@@ -439,16 +439,16 @@ msgid   "Executables from file list to be linked against"
 msgstr  ""
 
 msgid   "Exit Debreate"
-msgstr  ""
+msgstr  "Salir de Debreate"
 
 msgid   "Expected string for staging target, instead got"
 msgstr  ""
 
 msgid   "Export launcher to text file"
-msgstr  ""
+msgstr  "Exportar lanzador al archivo de texto"
 
 msgid   "Exporting file list:"
-msgstr  ""
+msgstr  "Exportando lista de archivos:"
 
 msgid   "Exporting {} field"
 msgstr  ""
@@ -463,7 +463,7 @@ msgid   "File"
 msgstr  "Archivo"
 
 msgid   "File Count"
-msgstr  ""
+msgstr  "Cuenta de Archivos"
 
 msgid   "File Exists"
 msgstr  "Archivo Existe"
@@ -475,7 +475,7 @@ msgid   "File list failed to resize. Forcing manual resize to target width: {}"
 msgstr  ""
 
 msgid   "File not found: {}"
-msgstr  ""
+msgstr  "No se encuentra el archivo: {}"
 
 msgid   "Filename"
 msgstr  "Nombre del archivo"
@@ -487,28 +487,29 @@ msgid   "Files to be added to package & their target directories"
 msgstr  ""
 
 msgid   "Font Size"
-msgstr  "Tamaño de Fuente"
+msgstr  "Tamaño del Texto"
 
 msgid   "For a video tutorial check the link below."
 msgstr  "Para un video instructivo de hacer clic en el enlace mas abajo."
 
+#, fuzzy
 msgid   "Formatted changelog entries (editable)"
-msgstr  ""
+msgstr  "Registro de cambios (editable)"
 
 msgid   "General Contributor"
 msgstr  "Colaborador General"
 
 msgid   "Generate Template"
-msgstr  ""
+msgstr  "Generar Plantilla"
 
 msgid   "Generate scripts"
-msgstr  "Producir scripts"
+msgstr  "Generar scripts"
 
 msgid   "Getting files from {}"
 msgstr  "Recogiendo archivos de {}"
 
 msgid   "Getting installed size"
-msgstr  ""
+msgstr  "Determinando tamaño de la instalación"
 
 msgid   "GitHub Project"
 msgstr  "Página del Proyecto en GitHub"
@@ -559,7 +560,7 @@ msgid   "Homepage"
 msgstr  "Página Principal"
 
 msgid   "How to use Auto-Link"
-msgstr  ""
+msgstr  "Como usar Enlace Automático"
 
 msgid   "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
 msgstr  "Como usar Enlace Automático: Presione el botón IMPORTAR para importar cualquier ejecutable desde la sección de Archivos. Presione el botón GENERAR. Scripts anteriores y posteriores a la instalación se crea secuencias de comandos que colocará enlaces simbólicos a los ejecutables en la ruta que aparece arriba."
