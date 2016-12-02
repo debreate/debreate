@@ -11,7 +11,6 @@
 import wx
 
 from dbr.language           import GT
-from globals.characters     import ARROW_RIGHT
 from globals.commands       import CMD_gdebi_gui
 from globals.constants      import system_licenses_path
 from globals.ident          import ID_BUILD
@@ -164,7 +163,7 @@ TT_build = {
     u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
-        GT(u'See: Help {0} Reference {0} Lintian Tags Explanation').format(ARROW_RIGHT),
+        GT(u'See: Help ➜ Reference ➜ Lintian Tags Explanation'),
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
     u'build': GT(u'Start building'),
