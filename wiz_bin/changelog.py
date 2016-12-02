@@ -14,7 +14,6 @@ from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
-from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import FID_EMAIL
@@ -46,7 +45,7 @@ class Panel(wx.ScrolledWindow):
         self.ti_dist = wx.TextCtrl(self, name=txt_dist.Name)
         
         opts_urgency = (
-            u'low', u'high',
+            u'low', u'medium', u'high', u'emergency',
             )
         
         txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
