@@ -107,8 +107,7 @@ class ListCtrlPanel(BorderedPanel):
         self.SetSizer(self.layout_V1)
         self.Layout()
         
-        # Only need to bind event for wx 3.0
-        if wx.MAJOR_VERSION > 2:
+        if wx.MAJOR_VERSION == 3 and wx.MINOR_VERSION == 0:
             wx.EVT_SIZE(self, self.OnResize)
     
     
@@ -196,6 +195,11 @@ class ListCtrlPanel(BorderedPanel):
     
     
     ## TODO: Doxygen
+    def GetListCtrl(self):
+        return self.listarea
+    
+    
+    ## TODO: Doxygen
     def GetNextItem(self, item, geometry=wx.LIST_NEXT_ALL, state=wx.LIST_STATE_DONTCARE):
         return self.listarea.GetNextItem(item, geometry, state)
     
@@ -253,8 +257,9 @@ class ListCtrlPanel(BorderedPanel):
     #    the remaining space.
     #  FIXME: Unknown if this bug persists in wx 3.1
     def OnResize(self, event=None):
-        # FIXME: -10 should be a dynamic number set by the sizer's padding
-        self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
+        if (self.GetWindowStyleFlag()) & wx.LC_REPORT:
+            # FIXME: -10 should be a dynamic number set by the sizer's padding
+            self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
         
         if event:
             event.Skip()
@@ -291,8 +296,9 @@ class ListCtrlPanel(BorderedPanel):
         return BorderedPanel.SetWindowStyleFlag(self, *args, **kwargs)
     
     
-    def SetSingleStyle(self, style, add=True):
-        self.listarea.SetSingleStyle(style, add)
+    ## TODO: Doxygen
+    def SetSingleStyle(self, *args, **kwargs):
+        self.listarea.SetSingleStyle(*args, **kwargs)
     
     
     ## TODO: Doxygen
@@ -479,6 +485,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
     #  Uses parent width & its children to determine
     #    desired width.
     #  FIXME: Unknown if this bug persists in wx 3.1
+    #  FIXME: Do not override, should be inherited from ListCtrlPanel
     def OnResize(self, event=None):
         if event:
             event.Skip(True)
