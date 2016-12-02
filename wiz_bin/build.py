@@ -195,10 +195,9 @@ class Panel(wx.ScrolledWindow):
         if os.path.isdir(u'{}/DEBIAN'.format(stage_dir)):
             c = u'rm -r "{}"'.format(stage_dir)
             if commands.getstatusoutput(c.encode(u'utf-8'))[0]:
-                err_msg1 = GT(u'Cannot continue:')
-                err_msg2 = GT(u'Could not delete staged directory: {}').format(stage_dir)
-                wx.MessageDialog(self, u'{}\n{}'.format(err_msg1, err_msg2),
-                        GT(u'Error'), style=wx.OK|wx.ICON_ERROR).ShowModal()
+                err_msg = GT(u'Could not free stage directory: {}').format(stage_dir)
+                wx.MessageDialog(self, err_msg, GT(u'Cannot Continue'),
+                        style=wx.OK|wx.ICON_ERROR).ShowModal()
                 
                 return (dbrerrno.EEXIST, None)
         
