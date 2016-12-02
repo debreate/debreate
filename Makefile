@@ -1,7 +1,7 @@
 # This is a generic Makefile. It will only work on systems with GNU make.
 
 PACKAGE = debreate
-VERSION = 0.7.11
+VERSION = 0.7.12
 BINDIR = bin
 DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
@@ -210,6 +210,7 @@ clean:
 	rm -vf "./prefix"; \
 
 distclean: clean debuild-clean
+	@rm -vf "$(DISTPACKAGE)"
 
 debuild-clean:
 	@rm -vrf "debian/debreate"
