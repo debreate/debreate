@@ -334,7 +334,7 @@ class DetailedMessageDialog(wx.Dialog):
         del clipboard
         print(u'DEBUG: Clipboard object deleted')
         
-        wx.MessageBox(GT(u'FIXME: Details not copied to clipboard'), GT(u'Debug'))
+        wx.MessageBox(u'FIXME: Details not copied to clipboard', GT(u'Debug'))
     
     
     ## TODO: Doxygen
