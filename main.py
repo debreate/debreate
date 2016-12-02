@@ -464,7 +464,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 wx.LaunchDefaultBrowser(APP_homepage)
         
         elif isinstance(current, (unicode, str)):
-            err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
+            err_msg = GT(u'An error occurred attempting to contact remote website:')
             err_msg = u'{}\n\n{}'.format(err_msg, current)
             
             Logger.Error(__name__, err_msg)
