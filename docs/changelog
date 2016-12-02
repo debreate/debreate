@@ -57,6 +57,7 @@
   - Show which required fields are empty in build dialog
   - Use custom hyperlink controls
   - Use GitHub URL to check for updates
+  - Use monospaced font for some multi-line text input fiels
   - Use os.chmod module in build rather than system chmod command
 - Translations:
   - Add Russian Gettext locale
