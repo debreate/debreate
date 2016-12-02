@@ -112,62 +112,77 @@ class ListCtrlPanel(BorderedPanel):
             wx.EVT_SIZE(self, self.OnResize)
     
     
+    ## TODO: Doxygen
     def AppendColumn(self, heading, fmt=wx.LIST_FORMAT_LEFT, width=-1):
         self.listarea.AppendColumn(heading, fmt, width)
     
     
+    ## TODO: Doxygen
     def AppendStringItem(self, items):
         self.listarea.AppendStringItem(items)
     
     
+    ## TODO: Doxygen
     def Arrange(self, flag=wx.LIST_ALIGN_DEFAULT):
         self.listarea.Arrange(flag)
     
     
+    ## TODO: Doxygen
     def ClearAll(self):
         self.listarea.ClearAll()
     
     
+    ## TODO: Doxygen
     def DeleteAllItems(self):
         self.listarea.DeleteAllItems()
     
     
+    ## TODO: Doxygen
     def DeleteItem(self, item):
         self.listarea.DeleteItem(item)
     
     
+    ## TODO: Doxygen
     def EditLabel(self, item):
         self.listarea.EditLabel(item)
     
     
+    ## TODO: Doxygen
     def GetColumnCount(self):
         return self.listarea.GetColumnCount()
     
     
+    ## TODO: Doxygen
     def GetColumnWidth(self, col):
         return self.listarea.GetColumnWidth(col)
     
     
+    ## TODO: Doxygen
     def GetCountPerPage(self):
         return self.listarea.GetCountPerPage()
     
     
+    ## TODO: Doxygen
     def GetFirstSelected(self):
         return self.listarea.GetFirstSelected()
     
     
+    ## TODO: Doxygen
     def GetFocusedItem(self):
         return self.listarea.GetFocusedItem()
     
     
+    ## TODO: Doxygen
     def GetItem(self, row, col):
         return self.listarea.GetItem(row, col)
     
     
+    ## TODO: Doxygen
     def GetItemCount(self):
         return self.listarea.GetItemCount()
     
     
+    ## TODO: Doxygen
     def GetItemText(self, item, col=0):
         if wx.MAJOR_VERSION > 2:
             return self.listarea.GetItemText(item, col)
@@ -175,14 +190,17 @@ class ListCtrlPanel(BorderedPanel):
         return self.listarea.GetItem(item, col).GetText()
     
     
+    ## TODO: Doxygen
     def GetItemTextColour(self, item):
         return self.listarea.GetItemTextColour(item)
     
     
+    ## TODO: Doxygen
     def GetNextItem(self, item, geometry=wx.LIST_NEXT_ALL, state=wx.LIST_STATE_DONTCARE):
         return self.listarea.GetNextItem(item, geometry, state)
     
     
+    ## TODO: Doxygen
     def GetNextSelected(self, item):
         self.listarea.GetNextSelected(item)
     
@@ -197,6 +215,7 @@ class ListCtrlPanel(BorderedPanel):
         return BorderedPanel.GetWindowStyleFlag(self, *args, **kwargs)
     
     
+    ## TODO: Doxygen
     def GetSelectedItemCount(self):
         return self.listarea.GetSelectedItemCount()
     
@@ -211,10 +230,12 @@ class ListCtrlPanel(BorderedPanel):
         return self.listarea.GetWindowStyleFlag()
     
     
+    ## TODO: Doxygen
     def HitTest(self, point, flags, ptrSubItem=None):
         return self.listarea.HitTest(point, flags, ptrSubItem)
     
     
+    ## TODO: Doxygen
     def InsertColumn(self, col, heading, fmt=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE):
         self.listarea.InsertColumn(col, heading, fmt, width)
     
@@ -239,19 +260,23 @@ class ListCtrlPanel(BorderedPanel):
             event.Skip()
     
     
+    ## TODO: Doxygen
     def RemoveSelected(self):
         self.listarea.RemoveSelected()
     
     
+    ## TODO: Doxygen
     def SetColumnWidth(self, col, width):
         self.listarea.SetColumnWidth(col, width)
         self.listarea.Layout()
     
     
+    ## TODO: Doxygen
     def SetItemBackgroundColour(self, item, color):
         self.listarea.SetItemBackgroundColour(item, color)
     
     
+    ## TODO: Doxygen
     def SetItemTextColour(self, item, color):
         self.listarea.SetItemTextColour(item, color)
     
