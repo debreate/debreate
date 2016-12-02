@@ -63,6 +63,10 @@ class MD5Hasher:
         temp_list = []
         md5_list = [] # Final list used to write the md5sum file
         for ROOT, DIRS, FILES in os.walk(tempdir):
+            # Ignore the 'DEBIAN' directory
+            if os.path.basename(ROOT) == u'DEBIAN':
+                continue
+            
             for F in FILES:
                 F = u'{}/{}'.format(ROOT, F)
                 md5 = commands.getoutput((u'{} -t "{}"'.format(CMD_md5sum, F)))
