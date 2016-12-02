@@ -132,6 +132,9 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     
     FR_dialog.Destroy()
     
+    # Delete first run dialog from memory
+    del(FR_dialog)
+    
 
 if exit_now:
     sys.exit(exit_now)
