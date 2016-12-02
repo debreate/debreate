@@ -49,6 +49,9 @@ BITMAPS = bitmaps/*.png
 
 MENU = debreate.desktop
 
+FILES_MAN = \
+	man/man1/$(PACKAGE).1
+
 DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
 
 DISTDIRS = \
@@ -85,7 +88,7 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
-install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) install-mime
+install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) install-mime install-man
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -155,7 +158,7 @@ install-mime: $(MIMEFILE) install-icons
 	fi; \
 	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
 
-uninstall: uninstall-mime
+uninstall: uninstall-mime uninstall-man
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -175,6 +178,24 @@ uninstall: uninstall-mime
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
+
+install-man: $(FILES_MAN)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_root="$${target}/$(DATAROOT)"; \
+	for f in $(FILES_MAN); do \
+		filename=$$(basename "$${f}") && mandir="$${data_root}/$$(dirname $${f})"; \
+		if [ ! -d "$${mandir}" ]; then \
+			$(MKDIR) "$${mandir}"; \
+		fi; \
+		$(INSTALL_DATA) "$${f}" "$${mandir}"; \
+		gzip -vf9 "$${mandir}/$${filename}"; \
+	done; \
+
+uninstall-man:
+	@target="$(DESTDIR)$(prefix)"; \
+	man_dir="$${target}/$(DATAROOT)/man"; \
+	echo "Manual dir: $${man_dir}"; \
+	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
 
 uninstall-icons:
 	@target="$(DESTDIR)$(prefix)"; \
@@ -245,9 +266,15 @@ help:
 	echo "\t\t- Install `tput bold`debreate`tput sgr0` executable & data files onto"; \
 	echo "\t\t  the system\n"; \
 	\
+	echo "\tinstall-man"; \
+	echo "\t\t- Install & compress Manpage files\n"; \
+	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system\n"; \
+	\
+	echo "\tuninstall-man"; \
+	echo "\t\t- Remove Debreate Manpages from system\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
@@ -267,7 +294,7 @@ help:
 	\
 	echo "\tdebuild-signed"; \
 	echo "\t\t- Create a source distribution package & sign"; \
-	echo "\t\t  it for upload to a repository\n"; \
+	echo "\t\t  the .changes file for upload to a repository\n"; \
 	\
 	echo "\tclean"; \
 	echo "\t\t- Delete Debreate binary & any compiled Python"; \
@@ -288,7 +315,7 @@ help:
 	echo "\tDESTDIR"; \
 	echo "\t\t- Prepends a target directory to prefix"; \
 	echo "\t\t- Files will be installed under DESTDIR\prefix"; \
-	echo "\t\t- DESTDIR is not written to the `tput bold`debreate`tput sgr0`"; \
+	echo "\t\t- DESTDIR is not written to the `tput bold`$(PACKAGE)`tput sgr0`"; \
 	echo "\t\t  executable so it will not be able to find the"; \
 	echo "\t\t  `tput bold`init.py`tput sgr0` script"; \
 	echo "\t\t- If used with `tput bold`uninstall`tput sgr0` it must match that of"; \
