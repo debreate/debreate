@@ -20,6 +20,17 @@ class MultilineTextCtrl(wx.TextCtrl):
                 size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
         wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE|wx.BORDER_NONE,
                 validator, name)
+    
+    
+    ## Sets the font size of the text area
+    #  
+    #  \param point_size
+    #        \b \e int : New point size of font
+    def SetFontSize(self, point_size):
+        font = self.GetFont()
+        font.SetPointSize(point_size)
+        
+        self.SetFont(font)
 
 
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
@@ -119,6 +130,13 @@ class MultilineTextCtrlPanel(BorderedPanel):
         self.textarea.SetFont(font)
     
     
+    ## Sets the font size of the text in the text area
+    #  
+    #  \override dbr.textinput.MultilineTextCtrl.SetFontSize
+    def SetFontSize(self, point_size):
+        self.textarea.SetFontSize(point_size)
+    
+    
     ## TODO: Doxygen
     def SetForegroundColour(self, *args, **kwargs):
         self.textarea.SetForegroundColour(*args, **kwargs)
@@ -186,6 +204,7 @@ class MonospaceTextCtrl(MultilineTextCtrlPanel):
             btn_font.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
     
     
+    ## TODO: Doxygen
     def OnToggleTextSize(self, event=None):
         # Save insertion point
         insertion = self.textarea.GetInsertionPoint()
