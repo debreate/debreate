@@ -1,4 +1,4 @@
-debreate (0.7.12) xenial; urgency=high
+debreate (0.7.12-dev6-2) xenial; urgency=high
 
   * Add Russian Gettext translation
     Use GitHub URL the check for updates
@@ -26,8 +26,11 @@ debreate (0.7.12) xenial; urgency=high
     Fix cancelling progress dialogs
     Progress dialogs optionally show task count
     Menu option to open logs directory
+    Add manpage
+    Use 'man debreate' output for 'debreate --help' option
+    - Uses default manpath if installed, otherwise uses directory man/man1
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 01 Dec 2016 21:52:52 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 01 Dec 2016 22:20:01 -0800
 
 
 debreate (0.7.11) xenial; urgency=low

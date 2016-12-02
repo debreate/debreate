@@ -25,6 +25,9 @@
 - Fix cancelling progress dialogs
 - Progress dialogs optionally show task count
 - Menu option to open logs directory
+- Add manpage
+- Use 'man debreate' output for 'debreate --help' option
+  - Uses default manpath if installed, otherwise uses directory man/man1
 
 0.7.11
 - Add template generation for copyright
