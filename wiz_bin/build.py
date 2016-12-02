@@ -238,10 +238,8 @@ class Panel(wx.ScrolledWindow):
         
         # *** Files *** #
         if u'files' in task_list:
-            # FIXME: Update progress dialog for each file
             UpdateProgress(progress, GT(u'Copying files'))
             
-            # FIXME: Get this in pre build
             files_data = task_list[u'files']
             for FILE in files_data:
                 # Create new directories
@@ -253,7 +251,7 @@ class Panel(wx.ScrolledWindow):
                 FILE = FILE.split(u' -> ')[0]
                 
                 # Remove asteriks from exectuables
-                exe = False # Used to set executable permissions
+                exe = False
                 if FILE[-1] == u'*':
                     exe = True
                     FILE = FILE[:-1]
@@ -364,8 +362,22 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
+        # *** md5sums file *** #
+        # Good practice to create hashes before populating DEBIAN directory
+        if u'md5sums' in task_list:
+            UpdateProgress(progress, GT(u'Creating md5sums'))
+            
+            if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
+                # Couldn't call md5sum command
+                build_progress.Cancel()
+            
+            progress += 1
+        
+        if build_progress.WasCancelled():
+            build_progress.Destroy()
+            return (dbrerrno.ECNCLD, None)
+        
         # *** Scripts *** #
-        # FIXME: Update progress dialog for each script
         if u'scripts' in task_list:
             UpdateProgress(progress, GT(u'Creating scripts'))
             
@@ -429,21 +441,6 @@ class Panel(wx.ScrolledWindow):
             build_progress.Destroy()
             return (dbrerrno.ECNCLD, None)
         
-        # *** md5sums file *** #
-        # Should be the last task before building package
-        if u'md5sums' in task_list:
-            UpdateProgress(progress, GT(u'Creating md5sums'))
-            
-            if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
-                # Couldn't call md5sum command
-                build_progress.Cancel()
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
         # *** Final build *** #
         UpdateProgress(progress, GT(u'Running dpkg'))
         
@@ -464,12 +461,6 @@ class Panel(wx.ScrolledWindow):
         # *** Delete staged directory *** #
         if u'rmstage' in task_list:
             UpdateProgress(progress, GT(u'Removing temp directory'))
-            '''
-            Logger.Debug(__name__, task_msg)
-            
-            wx.Yield()
-            build_progress.Update(progress, task_msg)
-            '''
             
             if commands.getstatusoutput((u'rm -r "{}"'.format(stage_dir)).encode(u'utf-8'))[0]:
                 wx.MessageDialog(build_progress, GT(u'An error occurred when trying to delete the build tree'),
