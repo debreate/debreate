@@ -107,7 +107,9 @@ class ListCtrlPanel(BorderedPanel):
         self.SetSizer(self.layout_V1)
         self.Layout()
         
-        wx.EVT_SIZE(self, self.OnResize)
+        # Only need to bind event for wx 3.0
+        if wx.MAJOR_VERSION > 2:
+            wx.EVT_SIZE(self, self.OnResize)
     
     
     def AppendColumn(self, heading, fmt=wx.LIST_FORMAT_LEFT, width=-1):
@@ -204,15 +206,14 @@ class ListCtrlPanel(BorderedPanel):
         self.listarea.InsertStringItem(index, label)
     
     
-    ## Some workarounds for resizing the list & its columns
+    ## Some bug workarounds for resizing the list & its columns in wx 3.0
     #  
     #  The last column is automatically expanded to fill
-    #  the remaining space.
+    #    the remaining space.
+    #  FIXME: Unknown if this bug persists in wx 3.1
     def OnResize(self, event=None):
-        if wx.MAJOR_VERSION > 2:
-            # Workaround for wx 3.0
-            # FIXME: -10 should be a dynamic number set by the sizer's padding
-            self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
+        # FIXME: -10 should be a dynamic number set by the sizer's padding
+        self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
         
         if event:
             event.Skip()
