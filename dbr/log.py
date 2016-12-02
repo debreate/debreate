@@ -24,7 +24,7 @@ RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 #  A log that will output messages to the terminal &
 #    a log text file.
 #  \param log_level
-#    \b \e int|str : The level at which messages will be output
+#    \b \e int|str : The level at which messages will be output (default is 2 (ERROR))
 #  \param log_path
 #    \b \e str : The file to which messages will be written
 class DebreateLogger:
@@ -38,11 +38,9 @@ class DebreateLogger:
         DEBUG: u'debug',
     }
     
-    def __init__(self, log_level=1, log_path=u'{}/logs'.format(PATH_local)):
+    def __init__(self, log_level=2, log_path=u'{}/logs'.format(PATH_local)):
         ## The level at which to output log messages
-        #  
-        #  Default is ERROR
-        self.log_level = self.ERROR
+        self.log_level = log_level
         
         # Directory where logs is written
         self.log_path = log_path
