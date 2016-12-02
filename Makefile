@@ -142,22 +142,6 @@ install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) install-mime install-man
 	$(MKDIR) "$${appsdir}"; \
 	$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
 
-install-icons: $(MIME_icons)
-	@target="$(DESTDIR)$(prefix)"; \
-	icons_dir="$${target}/$(MIMEICONSDIR)"; \
-	$(MKDIR) "$${icons_dir}"; \
-	for i in $(MIME_icons); do \
-		$(INSTALL_DATA) "$${i}" "$${icons_dir}"; \
-	done; \
-
-install-mime: $(MIMEFILE) install-icons
-	@target="$(DESTDIR)$(prefix)"; \
-	mime_dir="$${target}/$(MIMEDIR)"; \
-	if [ ! -d "$${mime_dir}" ]; then \
-		$(MKDIR) "$${mime_dir}"; \
-	fi; \
-	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
-
 uninstall: uninstall-mime uninstall-man
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
@@ -179,6 +163,22 @@ uninstall: uninstall-mime uninstall-man
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
 
+install-icons: $(MIME_icons)
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(MIMEICONSDIR)"; \
+	$(MKDIR) "$${icons_dir}"; \
+	for i in $(MIME_icons); do \
+		$(INSTALL_DATA) "$${i}" "$${icons_dir}"; \
+	done; \
+
+uninstall-icons:
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(ICONTHEME)"; \
+	if [ -d "$${icons_dir}" ]; then \
+		find "$${icons_dir}" -type f -name "application-x-dbp*" -print -delete; \
+		find "$${icons_dir}" -type d -empty -print -delete; \
+	fi; \
+
 install-man: $(FILES_MAN)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_root="$${target}/$(DATAROOT)"; \
@@ -197,13 +197,13 @@ uninstall-man:
 	echo "Manual dir: $${man_dir}"; \
 	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
 
-uninstall-icons:
+install-mime: $(MIMEFILE) install-icons
 	@target="$(DESTDIR)$(prefix)"; \
-	icons_dir="$${target}/$(ICONTHEME)"; \
-	if [ -d "$${icons_dir}" ]; then \
-		find "$${icons_dir}" -type f -name "application-x-dbp*" -print -delete; \
-		find "$${icons_dir}" -type d -empty -print -delete; \
+	mime_dir="$${target}/$(MIMEDIR)"; \
+	if [ ! -d "$${mime_dir}" ]; then \
+		$(MKDIR) "$${mime_dir}"; \
 	fi; \
+	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
 
 uninstall-mime: uninstall-icons
 	@target="$(DESTDIR)$(prefix)"; \
