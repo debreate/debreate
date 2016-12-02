@@ -218,6 +218,10 @@ class Panel(wx.ScrolledWindow):
             info2 = u'{}\n\n{}'.format(info2, info3)
         
         self.dsp_changes.SetValue(u'\n'.join((info1, details, info2)))
+        
+        # Clear "Changes" text
+        self.ti_changes.Clear()
+        self.ti_changes.SetFocus()
     
     
     ## TODO: Doxygen
