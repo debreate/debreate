@@ -20,7 +20,7 @@ from globals.constants  import COLOR_ERROR
 class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
-        wx.ListView.__init__(self, parent, ID, pos, size, wx.BORDER_NONE|style,
+        wx.ListView.__init__(self, parent, ID, pos, size, style|wx.BORDER_NONE,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
         
