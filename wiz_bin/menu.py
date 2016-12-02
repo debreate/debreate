@@ -19,6 +19,7 @@ from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import ID_MENU
@@ -188,13 +189,10 @@ class Panel(wx.ScrolledWindow):
         for B in btn_catadd, btn_catdel, btn_catclr:
             self.opts_button.append(B)
         
-        # NOTE: wx 3.0 compat
-        if wx.MAJOR_VERSION > 2:
-            self.lst_categories = wx.ListCtrl(self)
-            self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
-        
-        else:
-            self.lst_categories = wx.ListCtrl(self, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+        # FIXME: Allow using multi-select + remove
+        self.lst_categories = ListCtrlPanel(self)
+        # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
+        self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # For manually setting background color after enable/disable
         self.lst_categories.default_color = self.lst_categories.GetBackgroundColour()
