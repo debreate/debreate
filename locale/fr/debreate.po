@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-11-26 23:03-0800\n"
+        "POT-Creation-Date: 2016-12-02 02:56-0800\n"
         "PO-Revision-Date: 2011-12-07 02:10-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: French <philippe.dalet@ac-toulouse.fr>\n"
@@ -43,7 +43,6 @@ msgstr  "Ajouter"
 msgid   "Add File"
 msgstr  "Ajouter des Fichiers"
 
-# ## Files section
 msgid   "Add Folder"
 msgstr  "Ajouter un répertoire"
 
@@ -62,7 +61,7 @@ msgstr  ""
 msgid   "Adding file: {}/{}"
 msgstr  ""
 
-msgid   "An error occurred attempting to retrieve version from remote website:"
+msgid   "An error occurred attempting to contact remote website:"
 msgstr  ""
 
 msgid   "An error occurred during installation"
@@ -71,7 +70,10 @@ msgstr  ""
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Une erreur s'est produite lors de l'essai de destruction de l'arbre de construction"
 
-msgid   "An unknonw error occurred"
+msgid   "An unknown error occurred"
+msgstr  ""
+
+msgid   "App location: {}"
 msgstr  ""
 
 msgid   "Append"
@@ -85,6 +87,9 @@ msgstr  ""
 
 msgid   "Architecture"
 msgstr  "Architecture"
+
+msgid   "Are you sure you want to continue?"
+msgstr  ""
 
 msgid   "Attempting to install package: {}"
 msgstr  ""
@@ -122,7 +127,7 @@ msgstr  "En train de Construire"
 msgid   "Building a Debian Package with Debreate"
 msgstr  "En train de Construire un paquet Debian avec Debreate"
 
-msgid   "Building debs from Source"
+msgid   "Building debs from source"
 msgstr  "Construire Deb à partir du source"
 
 msgid   "Cancel"
@@ -132,10 +137,7 @@ msgid   "Cancel build"
 msgstr  ""
 
 msgid   "Cannot Continue"
-msgstr  ""
-
-msgid   "Cannot continue:"
-msgstr  ""
+msgstr  "Ne peut Continuer"
 
 msgid   "Cannot create config directory, file exists"
 msgstr  ""
@@ -149,7 +151,7 @@ msgstr  ""
 msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
-msgid   "Cannot run \"fakeroot dpkg"
+msgid   "Cannot run \"fakeroot dpkg\""
 msgstr  ""
 
 msgid   "Categories dictate where the launcher will be located in the system menu"
@@ -167,38 +169,20 @@ msgstr  ""
 msgid   "Changes"
 msgstr  "Changements"
 
-msgid   "Check for Update"
+msgid   "Check for update"
 msgstr  "Vérifie les mises à jour"
+
+msgid   "Check if a new version is available for download"
+msgstr  ""
 
 msgid   "Check package for errors with lintian"
 msgstr  "Vérifie le paquet avec lintian"
 
-msgid   "Checking changelog"
-msgstr  "En train de vérifier changelog"
-
-msgid   "Checking copyright"
-msgstr  "En train de vérifier  copyright"
-
-msgid   "Checking create md5sums"
-msgstr  "En train de vérifier  md5sums"
-
-msgid   "Checking delete build tree"
-msgstr  "En train de vérifier la destruction de l'arbre de construction"
-
-msgid   "Checking files"
-msgstr  "En train de vérifier les fichiers"
-
-msgid   "Checking lintian"
-msgstr  "En train d'exécuter lintian"
-
-msgid   "Checking menu launcher"
-msgstr  "En train de vérifier le Menu de lancement"
-
 msgid   "Checking package for errors"
 msgstr  "En train de vérifier les erreurs dans le paquet"
 
-msgid   "Checking scripts"
-msgstr  "En train de vérifier les scripts"
+msgid   "Checking {}"
+msgstr  ""
 
 msgid   "Checks the package for warnings & errors according to lintian specifications"
 msgstr  ""
@@ -266,13 +250,10 @@ msgstr  "Control"
 msgid   "Control File Preview"
 msgstr  ""
 
-msgid   "Control Files"
-msgstr  "Fichiers Control"
+msgid   "Control files"
+msgstr  "Fichiers control"
 
 msgid   "Converting string argument \"jobs\" to tuple"
-msgstr  ""
-
-msgid   "Copy details"
 msgstr  ""
 
 msgid   "Copying files"
@@ -290,11 +271,12 @@ msgstr  ""
 msgid   "Could not create configuration, exiting ..."
 msgstr  ""
 
-msgid   "Could not delete staged directory: {}"
+msgid   "Could not free stage directory: {}"
 msgstr  ""
 
+#, fuzzy
 msgid   "Could not install package: {}"
-msgstr  ""
+msgstr  "Ne peut installer  \"{}\""
 
 msgid   "Could not locate the following files:"
 msgstr  "Ne peut localiser les fichiers suivants:"
@@ -329,7 +311,6 @@ msgstr  "En train de Créer le Menu de lancement"
 msgid   "Creating scripts"
 msgstr  "En train de Créer les scripts"
 
-# ## About dialog
 msgid   "Credits"
 msgstr  "Crédits"
 
@@ -339,36 +320,24 @@ msgstr  "Personnalisé"
 msgid   "Custom filename to use for launcher"
 msgstr  ""
 
-msgid   "Debian Packages"
-msgstr  "Paquets Debian"
-
 msgid   "Debian Policy Manual"
 msgstr  "Manuel des Normes Debian"
 
 msgid   "Debian packages"
-msgstr  ""
+msgstr  "Paquets Debian"
 
-# WARNING:
-# If "%s" or "{}" is in the msgid be sure to put it in the msgstr
-# or parts of Debreate will not function.
-# If you do not wish to translate a line just leave its
-# msgstr blank
-# ## Program name
 msgid   "Debreate"
 msgstr  "Debreate"
 
-# ## Title bar
 msgid   "Debreate - Debian Package Builder"
 msgstr  "Debreate - Constructeur de paquet Debian"
 
-# ## First run message
 msgid   "Debreate First Run"
 msgstr  "Premier Lancement de Debreate"
 
 msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
 msgstr  "Debreate assiste à la construction pour des installations sur des systèmes basés sur Debian. Utiliser les flêches dans le coin droit en haut de la \"Page\" pour naviguer  à travers le programme. Pour des informations sur les paquets Debian utiliser les liens de références dans le menu  \"Aide\"."
 
-# ## First run message
 msgid   "Debreate is up to date!"
 msgstr  "Debreate est à jour!"
 
@@ -378,22 +347,19 @@ msgstr  "Debreate offre la caractéristique des exécutables Auto-Link. "
 msgid   "Debreate project files"
 msgstr  "Fichier Projet Debreate"
 
-msgid   "Debreate projects"
-msgstr  ""
-
 msgid   "Debug"
 msgstr  ""
 
 msgid   "Delete build tree"
 msgstr  "Détruit l'arbre de construction"
 
+#, fuzzy
 msgid   "Delete staged directory tree after package has been created"
-msgstr  ""
+msgstr  "Elimine l'arbre du répertoire temporaire  après que le paquet ait été créé."
 
 msgid   "Dependencies"
 msgstr  "Dépendances"
 
-# ## Dependencies and Conflicts section
 msgid   "Dependencies and Conflicts"
 msgstr  "Dépendances et Conflits"
 
@@ -406,14 +372,12 @@ msgstr  ""
 msgid   "Depends"
 msgstr  "Dépend de"
 
+#, fuzzy
 msgid   "Details"
-msgstr  ""
+msgstr  "Détails"
 
 msgid   "Details saved to {}"
-msgstr  ""
-
-msgid   "Details: {}"
-msgstr  ""
+msgstr  "Détails sauvés dans {}"
 
 msgid   "Developer"
 msgstr  "Developpeur"
@@ -427,7 +391,6 @@ msgstr  ""
 msgid   "Displays a notification in the system panel when launched"
 msgstr  "Affiche une notification dans le panneau système lors du lancement"
 
-# ## Changelog section
 msgid   "Distribution"
 msgstr  "Distribution"
 
@@ -476,22 +439,27 @@ msgstr  "Exécutable pour être lancer"
 msgid   "Executables from file list to be linked against"
 msgstr  ""
 
+msgid   "Exit Debreate"
+msgstr  ""
+
+msgid   "Expected string for staging target, instead got"
+msgstr  ""
+
 msgid   "Export launcher to text file"
+msgstr  ""
+
+msgid   "Exporting file list:"
 msgstr  ""
 
 msgid   "Exporting {} field"
 msgstr  ""
 
 msgid   "Extra Options"
-msgstr  ""
-
-msgid   "FIXME: Details not copied to clipboard"
-msgstr  ""
+msgstr  "Options Extras"
 
 msgid   "Field ID does not exist or match any fields: {}"
 msgstr  ""
 
-# ## Menu and Status bars
 msgid   "File"
 msgstr  "Fichier"
 
@@ -505,6 +473,9 @@ msgid   "File does not exist"
 msgstr  ""
 
 msgid   "File list failed to resize. Forcing manual resize to target width: {}"
+msgstr  ""
+
+msgid   "File not found: {}"
 msgstr  ""
 
 msgid   "Filename"
@@ -525,9 +496,6 @@ msgstr  "Pour un tutoriel vidéo cliquer sur le lien ci-dessous"
 msgid   "Formatted changelog entries (editable)"
 msgstr  ""
 
-msgid   "Gathering control information"
-msgstr  "En train de Récolter les informations control"
-
 msgid   "General Contributor"
 msgstr  ""
 
@@ -538,6 +506,9 @@ msgid   "Generate scripts"
 msgstr  "Génère des scripts"
 
 msgid   "Getting files from {}"
+msgstr  ""
+
+msgid   "Getting installed size"
 msgstr  ""
 
 msgid   "GitHub Project"
@@ -564,8 +535,8 @@ msgstr  "Aller à la Section Fichiers"
 msgid   "Go to Information section"
 msgstr  "Aller à la section Information "
 
-msgid   "Go to Menu Launcher section"
-msgstr  "Aller à la section Menu de Lancement"
+msgid   "Go to Menu launcher section"
+msgstr  ""
 
 msgid   "Go to Scripts section"
 msgstr  "Aller à la Section Scripts"
@@ -612,6 +583,9 @@ msgstr  ""
 msgid   "Import launcher from file"
 msgstr  ""
 
+msgid   "Importing {} files"
+msgstr  ""
+
 msgid   "Improperly formatted text may cause launcher to be unusable"
 msgstr  ""
 
@@ -639,10 +613,10 @@ msgstr  "Installe le paquet après Build"
 msgid   "Install package using a system installer after build"
 msgstr  ""
 
-msgid   "Installation requires one of the following utilities:"
+msgid   "Installation prefix: {}"
 msgstr  ""
 
-msgid   "Installed to: {}"
+msgid   "Installation requires one of the following utilities:"
 msgstr  ""
 
 msgid   "Installing with {}"
@@ -657,7 +631,10 @@ msgstr  "Job"
 msgid   "Launcher is only shown when options are satisfied"
 msgstr  ""
 
-msgid   "Launchers / Desktop Entries"
+msgid   "Launchers / Desktop entries"
+msgstr  ""
+
+msgid   "Length of file list & source directories does not match"
 msgstr  ""
 
 msgid   "License"
@@ -672,11 +649,11 @@ msgstr  ""
 msgid   "Lintian Errors"
 msgstr  "Erreurs de Lintian"
 
-msgid   "Lintian Tags Explanation"
-msgstr  "Explication des Etiquettes Lintian"
-
 msgid   "Lintian found some issues with the package."
 msgstr  "Lintian trouve quelques questions avec le paquet."
+
+msgid   "Lintian tags explanation"
+msgstr  ""
 
 msgid   "List new changes here, separated one per line"
 msgstr  ""
@@ -684,19 +661,12 @@ msgstr  ""
 msgid   "Loading license template: {}"
 msgstr  ""
 
-msgid   "Logger warning instead of error: {}"
-msgstr  ""
-
 msgid   "Long Description"
 msgstr  "Description détaillée"
-
-msgid   "Longest line in details: {}"
-msgstr  ""
 
 msgid   "Maintainer"
 msgstr  "Mainteneur"
 
-# ## Scripts section
 msgid   "Make this script"
 msgstr  "Fabrique ce script"
 
@@ -717,9 +687,6 @@ msgstr  ""
 
 msgid   "Missing Files"
 msgstr  "Fichiers manquants"
-
-msgid   "Module: {}"
-msgstr  ""
 
 msgid   "More detailed description"
 msgstr  ""
@@ -757,7 +724,9 @@ msgstr  ""
 msgid   "New Folder"
 msgstr  "Nouveau dossier"
 
-# ## Button tool tips
+msgid   "New project"
+msgstr  ""
+
 msgid   "Next"
 msgstr  "Prochain"
 
@@ -772,6 +741,9 @@ msgstr  ""
 
 msgid   "Not a valid Debreate project"
 msgstr  "Fichier Projet Debreate non Valide"
+
+msgid   "Not set as top window"
+msgstr  ""
 
 msgid   "Not writing empty text to configuration"
 msgstr  ""
@@ -806,7 +778,13 @@ msgstr  "Ouvrir un  Projet sauvé précédemment Debreate"
 msgid   "Open a usage document"
 msgstr  "Ouvrir un document "
 
+msgid   "Open logs directory"
+msgstr  ""
+
 msgid   "Open pre-formatted control text"
+msgstr  ""
+
+msgid   "Opening log directory ..."
 msgstr  ""
 
 msgid   "Opening project from argument: {}"
@@ -848,8 +826,9 @@ msgstr  "Paquet peut être utile mais n'est pas nécessaire et ne sera pas insta
 msgid   "Package or its files may be overwritten"
 msgstr  "Paquet et ses fichiers peuvent être écrasés"
 
+#, fuzzy
 msgid   "Package was installed to system"
-msgstr  ""
+msgstr  "Paquet installé avec succès"
 
 msgid   "Package will be removed from the system if it is installed"
 msgstr  "Paquet sera enlevé du système si il est installé"
@@ -894,6 +873,9 @@ msgid   "Permission Denied"
 msgstr  "Permission refusé"
 
 msgid   "Platform on which package/software is meant to run"
+msgstr  ""
+
+msgid   "Please report this error to one of the following addresses:"
 msgstr  ""
 
 msgid   "Post-Install"
@@ -941,6 +923,9 @@ msgstr  "Priorité"
 msgid   "Process returned code {}"
 msgstr  ""
 
+msgid   "Processing Files"
+msgstr  ""
+
 msgid   "Progress"
 msgstr  "Progression"
 
@@ -951,6 +936,9 @@ msgid   "Quick Build"
 msgstr  "Build Rapide"
 
 msgid   "Quick build complete"
+msgstr  ""
+
+msgid   "Quit"
 msgstr  ""
 
 msgid   "Quit?"
@@ -998,12 +986,12 @@ msgstr  ""
 msgid   "Replaces"
 msgstr  "Remplace"
 
-# ## Control section
 msgid   "Required"
 msgstr  "Nécessaire"
 
+#, fuzzy
 msgid   "Root directory of build tree"
-msgstr  ""
+msgstr  "Chemin vers l'arbre de Construction"
 
 msgid   "Running dpkg"
 msgstr  "dpkg en cours d'exécution"
@@ -1022,6 +1010,9 @@ msgstr  "Sauver le fichier"
 
 msgid   "Save Launcher"
 msgstr  "Sauve le lanceur"
+
+msgid   "Save as"
+msgstr  ""
 
 msgid   "Save control information to text"
 msgstr  ""
@@ -1062,8 +1053,7 @@ msgstr  ""
 msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
 msgstr  ""
 
-#, python-brace-format
-msgid   "See: Help {0} Reference {0} Lintian Tags Explanation"
+msgid   "See: Help ➜ Reference ➜ Lintian Tags Explanation"
 msgstr  ""
 
 msgid   "Select license to reference"
@@ -1105,7 +1095,6 @@ msgstr  ""
 msgid   "Staged directory tree"
 msgstr  ""
 
-# ## Dialogs
 msgid   "Start New Project"
 msgstr  "Démarrer un nouveau projet"
 
@@ -1151,22 +1140,28 @@ msgstr  ""
 msgid   "Terminal"
 msgstr  "Terminal"
 
+msgid   "Testing for: {}"
+msgstr  ""
+
 msgid   "Text Size"
 msgstr  ""
 
 msgid   "Text displayed when cursor hovers over launcher"
 msgstr  ""
 
-msgid   "Text: {}"
-msgstr  ""
-
 msgid   "Thank you for using Debreate."
 msgstr  "Merci d'utiliser  Debreate"
+
+msgid   "The \"md5sum\" command was not found on the system."
+msgstr  ""
 
 msgid   "The default configuration file will now be created."
 msgstr  ""
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "This could take a VERY long time"
 msgstr  ""
 
 msgid   "This message only displays on the first run, or if\n"
@@ -1198,6 +1193,9 @@ msgid   "To delete this file, type the following command in a\n"
         "terminal:"
 msgstr  ""
 
+msgid   "Total tasks: {}"
+msgstr  ""
+
 msgid   "Translation"
 msgstr  "Traduction"
 
@@ -1212,6 +1210,9 @@ msgstr  ""
 
 msgid   "Ubuntu Policy Manual"
 msgstr  "Manuel des Normes d'Ubuntu"
+
+msgid   "Uncheck the \"{}\" box."
+msgstr  ""
 
 msgid   "Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project."
 msgstr  ""
@@ -1243,17 +1244,14 @@ msgstr  "Urgence"
 msgid   "Urgency of this package update"
 msgstr  ""
 
-msgid   "Urgency of this update"
-msgstr  ""
-
 msgid   "Use \"Name\" as output filename (<Name>.desktop)"
 msgstr  ""
 
-msgid   "Use Custom Dialogs"
-msgstr  "Utiliser des fenêtres dialogues Personnalisées"
+msgid   "Use custom dialogs"
+msgstr  "Utiliser des fenêtres dialogues personnalisées"
 
-msgid   "Use System or Custom Save/Open Dialogs"
-msgstr  "Utiliser des fenêtres dialogues Système ou Personnalisées Sauve/Ouvrir"
+msgid   "Use system or custom save/open dialogs"
+msgstr  "Utiliser des fenêtres dialogues système ou personnalisées sauve/ouvrir"
 
 msgid   "Version"
 msgstr  "Version"
@@ -1262,6 +1260,9 @@ msgid   "Version corresponing to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
+msgstr  ""
+
+msgid   "WARNING"
 msgstr  ""
 
 msgid   "Warning"
@@ -1273,7 +1274,6 @@ msgstr  ""
 msgid   "Website Designer & Author"
 msgstr  ""
 
-# ## Information section
 msgid   "Welcome to Debreate!"
 msgstr  "Bienvenue à Debreate!"
 
@@ -1298,6 +1298,9 @@ msgid   "You will lose any unsaved information\n"
 msgstr  ""
 
 msgid   "all = platform independent"
+msgstr  ""
+
+msgid   "debugging"
 msgstr  ""
 
 msgid   "errors"
@@ -1339,14 +1342,32 @@ msgstr  ""
 #~ msgid        "Authentication failure"
 #~ msgstr       "Échec d'authentification"
 
-#~ msgid        "Can't Continue"
-#~ msgstr       "Ne peut Continuer"
-
 #~ msgid        "Categories"
 #~ msgstr       "Catégories"
 
-#~ msgid        "Could not install %s"
-#~ msgstr       "Ne peut installer  \"%s\""
+#~ msgid        "Checking changelog"
+#~ msgstr       "En train de vérifier changelog"
+
+#~ msgid        "Checking copyright"
+#~ msgstr       "En train de vérifier  copyright"
+
+#~ msgid        "Checking create md5sums"
+#~ msgstr       "En train de vérifier  md5sums"
+
+#~ msgid        "Checking delete build tree"
+#~ msgstr       "En train de vérifier la destruction de l'arbre de construction"
+
+#~ msgid        "Checking files"
+#~ msgstr       "En train de vérifier les fichiers"
+
+#~ msgid        "Checking lintian"
+#~ msgstr       "En train d'exécuter lintian"
+
+#~ msgid        "Checking menu launcher"
+#~ msgstr       "En train de vérifier le Menu de lancement"
+
+#~ msgid        "Checking scripts"
+#~ msgstr       "En train de vérifier les scripts"
 
 #~ msgid        "Could not locate \"%s\""
 #~ msgstr       "Ne peut localiser  \"%s\""
@@ -1360,21 +1381,23 @@ msgstr  ""
 #~ msgid        "Delete temporary directory tree after package has been created"
 #~ msgstr       "Elimine l'arbre du répertoire temporaire  après que le paquet ait été créé."
 
-#~ msgid        "Details saved to %s"
-#~ msgstr       "Détails sauvés dans %s"
-
 #~ msgid        "Empty password: Cancelling"
 #~ msgstr       "Mot de passe vide: Annulation"
 
-# ## Build section
 #~ msgid        "Extra options"
 #~ msgstr       "Options Extras"
+
+#~ msgid        "Gathering control information"
+#~ msgstr       "En train de Récolter les informations control"
 
 #~ msgid        "Getting administrative privileges from user"
 #~ msgstr       "Obtenir des privilèges administratifs de l'utilisateur"
 
 #~ msgid        "Getting files from %s"
 #~ msgstr       "Obtenir des fichiers de %s"
+
+#~ msgid        "Go to Menu Launcher section"
+#~ msgstr       "Aller à la section Menu de Lancement"
 
 #~ msgid        "Import executables from Files section"
 #~ msgstr       "Importe  des exécutables de la section Fichiers"
@@ -1385,7 +1408,9 @@ msgstr  ""
 #~ msgid        "Installing Package"
 #~ msgstr       "En train d'installer un Paquet"
 
-# ## Menu section
+#~ msgid        "Lintian Tags Explanation"
+#~ msgstr       "Explication des Etiquettes Lintian"
+
 #~ msgid        "Open launcher file"
 #~ msgstr       "Ouvre le fichier lanceur"
 
@@ -1398,7 +1423,6 @@ msgstr  ""
 #~ msgid        "Path %s does not exist. Continue?"
 #~ msgstr       "Le chemin %s n'existe pas.  Continuer ?"
 
-# ## Quick build
 #~ msgid        "Path to build tree"
 #~ msgstr       "Chemin vers l'arbre de Construction"
 
@@ -1413,9 +1437,6 @@ msgstr  ""
 
 #~ msgid        "The package failed to install"
 #~ msgstr       "Le Paquet a échoué lors de l'installation"
-
-#~ msgid        "The package installed successfully"
-#~ msgstr       "Paquet installé avec succès"
 
 #~ msgid        "There are non-ASCII characters in the package"
 #~ msgstr       "Il y a des caractères non-ASCII dans le paquet"
