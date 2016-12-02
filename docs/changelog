@@ -28,6 +28,7 @@
 - Add manpage
 - Use 'man debreate' output for 'debreate --help' option
   - Uses default manpath if installed, otherwise uses directory man/man1
+- Update Spanish Gettext locale
 
 0.7.11
 - Add template generation for copyright

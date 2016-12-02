@@ -1,4 +1,4 @@
-debreate (0.7.12-dev6-3) xenial; urgency=high
+debreate (0.7.12-dev7-1) xenial; urgency=low
 
   * Add Russian Gettext translation
     Use GitHub URL the check for updates
@@ -29,6 +29,7 @@ debreate (0.7.12-dev6-3) xenial; urgency=high
     Add manpage
     Use 'man debreate' output for 'debreate --help' option
     - Uses default manpath if installed, otherwise uses directory man/man1
+    Update Spanish Gettext locale
 
  -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 01 Dec 2016 22:20:01 -0800
 
