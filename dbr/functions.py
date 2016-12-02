@@ -394,7 +394,7 @@ def BuildDebPackage(stage_dir, target_file):
     packager = CMD_system_packager
     
     if not CMD_fakeroot or not packager:
-        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg'))
+        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))
     
     packager = os.path.basename(packager)
     
