@@ -47,7 +47,7 @@ from dbr.config             import default_config
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import InitializeConfig
 from dbr.config             import ReadConfig
-from dbr.custom             import FirstRun
+from dbr.dialogs            import FirstRun
 from dbr.error              import ShowError
 from dbr.language           import GT
 from dbr.language           import LOCALE_DIR

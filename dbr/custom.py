@@ -7,12 +7,11 @@
 
 
 import os, sys, webbrowser, wx
-from wx.combo import OwnerDrawnComboBox
+from wx.combo       import OwnerDrawnComboBox
 from wx.lib.docview import PathOnly
 
 from dbr.language   import GT
 from dbr.textinput  import MultilineTextCtrlPanel
-from globals.paths  import PATH_app
 
 
 db_here = PathOnly(__file__).decode(u'utf-8')
@@ -58,66 +57,6 @@ class ComboBox(OwnerDrawnComboBox):
         return return_value
 
 
-## Dialog shown when Debreate is run for first time
-#  
-#  If configuration file is not found or corrupted
-#    this dialog is shown.
-#  TODO: Move to dbr.dialogs
-class FirstRun(wx.Dialog):
-    def __init__(self):
-        wx.Dialog.__init__(self, None, wx.ID_ANY, GT(u'Debreate First Run'), size=(450,300))
-        
-        m2 = GT(u'This message only displays on the first run, or if\nthe configuration file becomes corrupted.')
-        m3 = GT(u'The default configuration file will now be created.')
-        m4 = GT(u'To delete this file, type the following command in a\nterminal:')
-        
-        # "OK" button sets to True
-        #self.OK = False
-        
-        message1 = GT(u'Thank you for using Debreate.')
-        message1 = u'{}\n\n{}'.format(message1, m2)
-        
-        message2 = m3
-        message2 = u'{}\n{}'.format(message2, m4)
-        
-        # Set the titlebar icon
-        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG))
-        
-        # Display a message to create a config file
-        text1 = wx.StaticText(self, label=message1)
-        text2 = wx.StaticText(self, label=message2)
-        
-        rm_cmd = wx.StaticText(self, label=u'rm -f ~/.config/debreate/config')
-        
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
-        layout_V1.Add(text1, 1)
-        layout_V1.Add(text2, 1, wx.TOP, 15)
-        layout_V1.Add(rm_cmd, 0, wx.TOP, 10)
-        
-        # Show the Debreate icon
-        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
-        icon = wx.StaticBitmap(self, -1, dbicon)
-        
-        # Button to confirm
-        self.button_ok = wx.Button(self, wx.ID_OK)
-        
-        # Nice border
-        self.border = wx.StaticBox(self, -1)
-        border_box = wx.StaticBoxSizer(self.border, wx.HORIZONTAL)
-        border_box.AddSpacer(10)
-        border_box.Add(icon, 0, wx.ALIGN_CENTER)
-        border_box.AddSpacer(10)
-        border_box.Add(layout_V1, 1, wx.ALIGN_CENTER)
-        
-        # Set Layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
-        
-        self.SetSizer(sizer)
-        self.Layout()
-
-
 ## A generic display area that captures \e stdout & \e stderr
 class OutputLog(MultilineTextCtrlPanel):
     def __init__(self, parent):
@@ -151,7 +90,7 @@ class DBDialog(wx.Dialog):
     def __init__(self, parent, title):
         wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE, size=(350,450))
         
-#        self.SetTitle("Browse for a Folder")
+        #self.SetTitle("Browse for a Folder")
         
         # IDs for context menu and buttons
         ID_Folder = 100
@@ -170,11 +109,11 @@ class DBDialog(wx.Dialog):
         wx.EVT_MENU(self, ID_Rename, self.ShowRename)
         wx.EVT_MENU(self, ID_Delete, self.Delete)
         
-#        # Display area
-#        self.dir_tree = wx.GenericDirCtrl(self, -1, os.getcwd())
-#        
-#        # Add a context menu to the dir_tree
-#        self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
+        # Display area
+        #self.dir_tree = wx.GenericDirCtrl(self, -1, os.getcwd())
+        
+        # Add a context menu to the dir_tree
+        #self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
         
         ## New folder button
         self.New = wx.Button(self, ID_Folder, GT(u'New Folder'))
@@ -196,7 +135,7 @@ class DBDialog(wx.Dialog):
         button_sizer.Add(self.Cancel, 0, wx.ALL, 5)
         
         self.main_sizer = wx.BoxSizer(wx.VERTICAL)
-#        self.main_sizer.Add(self.dir_tree, 1, wx.EXPAND|wx.ALL, 20)
+        #self.main_sizer.Add(self.dir_tree, 1, wx.EXPAND|wx.ALL, 20)
         self.main_sizer.Add(button_sizer, 0, wx.ALIGN_RIGHT|wx.LEFT|wx.RIGHT, 16)
         
         self.SetAutoLayout(True)
@@ -533,7 +472,7 @@ class SaveFile(DBDialog):
             filename = self.TextCtrl.GetValue()
             bad_filename_dia = wx.MessageDialog(self, GT(u'Bad File Name'), GT(u'Error'), wx.OK|wx.ICON_ERROR)
             # Check to see that the input value isn't empty
-#            if self.TextCtrl.GetValue() == wx.EmptyString:
+            #if self.TextCtrl.GetValue() == wx.EmptyString:
             if filename == wx.EmptyString or filename[0] in self.invalid_first_char or [i for i in list(filename) if i in self.invalid_char]:
                 bad_filename_dia.ShowModal()
                 #dia.Destroy()
