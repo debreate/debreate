@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.command_line
+## \package command_line
 
 
 # System modules

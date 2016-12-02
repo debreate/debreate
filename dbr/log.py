@@ -16,7 +16,6 @@ from globals.ident          import ID_LOG
 from globals.paths          import PATH_local
 
 
-#from dbr.command_line import parsed_args_v
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 
