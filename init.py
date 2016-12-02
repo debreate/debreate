@@ -12,10 +12,10 @@
 import sys
 
 import command_line as CL
+from command_line import GetParsedPath
 from command_line import parsed_commands
 from command_line import parsed_args_s
 from command_line import parsed_args_v
-from command_line import GetParsedPath
 
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
@@ -57,6 +57,7 @@ from globals.application    import APP_name
 from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
+from globals.ident          import ID_DIALOGS
 from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
@@ -165,7 +166,8 @@ if conf_values[u'center']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
-Debreate.cust_dias.Check(conf_values[u'dialogs'])
+if Debreate.menu_opt.FindItemById(ID_DIALOGS):
+    Debreate.menu_opt.Check(ID_DIALOGS, conf_values[u'dialogs'])
 
 parsed_path = GetParsedPath()
 if parsed_path:
