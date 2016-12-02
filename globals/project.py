@@ -26,7 +26,7 @@ supported_suffixes = (
     PROJECT_txt,
 )
 
-PROJ_DEF_L = GT(u'Debreate projects')
+PROJ_DEF_L = GT(u'Debreate project files')
 
 project_wildcards = {
     ID_PROJ_L: (PROJ_DEF_L, (PROJECT_ext, PROJECT_txt)),
