@@ -33,6 +33,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import UseCustomDialogs
 
 
 ## This panel displays the field input of the control file
@@ -419,7 +420,7 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
         cont = False
-        if wx.GetApp().GetTopWindow().cust_dias.IsChecked():
+        if UseCustomDialogs():
             dia = OpenFile(self)
             if dia.DisplayModal():
                 cont = True
@@ -503,15 +504,15 @@ class Panel(wx.ScrolledWindow):
         cont = False
         
         # Open a "Save Dialog"
-        if main_window.cust_dias.IsChecked():
-            dia = SaveFile(self, GT(u'Save Control Information'))
+        if UseCustomDialogs():
+            dia = SaveFile(main_window, GT(u'Save Control Information'))
             dia.SetFilename(u'control')
             if dia.DisplayModal():
                 cont = True
                 path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
         
         else:
-            dia = wx.FileDialog(self, u'Save Control Information', os.getcwd(),
+            dia = wx.FileDialog(main_window, u'Save Control Information', os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
             dia.SetFilename(u'control')
             

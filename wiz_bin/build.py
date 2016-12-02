@@ -48,6 +48,7 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import UseCustomDialogs
 
 
 ## Build page
@@ -566,7 +567,7 @@ class Panel(wx.ScrolledWindow):
         
         # Dialog for save destination
         ttype = GT(u'Debian Packages')
-        if GetTopWindow().cust_dias.IsChecked():
+        if UseCustomDialogs():
             save_dia = SaveFile(self)
             save_dia.SetFilter(u'{}|*.deb'.format(ttype))
             save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))

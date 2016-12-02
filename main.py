@@ -52,6 +52,7 @@ from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
 from globals.project        import PROJECT_txt
+from globals.wizardhelper   import FieldEnabled
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl
@@ -480,7 +481,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Writes dialog settings to config
     def OnEnableCustomDialogs(self, event=None):
-        WriteConfig(u'dialogs', self.cust_dias.IsChecked())
+        WriteConfig(u'dialogs', self.UseCustomDialogs())
     
     
     ## Action to take when 'Help' is selected from the help menu
@@ -517,7 +518,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         cont = False
         projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
         d = GT(u'Debreate project files')
-        if self.cust_dias.IsChecked():
+        if self.UseCustomDialogs():
             dia = OpenFile(self, GT(u'Open Debreate Project'))
             dia.SetFilter(u'{}{}'.format(d, projects_filter))
             if dia.DisplayModal():
@@ -625,7 +626,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             dbp = u'|*.dbp'
             d = GT(u'Debreate project files')
             cont = False
-            if self.cust_dias.IsChecked():
+            if self.UseCustomDialogs():
                 dia = SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
                 dia.SetFilter(u'{}{}'.format(d, dbp))
                 if dia.DisplayModal():
@@ -757,3 +758,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             title = self.GetTitle()
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
+    
+    
+    ## TODO: Doxygen
+    def UseCustomDialogs(self):
+        return FieldEnabled(self.cust_dias) and self.cust_dias.IsChecked()

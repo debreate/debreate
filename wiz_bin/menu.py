@@ -8,21 +8,22 @@
 
 import os, shutil, wx
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonBrowse64
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonPreview64
-from dbr.buttons        import ButtonRemove
-from dbr.buttons        import ButtonSave64
-from dbr.custom         import ComboBox
-from dbr.custom         import OpenFile
-from dbr.custom         import SaveFile
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.textinput      import MonospaceTextCtrl
-from dbr.textinput      import MultilineTextCtrlPanel
-from globals.ident      import ID_MENU
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonBrowse64
+from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonRemove
+from dbr.buttons            import ButtonSave64
+from dbr.custom             import ComboBox
+from dbr.custom             import OpenFile
+from dbr.custom             import SaveFile
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.textinput          import MonospaceTextCtrl
+from dbr.textinput          import MultilineTextCtrlPanel
+from globals.ident          import ID_MENU
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import UseCustomDialogs
 
 
 ## Page for creating a system menu launcher
@@ -407,7 +408,7 @@ class Panel(wx.ScrolledWindow):
         main_window = wx.GetApp().GetTopWindow()
         cont = False
         
-        if main_window.cust_dias.IsChecked():
+        if UseCustomDialogs():
             dia = OpenFile(main_window, GT(u'Open Launcher'))
             if dia.DisplayModal():
                 cont = True
@@ -464,7 +465,7 @@ class Panel(wx.ScrolledWindow):
         cont = False
         
         # Open a "Save Dialog"
-        if main_window.cust_dias.IsChecked():
+        if UseCustomDialogs():
             dia = SaveFile(main_window, GT(u'Save Launcher'))
             if dia.DisplayModal():
                 cont = True
