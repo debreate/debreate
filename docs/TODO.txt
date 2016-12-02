@@ -4,6 +4,8 @@
 - Add option to open logs directory (already available in 0.8)
 - Remove unused dbr/command_line.py
 - Fix/Change 'log_level' argument in DebreateLogger contructor
+- Change 'update-debian-changelog' script to use 'DIST' & 'URGENCY' from 'INFO' file
+- Install manpage with Makefile
 
 0.8.0
 - Option to preview/edit control file at build time
