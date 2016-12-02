@@ -10,12 +10,14 @@ import commands, wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
+from globals.bitmaps        import ICON_EXCLAMATION
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_MAINTAINER
 from globals.ident          import FID_PACKAGE
@@ -26,6 +28,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetFieldValue
+from globals.wizardhelper   import GetTopWindow
 
 
 ## Changelog page
@@ -84,9 +87,6 @@ class Panel(wx.ScrolledWindow):
         
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
-        
-        # Initially disable 'add' button
-        self.ToggleAddButton()
         
         self.dsp_changes = MultilineTextCtrlPanel(self, name=u'log')
         
@@ -165,8 +165,6 @@ class Panel(wx.ScrolledWindow):
         
         btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
         self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
-        
-        wx.EVT_KEY_UP(self.ti_changes, self.ToggleAddButton)
     
     
     ## TODO: Doxygen
@@ -174,6 +172,12 @@ class Panel(wx.ScrolledWindow):
         new_changes = self.ti_changes.GetValue()
         
         if TextIsEmpty(new_changes):
+            DetailedMessageDialog(GetTopWindow(), GT(u'Warning'), ICON_EXCLAMATION,
+                    GT(u'"Changes" section is empty')).ShowModal()
+            
+            self.ti_changes.SetInsertionPointEnd()
+            self.ti_changes.SetFocus()
+            
             return
         
         package = self.ti_package.GetValue()
@@ -284,9 +288,6 @@ class Panel(wx.ScrolledWindow):
         self.rb_target_standard.SetValue(self.rb_target_standard.default)
         self.ti_target.Reset()
         self.dsp_changes.Clear()
-        
-        # Reset 'add' button's enabled status
-        self.ToggleAddButton()
     
     
     ## TODO: Doxygen
@@ -302,18 +303,3 @@ class Panel(wx.ScrolledWindow):
             self.ti_target.SetValue(dest)
         
         self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
-    
-    
-    ## Toggles 'add' button on/off depending on value of text input
-    def ToggleAddButton(self, event=None):
-        changes = self.ti_changes.GetValue()
-        
-        if FieldEnabled(self.btn_add) and TextIsEmpty(changes):
-            self.btn_add.Enable(False)
-        
-        # Don't use 'else' here so that both tests must be evaluated
-        elif not FieldEnabled(self.btn_add) and not TextIsEmpty(changes):
-            self.btn_add.Enable(True)
-        
-        if event:
-            event.Skip()
