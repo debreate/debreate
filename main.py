@@ -52,7 +52,6 @@ from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
 from globals.project        import PROJECT_txt
-from globals.wizardhelper   import FieldEnabled
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl
