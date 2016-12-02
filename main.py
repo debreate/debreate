@@ -176,43 +176,41 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_page.AppendItem(p_build)
         
         # ----- Options Menu
-        menu_opt = wx.Menu()
+        self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
         
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
-            menu_opt.AppendItem(self.opt_tooltips)
+            self.menu_opt.AppendItem(self.opt_tooltips)
         
-        show_tooltips = ReadConfig(u'tooltips')
-        if show_tooltips != ConfCode.KEY_NO_EXIST:
-            self.opt_tooltips.Check(show_tooltips)
-        
-        else:
-            self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
-        
-        self.OnToggleToolTips()
+        if self.menu_opt.FindItemById(ID_MENU_TT):
+            show_tooltips = ReadConfig(u'tooltips')
+            if show_tooltips != ConfCode.KEY_NO_EXIST:
+                self.opt_tooltips.Check(show_tooltips)
+            
+            else:
+                self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+            
+            self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(menu_opt, ID_DIALOGS, GT(u'Use custom dialogs'),
+        cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use custom dialogs'),
             GT(u'Use system or custom save/open dialogs'), kind=wx.ITEM_CHECK)
         
         wx.EVT_MENU(self, ID_DIALOGS, self.OnEnableCustomDialogs)
         
         if CMD_gvfs_trash:
-            menu_opt.AppendItem(self.cust_dias)
-        
-        else:
-            menu_opt.Enable(ID_DIALOGS, False)
+            self.menu_opt.AppendItem(cust_dias)
         
         # *** Option Menu: open logs directory *** #
         
         if CMD_xdg_open:
-            opt_logs_open = wx.MenuItem(menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
-            menu_opt.AppendItem(opt_logs_open)
+            opt_logs_open = wx.MenuItem(self.menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
+            self.menu_opt.AppendItem(opt_logs_open)
             
             wx.EVT_MENU(self, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
         
@@ -290,10 +288,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menubar = wx.MenuBar()
         self.SetMenuBar(menubar)
         
-        menubar.Insert(0, menu_file, GT(u'File'))
-        menubar.Insert(1, self.menu_page, GT(u'Page'))
-        menubar.Insert(2, menu_opt, GT(u'Options'))
-        menubar.Insert(3, menu_help, GT(u'Help'))
+        menubar.Append(menu_file, GT(u'File'))
+        menubar.Append(self.menu_page, GT(u'Page'))
+        
+        if self.menu_opt.GetMenuItemCount():
+            menubar.Append(self.menu_opt, GT(u'Options'))
+        
+        menubar.Append(menu_help, GT(u'Help'))
         
         # ***** END MENUBAR ***** #
         
@@ -762,4 +763,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def UseCustomDialogs(self):
-        return FieldEnabled(self.cust_dias) and self.cust_dias.IsChecked()
+        cust_dias = self.menu_opt.FindItemById(ID_DIALOGS)
+        
+        # This needs to be checked first to avoid PyAssertionError in wx 3.0
+        if not cust_dias:
+            return False
+        
+        return cust_dias.IsChecked()
