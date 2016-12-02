@@ -4,7 +4,7 @@
 
 prefix=/usr
 datadir="${prefix}/share/debreate"
-icondir="${prefix}/share/icons/debreate"
+icondir="${prefix}/share/icons/gnome"
 
 if [ -d "${datadir}" ]; then
 	echo "Removing files & directories from ${datadir} ...";
