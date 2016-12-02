@@ -25,6 +25,7 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.commands       import CMD_gzip
 from globals.constants      import PREFIX
+from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 
@@ -370,7 +371,7 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
-        CHANGELOG = u'{}/docs/changelog'.format(PREFIX)
+        CHANGELOG = u'{}/docs/changelog'.format(PATH_app)
         
         if os.path.isfile(CHANGELOG):
             changelog_mimetype = GetFileMimeType(CHANGELOG)
@@ -435,7 +436,7 @@ class AboutDialog(wx.Dialog):
         #   under the applications root directory. The
         #   install script or Makefile should change this
         #   to reflect installed path.
-        license_path = u'{}/docs/LICENSE.txt'.format(PREFIX)
+        license_path = u'{}/docs/LICENSE.txt'.format(PATH_app)
         
         if os.path.isfile(license_path):
             lic_data = open(license_path)
