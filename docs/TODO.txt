@@ -1,11 +1,7 @@
 0.7.12
 - Heavy testing for both wx 3.0 & 2.8
 - Update locales
-- Add option to open logs directory (already available in 0.8)
-- Remove unused dbr/command_line.py
-- Fix/Change 'log_level' argument in DebreateLogger contructor
-- Change 'update-debian-changelog' script to use 'DIST' & 'URGENCY' from 'INFO' file
-- Install manpage with Makefile
+- Use system manpage for --help command line argument
 
 0.8.0
 - Option to preview/edit control file at build time
