@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+## \package dbr.templates
 
-# System modules
+# MIT licensing
+# See: docs/LICENSE.txt
+
+
 import os
 
 from dbr.language   import GT
@@ -10,7 +14,6 @@ from globals.paths  import PATH_app
 from globals.paths  import PATH_local
 
 
-# Local modules
 ## Application templates
 #  
 #  Path to application templates stored in the system Debreate directory.
