@@ -56,22 +56,6 @@ def GetCurrentVersion():
         return err
 
 
-## Checks if a field (or widget) is enabled
-#  
-#  This is used for compatibility between wx. 2.8 & 3.0.
-#    3.0 uses the method 'IsThisEnabled()' rather than
-#    'IsEnabled()' to get the 'intrinsic' status of the
-#    widget.
-#  \param field
-#        The widget (wx.Window) to be checked
-def FieldEnabled(field):
-    # wx. 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
-    if wx.MAJOR_VERSION > 2:
-        return field.IsThisEnabled()
-    else:
-        return field.IsEnabled()
-
-
 ## TODO: Doxygen
 def GetContainerItemCount(container):
     if wx.MAJOR_VERSION > 2:
