@@ -2,6 +2,9 @@
 
 ## \package wiz_bin.info
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
 
