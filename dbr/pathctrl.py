@@ -33,7 +33,7 @@ class PathCtrl(wx.TextCtrl):
         wx.EVT_KEY_UP(self, self.OnKeyUp)
         
         # Check if path is available on construction
-        if self.type == PATH_WARN:
+        if self.ctrl_type == PATH_WARN:
             self.SetPathAvailable()
     
     
