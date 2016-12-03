@@ -20,9 +20,13 @@ ID_NEXT = wx.NewId()
 
 # *** Custom IDs *** #
 ID_APPEND = wx.NewId()
+ID_BROWSE = wx.NewId()
+ID_CUSTOM = wx.NewId()
 ID_DEBUG = wx.NewId()
+ID_DIALOGS = wx.NewId()
 ID_IMPORT = wx.NewId()
 ID_LOG = wx.NewId()
+ID_MENU_TT = wx.NewId()
 ID_OVERWRITE = wx.NewId()
 ID_STAGE = wx.NewId()
 ID_TARGET = wx.NewId()
@@ -52,12 +56,12 @@ ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
 ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
 
-# ID for custom fields
-ID_CUSTOM = wx.NewId()
-
 # Field/Control IDs
+FID_ARCH = wx.NewId()
+FID_CUSTOM = wx.NewId()
 FID_EMAIL = wx.NewId()
+FID_LIST = wx.NewId()
 FID_MAINTAINER = wx.NewId()
-# FIXME: Rename to FID_PACKAGE???
 FID_NAME = wx.NewId()
+FID_PACKAGE = wx.NewId()
 FID_VERSION = wx.NewId()
