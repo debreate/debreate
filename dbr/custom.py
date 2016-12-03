@@ -9,13 +9,14 @@
 import os, sys, webbrowser, wx
 from wx.lib.docview import PathOnly
 
-from dbr.language   import GT
-from dbr.textinput  import MultilineTextCtrlPanel
+from dbr.language       import GT
+from dbr.textinput      import MultilineTextCtrlPanel
+from globals.commands   import CMD_gvfs_trash
 
 
 db_here = PathOnly(__file__).decode(u'utf-8')
 
-# FIXME: This should be import from dbr.functions
+# FIXME: This should be imported from dbr.functions
 def TextIsEmpty(text):
     return text.strip(u' \t\n') == wx.EmptyString
 
@@ -31,10 +32,13 @@ class OutputLog(MultilineTextCtrlPanel):
     def write(self, string):
         self.AppendText(string)
     
+    
+    ## TODO: Doxygen
     def ToggleOutput(self, event=None):
         if sys.stdout == self:
             sys.stdout = self.stdout
             sys.stderr = self.stderr
+        
         else:
             sys.stdout = self
             sys.stdout = self
@@ -43,13 +47,12 @@ class OutputLog(MultilineTextCtrlPanel):
 # *** File/Folder Dialogs *** #
 
 ## A base class for custom file & folder dialogs
+#  
+#  \param parent
+#        Parent window
+#  \param title
+#        Text to be displayed in title bar
 class DBDialog(wx.Dialog):
-    ## Constructor
-    #  
-    #  \param parent
-    #        Parent window
-    #  \param title
-    #        Text to be displayed in title bar
     def __init__(self, parent, title):
         wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE, size=(350,450))
         
@@ -73,29 +76,29 @@ class DBDialog(wx.Dialog):
         wx.EVT_MENU(self, ID_Delete, self.Delete)
         
         # Display area
-        #self.dir_tree = wx.GenericDirCtrl(self, -1, os.getcwd())
+        #self.dir_tree = wx.GenericDirCtrl(self, dir=os.getcwd())
         
         # Add a context menu to the dir_tree
         #self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
         
         ## New folder button
-        self.New = wx.Button(self, ID_Folder, GT(u'New Folder'))
+        btn_newfolder = wx.Button(self, ID_Folder, GT(u'New Folder'))
         
         ## Confirm button
-        self.Ok = wx.Button(self, wx.OK)
+        self.btn_confirm = wx.Button(self, wx.OK)
         
         ## Cancel button
-        self.Cancel = wx.Button(self, wx.CANCEL, GT(u'Cancel'))
+        btn_cancel = wx.Button(self, wx.CANCEL, GT(u'Cancel'))
         
-        wx.EVT_BUTTON(self.New, -1, self.CreateFolder)
-        wx.EVT_BUTTON(self.Ok, -1, self.OnButton)
-        wx.EVT_BUTTON(self.Cancel, -1, self.OnButton)
+        btn_newfolder.Bind(wx.EVT_BUTTON, self.CreateFolder)
+        self.btn_confirm.Bind(wx.EVT_BUTTON, self.OnButton)
+        btn_cancel.Bind(wx.EVT_BUTTON, self.OnButton)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(self.New, 0, wx.ALL, 5)
+        button_sizer.Add(btn_newfolder, 0, wx.ALL, 5)
         button_sizer.AddSpacer(40)
-        button_sizer.Add(self.Ok, 0, wx.ALL, 5)
-        button_sizer.Add(self.Cancel, 0, wx.ALL, 5)
+        button_sizer.Add(self.btn_confirm, 0, wx.ALL, 5)
+        button_sizer.Add(btn_cancel, 0, wx.ALL, 5)
         
         self.main_sizer = wx.BoxSizer(wx.VERTICAL)
         #self.main_sizer.Add(self.dir_tree, 1, wx.EXPAND|wx.ALL, 20)
@@ -112,32 +115,38 @@ class DBDialog(wx.Dialog):
     ## Defines type of dialog
     #  
     #  Dialogs can be 'open directory', 'open file', or 'save file'.
-    #  \param type
+    #  \param dia_type
     #        Dialoge type of either 'dir' or 'file'
     #  \param mode
     #        Action mode of either 'save' or 'open'
-    def SetType(self, type, mode):
+    def SetType(self, dia_type, mode):
         if type.lower() == u'file':
             try:
-                self.dir_tree = wx.GenericDirCtrl(self, -1, os.getcwd(), filter=u'*', style=wx.DIRCTRL_SHOW_FILTERS)
+                self.dir_tree = wx.GenericDirCtrl(self, dir=os.getcwd(), filter=u'*', style=wx.DIRCTRL_SHOW_FILTERS)
+            
             except OSError:
-                self.dir_tree = wx.GenericDirCtrl(self, -1, os.getenv(u'HOME'), filter=u'*', style=wx.DIRCTRL_SHOW_FILTERS)
+                self.dir_tree = wx.GenericDirCtrl(self, dir=os.getenv(u'HOME'), filter=u'*', style=wx.DIRCTRL_SHOW_FILTERS)
+            
             if mode.lower() == u'save':
-                self.Ok.SetLabel(GT(u'Save'))
+                self.btn_confirm.SetLabel(GT(u'Save'))
+            
             elif mode.lower() == u'open':
-                self.Ok.SetLabel(GT(u'Open'))
+                self.btn_confirm.SetLabel(GT(u'Open'))
+        
         elif type.lower() == u'dir':
-            self.dir_tree = wx.GenericDirCtrl(self, -1, os.getcwd(),
+            self.dir_tree = wx.GenericDirCtrl(self, dir=os.getcwd(),
                     style=wx.DIRCTRL_DIR_ONLY|wx.BORDER_SIMPLE)
             if mode.lower() == u'save':
-                self.Ok.SetLabel(GT(u'Save'))
+                self.btn_confirm.SetLabel(GT(u'Save'))
+            
             elif mode.lower() == u'open':
-                self.Ok.SetLabel(GT(u'Open'))
+                self.btn_confirm.SetLabel(GT(u'Open'))
         
         # Add a context menu to the dir_tree
         self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
         # Add to main sizer
         self.main_sizer.Insert(0, self.dir_tree, 1, wx.EXPAND|wx.ALL, 20)
+    
     
     ## Shows the dialog window
     #  
@@ -146,6 +155,7 @@ class DBDialog(wx.Dialog):
     def DisplayModal(self):
         self.ShowModal()
         return self.value
+    
     
     ## Shows a context menu
     #  
@@ -158,26 +168,37 @@ class DBDialog(wx.Dialog):
         # Show the context menu
         self.dir_tree.PopupMenu(self.menu)
     
+    
+    ## TODO: Doxygen
     def GetPath(self):
         return self.dir_tree.GetPath()
-        
+    
+    
+    ## TODO: Doxygen
     def OnButton(self, event=None):
-        id = event.GetEventObject().GetId()
+        object_id = event.GetEventObject().GetId()
         
         dest_path = self.dir_tree.GetPath()
         
-        if id == wx.OK:
+        if object_id == wx.OK:
             if os.path.isdir(dest_path):
                 os.chdir(dest_path)
+            
             else:
                 os.chdir(os.path.split(dest_path)[0])
+            
             self.value = True
+        
         self.Close()
     
-    def SetFilter(self, filter):
-        self.dir_tree.SetFilter(filter)
+    
+    ## TODO: Doxygen
+    def SetFilter(self, wildcard):
+        self.dir_tree.SetFilter(wildcard)
         self.dir_tree.ReCreateTree()
     
+    
+    ## TODO: Doxygen
     def CreateFolder(self, event=None):
         # Creates a new folder in the highlighted path
         destination = self.dir_tree.GetPath()
@@ -186,6 +207,7 @@ class DBDialog(wx.Dialog):
         n = GT(u'New Folder')
         if os.path.isdir(destination):
             new_folder = u'{}{}'.format(destination, n)
+        
         # If highlighted path is file, create new folder in the same directory
         else:
             parent_dir = os.path.split(destination)[0]
@@ -200,9 +222,11 @@ class DBDialog(wx.Dialog):
                 if not os.path.exists(new_folder):
                     os.mkdir(new_folder)
                     unavailable = False
+                
                 elif os.path.exists(new_folder):
                     folder_number += 1
                     new_folder = u'{}/{} ({})'.format(destination, n, folder_number)
+            
             # If folder can't be created show error dialog
             except OSError:
                 unavailable = False
@@ -213,48 +237,56 @@ class DBDialog(wx.Dialog):
         self.dir_tree.ReCreateTree()
         # When tree is refreshed return to new folder
         self.dir_tree.SetPath(new_folder)
-
     
+    
+    ## TODO: Doxygen
     def Delete(self, event=None):
         path = self.dir_tree.GetPath()
         
         # Get the parent dir of the file/folder being deleted
         parent_path = os.path.split(path)[0]
         
-        # Move file to trash
-        os.system((u'gvfs-trash "{}"'.format(path)).encode(u'utf-8'))
+        # FIXME: Use subprocess.Popen
+        os.system((u'{} "{}"'.format(CMD_gvfs_trash, path)).encode(u'utf-8'))
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(parent_path)
     
+    
+    ## TODO: Doxygen
     def ShowRename(self, event=None):
         # Get the filename to be placed in the textarea
         filename = os.path.split(self.dir_tree.GetPath())[1]
         
         # Create the rename dialog
-        dia = wx.Dialog(self, -1, GT(u'Rename'), size=(200,75))
+        dia = wx.Dialog(self, title=GT(u'Rename'), size=(200, 75))
         
         # Create the input area
-        input = wx.TextCtrl(dia, -1, filename)
+        ti_filename = wx.TextCtrl(dia, value=filename)
         
         input_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        input_sizer.Add(input, 1)
+        input_sizer.Add(ti_filename, 1)
         
         # Two buttons to confirm/cancel renaming
-        button_rename = wx.Button(dia, wx.WXK_RETURN, GT(u'Rename'))
-        button_cancel = wx.Button(dia, wx.WXK_ESCAPE, GT(u'Cancel'))
+        btn_rename = wx.Button(dia, wx.WXK_RETURN, GT(u'Rename'))
+        btn_cancel = wx.Button(dia, wx.WXK_ESCAPE, GT(u'Cancel'))
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.AddMany([(button_rename, 0, wx.ALL, 5), (button_cancel, 0, wx.ALL, 5)])
+        button_sizer.AddMany((
+            (btn_rename, 0, wx.ALL, 5),
+            (btn_cancel, 0, wx.ALL, 5),
+            ))
         
-        # If button_rename pressed, rename file, otherwise leave as is, and close dialog
+        # If btn_rename pressed, rename file, otherwise leave as is, and close dialog
         def Rename(event=None):
             try:
-                id = event.GetKeyCode()
+                key_code = event.GetKeyCode()
+            
             except:
-                id = event.GetId()
+                key_code = event.GetId()
+            
             # Get potential name
-            name = input.GetValue()
+            name = ti_filename.GetValue()
             
             # Get the selected path to folder/file
             path = self.dir_tree.GetPath()
@@ -262,12 +294,13 @@ class DBDialog(wx.Dialog):
             # Set the path and name
             new_name = u'{}/{}'.format(os.path.split(path)[0], name)
             
-            if id == wx.WXK_RETURN or id == wx.WXK_NUMPAD_ENTER:
+            if key_code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
                 if os.path.isdir(new_name) or os.path.isfile(new_name):
                     direrr = wx.MessageDialog(dia, GT(u'Name already used in current directory'), GT(u'Error'),
                                 wx.OK|wx.ICON_EXCLAMATION)
                     direrr.ShowModal()
                     direrr.Close()
+                
                 else:
                     os.rename(path, new_name)
                     
@@ -275,16 +308,17 @@ class DBDialog(wx.Dialog):
                     self.dir_tree.ReCreateTree()
                     self.dir_tree.SetPath(new_name)
                     dia.Close()
-            elif id == wx.WXK_ESCAPE:
+            
+            elif key_code == wx.WXK_ESCAPE:
                 dia.Close()
             
             if event:
                 event.Skip()
         
         
-        wx.EVT_BUTTON(button_rename, wx.WXK_RETURN, Rename)
-        wx.EVT_BUTTON(button_cancel, -1, Rename)
-        wx.EVT_KEY_DOWN(input, Rename)
+        wx.EVT_BUTTON(btn_rename, wx.WXK_RETURN, Rename)
+        btn_cancel.Bind(wx.EVT_BUTTON, Rename)
+        wx.EVT_KEY_DOWN(ti_filename, Rename)
         
         # Set layout for rename dialog
         naming_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -296,14 +330,14 @@ class DBDialog(wx.Dialog):
         dia.Layout()
         
         # Set focus on text area for quick renaming
-        input.SetFocus()
+        ti_filename.SetFocus()
         
         # Show the dialog
         dia.ShowModal()
         dia.Destroy()
-        
 
 
+## TODO: Doxygen
 class OpenDir(DBDialog):
     def __init__(self, parent, title=GT(u'Choose Directory')):
         DBDialog.__init__(self, parent, title)
@@ -311,9 +345,9 @@ class OpenDir(DBDialog):
         self.SetTitle(title)
         
         self.SetType(u'dIr', u'OpeN')
-        
 
 
+## TODO: Doxygen
 class OpenFile(DBDialog):
     def __init__(self, parent, title=GT(u'Open File')):
         DBDialog.__init__(self, parent, title)
@@ -328,6 +362,8 @@ class OpenFile(DBDialog):
         # Add an event handler to the tree for opening files on double-click
         wx.EVT_LEFT_DCLICK(self.tree, self.OnDClick)
     
+    
+    ## TODO: Doxygen
     def OnDClick(self, event=None):
         path = self.dir_tree.GetPath()
         if os.path.isfile(path):
@@ -335,31 +371,37 @@ class OpenFile(DBDialog):
         
         if event:
             event.Skip()
-        
+    
+    
+    ## TODO: Doxygen
     def OnButton(self, event=None):
         try:
-            id = event.GetEventObject().GetId()  # Get the button that was pressed
+            object_id = event.GetEventObject().GetId()  # Get the button that was pressed
+        
         except AttributeError:
-            id = event  # Use this if a EVT_LEFT_DCLICK is processed
+            object_id = event  # Use this if a EVT_LEFT_DCLICK is processed
         
         # Get the current selected path and (since is a file) get the parent path to return to after
         # file is selected
         path = self.dir_tree.GetPath()
         parent_path = os.path.split(path)[0]
         
-        if id == wx.OK:
+        if object_id == wx.OK:
             # If the selected path is a file, confirm and close, otherwise try to expand the path
             if os.path.isfile(path):
                 os.chdir(parent_path)
                 self.value = True
                 self.Close()
+            
             elif os.path.isdir(path):
                 self.dir_tree.ExpandPath(path)
+        
         # If cancel is pressed, just close the dialog
         else:
             self.Close()
 
 
+## TODO: Doxygen
 class SaveFile(DBDialog):
     def __init__(self, parent, title=GT(u'Save File'), defaultExtension=None):
         DBDialog.__init__(self, parent, title)
@@ -373,7 +415,7 @@ class SaveFile(DBDialog):
         # Find the wx.TreeCtrl child so events can be passed to it
         self.tree = self.dir_tree.GetChildren()[0]
         
-        self.TextCtrl = wx.TextCtrl(self, -1)
+        self.TextCtrl = wx.TextCtrl(self)
         wx.EVT_KEY_DOWN(self.TextCtrl, self.OnButton)
         
         # Double-click is the same as "Save"
@@ -389,6 +431,7 @@ class SaveFile(DBDialog):
         
         self.main_sizer.Insert(1, self.TextCtrl, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 20)
         
+        
         def OnLMouseButton(event=None):
             path = self.dir_tree.GetPath()
             if os.path.isfile(path):
@@ -400,38 +443,50 @@ class SaveFile(DBDialog):
         wx.EVT_LEFT_UP(self.dir_tree.GetChildren()[0], OnLMouseButton)
     
     
+    ## TODO: Doxygen
     def OnSelfShow(self, event=None):
         self.TextCtrl.SetFocus()
     
+    
+    ## TODO: Doxygen
     def SetFilename(self, path):
         filename = os.path.split(path)[1]
         self.TextCtrl.SetValue(filename)
     
+    
+    ## TODO: Doxygen
     def GetFilename(self):
         return self.TextCtrl.GetValue()
     
+    
+    ## TODO: Doxygen
     def GetPath(self):
         if os.path.isdir(self.dir_tree.GetPath()):
             return u'{}/{}'.format(self.dir_tree.GetPath(), self.GetFilename())
+        
         else:
             return u'{}/{}'.format(os.path.dirname(self.dir_tree.GetPath()), self.GetFilename())
     
+    
+    ## TODO: Doxygen
     def OnButton(self, event=None):
         save_ids = (wx.OK, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER, 7000) # 7000 is for left mouse button d-click
         cancel_ids = (wx.CANCEL, wx.WXK_ESCAPE)
         try:
-            id = event.GetKeyCode()
+            key_code = event.GetKeyCode()
+        
         except AttributeError:
-            id = event.GetEventObject().GetId()
+            key_code = event.GetEventObject().GetId()
         
         # Find out if the selected path is a file or directory
         if os.path.isdir(self.dir_tree.GetPath()):
             dest_path = self.dir_tree.GetPath()
+        
         else:
             # If the path is a file, set dest_path to dir where file resides
             dest_path = os.path.split(self.dir_tree.GetPath())[0]
         
-        if id in save_ids:
+        if key_code in save_ids:
             filename = self.TextCtrl.GetValue()
             bad_filename_dia = wx.MessageDialog(self, GT(u'Bad File Name'), GT(u'Error'), wx.OK|wx.ICON_ERROR)
             # Check to see that the input value isn't empty
@@ -439,6 +494,7 @@ class SaveFile(DBDialog):
             if filename == wx.EmptyString or filename[0] in self.invalid_first_char or [i for i in list(filename) if i in self.invalid_char]:
                 bad_filename_dia.ShowModal()
                 #dia.Destroy()
+            
             else:
                 # If a default file extension is set add it to the filename
                 if self.defaultExtension:
@@ -454,16 +510,20 @@ class SaveFile(DBDialog):
                     warn = wx.MessageDialog(self, GT(u'Overwrite File?'), GT(u'File Exists'), wx.YES_NO|wx.NO_DEFAULT)
                     if warn.ShowModal() == wx.ID_NO:
                         save_file = False
+                    
                     warn.Destroy()
                 
                 if save_file:
                     if os.path.isdir(dest_path):
                         os.chdir(dest_path)
+                    
                     else:
                         os.chdir(os.path.split(dest_path)[0])
+                    
                     self.value = True
                     self.Close()
-        elif id in cancel_ids:
+        
+        elif key_code in cancel_ids:
             self.Close()
         
         if event:
@@ -519,6 +579,7 @@ class Hyperlink(wx.Panel):
         self.Layout()
     
     
+    ## TODO: Doxygen
     def OnLeftClick(self, event=None):
         webbrowser.open(self.url)
         
@@ -530,11 +591,13 @@ class Hyperlink(wx.Panel):
             event.Skip(True)
     
     
+    ## TODO: Doxygen
     def OnMouseOut(self, event=None):
         self.SetCursor(wx.NullCursor)
         self.text.SetFont(self.FONT_DEFAULT)
     
     
+    ## TODO: Doxygen
     def OnMouseOver(self, event=None):
         self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
         self.text.SetFont(self.FONT_HIGHLIGHT)
@@ -543,9 +606,11 @@ class Hyperlink(wx.Panel):
             event.Skip(True)
     
     
+    ## TODO: Doxygen
     def SetDefaultFont(self, font):
         self.FONT_DEFAULT = font
     
     
+    ## TODO: Doxygen
     def SetHighlightFont(self, font):
         self.FONT_HIGHLIGHT = font
