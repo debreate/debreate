@@ -7,3 +7,8 @@ Low priority:
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
   - Always occurs with wx 3.0
   - Only occurs when using 'WriteText' method in wx 2.8
+- Window icon not showing up?
+- 2.8 Only
+  - 'Changes' text control is small on Changelog page
+- 3.0 Only
+  - Credits list does not expand completely on right edge

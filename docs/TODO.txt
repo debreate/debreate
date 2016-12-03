@@ -8,3 +8,6 @@
 - Compile python scripts to byte code (.pyc) after install
 - Move Changelog page to second to last, before Build page
 - Move Menu/Launcher page to after Dependencies
+
+Non-priority:
+- Change cursor when hovering over hyperlinks
