@@ -1,4 +1,6 @@
-Known Bugs:
+-- Known Bugs --
+
+Must be fixed before release:
 - QuickBuild
   - Successive building in same instance sessions causes app to freeze
 - md5sum produces different hash for binary files than debuild
@@ -6,6 +8,17 @@ Known Bugs:
   - no-section-field
   - md5sums-lists-nonexistent-file usr/share/debreate/bitmaps/browse64.pn
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
-- Log window has some issues with wx.Yield
 - Appending to multiple dependencies fails (0.8)
-- Cannot open control (and possible launcher & other) files without  extension using GetFileDialog functions
+- Cannot open control (and possibly launcher & other) files without extension using GetFileDialog functions
+
+Low priority:
+- Log window has some issues with wx.Yield (only affects debugging mode)
+- Detailed progress dialog does not always size correctly on construction
+- Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
+  - Always occurs with wx 3.0
+  - Only occurs when using 'WriteText' method in wx 2.8
+- Window icon not showing up?
+- 2.8 Only
+  - 'Changes' text control is small on Changelog page
+- 3.0 Only
+  - Credits list does not expand completely on right edge
