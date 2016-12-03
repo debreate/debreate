@@ -16,7 +16,6 @@ from globals.ident          import ID_LOG
 from globals.paths          import PATH_local
 
 
-#from dbr.command_line import parsed_args_v
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 
@@ -25,7 +24,7 @@ RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 #  A log that will output messages to the terminal &
 #    a log text file.
 #  \param log_level
-#    \b \e int|str : The level at which messages will be output
+#    \b \e int|str : The level at which messages will be output (default is 2 (ERROR))
 #  \param log_path
 #    \b \e str : The file to which messages will be written
 class DebreateLogger:
@@ -41,9 +40,7 @@ class DebreateLogger:
     
     def __init__(self, log_level=ERROR, log_path=u'{}/logs'.format(PATH_local)):
         ## The level at which to output log messages
-        #  
-        #  Default is ERROR
-        self.log_level = self.ERROR
+        self.log_level = log_level
         
         # Directory where logs is written
         self.log_path = log_path
@@ -321,7 +318,9 @@ class LogWindow(wx.Dialog):
     
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
-        log_select = wx.FileDialog(wx.GetApp().GetTopWindow(), GT(u'Open Log'),
+        main_window = wx.GetApp().GetTopWindow()
+        
+        log_select = wx.FileDialog(main_window, GT(u'Open Log'),
                 os.getcwd(), style=wx.FD_OPEN|wx.FD_CHANGE_DIR|wx.FD_FILE_MUST_EXIST)
         
         if log_select.ShowModal() == wx.ID_OK:
@@ -333,7 +332,7 @@ class LogWindow(wx.Dialog):
             
             # NOTE: Cannot import error module because it imports this one
             wx.MessageDialog(
-                    wx.GetApp().GetTopWindow(),
+                    main_window,
                     u'{}: {}'.format(GT(u'File does not exist'), log_file),
                     GT(u'Error'),
                     style=wx.OK|wx.ICON_ERROR
