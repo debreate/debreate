@@ -10,7 +10,6 @@ import wx
 from dbr.language       import GT
 from globals.bitmaps    import BUTTON_REFRESH
 from globals.ident      import ID_APPEND
-from globals.ident      import ID_BROWSE
 from globals.ident      import ID_BUILD
 from globals.ident      import ID_IMPORT
 from globals.ident      import ID_NEXT
