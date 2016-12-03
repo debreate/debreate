@@ -5,16 +5,14 @@
 #  Parsing & writing configuration.
 
 
-# System modules
-import wx, os
+import os, wx
 
-# Local modules
-# FIXME Can't import Logger
-#from dbr import Logger
-#from dbr.language import GT
-from dbr.functions import TextIsEmpty, GetBoolean, GetIntTuple
-from dbr.compression import compression_formats, DEFAULT_COMPRESSION_ID
-from globals.paths import PATH_home
+from dbr.compression    import DEFAULT_COMPRESSION_ID
+from dbr.compression    import compression_formats
+from dbr.functions      import GetBoolean
+from dbr.functions      import GetIntTuple
+from dbr.functions      import TextIsEmpty
+from globals.paths      import PATH_home
 
 
 ## Configuration codes
