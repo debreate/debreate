@@ -9,7 +9,6 @@
 import wx
 
 from dbr.language   import GT
-from dbr.wizard     import WizardPage
 
 
 ## TODO: Doxygen
@@ -100,9 +99,8 @@ def FieldEnabled(field):
 #  \return
 #        \b \e wx.Window : Field control matching field_id or None
 def GetField(page, field_id, field_type=wx.Window):
-    if not isinstance(page, WizardPage):
-        if isinstance(page, field_type) and page.GetId() == field_id:
-            return page
+    if isinstance(page, field_type) and page.GetId() == field_id:
+        return page
     
     # Recursively check children
     children = page.GetChildren()
