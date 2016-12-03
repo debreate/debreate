@@ -5,7 +5,7 @@
 
 import wx
 
-from dbr.custom     import Hyperlink
+from dbr.hyperlink  import Hyperlink
 from dbr.language   import GT
 from globals.ident  import ID_GREETING
 

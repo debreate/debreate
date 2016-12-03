@@ -9,13 +9,13 @@
 import commands, os, shutil, wx
 
 from dbr.buttons            import ButtonConfirm
-from dbr.custom             import Hyperlink
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
+from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
