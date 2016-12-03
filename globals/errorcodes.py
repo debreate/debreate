@@ -10,7 +10,7 @@
 
 import wx, errno
 
-# TODO: Convert thest to dbrerror
+# TODO: Convert these to dbrerror
 ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
 ERR_FILE_WRITE = wx.NewId()
@@ -33,8 +33,9 @@ def AddNewCode(code_def):
 
 dbrerrno = errno
 
-# ???: Should this be 0
-dbrerrno.SUCCESS = -1
+dbrerrno.SUCCESS = 0
 dbrerrno.errorcode[dbrerrno.SUCCESS] = u'SUCCESS'
 
 dbrerrno.EBADFT = AddNewCode(u'EBADFT')
+dbrerrno.ECNCLD = AddNewCode(u'ECNCLD')
+dbrerrno.FEMPTY = AddNewCode(u'FEMPTY')
