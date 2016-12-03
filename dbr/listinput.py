@@ -24,6 +24,9 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
         
+        self.clr_enabled = self.GetBackgroundColour()
+        self.clr_disabled = parent.GetBackgroundColour()
+        
         wx.EVT_KEY_DOWN(self, self.OnSelectAll)
     
     
@@ -45,6 +48,24 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
                     for I  in items[1:]:
                         column_index += 1
                         self.SetStringItem(row_index, column_index, I)
+    
+    
+    ## Disables the list control
+    def Disable(self, *args, **kwargs):
+        self.SetBackgroundColour(self.clr_disabled)
+        
+        return wx.ListView.Disable(self, *args, **kwargs)
+    
+    
+    ## Enables/Disables the list control
+    def Enable(self, *args, **kwargs):
+        if args[0]:
+            self.SetBackgroundColour(self.clr_enabled)
+        
+        else:
+            self.SetBackgroundColour(self.clr_disabled)
+        
+        return wx.ListView.Enable(self, *args, **kwargs)
     
     
     ## TODO: Doxygen
@@ -141,9 +162,23 @@ class ListCtrlPanel(BorderedPanel):
         self.listarea.DeleteItem(item)
     
     
+    ## Disables the panel & list control
+    def Disable(self, *args, **kwargs):
+        self.listarea.Disable(*args, **kwargs)
+        
+        return BorderedPanel.Disable(self, *args, **kwargs)
+    
+    
     ## TODO: Doxygen
     def EditLabel(self, item):
         self.listarea.EditLabel(item)
+    
+    
+    ## Enables/Disables the panel & list control
+    def Enable(self, *args, **kwargs):
+        self.listarea.Enable(*args, **kwargs)
+        
+        return BorderedPanel.Enable(self, *args, **kwargs)
     
     
     ## TODO: Doxygen
