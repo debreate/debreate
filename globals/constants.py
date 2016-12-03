@@ -46,14 +46,6 @@ PREFIX = GetPrefix()
 
 
 
-# *** FIXME: Deprecated??? Colors depicting importance of fields
-Mandatory = (255,200,192)
-Recommended = (197,204,255)
-Optional = (255,255,255)
-Unused = (200,200,200)
-Disabled = (246, 246, 245)
-
-
 ## Location of common licenses installed on the system
 system_licenses_path = u'/usr/share/common-licenses'
 
