@@ -12,8 +12,6 @@ from wx.lib.newevent import NewCommandEvent
 from dbr.buttons            import ButtonNext
 from dbr.buttons            import ButtonPrev
 from dbr.language           import GT
-from globals.ident          import ID_BUILD
-from globals.ident          import ID_GREETING
 from globals.ident          import ID_NEXT
 from globals.ident          import ID_PREV
 from globals.tooltips       import TT_wiz_next
@@ -28,6 +26,10 @@ class Wizard(wx.Panel):
         
         # List of pages available in the wizard
         self.pages = []
+        
+        # IDs for first & last pages
+        self.ID_FIRST = None
+        self.ID_LAST = None
         
         # A Header for the wizard
         pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
@@ -192,7 +194,8 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def SetPages(self, pages):
-        initial_id = pages[0].GetId()
+        self.ID_FIRST = pages[0].GetId()
+        self.ID_LAST = pages[-1].GetId()
         
         # Make sure all pages are hidden
         children = self.GetChildren()
@@ -211,7 +214,7 @@ class Wizard(wx.Panel):
             self.pages.append(page)
             self.GetSizer().Insert(1, page, 1, wx.EXPAND)
         
-        self.ShowPage(initial_id)
+        self.ShowPage(self.ID_FIRST)
         
         self.Layout()
     
@@ -232,13 +235,13 @@ class Wizard(wx.Panel):
                 p.Show()
                 self.txt_title.SetLabel(p.GetName())
         
-        if page_id == ID_GREETING:
+        if page_id == self.ID_FIRST:
             self.btn_prev.Enable(False)
         
         elif not FieldEnabled(self.btn_prev):
             self.btn_prev.Enable(True)
         
-        if page_id == ID_BUILD:
+        if page_id == self.ID_LAST:
             self.btn_next.Enable(False)
         
         elif not FieldEnabled(self.btn_next):
