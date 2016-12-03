@@ -57,7 +57,7 @@ class Wizard(wx.Panel):
         # Button sizer includes header
         layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
         layout_buttons.AddSpacer(5)
-        layout_buttons.Add(self.title, 1, wx.EXPAND)
+        layout_buttons.Add(self.title, 1, wx.EXPAND|wx.RIGHT, 5)
         layout_buttons.Add(self.button_prev)
         layout_buttons.AddSpacer(5)
         layout_buttons.Add(self.button_next)
