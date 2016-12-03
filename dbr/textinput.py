@@ -11,6 +11,7 @@ import wx
 from dbr.font       import MONOSPACED_LG
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
+from dbr.panel      import BorderedPanel
 
 
 ## A text control that is multiline & uses a themed border
@@ -19,24 +20,38 @@ class MultilineTextCtrl(wx.TextCtrl):
                 size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
         wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE|wx.BORDER_NONE,
                 validator, name)
+    
+    
+    ## Sets the font size of the text area
+    #  
+    #  \param point_size
+    #        \b \e int : New point size of font
+    def SetFontSize(self, point_size):
+        font = self.GetFont()
+        font.SetPointSize(point_size)
+        
+        self.SetFont(font)
 
 
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
-class MultilineTextCtrlPanel(wx.Panel):
+class MultilineTextCtrlPanel(BorderedPanel):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
-        wx.Panel.__init__(self, parent, ID, pos, size, wx.TAB_TRAVERSAL|wx.BORDER_THEME,
-                name)
+        BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
         self.textarea = MultilineTextCtrl(self, style=style)
         if not TextIsEmpty(value):
             self.textarea.SetValue(value)
         
+        # For setting color of disabled panel
+        self.clr_disabled = self.GetBackgroundColour()
+        self.clr_enabled = self.textarea.GetBackgroundColour()
+        
         # Match panel color to text control
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
         
         self.layout_V1 = wx.BoxSizer(wx.HORIZONTAL)
-        self.layout_V1.Add(self.textarea, 1, wx.EXPAND)
+        self.layout_V1.Add(self.textarea, 1, wx.EXPAND|wx.ALL, 2)
         
         self.SetAutoLayout(True)
         self.SetSizer(self.layout_V1)
@@ -46,6 +61,32 @@ class MultilineTextCtrlPanel(wx.Panel):
     ## Clears all text in the text area
     def Clear(self):
         self.textarea.Clear()
+    
+    
+    ## Disables self & text area
+    def Disable(self):
+        return self.Enable(False)
+    
+    
+    ## Disables or enables self & text area
+    def Enable(self, *args, **kwargs):
+        return_value = BorderedPanel.Enable(self, *args, **kwargs)
+        
+        if self.IsEnabled():
+            self.SetBackgroundColour(self.clr_enabled)
+        
+            # Older versions of wx do not change color of disabled multiline text control
+            if wx.MAJOR_VERSION < 3:
+                self.textarea.SetBackgroundColour(self.clr_enabled)
+        
+        else:
+            self.SetBackgroundColour(self.clr_disabled)
+        
+            # Older versions of wx do not change color of disabled multiline text control
+            if wx.MAJOR_VERSION < 3:
+                self.textarea.SetBackgroundColour(self.clr_disabled)
+        
+        return return_value
     
     
     ## Retrieves font that text area is using
@@ -78,9 +119,28 @@ class MultilineTextCtrlPanel(wx.Panel):
         return self.textarea.IsEmpty()
     
     
+    ## TODO: Doxygen
+    def SetBackgroundColour(self, *args, **kwargs):
+        self.textarea.SetBackgroundColour(*args, **kwargs)
+        return BorderedPanel.SetBackgroundColour(self, *args, **kwargs)
+    
+    
     ## Sets font in text area
     def SetFont(self, font):
         self.textarea.SetFont(font)
+    
+    
+    ## Sets the font size of the text in the text area
+    #  
+    #  \override dbr.textinput.MultilineTextCtrl.SetFontSize
+    def SetFontSize(self, point_size):
+        self.textarea.SetFontSize(point_size)
+    
+    
+    ## TODO: Doxygen
+    def SetForegroundColour(self, *args, **kwargs):
+        self.textarea.SetForegroundColour(*args, **kwargs)
+        return BorderedPanel.SetForegroundColour(self, *args, **kwargs)
     
     
     ## Places carat to position in text area
@@ -104,8 +164,8 @@ class MultilineTextCtrlPanel(wx.Panel):
     
     
     ## Writes to the text area
-    def Write(self, text):
-        self.textarea.Write(text)
+    def WriteText(self, text):
+        self.textarea.WriteText(text)
 
 
 MT_NO_BTN = 0
@@ -144,6 +204,7 @@ class MonospaceTextCtrl(MultilineTextCtrlPanel):
             btn_font.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
     
     
+    ## TODO: Doxygen
     def OnToggleTextSize(self, event=None):
         # Save insertion point
         insertion = self.textarea.GetInsertionPoint()
