@@ -3,13 +3,12 @@
 ## \package dbr.help
 
 
-import wx, os, commands
+import commands, os, wx
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 from globals.bitmaps import BUTTON_HELP
 
 
-# Local modules
 # FIXME: This should use a global manpage file
 #app_man = u'{}/man/debreate.1'
 app_man = u'man/man1/debreate.1'
