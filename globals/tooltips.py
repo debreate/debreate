@@ -30,14 +30,17 @@ TT_wiz_prev = wx.ToolTip(GT(u'Previous page'))
 TT_wiz_next = wx.ToolTip(GT(u'Next page'))
 
 TT_control = {
-    u'btn open': GT(u'Open pre-formatted control text'),
+    u'btn browse': GT(u'Open pre-formatted control text'),
     u'btn save': GT(u'Save control information to text'),
     u'btn preview': GT(u'Preview control file'),
     u'package': GT(u'Name of the package/software'),
     u'version': GT(u'Package/Software release version'),
     u'maintainer': GT(u'Package/Software maintainer\'s full name'),
     u'email': GT(u'Package/Software maintainer\'s email address'),
-    u'arch': (GT(u'Platform on which package/software is meant to run'), GT(u'all=platform independent'),),
+    u'architecture': (
+        GT(u'Platform on which package/software is meant to run'), u'',
+        GT(u'all = platform independent'),
+        ),
     u'section': GT(u'Section under which package managers will list this package'),
     u'priority': GT(u'Urgency of this package update'),
     u'synopsis': GT(u'One line descriptions/synopsys'),
@@ -51,12 +54,9 @@ TT_control = {
 }
 
 TT_depends = {
-    u'package': GT(u'Package that this depends on'),
-    u'version': GT(u'Minimum version that this package supports'),
-    u'add': GT(u'Add dependency package to list'),
-    u'append': GT(u'Append to selected dependency package in list'),
-    u'remove': GT(u'Remove selected dependency package from list'),
-    u'clear': GT(u'Clear the list of dependency packages'),
+    u'package': GT(u'Name of dependency/conflicting package'),
+    u'operator': GT(u'Operator'),
+    u'version': GT(u'Version corresponing to package name and operator'),
     u'depends': GT(u'Package will need to be installed'),
     u'pre-depends': GT(u'Package will need to be installed and configured first'),
     u'recommends': GT(u'Package is highly recommended and will be installed by default'),
@@ -65,16 +65,21 @@ TT_depends = {
     u'conflicts': GT(u'Package will be removed from the system if it is installed'),
     u'replaces': GT(u'Package or its files may be overwritten'),
     u'breaks': GT(u'Package conflicts and will be de-configured'),
+    u'btn add': GT(u'Add dependency package to list'),
+    u'btn append': GT(u'Add as alternative to selected dependency packages in list'),
+    u'btn remove': GT(u'Remove selected dependency package from list'),
+    u'btn clear': GT(u'Clear the list of dependency packages'),
     u'list': GT(u'Dependencies to be added'),
 }
 
 TT_files = {
-    u'add': GT(u'Add selected file/folder to list'),
-    u'remove': GT(u'Remove selected files from list'),
-    u'clear': GT(u'Clear file list'),
+    u'btn add': GT(u'Add selected file/folder to list'),
+    u'btn remove': GT(u'Remove selected files from list'),
+    u'btn clear': GT(u'Clear file list'),
+    u'btn browse': GT(u'Browse for target installation directory'),
+    u'btn refresh': GT(u'Update files\' executable status & availability'),
     u'target': GT(u'Target installation directory for file(s)'),
-    u'browse': GT(u'Browse for target installation directory'),
-    u'refresh': GT(u'Update files\' executable status & availability'),
+    u'filelist': GT(u'Files to be added to package & their target directories')
 }
 
 TT_manpages = {
@@ -86,30 +91,32 @@ TT_scripts = {
     u'postinst': GT(u'Scrtipt run after package install completes'),
     u'prerm': GT(u'Script run before package uninstall begins'),
     u'postrm': GT(u'Script run after package uninstall completes'),
+    u'script body': GT(u'Script text body'),
     u'target': GT(u'Directory where scripts should create symlinks'),
     u'al list': GT(u'Executables from file list to be linked against'),
-    u'import': GT(u'Import files marked as executable from Files page'),
-    u'remove': GT(u'Remove selected executables from list'),
-    u'generate': GT(u'Generate scripts'),
-    u'help': GT(u'How to use Auto-Link'),
+    u'btn import': GT(u'Import files marked as executable from Files page'),
+    u'btn remove': GT(u'Remove selected executables from list'),
+    u'btn build': GT(u'Generate scripts'),
+    u'btn help': GT(u'How to use Auto-Link'),
 }
 
 TT_changelog = {
     u'package': TT_control[u'package'],
     u'version': TT_control[u'version'],
     u'dist': GT(u'Name of Debian/Ubuntu/etc. target distribution'),
-    u'urgency': GT(u'Urgency of this update'),
+    u'urgency': TT_control[u'priority'],
     u'maintainer': TT_control[u'maintainer'],
     u'email': TT_control[u'email'],
     u'changes': GT(u'List new changes here, separated one per line'),
     u'target': GT(u'Target to install changelog file'),
     u'target default': GT(u'Install changelog to standard directory'),
     u'target custom': GT(u'Install changelog to custom directory'),
-    u'import': GT(u'Import information from Control page'),
-    u'add': GT(u'Prepend above changes as new log entry'),
+    u'btn import': GT(u'Import information from Control page'),
+    u'btn add': GT(u'Prepend above changes as new log entry'),
     u'log': GT(u'Formatted changelog entries (editable)'),
 }
 
+no_sys_licenses = GT(u'No system licenses found in {}').format(system_licenses_path)
 TT_copyright = {
     u'full': (
         u'{}\n'.format(GT(u'Copies a full system, app, or local license')),
@@ -120,6 +127,8 @@ TT_copyright = {
         u'\t{}'.format(local_templates_path),
         ),
     u'link': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
+    u'full_disabled': no_sys_licenses,
+    u'link_disabled': no_sys_licenses,
 }
 
 TT_launchers = {
@@ -162,7 +171,7 @@ TT_build = {
     u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
-        GT(u'See "Help ➜ Reference ➜ Lintian Tags Explanation"'),
+        GT(u'See: Help ➜ Reference ➜ Lintian Tags Explanation'),
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
     u'build': GT(u'Start building'),
