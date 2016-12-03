@@ -4,7 +4,7 @@
 # System imports
 import wx
 
-from dbr.custom     import Hyperlink
+from dbr.hyperlink  import Hyperlink
 from dbr.language   import GT
 from dbr.wizard     import WizardPage
 from globals.ident  import ID_GREETING
