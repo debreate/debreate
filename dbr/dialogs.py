@@ -11,6 +11,7 @@ from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonConfirm
 from dbr.custom         import TextIsEmpty
+from dbr.hyperlink      import Hyperlink
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.moduleaccess   import ModuleAccessCtrl

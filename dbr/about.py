@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.about
-#  
-#  Dialog that shows information about the application
+
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
-import wx, os, shutil, commands
+import commands, os, shutil, wx
 
-from dbr                    import font
 from dbr.buttons            import ButtonConfirm
-from dbr.custom             import Hyperlink
 from dbr.error              import ShowError
+from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
+from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -25,6 +26,7 @@ from globals.application    import AUTHOR_name
 from globals.commands       import CMD_gzip
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
+from globals.paths          import PATH_app
 from globals.system         import OS_codename
 from globals.system         import OS_name
 from globals.system         import OS_upstream_codename
@@ -82,7 +84,8 @@ class AboutDialog(wx.Dialog):
         self.t_about.Layout()
         
         ## List of credits
-        self.credits = ListCtrlPanel(t_credits, style=wx.LC_REPORT)
+        self.credits = ListCtrlPanel(t_credits)
+        self.credits.SetSingleStyle(wx.LC_REPORT)
         self.credits.InsertColumn(0, GT(u'Name'), width=150)
         self.credits.InsertColumn(1, GT(u'Job'), width=200)
         self.credits.InsertColumn(2, GT(u'Email'), width=240)
@@ -96,7 +99,7 @@ class AboutDialog(wx.Dialog):
         
         ## Changelog text area
         self.changelog = MultilineTextCtrlPanel(t_changelog, style=wx.TE_READONLY)
-        self.changelog.SetFont(font.MONOSPACED_MD)
+        self.changelog.SetFont(MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
         log_sizer.Add(self.changelog, 1, wx.EXPAND)
@@ -107,7 +110,7 @@ class AboutDialog(wx.Dialog):
         
         ## Licensing information text area
         self.license = MultilineTextCtrlPanel(t_license, style=wx.TE_READONLY)
-        self.license.SetFont(font.MONOSPACED_MD)
+        self.license.SetFont(MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)
         license_sizer.Add(self.license, 1, wx.EXPAND)
@@ -129,8 +132,11 @@ class AboutDialog(wx.Dialog):
                 GT(u'wxPython version: {}').format(WX_VER_STRING))
         
         ## Debreate's installation prefix
-        install_prefix = wx.StaticText(sys_info, -1,
-                GT(u'Installation prefix: {}').format(PREFIX))
+        install_prefix = wx.StaticText(sys_info,
+                label=GT(u'App location: {}').format(PATH_app))
+        
+        if INSTALLED:
+            install_prefix.SetLabel(GT(u'Installation prefix: {}').format(PREFIX))
         
         self.py_info.SetFont(sys_info_font)
         self.wx_info.SetFont(sys_info_font)
@@ -174,11 +180,11 @@ class AboutDialog(wx.Dialog):
         
         
         # Button to close the dialog
-        ok = ButtonConfirm(self)
+        btn_confirm = ButtonConfirm(self)
         
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
-        sizer.Add(ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP, 5)
+        sizer.Add(btn_confirm, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
         
         self.SetSizer(sizer)
         self.Layout()
@@ -203,6 +209,7 @@ class AboutDialog(wx.Dialog):
         )
         
         self.t_about.Layout()
+    
     
     ## Displays version in 'about' tab
     #  
@@ -244,6 +251,7 @@ class AboutDialog(wx.Dialog):
         
         self.t_about.Layout()
     
+    
     ## Sets a hotlink to the app's homepage
     #  
     #  TODO: Remove: Deprecated, unused
@@ -279,6 +287,7 @@ class AboutDialog(wx.Dialog):
         )
         self.t_about.Layout()
     
+    
     ## Displays a description about the app on the 'about' tab
     def SetDescription(self, desc):
         # Place between spacers
@@ -294,6 +303,7 @@ class AboutDialog(wx.Dialog):
         
         self.t_about.Layout()
     
+    
     ## Adds a developer to the list of credits
     #  
     #  \param name
@@ -306,6 +316,7 @@ class AboutDialog(wx.Dialog):
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, GT(u'Developer'))
     
+    
     ## Adds a packager to the list of credits
     #  
     #  \param name
@@ -317,6 +328,7 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, GT(u'Packager'))
+    
     
     ## Adds a translator to the list of credits
     #  
@@ -333,6 +345,7 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertStringItem(next_item, name)
         self.credits.SetStringItem(next_item, 2, email)
         self.credits.SetStringItem(next_item, 1, job)
+    
     
     ## Adds a general job to the credits list
     #  
@@ -376,8 +389,10 @@ class AboutDialog(wx.Dialog):
             self.credits.SetStringItem(next_item, 1, value)
     
     # FIXME: Unused?
-    def NoResizeCol(self, event):
-        event.Veto()
+    def NoResizeCol(self, event=None):
+        if event:
+            event.Veto()
+    
     
     ## Sets text to be shown on the 'Changelog' tab
     #  
@@ -478,11 +493,12 @@ class AboutDialog(wx.Dialog):
         self.license.SetValue(lic_text)
         self.license.SetInsertionPoint(0)
     
+    
     ## Defines action to take when 'Ok' button is press
     #  
     #  Closes the dialog.
     #  \param event
     #        <b><em>(wx.EVT_BUTTON)</em></b>
-    def OnOk(self, event):
+    def OnOk(self, event=None):
         self.Close()
     
