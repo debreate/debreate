@@ -72,6 +72,14 @@ def FieldEnabled(field):
         return field.IsEnabled()
 
 
+## TODO: Doxygen
+def GetContainerItemCount(container):
+    if wx.MAJOR_VERSION > 2:
+        return container.GetItemCount()
+    
+    return len(container.GetChildren())
+
+
 ## Execute a command with sudo (super user) privileges
 #  
 #  \param password
@@ -85,6 +93,7 @@ def RunSudo(password, command):
     err = int(output.split(u'\n')[-2])
     if (err):
         return False
+    
     return True
 
 
@@ -99,24 +108,29 @@ def RequirePython(version):
     if t == type(u''):
         if version == PY_VER_STRING[0:3]:
             return
+        
         raise ValueError(error)
+    
     elif t == type([]) or t == type(()):
         if PY_VER_STRING[0:3] in version:
             return
+        
         raise ValueError(error)
+    
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
+
 
 ## Checks if a text string is empty
 #  
 #  \param text
 #        The string to be checked
 def TextIsEmpty(text):
-    text = u''.join(u''.join(text.split(u' ')).split(u'\n'))
-    return (text == u'')
+    return text.strip(u' \t\n') == wx.EmptyString
 
 
-# FIXME: time.strftime can be used for all date & time functions
-
+## TODO: Doxygen
+#  
+#  FIXME: time.strftime can be used for all date & time functions
 def prepend_zero(number):
     if number < 10:
         return unicode(u'0{}'.format(number))
@@ -176,7 +190,7 @@ def GetSystemLicensesList():
             if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
                 license_list.append(F)
     
-    return license_list
+    return sorted(license_list)
 
 
 ## Checks if a string contains any alphabetic characters
@@ -287,15 +301,6 @@ def GetIntTuple(value):
                 return None
             
             value[t_index] = I
-            
-            '''
-            if type(I) not in (int, float):
-                return None
-            
-            # Convert float values to int
-            if type(I) == float:
-                value[t_index] = int(I)
-            '''
         
         return tuple(value)
     
@@ -314,21 +319,7 @@ def GetIntTuple(value):
                 
                 if S == None:
                     return None
-                '''
-                # Check for float values
-                if u'.' in S:
-                    # Remove trailing values after 2nd period
-                    S = S.split(u'.')[:2]
-                    
-                    for C in S:
-                        if (not C.isnumeric() and (not C.isdigit())):
-                            return None
-                    
-                    S = float(u'.'.join(S))
                 
-                elif (not S.isnumeric()) and (not S.isdigit()):
-                    return None
-                '''
                 value[v_index] = S
                 
             # Convert return value from list to tuple
@@ -421,7 +412,7 @@ def BuildDebPackage(stage_dir, target_file):
     packager = CMD_system_packager
     
     if not CMD_fakeroot or not packager:
-        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg'))
+        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))
     
     packager = os.path.basename(packager)
     
