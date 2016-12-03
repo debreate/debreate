@@ -2,6 +2,9 @@
 
 ## \package dbr.wizard
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
 from wx.lib.newevent import NewCommandEvent
@@ -9,6 +12,8 @@ from wx.lib.newevent import NewCommandEvent
 from dbr.buttons        import ButtonNext
 from dbr.buttons        import ButtonPrev
 from dbr.language       import GT
+from globals.ident      import ID_BUILD
+from globals.ident      import ID_GREETING
 from globals.ident      import ID_NEXT
 from globals.ident      import ID_PREV
 from globals.tooltips   import TT_wiz_next
@@ -229,6 +234,18 @@ class Wizard(wx.Panel):
             else:
                 p.Show()
                 self.txt_title.SetLabel(p.GetName())
+        
+        if page_id == ID_GREETING:
+            self.btn_prev.Enable(False)
+        
+        else:
+            self.btn_prev.Enable(True)
+        
+        if page_id == ID_BUILD:
+            self.btn_next.Enable(False)
+        
+        else:
+            self.btn_next.Enable(True)
         
         self.Layout()
         
