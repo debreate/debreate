@@ -44,6 +44,7 @@ Unknown Release:
 - Save monospaced font size for text areas using it
 - Add contributers file to docs dir
 - Option to create lintian overrides file
+- Use 'data/lintian/tags' for overrides
 
 Tasks being considered:
 - Scripting backend
