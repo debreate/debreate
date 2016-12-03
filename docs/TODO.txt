@@ -10,4 +10,3 @@
 - Move Menu/Launcher page to after Dependencies
 
 Non-priority:
-- Change cursor when hovering over hyperlinks
