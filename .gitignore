@@ -7,6 +7,9 @@
 /.pydevproject
 /.settings/
 
+# Netbeans project directory
+/nbproject/
+
 # Compiled Python bytecode
 *.pyc
 
