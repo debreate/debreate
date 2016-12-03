@@ -12,8 +12,8 @@ from wx.combo import OwnerDrawnComboBox
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonBrowse64
 from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonDel
 from dbr.buttons        import ButtonPreview64
+from dbr.buttons        import ButtonRemove
 from dbr.buttons        import ButtonSave64
 from dbr.dialogs        import GetFileOpenDialog
 from dbr.dialogs        import GetFileSaveDialog
@@ -187,7 +187,7 @@ class Panel(WizardPage):
         self.opts_input.append(self.ti_category)
         
         btn_catadd = ButtonAdd(self, name=u'add category')
-        btn_catdel = ButtonDel(self, name=u'rm category')
+        btn_catdel = ButtonRemove(self, name=u'rm category')
         btn_catclr = ButtonClear(self, name=u'clear categories')
         
         for B in btn_catadd, btn_catdel, btn_catclr:
