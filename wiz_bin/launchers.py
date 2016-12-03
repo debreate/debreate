@@ -9,25 +9,25 @@
 import os, shutil, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonBrowse64
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonPreview64
-from dbr.buttons        import ButtonRemove
-from dbr.buttons        import ButtonSave64
-from dbr.dialogs        import GetFileOpenDialog
-from dbr.dialogs        import GetFileSaveDialog
-from dbr.dialogs        import ShowDialog
-from dbr.functions      import FieldEnabled
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.wizard         import WizardPage
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_MENU
-from globals.ident      import page_ids
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonBrowse64
+from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonRemove
+from dbr.buttons            import ButtonSave64
+from dbr.dialogs            import GetFileOpenDialog
+from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import ShowDialog
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.wizard             import WizardPage
+from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_MENU
+from globals.ident          import page_ids
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import FieldEnabled
 
 
 ## Page for creating a system menu launcher

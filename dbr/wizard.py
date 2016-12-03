@@ -9,19 +9,19 @@
 import os, wx
 from wx.lib.newevent import NewCommandEvent
 
-from dbr.buttons        import ButtonNext
-from dbr.buttons        import ButtonPrev
-from dbr.functions      import FieldEnabled
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_NEXT
-from globals.ident      import ID_PREV
-from globals.ident      import page_ids
-from globals.tooltips   import TT_wiz_next
-from globals.tooltips   import TT_wiz_prev
+from dbr.buttons            import ButtonNext
+from dbr.buttons            import ButtonPrev
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
+from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_NEXT
+from globals.ident          import ID_PREV
+from globals.ident          import page_ids
+from globals.tooltips       import TT_wiz_next
+from globals.tooltips       import TT_wiz_prev
+from globals.wizardhelper   import FieldEnabled
 
 
 ## Wizard class for Debreate
