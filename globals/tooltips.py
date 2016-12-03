@@ -10,19 +10,20 @@
 
 import wx
 
-from dbr.functions      import FieldEnabled
-from dbr.language       import GT
-from dbr.templates      import local_templates_path
-from globals.commands   import CMD_system_installer
-from globals.ident      import ID_BUILD
-from globals.ident      import ID_CHANGELOG
-from globals.ident      import ID_CONTROL
-from globals.ident      import ID_COPYRIGHT
-from globals.ident      import ID_DEPENDS
-from globals.ident      import ID_FILES
-from globals.ident      import ID_MAN
-from globals.ident      import ID_MENU
-from globals.ident      import ID_SCRIPTS
+from dbr.language           import GT
+from dbr.templates          import local_templates_path
+from globals.commands       import CMD_system_installer
+from globals.constants      import system_licenses_path
+from globals.ident          import ID_BUILD
+from globals.ident          import ID_CHANGELOG
+from globals.ident          import ID_CONTROL
+from globals.ident          import ID_COPYRIGHT
+from globals.ident          import ID_DEPENDS
+from globals.ident          import ID_FILES
+from globals.ident          import ID_MAN
+from globals.ident          import ID_MENU
+from globals.ident          import ID_SCRIPTS
+from globals.wizardhelper   import FieldEnabled
 
 
 # *** Wizard buttons ***#
