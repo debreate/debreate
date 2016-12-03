@@ -7,7 +7,6 @@
 
 
 import os, wx
-from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
@@ -19,6 +18,7 @@ from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
+from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import FID_ARCH
@@ -104,7 +104,7 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
-        ti_section = OwnerDrawnComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
+        ti_section = ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
@@ -539,7 +539,7 @@ class Panel(wx.ScrolledWindow):
     def ResetAllFields(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options
-            if isinstance(I, OwnerDrawnComboBox):
+            if isinstance(I, ComboBox):
                 I.SetValue(wx.EmptyString)
             
             else:
