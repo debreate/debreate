@@ -14,12 +14,12 @@ from dbr.buttons            import ButtonClear
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
-from dbr.custom             import ComboBox
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
+from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import ID_MENU
