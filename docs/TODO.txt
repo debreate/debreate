@@ -10,3 +10,4 @@
 - Move Menu/Launcher page to after Dependencies
 
 Non-priority:
+- Enable/Disable wizard buttons at ends of pages
