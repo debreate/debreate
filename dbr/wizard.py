@@ -24,54 +24,58 @@ class Wizard(wx.Panel):
         self.pages = []
         
         # A Header for the wizard
-        self.title = wx.Panel(self, style=wx.RAISED_BORDER)
-        self.title.SetBackgroundColour((10, 47, 162))
+        pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
+        pnl_title.SetBackgroundColour((10, 47, 162))
         
         # Text displayed from objects "name" - object.GetName()
-        self.title_txt = wx.StaticText(self.title, label=GT(u'Title'))
-        self.title_txt.SetForegroundColour((255, 255, 255))
+        self.txt_title = wx.StaticText(pnl_title, label=GT(u'Title'))
+        self.txt_title.SetForegroundColour((255, 255, 255))
         
         # font to use in the header
         headerfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         
-        self.title_txt.SetFont(headerfont)
-        
-        # Position the text in the header
-        title_sizer = wx.GridSizer(1, 1)
-        title_sizer.Add(self.title_txt, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
-        self.title.SetSizer(title_sizer)
-        self.title.Layout()
+        self.txt_title.SetFont(headerfont)
         
         # Previous and Next buttons
-        self.button_prev = ButtonPrev(self)
-        self.button_prev.SetToolTip(TT_wiz_prev)
-        self.button_next = ButtonNext(self)
-        self.button_next.SetToolTip(TT_wiz_next)
-        
-        wx.EVT_BUTTON(self.button_prev, wx.ID_ANY, self.ChangePage)
-        wx.EVT_BUTTON(self.button_next, wx.ID_ANY, self.ChangePage)
+        self.btn_prev = ButtonPrev(self)
+        self.btn_prev.SetToolTip(TT_wiz_prev)
+        self.btn_next = ButtonNext(self)
+        self.btn_next.SetToolTip(TT_wiz_next)
         
         self.ChangePageEvent, self.EVT_CHANGE_PAGE = NewCommandEvent()
         self.evt = self.ChangePageEvent(0)
         
+        # These widgets are put into a list so that they are not automatically hidden
+        self.permanent_children = (pnl_title, self.btn_prev, self.btn_next)
+        
+        # *** Layout *** #
+        
+        # Position the text in the header
+        lyt_title = wx.GridSizer(1, 1)
+        lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        pnl_title.SetSizer(lyt_title)
+        pnl_title.Layout()
+        
         # Button sizer includes header
-        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        layout_buttons.AddSpacer(5)
-        layout_buttons.Add(self.title, 1, wx.EXPAND|wx.RIGHT, 5)
-        layout_buttons.Add(self.button_prev)
-        layout_buttons.AddSpacer(5)
-        layout_buttons.Add(self.button_next)
-        layout_buttons.AddSpacer(5)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.AddSpacer(5)
+        lyt_buttons.Add(pnl_title, 1, wx.EXPAND|wx.RIGHT, 5)
+        lyt_buttons.Add(self.btn_prev)
+        lyt_buttons.AddSpacer(5)
+        lyt_buttons.Add(self.btn_next)
+        lyt_buttons.AddSpacer(5)
         
-        layout_main = wx.BoxSizer(wx.VERTICAL)
-        layout_main.Add(layout_buttons, 0, wx.EXPAND)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_buttons, 0, wx.EXPAND)
         
-        self.SetSizer(layout_main)
+        self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
         
-        # These widgets are put into a list so that they are not automatically hidden
-        self.permanent_children = (self.title, self.button_prev, self.button_next)
+        # *** Event handlers *** #
+        
+        self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
+        self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
     
     
     ## TODO: Doxygen
@@ -127,10 +131,10 @@ class Wizard(wx.Panel):
     def EnableNext(self, value=True):
         if isinstance(value, (bool, int)):
             if value:
-                self.button_next.Enable()
+                self.btn_next.Enable()
             
             else:
-                self.button_next.Disable()
+                self.btn_next.Disable()
         
         else:
             # FIXME: Should not raise error here???
@@ -141,10 +145,10 @@ class Wizard(wx.Panel):
     def EnablePrev(self, value=True):
         if isinstance(value, (bool, int)):
             if value:
-                self.button_prev.Enable()
+                self.btn_prev.Enable()
             
             else:
-                self.button_prev.Disable()
+                self.btn_prev.Disable()
         
         else:
             # FIXME: Should not raise error here???
@@ -205,14 +209,14 @@ class Wizard(wx.Panel):
             
             else:
                 page.Show()
-                self.title_txt.SetLabel(page.GetName())
+                self.txt_title.SetLabel(page.GetName())
         
         self.Layout()
     
     
     ## TODO: Doxygen
     def SetTitle(self, title):
-        self.title_txt.SetLabel(title)
+        self.txt_title.SetLabel(title)
         self.Layout()
     
     
@@ -224,7 +228,7 @@ class Wizard(wx.Panel):
             
             else:
                 p.Show()
-                self.title_txt.SetLabel(p.GetName())
+                self.txt_title.SetLabel(p.GetName())
         
         self.Layout()
         
