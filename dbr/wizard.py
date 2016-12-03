@@ -191,6 +191,8 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def SetPages(self, pages):
+        initial_id = pages[0].GetId()
+        
         # Make sure all pages are hidden
         children = self.GetChildren()
         for child in children:
@@ -207,14 +209,8 @@ class Wizard(wx.Panel):
         for page in pages:
             self.pages.append(page)
             self.GetSizer().Insert(1, page, 1, wx.EXPAND)
-            
-            # Show the first page
-            if page != pages[0]:
-                page.Hide()
-            
-            else:
-                page.Show()
-                self.txt_title.SetLabel(page.GetName())
+        
+        self.ShowPage(initial_id)
         
         self.Layout()
     
