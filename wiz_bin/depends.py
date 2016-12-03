@@ -9,7 +9,7 @@ from wx.lib.mixins import listctrl as LC
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
 from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonDel
+from dbr.buttons        import ButtonRemove
 from dbr.functions      import TextIsEmpty
 from dbr.help           import HelpButton
 from dbr.language       import GT
@@ -68,7 +68,7 @@ class Panel(WizardPage):
         self.depadd.SetName(u'add')
         self.depapp = ButtonAppend(self)
         self.depapp.SetName(u'append')
-        self.deprem = ButtonDel(self)
+        self.deprem = ButtonRemove(self)
         self.deprem.SetName(u'remove')
         self.depclr = ButtonClear(self)
         self.depclr.SetName(u'clear')
