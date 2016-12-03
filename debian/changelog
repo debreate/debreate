@@ -1,4 +1,4 @@
-debreate (0.7.12-dev9-1) xenial; urgency=high
+debreate (0.7.12-dev9-2) xenial; urgency=medium
 
   * Fixes:
     - Added fixed & updated modules from unstable branch
@@ -62,11 +62,12 @@ debreate (0.7.12-dev9-1) xenial; urgency=high
     - Use GitHub URL to check for updates
     - Use monospaced font for some multi-line text input fiels
     - Use os.chmod module in build rather than system chmod command
+    - Wizard buttons disable on first & last pages
     Translations:
     - Add Russian Gettext locale
     - Update Spanish (es) Gettext locale
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 02 Dec 2016 14:32:27 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 02 Dec 2016 19:44:46 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
