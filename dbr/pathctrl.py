@@ -1,23 +1,33 @@
 # -*- coding: utf-8 -*-
 
-import wx, os
+## \package dbr.pathctrl
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
+
+import os, wx
+
 
 PATH_DEFAULT = wx.NewId()
 PATH_WARN = wx.NewId()
 
 
-# FIXME: Use boolean value instead of type
+## TODO: Doxygen
+#  
+#  FIXME: Use boolean value instead of type
 class PathCtrl(wx.TextCtrl):
-    def __init__(self, parent, id=wx.ID_ANY, value=wx.EmptyString, type=PATH_DEFAULT):
-        wx.TextCtrl.__init__(self, parent, id, value)
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
+                default=wx.EmptyString):
+        wx.TextCtrl.__init__(self, parent, ctrl_id, value)
         
-        self.type = type
+        self.ctrl_type = ctrl_type
         
         # Get the value of the textctrl so it can be restored
-        self.default = value
+        self.default = default
         
         # For restoring color of text area
-        self.bg_color = self.GetBackgroundColour()
+        self.clr_default = self.GetBackgroundColour()
         
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
@@ -27,14 +37,13 @@ class PathCtrl(wx.TextCtrl):
             self.SetPathAvailable()
     
     
-    def SetPathAvailable(self):
-        if os.path.isdir(self.GetValue()):
-            self.SetBackgroundColour(self.bg_color)
-            return
-        
-        self.SetBackgroundColour(u'red')
+    ## TODO: Doxygen
+    def GetDefaultValue(self):
+        return self.default
     
-    def OnKeyUp(self, event):
+    
+    ## TODO: Doxygen
+    def OnKeyUp(self, event=None):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
         if value == wx.EmptyString or value[0] != u'/':
@@ -47,15 +56,29 @@ class PathCtrl(wx.TextCtrl):
         if self.type == PATH_WARN:
             self.SetPathAvailable()
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
+    ## TODO: Doxygen
     def Reset(self):
         self.SetValue(self.default)
         
         if self.type == PATH_WARN:
             self.SetPathAvailable()
+        
+        self.SetInsertionPointEnd()
     
     
-    def SetDefaultValue(self, value):
-        self.default = value
+    ## TODO: Doxygen
+    def SetPathAvailable(self):
+        if os.path.isdir(self.GetValue()):
+            self.SetBackgroundColour(self.clr_default)
+            return
+        
+        self.SetBackgroundColour(u'red')
+    
+    
+    ## TODO: Doxygen
+    def SetDefaultValue(self, default):
+        self.default = default
