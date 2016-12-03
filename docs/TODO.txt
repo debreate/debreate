@@ -18,6 +18,10 @@
 - Changelog page: Add distribution automatically (drop-down box)
 - Replace wx.MessageDialog with DetailedMessageDialog
 - Add custom field option to Control
+- Compile python scripts to byte code (.pyc) after install
+- Move Changelog page to second to last, before Build page
+- Move Menu/Launcher page to after Dependencies
+- Option to save session
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
