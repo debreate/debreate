@@ -7,7 +7,6 @@
 
 
 import os, wx
-from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons        import ButtonConfirm
 from dbr.custom         import Hyperlink
@@ -15,6 +14,7 @@ from dbr.custom         import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.moduleaccess   import ModuleAccessCtrl
+from dbr.selectinput    import ComboBox
 from dbr.textinput      import MultilineTextCtrlPanel
 from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
@@ -380,7 +380,7 @@ class SuperUserDialog(wx.Dialog):
         wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
         
         # User selector
-        self.users = OwnerDrawnComboBox(self)
+        self.users = ComboBox(self)
 
 
 ## Dialog shown when Debreate is run for first time
