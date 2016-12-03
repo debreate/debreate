@@ -2,12 +2,16 @@
 
 ## \package dbr.wizard
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 from wx.lib.newevent import NewCommandEvent
 
 from dbr.buttons        import ButtonNext
 from dbr.buttons        import ButtonPrev
+from dbr.functions      import FieldEnabled
 from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -30,56 +34,64 @@ class Wizard(wx.Panel):
         
         self.pages_ids = {}
         
+        # IDs for first & last pages
+        self.ID_FIRST = None
+        self.ID_LAST = None
+        
         # A Header for the wizard
-        self.title = wx.Panel(self, style=wx.RAISED_BORDER)
-        self.title.SetBackgroundColour((10, 47, 162))
+        pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
+        pnl_title.SetBackgroundColour((10, 47, 162))
         
         # Text displayed from objects "name" - object.GetName()
-        self.title_txt = wx.StaticText(self.title, label=GT(u'Title'))
-        self.title_txt.SetForegroundColour((255, 255, 255))
+        self.txt_title = wx.StaticText(pnl_title, label=GT(u'Title'))
+        self.txt_title.SetForegroundColour((255, 255, 255))
         
         # font to use in the header
         headerfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
         
-        self.title_txt.SetFont(headerfont)
-        
-        # Position the text in the header
-        title_sizer = wx.GridSizer(1, 1)
-        title_sizer.Add(self.title_txt, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
-        self.title.SetSizer(title_sizer)
-        self.title.Layout()
+        self.txt_title.SetFont(headerfont)
         
         # Previous and Next buttons
-        self.button_prev = ButtonPrev(self)
-        self.button_prev.SetToolTip(TT_wiz_prev)
-        self.button_next = ButtonNext(self)
-        self.button_next.SetToolTip(TT_wiz_next)
-        
-        wx.EVT_BUTTON(self.button_prev, wx.ID_ANY, self.ChangePage)
-        wx.EVT_BUTTON(self.button_next, wx.ID_ANY, self.ChangePage)
+        self.btn_prev = ButtonPrev(self)
+        self.btn_prev.SetToolTip(TT_wiz_prev)
+        self.btn_next = ButtonNext(self)
+        self.btn_next.SetToolTip(TT_wiz_next)
         
         # FIXME: Should be global???
         self.ChangePageEvent, self.EVT_CHANGE_PAGE = NewCommandEvent()
         self.evt = self.ChangePageEvent(0)
         
+        # These widgets are put into a list so that they are not automatically hidden
+        self.permanent_children = (pnl_title, self.btn_prev, self.btn_next)
+        
+        # *** Layout *** #
+        
+        # Position the text in the header
+        lyt_title = wx.GridSizer(1, 1)
+        lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        pnl_title.SetSizer(lyt_title)
+        pnl_title.Layout()
+        
         # Button sizer includes header
-        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        layout_buttons.AddSpacer(5)
-        layout_buttons.Add(self.title, 1, wx.EXPAND)
-        layout_buttons.Add(self.button_prev)
-        layout_buttons.AddSpacer(5)
-        layout_buttons.Add(self.button_next)
-        layout_buttons.AddSpacer(5)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.AddSpacer(5)
+        lyt_buttons.Add(pnl_title, 1, wx.EXPAND|wx.RIGHT, 5)
+        lyt_buttons.Add(self.btn_prev)
+        lyt_buttons.AddSpacer(5)
+        lyt_buttons.Add(self.btn_next)
+        lyt_buttons.AddSpacer(5)
         
-        layout_main = wx.BoxSizer(wx.VERTICAL)
-        layout_main.Add(layout_buttons, 0, wx.EXPAND)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_buttons, 0, wx.EXPAND)
         
-        self.SetSizer(layout_main)
+        self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
         
-        # These widgets are put into a list so that they are not automatically hidden
-        self.permanent_children = (self.title, self.button_prev, self.button_next)
+        # *** Event handlers *** #
+        
+        self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
+        self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
     
     
     ## TODO: Doxygen
@@ -90,6 +102,8 @@ class Wizard(wx.Panel):
         for page in self.pages:
             if page.IsShown():
                 index = self.pages.index(page)
+                
+                break
         
         if event_id == ID_PREV:
             if index != 0:
@@ -104,11 +118,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        # Update "pages menu"
-        for M in wx.GetApp().GetTopWindow().menu_page.GetMenuItems():
-            if M.GetId() == page_id:
-                M.Check()
-                break
+        wx.GetApp().GetTopWindow().menu_page.Check(page_id, True)
     
     
     ## TODO: Doxygen
@@ -137,10 +147,10 @@ class Wizard(wx.Panel):
     def EnableNext(self, value=True):
         if isinstance(value, (bool, int)):
             if value:
-                self.button_next.Enable()
+                self.btn_next.Enable()
             
             else:
-                self.button_next.Disable()
+                self.btn_next.Disable()
         
         else:
             # FIXME: Should not raise error here???
@@ -151,10 +161,10 @@ class Wizard(wx.Panel):
     def EnablePrev(self, value=True):
         if isinstance(value, (bool, int)):
             if value:
-                self.button_prev.Enable()
+                self.btn_prev.Enable()
             
             else:
-                self.button_prev.Disable()
+                self.btn_prev.Disable()
         
         else:
             # FIXME: Should not raise error here???
@@ -209,6 +219,9 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def SetPages(self, pages):
+        self.ID_FIRST = pages[0].GetId()
+        self.ID_LAST = pages[-1].GetId()
+        
         main_window = wx.GetApp().GetTopWindow()
         
         # Make sure all pages are hidden
@@ -229,25 +242,19 @@ class Wizard(wx.Panel):
             self.pages_ids[page.GetId()] = page.GetName().upper()
             self.GetSizer().Insert(1, page, 1, wx.EXPAND)
             
-            # Show the first page
-            if page != pages[0]:
-                page.Hide()
-            
-            else:
-                page.Show()
-                self.title_txt.SetLabel(page.GetLabel())
-            
             # Add pages to main menu
             main_window.menu_page.AppendItem(
                 wx.MenuItem(main_window.menu_page, page.GetId(), page.GetLabel(),
                 kind=wx.ITEM_RADIO))
+        
+        self.ShowPage(self.ID_FIRST)
         
         self.Layout()
     
     
     ## TODO: Doxygen
     def SetTitle(self, title):
-        self.title_txt.SetLabel(title)
+        self.txt_title.SetLabel(title)
         self.Layout()
     
     
@@ -259,7 +266,19 @@ class Wizard(wx.Panel):
             
             else:
                 p.Show()
-                self.title_txt.SetLabel(p.GetLabel())
+                self.txt_title.SetLabel(p.GetLabel())
+        
+        if page_id == self.ID_FIRST:
+            self.btn_prev.Enable(False)
+        
+        elif not FieldEnabled(self.btn_prev):
+            self.btn_prev.Enable(True)
+        
+        if page_id == self.ID_LAST:
+            self.btn_next.Enable(False)
+        
+        elif not FieldEnabled(self.btn_next):
+            self.btn_next.Enable(True)
         
         self.Layout()
         
