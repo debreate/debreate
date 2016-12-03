@@ -10,6 +10,7 @@ import wx
 from dbr.language       import GT
 from globals.bitmaps    import BUTTON_REFRESH
 from globals.ident      import ID_APPEND
+from globals.ident      import ID_BROWSE
 from globals.ident      import ID_BUILD
 from globals.ident      import ID_IMPORT
 from globals.ident      import ID_NEXT
@@ -101,14 +102,6 @@ class ButtonConfirm(BitmapButton):
         self.SetToolTip(wx.ToolTip(GT(u'Ok')))
 
 
-class ButtonDel(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_DELETE, name=u'btn remove'):
-        BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/del32.png'.format(PATH_app)),
-                ID=ID, name=name)
-        
-        self.SetToolTip(wx.ToolTip(GT(u'Remove')))
-
-
 class ButtonImport(BitmapButton):
     def __init__(self, parent, ID=ID_IMPORT, name=u'btn import'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/import32.png'.format(PATH_app)),
@@ -164,6 +157,14 @@ class ButtonRefresh(BitmapButton):
                 ID=ID, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Refresh')))
+
+
+class ButtonRemove(BitmapButton):
+    def __init__(self, parent, ID=wx.WXK_DELETE, name=u'btn remove'):
+        BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/del32.png'.format(PATH_app)),
+                ID=ID, name=name)
+        
+        self.SetToolTip(wx.ToolTip(GT(u'Remove')))
 
 
 class ButtonSave(BitmapButton):
