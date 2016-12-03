@@ -9,15 +9,16 @@
 import wx
 from wx.lib.newevent import NewCommandEvent
 
-from dbr.buttons        import ButtonNext
-from dbr.buttons        import ButtonPrev
-from dbr.language       import GT
-from globals.ident      import ID_BUILD
-from globals.ident      import ID_GREETING
-from globals.ident      import ID_NEXT
-from globals.ident      import ID_PREV
-from globals.tooltips   import TT_wiz_next
-from globals.tooltips   import TT_wiz_prev
+from dbr.buttons            import ButtonNext
+from dbr.buttons            import ButtonPrev
+from dbr.language           import GT
+from globals.ident          import ID_BUILD
+from globals.ident          import ID_GREETING
+from globals.ident          import ID_NEXT
+from globals.ident          import ID_PREV
+from globals.tooltips       import TT_wiz_next
+from globals.tooltips       import TT_wiz_prev
+from globals.wizardhelper   import FieldEnabled
 
 
 ## Wizard class for Debreate
@@ -234,13 +235,13 @@ class Wizard(wx.Panel):
         if page_id == ID_GREETING:
             self.btn_prev.Enable(False)
         
-        else:
+        elif not FieldEnabled(self.btn_prev):
             self.btn_prev.Enable(True)
         
         if page_id == ID_BUILD:
             self.btn_next.Enable(False)
         
-        else:
+        elif not FieldEnabled(self.btn_next):
             self.btn_next.Enable(True)
         
         self.Layout()
