@@ -558,7 +558,7 @@ def ShowDialog(dialog):
         return dialog.DisplayModal()
     
     else:
-        return dialog.ShowModal() == wx.ID_OK
+        return dialog.ShowModal() == wx.OK
 
 
 ## Displays an instance of ErrorDialog class
