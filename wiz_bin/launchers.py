@@ -7,7 +7,6 @@
 
 
 import os, shutil, wx
-from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse64
@@ -21,6 +20,7 @@ from dbr.dialogs            import ShowDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals.errorcodes     import dbrerrno
@@ -109,7 +109,7 @@ class Panel(WizardPage):
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         self.labels.append(txt_type)
         
-        self.ti_type = OwnerDrawnComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
+        self.ti_type = ComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
         self.ti_type.default = self.ti_type.GetValue()
         self.opts_input.append(self.ti_type)
         
@@ -145,7 +145,7 @@ class Panel(WizardPage):
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         self.labels.append(txt_enc)
         
-        self.ti_enc = OwnerDrawnComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
+        self.ti_enc = ComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
         self.ti_enc.default = self.ti_enc.GetValue()
         self.opts_input.append(self.ti_enc)
         
@@ -182,7 +182,7 @@ class Panel(WizardPage):
         self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
-        self.ti_category = OwnerDrawnComboBox(self, value=opts_category[0], choices=opts_category,
+        self.ti_category = ComboBox(self, value=opts_category[0], choices=opts_category,
                 name=txt_category.Name)
         self.ti_category.default = self.ti_category.GetValue()
         self.opts_input.append(self.ti_category)

@@ -4,7 +4,6 @@
 
 
 import os, wx
-from wx.combo import OwnerDrawnComboBox
 
 from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
@@ -17,6 +16,7 @@ from dbr.log                import Logger
 from dbr.markdown           import MarkdownDialog
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
+from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
@@ -464,7 +464,7 @@ class DebianScript(wx.Panel):
                 else:
                     shell_options.append(P + S)
         
-        self.shell = OwnerDrawnComboBox(self, self.GetId(), choices=shell_options)
+        self.shell = ComboBox(self, self.GetId(), choices=shell_options)
         self.shell.default = u'/bin/bash'
         self.shell.SetStringSelection(self.shell.default)
         
