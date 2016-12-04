@@ -10,8 +10,9 @@
 import os, subprocess, wx
 from subprocess import PIPE
 
-from dbr.commandcheck   import CommandExists
-from dbr.language       import GT
+from dbr.commandcheck       import CommandExists
+from dbr.language           import GT
+from globals.wizardhelper   import GetTopWindow
 
 
 CMD_ar = CommandExists(u'ar')
@@ -76,7 +77,7 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if not CMD_sudo:
         return (None, GT(u'Super user command (sudo) not available'))
     
-    main_window = wx.GetApp().GetTopWindow()
+    main_window = GetTopWindow()
     
     cmd_line = list(args)
     cmd_line.insert(0, cmd)

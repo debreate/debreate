@@ -22,6 +22,7 @@ from globals.ident          import page_ids
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 ## Wizard class for Debreate
@@ -118,7 +119,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        wx.GetApp().GetTopWindow().menu_page.Check(page_id, True)
+        GetTopWindow().menu_page.Check(page_id, True)
     
     
     ## TODO: Doxygen
@@ -222,7 +223,7 @@ class Wizard(wx.Panel):
         self.ID_FIRST = pages[0].GetId()
         self.ID_LAST = pages[-1].GetId()
         
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         # Make sure all pages are hidden
         children = self.GetChildren()
@@ -282,7 +283,7 @@ class Wizard(wx.Panel):
         
         self.Layout()
         
-        wx.PostEvent(wx.GetApp().GetTopWindow(), self.evt)
+        wx.PostEvent(GetTopWindow(), self.evt)
 
 
 ## Parent class for wizard pages

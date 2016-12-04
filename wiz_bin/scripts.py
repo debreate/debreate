@@ -3,29 +3,30 @@
 ## \package wiz_bin.scripts
 
 
-import wx, os
+import os, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.buttons        import ButtonBuild
-from dbr.buttons        import ButtonImport
-from dbr.buttons        import ButtonQuestion64
-from dbr.buttons        import ButtonRemove
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.listinput      import ListCtrlPanel
-from dbr.log            import Logger
-from dbr.markdown       import MarkdownDialog
-from dbr.pathctrl       import PATH_WARN
-from dbr.pathctrl       import PathCtrl
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.wizard         import WizardPage
-from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
-from globals.errorcodes import ERR_FILE_WRITE
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_IMPORT
-from globals.ident      import ID_SCRIPTS
-from globals.ident      import page_ids
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonBuild
+from dbr.buttons            import ButtonImport
+from dbr.buttons            import ButtonQuestion64
+from dbr.buttons            import ButtonRemove
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
+from dbr.log                import Logger
+from dbr.markdown           import MarkdownDialog
+from dbr.pathctrl           import PATH_WARN
+from dbr.pathctrl           import PathCtrl
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.wizard             import WizardPage
+from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
+from globals.errorcodes     import ERR_FILE_WRITE
+from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_IMPORT
+from globals.ident          import ID_SCRIPTS
+from globals.ident          import page_ids
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetTopWindow
 
 
 ID_INST_PRE = wx.NewId()
@@ -208,7 +209,7 @@ scripts will be created that will place a symbolic link to your executables in t
     
     ## Imports names of executables from files page
     def ImportExe(self, event):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         event_id = event.GetId()
         if event_id == ID_IMPORT:
@@ -295,7 +296,7 @@ scripts will be created that will place a symbolic link to your executables in t
     def OnGenerate(self, event):
         for S in self.postinst, self.prerm:
             if not TextIsEmpty(S.GetValue()):
-                confirm = wx.MessageDialog(wx.GetApp().GetTopWindow(),
+                confirm = wx.MessageDialog(GetTopWindow(),
                         GT(u'The {} script is not empty').format(S.script_name), GT(u'Warning'),
                         style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION)
                 confirm.SetYesNoLabels(u'Continue', u'Cancel')

@@ -9,22 +9,22 @@
 import os, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.buttons        import ButtonConfirm
-from dbr.custom         import TextIsEmpty
-from dbr.hyperlink      import Hyperlink
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.moduleaccess   import ModuleAccessCtrl
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.workingdir     import ChangeWorkingDirectory
-from globals.bitmaps    import ICON_ERROR
-from globals.bitmaps    import ICON_EXCLAMATION
-from globals.bitmaps    import ICON_INFORMATION
-from globals.ident      import ID_APPEND
-from globals.ident      import ID_OVERWRITE
-from globals.paths      import PATH_app
-from globals.project    import project_wildcards
-from globals.project    import supported_suffixes
+from dbr.buttons            import ButtonConfirm
+from dbr.custom             import TextIsEmpty
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.moduleaccess       import ModuleAccessCtrl
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.workingdir         import ChangeWorkingDirectory
+from globals.bitmaps        import ICON_ERROR
+from globals.bitmaps        import ICON_EXCLAMATION
+from globals.bitmaps        import ICON_INFORMATION
+from globals.ident          import ID_APPEND
+from globals.ident          import ID_OVERWRITE
+from globals.paths          import PATH_app
+from globals.project        import project_wildcards
+from globals.project        import supported_suffixes
+from globals.wizardhelper   import GetTopWindow
 
 
 ## TODO: Doxygen
@@ -171,7 +171,7 @@ class StandardFileDialog(wx.FileDialog):
         
         if len(path):
             if path[-1] == u'.':
-                name_error = wx.MessageDialog(wx.GetApp().GetTopWindow(), GT(u'Error'),
+                name_error = wx.MessageDialog(GetTopWindow(), GT(u'Error'),
                         style=wx.ICON_ERROR|wx.OK)
                 
                 name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
@@ -198,7 +198,7 @@ class StandardFileDialog(wx.FileDialog):
         
         if path:
             if os.path.isfile(path):
-                overwrite = OverwriteDialog(wx.GetApp().GetTopWindow(), path).ShowModal()
+                overwrite = OverwriteDialog(GetTopWindow(), path).ShowModal()
                 
                 if overwrite != wx.ID_YES:
                     return
@@ -409,7 +409,7 @@ class ErrorDialog(DetailedMessageDialog):
 ## TODO: Doxygen
 class SuperUserDialog(wx.Dialog):
     def __init__(self, ID=wx.ID_ANY):
-        wx.Dialog.__init__(self, wx.GetApp().GetTopWindow(), ID)
+        wx.Dialog.__init__(self, GetTopWindow(), ID)
         
         # User selector
         self.users = OwnerDrawnComboBox(self)
@@ -587,7 +587,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
     if not parent:
-        parent = wx.GetApp().GetTopWindow()
+        parent = GetTopWindow()
     
     if isinstance(parent, ModuleAccessCtrl):
         module_name = parent.GetModuleName()
@@ -606,7 +606,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
 
 ## A function that displays a modal message dialog on the main window
 def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
-    main_window = wx.GetApp().GetTopWindow()
+    main_window = GetTopWindow()
     if not module:
         module = main_window.__name__
     
