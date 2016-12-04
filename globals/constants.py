@@ -61,7 +61,3 @@ FTYPE_EXE = wx.NewId()
 file_types_defs = {
     FTYPE_EXE: GT(u'script/executable'),
 }
-
-
-# *** Colors *** #
-COLOR_ERROR = wx.Colour(255, 143, 115)

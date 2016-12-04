@@ -13,7 +13,7 @@ from wx.lib.mixins.listctrl import TextEditMixin
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
-from globals.constants  import COLOR_ERROR
+from globals.colors     import COLOR_warn
 from globals.constants  import FTYPE_EXE
 from globals.constants  import file_types_defs
 
@@ -431,7 +431,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
         
         #self.Refresh()
         if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
-            self.SetItemBackgroundColour(list_index, COLOR_ERROR)
+            self.SetItemBackgroundColour(list_index, COLOR_warn)
             
             # File was added but does not exist on filesystem
             return False
@@ -576,7 +576,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
             absolute_filename = u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])
             
             if not os.path.isfile(absolute_filename):
-                item_color = COLOR_ERROR
+                item_color = COLOR_warn
                 dirty = True
             
             self.SetItemBackgroundColour(row, item_color)
