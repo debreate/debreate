@@ -1,16 +1,18 @@
-debreate (0.7.12-dev9-2) xenial; urgency=medium
+debreate (0.7.12) xenial; urgency=high
 
-  * Fixes:
+  * FIXES:
     - Added fixed & updated modules from unstable branch
     - Fix first run window not closing
     - Fix opening projects from command line
     - Fix problems with add/remove/delete in dependency list
     - Fix progress dialogs cannot be cancelled
     - Fix Quick Build
-    Code Cleanup:
+    CODE CLEANUP:
     - Removed old/unused code & comments
     - Removed some unused/deprecated modules & classes
-    New Features:
+    NEW FEATURES:
+    - About dialog:
+      - Displays system information (Python & wxPython versions)
     - Added manpage
     - Command line:
       - 'legacy' as first argument forces wx 2.8 if available
@@ -21,11 +23,12 @@ debreate (0.7.12-dev9-2) xenial; urgency=medium
         - Value can be one of 'info|0', 'warning|1', 'error|2', or 'debug|3'
         - Default level is 'error' (2)
       - '-i=|--log-interval=' is reserved for 0.8.0 & currently does nothing
+    - Logger added for outputting messages to text log
     - Menu options:
       - Enable/Disable tooltips (wx 3.0 only)
       - Open logs directory in system file manager
         - requires 'xdg-open' command
-    - Mimetype association for system "Open with..."
+    - MIME type association for system "Open with..."
       - .deb installation associates .dbp files (application/x-dbp)
       - Icons for .dbp files added to Gnome icons directory
     - Page Build:
@@ -37,11 +40,12 @@ debreate (0.7.12-dev9-2) xenial; urgency=medium
       - Added 'arm64' to architectures
     - Page Files:
       - File import progress dialog shows task count
+      - File list can be refreshed to update missing files
     - Page Menu/Launcher:
       - Optionally use custom filename for menu launcher
     - wx 3.0 compatibility for newer systems
       - wx 2.8 compatibility is retained
-    Misc:
+    MISC:
     - Added Debian maintainer scripts for (un)installation
       - postinst: Creates a symbolic link to executable
       - prerm: Deletes the symbolic when when package is uninstalled
@@ -54,6 +58,7 @@ debreate (0.7.12-dev9-2) xenial; urgency=medium
         - Optionally compiles .mo binaries if 'compile' argument is used
       - 'update-version'
         - Uses 'INFO' file to set version information in source code & helper files
+    - License changed to MIT (see docs/LICENSE.txt)
     - Merged new about dialog from 'unstable' branch
     - Merged some modules from 'unstable' branch
     - Replace some selection controls with check boxes
@@ -63,11 +68,11 @@ debreate (0.7.12-dev9-2) xenial; urgency=medium
     - Use monospaced font for some multi-line text input fiels
     - Use os.chmod module in build rather than system chmod command
     - Wizard buttons disable on first & last pages
-    Translations:
+    TRANSLATIONS:
     - Add Russian Gettext locale
     - Update Spanish (es) Gettext locale
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 02 Dec 2016 19:44:46 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 04 Dec 2016 13:31:45 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
