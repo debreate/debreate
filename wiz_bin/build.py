@@ -483,7 +483,7 @@ class Panel(WizardPage):
             GT(u'Control'): control_page.GetRequiredFields(),
         }
         
-        if menu_page.activate.GetValue():
+        if menu_page.chk_enable.GetValue():
             required_fields[GT(u'Menu Launcher')] = menu_page.GetRequiredFields()
             
             for RF in required_fields[GT(u'Menu Launcher')]:
@@ -492,7 +492,7 @@ class Panel(WizardPage):
         for page_name in required_fields:
             Logger.Debug(__name__, GT(u'Page name: {}').format(page_name))
             for F in required_fields[page_name]:
-                if TextIsEmpty(F.GetValue()):
+                if not isinstance(F, wx.StaticText) and TextIsEmpty(F.GetValue()):
                     field_name = F.GetName()
                     
                     Logger.Warning(__name__,
