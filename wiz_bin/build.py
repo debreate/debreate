@@ -35,6 +35,7 @@ from globals.ident          import ID_MENU
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetTopWindow
 
 
 ## TODO: Doxygen
@@ -151,7 +152,7 @@ class Panel(WizardPage):
         pages_build_ids = self.BuildPrep()
         
         if pages_build_ids != None:
-            main_window = wx.GetApp().GetTopWindow()
+            main_window = GetTopWindow()
             
             # Reported at the end of build
             build_summary = []
@@ -350,7 +351,7 @@ class Panel(WizardPage):
                 prep_ids.append(P.GetId())
         
         try:
-            main_window = wx.GetApp().GetTopWindow()
+            main_window = GetTopWindow()
             
             # List of page IDs to process during build
             build_page_ids = []
@@ -473,7 +474,7 @@ class Panel(WizardPage):
         if event:
             event.Skip()
         
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         control_page = self.wizard.GetPage(ID_CONTROL)
         files_page = self.wizard.GetPage(ID_FILES)
@@ -511,7 +512,7 @@ class Panel(WizardPage):
                     return
         
         if files_page.file_list.MissingFiles():
-            main_window = wx.GetApp().GetTopWindow()
+            main_window = GetTopWindow()
             
             Logger.Warning(__name__, GT(u'Files are missing in file list'))
             
@@ -710,7 +711,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def SetSummary(self, event):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         # Make sure the page is not destroyed so no error is thrown
         if self:
