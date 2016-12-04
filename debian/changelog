@@ -41,6 +41,7 @@ debreate (0.7.12) xenial; urgency=high
     - Page Files:
       - File import progress dialog shows task count
       - File list can be refreshed to update missing files
+        - Missing files marked by red-orange background
     - Page Menu/Launcher:
       - Optionally use custom filename for menu launcher
     - wx 3.0 compatibility for newer systems
