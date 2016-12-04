@@ -42,6 +42,7 @@ from dbr.log                import LogWindow
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
+from dbr.statusbar          import StatusBar
 from dbr.wizard             import Wizard
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
@@ -116,14 +117,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetIcon(self.main_icon)
         
         # ----- Status Bar
-        self.stat_bar = wx.StatusBar(self)
-        self.SetStatusBar(self.stat_bar)
+        self.stat_bar = StatusBar(self)
         
-        
-        
-        # ***** Menu Bar ***** #
-        
-        # ----- File Menu
+        # *** File Menu *** #
         self.menu_file = wx.Menu()
         
         # Quick Build
