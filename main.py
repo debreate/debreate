@@ -51,6 +51,7 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
+from globals.bitmaps        import ICON_GLOBE
 from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
@@ -64,6 +65,7 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
+from globals.wizardhelper   import GetTopWindow
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
 from wiz_bin.control        import Panel as PageControl
@@ -102,7 +104,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ModuleAccessCtrl.__init__(self, __name__)
         
         # Make sure that this frame is set as the top window
-        if not wx.GetApp().GetTopWindow() == self:
+        if not GetTopWindow() == self:
             Logger.Debug(__name__, GT(u'Not set as top window'))
             
             wx.GetApp().SetTopWindow(self)
@@ -117,24 +119,36 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetIcon(self.main_icon)
         
         # ----- Status Bar
-        self.stat_bar = StatusBar(self)
+        stat_bar = StatusBar(self)
         
         # *** File Menu *** #
         self.menu_file = wx.Menu()
         
-        # Quick Build
-        self.QuickBuild = wx.MenuItem(self.menu_file, ID_QBUILD,
-                                         GT(u'Quick Build'), GT(u'Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
+        mitm_new = wx.MenuItem(self.menu_file, wx.ID_NEW, GT(u'New project'),
+                help=GT(u'Start a new project'))
+        mitm_open = wx.MenuItem(self.menu_file, wx.ID_OPEN, GT(u'Open'),
+                help=GT(u'Open a previously saved project'))
+        mitm_save = wx.MenuItem(self.menu_file, wx.ID_SAVE, GT(u'Save'),
+                help=GT(u'Save current project'))
+        mitm_saveas = wx.MenuItem(self.menu_file, wx.ID_SAVEAS, GT(u'Save as'),
+                help=GT(u'Save current project with a new filename'))
         
-        self.menu_file.Append(wx.ID_NEW, help=GT(u'Start a new project'))
-        self.menu_file.Append(wx.ID_OPEN, help=GT(u'Open a previously saved project'))
-        self.menu_file.Append(wx.ID_SAVE, help=GT(u'Save current project'))
-        self.menu_file.Append(wx.ID_SAVEAS, help=GT(u'Save current project with a new filename'))
+        # Quick Build
+        mitm_quickbuild = wx.MenuItem(self.menu_file, ID_QBUILD,
+                                         GT(u'Quick Build'), GT(u'Build a package from an existing build tree'))
+        mitm_quickbuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
+        
+        mitm_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
+                help=GT(u'Exit Debreate'))
+        
+        self.menu_file.AppendItem(mitm_new)
+        self.menu_file.AppendItem(mitm_open)
+        self.menu_file.AppendItem(mitm_save)
+        self.menu_file.AppendItem(mitm_saveas)
         self.menu_file.AppendSeparator()
-        self.menu_file.AppendItem(self.QuickBuild)
+        self.menu_file.AppendItem(mitm_quickbuild)
         self.menu_file.AppendSeparator()
-        self.menu_file.Append(wx.ID_EXIT)
+        self.menu_file.AppendItem(mitm_quit)
         
         # *** Page Menu *** #
         ## This menu is filled from dbr.wizard.Wizard
@@ -223,44 +237,44 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self.menu_opt, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
         
         # ----- Help Menu
-        self.menu_help = wx.Menu()
+        menu_help = wx.Menu()
         
         # ----- Version update
-        self.version_check = wx.MenuItem(self.menu_help, ID_UPDATE, GT(u'Check for Update'))
-        self.menu_help.AppendItem(self.version_check)
-        self.menu_help.AppendSeparator()
+        version_check = wx.MenuItem(menu_help, ID_UPDATE, GT(u'Check for Update'))
+        menu_help.AppendItem(version_check)
+        menu_help.AppendSeparator()
         
         # Menu with links to the Debian Policy Manual webpages
-        self.Policy = wx.Menu()
+        menu_policy = wx.Menu()
         
-        globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
-        self.DPM = wx.MenuItem(self.Policy, ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
-        self.DPM.SetBitmap(globe)
-        self.DPMCtrl = wx.MenuItem(self.Policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
-        self.DPMCtrl.SetBitmap(globe)
-        self.DPMLog = wx.MenuItem(self.Policy, ID_DPMLog, GT(u'Changelog'),
+        #globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
+        m_dpm = wx.MenuItem(menu_policy, ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
+        m_dpm.SetBitmap(ICON_GLOBE)
+        m_dpm_ctrl = wx.MenuItem(menu_policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
+        m_dpm_ctrl.SetBitmap(ICON_GLOBE)
+        m_dpm_log = wx.MenuItem(menu_policy, ID_DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
-        self.DPMLog.SetBitmap(globe)
-        self.UPM = wx.MenuItem(self.Policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
+        m_dpm_log.SetBitmap(ICON_GLOBE)
+        m_upm = wx.MenuItem(menu_policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
-        self.UPM.SetBitmap(globe)
-        self.DebFrmSrc = wx.MenuItem(self.Policy, 222, GT(u'Building debs from Source'),
+        m_upm.SetBitmap(ICON_GLOBE)
+        m_deb_src = wx.MenuItem(menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
-        self.DebFrmSrc.SetBitmap(globe)
-        self.LintianTags = wx.MenuItem(self.Policy, ID_LINT_TAGS, GT(u'Lintian Tags Explanation'),
+        m_deb_src.SetBitmap(ICON_GLOBE)
+        m_lint_tags = wx.MenuItem(menu_policy, ID_LINT_TAGS, GT(u'Lintian Tags Explanation'),
                 u'http://lintian.debian.org/tags-all.html')
-        self.LintianTags.SetBitmap(globe)
-        self.LintOverrides = wx.MenuItem(self.Policy, ID_LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+        m_lint_tags.SetBitmap(ICON_GLOBE)
+        m_lint_overrides = wx.MenuItem(menu_policy, ID_LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
-        self.LintOverrides.SetBitmap(globe)
+        m_lint_overrides.SetBitmap(ICON_GLOBE)
         
-        self.Policy.AppendItem(self.DPM)
-        self.Policy.AppendItem(self.DPMCtrl)
-        self.Policy.AppendItem(self.DPMLog)
-        self.Policy.AppendItem(self.UPM)
-        self.Policy.AppendItem(self.DebFrmSrc)
-        self.Policy.AppendItem(self.LintianTags)
-        self.Policy.AppendItem(self.LintOverrides)
+        menu_policy.AppendItem(m_dpm)
+        menu_policy.AppendItem(m_dpm_ctrl)
+        menu_policy.AppendItem(m_dpm_log)
+        menu_policy.AppendItem(m_upm)
+        menu_policy.AppendItem(m_deb_src)
+        menu_policy.AppendItem(m_lint_tags)
+        menu_policy.AppendItem(m_lint_overrides)
         
         self.references = {
             ID_DPM: u'http://www.debian.org/doc/debian-policy',
@@ -272,22 +286,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
             }
         
-        self.Help = wx.MenuItem(self.menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
-        self.About = wx.MenuItem(self.menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
+        mi_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+        mi_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
-        self.menu_help.AppendMenu(-1, GT(u'Reference'), self.Policy)
-        self.menu_help.AppendSeparator()
-        self.menu_help.AppendItem(self.Help)
-        self.menu_help.AppendItem(self.About)
+        menu_help.AppendMenu(-1, GT(u'Reference'), menu_policy)
+        menu_help.AppendSeparator()
+        menu_help.AppendItem(mi_help)
+        menu_help.AppendItem(mi_about)
         
-        self.menubar = wx.MenuBar()
-        self.SetMenuBar(self.menubar)
+        menubar = wx.MenuBar()
+        self.SetMenuBar(menubar)
         
-        self.menubar.Append(self.menu_file, GT(u'File'))
-        self.menubar.Append(self.menu_page, GT(u'Page'))
-        self.menubar.Append(self.menu_action, GT(u'Action'))
-        self.menubar.Append(self.menu_opt, GT(u'Options'))
-        self.menubar.Append(self.menu_help, GT(u'Help'))
+        menubar.Append(self.menu_file, GT(u'File'))
+        menubar.Append(self.menu_page, GT(u'Page'))
+        menubar.Append(self.menu_action, GT(u'Action'))
+        menubar.Append(self.menu_opt, GT(u'Options'))
+        menubar.Append(menu_help, GT(u'Help'))
         
         self.wizard = Wizard(self)
         
@@ -307,26 +321,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.page_launchers = PageLaunchers(self.wizard)
         self.page_build = PageBuild(self.wizard)
         
-        self.all_pages = (
-            self.page_control, self.page_depends, self.page_files, self.page_scripts,
-            self.page_clog, self.page_cpright, self.page_launchers, self.page_build
-            )
-        
-        self.bin_pages = [
+        bin_pages = [
             self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
             self.page_clog, self.page_cpright, self.page_launchers, self.page_build
             ]
         
         if DebugEnabled():
-            self.bin_pages.insert(4, self.page_man)
+            bin_pages.insert(4, self.page_man)
         
-        self.wizard.SetPages(self.bin_pages)
+        self.wizard.SetPages(bin_pages)
         
         # Menu for debugging & running tests
         if DebugEnabled():
             self.menu_debug = wx.Menu()
             
-            self.menubar.Append(self.menu_debug, GT(u'Debug'))
+            menubar.Append(self.menu_debug, GT(u'Debug'))
             
             self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ID_LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
