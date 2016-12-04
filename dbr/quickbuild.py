@@ -8,23 +8,24 @@
 
 import os, thread, wx
 
-from dbr.buttons        import ButtonBrowse
-from dbr.buttons        import ButtonBuild
-from dbr.buttons        import ButtonCancel
-from dbr.dialogs        import GetDirDialog
-from dbr.dialogs        import GetFileSaveDialog
-from dbr.dialogs        import ShowDialog
-from dbr.dialogs        import ShowErrorDialog
-from dbr.dialogs        import ShowMessageDialog
-from dbr.functions      import BuildDebPackage
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.moduleaccess   import ModuleAccessCtrl
-from dbr.timer          import DebreateTimer
-from dbr.timer          import EVT_TIMER_STOP
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_STAGE
-from globals.ident      import ID_TARGET
+from dbr.buttons            import ButtonBrowse
+from dbr.buttons            import ButtonBuild
+from dbr.buttons            import ButtonCancel
+from dbr.dialogs            import GetDirDialog
+from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
+from dbr.dialogs            import ShowMessageDialog
+from dbr.functions          import BuildDebPackage
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.moduleaccess       import ModuleAccessCtrl
+from dbr.timer              import DebreateTimer
+from dbr.timer              import EVT_TIMER_STOP
+from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_STAGE
+from globals.ident          import ID_TARGET
+from globals.wizardhelper   import GetTopWindow
 
 
 GAUGE_MAX = 100
@@ -137,7 +138,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
         if event:
-            main_window = wx.GetApp().GetTopWindow()
+            main_window = GetTopWindow()
             
             button_id = event.GetEventObject().GetId()
             

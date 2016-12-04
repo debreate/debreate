@@ -23,6 +23,7 @@ from globals.errorcodes     import errno
 from globals.ident          import ID_COPYRIGHT
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 # Globals
@@ -95,7 +96,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def CopyStandardLicense(self, license_name):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         if self.DestroyLicenseText():
             license_path = u'{}/{}'.format(system_licenses_path, license_name)
@@ -127,7 +128,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def DestroyLicenseText(self):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         empty = TextIsEmpty(self.cp_display.GetValue())
         
@@ -141,7 +142,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         stage = u'{}/usr/share/doc/{}'.format(stage, main_window.page_control.GetPackageName()).replace(u'//', u'/')
         

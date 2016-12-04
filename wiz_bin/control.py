@@ -26,6 +26,7 @@ from globals.ident          import ID_CONTROL
 from globals.ident          import ID_DEPENDS
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 ## This panel displays the field input of the control file
@@ -288,7 +289,7 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     ## FIXME: Deprecated???
     def GetCtrlInfo(self):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         # Creat a list to store info
         ctrl_list = []
@@ -534,7 +535,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         wildcards = (
             GT(u'All files'), u'*',
@@ -572,7 +573,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnKeyUp(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         modified = False
         for widget in self.text_widgets:
@@ -616,7 +617,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnSave(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         wildcards = (
             GT(u'All files'), u'*',

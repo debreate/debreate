@@ -28,6 +28,7 @@ from globals.ident          import ID_MENU
 from globals.ident          import page_ids
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 ## Page for creating a system menu launcher
@@ -585,7 +586,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnSaveLauncher(self, event):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         # Get data to write to control file
         menu_data = self.GetMenuInfo().encode(u'utf-8')
@@ -654,7 +655,7 @@ class Panel(WizardPage):
     def OnLoadLauncher(self, event):
         cont = False
         
-        dia = GetFileOpenDialog(wx.GetApp().GetTopWindow(), GT(u'Open Launcher'), u'{}|*'.format(GT(u'All files')))
+        dia = GetFileOpenDialog(GetTopWindow(), GT(u'Open Launcher'), u'{}|*'.format(GT(u'All files')))
         if ShowDialog(dia):
             cont = True
         

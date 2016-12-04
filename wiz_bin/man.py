@@ -5,12 +5,13 @@
 
 import wx
 
-from dbr.buttons        import ButtonAdd
-from dbr.language       import GT
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.wizard         import WizardPage
-from globals.ident      import ID_MAN
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.language           import GT
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.wizard             import WizardPage
+from globals.ident          import ID_MAN
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetTopWindow
 
 
 ## TODO: Doxygen
@@ -61,7 +62,7 @@ class Panel(WizardPage, wx.Notebook):
     
     ## TODO: Doxygen
     def OnAddManpage(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         getname = wx.TextEntryDialog(main_window, GT(u'Name for new manpage'))
         

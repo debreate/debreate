@@ -25,7 +25,9 @@ from globals.ident          import ID_CHANGELOG
 from globals.ident          import ID_CONTROL
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetFieldValue, ErrorTuple
+from globals.wizardhelper   import ErrorTuple
+from globals.wizardhelper   import GetFieldValue
+from globals.wizardhelper   import GetTopWindow
 
 
 ## TODO: Doxygen
@@ -134,7 +136,7 @@ class Panel(WizardPage):
     def AddInfo(self, event):
         changes = self.changes.GetValue()
         if TextIsEmpty(changes):
-            wx.MessageDialog(wx.GetApp().GetTopWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
+            wx.MessageDialog(GetTopWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
                     style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
             return
         
@@ -186,7 +188,7 @@ class Panel(WizardPage):
     def ExportBuild(self, stage):
         if self.target_default.GetValue():
             stage = u'{}/usr/share/doc/{}'.format(stage,
-                    wx.GetApp().GetTopWindow().page_control.GetPackageName()).replace(u'//', u'/')
+                    GetTopWindow().page_control.GetPackageName()).replace(u'//', u'/')
         else:
             stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
         

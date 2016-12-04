@@ -5,27 +5,28 @@
 
 import wx, os, shutil
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonBrowse
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonRefresh
-from dbr.buttons        import ButtonRemove
-from dbr.dialogs        import DetailedMessageDialog
-from dbr.dialogs        import GetDirDialog
-from dbr.dialogs        import ShowDialog
-from dbr.functions      import TextIsEmpty
-from dbr.help           import HelpButton
-from dbr.language       import GT
-from dbr.listinput      import FileList
-from dbr.log            import Logger
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.wizard         import WizardPage
-from globals.bitmaps    import ICON_ERROR
-from globals.errorcodes import dbrerrno
-from globals.ident      import ID_CUSTOM
-from globals.ident      import ID_FILES
-from globals.paths      import PATH_home
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonBrowse
+from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonRefresh
+from dbr.buttons            import ButtonRemove
+from dbr.dialogs            import DetailedMessageDialog
+from dbr.dialogs            import GetDirDialog
+from dbr.dialogs            import ShowDialog
+from dbr.functions          import TextIsEmpty
+from dbr.help               import HelpButton
+from dbr.language           import GT
+from dbr.listinput          import FileList
+from dbr.log                import Logger
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.wizard             import WizardPage
+from globals.bitmaps        import ICON_ERROR
+from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_CUSTOM
+from globals.ident          import ID_FILES
+from globals.paths          import PATH_home
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetTopWindow
 
 
 ID_pin = 100
@@ -379,7 +380,7 @@ class Panel(WizardPage):
             self.file_list.AddFile(source_file, source_dir, T[0], executable=T[2])
         
         if len(missing_files):
-            main_window = wx.GetApp().GetTopWindow()
+            main_window = GetTopWindow()
             
             err_line1 = GT(u'The following files are missing from the filesystem.')
             err_line2 = GT(u'They will be highlighted on the Files page.')
@@ -486,7 +487,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
+        dia = GetDirDialog(GetTopWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.input_target.SetValue(dia.GetPath())
     

@@ -35,6 +35,7 @@ from globals.system         import OS_upstream_version
 from globals.system         import OS_version
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
+from globals.wizardhelper   import GetTopWindow
 
 
 # Font for the name
@@ -455,7 +456,7 @@ class AboutDialog(wx.Dialog):
                 log_data.close()
             
             else:
-                ShowError(wx.GetApp().GetTopWindow(), log_text)
+                ShowError(GetTopWindow(), log_text)
         
         else:
             log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
