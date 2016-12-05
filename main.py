@@ -220,10 +220,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help = wx.Menu()
         
         # ----- Version update
-        version_check = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
-        version_check.SetBitmap(ICON_LOGO)
+        mi_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
+        mi_update.SetBitmap(ICON_LOGO)
         
-        menu_help.AppendItem(version_check)
+        menu_help.AppendItem(mi_update)
         menu_help.AppendSeparator()
         
         # Menu with links to the Debian Policy Manual webpages
