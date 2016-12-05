@@ -85,7 +85,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # Make sure that this frame is set as the top window
         if not GetTopWindow() == self:
-            Logger.Debug(__name__, GT(u'Not set as top window'))
+            Logger.Debug(__name__, GT(u'Setting MainWindow instance as top window'))
             
             wx.GetApp().SetTopWindow(self)
         
