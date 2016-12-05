@@ -59,12 +59,18 @@ from globals.errorcodes     import dbrerrno
 from globals.ident          import ID_ACTION
 from globals.ident          import ID_DEBUG
 from globals.ident          import ID_DIALOGS
+from globals.ident          import ID_DPM
+from globals.ident          import ID_DPMCtrl
+from globals.ident          import ID_DPMLog
+from globals.ident          import ID_LINT_OVERRIDE
+from globals.ident          import ID_LINT_TAGS
 from globals.ident          import ID_LOG
 from globals.ident          import ID_OPENLOGS
 from globals.ident          import ID_OPTIONS
 from globals.ident          import ID_PAGE
 from globals.ident          import ID_THEME
 from globals.ident          import ID_TOOLTIPS
+from globals.ident          import ID_UPM
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
@@ -84,14 +90,6 @@ from wiz_bin.launchers      import Panel as PageLaunchers
 from wiz_bin.man            import Panel as PageMan
 from wiz_bin.scripts        import Panel as PageScripts
 
-
-# Debian Policy Manual IDs
-ID_DPM = wx.NewId()
-ID_DPMCtrl = wx.NewId()
-ID_DPMLog = wx.NewId()
-ID_UPM = wx.NewId()
-ID_LINT_TAGS = wx.NewId()
-ID_LINT_OVERRIDE = wx.NewId()
 
 ID_QBUILD = wx.NewId()
 ID_UPDATE = wx.NewId()
