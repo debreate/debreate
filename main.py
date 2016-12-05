@@ -10,6 +10,7 @@ import os, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
+import globals.ident as ID
 from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
@@ -56,23 +57,6 @@ from globals.bitmaps        import ICON_GLOBE
 from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_ACTION
-from globals.ident          import ID_DEBUG
-from globals.ident          import ID_DIALOGS
-from globals.ident          import ID_DPM
-from globals.ident          import ID_DPMCtrl
-from globals.ident          import ID_DPMLog
-from globals.ident          import ID_LINT_OVERRIDE
-from globals.ident          import ID_LINT_TAGS
-from globals.ident          import ID_LOG
-from globals.ident          import ID_OPENLOGS
-from globals.ident          import ID_OPTIONS
-from globals.ident          import ID_PAGE
-from globals.ident          import ID_QBUILD
-from globals.ident          import ID_THEME
-from globals.ident          import ID_TOOLTIPS
-from globals.ident          import ID_UPDATE
-from globals.ident          import ID_UPM
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
@@ -133,7 +117,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        mitm_quickbuild = wx.MenuItem(self.menu_file, ID_QBUILD,
+        mitm_quickbuild = wx.MenuItem(self.menu_file, ID.ID_QBUILD,
                                          GT(u'Quick Build'), GT(u'Build a package from an existing build tree'))
         mitm_quickbuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
         
@@ -166,7 +150,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_TOOLTIPS, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID.ID_TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
         self.menu_opt.AppendItem(self.opt_tooltips)
@@ -181,7 +165,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use Custom Dialogs'),
+        self.cust_dias = wx.MenuItem(self.menu_opt, ID.ID_DIALOGS, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         # FIXME: Disabled until fixed
@@ -230,16 +214,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if CMD_xdg_open:
-            opt_logs_open = wx.MenuItem(self.menu_opt, ID_OPENLOGS, GT(u'Open logs directory'))
+            opt_logs_open = wx.MenuItem(self.menu_opt, ID.ID_OPENLOGS, GT(u'Open logs directory'))
             self.menu_opt.AppendItem(opt_logs_open)
             
-            wx.EVT_MENU(self.menu_opt, ID_OPENLOGS, self.OnLogDirOpen)
+            wx.EVT_MENU(self.menu_opt, ID.ID_OPENLOGS, self.OnLogDirOpen)
         
         # ----- Help Menu
         menu_help = wx.Menu()
         
         # ----- Version update
-        version_check = wx.MenuItem(menu_help, ID_UPDATE, GT(u'Check for Update'))
+        version_check = wx.MenuItem(menu_help, ID.ID_UPDATE, GT(u'Check for Update'))
         menu_help.AppendItem(version_check)
         menu_help.AppendSeparator()
         
@@ -247,23 +231,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_policy = wx.Menu()
         
         #globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
-        m_dpm = wx.MenuItem(menu_policy, ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
+        m_dpm = wx.MenuItem(menu_policy, ID.ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_ctrl = wx.MenuItem(menu_policy, ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
+        m_dpm_ctrl = wx.MenuItem(menu_policy, ID.ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         m_dpm_ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_log = wx.MenuItem(menu_policy, ID_DPMLog, GT(u'Changelog'),
+        m_dpm_log = wx.MenuItem(menu_policy, ID.ID_DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         m_dpm_log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(menu_policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
+        m_upm = wx.MenuItem(menu_policy, ID.ID_UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         m_upm.SetBitmap(ICON_GLOBE)
         m_deb_src = wx.MenuItem(menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lint_tags = wx.MenuItem(menu_policy, ID_LINT_TAGS, GT(u'Lintian Tags Explanation'),
+        m_lint_tags = wx.MenuItem(menu_policy, ID.ID_LINT_TAGS, GT(u'Lintian Tags Explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         m_lint_tags.SetBitmap(ICON_GLOBE)
-        m_lint_overrides = wx.MenuItem(menu_policy, ID_LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+        m_lint_overrides = wx.MenuItem(menu_policy, ID.ID_LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
         m_lint_overrides.SetBitmap(ICON_GLOBE)
         
@@ -276,13 +260,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_policy.AppendItem(m_lint_overrides)
         
         self.references = {
-            ID_DPM: u'http://www.debian.org/doc/debian-policy',
-            ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
-            ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
-            ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
+            ID.ID_DPM: u'http://www.debian.org/doc/debian-policy',
+            ID.ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
+            ID.ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
+            ID.ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
             222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-            ID_LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
-            ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
+            ID.ID_LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
+            ID.ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
             }
         
         mi_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
@@ -296,9 +280,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menubar = MenuBar(self)
         
         menubar.Append(self.menu_file, GT(u'File'), wx.ID_FILE)
-        menubar.Append(self.menu_page, GT(u'Page'), ID_PAGE)
-        menubar.Append(self.menu_action, GT(u'Action'), ID_ACTION)
-        menubar.Append(self.menu_opt, GT(u'Options'), ID_OPTIONS)
+        menubar.Append(self.menu_page, GT(u'Page'), ID.ID_PAGE)
+        menubar.Append(self.menu_action, GT(u'Action'), ID.ID_ACTION)
+        menubar.Append(self.menu_opt, GT(u'Options'), ID.ID_OPTIONS)
         menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
         self.wizard = Wizard(self)
@@ -333,19 +317,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if DebugEnabled():
             self.menu_debug = wx.Menu()
             
-            menubar.Append(self.menu_debug, GT(u'Debug'), ID_DEBUG)
+            menubar.Append(self.menu_debug, GT(u'Debug'), ID.ID_DEBUG)
             
-            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ID_LOG, GT(u'Show log'),
+            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ID.ID_LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
             
             self.log_window = LogWindow(self, Logger.GetLogFile())
             
             # Window colors
             self.menu_debug.AppendItem(
-                wx.MenuItem(self.menu_debug, ID_THEME, GT(u'Toggle window colors')))
+                wx.MenuItem(self.menu_debug, ID.ID_THEME, GT(u'Toggle window colors')))
             
-            wx.EVT_MENU(self, ID_LOG, self.log_window.OnToggleWindow)
-            wx.EVT_MENU(self, ID_THEME, self.OnToggleTheme)
+            wx.EVT_MENU(self, ID.ID_LOG, self.log_window.OnToggleWindow)
+            wx.EVT_MENU(self, ID.ID_THEME, self.OnToggleTheme)
         
         self.loaded_project = None
         self.dirty = None
@@ -370,13 +354,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
         wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
-        wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, ID.ID_QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
-        wx.EVT_MENU(self, ID_TOOLTIPS, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ID.ID_TOOLTIPS, self.OnToggleToolTips)
         
-        wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
+        wx.EVT_MENU(self, ID.ID_UPDATE, self.OnCheckUpdate)
         
         for R_ID in self.references:
             wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
@@ -785,10 +769,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Toggling log window'))
         
         if event != None:
-            self.ShowLogWindow(self.menu_debug.IsChecked(ID_DEBUG))
+            self.ShowLogWindow(self.menu_debug.IsChecked(ID.ID_DEBUG))
             return
         
-        self.menu_debug.Check(ID_DEBUG, self.log_window.IsShown())
+        self.menu_debug.Check(ID.ID_DEBUG, self.log_window.IsShown())
     
     
     ## TODO: Doxygen
@@ -1072,8 +1056,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.log_window.Show(show)
         
-        if self.menu_debug.IsChecked(ID_DEBUG) != show:
-            self.menu_debug.Check(ID_DEBUG, show)
+        if self.menu_debug.IsChecked(ID.ID_DEBUG) != show:
+            self.menu_debug.Check(ID.ID_DEBUG, show)
     
     
     ## TODO: Doxygen
