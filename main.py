@@ -31,6 +31,7 @@ from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
 from dbr.functions          import UsingDevelopmentVersion
 from dbr.help               import HelpDialog
+from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
@@ -96,7 +97,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetMinSize(wx.Size(640, 400))
         
         # ----- Set Titlebar Icon
-        self.SetIcon(wx.Icon(LOGO))
+        self.SetIcon(Icon(LOGO))
         
         # ----- Status Bar
         stat_bar = StatusBar(self)
