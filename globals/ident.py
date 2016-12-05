@@ -8,7 +8,6 @@
 # See: docs/LICENSE.txt
 
 
-# System modules
 import wx
 
 from dbr.language import GT
