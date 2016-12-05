@@ -14,11 +14,6 @@ import globals.ident as ID
 from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
-from dbr.compression        import ID_ZIP_BZ2
-from dbr.compression        import ID_ZIP_GZ
-from dbr.compression        import ID_ZIP_NONE
-from dbr.compression        import ID_ZIP_XZ
-from dbr.compression        import ID_ZIP_ZIP
 from dbr.compression        import compression_formats
 from dbr.compression        import compression_mimetypes
 from dbr.config             import ConfCode
@@ -174,16 +169,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Project compression options
         self.menu_compression = wx.Menu()
         
-        opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ID_ZIP_NONE,
+        opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ID.ZIP_NONE,
                 GT(u'Uncompressed'), GT(u'Use uncompressed tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_gz = wx.MenuItem(self.menu_compression, ID_ZIP_GZ,
+        opt_compression_gz = wx.MenuItem(self.menu_compression, ID.ZIP_GZ,
                 GT(u'Gzip'), GT(u'Use compressed Gzip tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_bz2 = wx.MenuItem(self.menu_compression, ID_ZIP_BZ2,
+        opt_compression_bz2 = wx.MenuItem(self.menu_compression, ID.ZIP_BZ2,
                 GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_zip = wx.MenuItem(self.menu_compression, ID_ZIP_ZIP,
+        opt_compression_zip = wx.MenuItem(self.menu_compression, ID.ZIP_ZIP,
                 GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
                 kind=wx.ITEM_RADIO)
         
@@ -195,7 +190,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ]
         
         if CMD_tar != None:
-            opt_compression_xz = wx.MenuItem(self.menu_compression, ID_ZIP_XZ,
+            opt_compression_xz = wx.MenuItem(self.menu_compression, ID.ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)
             compression_opts.insert(3, opt_compression_xz)
@@ -205,7 +200,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
         
         # Default compression
-        self.menu_compression.Check(ID_ZIP_BZ2, True)
+        self.menu_compression.Check(ID.ZIP_BZ2, True)
         
         self.menu_opt.AppendSubMenu(self.menu_compression, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
