@@ -37,7 +37,7 @@ class CharCtrl(wx.TextCtrl):
         wx.EVT_KEY_UP(self, self.OnKeyUp)
     
     ## Actions to take when key is released
-    def OnKeyUp(self, event):
+    def OnKeyUp(self, event=None):
         char = u''
         insert_index = self.GetInsertionPoint()
         if insert_index > 0:
@@ -51,9 +51,12 @@ class CharCtrl(wx.TextCtrl):
                 total_chars -= 1
                 if value[total_chars] in self.invalid_chars:
                     self.Replace(total_chars, total_chars + 1, u'-')
+            
             self.SetInsertionPoint(insertion)
             
         
         if char in self.invalid_chars:
             ReplaceChar()
-        event.Skip()
+        
+        if event:
+            event.Skip()

@@ -265,7 +265,7 @@ class AutoListCtrl(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):
     
     
     ## Fixes sizing problems with ListCtrl in wx 3.0
-    def OnResize(self, event):
+    def OnResize(self, event=None):
         if event:
             event.Skip(True)
         

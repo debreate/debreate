@@ -211,7 +211,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 
     
     ## Imports names of executables from files page
-    def ImportExe(self, event):
+    def ImportExe(self, event=None):
         event_id = event.GetId()
         if event_id == ident.IMPORT:
             # First clear the Auto-Link display and the executable list
@@ -295,7 +295,7 @@ scripts will be created that will place a symbolic link to your executables in t
     
     
     ## TODO: Doxygen
-    def OnGenerate(self, event):
+    def OnGenerate(self, event=None):
         for S in self.postinst, self.prerm:
             if not TextIsEmpty(S.GetValue()):
                 confirm = wx.MessageDialog(GetTopWindow(),
@@ -358,7 +358,7 @@ scripts will be created that will place a symbolic link to your executables in t
     
     
     ## TODO: Doxygen
-    def OnHelpButton(self, event):
+    def OnHelpButton(self, event=None):
         self.al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'))
         #self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
@@ -384,7 +384,7 @@ scripts will be created that will place a symbolic link to your executables in t
     
     
     ## TODO: Doxygen
-    def ScriptSelect(self, event):
+    def ScriptSelect(self, event=None):
         for S, RB in self.script_objects:
             if RB.GetValue():
                 S.Show()
