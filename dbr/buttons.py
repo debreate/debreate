@@ -109,7 +109,7 @@ class ButtonConfirm(BitmapButton):
         self.SetToolTip(wx.ToolTip(GT(u'Ok')))
 
 
-## TODO: Doxygen
+## Button with an arrow for importing info from other pages
 class ButtonImport(BitmapButton):
     def __init__(self, parent, ID=ident.IMPORT, name=u'btn import'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/import32.png'.format(PATH_app)),
@@ -174,7 +174,7 @@ class ButtonRefresh(BitmapButton):
 
 ## TODO: Doxygen
 class ButtonRemove(BitmapButton):
-    def __init__(self, parent, ID=wx.WXK_DELETE, name=u'btn remove'):
+    def __init__(self, parent, ID=wx.ID_DELETE, name=u'btn remove'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/del32.png'.format(PATH_app)),
                 ID=ID, name=name)
         

@@ -129,7 +129,7 @@ class Panel(WizardPage):
         
         wx.EVT_BUTTON(self.al_import, ident.IMPORT, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
-        wx.EVT_BUTTON(self.al_del, wx.WXK_DELETE, self.ImportExe)
+        wx.EVT_BUTTON(self.al_del, wx.ID_DELETE, self.ImportExe)
         
         albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
         albutton_sizer.Add(self.al_import, 1)#, wx.ALIGN_CENTER|wx.RIGHT, 5)
@@ -237,6 +237,7 @@ scripts will be created that will place a symbolic link to your executables in t
                     self.executables.InsertStringItem(self.executables.GetItemCount(), file_target)
         
         elif event_id == wx.ID_DELETE:
+            # FIXME: Use ListCtrlPanel.DeleteAllItems()???
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
