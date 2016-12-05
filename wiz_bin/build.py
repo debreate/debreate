@@ -221,8 +221,8 @@ class Panel(WizardPage):
                     Logger.Debug(__name__, log_msg)
                     
                     # Retrieve control page
-                    control_page = self.wizard.GetPage(ident.CONTROL)
-                    if not control_page:
+                    pg_control = self.wizard.GetPage(ident.CONTROL)
+                    if not pg_control:
                         Logger.Error(__name__, GT(u'Could not retrieve control page'))
                         build_progress.Destroy()
                         err_msg = ErrorDialog(main_window, GT(u'Fatal Error'),
@@ -238,7 +238,7 @@ class Panel(WizardPage):
                     
                     build_summary.append(u'\n{}:'.format(log_msg))
                     build_summary.append(
-                        control_page.ExportBuild(u'{}/DEBIAN'.format(stage).replace(u'//', u'/'), installed_size)
+                        pg_control.ExportBuild(u'{}/DEBIAN'.format(stage).replace(u'//', u'/'), installed_size)
                         )
                     
                     current_step += 1
@@ -351,7 +351,7 @@ class Panel(WizardPage):
             main_window = GetTopWindow()
             
             # List of page IDs to process during build
-            build_page_ids = []
+            pg_build_ids = []
             
             steps_count = len(prep_ids)
             current_step = 0
@@ -377,7 +377,7 @@ class Panel(WizardPage):
                     prep_progress.Update(current_step, msg_label.format(page_label, current_step+1, steps_count))
                     
                     if P.IsExportable():
-                        build_page_ids.append(page_id)
+                        pg_build_ids.append(page_id)
                     
                     current_step += 1
                 
@@ -390,7 +390,7 @@ class Panel(WizardPage):
             
             prep_progress.Destroy()
             
-            return build_page_ids
+            return pg_build_ids
             
         except:
             prep_progress.Destroy()
@@ -473,16 +473,16 @@ class Panel(WizardPage):
         
         main_window = GetTopWindow()
         
-        control_page = self.wizard.GetPage(ident.CONTROL)
-        files_page = self.wizard.GetPage(ident.FILES)
-        menu_page = self.wizard.GetPage(ident.MENU)
+        pg_control = self.wizard.GetPage(ident.CONTROL)
+        pg_files = self.wizard.GetPage(ident.FILES)
+        pg_launcher = self.wizard.GetPage(ident.MENU)
         
         required_fields = {
-            GT(u'Control'): control_page.GetRequiredFields(),
+            GT(u'Control'): pg_control.GetRequiredFields(),
         }
         
-        if menu_page.chk_enable.GetValue():
-            required_fields[GT(u'Menu Launcher')] = menu_page.GetRequiredFields()
+        if pg_launcher.chk_enable.GetValue():
+            required_fields[GT(u'Menu Launcher')] = pg_launcher.GetRequiredFields()
             
             for RF in required_fields[GT(u'Menu Launcher')]:
                 Logger.Debug(__name__, GT(u'Required field (Menu Launcher): {}').format(RF.GetName()))
@@ -508,7 +508,7 @@ class Panel(WizardPage):
                     
                     return
         
-        if files_page.file_list.MissingFiles():
+        if pg_files.file_list.MissingFiles():
             main_window = GetTopWindow()
             
             Logger.Warning(__name__, GT(u'Files are missing in file list'))
@@ -527,9 +527,9 @@ class Panel(WizardPage):
         save_dialog = GetFileSaveDialog(main_window, GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
-        package = control_page.pack.GetValue()
-        version = control_page.ver.GetValue()
-        arch = control_page.arch.GetStringSelection()
+        package = pg_control.pack.GetValue()
+        version = pg_control.ver.GetValue()
+        arch = pg_control.arch.GetStringSelection()
         save_dialog.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
         
         if ShowDialog(save_dialog):
