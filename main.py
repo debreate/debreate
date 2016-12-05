@@ -104,31 +104,31 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** File Menu *** #
         self.m_file = wx.Menu()
         
-        mitm_new = wx.MenuItem(self.m_file, wx.ID_NEW, GT(u'New project'),
+        mi_new = wx.MenuItem(self.m_file, wx.ID_NEW, GT(u'New project'),
                 help=GT(u'Start a new project'))
-        mitm_open = wx.MenuItem(self.m_file, wx.ID_OPEN, GT(u'Open'),
+        mi_open = wx.MenuItem(self.m_file, wx.ID_OPEN, GT(u'Open'),
                 help=GT(u'Open a previously saved project'))
-        mitm_save = wx.MenuItem(self.m_file, wx.ID_SAVE, GT(u'Save'),
+        mi_save = wx.MenuItem(self.m_file, wx.ID_SAVE, GT(u'Save'),
                 help=GT(u'Save current project'))
-        mitm_saveas = wx.MenuItem(self.m_file, wx.ID_SAVEAS, GT(u'Save as'),
+        mi_saveas = wx.MenuItem(self.m_file, wx.ID_SAVEAS, GT(u'Save as'),
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        mitm_quickbuild = wx.MenuItem(self.m_file, ident.QBUILD, GT(u'Quick Build'),
+        mi_quickbuild = wx.MenuItem(self.m_file, ident.QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
-        mitm_quickbuild.SetBitmap(ICON_CLOCK)
+        mi_quickbuild.SetBitmap(ICON_CLOCK)
         
-        mitm_quit = wx.MenuItem(self.m_file, wx.ID_EXIT, GT(u'Quit'),
+        mi_quit = wx.MenuItem(self.m_file, wx.ID_EXIT, GT(u'Quit'),
                 help=GT(u'Exit Debreate'))
         
-        self.m_file.AppendItem(mitm_new)
-        self.m_file.AppendItem(mitm_open)
-        self.m_file.AppendItem(mitm_save)
-        self.m_file.AppendItem(mitm_saveas)
+        self.m_file.AppendItem(mi_new)
+        self.m_file.AppendItem(mi_open)
+        self.m_file.AppendItem(mi_save)
+        self.m_file.AppendItem(mi_saveas)
         self.m_file.AppendSeparator()
-        self.m_file.AppendItem(mitm_quickbuild)
+        self.m_file.AppendItem(mi_quickbuild)
         self.m_file.AppendSeparator()
-        self.m_file.AppendItem(mitm_quit)
+        self.m_file.AppendItem(mi_quit)
         
         # *** Page Menu *** #
         ## This menu is filled from dbr.wizard.Wizard
@@ -138,10 +138,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.m_action = wx.Menu()
         
         # FIXME: Use global ID???
-        action_build = wx.MenuItem(self.m_action, wx.NewId(), GT(u'Build'),
+        mi_build = wx.MenuItem(self.m_action, wx.NewId(), GT(u'Build'),
                 GT(u'Start building .deb package'))
         
-        self.m_action.AppendItem(action_build)
+        self.m_action.AppendItem(mi_build)
         
         # ----- Options Menu
         self.m_opt = wx.Menu()
@@ -380,7 +380,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self, M.GetId(), self.GoToPage)
         
         # Action menu events
-        wx.EVT_MENU(self, action_build.GetId(), self.page_build.OnBuild)
+        wx.EVT_MENU(self, mi_build.GetId(), self.page_build.OnBuild)
     
     
     ## TODO: Doxygen
