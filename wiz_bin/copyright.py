@@ -2,10 +2,12 @@
 
 ## \package wiz_bin.copyright
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
-import globals.ident as ident
 from dbr.error              import ShowError
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import GetYear
@@ -19,10 +21,11 @@ from dbr.templates          import local_licenses_path
 from dbr.textinput          import MT_BTN_BR
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import errno
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import FieldEnabled, GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -142,9 +145,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        main_window = GetTopWindow()
-        
-        stage = u'{}/usr/share/doc/{}'.format(stage, main_window.page_control.GetPackageName()).replace(u'//', u'/')
+        stage = u'{}/usr/share/doc/{}'.format(stage, GetPage(ident.CONTROL).GetPackageName()).replace(u'//', u'/')
         
         # FIXME: Should be error check
         self.Export(stage, u'copyright')

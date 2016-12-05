@@ -2,10 +2,12 @@
 
 ## \package wiz_bin.scripts
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
@@ -20,12 +22,13 @@ from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
 from globals.ident          import page_ids
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetTopWindow, GetPage
 
 
 ID_INST_PRE = wx.NewId()
@@ -208,15 +211,14 @@ scripts will be created that will place a symbolic link to your executables in t
     
     ## Imports names of executables from files page
     def ImportExe(self, event):
-        main_window = GetTopWindow()
-        
         event_id = event.GetId()
         if event_id == ident.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.xlist = []
             
-            file_list = main_window.page_files.file_list
+            # FIXME: Use file_page.GetFileList()
+            file_list = GetPage(ident.FILES).file_list
             
             item_count = file_list.GetItemCount()
             
