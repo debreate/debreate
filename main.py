@@ -225,9 +225,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Menu with links to the Debian Policy Manual webpages
         self.menu_policy = wx.Menu()
         
-        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
+        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
+                u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
+        m_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control Files'),
+                u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         m_dpm_ctrl.SetBitmap(ICON_GLOBE)
         m_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
@@ -244,6 +246,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         m_lint_overrides = wx.MenuItem(self.menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
         m_lint_overrides.SetBitmap(ICON_GLOBE)
+        m_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+                u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
+        m_launchers.SetBitmap(ICON_GLOBE)
         
         self.menu_policy.AppendItem(m_dpm)
         self.menu_policy.AppendItem(m_dpm_ctrl)
@@ -252,6 +257,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_policy.AppendItem(m_deb_src)
         self.menu_policy.AppendItem(m_lint_tags)
         self.menu_policy.AppendItem(m_lint_overrides)
+        self.menu_policy.AppendItem(m_launchers)
         
         lst_policy_ids = (
             ident.DPM,
