@@ -3,37 +3,30 @@
 ## \package dbr.compression
 
 
-import wx, os, tarfile, zipfile, commands
+import commands, os, tarfile, zipfile
 
+import globals.ident as ID
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals.errorcodes import errno
 
 
-# *** Compression Format IDs *** #
-ID_COMPRESSION = wx.NewId() # FIXME: Unused?
-ID_ZIP_NONE = wx.NewId()
-ID_ZIP_GZ = wx.NewId()
-ID_ZIP_BZ2 = wx.NewId()
-ID_ZIP_XZ = wx.NewId()
-ID_ZIP_ZIP = wx.NewId()
-
-DEFAULT_COMPRESSION_ID = ID_ZIP_BZ2
+DEFAULT_COMPRESSION_ID = ID.ZIP_BZ2
 
 compression_formats = {
-    ID_ZIP_NONE: u'tar',
-    ID_ZIP_GZ: u'gz',
-    ID_ZIP_BZ2: u'bz2',
-    ID_ZIP_XZ: u'xz',
-    ID_ZIP_ZIP: u'zip',
+    ID.ZIP_NONE: u'tar',
+    ID.ZIP_GZ: u'gz',
+    ID.ZIP_BZ2: u'bz2',
+    ID.ZIP_XZ: u'xz',
+    ID.ZIP_ZIP: u'zip',
 }
 
 compression_mimetypes = {
-    u'application/x-tar': ID_ZIP_NONE,
-    u'application/gzip': ID_ZIP_GZ,
-    u'application/x-bzip2': ID_ZIP_BZ2,
-    u'application/x-xz': ID_ZIP_XZ,
-    u'application/zip': ID_ZIP_ZIP,
+    u'application/x-tar': ID.ZIP_NONE,
+    u'application/gzip': ID.ZIP_GZ,
+    u'application/x-bzip2': ID.ZIP_BZ2,
+    u'application/x-xz': ID.ZIP_XZ,
+    u'application/zip': ID.ZIP_ZIP,
 }
 
 
@@ -53,17 +46,17 @@ class CompressionHandler:
         self.compression_id = compression_id
         
         self.tarfile_handlers = (
-            ID_ZIP_NONE,
-            ID_ZIP_GZ,
-            ID_ZIP_BZ2,
+            ID.ZIP_NONE,
+            ID.ZIP_GZ,
+            ID.ZIP_BZ2,
         )
         
         self.zipfile_handlers = (
-            ID_ZIP_ZIP,
+            ID.ZIP_ZIP,
         )
         
         self.system_handlers = {
-            ID_ZIP_XZ: u'J',
+            ID.ZIP_XZ: u'J',
         }
     
     
@@ -72,7 +65,7 @@ class CompressionHandler:
             compressto = u'w'
             
             if self.compression_id in self.tarfile_handlers:
-                if self.compression_id != ID_ZIP_NONE:
+                if self.compression_id != ID.ZIP_NONE:
                     compressto = u'{}:{}'.format(compressto, compression_formats[self.compression_id])
                 
                 archive = tarfile.open(target_name, compressto)
@@ -132,7 +125,7 @@ class CompressionHandler:
         z_format = u'r'
         
         if self.compression_id in self.tarfile_handlers:
-            if self.compression_id != ID_ZIP_NONE:
+            if self.compression_id != ID.ZIP_NONE:
                 z_format = u'{}:{}'.format(z_format, compression_formats[self.compression_id])
             
             archive = tarfile.open(source_file, z_format)
