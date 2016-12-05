@@ -247,27 +247,3 @@ class Panel(WizardPage):
                 item_count -= 1
                 self.dep_area.InsertStringItem(0, item[0])
                 self.dep_area.SetStringItem(0, 1, item[item_count])
-
-
-
-## A ListCtrl that automatically expands columns
-#  
-#  FIXME: Deprecated
-class AutoListCtrl(wx.ListCtrl, LC.ListCtrlAutoWidthMixin):
-    def __init__(self, parent, window_id=wx.ID_ANY):
-        wx.ListCtrl.__init__(self, parent, window_id, style=wx.BORDER_SIMPLE|wx.LC_REPORT)
-        LC.ListCtrlAutoWidthMixin.__init__(self)
-        
-        self.prev_width = self.Size[0]
-        
-        if wx.MAJOR_VERSION == 3 and wx.MINOR_VERSION == 0:
-            wx.EVT_SIZE(self, self.OnResize)
-    
-    
-    ## Fixes sizing problems with ListCtrl in wx 3.0
-    def OnResize(self, event=None):
-        if event:
-            event.Skip(True)
-        
-        # FIXME: -10 should be a dynamic number set by the sizer's padding
-        self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
