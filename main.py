@@ -40,6 +40,7 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
+from dbr.menu               import MenuBar
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
 from dbr.statusbar          import StatusBar
@@ -55,8 +56,11 @@ from globals.bitmaps        import ICON_GLOBE
 from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
+from globals.ident          import ID_ACTION
 from globals.ident          import ID_DEBUG
 from globals.ident          import ID_LOG
+from globals.ident          import ID_OPTIONS
+from globals.ident          import ID_PAGE
 from globals.ident          import ID_THEME
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
@@ -294,14 +298,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help.AppendItem(mi_help)
         menu_help.AppendItem(mi_about)
         
-        menubar = wx.MenuBar()
-        self.SetMenuBar(menubar)
+        menubar = MenuBar(self)
         
-        menubar.Append(self.menu_file, GT(u'File'))
-        menubar.Append(self.menu_page, GT(u'Page'))
-        menubar.Append(self.menu_action, GT(u'Action'))
-        menubar.Append(self.menu_opt, GT(u'Options'))
-        menubar.Append(menu_help, GT(u'Help'))
+        menubar.Append(self.menu_file, GT(u'File'), wx.ID_FILE)
+        menubar.Append(self.menu_page, GT(u'Page'), ID_PAGE)
+        menubar.Append(self.menu_action, GT(u'Action'), ID_ACTION)
+        menubar.Append(self.menu_opt, GT(u'Options'), ID_OPTIONS)
+        menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
         self.wizard = Wizard(self)
         
@@ -335,7 +338,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if DebugEnabled():
             self.menu_debug = wx.Menu()
             
-            menubar.Append(self.menu_debug, GT(u'Debug'))
+            menubar.Append(self.menu_debug, GT(u'Debug'), ID_DEBUG)
             
             self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ID_LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
@@ -1079,6 +1082,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
+    #  
+    #  TODO: Finish definition
     def ToggleTheme(self, window):
         for C in window.GetChildren():
             self.ToggleTheme(C)
