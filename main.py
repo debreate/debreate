@@ -57,9 +57,10 @@ from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
 from globals.ident          import ID_ACTION
-from globals.ident          import ID_DIALOGS
 from globals.ident          import ID_DEBUG
+from globals.ident          import ID_DIALOGS
 from globals.ident          import ID_LOG
+from globals.ident          import ID_OPENLOGS
 from globals.ident          import ID_OPTIONS
 from globals.ident          import ID_PAGE
 from globals.ident          import ID_THEME
@@ -83,9 +84,6 @@ from wiz_bin.launchers      import Panel as PageLaunchers
 from wiz_bin.man            import Panel as PageMan
 from wiz_bin.scripts        import Panel as PageScripts
 
-
-# Options menu
-ID_LOG_DIR_OPEN = wx.NewId()
 
 # Debian Policy Manual IDs
 ID_DPM = wx.NewId()
@@ -235,10 +233,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if CMD_xdg_open:
-            opt_logs_open = wx.MenuItem(self.menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
+            opt_logs_open = wx.MenuItem(self.menu_opt, ID_OPENLOGS, GT(u'Open logs directory'))
             self.menu_opt.AppendItem(opt_logs_open)
             
-            wx.EVT_MENU(self.menu_opt, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
+            wx.EVT_MENU(self.menu_opt, ID_OPENLOGS, self.OnLogDirOpen)
         
         # ----- Help Menu
         menu_help = wx.Menu()
