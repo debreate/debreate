@@ -10,7 +10,6 @@ import os, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
-import globals.ident as ident
 from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
@@ -41,6 +40,7 @@ from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
 from dbr.statusbar          import StatusBar
 from dbr.wizard             import Wizard
+from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
 from globals.application    import APP_project_sf
@@ -51,6 +51,7 @@ from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
+from globals.bitmaps        import LOGO
 from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
@@ -92,11 +93,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if DebugEnabled():
             self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
         
-        self.SetMinSize((640,400))
+        self.SetMinSize(wx.Size(640, 400))
         
         # ----- Set Titlebar Icon
-        self.main_icon = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
-        self.SetIcon(self.main_icon)
+        self.SetIcon(wx.Icon(LOGO))
         
         # ----- Status Bar
         stat_bar = StatusBar(self)
@@ -135,22 +135,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.m_page = wx.Menu()
         
         # *** Action Menu *** #
-        self.m_action = wx.Menu()
+        m_action = wx.Menu()
         
         # FIXME: Use global ID???
-        mi_build = wx.MenuItem(self.m_action, wx.NewId(), GT(u'Build'),
+        mi_build = wx.MenuItem(m_action, wx.NewId(), GT(u'Build'),
                 GT(u'Start building .deb package'))
         
-        self.m_action.AppendItem(mi_build)
+        m_action.AppendItem(mi_build)
         
         # ----- Options Menu
-        self.m_opt = wx.Menu()
+        m_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.m_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(m_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
-        self.m_opt.AppendItem(self.opt_tooltips)
+        m_opt.AppendItem(self.opt_tooltips)
         
         show_tooltips = ReadConfig(u'tooltips')
         if show_tooltips != ConfCode.KEY_NO_EXIST:
@@ -162,11 +162,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.mi_dialogs = wx.MenuItem(self.m_opt, ident.DIALOGS, GT(u'Use Custom Dialogs'),
+        self.mi_dialogs = wx.MenuItem(m_opt, ident.DIALOGS, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         # FIXME: Disabled until fixed
-        #self.m_opt.AppendItem(self.mi_dialogs)
+        #m_opt.AppendItem(self.mi_dialogs)
         
         # Project compression options
         self.m_compress = wx.Menu()
@@ -204,17 +204,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Default compression
         self.m_compress.Check(ident.ZIP_BZ2, True)
         
-        self.m_opt.AppendSubMenu(self.m_compress, GT(u'Project Compression'),
+        m_opt.AppendSubMenu(self.m_compress, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
-        
         
         # *** Option Menu: open logs directory *** #
         
         if CMD_xdg_open:
-            opt_logs_open = wx.MenuItem(self.m_opt, ident.OPENLOGS, GT(u'Open logs directory'))
-            self.m_opt.AppendItem(opt_logs_open)
+            mi_logs_dir = wx.MenuItem(m_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            m_opt.AppendItem(mi_logs_dir)
             
-            wx.EVT_MENU(self.m_opt, ident.OPENLOGS, self.OnLogDirOpen)
+            wx.EVT_MENU(m_opt, ident.OPENLOGS, self.OnLogDirOpen)
         
         # ----- Help Menu
         m_help = wx.Menu()
@@ -289,8 +288,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         menubar.Append(self.m_file, GT(u'File'), wx.ID_FILE)
         menubar.Append(self.m_page, GT(u'Page'), ident.PAGE)
-        menubar.Append(self.m_action, GT(u'Action'), ident.ACTION)
-        menubar.Append(self.m_opt, GT(u'Options'), ident.OPTIONS)
+        menubar.Append(m_action, GT(u'Action'), ident.ACTION)
+        menubar.Append(m_opt, GT(u'Options'), ident.OPTIONS)
         menubar.Append(m_help, GT(u'Help'), wx.ID_HELP)
         
         self.wizard = Wizard(self)
