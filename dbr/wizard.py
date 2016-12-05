@@ -9,6 +9,7 @@
 import os, wx
 from wx.lib.newevent import NewCommandEvent
 
+import globals.ident as ident
 from dbr.buttons            import ButtonNext
 from dbr.buttons            import ButtonPrev
 from dbr.functions          import TextIsEmpty
@@ -16,8 +17,6 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_NEXT
-from globals.ident          import ID_PREV
 from globals.ident          import page_ids
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
@@ -106,11 +105,11 @@ class Wizard(wx.Panel):
                 
                 break
         
-        if event_id == ID_PREV:
+        if event_id == ident.PREV:
             if index != 0:
                 index -= 1
         
-        elif event_id == ID_NEXT:
+        elif event_id == ident.NEXT:
             if index != len(self.pages) - 1:
                 index += 1
         

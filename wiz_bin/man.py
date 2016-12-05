@@ -5,11 +5,11 @@
 
 import wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.language           import GT
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
-from globals.ident          import ID_MAN
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 
@@ -18,7 +18,7 @@ from globals.wizardhelper   import GetTopWindow
 class Panel(WizardPage, wx.Notebook):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
-        WizardPage.__init__(self, parent, ID_MAN)
+        WizardPage.__init__(self, parent, ident.MAN)
         
         ## Override default label
         self.label = GT(u'Man Pages')

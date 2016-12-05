@@ -8,6 +8,7 @@
 
 import os, wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonConfirm
 from dbr.custom             import TextIsEmpty
 from dbr.language           import GT
@@ -19,8 +20,6 @@ from dbr.workingdir         import ChangeWorkingDirectory
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
-from globals.ident          import ID_APPEND
-from globals.ident          import ID_OVERWRITE
 from globals.paths          import PATH_app
 from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
@@ -54,16 +53,16 @@ class TextOverwriteDialog(wx.Dialog):
         self.message = wx.StaticText(self, -1, message)
         
         ## Button to accept overwrite
-        self.button_overwrite = wx.Button(self, ID_OVERWRITE, GT(u'Overwrite'))
+        self.button_overwrite = wx.Button(self, ident.OVERWRITE, GT(u'Overwrite'))
         
-        self.button_append = wx.Button(self, ID_APPEND, GT(u'Append'))
+        self.button_append = wx.Button(self, ident.APPEND, GT(u'Append'))
         
         ## Button to cancel overwrite
         self.button_cancel = wx.Button(self, wx.ID_CANCEL)
         
         # -*- Button events -*- #
-        wx.EVT_BUTTON(self.button_overwrite, ID_OVERWRITE, self.OnButton)
-        wx.EVT_BUTTON(self.button_append, ID_APPEND, self.OnButton)
+        wx.EVT_BUTTON(self.button_overwrite, ident.OVERWRITE, self.OnButton)
+        wx.EVT_BUTTON(self.button_append, ident.APPEND, self.OnButton)
         
         hsizer = wx.BoxSizer(wx.HORIZONTAL)
         hsizer.Add(self.button_overwrite, 0, wx.LEFT|wx.RIGHT, 5)

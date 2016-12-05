@@ -6,13 +6,12 @@
 import wx, os, thread, time
 from wx.lib.newevent import NewCommandEvent
 
+import globals.ident as ident
 from dbr.font               import GetMonospacedFont
 from dbr.functions          import GetDate, GetTime
 from dbr.language           import GT
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.application    import APP_logo
-from globals.ident          import ID_DEBUG
-from globals.ident          import ID_LOG
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
 
@@ -200,7 +199,7 @@ def GetLogWindowRefreshInterval():
 #  TODO: Watch for changes in log file
 class LogWindow(wx.Dialog):
     def __init__(self, parent, log_file):
-        wx.Dialog.__init__(self, parent, ID_DEBUG, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        wx.Dialog.__init__(self, parent, ident.DEBUG, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
         
         self.SetIcon(APP_logo)
         
@@ -345,10 +344,10 @@ class LogWindow(wx.Dialog):
         main_window = GetTopWindow()
         
         window_shown = self.IsShown()
-        menu_checked = main_window.menu_debug.IsChecked(ID_LOG)
+        menu_checked = main_window.menu_debug.IsChecked(ident.LOG)
         
         if menu_checked != window_shown:
-            main_window.menu_debug.Check(ID_LOG, window_shown)
+            main_window.menu_debug.Check(ident.LOG, window_shown)
     
     
     ## Use an event to show the log window
@@ -364,7 +363,7 @@ class LogWindow(wx.Dialog):
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        show = GetTopWindow().menu_debug.IsChecked(ID_LOG)
+        show = GetTopWindow().menu_debug.IsChecked(ident.LOG)
         
         if show:
             self.ShowLog()

@@ -5,6 +5,7 @@
 
 import os, wx
 
+import globals.ident as ident
 from dbr.error              import ShowError
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import GetYear
@@ -20,7 +21,6 @@ from dbr.textinput          import MonospaceTextCtrl
 from dbr.wizard             import WizardPage
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import errno
-from globals.ident          import ID_COPYRIGHT
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
@@ -33,7 +33,7 @@ copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]\n\n')
 ## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_COPYRIGHT)
+        WizardPage.__init__(self, parent, ident.COPYRIGHT)
         
         # FIXME: Ignore symbolic links
         license_list = GetSystemLicensesList()

@@ -6,6 +6,7 @@
 import wx
 from wx.lib.mixins import listctrl as LC
 
+import globals.ident as ident
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
 from dbr.buttons        import ButtonClear
@@ -16,15 +17,13 @@ from dbr.language       import GT
 from dbr.listinput      import ListCtrlPanel
 from dbr.log            import Logger
 from dbr.wizard         import WizardPage
-from globals.ident      import ID_APPEND
-from globals.ident      import ID_DEPENDS
 from globals.tooltips   import SetPageToolTips
 
 
 ## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_DEPENDS)
+        WizardPage.__init__(self, parent, ident.DEPENDS)
         
         # Bypass checking this page for build
         self.prebuild_check = False
@@ -202,7 +201,7 @@ class Panel(WizardPage):
             else:
                 self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
-        elif key_id == ID_APPEND:
+        elif key_id == ident.APPEND:
             selected_count = self.dep_area.GetSelectedItemCount()
             if not TextIsEmpty(addname) and self.dep_area.GetItemCount() and selected_count:
                 listrow = None

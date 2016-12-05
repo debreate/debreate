@@ -4,15 +4,15 @@
 # System imports
 import wx
 
+import globals.ident as ident
 from dbr.hyperlink  import Hyperlink
 from dbr.language   import GT
 from dbr.wizard     import WizardPage
-from globals.ident  import ID_GREETING
 
 
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_GREETING)
+        WizardPage.__init__(self, parent, ident.GREETING)
         
         self.parent = parent
         

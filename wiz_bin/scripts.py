@@ -5,6 +5,7 @@
 
 import os, wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
@@ -22,8 +23,6 @@ from dbr.wizard             import WizardPage
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_IMPORT
-from globals.ident          import ID_SCRIPTS
 from globals.ident          import page_ids
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
@@ -45,7 +44,7 @@ id_definitions = {
 ## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_SCRIPTS)
+        WizardPage.__init__(self, parent, ident.SCRIPTS)
         
         self.preinst = DebianScript(self, ID_INST_PRE)
         self.postinst = DebianScript(self, ID_INST_POST)
@@ -124,7 +123,7 @@ class Panel(WizardPage):
         self.al_gen = ButtonBuild(self)
         self.al_gen.SetName(u'Generate')
         
-        wx.EVT_BUTTON(self.al_import, ID_IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(self.al_import, ident.IMPORT, self.ImportExe)
         wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
         wx.EVT_BUTTON(self.al_del, wx.WXK_DELETE, self.ImportExe)
         
@@ -212,7 +211,7 @@ scripts will be created that will place a symbolic link to your executables in t
         main_window = GetTopWindow()
         
         event_id = event.GetId()
-        if event_id == ID_IMPORT:
+        if event_id == ident.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.xlist = []
