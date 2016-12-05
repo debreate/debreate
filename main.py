@@ -48,7 +48,9 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
+from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
+from globals.bitmaps        import ICON_LOGO
 from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
@@ -112,9 +114,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        mitm_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD,
-                                         GT(u'Quick Build'), GT(u'Build a package from an existing build tree'))
-        mitm_quickbuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
+        mitm_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD, GT(u'Quick Build'),
+                GT(u'Build a package from an existing build tree'))
+        mitm_quickbuild.SetBitmap(ICON_CLOCK)
         
         mitm_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
                 help=GT(u'Exit Debreate'))
@@ -219,6 +221,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # ----- Version update
         version_check = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
+        version_check.SetBitmap(ICON_LOGO)
+        
         menu_help.AppendItem(version_check)
         menu_help.AppendSeparator()
         
