@@ -2,10 +2,12 @@
 
 ## \package wiz_bin.changelog
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import commands, os, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
 from dbr.functions          import TextIsEmpty
@@ -16,11 +18,12 @@ from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.commands       import CMD_gzip
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import ErrorTuple
+from globals.wizardhelper   import ErrorTuple, GetPage
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetTopWindow
 
@@ -183,7 +186,8 @@ class Panel(WizardPage):
     def ExportBuild(self, stage):
         if self.target_default.GetValue():
             stage = u'{}/usr/share/doc/{}'.format(stage,
-                    GetTopWindow().page_control.GetPackageName()).replace(u'//', u'/')
+                    GetPage(ident.CONTROL).GetPackageName()).replace(u'//', u'/')
+        
         else:
             stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
         
