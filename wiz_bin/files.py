@@ -5,6 +5,7 @@
 
 import wx, os, shutil
 
+import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonClear
@@ -22,8 +23,6 @@ from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals.bitmaps        import ICON_ERROR
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_CUSTOM
-from globals.ident          import ID_FILES
 from globals.paths          import PATH_home
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
@@ -41,7 +40,7 @@ ID_Refresh = 142
 ## Class defining controls for the "Paths" page
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_FILES)
+        WizardPage.__init__(self, parent, ident.FILES)
         
         # Create a Context Menu
         self.menu = wx.Menu()
@@ -70,7 +69,7 @@ class Panel(WizardPage):
         self.radio_usrlib = wx.RadioButton(target_panel, label=u'/usr/lib')
         self.radio_locbin = wx.RadioButton(target_panel, label=u'/usr/local/bin')
         self.radio_loclib = wx.RadioButton(target_panel, label=u'/usr/local/lib')
-        self.radio_custom = wx.RadioButton(target_panel, ID_CUSTOM, GT(u'Custom'))
+        self.radio_custom = wx.RadioButton(target_panel, ident.CUSTOM, GT(u'Custom'))
         
         # Start with "Custom" selected
         self.radio_custom.SetValue(True)
@@ -406,7 +405,7 @@ class Panel(WizardPage):
         
         for target in self.targets:
             if target.GetValue():
-                if target.GetId() == ID_CUSTOM:
+                if target.GetId() == ident.CUSTOM:
                     target_dir = self.input_target.GetValue()
                 
                 else:

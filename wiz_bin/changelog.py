@@ -5,6 +5,7 @@
 
 import commands, os, wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
 from dbr.functions          import TextIsEmpty
@@ -17,12 +18,6 @@ from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals.commands       import CMD_gzip
 from globals.errorcodes     import dbrerrno
-from globals.ident          import FID_EMAIL
-from globals.ident          import FID_MAINTAINER
-from globals.ident          import FID_NAME
-from globals.ident          import FID_VERSION
-from globals.ident          import ID_CHANGELOG
-from globals.ident          import ID_CONTROL
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
@@ -33,7 +28,7 @@ from globals.wizardhelper   import GetTopWindow
 ## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_CHANGELOG)
+        WizardPage.__init__(self, parent, ident.CHANGELOG)
         
         self.package_text = wx.StaticText(self, label=GT(u'Package'), name=u'package')
         self.package = wx.TextCtrl(self, name=self.package_text.Name)
@@ -235,14 +230,14 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnImportFromControl(self, event):
         fields = (
-            (self.package, FID_NAME),
-            (self.version, FID_VERSION),
-            (self.maintainer, FID_MAINTAINER),
-            (self.email, FID_EMAIL),
+            (self.package, ident.F_NAME),
+            (self.version, ident.F_VERSION),
+            (self.maintainer, ident.F_MAINTAINER),
+            (self.email, ident.F_EMAIL),
             )
         
         for F, FID in fields:
-            field_value = GetFieldValue(ID_CONTROL, FID)
+            field_value = GetFieldValue(ident.CONTROL, FID)
             
             if isinstance(field_value, ErrorTuple):
                 err_msg1 = GT(u'Got error when attempting to retrieve field value')

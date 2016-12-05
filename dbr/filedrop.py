@@ -8,11 +8,10 @@
 
 import wx
 
+import globals.ident as ident
 from dbr.dialogs    import TextOverwriteDialog
 from dbr.functions  import TextIsEmpty
 from dbr.language   import GT
-from globals.ident  import ID_APPEND
-from globals.ident  import ID_OVERWRITE
 
 
 ## Object for drag-&-drop text files
@@ -39,10 +38,10 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
             if not TextIsEmpty(self.obj.GetValue()):
                 overwrite = TextOverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
                 ID = overwrite.ShowModal()
-                if ID == ID_OVERWRITE:
+                if ID == ident.OVERWRITE:
                     self.obj.SetValue(text)
                 
-                elif ID == ID_APPEND:
+                elif ID == ident.APPEND:
                     self.obj.SetInsertionPoint(-1)
                     self.obj.WriteText(text)
             

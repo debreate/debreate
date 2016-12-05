@@ -10,7 +10,7 @@ import os, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
-import globals.ident as ID
+import globals.ident as ident
 from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
@@ -112,7 +112,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        mitm_quickbuild = wx.MenuItem(self.menu_file, ID.ID_QBUILD,
+        mitm_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD,
                                          GT(u'Quick Build'), GT(u'Build a package from an existing build tree'))
         mitm_quickbuild.SetBitmap(wx.Bitmap(u'{}/bitmaps/clock16.png'.format(PATH_app)))
         
@@ -145,7 +145,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID.ID_TOOLTIPS, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
         self.menu_opt.AppendItem(self.opt_tooltips)
@@ -160,7 +160,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.menu_opt, ID.ID_DIALOGS, GT(u'Use Custom Dialogs'),
+        self.cust_dias = wx.MenuItem(self.menu_opt, ident.DIALOGS, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         # FIXME: Disabled until fixed
@@ -169,16 +169,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Project compression options
         self.menu_compression = wx.Menu()
         
-        opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ID.ZIP_NONE,
+        opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ident.ZIP_NONE,
                 GT(u'Uncompressed'), GT(u'Use uncompressed tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_gz = wx.MenuItem(self.menu_compression, ID.ZIP_GZ,
+        opt_compression_gz = wx.MenuItem(self.menu_compression, ident.ZIP_GZ,
                 GT(u'Gzip'), GT(u'Use compressed Gzip tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_bz2 = wx.MenuItem(self.menu_compression, ID.ZIP_BZ2,
+        opt_compression_bz2 = wx.MenuItem(self.menu_compression, ident.ZIP_BZ2,
                 GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_zip = wx.MenuItem(self.menu_compression, ID.ZIP_ZIP,
+        opt_compression_zip = wx.MenuItem(self.menu_compression, ident.ZIP_ZIP,
                 GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
                 kind=wx.ITEM_RADIO)
         
@@ -190,7 +190,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ]
         
         if CMD_tar != None:
-            opt_compression_xz = wx.MenuItem(self.menu_compression, ID.ZIP_XZ,
+            opt_compression_xz = wx.MenuItem(self.menu_compression, ident.ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)
             compression_opts.insert(3, opt_compression_xz)
@@ -200,7 +200,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self.menu_compression, OPT.GetId(), self.OnSetCompression)
         
         # Default compression
-        self.menu_compression.Check(ID.ZIP_BZ2, True)
+        self.menu_compression.Check(ident.ZIP_BZ2, True)
         
         self.menu_opt.AppendSubMenu(self.menu_compression, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
@@ -209,16 +209,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if CMD_xdg_open:
-            opt_logs_open = wx.MenuItem(self.menu_opt, ID.ID_OPENLOGS, GT(u'Open logs directory'))
+            opt_logs_open = wx.MenuItem(self.menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
             self.menu_opt.AppendItem(opt_logs_open)
             
-            wx.EVT_MENU(self.menu_opt, ID.ID_OPENLOGS, self.OnLogDirOpen)
+            wx.EVT_MENU(self.menu_opt, ident.OPENLOGS, self.OnLogDirOpen)
         
         # ----- Help Menu
         menu_help = wx.Menu()
         
         # ----- Version update
-        version_check = wx.MenuItem(menu_help, ID.ID_UPDATE, GT(u'Check for Update'))
+        version_check = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
         menu_help.AppendItem(version_check)
         menu_help.AppendSeparator()
         
@@ -226,23 +226,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_policy = wx.Menu()
         
         #globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
-        m_dpm = wx.MenuItem(menu_policy, ID.ID_DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
+        m_dpm = wx.MenuItem(menu_policy, ident.DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_ctrl = wx.MenuItem(menu_policy, ID.ID_DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
+        m_dpm_ctrl = wx.MenuItem(menu_policy, ident.DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         m_dpm_ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_log = wx.MenuItem(menu_policy, ID.ID_DPMLog, GT(u'Changelog'),
+        m_dpm_log = wx.MenuItem(menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         m_dpm_log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(menu_policy, ID.ID_UPM, GT(u'Ubuntu Policy Manual'),
+        m_upm = wx.MenuItem(menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         m_upm.SetBitmap(ICON_GLOBE)
         m_deb_src = wx.MenuItem(menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lint_tags = wx.MenuItem(menu_policy, ID.ID_LINT_TAGS, GT(u'Lintian Tags Explanation'),
+        m_lint_tags = wx.MenuItem(menu_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         m_lint_tags.SetBitmap(ICON_GLOBE)
-        m_lint_overrides = wx.MenuItem(menu_policy, ID.ID_LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+        m_lint_overrides = wx.MenuItem(menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
         m_lint_overrides.SetBitmap(ICON_GLOBE)
         
@@ -255,13 +255,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_policy.AppendItem(m_lint_overrides)
         
         self.references = {
-            ID.ID_DPM: u'http://www.debian.org/doc/debian-policy',
-            ID.ID_DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
-            ID.ID_DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
-            ID.ID_UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
+            ident.DPM: u'http://www.debian.org/doc/debian-policy',
+            ident.DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
+            ident.DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
+            ident.UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
             222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-            ID.ID_LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
-            ID.ID_LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
+            ident.LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
+            ident.LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
             }
         
         mi_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
@@ -275,9 +275,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menubar = MenuBar(self)
         
         menubar.Append(self.menu_file, GT(u'File'), wx.ID_FILE)
-        menubar.Append(self.menu_page, GT(u'Page'), ID.ID_PAGE)
-        menubar.Append(self.menu_action, GT(u'Action'), ID.ID_ACTION)
-        menubar.Append(self.menu_opt, GT(u'Options'), ID.ID_OPTIONS)
+        menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
+        menubar.Append(self.menu_action, GT(u'Action'), ident.ACTION)
+        menubar.Append(self.menu_opt, GT(u'Options'), ident.OPTIONS)
         menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
         self.wizard = Wizard(self)
@@ -312,19 +312,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if DebugEnabled():
             self.menu_debug = wx.Menu()
             
-            menubar.Append(self.menu_debug, GT(u'Debug'), ID.ID_DEBUG)
+            menubar.Append(self.menu_debug, GT(u'Debug'), ident.DEBUG)
             
-            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ID.ID_LOG, GT(u'Show log'),
+            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ident.LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
             
             self.log_window = LogWindow(self, Logger.GetLogFile())
             
             # Window colors
             self.menu_debug.AppendItem(
-                wx.MenuItem(self.menu_debug, ID.ID_THEME, GT(u'Toggle window colors')))
+                wx.MenuItem(self.menu_debug, ident.THEME, GT(u'Toggle window colors')))
             
-            wx.EVT_MENU(self, ID.ID_LOG, self.log_window.OnToggleWindow)
-            wx.EVT_MENU(self, ID.ID_THEME, self.OnToggleTheme)
+            wx.EVT_MENU(self, ident.LOG, self.log_window.OnToggleWindow)
+            wx.EVT_MENU(self, ident.THEME, self.OnToggleTheme)
         
         self.loaded_project = None
         self.dirty = None
@@ -349,13 +349,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
         wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
-        wx.EVT_MENU(self, ID.ID_QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
-        wx.EVT_MENU(self, ID.ID_TOOLTIPS, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ident.TOOLTIPS, self.OnToggleToolTips)
         
-        wx.EVT_MENU(self, ID.ID_UPDATE, self.OnCheckUpdate)
+        wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
         
         for R_ID in self.references:
             wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
@@ -764,10 +764,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Toggling log window'))
         
         if event != None:
-            self.ShowLogWindow(self.menu_debug.IsChecked(ID.ID_DEBUG))
+            self.ShowLogWindow(self.menu_debug.IsChecked(ident.DEBUG))
             return
         
-        self.menu_debug.Check(ID.ID_DEBUG, self.log_window.IsShown())
+        self.menu_debug.Check(ident.DEBUG, self.log_window.IsShown())
     
     
     ## TODO: Doxygen
@@ -1051,8 +1051,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.log_window.Show(show)
         
-        if self.menu_debug.IsChecked(ID.ID_DEBUG) != show:
-            self.menu_debug.Check(ID.ID_DEBUG, show)
+        if self.menu_debug.IsChecked(ident.DEBUG) != show:
+            self.menu_debug.Check(ident.DEBUG, show)
     
     
     ## TODO: Doxygen

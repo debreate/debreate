@@ -5,6 +5,7 @@
 
 import commands, math, os, subprocess, time, traceback, wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonBuild64
 from dbr.checklist          import CheckListDialog
 from dbr.custom             import OutputLog
@@ -28,10 +29,6 @@ from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_BUILD
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_FILES
-from globals.ident          import ID_MENU
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.tooltips       import SetPageToolTips
@@ -41,7 +38,7 @@ from globals.wizardhelper   import GetTopWindow
 ## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_BUILD)
+        WizardPage.__init__(self, parent, ident.BUILD)
         
         # Bypass build prep check
         self.prebuild_check = False
@@ -224,7 +221,7 @@ class Panel(WizardPage):
                     Logger.Debug(__name__, log_msg)
                     
                     # Retrieve control page
-                    control_page = self.wizard.GetPage(ID_CONTROL)
+                    control_page = self.wizard.GetPage(ident.CONTROL)
                     if not control_page:
                         Logger.Error(__name__, GT(u'Could not retrieve control page'))
                         build_progress.Destroy()
@@ -476,9 +473,9 @@ class Panel(WizardPage):
         
         main_window = GetTopWindow()
         
-        control_page = self.wizard.GetPage(ID_CONTROL)
-        files_page = self.wizard.GetPage(ID_FILES)
-        menu_page = self.wizard.GetPage(ID_MENU)
+        control_page = self.wizard.GetPage(ident.CONTROL)
+        files_page = self.wizard.GetPage(ident.FILES)
+        menu_page = self.wizard.GetPage(ident.MENU)
         
         required_fields = {
             GT(u'Control'): control_page.GetRequiredFields(),
@@ -521,7 +518,7 @@ class Panel(WizardPage):
             
             err_dialog.Destroy()
             
-            self.wizard.ShowPage(ID_FILES)
+            self.wizard.ShowPage(ident.FILES)
             
             return
         
