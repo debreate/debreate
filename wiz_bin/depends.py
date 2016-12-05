@@ -73,7 +73,7 @@ class Panel(WizardPage):
         self.depclr.SetName(u'clear')
         
         # ----- List
-        self.dep_area = ListCtrlPanel(self, style=wx.LC_REPORT, name=u'list')
+        self.dep_area = ListCtrlPanel(self, ident.F_LIST, style=wx.LC_REPORT, name=u'list')
         self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
         self.dep_area.InsertColumn(1, GT(u'Package(s)'))
         
