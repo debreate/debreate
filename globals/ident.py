@@ -32,6 +32,7 @@ TARGET = wx.NewId()
 # *** Menu IDs *** #
 ACTION = wx.NewId()
 DIALOGS = wx.NewId()
+LAUNCHERS = wx.NewId()
 OPENLOGS = wx.NewId()
 OPTIONS = wx.NewId()
 PAGE = wx.NewId()
