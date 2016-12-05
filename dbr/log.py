@@ -344,10 +344,10 @@ class LogWindow(wx.Dialog):
         main_window = GetTopWindow()
         
         window_shown = self.IsShown()
-        menu_checked = main_window.menu_debug.IsChecked(ident.LOG)
+        m_checked = main_window.m_debug.IsChecked(ident.LOG)
         
-        if menu_checked != window_shown:
-            main_window.menu_debug.Check(ident.LOG, window_shown)
+        if m_checked != window_shown:
+            main_window.m_debug.Check(ident.LOG, window_shown)
     
     
     ## Use an event to show the log window
@@ -363,7 +363,7 @@ class LogWindow(wx.Dialog):
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        show = GetTopWindow().menu_debug.IsChecked(ident.LOG)
+        show = GetTopWindow().m_debug.IsChecked(ident.LOG)
         
         if show:
             self.ShowLog()
