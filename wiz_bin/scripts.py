@@ -28,7 +28,8 @@ from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
 from globals.ident          import page_ids
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetTopWindow, GetPage
+from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetTopWindow
 
 
 ID_INST_PRE = wx.NewId()
@@ -217,10 +218,9 @@ scripts will be created that will place a symbolic link to your executables in t
             self.executables.DeleteAllItems()
             self.xlist = []
             
-            # FIXME: Use file_page.GetFileList()
-            file_list = GetPage(ident.FILES).file_list
+            file_list = GetPage(ident.FILES).GetFileList()
             
-            item_count = file_list.GetItemCount()
+            item_count = file_list.GetFileCount()
             
             for i_index in range(item_count):
                 file_name = file_list.GetFilename(i_index)

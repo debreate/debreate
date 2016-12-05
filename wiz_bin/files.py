@@ -6,9 +6,8 @@
 # See: docs/LICENSE.txt
 
 
-import wx, os, shutil
+import os, shutil, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonClear
@@ -24,6 +23,7 @@ from dbr.listinput          import FileList
 from dbr.log                import Logger
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.bitmaps        import ICON_ERROR
 from globals.errorcodes     import dbrerrno
 from globals.paths          import PATH_home
@@ -108,8 +108,7 @@ class Panel(WizardPage):
         btn_refresh.SetName(u'refresh')
         
         # Display area for files added to list
-        self.file_list = FileList(self)
-        self.file_list.SetName(u'filelist')
+        self.file_list = FileList(self, name=u'filelist')
         
         # List that stores the actual paths to the files
         # FIXME: Deprecated???
@@ -289,6 +288,16 @@ class Panel(WizardPage):
         
         if event:
             event.Skip()
+    
+    
+    ## Retrieve number of files in list
+    def GetFileCount(self):
+        return self.file_list.GetItemCount()
+    
+    
+    ## Retrieve FileList instance
+    def GetFileList(self):
+        return self.file_list
     
     
     ## Retrieves information on files to be packaged
