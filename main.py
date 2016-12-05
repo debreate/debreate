@@ -223,50 +223,54 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help.AppendSeparator()
         
         # Menu with links to the Debian Policy Manual webpages
-        menu_policy = wx.Menu()
+        self.menu_policy = wx.Menu()
         
-        m_dpm = wx.MenuItem(menu_policy, ident.DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
+        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_ctrl = wx.MenuItem(menu_policy, ident.DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
+        m_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         m_dpm_ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_log = wx.MenuItem(menu_policy, ident.DPMLog, GT(u'Changelog'),
+        m_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         m_dpm_log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
+        m_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         m_upm.SetBitmap(ICON_GLOBE)
-        m_deb_src = wx.MenuItem(menu_policy, 222, GT(u'Building debs from Source'),
+        m_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lint_tags = wx.MenuItem(menu_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+        m_lint_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         m_lint_tags.SetBitmap(ICON_GLOBE)
-        m_lint_overrides = wx.MenuItem(menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+        m_lint_overrides = wx.MenuItem(self.menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
         m_lint_overrides.SetBitmap(ICON_GLOBE)
         
-        menu_policy.AppendItem(m_dpm)
-        menu_policy.AppendItem(m_dpm_ctrl)
-        menu_policy.AppendItem(m_dpm_log)
-        menu_policy.AppendItem(m_upm)
-        menu_policy.AppendItem(m_deb_src)
-        menu_policy.AppendItem(m_lint_tags)
-        menu_policy.AppendItem(m_lint_overrides)
+        self.menu_policy.AppendItem(m_dpm)
+        self.menu_policy.AppendItem(m_dpm_ctrl)
+        self.menu_policy.AppendItem(m_dpm_log)
+        self.menu_policy.AppendItem(m_upm)
+        self.menu_policy.AppendItem(m_deb_src)
+        self.menu_policy.AppendItem(m_lint_tags)
+        self.menu_policy.AppendItem(m_lint_overrides)
         
-        self.references = {
-            ident.DPM: u'http://www.debian.org/doc/debian-policy',
-            ident.DPMCtrl: u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',
-            ident.DPMLog: u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',
-            ident.UPM: u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',
-            222: u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',
-            ident.LINT_TAGS: u'http://lintian.debian.org/tags-all.html',
-            ident.LINT_OVERRIDE: u'https://lintian.debian.org/manual/section-2.4.html',
-            }
+        lst_policy_ids = (
+            ident.DPM,
+            ident.DPMCtrl,
+            ident.DPMLog,
+            ident.UPM,
+            222,
+            ident.LINT_TAGS,
+            ident.LINT_OVERRIDE,
+            ident.LAUNCHERS,
+            )
+        
+        for ID in lst_policy_ids:
+            wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
         mi_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         mi_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
-        menu_help.AppendMenu(-1, GT(u'Reference'), menu_policy)
+        menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
         menu_help.AppendSeparator()
         menu_help.AppendItem(mi_help)
         menu_help.AppendItem(mi_about)
@@ -355,9 +359,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, ident.TOOLTIPS, self.OnToggleToolTips)
         
         wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
-        
-        for R_ID in self.references:
-            wx.EVT_MENU(self, R_ID, self.OpenPolicyManual)
         
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
@@ -784,10 +785,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         WriteConfig(u'tooltips', enabled)
     
     
-    ## Opens a help menu link
+    ## Opens web links from the help menu
     def OpenPolicyManual(self, event=None):
-        EVENT_ID = event.GetId()  # Get the id for the webpage link we are opening
-        webbrowser.open(self.references[EVENT_ID])
+        if isinstance(event, wx.CommandEvent):
+            event_id = event.GetId()
+        
+        elif isinstance(event, int):
+            event_id = event
+        
+        else:
+            Logger.Error(__name__,
+                    u'Cannot open policy manual link with object type {}'.format(type(event)))
+            
+            return
+        
+        url = self.menu_policy.GetHelpString(event_id)
+        webbrowser.open(url)
     
     
     ## Tests project type & calls correct method to read project file
