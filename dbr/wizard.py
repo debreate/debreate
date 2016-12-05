@@ -292,8 +292,6 @@ class WizardPage(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        self.wizard = parent
-        
         self.SetName(page_ids[self.GetId()])
         
         ## Label to show in title & menu
@@ -381,6 +379,14 @@ class WizardPage(wx.ScrolledWindow):
                 pass
         
         return tuple(required_fields)
+    
+    
+    ## Retrieve the parent Wizard instance
+    #  
+    #  \return
+    #    \b \e dbr.Wizard
+    def GetWizard(self):
+        return self.GetParent()
     
     
     ## TODO: Doxygen
