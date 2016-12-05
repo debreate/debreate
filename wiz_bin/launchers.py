@@ -8,6 +8,7 @@
 
 import os, shutil, wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonClear
@@ -24,7 +25,6 @@ from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals.errorcodes     import dbrerrno
-from globals.ident          import ID_MENU
 from globals.ident          import page_ids
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -34,7 +34,7 @@ from globals.wizardhelper   import GetTopWindow
 ## Page for creating a system menu launcher
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_MENU)
+        WizardPage.__init__(self, parent, ident.MENU)
         
         ## Override default label
         self.label = GT(u'Menu Launcher')

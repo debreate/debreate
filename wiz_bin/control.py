@@ -5,6 +5,7 @@
 
 import os, wx
 
+import globals.ident as ident
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
@@ -18,12 +19,6 @@ from dbr.log                import Logger
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals.errorcodes     import dbrerrno
-from globals.ident          import FID_EMAIL
-from globals.ident          import FID_MAINTAINER
-from globals.ident          import FID_NAME
-from globals.ident          import FID_VERSION
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_DEPENDS
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
@@ -32,7 +27,7 @@ from globals.wizardhelper   import GetTopWindow
 ## This panel displays the field input of the control file
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ID_CONTROL)
+        WizardPage.__init__(self, parent, ident.CONTROL)
         
         # Bypass checking this page for build
         # This is mandatory & done manually
@@ -52,22 +47,22 @@ class Panel(WizardPage):
         
         pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package')
         pack_txt.req = True
-        self.pack = CharCtrl(self.bg, FID_NAME, name=pack_txt.Name)
+        self.pack = CharCtrl(self.bg, ident.F_NAME, name=pack_txt.Name)
         self.pack.req = True
         
         ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version')
         ver_txt.req = True
-        self.ver = CharCtrl(self.bg, FID_VERSION, name=ver_txt.Name)
+        self.ver = CharCtrl(self.bg, ident.F_VERSION, name=ver_txt.Name)
         self.ver.req = True
         
         auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'), name=u'maintainer')
         auth_txt.req = True
-        self.auth = wx.TextCtrl(self.bg, FID_MAINTAINER, name=auth_txt.Name)
+        self.auth = wx.TextCtrl(self.bg, ident.F_MAINTAINER, name=auth_txt.Name)
         self.auth.req = True
         
         email_txt = wx.StaticText(self.bg, label=GT(u'Email'), name=u'email')
         email_txt.req = True
-        self.email = wx.TextCtrl(self.bg, FID_EMAIL, name=email_txt.Name)
+        self.email = wx.TextCtrl(self.bg, ident.F_EMAIL, name=email_txt.Name)
         self.email.req = True
         
         self.arch_opt = (
@@ -410,7 +405,7 @@ class Panel(WizardPage):
         # Dependencies
         depends_page = None
         for child in self.GetParent().GetChildren():
-            if child.GetId() == ID_DEPENDS:
+            if child.GetId() == ident.DEPENDS:
                 depends_page = child
         
         def set_choice(choice_object, value, label):
