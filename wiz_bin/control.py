@@ -2,10 +2,12 @@
 
 ## \package wiz_bin.control
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
@@ -18,9 +20,10 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import FieldEnabled, GetField
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -352,7 +355,7 @@ class Panel(WizardPage):
             }
         
         # Get amount of items to add
-        dep_area = main_window.page_depends.dep_area
+        dep_area = GetField(ident.DEPENDS, ident.F_LIST)
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:

@@ -2,10 +2,12 @@
 
 ## \package wiz_bin.build
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import commands, math, os, subprocess, time, traceback, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonBuild64
 from dbr.checklist          import CheckListDialog
 from dbr.custom             import OutputLog
@@ -29,10 +31,11 @@ from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
+import globals.ident as ident
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetTopWindow, GetPage
 
 
 ## TODO: Doxygen
@@ -117,19 +120,21 @@ class Panel(WizardPage):
         self.log = OutputLog(self)
         
         # --- Page 7 Sizer --- #
-        page_sizer = wx.BoxSizer(wx.VERTICAL)
-        page_sizer.AddSpacer(10)
-        page_sizer.Add(options1_sizer, 0, wx.LEFT, 5)
-        page_sizer.AddSpacer(5)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.AddSpacer(10)
+        lyt_main.Add(options1_sizer, 0, wx.LEFT, 5)
+        lyt_main.AddSpacer(5)
+        
         if DebugEnabled():
-            #page_sizer.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
-            page_sizer.Add(btn_lint_overrides, 0, wx.LEFT, 5)
-        page_sizer.AddSpacer(5)
-        page_sizer.Add(build_sizer, 0, wx.ALIGN_CENTER)
-        page_sizer.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+            #lyt_main.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
+            lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
+        
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(build_sizer, 0, wx.ALIGN_CENTER)
+        lyt_main.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(page_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         
@@ -183,10 +188,10 @@ class Panel(WizardPage):
                         break
                     
                     if P.GetId() in pages_build_ids:
-                        page_label = P.GetLabel()
+                        p_label = P.GetLabel()
                         
                         log_msg = log_message(
-                            GT(u'Processing page "{}"').format(page_label), current_step+1, steps_count)
+                            GT(u'Processing page "{}"').format(p_label), current_step+1, steps_count)
                         
                         # FIXME: Progress bar not updating???
                         wx.YieldIfNeeded()
@@ -369,20 +374,20 @@ class Panel(WizardPage):
                 if prep_progress.WasCancelled():
                     break
                 
-                page_id = P.GetId()
-                page_label = P.GetLabel()
+                p_id = P.GetId()
+                p_label = P.GetLabel()
                 
-                if page_id in prep_ids:
-                    Logger.Debug(__name__, msg_label.format(page_label, current_step+1, steps_count))
+                if p_id in prep_ids:
+                    Logger.Debug(__name__, msg_label.format(p_label, current_step+1, steps_count))
                     
                     wx.Yield()
-                    prep_progress.Update(current_step, msg_label.format(page_label, current_step+1, steps_count))
+                    prep_progress.Update(current_step, msg_label.format(p_label, current_step+1, steps_count))
                     
                     if P.IsExportable():
-                        pg_build_ids.append(page_id)
+                        pg_build_ids.append(p_id)
                     
                     current_step += 1
-                
+            
             if not prep_progress.WasCancelled():
                 wx.Yield()
                 prep_progress.Update(current_step, GT(u'Prepping finished'))
@@ -427,18 +432,18 @@ class Panel(WizardPage):
             if O not in omit_options:
                 fields[O.GetName()] = unicode(O.GetValue())
         
-        page_info = wx.EmptyString
+        p_info = wx.EmptyString
         
         for F in fields:
-            if page_info == wx.EmptyString:
-                page_info = u'{}={}'.format(F, fields[F])
+            if p_info == wx.EmptyString:
+                p_info = u'{}={}'.format(F, fields[F])
             else:
-                page_info = u'{}\n{}={}'.format(page_info, F, fields[F])
+                p_info = u'{}\n{}={}'.format(p_info, F, fields[F])
         
-        if page_info == wx.EmptyString:
+        if p_info == wx.EmptyString:
             return None
         
-        return (__name__, page_info)
+        return (__name__, p_info)
     
     
     ## TODO: Doxygen
@@ -473,7 +478,6 @@ class Panel(WizardPage):
         if event:
             event.Skip()
         
-        main_window = GetTopWindow()
         wizard = self.GetWizard()
         
         pg_control = wizard.GetPage(ident.CONTROL)
@@ -490,23 +494,23 @@ class Panel(WizardPage):
             for RF in required_fields[GT(u'Menu Launcher')]:
                 Logger.Debug(__name__, GT(u'Required field (Menu Launcher): {}').format(RF.GetName()))
         
-        for page_name in required_fields:
-            Logger.Debug(__name__, GT(u'Page name: {}').format(page_name))
-            for F in required_fields[page_name]:
+        for p_name in required_fields:
+            Logger.Debug(__name__, GT(u'Page name: {}').format(p_name))
+            for F in required_fields[p_name]:
                 if not isinstance(F, wx.StaticText) and TextIsEmpty(F.GetValue()):
-                    field_name = F.GetName()
+                    f_name = F.GetName()
                     
                     Logger.Warning(__name__,
-                            u'{}: {} ➜ {}'.format(GT(u'A required field is empty'), page_name, field_name))
+                            u'{}: {} ➜ {}'.format(GT(u'A required field is empty'), p_name, f_name))
                     
-                    err_dialog = wx.MessageDialog(main_window, GT(u'A required field is empty'),
+                    err_dialog = wx.MessageDialog(GetTopWindow(), GT(u'A required field is empty'),
                             GT(u'Error'), style=wx.OK|wx.ICON_ERROR)
-                    err_dialog.SetExtendedMessage(u'{} ➜ {}'.format(page_name, field_name))
+                    err_dialog.SetExtendedMessage(u'{} ➜ {}'.format(p_name, f_name))
                     err_dialog.ShowModal()
                     
                     for P in wizard.pages:
-                        if P.GetLabel() == page_name:
-                            Logger.Debug(__name__, GT(u'Showing page with required field: {}').format(page_name))
+                        if P.GetLabel() == p_name:
+                            Logger.Debug(__name__, GT(u'Showing page with required field: {}').format(p_name))
                             wizard.ShowPage(P.GetId())
                     
                     return
@@ -711,21 +715,22 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def SetSummary(self, event):
-        main_window = GetTopWindow()
+        pg_scripts = GetPage(ident.SCRIPTS)
         
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
             # Get the file count
-            files_total = main_window.page_files.dest_area.GetItemCount()
+            # FIXME: dest_area was renamed
+            files_total = GetPage(ident.FILES).dest_area.GetItemCount()
             f = GT(u'File Count')
             file_count = u'{}: {}'.format(f, files_total)
             # Scripts to make
             scripts_to_make = []
-            scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
-                (u'postinst', main_window.page_scripts.chk_postinst),
-                (u'prerm', main_window.page_scripts.chk_prerm),
-                (u'postrm', main_window.page_scripts.chk_postrm))
+            scripts = ((u'preinst', pg_scripts.chk_preinst),
+                (u'postinst', pg_scripts.chk_postinst),
+                (u'prerm', pg_scripts.chk_prerm),
+                (u'postrm', pg_scripts.chk_postrm))
             for script in scripts:
                 if script[1].IsChecked():
                     scripts_to_make.append(script[0])
