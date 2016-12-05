@@ -35,8 +35,10 @@ ID_DIALOGS = wx.NewId()
 ID_OPENLOGS = wx.NewId()
 ID_OPTIONS = wx.NewId()
 ID_PAGE = wx.NewId()
+ID_QBUILD = wx.NewId()
 ID_THEME = wx.NewId()
 ID_TOOLTIPS = wx.NewId()
+ID_UPDATE = wx.NewId()
 
 # *** Reference menu IDs *** #
 ID_DPM = wx.NewId()
