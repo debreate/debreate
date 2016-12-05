@@ -131,7 +131,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def AddInfo(self, event):
+    def AddInfo(self, event=None):
         changes = self.changes.GetValue()
         if TextIsEmpty(changes):
             wx.MessageDialog(GetTopWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
@@ -232,7 +232,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnImportFromControl(self, event):
+    def OnImportFromControl(self, event=None):
         fields = (
             (self.package, ident.F_NAME),
             (self.version, ident.F_VERSION),
