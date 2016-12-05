@@ -23,6 +23,7 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_fakeroot
@@ -31,11 +32,11 @@ from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
-import globals.ident as ident
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetTopWindow, GetPage
+from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetTopWindow
 
 
 ## TODO: Doxygen
@@ -304,6 +305,7 @@ class Panel(WizardPage):
                         
                         if not os.path.isdir(stage):
                             build_summary.append(GT(u'Staged build tree removed successfully'))
+                        
                         else:
                             build_summary.append(GT(u'Failed to remove staged build tree'))
                         
@@ -398,7 +400,7 @@ class Panel(WizardPage):
             prep_progress.Destroy()
             
             return pg_build_ids
-            
+        
         except:
             prep_progress.Destroy()
             
@@ -437,6 +439,7 @@ class Panel(WizardPage):
         for F in fields:
             if p_info == wx.EmptyString:
                 p_info = u'{}={}'.format(F, fields[F])
+            
             else:
                 p_info = u'{}\n{}={}'.format(p_info, F, fields[F])
         
@@ -721,10 +724,10 @@ class Panel(WizardPage):
         if self:
             # Set summary when "Build" page is shown
             # Get the file count
-            # FIXME: dest_area was renamed
-            files_total = GetPage(ident.FILES).dest_area.GetItemCount()
+            files_total = GetPage(ident.FILES).GetFileCount()
             f = GT(u'File Count')
             file_count = u'{}: {}'.format(f, files_total)
+            
             # Scripts to make
             scripts_to_make = []
             scripts = ((u'preinst', pg_scripts.chk_preinst),
@@ -734,10 +737,12 @@ class Panel(WizardPage):
             for script in scripts:
                 if script[1].IsChecked():
                     scripts_to_make.append(script[0])
+            
             s = GT(u'Scripts')
             if len(scripts_to_make):
                 scripts_to_make = u'{}: {}'.format(s, u', '.join(scripts_to_make))
+            
             else:
                 scripts_to_make = u'{}: 0'.format(s)
-                    
+            
             self.summary.SetValue(u'\n'.join((file_count, scripts_to_make)))
