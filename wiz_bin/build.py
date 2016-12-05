@@ -717,7 +717,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetSummary(self, event):
+    def SetSummary(self, event=None):
         pg_scripts = GetPage(ident.SCRIPTS)
         
         # Make sure the page is not destroyed so no error is thrown

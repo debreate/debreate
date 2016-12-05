@@ -8,7 +8,6 @@
 
 import os, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonConfirm
 from dbr.custom             import TextIsEmpty
 from dbr.language           import GT
@@ -17,6 +16,7 @@ from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.workingdir         import ChangeWorkingDirectory
+from globals                import ident
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
@@ -83,7 +83,7 @@ class TextOverwriteDialog(wx.Dialog):
     #  Get the event object & close the dialog.
     #  \param event
     #        wx.EVT_BUTTON
-    def OnButton(self, event):
+    def OnButton(self, event=None):
         button_id = event.GetEventObject().GetId()
         self.EndModal(button_id)
     

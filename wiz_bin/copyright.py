@@ -154,7 +154,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GenerateLinkedTemplate(self, event):
+    def GenerateLinkedTemplate(self, event=None):
         if self.DestroyLicenseText():
             self.cp_display.Clear()
             
@@ -272,7 +272,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnGenerateTemplate(self, event):
+    def OnGenerateTemplate(self, event=None):
         license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
         
         if FieldEnabled(self.template_btn_simple):
@@ -283,7 +283,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnSelectTemplate(self, event):
+    def OnSelectTemplate(self, event=None):
         if isinstance(event, wx.Choice):
             choice = event
         else:

@@ -164,7 +164,7 @@ class DBDialog(wx.Dialog):
     
     
     ## TODO: Doxygen
-    def OnButton(self, event):
+    def OnButton(self, event=None):
         button_id = event.GetEventObject().GetId()
         
         dest_path = self.dir_tree.GetPath()

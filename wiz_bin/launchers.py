@@ -550,7 +550,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnPreviewLauncher(self, event):
+    def OnPreviewLauncher(self, event=None):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
         
@@ -585,7 +585,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnSaveLauncher(self, event):
+    def OnSaveLauncher(self, event=None):
         main_window = GetTopWindow()
         
         # Get data to write to control file
@@ -652,7 +652,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnLoadLauncher(self, event):
+    def OnLoadLauncher(self, event=None):
         cont = False
         
         dia = GetFileOpenDialog(GetTopWindow(), GT(u'Open Launcher'), u'{}|*'.format(GT(u'All files')))
@@ -691,7 +691,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetCategory(self, event):
+    def SetCategory(self, event=None):
         try:
             key_code = event.GetKeyCode()
         
@@ -715,7 +715,8 @@ class Panel(WizardPage):
             if confirm.ShowModal() == wx.ID_YES:
                 self.lst_categories.DeleteAllItems()
         
-        event.Skip()
+        if event:
+            event.Skip()
     
     
     ## Fills out launcher information from loaded file
