@@ -159,6 +159,21 @@ def GetFieldValue(page_id, field_id, field_type=wx.Window):
         )
 
 
+## Retrieves a menu from the menu bar
+#  
+#  \param menu_id
+#        \b \e int : Identifier of desired menu
+#  \retun
+#        The wx.Menu instance or None if not found
+def GetMenu(menu_id):
+    return GetMenuBar().GetMenuById(menu_id)
+
+
+## TODO: Doxygen
+def GetMenuBar():
+    return GetTopWindow().GetMenuBar()
+
+
 ## TODO: Doxygen
 def GetPage(page_id):
     return GetWizard().GetPage(page_id)
