@@ -162,29 +162,29 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.m_opt, ident.DIALOGS, GT(u'Use Custom Dialogs'),
+        self.mi_dialogs = wx.MenuItem(self.m_opt, ident.DIALOGS, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         # FIXME: Disabled until fixed
-        #self.m_opt.AppendItem(self.cust_dias)
+        #self.m_opt.AppendItem(self.mi_dialogs)
         
         # Project compression options
-        self.m_compression = wx.Menu()
+        self.m_compress = wx.Menu()
         
-        opt_z_none = wx.MenuItem(self.m_compression, ident.ZIP_NONE,
+        opt_z_none = wx.MenuItem(self.m_compress, ident.ZIP_NONE,
                 GT(u'Uncompressed'), GT(u'Use uncompressed tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_z_gz = wx.MenuItem(self.m_compression, ident.ZIP_GZ,
+        opt_z_gz = wx.MenuItem(self.m_compress, ident.ZIP_GZ,
                 GT(u'Gzip'), GT(u'Use compressed Gzip tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_z_bz2 = wx.MenuItem(self.m_compression, ident.ZIP_BZ2,
+        opt_z_bz2 = wx.MenuItem(self.m_compress, ident.ZIP_BZ2,
                 GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_z_zip = wx.MenuItem(self.m_compression, ident.ZIP_ZIP,
+        opt_z_zip = wx.MenuItem(self.m_compress, ident.ZIP_ZIP,
                 GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
                 kind=wx.ITEM_RADIO)
         
-        compression_opts = [
+        opts_compress = [
             opt_z_none,
             opt_z_gz,
             opt_z_bz2,
@@ -192,19 +192,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ]
         
         if CMD_tar != None:
-            opt_z_xz = wx.MenuItem(self.m_compression, ident.ZIP_XZ,
+            opt_z_xz = wx.MenuItem(self.m_compress, ident.ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)
-            compression_opts.insert(3, opt_z_xz)
+            opts_compress.insert(3, opt_z_xz)
         
-        for OPT in compression_opts:
-            self.m_compression.AppendItem(OPT)
-            wx.EVT_MENU(self.m_compression, OPT.GetId(), self.OnSetCompression)
+        for OPT in opts_compress:
+            self.m_compress.AppendItem(OPT)
+            wx.EVT_MENU(self.m_compress, OPT.GetId(), self.OnSetCompression)
         
         # Default compression
-        self.m_compression.Check(ident.ZIP_BZ2, True)
+        self.m_compress.Check(ident.ZIP_BZ2, True)
         
-        self.m_opt.AppendSubMenu(self.m_compression, GT(u'Project Compression'),
+        self.m_opt.AppendSubMenu(self.m_compress, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
         
         
@@ -385,9 +385,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def GetCompression(self):
-        for Z in self.m_compression.GetMenuItems():
+        for Z in self.m_compress.GetMenuItems():
             Z_ID = Z.GetId()
-            if self.m_compression.IsChecked(Z_ID):
+            if self.m_compress.IsChecked(Z_ID):
                 return compression_formats[Z_ID]
         
         default_compression = GetDefaultConfigValue(u'compression')
@@ -400,9 +400,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def GetCompressionId(self):
-        for Z in self.m_compression.GetMenuItems():
+        for Z in self.m_compress.GetMenuItems():
             Z_ID = Z.GetId()
-            if self.m_compression.IsChecked(Z_ID):
+            if self.m_compress.IsChecked(Z_ID):
                 return Z_ID
         
         Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
@@ -1018,7 +1018,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \param compression_id
     #        \b \e int : Compression ID to search for in menu iteration
     def SetCompression(self, compression_id):
-        for Z in self.m_compression.GetMenuItems():
+        for Z in self.m_compress.GetMenuItems():
             Z_ID = Z.GetId()
             
             if compression_id == Z_ID:
