@@ -72,6 +72,14 @@ ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
 ID_MENU = NewPageId(GT(u'Menu'))
 ID_BUILD = NewPageId(GT(u'Build'))
 
+# *** Compression format IDs *** #
+COMPRESSION = wx.NewId() # FIXME: Unused?
+ZIP_NONE = wx.NewId()
+ZIP_GZ = wx.NewId()
+ZIP_BZ2 = wx.NewId()
+ZIP_XZ = wx.NewId()
+ZIP_ZIP = wx.NewId()
+
 # Field/Control IDs
 FID_ARCH = wx.NewId()
 FID_CUSTOM = wx.NewId()
