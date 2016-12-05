@@ -146,6 +146,7 @@ class Panel(WizardPage):
         def log_message(msg, current_step, total_steps):
             return u'{} ({}/{})'.format(msg, current_step, total_steps)
         
+        wizard = self.GetWizard()
         pages_build_ids = self.BuildPrep()
         
         if pages_build_ids != None:
@@ -177,7 +178,7 @@ class Panel(WizardPage):
             build_summary.append(u'{}:'.format(log_msg))
             
             try:
-                for P in self.wizard.pages:
+                for P in wizard.pages:
                     if build_progress.WasCancelled():
                         break
                     
@@ -221,7 +222,7 @@ class Panel(WizardPage):
                     Logger.Debug(__name__, log_msg)
                     
                     # Retrieve control page
-                    pg_control = self.wizard.GetPage(ident.CONTROL)
+                    pg_control = wizard.GetPage(ident.CONTROL)
                     if not pg_control:
                         Logger.Error(__name__, GT(u'Could not retrieve control page'))
                         build_progress.Destroy()
@@ -340,9 +341,10 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple containing data & label for each page
     def BuildPrep(self):
+        wizard = self.GetWizard()
         prep_ids = []
         
-        for P in self.wizard.pages:
+        for P in wizard.pages:
             if P.prebuild_check:
                 Logger.Debug(__name__, GT(u'Pre-build check for page "{}"'.format(P.GetName())))
                 prep_ids.append(P.GetId())
@@ -363,7 +365,7 @@ class Panel(WizardPage):
             prep_progress = wx.ProgressDialog(GT(u'Preparing Build'), msg_label2.format(current_step, steps_count),
                     steps_count, main_window, wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
             
-            for P in self.wizard.pages:
+            for P in wizard.pages:
                 if prep_progress.WasCancelled():
                     break
                 
@@ -472,10 +474,11 @@ class Panel(WizardPage):
             event.Skip()
         
         main_window = GetTopWindow()
+        wizard = self.GetWizard()
         
-        pg_control = self.wizard.GetPage(ident.CONTROL)
-        pg_files = self.wizard.GetPage(ident.FILES)
-        pg_launcher = self.wizard.GetPage(ident.MENU)
+        pg_control = wizard.GetPage(ident.CONTROL)
+        pg_files = wizard.GetPage(ident.FILES)
+        pg_launcher = wizard.GetPage(ident.MENU)
         
         required_fields = {
             GT(u'Control'): pg_control.GetRequiredFields(),
@@ -501,10 +504,10 @@ class Panel(WizardPage):
                     err_dialog.SetExtendedMessage(u'{} ➜ {}'.format(page_name, field_name))
                     err_dialog.ShowModal()
                     
-                    for P in self.wizard.pages:
+                    for P in wizard.pages:
                         if P.GetLabel() == page_name:
                             Logger.Debug(__name__, GT(u'Showing page with required field: {}').format(page_name))
-                            self.wizard.ShowPage(P.GetId())
+                            wizard.ShowPage(P.GetId())
                     
                     return
         
@@ -518,7 +521,7 @@ class Panel(WizardPage):
             
             err_dialog.Destroy()
             
-            self.wizard.ShowPage(ident.FILES)
+            wizard.ShowPage(ident.FILES)
             
             return
         
