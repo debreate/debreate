@@ -57,6 +57,7 @@ from globals.commands       import CMD_tar
 from globals.commands       import CMD_xdg_open
 from globals.errorcodes     import dbrerrno
 from globals.ident          import ID_ACTION
+from globals.ident          import ID_DIALOGS
 from globals.ident          import ID_DEBUG
 from globals.ident          import ID_LOG
 from globals.ident          import ID_OPTIONS
@@ -84,7 +85,6 @@ from wiz_bin.scripts        import Panel as PageScripts
 
 
 # Options menu
-ID_Dialogs = wx.NewId()
 ID_LOG_DIR_OPEN = wx.NewId()
 
 # Debian Policy Manual IDs
@@ -186,7 +186,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Dialogs options
-        self.cust_dias = wx.MenuItem(self.menu_opt, ID_Dialogs, GT(u'Use Custom Dialogs'),
+        self.cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use Custom Dialogs'),
             GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
         
         # FIXME: Disabled until fixed
