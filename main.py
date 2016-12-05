@@ -62,6 +62,7 @@ from globals.ident          import ID_LOG
 from globals.ident          import ID_OPTIONS
 from globals.ident          import ID_PAGE
 from globals.ident          import ID_THEME
+from globals.ident          import ID_TOOLTIPS
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
@@ -84,7 +85,6 @@ from wiz_bin.scripts        import Panel as PageScripts
 
 # Options menu
 ID_Dialogs = wx.NewId()
-ID_MENU_TT = wx.NewId()
 ID_LOG_DIR_OPEN = wx.NewId()
 
 # Debian Policy Manual IDs
@@ -171,7 +171,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
         self.menu_opt.AppendItem(self.opt_tooltips)
@@ -379,7 +379,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
-        wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ID_TOOLTIPS, self.OnToggleToolTips)
         
         wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
         
