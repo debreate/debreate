@@ -23,18 +23,18 @@ ID_APPEND = wx.NewId()
 ID_BROWSE = wx.NewId()
 ID_CUSTOM = wx.NewId()
 ID_DEBUG = wx.NewId()
-ID_DIALOGS = wx.NewId()
 ID_IMPORT = wx.NewId()
 ID_LOG = wx.NewId()
 ID_OVERWRITE = wx.NewId()
 ID_STAGE = wx.NewId()
 ID_TARGET = wx.NewId()
-ID_THEME = wx.NewId()
 
 # *** Menu IDs *** #
 ID_ACTION = wx.NewId()
+ID_DIALOGS = wx.NewId()
 ID_OPTIONS = wx.NewId()
 ID_PAGE = wx.NewId()
+ID_THEME = wx.NewId()
 ID_TOOLTIPS = wx.NewId()
 
 # Page IDs
