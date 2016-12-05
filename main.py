@@ -225,7 +225,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Menu with links to the Debian Policy Manual webpages
         menu_policy = wx.Menu()
         
-        #globe = wx.Bitmap(u'{}/bitmaps/globe16.png'.format(PATH_app))
         m_dpm = wx.MenuItem(menu_policy, ident.DPM, GT(u'Debian Policy Manual'), u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
         m_dpm_ctrl = wx.MenuItem(menu_policy, ident.DPMCtrl, GT(u'Control Files'), u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
