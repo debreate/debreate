@@ -68,8 +68,10 @@ from globals.ident          import ID_LOG
 from globals.ident          import ID_OPENLOGS
 from globals.ident          import ID_OPTIONS
 from globals.ident          import ID_PAGE
+from globals.ident          import ID_QBUILD
 from globals.ident          import ID_THEME
 from globals.ident          import ID_TOOLTIPS
+from globals.ident          import ID_UPDATE
 from globals.ident          import ID_UPM
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
@@ -90,9 +92,6 @@ from wiz_bin.launchers      import Panel as PageLaunchers
 from wiz_bin.man            import Panel as PageMan
 from wiz_bin.scripts        import Panel as PageScripts
 
-
-ID_QBUILD = wx.NewId()
-ID_UPDATE = wx.NewId()
 
 default_title = GT(u'Debreate - Debian Package Builder')
 
