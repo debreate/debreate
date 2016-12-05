@@ -8,7 +8,6 @@
 
 import os, shutil, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonClear
@@ -24,6 +23,7 @@ from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.ident          import page_ids
 from globals.tooltips       import SetPageToolTips
@@ -694,6 +694,7 @@ class Panel(WizardPage):
     def SetCategory(self, event):
         try:
             key_code = event.GetKeyCode()
+        
         except AttributeError:
             key_code = event.GetEventObject().GetId()
         
@@ -701,10 +702,10 @@ class Panel(WizardPage):
         cat = cat.split()
         cat = u''.join(cat)
         
-        if key_code == wx.WXK_RETURN or key_code == wx.WXK_NUMPAD_ENTER:
+        if key_code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             self.lst_categories.InsertStringItem(0, cat)
         
-        elif key_code == wx.WXK_DELETE:
+        elif key_code in (wx.ID_DELETE, wx.WXK_DELETE):
             cur_cat = self.lst_categories.GetFirstSelected()
             self.lst_categories.DeleteItem(cur_cat)
         
@@ -713,6 +714,7 @@ class Panel(WizardPage):
                     wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
             if confirm.ShowModal() == wx.ID_YES:
                 self.lst_categories.DeleteAllItems()
+        
         event.Skip()
     
     
