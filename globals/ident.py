@@ -32,6 +32,11 @@ ID_STAGE = wx.NewId()
 ID_TARGET = wx.NewId()
 ID_THEME = wx.NewId()
 
+# *** Menu IDs *** #
+ID_ACTION = wx.NewId()
+ID_OPTIONS = wx.NewId()
+ID_PAGE = wx.NewId()
+
 # Page IDs
 next_page_id = 1000
 page_ids = {}
