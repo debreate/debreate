@@ -38,6 +38,14 @@ ID_PAGE = wx.NewId()
 ID_THEME = wx.NewId()
 ID_TOOLTIPS = wx.NewId()
 
+# *** Reference menu IDs *** #
+ID_DPM = wx.NewId()
+ID_DPMCtrl = wx.NewId()
+ID_DPMLog = wx.NewId()
+ID_UPM = wx.NewId()
+ID_LINT_TAGS = wx.NewId()
+ID_LINT_OVERRIDE = wx.NewId()
+
 # Page IDs
 next_page_id = 1000
 page_ids = {}
