@@ -169,31 +169,31 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Project compression options
         self.menu_compression = wx.Menu()
         
-        opt_compression_uncompressed = wx.MenuItem(self.menu_compression, ident.ZIP_NONE,
+        opt_z_none = wx.MenuItem(self.menu_compression, ident.ZIP_NONE,
                 GT(u'Uncompressed'), GT(u'Use uncompressed tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_gz = wx.MenuItem(self.menu_compression, ident.ZIP_GZ,
+        opt_z_gz = wx.MenuItem(self.menu_compression, ident.ZIP_GZ,
                 GT(u'Gzip'), GT(u'Use compressed Gzip tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_bz2 = wx.MenuItem(self.menu_compression, ident.ZIP_BZ2,
+        opt_z_bz2 = wx.MenuItem(self.menu_compression, ident.ZIP_BZ2,
                 GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_compression_zip = wx.MenuItem(self.menu_compression, ident.ZIP_ZIP,
+        opt_z_zip = wx.MenuItem(self.menu_compression, ident.ZIP_ZIP,
                 GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
                 kind=wx.ITEM_RADIO)
         
         compression_opts = [
-            opt_compression_uncompressed,
-            opt_compression_gz,
-            opt_compression_bz2,
-            opt_compression_zip,
+            opt_z_none,
+            opt_z_gz,
+            opt_z_bz2,
+            opt_z_zip,
         ]
         
         if CMD_tar != None:
-            opt_compression_xz = wx.MenuItem(self.menu_compression, ident.ZIP_XZ,
+            opt_z_xz = wx.MenuItem(self.menu_compression, ident.ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)
-            compression_opts.insert(3, opt_compression_xz)
+            compression_opts.insert(3, opt_z_xz)
         
         for OPT in compression_opts:
             self.menu_compression.AppendItem(OPT)
