@@ -1,5 +1,9 @@
 # This is a generic Makefile. It will only work on systems with GNU make.
 
+# This is written to 'prefix' in 'build' rule, then read in 'install'
+prefix=/usr/local
+TARGET = $(DESTDIR)$(prefix)
+
 PACKAGE = debreate
 VERSION = 0.7.12
 BINDIR = bin
@@ -18,70 +22,72 @@ MKDIR = mkdir -vp
 UNINSTALL = rm -vf
 UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
 
-# This is written to 'prefix' in 'build' rule, then read in 'install'
-prefix=/usr/local
 
-
-FILES = \
-	main.py \
-	command_line.py
-
-FILES_EXECUTABLE = \
+FILES_executable = \
 	init.py
 
-FILES_WIZ_BIN = wiz_bin/*.py
+FILES_root = \
+	command_line.py \
+	main.py
 
-FILES_DBR = dbr/*.py
+PKG_wiz_bin = wiz_bin/*.py
 
-FILES_GLOBALS = globals/*.py
+PKG_dbr = dbr/*.py
+PKG_globals = globals/*.py
 
-FILES_EXTRA = \
+FILES_extra = \
 	README.md \
 	INFO
 
-FILES_DOC = \
+FILES_doc = \
 	docs/changelog \
 	docs/LICENSE.txt \
 	docs/release_notes \
 	docs/usage.pdf
 
-BITMAPS = bitmaps/*.png
+FILES_bitmap = bitmaps/*.png
 
-MENU = debreate.desktop
-
-FILES_MAN = \
+FILES_man = \
 	man/man1/$(PACKAGE).1
 
-DISTPACKAGE = $(PACKAGE)_$(VERSION).tar.xz
+FILES_dist = \
+	$(FILES_executable) \
+	$(FILES_root) \
+	$(FILES_extra) \
+	Makefile
 
-DISTDIRS = \
+DIR_locale = locale
+
+DIRS_build = \
+	$(DIR_locale)
+
+FILES_BUILD = \
+	$(FILES_root) \
+	$(PKG_dbr) \
+	$(FILES_doc) \
+	$(FILES_executable) \
+	$(PKG_globals) \
+	$(PKG_wiz_bin)
+
+DIRS_dist = \
+	$(DIRS_build) \
 	bitmaps \
 	data \
 	dbr \
+	debian \
 	docs \
 	globals \
-	locale \
-	debian \
+	man \
+	scripts \
 	wiz_bin
 
-DISTFILES = \
-	$(FILES_EXECUTABLE) \
-	$(FILES) \
-	$(FILES_EXTRA) \
-	Makefile
+PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
-FILES_BUILD = \
-	$(FILES) \
-	$(FILES_DBR) \
-	$(FILES_DOC) \
-	$(FILES_EXECUTABLE) \
-	$(FILES_GLOBALS) \
-	$(FILES_WIZ_BIN)
-
+FILE_launcher = debreate.desktop
+FILE_mime = data/mime/$(PACKAGE).xml
 INSTALLED = INSTALLED
-MIMEFILE = data/mime/$(PACKAGE).xml
-MIME_icons = data/svg/application-x-dbp.svg
 
+MIME_icons = data/svg/application-x-dbp.svg
 
 all:
 	@echo "\n\tNothing to be done"; \
@@ -93,50 +99,49 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) $(INSTALLED)_file install-mime install-man
+install: $(FILES_BUILD) $(FILES_bitmap) $(DIR_locale) $(INSTALLED)_file install-launcher install-man install-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
-	appsdir=$${target}/$(APPSDIR); \
 	pixdir=$${target}/$(PIXDIR); \
 	\
 	echo "\nprefix set to $(prefix)"; \
 	echo "Install target set to $${target}\n"; \
 	\
 	mkdir -vp "$${target}/$(DATADIR)"; \
-	for py in $(FILES_EXECUTABLE); do \
+	for py in $(FILES_executable); do \
 		$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
 	done; \
-	for py in $(FILES) $(EXTRA_FILES); do \
+	for py in $(FILES_root) $(EXTRA_FILES); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}"; \
 	done; \
 	\
 	mkdir -vp "$${datadir}/dbr"; \
-	for py in $(FILES_DBR); do \
+	for py in $(PKG_dbr); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
 	done; \
 	\
 	mkdir -vp "$${datadir}/wiz_bin"; \
-	for py in $(FILES_WIZ_BIN); do \
+	for py in $(PKG_wiz_bin); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
 	done; \
 	\
 	mkdir -vp "$${datadir}/globals"; \
-	for py in $(FILES_GLOBALS); do \
+	for py in $(PKG_globals); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}/globals"; \
 	done; \
 	\
 	$(MKDIR) "$${datadir}/docs"; \
-	for doc in $(FILES_DOC); do \
+	for doc in $(FILES_doc); do \
 		$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
 	done; \
 	\
 	mkdir -vp "$${datadir}/bitmaps"; \
-	for png in $(BITMAPS); do \
+	for png in $(FILES_bitmap); do \
 		$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
 	done; \
 	\
-	$(INSTALL_FOLDER) locale "$${datadir}"; \
+	$(INSTALL_FOLDER) $(DIR_locale) "$${datadir}"; \
 	\
 	$(MKDIR) "$${bindir}"; \
 	ln -vfs "$${datadir}/init.py" "$${bindir}/$(PACKAGE)"; \
@@ -144,12 +149,9 @@ install: $(FILES_BUILD) $(BITMAPS) locale data/$(MENU) $(INSTALLED)_file install
 	$(MKDIR) "$${pixdir}"; \
 	$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
 	\
-	$(MKDIR) "$${appsdir}"; \
-	$(INSTALL_EXEC) "data/$(MENU)" "$${appsdir}"; \
-	\
 	$(INSTALL_DATA) "$(INSTALLED)" "$${datadir}"; \
 
-uninstall: uninstall-mime uninstall-man
+uninstall: uninstall-launcher uninstall-man uninstall-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -159,7 +161,6 @@ uninstall: uninstall-mime uninstall-man
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
 	\
-	$(UNINSTALL) "$${appsdir}/$(MENU)"; \
 	$(UNINSTALL) "$${pixdir}/debreate.png"; \
 	$(UNINSTALL) "$${bindir}/$(PACKAGE)"; \
 	\
@@ -169,6 +170,15 @@ uninstall: uninstall-mime uninstall-man
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
+
+clean:
+	@find ./ -type f -name "*.pyc" -print -delete; \
+	rm -vf "./bin/$(PACKAGE)"; \
+	if [ -d "./bin" ]; then \
+		$(UNINSTALL_FOLDER) "./bin"; \
+	fi; \
+	rm -vf "./prefix"; \
+	rm -vf "$(INSTALLED)"; \
 
 install-icons: $(MIME_icons)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -186,10 +196,20 @@ uninstall-icons:
 		find "$${icons_dir}" -type d -empty -print -delete; \
 	fi; \
 
-install-man: $(FILES_MAN)
+# FIXME: Don't make launcher executable
+install-launcher: data/$(FILE_launcher)
+	apps_dir=$(TARGET)/$(APPSDIR); \
+	$(MKDIR) "$${apps_dir}"; \
+	$(INSTALL_EXEC) "data/$(FILE_launcher)" "$${apps_dir}"; \
+
+uninstall-launcher:
+	apps_dir=$(TARGET)/$(APPSDIR); \
+	$(UNINSTALL) "$${apps_dir}/$(FILE_launcher)"; \
+
+install-man: $(FILES_man)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_root="$${target}/$(DATAROOT)"; \
-	for f in $(FILES_MAN); do \
+	for f in $(FILES_man); do \
 		filename=$$(basename "$${f}") && mandir="$${data_root}/$$(dirname $${f})"; \
 		if [ ! -d "$${mandir}" ]; then \
 			$(MKDIR) "$${mandir}"; \
@@ -204,57 +224,51 @@ uninstall-man:
 	echo "Manual dir: $${man_dir}"; \
 	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
 
-install-mime: $(MIMEFILE) install-icons
+install-mime: $(FILE_mime) install-icons
 	@target="$(DESTDIR)$(prefix)"; \
 	mime_dir="$${target}/$(MIMEDIR)"; \
 	if [ ! -d "$${mime_dir}" ]; then \
 		$(MKDIR) "$${mime_dir}"; \
 	fi; \
-	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
+	$(INSTALL_DATA) "$(FILE_mime)" "$${mime_dir}"; \
 
 uninstall-mime: uninstall-icons
 	@target="$(DESTDIR)$(prefix)"; \
 	mime_dir="$${target}/$(MIMEDIR)"; \
 	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
 
-debuild:
-	@debuild -b -uc -us
+dist: deb-clean
+	@echo "Creating distribution package ..."
+	@if [ -f "$(PACKAGE_dist)" ]; then \
+		rm -v "$(PACKAGE_dist)"; \
+	fi
+	@tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist)
+	@file "$(PACKAGE_dist)"
 
-debuild-source:
-	@debuild -S -uc -us
-
-debuild-signed:
-	@debuild -S -sa
+distclean: clean deb-clean
+	@rm -vf "$(PACKAGE_dist)"
 
 debianize: dist
-	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(DISTPACKAGE)" -p "$(PACKAGE)_$(VERSION)" -i
+	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i
 
-clean:
-	@find ./ -type f -name "*.pyc" -print -delete; \
-	rm -vf "./bin/$(PACKAGE)"; \
-	if [ -d "./bin" ]; then \
-		$(UNINSTALL_FOLDER) "./bin"; \
-	fi; \
-	rm -vf "./prefix"; \
-	rm -vf "$(INSTALLED)"; \
+deb-bin: deb-clean
+	@debuild -b -uc -us
 
-distclean: clean debuild-clean
-	@rm -vf "$(DISTPACKAGE)"
+deb-bin-signed: deb-clean
+	@debuild -b -sa
 
-debuild-clean:
-	@rm -vrf "debian/debreate"
+deb-src: deb-clean
+	@debuild -S -uc -us
+
+deb-src-signed: deb-clean
+	@debuild -S -sa
+
+deb-clean:
+	@rm -vrf "debian/$(PACKAGE)"
 	@DEBUILD_FILES="\
-	debian/debhelper-build-stamp debian/debreate.debhelper.log \
-	debian/debreate.substvars debian/files"; \
-	rm -vf $${DEBUILD_FILES};
-
-dist: debuild-clean
-	@echo "Creating distribution package ..."
-	@if [ -f "$(DISTPACKAGE)" ]; then \
-		rm -v "$(DISTPACKAGE)"; \
-	fi
-	@tar -cJf "$(DISTPACKAGE)" $(DISTFILES) $(DISTDIRS)
-	@file "$(DISTPACKAGE)"
+	debian/debhelper-build-stamp debian/$(PACKAGE).debhelper.log \
+	debian/$(PACKAGE).substvars debian/files"; \
+	rm -vf $${DEBUILD_FILES}; \
 
 help:
 	@echo "Usage:"; \
@@ -267,31 +281,43 @@ help:
 	echo "\t\t- Show this help dialog\n"; \
 	\
 	echo "\tall"; \
-	echo "\t\t- Create `tput bold`$(PACKAGE)`tput sgr0` executable (same as invoking"; \
-	echo "\t\t  `tput bold`make`tput sgr0` with no arguments)\n"; \
+	echo "\t\t- Does nothing (same as invoking `tput bold`make`tput sgr0` with no"; \
+	echo "\t\t  arguments)\n"; \
 	\
 	echo "\tinstall"; \
 	echo "\t\t- Install `tput bold`$(PACKAGE)`tput sgr0` executable & data files onto"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`install-mime`tput sgr0` & `tput bold`install-man`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`install-launcher`tput sgr0`, `tput bold`install-man`tput sgr0`,"; \
+	echo "\t\t  & `tput bold`install-mime`tput sgr0`\n"; \
 	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0` & `tput bold`uninstall-man`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-mime`tput sgr0`,"; \
+	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
+	\
+	echo "\tclean"; \
+	echo "\t\t- Delete Debreate binary & any compiled Python"; \
+	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
 	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
 	echo "\t\t  registration\n"; \
 	\
 	echo "\tuninstall-icons"; \
-	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
+	echo "\t\t- Remove Debreate MimeType icons\n"; \
+	\
+	echo "\tinstall-launcher"; \
+	echo "\t\t- Install system menu launcher\n"; \
+	\
+	echo "\tuninstall-launcher"; \
+	echo "\t\t- Remove system menu launcher\n"; \
 	\
 	echo "\tinstall-man"; \
-	echo "\t\t- Install & compress Manpage files\n"; \
+	echo "\t\t- Install & compress Manpage file(s)\n"; \
 	\
 	echo "\tuninstall-man"; \
-	echo "\t\t- Remove Debreate Manpages from system\n"; \
+	echo "\t\t- Remove Debreate Manpage(s)\n"; \
 	\
 	echo "\tinstall-mime"; \
 	echo "\t\t- Register MimeType information for Debreate"; \
@@ -306,32 +332,36 @@ help:
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
 	\
+	echo "\tdistclean"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0`, `tput bold`deb-clean`tput sgr0`, & delete compressed"; \
+	echo "\t\t  distribution package archive\n"; \
+	\
 	echo "\tdebianize"; \
 	echo "\t\t- Configure source for building a Debian package"; \
 	echo "\t\t  (not necessary, should already be configured)"; \
 	echo "\t\t- Uses `tput bold`dh_make`tput sgr0` command (apt install dh-make)\n"; \
 	\
-	echo "\tdebuild"; \
+	echo "\tdeb-bin"; \
 	echo "\t\t- Build a Debian (.deb) package for installation"; \
 	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
-	echo "\tdebuild-source"; \
+	echo "\tdeb-bin-signed"; \
+	echo "\t\t- Build a Debian (.deb) package for installation"; \
+	echo "\t\t  & sign the .changes file"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
+	\
+	echo "\tdeb-src"; \
 	echo "\t\t- Create a source distribution package with"; \
-	echo "\t\t  Debian .dsc, .build, & .changes files\n"; \
+	echo "\t\t  Debian .dsc, .build, & .changes files"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
-	echo "\tdebuild-signed"; \
+	echo "\tdeb-src-signed"; \
 	echo "\t\t- Create a source distribution package & sign"; \
-	echo "\t\t  the .changes file for upload to a repository\n"; \
+	echo "\t\t  the .changes file for upload to a repository"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
-	echo "\tclean"; \
-	echo "\t\t- Delete Debreate binary & any compiled Python"; \
-	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
-	\
-	echo "\tdebuild-clean"; \
-	echo "\t\t- Delete files create by `tput bold`debuild`tput sgr0`\n"; \
-	\
-	echo "\tdistclean"; \
-	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`debuild-clean`tput sgr0`\n"; \
+	echo "\tdeb-clean"; \
+	echo "\t\t- Delete files created by `tput bold`debuild`tput sgr0`\n"; \
 	\
 	echo "Environment Variables:"; \
 	\
@@ -347,3 +377,14 @@ help:
 	echo "\t\t  `tput bold`init.py`tput sgr0` script"; \
 	echo "\t\t- If used with `tput bold`uninstall`tput sgr0` it must match that of"; \
 	echo "\t\t  the `tput bold`install`tput sgr0` invocation\n"; \
+	\
+	echo "Notes on Environment Variables:"; \
+	\
+	echo "\tCurrent Debreate does not use a build setup system (such as"; \
+	echo "\tGNU Autotools or CMake), so the \"prefix\" variable is static."; \
+	echo "\tThis means that when calling `tput bold`make uninstall`tput sgr0`, \"prefix\" must"; \
+	echo "\tbe set to the same as it was for `tput bold`make install`tput sgr0`. The same goes"; \
+	echo "\tfor the \"DESTDIR\" variable.\n"; \
+	\
+	echo "\tE.g. if `tput bold`make install prefix=/usr`tput sgr0` was called, then `tput bold`make"; \
+	echo "\tuninstall prefix=/usr`tput sgr0` must be called to uninstall.\n"; \
