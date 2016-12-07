@@ -74,6 +74,19 @@ Tests to be run before releasing new version:
 - Copyright page
 - Launcher/Menu page
 - Build page
+  - Build won't start if one of the following fields are empty
+    - Control page ➜ Package
+    - Control page ➜ Version
+    - Control page ➜ Maintainer
+    - Control page ➜ Email
+    - Menu page (if enabled) ➜ Name
+    - Menu page (if enabled) ➜ Filename (if not set to use 'Name' field)
+  - 'md5sums' file is created in '<stage>/DEBIAN' directory if enabled
+  - Staged directory is deleted if 'Delete stage directory' is enabled
+  - Progress dialog can be cancelled
+  - .deb is checked with lintian if enabled
+  - Gdebi is launched for installation if 'Install package after build' enabled
+  - .deb package is built correctly
 - About dialog
   - About tab
     - Displays Debreate logo & correct version
