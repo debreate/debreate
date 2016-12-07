@@ -62,6 +62,7 @@
       - Optionally compiles .mo binaries if 'compile' argument is used
     - update-version:
       - Set version information using 'INFO' file
+  - Added 'open', 'save', & 'preview' buttons to depends page
   - License changed to MIT (see docs/LICENSE.txt)
   - Merged new about dialog from 'unstable' branch
   - Merged some modules from 'unstable' branch

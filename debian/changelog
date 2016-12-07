@@ -63,6 +63,7 @@ debreate (0.7.12) xenial; urgency=high
         - Optionally compiles .mo binaries if 'compile' argument is used
       - update-version:
         - Set version information using 'INFO' file
+    - Added 'open', 'save', & 'preview' buttons to depends page
     - License changed to MIT (see docs/LICENSE.txt)
     - Merged new about dialog from 'unstable' branch
     - Merged some modules from 'unstable' branch
@@ -77,7 +78,7 @@ debreate (0.7.12) xenial; urgency=high
     - Add Russian Gettext locale
     - Update Spanish (es) Gettext locale
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Tue, 06 Dec 2016 20:11:58 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 07 Dec 2016 12:07:19 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
