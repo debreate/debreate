@@ -1,3 +1,5 @@
+![][icon]
+
 ## Debreate - Debian Package Builder
 
 #### A graphical program for building Debian (.deb) packages. Package applications, media, artwork, etc.
@@ -11,11 +13,14 @@ The source uses a generic Makefile for "building" (because I don't know how to u
 
 If you have [debuild][] installed, you can run 'make deb-bin' (or 'make deb-bin-signed') from the command line to build the debian package (.deb).
 
+It is recommended to build the .deb package with ***make deb-bin*** & install via the system's package manager.
 
 Debreate needs these packages installed to run:
 * [python][]
-    * Version 2.7 is supported. The goal is to port it to Python 3.
-* [wxpython (python-wxgtk)][python-wxgtk3]
+    * Version 2.7 is supported.
+    * The goal is to port it to Python 3.
+        * Currently, wxPython only supports up to version 2.7.
+* [wxPython (python-wxgtk)][python-wxgtk3]
     * python-wxgtk3 & [python-wxgtk2.8][] are supported.
 * [python-wxversion][]
 * [dpkg][]
@@ -25,14 +30,13 @@ Debreate needs these packages installed to run:
 
 
 Debreate recommends these packages to be installed:
-* [gvfs-bin][]
 * [lintian][]
 
-
-It is recommended to build the .deb package with 'make deb-bin' & install via the system's package manager.
-
+If the package [gvfs-bin][] is installed, there will be an option to use custom save/open dialogs. But, this is not recommended as these dialogs are currently very buggy. It is possible the option will be removed completely in future releases.
 
 
+
+[icon]: bitmaps/debreate64.png
 
 [coreutils]: http://packages.ubuntu.com/coreutils
 [debuild]: http://packages.ubuntu.com/debuild
