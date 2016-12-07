@@ -26,6 +26,7 @@ from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_gdebi_gui
+from globals.commands       import CMD_gzip
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
@@ -307,8 +308,8 @@ class Panel(wx.ScrolledWindow):
             FILE_BUFFER.write(task_list[u'changelog'][1].encode(u'utf-8'))
             FILE_BUFFER.close()
             
-            # FIXME: Use condition & 'CMD_gzip'
-            c = u'gzip -n --best "{}/changelog"'.format(changelog_target)
+            # FIXME: Use condition
+            c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
             clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
             if clog_status[0]:
                 clog_error = GT(u'Could not create changelog')
