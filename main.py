@@ -1029,8 +1029,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 
                 return
         
-        Logger.Warning(__name__,
-                GT(u'Attempt to set compression to non-existent value: {}'.format(compression_formats[compression_id])))
+        Logger.Debug(__name__,
+                GT(u'Urecognized compression ID: {}'.format(compression_id)))
     
     
     ## TODO: Doxygen
