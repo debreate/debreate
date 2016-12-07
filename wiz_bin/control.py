@@ -240,7 +240,7 @@ class Panel(wx.ScrolledWindow):
         # Main background panel sizer
         # FIXME: Is background panel (pnl_bg) necessary
         layt_bg = wx.BoxSizer(wx.VERTICAL)
-        layt_bg.Add(layt_buttons, 0, wx.BOTTOM, 5)
+        layt_bg.Add(layt_buttons, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
         layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0)
         layt_bg.Add(pnl_require, 0, wx.EXPAND)
         layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
@@ -254,7 +254,7 @@ class Panel(wx.ScrolledWindow):
         
         # Page's main sizer
         layt_main = wx.BoxSizer(wx.VERTICAL)
-        layt_main.AddSpacer(10)
+        layt_main.AddSpacer(5)
         layt_main.Add(pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
