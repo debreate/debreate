@@ -18,6 +18,8 @@ from dbr.buttons            import ButtonSave64
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
+from dbr.log                import DebugEnabled
+from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from globals.ident          import FID_LIST
 from globals.ident          import ID_APPEND
@@ -225,14 +227,19 @@ class Panel(wx.ScrolledWindow):
         
         elif key_id == ID_APPEND:
             selected_count = self.lst_deps.GetSelectedItemCount()
+            
+            Logger.Debug(__name__, u'Appending to {} items'.format(selected_count))
+            
             if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
-                listrow = None
-                for X in range(selected_count):
-                    if listrow == None:
-                        listrow = self.lst_deps.GetFirstSelected()
-                    
-                    else:
-                        listrow = self.lst_deps.GetNextSelected(listrow)
+                selected_rows = self.lst_deps.GetSelectedIndexes()
+                
+                if DebugEnabled:
+                    Logger.Debug(__name__, u'Selected rows:')
+                    for R in selected_rows:
+                        print(u'\t{}'.format(R))
+                
+                for listrow in selected_rows:
+                    Logger.Debug(__name__, u'Setting list row: {}'.format(listrow))
                     
                     # Get item from second column
                     colitem = self.lst_deps.GetItem(listrow, 1)
@@ -240,10 +247,14 @@ class Panel(wx.ScrolledWindow):
                     prev_text = colitem.GetText()
                     
                     if not TextIsEmpty(ver):
-                        self.lst_deps.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
+                        new_text = u'{} | {} {}'.format(prev_text, addname, addver)
                     
                     else:
-                        self.lst_deps.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
+                        new_text = u'{} | {}'.format(prev_text, addname)
+                    
+                    Logger.Debug(__name__, u'Appended item: {}'.format(new_text))
+                    
+                    self.lst_deps.SetStringItem(listrow, 1, new_text)
         
         elif key_id in (wx.ID_REMOVE, wx.WXK_DELETE):
             self.lst_deps.RemoveSelected()
