@@ -8,6 +8,7 @@
 
 import os, wx
 
+from dbr.buttons        import ButtonCancel
 from dbr.buttons        import ButtonConfirm
 from dbr.custom         import TextIsEmpty
 from dbr.hyperlink      import Hyperlink
@@ -203,7 +204,8 @@ class StandardFileOpenDialog(StandardFileDialog):
 #        \b \e wx.Bitmap|unicode|str : Image to display
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
-            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
+            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
+            buttons=(u'confirm',)):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
@@ -214,7 +216,13 @@ class DetailedMessageDialog(wx.Dialog):
         
         txt_message = wx.StaticText(self, label=text)
         
-        btn_confirm = ButtonConfirm(self)
+        button_list = []
+        
+        if u'cancel' in buttons:
+            button_list.append(ButtonCancel(self))
+        
+        if u'confirm' in buttons:
+            button_list.append(ButtonConfirm(self))
         
         # self.details needs to be empty for constructor
         self.details = wx.EmptyString
@@ -224,6 +232,11 @@ class DetailedMessageDialog(wx.Dialog):
         
         self.lyt_urls = wx.BoxSizer(wx.VERTICAL)
         
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        
+        for B in button_list:
+            lyt_buttons.Add(B, 0)
+        
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
         lyt_main.AddGrowableRow(3)
@@ -231,7 +244,7 @@ class DetailedMessageDialog(wx.Dialog):
         lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
         lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
         lyt_main.Add(self.lyt_urls, (1, 1), (1, 2), wx.RIGHT, 5)
-        lyt_main.Add(btn_confirm, (4, 2),
+        lyt_main.Add(lyt_buttons, (4, 2),
                 flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         
         self.SetAutoLayout(True)
