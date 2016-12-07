@@ -320,7 +320,7 @@ class Panel(wx.ScrolledWindow):
             cont = True
             
             # If the link path does not exist on the system post a warning message
-            if os.path.isdir(link_path) == False:
+            if not os.path.isdir(link_path):
                 cont = False
                 msg_path = GT(u'Path "{}" does not exist. Continue?')
                 link_error_dia = wx.MessageDialog(self, msg_path.format(link_path), GT(u'Path Warning'),
