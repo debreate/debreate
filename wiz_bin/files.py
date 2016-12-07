@@ -384,7 +384,7 @@ class Panel(wx.ScrolledWindow):
         except AttributeError:
             keycode = event.GetEventObject().GetId()
         
-        if keycode == wx.WXK_DELETE:
+        if keycode in (wx.ID_REMOVE, wx.WXK_DELETE):
             self.lst_files.RemoveSelected()
         
         elif keycode == 65 and modifier == wx.MOD_CONTROL:

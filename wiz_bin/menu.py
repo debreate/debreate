@@ -570,10 +570,10 @@ class Panel(wx.ScrolledWindow):
         cat = cat.split()
         cat = u''.join(cat)
         
-        if ID == wx.WXK_RETURN or ID == wx.WXK_NUMPAD_ENTER:
+        if ID in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), cat)
         
-        elif ID == wx.WXK_DELETE:
+        elif ID in (wx.ID_REMOVE, wx.WXK_DELETE):
             if self.lst_categories.GetItemCount() and self.lst_categories.GetSelectedItemCount():
                 cur_cat = self.lst_categories.GetFirstSelected()
                 self.lst_categories.DeleteItem(cur_cat)

@@ -65,7 +65,7 @@ class Panel(wx.ScrolledWindow):
         # Buttons to add and remove dependencies from the list
         btn_add = ButtonAdd(self)
         btn_append = ButtonAppend(self)
-        btn_remove = ButtonRemove(self, wx.ID_DELETE) # Change the id from wx.WXK_DELETE as workaround
+        btn_remove = ButtonRemove(self)
         btn_clear = ButtonClear(self)
         
         # ----- List
@@ -188,7 +188,7 @@ class Panel(wx.ScrolledWindow):
         ver = self.ti_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
             
-        if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
+        if key_id in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             if TextIsEmpty(addname):
                 return
             
@@ -226,7 +226,7 @@ class Panel(wx.ScrolledWindow):
                     else:
                         self.lst_deps.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
-        elif key_id == wx.ID_DELETE:
+        elif key_id in (wx.ID_REMOVE, wx.WXK_DELETE):
             self.lst_deps.RemoveSelected()
         
         elif key_id == wx.ID_CLEAR:

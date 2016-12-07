@@ -178,7 +178,7 @@ class Panel(wx.ScrolledWindow):
         
         wx.EVT_BUTTON(btn_al_import, ID_IMPORT, self.ImportExe)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
-        wx.EVT_BUTTON(btn_al_remove, wx.WXK_DELETE, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
     
     
@@ -291,7 +291,7 @@ class Panel(wx.ScrolledWindow):
                 
                 count += 1
         
-        elif ID == wx.WXK_DELETE:
+        elif ID in (wx.ID_REMOVE, wx.WXK_DELETE):
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
