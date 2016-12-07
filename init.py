@@ -141,7 +141,7 @@ if u'.py' in script_name:
 exit_now = 0
 
 if u'version' in parsed_args_s:
-    print(u'{} {}'.format(APP_name, VERSION_string))
+    print(VERSION_string)
     
     sys.exit(0)
 
