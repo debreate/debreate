@@ -22,6 +22,7 @@ value_args = (
 )
 
 cmds = (
+    u'clean',
     u'compile',
     u'legacy',
 )

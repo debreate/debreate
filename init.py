@@ -22,6 +22,7 @@ from globals.paths  import ConcatPaths
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
 
+
 # Compiles python source into bytecode
 if u'compile' in parsed_commands:
     import compileall, errno
@@ -37,8 +38,7 @@ if u'compile' in parsed_commands:
         print(u'ERROR: No write privileges for {}'.format(PATH_app))
         sys.exit(errno.EACCES)
     
-    print(u'Compiling Python modules (.py) to bytecode (.pyc) ...')
-    print
+    print(u'Compiling Python modules (.py) to bytecode (.pyc) ...\n')
     
     print(u'Compiling root directory: {}'.format(PATH_app))
     for F in os.listdir(PATH_app):
@@ -54,6 +54,27 @@ if u'compile' in parsed_commands:
             print(u'Compiling directory: {}'.format(D))
             compileall.compile_dir(D)
             print
+    
+    sys.exit(0)
+
+
+if u'clean' in parsed_commands:
+    import errno
+    
+    
+    if not os.access(PATH_app, os.W_OK):
+        print(u'ERROR: No write privileges for {}'.format(PATH_app))
+        sys.exit(errno.EACCES)
+    
+    print(u'Cleaning Python bytecode (.pyc) ...\n')
+    
+    for ROOT, DIRS, FILES in os.walk(PATH_app):
+        for F in FILES:
+            F = ConcatPaths((ROOT, F))
+            
+            if os.path.isfile(F) and F.endswith(u'.pyc'):
+                print(u'Removing file: {}'.format(F))
+                os.remove(F)
     
     sys.exit(0)
 
