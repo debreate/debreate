@@ -233,7 +233,7 @@ class Panel(wx.ScrolledWindow):
             if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
                 selected_rows = self.lst_deps.GetSelectedIndexes()
                 
-                if DebugEnabled:
+                if DebugEnabled():
                     Logger.Debug(__name__, u'Selected rows:')
                     for R in selected_rows:
                         print(u'\t{}'.format(R))
