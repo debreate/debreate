@@ -281,8 +281,8 @@ class Panel(wx.ScrolledWindow):
         
         # --- Page 5 Sizer --- #
         lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_LEFT|wx.LEFT|wx.BOTTOM, 5)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(self.chk_enable, 0, wx.LEFT, 5)
         lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
         
