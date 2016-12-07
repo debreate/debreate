@@ -116,7 +116,6 @@ from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.ident          import ID_DIALOGS
-from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from main                   import MainWindow
