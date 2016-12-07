@@ -8,18 +8,23 @@
 
 import wx
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonAppend
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonRemove
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.listinput      import ListCtrlPanel
-from dbr.panel          import BorderedPanel
-from globals.ident      import FID_LIST
-from globals.ident      import ID_APPEND
-from globals.ident      import ID_DEPENDS
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonAppend
+from dbr.buttons            import ButtonBrowse64
+from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonRemove
+from dbr.buttons            import ButtonSave64
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
+from dbr.panel              import BorderedPanel
+from globals.ident          import FID_LIST
+from globals.ident          import ID_APPEND
+from globals.ident          import ID_CONTROL
+from globals.ident          import ID_DEPENDS
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetPage
 
 
 ## Page defining dependencies
@@ -28,6 +33,11 @@ class Panel(wx.ScrolledWindow):
         wx.ScrolledWindow.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
         
         self.SetScrollbars(20, 20, 0, 0)
+        
+        # Buttons to open, save, & preview control file
+        btn_open = ButtonBrowse64(self)
+        btn_save = ButtonSave64(self)
+        btn_preview = ButtonPreview64(self)
         
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
@@ -84,57 +94,66 @@ class Panel(wx.ScrolledWindow):
         
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
         
-        layt_labels = wx.GridBagSizer()
+        lyt_top = wx.GridBagSizer()
+        lyt_top.SetCols(6)
+        lyt_top.AddGrowableCol(3)
         
         # Row 1
-        layt_labels.Add(txt_package, (0, 0), flag=LEFT_BOTTOM)
-        layt_labels.Add(txt_version, (0, 2), flag=LEFT_BOTTOM)
+        lyt_top.Add(txt_package, (0, 0), flag=LEFT_BOTTOM)
+        lyt_top.Add(txt_version, (0, 2), flag=LEFT_BOTTOM)
+        lyt_top.Add(btn_open, (0, 3), (5, 1), wx.ALIGN_RIGHT)
+        lyt_top.Add(btn_save, (0, 4), (5, 1))
+        lyt_top.Add(btn_preview, (0,5), (5, 1))
         
         # Row 2
-        layt_labels.Add(self.ti_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        layt_labels.Add(self.sel_operator, (1, 1))
-        layt_labels.Add(self.ti_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.ti_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.sel_operator, (1, 1))
+        lyt_top.Add(self.ti_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
         
-        layt_categories = wx.GridSizer(4, 2, 5, 5)
+        lyt_categories = wx.GridSizer(4, 2, 5, 5)
         
         for C in self.categories:
-            layt_categories.Add(C, 0)
+            lyt_categories.Add(C, 0)
         
         pnl_categories.SetAutoLayout(True)
-        pnl_categories.SetSizer(layt_categories)
+        pnl_categories.SetSizer(lyt_categories)
         pnl_categories.Layout()
         
-        layt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
-        layt_buttons.AddMany((
+        lyt_buttons.AddMany((
             (btn_add, 0, wx.ALIGN_CENTER_VERTICAL),
             (btn_append, 0, wx.ALIGN_CENTER_VERTICAL),
             (btn_remove, 0, wx.ALIGN_CENTER_VERTICAL),
             (btn_clear, 0, wx.ALIGN_CENTER_VERTICAL),
             ))
         
-        layt_top = wx.GridBagSizer()
-        layt_top.SetCols(2)
+        lyt_mid = wx.GridBagSizer()
+        lyt_mid.SetCols(2)
         
-        layt_top.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), LEFT_BOTTOM)
-        layt_top.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
-        layt_top.Add(layt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
+        lyt_mid.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), LEFT_BOTTOM)
+        lyt_mid.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
+        lyt_mid.Add(lyt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
-        layt_list = wx.BoxSizer(wx.HORIZONTAL)
-        layt_list.Add(self.lst_deps, 1, wx.EXPAND)
+        lyt_list = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_list.Add(self.lst_deps, 1, wx.EXPAND)
         
-        layt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
         # Spacer is less on this page because text is aligned to bottom
-        layt_main.AddSpacer(7)
-        layt_main.Add(layt_labels, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        layt_main.Add(layt_top, 0, wx.LEFT|wx.RIGHT, 5)
-        layt_main.Add(layt_list, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_mid, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_list, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layt_main)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         # *** Event handlers *** #
+        
+        btn_open.Bind(wx.EVT_BUTTON, GetPage(ID_CONTROL).OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, GetPage(ID_CONTROL).OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, GetPage(ID_CONTROL).OnPreviewControl)
         
         wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)

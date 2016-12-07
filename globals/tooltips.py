@@ -54,6 +54,9 @@ TT_control = {
 }
 
 TT_depends = {
+    u'btn browse': TT_control[u'btn browse'],
+    u'btn save': TT_control[u'btn save'],
+    u'btn preview': TT_control[u'btn preview'],
     u'package': GT(u'Name of dependency/conflicting package'),
     u'operator': GT(u'Operator'),
     u'version': GT(u'Version corresponing to package name and operator'),
