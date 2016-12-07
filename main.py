@@ -99,8 +99,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetMinSize((640,400))
         
         # ----- Set Titlebar Icon
-        self.main_icon = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
-        self.SetIcon(self.main_icon)
+        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG))
         
         # ----- Status Bar
         self.stat_bar = StatusBar(self)
