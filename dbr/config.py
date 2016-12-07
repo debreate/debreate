@@ -7,8 +7,6 @@
 
 import os, wx
 
-from dbr.compression    import compression_formats
-from dbr.compression    import DEFAULT_COMPRESSION_ID
 from dbr.functions      import TextIsEmpty
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
@@ -51,9 +49,7 @@ default_config_values = {
     u'position': (GetIntTuple, (0, 0)),
     u'size': (GetIntTuple, (800, 640)),
     u'workingdir': (unicode, PATH_home),
-    u'compression': (unicode, compression_formats[DEFAULT_COMPRESSION_ID]),
     u'tooltips': (GetBoolean, True),
-    u'hiddenfiles': (GetBoolean, True),
 }
 
 
