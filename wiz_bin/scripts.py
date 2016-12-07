@@ -12,6 +12,7 @@ from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
+from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.markdown           import MarkdownDialog
@@ -26,6 +27,7 @@ from globals.ident          import ID_SCRIPTS
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetTopWindow
 
 
 ID_INST_PRE = wx.NewId()
@@ -313,47 +315,47 @@ class Panel(wx.ScrolledWindow):
         postinst_list = []
         prerm_list = []
         
-        link_path = self.ti_autolink.GetValue() # Get destination for link from Auto-Link input textctrl
-        total = len(self.lst_executables)  # Get the amount of links to be created
+        # Get destination for link from Auto-Link input textctrl
+        link_path = self.ti_autolink.GetValue()
+        # Get the amount of links to be created
+        total = len(self.lst_executables)
         
         if total > 0:
-            cont = True
-            
             # If the link path does not exist on the system post a warning message
             if not os.path.isdir(link_path):
-                cont = False
-                msg_path = GT(u'Path "{}" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path.format(link_path), GT(u'Path Warning'),
-                    style=wx.YES_NO)
-                if link_error_dia.ShowModal() == wx.ID_YES:
-                    cont = True
+                err_msg = GT(u'Path "{}" does not exist. Continue?')
+                
+                err_dialog = ConfirmationDialog(GetTopWindow(), GT(u'Path Warning'),
+                        err_msg.format(link_path))
+                
+                if err_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
+                    return
             
-            if cont:
-                count = 0
-                while count < total:
-                    filename = os.path.split(self.lst_executables[count])[1]
-                    if u'.' in filename:
-                        linkname = u'.'.join(filename.split(u'.')[:-1])
-                        link = u'{}/{}'.format(link_path, linkname)
-                    
-                    else:
-                        link = u'{}/{}'.format(link_path, filename)
-                    
-                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
-                    prerm_list.append(u'rm "{}"'.format(link))
-                    count += 1
+            count = 0
+            while count < total:
+                filename = os.path.split(self.lst_executables[count])[1]
+                if u'.' in filename:
+                    linkname = u'.'.join(filename.split(u'.')[:-1])
+                    link = u'{}/{}'.format(link_path, linkname)
                 
-                postinst = u'\n\n'.join(postinst_list)
-                prerm = u'\n\n'.join(prerm_list)
+                else:
+                    link = u'{}/{}'.format(link_path, filename)
                 
-                self.te_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
-                self.chk_postinst.SetValue(True)
-                self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
-                self.chk_prerm.SetValue(True)
-                
-                dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
-                dia.ShowModal()
-                dia.Destroy()
+                postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
+                prerm_list.append(u'rm "{}"'.format(link))
+                count += 1
+            
+            postinst = u'\n\n'.join(postinst_list)
+            prerm = u'\n\n'.join(prerm_list)
+            
+            self.te_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
+            self.chk_postinst.SetValue(True)
+            self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
+            self.chk_prerm.SetValue(True)
+            
+            dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
+            dia.ShowModal()
+            dia.Destroy()
     
     
     ## TODO: Doxygen
