@@ -144,7 +144,7 @@ install: $(FILES_BUILD) $(FILES_bitmap) $(DIR_locale) $(INSTALLED)_file install-
 	$(INSTALL_FOLDER) $(DIR_locale) "$${datadir}"; \
 	\
 	$(MKDIR) "$${bindir}"; \
-	ln -vfs "$${datadir}/init.py" "$${bindir}/$(PACKAGE)"; \
+	ln -vfs "$(prefix)/$(DATADIR)/init.py" "$${bindir}/$(PACKAGE)"; \
 	\
 	$(MKDIR) "$${pixdir}"; \
 	$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
