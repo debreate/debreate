@@ -32,6 +32,7 @@ Tests to be run before releasing new version:
 - 'man debreate' display Debreate manpage when installed
 - Wizard pages can be changed with arrows & 'Pages' menu
 - Other menu options
+  - 'File ➜ New project' resets all pages' fields
   - 'File ➜ Save' only opens dialog if no project is currently loaded
   - 'File ➜ Save as' always opens a dialog
   - 'File ➜ Quick Build' opens Quick Build dialog
@@ -118,6 +119,8 @@ Tests to be run before releasing new version:
   - 'make deb-src' & 'make deb-src-signed' create source package
   - Can be launched after .deb installed
   - All possible lintian errors & warnings removed
+- .deb install
+  - System menu launcher available
   - MIME type application/x-dbp
     - Associates .dbp files with Debreate
     - File manager displays icon for .dbp files
