@@ -193,8 +193,10 @@ class Panel(wx.ScrolledWindow):
         stage_dir = u'{}/{}__dbp__'.format(build_path, filename)
         
         if os.path.isdir(u'{}/DEBIAN'.format(stage_dir)):
-            c = u'rm -r "{}"'.format(stage_dir)
-            if commands.getstatusoutput(c.encode(u'utf-8'))[0]:
+            try:
+                shutil.rmtree(stage_dir)
+            
+            except OSError:
                 err_msg = GT(u'Could not free stage directory: {}').format(stage_dir)
                 wx.MessageDialog(self, err_msg, GT(u'Cannot Continue'),
                         style=wx.OK|wx.ICON_ERROR).ShowModal()
@@ -305,6 +307,7 @@ class Panel(wx.ScrolledWindow):
             FILE_BUFFER.write(task_list[u'changelog'][1].encode(u'utf-8'))
             FILE_BUFFER.close()
             
+            # FIXME: Use condition & 'CMD_gzip'
             c = u'gzip -n --best "{}/changelog"'.format(changelog_target)
             clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
             if clog_status[0]:
@@ -462,7 +465,10 @@ class Panel(wx.ScrolledWindow):
         if u'rmstage' in task_list:
             UpdateProgress(progress, GT(u'Removing temp directory'))
             
-            if commands.getstatusoutput((u'rm -r "{}"'.format(stage_dir)).encode(u'utf-8'))[0]:
+            try:
+                shutil.rmtree(stage_dir)
+            
+            except OSError:
                 wx.MessageDialog(build_progress, GT(u'An error occurred when trying to delete the build tree'),
                         GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
             
