@@ -28,6 +28,8 @@ Tests to be run before releasing new version:
   - Can be opened from 'File ➜ Open' menu
   - Can be opened from command line
   - Staged directory in '/tmp' is removed after project saved/opened (0.8 only)
+- Command line arguments work correctly
+- 'man debreate' display Debreate manpage when installed
 - Wizard pages can be changed with arrows & 'Pages' menu
 - Other menu options
   - 'File ➜ Save' only opens dialog if no project is currently loaded
