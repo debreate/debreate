@@ -21,6 +21,7 @@ from dbr.workingdir     import ChangeWorkingDirectory
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
+from globals.bitmaps    import ICON_QUESTION
 from globals.paths      import PATH_app
 from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
@@ -379,6 +380,14 @@ class DetailedMessageDialog(wx.Dialog):
             self.SetMinSize(self.GetSize())
             
             return False
+
+
+## Dialog that gives the option to confirm or cancel
+class ConfirmationDialog(DetailedMessageDialog):
+    def __init__(self, parent, title=GT(u'Message'), text=wx.EmptyString,
+            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(u'confirm', u'cancel')):
+        DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
+                text=text, style=style, buttons=buttons)
 
 
 ## Message dialog that shows an error & details
