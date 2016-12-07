@@ -15,7 +15,8 @@ debreate (0.7.12) xenial; urgency=high
       - Displays system information (Python & wxPython versions)
     - Added manpage
     - Command line:
-      - 'legacy' as first argument forces wx 2.8 if available
+      - 'compile' command compiles Python source files (.py) into bytecode (.pyc)
+      - 'legacy' command forces wx 2.8 if available
       - '-h|--help' option uses output of 'man debreate'
         - Uses default manpath if installed, otherwise uses sub-directory man/man1
       - '-v|--version' displays Debreate version
@@ -73,7 +74,7 @@ debreate (0.7.12) xenial; urgency=high
     - Add Russian Gettext locale
     - Update Spanish (es) Gettext locale
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 04 Dec 2016 13:31:45 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Tue, 06 Dec 2016 19:30:49 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
