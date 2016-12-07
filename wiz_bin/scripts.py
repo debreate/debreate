@@ -13,6 +13,7 @@ from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
+from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.markdown           import MarkdownDialog
@@ -321,6 +322,29 @@ class Panel(wx.ScrolledWindow):
         total = len(self.lst_executables)
         
         if total > 0:
+            non_empty_scripts = []
+            checked_scripts = (
+                (self.te_postinst, self.rb_postinst),
+                (self.te_prerm, self.rb_prerm),
+                )
+            
+            for TI, RB in checked_scripts:
+                if not TextIsEmpty(TI.GetValue()):
+                    non_empty_scripts.append(RB.GetLabel())
+            
+            # Warn about overwriting previous post-install & pre-remove scripts
+            if non_empty_scripts:
+                warn_msg = GT(u'The following scripts will be overwritten if you continue: {}')
+                warn_msg = u'{}\n\n{}'.format(warn_msg.format(u', '.join(non_empty_scripts)), GT(u'Continue?'))
+                
+                warn_dialog = ConfirmationDialog(GetTopWindow(), text=warn_msg)
+                
+                if warn_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
+                    return
+                
+                warn_dialog.Destroy()
+                del warn_dialog
+            
             # If the link path does not exist on the system post a warning message
             if not os.path.isdir(link_path):
                 err_msg = GT(u'Path "{}" does not exist. Continue?')
