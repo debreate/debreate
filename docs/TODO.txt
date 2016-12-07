@@ -22,6 +22,8 @@
 - Move Changelog page to second to last, before Build page
 - Move Menu/Launcher page to after Dependencies
 - Option to save session
+- Fix changelog to put asterix before each entry
+
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
