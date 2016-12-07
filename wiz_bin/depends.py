@@ -99,16 +99,16 @@ class Panel(wx.ScrolledWindow):
         lyt_top.AddGrowableCol(3)
         
         # Row 1
-        lyt_top.Add(txt_package, (0, 0), flag=LEFT_BOTTOM)
-        lyt_top.Add(txt_version, (0, 2), flag=LEFT_BOTTOM)
-        lyt_top.Add(btn_open, (0, 3), (5, 1), wx.ALIGN_RIGHT)
-        lyt_top.Add(btn_save, (0, 4), (5, 1))
-        lyt_top.Add(btn_preview, (0,5), (5, 1))
+        lyt_top.Add(txt_package, (1, 0), flag=LEFT_BOTTOM)
+        lyt_top.Add(txt_version, (1, 2), flag=LEFT_BOTTOM)
+        lyt_top.Add(btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
+        lyt_top.Add(btn_save, (0, 4), (4, 1))
+        lyt_top.Add(btn_preview, (0, 5), (4, 1))
         
         # Row 2
-        lyt_top.Add(self.ti_package, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        lyt_top.Add(self.sel_operator, (1, 1))
-        lyt_top.Add(self.ti_version, (1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.ti_package, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.sel_operator, (2, 1), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.ti_version, (2, 2), flag=wx.ALIGN_CENTER_VERTICAL)
         
         lyt_categories = wx.GridSizer(4, 2, 5, 5)
         
