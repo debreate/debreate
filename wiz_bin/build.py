@@ -117,7 +117,7 @@ class Panel(wx.ScrolledWindow):
             (self.chk_md5, 0, wx.LEFT|wx.RIGHT, 5),
             (self.chk_rmstage, 0, wx.LEFT|wx.RIGHT, 5),
             (self.chk_lint, 0, wx.LEFT|wx.RIGHT, 5),
-            (self.chk_install, 0, wx.LEFT|wx.RIGHT, 5)
+            (self.chk_install, 0, wx.LEFT|wx.RIGHT, 5),
             ))
         
         pnl_options.SetSizer(lyt_options)
@@ -308,14 +308,15 @@ class Panel(wx.ScrolledWindow):
             FILE_BUFFER.write(task_list[u'changelog'][1].encode(u'utf-8'))
             FILE_BUFFER.close()
             
-            # FIXME: Use condition
-            c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
-            clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
-            if clog_status[0]:
-                clog_error = GT(u'Could not create changelog')
-                changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
-                        GT(u'Error'), wx.OK)
-                changelog_error.ShowModal()
+            if CMD_gzip:
+                UpdateProgress(progress, GT(u'Compressing changelog'))
+                c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
+                clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
+                if clog_status[0]:
+                    clog_error = GT(u'Could not compress changelog')
+                    changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
+                            GT(u'Warning'), wx.OK)
+                    changelog_error.ShowModal()
             
             progress += 1
         
@@ -804,12 +805,26 @@ class Panel(wx.ScrolledWindow):
     def SetFieldData(self, data):
         self.ResetAllFields()
         build_data = data.split(u'\n')
-        if CMD_md5sum:
-            self.chk_md5.SetValue(int(build_data[0]))
         
-        self.chk_rmstage.SetValue(int(build_data[1]))
+        if CMD_md5sum:
+            try:
+                self.chk_md5.SetValue(int(build_data[0]))
+            
+            except IndexError:
+                pass
+        
+        try:
+            self.chk_rmstage.SetValue(int(build_data[1]))
+        
+        except IndexError:
+            pass
+        
         if CMD_lintian:
-            self.chk_lint.SetValue(int(build_data[2]))
+            try:
+                self.chk_lint.SetValue(int(build_data[2]))
+            
+            except IndexError:
+                pass
     
     
     ## TODO: Doxygen
