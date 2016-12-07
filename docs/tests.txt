@@ -118,3 +118,6 @@ Tests to be run before releasing new version:
   - 'make deb-src' & 'make deb-src-signed' create source package
   - Can be launched after .deb installed
   - All possible lintian errors & warnings removed
+  - MIME type application/x-dbp
+    - Associates .dbp files with Debreate
+    - File manager displays icon for .dbp files
