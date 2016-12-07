@@ -384,7 +384,7 @@ class DetailedMessageDialog(wx.Dialog):
 
 ## Dialog that gives the option to confirm or cancel
 class ConfirmationDialog(DetailedMessageDialog):
-    def __init__(self, parent, title=GT(u'Message'), text=wx.EmptyString,
+    def __init__(self, parent, title=GT(u'Warning'), text=wx.EmptyString,
             style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(u'confirm', u'cancel')):
         DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
                 text=text, style=style, buttons=buttons)
