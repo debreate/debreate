@@ -8,12 +8,14 @@
 
 import wx
 
-from dbr.functions      import GetSystemLicensesList
-from dbr.functions      import TextIsEmpty
-from dbr.language       import GT
-from dbr.textinput      import MonospaceTextCtrl
-from globals.ident      import ID_COPYRIGHT
-from globals.tooltips   import SetPageToolTips
+from dbr.dialogs            import ConfirmationDialog
+from dbr.functions          import GetSystemLicensesList
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.textinput          import MonospaceTextCtrl
+from globals.ident          import ID_COPYRIGHT
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetTopWindow
 
 
 ## Copyright page
@@ -60,18 +62,14 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def DestroyLicenseText(self):
-        main_window = wx.GetApp().GetTopWindow()
+        if not TextIsEmpty(self.dsp_copyright.GetValue()):
+            warn_msg = GT(u'This will destroy all license text. Do you want to continue?')
+            warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
+            
+            if ConfirmationDialog(GetTopWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
+                return False
         
-        empty = TextIsEmpty(self.dsp_copyright.GetValue())
-        
-        if not empty:
-            if wx.MessageDialog(main_window,
-                    GT(u'This will destroy all license text. Do you want to continue?'),
-                    GT(u'Warning'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
-                return 0
-        
-        return 1
+        return True
     
     
     ## TODO: Doxygen
