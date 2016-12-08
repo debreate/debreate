@@ -2,5 +2,7 @@
 - Heavy testing for both wx 3.0 & 2.8
 - Add '-f' switch to 'rm' command in Auto-Link prerm script
 - Fix exporting menu launcher on build
+- Disable scripts' text area when unchecked
+- Only export scripts if enabled & not empty
 
 Non-priority:
