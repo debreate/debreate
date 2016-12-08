@@ -13,6 +13,7 @@ from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
@@ -312,6 +313,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
+        main_window = GetTopWindow()
         # Get the amount of links to be created
         total = len(self.lst_executables)
         
@@ -331,7 +333,7 @@ class Panel(wx.ScrolledWindow):
                 warn_msg = GT(u'The following scripts will be overwritten if you continue: {}')
                 warn_msg = u'{}\n\n{}'.format(warn_msg.format(u', '.join(non_empty_scripts)), GT(u'Continue?'))
                 
-                warn_dialog = ConfirmationDialog(GetTopWindow(), text=warn_msg)
+                warn_dialog = ConfirmationDialog(main_window, text=warn_msg)
                 
                 if warn_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
                     return
@@ -347,7 +349,7 @@ class Panel(wx.ScrolledWindow):
                 warn_msg = GT(u'Path "{}" does not exist.')
                 warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
                 
-                warn_dialog = ConfirmationDialog(GetTopWindow(), text=warn_msg.format(link_path))
+                warn_dialog = ConfirmationDialog(main_window, text=warn_msg.format(link_path))
                 
                 if warn_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
                     return
@@ -381,9 +383,8 @@ class Panel(wx.ScrolledWindow):
             self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
             self.chk_prerm.SetValue(True)
             
-            dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
-            dia.ShowModal()
-            dia.Destroy()
+            DetailedMessageDialog(main_window, GT(u'Success'),
+                    text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
     
     
     ## TODO: Doxygen
