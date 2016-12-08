@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, shutil, subprocess, wx
+import commands, os, shutil, subprocess, traceback, wx
 
 from dbr.buttons            import ButtonBuild64
 from dbr.custom             import OutputLog
@@ -157,359 +157,369 @@ class Panel(wx.ScrolledWindow):
     #  \return
     #        \b \e dbrerror : SUCCESS if build completed successfully
     def Build(self, task_list, build_path, filename):
-        # Other mandatory tasks that will be processed
-        mandatory_tasks = (
-            u'stage',
-            u'install_size',
-            u'control',
-            u'build',
-            )
+        # Declare this here in case of error before progress dialog created
+        build_progress = None
         
-        # Add other mandatory tasks
-        for T in mandatory_tasks:
-            task_list[T] = None
-        
-        task_count = len(task_list)
-        
-        # Add each file for updating progress dialog
-        if u'files' in task_list:
-            task_count += len(task_list[u'files'])
-        
-        # Add each script for updating progress dialog
-        if u'scripts' in task_list:
-            task_count += len(task_list[u'scripts'])
-        
-        if DebugEnabled():
-            task_msg = GT(u'Total tasks: {}').format(task_count)
-            print(u'DEBUG: [{}] {}'.format(__name__, task_msg))
-            for T in task_list:
-                print(u'\t{}'.format(T))
-        
-        create_changelog = u'changelog' in task_list
-        create_copyright = u'copyright' in task_list
-        
-        pg_control = GetPage(ID_CONTROL)
-        pg_menu = GetPage(ID_MENU)
-        
-        stage_dir = u'{}/{}__dbp__'.format(build_path, filename)
-        
-        if os.path.isdir(u'{}/DEBIAN'.format(stage_dir)):
-            try:
-                shutil.rmtree(stage_dir)
+        try:
+            # Other mandatory tasks that will be processed
+            mandatory_tasks = (
+                u'stage',
+                u'install_size',
+                u'control',
+                u'build',
+                )
             
-            except OSError:
-                err_msg = GT(u'Could not free stage directory: {}').format(stage_dir)
-                wx.MessageDialog(self, err_msg, GT(u'Cannot Continue'),
-                        style=wx.OK|wx.ICON_ERROR).ShowModal()
-                
-                return (dbrerrno.EEXIST, None)
-        
-        # Actual path to new .deb
-        deb = u'"{}/{}.deb"'.format(build_path, filename)
-        
-        progress = 0
-        
-        task_msg = GT(u'Preparing build tree')
-        Logger.Debug(__name__, task_msg)
-        
-        wx.Yield()
-        build_progress = ProgressDialog(GetTopWindow(), GT(u'Building'), task_msg,
-                maximum=task_count,
-                style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
-        
-        # Make a fresh build tree
-        os.makedirs(u'{}/DEBIAN'.format(stage_dir))
-        progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        def UpdateProgress(current_task, message=None):
-            task_eval = u'{} / {}'.format(current_task, task_count)
+            # Add other mandatory tasks
+            for T in mandatory_tasks:
+                task_list[T] = None
             
-            if message:
-                Logger.Debug(__name__, u'{} ({})'.format(message, task_eval))
+            task_count = len(task_list)
+            
+            # Add each file for updating progress dialog
+            if u'files' in task_list:
+                task_count += len(task_list[u'files'])
+            
+            # Add each script for updating progress dialog
+            if u'scripts' in task_list:
+                task_count += len(task_list[u'scripts'])
+            
+            if DebugEnabled():
+                task_msg = GT(u'Total tasks: {}').format(task_count)
+                print(u'DEBUG: [{}] {}'.format(__name__, task_msg))
+                for T in task_list:
+                    print(u'\t{}'.format(T))
+            
+            create_changelog = u'changelog' in task_list
+            create_copyright = u'copyright' in task_list
+            
+            pg_control = GetPage(ID_CONTROL)
+            pg_menu = GetPage(ID_MENU)
+            
+            stage_dir = u'{}/{}__dbp__'.format(build_path, filename)
+            
+            if os.path.isdir(u'{}/DEBIAN'.format(stage_dir)):
+                try:
+                    shutil.rmtree(stage_dir)
                 
-                wx.Yield()
-                build_progress.Update(current_task, message)
-                
-                return
+                except OSError:
+                    err_msg = GT(u'Could not free stage directory: {}').format(stage_dir)
+                    wx.MessageDialog(self, err_msg, GT(u'Cannot Continue'),
+                            style=wx.OK|wx.ICON_ERROR).ShowModal()
+                    
+                    return (dbrerrno.EEXIST, None)
+            
+            # Actual path to new .deb
+            deb = u'"{}/{}.deb"'.format(build_path, filename)
+            
+            progress = 0
+            
+            task_msg = GT(u'Preparing build tree')
+            Logger.Debug(__name__, task_msg)
             
             wx.Yield()
-            build_progress.Update(current_task)
-        
-        # *** Files *** #
-        if u'files' in task_list:
-            UpdateProgress(progress, GT(u'Copying files'))
+            build_progress = ProgressDialog(GetTopWindow(), GT(u'Building'), task_msg,
+                    maximum=task_count,
+                    style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
             
-            files_data = task_list[u'files']
-            for FILE in files_data:
-                # Create new directories
-                new_dir = u'{}{}'.format(stage_dir, FILE.split(u' -> ')[2])
-                if not os.path.isdir(new_dir):
-                    os.makedirs(new_dir)
+            # Make a fresh build tree
+            os.makedirs(u'{}/DEBIAN'.format(stage_dir))
+            progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            def UpdateProgress(current_task, message=None):
+                task_eval = u'{} / {}'.format(current_task, task_count)
                 
-                # Get FILE path
-                FILE = FILE.split(u' -> ')[0]
+                if message:
+                    Logger.Debug(__name__, u'{} ({})'.format(message, task_eval))
+                    
+                    wx.Yield()
+                    build_progress.Update(current_task, message)
+                    
+                    return
                 
-                # Remove asteriks from exectuables
-                exe = False
-                if FILE[-1] == u'*':
-                    exe = True
-                    FILE = FILE[:-1]
+                wx.Yield()
+                build_progress.Update(current_task)
+            
+            # *** Files *** #
+            if u'files' in task_list:
+                UpdateProgress(progress, GT(u'Copying files'))
                 
-                # Copy files
-                copy_path = u'{}/{}'.format(new_dir, os.path.split(FILE)[1])
-                shutil.copy(FILE, copy_path)
+                files_data = task_list[u'files']
+                for FILE in files_data:
+                    # Create new directories
+                    new_dir = u'{}{}'.format(stage_dir, FILE.split(u' -> ')[2])
+                    if not os.path.isdir(new_dir):
+                        os.makedirs(new_dir)
+                    
+                    # Get FILE path
+                    FILE = FILE.split(u' -> ')[0]
+                    
+                    # Remove asteriks from exectuables
+                    exe = False
+                    if FILE[-1] == u'*':
+                        exe = True
+                        FILE = FILE[:-1]
+                    
+                    # Copy files
+                    copy_path = u'{}/{}'.format(new_dir, os.path.split(FILE)[1])
+                    shutil.copy(FILE, copy_path)
+                    
+                    # Set FILE permissions
+                    if exe:
+                        os.chmod(copy_path, 0755)
+                    
+                    else:
+                        os.chmod(copy_path, 0644)
+                    
+                    # Individual files
+                    progress += 1
+                    UpdateProgress(progress)
                 
-                # Set FILE permissions
-                if exe:
-                    os.chmod(copy_path, 0755)
+                # Entire file task
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            package = GetField(pg_control, FID_PACKAGE).GetValue()
+            
+            # Make sure that the dirctory is available in which to place documentation
+            if create_changelog or create_copyright:
+                doc_dir = u'{}/usr/share/doc/{}'.format(stage_dir, package)
+                if not os.path.isdir(doc_dir):
+                    os.makedirs(doc_dir)
+            
+            # *** Changelog *** #
+            if create_changelog:
+                UpdateProgress(progress, GT(u'Creating changelog'))
+                
+                # If changelog will be installed to default directory
+                changelog_target = task_list[u'changelog'][0]
+                if changelog_target == u'STANDARD':
+                    changelog_target = ConcatPaths((u'{}/usr/share/doc'.format(stage_dir), package))
                 
                 else:
-                    os.chmod(copy_path, 0644)
+                    changelog_target = ConcatPaths((stage_dir, changelog_target))
                 
-                # Individual files
-                progress += 1
-                UpdateProgress(progress)
-            
-            # Entire file task
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        package = GetField(pg_control, FID_PACKAGE).GetValue()
-        
-        # Make sure that the dirctory is available in which to place documentation
-        if create_changelog or create_copyright:
-            doc_dir = u'{}/usr/share/doc/{}'.format(stage_dir, package)
-            if not os.path.isdir(doc_dir):
-                os.makedirs(doc_dir)
-        
-        # *** Changelog *** #
-        if create_changelog:
-            UpdateProgress(progress, GT(u'Creating changelog'))
-            
-            # If changelog will be installed to default directory
-            changelog_target = task_list[u'changelog'][0]
-            if changelog_target == u'STANDARD':
-                changelog_target = ConcatPaths((u'{}/usr/share/doc'.format(stage_dir), package))
-            
-            else:
-                changelog_target = ConcatPaths((stage_dir, changelog_target))
-            
-            if not os.path.isdir(changelog_target):
-                os.makedirs(changelog_target)
-            
-            FILE_BUFFER = open(u'{}/changelog'.format(changelog_target), u'w')
-            FILE_BUFFER.write(task_list[u'changelog'][1].encode(u'utf-8'))
-            FILE_BUFFER.close()
-            
-            if CMD_gzip:
-                UpdateProgress(progress, GT(u'Compressing changelog'))
-                c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
-                clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
-                if clog_status[0]:
-                    clog_error = GT(u'Could not compress changelog')
-                    changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
-                            GT(u'Warning'), wx.OK)
-                    changelog_error.ShowModal()
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** Copyright *** #
-        if create_copyright:
-            UpdateProgress(progress, GT(u'Creating copyright'))
-            
-            FILE_BUFFER = open(u'{}/usr/share/doc/{}/copyright'.format(stage_dir, package), u'w')
-            FILE_BUFFER.write(task_list[u'copyright'].encode(u'utf-8'))
-            FILE_BUFFER.close()
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # Characters that should not be in filenames
-        invalid_chars = (u' ', u'/')
-        
-        # *** Menu launcher *** #
-        if u'launcher' in task_list:
-            UpdateProgress(progress, GT(u'Creating menu launcher'))
-            
-            # This might be changed later to set a custom directory
-            menu_dir = u'{}/usr/share/applications'.format(stage_dir)
-            
-            menu_filename = pg_menu.GetOutputFilename()
-            
-            # Remove invalid characters from filename
-            for char in invalid_chars:
-                menu_filename = menu_filename.replace(char, u'_')
-            
-            if not os.path.isdir(menu_dir):
-                os.makedirs(menu_dir)
-            
-            FILE_BUFFER = open(u'{}/{}.desktop'.format(menu_dir, menu_filename), u'w')
-            FILE_BUFFER.write(task_list[u'launcher']).encode(u'utf-8')
-            FILE_BUFFER.close()
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** md5sums file *** #
-        # Good practice to create hashes before populating DEBIAN directory
-        if u'md5sums' in task_list:
-            UpdateProgress(progress, GT(u'Creating md5sums'))
-            
-            if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
-                # Couldn't call md5sum command
-                build_progress.Cancel()
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** Scripts *** #
-        if u'scripts' in task_list:
-            UpdateProgress(progress, GT(u'Creating scripts'))
-            
-            scripts = task_list[u'scripts']
-            for script_name, script_text in scripts:
-                script_filename = ConcatPaths((u'{}/DEBIAN'.format(stage_dir), script_name))
+                if not os.path.isdir(changelog_target):
+                    os.makedirs(changelog_target)
                 
-                FILE_BUFFER = open(script_filename, u'w')
-                FILE_BUFFER.write(script_text.encode(u'utf-8'))
+                FILE_BUFFER = open(u'{}/changelog'.format(changelog_target), u'w')
+                FILE_BUFFER.write(task_list[u'changelog'][1].encode(u'utf-8'))
                 FILE_BUFFER.close()
                 
-                # Make sure scipt path is wrapped in quotes to avoid whitespace errors
-                os.chmod(script_filename, 0755)
-                os.system((u'chmod +x "{}"'.format(script_filename)))
+                if CMD_gzip:
+                    UpdateProgress(progress, GT(u'Compressing changelog'))
+                    c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
+                    clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
+                    if clog_status[0]:
+                        clog_error = GT(u'Could not compress changelog')
+                        changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
+                                GT(u'Warning'), wx.OK)
+                        changelog_error.ShowModal()
                 
-                # Individual scripts
                 progress += 1
-                UpdateProgress(progress)
             
-            # Entire script task
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** Control file *** #
-        UpdateProgress(progress, GT(u'Getting installed size'))
-        
-        # Get installed-size
-        installed_size = os.popen((u'du -hsk "{}"'.format(stage_dir))).readlines()
-        installed_size = installed_size[0].split(u'\t')
-        installed_size = installed_size[0]
-        
-        # Insert Installed-Size into control file
-        control_data = pg_control.ExportPage().split(u'\n')
-        control_data.insert(2, u'Installed-Size: {}'.format(installed_size))
-        
-        progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # Create final control file
-        UpdateProgress(progress, GT(u'Creating control file'))
-        
-        # dpkg fails if there is no newline at end of file
-        if control_data and control_data[-1] != u'\n':
-            control_data.append(u'\n')
-        
-        control_data = u'\n'.join(control_data)
-        
-        FILE_BUFFER = open(u'{}/DEBIAN/control'.format(stage_dir), u'w')
-        FILE_BUFFER.write(control_data.encode(u'utf-8'))
-        FILE_BUFFER.close()
-        
-        progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** Final build *** #
-        UpdateProgress(progress, GT(u'Running dpkg'))
-        
-        working_dir = os.path.split(stage_dir)[0]
-        c_tree = os.path.split(stage_dir)[1]
-        deb_package = u'{}.deb'.format(filename)
-        
-        # Move the working directory becuase dpkg seems to have problems with spaces in path
-        os.chdir(working_dir)
-        build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(CMD_fakeroot, CMD_dpkgdeb, c_tree, deb_package)))
-        
-        progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** Delete staged directory *** #
-        if u'rmstage' in task_list:
-            UpdateProgress(progress, GT(u'Removing temp directory'))
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
             
-            try:
-                shutil.rmtree(stage_dir)
-            
-            except OSError:
-                wx.MessageDialog(build_progress, GT(u'An error occurred when trying to delete the build tree'),
-                        GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-            
-            progress += 1
-        
-        if build_progress.WasCancelled():
-            build_progress.Destroy()
-            return (dbrerrno.ECNCLD, None)
-        
-        # *** ERROR CHECK
-        if u'lintian' in task_list:
-            UpdateProgress(progress, GT(u'Checking package for errors'))
-            
-            errors = commands.getoutput((u'{} {}'.format(CMD_lintian, deb)))
-            
-            if errors != wx.EmptyString:
-                e1 = GT(u'Lintian found some issues with the package.')
-                e2 = GT(u'Details saved to {}').format(filename)
+            # *** Copyright *** #
+            if create_copyright:
+                UpdateProgress(progress, GT(u'Creating copyright'))
                 
-                FILE_BUFFER = open(u'{}/{}.lintian'.format(build_path, filename), u'w')
-                FILE_BUFFER.write(errors.encode(u'utf-8'))
+                FILE_BUFFER = open(u'{}/usr/share/doc/{}/copyright'.format(stage_dir, package), u'w')
+                FILE_BUFFER.write(task_list[u'copyright'].encode(u'utf-8'))
                 FILE_BUFFER.close()
                 
-                DetailedMessageDialog(build_progress, GT(u'Lintian Errors'),
-                        ICON_INFORMATION, u'{}\n{}.lintian'.format(e1, e2), errors).ShowModal()
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # Characters that should not be in filenames
+            invalid_chars = (u' ', u'/')
+            
+            # *** Menu launcher *** #
+            if u'launcher' in task_list:
+                UpdateProgress(progress, GT(u'Creating menu launcher'))
+                
+                # This might be changed later to set a custom directory
+                menu_dir = u'{}/usr/share/applications'.format(stage_dir)
+                
+                menu_filename = pg_menu.GetOutputFilename()
+                
+                # Remove invalid characters from filename
+                for char in invalid_chars:
+                    menu_filename = menu_filename.replace(char, u'_')
+                
+                if not os.path.isdir(menu_dir):
+                    os.makedirs(menu_dir)
+                
+                FILE_BUFFER = open(u'{}/{}.desktop'.format(menu_dir, menu_filename), u'w')
+                FILE_BUFFER.write(task_list[u'launcher']).encode(u'utf-8')
+                FILE_BUFFER.close()
+                
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** md5sums file *** #
+            # Good practice to create hashes before populating DEBIAN directory
+            if u'md5sums' in task_list:
+                UpdateProgress(progress, GT(u'Creating md5sums'))
+                
+                if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
+                    # Couldn't call md5sum command
+                    build_progress.Cancel()
+                
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** Scripts *** #
+            if u'scripts' in task_list:
+                UpdateProgress(progress, GT(u'Creating scripts'))
+                
+                scripts = task_list[u'scripts']
+                for script_name, script_text in scripts:
+                    script_filename = ConcatPaths((u'{}/DEBIAN'.format(stage_dir), script_name))
+                    
+                    FILE_BUFFER = open(script_filename, u'w')
+                    FILE_BUFFER.write(script_text.encode(u'utf-8'))
+                    FILE_BUFFER.close()
+                    
+                    # Make sure scipt path is wrapped in quotes to avoid whitespace errors
+                    os.chmod(script_filename, 0755)
+                    os.system((u'chmod +x "{}"'.format(script_filename)))
+                    
+                    # Individual scripts
+                    progress += 1
+                    UpdateProgress(progress)
+                
+                # Entire script task
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** Control file *** #
+            UpdateProgress(progress, GT(u'Getting installed size'))
+            
+            # Get installed-size
+            installed_size = os.popen((u'du -hsk "{}"'.format(stage_dir))).readlines()
+            installed_size = installed_size[0].split(u'\t')
+            installed_size = installed_size[0]
+            
+            # Insert Installed-Size into control file
+            control_data = pg_control.ExportPage().split(u'\n')
+            control_data.insert(2, u'Installed-Size: {}'.format(installed_size))
             
             progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # Create final control file
+            UpdateProgress(progress, GT(u'Creating control file'))
+            
+            # dpkg fails if there is no newline at end of file
+            if control_data and control_data[-1] != u'\n':
+                control_data.append(u'\n')
+            
+            control_data = u'\n'.join(control_data)
+            
+            FILE_BUFFER = open(u'{}/DEBIAN/control'.format(stage_dir), u'w')
+            FILE_BUFFER.write(control_data.encode(u'utf-8'))
+            FILE_BUFFER.close()
+            
+            progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** Final build *** #
+            UpdateProgress(progress, GT(u'Running dpkg'))
+            
+            working_dir = os.path.split(stage_dir)[0]
+            c_tree = os.path.split(stage_dir)[1]
+            deb_package = u'{}.deb'.format(filename)
+            
+            # Move the working directory becuase dpkg seems to have problems with spaces in path
+            os.chdir(working_dir)
+            build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(CMD_fakeroot, CMD_dpkgdeb, c_tree, deb_package)))
+            
+            progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** Delete staged directory *** #
+            if u'rmstage' in task_list:
+                UpdateProgress(progress, GT(u'Removing temp directory'))
+                
+                try:
+                    shutil.rmtree(stage_dir)
+                
+                except OSError:
+                    wx.MessageDialog(build_progress, GT(u'An error occurred when trying to delete the build tree'),
+                            GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** ERROR CHECK
+            if u'lintian' in task_list:
+                UpdateProgress(progress, GT(u'Checking package for errors'))
+                
+                errors = commands.getoutput((u'{} {}'.format(CMD_lintian, deb)))
+                
+                if errors != wx.EmptyString:
+                    e1 = GT(u'Lintian found some issues with the package.')
+                    e2 = GT(u'Details saved to {}').format(filename)
+                    
+                    FILE_BUFFER = open(u'{}/{}.lintian'.format(build_path, filename), u'w')
+                    FILE_BUFFER.write(errors.encode(u'utf-8'))
+                    FILE_BUFFER.close()
+                    
+                    DetailedMessageDialog(build_progress, GT(u'Lintian Errors'),
+                            ICON_INFORMATION, u'{}\n{}.lintian'.format(e1, e2), errors).ShowModal()
+                
+                progress += 1
+            
+            # Close progress dialog
+            wx.Yield()
+            build_progress.Update(progress)
+            build_progress.Destroy()
+            
+            # Build completed successfullly
+            if not build_status[0]:
+                return (dbrerrno.SUCCESS, deb_package)
+            
+            # Build failed
+            return (build_status[0], None)
         
-        # Close progress dialog
-        wx.Yield()
-        build_progress.Update(progress)
-        build_progress.Destroy()
-        
-        # Build completed successfullly
-        if not build_status[0]:
-            return (dbrerrno.SUCCESS, deb_package)
-        
-        # Build failed
-        return (build_status[0], None)
+        except:
+            if build_progress:
+                build_progress.Destroy()
+            
+            return(dbrerrno.EUNKNOWN, traceback.format_exc())
     
     
     ## TODO: Doxygen
