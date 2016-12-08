@@ -66,6 +66,7 @@
   - License changed to MIT (see docs/LICENSE.txt)
   - Merged new about dialog from 'unstable' branch
   - Merged some modules from 'unstable' branch
+  - Replace some confirmation dialogs with ConfirmationDialog class
   - Replace some selection controls with check boxes
   - Show which required fields are empty in build dialog
   - Use custom hyperlink controls

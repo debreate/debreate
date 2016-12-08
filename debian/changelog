@@ -67,6 +67,7 @@ debreate (0.7.12) xenial; urgency=high
     - License changed to MIT (see docs/LICENSE.txt)
     - Merged new about dialog from 'unstable' branch
     - Merged some modules from 'unstable' branch
+    - Replace some confirmation dialogs with ConfirmationDialog class
     - Replace some selection controls with check boxes
     - Show which required fields are empty in build dialog
     - Use custom hyperlink controls
@@ -78,7 +79,7 @@ debreate (0.7.12) xenial; urgency=high
     - Add Russian Gettext locale
     - Update Spanish (es) Gettext locale
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 07 Dec 2016 12:07:19 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 07 Dec 2016 17:30:27 -0800
 
 
 debreate (0.7.11) xenial; urgency=low
