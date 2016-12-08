@@ -527,141 +527,155 @@ class Panel(wx.ScrolledWindow):
     #  \return
     #        \b \e tuple : Return code & build details
     def BuildPrep(self):
-        # List of tasks for build process
-        # 'stage' should be very first task
-        task_list = {}
+        # Declare these here in case of error before dialogs created
+        save_dia = None
+        prebuild_progress = None
         
-        # Control page
-        pg_control = GetPage(ID_CONTROL)
-        fld_package = GetField(pg_control, FID_PACKAGE)
-        fld_version = GetField(pg_control, FID_VERSION)
-        fld_maint = GetField(pg_control, FID_MAINTAINER)
-        fld_email = GetField(pg_control, FID_EMAIL)
-        fields_control = (
-            fld_package,
-            fld_version,
-            fld_maint,
-            fld_email,
-            )
-        
-        # Menu launcher page
-        pg_launcher = GetPage(ID_MENU)
-        
-        # Check to make sure that all required fields have values
-        required = list(fields_control)
-        
-        if pg_launcher.IsBuildExportable():
-            task_list[u'launcher'] = pg_launcher.ExportPage()
+        try:
+            # List of tasks for build process
+            # 'stage' should be very first task
+            task_list = {}
             
-            required.append(pg_launcher.ti_name)
+            # Control page
+            pg_control = GetPage(ID_CONTROL)
+            fld_package = GetField(pg_control, FID_PACKAGE)
+            fld_version = GetField(pg_control, FID_VERSION)
+            fld_maint = GetField(pg_control, FID_MAINTAINER)
+            fld_email = GetField(pg_control, FID_EMAIL)
+            fields_control = (
+                fld_package,
+                fld_version,
+                fld_maint,
+                fld_email,
+                )
             
-            if not pg_launcher.chk_filename.GetValue():
-                required.append(pg_launcher.ti_filename)
-        
-        for item in required:
-            if TextIsEmpty(item.GetValue()):
-                field_name = GT(item.GetName().title())
-                page_name = pg_control.GetName()
-                if item not in fields_control:
-                    page_name = pg_launcher.GetName()
+            # Menu launcher page
+            pg_launcher = GetPage(ID_MENU)
+            
+            # Check to make sure that all required fields have values
+            required = list(fields_control)
+            
+            if pg_launcher.IsBuildExportable():
+                task_list[u'launcher'] = pg_launcher.ExportPage()
                 
-                return (dbrerrno.FEMPTY, u'{} ➜ {}'.format(page_name, field_name))
-        
-        # Get information from control page for default filename
-        package = fld_package.GetValue()
-        # Remove whitespace
-        package = package.strip(u' \t')
-        package = u'-'.join(package.split(u' '))
-        
-        version = fld_version.GetValue()
-        # Remove whitespace
-        version = version.strip(u' \t')
-        version = u''.join(version.split())
-        
-        arch = GetField(pg_control, FID_ARCH).GetStringSelection()
-        
-        cont = False
-        
-        # Dialog for save destination
-        ttype = GT(u'Debian packages')
-        if UseCustomDialogs():
-            save_dia = SaveFile(self)
-            save_dia.SetFilter(u'{}|*.deb'.format(ttype))
-            save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
-            if save_dia.DisplayModal():
-                cont = True
-                build_path = save_dia.GetPath()
-                filename = save_dia.GetFilename().split(u'.deb')[0]
-        
-        else:
-            save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'{}|*.deb'.format(ttype),
-                    wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
-            save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
-            if save_dia.ShowModal() == wx.ID_OK:
-                cont = True
-                build_path = os.path.split(save_dia.GetPath())[0]
-                filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
-        
-        if not cont:
-            return (dbrerrno.ECNCLD, None)
-        
-        # Control, menu, & build pages not added to this list
-        page_checks = (
-            (ID_FILES, u'files'),
-            (ID_SCRIPTS, u'scripts'),
-            (ID_CHANGELOG, u'changelog'),
-            (ID_COPYRIGHT, u'copyright'),
-            )
-        
-        # Install step is not added to this list
-        # 'control' should be after 'md5sums'
-        # 'build' should be after 'control'
-        other_checks = (
-            (self.chk_md5, u'md5sums'),
-            (self.chk_rmstage, u'rmstage'),
-            (self.chk_lint, u'lintian'),
-            )
-        
-        prep_task_count = len(page_checks) + len(other_checks)
-        
-        progress = 0
-        
-        wx.Yield()
-        prebuild_progress = ProgressDialog(GetTopWindow(), GT(u'Preparing to build'),
-                maximum=prep_task_count)
-        
-        if wx.MAJOR_VERSION < 3:
-            # Resize dialog for better fit
-            pb_size = prebuild_progress.GetSizeTuple()
-            pb_size = (pb_size[0]+200, pb_size[1])
-            prebuild_progress.SetSize(pb_size)
-            prebuild_progress.CenterOnParent()
-        
-        for PID, id_string in page_checks:
+                required.append(pg_launcher.ti_name)
+                
+                if not pg_launcher.chk_filename.GetValue():
+                    required.append(pg_launcher.ti_filename)
+            
+            for item in required:
+                if TextIsEmpty(item.GetValue()):
+                    field_name = GT(item.GetName().title())
+                    page_name = pg_control.GetName()
+                    if item not in fields_control:
+                        page_name = pg_launcher.GetName()
+                    
+                    return (dbrerrno.FEMPTY, u'{} ➜ {}'.format(page_name, field_name))
+            
+            # Get information from control page for default filename
+            package = fld_package.GetValue()
+            # Remove whitespace
+            package = package.strip(u' \t')
+            package = u'-'.join(package.split(u' '))
+            
+            version = fld_version.GetValue()
+            # Remove whitespace
+            version = version.strip(u' \t')
+            version = u''.join(version.split())
+            
+            arch = GetField(pg_control, FID_ARCH).GetStringSelection()
+            
+            cont = False
+            
+            # Dialog for save destination
+            ttype = GT(u'Debian packages')
+            if UseCustomDialogs():
+                save_dia = SaveFile(self)
+                save_dia.SetFilter(u'{}|*.deb'.format(ttype))
+                save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
+                if save_dia.DisplayModal():
+                    cont = True
+                    build_path = save_dia.GetPath()
+                    filename = save_dia.GetFilename().split(u'.deb')[0]
+            
+            else:
+                save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'{}|*.deb'.format(ttype),
+                        wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
+                save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
+                if save_dia.ShowModal() == wx.ID_OK:
+                    cont = True
+                    build_path = os.path.split(save_dia.GetPath())[0]
+                    filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
+            
+            if not cont:
+                return (dbrerrno.ECNCLD, None)
+            
+            # Control, menu, & build pages not added to this list
+            page_checks = (
+                (ID_FILES, u'files'),
+                (ID_SCRIPTS, u'scripts'),
+                (ID_CHANGELOG, u'changelog'),
+                (ID_COPYRIGHT, u'copyright'),
+                )
+            
+            # Install step is not added to this list
+            # 'control' should be after 'md5sums'
+            # 'build' should be after 'control'
+            other_checks = (
+                (self.chk_md5, u'md5sums'),
+                (self.chk_rmstage, u'rmstage'),
+                (self.chk_lint, u'lintian'),
+                )
+            
+            prep_task_count = len(page_checks) + len(other_checks)
+            
+            progress = 0
+            
             wx.Yield()
-            prebuild_progress.Update(progress, GT(u'Checking {}').format(id_string))
+            prebuild_progress = ProgressDialog(GetTopWindow(), GT(u'Preparing to build'),
+                    maximum=prep_task_count)
             
-            wizard_page = GetPage(PID)
-            if wizard_page.IsBuildExportable():
-                task_list[id_string] = wizard_page.ExportPage()
+            if wx.MAJOR_VERSION < 3:
+                # Resize dialog for better fit
+                pb_size = prebuild_progress.GetSizeTuple()
+                pb_size = (pb_size[0]+200, pb_size[1])
+                prebuild_progress.SetSize(pb_size)
+                prebuild_progress.CenterOnParent()
             
-            progress += 1
-        
-        for task_check, id_string in other_checks:
+            for PID, id_string in page_checks:
+                wx.Yield()
+                prebuild_progress.Update(progress, GT(u'Checking {}').format(id_string))
+                
+                wizard_page = GetPage(PID)
+                if wizard_page.IsBuildExportable():
+                    task_list[id_string] = wizard_page.ExportPage()
+                
+                progress += 1
+            
+            for task_check, id_string in other_checks:
+                wx.Yield()
+                prebuild_progress.Update(progress, GT(u'Testing for: {}').format(task_check.GetLabel()))
+                
+                if task_check.GetValue():
+                    task_list[id_string] = None
+                
+                progress += 1
+            
+            # Close progress dialog
             wx.Yield()
-            prebuild_progress.Update(progress, GT(u'Testing for: {}').format(task_check.GetLabel()))
+            prebuild_progress.Update(progress)
+            prebuild_progress.Destroy()
             
-            if task_check.GetValue():
-                task_list[id_string] = None
+            return (dbrerrno.SUCCESS, (task_list, build_path, filename))
+        
+        except:
+            if save_dia:
+                save_dia.Destroy()
             
-            progress += 1
-        
-        # Close progress dialog
-        wx.Yield()
-        prebuild_progress.Update(progress)
-        prebuild_progress.Destroy()
-        
-        return (dbrerrno.SUCCESS, (task_list, build_path, filename))
+            if prebuild_progress:
+                prebuild_progress.Destroy()
+            
+            return (dbrerrno.EUNKNOWN, traceback.format_exc())
     
     
     ## TODO: Doxygen
@@ -790,7 +804,15 @@ class Panel(wx.ScrolledWindow):
                 ShowErrorDialog(GT(u'Package build failed'), result)
             
             else:
-                ShowErrorDialog(GT(u'Package build failed'))
+                ShowErrorDialog(GT(u'Package build failed with unknown error'))
+            
+            return
+        
+        if build_prep:
+            ShowErrorDialog(GT(u'Build preparation failed'), build_prep)
+        
+        else:
+            ShowErrorDialog(GT(u'Build preparation failed with unknown error'))
     
     
     ## TODO: Doxygen
