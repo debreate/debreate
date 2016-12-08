@@ -554,10 +554,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Shows a dialog to confirm quit and write window settings to config file
     def OnQuit(self, event=None):
-        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
-                                   wx.OK|wx.CANCEL|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_OK:
-            confirm.Destroy()
+        if ConfirmationDialog(self, GT(u'Quit?'),
+                text=GT(u'You will lose any unsaved information')).ShowModal() in (wx.ID_OK, wx.OK):
             
             maximized = self.IsMaximized()
             WriteConfig(u'maximize', maximized)
@@ -575,9 +573,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             WriteConfig(u'workingdir', os.getcwd())
             
             self.Destroy()
-        
-        else:
-            confirm.Destroy()
     
     
     ## TODO: Doxygen
