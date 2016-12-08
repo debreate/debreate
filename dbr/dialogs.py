@@ -236,7 +236,16 @@ class DetailedMessageDialog(wx.Dialog):
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
         for B in button_list:
-            lyt_buttons.Add(B, 0)
+            tmp_sizer = wx.BoxSizer(wx.VERTICAL)
+            tmp_sizer.Add(B, 0, wx.ALIGN_CENTER)
+            # FIXME: Should use something other than tooltip for setting label
+            tmp_sizer.Add(wx.StaticText(self, label=B.GetToolTipString()), 0, wx.ALIGN_CENTER|wx.ALIGN_TOP)
+            
+            if not lyt_buttons.GetChildren():
+                lyt_buttons.Add(tmp_sizer, 0)
+            
+            else:
+                lyt_buttons.Add(tmp_sizer, 0, wx.LEFT, 5)
         
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
