@@ -20,6 +20,8 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
+from dbr.log                import DebugEnabled
+from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
@@ -591,95 +593,108 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Fills out launcher information from loaded file
+    #  
+    #  \param data
+    #    Information to fill out menu launcher fields
+    #  \param enabled
+    #    \b \e bool : Launcher will be flagged for export if True
     def SetLauncherData(self, data, enabled=True):
-        
         # Make sure we are dealing with a list
         if isinstance(data, (unicode, str)):
             data = data.split(u'\n')
         
-        # Clear all fields first
-        self.ResetAllFields()
-        self.chk_enable.SetValue(False)
-        
-        if enabled:
-            self.chk_enable.SetValue(True)
+        # Data list is not empty
+        if data:
+            Logger.Debug(__name__, u'Loading launcher')
             
-            data_defs = {}
-            data_defs_remove = []
-            misc_defs = {}
+            if data[0].isnumeric():
+                enabled = int(data.pop(0)) > 0
             
-            for L in data:
-                if u'=' in L:
-                    if L[0] == u'[' and L[-1] == u']':
-                        key = L[1:-1].split(u'=')
-                        value = key[1]
-                        key = key[0]
+            if DebugEnabled():
+                for L in data:
+                    print(u'  Launcher line: {}'.format(L))
+            
+            Logger.Debug(__name__, u'Enabling launcher: {}'.format(enabled))
+            
+            if enabled:
+                self.chk_enable.SetValue(True)
+                
+                data_defs = {}
+                data_defs_remove = []
+                misc_defs = {}
+                
+                for L in data:
+                    if u'=' in L:
+                        if L[0] == u'[' and L[-1] == u']':
+                            key = L[1:-1].split(u'=')
+                            value = key[1]
+                            key = key[0]
+                            
+                            misc_defs[key] = value
                         
-                        misc_defs[key] = value
+                        else:
+                            key = L.split(u'=')
+                            value = key[1]
+                            key = key[0]
+                            
+                            data_defs[key] = value
+                
+                # Fields using SetValue() function
+                set_value_fields = (
+                    (u'Name', self.ti_name),
+                    (u'Exec', self.ti_exec),
+                    (u'Comment', self.ti_comm),
+                    (u'Icon', self.ti_icon),
+                    (u'Type', self.ti_type),
+                    (u'Encoding', self.ti_enc),
+                    )
+                
+                for label, control in set_value_fields:
+                    try:
+                        control.SetValue(data_defs[label])
+                        data_defs_remove.append(label)
                     
-                    else:
-                        key = L.split(u'=')
-                        value = key[1]
-                        key = key[0]
-                        
-                        data_defs[key] = value
-            
-            # Fields using SetValue() function
-            set_value_fields = (
-                (u'Name', self.ti_name),
-                (u'Exec', self.ti_exec),
-                (u'Comment', self.ti_comm),
-                (u'Icon', self.ti_icon),
-                (u'Type', self.ti_type),
-                (u'Encoding', self.ti_enc),
-                )
-            
-            for label, control in set_value_fields:
+                    except KeyError:
+                        pass
+                
+                # Fields using SetSelection() function
+                set_selection_fields = (
+                    (u'Terminal', self.sel_term),
+                    (u'StartupNotify', self.sel_notify),
+                    )
+                
+                for label, control in set_selection_fields:
+                    try:
+                        control.SetStringSelection(data_defs[label].lower())
+                        data_defs_remove.append(label)
+                    
+                    except KeyError:
+                        pass
+                
                 try:
-                    control.SetValue(data_defs[label])
-                    data_defs_remove.append(label)
+                    categories = tuple(data_defs[u'Categories'].split(u';'))
+                    for C in categories:
+                        self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
+                    data_defs_remove.append(u'Categories')
                 
                 except KeyError:
                     pass
-            
-            # Fields using SetSelection() function
-            set_selection_fields = (
-                (u'Terminal', self.sel_term),
-                (u'StartupNotify', self.sel_notify),
-                )
-            
-            for label, control in set_selection_fields:
-                try:
-                    control.SetStringSelection(data_defs[label].lower())
-                    data_defs_remove.append(label)
                 
-                except KeyError:
-                    pass
-            
-            try:
-                categories = tuple(data_defs[u'Categories'].split(u';'))
-                for C in categories:
-                    self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
-                data_defs_remove.append(u'Categories')
-            
-            except KeyError:
-                pass
-        
-        for K in data_defs_remove:
-            if K in data_defs:
-                del data_defs[K]
-        
-        # Add any leftover keys to misc/other
-        for K in data_defs:
-            if K not in (u'Version',):
-                self.ti_other.SetValue(u'{}={}'.format(K, data_defs[K]))
-        
-        if misc_defs:
-            for K in misc_defs:
-                value = misc_defs[K]
-                if not TextIsEmpty(value):
-                    if K == u'FILENAME':
-                        self.ti_filename.SetValue(value)
-                        self.chk_filename.SetValue(False)
-        
-        self.OnToggle()
+                for K in data_defs_remove:
+                    if K in data_defs:
+                        del data_defs[K]
+                
+                # Add any leftover keys to misc/other
+                for K in data_defs:
+                    if K not in (u'Version',):
+                        self.ti_other.SetValue(u'{}={}'.format(K, data_defs[K]))
+                
+                if misc_defs:
+                    for K in misc_defs:
+                        value = misc_defs[K]
+                        if not TextIsEmpty(value):
+                            if K == u'FILENAME':
+                                self.ti_filename.SetValue(value)
+                                self.chk_filename.SetValue(False)
+                
+                self.OnToggle()
