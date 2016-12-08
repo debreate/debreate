@@ -72,13 +72,13 @@ class Panel(wx.ScrolledWindow):
                 name=u'postrm')
         
         # Text area for each radio button
-        self.te_preinst = MonospaceTextCtrl(self, ID_INST_PRE, name=u'script body')
-        self.te_postinst = MonospaceTextCtrl(self, ID_INST_POST, name=u'script body')
-        self.te_prerm = MonospaceTextCtrl(self, ID_RM_PRE, name=u'script body')
-        self.te_postrm = MonospaceTextCtrl(self, ID_RM_POST, name=u'script body')
+        self.ti_preinst = MonospaceTextCtrl(self, ID_INST_PRE, name=u'script body')
+        self.ti_postinst = MonospaceTextCtrl(self, ID_INST_POST, name=u'script body')
+        self.ti_prerm = MonospaceTextCtrl(self, ID_RM_PRE, name=u'script body')
+        self.ti_postrm = MonospaceTextCtrl(self, ID_RM_POST, name=u'script body')
         
-        self.grp_te = {	self.rb_preinst: self.te_preinst, self.rb_postinst: self.te_postinst,
-                            self.rb_prerm: self.te_prerm, self.rb_postrm: self.te_postrm
+        self.grp_te = {	self.rb_preinst: self.ti_preinst, self.rb_postinst: self.ti_postinst,
+                            self.rb_prerm: self.ti_prerm, self.rb_postrm: self.ti_postrm
                             }
         
         self.grp_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
@@ -136,10 +136,10 @@ class Panel(wx.ScrolledWindow):
         # Sizer for left half of scripts panel
         lyt_left = wx.BoxSizer(wx.VERTICAL)
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_left.Add(self.te_preinst, 1, wx.EXPAND)
-        lyt_left.Add(self.te_postinst, 1, wx.EXPAND)
-        lyt_left.Add(self.te_prerm, 1,wx.EXPAND)
-        lyt_left.Add(self.te_postrm, 1, wx.EXPAND)
+        lyt_left.Add(self.ti_preinst, 1, wx.EXPAND)
+        lyt_left.Add(self.ti_postinst, 1, wx.EXPAND)
+        lyt_left.Add(self.ti_prerm, 1,wx.EXPAND)
+        lyt_left.Add(self.ti_postrm, 1, wx.EXPAND)
         
         # Auto-Link/Right side
         lyt_ti_autolink = wx.BoxSizer(wx.HORIZONTAL)
@@ -201,10 +201,10 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ExportPage(self):
         script_controls = {
-            u'preinst': (self.chk_preinst, self.te_preinst,),
-            u'postinst': (self.chk_postinst, self.te_postinst,),
-            u'prerm': (self.chk_prerm, self.te_prerm),
-            u'postrm': (self.chk_postrm, self.te_postrm),
+            u'preinst': (self.chk_preinst, self.ti_preinst,),
+            u'postinst': (self.chk_postinst, self.ti_postinst,),
+            u'prerm': (self.chk_prerm, self.ti_prerm),
+            u'postrm': (self.chk_postrm, self.ti_postrm),
         }
         
         script_list = []
@@ -221,10 +221,10 @@ class Panel(wx.ScrolledWindow):
     def GatherData(self):
         # Custom dictionary of scripts
         script_list = (
-            (self.chk_preinst, self.te_preinst, u'PREINST'),
-            (self.chk_postinst, self.te_postinst, u'POSTINST'),
-            (self.chk_prerm, self.te_prerm, u'PRERM'),
-            (self.chk_postrm, self.te_postrm, u'POSTRM')
+            (self.chk_preinst, self.ti_preinst, u'PREINST'),
+            (self.chk_postinst, self.ti_postinst, u'POSTINST'),
+            (self.chk_prerm, self.ti_prerm, u'PRERM'),
+            (self.chk_postrm, self.ti_postrm, u'POSTRM')
         )
         
         # Create a list to return the data
@@ -320,8 +320,8 @@ class Panel(wx.ScrolledWindow):
         if total > 0:
             non_empty_scripts = []
             checked_scripts = (
-                (self.te_postinst, self.rb_postinst),
-                (self.te_prerm, self.rb_prerm),
+                (self.ti_postinst, self.rb_postinst),
+                (self.ti_prerm, self.rb_prerm),
                 )
             
             for TI, RB in checked_scripts:
@@ -378,9 +378,9 @@ class Panel(wx.ScrolledWindow):
             postinst = u'\n\n'.join(postinst_list)
             prerm = u'\n\n'.join(prerm_list)
             
-            self.te_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
+            self.ti_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
             self.chk_postinst.SetValue(True)
-            self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
+            self.ti_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
             self.chk_prerm.SetValue(True)
             
             DetailedMessageDialog(main_window, GT(u'Success'),
@@ -439,32 +439,32 @@ class Panel(wx.ScrolledWindow):
         
         if int(preinst[0]):
             self.chk_preinst.SetValue(True)
-            self.te_preinst.SetValue(preinst[2:]) # 2 removes firs line
+            self.ti_preinst.SetValue(preinst[2:]) # 2 removes firs line
         
         else:
             self.chk_preinst.SetValue(False)
-            self.te_preinst.Clear()
+            self.ti_preinst.Clear()
         
         if int(postinst[0]):
             self.chk_postinst.SetValue(True)
-            self.te_postinst.SetValue(postinst[2:]) # 2 removes firs line
+            self.ti_postinst.SetValue(postinst[2:]) # 2 removes firs line
         
         else:
             self.chk_postinst.SetValue(False)
-            self.te_postinst.Clear()
+            self.ti_postinst.Clear()
         
         if int(prerm[0]):
             self.chk_prerm.SetValue(True)
-            self.te_prerm.SetValue(prerm[2:]) # 2 removes firs line
+            self.ti_prerm.SetValue(prerm[2:]) # 2 removes firs line
         
         else:
             self.chk_prerm.SetValue(False)
-            self.te_prerm.Clear()
+            self.ti_prerm.Clear()
         
         if int(postrm[0]):
             self.chk_postrm.SetValue(True)
-            self.te_postrm.SetValue(postrm[2:]) # 2 removes firs line
+            self.ti_postrm.SetValue(postrm[2:]) # 2 removes firs line
         
         else:
             self.chk_postrm.SetValue(False)
-            self.te_postrm.Clear()
+            self.ti_postrm.Clear()
