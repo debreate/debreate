@@ -358,7 +358,7 @@ class Panel(wx.ScrolledWindow):
                 os.makedirs(menu_dir)
             
             FILE_BUFFER = open(u'{}/{}.desktop'.format(menu_dir, menu_filename), u'w')
-            FILE_BUFFER.write(u'\n'.join(task_list[u'launcher']).encode(u'utf-8'))
+            FILE_BUFFER.write(task_list[u'launcher']).encode(u'utf-8')
             FILE_BUFFER.close()
             
             progress += 1

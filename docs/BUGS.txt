@@ -2,7 +2,6 @@
 
 Must be fixed before release:
 - Menu not saving/exporting correctly into project
-- Menu launcher not formatted correctly
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
