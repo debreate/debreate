@@ -15,6 +15,7 @@ from dbr.buttons            import ButtonClear
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
+from dbr.dialogs            import ConfirmationDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
@@ -27,6 +28,7 @@ from globals.ident          import ID_CONTROL
 from globals.ident          import ID_DEPENDS
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetTopWindow
 
 
 ## Page defining dependencies
@@ -261,9 +263,8 @@ class Panel(wx.ScrolledWindow):
         
         elif key_id == wx.ID_CLEAR:
             if self.lst_deps.GetItemCount():
-                confirm = wx.MessageDialog(self, GT(u'Clear all dependencies?'), GT(u'Confirm'),
-                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-                if confirm.ShowModal() == wx.ID_YES:
+                if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                        GT(u'Clear all dependencies?')).ShowModal() in (wx.ID_OK, wx.OK):
                     self.lst_deps.DeleteAllItems()
         
         if event:
