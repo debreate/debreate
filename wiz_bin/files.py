@@ -13,6 +13,7 @@ from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonClear
 from dbr.buttons            import ButtonRefresh
 from dbr.buttons            import ButtonRemove
+from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import ShowDialog
@@ -315,8 +316,8 @@ class Panel(wx.ScrolledWindow):
             count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
             count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
             
-            get_files = wx.MessageDialog(GetTopWindow(), count_warnmsg, GT(u'WARNING'),
-                    style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING).ShowModal() == wx.ID_YES
+            get_files = ConfirmationDialog(GetTopWindow(),
+                    text=count_warnmsg).Confirmed()
         
         # FIXME: More efficient way to update progress dialog???
         if get_files:
@@ -357,8 +358,8 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnClearFileList(self, event=None):
-        confirm = wx.MessageDialog(self, GT(u'Clear all files?'), GT(u'Confirm'), wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-        if confirm.ShowModal() == wx.ID_YES:
+        if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                    GT(u'Clear all files?')).Confirmed():
             self.lst_files.DeleteAllItems()
     
     
