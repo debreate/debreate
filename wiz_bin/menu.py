@@ -16,6 +16,7 @@ from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
+from dbr.dialogs            import ConfirmationDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
@@ -24,6 +25,7 @@ from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals.ident          import ID_MENU
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetTopWindow
 from globals.wizardhelper   import UseCustomDialogs
 
 
@@ -580,10 +582,8 @@ class Panel(wx.ScrolledWindow):
         
         elif ID == wx.ID_CLEAR:
             if self.lst_categories.GetItemCount():
-                confirm = wx.MessageDialog(self, GT(u'Clear categories?'), GT(u'Confirm'),
-                        wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-                
-                if confirm.ShowModal() == wx.ID_YES:
+                if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                        GT(u'Clear categories?')).ShowModal() in (wx.ID_OK, wx.OK):
                     self.lst_categories.DeleteAllItems()
         
         if event:
