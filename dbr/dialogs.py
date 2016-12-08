@@ -204,7 +204,7 @@ class StandardFileOpenDialog(StandardFileDialog):
 #  \param icon
 #        \b \e wx.Bitmap|unicode|str : Image to display
 class DetailedMessageDialog(wx.Dialog):
-    def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
+    def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
             buttons=(u'confirm',)):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
