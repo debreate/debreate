@@ -358,9 +358,10 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnClearFileList(self, event=None):
-        if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
-                    GT(u'Clear all files?')).Confirmed():
-            self.lst_files.DeleteAllItems()
+        if self.lst_files.GetItemCount():
+            if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                        GT(u'Clear all files?')).Confirmed():
+                self.lst_files.DeleteAllItems()
     
     
     ## TODO: Doxygen
