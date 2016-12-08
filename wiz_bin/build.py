@@ -763,7 +763,7 @@ class Panel(wx.ScrolledWindow):
         if ret_code == dbrerrno.SUCCESS:
             task_list, build_path, filename = build_prep
             
-            ret_code, deb_package = self.Build(task_list, build_path, filename)
+            ret_code, result = self.Build(task_list, build_path, filename)
             
             # FIXME: Check .deb package timestamp to confirm build success
             if ret_code == dbrerrno.SUCCESS:
@@ -772,12 +772,15 @@ class Panel(wx.ScrolledWindow):
                 
                 # Installing the package
                 if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
-                    self.InstallPackage(deb_package)
+                    self.InstallPackage(result)
                 
                 return
             
-            wx.MessageDialog(self, GT(u'Package build failed'), GT(u'Error'),
-                    style=wx.OK|wx.ICON_ERROR).ShowModal()
+            if result:
+                ShowErrorDialog(GT(u'Package build failed'), result)
+            
+            else:
+                ShowErrorDialog(GT(u'Package build failed'))
     
     
     ## TODO: Doxygen
