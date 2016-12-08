@@ -189,10 +189,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def ChangeBG(self, exists):
-        if self.ti_autolink.GetValue() == u'':
-            self.ti_autolink.SetValue(u'/')
-        
-        elif exists == False:
+        if exists == False:
             self.ti_autolink.SetBackgroundColour((255, 0, 0, 255))
         
         else:
