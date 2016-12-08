@@ -277,6 +277,14 @@ class DetailedMessageDialog(wx.Dialog):
         self.CenterOnParent()
     
     
+    ## Shows dialog modal & returns 'confirmed' value
+    #  
+    #  \return
+    #    \b \e bool : True if ShowModal return value one of wx.ID_OK, wx.OK, wx.ID_YES, wx.YES
+    def Confirmed(self):
+        return self.ShowModal() in (wx.ID_OK, wx.OK, wx.ID_YES, wx.YES)
+    
+    
     ## Adds buttons & details text to dialog
     #  
     #  \param details
