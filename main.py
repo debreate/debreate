@@ -514,36 +514,34 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def OnOpenProject(self, event=None):
-        cont = False
         projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
         d = GT(u'Debreate project files')
+        
         if self.UseCustomDialogs():
             dia = OpenFile(self, GT(u'Open Debreate Project'))
             dia.SetFilter(u'{}{}'.format(d, projects_filter))
-            if dia.DisplayModal():
-                cont = True
+            if not dia.DisplayModal():
+                return
         
         else:
             dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
                     u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        
-        if cont:
-            # Abort
-            if self.saved_project and not self.ResetPages():
+            if dia.ShowModal() != wx.ID_OK:
                 return
-            
-            # Get the path and set the saved project
-            self.saved_project = dia.GetPath()
-            
-            FILE_BUFFER = open(self.saved_project, u'r')
-            data = FILE_BUFFER.read()
-            FILE_BUFFER.close()
-            
-            filename = os.path.split(self.saved_project)[1]
-            
-            self.OpenProject(data, filename)
+        
+        if self.saved_project and not self.ResetPages():
+            return
+        
+        # Get the path and set the saved project
+        self.saved_project = dia.GetPath()
+        
+        FILE_BUFFER = open(self.saved_project, u'r')
+        data = FILE_BUFFER.read()
+        FILE_BUFFER.close()
+        
+        filename = os.path.split(self.saved_project)[1]
+        
+        self.OpenProject(data, filename)
     
     
     ## TODO: Doxygen
