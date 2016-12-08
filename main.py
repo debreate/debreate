@@ -18,6 +18,7 @@ from dbr.config             import WriteConfig
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.custom             import StatusBar
+from dbr.dialogs            import ConfirmationDialog
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -734,19 +735,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def ResetPages(self):
-        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
-                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
-        if dia.ShowModal() == wx.ID_YES:
-            for page in self.all_pages:
-                page.ResetAllFields()
-            self.SetTitle(default_title)
-            
-            # Reset the saved project field so we know that a project file doesn't exists
-            self.saved_project = wx.EmptyString
-            
-            return True
+        warn_msg = GT(u'You will lose any unsaved information.')
+        warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
         
-        return False
+        if ConfirmationDialog(self, text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
+            return False
+        
+        for page in self.all_pages:
+            page.ResetAllFields()
+        
+        self.SetTitle(default_title)
+        
+        # Reset the saved project field so we know that a project file doesn't exists
+        self.saved_project = wx.EmptyString
+        
+        return True
     
     
     ## TODO: Doxygen
