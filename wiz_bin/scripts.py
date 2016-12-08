@@ -312,12 +312,6 @@ class Panel(wx.ScrolledWindow):
     
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
-        # Create a list of commands to put into the script
-        postinst_list = []
-        prerm_list = []
-        
-        # Get destination for link from Auto-Link input textctrl
-        link_path = self.ti_autolink.GetValue()
         # Get the amount of links to be created
         total = len(self.lst_executables)
         
@@ -343,17 +337,27 @@ class Panel(wx.ScrolledWindow):
                     return
                 
                 warn_dialog.Destroy()
-                del warn_dialog
+                del warn_msg, warn_dialog
             
-            # If the link path does not exist on the system post a warning message
+            # Get destination for link from Auto-Link input textctrl
+            link_path = self.ti_autolink.GetValue()
+            
+            # Warn about linking in a directory that does not exist on the current filesystem
             if not os.path.isdir(link_path):
-                err_msg = GT(u'Path "{}" does not exist. Continue?')
+                warn_msg = GT(u'Path "{}" does not exist.')
+                warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
                 
-                err_dialog = ConfirmationDialog(GetTopWindow(), GT(u'Path Warning'),
-                        err_msg.format(link_path))
+                warn_dialog = ConfirmationDialog(GetTopWindow(), text=warn_msg.format(link_path))
                 
-                if err_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
+                if warn_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
                     return
+                
+                warn_dialog.Destroy()
+                del warn_msg, warn_dialog
+            
+            # Create a list of commands to put into the script
+            postinst_list = []
+            prerm_list = []
             
             count = 0
             while count < total:
