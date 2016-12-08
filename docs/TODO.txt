@@ -1,5 +1,6 @@
 0.7.12
 - Heavy testing for both wx 3.0 & 2.8
 - Add '-f' switch to 'rm' command in Auto-Link prerm script
+- Fix exporting menu launcher on build
 
 Non-priority:
