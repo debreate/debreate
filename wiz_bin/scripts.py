@@ -101,6 +101,7 @@ class Panel(wx.ScrolledWindow):
         txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
         self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', ctrl_type=PATH_WARN)
         self.ti_autolink.SetName(u'target')
+        self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
         self.executables = ListCtrlPanel(pnl_autolink, size=(200,200), name=u'al list')
@@ -411,7 +412,7 @@ class Panel(wx.ScrolledWindow):
         self.rb_preinst.SetValue(True)
         self.ScriptSelect(None)
         
-        self.ti_autolink.SetValue(u'/usr/bin')
+        self.ti_autolink.SetValue(self.ti_autolink.default)
         self.ti_autolink.SetBackgroundColour((255, 255, 255, 255))
         self.executables.DeleteAllItems()
     
