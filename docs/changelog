@@ -68,6 +68,7 @@
   - Merged some modules from 'unstable' branch
   - Replace some confirmation dialogs with ConfirmationDialog class
   - Replace some selection controls with check boxes
+  - Scripts' text input areas are disabled when unchecked
   - Show which required fields are empty in build dialog
   - Use custom hyperlink controls
   - Use GitHub URL to check for updates
