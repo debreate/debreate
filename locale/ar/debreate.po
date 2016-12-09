@@ -13,9 +13,9 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-12-02 02:56-0800\n"
-        "PO-Revision-Date: \n"
-        "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
+        "POT-Creation-Date: 2016-12-09 02:02-0800\n"
+        "PO-Revision-Date: 2016-12-09 02:58-0800\n"
+        "Last-Translator: Karim Oulad Chalha <herr.linux88@gmail.com>\n"
         "Language-Team: Arabic <herr.linux88@gmail.com>\n"
         "Language: ar\n"
         "MIME-Version: 1.0\n"
@@ -23,6 +23,9 @@ msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Poedit-Language: Arabic\n"
         "X-Poedit-Country: Morocco\n"
+
+msgid   "\"Changes\" section is empty"
+msgstr  ""
 
 msgid   "A compatible package manager could not be found on the system"
 msgstr  ""
@@ -122,6 +125,12 @@ msgstr  ""
 
 msgid   "Build a package from an existing build tree"
 msgstr  "إنشاء حزمة من مجلد موجودة مسبقا"
+
+msgid   "Build preparation failed"
+msgstr  ""
+
+msgid   "Build preparation failed with unknown error"
+msgstr  ""
 
 msgid   "Building"
 msgstr  "بناء"
@@ -228,7 +237,7 @@ msgstr  ""
 msgid   "Comment"
 msgstr  "تعليق"
 
-msgid   "Compression ID not found for \"{}\" value"
+msgid   "Compressing changelog"
 msgstr  ""
 
 msgid   "Configuration key \"{}\" = \"{}\", type: {}"
@@ -245,6 +254,9 @@ msgstr  "تعاردات"
 
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
+
+msgid   "Continue?"
+msgstr  "الإستمرار؟"
 
 msgid   "Control"
 msgstr  "تحكم"
@@ -267,7 +279,7 @@ msgstr  "حقوق النشر"
 msgid   "Could not build .deb package"
 msgstr  ""
 
-msgid   "Could not create changelog"
+msgid   "Could not compress changelog"
 msgstr  ""
 
 msgid   "Could not create configuration, exiting ..."
@@ -508,7 +520,7 @@ msgid   "Generate scripts"
 msgstr  "تكوين السكربت"
 
 msgid   "Getting files from {}"
-msgstr  ""
+msgstr  "حصول على الملفات من {}"
 
 msgid   "Getting installed size"
 msgstr  ""
@@ -750,9 +762,6 @@ msgstr  ""
 msgid   "Not writing empty text to configuration"
 msgstr  ""
 
-msgid   "Ok"
-msgstr  "نعم"
-
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
@@ -813,6 +822,9 @@ msgstr  "حزمة"
 msgid   "Package build failed"
 msgstr  ""
 
+msgid   "Package build failed with unknown error"
+msgstr  ""
+
 msgid   "Package conflicts and will be de-configured"
 msgstr  "تضاد في الحزم و سيتم إلغاء الإعداد"
 
@@ -865,11 +877,8 @@ msgstr  ""
 msgid   "Path"
 msgstr  "مسار"
 
-msgid   "Path \"{}\" does not exist. Continue?"
-msgstr  ""
-
-msgid   "Path Warning"
-msgstr  "مسار التحذير"
+msgid   "Path \"{}\" does not exist."
+msgstr  "المسار {} غير موجود."
 
 msgid   "Permission Denied"
 msgstr  "صلاحيات غير كافية"
@@ -882,6 +891,9 @@ msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "بعد التثبيت"
+
+msgid   "Post-Install and Pre-Remove scripts generated"
+msgstr  "تكوين سكربتات بعد التثبيت و قبل الحذف"
 
 msgid   "Post-Remove"
 msgstr  "بعد الحذف"
@@ -1097,9 +1109,6 @@ msgstr  ""
 msgid   "Staged directory tree"
 msgstr  ""
 
-msgid   "Start New Project"
-msgstr  "بدء مشروع جديد"
-
 msgid   "Start a new project"
 msgstr  "بدء مشروع جديد"
 
@@ -1161,6 +1170,9 @@ msgid   "The default configuration file will now be created."
 msgstr  ""
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "The following scripts will be overwritten if you continue: {}"
 msgstr  ""
 
 msgid   "This could take a VERY long time"
@@ -1262,10 +1274,7 @@ msgid   "Version corresponing to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
-msgstr  ""
-
-msgid   "WARNING"
-msgstr  ""
+msgstr  "{} يتوفر إصدار!"
 
 msgid   "Warning"
 msgstr  ""
@@ -1294,9 +1303,7 @@ msgstr  ""
 msgid   "You will lose any unsaved information"
 msgstr  "سوف تفقد كل المعلومات الغير محفوظة"
 
-msgid   "You will lose any unsaved information\n"
-        "\n"
-        "Continue?"
+msgid   "You will lose any unsaved information."
 msgstr  ""
 
 msgid   "all = platform independent"
@@ -1319,9 +1326,6 @@ msgstr  ""
 
 msgid   "in progress"
 msgstr  ""
-
-msgid   "post-install and pre-remove scripts generated"
-msgstr  "تكوين سكربتات بعد التثبيت و قبل الحذف"
 
 msgid   "script will be created from text below"
 msgstr  ""
@@ -1371,8 +1375,8 @@ msgstr  ""
 #~ msgid        "Checking scripts"
 #~ msgstr       "فحص السكربتات"
 
-#~ msgid        "Could not locate \"%s\""
-#~ msgstr       "لا يمكن تحديد موقع \"%s\""
+#~ msgid        "Could not locate \"{}\""
+#~ msgstr       "لا يمكن تحديد موقع \"{}\""
 
 #~ msgid        "Create checksums for files in package"
 #~ msgstr       "إنشاء checksums للملفات في الحزمة"
@@ -1395,9 +1399,6 @@ msgstr  ""
 #~ msgid        "Getting administrative privileges from user"
 #~ msgstr       "الحصول على امتيازات إدارية من المستخدم"
 
-#~ msgid        "Getting files from %s"
-#~ msgstr       "حصول على الملفات من %s"
-
 #~ msgid        "Go to Menu Launcher section"
 #~ msgstr       "ذهاب إلى قسم Menu Launcher"
 
@@ -1416,6 +1417,9 @@ msgstr  ""
 #~ msgid        "Lintian Tags Explanation"
 #~ msgstr       "تعليل Lintian العلامات"
 
+#~ msgid        "Ok"
+#~ msgstr       "نعم"
+
 #~ msgid        "Open launcher file"
 #~ msgstr       "فتح ملف المطلقة"
 
@@ -1425,8 +1429,8 @@ msgstr  ""
 #~ msgid        "Password mismatch, try again"
 #~ msgstr       "عدم تطابق كلمة المرور ، حاول مرة أخرى"
 
-#~ msgid        "Path %s does not exist. Continue?"
-#~ msgstr       "المسار %s غير موجود. الإستمرار؟"
+#~ msgid        "Path Warning"
+#~ msgstr       "مسار التحذير"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "المسار إلى المجلد المؤقت"
@@ -1445,6 +1449,3 @@ msgstr  ""
 
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "هذه الرسالة يعرض أول مرة يتم تشغيل البرنامج ، أو معطوبة إذا يصبح التكوين. سيتم الآن ملف التكوين الافتراضي يتم إنشاؤه. لحذف هذا الملف ، استخدم الأمر التالي :"
-
-#~ msgid        "Version %s is available!"
-#~ msgstr       "%s يتوفر إصدار!"

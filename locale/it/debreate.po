@@ -13,14 +13,17 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-12-02 02:56-0800\n"
-        "PO-Revision-Date: 2011-12-05 20:32-0800\n"
+        "POT-Creation-Date: 2016-12-09 02:02-0800\n"
+        "PO-Revision-Date: 2016-12-09 03:01-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Italian <antumdeluge@gmail.com>\n"
         "Language: it\n"
         "MIME-Version: 1.0\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
+
+msgid   "\"Changes\" section is empty"
+msgstr  "Sezione \"Modifiche\" è vuota"
 
 msgid   "A compatible package manager could not be found on the system"
 msgstr  ""
@@ -120,6 +123,12 @@ msgstr  ""
 
 msgid   "Build a package from an existing build tree"
 msgstr  "Creare un pacchetto di un percorso esistente"
+
+msgid   "Build preparation failed"
+msgstr  "La preparazione di costruzione non è riuscita"
+
+msgid   "Build preparation failed with unknown error"
+msgstr  "La preparazione di costruzione non è riuscita con un errore sconosciuto"
 
 msgid   "Building"
 msgstr  "Costruzione del pacchetto"
@@ -226,8 +235,8 @@ msgstr  ""
 msgid   "Comment"
 msgstr  "Commento"
 
-msgid   "Compression ID not found for \"{}\" value"
-msgstr  ""
+msgid   "Compressing changelog"
+msgstr  "Compressione dei changelog"
 
 msgid   "Configuration key \"{}\" = \"{}\", type: {}"
 msgstr  ""
@@ -243,6 +252,9 @@ msgstr  "Conflitti"
 
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
+
+msgid   "Continue?"
+msgstr  "Continuare?"
 
 msgid   "Control"
 msgstr  "Controllo"
@@ -265,7 +277,7 @@ msgstr  ""
 msgid   "Could not build .deb package"
 msgstr  ""
 
-msgid   "Could not create changelog"
+msgid   "Could not compress changelog"
 msgstr  ""
 
 msgid   "Could not create configuration, exiting ..."
@@ -506,7 +518,7 @@ msgid   "Generate scripts"
 msgstr  "Genera script"
 
 msgid   "Getting files from {}"
-msgstr  ""
+msgstr  "Raccolta di file da {}"
 
 msgid   "Getting installed size"
 msgstr  ""
@@ -748,9 +760,6 @@ msgstr  ""
 msgid   "Not writing empty text to configuration"
 msgstr  ""
 
-msgid   "Ok"
-msgstr  ""
-
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
@@ -809,7 +818,10 @@ msgid   "Package"
 msgstr  "Pacchetto"
 
 msgid   "Package build failed"
-msgstr  ""
+msgstr  "La costruzione del pacchetto non è riuscita"
+
+msgid   "Package build failed with unknown error"
+msgstr  "La costruzione del pacchetto non è riuscita con un errore sconosciuto"
 
 msgid   "Package conflicts and will be de-configured"
 msgstr  "Il pacchetto è in conflitto e sarà deconfigurato"
@@ -863,11 +875,8 @@ msgstr  ""
 msgid   "Path"
 msgstr  "Percorso"
 
-msgid   "Path \"{}\" does not exist. Continue?"
-msgstr  ""
-
-msgid   "Path Warning"
-msgstr  "Avviso di Percorso"
+msgid   "Path \"{}\" does not exist."
+msgstr  "Percorso \"{}\" non esiste."
 
 msgid   "Permission Denied"
 msgstr  "Autorizzazione Negata"
@@ -880,6 +889,9 @@ msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "Postinstallar"
+
+msgid   "Post-Install and Pre-Remove scripts generated"
+msgstr  "Script di postinstallar e predesinstallar sono stati generati"
 
 msgid   "Post-Remove"
 msgstr  "Post Disinstallar"
@@ -1095,9 +1107,6 @@ msgstr  ""
 msgid   "Staged directory tree"
 msgstr  ""
 
-msgid   "Start New Project"
-msgstr  "Avviare un Nuovo Progetto"
-
 msgid   "Start a new project"
 msgstr  "Iniziare un nuovo progetto"
 
@@ -1159,6 +1168,9 @@ msgid   "The default configuration file will now be created."
 msgstr  ""
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "The following scripts will be overwritten if you continue: {}"
 msgstr  ""
 
 msgid   "This could take a VERY long time"
@@ -1260,10 +1272,7 @@ msgid   "Version corresponing to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
-msgstr  ""
-
-msgid   "WARNING"
-msgstr  ""
+msgstr  "Disponibile la versione {}!"
 
 msgid   "Warning"
 msgstr  ""
@@ -1292,9 +1301,7 @@ msgstr  ""
 msgid   "You will lose any unsaved information"
 msgstr  "Informazioni non salvate andranno perse"
 
-msgid   "You will lose any unsaved information\n"
-        "\n"
-        "Continue?"
+msgid   "You will lose any unsaved information."
 msgstr  ""
 
 msgid   "all = platform independent"
@@ -1317,9 +1324,6 @@ msgstr  ""
 
 msgid   "in progress"
 msgstr  ""
-
-msgid   "post-install and pre-remove scripts generated"
-msgstr  "Script di postinstallar e predesinstallar sono stati generati"
 
 msgid   "script will be created from text below"
 msgstr  ""
@@ -1369,8 +1373,8 @@ msgstr  ""
 #~ msgid        "Checking scripts"
 #~ msgstr       "Esaminando gli script"
 
-#~ msgid        "Could not locate \"%s\""
-#~ msgstr       "Non riusciva a trovare \"%s\""
+#~ msgid        "Could not locate \"{}\""
+#~ msgstr       "Non riusciva a trovare \"{}\""
 
 #~ msgid        "Create checksums for files in package"
 #~ msgstr       "Creare checksum per i file nel pacchetto"
@@ -1393,9 +1397,6 @@ msgstr  ""
 #~ msgid        "Getting administrative privileges from user"
 #~ msgstr       "Ottenere privilegi amministrativi da utente"
 
-#~ msgid        "Getting files from %s"
-#~ msgstr       "Raccolta di file da %s"
-
 #~ msgid        "Go to Menu Launcher section"
 #~ msgstr       "Vai alla sezione Lanciatore di Menu"
 
@@ -1417,8 +1418,8 @@ msgstr  ""
 #~ msgid        "Password mismatch, try again"
 #~ msgstr       "Mancata corrispondenza di password, riprovare"
 
-#~ msgid        "Path %s does not exist. Continue?"
-#~ msgstr       "Percorso %s non esiste. Continuare?"
+#~ msgid        "Path Warning"
+#~ msgstr       "Avviso di Percorso"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Percorso directory temporanea"
@@ -1437,6 +1438,3 @@ msgstr  ""
 
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "Questo messaggio viene visualizzato solo alla prima esecuzione, o se il file di configurazione risulta danneggiato. Ora verrà creato il file di configurazione predefinita. Per eliminare questo file, digitare il seguente comando in un terminale:"
-
-#~ msgid        "Version %s is available!"
-#~ msgstr       "Disponibile la versione %s!"

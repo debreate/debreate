@@ -13,14 +13,17 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-12-02 02:56-0800\n"
-        "PO-Revision-Date: 2011-12-07 02:10-0800\n"
-        "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
+        "POT-Creation-Date: 2016-12-09 02:02-0800\n"
+        "PO-Revision-Date: 2016-12-09 03:00-0800\n"
+        "Last-Translator: Philippe Dalet <philippe.dalet@ac-toulouse.fr>\n"
         "Language-Team: French <philippe.dalet@ac-toulouse.fr>\n"
         "Language: fr\n"
         "MIME-Version: 1.0\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
+
+msgid   "\"Changes\" section is empty"
+msgstr  ""
 
 msgid   "A compatible package manager could not be found on the system"
 msgstr  ""
@@ -121,6 +124,12 @@ msgstr  ""
 msgid   "Build a package from an existing build tree"
 msgstr  "Construire un paquet à partir d'un arbre de construction existant"
 
+msgid   "Build preparation failed"
+msgstr  ""
+
+msgid   "Build preparation failed with unknown error"
+msgstr  ""
+
 msgid   "Building"
 msgstr  "En train de Construire"
 
@@ -200,7 +209,7 @@ msgid   "Clear"
 msgstr  "Effacer"
 
 msgid   "Clear all dependencies?"
-msgstr  "Effacer toutes les dépendances"
+msgstr  "Effacer toutes les dépendances ?"
 
 msgid   "Clear all files?"
 msgstr  "Effacer tous les fichiers ?"
@@ -226,7 +235,7 @@ msgstr  ""
 msgid   "Comment"
 msgstr  "Commentaires"
 
-msgid   "Compression ID not found for \"{}\" value"
+msgid   "Compressing changelog"
 msgstr  ""
 
 msgid   "Configuration key \"{}\" = \"{}\", type: {}"
@@ -243,6 +252,9 @@ msgstr  "Conflits"
 
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
+
+msgid   "Continue?"
+msgstr  "Continuer ?"
 
 msgid   "Control"
 msgstr  "Control"
@@ -265,7 +277,7 @@ msgstr  "Copyright"
 msgid   "Could not build .deb package"
 msgstr  ""
 
-msgid   "Could not create changelog"
+msgid   "Could not compress changelog"
 msgstr  ""
 
 msgid   "Could not create configuration, exiting ..."
@@ -506,7 +518,7 @@ msgid   "Generate scripts"
 msgstr  "Génère des scripts"
 
 msgid   "Getting files from {}"
-msgstr  ""
+msgstr  "Obtenir des fichiers de {}"
 
 msgid   "Getting installed size"
 msgstr  ""
@@ -748,9 +760,6 @@ msgstr  ""
 msgid   "Not writing empty text to configuration"
 msgstr  ""
 
-msgid   "Ok"
-msgstr  "OK"
-
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
@@ -811,6 +820,9 @@ msgstr  "Paquet"
 msgid   "Package build failed"
 msgstr  ""
 
+msgid   "Package build failed with unknown error"
+msgstr  ""
+
 msgid   "Package conflicts and will be de-configured"
 msgstr  "Paquet génère un conflit et sera déconfiguré"
 
@@ -863,11 +875,8 @@ msgstr  ""
 msgid   "Path"
 msgstr  "Chemin"
 
-msgid   "Path \"{}\" does not exist. Continue?"
-msgstr  ""
-
-msgid   "Path Warning"
-msgstr  "Attention Chemin"
+msgid   "Path \"{}\" does not exist."
+msgstr  "Le chemin \"{}\" n'existe pas."
 
 msgid   "Permission Denied"
 msgstr  "Permission refusé"
@@ -880,6 +889,9 @@ msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "Post-Install"
+
+msgid   "Post-Install and Pre-Remove scripts generated"
+msgstr  "Scripts Post-Install et Pre-Remove générés"
 
 msgid   "Post-Remove"
 msgstr  "Post-Remove"
@@ -1095,11 +1107,8 @@ msgstr  ""
 msgid   "Staged directory tree"
 msgstr  ""
 
-msgid   "Start New Project"
-msgstr  "Démarrer un nouveau projet"
-
 msgid   "Start a new project"
-msgstr  "Démarre un nouveau Projet"
+msgstr  "Démarre un nouveau projet"
 
 msgid   "Start building"
 msgstr  "Démarre la construction"
@@ -1159,6 +1168,9 @@ msgid   "The default configuration file will now be created."
 msgstr  ""
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "The following scripts will be overwritten if you continue: {}"
 msgstr  ""
 
 msgid   "This could take a VERY long time"
@@ -1260,10 +1272,7 @@ msgid   "Version corresponing to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
-msgstr  ""
-
-msgid   "WARNING"
-msgstr  ""
+msgstr  "Version {} est valide!"
 
 msgid   "Warning"
 msgstr  ""
@@ -1284,7 +1293,7 @@ msgid   "Window ID"
 msgstr  ""
 
 msgid   "Would you like to go to Debreate's website?"
-msgstr  "Voulez-vous aller sur le site web de Debreate?"
+msgstr  "Voulez-vous aller sur le site web de Debreate ?"
 
 msgid   "Wrong value type for configuration key"
 msgstr  ""
@@ -1292,9 +1301,7 @@ msgstr  ""
 msgid   "You will lose any unsaved information"
 msgstr  "Vous allez perdre des informations non sauvées"
 
-msgid   "You will lose any unsaved information\n"
-        "\n"
-        "Continue?"
+msgid   "You will lose any unsaved information."
 msgstr  ""
 
 msgid   "all = platform independent"
@@ -1317,9 +1324,6 @@ msgstr  ""
 
 msgid   "in progress"
 msgstr  ""
-
-msgid   "post-install and pre-remove scripts generated"
-msgstr  "Scripts post-install et pre-remove générés"
 
 msgid   "script will be created from text below"
 msgstr  ""
@@ -1369,8 +1373,8 @@ msgstr  ""
 #~ msgid        "Checking scripts"
 #~ msgstr       "En train de vérifier les scripts"
 
-#~ msgid        "Could not locate \"%s\""
-#~ msgstr       "Ne peut localiser  \"%s\""
+#~ msgid        "Could not locate \"{}\""
+#~ msgstr       "Ne peut localiser  \"{}\""
 
 #~ msgid        "Create checksums for files in package"
 #~ msgstr       "Créé des checksums pour les fichiers dans le paquet"
@@ -1392,9 +1396,6 @@ msgstr  ""
 
 #~ msgid        "Getting administrative privileges from user"
 #~ msgstr       "Obtenir des privilèges administratifs de l'utilisateur"
-
-#~ msgid        "Getting files from %s"
-#~ msgstr       "Obtenir des fichiers de %s"
 
 #~ msgid        "Go to Menu Launcher section"
 #~ msgstr       "Aller à la section Menu de Lancement"
@@ -1420,8 +1421,8 @@ msgstr  ""
 #~ msgid        "Password mismatch, try again"
 #~ msgstr       "Incompatibilité de mot de passe, essayez de nouveau"
 
-#~ msgid        "Path %s does not exist. Continue?"
-#~ msgstr       "Le chemin %s n'existe pas.  Continuer ?"
+#~ msgid        "Path Warning"
+#~ msgstr       "Attention Chemin"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Chemin vers l'arbre de Construction"
@@ -1443,9 +1444,6 @@ msgstr  ""
 
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "Ce Message s'affiche seulement la première fois, ou si le fichier de configuration est corrompu. Le fichier de configuration par défaut sera immédiatement créé. Pour détruire ce fichier, taper la commande suivante dans un terminal:"
-
-#~ msgid        "Version %s is available!"
-#~ msgstr       "Version %s est valide!"
 
 #~ msgid        "filename. Debreate does not know how to deal"
 #~ msgstr       "Nom de fichier. Debreate ne sait pas comment faire face"

@@ -13,14 +13,17 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-12-02 02:56-0800\n"
-        "PO-Revision-Date: 2014-10-26 21:59-0800\n"
-        "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
+        "POT-Creation-Date: 2016-12-09 02:02-0800\n"
+        "PO-Revision-Date: 2016-12-09 03:03-0800\n"
+        "Last-Translator: Zhmurkov Sergey <LL@li.org>\n"
         "Language-Team: Russian <LL@li.org>\n"
         "Language: ru\n"
         "MIME-Version: 1.0\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
+
+msgid   "\"Changes\" section is empty"
+msgstr  ""
 
 msgid   "A compatible package manager could not be found on the system"
 msgstr  ""
@@ -120,6 +123,12 @@ msgstr  ""
 
 msgid   "Build a package from an existing build tree"
 msgstr  "Построить проект из существующего дерева"
+
+msgid   "Build preparation failed"
+msgstr  ""
+
+msgid   "Build preparation failed with unknown error"
+msgstr  ""
 
 msgid   "Building"
 msgstr  "Построение"
@@ -226,7 +235,7 @@ msgstr  ""
 msgid   "Comment"
 msgstr  "Коментарий"
 
-msgid   "Compression ID not found for \"{}\" value"
+msgid   "Compressing changelog"
 msgstr  ""
 
 msgid   "Configuration key \"{}\" = \"{}\", type: {}"
@@ -243,6 +252,9 @@ msgstr  "Конфликты"
 
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
+
+msgid   "Continue?"
+msgstr  "Продолжить?"
 
 msgid   "Control"
 msgstr  "Контроль"
@@ -265,7 +277,7 @@ msgstr  "Правообладатель"
 msgid   "Could not build .deb package"
 msgstr  ""
 
-msgid   "Could not create changelog"
+msgid   "Could not compress changelog"
 msgstr  ""
 
 msgid   "Could not create configuration, exiting ..."
@@ -505,7 +517,7 @@ msgid   "Generate scripts"
 msgstr  ""
 
 msgid   "Getting files from {}"
-msgstr  ""
+msgstr  "Получить файлы из {}"
 
 msgid   "Getting installed size"
 msgstr  ""
@@ -747,9 +759,6 @@ msgstr  ""
 msgid   "Not writing empty text to configuration"
 msgstr  ""
 
-msgid   "Ok"
-msgstr  "ОК"
-
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
@@ -810,6 +819,9 @@ msgstr  "Пакет"
 msgid   "Package build failed"
 msgstr  ""
 
+msgid   "Package build failed with unknown error"
+msgstr  ""
+
 msgid   "Package conflicts and will be de-configured"
 msgstr  "Пакет конфликтует и будет переконфигурирован"
 
@@ -862,11 +874,8 @@ msgstr  ""
 msgid   "Path"
 msgstr  "Путь"
 
-msgid   "Path \"{}\" does not exist. Continue?"
-msgstr  ""
-
-msgid   "Path Warning"
-msgstr  "Предупреждение"
+msgid   "Path \"{}\" does not exist."
+msgstr  "Путь \"{}\" не существует."
 
 msgid   "Permission Denied"
 msgstr  "Неразрешимая зависимость"
@@ -879,6 +888,9 @@ msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "Постустановка"
+
+msgid   "Post-Install and Pre-Remove scripts generated"
+msgstr  "Генерация сценариев постустановки и предудаления"
 
 msgid   "Post-Remove"
 msgstr  "Постудаление"
@@ -1094,11 +1106,8 @@ msgstr  ""
 msgid   "Staged directory tree"
 msgstr  ""
 
-msgid   "Start New Project"
-msgstr  "Запустить новый проект"
-
 msgid   "Start a new project"
-msgstr  ""
+msgstr  "Запустить новый проект"
 
 msgid   "Start building"
 msgstr  "Начать построение"
@@ -1158,6 +1167,9 @@ msgid   "The default configuration file will now be created."
 msgstr  ""
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "The following scripts will be overwritten if you continue: {}"
 msgstr  ""
 
 msgid   "This could take a VERY long time"
@@ -1259,10 +1271,7 @@ msgid   "Version corresponing to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
-msgstr  ""
-
-msgid   "WARNING"
-msgstr  ""
+msgstr  "Доступна версия {}!"
 
 msgid   "Warning"
 msgstr  ""
@@ -1291,10 +1300,8 @@ msgstr  ""
 msgid   "You will lose any unsaved information"
 msgstr  "Все несохраненные данные будут потеряны."
 
-msgid   "You will lose any unsaved information\n"
-        "\n"
-        "Continue?"
-msgstr  ""
+msgid   "You will lose any unsaved information."
+msgstr  "Все несохраненные данные будут потеряны."
 
 msgid   "all = platform independent"
 msgstr  ""
@@ -1316,9 +1323,6 @@ msgstr  ""
 
 msgid   "in progress"
 msgstr  ""
-
-msgid   "post-install and pre-remove scripts generated"
-msgstr  "Генерация сценариев постустановки и предудаления"
 
 msgid   "script will be created from text below"
 msgstr  ""
@@ -1368,8 +1372,8 @@ msgstr  ""
 #~ msgid        "Checking scripts"
 #~ msgstr       "Проверка сценариев"
 
-#~ msgid        "Could not locate \"%s\""
-#~ msgstr       "Невозможно разместить \"%s \""
+#~ msgid        "Could not locate \"{}\""
+#~ msgstr       "Невозможно разместить \"{} \""
 
 #~ msgid        "Create checksums for files in package"
 #~ msgstr       "Создать контрольную сумму пакета"
@@ -1395,9 +1399,6 @@ msgstr  ""
 #~ msgid        "Getting administrative privileges from user"
 #~ msgstr       "Получение административных привилегий для пользователя"
 
-#~ msgid        "Getting files from %s"
-#~ msgstr       "Получить файлы из %s"
-
 #~ msgid        "Go to Menu Launcher section"
 #~ msgstr       "Перейти к странице меню"
 
@@ -1422,8 +1423,8 @@ msgstr  ""
 #~ msgid        "Password mismatch, try again"
 #~ msgstr       "Неверный пароль, попробуйте еще раз"
 
-#~ msgid        "Path %s does not exist. Continue?"
-#~ msgstr       "Путь %s не существует. Продолжить?"
+#~ msgid        "Path Warning"
+#~ msgstr       "Предупреждение"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Путь создания дерева"
@@ -1445,6 +1446,3 @@ msgstr  ""
 
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "Это сообщение только выводится на экран при первом запуске, или если конфигурационный файл поврежден. Конфигурационный файл будет теперь создаваться по умолчанию . Чтобы удалить этот файл, введите следующую команду в терминале:"
-
-#~ msgid        "Version %s is available!"
-#~ msgstr       "Доступна версия %s!"

@@ -13,14 +13,17 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-12-02 02:56-0800\n"
-        "PO-Revision-Date: 2016-12-02 07:58-0800\n"
+        "POT-Creation-Date: 2016-12-09 02:02-0800\n"
+        "PO-Revision-Date: 2016-12-09 02:57-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Spanish <antumdeluge@gmail.com>\n"
         "Language: es\n"
         "MIME-Version: 1.0\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
+
+msgid   "\"Changes\" section is empty"
+msgstr  "La sección \"Cambios\" está vacía"
 
 msgid   "A compatible package manager could not be found on the system"
 msgstr  "No se encontró un administrador de paquetes compatible en el sistema"
@@ -120,6 +123,12 @@ msgstr  "Empaquetar Completada"
 
 msgid   "Build a package from an existing build tree"
 msgstr  "Construir un paquete de una directorio formateado existente"
+
+msgid   "Build preparation failed"
+msgstr  "La preparación de la construcción falló"
+
+msgid   "Build preparation failed with unknown error"
+msgstr  "La preparación de la construcción falló con un error desconocido"
 
 msgid   "Building"
 msgstr  "Empaquetando"
@@ -226,8 +235,8 @@ msgstr  "Comando ejecutado: {}"
 msgid   "Comment"
 msgstr  "Comentario"
 
-msgid   "Compression ID not found for \"{}\" value"
-msgstr  ""
+msgid   "Compressing changelog"
+msgstr  "Comprimir el registro de cambios"
 
 msgid   "Configuration key \"{}\" = \"{}\", type: {}"
 msgstr  ""
@@ -243,6 +252,9 @@ msgstr  "En Conflicto de"
 
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
+
+msgid   "Continue?"
+msgstr  "¿Continuar?"
 
 msgid   "Control"
 msgstr  ""
@@ -265,8 +277,8 @@ msgstr  "Derecho de Autor"
 msgid   "Could not build .deb package"
 msgstr  "No se pudo construir el paquete .deb"
 
-msgid   "Could not create changelog"
-msgstr  "No se pudo construir el registro de cambios"
+msgid   "Could not compress changelog"
+msgstr  "No se pudo comprimir el registro de cambios"
 
 msgid   "Could not create configuration, exiting ..."
 msgstr  "No se pudo construir el archivo de configuración, saliendo ..."
@@ -748,9 +760,6 @@ msgstr  ""
 msgid   "Not writing empty text to configuration"
 msgstr  "No se escribe texto vacío a la configuración"
 
-msgid   "Ok"
-msgstr  "Aceptar"
-
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
@@ -809,7 +818,10 @@ msgid   "Package"
 msgstr  "Paquete"
 
 msgid   "Package build failed"
-msgstr  ""
+msgstr  "Construcción del paquete falló"
+
+msgid   "Package build failed with unknown error"
+msgstr  "Construcción del paquete falló con un error desconocido"
 
 msgid   "Package conflicts and will be de-configured"
 msgstr  "El paquete está en conflicto y será desconfigurado"
@@ -863,11 +875,8 @@ msgstr  ""
 msgid   "Path"
 msgstr  "Ruta"
 
-msgid   "Path \"{}\" does not exist. Continue?"
-msgstr  "La Ruta \"{}\" no existe. ¿Continuar?"
-
-msgid   "Path Warning"
-msgstr  "Aviso de la Ruta"
+msgid   "Path \"{}\" does not exist."
+msgstr  "La Ruta \"{}\" no existe."
 
 msgid   "Permission Denied"
 msgstr  "Permiso Negado"
@@ -880,6 +889,9 @@ msgstr  ""
 
 msgid   "Post-Install"
 msgstr  "Post-Instalar"
+
+msgid   "Post-Install and Pre-Remove scripts generated"
+msgstr  "Los scripts de Post-Instalación y Pre-Desinstalación se producieron"
 
 msgid   "Post-Remove"
 msgstr  "Post-Desinstalar"
@@ -1095,9 +1107,6 @@ msgstr  ""
 msgid   "Staged directory tree"
 msgstr  "El directorio formateado"
 
-msgid   "Start New Project"
-msgstr  "Iniciar Proyecto Nuevo"
-
 msgid   "Start a new project"
 msgstr  "Iniciar proyecto nuevo"
 
@@ -1159,6 +1168,9 @@ msgid   "The default configuration file will now be created."
 msgstr  "Se creará el archivo de configuración por defecto."
 
 msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgstr  ""
+
+msgid   "The following scripts will be overwritten if you continue: {}"
 msgstr  ""
 
 msgid   "This could take a VERY long time"
@@ -1262,14 +1274,11 @@ msgstr  ""
 msgid   "Version {} is available!"
 msgstr  "¡Está disponible la versión {}!"
 
-msgid   "WARNING"
-msgstr  ""
-
 msgid   "Warning"
 msgstr  "Advertencia"
 
 msgid   "Warning:"
-msgstr  ""
+msgstr  "Advertencia:"
 
 msgid   "Website Designer & Author"
 msgstr  "Diseñador y Autor del Sitio Web"
@@ -1292,9 +1301,7 @@ msgstr  ""
 msgid   "You will lose any unsaved information"
 msgstr  "Se perderá la información no guardada"
 
-msgid   "You will lose any unsaved information\n"
-        "\n"
-        "Continue?"
+msgid   "You will lose any unsaved information."
 msgstr  ""
 
 msgid   "all = platform independent"
@@ -1317,9 +1324,6 @@ msgstr  ""
 
 msgid   "in progress"
 msgstr  ""
-
-msgid   "post-install and pre-remove scripts generated"
-msgstr  "Los scripts de post-instalación y pre-desinstalación se producieron"
 
 msgid   "script will be created from text below"
 msgstr  ""
@@ -1369,8 +1373,11 @@ msgstr  ""
 #~ msgid        "Checking scripts"
 #~ msgstr       "Comprobando los scrips"
 
-#~ msgid        "Could not locate \"%s\""
-#~ msgstr       "No se encuentra \"%s\""
+#~ msgid        "Could not create changelog"
+#~ msgstr       "No se pudo construir el registro de cambios"
+
+#~ msgid        "Could not locate \"{}\""
+#~ msgstr       "No se encuentra \"{}\""
 
 #~ msgid        "Create checksums for files in package"
 #~ msgstr       "Crear suma de comprobación para los archivos en el paquete"
@@ -1425,6 +1432,9 @@ msgstr  ""
 
 #~ msgid        "Password mismatch, try again"
 #~ msgstr       "Contraseña no coincide, vuelva a intentarlo"
+
+#~ msgid        "Path Warning"
+#~ msgstr       "Aviso de la Ruta"
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Ruta al directorio del construyo"
