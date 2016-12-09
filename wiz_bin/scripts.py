@@ -80,6 +80,9 @@ class Panel(wx.ScrolledWindow):
         self.ti_prerm = MonospaceTextCtrl(self, ID_RM_PRE, name=u'script body')
         self.ti_postrm = MonospaceTextCtrl(self, ID_RM_POST, name=u'script body')
         
+        # Set script text areas to default enabled/disabled setting
+        self.OnToggleScripts()
+        
         self.grp_te = {	self.rb_preinst: self.ti_preinst, self.rb_postinst: self.ti_postinst,
                             self.rb_prerm: self.ti_prerm, self.rb_postrm: self.ti_postrm
                             }
@@ -424,6 +427,8 @@ class Panel(wx.ScrolledWindow):
         for rb in self.grp_te:
             self.grp_te[rb].Clear()
         
+        self.OnToggleScripts()
+        
         self.rb_preinst.SetValue(True)
         self.ScriptSelect(None)
         
@@ -484,3 +489,6 @@ class Panel(wx.ScrolledWindow):
         else:
             self.chk_postrm.SetValue(False)
             self.ti_postrm.Clear()
+        
+        # Enable/Disable scripts text areas
+        self.OnToggleScripts()
