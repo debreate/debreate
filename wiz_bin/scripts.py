@@ -361,6 +361,12 @@ class Panel(wx.ScrolledWindow):
                 warn_dialog.Destroy()
                 del warn_msg, warn_dialog
             
+            self.chk_postinst.SetValue(True)
+            self.chk_prerm.SetValue(True)
+            
+            # Update scripts' text area enabled status
+            self.OnToggleScripts()
+            
             # Create a list of commands to put into the script
             postinst_list = []
             prerm_list = []
@@ -376,16 +382,14 @@ class Panel(wx.ScrolledWindow):
                     link = u'{}/{}'.format(link_path, filename)
                 
                 postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
-                prerm_list.append(u'rm "{}"'.format(link))
+                prerm_list.append(u'rm -f "{}"'.format(link))
                 count += 1
             
             postinst = u'\n\n'.join(postinst_list)
             prerm = u'\n\n'.join(prerm_list)
             
             self.ti_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
-            self.chk_postinst.SetValue(True)
             self.ti_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
-            self.chk_prerm.SetValue(True)
             
             DetailedMessageDialog(main_window, GT(u'Success'),
                     text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
