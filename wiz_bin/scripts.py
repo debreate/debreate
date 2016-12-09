@@ -17,6 +17,7 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
+from dbr.log                import Logger
 from dbr.markdown           import MarkdownDialog
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
@@ -60,6 +61,8 @@ class Panel(wx.ScrolledWindow):
         
         for S in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
             S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
+            
+            S.Bind(wx.EVT_CHECKBOX, self.OnToggleScripts)
         
         # Radio buttons for displaying between pre- and post- install scripts
         self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'),
@@ -396,6 +399,21 @@ class Panel(wx.ScrolledWindow):
         al_help.ShowModal()
         al_help.CenterOnParent(wx.BOTH)
         al_help.Close()
+    
+    
+    ## TODO: Doxygen
+    def OnToggleScripts(self, event=None):
+        Logger.Debug(__name__, u'Toggling scripts')
+        
+        fields = (
+            (self.ti_preinst, self.chk_preinst.GetValue()),
+            (self.ti_postinst, self.chk_postinst.GetValue()),
+            (self.ti_prerm, self.chk_prerm.GetValue()),
+            (self.ti_postrm, self.chk_postrm.GetValue()),
+            )
+        
+        for F, enable in fields:
+            F.Enable(enable)
     
     
     ## TODO: Doxygen
