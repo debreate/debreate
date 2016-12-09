@@ -22,6 +22,7 @@ from dbr.md5                import MD5Hasher
 from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
+from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
@@ -776,9 +777,8 @@ class Panel(wx.ScrolledWindow):
             return
         
         if ret_code == dbrerrno.FEMPTY:
-            err_dia = wx.MessageDialog(self,
-                    u'{}\n{}'.format(GT(u'One of the required fields is empty'), build_prep),
-                    GT(u'Cannot Continue'), wx.OK|wx.ICON_WARNING)
+            err_dia = DetailedMessageDialog(GetTopWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
+                    text=u'{}\n{}'.format(GT(u'One of the required fields is empty'), build_prep))
             err_dia.ShowModal()
             err_dia.Destroy()
             
@@ -791,8 +791,8 @@ class Panel(wx.ScrolledWindow):
             
             # FIXME: Check .deb package timestamp to confirm build success
             if ret_code == dbrerrno.SUCCESS:
-                wx.MessageDialog(self, GT(u'Package created successfully'), GT(u'Success'),
-                        style=wx.OK|wx.ICON_INFORMATION).ShowModal()
+                DetailedMessageDialog(GetTopWindow(), GT(u'Success'), ICON_INFORMATION,
+                        text=GT(u'Package created successfully')).ShowModal()
                 
                 # Installing the package
                 if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
