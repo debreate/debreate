@@ -18,7 +18,7 @@ from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
-from globals.bitmaps        import ICON_EXCLAMATION
+from globals.bitmaps        import ICON_WARNING
 from globals.ident          import FID_EMAIL
 from globals.ident          import FID_MAINTAINER
 from globals.ident          import FID_PACKAGE
@@ -172,7 +172,7 @@ class Panel(wx.ScrolledWindow):
         new_changes = self.ti_changes.GetValue()
         
         if TextIsEmpty(new_changes):
-            DetailedMessageDialog(GetTopWindow(), GT(u'Warning'), ICON_EXCLAMATION,
+            DetailedMessageDialog(GetTopWindow(), GT(u'Warning'), ICON_WARNING,
                     GT(u'"Changes" section is empty')).ShowModal()
             
             self.ti_changes.SetInsertionPointEnd()
