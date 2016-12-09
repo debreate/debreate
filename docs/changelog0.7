@@ -1,35 +1,35 @@
 0.7.12
-- FIXES:
+- Fixes:
   - Added fixed & updated modules from unstable branch
   - Fix first run window not closing
   - Fix opening projects from command line
   - Fix problems with add/remove/delete in dependency list
   - Fix progress dialogs cannot be cancelled
   - Fix Quick Build
-- CODE CLEANUP:
+- Code Cleanup:
   - Removed old/unused code & comments
   - Removed some unused/deprecated modules & classes
-- NEW FEATURES:
+- New Features:
   - About dialog:
     - Displays system information (Python & wxPython versions)
   - Added manpage
   - Command line:
-    - 'legacy' as first argument forces wx 2.8 if available
-    - '-h|--help' option uses output of 'man debreate'
-      - Uses default manpath if installed, otherwise uses sub-directory man/man1
-    - '-v|--version' displays Debreate version
-    - '-l=|--log-level=' sets the logger verbosity
+    - 'legacy': Forces wx 2.8 if available
+    - 'compile': Compiles Python source files (.py) into bytecode (.pyc)
+    - 'clean': Removes compiled Python bytecode from Debreate directory
+    - '-h|--help': Displays output of 'man debreate'
+      - installed: Uses default manpath
+      - portable: Uses sub-directory man/man1
+    - '-v|--version': displays Debreate version
+    - '-l=|--log-level=': sets the logger verbosity
       - Value can be one of 'info|0', 'warning|1', 'error|2', or 'debug|3'
       - Default level is 'error' (2)
-    - '-i=|--log-interval=' is reserved for 0.8.0 & currently does nothing
+    - '-i=|--log-interval=': is reserved for 0.8.0 (currently does nothing)
   - Logger added for outputting messages to text log
   - Menu options:
     - Enable/Disable tooltips (wx 3.0 only)
     - Open logs directory in system file manager
       - requires 'xdg-open' command
-  - MIME type association for system "Open with..."
-    - .deb installation associates .dbp files (application/x-dbp)
-    - Icons for .dbp files added to Gnome icons directory
   - Page Build:
     - Option to install packages after build uses gdebi
       - 'gdebi-gtk' or 'gdebi-kde' command required
@@ -39,35 +39,43 @@
     - Added 'arm64' to architectures
   - Page Files:
     - File import progress dialog shows task count
-    - File list can be refreshed to update missing files
+    - File list can be refreshed
+      - Updates missing files status & executable status
+    - Missing files marked by red-orange background
   - Page Menu/Launcher:
     - Optionally use custom filename for menu launcher
   - wx 3.0 compatibility for newer systems
     - wx 2.8 compatibility is retained
-- MISC:
+- Debreate Installation:
   - Added Debian maintainer scripts for (un)installation
-    - postinst: Creates a symbolic link to executable
-    - prerm: Deletes the symbolic when when package is uninstalled
     - postrm: Cleans up any residual files in /usr/share/debreate
+  - MIME type association for system "Open with..."
+    - .deb installation associates .dbp files (application/x-dbp)
+    - Icons for .dbp files added to Gnome icons directory
+- Misc:
   - Added/Altered some helper scripts for source management
-    - 'add-changes' adds new changes to changelog
-    - 'scripts_globals' contains variables for other scripts
-    - 'update-debian-changelog' merges changes from changelog into debian changelog
-    - 'update-locale' scans source & updates .pot & .po gettext files
+    - add-changes: adds new changes to changelog
+    - scripts_globals: contains variables for other scripts
+    - update-debian-changelog:
+      - Merges changes from changelog into debian changelog
+    - update-locale: scans source & updates .pot & .po gettext files
       - Optionally compiles .mo binaries if 'compile' argument is used
-    - 'update-version'
-      - Uses 'INFO' file to set version information in source code & helper files
+    - update-version:
+      - Set version information using 'INFO' file
+  - Added 'open', 'save', & 'preview' buttons to depends page
   - License changed to MIT (see docs/LICENSE.txt)
   - Merged new about dialog from 'unstable' branch
   - Merged some modules from 'unstable' branch
+  - Replace some confirmation dialogs with ConfirmationDialog class
   - Replace some selection controls with check boxes
+  - Scripts' text input areas are disabled when unchecked
   - Show which required fields are empty in build dialog
   - Use custom hyperlink controls
   - Use GitHub URL to check for updates
-  - Use monospaced font for some multi-line text input fiels
-  - Use os.chmod module in build rather than system chmod command
+  - Use monospaced font for some multi-line text input fields
+  - Use Python modules in place of some system calls
   - Wizard buttons disable on first & last pages
-- TRANSLATIONS:
+- Translations:
   - Add Russian Gettext locale
   - Update Spanish (es) Gettext locale
 
