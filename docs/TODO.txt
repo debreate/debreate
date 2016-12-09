@@ -24,6 +24,7 @@
 - Option to save session
 - Fix changelog to put asterix before each entry
 - Show dpkg output during build
+- Add MIME type section to menu/launcher
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
