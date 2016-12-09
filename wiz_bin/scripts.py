@@ -453,42 +453,40 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def SetFieldData(self, data):
-        preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
-        postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
-        prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
-        postrm = data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0]
+        preinst = (
+            data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0].split(u'\n'),
+            self.chk_preinst,
+            )
+        postinst = (
+            data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0].split(u'\n'),
+            self.chk_postinst,
+            )
+        prerm = (
+            data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0].split(u'\n'),
+            self.chk_prerm,
+            )
+        postrm = (
+            data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0].split(u'\n'),
+            self.chk_postrm,
+            )
         
-        if int(preinst[0]):
-            self.chk_preinst.SetValue(True)
-            self.ti_preinst.SetValue(preinst[2:]) # 2 removes firs line
-        
-        else:
-            self.chk_preinst.SetValue(False)
-            self.ti_preinst.Clear()
-        
-        if int(postinst[0]):
-            self.chk_postinst.SetValue(True)
-            self.ti_postinst.SetValue(postinst[2:]) # 2 removes firs line
-        
-        else:
-            self.chk_postinst.SetValue(False)
-            self.ti_postinst.Clear()
-        
-        if int(prerm[0]):
-            self.chk_prerm.SetValue(True)
-            self.ti_prerm.SetValue(prerm[2:]) # 2 removes firs line
-        
-        else:
-            self.chk_prerm.SetValue(False)
-            self.ti_prerm.Clear()
-        
-        if int(postrm[0]):
-            self.chk_postrm.SetValue(True)
-            self.ti_postrm.SetValue(postrm[2:]) # 2 removes firs line
-        
-        else:
-            self.chk_postrm.SetValue(False)
-            self.ti_postrm.Clear()
+        for S, CHK in (preinst, postinst, prerm, postrm):
+            if S[0].isnumeric() and int(S[0]) > 0:
+                CHK.SetValue(True)
+                # Remove unneeded integer
+                S.pop(0)
         
         # Enable/Disable scripts text areas
         self.OnToggleScripts()
+        
+        if self.chk_preinst.GetValue():
+            self.ti_preinst.SetValue(u'\n'.join(preinst[0]))
+        
+        if self.chk_postinst.GetValue():
+            self.ti_postinst.SetValue(u'\n'.join(postinst[0]))
+        
+        if self.chk_prerm.GetValue():
+            self.ti_prerm.SetValue(u'\n'.join(prerm[0]))
+        
+        if self.chk_postrm.GetValue():
+            self.ti_postrm.SetValue(u'\n'.join(postrm[0]))
