@@ -69,7 +69,21 @@ class MultilineTextCtrlPanel(BorderedPanel):
     
     
     ## Disables or enables self & text area
+    #  
+    #  Because of issues with text control background color, it
+    #  must be set manually when the parent MultilineTextCtrlPanel
+    #  is disabled. This causes some text artifacts in wx 3.0
+    #  when using the SetValue & WriteText methods. Because of
+    #  that, when the control is enabled/disabled, the value
+    #  is stored, then the control cleared. When the new
+    #  background color is set, the value is restored, causing
+    #  the text to take on the same background color.
     def Enable(self, *args, **kwargs):
+        # Clearing text area is done as workaround for text background color bug
+        current_value = self.textarea.GetValue()
+        insertion_point = self.textarea.GetInsertionPoint()
+        self.textarea.Clear()
+        
         return_value = BorderedPanel.Enable(self, *args, **kwargs)
         
         if self.IsEnabled():
@@ -85,6 +99,10 @@ class MultilineTextCtrlPanel(BorderedPanel):
             # Older versions of wx do not change color of disabled multiline text control
             if wx.MAJOR_VERSION < 3:
                 self.textarea.SetBackgroundColour(self.clr_disabled)
+        
+        # Reinstate the text
+        self.textarea.SetValue(current_value)
+        self.textarea.SetInsertionPoint(insertion_point)
         
         return return_value
     
