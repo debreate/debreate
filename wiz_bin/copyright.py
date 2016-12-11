@@ -28,6 +28,7 @@ class Panel(wx.ScrolledWindow):
         # FIXME: Ignore symbolic links
         opts_licenses = GetSystemLicensesList()
         
+        ## A list of available license templates
         self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list»')
         self.sel_templates.SetSelection(0)
         
@@ -37,7 +38,8 @@ class Panel(wx.ScrolledWindow):
             btn_template.Enable(False)
             self.sel_templates.Enable(False)
         
-        self.dsp_copyright = MonospaceTextCtrl(self)
+        ## Area where license text is displayed
+        self.dsp_copyright = MonospaceTextCtrl(self, name=u'license')
         
         SetPageToolTips(self)
         
