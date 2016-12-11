@@ -19,13 +19,14 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textpreview        import TextPreview
 from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetTopWindow
 from globals.wizardhelper   import UseCustomDialogs
 
 
@@ -471,17 +472,8 @@ class Panel(wx.ScrolledWindow):
         # Ensure only one empty newline at end of preview (same as actual output)
         control = control.rstrip(u'\n') + u'\n'
         
-        dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500, 400),
-                style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
-        dia.SetMinSize(wx.Size(250, 200))
-        preview = MonospaceTextCtrl(dia, style=wx.TE_READONLY)
-        preview.SetValue(control)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND|wx.ALL, 5)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
+        dia = TextPreview(GetTopWindow(), title=GT(u'Control File Preview'),
+                text=control, size=(500,400))
         
         dia.ShowModal()
         dia.Destroy()
