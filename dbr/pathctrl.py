@@ -53,7 +53,7 @@ class PathCtrl(wx.TextCtrl):
         # If PathCtrl is set to warn on non-existent paths, change background color to red when path
         # doesn't exist
         value = self.GetValue()
-        if self.type == PATH_WARN:
+        if self.ctrl_type == PATH_WARN:
             self.SetPathAvailable()
         
         if event:
@@ -64,7 +64,7 @@ class PathCtrl(wx.TextCtrl):
     def Reset(self):
         self.SetValue(self.default)
         
-        if self.type == PATH_WARN:
+        if self.ctrl_type == PATH_WARN:
             self.SetPathAvailable()
         
         self.SetInsertionPointEnd()
