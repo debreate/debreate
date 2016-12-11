@@ -26,7 +26,6 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
 from globals.wizardhelper   import UseCustomDialogs
 
 
@@ -472,7 +471,7 @@ class Panel(wx.ScrolledWindow):
         # Ensure only one empty newline at end of preview (same as actual output)
         control = control.rstrip(u'\n') + u'\n'
         
-        dia = TextPreview(GetTopWindow(), title=GT(u'Control File Preview'),
+        dia = TextPreview(title=GT(u'Control File Preview'),
                 text=control, size=(500,400))
         
         dia.ShowModal()

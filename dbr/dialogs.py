@@ -8,23 +8,24 @@
 
 import os, wx
 
-from dbr.buttons        import ButtonCancel
-from dbr.buttons        import ButtonConfirm
-from dbr.custom         import TextIsEmpty
-from dbr.hyperlink      import Hyperlink
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.moduleaccess   import ModuleAccessCtrl
-from dbr.selectinput    import ComboBox
-from dbr.textinput      import MultilineTextCtrlPanel
-from dbr.workingdir     import ChangeWorkingDirectory
-from globals.bitmaps    import ICON_ERROR
-from globals.bitmaps    import ICON_EXCLAMATION
-from globals.bitmaps    import ICON_INFORMATION
-from globals.bitmaps    import ICON_QUESTION
-from globals.paths      import PATH_app
-from globals.project    import project_wildcards
-from globals.project    import supported_suffixes
+from dbr.buttons            import ButtonCancel
+from dbr.buttons            import ButtonConfirm
+from dbr.custom             import TextIsEmpty
+from dbr.hyperlink          import Hyperlink
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.moduleaccess       import ModuleAccessCtrl
+from dbr.selectinput        import ComboBox
+from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.workingdir         import ChangeWorkingDirectory
+from globals.bitmaps        import ICON_ERROR
+from globals.bitmaps        import ICON_EXCLAMATION
+from globals.bitmaps        import ICON_INFORMATION
+from globals.bitmaps        import ICON_QUESTION
+from globals.paths          import PATH_app
+from globals.project        import project_wildcards
+from globals.project        import supported_suffixes
+from globals.wizardhelper   import GetTopWindow
 
 
 ## A base dialog class
@@ -35,6 +36,9 @@ from globals.project    import supported_suffixes
 class BaseDialog(wx.Dialog):
     def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Title'), pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr):
+        if parent == None:
+            parent = GetTopWindow()
+        
         wx.Dialog.__init__(self, parent, ID, title, pos, size, style|wx.RESIZE_BORDER, name)
     
     
