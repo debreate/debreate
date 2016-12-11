@@ -9,7 +9,10 @@
 import os, wx
 
 from dbr.dialogs            import ConfirmationDialog
+from dbr.error              import ShowError
 from dbr.functions          import GetSystemLicensesList
+from dbr.functions          import GetYear
+from dbr.functions          import RemovePreWhitespace
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.templates          import GetLicenseTemplatesList
@@ -19,6 +22,7 @@ from dbr.textinput          import MonospaceTextCtrl
 from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -101,7 +105,39 @@ class Panel(wx.ScrolledWindow):
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
         btn_template.Bind(wx.EVT_BUTTON, self.GenerateTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateLinkedTemplate)
+    
+    
+    ## TODO: Doxygen
+    def CopyStandardLicense(self, license_name):
+        main_window = GetTopWindow()
+        
+        if self.DestroyLicenseText():
+            license_path = u'{}/{}'.format(system_licenses_path, license_name)
+            
+            if not os.path.isfile(license_path):
+                ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
+                return
+            
+            FILE_BUFFER = open(license_path, u'r')
+            license_text = FILE_BUFFER.read()
+            FILE_BUFFER.close()
+            
+            self.dsp_copyright.Clear()
+            self.dsp_copyright.SetValue(RemovePreWhitespace(license_text))
+            
+            add_header = (
+                u'Artistic',
+                u'BSD',
+            )
+            
+            self.dsp_copyright.SetInsertionPoint(0)
+            
+            if license_name in add_header:
+                self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
+                self.dsp_copyright.SetInsertionPoint(0)
+        
+        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
@@ -125,6 +161,21 @@ class Panel(wx.ScrolledWindow):
     def GatherData(self):
         data = self.GetCopyright()
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
+    
+    
+    ## TODO: Doxygen
+    def GenerateLinkedTemplate(self, event=None):
+        if self.DestroyLicenseText():
+            self.dsp_copyright.Clear()
+            
+            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
+            
+            self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
+            self.dsp_copyright.WriteText(license_path)
+            
+            self.dsp_copyright.SetInsertionPoint(0)
+        
+        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
@@ -169,6 +220,17 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def OnGenerateTemplate(self, event=None):
+        license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
+        
+        if FieldEnabled(self.btn_template_simple):
+            self.CopyStandardLicense(license_name)
+        
+        else:
+            self.GenerateTemplate(license_name)
+    
+    
+    ## TODO: Doxygen
     def OnSelectTemplate(self, event=None):
         if isinstance(event, wx.Choice):
             choice = event
@@ -190,6 +252,10 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ResetAllFields(self):
         self.dsp_copyright.Clear()
+        
+        if self.sel_templates.IsEnabled():
+            self.sel_templates.SetSelection(self.sel_templates.default)
+            self.OnSelectTemplate(self.sel_templates)
     
     
     ## TODO: Doxygen
