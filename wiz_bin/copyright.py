@@ -221,7 +221,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnGenerateTemplate(self, event=None):
-        license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
+        license_name = self.sel_templates.GetStringSelection()
         
         if FieldEnabled(self.btn_template_simple):
             self.CopyStandardLicense(license_name)
