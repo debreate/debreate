@@ -58,15 +58,17 @@ class Panel(WizardPage):
         self.lic_choices = wx.Choice(self, -1, choices=license_list)
         self.lic_choices.SetSelection(0)
         
-        wx.EVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
-        
         template_btn = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
         self.template_btn_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link')
         
         self.OnSelectTemplate(self.lic_choices)
-                
-        wx.EVT_BUTTON(template_btn, -1, self.OnGenerateTemplate)
-        wx.EVT_BUTTON(self.template_btn_simple, -1, self.GenerateLinkedTemplate)
+        
+        ## Area where license text is displayed
+        self.cp_display = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
+        
+        SetPageToolTips(self)
+        
+        # *** Layout *** #
         
         sizer_H1 = wx.BoxSizer(wx.HORIZONTAL)
         sizer_H1.Add(template_btn, 1, wx.TOP|wx.RIGHT, 5)
@@ -82,9 +84,6 @@ class Panel(WizardPage):
         sizer_V1.Add(self.lic_choices, 0, wx.TOP, 5)
         sizer_V1.Add(sizer_H1, 1, wx.LEFT, 150)
         
-        ## Area where license text is displayed
-        self.cp_display = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
-        
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         main_sizer.Add(sizer_V1, 0, wx.ALL, 5)
         main_sizer.Add(self.cp_display, 1, wx.EXPAND|wx.ALL, 5)
@@ -93,8 +92,12 @@ class Panel(WizardPage):
         self.SetSizer(main_sizer)
         self.Layout()
         
+        # *** Event handlers *** #
         
-        SetPageToolTips(self)
+        wx.EVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
+        
+        wx.EVT_BUTTON(template_btn, -1, self.OnGenerateTemplate)
+        wx.EVT_BUTTON(self.template_btn_simple, -1, self.GenerateLinkedTemplate)
     
     
     ## TODO: Doxygen
