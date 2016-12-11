@@ -107,6 +107,11 @@ class MultilineTextCtrlPanel(BorderedPanel):
         return return_value
     
     
+    ## Retrieves the caret instance of the wx.TextCtrl
+    def GetCaret(self):
+        return self.textarea.GetCaret()
+    
+    
     ## Retrieves font that text area is using
     def GetFont(self):
         return self.textarea.GetFont()
@@ -141,6 +146,11 @@ class MultilineTextCtrlPanel(BorderedPanel):
     def SetBackgroundColour(self, *args, **kwargs):
         self.textarea.SetBackgroundColour(*args, **kwargs)
         return BorderedPanel.SetBackgroundColour(self, *args, **kwargs)
+    
+    
+    ## Sets the caret instance for the wx.TextCtrl
+    def SetCaret(self, caret):
+        return self.textarea.SetCaret(caret)
     
     
     ## Sets font in text area
