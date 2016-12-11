@@ -26,6 +26,7 @@ from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
 from dbr.wizard             import Wizard
+from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
 from globals.application    import APP_project_sf
@@ -38,17 +39,6 @@ from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
 from globals.commands       import CMD_gvfs_trash
 from globals.commands       import CMD_xdg_open
-from globals.ident          import ID_BUILD
-from globals.ident          import ID_CHANGELOG
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_COPYRIGHT
-from globals.ident          import ID_DEPENDS
-from globals.ident          import ID_DIALOGS
-from globals.ident          import ID_FILES
-from globals.ident          import ID_GREETING
-from globals.ident          import ID_MENU
-from globals.ident          import ID_MENU_TT
-from globals.ident          import ID_SCRIPTS
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
@@ -145,23 +135,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # ----- Page Menu
         self.menu_page = wx.Menu()
         
-        p_info = wx.MenuItem(self.menu_page, ID_GREETING, GT(u'Information'),
+        p_info = wx.MenuItem(self.menu_page, ident.GREETING, GT(u'Information'),
                 GT(u'Go to Information section'), kind=wx.ITEM_RADIO)
-        p_ctrl = wx.MenuItem(self.menu_page, ID_CONTROL, GT(u'Control'),
+        p_ctrl = wx.MenuItem(self.menu_page, ident.CONTROL, GT(u'Control'),
                 GT(u'Go to Control section'), kind=wx.ITEM_RADIO)
-        p_deps = wx.MenuItem(self.menu_page, ID_DEPENDS, GT(u'Dependencies'),
+        p_deps = wx.MenuItem(self.menu_page, ident.DEPENDS, GT(u'Dependencies'),
                 GT(u'Go to Dependencies section'), kind=wx.ITEM_RADIO)
-        p_files = wx.MenuItem(self.menu_page, ID_FILES, GT(u'Files'),
+        p_files = wx.MenuItem(self.menu_page, ident.FILES, GT(u'Files'),
                 GT(u'Go to Files section'), kind=wx.ITEM_RADIO)
-        p_scripts = wx.MenuItem(self.menu_page, ID_SCRIPTS, GT(u'Scripts'),
+        p_scripts = wx.MenuItem(self.menu_page, ident.SCRIPTS, GT(u'Scripts'),
                 GT(u'Go to Scripts section'), kind=wx.ITEM_RADIO)
-        p_changelog = wx.MenuItem(self.menu_page, ID_CHANGELOG, GT(u'Changelog'),
+        p_changelog = wx.MenuItem(self.menu_page, ident.CHANGELOG, GT(u'Changelog'),
                 GT(u'Go to Changelog section'), kind=wx.ITEM_RADIO)
-        p_copyright = wx.MenuItem(self.menu_page, ID_COPYRIGHT, GT(u'Copyright'),
+        p_copyright = wx.MenuItem(self.menu_page, ident.COPYRIGHT, GT(u'Copyright'),
                 GT(u'Go to Copyright section'), kind=wx.ITEM_RADIO)
-        p_menu = wx.MenuItem(self.menu_page, ID_MENU, GT(u'Menu Launcher'),
+        p_menu = wx.MenuItem(self.menu_page, ident.MENU, GT(u'Menu Launcher'),
                 GT(u'Go to Menu launcher section'), kind=wx.ITEM_RADIO)
-        p_build = wx.MenuItem(self.menu_page, ID_BUILD, GT(u'Build'),
+        p_build = wx.MenuItem(self.menu_page, ident.BUILD, GT(u'Build'),
                 GT(u'Go to Build section'), kind=wx.ITEM_RADIO)
         
         self.menu_page.AppendItem(p_info)
@@ -178,15 +168,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, ID_MENU_TT, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ident.MENU_TT, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
-        wx.EVT_MENU(self, ID_MENU_TT, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ident.MENU_TT, self.OnToggleToolTips)
         
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
             self.menu_opt.AppendItem(self.opt_tooltips)
         
-        if self.menu_opt.FindItemById(ID_MENU_TT):
+        if self.menu_opt.FindItemById(ident.MENU_TT):
             show_tooltips = ReadConfig(u'tooltips')
             if show_tooltips != ConfCode.KEY_NO_EXIST:
                 self.opt_tooltips.Check(show_tooltips)
@@ -197,10 +187,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.OnToggleToolTips()
         
         # Dialogs options
-        cust_dias = wx.MenuItem(self.menu_opt, ID_DIALOGS, GT(u'Use custom dialogs'),
+        cust_dias = wx.MenuItem(self.menu_opt, ident.DIALOGS, GT(u'Use custom dialogs'),
             GT(u'Use system or custom save/open dialogs'), kind=wx.ITEM_CHECK)
         
-        wx.EVT_MENU(self, ID_DIALOGS, self.OnEnableCustomDialogs)
+        wx.EVT_MENU(self, ident.DIALOGS, self.OnEnableCustomDialogs)
         
         if CMD_gvfs_trash:
             self.menu_opt.AppendItem(cust_dias)
@@ -757,7 +747,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def UseCustomDialogs(self):
-        cust_dias = self.menu_opt.FindItemById(ID_DIALOGS)
+        cust_dias = self.menu_opt.FindItemById(ident.DIALOGS)
         
         # This needs to be checked first to avoid PyAssertionError in wx 3.0
         if not cust_dias:

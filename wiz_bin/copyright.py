@@ -13,7 +13,7 @@ from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.textinput          import MonospaceTextCtrl
-from globals.ident          import ID_COPYRIGHT
+from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 
@@ -21,7 +21,7 @@ from globals.wizardhelper   import GetTopWindow
 ## Copyright page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_COPYRIGHT, name=GT(u'Copyright'))
+        wx.ScrolledWindow.__init__(self, parent, ident.COPYRIGHT, name=GT(u'Copyright'))
         
         self.SetScrollbars(0, 20, 0, 0)
         

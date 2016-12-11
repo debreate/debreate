@@ -21,14 +21,7 @@ from dbr.panel              import BorderedPanel
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
-from globals.ident          import FID_ARCH
-from globals.ident          import FID_EMAIL
-from globals.ident          import FID_LIST
-from globals.ident          import FID_MAINTAINER
-from globals.ident          import FID_PACKAGE
-from globals.ident          import FID_VERSION
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_DEPENDS
+from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
@@ -39,7 +32,7 @@ from globals.wizardhelper   import UseCustomDialogs
 ## This panel displays the field input of the control file
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_CONTROL, name=GT(u'Control'))
+        wx.ScrolledWindow.__init__(self, parent, ident.CONTROL, name=GT(u'Control'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -56,22 +49,22 @@ class Panel(wx.ScrolledWindow):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        ti_package = CharCtrl(pnl_require, FID_PACKAGE, name=txt_package.Name)
+        ti_package = CharCtrl(pnl_require, ident.F_PACKAGE, name=txt_package.Name)
         ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        ti_version = CharCtrl(pnl_require, FID_VERSION, name=txt_version.Name)
+        ti_version = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
         ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        ti_maintainer = wx.TextCtrl(pnl_require, FID_MAINTAINER, name=txt_maintainer.Name)
+        ti_maintainer = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
         ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        ti_email = wx.TextCtrl(pnl_require, FID_EMAIL, name=txt_email.Name)
+        ti_email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
         ti_email.req = True
         
         opts_arch = (
@@ -83,7 +76,7 @@ class Panel(wx.ScrolledWindow):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
-        sel_arch = wx.Choice(pnl_require, FID_ARCH, choices=opts_arch, name=txt_arch.Name)
+        sel_arch = wx.Choice(pnl_require, ident.F_ARCH, choices=opts_arch, name=txt_arch.Name)
         sel_arch.default = 0
         sel_arch.SetSelection(sel_arch.default)
         
@@ -285,7 +278,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def GetCtrlInfo(self):
-        pg_depends = GetPage(ID_DEPENDS)
+        pg_depends = GetPage(ident.DEPENDS)
         
         ctrl_list = []
         synopsis = None
@@ -387,7 +380,7 @@ class Panel(wx.ScrolledWindow):
             }
         
         # Get amount of items to add
-        dep_area = GetField(pg_depends, FID_LIST)
+        dep_area = GetField(pg_depends, ident.F_LIST)
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
@@ -437,7 +430,7 @@ class Panel(wx.ScrolledWindow):
             control_data = FILE_BUFFER.read()
             FILE_BUFFER.close()
             
-            page_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ID_DEPENDS)
+            page_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ident.DEPENDS)
             
             # Reset fields to default before opening
             self.ResetAllFields()

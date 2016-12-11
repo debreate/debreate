@@ -23,10 +23,7 @@ from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextCtrl
-from globals.ident          import FID_LIST
-from globals.ident          import ID_FILES
-from globals.ident          import ID_IMPORT
-from globals.ident          import ID_SCRIPTS
+from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
@@ -49,7 +46,7 @@ id_definitions = {
 ## Scripts page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_SCRIPTS, name=GT(u'Scripts'))
+        wx.ScrolledWindow.__init__(self, parent, ident.SCRIPTS, name=GT(u'Scripts'))
         
         self.SetScrollbars(20, 20, 0, 0)
         
@@ -114,7 +111,7 @@ class Panel(wx.ScrolledWindow):
         self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
-        btn_al_import = ButtonImport(pnl_autolink, ID_IMPORT)
+        btn_al_import = ButtonImport(pnl_autolink, ident.IMPORT)
         btn_al_remove = ButtonRemove(pnl_autolink)
         btn_al_generate = ButtonBuild(pnl_autolink)
         
@@ -187,7 +184,7 @@ class Panel(wx.ScrolledWindow):
         for rb in self.grp_te:
             rb.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
         
-        wx.EVT_BUTTON(btn_al_import, ID_IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
         wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
@@ -246,14 +243,14 @@ class Panel(wx.ScrolledWindow):
     ## Imports executables for Auto-Link
     def ImportExe(self, event=None):
         ID = event.GetId()
-        if ID == ID_IMPORT:
+        if ID == ident.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.lst_executables = []
             
             # Get executables from "files" tab
             #files = wx.GetApp().GetTopWindow().page_files.dest_area
-            files = GetField(GetPage(ID_FILES), FID_LIST)
+            files = GetField(GetPage(ident.FILES), ident.F_LIST)
             MAX = files.GetItemCount()  # Sets the max iterate value
             count = 0
             while count < MAX:

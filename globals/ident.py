@@ -8,29 +8,28 @@
 # See: docs/LICENSE.txt
 
 
-# System modules
 import wx
 
 from dbr.language import GT
 
 
 # *** Button IDs *** #
-ID_PREV = wx.NewId()
-ID_NEXT = wx.NewId()
+PREV = wx.NewId()
+NEXT = wx.NewId()
 
 # *** Custom IDs *** #
-ID_APPEND = wx.NewId()
-ID_BROWSE = wx.NewId()
-ID_CUSTOM = wx.NewId()
-ID_DEBUG = wx.NewId()
-ID_DIALOGS = wx.NewId()
-ID_IMPORT = wx.NewId()
-ID_LOG = wx.NewId()
-ID_MENU_TT = wx.NewId()
-ID_OVERWRITE = wx.NewId()
-ID_STAGE = wx.NewId()
-ID_TARGET = wx.NewId()
-ID_THEME = wx.NewId()
+APPEND = wx.NewId()
+BROWSE = wx.NewId()
+CUSTOM = wx.NewId()
+DEBUG = wx.NewId()
+DIALOGS = wx.NewId()
+IMPORT = wx.NewId()
+LOG = wx.NewId()
+MENU_TT = wx.NewId()
+OVERWRITE = wx.NewId()
+STAGE = wx.NewId()
+TARGET = wx.NewId()
+THEME = wx.NewId()
 
 # Page IDs
 next_page_id = 1000
@@ -45,23 +44,23 @@ def NewPageId(page_name=None):
     
     return this_page_id
 
-ID_GREETING = NewPageId(GT(u'Greeting'))
-ID_CONTROL = NewPageId(GT(u'Control'))
-ID_DEPENDS = NewPageId(GT(u'Depends'))
-ID_FILES = NewPageId(GT(u'Files'))
-ID_MAN = NewPageId(GT(u'Man'))
-ID_SCRIPTS = NewPageId(GT(u'Scripts'))
-ID_CHANGELOG = NewPageId(GT(u'Changelog'))
-ID_COPYRIGHT = NewPageId(GT(u'Copyright'))
-ID_MENU = NewPageId(GT(u'Menu'))
-ID_BUILD = NewPageId(GT(u'Build'))
+GREETING = NewPageId(GT(u'Greeting'))
+CONTROL = NewPageId(GT(u'Control'))
+DEPENDS = NewPageId(GT(u'Depends'))
+FILES = NewPageId(GT(u'Files'))
+MAN = NewPageId(GT(u'Man'))
+SCRIPTS = NewPageId(GT(u'Scripts'))
+CHANGELOG = NewPageId(GT(u'Changelog'))
+COPYRIGHT = NewPageId(GT(u'Copyright'))
+MENU = NewPageId(GT(u'Menu'))
+BUILD = NewPageId(GT(u'Build'))
 
 # Field/Control IDs
-FID_ARCH = wx.NewId()
-FID_CUSTOM = wx.NewId()
-FID_EMAIL = wx.NewId()
-FID_LIST = wx.NewId()
-FID_MAINTAINER = wx.NewId()
-FID_NAME = wx.NewId()
-FID_PACKAGE = wx.NewId()
-FID_VERSION = wx.NewId()
+F_ARCH = wx.NewId()
+F_CUSTOM = wx.NewId()
+F_EMAIL = wx.NewId()
+F_LIST = wx.NewId()
+F_MAINTAINER = wx.NewId()
+F_NAME = wx.NewId()
+F_PACKAGE = wx.NewId()
+F_VERSION = wx.NewId()

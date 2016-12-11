@@ -22,10 +22,7 @@ from dbr.listinput          import ListCtrlPanel
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
-from globals.ident          import FID_LIST
-from globals.ident          import ID_APPEND
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_DEPENDS
+from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
@@ -34,7 +31,7 @@ from globals.wizardhelper   import GetTopWindow
 ## Page defining dependencies
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        wx.ScrolledWindow.__init__(self, parent, ident.DEPENDS, name=GT(u'Dependencies and Conflicts'))
         
         self.SetScrollbars(20, 20, 0, 0)
         
@@ -83,7 +80,7 @@ class Panel(wx.ScrolledWindow):
         btn_clear = ButtonClear(self)
         
         # ----- List
-        self.lst_deps = ListCtrlPanel(self, FID_LIST, name=u'list')
+        self.lst_deps = ListCtrlPanel(self, ident.F_LIST, name=u'list')
         self.lst_deps.SetSingleStyle(wx.LC_REPORT)
         self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
         self.lst_deps.InsertColumn(1, GT(u'Package(s)'))
@@ -155,9 +152,9 @@ class Panel(wx.ScrolledWindow):
         
         # *** Event handlers *** #
         
-        btn_open.Bind(wx.EVT_BUTTON, GetPage(ID_CONTROL).OnBrowse)
-        btn_save.Bind(wx.EVT_BUTTON, GetPage(ID_CONTROL).OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, GetPage(ID_CONTROL).OnPreviewControl)
+        btn_open.Bind(wx.EVT_BUTTON, GetPage(ident.CONTROL).OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, GetPage(ident.CONTROL).OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, GetPage(ident.CONTROL).OnPreviewControl)
         
         wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
@@ -227,7 +224,7 @@ class Panel(wx.ScrolledWindow):
             else:
                 self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
-        elif key_id == ID_APPEND:
+        elif key_id == ident.APPEND:
             selected_count = self.lst_deps.GetSelectedItemCount()
             
             Logger.Debug(__name__, u'Appending to {} items'.format(selected_count))

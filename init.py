@@ -119,11 +119,10 @@ from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
 from dbr.log                import Logger
-from globals.application    import APP_name
+from globals                import ident
 from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
-from globals.ident          import ID_DIALOGS
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from main                   import MainWindow
@@ -231,8 +230,8 @@ if conf_values[u'center']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
-if Debreate.menu_opt.FindItemById(ID_DIALOGS):
-    Debreate.menu_opt.Check(ID_DIALOGS, conf_values[u'dialogs'])
+if Debreate.menu_opt.FindItemById(ident.DIALOGS):
+    Debreate.menu_opt.Check(ident.DIALOGS, conf_values[u'dialogs'])
 
 parsed_path = GetParsedPath()
 if parsed_path:

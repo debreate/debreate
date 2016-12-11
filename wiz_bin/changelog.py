@@ -18,13 +18,8 @@ from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
+from globals                import ident
 from globals.bitmaps        import ICON_WARNING
-from globals.ident          import FID_EMAIL
-from globals.ident          import FID_MAINTAINER
-from globals.ident          import FID_PACKAGE
-from globals.ident          import FID_VERSION
-from globals.ident          import ID_CHANGELOG
-from globals.ident          import ID_CONTROL
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
@@ -34,7 +29,7 @@ from globals.wizardhelper   import GetTopWindow
 ## Changelog page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_CHANGELOG, name=GT(u'Changelog'))
+        wx.ScrolledWindow.__init__(self, parent, ident.CHANGELOG, name=GT(u'Changelog'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -260,14 +255,14 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
-            (self.ti_package, FID_PACKAGE),
-            (self.ti_version, FID_VERSION),
-            (self.ti_maintainer, FID_MAINTAINER),
-            (self.ti_email, FID_EMAIL),
+            (self.ti_package, ident.F_PACKAGE),
+            (self.ti_version, ident.F_VERSION),
+            (self.ti_maintainer, ident.F_MAINTAINER),
+            (self.ti_email, ident.F_EMAIL),
             )
         
         for F, FID in fields:
-            field_value = GetFieldValue(ID_CONTROL, FID)
+            field_value = GetFieldValue(ident.CONTROL, FID)
             
             if isinstance(field_value, ErrorTuple):
                 err_msg1 = GT(u'Got error when attempting to retrieve field value')

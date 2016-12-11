@@ -24,10 +24,8 @@ from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.panel              import PANEL_BORDER
 from dbr.progress           import ProgressDialog
+from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
-from globals.ident          import FID_CUSTOM
-from globals.ident          import FID_LIST
-from globals.ident          import ID_FILES
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.tooltips       import SetPageToolTips
@@ -43,7 +41,7 @@ ID_Refresh = 142
 ## Class defining controls for the "Paths" page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_FILES, name=GT(u'Files'))
+        wx.ScrolledWindow.__init__(self, parent, ident.FILES, name=GT(u'Files'))
         
         self.SetScrollbars(20, 20, 0, 0)
         
@@ -72,7 +70,7 @@ class Panel(wx.ScrolledWindow):
         rb_usrlib = wx.RadioButton(pnl_target, label=u'/usr/lib')
         rb_locbin = wx.RadioButton(pnl_target, label=u'/usr/local/bin')
         rb_loclib = wx.RadioButton(pnl_target, label=u'/usr/local/lib')
-        self.rb_custom = wx.RadioButton(pnl_target, FID_CUSTOM, GT(u'Custom'))
+        self.rb_custom = wx.RadioButton(pnl_target, ident.F_CUSTOM, GT(u'Custom'))
         self.rb_custom.default = True
         
         # Start with "Custom" selected
@@ -102,7 +100,7 @@ class Panel(wx.ScrolledWindow):
         btn_refresh = ButtonRefresh(self)
         
         # Display area for files added to list
-        self.lst_files = FileList(self, FID_LIST, name=u'filelist')
+        self.lst_files = FileList(self, ident.F_LIST, name=u'filelist')
         
         # *** Layout *** #
         
@@ -266,7 +264,7 @@ class Panel(wx.ScrolledWindow):
         
         else:
             for target in self.grp_targets:
-                if target.GetId() != FID_CUSTOM and target.GetValue():
+                if target.GetId() != ident.F_CUSTOM and target.GetValue():
                     target_dir = target.GetLabel()
                     break
         

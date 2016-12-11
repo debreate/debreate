@@ -11,17 +11,9 @@
 import wx
 
 from dbr.language           import GT
+from globals                import ident
 from globals.commands       import CMD_gdebi_gui
 from globals.constants      import system_licenses_path
-from globals.ident          import ID_BUILD
-from globals.ident          import ID_CHANGELOG
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_COPYRIGHT
-from globals.ident          import ID_DEPENDS
-from globals.ident          import ID_FILES
-from globals.ident          import ID_MAN
-from globals.ident          import ID_MENU
-from globals.ident          import ID_SCRIPTS
 from globals.wizardhelper   import FieldEnabled
 
 
@@ -182,15 +174,15 @@ TT_build = {
 
 
 TT_pages = {
-    ID_CONTROL: TT_control,
-    ID_DEPENDS: TT_depends,
-    ID_FILES: TT_files,
-    ID_MAN: TT_manpages,
-    ID_SCRIPTS: TT_scripts,
-    ID_CHANGELOG: TT_changelog,
-    ID_COPYRIGHT: TT_copyright,
-    ID_MENU: TT_menu,
-    ID_BUILD: TT_build,
+    ident.CONTROL: TT_control,
+    ident.DEPENDS: TT_depends,
+    ident.FILES: TT_files,
+    ident.MAN: TT_manpages,
+    ident.SCRIPTS: TT_scripts,
+    ident.CHANGELOG: TT_changelog,
+    ident.COPYRIGHT: TT_copyright,
+    ident.MENU: TT_menu,
+    ident.BUILD: TT_build,
 }
 
 

@@ -25,7 +25,7 @@ from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.textinput          import MultilineTextCtrlPanel
-from globals.ident          import ID_MENU
+from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 from globals.wizardhelper   import UseCustomDialogs
@@ -34,7 +34,7 @@ from globals.wizardhelper   import UseCustomDialogs
 ## Page for creating a system menu launcher
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_MENU, name=GT(u'Menu Launcher'))
+        wx.ScrolledWindow.__init__(self, parent, ident.MENU, name=GT(u'Menu Launcher'))
         
         self.SetScrollbars(0, 20, 0, 0)
         

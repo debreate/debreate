@@ -22,6 +22,7 @@ from dbr.md5                import MD5Hasher
 from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
+from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
@@ -32,18 +33,6 @@ from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.errorcodes     import dbrerrno
-from globals.ident          import FID_ARCH
-from globals.ident          import FID_EMAIL
-from globals.ident          import FID_MAINTAINER
-from globals.ident          import FID_PACKAGE
-from globals.ident          import FID_VERSION
-from globals.ident          import ID_BUILD
-from globals.ident          import ID_CHANGELOG
-from globals.ident          import ID_CONTROL
-from globals.ident          import ID_COPYRIGHT
-from globals.ident          import ID_FILES
-from globals.ident          import ID_MENU
-from globals.ident          import ID_SCRIPTS
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -56,7 +45,7 @@ from globals.wizardhelper   import UseCustomDialogs
 ## Build page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ID_BUILD, name=GT(u'Build'))
+        wx.ScrolledWindow.__init__(self, parent, ident.BUILD, name=GT(u'Build'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -193,8 +182,8 @@ class Panel(wx.ScrolledWindow):
             create_changelog = u'changelog' in task_list
             create_copyright = u'copyright' in task_list
             
-            pg_control = GetPage(ID_CONTROL)
-            pg_menu = GetPage(ID_MENU)
+            pg_control = GetPage(ident.CONTROL)
+            pg_menu = GetPage(ident.MENU)
             
             stage_dir = u'{}/{}__dbp__'.format(build_path, filename)
             
@@ -286,7 +275,7 @@ class Panel(wx.ScrolledWindow):
                 build_progress.Destroy()
                 return (dbrerrno.ECNCLD, None)
             
-            package = GetField(pg_control, FID_PACKAGE).GetValue()
+            package = GetField(pg_control, ident.F_PACKAGE).GetValue()
             
             # Make sure that the dirctory is available in which to place documentation
             if create_changelog or create_copyright:
@@ -538,11 +527,11 @@ class Panel(wx.ScrolledWindow):
             task_list = {}
             
             # Control page
-            pg_control = GetPage(ID_CONTROL)
-            fld_package = GetField(pg_control, FID_PACKAGE)
-            fld_version = GetField(pg_control, FID_VERSION)
-            fld_maint = GetField(pg_control, FID_MAINTAINER)
-            fld_email = GetField(pg_control, FID_EMAIL)
+            pg_control = GetPage(ident.CONTROL)
+            fld_package = GetField(pg_control, ident.F_PACKAGE)
+            fld_version = GetField(pg_control, ident.F_VERSION)
+            fld_maint = GetField(pg_control, ident.F_MAINTAINER)
+            fld_email = GetField(pg_control, ident.F_EMAIL)
             fields_control = (
                 fld_package,
                 fld_version,
@@ -551,7 +540,7 @@ class Panel(wx.ScrolledWindow):
                 )
             
             # Menu launcher page
-            pg_launcher = GetPage(ID_MENU)
+            pg_launcher = GetPage(ident.MENU)
             
             # Check to make sure that all required fields have values
             required = list(fields_control)
@@ -584,7 +573,7 @@ class Panel(wx.ScrolledWindow):
             version = version.strip(u' \t')
             version = u''.join(version.split())
             
-            arch = GetField(pg_control, FID_ARCH).GetStringSelection()
+            arch = GetField(pg_control, ident.F_ARCH).GetStringSelection()
             
             cont = False
             
@@ -613,10 +602,10 @@ class Panel(wx.ScrolledWindow):
             
             # Control, menu, & build pages not added to this list
             page_checks = (
-                (ID_FILES, u'files'),
-                (ID_SCRIPTS, u'scripts'),
-                (ID_CHANGELOG, u'changelog'),
-                (ID_COPYRIGHT, u'copyright'),
+                (ident.FILES, u'files'),
+                (ident.SCRIPTS, u'scripts'),
+                (ident.CHANGELOG, u'changelog'),
+                (ident.COPYRIGHT, u'copyright'),
                 )
             
             # Install step is not added to this list

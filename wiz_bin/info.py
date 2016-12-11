@@ -10,13 +10,13 @@ import wx
 
 from dbr.hyperlink  import Hyperlink
 from dbr.language   import GT
-from globals.ident  import ID_GREETING
+from globals        import ident
 
 
 ## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent, name=GT(u'Information')):
-        wx.ScrolledWindow.__init__(self, parent, ID_GREETING, name=GT(u'Information'))
+        wx.ScrolledWindow.__init__(self, parent, ident.GREETING, name=GT(u'Information'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
