@@ -95,10 +95,10 @@ class Panel(WizardPage):
         
         # *** Event handlers *** #
         
-        wx.EVT_CHOICE(self.sel_templates, -1, self.OnSelectTemplate)
+        self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
-        wx.EVT_BUTTON(btn_template, -1, self.OnGenerateTemplate)
-        wx.EVT_BUTTON(self.btn_template_simple, -1, self.GenerateLinkedTemplate)
+        btn_template.Bind(wx.EVT_BUTTON, self.OnGenerateTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateLinkedTemplate)
     
     
     ## TODO: Doxygen
