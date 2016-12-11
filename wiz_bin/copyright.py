@@ -92,8 +92,9 @@ class Panel(WizardPage):
         lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.Add(lyt_label, 0, wx.ALL, 5)
-        lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main.AddSpacer(10)
+        lyt_main.Add(lyt_label, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
