@@ -30,7 +30,8 @@ class Panel(wx.ScrolledWindow):
         
         ## A list of available license templates
         self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list»')
-        self.sel_templates.SetSelection(0)
+        self.sel_templates.default = 0
+        self.sel_templates.SetSelection(self.sel_templates.default)
         
         btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'gen»')
         
