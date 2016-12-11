@@ -56,7 +56,7 @@ class Panel(WizardPage):
         opts_licences.sort(key=unicode.lower)
         
         ## A list of available license templates
-        self.sel_templates = wx.Choice(self, -1, choices=opts_licences)
+        self.sel_templates = wx.Choice(self, choices=opts_licences)
         self.sel_templates.SetSelection(0)
         
         btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
@@ -77,7 +77,7 @@ class Panel(WizardPage):
         
         lyt_label = wx.BoxSizer(wx.HORIZONTAL)
         lyt_label.Add(
-            wx.StaticText(self, -1, GT(u'Available Templates')),
+            wx.StaticText(self, label=GT(u'Available Templates')),
             0,
             wx.TOP|wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER,
             5
