@@ -11,9 +11,9 @@
 import wx
 
 from dbr.language           import GT
+from dbr.templates          import local_templates_path
 from globals                import ident
 from globals.commands       import CMD_gdebi_gui
-from globals.constants      import system_licenses_path
 from globals.wizardhelper   import FieldEnabled
 
 
@@ -110,12 +110,20 @@ TT_changelog = {
     u'log': GT(u'Formatted changelog entries (editable)'),
 }
 
-no_sys_licenses = GT(u'No system licenses found in {}').format(system_licenses_path)
+no_lic_templates = GT(u'No license templates available')
 TT_copyright = {
-    u'gen': GT(u'Creates a simple license that references the system\'s common license path'),
-    u'list': GT(u'Select license to reference'),
-    u'gen_disabled': no_sys_licenses,
-    u'list_disabled': no_sys_licenses,
+    u'list_disabled': no_lic_templates,
+    u'full': (
+        u'{}\n'.format(GT(u'Copies a full system, app, or local license')),
+        GT(u'SYSTEM:'), u'\t{}'.format(GT(u'Copies text from a license stored in')),
+        u'\t/usr/share/common-licenses',
+        GT(u'APP:'), u'\t{}'.format(GT(u'Copies a template distributed with Debreate')),
+        GT(u'LOCAL:'), u'\t{}'.format(GT(u'Copies a user-defined template from')),
+        u'\t{}'.format(local_templates_path),
+        ),
+    u'full_disabled': no_lic_templates,
+    u'link': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
+    u'link_disabled': no_lic_templates,
 }
 
 TT_menu = {
