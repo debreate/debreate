@@ -39,35 +39,41 @@ class Panel(WizardPage):
         WizardPage.__init__(self, parent, ident.COPYRIGHT)
         
         # FIXME: Ignore symbolic links
-        opts_licences = GetSystemLicensesList()
+        opts_licenses = GetSystemLicensesList()
         
         # FIXME: Change variable name to 'self.builtin_licenses
         self.opts_local_licenses = GetLicenseTemplatesList()
         
         # Do not use local licenses if already located on system
-        for lic in opts_licences:
+        for lic in opts_licenses:
             if lic in self.opts_local_licenses:
                 self.opts_local_licenses.remove(lic)
         
         # Add the remaining licenses to the selection list
         for lic in self.opts_local_licenses:
-            opts_licences.append(lic)
+            opts_licenses.append(lic)
         
-        opts_licences.sort(key=unicode.lower)
+        opts_licenses.sort(key=unicode.lower)
         
         ## A list of available license templates
-        self.sel_templates = wx.Choice(self, choices=opts_licences)
+        self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list»')
         self.sel_templates.SetSelection(0)
         
-        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
-        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link')
+        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full»')
+        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link»')
         
-        self.OnSelectTemplate(self.sel_templates)
+        if not self.sel_templates.GetCount():
+            self.sel_templates.Enable(False)
+            btn_template.Enable(False)
+            self.btn_template_simple.Enable(False)
         
         ## Area where license text is displayed
         self.dsp_copyright = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
         
         SetPageToolTips(self)
+        
+        if self.sel_templates.IsEnabled():
+            self.OnSelectTemplate(self.sel_templates)
         
         # *** Layout *** #
         
