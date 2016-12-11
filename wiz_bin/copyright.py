@@ -15,6 +15,7 @@ from dbr.functions          import GetYear
 from dbr.functions          import RemovePreWhitespace
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
+from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
@@ -104,7 +105,7 @@ class Panel(wx.ScrolledWindow):
         
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
-        btn_template.Bind(wx.EVT_BUTTON, self.GenerateTemplate)
+        btn_template.Bind(wx.EVT_BUTTON, self.OnGenerateTemplate)
         self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateSimpleTemplate)
     
     
@@ -179,16 +180,38 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GenerateTemplate(self, event=None):
-        if not self.DestroyLicenseText():
-            return
+    def GenerateTemplate(self, l_name):
+        if self.DestroyLicenseText():
+            self.dsp_copyright.Clear()
+            
+            l_path = GetLicenseTemplateFile(l_name)
+            
+            if l_path:
+                l_data = open(l_path)
+                l_lines = l_data.read().split(u'\n')
+                l_data.close()
+                
+                delimeters = (
+                    u'<year>',
+                    u'<years>',
+                    u'<year(s)>',
+                    u'<date>',
+                    u'<dates>',
+                    u'<date(s)>',
+                )
+                
+                for DEL in delimeters:
+                    l_index = 0
+                    for LI in l_lines:
+                        if DEL in LI:
+                            l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
+                        l_index += 1
+                
+                self.dsp_copyright.SetValue(u'\n'.join(l_lines))
+                
+                self.dsp_copyright.SetInsertionPoint(0)
         
-        self.dsp_copyright.Clear()
-        
-        lic_path = u'/usr/share/common-licenses/{}'.format(self.sel_templates.GetStringSelection())
-        cpright = u'Copyright: <year> <copyright holder> <email>'
-        
-        self.dsp_copyright.SetValue(u'{}\n\n{}'.format(cpright, lic_path))
+        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
@@ -214,12 +237,12 @@ class Panel(wx.ScrolledWindow):
         return None
     
     
-    ## TODO: Doxygen
+    ## Tells the app whether this page should be added to build
     def IsBuildExportable(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
     
-    ## TODO: Doxygen
+    ## Determines location of template file
     def OnGenerateTemplate(self, event=None):
         license_name = self.sel_templates.GetStringSelection()
         
@@ -230,7 +253,10 @@ class Panel(wx.ScrolledWindow):
             self.GenerateTemplate(license_name)
     
     
-    ## TODO: Doxygen
+    ## Enables/Disables simple template button
+    #  
+    #  Simple template generation is only available
+    #  for system  licenses.
     def OnSelectTemplate(self, event=None):
         if isinstance(event, wx.Choice):
             choice = event
@@ -249,7 +275,7 @@ class Panel(wx.ScrolledWindow):
         self.SetTemplateToolTip()
     
     
-    ## TODO: Doxygen
+    ## Resets all page fields to default values
     def ResetAllFields(self):
         self.dsp_copyright.Clear()
         
@@ -258,7 +284,7 @@ class Panel(wx.ScrolledWindow):
             self.OnSelectTemplate(self.sel_templates)
     
     
-    ## TODO: Doxygen
+    ## Sets the text of the displayed copyright
     def SetCopyright(self, data):
         self.dsp_copyright.SetValue(data)
     
