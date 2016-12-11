@@ -1,7 +1,7 @@
 # Application details
 NAME=Debreate
-VERSION=0.7.12
-VERSION_dev=0
+VERSION=0.7.13
+VERSION_dev=1
 
 # Developer details
 AUTHOR=Jordan Irwin
@@ -9,4 +9,4 @@ EMAIL=antumdeluge@gmail.com
 
 # Distribution details
 DIST=xenial
-URGENCY=high
+URGENCY=low

@@ -1,4 +1,4 @@
-0.7.12
-- Heavy testing for both wx 3.0 & 2.8
+0.7.13
+- Testing for both wx 3.0 & 2.8
 
 Non-priority:

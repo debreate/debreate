@@ -5,7 +5,7 @@ prefix=/usr/local
 TARGET = $(DESTDIR)$(prefix)
 
 PACKAGE = debreate
-VERSION = 0.7.12
+VERSION = 0.7.13
 BINDIR = bin
 DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
