@@ -33,71 +33,72 @@ from globals.wizardhelper   import GetTopWindow
 copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]\n\n')
 
 
-## TODO: Doxygen
+## Copyright page
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.COPYRIGHT)
         
         # FIXME: Ignore symbolic links
-        license_list = GetSystemLicensesList()
+        opts_licences = GetSystemLicensesList()
+        
         # FIXME: Change variable name to 'self.builtin_licenses
-        self.local_licenses = GetLicenseTemplatesList()
+        self.opts_local_licenses = GetLicenseTemplatesList()
         
         # Do not use local licenses if already located on system
-        for lic in license_list:
-            if lic in self.local_licenses:
-                self.local_licenses.remove(lic)
+        for lic in opts_licences:
+            if lic in self.opts_local_licenses:
+                self.opts_local_licenses.remove(lic)
         
         # Add the remaining licenses to the selection list
-        for lic in self.local_licenses:
-            license_list.append(lic)
+        for lic in self.opts_local_licenses:
+            opts_licences.append(lic)
         
-        license_list.sort(key=unicode.lower)
+        opts_licences.sort(key=unicode.lower)
         
         ## A list of available license templates
-        self.lic_choices = wx.Choice(self, -1, choices=license_list)
-        self.lic_choices.SetSelection(0)
+        self.sel_templates = wx.Choice(self, -1, choices=opts_licences)
+        self.sel_templates.SetSelection(0)
         
-        template_btn = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
-        self.template_btn_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link')
+        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full')
+        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link')
         
-        self.OnSelectTemplate(self.lic_choices)
+        self.OnSelectTemplate(self.sel_templates)
         
         ## Area where license text is displayed
-        self.cp_display = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
+        self.dsp_copyright = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
         
         SetPageToolTips(self)
         
         # *** Layout *** #
         
-        sizer_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_H1.Add(template_btn, 1, wx.TOP|wx.RIGHT, 5)
-        sizer_H1.Add(self.template_btn_simple, 1, wx.TOP|wx.LEFT, 5)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_template, 1, wx.TOP|wx.RIGHT, 5)
+        lyt_buttons.Add(self.btn_template_simple, 1, wx.TOP|wx.LEFT, 5)
         
-        sizer_V1 = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_V1.Add(
+        lyt_label = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_label.Add(
             wx.StaticText(self, -1, GT(u'Available Templates')),
             0,
             wx.TOP|wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER,
             5
         )
-        sizer_V1.Add(self.lic_choices, 0, wx.TOP, 5)
-        sizer_V1.Add(sizer_H1, 1, wx.LEFT, 150)
+        lyt_label.Add(self.sel_templates, 0, wx.TOP, 5)
+        lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-        main_sizer.Add(sizer_V1, 0, wx.ALL, 5)
-        main_sizer.Add(self.cp_display, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_label, 0, wx.ALL, 5)
+        lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(main_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         # *** Event handlers *** #
         
-        wx.EVT_CHOICE(self.lic_choices, -1, self.OnSelectTemplate)
+        wx.EVT_CHOICE(self.sel_templates, -1, self.OnSelectTemplate)
         
-        wx.EVT_BUTTON(template_btn, -1, self.OnGenerateTemplate)
-        wx.EVT_BUTTON(self.template_btn_simple, -1, self.GenerateLinkedTemplate)
+        wx.EVT_BUTTON(btn_template, -1, self.OnGenerateTemplate)
+        wx.EVT_BUTTON(self.btn_template_simple, -1, self.GenerateLinkedTemplate)
     
     
     ## TODO: Doxygen
@@ -115,28 +116,28 @@ class Panel(WizardPage):
             license_text = FILE.read()
             FILE.close()
             
-            self.cp_display.Clear()
-            self.cp_display.SetValue(RemovePreWhitespace(license_text))
+            self.dsp_copyright.Clear()
+            self.dsp_copyright.SetValue(RemovePreWhitespace(license_text))
             
             add_header = (
                 u'Artistic',
                 u'BSD',
             )
             
-            self.cp_display.SetInsertionPoint(0)
+            self.dsp_copyright.SetInsertionPoint(0)
             
             if license_name in add_header:
-                self.cp_display.WriteText(copyright_header.format(GetYear()))
-                self.cp_display.SetInsertionPoint(0)
+                self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
+                self.dsp_copyright.SetInsertionPoint(0)
             
-        self.cp_display.SetFocus()
+        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
     def DestroyLicenseText(self):
         main_window = GetTopWindow()
         
-        empty = TextIsEmpty(self.cp_display.GetValue())
+        empty = TextIsEmpty(self.dsp_copyright.GetValue())
         
         if not empty:
             if wx.MessageDialog(main_window, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
@@ -159,22 +160,22 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def GenerateLinkedTemplate(self, event=None):
         if self.DestroyLicenseText():
-            self.cp_display.Clear()
+            self.dsp_copyright.Clear()
             
-            license_path = u'{}/{}'.format(system_licenses_path, self.lic_choices.GetString(self.lic_choices.GetSelection()))
+            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
     
-            self.cp_display.WriteText(copyright_header.format(GetYear()))
-            self.cp_display.WriteText(license_path)
+            self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
+            self.dsp_copyright.WriteText(license_path)
             
-            self.cp_display.SetInsertionPoint(0)
+            self.dsp_copyright.SetInsertionPoint(0)
             
-        self.cp_display.SetFocus()
+        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
     def GenerateTemplate(self, l_name):
         if self.DestroyLicenseText():
-            self.cp_display.Clear()
+            self.dsp_copyright.Clear()
             
             l_path = GetLicenseTemplateFile(l_name)
             
@@ -199,16 +200,16 @@ class Panel(WizardPage):
                             l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
                         l_index += 1
                 
-                self.cp_display.SetValue(u'\n'.join(l_lines))
+                self.dsp_copyright.SetValue(u'\n'.join(l_lines))
                 
-                self.cp_display.SetInsertionPoint(0)
+                self.dsp_copyright.SetInsertionPoint(0)
         
-        self.cp_display.SetFocus()
+        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
     def GetCopyright(self):
-        return self.cp_display.GetValue()
+        return self.dsp_copyright.GetValue()
     
     
     ## TODO: Doxygen
@@ -234,7 +235,7 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple(str, str) : Filename & copyright/license text
     def GetPageInfo(self):
-        license_text = self.cp_display.GetValue()
+        license_text = self.dsp_copyright.GetValue()
         
         if TextIsEmpty(license_text):
             return None
@@ -264,21 +265,21 @@ class Panel(WizardPage):
         
         copyright_data = u'\n'.join(copyright_data)
         
-        self.cp_display.SetValue(copyright_data)
+        self.dsp_copyright.SetValue(copyright_data)
         
         return 0
     
     
     ## TODO: Doxygen
     def IsExportable(self):
-        return not TextIsEmpty(self.cp_display.GetValue())
+        return not TextIsEmpty(self.dsp_copyright.GetValue())
     
     
     ## TODO: Doxygen
     def OnGenerateTemplate(self, event=None):
-        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
+        license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
         
-        if FieldEnabled(self.template_btn_simple):
+        if FieldEnabled(self.btn_template_simple):
             self.CopyStandardLicense(license_name)
         
         else:
@@ -294,31 +295,31 @@ class Panel(WizardPage):
         
         template = choice.GetString(choice.GetSelection())
         
-        if template in self.local_licenses:
-            self.template_btn_simple.Disable()
+        if template in self.opts_local_licenses:
+            self.btn_template_simple.Disable()
         else:
-            self.template_btn_simple.Enable()
+            self.btn_template_simple.Enable()
         
         self.SetTemplateToolTip()
     
     
     ## TODO: Doxygen
     def ResetPageInfo(self):
-        self.cp_display.Clear()
+        self.dsp_copyright.Clear()
     
     
     ## TODO: Doxygen
     def SetCopyright(self, data):
-        self.cp_display.SetValue(data)
+        self.dsp_copyright.SetValue(data)
     
     
     ## TODO: Doxygen
     def SetTemplateToolTip(self):
-        license_name = self.lic_choices.GetString(self.lic_choices.GetSelection())
+        license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
         license_path = self.GetLicensePath(license_name)
         
         if license_path:
-            self.lic_choices.SetToolTip(wx.ToolTip(license_path))
+            self.sel_templates.SetToolTip(wx.ToolTip(license_path))
             return
         
-        self.lic_choices.SetToolTip(None)
+        self.sel_templates.SetToolTip(None)
