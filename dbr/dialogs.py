@@ -27,6 +27,27 @@ from globals.project    import project_wildcards
 from globals.project    import supported_suffixes
 
 
+## A base dialog class
+#  
+#  Differences from wx.Dialog:
+#    * Border is always resizable.
+#    * Centers on parent when ShowModal is called.
+class BaseDialog(wx.Dialog):
+    def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Title'), pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr):
+        wx.Dialog.__init__(self, parent, ID, title, pos, size, style|wx.RESIZE_BORDER, name)
+    
+    
+    ## Centers on parent then shows dialog in modal form
+    #  
+    #  \override wx.Dialog.ShowModal
+    def ShowModal(self, *args, **kwargs):
+        if self.GetParent():
+            self.CenterOnParent()
+        
+        return wx.Dialog.ShowModal(self, *args, **kwargs)
+
+
 ## TODO: Doxygen
 class OverwriteDialog(wx.MessageDialog):
     def __init__(self, parent, path):
