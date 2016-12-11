@@ -18,7 +18,6 @@ from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
-from dbr.textinput          import MT_BTN_BR
 from dbr.textinput          import MonospaceTextCtrl
 from dbr.wizard             import WizardPage
 from globals                import ident
