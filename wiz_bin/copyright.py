@@ -118,9 +118,9 @@ class Panel(WizardPage):
                 ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
                 return
             
-            FILE = open(license_path, u'r')
-            license_text = FILE.read()
-            FILE.close()
+            FILE_BUFFER = open(license_path, u'r')
+            license_text = FILE_BUFFER.read()
+            FILE_BUFFER.close()
             
             self.dsp_copyright.Clear()
             self.dsp_copyright.SetValue(RemovePreWhitespace(license_text))
@@ -135,7 +135,7 @@ class Panel(WizardPage):
             if license_name in add_header:
                 self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
                 self.dsp_copyright.SetInsertionPoint(0)
-            
+        
         self.dsp_copyright.SetFocus()
     
     
@@ -169,12 +169,12 @@ class Panel(WizardPage):
             self.dsp_copyright.Clear()
             
             license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
-    
+            
             self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
             self.dsp_copyright.WriteText(license_path)
             
             self.dsp_copyright.SetInsertionPoint(0)
-            
+        
         self.dsp_copyright.SetFocus()
     
     
@@ -254,9 +254,9 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return errno.ENOENT
         
-        FILE = open(filename, u'r')
-        copyright_data = FILE.read().split(u'\n')
-        FILE.close()
+        FILE_BUFFER = open(filename, u'r')
+        copyright_data = FILE_BUFFER.read().split(u'\n')
+        FILE_BUFFER.close()
         
         # Remove preceding empty lines
         remove_index = 0
@@ -296,6 +296,7 @@ class Panel(WizardPage):
     def OnSelectTemplate(self, event=None):
         if isinstance(event, wx.Choice):
             choice = event
+        
         else:
             choice = event.GetEventObject()
         
@@ -303,6 +304,7 @@ class Panel(WizardPage):
         
         if template in self.opts_local_licenses:
             self.btn_template_simple.Disable()
+        
         else:
             self.btn_template_simple.Enable()
         
