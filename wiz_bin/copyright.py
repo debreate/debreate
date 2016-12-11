@@ -68,7 +68,7 @@ class Panel(WizardPage):
             self.btn_template_simple.Enable(False)
         
         ## Area where license text is displayed
-        self.dsp_copyright = MonospaceTextCtrl(self, button=MT_BTN_BR, name=u'license')
+        self.dsp_copyright = MonospaceTextCtrl(self, name=u'license')
         
         SetPageToolTips(self)
         
