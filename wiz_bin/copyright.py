@@ -60,7 +60,7 @@ class Panel(wx.ScrolledWindow):
         self.sel_templates.SetSelection(self.sel_templates.default)
         
         btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full»')
-        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link»')
+        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Simple Template'), name=u'simple»')
         
         if not self.sel_templates.GetCount():
             self.sel_templates.Enable(False)
@@ -105,7 +105,7 @@ class Panel(wx.ScrolledWindow):
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
         btn_template.Bind(wx.EVT_BUTTON, self.GenerateTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateLinkedTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateSimpleTemplate)
     
     
     ## TODO: Doxygen
@@ -164,7 +164,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GenerateLinkedTemplate(self, event=None):
+    def GenerateSimpleTemplate(self, event=None):
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
             

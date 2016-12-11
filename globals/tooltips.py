@@ -122,8 +122,8 @@ TT_copyright = {
         u'\t{}'.format(local_templates_path),
         ),
     u'full_disabled': no_lic_templates,
-    u'link': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
-    u'link_disabled': no_lic_templates,
+    u'simple': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
+    u'simple_disabled': no_lic_templates,
 }
 
 TT_menu = {
