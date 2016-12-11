@@ -25,20 +25,17 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
+        # FIXME: Ignore symbolic links
         opts_licenses = GetSystemLicensesList()
-        
-        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'gen»')
         
         self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list»')
         self.sel_templates.SetSelection(0)
         
+        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'gen»')
+        
         if not self.sel_templates.GetCount():
             btn_template.Enable(False)
             self.sel_templates.Enable(False)
-        
-        template_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        template_sizer.Add(btn_template, 1)
-        template_sizer.Add(self.sel_templates, 1)
         
         self.dsp_copyright = MonospaceTextCtrl(self)
         
@@ -46,9 +43,13 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_template, 1)
+        lyt_buttons.Add(self.sel_templates, 1)
+        
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(template_sizer, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_buttons, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
