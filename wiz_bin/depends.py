@@ -153,6 +153,16 @@ class Panel(WizardPage):
         wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
     
     
+    ## Add a category & dependency to end of list
+    #  
+    #  \param category
+    #        \b \e unicode|str : Category label
+    #  \param value
+    #        \b \e unicode|str : Dependency value
+    def AppendDependency(self, category, value):
+        self.dep_area.AppendStringItem((category, value))
+    
+    
     ## TODO: Doxygen
     def GetDefaultCategory(self):
         return GT(u'Depends')
