@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# MIT licensing
+# See: docs/LICENSE.txt
 
 import os, sys, errno
 
