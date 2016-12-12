@@ -6,6 +6,7 @@
 import commands, os, wx
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
+
 from globals.bitmaps import BUTTON_HELP
 
 
