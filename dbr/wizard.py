@@ -16,6 +16,7 @@ from globals                import ident
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 ## Wizard class for Debreate
@@ -109,7 +110,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        wx.GetApp().GetTopWindow().menu_page.Check(page_id, True)
+        GetTopWindow().menu_page.Check(page_id, True)
     
     
     ## TODO: Doxygen
