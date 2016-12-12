@@ -119,6 +119,7 @@ from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
 from dbr.log                import Logger
+from dbr.workingdir         import ChangeWorkingDirectory
 from globals                import ident
 from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
@@ -233,22 +234,18 @@ if conf_values[u'maximize']:
 if Debreate.menu_opt.FindItemById(ident.DIALOGS):
     Debreate.menu_opt.Check(ident.DIALOGS, conf_values[u'dialogs'])
 
+working_dir = conf_values[u'workingdir']
+
 parsed_path = GetParsedPath()
 if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
     
-    FILE = open(project_file, u'r')
-    project_data = FILE.read()
-    FILE.close()
-    
-    Debreate.OpenProject(project_data, project_file)
-    
-    os.chdir(os.path.dirname(project_file))
-else:
-    # Set working directory (Not necessary to call ChangeWorkingDirectory here)
-    os.chdir(conf_values[u'workingdir'])
+    if Debreate.OpenProject(project_file):
+        working_dir = os.path.dirname(project_file)
 
+# Set working directory (Not necessary to call ChangeWorkingDirectory here)
+ChangeWorkingDirectory(working_dir)
 
 Debreate.Show(True)
 debreate_app.MainLoop()

@@ -19,6 +19,7 @@ from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.custom             import StatusBar
 from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -526,13 +527,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Get the path and set the saved project
         self.saved_project = dia.GetPath()
         
-        FILE_BUFFER = open(self.saved_project, u'r')
-        data = FILE_BUFFER.read()
-        FILE_BUFFER.close()
-        
         filename = os.path.split(self.saved_project)[1]
         
-        self.OpenProject(data, filename)
+        self.OpenProject(filename)
     
     
     ## TODO: Doxygen
@@ -674,48 +671,63 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         webbrowser.open(url)
     
     
-    ## TODO: Doxygen
-    def OpenProject(self, data, filename):
-        lines = data.split(u'\n')
-        app = lines[0].split(u'-')[0].split(u'[')[1]
-        if app != u'DEBREATE':
-            bad_file = wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
-                    style=wx.OK|wx.ICON_ERROR)
-            bad_file.ShowModal()
+    ## Tests project type & calls correct method to read project file
+    #  
+    #  \param project_file
+    #    \b \e unicode|str : Path to project file
+    def OpenProject(self, project_file):
+        if not os.path.isfile(project_file):
+            ShowErrorDialog(GT(u'Could not open project file'),
+                    GT(u'File does not exist or is not a regular file: {}').format(project_file))
+            return False
         
-        else: 
-            # *** Get Control Data *** #
-            control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-            depends_data = self.page_control.SetFieldData(control_data)
-            self.page_depends.SetFieldData(depends_data)
-            
-            # *** Get Files Data *** #
-            files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-            self.page_files.SetFieldData(files_data)
-            
-            # *** Get Scripts Data *** #
-            scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-            self.page_scripts.SetFieldData(scripts_data)
-            
-            # *** Get Changelog Data *** #
-            clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-            self.page_clog.SetChangelog(clog_data)
-            
-            # *** Get Copyright Data *** #
-            try:
-                cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
-                self.page_cpright.SetCopyright(cpright_data)
-            
-            except IndexError:
-                pass
-            
-            # *** Get Menu Data *** #
-            menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-            self.page_menu.SetLauncherData(menu_data, enabled=True)
-            
-            # Get Build Data
-            build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
-            self.page_build.SetFieldData(build_data)
+        FILE_BUFFER = open(project_file, u'r')
+        data = FILE_BUFFER.read()
+        FILE_BUFFER.close()
+        
+        lines = data.split(u'\n')
+        
+        # FIXME: Need a better way to determine valid project
+        app = lines[0].lstrip(u'[')
+        if not app.startswith(u'DEBREATE'):
+            ShowErrorDialog(GT(u'Could not open project file'),
+                    GT(u'Not a valid Debreate project: {}').format(project_file))
+            return False
+        
+        # *** Get Control Data *** #
+        control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
+        depends_data = self.page_control.SetFieldData(control_data)
+        self.page_depends.SetFieldData(depends_data)
+        
+        # *** Get Files Data *** #
+        files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
+        self.page_files.SetFieldData(files_data)
+        
+        # *** Get Scripts Data *** #
+        scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
+        self.page_scripts.SetFieldData(scripts_data)
+        
+        # *** Get Changelog Data *** #
+        clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
+        self.page_clog.SetChangelog(clog_data)
+        
+        # *** Get Copyright Data *** #
+        try:
+            cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
+            self.page_cpright.SetCopyright(cpright_data)
+        
+        except IndexError:
+            pass
+        
+        # *** Get Menu Data *** #
+        menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
+        self.page_menu.SetLauncherData(menu_data, enabled=True)
+        
+        # Get Build Data
+        build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
+        self.page_build.SetFieldData(build_data)
+        
+        return True
     
     
     ## TODO: Doxygen
