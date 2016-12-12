@@ -8,7 +8,6 @@
 
 import os, thread, wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonCancel
@@ -23,6 +22,7 @@ from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.timer              import DebreateTimer
 from dbr.timer              import EVT_TIMER_STOP
+from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.wizardhelper   import GetTopWindow
 
