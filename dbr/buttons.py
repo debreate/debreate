@@ -112,7 +112,7 @@ class ButtonConfirm(BitmapButton):
 
 ## Button with an arrow for importing info from other pages
 class ButtonImport(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_OPEN, name=u'btn import'):
+    def __init__(self, parent, ID=ident.IMPORT, name=u'btn import'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/import32.png'.format(PATH_app)),
                 ID=ID, name=name)
         

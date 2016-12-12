@@ -111,7 +111,7 @@ class Panel(wx.ScrolledWindow):
         self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
-        btn_al_import = ButtonImport(pnl_autolink, ident.IMPORT)
+        btn_al_import = ButtonImport(pnl_autolink)
         btn_al_remove = ButtonRemove(pnl_autolink)
         btn_al_generate = ButtonBuild(pnl_autolink)
         
@@ -184,7 +184,7 @@ class Panel(wx.ScrolledWindow):
         for rb in self.grp_te:
             rb.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
         
-        wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
+        btn_al_import.Bind(wx.EVT_BUTTON, self.ImportExe)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
         wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
