@@ -169,6 +169,8 @@ class ButtonRefresh(BitmapButton):
     def __init__(self, parent, ID=wx.ID_REFRESH, name=u'refresh'):
         BitmapButton.__init__(self, parent, BUTTON_REFRESH,
                 ID=ID, name=name)
+        
+        self.SetToolTip(wx.ToolTip(GT(u'Refresh')))
 
 
 ## TODO: Doxygen
