@@ -166,7 +166,7 @@ TT_build = {
     u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
-        GT(u'See: Help ➜ Reference ➜ Lintian Tags Explanation'),
+        GT(u'See "Help ➜ Reference ➜ Lintian Tags Explanation"'),
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
     u'build': GT(u'Start building'),
