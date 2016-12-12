@@ -230,9 +230,6 @@ if conf_values[u'center']:
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
-# Set working directory (Not necessary to call ChangeWorkingDirectory here)
-os.chdir(conf_values[u'workingdir'])
-
 # Set project compression
 Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
 
@@ -242,6 +239,12 @@ if parsed_path:
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
     
     Debreate.OpenProject(project_file)
+
+    os.chdir(os.path.dirname(project_file))
+else:
+    # Set working directory (Not necessary to call ChangeWorkingDirectory here)
+    os.chdir(conf_values[u'workingdir'])
+
 
 Debreate.Show(True)
 debreate_app.MainLoop()
