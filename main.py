@@ -521,9 +521,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             if dia.ShowModal() != wx.ID_OK:
                 return
         
-        if self.saved_project and not self.ResetPages():
-            return
-        
         # Get the path and set the saved project
         self.saved_project = dia.GetPath()
         
@@ -693,6 +690,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             ShowErrorDialog(GT(u'Could not open project file'),
                     GT(u'Not a valid Debreate project: {}').format(project_file))
             return False
+        
+        if self.saved_project and not self.ResetPages():
+            return
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
