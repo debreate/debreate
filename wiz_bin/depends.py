@@ -223,7 +223,7 @@ class Panel(WizardPage):
                     else:
                         self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
-        elif key_id == wx.ID_DELETE:
+        elif key_id == wx.ID_REMOVE:
             self.dep_area.RemoveSelected()
         
         elif key_id == wx.ID_CLEAR:

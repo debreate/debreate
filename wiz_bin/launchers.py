@@ -705,7 +705,7 @@ class Panel(WizardPage):
         if key_code in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             self.lst_categories.InsertStringItem(0, cat)
         
-        elif key_code in (wx.ID_DELETE, wx.WXK_DELETE):
+        elif key_code in (wx.ID_REMOVE, wx.WXK_DELETE):
             cur_cat = self.lst_categories.GetFirstSelected()
             self.lst_categories.DeleteItem(cur_cat)
         

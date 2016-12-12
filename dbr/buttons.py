@@ -175,7 +175,7 @@ class ButtonRefresh(BitmapButton):
 
 ## TODO: Doxygen
 class ButtonRemove(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_DELETE, name=u'btn remove'):
+    def __init__(self, parent, ID=wx.ID_REMOVE, name=u'btn remove'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/del32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
