@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, sys, errno
 from scripts_globals import version_files, GetInfoValue
@@ -28,8 +31,15 @@ def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
     
     for l in lines_new:
         l_index = lines_new.index(l)
-        if l.startswith(testline):
-            lines_new[l_index] = '{}{}{}'.format(testline, newvalue, suffix)
+        if l.strip(' ').startswith(testline):
+            # Preserve whitespace
+            ws = ''
+            if l.startswith(' '):
+                ws = l.split(testline)[0]
+            
+            lines_new[l_index] = '{}{}{}{}'.format(ws, testline, newvalue, suffix)
+            
+            # Only change first instance
             break
     
     if lines_new != lines_orig:
