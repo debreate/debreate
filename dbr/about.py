@@ -12,6 +12,7 @@ from dbr.buttons            import ButtonConfirm
 from dbr.error              import ShowError
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
+from dbr.functions          import GetContainerItemCount
 from dbr.functions          import GetFileMimeType
 from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
@@ -196,7 +197,7 @@ class AboutDialog(wx.Dialog):
     #  \param graphic
     #        Path to image file
     def SetGraphic(self, graphic):
-        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
         image = wx.Image(graphic)
         image.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
@@ -217,7 +218,7 @@ class AboutDialog(wx.Dialog):
     #  \param version
     #        String to display
     def SetVersion(self, version):
-        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
         app_label = wx.StaticText(
             self.t_about,
@@ -235,12 +236,13 @@ class AboutDialog(wx.Dialog):
         
         self.t_about.Layout()
     
+    
     ## Display author's name
     #  
     #  \param author
     #        String to display
     def SetAuthor(self, author):
-        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
         self.about_layout_V1.Insert(
             insertion_point,
@@ -268,7 +270,7 @@ class AboutDialog(wx.Dialog):
     #  \param url_list
     #        \b \e tuple : Website labels & URL definitions
     def SetWebsites(self, url_list):
-        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
         link_layout = wx.BoxSizer(wx.VERTICAL)
         for label, link in url_list:
@@ -292,7 +294,7 @@ class AboutDialog(wx.Dialog):
     ## Displays a description about the app on the 'about' tab
     def SetDescription(self, desc):
         # Place between spacers
-        insertion_point = self.about_layout_V1.GetItemCount() - 1
+        insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
         self.about_layout_V1.Insert(
             insertion_point,
@@ -464,6 +466,7 @@ class AboutDialog(wx.Dialog):
         self.changelog.SetValue(log_text)
         self.changelog.SetInsertionPoint(0)
     
+    
     ## Sets text to be shown on the 'License' tab
     #  
     #  \param lic_file
@@ -502,4 +505,3 @@ class AboutDialog(wx.Dialog):
     #        <b><em>(wx.EVT_BUTTON)</em></b>
     def OnOk(self, event=None):
         self.Close()
-    
