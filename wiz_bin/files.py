@@ -217,7 +217,7 @@ class Panel(WizardPage):
         except AttributeError:
             keycode = event.GetEventObject().GetId()
         
-        if keycode in (wx.ID_DELETE, wx.WXK_DELETE):
+        if keycode in (wx.ID_REMOVE, wx.WXK_DELETE):
             selected = [] # Items to remove from visible list
             toremove = [] # Items to remove from invisible list
             total = self.file_list.GetSelectedItemCount()
