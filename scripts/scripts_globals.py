@@ -6,6 +6,33 @@
 import os, sys, errno
 
 
+def PrependStringZeros(string):
+    longest = 4
+    difference = longest - len(string)
+    
+    for X in range(difference):
+        string = '0{}'.format(string)
+    
+    return string
+
+
+def lprint(message, line=None):
+    newlines = 0
+    
+    if isinstance(message, (unicode, str)):
+        while message.startswith('\n'):
+            newlines += 1
+            message = message[1:]
+    
+    if line != None:
+        message = '[L:{}] {}'.format(PrependStringZeros(str(line)), message)
+    
+    for X in range(newlines):
+        message = '\n{}'.format(message)
+    
+    print(message)
+
+
 def ConcatPaths(root, tail):
     if not root:
         return tail.replace('//', '/')
