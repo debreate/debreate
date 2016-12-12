@@ -83,9 +83,16 @@ if u'clean' in parsed_commands:
 import wxversion
 
 if u'legacy' in parsed_commands:
-    wxversion.select([u'2.8'])
-else:
+    try:
+        wxversion.select([u'2.8'])
+    
+    except wxversion.VersionError:
+        print(u'Warning: Could not find legacy version of wx on system. Reverting to default settings.')
+
+# Ensure that "legacy" version isn't already in use
+if not wxversion._selected:
     wxversion.select([u'3.0', u'2.8'])
+
 
 import commands, gettext, wx
 
