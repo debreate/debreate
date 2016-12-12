@@ -19,6 +19,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
@@ -601,15 +602,8 @@ class Panel(WizardPage):
         # Ensure only one empty newline at end of preview (same as actual output)
         control = control.rstrip(u'\n') + u'\n'
         
-        dia = wx.Dialog(self, title=GT(u'Control File Preview'), size=(500,400))
-        preview = MultilineTextCtrlPanel(dia, style=wx.TE_READONLY)
-        preview.SetValue(control)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND|wx.ALL, 5)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
+        dia = TextPreview(title=GT(u'Control File Preview'),
+                text=control, size=(500,400))
         
         dia.ShowModal()
         dia.Destroy()
