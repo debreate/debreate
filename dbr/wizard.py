@@ -50,6 +50,7 @@ class Wizard(wx.Panel):
         self.btn_next = ButtonNext(self)
         self.btn_next.SetToolTip(TT_wiz_next)
         
+        # FIXME: Should be global???
         self.ChangePageEvent, self.EVT_CHANGE_PAGE = NewCommandEvent()
         self.evt = self.ChangePageEvent(0)
         
@@ -249,5 +250,4 @@ class Wizard(wx.Panel):
         
         self.Layout()
         
-        for child in self.GetChildren():
-            wx.PostEvent(child, self.evt)
+        wx.PostEvent(GetTopWindow(), self.evt)
