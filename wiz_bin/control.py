@@ -25,6 +25,7 @@ from globals.errorcodes     import dbrerrno
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
+from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -253,7 +254,7 @@ class Panel(WizardPage):
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnBrowse)
         btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreview)
+        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
         
         # These are used for controlling the column width/size in the co-authors field
         # FIXME: Deprecated?
@@ -295,9 +296,8 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     ## FIXME: Deprecated???
     def GetCtrlInfo(self):
-        main_window = GetTopWindow()
+        pg_depends = GetPage(ident.DEPENDS)
         
-        # Creat a list to store info
         ctrl_list = []
         
         getvals = (
@@ -363,11 +363,11 @@ class Panel(WizardPage):
             }
         
         # Get amount of items to add
-        dep_area = GetField(ident.DEPENDS, ident.F_LIST)
+        dep_area = GetField(pg_depends, ident.F_LIST)
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:
-            # Get each item from dependencied page
+            # Get each item from dependencies page
             dep_type = dep_area.GetItem(count, 0).GetText()
             dep_val = dep_area.GetItem(count, 1).GetText()
             for item in all_deps:
@@ -398,7 +398,9 @@ class Panel(WizardPage):
                     
                 ctrl_list.append(u'\n'.join(desc_temp))
         
+        # dpkg requires empty newline at end of file
         ctrl_list.append(u'\n')
+        
         return u'\n'.join(ctrl_list)
     
     
@@ -560,7 +562,7 @@ class Panel(WizardPage):
         mod = event.GetModifiers()
         
         if mod == 2 and key == 80:
-            self.OnPreview(None)
+            self.OnPreviewControl()
         
         if event:
             event.Skip()
@@ -593,7 +595,7 @@ class Panel(WizardPage):
     
     
     ## Show a preview of the control file
-    def OnPreview(self, event=None):
+    def OnPreviewControl(self, event=None):
         control = self.GetCtrlInfo()
         
         # Ensure only one empty newline at end of preview (same as actual output)
