@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 # HOWTO:
 #   To add a changelog entry:
 #     - Run this script (from any location)

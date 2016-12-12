@@ -1,25 +1,63 @@
 # -*- coding: utf-8 -*-
 
+# MIT licensing
+# See: docs/LICENSE.txt
 
 import os, sys, errno
+
+
+def PrependStringZeros(string):
+    longest = 4
+    difference = longest - len(string)
+    
+    for X in range(difference):
+        string = '0{}'.format(string)
+    
+    return string
+
+
+def lprint(message, line=None):
+    newlines = 0
+    
+    if isinstance(message, (unicode, str)):
+        while message.startswith('\n'):
+            newlines += 1
+            message = message[1:]
+    
+    if line != None:
+        message = '[L:{}] {}'.format(PrependStringZeros(str(line)), message)
+    
+    for X in range(newlines):
+        message = '\n{}'.format(message)
+    
+    print(message)
+
+
+def ConcatPaths(root, tail):
+    if not root:
+        return tail.replace('//', '/')
+    
+    return '{}/{}'.format(root, tail).replace('//', '/')
 
 
 scripts_dir = os.path.dirname(__file__)
 root_dir = os.path.split(scripts_dir)[0]
 
-file_INFO = '{}/INFO'.format(root_dir)
+FILE_info = '{}/INFO'.format(root_dir)
 
-file_DOXYFILE = '{}/docs/Doxyfile'.format(root_dir)
-file_LOCALE = '{}/locale/debreate.pot'.format(root_dir)
-py_APP = '{}/globals/application.py'.format(root_dir)
-
-file_CHANGELOG = '{}/docs/changelog'.format(root_dir)
-
-if not os.path.isfile(file_INFO):
-    print('[ERROR] Required file not found: {}'.format(file_INFO))
+if not os.path.isfile(FILE_info):
+    print('[ERROR] Required file not found: {}'.format(FILE_info))
     sys.exit(errno.ENOENT)
 
-f_opened = open(file_INFO)
+FILE_doxyfile = '{}/docs/Doxyfile'.format(root_dir)
+FILE_locale = '{}/locale/debreate.pot'.format(root_dir)
+PY_app = '{}/globals/application.py'.format(root_dir)
+
+FILE_make = '{}/Makefile.in'.format(root_dir)
+FILE_changelog = '{}/docs/changelog'.format(root_dir)
+FILE_changelog_debian = 'debian/changelog'
+
+f_opened = open(FILE_info)
 data_INFO = f_opened.read().split('\n')
 f_opened.close()
 
@@ -45,7 +83,13 @@ required_locale_files = (
 )
 
 version_files = {
-    'application': py_APP,
-    'doxyfile': file_DOXYFILE,
-    'locale': file_LOCALE,
+    'application': PY_app,
+    'doxyfile': FILE_doxyfile,
+    'locale': FILE_locale,
+    'makefile': FILE_make,
 }
+
+debian_files = {
+    'changelog': FILE_changelog,
+    'changelog debian': FILE_changelog_debian,
+    }
