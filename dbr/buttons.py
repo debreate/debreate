@@ -106,7 +106,8 @@ class ButtonConfirm(BitmapButton):
     def __init__(self, parent, ID=wx.ID_OK, name=u'btn confirm'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/confirm32.png'.format(PATH_app)),
                 ID=ID, name=name)
-        self.SetToolTip(wx.ToolTip(GT(u'Ok')))
+        
+        self.SetToolTip(wx.ToolTip(GT(u'Confirm')))
 
 
 ## Button with an arrow for importing info from other pages
