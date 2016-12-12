@@ -1,45 +1,30 @@
-debreate (0.8.0) xenial; urgency=high
+debreate (0.8.0) xenial; urgency=low
 
-  * Add compatibility for wx 3.0
-    Made Lintian message dialog resizable
-    Display build errors in dialog
-    Fixed: do not delete directory tree if build fails
-    License changed to MIT (see docs/LICENSE.txt)
-    Added system information (Python & wxPython versions) to about dialog
-    License templates generation
-    License templates added:
-    - BSD-2-Clause
-    - BSD-4-Clause
-    - BSL
-    - CC0
-    - EPL-1.0
-    - ISC
-    - MIT-X
-    - OFL-1.1
-    - Zlib-PNG
-    Began adding Doxygen documentation
-    Logger added for outputting messages to text log
-    License templates can be placed in HOME .local directory
-    Fixed bug where importing files progress dialog cannot be cancelled
-    Uses archive file for project save/open format
-    - Uncompressed tar archive
-    - Gzip tar archive
-    - Bzip2 tar archive
-    - XZ tar archive
-    - Zip archive
-    Files list shows source directory as well as target
-    Option to enable/disable tooltips
-    Disabled custom dialogs
-    Use system '/tmp' directory as default for temporary files
-    File list can be refreshed to update missing files
-    Fixes for dialogs & saving working directory
-    Uses 'setup.py' to generate Makefile
-    Support for legacy project files
-    Log window when debugging enabled
-    Parses command line
-    Creates mimetypes for project files
+  * FIXES:
+    - Temporary staged directory not deleted if build fails
+    - Fixes for dialogs & saving working directory
+  * NEW FEATURES:
+    - Build result dialog resizable
+    - Build result dialog shows more details
+    - Doxygen documentation
+    - Exception errors during build are caught & displayed
+    - Files list displays source directory as well as target
+    - Generate Makefile with 'setup.py' script
+    - Log window displayed when Logger level set to debug/3
+    - Project save/export:
+      - Projects can be saved in compressed/uncompressed formats:
+        - Uncompressed tar archive
+        - Gzip tar archive
+        - Bzip2 tar archive
+        - XZ tar archive
+        - Zip archive
+      - New project MIME type association: application/x-dbpz (.dbpz) format
+      - Legacy project (.dbp/plain text) support
+    - The system '/tmp' directory is used staging project export & build prep
+  * MISC:
+    - Disabled custom dialogs
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 04 Nov 2016 18:09:38 -0700
+ -- Jordan Irwin <antumdeluge@gmail.com>  Mon, 12 Dec 2016 03:15:43 -0800
 
 
 debreate (0.7.12) xenial; urgency=high
