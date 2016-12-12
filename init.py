@@ -9,16 +9,75 @@
 #  reset it to its default settings.
 
 
-import sys
+import os, sys
 
 import command_line as CL
-from command_line import parsed_commands
-from command_line import parsed_args_s
-from command_line import parsed_args_v
-from command_line import GetParsedPath
+from command_line   import GetParsedPath
+from command_line   import parsed_commands
+from command_line   import parsed_args_s
+from command_line   import parsed_args_v
+from globals.paths  import PATH_app
+from globals.paths  import ConcatPaths
 
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
+
+
+# Compiles python source into bytecode
+if u'compile' in parsed_commands:
+    import compileall, errno
+    
+    
+    compile_dirs = (
+        u'dbr',
+        u'globals',
+        u'wiz_bin',
+        )
+    
+    if not os.access(PATH_app, os.W_OK):
+        print(u'ERROR: No write privileges for {}'.format(PATH_app))
+        sys.exit(errno.EACCES)
+    
+    print(u'Compiling Python modules (.py) to bytecode (.pyc) ...\n')
+    
+    print(u'Compiling root directory: {}'.format(PATH_app))
+    for F in os.listdir(PATH_app):
+        if os.path.isfile(F) and F.endswith(u'.py') and F != u'init.py':
+            F = ConcatPaths((PATH_app, F))
+            compileall.compile_file(F)
+    
+    print
+    
+    for D in os.listdir(PATH_app):
+        if os.path.isdir(D) and D in compile_dirs:
+            D = ConcatPaths((PATH_app, D))
+            print(u'Compiling directory: {}'.format(D))
+            compileall.compile_dir(D)
+            print
+    
+    sys.exit(0)
+
+
+if u'clean' in parsed_commands:
+    import errno
+    
+    
+    if not os.access(PATH_app, os.W_OK):
+        print(u'ERROR: No write privileges for {}'.format(PATH_app))
+        sys.exit(errno.EACCES)
+    
+    print(u'Cleaning Python bytecode (.pyc) ...\n')
+    
+    for ROOT, DIRS, FILES in os.walk(PATH_app):
+        for F in FILES:
+            F = ConcatPaths((ROOT, F))
+            
+            if os.path.isfile(F) and F.endswith(u'.pyc'):
+                print(u'Removing file: {}'.format(F))
+                os.remove(F)
+    
+    sys.exit(0)
+
 
 # Modules to define required version of wx
 import wxversion
