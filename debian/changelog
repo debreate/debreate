@@ -1,3 +1,21 @@
+debreate (0.7.13) xenial; urgency=low
+
+  * Full license templates can be generated
+  * License templates shipped with app:
+    - BSD-2-Clause
+    - BSD-4-Clause
+    - BSL-1.0
+    - CC0
+    - EPL-1.0
+    - ISC
+    - MIT-X
+    - OFL-1.1
+    - Zlib-PNG
+  * Custom license templates can be placed in $HOME/.local directory
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Mon, 12 Dec 2016 02:13:32 -0800
+
+
 debreate (0.7.12) xenial; urgency=high
 
   * Fixes:
