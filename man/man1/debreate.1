@@ -3,7 +3,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH Debreate 1 "19 September 2016"
+.TH Debreate 1 "7 December 2016"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -29,7 +29,16 @@ A utility to aid in creating Debian packages for distribution.
 .SH COMMANDS
 .TP
 .B legacy
-- Forces using version 2.8 of wxPython instead of 3.0.
+.br
+Forces using version 2.8 of wxPython instead of 3.0.
+.TP
+.B compile
+.br
+Compiles Debreate's source files (.py) into Python bytecode (.pyc).
+.TP
+.B clean
+.br
+Removes compiled Python bytecode files (.pyc) from Debreate directory.
 .SH OPTIONS
 .TP
 .B \-h|\-\-help
@@ -43,4 +52,3 @@ Set the log output level. Posibble values are 'info', 'warning', 'error', & 'deb
 .TP
 .B \-i=|\-\-log-interval=<value>
 Set the integer value refresh rate for the log window when debugging is enabled. Higher value is lower frequency. Default is 1.
-.SH "SEE ALSO"
