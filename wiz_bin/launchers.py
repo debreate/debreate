@@ -22,6 +22,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
@@ -554,15 +555,8 @@ class Panel(WizardPage):
         # Show a preview of the .desktop config file
         config = self.GetMenuInfo()
         
-        dia = wx.Dialog(self, -1, GT(u'Preview'), size=(500,400))
-        preview = MultilineTextCtrlPanel(dia, -1, style=wx.TE_READONLY)
-        preview.SetValue(config)
-        
-        dia_sizer = wx.BoxSizer(wx.VERTICAL)
-        dia_sizer.Add(preview, 1, wx.EXPAND)
-        
-        dia.SetSizer(dia_sizer)
-        dia.Layout()
+        dia = TextPreview(title=GT(u'Menu Launcher Preview'),
+                text=config, size=(500,400))
         
         dia.ShowModal()
         dia.Destroy()
