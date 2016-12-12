@@ -1,4 +1,4 @@
-0.8.0:
+0.8.0
 - FIXES:
   - Temporary staged directory not deleted if build fails
   - Fixes for dialogs & saving working directory
@@ -8,19 +8,7 @@
   - Doxygen documentation
   - Exception errors during build are caught & displayed
   - Files list displays source directory as well as target
-  - Full license templates can be generated
   - Generate Makefile with 'setup.py' script
-  - License templates shipped with app:
-    - BSD-2-Clause
-    - BSD-4-Clause
-    - BSL
-    - CC0
-    - EPL-1.0
-    - ISC
-    - MIT-X
-    - OFL-1.1
-    - Zlib-PNG
-  - Custom license templates can be placed in $HOME/.local directory
   - Log window displayed when Logger level set to debug/3
   - Project save/export:
     - Projects can be saved in compressed/uncompressed formats:
