@@ -176,7 +176,13 @@ def GetMenuBar():
 
 ## TODO: Doxygen
 def GetPage(page_id):
-    return GetWizard().GetPage(page_id)
+    page = GetWizard().GetPage(page_id)
+    
+    # Failsafe in case Wizard pages have not been added yet
+    if page == None:
+        page = GetField(GetTopWindow(), page_id)
+    
+    return page
 
 
 ## Retrieves the full list of page IDs from the wizard
