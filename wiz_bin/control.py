@@ -257,10 +257,6 @@ class Panel(WizardPage):
         btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
         btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
         
-        # These are used for controlling the column width/size in the co-authors field
-        # FIXME: Deprecated?
-        wx.EVT_SIZE(self, self.OnResize)
-        
         for widget in self.text_widgets:
             wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
             wx.EVT_KEY_UP(widget, self.OnKeyUp)
@@ -607,14 +603,6 @@ class Panel(WizardPage):
         
         dia.ShowModal()
         dia.Destroy()
-    
-    
-    ## TODO: Doxygen
-    #  
-    #  TODO: Define
-    def OnResize(self, event=None):
-        #self.ReLayout()
-        pass
     
     
     ## TODO: Doxygen
