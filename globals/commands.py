@@ -4,7 +4,8 @@
 #  
 #  Executable commands available from the system
 
-# MIT licensing; See: docs/LICENSE.txt
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
 import os, subprocess, wx

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package <package>
+## \package globals.bitmaps
 
 # MIT licensing
 # See: docs/LICENSE.txt
