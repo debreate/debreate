@@ -43,29 +43,34 @@ if entry_exists:
 cutoff_index = 0
 for L in changelog_data:
     if not L.strip():
-        # Reached a new segment
+        # Reached a new version entry segment
         cutoff_index = changelog_data.index(L)
         break
 
 version_data = changelog_data[:cutoff_index]
 
-# Format new entry
-version_data[0] = 'debreate ({}) {}; urgency={}'.format(version_string, DIST, URGENCY)
-
+offset = 4
 for L in version_data:
     if L.startswith('- '):
-        version_data[changelog_data.index(L)] = '    {}'.format(L[2:]).rstrip(' \t')
+        version_data[changelog_data.index(L)] = '  * {}'.format(L[2:]).rstrip(' \t')
         continue
     
     # Preserve formatting/indentation of other lines (must begin with '- ', '* ', or '+ ')
     if L.strip(' \t')[:2] in ('- ', '* ', '+ '):
         version_data[changelog_data.index(L)] = '  {}'.format(L).rstrip(' \t')
+        continue
+    
+    # All other lines will be indented by 'offset' value
+    version_data[changelog_data.index(L)] = '{}{}'.format(' ' * offset, L.strip())
 
-# Add an asterix to first listed change
-version_data[1] = version_data[1].replace('    ', '  * ')
+# Replace version string with formatted header
+version_data[0] = 'debreate ({}) {}; urgency={}'.format(version_string, DIST, URGENCY)
 
+# Add spacing
 version_data.insert(1, '')
 version_data.append('')
+
+# Add footer
 version_data.append(' -- {} <{}>  {}'.format(AUTHOR, EMAIL, time.strftime('%a, %d %b %Y %H:%M:%S %z')))
 
 version_data = '\n'.join(version_data)
