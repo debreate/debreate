@@ -119,7 +119,6 @@ from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
 from dbr.log                import Logger
-from globals.application    import APP_name
 from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
@@ -148,7 +147,7 @@ if u'.py' in script_name:
 exit_now = 0
 
 if u'version' in parsed_args_s:
-    print(u'{} {}'.format(APP_name, VERSION_string))
+    print(VERSION_string)
     
     sys.exit(0)
 
