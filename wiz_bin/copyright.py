@@ -10,6 +10,7 @@ import os, wx
 
 from dbr.dialogs            import ConfirmationDialog
 from dbr.error              import ShowError
+from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import GetYear
 from dbr.functions          import RemovePreWhitespace
@@ -24,7 +25,6 @@ from dbr.textinput          import MonospaceTextCtrl
 from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -130,7 +130,7 @@ class Panel(wx.ScrolledWindow):
             FILE_BUFFER.close()
             
             # Number defines how many empty lines to add after the copyright header
-            # Boolean defines whether copyright header should be centered
+            # Boolean/Integer defines whether copyright header should be centered/offset
             add_header = {
                 u'Artistic': (1, True),
                 u'BSD': (0, False),
@@ -140,22 +140,49 @@ class Panel(wx.ScrolledWindow):
             if template_name in add_header:
                 license_text = license_text.split(u'\n')
                 
-                for empty_line in range(add_header[template_name][0]):
+                empty_lines = add_header[template_name][0]
+                for L in range(empty_lines):
                     license_text.insert(0, wx.EmptyString)
+                
+                header = copyright_header.format(GetYear())
+                
+                center_header = add_header[template_name][1]
+                if center_header:
+                    Logger.Debug(__name__, u'Centering header...')
+                    
+                    offset = 0
+                    
+                    # Don't use isinstance() here because boolean is an instance of integer
+                    if type(center_header) == int:
+                        offset = center_header
+                    
+                    else:
+                        longest_line = GetLongestLine(license_text)
+                        
+                        Logger.Debug(__name__, u'Longest line: {}'.format(longest_line))
+                        
+                        header_length = len(header)
+                        if header_length < longest_line:
+                            offset = (longest_line - header_length) / 2
+                    
+                    if offset:
+                        Logger.Debug(__name__, u'Offset: {}'.format(offset))
+                        
+                        header = u'{}{}'.format(u' ' * offset, header)
                 
                 # Special changes for BSD license
                 if template_name == u'BSD':
                     line_index = 0
                     for LI in license_text:
                         if u'copyright (c)' in LI.lower():
-                            license_text[line_index] = copyright_header.format(GetYear())
+                            license_text[line_index] = header
                             
                             break
                         
                         line_index += 1
                 
                 else:
-                    license_text.insert(0, copyright_header.format(GetYear()))
+                    license_text.insert(0, header)
                 
                 license_text = u'\n'.join(license_text)
             
