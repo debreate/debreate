@@ -87,8 +87,7 @@ if u'legacy' in parsed_commands:
 else:
     wxversion.select([u'3.0', u'2.8'])
 
-# System modules
-import wx, os, gettext, commands
+import commands, gettext, wx
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
