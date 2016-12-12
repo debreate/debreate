@@ -39,7 +39,7 @@ class DebreateLogger:
         DEBUG: u'debug',
     }
     
-    def __init__(self, log_level=2, log_path=u'{}/logs'.format(PATH_local)):
+    def __init__(self, log_level=ERROR, log_path=u'{}/logs'.format(PATH_local)):
         ## The level at which to output log messages
         self.log_level = log_level
         
