@@ -4,6 +4,9 @@
 #  
 #  Global functions used throughout Debreate
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import commands, os, re, shutil, traceback, subprocess, wx
 from datetime   import date
