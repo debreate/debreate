@@ -226,7 +226,7 @@ class DBDialog(wx.Dialog):
         self.dir_tree.ReCreateTree()
         # When tree is refreshed return to new folder
         self.dir_tree.SetPath(new_folder)
-
+    
     
     ## TODO: Doxygen
     def Delete(self, event=None):
