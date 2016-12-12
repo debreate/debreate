@@ -38,50 +38,51 @@ class Panel(WizardPage):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        self.bg = wx.Panel(self)
+        self.pnl_bg = wx.Panel(self)
         
         # Buttons to open, save, & preview control file
-        btn_open = ButtonBrowse64(self.bg)
-        btn_save = ButtonSave64(self.bg)
-        btn_preview = ButtonPreview64(self.bg)
+        btn_open = ButtonBrowse64(self.pnl_bg)
+        btn_save = ButtonSave64(self.pnl_bg)
+        btn_preview = ButtonPreview64(self.pnl_bg)
         
         # Button to open a help dialog (WIP)
-        btn_help = HelpButton(self.bg)
+        btn_help = HelpButton(self.pnl_bg)
         
-        pack_txt = wx.StaticText(self.bg, label=GT(u'Package'), name=u'package')
-        pack_txt.req = True
-        self.pack = CharCtrl(self.bg, ident.F_NAME, name=pack_txt.Name)
+        txt_package = wx.StaticText(self.pnl_bg, label=GT(u'Package'), name=u'package')
+        txt_package.req = True
+        self.pack = CharCtrl(self.pnl_bg, ident.F_NAME, name=txt_package.Name)
         self.pack.req = True
         
-        ver_txt = wx.StaticText(self.bg, label=GT(u'Version'), name=u'version')
-        ver_txt.req = True
-        self.ver = CharCtrl(self.bg, ident.F_VERSION, name=ver_txt.Name)
+        txt_version = wx.StaticText(self.pnl_bg, label=GT(u'Version'), name=u'version')
+        txt_version.req = True
+        self.ver = CharCtrl(self.pnl_bg, ident.F_VERSION, name=txt_version.Name)
         self.ver.req = True
         
-        auth_txt = wx.StaticText(self.bg, label=GT(u'Maintainer'), name=u'maintainer')
-        auth_txt.req = True
-        self.auth = wx.TextCtrl(self.bg, ident.F_MAINTAINER, name=auth_txt.Name)
+        txt_maintainer = wx.StaticText(self.pnl_bg, label=GT(u'Maintainer'), name=u'maintainer')
+        txt_maintainer.req = True
+        self.auth = wx.TextCtrl(self.pnl_bg, ident.F_MAINTAINER, name=txt_maintainer.Name)
         self.auth.req = True
         
-        email_txt = wx.StaticText(self.bg, label=GT(u'Email'), name=u'email')
-        email_txt.req = True
-        self.email = wx.TextCtrl(self.bg, ident.F_EMAIL, name=email_txt.Name)
+        txt_email = wx.StaticText(self.pnl_bg, label=GT(u'Email'), name=u'email')
+        txt_email.req = True
+        self.email = wx.TextCtrl(self.pnl_bg, ident.F_EMAIL, name=txt_email.Name)
         self.email.req = True
         
-        self.arch_opt = (
+        self.opts_arch = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
-            u'armhf', u'avr32', u'hppa', u'i386', u'ia64', u'lpia',
-            u'm32r', u'm68k', u'mips', u'mipsel', u'powerpc',
-            u'powerpcspe', u'ppc64', u's390', u's390x', u'sh3',
-            u'sh3eb', u'sh4', u'sh4eb', u'sparc', u'sparc64')
+            u'armhf', u'avr32', u'hppa', u'i386', u'ia64', u'lpia', u'm32r',
+            u'm68k', u'mips', u'mipsel', u'powerpc', u'powerpcspe', u'ppc64',
+            u's390', u's390x', u'sh3', u'sh3eb', u'sh4', u'sh4eb', u'sparc',
+            u'sparc64',
+            )
         
-        arch_txt = wx.StaticText(self.bg, label=GT(u'Architecture'), name=u'arch')
-        self.arch = wx.Choice(self.bg, choices=self.arch_opt, name=arch_txt.Name)
+        txt_arch = wx.StaticText(self.pnl_bg, label=GT(u'Architecture'), name=u'arch')
+        self.arch = wx.Choice(self.pnl_bg, choices=self.opts_arch, name=txt_arch.Name)
         self.arch.default = 0
         self.arch.SetSelection(self.arch.default)
         
         # ***** Recommended Group ***** #
-        self.sect_opt = (
+        opts_section = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
             u'doc', u'editors', u'electronics', u'embedded', u'fonts', u'games',
             u'gnome', u'graphics', u'gnu-r', u'gnustep', u'hamradio', u'haskell',
@@ -93,37 +94,38 @@ class Panel(WizardPage):
             u'web', u'x11', u'xfce', u'zope',
             )
         
-        sect_txt = wx.StaticText(self.bg, label=GT(u'Section'), name=u'section')
-        self.sect = wx.ComboBox(self.bg, choices=self.sect_opt, name=sect_txt.Name)
+        txt_section = wx.StaticText(self.pnl_bg, label=GT(u'Section'), name=u'section')
+        self.sect = wx.ComboBox(self.pnl_bg, choices=opts_section, name=txt_section.Name)
         
-        self.prior_opt = (
+        self.opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
             )
         
-        prior_txt = wx.StaticText(self.bg, label=GT(u'Priority'), name=u'priority')
-        self.prior = wx.Choice(self.bg, choices=self.prior_opt, name=prior_txt.Name)
+        txt_priority = wx.StaticText(self.pnl_bg, label=GT(u'Priority'), name=u'priority')
+        self.prior = wx.Choice(self.pnl_bg, choices=self.opts_priority, name=txt_priority.Name)
         self.prior.default = 0
         self.prior.SetSelection(self.prior.default)
         
-        syn_txt = wx.StaticText(self.bg, label=GT(u'Short Description'), name=u'synopsis')
-        self.syn = wx.TextCtrl(self.bg, name=syn_txt.Name)
+        txt_synopsis = wx.StaticText(self.pnl_bg, label=GT(u'Short Description'), name=u'synopsis')
+        self.syn = wx.TextCtrl(self.pnl_bg, name=txt_synopsis.Name)
         
-        desc_txt = wx.StaticText(self.bg, label=GT(u'Long Description'), name=u'description')
-        self.desc = MultilineTextCtrlPanel(self.bg, name=desc_txt.Name)
+        txt_description = wx.StaticText(self.pnl_bg, label=GT(u'Long Description'), name=u'description')
+        self.desc = MultilineTextCtrlPanel(self.pnl_bg, name=txt_description.Name)
         
-        # ***** Optional Group ***** #
-        src_txt = wx.StaticText(self.bg, label=GT(u'Source'), name=u'source')
-        self.src = wx.TextCtrl(self.bg, name=src_txt.Name)
+        # *** Optional fields *** #
         
-        url_txt = wx.StaticText(self.bg, label=GT(u'Homepage'), name=u'homepage')
-        self.url = wx.TextCtrl(self.bg, name=url_txt.Name)
+        txt_source = wx.StaticText(self.pnl_bg, label=GT(u'Source'), name=u'source')
+        self.src = wx.TextCtrl(self.pnl_bg, name=txt_source.Name)
+        
+        txt_homepage = wx.StaticText(self.pnl_bg, label=GT(u'Homepage'), name=u'homepage')
+        self.url = wx.TextCtrl(self.pnl_bg, name=txt_homepage.Name)
         
         self.ess_opt = (
             u'yes', u'no',
             )
         
-        ess_txt = wx.StaticText(self.bg, label=GT(u'Essential'), name=u'essential')
-        self.ess = wx.Choice(self.bg, choices=self.ess_opt, name=ess_txt.Name)
+        txt_essential = wx.StaticText(self.pnl_bg, label=GT(u'Essential'), name=u'essential')
+        self.ess = wx.Choice(self.pnl_bg, choices=self.ess_opt, name=txt_essential.Name)
         self.ess.default = 1
         self.ess.SetSelection(self.ess.default)
         
@@ -144,101 +146,101 @@ class Panel(WizardPage):
         # *** Layout *** #
         
         # Buttons
-        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        layout_buttons.Add(btn_open, 0)
-        layout_buttons.Add(btn_save, 0)
-        layout_buttons.Add(btn_preview, 0)
-        layout_buttons.AddStretchSpacer(1)
-        layout_buttons.Add(btn_help, 0)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_open, 0)
+        lyt_buttons.Add(btn_save, 0)
+        lyt_buttons.Add(btn_preview, 0)
+        lyt_buttons.AddStretchSpacer(1)
+        lyt_buttons.Add(btn_help, 0)
         
         # Required fields
-        layout_required = wx.FlexGridSizer(0, 4, 5, 5)
-        layout_required.AddGrowableCol(1)
-        layout_required.AddGrowableCol(3)
+        lyt_require = wx.FlexGridSizer(0, 4, 5, 5)
+        lyt_require.AddGrowableCol(1)
+        lyt_require.AddGrowableCol(3)
         
-        layout_required.AddSpacer(5)
-        layout_required.AddSpacer(5)
-        layout_required.AddSpacer(5)
-        layout_required.AddSpacer(5)
-        layout_required.AddMany((
-            (pack_txt), (self.pack, 0, wx.EXPAND), (ver_txt), (self.ver, 0, wx.EXPAND),
-            (auth_txt), (self.auth, 0, wx.EXPAND), (email_txt), (self.email, 0, wx.EXPAND),
-            arch_txt, (self.arch)
+        lyt_require.AddSpacer(5)
+        lyt_require.AddSpacer(5)
+        lyt_require.AddSpacer(5)
+        lyt_require.AddSpacer(5)
+        lyt_require.AddMany((
+            (txt_package), (self.pack, 0, wx.EXPAND), (txt_version), (self.ver, 0, wx.EXPAND),
+            (txt_maintainer), (self.auth, 0, wx.EXPAND), (txt_email), (self.email, 0, wx.EXPAND),
+            txt_arch, (self.arch)
             ))
         
-        border_info = wx.StaticBox(self.bg, label=GT(u'Required'))
+        border_info = wx.StaticBox(self.pnl_bg, label=GT(u'Required'))
         bbox_info = wx.StaticBoxSizer(border_info, wx.VERTICAL)
         
-        bbox_info.Add(layout_required, 0, wx.EXPAND)
+        bbox_info.Add(lyt_require, 0, wx.EXPAND)
         
         # Recommended fields
-        r_temp = wx.FlexGridSizer(0, 4, 5, 5)
-        r_temp.AddGrowableCol(1)
-        r_temp.AddGrowableCol(3)
+        lyt_recommend = wx.FlexGridSizer(0, 4, 5, 5)
+        lyt_recommend.AddGrowableCol(1)
+        lyt_recommend.AddGrowableCol(3)
         
-        r_temp.AddSpacer(5)
-        r_temp.AddSpacer(5)
-        r_temp.AddSpacer(5)
-        r_temp.AddSpacer(5)
-        r_temp.AddMany((
-            (sect_txt),
+        lyt_recommend.AddSpacer(5)
+        lyt_recommend.AddSpacer(5)
+        lyt_recommend.AddSpacer(5)
+        lyt_recommend.AddSpacer(5)
+        lyt_recommend.AddMany((
+            (txt_section),
             (self.sect, 0, wx.EXPAND),
-            (prior_txt),
+            (txt_priority),
             (self.prior),
             ))
         
-        border_description = wx.StaticBox(self.bg, label=GT(u'Recommended'))
+        border_description = wx.StaticBox(self.pnl_bg, label=GT(u'Recommended'))
         bbox_description = wx.StaticBoxSizer(border_description, wx.VERTICAL)
         
         bbox_description.AddSpacer(5)
-        bbox_description.Add(r_temp, 0, wx.EXPAND)
+        bbox_description.Add(lyt_recommend, 0, wx.EXPAND)
         bbox_description.AddSpacer(5)
         bbox_description.AddMany((
-            (syn_txt, 0), (self.syn, 0, wx.EXPAND),
+            (txt_synopsis, 0), (self.syn, 0, wx.EXPAND),
             ))
         bbox_description.AddSpacer(5)
         bbox_description.AddMany((
-            (desc_txt, 0), (self.desc, 1, wx.EXPAND),
+            (txt_description, 0), (self.desc, 1, wx.EXPAND),
             ))
         
         # Optional fields
-        b_temp = wx.FlexGridSizer(0, 4, 5, 5)
+        lyt_option = wx.FlexGridSizer(0, 4, 5, 5)
         
-        b_temp.AddGrowableCol(1)
-        b_temp.AddGrowableCol(3)
-        b_temp.AddSpacer(5)
-        b_temp.AddSpacer(5)
-        b_temp.AddSpacer(5)
-        b_temp.AddSpacer(5)
-        b_temp.AddMany((
-            (src_txt), (self.src, 0, wx.EXPAND),
-            (url_txt), (self.url, 0, wx.EXPAND),
-            (ess_txt), (self.ess, 1),
+        lyt_option.AddGrowableCol(1)
+        lyt_option.AddGrowableCol(3)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddMany((
+            (txt_source), (self.src, 0, wx.EXPAND),
+            (txt_homepage), (self.url, 0, wx.EXPAND),
+            (txt_essential), (self.ess, 1),
             ))
         
-        border_author = wx.StaticBox(self.bg, label=GT(u'Optional'))
+        border_author = wx.StaticBox(self.pnl_bg, label=GT(u'Optional'))
         bbox_author = wx.StaticBoxSizer(border_author, wx.VERTICAL)
         
-        bbox_author.Add(b_temp, 0, wx.EXPAND)
+        bbox_author.Add(lyt_option, 0, wx.EXPAND)
         
         # Main background panel sizer
-        # FIXME: Is background panel (self.bg) necessary
-        layout_bg = wx.BoxSizer(wx.VERTICAL)
-        layout_bg.Add(layout_buttons, 0, wx.EXPAND|wx.ALL, 5)
-        layout_bg.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
-        layout_bg.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
-        layout_bg.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
+        # FIXME: Is background panel (self.pnl_bg) necessary
+        lyt_bg = wx.BoxSizer(wx.VERTICAL)
+        lyt_bg.Add(lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
+        lyt_bg.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
+        lyt_bg.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_bg.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
         
-        self.bg.SetAutoLayout(True)
-        self.bg.SetSizer(layout_bg)
-        self.bg.Layout()
+        self.pnl_bg.SetAutoLayout(True)
+        self.pnl_bg.SetSizer(lyt_bg)
+        self.pnl_bg.Layout()
         
         # Page's main sizer
-        layout_main = wx.BoxSizer(wx.VERTICAL)
-        layout_main.Add(self.bg, 1, wx.EXPAND)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(self.pnl_bg, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_main)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         # *** Event Handlers *** #
@@ -318,8 +320,8 @@ class Panel(WizardPage):
         
         # Add the "choice" options
         getsels = {
-            u'Architecture': (self.arch,self.arch_opt),
-            u'Priority': (self.prior,self.prior_opt),
+            u'Architecture': (self.arch,self.opts_arch),
+            u'Priority': (self.prior,self.opts_priority),
             u'Essential': (self.ess,self.ess_opt)
         }
         
@@ -638,7 +640,7 @@ class Panel(WizardPage):
     
     ## Resets all fields on page to default values
     def ResetPageInfo(self):
-        for child in self.bg.GetChildren():
+        for child in self.pnl_bg.GetChildren():
             if isinstance(child, (wx.TextCtrl, wx.ComboBox)):
                 # Can't use Clear() method for wx.ComboBox
                 child.SetValue(wx.EmptyString)
@@ -669,8 +671,8 @@ class Panel(WizardPage):
         
         # Fields that use "SetSelection()" function
         set_selection_fields = (
-            (u'Architecture', self.arch, self.arch_opt),
-            (u'Priority', self.prior, self.prior_opt),
+            (u'Architecture', self.arch, self.opts_arch),
+            (u'Priority', self.prior, self.opts_priority),
             (u'Essential', self.ess, self.ess_opt),
             )
         
