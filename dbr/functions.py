@@ -64,6 +64,21 @@ def GetContainerItemCount(container):
     return len(container.GetChildren())
 
 
+## TODO: Doxygen
+def GetLongestLine(lines):
+    if isinstance(lines, (unicode, str)):
+        lines = lines.split(u'\n')
+    
+    longest = 0
+    
+    for LI in lines:
+        l_length = len(LI)
+        if l_length > longest:
+            longest = l_length
+    
+    return longest
+
+
 ## Execute a command with sudo (super user) privileges
 #  
 #  \param password
