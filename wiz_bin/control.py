@@ -139,12 +139,6 @@ class Panel(WizardPage):
         self.sel_essential.default = 1
         self.sel_essential.SetSelection(self.sel_essential.default)
         
-        self.bins = (
-            (self.ti_package, self.sel_arch, self.ti_version, self.ti_maintainer, self.ti_email),
-            (self.ti_section, self.sel_priority),
-            (self.ti_source, self.ti_homepage, self.sel_essential),
-            )
-        
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.text_widgets = {
