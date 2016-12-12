@@ -537,9 +537,9 @@ class Panel(WizardPage):
         save_dialog = GetFileSaveDialog(main_window, GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
-        package = pg_control.pack.GetValue()
-        version = pg_control.ver.GetValue()
-        arch = pg_control.arch.GetStringSelection()
+        package = pg_control.ti_package.GetValue()
+        version = pg_control.ti_version.GetValue()
+        arch = pg_control.sel_arch.GetStringSelection()
         save_dialog.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
         
         if ShowDialog(save_dialog):

@@ -55,23 +55,23 @@ class Panel(WizardPage):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        self.pack = CharCtrl(pnl_require, ident.F_NAME, name=txt_package.Name)
-        self.pack.req = True
+        self.ti_package = CharCtrl(pnl_require, ident.F_NAME, name=txt_package.Name)
+        self.ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        self.ver = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
-        self.ver.req = True
+        self.ti_version = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
+        self.ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        self.auth = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
-        self.auth.req = True
+        self.ti_maintainer = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
+        self.ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        self.email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
-        self.email.req = True
+        self.ti_email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
+        self.ti_email.req = True
         
         self.opts_arch = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
@@ -82,9 +82,9 @@ class Panel(WizardPage):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'arch')
-        self.arch = wx.Choice(pnl_require, choices=self.opts_arch, name=txt_arch.Name)
-        self.arch.default = 0
-        self.arch.SetSelection(self.arch.default)
+        self.sel_arch = wx.Choice(pnl_require, choices=self.opts_arch, name=txt_arch.Name)
+        self.sel_arch.default = 0
+        self.sel_arch.SetSelection(self.sel_arch.default)
         
         # *** Recommended fields *** #
         
@@ -103,52 +103,52 @@ class Panel(WizardPage):
             )
         
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
-        self.sect = wx.ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
+        self.ti_section = wx.ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         self.opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
             )
         
         txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
-        self.prior = wx.Choice(pnl_recommend, choices=self.opts_priority, name=txt_priority.Name)
-        self.prior.default = 0
-        self.prior.SetSelection(self.prior.default)
+        self.sel_priority = wx.Choice(pnl_recommend, choices=self.opts_priority, name=txt_priority.Name)
+        self.sel_priority.default = 0
+        self.sel_priority.SetSelection(self.sel_priority.default)
         
         txt_synopsis = wx.StaticText(pnl_recommend, label=GT(u'Short Description'), name=u'synopsis')
-        self.syn = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
+        self.ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.desc = MultilineTextCtrlPanel(pnl_recommend, name=txt_description.Name)
+        self.ti_description = MultilineTextCtrlPanel(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         
         pnl_option = BorderedPanel(self.pnl_bg)
         
         txt_source = wx.StaticText(pnl_option, label=GT(u'Source'), name=u'source')
-        self.src = wx.TextCtrl(pnl_option, name=txt_source.Name)
+        self.ti_source = wx.TextCtrl(pnl_option, name=txt_source.Name)
         
         txt_homepage = wx.StaticText(pnl_option, label=GT(u'Homepage'), name=u'homepage')
-        self.url = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
+        self.ti_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
         
-        self.ess_opt = (
+        self.opts_essential = (
             u'yes', u'no',
             )
         
         txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
-        self.ess = wx.Choice(pnl_option, choices=self.ess_opt, name=txt_essential.Name)
-        self.ess.default = 1
-        self.ess.SetSelection(self.ess.default)
+        self.sel_essential = wx.Choice(pnl_option, choices=self.opts_essential, name=txt_essential.Name)
+        self.sel_essential.default = 1
+        self.sel_essential.SetSelection(self.sel_essential.default)
         
         self.bins = (
-            (self.pack, self.arch, self.ver, self.auth, self.email),
-            (self.sect, self.prior),
-            (self.src, self.url, self.ess),
+            (self.ti_package, self.sel_arch, self.ti_version, self.ti_maintainer, self.ti_email),
+            (self.ti_section, self.sel_priority),
+            (self.ti_source, self.ti_homepage, self.sel_essential),
             )
         
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.text_widgets = {
-            self.pack: wx.EmptyString, self.ver: wx.EmptyString
+            self.ti_package: wx.EmptyString, self.ti_version: wx.EmptyString
             }
         
         SetPageToolTips(self)
@@ -173,15 +173,15 @@ class Panel(WizardPage):
         
         lyt_require.AddMany((
             (txt_package, 0, RIGHT_CENTER|wx.LEFT|wx.TOP, 5),
-            (self.pack, 0, wx.EXPAND|wx.TOP, 5),
+            (self.ti_package, 0, wx.EXPAND|wx.TOP, 5),
             (txt_version, 0, RIGHT_CENTER|wx.TOP, 5),
-            (self.ver, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
+            (self.ti_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
             (txt_maintainer, 0, RIGHT_CENTER|wx.LEFT, 5),
-            (self.auth, 0, wx.EXPAND),
+            (self.ti_maintainer, 0, wx.EXPAND),
             (txt_email, 0, RIGHT_CENTER, 5),
-            (self.email, 0, wx.EXPAND|wx.RIGHT, 5),
+            (self.ti_email, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_arch, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
-            (self.arch, 0, wx.BOTTOM, 5)
+            (self.sel_arch, 0, wx.BOTTOM, 5)
             ))
         
         pnl_require.SetSizer(lyt_require)
@@ -195,14 +195,14 @@ class Panel(WizardPage):
         lyt_recommend.AddGrowableRow(3)
         
         lyt_recommend.Add(txt_section, (0, 2), flag=RIGHT_CENTER|wx.TOP|wx.BOTTOM, border=5)
-        lyt_recommend.Add(self.sect, (0, 3),
+        lyt_recommend.Add(self.ti_section, (0, 3),
                 flag=wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         lyt_recommend.Add(txt_synopsis, (0, 0), (1, 2), LEFT_BOTTOM|wx.LEFT, 5)
-        lyt_recommend.Add(self.syn, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_recommend.Add(self.ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_recommend.Add(txt_priority, (1, 2), flag=RIGHT_CENTER, border=5)
-        lyt_recommend.Add(self.prior, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+        lyt_recommend.Add(self.sel_priority, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
         lyt_recommend.Add(txt_description, (2, 0), (1, 2), LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
-        lyt_recommend.Add(self.desc, (3, 0), (1, 4),
+        lyt_recommend.Add(self.ti_description, (3, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         pnl_recommend.SetSizer(lyt_recommend)
@@ -220,11 +220,11 @@ class Panel(WizardPage):
         lyt_option.AddSpacer(5)
         lyt_option.AddMany((
             (txt_source, 0, RIGHT_CENTER|wx.LEFT, 5),
-            (self.src, 0, wx.EXPAND),
+            (self.ti_source, 0, wx.EXPAND),
             (txt_homepage, 0, RIGHT_CENTER, 5),
-            (self.url, 0, wx.EXPAND|wx.RIGHT, 5),
+            (self.ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
-            (self.ess, 1, wx.LEFT|wx.BOTTOM, 5),
+            (self.sel_essential, 1, wx.LEFT|wx.BOTTOM, 5),
             ))
         
         pnl_option.SetSizer(lyt_option)
@@ -307,11 +307,11 @@ class Panel(WizardPage):
         ctrl_list = []
         
         getvals = (
-            (u'Package',self.pack),
-            (u'Version',self.ver),
-            (u'Source',self.src),
-            (u'Section',self.sect),
-            (u'Homepage',self.url),
+            (u'Package',self.ti_package),
+            (u'Version',self.ti_version),
+            (u'Source',self.ti_source),
+            (u'Section',self.ti_section),
+            (u'Homepage',self.ti_homepage),
             )
         
         for key in getvals:
@@ -325,23 +325,23 @@ class Panel(WizardPage):
                     ctrl_list.append(u'{}: {}'.format(key[0], key[1].GetValue()))
         
         # Add the Maintainer
-        auth_enabled = FieldEnabled(self.auth)
+        auth_enabled = FieldEnabled(self.ti_maintainer)
         
-        if auth_enabled and self.auth.GetValue() != u'':
-            ctrl_list.insert(3, u'Maintainer: {} <{}>'.format(self.auth.GetValue(), self.email.GetValue()))
+        if auth_enabled and self.ti_maintainer.GetValue() != u'':
+            ctrl_list.insert(3, u'Maintainer: {} <{}>'.format(self.ti_maintainer.GetValue(), self.ti_email.GetValue()))
         
         # Add the "choice" options
         getsels = {
-            u'Architecture': (self.arch,self.opts_arch),
-            u'Priority': (self.prior,self.opts_priority),
-            u'Essential': (self.ess,self.ess_opt)
+            u'Architecture': (self.sel_arch,self.opts_arch),
+            u'Priority': (self.sel_priority,self.opts_priority),
+            u'Essential': (self.sel_essential,self.opts_essential)
         }
         
         for key in getsels:
             sel_enabled = FieldEnabled(getsels[key][0])
             
             if sel_enabled:
-                if key == u'Essential' and self.ess.GetCurrentSelection() == 1:
+                if key == u'Essential' and self.sel_essential.GetCurrentSelection() == 1:
                     pass
                 
                 else:
@@ -387,8 +387,8 @@ class Panel(WizardPage):
                 ctrl_list.append(u'{}: {}'.format(item, u', '.join(all_deps[item])))
         
         # *** Get description *** #
-        syn = self.syn.GetValue()
-        desc = self.desc.GetValue()
+        syn = self.ti_synopsis.GetValue()
+        desc = self.ti_description.GetValue()
         # Make sure synopsis isn't empty: Join spaces
         if u''.join(syn.split(u' ')) != u'':
             ctrl_list.append(u'Description: {}'.format(syn))
@@ -410,7 +410,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def GetPackageName(self):
-        return self.pack.GetValue()
+        return self.ti_package.GetValue()
     
     
     def ImportPageInfo(self, filename):
@@ -436,17 +436,17 @@ class Panel(WizardPage):
             Logger.Warning(__name__, GT(u'{} option not availabled: {}'.format(label, value)))
         
         import_functions = {
-            u'Package': self.pack.SetValue,
-            u'Version': self.ver.SetValue,
-            u'Maintainer': self.auth.SetValue,
-            u'Email': self.email.SetValue,
-            u'Architecture': self.arch,
-            u'Section': self.sect.SetValue,
-            u'Priority': self.prior,
-            u'Description': self.syn.SetValue,
-            u'Source': self.src.SetValue,
-            u'Homepage': self.url.SetValue,
-            u'Essential': self.ess,
+            u'Package': self.ti_package.SetValue,
+            u'Version': self.ti_version.SetValue,
+            u'Maintainer': self.ti_maintainer.SetValue,
+            u'Email': self.ti_email.SetValue,
+            u'Architecture': self.sel_arch,
+            u'Section': self.ti_section.SetValue,
+            u'Priority': self.sel_priority,
+            u'Description': self.ti_synopsis.SetValue,
+            u'Source': self.ti_source.SetValue,
+            u'Homepage': self.ti_homepage.SetValue,
+            u'Essential': self.sel_essential,
         }
         
         dependencies = (
@@ -521,7 +521,7 @@ class Panel(WizardPage):
                     import_functions[label](control_defs[label])
         
         if desc != wx.EmptyString:
-            self.desc.SetValue(desc)
+            self.ti_description.SetValue(desc)
     
     
     ## Tells the build script whether page should be built
@@ -676,16 +676,16 @@ class Panel(WizardPage):
         
         # Fields that use "SetValue()" function
         set_value_fields = (
-            (u'Package', self.pack), (u'Version', self.ver),
-            (u'Source', self.src), (u'Section', self.sect),
-            (u'Homepage', self.url), (u'Description', self.syn),
+            (u'Package', self.ti_package), (u'Version', self.ti_version),
+            (u'Source', self.ti_source), (u'Section', self.ti_section),
+            (u'Homepage', self.ti_homepage), (u'Description', self.ti_synopsis),
             )
         
         # Fields that use "SetSelection()" function
         set_selection_fields = (
-            (u'Architecture', self.arch, self.opts_arch),
-            (u'Priority', self.prior, self.opts_priority),
-            (u'Essential', self.ess, self.ess_opt),
+            (u'Architecture', self.sel_arch, self.opts_arch),
+            (u'Priority', self.sel_priority, self.opts_priority),
+            (u'Essential', self.sel_essential, self.opts_essential),
             )
         
         # Store Dependencies
@@ -745,12 +745,12 @@ class Panel(WizardPage):
                     leftovers.append(field)
         
         # Put leftovers in long description
-        self.desc.SetValue(u'\n'.join(leftovers))
+        self.ti_description.SetValue(u'\n'.join(leftovers))
         
         # Set the "Author" and "Email" fields
         if author != wx.EmptyString:
-            self.auth.SetValue(author.split(u' <')[0])
-            self.email.SetValue(author.split(u' <')[1].split(u'>')[0])
+            self.ti_maintainer.SetValue(author.split(u' <')[0])
+            self.ti_email.SetValue(author.split(u' <')[1].split(u'>')[0])
         
         # Return depends data to parent to be sent to page_depends
         return depends_containers
