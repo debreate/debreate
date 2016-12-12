@@ -39,3 +39,4 @@ dbrerrno.errorcode[dbrerrno.SUCCESS] = u'SUCCESS'
 dbrerrno.EBADFT = AddNewCode(u'EBADFT')
 dbrerrno.ECNCLD = AddNewCode(u'ECNCLD')
 dbrerrno.FEMPTY = AddNewCode(u'FEMPTY')
+dbrerrno.EUNKNOWN = AddNewCode(u'EUNKNOWN')
