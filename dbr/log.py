@@ -14,6 +14,7 @@ from dbr.textinput          import MultilineTextCtrlPanel
 from globals                import ident
 from globals.application    import APP_logo
 from globals.paths          import PATH_local
+from globals.wizardhelper   import GetTopWindow
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
@@ -249,7 +250,7 @@ class LogWindow(wx.Dialog):
         
         wx.EVT_CLOSE(self, self.OnClose)
         wx.EVT_SHOW(self, self.OnShow)
-        wx.EVT_SHOW(wx.GetApp().GetTopWindow(), self.OnShowMainWindow)
+        wx.EVT_SHOW(GetTopWindow(), self.OnShowMainWindow)
         
         self.SetMinSize(self.GetSize())
         
@@ -273,7 +274,7 @@ class LogWindow(wx.Dialog):
     
     ## Positions the log window relative to the main window
     def AlignWithMainWindow(self):
-        debreate_pos = wx.GetApp().GetTopWindow().GetPosition()
+        debreate_pos = GetTopWindow().GetPosition()
         width = self.GetSize()[0]
         posX = debreate_pos[0] - width
         posY = debreate_pos[1]
@@ -318,7 +319,7 @@ class LogWindow(wx.Dialog):
     
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         log_select = wx.FileDialog(main_window, GT(u'Open Log'),
                 os.getcwd(), style=wx.FD_OPEN|wx.FD_CHANGE_DIR|wx.FD_FILE_MUST_EXIST)
@@ -341,7 +342,7 @@ class LogWindow(wx.Dialog):
     
     ## Guarantess that menu item is synched with window's shown status
     def OnShow(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetTopWindow()
         
         window_shown = self.IsShown()
         menu_checked = main_window.menu_debug.IsChecked(ident.LOG)
@@ -357,13 +358,13 @@ class LogWindow(wx.Dialog):
     #    list for the log.
     def OnShowMainWindow(self, event=None):
         # Make sure the main window has not been destroyed
-        if wx.GetApp().GetTopWindow().IsShown():
+        if GetTopWindow().IsShown():
             self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        show = wx.GetApp().GetTopWindow().menu_debug.IsChecked(ident.LOG)
+        show = GetTopWindow().menu_debug.IsChecked(ident.LOG)
         
         if show:
             self.ShowLog()
