@@ -49,7 +49,7 @@ class ButtonAppend(BitmapButton):
 
 ## TODO: Doxygen
 class ButtonBrowse(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_OPEN, name=u'btn browse'):
+    def __init__(self, parent, ID=ident.BROWSE, name=u'btn browse'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse32.png'.format(PATH_app)),
                 ID=ID, name=name)
         
@@ -58,7 +58,7 @@ class ButtonBrowse(BitmapButton):
 
 ## TODO: Doxygen
 class ButtonBrowse64(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_OPEN, name=u'btn browse'):
+    def __init__(self, parent, ID=ident.BROWSE, name=u'btn browse'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse64.png'.format(PATH_app)),
                 ID=ID, name=name)
         
