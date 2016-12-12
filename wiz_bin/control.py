@@ -160,17 +160,17 @@ class Panel(wx.ScrolledWindow):
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT
         
         # Buttons
-        layt_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        layt_buttons.Add(btn_open, 0)
-        layt_buttons.Add(btn_save, 0)
-        layt_buttons.Add(btn_preview, 0)
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_open, 0)
+        lyt_buttons.Add(btn_save, 0)
+        lyt_buttons.Add(btn_preview, 0)
         
         # Required fields
-        layt_require = wx.FlexGridSizer(0, 4, 5, 5)
-        layt_require.AddGrowableCol(1)
-        layt_require.AddGrowableCol(3)
+        lyt_require = wx.FlexGridSizer(0, 4, 5, 5)
+        lyt_require.AddGrowableCol(1)
+        lyt_require.AddGrowableCol(3)
         
-        layt_require.AddMany((
+        lyt_require.AddMany((
             (txt_package, 0, RIGHT_CENTER|wx.LEFT|wx.TOP, 5),
             (ti_package, 0, wx.EXPAND|wx.TOP, 5),
             (txt_version, 0, RIGHT_CENTER|wx.TOP, 5),
@@ -183,75 +183,75 @@ class Panel(wx.ScrolledWindow):
             (sel_arch, 0, wx.BOTTOM, 5),
             ))
         
-        pnl_require.SetSizer(layt_require)
+        pnl_require.SetSizer(lyt_require)
         pnl_require.SetAutoLayout(True)
         pnl_require.Layout()
         
         # Recommended fields
-        layt_recommend = wx.GridBagSizer()
-        layt_recommend.SetCols(4)
-        layt_recommend.AddGrowableCol(1)
-        layt_recommend.AddGrowableRow(3)
+        lyt_recommend = wx.GridBagSizer()
+        lyt_recommend.SetCols(4)
+        lyt_recommend.AddGrowableCol(1)
+        lyt_recommend.AddGrowableRow(3)
         
-        layt_recommend.Add(txt_section, (0, 2), flag=RIGHT_CENTER|wx.TOP|wx.BOTTOM, border=5)
-        layt_recommend.Add(ti_section, (0, 3),
+        lyt_recommend.Add(txt_section, (0, 2), flag=RIGHT_CENTER|wx.TOP|wx.BOTTOM, border=5)
+        lyt_recommend.Add(ti_section, (0, 3),
                 flag=wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
-        layt_recommend.Add(txt_synopsis, (0, 0), (1, 2), LEFT_BOTTOM|wx.LEFT, 5)
-        layt_recommend.Add(ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        layt_recommend.Add(txt_priority, (1, 2), flag=RIGHT_CENTER, border=5)
-        layt_recommend.Add(sel_priority, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
-        layt_recommend.Add(txt_description, (2, 0), (1, 2), LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
-        layt_recommend.Add(self.ti_description, (3, 0), (1, 4),
+        lyt_recommend.Add(txt_synopsis, (0, 0), (1, 2), LEFT_BOTTOM|wx.LEFT, 5)
+        lyt_recommend.Add(ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_recommend.Add(txt_priority, (1, 2), flag=RIGHT_CENTER, border=5)
+        lyt_recommend.Add(sel_priority, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+        lyt_recommend.Add(txt_description, (2, 0), (1, 2), LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
+        lyt_recommend.Add(self.ti_description, (3, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
-        pnl_recommend.SetSizer(layt_recommend)
+        pnl_recommend.SetSizer(lyt_recommend)
         pnl_recommend.SetAutoLayout(True)
         pnl_recommend.Layout()
         
         # Optional fields
-        layt_option = wx.FlexGridSizer(0, 4, 5, 5)
+        lyt_option = wx.FlexGridSizer(0, 4, 5, 5)
         
-        layt_option.AddGrowableCol(1)
-        layt_option.AddGrowableCol(3)
-        layt_option.AddSpacer(5)
-        layt_option.AddSpacer(5)
-        layt_option.AddSpacer(5)
-        layt_option.AddSpacer(5)
-        layt_option.AddMany((
+        lyt_option.AddGrowableCol(1)
+        lyt_option.AddGrowableCol(3)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddSpacer(5)
+        lyt_option.AddMany((
             (txt_source, 0, RIGHT_CENTER|wx.LEFT, 5),
             (ti_source, 0, wx.EXPAND),
             (txt_homepage, 0, RIGHT_CENTER, 5),
             (ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
             ))
-        layt_option.Add(self.chk_essential, 0, wx.BOTTOM, 5),
+        lyt_option.Add(self.chk_essential, 0, wx.BOTTOM, 5),
         
-        pnl_option.SetSizer(layt_option)
+        pnl_option.SetSizer(lyt_option)
         pnl_option.SetAutoLayout(True)
         pnl_option.Layout()
         
         # Main background panel sizer
         # FIXME: Is background panel (pnl_bg) necessary
-        layt_bg = wx.BoxSizer(wx.VERTICAL)
-        layt_bg.Add(layt_buttons, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
-        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0)
-        layt_bg.Add(pnl_require, 0, wx.EXPAND)
-        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
-        layt_bg.Add(pnl_recommend, 1, wx.EXPAND)
-        layt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Optional')), 0, wx.TOP, 5)
-        layt_bg.Add(pnl_option, 0, wx.EXPAND)
+        lyt_bg = wx.BoxSizer(wx.VERTICAL)
+        lyt_bg.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
+        lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0)
+        lyt_bg.Add(pnl_require, 0, wx.EXPAND)
+        lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
+        lyt_bg.Add(pnl_recommend, 1, wx.EXPAND)
+        lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Optional')), 0, wx.TOP, 5)
+        lyt_bg.Add(pnl_option, 0, wx.EXPAND)
         
         pnl_bg.SetAutoLayout(True)
-        pnl_bg.SetSizer(layt_bg)
+        pnl_bg.SetSizer(lyt_bg)
         pnl_bg.Layout()
         
         # Page's main sizer
-        layt_main = wx.BoxSizer(wx.VERTICAL)
-        layt_main.AddSpacer(5)
-        layt_main.Add(pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layt_main)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         # *** Event Handlers *** #
