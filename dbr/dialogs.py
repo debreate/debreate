@@ -634,7 +634,7 @@ def ShowDialog(dialog):
     # Dialog's parent should be set to main window
     #debreate = dialog.GetParent()
     
-    if False: #debreate.mi_dialogs.IsChecked():
+    if False:
         return dialog.DisplayModal()
     
     else:
