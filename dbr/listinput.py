@@ -426,10 +426,8 @@ class FileList(ListCtrlPanel, TextEditMixin):
         
         # TODO: Use 'GetFileMimeType' module to determine file type
         if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
-            #self.SetStringItem(list_index, self.type_col, file_types_defs[FTYPE_EXE])
             self.SetFileExecutable(list_index)
         
-        #self.Refresh()
         if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
             self.SetItemBackgroundColour(list_index, COLOR_warn)
             
