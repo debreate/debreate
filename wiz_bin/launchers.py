@@ -702,7 +702,7 @@ class Panel(WizardPage):
         cat = cat.split()
         cat = u''.join(cat)
         
-        if key_code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+        if key_code in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             self.lst_categories.InsertStringItem(0, cat)
         
         elif key_code in (wx.ID_DELETE, wx.WXK_DELETE):
