@@ -1,78 +1,87 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
+
 import os, sys, errno, time
+
+from scripts_globals import debian_files, GetInfoValue
 
 
 # Ubuntu release
-release = u'xenial'
-urgency = u'low'
-
-FILE_changelog = u'docs/changelog'
-FILE_changelog_debian = u'debian/changelog'
+DIST = GetInfoValue('DIST')
+URGENCY = GetInfoValue('URGENCY')
+AUTHOR = GetInfoValue('AUTHOR')
+EMAIL = GetInfoValue('EMAIL')
 
 # Reading source log
-if not os.path.isfile(FILE_changelog):
-    print(u'ERROR: Source changelog does not exist, can\'t continue: {}'.format(FILE_changelog))
+if not os.path.isfile(debian_files['changelog']):
+    print('ERROR: Source changelog does not exist, can\'t continue: {}'.format(debian_files['changelog']))
     
     sys.exit(errno.ENOENT)
 
-TEMP = open(FILE_changelog, u'r')
-changelog_data = TEMP.read().split(u'\n')
+TEMP = open(debian_files['changelog'], 'r')
+changelog_data = TEMP.read().split('\n')
 TEMP.close()
 
 # Extract version number
 version_string = changelog_data[0]
-#changelog_data = changelog_data[1:]
 
 # Check for same version entry
 entry_exists = False
-TEMP = open(FILE_changelog_debian, u'r')
-if u' ({})'.format(version_string) in TEMP.read():
+TEMP = open(debian_files['changelog debian'], 'r')
+if ' ({})'.format(version_string) in TEMP.read():
     entry_exists = True
 TEMP.close()
 
 if entry_exists:
-    print(u'There is already an entry for version {}, exiting ...'.format(version_string))
+    print('There is already an entry for version {}, exiting ...'.format(version_string))
     sys.exit(0)
 
 cutoff_index = 0
 for L in changelog_data:
     if not L.strip():
-        # Reached a new segment
+        # Reached a new version entry segment
         cutoff_index = changelog_data.index(L)
         break
 
 version_data = changelog_data[:cutoff_index]
 
-# Format new entry
-version_data[0] = u'debreate ({}) {}; urgency={}'.format(version_string, release, urgency)
-
+offset = 4
 for L in version_data:
-    if L.startswith(u'- '):
-        version_data[changelog_data.index(L)] = u'    {}'.format(L[2:])
+    if L.startswith('- '):
+        version_data[changelog_data.index(L)] = '  * {}'.format(L[2:]).rstrip(' \t')
+        continue
     
-    # Indented lines
-    else:
-        S = L.strip(u' ')
-        if S.startswith(u'- '):
-            version_data[changelog_data.index(L)] = u'    {}'.format(S)
+    # Preserve formatting/indentation of other lines (must begin with '- ', '* ', or '+ ')
+    if L.strip(' \t')[:2] in ('- ', '* ', '+ '):
+        version_data[changelog_data.index(L)] = '  {}'.format(L).rstrip(' \t')
+        continue
+    
+    # All other lines will be indented by 'offset' value
+    version_data[changelog_data.index(L)] = '{}{}'.format(' ' * offset, L.strip())
 
-version_data[1] = version_data[1].replace(u'    ', u'  * ')
+# Replace version string with formatted header
+version_data[0] = 'debreate ({}) {}; urgency={}'.format(version_string, DIST, URGENCY)
 
-version_data.insert(1, u'')
-version_data.append(u'')
-version_data.append(u' -- Jordan Irwin <antumdeluge@gmail.com>  {}'.format(time.strftime(u'%a, %d %b %Y %H:%M:%S %z')))
+# Add spacing
+version_data.insert(1, '')
+version_data.append('')
 
-version_data = u'\n'.join(version_data)
+# Add footer
+version_data.append(' -- {} <{}>  {}'.format(AUTHOR, EMAIL, time.strftime('%a, %d %b %Y %H:%M:%S %z')))
 
-print(u'Writing new changelog entry:\n\n{}'.format(version_data))
+version_data = '\n'.join(version_data)
 
-if os.path.isfile(FILE_changelog_debian):
-    TEMP = open(FILE_changelog_debian, u'r')
-    version_data = u'{}\n\n\n{}'.format(version_data, TEMP.read())
+print('Writing new changelog entry:\n\n{}'.format(version_data))
+
+if os.path.isfile(debian_files['changelog debian']):
+    TEMP = open(debian_files['changelog debian'], 'r')
+    version_data = '{}\n\n\n{}'.format(version_data, TEMP.read())
     TEMP.close()
 
-TEMP = open(FILE_changelog_debian, u'w')
+TEMP = open(debian_files['changelog debian'], 'w')
 TEMP.write(version_data)
 TEMP.close()
