@@ -5,6 +5,9 @@
 #  Global variables used throughout the application & should remain constant.
 #  TODO: Rename or delete
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os
 import wx
