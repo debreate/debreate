@@ -6,6 +6,13 @@
 import os, sys, errno
 
 
+def ConcatPaths(root, tail):
+    if not root:
+        return tail.replace('//', '/')
+    
+    return '{}/{}'.format(root, tail).replace('//', '/')
+
+
 scripts_dir = os.path.dirname(__file__)
 root_dir = os.path.split(scripts_dir)[0]
 

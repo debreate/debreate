@@ -7,6 +7,7 @@
 
 import commands, errno, os, subprocess, sys, time
 
+from scripts_globals import ConcatPaths
 from scripts_globals import GetInfoValue
 from scripts_globals import required_locale_files
 from scripts_globals import root_dir
@@ -19,12 +20,6 @@ for F in required_locale_files:
     if not os.path.isfile(F):
         print('[ERROR] Required file not found: {}'.format(F))
         sys.exit(errno.ENOENT)
-
-def ConcatPaths(root, tail):
-    if not root:
-        return tail.replace('//', '/')
-    
-    return '{}/{}'.format(root, tail).replace('//', '/')
 
 source_root = os.path.dirname(os.path.dirname(__file__))
 DIR_locale = ConcatPaths(source_root, 'locale')
