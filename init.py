@@ -94,7 +94,6 @@ if not wxversion._selected:
     wxversion.select([u'3.0', u'2.8'])
 
 
-# System modules
 import commands, gettext, wx
 
 # Python & wx.Python encoding to UTF-8
@@ -244,7 +243,7 @@ if parsed_path:
     if Debreate.OpenProject(project_file):
         working_dir = os.path.dirname(project_file)
 
-# Set working directory (Not necessary to call ChangeWorkingDirectory here)
+# Set working directory
 ChangeWorkingDirectory(working_dir)
 
 Debreate.Show(True)
