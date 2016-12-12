@@ -15,15 +15,16 @@ from dbr.charctrl           import CharCtrl
 from dbr.dialogs            import GetFileOpenDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
-from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
 from dbr.textinput          import MultilineTextCtrlPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled, GetField
+from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -48,24 +49,28 @@ class Panel(WizardPage):
         # Button to open a help dialog (WIP)
         #btn_help = HelpButton(self.pnl_bg)
         
-        txt_package = wx.StaticText(self.pnl_bg, label=GT(u'Package'), name=u'package')
+        # *** Required fields *** #
+        
+        pnl_require = BorderedPanel(self.pnl_bg)
+        
+        txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        self.pack = CharCtrl(self.pnl_bg, ident.F_NAME, name=txt_package.Name)
+        self.pack = CharCtrl(pnl_require, ident.F_NAME, name=txt_package.Name)
         self.pack.req = True
         
-        txt_version = wx.StaticText(self.pnl_bg, label=GT(u'Version'), name=u'version')
+        txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        self.ver = CharCtrl(self.pnl_bg, ident.F_VERSION, name=txt_version.Name)
+        self.ver = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
         self.ver.req = True
         
-        txt_maintainer = wx.StaticText(self.pnl_bg, label=GT(u'Maintainer'), name=u'maintainer')
+        txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        self.auth = wx.TextCtrl(self.pnl_bg, ident.F_MAINTAINER, name=txt_maintainer.Name)
+        self.auth = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
         self.auth.req = True
         
-        txt_email = wx.StaticText(self.pnl_bg, label=GT(u'Email'), name=u'email')
+        txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        self.email = wx.TextCtrl(self.pnl_bg, ident.F_EMAIL, name=txt_email.Name)
+        self.email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
         self.email.req = True
         
         self.opts_arch = (
@@ -76,12 +81,15 @@ class Panel(WizardPage):
             u'sparc64',
             )
         
-        txt_arch = wx.StaticText(self.pnl_bg, label=GT(u'Architecture'), name=u'arch')
-        self.arch = wx.Choice(self.pnl_bg, choices=self.opts_arch, name=txt_arch.Name)
+        txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'arch')
+        self.arch = wx.Choice(pnl_require, choices=self.opts_arch, name=txt_arch.Name)
         self.arch.default = 0
         self.arch.SetSelection(self.arch.default)
         
-        # ***** Recommended Group ***** #
+        # *** Recommended fields *** #
+        
+        pnl_recommend = BorderedPanel(self.pnl_bg)
+        
         opts_section = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
             u'doc', u'editors', u'electronics', u'embedded', u'fonts', u'games',
@@ -94,38 +102,40 @@ class Panel(WizardPage):
             u'web', u'x11', u'xfce', u'zope',
             )
         
-        txt_section = wx.StaticText(self.pnl_bg, label=GT(u'Section'), name=u'section')
-        self.sect = wx.ComboBox(self.pnl_bg, choices=opts_section, name=txt_section.Name)
+        txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
+        self.sect = wx.ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         self.opts_priority = (
             u'optional', u'standard', u'important', u'required', u'extra',
             )
         
-        txt_priority = wx.StaticText(self.pnl_bg, label=GT(u'Priority'), name=u'priority')
-        self.prior = wx.Choice(self.pnl_bg, choices=self.opts_priority, name=txt_priority.Name)
+        txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
+        self.prior = wx.Choice(pnl_recommend, choices=self.opts_priority, name=txt_priority.Name)
         self.prior.default = 0
         self.prior.SetSelection(self.prior.default)
         
-        txt_synopsis = wx.StaticText(self.pnl_bg, label=GT(u'Short Description'), name=u'synopsis')
-        self.syn = wx.TextCtrl(self.pnl_bg, name=txt_synopsis.Name)
+        txt_synopsis = wx.StaticText(pnl_recommend, label=GT(u'Short Description'), name=u'synopsis')
+        self.syn = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
-        txt_description = wx.StaticText(self.pnl_bg, label=GT(u'Long Description'), name=u'description')
-        self.desc = MultilineTextCtrlPanel(self.pnl_bg, name=txt_description.Name)
+        txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
+        self.desc = MultilineTextCtrlPanel(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         
-        txt_source = wx.StaticText(self.pnl_bg, label=GT(u'Source'), name=u'source')
-        self.src = wx.TextCtrl(self.pnl_bg, name=txt_source.Name)
+        pnl_option = BorderedPanel(self.pnl_bg)
         
-        txt_homepage = wx.StaticText(self.pnl_bg, label=GT(u'Homepage'), name=u'homepage')
-        self.url = wx.TextCtrl(self.pnl_bg, name=txt_homepage.Name)
+        txt_source = wx.StaticText(pnl_option, label=GT(u'Source'), name=u'source')
+        self.src = wx.TextCtrl(pnl_option, name=txt_source.Name)
+        
+        txt_homepage = wx.StaticText(pnl_option, label=GT(u'Homepage'), name=u'homepage')
+        self.url = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
         
         self.ess_opt = (
             u'yes', u'no',
             )
         
-        txt_essential = wx.StaticText(self.pnl_bg, label=GT(u'Essential'), name=u'essential')
-        self.ess = wx.Choice(self.pnl_bg, choices=self.ess_opt, name=txt_essential.Name)
+        txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
+        self.ess = wx.Choice(pnl_option, choices=self.ess_opt, name=txt_essential.Name)
         self.ess.default = 1
         self.ess.SetSelection(self.ess.default)
         
@@ -161,50 +171,43 @@ class Panel(WizardPage):
         lyt_require.AddGrowableCol(1)
         lyt_require.AddGrowableCol(3)
         
-        lyt_require.AddSpacer(5)
-        lyt_require.AddSpacer(5)
-        lyt_require.AddSpacer(5)
-        lyt_require.AddSpacer(5)
         lyt_require.AddMany((
-            (txt_package), (self.pack, 0, wx.EXPAND), (txt_version), (self.ver, 0, wx.EXPAND),
-            (txt_maintainer), (self.auth, 0, wx.EXPAND), (txt_email), (self.email, 0, wx.EXPAND),
-            txt_arch, (self.arch)
+            (txt_package, 0, RIGHT_CENTER|wx.LEFT|wx.TOP, 5),
+            (self.pack, 0, wx.EXPAND|wx.TOP, 5),
+            (txt_version, 0, RIGHT_CENTER|wx.TOP, 5),
+            (self.ver, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
+            (txt_maintainer, 0, RIGHT_CENTER|wx.LEFT, 5),
+            (self.auth, 0, wx.EXPAND),
+            (txt_email, 0, RIGHT_CENTER, 5),
+            (self.email, 0, wx.EXPAND|wx.RIGHT, 5),
+            (txt_arch, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
+            (self.arch, 0, wx.BOTTOM, 5)
             ))
         
-        border_info = wx.StaticBox(self.pnl_bg, label=GT(u'Required'))
-        bbox_info = wx.StaticBoxSizer(border_info, wx.VERTICAL)
-        
-        bbox_info.Add(lyt_require, 0, wx.EXPAND)
+        pnl_require.SetSizer(lyt_require)
+        pnl_require.SetAutoLayout(True)
+        pnl_require.Layout()
         
         # Recommended fields
-        lyt_recommend = wx.FlexGridSizer(0, 4, 5, 5)
+        lyt_recommend = wx.GridBagSizer()
+        lyt_recommend.SetCols(4)
         lyt_recommend.AddGrowableCol(1)
-        lyt_recommend.AddGrowableCol(3)
+        lyt_recommend.AddGrowableRow(3)
         
-        lyt_recommend.AddSpacer(5)
-        lyt_recommend.AddSpacer(5)
-        lyt_recommend.AddSpacer(5)
-        lyt_recommend.AddSpacer(5)
-        lyt_recommend.AddMany((
-            (txt_section),
-            (self.sect, 0, wx.EXPAND),
-            (txt_priority),
-            (self.prior),
-            ))
+        lyt_recommend.Add(txt_section, (0, 2), flag=RIGHT_CENTER|wx.TOP|wx.BOTTOM, border=5)
+        lyt_recommend.Add(self.sect, (0, 3),
+                flag=wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
+        lyt_recommend.Add(txt_synopsis, (0, 0), (1, 2), LEFT_BOTTOM|wx.LEFT, 5)
+        lyt_recommend.Add(self.syn, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_recommend.Add(txt_priority, (1, 2), flag=RIGHT_CENTER, border=5)
+        lyt_recommend.Add(self.prior, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+        lyt_recommend.Add(txt_description, (2, 0), (1, 2), LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
+        lyt_recommend.Add(self.desc, (3, 0), (1, 4),
+                wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
-        border_description = wx.StaticBox(self.pnl_bg, label=GT(u'Recommended'))
-        bbox_description = wx.StaticBoxSizer(border_description, wx.VERTICAL)
-        
-        bbox_description.AddSpacer(5)
-        bbox_description.Add(lyt_recommend, 0, wx.EXPAND)
-        bbox_description.AddSpacer(5)
-        bbox_description.AddMany((
-            (txt_synopsis, 0), (self.syn, 0, wx.EXPAND),
-            ))
-        bbox_description.AddSpacer(5)
-        bbox_description.AddMany((
-            (txt_description, 0), (self.desc, 1, wx.EXPAND),
-            ))
+        pnl_recommend.SetSizer(lyt_recommend)
+        pnl_recommend.SetAutoLayout(True)
+        pnl_recommend.Layout()
         
         # Optional fields
         lyt_option = wx.FlexGridSizer(0, 4, 5, 5)
@@ -216,23 +219,28 @@ class Panel(WizardPage):
         lyt_option.AddSpacer(5)
         lyt_option.AddSpacer(5)
         lyt_option.AddMany((
-            (txt_source), (self.src, 0, wx.EXPAND),
-            (txt_homepage), (self.url, 0, wx.EXPAND),
-            (txt_essential), (self.ess, 1),
+            (txt_source, 0, RIGHT_CENTER|wx.LEFT, 5),
+            (self.src, 0, wx.EXPAND),
+            (txt_homepage, 0, RIGHT_CENTER, 5),
+            (self.url, 0, wx.EXPAND|wx.RIGHT, 5),
+            (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
+            (self.ess, 1, wx.LEFT|wx.BOTTOM, 5),
             ))
         
-        border_author = wx.StaticBox(self.pnl_bg, label=GT(u'Optional'))
-        bbox_author = wx.StaticBoxSizer(border_author, wx.VERTICAL)
-        
-        bbox_author.Add(lyt_option, 0, wx.EXPAND)
+        pnl_option.SetSizer(lyt_option)
+        pnl_option.SetAutoLayout(True)
+        pnl_option.Layout()
         
         # Main background panel sizer
         # FIXME: Is background panel (self.pnl_bg) necessary
         lyt_bg = wx.BoxSizer(wx.VERTICAL)
-        lyt_bg.Add(lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
-        lyt_bg.Add(bbox_info, 0, wx.EXPAND|wx.ALL, 5)
-        lyt_bg.Add(bbox_description, 1, wx.EXPAND|wx.ALL, 5)
-        lyt_bg.Add(bbox_author, 0, wx.EXPAND|wx.ALL, 5)
+        lyt_bg.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
+        lyt_bg.Add(wx.StaticText(self.pnl_bg, label=GT(u'Required')), 0)
+        lyt_bg.Add(pnl_require, 0, wx.EXPAND)
+        lyt_bg.Add(wx.StaticText(self.pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
+        lyt_bg.Add(pnl_recommend, 1, wx.EXPAND)
+        lyt_bg.Add(wx.StaticText(self.pnl_bg, label=GT(u'Optional')), 0, wx.TOP, 5)
+        lyt_bg.Add(pnl_option, 0, wx.EXPAND)
         
         self.pnl_bg.SetAutoLayout(True)
         self.pnl_bg.SetSizer(lyt_bg)
@@ -240,7 +248,8 @@ class Panel(WizardPage):
         
         # Page's main sizer
         lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.Add(self.pnl_bg, 1, wx.EXPAND)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(self.pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
