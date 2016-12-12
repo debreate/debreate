@@ -3,14 +3,15 @@
 ## \package dbr.log
 
 
-import wx, os, thread, time
+import os, thread, time, wx
 from wx.lib.newevent import NewCommandEvent
 
-import globals.ident as ident
 from dbr.font               import GetMonospacedFont
-from dbr.functions          import GetDate, GetTime
+from dbr.functions          import GetDate
+from dbr.functions          import GetTime
 from dbr.language           import GT
 from dbr.textinput          import MultilineTextCtrlPanel
+from globals                import ident
 from globals.application    import APP_logo
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
