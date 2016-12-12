@@ -8,8 +8,10 @@
 
 import os, wx
 
+from dbr.buttons            import ButtonCancel
 from dbr.buttons            import ButtonConfirm
 from dbr.custom             import TextIsEmpty
+from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
@@ -274,8 +276,9 @@ class StandardFileOpenDialog(StandardFileDialog):
 #  \param icon
 #        \b \e wx.Bitmap|unicode|str : Image to display
 class DetailedMessageDialog(wx.Dialog):
-    def __init__(self, parent, title=GT(u'Message'), icon=wx.NullBitmap, text=wx.EmptyString,
-            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER):
+    def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
+            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
+            buttons=(u'confirm',)):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
@@ -286,7 +289,13 @@ class DetailedMessageDialog(wx.Dialog):
         
         txt_message = wx.StaticText(self, label=text)
         
-        btn_confirm = ButtonConfirm(self)
+        button_list = []
+        
+        if u'cancel' in buttons:
+            button_list.append(ButtonCancel(self))
+        
+        if u'confirm' in buttons:
+            button_list.append(ButtonConfirm(self))
         
         # self.details needs to be empty for constructor
         self.details = wx.EmptyString
@@ -294,13 +303,30 @@ class DetailedMessageDialog(wx.Dialog):
         
         # *** Layout *** #
         
+        self.lyt_urls = wx.BoxSizer(wx.VERTICAL)
+        
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        
+        for B in button_list:
+            tmp_sizer = wx.BoxSizer(wx.VERTICAL)
+            tmp_sizer.Add(B, 0, wx.ALIGN_CENTER)
+            # FIXME: Should use something other than tooltip for setting label
+            tmp_sizer.Add(wx.StaticText(self, label=B.GetToolTipString()), 0, wx.ALIGN_CENTER|wx.ALIGN_TOP)
+            
+            if not lyt_buttons.GetChildren():
+                lyt_buttons.Add(tmp_sizer, 0)
+            
+            else:
+                lyt_buttons.Add(tmp_sizer, 0, wx.LEFT, 5)
+        
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
-        lyt_main.AddGrowableRow(2)
+        lyt_main.AddGrowableRow(3)
         lyt_main.AddGrowableCol(2)
         lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
         lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
-        lyt_main.Add(btn_confirm, (3, 2),
+        lyt_main.Add(self.lyt_urls, (1, 1), (1, 2), wx.RIGHT, 5)
+        lyt_main.Add(lyt_buttons, (4, 2),
                 flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         
         self.SetAutoLayout(True)
@@ -317,6 +343,27 @@ class DetailedMessageDialog(wx.Dialog):
             self.SetMinSize(self.GetSize())
         
         self.CenterOnParent()
+    
+    
+    ## Adds a clickable link to the dialog
+    def AddURL(self, url):
+        if not isinstance(url, Hyperlink):
+            url = Hyperlink(self, wx.ID_ANY, label=url, url=url)
+        
+        self.lyt_urls.Add(url, 0, wx.ALIGN_CENTER_VERTICAL)
+        
+        self.Layout()
+        self.Fit()
+        self.SetMinSize(self.GetSize())
+        self.CenterOnParent()
+    
+    
+    ## Shows dialog modal & returns 'confirmed' value
+    #  
+    #  \return
+    #    \b \e bool : True if ShowModal return value one of wx.ID_OK, wx.OK, wx.ID_YES, wx.YES
+    def Confirmed(self):
+        return self.ShowModal() in (wx.ID_OK, wx.OK, wx.ID_YES, wx.YES)
     
     
     ## Adds buttons & details text to dialog
@@ -338,9 +385,9 @@ class DetailedMessageDialog(wx.Dialog):
             #btn_copy.Bind(wx.EVT_BUTTON, self.OnCopyDetails)
             
             layout = self.GetSizer()
-            layout.Add(self.btn_details, (1, 1))
-            #layout.Add(btn_copy, (1, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
-            layout.Add(self.dsp_details, (2, 1), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+            layout.Add(self.btn_details, (2, 1))
+            #layout.Add(btn_copy, (2, 2), flag=wx.ALIGN_LEFT|wx.RIGHT, border=5)
+            layout.Add(self.dsp_details, (3, 1), (1, 2), wx.EXPAND|wx.RIGHT, 5)
             
             self.ToggleDetails()
         
@@ -357,6 +404,7 @@ class DetailedMessageDialog(wx.Dialog):
     
     ## TODO: Doxygen
     #  
+    #  FIXME: Layout initially wrong
     #  TODO: Allow copying details to clipboard
     def OnCopyDetails(self, event=None):
         print(u'DEBUG: Copying details to clipboard ...')
@@ -389,7 +437,7 @@ class DetailedMessageDialog(wx.Dialog):
         del clipboard
         print(u'DEBUG: Clipboard object deleted')
         
-        wx.MessageBox(GT(u'FIXME: Details not copied to clipboard'), GT(u'Debug'))
+        wx.MessageBox(u'FIXME: Details not copied to clipboard', GT(u'Debug'))
     
     
     ## TODO: Doxygen
