@@ -14,6 +14,8 @@ PATH_WARN = wx.NewId()
 
 
 ## TODO: Doxygen
+#  
+#  FIXME: Use boolean value instead of type
 class PathCtrl(wx.TextCtrl):
     def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
                 default=wx.EmptyString):
@@ -23,10 +25,16 @@ class PathCtrl(wx.TextCtrl):
         
         # Get the value of the textctrl so it can be restored
         self.default = default
+        
+        # For restoring color of text area
         self.clr_default = self.GetBackgroundColour()
         
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
+        
+        # Check if path is available on construction
+        if self.ctrl_type == PATH_WARN:
+            self.SetPathAvailable()
     
     
     ## TODO: Doxygen
@@ -46,11 +54,7 @@ class PathCtrl(wx.TextCtrl):
         # doesn't exist
         value = self.GetValue()
         if self.ctrl_type == PATH_WARN:
-            if not os.path.exists(value):
-                self.SetBackgroundColour(u'red')
-                
-            else:
-                self.SetBackgroundColour(self.clr_default)
+            self.SetPathAvailable()
         
         if event:
             event.Skip()
@@ -58,9 +62,21 @@ class PathCtrl(wx.TextCtrl):
     
     ## TODO: Doxygen
     def Reset(self):
-        self.SetBackgroundColour(self.clr_default)
         self.SetValue(self.default)
+        
+        if self.ctrl_type == PATH_WARN:
+            self.SetPathAvailable()
+        
         self.SetInsertionPointEnd()
+    
+    
+    ## TODO: Doxygen
+    def SetPathAvailable(self):
+        if os.path.isdir(self.GetValue()):
+            self.SetBackgroundColour(self.clr_default)
+            return
+        
+        self.SetBackgroundColour(u'red')
     
     
     ## TODO: Doxygen
