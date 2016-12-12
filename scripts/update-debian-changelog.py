@@ -7,7 +7,8 @@
 
 import os, sys, errno, time
 
-from scripts_globals import debian_files, GetInfoValue
+from scripts_globals import GetInfoValue
+from scripts_globals import debian_files
 
 
 # Ubuntu release
