@@ -31,7 +31,7 @@ class BitmapButton(wx.BitmapButton):
 
 ## TODO: Doxygen
 class ButtonAdd(BitmapButton):
-    def __init__(self, parent, ID=wx.WXK_RETURN, name=u'btn add'):
+    def __init__(self, parent, ID=wx.ID_ADD, name=u'btn add'):
         BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/add32.png'.format(PATH_app)),
                 ID=ID, name=name)
         

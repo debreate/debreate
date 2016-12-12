@@ -188,7 +188,7 @@ class Panel(WizardPage):
         ver = self.input_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
             
-        if key_id == wx.WXK_RETURN or key_id == wx.WXK_NUMPAD_ENTER:
+        if key_id in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             if TextIsEmpty(addname):
                 return
             
