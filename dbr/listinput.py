@@ -257,6 +257,11 @@ class ListCtrlPanel(BorderedPanel):
     
     
     ## TODO: Doxygen
+    def GetSelectedIndexes(self):
+        return self.listarea.GetSelectedIndexes()
+    
+    
+    ## TODO: Doxygen
     def GetSelectedItemCount(self):
         return self.listarea.GetSelectedItemCount()
     
