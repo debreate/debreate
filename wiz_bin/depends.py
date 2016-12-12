@@ -7,7 +7,6 @@
 
 
 import wx
-from wx.lib.mixins import listctrl as LC
 
 from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
