@@ -7,14 +7,11 @@
 
 
 import os, sys, wx
-from wx.lib.docview import PathOnly
 
 from dbr.language       import GT
 from dbr.textinput      import MultilineTextCtrlPanel
 from globals.commands   import CMD_gvfs_trash
 
-
-db_here = PathOnly(__file__).decode(u'utf-8')
 
 # FIXME: This should be imported from dbr.functions
 def TextIsEmpty(text):
@@ -27,6 +24,7 @@ class OutputLog(MultilineTextCtrlPanel):
         MultilineTextCtrlPanel.__init__(self, parent, style=wx.TE_READONLY)
         self.stdout = sys.stdout
         self.stderr = sys.stderr
+    
     
     ## Adds test to the display area
     def write(self, string):
@@ -49,20 +47,17 @@ class OutputLog(MultilineTextCtrlPanel):
 ## A base class for custom file & folder dialogs
 #  
 #  \param parent
-#        Parent window
+#        \b \e wx.Window : Parent window
 #  \param title
-#        Text to be displayed in title bar
+#        \b \e unicode|str : Text to be displayed in title bar
 class DBDialog(wx.Dialog):
     def __init__(self, parent, title):
         wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE, size=(350,450))
-        
-        #self.SetTitle("Browse for a Folder")
         
         # IDs for context menu and buttons
         ID_Folder = 100
         ID_Rename = 101
         ID_Delete = 102
-        
         
         ## Context menu
         self.menu = wx.Menu()
@@ -74,12 +69,6 @@ class DBDialog(wx.Dialog):
         wx.EVT_MENU(self, ID_Folder, self.CreateFolder)
         wx.EVT_MENU(self, ID_Rename, self.ShowRename)
         wx.EVT_MENU(self, ID_Delete, self.Delete)
-        
-        # Display area
-        #self.dir_tree = wx.GenericDirCtrl(self, dir=os.getcwd())
-        
-        # Add a context menu to the dir_tree
-        #self.dir_tree.Bind(wx.EVT_CONTEXT_MENU, self.OnContext)
         
         ## New folder button
         btn_newfolder = wx.Button(self, ID_Folder, GT(u'New Folder'))
@@ -108,9 +97,8 @@ class DBDialog(wx.Dialog):
         self.SetSizer(self.main_sizer)
         self.Layout()
         
-        
         self.value = False
-        
+    
     
     ## Defines type of dialog
     #  
@@ -120,7 +108,7 @@ class DBDialog(wx.Dialog):
     #  \param mode
     #        Action mode of either 'save' or 'open'
     def SetType(self, dia_type, mode):
-        if type.lower() == u'file':
+        if dia_type.lower() == u'file':
             try:
                 self.dir_tree = wx.GenericDirCtrl(self, dir=os.getcwd(), filter=u'*', style=wx.DIRCTRL_SHOW_FILTERS)
             
@@ -133,9 +121,10 @@ class DBDialog(wx.Dialog):
             elif mode.lower() == u'open':
                 self.btn_confirm.SetLabel(GT(u'Open'))
         
-        elif type.lower() == u'dir':
+        elif dia_type.lower() == u'dir':
             self.dir_tree = wx.GenericDirCtrl(self, dir=os.getcwd(),
                     style=wx.DIRCTRL_DIR_ONLY|wx.BORDER_SIMPLE)
+            
             if mode.lower() == u'save':
                 self.btn_confirm.SetLabel(GT(u'Save'))
             
@@ -176,11 +165,11 @@ class DBDialog(wx.Dialog):
     
     ## TODO: Doxygen
     def OnButton(self, event=None):
-        object_id = event.GetEventObject().GetId()
+        button_id = event.GetEventObject().GetId()
         
         dest_path = self.dir_tree.GetPath()
         
-        if object_id == wx.OK:
+        if button_id == wx.OK:
             if os.path.isdir(dest_path):
                 os.chdir(dest_path)
             
@@ -472,6 +461,7 @@ class SaveFile(DBDialog):
     def OnButton(self, event=None):
         save_ids = (wx.OK, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER, 7000) # 7000 is for left mouse button d-click
         cancel_ids = (wx.CANCEL, wx.WXK_ESCAPE)
+        
         try:
             key_code = event.GetKeyCode()
         
@@ -489,8 +479,8 @@ class SaveFile(DBDialog):
         if key_code in save_ids:
             filename = self.TextCtrl.GetValue()
             bad_filename_dia = wx.MessageDialog(self, GT(u'Bad File Name'), GT(u'Error'), wx.OK|wx.ICON_ERROR)
+            
             # Check to see that the input value isn't empty
-            #if self.TextCtrl.GetValue() == wx.EmptyString:
             if filename == wx.EmptyString or filename[0] in self.invalid_first_char or [i for i in list(filename) if i in self.invalid_char]:
                 bad_filename_dia.ShowModal()
                 #dia.Destroy()
@@ -500,6 +490,7 @@ class SaveFile(DBDialog):
                 if self.defaultExtension:
                     if self.TextCtrl.GetValue().split(u'.')[-1] != self.defaultExtension:
                         self.TextCtrl.SetValue(u'{}.{}'.format(self.TextCtrl.GetValue(), self.defaultExtension))
+                
                 # Set the Dir and Filename for saving
                 savefile = u'{}/{}'.format(dest_path, self.TextCtrl.GetValue())
                 
