@@ -46,7 +46,7 @@ class Panel(WizardPage):
         btn_preview = ButtonPreview64(self.pnl_bg)
         
         # Button to open a help dialog (WIP)
-        btn_help = HelpButton(self.pnl_bg)
+        #btn_help = HelpButton(self.pnl_bg)
         
         txt_package = wx.StaticText(self.pnl_bg, label=GT(u'Package'), name=u'package')
         txt_package.req = True
@@ -145,13 +145,16 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT
+        
         # Buttons
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_open, 0)
         lyt_buttons.Add(btn_save, 0)
         lyt_buttons.Add(btn_preview, 0)
-        lyt_buttons.AddStretchSpacer(1)
-        lyt_buttons.Add(btn_help, 0)
+        #lyt_buttons.AddStretchSpacer(1)
+        #lyt_buttons.Add(btn_help, 0)
         
         # Required fields
         lyt_require = wx.FlexGridSizer(0, 4, 5, 5)
