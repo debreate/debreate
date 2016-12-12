@@ -15,6 +15,7 @@ from dbr.functions          import GetYear
 from dbr.functions          import RemovePreWhitespace
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
+from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
@@ -28,7 +29,7 @@ from globals.wizardhelper   import GetTopWindow
 
 
 # Globals
-copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]\n\n')
+copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
 
 
 ## Copyright page
@@ -38,6 +39,7 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
+        # FIXME: Update license templates list when template is generated
         # FIXME: Ignore symbolic links
         opts_licenses = GetSystemLicensesList()
         
@@ -105,38 +107,62 @@ class Panel(wx.ScrolledWindow):
         
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
-        btn_template.Bind(wx.EVT_BUTTON, self.OnGenerateTemplate)
+        btn_template.Bind(wx.EVT_BUTTON, self.CopyFullTemplate)
         self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateSimpleTemplate)
     
     
     ## TODO: Doxygen
-    def CopyStandardLicense(self, license_name):
-        main_window = GetTopWindow()
+    def CopyFullTemplate(self, event=None):
+        selected_template = self.sel_templates.GetStringSelection()
+        template_file = self.GetLicensePath(selected_template)
         
         if self.DestroyLicenseText():
-            license_path = u'{}/{}'.format(system_licenses_path, license_name)
+            main_window = GetTopWindow()
             
-            if not os.path.isfile(license_path):
-                ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
+            if not os.path.isfile(template_file):
+                ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
                 return
             
-            FILE_BUFFER = open(license_path, u'r')
-            license_text = FILE_BUFFER.read()
+            Logger.Debug(__name__, u'Copying license {}'.format(template_file))
+            
+            FILE_BUFFER = open(template_file, u'r')
+            license_text = RemovePreWhitespace(FILE_BUFFER.read())
             FILE_BUFFER.close()
             
-            self.dsp_copyright.Clear()
-            self.dsp_copyright.SetValue(RemovePreWhitespace(license_text))
+            # Number defines how many empty lines to add after the copyright header
+            # Boolean defines whether copyright header should be centered
+            add_header = {
+                u'Artistic': (1, True),
+                u'BSD': (0, False),
+            }
             
-            add_header = (
-                u'Artistic',
-                u'BSD',
-            )
+            template_name = os.path.basename(template_file)
+            if template_name in add_header:
+                license_text = license_text.split(u'\n')
+                
+                for empty_line in range(add_header[template_name][0]):
+                    license_text.insert(0, wx.EmptyString)
+                
+                # Special changes for BSD license
+                if template_name == u'BSD':
+                    line_index = 0
+                    for LI in license_text:
+                        if u'copyright (c)' in LI.lower():
+                            license_text[line_index] = copyright_header.format(GetYear())
+                            
+                            break
+                        
+                        line_index += 1
+                
+                else:
+                    license_text.insert(0, copyright_header.format(GetYear()))
+                
+                license_text = u'\n'.join(license_text)
+            
+            self.dsp_copyright.Clear()
+            self.dsp_copyright.SetValue(license_text)
             
             self.dsp_copyright.SetInsertionPoint(0)
-            
-            if license_name in add_header:
-                self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
-                self.dsp_copyright.SetInsertionPoint(0)
         
         self.dsp_copyright.SetFocus()
     
@@ -180,7 +206,11 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    #  
+    #  FIXME: Deprecated/Unused
     def GenerateTemplate(self, l_name):
+        Logger.Debug(__name__, u'Generating template')
+        
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
             
@@ -191,7 +221,7 @@ class Panel(wx.ScrolledWindow):
                 l_lines = l_data.read().split(u'\n')
                 l_data.close()
                 
-                delimeters = (
+                year_delims = (
                     u'<year>',
                     u'<years>',
                     u'<year(s)>',
@@ -200,12 +230,43 @@ class Panel(wx.ScrolledWindow):
                     u'<date(s)>',
                 )
                 
-                for DEL in delimeters:
+                substitutions = {
+                    u'Copyright (C)': u'Copyright (REMOVEME) ©',
+                    year_delims: str(GetYear()),
+                }
+                
+                l_index = 0
+                for LI in l_lines:
+                    for RPLC in substitutions:
+                        if isinstance(RPLC, (tuple, list)):
+                            for S in RPLC:
+                                if S in LI:
+                                    new_str = substitutions[RPLC]
+                                    
+                                    Logger.Debug(__name__,
+                                            u'License template string substitution from list: {} ➜ {}'.format(S, new_str))
+                                    
+                                    l_lines[l_index] = LI.replace(S, new_str)
+                        
+                        else:
+                            if RPLC in LI:
+                                new_str = substitutions[RPLC]
+                                
+                                Logger.Debug(__name__,
+                                        u'License template string substitution from string: {} ➜ {}'.format(RPLC, new_str))
+                                
+                                l_lines[l_index] = LI.replace(RPLC, new_str)
+                        
+                        l_index += 1
+                '''
+                for DEL in year_delims:
                     l_index = 0
                     for LI in l_lines:
                         if DEL in LI:
                             l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
+                        
                         l_index += 1
+                '''
                 
                 self.dsp_copyright.SetValue(u'\n'.join(l_lines))
                 
@@ -240,17 +301,6 @@ class Panel(wx.ScrolledWindow):
     ## Tells the app whether this page should be added to build
     def IsBuildExportable(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
-    
-    
-    ## Determines location of template file
-    def OnGenerateTemplate(self, event=None):
-        license_name = self.sel_templates.GetStringSelection()
-        
-        if FieldEnabled(self.btn_template_simple):
-            self.CopyStandardLicense(license_name)
-        
-        else:
-            self.GenerateTemplate(license_name)
     
     
     ## Enables/Disables simple template button
