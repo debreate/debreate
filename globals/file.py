@@ -22,3 +22,31 @@ def ReadFile(filename):
     
     if contents:
         return contents
+
+
+## Outputs text content to file using utf-8 encoding
+#  
+#  FIXME: Needs exception handling
+def WriteFile(filename, contents):
+    # Ensure we are dealing with a string
+    if isinstance(contents, (tuple, list)):
+        contents = u'\n'.join(contents).strip(u' \t\n\r')
+    
+    if u'/' in filename:
+        target_dir = os.path.dirname(filename)
+    
+    else:
+        target_dir = os.getcwd()
+        filename = u'{}/{}'.format(target_dir, filename)
+    
+    if not os.path.isdir(target_dir):
+        os.makedirs(target_dir)
+    
+    FILE_BUFFER = codecs.open(filename, u'w', encoding=u'utf-8')
+    FILE_BUFFER.write(contents)
+    FILE_BUFFER.close()
+    
+    if not os.path.isfile(filename):
+        return False
+    
+    return True
