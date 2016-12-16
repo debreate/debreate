@@ -14,6 +14,7 @@ from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.application    import APP_logo
 from globals.fileio         import AppendFile
+from globals.fileio         import ReadFile
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
 
@@ -395,9 +396,7 @@ class LogWindow(wx.Dialog):
     ## Fills log with text file contents
     def RefreshLog(self, event=None):
         if os.path.isfile(self.log_file):
-            FILE = open(self.log_file)
-            log_data = FILE.read()
-            FILE.close()
+            log_data = ReadFile(self.log_file)
             
             if not self.log.IsEmpty():
                 self.log.Clear()
