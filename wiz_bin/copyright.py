@@ -9,7 +9,7 @@
 import os, wx
 
 from dbr.dialogs            import ConfirmationDialog
-from dbr.error              import ShowError
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import GetYear
@@ -121,7 +121,7 @@ class Panel(wx.ScrolledWindow):
             main_window = GetTopWindow()
             
             if not os.path.isfile(template_file):
-                ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
+                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
                 return
             
             Logger.Debug(__name__, u'Copying license {}'.format(template_file))
