@@ -12,7 +12,14 @@ import codecs, os
 
 
 ## Retrieves the contents of a text file using utf-8 encoding
-def ReadFile(filename, split=False):
+#  
+#  \param filename
+#    \b \e string : Path to filename to read
+#  \param split
+#    \b \e bool : If True, output will be split into a list or tuple
+#  \param convert
+#    \b \e tuple|list : Converts the output to value type if 'split' is True
+def ReadFile(filename, split=False, convert=tuple):
     if not os.path.isfile(filename):
         return
     
@@ -21,7 +28,7 @@ def ReadFile(filename, split=False):
     FILE_BUFFER.close()
     
     if split:
-        contents = tuple(contents.split(u'\n'))
+        contents = convert(contents.split(u'\n'))
     
     if contents:
         return contents
