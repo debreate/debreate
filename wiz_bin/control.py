@@ -22,6 +22,8 @@ from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from globals                import ident
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
@@ -426,9 +428,7 @@ class Panel(wx.ScrolledWindow):
         if cont:
             file_path = dia.GetPath()
             
-            FILE_BUFFER = open(file_path, u'r')
-            control_data = FILE_BUFFER.read()
-            FILE_BUFFER.close()
+            control_data = ReadFile(file_path)
             
             page_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ident.DEPENDS)
             
@@ -505,9 +505,7 @@ class Panel(wx.ScrolledWindow):
                 path = dia.GetPath()
         
         if cont:
-            FILE_BUFFER = open(path, u'w')
-            FILE_BUFFER.write(control)
-            FILE_BUFFER.close()
+            WriteFile(path, control)
     
     
     ## TODO: Doxygen
