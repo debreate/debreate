@@ -17,7 +17,7 @@ from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextCtrl
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.tooltips       import SetPageToolTips
@@ -61,7 +61,7 @@ class Panel(wx.ScrolledWindow):
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
         
         # Changes input
-        self.ti_changes = MultilineTextCtrlPanel(self, size=(20,150), name=u'changes')
+        self.ti_changes = TextAreaPanel(self, size=(20,150), name=u'changes')
         
         # *** Target installation directory
         

@@ -19,7 +19,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from globals                import ident
 from globals.tooltips       import SetPageToolTips
@@ -112,7 +112,7 @@ class Panel(wx.ScrolledWindow):
         ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.ti_description = MultilineTextCtrlPanel(pnl_recommend, name=txt_description.Name)
+        self.ti_description = TextAreaPanel(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         

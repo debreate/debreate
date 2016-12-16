@@ -51,7 +51,7 @@ class TextArea(wx.TextCtrl):
         if not self.IsDropTarget():
             parent = self.GetParent()
             
-            if isinstance(parent, MultilineTextCtrlPanel):
+            if isinstance(parent, TextAreaPanel):
                 main_object = parent
             
             else:
@@ -126,7 +126,7 @@ class TextAreaML(TextArea):
 
 
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
-class MultilineTextCtrlPanel(BorderedPanel):
+class TextAreaPanel(BorderedPanel):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
         BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
@@ -163,7 +163,7 @@ class MultilineTextCtrlPanel(BorderedPanel):
     ## Disables or enables self & text area
     #  
     #  Because of issues with text control background color, it
-    #  must be set manually when the parent MultilineTextCtrlPanel
+    #  must be set manually when the parent TextAreaPanel
     #  is disabled. This causes some text artifacts in wx 3.0
     #  when using the SetValue & WriteText methods. Because of
     #  that, when the control is enabled/disabled, the value
@@ -310,11 +310,11 @@ button_H_pos = {
 ## TODO: Doxygen
 #  
 #  TODO: Remove button & toggle text from external buttons
-class MonospaceTextCtrl(MultilineTextCtrlPanel):
+class MonospaceTextCtrl(TextAreaPanel):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, button=MT_NO_BTN,
                 pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL,
                 name=wx.TextCtrlNameStr):
-        MultilineTextCtrlPanel.__init__(self, parent, ID, value, pos, size, style, name)
+        TextAreaPanel.__init__(self, parent, ID, value, pos, size, style, name)
         
         self.textarea.SetFont(MONOSPACED_LG)
         

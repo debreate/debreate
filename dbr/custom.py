@@ -9,7 +9,7 @@
 import os, sys, wx
 
 from dbr.language       import GT
-from dbr.textinput      import MultilineTextCtrlPanel
+from dbr.textinput      import TextAreaPanel
 from globals.commands   import CMD_gvfs_trash
 
 
@@ -19,9 +19,9 @@ def TextIsEmpty(text):
 
 
 ## A generic display area that captures \e stdout & \e stderr
-class OutputLog(MultilineTextCtrlPanel):
+class OutputLog(TextAreaPanel):
     def __init__(self, parent):
-        MultilineTextCtrlPanel.__init__(self, parent, style=wx.TE_READONLY)
+        TextAreaPanel.__init__(self, parent, style=wx.TE_READONLY)
         self.stdout = sys.stdout
         self.stderr = sys.stderr
     

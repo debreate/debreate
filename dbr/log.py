@@ -10,7 +10,7 @@ from dbr.font               import GetMonospacedFont
 from dbr.functions          import GetDate
 from dbr.functions          import GetTime
 from dbr.language           import GT
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.application    import APP_logo
 from globals.paths          import PATH_local
@@ -216,7 +216,7 @@ class LogWindow(wx.Dialog):
         self.evt_refresh_log = RefreshLogEvent(0)
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
         
-        self.log = MultilineTextCtrlPanel(self, style=wx.TE_READONLY)
+        self.log = TextAreaPanel(self, style=wx.TE_READONLY)
         self.log.font_size = 8
         self.log.SetFont(GetMonospacedFont(self.log.font_size))
         

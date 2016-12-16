@@ -23,7 +23,7 @@ from dbr.listinput          import ListCtrlPanel
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from globals                import ident
 from globals.tooltips       import SetPageToolTips
@@ -207,7 +207,7 @@ class Panel(wx.ScrolledWindow):
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         self.labels.append(txt_other)
         
-        self.ti_other = MultilineTextCtrlPanel(self, name=txt_other.Name)
+        self.ti_other = TextAreaPanel(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.opts_input.append(self.ti_other)
         
