@@ -8,6 +8,8 @@
 
 import os, sys, wx
 
+from globals.fileio import ReadFile
+
 
 # *** Python Info *** #
 
@@ -33,9 +35,7 @@ def GetOSInfo(key, upstream=False):
     if not os.path.isfile(lsb_release):
         return None
     
-    FILE = open(lsb_release, u'r')
-    release_data = FILE.read().split(u'\n')
-    FILE.close()
+    release_data = ReadFile(lsb_release, split=True)
     
     value = None
     
