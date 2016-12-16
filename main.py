@@ -41,6 +41,7 @@ from globals.bitmaps        import ICON_LOGO
 from globals.commands       import CMD_gvfs_trash
 from globals.commands       import CMD_xdg_open
 from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
@@ -578,12 +579,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     shutil.copy(path, backup)
                     overwrite = True
                 
-                savefile = open(path, u'w')
-                
                 # This try statement can be removed when unicode support is enabled
                 try:
-                    savefile.write(u'[DEBREATE-{}]\n{}'.format(VERSION_string, u'\n'.join(data)))
-                    savefile.close()
+                    WriteFile(path, u'[DEBREATE-{}]\n{}'.format(VERSION_string, u'\n'.join(data)))
+                    
                     if overwrite:
                         os.remove(backup)
                 
@@ -592,7 +591,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
                     UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                     UniErr.ShowModal()
-                    savefile.close()
+                    
                     if overwrite:
                         os.remove(path)
                         # Restore project backup
