@@ -26,6 +26,8 @@ from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from globals                import ident
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 from globals.wizardhelper   import UseCustomDialogs
@@ -407,6 +409,9 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Loads a .desktop launcher's data
+    #  
+    #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
+    #         'Others' field not being completely filled out.
     def OnLoadLauncher(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
         cont = False
@@ -425,9 +430,7 @@ class Panel(wx.ScrolledWindow):
         if cont == True:
             path = dia.GetPath()
             
-            FILE_BUFFER = open(path, u'r')
-            data = FILE_BUFFER.read().split(u'\n')
-            FILE_BUFFER.close()
+            data = ReadFile(path).split(u'\n')
             
             # Remove unneeded lines
             if data[0] == u'[Desktop Entry]':
@@ -449,7 +452,12 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Saves launcher information to file
+    #  
+    #  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
+    #         'Others' field not being completely filled out.
     def OnSaveLauncher(self, event=None):
+        Logger.Debug(__name__, u'Export launcher ...')
+        
         main_window = wx.GetApp().GetTopWindow()
         
         # Get data to write to control file
@@ -480,10 +488,9 @@ class Panel(wx.ScrolledWindow):
                 shutil.copy(path, backup)
                 overwrite = True
             
-            FILE_BUFFER = open(path, u'w')
             try:
-                FILE_BUFFER.write(menu_data)
-                FILE_BUFFER.close()
+                WriteFile(path, menu_data)
+                
                 if overwrite:
                     os.remove(backup)
             
@@ -492,7 +499,6 @@ class Panel(wx.ScrolledWindow):
                 uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
                 UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
-                FILE_BUFFER.close()
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)
