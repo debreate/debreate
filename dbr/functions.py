@@ -8,7 +8,7 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, re, shutil, traceback, subprocess, wx
+import codecs, commands, os, re, shutil, traceback, subprocess, wx
 from datetime   import date
 from datetime   import datetime
 from urllib2    import URLError
@@ -383,6 +383,19 @@ def CreateTempDirectory():
         return temp_dir
     
     return dbrerrno.EACCES
+
+
+## Retrieves the contents of a text file using utf-8 encoding
+def ReadFile(filename):
+    if not os.path.isfile(filename):
+        return
+    
+    FILE_BUFFER = codecs.open(filename, u'r', u'utf-8')
+    contents = u''.join(FILE_BUFFER).strip(u' \t\n')
+    FILE_BUFFER.close()
+    
+    if contents:
+        return contents
 
 
 def RemoveTempDirectory(temp_dir):
