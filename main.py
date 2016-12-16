@@ -40,6 +40,7 @@ from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
 from globals.commands       import CMD_gvfs_trash
 from globals.commands       import CMD_xdg_open
+from globals.fileio         import ReadFile
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
@@ -678,9 +679,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     GT(u'File does not exist or is not a regular file: {}').format(project_file))
             return False
         
-        FILE_BUFFER = open(project_file, u'r')
-        data = FILE_BUFFER.read()
-        FILE_BUFFER.close()
+        data = ReadFile(project_file)
         
         lines = data.split(u'\n')
         
