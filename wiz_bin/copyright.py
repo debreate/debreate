@@ -225,9 +225,7 @@ class Panel(wx.ScrolledWindow):
             
             license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
             
-            self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
-            self.dsp_copyright.WriteText(license_path)
-            
+            self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
             self.dsp_copyright.SetInsertionPoint(0)
         
         self.dsp_copyright.SetFocus()
