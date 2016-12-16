@@ -84,6 +84,7 @@ class Panel(wx.ScrolledWindow):
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.dsp_changes = MonospaceTextCtrl(self, name=u'log')
+        self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)
         
