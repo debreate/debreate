@@ -11,6 +11,13 @@
 import codecs, os
 
 
+## TODO: Doxygen
+def AppendFile(filename, contents):
+    contents = u'{}\n{}'.format(ReadFile(filename), contents)
+    
+    WriteFile(filename, contents)
+
+
 ## Retrieves the contents of a text file using utf-8 encoding
 #  
 #  \param filename
