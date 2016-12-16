@@ -6,12 +6,13 @@
 # See: docs/LICENSE.txt
 
 
-import wx
+import codecs, wx
 
-from dbr.font       import MONOSPACED_LG
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
-from dbr.panel      import BorderedPanel
+from dbr.font               import MONOSPACED_LG
+from dbr.functions          import TextIsEmpty
+from dbr.language           import GT
+from dbr.panel              import BorderedPanel
+from globals.wizardhelper   import GetTopWindow
 
 
 ## A text control that is multiline & uses a themed border
@@ -43,6 +44,10 @@ class MultilineTextCtrlPanel(BorderedPanel):
         if not TextIsEmpty(value):
             self.textarea.SetValue(value)
         
+        # Used for allowing drag & drop files
+        self.accepts_drop = False
+        self.textarea.DragAcceptFiles(False)
+        
         # For setting color of disabled panel
         self.clr_disabled = self.GetBackgroundColour()
         self.clr_enabled = self.textarea.GetBackgroundColour()
@@ -56,6 +61,8 @@ class MultilineTextCtrlPanel(BorderedPanel):
         self.SetAutoLayout(True)
         self.SetSizer(self.layout_V1)
         self.Layout()
+        
+        wx.EVT_DROP_FILES(self.textarea, self.OnDropFiles)
     
     
     ## Clears all text in the text area
@@ -107,6 +114,17 @@ class MultilineTextCtrlPanel(BorderedPanel):
         return return_value
     
     
+    ## Allow dropping files from file manager
+    def EnableDropTarget(self, enable=True):
+        if enable != self.accepts_drop:
+            self.textarea.DragAcceptFiles(enable)
+            self.accepts_drop = enable
+            
+            return True
+        
+        return False
+    
+    
     ## Retrieves the caret instance of the wx.TextCtrl
     def GetCaret(self):
         return self.textarea.GetCaret()
@@ -140,6 +158,48 @@ class MultilineTextCtrlPanel(BorderedPanel):
     ## Returns True if text area is empty
     def IsEmpty(self):
         return self.textarea.IsEmpty()
+    
+    
+    ## Sets the text from a file dropped from file manager
+    #  
+    #  \return
+    #    \b \e bool : True if text was set successfully
+    def OnDropFiles(self, event=None):
+        if event:
+            filename = event.GetFiles()
+            
+            if isinstance(filename, (tuple, list)):
+                # Only use first file
+                filename = filename[0]
+            
+            if not TextIsEmpty(self.textarea.GetValue()):
+                msg_li1 = GT(u'This will delete all text')
+                msg_li2 = GT(u'Continue?')
+                
+                # FIXME: Use custom dialogs (currently cannot import)
+                message = wx.MessageDialog(GetTopWindow(), u'{}\n\n{}'.format(msg_li1, msg_li2),
+                        GT(u'Warning'))
+                
+                confirmed = message.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES)
+                
+                if not confirmed:
+                    return
+                
+            # TODO: Create global function ReadFile
+            FILE_BUFFER = codecs.open(filename, u'r', u'utf-8')
+            input_text = u''.join(FILE_BUFFER).strip(u' \t\n')
+            FILE_BUFFER.close()
+            
+            if input_text:
+                self.textarea.SetValue(input_text)
+                
+                return True
+            
+            #ShowErrorDialog(GT(u'There was an error reading file: {}').format(filename))
+            wx.MessageDialog(GetTopWindow(), GT(u'There was an error reading file: {}').format(filename),
+                    GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+        
+        return False
     
     
     ## TODO: Doxygen
