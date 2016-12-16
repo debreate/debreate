@@ -12,6 +12,7 @@
   - Zlib-PNG
 - Custom license templates can be placed in $HOME/.local directory
 - Files & folders can be dropped from file manager to file list
+- Files can be dropped onto some text areas
 
 0.7.12
 - Fixes:
