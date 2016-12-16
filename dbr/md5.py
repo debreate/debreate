@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# Writing the md5sums file
+## \package dbr.md5
+#  
+#  FIXME: This module uses the following deprecated modules:
+#  - commands
+
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
 import commands, os
@@ -9,11 +15,8 @@ from dbr.dialogs            import ErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals.commands       import CMD_md5sum
+from globals.fileio         import WriteFile
 from globals.wizardhelper   import GetTopWindow
-
-
-# FIXME: This module uses the following deprecated modules
-# - commands
 
 
 ## Object for creating MD5 hashes
@@ -81,8 +84,4 @@ class MD5Hasher:
             md5_list.append(sum_join)
         
         # Create the md5sums file in the "DEBIAN" directory
-        FILE_BUFFER = open(u'{}/DEBIAN/md5sums'.format(tempdir), u'w')
-        FILE_BUFFER.write(u'{}\n'.format(u'\n'.join(md5_list)))
-        FILE_BUFFER.close()
-        
-        return True
+        return WriteFile(u'{}/DEBIAN/md5sums'.format(tempdir), u'{}\n'.format(u'\n'.join(md5_list)))
