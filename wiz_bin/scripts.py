@@ -77,6 +77,9 @@ class Panel(wx.ScrolledWindow):
         self.ti_prerm = MonospaceTextCtrl(self, ID_RM_PRE, name=u'script body')
         self.ti_postrm = MonospaceTextCtrl(self, ID_RM_POST, name=u'script body')
         
+        for TI in self.ti_preinst, self.ti_postinst, self.ti_prerm, self.ti_postrm:
+            TI.EnableDropTarget()
+        
         # Set script text areas to default enabled/disabled setting
         self.OnToggleScripts()
         
