@@ -12,7 +12,7 @@ from dbr.font               import MONOSPACED_LG
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.panel              import BorderedPanel
-from globals.file           import ReadFile
+from globals.fileio         import ReadFile
 from globals.wizardhelper   import GetTopWindow
 
 

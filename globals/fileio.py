@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package globals.file
+## \package globals.fileio
 #  
 #  File I/O operations
 
