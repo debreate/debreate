@@ -2,6 +2,9 @@
 
 ## \package dbr.log
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, thread, time, wx
 from wx.lib.newevent import NewCommandEvent
@@ -79,9 +82,7 @@ class DebreateLogger:
             
             log_footer = u'\n--------------- End Log: {} ---------------\n\n'.format(date_time)
             
-            l_file = open(self.log_file, u'a')
-            l_file.write(log_footer)
-            l_file.close()
+            AppendFile(self.log_file, log_footer)
     
     
     ## Checks if log can be written at suppliet level
@@ -125,10 +126,7 @@ class DebreateLogger:
                 os.makedirs(PATH_local)
             
             # Open log for writing
-            l_file = open(self.log_file, u'a')
-            l_file.write(message)
-            l_file.write(u'\n')
-            l_file.close()
+            AppendFile(self.log_file, u'{}\n'.format(message))
     
     
     def Info(self, l_script, l_message):
