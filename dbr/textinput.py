@@ -166,7 +166,7 @@ class MultilineTextCtrlPanel(BorderedPanel):
     #  \return
     #    \b \e bool : True if text was set successfully
     def OnDropFiles(self, event=None):
-        if event:
+        if self.IsEnabled() and event:
             filename = event.GetFiles()
             
             if isinstance(filename, (tuple, list)):
