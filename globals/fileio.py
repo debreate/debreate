@@ -17,7 +17,7 @@ def ReadFile(filename):
         return
     
     FILE_BUFFER = codecs.open(filename, u'r', u'utf-8')
-    contents = u''.join(FILE_BUFFER).strip(u' \t\n')
+    contents = u''.join(FILE_BUFFER).strip(u' \t\n\r')
     FILE_BUFFER.close()
     
     if contents:
@@ -27,6 +27,7 @@ def ReadFile(filename):
 ## Outputs text content to file using utf-8 encoding
 #  
 #  FIXME: Needs exception handling
+#  FIXME: Set backup & restore on error/failure
 def WriteFile(filename, contents):
     # Ensure we are dealing with a string
     if isinstance(contents, (tuple, list)):
