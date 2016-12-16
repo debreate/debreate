@@ -6,9 +6,10 @@
 # See: docs/LICENSE.txt
 
 
-import codecs, wx
+import wx
 
 from dbr.font               import MONOSPACED_LG
+from dbr.functions          import ReadFile
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.panel              import BorderedPanel
@@ -184,11 +185,8 @@ class MultilineTextCtrlPanel(BorderedPanel):
                 
                 if not confirmed:
                     return
-                
-            # TODO: Create global function ReadFile
-            FILE_BUFFER = codecs.open(filename, u'r', u'utf-8')
-            input_text = u''.join(FILE_BUFFER).strip(u' \t\n')
-            FILE_BUFFER.close()
+            
+            input_text = ReadFile(filename)
             
             if input_text:
                 self.textarea.SetValue(input_text)
