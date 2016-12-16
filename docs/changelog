@@ -11,6 +11,7 @@
   - OFL-1.1
   - Zlib-PNG
 - Custom license templates can be placed in $HOME/.local directory
+- Files & folders can be dropped from file manager to file list
 
 0.7.12
 - Fixes:

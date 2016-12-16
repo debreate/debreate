@@ -362,11 +362,14 @@ class ListCtrlPanel(BorderedPanel):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(ListCtrlPanel, TextEditMixin):
+class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
     def __init__(self, parent, window_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
         ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT,
                 name=name)
         TextEditMixin.__init__(self)
+        wx.FileDropTarget.__init__(self)
+        
+        ListCtrlPanel.SetDropTarget(self, self)
         
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
         self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
@@ -507,6 +510,11 @@ class FileList(ListCtrlPanel, TextEditMixin):
     ## TODO: Doxygen
     def MissingFiles(self):
         return self.RefreshFileList()
+    
+    
+    ## Action to take when a file/folder is dropped onto the list from a file manager
+    def OnDropFiles(self, x, y, filename):
+        self.GetParent().OnDropFiles(filename)
     
     
     ## Defines actions to take when left-click or left-double-click event occurs

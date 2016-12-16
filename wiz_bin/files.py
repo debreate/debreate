@@ -173,6 +173,8 @@ class Panel(wx.ScrolledWindow):
         
         # Key events for file list
         wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
+        
+        self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
     
     
     ## TODO: Doxygen
@@ -361,6 +363,24 @@ class Panel(wx.ScrolledWindow):
             if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
                         GT(u'Clear all files?')).Confirmed():
                 self.lst_files.DeleteAllItems()
+    
+    
+    ## Adds files to list from file manager drop
+    #  
+    #  FIXME: Need method AddDirectory or AddFileList
+    def OnDropFiles(self, file_list):
+        target_dir = self.GetTarget()
+        
+        for fi in file_list:
+            if os.path.isdir(fi):
+                # FIXME: Should use progress dialog & relative path
+                for ROOT, DIRS, FILES in os.walk(fi):
+                    for F in FILES:
+                        self.lst_files.AddFile(F, ROOT, target_dir)
+                
+                continue
+            
+            self.lst_files.AddFile(os.path.basename(fi), os.path.dirname(fi), target_dir)
     
     
     ## TODO: Doxygen
