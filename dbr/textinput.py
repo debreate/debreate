@@ -186,12 +186,16 @@ class MultilineTextCtrlPanel(BorderedPanel):
                 if not confirmed:
                     return
             
-            input_text = ReadFile(filename)
+            try:
+                input_text = ReadFile(filename)
             
-            if input_text:
-                self.textarea.SetValue(input_text)
-                
-                return True
+                if input_text:
+                    self.textarea.SetValue(input_text)
+                    
+                    return True
+            
+            except UnicodeDecodeError:
+                pass
             
             #ShowErrorDialog(GT(u'There was an error reading file: {}').format(filename))
             wx.MessageDialog(GetTopWindow(), GT(u'There was an error reading file: {}').format(filename),
