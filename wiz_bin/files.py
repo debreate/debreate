@@ -246,6 +246,16 @@ class Panel(wx.ScrolledWindow):
             event.Skip()
     
     
+    ## Retrieves the target output directory
+    def GetTarget(self):
+        if FieldEnabled(self.ti_target):
+            return self.ti_target.GetValue()
+        
+        for target in self.grp_targets:
+            if target.GetId() != ident.F_CUSTOM and target.GetValue():
+                return target.GetLabel()
+    
+    
     ## TODO: Doxygen
     def IsBuildExportable(self):
         return not self.lst_files.IsEmpty()
@@ -257,16 +267,7 @@ class Panel(wx.ScrolledWindow):
         flist = []
         
         source = self.tree_directories.GetPath()
-        target_dir = None
-        
-        if FieldEnabled(self.ti_target):
-            target_dir = self.ti_target.GetValue()
-        
-        else:
-            for target in self.grp_targets:
-                if target.GetId() != ident.F_CUSTOM and target.GetValue():
-                    target_dir = target.GetLabel()
-                    break
+        target_dir = self.GetTarget()
         
         if not isinstance(target_dir, (unicode, str)):
             Logger.Error(__name__, GT(u'Expected string for staging target, instead got').format(type(target_dir)))
