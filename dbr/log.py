@@ -13,6 +13,7 @@ from dbr.language           import GT
 from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.application    import APP_logo
+from globals.fileio         import AppendFile
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
 
@@ -66,9 +67,7 @@ class DebreateLogger:
             log_header = u'\n\n{}'.format(log_header)
         
         # Write header to log file
-        l_file = open(self.log_file, u'a')
-        l_file.write(log_header)
-        l_file.close()
+        AppendFile(self.log_file, log_header)
     
     
     def OnClose(self):
