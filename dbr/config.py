@@ -4,13 +4,18 @@
 #  
 #  Parsing & writing configuration.
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
-from dbr.functions      import TextIsEmpty
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
+from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
+from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
 from globals.paths      import PATH_home
 
 
@@ -75,9 +80,7 @@ def ReadConfig(k_name, conf=default_config):
         #Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
-    conf_opened = open(conf, u'r')
-    conf_lines = conf_opened.read().split(u'\n')
-    conf_opened.close()
+    conf_lines = ReadFile(conf).split(u'\n')
     
     for L in conf_lines:
         if u'=' in L:
@@ -143,9 +146,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
             print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Cannot open config for writing, directory exists'), conf))
             return ConfCode.ERR_WRITE
         
-        conf_opened = open(conf, u'r')
-        conf_text = conf_opened.read()
-        conf_opened.close()
+        conf_text = ReadFile(conf)
     
     else:
         conf_text = u'[CONFIG-{}.{}]'.format(unicode(config_version[0]), unicode(config_version[1]))
@@ -173,9 +174,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
         return ConfCode.ERR_WRITE
     
     # Actual writing to configuration
-    conf_opened = open(conf, u'w')
-    conf_opened.write(conf_text)
-    conf_opened.close()
+    WriteFile(conf, conf_text)
     
     return ConfCode.SUCCESS
 
