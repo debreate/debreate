@@ -33,6 +33,7 @@ from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_system_installer
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -298,9 +299,7 @@ class Panel(wx.ScrolledWindow):
                 if not os.path.isdir(changelog_target):
                     os.makedirs(changelog_target)
                 
-                FILE_BUFFER = open(u'{}/changelog'.format(changelog_target), u'w')
-                FILE_BUFFER.write(task_list[u'changelog'][1].encode(u'utf-8'))
-                FILE_BUFFER.close()
+                WriteFile(u'{}/changelog'.format(changelog_target), task_list[u'changelog'][1])
                 
                 if CMD_gzip:
                     UpdateProgress(progress, GT(u'Compressing changelog'))
@@ -322,9 +321,7 @@ class Panel(wx.ScrolledWindow):
             if create_copyright:
                 UpdateProgress(progress, GT(u'Creating copyright'))
                 
-                FILE_BUFFER = open(u'{}/usr/share/doc/{}/copyright'.format(stage_dir, package), u'w')
-                FILE_BUFFER.write(task_list[u'copyright'].encode(u'utf-8'))
-                FILE_BUFFER.close()
+                WriteFile(u'{}/usr/share/doc/{}/copyright'.format(stage_dir, package), task_list[u'copyright'])
                 
                 progress += 1
             
@@ -351,9 +348,7 @@ class Panel(wx.ScrolledWindow):
                 if not os.path.isdir(menu_dir):
                     os.makedirs(menu_dir)
                 
-                FILE_BUFFER = open(u'{}/{}.desktop'.format(menu_dir, menu_filename), u'w')
-                FILE_BUFFER.write(task_list[u'launcher'].encode(u'utf-8'))
-                FILE_BUFFER.close()
+                WriteFile(u'{}/{}.desktop'.format(menu_dir, menu_filename), task_list[u'launcher'])
                 
                 progress += 1
             
@@ -384,9 +379,7 @@ class Panel(wx.ScrolledWindow):
                 for script_name, script_text in scripts:
                     script_filename = ConcatPaths((u'{}/DEBIAN'.format(stage_dir), script_name))
                     
-                    FILE_BUFFER = open(script_filename, u'w')
-                    FILE_BUFFER.write(script_text.encode(u'utf-8'))
-                    FILE_BUFFER.close()
+                    WriteFile(script_filename, script_text)
                     
                     # Make sure scipt path is wrapped in quotes to avoid whitespace errors
                     os.chmod(script_filename, 0755)
@@ -430,9 +423,7 @@ class Panel(wx.ScrolledWindow):
             
             control_data = u'\n'.join(control_data)
             
-            FILE_BUFFER = open(u'{}/DEBIAN/control'.format(stage_dir), u'w')
-            FILE_BUFFER.write(control_data.encode(u'utf-8'))
-            FILE_BUFFER.close()
+            WriteFile(u'{}/DEBIAN/control'.format(stage_dir), control_data)
             
             progress += 1
             
@@ -484,9 +475,7 @@ class Panel(wx.ScrolledWindow):
                     e1 = GT(u'Lintian found some issues with the package.')
                     e2 = GT(u'Details saved to {}').format(filename)
                     
-                    FILE_BUFFER = open(u'{}/{}.lintian'.format(build_path, filename), u'w')
-                    FILE_BUFFER.write(errors.encode(u'utf-8'))
-                    FILE_BUFFER.close()
+                    WriteFile(u'{}/{}.lintian'.format(build_path, filename), errors)
                     
                     DetailedMessageDialog(build_progress, GT(u'Lintian Errors'),
                             ICON_INFORMATION, u'{}\n{}.lintian'.format(e1, e2), errors).ShowModal()
