@@ -72,6 +72,7 @@ class Panel(wx.ScrolledWindow):
         
         ## Area where license text is displayed
         self.dsp_copyright = MonospaceTextCtrl(self, name=u'license')
+        self.dsp_copyright.EnableDropTarget()
         
         SetPageToolTips(self)
         
