@@ -13,7 +13,6 @@ from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import GetYear
-from dbr.functions          import RemovePreWhitespace
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -24,6 +23,7 @@ from dbr.templates          import local_licenses_path
 from dbr.textinput          import MonospaceTextArea
 from globals                import ident
 from globals.constants      import system_licenses_path
+from globals.fileio         import ReadFile
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 
@@ -118,17 +118,13 @@ class Panel(wx.ScrolledWindow):
         template_file = self.GetLicensePath(selected_template)
         
         if self.DestroyLicenseText():
-            main_window = GetTopWindow()
-            
             if not os.path.isfile(template_file):
                 ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
                 return
             
             Logger.Debug(__name__, u'Copying license {}'.format(template_file))
             
-            FILE_BUFFER = open(template_file, u'r')
-            license_text = RemovePreWhitespace(FILE_BUFFER.read())
-            FILE_BUFFER.close()
+            license_text = ReadFile(template_file)
             
             # Number defines how many empty lines to add after the copyright header
             # Boolean/Integer defines whether copyright header should be centered/offset
