@@ -12,13 +12,16 @@ import codecs, os
 
 
 ## Retrieves the contents of a text file using utf-8 encoding
-def ReadFile(filename):
+def ReadFile(filename, split=False):
     if not os.path.isfile(filename):
         return
     
     FILE_BUFFER = codecs.open(filename, u'r', u'utf-8')
     contents = u''.join(FILE_BUFFER).strip(u' \t\n\r')
     FILE_BUFFER.close()
+    
+    if split:
+        contents = tuple(contents.split(u'\n'))
     
     if contents:
         return contents
