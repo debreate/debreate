@@ -22,7 +22,7 @@ from dbr.markdown           import MarkdownDialog
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
-from dbr.textinput          import MonospaceTextCtrl
+from dbr.textinput          import MonospaceTextArea
 from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
@@ -72,10 +72,10 @@ class Panel(wx.ScrolledWindow):
                 name=u'postrm')
         
         # Text area for each radio button
-        self.ti_preinst = MonospaceTextCtrl(self, ID_INST_PRE, name=u'script body')
-        self.ti_postinst = MonospaceTextCtrl(self, ID_INST_POST, name=u'script body')
-        self.ti_prerm = MonospaceTextCtrl(self, ID_RM_PRE, name=u'script body')
-        self.ti_postrm = MonospaceTextCtrl(self, ID_RM_POST, name=u'script body')
+        self.ti_preinst = MonospaceTextArea(self, ID_INST_PRE, name=u'script body')
+        self.ti_postinst = MonospaceTextArea(self, ID_INST_POST, name=u'script body')
+        self.ti_prerm = MonospaceTextArea(self, ID_RM_PRE, name=u'script body')
+        self.ti_postrm = MonospaceTextArea(self, ID_RM_POST, name=u'script body')
         
         for TI in self.ti_preinst, self.ti_postinst, self.ti_prerm, self.ti_postrm:
             TI.EnableDropTarget()

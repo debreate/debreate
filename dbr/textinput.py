@@ -310,7 +310,7 @@ button_H_pos = {
 ## TODO: Doxygen
 #  
 #  TODO: Remove button & toggle text from external buttons
-class MonospaceTextCtrl(TextAreaPanel):
+class MonospaceTextArea(TextAreaPanel):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, button=MT_NO_BTN,
                 pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL,
                 name=wx.TextCtrlNameStr):

@@ -16,7 +16,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
-from dbr.textinput          import MonospaceTextCtrl
+from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
@@ -83,7 +83,7 @@ class Panel(wx.ScrolledWindow):
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
-        self.dsp_changes = MonospaceTextCtrl(self, name=u'log')
+        self.dsp_changes = MonospaceTextArea(self, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)

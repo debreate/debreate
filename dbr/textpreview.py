@@ -10,7 +10,7 @@ import wx
 
 from dbr.dialogs    import BaseDialog
 from dbr.language   import GT
-from dbr.textinput import MonospaceTextCtrl
+from dbr.textinput  import MonospaceTextArea
 
 
 ## A simple dialog for previewing text
@@ -21,7 +21,7 @@ class TextPreview(BaseDialog):
         BaseDialog.__init__(self, parent, ID, title, pos, size, style, name)
         
         # FIXME: Hide caret
-        text_display = MonospaceTextCtrl(self, style=wx.TE_READONLY)
+        text_display = MonospaceTextArea(self, style=wx.TE_READONLY)
         
         if text:
             text_display.SetValue(text)
@@ -37,7 +37,7 @@ class TextPreview(BaseDialog):
     ## Retrieves the text area
     def GetTextArea(self):
         for C in self.GetChildren():
-            if isinstance(C, MonospaceTextCtrl):
+            if isinstance(C, MonospaceTextArea):
                 return C
     
     
