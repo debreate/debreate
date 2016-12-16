@@ -209,6 +209,7 @@ class Panel(wx.ScrolledWindow):
         
         self.ti_other = TextAreaPanel(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
+        self.ti_other.EnableDropTarget()
         self.opts_input.append(self.ti_other)
         
         self.OnToggle()
