@@ -239,9 +239,7 @@ class Panel(wx.ScrolledWindow):
             l_path = GetLicenseTemplateFile(l_name)
             
             if l_path:
-                l_data = open(l_path)
-                l_lines = l_data.read().split(u'\n')
-                l_data.close()
+                l_lines = ReadFile(l_path).split(u'\n')
                 
                 year_delims = (
                     u'<year>',
