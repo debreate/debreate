@@ -10,6 +10,7 @@ import os
 import wx
 
 from dbr.language   import GT
+from globals.fileio import ReadFile
 from globals.paths  import PATH_app
 
 
@@ -26,9 +27,7 @@ def GetPrefix():
     if not INSTALLED:
         return PATH_app
     
-    FILE = open(u'{}/INSTALLED'.format(PATH_app))
-    lines = FILE.read().split(u'\n')
-    FILE.close()
+    lines = ReadFile(u'{}/INSTALLED'.format(PATH_app), split=True)
     
     for L in lines:
         if u'=' in L:
