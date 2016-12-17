@@ -150,11 +150,11 @@ class Panel(wx.ScrolledWindow):
         
         # Context menu events for directory tree
         wx.EVT_CONTEXT_MENU(self.tree_directories, self.OnRightClickTree)
-        wx.EVT_MENU(self, wx.ID_ADD, self.OnAddPath)
+        wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefreshTree)
         
         # Button events
-        btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
+        btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)
         btn_remove.Bind(wx.EVT_BUTTON, self.OnRemoveSelected)
         btn_clear.Bind(wx.EVT_BUTTON, self.OnClearFileList)
         self.btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
@@ -427,93 +427,6 @@ class Panel(wx.ScrolledWindow):
         return self.AddPaths(dir_list, file_count, show_dialog=file_count >= efficiency_threshold)
     
     
-    ## Add a selected path to the list of files
-    def OnAddPath(self, event=None):
-        # List of files tuple formatted as: filename, source
-        flist = []
-        
-        source = self.tree_directories.GetPath()
-        target_dir = self.GetTarget()
-        
-        if not isinstance(target_dir, (unicode, str)):
-            Logger.Error(__name__, GT(u'Expected string for staging target, instead got').format(type(target_dir)))
-        
-        if os.path.isfile(source):
-            filename = os.path.basename(source)
-            source_dir = os.path.dirname(source)
-            
-            flist.append((filename, source_dir))
-        
-        elif os.path.isdir(source):
-            prg_prep = ProgressDialog(GetTopWindow(), GT(u'Processing Files'),
-                    style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
-            
-            # Only update the gauge every 100 files (hack until I figure out time)
-            file_count_max = 2500
-            count = 0
-            for ROOT, DIRS, FILES in os.walk(source):
-                # Enable cancelling dialog
-                if prg_prep.WasCancelled():
-                    prg_prep.Destroy()
-                    return
-                
-                for filename in FILES:
-                    flist.append((filename, ROOT))
-                    count += 1
-                    if count >= file_count_max:
-                        wx.Yield()
-                        prg_prep.Pulse()
-                        count = 0
-            
-            prg_prep.Destroy()
-        
-        file_count = len(flist)
-        
-        # Set the maximum file count to process without showing progress dialog
-        efficiency_threshold = 250
-        
-        # Set the maximum file count to process without showing warning dialog
-        warning_threshhold = 1000
-        
-        get_files = True
-        if file_count > warning_threshhold:
-            count_warnmsg = GT(u'Importing {} files'.format(file_count))
-            count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
-            count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
-            
-            get_files = ConfirmationDialog(GetTopWindow(),
-                    text=count_warnmsg).Confirmed()
-        
-        # FIXME: More efficient way to update progress dialog???
-        if get_files:
-            # Show a progress dialog that can be aborted
-            if file_count > efficiency_threshold:
-                task_msg = GT(u'Getting files from {}'.format(source))
-                task_progress = ProgressDialog(GetTopWindow(), message=task_msg, maximum=file_count,
-                        style=wx.PD_AUTO_HIDE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT,
-                        detailed=True)
-                
-                task = 0
-                while task < file_count:
-                    if task_progress.WasCancelled():
-                        task_progress.Destroy()
-                        break
-                    
-                    # Get the index before progress dialog is updated
-                    task_index = task
-                    
-                    task += 1
-                    task_progress.Update(task)
-                    
-                    self.lst_files.AddFile(flist[task_index][0], flist[task_index][1], target_dir)
-            
-            else:
-                Logger.Debug(__name__, flist)
-                for F in flist:
-                    # (filename, source_dir, target)
-                    self.lst_files.AddFile(F[0], F[1], target_dir)
-    
-    
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
         dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
@@ -534,6 +447,13 @@ class Panel(wx.ScrolledWindow):
     #  FIXME: Need method AddDirectory or AddFileList
     def OnDropFiles(self, file_list):
         self.LoadPaths(file_list)
+    
+    
+    ## Files & directories added from directory tree
+    #  
+    #  FIXME: How to enable multi-select in wx 2.8
+    def OnImportFromTree(self, event=None):
+        self.LoadPaths(self.tree_directories.GetFilePaths())
     
     
     ## TODO: Doxygen
