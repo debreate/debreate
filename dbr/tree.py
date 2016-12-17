@@ -8,6 +8,7 @@
 
 import os, wx
 
+from dbr.language   import GT
 from dbr.panel      import BorderedPanel
 from globals.paths  import PATH_home
 
@@ -48,17 +49,74 @@ class DirectoryTree(wx.GenericDirCtrl):
         return tuple(path_list)
 
 
+## TODO: Doxygen
+class DirectoryTreeCustom(wx.TreeCtrl):
+    def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE, validator=wx.DefaultValidator,
+            name=wx.TreeCtrlNameStr):
+        
+        wx.TreeCtrl.__init__(self, parent, w_id, pos, size,
+                style=style|wx.TR_HAS_BUTTONS|wx.TR_MULTIPLE, validator=validator, name=name)
+        
+        self.current_path = path
+        
+        self.path_list = {}
+        
+        self.AddRoot(GT(u'Home directory'))
+    
+    
+    ## TODO: Doxygen
+    def GetPath(self):
+        return self.current_path
+    
+    
+    ## TODO: Doxygen
+    def InitDirectoryLayout(self):
+        root_item = self.GetRootItem()
+        
+        self.SetDirectoryLayout(root_item)
+    
+    
+    ## TODO: Doxygen
+    def SetDirectoryLayout(self, parent, directory=None):
+        if not directory:
+            self.SetDirectoryLayout(parent, PATH_home)
+            return
+        
+        dirs = []
+        files = []
+        
+        for I in os.listdir(directory):
+            # Ignore hidden files
+            if not I.startswith(u'.'):
+                path = u'{}/{}'.format(directory, I)
+                
+                if os.path.isdir(path) and os.access(path, os.R_OK):
+                    dirs.append(I)
+                
+                elif os.path.isfile(path) and os.access(path, os.R_OK):
+                    files.append(I)
+        
+        for D in sorted(dirs):
+            tree_item = self.AppendItem(parent, D)
+            self.path_list[tree_item] = D
+        
+        for F in sorted(files):
+            tree_item = self.AppendItem(parent, F)
+            self.path_list[tree_item] = F
+
+
 ## A directgory tree for legacy versions of wx
 #  
 #  TODO: Work-in-progress
-class DirectoryTreeLegacy(BorderedPanel):
+class DirectoryTreePanel(BorderedPanel):
     def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.TreeCtrlNameStr):
         BorderedPanel.__init__(self, parent, w_id, pos, size, name=name)
         
         tree_ctrl = wx.TreeCtrl(self, style=wx.TR_EDIT_LABELS|wx.TR_MULTIPLE|wx.TR_HAS_BUTTONS)
         
-        tree_ctrl.AddRoot(u'Home directory')
+        tree_ctrl.AddRoot(GT(u'Home directory'))
         
         self.InitDirectoryLayout()
         
