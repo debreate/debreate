@@ -8,12 +8,7 @@
 
 import wx
 
-
-if wx.MAJOR_VERSION > 2:
-    PANEL_BORDER = wx.BORDER_THEME
-
-else:
-    PANEL_BORDER = wx.BORDER_MASK
+from dbr.styles import PANEL_BORDER
 
 
 ## A wx.Panel with a border
