@@ -27,6 +27,25 @@ class DirectoryTree(wx.GenericDirCtrl):
         wx.GenericDirCtrl.__init__(self, parent, w_id, path, pos, size,
                 style=style|FORCED_STYLE, filter=f_filter,
                 defaultFilter=defaultFilter, name=name)
+    
+    
+    ## Retrieve all selected paths
+    #  
+    #  The original method doesn't seem to be working for wxPython 3.0.
+    #  Does not exist for older versions.
+    #  
+    #  \override wx.GenericDirCtrl.GetFilePaths
+    def GetFilePaths(self):
+        tree = self.GetTreeCtrl()
+        selected_items = tree.GetSelections()
+        
+        path_list = []
+        
+        for I in selected_items:
+            tree.SelectItem(I)
+            path_list.append(self.GetPath())
+        
+        return tuple(path_list)
 
 
 ## A directgory tree for legacy versions of wx
