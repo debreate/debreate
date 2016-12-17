@@ -13,6 +13,9 @@
 - Custom license templates can be placed in $HOME/.local directory
 - Files & folders can be dropped from file manager to file list
 - Files can be dropped onto some text areas
+- Files & directories can be renamed from directory tree on Files page
+- Drag & drop support for Files page
+- Relative paths are preserved when adding directories to the file list
 
 0.7.12
 - Fixes:
