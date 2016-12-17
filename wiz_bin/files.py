@@ -35,11 +35,6 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 
 
-ID_AddDir = 140
-ID_AddFile = 141
-ID_Refresh = 142
-
-
 ## Class defining controls for the "Paths" page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
@@ -50,12 +45,10 @@ class Panel(wx.ScrolledWindow):
         # Create a Context Menu
         self.mnu_tree = wx.Menu()
         
-        self.mitm_adddir = wx.MenuItem(self.mnu_tree, ID_AddDir, GT(u'Add Folder'))
-        self.mitm_addfile = wx.MenuItem(self.mnu_tree, ID_AddFile, GT(u'Add File'))
-        mitm_refresh = wx.MenuItem(self.mnu_tree, ID_Refresh, GT(u'Refresh'))
+        mitm_add = wx.MenuItem(self.mnu_tree, wx.ID_ADD, GT(u'Add'))
+        mitm_refresh = wx.MenuItem(self.mnu_tree, wx.ID_REFRESH, GT(u'Refresh'))
         
-        self.mnu_tree.AppendItem(self.mitm_adddir)
-        self.mnu_tree.AppendItem(self.mitm_addfile)
+        self.mnu_tree.AppendItem(mitm_add)
         self.mnu_tree.AppendSeparator()
         self.mnu_tree.AppendItem(mitm_refresh)
         
@@ -157,9 +150,8 @@ class Panel(wx.ScrolledWindow):
         
         # Context menu events for directory tree
         wx.EVT_CONTEXT_MENU(self.tree_directories, self.OnRightClickTree)
-        wx.EVT_MENU(self, ID_AddDir, self.OnAddPath)
-        wx.EVT_MENU(self, ID_AddFile, self.OnAddPath)
-        wx.EVT_MENU(self, ID_Refresh, self.OnRefreshTree)
+        wx.EVT_MENU(self, wx.ID_ADD, self.OnAddPath)
+        wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefreshTree)
         
         # Button events
         btn_add.Bind(wx.EVT_BUTTON, self.OnAddPath)
@@ -575,16 +567,6 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnRightClickTree(self, event=None):
-        # Show a context menu for adding files and folders
-        path = self.tree_directories.GetPath()
-        if os.path.isdir(path):
-            self.mitm_adddir.Enable(True)
-            self.mitm_addfile.Enable(False)
-        
-        elif os.path.isfile(path):
-            self.mitm_adddir.Enable(False)
-            self.mitm_addfile.Enable(True)
-        
         self.tree_directories.PopupMenu(self.mnu_tree)
     
     
