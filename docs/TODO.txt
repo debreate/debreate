@@ -1,10 +1,6 @@
 0.7.13
 - Testing for both wx 3.0 & 2.8
-- Allow multi-selecting files
-- Drag-&-drop input:
-  - Copyright
-  - Files
-  - Manpages
+- Allow multi-selecting files (works with wx 3.0)
 - Replace wx.MessageDialog with DetailedMessageDialog
 - Add custom field option to Control
 - Add 'provides' field to Control
