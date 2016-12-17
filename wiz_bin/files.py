@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import os, traceback, wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse
@@ -17,17 +17,19 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import FileList
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.panel              import PANEL_BORDER
+from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
+from dbr.tree               import DirectoryTree
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
-from globals.paths          import PATH_home
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
@@ -57,8 +59,7 @@ class Panel(wx.ScrolledWindow):
         self.mnu_tree.AppendSeparator()
         self.mnu_tree.AppendItem(mitm_refresh)
         
-        # Directory listing for importing files and folders
-        self.tree_directories = wx.GenericDirCtrl(self, dir=PATH_home, size=(300, 20),
+        self.tree_directories = DirectoryTree(self, size=(300,20),
                 style=PANEL_BORDER)
         
         # ----- Target path
@@ -177,6 +178,54 @@ class Panel(wx.ScrolledWindow):
         self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
     
     
+    ## Adds files to the list
+    #  
+    #  \param dirs
+    #    \b \e dict : dict[dir] = [file list]
+    #  \param show_dialog
+    #    \b \e bool : If True, shows a progress dialog
+    def AddPaths(self, dirs, file_count=None, show_dialog=False):
+        target = self.GetTarget()
+        
+        if file_count == None:
+            file_count = 0
+            for D in dirs:
+                for F in dirs[D]:
+                    file_count += 1
+        
+        progress = None
+        
+        Logger.Debug(__name__, u'Adding {} files ...'.format(file_count))
+        
+        if show_dialog:
+            progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=file_count,
+                    style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
+            progress.Show()
+        
+        completed = 0
+        for D in sorted(dirs):
+            for F in sorted(dirs[D]):
+                if progress and progress.WasCancelled():
+                    progress.Destroy()
+                    return False
+                
+                if progress:
+                    wx.Yield()
+                    progress.Update(completed, GT(u'Adding file {}').format(F))
+                
+                self.lst_files.AddFile(F, D, target)
+                
+                completed += 1
+        
+        if progress:
+            wx.Yield()
+            progress.Update(completed)
+            
+            progress.Destroy()
+        
+        return True
+    
+    
     ## TODO: Doxygen
     def CheckDest(self, event=None):
         if TextIsEmpty(self.ti_target.GetValue()):
@@ -261,6 +310,129 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def IsBuildExportable(self):
         return not self.lst_files.IsEmpty()
+    
+    
+    ## Reads files & directories & preps for loading into list
+    #  
+    #  \param paths_list
+    #    \b \e tuple|list : List of string values of files & directories to be added
+    def LoadPaths(self, paths_list):
+        if not isinstance(paths_list, (tuple, list)):
+            return False
+        
+        file_list = []
+        dir_list = {}
+        
+        prep = ProgressDialog(GetTopWindow(), GT(u'Processing Files'), GT(u'Scanning files ...'),
+                style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+        
+        # Only update the gauge every N files (hack until I figure out time)
+        update_interval = 900
+        count = 0
+        
+        prep.Show()
+        
+        try:
+            for P in paths_list:
+                if prep.WasCancelled():
+                    prep.Destroy()
+                    return False
+                
+                count += 1
+                if count >= update_interval:
+                    wx.Yield()
+                    prep.Pulse()
+                    count = 0
+                
+                if os.path.isfile(P):
+                    file_list.append(P)
+                    continue
+                
+                if os.path.isdir(P):
+                    if P not in dir_list:
+                        dir_list[P] = []
+                    
+                    for ROOT, DIRS, FILES in os.walk(P):
+                        if prep.WasCancelled():
+                            prep.Destroy()
+                            return False
+                        
+                        wx.Yield()
+                        prep.SetMessage(GT(u'Scanning directory {} ...').format(ROOT))
+                        
+                        count += 1
+                        if count >= update_interval:
+                            wx.Yield()
+                            prep.Pulse()
+                            count = 0
+                        
+                        for F in FILES:
+                            if prep.WasCancelled():
+                                prep.Destroy()
+                                return False
+                            
+                            count += 1
+                            if count >= update_interval:
+                                wx.Yield()
+                                prep.Pulse()
+                                count = 0
+                            
+                            ROOT = ROOT.replace(P, u'').strip(u'/')
+                            F = u'{}/{}'.format(ROOT, F)
+                            
+                            if F not in dir_list[P]:
+                                dir_list[P].append(F)
+        
+        except:
+            prep.Destroy()
+            
+            ShowErrorDialog(GT(u'Could not retrieve file list'), traceback.format_exc())
+            
+            return False
+        
+        wx.Yield()
+        prep.Pulse(GT(u'Counting Files'))
+        
+        file_count = len(file_list)
+        
+        count = 0
+        for D in dir_list:
+            for F in dir_list[D]:
+                file_count += 1
+                
+                count += 1
+                if count >= update_interval:
+                    wx.Yield()
+                    prep.Pulse()
+                    count = 0
+        
+        prep.Destroy()
+        
+        # Add files to directory list
+        for F in file_list:
+            f_name = os.path.basename(F)
+            f_dir = os.path.dirname(F)
+            
+            if f_dir not in dir_list:
+                dir_list[f_dir] = []
+            
+            dir_list[f_dir].append(f_name)
+        
+        # Set the maximum file count to process without showing progress dialog
+        efficiency_threshold = 250
+        
+        # Set the maximum file count to process without showing warning dialog
+        warning_threshhold = 1000
+        
+        if file_count > warning_threshhold:
+            count_warnmsg = GT(u'Importing {} files'.format(file_count))
+            count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
+            count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
+            
+            if not ConfirmationDialog(GetTopWindow(), text=count_warnmsg).Confirmed():
+                return False
+        
+        return self.AddPaths(dir_list, file_count, show_dialog=file_count >= efficiency_threshold)
     
     
     ## Add a selected path to the list of files
@@ -369,18 +541,7 @@ class Panel(wx.ScrolledWindow):
     #  
     #  FIXME: Need method AddDirectory or AddFileList
     def OnDropFiles(self, file_list):
-        target_dir = self.GetTarget()
-        
-        for fi in file_list:
-            if os.path.isdir(fi):
-                # FIXME: Should use progress dialog & relative path
-                for ROOT, DIRS, FILES in os.walk(fi):
-                    for F in FILES:
-                        self.lst_files.AddFile(F, ROOT, target_dir)
-                
-                continue
-            
-            self.lst_files.AddFile(os.path.basename(fi), os.path.dirname(fi), target_dir)
+        self.LoadPaths(file_list)
     
     
     ## TODO: Doxygen
