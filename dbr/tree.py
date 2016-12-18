@@ -8,61 +8,252 @@
 
 import os, wx
 
-from dbr.language   import GT
-from dbr.panel      import BorderedPanel
-from globals.paths  import PATH_home
+from dbr.language       import GT
+from globals.debugging  import DebugMessage
+from globals.debugging  import lineno
+from globals.paths      import PATH_home
+from wxcustom.imagelist import sm_DirectoryImageList as ImageList
 
 
-## Customized directory tree control
-class DirectoryTree(wx.GenericDirCtrl):
-    def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, style=wx.DIRCTRL_3D_INTERNAL|wx.SUNKEN_BORDER,
-            f_filter=wx.EmptyString, defaultFilter=0, name=wx.TreeCtrlNameStr):
-        
-        FORCED_STYLE = wx.DIRCTRL_EDIT_LABELS
-        
-        # Versions of wx older than 3.0 do not support multi-select
-        if wx.MAJOR_VERSION > 2:
-            FORCED_STYLE = FORCED_STYLE|wx.DIRCTRL_MULTIPLE
-        
-        wx.GenericDirCtrl.__init__(self, parent, w_id, path, pos, size,
-                style=style|FORCED_STYLE, filter=f_filter,
-                defaultFilter=defaultFilter, name=name)
+## A wxcustom tree item
+#  
+#  \param item
+#    The \b \e wx.TreeItemId to be associated with this instance
+#  \param path
+#    \b \e string : The filename path to be associated with this instance
+class PathItem:
+    def __init__(self, item, path, label=None):
+        self.Item = item
+        self.Path = path
+        self.Label = label
+        self.Children = []
     
     
-    ## Retrieve all selected paths
+    ## TODO: Doxygen
+    def AddChild(self, item):
+        self.Children.append(item)
+    
+    
+    ## TODO: Doxygen
+    def ContainsInstance(self, item):
+        return self.Item == item
+    
+    ## TODO: Doxygen
+    def GetBaseItem(self):
+        return self.Item
+    
+    
+    ## TODO: Doxygen
+    def GetChildren(self):
+        return self.Children
+    
+    
+    ## TODO: Doxygen
+    def GetLabel(self):
+        return self.Label
+    
+    
+    ## TODO: Doxygen
+    def GetPath(self):
+        return self.Path
+    
+    
+    ## TODO: Doxygen
     #  
-    #  The original method doesn't seem to be working for wxPython 3.0.
-    #  Does not exist for older versions.
-    #  
-    #  \override wx.GenericDirCtrl.GetFilePaths
-    def GetFilePaths(self):
-        tree = self.GetTreeCtrl()
-        selected_items = tree.GetSelections()
+    #  FIXME: Should return boolean
+    def HasChildren(self):
+        return self.Children
+    
+    
+    ## TODO: Doxygen
+    def IsDir(self):
+        return os.path.isdir(self.Path)
+    
+    
+    ## TODO: Doxygen
+    def IsFile(self):
+        return os.path.isfile(self.Path)
+    
+    
+    ## TODO: Doxygen
+    def RemoveChildren(self):
+        self.Children = []
         
-        path_list = []
+        return not self.Children
+    
+    
+    ## TODO: Doxygen
+    def SetChildren(self, items):
+        self.Children = items
         
-        for I in selected_items:
-            tree.SelectItem(I)
-            path_list.append(self.GetPath())
-        
-        return tuple(path_list)
+        return self.Children == items
+    
+    
+    ## TODO: Doxygen
+    def SetItem(self, item, path):
+        self.Item = item
+        self.Item.Path = path
 
 
-## TODO: Doxygen
-class DirectoryTreeCustom(wx.TreeCtrl):
-    def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE, validator=wx.DefaultValidator,
-            name=wx.TreeCtrlNameStr):
+## A customized directory tree that is compatible with older wx versions
+#  
+#  TODO: Add method GetFilePaths
+#  TODO: Change icon when directory expanded/collapsed
+#  TODO: Set current path when item selected
+class DirectoryTree(wx.TreeCtrl):
+    def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, exclude_pattern=[u'.*',],
+            pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE,
+            validator=wx.DefaultValidator, name=wx.TreeCtrlNameStr):
         
         wx.TreeCtrl.__init__(self, parent, w_id, pos, size,
-                style=style|wx.TR_HAS_BUTTONS|wx.TR_MULTIPLE, validator=validator, name=name)
+                style=style|wx.TR_HAS_BUTTONS|wx.TR_MULTIPLE|wx.BORDER_NONE,
+                validator=validator, name=name)
+        
+        self.AssignImageList()
+        
+        # FIXME: Use regular expressions
+        #self.exclude_pattern = list(exclude_pattern)
+        self.exclude_pattern = [u'.']
         
         self.current_path = path
         
-        self.path_list = {}
+        # NOTE: Use individual items children???
+        self.item_list = []
         
-        self.AddRoot(GT(u'Home directory'))
+        self.root_item = self.AddRoot(GT(u'Home directory'), path,
+                ImageList.GetImageIndex(u'folder'))
+        
+        # *** Event handlers *** #
+        
+        self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
+        self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnCollapse)
+        
+        # *** Post-layout/event actions *** #
+        
+        self.InitDirectoryLayout()
+    
+    
+    ## Override inherited method to return wxcustom PathItem instances
+    #  
+    #  \override wx.TreeCtrl.AddRoot
+    #  \param label
+    #    \b \e string : Text shown on item
+    #  \param path
+    #    \b \e string : Path stored with item
+    #  \param image
+    #    \b \e ???
+    #  \param selImage
+    #    \b \e ???
+    #  \param data
+    #    \b \e
+    def AddRoot(self, label, path, image=-1, selImage=-1, data=None):
+        root_item = PathItem(wx.TreeCtrl.AddRoot(self, label, image, selImage, data), path, label)
+        
+        self.SetItemHasChildren(root_item)
+        
+        self.item_list.append(root_item)
+        
+        return root_item
+    
+    
+    ## Override inherited method to return wxcustom PathItem instances
+    def AppendItem(self, parent, label, path, image=-1, selImage=-1, data=None):
+        base_item = wx.TreeCtrl.AppendItem(self, parent.GetBaseItem(), label, image, selImage, data)
+        tree_item = PathItem(base_item, path, label)
+        
+        if os.path.isdir(path):
+            # ???: Does this cause PathItem instance to be overwritten with wx.TreeItemId ...
+            #      or other errors?
+            self.SetItemHasChildren(tree_item)
+        
+        self.item_list.append(tree_item)
+        
+        return tree_item
+    
+    
+    ## Make sure image list cannot be changed
+    def AssignImageList(self):
+        return wx.TreeCtrl.AssignImageList(self, ImageList)
+    
+    
+    ## Override inherited method to avoid TypeError
+    def Collapse(self, item):
+        return wx.TreeCtrl.Collapse(self, item.GetBaseItem())
+    
+    
+    ## Override inherited method to delete item & base item
+    def Delete(self, item):
+        deleted = wx.TreeCtrl.Delete(self, item.GetBaseItem())
+        
+        item_index = 0
+        for I in self.item_list:
+            if I == item:
+                break
+            
+            item_index += 1
+        
+        self.item_list.pop(item_index)
+        del item
+        
+        return deleted
+    
+    
+    ## Override inherited method so children are filled out
+    #  
+    #  NOTE: Only items representing directories should expand
+    #  FIXME: Change icon when expanded/collapsed
+    def Expand(self, item):
+        if item.IsFile():
+            return False
+        
+        dirs = []
+        files = []
+        
+        if not self.ItemHasChildren(item):
+            # FIXME: Should use regular expressions for filter
+            item_path = item.GetPath()
+            for LABEL in os.listdir(item_path):
+                # Ignore filtered items
+                filtered = False
+                for FILTER in self.exclude_pattern:
+                    if LABEL.startswith(FILTER):
+                        filtered = True
+                        break
+                
+                if not filtered:
+                    child_path = u'{}/{}'.format(item_path, LABEL)
+                    
+                    if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
+                        dirs.append((LABEL, child_path,))
+                    
+                    elif os.path.isfile(child_path) and os.access(child_path, os.R_OK):
+                        files.append((LABEL, child_path,))
+            
+            # Sort directories first
+            for DIR, PATH in sorted(dirs):
+                item.AddChild(self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder')))
+            
+            for FILE, PATH in sorted(files):
+                item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))
+        
+        return wx.TreeCtrl.Expand(self, item.GetBaseItem())
+    
+    
+    ## TODO: Doxygen
+    def GetAllItems(self):
+        return tuple(self.item_list)
+    
+    
+    ## Override to ensure return value of DirectoryImageList instance
+    def GetImageList(self):
+        #return wx.TreeCtrl.GetImageList(self)
+        
+        return ImageList
+    
+    
+    ## Get the path of an item
+    def GetItemPath(self, item):
+        return item.GetPath()
     
     
     ## TODO: Doxygen
@@ -70,132 +261,106 @@ class DirectoryTreeCustom(wx.TreeCtrl):
         return self.current_path
     
     
+    ## Override inherited method to retrieve wxcustom root item with 'Path' attribute
+    def GetRootItem(self):
+        return self.root_item
+    
+    
+    ## Retrieve paths of all selected tree items
+    #  
+    #  TODO: Define method
+    def GetSelectedPaths(self):
+        selected = self.GetSelections()
+        
+        DebugMessage(u'Getting file paths ...', __name__, lineno())
+        for S in selected:
+            print(u'  {} ({})'.format(S.GetPath(), S))
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  TODO: Define
+    def GetSelections(self):
+        selected = wx.TreeCtrl.GetSelections(self)
+        
+        DebugMessage(u'Getting selections {} ...'.format(type(selected)), __name__, lineno())
+        for INDEX in reversed(range(len(selected))):
+            item = selected[INDEX]
+            '''
+            for ITEM in self.items:
+                print(u'\n  Item instance:\t\t{}'.format(item))
+                print(u'    Replacement base instance:\t{}'.format(ITEM.GetBaseItem()))
+                print(u'    Replacement item label: {}'.format(ITEM.GetLabel()))
+                if ITEM.GetBaseItem() == item:
+                    item = ITEM
+                    break
+            '''
+        
+        self.GetAllItems()
+    
+    
     ## TODO: Doxygen
     def InitDirectoryLayout(self):
         root_item = self.GetRootItem()
         
-        self.SetDirectoryLayout(root_item)
+        # Don't call self.Expand directly
+        self.OnExpand(item=root_item)
+    
+    
+    ## Override inherited method to extract base item
+    def ItemHasChildren(self, item):
+        # NOTE: HasChildren method returns a list ...
+        #       Should return a boolean
+        return item.HasChildren()
     
     
     ## TODO: Doxygen
-    def SetDirectoryLayout(self, parent, directory=None):
-        if not directory:
-            self.SetDirectoryLayout(parent, PATH_home)
-            return
-        
-        dirs = []
-        files = []
-        
-        for I in os.listdir(directory):
-            # Ignore hidden files
-            if not I.startswith(u'.'):
-                path = u'{}/{}'.format(directory, I)
-                
-                if os.path.isdir(path) and os.access(path, os.R_OK):
-                    dirs.append(I)
-                
-                elif os.path.isfile(path) and os.access(path, os.R_OK):
-                    files.append(I)
-        
-        for D in sorted(dirs):
-            tree_item = self.AppendItem(parent, D)
-            self.path_list[tree_item] = D
-        
-        for F in sorted(files):
-            tree_item = self.AppendItem(parent, F)
-            self.path_list[tree_item] = F
-
-
-## A directgory tree for legacy versions of wx
-#  
-#  TODO: Work-in-progress
-class DirectoryTreePanel(BorderedPanel):
-    def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.TreeCtrlNameStr):
-        BorderedPanel.__init__(self, parent, w_id, pos, size, name=name)
-        
-        tree_ctrl = wx.TreeCtrl(self, style=wx.TR_EDIT_LABELS|wx.TR_MULTIPLE|wx.TR_HAS_BUTTONS)
-        
-        tree_ctrl.AddRoot(GT(u'Home directory'))
-        
-        self.InitDirectoryLayout()
-        
-        # Expand to set initial width
-        tree_ctrl.ExpandAll()
-        
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.Add(tree_ctrl, 1, wx.EXPAND)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        self.Layout()
-        
-        tree_ctrl.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpandItem)
-    
-    
-    ## TODO: Doxygen
-    def SetDirectoryLayout(self, parent, directory=None):
-        tree_ctrl = self.GetTreeCtrl()
-        
-        if not directory:
-            self.SetDirectoryLayout(parent, PATH_home)
-            return
-        
-        dirs = []
-        files = []
-        
-        for I in os.listdir(directory):
-            if not I.startswith(u'.'):
-                path = u'{}/{}'.format(directory, I)
-                
-                if os.path.isdir(path) and os.access(path, os.R_OK):
-                    dirs.append(I)
-                
-                elif os.path.isfile(path) and os.access(path, os.R_OK):
-                    files.append(I)
-        
-        for D in sorted(dirs):
-            tree_ctrl.AppendItem(parent, D)
-        
-        for F in sorted(files):
-            tree_ctrl.AppendItem(parent, F)
-    
-    
-    ## Retrieves wx.TreeCtrl instance
-    def GetTreeCtrl(self):
-        for C in self.GetChildren():
-            if isinstance(C, wx.TreeCtrl):
-                return C
-    
-    
-    ## TODO: Doxygen
-    def InitDirectoryLayout(self):
-        tree_ctrl = self.GetTreeCtrl()
-        root_item = tree_ctrl.GetRootItem()
-        
-        self.SetDirectoryLayout(root_item)
-    
-    
-    ## TODO: Doxygen
-    def OnExpandItem(self, event=None):
+    def OnCollapse(self, event=None, item=None):
         if event:
-            tree_ctrl = event.GetEventObject()
-            tree_item = event.GetItem()
+            item = event.GetItem()
             
-            print(u'DEBUG: Tree item type: {}'.format(type(tree_item)))
+            event.Veto()
             
-            if tree_item == tree_ctrl.GetRootItem():
-                child = tree_ctrl.GetFirstChild(tree_item)
-                while child:
-                    print(u'DEBUG: Child type: {}'.format(type(child)))
-                    for C in child:
-                        print(u'DEBUG: Tuple item type: {}'.format(type(C)))
-                    
-                    if child == tree_ctrl.GetLastChild(child[0]):
-                        break
-                    
-                    child = tree_ctrl.GetNextSibling(tree_item, child)
+            for ITEM in self.GetAllItems():
+                if ITEM.ContainsInstance(item):
+                    item = ITEM
+                    break
             
-            label = event.GetLabel()
-            print(u'DEBUG: Event object: {}'.format(type(tree_ctrl)))
-            print(u'DEBUG: Item label: {}'.format(label))
+            if not isinstance(item, PathItem):
+                return False
+        
+        if item == None:
+            return False
+        
+        return self.Collapse(item)
+    
+    
+    ## TODO: Doxygen
+    def OnExpand(self, event=None, item=None):
+        if event:
+            item = event.GetItem()
+            
+            event.Veto()
+            
+            for ITEM in self.GetAllItems():
+                if ITEM.ContainsInstance(item):
+                    item = ITEM
+                    break
+            
+            if not isinstance(item, PathItem):
+                return False
+        
+        if item == None:
+            return False
+        
+        return self.Expand(item)
+    
+    
+    ## Make sure image list cannot be changed
+    def SetImageList(self):
+        return wx.TreeCtrl.SetImageList(self, ImageList)
+    
+    
+    ## TODO: Doxygen
+    def SetItemHasChildren(self, item, has_children=True):
+        return wx.TreeCtrl.SetItemHasChildren(self, item.GetBaseItem(), has_children)
