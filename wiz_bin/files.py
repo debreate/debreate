@@ -51,7 +51,7 @@ class Panel(wx.ScrolledWindow):
         self.mnu_tree.AppendSeparator()
         self.mnu_tree.AppendItem(mitm_refresh)
         
-        self.tree_directories = DirectoryTree(self, size=(300,20))
+        self.tree_dirs = DirectoryTree(self, size=(300,20))
         
         # ----- Target path
         pnl_target = BorderedPanel(self)
@@ -98,7 +98,7 @@ class Panel(wx.ScrolledWindow):
         
         lyt_left = wx.BoxSizer(wx.VERTICAL)
         lyt_left.AddSpacer(10)
-        lyt_left.Add(self.tree_directories, -1)
+        lyt_left.Add(self.tree_dirs, -1)
         
         lyt_target = wx.GridSizer(3, 2, 5, 5)
         
@@ -147,7 +147,7 @@ class Panel(wx.ScrolledWindow):
             wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
         
         # Context menu events for directory tree
-        wx.EVT_CONTEXT_MENU(self.tree_directories, self.OnRightClickTree)
+        wx.EVT_CONTEXT_MENU(self.tree_dirs, self.OnRightClickTree)
         wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefreshTree)
         
@@ -451,7 +451,7 @@ class Panel(wx.ScrolledWindow):
     #  
     #  FIXME: How to enable multi-select in wx 2.8
     def OnImportFromTree(self, event=None):
-        self.LoadPaths(self.tree_directories.GetSelectedPaths())
+        self.LoadPaths(self.tree_dirs.GetSelectedPaths())
     
     
     ## TODO: Doxygen
@@ -461,10 +461,10 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnRefreshTree(self, event=None):
-        path = self.tree_directories.GetPath()
+        path = self.tree_dirs.GetPath()
         
-        self.tree_directories.ReCreateTree()
-        self.tree_directories.SetPath(path)
+        self.tree_dirs.ReCreateTree()
+        self.tree_dirs.SetPath(path)
     
     
     ## TODO: Doxygen
@@ -485,7 +485,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnRightClickTree(self, event=None):
-        self.tree_directories.PopupMenu(self.mnu_tree)
+        self.tree_dirs.PopupMenu(self.mnu_tree)
     
     
     ## Event handler that disables the custom destination if the corresponding radio button isn't selected
