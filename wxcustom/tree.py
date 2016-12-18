@@ -9,8 +9,7 @@
 import os, wx
 
 from dbr.language       import GT
-from globals.debugging  import DebugMessage
-from globals.debugging  import lineno
+from dbr.panel          import BorderedPanel
 from globals.paths      import PATH_home
 from wxcustom.imagelist import sm_DirectoryImageList as ImageList
 
@@ -360,3 +359,29 @@ class DirectoryTree(wx.TreeCtrl):
     ## TODO: Doxygen
     def SetItemHasChildren(self, item, has_children=True):
         return wx.TreeCtrl.SetItemHasChildren(self, item.GetBaseItem(), has_children)
+
+
+## Directory tree with a nicer border
+class DirectoryTreePanel(BorderedPanel):
+    def __init__(self, parent, w_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            style=wx.TAB_TRAVERSAL, name=u'DirTreePnl'):
+        BorderedPanel.__init__(self, parent, w_id, pos, size, style, name)
+        
+        self.DirTree = DirectoryTree(self)
+        
+        # Give easy access of instance to parent
+        parent.DirTree = self.DirTree
+        
+        # *** Layout *** #
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(self.DirTree, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
+    
+    
+    ## Retrieve DirectoryTree instance so methods can be called from within other objects
+    def GetDirectoryTree(self):
+        return self.DirTree
