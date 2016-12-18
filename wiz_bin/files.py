@@ -23,16 +23,15 @@ from dbr.language           import GT
 from dbr.listinput          import FileList
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
-from dbr.panel              import PANEL_BORDER
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
-from dbr.tree               import DirectoryTree
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from wxcustom.tree          import DirectoryTree
 
 
 ## Class defining controls for the "Paths" page
@@ -52,8 +51,7 @@ class Panel(wx.ScrolledWindow):
         self.mnu_tree.AppendSeparator()
         self.mnu_tree.AppendItem(mitm_refresh)
         
-        self.tree_directories = DirectoryTree(self, size=(300,20),
-                style=PANEL_BORDER)
+        self.tree_directories = DirectoryTree(self, size=(300,20))
         
         # ----- Target path
         pnl_target = BorderedPanel(self)
@@ -309,7 +307,7 @@ class Panel(wx.ScrolledWindow):
     #  \param paths_list
     #    \b \e tuple|list : List of string values of files & directories to be added
     def LoadPaths(self, paths_list):
-        if not isinstance(paths_list, (tuple, list)):
+        if not paths_list or not isinstance(paths_list, (tuple, list)):
             return False
         
         file_list = []
@@ -453,7 +451,7 @@ class Panel(wx.ScrolledWindow):
     #  
     #  FIXME: How to enable multi-select in wx 2.8
     def OnImportFromTree(self, event=None):
-        self.LoadPaths(self.tree_directories.GetFilePaths())
+        self.LoadPaths(self.tree_directories.GetSelectedPaths())
     
     
     ## TODO: Doxygen
