@@ -31,7 +31,7 @@ from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
-from wxcustom.tree          import DirectoryTree
+from wxcustom.tree          import DirectoryTreePanel
 
 
 ## Class defining controls for the "Paths" page
@@ -51,7 +51,7 @@ class Panel(wx.ScrolledWindow):
         self.mnu_tree.AppendSeparator()
         self.mnu_tree.AppendItem(mitm_refresh)
         
-        self.tree_dirs = DirectoryTree(self, size=(300,20))
+        self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
         
         # ----- Target path
         pnl_target = BorderedPanel(self)
@@ -287,6 +287,13 @@ class Panel(wx.ScrolledWindow):
             event.Skip()
     
     
+    ## Retrieve DirectoryTreePanel instance
+    #  
+    #  Used in dbr.listinput.FileList for referencing size
+    def GetDirTreePanel(self):
+        return self.tree_dirs
+    
+    
     ## Retrieves the target output directory
     def GetTarget(self):
         if FieldEnabled(self.ti_target):
@@ -451,7 +458,7 @@ class Panel(wx.ScrolledWindow):
     #  
     #  FIXME: How to enable multi-select in wx 2.8
     def OnImportFromTree(self, event=None):
-        self.LoadPaths(self.tree_dirs.GetSelectedPaths())
+        self.LoadPaths(self.DirTree.GetSelectedPaths())
     
     
     ## TODO: Doxygen
@@ -461,10 +468,10 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnRefreshTree(self, event=None):
-        path = self.tree_dirs.GetPath()
+        path = self.DirTree.GetPath()
         
-        self.tree_dirs.ReCreateTree()
-        self.tree_dirs.SetPath(path)
+        self.DirTree.ReCreateTree()
+        self.DirTree.SetPath(path)
     
     
     ## TODO: Doxygen
@@ -485,7 +492,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnRightClickTree(self, event=None):
-        self.tree_dirs.PopupMenu(self.mnu_tree)
+        self.DirTree.PopupMenu(self.mnu_tree)
     
     
     ## Event handler that disables the custom destination if the corresponding radio button isn't selected
