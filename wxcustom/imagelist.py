@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package custom.imagelist
+## \package wxcustom.imagelist
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -24,19 +24,36 @@ class DirectoryImageList(wx.ImageList):
             (wx.ART_EXECUTABLE_FILE, u'executable file'),
             ]
         
+        aliases = (
+            (u'normal file', (u'file',)),
+            )
+        
         self.Images = {}
         
         for I in range(len(directory_images)):
             # Keys are set by index value
-            self.Images[I] = directory_images[I][1]
+            self.Images[directory_images[I][1]] = I
+        
+        for ORIG, ALIST in aliases:
+            for ALIAS in ALIST:
+                self.Images[ALIAS] = self.Images[ORIG]
         
         for IMAGE in directory_images:
             IMAGE = IMAGE[0]
             
             self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
+    
+    
+    ## Retrieves image index for setting in dbr.tree.DirectoryTree
+    #  
+    #  \param description
+    #    \b \e String name/description for image
+    def GetImageIndex(self, description):
+        if description in self.Images:
+            return self.Images[description]
 
 
 ## Image list used for dbr.tree.DirectoryTree
 #  
-#  NOTE: dbr.tree module will be moving to custom package
+#  NOTE: dbr.tree module will be moving to wxcustom package
 sm_DirectoryImageList = DirectoryImageList(16, 16)
