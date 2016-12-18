@@ -4,6 +4,10 @@ Must be fixed before release:
 - 'Others' field not being completely filled out in menu/launcher page when project/launcher imported
 - Progress dialogs are not refreshing on Files page
 - Multi-selecting files/folders does not import all of them
+- DirectoryTree class cannot be refreshed/recreated
+  - Options:
+    - Add refresh method
+    - Remove 'Refresh' option from Files page
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
