@@ -57,6 +57,20 @@ def DebugMessage(message, script=None, line=None, newline=True):
     HelperMessage(message, u'DEBUG', script, line, newline)
 
 
+## Prints a FIXME message to the terminal
+#  
+#  \param message
+#    \b \e string : Text do be output
+#  \param script
+#    \b \e string : Name of script from where function is being called
+#  \param line
+#    \b \e int : Line number of script where function is being called
+#  \param newline
+#    \b \e bool : If True, prepends an empty newline to printed message
+def FixmeMessage(message, script=None, line=None, newline=True):
+    HelperMessage(message, u'FIXME', script, line, newline)
+
+
 ## Prints a TODO message to the terminal
 #  
 #  \param message
