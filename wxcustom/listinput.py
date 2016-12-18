@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.listinput
+## \package wxcustom.listinput
 
 # MIT licensing
 # See: docs/LICENSE.txt

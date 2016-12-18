@@ -18,7 +18,7 @@ from dbr.buttons            import ButtonSave64
 from dbr.dialogs            import ConfirmationDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
-from dbr.listinput          import ListCtrlPanel
+from wxcustom.listinput     import ListCtrlPanel
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel

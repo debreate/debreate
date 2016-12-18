@@ -17,7 +17,7 @@ from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
 from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
-from dbr.listinput          import ListCtrlPanel
+from wxcustom.listinput     import ListCtrlPanel
 from dbr.log                import Logger
 from dbr.textinput          import TextAreaPanel
 from globals.application    import APP_name
