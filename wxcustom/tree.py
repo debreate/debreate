@@ -100,6 +100,7 @@ class PathItem:
 #  TODO: Add method GetFilePaths
 #  TODO: Change icon when directory expanded/collapsed
 #  TODO: Set current path when item selected
+#  TODO: Add option for refreshing tree (ReCreateTree?)
 class DirectoryTree(wx.TreeCtrl):
     def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, exclude_pattern=[u'.*',],
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE,
@@ -271,32 +272,27 @@ class DirectoryTree(wx.TreeCtrl):
     #  TODO: Define method
     def GetSelectedPaths(self):
         selected = self.GetSelections()
+        paths = []
         
-        DebugMessage(u'Getting file paths ...', __name__, lineno())
         for S in selected:
-            print(u'  {} ({})'.format(S.GetPath(), S))
+            paths.append(S.GetPath())
+        
+        return tuple(paths)
     
     
     ## TODO: Doxygen
     #  
     #  TODO: Define
     def GetSelections(self):
-        selected = wx.TreeCtrl.GetSelections(self)
+        base_selected = wx.TreeCtrl.GetSelections(self)
+        selected = []
         
-        DebugMessage(u'Getting selections {} ...'.format(type(selected)), __name__, lineno())
-        for INDEX in reversed(range(len(selected))):
-            item = selected[INDEX]
-            '''
-            for ITEM in self.items:
-                print(u'\n  Item instance:\t\t{}'.format(item))
-                print(u'    Replacement base instance:\t{}'.format(ITEM.GetBaseItem()))
-                print(u'    Replacement item label: {}'.format(ITEM.GetLabel()))
-                if ITEM.GetBaseItem() == item:
-                    item = ITEM
-                    break
-            '''
+        for BASE in base_selected:
+            for ITEM in self.item_list:
+                if ITEM.GetBaseItem() == BASE:
+                    selected.append(ITEM)
         
-        self.GetAllItems()
+        return tuple(selected)
     
     
     ## TODO: Doxygen
