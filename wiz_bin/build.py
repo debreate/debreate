@@ -256,14 +256,22 @@ class Panel(wx.ScrolledWindow):
                     
                     # Copy files
                     copy_path = u'{}/{}'.format(new_dir, os.path.split(FILE)[1])
-                    shutil.copy(FILE, copy_path)
                     
-                    # Set FILE permissions
-                    if exe:
+                    if os.path.isdir(FILE):
+                        Logger.Debug(__name__, u'Adding directory to stage: {}'.format(FILE))
+                        shutil.copytree(FILE, copy_path)
+                        
                         os.chmod(copy_path, 0755)
                     
                     else:
-                        os.chmod(copy_path, 0644)
+                        shutil.copy(FILE, copy_path)
+                        
+                        # Set FILE permissions
+                        if exe:
+                            os.chmod(copy_path, 0755)
+                        
+                        else:
+                            os.chmod(copy_path, 0644)
                     
                     # Individual files
                     progress += 1
