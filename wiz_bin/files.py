@@ -51,6 +51,12 @@ class Panel(wx.ScrolledWindow):
         self.mnu_tree.AppendSeparator()
         self.mnu_tree.AppendItem(mitm_refresh)
         
+        # *** Left Panel *** #
+        
+        self.chk_individuals = wx.CheckBox(self, label=GT(u'List files individually'),
+                name=u'individually')
+        self.chk_individuals.default = False
+        
         self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
         
         # ----- Target path
@@ -98,6 +104,7 @@ class Panel(wx.ScrolledWindow):
         
         lyt_left = wx.BoxSizer(wx.VERTICAL)
         lyt_left.AddSpacer(10)
+        lyt_left.Add(self.chk_individuals, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
         lyt_left.Add(self.tree_dirs, -1)
         
         lyt_target = wx.GridSizer(3, 2, 5, 5)
@@ -341,7 +348,7 @@ class Panel(wx.ScrolledWindow):
                     prep.Pulse()
                     count = 0
                 
-                if os.path.isfile(P):
+                if not self.chk_individuals.GetValue() or os.path.isfile(P):
                     file_list.append(P)
                     continue
                 
@@ -510,6 +517,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def ResetAllFields(self):
+        self.chk_individuals.SetValue(self.chk_individuals.default)
         self.rb_custom.SetValue(self.rb_custom.default)
         self.OnSetDestination()
         self.ti_target.SetValue(self.ti_target.default)

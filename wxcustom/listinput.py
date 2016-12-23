@@ -373,6 +373,7 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
         
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
         self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
+        self.FOLDER_TEXT_COLOR = wx.BLUE
         
         self.filename_col = 0
         self.target_col = 1
@@ -431,14 +432,18 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
         
         self.sources_list.insert(list_index, source_dir)
         
-        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
-            self.SetItemTextColour(list_index, wx.RED)
+        if os.path.isdir(u'{}/{}'.format(source_dir, filename)):
+            self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
         
-        if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
-            self.SetItemBackgroundColour(list_index, COLOR_warn)
+        else:
+            if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
+                self.SetItemTextColour(list_index, wx.RED)
             
-            # File was added but does not exist on filesystem
-            return False
+            if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
+                self.SetItemBackgroundColour(list_index, COLOR_warn)
+                
+                # File was added but does not exist on filesystem
+                return False
         
         return True
     
@@ -585,16 +590,20 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
             
             absolute_filename = u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])
             
-            if not os.path.isfile(absolute_filename):
-                item_color = COLOR_warn
-                dirty = True
+            if os.path.isdir(absolute_filename):
+                self.SetItemTextColour(row, self.FOLDER_TEXT_COLOR)
             
-            self.SetItemBackgroundColour(row, item_color)
-            
-            if os.access(absolute_filename, os.X_OK):
-                text_color = wx.RED
-            
-            self.SetItemTextColour(row, text_color)
+            else:
+                if not os.path.isfile(absolute_filename):
+                    item_color = COLOR_warn
+                    dirty = True
+                
+                self.SetItemBackgroundColour(row, item_color)
+                
+                if os.access(absolute_filename, os.X_OK):
+                    text_color = wx.RED
+                
+                self.SetItemTextColour(row, text_color)
         
         return dirty
     
