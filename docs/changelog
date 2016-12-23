@@ -1,4 +1,6 @@
 0.7.13
+- Fixes:
+  - Don't strip parent directories from filenames
 - Full license templates can be generated
 - License templates shipped with app:
   - BSD-2-Clause
