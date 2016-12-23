@@ -7,6 +7,8 @@
 - Fix changelog to put asterix before each entry
 - Set maximum width for automatic progress dialog resizing
 - Preserve root directory when adding folder in Files page
+- Don't show all files within directories when added
+  - Display directories in blue
 
 Non-priority:
 - Changelog page: Add distribution automatically (drop-down box)
