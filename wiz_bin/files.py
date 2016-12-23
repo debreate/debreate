@@ -353,8 +353,10 @@ class Panel(wx.ScrolledWindow):
                     continue
                 
                 if os.path.isdir(P):
-                    if P not in dir_list:
-                        dir_list[P] = []
+                    parent_dir = os.path.dirname(P)
+                    
+                    if parent_dir not in dir_list:
+                        dir_list[parent_dir] = []
                     
                     for ROOT, DIRS, FILES in os.walk(P):
                         if prep.WasCancelled():
@@ -381,11 +383,12 @@ class Panel(wx.ScrolledWindow):
                                 prep.Pulse()
                                 count = 0
                             
-                            ROOT = ROOT.replace(P, u'').strip(u'/')
-                            F = u'{}/{}'.format(ROOT, F)
+                            # os.path.dirname preserves top level directory
+                            ROOT = ROOT.replace(os.path.dirname(P), u'').strip(u'/')
+                            F = u'{}/{}'.format(ROOT, F).strip(u'/')
                             
-                            if F not in dir_list[P]:
-                                dir_list[P].append(F)
+                            if F not in dir_list[parent_dir]:
+                                dir_list[parent_dir].append(F)
         
         except:
             prep.Destroy()

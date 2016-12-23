@@ -384,7 +384,7 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
         # FIXME: Way to do this dynamically?
         col_width = 150  # self.GetSize()[0] / 4
         
-        self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
+        self.InsertColumn(self.filename_col, GT(u'File / Folder'), width=col_width)
         # Last column is automatcially stretched to fill remaining size
         self.InsertColumn(self.target_col, GT(u'Staged Target'))
         
