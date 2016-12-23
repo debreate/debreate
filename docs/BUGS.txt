@@ -8,7 +8,6 @@ Must be fixed before release:
   - Options:
     - Add refresh method
     - Remove 'Refresh' option from Files page
-- Parent directories are stripped from filename in build
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction

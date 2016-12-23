@@ -240,38 +240,41 @@ class Panel(wx.ScrolledWindow):
                 
                 files_data = task_list[u'files']
                 for FILE in files_data:
-                    # Create new directories
-                    new_dir = u'{}{}'.format(stage_dir, FILE.split(u' -> ')[2])
-                    if not os.path.isdir(new_dir):
-                        os.makedirs(new_dir)
+                    file_defs = FILE.split(u' -> ')
                     
-                    # Get FILE path
-                    FILE = FILE.split(u' -> ')[0]
+                    source_file = file_defs[0]
+                    target_file = u'{}{}/{}'.format(stage_dir, file_defs[2], file_defs[1])
+                    target_dir = os.path.dirname(target_file)
+                    
+                    if not os.path.isdir(target_dir):
+                        os.makedirs(target_dir)
                     
                     # Remove asteriks from exectuables
                     exe = False
-                    if FILE[-1] == u'*':
+                    if source_file[-1] == u'*':
+                        Logger.Debug(__name__, u'Adding executable to stage: {}'.format(target_file))
                         exe = True
-                        FILE = FILE[:-1]
+                        source_file = source_file[:-1]
                     
-                    # Copy files
-                    copy_path = u'{}/{}'.format(new_dir, os.path.split(FILE)[1])
-                    
-                    if os.path.isdir(FILE):
-                        Logger.Debug(__name__, u'Adding directory to stage: {}'.format(FILE))
-                        shutil.copytree(FILE, copy_path)
+                    if os.path.isdir(source_file):
+                        Logger.Debug(__name__, u'Adding directory to stage: {}'.format(target_file))
                         
-                        os.chmod(copy_path, 0755)
+                        # HACK: Use os.path.dirname to avoid OSError: File exists
+                        shutil.copytree(source_file, u'{}/{}'.format(target_dir, os.path.basename(source_file)))
+                        
+                        os.chmod(target_file, 0755)
                     
                     else:
-                        shutil.copy(FILE, copy_path)
+                        Logger.Debug(__name__, u'Adding file to stage: {}'.format(target_file))
+                        
+                        shutil.copy(source_file, target_dir)
                         
                         # Set FILE permissions
                         if exe:
-                            os.chmod(copy_path, 0755)
+                            os.chmod(target_file, 0755)
                         
                         else:
-                            os.chmod(copy_path, 0644)
+                            os.chmod(target_file, 0644)
                     
                     # Individual files
                     progress += 1
