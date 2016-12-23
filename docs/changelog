@@ -16,6 +16,7 @@
 - Files & directories can be renamed from directory tree on Files page
 - Drag & drop support for Files page
 - Relative paths are preserved when adding directories to the file list
+- Option to list only top-level directory or all files individually in file list
 
 0.7.12
 - Fixes:
