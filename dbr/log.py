@@ -22,6 +22,8 @@ RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 ## A log class for outputting messages
 #  
+#  TODO: Add 'quiet' (0) log level.
+#  
 #  A log that will output messages to the terminal &
 #    a log text file.
 #  \param log_level
