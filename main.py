@@ -10,6 +10,7 @@ import os, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
+from command_line           import parsed_args_s
 from dbr.about              import AboutDialog
 from dbr.compression        import CompressionHandler
 from dbr.compression        import DEFAULT_COMPRESSION_ID
@@ -329,6 +330,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             self.m_debug.AppendItem(wx.MenuItem(self.m_debug, ident.LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
+            
+            if u'log-window' in parsed_args_s:
+                self.m_debug.Check(ident.LOG, True)
             
             self.log_window = LogWindow(self, Logger.GetLogFile())
             
