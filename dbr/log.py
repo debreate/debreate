@@ -3,7 +3,7 @@
 ## \package dbr.log
 
 
-import os, thread, time, wx
+import os, thread, time, traceback, wx
 from wx.lib.newevent import NewCommandEvent
 
 from dbr.font               import GetMonospacedFont
@@ -346,11 +346,16 @@ class LogWindow(wx.Dialog):
     def OnShow(self, event=None):
         main_window = GetTopWindow()
         
-        window_shown = self.IsShown()
-        m_checked = main_window.m_debug.IsChecked(ident.LOG)
+        # In case main window has been destroyed, but sub thread still active
+        if main_window:
+            window_shown = self.IsShown()
+            m_checked = main_window.m_debug.IsChecked(ident.LOG)
+            
+            if m_checked != window_shown:
+                main_window.m_debug.Check(ident.LOG, window_shown)
         
-        if m_checked != window_shown:
-            main_window.m_debug.Check(ident.LOG, window_shown)
+        else:
+            Logger.Warning(__name__, u'Log thread still active!')
     
     
     ## Use an event to show the log window
@@ -359,9 +364,15 @@ class LogWindow(wx.Dialog):
     #    a separate item is not added in the system window
     #    list for the log.
     def OnShowMainWindow(self, event=None):
+        main_window = GetTopWindow()
+        
         # Make sure the main window has not been destroyed
-        if GetTopWindow().IsShown():
-            self.ShowLog()
+        if main_window:
+            if main_window.m_debug.IsChecked(ident.LOG):
+                self.ShowLog()
+        
+        else:
+            Logger.Warning(__name__, u'Log thread still active!')
     
     
     ## Toggles the log window shown or hidden
@@ -407,10 +418,16 @@ class LogWindow(wx.Dialog):
             
             self.log.SetValue(log_data)
             
-            # Yield here to make sure last line is displayed
-            # FIXME: Causes delay when debug enabled
-            wx.SafeYield()
-            self.log.ShowPosition(self.log.GetLastPosition())
+            try:
+                # Yield here to make sure last line is displayed
+                # FIXME: Causes delay when debug enabled
+                wx.SafeYield()
+                self.log.ShowPosition(self.log.GetLastPosition())
+            
+            except wx.PyDeadObjectError:
+                tb_error = unicode(traceback.format_exc())
+                
+                Logger.Warning(__name__, u'Error refreshing log window. Details below:\n\n{}'.format(tb_error))
     
     
     ## Changes the file to be loaded & displayed

@@ -11,11 +11,27 @@ import sys
 #short_args = u'hvg:'
 #long_args = [u'help', u'version', u'log-level=', u'log-interval=']
 
+## Solo args
+#  
+#  -h or --help
+#    Display usage information in the command line.
+#  -v or --version
+#    Display Debreate version in the command line & exit
+#  -w or --log-window
+#    Initially display the log window if debugging is enabled
 solo_args = (
     (u'h', u'help'),
     (u'v', u'version'),
+    (u'w', u'log-window'),
 )
 
+## Value args
+#  
+#  -l or --log-level
+#    Sets logging output level. Values can be 'quiet', 'info', 'warn', 'error', or debug,
+#    or equivalent numeric values of 0-4. Default is 'error' (3).
+#  -i or --log-interval
+#    Set the refresh interval, in seconds, for updating the log window. 
 value_args = (
     (u'l', u'log-level'),
     (u'i', u'log-interval'),
