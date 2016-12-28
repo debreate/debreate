@@ -33,6 +33,7 @@
   - Files
   - Manpages
 - Add 'quiet' log level
+- Replace import of 'thread' with 'threading'
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
