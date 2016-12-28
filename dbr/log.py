@@ -3,7 +3,7 @@
 ## \package dbr.log
 
 
-import os, thread, time, traceback, wx
+import os, thread, threading, time, traceback, wx
 from wx.lib.newevent import NewCommandEvent
 
 from dbr.font               import GetMonospacedFont
@@ -266,12 +266,10 @@ class LogWindow(wx.Dialog):
         self.log_timestamp = os.stat(self.log_file).st_mtime
     
     
-    ## Destructor
+    ## Destructor clears the log polling thead
     def __del__(self):
-        print(u'FIXME: [dbr.log] How to kill log polling thread?; Thread ID: {}'.format(self.THREAD_ID))
-        
-        # FIXME: PyDeadObjectError
-        #        How to exit thread?
+        if self.log_poll_thread and self.log_poll_thread.is_alive():
+            self.log_poll_thread.clear()
     
     
     ## Positions the log window relative to the main window
@@ -366,13 +364,10 @@ class LogWindow(wx.Dialog):
     def OnShowMainWindow(self, event=None):
         main_window = GetTopWindow()
         
-        # Make sure the main window has not been destroyed
-        if main_window:
+        # Make sure the main window has not been destroyed before showing log
+        if main_window and main_window.IsShown():
             if main_window.m_debug.IsChecked(ident.LOG):
                 self.ShowLog()
-        
-        else:
-            Logger.Warning(__name__, u'Log thread still active!')
     
     
     ## Toggles the log window shown or hidden
@@ -391,6 +386,9 @@ class LogWindow(wx.Dialog):
     
     ## Creates a thread that polls for changes in log file
     def PollLogFile(self, args=None):
+        self.log_poll_thread = threading.current_thread()
+        self.log_poll_thread.name = u'log_poll_thread'
+        
         previous_timestamp = os.stat(self.log_file).st_mtime
         while self.IsShown():
             current_timestamp = os.stat(self.log_file).st_mtime
@@ -447,5 +445,4 @@ class LogWindow(wx.Dialog):
         self.RefreshLog()
         self.Show(True)
         
-        # FIXME: Re-enable when threading fixed
-        self.log_poll_thread = thread.start_new_thread(self.PollLogFile, ())
+        thread.start_new_thread(self.PollLogFile, ())
