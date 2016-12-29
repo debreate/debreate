@@ -68,6 +68,11 @@ class ProgressDialog(wx.ProgressDialog):
         
         if parent:
             self.CenterOnParent()
+        
+        # Find the initial position to test if dialog has been moved by user
+        self.initial_posY = self.GetPositionTuple()[1]
+        
+        self.user_moved = False
     
     
     ## Sets the active status to False
@@ -217,6 +222,10 @@ class ProgressDialog(wx.ProgressDialog):
     #  FIXME: Window updates immediately, but children do not
     #  FIXME: Dialog could potentially resize outsize of display boundaries
     def UpdateSize(self):
+        if not self.user_moved:
+            if self.GetPositionTuple()[1] != self.initial_posY:
+                self.user_moved = True
+        
         resize = True
         size = self.GetSizeTuple()
         parent = self.GetParent()
@@ -244,7 +253,9 @@ class ProgressDialog(wx.ProgressDialog):
                 if target_width > size[0]:
                     self.SetSize((target_width, size[1]))
                     
-                    if parent:
+                    # Only center on parent if user did not move dialog manually
+                    # FIXME: Only works if dialog is moved vertically
+                    if parent and not self.user_moved:
                         self.CenterOnParent()
             
             self.GetSizer().Layout()
