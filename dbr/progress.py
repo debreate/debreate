@@ -17,8 +17,10 @@ PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
     def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
-            style=PD_DEFAULT_STYLE, detailed=False):
+            style=PD_DEFAULT_STYLE, detailed=False, resize=False):
         wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
+        
+        self.resize = resize
         
         self.active = None
         
@@ -176,7 +178,8 @@ class ProgressDialog(wx.ProgressDialog):
         if self.detailed:
             self.txt_tasks.SetLabel(u'{} / {}'.format(args[0], self.GetRange()))
         
-        self.UpdateSize()
+        if self.resize:
+            self.UpdateSize()
         
         return update_value
     
