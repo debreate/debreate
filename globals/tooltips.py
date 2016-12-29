@@ -169,6 +169,11 @@ TT_menu = {
 TT_build = {
     u'md5': GT(u'Creates a checksum for all staged files within the package'),
     u'md5_disabled': GT(u'Install md5sum package for this option'),
+    u'strip': (
+        GT(u'Discards unneeded symbols from binary files'), u'',
+        GT(u'See "man 1 strip"'),
+        ),
+    u'strip_disabled': GT(u'Install binutils package for this option'),
     u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',

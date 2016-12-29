@@ -10,7 +10,7 @@ X-Python-Version: >= 2.6
 Package: debreate
 Architecture: all
 Depends: ${misc:Depends}, python2.7, python-wxgtk3.0|python-wxgtk2.8, fakeroot, dpkg (>=1.0.0), file, util-linux (>=2.0.0), debianutils (>=4.0.0)
-Recommends: lintian, coreutils (>=8.0), xdg-utils, man-db, gzip (>=1.0)
+Recommends: lintian, coreutils (>=8.0), xdg-utils, man-db, gzip (>=1.0), binutils
 Suggests: gdebi|gdebi-kde, gvfs-bin
 Description: Debian Package Builder
  Debreate is a utility to aid in creating installable Debian packages (.deb).

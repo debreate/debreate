@@ -31,6 +31,7 @@ from globals.commands       import CMD_gdebi_gui
 from globals.commands       import CMD_gzip
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
+from globals.commands       import CMD_strip
 from globals.commands       import CMD_system_installer
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
@@ -65,6 +66,13 @@ class Panel(wx.ScrolledWindow):
         
         # For creating md5sum hashes
         self.md5 = MD5Hasher(self.chk_md5)
+        
+        # Option to strip binaries
+        self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
+        self.chk_strip.default = False
+        
+        if not CMD_strip:
+            self.chk_strip.Disable()
         
         # Deletes the temporary build tree
         self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete build tree'))
@@ -106,6 +114,7 @@ class Panel(wx.ScrolledWindow):
         lyt_options = wx.BoxSizer(wx.VERTICAL)
         lyt_options.AddMany((
             (self.chk_md5, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_strip, 0, wx.LEFT|wx.RIGHT, 5),
             (self.chk_rmstage, 0, wx.LEFT|wx.RIGHT, 5),
             (self.chk_lint, 0, wx.LEFT|wx.RIGHT, 5),
             (self.chk_install, 0, wx.LEFT|wx.RIGHT, 5),
@@ -672,23 +681,21 @@ class Panel(wx.ScrolledWindow):
     def GatherData(self):
         build_list = []
         
-        if self.chk_md5.GetValue():
-            build_list.append(u'1')
+        options = (
+            self.chk_md5,
+            self.chk_rmstage,
+            self.chk_lint,
+            )
         
-        else:
-            build_list.append(u'0')
+        for O in options:
+            if O.GetValue():
+                build_list.append(u'1')
+            
+            else:
+                build_list.append(u'0')
         
-        if self.chk_rmstage.GetValue():
-            build_list.append(u'1')
-        
-        else:
-            build_list.append(u'0')
-        
-        if self.chk_lint.GetValue():
-            build_list.append(u'1')
-        
-        else:
-            build_list.append(u'0')
+        if self.chk_strip.GetValue():
+            build_list.append(u'strip')
         
         return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))
     
@@ -807,6 +814,7 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ResetAllFields(self):
         self.chk_install.SetValue(False)
+        
         # chk_md5 should be reset no matter
         self.chk_md5.SetValue(False)
         if CMD_md5sum:
@@ -815,7 +823,16 @@ class Panel(wx.ScrolledWindow):
         else:
             self.chk_md5.Disable()
         
+        self.chk_strip.SetValue(False)
+        if CMD_strip:
+            self.chk_strip.Enable()
+            self.chk_strip.SetValue(self.chk_strip.default)
+        
+        else:
+            self.chk_strip.Disable()
+        
         self.chk_rmstage.SetValue(True)
+        
         if CMD_lintian:
             self.chk_lint.Enable()
             self.chk_lint.SetValue(True)
@@ -826,7 +843,12 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    #  
+    #  TODO: Use string names in project file but retain
+    #        compatibility with older projects that use
+    #        integer values.
     def SetFieldData(self, data):
+        # ???: Redundant
         self.ResetAllFields()
         build_data = data.split(u'\n')
         
@@ -849,6 +871,9 @@ class Panel(wx.ScrolledWindow):
             
             except IndexError:
                 pass
+        
+        if CMD_strip and u'strip' in build_data:
+            self.chk_strip.SetValue(True)
     
     
     ## TODO: Doxygen
