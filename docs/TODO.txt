@@ -6,7 +6,6 @@
 - Fix refreshing tree control
 
 Non-priority:
-- Option to strip binaries
 - Replace wx.MessageDialog with DetailedMessageDialog
 - Changelog page: Add distribution automatically (drop-down box)
 - Add feature to make custom tree control rename files/folders

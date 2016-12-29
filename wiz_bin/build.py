@@ -14,6 +14,7 @@ from dbr.custom             import SaveFile
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
+from dbr.functions          import FileUnstripped
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -33,6 +34,7 @@ from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_strip
 from globals.commands       import CMD_system_installer
+from globals.commands       import ExecuteCommand
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
@@ -221,8 +223,10 @@ class Panel(wx.ScrolledWindow):
                     maximum=task_count,
                     style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
             
+            DIR_debian = ConcatPaths((stage_dir, u'DEBIAN'))
+            
             # Make a fresh build tree
-            os.makedirs(u'{}/DEBIAN'.format(stage_dir))
+            os.makedirs(DIR_debian)
             progress += 1
             
             if build_progress.WasCancelled():
@@ -290,6 +294,28 @@ class Panel(wx.ScrolledWindow):
                     UpdateProgress(progress)
                 
                 # Entire file task
+                progress += 1
+            
+            if build_progress.WasCancelled():
+                build_progress.Destroy()
+                return (dbrerrno.ECNCLD, None)
+            
+            # *** Strip files ***#
+            # FIXME: Needs only be run if 'files' step is used
+            if u'strip' in task_list:
+                UpdateProgress(progress, GT(u'Stripping binaries'))
+                
+                for ROOT, DIRS, FILES in os.walk(stage_dir):
+                    for F in FILES:
+                        # Don't check files in DEBIAN directory
+                        if ROOT != DIR_debian:
+                            F = ConcatPaths((ROOT, F))
+                            
+                            if FileUnstripped(F):
+                                Logger.Debug(__name__, u'Unstripped file: {}'.format(F))
+                                
+                                ExecuteCommand(CMD_strip, F)
+                
                 progress += 1
             
             if build_progress.WasCancelled():
@@ -622,6 +648,7 @@ class Panel(wx.ScrolledWindow):
             # 'build' should be after 'control'
             other_checks = (
                 (self.chk_md5, u'md5sums'),
+                (self.chk_strip, u'strip'),
                 (self.chk_rmstage, u'rmstage'),
                 (self.chk_lint, u'lintian'),
                 )
