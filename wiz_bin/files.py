@@ -35,6 +35,13 @@ from wxcustom.listinput     import FileList
 from wxcustom.tree          import DirectoryTreePanel
 
 
+# Set the maximum file count to process without showing progress dialog
+efficiency_threshold = 250
+
+# Set the maximum file count to process without showing warning dialog
+warning_threshhold = 1000
+
+
 ## Class defining controls for the "Paths" page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
@@ -426,12 +433,6 @@ class Panel(wx.ScrolledWindow):
             
             dir_list[f_dir].append(f_name)
         
-        # Set the maximum file count to process without showing progress dialog
-        efficiency_threshold = 250
-        
-        # Set the maximum file count to process without showing warning dialog
-        warning_threshhold = 1000
-        
         if file_count > warning_threshhold:
             count_warnmsg = GT(u'Importing {} files'.format(file_count))
             count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
@@ -540,15 +541,18 @@ class Panel(wx.ScrolledWindow):
             # Store missing files here
             missing_files = []
             
-            progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=files_total,
-                    style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
+            progress = None
             
-            wx.Yield()
-            progress.Show()
+            if files_total >= efficiency_threshold:
+                progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=files_total,
+                        style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
+                
+                wx.Yield()
+                progress.Show()
             
             current_file = files_total
             while current_file > 1:
-                if progress.WasCancelled():
+                if progress and progress.WasCancelled():
                     progress.Destroy()
                     
                     # Project continues opening even if file import is cancelled
@@ -579,10 +583,11 @@ class Panel(wx.ScrolledWindow):
                     Logger.Warning(__name__, GT(u'File not found: {}').format(absolute_filename))
                     missing_files.append(absolute_filename)
                 
-                update_value = files_total - current_file
-                
-                wx.Yield()
-                progress.Update(update_value+1, GT(u'Imported file {} of {}').format(update_value, files_total))
+                if progress:
+                    update_value = files_total - current_file
+                    
+                    wx.Yield()
+                    progress.Update(update_value+1, GT(u'Imported file {} of {}').format(update_value, files_total))
             
             if progress:
                 progress.Destroy()
