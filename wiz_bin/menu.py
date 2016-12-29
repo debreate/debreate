@@ -436,6 +436,7 @@ class Panel(wx.ScrolledWindow):
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
             
+            self.ResetAllFields()
             self.SetLauncherData(u'\n'.join(data), enabled=True)
     
     
