@@ -34,6 +34,7 @@
   - Manpages
 - Add 'quiet' log level
 - Replace import of 'thread' with 'threading'
+- Replace 'debian' directory with script to automatically generate Debian build files
 
 0.8.1 Release:
 - Files page: Optional filter for hidden files & folders
