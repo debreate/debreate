@@ -9,6 +9,8 @@
 import os, wx
 
 from dbr.language       import GT
+from dbr.log            import DebugEnabled
+from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
 from globals.paths      import PATH_home
 from wxcustom.imagelist import sm_DirectoryImageList as ImageList
@@ -127,6 +129,8 @@ class DirectoryTree(wx.TreeCtrl):
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnCollapse)
+        
+        self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelect)
         
         # *** Post-layout/event actions *** #
         
@@ -279,6 +283,31 @@ class DirectoryTree(wx.TreeCtrl):
         return tuple(paths)
     
     
+    ## Get selected item
+    #  
+    #  \override wx.TreeCtrl.GetSelection
+    def GetSelection(self):
+        # wx 3.0 does not allow use of GetSelection with TR_MULTIPLE flag
+        if wx.MAJOR_VERSION <= 2:
+            base_selected = wx.TreeCtrl.GetSelection(self)
+        
+            for ITEM in self.item_list:
+                if ITEM.GetBaseItem() == base_selected:
+                    return ITEM
+        
+        else:
+            selected = self.GetSelections()
+            
+            # Just use previous selection
+            if len(selected) > 1:
+                for I in self.item_list:
+                    if I.Path == self.current_path:
+                        return I
+            
+            else:
+                return selected[0]
+    
+    
     ## TODO: Doxygen
     #  
     #  TODO: Define
@@ -349,6 +378,20 @@ class DirectoryTree(wx.TreeCtrl):
             return False
         
         return self.Expand(item)
+    
+    
+    ## Sets the current path to the newly selected item's path
+    #  
+    #  FIXME: Behavior is different between wx 2.8 & 3.0.
+    #         2.8 behavior is preferred.
+    def OnSelect(self, event=None):
+        selection = self.GetSelection()
+        
+        if selection.Path != self.current_path:
+            self.SetPath(selection.Path)
+        
+        if event:
+            event.Skip()
     
     
     ## Make sure image list cannot be changed
