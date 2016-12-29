@@ -20,6 +20,7 @@ from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
 from globals.commands       import CMD_fakeroot
+from globals.commands       import CMD_file
 from globals.commands       import CMD_system_packager
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
@@ -340,13 +341,41 @@ def IsIntTuple(value):
     return GetIntTuple(value) != None
 
 
+## TODO: Doxygen
+#  
+#  FIXME: Handle missing 'file' command
 def GetFileMimeType(file_name):
-    output = commands.getstatusoutput(u'file --mime-type "{}"'.format(file_name))
+    if CMD_file:
+        output = commands.getstatusoutput(u'{} --mime-type "{}"'.format(CMD_file, file_name))
+        
+        if output[0]:
+            return (output[0], output[1])
+        
+        return output[1].split(u': ')[-1]
     
-    if output[0]:
-        return (output[0], output[1])
+    print(u'ERROR: "file" command does not exist on system')
+
+
+## Checks if file is binary & needs stripped
+#  
+#  FIXME: Handle missing 'file' command
+def FileUnstripped(file_name):
+    if CMD_file:
+        output = commands.getoutput(u'{} "{}"'.format(CMD_file, file_name))
+        
+        if u': ' in output:
+            output = output.split(u': ')[1]
+        
+        output = output.split(u', ')
+        
+        if u'not stripped' in output:
+            return True
+        
+        return False
     
-    return output[1].split(u': ')[-1]
+    print(u'ERROR: "file" command does not exist on system')
+    
+    return False
 
 
 def BuildBinaryPackageFromTree(root_dir, filename):
