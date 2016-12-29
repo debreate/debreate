@@ -640,7 +640,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
 def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     main_window = GetTopWindow()
     if not module:
-        module = main_window.__name__
+        module = main_window.GetModuleName()
     
     logger_text = text
     if isinstance(text, (tuple, list)):
