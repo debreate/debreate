@@ -8,6 +8,7 @@ Must be fixed before release:
   - Options:
     - Add refresh method
     - Remove 'Refresh' option from Files page
+- Setting 'path' in DirectoryTree for wx 3.0 is not accurate
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
