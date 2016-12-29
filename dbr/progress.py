@@ -197,32 +197,39 @@ class ProgressDialog(wx.ProgressDialog):
     ## Currently only updates width
     #  
     #  FIXME: Window updates immediately, but children do not
+    #  FIXME: Dialog could potentially resize outsize of display boundaries
     def UpdateSize(self):
-        children = self.GetChildren()
-        target_width = 0
+        resize = True
+        size = self.GetSizeTuple()
+        parent = self.GetParent()
         
-        for C in children:
-            child_width = C.GetSizeTuple()[0]
-            if child_width > target_width:
-                target_width = child_width
+        if parent:
+            # Don't resize if dialog is already as big or bigger than parent
+            if size[0] >= parent.GetSizeTuple()[0]:
+                resize = False
         
-        if children:
-            padding_x = children[0].GetPositionTuple()[0]
+        if resize:
+            children = self.GetChildren()
+            target_width = 0
             
-            # Add padding
-            target_width += (padding_x * 2)
+            for C in children:
+                child_width = C.GetSizeTuple()[0]
+                if child_width > target_width:
+                    target_width = child_width
             
-            width = self.GetSize()
-            height = width[1]
-            width = width[0]
-            
-            if target_width > width:
-                self.SetSize((target_width, height))
+            if children:
+                padding_x = children[0].GetPositionTuple()[0]
                 
-                if self.GetParent():
-                    self.CenterOnParent()
-        
-        self.GetSizer().Layout()
+                # Add padding
+                target_width += (padding_x * 2)
+                
+                if target_width > size[0]:
+                    self.SetSize((target_width, size[1]))
+                    
+                    if parent:
+                        self.CenterOnParent()
+            
+            self.GetSizer().Layout()
     
     
     ## Override wx.ProgressDialog.WasCancelled method for compatibility wx older wx versions

@@ -1,6 +1,5 @@
 0.7.13
 - Testing for both wx 3.0 & 2.8
-- Set maximum width for automatic progress dialog resizing
 - Show a 'Loading files' dialog when opening a project
 - Check permissions of packaged files
 - Fix refreshing tree control
