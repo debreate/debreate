@@ -2,11 +2,11 @@
 - Testing for both wx 3.0 & 2.8
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
 - Check permissions of packaged files
+- Add feature to make custom tree control rename & delete files/folders
 
 Non-priority:
 - Replace wx.MessageDialog with DetailedMessageDialog
 - Changelog page: Add distribution automatically (drop-down box)
-- Add feature to make custom tree control rename files/folders
 - Add custom field option to Control
 - Add 'provides' field to Control
 - Add MIME type field to launcher/menu
