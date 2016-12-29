@@ -359,6 +359,14 @@ class DirectoryTree(wx.TreeCtrl):
     ## TODO: Doxygen
     def SetItemHasChildren(self, item, has_children=True):
         return wx.TreeCtrl.SetItemHasChildren(self, item.GetBaseItem(), has_children)
+    
+    
+    ## Sets the currently selected path
+    #  
+    #  \param path
+    #    \b \e string : New path to be set
+    def SetPath(self, path):
+        self.current_path = path
 
 
 ## Directory tree with a nicer border
