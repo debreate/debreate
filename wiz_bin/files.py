@@ -18,9 +18,9 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
+from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
-from wxcustom.listinput     import FileList
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
@@ -31,6 +31,7 @@ from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from wxcustom.listinput     import FileList
 from wxcustom.tree          import DirectoryTreePanel
 
 
@@ -539,11 +540,31 @@ class Panel(wx.ScrolledWindow):
             # Store missing files here
             missing_files = []
             
-            while files_total > 1:
-                files_total -= 1
+            progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=files_total,
+                    style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
+            
+            wx.Yield()
+            progress.Show()
+            
+            current_file = files_total
+            while current_file > 1:
+                if progress.WasCancelled():
+                    progress.Destroy()
+                    
+                    # Project continues opening even if file import is cancelled
+                    msg = (
+                        GT(u'File import did not complete.'),
+                        GT(u'Project files may be missing in file list.'),
+                        )
+                    
+                    ShowMessageDialog(u'\n'.join(msg), GT(u'Import Cancelled'))
+                    
+                    return False
+                
+                current_file -= 1
                 executable = False
                 
-                absolute_filename = files_data[files_total].split(u' -> ')[0]
+                absolute_filename = files_data[current_file].split(u' -> ')[0]
                 
                 if absolute_filename[-1] == u'*':
                     # Set executable flag and remove "*"
@@ -552,11 +573,19 @@ class Panel(wx.ScrolledWindow):
                 
                 filename = os.path.basename(absolute_filename)
                 source_dir = os.path.dirname(absolute_filename)
-                target_dir = files_data[files_total].split(u' -> ')[2]
+                target_dir = files_data[current_file].split(u' -> ')[2]
                 
                 if not self.lst_files.AddFile(filename, source_dir, target_dir, executable):
                     Logger.Warning(__name__, GT(u'File not found: {}').format(absolute_filename))
                     missing_files.append(absolute_filename)
+                
+                update_value = files_total - current_file
+                
+                wx.Yield()
+                progress.Update(update_value+1, GT(u'Imported file {} of {}').format(update_value, files_total))
+            
+            if progress:
+                progress.Destroy()
             
             Logger.Debug(__name__, u'Missing file count: {}'.format(len(missing_files)))
             
