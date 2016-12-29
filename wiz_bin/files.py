@@ -196,7 +196,7 @@ class Panel(wx.ScrolledWindow):
         
         if show_dialog:
             progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=file_count,
-                    style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT, resize=True)
+                    style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
             progress.Show()
         
         completed = 0
