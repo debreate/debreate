@@ -147,6 +147,16 @@ class ProgressDialog(wx.ProgressDialog):
     
     
     ## TODO: Doxygen
+    def Pulse(self, *args, **kwargs):
+        pulse_value = wx.ProgressDialog.Pulse(self, *args, **kwargs)
+        
+        if self.resize:
+            self.UpdateSize()
+        
+        return pulse_value
+    
+    
+    ## TODO: Doxygen
     def SetMessage(self, message):
         for C in self.GetChildren():
             if isinstance(C, wx.StaticText):
