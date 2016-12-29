@@ -619,7 +619,7 @@ class Panel(wx.ScrolledWindow):
                 
                 data_defs = {}
                 data_defs_remove = []
-                misc_defs = {}
+                misc_defs = []
                 
                 for L in data:
                     if u'=' in L:
@@ -628,7 +628,7 @@ class Panel(wx.ScrolledWindow):
                             value = key[1]
                             key = key[0]
                             
-                            misc_defs[key] = value
+                            misc_defs.append(u'{}={}'.format(key, value))
                         
                         else:
                             key = L.split(u'=')
@@ -673,6 +673,7 @@ class Panel(wx.ScrolledWindow):
                     categories = tuple(data_defs[u'Categories'].split(u';'))
                     for C in categories:
                         self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
+                    
                     data_defs_remove.append(u'Categories')
                 
                 except KeyError:
@@ -685,14 +686,27 @@ class Panel(wx.ScrolledWindow):
                 # Add any leftover keys to misc/other
                 for K in data_defs:
                     if K not in (u'Version',):
-                        self.ti_other.SetValue(u'{}={}'.format(K, data_defs[K]))
+                        misc_defs.append(u'{}={}'.format(K, data_defs[K]))
+                
+                for index in reversed(range(len(misc_defs))):
+                    K = misc_defs[index]
+                    
+                    # Set custom filename
+                    if u'FILENAME=' in K:
+                        filename = K.replace(u'FILENAME=', u'')
+                        
+                        if not TextIsEmpty(filename):
+                            Logger.Debug(__name__, u'Setting custom filename: {}'.format(filename))
+                            
+                            self.ti_filename.SetValue(filename)
+                            self.chk_filename.SetValue(False)
+                        
+                        # Remove so not added to misc. list
+                        misc_defs.pop(index)
+                        
+                        continue
                 
                 if misc_defs:
-                    for K in misc_defs:
-                        value = misc_defs[K]
-                        if not TextIsEmpty(value):
-                            if K == u'FILENAME':
-                                self.ti_filename.SetValue(value)
-                                self.chk_filename.SetValue(False)
+                    self.ti_other.SetValue(u'\n'.join(sorted(misc_defs)))
                 
                 self.OnToggle()
