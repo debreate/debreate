@@ -199,6 +199,10 @@ class Panel(wx.ScrolledWindow):
                     style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
             progress.Show()
         
+        # Disallow activity in main window while dialog is active
+        # ???: Not necessary
+        GetTopWindow().Disable()
+        
         completed = 0
         for D in sorted(dirs):
             for F in sorted(dirs[D]):
@@ -335,6 +339,10 @@ class Panel(wx.ScrolledWindow):
         count = 0
         
         prep.Show()
+        
+        # Disallow activity in main window while dialog is active
+        # ???: Not necessary
+        GetTopWindow().Disable()
         
         try:
             for P in paths_list:
