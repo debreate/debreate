@@ -186,6 +186,8 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## Override inherited method to delete item & base item
+    #  
+    #  TODO: Test if PathItem is actually removed from memory
     def Delete(self, item):
         deleted = wx.TreeCtrl.Delete(self, item.GetBaseItem())
         
@@ -200,6 +202,20 @@ class DirectoryTree(wx.TreeCtrl):
         del item
         
         return deleted
+    
+    
+    ## Overrides inherited method to not delete root item & clear item list
+    #  
+    #  FIXME: Need to make sure PathItem instances are removed from memory
+    def DeleteAllItems(self):
+        self.DeleteChildren(self.root_item.GetBaseItem())
+        self.root_item.RemoveChildren()
+        
+        # ???: Redundant
+        for I in reversed(self.item_list):
+            del I
+        
+        self.item_list = []
     
     
     ## Override inherited method so children are filled out
@@ -255,6 +271,33 @@ class DirectoryTree(wx.TreeCtrl):
         return ImageList
     
     
+    ## TODO: Doxygen
+    def GetItemParent(self, item):
+        base_item = None
+        if not isinstance(item, PathItem):
+            base_item = item
+            
+            for I in self.item_list:
+                if I.GetBaseItem() == base_item:
+                    item = I
+        
+        else:
+            base_item = item.GetBaseItem()
+        
+        if item == self.root_item:
+            # Root item does not have parent
+            return None
+        
+        parent = wx.TreeCtrl.GetItemParent(self, base_item)
+        
+        for I in self.item_list:
+            if I.GetBaseItem() == parent:
+                parent = I
+                break
+        
+        return parent
+    
+    
     ## Get the path of an item
     def GetItemPath(self, item):
         return item.GetPath()
@@ -304,7 +347,7 @@ class DirectoryTree(wx.TreeCtrl):
                     if I.Path == self.current_path:
                         return I
             
-            else:
+            elif selected:
                 return selected[0]
     
     
@@ -329,6 +372,14 @@ class DirectoryTree(wx.TreeCtrl):
         
         # Don't call self.Expand directly
         self.OnExpand(item=root_item)
+    
+    
+    ## TODO: Doxygen
+    def IsExpanded(self, item):
+        if isinstance(item, PathItem):
+            item = item.GetBaseItem()
+        
+        return wx.TreeCtrl.IsExpanded(self, item)
     
     
     ## Override inherited method to extract base item
@@ -385,13 +436,49 @@ class DirectoryTree(wx.TreeCtrl):
     #  FIXME: Behavior is different between wx 2.8 & 3.0.
     #         2.8 behavior is preferred.
     def OnSelect(self, event=None):
-        selection = self.GetSelection()
+        selected = self.GetSelection()
         
-        if selection.Path != self.current_path:
-            self.SetPath(selection.Path)
+        if selected:
+            if selected.Path != self.current_path:
+                self.SetPath(selected.Path)
         
         if event:
             event.Skip()
+    
+    
+    ## Refreshes the tree's displayed layout
+    def ReCreateTree(self):
+        selected = self.GetSelection()
+        selected_path = selected.Path
+        expanded = self.IsExpanded(selected)
+        
+        self.DeleteAllItems()
+        
+        # Recreate tree
+        self.InitDirectoryLayout()
+        
+        # DEBUG: Checking if selected still in memory
+        if selected:
+            Logger.Debug(__name__, u'Selected still in memory')
+        
+        else:
+            Logger.Debug(__name__, u'Selected NOT in memory')
+        
+        Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
+        
+        #selected_path = selected_path.replace(self.root_item.Path, u'').strip(u'/').split(u'/')
+        
+        #Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
+        
+        for I in self.item_list:
+            if I.Path == selected_path:
+                if expanded:
+                    self.Expand(I)
+                
+                break
+            
+            elif I.Path in selected_path:
+                self.Expand(I)
     
     
     ## Make sure image list cannot be changed
