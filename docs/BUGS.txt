@@ -15,6 +15,7 @@ Low priority:
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
   - Always occurs with wx 3.0
   - Only occurs when using 'WriteText' method in wx 2.8
+- Progress dialogs can resize outside of display boundaries
 - 2.8 Only
   - Taskbar icon does not show up
   - 'Changes' text control is small on Changelog page
