@@ -8,7 +8,10 @@
 
 import wx
 
-from dbr.language import GT
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
@@ -80,6 +83,21 @@ class ProgressDialog(wx.ProgressDialog):
     #  For 3.0 & newer, simply overrides wx.ProgressDialog.Destroy
     #  For older versions, calls dbr.progress.ProgressDialog.EndModal
     def Destroy(self, *args, **kwargs):
+        # Re-enable parent/main window if previously disabled
+        # ???: May not be necessary
+        parent = self.GetParent()
+        main_window = GetTopWindow()
+        
+        if not FieldEnabled(main_window):
+            Logger.Debug(__name__, u'Re-enabling main window')
+            
+            main_window.Enable()
+        
+        if not FieldEnabled(parent):
+            Logger.Debug(__name__, u'Re-enabling parent')
+            
+            parent.Enable()
+        
         if wx.MAJOR_VERSION < 3:
             self.EndModal(0)
         
