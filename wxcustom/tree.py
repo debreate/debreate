@@ -225,7 +225,8 @@ class DirectoryTree(wx.TreeCtrl):
         for I in reversed(self.item_list):
             del I
         
-        self.item_list = []
+        # Reset item list
+        self.item_list = [self.root_item,]
     
     
     ## Override inherited method so children are filled out
@@ -343,7 +344,7 @@ class DirectoryTree(wx.TreeCtrl):
         # wx 3.0 does not allow use of GetSelection with TR_MULTIPLE flag
         if wx.MAJOR_VERSION <= 2:
             base_selected = wx.TreeCtrl.GetSelection(self)
-        
+            
             for ITEM in self.item_list:
                 if ITEM.GetBaseItem() == base_selected:
                     return ITEM
