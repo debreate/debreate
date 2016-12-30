@@ -9,7 +9,6 @@
 import os, wx
 
 from dbr.language       import GT
-from dbr.log            import DebugEnabled
 from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
 from globals.paths      import PATH_home
