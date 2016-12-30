@@ -124,12 +124,23 @@ class DirectoryTree(wx.TreeCtrl):
         self.root_item = self.AddRoot(GT(u'Home directory'), path,
                 ImageList.GetImageIndex(u'folder'))
         
+        self.ctx_menu = wx.Menu()
+        
+        mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add'))
+        mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT(u'Refresh'))
+        
+        self.ctx_menu.AppendItem(mitm_add)
+        self.ctx_menu.AppendSeparator()
+        self.ctx_menu.AppendItem(mitm_refresh)
+        
         # *** Event handlers *** #
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnCollapse)
         
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelect)
+        
+        self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         
         # *** Post-layout/event actions *** #
         
@@ -407,6 +418,11 @@ class DirectoryTree(wx.TreeCtrl):
             return False
         
         return self.Collapse(item)
+    
+    
+    ## Open a context menu for manipulating tree files & directories
+    def OnContextMenu(self, event=None):
+        self.PopupMenu(self.ctx_menu)
     
     
     ## TODO: Doxygen

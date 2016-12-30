@@ -49,16 +49,6 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(20, 20, 0, 0)
         
-        # Create a Context Menu
-        self.mnu_tree = wx.Menu()
-        
-        mitm_add = wx.MenuItem(self.mnu_tree, wx.ID_ADD, GT(u'Add'))
-        mitm_refresh = wx.MenuItem(self.mnu_tree, wx.ID_REFRESH, GT(u'Refresh'))
-        
-        self.mnu_tree.AppendItem(mitm_add)
-        self.mnu_tree.AppendSeparator()
-        self.mnu_tree.AppendItem(mitm_refresh)
-        
         # *** Left Panel *** #
         
         self.chk_individuals = wx.CheckBox(self, label=GT(u'List files individually'),
@@ -162,7 +152,6 @@ class Panel(wx.ScrolledWindow):
             wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
         
         # Context menu events for directory tree
-        wx.EVT_CONTEXT_MENU(self.tree_dirs, self.OnRightClickTree)
         wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefreshTree)
         
@@ -500,11 +489,6 @@ class Panel(wx.ScrolledWindow):
         
         elif keycode == 65 and modifier == wx.MOD_CONTROL:
             self.lst_files.SelectAll()
-    
-    
-    ## TODO: Doxygen
-    def OnRightClickTree(self, event=None):
-        self.DirTree.PopupMenu(self.mnu_tree)
     
     
     ## Event handler that disables the custom destination if the corresponding radio button isn't selected
