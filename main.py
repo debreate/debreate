@@ -38,7 +38,7 @@ from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
-from globals.commands       import CMD_gvfs_trash
+from globals.commands       import CMD_trash
 from globals.commands       import CMD_xdg_open
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
@@ -195,7 +195,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         wx.EVT_MENU(self, ident.DIALOGS, self.OnEnableCustomDialogs)
         
-        if CMD_gvfs_trash:
+        if CMD_trash:
             self.menu_opt.AppendItem(cust_dias)
         
         # *** Option Menu: open logs directory *** #

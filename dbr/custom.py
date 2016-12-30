@@ -10,7 +10,7 @@ import os, sys, wx
 
 from dbr.language       import GT
 from dbr.textinput      import TextAreaPanel
-from globals.commands   import CMD_gvfs_trash
+from globals.commands   import CMD_trash
 
 
 # FIXME: This should be imported from dbr.functions
@@ -236,7 +236,7 @@ class DBDialog(wx.Dialog):
         parent_path = os.path.split(path)[0]
         
         # FIXME: Use subprocess.Popen
-        os.system((u'{} "{}"'.format(CMD_gvfs_trash, path)).encode(u'utf-8'))
+        os.system((u'{} "{}"'.format(CMD_trash, path)).encode(u'utf-8'))
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(parent_path)
