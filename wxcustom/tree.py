@@ -6,11 +6,14 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import os, traceback, wx
 
+from dbr.dialogs        import ShowErrorDialog
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
+from globals            import ident
+from globals.paths      import ConcatPaths
 from globals.paths      import PATH_home
 from wxcustom.imagelist import sm_DirectoryImageList as ImageList
 
@@ -127,9 +130,11 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu = wx.Menu()
         
         mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add'))
+        mitm_rename = wx.MenuItem(self.ctx_menu, ident.RENAME, GT(u'Rename'))
         mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT(u'Refresh'))
         
         self.ctx_menu.AppendItem(mitm_add)
+        self.ctx_menu.AppendItem(mitm_rename)
         self.ctx_menu.AppendSeparator()
         self.ctx_menu.AppendItem(mitm_refresh)
         
@@ -141,6 +146,10 @@ class DirectoryTree(wx.TreeCtrl):
         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.OnSelect)
         
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
+        
+        wx.EVT_MENU(self, ident.RENAME, self.OnMenuSelect)
+        
+        self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
         
         # *** Post-layout/event actions *** #
         
@@ -352,6 +361,8 @@ class DirectoryTree(wx.TreeCtrl):
         else:
             selected = self.GetSelections()
             
+            Logger.Debug(__name__, u'Selected: {}'.format(selected))
+            
             # Just use previous selection
             if len(selected) > 1:
                 for I in self.item_list:
@@ -427,6 +438,50 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## TODO: Doxygen
+    #  
+    #  FIXME: Paths can use forward slashes if a directory exists to move item into.
+    #         Tree does not update to show that the item has been moved.
+    def OnEndLabelEdit(self, event=None):
+        if event:
+            if event.IsEditCancelled():
+                Logger.Debug(__name__, u'Vetoing due to cancelled edit')
+                
+                event.Veto()
+                return
+            
+            item = event.GetItem()
+            for I in self.item_list:
+                if I.GetBaseItem() == item:
+                    item = I
+                    break
+            
+            new_label = event.GetLabel()
+            item_dir = os.path.dirname(item.Path)
+            new_path = ConcatPaths((item_dir, new_label))
+            
+            try:
+                if os.path.exists(new_path):
+                    ShowErrorDialog(GT(u'Name already exists: {}').format(new_path))
+                    
+                    event.Veto()
+                    return
+                
+                os.rename(item.Path, new_path)
+                
+                ## ???: Another way to test if rename was successful?
+                if os.path.exists(new_path):
+                    # Items path must be updated
+                    I.Path = new_path
+            
+            except OSError:
+                Logger.Debug(__name__, u'Item not renamed, traceback details below:\n\n{}'.format(traceback.format_exc()))
+                
+                event.Veto()
+            
+            Logger.Debug(__name__, u'New item path: {}'.format(item.Path))
+    
+    
+    ## TODO: Doxygen
     def OnExpand(self, event=None, item=None):
         if event:
             item = event.GetItem()
@@ -445,6 +500,18 @@ class DirectoryTree(wx.TreeCtrl):
             return False
         
         return self.Expand(item)
+    
+    
+    ## Actions for menu events
+    def OnMenuSelect(self, event=None):
+        if event:
+            event_id = event.GetId()
+            
+            if event_id == ident.RENAME:
+                Logger.Debug(__name__, u'Rename menu')
+                
+                selected = self.GetSelection()
+                self.EditLabel(selected.GetBaseItem())
     
     
     ## Sets the current path to the newly selected item's path
