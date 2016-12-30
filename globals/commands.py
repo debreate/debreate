@@ -83,6 +83,9 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if isinstance(args, (unicode, str)):
         cmd_line = [args,]
     
+    else:
+        cmd_line = args
+    
     cmd_line.insert(0, cmd)
     
     main_window.Enable(False)
