@@ -8,14 +8,18 @@
 
 import os, traceback, wx
 
-from dbr.dialogs        import ShowErrorDialog
-from dbr.language       import GT
-from dbr.log            import Logger
-from dbr.panel          import BorderedPanel
-from globals            import ident
-from globals.paths      import ConcatPaths
-from globals.paths      import PATH_home
-from wxcustom.imagelist import sm_DirectoryImageList as ImageList
+from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import ShowErrorDialog
+from dbr.language           import GT
+from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
+from globals                import ident
+from globals.commands       import CMD_trash
+from globals.commands       import ExecuteCommand
+from globals.paths          import ConcatPaths
+from globals.paths          import PATH_home
+from globals.wizardhelper   import GetTopWindow
+from wxcustom.imagelist     import sm_DirectoryImageList as ImageList
 
 
 ## A wxcustom tree item
@@ -138,6 +142,10 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.AppendSeparator()
         self.ctx_menu.AppendItem(mitm_refresh)
         
+        if CMD_trash:
+            mitm_delete = wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT(u'Trash'))
+            self.ctx_menu.InsertItem(2, mitm_delete)
+            
         # *** Event handlers *** #
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
@@ -148,6 +156,7 @@ class DirectoryTree(wx.TreeCtrl):
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         
         wx.EVT_MENU(self, ident.RENAME, self.OnMenuSelect)
+        wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
         
         self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
         
@@ -208,19 +217,26 @@ class DirectoryTree(wx.TreeCtrl):
     #  
     #  TODO: Test if PathItem is actually removed from memory
     def Delete(self, item):
-        deleted = wx.TreeCtrl.Delete(self, item.GetBaseItem())
+        Logger.Debug(__name__, u'Deleting item type: {}'.format(type(item)))
         
-        item_index = 0
-        for I in self.item_list:
-            if I == item:
-                break
+        if item:
+            deleted = wx.TreeCtrl.Delete(self, item.GetBaseItem())
             
-            item_index += 1
-        
-        self.item_list.pop(item_index)
-        del item
-        
-        return deleted
+            item_index = 0
+            for I in self.item_list:
+                if I == item:
+                    break
+                
+                item_index += 1
+            
+            # Delete children of deleted item
+            if self.item_list[item_index].HasChildren():
+                pass
+            
+            self.item_list.pop(item_index)
+            del item
+            
+            return deleted
     
     
     ## Overrides inherited method to not delete root item & clear item list
@@ -236,6 +252,13 @@ class DirectoryTree(wx.TreeCtrl):
         
         # Reset item list
         self.item_list = [self.root_item,]
+    
+    
+    ## Delete the listed items
+    def DeleteItems(self, item_list):
+        # FIXME: App crashes when trying to delete child of item already deleted
+        for I in item_list:
+            self.Delete(I)
     
     
     ## Override inherited method so children are filled out
@@ -434,7 +457,18 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Open a context menu for manipulating tree files & directories
     def OnContextMenu(self, event=None):
+        if len(self.GetSelections()) > 1:
+            self.ctx_menu.Enable(ident.RENAME, False)
+            # REMOVEME: App crashes when deleting child & parent paths.
+            #           Disabled for multiple items until fixed.
+            self.ctx_menu.Enable(wx.ID_DELETE, False)
+        
         self.PopupMenu(self.ctx_menu)
+        
+        # Re-enable rename option after menu hidden
+        self.ctx_menu.Enable(ident.RENAME, True)
+        # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
+        self.ctx_menu.Enable(wx.ID_DELETE, True)
     
     
     ## TODO: Doxygen
@@ -461,7 +495,8 @@ class DirectoryTree(wx.TreeCtrl):
             
             try:
                 if os.path.exists(new_path):
-                    ShowErrorDialog(GT(u'Name already exists: {}').format(new_path))
+                    msg_l1 = GT(u'Name already exists:')
+                    ShowErrorDialog(u'{}\n\n{}'.format(msg_l1, new_path))
                     
                     event.Veto()
                     return
@@ -508,10 +543,12 @@ class DirectoryTree(wx.TreeCtrl):
             event_id = event.GetId()
             
             if event_id == ident.RENAME:
-                Logger.Debug(__name__, u'Rename menu')
-                
                 selected = self.GetSelection()
                 self.EditLabel(selected.GetBaseItem())
+            
+            elif event_id == wx.ID_DELETE:
+                selected = self.GetSelections()
+                self.SendToTrash(selected)
     
     
     ## Sets the current path to the newly selected item's path
@@ -549,10 +586,6 @@ class DirectoryTree(wx.TreeCtrl):
         
         Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
         
-        #selected_path = selected_path.replace(self.root_item.Path, u'').strip(u'/').split(u'/')
-        
-        #Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
-        
         for I in self.item_list:
             if I.Path == selected_path:
                 if expanded:
@@ -562,6 +595,48 @@ class DirectoryTree(wx.TreeCtrl):
             
             elif I.Path in selected_path:
                 self.Expand(I)
+    
+    
+    ## Send that selected item's path to trash
+    def SendToTrash(self, item_list):
+        path_list = []
+        for I in item_list:
+            if not os.access(I.Path, os.W_OK):
+                ShowErrorDialog(GT(u'Cannot move "{}" to trash, no write access').format(I.Path),
+                        warn=True)
+                
+                return False
+            
+            path_list.append(I.Path)
+        
+        msg_l1 = GT(u'Move the following items to trash?')
+        msg_l2 = u'\n'.join(path_list)
+        if ConfirmationDialog(GetTopWindow(), GT(u'Delete'),
+                u'{}\n\n{}'.format(msg_l1, msg_l2)).Confirmed():
+            
+            arg_list = list(path_list)
+            # Use 'force' argument to avoid crash on non-existing paths
+            arg_list.insert(0, u'-f')
+            ExecuteCommand(CMD_trash, arg_list)
+            
+            Logger.Debug(__name__, u'Paths deleted')
+            
+            self.DeleteItems(item_list)
+            
+            Logger.Debug(__name__, u'Items deleted')
+            
+            # Confirm that paths were removed
+            for P in path_list:
+                if os.path.exists(P):
+                    Logger.Debug(__name__, u'Failed to remove "{}"'.format(P))
+                    
+                    return False
+            
+            Logger.Debug(__name__, u'Items successfully moved to trash')
+            
+            return True
+        
+        return False
     
     
     ## Make sure image list cannot be changed
