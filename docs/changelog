@@ -21,6 +21,8 @@
 - Option to list only top-level directory or all files individually in file list
 - Option to strip binary files in build
 - Only center progress dialog on parent if not manually moved by user
+- Files & folders can be renamed & deleted from directory tree on Files page
+  - 'gvfs-trash' required for deleting (moving to trash)
 
 0.7.12
 - Fixes:
