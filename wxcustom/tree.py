@@ -145,7 +145,7 @@ class DirectoryTree(wx.TreeCtrl):
         if CMD_trash:
             mitm_delete = wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT(u'Trash'))
             self.ctx_menu.InsertItem(2, mitm_delete)
-            
+        
         # *** Event handlers *** #
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
