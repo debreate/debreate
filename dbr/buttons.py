@@ -166,7 +166,7 @@ class ButtonQuestion64(BitmapButton):
 
 ## Button for refreshing displayed controls
 class ButtonRefresh(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_REFRESH, name=u'refresh'):
+    def __init__(self, parent, ID=wx.ID_REFRESH, name=u'btn refresh'):
         BitmapButton.__init__(self, parent, BUTTON_REFRESH,
                 ID=ID, name=name)
         
