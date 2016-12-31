@@ -13,5 +13,6 @@ Low priority:
 - 2.8 Only
   - Taskbar icon does not show up
   - 'Changes' text control is small on Changelog page
+  - Drag-&-drop cursor does not change
 - 3.0 Only
   - Credits list does not expand completely on right edge
