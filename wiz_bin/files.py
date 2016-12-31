@@ -456,7 +456,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Adds files to list from file manager drop
     #  
-    #  FIXME: Need method AddDirectory or AddFileList
+    #  FIXME: Need method AddDirectory or AddFileList (No longer needed???)
     def OnDropFiles(self, file_list):
         self.LoadPaths(file_list)
     
