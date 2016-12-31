@@ -157,6 +157,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         wx.EVT_MENU(self, ident.RENAME, self.OnMenuSelect)
         wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
+        wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
         
         self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
         
@@ -549,6 +550,11 @@ class DirectoryTree(wx.TreeCtrl):
             elif event_id == wx.ID_DELETE:
                 selected = self.GetSelections()
                 self.SendToTrash(selected)
+    
+    
+    ## Catches menu event to refresh/recreate tree
+    def OnRefresh(self, event=None):
+        self.ReCreateTree()
     
     
     ## Sets the current path to the newly selected item's path

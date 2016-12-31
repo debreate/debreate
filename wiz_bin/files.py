@@ -153,7 +153,6 @@ class Panel(wx.ScrolledWindow):
         
         # Context menu events for directory tree
         wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
-        wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefreshTree)
         
         # Button events
         btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)
@@ -465,14 +464,6 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def OnRefreshFileList(self, event=None):
         self.lst_files.RefreshFileList()
-    
-    
-    ## TODO: Doxygen
-    def OnRefreshTree(self, event=None):
-        path = self.DirTree.GetPath()
-        
-        self.DirTree.ReCreateTree()
-        self.DirTree.SetPath(path)
     
     
     ## TODO: Doxygen
