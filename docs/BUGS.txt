@@ -2,7 +2,6 @@
 
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
-- Multi-selecting files/folders does not import all of them
 - App crashes is trying to delete item & parent directory together in directory tree
 
 Low priority:
