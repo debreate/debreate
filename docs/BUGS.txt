@@ -15,4 +15,3 @@ Low priority:
   - 'Changes' text control is small on Changelog page
 - 3.0 Only
   - Credits list does not expand completely on right edge
-- Dragging files/folders from directory changes selection after import

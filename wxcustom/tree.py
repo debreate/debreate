@@ -505,14 +505,17 @@ class DirectoryTree(wx.TreeCtrl):
             # Reset cursor to default
             self.UpdateCursor(True)
             
-            drop_files = MouseInsideWindow(self.Parent.Parent.GetListInstance())
+            target_window = self.Parent.Parent.GetListInstance()
+            dropped = MouseInsideWindow(target_window)
             
-            Logger.Debug(__name__, u'Dropped inside file list: {}'.format(drop_files))
+            Logger.Debug(__name__, u'Dropped inside file list: {}'.format(dropped))
             
-            if drop_files:
+            if dropped:
                 self.Parent.Parent.OnImportFromTree()
             
-            event.Skip()
+            # WARNING: Skipping event causes selection to change in directory tree
+            #          if multiple items selected.
+            #event.Skip()
     
     
     ## TODO: Doxygen
@@ -708,6 +711,7 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Sets the visible cursor on the Files page dependent on drag-&-drop state
     #  
+    #  FIXME: Does not work for wx 2.8
     #  \param reset
     #    \b \e bool : Resets cursor back to default if True
     def UpdateCursor(self, reset=False):
