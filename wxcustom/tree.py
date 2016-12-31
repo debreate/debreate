@@ -146,6 +146,9 @@ class DirectoryTree(wx.TreeCtrl):
             mitm_delete = wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT(u'Trash'))
             self.ctx_menu.InsertItem(2, mitm_delete)
         
+        # Tells app if user is currently dragging an item from tree
+        self.dragging = False
+        
         # *** Event handlers *** #
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
@@ -160,6 +163,9 @@ class DirectoryTree(wx.TreeCtrl):
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
         
         self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
+        
+        self.Bind(wx.EVT_TREE_BEGIN_DRAG, self.OnDragBegin)
+        self.Bind(wx.EVT_LEFT_UP, self.OnDragEnd)
         
         # *** Post-layout/event actions *** #
         
@@ -385,8 +391,6 @@ class DirectoryTree(wx.TreeCtrl):
         else:
             selected = self.GetSelections()
             
-            Logger.Debug(__name__, u'Selected: {}'.format(selected))
-            
             # Just use previous selection
             if len(selected) > 1:
                 for I in self.item_list:
@@ -470,6 +474,42 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.Enable(ident.RENAME, True)
         # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
         self.ctx_menu.Enable(wx.ID_DELETE, True)
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  FIXME: File list does not receive EVT_ENTER_WINDOW during drag
+    def OnDragBegin(self, event=None):
+        if event:
+            event.Allow()
+            
+            self.dragging = True
+            
+            Logger.Debug(__name__, u'Dragging!!!')
+            
+            # Show a 'dragging' cursor
+            self.UpdateCursor()
+            
+            # Skipping drag event & using mouse release event for drop looks better
+            event.Skip()
+    
+    
+    ## TODO: Doxygen
+    def OnDragEnd(self, event=None):
+        if event and self.dragging:
+            self.dragging = False
+            
+            Logger.Debug(__name__, u'Dropped!!!')
+            
+            # Reset cursor to default
+            self.UpdateCursor(True)
+            
+            # FIXME: Should event be sent to files page?
+            lst_files = self.Parent.Parent.lst_files
+            if lst_files.mouse_over:
+                Logger.Debug(__name__, u'Dropping on file list')
+            
+            event.Skip()
     
     
     ## TODO: Doxygen
@@ -661,6 +701,26 @@ class DirectoryTree(wx.TreeCtrl):
     #    \b \e string : New path to be set
     def SetPath(self, path):
         self.current_path = path
+    
+    
+    ## Sets the visible cursor on the Files page dependent on drag-&-drop state
+    #  
+    #  \param reset
+    #    \b \e bool : Resets cursor back to default if True
+    def UpdateCursor(self, reset=False):
+        try:
+            file_page = self.Parent.Parent
+            
+            if reset:
+                file_page.SetCursor(wx.NullCursor)
+                return
+            
+            file_page.SetCursor(wx.StockCursor(wx.CURSOR_POINT_RIGHT))
+        
+        except TypeError:
+            err_l1 = GT(u'Failed to set cursor')
+            err_l2 = GT(u'Details below:')
+            Logger.Error(__name__, u'\n    {}\n    {}\n\n{}'.format(err_l1, err_l2, traceback.format_exc()))
 
 
 ## Directory tree with a nicer border
