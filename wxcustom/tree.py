@@ -716,13 +716,13 @@ class DirectoryTree(wx.TreeCtrl):
     #    \b \e bool : Resets cursor back to default if True
     def UpdateCursor(self, reset=False):
         try:
-            file_page = self.Parent.Parent
+            parent_window = self.Parent.Parent
             
             if reset:
-                file_page.SetCursor(wx.NullCursor)
+                parent_window.SetCursor(wx.NullCursor)
                 return
             
-            file_page.SetCursor(wx.StockCursor(wx.CURSOR_POINT_RIGHT))
+            parent_window.SetCursor(wx.StockCursor(wx.CURSOR_POINT_RIGHT))
         
         except TypeError:
             err_l1 = GT(u'Failed to set cursor')
