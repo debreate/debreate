@@ -20,6 +20,7 @@ from globals.commands       import ExecuteCommand
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
+from wxcustom.cursor        import CUR_FOLDER
 from wxcustom.imagelist     import sm_DirectoryImageList as ImageList
 
 
@@ -722,7 +723,7 @@ class DirectoryTree(wx.TreeCtrl):
                 parent_window.SetCursor(wx.NullCursor)
                 return
             
-            parent_window.SetCursor(wx.StockCursor(wx.CURSOR_POINT_RIGHT))
+            parent_window.SetCursor(CUR_FOLDER)
         
         except TypeError:
             err_l1 = GT(u'Failed to set cursor')
