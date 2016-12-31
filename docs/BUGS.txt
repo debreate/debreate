@@ -3,6 +3,8 @@
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
 - App crashes is trying to delete item & parent directory together in directory tree
+- wx 2.8 only:
+  - Drag-&-drop cursor does not change
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
@@ -10,9 +12,8 @@ Low priority:
   - Always occurs with wx 3.0
   - Only occurs when using 'WriteText' method in wx 2.8
 - Progress dialogs can resize outside of display boundaries
-- 2.8 Only
+- wx 2.8:
   - Taskbar icon does not show up
   - 'Changes' text control is small on Changelog page
-  - Drag-&-drop cursor does not change
-- 3.0 Only
+- wx 3.0 only:
   - Credits list does not expand completely on right edge
