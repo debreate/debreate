@@ -10,6 +10,7 @@ import os, traceback, wx
 
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
+from dbr.functions          import MouseInsideWindow
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -495,19 +496,21 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## TODO: Doxygen
+    #  
+    # FIXME: Should send event to Files page???
     def OnDragEnd(self, event=None):
         if event and self.dragging:
             self.dragging = False
             
-            Logger.Debug(__name__, u'Dropped!!!')
-            
             # Reset cursor to default
             self.UpdateCursor(True)
             
-            # FIXME: Should event be sent to files page?
-            lst_files = self.Parent.Parent.lst_files
-            if lst_files.mouse_over:
-                Logger.Debug(__name__, u'Dropping on file list')
+            drop_files = MouseInsideWindow(self.Parent.Parent.GetListInstance())
+            
+            Logger.Debug(__name__, u'Dropped inside file list: {}'.format(drop_files))
+            
+            if drop_files:
+                self.Parent.Parent.OnImportFromTree()
             
             event.Skip()
     

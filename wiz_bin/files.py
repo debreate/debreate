@@ -299,6 +299,11 @@ class Panel(wx.ScrolledWindow):
         return self.tree_dirs
     
     
+    ## Retrieves FileList instances
+    def GetListInstance(self):
+        return self.lst_files
+    
+    
     ## Retrieves the target output directory
     def GetTarget(self):
         if FieldEnabled(self.ti_target):
