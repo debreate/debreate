@@ -437,3 +437,17 @@ def BuildDebPackage(stage_dir, target_file):
         return (dbrerrno.EAGAIN, traceback.format_exc())
     
     return (dbrerrno.SUCCESS, output)
+
+
+## Check if mouse is within the rectangle area of a window
+def MouseInsideWindow(window):
+    # Only need to find size because ScreenToClient method gets mouse pos
+    # relative to window.
+    win_size = window.GetSizeTuple()
+    mouse_pos = window.ScreenToClient(wx.GetMousePosition())
+    
+    # Subtracting from width & height compensates for visual boundaries
+    inside_x = 0 <= mouse_pos[0] <= win_size[0]-4
+    inside_y = 0 <= mouse_pos[1] <= win_size[1]-3
+    
+    return inside_x and inside_y
