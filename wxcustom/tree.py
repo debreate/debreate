@@ -133,7 +133,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         self.ctx_menu = wx.Menu()
         
-        mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add'))
+        mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add to project'))
         mitm_rename = wx.MenuItem(self.ctx_menu, ident.RENAME, GT(u'Rename'))
         mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT(u'Refresh'))
         
