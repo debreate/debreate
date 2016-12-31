@@ -171,11 +171,6 @@ class Panel(wx.ScrolledWindow):
         wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
         
         self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
-        
-        # Handle items dragged & dropped from directory tree
-        # FIXME: Should directory tree post event???
-        self.lst_files.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseEnterList)
-        self.lst_files.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseLeaveList)
     
     
     ## Adds files to the list
@@ -461,39 +456,9 @@ class Panel(wx.ScrolledWindow):
         self.LoadPaths(file_list)
     
     
-    ## Files are dragged & dropped from directory tree
-    def OnDropFromTree(self, event=None):
-        Logger.Debug(__name__, u'Files dropped from tree')
-        
-        if event:
-            event.Skip()
-    
-    
     ## Files & directories added from directory tree
-    #  
-    #  FIXME: How to enable multi-select in wx 2.8
     def OnImportFromTree(self, event=None):
         self.LoadPaths(self.DirTree.GetSelectedPaths())
-    
-    
-    ## TODO: Doxygen
-    def OnMouseEnterList(self, event=None):
-        self.lst_files.mouse_over = True
-        
-        Logger.Debug(__name__, u'Mouse over file list: {}'.format(self.lst_files.mouse_over))
-        
-        if event:
-            event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def OnMouseLeaveList(self, event=None):
-        self.lst_files.mouse_over = False
-        
-        Logger.Debug(__name__, u'Mouse over file list: {}'.format(self.lst_files.mouse_over))
-        
-        if event:
-            event.Skip()
     
     
     ## TODO: Doxygen
