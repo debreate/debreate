@@ -8,6 +8,7 @@
 
 import os, traceback, wx
 
+from dbr.cursor             import GetCursor
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import MouseInsideWindow
@@ -20,7 +21,6 @@ from globals.commands       import ExecuteCommand
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
-from wxcustom.cursor        import GetCursor
 from wxcustom.imagelist     import sm_DirectoryImageList as ImageList
 
 

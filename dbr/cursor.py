@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wxcustom.cursor
+## \package dbr.cursor
 
 # MIT licensing
 # See: docs/LICENSE.txt
