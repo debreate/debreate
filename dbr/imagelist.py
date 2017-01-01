@@ -54,6 +54,4 @@ class DirectoryImageList(wx.ImageList):
 
 
 ## Image list used for dbr.tree.DirectoryTree
-#  
-#  NOTE: dbr.tree module will be moving to wxcustom package
 sm_DirectoryImageList = DirectoryImageList(16, 16)
