@@ -20,6 +20,7 @@ class DirectoryImageList(wx.ImageList):
         directory_images = []
         
         custom_images = (
+            u'failsafe',
             u'folder',
             u'folder-open',
             u'file',
@@ -73,10 +74,12 @@ class DirectoryImageList(wx.ImageList):
     #  \param description
     #    \b \e String name/description for image
     #  \return
-    #    \b \e Integer index of image
+    #    \b \e Integer index of image or index of failsafe image if description doesn't exist
     def GetImageIndex(self, description):
         if description in self.Images:
             return self.Images[description]
+        
+        return self.Images[u'failsafe']
 
 
 ## Image list used for dbr.tree.DirectoryTree
