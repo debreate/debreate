@@ -12,6 +12,7 @@ from dbr.cursor             import GetCursor
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import MouseInsideWindow
+from dbr.imagelist          import sm_DirectoryImageList as ImageList
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -21,7 +22,6 @@ from globals.commands       import ExecuteCommand
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
-from wxcustom.imagelist     import sm_DirectoryImageList as ImageList
 
 
 ## A wxcustom tree item

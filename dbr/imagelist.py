@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wxcustom.imagelist
+## \package dbr.imagelist
 
 # MIT licensing
 # See: docs/LICENSE.txt
