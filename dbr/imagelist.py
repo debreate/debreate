@@ -8,24 +8,39 @@
 
 import wx
 
+from dbr.image import GetBitmap
+from dbr.log import Logger
 
+
+## List of images used by dbr.tree.DirectoryTree
 class DirectoryImageList(wx.ImageList):
     def __init__(self, width, height, mask=True, initial_count=1):
         wx.ImageList.__init__(self, width, height, mask, initial_count)
         
-        directory_images = [
-            (wx.ART_FOLDER, u'folder'),
-            (wx.ART_FOLDER_OPEN, u'folder open'),
+        directory_images = []
+        
+        custom_images = (
+            u'folder',
+            u'folder-open',
+            u'file',
+            )
+        
+        for I in custom_images:
+            directory_images.append((GetBitmap(I), I))
+        
+        standard_images = (
             (wx.ART_HARDDISK, u'harddisk'),
             (wx.ART_CDROM, u'cdrom'),
             (wx.ART_FLOPPY, u'floppy'),
             (wx.ART_REMOVABLE, u'removable'),
-            (wx.ART_NORMAL_FILE, u'normal file'),
             (wx.ART_EXECUTABLE_FILE, u'executable file'),
-            ]
+            )
+        
+        for I in standard_images:
+            directory_images.append(I)
         
         aliases = (
-            (u'normal file', (u'file',)),
+            (u'file', (u'normal file',)),
             )
         
         self.Images = {}
@@ -41,7 +56,15 @@ class DirectoryImageList(wx.ImageList):
         for IMAGE in directory_images:
             IMAGE = IMAGE[0]
             
-            self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
+            if isinstance(IMAGE, wx.Bitmap):
+                Logger.Debug(__name__, u'Adding wx.Bitmap to image list')
+                
+                self.Add(IMAGE)
+            
+            else:
+                Logger.Debug(__name__, u'Adding bitmap from wx.ArtProvider')
+                
+                self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
     
     
     ## Retrieves image index for setting in dbr.tree.DirectoryTree
