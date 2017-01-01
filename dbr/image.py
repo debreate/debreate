@@ -22,7 +22,7 @@ from globals.paths      import ConcatPaths
 #    \b \e string : Image type / filename suffix
 #  \return
 #    \b \e string : Either pathname of image or None if file not found
-def GetImage(name, size=16, img_type=u'png'):
+def GetImagePath(name, size=16, img_type=u'png'):
     image = ConcatPaths((PATH_bitmaps, str(size), u'{}.{}'.format(name, img_type)))
     
     if not os.path.isfile(image):

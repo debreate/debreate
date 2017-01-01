@@ -6,10 +6,9 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import wx
 
-from globals.bitmaps    import PATH_bitmaps
-from globals.paths      import ConcatPaths
+from dbr.image import GetImagePath
 
 
 ## Retrieves an image from bitmaps dir & creates a wx.Cursor
@@ -23,9 +22,9 @@ from globals.paths      import ConcatPaths
 #  \return
 #    \b \e wx.Cursor : Either a new cursor using the retrieved image, or wx.NullCursor
 def GetCursor(name, size=16, img_type=u'png'):
-    cursor_bitmap = ConcatPaths((PATH_bitmaps, str(size), u'{}.{}'.format(name, img_type)))
+    cursor_bitmap = GetImagePath(name, size, img_type)
     
-    if not os.path.isfile(cursor_bitmap):
+    if not cursor_bitmap:
         return wx.NullCursor
     
     return wx.Cursor(cursor_bitmap, wx.BITMAP_TYPE_PNG)
