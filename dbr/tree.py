@@ -130,7 +130,7 @@ class DirectoryTree(wx.TreeCtrl):
         # NOTE: Use individual items children???
         self.item_list = []
         
-        self.root_item = self.AddRoot(GT(u'Home directory'), path,
+        self.root_home = self.AddRoot(GT(u'Home directory'), path,
                 ImageList.GetImageIndex(u'folder-home'))
         
         self.ctx_menu = wx.Menu()
@@ -252,15 +252,15 @@ class DirectoryTree(wx.TreeCtrl):
     #  
     #  FIXME: Need to make sure PathItem instances are removed from memory
     def DeleteAllItems(self):
-        self.DeleteChildren(self.root_item.GetBaseItem())
-        self.root_item.RemoveChildren()
+        self.DeleteChildren(self.root_home.GetBaseItem())
+        self.root_home.RemoveChildren()
         
         # ???: Redundant
         for I in reversed(self.item_list):
             del I
         
         # Reset item list
-        self.item_list = [self.root_item,]
+        self.item_list = [self.root_home,]
     
     
     ## Delete the listed items
@@ -336,7 +336,7 @@ class DirectoryTree(wx.TreeCtrl):
         else:
             base_item = item.GetBaseItem()
         
-        if item == self.root_item:
+        if item == self.root_home:
             # Root item does not have parent
             return None
         
@@ -362,7 +362,7 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Override inherited method to retrieve wxcustom root item with 'Path' attribute
     def GetRootItem(self):
-        return self.root_item
+        return self.root_home
     
     
     ## Retrieve paths of all selected tree items
