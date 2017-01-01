@@ -16,7 +16,7 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
-from wxcustom.listinput     import ListCtrlPanel
+from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
 from dbr.markdown           import MarkdownDialog
 from dbr.panel              import BorderedPanel

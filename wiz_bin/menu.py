@@ -19,7 +19,7 @@ from dbr.custom             import SaveFile
 from dbr.dialogs            import ConfirmationDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
-from wxcustom.listinput     import ListCtrlPanel
+from dbr.listinput          import ListCtrlPanel
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.selectinput        import ComboBox

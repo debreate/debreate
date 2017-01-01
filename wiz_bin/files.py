@@ -21,6 +21,7 @@ from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
+from dbr.listinput          import FileList
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
@@ -32,7 +33,6 @@ from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
-from wxcustom.listinput     import FileList
 
 
 # Set the maximum file count to process without showing progress dialog
@@ -294,7 +294,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Retrieve DirectoryTreePanel instance
     #  
-    #  Used in wxcustom.listinput.FileList for referencing size
+    #  Used in dbr.listinput.FileList for referencing size
     def GetDirTreePanel(self):
         return self.tree_dirs
     
