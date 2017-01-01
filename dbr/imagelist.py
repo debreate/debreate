@@ -22,6 +22,7 @@ class DirectoryImageList(wx.ImageList):
         custom_images = (
             u'failsafe',
             u'folder',
+            u'folder-home',
             u'folder-open',
             u'file',
             u'hard-disk',

@@ -131,7 +131,7 @@ class DirectoryTree(wx.TreeCtrl):
         self.item_list = []
         
         self.root_item = self.AddRoot(GT(u'Home directory'), path,
-                ImageList.GetImageIndex(u'folder'))
+                ImageList.GetImageIndex(u'folder-home'))
         
         self.ctx_menu = wx.Menu()
         
