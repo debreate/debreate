@@ -25,6 +25,11 @@ from globals.paths      import ConcatPaths
 def GetImagePath(name, size=16, img_type=u'png'):
     image_path = ConcatPaths((PATH_bitmaps, str(size), u'{}.{}'.format(name, img_type)))
     
+    # Attempt to use failsafe image if file does not exists
+    if not os.path.isfile(image_path):
+        image_path = ConcatPaths((PATH_bitmaps, str(size), u'failsafe.png'))
+    
+    # Last resort is to retrun None if a failsafe image was not found
     if not os.path.isfile(image_path):
         return None
     
