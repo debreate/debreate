@@ -20,7 +20,7 @@ from globals.commands       import ExecuteCommand
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
-from wxcustom.cursor        import CUR_FOLDER
+from wxcustom.cursor        import GetCursor
 from wxcustom.imagelist     import sm_DirectoryImageList as ImageList
 
 
@@ -723,7 +723,13 @@ class DirectoryTree(wx.TreeCtrl):
                 parent_window.SetCursor(wx.NullCursor)
                 return
             
-            parent_window.SetCursor(CUR_FOLDER)
+            new_cursor = u'drag-file'
+            for I in self.GetSelections():
+                if os.path.isdir(I.Path):
+                    new_cursor = u'drag-folder'
+                    break
+            
+            parent_window.SetCursor(GetCursor(new_cursor, 24))
         
         except TypeError:
             err_l1 = GT(u'Failed to set cursor')
