@@ -25,6 +25,7 @@ from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
+from dbr.tree               import DirectoryTreePanel
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
@@ -32,7 +33,6 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 from wxcustom.listinput     import FileList
-from wxcustom.tree          import DirectoryTreePanel
 
 
 # Set the maximum file count to process without showing progress dialog
