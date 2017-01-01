@@ -8,10 +8,10 @@
 
 import os, traceback, wx
 
-from dbr.cursor             import GetCursor
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import MouseInsideWindow
+from dbr.image              import GetCursor
 from dbr.imagelist          import sm_DirectoryImageList as ImageList
 from dbr.language           import GT
 from dbr.log                import Logger
