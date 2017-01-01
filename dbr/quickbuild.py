@@ -20,8 +20,8 @@ from dbr.functions          import BuildDebPackage
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
-from wxcustom.timer         import DebreateTimer
-from wxcustom.timer         import EVT_TIMER_STOP
+from dbr.timer              import DebreateTimer
+from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.wizardhelper   import GetTopWindow
