@@ -23,24 +23,25 @@ class DirectoryImageList(wx.ImageList):
             u'folder',
             u'folder-open',
             u'file',
+            u'hard-disk',
             )
         
         for I in custom_images:
             directory_images.append((GetBitmap(I), I))
         
-        standard_images = (
-            (wx.ART_HARDDISK, u'harddisk'),
+        stock_images = (
             (wx.ART_CDROM, u'cdrom'),
             (wx.ART_FLOPPY, u'floppy'),
             (wx.ART_REMOVABLE, u'removable'),
             (wx.ART_EXECUTABLE_FILE, u'executable file'),
             )
         
-        for I in standard_images:
+        for I in stock_images:
             directory_images.append(I)
         
         aliases = (
             (u'file', (u'normal file',)),
+            (u'hard-disk', (u'harddisk',)),
             )
         
         self.Images = {}
@@ -71,6 +72,8 @@ class DirectoryImageList(wx.ImageList):
     #  
     #  \param description
     #    \b \e String name/description for image
+    #  \return
+    #    \b \e Integer index of image
     def GetImageIndex(self, description):
         if description in self.Images:
             return self.Images[description]
