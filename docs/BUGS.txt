@@ -5,6 +5,7 @@ Must be fixed before release:
 - App crashes is trying to delete item & parent directory together in directory tree
 - wx 2.8 only:
   - Drag-&-drop cursor does not change
+- Refresh/ReCreateTree fails because of root item change
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
