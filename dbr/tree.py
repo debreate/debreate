@@ -275,40 +275,49 @@ class DirectoryTree(wx.TreeCtrl):
     #  NOTE: Only items representing directories should expand
     #  FIXME: Change icon when expanded/collapsed
     def Expand(self, item):
-        if item.IsFile():
-            return False
-        
-        dirs = []
-        files = []
-        
-        if not self.ItemHasChildren(item):
-            # FIXME: Should use regular expressions for filter
-            item_path = item.GetPath()
-            for LABEL in os.listdir(item_path):
-                # Ignore filtered items
-                filtered = False
-                for FILTER in self.exclude_pattern:
-                    if LABEL.startswith(FILTER):
-                        filtered = True
-                        break
+        if isinstance(item, PathItem):
+            if item.IsFile():
+                return False
+            
+            dirs = []
+            files = []
+            
+            if not self.ItemHasChildren(item):
+                # FIXME: Should use regular expressions for filter
+                item_path = item.GetPath()
+                for LABEL in os.listdir(item_path):
+                    # Ignore filtered items
+                    filtered = False
+                    for FILTER in self.exclude_pattern:
+                        if LABEL.startswith(FILTER):
+                            filtered = True
+                            break
+                    
+                    if not filtered:
+                        child_path = ConcatPaths((item_path, LABEL))
+                        
+                        if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
+                            dirs.append((LABEL, child_path,))
+                        
+                        elif os.path.isfile(child_path) and os.access(child_path, os.R_OK):
+                            files.append((LABEL, child_path,))
                 
-                if not filtered:
-                    child_path = u'{}/{}'.format(item_path, LABEL)
-                    
-                    if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
-                        dirs.append((LABEL, child_path,))
-                    
-                    elif os.path.isfile(child_path) and os.access(child_path, os.R_OK):
-                        files.append((LABEL, child_path,))
-            
-            # Sort directories first
-            for DIR, PATH in sorted(dirs):
-                item.AddChild(self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder')))
-            
-            for FILE, PATH in sorted(files):
-                item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))
+                # Sort directories first
+                for DIR, PATH in sorted(dirs):
+                    item.AddChild(self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder')))
+                
+                for FILE, PATH in sorted(files):
+                    item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))
         
-        return wx.TreeCtrl.Expand(self, item.GetBaseItem())
+        # Recursively expand parent items
+        parent = self.GetItemParent(item)
+        if parent:
+            self.Expand(parent)
+        
+        if isinstance(item, PathItem):
+            item = item.GetBaseItem()
+        
+        return wx.TreeCtrl.Expand(self, item)
     
     
     ## TODO: Doxygen
