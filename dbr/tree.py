@@ -197,9 +197,12 @@ class DirectoryTree(wx.TreeCtrl):
         return root_item
     
     
-    ## Override inherited method to return wxcustom PathItem instances
+    ## Override inherited method to return custom PathItem instances
     def AppendItem(self, parent, label, path, image=-1, selImage=-1, data=None):
-        base_item = wx.TreeCtrl.AppendItem(self, parent.GetBaseItem(), label, image, selImage, data)
+        if isinstance(parent, PathItem):
+            parent = parent.GetBaseItem()
+        
+        base_item = wx.TreeCtrl.AppendItem(self, parent, label, image, selImage, data)
         tree_item = PathItem(base_item, path, label)
         
         if os.path.isdir(path):
