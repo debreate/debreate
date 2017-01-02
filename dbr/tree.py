@@ -768,10 +768,8 @@ class DirectoryTree(wx.TreeCtrl):
     #    \b \e bool : Resets cursor back to default if True
     def UpdateCursor(self, reset=False):
         try:
-            parent_window = self.Parent.Parent
-            
             if reset:
-                parent_window.SetCursor(wx.NullCursor)
+                wx.SetCursor(wx.NullCursor)
                 return
             
             new_cursor = u'drag-file'
@@ -780,7 +778,7 @@ class DirectoryTree(wx.TreeCtrl):
                     new_cursor = u'drag-folder'
                     break
             
-            parent_window.SetCursor(GetCursor(new_cursor, 24))
+            wx.SetCursor(GetCursor(new_cursor, 24))
         
         except TypeError:
             err_l1 = GT(u'Failed to set cursor')

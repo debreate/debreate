@@ -3,8 +3,6 @@
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
 - App crashes if trying to delete item & parent directory together in directory tree
-- wx 2.8 only:
-  - Drag-&-drop cursor does not change
 - Refresh/ReCreateTree fails because of root item change
 
 Low priority:
@@ -16,5 +14,6 @@ Low priority:
 - wx 2.8:
   - Taskbar icon does not show up
   - 'Changes' text control is small on Changelog page
+  - Directory tree is small at startup
 - wx 3.0 only:
   - Credits list does not expand completely on right edge
