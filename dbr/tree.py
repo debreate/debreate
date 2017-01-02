@@ -716,7 +716,10 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## TODO: Doxygen
     def SetItemHasChildren(self, item, has_children=True):
-        return wx.TreeCtrl.SetItemHasChildren(self, item.GetBaseItem(), has_children)
+        if isinstance(item, PathItem):
+            item = item.GetBaseItem()
+        
+        return wx.TreeCtrl.SetItemHasChildren(self, item, has_children)
     
     
     ## Sets the currently selected path
