@@ -130,8 +130,17 @@ class DirectoryTree(wx.TreeCtrl):
         # NOTE: Use individual items children???
         self.item_list = []
         
-        self.root_home = self.AddRoot(GT(u'Home directory'), path,
-                ImageList.GetImageIndex(u'folder-home'))
+        self.root_item = self.AddRoot(GT(u'System'), ImageList.GetImageIndex(u'computer'))
+        
+        # Failsafe conditional in case of errors reading user home directory
+        home_exists = os.path.isdir(PATH_home)
+        if home_exists:
+            self.root_home = self.AppendItem(self.root_item, GT(u'Home directory'), PATH_home,
+                    ImageList.GetImageIndex(u'folder-home'))
+        
+        # Failsafe conditional in case of non-Unix filesystem standard
+        if os.path.isdir(u'/'):
+            self.AppendItem(self.root_item, u'/', u'/', ImageList.GetImageIndex(u'hard-disk'))
         
         self.ctx_menu = wx.Menu()
         
@@ -171,10 +180,12 @@ class DirectoryTree(wx.TreeCtrl):
         
         # *** Post-layout/event actions *** #
         
-        self.InitDirectoryLayout()
+        # Expand the user's home directory
+        if home_exists:
+            self.InitDirectoryLayout()
     
     
-    ## Override inherited method to return wxcustom PathItem instances
+    ## Override inherited method to return custom PathItem instances
     #  
     #  \override wx.TreeCtrl.AddRoot
     #  \param label
@@ -187,12 +198,11 @@ class DirectoryTree(wx.TreeCtrl):
     #    \b \e ???
     #  \param data
     #    \b \e
-    def AddRoot(self, label, path, image=-1, selImage=-1, data=None):
-        root_item = PathItem(wx.TreeCtrl.AddRoot(self, label, image, selImage, data), path, label)
+    def AddRoot(self, label, image=-1, selImage=-1, data=None):
+        root_item = wx.TreeCtrl.AddRoot(self, label, image, selImage, data)
         
+        # Root item should always have children unless errors found on filesystem
         self.SetItemHasChildren(root_item)
-        
-        self.item_list.append(root_item)
         
         return root_item
     
@@ -255,15 +265,16 @@ class DirectoryTree(wx.TreeCtrl):
     #  
     #  FIXME: Need to make sure PathItem instances are removed from memory
     def DeleteAllItems(self):
-        self.DeleteChildren(self.root_home.GetBaseItem())
-        self.root_home.RemoveChildren()
+        self.DeleteChildren(self.root_item.GetBaseItem())
+        self.root_item.RemoveChildren()
         
         # ???: Redundant
         for I in reversed(self.item_list):
             del I
         
         # Reset item list
-        self.item_list = [self.root_home,]
+        #self.item_list = [self.root_home,]
+        self.item_list = []
     
     
     ## Delete the listed items
@@ -371,7 +382,7 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Override inherited method to retrieve wxcustom root item with 'Path' attribute
     def GetRootItem(self):
-        return self.root_home
+        return self.root_item
     
     
     ## Retrieve paths of all selected tree items
@@ -431,12 +442,10 @@ class DirectoryTree(wx.TreeCtrl):
         return tuple(selected)
     
     
-    ## TODO: Doxygen
+    ## Expands the user's home directory
     def InitDirectoryLayout(self):
-        root_item = self.GetRootItem()
-        
         # Don't call self.Expand directly
-        self.OnExpand(item=root_item)
+        self.OnExpand(item=self.root_home)
     
     
     ## TODO: Doxygen
