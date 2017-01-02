@@ -2,7 +2,7 @@
 
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
-- App crashes is trying to delete item & parent directory together in directory tree
+- App crashes if trying to delete item & parent directory together in directory tree
 - wx 2.8 only:
   - Drag-&-drop cursor does not change
 - Refresh/ReCreateTree fails because of root item change
