@@ -382,7 +382,9 @@ class DirectoryTree(wx.TreeCtrl):
         paths = []
         
         for S in selected:
-            paths.append(S.GetPath())
+            # Ensure that all selected items are PathItem instances
+            if isinstance(S, PathItem):
+                paths.append(S.Path)
         
         return tuple(paths)
     
