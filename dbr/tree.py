@@ -421,6 +421,8 @@ class DirectoryTree(wx.TreeCtrl):
         base_selected = wx.TreeCtrl.GetSelections(self)
         selected = []
         
+        # Convert wx.TreeItemId instances to PathItem.
+        # Also omits any selected items that are not PathItem instances.
         for BASE in base_selected:
             for ITEM in self.item_list:
                 if ITEM.GetBaseItem() == BASE:
