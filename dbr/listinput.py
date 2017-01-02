@@ -14,6 +14,7 @@ from dbr.language   import GT
 from dbr.log        import Logger
 from dbr.panel      import BorderedPanel
 from globals.colors import COLOR_warn
+from globals.paths  import ConcatPaths
 
 
 ## A list control with no border
@@ -425,21 +426,23 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
             source_dir = os.path.dirname(filename)
             filename = os.path.basename(filename)
         
-        Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
+        source_path = ConcatPaths((source_dir, filename))
+        
+        Logger.Debug(__name__, GT(u'Adding file: {}').format(source_path))
         
         self.InsertStringItem(list_index, filename)
         self.SetStringItem(list_index, self.target_col, target_dir)
         
         self.sources_list.insert(list_index, source_dir)
         
-        if os.path.isdir(u'{}/{}'.format(source_dir, filename)):
+        if os.path.isdir(source_path):
             self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
         
         else:
-            if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
+            if os.access(source_path, os.X_OK) or executable:
                 self.SetItemTextColour(list_index, wx.RED)
             
-            if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
+            if not os.path.isfile(source_path):
                 self.SetItemBackgroundColour(list_index, COLOR_warn)
                 
                 # File was added but does not exist on filesystem
