@@ -232,7 +232,10 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Override inherited method to avoid TypeError
     def Collapse(self, item):
-        return wx.TreeCtrl.Collapse(self, item.GetBaseItem())
+        if isinstance(item, PathItem):
+            item = item.GetBaseItem()
+        
+        return wx.TreeCtrl.Collapse(self, item)
     
     
     ## Override inherited method to delete item & base item
