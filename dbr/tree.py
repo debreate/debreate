@@ -734,6 +734,21 @@ class DirectoryTree(wx.TreeCtrl):
         return wx.TreeCtrl.SetItemHasChildren(self, item, has_children)
     
     
+    ## Override inherited method to extract wx.TreeItemId instance
+    #  
+    #  \param item
+    #    \b \e PathItem or \b \e wx.TreeItemId instance
+    #  \param image_index
+    #    Image \b \e integer index to set for item
+    #  \param state
+    #    Item state for which to use image
+    def SetItemImage(self, item, image_index, state):
+        if isinstance(item, PathItem):
+            item = item.GetBaseItem()
+        
+        return wx.TreeCtrl.SetItemImage(self, item, image_index, state)
+    
+    
     ## Sets the currently selected path
     #  
     #  \param path
