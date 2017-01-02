@@ -321,7 +321,11 @@ class DirectoryTree(wx.TreeCtrl):
                 
                 # Sort directories first
                 for DIR, PATH in sorted(dirs):
-                    item.AddChild(self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder')))
+                    child = self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder'))
+                    self.SetItemImage(child, ImageList.GetImageIndex(u'folder'), wx.TreeItemIcon_Normal)
+                    self.SetItemImage(child, ImageList.GetImageIndex(u'folder-open'), wx.TreeItemIcon_Expanded)
+                    
+                    item.AddChild(child)
                 
                 for FILE, PATH in sorted(files):
                     item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))

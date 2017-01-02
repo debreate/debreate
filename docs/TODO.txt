@@ -6,7 +6,6 @@
 - Scan system for drives to add to directory tree
 
 Non-priority:
-- Set alternate icon for expanded folders in directory tree
 - Replace wx.MessageDialog with DetailedMessageDialog
 - Changelog page: Add distribution automatically (drop-down box)
 - Add custom field option to Control
