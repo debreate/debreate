@@ -449,8 +449,12 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Override inherited method to extract base item
     def ItemHasChildren(self, item):
-        # NOTE: HasChildren method returns a list ...
-        #       Should return a boolean
+        # Root item should always have children
+        if isinstance(item, wx.TreeItemId) and item == self.root_item:
+            return True
+        
+        # FIXME: HasChildren method returns a list ...
+        #        Should return a boolean
         return item.HasChildren()
     
     
