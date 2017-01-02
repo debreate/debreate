@@ -337,23 +337,20 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## TODO: Doxygen
     def GetItemParent(self, item):
-        base_item = None
-        if not isinstance(item, PathItem):
-            base_item = item
-            
-            for I in self.item_list:
-                if I.GetBaseItem() == base_item:
-                    item = I
-        
-        else:
-            base_item = item.GetBaseItem()
-        
-        if item == self.root_home:
+        if isinstance(item, wx.TreeItemId) and item == self.root_item:
             # Root item does not have parent
             return None
         
-        parent = wx.TreeCtrl.GetItemParent(self, base_item)
+        if isinstance(item, PathItem):
+            item = item.GetBaseItem()
         
+        parent = wx.TreeCtrl.GetItemParent(self, item)
+        
+        # Root item is not in item list
+        if parent == self.root_item:
+            return parent
+        
+        # Convert to PathItem
         for I in self.item_list:
             if I.GetBaseItem() == parent:
                 parent = I
