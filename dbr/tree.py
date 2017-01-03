@@ -17,6 +17,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from globals                import ident
+from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
 from globals.paths          import ConcatPaths
@@ -132,15 +133,21 @@ class DirectoryTree(wx.TreeCtrl):
         
         self.root_item = self.AddRoot(GT(u'System'), ImageList.GetImageIndex(u'computer'))
         
+        self.COLOR_default = self.GetItemBackgroundColour(self.root_item)
+        
+        # List of sub-root items that shouldn't be deleted if they exist on filesystem
+        self.root_list = []
+        
         # Failsafe conditional in case of errors reading user home directory
         home_exists = os.path.isdir(PATH_home)
         if home_exists:
             self.root_home = self.AppendItem(self.root_item, GT(u'Home directory'), PATH_home,
                     ImageList.GetImageIndex(u'folder-home'))
+            self.root_list.append(self.root_home)
         
         # Failsafe conditional in case of non-Unix filesystem standard
         if os.path.isdir(u'/'):
-            self.AppendItem(self.root_item, u'/', u'/', ImageList.GetImageIndex(u'hard-disk'))
+            self.root_list.append(self.AppendItem(self.root_item, u'/', u'/', ImageList.GetImageIndex(u'hard-disk')))
         
         self.ctx_menu = wx.Menu()
         
@@ -268,16 +275,20 @@ class DirectoryTree(wx.TreeCtrl):
     #  
     #  FIXME: Need to make sure PathItem instances are removed from memory
     def DeleteAllItems(self):
-        self.DeleteChildren(self.root_item.GetBaseItem())
-        self.root_item.RemoveChildren()
+        for I in self.root_list:
+            if isinstance(I, PathItem):
+                self.DeleteChildren(I.GetBaseItem())
+                I.RemoveChildren()
+            
+            else:
+                self.DeleteChildren(I)
         
         # ???: Redundant
         for I in reversed(self.item_list):
             del I
         
-        # Reset item list
-        #self.item_list = [self.root_home,]
-        self.item_list = []
+        # Reset item list to only contain sub-root items
+        self.item_list = list(self.root_list)
     
     
     ## Delete the listed items
@@ -302,33 +313,38 @@ class DirectoryTree(wx.TreeCtrl):
             if not self.ItemHasChildren(item):
                 # FIXME: Should use regular expressions for filter
                 item_path = item.GetPath()
-                for LABEL in os.listdir(item_path):
-                    # Ignore filtered items
-                    filtered = False
-                    for FILTER in self.exclude_pattern:
-                        if LABEL.startswith(FILTER):
-                            filtered = True
-                            break
-                    
-                    if not filtered:
-                        child_path = ConcatPaths((item_path, LABEL))
-                        
-                        if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
-                            dirs.append((LABEL, child_path,))
-                        
-                        elif os.path.isfile(child_path) and os.access(child_path, os.R_OK):
-                            files.append((LABEL, child_path,))
                 
-                # Sort directories first
-                for DIR, PATH in sorted(dirs):
-                    child = self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder'))
-                    self.SetItemImage(child, ImageList.GetImageIndex(u'folder'), wx.TreeItemIcon_Normal)
-                    self.SetItemImage(child, ImageList.GetImageIndex(u'folder-open'), wx.TreeItemIcon_Expanded)
+                try:
+                    for LABEL in os.listdir(item_path):
+                        # Ignore filtered items
+                        filtered = False
+                        for FILTER in self.exclude_pattern:
+                            if LABEL.startswith(FILTER):
+                                filtered = True
+                                break
+                        
+                        if not filtered:
+                            child_path = ConcatPaths((item_path, LABEL))
+                            
+                            if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
+                                dirs.append((LABEL, child_path,))
+                            
+                            elif os.path.isfile(child_path) and os.access(child_path, os.R_OK):
+                                files.append((LABEL, child_path,))
                     
-                    item.AddChild(child)
+                    # Sort directories first
+                    for DIR, PATH in sorted(dirs):
+                        child = self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder'))
+                        self.SetItemImage(child, ImageList.GetImageIndex(u'folder'), wx.TreeItemIcon_Normal)
+                        self.SetItemImage(child, ImageList.GetImageIndex(u'folder-open'), wx.TreeItemIcon_Expanded)
+                        
+                        item.AddChild(child)
+                    
+                    for FILE, PATH in sorted(files):
+                        item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))
                 
-                for FILE, PATH in sorted(files):
-                    item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))
+                except OSError:
+                    Logger.Warning(__name__, u'No such file or directory: {}'.format(item_path))
         
         # Recursively expand parent items
         parent = self.GetItemParent(item)
@@ -644,9 +660,17 @@ class DirectoryTree(wx.TreeCtrl):
     def OnSelect(self, event=None):
         selected = self.GetSelection()
         
-        if selected:
+        if isinstance(selected, PathItem):
+            base_item = selected.GetBaseItem()
+            
             if selected.Path != self.current_path:
                 self.SetPath(selected.Path)
+            
+            if not os.path.exists(selected.Path):
+                self.SetItemBackgroundColour(base_item, COLOR_warn)
+            
+            elif self.GetItemBackgroundColour(base_item) == COLOR_warn:
+                self.SetItemBackgroundColour(base_item, self.COLOR_default)
         
         if event:
             event.Skip()
@@ -655,20 +679,19 @@ class DirectoryTree(wx.TreeCtrl):
     ## Refreshes the tree's displayed layout
     def ReCreateTree(self):
         selected = self.GetSelection()
-        selected_path = selected.Path
-        expanded = self.IsExpanded(selected)
+        
+        if isinstance(selected, PathItem):
+            selected_path = selected.Path
+            expanded = self.IsExpanded(selected)
+        
+        else:
+            selected_path = PATH_home
+            expanded = True
         
         self.DeleteAllItems()
         
         # Recreate tree
         self.InitDirectoryLayout()
-        
-        # DEBUG: Checking if selected still in memory
-        if selected:
-            Logger.Debug(__name__, u'Selected still in memory')
-        
-        else:
-            Logger.Debug(__name__, u'Selected NOT in memory')
         
         Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
         
