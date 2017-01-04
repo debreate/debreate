@@ -5,6 +5,8 @@ Must be fixed before release:
 - App crashes if trying to delete item & parent directory together in directory tree
 - AttributeError in dbr.dialogs.ShowErrorDialog:
   - in 'parent.GetName()' where 'parent' is string instance
+- wx 2.8:
+  - Directory tree is small at startup
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
@@ -15,7 +17,6 @@ Low priority:
 - wx 2.8:
   - Taskbar icon does not show up
   - 'Changes' text control is small on Changelog page
-  - Directory tree is small at startup
 - wx 3.0 only:
   - Credits list does not expand completely on right edge
 - Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command
