@@ -38,6 +38,11 @@ class PathItem:
         self.Path = path
         self.Label = label
         self.Children = []
+        
+        self.Type = u'file'
+        
+        if os.path.isdir(self.Path):
+            self.Type = u'folder'
     
     
     ## TODO: Doxygen
@@ -354,14 +359,17 @@ class DirectoryTree(wx.TreeCtrl):
                     
                     # Sort directories first
                     for DIR, PATH in sorted(dirs):
-                        child = self.AppendItem(item, DIR, PATH, ImageList.GetImageIndex(u'folder'))
+                        child = self.AppendItem(item, DIR, PATH)
                         self.SetItemImage(child, ImageList.GetImageIndex(u'folder'), wx.TreeItemIcon_Normal)
                         self.SetItemImage(child, ImageList.GetImageIndex(u'folder-open'), wx.TreeItemIcon_Expanded)
                         
                         item.AddChild(child)
                     
                     for FILE, PATH in sorted(files):
-                        item.AddChild(self.AppendItem(item, FILE, PATH, ImageList.GetImageIndex(u'file')))
+                        child = self.AppendItem(item, FILE, PATH)
+                        self.SetItemImage(child, ImageList.GetImageIndex(child.Type), wx.TreeItemIcon_Normal)
+                        
+                        item.AddChild(child)
                 
                 except OSError:
                     Logger.Warning(__name__, u'No such file or directory: {}'.format(item_path))
