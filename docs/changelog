@@ -25,6 +25,7 @@
 - Files & folders can be renamed & deleted from directory tree on Files page
   - 'gvfs-trash' required for deleting (moving to trash)
 - Use more custom message dialogs
+- Executable files in directory tree are displayed in red
 
 0.7.12
 - Fixes:

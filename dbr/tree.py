@@ -8,6 +8,7 @@
 
 import os, traceback, wx
 
+from dbr.colors             import COLOR_executable
 from dbr.colors             import COLOR_warn
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
@@ -307,6 +308,9 @@ class DirectoryTree(wx.TreeCtrl):
             # ???: Does this cause PathItem instance to be overwritten with wx.TreeItemId ...
             #      or other errors?
             self.SetItemHasChildren(tree_item)
+        
+        elif os.access(path, os.X_OK):
+            self.SetItemTextColour(base_item, COLOR_executable)
         
         self.item_list.append(tree_item)
         
