@@ -3,7 +3,6 @@
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
 - App crashes if trying to delete item & parent directory together in directory tree
-- QuickBuild crashes if trying to overwrite directory
 - QuickBuild should show confirmation dialog for existing files
 - QuickBuild should add '.deb' file extension automatically
 - AttributeError in dbr.dialogs.ShowErrorDialog:
