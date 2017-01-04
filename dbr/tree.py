@@ -21,6 +21,7 @@ from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
 from globals.devices        import GetMountedStorageDevices
+from globals.mime           import GetFileMimeType
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
@@ -43,6 +44,10 @@ class PathItem:
         
         if os.path.isdir(self.Path):
             self.Type = u'folder'
+        
+        mime = GetFileMimeType(self.Path)
+        if mime.split(u'/')[0] == u'image':
+            self.Type = u'image-generic'
     
     
     ## TODO: Doxygen
