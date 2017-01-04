@@ -60,9 +60,10 @@ class DirectoryImageList(wx.ImageList):
                 directory_images.append(SI)
         
         aliases = (
+            (u'audio-generic', (u'audio', u'audio-file', u'file-audio',)),
             (u'file', (u'normal file',)),
             (u'drive-floppy', (u'floppy', u'floppy-drive',)),
-            (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive')),
+            (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive', u'drive',)),
             (u'drive-removable', (u'removable', u'removable-drive',)),
             (u'image-generic', (u'image',)),
             )
