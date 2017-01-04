@@ -333,8 +333,8 @@ class Panel(wx.ScrolledWindow):
         prep = ProgressDialog(GetTopWindow(), GT(u'Processing Files'), GT(u'Scanning files ...'),
                 style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
         
-        # Only update the gauge every N files (hack until I figure out time)
-        update_interval = 900
+        # Only update the gauge every N files (hack until I figure out timer)
+        update_interval = 450
         count = 0
         
         prep.Show()
