@@ -71,10 +71,13 @@ class Panel(wx.ScrolledWindow):
         
         # Option to strip binaries
         self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
-        self.chk_strip.default = False
+        self.chk_strip.default = True
         
         if not CMD_strip:
             self.chk_strip.Disable()
+        
+        else:
+            self.chk_strip.SetValue(self.chk_strip.default)
         
         # Deletes the temporary build tree
         self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete build tree'))

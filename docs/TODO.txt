@@ -1,7 +1,6 @@
 0.7.13
 - Testing for both wx 3.0 & 2.8
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
-- Set 'strip binaries' to True by default in build page
 
 Non-priority:
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
