@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, thread, wx
+import os, thread, traceback, wx
 
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonBuild
@@ -117,17 +117,24 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     def Build(self, stage, target):
         completed_status = (0, GT(u'errors'))
         
-        output = BuildDebPackage(stage, target)
-        if output[0] == dbrerrno.SUCCESS:
-            completed_status = (GAUGE_MAX, GT(u'finished'))
+        try:
+            output = BuildDebPackage(stage, target)
+            if output[0] == dbrerrno.SUCCESS:
+                completed_status = (GAUGE_MAX, GT(u'finished'))
+            
+            else:
+                self.build_error = (
+                    GT(u'Could not build .deb package'),
+                    GT(u'Is the staged directory formatted correctly?'),
+                    stage,
+                    output[1],
+                )
         
-        else:
+        except:
             self.build_error = (
-                GT(u'Could not build .deb package'),
-                GT(u'Is the staged directory formatted correctly?'),
-                stage,
-                output[1],
-            )
+                GT(u'An unhandled error occured'),
+                traceback.format_exc(),
+                )
         
         self.timer.Stop()
         self.gauge.SetValue(completed_status[0])
@@ -240,7 +247,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             error_lines = self.build_error[:-1]
             error_output = self.build_error[-1]
             
-            ShowErrorDialog(error_lines, error_output, __name__)
+            ShowErrorDialog(error_lines, error_output, self)
             
             # Needs to be reset or error dialog will successively show
             self.build_error = None
