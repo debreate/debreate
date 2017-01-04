@@ -53,26 +53,6 @@ class BaseDialog(wx.Dialog):
 
 
 ## TODO: Doxygen
-class OverwriteDialog(wx.MessageDialog):
-    def __init__(self, parent, path):
-        wx.MessageDialog.__init__(self, parent, wx.EmptyString,
-                style=wx.ICON_QUESTION|wx.YES_NO|wx.YES_DEFAULT)
-        
-        self.SetYesNoLabels(GT(u'Replace'), GT(u'Cancel'))
-        
-        filename = os.path.basename(path)
-        dirname = os.path.basename(os.path.dirname(path))
-        
-        self.SetMessage(
-            GT(u'A file named "{}" already exists. Do you want to replace it?').format(filename)
-        )
-        
-        self.SetExtendedMessage(
-            GT(u'The file already exists in "{}". Replacing it will overwrite its contents.').format(dirname)
-        )
-
-
-## TODO: Doxygen
 class StandardDirDialog(wx.DirDialog):
     def __init__(self, parent, title, style=wx.DD_DEFAULT_STYLE):
         
@@ -438,6 +418,14 @@ class ConfirmationDialog(DetailedMessageDialog):
             style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(u'confirm', u'cancel')):
         DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
                 text=text, style=style, buttons=buttons)
+
+
+## TODO: Doxygen
+class OverwriteDialog(ConfirmationDialog):
+    def __init__(self, parent, filename):
+        text = u'{}\n\n{}'.format(GT(u'Overwrite file?'), filename)
+        
+        ConfirmationDialog.__init__(self, parent, GT(u'File Exists'), text)
 
 
 ## Message dialog that shows an error & details
