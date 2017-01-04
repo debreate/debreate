@@ -32,6 +32,7 @@ class DirectoryImageList(wx.ImageList):
         for I in custom_images:
             directory_images.append((GetBitmap(I), I))
         
+        # ???: Use custom floppy drive image
         stock_images = (
             (wx.ART_CDROM, u'cdrom'),
             (wx.ART_FLOPPY, u'floppy'),
@@ -44,6 +45,7 @@ class DirectoryImageList(wx.ImageList):
         
         aliases = (
             (u'file', (u'normal file',)),
+            (u'floppy', (u'drive-floppy', u'floppy-drive',)),
             (u'hard-disk', (u'harddisk',)),
             )
         
