@@ -40,17 +40,38 @@ class PathItem:
         self.Label = label
         self.Children = []
         
-        self.Type = u'file'
+        self.Type = GetFileMimeType(self.Path)
         
+        executable_types = (
+            u'x-executable',
+            u'x-python',
+            u'x-shellscript',
+            )
+        
+        # Don't use MIME type 'inode' for directories (symlinks are inodes)
         if os.path.isdir(self.Path):
-            self.Type = u'folder'
+            self.ImageIndex = ImageList.GetImageIndex(u'folder')
+            
+            Logger.Debug(__name__, u'PathItem type: folder')
         
-        mime = GetFileMimeType(self.Path).split(u'/')[0]
-        if mime == u'image':
-            self.Type = u'image-generic'
+        elif self.Type.startswith(u'image'):
+            self.ImageIndex = ImageList.GetImageIndex(u'image')
+            
+            Logger.Debug(__name__, u'PathItem type: image')
         
-        elif mime == u'audio':
-            self.Type = u'audio-generic'
+        elif self.Type.startswith(u'audio'):
+            self.ImageIndex = ImageList.GetImageIndex(u'audio')
+            
+            Logger.Debug(__name__, u'PathItem type: audio')
+        
+        else:
+            self.ImageIndex = ImageList.GetImageIndex(self.Type)
+            
+            # Use generic 'file' image as default
+            if self.ImageIndex == ImageList.GetImageIndex(u'failsafe'):
+                self.ImageIndex = ImageList.GetImageIndex(u'file')
+            
+            Logger.Debug(__name__, u'PathItem type: {}'.format(self.Type))
     
     
     ## TODO: Doxygen
@@ -381,7 +402,7 @@ class DirectoryTree(wx.TreeCtrl):
                     
                     for FILE, PATH in sorted(files):
                         child = self.AppendItem(item, FILE, PATH)
-                        self.SetItemImage(child, ImageList.GetImageIndex(child.Type), wx.TreeItemIcon_Normal)
+                        self.SetItemImage(child, child.ImageIndex, wx.TreeItemIcon_Normal)
                         
                         item.AddChild(child)
                 
