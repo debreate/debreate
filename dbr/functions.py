@@ -341,21 +341,6 @@ def IsIntTuple(value):
     return GetIntTuple(value) != None
 
 
-## TODO: Doxygen
-#  
-#  FIXME: Handle missing 'file' command
-def GetFileMimeType(file_name):
-    if CMD_file:
-        output = commands.getstatusoutput(u'{} --mime-type "{}"'.format(CMD_file, file_name))
-        
-        if output[0]:
-            return (output[0], output[1])
-        
-        return output[1].split(u': ')[-1]
-    
-    print(u'ERROR: "file" command does not exist on system')
-
-
 ## Checks if file is binary & needs stripped
 #  
 #  FIXME: Handle missing 'file' command

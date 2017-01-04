@@ -12,7 +12,6 @@ from dbr.buttons            import ButtonConfirm
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
-from dbr.functions          import GetFileMimeType
 from dbr.functions          import GetYear
 from dbr.functions          import RemoveTempDirectory
 from dbr.hyperlink          import Hyperlink
@@ -27,6 +26,7 @@ from globals.commands       import CMD_gzip
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.fileio         import ReadFile
+from globals.mime import GetFileMimeType
 from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
