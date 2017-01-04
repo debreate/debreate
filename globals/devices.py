@@ -55,6 +55,27 @@ class StorageDevice:
         for TYPE in device_types:
             if node.startswith(TYPE):
                 self.Type = device_types[TYPE]
+                break
+        
+        # Extended device type check
+        # ???: Better method?
+        type_dir = u'/dev/disk/by-path'
+        if os.path.isdir(type_dir):
+            node_types = os.listdir(type_dir)
+            for TYPE in node_types:
+                link = ConcatPaths((type_dir, TYPE))
+                
+                if os.path.islink(link):
+                    link_node = os.path.realpath(link)
+                    
+                    if link_node == self.Node:
+                        # Ensure we are only dealing with lowercase
+                        TYPE = TYPE.lower()
+                        
+                        if u'usb' in TYPE.split(u'-'):
+                            Logger.Debug(__name__, u'{} is a removable drive'.format(self.Node))
+                            
+                            self.Type = u'removable'
     
     
     ## Get the instances string mount point
