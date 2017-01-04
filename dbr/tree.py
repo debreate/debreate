@@ -14,13 +14,12 @@ from dbr.functions          import MouseInsideWindow
 from dbr.image              import GetCursor
 from dbr.imagelist          import sm_DirectoryImageList as ImageList
 from dbr.language           import GT
-from dbr.log                import Logger, DebugEnabled
+from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from globals                import ident
 from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
-from globals.devices        import GetDeviceMountPoints
 from globals.devices        import GetMountedStorageDevices
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
