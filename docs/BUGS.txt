@@ -16,3 +16,5 @@ Low priority:
   - Directory tree is small at startup
 - wx 3.0 only:
   - Credits list does not expand completely on right edge
+- Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command
+  - Find a workaround to display these as binary executables in directory tree
