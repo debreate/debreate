@@ -21,6 +21,7 @@ class DirectoryImageList(wx.ImageList):
         
         custom_images = (
             u'computer',
+            u'drive-floppy',
             u'drive-removable',
             u'failsafe',
             u'folder',
@@ -37,7 +38,7 @@ class DirectoryImageList(wx.ImageList):
         stock_images = (
             (wx.ART_CDROM, u'cdrom'),
             (wx.ART_EXECUTABLE_FILE, u'file-executable'),
-            (wx.ART_FLOPPY, u'floppy'),
+            (wx.ART_FLOPPY, u'drive-floppy'),
             (wx.ART_FOLDER, u'folder'),
             (wx.ART_FOLDER_OPEN, u'folder-open'),
             (wx.ART_HARDDISK, u'hard-disk'),
@@ -58,7 +59,7 @@ class DirectoryImageList(wx.ImageList):
         
         aliases = (
             (u'file', (u'normal file',)),
-            (u'floppy', (u'drive-floppy', u'floppy-drive',)),
+            (u'drive-floppy', (u'floppy', u'floppy-drive',)),
             (u'hard-disk', (u'harddisk',)),
             (u'drive-removable', (u'removable', u'removable-drive',)),
             )
