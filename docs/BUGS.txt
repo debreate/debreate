@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Progress dialogs are not refreshing on Files page
 - wx 2.8:
   - Directory tree is small at startup
 
