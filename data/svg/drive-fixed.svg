@@ -14,10 +14,12 @@
    sodipodi:version="0.32"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="drive-harddisk.svg"
+   sodipodi:docname="drive-fixed.svg"
    version="1.1"
    width="128"
    height="128">
+  <title
+     id="title4181">Drive Fixed</title>
   <defs
      id="defs3">
     <linearGradient
@@ -165,8 +167,8 @@
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer2"
-     inkscape:cx="32.8347"
-     inkscape:cy="32.992843"
+     inkscape:cx="-82.6653"
+     inkscape:cy="31.992843"
      inkscape:window-width="1600"
      inkscape:pageopacity="0.0"
      inkscape:window-height="949"
@@ -333,9 +335,11 @@
             <dc:title>Openclipart</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title></dc:title>
+        <dc:title>Drive Fixed</dc:title>
         <dc:date>2010-03-27T10:12:39</dc:date>
-        <dc:description>&quot;Hard disk&quot; icon from &lt;a href=&quot;http://tango.freedesktop.org/Tango_Desktop_Project&quot;&gt; Tango Project &lt;/a&gt; \n&lt;br&gt;&lt;br&gt;\nSince version 0.8.90 Tango Project icons are Public Domain: &lt;a href=&quot;http://tango.freedesktop.org/Frequently_Asked_Questions#Terms_of_Use.3F&quot;&gt; Tango Project FAQ &lt;/a&gt;</dc:description>
+        <dc:description>&quot;Hard disk&quot; icon from &lt;a href=&quot;http://tango.freedesktop.org/Tango_Desktop_Project&quot;&gt; Tango Project &lt;/a&gt; 
+\n&lt;br&gt;&lt;br&gt;
+\nSince version 0.8.90 Tango Project icons are Public Domain: &lt;a href=&quot;http://tango.freedesktop.org/Frequently_Asked_Questions#Terms_of_Use.3F&quot;&gt; Tango Project FAQ &lt;/a&gt;</dc:description>
         <dc:source>https://openclipart.org/detail/34537/tango-drive-hard-disk-by-warszawianka</dc:source>
         <dc:creator>
           <cc:Agent>

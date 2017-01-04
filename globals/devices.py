@@ -43,10 +43,10 @@ class StorageDevice:
                 self.Label = os.path.basename(mount_point)
         
         device_types = {
-            u'/dev/sd': u'hard-disk',
-            u'/dev/hd': u'hard-disk',
-            u'/dev/pd': u'hard-disk',
-            u'/dev/fd': u'floppy',
+            u'/dev/sd': u'drive-fixed',
+            u'/dev/hd': u'drive-fixed',
+            u'/dev/pd': u'drive-fixed',
+            u'/dev/fd': u'drive-floppy',
             }
         
         # The type string is used in dbr.tree.DirectroyTree to set item icon

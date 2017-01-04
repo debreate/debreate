@@ -21,6 +21,7 @@ class DirectoryImageList(wx.ImageList):
         
         custom_images = (
             u'computer',
+            u'drive-fixed',
             u'drive-floppy',
             u'drive-removable',
             u'failsafe',
@@ -28,20 +29,18 @@ class DirectoryImageList(wx.ImageList):
             u'folder-home',
             u'folder-open',
             u'file',
-            u'hard-disk',
             )
         
         for I in custom_images:
             directory_images.append((GetBitmap(I), I))
         
-        # ???: Use custom floppy drive image
         stock_images = (
             (wx.ART_CDROM, u'cdrom'),
             (wx.ART_EXECUTABLE_FILE, u'file-executable'),
             (wx.ART_FLOPPY, u'drive-floppy'),
             (wx.ART_FOLDER, u'folder'),
             (wx.ART_FOLDER_OPEN, u'folder-open'),
-            (wx.ART_HARDDISK, u'hard-disk'),
+            (wx.ART_HARDDISK, u'drive-fixed'),
             (wx.ART_NORMAL_FILE, u'file'),
             (wx.ART_REMOVABLE, u'drive-removable'),
             )
@@ -60,7 +59,7 @@ class DirectoryImageList(wx.ImageList):
         aliases = (
             (u'file', (u'normal file',)),
             (u'drive-floppy', (u'floppy', u'floppy-drive',)),
-            (u'hard-disk', (u'harddisk',)),
+            (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive')),
             (u'drive-removable', (u'removable', u'removable-drive',)),
             )
         
