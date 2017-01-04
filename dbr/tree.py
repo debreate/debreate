@@ -151,7 +151,7 @@ class DirectoryTree(wx.TreeCtrl):
             self.root_home = self.AppendItem(self.root_item, GT(u'Home directory'), PATH_home,
                     ImageList.GetImageIndex(u'folder-home'),
                     expImage=ImageList.GetImageIndex(u'folder-home-open'))
-            #self.SetItemImage(self.root_home, image_index, state)
+            
             self.root_list.append(self.root_home)
         
         # List storage devices currently mounted on system
