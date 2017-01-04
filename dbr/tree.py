@@ -150,12 +150,6 @@ class DirectoryTree(wx.TreeCtrl):
         # Find attached storage devices mount points
         storage_mounts = GetDeviceMountPoints()
         
-        # DEBUG START
-        print(u'Devices:')
-        for S in storage_mounts:
-            print(u'  {}'.format(S))
-        # DEBUG END
-        
         for PATH in storage_mounts:
             add_item = os.path.isdir(PATH)
             
