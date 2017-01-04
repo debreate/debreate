@@ -45,9 +45,12 @@ class PathItem:
         if os.path.isdir(self.Path):
             self.Type = u'folder'
         
-        mime = GetFileMimeType(self.Path)
-        if mime.split(u'/')[0] == u'image':
+        mime = GetFileMimeType(self.Path).split(u'/')[0]
+        if mime == u'image':
             self.Type = u'image-generic'
+        
+        elif mime == u'audio':
+            self.Type = u'audio-generic'
     
     
     ## TODO: Doxygen

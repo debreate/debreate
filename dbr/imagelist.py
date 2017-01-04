@@ -20,6 +20,7 @@ class DirectoryImageList(wx.ImageList):
         directory_images = []
         
         custom_images = (
+            u'audio-generic',
             u'computer',
             u'drive-fixed',
             u'drive-floppy',
