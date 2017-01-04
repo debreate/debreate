@@ -12,6 +12,39 @@ from dbr.log        import Logger
 from globals.fileio import ReadFile
 
 
+## Class that represents a mounted storage device
+class StorageDevice:
+    def __init__(self, node, mount_point):
+        self.Node = node
+        self.MountPoint = mount_point
+        self.Label = None
+        
+        if not self.Label:
+            if mount_point == u'/':
+                self.Label = mount_point
+            
+            else:
+                self.Label = os.path.basename(mount_point)
+        
+        device_types = {
+            u'/dev/sd': u'hard-disk',
+            u'/dev/hd': u'hard-disk',
+            u'/dev/pd': u'hard-disk',
+            u'/dev/fd': u'floppy',
+            }
+        
+        self.Type = None
+        
+        for TYPE in device_types:
+            if node.startswith(TYPE):
+                self.Type = device_types[TYPE]
+    
+    
+    ## Get the instances string mount point
+    def GetMountPoint(self):
+        return self.MountPoint
+
+
 ## Opens /etc/mtab file & parses attached storage devices
 #  
 #  \return
@@ -51,13 +84,15 @@ def ParseMountedDevices():
     return mounted_devices
 
 
-## Retrieves only a list of mount points for attached storage devices
-def GetDeviceMountPoints():
+## Retrieves a list of globals.devices.StorageDevice instances
+def GetMountedStorageDevices():
     mounted_devices = ParseMountedDevices()
     
-    mount_points = []
+    device_list = []
     
-    for DEV in mounted_devices:
-        mount_points.append(mounted_devices[DEV])
+    for DEV in sorted(mounted_devices):
+        device_list.append(StorageDevice(DEV, mounted_devices[DEV]))
     
-    return tuple(sorted(mount_points))
+    #device_list.sort(key=StorageDevice.GetMountPoint)
+    
+    return tuple(sorted(device_list, key=StorageDevice.GetMountPoint))

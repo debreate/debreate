@@ -14,13 +14,14 @@ from dbr.functions          import MouseInsideWindow
 from dbr.image              import GetCursor
 from dbr.imagelist          import sm_DirectoryImageList as ImageList
 from dbr.language           import GT
-from dbr.log                import Logger
+from dbr.log                import Logger, DebugEnabled
 from dbr.panel              import BorderedPanel
 from globals                import ident
 from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
 from globals.devices        import GetDeviceMountPoints
+from globals.devices        import GetMountedStorageDevices
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
@@ -147,32 +148,27 @@ class DirectoryTree(wx.TreeCtrl):
                     ImageList.GetImageIndex(u'folder-home'))
             self.root_list.append(self.root_home)
         
-        # Find attached storage devices mount points
-        storage_mounts = GetDeviceMountPoints()
+        # List storage devices currently mounted on system
+        stdevs = GetMountedStorageDevices()
         
-        for PATH in storage_mounts:
-            add_item = os.path.isdir(PATH)
+        for DEV in stdevs:
+            add_item = os.path.isdir(DEV.MountPoint)
             
             if add_item:
                 for PITEM in self.root_list:
-                    if PATH == PITEM.Path:
+                    if DEV.MountPoint == PITEM.Path:
                         add_item = False
                         break
             
             if add_item:
-                Logger.Debug(__name__, u'Adding new sub-root PathItem instance: {}'.format(PATH))
+                Logger.Debug(__name__, u'Adding new sub-root PathItem instance: {}'.format(DEV.Label))
                 
-                if PATH == u'/':
-                    label = PATH
-                
-                else:
-                    label = os.path.basename(PATH)
-                
-                self.root_list.append(self.AppendItem(self.root_item, label, PATH, ImageList.GetImageIndex(u'hard-disk')))
+                self.root_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
+                        ImageList.GetImageIndex(DEV.Type)))
                 continue
             
             else:
-                Logger.Debug(__name__, u'PathItem instance for "{}" directory already exists'.format(PATH))
+                Logger.Debug(__name__, u'PathItem instance for "{}" directory already exists'.format(DEV.MountPoint))
         
         self.ctx_menu = wx.Menu()
         
