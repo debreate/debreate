@@ -42,8 +42,11 @@ class PathItem:
         
         self.Type = GetFileMimeType(self.Path)
         
-        executable_types = (
+        executables_binary = (
             u'x-executable',
+            )
+        
+        executables_text = (
             u'x-python',
             u'x-shellscript',
             )
@@ -74,11 +77,22 @@ class PathItem:
             self.Type = self.Type.split(u'/')[-1]
             self.ImageIndex = ImageList.GetImageIndex(self.Type)
             
-            # Use generic 'file' image as default
-            if self.ImageIndex == ImageList.GetImageIndex(u'failsafe'):
-                self.ImageIndex = ImageList.GetImageIndex(u'file')
+            if self.Type in executables_binary:
+                self.ImageIndex = ImageList.GetImageIndex(u'executable-binary')
+                
+                Logger.Debug(__name__, u'PathItem type: binary executable ({})'.format(self.Path))
             
-            Logger.Debug(__name__, u'PathItem type: {} ({})'.format(self.Type, self.Path))
+            elif self.Type in executables_text:
+                self.ImageIndex = ImageList.GetImageIndex(u'executable-script')
+                
+                Logger.Debug(__name__, u'PathItem type: script executable ({})'.format(self.Path))
+            
+            else:
+                # Use generic 'file' image as default
+                if self.ImageIndex == ImageList.GetImageIndex(u'failsafe'):
+                    self.ImageIndex = ImageList.GetImageIndex(u'file')
+                
+                Logger.Debug(__name__, u'PathItem type: {} ({})'.format(self.Type, self.Path))
     
     
     ## TODO: Doxygen

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg53383"
+   sodipodi:docname="executable-binary.svg"
+   viewBox="0 0 128 128"
+   sodipodi:version="0.32"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:version="0.91 r13725"
+   version="1.1"
+   width="128"
+   height="128">
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient53551"
+       y2="248.63"
+       gradientUnits="userSpaceOnUse"
+       x2="153"
+       gradientTransform="matrix(0.20068,0,0,0.20068,-0.58576,-1.0508)"
+       y1="15.424"
+       x1="99.777"
+       inkscape:collect="always">
+      <stop
+         id="stop53300"
+         style="stop-color:#184375"
+         offset="0" />
+      <stop
+         id="stop53302"
+         style="stop-color:#C8BDDC"
+         offset="1" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="0"
+     pagecolor="#ffffff"
+     inkscape:showpageshadow="false"
+     inkscape:grid-bbox="true"
+     inkscape:zoom="2.8284271"
+     inkscape:window-x="1366"
+     inkscape:window-height="949"
+     showgrid="false"
+     borderopacity="1.0"
+     inkscape:current-layer="layer1"
+     inkscape:cx="-33.1012"
+     inkscape:cy="24.15415"
+     inkscape:window-width="1600"
+     inkscape:pageopacity="0.0"
+     inkscape:document-units="px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-maximized="1" />
+  <g
+     id="layer2"
+     inkscape:label="shadow"
+     inkscape:groupmode="layer"
+     transform="translate(39.7145,40.7145)" />
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(39.7145,40.7145)">
+    <g
+       id="g4147"
+       transform="matrix(3.1356442,0,0,3.1356442,-51.865186,-49.729542)">
+      <path
+         d="M 24.286,43.196 4.375,23.286 24.286,3.375 l 19.91,19.911 -19.91,19.91 z"
+         style="fill:url(#linearGradient53551);stroke:#3f4561;stroke-linecap:round;stroke-linejoin:round"
+         id="path53304"
+         inkscape:connector-curvature="0" />
+      <path
+         d="M 43.505,23.286 24.286,4.066 5.066,23.286 5.8476,23.911 24.4566,5.483 43.5046,23.286 Z"
+         style="opacity:0.72000002;fill:#ffffff"
+         sodipodi:nodetypes="ccccccc"
+         id="path53359"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 8.9258,27.145 0.7384,-1.024 c 0.6368,0.268 1.3008,0.485 1.9858,0.645 l -0.005,1.577 c 0.427,0.088 0.863,0.156 1.304,0.204 l 0.481,-1.502 c 0.345,0.029 0.692,0.044 1.044,0.044 0.351,0 0.699,-0.015 1.043,-0.044 l 0.482,1.502 c 0.441,-0.048 0.876,-0.116 1.304,-0.204 l -0.006,-1.577 c 0.686,-0.16 1.349,-0.377 1.986,-0.645 L 20.206,27.4 C 20.608,27.218 21,27.018 21.38,26.8 l -0.492,-1.498 c 0.597,-0.362 1.161,-0.773 1.687,-1.228 l 1.272,0.932 c 0.326,-0.297 0.638,-0.609 0.934,-0.934 L 23.849,22.8 c 0.455,-0.526 0.866,-1.09 1.229,-1.688 l 1.498,0.493 c 0.217,-0.381 0.418,-0.773 0.6,-1.175 l -1.279,-0.922 c 0.268,-0.637 0.485,-1.301 0.645,-1.987 l 1.576,0.006 c 0.089,-0.427 0.156,-0.863 0.204,-1.304 l -1.501,-0.482 c 0.029,-0.344 0.044,-0.692 0.044,-1.043 0,-0.351 -0.016,-0.699 -0.044,-1.043 l 1.501,-0.482 c -0.047,-0.441 -0.116,-0.876 -0.204,-1.304 l -1.577,0.006 C 26.382,11.189 26.165,10.525 25.897,9.8887 L 27.176,8.9664 C 26.994,8.564 26.793,8.1721 26.576,7.7913 l -1.498,0.493 C 24.715,7.6869 24.304,7.1226 23.85,6.597 L 24.781,5.3249 C 24.503,5.019 24.21,4.7269 23.906,4.4467 l -18.839,18.839 1.0069,1.007 0.2987,-0.219 c 0.5257,0.455 1.09,0.866 1.6875,1.228 l -0.242,0.735 1.1081,1.108 -4e-4,0 z"
+         style="opacity:0.5;fill:#ffffff"
+         id="path53361"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 28.449,32.191 c 0,-6.485 4.234,-11.979 10.087,-13.874 L 36.309,16.09 c -0.017,0.007 -0.034,0.013 -0.05,0.02 l -0.182,-0.252 -1.412,-1.412 c -0.463,0.219 -0.917,0.455 -1.359,0.708 L 34,17.263 c -0.841,0.51 -1.636,1.089 -2.376,1.729 L 29.833,17.68 c -0.459,0.418 -0.897,0.856 -1.314,1.315 l 1.311,1.791 c -0.64,0.74 -1.219,1.534 -1.729,2.375 l -2.109,-0.694 c -0.307,0.537 -0.589,1.089 -0.845,1.655 l 1.801,1.298 c -0.378,0.897 -0.683,1.831 -0.908,2.797 l -2.22,-0.009 c -0.124,0.603 -0.22,1.215 -0.287,1.836 l 2.114,0.679 c -0.04,0.484 -0.062,0.974 -0.062,1.468 0,0.495 0.022,0.985 0.062,1.469 l -2.114,0.678 c 0.067,0.621 0.163,1.234 0.287,1.836 l 2.22,-0.008 c 0.225,0.965 0.53,1.9 0.908,2.796 l -1.801,1.299 c 0.142,0.315 0.294,0.625 0.452,0.93 l 3.804,-3.803 c -0.616,-1.615 -0.954,-3.366 -0.954,-5.197 z"
+         style="opacity:0.5;fill:#ffffff"
+         id="path53363"
+         inkscape:connector-curvature="0" />
+      <path
+         d="M 5.205,23.424 24.286,42.505 43.505,23.286 42.79,22.604 24.31,41.042 5.205,23.424 Z"
+         style="opacity:0.35;fill:#000000"
+         sodipodi:nodetypes="ccccccc"
+         id="path53365"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+  <metadata
+     id="metadata19">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title></dc:title>
+        <dc:date>2010-04-02T18:54:42</dc:date>
+        <dc:description>An icon from Tango Project. Since version 0.8.90 Tango Project icons are Public Domain: </dc:description>
+        <dc:source>https://openclipart.org/detail/36073/tango-application-x-executable-by-warszawianka</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>warszawianka</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>blue</rdf:li>
+            <rdf:li>externalsource</rdf:li>
+            <rdf:li>gear</rdf:li>
+            <rdf:li>icon</rdf:li>
+            <rdf:li>square</rdf:li>
+            <rdf:li>tango</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

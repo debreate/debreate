@@ -27,6 +27,8 @@ class DirectoryImageList(wx.ImageList):
             u'drive-fixed',
             u'drive-floppy',
             u'drive-removable',
+            u'executable-binary',
+            u'executable-script',
             u'failsafe',
             u'folder',
             u'folder-home',
@@ -42,7 +44,7 @@ class DirectoryImageList(wx.ImageList):
         
         stock_images = (
             (wx.ART_CDROM, u'cdrom'),
-            (wx.ART_EXECUTABLE_FILE, u'file-executable'),
+            (wx.ART_EXECUTABLE_FILE, u'executable-binary'),
             (wx.ART_FLOPPY, u'drive-floppy'),
             (wx.ART_FOLDER, u'folder'),
             (wx.ART_FOLDER_OPEN, u'folder-open'),
@@ -64,6 +66,8 @@ class DirectoryImageList(wx.ImageList):
         
         aliases = (
             (u'audio-generic', (u'audio', u'audio-file', u'file-audio',)),
+            (u'executable-binary', (u'executable', u'executable-file', u'file-executable',)),
+            (u'executable-script', (u'executable-text', u'text-executable',)),
             (u'file', (u'normal file',)),
             (u'drive-floppy', (u'floppy', u'floppy-drive',)),
             (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive', u'drive',)),
