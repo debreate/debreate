@@ -30,6 +30,7 @@ class DirectoryImageList(wx.ImageList):
             u'folder-home-open',
             u'folder-open',
             u'file',
+            u'image-generic',
             )
         
         for I in custom_images:
@@ -62,6 +63,7 @@ class DirectoryImageList(wx.ImageList):
             (u'drive-floppy', (u'floppy', u'floppy-drive',)),
             (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive')),
             (u'drive-removable', (u'removable', u'removable-drive',)),
+            (u'image-generic', (u'image',)),
             )
         
         self.Images = {}
