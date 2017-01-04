@@ -442,8 +442,8 @@ class ConfirmationDialog(DetailedMessageDialog):
 
 ## Message dialog that shows an error & details
 class ErrorDialog(DetailedMessageDialog):
-    def __init__(self, parent, text, details=wx.EmptyString):
-        DetailedMessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
+    def __init__(self, parent, title=GT(u'Error'), text=GT(u'An error has occurred'), details=wx.EmptyString):
+        DetailedMessageDialog.__init__(self, parent, title, ICON_ERROR, text, details)
 
 
 ## TODO: Doxygen
@@ -611,7 +611,7 @@ def ShowDialog(dialog):
 #        \b \e str|unicode: Module where error was caught (used for Logger output)
 #  \param warn
 #        \b \e bool: Show log message as warning instead of error
-def ShowErrorDialog(text, details=None, parent=False, warn=False):
+def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Error')):
     # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
@@ -637,7 +637,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
     
     PrintLogMessage(module_name, logger_text)
     
-    error_dialog = ErrorDialog(parent, text)
+    error_dialog = ErrorDialog(parent, title, text)
     if details:
         error_dialog.SetDetails(details)
     

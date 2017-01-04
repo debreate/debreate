@@ -53,7 +53,7 @@ class MD5Hasher:
             Logger.Error(__name__,
                     u'{} {} {}\n\t{}\n\t{}'.format(err_msg1, err_msg2, err_msg3, err_url1, err_url2))
             
-            md5_error = ErrorDialog(parent, u'{}\n{}\n\n{}'.format(err_msg1, err_msg2, err_msg3))
+            md5_error = ErrorDialog(parent, text=u'{}\n{}\n\n{}'.format(err_msg1, err_msg2, err_msg3))
             md5_error.AddURL(err_url1)
             md5_error.AddURL(err_url2)
             md5_error.ShowModal()
