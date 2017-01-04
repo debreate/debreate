@@ -52,31 +52,33 @@ class PathItem:
         if os.path.isdir(self.Path):
             self.ImageIndex = ImageList.GetImageIndex(u'folder')
             
-            Logger.Debug(__name__, u'PathItem type: folder')
+            Logger.Debug(__name__, u'PathItem type: folder ({})'.format(self.Path))
         
         elif self.Type.startswith(u'image'):
             self.ImageIndex = ImageList.GetImageIndex(u'image')
             
-            Logger.Debug(__name__, u'PathItem type: image')
+            Logger.Debug(__name__, u'PathItem type: image ({})'.format(self.Path))
         
         elif self.Type.startswith(u'audio'):
             self.ImageIndex = ImageList.GetImageIndex(u'audio')
             
-            Logger.Debug(__name__, u'PathItem type: audio')
+            Logger.Debug(__name__, u'PathItem type: audio ({})'.format(self.Path))
         
         elif self.Type.startswith(u'video'):
             self.ImageIndex = ImageList.GetImageIndex(u'video')
             
-            Logger.Debug(__name__, u'PathItem type: video')
+            Logger.Debug(__name__, u'PathItem type: video ({})'.format(self.Path))
         
         else:
+            # Exctract second part of MIME type
+            self.Type = self.Type.split(u'/')[-1]
             self.ImageIndex = ImageList.GetImageIndex(self.Type)
             
             # Use generic 'file' image as default
             if self.ImageIndex == ImageList.GetImageIndex(u'failsafe'):
                 self.ImageIndex = ImageList.GetImageIndex(u'file')
             
-            Logger.Debug(__name__, u'PathItem type: {}'.format(self.Type))
+            Logger.Debug(__name__, u'PathItem type: {} ({})'.format(self.Type, self.Path))
     
     
     ## TODO: Doxygen
