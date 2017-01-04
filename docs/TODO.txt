@@ -2,6 +2,7 @@
 - Testing for both wx 3.0 & 2.8
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
 - Check permissions of packaged files
+- Scan /dev directory for storage device types (/dev/hd* /dev/sd*)
 
 Non-priority:
 - Changelog page: Add distribution automatically (drop-down box)
