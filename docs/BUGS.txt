@@ -8,6 +8,7 @@ Must be fixed before release:
 - QuickBuild should add '.deb' file extension automatically
 - AttributeError in dbr.dialogs.ShowErrorDialog:
   - in 'parent.GetName()' where 'parent' is string instance
+- File/Directory dialogs do not appear to use QuickBuild instance as parent
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
