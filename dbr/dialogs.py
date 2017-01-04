@@ -518,18 +518,24 @@ def GetDialogWildcards(ID):
 
 
 ## TODO: Doxygen
-def GetDirDialog(main_window, title):
-    dir_open = StandardDirDialog(main_window, title)
+def GetDirDialog(parent, title):
+    if parent == None:
+        parent = GetTopWindow()
+        
+    dir_open = StandardDirDialog(parent, title)
     
     return dir_open
 
 
 ## TODO: Doxygen
-def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
+def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
+    if parent == None:
+        parent = GetTopWindow()
+    
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
     
-    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
+    file_open = StandardFileOpenDialog(parent, title, wildcard=ext_filters)
     
     return file_open
 
@@ -552,11 +558,14 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
+def GetFileSaveDialog(parent, title, ext_filters, extension=None):
+    if parent == None:
+        parent = GetTopWindow()
+    
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
     
-    file_save = StandardFileSaveDialog(main_window, title, default_extension=extension,
+    file_save = StandardFileSaveDialog(parent, title, default_extension=extension,
             wildcard=ext_filters)
     
     return file_save
