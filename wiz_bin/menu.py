@@ -17,6 +17,7 @@ from dbr.buttons            import ButtonSave64
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
@@ -496,10 +497,11 @@ class Panel(wx.ScrolledWindow):
                     os.remove(backup)
             
             except UnicodeEncodeError:
-                serr = GT(u'Save failed')
-                uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-                UniErr.ShowModal()
+                detail1 = GT(u'Unfortunately Debreate does not support unicode yet.')
+                detail2 = GT(u'Remove any non-ASCII characters from your project.')
+                
+                ShowErrorDialog(GT(u'Save failed'), u'{}\n{}'.format(detail1, detail2), title=GT(u'Unicode Error'))
+                
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)

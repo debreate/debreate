@@ -19,6 +19,7 @@ from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.custom             import StatusBar
 from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
@@ -46,6 +47,7 @@ from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
 from globals.project        import PROJECT_txt
+from globals.wizardhelper   import GetTopWindow
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl
@@ -436,8 +438,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Checks for new release availability
     def OnCheckUpdate(self, event=None):
         if u'-dev' in VERSION_string:
-            wx.MessageDialog(self, GT(u'Update checking not supported in development versions'),
-                    GT(u'Update'), wx.OK|wx.ICON_INFORMATION).ShowModal()
+            DetailedMessageDialog(GetTopWindow(), GT(u'Update'),
+                    text=GT(u'Update checking not supported in development versions')).ShowModal()
             return
         
         wx.SafeYield()
@@ -445,31 +447,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
-            wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+            ShowErrorDialog(current)
         
         elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = GT(u'Version {} is available!').format(current)
             l2 = GT(u'Would you like to go to Debreate\'s website?')
-            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
-            if (update == wx.ID_YES):
+            update = ConfirmationDialog(GetTopWindow(), GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed()
+            if update:
                 wx.LaunchDefaultBrowser(APP_homepage)
         
         elif isinstance(current, (unicode, str)):
-            err_msg = GT(u'An error occurred attempting to contact remote website:')
-            err_msg = u'{}\n\n{}'.format(err_msg, current)
-            
-            Logger.Error(__name__, err_msg)
-            
-            err = wx.MessageDialog(self, err_msg,
-                    GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
-            err.CenterOnParent()
-            err.ShowModal()
+            ShowErrorDialog(GT(u'An error occurred attempting to contact remote website'), current)
         
         else:
-            err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
-            err.CenterOnParent()
-            err.ShowModal()
+            DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), GT(u'Debreate is up to date!')).ShowModal()
     
     
     ## Writes dialog settings to config
@@ -587,10 +579,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                         os.remove(backup)
                 
                 except UnicodeEncodeError:
-                    serr = GT(u'Save failed')
-                    uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                    UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-                    UniErr.ShowModal()
+                    detail1 = GT(u'Unfortunately Debreate does not support unicode yet.')
+                    detail2 = GT(u'Remove any non-ASCII characters from your project.')
+                    
+                    ShowErrorDialog(GT(u'Save failed'), u'{}\n{}'.format(detail1, detail2), title=GT(u'Unicode Error'))
                     
                     if overwrite:
                         os.remove(path)

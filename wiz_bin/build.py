@@ -204,9 +204,8 @@ class Panel(wx.ScrolledWindow):
                     shutil.rmtree(stage_dir)
                 
                 except OSError:
-                    err_msg = GT(u'Could not free stage directory: {}').format(stage_dir)
-                    wx.MessageDialog(self, err_msg, GT(u'Cannot Continue'),
-                            style=wx.OK|wx.ICON_ERROR).ShowModal()
+                    ShowErrorDialog(GT(u'Could not free stage directory: {}').format(stage_dir),
+                            title=GT(u'Cannot Continue'))
                     
                     return (dbrerrno.EEXIST, None)
             
@@ -352,10 +351,7 @@ class Panel(wx.ScrolledWindow):
                     c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
                     clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
                     if clog_status[0]:
-                        clog_error = GT(u'Could not compress changelog')
-                        changelog_error = wx.MessageDialog(self, u'{}\n\n{}'.format(clog_error, clog_status[1]),
-                                GT(u'Warning'), wx.OK)
-                        changelog_error.ShowModal()
+                        ShowErrorDialog(GT(u'Could not compress changelog'), clog_status[1], warn=True, title=GT(u'Warning'))
                 
                 progress += 1
             
@@ -502,8 +498,8 @@ class Panel(wx.ScrolledWindow):
                     shutil.rmtree(stage_dir)
                 
                 except OSError:
-                    wx.MessageDialog(build_progress, GT(u'An error occurred when trying to delete the build tree'),
-                            GT(u'Error'), style=wx.OK|wx.ICON_EXCLAMATION)
+                    ShowErrorDialog(GT(u'An error occurred when trying to delete the build tree'),
+                            parent=build_progress)
                 
                 progress += 1
             
