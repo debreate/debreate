@@ -20,6 +20,7 @@ from globals                import ident
 from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
+from globals.devices        import ParseMountedDevices, GetDeviceMountPoints
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
@@ -136,6 +137,7 @@ class DirectoryTree(wx.TreeCtrl):
         self.COLOR_default = self.GetItemBackgroundColour(self.root_item)
         
         # List of sub-root items that shouldn't be deleted if they exist on filesystem
+        # FIXME: Should not need to use a root list now with GetDeviceMountPoints function
         self.root_list = []
         
         # Failsafe conditional in case of errors reading user home directory
@@ -145,9 +147,38 @@ class DirectoryTree(wx.TreeCtrl):
                     ImageList.GetImageIndex(u'folder-home'))
             self.root_list.append(self.root_home)
         
-        # Failsafe conditional in case of non-Unix filesystem standard
-        if os.path.isdir(u'/'):
-            self.root_list.append(self.AppendItem(self.root_item, u'/', u'/', ImageList.GetImageIndex(u'hard-disk')))
+        # Find attached storage devices mount points
+        storage_mounts = GetDeviceMountPoints()
+        
+        # DEBUG START
+        print(u'Devices:')
+        for S in storage_mounts:
+            print(u'  {}'.format(S))
+        # DEBUG END
+        
+        for PATH in storage_mounts:
+            add_item = os.path.isdir(PATH)
+            
+            if add_item:
+                for PITEM in self.root_list:
+                    if PATH == PITEM.Path:
+                        add_item = False
+                        break
+            
+            if add_item:
+                Logger.Debug(__name__, u'Adding new sub-root PathItem instance: {}'.format(PATH))
+                
+                if PATH == u'/':
+                    label = PATH
+                
+                else:
+                    label = os.path.basename(PATH)
+                
+                self.root_list.append(self.AppendItem(self.root_item, label, PATH, ImageList.GetImageIndex(u'hard-disk')))
+                continue
+            
+            else:
+                Logger.Debug(__name__, u'PathItem instance for "{}" directory already exists'.format(PATH))
         
         self.ctx_menu = wx.Menu()
         
