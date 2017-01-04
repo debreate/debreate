@@ -79,6 +79,8 @@ class StandardDirDialog(wx.DirDialog):
 
 
 ## TODO: Doxygen
+#  
+#  FIXME: Broken
 class StandardFileDialog(wx.FileDialog):
     def __init__(self, parent, title, default_extension=wx.EmptyString,
                 wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
@@ -558,15 +560,25 @@ def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-def GetFileSaveDialog(parent, title, ext_filters, extension=None):
+def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwrite=True):
     if parent == None:
         parent = GetTopWindow()
     
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
     
+    '''
+    # FIXME: Broken
     file_save = StandardFileSaveDialog(parent, title, default_extension=extension,
             wildcard=ext_filters)
+    '''
+    
+    FD_STYLE = wx.FD_SAVE|wx.FD_CHANGE_DIR
+    if confirm_overwrite:
+        FD_STYLE = FD_STYLE|wx.FD_OVERWRITE_PROMPT
+    
+    file_save = wx.FileDialog(parent, title, os.getcwd(), wildcard=ext_filters, style=FD_STYLE)
+    file_save.CenterOnParent()
     
     return file_save
 
