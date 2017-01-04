@@ -24,6 +24,8 @@ from dbr.timer              import DebreateTimer
 from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
+from globals.paths          import ConcatPaths
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -211,7 +213,33 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             
             return
         
-        msg_lines = u'{}\n\n{}'.format(GT(u'Quick build complete'), self.input_target.GetValue())
+        package_name = self.input_target.GetValue()
+        
+        # Attempt to get output package name from control file if target is a directory
+        # (dpkg automatically sets package name if not explicitly declared)
+        if os.path.isdir(package_name):
+            control_file = ConcatPaths((self.input_stage.GetValue(), u'DEBIAN/control'))
+            if os.path.isfile(control_file):
+                control_lines = ReadFile(control_file, split=True)
+                
+                name = None
+                version = None
+                arch = None
+                
+                for LINE in control_lines:
+                    if LINE.startswith(u'Package:'):
+                        name = LINE.replace(u'Package: ', u'').strip()
+                    
+                    elif LINE.startswith(u'Version:'):
+                        version = LINE.replace(u'Version: ', u'').strip()
+                    
+                    elif LINE.startswith(u'Architecture:'):
+                        arch = LINE.replace(u'Architecture: ', u'').strip()
+                
+                if name and version and arch:
+                    package_name = ConcatPaths((package_name, u'{}.deb'.format(u'_'.join((name, version, arch,)))))
+        
+        msg_lines = u'{}\n\n{}'.format(GT(u'Quick build complete'), package_name)
         ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
     
     
