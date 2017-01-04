@@ -27,7 +27,6 @@ from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.paths          import ConcatPaths
-from globals.wizardhelper   import GetTopWindow
 
 
 GAUGE_MAX = 100
