@@ -158,12 +158,18 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     #  
-    #  TODO: Show error if not using .deb extension
-    #  TODO: Show success message
     #  TODO: Check timestamp of created .deb package (should be done for main build as well)
     def OnBuild(self, event=None):
         stage = self.input_stage.GetValue()
-        target = self.input_target.GetValue()
+        target = self.input_target.GetValue().rstrip(u'/')
+        
+        # Automatically add .deb filename extension if not present
+        if not os.path.isdir(target) and not target.lower().endswith(u'.deb'):
+            target = u'{}.deb'.format(target)
+        
+        # Update the text input if target altered
+        if target != self.input_target.GetValue():
+            self.input_target.SetValue(target)
         
         if not os.path.isdir(stage):
             ShowErrorDialog(GT(u'Stage directory does not exist'), stage, self, True)
