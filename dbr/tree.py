@@ -20,7 +20,7 @@ from globals                import ident
 from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
-from globals.devices        import ParseMountedDevices, GetDeviceMountPoints
+from globals.devices        import GetDeviceMountPoints
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
