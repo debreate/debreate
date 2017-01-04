@@ -1,6 +1,7 @@
 0.7.13
 - Fixes:
-  - Don't strip parent directories from filenames
+  - Don't strip parent directories from filenames when adding to file list
+  - Only center progress dialog on parent if not manually moved by user
 - Full license templates can be generated
 - License templates shipped with app:
   - BSD-2-Clause
@@ -15,17 +16,18 @@
 - Custom license templates can be placed in $HOME/.local directory
 - Files & folders can be dropped from file manager to file list
 - Files can be dropped onto some text areas
-- Files & directories can be renamed from directory tree on Files page
 - Drag & drop support for Files page
   - Files/Directories can be dragged from system file manager or directory tree
 - Relative paths are preserved when adding directories to the file list
 - Option to list only top-level directory or all files individually in file list
 - Option to strip binary files in build
-- Only center progress dialog on parent if not manually moved by user
-- Files & folders can be renamed & deleted from directory tree on Files page
-  - 'gvfs-trash' required for deleting (moving to trash)
 - Use more custom message dialogs
-- Executable files in directory tree are displayed in red
+- Directory tree changes:
+  - Executable files in are displayed in red
+  - Some mime types use a unique bitmap icon
+  - Files & folders can be renamed & deleted
+    - 'gvfs-trash' required for deleting (moving to trash)
+  - Files & directories can be renamed
 
 0.7.12
 - Fixes:
