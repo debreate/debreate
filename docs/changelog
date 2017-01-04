@@ -24,6 +24,7 @@
 - Only center progress dialog on parent if not manually moved by user
 - Files & folders can be renamed & deleted from directory tree on Files page
   - 'gvfs-trash' required for deleting (moving to trash)
+- Use more custom message dialogs
 
 0.7.12
 - Fixes:
