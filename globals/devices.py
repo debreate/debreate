@@ -10,6 +10,7 @@ import os
 
 from dbr.log        import Logger
 from globals.fileio import ReadFile
+from globals.paths  import ConcatPaths
 
 
 ## Class that represents a mounted storage device
@@ -17,8 +18,23 @@ class StorageDevice:
     def __init__(self, node, mount_point):
         self.Node = node
         self.MountPoint = mount_point
+        
         self.Label = None
         
+        label_dir = u'/dev/disk/by-label'
+        if os.path.isdir(label_dir):
+            for LABEL in os.listdir(label_dir):
+                link = ConcatPaths((label_dir, LABEL))
+                
+                if os.path.islink(link):
+                    link_node = os.path.realpath(link)
+                    if link_node == self.Node:
+                        Logger.Debug(__name__, u'Found label for {}: {}'.format(self.Node, LABEL))
+                        
+                        self.Label = LABEL
+                        break
+        
+        # As last resort just use mount point basename
         if not self.Label:
             if mount_point == u'/':
                 self.Label = mount_point
@@ -33,6 +49,7 @@ class StorageDevice:
             u'/dev/fd': u'floppy',
             }
         
+        # The type string is used in dbr.tree.DirectroyTree to set item icon
         self.Type = None
         
         for TYPE in device_types:
