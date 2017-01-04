@@ -2,9 +2,11 @@
 
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
-- App crashes if trying to delete item & parent directory together in directory tree
 - wx 2.8:
   - Directory tree is small at startup
+
+High priority:
+- App crashes if trying to delete item & parent directory together in directory tree
 
 Low priority:
 - Detailed progress dialog does not always size correctly on construction
