@@ -8,6 +8,7 @@
 
 import os, traceback, wx
 
+from dbr.colors             import COLOR_warn
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import MouseInsideWindow
@@ -17,7 +18,6 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from globals                import ident
-from globals.colors         import COLOR_warn
 from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
 from globals.devices        import GetMountedStorageDevices

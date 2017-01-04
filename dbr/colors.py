@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package globals.colors
+## \package dbr.colors
 
 # MIT licensing
 # See: docs/LICENSE.txt
