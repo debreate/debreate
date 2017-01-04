@@ -139,18 +139,16 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
         if event:
-            main_window = GetTopWindow()
-            
             button_id = event.GetEventObject().GetId()
             
             if button_id == ident.STAGE:
-                stage = GetDirDialog(main_window, GT(u'Choose Directory'))
+                stage = GetDirDialog(self, GT(u'Choose Directory'))
                 
                 if (ShowDialog(stage)):
                     self.input_stage.SetValue(stage.GetPath())
             
             elif button_id == ident.TARGET:
-                target = GetFileSaveDialog(main_window, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'), u'deb')
+                target = GetFileSaveDialog(self, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'), u'deb')
                 
                 if (ShowDialog(target)):
                     self.input_target.SetValue(target.GetPath())
