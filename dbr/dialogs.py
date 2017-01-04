@@ -393,6 +393,14 @@ class DetailedMessageDialog(wx.Dialog):
         wx.MessageBox(u'FIXME: Details not copied to clipboard', GT(u'Debug'))
     
     
+    ## Override inherited method to center on parent window first
+    def ShowModal(self, *args, **kwargs):
+        if self.Parent:
+            self.CenterOnParent()
+        
+        return wx.Dialog.ShowModal(self, *args, **kwargs)
+    
+    
     ## TODO: Doxygen
     def SetDetails(self, details):
         return self.CreateDetailedView(details)
