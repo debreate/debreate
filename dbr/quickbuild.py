@@ -13,6 +13,7 @@ from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonCancel
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import OverwriteDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
@@ -109,7 +110,6 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         
         self.CenterOnParent()
         
-        
         # For showing error dialog after build thread exits
         self.build_error = None
     
@@ -163,8 +163,33 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         stage = self.input_stage.GetValue()
         target = self.input_target.GetValue().rstrip(u'/')
         
+        # Attempt to use DEBIAN/control file to set output filename. This is normally
+        # done automatically by the dpkg command, but we need to set it manually to
+        # check for overwriting a file.
+        if os.path.isdir(target):
+            control_file = ConcatPaths((stage, u'DEBIAN/control'))
+            if os.path.isfile(control_file):
+                control_lines = ReadFile(control_file, split=True)
+                
+                name = None
+                version = None
+                arch = None
+                
+                for LINE in control_lines:
+                    if LINE.startswith(u'Package:'):
+                        name = LINE.replace(u'Package: ', u'').strip()
+                    
+                    elif LINE.startswith(u'Version:'):
+                        version = LINE.replace(u'Version: ', u'').strip()
+                    
+                    elif LINE.startswith(u'Architecture:'):
+                        arch = LINE.replace(u'Architecture: ', u'').strip()
+                
+                if name and version and arch:
+                    target = ConcatPaths((target, u'{}.deb'.format(u'_'.join((name, version, arch,)))))
+        
         # Automatically add .deb filename extension if not present
-        if not os.path.isdir(target) and not target.lower().endswith(u'.deb'):
+        elif not target.lower().endswith(u'.deb'):
             target = u'{}.deb'.format(target)
         
         # Update the text input if target altered
@@ -183,6 +208,11 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         elif not os.access(target_path, os.W_OK):
             ShowErrorDialog(GT(u'No write access to target directory'), target_path, self, True)
             return
+        
+        # Check for pre-existing file
+        if os.path.isfile(target):
+            if not OverwriteDialog(self, target).Confirmed():
+                return
         
         self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
         
@@ -219,33 +249,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             
             return
         
-        package_name = self.input_target.GetValue()
-        
-        # Attempt to get output package name from control file if target is a directory
-        # (dpkg automatically sets package name if not explicitly declared)
-        if os.path.isdir(package_name):
-            control_file = ConcatPaths((self.input_stage.GetValue(), u'DEBIAN/control'))
-            if os.path.isfile(control_file):
-                control_lines = ReadFile(control_file, split=True)
-                
-                name = None
-                version = None
-                arch = None
-                
-                for LINE in control_lines:
-                    if LINE.startswith(u'Package:'):
-                        name = LINE.replace(u'Package: ', u'').strip()
-                    
-                    elif LINE.startswith(u'Version:'):
-                        version = LINE.replace(u'Version: ', u'').strip()
-                    
-                    elif LINE.startswith(u'Architecture:'):
-                        arch = LINE.replace(u'Architecture: ', u'').strip()
-                
-                if name and version and arch:
-                    package_name = ConcatPaths((package_name, u'{}.deb'.format(u'_'.join((name, version, arch,)))))
-        
-        msg_lines = u'{}\n\n{}'.format(GT(u'Quick build complete'), package_name)
+        msg_lines = u'{}\n\n{}'.format(GT(u'Quick build complete'), self.input_target.GetValue())
         ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
     
     

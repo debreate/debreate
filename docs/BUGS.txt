@@ -3,7 +3,6 @@
 Must be fixed before release:
 - Progress dialogs are not refreshing on Files page
 - App crashes if trying to delete item & parent directory together in directory tree
-- QuickBuild should show confirmation dialog for existing files
 - AttributeError in dbr.dialogs.ShowErrorDialog:
   - in 'parent.GetName()' where 'parent' is string instance
 - File/Directory dialogs do not appear to use QuickBuild instance as parent
