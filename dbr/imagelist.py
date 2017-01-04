@@ -27,6 +27,7 @@ class DirectoryImageList(wx.ImageList):
             u'failsafe',
             u'folder',
             u'folder-home',
+            u'folder-home-open',
             u'folder-open',
             u'file',
             )

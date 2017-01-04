@@ -149,7 +149,9 @@ class DirectoryTree(wx.TreeCtrl):
         home_exists = os.path.isdir(PATH_home)
         if home_exists:
             self.root_home = self.AppendItem(self.root_item, GT(u'Home directory'), PATH_home,
-                    ImageList.GetImageIndex(u'folder-home'))
+                    ImageList.GetImageIndex(u'folder-home'),
+                    expImage=ImageList.GetImageIndex(u'folder-home-open'))
+            #self.SetItemImage(self.root_home, image_index, state)
             self.root_list.append(self.root_home)
         
         # List storage devices currently mounted on system
@@ -240,11 +242,15 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## Override inherited method to return custom PathItem instances
-    def AppendItem(self, parent, label, path, image=-1, selImage=-1, data=None):
+    def AppendItem(self, parent, label, path, image=-1, selImage=-1, expImage=-1, data=None):
         if isinstance(parent, PathItem):
             parent = parent.GetBaseItem()
         
         base_item = wx.TreeCtrl.AppendItem(self, parent, label, image, selImage, data)
+        
+        if expImage >= 0:
+            self.SetItemImage(base_item, expImage, wx.TreeItemIcon_Expanded)
+        
         tree_item = PathItem(base_item, path, label)
         
         if os.path.isdir(path):
