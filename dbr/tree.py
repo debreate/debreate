@@ -151,7 +151,7 @@ class DirectoryTree(wx.TreeCtrl):
         stdevs = GetMountedStorageDevices()
         
         for DEV in stdevs:
-            add_item = os.path.isdir(DEV.MountPoint)
+            add_item = os.path.ismount(DEV.MountPoint)
             
             if add_item:
                 for PITEM in self.root_list:
