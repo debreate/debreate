@@ -708,6 +708,8 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## Refreshes the tree's displayed layout
+    #  
+    #  FIXME: Should rescan /dev for new or removed devices
     def ReCreateTree(self):
         selected = self.GetSelection()
         
