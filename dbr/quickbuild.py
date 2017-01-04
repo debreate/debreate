@@ -224,9 +224,6 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     def OnUpdateProgress(self, event=None):
         if event:
             if isinstance(event, wx.TimerEvent):
-                Logger.Debug(__name__, GT(u'wx.TimerEvent ID: {}').format(event.GetId()))
-                Logger.Debug(__name__, GT(u'wx.TimerEvent type: {}').format(event.GetEventType()))
-                
                 if not self.timer.IsRunning():
                     Logger.Debug(__name__, GT(u'Timer stopped. Stopping gauge ...'))
                     
