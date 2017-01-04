@@ -64,6 +64,11 @@ class PathItem:
             
             Logger.Debug(__name__, u'PathItem type: audio')
         
+        elif self.Type.startswith(u'video'):
+            self.ImageIndex = ImageList.GetImageIndex(u'video')
+            
+            Logger.Debug(__name__, u'PathItem type: video')
+        
         else:
             self.ImageIndex = ImageList.GetImageIndex(self.Type)
             

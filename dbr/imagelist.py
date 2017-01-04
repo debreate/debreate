@@ -13,6 +13,8 @@ from dbr.log import Logger
 
 
 ## List of images used by dbr.tree.DirectoryTree
+#  
+#  FIXME: Custom images should be generated dynamically using bitmaps found in MIME directory
 class DirectoryImageList(wx.ImageList):
     def __init__(self, width, height, mask=True, initial_count=1):
         wx.ImageList.__init__(self, width, height, mask, initial_count)
@@ -32,6 +34,7 @@ class DirectoryImageList(wx.ImageList):
             u'folder-open',
             u'file',
             u'image-generic',
+            u'video-generic',
             )
         
         for I in custom_images:
@@ -65,7 +68,8 @@ class DirectoryImageList(wx.ImageList):
             (u'drive-floppy', (u'floppy', u'floppy-drive',)),
             (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive', u'drive',)),
             (u'drive-removable', (u'removable', u'removable-drive',)),
-            (u'image-generic', (u'image',)),
+            (u'image-generic', (u'image', u'image-file', u'file-image',)),
+            (u'video-generic', (u'video', u'video-file', u'file-video',)),
             )
         
         self.Images = {}
