@@ -28,6 +28,7 @@
   - Files & folders can be renamed & deleted
     - 'gvfs-trash' required for deleting (moving to trash)
   - Files & directories can be renamed
+  - Double-click on file adds selection to file list
 - Show confirmation dialog in Quick Build when overwriting file
 
 0.7.12

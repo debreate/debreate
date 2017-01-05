@@ -247,6 +247,8 @@ class DirectoryTree(wx.TreeCtrl):
         
         # *** Event handlers *** #
         
+        self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
+        
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnCollapse)
         
@@ -613,6 +615,19 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.Enable(ident.RENAME, True)
         # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
         self.ctx_menu.Enable(wx.ID_DELETE, True)
+    
+    
+    ## TODO: Doxygen
+    def OnDoubleClick(self, event=None):
+        selected = self.GetSelection()
+        
+        if not os.path.isdir(selected.Path):
+            # FIXME: Better method?
+            self.Parent.Parent.OnImportFromTree()
+        
+        elif event:
+            # Allow directories to be expanded
+            event.Skip()
     
     
     ## TODO: Doxygen
