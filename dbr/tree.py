@@ -238,6 +238,7 @@ class DirectoryTree(wx.TreeCtrl):
         # *** Event handlers *** #
         
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
         self.Bind(wx.EVT_TREE_ITEM_COLLAPSED, self.OnCollapse)
@@ -779,6 +780,20 @@ class DirectoryTree(wx.TreeCtrl):
         return self.Expand(item)
     
     
+    ## Catch mouse left down event for custom selection behavior
+    #  
+    #  Resets selection to only currently selected item if modifiers are not present.
+    #  This behavior is not present by default if the newly selected item was
+    #  previously selected.
+    def OnLeftDown(self, event=None):
+        if event and isinstance(event, wx.MouseEvent):
+            modifiers = event.ControlDown() or event.ShiftDown()
+            if not modifiers and len(self.GetSelections()) > 1:
+                self.ResetSelected()
+            
+            event.Skip()
+    
+    
     ## Actions for menu events
     def OnMenuSelect(self, event=None):
         if event:
@@ -859,6 +874,18 @@ class DirectoryTree(wx.TreeCtrl):
             
             elif I.Path in selected_path:
                 self.Expand(I)
+    
+    
+    ## Clears all selected items except latest selected
+    def ResetSelected(self):
+        selected = self.GetSelection()
+        if selected:
+            self.UnselectAll()
+            
+            if isinstance(selected, PathItem):
+                selected = selected.GetBaseItem()
+            
+            self.SelectItem(selected)
     
     
     ## Send that selected item's path to trash
