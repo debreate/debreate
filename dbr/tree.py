@@ -349,8 +349,6 @@ class DirectoryTree(wx.TreeCtrl):
     #  
     #  TODO: Test if PathItem is actually removed from memory
     def Delete(self, item):
-        Logger.Debug(__name__, u'Deleting item type: {}'.format(type(item)))
-        
         if item:
             deleted = wx.TreeCtrl.Delete(self, item.GetBaseItem())
             
@@ -393,9 +391,12 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Delete the listed items
     def DeleteItems(self, item_list):
-        # FIXME: App crashes when trying to delete child of item already deleted
-        for I in item_list:
-            self.Delete(I)
+        # Reversing the sorted list guarantees child objects will be deleted
+        # before parents & prevents app crashing.
+        item_list = sorted(item_list, key=PathItem.GetPath, reverse=True)
+        
+        for ITEM in item_list:
+            self.Delete(ITEM)
     
     
     ## Override inherited method so children are filled out
@@ -632,7 +633,6 @@ class DirectoryTree(wx.TreeCtrl):
             allow_rename = False
             # REMOVEME: App crashes when deleting child & parent paths.
             #           Disabled for multiple items until fixed.
-            allow_trash = False
             
             removed_expand = self.ctx_menu.Remove(ident.EXPAND)
         
