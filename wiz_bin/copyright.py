@@ -76,23 +76,22 @@ class Panel(wx.ScrolledWindow):
         
         SetPageToolTips(self)
         
+        # Initiate tooltip for drop-down selector
         if self.sel_templates.IsEnabled():
             self.OnSelectTemplate(self.sel_templates)
         
         # *** Layout *** #
         
+        # Putting the generate buttons in their own sizer & making them
+        # them the same width looks nicer.
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_template, 1)
         lyt_buttons.Add(self.btn_template_simple, 1)
         
         lyt_label = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_label.Add(
-            wx.StaticText(self, label=GT(u'Available Templates')),
-            0,
-            wx.TOP|wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER,
-            5
-        )
-        lyt_label.Add(self.sel_templates, 0, wx.TOP, 5)
+        lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
+                wx.ALIGN_CENTER_VERTICAL)
+        lyt_label.Add(self.sel_templates, 0, wx.LEFT, 5)
         lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
