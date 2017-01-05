@@ -126,6 +126,20 @@ class PathItem:
         return self.Children
     
     
+    ## Checks if this is a child of another PathItem instance
+    #  
+    #  \param item
+    #    \b \e PathItem instance to check against
+    #  \return
+    #    True if self instance found in item children
+    def IsChildOf(self, item):
+        for CHILD in item.Children:
+            if CHILD == self:
+                return True
+        
+        return False
+    
+    
     ## TODO: Doxygen
     def IsDir(self):
         return os.path.isdir(self.Path)
