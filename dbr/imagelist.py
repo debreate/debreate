@@ -36,6 +36,7 @@ class DirectoryImageList(wx.ImageList):
             u'folder-open',
             u'file',
             u'image-generic',
+            u'symlink',
             u'video-generic',
             )
         
@@ -73,6 +74,7 @@ class DirectoryImageList(wx.ImageList):
             (u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive', u'drive',)),
             (u'drive-removable', (u'removable', u'removable-drive',)),
             (u'image-generic', (u'image', u'image-file', u'file-image',)),
+            (u'symlink', (u'symbolic-link', u'shortcut',)),
             (u'video-generic', (u'video', u'video-file', u'file-video',)),
             )
         
