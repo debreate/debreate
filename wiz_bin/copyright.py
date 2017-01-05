@@ -194,7 +194,7 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def DestroyLicenseText(self):
         if not TextIsEmpty(self.dsp_copyright.GetValue()):
-            warn_msg = GT(u'This will destroy all license text. Do you want to continue?')
+            warn_msg = GT(u'This will destroy all license text.')
             warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
             
             if ConfirmationDialog(GetTopWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
