@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import commands, wx
+import wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
@@ -20,6 +20,7 @@ from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
+from globals.changes        import FormatChangelog
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
@@ -179,42 +180,26 @@ class Panel(wx.ScrolledWindow):
         
         package = self.ti_package.GetValue()
         version = self.ti_version.GetValue()
-        distribution = self.ti_dist.GetValue()
+        dist = self.ti_dist.GetValue()
         urgency = self.sel_urgency.GetStringSelection()
-        info1 = u'{} ({}) {}; urgency={}'.format(package, version, distribution, urgency)
-        
-        details = []
-        for line in new_changes.split(u'\n'):
-            if not TextIsEmpty(line):
-                # Strip leading & trailing whitespace
-                line = line.strip(u' \t')
-                
-                # Empty list denotes adding first line
-                if not details:
-                    line = u'  * {}'.format(line)
-                
-                else:
-                    line = u'    {}'.format(line)
-                
-                details.append(line)
-        
-        details.insert(0, wx.EmptyString)
-        details.append(wx.EmptyString)
-        details = u'\n'.join(details)
-        
         maintainer = self.ti_maintainer.GetValue()
         email = self.ti_email.GetValue()
-        # FIXME: Use GetDate method
-        date = commands.getoutput(u'date -R')
-        # The '\n' makes sure that there is always at least one empty line at end of file
-        info2 = u' -- {} <{}>  {}\n'.format(maintainer, email, date)
-        info3 = self.dsp_changes.GetValue()
+        
+        new_changes = FormatChangelog(new_changes, package, version, dist, urgency,
+                maintainer, email)
+        
+        # Clean up leading & trailing whitespace in old changes
+        old_changes = self.dsp_changes.GetValue().strip(u' \t\n\r')
         
         # Only append newlines if log isn't already empty
-        if not TextIsEmpty(info3):
-            info2 = u'{}\n\n{}'.format(info2, info3)
+        if not TextIsEmpty(old_changes):
+            new_changes = u'{}\n\n\n{}'.format(new_changes, old_changes)
         
-        self.dsp_changes.SetValue(u'\n'.join((info1, details, info2)))
+        # Add empty line to end of log
+        if not new_changes.endswith(u'\n'):
+            new_changes = u'{}\n'.format(new_changes)
+        
+        self.dsp_changes.SetValue(new_changes)
         
         # Clear "Changes" text
         self.ti_changes.Clear()
