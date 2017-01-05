@@ -631,44 +631,49 @@ class DirectoryTree(wx.TreeCtrl):
         
         if len(selected) > 1:
             allow_rename = False
-            # REMOVEME: App crashes when deleting child & parent paths.
-            #           Disabled for multiple items until fixed.
             
-            removed_expand = self.ctx_menu.Remove(ident.EXPAND)
+            for ITEM in selected:
+                if ITEM.Type != u'folder':
+                    removed_expand = self.ctx_menu.Remove(ident.EXPAND)
+                    break
         
         elif isinstance(selected[0], PathItem) and selected[0].Type != u'folder':
             removed_expand = self.ctx_menu.Remove(ident.EXPAND)
         
-        elif selected:
-            # Set expand menu item label dependent on item state
-            if self.IsExpanded(selected[0]):
-                self.ctx_menu.SetLabel(ident.EXPAND, GT(u'Collapse'))
+        elif selected and isinstance(selected[0], wx.TreeItemId) and selected[0] == self.root_item:
+            Logger.Debug(__name__, u'Root item selected')
             
-            else:
-                self.ctx_menu.SetLabel(ident.EXPAND, GT(u'Expand'))
+            # Only allow expand/collapse & refresh for root item
+            removed_menus = []
+            for MENU_ID in (wx.ID_ADD, None, ident.RENAME, wx.ID_DELETE):
+                if not MENU_ID:
+                    removed_menus.append(None)
+                
+                else:
+                    removed_menus.append(self.ctx_menu.Remove(MENU_ID))
             
-            if isinstance(selected[0], wx.TreeItemId) and selected[0] == self.root_item:
-                Logger.Debug(__name__, u'Root item selected')
-                
-                # Only allow expand/collapse & refresh for root item
-                removed_menus = []
-                for MENU_ID in (wx.ID_ADD, None, ident.RENAME, wx.ID_DELETE):
-                    if not MENU_ID:
-                        removed_menus.append(None)
-                    
-                    else:
-                        removed_menus.append(self.ctx_menu.Remove(MENU_ID))
-                
-                self.PopupMenu(self.ctx_menu)
-                
-                for INDEX in range(len(removed_menus)):
-                    menu = removed_menus[INDEX]
-                    if menu:
-                        self.ctx_menu.InsertItem(INDEX, menu)
-                
-                return
+            self.PopupMenu(self.ctx_menu)
+            
+            for INDEX in range(len(removed_menus)):
+                menu = removed_menus[INDEX]
+                if menu:
+                    self.ctx_menu.InsertItem(INDEX, menu)
+            
+            return
         
         if selected:
+            # Should only have to worry about changing label if all selected
+            # items are directories.
+            if not removed_expand:
+                # Set expand menu item label dependent on item state
+                expand_label = GT(u'Collapse')
+                for ITEM in selected:
+                    if not self.IsExpanded(ITEM):
+                        expand_label = GT(u'Expand')
+                        break
+                
+                self.ctx_menu.SetLabel(ident.EXPAND, expand_label)
+            
             for ITEM in self.root_list:
                 if ITEM in selected:
                     allow_rename = False
@@ -855,12 +860,16 @@ class DirectoryTree(wx.TreeCtrl):
             event_id = event.GetId()
             
             if event_id == ident.EXPAND:
-                selection = self.GetSelection()
-                if self.IsExpanded(selection):
-                    self.Collapse(selection)
+                expand = event.GetEventObject().GetLabel(ident.EXPAND).lower() == u'expand'
+                selected = self.GetSelections()
+                
+                if expand:
+                    for ITEM in selected:
+                        self.Expand(ITEM)
                 
                 else:
-                    self.Expand(selection)
+                    for ITEM in selected:
+                        self.Collapse(ITEM)
             
             elif event_id == ident.RENAME:
                 selected = self.GetSelection()
