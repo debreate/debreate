@@ -609,13 +609,16 @@ class DirectoryTree(wx.TreeCtrl):
     def OnContextMenu(self, event=None):
         removed_expand = None
         
+        allow_rename = True
+        allow_trash = True
+        
         selected = self.GetSelections()
         
         if len(selected) > 1:
-            self.ctx_menu.Enable(ident.RENAME, False)
+            allow_rename = False
             # REMOVEME: App crashes when deleting child & parent paths.
             #           Disabled for multiple items until fixed.
-            self.ctx_menu.Enable(wx.ID_DELETE, False)
+            allow_trash = False
             
             removed_expand = self.ctx_menu.Remove(ident.EXPAND)
         
@@ -652,12 +655,16 @@ class DirectoryTree(wx.TreeCtrl):
                 return
         
         if selected:
-            self.PopupMenu(self.ctx_menu)
+            for ITEM in self.root_list:
+                if ITEM in selected:
+                    allow_rename = False
+                    allow_trash = False
+                    break
             
-            # Re-enable rename option after menu hidden
-            self.ctx_menu.Enable(ident.RENAME, True)
-            # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
-            self.ctx_menu.Enable(wx.ID_DELETE, True)
+            self.ctx_menu.Enable(ident.RENAME, allow_rename)
+            self.ctx_menu.Enable(wx.ID_DELETE, allow_trash)
+            
+            self.PopupMenu(self.ctx_menu)
             
             # Re-enable expand menu item
             if removed_expand:
