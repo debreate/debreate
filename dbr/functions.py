@@ -125,6 +125,7 @@ def RequirePython(version):
 
 ## Checks if a text string is empty
 #  
+#  TODO: Move to globals.strings
 #  \param text
 #        The string to be checked
 def TextIsEmpty(text):
