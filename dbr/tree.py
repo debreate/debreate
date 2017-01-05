@@ -218,10 +218,12 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu = wx.Menu()
         
         mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add to project'))
+        mitm_expand = wx.MenuItem(self.ctx_menu, ident.EXPAND, GT(u'Expand'))
         mitm_rename = wx.MenuItem(self.ctx_menu, ident.RENAME, GT(u'Rename'))
         mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT(u'Refresh'))
         
         self.ctx_menu.AppendItem(mitm_add)
+        self.ctx_menu.AppendItem(mitm_expand)
         self.ctx_menu.AppendItem(mitm_rename)
         self.ctx_menu.AppendSeparator()
         self.ctx_menu.AppendItem(mitm_refresh)
@@ -244,6 +246,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         
+        wx.EVT_MENU(self, ident.EXPAND, self.OnMenuSelect)
         wx.EVT_MENU(self, ident.RENAME, self.OnMenuSelect)
         wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
@@ -591,11 +594,30 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Open a context menu for manipulating tree files & directories
     def OnContextMenu(self, event=None):
-        if len(self.GetSelections()) > 1:
+        removed_expand = None
+        
+        selected = self.GetSelections()
+        
+        if len(selected) > 1:
             self.ctx_menu.Enable(ident.RENAME, False)
             # REMOVEME: App crashes when deleting child & parent paths.
             #           Disabled for multiple items until fixed.
             self.ctx_menu.Enable(wx.ID_DELETE, False)
+            
+            removed_expand = self.ctx_menu.Remove(ident.EXPAND)
+        
+        elif selected[0].Type != u'folder':
+            removed_expand = self.ctx_menu.Remove(ident.EXPAND)
+        
+        else:
+            # Set expand menu item label dependent on item state
+            if self.IsExpanded(selected[0]):
+                self.ctx_menu.SetLabel(ident.EXPAND, GT(u'Collapse'))
+            
+            else:
+                self.ctx_menu.SetLabel(ident.EXPAND, GT(u'Expand'))
+        
+        Logger.Debug(__name__, u'Selected item type: {}'.format(selected[0].Type))
         
         self.PopupMenu(self.ctx_menu)
         
@@ -603,6 +625,10 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.Enable(ident.RENAME, True)
         # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
         self.ctx_menu.Enable(wx.ID_DELETE, True)
+        
+        # Re-enable expand menu item
+        if removed_expand:
+            self.ctx_menu.InsertItem(1, removed_expand)
     
     
     ## TODO: Doxygen
@@ -730,7 +756,15 @@ class DirectoryTree(wx.TreeCtrl):
         if event:
             event_id = event.GetId()
             
-            if event_id == ident.RENAME:
+            if event_id == ident.EXPAND:
+                selection = self.GetSelection()
+                if self.IsExpanded(selection):
+                    self.Collapse(selection)
+                
+                else:
+                    self.Expand(selection)
+            
+            elif event_id == ident.RENAME:
                 selected = self.GetSelection()
                 self.EditLabel(selected.GetBaseItem())
             
