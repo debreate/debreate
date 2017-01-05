@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Double-clicking directory tree arrow will expand other highlighted selection
 
 High priority:
 
