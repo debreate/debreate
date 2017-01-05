@@ -15,7 +15,6 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import FileUnstripped
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
@@ -38,6 +37,7 @@ from globals.commands       import ExecuteCommand
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField

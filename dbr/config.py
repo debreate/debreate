@@ -12,11 +12,11 @@ import os, wx
 
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
-from dbr.functions      import TextIsEmpty
 from dbr.language       import GT
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
 from globals.paths      import PATH_home
+from globals.strings    import TextIsEmpty
 
 
 ## Configuration codes

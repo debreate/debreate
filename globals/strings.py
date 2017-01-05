@@ -8,7 +8,12 @@
 # See: docs/LICENSE.txt
 
 
-from dbr.functions import TextIsEmpty
+## Checks if a text string is empty
+#  
+#  \param text
+#        The string to be checked
+def TextIsEmpty(text):
+    return not text.strip(u' \t\n\r')
 
 
 ## Removes empty lines from a string or string list

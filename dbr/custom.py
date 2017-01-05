@@ -13,11 +13,6 @@ from dbr.textinput      import TextAreaPanel
 from globals.commands   import CMD_trash
 
 
-# FIXME: This should be imported from dbr.functions
-def TextIsEmpty(text):
-    return text.strip(u' \t\n') == wx.EmptyString
-
-
 ## A generic display area that captures \e stdout & \e stderr
 class OutputLog(TextAreaPanel):
     def __init__(self, parent):

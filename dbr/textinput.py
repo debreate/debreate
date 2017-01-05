@@ -9,10 +9,10 @@
 import time, wx
 
 from dbr.font               import MONOSPACED_LG
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.panel              import BorderedPanel
 from globals.fileio         import ReadFile
+from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
 
 

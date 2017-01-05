@@ -123,15 +123,6 @@ def RequirePython(version):
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
 
 
-## Checks if a text string is empty
-#  
-#  TODO: Move to globals.strings
-#  \param text
-#        The string to be checked
-def TextIsEmpty(text):
-    return text.strip(u' \t\n') == wx.EmptyString
-
-
 ## TODO: Doxygen
 def prepend_zero(number):
     if number < 10:

@@ -19,7 +19,6 @@ from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import FileList
 from dbr.log                import Logger
@@ -30,6 +29,7 @@ from dbr.tree               import DirectoryTreePanel
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow

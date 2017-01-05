@@ -18,7 +18,6 @@ from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import DebugEnabled
@@ -29,6 +28,7 @@ from dbr.textpreview        import TextPreview
 from globals                import ident
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 from globals.wizardhelper   import UseCustomDialogs

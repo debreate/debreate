@@ -11,7 +11,6 @@ import wx
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
 from dbr.dialogs            import DetailedMessageDialog
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -21,6 +20,7 @@ from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue

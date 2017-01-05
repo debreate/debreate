@@ -6,7 +6,6 @@
 # See: docs/LICENSE.txt
 
 
-from dbr.functions          import TextIsEmpty
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
@@ -16,6 +15,7 @@ from globals.dateinfo       import GetDate
 from globals.dateinfo       import GetTime
 from globals.dateinfo       import GetTimeZone
 from globals.strings        import RemoveEmptyLines
+from globals.strings        import TextIsEmpty
 from globals.system         import OS_codename
 
 

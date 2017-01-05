@@ -14,7 +14,6 @@ from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -24,6 +23,7 @@ from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextArea
 from globals                import ident
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage

@@ -14,7 +14,6 @@ from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
 from dbr.custom             import OpenFile
 from dbr.custom             import SaveFile
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -24,6 +23,7 @@ from dbr.textpreview        import TextPreview
 from globals                import ident
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
