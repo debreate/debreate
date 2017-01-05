@@ -238,6 +238,7 @@ class DirectoryTree(wx.TreeCtrl):
         # *** Event handlers *** #
         
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
+        wx.EVT_KEY_DOWN(self, self.OnDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
         
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
@@ -662,15 +663,34 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## TODO: Doxygen
     def OnDoubleClick(self, event=None):
-        selected = self.GetSelection()
+        if event and isinstance(event, wx.KeyEvent):
+            # Allow double-click behavior for return & enter keys
+            if event.GetKeyCode() not in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER,):
+                event.Skip()
+                return
         
-        if not os.path.isdir(selected.Path):
-            # FIXME: Better method?
-            self.Parent.Parent.OnImportFromTree()
+        selected = self.GetSelections()
         
-        elif event:
-            # Allow directories to be expanded
-            event.Skip()
+        if selected:
+            if len(selected) == 1 and os.path.isdir(selected[0].Path):
+                selected = selected[0]
+                
+                # Normally we could just call event.Skip() here which executes default
+                # double-click behavior of expanding directories. However, in order to
+                # allow keyboard events the same behavior we must explicitly call
+                # self.Expand or self.Collapse.
+                if self.IsExpanded(selected):
+                    self.Collapse(selected)
+                
+                else:
+                    self.Expand(selected)
+            
+            else:
+                # FIXME: Better method?
+                self.Parent.Parent.OnImportFromTree()
+                
+                # Return focus to tree for keyboard control
+                self.SetFocus()
     
     
     ## TODO: Doxygen
