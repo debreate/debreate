@@ -12,7 +12,6 @@ Low priority:
 - Progress dialogs can resize outside of display boundaries
 - wx 2.8:
   - Taskbar icon does not show up
-  - 'Changes' text control is small on Changelog page
 - wx 3.0 only:
   - Credits list does not expand completely on right edge
 - Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command

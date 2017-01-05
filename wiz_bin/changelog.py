@@ -133,6 +133,7 @@ class Panel(wx.ScrolledWindow):
         
         lyt_details = wx.GridBagSizer()
         lyt_details.SetCols(3)
+        lyt_details.AddGrowableRow(2)
         lyt_details.AddGrowableCol(1)
         
         lyt_details.Add(btn_import, (0, 0))
@@ -148,7 +149,7 @@ class Panel(wx.ScrolledWindow):
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_info, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_details, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_details, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
                 0, LEFT_BOTTOM|wx.LEFT, 5)
         lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
