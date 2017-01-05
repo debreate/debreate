@@ -675,10 +675,10 @@ class DirectoryTree(wx.TreeCtrl):
                 event.Skip()
                 return
         
-        selected = self.GetSelections()
+        selected = list(self.GetSelections())
         
         if selected:
-            if len(selected) == 1 and os.path.isdir(selected[0].Path):
+            if len(selected) == 1 and (self.ItemHasChildren(selected[0]) or os.path.isdir(selected[0].Path)):
                 selected = selected[0]
                 
                 # Normally we could just call event.Skip() here which executes default
