@@ -103,8 +103,8 @@ class Panel(wx.ScrolledWindow):
         # *** Layout *** #
         
         lyt_left = wx.BoxSizer(wx.VERTICAL)
-        lyt_left.AddSpacer(10)
-        lyt_left.Add(self.chk_individuals, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
+        lyt_left.AddSpacer(5)
+        lyt_left.Add(self.chk_individuals, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.BOTTOM, 5)
         lyt_left.Add(self.tree_dirs, 1, wx.EXPAND)
         
         lyt_target = wx.GridSizer(3, 2, 5, 5)
