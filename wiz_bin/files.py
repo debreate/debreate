@@ -105,7 +105,7 @@ class Panel(wx.ScrolledWindow):
         lyt_left = wx.BoxSizer(wx.VERTICAL)
         lyt_left.AddSpacer(10)
         lyt_left.Add(self.chk_individuals, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
-        lyt_left.Add(self.tree_dirs, -1)
+        lyt_left.Add(self.tree_dirs, 1, wx.EXPAND)
         
         lyt_target = wx.GridSizer(3, 2, 5, 5)
         
@@ -135,11 +135,20 @@ class Panel(wx.ScrolledWindow):
         lyt_right.Add(lyt_buttons, 0, wx.EXPAND)
         lyt_right.Add(self.lst_files, 5, wx.EXPAND|wx.TOP, 5)
         
+        PROP_LEFT = 0
+        PROP_RIGHT = 1
+        
         lyt_main = wx.FlexGridSizer(1, 2)
         lyt_main.AddGrowableRow(0)
+        
+        # Directory tree size issues with wx 2.8
+        if wx.MAJOR_VERSION <= 2:
+            PROP_LEFT = 1
+            lyt_main.AddGrowableCol(0, 1)
+        
         lyt_main.AddGrowableCol(1, 2)
-        lyt_main.Add(lyt_left, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        lyt_main.Add(lyt_right, 1, wx.EXPAND|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_left, PROP_LEFT, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_right, PROP_RIGHT, wx.EXPAND|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
