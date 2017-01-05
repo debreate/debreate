@@ -50,6 +50,7 @@ class DirectoryImageList(wx.ImageList):
             (wx.ART_FOLDER, u'folder'),
             (wx.ART_FOLDER_OPEN, u'folder-open'),
             (wx.ART_HARDDISK, u'drive-fixed'),
+            (wx.ART_MISSING_IMAGE, u'failsafe'),
             (wx.ART_NORMAL_FILE, u'file'),
             (wx.ART_REMOVABLE, u'drive-removable'),
             )
