@@ -12,7 +12,6 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
-from dbr.functions          import GetYear
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplateFile
@@ -22,6 +21,7 @@ from dbr.templates          import local_licenses_path
 from dbr.textinput          import MonospaceTextArea
 from globals                import ident
 from globals.constants      import system_licenses_path
+from globals.dateinfo       import GetYear
 from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips

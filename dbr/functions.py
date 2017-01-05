@@ -23,6 +23,7 @@ from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_file
 from globals.commands       import CMD_system_packager
 from globals.constants      import system_licenses_path
+from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
 
@@ -130,13 +131,6 @@ def prepend_zero(number):
     
     return unicode(number)
 
-
-## Retrieves the current year
-#  
-#  \return
-#        String value of the current year
-def GetYear():
-    return date.today().year
 
 def GetDate():
     yr = str(GetYear())
