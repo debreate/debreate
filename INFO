@@ -9,4 +9,4 @@ EMAIL=antumdeluge@gmail.com
 
 # Distribution details
 DIST=xenial
-URGENCY=low
+URGENCY=high
