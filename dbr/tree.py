@@ -36,52 +36,58 @@ from globals.wizardhelper   import GetTopWindow
 #    \b \e string : The filename path to be associated with this instance
 class PathItem:
     def __init__(self, item, path, label=None):
+        if path == None:
+            # So that calls to os.path.exists(PathItem.Path) do not raise exception
+            path = wx.EmptyString
+        
         self.Item = item
         self.Path = path
         self.Label = label
         self.Children = []
+        self.Type = None
         
-        self.Type = GetFileMimeType(self.Path)
-        
-        executables_binary = (
-            u'x-executable',
-            )
-        
-        executables_text = (
-            u'x-python',
-            u'x-shellscript',
-            )
-        
-        # Don't use MIME type 'inode' for directories (symlinks are inodes)
-        if os.path.isdir(self.Path):
-            self.Type = u'folder'
-        
-        elif self.Type.startswith(u'image'):
-            self.Type = u'image'
-        
-        elif self.Type.startswith(u'audio'):
-            self.Type = u'audio'
-        
-        elif self.Type.startswith(u'video'):
-            self.Type = u'video'
-        
-        else:
-            # Exctract second part of MIME type
-            self.Type = self.Type.split(u'/')[-1]
+        if self.Path:
+            self.Type = GetFileMimeType(self.Path)
             
-            if self.Type in executables_binary:
-                self.Type = u'executable-binary'
+            executables_binary = (
+                u'x-executable',
+                )
             
-            elif self.Type in executables_text:
-                self.Type = u'executable-script'
-        
-        self.ImageIndex = ImageList.GetImageIndex(self.Type)
-        
-        # Use generic 'file' image as default
-        if self.ImageIndex == ImageList.GetImageIndex(u'failsafe'):
-            self.ImageIndex = ImageList.GetImageIndex(u'file')
-        
-        Logger.Debug(__name__, u'PathItem type: {} ({})'.format(self.Type, self.Path))
+            executables_text = (
+                u'x-python',
+                u'x-shellscript',
+                )
+            
+            # Don't use MIME type 'inode' for directories (symlinks are inodes)
+            if os.path.isdir(self.Path):
+                self.Type = u'folder'
+            
+            elif self.Type.startswith(u'image'):
+                self.Type = u'image'
+            
+            elif self.Type.startswith(u'audio'):
+                self.Type = u'audio'
+            
+            elif self.Type.startswith(u'video'):
+                self.Type = u'video'
+            
+            else:
+                # Exctract second part of MIME type
+                self.Type = self.Type.split(u'/')[-1]
+                
+                if self.Type in executables_binary:
+                    self.Type = u'executable-binary'
+                
+                elif self.Type in executables_text:
+                    self.Type = u'executable-script'
+            
+            self.ImageIndex = ImageList.GetImageIndex(self.Type)
+            
+            # Use generic 'file' image as default
+            if self.ImageIndex == ImageList.GetImageIndex(u'failsafe'):
+                self.ImageIndex = ImageList.GetImageIndex(u'file')
+            
+            Logger.Debug(__name__, u'PathItem type: {} ({})'.format(self.Type, self.Path))
     
     
     ## TODO: Doxygen
