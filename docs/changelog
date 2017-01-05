@@ -1,35 +1,45 @@
 0.7.13
-- Fixes:
-  - Don't strip parent directories from filenames when adding to file list
-  - Only center progress dialog on parent if not manually moved by user
-- Full license templates can be generated
-- License templates shipped with app:
-  - BSD-2-Clause
-  - BSD-4-Clause
-  - BSL-1.0
-  - CC0
-  - EPL-1.0
-  - ISC
-  - MIT-X
-  - OFL-1.1
-  - Zlib-PNG
-- Custom license templates can be placed in $HOME/.local directory
-- Files & folders can be dropped from file manager to file list
-- Files can be dropped onto some text areas
-- Drag & drop support for Files page
-  - Files/Directories can be dragged from system file manager or directory tree
-- Relative paths are preserved when adding directories to the file list
-- Option to list only top-level directory or all files individually in file list
-- Option to strip binary files in build
-- Use more custom message dialogs
-- Directory tree changes:
-  - Executable files in are displayed in red
-  - Some mime types use a unique bitmap icon
-  - Files & folders can be renamed & deleted
-    - 'gvfs-trash' required for deleting (moving to trash)
-  - Files & directories can be renamed
-  - Double-click on file adds selection to file list
-- Show confirmation dialog in Quick Build when overwriting file
+- General:
+  - Only center progress dialogs on parent if not manually moved by user
+  - Use more custom message dialogs
+  - Show confirmation dialog in Quick Build when overwriting file
+  - Files can be dropped onto some text areas from system file manager
+    - Equivalent to opening file's contents into text area
+- License templates generation:
+  - Full license templates can be generated
+  - License templates shipped with app:
+    - BSD-2-Clause
+    - BSD-4-Clause
+    - BSL-1.0
+    - CC0
+    - EPL-1.0
+    - ISC
+    - MIT-X
+    - OFL-1.1
+    - Zlib-PNG
+  - Custom license templates can be placed in user's "local" directory
+    - $HOME/.local/share/debreate/templates/licenses
+    - These take precedence over system & app templates
+- Files & folders:
+  - Drag & drop support added
+    - Files/Folders can be dragged from system file manager or directory tree
+  - Relative paths are preserved when adding directories to the file list
+  - Option to list only top-level directory or all files individually in file list
+  - Directory tree changes:
+    - Executable files are displayed in red
+    - Some mime types use a unique bitmap icon
+    - Files/Folders can be renamed or moved to trash
+      - 'gvfs-trash' command required for trash
+    - Double-click action changes:
+      - Single selected file or multiple selected files/folders:
+        - Adds selection to file list
+      - Single selected folder expands contents
+    - Enter/Return keys have similar behavior to double-click
+    - Single "Add" option in context menu
+    - Folders can be expanded/collapsed from context menu
+      - Expand/Collapse menu only appears if all selected items are folders
+- Build options:
+  - Option to strip binary files before packaged (enabled by default)
 
 0.7.12
 - Fixes:
