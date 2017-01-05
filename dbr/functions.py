@@ -55,7 +55,7 @@ def GetCurrentVersion():
             version[version.index(V)] = int(V)
         
         return tuple(version)
-        
+    
     except URLError, err:
         return err
 
@@ -314,10 +314,10 @@ def GetIntTuple(value):
                     return None
                 
                 value[v_index] = S
-                
+            
             # Convert return value from list to tuple
             return tuple(value)
-        
+    
     return None
 
 
@@ -410,6 +410,7 @@ def BuildDebPackage(stage_dir, target_file):
     
     try:
         output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+    
     except:
         return (dbrerrno.EAGAIN, traceback.format_exc())
     
