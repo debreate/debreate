@@ -9,3 +9,4 @@ Non-priority:
 - Add 'provides' field to Control
 - Add MIME type field to launcher/menu
 - Fix changelog to put asterix before each entry
+- Use custom buttons for template generation on Copyright page
