@@ -158,14 +158,6 @@ def GetTime(formatted=False):
     return s_time
 
 
-## Formats the time for outputting to filename
-#  
-#  \param s_time
-#        \b \e str : String representation of the time
-def FormatTime(s_time):
-    return s_time.replace(u':', u'.')
-
-
 ## Retrieves a list of licenses installed on the system
 #  
 #  Common system license files are located in /usr/share/common-licenses.
