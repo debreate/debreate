@@ -534,6 +534,11 @@ class DirectoryTree(wx.TreeCtrl):
     #  TODO: Define
     def GetSelections(self):
         base_selected = wx.TreeCtrl.GetSelections(self)
+        
+        # Return root item if it is only thing selected
+        if len(base_selected) == 1 and self.root_item in base_selected:
+            return tuple(base_selected)
+        
         selected = []
         
         # Convert wx.TreeItemId instances to PathItem.
@@ -606,29 +611,52 @@ class DirectoryTree(wx.TreeCtrl):
             
             removed_expand = self.ctx_menu.Remove(ident.EXPAND)
         
-        elif selected[0].Type != u'folder':
+        elif isinstance(selected[0], PathItem) and selected[0].Type != u'folder':
             removed_expand = self.ctx_menu.Remove(ident.EXPAND)
         
-        else:
+        elif selected:
             # Set expand menu item label dependent on item state
             if self.IsExpanded(selected[0]):
                 self.ctx_menu.SetLabel(ident.EXPAND, GT(u'Collapse'))
             
             else:
                 self.ctx_menu.SetLabel(ident.EXPAND, GT(u'Expand'))
+            
+            if isinstance(selected[0], wx.TreeItemId) and selected[0] == self.root_item:
+                Logger.Debug(__name__, u'Root item selected')
+                
+                # Only allow expand/collapse & refresh for root item
+                removed_menus = []
+                for MENU_ID in (wx.ID_ADD, None, ident.RENAME, wx.ID_DELETE):
+                    if not MENU_ID:
+                        removed_menus.append(None)
+                    
+                    else:
+                        removed_menus.append(self.ctx_menu.Remove(MENU_ID))
+                
+                self.PopupMenu(self.ctx_menu)
+                
+                for INDEX in range(len(removed_menus)):
+                    menu = removed_menus[INDEX]
+                    if menu:
+                        self.ctx_menu.InsertItem(INDEX, menu)
+                
+                return
         
-        Logger.Debug(__name__, u'Selected item type: {}'.format(selected[0].Type))
+        if selected:
+            self.PopupMenu(self.ctx_menu)
+            
+            # Re-enable rename option after menu hidden
+            self.ctx_menu.Enable(ident.RENAME, True)
+            # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
+            self.ctx_menu.Enable(wx.ID_DELETE, True)
+            
+            # Re-enable expand menu item
+            if removed_expand:
+                self.ctx_menu.InsertItem(1, removed_expand)
         
-        self.PopupMenu(self.ctx_menu)
-        
-        # Re-enable rename option after menu hidden
-        self.ctx_menu.Enable(ident.RENAME, True)
-        # REMOVEME: Remove when moving multiple items to trash (deleting) is fixed
-        self.ctx_menu.Enable(wx.ID_DELETE, True)
-        
-        # Re-enable expand menu item
-        if removed_expand:
-            self.ctx_menu.InsertItem(1, removed_expand)
+        else:
+            Logger.Debug(__name__, u'No items were selected')
     
     
     ## TODO: Doxygen
