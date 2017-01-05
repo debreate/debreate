@@ -51,13 +51,19 @@ version_data = changelog_data[:cutoff_index]
 
 offset = 4
 for L in version_data:
+    # Each main entry begins with an asterix
     if L.startswith('- '):
         version_data[changelog_data.index(L)] = '  * {}'.format(L[2:]).rstrip(' \t')
         continue
     
+    # Single indented lines
+    if L.startswith(('  - ')):
+        version_data[changelog_data.index(L)] = '    {}'.format(L[4:]).rstrip(' \t')
+        continue
+    
     # Preserve formatting/indentation of other lines (must begin with '- ', '* ', or '+ ')
     if L.strip(' \t')[:2] in ('- ', '* ', '+ '):
-        version_data[changelog_data.index(L)] = '  {}'.format(L).rstrip(' \t')
+        version_data[changelog_data.index(L)] = L.rstrip(' \t')
         continue
     
     # All other lines will be indented by 'offset' value
