@@ -4,7 +4,6 @@
 
 Non-priority:
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
-- Changelog page: Add distribution automatically (drop-down box)
 - Add custom field option to Control
 - Add 'provides' field to Control
 - Add MIME type field to launcher/menu
