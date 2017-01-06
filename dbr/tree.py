@@ -527,6 +527,27 @@ class DirectoryTree(wx.TreeCtrl):
         return self.root_item
     
     
+    ## Retrieves the parent mount item for current selection
+    def GetSelectedMountItem(self):
+        mount_item = self.GetSelection()
+        
+        if isinstance(mount_item, PathItem) and mount_item in self.mount_list:
+            return mount_item
+        
+        if mount_item:
+            parent = self.GetItemParent(mount_item)
+            
+            # Root item should be only instance that is not PathItem
+            while isinstance(parent, PathItem):
+                if parent in self.mount_list:
+                    return parent
+                
+                parent = self.GetItemParent(parent)
+        
+        # FIXME: Should return home item if mount item is None???
+        return None
+    
+    
     ## Retrieve paths of all selected tree items
     #  
     #  TODO: Define method
