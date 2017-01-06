@@ -45,8 +45,6 @@ FILES_doc = \
 	docs/release_notes \
 	docs/usage.pdf
 
-FILES_bitmap = bitmaps/*.png
-
 FILES_man = \
 	man/man1/$(PACKAGE).1
 
@@ -56,9 +54,11 @@ FILES_dist = \
 	$(FILES_extra) \
 	Makefile
 
+DIR_bitmaps = bitmaps
 DIR_locale = locale
 
 DIRS_build = \
+	$(DIR_bitmaps) \
 	$(DIR_locale)
 
 FILES_BUILD = \
@@ -99,7 +99,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_BUILD) $(FILES_bitmap) $(DIR_locale) $(INSTALLED)_file install-launcher install-man install-mime
+install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-launcher install-man install-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -136,11 +136,6 @@ install: $(FILES_BUILD) $(FILES_bitmap) $(DIR_locale) $(INSTALLED)_file install-
 		$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
 	done; \
 	\
-	mkdir -vp "$${datadir}/bitmaps"; \
-	for png in $(FILES_bitmap); do \
-		$(INSTALL_DATA) "$${png}" "$${datadir}/bitmaps"; \
-	done; \
-	\
 	$(INSTALL_FOLDER) $(DIR_locale) "$${datadir}"; \
 	\
 	$(MKDIR) "$${bindir}"; \
@@ -151,7 +146,7 @@ install: $(FILES_BUILD) $(FILES_bitmap) $(DIR_locale) $(INSTALLED)_file install-
 	\
 	$(INSTALL_DATA) "$(INSTALLED)" "$${datadir}"; \
 
-uninstall: uninstall-launcher uninstall-man uninstall-mime
+uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -169,6 +164,21 @@ uninstall: uninstall-launcher uninstall-man uninstall-mime
 			$(UNINSTALL) "$${f}"; \
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
+	fi; \
+
+install-bitmaps: $(DIR_bitmaps)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
+
+uninstall-bitmaps:
+	@target="$(DESTDIR)$(prefix)"; \
+	bitmaps_dir="$${target}/$(DATADIR)/bitmaps"; \
+	if [ -d "$${bitmaps_dir}" ]; then \
+		$(call UNINSTALL_FOLDER,$${bitmaps_dir}); \
 	fi; \
 
 install-icons: $(MIME_icons)
@@ -294,6 +304,13 @@ help:
 	echo "\t\t  the system"; \
 	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-mime`tput sgr0`,"; \
 	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
+	\
+	echo "\tinstall-bitmaps"; \
+	echo "\t\t- Install bitmaps used by application\n"; \
+	\
+	echo "\tuninstall-bitmaps"; \
+	echo "\t\t- Remove bitmaps used by application\n"; \
+	\
 	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
