@@ -196,14 +196,13 @@ uninstall-icons:
 		find "$${icons_dir}" -type d -empty -print -delete; \
 	fi; \
 
-# FIXME: Don't make launcher executable
 install-launcher: data/$(FILE_launcher)
-	apps_dir=$(TARGET)/$(APPSDIR); \
+	@apps_dir=$(TARGET)/$(APPSDIR); \
 	$(MKDIR) "$${apps_dir}"; \
-	$(INSTALL_EXEC) "data/$(FILE_launcher)" "$${apps_dir}"; \
+	$(INSTALL_DATA) "data/$(FILE_launcher)" "$${apps_dir}"; \
 
 uninstall-launcher:
-	apps_dir=$(TARGET)/$(APPSDIR); \
+	@apps_dir=$(TARGET)/$(APPSDIR); \
 	$(UNINSTALL) "$${apps_dir}/$(FILE_launcher)"; \
 
 install-man: $(FILES_man)
