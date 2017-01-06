@@ -430,6 +430,32 @@ class DirectoryTree(wx.TreeCtrl):
         return wx.TreeCtrl.Expand(self, item)
     
     
+    ## Expands a mounted item all the way down path
+    #  
+    #  \param mount_item
+    #    Mounted \b \e PathItem to be expanded
+    #  \param path
+    #    Path to follow
+    def ExpandPath(self, mount_item, path):
+        self.Expand(mount_item)
+        
+        children = self.GetItemChildren(mount_item)
+        while children:
+            in_path = False
+            
+            for CHILD in children:
+                in_path = CHILD.Path in path
+                if in_path:
+                    Logger.Debug(__name__, u'Expanding path: {}'.format(CHILD.Path))
+                    
+                    self.Expand(CHILD)
+                    children = self.GetItemChildren(CHILD)
+                    break
+            
+            if not in_path:
+                break
+    
+    
     ## TODO: Doxygen
     def GetAllItems(self):
         return tuple(self.item_list)
@@ -445,6 +471,14 @@ class DirectoryTree(wx.TreeCtrl):
                     return ITEM
         
         return None
+    
+    
+    ## Retrieves all children for an item
+    def GetItemChildren(self, item):
+        if not isinstance(item, PathItem):
+            return list()
+        
+        return item.Children
     
     
     ## Override to ensure return value of DirectoryImageList instance
