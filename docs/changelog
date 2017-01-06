@@ -5,6 +5,7 @@
   - Show confirmation dialog in Quick Build when overwriting file
   - Files can be dropped onto some text areas from system file manager
     - Equivalent to opening file's contents into text area
+  - Attempts to retrieve list of dist names for changelog
 - License templates generation:
   - Full license templates can be generated
   - License templates shipped with app:
