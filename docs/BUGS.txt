@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Removed devices to not get removed directory tree on refresh
 
 High priority:
 
