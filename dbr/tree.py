@@ -250,6 +250,10 @@ class DirectoryTree(wx.TreeCtrl):
         # *** Post-layout/event actions *** #
         
         self.InitRootItems()
+        
+        # Expand the user's home directory
+        if self.GetHomeItem():
+            self.InitDirectoryLayout()
     
     
     ## Override inherited method to return custom PathItem instances
@@ -336,24 +340,22 @@ class DirectoryTree(wx.TreeCtrl):
             return deleted
     
     
-    ## Overrides inherited method to not delete root item & clear item list
+    ## Overrides inherited method to not delete everything but root item
     #  
     #  FIXME: Need to make sure PathItem instances are removed from memory
     def DeleteAllItems(self):
-        for I in self.root_list:
-            if isinstance(I, PathItem):
-                self.DeleteChildren(I.GetBaseItem())
-                I.RemoveChildren()
-            
-            else:
-                self.DeleteChildren(I)
+        self.DeleteChildren(self.root_item)
         
         # ???: Redundant
         for I in reversed(self.item_list):
             del I
         
-        # Reset item list to only contain sub-root items
-        self.item_list = list(self.root_list)
+        for I in reversed(self.root_list):
+            del I
+        
+        # Reset item lists
+        self.item_list = []
+        self.root_list = []
     
     
     ## Delete the listed items
@@ -592,10 +594,6 @@ class DirectoryTree(wx.TreeCtrl):
             
             else:
                 Logger.Debug(__name__, u'PathItem instance for "{}" directory already exists'.format(DEV.MountPoint))
-        
-        # Expand the user's home directory
-        if home_exists:
-            self.InitDirectoryLayout()
     
     
     ## TODO: Doxygen
@@ -927,8 +925,6 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## Refreshes the tree's displayed layout
-    #  
-    #  FIXME: Should rescan /dev for new or removed devices
     def ReCreateTree(self):
         selected = self.GetSelection()
         
@@ -942,8 +938,8 @@ class DirectoryTree(wx.TreeCtrl):
         
         self.DeleteAllItems()
         
-        # Recreate tree
-        self.InitDirectoryLayout()
+        # Refresh list of connected storage devices
+        self.InitRootItems()
         
         Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
         
