@@ -132,14 +132,6 @@ def prepend_zero(number):
     return unicode(number)
 
 
-def GetDate():
-    yr = str(GetYear())
-    mo = prepend_zero(date.today().month)
-    da = prepend_zero(date.today().day)
-    
-    return u'{}-{}-{}'.format(yr, mo, da)
-
-
 ## Retrieves a list of licenses installed on the system
 #  
 #  Common system license files are located in /usr/share/common-licenses.
