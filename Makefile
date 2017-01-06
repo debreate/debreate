@@ -57,10 +57,6 @@ FILES_dist = \
 DIR_bitmaps = bitmaps
 DIR_locale = locale
 
-DIRS_build = \
-	$(DIR_bitmaps) \
-	$(DIR_locale)
-
 FILES_BUILD = \
 	$(FILES_root) \
 	$(PKG_dbr) \
@@ -70,7 +66,8 @@ FILES_BUILD = \
 	$(PKG_wiz_bin)
 
 DIRS_dist = \
-	$(DIRS_build) \
+	$(DIR_bitmaps) \
+	$(DIR_locale) \
 	bitmaps \
 	data \
 	dbr \
