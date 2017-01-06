@@ -58,7 +58,7 @@ OS_upstream_version = GetOSInfo(u'DISTRIB_RELEASE', True)
 OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
 
 
-def _get_debian_codenames():
+def _get_debian_distname():
     ref_site = u''
     
     code_names = []
@@ -66,7 +66,7 @@ def _get_debian_codenames():
     return sorted(code_names)
 
 
-def _get_ubuntu_codenames(nonexistent=False):
+def _get_ubuntu_distname(nonexistent=False):
     ref_site = u'https://wiki.ubuntu.com/Releases'
     
     code_names = []
@@ -110,7 +110,7 @@ def _get_ubuntu_codenames(nonexistent=False):
     return sorted(code_names)
 
 
-def _get_mint_codenames():
+def _get_mint_distname():
     ref_site = u''
     
     code_names = []
@@ -119,7 +119,7 @@ def _get_mint_codenames():
 
 
 ## Get a list of available system release codenames
-def GetOSCodeNames():
+def GetOSDistNames():
     code_names = []
     
     if not code_names:
