@@ -1014,7 +1014,11 @@ class DirectoryTree(wx.TreeCtrl):
                     break
             
             if mount_item:
-                if expanded:
+                if mount_item.Path == selected_path:
+                    if expanded:
+                        self.Expand(mount_item)
+                
+                elif expanded:
                     self.ExpandPath(mount_item, selected_path)
                 
                 else:
