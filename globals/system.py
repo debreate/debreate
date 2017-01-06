@@ -8,7 +8,8 @@
 
 import os, sys, wx
 
-from globals.fileio import ReadFile
+from globals.fileio     import ReadFile
+from globals.strings    import RemoveEmptyLines
 
 
 # *** Python Info *** #
@@ -54,3 +55,27 @@ OS_codename = GetOSInfo(u'DISTRIB_CODENAME')
 OS_upstream_name = GetOSInfo(u'DISTRIB_ID', True)
 OS_upstream_version = GetOSInfo(u'DISTRIB_RELEASE', True)
 OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
+
+
+## Get a list of available system release codenames
+def GetOSCodeNames():
+    code_names = []
+    
+    # Ubuntu & Linux Mint distributions
+    global OS_codename, OS_upstream_codename
+    
+    for CN in (OS_codename, OS_upstream_codename,):
+        if CN and CN not in code_names:
+            code_names.append(CN)
+    
+    # Debian distributions
+    FILE_debian = u'/etc/debian_version'
+    if os.path.isfile(FILE_debian):
+        debian_names = RemoveEmptyLines(ReadFile(FILE_debian, split=True))[:1]
+        if u'/' in debian_names[0]:
+            debian_names = debian_names[0].split(u'/')
+        
+        for CN in debian_names:
+            code_names.append(CN)
+    
+    return tuple(sorted(code_names))
