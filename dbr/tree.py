@@ -982,31 +982,43 @@ class DirectoryTree(wx.TreeCtrl):
     ## Refreshes the tree's displayed layout
     def ReCreateTree(self):
         selected = self.GetSelection()
+        mount_path = None
         
-        if isinstance(selected, PathItem):
-            selected_path = selected.Path
-            expanded = self.IsExpanded(selected)
-        
-        else:
-            selected_path = PATH_home
-            expanded = True
+        if selected:
+            # Get the current mount item's path for re-expanding
+            mount_item = self.GetSelectedMountItem()
+            if isinstance(mount_item, PathItem):
+                mount_path = mount_item.Path
+            
+            if isinstance(selected, PathItem):
+                selected_path = selected.Path
+                expanded = self.IsExpanded(selected)
+            
+            else:
+                selected_path = PATH_home
+                expanded = True
+            
+            Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
         
         self.DeleteAllItems()
         
         # Refresh list of connected storage devices
         self.InitMountItems()
         
-        Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
-        
-        for I in self.item_list:
-            if I.Path == selected_path:
-                if expanded:
-                    self.Expand(I)
-                
-                break
+        if selected and mount_path:
+            mount_item = None
             
-            elif I.Path in selected_path:
-                self.Expand(I)
+            for MOUNT in self.mount_list:
+                if MOUNT.Path == mount_path:
+                    mount_item = MOUNT
+                    break
+            
+            if mount_item:
+                if expanded:
+                    self.ExpandPath(mount_item, selected_path)
+                
+                else:
+                    self.ExpandPath(mount_item, os.path.dirname(selected_path))
     
     
     ## Clears all selected items except latest selected
