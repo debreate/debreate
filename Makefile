@@ -171,15 +171,6 @@ uninstall: uninstall-launcher uninstall-man uninstall-mime
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
 
-clean:
-	@find ./ -type f -name "*.pyc" -print -delete; \
-	rm -vf "./bin/$(PACKAGE)"; \
-	if [ -d "./bin" ]; then \
-		$(call UNINSTALL_FOLDER,./bin); \
-	fi; \
-	rm -vf "./prefix"; \
-	rm -vf "$(INSTALLED)"; \
-
 install-icons: $(MIME_icons)
 	@target="$(DESTDIR)$(prefix)"; \
 	icons_dir="$${target}/$(MIMEICONSDIR)"; \
@@ -244,6 +235,15 @@ dist: deb-clean
 	@tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist)
 	@file "$(PACKAGE_dist)"
 
+clean:
+	@find ./ -type f -name "*.pyc" -print -delete; \
+	rm -vf "./bin/$(PACKAGE)"; \
+	if [ -d "./bin" ]; then \
+		$(call UNINSTALL_FOLDER,./bin); \
+	fi; \
+	rm -vf "./prefix"; \
+	rm -vf "$(INSTALLED)"; \
+
 distclean: clean deb-clean
 	@rm -vf "$(PACKAGE_dist)"
 
@@ -295,10 +295,6 @@ help:
 	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-mime`tput sgr0`,"; \
 	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
 	\
-	echo "\tclean"; \
-	echo "\t\t- Delete Debreate binary & any compiled Python"; \
-	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
-	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
 	echo "\t\t  registration\n"; \
@@ -334,6 +330,10 @@ help:
 	echo "\tdistclean"; \
 	echo "\t\t- Run `tput bold`clean`tput sgr0`, `tput bold`deb-clean`tput sgr0`, & delete compressed"; \
 	echo "\t\t  distribution package archive\n"; \
+	\
+	echo "\tclean"; \
+	echo "\t\t- Delete Debreate binary & any compiled Python"; \
+	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
 	\
 	echo "\tdebianize"; \
 	echo "\t\t- Configure source for building a Debian package"; \
