@@ -22,8 +22,7 @@ from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
 from globals.strings        import TextIsEmpty
-from globals.system         import OS_codename
-from globals.system         import OS_upstream_codename
+from globals.system         import GetOSCodeNames
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
@@ -43,12 +42,7 @@ class Panel(wx.ScrolledWindow):
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         self.ti_version = wx.TextCtrl(self, name=txt_version.Name)
         
-        dist_names = [OS_codename, OS_upstream_codename,]
-        for INDEX in reversed(range(len(dist_names))):
-            if not dist_names[INDEX]:
-                dist_names.pop(INDEX)
-        
-        dist_names.sort()
+        dist_names = GetOSCodeNames()
         
         txt_dist = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
         
