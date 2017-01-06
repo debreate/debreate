@@ -6,7 +6,8 @@
 # See: docs/LICENSE.txt
 
 
-from time import strftime
+from time       import strftime
+from datetime   import datetime
 
 
 ## Formatting methods for dates & times
@@ -58,7 +59,17 @@ def GetDate(fmt=DTFMT.DEFAULT):
 
 ## Retrieves current time
 def GetTime(fmt=DTFMT.DEFAULT):
-    return unicode(strftime(u'%T'))
+    ms = None
+    
+    if fmt in (DTFMT.LOG,):
+        ms = unicode(datetime.now().strftime(u'%f'))[:3]
+    
+    current_time = unicode(strftime(u'%T'))
+    
+    if ms != None:
+        current_time = u'{}.{}'.format(current_time, ms)
+    
+    return current_time
 
 
 ## Retrieves current time zone
