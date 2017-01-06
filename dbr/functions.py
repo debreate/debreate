@@ -140,24 +140,6 @@ def GetDate():
     return u'{}-{}-{}'.format(yr, mo, da)
 
 
-def GetTime(formatted=False):
-    c_time = datetime.now().time()
-    hr = prepend_zero(c_time.hour)
-    mn = prepend_zero(c_time.minute)
-    se = prepend_zero(c_time.second)
-    ms = c_time.microsecond
-    
-    # FIXME: Want to show only microseconds (ms[2:])
-    ms = str(ms)
-    
-    s_time = u'{}:{}:{}:{}'.format(hr, mn, se, ms)
-    
-    if formatted:
-        s_time = s_time.replace(u':', u'.')
-    
-    return s_time
-
-
 ## Retrieves a list of licenses installed on the system
 #  
 #  Common system license files are located in /usr/share/common-licenses.
