@@ -204,37 +204,6 @@ class DirectoryTree(wx.TreeCtrl):
         # FIXME: Should not need to use a root list now with GetDeviceMountPoints function
         self.root_list = []
         
-        # Failsafe conditional in case of errors reading user home directory
-        home_exists = os.path.isdir(PATH_home)
-        if home_exists:
-            self.root_home = self.AppendItem(self.root_item, GT(u'Home directory'), PATH_home,
-                    ImageList.GetImageIndex(u'folder-home'),
-                    expImage=ImageList.GetImageIndex(u'folder-home-open'))
-            
-            self.root_list.append(self.root_home)
-        
-        # List storage devices currently mounted on system
-        stdevs = GetMountedStorageDevices()
-        
-        for DEV in stdevs:
-            add_item = os.path.ismount(DEV.MountPoint)
-            
-            if add_item:
-                for PITEM in self.root_list:
-                    if DEV.MountPoint == PITEM.Path:
-                        add_item = False
-                        break
-            
-            if add_item:
-                Logger.Debug(__name__, u'Adding new sub-root PathItem instance: {}'.format(DEV.Label))
-                
-                self.root_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
-                        ImageList.GetImageIndex(DEV.Type)))
-                continue
-            
-            else:
-                Logger.Debug(__name__, u'PathItem instance for "{}" directory already exists'.format(DEV.MountPoint))
-        
         self.ctx_menu = wx.Menu()
         
         mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add to project'))
@@ -280,9 +249,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         # *** Post-layout/event actions *** #
         
-        # Expand the user's home directory
-        if home_exists:
-            self.InitDirectoryLayout()
+        self.InitRootItems()
     
     
     ## Override inherited method to return custom PathItem instances
@@ -588,8 +555,47 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Expands the user's home directory
     def InitDirectoryLayout(self):
-        # Don't call self.Expand directly
-        self.OnExpand(item=self.root_home)
+        if self.root_list:
+            # Don't call self.Expand directly
+            self.OnExpand(item=self.GetHomeItem())
+    
+    
+    ## Creates all sub-root items for tree
+    def InitRootItems(self):
+        # Failsafe conditional in case of errors reading user home directory
+        home_exists = os.path.isdir(PATH_home)
+        if home_exists:
+            home_item = self.AppendItem(self.root_item, GT(u'Home directory'), PATH_home,
+                    ImageList.GetImageIndex(u'folder-home'),
+                    expImage=ImageList.GetImageIndex(u'folder-home-open'))
+            
+            self.root_list.append(home_item)
+        
+        # List storage devices currently mounted on system
+        stdevs = GetMountedStorageDevices()
+        
+        for DEV in stdevs:
+            add_item = os.path.ismount(DEV.MountPoint)
+            
+            if add_item:
+                for PITEM in self.root_list:
+                    if DEV.MountPoint == PITEM.Path:
+                        add_item = False
+                        break
+            
+            if add_item:
+                Logger.Debug(__name__, u'Adding new sub-root PathItem instance: {}'.format(DEV.Label))
+                
+                self.root_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
+                        ImageList.GetImageIndex(DEV.Type)))
+                continue
+            
+            else:
+                Logger.Debug(__name__, u'PathItem instance for "{}" directory already exists'.format(DEV.MountPoint))
+        
+        # Expand the user's home directory
+        if home_exists:
+            self.InitDirectoryLayout()
     
     
     ## TODO: Doxygen
