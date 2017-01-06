@@ -10,3 +10,5 @@ Non-priority:
 - Fix changelog to put asterix before each entry
 - Use custom buttons for template generation on Copyright page
 - Add option to eject removable drive from directory tree context menu
+- Add button on changelog page to retrieve dist names from remote site
+  - Save names to file in ~/.local/share/debreate
