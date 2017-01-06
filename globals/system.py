@@ -59,7 +59,7 @@ OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
 
 
 def _get_debian_distname():
-    ref_site = u''
+    ref_site = u'https://wiki.debian.org/DebianReleases'
     
     code_names = []
     
@@ -111,7 +111,7 @@ def _get_ubuntu_distname(nonexistent=False):
 
 
 def _get_mint_distname():
-    ref_site = u''
+    ref_site = u'https://www.linuxmint.com/download_all.php'
     
     code_names = []
     
