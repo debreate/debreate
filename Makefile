@@ -20,7 +20,7 @@ INSTALL_EXEC = install -vm 0755
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
-UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
+UNINSTALL_FOLDER = find "$1" -type f -print -delete; find "$1" -type d -empty -print -delete
 
 
 FILES_executable = \
@@ -175,7 +175,7 @@ clean:
 	@find ./ -type f -name "*.pyc" -print -delete; \
 	rm -vf "./bin/$(PACKAGE)"; \
 	if [ -d "./bin" ]; then \
-		$(UNINSTALL_FOLDER) "./bin"; \
+		$(call UNINSTALL_FOLDER,./bin); \
 	fi; \
 	rm -vf "./prefix"; \
 	rm -vf "$(INSTALLED)"; \
