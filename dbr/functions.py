@@ -124,14 +124,6 @@ def RequirePython(version):
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
 
 
-## TODO: Doxygen
-def prepend_zero(number):
-    if number < 10:
-        return unicode(u'0{}'.format(number))
-    
-    return unicode(number)
-
-
 ## Retrieves a list of licenses installed on the system
 #  
 #  Common system license files are located in /usr/share/common-licenses.
