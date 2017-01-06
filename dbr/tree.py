@@ -202,7 +202,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         # List of sub-root items that shouldn't be deleted if they exist on filesystem
         # FIXME: Should not need to use a root list now with GetDeviceMountPoints function
-        self.root_list = []
+        self.mount_list = []
         
         self.ctx_menu = wx.Menu()
         
@@ -249,7 +249,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         # *** Post-layout/event actions *** #
         
-        self.InitRootItems()
+        self.InitMountItems()
         
         # Expand the user's home directory
         if self.GetHomeItem():
@@ -350,12 +350,12 @@ class DirectoryTree(wx.TreeCtrl):
         for I in reversed(self.item_list):
             del I
         
-        for I in reversed(self.root_list):
+        for I in reversed(self.mount_list):
             del I
         
         # Reset item lists
         self.item_list = []
-        self.root_list = []
+        self.mount_list = []
     
     
     ## Delete the listed items
@@ -439,8 +439,8 @@ class DirectoryTree(wx.TreeCtrl):
     #  
     #  Should always be first item in root list
     def GetHomeItem(self):
-        if self.root_list:
-            for ITEM in self.root_list:
+        if self.mount_list:
+            for ITEM in self.mount_list:
                 if ITEM.Path == PATH_home:
                     return ITEM
         
@@ -557,13 +557,13 @@ class DirectoryTree(wx.TreeCtrl):
     
     ## Expands the user's home directory
     def InitDirectoryLayout(self):
-        if self.root_list:
+        if self.mount_list:
             # Don't call self.Expand directly
             self.OnExpand(item=self.GetHomeItem())
     
     
-    ## Creates all sub-root items for tree
-    def InitRootItems(self):
+    ## Creates all mount items for tree
+    def InitMountItems(self):
         # Failsafe conditional in case of errors reading user home directory
         home_exists = os.path.isdir(PATH_home)
         if home_exists:
@@ -571,7 +571,7 @@ class DirectoryTree(wx.TreeCtrl):
                     ImageList.GetImageIndex(u'folder-home'),
                     expImage=ImageList.GetImageIndex(u'folder-home-open'))
             
-            self.root_list.append(home_item)
+            self.mount_list.append(home_item)
         
         # List storage devices currently mounted on system
         stdevs = GetMountedStorageDevices()
@@ -580,15 +580,15 @@ class DirectoryTree(wx.TreeCtrl):
             add_item = os.path.ismount(DEV.MountPoint)
             
             if add_item:
-                for PITEM in self.root_list:
+                for PITEM in self.mount_list:
                     if DEV.MountPoint == PITEM.Path:
                         add_item = False
                         break
             
             if add_item:
-                Logger.Debug(__name__, u'Adding new sub-root PathItem instance: {}'.format(DEV.Label))
+                Logger.Debug(__name__, u'Adding new mount PathItem instance: {}'.format(DEV.Label))
                 
-                self.root_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
+                self.mount_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
                         ImageList.GetImageIndex(DEV.Type)))
                 continue
             
@@ -690,7 +690,7 @@ class DirectoryTree(wx.TreeCtrl):
                 
                 self.ctx_menu.SetLabel(ident.EXPAND, expand_label)
             
-            for ITEM in self.root_list:
+            for ITEM in self.mount_list:
                 if ITEM in selected:
                     allow_rename = False
                     allow_trash = False
@@ -939,7 +939,7 @@ class DirectoryTree(wx.TreeCtrl):
         self.DeleteAllItems()
         
         # Refresh list of connected storage devices
-        self.InitRootItems()
+        self.InitMountItems()
         
         Logger.Debug(__name__, u'Selected path: {}'.format(selected_path))
         
