@@ -466,6 +466,18 @@ class DirectoryTree(wx.TreeCtrl):
         return tuple(self.item_list)
     
     
+    ## Retrieve the item that represents user's home directory
+    #  
+    #  Should always be first item in root list
+    def GetHomeItem(self):
+        if self.root_list:
+            for ITEM in self.root_list:
+                if ITEM.Path == PATH_home:
+                    return ITEM
+        
+        return None
+    
+    
     ## Override to ensure return value of DirectoryImageList instance
     def GetImageList(self):
         #return wx.TreeCtrl.GetImageList(self)
