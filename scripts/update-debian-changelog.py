@@ -16,6 +16,14 @@ URGENCY = GetInfoValue('URGENCY')
 AUTHOR = GetInfoValue('AUTHOR')
 EMAIL = GetInfoValue('EMAIL')
 
+DEV = GetInfoValue('VERSION_dev')
+
+if DEV.isdigit():
+    DEV = int(DEV)
+
+else:
+    DEV = 0
+
 # Reading source log
 if not os.path.isfile(debian_files['changelog']):
     print('ERROR: Source changelog does not exist, can\'t continue: {}'.format(debian_files['changelog']))
@@ -28,6 +36,9 @@ TEMP.close()
 
 # Extract version number
 version_string = changelog_data[0]
+
+if DEV:
+    version_string = u'{}-dev{}'.format(version_string, DEV)
 
 # Check for same version entry
 entry_exists = False
