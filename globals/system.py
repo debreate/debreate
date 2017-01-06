@@ -75,6 +75,9 @@ def GetOSCodeNames():
         if u'/' in debian_names[0]:
             debian_names = debian_names[0].split(u'/')
         
+        # Add generic Debian release names
+        debian_names = debian_names + [u'stable', u'testing', u'unstable',]
+        
         for CN in debian_names:
             code_names.append(CN)
     
