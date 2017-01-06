@@ -15,7 +15,7 @@ from wx.combo import OwnerDrawnComboBox
 #  This is a workaround for wx versions older than 3.0
 class ComboBox(OwnerDrawnComboBox):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=None, style=0,
+            size=wx.DefaultSize, choices=[], style=0,
             validator=wx.DefaultValidator, name=wx.ComboBoxNameStr):
         OwnerDrawnComboBox.__init__(self, parent, ID, value, pos, size, choices, style,
                 validator, name)
