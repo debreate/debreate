@@ -9,8 +9,6 @@
 
 
 import commands, os, re, shutil, traceback, subprocess, wx
-from datetime   import date
-from datetime   import datetime
 from urllib2    import URLError
 from urllib2    import urlopen
 
@@ -23,7 +21,6 @@ from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_file
 from globals.commands       import CMD_system_packager
 from globals.constants      import system_licenses_path
-from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
 
