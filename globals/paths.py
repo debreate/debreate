@@ -4,6 +4,9 @@
 #  
 #  Global paths used in the app
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os
 
