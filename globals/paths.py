@@ -5,8 +5,15 @@
 #  Global paths used in the app
 
 
-# System modules
 import os
+
+
+def ConcatPaths(path_list):
+    if not isinstance(path_list, (list, tuple)):
+        # FIXME: Need error checking
+        return None
+    
+    return u'/'.join(path_list).replace(u'//', u'/')
 
 
 # *** System paths *** #
@@ -24,12 +31,4 @@ PATH_app = os.path.dirname(os.path.dirname(__file__))
 PATH_home = os.getenv(u'HOME')
 
 ## Local folder to store files such as custom templates
-PATH_local = u'{}/.local/share/debreate'.format(PATH_home)
-
-
-def ConcatPaths(path_list):
-    if not isinstance(path_list, (list, tuple)):
-        # FIXME: Need error checking
-        return None
-    
-    return u'/'.join(path_list).replace(u'//', u'/')
+PATH_local = ConcatPaths((PATH_home, u'.local/share/debreate'))
