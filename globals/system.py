@@ -317,31 +317,31 @@ def GetOSDistNames():
             for OS in (u'debian', u'ubuntu', u'mint',):
                 for NAME in cached_names[OS]:
                     dist_names.append(NAME)
+    
+    # Only check system for dist names if could not be loaded from cache file
+    if not dist_names:
+        # Ubuntu & Linux Mint distributions
+        global OS_codename, OS_upstream_codename
+        
+        for CN in (OS_codename, OS_upstream_codename,):
+            if CN and CN not in dist_names:
+                dist_names.append(CN)
+        
+        # Debian distributions
+        FILE_debian = u'/etc/debian_version'
+        if os.path.isfile(FILE_debian):
+            debian_names = RemoveEmptyLines(ReadFile(FILE_debian, split=True))[:1]
             
-            print
-    
-    # Ubuntu & Linux Mint distributions
-    global OS_codename, OS_upstream_codename
-    
-    for CN in (OS_codename, OS_upstream_codename,):
-        if CN and CN not in dist_names:
-            dist_names.append(CN)
-    
-    # Debian distributions
-    FILE_debian = u'/etc/debian_version'
-    if os.path.isfile(FILE_debian):
-        debian_names = RemoveEmptyLines(ReadFile(FILE_debian, split=True))[:1]
-        
-        # Usable names should all be on first line
-        if u'/' in debian_names[0]:
-            debian_names = sorted(debian_names[0].split(u'/'))
-        
-        # Add generic Debian release names
-        debian_names = [u'unstable', u'testing', u'stable',] + debian_names
-        
-        for NAME in reversed(debian_names):
-            if NAME not in dist_names:
-                # Put Debian names first
-                dist_names.insert(0, NAME)
+            # Usable names should all be on first line
+            if u'/' in debian_names[0]:
+                debian_names = sorted(debian_names[0].split(u'/'))
+            
+            # Add generic Debian release names
+            debian_names = [u'unstable', u'testing', u'stable',] + debian_names
+            
+            for NAME in reversed(debian_names):
+                if NAME not in dist_names:
+                    # Put Debian names first
+                    dist_names.insert(0, NAME)
     
     return tuple(dist_names)
