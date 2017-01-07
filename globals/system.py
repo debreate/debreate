@@ -14,6 +14,7 @@ from globals.paths      import ConcatPaths
 from globals.paths      import PATH_local
 from globals.remote     import GetRemotePageText
 from globals.strings    import RemoveEmptyLines
+from globals.strings    import StringIsVersioned
 
 
 # *** Python Info *** #
@@ -63,12 +64,61 @@ OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
 ## File where distribution code names cache is stored
 FILE_distnames = ConcatPaths((PATH_local, u'distnames'))
 
-def _get_debian_stable_distname():
+## Retrieves list of current Debian distribution names
+#  
+#  \param obsolete
+#    Include obsolete distributions
+#  \param unstable
+#    Include testing & unstable distributions
+#  \param generic
+#    Include generic names 'oldstable', 'stable', 'testing', & 'unstable'
+def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
     ref_site = u'https://wiki.debian.org/DebianReleases'
     
-    stable_name = u''
+    # Names added statically are continually used by Debian project
+    dist_names = []
     
-    return stable_name
+    if generic:
+        if unstable:
+            dist_names.append(u'unstable')
+            dist_names.append(u'testing')
+        
+        dist_names.append(u'stable')
+        
+        if obsolete:
+            dist_names.append(u'oldstable')
+    
+    # NOTE: 'stretch' & 'sid' names are repeatedly used for testing & unstable,
+    #       but this could change in the future.
+    if unstable:
+        dist_names.append(u'sid')
+        dist_names.append(u'stretch')
+    
+    page_text = GetRemotePageText(ref_site).split(u'\n')
+    
+    if page_text:
+        # Only add up to max_dists to list
+        max_dists = 6
+        dists_added = 0
+        
+        for INDEX in range(len(page_text)):
+            LINE = page_text[INDEX].lower()
+            
+            if u'<p class="line862">' in LINE and LINE.strip().endswith(u'</td>'):
+                stable_version = LINE.split(u'</td>')[0].split(u'>')[-1].strip()
+                
+                if StringIsVersioned(stable_version):
+                    dist_names.append(page_text[INDEX+1].split(u'</a>')[0].split(u'>')[-1].lower().strip())
+                    dists_added += 1
+                    
+                    if dists_added >= max_dists:
+                        break
+                    
+                    # First name found should be current stable version
+                    if not obsolete:
+                        break
+    
+    return dist_names
 
 
 def _get_ubuntu_distnames(obsolete=False):
@@ -130,14 +180,14 @@ def _get_mint_distnames():
 #    If \b \e True, includes obsolete Ubuntu distributions
 #  \return
 #    \b \e Boolean value of WriteFile
-def UpdateDistNamesCache(obsolete=False, unstable=True):
+def UpdateDistNamesCache(unstable=True, obsolete=False, generic=False):
     global FILE_distnames
     
-    debian_stable_distname = _get_debian_stable_distname()
+    debian_distnames = _get_debian_distnames(unstable, obsolete, generic)
     ubuntu_distnames = _get_ubuntu_distnames(obsolete)
     mint_distnames = _get_mint_distnames()
     
-    section_debian = u'[DEBIAN]\n{}'.format(debian_stable_distname)
+    section_debian = u'[DEBIAN]\n{}'.format(u'\n'.join(debian_distnames))
     section_ubuntu = u'[UBUNTU]\n{}'.format(u'\n'.join(ubuntu_distnames))
     section_mint = u'[LINUX MINT]\n{}'.format(u'\n'.join(mint_distnames))
     
@@ -150,11 +200,11 @@ def UpdateDistNamesCache(obsolete=False, unstable=True):
 #    If \b \e True, includes obsolete Ubuntu distributions (only works if cache file doesn't already exist)
 #  \return
 #    ???
-def GetCachedDistNames(obsolete=False, unstable=True):
+def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
     global FILE_distnames
     
     if not os.path.isfile(FILE_distnames):
-        if not UpdateDistNamesCache(obsolete, unstable):
+        if not UpdateDistNamesCache(unstable, obsolete, generic):
             return None
     
     text_temp = ReadFile(FILE_distnames)
