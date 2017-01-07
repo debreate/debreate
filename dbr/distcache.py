@@ -6,17 +6,18 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import os, traceback, wx
 
 from dbr.dialogs            import BaseDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.panel              import BorderedPanel
 from dbr.textpreview        import TextPreview
+from globals.fileio         import ReadFile
 from globals.system         import FILE_distnames
 from globals.system         import UpdateDistNamesCache
-from globals.fileio         import ReadFile
 
 
 ## Dialog displaying controls for updating distribution names cache file
@@ -108,20 +109,35 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
     
     ## Creates/Updates the distribution names cache file
     def OnUpdateCache(self, event=None):
-        Logger.Debug(__name__, GT(u'Updating cache ...'))
+        try:
+            Logger.Debug(__name__, GT(u'Updating cache ...'))
+            
+            # FIXME: Should open a new thread & show progress dialog that can be cancelled
+            title_orig = self.GetTitle()
+            self.SetTitle(GT(u'Updating cache ...'))
+            
+            self.Disable()
+            
+            wx.Yield()
+            # FIXME: Should check timestamps to make sure file was updated
+            UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
+                    self.chk_generic.GetValue())
+            
+            self.SetTitle(title_orig)
+            self.Enable()
+            
+            self.btn_preview.Enable(os.path.isfile(FILE_distnames))
         
-        # FIXME: Should open a new thread & show progress dialog that can be cancelled
-        title_orig = self.GetTitle()
-        self.SetTitle(GT(u'Updating cache ...'))
-        
-        self.Disable()
-        
-        wx.Yield()
-        # FIXME: Should check timestamps to make sure file was updated
-        UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
-                self.chk_generic.GetValue())
-        
-        self.SetTitle(title_orig)
-        self.Enable()
-        
-        self.btn_preview.Enable(os.path.isfile(FILE_distnames))
+        except:
+            cache_exists = os.path.isfile(FILE_distnames)
+            
+            err_msg = GT(u'An error occurred when trying to update the distribution names cache')
+            err_msg2 = GT(u'The cache file exists but may not have been updated')
+            if cache_exists:
+                err_msg = u'{}\n\n{}'.format(err_msg, err_msg2)
+            
+            ShowErrorDialog(err_msg, traceback.format_exc(), self)
+            
+            self.btn_preview.Enable(cache_exists)
+            
+            return False
