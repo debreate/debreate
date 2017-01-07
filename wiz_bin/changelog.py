@@ -47,10 +47,10 @@ class Panel(wx.ScrolledWindow):
         txt_dist = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
         
         if dist_names:
-            self.ti_dist = ComboBox(self, choices=dist_names, name=txt_dist.Name)
+            self.ti_dist = ComboBox(self, ident.DIST, choices=dist_names, name=txt_dist.Name)
         
         else:
-            self.ti_dist = wx.TextCtrl(self, name=txt_dist.Name)
+            self.ti_dist = wx.TextCtrl(self, ident.DIST, name=txt_dist.Name)
         
         opts_urgency = (
             u'low', u'medium', u'high', u'emergency',
