@@ -130,11 +130,11 @@ def _get_mint_distnames():
 #    If \b \e True, includes obsolete Ubuntu distributions
 #  \return
 #    \b \e Boolean value of WriteFile
-def UpdateDistNamesCache(deprecated=False):
+def UpdateDistNamesCache(obsolete=False, unstable=True):
     global FILE_distnames
     
     debian_stable_distname = _get_debian_stable_distname()
-    ubuntu_distnames = _get_ubuntu_distnames(deprecated)
+    ubuntu_distnames = _get_ubuntu_distnames(obsolete)
     mint_distnames = _get_mint_distnames()
     
     section_debian = u'[DEBIAN]\n{}'.format(debian_stable_distname)
@@ -150,11 +150,11 @@ def UpdateDistNamesCache(deprecated=False):
 #    If \b \e True, includes obsolete Ubuntu distributions (only works if cache file doesn't already exist)
 #  \return
 #    ???
-def GetCachedDistNames(deprecated=False):
+def GetCachedDistNames(obsolete=False, unstable=True):
     global FILE_distnames
     
     if not os.path.isfile(FILE_distnames):
-        if not UpdateDistNamesCache(deprecated):
+        if not UpdateDistNamesCache(obsolete, unstable):
             return None
     
     text_temp = ReadFile(FILE_distnames)
