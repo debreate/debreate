@@ -156,7 +156,7 @@ install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-
 	$(MKDIR) "$${pixdir}"; \
 	$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
 	\
-	$(INSTALL_DATA) "$(INSTALLED)" "$${datadir}"; \
+	$(call MOVE,$(INSTALLED),$${datadir}); \
 
 uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime
 	@target=$(DESTDIR)$(prefix); \
