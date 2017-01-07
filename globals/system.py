@@ -8,6 +8,7 @@
 
 import os, sys, wx
 
+from globals.containers import Contains
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
 from globals.paths      import ConcatPaths
@@ -64,8 +65,9 @@ OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
 ## File where distribution code names cache is stored
 FILE_distnames = ConcatPaths((PATH_local, u'distnames'))
 
-## Retrieves list of current Debian distribution names
+## Retrieves distribution names from remote Debian site
 #  
+#  NOTE: If site layout changes, function will need updated
 #  \param obsolete
 #    Include obsolete distributions
 #  \param unstable
@@ -121,51 +123,107 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
     return dist_names
 
 
-def _get_ubuntu_distnames(obsolete=False):
+## Retrieves distribution names from remote Ubuntu site
+#  
+#  NOTE: If site layout changes, function will need updated
+def _get_ubuntu_distnames(unstable=True, obsolete=False):
     ref_site = u'https://wiki.ubuntu.com/Releases'
+    page_text = GetRemotePageText(ref_site).split(u'\n')
     
     dist_names = []
+    current = []
     
-    page_text = GetRemotePageText(ref_site).split(u'\n')
+    if unstable:
+        future = []
+    
+    if obsolete:
+        eol = []
     
     if page_text:
         for INDEX in range(len(page_text)):
-            if page_text[INDEX] == u'<h3 id="Current">Current</h3>':
-                page_text = page_text[INDEX+1:]
-                break
-        
-        for INDEX in range(len(page_text)):
-            if page_text[INDEX] == u'<h3 id="End_of_life">End of life</h3>':
-                page_text = page_text[:INDEX]
-                break
-        
-        delim = u'<td style="background-color: #f1f1dd"><p class="line891"><a '
-        
-        for LINE in page_text:
-            LINE = LINE.strip()
+            LINE = page_text[INDEX].lower()
             
-            if LINE.startswith(delim) and u'ReleaseNotes' not in LINE:
-                LINE = LINE.replace(delim, u'')
+            if u'id="current"' in LINE and len(current) < 2:
+                current.append(INDEX + 8)
                 
-                add_line = LINE.startswith(u'href=')
-                if obsolete:
-                    add_line = add_line or LINE.startswith(u'class="nonexistent"')
+                continue
+            
+            if u'id="future"' in LINE:
+                if len(current) < 2:
+                    current.append(INDEX)
                 
-                if add_line:
-                    index_start = LINE.index(u'>')
-                    index_end = LINE.index(u'<')
+                if unstable and len(future) < 2:
+                    future.append(INDEX + 8)
+                
+                continue
+            
+            if u'id="end_of_life"' in LINE:
+                if unstable and len(future) < 2:
+                    future.append(INDEX)
+                
+                if obsolete and len(eol) < 2:
+                    eol.append(INDEX + 8)
+                    eol.append(len(page_text) - 1)
                     
-                    LINE = LINE[index_start+1:index_end].lower().strip()
+                    break
+        
+        # Lines containing these strings will be ignored
+        skip_lines = (
+            u'releasenotes',
+            u'class="http',
+            )
+        
+        # Add names in order of newest first
+        
+        if unstable and len(future) > 1:
+            future = page_text[future[0]:future[1]]
+            
+            for LINE in future:
+                LINE = LINE.lower()
+                
+                if u'class="line891"' in LINE and not Contains(LINE, skip_lines):
+                    name = LINE.split(u'</a>')[0].split(u'>')[-1].strip().split(u' ')[0]
                     
-                    if u' ' in LINE:
-                        LINE = LINE.split(u' ')[0]
+                    if name and name not in dist_names:
+                        dist_names.append(name)
+        
+        if len(current) > 1:
+            current = page_text[current[0]:current[1]]
+            
+            for LINE in current:
+                LINE = LINE.lower()
+                
+                if u'class="line891"' in LINE and not Contains(LINE, skip_lines):
+                    name = LINE.split(u'</a>')[0].split(u'>')[-1].strip().split(u' ')[0]
+                    if name and name not in dist_names:
+                        dist_names.append(name)
+        
+        if obsolete and len(eol) > 1:
+            eol = page_text[eol[0]:eol[1]]
+            
+            # Maximum number of obsolete dists that will be added
+            eol_max = 6
+            eol_added = 0
+            
+            for LINE in eol:
+                LINE = LINE.lower()
+                
+                if u'class="line891"' in LINE and not Contains(LINE, skip_lines):
+                    name = LINE.split(u'</a>')[0].split(u'>')[-1].strip().split(u' ')[0]
                     
-                    if LINE not in dist_names:
-                        dist_names.append(LINE)
+                    if name and name not in dist_names:
+                        dist_names.append(name)
+                        
+                        eol_added += 1
+                        if eol_added >= eol_max:
+                            break
     
-    return sorted(dist_names)
+    return dist_names
 
 
+## Retrieves distribution names from remote Linux Mint site
+#  
+#  NOTE: If site layout changes, function will need updated
 def _get_mint_distnames():
     ref_site = u'https://www.linuxmint.com/download_all.php'
     
@@ -184,7 +242,7 @@ def UpdateDistNamesCache(unstable=True, obsolete=False, generic=False):
     global FILE_distnames
     
     debian_distnames = _get_debian_distnames(unstable, obsolete, generic)
-    ubuntu_distnames = _get_ubuntu_distnames(obsolete)
+    ubuntu_distnames = _get_ubuntu_distnames(unstable, obsolete)
     mint_distnames = _get_mint_distnames()
     
     section_debian = u'[DEBIAN]\n{}'.format(u'\n'.join(debian_distnames))
