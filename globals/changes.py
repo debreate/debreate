@@ -19,6 +19,8 @@ from globals.strings        import TextIsEmpty
 from globals.system         import OS_codename
 
 
+section_delims = u'*-+#'
+
 def _strip_line(line, chars, preserve_indent=False):
     if preserve_indent:
         return line.rstrip(chars)
@@ -32,7 +34,7 @@ def _format_lines(lines, preserve_indent=False):
         lines = list(lines)
     
     if lines:
-        section_delims = u'*-+'
+        global section_delims
         
         for INDEX in range(len(lines)):
             # Clean leading & trailing whitespace
@@ -41,7 +43,7 @@ def _format_lines(lines, preserve_indent=False):
             if INDEX == 0:
                 # First line will always start with an asterix
                 # FIXME: Indentation not saved here
-                lines[INDEX] = u'  * {}'.format(lines[INDEX].lstrip(u' *-+'))
+                lines[INDEX] = u'  * {}'.format(lines[INDEX].lstrip(u' {}'.format(section_delims)))
                 continue
             
             section = False
