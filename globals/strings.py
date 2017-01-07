@@ -41,3 +41,25 @@ def RemoveEmptyLines(text):
         return u'\n'.join(text)
     
     return tuple(text)
+
+
+## Tests if a string can be converted to int or float
+#  
+#  \param string
+#    \b \e String to be tested
+def StringIsNumerical(string):
+    try:
+        float(string)
+        return True
+    
+    except ValueError:
+        return False
+
+
+## Tests if a string is formatted for versioning
+def StringIsVersioned(string):
+    for P in string.split(u'.'):
+        if not P.isnumeric():
+            return False
+    
+    return True
