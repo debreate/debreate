@@ -9,6 +9,9 @@
 import os, sys, wx
 
 from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
+from globals.paths      import ConcatPaths
+from globals.paths      import PATH_local
 from globals.remote     import GetRemotePageText
 from globals.strings    import RemoveEmptyLines
 
@@ -57,19 +60,21 @@ OS_upstream_name = GetOSInfo(u'DISTRIB_ID', True)
 OS_upstream_version = GetOSInfo(u'DISTRIB_RELEASE', True)
 OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
 
+## File where distribution code names cache is stored
+FILE_distnames = ConcatPaths((PATH_local, u'distnames'))
 
-def _get_debian_distname():
+def _get_debian_stable_distname():
     ref_site = u'https://wiki.debian.org/DebianReleases'
     
-    code_names = []
+    stable_name = u''
     
-    return sorted(code_names)
+    return stable_name
 
 
-def _get_ubuntu_distname(nonexistent=False):
+def _get_ubuntu_distnames(nonexistent=False):
     ref_site = u'https://wiki.ubuntu.com/Releases'
     
-    code_names = []
+    dist_names = []
     
     page_text = GetRemotePageText(ref_site).split(u'\n')
     
@@ -104,31 +109,46 @@ def _get_ubuntu_distname(nonexistent=False):
                 if u' ' in LINE:
                     LINE = LINE.split(u' ')[0]
                 
-                if LINE not in code_names:
-                    code_names.append(LINE)
+                if LINE not in dist_names:
+                    dist_names.append(LINE)
     
-    return sorted(code_names)
+    return sorted(dist_names)
 
 
-def _get_mint_distname():
+def _get_mint_distnames():
     ref_site = u'https://www.linuxmint.com/download_all.php'
     
-    code_names = []
+    dist_names = []
     
-    return sorted(code_names)
+    return sorted(dist_names)
+
+
+## Creates/Updates list of distribution names stored in user's local directory
+def UpdateDistNamesCache(deprecated=False):
+    global FILE_distnames
+    
+    debian_stable_distname = _get_debian_stable_distname()
+    ubuntu_distnames = _get_ubuntu_distnames(deprecated)
+    mint_distnames = _get_mint_distnames()
+    
+    section_debian = u'[DEBIAN]\n{}'.format(debian_stable_distname)
+    section_ubuntu = u'[UBUNTU]\n{}'.format(u'\n'.join(ubuntu_distnames))
+    section_mint = u'[LINUX MINT]\n{}'.format(u'\n'.join(mint_distnames))
+    
+    WriteFile(FILE_distnames, u'\n\n'.join((section_debian, section_ubuntu, section_mint)))
 
 
 ## Get a list of available system release codenames
 def GetOSDistNames():
-    code_names = []
+    dist_names = []
     
-    if not code_names:
+    if not dist_names:
         # Ubuntu & Linux Mint distributions
         global OS_codename, OS_upstream_codename
         
         for CN in (OS_codename, OS_upstream_codename,):
-            if CN and CN not in code_names:
-                code_names.append(CN)
+            if CN and CN not in dist_names:
+                dist_names.append(CN)
     
     # Debian distributions
     FILE_debian = u'/etc/debian_version'
@@ -143,6 +163,6 @@ def GetOSDistNames():
         debian_names = debian_names + [u'stable', u'testing', u'unstable',]
         
         # Put Debian names first
-        code_names = debian_names + code_names
+        dist_names = debian_names + dist_names
     
-    return tuple(code_names)
+    return tuple(dist_names)
