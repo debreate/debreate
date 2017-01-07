@@ -11,6 +11,7 @@ import os, wx
 from dbr.dialogs            import BaseDialog
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.panel              import BorderedPanel
 from dbr.textpreview        import TextPreview
 from globals.system         import FILE_distnames
@@ -19,10 +20,11 @@ from globals.fileio         import ReadFile
 
 
 ## Dialog displaying controls for updating distribution names cache file
-class DistNamesCacheDialog(BaseDialog):
+class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
     def __init__(self):
         BaseDialog.__init__(self, title=GT(u'Update Dist Names Cache'),
                 style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        ModuleAccessCtrl.__init__(self, __name__)
         
         self.SetMinSize(wx.Size(300, 150))
         
