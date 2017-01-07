@@ -49,8 +49,8 @@ if u'compile' in parsed_commands:
     print
     
     for D in os.listdir(PATH_app):
-        if os.path.isdir(D) and D in compile_dirs:
-            D = ConcatPaths((PATH_app, D))
+        D = ConcatPaths((PATH_app, D))
+        if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
             print(u'Compiling directory: {}'.format(D))
             compileall.compile_dir(D)
             print
