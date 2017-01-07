@@ -44,3 +44,20 @@ class ComboBox(OwnerDrawnComboBox):
                 text_area.SetBackgroundColour(self.clr_disabled)
         
         return return_value
+    
+    
+    ## Override inherited method for compatibility with older wx versions
+    #  
+    #  \param items
+    #    \b \e String or \b \e list of string items
+    def Set(self, items):
+        if not isinstance(items, (tuple, list, dict)):
+            items = (items,)
+        
+        if wx.MAJOR_VERSION > 2:
+            return OwnerDrawnComboBox.Set(self, items)
+        
+        self.Clear()
+        
+        for I in items:
+            self.Append(I)
