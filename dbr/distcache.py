@@ -7,17 +7,22 @@
 
 
 import os, traceback, wx
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.dialogs            import BaseDialog
 from dbr.dialogs            import ShowErrorDialog
+from dbr.dialogs            import ShowMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.panel              import BorderedPanel
 from dbr.textpreview        import TextPreview
+from globals                import ident
 from globals.fileio         import ReadFile
 from globals.system         import FILE_distnames
+from globals.system         import GetOSDistNames
 from globals.system         import UpdateDistNamesCache
+from globals.wizardhelper   import GetField
 
 
 ## Dialog displaying controls for updating distribution names cache file
@@ -119,14 +124,29 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
             self.Disable()
             
             wx.Yield()
-            # FIXME: Should check timestamps to make sure file was updated
             UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
                     self.chk_generic.GetValue())
             
             self.SetTitle(title_orig)
             self.Enable()
             
-            self.btn_preview.Enable(os.path.isfile(FILE_distnames))
+            # FIXME: Should check timestamps to make sure file was updated
+            cache_updated = os.path.isfile(FILE_distnames)
+            
+            if cache_updated:
+                distname_input = GetField(ident.CHANGELOG, ident.DIST)
+                
+                if isinstance(distname_input, OwnerDrawnComboBox):
+                    distname_input.Set(GetOSDistNames())
+                
+                else:
+                    ShowMessageDialog(
+                        GT(u'The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page'),
+                        parent=self, linewrap=410)
+            
+            self.btn_preview.Enable(cache_updated)
+            
+            return cache_updated
         
         except:
             cache_exists = os.path.isfile(FILE_distnames)
