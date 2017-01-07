@@ -23,6 +23,18 @@ INSTALL_EXEC = install -vm ${PERM_EXEC}
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
+
+define MOVE =
+	target_dir=$2; \
+	source_file=$1; \
+	if [ ! -d "$${target_dir}" ]; then \
+		$(MKDIR) "$${target_dir}"; \
+	fi; \
+	mv -vf "$${source_file}" "$${target_dir}"; \
+	target_file="$${target_dir}/$$(basename $${source_file})"; \
+	chmod -c $(PERM_DATA) "$${target_file}"
+endef
+
 UNINSTALL_FOLDER = find "$1" -type f -print -delete; find "$1" -type d -empty -print -delete
 
 
