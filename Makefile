@@ -15,8 +15,11 @@ ICONTHEME = $(DATAROOT)/icons/gnome
 MIMEDIR = $(DATAROOT)/mime/packages
 MIMEICONSDIR = $(ICONTHEME)/scalable/mimetypes
 
-INSTALL_DATA = install -vm 0644
-INSTALL_EXEC = install -vm 0755
+PERM_DATA = 0644
+PERM_EXEC = 0755
+
+INSTALL_DATA = install -vm ${PERM_DATA}
+INSTALL_EXEC = install -vm ${PERM_EXEC}
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
