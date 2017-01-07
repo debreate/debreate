@@ -35,6 +35,7 @@ class DistNamesCacheDialog(BaseDialog):
         
         self.btn_preview = wx.Button(self, label=GT(u'Preview cache'))
         btn_update = wx.Button(self, label=GT(u'Update cache'))
+        btn_clear = wx.Button(self, label=GT(u'Clear cache'))
         
         # Keep preview dialog in memory so position/size is saved
         self.preview = TextPreview(self, title=GT(u'Available Distribution Names'),
@@ -44,6 +45,7 @@ class DistNamesCacheDialog(BaseDialog):
         
         self.btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewCache)
         btn_update.Bind(wx.EVT_BUTTON, self.OnUpdateCache)
+        btn_clear.Bind(wx.EVT_BUTTON, self.OnClearCache)
         
         # *** Layout *** #
         
@@ -62,6 +64,7 @@ class DistNamesCacheDialog(BaseDialog):
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(self.btn_preview, 1)
         lyt_buttons.Add(btn_update, 1)
+        lyt_buttons.Add(btn_clear, 1)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(txt_types, 0, wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT|wx.TOP, 5)
@@ -79,6 +82,19 @@ class DistNamesCacheDialog(BaseDialog):
         
         if self.Parent:
             self.CenterOnParent()
+    
+    
+    ## Deletes the distribution names cache file
+    def OnClearCache(self, event=None):
+        if os.path.isfile(FILE_distnames):
+            os.remove(FILE_distnames)
+            
+            self.btn_preview.Disable()
+        
+        cache_exists = os.path.exists(FILE_distnames)
+        
+        self.btn_preview.Enable(cache_exists)
+        return not cache_exists
     
     
     ## Opens cache file for previewing

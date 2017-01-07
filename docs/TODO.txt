@@ -2,7 +2,6 @@
 - Testing for both wx 3.0 & 2.8
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
 - Update distribution names list on changelog page when cache is updated from menu
-- Add button to dialog to delete distnames cache
 - Use progress dialog to update distnames cache
 
 Non-priority:
