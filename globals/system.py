@@ -303,16 +303,29 @@ def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
 
 
 ## Get a list of available system release codenames
+#  
+#  FIXME: unstable, obsolete, & generic names should only be added if specified
 def GetOSDistNames():
+    global FILE_distnames
+    
     dist_names = []
     
-    if not dist_names:
-        # Ubuntu & Linux Mint distributions
-        global OS_codename, OS_upstream_codename
+    if os.path.isfile(FILE_distnames):
+        cached_names = GetCachedDistNames()
         
-        for CN in (OS_codename, OS_upstream_codename,):
-            if CN and CN not in dist_names:
-                dist_names.append(CN)
+        if cached_names:
+            for OS in (u'debian', u'ubuntu', u'mint',):
+                for NAME in cached_names[OS]:
+                    dist_names.append(NAME)
+            
+            print
+    
+    # Ubuntu & Linux Mint distributions
+    global OS_codename, OS_upstream_codename
+    
+    for CN in (OS_codename, OS_upstream_codename,):
+        if CN and CN not in dist_names:
+            dist_names.append(CN)
     
     # Debian distributions
     FILE_debian = u'/etc/debian_version'
@@ -324,9 +337,11 @@ def GetOSDistNames():
             debian_names = sorted(debian_names[0].split(u'/'))
         
         # Add generic Debian release names
-        debian_names = debian_names + [u'stable', u'testing', u'unstable',]
+        debian_names = [u'unstable', u'testing', u'stable',] + debian_names
         
-        # Put Debian names first
-        dist_names = debian_names + dist_names
+        for NAME in reversed(debian_names):
+            if NAME not in dist_names:
+                # Put Debian names first
+                dist_names.insert(0, NAME)
     
     return tuple(dist_names)
