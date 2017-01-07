@@ -71,46 +71,47 @@ def _get_debian_stable_distname():
     return stable_name
 
 
-def _get_ubuntu_distnames(nonexistent=False):
+def _get_ubuntu_distnames(obsolete=False):
     ref_site = u'https://wiki.ubuntu.com/Releases'
     
     dist_names = []
     
     page_text = GetRemotePageText(ref_site).split(u'\n')
     
-    for INDEX in range(len(page_text)):
-        if page_text[INDEX] == u'<h3 id="Current">Current</h3>':
-            page_text = page_text[INDEX+1:]
-            break
-    
-    for INDEX in range(len(page_text)):
-        if page_text[INDEX] == u'<h3 id="End_of_life">End of life</h3>':
-            page_text = page_text[:INDEX]
-            break
-    
-    delim = u'<td style="background-color: #f1f1dd"><p class="line891"><a '
-    
-    for LINE in page_text:
-        LINE = LINE.strip()
+    if page_text:
+        for INDEX in range(len(page_text)):
+            if page_text[INDEX] == u'<h3 id="Current">Current</h3>':
+                page_text = page_text[INDEX+1:]
+                break
         
-        if LINE.startswith(delim) and u'ReleaseNotes' not in LINE:
-            LINE = LINE.replace(delim, u'')
+        for INDEX in range(len(page_text)):
+            if page_text[INDEX] == u'<h3 id="End_of_life">End of life</h3>':
+                page_text = page_text[:INDEX]
+                break
+        
+        delim = u'<td style="background-color: #f1f1dd"><p class="line891"><a '
+        
+        for LINE in page_text:
+            LINE = LINE.strip()
             
-            add_line = LINE.startswith(u'href=')
-            if nonexistent:
-                add_line = add_line or LINE.startswith(u'class="nonexistent"')
-            
-            if add_line:
-                index_start = LINE.index(u'>')
-                index_end = LINE.index(u'<')
+            if LINE.startswith(delim) and u'ReleaseNotes' not in LINE:
+                LINE = LINE.replace(delim, u'')
                 
-                LINE = LINE[index_start+1:index_end].lower().strip()
+                add_line = LINE.startswith(u'href=')
+                if obsolete:
+                    add_line = add_line or LINE.startswith(u'class="nonexistent"')
                 
-                if u' ' in LINE:
-                    LINE = LINE.split(u' ')[0]
-                
-                if LINE not in dist_names:
-                    dist_names.append(LINE)
+                if add_line:
+                    index_start = LINE.index(u'>')
+                    index_end = LINE.index(u'<')
+                    
+                    LINE = LINE[index_start+1:index_end].lower().strip()
+                    
+                    if u' ' in LINE:
+                        LINE = LINE.split(u' ')[0]
+                    
+                    if LINE not in dist_names:
+                        dist_names.append(LINE)
     
     return sorted(dist_names)
 
