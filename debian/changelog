@@ -1,4 +1,4 @@
-debreate (0.7.13-dev1) xenial; urgency=high
+debreate (0.7.13-dev2) xenial; urgency=high
 
   * General:
     Only center progress dialogs on parent if not manually moved by user
@@ -43,7 +43,7 @@ debreate (0.7.13-dev1) xenial; urgency=high
   * Build options:
     Option to strip binary files before packaged (enabled by default)
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 06 Jan 2017 03:29:35 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 06 Jan 2017 16:34:45 -0800
 
 
 debreate (0.7.12) xenial; urgency=high
