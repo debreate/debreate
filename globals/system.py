@@ -124,6 +124,11 @@ def _get_mint_distnames():
 
 
 ## Creates/Updates list of distribution names stored in user's local directory
+#  
+#  \param deprecated
+#    If \b \e True, includes obsolete Ubuntu distributions
+#  \return
+#    \b \e Boolean value of WriteFile
 def UpdateDistNamesCache(deprecated=False):
     global FILE_distnames
     
@@ -135,7 +140,7 @@ def UpdateDistNamesCache(deprecated=False):
     section_ubuntu = u'[UBUNTU]\n{}'.format(u'\n'.join(ubuntu_distnames))
     section_mint = u'[LINUX MINT]\n{}'.format(u'\n'.join(mint_distnames))
     
-    WriteFile(FILE_distnames, u'\n\n'.join((section_debian, section_ubuntu, section_mint)))
+    return WriteFile(FILE_distnames, u'\n\n'.join((section_debian, section_ubuntu, section_mint)))
 
 
 ## Get a list of available system release codenames
