@@ -26,7 +26,7 @@ debreate (0.7.13-dev2) xenial; urgency=high
     Drag & drop support added
     - Files/Folders can be dragged from system file manager or directory tree
     Relative paths are preserved when adding directories to the file list
-    Option to list only top-level directory or all files individually in file list
+    Option to list only top-level directory or individual files in file list
     Directory tree changes:
     - Executable files are displayed in red
     - Some mime types use a unique bitmap icon
@@ -42,8 +42,10 @@ debreate (0.7.13-dev2) xenial; urgency=high
       - Expand/Collapse menu only appears if all selected items are folders
   * Build options:
     Option to strip binary files before packaged (enabled by default)
+  * Installation from .deb package:
+    Added postinst script to compile source to Python bytecode
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 06 Jan 2017 16:34:45 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 06 Jan 2017 17:10:00 -0800
 
 
 debreate (0.7.12) xenial; urgency=high

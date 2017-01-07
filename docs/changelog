@@ -25,7 +25,7 @@
   - Drag & drop support added
     - Files/Folders can be dragged from system file manager or directory tree
   - Relative paths are preserved when adding directories to the file list
-  - Option to list only top-level directory or all files individually in file list
+  - Option to list only top-level directory or individual files in file list
   - Directory tree changes:
     - Executable files are displayed in red
     - Some mime types use a unique bitmap icon
@@ -41,6 +41,8 @@
       - Expand/Collapse menu only appears if all selected items are folders
 - Build options:
   - Option to strip binary files before packaged (enabled by default)
+- Installation from .deb package:
+  - Added postinst script to compile source to Python bytecode
 
 0.7.12
 - Fixes:
