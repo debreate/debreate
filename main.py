@@ -21,6 +21,7 @@ from dbr.custom             import StatusBar
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
+from dbr.distcache          import DistNamesCacheDialog
 from dbr.functions          import GetCurrentVersion
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -207,6 +208,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.menu_opt.AppendItem(opt_logs_open)
             
             wx.EVT_MENU(self, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
+        
+        # *** OS distribution names cache *** #
+        
+        opt_distname_cache = wx.MenuItem(self.menu_opt, ident.DIST, GT(u'Update dist names cache'),
+                GT(u'Creates/Updates list of distribution names for changelog page'))
+        self.menu_opt.AppendItem(opt_distname_cache)
+        
+        wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
         
         # ----- Help Menu
         menu_help = wx.Menu()
@@ -640,6 +649,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.ToolTip.Enable(enabled)
         
         WriteConfig(u'tooltips', enabled)
+    
+    
+    ## Opens a dialog for creating/updating list of distribution names cache file
+    def OnUpdateDistNamesCache(self, event=None):
+        DistNamesCacheDialog().ShowModal()
     
     
     ## Opens web links from the help menu
