@@ -213,7 +213,7 @@ class StandardFileOpenDialog(StandardFileDialog):
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
-            buttons=(u'confirm',)):
+            buttons=(u'confirm',), linewrap=0):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
@@ -223,6 +223,8 @@ class DetailedMessageDialog(wx.Dialog):
         icon = wx.StaticBitmap(self, wx.ID_ANY, icon)
         
         txt_message = wx.StaticText(self, label=text)
+        if linewrap:
+            txt_message.Wrap(linewrap)
         
         button_list = []
         
@@ -432,8 +434,10 @@ class OverwriteDialog(ConfirmationDialog):
 
 ## Message dialog that shows an error & details
 class ErrorDialog(DetailedMessageDialog):
-    def __init__(self, parent, title=GT(u'Error'), text=GT(u'An error has occurred'), details=wx.EmptyString):
-        DetailedMessageDialog.__init__(self, parent, title, ICON_ERROR, text, details)
+    def __init__(self, parent, title=GT(u'Error'), text=GT(u'An error has occurred'),
+            details=wx.EmptyString, linewrap=0):
+        DetailedMessageDialog.__init__(self, parent, title, ICON_ERROR, text, details,
+                linewrap=linewrap)
 
 
 ## TODO: Doxygen
@@ -620,7 +624,8 @@ def ShowDialog(dialog):
 #        \b \e str|unicode: Module where error was caught (used for Logger output)
 #  \param warn
 #        \b \e bool: Show log message as warning instead of error
-def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Error')):
+def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Error'),
+            linewrap=0):
     # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
@@ -646,7 +651,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
     
     PrintLogMessage(module_name, logger_text)
     
-    error_dialog = ErrorDialog(parent, title, text)
+    error_dialog = ErrorDialog(parent, title, text, linewrap=linewrap)
     if details:
         error_dialog.SetDetails(details)
     
@@ -654,7 +659,8 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
 
 
 ## A function that displays a modal message dialog on the main window
-def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, parent=None):
+def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, parent=None,
+            linewrap=0):
     if not parent:
         parent = GetTopWindow()
     
@@ -669,7 +675,7 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, par
     if details:
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
-    message_dialog = DetailedMessageDialog(parent, title, ICON_INFORMATION, text)
+    message_dialog = DetailedMessageDialog(parent, title, ICON_INFORMATION, text, linewrap=linewrap)
     if details:
         message_dialog.SetDetails(details)
     
