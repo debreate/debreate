@@ -280,9 +280,24 @@ def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
     
     dist_names = {}
     
-    dist_names[u'debian'] = RemoveEmptyLines(text_temp.split(u'[DEBIAN]')[1].split(u'[UBUNTU]')[0].split(u'\n'))
-    dist_names[u'ubuntu'] = RemoveEmptyLines(text_temp.split(u'[UBUNTU]')[1].split(u'[LINUX MINT]')[0].split(u'\n'))
-    dist_names[u'mint'] = RemoveEmptyLines(text_temp.split(u'[LINUX MINT]')[1].split(u'\n'))
+    if text_temp:
+        try:
+            dist_names[u'debian'] = RemoveEmptyLines(text_temp.split(u'[DEBIAN]')[1].split(u'[UBUNTU]')[0].split(u'\n'))
+        
+        except IndexError:
+            pass
+        
+        try:
+            dist_names[u'ubuntu'] = RemoveEmptyLines(text_temp.split(u'[UBUNTU]')[1].split(u'[LINUX MINT]')[0].split(u'\n'))
+        
+        except IndexError:
+            pass
+        
+        try:
+            dist_names[u'mint'] = RemoveEmptyLines(text_temp.split(u'[LINUX MINT]')[1].split(u'\n'))
+        
+        except IndexError:
+            pass
     
     return (dist_names)
 
