@@ -10,11 +10,12 @@ import os, wx
 
 from dbr.dialogs            import BaseDialog
 from dbr.language           import GT
+from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.textpreview        import TextPreview
-from globals.system         import FILE_distnames, UpdateDistNamesCache
-from globals.fileio import ReadFile
-from dbr.log import Logger
+from globals.system         import FILE_distnames
+from globals.system         import UpdateDistNamesCache
+from globals.fileio         import ReadFile
 
 
 ## Dialog displaying controls for updating distribution names cache file
