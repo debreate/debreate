@@ -96,21 +96,21 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
         dist_names.append(u'sid')
         dist_names.append(u'stretch')
     
-    page_text = GetRemotePageText(ref_site).split(u'\n')
+    page_html = GetRemotePageText(ref_site).split(u'\n')
     
-    if page_text:
+    if page_html:
         # Only add up to max_dists to list
         max_dists = 6
         dists_added = 0
         
-        for INDEX in range(len(page_text)):
-            LINE = page_text[INDEX].lower()
+        for INDEX in range(len(page_html)):
+            LINE = page_html[INDEX].lower()
             
             if u'<p class="line862">' in LINE and LINE.strip().endswith(u'</td>'):
                 stable_version = LINE.split(u'</td>')[0].split(u'>')[-1].strip()
                 
                 if StringIsVersioned(stable_version):
-                    dist_names.append(page_text[INDEX+1].split(u'</a>')[0].split(u'>')[-1].lower().strip())
+                    dist_names.append(page_html[INDEX+1].split(u'</a>')[0].split(u'>')[-1].lower().strip())
                     dists_added += 1
                     
                     if dists_added >= max_dists:
@@ -128,7 +128,7 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
 #  NOTE: If site layout changes, function will need updated
 def _get_ubuntu_distnames(unstable=True, obsolete=False):
     ref_site = u'https://wiki.ubuntu.com/Releases'
-    page_text = GetRemotePageText(ref_site).split(u'\n')
+    page_html = GetRemotePageText(ref_site).split(u'\n')
     
     dist_names = []
     current = []
@@ -139,9 +139,9 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
     if obsolete:
         eol = []
     
-    if page_text:
-        for INDEX in range(len(page_text)):
-            LINE = page_text[INDEX].lower()
+    if page_html:
+        for INDEX in range(len(page_html)):
+            LINE = page_html[INDEX].lower()
             
             if u'id="current"' in LINE and len(current) < 2:
                 current.append(INDEX + 8)
@@ -163,7 +163,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
                 
                 if obsolete and len(eol) < 2:
                     eol.append(INDEX + 8)
-                    eol.append(len(page_text) - 1)
+                    eol.append(len(page_html) - 1)
                     
                     break
         
@@ -176,7 +176,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
         # Add names in order of newest first
         
         if unstable and len(future) > 1:
-            future = page_text[future[0]:future[1]]
+            future = page_html[future[0]:future[1]]
             
             for LINE in future:
                 LINE = LINE.lower()
@@ -188,7 +188,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
                         dist_names.append(name)
         
         if len(current) > 1:
-            current = page_text[current[0]:current[1]]
+            current = page_html[current[0]:current[1]]
             
             for LINE in current:
                 LINE = LINE.lower()
@@ -199,7 +199,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
                         dist_names.append(name)
         
         if obsolete and len(eol) > 1:
-            eol = page_text[eol[0]:eol[1]]
+            eol = page_html[eol[0]:eol[1]]
             
             # Maximum number of obsolete dists that will be added
             eol_max = 6
