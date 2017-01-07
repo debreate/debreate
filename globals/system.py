@@ -226,10 +226,21 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 #  NOTE: If site layout changes, function will need updated
 def _get_mint_distnames():
     ref_site = u'https://www.linuxmint.com/download_all.php'
+    page_html = GetRemotePageText(ref_site).split(u'\n')
     
     dist_names = []
     
-    return sorted(dist_names)
+    if page_html:
+        for INDEX in range(len(page_html)):
+            LINE = page_html[INDEX].lower()
+            
+            if u'href="release.php?id=' in LINE:
+                name = LINE.split(u'</a>')[0].split(u'>')[-1].strip()
+                
+                if name and not StringIsVersioned(name) and name not in dist_names:
+                    dist_names.append(name)
+    
+    return dist_names
 
 
 ## Creates/Updates list of distribution names stored in user's local directory
