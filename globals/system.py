@@ -143,6 +143,30 @@ def UpdateDistNamesCache(deprecated=False):
     return WriteFile(FILE_distnames, u'\n\n'.join((section_debian, section_ubuntu, section_mint)))
 
 
+## Retrieves distribution names from cache file
+#  
+#  \param deprecated
+#    If \b \e True, includes obsolete Ubuntu distributions (only works if cache file doesn't already exist)
+#  \return
+#    ???
+def GetCachedDistNames(deprecated=False):
+    global FILE_distnames
+    
+    if not os.path.isfile(FILE_distnames):
+        if not UpdateDistNamesCache(deprecated):
+            return None
+    
+    text_temp = ReadFile(FILE_distnames)
+    
+    dist_names = {}
+    
+    dist_names[u'debian'] = RemoveEmptyLines(text_temp.split(u'[DEBIAN]')[1].split(u'[UBUNTU]')[0].split(u'\n'))
+    dist_names[u'ubuntu'] = RemoveEmptyLines(text_temp.split(u'[UBUNTU]')[1].split(u'[LINUX MINT]')[0].split(u'\n'))
+    dist_names[u'mint'] = RemoveEmptyLines(text_temp.split(u'[LINUX MINT]')[1].split(u'\n'))
+    
+    return (dist_names)
+
+
 ## Get a list of available system release codenames
 def GetOSDistNames():
     dist_names = []
