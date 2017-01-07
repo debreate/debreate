@@ -107,7 +107,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
     
     
     ## Creates/Updates the distribution names cache file
-    def OnUpdateCache(self, event):
+    def OnUpdateCache(self, event=None):
         Logger.Debug(__name__, GT(u'Updating cache ...'))
         
         # FIXME: Should open a new thread & show progress dialog that can be cancelled
