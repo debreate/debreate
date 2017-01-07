@@ -654,10 +654,12 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
 
 
 ## A function that displays a modal message dialog on the main window
-def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
-    main_window = GetTopWindow()
-    if not module:
-        module = main_window.GetModuleName()
+def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, parent=None):
+    if not parent:
+        parent = GetTopWindow()
+    
+    if not module and isinstance(parent, ModuleAccessCtrl):
+        module = parent.GetModuleName()
     
     logger_text = text
     if isinstance(text, (tuple, list)):
@@ -667,7 +669,7 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     if details:
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
-    message_dialog = DetailedMessageDialog(main_window, title, ICON_INFORMATION, text)
+    message_dialog = DetailedMessageDialog(parent, title, ICON_INFORMATION, text)
     if details:
         message_dialog.SetDetails(details)
     
