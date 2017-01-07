@@ -49,6 +49,7 @@ class Panel(wx.ScrolledWindow):
         if dist_names:
             self.ti_dist = ComboBox(self, ident.DIST, choices=dist_names, name=txt_dist.Name)
         
+        # Use regular text input if could not retrieve distribution names list
         else:
             self.ti_dist = wx.TextCtrl(self, ident.DIST, name=txt_dist.Name)
         
