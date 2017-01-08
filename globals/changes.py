@@ -30,6 +30,12 @@ def _strip_line(line, preserve_indent=False):
     return line.strip(chars)
 
 
+def _format_section(line, preserve_indent=False):
+    global section_delims
+    
+    return u'  * {}'.format(_strip_line(line, preserve_indent).lstrip(u' \t{}'.format(section_delims)))
+
+
 ## Formats lines for changelog output
 def _format_lines(lines, preserve_indent=False):
     if isinstance(lines, tuple):
@@ -39,27 +45,17 @@ def _format_lines(lines, preserve_indent=False):
         global section_delims
         
         for INDEX in range(len(lines)):
-            # Clean leading & trailing whitespace
-            lines[INDEX] = _strip_line(lines[INDEX], preserve_indent)
-            
             if INDEX == 0:
                 # First line will always start with an asterix
-                # FIXME: Indentation not saved here
-                lines[INDEX] = u'  * {}'.format(lines[INDEX].lstrip(u' {}'.format(section_delims)))
+                lines[INDEX] = _format_section(lines[INDEX], preserve_indent)
                 continue
             
-            section = False
-            
             # Make sure line is not empty before setting section
-            if lines[INDEX] and lines[INDEX][0] in section_delims:
-                section = True
-                lines[INDEX] = lines[INDEX][1:].strip()
-            
-            if section:
-                lines[INDEX] = u'  * {}'.format(lines[INDEX])
+            if lines[INDEX] and lines[INDEX].lstrip(u' \t')[0] in section_delims:
+                lines[INDEX] = _format_section(lines[INDEX], preserve_indent)
             
             else:
-                lines[INDEX] = u'    {}'.format(lines[INDEX])
+                lines[INDEX] = u'    {}'.format(_strip_line(lines[INDEX], preserve_indent))
     
     return tuple(lines)
 
