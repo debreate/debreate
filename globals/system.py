@@ -336,9 +336,6 @@ def GetOSDistNames():
             if u'/' in debian_names[0]:
                 debian_names = sorted(debian_names[0].split(u'/'))
             
-            # Add generic Debian release names
-            debian_names = [u'unstable', u'testing', u'stable',] + debian_names
-            
             for NAME in reversed(debian_names):
                 if NAME not in dist_names:
                     # Put Debian names first
