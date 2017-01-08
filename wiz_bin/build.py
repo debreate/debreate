@@ -463,12 +463,13 @@ class Panel(wx.ScrolledWindow):
             UpdateProgress(progress, GT(u'Creating control file'))
             
             # dpkg fails if there is no newline at end of file
-            if control_data and control_data[-1] != u'\n':
-                control_data.append(u'\n')
+            control_data = u'\n'.join(control_data).strip(u'\n')
+            # Ensure there is only one empty trailing newline
+            # Two '\n' to show physical empty line, but not required
+            # Perhaps because string is not null terminated???
+            control_data = u'{}\n\n'.format(control_data)
             
-            control_data = u'\n'.join(control_data)
-            
-            WriteFile(u'{}/DEBIAN/control'.format(stage_dir), control_data)
+            WriteFile(u'{}/DEBIAN/control'.format(stage_dir), control_data, no_strip=u'\n')
             
             progress += 1
             

@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Package build fails if long description empty
 
 Priority:
 - Progress dialogs can resize outside of display boundaries
