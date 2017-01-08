@@ -5,7 +5,8 @@
   - Show confirmation dialog in Quick Build when overwriting file
   - Files can be dropped onto some text areas from system file manager
     - Equivalent to opening file's contents into text area
-  - Attempts to retrieve list of dist names for changelog
+  - Menu option: Options ➜ Update dist names cache
+    - Attempts to retrieve list of dist names for changelog
 - License templates generation:
   - Full license templates can be generated
   - License templates shipped with app:
@@ -224,6 +225,6 @@
 - bugfix: Can't save projects when files have sub-dir
 - Re-enabled md5sums
 - Enabled previewing .desktop (Menu) config
-- bugfix: Semi-colons in project files under Menu -> Categories
+- bugfix: Semi-colons in project files under Menu ➜ Categories
 - Changed "Type" field under "Menu" to be customizable
 - Added more functionality to custom save dialog
