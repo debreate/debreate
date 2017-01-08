@@ -50,6 +50,9 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         self.preview = TextPreview(self, title=GT(u'Available Distribution Names'),
                 size=(500,400))
         
+        # For setting error messages from other threads
+        self.error_message = None
+        
         # *** Event Handling *** #
         
         self.btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewCache)
@@ -91,6 +94,21 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         
         if self.Parent:
             self.CenterOnParent()
+    
+    
+    ## Checks for present error message & displays dialog
+    #  
+    #  \return
+    #    \b \e False if no errors present
+    def CheckErrors(self):
+        if self.error_message:
+            ShowErrorDialog(self.error_message, parent=self, linewrap=410)
+            
+            # Clear error message & return
+            self.error_message = None
+            return True
+        
+        return False
     
     
     ## Deletes the distribution names cache file
