@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- Cannot start if configuration file is corrupted
 
 Priority:
 - Progress dialogs can resize outside of display boundaries
