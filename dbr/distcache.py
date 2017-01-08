@@ -127,6 +127,11 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         if os.path.isfile(FILE_distnames):
             os.remove(FILE_distnames)
             
+            # Update list on changelog page
+            distname_input = GetField(ident.CHANGELOG, ident.DIST)
+            if isinstance(distname_input, OwnerDrawnComboBox):
+                distname_input.Set(GetOSDistNames())
+            
             self.btn_preview.Disable()
         
         cache_exists = os.path.exists(FILE_distnames)
