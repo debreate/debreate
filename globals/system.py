@@ -12,7 +12,7 @@ from globals.containers import Contains
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
 from globals.paths      import ConcatPaths
-from globals.paths      import PATH_local
+from globals.paths      import PATH_cache
 from globals.remote     import GetRemotePageText
 from globals.strings    import RemoveEmptyLines
 from globals.strings    import StringIsVersioned
@@ -63,7 +63,7 @@ OS_upstream_version = GetOSInfo(u'DISTRIB_RELEASE', True)
 OS_upstream_codename = GetOSInfo(u'DISTRIB_CODENAME', True)
 
 ## File where distribution code names cache is stored
-FILE_distnames = ConcatPaths((PATH_local, u'distnames'))
+FILE_distnames = ConcatPaths((PATH_cache, u'distnames'))
 
 ## Retrieves distribution names from remote Debian site
 #  
