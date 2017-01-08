@@ -1,4 +1,4 @@
-debreate (0.7.13-dev4) xenial; urgency=high
+debreate (0.7.13-dev5) xenial; urgency=high
 
   * General:
     Only center progress dialogs on parent if not manually moved by user
@@ -49,7 +49,7 @@ debreate (0.7.13-dev4) xenial; urgency=high
   * Installation from .deb package:
     Added postinst script to compile source to Python bytecode
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Sat, 07 Jan 2017 22:41:17 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 08 Jan 2017 03:08:15 -0800
 
 
 debreate (0.7.12) xenial; urgency=high
