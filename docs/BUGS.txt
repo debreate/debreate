@@ -2,14 +2,14 @@
 
 Must be fixed before release:
 
-High priority:
+Priority:
+- Progress dialogs can resize outside of display boundaries
 
-Low priority:
+Non-priority:
 - Detailed progress dialog does not always size correctly on construction
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
   - Always occurs with wx 3.0
   - Only occurs when using 'WriteText' method in wx 2.8
-- Progress dialogs can resize outside of display boundaries
 - wx 2.8:
   - Taskbar icon does not show up
 - wx 3.0 only:
