@@ -10,3 +10,4 @@ Non-priority:
 - Add MIME type field to launcher/menu
 - Use custom buttons for template generation on Copyright page
 - Add option to eject removable drive from directory tree context menu
+- Add option to preserve indentation on changelog page
