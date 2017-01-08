@@ -9,6 +9,8 @@
 import wx
 from wx.combo import OwnerDrawnComboBox
 
+from globals.strings import TextIsEmpty
+
 
 ## Custom combo box that sets background colors when enabled/disabled
 #  
@@ -51,13 +53,20 @@ class ComboBox(OwnerDrawnComboBox):
     #  \param items
     #    \b \e String or \b \e list of string items
     def Set(self, items):
+        # Text control is cleared when options are changed
+        cached_value = self.GetValue()
+        
         if not isinstance(items, (tuple, list, dict)):
             items = (items,)
         
         if wx.MAJOR_VERSION > 2:
-            return OwnerDrawnComboBox.Set(self, items)
+            OwnerDrawnComboBox.Set(self, items)
         
-        self.Clear()
+        else:
+            self.Clear()
+            
+            for I in items:
+                self.Append(I)
         
-        for I in items:
-            self.Append(I)
+        if not TextIsEmpty(cached_value):
+            self.SetValue(cached_value)
