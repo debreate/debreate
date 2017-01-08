@@ -39,6 +39,9 @@
     - Single "Add" option in context menu
     - Folders can be expanded/collapsed from context menu
       - Expand/Collapse menu only appears if all selected items are folders
+- Changelog formatting:
+  - Option to preserve indentation of regular lines
+  - Lines beginning with one of *, -, +, or # are added as new section
 - Build options:
   - Option to strip binary files before packaged (enabled by default)
 - Installation from .deb package:
