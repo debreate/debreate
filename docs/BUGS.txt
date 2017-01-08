@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- Updating dist names cache resets dist name field on changelog page
 
 Priority:
 - Progress dialogs can resize outside of display boundaries
