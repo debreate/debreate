@@ -119,6 +119,7 @@ TT_changelog = {
     u'target custom': GT(u'Install changelog to custom directory'),
     u'btn import': GT(u'Import information from Control page'),
     u'btn add': GT(u'Prepend above changes as new log entry'),
+    u'indent': GT(u'Do not strip preceding whitespace from regular lines'),
     u'log': GT(u'Formatted changelog entries (editable)'),
 }
 

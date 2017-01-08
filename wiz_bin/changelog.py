@@ -94,6 +94,8 @@ class Panel(wx.ScrolledWindow):
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
+        self.chk_indentation = wx.CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
+        
         self.dsp_changes = MonospaceTextArea(self, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
@@ -153,8 +155,9 @@ class Panel(wx.ScrolledWindow):
         lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
         lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
         lyt_details.Add(pnl_target, (2, 2))
-        lyt_details.Add(self.btn_add, (3, 0))
-        lyt_details.Add(txt_add, (3, 1), flag=LEFT_CENTER)
+        lyt_details.Add(self.btn_add, (3, 0), (2, 1))
+        lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
+        lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
@@ -162,7 +165,7 @@ class Panel(wx.ScrolledWindow):
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_details, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
-                0, LEFT_BOTTOM|wx.LEFT, 5)
+                0, LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
         lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
@@ -196,7 +199,7 @@ class Panel(wx.ScrolledWindow):
         email = self.ti_email.GetValue()
         
         new_changes = FormatChangelog(new_changes, package, version, dist, urgency,
-                maintainer, email)
+                maintainer, email, self.chk_indentation.GetValue())
         
         # Clean up leading & trailing whitespace in old changes
         old_changes = self.dsp_changes.GetValue().strip(u' \t\n\r')
