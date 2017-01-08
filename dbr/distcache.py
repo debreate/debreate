@@ -167,6 +167,9 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
             return cache_updated
         
         except:
+            # Make sure dialog is re-enabled
+            self.Enable()
+            
             cache_exists = os.path.isfile(FILE_distnames)
             
             err_msg = GT(u'An error occurred when trying to update the distribution names cache')
