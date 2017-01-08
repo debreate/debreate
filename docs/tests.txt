@@ -1,7 +1,8 @@
 Tests to be run before releasing new version:
 
 - First run dialog
-  - Appears if '~/.config/debreate/config' file not found or corrupted
+  - Appears if '~/.config/debreate/config' file not found
+  - Appears if '~/.config/debreate/config' corrupted
   - Closes correctly & main app is launched
   - '~/.config/debreate/config' is created when when dialog closes
 - Configuration
