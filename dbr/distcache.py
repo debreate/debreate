@@ -16,12 +16,16 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.panel              import BorderedPanel
+from dbr.progress           import ProgressDialog
 from dbr.textpreview        import TextPreview
+from dbr.timer              import DebreateTimer
+from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.fileio         import ReadFile
 from globals.system         import FILE_distnames
 from globals.system         import GetOSDistNames
 from globals.system         import UpdateDistNamesCache
+from globals.threads        import Thread
 from globals.wizardhelper   import GetField
 
 
@@ -50,6 +54,10 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         self.preview = TextPreview(self, title=GT(u'Available Distribution Names'),
                 size=(500,400))
         
+        # Is instantiated as ProgressDialog when OnUpdateCache is called
+        self.progress = None
+        self.timer = DebreateTimer(self)
+        
         # For setting error messages from other threads
         self.error_message = None
         
@@ -58,6 +66,9 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         self.btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewCache)
         btn_update.Bind(wx.EVT_BUTTON, self.OnUpdateCache)
         btn_clear.Bind(wx.EVT_BUTTON, self.OnClearCache)
+        
+        self.Bind(wx.EVT_TIMER, self.OnTimerEvent)
+        self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
         
         # *** Layout *** #
         
@@ -130,23 +141,49 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         self.preview.ShowModal()
     
     
+    ## Calls Pulse method on progress dialog when timer event occurs
+    def OnTimerEvent(self, event=None):
+        if self.progress:
+            self.progress.Pulse()
+    
+    
+    ## Closes & resets the progress dialog to None when timer stops
+    def OnTimerStop(self, event=None):
+        if self.progress:
+            self.progress.EndModal(0)
+            self.progress = None
+        
+        return not self.progress
+    
+    
     ## Creates/Updates the distribution names cache file
     def OnUpdateCache(self, event=None):
         try:
-            Logger.Debug(__name__, GT(u'Updating cache ...'))
+            # Timer must be started before executing new thread
+            self.timer.Start(100)
             
-            # FIXME: Should open a new thread & show progress dialog that can be cancelled
-            title_orig = self.GetTitle()
-            self.SetTitle(GT(u'Updating cache ...'))
+            if not self.timer.IsRunning():
+                self.error_message = GT(u'Could not start progress dialog timer')
+                self.CheckErrors()
+                return False
             
             self.Disable()
             
-            wx.Yield()
-            UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
-                    self.chk_generic.GetValue())
+            # Start new thread for updating cache in background
+            Thread(self.UpdateCache, None).Start()
             
-            self.SetTitle(title_orig)
+            # Create the progress dialog & start timer
+            # NOTE: Progress dialog is reset by timer stop event
+            self.progress = ProgressDialog(self, message=GT(u'Contacting remote sites'),
+                    style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+            
+            # Use ShowModal to wait for timer to stop before continuing
+            self.progress.ShowModal()
+            
             self.Enable()
+            
+            if self.CheckErrors():
+                return False
             
             # FIXME: Should check timestamps to make sure file was updated
             cache_updated = os.path.isfile(FILE_distnames)
@@ -170,6 +207,11 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
             # Make sure dialog is re-enabled
             self.Enable()
             
+            # Make sure progress dialog & background thread instances are reset to None
+            if self.progress:
+                self.progress.EndModal(0)
+                self.progress = None
+            
             cache_exists = os.path.isfile(FILE_distnames)
             
             err_msg = GT(u'An error occurred when trying to update the distribution names cache')
@@ -180,5 +222,18 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
             ShowErrorDialog(err_msg, traceback.format_exc(), self)
             
             self.btn_preview.Enable(cache_exists)
-            
-            return False
+        
+        return False
+    
+    
+    ## Method that does the actual updating of the names cache list
+    #  
+    #  Called from a new thread
+    #  FIXME: Show error if could not contact 1 or more remote sites???
+    def UpdateCache(self, args=None):
+        Logger.Debug(__name__, GT(u'Updating cache ...'))
+        
+        UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
+                self.chk_generic.GetValue())
+        
+        self.timer.Stop()
