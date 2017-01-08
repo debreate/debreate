@@ -13,6 +13,7 @@ import wx
 from dbr.language           import GT
 from dbr.templates          import local_templates_path
 from globals                import ident
+from globals.changes        import section_delims
 from globals.commands       import CMD_gdebi_gui
 from globals.wizardhelper   import FieldEnabled
 
@@ -108,7 +109,12 @@ TT_changelog = {
     u'urgency': TT_control[u'priority'],
     u'maintainer': TT_control[u'maintainer'],
     u'email': TT_control[u'email'],
-    u'changes': GT(u'List new changes here, separated one per line'),
+    u'changes': (
+        GT(u'List new changes here, separated one per line'), u'',
+        GT(u'The first line will be prepended with an asterix (*) automatically.'),
+        GT(u'To denote any other sections, put one of the following as the first character on the line:'),
+        u'\t{}'.format(u',  '.join(list(section_delims))),
+        ),
     u'target default': GT(u'Install changelog to standard directory'),
     u'target custom': GT(u'Install changelog to custom directory'),
     u'btn import': GT(u'Import information from Control page'),
