@@ -124,3 +124,4 @@ Tests to be run before releasing new version:
   - MIME type application/x-dbp
     - Associates .dbp files with Debreate
     - File manager displays icon for .dbp files
+- Test all changes in docs/changelog
