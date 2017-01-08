@@ -80,24 +80,26 @@ def ReadConfig(k_name, conf=default_config):
         #Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
-    conf_lines = ReadFile(conf).split(u'\n')
-    
-    for L in conf_lines:
-        if u'=' in L:
-            key = L.split(u'=')
-            value = key[1]
-            key = key[0]
-            
-            if k_name == key:
-                value = default_config_values[key][0](value)
-                
-                #Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
-                return value
-    
-    if k_name in default_config_values:
-        #Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
+    conf_lines = ReadFile(conf)
+    if conf_lines:
+        conf_lines = conf_lines.split(u'\n')
         
-        return GetDefaultConfigValue(k_name)
+        for L in conf_lines:
+            if u'=' in L:
+                key = L.split(u'=')
+                value = key[1]
+                key = key[0]
+                
+                if k_name == key:
+                    value = default_config_values[key][0](value)
+                    
+                    #Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
+                    return value
+        
+        if k_name in default_config_values:
+            #Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
+            
+            return GetDefaultConfigValue(k_name)
     
     return ConfCode.KEY_NO_EXIST
 
@@ -151,32 +153,35 @@ def WriteConfig(k_name, k_value, conf=default_config):
     else:
         conf_text = u'[CONFIG-{}.{}]'.format(unicode(config_version[0]), unicode(config_version[1]))
     
-    conf_lines = conf_text.split(u'\n')
-    
-    key_exists = False
-    for L in conf_lines:
-        l_index = conf_lines.index(L)
-        if u'=' in L:
-            key = L.split(u'=')[0]
-            
-            if k_name == key:
-                key_exists = True
+    if conf_text:
+        conf_lines = conf_text.split(u'\n')
+        
+        key_exists = False
+        for L in conf_lines:
+            l_index = conf_lines.index(L)
+            if u'=' in L:
+                key = L.split(u'=')[0]
                 
-                conf_lines[l_index] = u'{}={}'.format(k_name, k_value)
+                if k_name == key:
+                    key_exists = True
+                    
+                    conf_lines[l_index] = u'{}={}'.format(k_name, k_value)
+        
+        if not key_exists:
+            conf_lines.append(u'{}={}'.format(k_name, k_value))
+        
+        conf_text = u'\n'.join(conf_lines)
+        
+        if TextIsEmpty(conf_text):
+            print(u'{}: {}'.format(GT(u'Warning'), GT(u'Not writing empty text to configuration')))
+            return ConfCode.ERR_WRITE
+        
+        # Actual writing to configuration
+        WriteFile(conf, conf_text)
+        
+        return ConfCode.SUCCESS
     
-    if not key_exists:
-        conf_lines.append(u'{}={}'.format(k_name, k_value))
-    
-    conf_text = u'\n'.join(conf_lines)
-    
-    if TextIsEmpty(conf_text):
-        print(u'{}: {}'.format(GT(u'Warning'), GT(u'Not writing empty text to configuration')))
-        return ConfCode.ERR_WRITE
-    
-    # Actual writing to configuration
-    WriteFile(conf, conf_text)
-    
-    return ConfCode.SUCCESS
+    return ConfCode.ERR_WRITE
 
 
 ## Function used to create the inital configuration file
@@ -206,3 +211,13 @@ def GetDefaultConfigValue(key):
         return default_config_values[key][1]
     
     return ConfCode.KEY_NO_EXIST
+
+
+## Reads in all values found in configuration file
+def GetAllConfigKeys():
+    keys = {}
+    
+    for KEY in default_config_values:
+        keys[KEY] = ReadConfig(KEY)
+    
+    return keys
