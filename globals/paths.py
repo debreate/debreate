@@ -35,3 +35,6 @@ PATH_home = os.getenv(u'HOME')
 
 ## Local folder to store files such as custom templates
 PATH_local = ConcatPaths((PATH_home, u'.local/share/debreate'))
+
+## Directory where cache files are stored
+PATH_cache = ConcatPaths((PATH_local, u'cache'))
