@@ -105,7 +105,10 @@ TT_scripts = {
 TT_changelog = {
     u'package': TT_control[u'package'],
     u'version': TT_control[u'version'],
-    u'dist': GT(u'Name of Debian/Ubuntu/etc. target distribution'),
+    u'dist': (
+        GT(u'Name of Debian/Ubuntu/etc. target distribution'), u'',
+        GT(u'See "Options ➜ Update dist names cache" to update this list.')
+        ),
     u'urgency': TT_control[u'priority'],
     u'maintainer': TT_control[u'maintainer'],
     u'email': TT_control[u'email'],
