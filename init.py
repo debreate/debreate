@@ -109,11 +109,13 @@ debreate_app = wx.App()
 
 from dbr.config             import ConfCode
 from dbr.config             import default_config
+from dbr.config             import GetAllConfigKeys
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import InitializeConfig
 from dbr.config             import ReadConfig
 from dbr.dialogs            import FirstRun
 from dbr.dialogs            import ShowErrorDialog
+from dbr.firstrun           import LaunchFirstRun
 from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
@@ -181,38 +183,9 @@ Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
 Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
 Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
 
-# First time Debreate is run
-if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
-    FR_dialog = FirstRun()
-    debreate_app.SetTopWindow(FR_dialog)
-    FR_dialog.ShowModal()
-    
-    init_conf_code = InitializeConfig()
-    Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
-    if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        ShowErrorDialog(GT(u'Could not create configuration, exiting ...'))
-        
-        exit_now = init_conf_code
-    
-    FR_dialog.Destroy()
-    
-    # Delete first run dialog from memory
-    del(FR_dialog)
-    
+conf_values = GetAllConfigKeys()
 
-if exit_now:
-    sys.exit(exit_now)
-
-
-conf_values = {
-    u'center': ReadConfig(u'center'),
-    u'position': ReadConfig(u'position'),
-    u'size': ReadConfig(u'size'),
-    u'maximize': ReadConfig(u'maximize'),
-    u'dialogs': ReadConfig(u'dialogs'),
-    u'workingdir': ReadConfig(u'workingdir'),
-}
-
+# Check that all configuration values are okay
 for V in conf_values:
     key = V
     value = conf_values[V]
@@ -221,6 +194,18 @@ for V in conf_values:
         value = GetDefaultConfigValue(key)
     
     Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
+    
+    # FIXME: ConfCode values are integers & could cause problems with config values
+    if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
+        first_run = LaunchFirstRun(debreate_app)
+        if not first_run == ConfCode.SUCCESS:
+            sys.exit(first_run)
+        
+        # Re-read configuration
+        conf_values = GetAllConfigKeys()
+        
+        break
+
 
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 
