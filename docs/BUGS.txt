@@ -19,3 +19,4 @@ Non-priority:
 - Error occurs sometimes after add changelog entries:
   - (init.py:4644) Gtk-CRITICAL **: IA__gtk_main_quit: assertion 'main_loops != NULL' failed
 - Progress dialogs could potentially resize outside of display boundaries
+- Does not show on main screen after First Run
