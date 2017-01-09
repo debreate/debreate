@@ -137,6 +137,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
     # tuple is the only type we need to format
     if isinstance(k_value, tuple):
         k_value = u'{},{}'.format(unicode(k_value[0]), unicode(k_value[1]))
+    
     else:
         k_value = unicode(k_value)
     
@@ -149,36 +150,40 @@ def WriteConfig(k_name, k_value, conf=default_config):
             return ConfCode.ERR_WRITE
         
         conf_text = ReadFile(conf)
+        
+        # FIXME: ReadFile returns None type if config file exists but is empty
+        if conf_text == None:
+            conf_text = u''
     
     else:
         conf_text = u'[CONFIG-{}.{}]'.format(unicode(config_version[0]), unicode(config_version[1]))
     
-    if conf_text:
-        conf_lines = conf_text.split(u'\n')
-        
-        key_exists = False
-        for L in conf_lines:
-            l_index = conf_lines.index(L)
-            if u'=' in L:
-                key = L.split(u'=')[0]
+    conf_lines = conf_text.split(u'\n')
+    
+    key_exists = False
+    for L in conf_lines:
+        l_index = conf_lines.index(L)
+        if u'=' in L:
+            key = L.split(u'=')[0]
+            
+            if k_name == key:
+                key_exists = True
                 
-                if k_name == key:
-                    key_exists = True
-                    
-                    conf_lines[l_index] = u'{}={}'.format(k_name, k_value)
-        
-        if not key_exists:
-            conf_lines.append(u'{}={}'.format(k_name, k_value))
-        
-        conf_text = u'\n'.join(conf_lines)
-        
-        if TextIsEmpty(conf_text):
-            print(u'{}: {}'.format(GT(u'Warning'), GT(u'Not writing empty text to configuration')))
-            return ConfCode.ERR_WRITE
-        
-        # Actual writing to configuration
-        WriteFile(conf, conf_text)
-        
+                conf_lines[l_index] = u'{}={}'.format(k_name, k_value)
+    
+    if not key_exists:
+        conf_lines.append(u'{}={}'.format(k_name, k_value))
+    
+    conf_text = u'\n'.join(conf_lines)
+    
+    if TextIsEmpty(conf_text):
+        print(u'{}: {}'.format(GT(u'Warning'), GT(u'Not writing empty text to configuration')))
+        return ConfCode.ERR_WRITE
+    
+    # Actual writing to configuration
+    WriteFile(conf, conf_text)
+    
+    if os.path.isfile(conf):
         return ConfCode.SUCCESS
     
     return ConfCode.ERR_WRITE
