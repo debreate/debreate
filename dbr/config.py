@@ -218,11 +218,31 @@ def GetDefaultConfigValue(key):
     return ConfCode.KEY_NO_EXIST
 
 
+## Checks if value type is correct
+def _check_config_values(keys):
+    for KEY in keys:
+        try:
+            if not isinstance(keys[KEY], type(default_config_values[KEY][1])):
+                return False
+        
+        except KeyError:
+            return False
+    
+    return True
+
+
 ## Reads in all values found in configuration file
+#  
+#  \return
+#    Configuration keys found in config file or None if error occurred
 def GetAllConfigKeys():
     keys = {}
     
+    # Read key/values from configuration file
     for KEY in default_config_values:
         keys[KEY] = ReadConfig(KEY)
+    
+    if not _check_config_values(keys):
+        return None
     
     return keys
