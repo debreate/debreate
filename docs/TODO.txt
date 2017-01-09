@@ -13,3 +13,5 @@ Non-priority:
 - Use custom buttons for template generation on Copyright page
 - Add option to eject removable drive from directory tree context menu
 - Create timer-based progress dialog class
+- Create a Python 2.x/3.x compatibility function for UTF-8 strings
+  - This could optionally be done on the dbr.language.GT function
