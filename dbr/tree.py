@@ -632,6 +632,10 @@ class DirectoryTree(wx.TreeCtrl):
         stdevs = GetMountedStorageDevices()
         
         for DEV in stdevs:
+            # Do not re-add home directory in case it is mounted on its own partition
+            if DEV.MountPoint == PATH_home:
+                continue
+            
             add_item = os.path.ismount(DEV.MountPoint)
             
             if add_item:
