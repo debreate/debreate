@@ -8,6 +8,9 @@
 # See: docs/LICENSE.txt
 
 
+import sys
+
+
 ## Checks if a text string is empty
 #  
 #  \param text
@@ -41,6 +44,28 @@ def RemoveEmptyLines(text):
         return u'\n'.join(text)
     
     return tuple(text)
+
+
+## A unicode compatibility function for older versions of Python
+#  
+#  Executes a function with optional arguments that returns a string
+#  & converts it to unicode if using Python version 2.x.
+#  \param function
+#    Callable function object to execute
+#  \param args
+#    List of arguments to pass to function
+#  \return
+#    Unicode compatible string
+def GetString(string):
+    if sys.version_info[0] < 3 and isinstance(string, str):
+        string = unicode(string)
+    
+    return string
+
+
+## Alias for globals.strings.GetString
+def GS(string):
+    return GetString(string)
 
 
 ## Tests if a string can be converted to int or float
