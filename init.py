@@ -178,13 +178,25 @@ Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
 Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
 Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
 
+# Check for & parse existing configuration
 conf_values = GetAllConfigKeys()
+
+if not conf_values:
+    Logger.Debug(script_name, u'Launching First Run dialog ...')
+    
+    first_run = LaunchFirstRun(debreate_app)
+    if not first_run == ConfCode.SUCCESS:
+        
+        sys.exit(first_run)
+    
+    conf_values = GetAllConfigKeys()
 
 # Check that all configuration values are okay
 for V in conf_values:
     key = V
     value = conf_values[V]
     
+    # ???: Redundant???
     if value == None:
         value = GetDefaultConfigValue(key)
     
@@ -195,9 +207,6 @@ for V in conf_values:
         first_run = LaunchFirstRun(debreate_app)
         if not first_run == ConfCode.SUCCESS:
             sys.exit(first_run)
-        
-        # Re-read configuration
-        conf_values = GetAllConfigKeys()
         
         break
 
