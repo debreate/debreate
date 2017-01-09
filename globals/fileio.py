@@ -46,6 +46,7 @@ def ReadFile(filename, split=False, convert=tuple, no_strip=None):
     if split:
         contents = convert(contents.split(u'\n'))
     
+    # FIXME: Should return contents even if it is empty string or list
     if contents:
         return contents
 
