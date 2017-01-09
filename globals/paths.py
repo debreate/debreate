@@ -10,6 +10,8 @@
 
 import os
 
+from globals.strings import GS
+
 
 def ConcatPaths(path_list):
     if not isinstance(path_list, (list, tuple)):
@@ -26,12 +28,12 @@ def ConcatPaths(path_list):
 #  HACK: Call os.path.dirname twice to get root directory.
 #        This is necessary because this variable is
 #        declared from a sub-directory.
-PATH_app = os.path.dirname(os.path.dirname(__file__))
+PATH_app = GS(os.path.dirname(os.path.dirname(__file__)))
 
 ## User's home directory
 #  
 #  Used to set config directory.
-PATH_home = os.getenv(u'HOME')
+PATH_home = GS(os.getenv(u'HOME'))
 
 ## Local folder to store files such as custom templates
 PATH_local = ConcatPaths((PATH_home, u'.local/share/debreate'))
