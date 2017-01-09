@@ -1,5 +1,7 @@
 debreate (0.7.13-dev5) xenial; urgency=high
 
+  * Fixes:
+    Fix app won't start if config file is empty
   * General:
     Only center progress dialogs on parent if not manually moved by user
     Use more custom message dialogs
@@ -49,7 +51,7 @@ debreate (0.7.13-dev5) xenial; urgency=high
   * Installation from .deb package:
     Added postinst script to compile source to Python bytecode
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 08 Jan 2017 03:08:15 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Mon, 09 Jan 2017 02:11:38 -0800
 
 
 debreate (0.7.12) xenial; urgency=high

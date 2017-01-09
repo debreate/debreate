@@ -1,4 +1,6 @@
 0.7.13
+- Fixes:
+  - Fix app won't start if config file is empty
 - General:
   - Only center progress dialogs on parent if not manually moved by user
   - Use more custom message dialogs
