@@ -559,10 +559,16 @@ def ShowDialog(dialog):
 
 ## Displays an instance of ErrorDialog class
 #  
+#  Dialog is orphaned if parent is None so it can be displayed
+#  without main window in cases of initialization errors.
 #  \param text
 #        \b \e str|unicode: Explanation of error
 #  \param details
 #        \b \e str|unicode: Extended details of error
+#  \param parent
+#    \b \e Parent window of new dialog
+#    If False, parent is set to main window
+#    If None, dialog is orphaned
 #  \param module
 #        \b \e str|unicode: Module where error was caught (used for Logger output)
 #  \param warn
@@ -583,10 +589,13 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
     if details:
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
-    if not parent:
+    if parent == False:
         parent = GetTopWindow()
     
-    if isinstance(parent, ModuleAccessCtrl):
+    if not parent:
+        module_name = __name__
+    
+    elif isinstance(parent, ModuleAccessCtrl):
         module_name = parent.GetModuleName()
     
     else:
