@@ -2,6 +2,8 @@
 
 Must be fixed before release:
 - 'Strip binaries' option on build page not saved/restored
+- Hitting 'Cancel' after opening project self.saved_project variable is set in 'main'
+  - Reselts in project being ovewritten if "File ➜ Save project" selected
 
 Priority:
 
