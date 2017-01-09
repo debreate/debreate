@@ -19,6 +19,11 @@ from command_line   import parsed_args_v
 from globals.paths  import PATH_app
 from globals.paths  import ConcatPaths
 
+
+## Module name displayed for Logger output.
+#  Should be set to 'init' or actual name of executable script.
+script_name = os.path.basename(__file__)
+
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
 
@@ -138,7 +143,6 @@ if INSTALLED:
     gettext.install(TRANSLATION_DOMAIN, LOCALE_DIR, unicode=True)
 
 
-script_name = os.path.basename(__file__)
 if u'.py' in script_name:
     script_name = script_name.split(u'.py')[0]
 
