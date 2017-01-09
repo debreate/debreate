@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- 'Strip binaries' option on build page not saved/restored
 
 Priority:
 
