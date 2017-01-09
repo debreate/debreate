@@ -24,9 +24,13 @@ def LaunchFirstRun(debreate_app):
     FR_dialog.ShowModal()
     
     init_conf_code = InitializeConfig()
-    Logger.Debug(__name__, init_conf_code == ConfCode.SUCCESS)
+    
+    Logger.Debug(__name__, u'Configuration initialized: {}'.format(init_conf_code == ConfCode.SUCCESS))
+    
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        ShowErrorDialog(GT(u'Could not create configuration, exiting ...'))
+        msg_l1 = GT(u'An error occurred trying to create the configuration file:')
+        msg_l2 = GT(u'Please report this error to Debreate\'s developers')
+        ShowErrorDialog(u'{} {}\n\n{}'.format(msg_l1, default_config, msg_l2))
         
         return init_conf_code
     
