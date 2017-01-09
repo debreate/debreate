@@ -3,7 +3,6 @@
 Must be fixed before release:
 
 Priority:
-- Progress dialogs can resize outside of display boundaries
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
@@ -19,3 +18,4 @@ Non-priority:
 - 'None' is written to first line of log file output
 - Error occurs sometimes after add changelog entries:
   - (init.py:4644) Gtk-CRITICAL **: IA__gtk_main_quit: assertion 'main_loops != NULL' failed
+- Progress dialogs could potentially resize outside of display boundaries
