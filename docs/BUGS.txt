@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Cannot start if configuration file is corrupted
 - User's home directory could potentially be listed twice if mounted on separate partition
 
 Priority:
