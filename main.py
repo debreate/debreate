@@ -679,6 +679,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \param project_file
     #    \b \e unicode|str : Path to project file
     def OpenProject(self, project_file):
+        Logger.Debug(__name__, u'Opening project: {}'.format(project_file))
+        
         if not os.path.isfile(project_file):
             ShowErrorDialog(GT(u'Could not open project file'),
                     GT(u'File does not exist or is not a regular file: {}').format(project_file))
