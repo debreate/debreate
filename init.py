@@ -27,6 +27,9 @@ script_name = os.path.basename(__file__)
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
 
+# GetParsedPath must be called after ParseArguments
+parsed_path = GetParsedPath()
+
 
 # Compiles python source into bytecode
 if u'compile' in parsed_commands:
@@ -227,7 +230,6 @@ if Debreate.menu_opt.FindItemById(ident.DIALOGS):
 
 working_dir = conf_values[u'workingdir']
 
-parsed_path = GetParsedPath()
 if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
