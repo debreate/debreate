@@ -87,8 +87,13 @@ def ParseArguments(arg_list):
     
     if u'test' in arg_list:
         testcmd_index = arg_list.index(u'test')
+        tests = arg_list[testcmd_index+1:]
         
-        for TEST in arg_list[testcmd_index+1:]:
+        if not tests:
+            print(u'ERROR: Must supply at least one test')
+            sys.exit(1)
+        
+        for TEST in tests:
             if TEST not in available_tests:
                 print(u'ERROR: Unrecognized test: {}'.format(TEST))
                 sys.exit(1)
