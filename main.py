@@ -48,6 +48,7 @@ from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
 from globals.project        import PROJECT_txt
+from globals.tests          import GetTestList
 from globals.wizardhelper   import GetTopWindow
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
@@ -446,13 +447,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks for new release availability
     def OnCheckUpdate(self, event=None):
-        if u'-dev' in VERSION_string:
+        update_test = u'update' in GetTestList()
+        
+        if not update_test and u'-dev' in VERSION_string:
             DetailedMessageDialog(GetTopWindow(), GT(u'Update'),
                     text=GT(u'Update checking not supported in development versions')).ShowModal()
             return
         
         wx.SafeYield()
-        current = GetCurrentVersion()
+        if update_test:
+            # Set a bad url to force error
+            current = GetCurrentVersion(u'http://dummyurl.blah/')
+        
+        else:
+            current = GetCurrentVersion()
+        
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
         if type (current) == URLError or type(current) == HTTPError:
             current = unicode(current)
