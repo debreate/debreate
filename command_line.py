@@ -2,14 +2,12 @@
 
 ## \package command_line
 
+# MIT licensing
+# See: docs/LICENSE.txt
 
-# System modules
+
 import sys
 
-
-
-#short_args = u'hvg:'
-#long_args = [u'help', u'version', u'log-level=', u'log-interval=']
 
 solo_args = (
     (u'h', u'help'),
