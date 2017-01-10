@@ -7,7 +7,9 @@ Must be fixed before release:
 - "Target file" option in Quick Build set to '.deb' if empty when 'Build' button pressed
 - GUI erro when checking for update:
   - "Python2 Error: Can't load image from file 'Debreate is up to date!': file does not exist."
-  - Update check fails
+  - Update check fails:
+    - wx 2.8 shows error message
+    - wx 3.0 freezes
 
 Priority:
 
