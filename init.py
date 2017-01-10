@@ -18,6 +18,7 @@ from command_line   import parsed_args_s
 from command_line   import parsed_args_v
 from globals.paths  import PATH_app
 from globals.paths  import ConcatPaths
+from globals.tests  import test_list
 
 
 ## Module name displayed for Logger output.
@@ -85,6 +86,19 @@ if u'clean' in parsed_commands:
                 os.remove(F)
     
     sys.exit(0)
+
+
+if u'test' in parsed_commands:
+    # All commands after 'test' become test arguments
+    for TEST in parsed_commands[parsed_commands.index(u'test')+1:]:
+        test_list.append(TEST)
+    
+    if not test_list:
+        print(u'\nERROR: No tests supplied')
+        print(u'Usage:')
+        print(u'\t{} test <test1> [test2 ...]\n'.format(script_name))
+        
+        sys.exit(1)
 
 
 # Modules to define required version of wx
