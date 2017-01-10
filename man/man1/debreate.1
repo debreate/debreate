@@ -23,6 +23,14 @@ Debreate \- Debian package builder
 [commands]
 [options]
 [project file]
+.sp 1
+.B debreate
+[commands]
+test
+<test1>
+[<test2> ...]
+[options]
+[project file]
 .SH DESCRIPTION
 A utility to aid in creating Debian packages for distribution.
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
@@ -41,6 +49,10 @@ Compiles Debreate's source files (.py) into Python bytecode (.pyc).
 .B clean
 .br
 Removes compiled Python bytecode files (.pyc) from Debreate directory.
+.TP
+.B test
+.br
+Runs supplied tests during execution for debugging.
 .SH OPTIONS
 .TP
 .B \-h|\-\-help
@@ -54,3 +66,7 @@ Set the log output level. Posibble values are 'info', 'warning', 'error', & 'deb
 .TP
 .B \-i=|\-\-log-interval=<value>
 Set the integer value refresh rate for the log window when debugging is enabled. Higher value is lower frequency. Default is 1.
+.SH TESTS
+.TP
+.B update-fail
+Uses a bad URL to force "Help ➜ Check for update" to fail.
