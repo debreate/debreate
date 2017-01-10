@@ -8,6 +8,8 @@
 
 import sys
 
+from globals.tests import available_tests
+
 
 solo_args = (
     (u'h', u'help'),
@@ -23,6 +25,7 @@ cmds = (
     u'clean',
     u'compile',
     u'legacy',
+    u'test',
 )
 
 parsed_args_s = []
@@ -74,13 +77,23 @@ def GetArgType(arg):
     if arg in cmds:
         return u'command'
     
+    # Any other arguments should be a filename path
     return u'path'
 
 
 def ParseArguments(arg_list):
-    global parsed_path
+    global parsed_path, parsed_commands, parsed_args_s, parsed_args_v
     
-    for A in arg_list:
+    argc = len(arg_list)
+    
+    # Allow tests
+    tests = True
+    
+    for AINDEX in range(argc):
+        if AINDEX >= argc:
+            break
+        
+        A = arg_list[AINDEX]
         arg_type = GetArgType(A)
         
         if arg_type == None:
@@ -89,11 +102,30 @@ def ParseArguments(arg_list):
         
         if arg_type == u'command':
             parsed_commands.append(A)
+            
+            if A == u'test' and tests:
+                # NOTE: Can't reset global_arg list here???
+                #       Changes arg_list to local variable.
+                testcmd_index = arg_list.index(A)
+                testarg_index = testcmd_index + 1
+                
+                for TESTARG in arg_list[testcmd_index+1:]:
+                    if TESTARG in available_tests:
+                        parsed_commands.append(TESTARG)
+                        
+                        # Remove test argument from main argumet list
+                        arg_list.pop(testarg_index)
+                        argc = len(arg_list)
+                    
+                    else:
+                        # End test arguments
+                        tests = False
+            
             continue
         
         if arg_type == u'path':
             if parsed_path != None:
-                print(u'ERROR: Multiple input files specified: {}, {}'.format(parsed_path, A))
+                print(u'ERROR: Extra input file detected: {}'.format(A))
                 # FIXME: Use errno here
                 sys.exit(1)
             
