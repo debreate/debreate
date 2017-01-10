@@ -9,6 +9,7 @@
 import sys
 
 from globals.tests import available_tests
+from globals.tests import test_list
 
 
 solo_args = (
@@ -84,10 +85,23 @@ def GetArgType(arg):
 def ParseArguments(arg_list):
     global parsed_path, parsed_commands, parsed_args_s, parsed_args_v
     
-    argc = len(arg_list)
+    if u'test' in arg_list:
+        testcmd_index = arg_list.index(u'test')
+        
+        for TEST in arg_list[testcmd_index+1:]:
+            if TEST not in available_tests:
+                print(u'ERROR: Unrecognized test: {}'.format(TEST))
+                sys.exit(1)
+            
+            test_list.append(TEST)
+            
+            # Remove tests from arguments
+            arg_list.pop(testcmd_index + 1)
+        
+        # Remove test command from arguments
+        arg_list.pop(testcmd_index)
     
-    # Allow tests
-    tests = True
+    argc = len(arg_list)
     
     for AINDEX in range(argc):
         if AINDEX >= argc:
@@ -102,25 +116,6 @@ def ParseArguments(arg_list):
         
         if arg_type == u'command':
             parsed_commands.append(A)
-            
-            if A == u'test' and tests:
-                # NOTE: Can't reset global_arg list here???
-                #       Changes arg_list to local variable.
-                testcmd_index = arg_list.index(A)
-                testarg_index = testcmd_index + 1
-                
-                for TESTARG in arg_list[testcmd_index+1:]:
-                    if TESTARG in available_tests:
-                        parsed_commands.append(TESTARG)
-                        
-                        # Remove test argument from main argumet list
-                        arg_list.pop(testarg_index)
-                        argc = len(arg_list)
-                    
-                    else:
-                        # End test arguments
-                        tests = False
-            
             continue
         
         if arg_type == u'path':
