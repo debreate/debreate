@@ -27,11 +27,13 @@ from globals.system         import PY_VER_STRING
 
 ## Get the current version of the application
 #  
+#  \param remote
+#    Website URL to parse for update
 #  \return
 #        Application's version tuple
-def GetCurrentVersion():
+def GetCurrentVersion(remote=APP_project_gh):
     try:
-        version = os.path.basename(urlopen(u'{}/releases/latest'.format(APP_project_gh)).geturl())
+        version = os.path.basename(urlopen(u'{}/releases/latest'.format(remote)).geturl())
         
         if u'-' in version:
             version = version.split(u'-')[0]
