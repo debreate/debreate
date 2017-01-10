@@ -447,7 +447,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks for new release availability
     def OnCheckUpdate(self, event=None):
-        update_test = u'update' in GetTestList()
+        update_test = u'update-fail' in GetTestList()
         
         if not update_test and u'-dev' in VERSION_string:
             DetailedMessageDialog(GetTopWindow(), GT(u'Update'),

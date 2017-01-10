@@ -10,7 +10,7 @@
 
 ## List of available tests
 available_tests = (
-    u'update',
+    u'update-fail',
     )
 
 ## List is populated from 'test' command arguments
