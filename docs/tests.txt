@@ -6,22 +6,20 @@ Tests to be run before releasing new version:
   - Closes correctly & main app is launched
   - '~/.config/debreate/config' is created when when dialog closes
 - Configuration
-  - Window position is written to config file on app exit
-  - Window position is read from config file
-  - Window dimensions are written to config file on app exit
-  - Window dimensions are read from config file
-  - Window maximized state written to config file on app exit
-  - Window maximized state is read from config file
+  - Window position, size, & maximized state are written to config file on app exit
+  - Window position, size, & maximized state are read from config file
   - Working directory is written to config file on app exit
   - Working directory is read from config file
   - 'Options ➜ Show tooltips' menu item
-    - Hidden for wx 2.8
-    - Writes 'tooltips' value to config file when toggled
-    - Read from config file
+    - wx 2.8
+      - Hidden for wx 2.8
+    - wx 3.0
+      - Writes 'tooltips' value to config file when toggled
+      - Read from config file
   - 'Options ➜ Use custom dialogs'
-    - Hidden if 'gvfs-trash' command not found on system
     - Writes 'dialogs' value to config file when toggled
     - Read from config file
+    - Hidden if 'gvfs-trash' command not found on system
 - Dialogs use previous working directory
 - Projects
   - All fields are exported correctly when saved
@@ -32,17 +30,21 @@ Tests to be run before releasing new version:
 - Command line arguments work correctly
 - 'man debreate' display Debreate manpage when installed
 - Wizard pages can be changed with arrows & 'Pages' menu
-- Other menu options
+- Project files:
   - 'File ➜ New project' resets all pages' fields
   - 'File ➜ Save' only opens dialog if no project is currently loaded
   - 'File ➜ Save as' always opens a dialog
-  - 'File ➜ Quick Build' opens Quick Build dialog
+- Logging:
   - 'Options ➜ Open logs directory'
     - Opens the '~/.local/share/debreate/logs' directory in system file manager
     - Hidden if 'xdg-open' command not found on system
+- Quick Build:
+  - 'File ➜ Quick Build' opens Quick Build dialog
+- Updates:
   - 'Help ➜ Check for update'
     - Reports either up-to-date or new version available
     - Shows error dialog if can't connect to remote site
+- Application help & info
   - 'Help ➜ Reference' links open correct URL in web browser
   - 'Help ➜ Help' opens usage PDF file
   - 'Help ➜ About' opens about dialog
