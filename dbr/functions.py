@@ -18,8 +18,8 @@ from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_file
 from globals.commands       import CMD_system_packager
+from globals.commands       import GetExecutable
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
 from globals.system         import PY_VER_STRING
@@ -288,6 +288,8 @@ def IsIntTuple(value):
 #  
 #  FIXME: Handle missing 'file' command
 def FileUnstripped(file_name):
+    CMD_file = GetExecutable(u'file')
+    
     if CMD_file:
         output = commands.getoutput(u'{} "{}"'.format(CMD_file, file_name))
         
