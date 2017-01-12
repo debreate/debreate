@@ -24,3 +24,4 @@ Non-priority:
 - Use Python's built-in module 'md5' for creating hashes
 - Startup window in primary monitor
 - Update missing path status in file list after selecting item
+- Add customizable filter for directory tree
