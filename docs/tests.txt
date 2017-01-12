@@ -97,16 +97,28 @@ Dependencies page:
 - 'Clear' button shows confirmation & deletes all lines only if confirmed
 
 Files page:
-- Directories & files can be added with right-click in tree or 'Add' button
-- Executables are displayed with red text
-- Warning dialog
-  - Displays if attempting to add a directory with too many files
-  - Confirming begins importing
-  - Can be aborted
-- File progress dialog
-  - Displays when adding many files
-  - Can be aborted
-- 'Staged Target' is set to 'Target' value after import
+- Directories & files can be added using:
+  - 'Add' button
+  - Right-click context menu option 'Add to project'
+  - Double-click on files (hold 'Shift' or 'Ctrl' for multiple files)
+- Executables are displayed with red text in directory tree & file list
+- Missing files & directories
+  - Red-orange background in file list
+  - Red-orange background in directory tree after selected
+  - Refreshing file list
+    - Updates paths & executable files status
+  - Refreshing directory tree
+    - Updates paths & mounted devices
+- Option 'List files individually'
+  - Not selected
+    - Only lists top-level name of added directories
+  - Selected
+    - Lists individual files when a directory is added
+    - 'Processing Files' progress dialog can be aborted
+    - Displays warning dialog if attempting to add a directory with too many files
+    - Confirming begins importing
+    - Import progress dialog can be aborted
+- 'Staged Target' is set from 'Target' input value after import
 - 'Remove' button only removes selected files from list
 - 'Clear' button
   - Asks for confirmation if list not empty
