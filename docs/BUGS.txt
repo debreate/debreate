@@ -4,6 +4,7 @@ Must be fixed before release:
 - License templates not being installed
 
 Priority:
+- Generate template button on copyright page moves header for system licenses
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
