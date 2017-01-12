@@ -27,3 +27,6 @@ Non-priority:
 - Add customizable filter for directory tree
 - Add refresh button on copyright page for updating templates list
 - Support multi-select for categories on launcher/menu page
+- Add alternate tooltip for 'strip' option if disabled
+- Add alternate tooltip for 'lintian' option if disabled
+- Add alternate tooltip for 'install' option if disabled
