@@ -1,6 +1,9 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- Update checking fails if up-to-date
+  - wx 3.0: Freezes app
+  - wx 2.8: Shows error dialog: Can't load image from file 'Debreate is up to date!': file does not exist.
 
 Priority:
 
