@@ -46,7 +46,8 @@
   - Option to preserve indentation of regular lines
   - Lines beginning with one of *, -, +, or # are added as new section
 - Build options:
-  - Option to strip binary files before packaged (enabled by default)
+  - 'Create md5sums file' set to True by default
+  - New option to strip binary files before packaged (enabled by default)
 - Installation from .deb package:
   - Added postinst script to compile source to Python bytecode
 
