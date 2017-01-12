@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- License templates not being installed
 
 Priority:
 
