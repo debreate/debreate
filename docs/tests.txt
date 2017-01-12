@@ -149,6 +149,10 @@ Distribution:
     - Associates .dbp files with Debreate
     - File manager displays icon for .dbp files
 
+Command line tests:
+- 'update-fail' causes 'Help ➜ Check for update' to fail & display error dialog
+  - Overrides development status warning
+
 General:
 - Wizard pages can be changed with arrows & 'Pages' menu
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
