@@ -20,8 +20,6 @@ CMD_fakeroot = CommandExists(u'fakeroot')
 if not CMD_fakeroot:
     CMD_fakeroot = CommandExists(u'fakeroot-sysv')
 
-CMD_trash = CommandExists(u'gvfs-trash')
-
 
 ## TODO: Doxygen
 def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):

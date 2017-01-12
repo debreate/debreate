@@ -19,8 +19,8 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from globals                import ident
-from globals.commands       import CMD_trash
 from globals.commands       import ExecuteCommand
+from globals.commands       import GetExecutable
 from globals.devices        import GetMountedStorageDevices
 from globals.mime           import GetFileMimeType
 from globals.paths          import ConcatPaths
@@ -217,7 +217,7 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.AppendSeparator()
         self.ctx_menu.AppendItem(mitm_refresh)
         
-        if CMD_trash:
+        if GetExecutable(u'gvfs-trash'):
             mitm_delete = wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT(u'Trash'))
             self.ctx_menu.InsertItem(2, mitm_delete)
         
@@ -1061,7 +1061,7 @@ class DirectoryTree(wx.TreeCtrl):
             arg_list = list(path_list)
             # Use 'force' argument to avoid crash on non-existing paths
             arg_list.insert(0, u'-f')
-            ExecuteCommand(CMD_trash, arg_list)
+            ExecuteCommand(GetExecutable(u'gvfs-trash'), arg_list)
             
             Logger.Debug(__name__, u'Paths deleted')
             
