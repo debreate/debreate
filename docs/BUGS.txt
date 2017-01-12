@@ -8,6 +8,7 @@ Priority:
 - Error if user deletes license template while app is open & attempts to generate:
   - TypeError: coercing to Unicode: need string or buffer, NoneType found
 - Can't brink up context menu on files page if 'gvfs-trash' command not found on system
+- Expand/Collapse doesn't change label for root item (System) in directory tree
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
