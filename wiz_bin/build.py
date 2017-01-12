@@ -9,6 +9,7 @@
 import commands, os, shutil, subprocess, traceback, wx
 
 from dbr.buttons            import ButtonBuild64
+from dbr.commandcheck       import CommandExists
 from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
@@ -61,24 +62,12 @@ class Panel(wx.ScrolledWindow):
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = True
         
-        if not CMD_md5sum:
-            self.chk_md5.Disable()
-        
-        else:
-            self.chk_md5.SetValue(self.chk_md5.default)
-        
         # For creating md5sum hashes
         self.md5 = MD5Hasher(self.chk_md5)
         
         # Option to strip binaries
         self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
         self.chk_strip.default = True
-        
-        if not CMD_strip:
-            self.chk_strip.Disable()
-        
-        else:
-            self.chk_strip.SetValue(self.chk_strip.default)
         
         # Deletes the temporary build tree
         self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete build tree'))
@@ -92,20 +81,11 @@ class Panel(wx.ScrolledWindow):
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
         
-        if not CMD_lintian:
-            self.chk_lint.Disable()
-        
-        else:
-            self.chk_lint.SetValue(self.chk_lint.default)
-        
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(pnl_options, label=GT(u'Install package after build'))
         self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
-        
-        if not CMD_gdebi_gui:
-            self.chk_install.Enable(False)
         
         btn_build = ButtonBuild64(self)
         btn_build.SetName(u'build')
@@ -146,6 +126,10 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
+        
+        # *** Post-layout functions *** #
+        
+        self.InitDefaultSettings()
         
         # *** Event handlers *** #
         
@@ -714,6 +698,26 @@ class Panel(wx.ScrolledWindow):
         return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))
     
     
+    ## Sets up page with default settings
+    def InitDefaultSettings(self):
+        # md5sum file
+        option_list = (
+            (self.chk_md5, CMD_md5sum,),
+            (self.chk_strip, CMD_strip,),
+            (self.chk_rmstage, True,),
+            (self.chk_lint, CMD_lintian,),
+            (self.chk_install, CMD_gdebi_gui,),
+            )
+        
+        for option, command in option_list:
+            # FIXME: Commands should be updated globally
+            if not isinstance(command, bool):
+                command = CommandExists(command)
+            
+            option.Enable(bool(command))
+            option.SetValue(FieldEnabled(option) and option.default)
+    
+    
     ## Installs the built .deb package onto the system
     #  
     #  Uses the system's package installer:
@@ -827,33 +831,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def ResetAllFields(self):
-        self.chk_install.SetValue(False)
-        
-        # chk_md5 should be reset no matter
-        self.chk_md5.SetValue(False)
-        if CMD_md5sum:
-            self.chk_md5.Enable()
-        
-        else:
-            self.chk_md5.Disable()
-        
-        self.chk_strip.SetValue(False)
-        if CMD_strip:
-            self.chk_strip.Enable()
-            self.chk_strip.SetValue(self.chk_strip.default)
-        
-        else:
-            self.chk_strip.Disable()
-        
-        self.chk_rmstage.SetValue(True)
-        
-        if CMD_lintian:
-            self.chk_lint.Enable()
-            self.chk_lint.SetValue(True)
-        
-        else:
-            self.chk_lint.Disable()
-            self.chk_lint.SetValue(False)
+        self.InitDefaultSettings()
     
     
     ## TODO: Doxygen
