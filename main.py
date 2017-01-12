@@ -15,8 +15,6 @@ from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
-from dbr.custom             import OpenFile
-from dbr.custom             import SaveFile
 from dbr.custom             import StatusBar
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
