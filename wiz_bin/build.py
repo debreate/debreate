@@ -26,7 +26,6 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_strip
 from globals.commands       import GetExecutable
@@ -501,6 +500,8 @@ class Panel(wx.ScrolledWindow):
             if u'lintian' in task_list:
                 UpdateProgress(progress, GT(u'Checking package for errors'))
                 
+                # FIXME: Should be set as class memeber?
+                CMD_lintian = GetExecutable(u'lintian')
                 errors = commands.getoutput((u'{} {}'.format(CMD_lintian, deb)))
                 
                 if errors != wx.EmptyString:
@@ -724,7 +725,7 @@ class Panel(wx.ScrolledWindow):
             (self.chk_md5, CMD_md5sum,),
             (self.chk_strip, CMD_strip,),
             (self.chk_rmstage, True,),
-            (self.chk_lint, CMD_lintian,),
+            (self.chk_lint, GetExecutable(u'lintian'),),
             (self.chk_install, GetSystemInstaller(),),
             )
         
@@ -870,7 +871,7 @@ class Panel(wx.ScrolledWindow):
         except IndexError:
             pass
         
-        if CMD_lintian:
+        if GetExecutable(u'lintian'):
             try:
                 self.chk_lint.SetValue(int(build_data[2]))
             
