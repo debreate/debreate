@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Can't bring up context menu on files page if 'gvfs-trash' command not found on system
 - Expand/Collapse doesn't change label for root item (System) in directory tree
 
 Priority:

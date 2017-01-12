@@ -217,9 +217,13 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.AppendSeparator()
         self.ctx_menu.AppendItem(mitm_refresh)
         
+        # FIXME: Hack
+        self.trash = False
+        
         if GetExecutable(u'gvfs-trash'):
             mitm_delete = wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT(u'Trash'))
             self.ctx_menu.InsertItem(2, mitm_delete)
+            self.trash = True
         
         # Tells app if user is currently dragging an item from tree
         self.dragging = False
@@ -720,7 +724,12 @@ class DirectoryTree(wx.TreeCtrl):
             
             # Only allow expand/collapse & refresh for root item
             removed_menus = []
-            for MENU_ID in (wx.ID_ADD, None, ident.RENAME, wx.ID_DELETE):
+            
+            menu_ids = [wx.ID_ADD, None, ident.RENAME,]
+            if self.trash:
+                menu_ids.append(wx.ID_DELETE)
+            
+            for MENU_ID in menu_ids:
                 if not MENU_ID:
                     removed_menus.append(None)
                 
@@ -756,7 +765,9 @@ class DirectoryTree(wx.TreeCtrl):
                     break
             
             self.ctx_menu.Enable(ident.RENAME, allow_rename)
-            self.ctx_menu.Enable(wx.ID_DELETE, allow_trash)
+            
+            if self.trash:
+                self.ctx_menu.Enable(wx.ID_DELETE, allow_trash)
             
             self.PopupMenu(self.ctx_menu)
             
