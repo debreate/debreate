@@ -589,3 +589,5 @@ class Panel(wx.ScrolledWindow):
                         ICON_EXCLAMATION, GT(u'Could not locate the following files:'),
                         u'\n'.join(missing_files))
                 alert.ShowModal()
+            
+            return True
