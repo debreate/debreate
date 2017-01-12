@@ -26,3 +26,4 @@ Non-priority:
 - Update missing path status in file list after selecting item
 - Add customizable filter for directory tree
 - Add refresh button on copyright page for updating templates list
+- Support multi-select for categories on launcher/menu page
