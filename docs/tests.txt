@@ -78,6 +78,10 @@ Tests to be run before releasing new version:
 - Copyright page
 - Launcher/Menu page
 - Build page
+  - 'Create md5sums file' option disabled if 'md5sum' command not on system
+  - 'Strip binaries' option disabled if 'strip' command not on system
+  - 'Check package for errors with lintian' option disabled if 'lintian' command not on system
+  - 'Install package after build' disabled if neither 'gdeb-gtk' nor 'gdebi-kde' are on system
   - Build won't start if one of the following fields are empty
     - Control page ➜ Package
     - Control page ➜ Version
