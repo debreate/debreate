@@ -93,7 +93,23 @@ def GetCommandOutput(cmd, args=[]):
 
 ## Retrieves executable it exists on system
 def GetExecutable(cmd):
-    return CommandExists(cmd)
+    alternatives = {
+        u'fakeroot': u'fakeroot-sysv', 
+        }
+    
+    found_command = CommandExists(cmd)
+    
+    if not found_command and cmd in alternatives:
+        if isinstance(alternatives[cmd], (unicode, str)):
+            found_command = alternatives[cmd]
+        
+        else:
+            for ALT in alternatives[cmd]:
+                found_command = CommandExists(ALT)
+                if found_command:
+                    break
+    
+    return found_command
 
 
 def GetSystemInstaller():
