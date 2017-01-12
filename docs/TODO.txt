@@ -1,5 +1,4 @@
-0.7.13
-- Testing for both wx 3.0 & 2.8
+0.7.13:
 
 Priority:
 - Use globals.thread module for all threading activity
