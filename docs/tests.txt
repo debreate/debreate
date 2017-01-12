@@ -148,6 +148,7 @@ Distribution:
   - MIME type application/x-dbp
     - Associates .dbp files with Debreate
     - File manager displays icon for .dbp files
+    - MIME type(s) are unassociated after uninstall
 
 Command line tests:
 - 'update-fail' causes 'Help ➜ Check for update' to fail & display error dialog
