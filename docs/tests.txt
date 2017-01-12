@@ -189,11 +189,22 @@ Launcher/Menu page:
   - Lines that are not delimited with a "=" are ignored when exported
 
 Build page:
-- Following options are 'False' & disabled if system command(s) not found:
-  - Create md5sums file:  command 'md5sum'
-  - Strip binaries: command 'strip'
-  - Check package for errors with lintian: command 'lintian'
-  - Install package after build: commands 'gdeb-gtk' & 'gdebi-kde'
+- Options:
+  - 'Create md5sums file'
+    - Disabled if 'md5sum' command not found on system
+    - Creates md5sums file in '<stage>/DEBIAN' directory if selected
+  - 'Strip binaries'
+    - Disabled if 'strip' command not found on system
+    - ELF binary files are stripped before adding to package if selected
+  - 'Delete build tree'
+    - Removes staged temp directory after build completes
+  - 'Check package for errors with lintian'
+    - Disabled if 'lintian' command not found on system
+    - Scans .deb package after build & displays output if warnings/errors were found
+  - 'Install package after build'
+    - Disabled if neither 'gdebi-gtk' nor 'gdebi-kde' commands found on system
+    - Opens package in gdebi program after successful build
+      - Defaults to gdebi-gtk
 - Build won't start if one of the following fields are empty
   - Control page ➜ Package
   - Control page ➜ Version
@@ -201,12 +212,8 @@ Build page:
   - Control page ➜ Email
   - Menu page (if enabled) ➜ Name
   - Menu page (if enabled) ➜ Filename (if not set to use 'Name' field)
-- 'md5sums' file is created in '<stage>/DEBIAN' directory if enabled
-- Staged directory is deleted if 'Delete stage directory' is enabled
 - Progress dialog can be cancelled
-- .deb is checked with lintian if enabled
-- Gdebi is launched for installation if 'Install package after build' enabled
-- .deb package is built correctly
+- .deb package is builds & installs correctly
 
 Shut down:
 - Shows warning dialog about losing unsaved information
