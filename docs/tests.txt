@@ -159,6 +159,19 @@ Changelog page:
   - Nothing to test
 
 Copyright page:
+- 'Available Templates' list
+  - Reads filenames from:
+    - /usr/share/common-licenses
+    - <install_prefix>/templates/licenses
+    - <user_home>/.local/share/debreate/templates/licenses
+  - Tooltip updates when changed
+  - 'Generate Simple Template' button disabled if non-system license selected
+- 'Generate Template' button copies full license text to text area
+  - Some licenses may have a header prepended
+- 'Generate Simple Template' adds a header template & references system license file name path
+- Text files can be droppoed from system file manager onto text area
+  - Non-text files will display an error but not overwrite text
+- A confirmation dialog is displayed if text is not empty before overwriting
 
 Launcher/Menu page:
 
