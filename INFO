@@ -1,7 +1,7 @@
 # Application details
 NAME=Debreate
 VERSION=0.7.13
-VERSION_dev=10
+VERSION_dev=11
 
 # Developer details
 AUTHOR=Jordan Irwin
