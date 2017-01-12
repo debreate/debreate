@@ -12,6 +12,7 @@ Must be fixed before release:
     - wx 3.0 freezes
 
 Priority:
+- dpkg fails if non-ASCII characters are in package name or dependencies
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
@@ -29,3 +30,4 @@ Non-priority:
   - (init.py:4644) Gtk-CRITICAL **: IA__gtk_main_quit: assertion 'main_loops != NULL' failed
 - Progress dialogs could potentially resize outside of display boundaries
 - Does not show on main screen after First Run
+- Auto-Link Help only re-centers if "check" button is pressed
