@@ -9,10 +9,10 @@ Must be fixed before release:
   - Update check fails:
     - wx 2.8 shows error message
     - wx 3.0 freezes
-- Commands are not updated globally in InitDefaultSettings on build page
 
 Priority:
 - dpkg fails if non-ASCII characters are in package name or dependencies
+- Commands are not updated globally in InitDefaultSettings on build page
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
