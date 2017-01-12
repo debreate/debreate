@@ -13,7 +13,6 @@ from dbr.commandcheck       import CommandExists
 from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
-from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import FileUnstripped
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -27,13 +26,12 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_gdebi_gui
 from globals.commands       import CMD_gzip
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_strip
-from globals.commands       import CMD_system_installer
 from globals.commands       import ExecuteCommand
+from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
@@ -725,7 +723,7 @@ class Panel(wx.ScrolledWindow):
             (self.chk_strip, CMD_strip,),
             (self.chk_rmstage, True,),
             (self.chk_lint, CMD_lintian,),
-            (self.chk_install, CMD_gdebi_gui,),
+            (self.chk_install, GetSystemInstaller(),),
             )
         
         for option, command in option_list:
@@ -747,7 +745,9 @@ class Panel(wx.ScrolledWindow):
     #  \param package
     #        \b \e unicode|str : Path to package to be installed
     def InstallPackage(self, package):
-        if not CMD_system_installer:
+        system_installer = GetSystemInstaller()
+        
+        if not system_installer:
             ShowErrorDialog(
                 GT(u'Cannot install package'),
                 GT(u'A compatible package manager could not be found on the system'),
@@ -758,14 +758,13 @@ class Panel(wx.ScrolledWindow):
             return
         
         Logger.Info(__name__, GT(u'Attempting to install package: {}').format(package))
-        Logger.Info(__name__, GT(u'Installing with {}').format(CMD_system_installer))
+        Logger.Info(__name__, GT(u'Installing with {}').format(system_installer))
         
-        install_output = None
-        install_cmd = (CMD_system_installer, package,)
+        install_cmd = (system_installer, package,)
         
         wx.Yield()
-        if CMD_system_installer == CMD_gdebi_gui:
-            install_output = subprocess.Popen(install_cmd)
+        # FIXME: Use ExecuteCommand here
+        install_output = subprocess.Popen(install_cmd)
         
         # Command appears to not have been executed correctly
         if install_output == None:
@@ -791,15 +790,6 @@ class Panel(wx.ScrolledWindow):
                 )
             
             return
-        
-        # TODO: This code is kept for future purposes
-        # Gdebi Gtk uses a GUI so no need to show a dialog of our own
-        if CMD_system_installer != CMD_gdebi_gui:
-            # Command executed & returned successfully
-            ShowMessageDialog(
-                GT(u'Package was installed to system'),
-                GT(u'Success')
-                )
     
     
     ## TODO: Doxygen

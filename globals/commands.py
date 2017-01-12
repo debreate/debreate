@@ -25,13 +25,6 @@ if not CMD_fakeroot:
     CMD_fakeroot = CommandExists(u'fakeroot-sysv')
 
 CMD_file = CommandExists(u'file')
-CMD_gdebi = CommandExists(u'gdebi')
-CMD_gdebi_gui = CommandExists(u'gdebi-gtk')
-
-# Check for gdebi KDE frontend of Gtk not available
-if not CMD_gdebi_gui:
-    CMD_gdebi_gui = CommandExists(u'gdebi-kde')
-
 CMD_gzip = CommandExists(u'gzip')
 CMD_lintian = CommandExists(u'lintian')
 CMD_md5sum = CommandExists(u'md5sum')
@@ -40,21 +33,6 @@ CMD_sudo = CommandExists(u'sudo')
 CMD_tar = CommandExists(u'tar')
 CMD_trash = CommandExists(u'gvfs-trash')
 CMD_xdg_open = CommandExists(u'xdg-open')
-
-CMD_system_installer = None
-
-# Order in priority
-CMDS_installers = (
-    CMD_gdebi_gui,
-    CMD_gdebi,
-    CMD_dpkg,
-)
-
-# Sets the system installer by priority
-for C in CMDS_installers:
-    if C:
-        CMD_system_installer = C
-        break
 
 CMD_system_packager = None
 
@@ -143,3 +121,12 @@ def GetCommandOutput(cmd, args=[]):
 ## Retrieves executable it exists on system
 def GetExecutable(cmd):
     return CommandExists(cmd)
+
+
+def GetSystemInstaller():
+    system_installer = GetExecutable(u'gdebi-gtk')
+    
+    if not system_installer:
+        system_installer = GetExecutable(u'gdebi-kde')
+    
+    return system_installer

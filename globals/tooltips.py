@@ -14,7 +14,7 @@ from dbr.language           import GT
 from dbr.templates          import local_templates_path
 from globals                import ident
 from globals.changes        import section_delims
-from globals.commands       import CMD_gdebi_gui
+from globals.commands       import GetSystemInstaller
 from globals.wizardhelper   import FieldEnabled
 
 
@@ -192,7 +192,7 @@ TT_build = {
     u'build': GT(u'Start building'),
     u'install': (
         GT(u'Install package using a system installer after build'), u'',
-        u'{} {}'.format(GT(u'System installer set to:'), CMD_gdebi_gui),
+        u'{} {}'.format(GT(u'System installer set to:'), GetSystemInstaller()),
         ),
     u'install_disabled': (
         GT(u'Installation requires one of the following utilities:'), u'',
