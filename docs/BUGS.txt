@@ -3,7 +3,6 @@
 Must be fixed before release:
 - Hitting 'Cancel' after opening project self.saved_project variable is set in 'main'
   - Reselts in project being ovewritten if "File ➜ Save project" selected
-- "Target file" option in Quick Build set to '.deb' if empty when 'Build' button pressed
 - GUI erro when checking for update:
   - "Python2 Error: Can't load image from file 'Debreate is up to date!': file does not exist."
   - Update check fails:

@@ -197,10 +197,6 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         elif not target.lower().endswith(u'.deb'):
             target = u'{}.deb'.format(target)
         
-        # Update the text input if target altered
-        if target != self.input_target.GetValue():
-            self.input_target.SetValue(target)
-        
         if not os.path.isdir(stage):
             ShowErrorDialog(GT(u'Stage directory does not exist'), stage, self, True)
             return
@@ -213,6 +209,10 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         elif not os.access(target_path, os.W_OK):
             ShowErrorDialog(GT(u'No write access to target directory'), target_path, self, True)
             return
+        
+        # Update the text input if target altered
+        if target != self.input_target.GetValue():
+            self.input_target.SetValue(target)
         
         # Check for pre-existing file
         if os.path.isfile(target):
