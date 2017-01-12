@@ -26,7 +26,6 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_strip
 from globals.commands       import GetExecutable
 from globals.commands       import ExecuteCommand
 from globals.commands       import GetSystemInstaller
@@ -298,7 +297,8 @@ class Panel(wx.ScrolledWindow):
                             if FileUnstripped(F):
                                 Logger.Debug(__name__, u'Unstripped file: {}'.format(F))
                                 
-                                ExecuteCommand(CMD_strip, F)
+                                # FIXME: Strip command should be set as class member?
+                                ExecuteCommand(GetExecutable(u'strip'), F)
                 
                 progress += 1
             
@@ -722,7 +722,7 @@ class Panel(wx.ScrolledWindow):
         # md5sum file
         option_list = (
             (self.chk_md5, GetExecutable(u'md5sum'),),
-            (self.chk_strip, CMD_strip,),
+            (self.chk_strip, GetExecutable(u'strip'),),
             (self.chk_rmstage, True,),
             (self.chk_lint, GetExecutable(u'lintian'),),
             (self.chk_install, GetSystemInstaller(),),
@@ -877,7 +877,7 @@ class Panel(wx.ScrolledWindow):
             except IndexError:
                 pass
         
-        self.chk_strip.SetValue(CMD_strip and u'strip' in build_data)
+        self.chk_strip.SetValue(GetExecutable(u'strip') and u'strip' in build_data)
     
     
     ## TODO: Doxygen
