@@ -40,7 +40,6 @@ from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
-from globals.commands       import CMD_trash
 from globals.commands       import CMD_xdg_open
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
@@ -192,15 +191,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
             
             self.OnToggleToolTips()
-        
-        # Dialogs options
-        cust_dias = wx.MenuItem(self.menu_opt, ident.DIALOGS, GT(u'Use custom dialogs'),
-            GT(u'Use system or custom save/open dialogs'), kind=wx.ITEM_CHECK)
-        
-        wx.EVT_MENU(self, ident.DIALOGS, self.OnEnableCustomDialogs)
-        
-        if CMD_trash:
-            self.menu_opt.AppendItem(cust_dias)
         
         # *** Option Menu: open logs directory *** #
         
@@ -482,11 +472,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), GT(u'Debreate is up to date!')).ShowModal()
     
     
-    ## Writes dialog settings to config
-    def OnEnableCustomDialogs(self, event=None):
-        WriteConfig(u'dialogs', self.UseCustomDialogs())
-    
-    
     ## Action to take when 'Help' is selected from the help menu
     #  
     #  First tries to open pdf help file. If fails tries
@@ -521,17 +506,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
         d = GT(u'Debreate project files')
         
-        if self.UseCustomDialogs():
-            dia = OpenFile(self, GT(u'Open Debreate Project'))
-            dia.SetFilter(u'{}{}'.format(d, projects_filter))
-            if not dia.DisplayModal():
-                return
-        
-        else:
-            dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
-                    u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
-            if dia.ShowModal() != wx.ID_OK:
-                return
+        dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
+                u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
+        if dia.ShowModal() != wx.ID_OK:
+            return
         
         # Get the path and set the saved project
         self.saved_project = dia.GetPath()
@@ -607,35 +585,18 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                         # Restore project backup
                         shutil.move(backup, path)
         
-        
-        ## TODO: Doxygen
         def OnSaveAs():
             dbp = u'|*.dbp'
             d = GT(u'Debreate project files')
-            cont = False
-            if self.UseCustomDialogs():
-                dia = SaveFile(self, GT(u'Save Debreate Project'), u'dbp')
-                dia.SetFilter(u'{}{}'.format(d, dbp))
-                if dia.DisplayModal():
-                    cont = True
-                    filename = dia.GetFilename()
-                    if filename.split(u'.')[-1] == u'dbp':
-                        filename = u'.'.join(filename.split(u'.')[:-1])
-                    
-                    self.saved_project = u'{}/{}.dbp'.format(dia.GetPath(), filename)
-            
-            else:
-                dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
-                                        wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-                if dia.ShowModal() == wx.ID_OK:
-                    cont = True
-                    filename = dia.GetFilename()
-                    if filename.split(u'.')[-1] == u'dbp':
-                        filename = u'.'.join(filename.split(u'.')[:-1])
-                    
-                    self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
-            
-            if cont:
+            dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
+                                    wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+            if dia.ShowModal() == wx.ID_OK:
+                filename = dia.GetFilename()
+                if filename.split(u'.')[-1] == u'dbp':
+                    filename = u'.'.join(filename.split(u'.')[:-1])
+                
+                self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
+                
                 SaveIt(self.saved_project)
         
         if event_id == wx.ID_SAVE:
@@ -770,14 +731,3 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             title = self.GetTitle()
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
-    
-    
-    ## TODO: Doxygen
-    def UseCustomDialogs(self):
-        cust_dias = self.menu_opt.FindItemById(ident.DIALOGS)
-        
-        # This needs to be checked first to avoid PyAssertionError in wx 3.0
-        if not cust_dias:
-            return False
-        
-        return cust_dias.IsChecked()

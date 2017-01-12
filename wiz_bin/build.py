@@ -10,7 +10,6 @@ import commands, os, shutil, subprocess, traceback, wx
 
 from dbr.buttons            import ButtonBuild64
 from dbr.custom             import OutputLog
-from dbr.custom             import SaveFile
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
@@ -43,7 +42,6 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
-from globals.wizardhelper   import UseCustomDialogs
 
 
 ## Build page
@@ -610,30 +608,16 @@ class Panel(wx.ScrolledWindow):
             
             arch = GetField(pg_control, ident.F_ARCH).GetStringSelection()
             
-            cont = False
-            
             # Dialog for save destination
             ttype = GT(u'Debian packages')
-            if UseCustomDialogs():
-                save_dia = SaveFile(self)
-                save_dia.SetFilter(u'{}|*.deb'.format(ttype))
-                save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
-                if save_dia.DisplayModal():
-                    cont = True
-                    build_path = save_dia.GetPath()
-                    filename = save_dia.GetFilename().split(u'.deb')[0]
-            
-            else:
-                save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'{}|*.deb'.format(ttype),
-                        wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
-                save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
-                if save_dia.ShowModal() == wx.ID_OK:
-                    cont = True
-                    build_path = os.path.split(save_dia.GetPath())[0]
-                    filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
-            
-            if not cont:
+            save_dia = wx.FileDialog(self, GT(u'Save'), os.getcwd(), wx.EmptyString, u'{}|*.deb'.format(ttype),
+                    wx.FD_SAVE|wx.FD_OVERWRITE_PROMPT|wx.FD_CHANGE_DIR)
+            save_dia.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
+            if not save_dia.ShowModal() == wx.ID_OK:
                 return (dbrerrno.ECNCLD, None)
+            
+            build_path = os.path.split(save_dia.GetPath())[0]
+            filename = os.path.split(save_dia.GetPath())[1].split(u'.deb')[0]
             
             # Control, menu, & build pages not added to this list
             page_checks = (

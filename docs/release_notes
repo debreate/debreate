@@ -1,19 +1,11 @@
-Debreate 0.7.12 Release Notes
-
-This is a release to enable support for wx 3.0.
+Debreate 0.7.13 Release Notes
 
 Known Bugs:
     *) Auto-Link Help only re-centers if "check" button is pressed
     *) dpkg fails if non-ASCII characters are in package name or dependencies
-    *) Custom dialogs are buggy
 
 New Features:
-    *) wx 3.0 support
-    *) Debreate Mimetype application/x-dbp created
 
 Tasks:
-    *) Add support for manpages
-    *) Add option to open changelog
     *) Add option to build standalone installers
     *) Add option to build from source
-    *) Add drag-and-drop support

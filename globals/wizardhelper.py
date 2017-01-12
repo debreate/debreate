@@ -135,11 +135,6 @@ def GetWizard():
 
 
 ## TODO: Doxygen
-def UseCustomDialogs():
-    return GetTopWindow().UseCustomDialogs()
-
-
-## TODO: Doxygen
 class ErrorTuple:
     def __init__(self, error_code=None, error_string=None):
         

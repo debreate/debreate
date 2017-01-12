@@ -12,8 +12,6 @@ from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
-from dbr.custom             import OpenFile
-from dbr.custom             import SaveFile
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -28,7 +26,6 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import UseCustomDialogs
 
 
 ## This panel displays the field input of the control file
@@ -414,18 +411,8 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        cont = False
-        if UseCustomDialogs():
-            dia = OpenFile(self)
-            if dia.DisplayModal():
-                cont = True
-        
-        else:
-            dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        
-        if cont:
+        dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+        if dia.ShowModal() == wx.ID_OK:
             file_path = dia.GetPath()
             
             control_data = ReadFile(file_path)
@@ -485,27 +472,12 @@ class Panel(wx.ScrolledWindow):
         # Get data to write to control file
         control = self.GetCtrlInfo()
         
-        cont = False
+        dia = wx.FileDialog(main_window, u'Save Control Information', os.getcwd(),
+            style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        dia.SetFilename(u'control')
         
-        # Open a "Save Dialog"
-        if UseCustomDialogs():
-            dia = SaveFile(main_window, GT(u'Save Control Information'))
-            dia.SetFilename(u'control')
-            if dia.DisplayModal():
-                cont = True
-                path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
-        
-        else:
-            dia = wx.FileDialog(main_window, u'Save Control Information', os.getcwd(),
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-            dia.SetFilename(u'control')
-            
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-                path = dia.GetPath()
-        
-        if cont:
-            WriteFile(path, control)
+        if dia.ShowModal() == wx.ID_OK:
+            WriteFile(dia.GetPath(), control)
     
     
     ## TODO: Doxygen

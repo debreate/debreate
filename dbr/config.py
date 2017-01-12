@@ -49,7 +49,6 @@ default_config = u'{}/config'.format(default_config_dir)
 # name = (function, default value)
 default_config_values = {
     u'center': (GetBoolean, True),
-    u'dialogs': (GetBoolean, False),
     u'maximize': (GetBoolean, False),
     u'position': (GetIntTuple, (0, 0)),
     u'size': (GetIntTuple, (800, 640)),

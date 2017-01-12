@@ -14,8 +14,6 @@ from dbr.buttons            import ButtonClear
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
-from dbr.custom             import OpenFile
-from dbr.custom             import SaveFile
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
@@ -31,7 +29,6 @@ from globals.fileio         import WriteFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
-from globals.wizardhelper   import UseCustomDialogs
 
 
 ## Page for creating a system menu launcher
@@ -415,20 +412,10 @@ class Panel(wx.ScrolledWindow):
     #         'Others' field not being completely filled out.
     def OnLoadLauncher(self, event=None):
         main_window = wx.GetApp().GetTopWindow()
-        cont = False
         
-        if UseCustomDialogs():
-            dia = OpenFile(main_window, GT(u'Open Launcher'))
-            if dia.DisplayModal():
-                cont = True
-        
-        else:
-            dia = wx.FileDialog(main_window, GT(u'Open Launcher'), os.getcwd(),
-                style=wx.FD_CHANGE_DIR)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-        
-        if cont == True:
+        dia = wx.FileDialog(main_window, GT(u'Open Launcher'), os.getcwd(),
+            style=wx.FD_CHANGE_DIR)
+        if dia.ShowModal() == wx.ID_OK:
             path = dia.GetPath()
             
             data = ReadFile(path).split(u'\n')
@@ -465,24 +452,11 @@ class Panel(wx.ScrolledWindow):
         # Get data to write to control file
         menu_data = self.GetLauncherInfo().encode(u'utf-8')
         
-        # Saving?
-        cont = False
-        
-        # Open a "Save Dialog"
-        if UseCustomDialogs():
-            dia = SaveFile(main_window, GT(u'Save Launcher'))
-            if dia.DisplayModal():
-                cont = True
-                path = u'{}/{}'.format(dia.GetPath(), dia.GetFilename())
-        
-        else:
-            dia = wx.FileDialog(main_window, GT(u'Save Launcher'), os.getcwd(),
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-            if dia.ShowModal() == wx.ID_OK:
-                cont = True
-                path = dia.GetPath()
-        
-        if cont:
+        dia = wx.FileDialog(main_window, GT(u'Save Launcher'), os.getcwd(),
+            style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        if dia.ShowModal() == wx.ID_OK:
+            path = dia.GetPath()
+            
             # Create a backup file
             overwrite = False
             if os.path.isfile(path):
