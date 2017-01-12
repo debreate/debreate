@@ -57,7 +57,6 @@ FILES_extra = \
 FILES_doc = \
 	docs/changelog \
 	docs/LICENSE.txt \
-	docs/release_notes \
 	docs/usage.pdf
 
 FILES_man = \
