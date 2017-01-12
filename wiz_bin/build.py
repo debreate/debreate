@@ -38,6 +38,7 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
+from globals.system         import PY_VER_MAJ
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
@@ -311,7 +312,7 @@ class Panel(wx.ScrolledWindow):
             
             package = GetField(pg_control, ident.F_PACKAGE).GetValue()
             
-            # Make sure that the dirctory is available in which to place documentation
+            # Make sure that the directory is available in which to place documentation
             if create_changelog or create_copyright:
                 doc_dir = u'{}/usr/share/doc/{}'.format(stage_dir, package)
                 if not os.path.isdir(doc_dir):
@@ -522,8 +523,26 @@ class Panel(wx.ScrolledWindow):
             if not build_status[0]:
                 return (dbrerrno.SUCCESS, deb_package)
             
+            if PY_VER_MAJ <= 2:
+                # Unicode decoder has trouble with certain characters. Replace any
+                # non-decodable characters with � (0xFFFD).
+                build_output = list(build_status[1])
+                
+                # String & unicode string incompatibilities
+                index = 0
+                for C in build_output:
+                    try:
+                        unicode(C)
+                    
+                    except UnicodeDecodeError:
+                        build_output[index] = u'�'
+                    
+                    index += 1
+                
+                build_status = (build_status[0], u''.join(build_output))
+            
             # Build failed
-            return (build_status[0], None)
+            return (build_status[0], build_status[1])
         
         except:
             if build_progress:
@@ -785,6 +804,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnBuild(self, event=None):
+        # Build preparation
         ret_code, build_prep = self.BuildPrep()
         
         if ret_code == dbrerrno.ECNCLD:
@@ -801,6 +821,7 @@ class Panel(wx.ScrolledWindow):
         if ret_code == dbrerrno.SUCCESS:
             task_list, build_path, filename = build_prep
             
+            # Actual build
             ret_code, result = self.Build(task_list, build_path, filename)
             
             # FIXME: Check .deb package timestamp to confirm build success

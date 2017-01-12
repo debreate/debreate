@@ -5,7 +5,6 @@ Must be fixed before release:
   - Reselts in project being ovewritten if "File ➜ Save project" selected
 
 Priority:
-- dpkg fails if non-ASCII characters are in package name or dependencies
 - Commands are not updated globally in InitDefaultSettings on build page
 
 Non-priority:
