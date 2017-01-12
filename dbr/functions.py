@@ -18,7 +18,6 @@ from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_system_packager
 from globals.commands       import GetExecutable
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
@@ -354,7 +353,7 @@ def UsingDevelopmentVersion():
 
 
 def BuildDebPackage(stage_dir, target_file):
-    packager = CMD_system_packager
+    packager = GetExecutable(u'dpkg-deb')
     
     if not CMD_fakeroot or not packager:
         return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))

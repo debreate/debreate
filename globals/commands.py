@@ -15,15 +15,12 @@ from dbr.commandcheck   import CommandExists
 from dbr.language       import GT
 
 
-CMD_dpkgdeb = CommandExists(u'dpkg-deb')
 CMD_fakeroot = CommandExists(u'fakeroot')
 
 if not CMD_fakeroot:
     CMD_fakeroot = CommandExists(u'fakeroot-sysv')
 
 CMD_trash = CommandExists(u'gvfs-trash')
-
-CMD_system_packager = CMD_dpkgdeb
 
 
 ## TODO: Doxygen
