@@ -38,6 +38,7 @@ Updates:
 - 'Help ➜ Check for update'
   - Reports either up-to-date or new version available
   - Shows error dialog if can't connect to remote site
+  - Dialog 'Confirm' button opens Debreate homepage
 
 Application help & info:
 - Command line
