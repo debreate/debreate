@@ -15,12 +15,6 @@ from dbr.commandcheck   import CommandExists
 from dbr.language       import GT
 
 
-CMD_fakeroot = CommandExists(u'fakeroot')
-
-if not CMD_fakeroot:
-    CMD_fakeroot = CommandExists(u'fakeroot-sysv')
-
-
 ## TODO: Doxygen
 def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if elevate and pword.strip(u' \t\n') == wx.EmptyString:

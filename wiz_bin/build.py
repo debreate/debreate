@@ -24,7 +24,6 @@ from dbr.progress           import ProgressDialog
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_fakeroot
 from globals.commands       import GetExecutable
 from globals.commands       import ExecuteCommand
 from globals.commands       import GetSystemInstaller
@@ -469,7 +468,8 @@ class Panel(wx.ScrolledWindow):
             
             # Move the working directory becuase dpkg seems to have problems with spaces in path
             os.chdir(working_dir)
-            build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(CMD_fakeroot, GetExecutable(u'dpkg-deb'), c_tree, deb_package)))
+            # FIXME: Should check for working fakeroot & dpkg-deb executables
+            build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(GetExecutable(u'fakeroot'), GetExecutable(u'dpkg-deb'), c_tree, deb_package)))
             
             progress += 1
             
