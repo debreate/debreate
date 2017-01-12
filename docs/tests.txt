@@ -42,7 +42,8 @@ Updates:
 
 Application help & info:
 - Command line
-  - '--help' option displays help output
+  - '--help' or '-h' displays help output
+  - '--version' or '-v' displays version info
   - 'man debreate' display Debreate manpage when installed
 - 'Help ➜ Reference' links open correct URL in web browser
 - 'Help ➜ Help' opens usage PDF file
