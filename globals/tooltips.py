@@ -114,8 +114,7 @@ TT_changelog = {
     u'email': TT_control[u'email'],
     u'changes': (
         GT(u'List new changes here, separated one per line'), u'',
-        GT(u'The first line will be prepended with an asterix (*) automatically.'),
-        GT(u'To denote any other sections, put one of the following as the first character on the line:'),
+        GT(u'The first line will be prepended with an asterix (*) automatically. To denote any other sections, put one of the following as the first character on the line:'),
         u'\t{}'.format(u',  '.join(list(section_delims))),
         ),
     u'target default': GT(u'Install changelog to standard directory'),
