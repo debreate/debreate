@@ -20,3 +20,4 @@ Non-priority:
 - Create a Python 2.x/3.x compatibility function for UTF-8 strings
   - This could optionally be done on the dbr.language.GT function
 - Config file should not be required to exist before launching main app window
+- Option for make/cmake to create portable release
