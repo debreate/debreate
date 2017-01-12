@@ -605,7 +605,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if event_id == wx.ID_SAVE:
             # Define what to do if save is pressed
             # If project already exists, don't show dialog
-            if not self.IsSaved() or self.saved_project == wx.EmptyString or not os.path.isfile(self.saved_project):
+            if not self.IsSaved() or not self.saved_project or not os.path.isfile(self.saved_project):
                 OnSaveAs()
             
             else:
@@ -680,7 +680,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        self.page_files.SetFieldData(files_data)
+        opened = self.page_files.SetFieldData(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
@@ -706,7 +706,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
         self.page_build.SetFieldData(build_data)
         
-        return True
+        return opened
     
     
     ## TODO: Doxygen
