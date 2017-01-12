@@ -112,7 +112,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-launcher install-man install-mime
+install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-launcher install-man install-mime install-templates
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -159,7 +159,7 @@ install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-
 	\
 	$(call MOVE,$(INSTALLED),$${datadir}); \
 
-uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime
+uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime uninstall-templates
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -250,6 +250,21 @@ uninstall-mime: uninstall-icons
 	mime_dir="$${target}/$(MIMEDIR)"; \
 	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
 
+install-templates: $(DIR_templates)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
+
+uninstall-templates:
+	@target="$(DESTDIR)$(prefix)"; \
+	templates_dir="$${target}/$(DATADIR)/templates"; \
+	if [ -d "$${templates_dir}" ]; then \
+		$(call UNINSTALL_FOLDER,$${templates_dir}); \
+	fi; \
+
 dist: deb-clean
 	@echo "Creating distribution package ..."
 	@if [ -f "$(PACKAGE_dist)" ]; then \
@@ -324,7 +339,6 @@ help:
 	echo "\tuninstall-bitmaps"; \
 	echo "\t\t- Remove bitmaps used by application\n"; \
 	\
-	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
 	echo "\t\t  registration\n"; \
@@ -353,6 +367,12 @@ help:
 	echo "\t\t- Unregister Debreate project MimeType"; \
 	echo "\t\t  information"; \
 	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
+	\
+	echo "\tinstall-templates"; \
+	echo "\t\t- Install template files used by application\n"; \
+	\
+	echo "\tuninstall-templates"; \
+	echo "\t\t- Remove application template files\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
