@@ -21,3 +21,5 @@ Non-priority:
   - This could optionally be done on the dbr.language.GT function
 - Config file should not be required to exist before launching main app window
 - Option for make/cmake to create portable release
+- Add option to build standalone installers
+- Add wizard to build packages from source
