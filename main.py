@@ -467,7 +467,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             ShowErrorDialog(GT(u'An error occurred attempting to contact remote website'), current)
         
         else:
-            DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), GT(u'Debreate is up to date!')).ShowModal()
+            DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
     
     
     ## Action to take when 'Help' is selected from the help menu
