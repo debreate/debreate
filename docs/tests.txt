@@ -234,13 +234,22 @@ Distribution:
     - Associates .dbp files with Debreate
     - File manager displays icon for .dbp files
     - MIME type(s) are unassociated after uninstall
+  - Python source compiled to bytecode after install
 
 Command line tests:
 - 'update-fail' causes 'Help ➜ Check for update' to fail & display error dialog
   - Overrides development status warning
 
 General:
+- Execution fails for:
+  - Invalid command line arguments & tests
 - Wizard pages can be changed with arrows & 'Pages' menu
+- 'Options ➜ Update dist names cache'
+  - Opens dialog for updating cache
+  - 'Update' button retrieves new list of dist names
+  - 'Clear' button removes cache file
+  - 'Preview' show cached list
+  - 'Distribution' list is updated on changelog page
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
 - Test all changes in docs/changelog
 - Development version is set to '0'
