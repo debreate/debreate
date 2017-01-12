@@ -8,15 +8,16 @@ Tests to be run before releasing new version:
 - Configuration
   - Window position, size, & maximized state are written to config file on app exit
   - Window position, size, & maximized state are read from config file
-  - Working directory is written to config file on app exit
-  - Working directory is read from config file
   - 'Options ➜ Show tooltips' menu item
     - wx 2.8
       - Hidden for wx 2.8
     - wx 3.0
       - Writes 'tooltips' value to config file when toggled
       - Read from config file
-- Dialogs use previous working directory
+- Working directory:
+  - File/Directory dialogs use & set current working directory
+  - Working directory is written to config file on app exit
+  - Working directory is read from config file
 - Projects
   - All fields are exported correctly when saved
   - All fields are imported correctly when opened
