@@ -59,10 +59,13 @@ class Panel(wx.ScrolledWindow):
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
-        self.chk_md5.default = False
+        self.chk_md5.default = True
         
         if not CMD_md5sum:
             self.chk_md5.Disable()
+        
+        else:
+            self.chk_md5.SetValue(self.chk_md5.default)
         
         # For creating md5sum hashes
         self.md5 = MD5Hasher(self.chk_md5)
