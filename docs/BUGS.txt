@@ -5,7 +5,6 @@ Must be fixed before release:
   - Reselts in project being ovewritten if "File ➜ Save project" selected
 
 Priority:
-- Commands are not updated globally in InitDefaultSettings on build page
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
