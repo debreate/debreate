@@ -730,6 +730,7 @@ class DirectoryTree(wx.TreeCtrl):
                 menu_ids.append(wx.ID_DELETE)
             
             for MENU_ID in menu_ids:
+                # None inserted into removed menus instead of trying to remember menu indexes
                 if not MENU_ID:
                     removed_menus.append(None)
                 
