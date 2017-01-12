@@ -3,6 +3,8 @@
 Priority:
 - Use globals.thread module for all threading activity
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
+- Add option for creating manpages
+- Add lintian overrides option
 
 Non-priority:
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
