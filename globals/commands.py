@@ -25,7 +25,6 @@ CMD_file = CommandExists(u'file')
 CMD_lintian = CommandExists(u'lintian')
 CMD_md5sum = CommandExists(u'md5sum')
 CMD_strip = CommandExists(u'strip')
-CMD_sudo = CommandExists(u'sudo')
 CMD_tar = CommandExists(u'tar')
 CMD_trash = CommandExists(u'gvfs-trash')
 CMD_xdg_open = CommandExists(u'xdg-open')
@@ -37,6 +36,8 @@ CMD_system_packager = CMD_dpkgdeb
 def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if elevate and pword.strip(u' \t\n') == wx.EmptyString:
         return (None, GT(u'Empty password'))
+    
+    CMD_sudo = GetExecutable(u'sudo')
     
     if not CMD_sudo:
         return (None, GT(u'Super user command (sudo) not available'))
