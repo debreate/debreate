@@ -138,3 +138,8 @@ def GetCommandOutput(cmd, args=[]):
     
     # The Popen command adds a newline character at end of output
     return output.rstrip(u'\n')
+
+
+## Retrieves executable it exists on system
+def GetExecutable(cmd):
+    return CommandExists(cmd)
