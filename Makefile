@@ -70,6 +70,7 @@ FILES_dist = \
 
 DIR_bitmaps = bitmaps
 DIR_locale = locale
+DIR_templates = templates
 
 FILES_BUILD = \
 	$(FILES_root) \
@@ -82,6 +83,7 @@ FILES_BUILD = \
 DIRS_dist = \
 	$(DIR_bitmaps) \
 	$(DIR_locale) \
+	$(DIR_templates) \
 	bitmaps \
 	data \
 	dbr \
