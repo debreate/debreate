@@ -30,3 +30,4 @@ Non-priority:
 - Add alternate tooltip for 'strip' option if disabled
 - Add alternate tooltip for 'lintian' option if disabled
 - Add alternate tooltip for 'install' option if disabled
+- Don't show 'unknown error' if package build was cancelled
