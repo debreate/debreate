@@ -184,6 +184,7 @@ if u'log-level' in parsed_args_v:
 Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
 Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
 Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
+Logger.Info(script_name, u'Logging level: {}'.format(Logger.GetLogLevel()))
 
 # Check for & parse existing configuration
 conf_values = GetAllConfigKeys()
