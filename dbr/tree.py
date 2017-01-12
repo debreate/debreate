@@ -737,6 +737,12 @@ class DirectoryTree(wx.TreeCtrl):
                 else:
                     removed_menus.append(self.ctx_menu.Remove(MENU_ID))
             
+            expand_label = GT(u'Collapse')
+            if not self.IsExpanded(self.root_item):
+                expand_label= GT(u'Expand')
+            
+            self.ctx_menu.SetLabel(ident.EXPAND, expand_label)
+            
             self.PopupMenu(self.ctx_menu)
             
             for INDEX in range(len(removed_menus)):

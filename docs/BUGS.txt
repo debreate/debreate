@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- Expand/Collapse doesn't change label for root item (System) in directory tree
 
 Priority:
 - Generate template button on copyright page moves header for system licenses
