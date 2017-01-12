@@ -510,11 +510,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return
         
         # Get the path and set the saved project
-        self.saved_project = dia.GetPath()
+        project = dia.GetPath()
         
-        filename = os.path.split(self.saved_project)[1]
+        filename = os.path.basename(project)
         
-        self.OpenProject(filename)
+        if self.OpenProject(filename):
+            # Only set project open in memory if loaded completely
+            self.saved_project = project
+        
+        else:
+            self.saved_project = None
     
     
     ## TODO: Doxygen
@@ -666,7 +671,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return False
         
         if self.saved_project and not self.ResetPages():
-            return
+            return False
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
