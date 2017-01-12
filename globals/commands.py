@@ -15,9 +15,6 @@ from dbr.commandcheck   import CommandExists
 from dbr.language       import GT
 
 
-CMD_ar = CommandExists(u'ar')
-CMD_bsdar = CommandExists(u'bsdar')
-CMD_dpkg = CommandExists(u'dpkg')
 CMD_dpkgdeb = CommandExists(u'dpkg-deb')
 CMD_fakeroot = CommandExists(u'fakeroot')
 
@@ -33,20 +30,7 @@ CMD_tar = CommandExists(u'tar')
 CMD_trash = CommandExists(u'gvfs-trash')
 CMD_xdg_open = CommandExists(u'xdg-open')
 
-CMD_system_packager = None
-
-# Order in priority
-CMDS_packagers = (
-    CMD_dpkgdeb,
-    CMD_bsdar,
-    CMD_ar,
-)
-
-# Sets the system packager by priority
-for C in CMDS_packagers:
-    if C:
-        CMD_system_packager = C
-        break
+CMD_system_packager = CMD_dpkgdeb
 
 
 ## TODO: Doxygen
