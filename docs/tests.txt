@@ -82,6 +82,7 @@ Quick Build:
 - Reports error if input directory is empty, malformed, or has no read access
 - Reports error if output directory is empty or has no write access
 - Sets output filename extension to '.deb'
+- Sets output filename using control file if not specified
 
 Control page:
 - Control file can be imported from 'Open' button
@@ -90,7 +91,8 @@ Control page:
 - All of the above apply to dependencies page
 
 Dependencies page:
-- 'Add' & 'Append' buttons work with selected category
+- 'Add' button adds package name & version (optional) to list
+- 'Append' button appends package name & version (optional) to selected items in list
 - 'Remove' button removes only selected lines from list
 - 'Clear' button shows confirmation & deletes all lines only if confirmed
 
