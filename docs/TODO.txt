@@ -19,3 +19,4 @@ Non-priority:
 - Add option to build standalone installers
 - Add wizard to build packages from source
 - Create release notes for install from TODO & BUGS lists
+- Use Python's built-in module 'md5' for creating hashes
