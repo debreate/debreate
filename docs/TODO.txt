@@ -1,7 +1,6 @@
 0.7.13
 - Testing for both wx 3.0 & 2.8
 - Test that main & parent windows are re-enabled after progress dialogs are destroyed
-- Add changelog tooltip details about section delimters
 
 Priority:
 - Use globals.thread module for all threading activity
