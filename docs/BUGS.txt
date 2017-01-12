@@ -7,6 +7,7 @@ Priority:
 - Generate template button on copyright page moves header for system licenses
 - Error if user deletes license template while app is open & attempts to generate:
   - TypeError: coercing to Unicode: need string or buffer, NoneType found
+- Can't brink up context menu on files page if 'gvfs-trash' command not found on system
 
 Non-priority:
 - Detailed progress dialog does not always size correctly on construction
