@@ -63,6 +63,13 @@ About dialog:
   - Displays Debreate's root/installation directory
 - Can be exited from title bar & confirm button
 
+Commands:
+- 'legacy': Forces using wx 2.8 instead of 3.0
+- 'compile': Compiles source files into Python bytecode (.pyc)
+  - Fails if installed & run without elevated privileges
+- 'clean': Removes compiled Python bytecode from app directory
+  - Fails if installed & run without elevated privileges
+
 Logging:
 - Command line option '--log-level' sets logging output level
   - info or 1, warn or 2, error or 3, debug or 4
