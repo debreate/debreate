@@ -25,3 +25,4 @@ Non-priority:
 - Startup window in primary monitor
 - Update missing path status in file list after selecting item
 - Add customizable filter for directory tree
+- Add refresh button on copyright page for updating templates list
