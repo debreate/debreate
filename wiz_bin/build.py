@@ -883,8 +883,7 @@ class Panel(wx.ScrolledWindow):
             except IndexError:
                 pass
         
-        if CMD_strip and u'strip' in build_data:
-            self.chk_strip.SetValue(True)
+        self.chk_strip.SetValue(CMD_strip and u'strip' in build_data)
     
     
     ## TODO: Doxygen
