@@ -126,6 +126,17 @@ Files page:
   - Confirming clears all files from list
 
 Scripts page:
+- Selecting 'Make this script' enables text area
+  - De-selecting disables
+- Scripts are only saved to project files if 'Make this script' is selected
+- Auto-Link Executables
+  - 'Import' button adds any executables from files page
+  - 'Remove' button removes selected executables from list
+  - 'Help' button opens help dialog
+  - 'Generate' button
+    - Does nothing if no executables in list
+    - Uses 'Path' input to create Post-Install & Pre-Remove scripts for listed executables
+      - Shows confirmation dialog if both script text areas are not empty
 
 Changelog page:
 
