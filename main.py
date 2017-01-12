@@ -451,9 +451,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             current = GetCurrentVersion()
         
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
-        if type (current) == URLError or type(current) == HTTPError:
+        if isinstance(current, (URLError,  HTTPError)):
             current = unicode(current)
-            ShowErrorDialog(current)
+            ShowErrorDialog(GT(u'An error occurred attempting to contact remote website'), current)
         
         elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
