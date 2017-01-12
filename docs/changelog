@@ -1,6 +1,8 @@
 0.7.13
 - Fixes:
   - Fix app won't start if config file is empty
+  - Use 'Save as' dialog for save action if project doesn't fully open
+    - E.g. 'Cancel' was pressed before all files were imported
 - General:
   - Only center progress dialogs on parent if not manually moved by user
   - Use more custom message dialogs
