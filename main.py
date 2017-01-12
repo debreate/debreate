@@ -38,7 +38,7 @@ from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
-from globals.commands       import CMD_xdg_open
+from globals.commands       import GetExecutable
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.paths          import PATH_app
@@ -192,7 +192,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Option Menu: open logs directory *** #
         
-        if CMD_xdg_open:
+        if GetExecutable(u'xdg-open'):
             opt_logs_open = wx.MenuItem(self.menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
             self.menu_opt.AppendItem(opt_logs_open)
             
@@ -491,7 +491,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def OnLogDirOpen(self, event=None):
         Logger.Debug(__name__, GT(u'Opening log directory ...'))
         
-        subprocess.check_output([CMD_xdg_open, u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
+        subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
     
     
     ## TODO: Doxygen
