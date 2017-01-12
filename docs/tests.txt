@@ -139,6 +139,24 @@ Scripts page:
       - Shows confirmation dialog if both script text areas are not empty
 
 Changelog page:
+- 'Distribution' displays list of available distribution names
+- 'Import' button
+  - Imports any of 'Package', 'Version', 'Maintainer', & 'Email' from Control page that are not empty
+- 'Changes' text input area
+  - Displays tooltip with info on creating sections
+- 'Add' button
+  - Shows warning dialog if 'Changes' section is empty
+  - Uses above input options & changes to format new entry in 'Changelog Output' section
+  - Section lines
+    - First line begins with asterix (*) denoting first section
+    - Any lines in 'Changes' section beginning with '*', '+', '-', or '#' will begin with an asterix in output
+  - Empty lines are removed
+  - Leading & trailing whitespace is removed from lines
+    - If 'Preserve indentation' is selected leading whitespace is not removed from non-section lines
+  - Headers are formatted as "package (version) dist; urgency=level"
+  - Footers are formatted as "-- maintainer <email>  Day, DD Mon YYYY HH:MM:SS timezone"
+- 'Target' section
+  - Nothing to test
 
 Copyright page:
 
