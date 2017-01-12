@@ -21,3 +21,5 @@ Non-priority:
 - Progress dialogs could potentially resize outside of display boundaries
 - Does not show on main screen after First Run
 - Auto-Link Help only re-centers if "check" button is pressed
+- 'Distribution' text input cannot be tabbed out of on changelog page
+  - May be an issue with custom combo box
