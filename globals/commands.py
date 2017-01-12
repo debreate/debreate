@@ -27,6 +27,11 @@ if not CMD_fakeroot:
 CMD_file = CommandExists(u'file')
 CMD_gdebi = CommandExists(u'gdebi')
 CMD_gdebi_gui = CommandExists(u'gdebi-gtk')
+
+# Check for gdebi KDE frontend of Gtk not available
+if not CMD_gdebi_gui:
+    CMD_gdebi_gui = CommandExists(u'gdebi-kde')
+
 CMD_gzip = CommandExists(u'gzip')
 CMD_lintian = CommandExists(u'lintian')
 CMD_md5sum = CommandExists(u'md5sum')
@@ -35,10 +40,6 @@ CMD_sudo = CommandExists(u'sudo')
 CMD_tar = CommandExists(u'tar')
 CMD_trash = CommandExists(u'gvfs-trash')
 CMD_xdg_open = CommandExists(u'xdg-open')
-
-# Check for gdebi KDE frontend of Gtk not available
-if not CMD_gdebi_gui:
-    CMD_gdebi_gui = CommandExists(u'gdebi-kde')
 
 CMD_system_installer = None
 
