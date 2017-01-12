@@ -14,7 +14,7 @@ import commands, os
 from dbr.dialogs            import ErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals.commands       import CMD_md5sum
+from globals.commands       import GetExecutable
 from globals.fileio         import WriteFile
 from globals.wizardhelper   import GetTopWindow
 
@@ -38,6 +38,8 @@ class MD5Hasher:
     
     ## TODO: Doxygen
     def WriteMd5(self, builddir, tempdir, parent=None):
+        CMD_md5sum = GetExecutable(u'md5sum')
+        
         # Show an error if the 'md5sum' command does not exist
         # This is only a failsafe & should never happen
         if not CMD_md5sum:

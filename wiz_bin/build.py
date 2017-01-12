@@ -26,7 +26,6 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_strip
 from globals.commands       import GetExecutable
 from globals.commands       import ExecuteCommand
@@ -722,7 +721,7 @@ class Panel(wx.ScrolledWindow):
     def InitDefaultSettings(self):
         # md5sum file
         option_list = (
-            (self.chk_md5, CMD_md5sum,),
+            (self.chk_md5, GetExecutable(u'md5sum'),),
             (self.chk_strip, CMD_strip,),
             (self.chk_rmstage, True,),
             (self.chk_lint, GetExecutable(u'lintian'),),
@@ -858,7 +857,7 @@ class Panel(wx.ScrolledWindow):
         self.ResetAllFields()
         build_data = data.split(u'\n')
         
-        if CMD_md5sum:
+        if GetExecutable(u'md5sum'):
             try:
                 self.chk_md5.SetValue(int(build_data[0]))
             
