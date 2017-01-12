@@ -9,6 +9,7 @@
     - Equivalent to opening file's contents into text area
   - Menu option: Options ➜ Update dist names cache
     - Attempts to retrieve list of dist names for changelog
+  - Removed custom open/save dialogs
 - License templates generation:
   - Full license templates can be generated
   - License templates shipped with app:
