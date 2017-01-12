@@ -21,7 +21,6 @@ CMD_fakeroot = CommandExists(u'fakeroot')
 if not CMD_fakeroot:
     CMD_fakeroot = CommandExists(u'fakeroot-sysv')
 
-CMD_tar = CommandExists(u'tar')
 CMD_trash = CommandExists(u'gvfs-trash')
 CMD_xdg_open = CommandExists(u'xdg-open')
 
