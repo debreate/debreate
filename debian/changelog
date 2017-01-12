@@ -1,4 +1,4 @@
-debreate (0.7.13-dev9) xenial; urgency=high
+debreate (0.7.13-dev10) xenial; urgency=high
 
   * Fixes:
     Fix app won't start if config file is empty
@@ -55,7 +55,7 @@ debreate (0.7.13-dev9) xenial; urgency=high
   * Installation from .deb package:
     Added postinst script to compile source to Python bytecode
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 12 Jan 2017 13:36:52 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Thu, 12 Jan 2017 13:52:22 -0800
 
 
 debreate (0.7.12) xenial; urgency=high
