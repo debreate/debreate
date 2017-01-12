@@ -26,10 +26,10 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_dpkgdeb
 from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_gzip
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
 from globals.commands       import CMD_strip
+from globals.commands       import GetExecutable
 from globals.commands       import ExecuteCommand
 from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
@@ -332,6 +332,8 @@ class Panel(wx.ScrolledWindow):
                     os.makedirs(changelog_target)
                 
                 WriteFile(u'{}/changelog'.format(changelog_target), task_list[u'changelog'][1])
+                
+                CMD_gzip = GetExecutable(u'gzip')
                 
                 if CMD_gzip:
                     UpdateProgress(progress, GT(u'Compressing changelog'))

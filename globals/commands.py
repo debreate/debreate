@@ -25,7 +25,6 @@ if not CMD_fakeroot:
     CMD_fakeroot = CommandExists(u'fakeroot-sysv')
 
 CMD_file = CommandExists(u'file')
-CMD_gzip = CommandExists(u'gzip')
 CMD_lintian = CommandExists(u'lintian')
 CMD_md5sum = CommandExists(u'md5sum')
 CMD_strip = CommandExists(u'strip')
