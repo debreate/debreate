@@ -84,7 +84,6 @@ DIRS_dist = \
 	$(DIR_bitmaps) \
 	$(DIR_locale) \
 	$(DIR_templates) \
-	bitmaps \
 	data \
 	dbr \
 	debian \
