@@ -1,7 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- 'Strip binaries' option on build page not saved/restored
+- 'Strip binaries' option on build page not restored from project
 - Hitting 'Cancel' after opening project self.saved_project variable is set in 'main'
   - Reselts in project being ovewritten if "File ➜ Save project" selected
 - "Target file" option in Quick Build set to '.deb' if empty when 'Build' button pressed
