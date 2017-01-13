@@ -64,7 +64,7 @@ class Panel(wx.ScrolledWindow):
         self.chk_strip.default = True
         
         # Deletes the temporary build tree
-        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete build tree'))
+        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete staged directory'))
         self.chk_rmstage.SetName(u'rmstage')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
