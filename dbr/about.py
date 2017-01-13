@@ -22,10 +22,10 @@ from dbr.textinput          import TextAreaPanel
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
-from globals.commands       import GetExecutable
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.dateinfo       import GetYear
+from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app

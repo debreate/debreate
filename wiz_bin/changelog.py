@@ -18,8 +18,8 @@ from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
-from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
+from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty

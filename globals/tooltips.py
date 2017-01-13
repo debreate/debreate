@@ -14,7 +14,7 @@ from dbr.language           import GT
 from dbr.templates          import local_templates_path
 from globals                import ident
 from globals.changes        import section_delims
-from globals.commands       import GetSystemInstaller
+from globals.execute        import GetSystemInstaller
 from globals.wizardhelper   import FieldEnabled
 
 

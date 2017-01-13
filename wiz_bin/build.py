@@ -25,9 +25,9 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import GetExecutable
-from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
+from globals.execute        import GetExecutable
+from globals.execute        import GetSystemInstaller
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths

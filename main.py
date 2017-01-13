@@ -53,8 +53,8 @@ from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
 from globals.bitmaps        import LOGO
-from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
+from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app

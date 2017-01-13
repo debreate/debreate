@@ -19,10 +19,10 @@ from globals.application    import APP_name
 from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
-from globals.commands       import GetExecutable
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
+from globals.execute        import GetExecutable
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_STRING
 

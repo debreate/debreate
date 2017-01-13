@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package globals.commands
+## \package globals.execute
 #  
 #  Executable commands available from the system
 
