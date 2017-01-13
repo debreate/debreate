@@ -21,15 +21,13 @@ for F in required_locale_files:
         print('[ERROR] Required file not found: {}'.format(F))
         sys.exit(errno.ENOENT)
 
-source_root = os.path.dirname(os.path.dirname(__file__))
-DIR_locale = ConcatPaths(source_root, 'locale')
+DIR_locale = ConcatPaths(root_dir, 'locale')
 
 if not os.path.isdir(DIR_locale):
     print('ERROR: Locale directory does not exist: {}'.format(DIR_locale))
     sys.exit(1)
 
 
-# This is done by Makefile in version 0.8
 if sys.argv[1:]:
     cmd = sys.argv[1]
     if cmd.lower() == 'compile':

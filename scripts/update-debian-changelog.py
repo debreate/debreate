@@ -7,7 +7,8 @@
 
 import os, sys, errno, time
 
-from scripts_globals import debian_files, GetInfoValue
+from scripts_globals import GetInfoValue
+from scripts_globals import debian_files
 
 
 # Ubuntu release
@@ -38,7 +39,7 @@ TEMP.close()
 version_string = changelog_data[0]
 
 if DEV:
-    version_string = u'{}-dev{}'.format(version_string, DEV)
+    version_string = '{}-dev{}'.format(version_string, DEV)
 
 # Check for same version entry
 entry_exists = False
