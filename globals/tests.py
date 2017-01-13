@@ -10,6 +10,7 @@
 
 ## List of available tests
 available_tests = (
+    u'alpha',
     u'update-fail',
     )
 
