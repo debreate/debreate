@@ -21,6 +21,7 @@ from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
@@ -51,7 +52,9 @@ class Panel(WizardPage):
         
         # ----- Extra Options
         
-        self.chk_md5 = wx.CheckBox(self, label=GT(u'Create md5sums file'))
+        pnl_options = BorderedPanel(self)
+        
+        self.chk_md5 = wx.CheckBox(pnl_options, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
@@ -64,18 +67,18 @@ class Panel(WizardPage):
             self.build_options.append(self.chk_md5)
         
         # Option to strip binaries
-        self.chk_strip = wx.CheckBox(self, label=GT(u'Strip binaries'), name=u'strip»')
+        self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
         self.chk_strip.default = True
         
         # Deletes the temporary build tree
-        self.chk_rmstage = wx.CheckBox(self, label=GT(u'Delete stage directory'))
+        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete stage directory'))
         self.chk_rmstage.SetName(u'RMSTAGE')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
         self.build_options.append(self.chk_rmstage)
         
         # Checks the output .deb for errors
-        self.chk_lint = wx.CheckBox(self, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint = wx.CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
@@ -88,7 +91,7 @@ class Panel(WizardPage):
             self.build_options.append(self.chk_lint)
         
         # Installs the deb on the system
-        self.chk_install = wx.CheckBox(self, label=GT(u'Install package after build'))
+        self.chk_install = wx.CheckBox(pnl_options, label=GT(u'Install package after build'))
         self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
@@ -121,22 +124,28 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
-        lyt_options = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
+        #options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
+        lyt_options = wx.BoxSizer(wx.VERTICAL)
         lyt_options.AddMany((
-            (self.chk_md5, 0),
-            (self.chk_strip, 0),
-            (self.chk_rmstage, 0),
-            (self.chk_lint, 0),
-            (self.chk_install, 0),
+            (self.chk_md5, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_strip, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_rmstage, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_lint, 0, wx.LEFT|wx.RIGHT, 5),
+            (self.chk_install, 0, wx.LEFT|wx.RIGHT, 5),
             ))
+        
+        pnl_options.SetSizer(lyt_options)
+        pnl_options.SetAutoLayout(True)
+        pnl_options.Layout()
         
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_build, 1)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_options, 0, wx.LEFT, 5)
+        lyt_main.Add(wx.StaticText(self, label=GT(u'Extra Options')), 0,
+                wx.ALIGN_LEFT|wx.ALIGN_BOTTOM|wx.LEFT, 5)
+        lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         
         if DebugEnabled():
