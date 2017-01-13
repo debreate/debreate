@@ -65,6 +65,7 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
+from globals.tests          import GetTestList
 from globals.wizardhelper   import GetTopWindow
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
@@ -130,6 +131,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_file.AppendItem(mitm_saveas)
         self.menu_file.AppendSeparator()
         self.menu_file.AppendItem(mitm_quickbuild)
+        
+        if u'alpha' in GetTestList():
+            mitm_alien = wx.MenuItem(self.menu_file, ident.ALIEN, GT(u'Convert packages'))
+            self.menu_file.AppendItem(mitm_alien)
+        
         self.menu_file.AppendSeparator()
         self.menu_file.AppendItem(mitm_quit)
         
