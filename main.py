@@ -134,7 +134,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Page Menu *** #
         ## This menu is filled from dbr.wizard.Wizard
-        self.m_page = wx.Menu()
+        self.menu_page = wx.Menu()
         
         # *** Action Menu *** #
         m_action = wx.Menu()
@@ -282,7 +282,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menubar = MenuBar(self)
         
         menubar.Append(self.m_file, GT(u'File'), wx.ID_FILE)
-        menubar.Append(self.m_page, GT(u'Page'), ident.PAGE)
+        menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
         menubar.Append(m_action, GT(u'Action'), ident.ACTION)
         menubar.Append(m_opt, GT(u'Options'), ident.OPTIONS)
         menubar.Append(m_help, GT(u'Help'), wx.ID_HELP)
@@ -372,7 +372,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
         
-        for M in self.m_page.GetMenuItems():
+        for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
             wx.EVT_MENU(self, M.GetId(), self.GoToPage)
         
@@ -424,7 +424,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
         
         else:
-            for M in self.m_page.GetMenuItems():
+            for M in self.menu_page.GetMenuItems():
                 if M.IsChecked():
                     page_id = M.GetId()
                     Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
@@ -657,8 +657,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ID = self.wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
         
-        if not self.m_page.IsChecked(ID):
-            self.m_page.Check(ID, True)
+        if not self.menu_page.IsChecked(ID):
+            self.menu_page.Check(ID, True)
     
     
     ## TODO: Doxygen
