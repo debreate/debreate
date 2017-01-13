@@ -21,6 +21,8 @@ from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
+from dbr.progress           import PD_DEFAULT_STYLE
+from dbr.progress           import ProgressDialog
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
@@ -199,8 +201,8 @@ class Panel(WizardPage):
             
             wx.YieldIfNeeded()
             # FIXME: Enable PD_CAN_ABORT
-            build_progress = wx.ProgressDialog(GT(u'Building'), log_msg,
-                    steps_count, main_window, wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+            build_progress = ProgressDialog(main_window, GT(u'Building'), log_msg,
+                    maximum=steps_count)
             
             build_summary.append(u'{}:'.format(log_msg))
             
@@ -374,8 +376,9 @@ class Panel(WizardPage):
             msg_label2 = GT(u'Step {}/{}')
             msg_label = u'{} ({})'.format(msg_label1, msg_label2)
             
-            prep_progress = wx.ProgressDialog(GT(u'Preparing Build'), msg_label2.format(current_step, steps_count),
-                    steps_count, main_window, wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
+            prep_progress = ProgressDialog(main_window, GT(u'Preparing Build'),
+                    msg_label2.format(current_step, steps_count), maximum=steps_count,
+                    style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
             
             for P in wizard.pages:
                 if prep_progress.WasCancelled():
