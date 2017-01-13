@@ -104,55 +104,55 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         stat_bar = StatusBar(self)
         
         # *** File Menu *** #
-        self.m_file = wx.Menu()
+        self.menu_file = wx.Menu()
         
-        mi_new = wx.MenuItem(self.m_file, wx.ID_NEW, GT(u'New project'),
+        mi_new = wx.MenuItem(self.menu_file, wx.ID_NEW, GT(u'New project'),
                 help=GT(u'Start a new project'))
-        mi_open = wx.MenuItem(self.m_file, wx.ID_OPEN, GT(u'Open'),
+        mi_open = wx.MenuItem(self.menu_file, wx.ID_OPEN, GT(u'Open'),
                 help=GT(u'Open a previously saved project'))
-        mi_save = wx.MenuItem(self.m_file, wx.ID_SAVE, GT(u'Save'),
+        mi_save = wx.MenuItem(self.menu_file, wx.ID_SAVE, GT(u'Save'),
                 help=GT(u'Save current project'))
-        mi_saveas = wx.MenuItem(self.m_file, wx.ID_SAVEAS, GT(u'Save as'),
+        mi_saveas = wx.MenuItem(self.menu_file, wx.ID_SAVEAS, GT(u'Save as'),
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        mi_quickbuild = wx.MenuItem(self.m_file, ident.QBUILD, GT(u'Quick Build'),
+        mi_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
         mi_quickbuild.SetBitmap(ICON_CLOCK)
         
-        mi_quit = wx.MenuItem(self.m_file, wx.ID_EXIT, GT(u'Quit'),
+        mi_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
                 help=GT(u'Exit Debreate'))
         
-        self.m_file.AppendItem(mi_new)
-        self.m_file.AppendItem(mi_open)
-        self.m_file.AppendItem(mi_save)
-        self.m_file.AppendItem(mi_saveas)
-        self.m_file.AppendSeparator()
-        self.m_file.AppendItem(mi_quickbuild)
-        self.m_file.AppendSeparator()
-        self.m_file.AppendItem(mi_quit)
+        self.menu_file.AppendItem(mi_new)
+        self.menu_file.AppendItem(mi_open)
+        self.menu_file.AppendItem(mi_save)
+        self.menu_file.AppendItem(mi_saveas)
+        self.menu_file.AppendSeparator()
+        self.menu_file.AppendItem(mi_quickbuild)
+        self.menu_file.AppendSeparator()
+        self.menu_file.AppendItem(mi_quit)
         
         # *** Page Menu *** #
         ## This menu is filled from dbr.wizard.Wizard
         self.menu_page = wx.Menu()
         
         # *** Action Menu *** #
-        m_action = wx.Menu()
+        menu_action = wx.Menu()
         
         # FIXME: Use global ID???
-        mi_build = wx.MenuItem(m_action, wx.NewId(), GT(u'Build'),
+        mi_build = wx.MenuItem(menu_action, wx.NewId(), GT(u'Build'),
                 GT(u'Start building .deb package'))
         
-        m_action.AppendItem(mi_build)
+        menu_action.AppendItem(mi_build)
         
         # ----- Options Menu
-        m_opt = wx.Menu()
+        menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(m_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(menu_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
-        m_opt.AppendItem(self.opt_tooltips)
+        menu_opt.AppendItem(self.opt_tooltips)
         
         show_tooltips = ReadConfig(u'tooltips')
         if show_tooltips != ConfCode.KEY_NO_EXIST:
@@ -164,18 +164,18 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.OnToggleToolTips()
         
         # Project compression options
-        self.m_compress = wx.Menu()
+        self.menu_compress = wx.Menu()
         
-        opt_z_none = wx.MenuItem(self.m_compress, ident.ZIP_NONE,
+        opt_z_none = wx.MenuItem(self.menu_compress, ident.ZIP_NONE,
                 GT(u'Uncompressed'), GT(u'Use uncompressed tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_z_gz = wx.MenuItem(self.m_compress, ident.ZIP_GZ,
+        opt_z_gz = wx.MenuItem(self.menu_compress, ident.ZIP_GZ,
                 GT(u'Gzip'), GT(u'Use compressed Gzip tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_z_bz2 = wx.MenuItem(self.m_compress, ident.ZIP_BZ2,
+        opt_z_bz2 = wx.MenuItem(self.menu_compress, ident.ZIP_BZ2,
                 GT(u'Bzip2'), GT(u'Use compressed Bzip2 tarball for project save format'),
                 kind=wx.ITEM_RADIO)
-        opt_z_zip = wx.MenuItem(self.m_compress, ident.ZIP_ZIP,
+        opt_z_zip = wx.MenuItem(self.menu_compress, ident.ZIP_ZIP,
                 GT(u'Zip'), GT(u'Use compressed zip file for project save format'),
                 kind=wx.ITEM_RADIO)
         
@@ -187,75 +187,75 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ]
         
         if GetExecutable(u'tar') != None:
-            opt_z_xz = wx.MenuItem(self.m_compress, ident.ZIP_XZ,
+            opt_z_xz = wx.MenuItem(self.menu_compress, ident.ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)
             opts_compress.insert(3, opt_z_xz)
         
         for OPT in opts_compress:
-            self.m_compress.AppendItem(OPT)
-            wx.EVT_MENU(self.m_compress, OPT.GetId(), self.OnSetCompression)
+            self.menu_compress.AppendItem(OPT)
+            wx.EVT_MENU(self.menu_compress, OPT.GetId(), self.OnSetCompression)
         
         # Default compression
-        self.m_compress.Check(ident.ZIP_BZ2, True)
+        self.menu_compress.Check(ident.ZIP_BZ2, True)
         
-        m_opt.AppendSubMenu(self.m_compress, GT(u'Project Compression'),
+        menu_opt.AppendSubMenu(self.menu_compress, GT(u'Project Compression'),
                 GT(u'Set the compression type for project save output'))
         
         # *** Option Menu: open logs directory *** #
         
         if GetExecutable(u'xdg-open'):
-            mi_logs_dir = wx.MenuItem(m_opt, ident.OPENLOGS, GT(u'Open logs directory'))
-            m_opt.AppendItem(mi_logs_dir)
+            mi_logs_dir = wx.MenuItem(menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            menu_opt.AppendItem(mi_logs_dir)
             
-            wx.EVT_MENU(m_opt, ident.OPENLOGS, self.OnLogDirOpen)
+            wx.EVT_MENU(menu_opt, ident.OPENLOGS, self.OnLogDirOpen)
         
         # ----- Help Menu
-        m_help = wx.Menu()
+        menu_help = wx.Menu()
         
         # ----- Version update
-        mi_update = wx.MenuItem(m_help, ident.UPDATE, GT(u'Check for Update'))
+        mi_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
         mi_update.SetBitmap(ICON_LOGO)
         
-        m_help.AppendItem(mi_update)
-        m_help.AppendSeparator()
+        menu_help.AppendItem(mi_update)
+        menu_help.AppendSeparator()
         
         # Menu with links to the Debian Policy Manual webpages
-        self.m_policy = wx.Menu()
+        self.menu_policy = wx.Menu()
         
-        m_dpm = wx.MenuItem(self.m_policy, ident.DPM, GT(u'Debian Policy Manual'),
+        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_ctrl = wx.MenuItem(self.m_policy, ident.DPMCtrl, GT(u'Control Files'),
+        m_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control Files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         m_dpm_ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_log = wx.MenuItem(self.m_policy, ident.DPMLog, GT(u'Changelog'),
+        m_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         m_dpm_log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(self.m_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
+        m_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         m_upm.SetBitmap(ICON_GLOBE)
-        m_deb_src = wx.MenuItem(self.m_policy, 222, GT(u'Building debs from Source'),
+        m_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lint_tags = wx.MenuItem(self.m_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+        m_lint_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         m_lint_tags.SetBitmap(ICON_GLOBE)
-        m_lint_overrides = wx.MenuItem(self.m_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+        m_lint_overrides = wx.MenuItem(self.menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
         m_lint_overrides.SetBitmap(ICON_GLOBE)
-        m_launchers = wx.MenuItem(self.m_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+        m_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
         m_launchers.SetBitmap(ICON_GLOBE)
         
-        self.m_policy.AppendItem(m_dpm)
-        self.m_policy.AppendItem(m_dpm_ctrl)
-        self.m_policy.AppendItem(m_dpm_log)
-        self.m_policy.AppendItem(m_upm)
-        self.m_policy.AppendItem(m_deb_src)
-        self.m_policy.AppendItem(m_lint_tags)
-        self.m_policy.AppendItem(m_lint_overrides)
-        self.m_policy.AppendItem(m_launchers)
+        self.menu_policy.AppendItem(m_dpm)
+        self.menu_policy.AppendItem(m_dpm_ctrl)
+        self.menu_policy.AppendItem(m_dpm_log)
+        self.menu_policy.AppendItem(m_upm)
+        self.menu_policy.AppendItem(m_deb_src)
+        self.menu_policy.AppendItem(m_lint_tags)
+        self.menu_policy.AppendItem(m_lint_overrides)
+        self.menu_policy.AppendItem(m_launchers)
         
         lst_policy_ids = (
             ident.DPM,
@@ -271,21 +271,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         for ID in lst_policy_ids:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
-        mi_help = wx.MenuItem(m_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
-        mi_about = wx.MenuItem(m_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
+        mi_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+        mi_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
-        m_help.AppendMenu(-1, GT(u'Reference'), self.m_policy)
-        m_help.AppendSeparator()
-        m_help.AppendItem(mi_help)
-        m_help.AppendItem(mi_about)
+        menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
+        menu_help.AppendSeparator()
+        menu_help.AppendItem(mi_help)
+        menu_help.AppendItem(mi_about)
         
         menubar = MenuBar(self)
         
-        menubar.Append(self.m_file, GT(u'File'), wx.ID_FILE)
+        menubar.Append(self.menu_file, GT(u'File'), wx.ID_FILE)
         menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
-        menubar.Append(m_action, GT(u'Action'), ident.ACTION)
-        menubar.Append(m_opt, GT(u'Options'), ident.OPTIONS)
-        menubar.Append(m_help, GT(u'Help'), wx.ID_HELP)
+        menubar.Append(menu_action, GT(u'Action'), ident.ACTION)
+        menubar.Append(menu_opt, GT(u'Options'), ident.OPTIONS)
+        menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
         self.wizard = Wizard(self)
         
@@ -382,9 +382,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def GetCompression(self):
-        for Z in self.m_compress.GetMenuItems():
+        for Z in self.menu_compress.GetMenuItems():
             Z_ID = Z.GetId()
-            if self.m_compress.IsChecked(Z_ID):
+            if self.menu_compress.IsChecked(Z_ID):
                 return compression_formats[Z_ID]
         
         default_compression = GetDefaultConfigValue(u'compression')
@@ -397,9 +397,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def GetCompressionId(self):
-        for Z in self.m_compress.GetMenuItems():
+        for Z in self.menu_compress.GetMenuItems():
             Z_ID = Z.GetId()
-            if self.m_compress.IsChecked(Z_ID):
+            if self.menu_compress.IsChecked(Z_ID):
                 return Z_ID
         
         Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
@@ -806,7 +806,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             return
         
-        url = self.m_policy.GetHelpString(event_id)
+        url = self.menu_policy.GetHelpString(event_id)
         webbrowser.open(url)
     
     
@@ -1015,7 +1015,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \param compression_id
     #        \b \e int : Compression ID to search for in menu iteration
     def SetCompression(self, compression_id):
-        for Z in self.m_compress.GetMenuItems():
+        for Z in self.menu_compress.GetMenuItems():
             Z_ID = Z.GetId()
             
             if compression_id == Z_ID:
@@ -1035,7 +1035,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Don't do anything if status isn't changing
         if not dirty == self.dirty:
             self.dirty = dirty
-            self.m_file.Enable(wx.ID_SAVE, dirty)
+            self.menu_file.Enable(wx.ID_SAVE, dirty)
             
             delim = u' ({})'.format(GT(u'unsaved'))
             title = self.GetTitle()
