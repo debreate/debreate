@@ -25,10 +25,9 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
-from globals.commands       import CMD_system_packager
+from globals.commands       import GetExecutable
 from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
@@ -562,8 +561,10 @@ class Panel(WizardPage):
     def OnBuildCreatePackage(self, stage, target_file):
         Logger.Debug(__name__, GT(u'Creating {} from {}').format(target_file, stage))
         
-        packager = CMD_system_packager
-        if not CMD_fakeroot or not packager:
+        packager = GetExecutable(u'dpkg-deb')
+        fakeroot = GetExecutable(u'fakeroot')
+        
+        if not fakeroot or not packager:
             return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg'))
         
         packager = os.path.basename(packager)
@@ -571,10 +572,10 @@ class Panel(WizardPage):
         Logger.Debug(__name__, GT(u'System packager: {}').format(packager))
         
         # DEBUG:
-        cmd = u'{} {} -b "{}" "{}"'.format(CMD_fakeroot, packager, stage, target_file)
+        cmd = u'{} {} -b "{}" "{}"'.format(fakeroot, packager, stage, target_file)
         Logger.Debug(__name__, GT(u'Executing: {}').format(cmd))
         
-        output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage, target_file], stderr=subprocess.STDOUT)
+        output = subprocess.check_output([fakeroot, packager, u'-b', stage, target_file], stderr=subprocess.STDOUT)
         
         Logger.Debug(__name__, GT(u'Build output: {}').format(output))
         
