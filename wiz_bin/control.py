@@ -18,7 +18,7 @@ from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
@@ -120,7 +120,7 @@ class Panel(WizardPage):
         self.ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.ti_description = MultilineTextCtrlPanel(pnl_recommend, name=txt_description.Name)
+        self.ti_description = TextAreaPanel(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         

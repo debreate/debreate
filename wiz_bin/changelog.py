@@ -15,16 +15,17 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
-from dbr.textinput          import MonospaceTextCtrl
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import MonospaceTextArea
+from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.commands       import CMD_gzip
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import ErrorTuple, GetPage
+from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
+from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -67,7 +68,7 @@ class Panel(WizardPage):
             ])
         
         # *** CHANGES DETAILS
-        self.changes = MultilineTextCtrlPanel(self, size=(20,150), name=u'changes')
+        self.changes = TextAreaPanel(self, size=(20,150), name=u'changes')
         
         self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
         changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
@@ -110,7 +111,7 @@ class Panel(WizardPage):
         button_sizer.Add(self.button_import)
         button_sizer.Add(self.button_add)
         
-        self.log = MonospaceTextCtrl(self, name=u'log')
+        self.log = MonospaceTextArea(self, name=u'log')
         
         # *** LAYOUT
         main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)

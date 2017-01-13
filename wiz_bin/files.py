@@ -21,7 +21,7 @@ from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.listinput          import FileList
 from dbr.log                import Logger
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.bitmaps        import ICON_ERROR
@@ -600,7 +600,7 @@ class Panel(WizardPage):
             if len(missing_files):
                 alert = wx.Dialog(self, -1, GT(u'Missing Files'))
                 alert_text = wx.StaticText(alert, -1, GT(u'Could not locate the following files:'))
-                alert_list = MultilineTextCtrlPanel(alert, style=wx.TE_READONLY)
+                alert_list = TextAreaPanel(alert, style=wx.TE_READONLY)
                 alert_list.SetValue(u'\n'.join(missing_files))
                 button_ok = wx.Button(alert, wx.ID_OK)
                 
