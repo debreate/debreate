@@ -254,7 +254,10 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             
             return
         
-        msg_lines = u'{}\n\n{}'.format(GT(u'Quick build complete'), self.input_target.GetValue())
+        msg_lines = (
+            GT(u'Quick build complete'),
+            self.input_target.GetValue(),
+            )
         ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
     
     
