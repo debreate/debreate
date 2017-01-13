@@ -10,7 +10,7 @@ import os, sys, wx
 
 from dbr.language       import GT
 from dbr.textinput      import TextAreaPanel
-from globals.commands   import GetExecutable
+from globals.execute    import GetExecutable
 
 
 ## A generic display area that captures \e stdout & \e stderr
