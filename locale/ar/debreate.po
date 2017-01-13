@@ -1,5 +1,5 @@
 # Debreate - Debian Package Builder
-# Copyright (C) 2011 Jordan Irwin
+# Copyright © 2011 Jordan Irwin
 # This file is distributed under the same license as the debreate package.
 # Jordan Irwin <antumdeluge@gmail.com>, 2011.
 #
