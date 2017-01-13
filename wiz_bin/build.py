@@ -39,7 +39,7 @@ from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
-## TODO: Doxygen
+## Build page
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.BUILD)
@@ -58,7 +58,7 @@ class Panel(WizardPage):
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
-        self.chk_md5.default = False
+        self.chk_md5.default = True
         
         if not GetExecutable(u'md5sum'):
             self.chk_md5.Disable()
@@ -71,7 +71,7 @@ class Panel(WizardPage):
         self.chk_strip.default = True
         
         # Deletes the temporary build tree
-        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete stage directory'))
+        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete staged directory'))
         self.chk_rmstage.SetName(u'RMSTAGE')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
@@ -124,7 +124,6 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        #options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
         lyt_options = wx.BoxSizer(wx.VERTICAL)
         lyt_options.AddMany((
             (self.chk_md5, 0, wx.LEFT|wx.RIGHT, 5),
