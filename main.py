@@ -22,6 +22,7 @@ from dbr.dialogs            import GetFileOpenDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
+from dbr.distcache          import DistNamesCacheDialog
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import RemoveTempDirectory
@@ -357,30 +358,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # TODO: This can be bypassed if opening a project from command line
         self.SetProjectDirty(False)
         
-        # *** Layout *** #
-        
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.Add(self.wizard, 1, wx.EXPAND)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        self.Layout()
-        
-        # *** Event handlers *** #
+        # *** Event Handling *** #
         
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
         wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
-        
         wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
         wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
         wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
-        wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
         wx.EVT_MENU(self, ident.TOOLTIPS, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
         
         wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
-        
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
@@ -392,6 +382,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # Action menu events
         wx.EVT_MENU(self, mitm_build.GetId(), self.page_build.OnBuild)
+        
+        wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
+        
+        # *** Layout *** #
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(self.wizard, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
     
     
     ## TODO: Doxygen
@@ -804,6 +805,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Update configuration in realtime
         # TODO: Use realtime for more or all options
         WriteConfig(u'tooltips', enabled)
+    
+    
+    ## Opens a dialog for creating/updating list of distribution names cache file
+    def OnUpdateDistNamesCache(self, event=None):
+        DistNamesCacheDialog().ShowModal()
     
     
     ## Opens web links from the help menu
