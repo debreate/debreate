@@ -11,14 +11,29 @@ Must be fixed before release:
 - Appending to multiple dependencies fails (0.8)
 - Cannot open control (and possibly launcher & other) files without extension using GetFileDialog functions
 
-Low priority:
+Priority:
+- Generate template button on copyright page moves header for system licenses
+- Error if user deletes license template while app is open & attempts to generate:
+  - TypeError: coercing to Unicode: need string or buffer, NoneType found
+
+Non-priority:
 - Log window has some issues with wx.Yield (only affects debugging mode)
 - Detailed progress dialog does not always size correctly on construction
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
   - Always occurs with wx 3.0
   - Only occurs when using 'WriteText' method in wx 2.8
-- Window icon not showing up?
-- 2.8 Only
+- wx 2.8:
+  - Taskbar icon does not show up
   - 'Changes' text control is small on Changelog page
-- 3.0 Only
+- wx 3.0 only:
   - Credits list does not expand completely on right edge
+- Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command
+  - Find a workaround to display these as binary executables in directory tree
+- 'None' is written to first line of log file output
+- Error occurs sometimes after add changelog entries:
+  - (init.py:4644) Gtk-CRITICAL **: IA__gtk_main_quit: assertion 'main_loops != NULL' failed
+- Progress dialogs could potentially resize outside of display boundaries
+- Does not show on main screen after First Run
+- Auto-Link Help only re-centers if "check" button is pressed
+- 'Distribution' text input cannot be tabbed out of on changelog page
+  - May be an issue with custom combo box
