@@ -15,7 +15,6 @@ from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
-from dbr.custom             import StatusBar
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
@@ -28,6 +27,7 @@ from dbr.log                import Logger
 from dbr.menu               import MenuBar
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
+from dbr.statusbar          import StatusBar
 from dbr.wizard             import Wizard
 from globals                import ident
 from globals.application    import APP_homepage
@@ -37,9 +37,10 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
-from globals.bitmaps        import ICON_CLOCK, LOGO
+from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
+from globals.bitmaps        import LOGO
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
