@@ -16,6 +16,7 @@ from dbr.log                import Logger
 from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import TT_wiz_next
@@ -340,9 +341,7 @@ class WizardPage(wx.ScrolledWindow):
         
         Logger.Debug(page_name, u'Exporting: {}'.format(absolute_filename))
         
-        FILE_BUFFER = open(absolute_filename, u'w')
-        FILE_BUFFER.write(page_info)
-        FILE_BUFFER.close()
+        WriteFile(absolute_filename, page_info)
         
         return 0
     

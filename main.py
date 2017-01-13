@@ -55,6 +55,7 @@ from globals.bitmaps        import ICON_LOGO
 from globals.bitmaps        import LOGO
 from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
@@ -828,9 +829,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         project_opened = None
         if mime_type == u'text/plain':
-            p_open = open(project_file, u'r')
-            p_text = p_open.read()
-            p_open.close()
+            p_text = ReadFile(project_file)
             
             filename = os.path.split(project_file)[1]
             

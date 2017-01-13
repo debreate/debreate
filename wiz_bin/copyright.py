@@ -22,6 +22,7 @@ from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import errno
+from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -118,9 +119,7 @@ class Panel(WizardPage):
                 ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
                 return
             
-            FILE_BUFFER = open(license_path, u'r')
-            license_text = FILE_BUFFER.read()
-            FILE_BUFFER.close()
+            license_text = ReadFile(license_path)
             
             self.dsp_copyright.Clear()
             self.dsp_copyright.SetValue(RemovePreWhitespace(license_text))
@@ -186,9 +185,7 @@ class Panel(WizardPage):
             l_path = GetLicenseTemplateFile(l_name)
             
             if l_path:
-                l_data = open(l_path)
-                l_lines = l_data.read().split(u'\n')
-                l_data.close()
+                l_lines = ReadFile(l_path, split=True)
                 
                 delimeters = (
                     u'<year>',
@@ -254,9 +251,7 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return errno.ENOENT
         
-        FILE_BUFFER = open(filename, u'r')
-        copyright_data = FILE_BUFFER.read().split(u'\n')
-        FILE_BUFFER.close()
+        copyright_data = ReadFile(filename, split=True)
         
         # Remove preceding empty lines
         remove_index = 0

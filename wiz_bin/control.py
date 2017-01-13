@@ -23,6 +23,8 @@ from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
@@ -272,9 +274,7 @@ class Panel(WizardPage):
             return GT(u'Control file was not created')
         
         if installed_size:
-            FILE_BUFFER = open(absolute_filename, u'r')
-            control_data = FILE_BUFFER.read().split(u'\n')
-            FILE_BUFFER.close()
+            control_data = ReadFile(absolute_filename, split=True)
             
             size_line = u'Installed-Size: {}'.format(installed_size)
             if len(control_data) > 3:
@@ -283,9 +283,7 @@ class Panel(WizardPage):
             else:
                 control_data.append(size_line)
             
-            FILE_BUFFER = open(absolute_filename, u'w')
-            FILE_BUFFER.write(u'\n'.join(control_data))
-            FILE_BUFFER.close()
+            WriteFile(absolute_filename, control_data)
         
         return GT(u'Control file created: {}').format(absolute_filename)
     
@@ -452,9 +450,7 @@ class Panel(WizardPage):
             u'Breaks',
         )
         
-        FILE_BUFFER = open(filename)
-        control_data = FILE_BUFFER.read().split(u'\n')
-        FILE_BUFFER.close()
+        control_data = ReadFile(filename, split=True)
         
         control_defs = {}
         remove_indexes = []

@@ -25,6 +25,8 @@ from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -259,9 +261,7 @@ scripts will be created that will place a symbolic link to your executables in t
         # Loading the actual text
         # FIXME: Should be done in class method
         if script_object != None:
-            FILE = open(filename)
-            script_data = FILE.read().split(u'\n')
-            FILE.close()
+            script_data = ReadFile(filename, split=True)
             
             # FIXME: this should be global variable
             shebang = u'/bin/bash'
@@ -538,13 +538,7 @@ class DebianScript(wx.Panel):
         
         #add_newline = script_text.split(u'\n')[-1] != u''
         
-        script_w = open(absolute_filename, u'w')
-        script_w.write(script_text)
-        
-        #if add_newline:
-        #    script_w.write(u'\n\n')
-        
-        script_w.close()
+        WriteFile(absolute_filename, script_text)
         
         if not os.path.isfile(absolute_filename):
             Logger.Error(__name__, GT(u'Could not write to file: {}'.format(absolute_filename)))
