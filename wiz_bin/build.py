@@ -62,6 +62,10 @@ class Panel(WizardPage):
         else:
             self.build_options.append(self.chk_md5)
         
+        # Option to strip binaries
+        self.chk_strip = wx.CheckBox(self, label=GT(u'Strip binaries'), name=u'strip»')
+        self.chk_strip.default = True
+        
         # Deletes the temporary build tree
         self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete stage directory'))
         self.chk_rmtree.SetName(u'RMSTAGE')
@@ -98,6 +102,7 @@ class Panel(WizardPage):
         options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
         options1_sizer.AddMany( [
             (self.chk_md5, 0),
+            (self.chk_strip, 0),
             (self.chk_rmtree, 0),
             (self.chk_lint, 0),
             (self.chk_install, 0)
