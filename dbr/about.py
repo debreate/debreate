@@ -9,6 +9,7 @@
 import commands, os, shutil, wx
 
 from dbr.buttons            import ButtonConfirm
+from dbr.dialogs            import ShowErrorDialog
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
@@ -418,8 +419,7 @@ class AboutDialog(wx.Dialog):
                 log_text = ReadFile(CHANGELOG)
             
             else:
-                # FIXME: Should display an error dialog
-                Logger.Error(__name__, log_text)
+                ShowErrorDialog(log_text, parent=self)
         
         else:
             log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
