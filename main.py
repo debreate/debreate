@@ -391,7 +391,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if UsingDevelopmentVersion() and not update_test:
             DetailedMessageDialog(GetTopWindow(), GT(u'Update'),
-                    text=GT(u'Update checking disabled in development versions')).ShowModal()
+                    text=GT(u'Update checking is disabled in development versions')).ShowModal()
             return
         
         wx.SafeYield()
