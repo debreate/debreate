@@ -9,15 +9,15 @@
 import os, wx
 from wx.lib.newevent import NewCommandEvent
 
-import globals.ident as ident
 from dbr.buttons            import ButtonNext
 from dbr.buttons            import ButtonPrev
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
+from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import dbrerrno
 from globals.ident          import page_ids
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
@@ -191,6 +191,19 @@ class Wizard(wx.Panel):
                 return P
         
         return None
+    
+    
+    ## Retrieves the full list of page IDs
+    #  
+    #  \return
+    #        \b e\ tuple : List of all page IDs
+    def GetPagesIdList(self):
+        page_ids = []
+        
+        for P in self.pages:
+            page_ids.append(P.GetId())
+        
+        return tuple(page_ids)
     
     
     ## Fills information for each page when project file is opened
