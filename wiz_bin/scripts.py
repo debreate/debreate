@@ -12,7 +12,6 @@ from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -27,6 +26,7 @@ from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
 from globals.ident          import page_ids
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow

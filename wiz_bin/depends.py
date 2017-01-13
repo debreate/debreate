@@ -12,13 +12,13 @@ from dbr.buttons        import ButtonAdd
 from dbr.buttons        import ButtonAppend
 from dbr.buttons        import ButtonClear
 from dbr.buttons        import ButtonRemove
-from dbr.functions      import TextIsEmpty
 from dbr.help           import HelpButton
 from dbr.language       import GT
 from dbr.listinput      import ListCtrlPanel
 from dbr.log            import Logger
 from dbr.wizard         import WizardPage
 from globals            import ident
+from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 
 

@@ -8,12 +8,12 @@
 
 import wx
 
-from dbr.buttons    import ButtonCancel
-from dbr.buttons    import ButtonClear
-from dbr.buttons    import ButtonConfirm
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
-from dbr.log        import Logger
+from dbr.buttons        import ButtonCancel
+from dbr.buttons        import ButtonClear
+from dbr.buttons        import ButtonConfirm
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.strings    import TextIsEmpty
 
 
 class CheckList(wx.Panel):
