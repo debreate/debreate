@@ -89,6 +89,10 @@ class Panel(wx.ScrolledWindow):
         
         SetPageToolTips(self)
         
+        # *** Event Handling *** #
+        
+        btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
+        
         # *** Layout *** #
         
         lyt_options = wx.BoxSizer(wx.VERTICAL)
@@ -124,10 +128,6 @@ class Panel(wx.ScrolledWindow):
         # *** Post-layout functions *** #
         
         self.InitDefaultSettings()
-        
-        # *** Event handlers *** #
-        
-        btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
     
     
     ## The actual build process
