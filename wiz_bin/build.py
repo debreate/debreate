@@ -12,7 +12,6 @@ from dbr.buttons            import ButtonBuild64
 from dbr.checklist          import CheckListDialog
 from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
-from dbr.dialogs            import ErrorDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
@@ -25,6 +24,7 @@ from dbr.panel              import BorderedPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
+from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.cmdcheck       import CommandExists
 from globals.errorcodes     import dbrerrno
@@ -226,14 +226,7 @@ class Panel(WizardPage):
                         if ret_code > 0:
                             build_progress.Destroy()
                             
-                            err_msg = GT(u'Error occurred during build')
-                            Logger.Error(__name__, u'\n{}:\n{}'.format(err_msg, ret_value))
-                            
-                            err_dialog = ErrorDialog(main_window, GT(u'Error occured during build'))
-                            err_dialog.SetDetails(ret_value)
-                            err_dialog.ShowModal()
-                            
-                            err_dialog.Destroy()
+                            ShowErrorDialog(GT(u'Error occurred during build'), ret_value)
                             
                             return
                         
@@ -251,12 +244,11 @@ class Panel(WizardPage):
                     # Retrieve control page
                     pg_control = wizard.GetPage(ident.CONTROL)
                     if not pg_control:
-                        Logger.Error(__name__, GT(u'Could not retrieve control page'))
                         build_progress.Destroy()
-                        err_msg = ErrorDialog(main_window, GT(u'Fatal Error'),
-                                GT(u'Could not retrieve control page'))
-                        err_msg.SetDetails(GT(u'Please contact the developer: {}').format(AUTHOR_email))
-                        err_msg.ShowModal()
+                        
+                        ShowErrorDialog(GT(u'Could not retrieve control page'),
+                                GT(u'Please contact the developer: {}').format(AUTHOR_email),
+                                title=u'Fatal Error')
                         
                         return
                     
@@ -351,14 +343,7 @@ class Panel(WizardPage):
             except:
                 build_progress.Destroy()
                 
-                err_msg = GT(u'Error occurred during build')
-                Logger.Error(__name__, u'{}:\n{}'.format(err_msg, traceback.format_exc()))
-                
-                err_dialog = ErrorDialog(main_window, GT(u'Error occured during build'))
-                err_dialog.SetDetails(traceback.format_exc())
-                err_dialog.ShowModal()
-                
-                err_dialog.Destroy()
+                ShowErrorDialog(GT(u'Error occurred during build'), traceback.format_exc())
         
         return
     
@@ -424,18 +409,7 @@ class Panel(WizardPage):
         except:
             prep_progress.Destroy()
             
-            err_traceback = traceback.format_exc()
-            
-            err_title = GT(u'Error occured during pre-build')
-            Logger.Error(__name__, u'{}:\n{}'.format(err_title, err_traceback))
-            
-            err_dialog = ErrorDialog(self, err_title)
-            err_dialog.SetDetails(err_traceback)
-            err_dialog.ShowModal()
-            
-            # Cleanup
-            err_dialog.Destroy()
-            del err_title
+            ShowErrorDialog(GT(u'Error occurred during pre-build'), traceback.format_exc())
         
         return None
     
@@ -598,13 +572,13 @@ class Panel(WizardPage):
                 if not isinstance(F, wx.StaticText) and TextIsEmpty(F.GetValue()):
                     f_name = F.GetName()
                     
-                    Logger.Warning(__name__,
-                            u'{}: {} ➜ {}'.format(GT(u'A required field is empty'), p_name, f_name))
+                    msg_l1 = GT(u'One of the required fields is empty')
+                    msg_full = u'{}: {} ➜ {}'.format(msg_l1, p_name, f_name)
                     
-                    err_dialog = wx.MessageDialog(GetTopWindow(), GT(u'A required field is empty'),
-                            GT(u'Error'), style=wx.OK|wx.ICON_ERROR)
-                    err_dialog.SetExtendedMessage(u'{} ➜ {}'.format(p_name, f_name))
-                    err_dialog.ShowModal()
+                    Logger.Warning(__name__, msg_full)
+                    
+                    DetailedMessageDialog(GetTopWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
+                            text=msg_full).ShowModal()
                     
                     for P in wizard.pages:
                         if P.GetLabel() == p_name:
@@ -614,14 +588,7 @@ class Panel(WizardPage):
                     return
         
         if pg_files.file_list.MissingFiles():
-            main_window = GetTopWindow()
-            
-            Logger.Warning(__name__, GT(u'Files are missing in file list'))
-            
-            err_dialog = ErrorDialog(main_window, GT(u'Warning'), GT(u'Files are missing in file list'))
-            err_dialog.ShowModal()
-            
-            err_dialog.Destroy()
+            ShowErrorDialog(GT(u'Files are missing in file list'), warn=True, title=GT(u'Warning'))
             
             wizard.ShowPage(ident.FILES)
             
@@ -629,7 +596,7 @@ class Panel(WizardPage):
         
         
         ttype = GT(u'Debian Packages')
-        save_dialog = GetFileSaveDialog(main_window, GT(u'Build Package'),
+        save_dialog = GetFileSaveDialog(GetTopWindow(), GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
         package = pg_control.ti_package.GetValue()
