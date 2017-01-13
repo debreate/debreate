@@ -2,6 +2,9 @@
 
 ## \package dbr.log
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, thread, threading, time, traceback, wx
 from wx.lib.newevent import NewCommandEvent
