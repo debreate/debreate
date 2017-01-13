@@ -19,8 +19,16 @@ from command_line   import parsed_args_v
 from globals.paths  import PATH_app
 from globals.paths  import ConcatPaths
 
+
+## Module name displayed for Logger output.
+#  Should be set to 'init' or actual name of executable script.
+script_name = os.path.basename(__file__)
+
 # *** Command line arguments
 CL.ParseArguments(sys.argv[1:])
+
+# GetParsedPath must be called after ParseArguments
+parsed_path = GetParsedPath()
 
 
 # Compiles python source into bytecode
@@ -49,8 +57,8 @@ if u'compile' in parsed_commands:
     print
     
     for D in os.listdir(PATH_app):
-        if os.path.isdir(D) and D in compile_dirs:
-            D = ConcatPaths((PATH_app, D))
+        D = ConcatPaths((PATH_app, D))
+        if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
             print(u'Compiling directory: {}'.format(D))
             compileall.compile_dir(D)
             print
@@ -108,12 +116,9 @@ wx.SetDefaultPyEncoding('UTF-8')
 debreate_app = wx.App()
 
 from dbr.config             import ConfCode
-from dbr.config             import default_config
+from dbr.config             import GetAllConfigKeys
 from dbr.config             import GetDefaultConfigValue
-from dbr.config             import InitializeConfig
-from dbr.config             import ReadConfig
-from dbr.dialogs            import ShowErrorDialog
-from dbr.firstrun           import FirstRun
+from dbr.firstrun           import LaunchFirstRun
 from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
@@ -141,7 +146,6 @@ if INSTALLED:
     gettext.install(TRANSLATION_DOMAIN, LOCALE_DIR, unicode=True)
 
 
-script_name = os.path.basename(__file__)
 if u'.py' in script_name:
     script_name = script_name.split(u'.py')[0]
 
@@ -180,49 +184,40 @@ if u'log-level' in parsed_args_v:
 Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
 Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
 Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
+Logger.Info(script_name, u'Logging level: {}'.format(Logger.GetLogLevel()))
 
-# First time Debreate is run
-if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
-    FR_dialog = FirstRun()
-    debreate_app.SetTopWindow(FR_dialog)
-    FR_dialog.ShowModal()
+# Check for & parse existing configuration
+conf_values = GetAllConfigKeys()
+
+if not conf_values:
+    Logger.Debug(script_name, u'Launching First Run dialog ...')
     
-    init_conf_code = InitializeConfig()
-    Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
-    if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-        fr_error = GT(u'Could not create configuration, exiting ...')
-        ShowErrorDialog(fr_error, ConfCode.string[init_conf_code], parent=FR_dialog)
+    first_run = LaunchFirstRun(debreate_app)
+    if not first_run == ConfCode.SUCCESS:
         
-        exit_now = init_conf_code
+        sys.exit(first_run)
     
-    FR_dialog.Destroy()
-    
-    # Delete first run dialog from memory
-    del(FR_dialog)
-    
+    conf_values = GetAllConfigKeys()
 
-if exit_now:
-    sys.exit(exit_now)
-
-
-conf_values = {
-    u'center': ReadConfig(u'center'),
-    u'position': ReadConfig(u'position'),
-    u'size': ReadConfig(u'size'),
-    u'maximize': ReadConfig(u'maximize'),
-    u'dialogs': ReadConfig(u'dialogs'),
-    u'workingdir': ReadConfig(u'workingdir'),
-    u'compression': ReadConfig(u'compression'),
-}
-
+# Check that all configuration values are okay
 for V in conf_values:
     key = V
     value = conf_values[V]
     
+    # ???: Redundant???
     if value == None:
         value = GetDefaultConfigValue(key)
     
     Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
+    
+    # FIXME: ConfCode values are integers & could cause problems with config values
+    if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
+        first_run = LaunchFirstRun(debreate_app)
+        if not first_run == ConfCode.SUCCESS:
+            sys.exit(first_run)
+        
+        break
+
 
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 
@@ -236,7 +231,6 @@ Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
 
 working_dir = conf_values[u'workingdir']
 
-parsed_path = GetParsedPath()
 if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
