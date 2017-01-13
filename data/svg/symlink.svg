@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg11300"
+   sodipodi:docname="symlink.svg"
+   inkscape:export-filename="/home/jimmac/Desktop/wi-fi.png"
+   viewBox="0 0 128 128"
+   sodipodi:version="0.32"
+   inkscape:export-xdpi="90.000000"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-ydpi="90.000000"
+   inkscape:version="0.91 r13725"
+   version="1.1"
+   width="128"
+   height="128">
+  <defs
+     id="defs3">
+    <radialGradient
+       id="radialGradient1366"
+       gradientUnits="userSpaceOnUse"
+       cy="35.877998"
+       cx="24.445999"
+       gradientTransform="matrix(1.9951,0,0,1.9951,-24.325,-35.701)"
+       r="20.531"
+       inkscape:collect="always">
+      <stop
+         id="stop11522"
+         style="stop-color:#ffffff"
+         offset="0" />
+      <stop
+         id="stop11524"
+         style="stop-color:#dcdcdc"
+         offset="1" />
+    </radialGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="0"
+     pagecolor="#ffffff"
+     inkscape:showpageshadow="false"
+     inkscape:grid-bbox="true"
+     inkscape:zoom="2"
+     inkscape:cx="-26.814954"
+     inkscape:window-height="949"
+     showgrid="false"
+     borderopacity="0.25490196"
+     inkscape:current-layer="layer1"
+     stroke="#ef2929"
+     inkscape:cy="70.492646"
+     inkscape:window-x="1366"
+     inkscape:window-width="1600"
+     inkscape:pageopacity="0.0"
+     inkscape:document-units="px"
+     fill="#888a85"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-maximized="1" />
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(39.5543,40.4457)">
+    <g
+       id="g4153"
+       transform="matrix(3.1172373,0,0,3.1172373,-51.757349,-49.870043)">
+      <rect
+         x="4.4147"
+         y="3.5232999"
+         width="40.062"
+         height="40.062"
+         ry="5.4548001"
+         rx="5.4548001"
+         style="color:#000000;fill:url(#radialGradient1366);fill-rule:evenodd;stroke:#9b9b9b;stroke-linejoin:bevel;stroke-miterlimit:10"
+         id="rect11518" />
+      <rect
+         x="5.5974002"
+         y="4.7059999"
+         width="37.696999"
+         height="37.696999"
+         ry="4.2426"
+         rx="4.2426"
+         style="color:#000000;fill:none;stroke:#ffffff;stroke-linejoin:bevel;stroke-miterlimit:10"
+         id="rect11528" />
+      <path
+         d="M 11.5,31.437 C 11.94,20.098 22.043,11.323 32.159,21.979 L 37.069,17.246 37.088,32 22.16,31.978 26.998,27.14 C 18.529,18.264 13.292,25.23 11.5,31.437 Z"
+         style="color:#000000;display:block;opacity:0.6988602;fill:#888a85"
+         sodipodi:nodetypes="ccccccc"
+         id="path2177"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title></dc:title>
+        <dc:date>2010-03-29T15:49:10</dc:date>
+        <dc:description>&quot;Symlink&quot; icon from &lt;a href=&quot;http://tango.freedesktop.org/Tango_Desktop_Project&quot;&gt; Tango Project &lt;/a&gt; \n&lt;br&gt;&lt;br&gt;\nSince version 0.8.90 Tango Project icons are Public Domain: &lt;a href=&quot;http://tango.freedesktop.org/Frequently_Asked_Questions#Terms_of_Use.3F&quot;&gt; Tango Project FAQ &lt;/a&gt;</dc:description>
+        <dc:source>https://openclipart.org/detail/35527/tango-emblem-symbolic-link-by-warszawianka</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>warszawianka</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>arrow</rdf:li>
+            <rdf:li>externalosurce</rdf:li>
+            <rdf:li>icon</rdf:li>
+            <rdf:li>link</rdf:li>
+            <rdf:li>tango</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg7032"
+   viewBox="0 0 128 128"
+   sodipodi:version="0.32"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="audio-generic.svg"
+   version="1.1"
+   width="128"
+   height="128">
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient2315"
+       inkscape:collect="always">
+      <stop
+         id="stop2317"
+         style="stop-color:#ffffff"
+         offset="0" />
+      <stop
+         id="stop2319"
+         style="stop-color:#ffffff;stop-opacity:0"
+         offset="1" />
+    </linearGradient>
+    <radialGradient
+       id="radialGradient1358"
+       xlink:href="#linearGradient2315"
+       gradientUnits="userSpaceOnUse"
+       cy="32.307999"
+       cx="4.3920002"
+       gradientTransform="matrix(1,0,0,0.5098,0,16.054)"
+       r="6.375"
+       inkscape:collect="always" />
+    <radialGradient
+       id="radialGradient1360"
+       xlink:href="#linearGradient2315"
+       gradientUnits="userSpaceOnUse"
+       cy="32.307999"
+       cx="4.3920002"
+       gradientTransform="matrix(1,0,0,0.5098,0,16.054)"
+       r="6.375"
+       inkscape:collect="always" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:window-x="1366"
+     inkscape:window-y="0"
+     pagecolor="#ffffff"
+     inkscape:showpageshadow="false"
+     inkscape:grid-bbox="true"
+     inkscape:zoom="4"
+     inkscape:pageshadow="2"
+     showgrid="false"
+     borderopacity="0.22745098"
+     inkscape:current-layer="layer1"
+     inkscape:cx="66.876468"
+     inkscape:cy="59.726948"
+     inkscape:window-width="1600"
+     inkscape:pageopacity="0.0"
+     inkscape:window-height="949"
+     inkscape:document-units="px"
+     fill="#9db029"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(40.649776,47.509282)">
+    <g
+       id="g4166"
+       transform="matrix(3.408829,0,0,3.408829,-56.246697,-64.980702)">
+      <path
+         d="m 41.625,7.7952 c 0,0 -23.063,2.8348 -23.063,2.8348 l 0,21.781 c -1.645,-0.558 -3.931,-0.703 -6.437,-0.187 -4.3563,0.897 -7.4779,3.299 -7,5.343 0.4779,2.045 4.3937,2.991 8.75,2.094 4.117,-0.848 7.684,-3.038 7.603,-5 l 0.156,-19.031 16.93,-2.896 0,17.285 c -10.25,-1.5 -13.292,2.893 -12.814,4.938 0.478,2.044 4.394,2.99 8.75,2.093 3.865,-0.796 6.632,-2.763 6.906,-4.625 l 0.219,-24.63 z"
+         style="color:#000000;display:block;fill:#9db029;stroke:#596616;stroke-linecap:round;stroke-linejoin:round"
+         sodipodi:nodetypes="cccccccccccccc"
+         id="path7042"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 40.729,8.8956 -21.182,2.8344 0,21.839 c -7.565,-1.906 -13.733,1.834 -13.278,3.778 0.704,3.319 14.378,1.102 14.3,-3.139 l 0.149,-19.473 18.85,-2.892 0,19.437 c -7.566,-1.927 -13.265,1.376 -12.811,3.32 0.58,3.194 12.379,2.114 13.764,-2.657 L 40.729,8.896 Z"
+         style="color:#000000;display:block;opacity:0.51175998;fill:none;stroke:#ffffff"
+         sodipodi:nodetypes="ccccccccccc"
+         id="path2311"
+         inkscape:connector-curvature="0" />
+      <ellipse
+         transform="matrix(0.73452,-0.11164,0.11164,0.73452,3.9034,12.226)"
+         style="color:#000000;display:block;opacity:0.51175998;fill:url(#radialGradient1358)"
+         id="path2313"
+         cx="5.875"
+         cy="32.75"
+         rx="6.375"
+         ry="3.25" />
+      <ellipse
+         transform="matrix(0.73452,-0.11164,0.11164,0.73452,23.746,9.3909)"
+         style="color:#000000;display:block;opacity:0.51175998;fill:url(#radialGradient1360)"
+         id="path2323"
+         cx="5.875"
+         cy="32.75"
+         rx="6.375"
+         ry="3.25" />
+    </g>
+  </g>
+  <metadata
+     id="metadata19">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title></dc:title>
+        <dc:date>2010-04-02T18:55:13</dc:date>
+        <dc:description>An icon from Tango Project. Since version 0.8.90 Tango Project icons are Public Domain: </dc:description>
+        <dc:source>https://openclipart.org/detail/36079/tango-audio-x-generic-by-warszawianka</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>warszawianka</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>externalousrce</rdf:li>
+            <rdf:li>green</rdf:li>
+            <rdf:li>icon</rdf:li>
+            <rdf:li>music</rdf:li>
+            <rdf:li>note</rdf:li>
+            <rdf:li>tango</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
