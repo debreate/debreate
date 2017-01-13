@@ -13,7 +13,8 @@ import wx
 from dbr.language           import GT
 from dbr.templates          import local_templates_path
 from globals                import ident
-from globals.commands       import CMD_system_installer
+from globals.changes        import section_delims
+from globals.commands       import GetSystemInstaller
 from globals.wizardhelper   import FieldEnabled
 
 
@@ -68,13 +69,19 @@ TT_depends = {
 }
 
 TT_files = {
+    u'individually': GT(u'Files from selected directories will be added individually to list'),
     u'btn add': GT(u'Add selected file/folder to list'),
     u'btn remove': GT(u'Remove selected files from list'),
     u'btn clear': GT(u'Clear file list'),
     u'btn browse': GT(u'Browse for target installation directory'),
     u'btn refresh': GT(u'Update files\' executable status & availability'),
     u'target': GT(u'Target installation directory for file(s)'),
-    u'filelist': GT(u'Files to be added to package & their target directories')
+    u'filelist': (
+            GT(u'Files to be added to package & their target directories'), u'',
+            GT(u'Blue text = directory'),
+            GT(u'Red text = executable'),
+            GT(u'Red background = missing file/directory'),
+            )
 }
 
 TT_manpages = {
@@ -98,16 +105,24 @@ TT_scripts = {
 TT_changelog = {
     u'package': TT_control[u'package'],
     u'version': TT_control[u'version'],
-    u'dist': GT(u'Name of Debian/Ubuntu/etc. target distribution'),
+    u'dist': (
+        GT(u'Name of Debian/Ubuntu/etc. target distribution'), u'',
+        GT(u'See "Options ➜ Update dist names cache" to update this list.')
+        ),
     u'urgency': TT_control[u'priority'],
     u'maintainer': TT_control[u'maintainer'],
     u'email': TT_control[u'email'],
-    u'changes': GT(u'List new changes here, separated one per line'),
+    u'changes': (
+        GT(u'List new changes here, separated one per line'), u'',
+        GT(u'The first line will be prepended with an asterix (*) automatically. To denote any other sections, put one of the following as the first character on the line:'),
+        u'\t{}'.format(u',  '.join(list(section_delims))),
+        ),
     u'target': GT(u'Target to install changelog file'),
     u'target default': GT(u'Install changelog to standard directory'),
     u'target custom': GT(u'Install changelog to custom directory'),
     u'btn import': GT(u'Import information from Control page'),
     u'btn add': GT(u'Prepend above changes as new log entry'),
+    u'indent': GT(u'Do not strip preceding whitespace from regular lines'),
     u'log': GT(u'Formatted changelog entries (editable)'),
 }
 
@@ -123,8 +138,8 @@ TT_copyright = {
         u'\t{}'.format(local_templates_path),
         ),
     u'full_disabled': no_lic_templates,
-    u'link': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
-    u'link_disabled': no_lic_templates,
+    u'simple': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
+    u'simple_disabled': no_lic_templates,
 }
 
 TT_launchers = {
@@ -164,6 +179,11 @@ TT_launchers = {
 TT_build = {
     u'md5': GT(u'Creates a checksum for all staged files within the package'),
     u'md5_disabled': GT(u'Install md5sum package for this option'),
+    u'strip': (
+        GT(u'Discards unneeded symbols from binary files'), u'',
+        GT(u'See "man 1 strip"'),
+        ),
+    u'strip_disabled': GT(u'Install binutils package for this option'),
     u'rmstage': GT(u'Delete staged directory tree after package has been created'),
     u'lintian': (
         GT(u'Checks the package for warnings & errors according to lintian specifications'), u'',
@@ -173,7 +193,7 @@ TT_build = {
     u'build': GT(u'Start building'),
     u'install': (
         GT(u'Install package using a system installer after build'), u'',
-        u'{} {}'.format(GT(u'System installer set to:'), CMD_system_installer),
+        u'{} {}'.format(GT(u'System installer set to:'), GetSystemInstaller()),
         ),
     u'install_disabled': (
         GT(u'Installation requires one of the following utilities:'), u'',
