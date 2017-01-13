@@ -12,7 +12,6 @@ from dbr.error              import ShowError
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import GetYear
 from dbr.functions          import RemovePreWhitespace
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
@@ -23,6 +22,7 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import errno
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetPage

@@ -17,7 +17,6 @@ from dbr.buttons            import ButtonSave64
 from dbr.dialogs            import GetFileOpenDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
@@ -27,6 +26,7 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.ident          import page_ids
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow

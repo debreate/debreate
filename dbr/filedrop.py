@@ -8,10 +8,10 @@
 
 import wx
 
-import globals.ident as ident
-from dbr.dialogs    import TextOverwriteDialog
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
+from dbr.dialogs        import TextOverwriteDialog
+from dbr.language       import GT
+from globals            import ident
+from globals.strings    import TextIsEmpty
 
 
 ## Object for drag-&-drop text files
