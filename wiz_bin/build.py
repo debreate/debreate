@@ -25,8 +25,6 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import CMD_lintian
-from globals.commands       import CMD_md5sum
 from globals.commands       import GetExecutable
 from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
@@ -56,8 +54,9 @@ class Panel(WizardPage):
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = False
         
-        if not CMD_md5sum:
+        if not GetExecutable(u'md5sum'):
             self.chk_md5.Disable()
+        
         else:
             self.build_options.append(self.chk_md5)
         
@@ -73,8 +72,10 @@ class Panel(WizardPage):
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
-        if not CMD_lintian:
+        
+        if not GetExecutable(u'lintian'):
             self.chk_lint.Disable()
+        
         else:
             self.chk_lint.SetValue(self.chk_lint.default)
             self.build_options.append(self.chk_lint)
@@ -552,7 +553,7 @@ class Panel(WizardPage):
                 GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(target_package)))
         
         # FIXME: commands module deprecated?
-        output = commands.getoutput(u'{} "{}"'.format(CMD_lintian, target_package))
+        output = commands.getoutput(u'{} "{}"'.format(GetExecutable(u'lintian'), target_package))
         
         return output
     
@@ -637,7 +638,7 @@ class Panel(WizardPage):
                             break
                     '''
                     
-                    md5 = commands.getoutput(u'{} -{} "{}"'.format(CMD_md5sum, read_format, F))
+                    md5 = commands.getoutput(u'{} -{} "{}"'.format(GetExecutable(u'md5sum'), read_format, F))
                     
                     # Need to remove stage dir from file path
                     md5 = md5.replace(u'{}/'.format(target_dir), u'')
@@ -709,12 +710,12 @@ class Panel(WizardPage):
         self.ResetPageInfo()
         build_data = data.split(u'\n')
         
-        if CMD_md5sum:
+        if GetExecutable(u'md5sum'):
             self.chk_md5.SetValue(int(build_data[0]))
         
         self.chk_rmtree.SetValue(int(build_data[1]))
         
-        if CMD_lintian:
+        if GetExecutable(u'lintian'):
             self.chk_lint.SetValue(int(build_data[2]))
     
     

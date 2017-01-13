@@ -54,8 +54,7 @@ from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
 from globals.bitmaps        import LOGO
-from globals.commands       import CMD_tar
-from globals.commands       import CMD_xdg_open
+from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
@@ -193,7 +192,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             opt_z_zip,
         ]
         
-        if CMD_tar != None:
+        if GetExecutable(u'tar') != None:
             opt_z_xz = wx.MenuItem(self.m_compress, ident.ZIP_XZ,
                     GT(u'XZ'), GT(u'Use compressed xz tarball for project save format'),
                     kind=wx.ITEM_RADIO)
@@ -211,7 +210,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Option Menu: open logs directory *** #
         
-        if CMD_xdg_open:
+        if GetExecutable(u'xdg-open'):
             mi_logs_dir = wx.MenuItem(m_opt, ident.OPENLOGS, GT(u'Open logs directory'))
             m_opt.AppendItem(mi_logs_dir)
             
@@ -577,7 +576,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def OnLogDirOpen(self, event=None):
         Logger.Debug(__name__, GT(u'Opening log directory ...'))
         
-        subprocess.check_output([CMD_xdg_open, u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
+        subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
     
     
     ## TODO: Doxygen
