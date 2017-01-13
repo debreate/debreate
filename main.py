@@ -38,7 +38,7 @@ from globals.application    import VERSION_tuple
 from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
-from globals.commands       import GetExecutable
+from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.paths          import PATH_app

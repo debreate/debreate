@@ -24,10 +24,10 @@ from dbr.progress           import ProgressDialog
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
-from globals.commands       import GetExecutable
-from globals.commands       import ExecuteCommand
-from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
+from globals.execute        import ExecuteCommand
+from globals.execute        import GetExecutable
+from globals.execute        import GetSystemInstaller
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty

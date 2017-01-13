@@ -6,8 +6,8 @@
 # See: docs/LICENSE.txt
 
 
-from globals.commands   import GetCommandOutput
-from globals.commands   import GetExecutable
+from globals.execute    import GetCommandOutput
+from globals.execute    import GetExecutable
 
 
 ## TODO: Doxygen

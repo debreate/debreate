@@ -14,7 +14,7 @@ import commands, os
 from dbr.dialogs            import ErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals.commands       import GetExecutable
+from globals.execute        import GetExecutable
 from globals.fileio         import WriteFile
 from globals.wizardhelper   import GetTopWindow
 
