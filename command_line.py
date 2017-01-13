@@ -12,11 +12,24 @@ from globals.tests import available_tests
 from globals.tests import test_list
 
 
+## Solo args
+#  
+#  -h or --help
+#    Display usage information in the command line.
+#  -v or --version
+#    Display Debreate version in the command line & exit
 solo_args = (
     (u'h', u'help'),
     (u'v', u'version'),
 )
 
+## Value args
+#  
+#  -l or --log-level
+#    Sets logging output level. Values can be 'quiet', 'info', 'warn', 'error', or debug,
+#    or equivalent numeric values of 0-4. Default is 'error' (3).
+#  -i or --log-interval
+#    Set the refresh interval, in seconds, for updating the log window. 
 value_args = (
     (u'l', u'log-level'),
     (u'i', u'log-interval'),
@@ -34,12 +47,14 @@ parsed_args_v = {}
 parsed_commands = []
 parsed_path = None
 
+
 def ArgOK(arg, group):
     for s, l in group:
         if arg in (s, l,):
             return True
     
     return False
+
 
 def ArgIsDefined(arg, a_type):
     for group in (solo_args, value_args):
@@ -49,6 +64,7 @@ def ArgIsDefined(arg, a_type):
                     return True
     
     return False
+
 
 def GetArgType(arg):
     dashes = 0
@@ -163,9 +179,6 @@ def ParseArguments(arg_list):
         
         parsed_args_v[key] = value
     
-    
-    # Testing arguments
-    
     for A in parsed_args_s:
         if not ArgOK(A, solo_args):
             for S, L in value_args:
@@ -183,7 +196,6 @@ def ParseArguments(arg_list):
         for S, L in solo_args:
             if A == S:
                 parsed_args_s[arg_index] = L
-    
     
     for A in parsed_args_v:
         if not ArgOK(A, value_args):
