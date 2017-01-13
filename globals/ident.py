@@ -18,6 +18,7 @@ PREV = wx.NewId()
 NEXT = wx.NewId()
 
 # *** Custom IDs *** #
+ALIEN = wx.NewId()
 APPEND = wx.NewId()
 BROWSE = wx.NewId()
 CUSTOM = wx.NewId()
