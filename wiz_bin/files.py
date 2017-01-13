@@ -103,10 +103,6 @@ class Panel(WizardPage):
         # Display area for files added to list
         self.lst_files = FileList(self, ident.F_LIST, name=u'filelist')
         
-        # List that stores the actual paths to the files
-        # FIXME: Deprecated???
-        self.list_data = []
-        
         # *** Event Handling *** #
         
         # create an event to enable/disable custom widget
@@ -322,7 +318,6 @@ class Panel(WizardPage):
         item_count = self.lst_files.GetItemCount()
         
         if item_count:
-            #file_list = []
             files_definitions = {}
             for X in range(item_count):
                 row_data = self.lst_files.GetRowData(X)
@@ -562,7 +557,6 @@ class Panel(WizardPage):
             if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
                         GT(u'Clear all files?')).Confirmed():
                 self.lst_files.DeleteAllItems()
-                self.list_data = []
     
     
     ## Adds files to list from file manager drop
@@ -621,7 +615,6 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def SetFieldDataLegacy(self, data):
         # Clear files list
-        self.list_data = []
         self.lst_files.DeleteAllItems()
         files_data = data.split(u'\n')
         if int(files_data[0]):
