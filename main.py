@@ -152,14 +152,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.opt_tooltips = wx.MenuItem(menu_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
-        menu_opt.AppendItem(self.opt_tooltips)
+        # A bug with wx 2.8 does not allow tooltips to be toggled off
+        if wx.MAJOR_VERSION > 2:
+            menu_opt.AppendItem(self.opt_tooltips)
         
-        show_tooltips = ReadConfig(u'tooltips')
-        if show_tooltips != ConfCode.KEY_NO_EXIST:
-            self.opt_tooltips.Check(show_tooltips)
-        
-        else:
-            self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+        if menu_opt.FindItemById(ident.TOOLTIPS):
+            show_tooltips = ReadConfig(u'tooltips')
+            if show_tooltips != ConfCode.KEY_NO_EXIST:
+                self.opt_tooltips.Check(show_tooltips)
+            
+            else:
+                self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
         
         self.OnToggleToolTips()
         
@@ -205,16 +208,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if GetExecutable(u'xdg-open'):
-            mitm_logs_dir = wx.MenuItem(menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
-            menu_opt.AppendItem(mitm_logs_dir)
+            mitm_logs_open = wx.MenuItem(menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            menu_opt.AppendItem(mitm_logs_open)
             
             wx.EVT_MENU(menu_opt, ident.OPENLOGS, self.OnLogDirOpen)
+        
+        # *** OS distribution names cache *** #
+        
+        opt_distname_cache = wx.MenuItem(menu_opt, ident.DIST, GT(u'Update dist names cache'),
+                GT(u'Creates/Updates list of distribution names for changelog page'))
+        menu_opt.AppendItem(opt_distname_cache)
         
         # ----- Help Menu
         menu_help = wx.Menu()
         
         # ----- Version update
-        mitm_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
+        mitm_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for update'),
+                GT(u'Check if a new version is available for download'))
         mitm_update.SetBitmap(ICON_LOGO)
         
         menu_help.AppendItem(mitm_update)
@@ -235,6 +245,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         mitm_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         mitm_upm.SetBitmap(ICON_GLOBE)
+        # FIXME: Use wx.NewId()
         mitm_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         mitm_deb_src.SetBitmap(ICON_GLOBE)
@@ -284,7 +295,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menubar.Append(self.menu_file, GT(u'File'), wx.ID_FILE)
         menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
         menubar.Append(menu_action, GT(u'Action'), ident.ACTION)
-        menubar.Append(menu_opt, GT(u'Options'), ident.OPTIONS)
+        
+        if menu_opt.GetMenuItemCount():
+            menubar.Append(menu_opt, GT(u'Options'), ident.OPTIONS)
+        
         menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
         self.wizard = Wizard(self)
