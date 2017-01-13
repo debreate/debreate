@@ -27,6 +27,8 @@ class Wizard(wx.Panel):
         # List of pages available in the wizard
         self.pages = []
         
+        self.pages_ids = {}
+        
         # IDs for first & last pages
         self.ID_FIRST = None
         self.ID_LAST = None
@@ -198,6 +200,8 @@ class Wizard(wx.Panel):
         self.ID_FIRST = pages[0].GetId()
         self.ID_LAST = pages[-1].GetId()
         
+        main_window = GetTopWindow()
+        
         # Make sure all pages are hidden
         children = self.GetChildren()
         for child in children:
@@ -213,7 +217,13 @@ class Wizard(wx.Panel):
         
         for page in pages:
             self.pages.append(page)
+            self.pages_ids[page.GetId()] = page.GetName().upper()
             self.GetSizer().Insert(1, page, 1, wx.EXPAND)
+            
+            # Add pages to main menu
+            main_window.menu_page.AppendItem(
+                wx.MenuItem(main_window.menu_page, page.GetId(), page.GetName(),
+                kind=wx.ITEM_RADIO))
         
         self.ShowPage(self.ID_FIRST)
         
