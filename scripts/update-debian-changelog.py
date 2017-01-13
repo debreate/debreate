@@ -17,6 +17,14 @@ URGENCY = GetInfoValue('URGENCY')
 AUTHOR = GetInfoValue('AUTHOR')
 EMAIL = GetInfoValue('EMAIL')
 
+DEV = GetInfoValue('VERSION_dev')
+
+if DEV.isdigit():
+    DEV = int(DEV)
+
+else:
+    DEV = 0
+
 # Reading source log
 if not os.path.isfile(debian_files['changelog']):
     print('ERROR: Source changelog does not exist, can\'t continue: {}'.format(debian_files['changelog']))
@@ -29,6 +37,9 @@ TEMP.close()
 
 # Extract version number
 version_string = changelog_data[0]
+
+if DEV:
+    version_string = '{}-dev{}'.format(version_string, DEV)
 
 # Check for same version entry
 entry_exists = False
@@ -52,13 +63,19 @@ version_data = changelog_data[:cutoff_index]
 
 offset = 4
 for L in version_data:
+    # Each main entry begins with an asterix
     if L.startswith('- '):
         version_data[changelog_data.index(L)] = '  * {}'.format(L[2:]).rstrip(' \t')
         continue
     
+    # Single indented lines
+    if L.startswith(('  - ')):
+        version_data[changelog_data.index(L)] = '    {}'.format(L[4:]).rstrip(' \t')
+        continue
+    
     # Preserve formatting/indentation of other lines (must begin with '- ', '* ', or '+ ')
     if L.strip(' \t')[:2] in ('- ', '* ', '+ '):
-        version_data[changelog_data.index(L)] = '  {}'.format(L).rstrip(' \t')
+        version_data[changelog_data.index(L)] = L.rstrip(' \t')
         continue
     
     # All other lines will be indented by 'offset' value
