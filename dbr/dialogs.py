@@ -10,7 +10,6 @@ import os, wx
 
 from dbr.buttons            import ButtonCancel
 from dbr.buttons            import ButtonConfirm
-from dbr.custom             import TextIsEmpty
 from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -26,6 +25,7 @@ from globals.bitmaps        import ICON_QUESTION
 from globals.paths          import PATH_app
 from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
+from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -53,27 +53,9 @@ class BaseDialog(wx.Dialog):
         return wx.Dialog.ShowModal(self, *args, **kwargs)
 
 
-## TODO: Doxygen
-class OverwriteDialog(wx.MessageDialog):
-    def __init__(self, parent, path):
-        wx.MessageDialog.__init__(self, parent, wx.EmptyString,
-                style=wx.ICON_QUESTION|wx.YES_NO|wx.YES_DEFAULT)
-        
-        self.SetYesNoLabels(GT(u'Replace'), GT(u'Cancel'))
-        
-        filename = os.path.basename(path)
-        dirname = os.path.basename(os.path.dirname(path))
-        
-        self.SetMessage(
-            GT(u'A file named "{}" already exists. Do you want to replace it?').format(filename)
-        )
-        
-        self.SetExtendedMessage(
-            GT(u'The file already exists in "{}". Replacing it will overwrite its contents.').format(dirname)
-        )
-
-
 ## Prompt for overwriting a text area
+#  
+#  FIXME: Unused?
 class TextOverwriteDialog(wx.Dialog):
     def __init__(self, parent, ID=wx.ID_ANY, title=GT(u'Overwrite?'), message=u''):
         wx.Dialog.__init__(self, parent, ID, title)
@@ -147,6 +129,8 @@ class StandardDirDialog(wx.DirDialog):
 
 
 ## TODO: Doxygen
+#  
+#  FIXME: Broken
 class StandardFileDialog(wx.FileDialog):
     def __init__(self, parent, title, default_extension=wx.EmptyString,
                 wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
@@ -279,7 +263,7 @@ class StandardFileOpenDialog(StandardFileDialog):
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
-            buttons=(u'confirm',)):
+            buttons=(u'confirm',), linewrap=0):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
@@ -289,6 +273,8 @@ class DetailedMessageDialog(wx.Dialog):
         icon = wx.StaticBitmap(self, wx.ID_ANY, icon)
         
         txt_message = wx.StaticText(self, label=text)
+        if linewrap:
+            txt_message.Wrap(linewrap)
         
         button_list = []
         
@@ -441,6 +427,14 @@ class DetailedMessageDialog(wx.Dialog):
         wx.MessageBox(u'FIXME: Details not copied to clipboard', GT(u'Debug'))
     
     
+    ## Override inherited method to center on parent window first
+    def ShowModal(self, *args, **kwargs):
+        if self.Parent:
+            self.CenterOnParent()
+        
+        return wx.Dialog.ShowModal(self, *args, **kwargs)
+    
+    
     ## TODO: Doxygen
     def SetDetails(self, details):
         return self.CreateDetailedView(details)
@@ -480,10 +474,20 @@ class ConfirmationDialog(DetailedMessageDialog):
                 text=text, style=style, buttons=buttons)
 
 
+## TODO: Doxygen
+class OverwriteDialog(ConfirmationDialog):
+    def __init__(self, parent, filename):
+        text = u'{}\n\n{}'.format(GT(u'Overwrite file?'), filename)
+        
+        ConfirmationDialog.__init__(self, parent, GT(u'File Exists'), text)
+
+
 ## Message dialog that shows an error & details
 class ErrorDialog(DetailedMessageDialog):
-    def __init__(self, parent, text, details=wx.EmptyString):
-        DetailedMessageDialog.__init__(self, parent, GT(u'Error'), ICON_ERROR, text, details)
+    def __init__(self, parent, title=GT(u'Error'), text=GT(u'An error has occurred'),
+            details=wx.EmptyString, linewrap=0):
+        DetailedMessageDialog.__init__(self, parent, title, ICON_ERROR, text, details,
+                linewrap=linewrap)
 
 
 ## TODO: Doxygen
@@ -570,18 +574,24 @@ def GetDialogWildcards(ID):
 
 
 ## TODO: Doxygen
-def GetDirDialog(main_window, title):
-    dir_open = StandardDirDialog(main_window, title)
+def GetDirDialog(parent, title):
+    if parent == None:
+        parent = GetTopWindow()
+        
+    dir_open = StandardDirDialog(parent, title)
     
     return dir_open
 
 
 ## TODO: Doxygen
-def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
+def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
+    if parent == None:
+        parent = GetTopWindow()
+    
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
     
-    file_open = StandardFileOpenDialog(main_window, title, wildcard=ext_filters)
+    file_open = StandardFileOpenDialog(parent, title, wildcard=ext_filters)
     
     return file_open
 
@@ -604,12 +614,25 @@ def GetFileOpenDialog(main_window, title, ext_filters, default_extension=None):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-def GetFileSaveDialog(main_window, title, ext_filters, extension=None):
+def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwrite=True):
+    if parent == None:
+        parent = GetTopWindow()
+    
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
     
-    file_save = StandardFileSaveDialog(main_window, title, default_extension=extension,
+    '''
+    # FIXME: Broken
+    file_save = StandardFileSaveDialog(parent, title, default_extension=extension,
             wildcard=ext_filters)
+    '''
+    
+    FD_STYLE = wx.FD_SAVE|wx.FD_CHANGE_DIR
+    if confirm_overwrite:
+        FD_STYLE = FD_STYLE|wx.FD_OVERWRITE_PROMPT
+    
+    file_save = wx.FileDialog(parent, title, os.getcwd(), wildcard=ext_filters, style=FD_STYLE)
+    file_save.CenterOnParent()
     
     return file_save
 
@@ -638,20 +661,27 @@ def ShowDialog(dialog):
         return dialog.DisplayModal()
     
     else:
-        return dialog.ShowModal() == wx.OK
+        return dialog.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES, wx.OPEN, wx.ID_OPEN,)
 
 
 ## Displays an instance of ErrorDialog class
 #  
+#  Dialog is orphaned if parent is None so it can be displayed
+#  without main window in cases of initialization errors.
 #  \param text
 #        \b \e str|unicode: Explanation of error
 #  \param details
 #        \b \e str|unicode: Extended details of error
+#  \param parent
+#    \b \e Parent window of new dialog
+#    If False, parent is set to main window
+#    If None, dialog is orphaned
 #  \param module
 #        \b \e str|unicode: Module where error was caught (used for Logger output)
 #  \param warn
 #        \b \e bool: Show log message as warning instead of error
-def ShowErrorDialog(text, details=None, parent=False, warn=False):
+def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Error'),
+            linewrap=0):
     # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
@@ -666,10 +696,13 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
     if details:
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
-    if not parent:
+    if parent == False:
         parent = GetTopWindow()
     
-    if isinstance(parent, ModuleAccessCtrl):
+    if not parent:
+        module_name = __name__
+    
+    elif isinstance(parent, ModuleAccessCtrl):
         module_name = parent.GetModuleName()
     
     else:
@@ -677,7 +710,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
     
     PrintLogMessage(module_name, logger_text)
     
-    error_dialog = ErrorDialog(parent, text)
+    error_dialog = ErrorDialog(parent, title, text, linewrap=linewrap)
     if details:
         error_dialog.SetDetails(details)
     
@@ -685,10 +718,13 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False):
 
 
 ## A function that displays a modal message dialog on the main window
-def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
-    main_window = GetTopWindow()
-    if not module:
-        module = main_window.__name__
+def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, parent=None,
+            linewrap=0):
+    if not parent:
+        parent = GetTopWindow()
+    
+    if not module and isinstance(parent, ModuleAccessCtrl):
+        module = parent.GetModuleName()
     
     logger_text = text
     if isinstance(text, (tuple, list)):
@@ -698,7 +734,7 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None):
     if details:
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
-    message_dialog = DetailedMessageDialog(main_window, title, ICON_INFORMATION, text)
+    message_dialog = DetailedMessageDialog(parent, title, ICON_INFORMATION, text, linewrap=linewrap)
     if details:
         message_dialog.SetDetails(details)
     

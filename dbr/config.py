@@ -4,6 +4,9 @@
 #  
 #  Parsing & writing configuration.
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import os, wx
 
@@ -11,8 +14,11 @@ from dbr.compression    import DEFAULT_COMPRESSION_ID
 from dbr.compression    import compression_formats
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
-from dbr.functions      import TextIsEmpty
+from dbr.language       import GT
+from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
 from globals.paths      import PATH_home
+from globals.strings    import TextIsEmpty
 
 
 ## Configuration codes
@@ -78,26 +84,26 @@ def ReadConfig(k_name, conf=default_config):
         #Logger.Warning(__name__, u'Undefined key, not attempting to retrieve value: {}'.format(k_name))
         return ConfCode.KEY_NOT_DEFINED
     
-    conf_opened = open(conf, u'r')
-    conf_lines = conf_opened.read().split(u'\n')
-    conf_opened.close()
-    
-    for L in conf_lines:
-        if u'=' in L:
-            key = L.split(u'=')
-            value = key[1]
-            key = key[0]
-            
-            if k_name == key:
-                value = default_config_values[key][0](value)
-                
-                #Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
-                return value
-    
-    if k_name in default_config_values:
-        #Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
+    conf_lines = ReadFile(conf)
+    if conf_lines:
+        conf_lines = conf_lines.split(u'\n')
         
-        return GetDefaultConfigValue(k_name)
+        for L in conf_lines:
+            if u'=' in L:
+                key = L.split(u'=')
+                value = key[1]
+                key = key[0]
+                
+                if k_name == key:
+                    value = default_config_values[key][0](value)
+                    
+                    #Logger.Debug(__name__, u'Retrieved key-value: {}={}, value type: {}'.format(key, value, type(value)))
+                    return value
+        
+        if k_name in default_config_values:
+            #Logger.Debug(__name__, u'Configuration does not contain key, retrieving default value: {}'.format(k_name))
+            
+            return GetDefaultConfigValue(k_name)
     
     return ConfCode.KEY_NO_EXIST
 
@@ -115,26 +121,27 @@ def WriteConfig(k_name, k_value, conf=default_config):
     
     if not os.path.isdir(conf_dir):
         if os.path.exists(conf_dir):
-            #Logger.Error(__name__, u'Cannot create config directory, file exists: {}'.format(conf_dir))
+            print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Cannot create config directory, file exists'), conf_dir))
             return ConfCode.ERR_WRITE
         
         os.makedirs(conf_dir)
     
     # Only write pre-defined keys
     if k_name not in default_config_values:
-        #Logger.Warning(__name__, u'Cannot write to config, key not defined: {}'.format(k_name))
+        print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Configuration key not found'), k_name))
         return ConfCode.KEY_NOT_DEFINED
     
     # Make sure we are writing the correct type
     k_value = default_config_values[k_name][0](k_value)
     
     if k_value == None:
-        #Logger.Warning(__name__, u'Value is of wrong type for key "{}"'.format(k_name))
+        print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Wrong value type for configuration key'), k_name))
         return ConfCode.WRONG_TYPE
     
     # tuple is the only type we need to format
     if isinstance(k_value, tuple):
         k_value = u'{},{}'.format(unicode(k_value[0]), unicode(k_value[1]))
+    
     else:
         k_value = unicode(k_value)
     
@@ -143,12 +150,14 @@ def WriteConfig(k_name, k_value, conf=default_config):
     # Save current config to buffer
     if os.path.exists(conf):
         if not os.path.isfile(conf):
-            #Logger.Error(__name__, u'Cannot open config for writing, directory exists: {}'.format(conf))
+            print(u'{}: {}: {}'.format(GT(u'Error'), GT(u'Cannot open config for writing, directory exists'), conf))
             return ConfCode.ERR_WRITE
         
-        conf_opened = open(conf, u'r')
-        conf_text = conf_opened.read()
-        conf_opened.close()
+        conf_text = ReadFile(conf)
+        
+        # FIXME: ReadFile returns None type if config file exists but is empty
+        if conf_text == None:
+            conf_text = u''
     
     else:
         conf_text = u'[CONFIG-{}.{}]'.format(unicode(config_version[0]), unicode(config_version[1]))
@@ -172,15 +181,16 @@ def WriteConfig(k_name, k_value, conf=default_config):
     conf_text = u'\n'.join(conf_lines)
     
     if TextIsEmpty(conf_text):
-        #Logger.Warning(__name__, u'Not writing empty text to configuration')
+        print(u'{}: {}'.format(GT(u'Warning'), GT(u'Not writing empty text to configuration')))
         return ConfCode.ERR_WRITE
     
     # Actual writing to configuration
-    conf_opened = open(conf, u'w')
-    conf_opened.write(conf_text)
-    conf_opened.close()
+    WriteFile(conf, conf_text)
     
-    return ConfCode.SUCCESS
+    if os.path.isfile(conf):
+        return ConfCode.SUCCESS
+    
+    return ConfCode.ERR_WRITE
 
 
 ## Function used to create the inital configuration file
@@ -210,3 +220,33 @@ def GetDefaultConfigValue(key):
         return default_config_values[key][1]
     
     return ConfCode.KEY_NO_EXIST
+
+
+## Checks if value type is correct
+def _check_config_values(keys):
+    for KEY in keys:
+        try:
+            if not isinstance(keys[KEY], type(default_config_values[KEY][1])):
+                return False
+        
+        except KeyError:
+            return False
+    
+    return True
+
+
+## Reads in all values found in configuration file
+#  
+#  \return
+#    Configuration keys found in config file or None if error occurred
+def GetAllConfigKeys():
+    keys = {}
+    
+    # Read key/values from configuration file
+    for KEY in default_config_values:
+        keys[KEY] = ReadConfig(KEY)
+    
+    if not _check_config_values(keys):
+        return None
+    
+    return keys

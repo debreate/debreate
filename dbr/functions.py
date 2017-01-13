@@ -4,6 +4,9 @@
 #  
 #  Global functions used throughout Debreate
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import commands, os, re, shutil, traceback, subprocess, wx
 from datetime   import date
@@ -16,20 +19,22 @@ from globals.application    import APP_name
 from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
-from globals.commands       import CMD_fakeroot
-from globals.commands       import CMD_system_packager
+from globals.commands       import GetExecutable
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
+from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_STRING
 
 
 ## Get the current version of the application
 #  
+#  \param remote
+#    Website URL to parse for update
 #  \return
 #        Application's version tuple
-def GetCurrentVersion():
+def GetCurrentVersion(remote=APP_project_gh):
     try:
-        version = os.path.basename(urlopen(u'{}/releases/latest'.format(APP_project_gh)).geturl())
+        version = os.path.basename(urlopen(u'{}/releases/latest'.format(remote)).geturl())
         
         if u'-' in version:
             version = version.split(u'-')[0]
@@ -51,7 +56,7 @@ def GetCurrentVersion():
             version[version.index(V)] = int(V)
         
         return tuple(version)
-        
+    
     except URLError, err:
         return err
 
@@ -117,14 +122,6 @@ def RequirePython(version):
         raise ValueError(error)
     
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
-
-
-## Checks if a text string is empty
-#  
-#  \param text
-#        The string to be checked
-def TextIsEmpty(text):
-    return text.strip(u' \t\n') == wx.EmptyString
 
 
 ## TODO: Doxygen
@@ -320,10 +317,10 @@ def GetIntTuple(value):
                     return None
                 
                 value[v_index] = S
-                
+            
             # Convert return value from list to tuple
             return tuple(value)
-        
+    
     return None
 
 
@@ -337,6 +334,30 @@ def IsBoolean(value):
 
 def IsIntTuple(value):
     return GetIntTuple(value) != None
+
+
+## Checks if file is binary & needs stripped
+#  
+#  FIXME: Handle missing 'file' command
+def FileUnstripped(file_name):
+    CMD_file = GetExecutable(u'file')
+    
+    if CMD_file:
+        output = commands.getoutput(u'{} "{}"'.format(CMD_file, file_name))
+        
+        if u': ' in output:
+            output = output.split(u': ')[1]
+        
+        output = output.split(u', ')
+        
+        if u'not stripped' in output:
+            return True
+        
+        return False
+    
+    print(u'ERROR: "file" command does not exist on system')
+    
+    return False
 
 
 def GetFileMimeType(file_name):
@@ -408,16 +429,32 @@ def UsingDevelopmentVersion():
 
 
 def BuildDebPackage(stage_dir, target_file):
-    packager = CMD_system_packager
+    packager = GetExecutable(u'dpkg-deb')
+    fakeroot = GetExecutable(u'fakeroot')
     
-    if not CMD_fakeroot or not packager:
+    if not fakeroot or not packager:
         return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))
     
     packager = os.path.basename(packager)
     
     try:
-        output = subprocess.check_output([CMD_fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+        output = subprocess.check_output([fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+    
     except:
         return (dbrerrno.EAGAIN, traceback.format_exc())
     
     return (dbrerrno.SUCCESS, output)
+
+
+## Check if mouse is within the rectangle area of a window
+def MouseInsideWindow(window):
+    # Only need to find size because ScreenToClient method gets mouse pos
+    # relative to window.
+    win_size = window.GetSizeTuple()
+    mouse_pos = window.ScreenToClient(wx.GetMousePosition())
+    
+    # Subtracting from width & height compensates for visual boundaries
+    inside_x = 0 <= mouse_pos[0] <= win_size[0]-4
+    inside_y = 0 <= mouse_pos[1] <= win_size[1]-3
+    
+    return inside_x and inside_y

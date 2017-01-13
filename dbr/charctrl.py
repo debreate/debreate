@@ -10,7 +10,7 @@
 
 import wx
 
-from dbr.functions import TextIsEmpty
+from globals.strings import TextIsEmpty
 
 
 # List of characters that cannot be entered

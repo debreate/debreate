@@ -6,13 +6,14 @@
 # See: docs/LICENSE.txt
 
 
-import os, thread, wx
+import os, thread, traceback, wx
 
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonCancel
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import OverwriteDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
@@ -24,7 +25,8 @@ from dbr.timer              import DebreateTimer
 from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.errorcodes     import dbrerrno
-from globals.wizardhelper   import GetTopWindow
+from globals.fileio         import ReadFile
+from globals.paths          import ConcatPaths
 
 
 GAUGE_MAX = 100
@@ -107,7 +109,6 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         
         self.CenterOnParent()
         
-        
         # For showing error dialog after build thread exits
         self.build_error = None
     
@@ -116,17 +117,24 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     def Build(self, stage, target):
         completed_status = (0, GT(u'errors'))
         
-        output = BuildDebPackage(stage, target)
-        if output[0] == dbrerrno.SUCCESS:
-            completed_status = (GAUGE_MAX, GT(u'finished'))
+        try:
+            output = BuildDebPackage(stage, target)
+            if output[0] == dbrerrno.SUCCESS:
+                completed_status = (GAUGE_MAX, GT(u'finished'))
+            
+            else:
+                self.build_error = (
+                    GT(u'Could not build .deb package'),
+                    GT(u'Is the staged directory formatted correctly?'),
+                    stage,
+                    output[1],
+                )
         
-        else:
+        except:
             self.build_error = (
-                GT(u'Could not build .deb package'),
-                GT(u'Is the staged directory formatted correctly?'),
-                stage,
-                output[1],
-            )
+                GT(u'An unhandled error occured'),
+                traceback.format_exc(),
+                )
         
         self.timer.Stop()
         self.gauge.SetValue(completed_status[0])
@@ -137,20 +145,17 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
         if event:
-            main_window = GetTopWindow()
-            
             button_id = event.GetEventObject().GetId()
             
             if button_id == ident.STAGE:
-                stage = GetDirDialog(main_window, GT(u'Choose Directory'))
-                stage.CenterOnParent()
+                stage = GetDirDialog(self, GT(u'Choose Directory'))
                 
                 if (ShowDialog(stage)):
                     self.input_stage.SetValue(stage.GetPath())
             
             elif button_id == ident.TARGET:
-                target = GetFileSaveDialog(main_window, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'), u'deb')
-                target.CenterOnParent()
+                target = GetFileSaveDialog(self, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'),
+                        u'deb', False)
                 
                 if (ShowDialog(target)):
                     self.input_target.SetValue(target.GetPath())
@@ -158,12 +163,39 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     #  
-    #  TODO: Show error if not using .deb extension
-    #  TODO: Show success message
     #  TODO: Check timestamp of created .deb package (should be done for main build as well)
     def OnBuild(self, event=None):
         stage = self.input_stage.GetValue()
-        target = self.input_target.GetValue()
+        target = self.input_target.GetValue().rstrip(u'/')
+        
+        # Attempt to use DEBIAN/control file to set output filename. This is normally
+        # done automatically by the dpkg command, but we need to set it manually to
+        # check for overwriting a file.
+        if os.path.isdir(target):
+            control_file = ConcatPaths((stage, u'DEBIAN/control'))
+            if os.path.isfile(control_file):
+                control_lines = ReadFile(control_file, split=True)
+                
+                name = None
+                version = None
+                arch = None
+                
+                for LINE in control_lines:
+                    if LINE.startswith(u'Package:'):
+                        name = LINE.replace(u'Package: ', u'').strip()
+                    
+                    elif LINE.startswith(u'Version:'):
+                        version = LINE.replace(u'Version: ', u'').strip()
+                    
+                    elif LINE.startswith(u'Architecture:'):
+                        arch = LINE.replace(u'Architecture: ', u'').strip()
+                
+                if name and version and arch:
+                    target = ConcatPaths((target, u'{}.deb'.format(u'_'.join((name, version, arch,)))))
+        
+        # Automatically add .deb filename extension if not present
+        elif not target.lower().endswith(u'.deb'):
+            target = u'{}.deb'.format(target)
         
         if not os.path.isdir(stage):
             ShowErrorDialog(GT(u'Stage directory does not exist'), stage, self, True)
@@ -177,6 +209,15 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         elif not os.access(target_path, os.W_OK):
             ShowErrorDialog(GT(u'No write access to target directory'), target_path, self, True)
             return
+        
+        # Update the text input if target altered
+        if target != self.input_target.GetValue():
+            self.input_target.SetValue(target)
+        
+        # Check for pre-existing file
+        if os.path.isfile(target):
+            if not OverwriteDialog(self, target).Confirmed():
+                return
         
         self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
         
@@ -206,7 +247,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             error_lines = self.build_error[:-1]
             error_output = self.build_error[-1]
             
-            ShowErrorDialog(error_lines, error_output, __name__)
+            ShowErrorDialog(error_lines, error_output, self)
             
             # Needs to be reset or error dialog will successively show
             self.build_error = None
@@ -224,9 +265,6 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     def OnUpdateProgress(self, event=None):
         if event:
             if isinstance(event, wx.TimerEvent):
-                Logger.Debug(__name__, GT(u'wx.TimerEvent ID: {}').format(event.GetId()))
-                Logger.Debug(__name__, GT(u'wx.TimerEvent type: {}').format(event.GetEventType()))
-                
                 if not self.timer.IsRunning():
                     Logger.Debug(__name__, GT(u'Timer stopped. Stopping gauge ...'))
                     
