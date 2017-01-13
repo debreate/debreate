@@ -567,8 +567,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
     
     
-    ## TODO: Doxygen
+    ## Action to take when 'Help' is selected from the help menu
     #  
+    #  First tries to open pdf help file. If fails tries
+    #  to open html help file. If fails opens debreate usage
+    #  webpage
     #  FIXME: Appears to have errors
     def OnHelp(self, event=None):
         if DebugEnabled():
