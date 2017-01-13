@@ -25,6 +25,8 @@ pattern2 = r'\"(.+?)\"'
 #    original: (replacement, (exclude-file-list))
 replacements = {
     ' -> ': (' ➜ ', ('build', 'files',)),
+    ' (C) ': (' © ',),
+    ' (c) ': (' © ',),
     }
 
 # For running test without risk of making changes to regular files
@@ -74,7 +76,10 @@ def PerformSubstitution(filename, unbiased=False):
             NEW = replacements[OLD]
             
             if isinstance(NEW, (tuple, list)):
-                excludes = NEW[1]
+                excludes = None
+                if len(NEW) > 1:
+                    excludes = NEW[1]
+                
                 NEW = NEW[0]
             
             if excludes and os.path.basename(filename).rstrip('.py') in excludes:
