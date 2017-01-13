@@ -19,9 +19,9 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from globals                import ident
-from globals.commands       import ExecuteCommand
-from globals.commands       import GetExecutable
 from globals.devices        import GetMountedStorageDevices
+from globals.execute        import ExecuteCommand
+from globals.execute        import GetExecutable
 from globals.mime           import GetFileMimeType
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
