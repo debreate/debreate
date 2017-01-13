@@ -25,6 +25,7 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_INFORMATION
+from globals.cmdcheck       import CommandExists
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
@@ -35,6 +36,7 @@ from globals.paths          import PATH_app
 from globals.strings        import TextIsEmpty
 from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
@@ -489,6 +491,26 @@ class Panel(WizardPage):
                 O.SetValue(options_definitions[name])
         
         return 0
+    
+    
+    ## Sets up page with default settings
+    def InitDefaultSettings(self):
+        # md5sum file
+        option_list = (
+            (self.chk_md5, GetExecutable(u'md5sum'),),
+            (self.chk_strip, GetExecutable(u'strip'),),
+            (self.chk_rmstage, True,),
+            (self.chk_lint, GetExecutable(u'lintian'),),
+            (self.chk_install, GetSystemInstaller(),),
+            )
+        
+        for option, command in option_list:
+            # FIXME: Commands should be updated globally
+            if not isinstance(command, bool):
+                command = CommandExists(command)
+            
+            option.Enable(bool(command))
+            option.SetValue(FieldEnabled(option) and option.default)
     
     
     ## TODO: Doxygen
