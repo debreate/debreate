@@ -26,6 +26,7 @@ from globals.commands       import GetExecutable
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.dateinfo       import GetYear
+from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
 from globals.system         import OS_codename
@@ -448,16 +449,12 @@ class AboutDialog(wx.Dialog):
                 changelog_file = u'{}/{}'.format(temp_dir, changelog_file)
                 
                 if os.path.isfile(changelog_file):
-                    FILE = open(changelog_file)
-                    log_text = FILE.read()
-                    FILE.close()
+                    log_text = ReadFile(changelog_file)
                 
                 RemoveTempDirectory(temp_dir)
             
             elif changelog_mimetype == u'text/plain':
-                log_data = open(CHANGELOG)
-                log_text = log_data.read()
-                log_data.close()
+                log_text = ReadFile(CHANGELOG)
             
             else:
                 ShowError(GetTopWindow(), log_text)
@@ -487,9 +484,7 @@ class AboutDialog(wx.Dialog):
             license_path = u'{}/docs/LICENSE.txt'.format(PREFIX)
         
         if os.path.isfile(license_path):
-            lic_data = open(license_path)
-            lic_text = lic_data.read()
-            lic_data.close()
+            lic_text = ReadFile(license_path)
         
         else:
             lic_text = GT(u'ERROR: Could not locate license file:\n\t\'{}\' not found'.format(license_path))
