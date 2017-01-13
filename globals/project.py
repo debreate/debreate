@@ -2,13 +2,12 @@
 
 ## \package globals.project
 
-# MIT licensing; See: docs/LICENSE.txt
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
-# System modules
 import wx
 
-# Local modules
 from dbr.language import GT
 
 

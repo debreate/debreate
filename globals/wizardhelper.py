@@ -11,6 +11,64 @@ import wx
 from dbr.language   import GT
 
 
+## TODO: Doxygen
+class ErrorTuple:
+    def __init__(self, error_code=None, error_string=None):
+        
+        # FIXME: Shoule throw exception for wrong instance types???
+        self.error_code = error_code
+        self.error_string = error_string
+    
+    
+    ## Same as dbr.functions.ErrorTuple.GetTuple
+    def Get(self):
+        return self.GetTuple()
+    
+    
+    ## TODO: Doxygen
+    def GetCode(self):
+        return self.error_code
+    
+    
+    ## TODO: Doxygen
+    def GetString(self):
+        return self.error_string
+    
+    
+    ## TODO: Doxygen
+    def GetTuple(self):
+        return (self.error_code, self.error_string,)
+    
+    
+    ## TODO: Doxygen
+    def Set(self, error_code, error_string):
+        # FIXME: Shoule throw exception for wrong instance types???
+        self.error_code = error_code
+        self.error_string = error_string
+    
+    
+    ## TODO: Doxygen
+    def SetCode(self, error_code):
+        # FIXME: Should throw exception for wrong instance type???
+        if not isinstance(error_code, int):
+            return 1
+        
+        self.error_code = error_code
+        
+        return 0
+    
+    
+    ## TODO: Doxygen
+    def SetString(self, error_string):
+        # FIXME: Should throw exception for wrong instance type???
+        if not isinstance(error_string, (unicode, str)):
+            return 1
+        
+        self.error_string = error_string
+        
+        return 0
+
+
 ## Checks if a field (or widget) is enabled
 #  
 #  This is used for compatibility between wx. 2.8 & 3.0.
@@ -105,6 +163,21 @@ def GetFieldValue(page_id, field_id, field_type=wx.Window):
         )
 
 
+## Retrieves a menu from the menu bar
+#  
+#  \param menu_id
+#        \b \e int : Identifier of desired menu
+#  \retun
+#        The wx.Menu instance or None if not found
+def GetMenu(menu_id):
+    return GetMenuBar().GetMenuById(menu_id)
+
+
+## TODO: Doxygen
+def GetMenuBar():
+    return GetTopWindow().GetMenuBar()
+
+
 ## TODO: Doxygen
 def GetPage(page_id):
     page = GetWizard().GetPage(page_id)
@@ -132,61 +205,3 @@ def GetTopWindow():
 ## TODO: Doxygen
 def GetWizard():
     return GetTopWindow().GetWizard()
-
-
-## TODO: Doxygen
-class ErrorTuple:
-    def __init__(self, error_code=None, error_string=None):
-        
-        # FIXME: Shoule throw exception for wrong instance types???
-        self.error_code = error_code
-        self.error_string = error_string
-    
-    
-    ## Same as dbr.functions.ErrorTuple.GetTuple
-    def Get(self):
-        return self.GetTuple()
-    
-    
-    ## TODO: Doxygen
-    def GetCode(self):
-        return self.error_code
-    
-    
-    ## TODO: Doxygen
-    def GetString(self):
-        return self.error_string
-    
-    
-    ## TODO: Doxygen
-    def GetTuple(self):
-        return (self.error_code, self.error_string,)
-    
-    
-    ## TODO: Doxygen
-    def Set(self, error_code, error_string):
-        # FIXME: Shoule throw exception for wrong instance types???
-        self.error_code = error_code
-        self.error_string = error_string
-    
-    
-    ## TODO: Doxygen
-    def SetCode(self, error_code):
-        # FIXME: Should throw exception for wrong instance type???
-        if not isinstance(error_code, int):
-            return 1
-        
-        self.error_code = error_code
-        
-        return 0
-    
-    
-    ## TODO: Doxygen
-    def SetString(self, error_string):
-        # FIXME: Should throw exception for wrong instance type???
-        if not isinstance(error_string, (unicode, str)):
-            return 1
-        
-        self.error_string = error_string
-        
-        return 0

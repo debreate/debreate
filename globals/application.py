@@ -2,7 +2,8 @@
 
 ## \package globals.application
 
-# MIT licensing; See: docs/LICENSE.txt
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
 # System modules

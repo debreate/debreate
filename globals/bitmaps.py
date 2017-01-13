@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package <package>
+## \package globals.bitmaps
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -13,6 +13,8 @@ from globals.paths import PATH_app
 
 
 PATH_bitmaps = u'{}/bitmaps'.format(PATH_app)
+
+LOGO = ConcatPaths((PATH_bitmaps, u'debreate64.png'))
 
 ICON_ERROR = ConcatPaths((PATH_bitmaps, u'error64.png'))
 ICON_EXCLAMATION = ICON_ERROR
