@@ -10,6 +10,7 @@
 
 import os, subprocess, wx
 from subprocess import PIPE
+from subprocess import STDOUT
 
 from dbr.commandcheck       import CommandExists
 from dbr.language           import GT
@@ -75,12 +76,19 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if elevate and pword.strip(u' \t\n') == wx.EmptyString:
         return (None, GT(u'Empty password'))
     
+    CMD_sudo = GetExecutable(u'sudo')
+    
     if not CMD_sudo:
         return (None, GT(u'Super user command (sudo) not available'))
     
     main_window = GetTopWindow()
     
-    cmd_line = list(args)
+    if isinstance(args, (unicode, str)):
+        cmd_line = [args,]
+    
+    else:
+        cmd_line = list(args)
+    
     cmd_line.insert(0, cmd)
     
     main_window.Enable(False)
@@ -120,3 +128,44 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
         returncode = 0
     
     return (returncode, stdout)
+
+
+## TODO: Doxygen
+def GetCommandOutput(cmd, args=[]):
+    command_line = list(args)
+    command_line.insert(0, cmd)
+    
+    output = subprocess.Popen(command_line, stdout=PIPE, stderr=STDOUT).communicate()[0]
+    
+    # The Popen command adds a newline character at end of output
+    return output.rstrip(u'\n')
+
+
+## Retrieves executable it exists on system
+def GetExecutable(cmd):
+    alternatives = {
+        u'fakeroot': u'fakeroot-sysv', 
+        }
+    
+    found_command = CommandExists(cmd)
+    
+    if not found_command and cmd in alternatives:
+        if isinstance(alternatives[cmd], (unicode, str)):
+            found_command = alternatives[cmd]
+        
+        else:
+            for ALT in alternatives[cmd]:
+                found_command = CommandExists(ALT)
+                if found_command:
+                    break
+    
+    return found_command
+
+
+def GetSystemInstaller():
+    system_installer = GetExecutable(u'gdebi-gtk')
+    
+    if not system_installer:
+        system_installer = GetExecutable(u'gdebi-kde')
+    
+    return system_installer
