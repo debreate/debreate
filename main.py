@@ -527,13 +527,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks for new release availability
     def OnCheckUpdate(self, event=None):
-        if UsingDevelopmentVersion():
+        update_test = u'update-fail' in GetTestList()
+        
+        if UsingDevelopmentVersion() and not update_test:
             wx.MessageDialog(self, GT(u'This is a development version. Update checking is disabled. '),
                     GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
             
             return
         
-        current = GetCurrentVersion()
+        if update_test:
+            # Set a bad url to force error
+            current = GetCurrentVersion(u'http://dummyurl.blah/')
+        
+        else:
+            current = GetCurrentVersion()
+        
         wx.SafeYield()
         
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
