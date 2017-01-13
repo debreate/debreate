@@ -98,6 +98,5 @@ Tasks being considered:
 - Compile source to Python bytecode (.pyc) after install
 - Replace Makefile with CMake build system
 - Add Makefile rule for signing binary debuild package
-- Rework custom dialogs
 - Optionally strip binaries
 - Add option to clear logs folder

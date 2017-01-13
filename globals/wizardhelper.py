@@ -205,8 +205,3 @@ def GetTopWindow():
 ## TODO: Doxygen
 def GetWizard():
     return GetTopWindow().GetWizard()
-
-
-## TODO: Doxygen
-def UseCustomDialogs():
-    return GetTopWindow().UseCustomDialogs()
