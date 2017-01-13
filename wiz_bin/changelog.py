@@ -10,7 +10,6 @@ import commands, os, wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.pathctrl           import PATH_WARN
@@ -22,6 +21,7 @@ from globals                import ident
 from globals.commands       import CMD_gzip
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue

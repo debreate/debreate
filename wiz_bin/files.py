@@ -16,7 +16,6 @@ from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import ShowDialog
-from dbr.functions          import TextIsEmpty
 from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.listinput          import FileList
@@ -27,6 +26,7 @@ from globals                import ident
 from globals.bitmaps        import ICON_ERROR
 from globals.errorcodes     import dbrerrno
 from globals.paths          import PATH_home
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 

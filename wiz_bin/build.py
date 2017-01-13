@@ -18,7 +18,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
-from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
@@ -34,6 +33,7 @@ from globals.commands       import CMD_system_packager
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
