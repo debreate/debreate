@@ -164,8 +164,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             else:
                 self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
-        
-        self.OnToggleToolTips()
+            
+            self.OnToggleToolTips()
         
         # Project compression options
         self.menu_compress = wx.Menu()
