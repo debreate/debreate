@@ -25,7 +25,7 @@ from dbr.dialogs            import GetDialogWildcards
 from dbr.dialogs            import GetFileOpenDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
-from dbr.error              import ShowError
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import RemoveTempDirectory
@@ -877,7 +877,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ret_code = p_archive.Uncompress(filename, temp_dir)
         
         if isinstance(ret_code, tuple) and ret_code[0]:
-            ShowError(self, u'{}: {}'.format(GT(u'Project load error'), ret_code[1]), ret_code[0])
+            ShowErrorDialog(u'{}: {}'.format(GT(u'Project load error'), ret_code[1]),
+                    ret_code[0], parent=self)
             return
         
         self.wizard.ImportPagesInfo(temp_dir)
@@ -963,7 +964,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         temp_dir = CreateTempDirectory()
         
         if not os.path.exists(temp_dir) or temp_dir == dbrerrno.EACCES:
-            ShowError(self, u'{}: {}'.format(GT(u'Could not create staging directory'), temp_dir))
+            ShowErrorDialog(u'{}: {}'.format(GT(u'Could not create staging directory'), temp_dir),
+                    parent=self)
             return
         
         Logger.Debug(__name__, GT(u'Temp dir created: {}').format(temp_dir))
@@ -1013,7 +1015,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             return dbrerrno.SUCCESS
         
-        ShowError(self, u'{}: {}'.format(GT(u'Project save failed'), target_path))
+        ShowErrorDialog(u'{}: {}'.format(GT(u'Project save failed'), target_path), parent=self)
     
     
     ## Sets compression in the main menu
