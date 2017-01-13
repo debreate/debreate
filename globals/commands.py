@@ -17,8 +17,6 @@ from dbr.language           import GT
 from globals.wizardhelper   import GetTopWindow
 
 
-CMD_gdebi = CommandExists(u'gdebi')
-CMD_gdebi_gui = CommandExists(u'gdebi-gtk')
 CMD_gvfs_trash = CommandExists(u'gvfs-trash')
 CMD_gzip = CommandExists(u'gzip')
 CMD_lintian = CommandExists(u'lintian')
@@ -26,10 +24,6 @@ CMD_md5sum = CommandExists(u'md5sum')
 CMD_sudo = CommandExists(u'sudo')
 CMD_tar = CommandExists(u'tar')
 CMD_xdg_open = CommandExists(u'xdg-open')
-
-# Check for gdebi KDE frontend of Gtk not available
-if not CMD_gdebi_gui:
-    CMD_gdebi_gui = CommandExists(u'gdebi-kde')
 
 
 ## TODO: Doxygen
