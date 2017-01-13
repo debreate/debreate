@@ -18,13 +18,14 @@ from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
-from dbr.textinput          import MonospaceTextCtrl
+from dbr.textinput          import MonospaceTextArea
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import errno
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled, GetPage
+from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -68,7 +69,7 @@ class Panel(WizardPage):
             self.btn_template_simple.Enable(False)
         
         ## Area where license text is displayed
-        self.dsp_copyright = MonospaceTextCtrl(self, name=u'license')
+        self.dsp_copyright = MonospaceTextArea(self, name=u'license')
         
         SetPageToolTips(self)
         
