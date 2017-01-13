@@ -811,8 +811,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         enabled = self.opt_tooltips.IsChecked()
         wx.ToolTip.Enable(enabled)
         
-        # Update configuration in realtime
-        # TODO: Use realtime for more or all options
         WriteConfig(u'tooltips', enabled)
     
     
@@ -844,9 +842,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \param project_file
     #    \b \e unicode|str : Path to project file
     def OpenProject(self, project_file):
+        Logger.Debug(__name__, u'Opening project: {}'.format(project_file))
+        
         mime_type = GetFileMimeType(project_file)
         
-        Logger.Debug(__name__, GT(u'Opening project: {}').format(project_file))
         Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
         
         project_opened = None
@@ -915,7 +914,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         def ProjectError():
             wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
-    		                       style=wx.OK|wx.ICON_ERROR).ShowModal()
+    		          style=wx.OK|wx.ICON_ERROR).ShowModal()
         
         if data == wx.EmptyString:
             ProjectError()
@@ -927,10 +926,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if app != u'DEBREATE':
             ProjectError()
             return
-        
-        # Set title to show open project
-        # FIXME:
-        #self.SetTitle(u'Debreate - {}'.format(filename))
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
