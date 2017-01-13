@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.commandcheck
+## \package globals.cmdcheck
 
 # MIT licensing
 # See: docs/LICENSE.txt
