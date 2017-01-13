@@ -17,12 +17,6 @@ from dbr.language           import GT
 from globals.wizardhelper   import GetTopWindow
 
 
-CMD_dpkgdeb = CommandExists(u'dpkg-deb')
-CMD_fakeroot = CommandExists(u'fakeroot')
-
-if not CMD_fakeroot:
-    CMD_fakeroot = CommandExists(u'fakeroot-sysv')
-
 CMD_gdebi = CommandExists(u'gdebi')
 CMD_gdebi_gui = CommandExists(u'gdebi-gtk')
 CMD_gvfs_trash = CommandExists(u'gvfs-trash')
@@ -36,19 +30,6 @@ CMD_xdg_open = CommandExists(u'xdg-open')
 # Check for gdebi KDE frontend of Gtk not available
 if not CMD_gdebi_gui:
     CMD_gdebi_gui = CommandExists(u'gdebi-kde')
-
-CMD_system_packager = None
-
-# Order in priority
-CMDS_packagers = (
-    CMD_dpkgdeb,
-)
-
-# Sets the system packager by priority
-for C in CMDS_packagers:
-    if C:
-        CMD_system_packager = C
-        break
 
 
 ## TODO: Doxygen
