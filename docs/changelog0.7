@@ -1,16 +1,58 @@
 0.7.13
-- Full license templates can be generated
-- License templates shipped with app:
-  - BSD-2-Clause
-  - BSD-4-Clause
-  - BSL-1.0
-  - CC0
-  - EPL-1.0
-  - ISC
-  - MIT-X
-  - OFL-1.1
-  - Zlib-PNG
-- Custom license templates can be placed in $HOME/.local directory
+- Fixes:
+  - Fix app won't start if config file is empty
+  - Use 'Save as' dialog for save action if project doesn't fully open
+    - E.g. 'Cancel' was pressed before all files were imported
+- General:
+  - Only center progress dialogs on parent if not manually moved by user
+  - Use more custom message dialogs
+  - Show confirmation dialog in Quick Build when overwriting file
+  - Files can be dropped onto some text areas from system file manager
+    - Equivalent to opening file's contents into text area
+  - Menu option: Options ➜ Update dist names cache
+    - Attempts to retrieve list of dist names for changelog
+  - Removed custom open/save dialogs
+- License templates generation:
+  - Full license templates can be generated
+  - License templates shipped with app:
+    - BSD-2-Clause
+    - BSD-4-Clause
+    - BSL-1.0
+    - CC0
+    - EPL-1.0
+    - ISC
+    - MIT-X
+    - OFL-1.1
+    - Zlib-PNG
+  - Custom license templates can be placed in user's "local" directory
+    - $HOME/.local/share/debreate/templates/licenses
+    - These take precedence over system & app templates
+- Files & folders:
+  - Drag & drop support added
+    - Files/Folders can be dragged from system file manager or directory tree
+  - Relative paths are preserved when adding directories to the file list
+  - Option to list only top-level directory or individual files in file list
+  - Directory tree changes:
+    - Executable files are displayed in red
+    - Some mime types use a unique bitmap icon
+    - Files/Folders can be renamed or moved to trash
+      - 'gvfs-trash' command required for trash
+    - Double-click action changes:
+      - Single selected file or multiple selected files/folders:
+        - Adds selection to file list
+      - Single selected folder expands contents
+    - Enter/Return keys have similar behavior to double-click
+    - Single "Add" option in context menu
+    - Folders can be expanded/collapsed from context menu
+      - Expand/Collapse menu only appears if all selected items are folders
+- Changelog formatting:
+  - Option to preserve indentation of regular lines
+  - Lines beginning with one of *, -, +, or # are added as new section
+- Build options:
+  - 'Create md5sums file' set to True by default
+  - New option to strip binary files before packaged (enabled by default)
+- Installation from .deb package:
+  - Added postinst script to compile source to Python bytecode
 
 0.7.12
 - Fixes:
@@ -190,6 +232,6 @@
 - bugfix: Can't save projects when files have sub-dir
 - Re-enabled md5sums
 - Enabled previewing .desktop (Menu) config
-- bugfix: Semi-colons in project files under Menu -> Categories
+- bugfix: Semi-colons in project files under Menu ➜ Categories
 - Changed "Type" field under "Menu" to be customizable
 - Added more functionality to custom save dialog
