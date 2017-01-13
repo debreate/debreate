@@ -124,7 +124,6 @@ from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
 from dbr.log                import Logger
 from dbr.workingdir         import ChangeWorkingDirectory
-from globals                import ident
 from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
@@ -225,9 +224,6 @@ if conf_values[u'center']:
     Debreate.Center()
 if conf_values[u'maximize']:
     Debreate.Maximize()
-
-if Debreate.menu_opt.FindItemById(ident.DIALOGS):
-    Debreate.menu_opt.Check(ident.DIALOGS, conf_values[u'dialogs'])
 
 working_dir = conf_values[u'workingdir']
 
