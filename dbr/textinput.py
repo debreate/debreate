@@ -6,20 +6,112 @@
 # See: docs/LICENSE.txt
 
 
-import wx
+import time, wx
 
-from dbr.font       import MONOSPACED_LG
-from dbr.functions  import TextIsEmpty
-from dbr.language   import GT
-from dbr.panel      import BorderedPanel
+from dbr.font               import MONOSPACED_LG
+from dbr.language           import GT
+from dbr.panel              import BorderedPanel
+from globals.fileio         import ReadFile
+from globals.strings        import TextIsEmpty
+from globals.wizardhelper   import GetTopWindow
+
+
+## Text control set up for handling file drop events
+class TextArea(wx.TextCtrl):
+    def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+        wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style, validator, name)
+        
+        # Enable to override default behavior of adding filename string
+        self.DragAcceptFiles(True)
+        
+        self.accepts_drop = False
+        
+        # *** Event handlers *** #
+        
+        self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
+    
+    
+    ## Allow dropping files from file manager
+    def EnableDropTarget(self, enable=True):
+        self.accepts_drop = enable
+    
+    
+    ## TODO: Doxygen
+    def IsDropTarget(self):
+        return self.accepts_drop
+    
+    
+    ## TODO: Doxygen
+    def OnDropFiles(self, event=None):
+        if not self.IsEnabled() or not event:
+            return False
+        
+        # Flash red if doesn't accept file drops
+        if not self.IsDropTarget():
+            parent = self.GetParent()
+            
+            if isinstance(parent, MultilineTextCtrlPanel):
+                main_object = parent
+            
+            else:
+                main_object = self
+            
+            bgcolor = main_object.GetBackgroundColour()
+            main_object.SetBackgroundColour(wx.RED)
+            
+            wx.Yield()
+            time.sleep(0.1)
+            
+            main_object.SetBackgroundColour(bgcolor)
+            
+            return False
+        
+        filename = event.GetFiles()
+        
+        if not filename:
+            return False
+        
+        # Use only the first file
+        if isinstance(filename, (tuple, list)):
+            filename = filename[0]
+        
+        if not TextIsEmpty(self.GetValue()):
+            msg_li1 = GT(u'This will delete all text')
+            msg_li2 = GT(u'Continue?')
+            
+            # FIXME: Use custom dialogs (currently cannot import)
+            message = wx.MessageDialog(GetTopWindow(), u'{}\n\n{}'.format(msg_li1, msg_li2),
+                    GT(u'Warning'), wx.OK|wx.CANCEL|wx.ICON_WARNING)
+            
+            confirmed = message.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES)
+            
+            if not confirmed:
+                return False
+        
+        try:
+            input_text = ReadFile(filename)
+            
+            if input_text:
+                self.SetValue(input_text)
+                
+                return True
+        
+        except UnicodeDecodeError:
+            pass
+        
+        #ShowErrorDialog(GT(u'There was an error reading file: {}').format(filename))
+        wx.MessageDialog(GetTopWindow(), GT(u'There was an error reading file: {}').format(filename),
+                GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+        
+        return False
 
 
 ## A text control that is multiline & uses a themed border
-class MultilineTextCtrl(wx.TextCtrl):
+class MultilineTextCtrl(TextArea):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
-        wx.TextCtrl.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE|wx.BORDER_NONE,
-                validator, name)
+        TextArea.__init__(self, parent, ID, value, pos, size, style|wx.TE_MULTILINE, validator, name)
     
     
     ## Sets the font size of the text area
@@ -39,7 +131,7 @@ class MultilineTextCtrlPanel(BorderedPanel):
                 size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
         BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
-        self.textarea = MultilineTextCtrl(self, style=style)
+        self.textarea = MultilineTextCtrl(self, style=style|wx.BORDER_NONE)
         if not TextIsEmpty(value):
             self.textarea.SetValue(value)
         
@@ -105,6 +197,11 @@ class MultilineTextCtrlPanel(BorderedPanel):
         self.textarea.SetInsertionPoint(insertion_point)
         
         return return_value
+    
+    
+    ## Allow dropping files from file manager
+    def EnableDropTarget(self, enable=True):
+        return self.textarea.EnableDropTarget(enable)
     
     
     ## Retrieves the caret instance of the wx.TextCtrl

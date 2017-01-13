@@ -10,12 +10,15 @@ import os, thread, threading, time, traceback, wx
 from wx.lib.newevent import NewCommandEvent
 
 from dbr.font               import GetMonospacedFont
-from dbr.functions          import GetDate
-from dbr.functions          import GetTime
 from dbr.language           import GT
 from dbr.textinput          import MultilineTextCtrlPanel
 from globals                import ident
 from globals.application    import APP_logo
+from globals.dateinfo       import DTFMT
+from globals.dateinfo       import GetDate
+from globals.dateinfo       import GetTime
+from globals.fileio         import AppendFile
+from globals.fileio         import ReadFile
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
 
@@ -52,7 +55,10 @@ class DebreateLogger:
         self.log_path = log_path
         
         # Filename output information
-        self.log_file = u'{}/{}.log'.format(self.log_path, GetDate())
+        self.log_file = u'{}/{}.log'.format(self.log_path, GetDate(DTFMT.LOG))
+        
+        # Forces space between header & first log entry (changed to None after first entry)
+        self.no_strip = u'\n'
         
         self.OnInit()
     
@@ -62,34 +68,32 @@ class DebreateLogger:
             os.makedirs(self.log_path)
         
         # Initialize the log with date & time
-        date_time = u'{} {}'.format(GetDate(), GetTime())
+        date_time = u'{} {}'.format(GetDate(DTFMT.LOG), GetTime(DTFMT.LOG))
         
-        log_header = u'--------------- Start Log: {} ---------------\n\n'.format(date_time)
+        log_header = u'--------------- Log Start: {} ---------------\n'.format(date_time)
         
+        '''
         # Add whitespace for new entries
         if os.path.isfile(self.log_file):
             log_header = u'\n\n{}'.format(log_header)
+        '''
         
         # Write header to log file
-        l_file = open(self.log_file, u'a')
-        l_file.write(log_header)
-        l_file.close()
+        AppendFile(self.log_file, log_header, no_strip=u'\n')
     
     
     def OnClose(self):
         # Don't write to log if user deleted it
         if os.path.isfile(self.log_file):
             # Close the log with date & time
-            date_time = u'{} {}'.format(GetDate(), GetTime())
+            date_time = u'{} {}'.format(GetDate(DTFMT.LOG), GetTime(DTFMT.LOG))
             
-            log_footer = u'\n--------------- End Log: {} ---------------\n\n'.format(date_time)
+            log_footer = u'\n--------------- Log End:   {} ---------------\n\n'.format(date_time)
             
-            l_file = open(self.log_file, u'a')
-            l_file.write(log_footer)
-            l_file.close()
+            AppendFile(self.log_file, log_footer, no_strip=u'\n')
     
     
-    ## Checks if log can be written at suppliet level
+    ## Checks if log can be written at supplied level
     #  
     #  \param l_level
     #        \b \e int|str : The desired message level to output
@@ -130,10 +134,11 @@ class DebreateLogger:
                 os.makedirs(PATH_local)
             
             # Open log for writing
-            l_file = open(self.log_file, u'a')
-            l_file.write(message)
-            l_file.write(u'\n')
-            l_file.close()
+            AppendFile(self.log_file, u'{}\n'.format(message), self.no_strip)
+            
+            # Allow stripping leading & trailing newlines from opened log file
+            if self.no_strip:
+                self.no_strip = None
     
     
     def Info(self, l_script, l_message):
@@ -410,9 +415,7 @@ class LogWindow(wx.Dialog):
     ## Fills log with text file contents
     def RefreshLog(self, event=None):
         if os.path.isfile(self.log_file):
-            FILE = open(self.log_file)
-            log_data = FILE.read()
-            FILE.close()
+            log_data = ReadFile(self.log_file)
             
             if not self.log.IsEmpty():
                 self.log.Clear()

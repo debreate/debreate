@@ -8,7 +8,10 @@
 
 import wx
 
-from dbr.language import GT
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
 
 
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
@@ -17,8 +20,10 @@ PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
     def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
-            style=PD_DEFAULT_STYLE, detailed=False):
+            style=PD_DEFAULT_STYLE, detailed=False, resize=True):
         wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
+        
+        self.resize = resize
         
         self.active = None
         
@@ -63,6 +68,11 @@ class ProgressDialog(wx.ProgressDialog):
         
         if parent:
             self.CenterOnParent()
+        
+        # Find the initial position to test if dialog has been moved by user
+        self.initial_posY = self.GetPositionTuple()[1]
+        
+        self.user_moved = False
     
     
     ## Sets the active status to False
@@ -78,6 +88,21 @@ class ProgressDialog(wx.ProgressDialog):
     #  For 3.0 & newer, simply overrides wx.ProgressDialog.Destroy
     #  For older versions, calls dbr.progress.ProgressDialog.EndModal
     def Destroy(self, *args, **kwargs):
+        # Re-enable parent/main window if previously disabled
+        # ???: May not be necessary
+        parent = self.GetParent()
+        main_window = GetTopWindow()
+        
+        if not FieldEnabled(main_window):
+            Logger.Debug(__name__, u'Re-enabling main window')
+            
+            main_window.Enable()
+        
+        if not FieldEnabled(parent):
+            Logger.Debug(__name__, u'Re-enabling parent')
+            
+            parent.Enable()
+        
         if wx.MAJOR_VERSION < 3:
             self.EndModal(0)
         
@@ -145,6 +170,16 @@ class ProgressDialog(wx.ProgressDialog):
     
     
     ## TODO: Doxygen
+    def Pulse(self, *args, **kwargs):
+        pulse_value = wx.ProgressDialog.Pulse(self, *args, **kwargs)
+        
+        if self.resize:
+            self.UpdateSize()
+        
+        return pulse_value
+    
+    
+    ## TODO: Doxygen
     def SetMessage(self, message):
         for C in self.GetChildren():
             if isinstance(C, wx.StaticText):
@@ -176,7 +211,8 @@ class ProgressDialog(wx.ProgressDialog):
         if self.detailed:
             self.txt_tasks.SetLabel(u'{} / {}'.format(args[0], self.GetRange()))
         
-        self.UpdateSize()
+        if self.resize:
+            self.UpdateSize()
         
         return update_value
     
@@ -184,32 +220,45 @@ class ProgressDialog(wx.ProgressDialog):
     ## Currently only updates width
     #  
     #  FIXME: Window updates immediately, but children do not
+    #  FIXME: Dialog could potentially resize outsize of display boundaries
     def UpdateSize(self):
-        children = self.GetChildren()
-        target_width = 0
+        if not self.user_moved:
+            if self.GetPositionTuple()[1] != self.initial_posY:
+                self.user_moved = True
         
-        for C in children:
-            child_width = C.GetSizeTuple()[0]
-            if child_width > target_width:
-                target_width = child_width
+        resize = True
+        size = self.GetSizeTuple()
+        parent = self.GetParent()
         
-        if children:
-            padding_x = children[0].GetPositionTuple()[0]
+        if parent:
+            # Don't resize if dialog is already as big or bigger than parent
+            if size[0] >= parent.GetSizeTuple()[0]:
+                resize = False
+        
+        if resize:
+            children = self.GetChildren()
+            target_width = 0
             
-            # Add padding
-            target_width += (padding_x * 2)
+            for C in children:
+                child_width = C.GetSizeTuple()[0]
+                if child_width > target_width:
+                    target_width = child_width
             
-            width = self.GetSize()
-            height = width[1]
-            width = width[0]
-            
-            if target_width > width:
-                self.SetSize((target_width, height))
+            if children:
+                padding_x = children[0].GetPositionTuple()[0]
                 
-                if self.GetParent():
-                    self.CenterOnParent()
-        
-        self.GetSizer().Layout()
+                # Add padding
+                target_width += (padding_x * 2)
+                
+                if target_width > size[0]:
+                    self.SetSize((target_width, size[1]))
+                    
+                    # Only center on parent if user did not move dialog manually
+                    # FIXME: Only works if dialog is moved vertically
+                    if parent and not self.user_moved:
+                        self.CenterOnParent()
+            
+            self.GetSizer().Layout()
     
     
     ## Override wx.ProgressDialog.WasCancelled method for compatibility wx older wx versions

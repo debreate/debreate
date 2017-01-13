@@ -10,10 +10,11 @@ import os, wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.mixins.listctrl import TextEditMixin
 
+from dbr.colors         import COLOR_warn
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.panel          import BorderedPanel
-from globals.colors     import COLOR_warn
+from globals.paths      import ConcatPaths
 from globals.constants  import FTYPE_EXE
 from globals.constants  import file_types_defs
 
@@ -364,13 +365,17 @@ class ListCtrlPanel(BorderedPanel):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(ListCtrlPanel, TextEditMixin):
+class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
     def __init__(self, parent, window_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
         ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT,
                 name=name)
         TextEditMixin.__init__(self)
+        wx.FileDropTarget.__init__(self)
+        
+        ListCtrlPanel.SetDropTarget(self, self)
         
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
+        self.FOLDER_TEXT_COLOR = wx.BLUE
         
         self.filename_col = 0
         self.source_col = 1
@@ -423,21 +428,27 @@ class FileList(ListCtrlPanel, TextEditMixin):
             source_dir = os.path.dirname(filename)
             filename = os.path.basename(filename)
         
-        Logger.Debug(__name__, GT(u'Adding file: {}/{}').format(source_dir, filename))
+        source_path = ConcatPaths((source_dir, filename))
+        
+        Logger.Debug(__name__, GT(u'Adding file: {}').format(source_path))
         
         self.InsertStringItem(list_index, filename)
         self.SetStringItem(list_index, self.source_col, source_dir)
         self.SetStringItem(list_index, self.target_col, target_dir)
         
-        # TODO: Use 'GetFileMimeType' module to determine file type
-        if os.access(u'{}/{}'.format(source_dir, filename), os.X_OK) or executable:
-            self.SetFileExecutable(list_index)
+        if os.path.isdir(source_path):
+            self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
         
-        if not os.path.isfile(u'{}/{}'.format(source_dir, filename)):
-            self.SetItemBackgroundColour(list_index, COLOR_warn)
+        else:
+            # TODO: Use 'GetFileMimeType' module to determine file type
+            if os.access(source_path, os.X_OK) or executable:
+                self.SetFileExecutable(list_index)
             
-            # File was added but does not exist on filesystem
-            return False
+            if not os.path.isfile(source_path):
+                self.SetItemBackgroundColour(list_index, COLOR_warn)
+                
+                # File was added but does not exist on filesystem
+                return False
         
         return True
     
@@ -510,6 +521,11 @@ class FileList(ListCtrlPanel, TextEditMixin):
         return self.RefreshFileList()
     
     
+    ## Action to take when a file/folder is dropped onto the list from a file manager
+    def OnDropFiles(self, x, y, filename):
+        self.GetParent().OnDropFiles(filename)
+    
+    
     ## Defines actions to take when left-click or left-double-click event occurs
     #  
     #  The super method is overridden to ensure that 'event.Skip' is called.
@@ -538,7 +554,7 @@ class FileList(ListCtrlPanel, TextEditMixin):
         width = width[0]
         
         # Use the parent window & its children to determine desired width
-        target_width = parent.GetSize()[0] - parent.dir_tree.GetSize()[0] - 15
+        target_width = parent.GetSize()[0] - parent.GetDirTreePanel().GetSize()[0] - 15
         
         if width > 0 and target_width > 0:
             if width != target_width:
@@ -578,16 +594,20 @@ class FileList(ListCtrlPanel, TextEditMixin):
             
             absolute_filename = u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])
             
-            if not os.path.isfile(absolute_filename):
-                item_color = COLOR_warn
-                dirty = True
+            if os.path.isdir(absolute_filename):
+                self.SetItemTextColour(row, self.FOLDER_TEXT_COLOR)
             
-            self.SetItemBackgroundColour(row, item_color)
-            
-            if os.access(absolute_filename, os.X_OK):
-                executable = True
-            
-            self.SetFileExecutable(row, executable)
+            else:
+                if not os.path.isfile(absolute_filename):
+                    item_color = COLOR_warn
+                    dirty = True
+                
+                self.SetItemBackgroundColour(row, item_color)
+                
+                if os.access(absolute_filename, os.X_OK):
+                    executable = True
+                
+                self.SetFileExecutable(row, executable)
         
         return dirty
     

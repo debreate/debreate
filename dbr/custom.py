@@ -10,12 +10,7 @@ import os, sys, wx
 
 from dbr.language       import GT
 from dbr.textinput      import MultilineTextCtrlPanel
-from globals.commands   import CMD_gvfs_trash
-
-
-# FIXME: This should be imported from dbr.functions
-def TextIsEmpty(text):
-    return text.strip(u' \t\n') == wx.EmptyString
+from globals.commands   import GetExecutable
 
 
 ## A generic display area that captures \e stdout & \e stderr
@@ -236,7 +231,7 @@ class DBDialog(wx.Dialog):
         parent_path = os.path.split(path)[0]
         
         # FIXME: Use subprocess.Popen
-        os.system((u'{} "{}"'.format(CMD_gvfs_trash, path)).encode(u'utf-8'))
+        os.system((u'{} "{}"'.format(GetExecutable(u'gvfs-trash'), path)).encode(u'utf-8'))
         
         self.dir_tree.ReCreateTree()
         self.dir_tree.SetPath(parent_path)
@@ -519,3 +514,18 @@ class SaveFile(DBDialog):
         
         if event:
             event.Skip()
+
+
+## A status bar for compatibility between wx 3.0 & older versions
+class StatusBar(wx.StatusBar):
+    if wx.MAJOR_VERSION > 2:
+        sb_style = wx.STB_DEFAULT_STYLE
+    
+    else:
+        sb_style = wx.ST_SIZEGRIP
+    
+    def __init__(self, parent, ID=wx.ID_ANY, style=sb_style,
+                name=wx.StatusLineNameStr):
+        wx.StatusBar.__init__(self, parent, ID, style, name)
+        
+        parent.SetStatusBar(self)
