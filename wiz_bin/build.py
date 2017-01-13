@@ -28,6 +28,8 @@ from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import GetExecutable
 from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.strings        import TextIsEmpty
@@ -454,9 +456,7 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
         
-        FILE = open(filename, u'r')
-        build_data = FILE.read().split(u'\n')
-        FILE.close()
+        build_data = ReadFile(filename, split=True)
         
         options_definitions = {}
         
@@ -650,9 +650,8 @@ class Panel(WizardPage):
             os.makedirs(debian_dir)
         
         md5_file = ConcatPaths((debian_dir, u'md5sums'))
-        FILE = open(md5_file, u'w')
-        FILE.write(u'\n'.join(md5_list))
-        FILE.close()
+        
+        WriteFile(md5_file, md5_list)
         
         return GT(u'md5sums created: {}').format(md5_file)
     
@@ -664,9 +663,7 @@ class Panel(WizardPage):
         lintian_tags_file = u'{}/data/lintian/tags'.format(PATH_app)
         
         if os.path.isfile(lintian_tags_file):
-            FILE = open(lintian_tags_file, u'r')
-            lint_lines = FILE.read().split(u'\n')
-            FILE.close()
+            lint_lines = ReadFile(lintian_tags_file, split=True)
             
             lint_tags = []
             for L in lint_lines:

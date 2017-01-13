@@ -20,6 +20,7 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -262,9 +263,7 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
         
-        FILE = open(filename, u'r')
-        clog_data = FILE.read().split(u'\n')
-        FILE.close()
+        clog_data = ReadFile(filename, split=True)
         
         sections = {}
         

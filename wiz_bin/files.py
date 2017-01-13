@@ -25,6 +25,7 @@ from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.bitmaps        import ICON_ERROR
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
 from globals.paths          import PATH_home
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -352,9 +353,7 @@ class Panel(WizardPage):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
         
-        FILE = open(filename)
-        files_data = FILE.read().split(u'\n')
-        FILE.close()
+        files_data = ReadFile(filename, split=True)
         
         # Lines beginning with these characters will be ignored
         ignore_characters = (

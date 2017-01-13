@@ -11,6 +11,7 @@ import wx
 from dbr.dialogs        import TextOverwriteDialog
 from dbr.language       import GT
 from globals            import ident
+from globals.fileio     import ReadFile
 from globals.strings    import TextIsEmpty
 
 
@@ -33,7 +34,7 @@ class SingleFileTextDropTarget(wx.FileDropTarget):
         if len(filenames) > 1:
             raise ValueError(GT(u'Too many files'))
         
-        text = open(filenames[0]).read()
+        text = ReadFile(filenames[0])
         try:
             if not TextIsEmpty(self.obj.GetValue()):
                 overwrite = TextOverwriteDialog(self.obj, message = GT(u'The text area is not empty!'))
