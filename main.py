@@ -116,50 +116,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_file.AppendSeparator()
         menu_file.AppendItem(mitm_quit)
         
-        # ----- Page Menu
+        # *** Page Menu *** #
+        ## This menu is filled from dbr.wizard.Wizard
         self.menu_page = wx.Menu()
-        
-        p_info = wx.MenuItem(self.menu_page, ident.GREETING, GT(u'Information'),
-                GT(u'Go to Information section'), kind=wx.ITEM_RADIO)
-        p_ctrl = wx.MenuItem(self.menu_page, ident.CONTROL, GT(u'Control'),
-                GT(u'Go to Control section'), kind=wx.ITEM_RADIO)
-        p_deps = wx.MenuItem(self.menu_page, ident.DEPENDS, GT(u'Dependencies'),
-                GT(u'Go to Dependencies section'), kind=wx.ITEM_RADIO)
-        p_files = wx.MenuItem(self.menu_page, ident.FILES, GT(u'Files'),
-                GT(u'Go to Files section'), kind=wx.ITEM_RADIO)
-        p_scripts = wx.MenuItem(self.menu_page, ident.SCRIPTS, GT(u'Scripts'),
-                GT(u'Go to Scripts section'), kind=wx.ITEM_RADIO)
-        p_changelog = wx.MenuItem(self.menu_page, ident.CHANGELOG, GT(u'Changelog'),
-                GT(u'Go to Changelog section'), kind=wx.ITEM_RADIO)
-        p_copyright = wx.MenuItem(self.menu_page, ident.COPYRIGHT, GT(u'Copyright'),
-                GT(u'Go to Copyright section'), kind=wx.ITEM_RADIO)
-        p_menu = wx.MenuItem(self.menu_page, ident.MENU, GT(u'Menu Launcher'),
-                GT(u'Go to Menu launcher section'), kind=wx.ITEM_RADIO)
-        p_build = wx.MenuItem(self.menu_page, ident.BUILD, GT(u'Build'),
-                GT(u'Go to Build section'), kind=wx.ITEM_RADIO)
-        
-        self.menu_page.AppendItem(p_info)
-        self.menu_page.AppendItem(p_ctrl)
-        self.menu_page.AppendItem(p_deps)
-        self.menu_page.AppendItem(p_files)
-        self.menu_page.AppendItem(p_scripts)
-        self.menu_page.AppendItem(p_changelog)
-        self.menu_page.AppendItem(p_copyright)
-        self.menu_page.AppendItem(p_menu)
-        self.menu_page.AppendItem(p_build)
         
         # ----- Options Menu
         self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, ident.MENU_TT, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
             self.menu_opt.AppendItem(self.opt_tooltips)
         
-        if self.menu_opt.FindItemById(ident.MENU_TT):
+        if self.menu_opt.FindItemById(ident.TOOLTIPS):
             show_tooltips = ReadConfig(u'tooltips')
             if show_tooltips != ConfCode.KEY_NO_EXIST:
                 self.opt_tooltips.Check(show_tooltips)
@@ -197,36 +169,36 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Menu with links to the Debian Policy Manual webpages
         self.menu_policy = wx.Menu()
         
-        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
+        mitm_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
-        m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_Ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control files'),
+        mitm_dpm.SetBitmap(ICON_GLOBE)
+        mitm_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
-        m_dpm_Ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_Log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
+        mitm_dpm_ctrl.SetBitmap(ICON_GLOBE)
+        mitm_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
-        m_dpm_Log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
+        mitm_dpm_log.SetBitmap(ICON_GLOBE)
+        mitm_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
-        m_upm.SetBitmap(ICON_GLOBE)
+        mitm_upm.SetBitmap(ICON_GLOBE)
         # FIXME: Use wx.NewId()
-        m_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from source'),
+        mitm_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
-        m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lintain_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian tags explanation'),
+        mitm_deb_src.SetBitmap(ICON_GLOBE)
+        mitm_lint_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian tags explanation'),
                 u'http://lintian.debian.org/tags-all.html')
-        m_lintain_tags.SetBitmap(ICON_GLOBE)
-        m_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+        mitm_lint_tags.SetBitmap(ICON_GLOBE)
+        mitm_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
-        m_launchers.SetBitmap(ICON_GLOBE)
+        mitm_launchers.SetBitmap(ICON_GLOBE)
         
-        self.menu_policy.AppendItem(m_dpm)
-        self.menu_policy.AppendItem(m_dpm_Ctrl)
-        self.menu_policy.AppendItem(m_dpm_Log)
-        self.menu_policy.AppendItem(m_upm)
-        self.menu_policy.AppendItem(m_deb_src)
-        self.menu_policy.AppendItem(m_lintain_tags)
-        self.menu_policy.AppendItem(m_launchers)
+        self.menu_policy.AppendItem(mitm_dpm)
+        self.menu_policy.AppendItem(mitm_dpm_ctrl)
+        self.menu_policy.AppendItem(mitm_dpm_log)
+        self.menu_policy.AppendItem(mitm_upm)
+        self.menu_policy.AppendItem(mitm_deb_src)
+        self.menu_policy.AppendItem(mitm_lint_tags)
+        self.menu_policy.AppendItem(mitm_launchers)
         
         lst_policy_ids = (
             ident.DPM,
@@ -249,19 +221,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help.AppendItem(mitm_help)
         menu_help.AppendItem(mitm_about)
         
-        menubar = MenuBar()
+        menubar = MenuBar(self)
         
-        menubar.Append(menu_file, GT(u'File'))
-        menubar.Append(self.menu_page, GT(u'Page'))
+        menubar.Append(menu_file, GT(u'File'), wx.ID_FILE)
+        menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
         
         if self.menu_opt.GetMenuItemCount():
-            menubar.Append(self.menu_opt, GT(u'Options'))
+            menubar.Append(self.menu_opt, GT(u'Options'), ident.OPTIONS)
         
-        menubar.Append(menu_help, GT(u'Help'))
+        menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
-        # ***** END MENUBAR ***** #
-        
-        self.wizard = Wizard(self) # Binary
+        self.wizard = Wizard(self)
         
         self.page_info = PanelInfo(self.wizard)
         self.page_control = PanelControl(self.wizard)
@@ -285,18 +255,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.wizard.SetPages(bin_pages)
         
-        lst_pages = (
-            p_info,
-            p_ctrl,
-            p_deps,
-            p_files,
-            p_scripts,
-            p_changelog,
-            p_copyright,
-            p_menu,
-            p_build,
-            )
-        
         # *** Event Handling *** #
         
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
@@ -306,25 +264,28 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         
-        wx.EVT_MENU(self, ident.MENU_TT, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ident.TOOLTIPS, self.OnToggleToolTips)
         wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
         
         wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
-        for p in lst_pages:
-            wx.EVT_MENU(self, p.GetId(), self.GoToPage)
+        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
+        
+        for M in self.menu_page.GetMenuItems():
+            Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
+            wx.EVT_MENU(self, M.GetId(), self.GoToPage)
         
         wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
         
         # *** Layout *** #
         
-        self.main_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(self.wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
-        self.SetSizer(self.main_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         # Saving
