@@ -112,7 +112,6 @@ from dbr.config             import default_config
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import InitializeConfig
 from dbr.config             import ReadConfig
-from dbr.compression        import GetCompressionId
 from dbr.dialogs            import FirstRun
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
@@ -121,6 +120,7 @@ from dbr.language           import TRANSLATION_DOMAIN
 from dbr.log                import Logger
 from dbr.workingdir         import ChangeWorkingDirectory
 from globals.application    import VERSION_string
+from globals.compression    import GetCompressionId
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.system         import PY_VER_STRING

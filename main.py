@@ -12,10 +12,6 @@ from urllib2 import URLError
 
 from command_line           import parsed_args_s
 from dbr.about              import AboutDialog
-from dbr.compression        import CompressionHandler
-from dbr.compression        import DEFAULT_COMPRESSION_ID
-from dbr.compression        import compression_formats
-from dbr.compression        import compression_mimetypes
 from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
@@ -53,6 +49,10 @@ from globals.bitmaps        import ICON_CLOCK
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
 from globals.bitmaps        import LOGO
+from globals.compression    import CompressionHandler
+from globals.compression    import DEFAULT_COMPRESSION_ID
+from globals.compression    import compression_formats
+from globals.compression    import compression_mimetypes
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
