@@ -86,8 +86,9 @@ Non-priority:
 - Add contributers file to docs dir
 - Option to create lintian overrides file
 - Use 'data/lintian/tags' for overrides
+- Option to convert between package formats (alien?)
 
-Tasks being considered:
+Undecided:
 - Scripting backend
 - Plugin support for adding custom pages to wizard
 - Include ar (BSD variant) as alternative to dpkg
