@@ -5,11 +5,11 @@
 
 import wx
 
-import globals.ident as ident
 from dbr.buttons            import ButtonAdd
 from dbr.language           import GT
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
+from globals                import ident
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 
@@ -129,7 +129,7 @@ class ManPage(wx.NotebookPage):
         layout_H1.Add(self.section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         layout_H1.Add(self.section_definition, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
-        self.man_text = MultilineTextCtrlPanel(self.bg)
+        self.man_text = TextAreaPanel(self.bg)
         
         layout_V1 = wx.BoxSizer(wx.VERTICAL)
         layout_V1.Add(layout_H1, 0, wx.TOP|wx.BOTTOM, 5)

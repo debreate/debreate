@@ -15,7 +15,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.workingdir         import ChangeWorkingDirectory
 from globals                import ident
 from globals.bitmaps        import ICON_ERROR
@@ -363,7 +363,7 @@ class DetailedMessageDialog(wx.Dialog):
             self.btn_details = wx.ToggleButton(self, label=GT(u'Details'))
             #btn_copy = wx.Button(self, label=GT(u'Copy details'))
             
-            self.dsp_details = MultilineTextCtrlPanel(self, value=details,
+            self.dsp_details = TextAreaPanel(self, value=details,
                     style=wx.TE_READONLY)
             
             # *** Event handlers *** #
@@ -380,7 +380,7 @@ class DetailedMessageDialog(wx.Dialog):
         
         if not TextIsEmpty(details):
             for C in self.GetChildren():
-                if isinstance(C, MultilineTextCtrlPanel):
+                if isinstance(C, TextAreaPanel):
                     self.details = details
                     C.SetValue(self.details)
                     

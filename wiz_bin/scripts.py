@@ -20,7 +20,7 @@ from dbr.markdown           import MarkdownDialog
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
@@ -474,7 +474,7 @@ class DebianScript(wx.Panel):
         shell_layout.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
         shell_layout.Add(self.shell, 1)
         
-        self.script_body = MultilineTextCtrlPanel(self, self.GetId())
+        self.script_body = TextAreaPanel(self, self.GetId())
         
         sizer_v1 = wx.BoxSizer(wx.VERTICAL)
         sizer_v1.Add(shell_layout, 0)

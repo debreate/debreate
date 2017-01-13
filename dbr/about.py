@@ -20,7 +20,7 @@ from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
@@ -100,7 +100,7 @@ class AboutDialog(wx.Dialog):
         t_credits.Layout()
         
         ## Changelog text area
-        self.changelog = MultilineTextCtrlPanel(t_changelog, style=wx.TE_READONLY)
+        self.changelog = TextAreaPanel(t_changelog, style=wx.TE_READONLY)
         self.changelog.SetFont(MONOSPACED_MD)
         
         log_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -111,7 +111,7 @@ class AboutDialog(wx.Dialog):
         
         
         ## Licensing information text area
-        self.license = MultilineTextCtrlPanel(t_license, style=wx.TE_READONLY)
+        self.license = TextAreaPanel(t_license, style=wx.TE_READONLY)
         self.license.SetFont(MONOSPACED_MD)
         
         license_sizer = wx.BoxSizer(wx.VERTICAL)

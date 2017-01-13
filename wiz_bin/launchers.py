@@ -21,7 +21,7 @@ from dbr.functions          import TextIsEmpty
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import MultilineTextCtrlPanel
+from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
@@ -212,7 +212,7 @@ class Panel(WizardPage):
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         self.labels.append(txt_other)
         
-        self.ti_other = MultilineTextCtrlPanel(self, name=txt_other.Name)
+        self.ti_other = TextAreaPanel(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.opts_input.append(self.ti_other)
         
