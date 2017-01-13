@@ -20,7 +20,12 @@
 Debreate \- Debian package builder
 .SH SYNOPSIS
 .B debreate
-.RI [commands] | [options] | [project]
+[commands]
+[options]
+[project file]
+[test
+<test1>
+[test2 ...]]
 .SH DESCRIPTION
 A utility to aid in creating Debian packages for distribution.
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
@@ -55,3 +60,12 @@ Set the integer value refresh rate for the log window when debugging is enabled.
 .TP
 .B \-w|\-\-log-window
 Initially display log window if log level is set to 'debug'.
+.SH TESTING COMMANDS
+.TP
+.B test <tests>
+.br
+Runs supplied tests during execution for debugging.
+.SH TESTS
+.TP
+.B update-fail
+Uses a bad URL to force "Help ➜ Check for update" to fail.
