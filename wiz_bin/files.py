@@ -100,6 +100,31 @@ class Panel(wx.ScrolledWindow):
         
         self.lst_files.mouse_over = False
         
+        # *** Event Handling *** #
+        
+        # create an event to enable/disable custom widget
+        for item in self.grp_targets:
+            wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
+        
+        # Context menu events for directory tree
+        wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
+        
+        # Button events
+        btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)
+        btn_remove.Bind(wx.EVT_BUTTON, self.OnRemoveSelected)
+        btn_clear.Bind(wx.EVT_BUTTON, self.OnClearFileList)
+        self.btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
+        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
+        
+        # ???: Not sure what these do
+        wx.EVT_KEY_DOWN(self.ti_target, self.GetDestValue)
+        wx.EVT_KEY_UP(self.ti_target, self.CheckDest)
+        
+        # Key events for file list
+        wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
+        
+        self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
+        
         # *** Layout *** #
         
         lyt_left = wx.BoxSizer(wx.VERTICAL)
@@ -155,31 +180,6 @@ class Panel(wx.ScrolledWindow):
         self.Layout()
         
         SetPageToolTips(self)
-        
-        # *** Event handlers *** #
-        
-        # create an event to enable/disable custom widget
-        for item in self.grp_targets:
-            wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
-        
-        # Context menu events for directory tree
-        wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
-        
-        # Button events
-        btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)
-        btn_remove.Bind(wx.EVT_BUTTON, self.OnRemoveSelected)
-        btn_clear.Bind(wx.EVT_BUTTON, self.OnClearFileList)
-        self.btn_browse.Bind(wx.EVT_BUTTON, self.OnBrowse)
-        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
-        
-        # ???: Not sure what these do
-        wx.EVT_KEY_DOWN(self.ti_target, self.GetDestValue)
-        wx.EVT_KEY_UP(self.ti_target, self.CheckDest)
-        
-        # Key events for file list
-        wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
-        
-        self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
     
     
     ## Adds files to the list
@@ -450,7 +450,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        dia = GetDirDialog(wx.GetApp().GetTopWindow(), GT(u'Choose Target Directory'))
+        dia = GetDirDialog(GetTopWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.ti_target.SetValue(dia.GetPath())
     
