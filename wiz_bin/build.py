@@ -53,6 +53,7 @@ class Panel(WizardPage):
         self.prebuild_check = False
         
         # Add checkable items to this list
+        # FIXME: Use a different method
         self.build_options = []
         
         # ----- Extra Options
@@ -65,12 +66,6 @@ class Panel(WizardPage):
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = True
         
-        if not GetExecutable(u'md5sum'):
-            self.chk_md5.Disable()
-        
-        else:
-            self.build_options.append(self.chk_md5)
-        
         # Option to strip binaries
         self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
         self.chk_strip.default = True
@@ -80,7 +75,6 @@ class Panel(WizardPage):
         self.chk_rmstage.SetName(u'RMSTAGE')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
-        self.build_options.append(self.chk_rmstage)
         
         # Checks the output .deb for errors
         self.chk_lint = wx.CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
@@ -88,24 +82,11 @@ class Panel(WizardPage):
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
         
-        if not GetExecutable(u'lintian'):
-            self.chk_lint.Disable()
-        
-        else:
-            self.chk_lint.SetValue(self.chk_lint.default)
-            self.build_options.append(self.chk_lint)
-        
         # Installs the deb on the system
         self.chk_install = wx.CheckBox(pnl_options, label=GT(u'Install package after build'))
         self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
-        
-        if not GetSystemInstaller():
-            self.chk_install.Disable()
-        
-        else:
-            self.build_options.append(self.chk_install)
         
         # *** Lintian Overrides *** #
         
@@ -163,6 +144,10 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
+        
+        # *** Post-layout functions *** #
+        
+        self.InitDefaultSettings()
     
     
     ## Method that builds the actual Debian package
@@ -473,7 +458,8 @@ class Panel(WizardPage):
     
     ## Sets up page with default settings
     def InitDefaultSettings(self):
-        # md5sum file
+        self.build_options = []
+        
         option_list = (
             (self.chk_md5, GetExecutable(u'md5sum'),),
             (self.chk_strip, GetExecutable(u'strip'),),
@@ -489,6 +475,9 @@ class Panel(WizardPage):
             
             option.Enable(bool(command))
             option.SetValue(FieldEnabled(option) and option.default)
+            
+            if bool(command):
+                self.build_options.append(option)
     
     
     ## Installs the built .deb package onto the system
