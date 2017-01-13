@@ -21,6 +21,7 @@ from globals.application    import VERSION_dev
 from globals.application    import VERSION_string
 from globals.commands       import GetExecutable
 from globals.constants      import system_licenses_path
+from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_STRING
@@ -133,13 +134,6 @@ def prepend_zero(number):
     
     return unicode(number)
 
-
-## Retrieves the current year
-#  
-#  \return
-#        String value of the current year
-def GetYear():
-    return date.today().year
 
 def GetDate():
     yr = str(GetYear())
