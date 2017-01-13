@@ -106,31 +106,31 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** File Menu *** #
         self.menu_file = wx.Menu()
         
-        mi_new = wx.MenuItem(self.menu_file, wx.ID_NEW, GT(u'New project'),
+        mitm_new = wx.MenuItem(self.menu_file, wx.ID_NEW, GT(u'New project'),
                 help=GT(u'Start a new project'))
-        mi_open = wx.MenuItem(self.menu_file, wx.ID_OPEN, GT(u'Open'),
+        mitm_open = wx.MenuItem(self.menu_file, wx.ID_OPEN, GT(u'Open'),
                 help=GT(u'Open a previously saved project'))
-        mi_save = wx.MenuItem(self.menu_file, wx.ID_SAVE, GT(u'Save'),
+        mitm_save = wx.MenuItem(self.menu_file, wx.ID_SAVE, GT(u'Save'),
                 help=GT(u'Save current project'))
-        mi_saveas = wx.MenuItem(self.menu_file, wx.ID_SAVEAS, GT(u'Save as'),
+        mitm_saveas = wx.MenuItem(self.menu_file, wx.ID_SAVEAS, GT(u'Save as'),
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        mi_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD, GT(u'Quick Build'),
+        mitm_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
-        mi_quickbuild.SetBitmap(ICON_CLOCK)
+        mitm_quickbuild.SetBitmap(ICON_CLOCK)
         
-        mi_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
+        mitm_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
                 help=GT(u'Exit Debreate'))
         
-        self.menu_file.AppendItem(mi_new)
-        self.menu_file.AppendItem(mi_open)
-        self.menu_file.AppendItem(mi_save)
-        self.menu_file.AppendItem(mi_saveas)
+        self.menu_file.AppendItem(mitm_new)
+        self.menu_file.AppendItem(mitm_open)
+        self.menu_file.AppendItem(mitm_save)
+        self.menu_file.AppendItem(mitm_saveas)
         self.menu_file.AppendSeparator()
-        self.menu_file.AppendItem(mi_quickbuild)
+        self.menu_file.AppendItem(mitm_quickbuild)
         self.menu_file.AppendSeparator()
-        self.menu_file.AppendItem(mi_quit)
+        self.menu_file.AppendItem(mitm_quit)
         
         # *** Page Menu *** #
         ## This menu is filled from dbr.wizard.Wizard
@@ -140,10 +140,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_action = wx.Menu()
         
         # FIXME: Use global ID???
-        mi_build = wx.MenuItem(menu_action, wx.NewId(), GT(u'Build'),
+        mitm_build = wx.MenuItem(menu_action, wx.NewId(), GT(u'Build'),
                 GT(u'Start building .deb package'))
         
-        menu_action.AppendItem(mi_build)
+        menu_action.AppendItem(mitm_build)
         
         # ----- Options Menu
         menu_opt = wx.Menu()
@@ -205,8 +205,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if GetExecutable(u'xdg-open'):
-            mi_logs_dir = wx.MenuItem(menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
-            menu_opt.AppendItem(mi_logs_dir)
+            mitm_logs_dir = wx.MenuItem(menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            menu_opt.AppendItem(mitm_logs_dir)
             
             wx.EVT_MENU(menu_opt, ident.OPENLOGS, self.OnLogDirOpen)
         
@@ -214,48 +214,48 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help = wx.Menu()
         
         # ----- Version update
-        mi_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
-        mi_update.SetBitmap(ICON_LOGO)
+        mitm_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for Update'))
+        mitm_update.SetBitmap(ICON_LOGO)
         
-        menu_help.AppendItem(mi_update)
+        menu_help.AppendItem(mitm_update)
         menu_help.AppendSeparator()
         
         # Menu with links to the Debian Policy Manual webpages
         self.menu_policy = wx.Menu()
         
-        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
+        mitm_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
-        m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control Files'),
+        mitm_dpm.SetBitmap(ICON_GLOBE)
+        mitm_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control Files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
-        m_dpm_ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
+        mitm_dpm_ctrl.SetBitmap(ICON_GLOBE)
+        mitm_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
-        m_dpm_log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
+        mitm_dpm_log.SetBitmap(ICON_GLOBE)
+        mitm_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
-        m_upm.SetBitmap(ICON_GLOBE)
-        m_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from Source'),
+        mitm_upm.SetBitmap(ICON_GLOBE)
+        mitm_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from Source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
-        m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lint_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+        mitm_deb_src.SetBitmap(ICON_GLOBE)
+        mitm_lint_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
                 u'http://lintian.debian.org/tags-all.html')
-        m_lint_tags.SetBitmap(ICON_GLOBE)
-        m_lint_overrides = wx.MenuItem(self.menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+        mitm_lint_tags.SetBitmap(ICON_GLOBE)
+        mitm_lint_overrides = wx.MenuItem(self.menu_policy, ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                 u'https://lintian.debian.org/manual/section-2.4.html')
-        m_lint_overrides.SetBitmap(ICON_GLOBE)
-        m_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+        mitm_lint_overrides.SetBitmap(ICON_GLOBE)
+        mitm_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
-        m_launchers.SetBitmap(ICON_GLOBE)
+        mitm_launchers.SetBitmap(ICON_GLOBE)
         
-        self.menu_policy.AppendItem(m_dpm)
-        self.menu_policy.AppendItem(m_dpm_ctrl)
-        self.menu_policy.AppendItem(m_dpm_log)
-        self.menu_policy.AppendItem(m_upm)
-        self.menu_policy.AppendItem(m_deb_src)
-        self.menu_policy.AppendItem(m_lint_tags)
-        self.menu_policy.AppendItem(m_lint_overrides)
-        self.menu_policy.AppendItem(m_launchers)
+        self.menu_policy.AppendItem(mitm_dpm)
+        self.menu_policy.AppendItem(mitm_dpm_ctrl)
+        self.menu_policy.AppendItem(mitm_dpm_log)
+        self.menu_policy.AppendItem(mitm_upm)
+        self.menu_policy.AppendItem(mitm_deb_src)
+        self.menu_policy.AppendItem(mitm_lint_tags)
+        self.menu_policy.AppendItem(mitm_lint_overrides)
+        self.menu_policy.AppendItem(mitm_launchers)
         
         lst_policy_ids = (
             ident.DPM,
@@ -271,13 +271,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         for ID in lst_policy_ids:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
-        mi_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
-        mi_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
+        mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+        mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
         menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
         menu_help.AppendSeparator()
-        menu_help.AppendItem(mi_help)
-        menu_help.AppendItem(mi_about)
+        menu_help.AppendItem(mitm_help)
+        menu_help.AppendItem(mitm_about)
         
         menubar = MenuBar(self)
         
@@ -377,7 +377,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self, M.GetId(), self.GoToPage)
         
         # Action menu events
-        wx.EVT_MENU(self, mi_build.GetId(), self.page_build.OnBuild)
+        wx.EVT_MENU(self, mitm_build.GetId(), self.page_build.OnBuild)
     
     
     ## TODO: Doxygen
