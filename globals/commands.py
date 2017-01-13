@@ -17,9 +17,6 @@ from dbr.language           import GT
 from globals.wizardhelper   import GetTopWindow
 
 
-CMD_ar = CommandExists(u'ar')
-CMD_bsdar = CommandExists(u'bsdar')
-CMD_dpkg = CommandExists(u'dpkg')
 CMD_dpkgdeb = CommandExists(u'dpkg-deb')
 CMD_fakeroot = CommandExists(u'fakeroot')
 
@@ -46,7 +43,6 @@ CMD_system_installer = None
 CMDS_installers = (
     CMD_gdebi_gui,
     CMD_gdebi,
-    CMD_dpkg,
 )
 
 # Sets the system installer by priority
@@ -60,8 +56,6 @@ CMD_system_packager = None
 # Order in priority
 CMDS_packagers = (
     CMD_dpkgdeb,
-    CMD_bsdar,
-    CMD_ar,
 )
 
 # Sets the system packager by priority
