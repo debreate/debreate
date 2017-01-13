@@ -2,14 +2,15 @@
 
 ## \package command_line
 
+# MIT licensing
+# See: docs/LICENSE.txt
 
-# System modules
+
 import sys
 
+from globals.tests import available_tests
+from globals.tests import test_list
 
-
-#short_args = u'hvg:'
-#long_args = [u'help', u'version', u'log-level=', u'log-interval=']
 
 ## Solo args
 #  
@@ -41,12 +42,14 @@ cmds = (
     u'clean',
     u'compile',
     u'legacy',
+    u'test',
 )
 
 parsed_args_s = []
 parsed_args_v = {}
 parsed_commands = []
 parsed_path = None
+
 
 def ArgOK(arg, group):
     for s, l in group:
@@ -55,14 +58,16 @@ def ArgOK(arg, group):
     
     return False
 
+
 def ArgIsDefined(arg, a_type):
     for group in (solo_args, value_args):
-        for S in group:
-            for A in S:
+        for SET in group:
+            for A in SET:
                 if arg == A:
                     return True
     
     return False
+
 
 def GetArgType(arg):
     dashes = 0
@@ -92,13 +97,41 @@ def GetArgType(arg):
     if arg in cmds:
         return u'command'
     
+    # Any other arguments should be a filename path
     return u'path'
 
 
 def ParseArguments(arg_list):
-    global parsed_path
+    global parsed_path, parsed_commands, parsed_args_s, parsed_args_v
     
-    for A in arg_list:
+    if u'test' in arg_list:
+        testcmd_index = arg_list.index(u'test')
+        tests = arg_list[testcmd_index+1:]
+        
+        if not tests:
+            print(u'ERROR: Must supply at least one test')
+            sys.exit(1)
+        
+        for TEST in tests:
+            if TEST not in available_tests:
+                print(u'ERROR: Unrecognized test: {}'.format(TEST))
+                sys.exit(1)
+            
+            test_list.append(TEST)
+            
+            # Remove tests from arguments
+            arg_list.pop(testcmd_index + 1)
+        
+        # Remove test command from arguments
+        arg_list.pop(testcmd_index)
+    
+    argc = len(arg_list)
+    
+    for AINDEX in range(argc):
+        if AINDEX >= argc:
+            break
+        
+        A = arg_list[AINDEX]
         arg_type = GetArgType(A)
         
         if arg_type == None:
@@ -111,7 +144,7 @@ def ParseArguments(arg_list):
         
         if arg_type == u'path':
             if parsed_path != None:
-                print(u'ERROR: Multiple input files specified: {}, {}'.format(parsed_path, A))
+                print(u'ERROR: Extra input file detected: {}'.format(A))
                 # FIXME: Use errno here
                 sys.exit(1)
             
@@ -149,9 +182,6 @@ def ParseArguments(arg_list):
         
         parsed_args_v[key] = value
     
-    
-    # Testing arguments
-    
     for A in parsed_args_s:
         if not ArgOK(A, solo_args):
             for S, L in value_args:
@@ -169,7 +199,6 @@ def ParseArguments(arg_list):
         for S, L in solo_args:
             if A == S:
                 parsed_args_s[arg_index] = L
-    
     
     for A in parsed_args_v:
         if not ArgOK(A, value_args):
