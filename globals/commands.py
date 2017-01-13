@@ -37,20 +37,6 @@ CMD_xdg_open = CommandExists(u'xdg-open')
 if not CMD_gdebi_gui:
     CMD_gdebi_gui = CommandExists(u'gdebi-kde')
 
-CMD_system_installer = None
-
-# Order in priority
-CMDS_installers = (
-    CMD_gdebi_gui,
-    CMD_gdebi,
-)
-
-# Sets the system installer by priority
-for C in CMDS_installers:
-    if C:
-        CMD_system_installer = C
-        break
-
 CMD_system_packager = None
 
 # Order in priority
