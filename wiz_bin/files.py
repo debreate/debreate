@@ -254,45 +254,6 @@ class Panel(WizardPage):
             event.Skip()
     
     
-    # FIXME: Deprecated; Replace with self.OnKeyDelete|self.OnKeyDown
-    def DelPathDeprecated(self, event=None):
-        try:
-            modifier = event.GetModifiers()
-            keycode = event.GetKeyCode()
-        
-        except AttributeError:
-            keycode = event.GetEventObject().GetId()
-        
-        if keycode in (wx.ID_REMOVE, wx.WXK_DELETE):
-            selected = [] # Items to remove from visible list
-            toremove = [] # Items to remove from invisible list
-            total = self.lst_files.GetSelectedItemCount()
-            current = self.lst_files.GetFirstSelected()
-            if current != -1:
-                selected.insert(0, current)
-                while total > 1:
-                    total = total - 1
-                    prev = current
-                    current = self.lst_files.GetNextSelected(prev)
-                    selected.insert(0, current)
-            
-            for path in selected:
-                # Remove the item from the invisible list
-                for item in self.list_data:
-                    filename = self.lst_files.GetItemText(path)
-                    dest = self.lst_files.GetItem(path, 1).GetText()
-                    if filename.encode(u'utf-8') == item[1].decode(u'utf-8') and dest.encode(u'utf-8') == item[2].decode(u'utf-8'):
-                        toremove.append(item)
-                
-                self.lst_files.DeleteItem(path) # Remove the item from the visible list
-            
-            for item in toremove:
-                self.list_data.remove(item)
-        
-        elif keycode == 65 and modifier == wx.MOD_CONTROL:
-            self.SelectAll()
-    
-    
     ## TODO: Doxygen
     def ExportBuild(self, target):
         if not os.path.isdir(target):
