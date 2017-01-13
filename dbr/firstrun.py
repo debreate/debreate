@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-
 ## \package dbr.firstrun
+
 # MIT licensing
 # See: docs/LICENSE.txt
 
