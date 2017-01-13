@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, thread, time, wx
+import os, thread, threading, time, traceback, wx
 from wx.lib.newevent import NewCommandEvent
 
 from dbr.font               import GetMonospacedFont
@@ -27,6 +27,8 @@ RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 
 ## A log class for outputting messages
+#  
+#  TODO: Add 'quiet' (0) log level.
 #  
 #  A log that will output messages to the terminal &
 #    a log text file.
@@ -272,12 +274,10 @@ class LogWindow(wx.Dialog):
         self.log_timestamp = os.stat(self.log_file).st_mtime
     
     
-    ## Destructor
+    ## Destructor clears the log polling thead
     def __del__(self):
-        print(u'FIXME: [dbr.log] How to kill log polling thread?; Thread ID: {}'.format(self.THREAD_ID))
-        
-        # FIXME: PyDeadObjectError
-        #        How to exit thread?
+        if self.log_poll_thread and self.log_poll_thread.is_alive():
+            self.log_poll_thread.clear()
     
     
     ## Positions the log window relative to the main window
@@ -352,11 +352,16 @@ class LogWindow(wx.Dialog):
     def OnShow(self, event=None):
         main_window = GetTopWindow()
         
-        window_shown = self.IsShown()
-        menu_checked = main_window.menu_debug.IsChecked(ident.LOG)
+        # In case main window has been destroyed, but sub thread still active
+        if main_window:
+            window_shown = self.IsShown()
+            menu_checked = main_window.menu_debug.IsChecked(ident.LOG)
+            
+            if menu_checked != window_shown:
+                main_window.menu_debug.Check(ident.LOG, window_shown)
         
-        if menu_checked != window_shown:
-            main_window.menu_debug.Check(ident.LOG, window_shown)
+        else:
+            Logger.Warning(__name__, u'Log thread still active!')
     
     
     ## Use an event to show the log window
@@ -365,9 +370,12 @@ class LogWindow(wx.Dialog):
     #    a separate item is not added in the system window
     #    list for the log.
     def OnShowMainWindow(self, event=None):
-        # Make sure the main window has not been destroyed
-        if GetTopWindow().IsShown():
-            self.ShowLog()
+        main_window = GetTopWindow()
+        
+        # Make sure the main window has not been destroyed before showing log
+        if main_window and main_window.IsShown():
+            if main_window.menu_debug.IsChecked(ident.LOG):
+                self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
@@ -386,6 +394,9 @@ class LogWindow(wx.Dialog):
     
     ## Creates a thread that polls for changes in log file
     def PollLogFile(self, args=None):
+        self.log_poll_thread = threading.current_thread()
+        self.log_poll_thread.name = u'log_poll_thread'
+        
         previous_timestamp = os.stat(self.log_file).st_mtime
         while self.IsShown():
             current_timestamp = os.stat(self.log_file).st_mtime
@@ -411,10 +422,16 @@ class LogWindow(wx.Dialog):
             
             self.log.SetValue(log_data)
             
-            # Yield here to make sure last line is displayed
-            # FIXME: Causes delay when debug enabled
-            wx.SafeYield()
-            self.log.ShowPosition(self.log.GetLastPosition())
+            try:
+                # Yield here to make sure last line is displayed
+                # FIXME: Causes delay when debug enabled
+                wx.SafeYield()
+                self.log.ShowPosition(self.log.GetLastPosition())
+            
+            except wx.PyDeadObjectError:
+                tb_error = unicode(traceback.format_exc())
+                
+                Logger.Warning(__name__, u'Error refreshing log window. Details below:\n\n{}'.format(tb_error))
     
     
     ## Changes the file to be loaded & displayed
@@ -434,5 +451,4 @@ class LogWindow(wx.Dialog):
         self.RefreshLog()
         self.Show(True)
         
-        # FIXME: Re-enable when threading fixed
-        self.log_poll_thread = thread.start_new_thread(self.PollLogFile, ())
+        thread.start_new_thread(self.PollLogFile, ())
