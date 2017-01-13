@@ -10,15 +10,15 @@
 
 import os, wx
 
-from dbr.compression    import DEFAULT_COMPRESSION_ID
-from dbr.compression    import compression_formats
-from dbr.functions      import GetBoolean
-from dbr.functions      import GetIntTuple
-from dbr.language       import GT
-from globals.fileio     import ReadFile
-from globals.fileio     import WriteFile
-from globals.paths      import PATH_home
-from globals.strings    import TextIsEmpty
+from dbr.functions          import GetBoolean
+from dbr.functions          import GetIntTuple
+from dbr.language           import GT
+from globals.compression    import DEFAULT_COMPRESSION_ID
+from globals.compression    import compression_formats
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
+from globals.paths          import PATH_home
+from globals.strings        import TextIsEmpty
 
 
 ## Configuration codes

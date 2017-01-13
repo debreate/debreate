@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.compression
+## \package globals.compression
 
 
 import commands, os, tarfile, zipfile
 
-import globals.ident as ID
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals            import ident as ID
 from globals.errorcodes import errno
 
 
