@@ -1,4 +1,4 @@
-﻿0.8.0 Release:
+﻿Next Release:
 - Add Launchpad packages for 'yakkety'
 - Use names 'master', 'unstable' & 'stable' for main Git branches
 - Update gettext locales
@@ -36,7 +36,11 @@
 - Replace import of 'thread' with 'threading'
 - Replace 'debian' directory with script to automatically generate Debian build files
 
-0.8.1 Release:
+Priority:
+- Use globals.thread module for all threading activity
+- Test if user's home directory listed twice in directory tree if mounted on separate partition
+- Add option for creating manpages
+- Add lintian overrides option
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
 - Finish page for creating manpage
@@ -46,7 +50,31 @@
 - Text output on Build page
 - Set up manpage template creation for executables in file list
 
-Unknown Release:
+Non-priority:
+- Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
+- Add custom field option to Control
+- Add 'provides' field to Control
+- Add MIME type field to launcher/menu
+- Use custom buttons for template generation on Copyright page
+- Add option to eject removable drive from directory tree context menu
+- Create timer-based progress dialog class
+- Create a Python 2.x/3.x compatibility function for UTF-8 strings
+  - This could optionally be done on the dbr.language.GT function
+- Config file should not be required to exist before launching main app window
+- Option for make/cmake to create portable release
+- Add option to build standalone installers
+- Add wizard to build packages from source
+- Create release notes for install from TODO & BUGS lists
+- Use Python's built-in module 'md5' for creating hashes
+- Startup window in primary monitor
+- Update missing path status in file list after selecting item
+- Add customizable filter for directory tree
+- Add refresh button on copyright page for updating templates list
+- Support multi-select for categories on launcher/menu page
+- Add alternate tooltip for 'strip' option if disabled
+- Add alternate tooltip for 'lintian' option if disabled
+- Add alternate tooltip for 'install' option if disabled
+- Don't show 'unknown error' if package build was cancelled
 - Detailed documentation on files page
 - Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Find alternative (if necessary) to sys.setdefaultencoding
