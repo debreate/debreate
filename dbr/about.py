@@ -128,8 +128,8 @@ class AboutDialog(wx.Dialog):
                 GT(u'wxPython version: {}').format(WX_VER_STRING))
         
         ## Debreate's installation prefix
-        install_prefix = wx.StaticText(sys_info, -1,
-                GT(u'App location: {}').format(PATH_app))
+        install_prefix = wx.StaticText(sys_info,
+                label=GT(u'App location: {}').format(PATH_app))
         
         if INSTALLED:
             install_prefix.SetLabel(GT(u'Installation prefix: {}').format(PREFIX))
@@ -142,6 +142,7 @@ class AboutDialog(wx.Dialog):
         sysinfo_layout_V1.AddStretchSpacer()
         sysinfo_layout_V1.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
         sysinfo_layout_V1.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+        sysinfo_layout_V1.AddSpacer(20)
         sysinfo_layout_V1.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP, 5)
         sysinfo_layout_V1.AddStretchSpacer()
         
