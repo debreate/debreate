@@ -569,12 +569,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Action to take when 'Help' is selected from the help menu
     #  
-    #  First tries to open pdf help file. If fails tries
-    #  to open html help file. If fails opens debreate usage
-    #  webpage
-    #  FIXME: Appears to have errors
+    #  Opens a help dialog if using 'alpha' test. Otherwise, opens
+    #  PDF usage document. If openening usage document fails, attempts
+    #  to open web browser in remote usage page.
+    #  TODO: Use dialog as main method
     def OnHelp(self, event=None):
-        if DebugEnabled():
+        if u'alpha' in GetTestList():
             HelpDialog(self).ShowModal()
         
         else:
