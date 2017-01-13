@@ -21,9 +21,11 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.distcache          import DistNamesCacheDialog
 from dbr.functions          import GetCurrentVersion
+from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
+from dbr.menu               import MenuBar
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
 from dbr.wizard             import Wizard
@@ -35,7 +37,7 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
-from globals.bitmaps        import ICON_CLOCK
+from globals.bitmaps        import ICON_CLOCK, LOGO
 from globals.bitmaps        import ICON_GLOBE
 from globals.bitmaps        import ICON_LOGO
 from globals.execute        import GetExecutable
@@ -58,21 +60,6 @@ from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
 
 
-# Options menu
-ID_LOG_DIR_OPEN = wx.NewId()
-
-# Debian Policy Manual IDs
-ID_DPM = wx.NewId()
-ID_DPMCtrl = wx.NewId()
-ID_DPMLog = wx.NewId()
-ID_UPM = wx.NewId()
-ID_Lintian = wx.NewId()
-ID_Launchers = wx.NewId()
-
-# Misc. IDs
-ID_QBUILD = wx.NewId()
-ID_UPDATE = wx.NewId()
-
 default_title = GT(u'Debreate - Debian Package Builder')
 
 
@@ -83,23 +70,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ModuleAccessCtrl.__init__(self, __name__)
         
         # Make sure that this frame is set as the top window
-        if not wx.GetApp().GetTopWindow() == self:
-            Logger.Debug(__name__, GT(u'Not set as top window'))
+        if not GetTopWindow() == self:
+            Logger.Debug(__name__, GT(u'Setting MainWindow instance as top window'))
             
             wx.GetApp().SetTopWindow(self)
         
         if DebugEnabled():
             self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
         
-        self.SetMinSize((640,400))
+        self.SetMinSize(wx.Size(640, 400))
         
         # ----- Set Titlebar Icon
-        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG))
+        self.SetIcon(Icon(LOGO))
         
         # ----- Status Bar
-        self.stat_bar = StatusBar(self)
+        stat_bar = StatusBar(self)
         
-        # ----- File Menu
+        # *** File Menu *** #
         menu_file = wx.Menu()
         
         mitm_new = wx.MenuItem(menu_file, wx.ID_NEW, GT(u'New project'),
@@ -112,9 +99,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 help=GT(u'Save current project with a new filename'))
         
         # Quick Build
-        self.QuickBuild = wx.MenuItem(menu_file, ID_QBUILD, GT(u'Quick Build'),
+        mitm_quickbuild = wx.MenuItem(menu_file, ident.QBUILD, GT(u'Quick Build'),
                 GT(u'Build a package from an existing build tree'))
-        self.QuickBuild.SetBitmap(ICON_CLOCK)
+        mitm_quickbuild.SetBitmap(ICON_CLOCK)
         
         mitm_quit = wx.MenuItem(menu_file, wx.ID_EXIT, GT(u'Quit'),
                 help=GT(u'Exit Debreate'))
@@ -124,17 +111,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_file.AppendItem(mitm_save)
         menu_file.AppendItem(mitm_saveas)
         menu_file.AppendSeparator()
-        menu_file.AppendItem(self.QuickBuild)
+        menu_file.AppendItem(mitm_quickbuild)
         menu_file.AppendSeparator()
         menu_file.AppendItem(mitm_quit)
-        
-        wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
-        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
-        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProject)
-        wx.EVT_MENU(self, ID_QBUILD, self.OnQuickBuild)
-        wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
-        wx.EVT_CLOSE(self, self.OnQuit) #custom close event shows a dialog box to confirm quit
         
         # ----- Page Menu
         self.menu_page = wx.Menu()
@@ -174,7 +153,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Show/Hide tooltips
         self.opt_tooltips = wx.MenuItem(self.menu_opt, ident.MENU_TT, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
-        wx.EVT_MENU(self, ident.MENU_TT, self.OnToggleToolTips)
         
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
@@ -193,10 +171,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if GetExecutable(u'xdg-open'):
-            opt_logs_open = wx.MenuItem(self.menu_opt, ID_LOG_DIR_OPEN, GT(u'Open logs directory'))
-            self.menu_opt.AppendItem(opt_logs_open)
+            mitm_logs_open = wx.MenuItem(self.menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            self.menu_opt.AppendItem(mitm_logs_open)
             
-            wx.EVT_MENU(self, ID_LOG_DIR_OPEN, self.OnLogDirOpen)
+            wx.EVT_MENU(self, ident.OPENLOGS, self.OnLogDirOpen)
         
         # *** OS distribution names cache *** #
         
@@ -204,44 +182,40 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 GT(u'Creates/Updates list of distribution names for changelog page'))
         self.menu_opt.AppendItem(opt_distname_cache)
         
-        wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
-        
         # ----- Help Menu
         menu_help = wx.Menu()
         
         # ----- Version update
-        m_version_check = wx.MenuItem(menu_help, ID_UPDATE, GT(u'Check for update'),
+        mitm_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for update'),
                 GT(u'Check if a new version is available for download'))
-        m_version_check.SetBitmap(ICON_LOGO)
+        mitm_update.SetBitmap(ICON_LOGO)
         
-        menu_help.AppendItem(m_version_check)
+        menu_help.AppendItem(mitm_update)
         menu_help.AppendSeparator()
-        
-        wx.EVT_MENU(self, ID_UPDATE, self.OnCheckUpdate)
         
         # Menu with links to the Debian Policy Manual webpages
         self.menu_policy = wx.Menu()
         
-        m_dpm = wx.MenuItem(self.menu_policy, ID_DPM, GT(u'Debian Policy Manual'),
+        m_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
                 u'http://www.debian.org/doc/debian-policy')
         m_dpm.SetBitmap(ICON_GLOBE)
-        m_dpm_Ctrl = wx.MenuItem(self.menu_policy, ID_DPMCtrl, GT(u'Control files'),
+        m_dpm_Ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control files'),
                 u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
         m_dpm_Ctrl.SetBitmap(ICON_GLOBE)
-        m_dpm_Log = wx.MenuItem(self.menu_policy, ID_DPMLog, GT(u'Changelog'),
+        m_dpm_Log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
                 u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
         m_dpm_Log.SetBitmap(ICON_GLOBE)
-        m_upm = wx.MenuItem(self.menu_policy, ID_UPM, GT(u'Ubuntu Policy Manual'),
+        m_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
                 u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
         m_upm.SetBitmap(ICON_GLOBE)
         # FIXME: Use wx.NewId()
         m_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from source'),
                 u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
         m_deb_src.SetBitmap(ICON_GLOBE)
-        m_lintain_tags = wx.MenuItem(self.menu_policy, ID_Lintian, GT(u'Lintian tags explanation'),
+        m_lintain_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian tags explanation'),
                 u'http://lintian.debian.org/tags-all.html')
         m_lintain_tags.SetBitmap(ICON_GLOBE)
-        m_launchers = wx.MenuItem(self.menu_policy, ID_Launchers, GT(u'Launchers / Desktop entries'),
+        m_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
                 u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
         m_launchers.SetBitmap(ICON_GLOBE)
         
@@ -254,31 +228,27 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_policy.AppendItem(m_launchers)
         
         lst_policy_ids = (
-            ID_DPM,
-            ID_DPMCtrl,
-            ID_DPMLog,
-            ID_UPM,
+            ident.DPM,
+            ident.DPMCtrl,
+            ident.DPMLog,
+            ident.UPM,
             222,
-            ID_Lintian,
-            ID_Launchers,
+            ident.LINT_TAGS,
+            ident.LAUNCHERS,
             )
         
         for ID in lst_policy_ids:
             wx.EVT_MENU(self, ID, self.OpenPolicyManual)
         
-        m_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
-        m_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
+        mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+        mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
         
         menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
         menu_help.AppendSeparator()
-        menu_help.AppendItem(m_help)
-        menu_help.AppendItem(m_about)
+        menu_help.AppendItem(mitm_help)
+        menu_help.AppendItem(mitm_about)
         
-        wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
-        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
-        
-        menubar = wx.MenuBar()
-        self.SetMenuBar(menubar)
+        menubar = MenuBar()
         
         menubar.Append(menu_file, GT(u'File'))
         menubar.Append(self.menu_page, GT(u'Page'))
@@ -326,10 +296,29 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             p_build,
             )
         
+        # *** Event Handling *** #
+        
+        wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
+        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
+        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
+        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProject)
+        wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
+        
+        wx.EVT_MENU(self, ident.MENU_TT, self.OnToggleToolTips)
+        wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
+        
+        wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
+        wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
+        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
+        
         for p in lst_pages:
             wx.EVT_MENU(self, p.GetId(), self.GoToPage)
         
-        # ----- Layout
+        wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
+        
+        # *** Layout *** #
+        
         self.main_sizer = wx.BoxSizer(wx.VERTICAL)
         self.main_sizer.Add(self.wizard, 1, wx.EXPAND)
         
