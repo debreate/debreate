@@ -1,5 +1,5 @@
 # Debreate - Debian Package Creator
-# Copyright (C) 2016 Jordan Irwin
+# Copyright © 2016 Jordan Irwin
 # This file is distributed under the same license as the debreate software, source, &/or package.
 # Jordan Irwin <antumdeluge@gmail.com>, 2016.
 #
