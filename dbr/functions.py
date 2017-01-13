@@ -85,23 +85,6 @@ def GetLongestLine(lines):
     return longest
 
 
-## Execute a command with sudo (super user) privileges
-#  
-#  \param password
-#        Password of the current user's login session
-#  \param command
-#        The command to be run with elevated/super user privileges
-def RunSudo(password, command):
-    command = u'echo {} | sudo -S {} ; echo $?'.format(password, command)
-    wx.SafeYield()
-    output = os.popen(command).read()
-    err = int(output.split(u'\n')[-2])
-    if (err):
-        return False
-    
-    return True
-
-
 ## Checks if the system is using a specific version of Python
 #  
 #  FIXME: This function is currently not used anywhere in the code
