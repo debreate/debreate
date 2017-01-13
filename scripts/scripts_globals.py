@@ -41,7 +41,7 @@ def ConcatPaths(root, tail):
 
 
 scripts_dir = os.path.dirname(__file__)
-root_dir = os.path.split(scripts_dir)[0]
+root_dir = os.path.dirname(scripts_dir)
 
 FILE_info = '{}/INFO'.format(root_dir)
 
