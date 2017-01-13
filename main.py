@@ -20,6 +20,7 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.distcache          import DistNamesCacheDialog
 from dbr.functions          import GetCurrentVersion
+from dbr.functions          import UsingDevelopmentVersion
 from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -388,9 +389,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def OnCheckUpdate(self, event=None):
         update_test = u'update-fail' in GetTestList()
         
-        if not update_test and u'-dev' in VERSION_string:
+        if UsingDevelopmentVersion() and not update_test:
             DetailedMessageDialog(GetTopWindow(), GT(u'Update'),
-                    text=GT(u'Update checking not supported in development versions')).ShowModal()
+                    text=GT(u'Update checking disabled in development versions')).ShowModal()
             return
         
         wx.SafeYield()
