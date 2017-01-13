@@ -360,15 +360,6 @@ def FileUnstripped(file_name):
     return False
 
 
-def GetFileMimeType(file_name):
-    output = commands.getstatusoutput(u'file --mime-type "{}"'.format(file_name))
-    
-    if output[0]:
-        return (output[0], output[1])
-    
-    return output[1].split(u': ')[-1]
-
-
 def BuildBinaryPackageFromTree(root_dir, filename):
     if not os.path.isdir(root_dir):
         return dbrerrno.ENOENT

@@ -28,7 +28,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.error              import ShowError
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetCurrentVersion
-from dbr.functions          import GetFileMimeType
 from dbr.functions          import RemoveTempDirectory
 from dbr.functions          import UsingDevelopmentVersion
 from dbr.help               import HelpDialog
@@ -56,6 +55,7 @@ from globals.bitmaps        import ICON_LOGO
 from globals.bitmaps        import LOGO
 from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
+from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
