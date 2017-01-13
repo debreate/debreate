@@ -9,7 +9,6 @@
 import commands, os, shutil, subprocess, traceback, wx
 
 from dbr.buttons            import ButtonBuild64
-from dbr.commandcheck       import CommandExists
 from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
@@ -24,6 +23,7 @@ from dbr.progress           import ProgressDialog
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
+from globals.cmdcheck       import CommandExists
 from globals.errorcodes     import dbrerrno
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
