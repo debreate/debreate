@@ -5,7 +5,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, re
+import os, re, sys
 
 from scripts_globals import ConcatPaths
 from scripts_globals import lprint
@@ -50,7 +50,10 @@ finaltest = " - outer-pre - \\" - inner - \\" - outer-pro - "\n')
     replacements['arrow'] = 'AR'
 
 
-def PerformSubstitution(filename):
+def PerformSubstitution(filename, unbiased=False):
+    if unbiased:
+        print('\nWARNING: Using unbiased scan (will not check for string literals)\n')
+    
     F_relative = filename.replace('{}/'.format(root_dir), '')
     
     if TESTING:
@@ -80,7 +83,7 @@ def PerformSubstitution(filename):
                 continue
             
             # DEBUG LINE
-            print('\nChecking for string "{}" in file: {}'.format(NEW, filename))
+            print('\nChecking for string "{}" in file: {}'.format(OLD, filename))
             
             changed_lines = original_text.split('\n')
             
@@ -99,11 +102,13 @@ def PerformSubstitution(filename):
                     # DEBUG LINE
                     #lprint('Substrings: {}'.format(substrings), line_number)
                     
-                    string_literal = False
-                    for SS in substrings:
-                        if OLD in SS:
-                            string_literal = True
-                            break
+                    string_literal = unbiased
+                    
+                    if not string_literal:
+                        for SS in substrings:
+                            if OLD in SS:
+                                string_literal = True
+                                break
                     
                     # Source is not within a string literal
                     if not string_literal:
@@ -134,6 +139,19 @@ def PerformSubstitution(filename):
             print('Not found')
     
     return False
+
+
+# Manually specify files with command line
+
+args = sys.argv[1:]
+if args:
+    for FILE in args:
+        if os.path.isfile(FILE):
+            # Use unbiased scan for non-source files
+            PerformSubstitution(FILE, unbiased=not FILE.endswith('.py'))
+    
+    sys.exit(0)
+
 
 # Directories excluded from search (Debreate's root dir would be denoted by an empty string '')
 exclude_dirs = (
