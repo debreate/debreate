@@ -9,7 +9,7 @@
 import commands, os, shutil, wx
 
 from dbr.buttons            import ButtonConfirm
-from dbr.error              import ShowError
+from dbr.dialogs            import ShowErrorDialog
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
@@ -37,7 +37,6 @@ from globals.system         import OS_upstream_version
 from globals.system         import OS_version
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
-from globals.wizardhelper   import GetTopWindow
 
 
 # Font for the name
@@ -457,7 +456,7 @@ class AboutDialog(wx.Dialog):
                 log_text = ReadFile(CHANGELOG)
             
             else:
-                ShowError(GetTopWindow(), log_text)
+                ShowErrorDialog(log_text, parent=self)
         
         else:
             log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
