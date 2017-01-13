@@ -18,7 +18,7 @@ from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
-from globals.commands       import CMD_gzip
+from globals.commands       import GetExecutable
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
@@ -176,6 +176,8 @@ class Panel(WizardPage):
         ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
         
         absolute_filename = u'{}/{}'.format(out_dir, out_name).replace(u'//', u'/')
+        
+        CMD_gzip = GetExecutable(u'gzip')
         
         if compress and CMD_gzip:
             commands.getstatusoutput(u'{} -n9 "{}"'.format(CMD_gzip, absolute_filename))

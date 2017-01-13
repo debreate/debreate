@@ -17,15 +17,6 @@ from dbr.language           import GT
 from globals.wizardhelper   import GetTopWindow
 
 
-CMD_gvfs_trash = CommandExists(u'gvfs-trash')
-CMD_gzip = CommandExists(u'gzip')
-CMD_lintian = CommandExists(u'lintian')
-CMD_md5sum = CommandExists(u'md5sum')
-CMD_sudo = CommandExists(u'sudo')
-CMD_tar = CommandExists(u'tar')
-CMD_xdg_open = CommandExists(u'xdg-open')
-
-
 ## TODO: Doxygen
 def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if elevate and pword.strip(u' \t\n') == wx.EmptyString:
