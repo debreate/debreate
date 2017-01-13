@@ -99,6 +99,10 @@ def FieldEnabled(field):
 #  \return
 #        \b \e wx.Window : Field control matching field_id or None
 def GetField(page, field_id, field_type=wx.Window):
+    # FIXME: This should be an instance of dbr.wizard.WizardPage
+    if not isinstance(page, wx.Window):
+        page = GetPage(page)
+    
     if isinstance(page, field_type) and page.GetId() == field_id:
         return page
     
