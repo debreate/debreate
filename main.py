@@ -475,6 +475,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
+    def OnPageChanged(self, event=None):
+        ID = self.wizard.GetCurrentPageId()
+        Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
+        
+        if not self.menu_page.IsChecked(ID):
+            self.menu_page.Check(ID, True)
+    
+    
+    ## TODO: Doxygen
     def OnQuickBuild(self, event=None):
         QB = QuickBuild(self)
         QB.ShowModal()
