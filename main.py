@@ -317,21 +317,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # Menu for debugging & running tests
         if DebugEnabled():
-            self.m_debug = wx.Menu()
+            self.menu_debug = wx.Menu()
             
-            menubar.Append(self.m_debug, GT(u'Debug'), ident.DEBUG)
+            menubar.Append(self.menu_debug, GT(u'Debug'), ident.DEBUG)
             
-            self.m_debug.AppendItem(wx.MenuItem(self.m_debug, ident.LOG, GT(u'Show log'),
+            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ident.LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
             
             if u'log-window' in parsed_args_s:
-                self.m_debug.Check(ident.LOG, True)
+                self.menu_debug.Check(ident.LOG, True)
             
             self.log_window = LogWindow(self, Logger.GetLogFile())
             
             # Window colors
-            self.m_debug.AppendItem(
-                wx.MenuItem(self.m_debug, ident.THEME, GT(u'Toggle window colors')))
+            self.menu_debug.AppendItem(
+                wx.MenuItem(self.menu_debug, ident.THEME, GT(u'Toggle window colors')))
             
             wx.EVT_MENU(self, ident.LOG, self.log_window.OnToggleWindow)
             wx.EVT_MENU(self, ident.THEME, self.OnToggleTheme)
@@ -771,10 +771,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Toggling log window'))
         
         if event != None:
-            self.ShowLogWindow(self.m_debug.IsChecked(ident.DEBUG))
+            self.ShowLogWindow(self.menu_debug.IsChecked(ident.DEBUG))
             return
         
-        self.m_debug.Check(ident.DEBUG, self.log_window.IsShown())
+        self.menu_debug.Check(ident.DEBUG, self.log_window.IsShown())
     
     
     ## TODO: Doxygen
@@ -1070,8 +1070,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.log_window.Show(show)
         
-        if self.m_debug.IsChecked(ident.DEBUG) != show:
-            self.m_debug.Check(ident.DEBUG, show)
+        if self.menu_debug.IsChecked(ident.DEBUG) != show:
+            self.menu_debug.Check(ident.DEBUG, show)
     
     
     ## TODO: Doxygen
