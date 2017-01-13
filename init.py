@@ -114,7 +114,7 @@ from dbr.config             import InitializeConfig
 from dbr.config             import ReadConfig
 from dbr.compression        import GetCompressionId
 from dbr.dialogs            import FirstRun
-from dbr.error              import ShowError
+from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
@@ -191,7 +191,7 @@ if ReadConfig(u'__test__') == ConfCode.FILE_NOT_FOUND:
     Logger.Debug(script_name, init_conf_code == ConfCode.SUCCESS)
     if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
         fr_error = GT(u'Could not create configuration, exiting ...')
-        ShowError(FR_dialog, fr_error, ConfCode.string[init_conf_code])
+        ShowErrorDialog(fr_error, ConfCode.string[init_conf_code], parent=FR_dialog)
         
         exit_now = init_conf_code
     
