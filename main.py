@@ -163,13 +163,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.OnToggleToolTips()
         
-        # Dialogs options
-        self.mi_dialogs = wx.MenuItem(m_opt, ident.DIALOGS, GT(u'Use Custom Dialogs'),
-            GT(u'Use System or Custom Save/Open Dialogs'), kind=wx.ITEM_CHECK)
-        
-        # FIXME: Disabled until fixed
-        #m_opt.AppendItem(self.mi_dialogs)
-        
         # Project compression options
         self.m_compress = wx.Menu()
         
