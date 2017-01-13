@@ -8,7 +8,7 @@
 
 import os, wx
 
-from dbr.error              import ShowError
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import RemovePreWhitespace
 from dbr.language           import GT
@@ -111,13 +111,11 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def CopyStandardLicense(self, license_name):
-        main_window = GetTopWindow()
-        
         if self.DestroyLicenseText():
             license_path = u'{}/{}'.format(system_licenses_path, license_name)
             
             if not os.path.isfile(license_path):
-                ShowError(main_window, u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
+                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
                 return
             
             FILE_BUFFER = open(license_path, u'r')

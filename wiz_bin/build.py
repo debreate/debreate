@@ -331,7 +331,6 @@ class Panel(WizardPage):
             except:
                 build_progress.Destroy()
                 
-                # TODO: Use dbr.error dialog
                 err_msg = GT(u'Error occurred during build')
                 Logger.Error(__name__, u'{}:\n{}'.format(err_msg, traceback.format_exc()))
                 
