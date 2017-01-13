@@ -16,6 +16,8 @@ from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
+from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ErrorDialog
 from dbr.dialogs            import GetDialogWildcards
 from dbr.dialogs            import GetFileOpenDialog
@@ -530,10 +532,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         update_test = u'update-fail' in GetTestList()
         
         if UsingDevelopmentVersion() and not update_test:
-            wx.MessageDialog(self, GT(u'This is a development version. Update checking is disabled. '),
-                    GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION).ShowModal()
-            
+            DetailedMessageDialog(GetTopWindow(), GT(u'Update'),
+                    text=GT(u'Update checking is disabled in development versions')).ShowModal()
             return
+        
+        wx.SafeYield()
         
         if update_test:
             # Set a bad url to force error
@@ -542,37 +545,26 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         else:
             current = GetCurrentVersion()
         
-        wx.SafeYield()
-        
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
+        
+        error_remote = GT(u'An error occurred attempting to contact remote website')
         
         if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
-            wx.MessageDialog(self, current, GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+            ShowErrorDialog(error_remote, current)
         
         elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = GT(u'Version {} is available!').format(current)
             l2 = GT(u'Would you like to go to Debreate\'s website?')
-            update = wx.MessageDialog(self, u'{}\n\n{}'.format(l1, l2), GT(u'Debreate'), wx.YES_NO|wx.ICON_INFORMATION).ShowModal()
-            if (update == wx.ID_YES):
+            if ConfirmationDialog(GetTopWindow(), GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed():
                 wx.LaunchDefaultBrowser(APP_homepage)
         
         elif isinstance(current, (unicode, str)):
-            err_msg = GT(u'An error occurred attempting to retrieve version from remote website:')
-            err_msg = u'{}\n\n{}'.format(err_msg, current)
-            
-            Logger.Error(__name__, err_msg)
-            
-            err = wx.MessageDialog(self, err_msg,
-                    GT(u'Error'), wx.OK|wx.ICON_INFORMATION)
-            err.CenterOnParent()
-            err.ShowModal()
+            ShowErrorDialog(error_remote, current)
         
         else:
-            err = wx.MessageDialog(self, GT(u'Debreate is up to date!'), GT(u'Debreate'), wx.OK|wx.ICON_INFORMATION)
-            err.CenterOnParent()
-            err.ShowModal()
+            DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
     
     
     ## TODO: Doxygen
