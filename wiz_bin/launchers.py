@@ -25,6 +25,8 @@ from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
+from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -461,9 +463,7 @@ class Panel(WizardPage):
                 self.chk_filename.SetValue(False)
                 self.ti_filename.SetValue(custom_filename)
         
-        FILE = open(filename, u'r')
-        menu_data = FILE.read().split(u'\n')
-        FILE.close()
+        menu_data = ReadFile(filename, split=True)
         
         if u'[Desktop Entry]' in menu_data[0]:
             menu_data.remove(menu_data[0])
@@ -606,18 +606,16 @@ class Panel(WizardPage):
                 shutil.copy(path, backup)
                 overwrite = True
             
-            f_opened = open(path, u'w')
             try:
-                f_opened.write(menu_data)
-                f_opened.close()
+                WriteFile(path, menu_data)
                 if overwrite:
                     os.remove(backup)
+            
             except UnicodeEncodeError:
                 serr = GT(u'Save failed')
                 uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
                 UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
                 UniErr.ShowModal()
-                f_opened.close()
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)
@@ -655,10 +653,7 @@ class Panel(WizardPage):
         
         if cont == True:
             path = dia.GetPath()
-            f_opened = open(path, u'r')
-            text = f_opened.read()
-            f_opened.close()
-            data = text.split(u'\n')
+            data = ReadFile(path, split=True)
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
                 # First line needs to be changed to '1'
