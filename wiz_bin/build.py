@@ -28,8 +28,8 @@ from globals.bitmaps        import ICON_INFORMATION
 from globals.commands       import CMD_fakeroot
 from globals.commands       import CMD_lintian
 from globals.commands       import CMD_md5sum
-from globals.commands       import CMD_system_installer
 from globals.commands       import CMD_system_packager
+from globals.commands       import GetSystemInstaller
 from globals.errorcodes     import dbrerrno
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
@@ -86,8 +86,9 @@ class Panel(WizardPage):
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
         
-        if not CMD_system_installer:
+        if not GetSystemInstaller():
             self.chk_install.Disable()
+        
         else:
             self.build_options.append(self.chk_install)
         
