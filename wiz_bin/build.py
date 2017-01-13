@@ -50,6 +50,7 @@ class Panel(WizardPage):
         self.build_options = []
         
         # ----- Extra Options
+        
         self.chk_md5 = wx.CheckBox(self, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
@@ -67,11 +68,11 @@ class Panel(WizardPage):
         self.chk_strip.default = True
         
         # Deletes the temporary build tree
-        self.chk_rmtree = wx.CheckBox(self, label=GT(u'Delete stage directory'))
-        self.chk_rmtree.SetName(u'RMSTAGE')
-        self.chk_rmtree.default = True
-        self.chk_rmtree.SetValue(self.chk_rmtree.default)
-        self.build_options.append(self.chk_rmtree)
+        self.chk_rmstage = wx.CheckBox(self, label=GT(u'Delete stage directory'))
+        self.chk_rmstage.SetName(u'RMSTAGE')
+        self.chk_rmstage.default = True
+        self.chk_rmstage.SetValue(self.chk_rmstage.default)
+        self.build_options.append(self.chk_rmstage)
         
         # Checks the output .deb for errors
         self.chk_lint = wx.CheckBox(self, label=GT(u'Check package for errors with lintian'))
@@ -98,16 +99,6 @@ class Panel(WizardPage):
         else:
             self.build_options.append(self.chk_install)
         
-        options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
-        options1_sizer = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
-        options1_sizer.AddMany( [
-            (self.chk_md5, 0),
-            (self.chk_strip, 0),
-            (self.chk_rmtree, 0),
-            (self.chk_lint, 0),
-            (self.chk_install, 0)
-            ] )
-        
         # *** Lintian Overrides *** #
         
         if DebugEnabled():
@@ -116,22 +107,36 @@ class Panel(WizardPage):
             btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
-        # --- BUILD
-        self.build_button = ButtonBuild64(self)
-        self.build_button.SetName(u'build')
+        btn_build = ButtonBuild64(self)
+        btn_build.SetName(u'build')
         
-        self.build_button.Bind(wx.EVT_BUTTON, self.OnBuild)
+        # Display log
+        dsp_log = OutputLog(self)
         
-        build_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        build_sizer.Add(self.build_button, 1)
+        SetPageToolTips(self)
         
-        # --- Display log
-        self.log = OutputLog(self)
+        # *** Event Handling *** #
         
-        # --- Page 7 Sizer --- #
+        btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
+        
+        # *** Layout *** #
+        
+        options1_border = wx.StaticBox(self, label=GT(u'Extra options')) # Nice border for the options
+        lyt_options = wx.StaticBoxSizer(options1_border, wx.VERTICAL)
+        lyt_options.AddMany((
+            (self.chk_md5, 0),
+            (self.chk_strip, 0),
+            (self.chk_rmstage, 0),
+            (self.chk_lint, 0),
+            (self.chk_install, 0),
+            ))
+        
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_build, 1)
+        
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(options1_sizer, 0, wx.LEFT, 5)
+        lyt_main.Add(lyt_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         
         if DebugEnabled():
@@ -139,15 +144,12 @@ class Panel(WizardPage):
             lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
         
         lyt_main.AddSpacer(5)
-        lyt_main.Add(build_sizer, 0, wx.ALIGN_CENTER)
-        lyt_main.Add(self.log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
+        lyt_main.Add(dsp_log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        
-        SetPageToolTips(self)
     
     
     ## Method that builds the actual Debian package
@@ -173,7 +175,7 @@ class Panel(WizardPage):
             current_step = 0
             
             # Steps from build page
-            for chk in self.chk_md5, self.chk_lint, self.chk_rmtree:
+            for chk in self.chk_md5, self.chk_lint, self.chk_rmstage:
                 if chk.IsChecked():
                     steps_count += 1
             
@@ -302,7 +304,7 @@ class Panel(WizardPage):
                 
                 # *** Delete Stage *** #
                 if not build_progress.WasCancelled():
-                    if self.chk_rmtree.IsChecked():
+                    if self.chk_rmstage.IsChecked():
                         log_msg = log_message(GT(u'Removing staged build tree'), current_step+1, steps_count)
                         
                         wx.YieldIfNeeded()
@@ -714,7 +716,7 @@ class Panel(WizardPage):
         if GetExecutable(u'md5sum'):
             self.chk_md5.SetValue(int(build_data[0]))
         
-        self.chk_rmtree.SetValue(int(build_data[1]))
+        self.chk_rmstage.SetValue(int(build_data[1]))
         
         if GetExecutable(u'lintian'):
             self.chk_lint.SetValue(int(build_data[2]))
