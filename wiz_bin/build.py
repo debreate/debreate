@@ -19,7 +19,6 @@ from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
-from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.wizard             import WizardPage
@@ -34,6 +33,7 @@ from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.strings        import TextIsEmpty
+from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
@@ -104,7 +104,7 @@ class Panel(WizardPage):
         
         # *** Lintian Overrides *** #
         
-        if DebugEnabled():
+        if u'alpha' in GetTestList():
             # FIXME: Move next to lintian check box
             self.lint_overrides = []
             btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
@@ -148,7 +148,7 @@ class Panel(WizardPage):
         lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         
-        if DebugEnabled():
+        if u'alpha' in GetTestList():
             #lyt_main.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
             lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
         
