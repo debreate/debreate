@@ -119,7 +119,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        GetTopWindow().m_page.Check(page_id, True)
+        GetTopWindow().menu_page.Check(page_id, True)
     
     
     ## TODO: Doxygen
@@ -257,8 +257,8 @@ class Wizard(wx.Panel):
             self.GetSizer().Insert(1, page, 1, wx.EXPAND)
             
             # Add pages to main menu
-            main_window.m_page.AppendItem(
-                wx.MenuItem(main_window.m_page, page.GetId(), page.GetLabel(),
+            main_window.menu_page.AppendItem(
+                wx.MenuItem(main_window.menu_page, page.GetId(), page.GetLabel(),
                 kind=wx.ITEM_RADIO))
         
         self.ShowPage(self.ID_FIRST)
