@@ -15,6 +15,7 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ErrorDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
@@ -511,6 +512,63 @@ class Panel(WizardPage):
             
             option.Enable(bool(command))
             option.SetValue(FieldEnabled(option) and option.default)
+    
+    
+    ## Installs the built .deb package onto the system
+    #  
+    #  Uses the system's package installer:
+    #    gdebi if available or dpkg
+    #  
+    #  Shows a success dialog if installed. Otherwise shows an
+    #  error dialog.
+    #  \param package
+    #        \b \e unicode|str : Path to package to be installed
+    def InstallPackage(self, package):
+        system_installer = GetSystemInstaller()
+        
+        if not system_installer:
+            ShowErrorDialog(
+                GT(u'Cannot install package'),
+                GT(u'A compatible package manager could not be found on the system'),
+                __name__,
+                warn=True
+                )
+            
+            return
+        
+        Logger.Info(__name__, GT(u'Attempting to install package: {}').format(package))
+        Logger.Info(__name__, GT(u'Installing with {}').format(system_installer))
+        
+        install_cmd = (system_installer, package,)
+        
+        wx.Yield()
+        # FIXME: Use ExecuteCommand here
+        install_output = subprocess.Popen(install_cmd)
+        
+        # Command appears to not have been executed correctly
+        if install_output == None:
+            ShowErrorDialog(
+                GT(u'Could not install package: {}'),
+                GT(u'An unknown error occurred'),
+                __name__
+                )
+            
+            return
+        
+        # Command executed but did not return success code
+        if install_output.returncode:
+            err_details = (
+                GT(u'Process returned code {}').format(install_output.returncode),
+                GT(u'Command executed: {}').format(u' '.join(install_cmd)),
+                )
+            
+            ShowErrorDialog(
+                GT(u'An error occurred during installation'),
+                u'\n'.join(err_details),
+                __name__
+                )
+            
+            return
     
     
     ## TODO: Doxygen
