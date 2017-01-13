@@ -355,10 +355,10 @@ class LogWindow(wx.Dialog):
         # In case main window has been destroyed, but sub thread still active
         if main_window:
             window_shown = self.IsShown()
-            m_checked = main_window.m_debug.IsChecked(ident.LOG)
+            m_checked = main_window.menu_debug.IsChecked(ident.LOG)
             
             if m_checked != window_shown:
-                main_window.m_debug.Check(ident.LOG, window_shown)
+                main_window.menu_debug.Check(ident.LOG, window_shown)
         
         else:
             Logger.Warning(__name__, u'Log thread still active!')
@@ -374,13 +374,13 @@ class LogWindow(wx.Dialog):
         
         # Make sure the main window has not been destroyed before showing log
         if main_window and main_window.IsShown():
-            if main_window.m_debug.IsChecked(ident.LOG):
+            if main_window.menu_debug.IsChecked(ident.LOG):
                 self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        show = GetTopWindow().m_debug.IsChecked(ident.LOG)
+        show = GetTopWindow().menu_debug.IsChecked(ident.LOG)
         
         if show:
             self.ShowLog()
