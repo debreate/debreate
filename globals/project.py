@@ -22,11 +22,13 @@ PROJECT_ext = u'dbpz'
 
 ## Legacy project filename extension
 PROJECT_ext_legacy = u'dbp'
+PROJECT_txt_legacy = u'txt'
 
 ## Filename suffixes that can be opened
 supported_suffixes = (
-    u'dbpz',
-    u'dbp',
+    PROJECT_ext,
+    PROJECT_ext_legacy,
+    PROJECT_txt_legacy,
     u'tar',
     u'tar.gz',
     u'tar.bz2',
@@ -34,8 +36,8 @@ supported_suffixes = (
     u'zip',
 )
 
-PROJ_DEF_Z = GT(u'Debreate projects')
-PROJ_DEF_L = GT(u'Legacy Debreate projects')
+PROJ_DEF_Z = GT(u'Debreate project files')
+PROJ_DEF_L = GT(u'Legacy Debreate project files')
 PROJ_DEF_A = GT(u'All supported formats')
 PROJ_DEF_T = GT(u'Supported compressed archives')
 
