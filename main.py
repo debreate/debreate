@@ -395,6 +395,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return
         
         wx.SafeYield()
+        
         if update_test:
             # Set a bad url to force error
             current = GetCurrentVersion(u'http://dummyurl.blah/')
@@ -403,9 +404,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             current = GetCurrentVersion()
         
         Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
-        if isinstance(current, (URLError,  HTTPError)):
+        
+        error_remote = GT(u'An error occurred attempting to contact remote website')
+        
+        if isinstance(current, (URLError, HTTPError)):
             current = unicode(current)
-            ShowErrorDialog(GT(u'An error occurred attempting to contact remote website'), current)
+            ShowErrorDialog(error_remote, current)
         
         elif isinstance(current, tuple) and current > VERSION_tuple:
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
@@ -416,7 +420,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 wx.LaunchDefaultBrowser(APP_homepage)
         
         elif isinstance(current, (unicode, str)):
-            ShowErrorDialog(GT(u'An error occurred attempting to contact remote website'), current)
+            ShowErrorDialog(error_remote, current)
         
         else:
             DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
