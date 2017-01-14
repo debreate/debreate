@@ -61,6 +61,8 @@ class CheckList(wx.Panel):
     
     def AddItems(self, labels, checked=False):
         for l in labels:
+            Logger.Debug(__name__, u'Adding item: {} (checked={})'.format(l, checked))
+            
             self.AddItem(l, checked)
     
     
