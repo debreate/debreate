@@ -315,6 +315,10 @@ class TimedProgressDialog(ProgressDialog):
     def OnTimerStop(self, event=None):
         Logger.Debug(__name__, u'Destroying TimedProgressDialog instance')
         
+        if wx.MAJOR_VERSION <= 2:
+            # Dialog needs to be closed before destroying for wx 2.8
+            self.Close()
+        
         self.Destroy()
     
     
