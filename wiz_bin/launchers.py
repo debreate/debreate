@@ -662,7 +662,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ResetPageInfo(self):
+    def ResetPage(self):
         self.chk_filename.SetValue(self.chk_filename.default)
         self.ti_filename.Clear()
         
@@ -716,7 +716,7 @@ class Panel(WizardPage):
             data = data.split(u'\n')
         
         # Clear all fields first
-        self.ResetPageInfo()
+        self.ResetPage()
         self.chk_enable.SetValue(False)
         
         # TODO: Check for error with first character not being integer

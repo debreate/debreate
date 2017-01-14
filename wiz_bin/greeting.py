@@ -66,6 +66,6 @@ class Panel(WizardPage):
         self.Layout()
     
     
-    ## Override Wizard.ResetPageInfo & do nothing
-    def ResetPageInfo(self):
+    ## Override Wizard.ResetPage & do nothing
+    def ResetPage(self):
         pass

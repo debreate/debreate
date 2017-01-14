@@ -180,7 +180,7 @@ class Panel(WizardPage):
     
     
     ## Resets all fields on page to default values
-    def ResetPageInfo(self):
+    def ResetPage(self):
         self.dep_area.DeleteAllItems()
     
     

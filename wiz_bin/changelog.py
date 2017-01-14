@@ -377,7 +377,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ResetPageInfo(self):
+    def ResetPage(self):
         self.ti_package.Clear()
         self.ti_version.Clear()
         self.ti_dist.Clear()
