@@ -19,10 +19,12 @@ from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
+from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
+from dbr.progress           import TimedProgressDialog
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
@@ -36,6 +38,7 @@ from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
+from globals.strings        import RemoveEmptyLines
 from globals.strings        import TextIsEmpty
 from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
@@ -711,42 +714,84 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    #  
+    #  TODO: Show warning dialog that this could take a while
+    #  TODO: Add cancel option to progress dialog
+    #  FIXME: List should be cached so no need for re-scanning
     def OnSetLintOverrides(self, event=None):
         Logger.Debug(__name__, GT(u'Setting Lintian overrides...'))
         
         lintian_tags_file = u'{}/data/lintian/tags'.format(PATH_app)
         
-        if os.path.isfile(lintian_tags_file):
-            lint_lines = ReadFile(lintian_tags_file, split=True)
+        if not os.path.isfile(lintian_tags_file):
+            Logger.Error(__name__, u'Lintian tags file is missing: {}'.format(lintian_tags_file))
             
-            lint_tags = []
-            for L in lint_lines:
-                if not TextIsEmpty(L):
-                    lint_tags.append(L)
+            return False
+        
+        lint_tags = RemoveEmptyLines(ReadFile(lintian_tags_file, split=True))
+        
+        if lint_tags:
+            Logger.Debug(__name__, u'Lintian tags set')
             
-            if lint_tags:
-                # Create the dialog
-                overrides_dialog = CheckListDialog(self, title=GT(u'Lintian Overrides'),
-                        allow_custom=True)
-                overrides_dialog.InitCheckList(tuple(lint_tags))
+            # DEBUG: Start
+            if DebugEnabled() and len(lint_tags) > 50:
+                print(u'  Reducing tag count to 200 ...')
                 
-                for T in lint_tags:
-                    if T in self.lint_overrides:
-                        overrides_dialog.SetItemCheckedByLabel(T)
-                        self.lint_overrides.remove(T)
-                
-                # Remaining tags should be custom entries
-                if lint_tags:
-                    for T in lint_tags:
-                        overrides_dialog.AddItem(T, True)
-                
-                if overrides_dialog.ShowModal() == wx.ID_OK:
-                    # Remove old overrides
-                    self.lint_overrides = []
-                    for L in overrides_dialog.GetCheckedLabels():
-                        Logger.Debug(__name__, GT(u'Adding Lintian override: {}').format(L))
-                        
-                        self.lint_overrides.append(L)
+                lint_tags = lint_tags[:50]
+            
+            Logger.Debug(__name__, u'Processing {} tags'.format(len(lint_tags)))
+            # DEBUG: End
+            
+            
+            tag_count = len(lint_tags)
+            
+            def GetProgressMessage(message, count=tag_count):
+                return u'{} ({} {})'.format(message, count, GT(u'tags'))
+            
+            
+            progress = TimedProgressDialog(GetTopWindow(), GT(u'Building Tag List'),
+                    GetProgressMessage(GT(u'Scanning default tags')))
+            progress.Start()
+            
+            wx.Yield()
+            
+            # Create the dialog
+            overrides_dialog = CheckListDialog(GetTopWindow(), title=GT(u'Lintian Overrides'),
+                    allow_custom=True)
+            # FIXME: Needs progress dialog
+            overrides_dialog.InitCheckList(tuple(lint_tags))
+            
+            progress.SetMessage(GetProgressMessage(GT(u'Setting selected overrides')))
+            
+            for T in lint_tags:
+                if T in self.lint_overrides:
+                    overrides_dialog.SetItemCheckedByLabel(T)
+                    self.lint_overrides.remove(T)
+            
+            progress.SetMessage(GetProgressMessage(GT(u'Adding custom tags'), len(self.lint_overrides)))
+            
+            # Remaining tags should be custom entries
+            # FIXME:
+            if self.lint_overrides:
+                for T in self.lint_overrides:
+                    overrides_dialog.AddItem(T, True)
+            
+            progress.Stop()
+            
+            if overrides_dialog.ShowModal() == wx.ID_OK:
+                # Remove old overrides
+                self.lint_overrides = []
+                for L in overrides_dialog.GetCheckedLabels():
+                    Logger.Debug(__name__, GT(u'Adding Lintian override: {}').format(L))
+                    
+                    self.lint_overrides.append(L)
+            
+            return True
+        
+        else:
+            Logger.Debug(__name__, u'Setting lintian tags failed')
+            
+            return False
     
     
     ## TODO: Doxygen
