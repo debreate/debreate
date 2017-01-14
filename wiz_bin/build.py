@@ -795,14 +795,14 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ResetPageInfo(self):
+    def ResetPage(self):
         for O in self.build_options:
             O.SetValue(O.default)
     
     
     ## TODO: Doxygen
     def SetFieldDataLegacy(self, data):
-        self.ResetPageInfo()
+        self.ResetPage()
         build_data = data.split(u'\n')
         
         if GetExecutable(u'md5sum'):

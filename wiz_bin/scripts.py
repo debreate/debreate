@@ -375,7 +375,7 @@ scripts will be created that will place a symbolic link to your executables in t
     
     
     ## Resets all fields on page to default values
-    def ResetPageInfo(self):
+    def ResetPage(self):
         for S, O in self.script_objects:
             S.Reset()
         
