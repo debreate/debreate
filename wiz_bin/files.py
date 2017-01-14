@@ -98,8 +98,6 @@ class Panel(wx.ScrolledWindow):
         # Display area for files added to list
         self.lst_files = FileList(self, ident.F_LIST, name=u'filelist')
         
-        self.lst_files.mouse_over = False
-        
         # *** Event Handling *** #
         
         # create an event to enable/disable custom widget
