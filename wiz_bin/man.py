@@ -88,7 +88,7 @@ class Panel(WizardPage, wx.Notebook):
     
     
     ## TODO: Doxygen
-    def ResetPageInfo(self):
+    def ResetPage(self):
         pass
 
 

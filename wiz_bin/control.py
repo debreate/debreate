@@ -625,7 +625,7 @@ class Panel(WizardPage):
     
     
     ## Resets all fields on page to default values
-    def ResetPageInfo(self):
+    def ResetPage(self):
         for child in self.pnl_bg.GetChildren():
             if isinstance(child, (wx.TextCtrl, wx.ComboBox)):
                 # Can't use Clear() method for wx.ComboBox

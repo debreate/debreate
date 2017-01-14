@@ -307,7 +307,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ResetPageInfo(self):
+    def ResetPage(self):
         self.dsp_copyright.Clear()
         
         if self.sel_templates.IsEnabled():
