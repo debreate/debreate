@@ -565,7 +565,9 @@ class Panel(WizardPage):
             # Remove unneeded lines
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
-                # First line needs to be changed to '1'
+            
+            self.ResetPage()
+            # First line needs to be changed to '1'
             data.insert(0, u'1')
             self.SetFieldDataLegacy(u'\n'.join(data))
     
@@ -595,7 +597,7 @@ class Panel(WizardPage):
         dia = wx.FileDialog(GetTopWindow(), GT(u'Save Launcher'), os.getcwd(),
             style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
         
-        if dia.ShowModal() == wx.ID_OK:
+        if ShowDialog(dia):
             path = dia.GetPath()
             
             # Create a backup file
