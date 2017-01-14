@@ -14,7 +14,6 @@ from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
