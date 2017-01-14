@@ -12,8 +12,8 @@ from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
+from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
@@ -23,6 +23,7 @@ from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
+from globals.system         import GetOSDistNames
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
@@ -30,120 +31,142 @@ from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
-## TODO: Doxygen
+## Changelog page
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.CHANGELOG)
         
-        self.package_text = wx.StaticText(self, label=GT(u'Package'), name=u'package')
-        self.package = wx.TextCtrl(self, name=self.package_text.Name)
+        txt_package = wx.StaticText(self, label=GT(u'Package'), name=u'package')
+        self.ti_package = wx.TextCtrl(self, name=txt_package.Name)
         
-        self.version_text = wx.StaticText(self, label=GT(u'Version'), name=u'version')
-        self.version = wx.TextCtrl(self, name=self.version_text.Name)
+        txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
+        self.ti_version = wx.TextCtrl(self, name=txt_version.Name)
         
-        self.distribution_text = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
-        self.distribution = wx.TextCtrl(self, name=self.distribution_text.Name)
+        dist_names = GetOSDistNames()
         
-        self.urgency_text = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
-        self.urgency_opt = (u'low', u'high')
-        self.urgency = wx.Choice(self, choices=self.urgency_opt, name=self.urgency_text.Name)
-        self.urgency.SetSelection(0)
+        txt_dist = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
         
-        self.maintainer_text = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
-        self.maintainer = wx.TextCtrl(self, name=self.maintainer_text.Name)
+        if dist_names:
+            self.ti_dist = ComboBox(self, ident.DIST, choices=dist_names, name=txt_dist.Name)
         
-        self.email_text = wx.StaticText(self, label=GT(u'Email'), name=u'email')
-        self.email = wx.TextCtrl(self, name=self.email_text.Name)
+        # Use regular text input if could not retrieve distribution names list
+        else:
+            self.ti_dist = wx.TextCtrl(self, ident.DIST, name=txt_dist.Name)
         
-        info_sizer = wx.FlexGridSizer(2, 6, 5, 5)
-        info_sizer.AddGrowableCol(1)
-        info_sizer.AddGrowableCol(3)
-        info_sizer.AddGrowableCol(5)
-        info_sizer.AddMany([
-            (self.package_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.package, 1, wx.EXPAND),
-            (self.version_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.version, 1, wx.EXPAND),
-            (self.distribution_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.distribution, 1, wx.EXPAND),
-            (self.urgency_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.urgency, 1, wx.EXPAND),
-            (self.maintainer_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.maintainer, 1, wx.EXPAND),
-            (self.email_text, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.email, 1, wx.EXPAND)
-            ])
+        self.opts_urgency = (
+            u'low',
+            u'medium',
+            u'high',
+            u'emergency',
+            )
         
-        # *** CHANGES DETAILS
-        self.changes = TextAreaPanel(self, size=(20,150), name=u'changes')
+        txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
+        self.sel_urgency = wx.Choice(self, choices=self.opts_urgency, name=txt_urgency.Name)
+        self.sel_urgency.default = 0
+        self.sel_urgency.SetSelection(self.sel_urgency.default)
         
-        self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
-        changes_box = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
-        changes_box.Add(self.changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
+        txt_maintainer = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
+        self.ti_maintainer = wx.TextCtrl(self, name=txt_maintainer.Name)
         
-        # Destination of changelog
-        self.target_default = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
+        txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
+        self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
+        
+        # Changes input
+        self.ti_changes = TextAreaPanel(self, size=(20,150), name=u'changes')
+        
+        # Standard destination of changelog
+        self.rb_target_standard = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
                 name=u'target default', style=wx.RB_GROUP)
-        self.target_custom = wx.RadioButton(self, name=u'target custom')
-        self.target = PathCtrl(self, -1, u'/', PATH_WARN)
-        self.target.SetName(self.target_custom.Name)
+        self.rb_target_standard.default = True
+        self.rb_target_standard.SetValue(self.rb_target_standard.default)
         
-        dest_custom_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        dest_custom_sizer.Add(self.target_custom)
-        dest_custom_sizer.Add(self.target, 1)
+        # Custom destination of changelog
+        # FIXME: Should not use same name as default destination???
+        self.rb_target_custom = wx.RadioButton(self, name=self.rb_target_standard.Name)
         
-        border_dest = wx.StaticBox(self, label=GT(u'Target'))
-        dest_box = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
-        dest_box.AddSpacer(5)
-        dest_box.Add(self.target_default)
-        dest_box.AddSpacer(5)
-        dest_box.Add(dest_custom_sizer, 0, wx.EXPAND)
-        dest_box.AddSpacer(5)
+        self.ti_target = PathCtrl(self, value=u'/', default=u'/')
+        self.ti_target.SetName(u'target custom')
         
-        details_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        details_sizer.Add(changes_box, 1, wx.EXPAND|wx.RIGHT, 5)
-        details_sizer.Add(dest_box)
+        self.btn_import = ButtonImport(self)
         
+        self.btn_add = ButtonAdd(self)
         
-        self.button_import = ButtonImport(self)
-        self.button_import.SetName(u'import')
-        
-        self.button_add = ButtonAdd(self)
-        self.button_add.SetName(u'add')
-        
-        wx.EVT_BUTTON(self.button_import, -1, self.OnImportFromControl)
-        wx.EVT_BUTTON(self.button_add, -1, self.AddInfo)
-        
-        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(self.button_import)
-        button_sizer.Add(self.button_add)
-        
-        self.log = MonospaceTextArea(self, name=u'log')
-        
-        # *** LAYOUT
-        main_sizer = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(info_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        main_sizer.Add(self.log, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        main_sizer.AddSpacer(5)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(main_sizer)
-        self.Layout()
-        
+        self.dsp_changes = MonospaceTextArea(self, name=u'log')
+        self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)
+        
+        # *** Event Handling *** #
+        
+        wx.EVT_BUTTON(self.btn_import, -1, self.OnImportFromControl)
+        wx.EVT_BUTTON(self.btn_add, -1, self.AddInfo)
+        
+        # *** Layout *** #
+        
+        lyt_info = wx.FlexGridSizer(2, 6, 5, 5)
+        
+        lyt_info.AddGrowableCol(1)
+        lyt_info.AddGrowableCol(3)
+        lyt_info.AddGrowableCol(5)
+        lyt_info.AddMany((
+            (txt_package, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_package, 1, wx.EXPAND),
+            (txt_version, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_version, 1, wx.EXPAND),
+            (txt_dist, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_dist, 1, wx.EXPAND),
+            (txt_urgency, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.sel_urgency, 1, wx.EXPAND),
+            (txt_maintainer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_maintainer, 1, wx.EXPAND),
+            (txt_email, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_email, 1, wx.EXPAND)
+            ))
+        
+        self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
+        lyt_changes = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
+        lyt_changes.Add(self.ti_changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
+        
+        lyt_target_custom = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_target_custom.Add(self.rb_target_custom)
+        lyt_target_custom.Add(self.ti_target, 1)
+        
+        border_dest = wx.StaticBox(self, label=GT(u'Target'))
+        lyt_target = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
+        lyt_target.AddSpacer(5)
+        lyt_target.Add(self.rb_target_standard)
+        lyt_target.AddSpacer(5)
+        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND)
+        lyt_target.AddSpacer(5)
+        
+        details_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        details_sizer.Add(lyt_changes, 1, wx.EXPAND|wx.RIGHT, 5)
+        details_sizer.Add(lyt_target)
+        
+        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        button_sizer.Add(self.btn_import)
+        button_sizer.Add(self.btn_add)
+        
+        lyt_main = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
+        lyt_main.AddSpacer(10)
+        lyt_main.Add(lyt_info, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.AddSpacer(10)
+        lyt_main.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.AddSpacer(5)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
     
     
     ## TODO: Doxygen
     def AddInfo(self, event=None):
-        changes = self.changes.GetValue()
+        changes = self.ti_changes.GetValue()
         if TextIsEmpty(changes):
             wx.MessageDialog(GetTopWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
                     style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
             return
         
-        package = self.package.GetValue()
-        version = self.version.GetValue()
-        distribution = self.distribution.GetValue()
-        urgency = self.urgency_opt[self.urgency.GetSelection()]
+        package = self.ti_package.GetValue()
+        version = self.ti_version.GetValue()
+        distribution = self.ti_dist.GetValue()
+        urgency = self.opts_urgency[self.sel_urgency.GetSelection()]
         info1 = u'{} ({}) {}; urgency={}'.format(package, version, distribution, urgency)
         
         details = []
@@ -161,15 +184,15 @@ class Panel(WizardPage):
         details.append(wx.EmptyString)
         details = u'\n'.join(details)
         
-        maintainer = self.maintainer.GetValue()
-        email = self.email.GetValue()
+        maintainer = self.ti_maintainer.GetValue()
+        email = self.ti_email.GetValue()
         #date = commands.getoutput("date +\"%a, %d %b %Y %T %z\"")
         # FIXME: Use methods from dbr.functions to get date & time
         date = commands.getoutput(u'date -R')
         info2 = u' -- {} <{}>  {}'.format(maintainer, email, date)
         
         entry = u'\n'.join((info1, details, info2))
-        self.log.SetValue(u'\n'.join((entry, wx.EmptyString, self.log.GetValue())))
+        self.dsp_changes.SetValue(u'\n'.join((entry, wx.EmptyString, self.dsp_changes.GetValue())))
     
     
     ## TODO: Doxygen
@@ -188,12 +211,12 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        if self.target_default.GetValue():
+        if self.rb_target_standard.GetValue():
             stage = u'{}/usr/share/doc/{}'.format(stage,
                     GetPage(ident.CONTROL).GetPackageName()).replace(u'//', u'/')
         
         else:
-            stage = u'{}/{}'.format(stage, self.target.GetValue()).replace(u'//', u'/')
+            stage = u'{}/{}'.format(stage, self.ti_target.GetValue()).replace(u'//', u'/')
         
         if not os.path.isdir(stage):
             os.makedirs(stage)
@@ -212,7 +235,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def GetChangelog(self):
-        return self.log.GetValue()
+        return self.dsp_changes.GetValue()
     
     
     ## Retrieves changelog information
@@ -224,10 +247,10 @@ class Panel(WizardPage):
     def GetPageInfo(self):
         cl_target = u'DEFAULT'
         
-        if self.target_custom.GetValue():
-            cl_target = self.target.GetValue()
+        if self.rb_target_custom.GetValue():
+            cl_target = self.ti_target.GetValue()
         
-        cl_body = self.log.GetValue()
+        cl_body = self.dsp_changes.GetValue()
         
         if TextIsEmpty(cl_body):
             return None
@@ -238,10 +261,10 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
-            (self.package, ident.F_NAME),
-            (self.version, ident.F_VERSION),
-            (self.maintainer, ident.F_MAINTAINER),
-            (self.email, ident.F_EMAIL),
+            (self.ti_package, ident.F_NAME),
+            (self.ti_version, ident.F_VERSION),
+            (self.ti_maintainer, ident.F_MAINTAINER),
+            (self.ti_email, ident.F_EMAIL),
             )
         
         for F, FID in fields:
@@ -286,7 +309,7 @@ class Panel(WizardPage):
                 parse_section(L, clog_data[line_index+1:])
         '''
         if u'BODY' in sections:
-            self.log.SetValue(sections[u'BODY'])
+            self.dsp_changes.SetValue(sections[u'BODY'])
         '''
         
         for S in sections:
@@ -304,20 +327,20 @@ class Panel(WizardPage):
                 if sections[S][0] == u'DEFAULT':
                     Logger.Debug(__name__, u'Using default target')
                     
-                    self.target_default.SetValue(True)
+                    self.rb_target_standard.SetValue(True)
                 
                 else:
                     Logger.Debug(__name__, GT(u'Using custom target: {}').format(sections[S][0]))
                     
-                    self.target_custom.SetValue(True)
-                    self.target.SetValue(sections[S][0])
+                    self.rb_target_custom.SetValue(True)
+                    self.ti_target.SetValue(sections[S][0])
                 
                 continue
             
             if S == u'BODY':
                 Logger.Debug(__name__, u'SECTION BODY FOUND')
                 
-                self.log.SetValue(sections[S])
+                self.dsp_changes.SetValue(sections[S])
                 
                 continue
         
@@ -326,13 +349,13 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def IsExportable(self):
-        return not TextIsEmpty(self.log.GetValue())
+        return not TextIsEmpty(self.dsp_changes.GetValue())
     
     
     ## TODO: Doxygen
     def ResetPageInfo(self):
-        self.target.Reset()
-        self.log.Clear()
+        self.ti_target.Reset()
+        self.dsp_changes.Clear()
     
     
     ## TODO: Doxygen
@@ -340,8 +363,10 @@ class Panel(WizardPage):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         if dest == u'DEFAULT':
-            self.target_default.SetValue(True)
+            self.rb_target_standard.SetValue(True)
+        
         else:
-            self.target_custom.SetValue(True)
-            self.target.SetValue(dest)
-        self.log.SetValue(u'\n'.join(changelog[1:]))
+            self.rb_target_custom.SetValue(True)
+            self.ti_target.SetValue(dest)
+        
+        self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
