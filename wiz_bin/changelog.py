@@ -57,7 +57,7 @@ class Panel(WizardPage):
         else:
             self.ti_dist = wx.TextCtrl(self, ident.DIST, name=txt_dist.Name)
         
-        self.opts_urgency = (
+        opts_urgency = (
             u'low',
             u'medium',
             u'high',
@@ -65,7 +65,7 @@ class Panel(WizardPage):
             )
         
         txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
-        self.sel_urgency = wx.Choice(self, choices=self.opts_urgency, name=txt_urgency.Name)
+        self.sel_urgency = wx.Choice(self, choices=opts_urgency, name=txt_urgency.Name)
         self.sel_urgency.default = 0
         self.sel_urgency.SetSelection(self.sel_urgency.default)
         
@@ -101,6 +101,8 @@ class Panel(WizardPage):
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
+        self.chk_indentation = wx.CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
+        
         self.dsp_changes = MonospaceTextArea(self, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
@@ -112,7 +114,7 @@ class Panel(WizardPage):
         self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
         
         # *** Layout *** #
-
+        
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
@@ -167,6 +169,7 @@ class Panel(WizardPage):
         lyt_details.Add(pnl_target, (2, 2))
         lyt_details.Add(self.btn_add, (3, 0), (2, 1))
         lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
+        lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
