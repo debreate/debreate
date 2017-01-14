@@ -53,27 +53,27 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.SCRIPTS)
         
-        self.preinst = DebianScript(self, ID_INST_PRE)
-        self.postinst = DebianScript(self, ID_INST_POST)
-        self.prerm = DebianScript(self, ID_RM_PRE)
-        self.postrm = DebianScript(self, ID_RM_POST)
+        preinst = DebianScript(self, ID_INST_PRE)
+        postinst = DebianScript(self, ID_INST_POST)
+        prerm = DebianScript(self, ID_RM_PRE)
+        postrm = DebianScript(self, ID_RM_POST)
         
         # Radio buttons for displaying between pre- and post- install scripts
         # FIXME: Names settings for tooltips are confusing
-        rb_preinst = wx.RadioButton(self, self.preinst.GetId(), self.preinst.GetName(),
-                name=self.preinst.script_filename, style=wx.RB_GROUP)
-        rb_postinst = wx.RadioButton(self, self.postinst.GetId(), self.postinst.GetName(),
-                name=self.postinst.script_filename)
-        rb_prerm = wx.RadioButton(self, self.prerm.GetId(), self.prerm.GetName(),
-                name=self.prerm.script_filename)
-        rb_postrm = wx.RadioButton(self, self.postrm.GetId(), self.postrm.GetName(),
-                name=self.postrm.script_filename)
+        rb_preinst = wx.RadioButton(self, preinst.GetId(), preinst.GetName(),
+                name=preinst.script_filename, style=wx.RB_GROUP)
+        rb_postinst = wx.RadioButton(self, postinst.GetId(), postinst.GetName(),
+                name=postinst.script_filename)
+        rb_prerm = wx.RadioButton(self, prerm.GetId(), prerm.GetName(),
+                name=prerm.script_filename)
+        rb_postrm = wx.RadioButton(self, postrm.GetId(), postrm.GetName(),
+                name=postrm.script_filename)
         
         self.script_objects = (
-            (self.preinst, rb_preinst),
-            (self.postinst, rb_postinst),
-            (self.prerm, rb_prerm),
-            (self.postrm, rb_postrm),
+            (preinst, rb_preinst),
+            (postinst, rb_postinst),
+            (prerm, rb_prerm),
+            (postrm, rb_postrm),
         )
         
         # *** Auto-Link *** #
@@ -332,7 +332,7 @@ scripts will be created that will place a symbolic link to your executables in t
     
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
-        for S in self.postinst, self.prerm:
+        for S in self.script_objects[1][0], self.script_objects[2][0]:
             if not TextIsEmpty(S.GetValue()):
                 confirm = wx.MessageDialog(GetTopWindow(),
                         GT(u'The {} script is not empty').format(S.script_name), GT(u'Warning'),
@@ -442,19 +442,19 @@ scripts will be created that will place a symbolic link to your executables in t
         
         if unicode(preinst[0]).isnumeric():
             if int(preinst[0]):
-                self.preinst.SetValue(format_script(preinst))
+                self.script_objects[0][0].SetValue(format_script(preinst))
         
         if unicode(postinst[0]).isnumeric():
             if int(postinst[0]):
-                self.postinst.SetValue(format_script(postinst))
+                self.script_objects[1][0].SetValue(format_script(postinst))
         
         if unicode(prerm[0]).isnumeric():
             if int(prerm[0]):
-                self.prerm.SetValue(format_script(prerm))
+                self.script_objects[2][0].SetValue(format_script(prerm))
         
         if unicode(postrm[0]).isnumeric():
             if int(postrm[0]):
-                self.postrm.SetValue(format_script(postrm))
+                self.script_objects[3][0].SetValue(format_script(postrm))
 
 
 
