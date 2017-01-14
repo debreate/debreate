@@ -547,14 +547,7 @@ def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwr
 #  
 #  \b Alias: \e dbr.ShowDialog
 def ShowDialog(dialog):
-    # Dialog's parent should be set to main window
-    #debreate = dialog.GetParent()
-    
-    if False:
-        return dialog.DisplayModal()
-    
-    else:
-        return dialog.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES, wx.OPEN, wx.ID_OPEN,)
+    return dialog.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES, wx.OPEN, wx.ID_OPEN,)
 
 
 ## Displays an instance of ErrorDialog class
