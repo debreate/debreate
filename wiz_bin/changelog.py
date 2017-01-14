@@ -12,6 +12,7 @@ from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextArea
@@ -74,17 +75,21 @@ class Panel(WizardPage):
         # Changes input
         self.ti_changes = TextAreaPanel(self, size=(20,150), name=u'changes')
         
+        # *** Target installation directory
+        
+        pnl_target = BorderedPanel(self)
+        
         # Standard destination of changelog
-        self.rb_target_standard = wx.RadioButton(self, label=u'/usr/share/doc/<package>',
+        self.rb_target_standard = wx.RadioButton(pnl_target, label=u'/usr/share/doc/<package>',
                 name=u'target default', style=wx.RB_GROUP)
         self.rb_target_standard.default = True
         self.rb_target_standard.SetValue(self.rb_target_standard.default)
         
         # Custom destination of changelog
         # FIXME: Should not use same name as default destination???
-        self.rb_target_custom = wx.RadioButton(self, name=self.rb_target_standard.Name)
+        self.rb_target_custom = wx.RadioButton(pnl_target, name=self.rb_target_standard.Name)
         
-        self.ti_target = PathCtrl(self, value=u'/', default=u'/')
+        self.ti_target = PathCtrl(pnl_target, value=u'/', default=u'/')
         self.ti_target.SetName(u'target custom')
         
         self.btn_import = ButtonImport(self)
@@ -125,17 +130,22 @@ class Panel(WizardPage):
         lyt_target_custom.Add(self.rb_target_custom)
         lyt_target_custom.Add(self.ti_target, 1)
         
-        border_dest = wx.StaticBox(self, label=GT(u'Target'))
-        lyt_target = wx.StaticBoxSizer(border_dest, wx.VERTICAL)
+        #border_dest = wx.StaticBox(self, label=GT(u'Target'))
+        lyt_target = wx.BoxSizer(wx.VERTICAL)
+        
         lyt_target.AddSpacer(5)
-        lyt_target.Add(self.rb_target_standard)
+        lyt_target.Add(self.rb_target_standard, 0, wx.RIGHT, 5)
         lyt_target.AddSpacer(5)
-        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND)
+        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND|wx.RIGHT, 5)
         lyt_target.AddSpacer(5)
+        
+        pnl_target.SetSizer(lyt_target)
+        pnl_target.SetAutoLayout(True)
+        pnl_target.Layout()
         
         details_sizer = wx.BoxSizer(wx.HORIZONTAL)
         details_sizer.Add(lyt_changes, 1, wx.EXPAND|wx.RIGHT, 5)
-        details_sizer.Add(lyt_target)
+        details_sizer.Add(pnl_target)
         
         button_sizer = wx.BoxSizer(wx.HORIZONTAL)
         button_sizer.Add(self.btn_import)
