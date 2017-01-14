@@ -15,6 +15,7 @@ from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
 from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
@@ -411,21 +412,20 @@ class Panel(wx.ScrolledWindow):
     #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
     #         'Others' field not being completely filled out.
     def OnLoadLauncher(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        dia = wx.FileDialog(GetTopWindow(), GT(u'Open Launcher'), os.getcwd(),
+                style=wx.FD_CHANGE_DIR)
         
-        dia = wx.FileDialog(main_window, GT(u'Open Launcher'), os.getcwd(),
-            style=wx.FD_CHANGE_DIR)
-        if dia.ShowModal() == wx.ID_OK:
+        if ShowDialog(dia):
             path = dia.GetPath()
             
-            data = ReadFile(path).split(u'\n')
+            data = ReadFile(path, split=True)
             
             # Remove unneeded lines
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
             
             self.ResetPage()
-            self.SetLauncherData(u'\n'.join(data), enabled=True)
+            self.SetLauncherData(u'\n'.join(data))
     
     
     ## TODO: Doxygen
@@ -447,14 +447,13 @@ class Panel(wx.ScrolledWindow):
     def OnSaveLauncher(self, event=None):
         Logger.Debug(__name__, u'Export launcher ...')
         
-        main_window = wx.GetApp().GetTopWindow()
-        
         # Get data to write to control file
         menu_data = self.GetLauncherInfo().encode(u'utf-8')
         
-        dia = wx.FileDialog(main_window, GT(u'Save Launcher'), os.getcwd(),
+        dia = wx.FileDialog(GetTopWindow(), GT(u'Save Launcher'), os.getcwd(),
             style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-        if dia.ShowModal() == wx.ID_OK:
+        
+        if ShowDialog(dia):
             path = dia.GetPath()
             
             # Create a backup file
