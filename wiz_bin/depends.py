@@ -215,7 +215,7 @@ class Panel(wx.ScrolledWindow):
         oper = self.sel_operator.GetStringSelection()
         ver = self.ti_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
-            
+        
         if key_id in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             if TextIsEmpty(addname):
                 return
