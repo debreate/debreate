@@ -9,9 +9,9 @@
 import os, wx
 from wx.lib.newevent import NewCommandEvent
 
+from dbr.buttons            import ButtonHelp
 from dbr.buttons            import ButtonNext
 from dbr.buttons            import ButtonPrev
-from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -41,7 +41,7 @@ class Wizard(wx.Panel):
         self.ID_LAST = None
         
         # Help button
-        btn_help = HelpButton(self)
+        btn_help = ButtonHelp(self)
         btn_help.SetToolTipString(GT(u'Page help'))
         
         # A Header for the wizard

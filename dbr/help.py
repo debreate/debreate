@@ -10,8 +10,6 @@ import commands, os, wx
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
-from globals.bitmaps import BUTTON_HELP
-
 
 # FIXME: This should use a global manpage file
 #app_man = u'{}/man/debreate.1'
@@ -37,13 +35,6 @@ def ParseManpage():
             help_text = c_output[1]
     
     return help_text
-
-
-## TODO: Doxygen
-class HelpButton(wx.BitmapButton):
-    def __init__(self, parent):
-        wx.BitmapButton.__init__(self, parent, wx.ID_HELP, BUTTON_HELP,
-                style=wx.NO_BORDER)
 
 
 ## TODO: Doxygen

@@ -12,6 +12,7 @@ import wx
 
 from dbr.language       import GT
 from globals            import ident
+from globals.bitmaps    import BUTTON_HELP
 from globals.bitmaps    import BUTTON_REFRESH
 from globals.paths      import PATH_app
 
@@ -108,6 +109,14 @@ class ButtonConfirm(BitmapButton):
                 ID=ID, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Confirm')))
+
+
+## TODO: Doxygen
+class ButtonHelp(BitmapButton):
+    def __init__(self, parent, ID=wx.ID_HELP, name=u'btn help'):
+        BitmapButton.__init__(self, parent, BUTTON_HELP, ID=ID, name=name)
+        
+        self.SetToolTipString(GT(u'Help'))
 
 
 ## Button with an arrow for importing info from other pages
