@@ -322,11 +322,6 @@ class TimedProgressDialog(ProgressDialog):
         self.Destroy()
     
     
-    ## TODO: Doxygen
-    def SetMessage(self, message):
-        return ProgressDialog.SetMessage(self, message)
-    
-    
     ## Starts the timer & begins pulsing dialog
     def Start(self):
         Logger.Debug(__name__, u'Starting TimedProgressDialog timer ...')
