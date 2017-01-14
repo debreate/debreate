@@ -19,6 +19,7 @@ from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
+from dbr.panel              import BorderedPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
@@ -39,32 +40,42 @@ class Panel(WizardPage):
         btn_save = ButtonSave64(self)
         btn_preview = ButtonPreview64(self)
         
-        txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
+        txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         
-        self.input_package = wx.TextCtrl(self, size=(300,25), name=u'package')
+        self.ti_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
-        opts_oper = (u'>=', u'<=', u'=', u'>>', u'<<')
-        self.select_oper = wx.Choice(self, choices=opts_oper)
-        self.select_oper.SetSelection(0)
+        opts_operator = (
+            u'>=',
+            u'<=',
+            u'=',
+            u'>>',
+            u'<<',
+            )
         
-        self.input_version = wx.TextCtrl(self, name=u'version')
+        self.sel_operator = wx.Choice(self, choices=opts_operator)
+        self.sel_operator.default = 0
+        self.sel_operator.SetSelection(self.sel_operator.default)
+        
+        self.ti_version = wx.TextCtrl(self, name=u'version')
         
         # Button to display help information about this page
         btn_help = HelpButton(self)
         
-        self.input_package.SetSize((100,50))
+        self.ti_package.SetSize((100,50))
         
-        categories_panel = wx.Panel(self, style=wx.BORDER_THEME)
+        pnl_categories = BorderedPanel(self)
         
-        rb_dep = wx.RadioButton(categories_panel, label=GT(u'Depends'), name=u'Depends', style=wx.RB_GROUP)
-        rb_pre = wx.RadioButton(categories_panel, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
-        rb_rec = wx.RadioButton(categories_panel, label=GT(u'Recommends'), name=u'Recommends')
-        rb_sug = wx.RadioButton(categories_panel, label=GT(u'Suggests'), name=u'Suggests')
-        rb_enh = wx.RadioButton(categories_panel, label=GT(u'Enhances'), name=u'Enhances')
-        rb_con = wx.RadioButton(categories_panel, label=GT(u'Conflicts'), name=u'Conflicts')
-        rb_rep = wx.RadioButton(categories_panel, label=GT(u'Replaces'), name=u'Replaces')
-        rb_break = wx.RadioButton(categories_panel, label=GT(u'Breaks'), name=u'Breaks')
+        self.default_category = u'Depends'
+        
+        rb_dep = wx.RadioButton(pnl_categories, label=GT(u'Depends'), name=self.default_category, style=wx.RB_GROUP)
+        rb_pre = wx.RadioButton(pnl_categories, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
+        rb_rec = wx.RadioButton(pnl_categories, label=GT(u'Recommends'), name=u'Recommends')
+        rb_sug = wx.RadioButton(pnl_categories, label=GT(u'Suggests'), name=u'Suggests')
+        rb_enh = wx.RadioButton(pnl_categories, label=GT(u'Enhances'), name=u'Enhances')
+        rb_con = wx.RadioButton(pnl_categories, label=GT(u'Conflicts'), name=u'Conflicts')
+        rb_rep = wx.RadioButton(pnl_categories, label=GT(u'Replaces'), name=u'Replaces')
+        rb_break = wx.RadioButton(pnl_categories, label=GT(u'Breaks'), name=u'Breaks')
         
         self.categories = (
             rb_dep, rb_pre, rb_rec,
@@ -73,25 +84,39 @@ class Panel(WizardPage):
         )
         
         # Buttons to add and remove dependencies from the list
-        self.depadd = ButtonAdd(self)
-        self.depadd.SetName(u'add')
-        self.depapp = ButtonAppend(self)
-        self.depapp.SetName(u'append')
-        self.deprem = ButtonRemove(self)
-        self.deprem.SetName(u'remove')
-        self.depclr = ButtonClear(self)
-        self.depclr.SetName(u'clear')
+        btn_add = ButtonAdd(self)
+        btn_append = ButtonAppend(self)
+        btn_remove = ButtonRemove(self)
+        btn_clear = ButtonClear(self)
         
         # ----- List
-        self.dep_area = ListCtrlPanel(self, ident.F_LIST, style=wx.LC_REPORT, name=u'list')
-        self.dep_area.InsertColumn(0, GT(u'Category'), width=150)
-        self.dep_area.InsertColumn(1, GT(u'Package(s)'))
+        self.lst_deps = ListCtrlPanel(self, ident.F_LIST, name=u'list')
+        self.lst_deps.SetSingleStyle(wx.LC_REPORT)
+        self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
+        self.lst_deps.InsertColumn(1, GT(u'Package(s)'))
         
         # wx 3.0 compatibility
         if wx.MAJOR_VERSION < 3:
-            self.dep_area.SetColumnWidth(100, wx.LIST_AUTOSIZE)
+            self.lst_deps.SetColumnWidth(100, wx.LIST_AUTOSIZE)
         
         SetPageToolTips(self)
+        
+        # *** Event Handling *** #
+        
+        control_page = GetPage(ident.CONTROL)
+        btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
+        
+        wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
+        
+        btn_add.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_append.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_remove.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_clear.Bind(wx.EVT_BUTTON, self.SetDepends)
+        
+        wx.EVT_KEY_DOWN(self.lst_deps, self.SetDepends)
         
         # *** Layout *** #
         
@@ -105,9 +130,9 @@ class Panel(WizardPage):
         lyt_top.Add(btn_preview, (0, 5), (4, 1))
         
         # Row 2
-        lyt_top.Add(self.input_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        lyt_top.Add(self.select_oper, pos=(1, 1))
-        lyt_top.Add(self.input_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.ti_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.sel_operator, pos=(1, 1))
+        lyt_top.Add(self.ti_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
         
         layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
         layout_H1.Add(lyt_top, 0, wx.ALIGN_BOTTOM)
@@ -119,28 +144,28 @@ class Panel(WizardPage):
         for C in self.categories:
             layout_categories.Add(C, 0)
         
-        categories_panel.SetSizer(layout_categories)
-        categories_panel.SetAutoLayout(True)
-        categories_panel.Layout()
+        pnl_categories.SetSizer(layout_categories)
+        pnl_categories.SetAutoLayout(True)
+        pnl_categories.Layout()
         
         layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
         
         layout_buttons.AddMany( (
-            (self.depadd, 0, wx.ALIGN_CENTER_VERTICAL),
-            (self.depapp, 0, wx.ALIGN_CENTER_VERTICAL),
-            (self.deprem, 0, wx.ALIGN_CENTER_VERTICAL),
-            (self.depclr, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_add, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_append, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_remove, 0, wx.ALIGN_CENTER_VERTICAL),
+            (btn_clear, 0, wx.ALIGN_CENTER_VERTICAL),
             ) )
         
         layout_G2 = wx.GridBagSizer(5, 5)
         layout_G2.SetCols(2)
         
         layout_G2.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1))
-        layout_G2.Add(categories_panel, (1, 0), flag=wx.RIGHT, border=5)
+        layout_G2.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
         layout_G2.Add(layout_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
         layout_H3 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H3.Add(self.dep_area, 1, wx.EXPAND)
+        layout_H3.Add(self.lst_deps, 1, wx.EXPAND)
         
         layout_main = wx.BoxSizer(wx.VERTICAL)
         layout_main.Add(layout_H1, 0, wx.EXPAND|wx.ALL, 5)
@@ -150,23 +175,6 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(layout_main)
         self.Layout()
-        
-        # *** Event Handling *** #
-        
-        control_page = GetPage(ident.CONTROL)
-        btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
-        btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
-        
-        wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
-        
-        self.depadd.Bind(wx.EVT_BUTTON, self.SetDepends)
-        self.depapp.Bind(wx.EVT_BUTTON, self.SetDepends)
-        self.deprem.Bind(wx.EVT_BUTTON, self.SetDepends)
-        self.depclr.Bind(wx.EVT_BUTTON, self.SetDepends)
-        
-        wx.EVT_KEY_DOWN(self.dep_area, self.SetDepends)
     
     
     ## Add a category & dependency to end of list
@@ -176,7 +184,7 @@ class Panel(WizardPage):
     #  \param value
     #        \b \e unicode|str : Dependency value
     def AppendDependency(self, category, value):
-        self.dep_area.AppendStringItem((category, value))
+        self.lst_deps.AppendStringItem((category, value))
     
     
     ## TODO: Doxygen
@@ -191,13 +199,13 @@ class Panel(WizardPage):
         values = d_string.split(u', ')
         
         for V in values:
-            self.dep_area.InsertStringItem(0, d_type)
-            self.dep_area.SetStringItem(0, 1, V)
+            self.lst_deps.InsertStringItem(0, d_type)
+            self.lst_deps.SetStringItem(0, 1, V)
     
     
     ## Resets all fields on page to default values
     def ResetPage(self):
-        self.dep_area.DeleteAllItems()
+        self.lst_deps.DeleteAllItems()
     
     
     ## TODO: Doxygen
@@ -208,11 +216,11 @@ class Panel(WizardPage):
         except AttributeError:
             key_id = event.GetEventObject().GetId()
         
-        addname = self.input_package.GetValue()
-        oper = self.select_oper.GetStringSelection()
-        ver = self.input_version.GetValue()
+        addname = self.ti_package.GetValue()
+        oper = self.sel_operator.GetStringSelection()
+        ver = self.ti_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
-            
+        
         if key_id in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             if TextIsEmpty(addname):
                 return
@@ -230,34 +238,34 @@ class Panel(WizardPage):
                 self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
         elif key_id == ident.APPEND:
-            selected_count = self.dep_area.GetSelectedItemCount()
-            if not TextIsEmpty(addname) and self.dep_area.GetItemCount() and selected_count:
+            selected_count = self.lst_deps.GetSelectedItemCount()
+            if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
                 listrow = None
                 for X in range(selected_count):
                     if listrow == None:
-                        listrow = self.dep_area.GetFirstSelected()
+                        listrow = self.lst_deps.GetFirstSelected()
                     
                     else:
-                        listrow = self.dep_area.GetNextSelected(listrow)
+                        listrow = self.lst_deps.GetNextSelected(listrow)
                     
-                    colitem = self.dep_area.GetItem(listrow, 1)  # Get item from second column
+                    colitem = self.lst_deps.GetItem(listrow, 1)  # Get item from second column
                     prev_text = colitem.GetText()  # Get the text from that item
                     
                     if not TextIsEmpty(ver):
-                        self.dep_area.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
+                        self.lst_deps.SetStringItem(listrow, 1, u'{} | {} {}'.format(prev_text, addname, addver))
                     
                     else:
-                        self.dep_area.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
+                        self.lst_deps.SetStringItem(listrow, 1, u'{} | {}'.format(prev_text, addname))
         
         elif key_id == wx.ID_REMOVE:
-            self.dep_area.RemoveSelected()
+            self.lst_deps.RemoveSelected()
         
         elif key_id == wx.ID_CLEAR:
-            if self.dep_area.GetItemCount():
+            if self.lst_deps.GetItemCount():
                 confirm = wx.MessageDialog(self, GT(u'Clear all dependencies?'), GT(u'Confirm'),
                         wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
                 if confirm.ShowModal() == wx.ID_YES:
-                    self.dep_area.DeleteAllItems()
+                    self.lst_deps.DeleteAllItems()
         
         if event:
             event.Skip()
@@ -265,10 +273,10 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def SetFieldDataLegacy(self, data):
-        self.dep_area.DeleteAllItems()
+        self.lst_deps.DeleteAllItems()
         for item in data:
             item_count = len(item)
             while item_count > 1:
                 item_count -= 1
-                self.dep_area.InsertStringItem(0, item[0])
-                self.dep_area.SetStringItem(0, 1, item[item_count])
+                self.lst_deps.InsertStringItem(0, item[0])
+                self.lst_deps.SetStringItem(0, 1, item[item_count])
