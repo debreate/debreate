@@ -1,25 +1,27 @@
 # -*- coding: utf-8 -*-
 
+## \package wiz_bin.info
 
-# System imports
+# MIT licensing
+# See: docs/LICENSE.txt
+
+
 import wx
 
-import globals.ident as ident
 from dbr.hyperlink  import Hyperlink
 from dbr.language   import GT
 from dbr.wizard     import WizardPage
+from globals        import ident
 
 
+## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.GREETING)
         
-        self.parent = parent
-        
         # Bypass checking this page for build
         self.prebuild_check = False
         
-        # Mode Information
         m1 = GT(u'Welcome to Debreate!')
         m2 = GT(u'Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
         m3 = GT(u'For a video tutorial check the link below.')
@@ -33,34 +35,34 @@ class Panel(WizardPage):
             (2, u'Update a Package', self.txt_upd)
             )
         
-        # ----- Helpful information to be displayed about each mode
-        self.info = wx.StaticText(self)
-        self.vidlink = Hyperlink(
-                self, -1,
-                GT(u'Building a Debian Package with Debreate'),
-                u'http://www.youtube.com/watch?v=kx4D5eL6HKE'
-        )
-        self.vidlink.SetToolTip(wx.ToolTip(self.vidlink.url))
+        # --- Information to be displayed about each mode
+        self.txt_info = wx.StaticText(self)
+        # Keep characters within the width of the window
+        self.txt_info.Wrap(600)
         
-        self.info_border = wx.StaticBox(self, -1, size=(100,100))
-        info_box = wx.GridSizer()
-        info_box.Add(self.info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        lnk_video = Hyperlink(self, wx.ID_ANY, GT(u'Building a Debian Package with Debreate'),
+                u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
+        lnk_video.SetToolTipString(lnk_video.url)
         
-        # ----- Layout
-        mode_sizer = wx.StaticBoxSizer(self.info_border, wx.VERTICAL)
-        mode_sizer.Add(info_box, 4, wx.ALIGN_CENTER|wx.ALL, 10)
-        mode_sizer.Add(self.vidlink, 2, wx.ALIGN_CENTER)
+        # *** Layout *** #
+        
+        lyt_info = wx.GridSizer()
+        lyt_info.Add(self.txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_info, 4, wx.ALIGN_CENTER|wx.ALL, 10)
+        lyt_main.Add(lnk_video, 2, wx.ALIGN_CENTER)
         
         self.SetAutoLayout(True)
-        self.SetSizer(mode_sizer)
+        self.SetSizer(lyt_main)
         self.Layout()
         
         
     def SetInfo(self):
-        self.parent.SetTitle(u'Testing')
-        self.info.SetLabel(self.txt_bin)
+        self.Parent.SetTitle(u'Testing')
+        self.txt_info.SetLabel(self.txt_bin)
         
-        self.info.Wrap(600) # Keep characters within the width of the window
+        self.txt_info.Wrap(600) # Keep characters within the width of the window
         
         # Refresh widget layout
         self.Layout()
