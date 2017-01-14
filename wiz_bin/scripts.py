@@ -16,6 +16,7 @@ from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
 from dbr.markdown           import MarkdownDialog
+from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
@@ -47,7 +48,7 @@ id_definitions = {
 }
 
 
-## TODO: Doxygen
+## Scripts page
 class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.SCRIPTS)
@@ -75,112 +76,110 @@ class Panel(WizardPage):
             (self.postrm, rb_postrm),
         )
         
-        for S, RB in self.script_objects:
-            wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
+        # *** Auto-Link *** #
         
-        rb_layout = wx.BoxSizer(wx.HORIZONTAL)
-        rb_layout.AddMany([
-            (rb_preinst),
-            (rb_postinst),
-            (rb_prerm),
-            (rb_postrm),
-        ])
-        
-        # Sizer for left half of scripts panel
-        layout_left = wx.BoxSizer(wx.VERTICAL)
-        
-        layout_left.Add(rb_layout, 0, wx.EXPAND|wx.BOTTOM, 5)
-        
-        for S, RB in self.script_objects:
-            layout_left.Add(S, 1, wx.EXPAND)
-        
-        # *** Auto-Link options *** #
+        pnl_autolink = BorderedPanel(self)
         
         # Executable list - generate button will make scripts to link to files in this list
         self.lst_executables = []
         
         # Auto-Link path for new link
-        self.al_text = wx.StaticText(self, label=GT(u'Path'), name=u'target')
-        self.al_input = PathCtrl(self, -1, u'/usr/bin', PATH_WARN)
-        self.al_input.SetName(u'target')
-        
-        #wx.EVT_KEY_UP(self.al_input, ChangeInput)
-        
-        alpath_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        alpath_sizer.Add(self.al_text, 0, wx.ALIGN_CENTER)
-        alpath_sizer.Add(self.al_input, 1, wx.ALIGN_CENTER)
+        txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
+        self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', ctrl_type=PATH_WARN)
+        self.ti_autolink.SetName(u'target')
+        self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
-        if wx.MAJOR_VERSION < 3: # NOTE: wx. 3.0 compat
-            self.executables = ListCtrlPanel(self, size=(200,200),
-            	style=wx.BORDER_SIMPLE|wx.LC_SINGLE_SEL)
-            self.executables.InsertColumn(0, u'')
-        
-        else:
-            self.executables = ListCtrlPanel(self, size=(200,200))
-            #self.executables.SetSingleStyle(wx.LC_REPORT)
-            self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
+        self.executables = ListCtrlPanel(pnl_autolink, size=(200,200), name=u'al list')
+        self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
+        #self.executables.InsertColumn(0, u'')
         
         # Auto-Link import, generate and remove buttons
-        self.al_import = ButtonImport(self)
-        self.al_import.SetName(u'import')
-        self.al_del = ButtonRemove(self)
-        self.al_del.SetName(u'Remove')
-        self.al_gen = ButtonBuild(self)
-        self.al_gen.SetName(u'Generate')
-        
-        wx.EVT_BUTTON(self.al_import, ident.IMPORT, self.ImportExe)
-        wx.EVT_BUTTON(self.al_gen, -1, self.OnGenerate)
-        self.al_del.Bind(wx.EVT_BUTTON, self.ImportExe)
-        
-        albutton_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        albutton_sizer.Add(self.al_import, 1)#, wx.ALIGN_CENTER|wx.RIGHT, 5)
-        albutton_sizer.Add(self.al_del, 1)
-        albutton_sizer.Add(self.al_gen, 1)#, wx.ALIGN_CENTER)
-        
-        # Nice border for auto-generate scripts area
-        self.autogen_border = wx.StaticBox(self, -1, GT(u'Auto-Link Executables'), size=(20,20))  # Size mandatory or causes gui errors
-        autogen_box = wx.StaticBoxSizer(self.autogen_border, wx.VERTICAL)
-        autogen_box.Add(alpath_sizer, 0, wx.EXPAND)
-        autogen_box.Add(self.executables, 0, wx.TOP|wx.BOTTOM, 5)
-        autogen_box.Add(albutton_sizer, 0, wx.EXPAND)
-        #autogen_box.AddSpacer(5)
-        #autogen_box.Add(self.al_del, 0, wx.ALIGN_CENTER)
+        btn_al_import = ButtonImport(pnl_autolink)
+        btn_al_remove = ButtonRemove(pnl_autolink)
+        btn_al_generate = ButtonBuild(pnl_autolink)
         
         # Text explaining Auto-Link
-        '''self.al_text = wx.StaticText(self, -1, 'How to use Auto-Link: Press the "import" button to \
+        '''txt_autolink = wx.StaticText(self, -1, 'How to use Auto-Link: Press the "import" button to \
 import any executables from the "files" tab.  Then press the "generate" button.  "postinst" and "prerm" \
 scripts will be created that will place a symbolic link to your executables in the path displayed above.')
-        self.al_text.Wrap(210)'''
+        txt_autolink.Wrap(210)'''
         
-        # *** HELP *** #
-        self.button_help = ButtonQuestion64(self)
-        self.button_help.SetName(u'help')
-        
-        wx.EVT_BUTTON(self.button_help, wx.ID_HELP, self.OnHelpButton)
-        
-        # Sizer for right half of scripts panel
-        layout_right = wx.BoxSizer(wx.VERTICAL)
-        layout_right.AddSpacer(17)
-        layout_right.Add(autogen_box, 0)
-        #layout_right.Add(self.al_text, 0)
-        layout_right.Add(self.button_help, 0, wx.ALIGN_CENTER)
-        
-        
-        # ----- Layout
-        layout_main = wx.BoxSizer(wx.HORIZONTAL)
-        layout_main.Add(layout_left, 1, wx.EXPAND|wx.ALL, 5)
-        layout_main.Add(layout_right, 0, wx.ALL, 5)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(layout_main)
-        self.Layout()
+        # Auto-Link help
+        btn_help = ButtonQuestion64(pnl_autolink)
         
         # Initialize script display
         self.ScriptSelect(None)
         
-        
         SetPageToolTips(self)
+        
+        # *** Event Handling *** #
+        
+        for S, RB in self.script_objects:
+            wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
+        
+        #wx.EVT_KEY_UP(self.ti_autolink, ChangeInput)
+        
+        wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_generate, -1, self.OnGenerate)
+        btn_al_remove.Bind(wx.EVT_BUTTON, self.ImportExe)
+        
+        wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
+        
+        # *** Layout *** #
+        
+        # Organizing radio buttons
+        lyt_sel_script = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_sel_script.AddMany((
+            (rb_preinst),
+            (rb_postinst),
+            (rb_prerm),
+            (rb_postrm),
+            ))
+        
+        # Sizer for left half of scripts panel
+        lyt_left = wx.BoxSizer(wx.VERTICAL)
+        
+        lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
+        
+        for S, RB in self.script_objects:
+            lyt_left.Add(S, 1, wx.EXPAND)
+        
+        # Auto-Link/Right side
+        lyt_ti_autolink = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_ti_autolink.Add(txt_autolink, 0, wx.ALIGN_CENTER)
+        lyt_ti_autolink.Add(self.ti_autolink, 1, wx.ALIGN_CENTER)
+        
+        lyt_btn_autolink = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_btn_autolink.Add(btn_al_import, 0)
+        lyt_btn_autolink.Add(btn_al_remove, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_btn_autolink.Add(btn_al_generate, 0)
+        
+        lyt_autolink = wx.BoxSizer(wx.VERTICAL)
+        lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
+        lyt_autolink.Add(self.executables, 3, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
+        lyt_autolink.Add(lyt_btn_autolink, 0, wx.ALIGN_CENTER_HORIZONTAL)
+        lyt_autolink.Add(btn_help, 1, wx.ALIGN_CENTER)
+        
+        pnl_autolink.SetSizer(lyt_autolink)
+        pnl_autolink.SetAutoLayout(True)
+        pnl_autolink.Layout()
+        
+        # Sizer for right half of scripts panel
+        lyt_right = wx.BoxSizer(wx.VERTICAL)
+        # Line up panels to look even
+        lyt_right.AddSpacer(39)
+        lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
+                0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
+        lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
+        
+        lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main.Add(lyt_right, 0, wx.ALL, 5)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
     
     
     ## TODO: Doxygen
@@ -233,7 +232,6 @@ scripts will be created that will place a symbolic link to your executables in t
                     filename = os.path.basename(files.GetItemText(i_index))
                     
                     # Where the file linked to will be installed
-                    #file_target = u'{}/{}'.format(files.GetTarget(i_index), filename)
                     file_target = files.GetItem(i_index, 2)
                     
                     try:
@@ -261,7 +259,12 @@ scripts will be created that will place a symbolic link to your executables in t
                             else:
                                 dest_path = file_target.GetText()
                             
-                            self.executables.InsertStringItem(self.executables.GetItemCount(), filename)
+                            exe_index = self.executables.GetItemCount()
+                            
+                            # Put "destination/filename" together in executable list
+                            self.lst_executables.insert(exe_index, u'{}/{}'.format(dest_path, filename))
+                            self.executables.InsertStringItem(exe_index, filename)
+                            self.executables.SetItemTextColour(exe_index, wx.RED)
                         
                         else:
                             Logger.Warning(__name__, u'{}: The executables destination is not valid'.format(__name__))
@@ -327,7 +330,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 return True
     
     
-    ## TODO: Doxygen
+    ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
         for S in self.postinst, self.prerm:
             if not TextIsEmpty(S.GetValue()):
@@ -348,7 +351,7 @@ scripts will be created that will place a symbolic link to your executables in t
         postinst_list = []
         prerm_list = []
         
-        link_path = self.al_input.GetValue() # Get destination for link from Auto-Link input textctrl
+        link_path = self.ti_autolink.GetValue() # Get destination for link from Auto-Link input textctrl
         total = len(self.lst_executables)  # Get the amount of links to be created
         
         if total > 0:
@@ -412,7 +415,7 @@ scripts will be created that will place a symbolic link to your executables in t
         for S, O in self.script_objects:
             S.Reset()
         
-        self.al_input.Reset()
+        self.ti_autolink.Reset()
         self.executables.DeleteAllItems()
     
     
