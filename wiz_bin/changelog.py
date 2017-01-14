@@ -10,6 +10,7 @@ import commands, os, wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonImport
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -19,6 +20,8 @@ from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
+from globals.bitmaps        import ICON_WARNING
+from globals.changes        import FormatChangelog
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
@@ -133,11 +136,7 @@ class Panel(WizardPage):
             (txt_email, 0, RIGHT_CENTER|wx.RIGHT, 5),
             (self.ti_email, 1, wx.EXPAND)
             ))
-        '''
-        self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
-        lyt_changes = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
-        lyt_changes.Add(self.ti_changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
-        '''
+        
         lyt_target_custom = wx.BoxSizer(wx.HORIZONTAL)
         
         lyt_target_custom.Add(self.rb_target_custom, 0, wx.ALIGN_CENTER_VERTICAL)
@@ -185,42 +184,43 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def AddInfo(self, event=None):
-        changes = self.ti_changes.GetValue()
-        if TextIsEmpty(changes):
-            wx.MessageDialog(GetTopWindow(), GT(u'List of changes is empty'), GT(u'Warning'),
-                    style=wx.OK|wx.ICON_EXCLAMATION).ShowModal()
+        new_changes = self.ti_changes.GetValue()
+        
+        if TextIsEmpty(new_changes):
+            DetailedMessageDialog(GetTopWindow(), GT(u'Warning'), ICON_WARNING,
+                    GT(u'"Changes" section is empty')).ShowModal()
+            
+            self.ti_changes.SetInsertionPointEnd()
+            self.ti_changes.SetFocus()
+            
             return
         
         package = self.ti_package.GetValue()
         version = self.ti_version.GetValue()
-        distribution = self.ti_dist.GetValue()
-        urgency = self.opts_urgency[self.sel_urgency.GetSelection()]
-        info1 = u'{} ({}) {}; urgency={}'.format(package, version, distribution, urgency)
-        
-        details = []
-        for line in changes.split(u'\n'):
-            line = line.strip()
-            
-            # Strip empty lines
-            if not TextIsEmpty(line):
-                if not details:
-                    details.append(u'  * {}'.format(line))
-                else:
-                    details.append(u'    {}'.format(line))
-        
-        details.insert(0, wx.EmptyString)
-        details.append(wx.EmptyString)
-        details = u'\n'.join(details)
-        
+        dist = self.ti_dist.GetValue()
+        urgency = self.sel_urgency.GetStringSelection()
         maintainer = self.ti_maintainer.GetValue()
         email = self.ti_email.GetValue()
-        #date = commands.getoutput("date +\"%a, %d %b %Y %T %z\"")
-        # FIXME: Use methods from dbr.functions to get date & time
-        date = commands.getoutput(u'date -R')
-        info2 = u' -- {} <{}>  {}'.format(maintainer, email, date)
         
-        entry = u'\n'.join((info1, details, info2))
-        self.dsp_changes.SetValue(u'\n'.join((entry, wx.EmptyString, self.dsp_changes.GetValue())))
+        new_changes = FormatChangelog(new_changes, package, version, dist, urgency,
+                maintainer, email, self.chk_indentation.GetValue())
+        
+        # Clean up leading & trailing whitespace in old changes
+        old_changes = self.dsp_changes.GetValue().strip(u' \t\n\r')
+        
+        # Only append newlines if log isn't already empty
+        if not TextIsEmpty(old_changes):
+            new_changes = u'{}\n\n\n{}'.format(new_changes, old_changes)
+        
+        # Add empty line to end of log
+        if not new_changes.endswith(u'\n'):
+            new_changes = u'{}\n'.format(new_changes)
+        
+        self.dsp_changes.SetValue(new_changes)
+        
+        # Clear "Changes" text
+        self.ti_changes.Clear()
+        self.ti_changes.SetFocus()
     
     
     ## TODO: Doxygen
@@ -289,7 +289,7 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
-            (self.ti_package, ident.F_NAME),
+            (self.ti_package, ident.F_PACKAGE),
             (self.ti_version, ident.F_VERSION),
             (self.ti_maintainer, ident.F_MAINTAINER),
             (self.ti_email, ident.F_EMAIL),
@@ -335,10 +335,6 @@ class Panel(WizardPage):
             if not TextIsEmpty(L) and u'[' in L and u']' in L:
                 L = L.split(u'[')[-1].split(u']')[0]
                 parse_section(L, clog_data[line_index+1:])
-        '''
-        if u'BODY' in sections:
-            self.dsp_changes.SetValue(sections[u'BODY'])
-        '''
         
         for S in sections:
             Logger.Debug(__name__, GT(u'Changelog section: "{}", Value:\n{}').format(S, sections[S]))
@@ -382,6 +378,14 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ResetPageInfo(self):
+        self.ti_package.Clear()
+        self.ti_version.Clear()
+        self.ti_dist.Clear()
+        self.sel_urgency.SetSelection(self.sel_urgency.default)
+        self.ti_maintainer.Clear()
+        self.ti_email.Clear()
+        self.ti_changes.Clear()
+        self.rb_target_standard.SetValue(self.rb_target_standard.default)
         self.ti_target.Reset()
         self.dsp_changes.Clear()
     
@@ -390,6 +394,7 @@ class Panel(WizardPage):
     def SetChangelogLegacy(self, data):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+        
         if dest == u'DEFAULT':
             self.rb_target_standard.SetValue(True)
         
