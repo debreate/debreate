@@ -12,6 +12,8 @@ from dbr.buttons            import ButtonBuild
 from dbr.buttons            import ButtonImport
 from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
+from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -70,10 +72,10 @@ class Panel(WizardPage):
                 name=postrm.script_filename)
         
         self.script_objects = (
-            (preinst, rb_preinst),
-            (postinst, rb_postinst),
-            (prerm, rb_prerm),
-            (postrm, rb_postrm),
+            (preinst, rb_preinst,),
+            (postinst, rb_postinst,),
+            (prerm, rb_prerm,),
+            (postrm, rb_postrm,),
         )
         
         # *** Auto-Link *** #
@@ -118,12 +120,9 @@ scripts will be created that will place a symbolic link to your executables in t
         for S, RB in self.script_objects:
             wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
         
-        #wx.EVT_KEY_UP(self.ti_autolink, ChangeInput)
-        
         wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
-        wx.EVT_BUTTON(btn_al_generate, -1, self.OnGenerate)
-        btn_al_remove.Bind(wx.EVT_BUTTON, self.ImportExe)
-        
+        wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
+        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
         
         # *** Layout *** #
@@ -139,7 +138,6 @@ scripts will be created that will place a symbolic link to your executables in t
         
         # Sizer for left half of scripts panel
         lyt_left = wx.BoxSizer(wx.VERTICAL)
-        
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
         
         for S, RB in self.script_objects:
@@ -168,7 +166,7 @@ scripts will be created that will place a symbolic link to your executables in t
         # Sizer for right half of scripts panel
         lyt_right = wx.BoxSizer(wx.VERTICAL)
         # Line up panels to look even
-        lyt_right.AddSpacer(39)
+        lyt_right.AddSpacer(44)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
                 0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
         lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
@@ -209,7 +207,7 @@ scripts will be created that will place a symbolic link to your executables in t
                 S.Export(stage, build=True)
         
         return (dbrerrno.SUCCESS, None)
-                
+    
     
     ## Imports executables from files page for Auto-Link
     def ImportExe(self, event=None):
@@ -332,64 +330,73 @@ scripts will be created that will place a symbolic link to your executables in t
     
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
-        for S in self.script_objects[1][0], self.script_objects[2][0]:
-            if not TextIsEmpty(S.GetValue()):
-                confirm = wx.MessageDialog(GetTopWindow(),
-                        GT(u'The {} script is not empty').format(S.script_name), GT(u'Warning'),
-                        style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION)
-                confirm.SetYesNoLabels(u'Continue', u'Cancel')
-                confirm.SetExtendedMessage(GT(u'Do you want to overwrite the contents of this script?'))
-                if confirm.ShowModal() == wx.ID_NO:
-                    Logger.Debug(__name__, GT(u'Cancelling'))
-                    return
-                
-                Logger.Debug(__name__, GT(u'Continuing'))
-    
-        # Create the scripts to link the executables
+        main_window = GetTopWindow()
         
-        # Create a list of commands to put into the script
-        postinst_list = []
-        prerm_list = []
-        
-        link_path = self.ti_autolink.GetValue() # Get destination for link from Auto-Link input textctrl
-        total = len(self.lst_executables)  # Get the amount of links to be created
+        # Get the amount of links to be created
+        total = len(self.lst_executables)
         
         if total > 0:
-            cont = True
+            non_empty_scripts = []
             
-            # If the link path does not exist on the system post a warning message
-            if os.path.isdir(link_path) == False:
-                cont = False
-                msg_path = GT(u'Path "{}" does not exist. Continue?')
-                link_error_dia = wx.MessageDialog(self, msg_path.format(link_path), GT(u'Path Warning'),
-                    style=wx.YES_NO)
-                if link_error_dia.ShowModal() == wx.ID_YES:
-                    cont = True
+            for SCRIPT in self.script_objects[1][0], self.script_objects[2][0]:
+                if not TextIsEmpty(SCRIPT.GetValue()):
+                    non_empty_scripts.append(SCRIPT.GetName())
             
-            if cont:
-                count = 0
-                while count < total:
-                    filename = os.path.split(self.lst_executables[count])[1]
-                    if u'.' in filename:
-                        linkname = u'.'.join(filename.split(u'.')[:-1])
-                        link = u'{}/{}'.format(link_path, linkname)
-                    
-                    else:
-                        link = u'{}/{}'.format(link_path, filename)
-                    
-                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
-                    prerm_list.append(u'rm -f "{}"'.format(link))
-                    count += 1
+            # Warn about overwriting previous post-install & pre-remove scripts
+            if non_empty_scripts:
+                warn_msg = GT(u'The following scripts will be overwritten if you continue: {}')
+                warn_msg = u'{}\n\n{}'.format(warn_msg.format(u', '.join(non_empty_scripts)), GT(u'Continue?'))
                 
-                postinst = u'\n\n'.join(postinst_list)
-                prerm = u'\n\n'.join(prerm_list)
+                overwrite = ConfirmationDialog(main_window, text=warn_msg)
                 
-                self.script_objects[1][0].SetValue(postinst)
-                self.script_objects[2][0].SetValue(prerm)
+                if not overwrite.Confirmed():
+                    return
                 
-                dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
-                dia.ShowModal()
-                dia.Destroy()
+                overwrite.Destroy()
+                del warn_msg, overwrite
+            
+            # Get destination for link from Auto-Link input textctrl
+            link_path = self.ti_autolink.GetValue()
+            
+            # Warn about linking in a directory that does not exist on the current filesystem
+            if not os.path.isdir(link_path):
+                warn_msg = GT(u'Path "{}" does not exist.')
+                warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
+                
+                overwrite = ConfirmationDialog(main_window, text=warn_msg.format(link_path))
+                
+                if not overwrite.Confirmed():
+                    return
+                
+                overwrite.Destroy()
+                del warn_msg, overwrite
+            
+            # Create a list of commands to put into the script
+            postinst_list = []
+            prerm_list = []
+            
+            e_index = 0
+            while e_index < total:
+                filename = os.path.basename(self.lst_executables[e_index])
+                if u'.' in filename:
+                    linkname = u'.'.join(filename.split(u'.')[:-1])
+                    link = u'{}/{}'.format(link_path, linkname)
+                
+                else:
+                    link = u'{}/{}'.format(link_path, filename)
+                
+                postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[e_index], link))
+                prerm_list.append(u'rm -f "{}"'.format(link))
+                e_index += 1
+            
+            postinst = u'\n\n'.join(postinst_list)
+            prerm = u'\n\n'.join(prerm_list)
+            
+            self.script_objects[1][0].SetValue(postinst)
+            self.script_objects[2][0].SetValue(prerm)
+            
+            DetailedMessageDialog(main_window, GT(u'Success'),
+                    text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
     
     
     ## TODO: Doxygen
