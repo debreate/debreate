@@ -17,7 +17,6 @@ from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
 from dbr.workingdir         import ChangeWorkingDirectory
-from globals                import ident
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
@@ -50,55 +49,6 @@ class BaseDialog(wx.Dialog):
             self.CenterOnParent()
         
         return wx.Dialog.ShowModal(self, *args, **kwargs)
-
-
-## Prompt for overwriting a text area
-#  
-#  FIXME: Unused?
-class TextOverwriteDialog(wx.Dialog):
-    def __init__(self, parent, ID=wx.ID_ANY, title=GT(u'Overwrite?'), message=u''):
-        wx.Dialog.__init__(self, parent, ID, title)
-        self.message = wx.StaticText(self, -1, message)
-        
-        ## Button to accept overwrite
-        self.button_overwrite = wx.Button(self, ident.OVERWRITE, GT(u'Overwrite'))
-        
-        self.button_append = wx.Button(self, ident.APPEND, GT(u'Append'))
-        
-        ## Button to cancel overwrite
-        self.button_cancel = wx.Button(self, wx.ID_CANCEL)
-        
-        # -*- Button events -*- #
-        wx.EVT_BUTTON(self.button_overwrite, ident.OVERWRITE, self.OnButton)
-        wx.EVT_BUTTON(self.button_append, ident.APPEND, self.OnButton)
-        
-        hsizer = wx.BoxSizer(wx.HORIZONTAL)
-        hsizer.Add(self.button_overwrite, 0, wx.LEFT|wx.RIGHT, 5)
-        hsizer.Add(self.button_append, 0, wx.LEFT|wx.RIGHT, 5)
-        hsizer.Add(self.button_cancel, 0, wx.LEFT|wx.RIGHT, 5)
-        
-        vsizer = wx.BoxSizer(wx.VERTICAL)
-        vsizer.Add(self.message, 1, wx.ALIGN_CENTER|wx.ALL, 5)
-        vsizer.Add(hsizer, 0, wx.ALIGN_RIGHT|wx.TOP|wx.BOTTOM, 5)
-        
-        self.SetAutoLayout(True)
-        self.SetSizerAndFit(vsizer)
-        self.Layout()
-    
-    
-    ## Defines actions to take when a button is pressed
-    #  
-    #  Get the event object & close the dialog.
-    #  \param event
-    #        wx.EVT_BUTTON
-    def OnButton(self, event=None):
-        button_id = event.GetEventObject().GetId()
-        self.EndModal(button_id)
-    
-    
-    ## Retrieves the message that is displayed in the dialog
-    def GetMessage(self, event=None):
-        return self.message.GetLabel()
 
 
 ## TODO: Doxygen
