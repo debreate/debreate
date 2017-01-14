@@ -9,7 +9,8 @@
 import wx
 from wx.combo import OwnerDrawnComboBox
 
-from globals.strings import TextIsEmpty
+from dbr.font           import MONOSPACED_MD
+from globals.strings    import TextIsEmpty
 
 
 ## Custom combo box that sets background colors when enabled/disabled
@@ -18,13 +19,18 @@ from globals.strings import TextIsEmpty
 class ComboBox(OwnerDrawnComboBox):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0,
-            validator=wx.DefaultValidator, name=wx.ComboBoxNameStr):
+            validator=wx.DefaultValidator, name=wx.ComboBoxNameStr, monospace=False):
         OwnerDrawnComboBox.__init__(self, parent, ID, value, pos, size, choices, style,
                 validator, name)
         
         if wx.MAJOR_VERSION < 3:
             self.clr_disabled = self.GetBackgroundColour()
             self.clr_enabled = self.GetTextCtrl().GetBackgroundColour()
+        
+        if monospace:
+            self.TextCtrl.SetFont(MONOSPACED_MD)
+            # FIXME: This doesn't work (use monospace in popup list)
+            self.PopupControl.GetControl().SetFont(MONOSPACED_MD)
     
     
     ## TODO: Doxygen
