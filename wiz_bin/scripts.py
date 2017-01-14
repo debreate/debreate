@@ -22,7 +22,7 @@ from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
-from dbr.textinput          import TextAreaPanel
+from dbr.textinput          import MonospaceTextArea
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
@@ -508,11 +508,11 @@ class DebianScript(wx.Panel):
                 else:
                     shell_options.append(P + S)
         
-        self.shell = ComboBox(self, self.GetId(), choices=shell_options)
+        self.shell = ComboBox(self, self.GetId(), choices=shell_options, monospace=True)
         self.shell.default = u'/bin/bash'
         self.shell.SetStringSelection(self.shell.default)
         
-        self.script_body = TextAreaPanel(self, self.GetId())
+        self.script_body = MonospaceTextArea(self, self.GetId())
         
         # *** Layout *** #
         
