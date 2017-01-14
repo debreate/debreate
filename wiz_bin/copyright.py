@@ -8,10 +8,12 @@
 
 import os, wx
 
+from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import RemovePreWhitespace
 from dbr.language           import GT
+from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
@@ -31,7 +33,7 @@ from globals.wizardhelper   import GetTopWindow
 
 
 # Globals
-copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]\n\n')
+copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
 
 
 ## Copyright page
@@ -39,6 +41,7 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.COPYRIGHT)
         
+        # FIXME: Update license templates list when template is generated
         # FIXME: Ignore symbolic links
         opts_licenses = GetSystemLicensesList()
         
@@ -62,7 +65,7 @@ class Panel(WizardPage):
         self.sel_templates.SetSelection(self.sel_templates.default)
         
         btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full»')
-        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Linked Template'), name=u'link»')
+        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Simple Template'), name=u'simple»')
         
         if not self.sel_templates.GetCount():
             self.sel_templates.Enable(False)
@@ -71,26 +74,26 @@ class Panel(WizardPage):
         
         ## Area where license text is displayed
         self.dsp_copyright = MonospaceTextArea(self, name=u'license')
+        self.dsp_copyright.EnableDropTarget()
         
         SetPageToolTips(self)
         
+        # Initiate tooltip for drop-down selector
         if self.sel_templates.IsEnabled():
             self.OnSelectTemplate(self.sel_templates)
         
         # *** Layout *** #
         
+        # Putting the generate buttons in their own sizer & making them
+        # them the same width looks nicer.
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(btn_template, 1, wx.TOP|wx.RIGHT, 5)
-        lyt_buttons.Add(self.btn_template_simple, 1, wx.TOP|wx.LEFT, 5)
+        lyt_buttons.Add(btn_template, 1)
+        lyt_buttons.Add(self.btn_template_simple, 1)
         
         lyt_label = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_label.Add(
-            wx.StaticText(self, label=GT(u'Available Templates')),
-            0,
-            wx.TOP|wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER,
-            5
-        )
-        lyt_label.Add(self.sel_templates, 0, wx.TOP, 5)
+        lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
+                wx.ALIGN_CENTER_VERTICAL)
+        lyt_label.Add(self.sel_templates, 0, wx.LEFT, 5)
         lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
@@ -107,7 +110,7 @@ class Panel(WizardPage):
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
         btn_template.Bind(wx.EVT_BUTTON, self.OnGenerateTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateLinkedTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateSimpleTemplate)
     
     
     ## TODO: Doxygen
@@ -140,16 +143,14 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def DestroyLicenseText(self):
-        main_window = GetTopWindow()
+        if not TextIsEmpty(self.dsp_copyright.GetValue()):
+            warn_msg = GT(u'This will destroy all license text.')
+            warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
+            
+            if ConfirmationDialog(GetTopWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
+                return False
         
-        empty = TextIsEmpty(self.dsp_copyright.GetValue())
-        
-        if not empty:
-            if wx.MessageDialog(main_window, GT(u'This will destroy all license text. Do you want to continue?'), GT(u'Warning'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_EXCLAMATION).ShowModal() == wx.ID_NO:
-                return 0
-        
-        return 1
+        return True
     
     
     ## TODO: Doxygen
@@ -163,15 +164,13 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GenerateLinkedTemplate(self, event=None):
+    def GenerateSimpleTemplate(self, event=None):
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
             
             license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
             
-            self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
-            self.dsp_copyright.WriteText(license_path)
-            
+            self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
             self.dsp_copyright.SetInsertionPoint(0)
         
         self.dsp_copyright.SetFocus()
@@ -179,6 +178,8 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def GenerateTemplate(self, l_name):
+        Logger.Debug(__name__, u'Generating template')
+        
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
             
@@ -187,7 +188,7 @@ class Panel(WizardPage):
             if l_path:
                 l_lines = ReadFile(l_path, split=True)
                 
-                delimeters = (
+                year_delims = (
                     u'<year>',
                     u'<years>',
                     u'<year(s)>',
@@ -196,12 +197,43 @@ class Panel(WizardPage):
                     u'<date(s)>',
                 )
                 
-                for DEL in delimeters:
+                substitutions = {
+                    u'Copyright (C)': u'Copyright (REMOVEME) ©',
+                    year_delims: str(GetYear()),
+                }
+                
+                l_index = 0
+                for LI in l_lines:
+                    for RPLC in substitutions:
+                        if isinstance(RPLC, (tuple, list)):
+                            for S in RPLC:
+                                if S in LI:
+                                    new_str = substitutions[RPLC]
+                                    
+                                    Logger.Debug(__name__,
+                                            u'License template string substitution from list: {} ➜ {}'.format(S, new_str))
+                                    
+                                    l_lines[l_index] = LI.replace(S, new_str)
+                        
+                        else:
+                            if RPLC in LI:
+                                new_str = substitutions[RPLC]
+                                
+                                Logger.Debug(__name__,
+                                        u'License template string substitution from string: {} ➜ {}'.format(RPLC, new_str))
+                                
+                                l_lines[l_index] = LI.replace(RPLC, new_str)
+                        
+                        l_index += 1
+                '''
+                for DEL in year_delims:
                     l_index = 0
                     for LI in l_lines:
                         if DEL in LI:
                             l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
+                        
                         l_index += 1
+                '''
                 
                 self.dsp_copyright.SetValue(u'\n'.join(l_lines))
                 
@@ -287,7 +319,10 @@ class Panel(WizardPage):
             self.GenerateTemplate(license_name)
     
     
-    ## TODO: Doxygen
+    ## Enables/Disables simple template button
+    #  
+    #  Simple template generation is only available
+    #  for system  licenses.
     def OnSelectTemplate(self, event=None):
         if isinstance(event, wx.Choice):
             choice = event
@@ -306,7 +341,7 @@ class Panel(WizardPage):
         self.SetTemplateToolTip()
     
     
-    ## TODO: Doxygen
+    ## Resets all page fields to default values
     def ResetPage(self):
         self.dsp_copyright.Clear()
         
@@ -315,7 +350,7 @@ class Panel(WizardPage):
             self.OnSelectTemplate(self.sel_templates)
     
     
-    ## TODO: Doxygen
+    ## Sets the text of the displayed copyright
     def SetCopyright(self, data):
         self.dsp_copyright.SetValue(data)
     
