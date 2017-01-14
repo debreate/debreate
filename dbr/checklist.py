@@ -101,7 +101,10 @@ class CheckList(wx.Panel):
     
     
     def GetItemCount(self):
-        return self.layout_scrolled.GetItemCount()
+        if wx.MAJOR_VERSION > 2:
+            return self.layout_scrolled.GetItemCount()
+        
+        return len(self.layout_scrolled.GetChildren())
     
     
     def LabelExists(self, label):
