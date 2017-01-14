@@ -506,17 +506,19 @@ class DebianScript(wx.Panel):
         self.shell.default = u'/bin/bash'
         self.shell.SetStringSelection(self.shell.default)
         
-        shell_layout = wx.BoxSizer(wx.HORIZONTAL)
-        shell_layout.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
-        shell_layout.Add(self.shell, 1)
-        
         self.script_body = TextAreaPanel(self, self.GetId())
         
-        sizer_v1 = wx.BoxSizer(wx.VERTICAL)
-        sizer_v1.Add(shell_layout, 0)
-        sizer_v1.Add(self.script_body, 1, wx.EXPAND)
+        # *** Layout *** #
         
-        self.SetSizer(sizer_v1)
+        lyt_shell = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_shell.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
+        lyt_shell.Add(self.shell, 1)
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_shell, 0)
+        lyt_main.Add(self.script_body, 1, wx.EXPAND|wx.TOP, 5)
+        
+        self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
         
