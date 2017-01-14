@@ -12,10 +12,8 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
-from dbr.functions          import RemovePreWhitespace
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
@@ -114,36 +112,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    #  
-    #  FIXME: Deprecated/Unused
-    def CopyStandardLicense(self, license_name):
-        if self.DestroyLicenseText():
-            license_path = u'{}/{}'.format(system_licenses_path, license_name)
-            
-            if not os.path.isfile(license_path):
-                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate standard license'), license_path))
-                return
-            
-            license_text = ReadFile(license_path)
-            
-            self.dsp_copyright.Clear()
-            self.dsp_copyright.SetValue(RemovePreWhitespace(license_text))
-            
-            add_header = (
-                u'Artistic',
-                u'BSD',
-            )
-            
-            self.dsp_copyright.SetInsertionPoint(0)
-            
-            if license_name in add_header:
-                self.dsp_copyright.WriteText(copyright_header.format(GetYear()))
-                self.dsp_copyright.SetInsertionPoint(0)
-        
-        self.dsp_copyright.SetFocus()
-    
-    
-    ## TODO: Doxygen
     def DestroyLicenseText(self):
         if not TextIsEmpty(self.dsp_copyright.GetValue()):
             warn_msg = GT(u'This will destroy all license text.')
@@ -163,65 +131,6 @@ class Panel(WizardPage):
         self.Export(stage, u'copyright')
         
         return (0, None)
-    
-    
-    ## TODO: Doxygen
-    #  
-    #  FIXME: Deprecated/Unused
-    def GenerateTemplate(self, l_name):
-        Logger.Debug(__name__, u'Generating template')
-        
-        if self.DestroyLicenseText():
-            self.dsp_copyright.Clear()
-            
-            l_path = GetLicenseTemplateFile(l_name)
-            
-            if l_path:
-                l_lines = ReadFile(l_path, split=True)
-                
-                year_delims = (
-                    u'<year>',
-                    u'<years>',
-                    u'<year(s)>',
-                    u'<date>',
-                    u'<dates>',
-                    u'<date(s)>',
-                )
-                
-                substitutions = {
-                    u'Copyright (C)': u'Copyright (REMOVEME) ©',
-                    year_delims: str(GetYear()),
-                }
-                
-                l_index = 0
-                for LI in l_lines:
-                    for RPLC in substitutions:
-                        if isinstance(RPLC, (tuple, list)):
-                            for S in RPLC:
-                                if S in LI:
-                                    new_str = substitutions[RPLC]
-                                    
-                                    Logger.Debug(__name__,
-                                            u'License template string substitution from list: {} ➜ {}'.format(S, new_str))
-                                    
-                                    l_lines[l_index] = LI.replace(S, new_str)
-                        
-                        else:
-                            if RPLC in LI:
-                                new_str = substitutions[RPLC]
-                                
-                                Logger.Debug(__name__,
-                                        u'License template string substitution from string: {} ➜ {}'.format(RPLC, new_str))
-                                
-                                l_lines[l_index] = LI.replace(RPLC, new_str)
-                        
-                        l_index += 1
-                
-                self.dsp_copyright.SetValue(u'\n'.join(l_lines))
-                
-                self.dsp_copyright.SetInsertionPoint(0)
-        
-        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
