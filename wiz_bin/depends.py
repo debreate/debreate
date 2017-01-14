@@ -45,7 +45,14 @@ class Panel(wx.ScrolledWindow):
         
         self.ti_package = wx.TextCtrl(self, size=(300,25), name=u'package')
         
-        opts_operator = (u'>=', u'<=', u'=', u'>>', u'<<')
+        opts_operator = (
+            u'>=',
+            u'<=',
+            u'=',
+            u'>>',
+            u'<<',
+            )
+        
         self.sel_operator = wx.Choice(self, choices=opts_operator, name=u'operator')
         self.sel_operator.default = 0
         self.sel_operator.SetSelection(self.sel_operator.default)
@@ -90,6 +97,23 @@ class Panel(wx.ScrolledWindow):
             self.lst_deps.SetColumnWidth(100, wx.LIST_AUTOSIZE)
         
         SetPageToolTips(self)
+        
+        # *** Event Handling *** #
+        
+        control_page = GetPage(ident.CONTROL)
+        btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
+        
+        wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
+        wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
+        
+        btn_add.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_append.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_remove.Bind(wx.EVT_BUTTON, self.SetDepends)
+        btn_clear.Bind(wx.EVT_BUTTON, self.SetDepends)
+        
+        wx.EVT_KEY_DOWN(self.lst_deps, self.SetDepends)
         
         # *** Layout *** #
         
@@ -149,22 +173,6 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        btn_open.Bind(wx.EVT_BUTTON, GetPage(ident.CONTROL).OnBrowse)
-        btn_save.Bind(wx.EVT_BUTTON, GetPage(ident.CONTROL).OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, GetPage(ident.CONTROL).OnPreviewControl)
-        
-        wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
-        
-        btn_add.Bind(wx.EVT_BUTTON, self.SetDepends)
-        btn_append.Bind(wx.EVT_BUTTON, self.SetDepends)
-        btn_remove.Bind(wx.EVT_BUTTON, self.SetDepends)
-        btn_clear.Bind(wx.EVT_BUTTON, self.SetDepends)
-        
-        wx.EVT_KEY_DOWN(self.lst_deps, self.SetDepends)
     
     
     ## Add a category & dependency to end of list
