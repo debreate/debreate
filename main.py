@@ -692,15 +692,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         QB.Destroy()
     
     
-    ## Shows a quit dialog & exits the application
-    #  
-    #  If user confirms quit, closes main window & exits.
+    ## Shows a dialog to confirm quit and write window settings to config file
     def OnQuit(self, event=None):
-        confirm = wx.MessageDialog(self, GT(u'You will lose any unsaved information'), GT(u'Quit?'),
-                                   wx.OK|wx.CANCEL|wx.ICON_QUESTION)
-        
-        if confirm.ShowModal() == wx.ID_OK:
-            confirm.Destroy()
+        if ConfirmationDialog(self, GT(u'Quit?'),
+                text=GT(u'You will lose any unsaved information')).Confirmed():
             
             maximized = self.IsMaximized()
             
@@ -715,8 +710,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 WriteConfig(u'maximize', True)
             
             else:
-                WriteConfig(u'size', (self.GetSize()[0], self.GetSize()[1]))
-                WriteConfig(u'position', (self.GetPosition()[0], self.GetPosition()[1]))
+                WriteConfig(u'position', self.GetPositionTuple())
+                WriteConfig(u'size', self.GetSizeTuple())
                 WriteConfig(u'center', False)
                 WriteConfig(u'maximize', False)
             
@@ -728,9 +723,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 WriteConfig(u'workingdir', current_wdir)
             
             self.Destroy()
-        
-        else:
-            confirm.Destroy()
     
     
     ## TODO: Doxygen
