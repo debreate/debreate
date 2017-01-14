@@ -50,50 +50,48 @@ class Panel(wx.ScrolledWindow):
         self.SetScrollbars(20, 20, 0, 0)
         
         # Check boxes for choosing scripts
-        self.chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
-        self.chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
-        self.chk_prerm = wx.CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
-        self.chk_postrm = wx.CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
+        chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
+        chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
+        chk_prerm = wx.CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
+        chk_postrm = wx.CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
         
-        for S in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
+        for S in chk_preinst, chk_postinst, chk_prerm, chk_postrm:
             S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
             
             S.Bind(wx.EVT_CHECKBOX, self.OnToggleScripts)
         
         # Radio buttons for displaying between pre- and post- install scripts
-        self.rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'),
+        rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'),
                 name=u'preinst', style=wx.RB_GROUP)
-        self.rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'),
+        rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'),
                 name=u'postinst')
-        self.rb_prerm = wx.RadioButton(self, ID_RM_PRE, GT(u'Pre-Remove'),
+        rb_prerm = wx.RadioButton(self, ID_RM_PRE, GT(u'Pre-Remove'),
                 name=u'prerm')
-        self.rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'),
+        rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'),
                 name=u'postrm')
         
         # Text area for each radio button
-        self.ti_preinst = MonospaceTextArea(self, ID_INST_PRE, name=u'script body')
-        self.ti_postinst = MonospaceTextArea(self, ID_INST_POST, name=u'script body')
-        self.ti_prerm = MonospaceTextArea(self, ID_RM_PRE, name=u'script body')
-        self.ti_postrm = MonospaceTextArea(self, ID_RM_POST, name=u'script body')
+        ti_preinst = MonospaceTextArea(self, ID_INST_PRE, name=u'script body')
+        ti_postinst = MonospaceTextArea(self, ID_INST_POST, name=u'script body')
+        ti_prerm = MonospaceTextArea(self, ID_RM_PRE, name=u'script body')
+        ti_postrm = MonospaceTextArea(self, ID_RM_POST, name=u'script body')
         
-        for TI in self.ti_preinst, self.ti_postinst, self.ti_prerm, self.ti_postrm:
+        for TI in ti_preinst, ti_postinst, ti_prerm, ti_postrm:
             TI.EnableDropTarget()
+        
+        self.script_objects = (
+            (chk_preinst, rb_preinst, ti_preinst,),
+            (chk_postinst, rb_postinst, ti_postinst,),
+            (chk_prerm, rb_prerm, ti_prerm,),
+            (chk_postrm, rb_postrm, ti_postrm,),
+            )
+        
+        for CHK, RB, TI in self.script_objects:
+            CHK.Hide()
+            TI.Hide()
         
         # Set script text areas to default enabled/disabled setting
         self.OnToggleScripts()
-        
-        self.grp_te = {	self.rb_preinst: self.ti_preinst, self.rb_postinst: self.ti_postinst,
-                            self.rb_prerm: self.ti_prerm, self.rb_postrm: self.ti_postrm
-                            }
-        
-        self.grp_chk = {	self.rb_preinst: self.chk_preinst, self.rb_postinst: self.chk_postinst,
-                            self.rb_prerm: self.chk_prerm, self.rb_postrm: self.chk_postrm }
-        
-        for rb in self.grp_te:
-            self.grp_te[rb].Hide()
-        
-        for rb in self.grp_chk:
-            self.grp_chk[rb].Hide()
         
         # *** Auto-Link *** #
         
@@ -125,27 +123,37 @@ class Panel(wx.ScrolledWindow):
         
         SetPageToolTips(self)
         
+        # *** Event Handling *** #
+        
+        for CHK, RB, TI in self.script_objects:
+            RB.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
+        
+        wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
+        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
+        wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
+        
         # *** Layout *** #
         
         # Organizing radio buttons
         lyt_sel_script = wx.BoxSizer(wx.HORIZONTAL)
         lyt_sel_script.AddMany((
-            (self.chk_preinst),(self.chk_postinst),
-            (self.chk_prerm),(self.chk_postrm)
+            (chk_preinst),(chk_postinst),
+            (chk_prerm),(chk_postrm)
             ))
         lyt_sel_script.AddStretchSpacer(1)
-        lyt_sel_script.Add(self.rb_preinst, 0)
-        lyt_sel_script.Add(self.rb_postinst, 0)
-        lyt_sel_script.Add(self.rb_prerm, 0)
-        lyt_sel_script.Add(self.rb_postrm, 0)
+        lyt_sel_script.Add(rb_preinst, 0)
+        lyt_sel_script.Add(rb_postinst, 0)
+        lyt_sel_script.Add(rb_prerm, 0)
+        lyt_sel_script.Add(rb_postrm, 0)
         
         # Sizer for left half of scripts panel
         lyt_left = wx.BoxSizer(wx.VERTICAL)
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_left.Add(self.ti_preinst, 1, wx.EXPAND)
-        lyt_left.Add(self.ti_postinst, 1, wx.EXPAND)
-        lyt_left.Add(self.ti_prerm, 1,wx.EXPAND)
-        lyt_left.Add(self.ti_postrm, 1, wx.EXPAND)
+        lyt_left.Add(ti_preinst, 1, wx.EXPAND)
+        lyt_left.Add(ti_postinst, 1, wx.EXPAND)
+        lyt_left.Add(ti_prerm, 1,wx.EXPAND)
+        lyt_left.Add(ti_postrm, 1, wx.EXPAND)
         
         # Auto-Link/Right side
         lyt_ti_autolink = wx.BoxSizer(wx.HORIZONTAL)
@@ -180,16 +188,6 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        for rb in self.grp_te:
-            rb.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
-        
-        btn_al_import.Bind(wx.EVT_BUTTON, self.ImportExe)
-        wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
-        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
-        wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
     
     
     ## TODO: Doxygen
@@ -204,10 +202,10 @@ class Panel(wx.ScrolledWindow):
     ## TODO: Doxygen
     def ExportPage(self):
         script_controls = {
-            u'preinst': (self.chk_preinst, self.ti_preinst,),
-            u'postinst': (self.chk_postinst, self.ti_postinst,),
-            u'prerm': (self.chk_prerm, self.ti_prerm),
-            u'postrm': (self.chk_postrm, self.ti_postrm),
+            u'preinst': (self.script_ojects[0][0], self.script_ojects[0][2],),
+            u'postinst': (self.script_ojects[1][0], self.script_ojects[1][2],),
+            u'prerm': (self.script_ojects[2][0], self.script_ojects[2][2],),
+            u'postrm': (self.script_ojects[3][0], self.script_ojects[3][2],),
         }
         
         script_list = []
@@ -224,10 +222,10 @@ class Panel(wx.ScrolledWindow):
     def GatherData(self):
         # Custom dictionary of scripts
         script_list = (
-            (self.chk_preinst, self.ti_preinst, u'PREINST'),
-            (self.chk_postinst, self.ti_postinst, u'POSTINST'),
-            (self.chk_prerm, self.ti_prerm, u'PRERM'),
-            (self.chk_postrm, self.ti_postrm, u'POSTRM')
+            (self.script_ojects[0][0], self.script_ojects[0][2], u'PREINST'),
+            (self.script_ojects[1][0], self.script_ojects[1][2], u'POSTINST'),
+            (self.script_ojects[2][0], self.script_ojects[2][2], u'PRERM'),
+            (self.script_ojects[3][0], self.script_ojects[3][2], u'POSTRM')
         )
         
         # Create a list to return the data
@@ -315,7 +313,8 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def IsBuildExportable(self):
-        for chk in self.chk_preinst, self.chk_postinst, self.chk_prerm, self.chk_postrm:
+        for chk in self.script_ojects:
+            chk = chk[0]
             if chk.GetValue():
                 return True
         
@@ -330,12 +329,13 @@ class Panel(wx.ScrolledWindow):
         
         if total > 0:
             non_empty_scripts = []
+            
             checked_scripts = (
-                (self.ti_postinst, self.rb_postinst),
-                (self.ti_prerm, self.rb_prerm),
+                self.script_objects[1],
+                self.script_objects[2],
                 )
             
-            for TI, RB in checked_scripts:
+            for CHK, RB, TI in checked_scripts:
                 if not TextIsEmpty(TI.GetValue()):
                     non_empty_scripts.append(RB.GetLabel())
             
@@ -368,8 +368,8 @@ class Panel(wx.ScrolledWindow):
                 warn_dialog.Destroy()
                 del warn_msg, warn_dialog
             
-            self.chk_postinst.SetValue(True)
-            self.chk_prerm.SetValue(True)
+            self.script_objects[1][0].SetValue(True)
+            self.script_objects[2][0].SetValue(True)
             
             # Update scripts' text area enabled status
             self.OnToggleScripts()
@@ -395,8 +395,8 @@ class Panel(wx.ScrolledWindow):
             postinst = u'\n\n'.join(postinst_list)
             prerm = u'\n\n'.join(prerm_list)
             
-            self.ti_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
-            self.ti_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
+            self.script_objects[1][2].SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
+            self.script_objects[2][2].SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
             
             DetailedMessageDialog(main_window, GT(u'Success'),
                     text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
@@ -419,28 +419,19 @@ class Panel(wx.ScrolledWindow):
     def OnToggleScripts(self, event=None):
         Logger.Debug(__name__, u'Toggling scripts')
         
-        fields = (
-            (self.ti_preinst, self.chk_preinst.GetValue()),
-            (self.ti_postinst, self.chk_postinst.GetValue()),
-            (self.ti_prerm, self.chk_prerm.GetValue()),
-            (self.ti_postrm, self.chk_postrm.GetValue()),
-            )
-        
-        for F, enable in fields:
-            F.Enable(enable)
+        for CHK, RB, TI in self.script_objects:
+            TI.Enable(CHK.GetValue())
     
     
     ## TODO: Doxygen
     def ResetPage(self):
-        for rb in self.grp_chk:
-            self.grp_chk[rb].SetValue(False)
-        
-        for rb in self.grp_te:
-            self.grp_te[rb].Clear()
+        for CHK, RB, TI in self.script_objects:
+            CHK.SetValue(False)
+            TI.Clear()
         
         self.OnToggleScripts()
         
-        self.rb_preinst.SetValue(True)
+        self.script_objects[0][1].SetValue(True)
         self.ScriptSelect(None)
         
         self.ti_autolink.SetValue(self.ti_autolink.default)
@@ -450,35 +441,45 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def ScriptSelect(self, event=None):
-        for rb in self.grp_te:
-            if rb.GetValue() == True:
-                self.grp_te[rb].Show()
-                self.grp_chk[rb].Show()
+        for CHK, RB, TI in self.script_objects:
+            if RB.GetValue():
+                CHK.Show()
+                TI.Show()
             
             else:
-                self.grp_te[rb].Hide()
-                self.grp_chk[rb].Hide()
+                CHK.Hide()
+                TI.Hide()
         
         self.Layout()
     
     
     ## TODO: Doxygen
     def SetFieldData(self, data):
+        chk_preinst = self.script_objects[0][0]
+        chk_postinst = self.script_objects[1][0]
+        chk_prerm = self.script_objects[2][0]
+        chk_postrm = self.script_objects[3][0]
+        
+        ti_preinst = self.script_objects[0][2]
+        ti_postinst = self.script_objects[1][2]
+        ti_prerm = self.script_objects[2][2]
+        ti_postrm = self.script_objects[3][2]
+        
         preinst = (
             data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0].split(u'\n'),
-            self.chk_preinst,
+            chk_preinst,
             )
         postinst = (
             data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0].split(u'\n'),
-            self.chk_postinst,
+            chk_postinst,
             )
         prerm = (
             data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0].split(u'\n'),
-            self.chk_prerm,
+            chk_prerm,
             )
         postrm = (
             data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0].split(u'\n'),
-            self.chk_postrm,
+            chk_postrm,
             )
         
         for S, CHK in (preinst, postinst, prerm, postrm):
@@ -490,14 +491,14 @@ class Panel(wx.ScrolledWindow):
         # Enable/Disable scripts text areas
         self.OnToggleScripts()
         
-        if self.chk_preinst.GetValue():
-            self.ti_preinst.SetValue(u'\n'.join(preinst[0]))
+        if chk_preinst.GetValue():
+            ti_preinst.SetValue(u'\n'.join(preinst[0]))
         
-        if self.chk_postinst.GetValue():
-            self.ti_postinst.SetValue(u'\n'.join(postinst[0]))
+        if chk_postinst.GetValue():
+            ti_postinst.SetValue(u'\n'.join(postinst[0]))
         
-        if self.chk_prerm.GetValue():
-            self.ti_prerm.SetValue(u'\n'.join(prerm[0]))
+        if chk_prerm.GetValue():
+            ti_prerm.SetValue(u'\n'.join(prerm[0]))
         
-        if self.chk_postrm.GetValue():
-            self.ti_postrm.SetValue(u'\n'.join(postrm[0]))
+        if chk_postrm.GetValue():
+            ti_postrm.SetValue(u'\n'.join(postrm[0]))
