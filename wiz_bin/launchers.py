@@ -716,7 +716,7 @@ class Panel(WizardPage):
     #    Information to fill out menu launcher fields
     #  \param enabled
     #    \b \e bool : Launcher will be flagged for export if True
-    def SetFieldDataLegacy(self, data, enabled=True):
+    def SetLauncherDataLegacy(self, data, enabled=True):
         # Make sure we are dealing with a list
         if isinstance(data, (unicode, str)):
             data = data.split(u'\n')
