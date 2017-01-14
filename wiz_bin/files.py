@@ -11,6 +11,7 @@ import os, shutil, traceback, wx
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonHelp
 from dbr.buttons            import ButtonRefresh
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
@@ -19,7 +20,6 @@ from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
-from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.listinput          import FileList
 from dbr.log                import Logger
@@ -59,7 +59,7 @@ class Panel(WizardPage):
         
         self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
         
-        btn_help = HelpButton(self)
+        btn_help = ButtonHelp(self)
         
         # ----- Target path
         pnl_target = BorderedPanel(self)
