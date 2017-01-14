@@ -11,7 +11,6 @@ import os, shutil, traceback, wx
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse
 from dbr.buttons            import ButtonClear
-from dbr.buttons            import ButtonHelp
 from dbr.buttons            import ButtonRefresh
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
@@ -58,8 +57,6 @@ class Panel(WizardPage):
         self.chk_individuals.default = False
         
         self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
-        
-        btn_help = ButtonHelp(self)
         
         # ----- Target path
         pnl_target = BorderedPanel(self)
@@ -160,9 +157,8 @@ class Panel(WizardPage):
         lyt_buttons.Add(btn_refresh, 0)
         
         lyt_right = wx.BoxSizer(wx.VERTICAL)
-        lyt_right.Add(btn_help, 0, wx.ALIGN_RIGHT|wx.TOP, 5)
-        lyt_right.Add(wx.StaticText(self, label=GT(u'Target')), 0, wx.BOTTOM, 5)
-        lyt_right.Add(pnl_target, 0)
+        lyt_right.Add(wx.StaticText(self, label=GT(u'Target')), 0, wx.TOP, 5)
+        lyt_right.Add(pnl_target, 0, wx.TOP, 5)
         lyt_right.Add(lyt_buttons, 0, wx.EXPAND)
         lyt_right.Add(self.lst_files, 1, wx.EXPAND|wx.TOP, 5)
         
