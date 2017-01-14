@@ -72,6 +72,9 @@ class Panel(WizardPage):
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
         self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
         
+        btn_import = ButtonImport(self)
+        txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
+        
         # Changes input
         self.ti_changes = TextAreaPanel(self, size=(20,150), name=u'changes')
         
@@ -92,9 +95,8 @@ class Panel(WizardPage):
         self.ti_target = PathCtrl(pnl_target, value=u'/', default=u'/')
         self.ti_target.SetName(u'target custom')
         
-        self.btn_import = ButtonImport(self)
-        
         self.btn_add = ButtonAdd(self)
+        txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.dsp_changes = MonospaceTextArea(self, name=u'log')
         self.dsp_changes.EnableDropTarget()
@@ -103,34 +105,44 @@ class Panel(WizardPage):
         
         # *** Event Handling *** #
         
-        wx.EVT_BUTTON(self.btn_import, -1, self.OnImportFromControl)
-        wx.EVT_BUTTON(self.btn_add, -1, self.AddInfo)
+        btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
+        self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
         
         # *** Layout *** #
+
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
+        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
         
-        lyt_info = wx.FlexGridSizer(2, 6, 5, 5)
+        lyt_info = wx.FlexGridSizer(2, 6)
         
         lyt_info.AddGrowableCol(1)
         lyt_info.AddGrowableCol(3)
         lyt_info.AddGrowableCol(5)
         lyt_info.AddMany((
-            (txt_package, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_package, 1, wx.EXPAND),
-            (txt_version, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_version, 1, wx.EXPAND),
-            (txt_dist, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_dist, 1, wx.EXPAND),
-            (txt_urgency, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.sel_urgency, 1, wx.EXPAND),
-            (txt_maintainer, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_maintainer, 1, wx.EXPAND),
-            (txt_email, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT), (self.ti_email, 1, wx.EXPAND)
+            (txt_package, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_package, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
+            (txt_version, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_version, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
+            (txt_dist, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_dist, 1, wx.EXPAND|wx.BOTTOM, 5),
+            (txt_urgency, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.sel_urgency, 1, wx.EXPAND|wx.RIGHT, 5),
+            (txt_maintainer, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_maintainer, 1, wx.EXPAND|wx.RIGHT, 5),
+            (txt_email, 0, RIGHT_CENTER|wx.RIGHT, 5),
+            (self.ti_email, 1, wx.EXPAND)
             ))
-        
+        '''
         self.border_changes = wx.StaticBox(self, label=GT(u'Changes'), size=(20,20))
         lyt_changes = wx.StaticBoxSizer(self.border_changes, wx.VERTICAL)
         lyt_changes.Add(self.ti_changes, 1, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
-        
+        '''
         lyt_target_custom = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_target_custom.Add(self.rb_target_custom)
+        
+        lyt_target_custom.Add(self.rb_target_custom, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_target_custom.Add(self.ti_target, 1)
         
-        #border_dest = wx.StaticBox(self, label=GT(u'Target'))
         lyt_target = wx.BoxSizer(wx.VERTICAL)
         
         lyt_target.AddSpacer(5)
@@ -143,22 +155,28 @@ class Panel(WizardPage):
         pnl_target.SetAutoLayout(True)
         pnl_target.Layout()
         
-        details_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        details_sizer.Add(lyt_changes, 1, wx.EXPAND|wx.RIGHT, 5)
-        details_sizer.Add(pnl_target)
+        lyt_details = wx.GridBagSizer()
+        lyt_details.SetCols(3)
+        lyt_details.AddGrowableRow(2)
+        lyt_details.AddGrowableCol(1)
         
-        button_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_sizer.Add(self.btn_import)
-        button_sizer.Add(self.btn_add)
+        lyt_details.Add(btn_import, (0, 0))
+        lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
+        lyt_details.Add(wx.StaticText(self, label=GT(u'Changes')), (1, 0), flag=LEFT_BOTTOM)
+        lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
+        lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+        lyt_details.Add(pnl_target, (2, 2))
+        lyt_details.Add(self.btn_add, (3, 0), (2, 1))
+        lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
         
-        lyt_main = wx.StaticBoxSizer(wx.StaticBox(self), wx.VERTICAL)
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_info, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(details_sizer, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_main.Add(button_sizer, 0, wx.LEFT|wx.RIGHT, 5)
-        lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_main.AddSpacer(5)
+        lyt_main.Add(lyt_details, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
+                0, LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
+        lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
