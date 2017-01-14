@@ -8,18 +8,22 @@
 
 import wx
 
-from dbr.buttons        import ButtonAdd
-from dbr.buttons        import ButtonAppend
-from dbr.buttons        import ButtonClear
-from dbr.buttons        import ButtonRemove
-from dbr.help           import HelpButton
-from dbr.language       import GT
-from dbr.listinput      import ListCtrlPanel
-from dbr.log            import Logger
-from dbr.wizard         import WizardPage
-from globals            import ident
-from globals.strings    import TextIsEmpty
-from globals.tooltips   import SetPageToolTips
+from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonAppend
+from dbr.buttons            import ButtonBrowse64
+from dbr.buttons            import ButtonClear
+from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonRemove
+from dbr.buttons            import ButtonSave64
+from dbr.help               import HelpButton
+from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
+from dbr.log                import Logger
+from dbr.wizard             import WizardPage
+from globals                import ident
+from globals.strings        import TextIsEmpty
+from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetPage
 
 
 ## TODO: Doxygen
@@ -30,6 +34,10 @@ class Panel(WizardPage):
         # Bypass checking this page for build
         self.prebuild_check = False
         
+        # Buttons to open, save, & preview control file
+        btn_open = ButtonBrowse64(self)
+        btn_save = ButtonSave64(self)
+        btn_preview = ButtonPreview64(self)
         
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
@@ -87,19 +95,22 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        layout_G1 = wx.GridBagSizer()
+        lyt_top = wx.GridBagSizer()
         
         # Row 1
-        layout_G1.Add(txt_package, pos=(0, 0), flag=wx.ALIGN_BOTTOM, border=0)
-        layout_G1.Add(txt_version, pos=(0, 2), flag=wx.ALIGN_BOTTOM)
+        lyt_top.Add(txt_package, pos=(0, 0), flag=wx.ALIGN_BOTTOM, border=0)
+        lyt_top.Add(txt_version, pos=(0, 2), flag=wx.ALIGN_BOTTOM)
+        lyt_top.Add(btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
+        lyt_top.Add(btn_save, (0, 4), (4, 1))
+        lyt_top.Add(btn_preview, (0, 5), (4, 1))
         
         # Row 2
-        layout_G1.Add(self.input_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        layout_G1.Add(self.select_oper, pos=(1, 1))
-        layout_G1.Add(self.input_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.input_package, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_top.Add(self.select_oper, pos=(1, 1))
+        lyt_top.Add(self.input_version, pos=(1, 2), flag=wx.ALIGN_CENTER_VERTICAL)
         
         layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H1.Add(layout_G1, 0, wx.ALIGN_BOTTOM)
+        layout_H1.Add(lyt_top, 0, wx.ALIGN_BOTTOM)
         layout_H1.AddStretchSpacer(1)
         layout_H1.Add(btn_help)
         
@@ -140,7 +151,12 @@ class Panel(WizardPage):
         self.SetSizer(layout_main)
         self.Layout()
         
-        # *** Events *** #
+        # *** Event Handling *** #
+        
+        control_page = GetPage(ident.CONTROL)
+        btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
         
         wx.EVT_KEY_DOWN(self.input_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.input_version, self.SetDepends)
