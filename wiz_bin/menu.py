@@ -424,7 +424,7 @@ class Panel(wx.ScrolledWindow):
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
             
-            self.ResetAllFields()
+            self.ResetPage()
             self.SetLauncherData(u'\n'.join(data), enabled=True)
     
     
@@ -520,7 +520,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetAllFields(self):
+    def ResetPage(self):
         self.chk_filename.SetValue(self.chk_filename.default)
         self.ti_filename.Clear()
         

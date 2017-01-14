@@ -424,7 +424,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetAllFields(self):
+    def ResetPage(self):
         for rb in self.grp_chk:
             self.grp_chk[rb].SetValue(False)
         

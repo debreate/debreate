@@ -420,8 +420,8 @@ class Panel(wx.ScrolledWindow):
             page_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ident.DEPENDS)
             
             # Reset fields to default before opening
-            self.ResetAllFields()
-            page_depends.ResetAllFields()
+            self.ResetPage()
+            page_depends.ResetPage()
             
             depends_data = self.SetFieldData(control_data)
             page_depends.SetFieldData(depends_data)
@@ -490,7 +490,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetAllFields(self):
+    def ResetPage(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options
             if isinstance(I, ComboBox):

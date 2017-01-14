@@ -683,7 +683,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return False
         
         for page in self.all_pages:
-            page.ResetAllFields()
+            page.ResetPage()
         
         self.SetTitle(default_title)
         

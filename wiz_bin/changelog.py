@@ -279,7 +279,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetAllFields(self):
+    def ResetPage(self):
         self.ti_package.Clear()
         self.ti_version.Clear()
         self.ti_dist.Clear()
