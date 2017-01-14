@@ -219,3 +219,12 @@ class CheckListDialog(wx.Dialog):
     
     def SetItemCheckedByLabel(self, label, checked=True):
         self.check_list.SetItemCheckedByLabel(label, checked)
+    
+    
+    ## TODO: Doxygen
+    def ShowModal(self):
+        # wx 2.8 doesn't automatically center on parent
+        if self.Parent:
+            self.CenterOnParent()
+        
+        return wx.Dialog.ShowModal(self)
