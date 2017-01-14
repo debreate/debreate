@@ -57,7 +57,7 @@ from wiz_bin.control        import Panel as PanelControl
 from wiz_bin.copyright      import Panel as PanelCopyright
 from wiz_bin.depends        import Panel as PanelDepends
 from wiz_bin.files          import Panel as PanelFiles
-from wiz_bin.info           import Panel as PanelInfo
+from wiz_bin.greeting       import Panel as PanelInfo
 from wiz_bin.menu           import Panel as PanelMenu
 from wiz_bin.scripts        import Panel as PanelScripts
 
