@@ -10,6 +10,8 @@ import wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.timer              import DebreateTimer
+from dbr.timer              import EVT_TIMER_STOP
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 
@@ -274,3 +276,61 @@ class ProgressDialog(wx.ProgressDialog):
             return True
         
         return wx.ProgressDialog.WasCancelled(self, *args, **kwargs)
+
+
+## A progress dialog that uses a time
+#  
+#  TODO: Finish defining
+class TimedProgressDialog(ProgressDialog):
+    def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
+            style=PD_DEFAULT_STYLE, detailed=False, resize=True, interval=100):
+        ProgressDialog.__init__(self, parent, title, message, size, maximum, style, detailed, resize)
+        
+        self.Timer = DebreateTimer(self)
+        self.Interval = interval
+        
+        self.MessageCtrl = None
+        for CHILD in self.GetChildren():
+            if isinstance(CHILD, wx.TextCtrl):
+                self.MessageCtrl = CHILD
+                break
+        
+        # *** Event Handling *** #
+        
+        self.Bind(wx.EVT_TIMER, self.OnTimerPulse)
+        self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
+    
+    
+    ## Retrievers timer instance
+    def GetTimer(self):
+        return self.Timer
+    
+    
+    ## Pulses dialog on timer event
+    def OnTimerPulse(self, event=None):
+        self.Pulse()
+    
+    
+    ## TODO: Doxygen
+    def OnTimerStop(self, event=None):
+        Logger.Debug(__name__, u'Destroying TimedProgressDialog instance')
+        
+        if wx.MAJOR_VERSION <= 2:
+            # Dialog needs to be closed before destroying for wx 2.8
+            self.Close()
+        
+        self.Destroy()
+    
+    
+    ## Starts the timer & begins pulsing dialog
+    def Start(self):
+        Logger.Debug(__name__, u'Starting TimedProgressDialog timer ...')
+        
+        self.Timer.Start(self.Interval)
+    
+    
+    ## Stops the timer & destroys the progress dialog
+    def Stop(self):
+        Logger.Debug(__name__, u'Stopping TimedProgressDialog timer ...')
+        
+        self.Timer.Stop()
