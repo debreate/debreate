@@ -30,7 +30,7 @@ from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -97,7 +97,7 @@ class Panel(WizardPage):
         # *** Auto-Link options *** #
         
         # Executable list - generate button will make scripts to link to files in this list
-        self.xlist = []
+        self.lst_executables = []
         
         # Auto-Link path for new link
         self.al_text = wx.StaticText(self, label=GT(u'Path'), name=u'target')
@@ -212,38 +212,71 @@ scripts will be created that will place a symbolic link to your executables in t
         return (dbrerrno.SUCCESS, None)
                 
     
-    ## Imports names of executables from files page
+    ## Imports executables from files page for Auto-Link
     def ImportExe(self, event=None):
         event_id = event.GetId()
         if event_id == ident.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
-            self.xlist = []
+            self.lst_executables = []
             
-            file_list = GetPage(ident.FILES).GetFileList()
+            # Get executables from "files" tab
+            files = GetField(ident.FILES, ident.F_LIST)
             
-            item_count = file_list.GetFileCount()
-            
-            for i_index in range(item_count):
-                file_name = file_list.GetFilename(i_index)
-                
-                Logger.Debug(__name__, GT(u'Checking if file "{}" is executable').format(file_name))
-                file_executable = file_list.FileIsExecutable(i_index)
-                
-                if file_executable:
+            # Sets the max iterate value
+            MAX = files.GetItemCount()
+            i_index = 0
+            while i_index < MAX:
+                # Searches for executables (distinguished by executable flag)
+                if files.FileIsExecutable(i_index):
+                    # Get the filename from the source
+                    filename = os.path.basename(files.GetItemText(i_index))
+                    
                     # Where the file linked to will be installed
-                    file_target = u'{}/{}'.format(file_list.GetTarget(i_index), file_name)
+                    #file_target = u'{}/{}'.format(files.GetTarget(i_index), filename)
+                    file_target = files.GetItem(i_index, 2)
                     
-                    Logger.Debug(__name__, GT(u'File install target: {}').format(file_target))
+                    try:
+                        # If destination doesn't start with "/" do not include executable
+                        if file_target.GetText()[0] == u'/':
+                            if file_target.GetText()[-1] == u'/' or file_target.GetText()[-1] == u' ':
+                                # In case the full path of the destination is "/" keep going
+                                if len(file_target.GetText()) == 1:
+                                    dest_path = u''
+                                
+                                else:
+                                    search = True
+                                    # Set the number of spaces to remove from dest path in case of multiple "/"
+                                    slashes = 1
+                                    while search:
+                                        # Find the number of slashes/spaces at the end of the filename
+                                        endline = slashes - 1
+                                        if file_target.GetText()[-slashes] == u'/' or file_target.GetText()[-slashes] == u' ':
+                                            slashes += 1
+                                        
+                                        else:
+                                            dest_path = file_target.GetText()[:-endline]
+                                            search = False
+                            
+                            else:
+                                dest_path = file_target.GetText()
+                            
+                            self.executables.InsertStringItem(self.executables.GetItemCount(), filename)
+                        
+                        else:
+                            Logger.Warning(__name__, u'{}: The executables destination is not valid'.format(__name__))
                     
-                    self.executables.InsertStringItem(self.executables.GetItemCount(), file_target)
+                    except IndexError:
+                        Logger.Warning(__name__, u'{}: The executables destination is not available'.format(__name__))
+                
+                i_index += 1
         
-        elif event_id == wx.ID_REMOVE:
+        elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
             # FIXME: Use ListCtrlPanel.DeleteAllItems()???
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
-                self.xlist.remove(self.xlist[exe])
+                self.lst_executables.remove(self.lst_executables[exe])
     
     
     ## TODO: Doxygen
@@ -316,7 +349,7 @@ scripts will be created that will place a symbolic link to your executables in t
         prerm_list = []
         
         link_path = self.al_input.GetValue() # Get destination for link from Auto-Link input textctrl
-        total = len(self.xlist)  # Get the amount of links to be created
+        total = len(self.lst_executables)  # Get the amount of links to be created
         
         if total > 0:
             cont = True
@@ -333,14 +366,14 @@ scripts will be created that will place a symbolic link to your executables in t
             if cont:
                 count = 0
                 while count < total:
-                    filename = os.path.split(self.xlist[count])[1]
+                    filename = os.path.split(self.lst_executables[count])[1]
                     if u'.' in filename:
                         linkname = u'.'.join(filename.split(u'.')[:-1])
                         link = u'{}/{}'.format(link_path, linkname)
                     else:
                         link = u'{}/{}'.format(link_path, filename)
-                        #link = u'{}/{}'.format(link_path, os.path.split(self.xlist[count])[1])
-                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.xlist[count], link))
+                        #link = u'{}/{}'.format(link_path, os.path.split(self.lst_executables[count])[1])
+                    postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
                     prerm_list.append(u'rm "{}"'.format(link))
                     count += 1
                 
