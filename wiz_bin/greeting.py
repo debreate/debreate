@@ -20,7 +20,6 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        # --- Mode Information
         m1 = GT(u'Welcome to Debreate!')
         m2 = GT(u'Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
         m3 = GT(u'For a video tutorial check the link below.')
@@ -33,17 +32,17 @@ class Panel(wx.ScrolledWindow):
         
         lnk_video = Hyperlink(self, wx.ID_ANY, GT(u'Building a Debian Package with Debreate'),
                 u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
-        
-        layt_info = wx.GridSizer()
-        
-        layt_info.Add(txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        lnk_video.SetToolTipString(lnk_video.url)
         
         # *** Layout *** #
         
-        layt_main = wx.BoxSizer(wx.VERTICAL)
-        layt_main.Add(layt_info, 4, wx.EXPAND|wx.ALIGN_CENTER|wx.ALL, 10)
-        layt_main.Add(lnk_video, 2, wx.EXPAND|wx.ALIGN_CENTER)
+        lyt_info = wx.GridSizer()
+        lyt_info.Add(txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_info, 4, wx.ALIGN_CENTER|wx.ALL, 10)
+        lyt_main.Add(lnk_video, 2, wx.ALIGN_CENTER)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layt_main)
+        self.SetSizer(lyt_main)
         self.Layout()
