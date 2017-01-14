@@ -109,8 +109,8 @@ class Panel(WizardPage):
         
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
-        btn_template.Bind(wx.EVT_BUTTON, self.OnGenerateTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateSimpleTemplate)
+        btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
     
     
     ## TODO: Doxygen
@@ -161,19 +161,6 @@ class Panel(WizardPage):
         self.Export(stage, u'copyright')
         
         return (0, None)
-    
-    
-    ## TODO: Doxygen
-    def GenerateSimpleTemplate(self, event=None):
-        if self.DestroyLicenseText():
-            self.dsp_copyright.Clear()
-            
-            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
-            
-            self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
-            self.dsp_copyright.SetInsertionPoint(0)
-        
-        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
@@ -309,7 +296,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnGenerateTemplate(self, event=None):
+    def OnFullTemplate(self, event=None):
         license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
         
         if FieldEnabled(self.btn_template_simple):
@@ -339,6 +326,19 @@ class Panel(WizardPage):
             self.btn_template_simple.Enable()
         
         self.SetTemplateToolTip()
+    
+    
+    ## TODO: Doxygen
+    def OnSimpleTemplate(self, event=None):
+        if self.DestroyLicenseText():
+            self.dsp_copyright.Clear()
+            
+            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
+            
+            self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
+            self.dsp_copyright.SetInsertionPoint(0)
+        
+        self.dsp_copyright.SetFocus()
     
     
     ## Resets all page fields to default values
