@@ -1,0 +1,256 @@
+Tests to be run before releasing new version:
+
+First run dialog:
+- Appears if '~/.config/debreate/config' file not found
+- Appears if '~/.config/debreate/config' corrupted
+- Closes correctly & main app is launched
+- '~/.config/debreate/config' is created when when dialog closes
+
+Configuration:
+- Window position, size, & maximized state are written to config file on app exit
+- Window position, size, & maximized state are read from config file
+- 'Options ➜ Show tooltips' menu item
+  - wx 2.8
+    - Hidden for wx 2.8
+  - wx 3.0
+    - Writes 'tooltips' value to config file when toggled
+    - Read from config file
+
+Working directory:
+- File/Directory dialogs use & set current working directory
+- Working directory is written to config file on app exit
+- Working directory is read from config file
+
+Project files:
+- All fields are exported correctly when saved
+- All fields are imported correctly when opened
+- Can be opened from 'File ➜ Open' menu
+- Can be opened from command line
+  - Both absolute & relative paths
+- Can be opened from sytem file manager if associated with MIME type
+- Error dialog displays for invalid/non-existent project files
+- 'File ➜ New project' resets all pages' fields
+- 'File ➜ Save' only opens dialog if no project is currently loaded
+- 'File ➜ Save as' always opens a dialog
+- Staged directory in '/tmp' is removed after project saved/opened (0.8 only)
+
+Updates:
+- 'Help ➜ Check for update'
+  - Reports either up-to-date or new version available
+  - Shows error dialog if can't connect to remote site
+  - Dialog 'Confirm' button opens Debreate homepage
+
+Application help & info:
+- Command line
+  - '--help' or '-h' displays help output
+  - '--version' or '-v' displays version info
+  - 'man debreate' display Debreate manpage when installed
+- 'Help ➜ Reference' links open correct URL in web browser
+- 'Help ➜ Help' opens usage PDF file
+- 'Help ➜ About' opens about dialog
+
+About dialog:
+- About tab
+  - Displays Debreate logo & correct version
+  - Hyperlinks open correct URLs
+- Credits tab displays correctly
+- Changelog tab
+  - Changelog text displays correctly when installed & running portably
+- License tab
+  - License text displays correctly when installed & running portably
+- System Information tab
+  - Displays Python & wxPython versions
+  - Displays Debreate's root/installation directory
+- Can be exited from title bar & confirm button
+
+Commands:
+- 'legacy': Forces using wx 2.8 instead of 3.0
+- 'compile': Compiles source files into Python bytecode (.pyc)
+  - Fails if installed & run without elevated privileges
+- 'clean': Removes compiled Python bytecode from app directory
+  - Fails if installed & run without elevated privileges
+
+Logging:
+- Command line option '--log-level' sets logging output level
+  - info or 1, warn or 2, error or 3, debug or 4
+- 'Options ➜ Open logs directory'
+  - Opens the '~/.local/share/debreate/logs' directory in system file manager
+  - Hidden if 'xdg-open' command not found on system
+
+Quick Build:
+- 'File ➜ Quick Build' opens Quick Build dialog
+- Reports error if input directory is empty, malformed, or has no read access
+- Reports error if output directory is empty or has no write access
+- Sets output filename extension to '.deb'
+- Sets output filename using control file if not specified
+
+Control page:
+- Control file can be imported from 'Open' button
+- All control file fields export correctly with 'Save' button
+- All non-empty fields are shown in preview
+- All of the above apply to dependencies page
+
+Dependencies page:
+- 'Add' button adds package name & version (optional) to list
+- 'Append' button appends package name & version (optional) to selected items in list
+- 'Remove' button removes only selected lines from list
+- 'Clear' button shows confirmation & deletes all lines only if confirmed
+
+Files page:
+- Directories & files can be added using:
+  - 'Add' button
+  - Right-click context menu option 'Add to project'
+  - Double-click on files (hold 'Shift' or 'Ctrl' for multiple files)
+- Executables are displayed with red text in directory tree & file list
+- Missing files & directories
+  - Red-orange background in file list
+  - Red-orange background in directory tree after selected
+  - Refreshing file list
+    - Updates paths & executable files status
+  - Refreshing directory tree
+    - Updates paths & mounted devices
+- Option 'List files individually'
+  - Not selected
+    - Only lists top-level name of added directories
+  - Selected
+    - Lists individual files when a directory is added
+    - 'Processing Files' progress dialog can be aborted
+    - Displays warning dialog if attempting to add a directory with too many files
+    - Confirming begins importing
+    - Import progress dialog can be aborted
+- 'Staged Target' is set from 'Target' input value after import
+- 'Remove' button only removes selected files from list
+- 'Clear' button
+  - Asks for confirmation if list not empty
+  - Can be aborted
+  - Confirming clears all files from list
+
+Scripts page:
+- Selecting 'Make this script' enables text area
+  - De-selecting disables
+- Scripts are only saved to project files if 'Make this script' is selected
+- Auto-Link Executables
+  - 'Import' button adds any executables from files page
+  - 'Remove' button removes selected executables from list
+  - 'Help' button opens help dialog
+  - 'Generate' button
+    - Does nothing if no executables in list
+    - Uses 'Path' input to create Post-Install & Pre-Remove scripts for listed executables
+      - Shows confirmation dialog if both script text areas are not empty
+
+Changelog page:
+- 'Distribution' displays list of available distribution names
+- 'Import' button
+  - Imports any of 'Package', 'Version', 'Maintainer', & 'Email' from Control page that are not empty
+- 'Changes' text input area
+  - Displays tooltip with info on creating sections
+- 'Add' button
+  - Shows warning dialog if 'Changes' section is empty
+  - Uses above input options & changes to format new entry in 'Changelog Output' section
+  - Section lines
+    - First line begins with asterix (*) denoting first section
+    - Any lines in 'Changes' section beginning with '*', '+', '-', or '#' will begin with an asterix in output
+  - Empty lines are removed
+  - Leading & trailing whitespace is removed from lines
+    - If 'Preserve indentation' is selected leading whitespace is not removed from non-section lines
+  - Headers are formatted as "package (version) dist; urgency=level"
+  - Footers are formatted as "-- maintainer <email>  Day, DD Mon YYYY HH:MM:SS timezone"
+- 'Target' section
+  - Nothing to test
+
+Copyright page:
+- 'Available Templates' list
+  - Reads filenames from:
+    - /usr/share/common-licenses
+    - <install_prefix>/templates/licenses
+    - <user_home>/.local/share/debreate/templates/licenses
+  - Tooltip updates when changed
+  - 'Generate Simple Template' button disabled if non-system license selected
+- 'Generate Template' button copies full license text to text area
+  - Some licenses may have a header prepended
+- 'Generate Simple Template' adds a header template & references system license file name path
+- Text files can be droppoed from system file manager onto text area
+  - Non-text files will display an error but not overwrite text
+- A confirmation dialog is displayed if text is not empty before overwriting
+
+Launcher/Menu page:
+- Selecting 'Create system menu launcher' enables all fields except 'Filename'
+- De-selecting 'Use "Name" as output filename' enables 'Filename' field
+- Buttons:
+  - 'Import' opens text files & fills fields with properly formatted information
+  - 'Export' saves all fields, except 'Filename', to properly formatted text file
+  - 'Preview' displays all non-empty fields
+- Categories:
+  - 'Add' button adds selected category to list
+  - 'Remove' deletes only selected categories from list
+  - 'Clear' deletes all categories from list
+    - Displays confirmation dialog if list is not empty
+- Other:
+  - Lines that are not delimited with a "=" are ignored when exported
+
+Build page:
+- Options:
+  - 'Create md5sums file'
+    - Disabled if 'md5sum' command not found on system
+    - Creates md5sums file in '<stage>/DEBIAN' directory if selected
+  - 'Strip binaries'
+    - Disabled if 'strip' command not found on system
+    - ELF binary files are stripped before adding to package if selected
+  - 'Delete build tree'
+    - Removes staged temp directory after build completes
+  - 'Check package for errors with lintian'
+    - Disabled if 'lintian' command not found on system
+    - Scans .deb package after build & displays output if warnings/errors were found
+  - 'Install package after build'
+    - Disabled if neither 'gdebi-gtk' nor 'gdebi-kde' commands found on system
+    - Opens package in gdebi program after successful build
+      - Defaults to gdebi-gtk
+- Build won't start if one of the following fields are empty
+  - Control page ➜ Package
+  - Control page ➜ Version
+  - Control page ➜ Maintainer
+  - Control page ➜ Email
+  - Menu page (if enabled) ➜ Name
+  - Menu page (if enabled) ➜ Filename (if not set to use 'Name' field)
+- Progress dialog can be cancelled
+- .deb package is builds & installs correctly
+
+Shut down:
+- Shows warning dialog about losing unsaved information
+  - Confirming continues shutdown
+  - Aborting goes back to main window
+- Closes without errors from title bar & menu
+- No subprocesses or threads are left open when app quits
+
+Distribution:
+- 'make dist' creates dist package with correct files
+- 'make deb-bin' & 'make deb-bin-signed' create .deb package
+- 'make deb-src' & 'make deb-src-signed' create source package
+- All possible lintian errors & warnings removed
+- .deb install:
+  - Can be launched after .deb installed
+  - System menu launcher available
+  - MIME type application/x-dbp
+    - Associates .dbp files with Debreate
+    - File manager displays icon for .dbp files
+    - MIME type(s) are unassociated after uninstall
+  - Python source compiled to bytecode after install
+
+Command line tests:
+- 'update-fail' causes 'Help ➜ Check for update' to fail & display error dialog
+  - Overrides development status warning
+
+General:
+- Execution fails for:
+  - Invalid command line arguments & tests
+- Wizard pages can be changed with arrows & 'Pages' menu
+- 'Options ➜ Update dist names cache'
+  - Opens dialog for updating cache
+  - 'Update' button retrieves new list of dist names
+  - 'Clear' button removes cache file
+  - 'Preview' show cached list
+  - 'Distribution' list is updated on changelog page
+- Test that main & parent windows are re-enabled after progress dialogs are destroyed
+- Test all changes in docs/changelog
+- All runtime tests work for wx 3.0 & 2.8
+- Development version is set to '0'
