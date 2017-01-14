@@ -107,87 +107,8 @@ class Panel(wx.ScrolledWindow):
         
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
-        btn_template.Bind(wx.EVT_BUTTON, self.CopyFullTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.GenerateSimpleTemplate)
-    
-    
-    ## TODO: Doxygen
-    def CopyFullTemplate(self, event=None):
-        selected_template = self.sel_templates.GetStringSelection()
-        template_file = self.GetLicensePath(selected_template)
-        
-        if self.DestroyLicenseText():
-            if not os.path.isfile(template_file):
-                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
-                return
-            
-            Logger.Debug(__name__, u'Copying license {}'.format(template_file))
-            
-            license_text = ReadFile(template_file)
-            
-            # Number defines how many empty lines to add after the copyright header
-            # Boolean/Integer defines whether copyright header should be centered/offset
-            add_header = {
-                u'Artistic': (1, True),
-                u'BSD': (0, False),
-            }
-            
-            template_name = os.path.basename(template_file)
-            if template_name in add_header:
-                license_text = license_text.split(u'\n')
-                
-                empty_lines = add_header[template_name][0]
-                for L in range(empty_lines):
-                    license_text.insert(0, wx.EmptyString)
-                
-                header = copyright_header.format(GetYear())
-                
-                center_header = add_header[template_name][1]
-                if center_header:
-                    Logger.Debug(__name__, u'Centering header...')
-                    
-                    offset = 0
-                    
-                    # Don't use isinstance() here because boolean is an instance of integer
-                    if type(center_header) == int:
-                        offset = center_header
-                    
-                    else:
-                        longest_line = GetLongestLine(license_text)
-                        
-                        Logger.Debug(__name__, u'Longest line: {}'.format(longest_line))
-                        
-                        header_length = len(header)
-                        if header_length < longest_line:
-                            offset = (longest_line - header_length) / 2
-                    
-                    if offset:
-                        Logger.Debug(__name__, u'Offset: {}'.format(offset))
-                        
-                        header = u'{}{}'.format(u' ' * offset, header)
-                
-                # Special changes for BSD license
-                if template_name == u'BSD':
-                    line_index = 0
-                    for LI in license_text:
-                        if u'copyright (c)' in LI.lower():
-                            license_text[line_index] = header
-                            
-                            break
-                        
-                        line_index += 1
-                
-                else:
-                    license_text.insert(0, header)
-                
-                license_text = u'\n'.join(license_text)
-            
-            self.dsp_copyright.Clear()
-            self.dsp_copyright.SetValue(license_text)
-            
-            self.dsp_copyright.SetInsertionPoint(0)
-        
-        self.dsp_copyright.SetFocus()
+        btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
     
     
     ## TODO: Doxygen
@@ -211,19 +132,6 @@ class Panel(wx.ScrolledWindow):
     def GatherData(self):
         data = self.GetCopyright()
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
-    
-    
-    ## TODO: Doxygen
-    def GenerateSimpleTemplate(self, event=None):
-        if self.DestroyLicenseText():
-            self.dsp_copyright.Clear()
-            
-            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
-            
-            self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
-            self.dsp_copyright.SetInsertionPoint(0)
-        
-        self.dsp_copyright.SetFocus()
     
     
     ## TODO: Doxygen
@@ -322,6 +230,85 @@ class Panel(wx.ScrolledWindow):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
     
+    ## TODO: Doxygen
+    def OnFullTemplate(self, event=None):
+        selected_template = self.sel_templates.GetStringSelection()
+        template_file = self.GetLicensePath(selected_template)
+        
+        if self.DestroyLicenseText():
+            if not os.path.isfile(template_file):
+                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
+                return
+            
+            Logger.Debug(__name__, u'Copying license {}'.format(template_file))
+            
+            license_text = ReadFile(template_file)
+            
+            # Number defines how many empty lines to add after the copyright header
+            # Boolean/Integer defines whether copyright header should be centered/offset
+            add_header = {
+                u'Artistic': (1, True),
+                u'BSD': (0, False),
+            }
+            
+            template_name = os.path.basename(template_file)
+            if template_name in add_header:
+                license_text = license_text.split(u'\n')
+                
+                empty_lines = add_header[template_name][0]
+                for L in range(empty_lines):
+                    license_text.insert(0, wx.EmptyString)
+                
+                header = copyright_header.format(GetYear())
+                
+                center_header = add_header[template_name][1]
+                if center_header:
+                    Logger.Debug(__name__, u'Centering header...')
+                    
+                    offset = 0
+                    
+                    # Don't use isinstance() here because boolean is an instance of integer
+                    if type(center_header) == int:
+                        offset = center_header
+                    
+                    else:
+                        longest_line = GetLongestLine(license_text)
+                        
+                        Logger.Debug(__name__, u'Longest line: {}'.format(longest_line))
+                        
+                        header_length = len(header)
+                        if header_length < longest_line:
+                            offset = (longest_line - header_length) / 2
+                    
+                    if offset:
+                        Logger.Debug(__name__, u'Offset: {}'.format(offset))
+                        
+                        header = u'{}{}'.format(u' ' * offset, header)
+                
+                # Special changes for BSD license
+                if template_name == u'BSD':
+                    line_index = 0
+                    for LI in license_text:
+                        if u'copyright (c)' in LI.lower():
+                            license_text[line_index] = header
+                            
+                            break
+                        
+                        line_index += 1
+                
+                else:
+                    license_text.insert(0, header)
+                
+                license_text = u'\n'.join(license_text)
+            
+            self.dsp_copyright.Clear()
+            self.dsp_copyright.SetValue(license_text)
+            
+            self.dsp_copyright.SetInsertionPoint(0)
+        
+        self.dsp_copyright.SetFocus()
+    
+    
     ## Enables/Disables simple template button
     #  
     #  Simple template generation is only available
@@ -342,6 +329,19 @@ class Panel(wx.ScrolledWindow):
             self.btn_template_simple.Enable()
         
         self.SetTemplateToolTip()
+    
+    
+    ## TODO: Doxygen
+    def OnSimpleTemplate(self, event=None):
+        if self.DestroyLicenseText():
+            self.dsp_copyright.Clear()
+            
+            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
+            
+            self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
+            self.dsp_copyright.SetInsertionPoint(0)
+        
+        self.dsp_copyright.SetFocus()
     
     
     ## Resets all page fields to default values
