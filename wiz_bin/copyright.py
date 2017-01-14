@@ -146,7 +146,7 @@ class Panel(wx.ScrolledWindow):
             l_path = GetLicenseTemplateFile(l_name)
             
             if l_path:
-                l_lines = ReadFile(l_path).split(u'\n')
+                l_lines = ReadFile(l_path, split=True)
                 
                 year_delims = (
                     u'<year>',
@@ -185,15 +185,6 @@ class Panel(wx.ScrolledWindow):
                                 l_lines[l_index] = LI.replace(RPLC, new_str)
                         
                         l_index += 1
-                '''
-                for DEL in year_delims:
-                    l_index = 0
-                    for LI in l_lines:
-                        if DEL in LI:
-                            l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
-                        
-                        l_index += 1
-                '''
                 
                 self.dsp_copyright.SetValue(u'\n'.join(l_lines))
                 
