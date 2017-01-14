@@ -25,20 +25,18 @@ class Panel(WizardPage):
         m1 = GT(u'Welcome to Debreate!')
         m2 = GT(u'Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')
         m3 = GT(u'For a video tutorial check the link below.')
-        self.txt_bin = u'{}\n\n{}\n\n{}'.format(m1, m2, m3)
-        self.txt_src = u'This mode is not fully functional'
-        self.txt_upd = u'This mode is not fully functional'
+        txt_bin = u'{}\n\n{}\n\n{}'.format(m1, m2, m3)
+        txt_src = u'This mode is not fully functional'
+        txt_upd = u'This mode is not fully functional'
         
         self.mode_info = (
-            (0, u'Build Package from Precompiled Files', self.txt_bin),
-            (1, u'Build Debian Source Package', self.txt_src),
-            (2, u'Update a Package', self.txt_upd)
+            (u'Build Package from Precompiled Files', txt_bin,),
+            (u'Build Debian Source Package', txt_src,),
+            (u'Update a Package', txt_upd,),
             )
         
         # --- Information to be displayed about each mode
         self.txt_info = wx.StaticText(self)
-        # Keep characters within the width of the window
-        self.txt_info.Wrap(600)
         
         lnk_video = Hyperlink(self, wx.ID_ANY, GT(u'Building a Debian Package with Debreate'),
                 u'http://www.youtube.com/watch?v=kx4D5eL6HKE')
@@ -58,14 +56,21 @@ class Panel(WizardPage):
         self.Layout()
         
         
-    def SetInfo(self):
-        self.Parent.SetTitle(u'Testing')
-        self.txt_info.SetLabel(self.txt_bin)
+    def SetInfo(self, mode=0):
+        if mode not in range(len(self.mode_info)):
+            return False
         
-        self.txt_info.Wrap(600) # Keep characters within the width of the window
+        # Set wizard title in case of error
+        self.Parent.SetTitle(GT(u'Error'))
+        self.txt_info.SetLabel(self.mode_info[mode][1])
+        
+        # Wrap needs to be called every time the label is changed
+        self.txt_info.Wrap(600)
         
         # Refresh widget layout
         self.Layout()
+        
+        return True
     
     
     ## Override Wizard.ResetPage & do nothing
