@@ -87,6 +87,7 @@ Non-priority:
 - Option to create lintian overrides file
 - Use 'data/lintian/tags' for overrides
 - Option to convert between package formats (alien?)
+- Cache lintian tags list from remote site
 
 Undecided:
 - Scripting backend
