@@ -54,7 +54,10 @@ class Panel(wx.ScrolledWindow):
             self.ti_dist = wx.TextCtrl(self, ident.DIST, name=txt_dist.Name)
         
         opts_urgency = (
-            u'low', u'medium', u'high', u'emergency',
+            u'low',
+            u'medium',
+            u'high',
+            u'emergency',
             )
         
         txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
@@ -100,6 +103,11 @@ class Panel(wx.ScrolledWindow):
         self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)
+        
+        # *** Event Handling *** #
+        
+        btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
+        self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
         
         # *** Layout *** #
         
@@ -171,11 +179,6 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
-        self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
     
     
     ## TODO: Doxygen
@@ -242,7 +245,7 @@ class Panel(wx.ScrolledWindow):
         return u'\n'.join((u'<<CHANGELOG>>', dest, self.dsp_changes.GetValue(), u'<</CHANGELOG>>'))
     
     
-    ## TODO: Doxygen.
+    ## TODO: Doxygen
     def GetChangelog(self):
         return self.dsp_changes.GetValue()
     
