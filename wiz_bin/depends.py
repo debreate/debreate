@@ -16,7 +16,6 @@ from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
 from dbr.dialogs            import ConfirmationDialog
-from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import DebugEnabled
@@ -61,9 +60,6 @@ class Panel(WizardPage):
         self.sel_operator.SetSelection(self.sel_operator.default)
         
         self.ti_version = wx.TextCtrl(self, name=u'version')
-        
-        # Button to display help information about this page
-        btn_help = HelpButton(self)
         
         self.ti_package.SetSize((100,50))
         
@@ -126,6 +122,8 @@ class Panel(WizardPage):
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
         
         lyt_top = wx.GridBagSizer()
+        lyt_top.SetCols(6)
+        lyt_top.AddGrowableCol(3)
         
         # Row 1
         lyt_top.Add(txt_package, (1, 0), flag=LEFT_BOTTOM)
@@ -138,11 +136,6 @@ class Panel(WizardPage):
         lyt_top.Add(self.ti_package, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
         lyt_top.Add(self.sel_operator, (2, 1), flag=wx.ALIGN_CENTER_VERTICAL)
         lyt_top.Add(self.ti_version, (2, 2), flag=wx.ALIGN_CENTER_VERTICAL)
-        
-        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H1.Add(lyt_top, 0, wx.ALIGN_BOTTOM)
-        layout_H1.AddStretchSpacer(1)
-        layout_H1.Add(btn_help)
         
         lyt_categories = wx.GridSizer(4, 2, 5, 5)
         
@@ -175,7 +168,7 @@ class Panel(WizardPage):
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         # Spacer is less on this page because text is aligned to bottom
         lyt_main.AddSpacer(5)
-        lyt_main.Add(layout_H1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(lyt_mid, 0, wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(lyt_list, 1, wx.EXPAND|wx.ALL, 5)
         
