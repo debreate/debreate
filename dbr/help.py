@@ -17,6 +17,7 @@ app_man = u'man/man1/debreate.1'
 local_manpath = u'man'
 man_section = u'1'
 
+
 ## Parses & returns Debreate's manpage as RichText
 #  
 #  \return
@@ -36,6 +37,7 @@ def ParseManpage():
     return help_text
 
 
+## TODO: Doxygen
 class HelpDialog(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, wx.ID_HELP, u'Help',
