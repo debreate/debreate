@@ -26,7 +26,6 @@ from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
 
@@ -243,30 +242,35 @@ class Panel(wx.ScrolledWindow):
         return u'<<SCRIPTS>>\n{}\n<</SCRIPTS>>'.format(u'\n'.join(data))
     
     
-    ## Imports executables for Auto-Link
+    ## Imports executables from files page for Auto-Link
     def ImportExe(self, event=None):
-        ID = event.GetId()
-        if ID == ident.IMPORT:
+        event_id = event.GetId()
+        if event_id == ident.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.lst_executables = []
             
             # Get executables from "files" tab
-            #files = wx.GetApp().GetTopWindow().page_files.dest_area
-            files = GetField(GetPage(ident.FILES), ident.F_LIST)
-            MAX = files.GetItemCount()  # Sets the max iterate value
-            count = 0
-            while count < MAX:
+            files = GetField(ident.FILES, ident.F_LIST)
+            
+            # Sets the max iterate value
+            MAX = files.GetItemCount()
+            i_index = 0
+            while i_index < MAX:
                 # Searches for executables (distinguished by red text)
-                if files.GetItemTextColour(count) == (255, 0, 0, 255):
-                    filename = os.path.split(files.GetItemText(count))[1]  # Get the filename from the source
-                    dest = files.GetItem(count, 1)  # Get the destination of executable
+                if files.FileIsExecutable(i_index):
+                    # Get the filename from the source
+                    filename = os.path.basename(files.GetItemText(i_index))
+                    
+                    # Where the file linked to will be installed
+                    file_target = files.GetItem(i_index, 1)
+                    
                     try:
                         # If destination doesn't start with "/" do not include executable
-                        if dest.GetText()[0] == u'/':
-                            if dest.GetText()[-1] == u'/' or dest.GetText()[-1] == u' ':
+                        if file_target.GetText()[0] == u'/':
+                            if file_target.GetText()[-1] == u'/' or file_target.GetText()[-1] == u' ':
                                 # In case the full path of the destination is "/" keep going
-                                if len(dest.GetText()) == 1:
+                                if len(file_target.GetText()) == 1:
                                     dest_path = u''
                                 
                                 else:
@@ -276,30 +280,33 @@ class Panel(wx.ScrolledWindow):
                                     while search:
                                         # Find the number of slashes/spaces at the end of the filename
                                         endline = slashes - 1
-                                        if dest.GetText()[-slashes] == u'/' or dest.GetText()[-slashes] == u' ':
+                                        if file_target.GetText()[-slashes] == u'/' or file_target.GetText()[-slashes] == u' ':
                                             slashes += 1
                                         
                                         else:
-                                            dest_path = dest.GetText()[:-endline]
+                                            dest_path = file_target.GetText()[:-endline]
                                             search = False
                             
                             else:
-                                dest_path = dest.GetText()
+                                dest_path = file_target.GetText()
+                            
+                            exe_index = self.executables.GetItemCount()
                             
                             # Put "destination/filename" together in executable list
-                            self.lst_executables.insert(0, u'{}/{}'.format(dest_path, filename))
-                            self.executables.InsertStringItem(0, filename)
-                            self.executables.SetItemTextColour(0, u'red')
+                            self.lst_executables.insert(exe_index, u'{}/{}'.format(dest_path, filename))
+                            self.executables.InsertStringItem(exe_index, filename)
+                            self.executables.SetItemTextColour(exe_index, wx.RED)
                         
                         else:
-                            print(u'{}: The executables destination is not valid'.format(__name__))
+                            Logger.Warning(__name__, u'{}: The executables destination is not valid'.format(__name__))
                     
                     except IndexError:
-                        print(u'{}: The executables destination is not available'.format(__name__))
+                        Logger.Warning(__name__, u'{}: The executables destination is not available'.format(__name__))
                 
-                count += 1
+                i_index += 1
         
-        elif ID in (wx.ID_REMOVE, wx.WXK_DELETE):
+        elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
+            # FIXME: Use ListCtrlPanel.DeleteAllItems()???
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)
