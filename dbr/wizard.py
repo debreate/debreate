@@ -11,6 +11,7 @@ from wx.lib.newevent import NewCommandEvent
 
 from dbr.buttons            import ButtonNext
 from dbr.buttons            import ButtonPrev
+from dbr.help               import HelpButton
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -39,6 +40,9 @@ class Wizard(wx.Panel):
         self.ID_FIRST = None
         self.ID_LAST = None
         
+        # Help button
+        btn_help = HelpButton(self)
+        
         # A Header for the wizard
         pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
         pnl_title.SetBackgroundColour((10, 47, 162))
@@ -63,18 +67,30 @@ class Wizard(wx.Panel):
         self.evt = self.ChangePageEvent(0)
         
         # These widgets are put into a list so that they are not automatically hidden
-        self.permanent_children = (pnl_title, self.btn_prev, self.btn_next)
+        self.permanent_children = (
+            btn_help,
+            pnl_title,
+            self.btn_prev,
+            self.btn_next,
+            )
+        
+        # *** Event Handling *** #
+        
+        self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
+        self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
         
         # *** Layout *** #
         
         # Position the text in the header
         lyt_title = wx.GridSizer(1, 1)
         lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        
         pnl_title.SetSizer(lyt_title)
         pnl_title.Layout()
         
         # Button sizer includes header
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(btn_help, 0, wx.LEFT, 5)
         lyt_buttons.AddSpacer(5)
         lyt_buttons.Add(pnl_title, 1, wx.EXPAND|wx.RIGHT, 5)
         lyt_buttons.Add(self.btn_prev)
@@ -88,11 +104,6 @@ class Wizard(wx.Panel):
         self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
-        self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
     
     
     ## TODO: Doxygen
