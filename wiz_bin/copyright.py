@@ -10,6 +10,7 @@ import os, wx
 
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowErrorDialog
+from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
 from dbr.functions          import RemovePreWhitespace
 from dbr.language           import GT
@@ -27,7 +28,6 @@ from globals.errorcodes     import errno
 from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
@@ -114,6 +114,8 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    #  
+    #  FIXME: Deprecated/Unused
     def CopyStandardLicense(self, license_name):
         if self.DestroyLicenseText():
             license_path = u'{}/{}'.format(system_licenses_path, license_name)
@@ -164,6 +166,8 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    #  
+    #  FIXME: Deprecated/Unused
     def GenerateTemplate(self, l_name):
         Logger.Debug(__name__, u'Generating template')
         
@@ -212,15 +216,6 @@ class Panel(WizardPage):
                                 l_lines[l_index] = LI.replace(RPLC, new_str)
                         
                         l_index += 1
-                '''
-                for DEL in year_delims:
-                    l_index = 0
-                    for LI in l_lines:
-                        if DEL in LI:
-                            l_lines[l_index] = str(GetYear()).join(LI.split(DEL))
-                        
-                        l_index += 1
-                '''
                 
                 self.dsp_copyright.SetValue(u'\n'.join(l_lines))
                 
@@ -297,13 +292,81 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnFullTemplate(self, event=None):
-        license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
+        selected_template = self.sel_templates.GetStringSelection()
+        template_file = self.GetLicensePath(selected_template)
         
-        if FieldEnabled(self.btn_template_simple):
-            self.CopyStandardLicense(license_name)
+        if self.DestroyLicenseText():
+            if not os.path.isfile(template_file):
+                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate license file'), template_file))
+                return
+            
+            Logger.Debug(__name__, u'Copying license {}'.format(template_file))
+            
+            license_text = ReadFile(template_file)
+            
+            # Number defines how many empty lines to add after the copyright header
+            # Boolean/Integer defines whether copyright header should be centered/offset
+            add_header = {
+                u'Artistic': (1, True),
+                u'BSD': (0, False),
+            }
+            
+            template_name = os.path.basename(template_file)
+            if template_name in add_header:
+                license_text = license_text.split(u'\n')
+                
+                empty_lines = add_header[template_name][0]
+                for L in range(empty_lines):
+                    license_text.insert(0, wx.EmptyString)
+                
+                header = copyright_header.format(GetYear())
+                
+                center_header = add_header[template_name][1]
+                if center_header:
+                    Logger.Debug(__name__, u'Centering header...')
+                    
+                    offset = 0
+                    
+                    # Don't use isinstance() here because boolean is an instance of integer
+                    if type(center_header) == int:
+                        offset = center_header
+                    
+                    else:
+                        longest_line = GetLongestLine(license_text)
+                        
+                        Logger.Debug(__name__, u'Longest line: {}'.format(longest_line))
+                        
+                        header_length = len(header)
+                        if header_length < longest_line:
+                            offset = (longest_line - header_length) / 2
+                    
+                    if offset:
+                        Logger.Debug(__name__, u'Offset: {}'.format(offset))
+                        
+                        header = u'{}{}'.format(u' ' * offset, header)
+                
+                # Special changes for BSD license
+                if template_name == u'BSD':
+                    line_index = 0
+                    for LI in license_text:
+                        if u'copyright (c)' in LI.lower():
+                            license_text[line_index] = header
+                            
+                            break
+                        
+                        line_index += 1
+                
+                else:
+                    license_text.insert(0, header)
+                
+                license_text = u'\n'.join(license_text)
+            
+            self.dsp_copyright.Clear()
+            self.dsp_copyright.SetValue(license_text)
+            
+            self.dsp_copyright.SetInsertionPoint(0)
         
-        else:
-            self.GenerateTemplate(license_name)
+        self.dsp_copyright.SetFocus()
     
     
     ## Enables/Disables simple template button
