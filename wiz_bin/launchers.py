@@ -14,10 +14,12 @@ from dbr.buttons            import ButtonClear
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
-from dbr.dialogs            import GetFileOpenDialog
-from dbr.dialogs            import GetFileSaveDialog
+from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
+from dbr.listinput          import ListCtrlPanel
+from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
@@ -197,13 +199,10 @@ class Panel(WizardPage):
         for B in btn_catadd, btn_catdel, btn_catclr:
             self.opts_button.append(B)
         
-        # NOTE: wx 3.0 compat
-        if wx.MAJOR_VERSION > 2:
-            self.lst_categories = wx.ListCtrl(self)
-            self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
-        
-        else:
-            self.lst_categories = wx.ListCtrl(self, style=wx.LC_SINGLE_SEL|wx.BORDER_SIMPLE)
+        # FIXME: Allow using multi-select + remove
+        self.lst_categories = ListCtrlPanel(self)
+        # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
+        self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # For manually setting background color after enable/disable
         self.lst_categories.default_color = self.lst_categories.GetBackgroundColour()
@@ -216,6 +215,7 @@ class Panel(WizardPage):
         
         self.ti_other = TextAreaPanel(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
+        self.ti_other.EnableDropTarget()
         self.opts_input.append(self.ti_other)
         
         self.OnToggle()
@@ -224,7 +224,6 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        CENTER = wx.ALIGN_CENTER_VERTICAL
         CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
         CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
@@ -293,8 +292,8 @@ class Panel(WizardPage):
         
         # --- Page 5 Sizer --- #
         lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_LEFT|wx.LEFT|wx.BOTTOM, 5)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(self.chk_enable, 0, wx.LEFT, 5)
         lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
         
@@ -357,7 +356,7 @@ class Panel(WizardPage):
     
     
     ## Formats the launcher information for export
-    def GetMenuInfo(self):
+    def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
         
         name = self.ti_name.GetValue()
@@ -434,7 +433,7 @@ class Panel(WizardPage):
         if not self.chk_enable.GetValue():
             return None
         
-        return(__name__, self.GetMenuInfo(), u'MENU')
+        return(__name__, self.GetLauncherInfo(), u'MENU')
     
     
     ## Overrides dbr.wizard.GetRequiredField
@@ -550,16 +549,77 @@ class Panel(WizardPage):
         return self.chk_enable.IsChecked()
     
     
+    ## Loads a .desktop launcher's data
+    #  
+    #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
+    #         'Others' field not being completely filled out.
+    def OnLoadLauncher(self, event=None):
+        dia = wx.FileDialog(GetTopWindow(), GT(u'Open Launcher'), os.getcwd(),
+                style=wx.FD_CHANGE_DIR)
+        
+        if ShowDialog(dia):
+            path = dia.GetPath()
+            
+            data = ReadFile(path, split=True)
+            
+            # Remove unneeded lines
+            if data[0] == u'[Desktop Entry]':
+                data = data[1:]
+                # First line needs to be changed to '1'
+            data.insert(0, u'1')
+            self.SetFieldDataLegacy(u'\n'.join(data))
+    
+    
     ## TODO: Doxygen
     def OnPreviewLauncher(self, event=None):
         # Show a preview of the .desktop config file
-        config = self.GetMenuInfo()
+        config = self.GetLauncherInfo()
         
         dia = TextPreview(title=GT(u'Menu Launcher Preview'),
                 text=config, size=(500,400))
         
         dia.ShowModal()
         dia.Destroy()
+    
+    
+    ## Saves launcher information to file
+    #  
+    #  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
+    #         'Others' field not being completely filled out.
+    def OnSaveLauncher(self, event=None):
+        Logger.Debug(__name__, u'Export launcher ...')
+        
+        # Get data to write to control file
+        menu_data = self.GetLauncherInfo().encode(u'utf-8')
+        
+        dia = wx.FileDialog(GetTopWindow(), GT(u'Save Launcher'), os.getcwd(),
+            style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        
+        if dia.ShowModal() == wx.ID_OK:
+            path = dia.GetPath()
+            
+            # Create a backup file
+            overwrite = False
+            if os.path.isfile(path):
+                backup = u'{}.backup'.format(path)
+                shutil.copy(path, backup)
+                overwrite = True
+            
+            try:
+                WriteFile(path, menu_data)
+                
+                if overwrite:
+                    os.remove(backup)
+            
+            except UnicodeEncodeError:
+                detail1 = GT(u'Unfortunately Debreate does not support unicode yet.')
+                detail2 = GT(u'Remove any non-ASCII characters from your project.')
+                
+                ShowErrorDialog(GT(u'Save failed'), u'{}\n{}'.format(detail1, detail2), title=GT(u'Unicode Error'))
+                
+                os.remove(path)
+                # Restore from backup
+                shutil.move(backup, path)
     
     
     ## TODO: Doxygen
@@ -576,49 +636,6 @@ class Panel(WizardPage):
         
         self.txt_filename.Enable(True)
         self.ti_filename.Enable(True)
-    
-    
-    ## TODO: Doxygen
-    def OnSaveLauncher(self, event=None):
-        main_window = GetTopWindow()
-        
-        # Get data to write to control file
-        menu_data = self.GetMenuInfo().encode(u'utf-8')
-        menu_data = menu_data.split(u'\n')
-        menu_data = u'\n'.join(menu_data)
-        
-        # Saving?
-        cont = False
-        
-        # Open a u'Save Dialog'
-        dia = GetFileSaveDialog(main_window, GT(u'Save Launcher'), u'{}|*'.format(GT(u'All files')))
-        if ShowDialog(dia):
-            cont = True
-            path = dia.GetPath()
-        
-        if cont:
-            filename = dia.GetFilename()
-            
-            # Create a backup file
-            overwrite = False
-            if os.path.isfile(path):
-                backup = u'{}.backup'.format(path)
-                shutil.copy(path, backup)
-                overwrite = True
-            
-            try:
-                WriteFile(path, menu_data)
-                if overwrite:
-                    os.remove(backup)
-            
-            except UnicodeEncodeError:
-                serr = GT(u'Save failed')
-                uni = GT(u'Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project.')
-                UniErr = wx.MessageDialog(self, u'{}\n\n{}'.format(serr, uni), GT(u'Unicode Error'), style=wx.OK|wx.ICON_EXCLAMATION)
-                UniErr.ShowModal()
-                os.remove(path)
-                # Restore from backup
-                shutil.move(backup, path)
     
     
     ## TODO: Doxygen
@@ -644,24 +661,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnLoadLauncher(self, event=None):
-        cont = False
-        
-        dia = GetFileOpenDialog(GetTopWindow(), GT(u'Open Launcher'), u'{}|*'.format(GT(u'All files')))
-        if ShowDialog(dia):
-            cont = True
-        
-        if cont == True:
-            path = dia.GetPath()
-            data = ReadFile(path, split=True)
-            if data[0] == u'[Desktop Entry]':
-                data = data[1:]
-                # First line needs to be changed to '1'
-            data.insert(0, u'1')
-            self.SetFieldDataLegacy(u'\n'.join(data))
-    
-    
-    ## TODO: Doxygen
     def ResetPage(self):
         self.chk_filename.SetValue(self.chk_filename.default)
         self.ti_filename.Clear()
@@ -682,125 +681,153 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def SetCategory(self, event=None):
         try:
-            key_code = event.GetKeyCode()
+            ID = event.GetKeyCode()
         
         except AttributeError:
-            key_code = event.GetEventObject().GetId()
+            ID = event.GetEventObject().GetId()
         
         cat = self.ti_category.GetValue()
         cat = cat.split()
         cat = u''.join(cat)
         
-        if key_code in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
-            self.lst_categories.InsertStringItem(0, cat)
+        if ID in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+            self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), cat)
         
-        elif key_code in (wx.ID_REMOVE, wx.WXK_DELETE):
-            cur_cat = self.lst_categories.GetFirstSelected()
-            self.lst_categories.DeleteItem(cur_cat)
+        elif ID in (wx.ID_REMOVE, wx.WXK_DELETE):
+            if self.lst_categories.GetItemCount() and self.lst_categories.GetSelectedItemCount():
+                cur_cat = self.lst_categories.GetFirstSelected()
+                self.lst_categories.DeleteItem(cur_cat)
         
-        elif key_code == wx.ID_CLEAR:
-            confirm = wx.MessageDialog(self, GT(u'Delete all categories?'), GT(u'Confirm'),
-                    wx.YES_NO|wx.NO_DEFAULT|wx.ICON_QUESTION)
-            if confirm.ShowModal() == wx.ID_YES:
-                self.lst_categories.DeleteAllItems()
+        elif ID == wx.ID_CLEAR:
+            if self.lst_categories.GetItemCount():
+                if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                        GT(u'Clear categories?')).ShowModal() in (wx.ID_OK, wx.OK):
+                    self.lst_categories.DeleteAllItems()
         
         if event:
             event.Skip()
     
     
     ## Fills out launcher information from loaded file
+    #  
+    #  \param data
+    #    Information to fill out menu launcher fields
+    #  \param enabled
+    #    \b \e bool : Launcher will be flagged for export if True
     def SetFieldDataLegacy(self, data, enabled=True):
-        
         # Make sure we are dealing with a list
         if isinstance(data, (unicode, str)):
             data = data.split(u'\n')
         
-        # Clear all fields first
-        self.ResetPage()
-        self.chk_enable.SetValue(False)
-        
-        # TODO: Check for error with first character not being integer
-        Logger.Debug(__name__, GT(u'Importing legacy project; First character (should be "0" or "1"): {}').format(data[0]))
-        
-        if enabled:
-            self.chk_enable.SetValue(True)
+        # Data list is not empty
+        if data:
+            Logger.Debug(__name__, u'Loading launcher')
             
-            data_defs = {}
-            data_defs_remove = []
-            misc_defs = {}
+            if data[0].isnumeric():
+                enabled = int(data.pop(0)) > 0
             
-            for L in data:
-                if u'=' in L:
-                    if L[0] == u'[' and L[-1] == u']':
-                        key = L[1:-1].split(u'=')
-                        value = key[1]
-                        key = key[0]
+            if DebugEnabled():
+                for L in data:
+                    print(u'  Launcher line: {}'.format(L))
+            
+            Logger.Debug(__name__, u'Enabling launcher: {}'.format(enabled))
+            
+            # TODO: Check for error with first character not being integer
+            Logger.Debug(__name__, GT(u'Importing legacy project; First character (should be "0" or "1"): {}').format(data[0]))
+            
+            if enabled:
+                self.chk_enable.SetValue(True)
+                
+                data_defs = {}
+                data_defs_remove = []
+                misc_defs = []
+                
+                for L in data:
+                    if u'=' in L:
+                        if L[0] == u'[' and L[-1] == u']':
+                            key = L[1:-1].split(u'=')
+                            value = key[1]
+                            key = key[0]
+                            
+                            misc_defs.append(u'{}={}'.format(key, value))
                         
-                        misc_defs[key] = value
+                        else:
+                            key = L.split(u'=')
+                            value = key[1]
+                            key = key[0]
+                            
+                            data_defs[key] = value
+                
+                # Fields using SetValue() function
+                set_value_fields = (
+                    (u'Name', self.ti_name),
+                    (u'Exec', self.ti_exec),
+                    (u'Comment', self.ti_comm),
+                    (u'Icon', self.ti_icon),
+                    (u'Type', self.ti_type),
+                    (u'Encoding', self.ti_enc),
+                    )
+                
+                for label, control in set_value_fields:
+                    try:
+                        control.SetValue(data_defs[label])
+                        data_defs_remove.append(label)
                     
-                    else:
-                        key = L.split(u'=')
-                        value = key[1]
-                        key = key[0]
+                    except KeyError:
+                        pass
+                
+                # Fields using SetSelection() function
+                set_selection_fields = (
+                    (u'Terminal', self.sel_term),
+                    (u'StartupNotify', self.sel_notify),
+                    )
+                
+                for label, control in set_selection_fields:
+                    try:
+                        control.SetStringSelection(data_defs[label].lower())
+                        data_defs_remove.append(label)
+                    
+                    except KeyError:
+                        pass
+                
+                try:
+                    categories = tuple(data_defs[u'Categories'].split(u';'))
+                    for C in categories:
+                        self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
+                    
+                    data_defs_remove.append(u'Categories')
+                
+                except KeyError:
+                    pass
+                
+                for K in data_defs_remove:
+                    if K in data_defs:
+                        del data_defs[K]
+                
+                # Add any leftover keys to misc/other
+                for K in data_defs:
+                    if K not in (u'Version',):
+                        misc_defs.append(u'{}={}'.format(K, data_defs[K]))
+                
+                for index in reversed(range(len(misc_defs))):
+                    K = misc_defs[index]
+                    
+                    # Set custom filename
+                    if u'FILENAME=' in K:
+                        filename = K.replace(u'FILENAME=', u'')
                         
-                        data_defs[key] = value
-            
-            # Fields using SetValue() function
-            set_value_fields = (
-                (u'Name', self.ti_name),
-                (u'Exec', self.ti_exec),
-                (u'Comment', self.ti_comm),
-                (u'Icon', self.ti_icon),
-                (u'Type', self.ti_type),
-                (u'Encoding', self.ti_enc),
-                )
-            
-            for label, control in set_value_fields:
-                try:
-                    control.SetValue(data_defs[label])
-                    data_defs_remove.append(label)
+                        if not TextIsEmpty(filename):
+                            Logger.Debug(__name__, u'Setting custom filename: {}'.format(filename))
+                            
+                            self.ti_filename.SetValue(filename)
+                            self.chk_filename.SetValue(False)
+                        
+                        # Remove so not added to misc. list
+                        misc_defs.pop(index)
+                        
+                        continue
                 
-                except KeyError:
-                    pass
-            
-            # Fields using SetSelection() function
-            set_selection_fields = (
-                (u'Terminal', self.sel_term),
-                (u'StartupNotify', self.sel_notify),
-                )
-            
-            for label, control in set_selection_fields:
-                try:
-                    control.SetStringSelection(data_defs[label].lower())
-                    data_defs_remove.append(label)
+                if misc_defs:
+                    self.ti_other.SetValue(u'\n'.join(sorted(misc_defs)))
                 
-                except KeyError:
-                    pass
-            
-            try:
-                categories = tuple(data_defs[u'Categories'].split(u';'))
-                for C in categories:
-                    self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
-                data_defs_remove.append(u'Categories')
-            
-            except KeyError:
-                pass
-        
-        for K in data_defs_remove:
-            if K in data_defs:
-                del data_defs[K]
-        
-        # Add any leftover keys to misc/other
-        for K in data_defs:
-            if K not in (u'Version',):
-                self.ti_other.WriteText(u'{}={}'.format(K, data_defs[K]))
-        
-        if misc_defs:
-            for K in misc_defs:
-                value = misc_defs[K]
-                if not TextIsEmpty(value):
-                    if K == u'FILENAME':
-                        self.ti_filename.SetValue(value)
-                        self.chk_filename.SetValue(False)
-        
-        self.OnToggle()
+                self.OnToggle()
