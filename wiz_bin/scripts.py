@@ -373,20 +373,19 @@ scripts will be created that will place a symbolic link to your executables in t
                     if u'.' in filename:
                         linkname = u'.'.join(filename.split(u'.')[:-1])
                         link = u'{}/{}'.format(link_path, linkname)
+                    
                     else:
                         link = u'{}/{}'.format(link_path, filename)
-                        #link = u'{}/{}'.format(link_path, os.path.split(self.lst_executables[count])[1])
+                    
                     postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
-                    prerm_list.append(u'rm "{}"'.format(link))
+                    prerm_list.append(u'rm -f "{}"'.format(link))
                     count += 1
                 
                 postinst = u'\n\n'.join(postinst_list)
                 prerm = u'\n\n'.join(prerm_list)
                 
-                #self.te_postinst.SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
-                self.chk_postinst.SetValue(True)
-                #self.te_prerm.SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
-                self.chk_prerm.SetValue(True)
+                self.script_objects[1][0].SetValue(postinst)
+                self.script_objects[2][0].SetValue(prerm)
                 
                 dia = wx.MessageDialog(self, GT(u'post-install and pre-remove scripts generated'), GT(u'Success'), wx.OK)
                 dia.ShowModal()
