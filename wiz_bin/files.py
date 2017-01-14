@@ -155,8 +155,8 @@ class Panel(wx.ScrolledWindow):
         
         lyt_right = wx.BoxSizer(wx.VERTICAL)
         lyt_right.AddSpacer(10)
-        lyt_right.Add(wx.StaticText(self, label=GT(u'Target')), 0, wx.BOTTOM, 5)
-        lyt_right.Add(pnl_target, 0)
+        lyt_right.Add(wx.StaticText(self, label=GT(u'Target')))
+        lyt_right.Add(pnl_target, 0, wx.TOP, 5)
         lyt_right.Add(lyt_buttons, 0, wx.EXPAND)
         lyt_right.Add(self.lst_files, 5, wx.EXPAND|wx.TOP, 5)
         
