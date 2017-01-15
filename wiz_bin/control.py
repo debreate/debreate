@@ -12,7 +12,6 @@ from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
-from dbr.dialogs            import GetFileOpenDialog
 from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -569,17 +568,21 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        main_window = GetTopWindow()
-        
-        wildcards = (
-            GT(u'All files'), u'*',
-            GT(u'CONTROL file'), u'CONTROL',
-        )
-        
-        browse_dialog = GetFileOpenDialog(main_window, GT(u'Open File'), wildcards)
+        browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
         if ShowDialog(browse_dialog):
             file_path = browse_dialog.GetPath()
-            self.ImportPageInfo(file_path)
+            
+            control_data = ReadFile(file_path)
+            
+            page_depends = GetPage(ident.DEPENDS)
+            
+            # Reset fields to default before opening
+            self.ResetPage()
+            page_depends.ResetPage()
+            
+            # FIXME: Use new methods
+            depends_data = self.SetFieldDataLegacy(control_data)
+            page_depends.SetFieldDataLegacy(depends_data)
     
     
     ## TODO: Doxygen
