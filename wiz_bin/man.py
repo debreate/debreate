@@ -23,23 +23,26 @@ class Panel(WizardPage, wx.Notebook):
         ## Override default label
         self.label = GT(u'Man Pages')
         
-        button_add = ButtonAdd(self)
-        button_add.SetName(u'add')
-        
-        wx.EVT_BUTTON(button_add, wx.ID_ANY, self.OnAddManpage)
+        btn_add = ButtonAdd(self)
+        btn_add.SetName(u'add')
         
         self.tabs = wx.Notebook(self)
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
-        layout_V1.Add(button_add, 0, wx.ALL, 5)
-        layout_V1.Add(self.tabs, 1, wx.ALL|wx.EXPAND, 5)
+        SetPageToolTips(self)
+        
+        # *** Event Handling *** #
+        
+        btn_add.Bind(wx.EVT_BUTTON, self.OnAddManpage)
+        
+        # *** Layout *** #
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(btn_add, 0, wx.ALL, 5)
+        lyt_main.Add(self.tabs, 1, wx.ALL|wx.EXPAND, 5)
         
         self.SetAutoLayout(True)
-        self.SetSizer(layout_V1)
+        self.SetSizer(lyt_main)
         self.Layout()
-        
-        
-        SetPageToolTips(self)
     
     
     ## TODO: Doxygen
@@ -98,7 +101,6 @@ class Panel(WizardPage, wx.Notebook):
         pass
 
 
-
 ## TODO: Doxygen
 class ManPage(wx.NotebookPage):
     def __init__(self, parent, name=u'manual'):
@@ -122,31 +124,35 @@ class ManPage(wx.NotebookPage):
         
         section_title = wx.StaticText(self.bg, label=GT(u'Section'))
         
-        self.section = wx.Choice(self.bg, choices=tuple(self.sections))
-        self.section.default = u'1'
-        self.section.SetStringSelection(self.section.default)
+        self.sel_section = wx.Choice(self.bg, choices=tuple(self.sections))
+        self.sel_section.default = u'1'
+        self.sel_section.SetStringSelection(self.sel_section.default)
         
-        self.section_definition = wx.StaticText(self.bg, label=self.sections[self.section.default])
+        self.section_definition = wx.StaticText(self.bg, label=self.sections[self.sel_section.default])
         
-        wx.EVT_CHOICE(self.section, wx.ID_ANY, self.OnSetSection)
+        ti_man = TextAreaPanel(self.bg)
         
-        layout_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        layout_H1.Add(section_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        layout_H1.Add(self.section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        layout_H1.Add(self.section_definition, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        # *** Event Handling *** #
         
-        self.man_text = TextAreaPanel(self.bg)
+        self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
-        layout_V1.Add(layout_H1, 0, wx.TOP|wx.BOTTOM, 5)
-        layout_V1.Add(self.man_text, 1, wx.ALL|wx.EXPAND, 5)
+        # *** Layout *** #
+        
+        lyt_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_H1.Add(section_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_H1.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_H1.Add(self.section_definition, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        
+        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(lyt_H1, 0, wx.TOP|wx.BOTTOM, 5)
+        lyt_main.Add(ti_man, 1, wx.ALL|wx.EXPAND, 5)
         
         self.bg.SetAutoLayout(True)
-        self.bg.SetSizer(layout_V1)
+        self.bg.SetSizer(lyt_main)
         self.bg.Layout()
     
     
     ## TODO: Doxygen
     def OnSetSection(self, event=None):
-        self.section_definition.SetLabel(self.sections[self.section.GetStringSelection()])
-        print(u'Setting section to {}'.format(self.section.GetStringSelection()))
+        self.section_definition.SetLabel(self.sections[self.sel_section.GetStringSelection()])
+        print(u'Setting section to {}'.format(self.sel_section.GetStringSelection()))
