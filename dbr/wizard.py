@@ -240,7 +240,7 @@ class Wizard(wx.Panel):
     ## TODO: Doxygen
     def ResetPagesInfo(self):
         for page in self.pages:
-            page.ResetPage()
+            page.Reset()
     
     
     ## TODO: Doxygen
@@ -426,5 +426,5 @@ class WizardPage(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetPage(self):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ResetPage').format(self.GetName()))
+    def Reset(self):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method Reset').format(self.GetName()))

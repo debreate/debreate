@@ -73,6 +73,6 @@ class Panel(WizardPage):
         return True
     
     
-    ## Override Wizard.ResetPage & do nothing
-    def ResetPage(self):
+    ## Override Wizard.Reset & do nothing
+    def Reset(self):
         pass
