@@ -24,22 +24,26 @@
 - Add option for lintian overrides
 - Add 'quiet' log level
 - Replace 'debian' directory with script to automatically generate Debian build files
+- Add page for creating manpage
+- Add lintian overrides option
 
 Priority:
 - Use globals.thread module for all threading activity
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
-- Add option for creating manpages
-- Add lintian overrides option
 - Files page: Optional filter for hidden files & folders
 - Add a 'help' button for info on each page
-- Finish page for creating manpage
 - Finish Doxygen documentation
 - Allow editing of dependecies list
 - Finish Markdown parser
-- Text output on Build page
-- Set up manpage template creation for executables in file list
+- Add wizard to build packages from source
+  - Possibly use as a front-end for 'dh_make' & 'debuild'
+- Allow making multiple .desktop menus
+- Option to create lintian overrides file
+- Use 'data/lintian/tags' for overrides
+- Cache lintian tags list from remote site
 
 Non-priority:
+- Set up manpage template creation for executables in file list
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
 - Add custom field option to Control
 - Add 'provides' field to Control
@@ -51,8 +55,7 @@ Non-priority:
 - Config file should not be required to exist before launching main app window
 - Option for make/cmake to create portable release
 - Add option to build standalone installers
-- Add wizard to build packages from source
-- Create release notes for install from TODO & BUGS lists
+- Auto-generate release notes for install from TODO & BUGS lists
 - Use Python's built-in module 'md5' for creating hashes
 - Startup window in primary monitor
 - Update missing path status in file list after selecting item
@@ -64,17 +67,13 @@ Non-priority:
 - Add alternate tooltip for 'install' option if disabled
 - Don't show 'unknown error' if package build was cancelled
 - Detailed documentation on files page
-- Use Debreate as a front-end for 'dh_make' & 'debuild' for building source packages
 - Find alternative (if necessary) to sys.setdefaultencoding
-- Allow making multiple .desktop menus
 - Omit scripts directory in gettext search
 - Create FreeBSD Port
 - Save monospaced font size for text areas using it
 - Add contributers file to docs dir
-- Option to create lintian overrides file
-- Use 'data/lintian/tags' for overrides
 - Option to convert between package formats (alien?)
-- Cache lintian tags list from remote site
+- Replace Makefile with CMake build system
 
 Undecided:
 - Scripting backend
@@ -84,7 +83,3 @@ Undecided:
   - dpkg-deb
   - bsdar
   - ar (some errors in format)
-- Compile source to Python bytecode (.pyc) after install
-- Replace Makefile with CMake build system
-- Add Makefile rule for signing binary debuild package
-- Add option to clear logs folder
