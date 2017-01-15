@@ -193,7 +193,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ImportPageInfo(self, d_type, d_string):
+    def ImportFromFile(self, d_type, d_string):
         Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
         
         values = d_string.split(u', ')

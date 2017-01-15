@@ -358,8 +358,8 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     #  
-    #  \override dbr.wizard.Wizard.ImportPageInfo
-    def ImportPageInfo(self, filename):
+    #  \override dbr.wizard.Wizard.ImportFromFile
+    def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         
         if not os.path.isfile(filename):
@@ -596,7 +596,7 @@ class Panel(WizardPage):
     
     ## Resets all fields on page to default values
     #  
-    #  \override dbr.wizard.Wizard.ImportPageInfo
+    #  \override dbr.wizard.Wizard.ImportFromFile
     def ResetPage(self):
         self.lst_files.DeleteAllItems()
     

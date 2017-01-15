@@ -449,7 +449,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
+    def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         
         if not os.path.isfile(filename):

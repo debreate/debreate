@@ -313,7 +313,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
+    def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
         
