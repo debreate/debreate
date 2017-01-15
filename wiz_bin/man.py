@@ -14,6 +14,9 @@ from dbr.buttons            import ButtonAdd
 from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.log                import Logger
+from dbr.mansect            import ManTitle
+from dbr.menu               import PanelMenu
+from dbr.menu               import PanelMenuBar
 from dbr.textinput          import MonospaceTextArea
 from dbr.wizard             import WizardPage
 from globals                import ident
@@ -138,6 +141,11 @@ class ManPage(wx.Panel):
             u'8': GT(u'System administration commands and daemons'),
         }
         
+        # FIXME: wx.Panel can't set wx.MenuBar
+        # TODO: Create custom menubar
+        menubar = PanelMenuBar(self)
+        menubar.Add(PanelMenu(), GT(u'Add'))
+        
         txt_title = wx.StaticText(self, label=GT(u'Section'))
         
         self.sel_section = wx.Choice(self, choices=tuple(self.sections))
@@ -161,8 +169,10 @@ class ManPage(wx.Panel):
         lyt_H1.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main.Add(menubar, 0, wx.EXPAND)
         lyt_main.Add(lyt_H1, 0, wx.TOP|wx.BOTTOM, 5)
         lyt_main.Add(self.ti_man, 1, wx.ALL|wx.EXPAND, 5)
+        lyt_main.Add(ManTitle(self).GetObject(), 0, wx.LEFT, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
