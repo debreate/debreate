@@ -585,18 +585,6 @@ class Panel(WizardPage):
             page_depends.SetFieldDataLegacy(depends_data)
     
     
-    ## TODO: Doxygen
-    def OnCtrlKey(self, event=None):
-        key = event.GetKeyCode()
-        mod = event.GetModifiers()
-        
-        if mod == 2 and key == 80:
-            self.OnPreviewControl()
-        
-        if event:
-            event.Skip()
-    
-    
     ## Determins if project has been modified
     def OnKeyDown(self, event=None):
         for widget in self.grp_keypress:
@@ -608,14 +596,12 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnKeyUp(self, event=None):
-        main_window = GetTopWindow()
-        
         modified = False
         for widget in self.grp_keypress:
             if widget.GetValue() != self.grp_keypress[widget]:
                 modified = True
         
-        main_window.SetSavedStatus(modified)
+        GetTopWindow().SetSavedStatus(modified)
         
         if event:
             event.Skip()
