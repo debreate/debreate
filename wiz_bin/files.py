@@ -281,10 +281,13 @@ class Panel(WizardPage):
     #  
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
-    def Get(self, string_format=False):
+    def Get(self, get_module=False):
         item_count = self.lst_files.GetItemCount()
         
-        if item_count:
+        if not item_count:
+            page = None
+        
+        else:
             files_definitions = {}
             for X in range(item_count):
                 row_data = self.lst_files.GetRowData(X)
@@ -309,14 +312,12 @@ class Panel(WizardPage):
                 for F in files_definitions[D]:
                     files_data.append(F)
             
-            files_data = u'\n'.join(files_data)
-            
-            if string_format:
-                return files_data
-            
-            return (__name__, files_data)
+            page = u'\n'.join(files_data)
         
-        return None
+        if get_module:
+            page = (__name__, page,)
+        
+        return page
     
     
     ## TODO: Doxygen
