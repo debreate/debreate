@@ -508,7 +508,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetPage(self):
+    def Reset(self):
         self.chk_individuals.SetValue(self.chk_individuals.default)
         self.rb_custom.SetValue(self.rb_custom.default)
         self.OnSetDestination()

@@ -842,7 +842,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetPage(self):
+    def Reset(self):
         self.InitDefaultSettings()
     
     
@@ -853,7 +853,7 @@ class Panel(wx.ScrolledWindow):
     #        integer values.
     def Set(self, data):
         # ???: Redundant
-        self.ResetPage()
+        self.Reset()
         build_data = data.split(u'\n')
         
         if GetExecutable(u'md5sum'):

@@ -191,7 +191,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ResetPage(self):
+    def Reset(self):
         for C in self.categories:
             if C.GetName() == self.default_category:
                 C.SetValue(True)

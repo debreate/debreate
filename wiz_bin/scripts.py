@@ -426,7 +426,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Resets all fields on page to default values
-    def ResetPage(self):
+    def Reset(self):
         for CHK, RB, TI in self.script_objects:
             CHK.SetValue(False)
             TI.Clear()
