@@ -14,6 +14,7 @@ from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
+from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -76,7 +77,7 @@ class Panel(WizardPage):
             (postinst, rb_postinst,),
             (prerm, rb_prerm,),
             (postrm, rb_postrm,),
-        )
+            )
         
         # *** Auto-Link *** #
         
@@ -94,18 +95,11 @@ class Panel(WizardPage):
         # Auto-Link executables to be linked
         self.executables = ListCtrlPanel(pnl_autolink, size=(200,200), name=u'al list')
         self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
-        #self.executables.InsertColumn(0, u'')
         
         # Auto-Link import, generate and remove buttons
         btn_al_import = ButtonImport(pnl_autolink)
         btn_al_remove = ButtonRemove(pnl_autolink)
         btn_al_generate = ButtonBuild(pnl_autolink)
-        
-        # Text explaining Auto-Link
-        '''txt_autolink = wx.StaticText(self, -1, 'How to use Auto-Link: Press the "import" button to \
-import any executables from the "files" tab.  Then press the "generate" button.  "postinst" and "prerm" \
-scripts will be created that will place a symbolic link to your executables in the path displayed above.')
-        txt_autolink.Wrap(210)'''
         
         # Auto-Link help
         btn_help = ButtonQuestion64(pnl_autolink)
@@ -315,6 +309,7 @@ scripts will be created that will place a symbolic link to your executables in t
             
             for I in reversed(range(remove_indexes)):
                 script_data.remove(script_data[I])
+            
             script_data = u'\n'.join(script_data)
             
             script_object.SetShell(shebang, True)
@@ -401,19 +396,13 @@ scripts will be created that will place a symbolic link to your executables in t
     
     ## TODO: Doxygen
     def OnHelpButton(self, event=None):
-        self.al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'))
-        #self.al_help = wx.Dialog(self, -1, GT(u'Auto-Link Help'))
+        al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
         instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
         
-        self.al_help.SetText(u'{}\n\n{}'.format(description, instructions))
+        al_help.SetText(u'{}\n\n{}'.format(description, instructions))
         
-        # FIXME:
-        #self.al_help.button_ok = ButtonConfirm(self.al_help)
-        
-        self.al_help.ShowModal()
-        self.al_help.CenterOnParent(wx.BOTH)
-        self.al_help.Close()
+        ShowDialog(al_help)
     
     
     ## Resets all fields on page to default values
