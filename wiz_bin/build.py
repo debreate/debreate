@@ -407,7 +407,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GetPageInfo(self):
+    def Get(self):
         # 'install after build' is not exported to project for safety
         
         fields = {}
