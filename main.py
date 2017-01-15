@@ -939,7 +939,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Get Copyright Data *** #
         try:
             cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
-            self.page_cpright.SetCopyright(cpright_data)
+            self.page_cpright.Set(cpright_data)
         
         except IndexError:
             pass
