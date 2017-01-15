@@ -290,7 +290,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
+    def Set(self, data):
         self.lst_deps.DeleteAllItems()
         for item in data:
             item_count = len(item)

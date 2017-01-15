@@ -569,7 +569,7 @@ class Panel(WizardPage):
             self.ResetPage()
             # First line needs to be changed to '1'
             data.insert(0, u'1')
-            self.SetFieldDataLegacy(u'\n'.join(data))
+            self.Set(u'\n'.join(data))
     
     
     ## TODO: Doxygen
