@@ -517,7 +517,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def SetFieldData(self, data):
+    def Set(self, data):
         # Clear files list
         self.lst_files.DeleteAllItems()
         files_data = data.split(u'\n')

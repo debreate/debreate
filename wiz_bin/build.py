@@ -851,7 +851,7 @@ class Panel(wx.ScrolledWindow):
     #  TODO: Use string names in project file but retain
     #        compatibility with older projects that use
     #        integer values.
-    def SetFieldData(self, data):
+    def Set(self, data):
         # ???: Redundant
         self.ResetPage()
         build_data = data.split(u'\n')

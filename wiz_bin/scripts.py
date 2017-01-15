@@ -455,7 +455,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def SetFieldData(self, data):
+    def Set(self, data):
         chk_preinst = self.script_objects[0][0]
         chk_postinst = self.script_objects[1][0]
         chk_prerm = self.script_objects[2][0]

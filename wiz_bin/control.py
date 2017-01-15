@@ -425,8 +425,8 @@ class Panel(wx.ScrolledWindow):
             self.ResetPage()
             page_depends.ResetPage()
             
-            depends_data = self.SetFieldData(control_data)
-            page_depends.SetFieldData(depends_data)
+            depends_data = self.Set(control_data)
+            page_depends.Set(depends_data)
     
     
     ## Determins if project has been modified
@@ -504,7 +504,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## Opening Project/File & Setting Fields
-    def SetFieldData(self, data):
+    def Set(self, data):
         # Decode to unicode string if input is byte string
         if isinstance(data, str):
             data = data.decode(u'utf-8')

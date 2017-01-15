@@ -277,7 +277,7 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def SetFieldData(self, data):
+    def Set(self, data):
         self.lst_deps.DeleteAllItems()
         for item in data:
             item_count = len(item)

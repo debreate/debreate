@@ -640,16 +640,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-        depends_data = self.page_control.SetFieldData(control_data)
-        self.page_depends.SetFieldData(depends_data)
+        depends_data = self.page_control.Set(control_data)
+        self.page_depends.Set(depends_data)
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        opened = self.page_files.SetFieldData(files_data)
+        opened = self.page_files.Set(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-        self.page_scripts.SetFieldData(scripts_data)
+        self.page_scripts.Set(scripts_data)
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
@@ -669,7 +669,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
-        self.page_build.SetFieldData(build_data)
+        self.page_build.Set(build_data)
         
         return opened
     
