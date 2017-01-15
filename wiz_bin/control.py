@@ -442,9 +442,8 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     #  
-    #  TODO: Rename to 'ImportFromFile'
     #  TODO: Use 'Set'/'SetPage' method
-    def ImportPageInfo(self, filename):
+    def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         
         if not os.path.isfile(filename):
@@ -537,7 +536,7 @@ class Panel(WizardPage):
         for label in control_defs:
             if label in dependencies:
                 if depends_page != None:
-                    depends_page.ImportPageInfo(label, control_defs[label])
+                    depends_page.ImportFromFile(label, control_defs[label])
                 
                 else:
                     Logger.Warning(__name__, GT(u'Could not set {}: {}'.format(label, control_defs[label])))

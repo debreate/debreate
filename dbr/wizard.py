@@ -234,7 +234,7 @@ class Wizard(wx.Panel):
                         Logger.Debug(__name__,
                                 GT(u'Imported project file {} matches page {}'.format(F, page_name)))
                         
-                        page.ImportPageInfo(u'{}/{}'.format(PATH, F))
+                        page.ImportFromFile(u'{}/{}'.format(PATH, F))
     
     
     ## TODO: Doxygen
@@ -414,8 +414,8 @@ class WizardPage(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportPageInfo').format(self.GetName()))
+    def ImportFromFile(self, filename):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
     
     
     ## TODO: Doxygen
