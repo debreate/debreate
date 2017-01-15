@@ -355,6 +355,18 @@ class Panel(WizardPage):
         return (0, None)
     
     
+    ## Retrieves Desktop Entry file information
+    #  
+    #  \return
+    #        \b \e tuple(str, str, str) : File/Page name,
+    #          string formatted menu information, & filename to output
+    def Get(self):
+        if not self.chk_enable.GetValue():
+            return None
+        
+        return(__name__, self.GetLauncherInfo(), u'MENU')
+    
+    
     ## Formats the launcher information for export
     def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
@@ -422,18 +434,6 @@ class Panel(WizardPage):
                 return filename
         
         return self.ti_name.GetValue().strip(u' ').replace(u' ', u'_')
-    
-    
-    ## Retrieves Desktop Entry file information
-    #  
-    #  \return
-    #        \b \e tuple(str, str, str) : File/Page name,
-    #          string formatted menu information, & filename to output
-    def GetPageInfo(self):
-        if not self.chk_enable.GetValue():
-            return None
-        
-        return(__name__, self.GetLauncherInfo(), u'MENU')
     
     
     ## Overrides dbr.wizard.GetRequiredField

@@ -51,7 +51,7 @@ class Panel(WizardPage, wx.Notebook):
     ## Retrieves manpages info for text output
     #  
     #  TODO: Nothing here yet
-    def GetPageInfo(self):
+    def Get(self):
         return wx.EmptyString
     
     
