@@ -8,6 +8,8 @@
 
 import wx
 
+from globals.wizardhelper import GetTopWindow
+
 
 ## A menu bar that stores an ID along with a menu
 #  
@@ -68,3 +70,37 @@ class MenuBar(wx.MenuBar):
         self.id_list.insert(index, ID)
         
         return wx.MenuBar.Insert(self, index, menu, title)
+
+
+## A custom menu designed for use with PanelMenuBar
+class PanelMenu(wx.StaticText):
+    def __init__(self, parent=None, win_id=wx.ID_ANY, label=wx.EmptyString, name=u'menu'):
+        if not parent:
+            parent = GetTopWindow()
+        
+        wx.StaticText.__init__(self, parent, win_id, name=name)
+
+
+## A custom menu bar designed for use in wx.Panel
+class PanelMenuBar(wx.Panel):
+    def __init__(self, parent, win_id=wx.ID_ANY, name=u'menubar'):
+        wx.Panel.__init__(self, parent, win_id, name=name)
+        
+        lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+    
+    
+    ## TODO: Doxygen
+    def Add(self, menu, label=None):
+        if label:
+            menu.SetLabel(label)
+        
+        if not menu.Parent == self:
+            menu.Reparent(self)
+        
+        lyt = self.GetSizer()
+        lyt.Add(menu)
+        
+        self.Layout()
