@@ -7,7 +7,7 @@ import wx
 
 from dbr.buttons            import ButtonAdd
 from dbr.language           import GT
-from dbr.textinput          import TextAreaPanel
+from dbr.textinput          import MonospaceTextArea
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.tooltips       import SetPageToolTips
@@ -130,7 +130,7 @@ class ManPage(wx.NotebookPage):
         
         self.section_definition = wx.StaticText(self.bg, label=self.sections[self.sel_section.default])
         
-        ti_man = TextAreaPanel(self.bg)
+        ti_man = MonospaceTextArea(self.bg)
         ti_man.EnableDropTarget()
         
         # *** Event Handling *** #
