@@ -183,7 +183,8 @@ class Panel(wx.ScrolledWindow):
         
         # Sizer for right half of scripts panel
         lyt_right = wx.BoxSizer(wx.VERTICAL)
-        lyt_right.AddSpacer(30)
+        # Line up panels to look even
+        lyt_right.AddSpacer(32)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
                 0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
         lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
@@ -331,6 +332,7 @@ class Panel(wx.ScrolledWindow):
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
         main_window = GetTopWindow()
+        
         # Get the amount of links to be created
         total = len(self.lst_executables)
         
