@@ -9,8 +9,8 @@
 import os, wx
 
 from dbr.buttons            import ButtonBuild
+from dbr.buttons            import ButtonHelp64
 from dbr.buttons            import ButtonImport
-from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
@@ -102,7 +102,7 @@ class Panel(WizardPage):
         btn_al_generate = ButtonBuild(pnl_autolink)
         
         # Auto-Link help
-        btn_help = ButtonQuestion64(pnl_autolink)
+        btn_help = ButtonHelp64(pnl_autolink)
         
         # Initialize script display
         self.ScriptSelect(None)
