@@ -13,6 +13,7 @@ from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
 from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -446,8 +447,8 @@ class Panel(WizardPage):
     def ImportFromFile(self, file_path):
         Logger.Debug(__name__, GT(u'Importing file: {}'.format(file_path)))
         
-        # FIXME: Show error dialog
         if not os.path.isfile(file_path):
+            ShowErrorDialog(GT(u'File does not exist: {}'.format(file_path)), linewrap=600)
             return dbrerrno.ENOENT
         
         file_text = ReadFile(file_path)
