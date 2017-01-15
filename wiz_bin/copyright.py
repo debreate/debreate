@@ -314,7 +314,7 @@ class Panel(WizardPage):
     
     
     ## Resets all page fields to default values
-    def ResetPage(self):
+    def Reset(self):
         self.dsp_copyright.Clear()
         
         if self.sel_templates.IsEnabled():

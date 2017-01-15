@@ -946,7 +946,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Menu Data *** #
         m_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-        self.page_launchers.SetLauncherDataLegacy(m_data)
+        self.page_launchers.Set(m_data)
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')

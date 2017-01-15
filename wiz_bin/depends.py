@@ -204,7 +204,7 @@ class Panel(WizardPage):
     
     
     ## Resets all fields on page to default values
-    def ResetPage(self):
+    def Reset(self):
         for C in self.categories:
             if C.GetName() == self.default_category:
                 C.SetValue(True)

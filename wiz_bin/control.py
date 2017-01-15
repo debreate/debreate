@@ -456,8 +456,8 @@ class Panel(WizardPage):
         page_depends = GetPage(ident.DEPENDS)
         
         # Reset fields to default before opening
-        self.ResetPage()
-        page_depends.ResetPage()
+        self.Reset()
+        page_depends.Reset()
         
         depends_data = self.Set(file_text)
         page_depends.Set(depends_data)
@@ -550,7 +550,7 @@ class Panel(WizardPage):
     
     
     ## Resets all fields on page to default values
-    def ResetPage(self):
+    def Reset(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options
             if isinstance(I, ComboBox):
