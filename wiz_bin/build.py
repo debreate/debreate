@@ -407,7 +407,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def Get(self):
+    def Get(self, get_module=False):
         # 'install after build' is not exported to project for safety
         
         fields = {}
@@ -420,19 +420,22 @@ class Panel(WizardPage):
             if O not in omit_options:
                 fields[O.GetName()] = unicode(O.GetValue())
         
-        p_info = wx.EmptyString
+        page = wx.EmptyString
         
         for F in fields:
-            if p_info == wx.EmptyString:
-                p_info = u'{}={}'.format(F, fields[F])
+            if page == wx.EmptyString:
+                page = u'{}={}'.format(F, fields[F])
             
             else:
-                p_info = u'{}\n{}={}'.format(p_info, F, fields[F])
+                page = u'{}\n{}={}'.format(page, F, fields[F])
         
-        if p_info == wx.EmptyString:
-            return None
+        if page == wx.EmptyString:
+            page = None
         
-        return (__name__, p_info)
+        if get_module:
+            page = (__name__, page,)
+        
+        return page
     
     
     ## TODO: Doxygen

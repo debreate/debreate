@@ -270,7 +270,7 @@ class Panel(WizardPage):
     #    by braces ([, ]).
     #  \return
     #        \b \e tuple(str, str) : Filename & formatted string of changelog target & body
-    def Get(self):
+    def Get(self, get_module=False):
         cl_target = u'DEFAULT'
         
         if self.rb_target_custom.GetValue():
@@ -279,9 +279,15 @@ class Panel(WizardPage):
         cl_body = self.dsp_changes.GetValue()
         
         if TextIsEmpty(cl_body):
-            return None
+            page = None
         
-        return (__name__, u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body))
+        else:
+            page = u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body)
+        
+        if get_module:
+            page = (__name__, page,)
+        
+        return page
     
     
     ## TODO: Doxygen

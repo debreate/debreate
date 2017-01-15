@@ -360,11 +360,18 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple(str, str, str) : File/Page name,
     #          string formatted menu information, & filename to output
-    def Get(self):
+    def Get(self, get_module=False):
         if not self.chk_enable.GetValue():
-            return None
+            page = None
         
-        return(__name__, self.GetLauncherInfo(), u'MENU')
+        else:
+            page = self.GetLauncherInfo()
+        
+        if get_module:
+            # FIXME: 'MENU' needed?
+            page = (__name__, page, u'MENU')
+        
+        return page
     
     
     ## Formats the launcher information for export

@@ -137,13 +137,16 @@ class Panel(WizardPage):
     #  
     #  \return
     #        \b \e tuple(str, str) : Filename & copyright/license text
-    def Get(self):
-        license_text = self.dsp_copyright.GetValue()
+    def Get(self, get_module=False):
+        page = self.dsp_copyright.GetValue()
         
-        if TextIsEmpty(license_text):
-            return None
+        if TextIsEmpty(page):
+            page = None
         
-        return (__name__, license_text)
+        if get_module:
+            page = (__name__, page,)
+        
+        return page
     
     
     ## TODO: Doxygen
