@@ -329,7 +329,7 @@ class WizardPage(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     #  
-    #  Child class must define 'GetPageInfo' method.
+    #  Child class must define 'Get' method.
     def Export(self, out_dir, out_name=wx.EmptyString):
         if not os.path.isdir(out_dir):
             Logger.Debug(__name__, u'Directory does not exist: {}'.format(out_dir))
@@ -338,7 +338,7 @@ class WizardPage(wx.ScrolledWindow):
         if out_name == wx.EmptyString:
             out_name = page_ids[self.GetId()].upper()
         
-        page_info = self.GetPageInfo()
+        page_info = self.Get()
         
         if not page_info:
             return 0
@@ -374,8 +374,8 @@ class WizardPage(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def GetPageInfo(self, string_format=False):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method GetPageInfo').format(self.GetName()))
+    def Get(self, string_format=False):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
     ## Retrieves all fields that cannot be left blank for build

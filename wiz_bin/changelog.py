@@ -264,18 +264,13 @@ class Panel(WizardPage):
         return(0, export_summary)
     
     
-    ## TODO: Doxygen
-    def GetChangelog(self):
-        return self.dsp_changes.GetValue()
-    
-    
     ## Retrieves changelog information
     #  
     #  The output is a text file that uses sections defined
     #    by braces ([, ]).
     #  \return
     #        \b \e tuple(str, str) : Filename & formatted string of changelog target & body
-    def GetPageInfo(self):
+    def Get(self):
         cl_target = u'DEFAULT'
         
         if self.rb_target_custom.GetValue():
@@ -287,6 +282,11 @@ class Panel(WizardPage):
             return None
         
         return (__name__, u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body))
+    
+    
+    ## TODO: Doxygen
+    def GetChangelog(self):
+        return self.dsp_changes.GetValue()
     
     
     ## TODO: Doxygen

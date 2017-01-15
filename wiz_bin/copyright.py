@@ -133,6 +133,19 @@ class Panel(WizardPage):
         return (0, None)
     
     
+    ## Retrieve copyright/license text
+    #  
+    #  \return
+    #        \b \e tuple(str, str) : Filename & copyright/license text
+    def Get(self):
+        license_text = self.dsp_copyright.GetValue()
+        
+        if TextIsEmpty(license_text):
+            return None
+        
+        return (__name__, license_text)
+    
+    
     ## TODO: Doxygen
     def GetCopyright(self):
         return self.dsp_copyright.GetValue()
@@ -154,19 +167,6 @@ class Panel(WizardPage):
             return license_path
         
         return None
-    
-    
-    ## Retrieve copyright/license text
-    #  
-    #  \return
-    #        \b \e tuple(str, str) : Filename & copyright/license text
-    def GetPageInfo(self):
-        license_text = self.dsp_copyright.GetValue()
-        
-        if TextIsEmpty(license_text):
-            return None
-        
-        return (__name__, license_text)
     
     
     ## TODO: Doxygen

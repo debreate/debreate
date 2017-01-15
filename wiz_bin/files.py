@@ -277,38 +277,11 @@ class Panel(WizardPage):
         return (dbrerrno.SUCCESS, None)
     
     
-    ## TODO: Doxygen
-    def GetDestValue(self, event=None):
-        if not TextIsEmpty(self.ti_target.GetValue()):
-            if self.ti_target.GetValue()[0] == u'/':
-                self.prev_dest_value = self.ti_target.GetValue()
-        
-        if event:
-            event.Skip()
-    
-    
-    ## Retrieve DirectoryTreePanel instance
-    #  
-    #  Used in dbr.listinput.FileList for referencing size
-    def GetDirTreePanel(self):
-        return self.tree_dirs
-    
-    
-    ## Retrieve number of files in list
-    def GetFileCount(self):
-        return self.lst_files.GetItemCount()
-    
-    
-    ## Retrieves FileList instances
-    def GetListInstance(self):
-        return self.lst_files
-    
-    
     ## Retrieves information on files to be packaged
     #  
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
-    def GetPageInfo(self, string_format=False):
+    def Get(self, string_format=False):
         item_count = self.lst_files.GetItemCount()
         
         if item_count:
@@ -344,6 +317,33 @@ class Panel(WizardPage):
             return (__name__, files_data)
         
         return None
+    
+    
+    ## TODO: Doxygen
+    def GetDestValue(self, event=None):
+        if not TextIsEmpty(self.ti_target.GetValue()):
+            if self.ti_target.GetValue()[0] == u'/':
+                self.prev_dest_value = self.ti_target.GetValue()
+        
+        if event:
+            event.Skip()
+    
+    
+    ## Retrieve DirectoryTreePanel instance
+    #  
+    #  Used in dbr.listinput.FileList for referencing size
+    def GetDirTreePanel(self):
+        return self.tree_dirs
+    
+    
+    ## Retrieve number of files in list
+    def GetFileCount(self):
+        return self.lst_files.GetItemCount()
+    
+    
+    ## Retrieves FileList instances
+    def GetListInstance(self):
+        return self.lst_files
     
     
     ## Retrieves the target output directory
