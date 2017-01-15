@@ -13,6 +13,7 @@ from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
 from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -20,6 +21,7 @@ from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from globals                import ident
+from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.strings        import TextIsEmpty
@@ -101,7 +103,11 @@ class Panel(wx.ScrolledWindow):
         ti_section = ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         opts_priority = (
-            u'optional', u'standard', u'important', u'required', u'extra',
+            u'optional',
+            u'standard',
+            u'important',
+            u'required',
+            u'extra',
             )
         
         txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
@@ -412,21 +418,30 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def ImportFromFile(self, file_path):
+        Logger.Debug(__name__, GT(u'Importing file: {}'.format(file_path)))
+        
+        if not os.path.isfile(file_path):
+            ShowErrorDialog(GT(u'File does not exist: {}'.format(file_path)), linewrap=600)
+            return dbrerrno.ENOENT
+        
+        file_text = ReadFile(file_path)
+        
+        page_depends = GetPage(ident.DEPENDS)
+        
+        # Reset fields to default before opening
+        self.Reset()
+        page_depends.Reset()
+        
+        depends_data = self.Set(file_text)
+        page_depends.Set(depends_data)
+    
+    
+    ## TODO: Doxygen
     def OnBrowse(self, event=None):
         browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
         if ShowDialog(browse_dialog):
-            file_path = browse_dialog.GetPath()
-            
-            control_data = ReadFile(file_path)
-            
-            page_depends = GetPage(ident.DEPENDS)
-            
-            # Reset fields to default before opening
-            self.Reset()
-            page_depends.Reset()
-            
-            depends_data = self.Set(control_data)
-            page_depends.Set(depends_data)
+            self.ImportFromFile(browse_dialog.GetPath())
     
     
     ## Determins if project has been modified
