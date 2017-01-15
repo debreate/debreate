@@ -106,8 +106,6 @@ class ManPage(wx.NotebookPage):
     def __init__(self, parent, name=u'manual'):
         wx.NotebookPage.__init__(self, parent, name=name)
         
-        self.parent = parent
-        
         # List of sections & definitions
         self.sections = {
             u'1': GT(u'General commands'),
@@ -122,13 +120,13 @@ class ManPage(wx.NotebookPage):
         
         self.bg = wx.Panel(self)
         
-        section_title = wx.StaticText(self.bg, label=GT(u'Section'))
+        txt_title = wx.StaticText(self.bg, label=GT(u'Section'))
         
         self.sel_section = wx.Choice(self.bg, choices=tuple(self.sections))
         self.sel_section.default = u'1'
         self.sel_section.SetStringSelection(self.sel_section.default)
         
-        self.section_definition = wx.StaticText(self.bg, label=self.sections[self.sel_section.default])
+        self.label_section = wx.StaticText(self.bg, label=self.sections[self.sel_section.default])
         
         ti_man = MonospaceTextArea(self.bg)
         ti_man.EnableDropTarget()
@@ -140,9 +138,9 @@ class ManPage(wx.NotebookPage):
         # *** Layout *** #
         
         lyt_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_H1.Add(section_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_H1.Add(txt_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_H1.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_H1.Add(self.section_definition, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_H1.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_H1, 0, wx.TOP|wx.BOTTOM, 5)
@@ -155,5 +153,5 @@ class ManPage(wx.NotebookPage):
     
     ## TODO: Doxygen
     def OnSetSection(self, event=None):
-        self.section_definition.SetLabel(self.sections[self.sel_section.GetStringSelection()])
+        self.label_section.SetLabel(self.sections[self.sel_section.GetStringSelection()])
         print(u'Setting section to {}'.format(self.sel_section.GetStringSelection()))
