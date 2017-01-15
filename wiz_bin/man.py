@@ -35,7 +35,6 @@ class Panel(WizardPage):
         btn_add.SetName(u'add')
         
         self.tabs = AuiNotebook(self, style=AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_BUTTON)
-        self.tabs.SetBackgroundColour(wx.BLUE)
         
         SetPageToolTips(self)
         
