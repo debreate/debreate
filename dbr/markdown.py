@@ -2,9 +2,15 @@
 
 ## \package dbr.markdown
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
-from wx.richtext import RichTextCtrl, RE_MULTILINE
+from wx.richtext import RE_MULTILINE
+from wx.richtext import RichTextCtrl
+
+from dbr.buttons import ButtonConfirm
 
 
 ## Class to parse & display Markdown text
@@ -30,8 +36,8 @@ class MarkdownDialog(wx.Dialog):
         layout_V1.Add(self.markdown, 1, wx.ALL|wx.EXPAND, 5)
         
         if style & wx.OK:
-            self.button_ok = wx.Button(self, wx.ID_OK, label=u'OK')
-            layout_V1.Add(self.button_ok, 0, wx.ALL|wx.ALIGN_RIGHT, 5)
+            self.btn_confirm = ButtonConfirm(self)
+            layout_V1.Add(self.btn_confirm, 0, wx.ALL|wx.ALIGN_RIGHT, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(layout_V1)
