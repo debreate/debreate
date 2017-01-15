@@ -440,6 +440,10 @@ class Panel(WizardPage):
         return self.ti_package.GetValue()
     
     
+    ## TODO: Doxygen
+    #  
+    #  TODO: Rename to 'ImportFromFile'
+    #  TODO: Use 'Set'/'SetPage' method
     def ImportPageInfo(self, filename):
         Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         
@@ -664,6 +668,8 @@ class Panel(WizardPage):
     
     
     ## Opening Project/File & Setting Fields
+    #  
+    #  TODO: Rename to 'Set' or 'SetPage'
     def SetFieldDataLegacy(self, data):
         # Decode to unicode string if input is byte string
         if isinstance(data, str):
