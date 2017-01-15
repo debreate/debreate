@@ -119,6 +119,15 @@ class ButtonHelp(BitmapButton):
         self.SetToolTipString(GT(u'Help'))
 
 
+## TODO: Doxygen
+class ButtonHelp64(BitmapButton):
+    def __init__(self, parent, ID=wx.ID_HELP, name=u'btn help'):
+        BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/question64.png'.format(PATH_app)),
+                ID=ID, name=name)
+        
+        self.SetToolTipString(GT(u'Help'))
+
+
 ## Button with an arrow for importing info from other pages
 class ButtonImport(BitmapButton):
     def __init__(self, parent, ID=ident.IMPORT, name=u'btn import'):
@@ -162,15 +171,6 @@ class ButtonPreview64(BitmapButton):
                 ID=ID, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Preview')))
-
-
-## TODO: Doxygen
-class ButtonQuestion64(BitmapButton):
-    def __init__(self, parent, ID=wx.ID_HELP, name=u'btn help'):
-        BitmapButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/question64.png'.format(PATH_app)),
-                ID=ID, name=name)
-        
-        self.SetToolTip(wx.ToolTip(GT(u'Help')))
 
 
 ## Button for refreshing displayed controls
