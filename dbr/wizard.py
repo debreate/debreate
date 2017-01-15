@@ -366,7 +366,7 @@ class WizardPage(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
-    def Get(self, string_format=False):
+    def Get(self, get_module=False):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     

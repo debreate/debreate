@@ -51,8 +51,14 @@ class Panel(WizardPage, wx.Notebook):
     ## Retrieves manpages info for text output
     #  
     #  TODO: Nothing here yet
-    def Get(self):
-        return wx.EmptyString
+    def Get(self, get_module=False):
+        # TODO:
+        page = None
+        
+        if get_module:
+            page = (__name__, page,)
+        
+        return page
     
     
     ## TODO: Doxygen
