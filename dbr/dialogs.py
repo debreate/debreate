@@ -537,16 +537,18 @@ def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwr
 #    is used. The dialog that will be shown is determined
 #    from 'GetFileSaveDialog'.
 #    FIXME: Perhaps should be moved to dbr.custom
-#  \param main_window
-#    Debreate's main window class
 #  \param dialog
 #    The dialog window to be shown
+#  \param center
+#    Positioning relative to parent window
 #  \return
 #    'True' if the dialog's return value is 'wx..ID_OK', 'False'
 #      otherwise
 #  
 #  \b Alias: \e dbr.ShowDialog
-def ShowDialog(dialog):
+def ShowDialog(dialog, center=wx.BOTH):
+    dialog.CenterOnParent(center)
+    
     return dialog.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES, wx.OPEN, wx.ID_OPEN,)
 
 
