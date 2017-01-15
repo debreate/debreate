@@ -96,6 +96,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             wx.GetApp().SetTopWindow(self)
         
+        testing = u'alpha' in GetTestList() or DebugEnabled()
+        
         if DebugEnabled():
             self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
         
@@ -134,7 +136,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_file.AppendSeparator()
         self.menu_file.AppendItem(mitm_quickbuild)
         
-        if u'alpha' in GetTestList():
+        if testing:
             mitm_alien = wx.MenuItem(self.menu_file, ident.ALIEN, GT(u'Convert packages'))
             self.menu_file.AppendItem(mitm_alien)
         
@@ -319,7 +321,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.page_files = PageFiles(self.wizard)
         
         # TODO: finish manpage section
-        if DebugEnabled():
+        if testing:
             self.page_man = PageMan(self.wizard)
         
         self.page_scripts = PageScripts(self.wizard)
@@ -333,7 +335,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.page_clog, self.page_cpright, self.page_launchers, self.page_build
             ]
         
-        if DebugEnabled():
+        if testing:
             bin_pages.insert(4, self.page_man)
         
         self.wizard.SetPages(bin_pages)
