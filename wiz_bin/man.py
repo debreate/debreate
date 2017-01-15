@@ -151,5 +151,15 @@ class ManPage(wx.Panel):
     
     ## TODO: Doxygen
     def OnSetSection(self, event=None):
-        self.label_section.SetLabel(self.sections[self.sel_section.GetStringSelection()])
-        print(u'Setting section to {}'.format(self.sel_section.GetStringSelection()))
+        self.SetSectionLabel(self.sel_section.GetStringSelection())
+    
+    
+    ## Updates the label for the current section
+    def SetSectionLabel(self, section):
+        if section in self.sections:
+            Logger.Debug(__name__, u'Setting section to {}'.format(section))
+            
+            self.label_section.SetLabel(self.sections[section])
+            return True
+        
+        return False
