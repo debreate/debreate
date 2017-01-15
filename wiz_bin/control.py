@@ -459,8 +459,8 @@ class Panel(WizardPage):
         self.ResetPage()
         page_depends.ResetPage()
         
-        depends_data = self.SetFieldDataLegacy(file_text)
-        page_depends.SetFieldDataLegacy(depends_data)
+        depends_data = self.Set(file_text)
+        page_depends.Set(depends_data)
     
     
     ## Tells the build script whether page should be built
@@ -566,9 +566,7 @@ class Panel(WizardPage):
     
     
     ## Opening Project/File & Setting Fields
-    #  
-    #  TODO: Rename to 'Set' or 'SetPage'
-    def SetFieldDataLegacy(self, data):
+    def Set(self, data):
         # Decode to unicode string if input is byte string
         if isinstance(data, str):
             data = data.decode(u'utf-8')

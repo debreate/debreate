@@ -426,7 +426,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
+    def Set(self, data):
         preinst = data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0]
         postinst = data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0]
         prerm = data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0]
