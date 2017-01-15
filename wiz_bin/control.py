@@ -443,113 +443,23 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     #  
     #  TODO: Use 'Set'/'SetPage' method
-    def ImportFromFile(self, filename):
-        Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
+    def ImportFromFile(self, file_path):
+        Logger.Debug(__name__, GT(u'Importing file: {}'.format(file_path)))
         
-        if not os.path.isfile(filename):
+        # FIXME: Show error dialog
+        if not os.path.isfile(file_path):
             return dbrerrno.ENOENT
         
-        # Dependencies
-        depends_page = None
-        for child in self.GetParent().GetChildren():
-            if child.GetId() == ident.DEPENDS:
-                depends_page = child
+        file_text = ReadFile(file_path)
         
-        def set_choice(choice_object, value, label):
-            choices = choice_object.GetStrings()
-            for L in choices:
-                c_index = choices.index(L)
-                if value == L:
-                    choice_object.SetSelection(c_index)
-                    return
-            
-            Logger.Warning(__name__, GT(u'{} option not availabled: {}'.format(label, value)))
+        page_depends = GetPage(ident.DEPENDS)
         
-        import_functions = {
-            u'Package': self.ti_package.SetValue,
-            u'Version': self.ti_version.SetValue,
-            u'Maintainer': self.ti_maintainer.SetValue,
-            u'Email': self.ti_email.SetValue,
-            u'Architecture': self.sel_arch,
-            u'Section': self.ti_section.SetValue,
-            u'Priority': self.sel_priority,
-            u'Description': self.ti_synopsis.SetValue,
-            u'Source': self.ti_source.SetValue,
-            u'Homepage': self.ti_homepage.SetValue,
-            u'Essential': self.chk_essential,
-        }
+        # Reset fields to default before opening
+        self.ResetPage()
+        page_depends.ResetPage()
         
-        dependencies = (
-            u'Depends',
-            u'Pre-Depends',
-            u'Recommends',
-            u'Suggests',
-            u'Conflicts',
-            u'Replaces',
-            u'Breaks',
-        )
-        
-        control_data = ReadFile(filename, split=True)
-        
-        control_defs = {}
-        remove_indexes = []
-        for LI in control_data:
-            line_index = control_data.index(LI)
-            if u': ' in LI:
-                key = LI.split(u': ')
-                control_defs[key[0]] = key[1]
-                
-                remove_indexes.append(line_index)
-            
-            elif LI == wx.EmptyString:
-                remove_indexes.append(line_index)
-            
-            else:
-                # Remove leading whitespace from lines
-                c_index = 0
-                for C in LI:
-                    if C != u' ':
-                        break
-                    
-                    c_index += 1
-                
-                control_data[line_index] = LI[c_index:]
-        
-        remove_indexes.reverse()
-        
-        for I in remove_indexes:
-            control_data.remove(control_data[I])
-        
-        for LI in control_data:
-            if LI == u'.':
-                control_data[control_data.index(LI)] = u''
-        
-        desc = u'\n'.join(control_data)
-        
-        # Extract email from Maintainer field
-        if u'Maintainer' in control_defs:
-            if u' <' in control_defs[u'Maintainer'] and u'>' in control_defs[u'Maintainer']:
-                control_defs[u'Maintainer'] = control_defs[u'Maintainer'].split(u' <')
-                control_defs[u'Email'] = control_defs[u'Maintainer'][1].split(u'>')[0]
-                control_defs[u'Maintainer'] = control_defs[u'Maintainer'][0]
-        
-        for label in control_defs:
-            if label in dependencies:
-                if depends_page != None:
-                    depends_page.ImportFromFile(label, control_defs[label])
-                
-                else:
-                    Logger.Warning(__name__, GT(u'Could not set {}: {}'.format(label, control_defs[label])))
-            
-            elif label in import_functions:
-                if isinstance(import_functions[label], wx.Choice):
-                    set_choice(import_functions[label], control_defs[label], label)
-                
-                else:
-                    import_functions[label](control_defs[label])
-        
-        if desc != wx.EmptyString:
-            self.ti_description.SetValue(desc)
+        depends_data = self.SetFieldDataLegacy(file_text)
+        page_depends.SetFieldDataLegacy(depends_data)
     
     
     ## Tells the build script whether page should be built
@@ -577,19 +487,7 @@ class Panel(WizardPage):
     def OnBrowse(self, event=None):
         browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
         if ShowDialog(browse_dialog):
-            file_path = browse_dialog.GetPath()
-            
-            control_data = ReadFile(file_path)
-            
-            page_depends = GetPage(ident.DEPENDS)
-            
-            # Reset fields to default before opening
-            self.ResetPage()
-            page_depends.ResetPage()
-            
-            # FIXME: Use new methods
-            depends_data = self.SetFieldDataLegacy(control_data)
-            page_depends.SetFieldDataLegacy(depends_data)
+            self.ImportFromFile(browse_dialog.GetPath())
     
     
     ## Determins if project has been modified
