@@ -43,6 +43,7 @@ from globals.strings        import TextIsEmpty
 from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 
@@ -594,9 +595,9 @@ class Panel(WizardPage):
         save_dialog = GetFileSaveDialog(GetTopWindow(), GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
-        package = pg_control.ti_package.GetValue()
-        version = pg_control.ti_version.GetValue()
-        arch = pg_control.sel_arch.GetStringSelection()
+        package = GetField(pg_control, ident.F_PACKAGE)
+        version = GetField(pg_control, ident.F_VERSION)
+        arch = GetField(pg_control, ident.F_ARCH)
         save_dialog.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
         
         if ShowDialog(save_dialog):
