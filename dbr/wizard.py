@@ -20,6 +20,7 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty
+from globals.tests          import GetTestList
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
@@ -31,6 +32,8 @@ class Wizard(wx.Panel):
     def __init__(self, parent, page_list=None):
         wx.Panel.__init__(self, parent, wx.ID_ANY, page_list)
         
+        testing = u'alpha' in GetTestList()
+        
         # List of pages available in the wizard
         self.pages = []
         
@@ -40,9 +43,10 @@ class Wizard(wx.Panel):
         self.ID_FIRST = None
         self.ID_LAST = None
         
-        # Help button
-        btn_help = ButtonHelp(self)
-        btn_help.SetToolTipString(GT(u'Page help'))
+        if testing:
+            # Help button
+            btn_help = ButtonHelp(self)
+            btn_help.SetToolTipString(GT(u'Page help'))
         
         # A Header for the wizard
         pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
@@ -68,12 +72,14 @@ class Wizard(wx.Panel):
         self.evt = self.ChangePageEvent(0)
         
         # These widgets are put into a list so that they are not automatically hidden
-        self.permanent_children = (
-            btn_help,
+        self.permanent_children = [
             pnl_title,
             self.btn_prev,
             self.btn_next,
-            )
+            ]
+        
+        if testing:
+            self.permanent_children.insert(0, btn_help)
         
         # *** Event Handling *** #
         
@@ -91,7 +97,10 @@ class Wizard(wx.Panel):
         
         # Button sizer includes header
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(btn_help, 0, wx.LEFT, 5)
+        
+        if testing:
+            lyt_buttons.Add(btn_help, 0, wx.LEFT, 5)
+        
         lyt_buttons.AddSpacer(5)
         lyt_buttons.Add(pnl_title, 1, wx.EXPAND|wx.RIGHT, 5)
         lyt_buttons.Add(self.btn_prev)
