@@ -438,7 +438,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def GetPackageName(self):
-        return self.ti_package.GetValue()
+        return GetField(self, ident.F_PACKAGE).GetValue()
     
     
     ## TODO: Doxygen
