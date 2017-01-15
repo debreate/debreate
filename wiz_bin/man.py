@@ -102,9 +102,9 @@ class Panel(WizardPage, wx.Notebook):
 
 
 ## TODO: Doxygen
-class ManPage(wx.NotebookPage):
+class ManPage(wx.Panel):
     def __init__(self, parent, name=u'manual'):
-        wx.NotebookPage.__init__(self, parent, name=name)
+        wx.Panel.__init__(self, parent, name=name)
         
         # List of sections & definitions
         self.sections = {
@@ -118,17 +118,15 @@ class ManPage(wx.NotebookPage):
             u'8': GT(u'System administration commands and daemons'),
         }
         
-        self.bg = wx.Panel(self)
+        txt_title = wx.StaticText(self, label=GT(u'Section'))
         
-        txt_title = wx.StaticText(self.bg, label=GT(u'Section'))
-        
-        self.sel_section = wx.Choice(self.bg, choices=tuple(self.sections))
+        self.sel_section = wx.Choice(self, choices=tuple(self.sections))
         self.sel_section.default = u'1'
         self.sel_section.SetStringSelection(self.sel_section.default)
         
-        self.label_section = wx.StaticText(self.bg, label=self.sections[self.sel_section.default])
+        self.label_section = wx.StaticText(self, label=self.sections[self.sel_section.default])
         
-        ti_man = MonospaceTextArea(self.bg)
+        ti_man = MonospaceTextArea(self)
         ti_man.EnableDropTarget()
         
         # *** Event Handling *** #
@@ -146,9 +144,9 @@ class ManPage(wx.NotebookPage):
         lyt_main.Add(lyt_H1, 0, wx.TOP|wx.BOTTOM, 5)
         lyt_main.Add(ti_man, 1, wx.ALL|wx.EXPAND, 5)
         
-        self.bg.SetAutoLayout(True)
-        self.bg.SetSizer(lyt_main)
-        self.bg.Layout()
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
     
     
     ## TODO: Doxygen
