@@ -413,13 +413,13 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        dia = wx.FileDialog(self, GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
-        if dia.ShowModal() == wx.ID_OK:
-            file_path = dia.GetPath()
+        browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+        if ShowDialog(browse_dialog):
+            file_path = browse_dialog.GetPath()
             
             control_data = ReadFile(file_path)
             
-            page_depends = wx.GetApp().GetTopWindow().GetWizard().GetPage(ident.DEPENDS)
+            page_depends = GetPage(ident.DEPENDS)
             
             # Reset fields to default before opening
             self.ResetPage()
