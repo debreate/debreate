@@ -566,7 +566,7 @@ class Panel(WizardPage):
             if data[0] == u'[Desktop Entry]':
                 data = data[1:]
             
-            self.ResetPage()
+            self.Reset()
             # First line needs to be changed to '1'
             data.insert(0, u'1')
             self.Set(u'\n'.join(data))
@@ -663,7 +663,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ResetPage(self):
+    def Reset(self):
         self.chk_filename.SetValue(self.chk_filename.default)
         self.ti_filename.Clear()
         

@@ -795,14 +795,14 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ResetPage(self):
+    def Reset(self):
         for O in self.build_options:
             O.SetValue(O.default)
     
     
     ## TODO: Doxygen
     def Set(self, data):
-        self.ResetPage()
+        self.Reset()
         build_data = data.split(u'\n')
         
         if GetExecutable(u'md5sum'):

@@ -406,7 +406,7 @@ class Panel(WizardPage):
     
     
     ## Resets all fields on page to default values
-    def ResetPage(self):
+    def Reset(self):
         for S, O in self.script_objects:
             S.Reset()
         
