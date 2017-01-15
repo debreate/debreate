@@ -4,18 +4,26 @@
 
 
 import wx
+from wx.aui import AUI_NB_CLOSE_BUTTON
+from wx.aui import AUI_NB_TAB_MOVE
+from wx.aui import AUI_NB_TAB_SPLIT
+from wx.aui import AuiNotebook
+from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 
 from dbr.buttons            import ButtonAdd
+from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
+from dbr.log                import Logger
 from dbr.textinput          import MonospaceTextArea
 from dbr.wizard             import WizardPage
 from globals                import ident
+from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 
 
 ## TODO: Doxygen
-class Panel(WizardPage, wx.Notebook):
+class Panel(WizardPage):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
         WizardPage.__init__(self, parent, ident.MAN)
@@ -26,13 +34,16 @@ class Panel(WizardPage, wx.Notebook):
         btn_add = ButtonAdd(self)
         btn_add.SetName(u'add')
         
-        self.tabs = wx.Notebook(self)
+        self.tabs = AuiNotebook(self, style=AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_BUTTON)
+        self.tabs.SetBackgroundColour(wx.BLUE)
         
         SetPageToolTips(self)
         
         # *** Event Handling *** #
         
         btn_add.Bind(wx.EVT_BUTTON, self.OnAddManpage)
+        
+        self.tabs.Bind(EVT_AUINOTEBOOK_PAGE_CLOSE, self.OnCloseTab)
         
         # *** Layout *** #
         
@@ -99,6 +110,16 @@ class Panel(WizardPage, wx.Notebook):
     ## TODO: Doxygen
     def Reset(self):
         pass
+    
+    
+    ## Show a confirmation dialog when closing a tab
+    def OnCloseTab(self, event=None):
+        if not TextIsEmpty(self.tabs.CurrentPage.GetValue()):
+            if not ConfirmationDialog(GetTopWindow(), GT(u'Close Tab'),
+                    GT(u'Are you sure you want to close this tab?')).Confirmed():
+                if event:
+                    event.Veto()
+            
 
 
 ## TODO: Doxygen
