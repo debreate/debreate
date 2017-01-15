@@ -107,7 +107,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetIcon(Icon(LOGO))
         
         # ----- Status Bar
-        stat_bar = StatusBar(self)
+        StatusBar(self)
         
         # *** File Menu *** #
         self.menu_file = wx.Menu()
