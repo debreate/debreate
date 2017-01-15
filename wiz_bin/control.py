@@ -12,6 +12,7 @@ from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
 from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
+from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.panel              import BorderedPanel
@@ -26,6 +27,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
+from globals.wizardhelper   import GetTopWindow
 
 
 ## This panel displays the field input of the control file
@@ -153,6 +155,16 @@ class Panel(wx.ScrolledWindow):
         
         SetPageToolTips(self)
         
+        # *** Event Handling *** #
+        
+        btn_open.Bind(wx.EVT_BUTTON, self.OnBrowse)
+        btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
+        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
+        
+        for widget in self.grp_keypress:
+            wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
+            wx.EVT_KEY_UP(widget, self.OnKeyUp)
+        
         # *** Layout *** #
         
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
@@ -222,8 +234,8 @@ class Panel(wx.ScrolledWindow):
             (txt_homepage, 0, RIGHT_CENTER, 5),
             (ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
+            (self.chk_essential, 0, wx.BOTTOM, 5),
             ))
-        lyt_option.Add(self.chk_essential, 0, wx.BOTTOM, 5),
         
         pnl_option.SetSizer(lyt_option)
         pnl_option.SetAutoLayout(True)
@@ -252,16 +264,6 @@ class Panel(wx.ScrolledWindow):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Event Handlers *** #
-        
-        btn_open.Bind(wx.EVT_BUTTON, self.OnBrowse)
-        btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
-        
-        for widget in self.grp_keypress:
-            wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
-            wx.EVT_KEY_UP(widget, self.OnKeyUp)
     
     
     ## TODO: Doxygen
@@ -438,14 +440,12 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnKeyUp(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
-        
         modified = False
         for widget in self.grp_keypress:
             if widget.GetValue() != self.grp_keypress[widget]:
                 modified = True
         
-        main_window.SetSavedStatus(modified)
+        GetTopWindow().SetSavedStatus(modified)
         
         if event:
             event.Skip()
@@ -467,17 +467,15 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnSave(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
-        
         # Get data to write to control file
         control = self.GetCtrlInfo()
         
-        dia = wx.FileDialog(main_window, u'Save Control Information', os.getcwd(),
-            style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
-        dia.SetFilename(u'control')
+        save_dialog = wx.FileDialog(GetTopWindow(), u'Save Control Information', os.getcwd(),
+                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        save_dialog.SetFilename(u'control')
         
-        if dia.ShowModal() == wx.ID_OK:
-            WriteFile(dia.GetPath(), control)
+        if ShowDialog(save_dialog):
+            WriteFile(save_dialog.GetPath(), control)
     
     
     ## TODO: Doxygen
@@ -489,7 +487,7 @@ class Panel(wx.ScrolledWindow):
         self.coauth.SetColumnWidth(0, lc_width/2)
     
     
-    ## TODO: Doxygen
+    ## Resets all fields on page to default values
     def ResetPage(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options
@@ -511,7 +509,7 @@ class Panel(wx.ScrolledWindow):
         if isinstance(data, str):
             data = data.decode(u'utf-8')
         
-        # Strip leading & traling spaces, tabs, & newlines
+        # Strip leading & trailing spaces, tabs, & newlines
         data = data.strip(u' \t\n')
         control_data = data.split(u'\n')
         
