@@ -394,7 +394,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetChangelogLegacy(self, data):
+    def Set(self, data):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         
