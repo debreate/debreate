@@ -801,7 +801,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetFieldDataLegacy(self, data):
+    def Set(self, data):
         self.ResetPage()
         build_data = data.split(u'\n')
         
