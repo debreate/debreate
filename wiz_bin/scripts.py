@@ -275,7 +275,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
+    def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
         
         script_name = filename.split(u'-')[-1]

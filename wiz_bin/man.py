@@ -56,7 +56,7 @@ class Panel(WizardPage, wx.Notebook):
     
     
     ## TODO: Doxygen
-    def ImportPageInfo(self, filename):
+    def ImportFromFile(self, filename):
         pass
     
     
