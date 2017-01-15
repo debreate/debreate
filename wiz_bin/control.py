@@ -56,7 +56,7 @@ class Panel(WizardPage):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        self.ti_package = CharCtrl(pnl_require, ident.F_NAME, name=txt_package.Name)
+        self.ti_package = CharCtrl(pnl_require, ident.F_PACKAGE, name=txt_package.Name)
         self.ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
@@ -74,7 +74,7 @@ class Panel(WizardPage):
         self.ti_email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
         self.ti_email.req = True
         
-        self.opts_arch = (
+        opts_arch = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
             u'armhf', u'avr32', u'hppa', u'i386', u'ia64', u'lpia', u'm32r',
             u'm68k', u'mips', u'mipsel', u'powerpc', u'powerpcspe', u'ppc64',
@@ -82,8 +82,8 @@ class Panel(WizardPage):
             u'sparc64',
             )
         
-        txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'arch')
-        self.sel_arch = wx.Choice(pnl_require, choices=self.opts_arch, name=txt_arch.Name)
+        txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
+        self.sel_arch = wx.Choice(pnl_require, ident.F_ARCH, choices=opts_arch, name=txt_arch.Name)
         self.sel_arch.default = 0
         self.sel_arch.SetSelection(self.sel_arch.default)
         
@@ -106,12 +106,16 @@ class Panel(WizardPage):
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
         self.ti_section = ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
-        self.opts_priority = (
-            u'optional', u'standard', u'important', u'required', u'extra',
+        opts_priority = (
+            u'optional',
+            u'standard',
+            u'important',
+            u'required',
+            u'extra',
             )
         
         txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
-        self.sel_priority = wx.Choice(pnl_recommend, choices=self.opts_priority, name=txt_priority.Name)
+        self.sel_priority = wx.Choice(pnl_recommend, choices=opts_priority, name=txt_priority.Name)
         self.sel_priority.default = 0
         self.sel_priority.SetSelection(self.sel_priority.default)
         
