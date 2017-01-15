@@ -131,6 +131,7 @@ class ManPage(wx.NotebookPage):
         self.section_definition = wx.StaticText(self.bg, label=self.sections[self.sel_section.default])
         
         ti_man = TextAreaPanel(self.bg)
+        ti_man.EnableDropTarget()
         
         # *** Event Handling *** #
         
