@@ -126,8 +126,8 @@ class ManPage(wx.Panel):
         
         self.label_section = wx.StaticText(self, label=self.sections[self.sel_section.default])
         
-        ti_man = MonospaceTextArea(self)
-        ti_man.EnableDropTarget()
+        self.ti_man = MonospaceTextArea(self)
+        self.ti_man.EnableDropTarget()
         
         # *** Event Handling *** #
         
@@ -142,7 +142,7 @@ class ManPage(wx.Panel):
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_H1, 0, wx.TOP|wx.BOTTOM, 5)
-        lyt_main.Add(ti_man, 1, wx.ALL|wx.EXPAND, 5)
+        lyt_main.Add(self.ti_man, 1, wx.ALL|wx.EXPAND, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
