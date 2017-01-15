@@ -14,6 +14,7 @@ from dbr.buttons            import ButtonQuestion64
 from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
+from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -138,22 +139,27 @@ class Panel(wx.ScrolledWindow):
         # Organizing radio buttons
         lyt_sel_script = wx.BoxSizer(wx.HORIZONTAL)
         lyt_sel_script.AddMany((
-            (chk_preinst),(chk_postinst),
-            (chk_prerm),(chk_postrm)
+            (chk_preinst),
+            (chk_postinst),
+            (chk_prerm),
+            (chk_postrm),
             ))
+        
         lyt_sel_script.AddStretchSpacer(1)
-        lyt_sel_script.Add(rb_preinst, 0)
-        lyt_sel_script.Add(rb_postinst, 0)
-        lyt_sel_script.Add(rb_prerm, 0)
-        lyt_sel_script.Add(rb_postrm, 0)
+        
+        lyt_sel_script.AddMany((
+            (rb_preinst),
+            (rb_postinst),
+            (rb_prerm),
+            (rb_postrm),
+            ))
         
         # Sizer for left half of scripts panel
         lyt_left = wx.BoxSizer(wx.VERTICAL)
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_left.Add(ti_preinst, 1, wx.EXPAND)
-        lyt_left.Add(ti_postinst, 1, wx.EXPAND)
-        lyt_left.Add(ti_prerm, 1,wx.EXPAND)
-        lyt_left.Add(ti_postrm, 1, wx.EXPAND)
+        
+        for CHK, RB, TI in self.script_objects:
+            lyt_left.Add(TI, 1, wx.EXPAND)
         
         # Auto-Link/Right side
         lyt_ti_autolink = wx.BoxSizer(wx.HORIZONTAL)
@@ -175,6 +181,7 @@ class Panel(wx.ScrolledWindow):
         pnl_autolink.SetAutoLayout(True)
         pnl_autolink.Layout()
         
+        # Sizer for right half of scripts panel
         lyt_right = wx.BoxSizer(wx.VERTICAL)
         lyt_right.AddSpacer(30)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
@@ -330,12 +337,7 @@ class Panel(wx.ScrolledWindow):
         if total > 0:
             non_empty_scripts = []
             
-            checked_scripts = (
-                self.script_objects[1],
-                self.script_objects[2],
-                )
-            
-            for CHK, RB, TI in checked_scripts:
+            for CHK, RB, TI in self.script_objects[1], self.script_objects[2]:
                 if not TextIsEmpty(TI.GetValue()):
                     non_empty_scripts.append(RB.GetLabel())
             
@@ -344,13 +346,13 @@ class Panel(wx.ScrolledWindow):
                 warn_msg = GT(u'The following scripts will be overwritten if you continue: {}')
                 warn_msg = u'{}\n\n{}'.format(warn_msg.format(u', '.join(non_empty_scripts)), GT(u'Continue?'))
                 
-                warn_dialog = ConfirmationDialog(main_window, text=warn_msg)
+                overwrite = ConfirmationDialog(main_window, text=warn_msg)
                 
-                if warn_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
+                if not overwrite.Confirmed():
                     return
                 
-                warn_dialog.Destroy()
-                del warn_msg, warn_dialog
+                overwrite.Destroy()
+                del warn_msg, overwrite
             
             # Get destination for link from Auto-Link input textctrl
             link_path = self.ti_autolink.GetValue()
@@ -360,13 +362,13 @@ class Panel(wx.ScrolledWindow):
                 warn_msg = GT(u'Path "{}" does not exist.')
                 warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
                 
-                warn_dialog = ConfirmationDialog(main_window, text=warn_msg.format(link_path))
+                overwrite = ConfirmationDialog(main_window, text=warn_msg.format(link_path))
                 
-                if warn_dialog.ShowModal() not in (wx.ID_OK, wx.OK):
+                if not overwrite.Confirmed():
                     return
                 
-                warn_dialog.Destroy()
-                del warn_msg, warn_dialog
+                overwrite.Destroy()
+                del warn_msg, overwrite
             
             self.script_objects[1][0].SetValue(True)
             self.script_objects[2][0].SetValue(True)
@@ -378,9 +380,9 @@ class Panel(wx.ScrolledWindow):
             postinst_list = []
             prerm_list = []
             
-            count = 0
-            while count < total:
-                filename = os.path.split(self.lst_executables[count])[1]
+            e_index = 0
+            while e_index < total:
+                filename = os.path.basename(self.lst_executables[e_index])
                 if u'.' in filename:
                     linkname = u'.'.join(filename.split(u'.')[:-1])
                     link = u'{}/{}'.format(link_path, linkname)
@@ -388,15 +390,15 @@ class Panel(wx.ScrolledWindow):
                 else:
                     link = u'{}/{}'.format(link_path, filename)
                 
-                postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[count], link))
+                postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[e_index], link))
                 prerm_list.append(u'rm -f "{}"'.format(link))
-                count += 1
+                e_index += 1
             
             postinst = u'\n\n'.join(postinst_list)
             prerm = u'\n\n'.join(prerm_list)
             
-            self.script_objects[1][2].SetValue(u'#! /bin/bash -e\n\n{}'.format(postinst))
-            self.script_objects[2][2].SetValue(u'#! /bin/bash -e\n\n{}'.format(prerm))
+            self.script_objects[1][2].SetValue(u'#!/bin/bash -e\n\n{}'.format(postinst))
+            self.script_objects[2][2].SetValue(u'#!/bin/bash -e\n\n{}'.format(prerm))
             
             DetailedMessageDialog(main_window, GT(u'Success'),
                     text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
@@ -410,9 +412,7 @@ class Panel(wx.ScrolledWindow):
         
         al_help.SetText(u'{}\n\n{}'.format(description, instructions))
         
-        al_help.ShowModal()
-        al_help.CenterOnParent(wx.BOTH)
-        al_help.Close()
+        ShowDialog(al_help)
     
     
     ## TODO: Doxygen
@@ -423,7 +423,7 @@ class Panel(wx.ScrolledWindow):
             TI.Enable(CHK.GetValue())
     
     
-    ## TODO: Doxygen
+    ## Resets all fields on page to default values
     def ResetPage(self):
         for CHK, RB, TI in self.script_objects:
             CHK.SetValue(False)
@@ -434,8 +434,7 @@ class Panel(wx.ScrolledWindow):
         self.script_objects[0][1].SetValue(True)
         self.ScriptSelect(None)
         
-        self.ti_autolink.SetValue(self.ti_autolink.default)
-        self.ti_autolink.SetBackgroundColour((255, 255, 255, 255))
+        self.ti_autolink.Reset()
         self.executables.DeleteAllItems()
     
     
