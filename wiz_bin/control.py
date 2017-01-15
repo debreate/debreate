@@ -301,6 +301,19 @@ class Panel(WizardPage):
         return GT(u'Control file created: {}').format(absolute_filename)
     
     
+    ## Retrieves information for control file export
+    #  
+    #  \param string_format
+    #        \b \e bool : If True, only string-formatted info is returned
+    #  \return
+    #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
+    def Get(self, string_format=False):
+        if string_format:
+            return self.GetCtrlInfo()
+        
+        return (__name__, self.GetCtrlInfo())
+    
+    
     ## TODO: Doxygen
     ## FIXME: Deprecated???
     def GetCtrlInfo(self):
@@ -469,19 +482,6 @@ class Panel(WizardPage):
     def IsExportable(self):
         # Build page must always be built
         return True
-    
-    
-    ## Retrieves information for control file export
-    #  
-    #  \param string_format
-    #        \b \e bool : If True, only string-formatted info is returned
-    #  \return
-    #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
-    def Get(self, string_format=False):
-        if string_format:
-            return self.GetCtrlInfo()
-        
-        return (__name__, self.GetCtrlInfo())
     
     
     ## TODO: Doxygen
