@@ -366,16 +366,16 @@ class WizardPage(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def Get(self, string_format=False):
+        Logger.Warning(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
+    
+    
+    ## TODO: Doxygen
     def GetLabel(self):
         if self.label == None:
             return self.GetName()
         
         return self.label
-    
-    
-    ## TODO: Doxygen
-    def Get(self, string_format=False):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
     ## Retrieves all fields that cannot be left blank for build
