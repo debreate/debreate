@@ -44,36 +44,36 @@ class Panel(WizardPage):
         
         self.SetScrollbars(0, 20, 0, 0)
         
-        self.pnl_bg = wx.Panel(self)
+        pnl_bg = wx.Panel(self)
         
         # Buttons to open, save, & preview control file
-        btn_open = ButtonBrowse64(self.pnl_bg)
-        btn_save = ButtonSave64(self.pnl_bg)
-        btn_preview = ButtonPreview64(self.pnl_bg)
+        btn_open = ButtonBrowse64(pnl_bg)
+        btn_save = ButtonSave64(pnl_bg)
+        btn_preview = ButtonPreview64(pnl_bg)
         
         # *** Required fields *** #
         
-        pnl_require = BorderedPanel(self.pnl_bg)
+        pnl_require = BorderedPanel(pnl_bg)
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        self.ti_package = CharCtrl(pnl_require, ident.F_PACKAGE, name=txt_package.Name)
-        self.ti_package.req = True
+        ti_package = CharCtrl(pnl_require, ident.F_PACKAGE, name=txt_package.Name)
+        ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        self.ti_version = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
-        self.ti_version.req = True
+        ti_version = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
+        ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        self.ti_maintainer = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
-        self.ti_maintainer.req = True
+        ti_maintainer = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
+        ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        self.ti_email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
-        self.ti_email.req = True
+        ti_email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
+        ti_email.req = True
         
         opts_arch = (
             u'all', u'alpha', u'amd64', u'arm', u'arm64', u'armeb', u'armel',
@@ -84,13 +84,13 @@ class Panel(WizardPage):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
-        self.sel_arch = wx.Choice(pnl_require, ident.F_ARCH, choices=opts_arch, name=txt_arch.Name)
-        self.sel_arch.default = 0
-        self.sel_arch.SetSelection(self.sel_arch.default)
+        sel_arch = wx.Choice(pnl_require, ident.F_ARCH, choices=opts_arch, name=txt_arch.Name)
+        sel_arch.default = 0
+        sel_arch.SetSelection(sel_arch.default)
         
         # *** Recommended fields *** #
         
-        pnl_recommend = BorderedPanel(self.pnl_bg)
+        pnl_recommend = BorderedPanel(pnl_bg)
         
         opts_section = (
             u'admin', u'cli-mono', u'comm', u'database', u'devel', u'debug',
@@ -105,7 +105,7 @@ class Panel(WizardPage):
             )
         
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
-        self.ti_section = ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
+        ti_section = ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         opts_priority = (
             u'optional',
@@ -116,25 +116,25 @@ class Panel(WizardPage):
             )
         
         txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
-        self.sel_priority = wx.Choice(pnl_recommend, choices=opts_priority, name=txt_priority.Name)
-        self.sel_priority.default = 0
-        self.sel_priority.SetSelection(self.sel_priority.default)
+        sel_priority = wx.Choice(pnl_recommend, choices=opts_priority, name=txt_priority.Name)
+        sel_priority.default = 0
+        sel_priority.SetSelection(sel_priority.default)
         
         txt_synopsis = wx.StaticText(pnl_recommend, label=GT(u'Short Description'), name=u'synopsis')
-        self.ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
+        ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
         self.ti_description = TextAreaPanel(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         
-        pnl_option = BorderedPanel(self.pnl_bg)
+        pnl_option = BorderedPanel(pnl_bg)
         
         txt_source = wx.StaticText(pnl_option, label=GT(u'Source'), name=u'source')
-        self.ti_source = wx.TextCtrl(pnl_option, name=txt_source.Name)
+        ti_source = wx.TextCtrl(pnl_option, name=txt_source.Name)
         
         txt_homepage = wx.StaticText(pnl_option, label=GT(u'Homepage'), name=u'homepage')
-        self.ti_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
+        ti_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
         
         txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
         self.chk_essential = wx.CheckBox(pnl_option, name=u'essential')
@@ -143,25 +143,25 @@ class Panel(WizardPage):
         # List all widgets to check if fields have changed after keypress
         # This is for determining if the project is saved
         self.grp_keypress = {
-            self.ti_package: wx.EmptyString,
-            self.ti_version: wx.EmptyString,
+            ti_package: wx.EmptyString,
+            ti_version: wx.EmptyString,
             }
         
         self.grp_input = (
-            self.ti_package,
-            self.ti_version,
-            self.ti_maintainer,  # Maintainer must be listed before email
-            self.ti_email,
-            self.ti_section,
-            self.ti_source,
-            self.ti_homepage,
-            self.ti_synopsis,
+            ti_package,
+            ti_version,
+            ti_maintainer,  # Maintainer must be listed before email
+            ti_email,
+            ti_section,
+            ti_source,
+            ti_homepage,
+            ti_synopsis,
             self.ti_description,
             )
         
         self.grp_select = (
-            self.sel_arch,
-            self.sel_priority,
+            sel_arch,
+            sel_priority,
             )
         
         SetPageToolTips(self)
@@ -194,15 +194,15 @@ class Panel(WizardPage):
         
         lyt_require.AddMany((
             (txt_package, 0, RIGHT_CENTER|wx.LEFT|wx.TOP, 5),
-            (self.ti_package, 0, wx.EXPAND|wx.TOP, 5),
+            (ti_package, 0, wx.EXPAND|wx.TOP, 5),
             (txt_version, 0, RIGHT_CENTER|wx.TOP, 5),
-            (self.ti_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
+            (ti_version, 0, wx.EXPAND|wx.TOP|wx.RIGHT, 5),
             (txt_maintainer, 0, RIGHT_CENTER|wx.LEFT, 5),
-            (self.ti_maintainer, 0, wx.EXPAND),
+            (ti_maintainer, 0, wx.EXPAND),
             (txt_email, 0, RIGHT_CENTER, 5),
-            (self.ti_email, 0, wx.EXPAND|wx.RIGHT, 5),
+            (ti_email, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_arch, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
-            (self.sel_arch, 0, wx.BOTTOM, 5),
+            (sel_arch, 0, wx.BOTTOM, 5),
             ))
         
         pnl_require.SetSizer(lyt_require)
@@ -216,12 +216,12 @@ class Panel(WizardPage):
         lyt_recommend.AddGrowableRow(3)
         
         lyt_recommend.Add(txt_section, (0, 2), flag=RIGHT_CENTER|wx.TOP|wx.BOTTOM, border=5)
-        lyt_recommend.Add(self.ti_section, (0, 3),
+        lyt_recommend.Add(ti_section, (0, 3),
                 flag=wx.EXPAND|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         lyt_recommend.Add(txt_synopsis, (0, 0), (1, 2), LEFT_BOTTOM|wx.LEFT, 5)
-        lyt_recommend.Add(self.ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_recommend.Add(ti_synopsis, (1, 0), (1, 2), wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_recommend.Add(txt_priority, (1, 2), flag=RIGHT_CENTER, border=5)
-        lyt_recommend.Add(self.sel_priority, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
+        lyt_recommend.Add(sel_priority, (1, 3), flag=wx.EXPAND|wx.RIGHT, border=5)
         lyt_recommend.Add(txt_description, (2, 0), (1, 2), LEFT_BOTTOM|wx.LEFT|wx.TOP, 5)
         lyt_recommend.Add(self.ti_description, (3, 0), (1, 4),
                 wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
@@ -241,9 +241,9 @@ class Panel(WizardPage):
         lyt_option.AddSpacer(5)
         lyt_option.AddMany((
             (txt_source, 0, RIGHT_CENTER|wx.LEFT, 5),
-            (self.ti_source, 0, wx.EXPAND),
+            (ti_source, 0, wx.EXPAND),
             (txt_homepage, 0, RIGHT_CENTER, 5),
-            (self.ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
+            (ti_homepage, 0, wx.EXPAND|wx.RIGHT, 5),
             (txt_essential, 0, RIGHT_CENTER|wx.LEFT|wx.BOTTOM, 5),
             (self.chk_essential, 0, wx.BOTTOM, 5),
             ))
@@ -253,24 +253,24 @@ class Panel(WizardPage):
         pnl_option.Layout()
         
         # Main background panel sizer
-        # FIXME: Is background panel (self.pnl_bg) necessary
+        # FIXME: Is background panel (pnl_bg) necessary
         lyt_bg = wx.BoxSizer(wx.VERTICAL)
         lyt_bg.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
-        lyt_bg.Add(wx.StaticText(self.pnl_bg, label=GT(u'Required')), 0)
+        lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0)
         lyt_bg.Add(pnl_require, 0, wx.EXPAND)
-        lyt_bg.Add(wx.StaticText(self.pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
+        lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Recommended')), 0, wx.TOP, 5)
         lyt_bg.Add(pnl_recommend, 1, wx.EXPAND)
-        lyt_bg.Add(wx.StaticText(self.pnl_bg, label=GT(u'Optional')), 0, wx.TOP, 5)
+        lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Optional')), 0, wx.TOP, 5)
         lyt_bg.Add(pnl_option, 0, wx.EXPAND)
         
-        self.pnl_bg.SetAutoLayout(True)
-        self.pnl_bg.SetSizer(lyt_bg)
-        self.pnl_bg.Layout()
+        pnl_bg.SetAutoLayout(True)
+        pnl_bg.SetSizer(lyt_bg)
+        pnl_bg.Layout()
         
         # Page's main sizer
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
-        lyt_main.Add(self.pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
