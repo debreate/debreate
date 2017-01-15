@@ -149,6 +149,21 @@ class ManPage(wx.Panel):
         self.Layout()
     
     
+    ## Get manpage section & contents
+    def Get(self):
+        return (self.GetSection(), self.GetValue(),)
+    
+    
+    ## Get the manpage section number
+    def GetSection(self):
+        return self.sel_section.GetStringSelection()
+    
+    
+    ## Get the contents of manpage
+    def GetValue(self):
+        return self.ti_man.GetValue()
+    
+    
     ## TODO: Doxygen
     def OnSetSection(self, event=None):
         self.SetSectionLabel(self.sel_section.GetStringSelection())
