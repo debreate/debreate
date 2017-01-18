@@ -6,8 +6,10 @@
 # See: docs/LICENSE.txt
 
 
-from time       import strftime
 from datetime   import datetime
+from time       import strftime
+
+from globals.system import PY_VER_MAJ
 
 
 ## Formatting methods for dates & times
@@ -33,10 +35,19 @@ def _digit_to_string(number):
 
 ## Retrieves the current year
 #  
+#  FIXME: Should return value default to integer?
 #  \return
 #    \b \e String representation of the current year
-def GetYear(fmt=DTFMT.DEFAULT):
-    return unicode(strftime(u'%Y'))
+def GetYear(fmt=DTFMT.DEFAULT, string_value=True):
+    year = strftime(u'%Y')
+    
+    if not string_value:
+        year = int(year)
+    
+    elif PY_VER_MAJ < 3:
+        year = unicode(year)
+    
+    return year
 
 
 ## Retrieves today's date
