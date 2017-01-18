@@ -95,13 +95,13 @@ class ManTitle(ManBase):
         self.lyt_main = wx.FlexGridSizer(rows=2)
         self.lyt_main.AddMany((
             txt_name,
-            txt_date,
-            txt_unknown1,
-            txt_unknown2,
-            ti_name,
-            lyt_date,
-            ti_unknown1,
-            ti_unknown2,
+            (txt_date, 0, wx.LEFT, 5),
+            (txt_unknown1, 0, wx.LEFT, 5),
+            (txt_unknown2, 0, wx.LEFT, 5),
+            (ti_name, 0),
+            (lyt_date, 0, wx.LEFT, 5),
+            (ti_unknown1, 0, wx.LEFT, 5),
+            (ti_unknown2, 0, wx.LEFT, 5),
             ))
 
 
