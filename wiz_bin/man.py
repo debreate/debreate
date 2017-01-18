@@ -79,8 +79,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def AddManpage(self, name=u'manual'):
-        newman = ManPage(self.tabs, name)
-        self.tabs.AddPage(newman, name)
+        self.tabs.AddPage(ManPage(self.tabs, name), name)
     
     
     ## Retrieves manpages info for text output
@@ -140,7 +139,6 @@ class Panel(WizardPage):
                     GT(u'Are you sure you want to close this tab?')).Confirmed():
                 if event:
                     event.Veto()
-            
 
 
 ## TODO: Doxygen
