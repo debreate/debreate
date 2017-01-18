@@ -20,6 +20,7 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.mansect            import ManSection
+from dbr.mansect            import ManTitle
 from dbr.menu               import PanelMenu
 from dbr.menu               import PanelMenuBar
 from dbr.wizard             import WizardPage
@@ -196,6 +197,7 @@ class ManPage(ScrolledPanel):
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
         lyt_main.Add(lyt_title, 0, wx.LEFT|wx.TOP, 5)
+        lyt_main.Add(ManTitle(self).GetObject(), 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
         
         self.SetAutoLayout(True)
