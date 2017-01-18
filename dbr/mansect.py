@@ -9,6 +9,7 @@
 import wx
 
 from dbr.language       import GT
+from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetYear
 
 
@@ -102,3 +103,20 @@ class ManTitle(ManBase):
             ti_unknown1,
             ti_unknown2,
             ))
+
+
+## TODO: Doxygen
+class ManSectName(ManBase):
+    def __init__(self, parent):
+        ManBase.__init__(self, parent)
+        
+        self._add_field(GT(u'Program'), wx.TextCtrl(parent))
+        self._add_field(GT(u'Description'), wx.TextCtrl(parent))
+
+
+## TODO: Doxygen
+class ManSectSynopsis(ManBase):
+    def __init__(self, parent):
+        ManBase.__init__(self, parent)
+        
+        self._add_field(u'Synopsis', TextAreaPanel(parent), expand=True)
