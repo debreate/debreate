@@ -163,7 +163,7 @@ class ManPage(ScrolledPanel):
         menubar = PanelMenuBar(self)
         menubar.Add(PanelMenu(), GT(u'Add'))
         
-        txt_title = wx.StaticText(self, label=GT(u'Section'))
+        txt_section = wx.StaticText(self, label=GT(u'Section'))
         
         self.sel_section = wx.Choice(self, choices=tuple(self.sections))
         self.sel_section.default = u'1'
@@ -181,7 +181,7 @@ class ManPage(ScrolledPanel):
         # *** Layout *** #
         
         lyt_title = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_title.Add(txt_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_title.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_title.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_title.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
