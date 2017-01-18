@@ -68,7 +68,7 @@ class ManTitle(ManBase):
         ManBase.__init__(self, parent)
         
         txt_name = wx.StaticText(parent, label=GT(u'Name'))
-        ti_name = wx.TextCtrl(parent)
+        ti_name = wx.TextCtrl(parent, value=parent.Name)
         
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
