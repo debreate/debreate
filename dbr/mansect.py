@@ -85,24 +85,32 @@ class ManTitle(ManBase):
         
         # *** Layout *** #
         
-        lyt_date = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_date.AddMany((
-            spin_year,
-            spin_month,
-            spin_day,
-            ))
+        lyt_name = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_name.Add(txt_name, 0, wx.ALIGN_CENTER_VERTICAL)
+        lyt_name.Add(ti_name, 0, wx.LEFT, 5)
         
-        self.lyt_main = wx.FlexGridSizer(rows=2)
-        self.lyt_main.AddMany((
-            txt_name,
-            (txt_date, 0, wx.LEFT, 5),
-            (txt_unknown1, 0, wx.LEFT, 5),
-            (txt_unknown2, 0, wx.LEFT, 5),
-            (ti_name, 0),
-            (lyt_date, 0, wx.LEFT, 5),
-            (ti_unknown1, 0, wx.LEFT, 5),
-            (ti_unknown2, 0, wx.LEFT, 5),
-            ))
+        lyt_date = wx.GridBagSizer()
+        lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        lyt_date.Add(wx.StaticText(parent, label=GT(u'Year')), (0, 1))
+        lyt_date.Add(wx.StaticText(parent, label=GT(u'Month')), (0, 2))
+        lyt_date.Add(wx.StaticText(parent, label=GT(u'Day')), (0, 3))
+        lyt_date.Add(spin_year, (1, 1))
+        lyt_date.Add(spin_month, (1, 2))
+        lyt_date.Add(spin_day, (1, 3))
+        
+        lyt_uknwn1 = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_uknwn1.Add(txt_unknown1, 0, wx.ALIGN_CENTER_VERTICAL)
+        lyt_uknwn1.Add(ti_unknown1, 0, wx.LEFT, 5)
+        
+        lyt_uknwn2 = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_uknwn2.Add(txt_unknown2, 0, wx.ALIGN_CENTER_VERTICAL)
+        lyt_uknwn2.Add(ti_unknown2, 0, wx.LEFT, 5)
+        
+        self.lyt_main = wx.BoxSizer(wx.VERTICAL)
+        self.lyt_main.Add(lyt_name)
+        self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
+        self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
+        self.lyt_main.Add(lyt_uknwn2, 0, wx.TOP, 5)
 
 
 ## TODO: Doxygen
