@@ -127,4 +127,4 @@ class ManSectSynopsis(ManBase):
     def __init__(self, parent):
         ManBase.__init__(self, parent)
         
-        self._add_field(u'Synopsis', TextAreaPanel(parent), expand=True)
+        self._add_field(GT(u'Synopsis'), TextAreaPanel(parent), expand=True)
