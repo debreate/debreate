@@ -191,7 +191,7 @@ class ManPage(ScrolledPanel):
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
-        lyt_main.Add(lyt_title, 0, wx.TOP, 5)
+        lyt_main.Add(lyt_title, 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(lyt_name, 0, wx.TOP, 5)
         lyt_main.Add(ManSectName(self).GetObject(), 0, wx.LEFT, 5)
         lyt_main.Add(ManSectSynopsis(self).GetObject(), 0, wx.LEFT, 5)
