@@ -16,7 +16,7 @@ class ManBase:
     def __init__(self, parent):
         self.Parent = parent
         
-        self.lyt_main = wx.Sizer
+        self.lyt_main = wx.BoxSizer(wx.VERTICAL)
     
     
     ## Retrieve the main sizer object
