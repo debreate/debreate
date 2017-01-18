@@ -16,12 +16,20 @@ class ManBase:
     def __init__(self, parent):
         self.Parent = parent
         
+        # Allow adding multiple instances of object
+        self.Multiple = False
+        
         self.lyt_main = wx.BoxSizer(wx.VERTICAL)
     
     
     ## Retrieve the main sizer object
     def GetObject(self):
         return self.lyt_main
+    
+    
+    ## Checks multiple instances can be uses
+    def MultipleAllowed(self):
+        return self.Multiple
 
 
 ## TODO: Doxygen
