@@ -142,9 +142,9 @@ class Panel(WizardPage):
 
 
 ## TODO: Doxygen
-class ManPage(wx.Panel):
+class ManPage(ScrolledPanel):
     def __init__(self, parent, name=u'manual'):
-        wx.Panel.__init__(self, parent, name=name)
+        wx.ScrolledWindow.__init__(self, parent, style=wx.VSCROLL, name=name)
         
         # List of sections & definitions
         self.sections = {
