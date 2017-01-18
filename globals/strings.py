@@ -46,6 +46,16 @@ def RemoveEmptyLines(text):
     return tuple(text)
 
 
+## Checks if object is a string instance
+#  
+#  Compatibility function for legacy Python versions
+def IsString(text):
+    if sys.version_info[0] <= 2:
+        return isinstance(text, (unicode, str))
+    
+    return isinstance(text, str)
+
+
 ## A unicode compatibility function for older versions of Python
 #  
 #  Executes a function with optional arguments that returns a string
