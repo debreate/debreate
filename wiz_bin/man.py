@@ -13,12 +13,13 @@ from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
+from dbr.containers         import GetItemCount
 from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.mansect            import ManSectName
-from dbr.mansect            import ManSectSynopsis
+from dbr.mansect            import ManSection
 from dbr.menu               import PanelMenu
 from dbr.menu               import PanelMenuBar
 from dbr.wizard             import WizardPage
@@ -26,6 +27,7 @@ from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import ScrolledPanel
 
 
 ## TODO: Doxygen
