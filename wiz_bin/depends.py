@@ -20,13 +20,13 @@ from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.panel              import BorderedPanel
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import BorderedPanel
 
 
 ## Page defining dependencies
