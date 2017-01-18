@@ -11,6 +11,9 @@ from wx.aui import AuiNotebook
 from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 
 from dbr.buttons            import ButtonAdd
+from dbr.buttons            import ButtonBrowse64
+from dbr.buttons            import ButtonPreview64
+from dbr.buttons            import ButtonSave64
 from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -37,6 +40,11 @@ class Panel(WizardPage):
         btn_add = ButtonAdd(self)
         btn_add.SetName(u'add')
         
+        # Import/Export/Preview
+        btn_browse = ButtonBrowse64(self)
+        btn_save = ButtonSave64(self)
+        btn_preview = ButtonPreview64(self)
+        
         self.tabs = AuiNotebook(self, style=AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_BUTTON)
         
         SetPageToolTips(self)
@@ -49,8 +57,19 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
+        lyt_add = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_add.Add(btn_add, 0)
+        lyt_add.Add(wx.StaticText(self, label=GT(u'Add manpage')), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        
+        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons.Add(lyt_add, 0, wx.ALIGN_BOTTOM)
+        lyt_buttons.AddStretchSpacer(1)
+        lyt_buttons.Add(btn_browse, 0)
+        lyt_buttons.Add(btn_save, 0, wx.LEFT, 5)
+        lyt_buttons.Add(btn_preview, 0, wx.LEFT, 5)
+        
         lyt_main = wx.BoxSizer(wx.VERTICAL)
-        lyt_main.Add(btn_add, 0, wx.ALL, 5)
+        lyt_main.Add(lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
         lyt_main.Add(self.tabs, 1, wx.ALL|wx.EXPAND, 5)
         
         self.SetAutoLayout(True)
