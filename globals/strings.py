@@ -56,21 +56,21 @@ def IsString(text):
     return isinstance(text, str)
 
 
-## A unicode compatibility function for older versions of Python
+## Converts an object to a string instance
 #  
-#  Executes a function with optional arguments that returns a string
-#  & converts it to unicode if using Python version 2.x.
-#  \param function
-#    Callable function object to execute
-#  \param args
-#    List of arguments to pass to function
+#  Compatibility function for legacy Python versions
+#  \param item
+#    Instance to be converted to string
 #  \return
-#    Unicode compatible string
-def GetString(string):
-    if sys.version_info[0] < 3 and isinstance(string, str):
-        string = unicode(string)
+#    Compatible string
+def GetString(item):
+    if sys.version_info[0] <= 2 and not isinstance(item, unicode):
+        item = unicode(item)
     
-    return string
+    elif not isinstance(item, str):
+        item = str(item)
+    
+    return item
 
 
 ## Alias for globals.strings.GetString
