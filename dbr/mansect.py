@@ -9,6 +9,7 @@
 import wx
 
 from dbr.language       import GT
+from dbr.selectinput    import ComboBox
 from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetYear
 
@@ -128,3 +129,41 @@ class ManSectSynopsis(ManBase):
         ManBase.__init__(self, parent)
         
         self._add_field(GT(u'Synopsis'), TextAreaPanel(parent), expand=True)
+
+
+## Generic manpage section
+class ManSection(ManBase):
+    def __init__(self, parent):
+        ManBase.__init__(self, parent)
+        
+        sections = (
+            GT(u'Name'),
+            GT(u'Synopsis'),
+            GT(u'Configuration'),
+            GT(u'Description'),
+            GT(u'Options'),
+            GT(u'Exit status'),
+            GT(u'Return value'),
+            GT(u'Errors'),
+            GT(u'Environment'),
+            GT(u'Files'),
+            GT(u'Versions'),
+            GT(u'Conforming to'),
+            GT(u'Notes'),
+            GT(u'Bugs'),
+            GT(u'Example'),
+            )
+        
+        self.sect_name = ComboBox(parent, choices=sections)
+        value = TextAreaPanel(parent)
+        
+        # *** Layout *** #
+        
+        self.lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        self.lyt_main.Add(self.sect_name)
+        self.lyt_main.Add(value, 1, wx.EXPAND|wx.LEFT, 5)
+    
+    
+    ## TODO: Doxygen
+    def SetSectionName(self, name):
+        self.sect_name.SetValue(name)
