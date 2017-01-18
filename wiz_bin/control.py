@@ -16,7 +16,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.panel              import BorderedPanel
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
@@ -30,6 +29,7 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import BorderedPanel
 
 
 ## This panel displays the field input of the control file

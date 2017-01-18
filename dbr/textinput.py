@@ -10,10 +10,10 @@ import time, wx
 
 from dbr.font               import MONOSPACED_LG
 from dbr.language           import GT
-from dbr.panel              import BorderedPanel
 from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import BorderedPanel
 
 
 ## Text control set up for handling file drop events

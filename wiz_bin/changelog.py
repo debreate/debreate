@@ -13,7 +13,6 @@ from dbr.buttons            import ButtonImport
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.panel              import BorderedPanel
 from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextArea
@@ -27,6 +26,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import BorderedPanel
 
 
 ## Changelog page

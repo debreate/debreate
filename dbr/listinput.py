@@ -13,8 +13,8 @@ from wx.lib.mixins.listctrl import TextEditMixin
 from dbr.colors     import COLOR_warn
 from dbr.language   import GT
 from dbr.log        import Logger
-from dbr.panel      import BorderedPanel
 from globals.paths  import ConcatPaths
+from ui.panel       import BorderedPanel
 
 
 ## A list control with no border
