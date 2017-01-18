@@ -69,10 +69,6 @@ class ManTitle(ManBase):
         txt_name = wx.StaticText(parent, label=GT(u'Name'))
         ti_name = wx.TextCtrl(parent)
         
-        txt_section = wx.StaticText(parent, label=GT(u'Section'))
-        # TODO: Add section & descriptions
-        sel_section = wx.Choice(parent)
-        
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
         spin_month = wx.SpinCtrl(parent)
@@ -98,12 +94,10 @@ class ManTitle(ManBase):
         self.lyt_main = wx.FlexGridSizer(rows=2)
         self.lyt_main.AddMany((
             txt_name,
-            txt_section,
             txt_date,
             txt_unknown1,
             txt_unknown2,
             ti_name,
-            sel_section,
             lyt_date,
             ti_unknown1,
             ti_unknown2,
