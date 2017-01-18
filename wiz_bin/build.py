@@ -21,7 +21,6 @@ from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.panel              import BorderedPanel
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
 from dbr.progress           import TimedProgressDialog
@@ -46,6 +45,7 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import BorderedPanel
 
 
 ## Build page

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.panel
+## \package ui.panel
 
 # MIT licensing
 # See: docs/LICENSE.txt
