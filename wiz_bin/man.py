@@ -203,6 +203,8 @@ class ManPage(ScrolledPanel):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
+        
+        self.AddDocumentSection(GT(u'Name'), False)
     
     
     ## Adds a new section to the document
