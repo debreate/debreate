@@ -8,7 +8,8 @@
 
 import wx
 
-from dbr.language import GT
+from dbr.language       import GT
+from globals.dateinfo   import GetYear
 
 
 ## Base class for manpage parts
@@ -73,7 +74,7 @@ class ManTitle(ManBase):
         sel_section = wx.Choice(parent)
         
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
-        spin_year = wx.SpinCtrl(parent)
+        spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
         spin_month = wx.SpinCtrl(parent)
         spin_day = wx.SpinCtrl(parent)
         
