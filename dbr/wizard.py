@@ -25,6 +25,7 @@ from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from ui.panel               import ScrolledPanel
 
 
 ## Wizard class for Debreate
@@ -321,11 +322,9 @@ class Wizard(wx.Panel):
 
 
 ## Parent class for wizard pages
-class WizardPage(wx.ScrolledWindow):
+class WizardPage(ScrolledPanel):
     def __init__(self, parent, page_id):
-        wx.ScrolledWindow.__init__(self, parent, page_id)
-        
-        self.SetScrollbars(0, 20, 0, 0)
+        ScrolledPanel.__init__(self, parent, page_id)
         
         self.SetName(page_ids[self.GetId()])
         
