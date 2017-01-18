@@ -72,8 +72,8 @@ class ManTitle(ManBase):
         
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
-        spin_month = wx.SpinCtrl(parent)
-        spin_day = wx.SpinCtrl(parent)
+        spin_month = wx.SpinCtrl(parent, min=1, max=12)
+        spin_day = wx.SpinCtrl(parent, min=1, max=31)
         
         # FIXME: What is this for?
         txt_unknown1 = wx.StaticText(parent, label=GT(u'Unknown'))
