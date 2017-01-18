@@ -14,6 +14,8 @@ from dbr.language import GT
 ## Base class for manpage parts
 class ManBase:
     def __init__(self, parent):
+        self.Parent = parent
+        
         self.lyt_main = wx.Sizer
     
     
