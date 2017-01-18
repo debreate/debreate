@@ -22,6 +22,31 @@ class ManBase:
         self.lyt_main = wx.BoxSizer(wx.VERTICAL)
     
     
+    ## TODO: Doxygen
+    def _add_field(self, label, window, count=1, expand=False):
+        if isinstance(label, (unicode, str)):
+            label = wx.StaticText(self.Parent, label=label)
+        
+        lyt_field = wx.BoxSizer(wx.HORIZONTAL)
+        
+        for X in range(count):
+            if expand:
+                lyt_field.Add(window, 1, wx.EXPAND)
+                continue
+            
+            lyt_field.Add(window, 1)
+        
+        self.lyt_main.Add(label, 0, wx.ALIGN_BOTTOM|wx.LEFT, 5)
+        
+        if expand:
+            self.lyt_main.Add(lyt_field, 1, wx.EXPAND|wx.LEFT|wx.BOTTOM, 5)
+        
+        else:
+            self.lyt_main.Add(lyt_field, 1, wx.LEFT|wx.BOTTOM, 5)
+        
+        self.Parent.Layout()
+    
+    
     ## Retrieve the main sizer object
     def GetObject(self):
         return self.lyt_main
