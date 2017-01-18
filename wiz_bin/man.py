@@ -171,9 +171,6 @@ class ManPage(ScrolledPanel):
         
         self.label_section = wx.StaticText(self, label=self.sections[self.sel_section.default])
         
-        txt_name = wx.StaticText(self, label=GT(u'Name'))
-        ti_name = wx.TextCtrl(self, value=name)
-        
         # *** Event Handling *** #
         
         self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
@@ -185,16 +182,9 @@ class ManPage(ScrolledPanel):
         lyt_title.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_title.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
-        lyt_name = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_name.Add(txt_name)
-        lyt_name.Add(ti_name)
-        
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
         lyt_main.Add(lyt_title, 0, wx.LEFT|wx.TOP, 5)
-        lyt_main.Add(lyt_name, 0, wx.TOP, 5)
-        lyt_main.Add(ManSectName(self).GetObject(), 0, wx.LEFT, 5)
-        lyt_main.Add(ManSectSynopsis(self).GetObject(), 0, wx.LEFT, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
