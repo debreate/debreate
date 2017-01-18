@@ -8,7 +8,7 @@
 
 import os, sys, wx
 
-from globals.containers import Contains
+from dbr.containers     import Contains
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
 from globals.paths      import ConcatPaths
@@ -19,7 +19,6 @@ from globals.strings    import StringIsVersioned
 
 
 # *** Python Info *** #
-
 PY_VER_MAJ = sys.version_info[0]
 PY_VER_MIN = sys.version_info[1]
 PY_VER_REL = sys.version_info[2]
