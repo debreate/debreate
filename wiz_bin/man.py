@@ -191,6 +191,29 @@ class ManPage(ScrolledPanel):
         self.Layout()
     
     
+    ## Adds a new section to the document
+    def AddDocumentSection(self, name=None, expand=False, removable=True):
+        doc_section = ManSection(self)
+        sect_sizer = doc_section.GetObject()
+        
+        if name:
+            doc_section.SetSectionName(name)
+        
+        FLAGS = wx.LEFT|wx.RIGHT|wx.TOP
+        if expand:
+            FLAGS = wx.EXPAND|FLAGS
+        
+        main_sizer = self.GetSizer()
+        main_sizer.Add(sect_sizer, 0, FLAGS, 5)
+        
+        if removable:
+            btn_remove = ButtonRemove(self)
+            btn_remove.Index = GetItemCount(main_sizer)
+            sect_sizer.Add(btn_remove, 0, wx.LEFT, 5)
+        
+        self.Layout()
+    
+    
     ## Get manpage section & contents
     def Get(self):
         return (self.GetSection(), self.GetValue(),)
