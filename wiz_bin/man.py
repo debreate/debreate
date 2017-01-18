@@ -182,14 +182,14 @@ class ManPage(wx.Panel):
         
         # *** Layout *** #
         
-        lyt_H1 = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_H1.Add(txt_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_H1.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_H1.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_title = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_title.Add(txt_title, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_title.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_title.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_main = wx.BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
-        lyt_main.Add(lyt_H1, 0, wx.TOP|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_title, 0, wx.TOP, 5)
         lyt_main.Add(self.ti_man, 1, wx.ALL|wx.EXPAND, 5)
         lyt_main.Add(ManTitle(self).GetObject(), 0, wx.LEFT, 5)
         
