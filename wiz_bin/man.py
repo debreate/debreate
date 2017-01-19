@@ -24,6 +24,7 @@ from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
+from ui.layout              import BoxSizer
 from ui.notebook            import Notebook
 from ui.panel               import ScrolledPanel
 
@@ -57,18 +58,18 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        lyt_add = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_add = BoxSizer(wx.HORIZONTAL)
         lyt_add.Add(btn_add, 0)
         lyt_add.Add(wx.StaticText(self, label=GT(u'Add manpage')), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(lyt_add, 0, wx.ALIGN_BOTTOM)
         lyt_buttons.AddStretchSpacer(1)
         lyt_buttons.Add(btn_browse, 0)
         lyt_buttons.Add(btn_save, 0, wx.LEFT, 5)
         lyt_buttons.Add(btn_preview, 0, wx.LEFT, 5)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
         lyt_main.Add(self.tabs, 1, wx.ALL|wx.EXPAND, 5)
         
@@ -182,16 +183,16 @@ class ManPage(ScrolledPanel):
         
         # *** Layout *** #
         
-        lyt_title = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_title = BoxSizer(wx.HORIZONTAL)
         lyt_title.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_title.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_title.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
-        lyt_button = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_button = BoxSizer(wx.HORIZONTAL)
         lyt_button.Add(btn_add_sect)
         lyt_button.Add(txt_add_sect, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
         lyt_main.Add(lyt_title, 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(ManBanner(self).GetObject(), 0, wx.LEFT|wx.TOP, 5)
