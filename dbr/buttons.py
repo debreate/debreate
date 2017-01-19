@@ -251,6 +251,48 @@ class ButtonSizer(BoxSizer):
                 window.Layout()
 
 
+button_list = {
+    wx.ID_CANCEL: ButtonCancel,
+    wx.ID_OK: ButtonConfirm,
+    wx.ID_HELP: ButtonHelp,
+    wx.ID_SAVE: ButtonSave,
+    }
+
+
+## TODO: Doxygen
+#  
+#  \param button_ids
+#    \b \e List of IDs of buttons to be added
+#  \param parent_sizer
+#    The \b \e wx.Sizer instance that the buttons sizer should be added to
+#  \param show_labels:
+#    If True, button labels will be shown on custom button instances
+#  \return
+#    \b \e BoxSizer instance containing the buttons
+def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True):
+    lyt_buttons = ButtonSizer(wx.HORIZONTAL)
+    
+    for ID in button_ids:
+        if ID in button_list:
+            new_button = button_list[ID](window)
+            lyt_buttons.Add(new_button, 1)
+            
+            continue
+        
+        # Use a standard button if custom button not available
+        new_button = wx.Button(window, ID)
+        lyt_buttons.Add(new_button, 0, wx.ALIGN_CENTER)
+    
+    lyt_buttons.ShowLabels(show_labels)
+    
+    if parent_sizer:
+        parent_sizer.Add(lyt_buttons)
+        
+        return None
+    
+    return lyt_buttons
+
+
 ## Find sizer instance that contains buttons
 #  
 #  Helper function for ReplaceStandardButtons
