@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.menu
+## \package ui.menu
 
 # MIT licensing
 # See: docs/LICENSE.txt
