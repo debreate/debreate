@@ -207,3 +207,60 @@ class ButtonSave64(BitmapButton):
                 ID=ID, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
+
+
+## Find sizer instance that contains buttons
+#  
+#  Helper function for ReplaceStandardButtons
+def _get_button_sizer(sizer):
+    if isinstance(sizer, wx.StdDialogButtonSizer):
+        return sizer
+    
+    for S in sizer.GetChildren():
+        S = S.GetSizer()
+        
+        if S:
+            S = _get_button_sizer(S)
+            
+            if isinstance(S, wx.StdDialogButtonSizer):
+                return S
+
+
+## Replaces standard dialog buttons with custom ones
+#  
+#  \param dialog
+#    Dialog instance containing the buttons
+def ReplaceStandardButtons(dialog):
+    lyt_buttons = _get_button_sizer(dialog.GetSizer())
+    
+    removed_button_ids = []
+    insert_index = 0
+    found_button = False
+    
+    if lyt_buttons:
+        for FIELD in lyt_buttons.GetChildren():
+            FIELD = FIELD.GetWindow()
+            
+            if isinstance(FIELD, wx.Button):
+                lyt_buttons.Detach(FIELD)
+                removed_button_ids.append(FIELD.GetId())
+                FIELD.Destroy()
+                
+                found_button = True
+            
+            if not found_button:
+                insert_index += 1
+    
+    for ID in reversed(removed_button_ids):
+        if ID == wx.ID_OK:
+            lyt_buttons.Insert(insert_index, ButtonConfirm(dialog))
+            continue
+        
+        if ID == wx.ID_CANCEL:
+            lyt_buttons.Insert(insert_index, ButtonCancel(dialog))
+            continue
+        
+        lyt_buttons.Insert(insert_index, wx.Button(dialog, ID))
+    
+    dialog.Fit()
+    dialog.Layout()
