@@ -331,7 +331,7 @@ def _get_button_sizer(sizer):
         if S:
             S = _get_button_sizer(S)
             
-            if isinstance(S, wx.StdDialogButtonSizer):
+            if S:
                 return S
 
 
