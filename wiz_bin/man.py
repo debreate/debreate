@@ -4,10 +4,6 @@
 
 
 import wx
-from wx.aui import AUI_NB_CLOSE_BUTTON
-from wx.aui import AUI_NB_TAB_MOVE
-from wx.aui import AUI_NB_TAB_SPLIT
-from wx.aui import AuiNotebook
 from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 
 from dbr.buttons            import ButtonAdd
@@ -28,6 +24,7 @@ from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
+from ui.notebook            import Notebook
 from ui.panel               import ScrolledPanel
 
 
@@ -48,7 +45,7 @@ class Panel(WizardPage):
         btn_save = ButtonSave64(self)
         btn_preview = ButtonPreview64(self)
         
-        self.tabs = AuiNotebook(self, style=AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_BUTTON)
+        self.tabs = Notebook(self)
         
         SetPageToolTips(self)
         
