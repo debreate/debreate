@@ -9,10 +9,8 @@ from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 from dbr.buttons            import ButtonAdd
 from dbr.buttons            import ButtonBrowse64
 from dbr.buttons            import ButtonPreview64
-from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
-from dbr.containers         import GetItemCount
-from dbr.dialogs            import ConfirmationDialog
+from dbr.containers         import Contains
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
