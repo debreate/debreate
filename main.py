@@ -604,7 +604,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
                 GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
         
-        if dia.ShowModal() == wx.ID_YES:
+        if ShowDialog(dia):
             Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectLoaded()))
             
             self.wizard.ResetPagesInfo()
