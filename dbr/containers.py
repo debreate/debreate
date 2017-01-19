@@ -10,13 +10,30 @@ import wx
 
 
 ## Tests if a container contains any of a list of items
-def Contains(cont, items):
-    if not isinstance(items, (tuple, list, dict)):
-        return items in cont
+def Contains(cont, items, all_of=False):
+    sizer = isinstance(cont, wx.Sizer)
     
-    for ITEM in items:
-        if ITEM in cont:
-            return True
+    if not isinstance(items, (tuple, list, dict)):
+        if sizer:
+            items = (items,)
+        
+        else:
+            return items in cont
+    
+    if sizer:
+        for ITEM in items:
+            for SI in cont.GetChildren():
+                if SI:
+                    if isinstance(SI, wx.SizerItem) and ITEM in (SI.GetWindow(), SI.GetSizer()):
+                        return True
+                    
+                    if ITEM == SI:
+                        return True
+    
+    else:
+        for ITEM in items:
+            if ITEM in cont:
+                return True
     
     return False
 
