@@ -11,6 +11,8 @@ import wx
 from dbr.language       import GT
 from dbr.selectinput    import ComboBox
 from dbr.textinput      import TextAreaPanel
+from globals.dateinfo   import GetDayInt
+from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
 from ui.layout          import BoxSizer
 
@@ -74,8 +76,8 @@ class ManBanner(ManBase):
         
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
-        spin_month = wx.SpinCtrl(parent, min=1, max=12)
-        spin_day = wx.SpinCtrl(parent, min=1, max=31)
+        spin_month = wx.SpinCtrl(parent, min=1, max=12, initial=GetMonthInt())
+        spin_day = wx.SpinCtrl(parent, min=1, max=31, initial=GetDayInt())
         
         # FIXME: What is this for?
         txt_unknown1 = wx.StaticText(parent, label=GT(u'Unknown'))
@@ -96,7 +98,7 @@ class ManBanner(ManBase):
         lyt_date.Add(wx.StaticText(parent, label=GT(u'Year')), (0, 1))
         lyt_date.Add(wx.StaticText(parent, label=GT(u'Month')), (0, 2))
         lyt_date.Add(wx.StaticText(parent, label=GT(u'Day')), (0, 3))
-        lyt_date.Add(spin_year, (1, 1))
+        lyt_date.Add(spin_year, (1, 1), flag=wx.LEFT, border=5)
         lyt_date.Add(spin_month, (1, 2))
         lyt_date.Add(spin_day, (1, 3))
         
