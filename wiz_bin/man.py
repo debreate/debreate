@@ -219,11 +219,15 @@ class ManPage(ScrolledPanel):
         btn_single_line = ButtonAdd(self, ident.SINGLE)
         txt_single_line = wx.StaticText(self, label=GT(u'Add single line section'))
         
+        btn_multi_line = ButtonAdd(self, ident.MULTI)
+        txt_multi_line = wx.StaticText(self, label=GT(u'Add multi-line section'))
+        
         # *** Event Handling *** #
         
         self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
         
         btn_single_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
+        btn_multi_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
         
         # *** Layout *** #
         
@@ -235,6 +239,8 @@ class ManPage(ScrolledPanel):
         lyt_button = BoxSizer(wx.HORIZONTAL)
         lyt_button.Add(btn_single_line)
         lyt_button.Add(txt_single_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        lyt_button.Add(btn_multi_line, 0, wx.LEFT, 5)
+        lyt_button.Add(txt_multi_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
