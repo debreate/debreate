@@ -78,6 +78,14 @@ class Panel(WizardPage):
         self.Layout()
     
     
+    ## Check if name is okay for manpage filename
+    def _name_is_ok(self, name):
+        if TextIsEmpty(name):
+            return False
+        
+        return not Contains(name, (u' ', u'\t',))
+    
+    
     ## TODO: Doxygen
     def AddManpage(self, name=u'manual'):
         self.tabs.AddPage(ManPage(self.tabs, name), name)
