@@ -191,10 +191,10 @@ class ManPage(ScrolledPanel):
         
         # *** Layout *** #
         
-        lyt_title = BoxSizer(wx.HORIZONTAL)
-        lyt_title.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_title.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_title.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_section = BoxSizer(wx.HORIZONTAL)
+        lyt_section.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_section.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_button = BoxSizer(wx.HORIZONTAL)
         lyt_button.Add(btn_add_sect)
@@ -202,7 +202,7 @@ class ManPage(ScrolledPanel):
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
-        lyt_main.Add(lyt_title, 0, wx.LEFT|wx.TOP, 5)
+        lyt_main.Add(lyt_section, 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(ManBanner(self).GetObject(), 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
         
