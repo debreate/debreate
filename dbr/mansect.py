@@ -65,7 +65,7 @@ class ManBase:
 #  
 #  This section is required
 #  FIXME: Should derive from wx.Panel/BorderedPanel???
-class ManTitle(ManBase):
+class ManBanner(ManBase):
     def __init__(self, parent):
         ManBase.__init__(self, parent)
         
