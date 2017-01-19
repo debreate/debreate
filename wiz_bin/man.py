@@ -136,6 +136,13 @@ class Panel(WizardPage):
             invalid_name = False
     
     
+    ## TODO: Doxygen
+    #  
+    #  TODO: Define
+    def OnCloseTab(self, event=None):
+        Logger.Debug(__name__, u'Closing tab')
+    
+    
     ## Rename tab & manpage
     def OnRenamePage(self, event=None):
         index = self.tabs.GetSelection()
