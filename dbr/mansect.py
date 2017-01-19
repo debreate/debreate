@@ -9,6 +9,7 @@
 import wx
 
 from dbr.language       import GT
+from dbr.log            import Logger
 from dbr.selectinput    import ComboBox
 from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetDayInt
@@ -160,5 +161,17 @@ class ManSection(ManBase):
     
     
     ## TODO: Doxygen
-    def SetSectionName(self, name):
-        self.sect_name.SetValue(name)
+    def SetSectionName(self, section_name):
+        if isinstance(self.sect_name, (ComboBox, wx.TextCtrl,)):
+            self.sect_name.SetValue(section_name)
+            
+            return True
+        
+        elif isinstance(self.sect_name, wx.StaticText):
+            self.sect_name.SetLabel(section_name)
+            
+            return True
+        
+        Logger.Warning(__name__, u'Could not set section name: {}'.format(section_name))
+        
+        return False
