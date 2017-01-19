@@ -17,8 +17,6 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.mansect            import ManBanner
 from dbr.mansect            import ManSection
-from dbr.menu               import PanelMenu
-from dbr.menu               import PanelMenuBar
 from dbr.textinput          import TextEntryDialog
 from dbr.wizard             import WizardPage
 from globals                import ident
@@ -26,6 +24,8 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 from ui.layout              import BoxSizer
+from ui.menu                import PanelMenu
+from ui.menu                import PanelMenuBar
 from ui.notebook            import Notebook
 from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel

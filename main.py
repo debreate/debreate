@@ -35,7 +35,6 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
-from dbr.menu               import MenuBar
 from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.quickbuild         import QuickBuild
 from dbr.statusbar          import StatusBar
@@ -69,6 +68,7 @@ from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
 from globals.tests          import GetTestList
 from globals.wizardhelper   import GetTopWindow
+from ui.menu                import MenuBar
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
 from wiz_bin.control        import Panel as PageControl
