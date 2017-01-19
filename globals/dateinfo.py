@@ -9,7 +9,7 @@
 from datetime   import datetime
 from time       import strftime
 
-from globals.system import PY_VER_MAJ
+from globals.strings import GS
 
 
 ## Formatting methods for dates & times
@@ -30,7 +30,7 @@ def _digit_to_string(number):
     if number < 10:
         return unicode(u'0{}'.format(number))
     
-    return unicode(number)
+    return GS(number)
 
 
 ## Retrieves the current year
@@ -39,13 +39,10 @@ def _digit_to_string(number):
 #  \return
 #    \b \e String representation of the current year
 def GetYear(fmt=DTFMT.DEFAULT, string_value=True):
-    year = strftime(u'%Y')
+    year = GS(strftime(u'%Y'))
     
     if not string_value:
         year = int(year)
-    
-    elif PY_VER_MAJ < 3:
-        year = unicode(year)
     
     return year
 
@@ -73,7 +70,7 @@ def GetTime(fmt=DTFMT.DEFAULT):
     ms = None
     
     if fmt in (DTFMT.LOG,):
-        ms = unicode(datetime.now().strftime(u'%f'))[:3]
+        ms = GS(datetime.now().strftime(u'%f'))[:3]
     
     current_time = unicode(strftime(u'%T'))
     
@@ -85,4 +82,4 @@ def GetTime(fmt=DTFMT.DEFAULT):
 
 ## Retrieves current time zone
 def GetTimeZone(fmt=DTFMT.DEFAULT):
-    return unicode(strftime(u'%z'))
+    return GS(strftime(u'%z'))
