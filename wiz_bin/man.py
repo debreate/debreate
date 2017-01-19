@@ -213,6 +213,30 @@ class ManPage(ScrolledPanel):
         self.AddDocumentSection(GT(u'Name'), False)
     
     
+    ## Retrieves the section index that contains the object
+    #  
+    #  \param item
+    #    Object instance to search for
+    #  \return
+    #    \b \e Integer index of the item or -1
+    def _get_object_section(self, item):
+        index = -1
+        
+        for C1 in self.GetSizer().GetChildren():
+            index += 1
+            
+            C1 = C1.GetSizer()
+            
+            if isinstance(C1, wx.Sizer):
+                for C2 in C1.GetChildren():
+                    C2 = C2.GetWindow()
+                    
+                    if C2 == item:
+                        return index
+        
+        return None
+    
+    
     ## Adds a new section to the document
     def AddDocumentSection(self, name=None, expand=False, removable=True):
         doc_section = ManSection(self)
