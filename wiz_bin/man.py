@@ -13,12 +13,15 @@ from dbr.buttons            import ButtonRemove
 from dbr.buttons            import ButtonSave64
 from dbr.containers         import GetItemCount
 from dbr.dialogs            import ConfirmationDialog
+from dbr.dialogs            import ShowDialog
+from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.mansect            import ManBanner
 from dbr.mansect            import ManSection
 from dbr.menu               import PanelMenu
 from dbr.menu               import PanelMenuBar
+from dbr.textinput          import TextEntryDialog
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
@@ -88,7 +91,16 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def AddManpage(self, name=u'manual'):
-        self.tabs.AddPage(ManPage(self.tabs, name), name)
+        # Set 'select' argument to True to switch to new manpage
+        ret_val = self.tabs.AddPage(ManPage(self.tabs, name), name, select=True)
+        
+        # New page should be selected
+        new_page = self.tabs.GetPage(self.tabs.GetSelection())
+        
+        # Set up some event handling for new page
+        new_page.btn_rename.Bind(wx.EVT_BUTTON, self.OnRenamePage)
+        
+        return ret_val
     
     
     ## Retrieves manpages info for text output
@@ -111,29 +123,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnAddManpage(self, event=None):
-        main_window = GetTopWindow()
-        
-        getname = wx.TextEntryDialog(main_window, GT(u'Name for new manpage'))
-        
-        # FIXME: Better way to do this?
-        invalid_name = True
-        while invalid_name:
-            if getname.ShowModal() == wx.ID_OK:
-                name = getname.GetValue()
-                invalid_name = False
-                
-                # FIXME: support unicode characters
-                for C in name:
-                    if not C.isalnum():
-                        invalid_name = True
-                        wx.MessageDialog(main_window, GT(u'Invalid characters found in name'), GT(u'Error'),
-                            style=wx.OK|wx.ICON_ERROR).ShowModal()
-                        break
-                
-                if not invalid_name:
-                    self.AddManpage(name)
-            
-            invalid_name = False
+        return self.SetPageName()
     
     
     ## TODO: Doxygen
@@ -153,6 +143,45 @@ class Panel(WizardPage):
     ## Removes all tabs & sets page to default values
     def Reset(self):
         self.tabs.DeleteAllPages()
+    
+    
+    ## Either renames an existing page or creates a new one
+    #  
+    #  \param index
+    #    Page index to rename (only used if 'rename' is True)
+    #  \param rename
+    #    Renames an existing page instead of creating a new one
+    def SetPageName(self, index=-1, rename=False):
+        getname = TextEntryDialog(GetTopWindow(), GT(u'Name for new manpage'))
+        new_name = None
+        
+        valid_name = False
+        
+        while not valid_name:
+            if new_name and TextIsEmpty(new_name):
+                getname.Clear()
+            
+            # User cancelled
+            if not ShowDialog(getname):
+                return False
+            
+            else:
+                new_name = getname.GetValue()
+            
+            valid_name = self._name_is_ok(new_name)
+            
+            if valid_name:
+                break
+            
+            ShowErrorDialog(GT(u'Manpage name cannot contain whitespace'), warn=True)
+        
+        if rename:
+            if index < 0:
+                return False
+            
+            return self.tabs.SetPageText(index, new_name)
+        
+        return self.AddManpage(new_name)
 
 
 ## TODO: Doxygen
@@ -177,6 +206,7 @@ class ManPage(ScrolledPanel):
         menubar = PanelMenuBar(self)
         menubar.Add(PanelMenu(), GT(u'Add'))
         
+        self.btn_rename = wx.Button(self, label=GT(u'Rename'))
         txt_section = wx.StaticText(self, label=GT(u'Section'))
         
         self.sel_section = wx.Choice(self, choices=tuple(self.sections))
@@ -207,6 +237,7 @@ class ManPage(ScrolledPanel):
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
+        lyt_main.Add(self.btn_rename, 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(lyt_section, 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(ManBanner(self).GetObject(), 0, wx.LEFT|wx.TOP, 5)
         lyt_main.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
