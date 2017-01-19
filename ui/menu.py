@@ -105,3 +105,8 @@ class PanelMenuBar(BorderedPanel):
         lyt.Add(menu, 0, wx.ALL, 5)
         
         self.Layout()
+    
+    
+    ## Retrieve number of menus in bar
+    def GetMenuCount(self):
+        return len(self.GetSizer().GetChildren())
