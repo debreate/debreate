@@ -136,6 +136,13 @@ class Panel(WizardPage):
             invalid_name = False
     
     
+    ## Rename tab & manpage
+    def OnRenamePage(self, event=None):
+        index = self.tabs.GetSelection()
+        
+        return self.SetPageName(index, rename=True)
+    
+    
     ## TODO: Doxygen
     def Reset(self):
         pass
