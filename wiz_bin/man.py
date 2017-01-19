@@ -287,9 +287,47 @@ class ManPage(ScrolledPanel):
         pass
     
     
+    ## Removes selected section from manpage document via button press
+    #  
+    #  \return
+    #    \b \e True if section elements were removed
+    def OnRemoveDocumentSection(self, event=None, index=None):
+        if event:
+            index = self._get_object_section(event.GetEventObject())
+        
+        return self.RemoveDocumentSection(index)
+    
+    
     ## TODO: Doxygen
     def OnSetSection(self, event=None):
         self.SetSectionLabel(self.sel_section.GetStringSelection())
+    
+    
+    ## Removes selected section from manpage document
+    #  
+    #  \return
+    #    \b \e True if section elements were removed
+    def RemoveDocumentSection(self, index):
+        if index == None:
+            Logger.Error(__name__, u'Cannot remove desired index')
+            
+            return False
+        
+        Logger.Debug(__name__, u'Removing manpage section at index {}'.format(index))
+        
+        sizer_to_remove = self.GetSizer().GetItem(index).GetSizer()
+        
+        # Object was returned as sizer
+        if sizer_to_remove:
+            self.GetSizer().Detach(sizer_to_remove)
+            sizer_to_remove.Clear(True)
+            sizer_to_remove.Destroy()
+            
+            self.Layout()
+            
+            return True
+        
+        return False
     
     
     ## Updates the label for the current section
