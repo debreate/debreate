@@ -150,9 +150,9 @@ class Panel(WizardPage):
         return self.SetPageName(index, rename=True)
     
     
-    ## TODO: Doxygen
+    ## Removes all tabs & sets page to default values
     def Reset(self):
-        pass
+        self.tabs.DeleteAllPages()
     
     
     ## Show a confirmation dialog when closing a tab
