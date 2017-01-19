@@ -368,8 +368,6 @@ def ReplaceStandardButtons(dialog):
     lyt_buttons = _get_button_sizer(dialog.GetSizer())
     
     removed_button_ids = []
-    insert_index = 0
-    found_button = False
     
     if lyt_buttons:
         for FIELD in lyt_buttons.GetChildren():
@@ -379,22 +377,37 @@ def ReplaceStandardButtons(dialog):
                 lyt_buttons.Detach(FIELD)
                 removed_button_ids.append(FIELD.GetId())
                 FIELD.Destroy()
-                
-                found_button = True
-            
-            if not found_button:
-                insert_index += 1
     
-    for ID in reversed(removed_button_ids):
-        if ID == wx.ID_OK:
-            lyt_buttons.Insert(insert_index, ButtonConfirm(dialog))
-            continue
+    # Replace sizer with ButtonSizer
+    if not isinstance(lyt_buttons, ButtonSizer):
+        container_sizer = _get_containing_sizer(dialog, lyt_buttons)
         
-        if ID == wx.ID_CANCEL:
-            lyt_buttons.Insert(insert_index, ButtonCancel(dialog))
-            continue
+        index = 0
+        for S in container_sizer.GetChildren():
+            S = S.GetSizer()
+            
+            if S and S == lyt_buttons:
+                break
+            
+            index += 1
         
-        lyt_buttons.Insert(insert_index, wx.Button(dialog, ID))
+        container_sizer.Remove(lyt_buttons)
+        lyt_buttons = ButtonSizer(wx.HORIZONTAL)
+        container_sizer.Insert(index, lyt_buttons, 0, wx.ALIGN_RIGHT)
+    
+    # Don't add padding to first item
+    FLAGS = 0
+    
+    for ID in removed_button_ids:
+        if ID in button_list:
+            lyt_buttons.Add(button_list[ID](dialog), 0, FLAGS, 5)
+        
+        else:
+            # Failsafe to add regular wx.Button
+            lyt_buttons.Add(wx.Button(dialog, ID), 0, FLAGS, 5)
+        
+        if not FLAGS:
+            FLAGS = wx.LEFT
     
     dialog.Fit()
     dialog.Layout()
