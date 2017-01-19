@@ -12,6 +12,7 @@ from dbr.language       import GT
 from dbr.selectinput    import ComboBox
 from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetYear
+from ui.layout          import BoxSizer
 
 
 ## Base class for manpage parts
@@ -22,7 +23,7 @@ class ManBase:
         # Allow adding multiple instances of object
         self.Multiple = False
         
-        self.lyt_main = wx.BoxSizer(wx.VERTICAL)
+        self.lyt_main = BoxSizer(wx.VERTICAL)
     
     
     ## TODO: Doxygen
@@ -30,7 +31,7 @@ class ManBase:
         if isinstance(label, (unicode, str)):
             label = wx.StaticText(self.Parent, label=label)
         
-        lyt_field = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_field = BoxSizer(wx.HORIZONTAL)
         
         for X in range(count):
             if expand:
@@ -86,7 +87,7 @@ class ManTitle(ManBase):
         
         # *** Layout *** #
         
-        lyt_name = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_name = BoxSizer(wx.HORIZONTAL)
         lyt_name.Add(txt_name, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_name.Add(ti_name, 0, wx.LEFT, 5)
         
@@ -99,15 +100,15 @@ class ManTitle(ManBase):
         lyt_date.Add(spin_month, (1, 2))
         lyt_date.Add(spin_day, (1, 3))
         
-        lyt_uknwn1 = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_uknwn1 = BoxSizer(wx.HORIZONTAL)
         lyt_uknwn1.Add(txt_unknown1, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_uknwn1.Add(ti_unknown1, 0, wx.LEFT, 5)
         
-        lyt_uknwn2 = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_uknwn2 = BoxSizer(wx.HORIZONTAL)
         lyt_uknwn2.Add(txt_unknown2, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_uknwn2.Add(ti_unknown2, 0, wx.LEFT, 5)
         
-        self.lyt_main = wx.BoxSizer(wx.VERTICAL)
+        self.lyt_main = BoxSizer(wx.VERTICAL)
         self.lyt_main.Add(lyt_name)
         self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
@@ -159,7 +160,7 @@ class ManSection(ManBase):
         
         # *** Layout *** #
         
-        self.lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        self.lyt_main = BoxSizer(wx.HORIZONTAL)
         self.lyt_main.Add(self.sect_name)
         self.lyt_main.Add(value, 1, wx.EXPAND|wx.LEFT, 5)
     
