@@ -334,11 +334,6 @@ class ManPage(ScrolledPanel):
         return self.sel_section.GetStringSelection()
     
     
-    ## Get the contents of manpage
-    def GetValue(self):
-        return self.ti_man.GetValue()
-    
-    
     ## Adds a new section to the document via button press
     def OnAddDocumentSection(self, event=None):
         multiline = False
