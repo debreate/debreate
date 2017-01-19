@@ -47,6 +47,26 @@ def GetYear(fmt=DTFMT.DEFAULT, string_value=True):
     return year
 
 
+## TODO: Doxygen
+def GetMonthInt(string_value=False):
+    month = GS(strftime(u'%m'))
+    
+    if not string_value:
+        month = int(month)
+    
+    return month
+
+
+## TODO: Doxygen
+def GetDayInt(string_value=False):
+    day = GS(strftime(u'%d'))
+    
+    if not string_value:
+        day = int(day)
+    
+    return day
+
+
 ## Retrieves today's date
 #  
 #  \param changelog
