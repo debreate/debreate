@@ -102,6 +102,6 @@ class PanelMenuBar(BorderedPanel):
             menu.Reparent(self)
         
         lyt = self.GetSizer()
-        lyt.Add(menu)
+        lyt.Add(menu, 0, wx.ALL, 5)
         
         self.Layout()
