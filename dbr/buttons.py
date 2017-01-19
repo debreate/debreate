@@ -10,6 +10,7 @@
 
 import wx
 
+from dbr.containers     import Contains
 from dbr.language       import GT
 from globals            import ident
 from globals.bitmaps    import BUTTON_HELP
@@ -330,6 +331,26 @@ def _get_button_sizer(sizer):
         
         if S:
             S = _get_button_sizer(S)
+            
+            if S:
+                return S
+
+
+def _get_containing_sizer(parent, sizer):
+    if isinstance(parent, wx.Window):
+        parent = parent.GetSizer()
+    
+    if not parent or parent == sizer:
+        return None
+    
+    if Contains(parent, sizer):
+        return parent
+    
+    for S in parent.GetChildren():
+        S = S.GetSizer()
+        
+        if S:
+            S = _get_containing_sizer(S, sizer)
             
             if S:
                 return S
