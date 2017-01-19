@@ -6,11 +6,14 @@
 # See: docs/LICENSE.txt
 
 
-import wx
+import traceback, wx
 
+from dbr.buttons        import ButtonRemove
+from dbr.dialogs        import ShowErrorDialog
 from dbr.language       import GT
 from dbr.log            import Logger
 from dbr.selectinput    import ComboBox
+from dbr.textinput      import TextArea
 from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetDayInt
 from globals.dateinfo   import GetMonthInt
@@ -132,7 +135,7 @@ class ManSection(ManBase):
     def __init__(self, parent):
         ManBase.__init__(self, parent)
         
-        sections = (
+        self.sections = (
             GT(u'Name'),
             GT(u'Synopsis'),
             GT(u'Configuration'),
@@ -150,14 +153,61 @@ class ManSection(ManBase):
             GT(u'Example'),
             )
         
-        self.sect_name = ComboBox(parent, choices=sections)
-        value = TextAreaPanel(parent)
+        self.sect_name = None
+        # FIXME: Replace with checkbox
+        self.btn_remove = None
         
         # *** Layout *** #
         
-        self.lyt_main = BoxSizer(wx.HORIZONTAL)
-        self.lyt_main.Add(self.sect_name)
-        self.lyt_main.Add(value, 1, wx.EXPAND|wx.LEFT, 5)
+        self.lyt_main = wx.GridBagSizer()
+    
+    
+    ## Retrieve the remove button
+    def GetButton(self):
+        return self.btn_remove
+    
+    
+    ## Retrieve the main sizer object
+    #  
+    #  \override dbr.mansect.ManBase.GetObject
+    def GetObject(self, section_name=None, multiline=False, static=False, expand=False,
+                removable=False):
+        if static:
+            try:
+                self.sect_name = wx.StaticText(self.Parent, label=section_name)
+            
+            except TypeError:
+                err_l1 = GT(u'Could not remove section')
+                err_l2 = GT(u'Please report this problem to the developers')
+                ShowErrorDialog(u'{}\n\n{}'.format(err_l1, err_l2), traceback.format_exc())
+                
+                return None
+        
+        else:
+            self.sect_name = wx.Choice(self.Parent, choices=self.sections)
+        
+        if multiline:
+            value = TextAreaPanel(self.Parent)
+            FLAG_VALUE = wx.EXPAND|wx.LEFT
+            FLAG_LABEL = wx.ALIGN_TOP
+        
+        else:
+            value = TextArea(self.Parent)
+            FLAG_VALUE = wx.ALIGN_CENTER_VERTICAL|wx.LEFT
+            FLAG_LABEL = wx.ALIGN_CENTER_VERTICAL
+        
+        self.lyt_main.Add(self.sect_name, (0, 0), flag=FLAG_LABEL)
+        self.lyt_main.Add(value, (0, 1), flag=FLAG_VALUE, border=5)
+        
+        if expand:
+            self.lyt_main.AddGrowableCol(1)
+        
+        if removable:
+            self.btn_remove = ButtonRemove(self.Parent)
+            
+            self.lyt_main.Add(self.btn_remove, (0, 2), flag=wx.RIGHT, border=5)
+        
+        return ManBase.GetObject(self)
     
     
     ## TODO: Doxygen
