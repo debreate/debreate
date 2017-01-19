@@ -71,9 +71,6 @@ class ManBanner(ManBase):
     def __init__(self, parent):
         ManBase.__init__(self, parent)
         
-        txt_name = wx.StaticText(parent, label=GT(u'Name'))
-        ti_name = wx.TextCtrl(parent, value=parent.Name)
-        
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
         spin_month = wx.SpinCtrl(parent, min=1, max=12, initial=GetMonthInt())
@@ -88,10 +85,6 @@ class ManBanner(ManBase):
         ti_unknown2 = wx.TextCtrl(parent)
         
         # *** Layout *** #
-        
-        lyt_name = BoxSizer(wx.HORIZONTAL)
-        lyt_name.Add(txt_name, 0, wx.ALIGN_CENTER_VERTICAL)
-        lyt_name.Add(ti_name, 0, wx.LEFT, 5)
         
         lyt_date = wx.GridBagSizer()
         lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
@@ -111,7 +104,6 @@ class ManBanner(ManBase):
         lyt_uknwn2.Add(ti_unknown2, 0, wx.LEFT, 5)
         
         self.lyt_main = BoxSizer(wx.VERTICAL)
-        self.lyt_main.Add(lyt_name)
         self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn2, 0, wx.TOP, 5)
