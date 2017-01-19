@@ -216,7 +216,9 @@ class ButtonSizer(BoxSizer):
         BoxSizer.__init__(self, orient)
     
     
+    ## TODO: Doxygen
     def Add(self, button, proportion=0, flag=0, border=0, label=None, userData=None):
+        # FIXME: Create method to call from Add & Insert methods & reduce code
         if isinstance(button, CustomButton):
             if label == None:
                 label = button.GetToolTipString()
@@ -231,10 +233,28 @@ class ButtonSizer(BoxSizer):
         return BoxSizer.Add(self, add_object, proportion, flag, border, userData)
     
     
+    ## TODO: Doxygen
     def HideLabels(self):
         self.ShowLabels(False)
     
     
+    ## TODO: Doxygen
+    def Insert(self, index, button, proportion=0, flag=0, border=0, label=None, userData=None):
+        if isinstance(button, CustomButton):
+            if label == None:
+                label = button.GetToolTipString()
+            
+            add_object = BoxSizer(wx.VERTICAL)
+            add_object.Add(button, 0, wx.ALIGN_CENTER)
+            add_object.Add(wx.StaticText(button.Parent, label=label), 0, wx.ALIGN_CENTER_HORIZONTAL)
+        
+        else:
+            add_object = button
+        
+        return BoxSizer.Insert(self, index, add_object, proportion, flag, border, userData)
+    
+    
+    ## Show or hide text labels
     def ShowLabels(self, show=True):
         buttons = self.GetChildren()
         
