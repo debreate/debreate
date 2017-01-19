@@ -153,15 +153,6 @@ class Panel(WizardPage):
     ## Removes all tabs & sets page to default values
     def Reset(self):
         self.tabs.DeleteAllPages()
-    
-    
-    ## Show a confirmation dialog when closing a tab
-    def OnCloseTab(self, event=None):
-        if not TextIsEmpty(self.tabs.CurrentPage.GetValue()):
-            if not ConfirmationDialog(GetTopWindow(), GT(u'Close Tab'),
-                    GT(u'Are you sure you want to close this tab?')).Confirmed():
-                if event:
-                    event.Veto()
 
 
 ## TODO: Doxygen
