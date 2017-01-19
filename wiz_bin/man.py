@@ -280,6 +280,13 @@ class ManPage(ScrolledPanel):
         self.AddDocumentSection(expand=True)
     
     
+    ## Show a confirmation dialog when closing a tab
+    #  
+    #  FIXME: Find children & check default values
+    def OnCloseTab(self, event=None):
+        pass
+    
+    
     ## TODO: Doxygen
     def OnSetSection(self, event=None):
         self.SetSectionLabel(self.sel_section.GetStringSelection())
