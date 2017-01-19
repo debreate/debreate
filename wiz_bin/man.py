@@ -253,7 +253,7 @@ class ManPage(ScrolledPanel):
         self.SetSizer(lyt_main)
         self.Layout()
         
-        self.AddDocumentSection(GT(u'Name'), False)
+        self.AddDocumentSection(GT(u'Name'), static=True, expand=False, removable=False)
     
     
     ## Retrieves the section index that contains the object
@@ -281,26 +281,31 @@ class ManPage(ScrolledPanel):
     
     
     ## Adds a new section to the document
-    def AddDocumentSection(self, name=None, expand=False, removable=True):
+    def AddDocumentSection(self, section_name=None, multiline=False, static=False, expand=False,
+                removable=True):
         doc_section = ManSection(self)
-        sect_sizer = doc_section.GetObject()
+        sect_sizer = doc_section.GetObject(section_name, multiline, static, expand, removable)
         
-        if name:
-            doc_section.SetSectionName(name)
+        if not sect_sizer:
+            return False
         
         FLAGS = wx.LEFT|wx.RIGHT|wx.TOP
         if expand:
             FLAGS = wx.EXPAND|FLAGS
         
         main_sizer = self.GetSizer()
-        main_sizer.Add(sect_sizer, 0, FLAGS, 5)
         
         if removable:
-            btn_remove = ButtonRemove(self)
-            btn_remove.Index = GetItemCount(main_sizer)
-            sect_sizer.Add(btn_remove, 0, wx.LEFT, 5)
+            # FIXME: Replace with checkboxes
+            btn_remove = doc_section.GetButton()
+            if btn_remove:
+                btn_remove.Bind(wx.EVT_BUTTON, self.OnRemoveDocumentSection)
+        
+        main_sizer.Add(sect_sizer, 0, FLAGS, 5)
         
         self.Layout()
+        
+        return True
     
     
     ## Get manpage section & contents
@@ -320,7 +325,12 @@ class ManPage(ScrolledPanel):
     
     ## Adds a new section to the document via button press
     def OnAddDocumentSection(self, event=None):
-        self.AddDocumentSection(expand=True)
+        multiline = False
+        
+        if event:
+            multiline = event.GetEventObject().GetId() == ident.MULTI
+        
+        self.AddDocumentSection(multiline=multiline, expand=True, removable=True)
     
     
     ## Show a confirmation dialog when closing a tab
