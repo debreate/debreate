@@ -601,10 +601,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def OnNewProject(self, event=None):
-        dia = wx.MessageDialog(self, GT(u'You will lose any unsaved information\n\nContinue?'),
-                GT(u'Start New Project'), wx.YES_NO|wx.NO_DEFAULT)
+        confirm = ConfirmationDialog(self, GT(u'Start New Project'),
+                text=GT(u'You will lose any unsaved information\n\nContinue?'))
         
-        if ShowDialog(dia):
+        if confirm.Confirmed():
             Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectLoaded()))
             
             self.wizard.ResetPagesInfo()
