@@ -215,14 +215,15 @@ class ManPage(ScrolledPanel):
         
         self.label_section = wx.StaticText(self, label=self.sections[self.sel_section.default])
         
-        btn_add_sect = ButtonAdd(self)
-        txt_add_sect = wx.StaticText(self, label=GT(u'Add document section'))
+        #FIXME: Replace buttons with drop-down menu
+        btn_single_line = ButtonAdd(self, ident.SINGLE)
+        txt_single_line = wx.StaticText(self, label=GT(u'Add single line section'))
         
         # *** Event Handling *** #
         
         self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
         
-        btn_add_sect.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
+        btn_single_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
         
         # *** Layout *** #
         
@@ -232,8 +233,8 @@ class ManPage(ScrolledPanel):
         lyt_section.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_button = BoxSizer(wx.HORIZONTAL)
-        lyt_button.Add(btn_add_sect)
-        lyt_button.Add(txt_add_sect, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        lyt_button.Add(btn_single_line)
+        lyt_button.Add(txt_single_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
