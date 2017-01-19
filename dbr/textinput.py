@@ -8,6 +8,8 @@
 
 import time, wx
 
+from dbr.buttons            import ButtonCancel
+from dbr.buttons            import ButtonConfirm
 from dbr.font               import MONOSPACED_LG
 from dbr.language           import GT
 from globals.fileio         import ReadFile
@@ -348,3 +350,78 @@ class MonospaceTextArea(TextAreaPanel):
         self.textarea.SetFont(font)
         self.textarea.SetInsertionPoint(insertion)
         self.textarea.SetFocus()
+
+
+## Custom TextEntryDialog that defines Clear method
+class TextEntryDialog(wx.TextEntryDialog):
+    def __init__(self, parent, message, caption=u'Please enter text', defaultValue=u'',
+            pos=wx.DefaultPosition, style=wx.OK|wx.CANCEL|wx.CENTER):
+        wx.TextEntryDialog.__init__(self, parent, message, caption, defaultValue, style, pos)
+    
+    
+    ## Clear the text input
+    #  
+    #  \return
+    #    \b \e True if text input is empty
+    def Clear(self):
+        self.SetValue(wx.EmptyString)
+        
+        return TextIsEmpty(self.Value)
+    
+    
+    ## Find sizer instance that contains buttons
+    def GetButtonSizer(self, sizer=None):
+        if sizer == None:
+            sizer = self.GetSizer()
+        
+        if isinstance(sizer, wx.StdDialogButtonSizer):
+            return sizer
+        
+        for S in sizer.GetChildren():
+            S = S.GetSizer()
+            
+            if S:
+                S = self.GetButtonSizer(S)
+                
+                if isinstance(S, wx.StdDialogButtonSizer):
+                    return S
+    
+    
+    ## Override ShowModal method to set focus in text area
+    def ShowModal(self):
+        # FIXME: Create function for replacing standard dialog buttons
+        lyt_buttons = self.GetButtonSizer()
+        
+        removed_button_ids = []
+        insert_index = 0
+        found_button = False
+        
+        if lyt_buttons:
+            for FIELD in lyt_buttons.GetChildren():
+                FIELD = FIELD.GetWindow()
+                
+                if isinstance(FIELD, wx.Button):
+                    lyt_buttons.Detach(FIELD)
+                    removed_button_ids.append(FIELD.GetId())
+                    FIELD.Destroy()
+                    
+                    found_button = True
+                
+                if not found_button:
+                    insert_index += 1
+        
+        for ID in reversed(removed_button_ids):
+            if ID == wx.ID_OK:
+                lyt_buttons.Insert(insert_index, ButtonConfirm(self))
+                continue
+            
+            if ID == wx.ID_CANCEL:
+                lyt_buttons.Insert(insert_index, ButtonCancel(self))
+                continue
+            
+            lyt_buttons.Insert(insert_index, wx.Button(self, ID))
+        
+        self.Fit()
+        self.Layout()
+        
+        return wx.TextEntryDialog.ShowModal(self)
