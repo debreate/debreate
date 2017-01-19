@@ -267,10 +267,15 @@ button_list = {
 #    The \b \e wx.Sizer instance that the buttons sizer should be added to
 #  \param show_labels:
 #    If True, button labels will be shown on custom button instances
+#  \param reverse
+#    Reverse order of buttons added
 #  \return
 #    \b \e BoxSizer instance containing the buttons
-def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True):
+def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, reverse=True):
     lyt_buttons = ButtonSizer(wx.HORIZONTAL)
+    
+    if reverse:
+        button_ids = reversed(button_ids)
     
     for ID in button_ids:
         if ID in button_list:
