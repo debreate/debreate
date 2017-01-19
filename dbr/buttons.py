@@ -15,6 +15,7 @@ from globals            import ident
 from globals.bitmaps    import BUTTON_HELP
 from globals.bitmaps    import BUTTON_REFRESH
 from globals.paths      import PATH_app
+from ui.layout          import BoxSizer
 
 
 ## The same as wx.BitmapButton but defaults to style=wx.NO_BORDER
@@ -209,11 +210,52 @@ class ButtonSave64(CustomButton):
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
 
 
+## BoxSizer class to distinguish between other sizers
+class ButtonSizer(BoxSizer):
+    def __init__(self, orient):
+        BoxSizer.__init__(self, orient)
+    
+    
+    def Add(self, button, proportion=0, flag=0, border=0, label=None, userData=None):
+        if isinstance(button, CustomButton):
+            if label == None:
+                label = button.GetToolTipString()
+            
+            add_object = BoxSizer(wx.VERTICAL)
+            add_object.Add(button, 0, wx.ALIGN_CENTER)
+            add_object.Add(wx.StaticText(button.Parent, label=label), 0, wx.ALIGN_CENTER_HORIZONTAL)
+        
+        else:
+            add_object = button
+        
+        return BoxSizer.Add(self, add_object, proportion, flag, border, userData)
+    
+    
+    def HideLabels(self):
+        self.ShowLabels(False)
+    
+    
+    def ShowLabels(self, show=True):
+        buttons = self.GetChildren()
+        
+        if buttons:
+            for SIZER in self.GetChildren():
+                SIZER = SIZER.GetSizer()
+                
+                if SIZER:
+                    label = SIZER.GetChildren()[1]
+                    label.Show(show)
+            
+            window = self.GetContainingWindow()
+            if window:
+                window.Layout()
+
+
 ## Find sizer instance that contains buttons
 #  
 #  Helper function for ReplaceStandardButtons
 def _get_button_sizer(sizer):
-    if isinstance(sizer, wx.StdDialogButtonSizer):
+    if isinstance(sizer, (ButtonSizer, wx.StdDialogButtonSizer)):
         return sizer
     
     for S in sizer.GetChildren():
