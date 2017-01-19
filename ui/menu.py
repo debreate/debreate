@@ -8,7 +8,8 @@
 
 import wx
 
-from globals.wizardhelper import GetTopWindow
+from globals.wizardhelper   import GetTopWindow
+from ui.panel               import BorderedPanel
 
 
 ## A menu bar that stores an ID along with a menu
@@ -82,9 +83,9 @@ class PanelMenu(wx.StaticText):
 
 
 ## A custom menu bar designed for use in wx.Panel
-class PanelMenuBar(wx.Panel):
+class PanelMenuBar(BorderedPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, name=u'menubar'):
-        wx.Panel.__init__(self, parent, win_id, name=name)
+        BorderedPanel.__init__(self, parent, win_id, name=name)
         
         lyt_main = wx.BoxSizer(wx.HORIZONTAL)
         
