@@ -29,6 +29,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 from ui.layout              import BoxSizer
 from ui.notebook            import Notebook
+from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 
 
@@ -207,13 +208,20 @@ class ManPage(ScrolledPanel):
         menubar.Add(PanelMenu(), GT(u'Add'))
         
         self.btn_rename = wx.Button(self, label=GT(u'Rename'))
-        txt_section = wx.StaticText(self, label=GT(u'Section'))
         
-        self.sel_section = wx.Choice(self, choices=tuple(self.sections))
+        # *** Banners *** #
+        
+        txt_banners = wx.StaticText(self, label=GT(u'Banners'))
+        pnl_banners = BorderedPanel(self)
+        
+        txt_section = wx.StaticText(pnl_banners, label=GT(u'Section'))
+        
+        self.sel_section = wx.Choice(pnl_banners, choices=tuple(self.sections))
         self.sel_section.default = u'1'
         self.sel_section.SetStringSelection(self.sel_section.default)
         
-        self.label_section = wx.StaticText(self, label=self.sections[self.sel_section.default])
+        # Section description that changes with EVT_CHOICE
+        self.label_section = wx.StaticText(pnl_banners, label=self.sections[self.sel_section.default])
         
         #FIXME: Replace buttons with drop-down menu
         btn_single_line = ButtonAdd(self, ident.SINGLE)
@@ -236,17 +244,25 @@ class ManPage(ScrolledPanel):
         lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_section.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
+        lyt_banners = BoxSizer(wx.VERTICAL)
+        lyt_banners.Add(lyt_section, 0, wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_banners.Add(ManBanner(pnl_banners).GetObject(), 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        
+        pnl_banners.SetAutoLayout(True)
+        pnl_banners.SetSizer(lyt_banners)
+        
         lyt_button = BoxSizer(wx.HORIZONTAL)
         lyt_button.Add(btn_single_line)
         lyt_button.Add(txt_single_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         lyt_button.Add(btn_multi_line, 0, wx.LEFT, 5)
         lyt_button.Add(txt_multi_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
+        # FIXME: Use GridBagSizer???
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(menubar, 0, wx.EXPAND)
         lyt_main.Add(self.btn_rename, 0, wx.LEFT|wx.TOP, 5)
-        lyt_main.Add(lyt_section, 0, wx.LEFT|wx.TOP, 5)
-        lyt_main.Add(ManBanner(self).GetObject(), 0, wx.LEFT|wx.TOP, 5)
+        lyt_main.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
+        lyt_main.Add(pnl_banners, 0, wx.LEFT, 5)
         lyt_main.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
         
         self.SetAutoLayout(True)
