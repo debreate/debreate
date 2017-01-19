@@ -273,6 +273,10 @@ def _get_button_sizer(sizer):
 #  \param dialog
 #    Dialog instance containing the buttons
 def ReplaceStandardButtons(dialog):
+    if isinstance(dialog, wx.MessageDialog):
+        print(u'ERROR: [dbr.buttons] FIXME: Cannot replace buttons on wx.MessageDialog')
+        return
+    
     lyt_buttons = _get_button_sizer(dialog.GetSizer())
     
     removed_button_ids = []
