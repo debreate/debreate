@@ -10,7 +10,7 @@ import wx
 from wx.richtext import RE_MULTILINE
 from wx.richtext import RichTextCtrl
 
-from dbr.buttons import ButtonConfirm
+from ui.button   import ButtonConfirm
 
 
 ## Class to parse & display Markdown text

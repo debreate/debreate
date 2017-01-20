@@ -8,8 +8,8 @@
 
 import wx
 
-from dbr.buttons        import ReplaceStandardButtons
 from globals.strings    import TextIsEmpty
+from ui.button          import ReplaceStandardButtons
 
 
 ## Custom TextEntryDialog that defines Clear method
