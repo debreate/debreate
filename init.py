@@ -118,7 +118,6 @@ debreate_app = wx.App()
 from dbr.config             import ConfCode
 from dbr.config             import GetAllConfigKeys
 from dbr.config             import GetDefaultConfigValue
-from dbr.firstrun           import LaunchFirstRun
 from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
@@ -131,6 +130,7 @@ from globals.constants      import PREFIX
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from main                   import MainWindow
+from startup.firstrun       import LaunchFirstRun
 
 
 # Log window refresh interval
