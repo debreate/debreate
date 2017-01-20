@@ -15,11 +15,11 @@ from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
+from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
-from startup.tests          import GetTestList
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
@@ -51,8 +51,6 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, ident.FILES)
         
-        testing = u'alpha' in GetTestList()
-        
         # *** Left Panel *** #
         
         pnl_treeopts = BorderedPanel(self)
@@ -61,10 +59,9 @@ class Panel(WizardPage):
                 name=u'individually')
         self.chk_individuals.default = False
         
-        if testing:
-            self.chk_preserve_top = wx.CheckBox(pnl_treeopts, label=GT(u'Preserve top-level directories'),
-                    name=u'top-level')
-            self.chk_preserve_top.default = False
+        self.chk_preserve_top = wx.CheckBox(pnl_treeopts, label=GT(u'Preserve top-level directories'),
+                name=u'top-level')
+        self.chk_preserve_top.default = False
         
         self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
         
@@ -140,10 +137,7 @@ class Panel(WizardPage):
         lyt_treeopts = wx.BoxSizer(wx.VERTICAL)
         lyt_treeopts.AddSpacer(5)
         lyt_treeopts.Add(self.chk_individuals, 0, wx.LEFT|wx.RIGHT, 5)
-        
-        if testing:
-            lyt_treeopts.Add(self.chk_preserve_top, 0, wx.LEFT|wx.RIGHT, 5)
-        
+        lyt_treeopts.Add(self.chk_preserve_top, 0, wx.LEFT|wx.RIGHT, 5)
         lyt_treeopts.AddSpacer(5)
         
         pnl_treeopts.SetSizer(lyt_treeopts)
@@ -446,7 +440,10 @@ class Panel(WizardPage):
     #  \param paths_list
     #    \b \e tuple|list : List of string values of files & directories to be added
     def LoadPaths(self, paths_list):
-        if not paths_list or not isinstance(paths_list, (tuple, list)):
+        if isinstance(paths_list, tuple):
+            paths_list = list(paths_list)
+        
+        if not paths_list or not isinstance(paths_list, list):
             return False
         
         file_list = []
@@ -460,6 +457,18 @@ class Panel(WizardPage):
         count = 0
         
         prep.Show()
+        
+        if not self.chk_preserve_top.GetValue():
+            for INDEX in reversed(range(len(paths_list))):
+                path = paths_list[INDEX]
+                if os.path.isdir(path):
+                    # Remove top-level directory from list
+                    paths_list.pop(INDEX)
+                    
+                    insert_index = INDEX
+                    for P in os.listdir(path):
+                        paths_list.insert(insert_index, ConcatPaths((path, P)))
+                        insert_index += 1
         
         try:
             for P in paths_list:
