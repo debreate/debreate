@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.mansect
+## \package ui.mansect
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -169,7 +169,7 @@ class ManSection(ManBase):
     
     ## Retrieve the main sizer object
     #  
-    #  \override dbr.mansect.ManBase.GetObject
+    #  \override ui.mansect.ManBase.GetObject
     def GetObject(self, section_name=None, multiline=False, static=False, expand=False,
                 removable=False):
         if static:
