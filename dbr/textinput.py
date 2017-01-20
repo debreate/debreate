@@ -359,6 +359,9 @@ class TextEntryDialog(wx.TextEntryDialog):
         
         ReplaceStandardButtons(self)
         
+        self.stored_value = wx.EmptyString
+        self.stored_insertion = 0
+        
         # *** Event Handling *** #
         
         bound_id = None
@@ -386,6 +389,23 @@ class TextEntryDialog(wx.TextEntryDialog):
         self.SetValue(wx.EmptyString)
         
         return TextIsEmpty(self.Value)
+    
+    
+    ## Ends a modal dialog, passing a value to be returned from the wxDialog::ShowModal invocation
+    #  
+    #  \override wx.TextEntryDialog.EndModal
+    def EndModal(self, retCode):
+        self.StoreValue()
+        self.StoreInsertionPoint()
+        
+        return wx.TextEntryDialog.EndModal(self, retCode)
+    
+    
+    ## Retrieve dialog's TextCtrl instance
+    def GetTextCtrl(self):
+        for FIELD in self.GetChildren():
+            if isinstance(FIELD, wx.TextCtrl):
+                return FIELD
     
     
     ## Extra actions to take when pressing 'OK/Confirm' button
@@ -416,3 +436,13 @@ class TextEntryDialog(wx.TextEntryDialog):
         self.SetFocus()
         
         return wx.TextEntryDialog.ShowModal(self)
+    
+    
+    ## Stores TextCtrl instance's insertion point
+    def StoreInsertionPoint(self):
+        self.stored_insertion = self.GetInsertionPoint()
+    
+    
+    ## Stores TextCtrl instance's value
+    def StoreValue(self):
+        self.stored_value = self.GetValue()
