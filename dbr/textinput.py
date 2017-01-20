@@ -372,4 +372,7 @@ class TextEntryDialog(wx.TextEntryDialog):
     def ShowModal(self):
         ReplaceStandardButtons(self)
         
+        # Place focus on text control
+        self.SetFocus()
+        
         return wx.TextEntryDialog.ShowModal(self)
