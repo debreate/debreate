@@ -358,6 +358,24 @@ class TextEntryDialog(wx.TextEntryDialog):
         wx.TextEntryDialog.__init__(self, parent, message, caption, defaultValue, style, pos)
         
         ReplaceStandardButtons(self)
+        
+        # *** Event Handling *** #
+        
+        bound_id = None
+        for FIELD in self.GetChildren():
+            field_id = FIELD.GetId()
+            if isinstance(FIELD, wx.Button) and field_id == wx.ID_OK:
+                FIELD.Bind(wx.EVT_BUTTON, self.OnConfirm)
+                
+                bound_id = field_id
+        
+        if not bound_id:
+            # FIXME: Can't use Logger in this module
+            print(u'WARNING: [{}] Confirm button was not bound to button event, insertion point will not be updated'.format(__name__))
+        
+        elif bound_id != wx.ID_OK:
+            # FIXME: Can't use Logger in this module
+            print(u'WARNING: [{}] Button event was bound to button with non-ID ID_OK: {}'.format(__name__, bound_id))
     
     
     ## Clear the text input
@@ -368,6 +386,28 @@ class TextEntryDialog(wx.TextEntryDialog):
         self.SetValue(wx.EmptyString)
         
         return TextIsEmpty(self.Value)
+    
+    
+    ## Extra actions to take when pressing 'OK/Confirm' button
+    #  
+    #  - Stores insertion point for updating when dialog is shown again
+    #  FIXME: Event not propagating from inherited class
+    def OnConfirm(self, event=None):
+        self.stored_insertion = self.GetInsertionPoint()
+        
+        if event:
+            event_object = event.GetEventObject()
+            
+            if isinstance(event_object, wx.Button):
+                event_id = event_object.GetId()
+            
+            else:
+                event_id = event.GetId()
+        
+        else:
+            event_id = wx.ID_OK
+        
+        self.EndModal(event_id)
     
     
     ## Override ShowModal method to set focus in text area
