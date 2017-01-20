@@ -12,7 +12,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.textpreview        import TextPreview
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
@@ -30,6 +29,7 @@ from ui.charctrl            import CharCtrl
 from ui.panel               import BorderedPanel
 from ui.selectinput         import ComboBox
 from ui.textinput           import TextAreaPanel
+from ui.textpreview         import TextPreview
 
 
 ## This panel displays the field input of the control file

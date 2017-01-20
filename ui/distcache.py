@@ -15,7 +15,6 @@ from dbr.dialogs            import ShowMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
-from dbr.textpreview        import TextPreview
 from dbr.timer              import DebreateTimer
 from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
@@ -27,6 +26,7 @@ from globals.threads        import Thread
 from globals.wizardhelper   import GetField
 from ui.panel               import BorderedPanel
 from ui.progress            import ProgressDialog
+from ui.textpreview         import TextPreview
 
 
 ## Dialog displaying controls for updating distribution names cache file
