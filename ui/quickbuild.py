@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.quickbuild
+## \package ui.quickbuild
 
 # MIT licensing
 # See: docs/LICENSE.txt
