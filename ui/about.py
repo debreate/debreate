@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.about
+## \package ui.about
 
 # MIT licensing
 # See: docs/LICENSE.txt
