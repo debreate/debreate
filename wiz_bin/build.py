@@ -39,12 +39,12 @@ from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.strings        import RemoveEmptyLines
 from globals.strings        import TextIsEmpty
-from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from startup.tests          import GetTestList
 from ui.panel               import BorderedPanel
 
 
