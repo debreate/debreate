@@ -514,9 +514,17 @@ class TextEntryDialog(wx.TextEntryDialog):
         return False
     
     
-    ## Override ShowModal method to set focus in text area
+    ## Show modal dialog
+    #  
+    #  Differences from inherited method:
+    #  - Replaces insertion point & sets focus back on text area
+    #  \override wx.TextEntryDialog.ShowModal
     def ShowModal(self):
-        # Place focus on text control
+        if self.stored_value:
+            self.RestoreValue()
+            self.RestoreInsertionPoint()
+        
+        # Put focus back on text control
         self.SetFocus()
         
         return wx.TextEntryDialog.ShowModal(self)
