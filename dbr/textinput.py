@@ -401,11 +401,28 @@ class TextEntryDialog(wx.TextEntryDialog):
         return wx.TextEntryDialog.EndModal(self, retCode)
     
     
+    ## Retrieves insertion point of the TextCtrl instance
+    #  
+    #  \return
+    #    Index of insertion point
+    def GetInsertionPoint(self):
+        text_ctrl = self.GetTextCtrl()
+        if text_ctrl:
+            return text_ctrl.GetInsertionPoint()
+    
+    
     ## Retrieve dialog's TextCtrl instance
     def GetTextCtrl(self):
         for FIELD in self.GetChildren():
             if isinstance(FIELD, wx.TextCtrl):
                 return FIELD
+    
+    
+    ## Retrieves value from TextCtrl instance
+    def GetValue(self):
+        text_ctrl = self.GetTextCtrl()
+        if text_ctrl:
+            return self.GetTextCtrl().GetValue()
     
     
     ## Extra actions to take when pressing 'OK/Confirm' button
@@ -428,6 +445,73 @@ class TextEntryDialog(wx.TextEntryDialog):
             event_id = wx.ID_OK
         
         self.EndModal(event_id)
+    
+    
+    ## Sets TextCtrl instance's insertion point from stored value
+    def RestoreInsertionPoint(self):
+        # DEBUG: Start
+        print(u'\nTextEntryDialog.RestoreInsertionPoint:')
+        print(u'  Restoring insertion point: {}'.format(self.stored_insertion))
+        # DEBUG: End
+        
+        self.SetInsertionPoint(self.stored_insertion)
+        
+        # Reset to default
+        self.stored_insertion = 0
+    
+    
+    ## Sets TextCtrl instance's value from stored value
+    def RestoreValue(self):
+        # DEBUG: Start
+        print(u'\nTextEntryDialog.RestoreValue:')
+        print(u'  Restoring value: {}'.format(self.stored_value))
+        # DEBUG: End
+        
+        self.SetValue(self.stored_value)
+        
+        # Reset to default
+        self.stored_value = wx.EmptyString
+    
+    
+    ## Set insertion point of TextCtrl instance
+    #  
+    #  FIXME: Not working
+    #  \param point
+    #    Index at with to set carat
+    def SetInsertionPoint(self, pos):
+        # DEBUG: Line
+        print(u'\nTextEntryDialog.SetInsertionPoint:')
+        
+        text_ctrl = self.GetTextCtrl()
+        
+        # DEBUG: Start
+        print(u'  TextCtrl instance: {}'.format(type(text_ctrl)))
+        print(u'  Insertion point before: {}'.format(text_ctrl.GetInsertionPoint()))
+        # DEBUG: End
+        
+        if text_ctrl:
+            text_ctrl.SetInsertionPoint(pos)
+            
+            # DEBUG: Line
+            print(u'  Insertion point after:  {}'.format(text_ctrl.GetInsertionPoint()))
+            
+            return True
+        
+        # DEBUG: Line
+        print(u'  Error: TextCtrl instance is None type')
+        
+        return False
+    
+    
+    ## Set insertion point of TextContrl to end
+    def SetInsertionPointEnd(self):
+        text_ctrl = self.GetTextCtrl()
+        if text_ctrl:
+            text_ctrl.SetInsertionPointEnd()
+            
+            return True
+        
+        return False
     
     
     ## Override ShowModal method to set focus in text area
