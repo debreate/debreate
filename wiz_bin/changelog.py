@@ -11,7 +11,6 @@ import commands, os, wx
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.pathctrl           import PathCtrl
 from dbr.selectinput        import ComboBox
 from dbr.textinput          import MonospaceTextArea
 from dbr.textinput          import TextAreaPanel
@@ -33,6 +32,7 @@ from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.panel               import BorderedPanel
+from ui.pathctrl            import PathCtrl
 
 
 ## Changelog page
