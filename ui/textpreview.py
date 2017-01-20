@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.textpreview
+## \package ui.textpreview
 
 # MIT licensing
 # See: docs/LICENSE.txt
