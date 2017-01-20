@@ -93,8 +93,13 @@ class PanelMenuBar(BorderedPanel):
         self.SetSizer(lyt_main)
     
     
-    ## TODO: Doxygen
-    def Add(self, menu, label=None):
+    ## Add a Panel menu instance to menu bar
+    #  
+    #  \param menu
+    #    \b \e PanelMenu instance to be added
+    #  \param label
+    #    Optional \b \e string label to override menu label
+    def AddItem(self, menu, label=None):
         if label:
             menu.SetLabel(label)
         
