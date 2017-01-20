@@ -11,7 +11,6 @@ from urllib2 import HTTPError
 from urllib2 import URLError
 
 from command_line           import parsed_args_s
-from dbr.about              import AboutDialog
 from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
@@ -68,6 +67,7 @@ from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
+from ui.about               import AboutDialog
 from ui.menu                import MenuBar
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
