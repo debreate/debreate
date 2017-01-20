@@ -257,7 +257,8 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         msg_lines = (
             GT(u'Quick build complete'),
             self.input_target.GetValue(),
-        )
+            )
+        
         ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
     
     
