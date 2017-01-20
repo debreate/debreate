@@ -8,7 +8,6 @@
 
 import commands, math, os, subprocess, time, traceback, wx
 
-from dbr.checklist          import CheckListDialog
 from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetFileSaveDialog
@@ -45,6 +44,7 @@ from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
+from ui.checklist           import CheckListDialog
 from ui.panel               import BorderedPanel
 
 

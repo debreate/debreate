@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.checklist
+## \package ui.checklist
 
 # MIT licensing
 # See: docs/LICENSE.txt
