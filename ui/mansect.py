@@ -11,7 +11,6 @@ import traceback, wx
 from dbr.dialogs        import ShowErrorDialog
 from dbr.language       import GT
 from dbr.log            import Logger
-from dbr.selectinput    import ComboBox
 from dbr.textinput      import TextArea
 from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetDayInt
@@ -19,6 +18,7 @@ from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
 from ui.button          import ButtonRemove
 from ui.layout          import BoxSizer
+from ui.selectinput     import ComboBox
 
 
 ## Base class for manpage parts
