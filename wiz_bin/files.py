@@ -52,7 +52,9 @@ class Panel(WizardPage):
         
         # *** Left Panel *** #
         
-        self.chk_individuals = wx.CheckBox(self, label=GT(u'List files individually'),
+        pnl_treeopts = BorderedPanel(self)
+        
+        self.chk_individuals = wx.CheckBox(pnl_treeopts, label=GT(u'List files individually'),
                 name=u'individually')
         self.chk_individuals.default = False
         
@@ -127,9 +129,17 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
+        lyt_treeopts = wx.BoxSizer(wx.VERTICAL)
+        lyt_treeopts.AddSpacer(5)
+        lyt_treeopts.Add(self.chk_individuals, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_treeopts.AddSpacer(5)
+        
+        pnl_treeopts.SetSizer(lyt_treeopts)
+        
         lyt_left = wx.BoxSizer(wx.VERTICAL)
-        lyt_left.AddSpacer(5)
-        lyt_left.Add(self.chk_individuals, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.BOTTOM, 5)
+        lyt_left.AddSpacer(10)
+        lyt_left.Add(wx.StaticText(self, label=GT(u'Directory options')), 0, wx.ALIGN_BOTTOM)
+        lyt_left.Add(pnl_treeopts, 0, wx.EXPAND|wx.ALIGN_LEFT|wx.BOTTOM, 5)
         lyt_left.Add(self.tree_dirs, 1, wx.EXPAND)
         
         lyt_target = wx.GridSizer(3, 2, 5, 5)
