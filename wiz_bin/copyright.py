@@ -8,8 +8,6 @@
 
 import os, wx
 
-from dbr.dialogs            import ConfirmationDialog
-from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetLongestLine
 from dbr.functions          import GetSystemLicensesList
 from dbr.language           import GT
@@ -24,6 +22,8 @@ from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
+from ui.dialog              import ConfirmationDialog
+from ui.dialog              import ShowErrorDialog
 from ui.textinput           import MonospaceTextArea
 
 

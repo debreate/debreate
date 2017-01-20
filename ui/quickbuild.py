@@ -8,12 +8,6 @@
 
 import os, thread, traceback, wx
 
-from dbr.dialogs            import GetDirDialog
-from dbr.dialogs            import GetFileSaveDialog
-from dbr.dialogs            import OverwriteDialog
-from dbr.dialogs            import ShowDialog
-from dbr.dialogs            import ShowErrorDialog
-from dbr.dialogs            import ShowMessageDialog
 from dbr.functions          import BuildDebPackage
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -27,6 +21,12 @@ from globals.paths          import ConcatPaths
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonBuild
 from ui.button              import ButtonCancel
+from ui.dialog              import GetDirDialog
+from ui.dialog              import GetFileSaveDialog
+from ui.dialog              import OverwriteDialog
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
+from ui.dialog              import ShowMessageDialog
 
 
 GAUGE_MAX = 100

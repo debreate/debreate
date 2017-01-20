@@ -8,7 +8,6 @@
 
 import commands, os, shutil, wx
 
-from dbr.dialogs            import ShowErrorDialog
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
@@ -28,6 +27,7 @@ from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from ui.button              import ButtonConfirm
+from ui.dialog              import ShowErrorDialog
 from ui.hyperlink           import Hyperlink
 from ui.listinput           import ListCtrlPanel
 from ui.textinput           import TextAreaPanel

@@ -14,9 +14,6 @@ from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
-from dbr.dialogs            import ConfirmationDialog
-from dbr.dialogs            import DetailedMessageDialog
-from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import UsingDevelopmentVersion
 from dbr.icon               import Icon
@@ -46,6 +43,9 @@ from globals.project        import PROJECT_txt
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
+from ui.dialog              import ConfirmationDialog
+from ui.dialog              import DetailedMessageDialog
+from ui.dialog              import ShowErrorDialog
 from ui.distcache           import DistNamesCacheDialog
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild

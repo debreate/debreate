@@ -8,8 +8,6 @@
 
 import os, wx
 
-from dbr.dialogs            import ShowDialog
-from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -26,6 +24,8 @@ from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.charctrl            import CharCtrl
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
 from ui.panel               import BorderedPanel
 from ui.selectinput         import ComboBox
 from ui.textinput           import TextAreaPanel
