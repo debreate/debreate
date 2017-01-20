@@ -28,6 +28,7 @@ from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel
 from ui.pathctrl            import PATH_WARN
 from ui.pathctrl            import PathCtrl
+from ui.selectinput         import ComboBox
 
 
 ID_INST_PRE = wx.NewId()
