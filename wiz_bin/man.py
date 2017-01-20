@@ -203,7 +203,7 @@ class ManPage(ScrolledPanel):
         # FIXME: wx.Panel can't set wx.MenuBar
         # TODO: Create custom menubar
         menubar = PanelMenuBar(self)
-        menubar.AddItem(PanelMenu(), GT(u'Add'))
+        menubar.AddItem(PanelMenu(self, wx.ID_ADD), GT(u'Add'))
         
         self.btn_rename = wx.Button(self, label=GT(u'Rename'))
         
