@@ -19,9 +19,6 @@ from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.progress           import PD_DEFAULT_STYLE
-from dbr.progress           import ProgressDialog
-from dbr.progress           import TimedProgressDialog
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
@@ -46,6 +43,9 @@ from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
 from ui.panel               import BorderedPanel
+from ui.progress            import PD_DEFAULT_STYLE
+from ui.progress            import ProgressDialog
+from ui.progress            import TimedProgressDialog
 
 
 ## Build page
