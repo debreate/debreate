@@ -112,6 +112,11 @@ class PanelMenuBar(BorderedPanel):
         self.Layout()
     
     
+    ## Alias for ui.menu.PanelMenuBar.AddItem
+    def AppendItem(self, menu, label=None):
+        self.AddItem(menu, label)
+    
+    
     ## Retrieve number of menus in bar
     def GetMenuCount(self):
         return len(self.GetSizer().GetChildren())
