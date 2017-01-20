@@ -94,7 +94,6 @@ class Wizard(wx.Panel):
         lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
         pnl_title.SetSizer(lyt_title)
-        pnl_title.Layout()
         
         # Button sizer includes header
         lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
