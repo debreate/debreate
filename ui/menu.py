@@ -22,7 +22,7 @@ class MenuBar(wx.MenuBar):
         
         self.id_list = []
         
-        if parent:
+        if isinstance(parent, wx.Frame):
             parent.SetMenuBar(self)
     
     
