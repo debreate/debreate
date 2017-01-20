@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.firstrun
+## \package startup.firstrun
 
 # MIT licensing
 # See: docs/LICENSE.txt
