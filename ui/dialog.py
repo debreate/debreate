@@ -20,8 +20,7 @@ from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
-from ui.button              import ButtonCancel
-from ui.button              import ButtonConfirm
+from ui.button              import AddCustomButtons
 from ui.hyperlink           import Hyperlink
 from ui.selectinput         import ComboBox
 from ui.textinput           import TextAreaPanel
@@ -212,7 +211,7 @@ class StandardFileOpenDialog(StandardFileDialog):
 class DetailedMessageDialog(wx.Dialog):
     def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
-            buttons=(u'confirm',), linewrap=0):
+            buttons=(wx.ID_OK,), linewrap=0):
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
@@ -225,14 +224,6 @@ class DetailedMessageDialog(wx.Dialog):
         if linewrap:
             txt_message.Wrap(linewrap)
         
-        button_list = []
-        
-        if u'cancel' in buttons:
-            button_list.append(ButtonCancel(self))
-        
-        if u'confirm' in buttons:
-            button_list.append(ButtonConfirm(self))
-        
         # self.details needs to be empty for constructor
         self.details = wx.EmptyString
         details = details
@@ -241,20 +232,6 @@ class DetailedMessageDialog(wx.Dialog):
         
         self.lyt_urls = wx.BoxSizer(wx.VERTICAL)
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
-        
-        for B in button_list:
-            tmp_sizer = wx.BoxSizer(wx.VERTICAL)
-            tmp_sizer.Add(B, 0, wx.ALIGN_CENTER)
-            # FIXME: Should use something other than tooltip for setting label
-            tmp_sizer.Add(wx.StaticText(self, label=B.GetToolTipString()), 0, wx.ALIGN_CENTER|wx.ALIGN_TOP)
-            
-            if not lyt_buttons.GetChildren():
-                lyt_buttons.Add(tmp_sizer, 0)
-            
-            else:
-                lyt_buttons.Add(tmp_sizer, 0, wx.LEFT, 5)
-        
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
         lyt_main.AddGrowableRow(3)
@@ -262,11 +239,11 @@ class DetailedMessageDialog(wx.Dialog):
         lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
         lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
         lyt_main.Add(self.lyt_urls, (1, 1), (1, 2), wx.RIGHT, 5)
-        lyt_main.Add(lyt_buttons, (4, 2),
-                flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
+        
+        self.AddButtons(buttons)
         
         if not TextIsEmpty(details):
             # self.details will be set here
@@ -279,6 +256,19 @@ class DetailedMessageDialog(wx.Dialog):
             self.SetMinSize(self.GetSize())
         
         self.CenterOnParent()
+    
+    
+    ## Add custom buttons to dialog
+    #  
+    #  NOTE: Do not call before self.SetSizer
+    #  
+    #  FIXME: Rename to SetButtons???
+    #  FIXME: Should delete any previous buttons
+    def AddButtons(self, button_ids):
+        lyt_buttons = AddCustomButtons(self, button_ids)
+        
+        self.Sizer.Add(lyt_buttons, (4, 2),
+                flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
     
     
     ## Adds a clickable link to the dialog
@@ -418,7 +408,7 @@ class DetailedMessageDialog(wx.Dialog):
 ## Dialog that gives the option to confirm or cancel
 class ConfirmationDialog(DetailedMessageDialog):
     def __init__(self, parent, title=GT(u'Warning'), text=wx.EmptyString,
-            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(u'confirm', u'cancel')):
+            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(wx.ID_OK, wx.ID_CANCEL,)):
         DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
                 text=text, style=style, buttons=buttons)
 
