@@ -46,9 +46,10 @@ FILES_root = \
 	main.py
 
 PKG_wiz_bin = wiz_bin/*.py
-
 PKG_dbr = dbr/*.py
 PKG_globals = globals/*.py
+PKG_startup = startup/*.py
+PKG_ui = ui/*.py
 
 FILES_extra = \
 	README.md \
@@ -74,10 +75,12 @@ DIR_templates = templates
 
 FILES_BUILD = \
 	$(FILES_root) \
-	$(PKG_dbr) \
 	$(FILES_doc) \
 	$(FILES_executable) \
+	$(PKG_dbr) \
 	$(PKG_globals) \
+	$(PKG_startup) \
+	$(PKG_ui) \
 	$(PKG_wiz_bin)
 
 DIRS_dist = \
@@ -91,6 +94,8 @@ DIRS_dist = \
 	globals \
 	man \
 	scripts \
+	startup \
+	ui \
 	wiz_bin
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
@@ -141,6 +146,16 @@ install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-
 	mkdir -vp "$${datadir}/globals"; \
 	for py in $(PKG_globals); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}/globals"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/startup"; \
+	for py in $(PKG_startup); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}/startup"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/ui"; \
+	for py in $(PKG_ui); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}/ui"; \
 	done; \
 	\
 	$(MKDIR) "$${datadir}/docs"; \
