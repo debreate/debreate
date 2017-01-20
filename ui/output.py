@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.custom
+## \package ui.output
 
 # MIT licensing
 # See: docs/LICENSE.txt
