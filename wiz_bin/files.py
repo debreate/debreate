@@ -29,6 +29,7 @@ from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
+from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
@@ -49,6 +50,8 @@ class Panel(wx.ScrolledWindow):
         
         self.SetScrollbars(20, 20, 0, 0)
         
+        testing = u'alpha' in GetTestList()
+        
         # *** Left Panel *** #
         
         pnl_treeopts = BorderedPanel(self)
@@ -56,6 +59,11 @@ class Panel(wx.ScrolledWindow):
         self.chk_individuals = wx.CheckBox(pnl_treeopts, label=GT(u'List files individually'),
                 name=u'individually')
         self.chk_individuals.default = False
+        
+        if testing:
+            self.chk_preserve_top = wx.CheckBox(pnl_treeopts, label=GT(u'Preserve top-level directories'),
+                    name=u'top-level')
+            self.chk_preserve_top.default = False
         
         self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
         
@@ -130,6 +138,10 @@ class Panel(wx.ScrolledWindow):
         lyt_treeopts = wx.BoxSizer(wx.VERTICAL)
         lyt_treeopts.AddSpacer(5)
         lyt_treeopts.Add(self.chk_individuals, 0, wx.LEFT|wx.RIGHT, 5)
+        
+        if testing:
+            lyt_treeopts.Add(self.chk_preserve_top, 0, wx.LEFT|wx.RIGHT, 5)
+        
         lyt_treeopts.AddSpacer(5)
         
         pnl_treeopts.SetSizer(lyt_treeopts)
