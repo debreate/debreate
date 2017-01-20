@@ -49,7 +49,7 @@ class StorageDevice:
             u'/dev/fd': u'drive-floppy',
             }
         
-        # The type string is used in dbr.tree.DirectroyTree to set item icon
+        # The type string is used in ui.tree.DirectroyTree to set item icon
         self.Type = None
         
         for TYPE in device_types:

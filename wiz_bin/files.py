@@ -16,7 +16,6 @@ from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.tree               import DirectoryTreePanel
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
@@ -34,6 +33,7 @@ from ui.listinput           import FileList
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
+from ui.tree                import DirectoryTreePanel
 
 
 # Set the maximum file count to process without showing progress dialog
