@@ -29,10 +29,10 @@ from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
-from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from startup.tests          import GetTestList
 from ui.panel               import BorderedPanel
 
 
