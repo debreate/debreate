@@ -57,13 +57,23 @@ class Wizard(wx.Panel):
         self.evt = self.ChangePageEvent(0)
         
         # These widgets are put into a list so that they are not automatically hidden
-        self.permanent_children = (pnl_title, self.btn_prev, self.btn_next)
+        self.permanent_children = (
+            pnl_title,
+            self.btn_prev,
+            self.btn_next,
+            )
+        
+        # *** Event Handling *** #
+        
+        self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
+        self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
         
         # *** Layout *** #
         
         # Position the text in the header
         lyt_title = wx.GridSizer(1, 1)
         lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
+        
         pnl_title.SetSizer(lyt_title)
         pnl_title.Layout()
         
@@ -82,11 +92,6 @@ class Wizard(wx.Panel):
         self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
-        self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
     
     
     ## TODO: Doxygen
