@@ -12,7 +12,6 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
-from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
@@ -26,6 +25,7 @@ from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
 from ui.button              import ButtonImport
 from ui.button              import ButtonRemove
+from ui.listinput           import ListCtrlPanel
 from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel
 

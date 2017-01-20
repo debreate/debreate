@@ -15,7 +15,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.dialogs            import ShowMessageDialog
 from dbr.language           import GT
-from dbr.listinput          import FileList
 from dbr.log                import Logger
 from dbr.progress           import PD_DEFAULT_STYLE
 from dbr.progress           import ProgressDialog
@@ -33,6 +32,7 @@ from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
 from ui.button              import ButtonRefresh
 from ui.button              import ButtonRemove
+from ui.listinput           import FileList
 from ui.panel               import BorderedPanel
 
 
@@ -323,7 +323,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Retrieve DirectoryTreePanel instance
     #  
-    #  Used in dbr.listinput.FileList for referencing size
+    #  Used in ui.listinput.FileList for referencing size
     def GetDirTreePanel(self):
         return self.tree_dirs
     

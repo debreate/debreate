@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.listinput
+## \package ui.listinput
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -451,7 +451,7 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
         return True
     
     
-    ## Retrivies is the item at 'i_index' is executable
+    ## Retrieves is the item at 'i_index' is executable
     #  
     #  \param i_index
     #        \b \e int : The list row to check
