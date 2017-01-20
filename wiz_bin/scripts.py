@@ -14,7 +14,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
-from dbr.markdown           import MarkdownDialog
 from dbr.pathctrl           import PATH_WARN
 from dbr.pathctrl           import PathCtrl
 from dbr.textinput          import MonospaceTextArea
@@ -27,6 +26,7 @@ from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
 from ui.button              import ButtonImport
 from ui.button              import ButtonRemove
+from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel
 
 
