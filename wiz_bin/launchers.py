@@ -14,7 +14,6 @@ from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.textinput          import TextAreaPanel
 from dbr.textpreview        import TextPreview
 from dbr.wizard             import WizardPage
 from globals                import ident
@@ -34,6 +33,7 @@ from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
 from ui.listinput           import ListCtrlPanel
 from ui.selectinput         import ComboBox
+from ui.textinput           import TextAreaPanel
 
 
 ## Page for creating a system menu launcher

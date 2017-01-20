@@ -13,7 +13,6 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.textinput          import MonospaceTextArea
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
@@ -36,6 +35,7 @@ from ui.panel               import BorderedPanel
 from ui.pathctrl            import PATH_WARN
 from ui.pathctrl            import PathCtrl
 from ui.selectinput         import ComboBox
+from ui.textinput           import MonospaceTextArea
 
 
 ID_INST_PRE = wx.NewId()
