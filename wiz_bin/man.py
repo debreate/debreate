@@ -11,7 +11,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -29,6 +28,7 @@ from ui.notebook            import Notebook
 from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 from ui.prompt              import TextEntryDialog
+from ui.wizard              import WizardPage
 
 
 ## TODO: Doxygen
