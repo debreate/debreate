@@ -80,6 +80,47 @@ class PanelMenu(wx.StaticText):
             parent = GetTopWindow()
         
         wx.StaticText.__init__(self, parent, win_id, label, name=name)
+        
+        self.fg_orig = self.GetForegroundColour()
+        
+        # Begin with deselected state
+        self.Selected = False
+        
+        # *** Event Handling *** #
+        
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnSelect)
+    
+    
+    ## Checks if menu is in selected state
+    def IsSelected(self):
+        return self.Selected
+    
+    
+    ## TODO: Doxygen
+    def OnSelect(self, event=None):
+        if event:
+            # Send event to parent PanelMenuBar instance
+            wx.PostEvent(self.Parent, event)
+    
+    
+    ## Sets menu selected state
+    #  
+    #  \param selected
+    #    Sets state to selected value
+    def Select(self, select=True):
+        if select and not self.Selected:
+            self.SetForegroundColour(wx.WHITE)
+            self.Selected = True
+        
+        elif not select and self.Selected:
+            # Reset to deselected state
+            self.SetForegroundColour(self.fg_orig)
+            self.Selected = False
+    
+    
+    ## Toggles selected state
+    def ToggleSelected(self):
+        self.Select(not self.Selected)
 
 
 ## A custom menu bar designed for use in wx.Panel
