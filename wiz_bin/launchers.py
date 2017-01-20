@@ -14,7 +14,6 @@ from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
@@ -34,6 +33,7 @@ from ui.listinput           import ListCtrlPanel
 from ui.selectinput         import ComboBox
 from ui.textinput           import TextAreaPanel
 from ui.textpreview         import TextPreview
+from ui.wizard              import WizardPage
 
 
 ## Page for creating a system menu launcher
@@ -443,7 +443,7 @@ class Panel(WizardPage):
         return self.ti_name.GetValue().strip(u' ').replace(u' ', u'_')
     
     
-    ## Overrides dbr.wizard.GetRequiredField
+    ## Overrides ui.wizard.GetRequiredField
     #  
     #  Optionally adds "Filename" to required fields
     def GetRequiredFields(self, children=None):

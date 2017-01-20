@@ -11,7 +11,6 @@ import commands, os, wx
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
@@ -33,6 +32,7 @@ from ui.pathctrl            import PathCtrl
 from ui.selectinput         import ComboBox
 from ui.textinput           import MonospaceTextArea
 from ui.textinput           import TextAreaPanel
+from ui.wizard              import WizardPage
 
 
 ## Changelog page

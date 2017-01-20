@@ -9,9 +9,9 @@
 import wx
 
 from dbr.language   import GT
-from dbr.wizard     import WizardPage
 from globals        import ident
 from ui.hyperlink   import Hyperlink
+from ui.wizard      import WizardPage
 
 
 ## TODO: Doxygen

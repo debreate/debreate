@@ -18,7 +18,6 @@ from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_EXCLAMATION
@@ -46,6 +45,7 @@ from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.progress            import TimedProgressDialog
+from ui.wizard              import WizardPage
 
 
 ## Build page
