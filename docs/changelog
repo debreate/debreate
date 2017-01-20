@@ -3,6 +3,7 @@
   - 'alpha'
     - Enables features that aren't ready for release
 - Option to preserve top-level directories in file list
+- Some code merged from unstable branch
 
 0.7.13
 - Fixes:
