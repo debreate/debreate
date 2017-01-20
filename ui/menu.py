@@ -79,7 +79,7 @@ class PanelMenu(wx.StaticText):
         if not parent:
             parent = GetTopWindow()
         
-        wx.StaticText.__init__(self, parent, win_id, name=name)
+        wx.StaticText.__init__(self, parent, win_id, label, name=name)
 
 
 ## A custom menu bar designed for use in wx.Panel
