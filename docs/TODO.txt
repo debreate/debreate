@@ -26,6 +26,7 @@
 - Replace 'debian' directory with script to automatically generate Debian build files
 - Add page for creating manpage
 - Add lintian overrides option
+- Add option to preserve/trip top-level directory in directory tree
 
 Priority:
 - Use globals.thread module for all threading activity
