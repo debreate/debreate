@@ -1,5 +1,7 @@
 Next Release:
 - Add option to preserve/trip top-level directory in directory tree
+- Files page:
+  - 'List files individually' & 'Preserve top-level directories' should be saved to config
 
 Priority:
 - Use globals.thread module for all threading activity
