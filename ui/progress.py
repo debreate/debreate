@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.progress
+## \package ui.progress
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -79,7 +79,7 @@ class ProgressDialog(wx.ProgressDialog):
     
     ## Sets the active status to False
     #  
-    #  Calls dbr.progress.ProgressDialog.OnAbort
+    #  Calls ui.progress.ProgressDialog.OnAbort
     def Cancel(self):
         self.OnAbort()
     
@@ -88,7 +88,7 @@ class ProgressDialog(wx.ProgressDialog):
     #  
     #  Method for compatibility between wx 3.0 & older versions
     #  For 3.0 & newer, simply overrides wx.ProgressDialog.Destroy
-    #  For older versions, calls dbr.progress.ProgressDialog.EndModal
+    #  For older versions, calls ui.progress.ProgressDialog.EndModal
     def Destroy(self, *args, **kwargs):
         # Re-enable parent/main window if previously disabled
         # ???: May not be necessary
@@ -163,7 +163,7 @@ class ProgressDialog(wx.ProgressDialog):
     
     ## Sets the active status to False
     #  
-    #  The dialog will be destroyed when dbr.progress.ProgressDialog.WasCancelled is called
+    #  The dialog will be destroyed when ui.progress.ProgressDialog.WasCancelled is called
     def OnAbort(self, event=None):
         self.active = False
         
