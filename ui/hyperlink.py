@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.hyperlink
+## \package ui.hyperlink
 
 # MIT licensing
 # See: docs/LICENSE.txt

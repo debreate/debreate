@@ -13,7 +13,6 @@ from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
 from dbr.functions          import RemoveTempDirectory
-from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
 from dbr.log                import Logger
@@ -31,6 +30,7 @@ from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from ui.button              import ButtonConfirm
+from ui.hyperlink           import Hyperlink
 
 
 # Font for the name

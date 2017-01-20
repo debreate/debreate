@@ -8,9 +8,9 @@
 
 import wx
 
-from dbr.hyperlink  import Hyperlink
 from dbr.language   import GT
 from globals        import ident
+from ui.hyperlink   import Hyperlink
 
 
 ## TODO: Doxygen
