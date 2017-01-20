@@ -128,7 +128,7 @@ class TextEntryDialog(wx.TextEntryDialog):
         print(u'  Restoring value: {}'.format(self.stored_value))
         # DEBUG: End
         
-        self.SetValue(self.stored_value)
+        self.SetValue(self.stored_value.strip())
         
         # Reset to default
         self.stored_value = wx.EmptyString
