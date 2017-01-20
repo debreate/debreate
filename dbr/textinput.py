@@ -352,6 +352,8 @@ class MonospaceTextArea(TextAreaPanel):
 
 
 ## Custom TextEntryDialog that defines Clear method
+#  
+#  TODO: Move to ui package
 class TextEntryDialog(wx.TextEntryDialog):
     def __init__(self, parent, message, caption=u'Please enter text', defaultValue=u'',
             pos=wx.DefaultPosition, style=wx.OK|wx.CANCEL|wx.CENTER):
