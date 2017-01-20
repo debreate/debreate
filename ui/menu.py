@@ -128,6 +128,14 @@ class PanelMenuBar(BorderedPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, name=u'menubar'):
         BorderedPanel.__init__(self, parent, win_id, name=name)
         
+        self.Padding = 5
+        
+        # *** Event Handling *** #
+        
+        self.Bind(wx.EVT_LEFT_DOWN, self.OnSelect)
+        
+        # *** Layout *** #
+        
         lyt_main = wx.BoxSizer(wx.HORIZONTAL)
         
         self.SetAutoLayout(True)
@@ -159,7 +167,7 @@ class PanelMenuBar(BorderedPanel):
             menu.Reparent(self)
         
         lyt = self.GetSizer()
-        lyt.Add(menu, 0, wx.ALL, 5)
+        lyt.Add(menu, 0, wx.ALL, self.Padding)
         
         self.Layout()
     
@@ -184,6 +192,16 @@ class PanelMenuBar(BorderedPanel):
         for M in self.GetMenuList():
             if M.GetId() == win_id:
                 return M
+    
+    
+    ## Find a menu within the menu bar at given index
+    #  
+    #  \param index
+    #    Index of item to return
+    #  \return
+    #    \b \e PanelMenu at menu index
+    def GetMenuByIndex(self, index):
+        return self.GetMenuList()[index]
     
     
     ## Find a menu within the menu bar that matches a given label
@@ -231,3 +249,13 @@ class PanelMenuBar(BorderedPanel):
                 menu_list.append(menu)
         
         return tuple(menu_list)
+    
+    
+    ## Action to take when menu is selected
+    def OnSelect(self, event=None):
+        if event:
+            # DEBUG: Start
+            print(u'DEBUGGING: PanelMenuBar.OnSelect')
+            
+            self.GetMenuByIndex(0).ToggleSelected()
+            # DEBUG: End
