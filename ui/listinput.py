@@ -375,6 +375,7 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
         ListCtrlPanel.SetDropTarget(self, self)
         
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
+        self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
         self.FOLDER_TEXT_COLOR = wx.BLUE
         
         self.filename_col = 0
@@ -644,10 +645,13 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
     def SetFileExecutable(self, row, executable=True):
         if executable:
             self.SetStringItem(row, self.type_col, file_types_defs[FTYPE_EXE])
+            self.SetItemTextColour(row, wx.RED)
+            
             return
         
         # FIXME: Delete item rather than setting to wx.EmptyString???
         self.SetStringItem(row, self.type_col, wx.EmptyString)
+        self.SetItemTextColour(row, self.DEFAULT_TEXT_COLOR)
     
     
     ## Sorts listed items in target column alphabetially
