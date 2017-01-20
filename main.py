@@ -23,7 +23,6 @@ from dbr.dialogs            import GetFileOpenDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
-from dbr.distcache          import DistNamesCacheDialog
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import RemoveTempDirectory
@@ -68,6 +67,7 @@ from globals.project        import PROJECT_ext
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
+from ui.distcache           import DistNamesCacheDialog
 from ui.menu                import MenuBar
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
