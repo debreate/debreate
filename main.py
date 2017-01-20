@@ -17,7 +17,6 @@ from dbr.config             import WriteConfig
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
-from dbr.distcache          import DistNamesCacheDialog
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import UsingDevelopmentVersion
 from dbr.icon               import Icon
@@ -50,6 +49,7 @@ from globals.project        import PROJECT_txt
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
+from ui.distcache           import DistNamesCacheDialog
 from ui.menu                import MenuBar
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
