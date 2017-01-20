@@ -93,7 +93,18 @@ class PanelMenuBar(BorderedPanel):
         self.SetSizer(lyt_main)
     
     
-    ## Add a Panel menu instance to menu bar
+    ## Create a PanelMenu instance & add it to menu bar
+    #  
+    #  \param label
+    #    Text displayed for menu
+    #  \param win_id
+    #    ID to use for menu
+    def Add(self, label, win_id=wx.ID_ANY):
+        new_menu = PanelMenu(self, win_id, label)
+        self.AddItem(new_menu)
+    
+    
+    ## Add a PanelMenu instance to menu bar
     #  
     #  \param menu
     #    \b \e PanelMenu instance to be added
@@ -110,6 +121,11 @@ class PanelMenuBar(BorderedPanel):
         lyt.Add(menu, 0, wx.ALL, 5)
         
         self.Layout()
+    
+    
+    ## Alias for ui.menu.PanelMenuBar.Add
+    def Append(self, label, win_id=wx.ID_ANY):
+        self.Add(label, win_id)
     
     
     ## Alias for ui.menu.PanelMenuBar.AddItem
