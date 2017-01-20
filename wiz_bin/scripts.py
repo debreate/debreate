@@ -8,9 +8,6 @@
 
 import os, wx
 
-from dbr.dialogs            import ConfirmationDialog
-from dbr.dialogs            import DetailedMessageDialog
-from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -28,6 +25,9 @@ from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
 from ui.button              import ButtonImport
 from ui.button              import ButtonRemove
+from ui.dialog              import ConfirmationDialog
+from ui.dialog              import DetailedMessageDialog
+from ui.dialog              import ShowDialog
 from ui.listinput           import ListCtrlPanel
 from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel

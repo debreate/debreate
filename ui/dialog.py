@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.dialogs
+## \package ui.dialog
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -73,7 +73,7 @@ class StandardDirDialog(wx.DirDialog):
             return
         
         # FIXME: Use Logger
-        print(u'DEBUG: [dbr.dialogs] Path is not a directory: {}'.format(path))
+        print(u'DEBUG: [{}] Path is not a directory: {}'.format(__name__, path))
 
 
 ## TODO: Doxygen

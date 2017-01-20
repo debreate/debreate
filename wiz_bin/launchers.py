@@ -8,9 +8,6 @@
 
 import os, shutil, wx
 
-from dbr.dialogs            import ConfirmationDialog
-from dbr.dialogs            import ShowDialog
-from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
@@ -29,6 +26,9 @@ from ui.button              import ButtonClear
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
+from ui.dialog              import ConfirmationDialog
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
 from ui.listinput           import ListCtrlPanel
 from ui.selectinput         import ComboBox
 from ui.textinput           import TextAreaPanel
