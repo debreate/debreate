@@ -24,7 +24,6 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
-from dbr.quickbuild         import QuickBuild
 from dbr.statusbar          import StatusBar
 from dbr.wizard             import Wizard
 from globals                import ident
@@ -51,6 +50,7 @@ from startup.tests          import GetTestList
 from ui.about               import AboutDialog
 from ui.distcache           import DistNamesCacheDialog
 from ui.menu                import MenuBar
+from ui.quickbuild          import QuickBuild
 from wiz_bin.build          import Panel as PanelBuild
 from wiz_bin.changelog      import Panel as PanelChangelog
 from wiz_bin.control        import Panel as PanelControl

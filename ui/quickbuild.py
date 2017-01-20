@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.quickbuild
+## \package ui.quickbuild
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -258,6 +258,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             GT(u'Quick build complete'),
             self.input_target.GetValue(),
             )
+        
         ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
     
     
