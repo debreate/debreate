@@ -8,11 +8,11 @@
 
 import wx
 
-from dbr.image import GetBitmap
-from dbr.log import Logger
+from dbr.image  import GetBitmap
+from dbr.log    import Logger
 
 
-## List of images used by dbr.tree.DirectoryTree
+## List of images used by ui.tree.DirectoryTree
 #  
 #  FIXME: Custom images should be generated dynamically using bitmaps found in MIME directory
 class DirectoryImageList(wx.ImageList):
@@ -103,7 +103,7 @@ class DirectoryImageList(wx.ImageList):
                 self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
     
     
-    ## Retrieves image index for setting in dbr.tree.DirectoryTree
+    ## Retrieves image index for setting in ui.tree.DirectoryTree
     #  
     #  \param description
     #    \b \e String name/description for image
@@ -116,5 +116,5 @@ class DirectoryImageList(wx.ImageList):
         return self.Images[u'failsafe']
 
 
-## Image list used for dbr.tree.DirectoryTree
+## Image list used for ui.tree.DirectoryTree
 sm_DirectoryImageList = DirectoryImageList(16, 16)
