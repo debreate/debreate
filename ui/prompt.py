@@ -110,11 +110,6 @@ class TextEntryDialog(wx.TextEntryDialog):
     
     ## Sets TextCtrl instance's insertion point from stored value
     def RestoreInsertionPoint(self):
-        # DEBUG: Start
-        print(u'\nTextEntryDialog.RestoreInsertionPoint:')
-        print(u'  Restoring insertion point: {}'.format(self.stored_insertion))
-        # DEBUG: End
-        
         self.SetInsertionPoint(self.stored_insertion)
         
         # Reset to default
@@ -123,11 +118,6 @@ class TextEntryDialog(wx.TextEntryDialog):
     
     ## Sets TextCtrl instance's value from stored value
     def RestoreValue(self):
-        # DEBUG: Start
-        print(u'\nTextEntryDialog.RestoreValue:')
-        print(u'  Restoring value: {}'.format(self.stored_value))
-        # DEBUG: End
-        
         self.SetValue(self.stored_value.strip())
         
         # Reset to default
@@ -140,26 +130,11 @@ class TextEntryDialog(wx.TextEntryDialog):
     #  \param point
     #    Index at with to set carat
     def SetInsertionPoint(self, pos):
-        # DEBUG: Line
-        print(u'\nTextEntryDialog.SetInsertionPoint:')
-        
         text_ctrl = self.GetTextCtrl()
-        
-        # DEBUG: Start
-        print(u'  TextCtrl instance: {}'.format(type(text_ctrl)))
-        print(u'  Insertion point before: {}'.format(text_ctrl.GetInsertionPoint()))
-        # DEBUG: End
-        
         if text_ctrl:
             text_ctrl.SetInsertionPoint(pos)
             
-            # DEBUG: Line
-            print(u'  Insertion point after:  {}'.format(text_ctrl.GetInsertionPoint()))
-            
             return True
-        
-        # DEBUG: Line
-        print(u'  Error: TextCtrl instance is None type')
         
         return False
     
