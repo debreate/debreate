@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.pathctrl
+## \package ui.pathctrl
 
 # MIT licensing
 # See: docs/LICENSE.txt
