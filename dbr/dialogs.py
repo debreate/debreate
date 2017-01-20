@@ -485,7 +485,7 @@ def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
 #    the main window, the a custom defined
 #    dialog is returned. Otherwise the systems
 #    default dialog is used.
-#    FIXME: Perhaps should be moved to dbr.custom
+#    FIXME: Perhaps should be moved to ui.output
 #  \param main_window
 #        Debreate's main window class
 #  \param title
@@ -526,7 +526,7 @@ def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwr
 #    to display the dialog. For stock dialogs, 'ShowModal()'
 #    is used. The dialog that will be shown is determined
 #    from 'GetFileSaveDialog'.
-#    FIXME: Perhaps should be moved to dbr.custom
+#    FIXME: Perhaps should be moved to ui.output
 #  \param dialog
 #    The dialog window to be shown
 #  \param center
