@@ -117,6 +117,42 @@ class PanelMenuBar(BorderedPanel):
         self.AddItem(menu, label)
     
     
+    ## Find a menu within the menu bar that matches a given ID
+    #  
+    #  \param win_id
+    #    \b \e Integer ID to scan for
+    #  \return
+    #    \b \e PanelMenu instance matching win_id or None
+    def GetMenuById(self, win_id):
+        for M in self.GetMenuList():
+            if M.GetId() == win_id:
+                return M
+    
+    
+    ## Find a menu within the menu bar that matches a given label
+    #  
+    #  \param label
+    #    \b \e String label to scan for
+    #  \return
+    #    \b \e PanelMenu instance with matching label or None
+    def GetMenuByLabel(self, label):
+        for M in self.GetMenuList():
+            if M.GetLabel() == label:
+                return M
+    
+    
+    ## Find the index withint the menu bar of a give item
+    def GetMenuIndex(self, menu):
+        if menu == None:
+            return None
+        
+        menu_list = self.GetMenuList()
+        
+        for M in menu_list:
+            if M == menu:
+                return menu_list.index(M)
+    
+    
     ## Retrieve number of menus in bar
     def GetMenuCount(self):
         return len(self.GetMenuList())
