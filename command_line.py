@@ -8,8 +8,8 @@
 
 import sys
 
-from globals.tests import available_tests
-from globals.tests import test_list
+from startup.tests import available_tests
+from startup.tests import test_list
 
 
 ## Solo args

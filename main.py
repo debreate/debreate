@@ -66,8 +66,8 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
-from globals.tests          import GetTestList
 from globals.wizardhelper   import GetTopWindow
+from startup.tests          import GetTestList
 from ui.menu                import MenuBar
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
