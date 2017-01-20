@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.listinput
+## \package ui.listinput
 
 # MIT licensing
 # See: docs/LICENSE.txt
