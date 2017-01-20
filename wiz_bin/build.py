@@ -16,8 +16,6 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.md5                import MD5Hasher
-from dbr.progress           import PD_DEFAULT_STYLE
-from dbr.progress           import ProgressDialog
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
@@ -37,6 +35,8 @@ from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonBuild64
 from ui.panel               import BorderedPanel
+from ui.progress            import PD_DEFAULT_STYLE
+from ui.progress            import ProgressDialog
 
 
 ## Build page
