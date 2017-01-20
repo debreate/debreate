@@ -8,7 +8,6 @@
 
 import os, wx
 
-from dbr.charctrl           import CharCtrl
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
@@ -29,6 +28,7 @@ from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
+from ui.charctrl            import CharCtrl
 from ui.panel               import BorderedPanel
 
 
