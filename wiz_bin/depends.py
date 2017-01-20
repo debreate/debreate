@@ -8,13 +8,6 @@
 
 import wx
 
-from dbr.buttons            import ButtonAdd
-from dbr.buttons            import ButtonAppend
-from dbr.buttons            import ButtonBrowse64
-from dbr.buttons            import ButtonClear
-from dbr.buttons            import ButtonPreview64
-from dbr.buttons            import ButtonRemove
-from dbr.buttons            import ButtonSave64
 from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.listinput          import ListCtrlPanel
@@ -25,6 +18,13 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from ui.button              import ButtonAdd
+from ui.button              import ButtonAppend
+from ui.button              import ButtonBrowse64
+from ui.button              import ButtonClear
+from ui.button              import ButtonPreview64
+from ui.button              import ButtonRemove
+from ui.button              import ButtonSave64
 from ui.panel               import BorderedPanel
 
 

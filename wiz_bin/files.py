@@ -8,11 +8,6 @@
 
 import os, traceback, wx
 
-from dbr.buttons            import ButtonAdd
-from dbr.buttons            import ButtonBrowse
-from dbr.buttons            import ButtonClear
-from dbr.buttons            import ButtonRefresh
-from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetDirDialog
@@ -33,6 +28,11 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
+from ui.button              import ButtonAdd
+from ui.button              import ButtonBrowse
+from ui.button              import ButtonClear
+from ui.button              import ButtonRefresh
+from ui.button              import ButtonRemove
 from ui.panel               import BorderedPanel
 
 

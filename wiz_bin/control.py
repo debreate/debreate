@@ -8,9 +8,6 @@
 
 import os, wx
 
-from dbr.buttons            import ButtonBrowse64
-from dbr.buttons            import ButtonPreview64
-from dbr.buttons            import ButtonSave64
 from dbr.charctrl           import CharCtrl
 from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
@@ -29,6 +26,9 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from ui.button              import ButtonBrowse64
+from ui.button              import ButtonPreview64
+from ui.button              import ButtonSave64
 from ui.panel               import BorderedPanel
 
 

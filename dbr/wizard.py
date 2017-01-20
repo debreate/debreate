@@ -9,14 +9,14 @@
 import wx
 from wx.lib.newevent import NewCommandEvent
 
-from dbr.buttons            import ButtonNext
-from dbr.buttons            import ButtonPrev
 from dbr.language           import GT
 from globals                import ident
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from ui.button              import ButtonNext
+from ui.button              import ButtonPrev
 
 
 ## Wizard class for Debreate

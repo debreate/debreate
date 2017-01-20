@@ -8,9 +8,6 @@
 
 import os, thread, traceback, wx
 
-from dbr.buttons            import ButtonBrowse
-from dbr.buttons            import ButtonBuild
-from dbr.buttons            import ButtonCancel
 from dbr.dialogs            import GetDirDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import OverwriteDialog
@@ -27,6 +24,9 @@ from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.paths          import ConcatPaths
+from ui.button              import ButtonBrowse
+from ui.button              import ButtonBuild
+from ui.button              import ButtonCancel
 
 
 GAUGE_MAX = 100

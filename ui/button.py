@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.buttons
+## \package dbr.button
 #  
 #  Custom buttons for application
 
