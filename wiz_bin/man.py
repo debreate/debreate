@@ -38,7 +38,7 @@ class Panel(WizardPage):
         WizardPage.__init__(self, parent, ident.MAN)
         
         ## Override default label
-        self.label = GT(u'Man Pages')
+        self.label = GT(u'Manual Pages')
         
         btn_add = ButtonAdd(self)
         btn_add.SetName(u'add')
@@ -62,7 +62,7 @@ class Panel(WizardPage):
         
         lyt_add = BoxSizer(wx.HORIZONTAL)
         lyt_add.Add(btn_add, 0)
-        lyt_add.Add(wx.StaticText(self, label=GT(u'Add manpage')), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        lyt_add.Add(wx.StaticText(self, label=GT(u'Add manual')), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
         lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(lyt_add, 0, wx.ALIGN_BOTTOM)
