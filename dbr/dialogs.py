@@ -11,7 +11,6 @@ import os, wx
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
-from dbr.selectinput        import ComboBox
 from dbr.textinput          import TextAreaPanel
 from dbr.workingdir         import ChangeWorkingDirectory
 from globals.bitmaps        import ICON_ERROR
@@ -24,6 +23,7 @@ from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
 from ui.button              import AddCustomButtons
 from ui.hyperlink           import Hyperlink
+from ui.selectinput         import ComboBox
 
 
 ## A base dialog class
