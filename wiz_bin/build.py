@@ -8,7 +8,6 @@
 
 import commands, os, shutil, subprocess, traceback, wx
 
-from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import FileUnstripped
@@ -34,6 +33,7 @@ from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonBuild64
+from ui.output              import OutputLog
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
