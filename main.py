@@ -34,7 +34,6 @@ from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
-from dbr.wizard             import Wizard
 from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
@@ -69,6 +68,7 @@ from ui.distcache           import DistNamesCacheDialog
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
+from ui.wizard              import Wizard
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
 from wiz_bin.control        import Panel as PageControl
@@ -144,7 +144,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_file.AppendItem(mitm_quit)
         
         # *** Page Menu *** #
-        ## This menu is filled from dbr.wizard.Wizard
+        ## This menu is filled from ui.wizard.Wizard
         self.menu_page = wx.Menu()
         
         # *** Action Menu *** #
@@ -435,7 +435,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Retrieves the Wizard instance
     #  
     #  \return
-    #        dbr.wizard.Wizard
+    #        ui.wizard.Wizard
     def GetWizard(self):
         return self.wizard
     

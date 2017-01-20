@@ -12,7 +12,6 @@ from dbr.dialogs            import ConfirmationDialog
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -27,6 +26,7 @@ from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
 from ui.listinput           import ListCtrlPanel
 from ui.panel               import BorderedPanel
+from ui.wizard              import WizardPage
 
 
 ## Page defining dependencies

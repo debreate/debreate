@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.wizard
+## \package ui.wizard
 
 # MIT licensing
 # See: docs/LICENSE.txt

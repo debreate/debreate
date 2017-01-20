@@ -17,7 +17,6 @@ from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
-from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
@@ -28,6 +27,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
 from ui.textinput           import MonospaceTextArea
+from ui.wizard              import WizardPage
 
 
 # Globals

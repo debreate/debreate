@@ -91,7 +91,7 @@ def FieldEnabled(field):
 #  FIXME: field_type is currently unused
 #  
 #  \param page
-#        \b \e dbr.wizard.WizardPage : The page to search
+#        \b \e ui.wizard.WizardPage : The page to search
 #  \param field_id
 #        \b \e int : ID of desired field/control
 #  \param field_type
@@ -99,7 +99,7 @@ def FieldEnabled(field):
 #  \return
 #        \b \e wx.Window : Field control matching field_id or None
 def GetField(page, field_id, field_type=wx.Window):
-    # FIXME: This should be an instance of dbr.wizard.WizardPage
+    # FIXME: This should be an instance of ui.wizard.WizardPage
     if not isinstance(page, wx.Window):
         page = GetPage(page)
     
