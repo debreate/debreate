@@ -1,4 +1,5 @@
-0.7.13:
+Next Release:
+- Add option to preserve/trip top-level directory in directory tree
 
 Priority:
 - Use globals.thread module for all threading activity
