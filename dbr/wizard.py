@@ -9,9 +9,6 @@
 import os, wx
 from wx.lib.newevent import NewCommandEvent
 
-from dbr.buttons            import ButtonHelp
-from dbr.buttons            import ButtonNext
-from dbr.buttons            import ButtonPrev
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -25,6 +22,9 @@ from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
+from ui.button              import ButtonHelp
+from ui.button              import ButtonNext
+from ui.button              import ButtonPrev
 from ui.panel               import ScrolledPanel
 
 

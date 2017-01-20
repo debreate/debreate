@@ -8,8 +8,6 @@
 
 import commands, os, wx
 
-from dbr.buttons            import ButtonAdd
-from dbr.buttons            import ButtonImport
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
@@ -32,6 +30,8 @@ from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from ui.button              import ButtonAdd
+from ui.button              import ButtonImport
 from ui.panel               import BorderedPanel
 
 

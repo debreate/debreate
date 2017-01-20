@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.buttons
+## \package ui.buttons
 #  
 #  Custom buttons for application
 
@@ -362,7 +362,7 @@ def _get_containing_sizer(parent, sizer):
 #    Dialog instance containing the buttons
 def ReplaceStandardButtons(dialog):
     if isinstance(dialog, wx.MessageDialog):
-        print(u'ERROR: [dbr.buttons] FIXME: Cannot replace buttons on wx.MessageDialog')
+        print(u'ERROR: [{}] FIXME: Cannot replace buttons on wx.MessageDialog'.format(__name__))
         return
     
     lyt_buttons = _get_button_sizer(dialog.GetSizer())

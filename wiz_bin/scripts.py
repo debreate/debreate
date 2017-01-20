@@ -8,10 +8,6 @@
 
 import os, wx
 
-from dbr.buttons            import ButtonBuild
-from dbr.buttons            import ButtonHelp64
-from dbr.buttons            import ButtonImport
-from dbr.buttons            import ButtonRemove
 from dbr.dialogs            import ConfirmationDialog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowDialog
@@ -35,6 +31,10 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetTopWindow
+from ui.button              import ButtonBuild
+from ui.button              import ButtonHelp64
+from ui.button              import ButtonImport
+from ui.button              import ButtonRemove
 from ui.panel               import BorderedPanel
 
 

@@ -8,7 +8,6 @@
 
 import traceback, wx
 
-from dbr.buttons        import ButtonRemove
 from dbr.dialogs        import ShowErrorDialog
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -18,6 +17,7 @@ from dbr.textinput      import TextAreaPanel
 from globals.dateinfo   import GetDayInt
 from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
+from ui.button          import ButtonRemove
 from ui.layout          import BoxSizer
 
 

@@ -8,7 +8,6 @@
 
 import commands, os, shutil, wx
 
-from dbr.buttons            import ButtonConfirm
 from dbr.dialogs            import ShowErrorDialog
 from dbr.font               import MONOSPACED_MD
 from dbr.functions          import CreateTempDirectory
@@ -37,6 +36,7 @@ from globals.system         import OS_upstream_version
 from globals.system         import OS_version
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
+from ui.button              import ButtonConfirm
 
 
 # Font for the name
