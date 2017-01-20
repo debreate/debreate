@@ -119,4 +119,22 @@ class PanelMenuBar(BorderedPanel):
     
     ## Retrieve number of menus in bar
     def GetMenuCount(self):
-        return len(self.GetSizer().GetChildren())
+        return len(self.GetMenuList())
+    
+    
+    ## Retrieves a standard list of all menus in menu bar
+    #  
+    #  FIXME: Need a failsafe for non-PanelMenu objects???
+    #  \return
+    #    \b \e Tuple list of found menus
+    def GetMenuList(self):
+        menu_list = []
+        
+        # Convert wx.SizerItem to PanelMenu
+        for SI in self.GetSizer().GetChildren():
+            menu = SI.GetWindow()
+            
+            if isinstance(menu, PanelMenu):
+                menu_list.append(menu)
+        
+        return tuple(menu_list)
