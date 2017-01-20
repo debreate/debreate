@@ -8,7 +8,6 @@
 
 import os, wx
 
-from dbr.hyperlink          import Hyperlink
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
@@ -24,6 +23,7 @@ from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
 from ui.button              import AddCustomButtons
+from ui.hyperlink           import Hyperlink
 
 
 ## A base dialog class
