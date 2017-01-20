@@ -11,8 +11,6 @@ from dbr.dialogs            import ShowDialog
 from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.mansect            import ManBanner
-from dbr.mansect            import ManSection
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
@@ -23,6 +21,8 @@ from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.layout              import BoxSizer
+from ui.mansect             import ManBanner
+from ui.mansect             import ManSection
 from ui.menu                import PanelMenu
 from ui.menu                import PanelMenuBar
 from ui.notebook            import Notebook
