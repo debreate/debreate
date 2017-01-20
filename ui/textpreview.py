@@ -8,8 +8,8 @@
 
 import wx
 
-from dbr.dialogs    import BaseDialog
 from dbr.language   import GT
+from ui.dialog      import BaseDialog
 from ui.textinput   import MonospaceTextArea
 
 

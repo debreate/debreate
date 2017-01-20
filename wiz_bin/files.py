@@ -8,12 +8,6 @@
 
 import os, shutil, traceback, wx
 
-from dbr.dialogs            import ConfirmationDialog
-from dbr.dialogs            import DetailedMessageDialog
-from dbr.dialogs            import GetDirDialog
-from dbr.dialogs            import ShowDialog
-from dbr.dialogs            import ShowErrorDialog
-from dbr.dialogs            import ShowMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -31,6 +25,12 @@ from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
 from ui.button              import ButtonRefresh
 from ui.button              import ButtonRemove
+from ui.dialog              import ConfirmationDialog
+from ui.dialog              import DetailedMessageDialog
+from ui.dialog              import GetDirDialog
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
+from ui.dialog              import ShowMessageDialog
 from ui.listinput           import FileList
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE

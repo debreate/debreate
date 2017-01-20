@@ -8,10 +8,6 @@
 
 import commands, math, os, subprocess, time, traceback, wx
 
-from dbr.dialogs            import DetailedMessageDialog
-from dbr.dialogs            import GetFileSaveDialog
-from dbr.dialogs            import ShowDialog
-from dbr.dialogs            import ShowErrorDialog
 from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
 from dbr.functions          import RemoveTempDirectory
@@ -40,6 +36,10 @@ from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
+from ui.dialog              import DetailedMessageDialog
+from ui.dialog              import GetFileSaveDialog
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
 from ui.output              import OutputLog
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE

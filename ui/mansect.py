@@ -8,13 +8,13 @@
 
 import traceback, wx
 
-from dbr.dialogs        import ShowErrorDialog
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals.dateinfo   import GetDayInt
 from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
 from ui.button          import ButtonRemove
+from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
 from ui.selectinput     import ComboBox
 from ui.textinput       import TextArea
