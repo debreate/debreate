@@ -13,6 +13,22 @@ import wx
 from dbr.language import GT
 
 
+## Creates a new ID
+#  
+#  Along with return a new ID, it also updates the id_wrapper reference
+#  
+#  FIXME: Better method than using a list to pass reference?
+#  \param id_wrapper
+#    \b \e List instance to reference ID number so can be incremented
+#  \return
+#    New ID number
+def AddId(id_wrapper):
+    new_id = id_wrapper[0]
+    id_wrapper[0] *= 2
+    
+    return new_id
+
+
 # *** Button IDs *** #
 PREV = wx.NewId()
 NEXT = wx.NewId()
