@@ -1,3 +1,13 @@
+debreate (0.7.next15) xenial; urgency=low
+
+  * Test modes:
+    'alpha'
+    - Enables features that aren't ready for release
+  * Option to preserve top-level directories in file list
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 20 Jan 2017 09:16:03 -0800
+
+
 debreate (0.7.13) xenial; urgency=high
 
   * Fixes:
