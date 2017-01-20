@@ -7,8 +7,6 @@ import wx
 from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 
 from dbr.containers         import Contains
-from dbr.dialogs            import ShowDialog
-from dbr.dialogs            import ShowErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
@@ -19,6 +17,8 @@ from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.mansect             import ManBanner
 from ui.mansect             import ManSection

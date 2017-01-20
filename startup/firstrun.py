@@ -11,10 +11,10 @@ import os, wx
 from dbr.config     import ConfCode
 from dbr.config     import InitializeConfig
 from dbr.config     import default_config
-from dbr.dialogs    import ShowErrorDialog
 from dbr.language   import GT
 from dbr.log        import Logger
 from globals.paths  import PATH_app
+from ui.dialog      import ShowErrorDialog
 
 
 ## Shows the first run dialog

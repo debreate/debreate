@@ -9,9 +9,6 @@
 import os, traceback, wx
 from wx.combo import OwnerDrawnComboBox
 
-from dbr.dialogs            import BaseDialog
-from dbr.dialogs            import ShowErrorDialog
-from dbr.dialogs            import ShowMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
@@ -24,6 +21,9 @@ from globals.system         import GetOSDistNames
 from globals.system         import UpdateDistNamesCache
 from globals.threads        import Thread
 from globals.wizardhelper   import GetField
+from ui.dialog              import BaseDialog
+from ui.dialog              import ShowErrorDialog
+from ui.dialog              import ShowMessageDialog
 from ui.panel               import BorderedPanel
 from ui.progress            import ProgressDialog
 from ui.textpreview         import TextPreview
