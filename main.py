@@ -34,7 +34,6 @@ from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
 from dbr.moduleaccess       import ModuleAccessCtrl
-from dbr.statusbar          import StatusBar
 from dbr.wizard             import Wizard
 from globals                import ident
 from globals.application    import APP_homepage
@@ -69,6 +68,7 @@ from ui.about               import AboutDialog
 from ui.distcache           import DistNamesCacheDialog
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
+from ui.statusbar           import StatusBar
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
 from wiz_bin.control        import Panel as PageControl
