@@ -356,6 +356,8 @@ class TextEntryDialog(wx.TextEntryDialog):
     def __init__(self, parent, message, caption=u'Please enter text', defaultValue=u'',
             pos=wx.DefaultPosition, style=wx.OK|wx.CANCEL|wx.CENTER):
         wx.TextEntryDialog.__init__(self, parent, message, caption, defaultValue, style, pos)
+        
+        ReplaceStandardButtons(self)
     
     
     ## Clear the text input
@@ -370,8 +372,6 @@ class TextEntryDialog(wx.TextEntryDialog):
     
     ## Override ShowModal method to set focus in text area
     def ShowModal(self):
-        ReplaceStandardButtons(self)
-        
         # Place focus on text control
         self.SetFocus()
         
