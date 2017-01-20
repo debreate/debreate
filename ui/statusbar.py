@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.statusbar
+## \package ui.statusbar
 
 # MIT licensing
 # See: docs/LICENSE.txt
