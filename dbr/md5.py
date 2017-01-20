@@ -11,12 +11,12 @@
 
 import commands, os
 
-from dbr.dialogs            import ErrorDialog
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals.execute        import GetExecutable
 from globals.fileio         import WriteFile
 from globals.wizardhelper   import GetTopWindow
+from ui.dialog              import ErrorDialog
 
 
 ## Object for creating MD5 hashes

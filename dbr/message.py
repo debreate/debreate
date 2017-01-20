@@ -8,9 +8,9 @@
 
 import wx
 
-from dbr.buttons    import ButtonConfirm
 from dbr.language   import GT
-from dbr.textinput  import TextAreaPanel
+from ui.button      import ButtonConfirm
+from ui.textinput   import TextAreaPanel
 
 
 ## TODO: Doxygen
