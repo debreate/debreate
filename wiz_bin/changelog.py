@@ -11,8 +11,6 @@ import wx
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.textinput          import MonospaceTextArea
-from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
@@ -27,6 +25,8 @@ from ui.button              import ButtonImport
 from ui.panel               import BorderedPanel
 from ui.pathctrl            import PathCtrl
 from ui.selectinput         import ComboBox
+from ui.textinput           import MonospaceTextArea
+from ui.textinput           import TextAreaPanel
 
 
 ## Changelog page

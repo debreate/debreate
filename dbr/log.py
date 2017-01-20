@@ -11,7 +11,6 @@ from wx.lib.newevent import NewCommandEvent
 
 from dbr.font               import GetMonospacedFont
 from dbr.language           import GT
-from dbr.textinput          import TextAreaPanel
 from globals                import ident
 from globals.application    import APP_logo
 from globals.dateinfo       import DTFMT
@@ -21,6 +20,7 @@ from globals.fileio         import AppendFile
 from globals.fileio         import ReadFile
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
+from ui.textinput           import TextAreaPanel
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()

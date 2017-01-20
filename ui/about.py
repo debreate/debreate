@@ -15,7 +15,6 @@ from dbr.functions          import GetContainerItemCount
 from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.textinput          import TextAreaPanel
 from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
@@ -31,6 +30,7 @@ from globals.system         import WX_VER_STRING
 from ui.button              import ButtonConfirm
 from ui.hyperlink           import Hyperlink
 from ui.listinput           import ListCtrlPanel
+from ui.textinput           import TextAreaPanel
 
 
 # Font for the name

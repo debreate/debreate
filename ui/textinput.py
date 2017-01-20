@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.textinput
+## \package ui.textinput
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -257,7 +257,7 @@ class TextAreaPanel(BorderedPanel):
     
     ## Sets the font size of the text in the text area
     #  
-    #  \override dbr.textinput.MultilineTextCtrl.SetFontSize
+    #  \override ui.textinput.MultilineTextCtrl.SetFontSize
     def SetFontSize(self, point_size):
         self.textarea.SetFontSize(point_size)
     

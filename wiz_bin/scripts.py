@@ -13,7 +13,6 @@ from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import ShowDialog
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.textinput          import MonospaceTextArea
 from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -28,7 +27,7 @@ from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel
 from ui.pathctrl            import PATH_WARN
 from ui.pathctrl            import PathCtrl
-from ui.selectinput         import ComboBox
+from ui.textinput           import MonospaceTextArea
 
 
 ID_INST_PRE = wx.NewId()
