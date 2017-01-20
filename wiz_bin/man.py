@@ -17,7 +17,6 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.mansect            import ManBanner
 from dbr.mansect            import ManSection
-from dbr.textinput          import TextEntryDialog
 from dbr.wizard             import WizardPage
 from globals                import ident
 from globals.strings        import TextIsEmpty
@@ -29,6 +28,7 @@ from ui.menu                import PanelMenuBar
 from ui.notebook            import Notebook
 from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
+from ui.prompt              import TextEntryDialog
 
 
 ## TODO: Doxygen
