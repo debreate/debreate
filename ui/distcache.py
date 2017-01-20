@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.distcache
+## \package ui.distcache
 
 # MIT licensing
 # See: docs/LICENSE.txt
