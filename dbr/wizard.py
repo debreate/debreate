@@ -20,11 +20,11 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty
-from globals.tests          import GetTestList
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from startup.tests          import GetTestList
 from ui.panel               import ScrolledPanel
 
 

@@ -32,10 +32,10 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
-from globals.tests          import GetTestList
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from startup.tests          import GetTestList
 from ui.panel               import BorderedPanel
 
 
