@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package dbr.selectinput
+## \package ui.selectinput
 
 # MIT licensing
 # See: docs/LICENSE.txt
