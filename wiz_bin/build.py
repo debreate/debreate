@@ -8,7 +8,6 @@
 
 import commands, math, os, subprocess, time, traceback, wx
 
-from dbr.custom             import OutputLog
 from dbr.dialogs            import DetailedMessageDialog
 from dbr.dialogs            import GetFileSaveDialog
 from dbr.dialogs            import ShowDialog
@@ -42,6 +41,7 @@ from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
+from ui.output              import OutputLog
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
