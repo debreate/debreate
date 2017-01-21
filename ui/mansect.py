@@ -62,6 +62,9 @@ class ManSectBase:
         lyt_main = BoxSizer(wx.HORIZONTAL)
         lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
         
+        if style & manid.REMOVABLE:
+            lyt_main.Add(ButtonRemove(self.Panel))
+        
         self.Panel.SetSizer(lyt_main)
     
     
@@ -116,6 +119,13 @@ class ManSectBase:
     ## Retrieve the main object
     def GetObject(self):
         return self.Panel
+    
+    
+    ## Retrieve RemoveButton instance
+    def GetButton(self):
+        for FIELD in self.Panel.GetChildren():
+            if isinstance(FIELD, ButtonRemove):
+                return FIELD
     
     
     ## Retrieve the object's sizer instance
