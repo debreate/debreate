@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package ui.charctrl
+## \package input.charctrl
 #  
 #  This script is used for field data that cannot use certain characters
 
