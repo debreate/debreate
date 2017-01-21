@@ -23,6 +23,8 @@ from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetTopWindow
 from input.list             import ListCtrlPanel
 from input.markdown         import MarkdownDialog
+from input.pathctrl         import PATH_WARN
+from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
 from input.text             import MonospaceTextArea
 from ui.button              import ButtonBuild
@@ -33,8 +35,6 @@ from ui.dialog              import ConfirmationDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
 from ui.panel               import BorderedPanel
-from ui.pathctrl            import PATH_WARN
-from ui.pathctrl            import PathCtrl
 from ui.wizard              import WizardPage
 
 
