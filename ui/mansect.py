@@ -40,7 +40,7 @@ class ManSectBase:
             return
         
         # Allow adding multiple instances of object
-        self.Multiple = False
+        self.Multiple = True
         
         self.lyt_main = BoxSizer(wx.VERTICAL)
     
