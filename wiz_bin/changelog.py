@@ -24,6 +24,7 @@ from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
 from input.text             import MonospaceTextArea
 from input.text             import TextAreaPanel
@@ -31,7 +32,6 @@ from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
 from ui.panel               import BorderedPanel
-from ui.pathctrl            import PathCtrl
 from ui.wizard              import WizardPage
 
 
