@@ -27,12 +27,29 @@ DEFAULT_MANSECT_STYLE = manid.REMOVABLE
 
 
 ## Base class for manpage parts
+class ManSectBase:
+    def __init__(self, parent):
+        self.Parent = parent
+        
+        self.lyt_main = BoxSizer(wx.HORIZONTAL)
+    
+    
+    def GetParent(self):
+        return self.Parent
+    
+    
+    def GetSizer(self):
+        return self.lyt_main
+
+
+## Secondary base class for manpage parts
 #  
 #  \param label
 #    Only used if style is STATIC
-class ManSectBase:
+class ManSectBase2(ManSectBase):
     def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
-        self.Parent = parent
+        ManSectBase.__init__(self, parent)
+        
         self.Style = style
         
         if self.HasStyle((manid.CHOICE & manid.MUTABLE)):
@@ -59,13 +76,12 @@ class ManSectBase:
         
         # *** Layout *** #
         
-        lyt_main = BoxSizer(wx.HORIZONTAL)
-        lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
+        self.lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
         
         if style & manid.REMOVABLE:
-            lyt_main.Add(ButtonRemove(self.Panel))
+            self.lyt_main.Add(ButtonRemove(self.Panel))
         
-        self.Panel.SetSizer(lyt_main)
+        self.Panel.SetSizer(self.lyt_main)
     
     
     ## TODO: Doxygen
@@ -128,11 +144,6 @@ class ManSectBase:
                 return FIELD
     
     
-    ## Retrieve the object's sizer instance
-    def GetSizer(self):
-        return self.Panel.GetSizer()
-    
-    
     ## Retrieve styling used by instance
     def GetStyle(self):
         return self.Style
@@ -160,9 +171,9 @@ class ManSectBase:
 
 
 ## TODO: Doxygen
-class ManSect(ManSectBase):
+class ManSect(ManSectBase2):
     def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
-        ManSectBase.__init__(self, parent, label, style)
+        ManSectBase2.__init__(self, parent, label, style)
         
         FLAGS = 0
         
