@@ -13,12 +13,16 @@ from dbr.log            import Logger
 from globals.dateinfo   import GetDayInt
 from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
+from globals.ident      import manid
 from ui.button          import ButtonRemove
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
 from ui.selectinput     import ComboBox
 from ui.textinput       import TextArea
 from ui.textinput       import TextAreaPanel
+
+
+DEFAULT_MANSECT_STYLE = manid.REMOVABLE
 
 
 ## Base class for manpage parts
