@@ -234,10 +234,14 @@ class ManPage(ScrolledPanel):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         
-        # *** Required Sections *** #
+        # *** Default Sections *** #
         
         # This calls self.Layout
-        self.AddDocumentSection(GT(u'Name'), style=manid.MUTABLE)
+        self.AddDocumentSection(GT(u'Name'))
+        self.AddDocumentSection(GT(u'Synopsis'))
+        self.AddDocumentSection(GT(u'Description'))
+        self.AddDocumentSection(GT(u'Examples'))
+        self.AddDocumentSection(GT(u'See also'))
     
     
     ## Retrieves the section index that contains the object
