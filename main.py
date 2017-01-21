@@ -365,6 +365,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.dirty = None
         
         self.ProjectDirty = False
+        self.dirty_mark = u' *'
         
         # Initialize with clean project
         # TODO: This can be bypassed if opening a project from command line
@@ -958,12 +959,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
+    #  
+    #  \return
+    #    \b \e True if 'dirty' status was changed
     def ProjectChanged(self, event=None):
-        if DebugEnabled():
-            Logger.Debug(__name__, u'MainWindow.OnProjectChanged:')
-            print(u'  Object: {}'.format(event.GetEventObject()))
+        if not self.ProjectDirty:
+            self.ProjectDirty = True
+            
+            self.SetTitle(u'{}{}'.format(self.GetTitle(), self.dirty_mark))
+            
+            if DebugEnabled():
+                Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(self.ProjectDirty))
+                print(u'  Object: {}'.format(event.GetEventObject()))
+            
+            return True
         
-        self.ProjectDirty = True
+        return False
     
     
     ## Checks if a project is loaded
