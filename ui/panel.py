@@ -11,6 +11,21 @@ import wx
 from dbr.styles import PANEL_BORDER
 
 
+## Global function for setting & updating scrolled window scrollbars
+#  
+#  \param window
+#    \b \e wx.ScrolledWindow to be set
+#  \return
+#    \b \e True if scrollbars were set
+def SetScrollbars(window):
+    if isinstance(window, wx.ScrolledWindow):
+        window.SetScrollbars(20, 20, 0, 0)
+        
+        return True
+    
+    return False
+
+
 ## A wx.Panel with a border
 #  
 #  This is to work around differences in wx 3.0 with older versions
@@ -54,4 +69,4 @@ class ScrolledPanel(wx.ScrolledWindow):
                 style=wx.HSCROLL|wx.VSCROLL, name=u'scrolledPanel'):
         wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
         
-        self.SetScrollbars(0, 20, 0, 0)
+        SetScrollbars(self)
