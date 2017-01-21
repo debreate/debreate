@@ -270,7 +270,7 @@ class ManPage(ScrolledPanel):
         if not obj_section:
             return False
         
-        if doc_section.HasStyle(manid.CHOICE):
+        if doc_section.HasStyle(manid.CHOICE|manid.MUTABLE):
             labels = (
                 GT(u'Name'),
                 GT(u'Synopsis'),
