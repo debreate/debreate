@@ -108,7 +108,6 @@ class PanelMenu(wx.StaticText):
     
     ## TODO: doxygen
     def OnMenuClose(self, event=None):
-        print(u'\nDEBUG: PanelMenu.OnMenu:')
         self.Select(False)
         
         if event:
