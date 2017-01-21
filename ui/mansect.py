@@ -200,26 +200,28 @@ class ManBanner(ManSectBase):
     def __init__(self, parent):
         ManSectBase.__init__(self, parent)
         
-        txt_date = wx.StaticText(parent, label=GT(u'Date'))
-        spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
-        spin_month = wx.SpinCtrl(parent, min=1, max=12, initial=GetMonthInt())
-        spin_day = wx.SpinCtrl(parent, min=1, max=31, initial=GetDayInt())
+        self.Panel = BorderedPanel(parent)
+        
+        txt_date = wx.StaticText(self.Panel, label=GT(u'Date'))
+        spin_year = wx.SpinCtrl(self.Panel, min=1900, max=2100, initial=GetYear(string_value=False))
+        spin_month = wx.SpinCtrl(self.Panel, min=1, max=12, initial=GetMonthInt())
+        spin_day = wx.SpinCtrl(self.Panel, min=1, max=31, initial=GetDayInt())
         
         # FIXME: What is this for?
-        txt_unknown1 = wx.StaticText(parent, label=GT(u'Unknown'))
-        ti_unknown1 = wx.TextCtrl(parent)
+        txt_unknown1 = wx.StaticText(self.Panel, label=GT(u'Unknown'))
+        ti_unknown1 = wx.TextCtrl(self.Panel)
         
         # FIXME: What is this for?
-        txt_unknown2 = wx.StaticText(parent, label=GT(u'Unknown'))
-        ti_unknown2 = wx.TextCtrl(parent)
+        txt_unknown2 = wx.StaticText(self.Panel, label=GT(u'Unknown'))
+        ti_unknown2 = wx.TextCtrl(self.Panel)
         
         # *** Layout *** #
         
         lyt_date = wx.GridBagSizer()
         lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        lyt_date.Add(wx.StaticText(parent, label=GT(u'Year')), (0, 1))
-        lyt_date.Add(wx.StaticText(parent, label=GT(u'Month')), (0, 2))
-        lyt_date.Add(wx.StaticText(parent, label=GT(u'Day')), (0, 3))
+        lyt_date.Add(wx.StaticText(self.Panel, label=GT(u'Year')), (0, 1))
+        lyt_date.Add(wx.StaticText(self.Panel, label=GT(u'Month')), (0, 2))
+        lyt_date.Add(wx.StaticText(self.Panel, label=GT(u'Day')), (0, 3))
         lyt_date.Add(spin_year, (1, 1), flag=wx.LEFT, border=5)
         lyt_date.Add(spin_month, (1, 2))
         lyt_date.Add(spin_day, (1, 3))
@@ -232,10 +234,18 @@ class ManBanner(ManSectBase):
         lyt_uknwn2.Add(txt_unknown2, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_uknwn2.Add(ti_unknown2, 0, wx.LEFT, 5)
         
+        # Change orientation of main sizer to vertical
         self.lyt_main = BoxSizer(wx.VERTICAL)
         self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn2, 0, wx.TOP, 5)
+        
+        self.Panel.SetSizer(self.lyt_main)
+    
+    
+    ## Retrieve main object instance
+    def GetPanel(self):
+        return self.Panel
 
 
 ## TODO: Doxygen
