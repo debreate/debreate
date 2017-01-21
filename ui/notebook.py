@@ -7,10 +7,13 @@
 
 
 import wx
-from wx.aui import AuiNotebook
-from wx.aui import AUI_NB_CLOSE_BUTTON
-from wx.aui import AUI_NB_TAB_MOVE
-from wx.aui import AUI_NB_TAB_SPLIT
+from wx.aui     import AUI_NB_CLOSE_BUTTON
+from wx.aui     import AUI_NB_TAB_MOVE
+from wx.aui     import AUI_NB_TAB_SPLIT
+from wx.aui     import AuiNotebook
+
+from dbr.log    import Logger
+from ui.panel   import ScrolledPanel
 
 
 ## Custom notebook class for compatibility with legacy wx versions
@@ -21,6 +24,41 @@ class Notebook(AuiNotebook):
         
         # wx.aui.AuiNotebook does not allow setting name from constructor
         self.Name = name
+    
+    
+    ## Adds a new page
+    #  
+    #  \param caption
+    #    Label displayed on tab
+    #  \param page
+    #    \b \e wx.Window instance that will be new page (if None, a new instance is created)
+    #  \param select
+    #    Specifies whether the page should be selected
+    #  \param bitmap:
+    #    Specifies optional image
+    def AddPage(self, caption, page=None, win_id=wx.ID_ANY, select=False, imageId=0):
+        if not page:
+            page = wx.Panel(self, win_id)
+        
+        # Existing instance should already have an ID
+        elif win_id != wx.ID_ANY:
+            Logger.Warning(__name__, u'Option "win_id" is only used if "page" is None')
+        
+        AuiNotebook.AddPage(self, page, caption, select, imageId)
+        
+        return page
+    
+    
+    ## Adds a ui.panel.ScrolledPanel instance as new page
+    #  
+    #  \param caption
+    #    Label displayed on tab
+    #  \param select
+    #    Specifies whether the page should be selected
+    #  \param bitmap:
+    #    Specifies optional image
+    def AddScrolledPage(self, caption, win_id=wx.ID_ANY, select=False, imageId=0):
+        return self.AddPage(caption, ScrolledPanel(self), win_id, select, imageId)
     
     
     ## Deletes all pages
