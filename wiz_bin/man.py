@@ -190,18 +190,6 @@ class ManPage(ScrolledPanel):
     def __init__(self, parent, name=u'manual'):
         ScrolledPanel.__init__(self, parent, style=wx.VSCROLL, name=name)
         
-        # List of sections & definitions
-        self.sections = {
-            u'1': GT(u'General commands'),
-            u'2': GT(u'System calls'),
-            u'3': GT(u'Library functions'),
-            u'4': GT(u'Special files and drivers'),
-            u'5': GT(u'File formats and conventions'),
-            u'6': GT(u'Games and screensavers'),
-            u'7': GT(u'Miscellanea'),
-            u'8': GT(u'System administration commands and daemons'),
-        }
-        
         # FIXME: wx.Panel can't set wx.MenuBar
         # TODO: Create custom menubar
         menubar = PanelMenuBar(self)
@@ -215,15 +203,6 @@ class ManPage(ScrolledPanel):
         banners = ManBanner(self)
         pnl_banners = banners.GetPanel()
         
-        txt_section = wx.StaticText(pnl_banners, label=GT(u'Section'))
-        
-        self.sel_section = wx.Choice(pnl_banners, choices=tuple(self.sections))
-        self.sel_section.default = u'1'
-        self.sel_section.SetStringSelection(self.sel_section.default)
-        
-        # Section description that changes with EVT_CHOICE
-        self.label_section = wx.StaticText(pnl_banners, label=self.sections[self.sel_section.default])
-        
         #FIXME: Replace buttons with drop-down menu
         btn_single_line = ButtonAdd(self, ident.SINGLE)
         txt_single_line = wx.StaticText(self, label=GT(u'Add single line section'))
@@ -233,24 +212,10 @@ class ManPage(ScrolledPanel):
         
         # *** Event Handling *** #
         
-        self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
-        
         btn_single_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
         btn_multi_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
         
         # *** Layout *** #
-        
-        lyt_section = BoxSizer(wx.HORIZONTAL)
-        lyt_section.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_section.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        
-        lyt_banners = BoxSizer(wx.VERTICAL)
-        lyt_banners.Add(lyt_section, 0, wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_banners.Add(ManBanner(pnl_banners).GetObject(), 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        
-        pnl_banners.SetAutoLayout(True)
-        pnl_banners.SetSizer(lyt_banners)
         
         lyt_button = BoxSizer(wx.HORIZONTAL)
         lyt_button.Add(btn_single_line)
@@ -388,11 +353,6 @@ class ManPage(ScrolledPanel):
         return self.RemoveDocumentSection(index)
     
     
-    ## TODO: Doxygen
-    def OnSetSection(self, event=None):
-        self.SetSectionLabel(self.sel_section.GetStringSelection())
-    
-    
     ## Removes selected section from manpage document
     #  
     #  \return
@@ -415,17 +375,6 @@ class ManPage(ScrolledPanel):
             
             self.Layout()
             
-            return True
-        
-        return False
-    
-    
-    ## Updates the label for the current section
-    def SetSectionLabel(self, section):
-        if section in self.sections:
-            Logger.Debug(__name__, u'Setting section to {}'.format(section))
-            
-            self.label_section.SetLabel(self.sections[section])
             return True
         
         return False
