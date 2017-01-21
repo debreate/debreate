@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wiz_bin.man
+## \package wiz_bin.manuals
 
 
 import wx
