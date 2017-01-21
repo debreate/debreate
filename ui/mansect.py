@@ -96,10 +96,11 @@ class ManSectBase2(ManSectBase):
         
         # *** Layout *** #
         
-        self.lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
+        self.lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.LEFT, 5)
         
         if style & manid.REMOVABLE:
-            self.lyt_main.Add(ButtonRemove(self.Panel))
+            self.lyt_main.AddStretchSpacer(1)
+            self.lyt_main.Add(ButtonRemove(self.Panel), 0, wx.TOP|wx.BOTTOM, 5)
         
         self.Panel.SetSizer(self.lyt_main)
     
@@ -195,7 +196,7 @@ class ManSect(ManSectBase2):
     def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
         ManSectBase2.__init__(self, parent, label, style)
         
-        FLAGS = 0
+        FLAGS = wx.LEFT
         
         if self.HasStyle(manid.MULTILINE):
             self.Input = TextAreaPanel(self.Panel)
@@ -206,10 +207,10 @@ class ManSect(ManSectBase2):
             FLAGS = wx.ALIGN_CENTER_VERTICAL|FLAGS
         
         lyt_input = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_input.Add(self.Input, 0, FLAGS)
+        lyt_input.Add(self.Input, 0, FLAGS, 5)
         
         lyt_main = self.GetSizer()
-        lyt_main.Insert(1, lyt_input, 0, FLAGS)
+        lyt_main.Insert(1, lyt_input, 0, wx.ALIGN_CENTER)
 
 
 ## TODO: Doxygen
