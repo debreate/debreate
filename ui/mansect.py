@@ -26,7 +26,7 @@ DEFAULT_MANSECT_STYLE = manid.REMOVABLE
 
 
 ## Base class for manpage parts
-class ManBase:
+class ManSectBase:
     def __init__(self, parent):
         self.Parent = parent
         
@@ -75,9 +75,9 @@ class ManBase:
 #  
 #  This section is required
 #  FIXME: Should derive from wx.Panel/BorderedPanel???
-class ManBanner(ManBase):
+class ManBanner(ManSectBase):
     def __init__(self, parent):
-        ManBase.__init__(self, parent)
+        ManSectBase.__init__(self, parent)
         
         txt_date = wx.StaticText(parent, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(parent, min=1900, max=2100, initial=GetYear(string_value=False))
@@ -118,26 +118,26 @@ class ManBanner(ManBase):
 
 
 ## TODO: Doxygen
-class ManSectName(ManBase):
+class ManSectName(ManSectBase):
     def __init__(self, parent):
-        ManBase.__init__(self, parent)
+        ManSectBase.__init__(self, parent)
         
         self._add_field(GT(u'Program'), wx.TextCtrl(parent))
         self._add_field(GT(u'Description'), wx.TextCtrl(parent))
 
 
 ## TODO: Doxygen
-class ManSectSynopsis(ManBase):
+class ManSectSynopsis(ManSectBase):
     def __init__(self, parent):
-        ManBase.__init__(self, parent)
+        ManSectBase.__init__(self, parent)
         
         self._add_field(GT(u'Synopsis'), TextAreaPanel(parent), expand=True)
 
 
 ## Generic manpage section
-class ManSection(ManBase):
+class ManSection(ManSectBase):
     def __init__(self, parent):
-        ManBase.__init__(self, parent)
+        ManSectBase.__init__(self, parent)
         
         self.sections = (
             GT(u'Name'),
@@ -173,7 +173,7 @@ class ManSection(ManBase):
     
     ## Retrieve the main sizer object
     #  
-    #  \override ui.mansect.ManBase.GetObject
+    #  \override ui.mansect.ManSectBase.GetObject
     def GetObject(self, section_name=None, multiline=False, static=False, expand=False,
                 removable=False):
         if static:
@@ -211,7 +211,7 @@ class ManSection(ManBase):
             
             self.lyt_main.Add(self.btn_remove, (0, 2), flag=wx.RIGHT, border=5)
         
-        return ManBase.GetObject(self)
+        return ManSectBase.GetObject(self)
     
     
     ## TODO: Doxygen
