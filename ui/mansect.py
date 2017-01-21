@@ -23,6 +23,18 @@ from ui.textinput       import TextArea
 from ui.textinput       import TextAreaPanel
 
 
+# List of sections & definitions
+sections = {
+    u'1': GT(u'General commands'),
+    u'2': GT(u'System calls'),
+    u'3': GT(u'Library functions'),
+    u'4': GT(u'Special files and drivers'),
+    u'5': GT(u'File formats and conventions'),
+    u'6': GT(u'Games and screensavers'),
+    u'7': GT(u'Miscellanea'),
+    u'8': GT(u'System administration commands and daemons'),
+    }
+
 DEFAULT_MANSECT_STYLE = manid.REMOVABLE
 
 
@@ -202,6 +214,16 @@ class ManBanner(ManSectBase):
         
         self.Panel = BorderedPanel(parent)
         
+        txt_section = wx.StaticText(self.Panel, label=GT(u'Section'))
+        
+        self.sel_section = wx.Choice(self.Panel, choices=tuple(sections))
+        self.sel_section.default = u'1'
+        self.sel_section.SetStringSelection(self.sel_section.default)
+        
+        # Section description that changes with EVT_CHOICE
+        self.label_section = wx.StaticText(self.Panel)
+        self.SetSectionLabel()
+        
         txt_date = wx.StaticText(self.Panel, label=GT(u'Date'))
         spin_year = wx.SpinCtrl(self.Panel, min=1900, max=2100, initial=GetYear(string_value=False))
         spin_month = wx.SpinCtrl(self.Panel, min=1, max=12, initial=GetMonthInt())
@@ -215,7 +237,16 @@ class ManBanner(ManSectBase):
         txt_unknown2 = wx.StaticText(self.Panel, label=GT(u'Unknown'))
         ti_unknown2 = wx.TextCtrl(self.Panel)
         
+        # *** Event Handling *** #
+        
+        self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
+        
         # *** Layout *** #
+        
+        lyt_section = BoxSizer(wx.HORIZONTAL)
+        lyt_section.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_section.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_date = wx.GridBagSizer()
         lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
@@ -236,6 +267,7 @@ class ManBanner(ManSectBase):
         
         # Change orientation of main sizer to vertical
         self.lyt_main = BoxSizer(wx.VERTICAL)
+        self.lyt_main.Add(lyt_section, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
         self.lyt_main.Add(lyt_uknwn2, 0, wx.TOP, 5)
@@ -246,6 +278,25 @@ class ManBanner(ManSectBase):
     ## Retrieve main object instance
     def GetPanel(self):
         return self.Panel
+    
+    
+    ## TODO: Doxygen
+    def OnSetSection(self, event=None):
+        self.SetSectionLabel(self.sel_section.GetStringSelection())
+    
+    
+    ## Updates the label for the current section
+    def SetSectionLabel(self, section=None):
+        if section == None:
+            section = self.sel_section.GetStringSelection()
+        
+        if section in sections:
+            Logger.Debug(__name__, u'Setting section to {}'.format(section))
+            
+            self.label_section.SetLabel(sections[section])
+            return True
+        
+        return False
 
 
 ## TODO: Doxygen
