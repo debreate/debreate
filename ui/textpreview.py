@@ -9,8 +9,8 @@
 import wx
 
 from dbr.language   import GT
+from input.text     import MonospaceTextArea
 from ui.dialog      import BaseDialog
-from ui.inputtext   import MonospaceTextArea
 
 
 ## A simple dialog for previewing text

@@ -22,9 +22,9 @@ from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
+from input.text             import MonospaceTextArea
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
-from ui.inputtext           import MonospaceTextArea
 
 
 # Globals

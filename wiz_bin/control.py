@@ -20,14 +20,14 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from input.select           import ComboBox
+from input.text             import TextAreaPanel
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.charctrl            import CharCtrl
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
-from ui.inputselect         import ComboBox
-from ui.inputtext           import TextAreaPanel
 from ui.panel               import BorderedPanel
 from ui.textpreview         import TextPreview
 
