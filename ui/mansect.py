@@ -45,9 +45,22 @@ class ManSectBase:
         
         self.Panel = BorderedPanel(parent)
         
+        if self.HasStyle(manid.CHOICE):
+            self.Label = wx.Choice(self.Panel)
+        
+        elif self.HasStyle(manid.MUTABLE):
+            self.Label = ComboBox(self.Panel)
+        
+        else:
+            self.Label = wx.StaticText(self.Panel)
+            
+            if label:
+                self.Label.SetLabel(label)
+        
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.HORIZONTAL)
+        lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT)
         
         self.Panel.SetSizer(lyt_main)
     
@@ -77,14 +90,63 @@ class ManSectBase:
         self.Parent.Layout()
     
     
+    ## Retrieves the section label or StaticText instance
+    #  
+    #  \param string
+    #    If \b \e True, retrieves string value, otherwise retrieves StaticText instance
+    #  \return
+    #    \b \e String or \b \e wx.StaticText instance
+    def GetLabel(self, string=True):
+        if string:
+            label = self.Label.GetLabel()
+            
+            # DEBUG: Line
+            print(u'\nDEBUG: ui.mansect.SingleLineSect.GetLabel: Label type: {}'.format(type(label)))
+            
+            return label
+        
+        return self.Label
+    
+    
+    ## TODO: Doxygen
+    def GetLabelObject(self):
+        return self.GetLabel(False)
+    
+    
     ## Retrieve the main object
     def GetObject(self):
         return self.Panel
     
     
+    ## Retrieve the object's sizer instance
+    def GetSizer(self):
+        return self.Panel.GetSizer()
+    
+    
+    ## Retrieve styling used by instance
+    def GetStyle(self):
+        return self.Style
+    
+    
+    ## Check if instance is using style
+    def HasStyle(self, style):
+        return self.Style & style
+    
+    
     ## Checks multiple instances can be uses
     def MultipleAllowed(self):
         return self.Multiple
+    
+    
+    ## Sets the section label
+    #  
+    #  \param label
+    #    \b \e String value or wx.StaticText instance for new label
+    def SetLabel(self, label):
+        if isinstance(label, wx.StaticText):
+            label = label.GetLabel()
+        
+        self.Label.SetLabel(label)
 
 
 ## TODO: Doxygen
