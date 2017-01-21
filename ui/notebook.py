@@ -44,6 +44,10 @@ class Notebook(AuiNotebook):
         elif win_id != wx.ID_ANY:
             Logger.Warning(__name__, u'Option "win_id" is only used if "page" is None')
         
+        if wx.MAJOR_VERSION <= 2:
+            if not isinstance(imageId, wx.Bitmap):
+                imageId = wx.NullBitmap
+        
         AuiNotebook.AddPage(self, page, caption, select, imageId)
         
         return page
