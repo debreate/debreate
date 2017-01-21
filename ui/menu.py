@@ -86,14 +86,33 @@ class PanelMenu(wx.StaticText):
         # Begin with deselected state
         self.Selected = False
         
+        self.Menu = wx.Menu()
+        
         # *** Event Handling *** #
         
         self.Bind(wx.EVT_LEFT_DOWN, self.OnSelect)
+        
+        self.Bind(wx.EVT_MENU, self.OnMenuClose)
+        self.Bind(wx.EVT_MENU_CLOSE, self.OnMenuClose)
+    
+    
+    ## TODO: Doxygen
+    def Append(self, menu_id, label):
+        self.Menu.Append(menu_id, label)
     
     
     ## Checks if menu is in selected state
     def IsSelected(self):
         return self.Selected
+    
+    
+    ## TODO: doxygen
+    def OnMenuClose(self, event=None):
+        print(u'\nDEBUG: PanelMenu.OnMenu:')
+        self.Select(False)
+        
+        if event:
+            event.Skip()
     
     
     ## TODO: Doxygen
@@ -111,6 +130,8 @@ class PanelMenu(wx.StaticText):
         if select and not self.Selected:
             self.SetForegroundColour(wx.WHITE)
             self.Selected = True
+            
+            self.PopupMenu(self.Menu)
         
         elif not select and self.Selected:
             # Reset to deselected state
