@@ -26,9 +26,18 @@ DEFAULT_MANSECT_STYLE = manid.REMOVABLE
 
 
 ## Base class for manpage parts
+#  
+#  \param label
+#    Only used if style is STATIC
 class ManSectBase:
-    def __init__(self, parent):
+    def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
         self.Parent = parent
+        self.Style = style
+        
+        if self.HasStyle((manid.CHOICE & manid.MUTABLE)):
+            # FIXME: Raise exception
+            Logger.Error(__name__, u'Cannot use CHOICE and MUTABLE styles together')
+            return
         
         # Allow adding multiple instances of object
         self.Multiple = False
