@@ -334,7 +334,7 @@ class ManPage(ScrolledPanel):
     
     ## Adds a new section to the document via button press
     def OnAddDocumentSection(self, event=None):
-        style = manid.CHOICE|manid.REMOVABLE
+        style = DEFAULT_MANSECT_STYLE
         
         if event:
             if event.GetEventObject().GetId() == manid.MULTILINE:
