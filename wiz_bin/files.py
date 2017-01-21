@@ -20,6 +20,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
+from input.list             import FileList
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
@@ -31,7 +32,6 @@ from ui.dialog              import GetDirDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
-from ui.inputlist           import FileList
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
@@ -348,7 +348,7 @@ class Panel(WizardPage):
     
     ## Retrieve DirectoryTreePanel instance
     #  
-    #  Used in ui.inputlist.FileList for referencing size
+    #  Used in input.list.FileList for referencing size
     def GetDirTreePanel(self):
         return self.tree_dirs
     

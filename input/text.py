@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package ui.inputtext
+## \package input.text
 
 # MIT licensing
 # See: docs/LICENSE.txt

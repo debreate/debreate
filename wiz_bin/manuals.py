@@ -17,13 +17,13 @@ from globals.ident          import manid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
+from input.text             import TextAreaPanel
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
-from ui.inputtext           import TextAreaPanel
 from ui.layout              import BoxSizer
 from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
