@@ -114,3 +114,16 @@ F_MAINTAINER = wx.NewId()
 F_NAME = wx.NewId()
 F_PACKAGE = wx.NewId()
 F_VERSION = wx.NewId()
+
+
+## IDs referencing manual pages
+class manid:
+    # Starting ID number
+    current_id = [1]
+    
+    CHOICE = AddId(current_id)
+    EXPAND = AddId(current_id)
+    REMOVABLE = AddId(current_id)
+    STATIC = AddId(current_id)
+    MULTILINE = AddId(current_id)
+    MUTABLE = AddId(current_id)
