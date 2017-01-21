@@ -193,8 +193,6 @@ class ManPage(wx.Panel):
         # Add sibling panel to hold menu & rename button
         pnl_top = wx.Panel(self)
         
-        # FIXME: wx.Panel can't set wx.MenuBar
-        # TODO: Create custom menubar
         menubar = PanelMenuBar(pnl_top)
         
         menu_add = PanelMenu(menubar, label=GT(u'Add'))
@@ -213,20 +211,10 @@ class ManPage(wx.Panel):
         banners = ManBanner(self.pnl_bottom)
         pnl_banners = banners.GetPanel()
         
-        #FIXME: Replace buttons with drop-down menu
-        btn_single_line = ButtonAdd(self.pnl_bottom, ident.SINGLE)
-        txt_single_line = wx.StaticText(self.pnl_bottom, label=GT(u'Add single line section'))
-        
-        btn_multi_line = ButtonAdd(self.pnl_bottom, manid.MULTILINE)
-        txt_multi_line = wx.StaticText(self.pnl_bottom, label=GT(u'Add multi-line section'))
-        
         # *** Event Handling *** #
         
         wx.EVT_MENU(self, ident.SINGLE, self.OnAddDocumentSection)
         wx.EVT_MENU(self, manid.MULTILINE, self.OnAddDocumentSection)
-        
-        btn_single_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
-        btn_multi_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
         
         # *** Layout *** #
         
@@ -237,17 +225,10 @@ class ManPage(wx.Panel):
         pnl_top.SetAutoLayout(True)
         pnl_top.SetSizer(lyt_top)
         
-        lyt_button = BoxSizer(wx.HORIZONTAL)
-        lyt_button.Add(btn_single_line)
-        lyt_button.Add(txt_single_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        lyt_button.Add(btn_multi_line, 0, wx.LEFT, 5)
-        lyt_button.Add(txt_multi_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        
         # FIXME: Use GridBagSizer???
         lyt_bottom = BoxSizer(wx.VERTICAL)
         lyt_bottom.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
         lyt_bottom.Add(pnl_banners, 0, wx.LEFT, 5)
-        lyt_bottom.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
         lyt_bottom.AddStretchSpacer(1)
         
         self.pnl_bottom.SetAutoLayout(True)
