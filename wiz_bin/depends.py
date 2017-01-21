@@ -24,7 +24,7 @@ from ui.button              import ButtonPreview64
 from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
-from ui.listinput           import ListCtrlPanel
+from ui.inputlist           import ListCtrlPanel
 from ui.panel               import BorderedPanel
 
 

@@ -28,7 +28,7 @@ from ui.dialog              import GetDirDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
-from ui.listinput           import FileList
+from ui.inputlist           import FileList
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
@@ -316,7 +316,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Retrieve DirectoryTreePanel instance
     #  
-    #  Used in ui.listinput.FileList for referencing size
+    #  Used in ui.inputlist.FileList for referencing size
     def GetDirTreePanel(self):
         return self.tree_dirs
     
