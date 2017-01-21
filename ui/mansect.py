@@ -16,12 +16,12 @@ from globals.dateinfo   import GetYear
 from globals.ident      import manid
 from ui.button          import ButtonRemove
 from ui.dialog          import ShowErrorDialog
+from ui.inputselect     import Choice
+from ui.inputselect     import ComboBox
 from ui.inputtext       import TextArea
 from ui.inputtext       import TextAreaPanel
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
-from ui.selectinput     import Choice
-from ui.selectinput     import ComboBox
 
 
 # List of sections & definitions
