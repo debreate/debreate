@@ -358,7 +358,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self, ident.THEME, self.OnToggleTheme)
         
         self.loaded_project = None
+        
+        # *** Current Project Status *** #
+        
+        # FIXME: Deprecated/Remove
         self.dirty = None
+        
+        self.ProjectDirty = False
         
         # Initialize with clean project
         # TODO: This can be bypassed if opening a project from command line
@@ -949,6 +955,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
         self.page_build.Set(build_data)
+    
+    
+    ## TODO: Doxygen
+    def ProjectChanged(self, event=None):
+        if DebugEnabled():
+            Logger.Debug(__name__, u'MainWindow.OnProjectChanged:')
+            print(u'  Object: {}'.format(event.GetEventObject()))
+        
+        self.ProjectDirty = True
     
     
     ## Checks if a project is loaded
