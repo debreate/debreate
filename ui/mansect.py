@@ -38,6 +38,12 @@ sections = {
 DEFAULT_MANSECT_STYLE = manid.REMOVABLE
 
 
+## Special Panel class to distinguish from other instances
+class ManPanel(BorderedPanel):
+    def __init__(self, parent):
+        BorderedPanel.__init__(self, parent)
+
+
 ## Base class for manpage parts
 class ManSectBase:
     def __init__(self, parent):
@@ -72,7 +78,7 @@ class ManSectBase2(ManSectBase):
         # Allow adding multiple instances of object
         self.Multiple = True
         
-        self.Panel = BorderedPanel(parent)
+        self.Panel = ManPanel(parent)
         
         if self.HasStyle(manid.CHOICE):
             self.Label = wx.Choice(self.Panel)
