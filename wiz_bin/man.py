@@ -10,6 +10,7 @@ from dbr.containers         import Contains
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import manid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
@@ -225,7 +226,7 @@ class ManPage(ScrolledPanel):
         btn_single_line = ButtonAdd(self, ident.SINGLE)
         txt_single_line = wx.StaticText(self, label=GT(u'Add single line section'))
         
-        btn_multi_line = ButtonAdd(self, ident.MULTI)
+        btn_multi_line = ButtonAdd(self, manid.MULTILINE)
         txt_multi_line = wx.StaticText(self, label=GT(u'Add multi-line section'))
         
         # *** Event Handling *** #
@@ -267,6 +268,9 @@ class ManPage(ScrolledPanel):
         self.SetSizer(lyt_main)
         self.Layout()
         
+        # *** Required Sections *** #
+        
+        # This calls self.Layout
         self.AddDocumentSection(GT(u'Name'), static=True, expand=False, removable=False)
     
     
@@ -337,7 +341,7 @@ class ManPage(ScrolledPanel):
         multiline = False
         
         if event:
-            multiline = event.GetEventObject().GetId() == ident.MULTI
+            multiline = event.GetEventObject().GetId() == manid.MULTILINE
         
         self.AddDocumentSection(multiline=multiline, expand=True, removable=True)
     
