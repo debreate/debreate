@@ -237,7 +237,7 @@ class ManPage(ScrolledPanel):
         # *** Required Sections *** #
         
         # This calls self.Layout
-        self.AddDocumentSection(GT(u'Name'), style=manid.STATIC)
+        self.AddDocumentSection(GT(u'Name'), style=manid.MUTABLE)
     
     
     ## Retrieves the section index that contains the object
