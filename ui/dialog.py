@@ -10,12 +10,12 @@ import os, wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.workingdir         import ChangeWorkingDirectory
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.bitmaps        import ICON_QUESTION
+from globals.moduleaccess   import ModuleAccessCtrl
 from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty

@@ -11,11 +11,11 @@ from wx.combo import OwnerDrawnComboBox
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.timer              import DebreateTimer
 from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.fileio         import ReadFile
+from globals.moduleaccess   import ModuleAccessCtrl
 from globals.system         import FILE_distnames
 from globals.system         import GetOSDistNames
 from globals.system         import UpdateDistNamesCache
