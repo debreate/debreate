@@ -11,6 +11,7 @@ Release:
 - Appending to multiple dependencies fails (0.8)
 - Cannot open control (and possibly launcher & other) files without extension using GetFileDialog functions
 - 'Refresh' & 'Browse' buttons on hidden on files page if width is sized down
+- PanelMenu pops up no matter where you click on the PanelManuBar
 
 Priority:
 - Generate template button on copyright page moves header for system licenses
