@@ -2,6 +2,9 @@
 
 ## \package wiz_bin.manuals
 
+# MIT licensing
+# See: docs/LICENSE.txt
+
 
 import wx
 from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
