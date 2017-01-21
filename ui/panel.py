@@ -18,6 +18,34 @@ class BorderedPanel(wx.Panel):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                 style=wx.TAB_TRAVERSAL, name=wx.PanelNameStr):
         wx.Panel.__init__(self, parent, ID, pos, size, style|PANEL_BORDER, name)
+    
+    
+    ## Hide the panel's border
+    def HideBorder(self):
+        return self.ShowBorder(False)
+    
+    
+    ## Show or hide the panel's border
+    #  
+    #  \param show
+    #    If \b \e True, show border, otherwise hide
+    #  \return
+    #    \b \e True if border visible state changed
+    def ShowBorder(self, show=True):
+        style = self.GetWindowStyleFlag()
+        
+        if show:
+            if not style & PANEL_BORDER:
+                self.SetWindowStyleFlag(style|PANEL_BORDER)
+                
+                return True
+        
+        elif style & PANEL_BORDER:
+            self.SetWindowStyleFlag(style&~PANEL_BORDER)
+            
+            return True
+        
+        return False
 
 
 ## A wx.ScrolledWindow that sets scrollbars by default
