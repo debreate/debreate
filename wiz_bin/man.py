@@ -230,6 +230,7 @@ class ManPage(ScrolledPanel):
         lyt_main.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
         lyt_main.Add(pnl_banners, 0, wx.LEFT, 5)
         lyt_main.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
+        lyt_main.AddStretchSpacer(1)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
@@ -315,7 +316,7 @@ class ManPage(ScrolledPanel):
         FLAGS = wx.LEFT|wx.RIGHT|wx.TOP
         
         lyt_main = self.GetSizer()
-        lyt_main.Add(obj_section, proportion, wx.EXPAND|FLAGS, 5)
+        lyt_main.AddKeepLast(obj_section, proportion, wx.EXPAND|FLAGS, 5)
         
         self.Layout()
         
