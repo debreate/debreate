@@ -7,19 +7,26 @@
 
 
 import wx
-from wx.aui     import AUI_NB_CLOSE_BUTTON
+from wx.aui     import AUI_NB_CLOSE_ON_ACTIVE_TAB
+from wx.aui     import AUI_NB_SCROLL_BUTTONS
 from wx.aui     import AUI_NB_TAB_MOVE
 from wx.aui     import AUI_NB_TAB_SPLIT
+from wx.aui     import AUI_NB_TOP
 from wx.aui     import AuiNotebook
 
 from dbr.log    import Logger
 from ui.panel   import ScrolledPanel
 
 
+# ???: What is TAB_SPLIT for?
+DEFAULT_NB_STYLE = AUI_NB_TOP|AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_ON_ACTIVE_TAB|AUI_NB_SCROLL_BUTTONS
+
+
 ## Custom notebook class for compatibility with legacy wx versions
 class Notebook(AuiNotebook):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_BUTTON, name=u'notebook'):
+            style=DEFAULT_NB_STYLE, name=u'notebook'):
+        
         AuiNotebook.__init__(self, parent, win_id, pos, size, style)
         
         # wx.aui.AuiNotebook does not allow setting name from constructor
