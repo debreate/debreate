@@ -191,7 +191,7 @@ class ManSectBase2(ManSectBase):
         self.Label.SetLabel(label)
 
 
-## TODO: Doxygen
+## General section
 class ManSect(ManSectBase2):
     def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
         ManSectBase2.__init__(self, parent, label, style)
