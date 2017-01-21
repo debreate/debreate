@@ -291,7 +291,12 @@ class ManPage(ScrolledPanel):
                 )
             
             doc_section.Label.Set(labels)
-            doc_section.Label.SetSelection(0)
+            
+            if section_name:
+                doc_section.Label.SetStringSelection(section_name)
+            
+            if not doc_section.Label.GetSelection():
+                doc_section.Label.SetSelection(0)
         
         if doc_section.HasStyle(manid.REMOVABLE):
             # FIXME: Replace with checkboxes
