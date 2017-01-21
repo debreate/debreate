@@ -258,6 +258,7 @@ class ManPage(wx.Panel):
         self.AddDocumentSection(GT(u'Name'))
         self.AddDocumentSection(GT(u'Synopsis'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
         self.AddDocumentSection(GT(u'Description'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
+        self.AddDocumentSection(GT(u'Options'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
         self.AddDocumentSection(GT(u'Examples'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
         self.AddDocumentSection(GT(u'See also'))
     
