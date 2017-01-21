@@ -24,7 +24,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetTopWindow
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
-from ui.textinput           import MonospaceTextArea
+from ui.inputtext           import MonospaceTextArea
 
 
 # Globals

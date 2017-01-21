@@ -26,9 +26,9 @@ from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
+from ui.inputtext           import TextAreaPanel
 from ui.listinput           import ListCtrlPanel
 from ui.selectinput         import ComboBox
-from ui.textinput           import TextAreaPanel
 from ui.textpreview         import TextPreview
 
 

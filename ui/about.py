@@ -29,8 +29,8 @@ from globals.system         import WX_VER_STRING
 from ui.button              import ButtonConfirm
 from ui.dialog              import ShowErrorDialog
 from ui.hyperlink           import Hyperlink
+from ui.inputtext           import TextAreaPanel
 from ui.listinput           import ListCtrlPanel
-from ui.textinput           import TextAreaPanel
 
 
 # Font for the name

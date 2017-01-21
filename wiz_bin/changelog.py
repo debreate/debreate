@@ -22,11 +22,11 @@ from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
+from ui.inputtext           import MonospaceTextArea
+from ui.inputtext           import TextAreaPanel
 from ui.panel               import BorderedPanel
 from ui.pathctrl            import PathCtrl
 from ui.selectinput         import ComboBox
-from ui.textinput           import MonospaceTextArea
-from ui.textinput           import TextAreaPanel
 
 
 ## Changelog page
