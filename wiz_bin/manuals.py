@@ -28,6 +28,7 @@ from ui.mansect             import ManSect
 from ui.menu                import PanelMenu
 from ui.menu                import PanelMenuBar
 from ui.notebook            import Notebook
+from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 from ui.prompt              import TextEntryDialog
 from ui.wizard              import WizardPage
@@ -193,7 +194,11 @@ class ManPage(wx.Panel):
         # Add sibling panel to hold menu & rename button
         pnl_top = wx.Panel(self)
         
-        menubar = PanelMenuBar(pnl_top)
+        # FIXME: Hack
+        temp_bar = BorderedPanel(pnl_top)
+        
+        menubar = PanelMenuBar(temp_bar)
+        menubar.HideBorder()
         
         menu_add = PanelMenu(menubar, label=GT(u'Add'))
         menu_add.Append(ident.SINGLE, GT(u'Single line section'))
@@ -218,8 +223,15 @@ class ManPage(wx.Panel):
         
         # *** Layout *** #
         
+        # FIXME: Hack
+        temp_lyt = BoxSizer(wx.HORIZONTAL)
+        temp_lyt.Add(menubar)
+        temp_lyt.AddStretchSpacer(1)
+        
+        temp_bar.SetSizer(temp_lyt)
+        
         lyt_top = BoxSizer(wx.VERTICAL)
-        lyt_top.Add(menubar, 0, wx.EXPAND)
+        lyt_top.Add(temp_bar, 0, wx.EXPAND)
         lyt_top.Add(self.btn_rename, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 5)
         
         pnl_top.SetAutoLayout(True)
