@@ -192,7 +192,6 @@ class ManPage(wx.Panel):
         
         # Add sibling panel to hold menu & rename button
         pnl_top = wx.Panel(self)
-        pnl_top.SetBackgroundColour(wx.BLUE)
         
         # FIXME: wx.Panel can't set wx.MenuBar
         # TODO: Create custom menubar
