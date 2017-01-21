@@ -23,6 +23,7 @@ from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
+from ui.inputtext           import TextAreaPanel
 from ui.layout              import BoxSizer
 from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
@@ -34,7 +35,6 @@ from ui.notebook            import Notebook
 from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 from ui.prompt              import TextEntryDialog
-from ui.textinput           import TextAreaPanel
 from ui.wizard              import WizardPage
 
 
