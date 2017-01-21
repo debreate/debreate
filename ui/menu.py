@@ -272,6 +272,8 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Action to take when menu is selected
+    #  
+    #  FIXME: Needs to find the menu item that was selected
     def OnSelect(self, event=None):
         if event:
             # DEBUG: Start
