@@ -13,7 +13,7 @@ import wx
 from dbr.language import GT
 
 
-## Creates a new ID
+## Creates a new bitwise compatible ID
 #  
 #  Along with return a new ID, it also updates the id_wrapper reference
 #  
