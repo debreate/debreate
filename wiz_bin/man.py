@@ -31,7 +31,7 @@ from ui.prompt              import TextEntryDialog
 from ui.wizard              import WizardPage
 
 
-## TODO: Doxygen
+## Manual pages page
 class Panel(WizardPage):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
@@ -91,7 +91,7 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def AddManpage(self, name=u'manual'):
         # Set 'select' argument to True to switch to new manpage
-        ret_val = self.tabs.AddPage(ManPage(self.tabs, name), name, select=True)
+        ret_val = self.tabs.AddPage(name, ManPage(self.tabs, name), select=True)
         
         # New page should be selected
         new_page = self.tabs.GetPage(self.tabs.GetSelection())
