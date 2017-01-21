@@ -170,49 +170,48 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Menu with links to the Debian Policy Manual webpages
         self.menu_policy = wx.Menu()
         
-        mitm_dpm = wx.MenuItem(self.menu_policy, ident.DPM, GT(u'Debian Policy Manual'),
-                u'http://www.debian.org/doc/debian-policy')
-        mitm_dpm.SetBitmap(ICON_GLOBE)
-        mitm_dpm_ctrl = wx.MenuItem(self.menu_policy, ident.DPMCtrl, GT(u'Control files'),
-                u'http://www.debian.org/doc/debian-policy/ch-controlfields.html')
-        mitm_dpm_ctrl.SetBitmap(ICON_GLOBE)
-        mitm_dpm_log = wx.MenuItem(self.menu_policy, ident.DPMLog, GT(u'Changelog'),
-                u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog')
-        mitm_dpm_log.SetBitmap(ICON_GLOBE)
-        mitm_upm = wx.MenuItem(self.menu_policy, ident.UPM, GT(u'Ubuntu Policy Manual'),
-                u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/')
-        mitm_upm.SetBitmap(ICON_GLOBE)
-        # FIXME: Use wx.NewId()
-        mitm_deb_src = wx.MenuItem(self.menu_policy, 222, GT(u'Building debs from source'),
-                u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source') # This is here only temporarily for reference
-        mitm_deb_src.SetBitmap(ICON_GLOBE)
-        mitm_lint_tags = wx.MenuItem(self.menu_policy, ident.LINT_TAGS, GT(u'Lintian tags explanation'),
-                u'http://lintian.debian.org/tags-all.html')
-        mitm_lint_tags.SetBitmap(ICON_GLOBE)
-        mitm_launchers = wx.MenuItem(self.menu_policy, ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
-                u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/')
-        mitm_launchers.SetBitmap(ICON_GLOBE)
-        
-        self.menu_policy.AppendItem(mitm_dpm)
-        self.menu_policy.AppendItem(mitm_dpm_ctrl)
-        self.menu_policy.AppendItem(mitm_dpm_log)
-        self.menu_policy.AppendItem(mitm_upm)
-        self.menu_policy.AppendItem(mitm_deb_src)
-        self.menu_policy.AppendItem(mitm_lint_tags)
-        self.menu_policy.AppendItem(mitm_launchers)
-        
-        lst_policy_ids = (
-            ident.DPM,
-            ident.DPMCtrl,
-            ident.DPMLog,
-            ident.UPM,
-            222,
-            ident.LINT_TAGS,
-            ident.LAUNCHERS,
+        policy_links = (
+            (ident.DPM, GT(u'Debian Policy Manual'),
+                    u'https://www.debian.org/doc/debian-policy',),
+            (ident.DPMCtrl, GT(u'Control files'),
+                    u'https://www.debian.org/doc/debian-policy/ch-controlfields.html',),
+            (ident.DPMLog, GT(u'Changelog'),
+                    u'https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
+            (ident.UPM, GT(u'Ubuntu Policy Manual'),
+                    u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',),
+            (ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+                    u'https://lintian.debian.org/tags-all.html',),
+            (ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+                    u'https://lintian.debian.org/manual/section-2.4.html',),
+            (ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+                    u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
+            # Unofficial links
+            None,
+            # FIXME: Use wx.NewId()
+            (222, GT(u'Building debs from Source'),
+                    u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
             )
         
-        for ID in lst_policy_ids:
-            wx.EVT_MENU(self, ID, self.OpenPolicyManual)
+        for LINK in policy_links:
+            if not LINK:
+                self.menu_policy.AppendSeparator()
+            
+            elif len(LINK) > 2:
+                link_id = LINK[0]
+                label = LINK[1]
+                url = LINK[2]
+                
+                if len(LINK) > 3:
+                    icon = LINK[3]
+                
+                else:
+                    icon = ICON_GLOBE
+                
+                mitm = wx.MenuItem(self.menu_policy, link_id, label, url)
+                mitm.SetBitmap(icon)
+                self.menu_policy.AppendItem(mitm)
+                
+                wx.EVT_MENU(self, link_id, self.OpenPolicyManual)
         
         mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
