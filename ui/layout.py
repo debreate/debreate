@@ -12,6 +12,17 @@ import wx
 
 
 class Sizer(wx.Sizer):
+    ## Retains spacer at end of items
+    #  
+    #  FIXME: Detect spacer as last item, otherwise call Add instead of Insert
+    def AddKeepLast(self, item, proportion=0, flag=0, border=0, userData=None):
+        last_index = self.GetItemCount() - 1
+        
+        return self.Insert(last_index, item, proportion, flag, border, userData)
+        
+        #self.Add(item, proportion, flag, border, userData)
+    
+    
     ## Returns the number of items in the sizer
     #  
     #  Compatibility method for legacy wx versions
