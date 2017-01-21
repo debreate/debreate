@@ -286,7 +286,8 @@ class ManPage(ScrolledPanel):
                 GT(u'Conforming to'),
                 GT(u'Notes'),
                 GT(u'Bugs'),
-                GT(u'Example'),
+                GT(u'Examples'),
+                GT(u'See also')
                 )
             
             doc_section.Label.Set(labels)
