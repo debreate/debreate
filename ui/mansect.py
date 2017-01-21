@@ -96,7 +96,7 @@ class ManSectBase2(ManSectBase):
         
         # *** Layout *** #
         
-        self.lyt_main.Add(self.Label, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.LEFT, 5)
+        self.lyt_main.Add(self.Label, -1, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.LEFT, 5)
         
         if style & manid.REMOVABLE:
             self.lyt_main.AddStretchSpacer(1)
@@ -196,21 +196,26 @@ class ManSect(ManSectBase2):
     def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
         ManSectBase2.__init__(self, parent, label, style)
         
-        FLAGS = wx.LEFT
+        FLAGS = wx.EXPAND|wx.LEFT|wx.ALIGN_CENTER_VERTICAL
+        FLAGS_MAIN = wx.ALIGN_CENTER_VERTICAL
         
         if self.HasStyle(manid.MULTILINE):
             self.Input = TextAreaPanel(self.Panel)
-            FLAGS = wx.EXPAND|FLAGS
+            #FLAGS = wx.EXPAND|FLAGS
+            FLAGS_MAIN = wx.EXPAND|FLAGS_MAIN
         
         else:
             self.Input = TextArea(self.Panel)
-            FLAGS = wx.ALIGN_CENTER_VERTICAL|FLAGS
         
-        lyt_input = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_input.Add(self.Input, 0, FLAGS, 5)
+        lyt_input = wx.BoxSizer(wx.VERTICAL)
+        lyt_input.Add(self.Input, 1, FLAGS, 5)
+        #lyt_input = wx.GridBagSizer()
+        #lyt_input.AddGrowableCol(0)
+        
+        #lyt_input.Add(self.Input, (0, 0), flag=FLAGS, border=5)
         
         lyt_main = self.GetSizer()
-        lyt_main.Insert(1, lyt_input, 0, wx.ALIGN_CENTER)
+        lyt_main.Insert(1, lyt_input, 3, FLAGS_MAIN)
 
 
 ## TODO: Doxygen
