@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package ui.markdown
+## \package input.markdown
 
 # MIT licensing
 # See: docs/LICENSE.txt
