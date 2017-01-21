@@ -96,9 +96,9 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def AddManpage(self, name=u'manual'):
+    def AddManpage(self, name=u'manual', easy_mode=True):
         # Set 'select' argument to True to switch to new manpage
-        ret_val = self.tabs.AddPage(name, ManPage(self.tabs, name), select=True)
+        ret_val = self.tabs.AddPage(name, ManPage(self.tabs, name, easy_mode), select=True)
         
         # New page should be selected
         #new_page = self.tabs.GetPage(self.tabs.GetSelection())
@@ -161,6 +161,20 @@ class Panel(WizardPage):
         getname = TextEntryDialog(GetTopWindow(), GT(u'Name for new manpage'))
         new_name = None
         
+        if not rename:
+            easy_mode = wx.CheckBox(getname, label=u'Easy mode')
+            easy_mode.SetValue(True)
+            
+            sizer = getname.GetSizer()
+            insert_point = len(sizer.GetChildren()) - 1
+            
+            sizer.InsertSpacer(insert_point, 5)
+            sizer.Insert(insert_point + 1, easy_mode, 0, wx.LEFT, 16)
+            
+            getname.SetSize(sizer.GetMinSize())
+            getname.Fit()
+            getname.CenterOnParent()
+        
         valid_name = False
         
         while not valid_name:
@@ -187,16 +201,16 @@ class Panel(WizardPage):
             
             return self.tabs.SetPageText(index, new_name)
         
-        return self.AddManpage(new_name)
+        return self.AddManpage(new_name, easy_mode.GetValue())
 
 
 ## TODO: Doxygen
 class ManPage(wx.Panel):
-    def __init__(self, parent, name=u'manual', mode=False):
+    def __init__(self, parent, name=u'manual', easy_mode=True):
         wx.Panel.__init__(self, parent, name=name)
         
-        # False is 'maual', True is 'easy'
-        self.SetMode(mode)
+        # False is 'manual', True is 'easy'
+        self.SetMode(easy_mode)
     
     
     ## Retrieves the section index that contains the object
