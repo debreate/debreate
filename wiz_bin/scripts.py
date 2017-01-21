@@ -16,6 +16,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetTopWindow
 from input.list             import ListCtrlPanel
+from input.markdown         import MarkdownDialog
 from input.text             import MonospaceTextArea
 from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
@@ -24,7 +25,6 @@ from ui.button              import ButtonRemove
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
-from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel
 from ui.pathctrl            import PATH_WARN
 from ui.pathctrl            import PathCtrl
