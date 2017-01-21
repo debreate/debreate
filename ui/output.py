@@ -8,7 +8,7 @@
 
 import sys, wx
 
-from ui.textinput import TextAreaPanel
+from ui.inputtext import TextAreaPanel
 
 
 ## A generic display area that captures \e stdout & \e stderr
