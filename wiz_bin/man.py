@@ -21,8 +21,9 @@ from ui.button              import ButtonSave64
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
-from ui.mansect             import ManSection
+from ui.mansect             import ManSect
 from ui.menu                import PanelMenu
 from ui.menu                import PanelMenuBar
 from ui.notebook            import Notebook
@@ -266,12 +267,11 @@ class ManPage(ScrolledPanel):
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
-        self.Layout()
         
         # *** Required Sections *** #
         
         # This calls self.Layout
-        self.AddDocumentSection(GT(u'Name'), static=True, expand=False, removable=False)
+        self.AddDocumentSection(GT(u'Name'), style=manid.STATIC)
     
     
     ## Retrieves the section index that contains the object
@@ -299,27 +299,49 @@ class ManPage(ScrolledPanel):
     
     
     ## Adds a new section to the document
-    def AddDocumentSection(self, section_name=None, multiline=False, static=False, expand=False,
-                removable=True):
-        doc_section = ManSection(self)
-        sect_sizer = doc_section.GetObject(section_name, multiline, static, expand, removable)
+    def AddDocumentSection(self, section_name=None, style=DEFAULT_MANSECT_STYLE):
+        doc_section = ManSect(self, section_name, style=style)
+        obj_section = doc_section.GetObject()
         
-        if not sect_sizer:
+        if not obj_section:
             return False
         
-        FLAGS = wx.LEFT|wx.RIGHT|wx.TOP
-        if expand:
-            FLAGS = wx.EXPAND|FLAGS
+        if doc_section.HasStyle(manid.CHOICE):
+            labels = (
+                GT(u'Name'),
+                GT(u'Synopsis'),
+                GT(u'Configuration'),
+                GT(u'Description'),
+                GT(u'Options'),
+                GT(u'Exit status'),
+                GT(u'Return value'),
+                GT(u'Errors'),
+                GT(u'Environment'),
+                GT(u'Files'),
+                GT(u'Versions'),
+                GT(u'Conforming to'),
+                GT(u'Notes'),
+                GT(u'Bugs'),
+                GT(u'Example'),
+                )
+            
+            doc_section.Label.Set(labels)
+            doc_section.Label.SetSelection(0)
         
-        main_sizer = self.GetSizer()
-        
-        if removable:
+        if doc_section.HasStyle(manid.REMOVABLE):
             # FIXME: Replace with checkboxes
             btn_remove = doc_section.GetButton()
             if btn_remove:
                 btn_remove.Bind(wx.EVT_BUTTON, self.OnRemoveDocumentSection)
         
-        main_sizer.Add(sect_sizer, 0, FLAGS, 5)
+        proportion = 0
+        if doc_section.HasStyle(manid.MULTILINE):
+            proportion = 1
+        
+        FLAGS = wx.LEFT|wx.RIGHT|wx.TOP
+        
+        lyt_main = self.GetSizer()
+        lyt_main.Add(obj_section, proportion, wx.EXPAND|FLAGS, 5)
         
         self.Layout()
         
@@ -338,12 +360,13 @@ class ManPage(ScrolledPanel):
     
     ## Adds a new section to the document via button press
     def OnAddDocumentSection(self, event=None):
-        multiline = False
+        style = manid.CHOICE|manid.REMOVABLE
         
         if event:
-            multiline = event.GetEventObject().GetId() == manid.MULTILINE
+            if event.GetEventObject().GetId() == manid.MULTILINE:
+                style = style|manid.MULTILINE
         
-        self.AddDocumentSection(multiline=multiline, expand=True, removable=True)
+        self.AddDocumentSection(style=style)
     
     
     ## Show a confirmation dialog when closing a tab
