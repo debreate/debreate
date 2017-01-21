@@ -13,14 +13,47 @@ from dbr.font           import MONOSPACED_MD
 from globals.strings    import TextIsEmpty
 
 
+## Custom wx.Choice class for compatibility with older wx versions
+class Choice(wx.Choice):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr):
+        
+        wx.Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
+    
+    
+    ## wx 2.8 does not define wx.Choice.Set
+    #  
+    #  \param items
+    #    List of items to be set
+    #  \override wx.Choice.Set
+    def Set(self, items):
+        cached_value = self.GetStringSelection()
+        
+        if not isinstance(items, (tuple, list, dict,)):
+            items = (items,)
+        
+        if wx.MAJOR_VERSION > 2:
+            wx.Choice.Set(self, items)
+        
+        else:
+            self.Clear()
+            
+            for I in items:
+                self.Append(I)
+        
+        if cached_value:
+            self.SetStringSelection(cached_value)
+
+
 ## Custom combo box that sets background colors when enabled/disabled
 #  
 #  This is a workaround for wx versions older than 3.0
 class ComboBox(OwnerDrawnComboBox):
-    def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0,
             validator=wx.DefaultValidator, name=wx.ComboBoxNameStr, monospace=False):
-        OwnerDrawnComboBox.__init__(self, parent, ID, value, pos, size, choices, style,
+        
+        OwnerDrawnComboBox.__init__(self, parent, win_id, value, pos, size, choices, style,
                 validator, name)
         
         if wx.MAJOR_VERSION < 3:
