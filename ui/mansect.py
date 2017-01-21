@@ -17,6 +17,7 @@ from globals.ident      import manid
 from ui.button          import ButtonRemove
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
 from ui.selectinput     import ComboBox
 from ui.textinput       import TextArea
 from ui.textinput       import TextAreaPanel
@@ -42,7 +43,13 @@ class ManSectBase:
         # Allow adding multiple instances of object
         self.Multiple = True
         
-        self.lyt_main = BoxSizer(wx.VERTICAL)
+        self.Panel = BorderedPanel(parent)
+        
+        # *** Layout *** #
+        
+        lyt_main = BoxSizer(wx.HORIZONTAL)
+        
+        self.Panel.SetSizer(lyt_main)
     
     
     ## TODO: Doxygen
@@ -70,9 +77,9 @@ class ManSectBase:
         self.Parent.Layout()
     
     
-    ## Retrieve the main sizer object
+    ## Retrieve the main object
     def GetObject(self):
-        return self.lyt_main
+        return self.Panel
     
     
     ## Checks multiple instances can be uses
