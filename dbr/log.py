@@ -20,7 +20,7 @@ from globals.fileio         import AppendFile
 from globals.fileio         import ReadFile
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
-from ui.inputtext           import TextAreaPanel
+from input.text             import TextAreaPanel
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()

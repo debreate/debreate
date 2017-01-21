@@ -14,12 +14,12 @@ from globals.dateinfo   import GetDayInt
 from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
 from globals.ident      import manid
+from input.select       import Choice
+from input.select       import ComboBox
+from input.text         import TextArea
+from input.text         import TextAreaPanel
 from ui.button          import ButtonRemove
 from ui.dialog          import ShowErrorDialog
-from ui.inputselect     import Choice
-from ui.inputselect     import ComboBox
-from ui.inputtext       import TextArea
-from ui.inputtext       import TextAreaPanel
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 
