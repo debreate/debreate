@@ -186,29 +186,35 @@ class Panel(WizardPage):
 
 
 ## TODO: Doxygen
-class ManPage(ScrolledPanel):
+class ManPage(wx.Panel):
     def __init__(self, parent, name=u'manual'):
-        ScrolledPanel.__init__(self, parent, style=wx.VSCROLL, name=name)
+        wx.Panel.__init__(self, parent, name=name)
+        
+        # Add sibling panel to hold menu & rename button
+        pnl_top = wx.Panel(self)
+        pnl_top.SetBackgroundColour(wx.BLUE)
         
         # FIXME: wx.Panel can't set wx.MenuBar
         # TODO: Create custom menubar
-        menubar = PanelMenuBar(self)
-        menubar.AddItem(PanelMenu(self, wx.ID_ADD), GT(u'Add'))
+        menubar = PanelMenuBar(pnl_top)
+        menubar.AddItem(PanelMenu(pnl_top, wx.ID_ADD), GT(u'Add'))
         
-        self.btn_rename = wx.Button(self, label=GT(u'Rename'))
+        self.btn_rename = wx.Button(pnl_top, label=GT(u'Rename'))
+        
+        self.pnl_bottom = ScrolledPanel(self)
         
         # *** Banners *** #
         
-        txt_banners = wx.StaticText(self, label=GT(u'Banners'))
-        banners = ManBanner(self)
+        txt_banners = wx.StaticText(self.pnl_bottom, label=GT(u'Banners'))
+        banners = ManBanner(self.pnl_bottom)
         pnl_banners = banners.GetPanel()
         
         #FIXME: Replace buttons with drop-down menu
-        btn_single_line = ButtonAdd(self, ident.SINGLE)
-        txt_single_line = wx.StaticText(self, label=GT(u'Add single line section'))
+        btn_single_line = ButtonAdd(self.pnl_bottom, ident.SINGLE)
+        txt_single_line = wx.StaticText(self.pnl_bottom, label=GT(u'Add single line section'))
         
-        btn_multi_line = ButtonAdd(self, manid.MULTILINE)
-        txt_multi_line = wx.StaticText(self, label=GT(u'Add multi-line section'))
+        btn_multi_line = ButtonAdd(self.pnl_bottom, manid.MULTILINE)
+        txt_multi_line = wx.StaticText(self.pnl_bottom, label=GT(u'Add multi-line section'))
         
         # *** Event Handling *** #
         
@@ -217,6 +223,13 @@ class ManPage(ScrolledPanel):
         
         # *** Layout *** #
         
+        lyt_top = BoxSizer(wx.VERTICAL)
+        lyt_top.Add(menubar, 0, wx.EXPAND)
+        lyt_top.Add(self.btn_rename, 0, wx.LEFT|wx.TOP, 5)
+        
+        pnl_top.SetAutoLayout(True)
+        pnl_top.SetSizer(lyt_top)
+        
         lyt_button = BoxSizer(wx.HORIZONTAL)
         lyt_button.Add(btn_single_line)
         lyt_button.Add(txt_single_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
@@ -224,13 +237,18 @@ class ManPage(ScrolledPanel):
         lyt_button.Add(txt_multi_line, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
         # FIXME: Use GridBagSizer???
+        lyt_bottom = BoxSizer(wx.VERTICAL)
+        lyt_bottom.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
+        lyt_bottom.Add(pnl_banners, 0, wx.LEFT, 5)
+        lyt_bottom.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
+        lyt_bottom.AddStretchSpacer(1)
+        
+        self.pnl_bottom.SetAutoLayout(True)
+        self.pnl_bottom.SetSizer(lyt_bottom)
+        
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(menubar, 0, wx.EXPAND)
-        lyt_main.Add(self.btn_rename, 0, wx.LEFT|wx.TOP, 5)
-        lyt_main.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
-        lyt_main.Add(pnl_banners, 0, wx.LEFT, 5)
-        lyt_main.Add(lyt_button, 0, wx.LEFT|wx.TOP, 5)
-        lyt_main.AddStretchSpacer(1)
+        lyt_main.Add(pnl_top, 0, wx.EXPAND)
+        lyt_main.Add(self.pnl_bottom, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
@@ -254,7 +272,7 @@ class ManPage(ScrolledPanel):
     def _get_object_section(self, item):
         index = 0
         
-        for C1 in self.GetSizer().GetChildren():
+        for C1 in self.pnl_bottom.GetSizer().GetChildren():
             C1 = C1.GetWindow()
             
             if isinstance(C1, ManPanel):
@@ -269,7 +287,7 @@ class ManPage(ScrolledPanel):
     
     ## Adds a new section to the document
     def AddDocumentSection(self, section_name=None, style=DEFAULT_MANSECT_STYLE):
-        doc_section = ManSect(self, section_name, style=style)
+        doc_section = ManSect(self.pnl_bottom, section_name, style=style)
         obj_section = doc_section.GetObject()
         
         if not obj_section:
@@ -311,12 +329,13 @@ class ManPage(ScrolledPanel):
         
         proportion = 0
         if doc_section.HasStyle(manid.MULTILINE):
-            proportion = 1
+            # FIXME: Proportion for multilines is not any bigger
+            proportion = 2
         
         FLAGS = wx.LEFT|wx.RIGHT|wx.TOP
         
-        lyt_main = self.GetSizer()
-        lyt_main.AddKeepLast(obj_section, proportion, wx.EXPAND|FLAGS, 5)
+        layout = self.pnl_bottom.GetSizer()
+        layout.AddKeepLast(obj_section, proportion, wx.EXPAND|FLAGS, 5)
         
         self.Layout()
         
@@ -374,13 +393,13 @@ class ManPage(ScrolledPanel):
         
         Logger.Debug(__name__, u'Removing manpage section at index {}'.format(index))
         
-        lyt_main = self.GetSizer()
+        layout = self.pnl_bottom.GetSizer()
         
-        object_to_remove = lyt_main.GetItem(index).GetWindow()
+        object_to_remove = layout.GetItem(index).GetWindow()
         
         # Object was returned as wx.Window instance
         if object_to_remove:
-            lyt_main.Detach(object_to_remove)
+            layout.Detach(object_to_remove)
             object_to_remove.Destroy()
             
             self.Layout()
