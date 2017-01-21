@@ -34,6 +34,7 @@ from ui.notebook            import Notebook
 from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 from ui.prompt              import TextEntryDialog
+from ui.textinput           import TextAreaPanel
 from ui.wizard              import WizardPage
 
 
@@ -100,10 +101,10 @@ class Panel(WizardPage):
         ret_val = self.tabs.AddPage(name, ManPage(self.tabs, name), select=True)
         
         # New page should be selected
-        new_page = self.tabs.GetPage(self.tabs.GetSelection())
+        #new_page = self.tabs.GetPage(self.tabs.GetSelection())
         
         # Set up some event handling for new page
-        new_page.btn_rename.Bind(wx.EVT_BUTTON, self.OnRenamePage)
+        #new_page.btn_rename.Bind(wx.EVT_BUTTON, self.OnRenamePage)
         
         return ret_val
     
@@ -191,80 +192,11 @@ class Panel(WizardPage):
 
 ## TODO: Doxygen
 class ManPage(wx.Panel):
-    def __init__(self, parent, name=u'manual'):
+    def __init__(self, parent, name=u'manual', mode=False):
         wx.Panel.__init__(self, parent, name=name)
         
-        # Add sibling panel to hold menu & rename button
-        pnl_top = wx.Panel(self)
-        
-        # FIXME: Hack
-        temp_bar = BorderedPanel(pnl_top)
-        
-        menubar = PanelMenuBar(temp_bar)
-        menubar.HideBorder()
-        
-        menu_add = PanelMenu(menubar, label=GT(u'Add'))
-        menu_add.Append(ident.SINGLE, GT(u'Single line section'))
-        menu_add.Append(manid.MULTILINE, GT(u'Multi-line section'))
-        
-        menubar.AddItem(menu_add)
-        
-        self.btn_rename = wx.Button(pnl_top, label=GT(u'Rename'))
-        
-        self.pnl_bottom = ScrolledPanel(self)
-        
-        # *** Banners *** #
-        
-        txt_banners = wx.StaticText(self.pnl_bottom, label=GT(u'Banners'))
-        banners = ManBanner(self.pnl_bottom)
-        pnl_banners = banners.GetPanel()
-        
-        # *** Event Handling *** #
-        
-        wx.EVT_MENU(self, ident.SINGLE, self.OnAddDocumentSection)
-        wx.EVT_MENU(self, manid.MULTILINE, self.OnAddDocumentSection)
-        
-        # *** Layout *** #
-        
-        # FIXME: Hack
-        temp_lyt = BoxSizer(wx.HORIZONTAL)
-        temp_lyt.Add(menubar)
-        temp_lyt.AddStretchSpacer(1)
-        
-        temp_bar.SetSizer(temp_lyt)
-        
-        lyt_top = BoxSizer(wx.VERTICAL)
-        lyt_top.Add(temp_bar, 0, wx.EXPAND)
-        lyt_top.Add(self.btn_rename, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 5)
-        
-        pnl_top.SetAutoLayout(True)
-        pnl_top.SetSizer(lyt_top)
-        
-        # FIXME: Use GridBagSizer???
-        lyt_bottom = BoxSizer(wx.VERTICAL)
-        lyt_bottom.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
-        lyt_bottom.Add(pnl_banners, 0, wx.LEFT, 5)
-        lyt_bottom.AddStretchSpacer(1)
-        
-        self.pnl_bottom.SetAutoLayout(True)
-        self.pnl_bottom.SetSizer(lyt_bottom)
-        
-        lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(pnl_top, 0, wx.EXPAND)
-        lyt_main.Add(self.pnl_bottom, 1, wx.EXPAND)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        
-        # *** Default Sections *** #
-        
-        # This calls self.Layout
-        self.AddDocumentSection(GT(u'Name'))
-        self.AddDocumentSection(GT(u'Synopsis'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
-        self.AddDocumentSection(GT(u'Description'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
-        self.AddDocumentSection(GT(u'Options'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
-        self.AddDocumentSection(GT(u'Examples'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
-        self.AddDocumentSection(GT(u'See also'))
+        # False is 'maual', True is 'easy'
+        self.SetMode(mode)
     
     
     ## Retrieves the section index that contains the object
@@ -419,3 +351,122 @@ class ManPage(wx.Panel):
             return True
         
         return False
+    
+    
+    ## TODO: Doxygen
+    def SetMode(self, mode):
+        if isinstance(mode, wx.CommandEvent):
+            mode = mode.GetEventObject().Mode
+        
+        # Restart with fresh panel
+        self.DestroyChildren()
+        
+        self.btn_rename = wx.Button(self, label=GT(u'Rename'))
+        self.btn_mode = wx.Button(self, label=GT(u'Switch mode'))
+        self.btn_mode.Mode = not mode
+        
+        self.btn_rename.Bind(wx.EVT_BUTTON, self.Parent.Parent.OnRenamePage)
+        self.btn_mode.Bind(wx.EVT_BUTTON, self.SetMode)
+        
+        # *** Layout *** #
+        
+        self.lyt_buttons = BoxSizer(wx.HORIZONTAL)
+        self.lyt_buttons.Add(self.btn_rename)
+        self.lyt_buttons.AddStretchSpacer(1)
+        self.lyt_buttons.Add(self.btn_mode)
+        
+        self.lyt_main = BoxSizer(wx.VERTICAL)
+        
+        if mode:
+            return self.SetModeEasy()
+        
+        return self.SetModeManual()
+    
+    
+    ## TODO: Doxygen
+    def SetModeEasy(self):
+        # Add sibling panel to hold menu & rename button
+        pnl_top = wx.Panel(self)
+        
+        # FIXME: Hack
+        temp_bar = BorderedPanel(pnl_top)
+        
+        menubar = PanelMenuBar(temp_bar)
+        menubar.HideBorder()
+        
+        menu_add = PanelMenu(menubar, label=GT(u'Add'))
+        menu_add.Append(ident.SINGLE, GT(u'Single line section'))
+        menu_add.Append(manid.MULTILINE, GT(u'Multi-line section'))
+        
+        menubar.AddItem(menu_add)
+        
+        self.btn_rename.Reparent(pnl_top)
+        self.btn_mode.Reparent(pnl_top)
+        
+        self.pnl_bottom = ScrolledPanel(self)
+        
+        # *** Banners *** #
+        
+        txt_banners = wx.StaticText(self.pnl_bottom, label=GT(u'Banners'))
+        banners = ManBanner(self.pnl_bottom)
+        pnl_banners = banners.GetPanel()
+        
+        # *** Event Handling *** #
+        
+        wx.EVT_MENU(self, ident.SINGLE, self.OnAddDocumentSection)
+        wx.EVT_MENU(self, manid.MULTILINE, self.OnAddDocumentSection)
+        
+        # *** Layout *** #
+        
+        # FIXME: Hack
+        temp_lyt = BoxSizer(wx.HORIZONTAL)
+        temp_lyt.Add(menubar)
+        temp_lyt.AddStretchSpacer(1)
+        
+        temp_bar.SetSizer(temp_lyt)
+        
+        lyt_top = BoxSizer(wx.VERTICAL)
+        lyt_top.Add(temp_bar, 0, wx.EXPAND)
+        lyt_top.Add(self.lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
+        
+        pnl_top.SetAutoLayout(True)
+        pnl_top.SetSizer(lyt_top)
+        
+        # FIXME: Use GridBagSizer???
+        lyt_bottom = BoxSizer(wx.VERTICAL)
+        lyt_bottom.Add(txt_banners, 0, wx.ALIGN_BOTTOM|wx.LEFT|wx.TOP, 5)
+        lyt_bottom.Add(pnl_banners, 0, wx.LEFT, 5)
+        lyt_bottom.AddStretchSpacer(1)
+        
+        self.pnl_bottom.SetAutoLayout(True)
+        self.pnl_bottom.SetSizer(lyt_bottom)
+        
+        self.lyt_main.Add(pnl_top, 0, wx.EXPAND)
+        self.lyt_main.Add(self.pnl_bottom, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(self.lyt_main)
+        
+        # *** Default Sections *** #
+        
+        # This calls self.Layout
+        self.AddDocumentSection(GT(u'Name'))
+        self.AddDocumentSection(GT(u'Synopsis'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
+        self.AddDocumentSection(GT(u'Description'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
+        self.AddDocumentSection(GT(u'Options'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
+        self.AddDocumentSection(GT(u'Examples'), style=DEFAULT_MANSECT_STYLE|manid.MULTILINE)
+        self.AddDocumentSection(GT(u'See also'))
+    
+    
+    ## TODO: Doxygen
+    def SetModeManual(self):
+        self.ManualText = TextAreaPanel(self)
+        
+        # *** Layout *** #
+        
+        self.lyt_main.Add(self.lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
+        self.lyt_main.Add(self.ManualText, 1, wx.EXPAND)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(self.lyt_main)
+        self.Layout()
