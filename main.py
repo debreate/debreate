@@ -257,6 +257,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.wizard.SetPages(bin_pages)
         
+        # *** Current Project Status *** #
+        
+        self.ProjectDirty = False
+        
         # *** Event Handling *** #
         
         wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
@@ -673,6 +677,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.page_build.Set(build_data)
         
         return opened
+    
+    
+    ## TODO: Doxygen
+    def ProjectChanged(self, event=None):
+        if DebugEnabled():
+            Logger.Debug(__name__, u'MainWindow.OnProjectChanged:')
+            print(u'  Object: {}'.format(event.GetEventObject()))
+        
+        self.ProjectDirty = True
     
     
     ## TODO: Doxygen
