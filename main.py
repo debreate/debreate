@@ -246,28 +246,33 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         policy_links = (
             (ident.DPM, GT(u'Debian Policy Manual'),
-                    u'http://www.debian.org/doc/debian-policy',),
+                    u'https://www.debian.org/doc/debian-policy',),
             (ident.DPMCtrl, GT(u'Control files'),
-                    u'http://www.debian.org/doc/debian-policy/ch-controlfields.html',),
+                    u'https://www.debian.org/doc/debian-policy/ch-controlfields.html',),
             (ident.DPMLog, GT(u'Changelog'),
-                    u'http://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
+                    u'https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
             (ident.UPM, GT(u'Ubuntu Policy Manual'),
                     u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',),
+            (ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+                    u'https://lintian.debian.org/tags-all.html',),
+            (ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+                    u'https://lintian.debian.org/manual/section-2.4.html',),
+            (ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+                    u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
+            # Unofficial links
+            None,
             # FIXME: Use wx.NewId()
             (222, GT(u'Building debs from Source'),
                     u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
-            (ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
-                    u'http://lintian.debian.org/tags-all.html',),
-            (ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
-                u'https://lintian.debian.org/manual/section-2.4.html',),
-            (ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
-                u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
             (ident.MAN, GT(u'Writing manual pages'),
                     u'https://liw.fi/manpages/',),
             )
         
         for LINK in policy_links:
-            if len(LINK) > 2:
+            if not LINK:
+                self.menu_policy.AppendSeparator()
+            
+            elif len(LINK) > 2:
                 link_id = LINK[0]
                 label = LINK[1]
                 url = LINK[2]
@@ -281,21 +286,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 mitm = wx.MenuItem(self.menu_policy, link_id, label, url)
                 mitm.SetBitmap(icon)
                 self.menu_policy.AppendItem(mitm)
-        
-        lst_policy_ids = (
-            ident.DPM,
-            ident.DPMCtrl,
-            ident.DPMLog,
-            ident.UPM,
-            222,
-            ident.LINT_TAGS,
-            ident.LINT_OVERRIDE,
-            ident.LAUNCHERS,
-            ident.MAN,
-            )
-        
-        for ID in lst_policy_ids:
-            wx.EVT_MENU(self, ID, self.OpenPolicyManual)
+                
+                wx.EVT_MENU(self, link_id, self.OpenPolicyManual)
         
         mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
         mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
