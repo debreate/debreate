@@ -11,12 +11,12 @@ import os, thread, traceback, wx
 from dbr.functions          import BuildDebPackage
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.moduleaccess       import ModuleAccessCtrl
 from dbr.timer              import DebreateTimer
 from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
+from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import ConcatPaths
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonBuild
