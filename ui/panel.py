@@ -70,3 +70,19 @@ class ScrolledPanel(wx.ScrolledWindow):
         wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
         
         SetScrollbars(self)
+    
+    
+    ## Override inherited method to also update the scrollbars
+    def Layout(self):
+        layout = wx.ScrolledWindow.Layout(self)
+        
+        self.UpdateScrollbars()
+        
+        return layout
+    
+    
+    ## Refresh the panel's size so scrollbars will update
+    def UpdateScrollbars(self):
+        sizer = self.GetSizer()
+        if sizer:
+            self.SetVirtualSize(sizer.GetMinSize())
