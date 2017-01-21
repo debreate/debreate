@@ -196,7 +196,12 @@ class ManPage(wx.Panel):
         # FIXME: wx.Panel can't set wx.MenuBar
         # TODO: Create custom menubar
         menubar = PanelMenuBar(pnl_top)
-        menubar.AddItem(PanelMenu(pnl_top, wx.ID_ADD), GT(u'Add'))
+        
+        menu_add = PanelMenu(menubar, label=GT(u'Add'))
+        menu_add.Append(ident.SINGLE, GT(u'Single line section'))
+        menu_add.Append(manid.MULTILINE, GT(u'Multi-line section'))
+        
+        menubar.AddItem(menu_add)
         
         self.btn_rename = wx.Button(pnl_top, label=GT(u'Rename'))
         
@@ -216,6 +221,9 @@ class ManPage(wx.Panel):
         txt_multi_line = wx.StaticText(self.pnl_bottom, label=GT(u'Add multi-line section'))
         
         # *** Event Handling *** #
+        
+        wx.EVT_MENU(self, ident.SINGLE, self.OnAddDocumentSection)
+        wx.EVT_MENU(self, manid.MULTILINE, self.OnAddDocumentSection)
         
         btn_single_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
         btn_multi_line.Bind(wx.EVT_BUTTON, self.OnAddDocumentSection)
@@ -357,7 +365,15 @@ class ManPage(wx.Panel):
         style = DEFAULT_MANSECT_STYLE
         
         if event:
-            if event.GetEventObject().GetId() == manid.MULTILINE:
+            event_object = event.GetEventObject()
+            
+            if isinstance(event_object, wx.Menu):
+                event_id = event.GetId()
+            
+            else:
+                event_id = event_object.GetId()
+            
+            if event_id == manid.MULTILINE:
                 style = style|manid.MULTILINE
         
         self.AddDocumentSection(style=style)
