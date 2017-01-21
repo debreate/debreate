@@ -190,6 +190,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             # FIXME: Use wx.NewId()
             (222, GT(u'Building debs from Source'),
                     u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
+            (ident.MAN, GT(u'Writing manual pages'),
+                    u'https://liw.fi/manpages/',),
             )
         
         for LINK in policy_links:
