@@ -25,7 +25,6 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import LogWindow
 from dbr.log                import Logger
-from dbr.moduleaccess       import ModuleAccessCtrl
 from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
@@ -46,6 +45,7 @@ from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
+from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
