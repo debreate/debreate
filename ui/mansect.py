@@ -18,6 +18,7 @@ from ui.button          import ButtonRemove
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
+from ui.selectinput     import Choice
 from ui.selectinput     import ComboBox
 from ui.textinput       import TextArea
 from ui.textinput       import TextAreaPanel
@@ -82,7 +83,7 @@ class ManSectBase2(ManSectBase):
         self.Panel = ManPanel(parent)
         
         if self.HasStyle(manid.CHOICE):
-            self.Label = wx.Choice(self.Panel)
+            self.Label = Choice(self.Panel)
         
         elif self.HasStyle(manid.MUTABLE):
             self.Label = ComboBox(self.Panel)
@@ -223,7 +224,7 @@ class ManBanner(ManSectBase):
         
         txt_section = wx.StaticText(self.Panel, label=GT(u'Section'))
         
-        self.sel_section = wx.Choice(self.Panel, choices=tuple(sections))
+        self.sel_section = Choice(self.Panel, choices=tuple(sections))
         self.sel_section.default = u'1'
         self.sel_section.SetStringSelection(self.sel_section.default)
         
@@ -377,7 +378,7 @@ class ManSection(ManSectBase):
                 return None
         
         else:
-            self.sect_name = wx.Choice(self.Parent, choices=self.sections)
+            self.sect_name = Choice(self.Parent, choices=self.sections)
         
         if multiline:
             value = TextAreaPanel(self.Parent)
