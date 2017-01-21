@@ -212,7 +212,8 @@ class ManPage(ScrolledPanel):
         # *** Banners *** #
         
         txt_banners = wx.StaticText(self, label=GT(u'Banners'))
-        pnl_banners = BorderedPanel(self)
+        banners = ManBanner(self)
+        pnl_banners = banners.GetPanel()
         
         txt_section = wx.StaticText(pnl_banners, label=GT(u'Section'))
         
