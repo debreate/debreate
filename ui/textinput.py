@@ -16,6 +16,18 @@ from globals.wizardhelper   import GetTopWindow
 from ui.panel               import BorderedPanel
 
 
+## Abstract class that sends a message to main window to mark project dirty when text is changed
+class EssentialText:
+    def __init__(self):
+        
+        self.Bind(wx.EVT_TEXT, self.OnNotifyMainWindow)
+    
+    
+    ## Notify the main window to mark the project dirty
+    def OnNotifyMainWindow(self, event=None):
+        GetTopWindow().ProjectChanged(event)
+
+
 ## Text control set up for handling file drop events
 class TextArea(wx.TextCtrl):
     def __init__(self, parent, ID=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
@@ -105,6 +117,15 @@ class TextArea(wx.TextCtrl):
                 GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         
         return False
+
+
+## TextAreaPanel that will tell the main window to mark the project dirt when text is changed
+class TextAreaESS(TextArea, EssentialText):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+        
+        TextArea.__init__(self, parent, win_id, value, pos, size, style, validator, name)
+        EssentialText.__init__(self)
 
 
 ## A text control that is multiline & uses a themed border
@@ -291,6 +312,15 @@ class TextAreaPanel(BorderedPanel):
     ## Writes to the text area
     def WriteText(self, text):
         self.textarea.WriteText(text)
+
+
+## TextAreaPanel that will tell the main window to mark the project dirt when text is changed
+class TextAreaPanelESS(TextAreaPanel, EssentialText):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
+        
+        TextAreaPanel.__init__(self, parent, win_id, value, pos, size, style, name)
+        EssentialText.__init__(self)
 
 
 MT_NO_BTN = 0
