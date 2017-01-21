@@ -20,10 +20,10 @@ from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
+from input.select           import ComboBox
+from input.text             import TextAreaPanel
 from ui.button              import AddCustomButtons
 from ui.hyperlink           import Hyperlink
-from ui.inputselect         import ComboBox
-from ui.inputtext           import TextAreaPanel
 
 
 ## A base dialog class

@@ -32,11 +32,11 @@ from globals.system         import OS_upstream_version
 from globals.system         import OS_version
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
+from input.list             import ListCtrlPanel
+from input.text             import TextAreaPanel
 from ui.button              import ButtonConfirm
 from ui.dialog              import ShowErrorDialog
 from ui.hyperlink           import Hyperlink
-from ui.inputlist           import ListCtrlPanel
-from ui.inputtext           import TextAreaPanel
 
 
 # Font for the name
