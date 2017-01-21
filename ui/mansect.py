@@ -35,7 +35,7 @@ sections = {
     u'8': GT(u'System administration commands and daemons'),
     }
 
-DEFAULT_MANSECT_STYLE = manid.REMOVABLE
+DEFAULT_MANSECT_STYLE = manid.MUTABLE|manid.REMOVABLE
 
 
 ## Special Panel class to distinguish from other instances
@@ -76,6 +76,7 @@ class ManSectBase2(ManSectBase):
             return
         
         # Allow adding multiple instances of object
+        # FIXME: Unused???
         self.Multiple = True
         
         self.Panel = ManPanel(parent)
