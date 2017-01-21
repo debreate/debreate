@@ -224,7 +224,7 @@ class ManPage(wx.Panel):
         
         lyt_top = BoxSizer(wx.VERTICAL)
         lyt_top.Add(menubar, 0, wx.EXPAND)
-        lyt_top.Add(self.btn_rename, 0, wx.LEFT|wx.TOP, 5)
+        lyt_top.Add(self.btn_rename, 0, wx.LEFT|wx.TOP|wx.BOTTOM, 5)
         
         pnl_top.SetAutoLayout(True)
         pnl_top.SetSizer(lyt_top)
