@@ -22,8 +22,8 @@ from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
 from ui.button              import AddCustomButtons
 from ui.hyperlink           import Hyperlink
+from ui.inputselect         import ComboBox
 from ui.inputtext           import TextAreaPanel
-from ui.selectinput         import ComboBox
 
 
 ## A base dialog class

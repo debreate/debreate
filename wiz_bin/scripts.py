@@ -29,12 +29,12 @@ from ui.dialog              import ConfirmationDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
 from ui.inputlist           import ListCtrlPanel
+from ui.inputselect         import ComboBox
 from ui.inputtext           import MonospaceTextArea
 from ui.markdown            import MarkdownDialog
 from ui.panel               import BorderedPanel
 from ui.pathctrl            import PATH_WARN
 from ui.pathctrl            import PathCtrl
-from ui.selectinput         import ComboBox
 from ui.wizard              import WizardPage
 
 
