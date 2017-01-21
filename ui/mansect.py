@@ -160,6 +160,28 @@ class ManSectBase:
 
 
 ## TODO: Doxygen
+class ManSect(ManSectBase):
+    def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
+        ManSectBase.__init__(self, parent, label, style)
+        
+        FLAGS = 0
+        
+        if self.HasStyle(manid.MULTILINE):
+            self.Input = TextAreaPanel(self.Panel)
+            FLAGS = wx.EXPAND|FLAGS
+        
+        else:
+            self.Input = TextArea(self.Panel)
+            FLAGS = wx.ALIGN_CENTER_VERTICAL|FLAGS
+        
+        lyt_input = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_input.Add(self.Input, 0, FLAGS)
+        
+        lyt_main = self.GetSizer()
+        lyt_main.Insert(1, lyt_input, 0, FLAGS)
+
+
+## TODO: Doxygen
 #  
 #  This section is required
 #  FIXME: Should derive from wx.Panel/BorderedPanel???
