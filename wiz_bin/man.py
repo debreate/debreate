@@ -23,11 +23,11 @@ from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
+from ui.mansect             import ManPanel
 from ui.mansect             import ManSect
 from ui.menu                import PanelMenu
 from ui.menu                import PanelMenuBar
 from ui.notebook            import Notebook
-from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 from ui.prompt              import TextEntryDialog
 from ui.wizard              import WizardPage
@@ -247,19 +247,17 @@ class ManPage(ScrolledPanel):
     #  \return
     #    \b \e Integer index of the item or -1
     def _get_object_section(self, item):
-        index = -1
+        index = 0
         
         for C1 in self.GetSizer().GetChildren():
-            index += 1
+            C1 = C1.GetWindow()
             
-            C1 = C1.GetSizer()
-            
-            if isinstance(C1, wx.Sizer):
+            if isinstance(C1, ManPanel):
                 for C2 in C1.GetChildren():
-                    C2 = C2.GetWindow()
-                    
                     if C2 == item:
                         return index
+            
+            index += 1
         
         return None
     
@@ -365,13 +363,14 @@ class ManPage(ScrolledPanel):
         
         Logger.Debug(__name__, u'Removing manpage section at index {}'.format(index))
         
-        sizer_to_remove = self.GetSizer().GetItem(index).GetSizer()
+        lyt_main = self.GetSizer()
         
-        # Object was returned as sizer
-        if sizer_to_remove:
-            self.GetSizer().Detach(sizer_to_remove)
-            sizer_to_remove.Clear(True)
-            sizer_to_remove.Destroy()
+        object_to_remove = lyt_main.GetItem(index).GetWindow()
+        
+        # Object was returned as wx.Window instance
+        if object_to_remove:
+            lyt_main.Detach(object_to_remove)
+            object_to_remove.Destroy()
             
             self.Layout()
             
