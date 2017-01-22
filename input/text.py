@@ -136,6 +136,15 @@ class TextAreaML(TextArea):
         self.SetFont(font)
 
 
+## TextAreaML that notifies main window to mark the project dirty
+class TextAreaMLESS(TextAreaML, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+        
+        TextAreaML.__init__(self, parent, win_id, value, pos, size, style, validator, name)
+        EssentialField.__init__(self)
+
+
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
 class TextAreaPanel(BorderedPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
@@ -302,15 +311,6 @@ class TextAreaPanel(BorderedPanel):
     ## Writes to the text area
     def WriteText(self, text):
         self.textarea.WriteText(text)
-
-
-## TextAreaPanel that will tell the main window to mark the project dirt when text is changed
-class TextAreaPanelESS(TextAreaPanel, EssentialText):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
-        
-        TextAreaPanel.__init__(self, parent, win_id, value, pos, size, style, name)
-        EssentialText.__init__(self)
 
 
 MT_NO_BTN = 0
