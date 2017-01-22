@@ -11,6 +11,7 @@ from wx.combo import OwnerDrawnComboBox
 
 from dbr.font           import MONOSPACED_MD
 from globals.strings    import TextIsEmpty
+from input.essential    import EssentialField
 
 
 ## Custom wx.Choice class for compatibility with older wx versions
@@ -45,13 +46,22 @@ class Choice(wx.Choice):
             self.SetStringSelection(cached_value)
 
 
+## Choice class that notifies main window to mark the project dirty
+class ChoiceESS(Choice, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr):
+        
+        Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
+        EssentialField.__init__(self)
+
+
 ## Custom combo box that sets background colors when enabled/disabled
 #  
 #  This is a workaround for wx versions older than 3.0
 class ComboBox(OwnerDrawnComboBox):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=0,
-            validator=wx.DefaultValidator, name=wx.ComboBoxNameStr, monospace=False):
+            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
+            name=wx.ComboBoxNameStr, monospace=False):
         
         OwnerDrawnComboBox.__init__(self, parent, win_id, value, pos, size, choices, style,
                 validator, name)
@@ -109,3 +119,31 @@ class ComboBox(OwnerDrawnComboBox):
         
         if not TextIsEmpty(cached_value):
             self.SetValue(cached_value)
+
+
+## ComboBox class that notifies main window to mark the project dirty
+class ComboBoxESS(ComboBox, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
+            name=wx.ComboBoxNameStr, monospace=False):
+        
+        ComboBox.__init__(self, parent, win_id, value, pos, size, choices, style, validator,
+                name, monospace)
+        EssentialField.__init__(self)
+        
+        # *** Event Handling *** #
+        
+        self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheelEvent)
+    
+    
+    ## Process an EVT_MOUSEWHEEL
+    def OnMouseWheelEvent(self, event=None):
+        if event:
+            # Allow mouse wheel to change text
+            event.Skip(True)
+        
+        # The following behavior only applies to wx 3.0 & later
+        if wx.MAJOR_VERSION > 2:
+            # This is a workaround since wx.combo.OwnerDrawnComboBox doesn't emit EVT_TEXT on mouse wheel event
+            if isinstance(self, EssentialField):
+                self.NotifyMainWindow(event)
