@@ -119,12 +119,15 @@ class DebreateLogger:
     #  
     #  \param l_level
     #        \b \e int|str : Level at which to display the message
-    def LogMessage(self, l_level, l_script, l_message):
+    def LogMessage(self, l_level, l_script, l_message, newline=False):
         l_level = self.CheckLogLevel(l_level)
         
         if (l_level in self.log_level_list) and (l_level <= self.log_level):
             l_string = self.log_level_list[l_level].upper()
             message = u'{}: [{}] {}'.format(l_string, l_script, l_message)
+            
+            if newline:
+                message = u'\n{}'.format(message)
             
             # Message is shown in terminal
             print(message)
@@ -141,19 +144,19 @@ class DebreateLogger:
                 self.no_strip = None
     
     
-    def Info(self, l_script, l_message):
-        self.LogMessage(u'info', l_script, l_message)
+    def Info(self, l_script, l_message, newline=False):
+        self.LogMessage(u'info', l_script, l_message, newline)
     
-    def Warning(self, l_script, l_message):
-        self.LogMessage(u'warning', l_script, l_message)
-    
-    
-    def Error(self, l_script, l_message):
-        self.LogMessage(u'error', l_script, l_message)
+    def Warning(self, l_script, l_message, newline=False):
+        self.LogMessage(u'warning', l_script, l_message, newline)
     
     
-    def Debug(self, l_script, l_message):
-        self.LogMessage(u'debug', l_script, l_message)
+    def Error(self, l_script, l_message, newline=False):
+        self.LogMessage(u'error', l_script, l_message, newline)
+    
+    
+    def Debug(self, l_script, l_message, newline=False):
+        self.LogMessage(u'debug', l_script, l_message, newline)
     
     
     ## Sets the level at which messages will be output to terminal & log file
