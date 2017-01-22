@@ -361,15 +361,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Current Project Status *** #
         
-        # FIXME: Deprecated/Remove
-        self.dirty = None
-        
         self.ProjectDirty = False
         self.dirty_mark = u' *'
         
-        # Initialize with clean project
-        # TODO: This can be bypassed if opening a project from command line
-        self.SetProjectDirty(False)
+        self.menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
         
         # *** Event Handling *** #
         
@@ -467,7 +462,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks if current project is dirty
     def IsDirty(self):
-        return self.dirty
+        return self.ProjectDirty
     
     
     ## TODO: Doxygen
@@ -612,7 +607,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             self.wizard.ResetPagesInfo()
             self.loaded_project = None
-            self.SetProjectDirty(False)
+            self.ProjectSetDirty(False)
             
             Logger.Debug(__name__, GT(u'Project loaded after OnNewProject: {}').format(self.ProjectLoaded()))
             
@@ -737,12 +732,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return
         
         # Only save if changes have been made
-        if self.dirty:
+        if self.ProjectDirty:
             Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
             
             # Saving over currently loaded project
             if self.SaveProject(self.loaded_project) == dbrerrno.SUCCESS:
-                self.SetProjectDirty(False)
+                self.ProjectSetDirty(False)
     
     
     ## TODO: Doxygen
@@ -765,7 +760,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
             if self.SaveProject(project_path) == dbrerrno.SUCCESS:
-                self.SetProjectDirty(False)
+                self.ProjectSetDirty(False)
             
             return
         
@@ -966,10 +961,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         changed = False
         
         if not self.ProjectDirty:
-            self.ProjectDirty = True
-            self.SetTitle(u'{}{}'.format(self.GetTitle(), self.dirty_mark))
-            
-            changed = True
+            changed = self.ProjectSetDirty()
         
         if DebugEnabled():
             Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
@@ -981,6 +973,27 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Checks if a project is loaded
     def ProjectLoaded(self):
         return self.loaded_project != None
+    
+    
+    ## TODO: Doxygen
+    def ProjectSetDirty(self, dirty=True):
+        changed = False
+        
+        if self.ProjectDirty != dirty:
+            self.ProjectDirty = dirty
+            self.menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
+            
+            title = self.GetTitle()
+            
+            if self.ProjectDirty:
+                self.SetTitle(u'{}{}'.format(title, self.dirty_mark))
+            
+            else:
+                self.SetTitle(title[:-len(self.dirty_mark)])
+            
+            changed = True
+        
+        return changed
     
     
     ## Saves project in archive format
@@ -1069,32 +1082,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         Logger.Debug(__name__,
                 GT(u'Urecognized compression ID: {}'.format(compression_id)))
-    
-    
-    ## TODO: Doxygen
-    def SetProjectDirty(self, dirty=True):
-        # Don't do anything if status isn't changing
-        if not dirty == self.dirty:
-            self.dirty = dirty
-            self.menu_file.Enable(wx.ID_SAVE, dirty)
-            
-            delim = u' ({})'.format(GT(u'unsaved'))
-            title = self.GetTitle()
-            t_end = title[-len(delim):]
-            
-            Logger.Debug(__name__, GT(u'SetProjectDirty; Title: {}').format(title))
-            Logger.Debug(__name__, GT(u'End of title: {}').format(t_end))
-            
-            if dirty and t_end != delim:
-                self.SetTitle(u'{}{}'.format(title, delim))
-            
-            else:
-                if t_end == delim:
-                    self.SetTitle(u'{}'.format(title[:-len(delim)]))
-            
-            return
-        
-        Logger.Debug(__name__, GT(u'Dirty status not changing'))
     
     
     ## TODO: Doxygen
