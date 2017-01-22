@@ -143,13 +143,6 @@ class Panel(WizardPage):
         self.chk_essential = CheckBoxESS(pnl_option, name=u'essential')
         self.chk_essential.default = False
         
-        # List all widgets to check if fields have changed after keypress
-        # This is for determining if the project is saved
-        self.grp_keypress = {
-            ti_package: wx.EmptyString,
-            ti_version: wx.EmptyString,
-            }
-        
         self.grp_input = (
             ti_package,
             ti_version,
@@ -175,9 +168,6 @@ class Panel(WizardPage):
         btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
         btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
         
-        for widget in self.grp_keypress:
-            wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
-            wx.EVT_KEY_UP(widget, self.OnKeyUp)
         
         # *** Layout *** #
         
@@ -494,28 +484,6 @@ class Panel(WizardPage):
         browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
-    
-    
-    ## Determins if project has been modified
-    def OnKeyDown(self, event=None):
-        for widget in self.grp_keypress:
-            self.grp_keypress[widget] = widget.GetValue()
-        
-        if event:
-            event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def OnKeyUp(self, event=None):
-        modified = False
-        for widget in self.grp_keypress:
-            if widget.GetValue() != self.grp_keypress[widget]:
-                modified = True
-        
-        GetTopWindow().SetSavedStatus(modified)
-        
-        if event:
-            event.Skip()
     
     
     ## Show a preview of the control file
