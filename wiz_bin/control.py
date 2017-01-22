@@ -7,6 +7,7 @@
 
 
 import os, wx
+from wx.combo               import OwnerDrawnComboBox
 
 from dbr.language           import GT
 from dbr.log                import Logger
