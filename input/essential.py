@@ -24,4 +24,7 @@ class EssentialField:
     
     
     def NotifyMainWindow(self, event=None):
+        if event:
+            event.Skip(True)
+        
         GetTopWindow().ProjectChanged(event)
