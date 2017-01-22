@@ -48,6 +48,27 @@ class Choice(wx.Choice):
 ## Custom combo box that sets background colors when enabled/disabled
 #  
 #  This is a workaround for wx versions older than 3.0
+#  
+#  Notes on processing combo box events (EVT_COMBOBOX)
+#    wx 2.8:
+#        wx.combo.OwnerDrawnComboBox
+#            - Keyboard:     Emits EVT_TEXT
+#            - Drop-down:    Emits EVT_COMBOBOX & 2 EVT_TEXT
+#            - Mouse scroll: Does nothing
+#        wx.ComboBox
+#            - Keyboard:     Emits EVT_TEXT
+#            - Drop-down:    Emits EVT_COMBOBOX & EVT_TEXT
+#            - Mouse scroll: Emits EVT_COMBOBOX & EVT_TEXT (Note: Doesn't scroll until after drop-down select)
+#    wx 3.0:
+#        wx.combo.OwnerDrawnComboBox
+#            - Keyboard:     Emits EVT_TEXT
+#            - Drop-down:    Emits EVT_COMBOBOX & 2 EVT_TEXT
+#            - Mouse scroll: Emits EVT_COMBOBOX
+#            Other Notes: Mouse scroll emits EVT_KEY_DOWN
+#        wx.ComboBox
+#            - Keyboard:     Emits EVT_TEXT
+#            - Drop-down:    Emits EVT_COMBOBOX & EVT_TEXT
+#            - Mouse scroll: Emits EVT_COMBOBOX & EVT_TEXT (Note: Doesn't scroll until after drop-down select)
 class ComboBox(OwnerDrawnComboBox):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0,
