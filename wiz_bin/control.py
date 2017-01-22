@@ -25,6 +25,7 @@ from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
 from input.text             import TextAreaPanel
+from input.toggle           import CheckBoxESS
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
@@ -139,7 +140,7 @@ class Panel(WizardPage):
         ti_homepage = TextAreaESS(pnl_option, name=txt_homepage.Name)
         
         txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
-        self.chk_essential = wx.CheckBox(pnl_option, name=u'essential')
+        self.chk_essential = CheckBoxESS(pnl_option, name=u'essential')
         self.chk_essential.default = False
         
         # List all widgets to check if fields have changed after keypress
