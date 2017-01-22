@@ -21,6 +21,9 @@ class EssentialField:
         
         elif isinstance(self, wx.Choice):
             self.Bind(wx.EVT_CHOICE, self.NotifyMainWindow)
+        
+        elif isinstance(self, wx.CheckBox):
+            self.Bind(wx.EVT_CHECKBOX, self.NotifyMainWindow)
     
     
     def NotifyMainWindow(self, event=None):
