@@ -963,18 +963,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \return
     #    \b \e True if 'dirty' status was changed
     def ProjectChanged(self, event=None):
+        changed = False
+        
         if not self.ProjectDirty:
             self.ProjectDirty = True
-            
             self.SetTitle(u'{}{}'.format(self.GetTitle(), self.dirty_mark))
             
-            if DebugEnabled():
-                Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(self.ProjectDirty))
-                print(u'  Object: {}'.format(event.GetEventObject()))
-            
-            return True
+            changed = True
         
-        return False
+        if DebugEnabled():
+            Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
+            print(u'  Object: {}'.format(event.GetEventObject()))
+        
+        return changed
     
     
     ## Checks if a project is loaded
