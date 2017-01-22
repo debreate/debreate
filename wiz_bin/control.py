@@ -555,7 +555,7 @@ class Panel(WizardPage):
     def Reset(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options
-            if isinstance(I, ComboBox):
+            if isinstance(I, (wx.ComboBox, OwnerDrawnComboBox,)):
                 I.SetValue(wx.EmptyString)
             
             else:
