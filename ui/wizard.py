@@ -20,7 +20,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from startup.tests          import GetTestList
 from ui.button              import ButtonHelp
 from ui.button              import ButtonNext
@@ -141,7 +141,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        GetTopWindow().menu_page.Check(page_id, True)
+        GetMainWindow().menu_page.Check(page_id, True)
     
     
     ## TODO: Doxygen
@@ -273,7 +273,7 @@ class Wizard(wx.Panel):
         self.ID_FIRST = pages[0].GetId()
         self.ID_LAST = pages[-1].GetId()
         
-        main_window = GetTopWindow()
+        main_window = GetMainWindow()
         
         # Make sure all pages are hidden
         children = self.GetChildren()
@@ -333,7 +333,7 @@ class Wizard(wx.Panel):
         
         self.Layout()
         
-        wx.PostEvent(GetTopWindow(), self.evt)
+        wx.PostEvent(GetMainWindow(), self.evt)
 
 
 ## Parent class for wizard pages
