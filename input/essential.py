@@ -25,6 +25,15 @@ class EssentialField:
         
         elif isinstance(self, wx.CheckBox):
             self.Bind(wx.EVT_CHECKBOX, self.NotifyMainWindow)
+        
+        else:
+            # TextCtrlPanel (cannot import)
+            try:
+                text_ctrl = self.GetTextCtrl()
+                text_ctrl.Bind(wx.EVT_TEXT, self.NotifyMainWindow)
+            
+            except AttributeError:
+                pass
     
     
     def NotifyMainWindow(self, event=None):
