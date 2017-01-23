@@ -386,7 +386,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
-            wx.EVT_MENU(self, M.GetId(), self.GoToPage)
+            wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
         
         # Action menu events
         wx.EVT_MENU(self, mitm_build.GetId(), self.page_build.OnBuild)
@@ -436,28 +436,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #        ui.wizard.Wizard
     def GetWizard(self):
         return self.wizard
-    
-    
-    ## Changes wizard page from menu
-    def GoToPage(self, event=None):
-        page_id = None
-        
-        if event:
-            page_id = event.GetId()
-            Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
-        
-        else:
-            for M in self.menu_page.GetMenuItems():
-                if M.IsChecked():
-                    page_id = M.GetId()
-                    Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
-                    break
-        
-        if page_id == None:
-            Logger.Error(__name__, GT(u'Could not get page ID'))
-            return
-        
-        self.wizard.ShowPage(page_id)
     
     
     ## Opens a dialog box with information about the program
@@ -576,6 +554,28 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Opening log directory ...'))
         
         subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
+    
+    
+    ## Changes wizard page from menu
+    def OnMenuChangePage(self, event=None):
+        page_id = None
+        
+        if event:
+            page_id = event.GetId()
+            Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
+        
+        else:
+            for M in self.menu_page.GetMenuItems():
+                if M.IsChecked():
+                    page_id = M.GetId()
+                    Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
+                    break
+        
+        if page_id == None:
+            Logger.Error(__name__, GT(u'Could not get page ID'))
+            return
+        
+        self.wizard.ShowPage(page_id)
     
     
     ## TODO: Doxygen
