@@ -62,14 +62,6 @@ THEME = wx.NewId()
 TOOLTIPS = wx.NewId()
 UPDATE = wx.NewId()
 
-# *** Reference menu IDs *** #
-DPM = wx.NewId()
-DPMCtrl = wx.NewId()
-DPMLog = wx.NewId()
-UPM = wx.NewId()
-LINT_TAGS = wx.NewId()
-LINT_OVERRIDE = wx.NewId()
-
 # Page IDs
 next_page_id = 1000
 page_ids = {}
@@ -103,3 +95,16 @@ F_MAINTAINER = wx.NewId()
 F_NAME = wx.NewId()
 F_PACKAGE = wx.NewId()
 F_VERSION = wx.NewId()
+
+
+## IDs for reference manual menu item links
+class refid:
+    DEBSRC = wx.NewId()
+    DPM = wx.NewId()
+    DPMCtrl = wx.NewId()
+    DPMLog = wx.NewId()
+    LAUNCHERS = wx.NewId()
+    LINT_TAGS = wx.NewId()
+    LINT_OVERRIDE = wx.NewId()
+    MAN = wx.NewId()
+    UPM = wx.NewId()

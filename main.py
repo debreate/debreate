@@ -36,6 +36,7 @@ from globals.bitmaps        import LOGO
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import refid
 from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
@@ -172,26 +173,26 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_policy = wx.Menu()
         
         policy_links = (
-            (ident.DPM, GT(u'Debian Policy Manual'),
+            (refid.DPM, GT(u'Debian Policy Manual'),
                     u'https://www.debian.org/doc/debian-policy',),
-            (ident.DPMCtrl, GT(u'Control files'),
+            (refid.DPMCtrl, GT(u'Control files'),
                     u'https://www.debian.org/doc/debian-policy/ch-controlfields.html',),
-            (ident.DPMLog, GT(u'Changelog'),
+            (refid.DPMLog, GT(u'Changelog'),
                     u'https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
-            (ident.UPM, GT(u'Ubuntu Policy Manual'),
+            (refid.UPM, GT(u'Ubuntu Policy Manual'),
                     u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',),
-            (ident.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+            (refid.LINT_TAGS, GT(u'Lintian Tags Explanation'),
                     u'https://lintian.debian.org/tags-all.html',),
-            (ident.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+            (refid.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
                     u'https://lintian.debian.org/manual/section-2.4.html',),
-            (ident.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+            (refid.LAUNCHERS, GT(u'Launchers / Desktop entries'),
                     u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
             # Unofficial links
             None,
             # FIXME: Use wx.NewId()
-            (222, GT(u'Building debs from Source'),
+            (refid.DEBSRC, GT(u'Building debs from Source'),
                     u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
-            (ident.MAN, GT(u'Writing manual pages'),
+            (refid.MAN, GT(u'Writing manual pages'),
                     u'https://liw.fi/manpages/',),
             )
         
