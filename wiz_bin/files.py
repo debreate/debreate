@@ -20,7 +20,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
-from input.list             import FileList
+from input.list             import FileListESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
@@ -106,7 +106,7 @@ class Panel(WizardPage):
         btn_refresh = ButtonRefresh(self)
         
         # Display area for files added to list
-        self.lst_files = FileList(self, ident.F_LIST, name=u'filelist')
+        self.lst_files = FileListESS(self, ident.F_LIST, name=u'filelist')
         
         # *** Event Handling *** #
         
