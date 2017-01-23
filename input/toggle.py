@@ -17,6 +17,16 @@ class CheckBox(wx.CheckBox):
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr):
         
         wx.CheckBox.__init__(self, parent, win_id, label, pos, size, style, name=name)
+    
+    
+    ## Manually emit EVT_CHECKBOX when setting value
+    #  
+    #  \param state
+    #    If \b \e True, the check is on, otherwise it is off
+    def SetChecked(self, state=True):
+        wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED))
+        
+        return self.SetValue(state)
 
 
 ## CheckBox class that notifies main window to mark project dirty
