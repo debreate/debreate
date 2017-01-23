@@ -8,10 +8,10 @@
 
 import wx
 
+from dbr.event              import EVT_TIMER_STOP
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.timer              import DebreateTimer
-from dbr.timer              import EVT_TIMER_STOP
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 
