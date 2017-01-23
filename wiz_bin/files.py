@@ -19,6 +19,7 @@ from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetTopWindow
 from input.list             import FileListESS
 from ui.button              import ButtonAdd
@@ -706,7 +707,7 @@ class Panel(WizardPage):
             
             # If files are missing show a message
             if missing_files:
-                alert = DetailedMessageDialog(wx.GetApp().GetTopWindow(), GT(u'Missing Files'),
+                alert = DetailedMessageDialog(GetMainWindow(), GT(u'Missing Files'),
                         ICON_EXCLAMATION, GT(u'Could not locate the following files:'),
                         u'\n'.join(missing_files))
                 alert.ShowModal()
