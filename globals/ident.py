@@ -126,3 +126,16 @@ class manid:
     STATIC = AddId(current_id)
     MULTILINE = AddId(current_id)
     MUTABLE = AddId(current_id)
+
+
+## IDs for reference manual menu item links
+class refid:
+    DEBSRC = wx.NewId()
+    DPM = wx.NewId()
+    DPMCtrl = wx.NewId()
+    DPMLog = wx.NewId()
+    LAUNCHERS = wx.NewId()
+    LINT_TAGS = wx.NewId()
+    LINT_OVERRIDE = wx.NewId()
+    MAN = wx.NewId()
+    UPM = wx.NewId()
