@@ -7,8 +7,9 @@
 
 
 import os, thread, threading, time, traceback, wx
-from wx.lib.newevent import NewCommandEvent
 
+from dbr.event              import EVT_REFRESH_LOG
+from dbr.event              import RefreshLogEvent
 from dbr.font               import GetMonospacedFont
 from dbr.language           import GT
 from globals                import ident
@@ -22,9 +23,6 @@ from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
 from input.text             import TextAreaPanel
 from ui.layout              import BoxSizer
-
-
-RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
 
 
 ## A log class for outputting messages
@@ -227,7 +225,6 @@ class LogWindow(wx.Dialog):
         self.THREAD_ID = None
         self.MAIN_THREAD_ID = thread.get_ident()
         
-        self.evt_refresh_log = RefreshLogEvent(0)
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
         
         self.log = TextAreaPanel(self, style=wx.TE_READONLY)
@@ -408,7 +405,7 @@ class LogWindow(wx.Dialog):
             if current_timestamp != previous_timestamp:
                 print(u'Log timestamp changed, loading new log ...')
                 
-                wx.PostEvent(self, self.evt_refresh_log)
+                wx.PostEvent(self, RefreshLogEvent(0))
                 
                 previous_timestamp = current_timestamp
             
