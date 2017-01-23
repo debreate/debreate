@@ -604,6 +604,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         webbrowser.open(url)
     
     
+    ## Retrieves filename of loaded project
+    def ProjectGetLoaded(self):
+        return self.LoadedProject
+    
+    
     ## Tests project type & calls correct method to read project file
     #  
     #  \param project_file
