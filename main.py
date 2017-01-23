@@ -832,7 +832,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks if current project is dirty
     def ProjectIsDirty(self):
-        return self.ProjectDirty
+        if self.loaded_project:
+            return self.ProjectDirty
+        
+        return False
     
     
     ## Checks if a project is loaded
