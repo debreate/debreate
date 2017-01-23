@@ -460,20 +460,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.wizard.ShowPage(page_id)
     
     
-    ## TODO: Doxygen
-    def IsNewProject(self):
-        title = self.GetTitle()
-        
-        return bool(title == self.default_title)
-    
-    
-    ## TODO: Doxygen
-    def IsSaved(self):
-        title = self.GetTitle()
-        
-        return bool(title[-1] == u'*')
-    
-    
     ## Opens a dialog box with information about the program
     def OnAbout(self, event=None):
         about = AboutDialog(self)
@@ -1082,14 +1068,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         Logger.Debug(__name__,
                 GT(u'Urecognized compression ID: {}'.format(compression_id)))
-    
-    
-    ## TODO: Doxygen
-    def SetSavedStatus(self, status):
-        if status: # If status is changing to unsaved this is True
-            title = self.GetTitle()
-            if self.IsSaved() and title != default_title:
-                self.SetTitle(u'{}*'.format(title))
     
     
     ## TODO: Doxygen
