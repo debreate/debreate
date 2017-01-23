@@ -20,7 +20,6 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetMainWindow
-from globals.wizardhelper   import GetTopWindow
 from input.list             import FileListESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
@@ -220,7 +219,7 @@ class Panel(WizardPage):
         Logger.Debug(__name__, u'Adding {} files ...'.format(file_count))
         
         if show_dialog:
-            progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=file_count,
+            progress = ProgressDialog(GetMainWindow(), GT(u'Adding Files'), maximum=file_count,
                     style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
             progress.Show()
         
@@ -421,7 +420,7 @@ class Panel(WizardPage):
             self.lst_files.AddFile(source_file, source_dir, T[0], executable=T[2])
         
         if len(missing_files):
-            main_window = GetTopWindow()
+            main_window = GetMainWindow()
             
             err_line1 = GT(u'The following files are missing from the filesystem.')
             err_line2 = GT(u'They will be highlighted on the Files page.')
@@ -451,7 +450,7 @@ class Panel(WizardPage):
         file_list = []
         dir_list = {}
         
-        prep = ProgressDialog(GetTopWindow(), GT(u'Processing Files'), GT(u'Scanning files ...'),
+        prep = ProgressDialog(GetMainWindow(), GT(u'Processing Files'), GT(u'Scanning files ...'),
                 style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
         
         # Only update the gauge every N files (hack until I figure out timer)
@@ -566,7 +565,7 @@ class Panel(WizardPage):
             count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
             count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
             
-            if not ConfirmationDialog(GetTopWindow(), text=count_warnmsg).Confirmed():
+            if not ConfirmationDialog(GetMainWindow(), text=count_warnmsg).Confirmed():
                 return False
         
         return self.AddPaths(dir_list, file_count, show_dialog=file_count >= efficiency_threshold)
@@ -574,7 +573,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        dia = GetDirDialog(GetTopWindow(), GT(u'Choose Target Directory'))
+        dia = GetDirDialog(GetMainWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.ti_target.SetValue(dia.GetPath())
     
@@ -582,7 +581,7 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnClearFileList(self, event=None):
         if self.lst_files.GetItemCount():
-            if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+            if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
                         GT(u'Clear all files?')).Confirmed():
                 self.lst_files.DeleteAllItems()
     
@@ -655,7 +654,7 @@ class Panel(WizardPage):
             progress = None
             
             if files_total >= efficiency_threshold:
-                progress = ProgressDialog(GetTopWindow(), GT(u'Adding Files'), maximum=files_total,
+                progress = ProgressDialog(GetMainWindow(), GT(u'Adding Files'), maximum=files_total,
                         style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
                 
                 wx.Yield()
