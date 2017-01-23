@@ -721,6 +721,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
+    #  
+    #  \return
+    #    \b \e True if 'dirty' status was changed
+    def OnProjectChanged(self, event=None):
+        changed = False
+        
+        if not self.ProjectDirty:
+            changed = self.ProjectSetDirty()
+        
+        if DebugEnabled():
+            Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
+            print(u'  Object: {}'.format(event.GetEventObject()))
+        
+        return changed
+    
+    
+    ## TODO: Doxygen
     def OnSaveProject(self, event=None):
         if not self.ProjectIsLoaded():
             self.OnSaveProjectAs(event)
@@ -946,23 +963,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
         self.page_build.Set(build_data)
-    
-    
-    ## TODO: Doxygen
-    #  
-    #  \return
-    #    \b \e True if 'dirty' status was changed
-    def ProjectChanged(self, event=None):
-        changed = False
-        
-        if not self.ProjectDirty:
-            changed = self.ProjectSetDirty()
-        
-        if DebugEnabled():
-            Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
-            print(u'  Object: {}'.format(event.GetEventObject()))
-        
-        return changed
     
     
     ## Checks if current project is dirty
