@@ -28,7 +28,7 @@ class Sizer(wx.Sizer):
     #  Compatibility method for legacy wx versions
     def GetItemCount(self):
         if wx.MAJOR_VERSION > 2:
-            return wx.BoxSizer.GetItemCount(self)
+            return wx.Sizer.GetItemCount(self)
         
         return len(self.GetChildren())
     
