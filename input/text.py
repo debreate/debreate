@@ -315,6 +315,27 @@ class TextAreaPanel(BorderedPanel):
         self.textarea.WriteText(text)
 
 
+## TextAreaPanel that notifies main window to mark the project dirty
+class TextAreaPanelESS(TextAreaPanel, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
+        
+        TextAreaPanel.__init__(self, parent, win_id, value, pos, size, style, name)
+        
+        lyt_main = self.GetSizer()
+        index = lyt_main.GetItemIndex(self.textarea)
+        
+        # Replace TextAreaML instance
+        self.textarea.Destroy()
+        self.textarea = TextAreaMLESS(self, style=style|wx.BORDER_NONE)
+        
+        # *** Layout *** #
+        
+        lyt_main.Insert(index, self.textarea, 1, wx.EXPAND|wx.ALL, 2)
+        
+        self.Layout()
+
+
 MT_NO_BTN = 0
 MT_BTN_TL = 1
 MT_BTN_TR = 2
