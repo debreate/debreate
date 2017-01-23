@@ -10,16 +10,17 @@ import os, wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.mixins.listctrl import TextEditMixin
 
-from dbr.colors         import COLOR_warn
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.constants  import FTYPE_EXE
-from globals.constants  import file_types_defs
-from globals.paths      import ConcatPaths
-from input.essential    import EssentialField
-from ui.layout          import BoxSizer
-from ui.panel           import BorderedPanel
-from ui.panel           import ControlPanel
+from dbr.colors             import COLOR_warn
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.constants      import FTYPE_EXE
+from globals.constants      import file_types_defs
+from globals.paths          import ConcatPaths
+from globals.wizardhelper   import GetMainWindow
+from input.essential        import EssentialField
+from ui.layout              import BoxSizer
+from ui.panel               import BorderedPanel
+from ui.panel               import ControlPanel
 
 
 ## A list control with no border
@@ -55,6 +56,22 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
                     for I  in items[1:]:
                         column_index += 1
                         self.SetStringItem(row_index, column_index, I)
+    
+    
+    ## Override inherited method to post list event for EssentialField instances
+    def SetStringItem(self, *args, **kwargs):
+        string_set = wx.ListView.SetStringItem(self, *args, **kwargs)
+        
+        # FIXME: Not sure why this check is necessary here.
+        #        Without, sets project dirty at load time.
+        if GetMainWindow().ProjectIsLoaded():
+            # Cause EssentialField instances to emit event that will tell main window to mark paroject dirty
+            if isinstance(self, EssentialField) or isinstance(self.Parent, EssentialField):
+                Logger.Debug(__name__, u'EssentialField instance posting list event')
+                
+                wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT))
+        
+        return string_set
     
     
     ## Disables the list control
