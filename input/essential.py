@@ -30,4 +30,4 @@ class EssentialField:
         if event:
             event.Skip(True)
         
-        GetTopWindow().ProjectChanged(event)
+        GetTopWindow().OnProjectChanged(event)
