@@ -22,14 +22,15 @@ from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import WriteFile
+from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_MAJ
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from ui.button              import ButtonBuild64
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
@@ -43,7 +44,7 @@ from ui.progress            import ProgressDialog
 ## Build page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ident.BUILD, name=GT(u'Build'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.BUILD, name=GT(u'Build'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -177,8 +178,8 @@ class Panel(wx.ScrolledWindow):
             create_changelog = u'changelog' in task_list
             create_copyright = u'copyright' in task_list
             
-            pg_control = GetPage(ident.CONTROL)
-            pg_menu = GetPage(ident.MENU)
+            pg_control = GetPage(pgid.CONTROL)
+            pg_menu = GetPage(pgid.MENU)
             
             stage_dir = u'{}/{}__dbp__'.format(build_path, filename)
             
@@ -566,7 +567,7 @@ class Panel(wx.ScrolledWindow):
             task_list = {}
             
             # Control page
-            pg_control = GetPage(ident.CONTROL)
+            pg_control = GetPage(pgid.CONTROL)
             fld_package = GetField(pg_control, ident.F_PACKAGE)
             fld_version = GetField(pg_control, ident.F_VERSION)
             fld_maint = GetField(pg_control, ident.F_MAINTAINER)
@@ -579,7 +580,7 @@ class Panel(wx.ScrolledWindow):
                 )
             
             # Menu launcher page
-            pg_launcher = GetPage(ident.MENU)
+            pg_launcher = GetPage(pgid.MENU)
             
             # Check to make sure that all required fields have values
             required = list(fields_control)
@@ -627,10 +628,10 @@ class Panel(wx.ScrolledWindow):
             
             # Control, menu, & build pages not added to this list
             page_checks = (
-                (ident.FILES, u'files'),
-                (ident.SCRIPTS, u'scripts'),
-                (ident.CHANGELOG, u'changelog'),
-                (ident.COPYRIGHT, u'copyright'),
+                (pgid.FILES, u'files'),
+                (pgid.SCRIPTS, u'scripts'),
+                (pgid.CHANGELOG, u'changelog'),
+                (pgid.COPYRIGHT, u'copyright'),
                 )
             
             # Install step is not added to this list

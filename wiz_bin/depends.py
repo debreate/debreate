@@ -12,10 +12,11 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from input.list             import ListCtrlPanel
 from ui.button              import ButtonAdd
 from ui.button              import ButtonAppend
@@ -32,7 +33,7 @@ from ui.panel               import BorderedPanel
 ## Page defining dependencies
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ident.DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.DEPENDS, name=GT(u'Dependencies and Conflicts'))
         
         self.SetScrollbars(20, 20, 0, 0)
         
@@ -101,7 +102,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Event Handling *** #
         
-        control_page = GetPage(ident.CONTROL)
+        control_page = GetPage(pgid.CONTROL)
         btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
         btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
         btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)

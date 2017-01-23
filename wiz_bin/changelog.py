@@ -13,6 +13,7 @@ from dbr.log                import Logger
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.system         import GetOSDistNames
 from globals.tooltips       import SetPageToolTips
@@ -33,7 +34,7 @@ from ui.panel               import BorderedPanel
 ## Changelog page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ident.CHANGELOG, name=GT(u'Changelog'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.CHANGELOG, name=GT(u'Changelog'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
@@ -266,7 +267,7 @@ class Panel(wx.ScrolledWindow):
             )
         
         for F, FID in fields:
-            field_value = GetFieldValue(ident.CONTROL, FID)
+            field_value = GetFieldValue(pgid.CONTROL, FID)
             
             if isinstance(field_value, ErrorTuple):
                 err_msg1 = GT(u'Got error when attempting to retrieve field value')

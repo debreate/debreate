@@ -12,9 +12,9 @@ import wx
 
 from dbr.language           import GT
 from dbr.templates          import local_templates_path
-from globals                import ident
 from globals.changes        import section_delims
 from globals.execute        import GetSystemInstaller
+from globals.ident          import pgid
 from globals.wizardhelper   import FieldEnabled
 
 
@@ -202,15 +202,15 @@ TT_build = {
 
 
 TT_pages = {
-    ident.CONTROL: TT_control,
-    ident.DEPENDS: TT_depends,
-    ident.FILES: TT_files,
-    ident.MAN: TT_manpages,
-    ident.SCRIPTS: TT_scripts,
-    ident.CHANGELOG: TT_changelog,
-    ident.COPYRIGHT: TT_copyright,
-    ident.MENU: TT_menu,
-    ident.BUILD: TT_build,
+    pgid.CONTROL: TT_control,
+    pgid.DEPENDS: TT_depends,
+    pgid.FILES: TT_files,
+    pgid.MAN: TT_manpages,
+    pgid.SCRIPTS: TT_scripts,
+    pgid.CHANGELOG: TT_changelog,
+    pgid.COPYRIGHT: TT_copyright,
+    pgid.MENU: TT_menu,
+    pgid.BUILD: TT_build,
 }
 
 

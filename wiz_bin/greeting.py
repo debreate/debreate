@@ -9,7 +9,7 @@
 import wx
 
 from dbr.language   import GT
-from globals        import ident
+from globals.ident  import pgid
 from ui.hyperlink   import Hyperlink
 from ui.layout      import BoxSizer
 
@@ -17,7 +17,7 @@ from ui.layout      import BoxSizer
 ## TODO: Doxygen
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent, name=GT(u'Information')):
-        wx.ScrolledWindow.__init__(self, parent, ident.GREETING, name=GT(u'Information'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.GREETING, name=GT(u'Information'))
         
         self.SetScrollbars(0, 20, 0, 0)
         

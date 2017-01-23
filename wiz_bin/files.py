@@ -12,6 +12,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
+from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -46,7 +47,7 @@ warning_threshhold = 1000
 ## Class defining controls for the "Paths" page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ident.FILES, name=GT(u'Files'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.FILES, name=GT(u'Files'))
         
         self.SetScrollbars(20, 20, 0, 0)
         

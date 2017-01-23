@@ -11,9 +11,9 @@ import os, shutil, wx
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from globals                import ident
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
@@ -36,7 +36,7 @@ from ui.textpreview         import TextPreview
 ## Page for creating a system menu launcher
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ident.MENU, name=GT(u'Menu Launcher'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.MENU, name=GT(u'Menu Launcher'))
         
         self.SetScrollbars(0, 20, 0, 0)
         

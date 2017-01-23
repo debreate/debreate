@@ -75,16 +75,20 @@ def NewPageId(page_name=None):
     
     return this_page_id
 
-GREETING = NewPageId(GT(u'Greeting'))
-CONTROL = NewPageId(GT(u'Control'))
-DEPENDS = NewPageId(GT(u'Depends'))
-FILES = NewPageId(GT(u'Files'))
-MAN = NewPageId(GT(u'Man'))
-SCRIPTS = NewPageId(GT(u'Scripts'))
-CHANGELOG = NewPageId(GT(u'Changelog'))
-COPYRIGHT = NewPageId(GT(u'Copyright'))
-MENU = NewPageId(GT(u'Menu'))
-BUILD = NewPageId(GT(u'Build'))
+
+## Page IDs
+class pgid:
+    GREETING = NewPageId(GT(u'Greeting'))
+    CONTROL = NewPageId(GT(u'Control'))
+    DEPENDS = NewPageId(GT(u'Depends'))
+    FILES = NewPageId(GT(u'Files'))
+    MAN = NewPageId(GT(u'Man'))
+    SCRIPTS = NewPageId(GT(u'Scripts'))
+    CHANGELOG = NewPageId(GT(u'Changelog'))
+    COPYRIGHT = NewPageId(GT(u'Copyright'))
+    MENU = NewPageId(GT(u'Menu'))
+    BUILD = NewPageId(GT(u'Build'))
+
 
 # Field/Control IDs
 F_ARCH = wx.NewId()

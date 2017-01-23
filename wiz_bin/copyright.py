@@ -15,10 +15,10 @@ from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
-from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.fileio         import ReadFile
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
@@ -35,7 +35,7 @@ copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
 ## Copyright page
 class Panel(wx.ScrolledWindow):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, ident.COPYRIGHT, name=GT(u'Copyright'))
+        wx.ScrolledWindow.__init__(self, parent, pgid.COPYRIGHT, name=GT(u'Copyright'))
         
         self.SetScrollbars(0, 20, 0, 0)
         
