@@ -883,6 +883,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if file_type not in compression_mimetypes:
             Logger.Error(__name__, GT(u'Cannot open project with compression mime type "{}"'.format(file_type)))
+            
             return dbrerrno.EBADFT
         
         compression_id = compression_mimetypes[file_type]
@@ -905,7 +906,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if isinstance(ret_code, tuple) and ret_code[0]:
             ShowErrorDialog(u'{}: {}'.format(GT(u'Project load error'), ret_code[1]),
                     ret_code[0], parent=self)
-            return
+            
+            return dbrerrno.EBADFT
         
         self.wizard.ImportPagesInfo(temp_dir)
         RemoveTempDirectory(temp_dir)
@@ -924,14 +926,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if data == wx.EmptyString:
             ProjectError()
-            return
+            return dbrerrno.EBADFT
         
         lines = data.split(u'\n')
         app = lines[0].split(u'-')[0].split(u'[')[1]
         
         if app != u'DEBREATE':
             ProjectError()
-            return
+            return dbrerrno.EBADFT
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
@@ -963,8 +965,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.page_launchers.Set(m_data)
         
         # Get Build Data
-        build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
+        build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]
         self.page_build.Set(build_data)
+        
+        # Legacy projects should return None since we can't save in that format
+        return None
     
     
     ## Saves project in archive format
