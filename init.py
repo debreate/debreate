@@ -112,8 +112,10 @@ if (sys.getdefaultencoding() != u'utf-8'):
 wx.SetDefaultPyEncoding('UTF-8')
 
 
+from dbr.app import DebreateApp
+
 # Initialize app before importing local modules
-debreate_app = wx.App()
+debreate_app = DebreateApp()
 
 from dbr.config             import ConfCode
 from dbr.config             import GetAllConfigKeys
@@ -220,6 +222,7 @@ for V in conf_values:
 
 
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
+debreate_app.SetMainWindow(Debreate)
 
 if conf_values[u'center']:
     Debreate.Center()
