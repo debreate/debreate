@@ -289,10 +289,15 @@ class Wizard(wx.Panel):
             self.pages_ids[PAGE.GetId()] = PAGE.GetName().upper()
             self.GetSizer().Insert(1, PAGE, 1, wx.EXPAND)
             
+            pg_id = PAGE.GetId()
+            
             # Add pages to main menu
             main_window.menu_page.AppendItem(
-                wx.MenuItem(main_window.menu_page, PAGE.GetId(), PAGE.GetLabel(),
+                wx.MenuItem(main_window.menu_page, pg_id, PAGE.GetLabel(),
                 kind=wx.ITEM_RADIO))
+            
+            # Bind menu event to ID
+            wx.EVT_MENU(main_window, pg_id, main_window.OnMenuChangePage)
         
         # Initailize functions that can only be called after all pages are constructed
         for PAGE in pages:
