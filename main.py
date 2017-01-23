@@ -382,7 +382,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
-        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnPageChanged)
+        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnWizardBtnPage)
         
         for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
@@ -576,15 +576,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return
         
         self.wizard.ShowPage(page_id)
-    
-    
-    ## TODO: Doxygen
-    def OnPageChanged(self, event=None):
-        ID = self.wizard.GetCurrentPageId()
-        Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
-        
-        if not self.menu_page.IsChecked(ID):
-            self.menu_page.Check(ID, True)
     
     
     ## TODO: Doxygen
@@ -807,6 +798,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Opens a dialog for creating/updating list of distribution names cache file
     def OnUpdateDistNamesCache(self, event=None):
         DistNamesCacheDialog().ShowModal()
+    
+    
+    ## Updates the page menu to reflect current page
+    def OnWizardBtnPage(self, event=None):
+        ID = self.wizard.GetCurrentPageId()
+        Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
+        
+        if not self.menu_page.IsChecked(ID):
+            self.menu_page.Check(ID, True)
     
     
     ## Opens web links from the help menu
