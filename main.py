@@ -281,7 +281,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
-            wx.EVT_MENU(self, M.GetId(), self.GoToPage)
+            wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
         
         wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
         
@@ -306,20 +306,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #        dbr.wizard.Wizard
     def GetWizard(self):
         return self.wizard
-    
-    
-    ## Changes wizard page
-    #  
-    #  \param event
-    #        \b \e wx.MenuEvent|int : The event or integer to use as page ID
-    def GoToPage(self, event=None):
-        if isinstance(event, int):
-            event_id = event
-        
-        else:
-            event_id = event.GetId()
-        
-        self.wizard.ShowPage(event_id)
     
     
     ## TODO: Doxygen
@@ -453,6 +439,20 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Opening log directory ...'))
         
         subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
+    
+    
+    ## Changes wizard page
+    #  
+    #  \param event
+    #        \b \e wx.MenuEvent|int : The event or integer to use as page ID
+    def OnMenuChangePage(self, event=None):
+        if isinstance(event, int):
+            event_id = event
+        
+        else:
+            event_id = event.GetId()
+        
+        self.wizard.ShowPage(event_id)
     
     
     ## TODO: Doxygen
