@@ -21,8 +21,8 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 from input.list             import ListCtrlPanel
-from input.select           import ComboBox
-from input.text             import TextAreaPanel
+from input.select           import ComboBoxESS
+from input.text             import TextAreaPanelESS
 from input.toggle           import CheckBoxESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
@@ -116,7 +116,7 @@ class Panel(WizardPage):
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         self.labels.append(txt_type)
         
-        self.ti_type = ComboBox(self, value=opts_type[0], choices=opts_type, name=u'Type')
+        self.ti_type = ComboBoxESS(self, value=opts_type[0], choices=opts_type, name=u'Type')
         self.ti_type.default = self.ti_type.GetValue()
         self.opts_input.append(self.ti_type)
         
@@ -152,7 +152,7 @@ class Panel(WizardPage):
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         self.labels.append(txt_enc)
         
-        self.ti_enc = ComboBox(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
+        self.ti_enc = ComboBoxESS(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
         self.ti_enc.default = self.ti_enc.GetValue()
         self.opts_input.append(self.ti_enc)
         
@@ -189,7 +189,7 @@ class Panel(WizardPage):
         self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
-        self.ti_category = ComboBox(self, value=opts_category[0], choices=opts_category,
+        self.ti_category = ComboBoxESS(self, value=opts_category[0], choices=opts_category,
                 name=txt_category.Name)
         self.ti_category.default = self.ti_category.GetValue()
         self.opts_input.append(self.ti_category)
@@ -215,7 +215,7 @@ class Panel(WizardPage):
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
         self.labels.append(txt_other)
         
-        self.ti_other = TextAreaPanel(self, name=txt_other.Name)
+        self.ti_other = TextAreaPanelESS(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.ti_other.EnableDropTarget()
         self.opts_input.append(self.ti_other)
