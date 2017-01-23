@@ -21,10 +21,12 @@ from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetMainWindow
+from input.markdown         import MarkdownDialog
 from startup.tests          import GetTestList
 from ui.button              import ButtonHelp
 from ui.button              import ButtonNext
 from ui.button              import ButtonPrev
+from ui.dialog              import ShowDialog
 from ui.layout              import BoxSizer
 from ui.panel               import ScrolledPanel
 
@@ -80,6 +82,9 @@ class Wizard(wx.Panel):
             self.permanent_children.insert(0, btn_help)
         
         # *** Event Handling *** #
+        
+        if testing:
+            btn_help.Bind(wx.EVT_BUTTON, self.OnHelpButton)
         
         self.btn_prev.Bind(wx.EVT_BUTTON, self.ChangePage)
         self.btn_next.Bind(wx.EVT_BUTTON, self.ChangePage)
@@ -200,11 +205,18 @@ class Wizard(wx.Panel):
             P.Export(out_dir)
     
     
-    ## TODO: Doxygen
-    def GetCurrentPageId(self):
+    ## Retrieve currently showing page
+    def GetCurrentPage(self):
         for page in self.pages:
             if page.IsShown():
-                return page.GetId()
+                return page
+    
+    
+    ## Retrieve currently showing page's ID
+    def GetCurrentPageId(self):
+        current_page = self.GetCurrentPage()
+        if current_page:
+            return current_page.GetId()
     
     
     ## TODO: Doxygen
@@ -256,6 +268,16 @@ class Wizard(wx.Panel):
                 pages.append(C)
         
         return self.SetPages(pages)
+    
+    
+    ## Show a help dialog for current page
+    def OnHelpButton(self, event=None):
+        label = self.GetCurrentPage().GetLabel()
+        page_help = MarkdownDialog(self, title=GT(u'Help'), readonly=True)
+        
+        page_help.SetText(GT(u'Help information for page "{}"'.format(label)))
+        
+        ShowDialog(page_help)
     
     
     ## TODO: Doxygen
