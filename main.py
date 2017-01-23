@@ -603,15 +603,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 text=GT(u'You will lose any unsaved information\n\nContinue?'))
         
         if confirm.Confirmed():
-            Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectLoaded()))
+            Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectIsLoaded()))
             
             self.wizard.ResetPagesInfo()
             self.loaded_project = None
             self.ProjectSetDirty(False)
             
-            Logger.Debug(__name__, GT(u'Project loaded after OnNewProject: {}').format(self.ProjectLoaded()))
+            Logger.Debug(__name__, GT(u'Project loaded after OnNewProject: {}').format(self.ProjectIsLoaded()))
             
-            if DebugEnabled() and self.ProjectLoaded():
+            if DebugEnabled() and self.ProjectIsLoaded():
                 Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
@@ -727,7 +727,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def OnSaveProject(self, event=None):
-        if not self.ProjectLoaded():
+        if not self.ProjectIsLoaded():
             self.OnSaveProjectAs(event)
             return
         
@@ -852,14 +852,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         else:
             project_opened = self.OpenProjectArchive(project_file, mime_type)
         
-        Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectLoaded()))
+        Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectIsLoaded()))
         
         if project_opened == dbrerrno.SUCCESS:
             self.loaded_project = project_file
         
-        Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectLoaded()))
+        Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectIsLoaded()))
         
-        if DebugEnabled() and self.ProjectLoaded():
+        if DebugEnabled() and self.ProjectIsLoaded():
             Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
     
     
@@ -971,7 +971,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## Checks if a project is loaded
-    def ProjectLoaded(self):
+    def ProjectIsLoaded(self):
         return self.loaded_project != None
     
     
