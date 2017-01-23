@@ -197,6 +197,10 @@ class Wizard(wx.Panel):
     ## TODO: Doxygen
     def ExportPages(self, page_list, out_dir):
         for P in page_list:
+            # Support using list of IDs instead of WizardPage instances
+            if not isinstance(P, WizardPage):
+                P = self.GetPage(P)
+            
             P.Export(out_dir)
     
     
