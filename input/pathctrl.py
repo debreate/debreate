@@ -8,6 +8,8 @@
 
 import os, wx
 
+from input.text import TextArea
+
 
 PATH_DEFAULT = wx.NewId()
 PATH_WARN = wx.NewId()
@@ -16,10 +18,11 @@ PATH_WARN = wx.NewId()
 ## TODO: Doxygen
 #  
 #  FIXME: Use boolean value instead of type
-class PathCtrl(wx.TextCtrl):
+class PathCtrl(TextArea):
     def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
-                default=wx.EmptyString):
-        wx.TextCtrl.__init__(self, parent, ctrl_id, value)
+            default=wx.EmptyString, name=wx.TextCtrlNameStr):
+        
+        TextArea.__init__(self, parent, ctrl_id, value, name=name)
         
         self.ctrl_type = ctrl_type
         
