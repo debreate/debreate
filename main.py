@@ -854,21 +854,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         Logger.Debug(__name__, GT(u'Project mime type: {}').format(mime_type))
         
-        project_opened = None
+        opened = None
         if mime_type == u'text/plain':
             p_text = ReadFile(project_file)
             
             filename = os.path.split(project_file)[1]
             
             # Legacy projects should return None since we can't save in that format
-            project_opened = self.ProjectOpenLegacy(p_text, filename)
+            opened = self.ProjectOpenLegacy(p_text, filename)
         
         else:
-            project_opened = self.ProjectOpenArchive(project_file, mime_type)
+            opened = self.ProjectOpenArchive(project_file, mime_type)
         
         Logger.Debug(__name__, GT(u'Project loaded before OnProjectOpen: {}').format(self.ProjectIsLoaded()))
         
-        if project_opened == dbrerrno.SUCCESS:
+        if opened == dbrerrno.SUCCESS:
             self.loaded_project = project_file
         
         Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectIsLoaded()))
