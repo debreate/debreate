@@ -628,22 +628,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         return changed
     
     
-    ## TODO: Doxygen
+    ## Clears current project & restores fields to defaults
+    #  
+    #  \return
+    #    \b \e True if project state is reset to default
     def OnProjectNew(self, event=None):
-        confirm = ConfirmationDialog(self, GT(u'Start New Project'),
-                text=GT(u'You will lose any unsaved information\n\nContinue?'))
+        Logger.Debug(__name__, GT(u'Project loaded before OnProjectNew: {}').format(self.ProjectIsLoaded()))
         
-        if confirm.Confirmed():
-            Logger.Debug(__name__, GT(u'Project loaded before OnProjectNew: {}').format(self.ProjectIsLoaded()))
-            
-            self.Wizard.ResetPagesInfo()
-            self.LoadedProject = None
-            self.ProjectSetDirty(False)
-            
-            Logger.Debug(__name__, GT(u'Project loaded after OnProjectNew: {}').format(self.ProjectIsLoaded()))
-            
-            if DebugEnabled() and self.ProjectIsLoaded():
-                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.LoadedProject))
+        return self.ProjectClose()
     
     
     ## TODO: Doxygen
