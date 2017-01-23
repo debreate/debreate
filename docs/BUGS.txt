@@ -14,6 +14,7 @@ Release:
 - PanelMenu pops up no matter where you click on the PanelManuBar
 - Dependencies page:
   - 'Append' button does not cause ListCtrlPanelESS to mark project dirty
+- wx._core.PyDeadObjectError caused by input.essential.EssentialField.NotifyMainWindow when app is closed
 
 Priority:
 - Generate template button on copyright page moves header for system licenses
