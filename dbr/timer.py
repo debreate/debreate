@@ -7,11 +7,8 @@
 
 
 import wx
-from wx.lib.newevent import NewCommandEvent
 
-
-## Event to post when Timer.Stop() is called
-TimerStopEvent, EVT_TIMER_STOP = NewCommandEvent()
+from dbr.event import TimerStopEvent
 
 
 ## A custom timer that posts a TimerStopEvent when Stop() is called
