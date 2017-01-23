@@ -33,6 +33,7 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
+from input.toggle           import CheckBoxESS
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
@@ -65,24 +66,24 @@ class Panel(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = wx.CheckBox(pnl_options, label=GT(u'Create md5sums file'))
+        self.chk_md5 = CheckBoxESS(pnl_options, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = True
         
         # Option to strip binaries
-        self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
+        self.chk_strip = CheckBoxESS(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
         self.chk_strip.default = True
         
         # Deletes the temporary build tree
-        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete staged directory'))
+        self.chk_rmstage = CheckBoxESS(pnl_options, label=GT(u'Delete staged directory'))
         self.chk_rmstage.SetName(u'RMSTAGE')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
         
         # Checks the output .deb for errors
-        self.chk_lint = wx.CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint = CheckBoxESS(pnl_options, label=GT(u'Check package for errors with lintian'))
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
