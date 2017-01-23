@@ -12,8 +12,6 @@ Release:
 - Cannot open control (and possibly launcher & other) files without extension using GetFileDialog functions
 - 'Refresh' & 'Browse' buttons on hidden on files page if width is sized down
 - PanelMenu pops up no matter where you click on the PanelManuBar
-- Dependencies page:
-  - 'Append' button does not cause ListCtrlPanelESS to mark project dirty
 - wx._core.PyDeadObjectError caused by input.essential.EssentialField.NotifyMainWindow when app is closed
 
 Priority:
