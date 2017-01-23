@@ -59,6 +59,7 @@ from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
+from ui.dialog              import ConfirmSaveDialog
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ErrorDialog
@@ -701,44 +702,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def OnProjectSave(self, event=None):
+        # Open a file save dialog for new projects
+        # FIXME: Necessary?
         if not self.ProjectIsLoaded():
             self.OnProjectSaveAs(event)
             return
         
-        # Only save if changes have been made
-        if self.ProjectDirty:
-            Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
-            
-            # Saving over currently loaded project
-            if self.ProjectSave(self.LoadedProject) == dbrerrno.SUCCESS:
-                self.ProjectSetDirty(False)
+        # 'Save' menu item is enabled
+        Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
+        
+        # Saving over currently loaded project
+        self.ProjectSave(self.LoadedProject)
     
     
     ## TODO: Doxygen
     def OnProjectSaveAs(self, event=None):
-        wildcards = (
-            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext),
-            u'*.{}'.format(PROJECT_ext),
-        )
-        
-        save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
-                PROJECT_ext)
-        
-        if ShowDialog(save_dialog):
-            project_path = save_dialog.GetPath()
-            project_filename = save_dialog.GetFilename()
-            project_extension = save_dialog.GetExtension()
-            
-            Logger.Debug(__name__, GT(u'Project save path: {}').format(project_path))
-            Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
-            Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
-            
-            if self.ProjectSave(project_path) == dbrerrno.SUCCESS:
-                self.ProjectSetDirty(False)
-            
-            return
-        
-        Logger.Debug(__name__, GT(u'Not saving project'))
+        self.ProjectSaveAs()
     
     
     ## Writes compression value to config in real time
@@ -813,16 +792,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## Closes currently open project & resets pages to default
+    #  
+    #  \return
+    #    \b \e True if the project was closed, \b \e False if should not continue
     def ProjectClose(self):
         if not self.ProjectIsDirty():
             # Everything okay to continue
             return True
         
         msg_l1 = GT(u'{} is unsaved, any changes will be lost').format(self.LoadedProject)
-        confirm = ConfirmationDialog(self, GT(u'Unsaved Changes'),
-                text=GT(u'{}\n\n{}'.format(msg_l1, GT(u'Continue?'))))
+        confirmed = ConfirmSaveDialog(self, GT(u'Unsaved Changes'),
+                text=GT(u'{}\n\n{}'.format(msg_l1, GT(u'Continue?')))).ShowModal()
         
-        if not confirm.Confirmed():
+        if confirmed != wx.ID_OK:
             return False
         
         self.Wizard.ResetPagesInfo()
@@ -849,9 +831,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Tests project type & calls correct method to read project file
     #  
+    #  Opens a file dialog if not project file is specified.
     #  \param project_file
     #    \b \e unicode|str : Path to project file
-    def ProjectOpen(self, project_file):
+    def ProjectOpen(self, project_file=None):
+        if not self.ProjectClose():
+            return dbrerrno.EUNKNOWN
+        
         Logger.Debug(__name__, u'Opening project: {}'.format(project_file))
         
         mime_type = GetFileMimeType(project_file)
@@ -879,6 +865,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if DebugEnabled() and self.ProjectIsLoaded():
             Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.LoadedProject))
+        
+        return opened
     
     
     ## TODO: Doxygen
@@ -983,6 +971,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #    tarballs.
     #  Proposed formats are xz compressed tarball &
     #    zip compressed file.
+    #  \param target_path
+    #    Absolute output filename
     def ProjectSave(self, target_path):
         Logger.Debug(__name__, GT(u'Saving in new project format'))
         Logger.Debug(__name__, GT(u'Saving to file {}').format(target_path))
@@ -992,7 +982,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if not os.path.exists(temp_dir) or temp_dir == dbrerrno.EACCES:
             ShowErrorDialog(u'{}: {}'.format(GT(u'Could not create staging directory'), temp_dir),
                     parent=self)
-            return
+            
+            return dbrerrno.EACCES
         
         Logger.Debug(__name__, GT(u'Temp dir created: {}').format(temp_dir))
         
@@ -1034,14 +1025,49 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         p_archive.Compress(temp_dir, u'{}'.format(target_path))
         
+        # FIXME: Should check file timestamp
         if os.path.isfile(target_path):
             Logger.Debug(__name__, GT(u'Project saved: {}').format(target_path))
             
+            # Cleanup
             RemoveTempDirectory(temp_dir)
+            self.ProjectSetDirty(False)
             
             return dbrerrno.SUCCESS
         
         ShowErrorDialog(u'{}: {}'.format(GT(u'Project save failed'), target_path), parent=self)
+        
+        return dbrerrno.EUNKNOWN
+    
+    
+    ## Opens a dialog for saving a new project
+    def ProjectSaveAs(self):
+        wildcards = (
+            u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext),
+            u'*.{}'.format(PROJECT_ext),
+        )
+        
+        save_dialog = GetFileSaveDialog(self, GT(u'Save Debreate Project'), wildcards,
+                PROJECT_ext)
+        
+        if ShowDialog(save_dialog):
+            project_path = save_dialog.GetPath()
+            project_filename = save_dialog.GetFilename()
+            project_extension = save_dialog.GetExtension()
+            
+            Logger.Debug(__name__, GT(u'Project save path: {}').format(project_path))
+            Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
+            Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
+            
+            saved = self.ProjectSave(project_path)
+            if saved == dbrerrno.SUCCESS:
+                self.ProjectSetDirty(False)
+            
+            return saved
+        
+        Logger.Debug(__name__, GT(u'Not saving project'))
+        
+        return dbrerrno.ECNCLD
     
     
     ## Sets the 'modified' state of the project
