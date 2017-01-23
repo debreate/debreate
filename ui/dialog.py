@@ -19,7 +19,7 @@ from globals.moduleaccess   import ModuleAccessCtrl
 from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
 from ui.button              import AddCustomButtons
@@ -36,7 +36,7 @@ class BaseDialog(wx.Dialog):
     def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Title'), pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr):
         if parent == None:
-            parent = GetTopWindow()
+            parent = GetMainWindow()
         
         wx.Dialog.__init__(self, parent, ID, title, pos, size, style|wx.RESIZE_BORDER, name)
     
@@ -130,7 +130,7 @@ class StandardFileDialog(wx.FileDialog):
         
         if len(path):
             if path[-1] == u'.':
-                name_error = wx.MessageDialog(GetTopWindow(), GT(u'Error'),
+                name_error = wx.MessageDialog(GetMainWindow(), GT(u'Error'),
                         style=wx.ICON_ERROR|wx.OK)
                 
                 name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
@@ -157,7 +157,7 @@ class StandardFileDialog(wx.FileDialog):
         
         if path:
             if os.path.isfile(path):
-                overwrite = OverwriteDialog(GetTopWindow(), path).ShowModal()
+                overwrite = OverwriteDialog(GetMainWindow(), path).ShowModal()
                 
                 if overwrite != wx.ID_YES:
                     return
@@ -433,7 +433,7 @@ class ErrorDialog(DetailedMessageDialog):
 ## TODO: Doxygen
 class SuperUserDialog(wx.Dialog):
     def __init__(self, ID=wx.ID_ANY):
-        wx.Dialog.__init__(self, GetTopWindow(), ID)
+        wx.Dialog.__init__(self, GetMainWindow(), ID)
         
         # User selector
         self.users = ComboBox(self)
@@ -460,7 +460,7 @@ def GetDialogWildcards(ID):
 ## TODO: Doxygen
 def GetDirDialog(parent, title):
     if parent == None:
-        parent = GetTopWindow()
+        parent = GetMainWindow()
         
     dir_open = StandardDirDialog(parent, title)
     
@@ -470,7 +470,7 @@ def GetDirDialog(parent, title):
 ## TODO: Doxygen
 def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
     if parent == None:
-        parent = GetTopWindow()
+        parent = GetMainWindow()
     
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
@@ -500,7 +500,7 @@ def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
 #        The dialog window to be shown
 def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwrite=True):
     if parent == None:
-        parent = GetTopWindow()
+        parent = GetMainWindow()
     
     if isinstance(ext_filters, (list, tuple)):
         ext_filters = u'|'.join(ext_filters)
@@ -576,7 +576,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
         logger_text = u'{}:\n{}'.format(logger_text, details)
     
     if parent == False:
-        parent = GetTopWindow()
+        parent = GetMainWindow()
     
     if not parent:
         module_name = __name__
@@ -600,7 +600,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
 def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, parent=None,
             linewrap=0):
     if not parent:
-        parent = GetTopWindow()
+        parent = GetMainWindow()
     
     if not module and isinstance(parent, ModuleAccessCtrl):
         module = parent.GetModuleName()

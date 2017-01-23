@@ -22,7 +22,7 @@ from globals.execute        import GetExecutable
 from globals.mime           import GetFileMimeType
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_home
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -1074,7 +1074,7 @@ class DirectoryTree(wx.TreeCtrl):
         
         msg_l1 = GT(u'Move the following items to trash?')
         msg_l2 = u'\n'.join(path_list)
-        if ConfirmationDialog(GetTopWindow(), GT(u'Delete'),
+        if ConfirmationDialog(GetMainWindow(), GT(u'Delete'),
                 u'{}\n\n{}'.format(msg_l1, msg_l2)).Confirmed():
             
             arg_list = list(path_list)

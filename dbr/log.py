@@ -20,7 +20,7 @@ from globals.dateinfo       import GetTime
 from globals.fileio         import AppendFile
 from globals.fileio         import ReadFile
 from globals.paths          import PATH_local
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanel
 from ui.layout              import BoxSizer
 
@@ -261,7 +261,7 @@ class LogWindow(wx.Dialog):
         
         wx.EVT_CLOSE(self, self.OnClose)
         wx.EVT_SHOW(self, self.OnShow)
-        wx.EVT_SHOW(GetTopWindow(), self.OnShowMainWindow)
+        wx.EVT_SHOW(GetMainWindow(), self.OnShowMainWindow)
         
         self.SetMinSize(self.GetSize())
         
@@ -283,7 +283,7 @@ class LogWindow(wx.Dialog):
     
     ## Positions the log window relative to the main window
     def AlignWithMainWindow(self):
-        debreate_pos = GetTopWindow().GetPosition()
+        debreate_pos = GetMainWindow().GetPosition()
         width = self.GetSize()[0]
         posX = debreate_pos[0] - width
         posY = debreate_pos[1]
@@ -328,7 +328,7 @@ class LogWindow(wx.Dialog):
     
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
-        main_window = GetTopWindow()
+        main_window = GetMainWindow()
         
         log_select = wx.FileDialog(main_window, GT(u'Open Log'),
                 os.getcwd(), style=wx.FD_OPEN|wx.FD_CHANGE_DIR|wx.FD_FILE_MUST_EXIST)
@@ -351,7 +351,7 @@ class LogWindow(wx.Dialog):
     
     ## Guarantess that menu item is synched with window's shown status
     def OnShow(self, event=None):
-        main_window = GetTopWindow()
+        main_window = GetMainWindow()
         
         # In case main window has been destroyed, but sub thread still active
         if main_window:
@@ -371,7 +371,7 @@ class LogWindow(wx.Dialog):
     #    a separate item is not added in the system window
     #    list for the log.
     def OnShowMainWindow(self, event=None):
-        main_window = GetTopWindow()
+        main_window = GetMainWindow()
         
         # Make sure the main window has not been destroyed before showing log
         if main_window and main_window.IsShown():
@@ -381,7 +381,7 @@ class LogWindow(wx.Dialog):
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        show = GetTopWindow().menu_debug.IsChecked(ident.LOG)
+        show = GetMainWindow().menu_debug.IsChecked(ident.LOG)
         
         if show:
             self.ShowLog()
