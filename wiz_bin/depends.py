@@ -12,6 +12,7 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import genid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -252,7 +253,7 @@ class Panel(WizardPage):
             else:
                 self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
-        elif key_id == ident.APPEND:
+        elif key_id == genid.APPEND:
             selected_count = self.lst_deps.GetSelectedItemCount()
             
             Logger.Debug(__name__, u'Appending to {} items'.format(selected_count))
