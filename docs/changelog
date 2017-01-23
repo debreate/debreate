@@ -20,5 +20,6 @@
     - New project MIME type association: application/x-dbpz (.dbpz) format
     - Legacy project (.dbp/plain text) support
   - The system '/tmp' directory is used staging project export & build prep
+  - Project is marked dirty when altered
 - MISC:
   - Disabled custom dialogs
