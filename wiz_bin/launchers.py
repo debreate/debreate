@@ -20,7 +20,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
-from input.list             import ListCtrlPanel
+from input.list             import ListCtrlPanelESS
 from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
@@ -204,7 +204,7 @@ class Panel(WizardPage):
             self.opts_button.append(B)
         
         # FIXME: Allow using multi-select + remove
-        self.lst_categories = ListCtrlPanel(self)
+        self.lst_categories = ListCtrlPanelESS(self)
         # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
         self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
