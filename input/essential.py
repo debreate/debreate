@@ -10,7 +10,7 @@ import wx
 from wx.combo import OwnerDrawnComboBox
 
 from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import ProjectIsDirty
 from ui.panel               import ControlPanel
 
@@ -47,4 +47,4 @@ class EssentialField:
         
         # NOTE: Calling ProjectIsDirty might be redundant (check MainWindow.OnProjectChanged
         if FieldEnabled(self) and not ProjectIsDirty():
-            GetTopWindow().OnProjectChanged(event)
+            GetMainWindow().OnProjectChanged(event)

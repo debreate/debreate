@@ -13,7 +13,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.timer              import DebreateTimer
 from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 
 
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
@@ -93,7 +93,7 @@ class ProgressDialog(wx.ProgressDialog):
         # Re-enable parent/main window if previously disabled
         # ???: May not be necessary
         parent = self.GetParent()
-        main_window = GetTopWindow()
+        main_window = GetMainWindow()
         
         if not FieldEnabled(main_window):
             Logger.Debug(__name__, u'Re-enabling main window')

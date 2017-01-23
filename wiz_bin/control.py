@@ -20,7 +20,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
@@ -482,7 +482,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+        browse_dialog = wx.FileDialog(GetMainWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
     
@@ -506,7 +506,7 @@ class Panel(WizardPage):
         # Get data to write to control file
         control = self.GetCtrlInfo()
         
-        save_dialog = wx.FileDialog(GetTopWindow(), u'Save Control Information', os.getcwd(),
+        save_dialog = wx.FileDialog(GetMainWindow(), u'Save Control Information', os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
         save_dialog.SetFilename(u'control')
         

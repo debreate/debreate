@@ -16,7 +16,7 @@ from globals                import ident
 from globals.ident          import manid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanel
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
@@ -158,7 +158,7 @@ class Panel(WizardPage):
     #  \param rename
     #    Renames an existing page instead of creating a new one
     def SetPageName(self, index=-1, rename=False):
-        getname = TextEntryDialog(GetTopWindow(), GT(u'Name for new manpage'))
+        getname = TextEntryDialog(GetMainWindow(), GT(u'Name for new manpage'))
         new_name = None
         
         if not rename:

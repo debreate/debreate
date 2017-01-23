@@ -172,16 +172,12 @@ def GetMenu(menu_id):
 
 ## TODO: Doxygen
 def GetMenuBar():
-    return GetTopWindow().GetMenuBar()
+    return GetMainWindow().GetMenuBar()
 
 
 ## TODO: Doxygen
 def GetPage(page_id):
     page = GetWizard().GetPage(page_id)
-    
-    # Failsafe in case Wizard pages have not been added yet
-    if page == None:
-        page = GetField(GetTopWindow(), page_id)
     
     return page
 
@@ -192,11 +188,6 @@ def GetPage(page_id):
 #        \b e\ tuple : List of all active wizard page IDs
 def GetPagesIdList():
     return GetWizard().GetPagesIdList()
-
-
-## TODO: Doxygen
-def GetTopWindow():
-    return wx.GetApp().GetTopWindow()
 
 
 ## Finds the MainWindow instance

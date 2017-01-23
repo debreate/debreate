@@ -14,7 +14,7 @@ from subprocess import STDOUT
 
 from dbr.language           import GT
 from globals.cmdcheck       import CommandExists
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 
 
 ## TODO: Doxygen
@@ -27,7 +27,7 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
     if not CMD_sudo:
         return (None, GT(u'Super user command (sudo) not available'))
     
-    main_window = GetTopWindow()
+    main_window = GetMainWindow()
     
     if isinstance(args, (unicode, str)):
         cmd_line = [args,]

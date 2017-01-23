@@ -12,7 +12,7 @@ from dbr.font               import MONOSPACED_LG
 from dbr.language           import GT
 from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.essential        import EssentialField
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
@@ -84,7 +84,7 @@ class TextArea(wx.TextCtrl):
             msg_li2 = GT(u'Continue?')
             
             # FIXME: Use custom dialogs (currently cannot import)
-            message = wx.MessageDialog(GetTopWindow(), u'{}\n\n{}'.format(msg_li1, msg_li2),
+            message = wx.MessageDialog(GetMainWindow(), u'{}\n\n{}'.format(msg_li1, msg_li2),
                     GT(u'Warning'), wx.OK|wx.CANCEL|wx.ICON_WARNING)
             
             confirmed = message.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES)
@@ -104,7 +104,7 @@ class TextArea(wx.TextCtrl):
             pass
         
         #ShowErrorDialog(GT(u'There was an error reading file: {}').format(filename))
-        wx.MessageDialog(GetTopWindow(), GT(u'There was an error reading file: {}').format(filename),
+        wx.MessageDialog(GetMainWindow(), GT(u'There was an error reading file: {}').format(filename),
                 GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         
         return False
