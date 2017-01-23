@@ -84,7 +84,7 @@ def NewPageId(page_name=None):
 
 ## Page IDs
 class pgid:
-    GREETING = NewPageId(GT(u'Greeting'))
+    GREETING = NewPageId(GT(u'Information'))
     CONTROL = NewPageId(GT(u'Control'))
     DEPENDS = NewPageId(GT(u'Depends'))
     FILES = NewPageId(GT(u'Files'))
