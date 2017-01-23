@@ -64,14 +64,6 @@ THEME = wx.NewId()
 TOOLTIPS = wx.NewId()
 UPDATE = wx.NewId()
 
-# *** Reference menu IDs *** #
-DPM = wx.NewId()
-DPMCtrl = wx.NewId()
-DPMLog = wx.NewId()
-UPM = wx.NewId()
-LINT_TAGS = wx.NewId()
-LINT_OVERRIDE = wx.NewId()
-
 BUILD = wx.NewId()
 CHANGELOG = wx.NewId()
 
