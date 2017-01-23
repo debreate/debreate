@@ -86,3 +86,12 @@ class ScrolledPanel(wx.ScrolledWindow):
         sizer = self.GetSizer()
         if sizer:
             self.SetVirtualSize(sizer.GetMinSize())
+
+
+## Class designed for custom controls parented with a BorderedPanel
+class ControlPanel:
+    ## Retrieve main child of panel
+    #  
+    #  Intended for use in input.essential.EssentialField
+    def GetMainControl(self):
+        return self.MainCtrl
