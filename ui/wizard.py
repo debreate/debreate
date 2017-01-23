@@ -251,6 +251,17 @@ class Wizard(wx.Panel):
                         page.ImportFromFile(u'{}/{}'.format(PATH, F))
     
     
+    ## Uses children WizardPage instances to set pages
+    def InitPages(self):
+        pages = []
+        
+        for C in self.GetChildren():
+            if isinstance(C, WizardPage):
+                pages.append(C)
+        
+        return self.SetPages(pages)
+    
+    
     ## TODO: Doxygen
     def ResetPagesInfo(self):
         for page in self.pages:
