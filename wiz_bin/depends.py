@@ -39,9 +39,9 @@ class Panel(WizardPage):
         self.prebuild_check = False
         
         # Buttons to open, save, & preview control file
-        btn_open = ButtonBrowse64(self)
-        btn_save = ButtonSave64(self)
-        btn_preview = ButtonPreview64(self)
+        self.btn_open = ButtonBrowse64(self)
+        self.btn_save = ButtonSave64(self)
+        self.btn_preview = ButtonPreview64(self)
         
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
@@ -103,11 +103,6 @@ class Panel(WizardPage):
         
         # *** Event Handling *** #
         
-        control_page = GetPage(ident.CONTROL)
-        btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
-        btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
-        
         wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
         
@@ -129,9 +124,9 @@ class Panel(WizardPage):
         # Row 1
         lyt_top.Add(txt_package, (1, 0), flag=LEFT_BOTTOM)
         lyt_top.Add(txt_version, (1, 2), flag=LEFT_BOTTOM)
-        lyt_top.Add(btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
-        lyt_top.Add(btn_save, (0, 4), (4, 1))
-        lyt_top.Add(btn_preview, (0, 5), (4, 1))
+        lyt_top.Add(self.btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
+        lyt_top.Add(self.btn_save, (0, 4), (4, 1))
+        lyt_top.Add(self.btn_preview, (0, 5), (4, 1))
         
         # Row 2
         lyt_top.Add(self.ti_package, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
@@ -202,6 +197,16 @@ class Panel(WizardPage):
         for V in values:
             self.lst_deps.InsertStringItem(0, d_type)
             self.lst_deps.SetStringItem(0, 1, V)
+    
+    
+    ## TODO: Doxygen
+    def InitPage(self):
+        control_page = GetPage(ident.CONTROL)
+        self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
+        self.btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
+        self.btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
+        
+        return True
     
     
     ## Resets all fields on page to default values
