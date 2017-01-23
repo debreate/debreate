@@ -10,6 +10,7 @@ import wx
 from wx.combo import OwnerDrawnComboBox
 
 from globals.wizardhelper import GetTopWindow
+from globals.wizardhelper import ProjectIsDirty
 
 
 ## Abstract class that sends a message to main window to mark project dirty when field is changed
@@ -30,4 +31,6 @@ class EssentialField:
         if event:
             event.Skip(True)
         
-        GetTopWindow().OnProjectChanged(event)
+        # NOTE: This might be redundant (check MainWindow.OnProjectChanged
+        if not ProjectIsDirty():
+            GetTopWindow().OnProjectChanged(event)
