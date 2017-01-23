@@ -132,10 +132,7 @@ def GetField(page, field_id, field_type=wx.Window):
 #  \param return
 #        The retrieved value of the field/control or an error tuple
 def GetFieldValue(page_id, field_id, field_type=wx.Window):
-    
-    wizard = wx.GetApp().GetTopWindow().GetWizard()
-    
-    page = wizard.GetPage(page_id)
+    page = GetWizard().GetPage(page_id)
     
     if not isinstance(page, wx.Window):
         # FIXME: Should have error id
