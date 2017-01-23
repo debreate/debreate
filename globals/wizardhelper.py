@@ -205,3 +205,8 @@ def GetTopWindow():
 ## TODO: Doxygen
 def GetWizard():
     return GetTopWindow().GetWizard()
+
+
+## Checks if project is in 'dirty' state
+def ProjectIsDirty():
+    return GetTopWindow().ProjectIsDirty()
