@@ -27,6 +27,7 @@ from globals.wizardhelper   import GetTopWindow
 from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
+from input.toggle           import CheckBox
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
@@ -86,14 +87,9 @@ class Panel(WizardPage):
         pnl_target = BorderedPanel(self)
         
         # Standard destination of changelog
-        self.rb_target_standard = wx.RadioButton(pnl_target, label=u'/usr/share/doc/<package>',
-                name=u'target default', style=wx.RB_GROUP)
-        self.rb_target_standard.default = True
-        self.rb_target_standard.SetValue(self.rb_target_standard.default)
-        
-        # Custom destination of changelog
-        # FIXME: Should not use same name as default destination???
-        self.rb_target_custom = wx.RadioButton(pnl_target, name=self.rb_target_standard.Name)
+        self.chk_target = CheckBox(pnl_target, label=u'/usr/share/doc/<package>',
+                name=u'target default')
+        self.chk_target.default = True
         
         self.ti_target = PathCtrl(pnl_target, value=u'/', default=u'/')
         self.ti_target.SetName(u'target custom')
@@ -112,6 +108,12 @@ class Panel(WizardPage):
         
         btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
         self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
+        
+        self.chk_target.Bind(wx.EVT_CHECKBOX, self.OnSelectTarget)
+        
+        # *** Post-event Actions *** #
+        
+        self.chk_target.SetChecked(self.chk_target.default)
         
         # *** Layout *** #
         
@@ -139,17 +141,12 @@ class Panel(WizardPage):
             (self.ti_email, 1, wx.EXPAND)
             ))
         
-        lyt_target_custom = BoxSizer(wx.HORIZONTAL)
-        
-        lyt_target_custom.Add(self.rb_target_custom, 0, wx.ALIGN_CENTER_VERTICAL)
-        lyt_target_custom.Add(self.ti_target, 1)
-        
         lyt_target = BoxSizer(wx.VERTICAL)
         
         lyt_target.AddSpacer(5)
-        lyt_target.Add(self.rb_target_standard, 0, wx.RIGHT, 5)
+        lyt_target.Add(self.chk_target, 0, wx.LEFT|wx.RIGHT, 5)
         lyt_target.AddSpacer(5)
-        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND|wx.RIGHT, 5)
+        lyt_target.Add(self.ti_target, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_target.AddSpacer(5)
         
         pnl_target.SetSizer(lyt_target)
@@ -242,7 +239,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        if self.rb_target_standard.GetValue():
+        if self.chk_target.GetValue():
             stage = u'{}/usr/share/doc/{}'.format(stage,
                     GetPage(ident.CONTROL).GetPackageName()).replace(u'//', u'/')
         
@@ -273,7 +270,7 @@ class Panel(WizardPage):
     def Get(self, get_module=False):
         cl_target = u'DEFAULT'
         
-        if self.rb_target_custom.GetValue():
+        if not self.chk_target.GetValue():
             cl_target = self.ti_target.GetValue()
         
         cl_body = self.dsp_changes.GetValue()
@@ -318,6 +315,11 @@ class Panel(WizardPage):
                 F.SetValue(field_value)
     
     
+    ## Enables/Disables custom target field
+    def OnSelectTarget(self, event=None):
+        self.ti_target.Enable(not self.chk_target.GetValue())
+    
+    
     ## TODO: Doxygen
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
@@ -357,15 +359,14 @@ class Panel(WizardPage):
             if S == u'TARGET':
                 Logger.Debug(__name__, u'SECTION TARGET FOUND')
                 
-                if sections[S][0] == u'DEFAULT':
+                self.chk_target.SetChecked(sections[S][0] == u'DEFAULT')
+                
+                if self.chk_target.Value:
                     Logger.Debug(__name__, u'Using default target')
-                    
-                    self.rb_target_standard.SetValue(True)
                 
                 else:
                     Logger.Debug(__name__, GT(u'Using custom target: {}').format(sections[S][0]))
                     
-                    self.rb_target_custom.SetValue(True)
                     self.ti_target.SetValue(sections[S][0])
                 
                 continue
@@ -394,7 +395,7 @@ class Panel(WizardPage):
         self.ti_maintainer.Clear()
         self.ti_email.Clear()
         self.ti_changes.Clear()
-        self.rb_target_standard.SetValue(self.rb_target_standard.default)
+        self.chk_target.SetChecked(self.chk_target.default)
         self.ti_target.Reset()
         self.dsp_changes.Clear()
     
@@ -404,11 +405,9 @@ class Panel(WizardPage):
         changelog = data.split(u'\n')
         dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         
-        if dest == u'DEFAULT':
-            self.rb_target_standard.SetValue(True)
+        self.chk_target.SetChecked(dest == u'DEFAULT')
         
-        else:
-            self.rb_target_custom.SetValue(True)
+        if not self.chk_target.Value:
             self.ti_target.SetValue(dest)
         
         self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
