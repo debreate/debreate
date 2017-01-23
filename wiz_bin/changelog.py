@@ -293,34 +293,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def OnImportFromControl(self, event=None):
-        fields = (
-            (self.ti_package, ident.F_PACKAGE),
-            (self.ti_version, ident.F_VERSION),
-            (self.ti_maintainer, ident.F_MAINTAINER),
-            (self.ti_email, ident.F_EMAIL),
-            )
-        
-        for F, FID in fields:
-            field_value = GetFieldValue(ident.CONTROL, FID)
-            
-            if isinstance(field_value, ErrorTuple):
-                err_msg1 = GT(u'Got error when attempting to retrieve field value')
-                err_msg2 = u'\tError code: {}\n\tError message: {}'.format(field_value.GetCode(), field_value.GetString())
-                Logger.Error(__name__, u'{}:\n{}'.format(err_msg1, err_msg2))
-                
-                continue
-            
-            if not TextIsEmpty(field_value):
-                F.SetValue(field_value)
-    
-    
-    ## Enables/Disables custom target field
-    def OnSelectTarget(self, event=None):
-        self.ti_target.Enable(not self.chk_target.GetValue())
-    
-    
-    ## TODO: Doxygen
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -384,6 +356,34 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def IsExportable(self):
         return not TextIsEmpty(self.dsp_changes.GetValue())
+    
+    
+    ## TODO: Doxygen
+    def OnImportFromControl(self, event=None):
+        fields = (
+            (self.ti_package, ident.F_PACKAGE),
+            (self.ti_version, ident.F_VERSION),
+            (self.ti_maintainer, ident.F_MAINTAINER),
+            (self.ti_email, ident.F_EMAIL),
+            )
+        
+        for F, FID in fields:
+            field_value = GetFieldValue(ident.CONTROL, FID)
+            
+            if isinstance(field_value, ErrorTuple):
+                err_msg1 = GT(u'Got error when attempting to retrieve field value')
+                err_msg2 = u'\tError code: {}\n\tError message: {}'.format(field_value.GetCode(), field_value.GetString())
+                Logger.Error(__name__, u'{}:\n{}'.format(err_msg1, err_msg2))
+                
+                continue
+            
+            if not TextIsEmpty(field_value):
+                F.SetValue(field_value)
+    
+    
+    ## Enables/Disables custom target field
+    def OnSelectTarget(self, event=None):
+        self.ti_target.Enable(not self.chk_target.GetValue())
     
     
     ## TODO: Doxygen
