@@ -15,15 +15,15 @@ from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
-from globals                import ident
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import errno
 from globals.fileio         import ReadFile
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from input.text             import TextAreaPanelESS
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
@@ -38,7 +38,7 @@ copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
 ## Copyright page
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.COPYRIGHT)
+        WizardPage.__init__(self, parent, pgid.COPYRIGHT)
         
         # FIXME: Update license templates list when template is generated
         # FIXME: Ignore symbolic links
@@ -126,7 +126,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        stage = u'{}/usr/share/doc/{}'.format(stage, GetPage(ident.CONTROL).GetPackageName()).replace(u'//', u'/')
+        stage = u'{}/usr/share/doc/{}'.format(stage, GetPage(pgid.CONTROL).GetPackageName()).replace(u'//', u'/')
         
         # FIXME: Should be error check
         self.Export(stage, u'copyright')

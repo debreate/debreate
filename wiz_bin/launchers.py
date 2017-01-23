@@ -11,11 +11,11 @@ import os, shutil, wx
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import page_ids
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -43,7 +43,7 @@ from ui.wizard              import WizardPage
 ## Page for creating a system menu launcher
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.LAUNCHERS)
+        WizardPage.__init__(self, parent, pgid.LAUNCHERS)
         
         ## Override default label
         self.label = GT(u'Menu Launcher')

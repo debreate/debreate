@@ -17,6 +17,7 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import page_ids
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
@@ -55,7 +56,7 @@ id_definitions = {
 ## Scripts page
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.SCRIPTS)
+        WizardPage.__init__(self, parent, pgid.SCRIPTS)
         
         preinst = DebianScript(self, ID_INST_PRE)
         postinst = DebianScript(self, ID_INST_POST)
@@ -213,7 +214,7 @@ class Panel(WizardPage):
             self.lst_executables = []
             
             # Get executables from "files" tab
-            files = GetField(ident.FILES, ident.F_LIST)
+            files = GetField(pgid.FILES, ident.F_LIST)
             
             # Sets the max iterate value
             MAX = files.GetItemCount()

@@ -9,7 +9,7 @@
 import wx
 
 from dbr.language   import GT
-from globals        import ident
+from globals.ident  import pgid
 from ui.hyperlink   import Hyperlink
 from ui.layout      import BoxSizer
 from ui.wizard      import WizardPage
@@ -18,7 +18,7 @@ from ui.wizard      import WizardPage
 ## TODO: Doxygen
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.GREETING)
+        WizardPage.__init__(self, parent, pgid.GREETING)
         
         # Bypass checking this page for build
         self.prebuild_check = False

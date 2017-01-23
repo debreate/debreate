@@ -16,14 +16,15 @@ from globals.changes        import FormatChangelog
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
+from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.system         import GetOSDistNames
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from input.pathctrl         import PathCtrlESS
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
@@ -40,7 +41,7 @@ from ui.wizard              import WizardPage
 ## Changelog page
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.CHANGELOG)
+        WizardPage.__init__(self, parent, pgid.CHANGELOG)
         
         txt_package = wx.StaticText(self, label=GT(u'Package'), name=u'package')
         self.ti_package = wx.TextCtrl(self, name=txt_package.Name)
@@ -242,7 +243,7 @@ class Panel(WizardPage):
     def ExportBuild(self, stage):
         if self.chk_target.GetValue():
             stage = u'{}/usr/share/doc/{}'.format(stage,
-                    GetPage(ident.CONTROL).GetPackageName()).replace(u'//', u'/')
+                    GetPage(pgid.CONTROL).GetPackageName()).replace(u'//', u'/')
         
         else:
             stage = u'{}/{}'.format(stage, self.ti_target.GetValue()).replace(u'//', u'/')
@@ -369,7 +370,7 @@ class Panel(WizardPage):
             )
         
         for F, FID in fields:
-            field_value = GetFieldValue(ident.CONTROL, FID)
+            field_value = GetFieldValue(pgid.CONTROL, FID)
             
             if isinstance(field_value, ErrorTuple):
                 err_msg1 = GT(u'Got error when attempting to retrieve field value')

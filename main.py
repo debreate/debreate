@@ -45,6 +45,7 @@ from globals.compression    import compression_mimetypes
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
+from globals.ident          import pgid
 from globals.ident          import refid
 from globals.mime           import GetFileMimeType
 from globals.moduleaccess   import ModuleAccessCtrl
@@ -928,36 +929,36 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-        depends_data = self.Wizard.GetPage(ident.CONTROL).Set(control_data)
-        self.Wizard.GetPage(ident.DEPENDS).Set(depends_data)
+        depends_data = self.Wizard.GetPage(pgid.CONTROL).Set(control_data)
+        self.Wizard.GetPage(pgid.DEPENDS).Set(depends_data)
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        self.Wizard.GetPage(ident.FILES).Set(files_data)
+        self.Wizard.GetPage(pgid.FILES).Set(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-        self.Wizard.GetPage(ident.SCRIPTS).Set(scripts_data)
+        self.Wizard.GetPage(pgid.SCRIPTS).Set(scripts_data)
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-        self.Wizard.GetPage(ident.CHANGELOG).Set(clog_data)
+        self.Wizard.GetPage(pgid.CHANGELOG).Set(clog_data)
         
         # *** Get Copyright Data *** #
         try:
             cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
-            self.Wizard.GetPage(ident.COPYRIGHT).Set(cpright_data)
+            self.Wizard.GetPage(pgid.COPYRIGHT).Set(cpright_data)
         
         except IndexError:
             pass
         
         # *** Get Menu Data *** #
         m_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-        self.Wizard.GetPage(ident.LAUNCHERS).Set(m_data)
+        self.Wizard.GetPage(pgid.LAUNCHERS).Set(m_data)
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]
-        self.Wizard.GetPage(ident.BUILD).Set(build_data)
+        self.Wizard.GetPage(pgid.BUILD).Set(build_data)
         
         # Legacy projects should return None since we can't save in that format
         return None
@@ -993,13 +994,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             )
         
         export_pages = (
-            ident.CONTROL,
-            ident.FILES,
-            ident.SCRIPTS,
-            ident.CHANGELOG,
-            ident.COPYRIGHT,
-            ident.LAUNCHERS,
-            ident.BUILD,
+            pgid.CONTROL,
+            pgid.FILES,
+            pgid.SCRIPTS,
+            pgid.CHANGELOG,
+            pgid.COPYRIGHT,
+            pgid.LAUNCHERS,
+            pgid.BUILD,
             )
         
         self.Wizard.ExportPages(export_pages, temp_dir)
