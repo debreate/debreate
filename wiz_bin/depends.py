@@ -15,7 +15,7 @@ from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrlPanel
 from ui.button              import ButtonAdd
 from ui.button              import ButtonAppend
@@ -269,7 +269,7 @@ class Panel(wx.ScrolledWindow):
         
         elif key_id == wx.ID_CLEAR:
             if self.lst_deps.GetItemCount():
-                if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
                         GT(u'Clear all dependencies?')).ShowModal() in (wx.ID_OK, wx.OK):
                     self.lst_deps.DeleteAllItems()
         

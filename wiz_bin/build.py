@@ -29,7 +29,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from ui.button              import ButtonBuild64
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
@@ -201,7 +201,7 @@ class Panel(wx.ScrolledWindow):
             Logger.Debug(__name__, task_msg)
             
             wx.Yield()
-            build_progress = ProgressDialog(GetTopWindow(), GT(u'Building'), task_msg,
+            build_progress = ProgressDialog(GetMainWindow(), GT(u'Building'), task_msg,
                     maximum=task_count,
                     style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
             
@@ -648,7 +648,7 @@ class Panel(wx.ScrolledWindow):
             progress = 0
             
             wx.Yield()
-            prebuild_progress = ProgressDialog(GetTopWindow(), GT(u'Preparing to build'),
+            prebuild_progress = ProgressDialog(GetMainWindow(), GT(u'Preparing to build'),
                     maximum=prep_task_count)
             
             if wx.MAJOR_VERSION < 3:
@@ -803,7 +803,7 @@ class Panel(wx.ScrolledWindow):
             return
         
         if ret_code == dbrerrno.FEMPTY:
-            err_dia = DetailedMessageDialog(GetTopWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
+            err_dia = DetailedMessageDialog(GetMainWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
                     text=u'{}\n{}'.format(GT(u'One of the required fields is empty'), build_prep))
             err_dia.ShowModal()
             err_dia.Destroy()
@@ -818,7 +818,7 @@ class Panel(wx.ScrolledWindow):
             
             # FIXME: Check .deb package timestamp to confirm build success
             if ret_code == dbrerrno.SUCCESS:
-                DetailedMessageDialog(GetTopWindow(), GT(u'Success'), ICON_INFORMATION,
+                DetailedMessageDialog(GetMainWindow(), GT(u'Success'), ICON_INFORMATION,
                         text=GT(u'Package created successfully')).ShowModal()
                 
                 # Installing the package
@@ -882,7 +882,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def SetSummary(self, event=None):
-        main_window = wx.GetApp().GetTopWindow()
+        main_window = GetMainWindow()
         
         # Make sure the page is not destroyed so no error is thrown
         if self:

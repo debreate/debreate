@@ -15,7 +15,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals.execute        import GetExecutable
 from globals.fileio         import WriteFile
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from ui.dialog              import ErrorDialog
 
 
@@ -44,7 +44,7 @@ class MD5Hasher:
         # This is only a failsafe & should never happen
         if not CMD_md5sum:
             if not parent:
-                parent = GetTopWindow()
+                parent = GetMainWindow()
             
             err_msg1 = GT(u'The "md5sum" command was not found on the system.')
             err_msg2 = GT(u'Uncheck the "{}" box.').format(self.md5_box_name)

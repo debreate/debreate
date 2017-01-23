@@ -18,7 +18,7 @@ from globals.system         import GetOSDistNames
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
 from input.text             import MonospaceTextArea
@@ -187,7 +187,7 @@ class Panel(wx.ScrolledWindow):
         new_changes = self.ti_changes.GetValue()
         
         if TextIsEmpty(new_changes):
-            DetailedMessageDialog(GetTopWindow(), GT(u'Warning'), ICON_WARNING,
+            DetailedMessageDialog(GetMainWindow(), GT(u'Warning'), ICON_WARNING,
                     GT(u'"Changes" section is empty')).ShowModal()
             
             self.ti_changes.SetInsertionPointEnd()

@@ -14,7 +14,7 @@ from globals                import ident
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrlPanel
 from input.markdown         import MarkdownDialog
 from input.pathctrl         import PATH_WARN
@@ -332,7 +332,7 @@ class Panel(wx.ScrolledWindow):
     
     ## Creates scripts that link the executables
     def OnGenerate(self, event=None):
-        main_window = GetTopWindow()
+        main_window = GetMainWindow()
         
         # Get the amount of links to be created
         total = len(self.lst_executables)

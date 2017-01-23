@@ -20,7 +20,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.charctrl         import CharCtrl
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
@@ -441,7 +441,7 @@ class Panel(wx.ScrolledWindow):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        browse_dialog = wx.FileDialog(GetTopWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+        browse_dialog = wx.FileDialog(GetMainWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
     
@@ -462,7 +462,7 @@ class Panel(wx.ScrolledWindow):
             if widget.GetValue() != self.grp_keypress[widget]:
                 modified = True
         
-        GetTopWindow().SetSavedStatus(modified)
+        GetMainWindow().SetSavedStatus(modified)
         
         if event:
             event.Skip()
@@ -487,7 +487,7 @@ class Panel(wx.ScrolledWindow):
         # Get data to write to control file
         control = self.GetCtrlInfo()
         
-        save_dialog = wx.FileDialog(GetTopWindow(), u'Save Control Information', os.getcwd(),
+        save_dialog = wx.FileDialog(GetMainWindow(), u'Save Control Information', os.getcwd(),
                 style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
         save_dialog.SetFilename(u'control')
         
