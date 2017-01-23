@@ -15,6 +15,7 @@ from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
+from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -50,7 +51,7 @@ warning_threshhold = 1000
 ## Class defining controls for the "Paths" page
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.FILES)
+        WizardPage.__init__(self, parent, pgid.FILES)
         
         # *** Left Panel *** #
         

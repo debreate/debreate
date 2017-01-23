@@ -72,6 +72,9 @@ UPM = wx.NewId()
 LINT_TAGS = wx.NewId()
 LINT_OVERRIDE = wx.NewId()
 
+BUILD = wx.NewId()
+CHANGELOG = wx.NewId()
+
 # Page IDs
 next_page_id = 1000
 page_ids = {}
@@ -85,16 +88,19 @@ def NewPageId(page_name=None):
     
     return this_page_id
 
-GREETING = NewPageId(GT(u'Greeting'))
-CONTROL = NewPageId(GT(u'Control'))
-DEPENDS = NewPageId(GT(u'Depends'))
-FILES = NewPageId(GT(u'Files'))
-MAN = NewPageId(GT(u'Man'))
-SCRIPTS = NewPageId(GT(u'Scripts'))
-CHANGELOG = NewPageId(GT(u'Changelog'))
-COPYRIGHT = NewPageId(GT(u'Copyright'))
-LAUNCHERS = NewPageId(GT(u'Menu'))
-BUILD = NewPageId(GT(u'Build'))
+
+class pgid:
+    GREETING = NewPageId(GT(u'Greeting'))
+    CONTROL = NewPageId(GT(u'Control'))
+    DEPENDS = NewPageId(GT(u'Depends'))
+    FILES = NewPageId(GT(u'Files'))
+    MAN = NewPageId(GT(u'Man'))
+    SCRIPTS = NewPageId(GT(u'Scripts'))
+    CHANGELOG = NewPageId(GT(u'Changelog'))
+    COPYRIGHT = NewPageId(GT(u'Copyright'))
+    LAUNCHERS = NewPageId(GT(u'Menu'))
+    BUILD = NewPageId(GT(u'Build'))
+
 
 # *** Compression format IDs *** #
 COMPRESSION = wx.NewId() # FIXME: Unused?
