@@ -7,8 +7,8 @@
 
 
 import wx
-from wx.lib.newevent import NewCommandEvent
 
+from dbr.event              import ChangePageEvent
 from dbr.language           import GT
 from globals                import ident
 from globals.tooltips       import TT_wiz_next
@@ -52,10 +52,6 @@ class Wizard(wx.Panel):
         self.btn_prev.SetToolTip(TT_wiz_prev)
         self.btn_next = ButtonNext(self)
         self.btn_next.SetToolTip(TT_wiz_next)
-        
-        # FIXME: Should be global???
-        self.ChangePageEvent, self.EVT_CHANGE_PAGE = NewCommandEvent()
-        self.evt = self.ChangePageEvent(0)
         
         # These widgets are put into a list so that they are not automatically hidden
         self.permanent_children = (
@@ -266,4 +262,4 @@ class Wizard(wx.Panel):
         
         self.Layout()
         
-        wx.PostEvent(GetMainWindow(), self.evt)
+        wx.PostEvent(GetMainWindow(), ChangePageEvent(0))

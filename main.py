@@ -14,6 +14,7 @@ from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
+from dbr.event              import EVT_CHANGE_PAGE
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import UsingDevelopmentVersion
 from dbr.icon               import Icon
@@ -277,7 +278,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
-        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnWizardBtnPage)
+        EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnWizardBtnPage)
         
         for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
