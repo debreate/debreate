@@ -21,6 +21,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 from input.list             import ListCtrlPanel
+from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
 from input.text             import TextAreaPanelESS
@@ -127,7 +128,7 @@ class Panel(WizardPage):
         txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
         self.labels.append(txt_term)
         
-        self.sel_term = wx.Choice(self, choices=opts_term, name=u'Terminal')
+        self.sel_term = ChoiceESS(self, choices=opts_term, name=u'Terminal')
         self.sel_term.default = 1
         self.sel_term.SetSelection(self.sel_term.default)
         self.opts_choice.append(self.sel_term)
@@ -138,7 +139,7 @@ class Panel(WizardPage):
         txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
         self.labels.append(txt_notify)
         
-        self.sel_notify = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
+        self.sel_notify = ChoiceESS(self, choices=self.notify_opt, name=u'StartupNotify')
         self.sel_notify.default = 0
         self.sel_notify.SetSelection(self.sel_notify.default)
         self.opts_choice.append(self.sel_notify)
