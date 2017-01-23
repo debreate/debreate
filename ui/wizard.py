@@ -284,15 +284,19 @@ class Wizard(wx.Panel):
             # FIXME: Should not raise error here???
             raise TypeError(u'Argument 2 of Wizard.SetPages() must be List or Tuple')
         
-        for page in pages:
-            self.pages.append(page)
-            self.pages_ids[page.GetId()] = page.GetName().upper()
-            self.GetSizer().Insert(1, page, 1, wx.EXPAND)
+        for PAGE in pages:
+            self.pages.append(PAGE)
+            self.pages_ids[PAGE.GetId()] = PAGE.GetName().upper()
+            self.GetSizer().Insert(1, PAGE, 1, wx.EXPAND)
             
             # Add pages to main menu
             main_window.menu_page.AppendItem(
-                wx.MenuItem(main_window.menu_page, page.GetId(), page.GetLabel(),
+                wx.MenuItem(main_window.menu_page, PAGE.GetId(), PAGE.GetLabel(),
                 kind=wx.ITEM_RADIO))
+        
+        # Initailize functions that can only be called after all pages are constructed
+        for PAGE in pages:
+            PAGE.InitPage()
         
         self.ShowPage(self.ID_FIRST)
         
@@ -435,6 +439,13 @@ class WizardPage(ScrolledPanel):
     ## TODO: Doxygen
     def ImportFromFile(self, filename):
         Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
+    
+    
+    ## This method should contain anything that needs to be initialized only after all pages are constructed
+    def InitPage(self):
+        Logger.Debug(__name__, GT(u'Page {} does not override inherited method InitPage').format(self.GetName()))
+        
+        return False
     
     
     ## TODO: Doxygen
