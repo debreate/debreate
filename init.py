@@ -132,6 +132,7 @@ from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from main                   import MainWindow
 from startup.firstrun       import LaunchFirstRun
+from startup.startup        import SetAppInitialized
 
 
 # Log window refresh interval
@@ -242,6 +243,13 @@ if parsed_path:
 ChangeWorkingDirectory(working_dir)
 
 Debreate.Show(True)
+
+# Wait for window to be constructed (prevents being marked as dirty project after initialization)
+wx.Yield()
+
+# Set initializaton state to 'True'
+SetAppInitialized()
+
 debreate_app.MainLoop()
 
 Logger.OnClose()
