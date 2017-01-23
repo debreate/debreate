@@ -385,6 +385,9 @@ class Panel(WizardPage):
     ## Enables/Disables custom target field
     def OnSelectTarget(self, event=None):
         self.ti_target.Enable(not self.chk_target.GetValue())
+        
+        if event:
+            event.Skip(True)
     
     
     ## TODO: Doxygen
