@@ -210,7 +210,7 @@ TT_pages = {
     ident.SCRIPTS: TT_scripts,
     ident.CHANGELOG: TT_changelog,
     ident.COPYRIGHT: TT_copyright,
-    ident.MENU: TT_launchers,
+    ident.LAUNCHERS: TT_launchers,
     ident.BUILD: TT_build,
 }
 
