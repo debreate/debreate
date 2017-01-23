@@ -11,6 +11,7 @@ import wx
 from input.essential import EssentialField
 
 
+## Standard wx.CheckBox
 class CheckBox(wx.CheckBox):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr):
@@ -18,6 +19,7 @@ class CheckBox(wx.CheckBox):
         wx.CheckBox.__init__(self, parent, win_id, label, pos, size, style, name=name)
 
 
+## CheckBox class that notifies main window to mark project dirty
 class CheckBoxESS(CheckBox, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr):
