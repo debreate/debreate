@@ -199,6 +199,11 @@ def GetTopWindow():
     return wx.GetApp().GetTopWindow()
 
 
+## Finds the MainWindow instance
+def GetMainWindow():
+    return wx.GetApp().GetMainWindow()
+
+
 ## TODO: Doxygen
 def GetWizard():
-    return GetTopWindow().GetWizard()
+    return GetMainWindow().GetWizard()
