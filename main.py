@@ -822,6 +822,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         webbrowser.open(url)
     
     
+    ## Retrieves filename of loaded project
+    def ProjectGetLoaded(self):
+        return self.LoadedProject
+    
+    
     ## Checks if current project is dirty
     def ProjectIsDirty(self):
         if self.LoadedProject:
