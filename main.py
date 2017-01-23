@@ -53,7 +53,6 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
-from globals.wizardhelper   import GetTopWindow
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
 from ui.dialog              import ConfirmationDialog
@@ -92,7 +91,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ModuleAccessCtrl.__init__(self, __name__)
         
         # Make sure that this frame is set as the top window
-        if not GetTopWindow() == self:
+        if not wx.GetApp().GetTopWindow() == self:
             Logger.Debug(__name__, GT(u'Setting MainWindow instance as top window'))
             
             wx.GetApp().SetTopWindow(self)
@@ -491,7 +490,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         update_test = u'update-fail' in GetTestList()
         
         if UsingDevelopmentVersion() and not update_test:
-            DetailedMessageDialog(GetTopWindow(), GT(u'Update'),
+            DetailedMessageDialog(self, GT(u'Update'),
                     text=GT(u'Update checking is disabled in development versions')).ShowModal()
             return
         
@@ -516,14 +515,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = GT(u'Version {} is available!').format(current)
             l2 = GT(u'Would you like to go to Debreate\'s website?')
-            if ConfirmationDialog(GetTopWindow(), GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed():
+            if ConfirmationDialog(self, GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed():
                 wx.LaunchDefaultBrowser(APP_homepage)
         
         elif isinstance(current, (unicode, str)):
             ShowErrorDialog(error_remote, current)
         
         else:
-            DetailedMessageDialog(GetTopWindow(), GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
+            DetailedMessageDialog(self, GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
     
     
     ## Action to take when 'Help' is selected from the help menu
