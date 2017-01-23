@@ -26,7 +26,7 @@ from input.markdown         import MarkdownDialog
 from input.pathctrl         import PATH_WARN
 from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
-from input.text             import MonospaceTextArea
+from input.text             import TextAreaPanel
 from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
 from ui.button              import ButtonImport
@@ -502,7 +502,7 @@ class DebianScript(wx.Panel):
         self.shell.default = u'/bin/bash'
         self.shell.SetStringSelection(self.shell.default)
         
-        self.script_body = MonospaceTextArea(self, self.GetId())
+        self.script_body = TextAreaPanel(self, self.GetId(), monospace=True)
         
         # *** Layout *** #
         

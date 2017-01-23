@@ -146,10 +146,25 @@ class TextAreaMLESS(TextAreaML, EssentialField):
         EssentialField.__init__(self)
 
 
+MT_NO_BTN = 0
+MT_BTN_TL = 1
+MT_BTN_TR = 2
+MT_BTN_BL = 3
+MT_BTN_BR = 4
+
+button_H_pos = {
+    MT_BTN_TL: wx.ALIGN_LEFT,
+    MT_BTN_TR: wx.ALIGN_RIGHT,
+    MT_BTN_BL: wx.ALIGN_LEFT,
+    MT_BTN_BR: wx.ALIGN_RIGHT,
+}
+
+
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
 class TextAreaPanel(BorderedPanel):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, monospace=False,
+            button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
+            name=wx.TextCtrlNameStr):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
@@ -164,12 +179,19 @@ class TextAreaPanel(BorderedPanel):
         # Match panel color to text control
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
         
-        self.layout_V1 = BoxSizer(wx.HORIZONTAL)
-        self.layout_V1.Add(self.textarea, 1, wx.EXPAND|wx.ALL, 2)
+        # *** Layout *** #
+        
+        lyt_main = BoxSizer(wx.HORIZONTAL)
+        lyt_main.Add(self.textarea, 1, wx.EXPAND|wx.ALL, 2)
         
         self.SetAutoLayout(True)
-        self.SetSizer(self.layout_V1)
+        self.SetSizer(lyt_main)
         self.Layout()
+        
+        # *** Post-layout Actions *** #
+        
+        if monospace:
+            self.SetMonospaced(button)
     
     
     ## Clears all text in the text area
@@ -262,6 +284,27 @@ class TextAreaPanel(BorderedPanel):
     
     
     ## TODO: Doxygen
+    def OnToggleTextSize(self, event=None):
+        # Save insertion point
+        insertion = self.textarea.GetInsertionPoint()
+        
+        sizes = {
+            7: 8,
+            8: 10,
+            10: 11,
+            11: 7,
+        }
+        
+        font = self.textarea.GetFont()
+        new_size = sizes[font.GetPointSize()]
+        font.SetPointSize(new_size)
+        
+        self.textarea.SetFont(font)
+        self.textarea.SetInsertionPoint(insertion)
+        self.textarea.SetFocus()
+    
+    
+    ## TODO: Doxygen
     def SetBackgroundColour(self, *args, **kwargs):
         self.textarea.SetBackgroundColour(*args, **kwargs)
         return BorderedPanel.SetBackgroundColour(self, *args, **kwargs)
@@ -305,6 +348,25 @@ class TextAreaPanel(BorderedPanel):
         self.textarea.SetValue(text)
     
     
+    ## Sets text area font to monospaced
+    def SetMonospaced(self, button):
+        self.textarea.SetFont(MONOSPACED_LG)
+        
+        if button:
+            lyt_main = self.GetSizer()
+            
+            btn_text_size = wx.Button(self, label=GT(u'Text Size'))
+            if button in (MT_BTN_TL, MT_BTN_TR):
+                lyt_main.Insert(0, btn_text_size, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
+            
+            else:
+                lyt_main.Add(btn_text_size, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
+            
+            btn_text_size.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
+            
+            self.Layout()
+    
+    
     ## TODO: Doxygen
     def ShowPosition(self, pos):
         return self.textarea.ShowPosition(pos)
@@ -317,10 +379,12 @@ class TextAreaPanel(BorderedPanel):
 
 ## TextAreaPanel that notifies main window to mark the project dirty
 class TextAreaPanelESS(TextAreaPanel, EssentialField):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, monospace=False,
+            button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
+            name=wx.TextCtrlNameStr):
         
-        TextAreaPanel.__init__(self, parent, win_id, value, pos, size, style, name)
+        TextAreaPanel.__init__(self, parent, win_id, value, monospace, button, pos, size,
+                style, name)
         
         lyt_main = self.GetSizer()
         index = lyt_main.GetItemIndex(self.textarea)
@@ -334,60 +398,8 @@ class TextAreaPanelESS(TextAreaPanel, EssentialField):
         lyt_main.Insert(index, self.textarea, 1, wx.EXPAND|wx.ALL, 2)
         
         self.Layout()
-
-
-MT_NO_BTN = 0
-MT_BTN_TL = 1
-MT_BTN_TR = 2
-MT_BTN_BL = 3
-MT_BTN_BR = 4
-
-button_H_pos = {
-    MT_BTN_TL: wx.ALIGN_LEFT,
-    MT_BTN_TR: wx.ALIGN_RIGHT,
-    MT_BTN_BL: wx.ALIGN_LEFT,
-    MT_BTN_BR: wx.ALIGN_RIGHT,
-}
-
-
-## TODO: Doxygen
-#  
-#  TODO: Remove button & toggle text from external buttons
-class MonospaceTextArea(TextAreaPanel):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, button=MT_NO_BTN,
-                pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TAB_TRAVERSAL,
-                name=wx.TextCtrlNameStr):
-        TextAreaPanel.__init__(self, parent, win_id, value, pos, size, style, name)
         
-        self.textarea.SetFont(MONOSPACED_LG)
+        # *** Post-layout Actions *** #
         
-        if button:
-            btn_font = wx.Button(self, label=GT(u'Text Size'))
-            if button in (MT_BTN_TL, MT_BTN_TR):
-                self.layout_V1.Insert(0, btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
-            
-            else:
-                self.layout_V1.Add(btn_font, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
-            
-            btn_font.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
-    
-    
-    ## TODO: Doxygen
-    def OnToggleTextSize(self, event=None):
-        # Save insertion point
-        insertion = self.textarea.GetInsertionPoint()
-        
-        sizes = {
-            7: 8,
-            8: 10,
-            10: 11,
-            11: 7,
-        }
-        
-        font = self.textarea.GetFont()
-        new_size = sizes[font.GetPointSize()]
-        font.SetPointSize(new_size)
-        
-        self.textarea.SetFont(font)
-        self.textarea.SetInsertionPoint(insertion)
-        self.textarea.SetFocus()
+        if monospace:
+            self.SetMonospaced(button)
