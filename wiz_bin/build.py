@@ -24,6 +24,7 @@ from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.strings        import RemoveEmptyLines
@@ -31,8 +32,8 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from input.toggle           import CheckBoxESS
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
@@ -53,7 +54,7 @@ from ui.wizard              import WizardPage
 ## Build page
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.BUILD)
+        WizardPage.__init__(self, parent, pgid.BUILD)
         
         # Bypass build prep check
         self.prebuild_check = False
@@ -235,7 +236,7 @@ class Panel(WizardPage):
                     Logger.Debug(__name__, log_msg)
                     
                     # Retrieve control page
-                    pg_control = wizard.GetPage(ident.CONTROL)
+                    pg_control = wizard.GetPage(pgid.CONTROL)
                     if not pg_control:
                         build_progress.Destroy()
                         
@@ -553,9 +554,9 @@ class Panel(WizardPage):
         
         wizard = self.GetWizard()
         
-        pg_control = wizard.GetPage(ident.CONTROL)
-        pg_files = wizard.GetPage(ident.FILES)
-        pg_launcher = wizard.GetPage(ident.LAUNCHERS)
+        pg_control = wizard.GetPage(pgid.CONTROL)
+        pg_files = wizard.GetPage(pgid.FILES)
+        pg_launcher = wizard.GetPage(pgid.LAUNCHERS)
         
         required_fields = {
             GT(u'Control'): pg_control.GetRequiredFields(),
@@ -591,7 +592,7 @@ class Panel(WizardPage):
         if pg_files.file_list.MissingFiles():
             ShowErrorDialog(GT(u'Files are missing in file list'), warn=True, title=GT(u'Warning'))
             
-            wizard.ShowPage(ident.FILES)
+            wizard.ShowPage(pgid.FILES)
             
             return
         
@@ -822,13 +823,13 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def SetSummary(self, event=None):
-        pg_scripts = GetPage(ident.SCRIPTS)
+        pg_scripts = GetPage(pgid.SCRIPTS)
         
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
             # Get the file count
-            files_total = GetPage(ident.FILES).GetFileCount()
+            files_total = GetPage(pgid.FILES).GetFileCount()
             f = GT(u'File Count')
             file_count = u'{}: {}'.format(f, files_total)
             

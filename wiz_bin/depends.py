@@ -12,10 +12,11 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from input.list             import ListCtrlPanelESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonAppend
@@ -33,7 +34,7 @@ from ui.wizard              import WizardPage
 ## Page defining dependencies
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.DEPENDS)
+        WizardPage.__init__(self, parent, pgid.DEPENDS)
         
         # Bypass checking this page for build
         self.prebuild_check = False
@@ -201,7 +202,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def InitPage(self):
-        control_page = GetPage(ident.CONTROL)
+        control_page = GetPage(pgid.CONTROL)
         self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
         self.btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
         self.btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)

@@ -14,6 +14,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
 from globals.ident          import manid
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
@@ -42,7 +43,7 @@ from ui.wizard              import WizardPage
 class Panel(WizardPage):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
-        WizardPage.__init__(self, parent, ident.MAN)
+        WizardPage.__init__(self, parent, pgid.MAN)
         
         ## Override default label
         self.label = GT(u'Manual Pages')

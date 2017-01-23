@@ -15,12 +15,13 @@ from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetMainWindow
+from globals.wizardhelper   import GetPage
 from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
@@ -40,7 +41,7 @@ from ui.wizard              import WizardPage
 ## This panel displays the field input of the control file
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.CONTROL)
+        WizardPage.__init__(self, parent, pgid.CONTROL)
         
         # Bypass checking this page for build
         # This is mandatory & done manually
@@ -313,7 +314,7 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     ## FIXME: Deprecated???
     def GetCtrlInfo(self):
-        pg_depends = GetPage(ident.DEPENDS)
+        pg_depends = GetPage(pgid.DEPENDS)
         
         ctrl_list = []
         synopsis = None
@@ -462,7 +463,7 @@ class Panel(WizardPage):
         
         file_text = ReadFile(file_path)
         
-        page_depends = GetPage(ident.DEPENDS)
+        page_depends = GetPage(pgid.DEPENDS)
         
         # Reset fields to default before opening
         self.Reset()
