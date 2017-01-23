@@ -37,6 +37,9 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.DEPENDS)
         
+        ## Override default label
+        self.label = GT(u'Dependencies and Conflicts')
+        
         # Bypass checking this page for build
         self.prebuild_check = False
         
