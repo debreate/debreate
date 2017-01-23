@@ -29,19 +29,21 @@ from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
+from ui.wizard              import WizardPage
 
 
 ## Page defining dependencies
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.DEPENDS, name=GT(u'Dependencies and Conflicts'))
+        WizardPage.__init__(self, parent, pgid.DEPENDS)
         
-        self.SetScrollbars(20, 20, 0, 0)
+        ## Override default label
+        self.label = GT(u'Dependencies and Conflicts')
         
         # Buttons to open, save, & preview control file
-        btn_open = ButtonBrowse64(self)
-        btn_save = ButtonSave64(self)
-        btn_preview = ButtonPreview64(self)
+        self.btn_open = ButtonBrowse64(self)
+        self.btn_save = ButtonSave64(self)
+        self.btn_preview = ButtonPreview64(self)
         
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
@@ -103,11 +105,6 @@ class Panel(wx.ScrolledWindow):
         
         # *** Event Handling *** #
         
-        control_page = GetPage(pgid.CONTROL)
-        btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
-        btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
-        btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
-        
         wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
         wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
         
@@ -129,9 +126,9 @@ class Panel(wx.ScrolledWindow):
         # Row 1
         lyt_top.Add(txt_package, (1, 0), flag=LEFT_BOTTOM)
         lyt_top.Add(txt_version, (1, 2), flag=LEFT_BOTTOM)
-        lyt_top.Add(btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
-        lyt_top.Add(btn_save, (0, 4), (4, 1))
-        lyt_top.Add(btn_preview, (0, 5), (4, 1))
+        lyt_top.Add(self.btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
+        lyt_top.Add(self.btn_save, (0, 4), (4, 1))
+        lyt_top.Add(self.btn_preview, (0, 5), (4, 1))
         
         # Row 2
         lyt_top.Add(self.ti_package, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
@@ -194,6 +191,16 @@ class Panel(wx.ScrolledWindow):
     
     
     ## TODO: Doxygen
+    def InitPage(self):
+        control_page = GetPage(pgid.CONTROL)
+        self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
+        self.btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
+        self.btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
+        
+        return True
+    
+    
+    ## Resets all fields on page to default values
     def Reset(self):
         for C in self.categories:
             if C.GetName() == self.default_category:

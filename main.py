@@ -53,15 +53,15 @@ from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
 from ui.wizard              import Wizard
-from wiz_bin.build          import Panel as PanelBuild
-from wiz_bin.changelog      import Panel as PanelChangelog
-from wiz_bin.control        import Panel as PanelControl
-from wiz_bin.copyright      import Panel as PanelCopyright
-from wiz_bin.depends        import Panel as PanelDepends
-from wiz_bin.files          import Panel as PanelFiles
-from wiz_bin.greeting       import Panel as PanelInfo
-from wiz_bin.menu           import Panel as PanelMenu
-from wiz_bin.scripts        import Panel as PanelScripts
+from wiz_bin.build          import Panel as PageBuild
+from wiz_bin.changelog      import Panel as PageChangelog
+from wiz_bin.control        import Panel as PageControl
+from wiz_bin.copyright      import Panel as PageCopyright
+from wiz_bin.depends        import Panel as PageDepends
+from wiz_bin.files          import Panel as PageFiles
+from wiz_bin.greeting       import Panel as PageGreeting
+from wiz_bin.menu           import Panel as PageMenu
+from wiz_bin.scripts        import Panel as PageScripts
 
 
 default_title = GT(u'Debreate - Debian Package Builder')
@@ -120,7 +120,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_file.AppendItem(mitm_quit)
         
         # *** Page Menu *** #
-        ## This menu is filled from dbr.wizard.Wizard
+        ## This menu is filled from ui.wizard.Wizard.SetPages
         self.menu_page = wx.Menu()
         
         # ----- Options Menu
@@ -189,7 +189,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
             # Unofficial links
             None,
-            # FIXME: Use wx.NewId()
             (refid.DEBSRC, GT(u'Building debs from Source'),
                     u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
             (refid.MAN, GT(u'Writing manual pages'),
@@ -235,17 +234,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
-        self.wizard = Wizard(self)
-        
-        self.page_info = PanelInfo(self.wizard)
-        self.page_control = PanelControl(self.wizard)
-        self.page_depends = PanelDepends(self.wizard)
-        self.page_files = PanelFiles(self.wizard)
-        self.page_scripts = PanelScripts(self.wizard)
-        self.page_clog = PanelChangelog(self.wizard)
-        self.page_cpright = PanelCopyright(self.wizard)
-        self.page_menu = PanelMenu(self.wizard)
-        self.page_build = PanelBuild(self.wizard)
+        self.Wizard = Wizard(self)
+        '''
+        self.page_info = PageInfo(self.Wizard)
+        self.page_control = PageControl(self.Wizard)
+        self.page_depends = PageDepends(self.Wizard)
+        self.page_files = PageFiles(self.Wizard)
+        self.page_scripts = PageScripts(self.Wizard)
+        self.page_clog = PageChangelog(self.Wizard)
+        self.page_cpright = PageCopyright(self.Wizard)
+        self.page_menu = PageMenu(self.Wizard)
+        self.page_build = PageBuild(self.Wizard)
         
         self.all_pages = (
             self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -257,7 +256,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.page_clog, self.page_cpright, self.page_menu, self.page_build
             )
         
-        self.wizard.SetPages(bin_pages)
+        self.Wizard.SetPages(bin_pages)
+        '''
         
         # *** Current Project Status *** #
         
@@ -265,10 +265,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Event Handling *** #
         
-        wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
-        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
-        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProject)
+        wx.EVT_MENU(self, wx.ID_NEW, self.OnProjectNew)
+        wx.EVT_MENU(self, wx.ID_OPEN, self.OnProjectOpen)
+        wx.EVT_MENU(self, wx.ID_SAVE, self.OnProjectSave)
+        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnProjectSave)
         wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         
@@ -279,18 +279,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
-        EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnWizardBtnPage)
+        self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
         
+        '''
         for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
             wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
+        '''
         
-        wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
+        # Custom close event shows a dialog box to confirm quit
+        wx.EVT_CLOSE(self, self.OnQuit)
         
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(self.wizard, 1, wx.EXPAND)
+        lyt_main.Add(self.Wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
@@ -305,9 +308,24 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Retrieves the Wizard instance
     #  
     #  \return
-    #        dbr.wizard.Wizard
+    #        ui.wizard.Wizard
     def GetWizard(self):
-        return self.wizard
+        return self.Wizard
+    
+    
+    ## Sets the pages in the ui.wizard.Wizard instance
+    def InitWizard(self):
+        PageGreeting(self.Wizard)
+        PageControl(self.Wizard)
+        PageDepends(self.Wizard)
+        PageFiles(self.Wizard)
+        PageScripts(self.Wizard)
+        PageChangelog(self.Wizard)
+        PageCopyright(self.Wizard)
+        PageMenu(self.Wizard)
+        PageBuild(self.Wizard)
+        
+        self.Wizard.InitPages()
     
     
     ## TODO: Doxygen
@@ -454,16 +472,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         else:
             event_id = event.GetId()
         
-        self.wizard.ShowPage(event_id)
+        self.Wizard.ShowPage(event_id)
     
     
     ## TODO: Doxygen
-    def OnNewProject(self, event=None):
+    def OnProjectNew(self, event=None):
         self.ResetPages()
     
     
     ## TODO: Doxygen
-    def OnOpenProject(self, event=None):
+    def OnProjectOpen(self, event=None):
         projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
         d = GT(u'Debreate project files')
         
@@ -486,37 +504,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
-    def OnQuickBuild(self, event=None):
-        QB = QuickBuild(self)
-        QB.ShowModal()
-        QB.Destroy()
-    
-    
-    ## Shows a dialog to confirm quit and write window settings to config file
-    def OnQuit(self, event=None):
-        if ConfirmationDialog(self, GT(u'Quit?'),
-                text=GT(u'You will lose any unsaved information')).ShowModal() in (wx.ID_OK, wx.OK):
-            
-            maximized = self.IsMaximized()
-            WriteConfig(u'maximize', maximized)
-            
-            if maximized:
-                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
-                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
-                WriteConfig(u'center', True)
-            
-            else:
-                WriteConfig(u'position', self.GetPositionTuple())
-                WriteConfig(u'size', self.GetSizeTuple())
-                WriteConfig(u'center', False)
-            
-            WriteConfig(u'workingdir', os.getcwd())
-            
-            self.Destroy()
-    
-    
-    ## TODO: Doxygen
-    def OnSaveProject(self, event=None):
+    def OnProjectSave(self, event=None):
         event_id = event.GetId()
         
         def SaveIt(path):
@@ -579,6 +567,36 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             OnSaveAs()
     
     
+    ## TODO: Doxygen
+    def OnQuickBuild(self, event=None):
+        QB = QuickBuild(self)
+        QB.ShowModal()
+        QB.Destroy()
+    
+    
+    ## Shows a dialog to confirm quit and write window settings to config file
+    def OnQuit(self, event=None):
+        if ConfirmationDialog(self, GT(u'Quit?'),
+                text=GT(u'You will lose any unsaved information')).ShowModal() in (wx.ID_OK, wx.OK):
+            
+            maximized = self.IsMaximized()
+            WriteConfig(u'maximize', maximized)
+            
+            if maximized:
+                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
+                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+                WriteConfig(u'center', True)
+            
+            else:
+                WriteConfig(u'position', self.GetPositionTuple())
+                WriteConfig(u'size', self.GetSizeTuple())
+                WriteConfig(u'center', False)
+            
+            WriteConfig(u'workingdir', os.getcwd())
+            
+            self.Destroy()
+    
+    
     ## Shows or hides tooltips
     def OnToggleToolTips(self, event=None):
         enabled = self.opt_tooltips.IsChecked()
@@ -594,7 +612,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Updates the page menu to reflect current page
     def OnWizardBtnPage(self, event=None):
-        ID = self.wizard.GetCurrentPageId()
+        ID = self.Wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
         
         if not self.menu_page.IsChecked(ID):

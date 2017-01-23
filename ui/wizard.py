@@ -10,20 +10,27 @@ import wx
 
 from dbr.event              import ChangePageEvent
 from dbr.language           import GT
+from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import page_ids
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetMainWindow
+from startup.tests          import GetTestList
+from ui.button              import ButtonHelp
 from ui.button              import ButtonNext
 from ui.button              import ButtonPrev
 from ui.layout              import BoxSizer
+from ui.panel               import ScrolledPanel
 
 
 ## Wizard class for Debreate
 class Wizard(wx.Panel):
     def __init__(self, parent, page_list=None):
         wx.Panel.__init__(self, parent, wx.ID_ANY, page_list)
+        
+        testing = u'alpha' in GetTestList()
         
         # List of pages available in the wizard
         self.pages = []
@@ -33,6 +40,11 @@ class Wizard(wx.Panel):
         # IDs for first & last pages
         self.ID_FIRST = None
         self.ID_LAST = None
+        
+        if testing:
+            # Help button
+            btn_help = ButtonHelp(self)
+            btn_help.SetToolTipString(GT(u'Page help'))
         
         # A Header for the wizard
         pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
@@ -54,11 +66,14 @@ class Wizard(wx.Panel):
         self.btn_next.SetToolTip(TT_wiz_next)
         
         # These widgets are put into a list so that they are not automatically hidden
-        self.permanent_children = (
+        self.permanent_children = [
             pnl_title,
             self.btn_prev,
             self.btn_next,
-            )
+            ]
+        
+        if testing:
+            self.permanent_children.insert(0, btn_help)
         
         # *** Event Handling *** #
         
@@ -72,10 +87,13 @@ class Wizard(wx.Panel):
         lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
         pnl_title.SetSizer(lyt_title)
-        pnl_title.Layout()
         
         # Button sizer includes header
         lyt_buttons = BoxSizer(wx.HORIZONTAL)
+        
+        if testing:
+            lyt_buttons.Add(btn_help, 0, wx.LEFT, 5)
+        
         lyt_buttons.AddSpacer(5)
         lyt_buttons.Add(pnl_title, 1, wx.EXPAND|wx.RIGHT, 5)
         lyt_buttons.Add(self.btn_prev)
@@ -197,6 +215,17 @@ class Wizard(wx.Panel):
         return tuple(page_ids)
     
     
+    ## Uses children WizardPage instances to set pages
+    def InitPages(self):
+        pages = []
+        
+        for C in self.GetChildren():
+            if isinstance(C, WizardPage):
+                pages.append(C)
+        
+        return self.SetPages(pages)
+    
+    
     ## TODO: Doxygen
     def SetPages(self, pages):
         self.ID_FIRST = pages[0].GetId()
@@ -217,15 +246,24 @@ class Wizard(wx.Panel):
             # FIXME: Should not raise error here???
             raise TypeError(u'Argument 2 of Wizard.SetPages() must be List or Tuple')
         
-        for page in pages:
-            self.pages.append(page)
-            self.pages_ids[page.GetId()] = page.GetName().upper()
-            self.GetSizer().Insert(1, page, 1, wx.EXPAND)
+        for PAGE in pages:
+            self.pages.append(PAGE)
+            self.pages_ids[PAGE.GetId()] = PAGE.GetName().upper()
+            self.GetSizer().Insert(1, PAGE, 1, wx.EXPAND)
+            
+            pg_id = PAGE.GetId()
             
             # Add pages to main menu
             main_window.menu_page.AppendItem(
-                wx.MenuItem(main_window.menu_page, page.GetId(), page.GetName(),
+                wx.MenuItem(main_window.menu_page, pg_id, PAGE.GetLabel(),
                 kind=wx.ITEM_RADIO))
+            
+            # Bind menu event to ID
+            wx.EVT_MENU(main_window, pg_id, main_window.OnMenuChangePage)
+        
+        # Initailize functions that can only be called after all pages are constructed
+        for PAGE in pages:
+            PAGE.InitPage()
         
         self.ShowPage(self.ID_FIRST)
         
@@ -246,7 +284,7 @@ class Wizard(wx.Panel):
             
             else:
                 p.Show()
-                self.txt_title.SetLabel(p.GetName())
+                self.txt_title.SetLabel(p.GetLabel())
         
         if page_id == self.ID_FIRST:
             self.btn_prev.Enable(False)
@@ -263,3 +301,29 @@ class Wizard(wx.Panel):
         self.Layout()
         
         wx.PostEvent(GetMainWindow(), ChangePageEvent(0))
+
+
+## Parent class for wizard pages
+class WizardPage(ScrolledPanel):
+    def __init__(self, parent, page_id):
+        ScrolledPanel.__init__(self, parent, page_id)
+        
+        self.SetName(page_ids[self.GetId()])
+        
+        ## Label to show in title & menu
+        self.label = None
+    
+    
+    ## TODO: Doxygen
+    def GetLabel(self):
+        if self.label == None:
+            return self.GetName()
+        
+        return self.label
+    
+    
+    ## This method should contain anything that needs to be initialized only after all pages are constructed
+    def InitPage(self):
+        Logger.Debug(__name__, GT(u'Page {} does not override inherited method InitPage').format(self.GetName()))
+        
+        return False

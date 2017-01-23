@@ -31,6 +31,7 @@ from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
+from ui.wizard              import WizardPage
 
 
 ID_INST_PRE = wx.NewId()
@@ -47,11 +48,9 @@ id_definitions = {
 
 
 ## Scripts page
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.SCRIPTS, name=GT(u'Scripts'))
-        
-        self.SetScrollbars(20, 20, 0, 0)
+        WizardPage.__init__(self, parent, pgid.SCRIPTS)
         
         # Check boxes for choosing scripts
         chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))

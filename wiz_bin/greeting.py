@@ -12,14 +12,13 @@ from dbr.language   import GT
 from globals.ident  import pgid
 from ui.hyperlink   import Hyperlink
 from ui.layout      import BoxSizer
+from ui.wizard      import WizardPage
 
 
 ## TODO: Doxygen
-class Panel(wx.ScrolledWindow):
-    def __init__(self, parent, name=GT(u'Information')):
-        wx.ScrolledWindow.__init__(self, parent, pgid.GREETING, name=GT(u'Information'))
-        
-        self.SetScrollbars(0, 20, 0, 0)
+class Panel(WizardPage):
+    def __init__(self, parent):
+        WizardPage.__init__(self, parent, pgid.GREETING)
         
         m1 = GT(u'Welcome to Debreate!')
         m2 = GT(u'Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the "Page" menu to navigate through the program. For some information on Debian packages use the reference links in the "Help" menu.')

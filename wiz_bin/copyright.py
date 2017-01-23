@@ -26,6 +26,7 @@ from input.text             import MonospaceTextArea
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from ui.wizard              import WizardPage
 
 
 # Globals
@@ -33,11 +34,9 @@ copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
 
 
 ## Copyright page
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.COPYRIGHT, name=GT(u'Copyright'))
-        
-        self.SetScrollbars(0, 20, 0, 0)
+        WizardPage.__init__(self, parent, pgid.COPYRIGHT)
         
         # FIXME: Update license templates list when template is generated
         # FIXME: Ignore symbolic links

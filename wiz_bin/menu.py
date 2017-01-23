@@ -31,14 +31,16 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.textpreview         import TextPreview
+from ui.wizard              import WizardPage
 
 
 ## Page for creating a system menu launcher
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.MENU, name=GT(u'Menu Launcher'))
+        WizardPage.__init__(self, parent, pgid.MENU) #, name=GT(u'Menu Launcher'))
         
-        self.SetScrollbars(0, 20, 0, 0)
+        ## Override default label
+        self.label = GT(u'Menu Launcher')
         
         self.opts_button = []
         self.opts_input = []

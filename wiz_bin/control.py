@@ -33,14 +33,13 @@ from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.textpreview         import TextPreview
+from ui.wizard              import WizardPage
 
 
 ## This panel displays the field input of the control file
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.CONTROL, name=GT(u'Control'))
-        
-        self.SetScrollbars(0, 20, 0, 0)
+        WizardPage.__init__(self, parent, pgid.CONTROL)
         
         pnl_bg = wx.Panel(self)
         

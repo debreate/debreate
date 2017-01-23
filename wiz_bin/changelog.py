@@ -29,14 +29,13 @@ from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
+from ui.wizard              import WizardPage
 
 
 ## Changelog page
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.CHANGELOG, name=GT(u'Changelog'))
-        
-        self.SetScrollbars(0, 20, 0, 0)
+        WizardPage.__init__(self, parent, pgid.CHANGELOG)
         
         txt_package = wx.StaticText(self, label=GT(u'Package'), name=u'package')
         self.ti_package = wx.TextCtrl(self, name=txt_package.Name)

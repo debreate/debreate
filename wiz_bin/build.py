@@ -39,14 +39,13 @@ from ui.output              import OutputLog
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
+from ui.wizard              import WizardPage
 
 
 ## Build page
-class Panel(wx.ScrolledWindow):
+class Panel(WizardPage):
     def __init__(self, parent):
-        wx.ScrolledWindow.__init__(self, parent, pgid.BUILD, name=GT(u'Build'))
-        
-        self.SetScrollbars(0, 20, 0, 0)
+        WizardPage.__init__(self, parent, pgid.BUILD)
         
         # ----- Extra Options
         
