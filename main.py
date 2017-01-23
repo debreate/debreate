@@ -309,32 +309,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.Wizard = Wizard(self)
         
-        self.page_info = PageGreeting(self.Wizard)
-        self.page_info.SetInfo()
-        self.page_control = PageControl(self.Wizard)
-        self.page_depends = PageDepends(self.Wizard)
-        self.page_files = PageFiles(self.Wizard)
-        
-        # TODO: finish manpage section
-        if testing:
-            self.page_man = PageMan(self.Wizard)
-        
-        self.page_scripts = PageScripts(self.Wizard)
-        self.page_clog = PageChangelog(self.Wizard)
-        self.page_cpright = PageCopyright(self.Wizard)
-        self.page_launchers = PageLaunchers(self.Wizard)
-        self.page_build = PageBuild(self.Wizard)
-        
-        bin_pages = [
-            self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
-            self.page_clog, self.page_cpright, self.page_launchers, self.page_build
-            ]
-        
-        if testing:
-            bin_pages.insert(4, self.page_man)
-        
-        self.Wizard.SetPages(bin_pages)
-        
         # Menu for debugging & running tests
         if DebugEnabled():
             self.menu_debug = wx.Menu()
@@ -387,9 +361,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
             wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
         
-        # Action menu events
-        wx.EVT_MENU(self, ident.BUILD, self.page_build.OnBuild)
-        
         wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
         
         # *** Layout *** #
@@ -435,6 +406,30 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #        ui.wizard.Wizard
     def GetWizard(self):
         return self.Wizard
+    
+    
+    ## Sets the pages in the ui.wizard.Wizard instance
+    def InitWizard(self):
+        pg_info = PageGreeting(self.Wizard)
+        pg_info.SetInfo()
+        PageControl(self.Wizard)
+        PageDepends(self.Wizard)
+        PageFiles(self.Wizard)
+        
+        # TODO: finish manpage section
+        if u'alpha' in GetTestList() or DebugEnabled():
+            PageMan(self.Wizard)
+        
+        PageScripts(self.Wizard)
+        PageChangelog(self.Wizard)
+        PageCopyright(self.Wizard)
+        PageLaunchers(self.Wizard)
+        pg_build = PageBuild(self.Wizard)
+        
+        # Action menu events
+        wx.EVT_MENU(self, ident.BUILD, pg_build.OnBuild)
+        
+        self.Wizard.InitPages()
     
     
     ## Opens a dialog box with information about the program
