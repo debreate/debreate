@@ -14,6 +14,7 @@ from dbr.colors     import COLOR_warn
 from dbr.language   import GT
 from dbr.log        import Logger
 from globals.paths  import ConcatPaths
+from ui.layout      import BoxSizer
 from ui.panel       import BorderedPanel
 
 
@@ -122,7 +123,7 @@ class ListCtrlPanel(BorderedPanel):
         # Match panel background color to list control
         self.SetBackgroundColour(self.listarea.GetBackgroundColour())
         
-        self.layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        self.layout_V1 = BoxSizer(wx.VERTICAL)
         self.layout_V1.Add(self.listarea, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)

@@ -17,6 +17,7 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonNext
 from ui.button              import ButtonPrev
+from ui.layout              import BoxSizer
 
 
 ## Wizard class for Debreate
@@ -78,7 +79,7 @@ class Wizard(wx.Panel):
         pnl_title.Layout()
         
         # Button sizer includes header
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.AddSpacer(5)
         lyt_buttons.Add(pnl_title, 1, wx.EXPAND|wx.RIGHT, 5)
         lyt_buttons.Add(self.btn_prev)
@@ -86,7 +87,7 @@ class Wizard(wx.Panel):
         lyt_buttons.Add(self.btn_next)
         lyt_buttons.AddSpacer(5)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_buttons, 0, wx.EXPAND)
         
         self.SetSizer(lyt_main)

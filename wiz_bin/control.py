@@ -29,6 +29,7 @@ from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.textpreview         import TextPreview
 
@@ -178,7 +179,7 @@ class Panel(wx.ScrolledWindow):
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT
         
         # Buttons
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_open, 0)
         lyt_buttons.Add(btn_save, 0)
         lyt_buttons.Add(btn_preview, 0)
@@ -250,7 +251,7 @@ class Panel(wx.ScrolledWindow):
         
         # Main background panel sizer
         # FIXME: Is background panel (pnl_bg) necessary
-        lyt_bg = wx.BoxSizer(wx.VERTICAL)
+        lyt_bg = BoxSizer(wx.VERTICAL)
         lyt_bg.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.BOTTOM, 5)
         lyt_bg.Add(wx.StaticText(pnl_bg, label=GT(u'Required')), 0)
         lyt_bg.Add(pnl_require, 0, wx.EXPAND)
@@ -264,7 +265,7 @@ class Panel(wx.ScrolledWindow):
         pnl_bg.Layout()
         
         # Page's main sizer
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
         lyt_main.Add(pnl_bg, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         

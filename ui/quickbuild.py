@@ -27,6 +27,7 @@ from ui.dialog              import OverwriteDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
+from ui.layout              import BoxSizer
 
 
 GAUGE_MAX = 100
@@ -70,30 +71,30 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         
         # *** Layout *** #
         
-        Lstage_V1 = wx.BoxSizer(wx.VERTICAL)
+        Lstage_V1 = BoxSizer(wx.VERTICAL)
         Lstage_V1.Add(label_stage, 0, wx.ALIGN_LEFT)
         Lstage_V1.Add(self.input_stage, 1, wx.EXPAND)
         
-        Lstage_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        Lstage_H1 = BoxSizer(wx.HORIZONTAL)
         Lstage_H1.Add(Lstage_V1, 3, wx.ALIGN_TOP)
         Lstage_H1.Add(btn_browse_stage, 0, wx.ALIGN_TOP|wx.TOP, 7)
         
-        Ltarget_V1 = wx.BoxSizer(wx.VERTICAL)
+        Ltarget_V1 = BoxSizer(wx.VERTICAL)
         Ltarget_V1.Add(label_target, 0, wx.ALIGN_LEFT)
         Ltarget_V1.Add(self.input_target, 1, wx.EXPAND)
         
-        Ltarget_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        Ltarget_H1 = BoxSizer(wx.HORIZONTAL)
         Ltarget_H1.Add(Ltarget_V1, 3, wx.ALIGN_TOP)
         Ltarget_H1.Add(btn_browse_target, 0, wx.ALIGN_TOP|wx.TOP, 7)
         
-        Lbtn_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        Lbtn_H1 = BoxSizer(wx.HORIZONTAL)
         Lbtn_H1.Add(btn_build, 1, wx.ALIGN_BOTTOM|wx.RIGHT, 2)
         Lbtn_H1.Add(btn_cancel, 1, wx.ALIGN_BOTTOM|wx.LEFT, 2)
         
-        Lguage_H1 = wx.BoxSizer(wx.HORIZONTAL)
+        Lguage_H1 = BoxSizer(wx.HORIZONTAL)
         Lguage_H1.Add(self.gauge, 1, wx.LEFT|wx.RIGHT, 5)
         
-        Lmain_V = wx.BoxSizer(wx.VERTICAL)
+        Lmain_V = BoxSizer(wx.VERTICAL)
         Lmain_V.AddSpacer(1, wx.EXPAND)
         Lmain_V.Add(Lstage_H1, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         Lmain_V.Add(Ltarget_H1, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)

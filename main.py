@@ -47,6 +47,7 @@ from ui.dialog              import ConfirmationDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
 from ui.distcache           import DistNamesCacheDialog
+from ui.layout              import BoxSizer
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
@@ -287,7 +288,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Layout *** #
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(self.wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)

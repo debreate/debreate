@@ -33,6 +33,7 @@ from globals.wizardhelper   import GetTopWindow
 from ui.button              import ButtonBuild64
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
+from ui.layout              import BoxSizer
 from ui.output              import OutputLog
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
@@ -95,7 +96,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
-        lyt_options = wx.BoxSizer(wx.VERTICAL)
+        lyt_options = BoxSizer(wx.VERTICAL)
         lyt_options.AddMany((
             (self.chk_md5, 0, wx.LEFT|wx.RIGHT, 5),
             (self.chk_strip, 0, wx.LEFT|wx.RIGHT, 5),
@@ -108,10 +109,10 @@ class Panel(wx.ScrolledWindow):
         pnl_options.SetAutoLayout(True)
         pnl_options.Layout()
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_build, 1)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(wx.StaticText(self, label=GT(u'Extra Options')), 0,
                 wx.ALIGN_LEFT|wx.ALIGN_BOTTOM|wx.LEFT, 5)

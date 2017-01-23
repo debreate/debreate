@@ -29,6 +29,7 @@ from ui.dialog              import GetDirDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
@@ -131,7 +132,7 @@ class Panel(wx.ScrolledWindow):
         
         # *** Layout *** #
         
-        lyt_treeopts = wx.BoxSizer(wx.VERTICAL)
+        lyt_treeopts = BoxSizer(wx.VERTICAL)
         lyt_treeopts.AddSpacer(5)
         lyt_treeopts.Add(self.chk_individuals, 0, wx.LEFT|wx.RIGHT, 5)
         lyt_treeopts.Add(self.chk_preserve_top, 0, wx.LEFT|wx.RIGHT, 5)
@@ -139,7 +140,7 @@ class Panel(wx.ScrolledWindow):
         
         pnl_treeopts.SetSizer(lyt_treeopts)
         
-        lyt_left = wx.BoxSizer(wx.VERTICAL)
+        lyt_left = BoxSizer(wx.VERTICAL)
         lyt_left.AddSpacer(10)
         lyt_left.Add(wx.StaticText(self, label=GT(u'Directory options')), 0, wx.ALIGN_BOTTOM)
         lyt_left.Add(pnl_treeopts, 0, wx.EXPAND|wx.ALIGN_LEFT|wx.BOTTOM, 5)
@@ -155,10 +156,10 @@ class Panel(wx.ScrolledWindow):
         pnl_target.Layout()
         
         # Put text input in its own sizer to force expand
-        lyt_input = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_input = BoxSizer(wx.HORIZONTAL)
         lyt_input.Add(self.ti_target, 1, wx.ALIGN_CENTER_VERTICAL)
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_add, 0)
         lyt_buttons.Add(btn_remove, 0)
         lyt_buttons.Add(btn_clear, 0)
@@ -166,7 +167,7 @@ class Panel(wx.ScrolledWindow):
         lyt_buttons.Add(self.btn_browse, 0)
         lyt_buttons.Add(btn_refresh, 0)
         
-        lyt_right = wx.BoxSizer(wx.VERTICAL)
+        lyt_right = BoxSizer(wx.VERTICAL)
         lyt_right.AddSpacer(10)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Target')))
         lyt_right.Add(pnl_target, 0, wx.TOP, 5)

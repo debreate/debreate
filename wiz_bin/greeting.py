@@ -11,6 +11,7 @@ import wx
 from dbr.language   import GT
 from globals        import ident
 from ui.hyperlink   import Hyperlink
+from ui.layout      import BoxSizer
 
 
 ## TODO: Doxygen
@@ -39,7 +40,7 @@ class Panel(wx.ScrolledWindow):
         lyt_info = wx.GridSizer()
         lyt_info.Add(txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_info, 4, wx.ALIGN_CENTER|wx.ALL, 10)
         lyt_main.Add(lnk_video, 2, wx.ALIGN_CENTER)
         

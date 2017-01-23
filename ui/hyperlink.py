@@ -8,6 +8,8 @@
 
 import webbrowser, wx
 
+from ui.layout import BoxSizer
+
 
 ## Control for opening a webpage with a mouse click
 #  
@@ -41,7 +43,7 @@ class Hyperlink(wx.Panel):
         
         self.text.SetForegroundColour(wx.Colour(0, 0, 255))
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        layout_V1 = BoxSizer(wx.VERTICAL)
         layout_V1.AddSpacer(1, wx.EXPAND)
         layout_V1.Add(self.text_bg, 0, wx.ALIGN_CENTER)
         layout_V1.AddSpacer(1, wx.EXPAND)

@@ -26,6 +26,7 @@ from input.text             import TextAreaPanel
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 
 
@@ -135,12 +136,12 @@ class Panel(wx.ScrolledWindow):
             (self.ti_email, 1, wx.EXPAND)
             ))
         
-        lyt_target_custom = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_target_custom = BoxSizer(wx.HORIZONTAL)
         
         lyt_target_custom.Add(self.rb_target_custom, 0, wx.ALIGN_CENTER_VERTICAL)
         lyt_target_custom.Add(self.ti_target, 1)
         
-        lyt_target = wx.BoxSizer(wx.VERTICAL)
+        lyt_target = BoxSizer(wx.VERTICAL)
         
         lyt_target.AddSpacer(5)
         lyt_target.Add(self.rb_target_standard, 0, wx.RIGHT, 5)
@@ -167,7 +168,7 @@ class Panel(wx.ScrolledWindow):
         lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
         lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_info, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.AddSpacer(10)
