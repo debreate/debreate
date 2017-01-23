@@ -457,6 +457,27 @@ class ConfirmationDialog(DetailedMessageDialog):
                 text=text, style=style, buttons=buttons)
 
 
+## Dialog for the main window when a modified project is being closed
+class ConfirmSaveDialog(DetailedMessageDialog):
+    def __init__(self, parent, title=GT(u'Warning'), text=wx.EmptyString,
+            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
+            buttons=(wx.ID_OK, wx.ID_CANCEL, wx.ID_SAVE,)):
+        
+        DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
+                text=text, style=style, buttons=buttons)
+        
+        btn_save = self.GetButton(wx.ID_SAVE)
+        
+        # *** Event Handling *** #
+        
+        if btn_save:
+            btn_save.Bind(wx.EVT_BUTTON, self.OnButtonSave)
+    
+    
+    def OnButtonSave(self, event=None):
+        self.EndModal(wx.ID_SAVE)
+
+
 ## TODO: Doxygen
 class OverwriteDialog(ConfirmationDialog):
     def __init__(self, parent, filename):
