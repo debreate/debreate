@@ -11,6 +11,7 @@ import wx
 from dbr.language   import GT
 from input.text     import MonospaceTextArea
 from ui.dialog      import BaseDialog
+from ui.layout      import BoxSizer
 
 
 ## A simple dialog for previewing text
@@ -26,7 +27,7 @@ class TextPreview(BaseDialog):
         if text:
             text_display.SetValue(text)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(text_display, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)

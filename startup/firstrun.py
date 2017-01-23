@@ -15,6 +15,7 @@ from dbr.language   import GT
 from dbr.log        import Logger
 from globals.paths  import PATH_app
 from ui.dialog      import ShowErrorDialog
+from ui.layout      import BoxSizer
 
 
 ## Shows the first run dialog
@@ -69,7 +70,7 @@ class FirstRun(wx.Dialog):
         
         rm_cmd = wx.StaticText(self, label=u'rm -f ~/.config/debreate/config')
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        layout_V1 = BoxSizer(wx.VERTICAL)
         layout_V1.Add(text1, 1)
         layout_V1.Add(text2, 1, wx.TOP, 15)
         layout_V1.Add(rm_cmd, 0, wx.TOP, 10)
@@ -90,7 +91,7 @@ class FirstRun(wx.Dialog):
         border_box.Add(layout_V1, 1, wx.ALIGN_CENTER)
         
         # Set Layout
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer = BoxSizer(wx.VERTICAL)
         sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
         

@@ -25,6 +25,7 @@ from startup.tests          import GetTestList
 from ui.button              import ButtonHelp
 from ui.button              import ButtonNext
 from ui.button              import ButtonPrev
+from ui.layout              import BoxSizer
 from ui.panel               import ScrolledPanel
 
 
@@ -96,7 +97,7 @@ class Wizard(wx.Panel):
         pnl_title.SetSizer(lyt_title)
         
         # Button sizer includes header
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         
         if testing:
             lyt_buttons.Add(btn_help, 0, wx.LEFT, 5)
@@ -108,7 +109,7 @@ class Wizard(wx.Panel):
         lyt_buttons.Add(self.btn_next)
         lyt_buttons.AddSpacer(5)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_buttons, 0, wx.EXPAND)
         
         self.SetSizer(lyt_main)

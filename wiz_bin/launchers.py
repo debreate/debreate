@@ -32,6 +32,7 @@ from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
+from ui.layout              import BoxSizer
 from ui.textpreview         import TextPreview
 from ui.wizard              import WizardPage
 
@@ -230,22 +231,22 @@ class Panel(WizardPage):
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_open, 0)
         lyt_buttons.Add(btn_save, 0)
         lyt_buttons.Add(btn_preview, 0)
         
-        lyt_cat_btn = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_cat_btn = BoxSizer(wx.HORIZONTAL)
         lyt_cat_btn.Add(btn_catadd, 0)
         lyt_cat_btn.Add(btn_catdel, 0)
         lyt_cat_btn.Add(btn_catclr, 0)
         
-        lyt_cat_input = wx.BoxSizer(wx.VERTICAL)
+        lyt_cat_input = BoxSizer(wx.VERTICAL)
         lyt_cat_input.Add(txt_category, 0, LEFT_BOTTOM)
         lyt_cat_input.Add(self.ti_category, 0, wx.TOP|wx.BOTTOM, 5)
         lyt_cat_input.Add(lyt_cat_btn, 0)
         
-        lyt_cat_main = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_cat_main = BoxSizer(wx.HORIZONTAL)
         lyt_cat_main.Add(lyt_cat_input, 0)
         lyt_cat_main.Add(self.lst_categories, 1, wx.EXPAND|wx.LEFT, 5)
         
@@ -282,7 +283,7 @@ class Panel(WizardPage):
         lyt_grid.Add(txt_enc, (4, 2), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_enc, (4, 3), flag=CENTER_EXPAND)
         
-        lyt_border = wx.BoxSizer(wx.VERTICAL)
+        lyt_border = BoxSizer(wx.VERTICAL)
         
         lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
         lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.TOP, 5)
@@ -291,7 +292,7 @@ class Panel(WizardPage):
         lyt_border.Add(self.ti_other, 1, wx.EXPAND)
         
         # --- Page 5 Sizer --- #
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(self.chk_enable, 0, wx.LEFT, 5)

@@ -10,6 +10,8 @@ import commands, os, wx
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
+from ui.layout import BoxSizer
+
 
 # FIXME: This should use a global manpage file
 #app_man = u'{}/man/debreate.1'
@@ -52,7 +54,7 @@ class HelpDialog(wx.Dialog):
         
         help_display = RichTextCtrl(bg, style=RE_READONLY)
         
-        sizer_v1 = wx.BoxSizer(wx.VERTICAL)
+        sizer_v1 = BoxSizer(wx.VERTICAL)
         sizer_v1.Add(help_display, 1, wx.EXPAND)
         
         bg.SetSizer(sizer_v1)

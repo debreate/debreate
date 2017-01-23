@@ -10,7 +10,8 @@ import wx
 from wx.richtext import RE_MULTILINE
 from wx.richtext import RichTextCtrl
 
-from ui.button   import ButtonConfirm
+from ui.button import ButtonConfirm
+from ui.layout import BoxSizer
 
 
 ## Class to parse & display Markdown text
@@ -32,7 +33,7 @@ class MarkdownDialog(wx.Dialog):
         self.markdown = MarkdownCtrl(self)
         self.loaded_file = None
         
-        layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        layout_V1 = BoxSizer(wx.VERTICAL)
         layout_V1.Add(self.markdown, 1, wx.ALL|wx.EXPAND, 5)
         
         if style & wx.OK:

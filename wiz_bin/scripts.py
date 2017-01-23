@@ -34,6 +34,7 @@ from ui.button              import ButtonRemove
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.wizard              import WizardPage
 
@@ -122,7 +123,7 @@ class Panel(WizardPage):
         # *** Layout *** #
         
         # Organizing radio buttons
-        lyt_sel_script = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_sel_script = BoxSizer(wx.HORIZONTAL)
         lyt_sel_script.AddMany((
             (rb_preinst),
             (rb_postinst),
@@ -131,23 +132,23 @@ class Panel(WizardPage):
             ))
         
         # Sizer for left half of scripts panel
-        lyt_left = wx.BoxSizer(wx.VERTICAL)
+        lyt_left = BoxSizer(wx.VERTICAL)
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
         
         for S, RB in self.script_objects:
             lyt_left.Add(S, 1, wx.EXPAND)
         
         # Auto-Link/Right side
-        lyt_ti_autolink = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_ti_autolink = BoxSizer(wx.HORIZONTAL)
         lyt_ti_autolink.Add(txt_autolink, 0, wx.ALIGN_CENTER)
         lyt_ti_autolink.Add(self.ti_autolink, 1, wx.ALIGN_CENTER)
         
-        lyt_btn_autolink = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_btn_autolink = BoxSizer(wx.HORIZONTAL)
         lyt_btn_autolink.Add(btn_al_import, 0)
         lyt_btn_autolink.Add(btn_al_remove, 0, wx.LEFT|wx.RIGHT, 5)
         lyt_btn_autolink.Add(btn_al_generate, 0)
         
-        lyt_autolink = wx.BoxSizer(wx.VERTICAL)
+        lyt_autolink = BoxSizer(wx.VERTICAL)
         lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
         lyt_autolink.Add(self.executables, 3, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
         lyt_autolink.Add(lyt_btn_autolink, 0, wx.ALIGN_CENTER_HORIZONTAL)
@@ -158,14 +159,14 @@ class Panel(WizardPage):
         pnl_autolink.Layout()
         
         # Sizer for right half of scripts panel
-        lyt_right = wx.BoxSizer(wx.VERTICAL)
+        lyt_right = BoxSizer(wx.VERTICAL)
         # Line up panels to look even
         lyt_right.AddSpacer(44)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
                 0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
         lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
         
-        lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_main = BoxSizer(wx.HORIZONTAL)
         lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.ALL, 5)
         lyt_main.Add(lyt_right, 0, wx.ALL, 5)
         
@@ -505,11 +506,11 @@ class DebianScript(wx.Panel):
         
         # *** Layout *** #
         
-        lyt_shell = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_shell = BoxSizer(wx.HORIZONTAL)
         lyt_shell.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
         lyt_shell.Add(self.shell, 1)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_shell, 0)
         lyt_main.Add(self.script_body, 1, wx.EXPAND|wx.TOP, 5)
         
