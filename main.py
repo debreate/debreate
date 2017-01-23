@@ -822,6 +822,26 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         webbrowser.open(url)
     
     
+    ## Closes currently open project & resets pages to default
+    def ProjectClose(self):
+        if not self.ProjectIsDirty():
+            # Everything okay to continue
+            return True
+        
+        msg_l1 = GT(u'{} is unsaved, any changes will be lost').format(self.LoadedProject)
+        confirm = ConfirmationDialog(self, GT(u'Unsaved Changes'),
+                text=GT(u'{}\n\n{}'.format(msg_l1, GT(u'Continue?'))))
+        
+        if not confirm.Confirmed():
+            return False
+        
+        self.Wizard.ResetPagesInfo()
+        self.LoadedProject = None
+        self.ProjectSetDirty(False)
+        
+        return not self.ProjectIsLoaded()
+    
+    
     ## Retrieves filename of loaded project
     def ProjectGetLoaded(self):
         return self.LoadedProject
