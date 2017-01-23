@@ -611,21 +611,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.Destroy()
     
     
-    ## TODO: Doxygen
+    ## Handles events from fields that are essential to project
     #  
     #  \return
     #    \b \e True if 'dirty' status was changed
     def OnProjectChanged(self, event=None):
         changed = False
         
-        # Do not mark dirty unless a project is loaded
-        if self.ProjectIsLoaded():
-            if not self.ProjectDirty:
-                changed = self.ProjectSetDirty()
-            
-            if DebugEnabled():
-                Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
-                print(u'  Object: {}'.format(event.GetEventObject()))
+        if not self.ProjectDirty:
+            changed = self.ProjectSetDirty()
+        
+        if DebugEnabled():
+            Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
+            print(u'  Object: {}'.format(event.GetEventObject()))
         
         return changed
     
