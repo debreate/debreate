@@ -14,6 +14,7 @@ from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetTopWindow
 from input.essential        import EssentialField
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 
 
@@ -149,6 +150,7 @@ class TextAreaMLESS(TextAreaML, EssentialField):
 class TextAreaPanel(BorderedPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.TextCtrlNameStr):
+        
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
         self.textarea = TextAreaML(self, style=style|wx.BORDER_NONE)
@@ -162,7 +164,7 @@ class TextAreaPanel(BorderedPanel):
         # Match panel color to text control
         self.SetBackgroundColour(self.textarea.GetBackgroundColour())
         
-        self.layout_V1 = wx.BoxSizer(wx.HORIZONTAL)
+        self.layout_V1 = BoxSizer(wx.HORIZONTAL)
         self.layout_V1.Add(self.textarea, 1, wx.EXPAND|wx.ALL, 2)
         
         self.SetAutoLayout(True)
