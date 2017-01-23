@@ -290,7 +290,7 @@ class Panel(WizardPage):
         # Loading the actual text
         # FIXME: Should be done in class method
         if script_object != None:
-            script_data = ReadFile(filename, split=True)
+            script_data = ReadFile(filename, split=True, convert=list)
             
             # FIXME: this should be global variable
             shebang = u'/bin/bash'
