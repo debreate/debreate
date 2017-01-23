@@ -151,8 +151,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Action Menu *** #
         menu_action = wx.Menu()
         
-        # FIXME: Use global ID???
-        mitm_build = wx.MenuItem(menu_action, wx.NewId(), GT(u'Build'),
+        mitm_build = wx.MenuItem(menu_action, ident.BUILD, GT(u'Build'),
                 GT(u'Start building .deb package'))
         
         menu_action.AppendItem(mitm_build)
@@ -390,7 +389,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
         
         # Action menu events
-        wx.EVT_MENU(self, mitm_build.GetId(), self.page_build.OnBuild)
+        wx.EVT_MENU(self, ident.BUILD, self.page_build.OnBuild)
         
         wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
         
