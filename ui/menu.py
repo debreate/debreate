@@ -9,6 +9,7 @@
 import wx
 
 from globals.wizardhelper   import GetTopWindow
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 
 
@@ -156,7 +157,7 @@ class PanelMenuBar(BorderedPanel):
         
         # *** Layout *** #
         
-        lyt_main = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_main = BoxSizer(wx.HORIZONTAL)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)

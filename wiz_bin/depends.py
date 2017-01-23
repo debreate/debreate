@@ -25,6 +25,7 @@ from ui.button              import ButtonPreview64
 from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.wizard              import WizardPage
 
@@ -146,7 +147,7 @@ class Panel(WizardPage):
         pnl_categories.SetSizer(lyt_categories)
         pnl_categories.Layout()
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         
         lyt_buttons.AddMany((
             (btn_add, 0, wx.ALIGN_CENTER_VERTICAL),
@@ -162,10 +163,10 @@ class Panel(WizardPage):
         lyt_mid.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
         lyt_mid.Add(lyt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
         
-        lyt_list = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_list = BoxSizer(wx.HORIZONTAL)
         lyt_list.Add(self.lst_deps, 1, wx.EXPAND)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         # Spacer is less on this page because text is aligned to bottom
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)

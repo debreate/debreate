@@ -37,6 +37,7 @@ from input.text             import TextAreaPanel
 from ui.button              import ButtonConfirm
 from ui.dialog              import ShowErrorDialog
 from ui.hyperlink           import Hyperlink
+from ui.layout              import BoxSizer
 
 
 # Font for the name
@@ -77,7 +78,7 @@ class AboutDialog(wx.Dialog):
         tabs.AddPage(t_license, GT(u'License'))
         
         # FIXME: Center verticall on about tab
-        self.about_layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        self.about_layout_V1 = BoxSizer(wx.VERTICAL)
         self.about_layout_V1.AddStretchSpacer()
         self.about_layout_V1.AddStretchSpacer()
         
@@ -92,7 +93,7 @@ class AboutDialog(wx.Dialog):
         self.credits.InsertColumn(1, GT(u'Job'), width=200)
         self.credits.InsertColumn(2, GT(u'Email'), width=240)
         
-        credits_sizer = wx.BoxSizer(wx.VERTICAL)
+        credits_sizer = BoxSizer(wx.VERTICAL)
         credits_sizer.Add(self.credits, 1, wx.EXPAND)
         
         t_credits.SetAutoLayout(True)
@@ -103,7 +104,7 @@ class AboutDialog(wx.Dialog):
         self.changelog = TextAreaPanel(t_changelog, style=wx.TE_READONLY)
         self.changelog.SetFont(MONOSPACED_MD)
         
-        log_sizer = wx.BoxSizer(wx.VERTICAL)
+        log_sizer = BoxSizer(wx.VERTICAL)
         log_sizer.Add(self.changelog, 1, wx.EXPAND)
         
         t_changelog.SetSizer(log_sizer)
@@ -114,7 +115,7 @@ class AboutDialog(wx.Dialog):
         self.license = TextAreaPanel(t_license, style=wx.TE_READONLY)
         self.license.SetFont(MONOSPACED_MD)
         
-        license_sizer = wx.BoxSizer(wx.VERTICAL)
+        license_sizer = BoxSizer(wx.VERTICAL)
         license_sizer.Add(self.license, 1, wx.EXPAND)
         
         t_license.SetSizer(license_sizer)
@@ -144,7 +145,7 @@ class AboutDialog(wx.Dialog):
         self.wx_info.SetFont(sys_info_font)
         
         
-        sysinfo_layout_V1 = wx.BoxSizer(wx.VERTICAL)
+        sysinfo_layout_V1 = BoxSizer(wx.VERTICAL)
         sysinfo_layout_V1.AddStretchSpacer()
         sysinfo_layout_V1.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
         sysinfo_layout_V1.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
@@ -184,7 +185,7 @@ class AboutDialog(wx.Dialog):
         # Button to close the dialog
         btn_confirm = ButtonConfirm(self)
         
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer = BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
         sizer.Add(btn_confirm, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
         
@@ -272,7 +273,7 @@ class AboutDialog(wx.Dialog):
     def SetWebsites(self, url_list):
         insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
-        link_layout = wx.BoxSizer(wx.VERTICAL)
+        link_layout = BoxSizer(wx.VERTICAL)
         for label, link in url_list:
             link_layout.Add(
                 Hyperlink(self.t_about, wx.ID_ANY, label=label, url=link),

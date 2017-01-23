@@ -24,6 +24,7 @@ from input.select           import ComboBox
 from input.text             import TextAreaPanel
 from ui.button              import AddCustomButtons
 from ui.hyperlink           import Hyperlink
+from ui.layout              import BoxSizer
 
 
 ## A base dialog class
@@ -230,7 +231,7 @@ class DetailedMessageDialog(wx.Dialog):
         
         # *** Layout *** #
         
-        self.lyt_urls = wx.BoxSizer(wx.VERTICAL)
+        self.lyt_urls = BoxSizer(wx.VERTICAL)
         
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
