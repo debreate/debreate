@@ -626,12 +626,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def OnProjectChanged(self, event=None):
         changed = False
         
-        if not self.ProjectDirty:
-            changed = self.ProjectSetDirty()
-        
-        if DebugEnabled():
-            Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
-            print(u'  Object: {}'.format(event.GetEventObject()))
+        # Do not mark dirty unless a project is loaded
+        if self.ProjectIsLoaded():
+            if not self.ProjectDirty:
+                changed = self.ProjectSetDirty()
+            
+            if DebugEnabled():
+                Logger.Debug(__name__, u'MainWindow.OnProjectChanged: {}'.format(changed), newline=True)
+                print(u'  Object: {}'.format(event.GetEventObject()))
         
         return changed
     
