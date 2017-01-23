@@ -24,10 +24,11 @@ from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetPage
 from globals.wizardhelper   import GetTopWindow
-from input.pathctrl         import PathCtrl
+from input.pathctrl         import PathCtrlESS
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
-from input.toggle           import CheckBox
+from input.text             import TextAreaPanelESS
+from input.toggle           import CheckBoxESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
@@ -87,11 +88,11 @@ class Panel(WizardPage):
         pnl_target = BorderedPanel(self)
         
         # Standard destination of changelog
-        self.chk_target = CheckBox(pnl_target, label=u'/usr/share/doc/<package>',
+        self.chk_target = CheckBoxESS(pnl_target, label=u'/usr/share/doc/<package>',
                 name=u'target default')
         self.chk_target.default = True
         
-        self.ti_target = PathCtrl(pnl_target, value=u'/', default=u'/')
+        self.ti_target = PathCtrlESS(pnl_target, value=u'/', default=u'/')
         self.ti_target.SetName(u'target custom')
         
         self.btn_add = ButtonAdd(self)
@@ -99,7 +100,7 @@ class Panel(WizardPage):
         
         self.chk_indentation = wx.CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
         
-        self.dsp_changes = TextAreaPanel(self, monospace=True, name=u'log')
+        self.dsp_changes = TextAreaPanelESS(self, monospace=True, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)
