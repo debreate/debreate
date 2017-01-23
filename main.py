@@ -935,36 +935,36 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-        depends_data = self.page_control.Set(control_data)
-        self.page_depends.Set(depends_data)
+        depends_data = self.Wizard.GetPage(ident.CONTROL).Set(control_data)
+        self.Wizard.GetPage(ident.DEPENDS).Set(depends_data)
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        self.page_files.Set(files_data)
+        self.Wizard.GetPage(ident.FILES).Set(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-        self.page_scripts.Set(scripts_data)
+        self.Wizard.GetPage(ident.SCRIPTS).Set(scripts_data)
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-        self.page_clog.Set(clog_data)
+        self.Wizard.GetPage(ident.CHANGELOG).Set(clog_data)
         
         # *** Get Copyright Data *** #
         try:
             cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
-            self.page_cpright.Set(cpright_data)
+            self.Wizard.GetPage(ident.COPYRIGHT).Set(cpright_data)
         
         except IndexError:
             pass
         
         # *** Get Menu Data *** #
         m_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-        self.page_launchers.Set(m_data)
+        self.Wizard.GetPage(ident.LAUNCHERS).Set(m_data)
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]
-        self.page_build.Set(build_data)
+        self.Wizard.GetPage(ident.BUILD).Set(build_data)
         
         # Legacy projects should return None since we can't save in that format
         return None
