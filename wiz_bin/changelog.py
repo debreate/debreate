@@ -136,7 +136,7 @@ class Panel(WizardPage):
             (txt_dist, 0, RIGHT_CENTER|wx.RIGHT, 5),
             (self.ti_dist, 1, wx.EXPAND|wx.BOTTOM, 5),
             (txt_urgency, 0, RIGHT_CENTER|wx.RIGHT, 5),
-            (self.sel_urgency, 1, wx.EXPAND|wx.RIGHT, 5),
+            (self.sel_urgency, 1, wx.RIGHT, 5),
             (txt_maintainer, 0, RIGHT_CENTER|wx.RIGHT, 5),
             (self.ti_maintainer, 1, wx.EXPAND|wx.RIGHT, 5),
             (txt_email, 0, RIGHT_CENTER|wx.RIGHT, 5),
