@@ -8,7 +8,8 @@
 
 import os, wx
 
-from input.text import TextArea
+from input.essential    import EssentialField
+from input.text         import TextArea
 
 
 PATH_DEFAULT = wx.NewId()
@@ -85,3 +86,12 @@ class PathCtrl(TextArea):
     ## TODO: Doxygen
     def SetDefaultValue(self, default):
         self.default = default
+
+
+## TODO: Doxygen
+class PathCtrlESS(PathCtrl, EssentialField):
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
+            default=wx.EmptyString, name=wx.TextCtrlNameStr):
+        
+        PathCtrl.__init__(self, parent, ctrl_id, value, ctrl_type, default, name)
+        EssentialField.__init__(self)
