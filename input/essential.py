@@ -39,15 +39,6 @@ class EssentialField:
             main_control.Bind(wx.EVT_LIST_DELETE_ITEM, self.NotifyMainWindow)
             main_control.Bind(wx.EVT_LIST_END_LABEL_EDIT, self.NotifyMainWindow)
             main_control.Bind(wx.EVT_LIST_INSERT_ITEM, self.NotifyMainWindow)
-        
-        else:
-            # TextCtrlPanel (cannot import)
-            try:
-                text_ctrl = self.GetTextCtrl()
-                text_ctrl.Bind(wx.EVT_TEXT, self.NotifyMainWindow)
-            
-            except AttributeError:
-                pass
     
     
     def NotifyMainWindow(self, event=None):
