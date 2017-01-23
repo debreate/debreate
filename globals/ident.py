@@ -56,7 +56,6 @@ THEME = wx.NewId()
 # *** Menu IDs *** #
 ACTION = wx.NewId()
 DIALOGS = wx.NewId()
-LAUNCHERS = wx.NewId()
 OPENLOGS = wx.NewId()
 OPTIONS = wx.NewId()
 PAGE = wx.NewId()
@@ -94,7 +93,7 @@ MAN = NewPageId(GT(u'Man'))
 SCRIPTS = NewPageId(GT(u'Scripts'))
 CHANGELOG = NewPageId(GT(u'Changelog'))
 COPYRIGHT = NewPageId(GT(u'Copyright'))
-MENU = NewPageId(GT(u'Menu'))
+LAUNCHERS = NewPageId(GT(u'Menu'))
 BUILD = NewPageId(GT(u'Build'))
 
 # *** Compression format IDs *** #
