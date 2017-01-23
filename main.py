@@ -460,11 +460,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.wizard.ShowPage(page_id)
     
     
-    ## Checks if current project is dirty
-    def IsDirty(self):
-        return self.ProjectDirty
-    
-    
     ## TODO: Doxygen
     def IsNewProject(self):
         title = self.GetTitle()
@@ -617,7 +612,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## TODO: Doxygen
     def OnOpenProject(self, event=None):
-        if self.IsDirty():
+        if self.ProjectIsDirty():
             Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
             
             ignore_dirty = wx.MessageDialog(self,
@@ -968,6 +963,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             print(u'  Object: {}'.format(event.GetEventObject()))
         
         return changed
+    
+    
+    ## Checks if current project is dirty
+    def ProjectIsDirty(self):
+        return self.ProjectDirty
     
     
     ## Checks if a project is loaded
