@@ -470,7 +470,7 @@ class Panel(WizardPage):
                 self.chk_filename.SetValue(False)
                 self.ti_filename.SetValue(custom_filename)
         
-        menu_data = ReadFile(filename, split=True)
+        menu_data = ReadFile(filename, split=True, convert=list)
         
         if u'[Desktop Entry]' in menu_data[0]:
             menu_data.remove(menu_data[0])
