@@ -8,6 +8,7 @@
 
 import wx
 from wx.richtext import RE_MULTILINE
+from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
 from ui.button import ButtonConfirm
@@ -16,21 +17,26 @@ from ui.layout import BoxSizer
 
 ## Class to parse & display Markdown text
 class MarkdownCtrl(RichTextCtrl):
-    def __init__(self, parent, rt_id=wx.ID_ANY):
-        RichTextCtrl.__init__(self, parent, rt_id, style=RE_MULTILINE)
-        
+    def __init__(self, parent, rt_id=wx.ID_ANY, style=0):
+        RichTextCtrl.__init__(self, parent, rt_id, style=style|RE_MULTILINE)
+    
     
     def LoadFile(self, *args, **kwargs):
         return RichTextCtrl.LoadFile(self, *args, **kwargs)
 
 
-
 ## Class that displays a dialog with a MarkdownCtrl
 class MarkdownDialog(wx.Dialog):
-    def __init__(self, parent, title=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.OK):
+    def __init__(self, parent, title=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.OK,
+            readonly=False):
+        
         wx.Dialog.__init__(self, parent, wx.ID_ANY, title=title, style=style)
         
-        self.markdown = MarkdownCtrl(self)
+        md_style = 0
+        if readonly:
+            md_style = RE_READONLY
+        
+        self.markdown = MarkdownCtrl(self, style=md_style)
         self.loaded_file = None
         
         layout_V1 = BoxSizer(wx.VERTICAL)
