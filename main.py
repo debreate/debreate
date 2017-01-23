@@ -1054,8 +1054,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ShowErrorDialog(u'{}: {}'.format(GT(u'Project save failed'), target_path), parent=self)
     
     
-    ## TODO: Doxygen
+    ## Sets the 'modified' state of the project
+    #  
+    #  \param dirty
+    #    \b \e True means project is modified
     def ProjectSetDirty(self, dirty=True):
+        # Wait for all fields to update before setting state
+        wx.Yield()
+        
         changed = False
         
         if self.ProjectDirty != dirty:
