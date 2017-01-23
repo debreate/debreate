@@ -1000,14 +1000,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             )
         
         export_pages = (
-            self.page_control,
-            self.page_files,
-            self.page_scripts,
-            self.page_clog,
-            self.page_cpright,
-            self.page_launchers,
-            self.page_build,
-        )
+            ident.CONTROL,
+            ident.FILES,
+            ident.SCRIPTS,
+            ident.CHANGELOG,
+            ident.COPYRIGHT,
+            ident.LAUNCHERS,
+            ident.BUILD,
+            )
         
         self.Wizard.ExportPages(export_pages, temp_dir)
         
