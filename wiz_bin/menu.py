@@ -16,7 +16,7 @@ from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrlPanel
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
@@ -413,7 +413,7 @@ class Panel(wx.ScrolledWindow):
     #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
     #         'Others' field not being completely filled out.
     def OnLoadLauncher(self, event=None):
-        dia = wx.FileDialog(GetTopWindow(), GT(u'Open Launcher'), os.getcwd(),
+        dia = wx.FileDialog(GetMainWindow(), GT(u'Open Launcher'), os.getcwd(),
                 style=wx.FD_CHANGE_DIR)
         
         if ShowDialog(dia):
@@ -451,7 +451,7 @@ class Panel(wx.ScrolledWindow):
         # Get data to write to control file
         menu_data = self.GetLauncherInfo().encode(u'utf-8')
         
-        dia = wx.FileDialog(GetTopWindow(), GT(u'Save Launcher'), os.getcwd(),
+        dia = wx.FileDialog(GetMainWindow(), GT(u'Save Launcher'), os.getcwd(),
             style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
         
         if ShowDialog(dia):
@@ -559,7 +559,7 @@ class Panel(wx.ScrolledWindow):
         
         elif ID == wx.ID_CLEAR:
             if self.lst_categories.GetItemCount():
-                if ConfirmationDialog(GetTopWindow(), GT(u'Confirm'),
+                if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
                         GT(u'Clear categories?')).ShowModal() in (wx.ID_OK, wx.OK):
                     self.lst_categories.DeleteAllItems()
         
