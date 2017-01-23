@@ -16,6 +16,7 @@ from dbr.log            import Logger
 from globals.constants  import FTYPE_EXE
 from globals.constants  import file_types_defs
 from globals.paths      import ConcatPaths
+from input.essential    import EssentialField
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.panel           import ControlPanel
@@ -114,6 +115,15 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
         if selected_indexes != None:
             for index in reversed(selected_indexes):
                 self.DeleteItem(index)
+
+
+## ListCtrl that notifies main window to mark project dirty
+class ListCtrlESS(ListCtrl, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
+        ListCtrl.__init__(self, parent, win_id, pos, size, style, validator, name)
+        EssentialField.__init__(self)
 
 
 ## Hack to make list control border have rounded edges
@@ -363,6 +373,16 @@ class ListCtrlPanel(BorderedPanel, ControlPanel):
     ## TODO: Doxygen
     def SetWindowStyleFlag(self, *args, **kwargs):
         return self.MainCtrl.SetWindowStyleFlag(*args, **kwargs)
+
+
+## ListCtrlPanel that notifies main window to mark project dirty
+class ListCtrlPanelESS(ListCtrlPanel, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
+        ListCtrlPanel.__init__(self, parent, win_id, pos, size, style, validator, name)
+                #essential=True)
+        EssentialField.__init__(self)
 
 
 ## An editable list
@@ -669,3 +689,10 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
     #  TODO: Define & execute with context menu
     def ToggleExecutable(self):
         pass
+
+
+## FileList that notifies main window to mark project dirty
+class FileListESS(FileList, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
+        FileList.__init__(self, parent, win_id, name) #, essential=True)
+        EssentialField.__init__(self)
