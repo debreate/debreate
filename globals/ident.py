@@ -35,14 +35,11 @@ NEXT = wx.NewId()
 
 # *** Custom IDs *** #
 ALIEN = wx.NewId()
-APPEND = wx.NewId()
-BROWSE = wx.NewId()
 CUSTOM = wx.NewId()
 DEBUG = wx.NewId()
 DIALOGS = wx.NewId()
 DIST = wx.NewId()
 EXPAND = wx.NewId()
-IMPORT = wx.NewId()
 LOG = wx.NewId()
 MENU_TT = wx.NewId()
 MULTI = wx.NewId()
@@ -64,8 +61,14 @@ THEME = wx.NewId()
 TOOLTIPS = wx.NewId()
 UPDATE = wx.NewId()
 
-BUILD = wx.NewId()
-CHANGELOG = wx.NewId()
+
+## General IDs
+class genid:
+    APPEND = wx.NewId()
+    BROWSE = wx.NewId()
+    BUILD = wx.NewId()
+    IMPORT = wx.NewId()
+
 
 # Page IDs
 next_page_id = 1000
@@ -81,6 +84,7 @@ def NewPageId(page_name=None):
     return this_page_id
 
 
+## Page IDs
 class pgid:
     GREETING = NewPageId(GT(u'Greeting'))
     CONTROL = NewPageId(GT(u'Control'))

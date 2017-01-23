@@ -16,6 +16,7 @@ from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import genid
 from globals.ident          import page_ids
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
@@ -116,7 +117,7 @@ class Panel(WizardPage):
         for S, RB in self.script_objects:
             wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
         
-        wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExe)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
         wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
@@ -208,7 +209,7 @@ class Panel(WizardPage):
     ## Imports executables from files page for Auto-Link
     def ImportExe(self, event=None):
         event_id = event.GetId()
-        if event_id == ident.IMPORT:
+        if event_id == genid.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.lst_executables = []
