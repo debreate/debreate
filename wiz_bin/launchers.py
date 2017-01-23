@@ -43,7 +43,7 @@ from ui.wizard              import WizardPage
 ## Page for creating a system menu launcher
 class Panel(WizardPage):
     def __init__(self, parent):
-        WizardPage.__init__(self, parent, ident.MENU)
+        WizardPage.__init__(self, parent, ident.LAUNCHERS)
         
         ## Override default label
         self.label = GT(u'Menu Launcher')

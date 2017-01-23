@@ -555,7 +555,7 @@ class Panel(WizardPage):
         
         pg_control = wizard.GetPage(ident.CONTROL)
         pg_files = wizard.GetPage(ident.FILES)
-        pg_launcher = wizard.GetPage(ident.MENU)
+        pg_launcher = wizard.GetPage(ident.LAUNCHERS)
         
         required_fields = {
             GT(u'Control'): pg_control.GetRequiredFields(),
