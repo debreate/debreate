@@ -27,6 +27,7 @@ from globals.wizardhelper   import GetTopWindow
 from input.text             import MonospaceTextArea
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
+from ui.layout              import BoxSizer
 from ui.wizard              import WizardPage
 
 
@@ -84,17 +85,17 @@ class Panel(WizardPage):
         
         # Putting the generate buttons in their own sizer & making them
         # them the same width looks nicer.
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(btn_template, 1)
         lyt_buttons.Add(self.btn_template_simple, 1)
         
-        lyt_label = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_label = BoxSizer(wx.HORIZONTAL)
         lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
                 wx.ALIGN_CENTER_VERTICAL)
         lyt_label.Add(self.sel_templates, 0, wx.LEFT, 5)
         lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_label, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)

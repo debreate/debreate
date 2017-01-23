@@ -14,6 +14,7 @@ from globals.strings    import TextIsEmpty
 from ui.button          import ButtonCancel
 from ui.button          import ButtonClear
 from ui.button          import ButtonConfirm
+from ui.layout          import BoxSizer
 
 
 class CheckList(wx.Panel):
@@ -27,12 +28,12 @@ class CheckList(wx.Panel):
         self.scrolled_panel.SetBackgroundColour(self.GetBackgroundColour())
         self.scrolled_panel.SetScrollbars(20, 20, 50, 50)
         
-        self.layout_scrolled = wx.BoxSizer(wx.VERTICAL)
+        self.layout_scrolled = BoxSizer(wx.VERTICAL)
         
         self.scrolled_panel.SetSizer(self.layout_scrolled)
         self.scrolled_panel.SetAutoLayout(True)
         
-        layout_main = wx.BoxSizer(wx.VERTICAL)
+        layout_main = BoxSizer(wx.VERTICAL)
         layout_main.Add(self.scrolled_panel, 1, wx.EXPAND)
         
         self.SetSizer(layout_main)
@@ -144,7 +145,7 @@ class CheckListDialog(wx.Dialog):
         
         # *** Buttons *** #
         
-        layout_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        layout_buttons = BoxSizer(wx.HORIZONTAL)
         
         btn_clear = ButtonClear(self)
         btn_confirm = ButtonConfirm(self)
@@ -160,7 +161,7 @@ class CheckListDialog(wx.Dialog):
         
         # *** Layout *** #
         
-        layout_main = wx.BoxSizer(wx.VERTICAL)
+        layout_main = BoxSizer(wx.VERTICAL)
         
         layout_main.Add(self.check_list, 1, wx.EXPAND|wx.ALL, 5)
         layout_main.Add(layout_buttons, 0, wx.EXPAND|wx.BOTTOM, 5)
@@ -171,7 +172,7 @@ class CheckListDialog(wx.Dialog):
             
             self.input_add_custom = wx.TextCtrl(self)
             
-            layout_add_custom = wx.BoxSizer(wx.HORIZONTAL)
+            layout_add_custom = BoxSizer(wx.HORIZONTAL)
             layout_add_custom.Add(btn_add_custom, 0, wx.LEFT|wx.RIGHT, 5)
             layout_add_custom.Add(self.input_add_custom, 1, wx.RIGHT, 5)
             

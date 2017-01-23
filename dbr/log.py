@@ -21,6 +21,7 @@ from globals.fileio         import ReadFile
 from globals.paths          import PATH_local
 from globals.wizardhelper   import GetTopWindow
 from input.text             import TextAreaPanel
+from ui.layout              import BoxSizer
 
 
 RefreshLogEvent, EVT_REFRESH_LOG = NewCommandEvent()
@@ -253,7 +254,7 @@ class LogWindow(wx.Dialog):
         layout_btnF1.Add(btn_refresh, 0, wx.RIGHT, 5)
         layout_btnF1.Add(btn_hide, 0, wx.RIGHT, 5)
         
-        layout_mainV1 = wx.BoxSizer(wx.VERTICAL)
+        layout_mainV1 = BoxSizer(wx.VERTICAL)
         layout_mainV1.Add(self.log, 1, wx.ALL|wx.EXPAND, 5)
         layout_mainV1.Add(layout_btnF1, 0, wx.EXPAND|wx.BOTTOM, 5)
         

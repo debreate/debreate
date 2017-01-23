@@ -207,7 +207,7 @@ class ManSect(ManSectBase2):
         else:
             self.Input = TextArea(self.Panel)
         
-        lyt_input = wx.BoxSizer(wx.VERTICAL)
+        lyt_input = BoxSizer(wx.VERTICAL)
         lyt_input.Add(self.Input, 1, FLAGS, 5)
         #lyt_input = wx.GridBagSizer()
         #lyt_input.AddGrowableCol(0)

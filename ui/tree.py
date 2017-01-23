@@ -25,6 +25,7 @@ from globals.paths          import PATH_home
 from globals.wizardhelper   import GetTopWindow
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 
 
@@ -1175,7 +1176,7 @@ class DirectoryTreePanel(BorderedPanel):
         
         # *** Layout *** #
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(self.DirTree, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)

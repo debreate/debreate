@@ -24,6 +24,7 @@ from globals.wizardhelper   import GetField
 from ui.dialog              import BaseDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
+from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.progress            import ProgressDialog
 from ui.textpreview         import TextPreview
@@ -72,7 +73,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         
         # *** Layout *** #
         
-        lyt_types = wx.BoxSizer(wx.VERTICAL)
+        lyt_types = BoxSizer(wx.VERTICAL)
         lyt_types.AddSpacer(5)
         
         for CHK in (self.chk_unstable, self.chk_obsolete, self.chk_generic,):
@@ -84,12 +85,12 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         pnl_types.SetSizerAndFit(lyt_types)
         pnl_types.Layout()
         
-        lyt_buttons = wx.BoxSizer(wx.HORIZONTAL)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         lyt_buttons.Add(self.btn_preview, 1)
         lyt_buttons.Add(btn_update, 1)
         lyt_buttons.Add(btn_clear, 1)
         
-        lyt_main = wx.BoxSizer(wx.VERTICAL)
+        lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(txt_types, 0, wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT|wx.TOP, 5)
         lyt_main.Add(pnl_types, 0, wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(lyt_buttons, 1, wx.ALIGN_CENTER|wx.ALL, 5)
