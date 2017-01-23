@@ -18,12 +18,14 @@ from globals.constants  import file_types_defs
 from globals.paths      import ConcatPaths
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
+from ui.panel           import ControlPanel
 
 
 ## A list control with no border
 class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
         wx.ListView.__init__(self, parent, ID, pos, size, style|wx.BORDER_NONE,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
@@ -115,18 +117,19 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
 
 
 ## Hack to make list control border have rounded edges
-class ListCtrlPanel(BorderedPanel):
-    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+class ListCtrlPanel(BorderedPanel, ControlPanel):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
-        BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
-        self.listarea = ListCtrl(self, style=style, validator=validator)
+        BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
+        
+        self.MainCtrl = ListCtrl(self, style=style, validator=validator)
         
         # Match panel background color to list control
-        self.SetBackgroundColour(self.listarea.GetBackgroundColour())
+        self.SetBackgroundColour(self.MainCtrl.GetBackgroundColour())
         
         self.layout_V1 = BoxSizer(wx.VERTICAL)
-        self.layout_V1.Add(self.listarea, 1, wx.EXPAND)
+        self.layout_V1.Add(self.MainCtrl, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(self.layout_V1)
@@ -138,114 +141,114 @@ class ListCtrlPanel(BorderedPanel):
     
     ## TODO: Doxygen
     def AppendColumn(self, heading, fmt=wx.LIST_FORMAT_LEFT, width=-1):
-        self.listarea.AppendColumn(heading, fmt, width)
+        self.MainCtrl.AppendColumn(heading, fmt, width)
     
     
     ## TODO: Doxygen
     def AppendStringItem(self, items):
-        self.listarea.AppendStringItem(items)
+        self.MainCtrl.AppendStringItem(items)
     
     
     ## TODO: Doxygen
     def Arrange(self, flag=wx.LIST_ALIGN_DEFAULT):
-        self.listarea.Arrange(flag)
+        self.MainCtrl.Arrange(flag)
     
     
     ## TODO: Doxygen
     def ClearAll(self):
-        self.listarea.ClearAll()
+        self.MainCtrl.ClearAll()
     
     
     ## TODO: Doxygen
     def DeleteAllItems(self):
-        self.listarea.DeleteAllItems()
+        self.MainCtrl.DeleteAllItems()
     
     
     ## TODO: Doxygen
     def DeleteItem(self, item):
-        self.listarea.DeleteItem(item)
+        self.MainCtrl.DeleteItem(item)
     
     
     ## Disables the panel & list control
     def Disable(self, *args, **kwargs):
-        self.listarea.Disable(*args, **kwargs)
+        self.MainCtrl.Disable(*args, **kwargs)
         
         return BorderedPanel.Disable(self, *args, **kwargs)
     
     
     ## TODO: Doxygen
     def EditLabel(self, item):
-        self.listarea.EditLabel(item)
+        self.MainCtrl.EditLabel(item)
     
     
     ## Enables/Disables the panel & list control
     def Enable(self, *args, **kwargs):
-        self.listarea.Enable(*args, **kwargs)
+        self.MainCtrl.Enable(*args, **kwargs)
         
         return BorderedPanel.Enable(self, *args, **kwargs)
     
     
     ## TODO: Doxygen
     def GetColumnCount(self):
-        return self.listarea.GetColumnCount()
+        return self.MainCtrl.GetColumnCount()
     
     
     ## TODO: Doxygen
     def GetColumnWidth(self, col):
-        return self.listarea.GetColumnWidth(col)
+        return self.MainCtrl.GetColumnWidth(col)
     
     
     ## TODO: Doxygen
     def GetCountPerPage(self):
-        return self.listarea.GetCountPerPage()
+        return self.MainCtrl.GetCountPerPage()
     
     
     ## TODO: Doxygen
     def GetFirstSelected(self):
-        return self.listarea.GetFirstSelected()
+        return self.MainCtrl.GetFirstSelected()
     
     
     ## TODO: Doxygen
     def GetFocusedItem(self):
-        return self.listarea.GetFocusedItem()
+        return self.MainCtrl.GetFocusedItem()
     
     
     ## TODO: Doxygen
     def GetItem(self, row, col):
-        return self.listarea.GetItem(row, col)
+        return self.MainCtrl.GetItem(row, col)
     
     
     ## TODO: Doxygen
     def GetItemCount(self):
-        return self.listarea.GetItemCount()
+        return self.MainCtrl.GetItemCount()
     
     
     ## TODO: Doxygen
     def GetItemText(self, item, col=0):
         if wx.MAJOR_VERSION > 2:
-            return self.listarea.GetItemText(item, col)
+            return self.MainCtrl.GetItemText(item, col)
         
-        return self.listarea.GetItem(item, col).GetText()
+        return self.MainCtrl.GetItem(item, col).GetText()
     
     
     ## TODO: Doxygen
     def GetItemTextColour(self, item):
-        return self.listarea.GetItemTextColour(item)
+        return self.MainCtrl.GetItemTextColour(item)
     
     
     ## TODO: Doxygen
     def GetListCtrl(self):
-        return self.listarea
+        return self.MainCtrl
     
     
     ## TODO: Doxygen
     def GetNextItem(self, item, geometry=wx.LIST_NEXT_ALL, state=wx.LIST_STATE_DONTCARE):
-        return self.listarea.GetNextItem(item, geometry, state)
+        return self.MainCtrl.GetNextItem(item, geometry, state)
     
     
     ## TODO: Doxygen
     def GetNextSelected(self, item):
-        self.listarea.GetNextSelected(item)
+        self.MainCtrl.GetNextSelected(item)
     
     
     ## TODO: Doxygen
@@ -260,39 +263,39 @@ class ListCtrlPanel(BorderedPanel):
     
     ## TODO: Doxygen
     def GetSelectedIndexes(self):
-        return self.listarea.GetSelectedIndexes()
+        return self.MainCtrl.GetSelectedIndexes()
     
     
     ## TODO: Doxygen
     def GetSelectedItemCount(self):
-        return self.listarea.GetSelectedItemCount()
+        return self.MainCtrl.GetSelectedItemCount()
     
     
     ## TODO: Doxygen
     def GetWindowStyle(self):
-        return self.listarea.GetWindowStyle()
+        return self.MainCtrl.GetWindowStyle()
     
     
     ## TODO: Doxygen
     def GetWindowStyleFlag(self):
-        return self.listarea.GetWindowStyleFlag()
+        return self.MainCtrl.GetWindowStyleFlag()
     
     
     ## TODO: Doxygen
     def HitTest(self, point, flags, ptrSubItem=None):
-        return self.listarea.HitTest(point, flags, ptrSubItem)
+        return self.MainCtrl.HitTest(point, flags, ptrSubItem)
     
     
     ## TODO: Doxygen
     def InsertColumn(self, col, heading, fmt=wx.LIST_FORMAT_LEFT, width=wx.LIST_AUTOSIZE):
-        self.listarea.InsertColumn(col, heading, fmt, width)
+        self.MainCtrl.InsertColumn(col, heading, fmt, width)
     
     
     ## TODO: Doxygen
     #  
     #  FIXME: imageIndex unused; Unknown purpose, not documented
     def InsertStringItem(self, index, label, imageIndex=None):
-        self.listarea.InsertStringItem(index, label)
+        self.MainCtrl.InsertStringItem(index, label)
     
     
     ## Some bug workarounds for resizing the list & its columns in wx 3.0
@@ -311,23 +314,23 @@ class ListCtrlPanel(BorderedPanel):
     
     ## TODO: Doxygen
     def RemoveSelected(self):
-        self.listarea.RemoveSelected()
+        self.MainCtrl.RemoveSelected()
     
     
     ## TODO: Doxygen
     def SetColumnWidth(self, col, width):
-        self.listarea.SetColumnWidth(col, width)
-        self.listarea.Layout()
+        self.MainCtrl.SetColumnWidth(col, width)
+        self.MainCtrl.Layout()
     
     
     ## TODO: Doxygen
     def SetItemBackgroundColour(self, item, color):
-        self.listarea.SetItemBackgroundColour(item, color)
+        self.MainCtrl.SetItemBackgroundColour(item, color)
     
     
     ## TODO: Doxygen
     def SetItemTextColour(self, item, color):
-        self.listarea.SetItemTextColour(item, color)
+        self.MainCtrl.SetItemTextColour(item, color)
     
     
     ## TODO: Doxygen
@@ -342,34 +345,33 @@ class ListCtrlPanel(BorderedPanel):
     
     ## TODO: Doxygen
     def SetSingleStyle(self, *args, **kwargs):
-        self.listarea.SetSingleStyle(*args, **kwargs)
+        self.MainCtrl.SetSingleStyle(*args, **kwargs)
     
     
     ## TODO: Doxygen
     #  
     #  FIXME: imageId unused; Unknown purpose, not documented
     def SetStringItem(self, index, col, label, imageId=None):
-        self.listarea.SetStringItem(index, col, label)
+        self.MainCtrl.SetStringItem(index, col, label)
     
     
     ## TODO: Doxygen
     def SetWindowStyle(self, *args, **kwargs):
-        return self.listarea.SetWindowStyle(*args, **kwargs)
+        return self.MainCtrl.SetWindowStyle(*args, **kwargs)
     
     
     ## TODO: Doxygen
     def SetWindowStyleFlag(self, *args, **kwargs):
-        return self.listarea.SetWindowStyleFlag(*args, **kwargs)
-
+        return self.MainCtrl.SetWindowStyleFlag(*args, **kwargs)
 
 
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
 class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
-    def __init__(self, parent, window_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT,
-                name=name)
+    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
+        
+        ListCtrlPanel.__init__(self, parent, win_id, style=wx.LC_REPORT, name=name)
         TextEditMixin.__init__(self)
         wx.FileDropTarget.__init__(self)
         
