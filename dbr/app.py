@@ -17,9 +17,15 @@ class DebreateApp(wx.App):
         self.MainWindow = None
     
     
-    ## Retrieve main window instance
+    ## Retrieves main window instance
     def GetMainWindow(self):
         return self.MainWindow
+    
+    
+    ## Retrieves the ui.wizard.Wizard instance
+    def GetWizard(self):
+        if self.MainWindow:
+            return self.MainWindow.GetWizard()
     
     
     ## Set the main window instance
