@@ -8,11 +8,11 @@
 
 import os, thread, traceback, wx
 
+from dbr.event              import EVT_TIMER_STOP
 from dbr.functions          import BuildDebPackage
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.timer              import DebreateTimer
-from dbr.timer              import EVT_TIMER_STOP
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
