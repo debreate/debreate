@@ -307,23 +307,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
-        self.wizard = Wizard(self)
+        self.Wizard = Wizard(self)
         
-        self.page_info = PageGreeting(self.wizard)
+        self.page_info = PageGreeting(self.Wizard)
         self.page_info.SetInfo()
-        self.page_control = PageControl(self.wizard)
-        self.page_depends = PageDepends(self.wizard)
-        self.page_files = PageFiles(self.wizard)
+        self.page_control = PageControl(self.Wizard)
+        self.page_depends = PageDepends(self.Wizard)
+        self.page_files = PageFiles(self.Wizard)
         
         # TODO: finish manpage section
         if testing:
-            self.page_man = PageMan(self.wizard)
+            self.page_man = PageMan(self.Wizard)
         
-        self.page_scripts = PageScripts(self.wizard)
-        self.page_clog = PageChangelog(self.wizard)
-        self.page_cpright = PageCopyright(self.wizard)
-        self.page_launchers = PageLaunchers(self.wizard)
-        self.page_build = PageBuild(self.wizard)
+        self.page_scripts = PageScripts(self.Wizard)
+        self.page_clog = PageChangelog(self.Wizard)
+        self.page_cpright = PageCopyright(self.Wizard)
+        self.page_launchers = PageLaunchers(self.Wizard)
+        self.page_build = PageBuild(self.Wizard)
         
         bin_pages = [
             self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
@@ -333,7 +333,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if testing:
             bin_pages.insert(4, self.page_man)
         
-        self.wizard.SetPages(bin_pages)
+        self.Wizard.SetPages(bin_pages)
         
         # Menu for debugging & running tests
         if DebugEnabled():
@@ -381,7 +381,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
-        self.wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnWizardBtnPage)
+        self.Wizard.EVT_CHANGE_PAGE(self, wx.ID_ANY, self.OnWizardBtnPage)
         
         for M in self.menu_page.GetMenuItems():
             Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
@@ -395,7 +395,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(self.wizard, 1, wx.EXPAND)
+        lyt_main.Add(self.Wizard, 1, wx.EXPAND)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
@@ -434,7 +434,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \return
     #        ui.wizard.Wizard
     def GetWizard(self):
-        return self.wizard
+        return self.Wizard
     
     
     ## Opens a dialog box with information about the program
@@ -574,7 +574,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Error(__name__, GT(u'Could not get page ID'))
             return
         
-        self.wizard.ShowPage(page_id)
+        self.Wizard.ShowPage(page_id)
     
     
     ## TODO: Doxygen
@@ -644,7 +644,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if confirm.Confirmed():
             Logger.Debug(__name__, GT(u'Project loaded before OnProjectNew: {}').format(self.ProjectIsLoaded()))
             
-            self.wizard.ResetPagesInfo()
+            self.Wizard.ResetPagesInfo()
             self.loaded_project = None
             self.ProjectSetDirty(False)
             
@@ -707,7 +707,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # FIXME: Should have confirmation if current project marked "dirty"
         if ShowDialog(open_dialog):
             # Remove current project
-            self.wizard.ResetPagesInfo()
+            self.Wizard.ResetPagesInfo()
             
             # Get the path and set the saved project
             opened_path = open_dialog.GetPath()
@@ -803,7 +803,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Updates the page menu to reflect current page
     def OnWizardBtnPage(self, event=None):
-        ID = self.wizard.GetCurrentPageId()
+        ID = self.Wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
         
         if not self.menu_page.IsChecked(ID):
@@ -907,7 +907,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             return dbrerrno.EBADFT
         
-        self.wizard.ImportPagesInfo(temp_dir)
+        self.Wizard.ImportPagesInfo(temp_dir)
         RemoveTempDirectory(temp_dir)
         
         # Mark project as loaded
@@ -1009,7 +1009,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.page_build,
         )
         
-        self.wizard.ExportPages(export_pages, temp_dir)
+        self.Wizard.ExportPages(export_pages, temp_dir)
         
         p_archive = CompressionHandler(self.GetCompressionId())
         
