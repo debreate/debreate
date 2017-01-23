@@ -233,6 +233,9 @@ class DetailedMessageDialog(wx.Dialog):
         
         self.lyt_urls = BoxSizer(wx.VERTICAL)
         
+        # Only set if buttons are added to dialog
+        self.lyt_buttons = None
+        
         lyt_main = wx.GridBagSizer(5, 5)
         lyt_main.SetCols(3)
         lyt_main.AddGrowableRow(3)
@@ -266,9 +269,9 @@ class DetailedMessageDialog(wx.Dialog):
     #  FIXME: Rename to SetButtons???
     #  FIXME: Should delete any previous buttons
     def AddButtons(self, button_ids):
-        lyt_buttons = AddCustomButtons(self, button_ids)
+        self.lyt_buttons = AddCustomButtons(self, button_ids)
         
-        self.Sizer.Add(lyt_buttons, (4, 2),
+        self.Sizer.Add(self.lyt_buttons, (4, 2),
                 flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
     
     
@@ -327,6 +330,45 @@ class DetailedMessageDialog(wx.Dialog):
                     return True
         
         return False
+    
+    
+    ## Attempts to retrieve button instance matching btn_id
+    #  
+    #  FIXME: This will fail if there are standard buttons in the dialog
+    #  FIXME: Retrieving by label doesn't work
+    #  \param btn_id
+    #    ID of the button instance to retrieve
+    #  \return
+    #    \b \e wx.Button instance or None
+    def GetButton(self, btn_id):
+        # Allow search by label
+        use_label = not isinstance(btn_id, int)
+        
+        if self.lyt_buttons:
+            for sizer in self.lyt_buttons.GetChildren():
+                sizer = sizer.GetSizer()
+                
+                btn_layout = sizer.GetChildren()
+                
+                if btn_layout:
+                    BTN = btn_layout[0].GetWindow()
+                    LBL = None
+                    
+                    if len(btn_layout) < 2 and isinstance(BTN, wx.Button):
+                        LBL = BTN.GetLabel()
+                    
+                    else:
+                        LBL = btn_layout[1]
+                        if isinstance(LBL, wx.StaticText):
+                            LBL = LBL.GetLabel()
+                    
+                    if not use_label:
+                        if BTN.GetId() == btn_id:
+                            return BTN
+                    
+                    else:
+                        if LBL == btn_id:
+                            return BTN
     
     
     ## TODO: Doxygen
@@ -410,6 +452,7 @@ class DetailedMessageDialog(wx.Dialog):
 class ConfirmationDialog(DetailedMessageDialog):
     def __init__(self, parent, title=GT(u'Warning'), text=wx.EmptyString,
             style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(wx.ID_OK, wx.ID_CANCEL,)):
+        
         DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
                 text=text, style=style, buttons=buttons)
 
