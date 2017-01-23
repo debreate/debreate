@@ -385,21 +385,4 @@ class TextAreaPanelESS(TextAreaPanel, EssentialField):
         
         TextAreaPanel.__init__(self, parent, win_id, value, monospace, button, pos, size,
                 style, name)
-        
-        lyt_main = self.GetSizer()
-        index = lyt_main.GetItemIndex(self.textarea)
-        
-        # Replace TextAreaML instance
-        self.textarea.Destroy()
-        self.textarea = TextAreaMLESS(self, style=style|wx.BORDER_NONE)
-        
-        # *** Layout *** #
-        
-        lyt_main.Insert(index, self.textarea, 1, wx.EXPAND|wx.ALL, 2)
-        
-        self.Layout()
-        
-        # *** Post-layout Actions *** #
-        
-        if monospace:
-            self.SetMonospaced(button)
+        EssentialField.__init__(self)
