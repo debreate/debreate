@@ -11,6 +11,7 @@ import os, wx
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import genid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -131,7 +132,7 @@ class Panel(wx.ScrolledWindow):
         for CHK, RB, TI in self.script_objects:
             RB.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
         
-        wx.EVT_BUTTON(btn_al_import, ident.IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExe)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
         wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
@@ -253,7 +254,7 @@ class Panel(wx.ScrolledWindow):
     ## Imports executables from files page for Auto-Link
     def ImportExe(self, event=None):
         event_id = event.GetId()
-        if event_id == ident.IMPORT:
+        if event_id == genid.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.executables.DeleteAllItems()
             self.lst_executables = []

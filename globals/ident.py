@@ -34,14 +34,11 @@ PREV = wx.NewId()
 NEXT = wx.NewId()
 
 # *** Custom IDs *** #
-APPEND = wx.NewId()
-BROWSE = wx.NewId()
 CUSTOM = wx.NewId()
 DEBUG = wx.NewId()
 DIALOGS = wx.NewId()
 DIST = wx.NewId()
 EXPAND = wx.NewId()
-IMPORT = wx.NewId()
 LOG = wx.NewId()
 MENU_TT = wx.NewId()
 OVERWRITE = wx.NewId()
@@ -61,6 +58,15 @@ QBUILD = wx.NewId()
 THEME = wx.NewId()
 TOOLTIPS = wx.NewId()
 UPDATE = wx.NewId()
+
+
+## General IDs
+class genid:
+    APPEND = wx.NewId()
+    BROWSE = wx.NewId()
+    BUILD = wx.NewId()
+    IMPORT = wx.NewId()
+
 
 # Page IDs
 next_page_id = 1000
