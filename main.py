@@ -261,6 +261,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Current Project Status *** #
         
+        self.LoadedProject = None
         self.ProjectDirty = False
         
         # *** Event Handling *** #
@@ -298,11 +299,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # Saving
-        # First item is name of saved file displayed in title
-        # Second item is actual path to project file
-        self.saved_project = wx.EmptyString
     
     
     ## Retrieves the Wizard instance
@@ -497,10 +493,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if self.OpenProject(filename):
             # Only set project open in memory if loaded completely
-            self.saved_project = project
+            self.LoadedProject = project
         
         else:
-            self.saved_project = None
+            self.LoadedProject = None
     
     
     ## TODO: Doxygen
@@ -549,18 +545,18 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 if filename.split(u'.')[-1] == u'dbp':
                     filename = u'.'.join(filename.split(u'.')[:-1])
                 
-                self.saved_project = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
+                self.LoadedProject = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
                 
-                SaveIt(self.saved_project)
+                SaveIt(self.LoadedProject)
         
         if event_id == wx.ID_SAVE:
             # Define what to do if save is pressed
             # If project already exists, don't show dialog
-            if not self.IsSaved() or not self.saved_project or not os.path.isfile(self.saved_project):
+            if not self.IsSaved() or not self.LoadedProject or not os.path.isfile(self.LoadedProject):
                 OnSaveAs()
             
             else:
-                SaveIt(self.saved_project)
+                SaveIt(self.LoadedProject)
         
         else:
             # If save as is press, show the save dialog
@@ -660,7 +656,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     GT(u'Not a valid Debreate project: {}').format(project_file))
             return False
         
-        if self.saved_project and not self.ResetPages():
+        if self.LoadedProject and not self.ResetPages():
             return False
         
         # *** Get Control Data *** #
@@ -722,7 +718,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.SetTitle(default_title)
         
         # Reset the saved project field so we know that a project file doesn't exists
-        self.saved_project = wx.EmptyString
+        self.LoadedProject = None
         
         return True
     
