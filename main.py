@@ -368,10 +368,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Event Handling *** #
         
-        wx.EVT_MENU(self, wx.ID_NEW, self.OnNewProject)
-        wx.EVT_MENU(self, wx.ID_OPEN, self.OnOpenProject)
-        wx.EVT_MENU(self, wx.ID_SAVE, self.OnSaveProject)
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnSaveProjectAs)
+        wx.EVT_MENU(self, wx.ID_NEW, self.OnProjectNew)
+        wx.EVT_MENU(self, wx.ID_OPEN, self.OnProjectOpen)
+        wx.EVT_MENU(self, wx.ID_SAVE, self.OnProjectSave)
+        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnProjectSaveAs)
         wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
         wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
         
@@ -593,85 +593,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
-    def OnNewProject(self, event=None):
-        confirm = ConfirmationDialog(self, GT(u'Start New Project'),
-                text=GT(u'You will lose any unsaved information\n\nContinue?'))
-        
-        if confirm.Confirmed():
-            Logger.Debug(__name__, GT(u'Project loaded before OnNewProject: {}').format(self.ProjectIsLoaded()))
-            
-            self.wizard.ResetPagesInfo()
-            self.loaded_project = None
-            self.ProjectSetDirty(False)
-            
-            Logger.Debug(__name__, GT(u'Project loaded after OnNewProject: {}').format(self.ProjectIsLoaded()))
-            
-            if DebugEnabled() and self.ProjectIsLoaded():
-                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
-    
-    
-    ## TODO: Doxygen
-    def OnOpenProject(self, event=None):
-        if self.ProjectIsDirty():
-            Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
-            
-            ignore_dirty = wx.MessageDialog(self,
-                    GT(u'{} is unsaved, any changes will be lost').format(self.loaded_project),
-                    GT(u'Confirm Open New Project'),
-                    style=wx.YES_NO|wx.CANCEL|wx.CANCEL_DEFAULT|wx.ICON_WARNING)
-            
-            ignore_dirty.SetExtendedMessage(GT(u'Continue without saving?'))
-            ignore_dirty.SetYesNoLabels(GT(u'Continue'), GT(u'Save'))
-            overwrite_dirty = ignore_dirty.ShowModal()
-            
-            if overwrite_dirty == wx.ID_CANCEL:
-                Logger.Debug(__name__, GT(u'OnOpenProject; Cancelling open over dirty project'))
-                return
-            
-            # wx.ID_NO means save & continue
-            elif overwrite_dirty == wx.ID_NO:
-                if self.loaded_project == None:
-                    err_msg = GT(u'No project loaded, cannot save')
-                    Logger.Error(__name__, u'OnOpenProject; {}'.format(err_msg))
-                    
-                    err_dialog = ErrorDialog(self, err_msg)
-                    err_dialog.ShowModal()
-                    
-                    return
-                
-                Logger.Debug(__name__, GT(u'OnOpenProject; Saving dirty project & continuing'))
-                
-                self.SaveProject(self.loaded_project)
-            
-            else:
-                Logger.Debug(__name__, GT(u'OnOpenProject; Destroying changes of dirty project'))
-        
-        wc_z = GetDialogWildcards(ID_PROJ_Z)
-        wc_l = GetDialogWildcards(ID_PROJ_L)
-        wc_a = GetDialogWildcards(ID_PROJ_A)
-        wc_t = GetDialogWildcards(ID_PROJ_T)
-        
-        wildcards = (
-            wc_a[0], wc_a[1],
-            wc_z[0], wc_z[1],
-            wc_t[0], wc_t[1],
-            wc_l[0], wc_l[1],
-        )
-        
-        open_dialog = GetFileOpenDialog(self, GT(u'Open Debreate Project'), wildcards)
-        
-        # FIXME: Should have confirmation if current project marked "dirty"
-        if ShowDialog(open_dialog):
-            # Remove current project
-            self.wizard.ResetPagesInfo()
-            
-            # Get the path and set the saved project
-            opened_path = open_dialog.GetPath()
-            
-            self.OpenProject(opened_path)
-    
-    
-    ## TODO: Doxygen
     def OnPageChanged(self, event=None):
         ID = self.wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
@@ -738,9 +659,88 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
-    def OnSaveProject(self, event=None):
+    def OnProjectNew(self, event=None):
+        confirm = ConfirmationDialog(self, GT(u'Start New Project'),
+                text=GT(u'You will lose any unsaved information\n\nContinue?'))
+        
+        if confirm.Confirmed():
+            Logger.Debug(__name__, GT(u'Project loaded before OnProjectNew: {}').format(self.ProjectIsLoaded()))
+            
+            self.wizard.ResetPagesInfo()
+            self.loaded_project = None
+            self.ProjectSetDirty(False)
+            
+            Logger.Debug(__name__, GT(u'Project loaded after OnProjectNew: {}').format(self.ProjectIsLoaded()))
+            
+            if DebugEnabled() and self.ProjectIsLoaded():
+                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
+    
+    
+    ## TODO: Doxygen
+    def OnProjectOpen(self, event=None):
+        if self.ProjectIsDirty():
+            Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
+            
+            ignore_dirty = wx.MessageDialog(self,
+                    GT(u'{} is unsaved, any changes will be lost').format(self.loaded_project),
+                    GT(u'Confirm Open New Project'),
+                    style=wx.YES_NO|wx.CANCEL|wx.CANCEL_DEFAULT|wx.ICON_WARNING)
+            
+            ignore_dirty.SetExtendedMessage(GT(u'Continue without saving?'))
+            ignore_dirty.SetYesNoLabels(GT(u'Continue'), GT(u'Save'))
+            overwrite_dirty = ignore_dirty.ShowModal()
+            
+            if overwrite_dirty == wx.ID_CANCEL:
+                Logger.Debug(__name__, GT(u'OnProjectOpen; Cancelling open over dirty project'))
+                return
+            
+            # wx.ID_NO means save & continue
+            elif overwrite_dirty == wx.ID_NO:
+                if self.loaded_project == None:
+                    err_msg = GT(u'No project loaded, cannot save')
+                    Logger.Error(__name__, u'OnProjectOpen; {}'.format(err_msg))
+                    
+                    err_dialog = ErrorDialog(self, err_msg)
+                    err_dialog.ShowModal()
+                    
+                    return
+                
+                Logger.Debug(__name__, GT(u'OnProjectOpen; Saving dirty project & continuing'))
+                
+                self.ProjectSave(self.loaded_project)
+            
+            else:
+                Logger.Debug(__name__, GT(u'OnProjectOpen; Destroying changes of dirty project'))
+        
+        wc_z = GetDialogWildcards(ID_PROJ_Z)
+        wc_l = GetDialogWildcards(ID_PROJ_L)
+        wc_a = GetDialogWildcards(ID_PROJ_A)
+        wc_t = GetDialogWildcards(ID_PROJ_T)
+        
+        wildcards = (
+            wc_a[0], wc_a[1],
+            wc_z[0], wc_z[1],
+            wc_t[0], wc_t[1],
+            wc_l[0], wc_l[1],
+        )
+        
+        open_dialog = GetFileOpenDialog(self, GT(u'Open Debreate Project'), wildcards)
+        
+        # FIXME: Should have confirmation if current project marked "dirty"
+        if ShowDialog(open_dialog):
+            # Remove current project
+            self.wizard.ResetPagesInfo()
+            
+            # Get the path and set the saved project
+            opened_path = open_dialog.GetPath()
+            
+            self.ProjectOpen(opened_path)
+    
+    
+    ## TODO: Doxygen
+    def OnProjectSave(self, event=None):
         if not self.ProjectIsLoaded():
-            self.OnSaveProjectAs(event)
+            self.OnProjectSaveAs(event)
             return
         
         # Only save if changes have been made
@@ -748,12 +748,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
             
             # Saving over currently loaded project
-            if self.SaveProject(self.loaded_project) == dbrerrno.SUCCESS:
+            if self.ProjectSave(self.loaded_project) == dbrerrno.SUCCESS:
                 self.ProjectSetDirty(False)
     
     
     ## TODO: Doxygen
-    def OnSaveProjectAs(self, event=None):
+    def OnProjectSaveAs(self, event=None):
         wildcards = (
             u'{} (.{})'.format(GT(u'Debreate project files'), PROJECT_ext),
             u'*.{}'.format(PROJECT_ext),
@@ -771,7 +771,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
             Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
-            if self.SaveProject(project_path) == dbrerrno.SUCCESS:
+            if self.ProjectSave(project_path) == dbrerrno.SUCCESS:
                 self.ProjectSetDirty(False)
             
             return
@@ -841,11 +841,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         webbrowser.open(url)
     
     
+    ## Checks if current project is dirty
+    def ProjectIsDirty(self):
+        return self.ProjectDirty
+    
+    
+    ## Checks if a project is loaded
+    def ProjectIsLoaded(self):
+        return self.loaded_project != None
+    
+    
     ## Tests project type & calls correct method to read project file
     #  
     #  \param project_file
     #    \b \e unicode|str : Path to project file
-    def OpenProject(self, project_file):
+    def ProjectOpen(self, project_file):
         Logger.Debug(__name__, u'Opening project: {}'.format(project_file))
         
         mime_type = GetFileMimeType(project_file)
@@ -859,12 +869,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             filename = os.path.split(project_file)[1]
             
             # Legacy projects should return None since we can't save in that format
-            project_opened = self.OpenProjectLegacy(p_text, filename)
+            project_opened = self.ProjectOpenLegacy(p_text, filename)
         
         else:
-            project_opened = self.OpenProjectArchive(project_file, mime_type)
+            project_opened = self.ProjectOpenArchive(project_file, mime_type)
         
-        Logger.Debug(__name__, GT(u'Project loaded before OnOpenProject: {}').format(self.ProjectIsLoaded()))
+        Logger.Debug(__name__, GT(u'Project loaded before OnProjectOpen: {}').format(self.ProjectIsLoaded()))
         
         if project_opened == dbrerrno.SUCCESS:
             self.loaded_project = project_file
@@ -876,7 +886,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
-    def OpenProjectArchive(self, filename, file_type):
+    def ProjectOpenArchive(self, filename, file_type):
         Logger.Debug(__name__, GT(u'Compressed project archive detected'))
         
         if file_type not in compression_mimetypes:
@@ -913,12 +923,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     
     ## TODO: Doxygen
-    def OpenProjectLegacy(self, data, filename):
+    def ProjectOpenLegacy(self, data, filename):
         Logger.Debug(__name__, GT(u'Legacy project format (text) detected'))
         
         def ProjectError():
             wx.MessageDialog(self, GT(u'Not a valid Debreate project'), GT(u'Error'),
-    		          style=wx.OK|wx.ICON_ERROR).ShowModal()
+                      style=wx.OK|wx.ICON_ERROR).ShowModal()
         
         if data == wx.EmptyString:
             ProjectError()
@@ -965,37 +975,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.page_build.Set(build_data)
     
     
-    ## Checks if current project is dirty
-    def ProjectIsDirty(self):
-        return self.ProjectDirty
-    
-    
-    ## Checks if a project is loaded
-    def ProjectIsLoaded(self):
-        return self.loaded_project != None
-    
-    
-    ## TODO: Doxygen
-    def ProjectSetDirty(self, dirty=True):
-        changed = False
-        
-        if self.ProjectDirty != dirty:
-            self.ProjectDirty = dirty
-            self.menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
-            
-            title = self.GetTitle()
-            
-            if self.ProjectDirty:
-                self.SetTitle(u'{}{}'.format(title, self.dirty_mark))
-            
-            else:
-                self.SetTitle(title[:-len(self.dirty_mark)])
-            
-            changed = True
-        
-        return changed
-    
-    
     ## Saves project in archive format
     #  
     #  Supported uncompressed formats are unix tarball.
@@ -1003,7 +982,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #    tarballs.
     #  Proposed formats are xz compressed tarball &
     #    zip compressed file.
-    def SaveProject(self, target_path):
+    def ProjectSave(self, target_path):
         Logger.Debug(__name__, GT(u'Saving in new project format'))
         Logger.Debug(__name__, GT(u'Saving to file {}').format(target_path))
         
@@ -1062,6 +1041,27 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             return dbrerrno.SUCCESS
         
         ShowErrorDialog(u'{}: {}'.format(GT(u'Project save failed'), target_path), parent=self)
+    
+    
+    ## TODO: Doxygen
+    def ProjectSetDirty(self, dirty=True):
+        changed = False
+        
+        if self.ProjectDirty != dirty:
+            self.ProjectDirty = dirty
+            self.menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
+            
+            title = self.GetTitle()
+            
+            if self.ProjectDirty:
+                self.SetTitle(u'{}{}'.format(title, self.dirty_mark))
+            
+            else:
+                self.SetTitle(title[:-len(self.dirty_mark)])
+            
+            changed = True
+        
+        return changed
     
     
     ## Sets compression in the main menu
