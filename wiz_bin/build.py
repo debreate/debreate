@@ -32,7 +32,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.toggle           import CheckBoxESS
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
@@ -170,7 +170,7 @@ class Panel(WizardPage):
         pages_build_ids = self.BuildPrep()
         
         if pages_build_ids != None:
-            main_window = GetTopWindow()
+            main_window = GetMainWindow()
             
             # Reported at the end of build
             build_summary = []
@@ -355,7 +355,7 @@ class Panel(WizardPage):
                 prep_ids.append(P.GetId())
         
         try:
-            main_window = GetTopWindow()
+            main_window = GetMainWindow()
             
             # List of page IDs to process during build
             pg_build_ids = []
@@ -578,7 +578,7 @@ class Panel(WizardPage):
                     
                     Logger.Warning(__name__, msg_full)
                     
-                    DetailedMessageDialog(GetTopWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
+                    DetailedMessageDialog(GetMainWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
                             text=msg_full).ShowModal()
                     
                     for P in wizard.pages:
@@ -597,7 +597,7 @@ class Panel(WizardPage):
         
         
         ttype = GT(u'Debian Packages')
-        save_dialog = GetFileSaveDialog(GetTopWindow(), GT(u'Build Package'),
+        save_dialog = GetFileSaveDialog(GetMainWindow(), GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
         package = GetField(pg_control, ident.F_PACKAGE)
@@ -755,14 +755,14 @@ class Panel(WizardPage):
                 return u'{} ({} {})'.format(message, count, GT(u'tags'))
             
             
-            progress = TimedProgressDialog(GetTopWindow(), GT(u'Building Tag List'),
+            progress = TimedProgressDialog(GetMainWindow(), GT(u'Building Tag List'),
                     GetProgressMessage(GT(u'Scanning default tags')))
             progress.Start()
             
             wx.Yield()
             
             # Create the dialog
-            overrides_dialog = CheckListDialog(GetTopWindow(), title=GT(u'Lintian Overrides'),
+            overrides_dialog = CheckListDialog(GetMainWindow(), title=GT(u'Lintian Overrides'),
                     allow_custom=True)
             # FIXME: Needs progress dialog
             overrides_dialog.InitCheckList(tuple(lint_tags))

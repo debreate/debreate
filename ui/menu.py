@@ -8,7 +8,7 @@
 
 import wx
 
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 
@@ -78,7 +78,7 @@ class MenuBar(wx.MenuBar):
 class PanelMenu(wx.StaticText):
     def __init__(self, parent=None, win_id=wx.ID_ANY, label=wx.EmptyString, name=u'menu'):
         if not parent:
-            parent = GetTopWindow()
+            parent = GetMainWindow()
         
         wx.StaticText.__init__(self, parent, win_id, label, name=name)
         

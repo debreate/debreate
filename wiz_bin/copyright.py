@@ -23,7 +23,7 @@ from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetPage
-from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanelESS
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
@@ -118,7 +118,7 @@ class Panel(WizardPage):
             warn_msg = GT(u'This will destroy all license text.')
             warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
             
-            if ConfirmationDialog(GetTopWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
+            if ConfirmationDialog(GetMainWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
                 return False
         
         return True
