@@ -146,7 +146,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.menu_file.AppendItem(mitm_quit)
         
         # *** Page Menu *** #
-        ## This menu is filled from ui.wizard.Wizard
+        ## This menu is filled from ui.wizard.Wizard.SetPages
         self.menu_page = wx.Menu()
         
         # *** Action Menu *** #
@@ -358,11 +358,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
         
-        for M in self.menu_page.GetMenuItems():
-            Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
-            wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
-        
-        wx.EVT_CLOSE(self, self.OnQuit) # Custom close event shows a dialog box to confirm quit
+        # Custom close event shows a dialog box to confirm quit
+        wx.EVT_CLOSE(self, self.OnQuit)
         
         # *** Layout *** #
         
