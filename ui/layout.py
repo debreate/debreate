@@ -37,6 +37,12 @@ class Sizer(wx.Sizer):
     def GetItemIndex(self, item):
         index = 0
         for I in self.GetChildren():
+            S = I.GetSizer()
+            I = I.GetWindow()
+            
+            if not I:
+                I = S
+            
             if I == item:
                 return index
             
