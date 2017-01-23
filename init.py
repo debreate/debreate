@@ -223,6 +223,7 @@ for V in conf_values:
 
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 debreate_app.SetMainWindow(Debreate)
+Debreate.InitWizard()
 
 if conf_values[u'center']:
     Debreate.Center()
