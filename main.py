@@ -333,10 +333,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             wx.EVT_MENU(self, ident.LOG, self.log_window.OnToggleWindow)
             wx.EVT_MENU(self, ident.THEME, self.OnToggleTheme)
         
-        self.loaded_project = None
-        
         # *** Current Project Status *** #
         
+        self.LoadedProject = None
         self.ProjectDirty = False
         self.dirty_mark = u' *'
         
@@ -640,13 +639,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Project loaded before OnProjectNew: {}').format(self.ProjectIsLoaded()))
             
             self.Wizard.ResetPagesInfo()
-            self.loaded_project = None
+            self.LoadedProject = None
             self.ProjectSetDirty(False)
             
             Logger.Debug(__name__, GT(u'Project loaded after OnProjectNew: {}').format(self.ProjectIsLoaded()))
             
             if DebugEnabled() and self.ProjectIsLoaded():
-                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
+                Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.LoadedProject))
     
     
     ## TODO: Doxygen
@@ -655,7 +654,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Attempting to open new project while dirty'))
             
             ignore_dirty = wx.MessageDialog(self,
-                    GT(u'{} is unsaved, any changes will be lost').format(self.loaded_project),
+                    GT(u'{} is unsaved, any changes will be lost').format(self.LoadedProject),
                     GT(u'Confirm Open New Project'),
                     style=wx.YES_NO|wx.CANCEL|wx.CANCEL_DEFAULT|wx.ICON_WARNING)
             
@@ -669,7 +668,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             # wx.ID_NO means save & continue
             elif overwrite_dirty == wx.ID_NO:
-                if self.loaded_project == None:
+                if self.LoadedProject == None:
                     err_msg = GT(u'No project loaded, cannot save')
                     Logger.Error(__name__, u'OnProjectOpen; {}'.format(err_msg))
                     
@@ -680,7 +679,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 
                 Logger.Debug(__name__, GT(u'OnProjectOpen; Saving dirty project & continuing'))
                 
-                self.ProjectSave(self.loaded_project)
+                self.ProjectSave(self.LoadedProject)
             
             else:
                 Logger.Debug(__name__, GT(u'OnProjectOpen; Destroying changes of dirty project'))
@@ -721,7 +720,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Project loaded; Saving without showing dialog'))
             
             # Saving over currently loaded project
-            if self.ProjectSave(self.loaded_project) == dbrerrno.SUCCESS:
+            if self.ProjectSave(self.LoadedProject) == dbrerrno.SUCCESS:
                 self.ProjectSetDirty(False)
     
     
@@ -825,7 +824,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks if current project is dirty
     def ProjectIsDirty(self):
-        if self.loaded_project:
+        if self.LoadedProject:
             return self.ProjectDirty
         
         return False
@@ -833,7 +832,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Checks if a project is loaded
     def ProjectIsLoaded(self):
-        return self.loaded_project != None
+        return self.LoadedProject != None
     
     
     ## Tests project type & calls correct method to read project file
@@ -862,12 +861,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Project loaded before OnProjectOpen: {}').format(self.ProjectIsLoaded()))
         
         if opened == dbrerrno.SUCCESS:
-            self.loaded_project = project_file
+            self.LoadedProject = project_file
         
         Logger.Debug(__name__, GT(u'Project loaded after OnOpenPreject: {}').format(self.ProjectIsLoaded()))
         
         if DebugEnabled() and self.ProjectIsLoaded():
-            Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.loaded_project))
+            Logger.Debug(__name__, GT(u'Loaded project: {}').format(self.LoadedProject))
     
     
     ## TODO: Doxygen
@@ -1018,7 +1017,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                     )
         )
         
-        if os.path.isfile(target_path) or target_path == self.loaded_project:
+        if os.path.isfile(target_path) or target_path == self.LoadedProject:
             Logger.Debug(__name__, GT(u'Overwriting old project file: {}').format(target_path))
         
         p_archive.Compress(temp_dir, u'{}'.format(target_path))
