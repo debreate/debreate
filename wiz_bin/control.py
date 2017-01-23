@@ -24,7 +24,7 @@ from globals.wizardhelper   import GetTopWindow
 from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
-from input.text             import TextAreaPanel
+from input.text             import TextAreaPanelESS
 from input.toggle           import CheckBoxESS
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
@@ -127,7 +127,7 @@ class Panel(WizardPage):
         ti_synopsis = TextAreaESS(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.ti_description = TextAreaPanel(pnl_recommend, name=txt_description.Name)
+        self.ti_description = TextAreaPanelESS(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         
