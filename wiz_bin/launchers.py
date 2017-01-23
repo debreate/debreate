@@ -646,6 +646,9 @@ class Panel(WizardPage):
         
         self.txt_filename.Enable(True)
         self.ti_filename.Enable(True)
+        
+        if event:
+            event.Skip(True)
     
     
     ## TODO: Doxygen
@@ -668,6 +671,9 @@ class Panel(WizardPage):
         
         self.chk_filename.Enable(enable)
         self.OnSetCustomFilename()
+        
+        if event:
+            event.Skip(True)
     
     
     ## TODO: Doxygen
