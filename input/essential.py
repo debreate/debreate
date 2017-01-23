@@ -9,23 +9,36 @@
 import wx
 from wx.combo import OwnerDrawnComboBox
 
-from globals.wizardhelper import FieldEnabled
-from globals.wizardhelper import GetTopWindow
-from globals.wizardhelper import ProjectIsDirty
+from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetTopWindow
+from globals.wizardhelper   import ProjectIsDirty
+from ui.panel               import ControlPanel
 
 
 ## Abstract class that sends a message to main window to mark project dirty when field is changed
 class EssentialField:
     def __init__(self):
         
-        if isinstance(self, (wx.TextCtrl, wx.ComboBox, OwnerDrawnComboBox)):
-            self.Bind(wx.EVT_TEXT, self.NotifyMainWindow)
+        if isinstance(self, ControlPanel):
+            main_control = self.GetMainControl()
         
-        elif isinstance(self, wx.Choice):
-            self.Bind(wx.EVT_CHOICE, self.NotifyMainWindow)
+        else:
+            main_control = self
         
-        elif isinstance(self, wx.CheckBox):
-            self.Bind(wx.EVT_CHECKBOX, self.NotifyMainWindow)
+        if isinstance(main_control, (wx.TextCtrl, wx.ComboBox, OwnerDrawnComboBox)):
+            main_control.Bind(wx.EVT_TEXT, self.NotifyMainWindow)
+        
+        elif isinstance(main_control, wx.Choice):
+            main_control.Bind(wx.EVT_CHOICE, self.NotifyMainWindow)
+        
+        elif isinstance(main_control, wx.CheckBox):
+            main_control.Bind(wx.EVT_CHECKBOX, self.NotifyMainWindow)
+        
+        elif isinstance(main_control, wx.ListCtrl):
+            main_control.Bind(wx.EVT_LIST_DELETE_ALL_ITEMS, self.NotifyMainWindow)
+            main_control.Bind(wx.EVT_LIST_DELETE_ITEM, self.NotifyMainWindow)
+            main_control.Bind(wx.EVT_LIST_END_LABEL_EDIT, self.NotifyMainWindow)
+            main_control.Bind(wx.EVT_LIST_INSERT_ITEM, self.NotifyMainWindow)
         
         else:
             # TextCtrlPanel (cannot import)
