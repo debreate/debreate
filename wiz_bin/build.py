@@ -8,9 +8,7 @@
 
 import commands, math, os, subprocess, time, traceback, wx
 
-from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetBoolean
-from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
@@ -27,6 +25,8 @@ from globals.fileio         import WriteFile
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
+from globals.stage          import CreateStage
+from globals.stage          import RemoveStage
 from globals.strings        import RemoveEmptyLines
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -187,7 +187,7 @@ class Panel(WizardPage):
             # Control file & .deb build step
             steps_count += 2
             
-            stage = CreateTempDirectory()
+            stage = CreateStage()
             
             log_msg = GT(u'Starting build')
             
@@ -308,7 +308,7 @@ class Panel(WizardPage):
                         build_progress.Update(current_step, log_msg)
                         
                         build_summary.append(u'\n{}:'.format(log_msg))
-                        RemoveTempDirectory(stage)
+                        RemoveStage(stage)
                         
                         if not os.path.isdir(stage):
                             build_summary.append(GT(u'Staged build tree removed successfully'))

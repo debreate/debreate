@@ -9,9 +9,7 @@
 import commands, os, shutil, wx
 
 from dbr.font               import MONOSPACED_MD
-from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
-from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals.application    import APP_name
@@ -24,6 +22,8 @@ from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
+from globals.stage          import CreateStage
+from globals.stage          import RemoveStage
 from globals.system         import OS_codename
 from globals.system         import OS_name
 from globals.system         import OS_upstream_codename
@@ -428,7 +428,7 @@ class AboutDialog(wx.Dialog):
                                       GT(u'Cannot decode, unrecognized mimetype: {}').format(changelog_mimetype))
             
             if changelog_mimetype == u'application/gzip':
-                temp_dir = CreateTempDirectory()
+                temp_dir = CreateStage()
                 
                 shutil.copy(CHANGELOG, temp_dir)
                 
@@ -451,7 +451,7 @@ class AboutDialog(wx.Dialog):
                 if os.path.isfile(changelog_file):
                     log_text = ReadFile(changelog_file)
                 
-                RemoveTempDirectory(temp_dir)
+                RemoveStage(temp_dir)
             
             elif changelog_mimetype == u'text/plain':
                 log_text = ReadFile(CHANGELOG)

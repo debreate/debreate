@@ -350,34 +350,6 @@ def BuildBinaryPackageFromTree(root_dir, filename):
     return 0
 
 
-def CreateTempDirectory():
-    temp_dir = u'/tmp'
-    
-    # Check if we can write to /tmp
-    if not os.access(temp_dir, os.W_OK):
-        temp_dir = os.getcwd()
-    
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_name).lower(), VERSION_string)
-    
-    if os.access(os.path.dirname(temp_dir), os.W_OK):
-        # Start with fresh directory
-        if os.path.isdir(temp_dir):
-            shutil.rmtree(temp_dir)
-        
-        elif os.path.isfile(temp_dir):
-            return dbrerrno.EACCES
-        
-        os.makedirs(temp_dir)
-        return temp_dir
-    
-    return dbrerrno.EACCES
-
-
-def RemoveTempDirectory(temp_dir):
-    if os.access(temp_dir, os.W_OK):
-        shutil.rmtree(temp_dir)
-
-
 def RemovePreWhitespace(text):
     text_lines = text.split(u'\n')
     
