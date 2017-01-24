@@ -16,9 +16,7 @@ from dbr.config             import GetDefaultConfigValue
 from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
 from dbr.event              import EVT_CHANGE_PAGE
-from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetCurrentVersion
-from dbr.functions          import RemoveTempDirectory
 from dbr.functions          import UsingDevelopmentVersion
 from dbr.help               import HelpDialog
 from dbr.icon               import Icon
@@ -57,6 +55,8 @@ from globals.project        import ID_PROJ_L
 from globals.project        import ID_PROJ_T
 from globals.project        import ID_PROJ_Z
 from globals.project        import PROJECT_ext
+from globals.stage          import CreateStage
+from globals.stage          import RemoveStage
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
 from ui.dialog              import ConfirmSaveDialog
@@ -868,10 +868,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         Logger.Debug(__name__, GT(u'Opening compressed project with "{}" format').format(z_format))
         
-        temp_dir = CreateTempDirectory()
+        stage = CreateStage()
         
         p_archive = CompressionHandler(compression_id)
-        ret_code = p_archive.Uncompress(filename, temp_dir)
+        ret_code = p_archive.Uncompress(filename, stage)
         
         if isinstance(ret_code, tuple) and ret_code[0]:
             ShowErrorDialog(u'{}: {}'.format(GT(u'Project load error'), ret_code[1]),
@@ -879,8 +879,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             return dbrerrno.EBADFT
         
-        self.Wizard.ImportPagesInfo(temp_dir)
-        RemoveTempDirectory(temp_dir)
+        self.Wizard.ImportPagesInfo(stage)
+        RemoveStage(stage)
         
         # Mark project as loaded
         return dbrerrno.SUCCESS
@@ -957,15 +957,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Saving in new project format'))
         Logger.Debug(__name__, GT(u'Saving to file {}').format(target_path))
         
-        temp_dir = CreateTempDirectory()
+        stage = CreateStage()
         
-        if not os.path.exists(temp_dir) or temp_dir == dbrerrno.EACCES:
-            ShowErrorDialog(u'{}: {}'.format(GT(u'Could not create staging directory'), temp_dir),
+        if not os.path.exists(stage) or stage == dbrerrno.EACCES:
+            ShowErrorDialog(u'{}: {}'.format(GT(u'Could not create staging directory'), stage),
                     parent=self)
             
             return dbrerrno.EACCES
         
-        Logger.Debug(__name__, GT(u'Temp dir created: {}').format(temp_dir))
+        Logger.Debug(__name__, GT(u'Temp dir created: {}').format(stage))
         
         working_path = os.path.dirname(target_path)
         output_filename = os.path.basename(target_path)
@@ -973,7 +973,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(
             __name__,
             u'Save project\n\tWorking path: {}\n\tFilename: {}\n\tTemp directory: {}'.format(working_path,
-                                                                                        output_filename, temp_dir)
+                                                                                        output_filename, stage)
             )
         
         export_pages = (
@@ -986,7 +986,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             pgid.BUILD,
             )
         
-        self.Wizard.ExportPages(export_pages, temp_dir)
+        self.Wizard.ExportPages(export_pages, stage)
         
         p_archive = CompressionHandler(self.GetCompressionId())
         
@@ -1003,14 +1003,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if os.path.isfile(target_path) or target_path == self.LoadedProject:
             Logger.Debug(__name__, GT(u'Overwriting old project file: {}').format(target_path))
         
-        p_archive.Compress(temp_dir, u'{}'.format(target_path))
+        p_archive.Compress(stage, u'{}'.format(target_path))
         
         # FIXME: Should check file timestamp
         if os.path.isfile(target_path):
             Logger.Debug(__name__, GT(u'Project saved: {}').format(target_path))
             
             # Cleanup
-            RemoveTempDirectory(temp_dir)
+            RemoveStage(stage)
             self.ProjectSetDirty(False)
             
             return dbrerrno.SUCCESS
@@ -1033,11 +1033,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if ShowDialog(save_dialog):
             project_path = save_dialog.GetPath()
             project_filename = save_dialog.GetFilename()
-            project_extension = save_dialog.GetExtension()
             
             Logger.Debug(__name__, GT(u'Project save path: {}').format(project_path))
             Logger.Debug(__name__, GT(u'Project save filename: {}').format(project_filename))
-            Logger.Debug(__name__, GT(u'Project save extension: {}').format(project_extension))
             
             saved = self.ProjectSave(project_path)
             if saved == dbrerrno.SUCCESS:
