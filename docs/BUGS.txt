@@ -15,6 +15,7 @@ Release:
 - wx._core.PyDeadObjectError caused by input.essential.EssentialField.NotifyMainWindow when app is closed
 - Log window cannot be imported before DebreateApp.SetMainWindow is called
 - Save project is not add extension
+- Projects not saving correctly
 
 Priority:
 - Generate template button on copyright page moves header for system licenses
