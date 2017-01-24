@@ -20,6 +20,7 @@ class dtfmt:
     DEFAULT = 0
     CL = 1
     LOG = 2
+    STAMP = 3
 
 
 ## Prepends a zero to single-digit numbers
@@ -47,6 +48,26 @@ def GetYear(fmt=dtfmt.DEFAULT, string_value=True):
     return year
 
 
+## TODO: Doxygen
+def GetMonthInt(string_value=False):
+    month = GS(strftime(u'%m'))
+    
+    if not string_value:
+        month = int(month)
+    
+    return month
+
+
+## TODO: Doxygen
+def GetDayInt(string_value=False):
+    day = GS(strftime(u'%d'))
+    
+    if not string_value:
+        day = int(day)
+    
+    return day
+
+
 ## Retrieves today's date
 #  
 #  \param changelog
@@ -61,6 +82,10 @@ def GetDate(fmt=dtfmt.DEFAULT):
         # NOTE: May be a simpler method
         return u'{} {}'.format(strftime(u'%a, %d %b'), yr)
     
+    if fmt == dtfmt.STAMP:
+        # YYYYMMDD_HHMMSSmmm
+        return u'{}_{}'.format(strftime(u'%Y%m%d'), GetTime(fmt))
+    
     # Format: YYYY-MM-DD
     return u'{}-{}'.format(yr, strftime(u'%m-%d'))
 
@@ -68,14 +93,18 @@ def GetDate(fmt=dtfmt.DEFAULT):
 ## Retrieves current time
 def GetTime(fmt=dtfmt.DEFAULT):
     ms = None
+    current_time = None
     
-    if fmt in (dtfmt.LOG,):
+    if fmt in (dtfmt.LOG, dtfmt.STAMP,):
         ms = GS(datetime.now().strftime(u'%f'))[:3]
-    
-    current_time = unicode(strftime(u'%T'))
-    
-    if ms != None:
-        current_time = u'{}.{}'.format(current_time, ms)
+        
+        if fmt == dtfmt.STAMP:
+            # HHMMSSmmm
+            current_time = u'{}{}'.format(unicode(strftime(u'%H%M%S')), ms)
+        
+        else:
+            # HH:MM:SS.mmm
+            current_time = u'{}.{}'.format(unicode(strftime(u'%T')), ms)
     
     return current_time
 
