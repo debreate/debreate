@@ -16,7 +16,7 @@ from globals.strings import GS
 #  
 #  Formats:
 #    DEFAULT (none), CL (changelog), LOG (logger)
-class DTFMT:
+class dtfmt:
     DEFAULT = 0
     CL = 1
     LOG = 2
@@ -38,7 +38,7 @@ def _digit_to_string(number):
 #  FIXME: Should return value default to integer?
 #  \return
 #    \b \e String representation of the current year
-def GetYear(fmt=DTFMT.DEFAULT, string_value=True):
+def GetYear(fmt=dtfmt.DEFAULT, string_value=True):
     year = GS(strftime(u'%Y'))
     
     if not string_value:
@@ -73,10 +73,10 @@ def GetDayInt(string_value=False):
 #    If \b \e True, formats output to Debian changelog standard
 #  \return
 #    \b \e String representation of date
-def GetDate(fmt=DTFMT.DEFAULT):
+def GetDate(fmt=dtfmt.DEFAULT):
     yr = GetYear()
     
-    if fmt == DTFMT.CL:
+    if fmt == dtfmt.CL:
         # Format: Wkdy, DD Mon YYYY
         # NOTE: May be a simpler method
         return u'{} {}'.format(strftime(u'%a, %d %b'), yr)
@@ -86,10 +86,10 @@ def GetDate(fmt=DTFMT.DEFAULT):
 
 
 ## Retrieves current time
-def GetTime(fmt=DTFMT.DEFAULT):
+def GetTime(fmt=dtfmt.DEFAULT):
     ms = None
     
-    if fmt in (DTFMT.LOG,):
+    if fmt in (dtfmt.LOG,):
         ms = GS(datetime.now().strftime(u'%f'))[:3]
     
     current_time = unicode(strftime(u'%T'))
@@ -101,5 +101,5 @@ def GetTime(fmt=DTFMT.DEFAULT):
 
 
 ## Retrieves current time zone
-def GetTimeZone(fmt=DTFMT.DEFAULT):
+def GetTimeZone(fmt=dtfmt.DEFAULT):
     return GS(strftime(u'%z'))

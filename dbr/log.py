@@ -14,7 +14,7 @@ from dbr.font               import GetMonospacedFont
 from dbr.language           import GT
 from globals                import ident
 from globals.application    import APP_logo
-from globals.dateinfo       import DTFMT
+from globals.dateinfo       import dtfmt
 from globals.dateinfo       import GetDate
 from globals.dateinfo       import GetTime
 from globals.fileio         import AppendFile
@@ -54,7 +54,7 @@ class DebreateLogger:
         self.log_path = log_path
         
         # Filename output information
-        self.log_file = u'{}/{}.log'.format(self.log_path, GetDate(DTFMT.LOG))
+        self.log_file = u'{}/{}.log'.format(self.log_path, GetDate(dtfmt.LOG))
         
         # Forces space between header & first log entry (changed to None after first entry)
         self.no_strip = u'\n'
@@ -67,7 +67,7 @@ class DebreateLogger:
             os.makedirs(self.log_path)
         
         # Initialize the log with date & time
-        date_time = u'{} {}'.format(GetDate(DTFMT.LOG), GetTime(DTFMT.LOG))
+        date_time = u'{} {}'.format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
         
         log_header = u'--------------- Log Start: {} ---------------\n'.format(date_time)
         
@@ -85,7 +85,7 @@ class DebreateLogger:
         # Don't write to log if user deleted it
         if os.path.isfile(self.log_file):
             # Close the log with date & time
-            date_time = u'{} {}'.format(GetDate(DTFMT.LOG), GetTime(DTFMT.LOG))
+            date_time = u'{} {}'.format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
             
             log_footer = u'\n--------------- Log End:   {} ---------------\n\n'.format(date_time)
             
