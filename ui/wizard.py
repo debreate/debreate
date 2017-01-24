@@ -393,15 +393,15 @@ class WizardPage(ScrolledPanel):
         if not page_info:
             return 0
         
-        page_name = page_info[0]
-        page_info = page_info[1]
+        if not out_name:
+            out_name = self.Name
         
         if TextIsEmpty(page_info):
             return 0
         
         absolute_filename = u'{}/{}'.format(out_dir, out_name)
         
-        Logger.Debug(page_name, u'Exporting: {}'.format(absolute_filename))
+        Logger.Debug(out_name, u'Exporting: {}'.format(absolute_filename))
         
         WriteFile(absolute_filename, page_info)
         
