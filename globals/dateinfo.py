@@ -82,6 +82,10 @@ def GetDate(fmt=dtfmt.DEFAULT):
         # NOTE: May be a simpler method
         return u'{} {}'.format(strftime(u'%a, %d %b'), yr)
     
+    if fmt == dtfmt.STAMP:
+        # YYYYMMDD_HHMMSSmmm
+        return u'{}_{}'.format(strftime(u'%Y%m%d'), GetTime(fmt))
+    
     # Format: YYYY-MM-DD
     return u'{}-{}'.format(yr, strftime(u'%m-%d'))
 
@@ -89,14 +93,18 @@ def GetDate(fmt=dtfmt.DEFAULT):
 ## Retrieves current time
 def GetTime(fmt=dtfmt.DEFAULT):
     ms = None
+    current_time = None
     
-    if fmt in (dtfmt.LOG,):
+    if fmt in (dtfmt.LOG, dtfmt.STAMP,):
         ms = GS(datetime.now().strftime(u'%f'))[:3]
-    
-    current_time = unicode(strftime(u'%T'))
-    
-    if ms != None:
-        current_time = u'{}.{}'.format(current_time, ms)
+        
+        if fmt == dtfmt.STAMP:
+            # HHMMSSmmm
+            current_time = u'{}{}'.format(unicode(strftime(u'%H%M%S')), ms)
+        
+        else:
+            # HH:MM:SS.mmm
+            current_time = u'{}.{}'.format(unicode(strftime(u'%T')), ms)
     
     return current_time
 
