@@ -29,7 +29,7 @@ class dtfmt:
 #    \b \e String representation of digit
 def _digit_to_string(number):
     if number < 10:
-        return unicode(u'0{}'.format(number))
+        return GS(u'0{}'.format(number))
     
     return GS(number)
 
@@ -100,11 +100,11 @@ def GetTime(fmt=dtfmt.DEFAULT):
         
         if fmt == dtfmt.STAMP:
             # HHMMSSmmm
-            current_time = u'{}{}'.format(unicode(strftime(u'%H%M%S')), ms)
+            current_time = u'{}{}'.format(GS(strftime(u'%H%M%S')), ms)
         
         else:
             # HH:MM:SS.mmm
-            current_time = u'{}.{}'.format(unicode(strftime(u'%T')), ms)
+            current_time = u'{}.{}'.format(GS(strftime(u'%T')), ms)
     
     return current_time
 
