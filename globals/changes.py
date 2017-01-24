@@ -10,7 +10,7 @@ from globals.application    import APP_name
 from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
-from globals.dateinfo       import DTFMT
+from globals.dateinfo       import dtfmt
 from globals.dateinfo       import GetDate
 from globals.dateinfo       import GetTime
 from globals.dateinfo       import GetTimeZone
@@ -62,7 +62,7 @@ def _format_lines(lines, preserve_indent=False):
 
 ## Formats date & time for changelog
 def _get_cl_timestamp():
-    fmt = DTFMT.CL
+    fmt = dtfmt.CL
     return u'{} {} {}'.format(GetDate(fmt), GetTime(fmt), GetTimeZone(fmt))
 
 
