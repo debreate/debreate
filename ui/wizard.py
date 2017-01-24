@@ -191,11 +191,18 @@ class Wizard(wx.Panel):
             raise TypeError(u'Must be bool or int value')
     
     
-    ## TODO: Doxygen
-    def GetCurrentPageId(self):
+    ## Retrieve currently showing page
+    def GetCurrentPage(self):
         for page in self.pages:
             if page.IsShown():
-                return page.GetId()
+                return page
+    
+    
+    ## Retrieve currently showing page's ID
+    def GetCurrentPageId(self):
+        current_page = self.GetCurrentPage()
+        if current_page:
+            return current_page.GetId()
     
     
     ## TODO: Doxygen
