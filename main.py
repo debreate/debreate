@@ -235,29 +235,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
         
         self.Wizard = Wizard(self)
-        '''
-        self.page_info = PageInfo(self.Wizard)
-        self.page_control = PageControl(self.Wizard)
-        self.page_depends = PageDepends(self.Wizard)
-        self.page_files = PageFiles(self.Wizard)
-        self.page_scripts = PageScripts(self.Wizard)
-        self.page_clog = PageChangelog(self.Wizard)
-        self.page_cpright = PageCopyright(self.Wizard)
-        self.page_menu = PageMenu(self.Wizard)
-        self.page_build = PageBuild(self.Wizard)
-        
-        self.all_pages = (
-            self.page_control, self.page_depends, self.page_files, self.page_scripts,
-            self.page_clog, self.page_cpright, self.page_menu, self.page_build
-            )
-        
-        bin_pages = (
-            self.page_info, self.page_control, self.page_depends, self.page_files, self.page_scripts,
-            self.page_clog, self.page_cpright, self.page_menu, self.page_build
-            )
-        
-        self.Wizard.SetPages(bin_pages)
-        '''
         
         # *** Current Project Status *** #
         
@@ -281,12 +258,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
         
         self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
-        
-        '''
-        for M in self.menu_page.GetMenuItems():
-            Logger.Debug(__name__, GT(u'Menu page: {}').format(M.GetLabel()))
-            wx.EVT_MENU(self, M.GetId(), self.OnMenuChangePage)
-        '''
         
         # Custom close event shows a dialog box to confirm quit
         wx.EVT_CLOSE(self, self.OnQuit)
