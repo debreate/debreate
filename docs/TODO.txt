@@ -45,6 +45,7 @@ Priority:
 - Use 'data/lintian/tags' for overrides
 - Cache lintian tags list from remote site
 - Mark project dirty when lintian overrides are changed
+- Use datestamp for project save & build stage directories
 
 Non-priority:
 - Set up manpage template creation for executables in file list
