@@ -740,6 +740,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #    \b \e True if the project was closed, \b \e False if should not continue
     def ProjectClose(self):
         if not self.ProjectIsDirty():
+            self.Wizard.ResetPagesInfo()
+            self.LoadedProject = None
+            
             # Everything okay to continue
             return True
         
@@ -747,8 +750,20 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         confirmed = ConfirmSaveDialog(self, GT(u'Unsaved Changes'),
                 text=GT(u'{}\n\n{}'.format(msg_l1, GT(u'Continue?')))).ShowModal()
         
-        # FIXME: Need to check for wx.ID_SAVE value
-        if confirmed != wx.ID_OK:
+        if confirmed == wx.ID_SAVE:
+            if self.LoadedProject:
+                Logger.Debug(__name__, u'Saving modified project ...')
+                
+                self.ProjectSave(self.LoadedProject)
+            
+            else:
+                Logger.Debug(__name__, u'Saving new project ...')
+                
+                # Open file save dialog for new project
+                if self.ProjectSaveAs() != dbrerrno.SUCCESS:
+                    return False
+        
+        elif confirmed != wx.ID_OK:
             return False
         
         self.Wizard.ResetPagesInfo()
