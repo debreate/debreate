@@ -20,6 +20,7 @@ class dtfmt:
     DEFAULT = 0
     CL = 1
     LOG = 2
+    STAMP = 3
 
 
 ## Prepends a zero to single-digit numbers
