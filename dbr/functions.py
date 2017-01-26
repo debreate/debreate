@@ -8,15 +8,13 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, re, shutil, traceback, subprocess, wx
+import commands, os, re, traceback, subprocess, wx
 from urllib2    import URLError
 from urllib2    import urlopen
 
 from dbr.language           import GT
-from globals.application    import APP_name
 from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
-from globals.application    import VERSION_string
 from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
@@ -297,34 +295,6 @@ def BuildBinaryPackageFromTree(root_dir, filename):
     #output = commands.getstatusoutput(cmd)
     
     return 0
-
-
-def CreateTempDirectory():
-    temp_dir = u'/tmp'
-    
-    # Check if we can write to /tmp
-    if not os.access(temp_dir, os.W_OK):
-        temp_dir = os.getcwd()
-    
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, GS(APP_name).lower(), VERSION_string)
-    
-    if os.access(os.path.dirname(temp_dir), os.W_OK):
-        # Start with fresh directory
-        if os.path.isdir(temp_dir):
-            shutil.rmtree(temp_dir)
-        
-        elif os.path.isfile(temp_dir):
-            return dbrerrno.EACCES
-        
-        os.makedirs(temp_dir)
-        return temp_dir
-    
-    return dbrerrno.EACCES
-
-
-def RemoveTempDirectory(temp_dir):
-    if os.access(temp_dir, os.W_OK):
-        shutil.rmtree(temp_dir)
 
 
 def UsingDevelopmentVersion():
