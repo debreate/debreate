@@ -40,3 +40,6 @@ PATH_local = ConcatPaths((PATH_home, u'.local/share/debreate'))
 
 ## Directory where cache files are stored
 PATH_cache = ConcatPaths((PATH_local, u'cache'))
+
+## Directory where log files are stored
+PATH_logs = ConcatPaths((PATH_local, u'logs'))
