@@ -753,7 +753,7 @@ class Panel(WizardPage):
             Logger.Debug(__name__, u'Enabling launcher: {}'.format(enabled))
             
             # TODO: Check for error with first character not being integer
-            Logger.Debug(__name__, GT(u'Importing legacy project; First character (should be "0" or "1"): {}').format(data[0]))
+            #Logger.Debug(__name__, u'Importing legacy project; First character (should be "0" or "1"): {}'.format(data[0]))
             
             if enabled:
                 self.chk_enable.SetValue(True)
