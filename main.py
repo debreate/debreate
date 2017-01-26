@@ -21,6 +21,7 @@ from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
+from dbr.logwindow          import LogWindow
 from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
