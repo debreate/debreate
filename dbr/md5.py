@@ -36,12 +36,18 @@ class MD5Hasher:
         return bool(executable)
     
     
-    ## TODO: Doxygen
-    def WriteMd5(self, builddir, tempdir, parent=None):
+    ## Creates a file of md5 hashes for files within the staged directory
+    #  
+    #  FIXME: Should binary files be handled differently?
+    #  \param stage_dir
+    #    Temporary directory to scan files into list
+    #  \param parent
+    #    The window to be parent of error messages
+    def WriteMd5(self, stage_dir, parent=None):
         CMD_md5sum = GetExecutable(u'md5sum')
         
         # Show an error if the 'md5sum' command does not exist
-        # This is only a failsafe & should never happen
+        # This is only a failsafe & should never actually occur
         if not CMD_md5sum:
             if not parent:
                 parent = GetMainWindow()
@@ -62,12 +68,9 @@ class MD5Hasher:
             
             return False
         
-        tempdir = tempdir.encode(u'utf-8')
-        os.chdir(builddir)
-        
         temp_list = []
         md5_list = [] # Final list used to write the md5sum file
-        for ROOT, DIRS, FILES in os.walk(tempdir):
+        for ROOT, DIRS, FILES in os.walk(stage_dir):
             # Ignore the 'DEBIAN' directory
             if os.path.basename(ROOT) == u'DEBIAN':
                 continue
@@ -78,12 +81,12 @@ class MD5Hasher:
                 temp_list.append(md5)
         
         for item in temp_list:
-            # Remove [tempdir] from the path name in the md5sum so that it has a
+            # Remove [stage_dir] from the path name in the md5sum so that it has a
             # true unix path
             # e.g., instead of "/myfolder_temp/usr/local/bin", "/usr/local/bin"
-            sum_split = item.split(u'{}/'.format(tempdir))
+            sum_split = item.split(u'{}/'.format(stage_dir))
             sum_join = u''.join(sum_split)
             md5_list.append(sum_join)
         
         # Create the md5sums file in the "DEBIAN" directory
-        return WriteFile(u'{}/DEBIAN/md5sums'.format(tempdir), u'{}\n'.format(u'\n'.join(md5_list)))
+        return WriteFile(u'{}/DEBIAN/md5sums'.format(stage_dir), u'{}\n'.format(u'\n'.join(md5_list)))
