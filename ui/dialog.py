@@ -100,18 +100,6 @@ class StandardFileDialog(wx.FileDialog):
     
     
     ## TODO: Doxygen
-    def GetDirectory(self, directory=None):
-        if directory == None:
-            directory = self.GetPath()
-        
-        # Recursively check for first directory in hierarchy
-        if not os.path.isdir(directory):
-            return self.GetDirectory(os.path.dirname(directory))
-        
-        return directory
-    
-    
-    ## TODO: Doxygen
     def GetExtension(self):
         return self.Extension
     
