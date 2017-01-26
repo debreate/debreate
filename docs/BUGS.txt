@@ -8,7 +8,6 @@ Release:
   - no-section-field
   - md5sums-lists-nonexistent-file usr/share/debreate/bitmaps/browse64.pn
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
-- Appending to multiple dependencies fails (0.8)
 - PanelMenu pops up no matter where you click on the PanelMenuBar
 - wx._core.PyDeadObjectError caused by input.essential.EssentialField.NotifyMainWindow when app is closed
 - wx 3.0:
