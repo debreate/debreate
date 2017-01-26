@@ -564,26 +564,15 @@ def GetFileOpenDialog(parent, title, ext_filters, defaultExt=None):
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None,
-        confirm_overwrite=True):
+def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
     if parent == None:
         parent = GetMainWindow()
     
     if isinstance(wildcard, (list, tuple)):
         wildcard = u'|'.join(wildcard)
     
-    '''
-    # FIXME: Broken
-    file_save = StandardFileSaveDialog(parent, title, defaultExt=extension,
-            wildcard=ext_filters)
-    '''
-    
-    FD_STYLE = wx.FD_SAVE|wx.FD_CHANGE_DIR
-    if confirm_overwrite:
-        FD_STYLE = FD_STYLE|wx.FD_OVERWRITE_PROMPT
-    
-    file_save = wx.FileDialog(parent, title, os.getcwd(), wildcard=wildcard, style=FD_STYLE)
-    file_save.CenterOnParent()
+    file_save = StandardFileDialog(parent, title, defaultExt=extension,
+            wildcard=wildcard, style=wx.FD_SAVE)
     
     return file_save
 
