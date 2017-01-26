@@ -172,16 +172,6 @@ class StandardFileDialog(wx.FileDialog):
         return wx.FileDialog.SetFilename(self, filename)
 
 
-# FIXME: Unneeded?
-class StandardFileSaveDialog(StandardFileDialog):
-    def __init__(self, parent, title, defaultExt=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr):
-        
-        # Initialize parent class
-        StandardFileDialog.__init__(self, parent, title, defaultExt=defaultExt,
-                wildcard=wildcard, style=wx.FD_SAVE)
-
-
 # FIXME: Unneded?
 class StandardFileOpenDialog(StandardFileDialog):
     def __init__(self, parent, title, defaultExt=wx.EmptyString,
