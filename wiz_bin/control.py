@@ -28,6 +28,7 @@ from input.text             import TextAreaPanel
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
+from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -441,7 +442,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnBrowse(self, event=None):
-        browse_dialog = wx.FileDialog(GetMainWindow(), GT(u'Open File'), os.getcwd(), style=wx.FD_CHANGE_DIR)
+        browse_dialog = GetFileOpenDialog(GetMainWindow(), GT(u'Open File'))
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
     
