@@ -262,10 +262,10 @@ class Panel(WizardPage):
                             self.executables.SetItemTextColour(exe_index, wx.RED)
                         
                         else:
-                            Logger.Warning(__name__, u'{}: The executables destination is not valid'.format(__name__))
+                            Logger.Warn(__name__, u'{}: The executables destination is not valid'.format(__name__))
                     
                     except IndexError:
-                        Logger.Warning(__name__, u'{}: The executables destination is not available'.format(__name__))
+                        Logger.Warn(__name__, u'{}: The executables destination is not available'.format(__name__))
                 
                 i_index += 1
         
