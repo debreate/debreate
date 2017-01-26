@@ -366,6 +366,10 @@ def ReplaceStandardButtons(dialog):
         print(u'ERROR: [{}] FIXME: Cannot replace buttons on wx.MessageDialog'.format(__name__))
         return
     
+    elif isinstance(dialog, wx.FileDialog):
+        print(u'ERROR: [{}] FIXME: Cannot replace buttons on wx.FileDialog'.format(__name__))
+        return
+    
     lyt_buttons = _get_button_sizer(dialog.GetSizer())
     
     removed_button_ids = []
