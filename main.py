@@ -49,7 +49,6 @@ from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
 from ui.distcache           import DistNamesCacheDialog
 from ui.layout              import BoxSizer
-from ui.logwindow           import LogWindow
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
