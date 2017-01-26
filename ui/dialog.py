@@ -543,24 +543,18 @@ def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
     return file_open
 
 
-## Retrieves a dialog for display
+## Retrieves a 'save file' dialog for display
 #  
-#  If 'Use custom dialogs' is selected from
-#    the main window, the a custom defined
-#    dialog is returned. Otherwise the systems
-#    default dialog is used.
-#    FIXME: Perhaps should be moved to ui.output
-#  \param main_window
-#        Debreate's main window class
+#  \param parent
+#    \b \e wx.Window instance that should be dialog's parent
 #  \param title
-#        Text to be shown in the dialogs's title bar
+#    Text to be shown in the dialogs's title bar
 #  \param wildcard
-#        Wildcard to be used to filter filenames
-#  \param defaultExt
-#        The default filename extension to use when opening or closing a file
-#          Only applies to custom dialogs
+#    Wildcard to filter filenames
+#  \param extension
+#    The default filename extension to use when saving a file
 #  \return
-#        The dialog window to be shown
+#    \b \e StandardFileDialog instance
 def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
     if parent == None:
         parent = GetMainWindow()
