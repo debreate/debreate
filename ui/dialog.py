@@ -557,19 +557,20 @@ def GetFileOpenDialog(parent, title, ext_filters, defaultExt=None):
 #        Debreate's main window class
 #  \param title
 #        Text to be shown in the dialogs's title bar
-#  \param ext_filter
+#  \param wildcard
 #        Wildcard to be used to filter filenames
 #  \param defaultExt
 #        The default filename extension to use when opening or closing a file
 #          Only applies to custom dialogs
 #  \return
 #        The dialog window to be shown
-def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwrite=True):
+def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None,
+        confirm_overwrite=True):
     if parent == None:
         parent = GetMainWindow()
     
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
+    if isinstance(wildcard, (list, tuple)):
+        wildcard = u'|'.join(wildcard)
     
     '''
     # FIXME: Broken
@@ -581,7 +582,7 @@ def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwr
     if confirm_overwrite:
         FD_STYLE = FD_STYLE|wx.FD_OVERWRITE_PROMPT
     
-    file_save = wx.FileDialog(parent, title, os.getcwd(), wildcard=ext_filters, style=FD_STYLE)
+    file_save = wx.FileDialog(parent, title, os.getcwd(), wildcard=wildcard, style=FD_STYLE)
     file_save.CenterOnParent()
     
     return file_save
