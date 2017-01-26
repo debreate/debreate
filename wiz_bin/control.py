@@ -31,6 +31,7 @@ from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
 from ui.dialog              import GetFileOpenDialog
+from ui.dialog              import GetFileSaveDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -503,13 +504,12 @@ class Panel(WizardPage):
         dia.Destroy()
     
     
-    ## TODO: Doxygen
+    ## Export control information to text file
     def OnSave(self, event=None):
         # Get data to write to control file
         control = self.GetCtrlInfo()
         
-        save_dialog = wx.FileDialog(GetMainWindow(), u'Save Control Information', os.getcwd(),
-                style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        save_dialog = GetFileSaveDialog(GetMainWindow(), GT(u'Save Control Information'))
         save_dialog.SetFilename(u'control')
         
         if ShowDialog(save_dialog):
