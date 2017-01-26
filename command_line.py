@@ -180,6 +180,10 @@ def ParseArguments(arg_list):
                 key = L
                 break
         
+        # Allow using 'warning' as 'alias' for 'log-level'
+        if key == u'log-level' and value == u'warning':
+            value = u'warn'
+        
         parsed_args_v[key] = value
     
     for A in parsed_args_s:
