@@ -18,6 +18,9 @@ from globals.application    import APP_logo
 from globals.fileio         import ReadFile
 from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanel
+from ui.dialog              import GetFileOpenDialog
+from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 
 
@@ -154,25 +157,18 @@ class LogWindow(wx.Dialog):
     
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
-        main_window = GetMainWindow()
+        log_select = GetFileOpenDialog(self, GT(u'Open Log'))
         
-        log_select = wx.FileDialog(main_window, GT(u'Open Log'),
-                os.getcwd(), style=wx.FD_OPEN|wx.FD_CHANGE_DIR|wx.FD_FILE_MUST_EXIST)
-        
-        if log_select.ShowModal() == wx.ID_OK:
+        if ShowDialog(log_select):
             log_file = log_select.GetPath()
             
             if os.path.isfile(log_file):
                 self.SetLogFile(log_file)
+                
                 return
             
-            # NOTE: Cannot import error module because it imports this one
-            wx.MessageDialog(
-                    main_window,
-                    u'{}: {}'.format(GT(u'File does not exist'), log_file),
-                    GT(u'Error'),
-                    style=wx.OK|wx.ICON_ERROR
-                    ).ShowModal()
+            ShowErrorDialog(u'{}: {}'.format(GT(u'File does not exist'), log_file),
+                    parent=self)
     
     
     ## Guarantess that menu item is synched with window's shown status
