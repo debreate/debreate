@@ -137,7 +137,7 @@ from startup.startup        import SetAppInitialized
 
 # Log window refresh interval
 if u'log-interval' in parsed_args_v:
-    from dbr.logwindow import SetLogWindowRefreshInterval
+    from ui.logwindow import SetLogWindowRefreshInterval
     if unicode(parsed_args_v[u'log-interval']).isnumeric():
         SetLogWindowRefreshInterval(int(parsed_args_v[u'log-interval']))
 

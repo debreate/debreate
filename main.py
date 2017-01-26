@@ -21,7 +21,6 @@ from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.logwindow          import LogWindow
 from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
@@ -50,6 +49,7 @@ from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
 from ui.distcache           import DistNamesCacheDialog
 from ui.layout              import BoxSizer
+from ui.logwindow           import LogWindow
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
