@@ -19,6 +19,7 @@ from globals.fileio         import WriteFile
 from globals.ident          import genid
 from globals.ident          import page_ids
 from globals.ident          import pgid
+from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
@@ -438,19 +439,19 @@ class Panel(WizardPage):
         def format_script(script):
             return u'\n'.join(script.split(u'\n')[2:])  # Use '2' to remove first two lines
         
-        if unicode(preinst[0]).isnumeric():
+        if GS(preinst[0]).isnumeric():
             if int(preinst[0]):
                 self.script_objects[0][0].SetValue(format_script(preinst))
         
-        if unicode(postinst[0]).isnumeric():
+        if GS(postinst[0]).isnumeric():
             if int(postinst[0]):
                 self.script_objects[1][0].SetValue(format_script(postinst))
         
-        if unicode(prerm[0]).isnumeric():
+        if GS(prerm[0]).isnumeric():
             if int(prerm[0]):
                 self.script_objects[2][0].SetValue(format_script(prerm))
         
-        if unicode(postrm[0]).isnumeric():
+        if GS(postrm[0]).isnumeric():
             if int(postrm[0]):
                 self.script_objects[3][0].SetValue(format_script(postrm))
 

@@ -27,6 +27,7 @@ from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
 from globals.stage          import CreateStage
 from globals.stage          import RemoveStage
+from globals.strings        import GS
 from globals.strings        import RemoveEmptyLines
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -421,7 +422,7 @@ class Panel(WizardPage):
         for O in self.build_options:
             # Leave options out that should not be saved
             if O not in omit_options:
-                fields[O.GetName()] = unicode(O.GetValue())
+                fields[O.GetName()] = GS(O.GetValue())
         
         page = wx.EmptyString
         
