@@ -113,23 +113,34 @@ class StandardFileDialog(wx.FileDialog):
         return False
     
     
+    ## Checks if dialog is using FD_SAVE style
+    def IsSaveDialog(self):
+        return self.WindowStyleFlag & wx.FD_SAVE
+    
+    
     ## TODO: Doxygen
     def OnAccept(self, event=None):
-        if self.Path:
-            if os.path.isfile(self.Path):
-                overwrite = OverwriteDialog(self, self.Path)
-                
-                if not ShowDialog(overwrite):
-                    return
-                
-                try:
-                    os.remove(self.Path)
-                
-                except OSError:
-                    # File was removed before confirmation
-                    Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
-                    #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
-                    #print(u'FIXME: Cannot import logger')
+        if self.IsSaveDialog():
+            if self.Extension:
+                if not self.Filename.endswith(self.Extension):
+                    # Adds extensions if not specified
+                    self.SetFilename(self.Filename)
+            
+            if self.Path:
+                if os.path.isfile(self.Path):
+                    overwrite = OverwriteDialog(self, self.Path)
+                    
+                    if not ShowDialog(overwrite):
+                        return
+                    
+                    try:
+                        os.remove(self.Path)
+                    
+                    except OSError:
+                        # File was removed before confirmation
+                        Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
+                        #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
+                        #print(u'FIXME: Cannot import logger')
             
             # Because we are not using default FileDialog methods, we must set
             # directory manually.
@@ -166,36 +177,6 @@ class StandardFileDialog(wx.FileDialog):
         
         return wx.FileDialog.SetFilename(self, filename)
 
-
-# FIXME: Unneeded?
-class StandardFileSaveDialog(StandardFileDialog):
-    def __init__(self, parent, title, defaultExt=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr):
-        
-        # Initialize parent class
-        StandardFileDialog.__init__(self, parent, title, defaultExt=defaultExt,
-                wildcard=wildcard, style=wx.FD_SAVE)
-
-
-# FIXME: Unneded?
-class StandardFileOpenDialog(StandardFileDialog):
-    def __init__(self, parent, title, defaultExt=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr):
-        
-        # Initialize parent class
-        StandardFileDialog.__init__(self, parent, title, defaultExt=defaultExt,
-                wildcard=wildcard, style=wx.FD_OPEN)
-    
-    
-    ## TODO: Doxygen
-    def OnAccept(self, event=None):
-        # File & directory dialogs should call this function
-        ChangeWorkingDirectory(self.GetDirectory())
-        
-        self.EndModal(wx.ID_OK)
-
-
-# *** MESSAGE & ERROR *** #
 
 ## Displays a dialog with message & details
 #  
@@ -528,56 +509,58 @@ def GetDirDialog(parent, title):
     return dir_open
 
 
-## TODO: Doxygen
-def GetFileOpenDialog(parent, title, ext_filters, defaultExt=None):
+## Formats a wildcard list into a string
+def _format_wildcard(wildcard):
+    if isinstance(wildcard, (list, tuple)):
+        wildcard = u'|'.join(wildcard)
+    
+    return wildcard
+
+
+## Retrieves an 'open file' dialog for display
+#  
+#  \param parent
+#    \b \e wx.Window instance that should be dialog's parent
+#  \param title
+#    Text to be shown in the dialogs's title bar
+#  \param wildcard
+#    Wildcard to filter filenames
+#  \param extension
+#    The default filename extension to use when opening a file
+#  \return
+#    \b \e StandardFileDialog instance
+def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
     if parent == None:
         parent = GetMainWindow()
     
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
+    wildcard = _format_wildcard(wildcard)
     
-    file_open = StandardFileOpenDialog(parent, title, wildcard=ext_filters)
+    file_open = StandardFileDialog(parent, title, defaultExt=extension, wildcard=wildcard,
+            style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
     
     return file_open
 
 
-## Retrieves a dialog for display
+## Retrieves a 'save file' dialog for display
 #  
-#  If 'Use custom dialogs' is selected from
-#    the main window, the a custom defined
-#    dialog is returned. Otherwise the systems
-#    default dialog is used.
-#    FIXME: Perhaps should be moved to ui.output
-#  \param main_window
-#        Debreate's main window class
+#  \param parent
+#    \b \e wx.Window instance that should be dialog's parent
 #  \param title
-#        Text to be shown in the dialogs's title bar
-#  \param ext_filter
-#        Wildcard to be used to filter filenames
-#  \param defaultExt
-#        The default filename extension to use when opening or closing a file
-#          Only applies to custom dialogs
+#    Text to be shown in the dialogs's title bar
+#  \param wildcard
+#    Wildcard to filter filenames
+#  \param extension
+#    The default filename extension to use when saving a file
 #  \return
-#        The dialog window to be shown
-def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwrite=True):
+#    \b \e StandardFileDialog instance
+def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
     if parent == None:
         parent = GetMainWindow()
     
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
+    wildcard = _format_wildcard(wildcard)
     
-    '''
-    # FIXME: Broken
-    file_save = StandardFileSaveDialog(parent, title, defaultExt=extension,
-            wildcard=ext_filters)
-    '''
-    
-    FD_STYLE = wx.FD_SAVE|wx.FD_CHANGE_DIR
-    if confirm_overwrite:
-        FD_STYLE = FD_STYLE|wx.FD_OVERWRITE_PROMPT
-    
-    file_save = wx.FileDialog(parent, title, os.getcwd(), wildcard=ext_filters, style=FD_STYLE)
-    file_save.CenterOnParent()
+    file_save = StandardFileDialog(parent, title, defaultExt=extension,
+            wildcard=wildcard, style=wx.FD_SAVE)
     
     return file_save
 
