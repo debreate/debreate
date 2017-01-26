@@ -677,16 +677,18 @@ class Panel(WizardPage):
     # FIXME: Hashes for .png images (binary files???) is not the same as those
     #        produced by debuild
     # TODO:  Create global md5 function???
-    def OnBuildMD5Sum(self, target_dir):
+    #  \param stage_dir
+    #    Temporary directory where to scan files
+    def OnBuildMD5Sum(self, stage_dir):
         Logger.Debug(__name__,
-                GT(u'Creating MD5sum file in {}').format(target_dir))
+                GT(u'Creating MD5sum file in {}').format(stage_dir))
         
         md5_list = []
         #md5hash_size = 32
-        debian_dir = u'{}/DEBIAN'.format(target_dir).replace(u'//', u'/')
+        debian_dir = u'{}/DEBIAN'.format(stage_dir).replace(u'//', u'/')
         text_formats = (u'text', u'script',)
         
-        for ROOT, DIRS, FILES in os.walk(target_dir):
+        for ROOT, DIRS, FILES in os.walk(stage_dir):
             for F in FILES:
                 if ROOT != debian_dir:
                     F = ConcatPaths((ROOT, F,))
@@ -705,7 +707,7 @@ class Panel(WizardPage):
                     md5 = commands.getoutput(u'{} -{} "{}"'.format(GetExecutable(u'md5sum'), read_format, F))
                     
                     # Need to remove stage dir from file path
-                    md5 = md5.replace(u'{}/'.format(target_dir), u'')
+                    md5 = md5.replace(u'{}/'.format(stage_dir), u'')
                     md5_list.append(md5)
         
         if not md5_list:
