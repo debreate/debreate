@@ -533,7 +533,7 @@ def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
     wildcard = _format_wildcard(wildcard)
     
     file_open = StandardFileDialog(parent, title, defaultExt=extension, wildcard=wildcard,
-            style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
+            style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST|wx.FD_CHANGE_DIR)
     
     return file_open
 
