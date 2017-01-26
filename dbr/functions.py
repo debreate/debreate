@@ -8,17 +8,15 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, re, shutil, traceback, subprocess, wx
+import commands, os, re, traceback, subprocess, wx
 from datetime   import date
 from datetime   import datetime
 from urllib2    import URLError
 from urllib2    import urlopen
 
 from dbr.language           import GT
-from globals.application    import APP_name
 from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
-from globals.application    import VERSION_string
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
