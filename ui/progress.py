@@ -92,7 +92,6 @@ class ProgressDialog(wx.ProgressDialog):
     def Destroy(self, *args, **kwargs):
         # Re-enable parent/main window if previously disabled
         # ???: May not be necessary
-        parent = self.GetParent()
         main_window = GetMainWindow()
         
         if not FieldEnabled(main_window):
@@ -100,10 +99,10 @@ class ProgressDialog(wx.ProgressDialog):
             
             main_window.Enable()
         
-        if not FieldEnabled(parent):
+        if self.Parent and not FieldEnabled(self.Parent):
             Logger.Debug(__name__, u'Re-enabling parent')
             
-            parent.Enable()
+            self.Parent.Enable()
         
         if wx.MAJOR_VERSION < 3:
             self.EndModal(0)
