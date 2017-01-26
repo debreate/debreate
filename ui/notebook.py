@@ -49,7 +49,7 @@ class Notebook(AuiNotebook):
         
         # Existing instance should already have an ID
         elif win_id != wx.ID_ANY:
-            Logger.Warning(__name__, u'Option "win_id" is only used if "page" is None')
+            Logger.Warn(__name__, u'Option "win_id" is only used if "page" is None')
         
         if wx.MAJOR_VERSION <= 2:
             if not isinstance(imageId, wx.Bitmap):

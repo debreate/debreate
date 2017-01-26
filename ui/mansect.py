@@ -422,6 +422,6 @@ class ManSection(ManSectBase):
             
             return True
         
-        Logger.Warning(__name__, u'Could not set section name: {}'.format(section_name))
+        Logger.Warn(__name__, u'Could not set section name: {}'.format(section_name))
         
         return False

@@ -78,7 +78,7 @@ def GetLicenseTemplateFile(l_name):
     if os.path.isfile(l_template):
         Logger.Info(__name__, GT(u'Loading license template: {}'.format(l_template)))
     else:
-        Logger.Warning(__name__, GT(u'License template not found: {}'.format(l_template)))
+        Logger.Warn(__name__, GT(u'License template not found: {}'.format(l_template)))
     
     return l_template
 

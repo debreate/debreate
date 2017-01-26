@@ -410,14 +410,14 @@ class WizardPage(ScrolledPanel):
     
     ## Exports data for the build process
     def ExportBuild(self, target):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ExportBuild').format(self.GetName()))
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method ExportBuild').format(self.GetName()))
         
         return (dbrerrno.SUCCESS, None)
     
     
     ## TODO: Doxygen
     def Get(self, get_module=False):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
     ## TODO: Doxygen
@@ -465,7 +465,7 @@ class WizardPage(ScrolledPanel):
     
     ## TODO: Doxygen
     def ImportFromFile(self, filename):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
     
     
     ## This method should contain anything that needs to be initialized only after all pages are constructed
@@ -477,11 +477,11 @@ class WizardPage(ScrolledPanel):
     
     ## TODO: Doxygen
     def IsExportable(self):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method IsExportable').format(self.GetName()))
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method IsExportable').format(self.GetName()))
         
         return False
     
     
     ## TODO: Doxygen
     def Reset(self):
-        Logger.Warning(__name__, GT(u'Page {} does not override inherited method Reset').format(self.GetName()))
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method Reset').format(self.GetName()))
