@@ -247,7 +247,7 @@ if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
     
-    if Debreate.OpenProject(project_file):
+    if Debreate.ProjectOpen(project_file):
         working_dir = os.path.dirname(project_file)
 
 # Set working directory
