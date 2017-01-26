@@ -8,6 +8,7 @@
 
 import wx
 
+from dbr.log            import Logger
 from globals.strings    import TextIsEmpty
 from ui.button          import ReplaceStandardButtons
 
@@ -34,12 +35,10 @@ class TextEntryDialog(wx.TextEntryDialog):
                 bound_id = field_id
         
         if not bound_id:
-            # FIXME: Can't use Logger in this module
-            print(u'WARNING: [{}] Confirm button was not bound to button event, insertion point will not be updated'.format(__name__))
+            Logger.Warn(__name__, u'Confirm button was not bound to button event, insertion point will not be updated')
         
         elif bound_id != wx.ID_OK:
-            # FIXME: Can't use Logger in this module
-            print(u'WARNING: [{}] Button event was bound to button with non-ID ID_OK: {}'.format(__name__, bound_id))
+            Logger.Warn(__name__, u'Button event was bound to button with non-ID ID_OK: {}'.format(bound_id))
     
     
     ## Clear the text input
