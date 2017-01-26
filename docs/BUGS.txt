@@ -11,7 +11,7 @@ Release:
 - Appending to multiple dependencies fails (0.8)
 - PanelMenu pops up no matter where you click on the PanelMenuBar
 - wx._core.PyDeadObjectError caused by input.essential.EssentialField.NotifyMainWindow when app is closed
-- Open file dialog not saving directory
+- Cannot open legacy projects from command line
 - wx 3.0:
   - 'Refresh' & 'Browse' buttons on hidden on files page if width is sized down
 
