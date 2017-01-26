@@ -6,12 +6,10 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, shutil, wx
+import os, wx
 
 from dbr.font               import MONOSPACED_MD
-from dbr.functions          import CreateTempDirectory
 from dbr.functions          import GetContainerItemCount
-from dbr.functions          import RemoveTempDirectory
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals.application    import APP_name
@@ -20,7 +18,6 @@ from globals.application    import AUTHOR_name
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.dateinfo       import GetYear
-from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
@@ -391,33 +388,7 @@ class AboutDialog(wx.Dialog):
             log_text = u'{}{}'.format(log_text,
                                       GT(u'Cannot decode, unrecognized mimetype: {}').format(changelog_mimetype))
             
-            if changelog_mimetype == u'application/gzip':
-                temp_dir = CreateTempDirectory()
-                
-                shutil.copy(CHANGELOG, temp_dir)
-                
-                CMD_gzip = GetExecutable(u'gzip')
-                
-                if CMD_gzip:
-                    prev_dir = os.getcwd()
-                    os.chdir(temp_dir)
-                    
-                    gzip_output = commands.getstatusoutput(u'{} -fd {}'.format(CMD_gzip, os.path.basename(CHANGELOG)))
-                    
-                    Logger.Debug(__name__,
-                            GT(u'gzip decompress; Code: {}, Output: {}').format(gzip_output[0], gzip_output[1]))
-                    
-                    os.chdir(prev_dir)
-                
-                changelog_file = os.path.basename(CHANGELOG).split(u'.')[0]
-                changelog_file = u'{}/{}'.format(temp_dir, changelog_file)
-                
-                if os.path.isfile(changelog_file):
-                    log_text = ReadFile(changelog_file)
-                
-                RemoveTempDirectory(temp_dir)
-            
-            elif changelog_mimetype == u'text/plain':
+            if changelog_mimetype == u'text/plain':
                 log_text = ReadFile(CHANGELOG)
             
             else:
