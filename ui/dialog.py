@@ -157,16 +157,21 @@ class StandardFileDialog(wx.FileDialog):
     
     ## TODO: Doxygen
     def OnAccept(self, event=None):
-        path = self.GetPath()
-        
-        if path:
-            if os.path.isfile(path):
-                overwrite = OverwriteDialog(GetMainWindow(), path).ShowModal()
+        if self.Path:
+            if os.path.isfile(self.Path):
+                overwrite = OverwriteDialog(self, self.Path)
                 
-                if overwrite != wx.ID_YES:
+                if not ShowDialog(overwrite):
                     return
                 
-                os.remove(path)
+                try:
+                    os.remove(self.Path)
+                
+                except OSError:
+                    # File was removed before confirmation
+                    Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
+                    #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
+                    #print(u'FIXME: Cannot import logger')
             
             # File & directory dialogs should call this function
             ChangeWorkingDirectory(self.GetDirectory())
