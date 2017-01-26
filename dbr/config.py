@@ -18,6 +18,7 @@ from globals.compression    import compression_formats
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.paths          import PATH_home
+from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 
 
@@ -139,10 +140,10 @@ def WriteConfig(k_name, k_value, conf=default_config):
     
     # tuple is the only type we need to format
     if isinstance(k_value, tuple):
-        k_value = u'{},{}'.format(unicode(k_value[0]), unicode(k_value[1]))
+        k_value = u'{},{}'.format(GS(k_value[0]), GS(k_value[1]))
     
     else:
-        k_value = unicode(k_value)
+        k_value = GS(k_value)
     
     conf_text = wx.EmptyString
     
@@ -159,7 +160,7 @@ def WriteConfig(k_name, k_value, conf=default_config):
             conf_text = u''
     
     else:
-        conf_text = u'[CONFIG-{}.{}]'.format(unicode(config_version[0]), unicode(config_version[1]))
+        conf_text = u'[CONFIG-{}.{}]'.format(GS(config_version[0]), GS(config_version[1]))
     
     conf_lines = conf_text.split(u'\n')
     

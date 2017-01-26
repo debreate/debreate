@@ -21,6 +21,7 @@ from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
+from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_STRING
 
@@ -111,9 +112,9 @@ def RequirePython(version):
 #  FIXME: time.strftime can be used for all date & time functions
 def prepend_zero(number):
     if number < 10:
-        return unicode(u'0{}'.format(number))
+        return GS(u'0{}'.format(number))
     
-    return unicode(number)
+    return GS(number)
 
 
 def GetDate():
@@ -171,7 +172,7 @@ def GetSystemLicensesList():
 #  \return
 #        \b \e bool : Alphabet characters found
 def HasAlpha(value):
-    return (re.search(u'[a-zA-Z]', unicode(value)) != None)
+    return (re.search(u'[a-zA-Z]', GS(value)) != None)
 
 
 ## Finds integer value from a string, float, tuple, or list
@@ -193,7 +194,7 @@ def GetInteger(value):
     
     elif v_type in (unicode, str):
         # Convert because of unsupported methods in str class
-        value = unicode(value)
+        value = GS(value)
         
         if HasAlpha(value):
             return None

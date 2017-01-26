@@ -16,6 +16,7 @@ from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import page_ids
 from globals.ident          import pgid
+from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -406,9 +407,9 @@ class Panel(WizardPage):
         if not TextIsEmpty(launcher_type):
             desktop_list.append(u'Type={}'.format(launcher_type))
         
-        desktop_list.append(u'Terminal={}'.format(unicode(self.sel_term.GetSelection() == 0).lower()))
+        desktop_list.append(u'Terminal={}'.format(GS(self.sel_term.GetSelection() == 0).lower()))
         
-        desktop_list.append(u'StartupNotify={}'.format(unicode(self.sel_notify.GetSelection() == 0).lower()))
+        desktop_list.append(u'StartupNotify={}'.format(GS(self.sel_notify.GetSelection() == 0).lower()))
         
         encoding = self.ti_enc.GetValue()
         if not TextIsEmpty(encoding):
