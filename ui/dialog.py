@@ -523,13 +523,20 @@ def GetDirDialog(parent, title):
     return dir_open
 
 
+## Formats a wildcard list into a string
+def _format_wildcard(wildcard):
+    if isinstance(wildcard, (list, tuple)):
+        wildcard = u'|'.join(wildcard)
+    
+    return wildcard
+
+
 ## TODO: Doxygen
 def GetFileOpenDialog(parent, title, ext_filters, defaultExt=None):
     if parent == None:
         parent = GetMainWindow()
     
-    if isinstance(ext_filters, (list, tuple)):
-        ext_filters = u'|'.join(ext_filters)
+    ext_filters = _format_wildcard(wildcard)
     
     file_open = StandardFileOpenDialog(parent, title, wildcard=ext_filters)
     
@@ -558,8 +565,7 @@ def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
     if parent == None:
         parent = GetMainWindow()
     
-    if isinstance(wildcard, (list, tuple)):
-        wildcard = u'|'.join(wildcard)
+    wildcard = _format_wildcard(wildcard)
     
     file_save = StandardFileDialog(parent, title, defaultExt=extension,
             wildcard=wildcard, style=wx.FD_SAVE)
