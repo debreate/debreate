@@ -115,6 +115,11 @@ class StandardFileDialog(wx.FileDialog):
     
     ## TODO: Doxygen
     def OnAccept(self, event=None):
+        if self.Extension:
+            if not self.Filename.endswith(self.Extension):
+                # Adds extensions if not specified
+                self.SetFilename(self.Filename)
+        
         if self.Path:
             if os.path.isfile(self.Path):
                 overwrite = OverwriteDialog(self, self.Path)
