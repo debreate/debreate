@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+## \package dbr.language
+
+# MIT licensing
+# See: docs/LICENSE.txt
+
+
 import os, sys, gettext
 
 
