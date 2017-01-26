@@ -113,6 +113,7 @@ class StandardFileDialog(wx.FileDialog):
         return False
     
     
+    ## Checks if dialog is using FD_SAVE style
     def IsSaveDialog(self):
         return self.WindowStyleFlag & wx.FD_SAVE
     
