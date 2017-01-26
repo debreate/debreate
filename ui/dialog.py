@@ -138,17 +138,15 @@ class StandardFileDialog(wx.FileDialog):
                     except OSError:
                         # File was removed before confirmation
                         Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
-                        #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
-                        #print(u'FIXME: Cannot import logger')
-            
-            # Because we are not using default FileDialog methods, we must set
-            # directory manually.
-            self.SetDirectory(os.path.dirname(self.Path))
-            
-            # File & directory dialogs should call this function
-            ChangeWorkingDirectory(self.GetDirectory())
-            
-            self.EndModal(self.AffirmativeId)
+        
+        # Because we are not using default FileDialog methods, we must set
+        # directory manually.
+        self.SetDirectory(os.path.dirname(self.Path))
+        
+        # File & directory dialogs should call this function
+        ChangeWorkingDirectory(self.GetDirectory())
+        
+        self.EndModal(self.AffirmativeId)
     
     
     ## Updates the Filename & Path attributes
