@@ -37,11 +37,11 @@ from ui.layout              import BoxSizer
 #    \b \e str : The file to which messages will be written
 class DebreateLogger:
     # Logging levels
-    INFO, WARNING, ERROR, DEBUG = range(4)
+    INFO, WARN, ERROR, DEBUG = range(4)
     
     log_level_list = {
         INFO: u'info',
-        WARNING: u'warning',
+        WARN: u'warn',
         ERROR: u'error',
         DEBUG: u'debug',
     }
@@ -101,11 +101,11 @@ class DebreateLogger:
     #          or None for invalid log level
     def CheckLogLevel(self, l_level):
         
-        # Check if l_level is of type INFO, WARNING, ERROR, DEBUG
+        # Check if l_level is of type INFO, WARN, ERROR, DEBUG
         if l_level in self.log_level_list:
             return l_level
         
-        # Check if l_level is a string value of 'info', 'warning', 'error', 'debug'
+        # Check if l_level is a string value of 'info', 'warn', 'error', 'debug'
         if isinstance(l_level, (unicode, str)):
             for L in self.log_level_list:
                 if l_level.lower() == self.log_level_list[L].lower():
@@ -146,8 +146,8 @@ class DebreateLogger:
     def Info(self, l_script, l_message, newline=False):
         self.LogMessage(u'info', l_script, l_message, newline)
     
-    def Warning(self, l_script, l_message, newline=False):
-        self.LogMessage(u'warning', l_script, l_message, newline)
+    def Warn(self, l_script, l_message, newline=False):
+        self.LogMessage(u'warn', l_script, l_message, newline)
     
     
     def Error(self, l_script, l_message, newline=False):

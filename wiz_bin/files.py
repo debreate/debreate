@@ -598,7 +598,7 @@ class Panel(WizardPage):
                 target_dir = files_data[current_file].split(u' -> ')[2]
                 
                 if not self.lst_files.AddFile(filename, source_dir, target_dir, executable):
-                    Logger.Warning(__name__, GT(u'File not found: {}').format(absolute_filename))
+                    Logger.Warn(__name__, GT(u'File not found: {}').format(absolute_filename))
                     missing_files.append(absolute_filename)
                 
                 if progress:

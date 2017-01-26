@@ -422,7 +422,7 @@ class DirectoryTree(wx.TreeCtrl):
                         item.AddChild(child)
                 
                 except OSError:
-                    Logger.Warning(__name__, u'No such file or directory: {}'.format(item_path))
+                    Logger.Warn(__name__, u'No such file or directory: {}'.format(item_path))
         
         # Recursively expand parent items
         parent = self.GetItemParent(item)

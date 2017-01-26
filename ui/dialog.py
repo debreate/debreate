@@ -628,7 +628,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
     # Instantiate Logger message type so it can be optionally changed
     PrintLogMessage = Logger.Error
     if warn:
-        PrintLogMessage = Logger.Warning
+        PrintLogMessage = Logger.Warn
     
     logger_text = text
     
