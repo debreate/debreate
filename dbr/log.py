@@ -8,11 +8,11 @@
 
 import os
 
-from globals.dateinfo       import GetDate
-from globals.dateinfo       import GetTime
-from globals.dateinfo       import dtfmt
-from globals.fileio         import AppendFile
-from globals.paths          import PATH_local
+from globals.dateinfo   import GetDate
+from globals.dateinfo   import GetTime
+from globals.dateinfo   import dtfmt
+from globals.fileio     import AppendFile
+from globals.paths      import PATH_local
 
 
 ## A log class for outputting messages
