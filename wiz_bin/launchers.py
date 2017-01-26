@@ -33,6 +33,7 @@ from ui.button              import ButtonPreview64
 from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
+from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -565,13 +566,12 @@ class Panel(WizardPage):
     #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
     #         'Others' field not being completely filled out.
     def OnLoadLauncher(self, event=None):
-        dia = wx.FileDialog(GetMainWindow(), GT(u'Open Launcher'), os.getcwd(),
-                style=wx.FD_CHANGE_DIR)
+        dia = GetFileOpenDialog(GetMainWindow(), GT(u'Open Launcher'))
         
         if ShowDialog(dia):
             path = dia.GetPath()
             
-            data = ReadFile(path, split=True)
+            data = ReadFile(path, split=True, convert=list)
             
             # Remove unneeded lines
             if data[0] == u'[Desktop Entry]':
