@@ -9,8 +9,6 @@
 
 
 import commands, os, re, traceback, subprocess, wx
-from datetime   import date
-from datetime   import datetime
 from urllib2    import URLError
 from urllib2    import urlopen
 
@@ -18,13 +16,11 @@ from dbr.language           import GT
 from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
 from globals.constants      import system_licenses_path
-from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.strings        import GS
 from globals.strings        import IsString
 from globals.strings        import StringIsNumeric
-from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_STRING
 
 
@@ -107,50 +103,6 @@ def RequirePython(version):
         raise ValueError(error)
     
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
-
-
-## TODO: Doxygen
-#  
-#  FIXME: time.strftime can be used for all date & time functions
-def prepend_zero(number):
-    if number < 10:
-        return GS(u'0{}'.format(number))
-    
-    return GS(number)
-
-
-def GetDate():
-    yr = str(GetYear())
-    mo = prepend_zero(date.today().month)
-    da = prepend_zero(date.today().day)
-    
-    return u'{}-{}-{}'.format(yr, mo, da)
-
-
-def GetTime(formatted=False):
-    c_time = datetime.now().time()
-    hr = prepend_zero(c_time.hour)
-    mn = prepend_zero(c_time.minute)
-    se = prepend_zero(c_time.second)
-    ms = c_time.microsecond
-    
-    # FIXME: Want to show only microseconds (ms[2:])
-    ms = str(ms)
-    
-    s_time = u'{}:{}:{}:{}'.format(hr, mn, se, ms)
-    
-    if formatted:
-        s_time = s_time.replace(u':', u'.')
-    
-    return s_time
-
-
-## Formats the time for outputting to filename
-#  
-#  \param s_time
-#        \b \e str : String representation of the time
-def FormatTime(s_time):
-    return s_time.replace(u':', u'.')
 
 
 ## Retrieves a list of licenses installed on the system
@@ -343,20 +295,6 @@ def BuildBinaryPackageFromTree(root_dir, filename):
     #output = commands.getstatusoutput(cmd)
     
     return 0
-
-
-def RemovePreWhitespace(text):
-    text_lines = text.split(u'\n')
-    
-    remove_lines = 0
-    
-    for L in text_lines:
-        if not TextIsEmpty(L):
-            break
-        
-        remove_lines += 1
-    
-    return u'\n'.join(text_lines[remove_lines:])
 
 
 def UsingDevelopmentVersion():
