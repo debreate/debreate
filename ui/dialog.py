@@ -78,9 +78,12 @@ class StandardDirDialog(wx.DirDialog):
 
 ## A standard system file dialog modified for advanced use
 class StandardFileDialog(wx.FileDialog):
-    def __init__(self, parent, title=u'Choose a file', defaultDir=os.getcwd(), defaultFile=u'',
+    def __init__(self, parent, title=u'Choose a file', defaultDir=None, defaultFile=u'',
             defaultExt=None, wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE,
             pos=wx.DefaultPosition, size=wx.DefaultSize, name=u'filedlg'):
+        
+        if not defaultDir:
+            defaultDir = os.getcwd()
         
         # Setting os.getcwd() causes dialog to always be opened in working directory
         wx.FileDialog.__init__(self, parent, title, defaultDir, defaultFile, wildcard, style, pos)
@@ -527,7 +530,7 @@ def _format_wildcard(wildcard):
 #  \return
 #    \b \e StandardFileDialog instance
 def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None,
-            directory=os.getcwd()):
+            directory=None):
     
     if parent == None:
         parent = GetMainWindow()
