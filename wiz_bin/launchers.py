@@ -34,6 +34,7 @@ from ui.button              import ButtonRemove
 from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import GetFileOpenDialog
+from ui.dialog              import GetFileSaveDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -605,8 +606,7 @@ class Panel(WizardPage):
         # Get data to write to control file
         menu_data = self.GetLauncherInfo().encode(u'utf-8')
         
-        dia = wx.FileDialog(GetMainWindow(), GT(u'Save Launcher'), os.getcwd(),
-            style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
+        dia = GetFileSaveDialog(GetMainWindow(), GT(u'Save Launcher'))
         
         if ShowDialog(dia):
             path = dia.GetPath()
