@@ -172,6 +172,32 @@ class StandardFileDialog(wx.FileDialog):
             ChangeWorkingDirectory(self.GetDirectory())
             
             self.EndModal(self.AffirmativeId)
+    
+    
+    ## Updates the Filename & Path attributes
+    #  
+    #  Differences from inherited method:
+    #  - If the filename does not already have an extension, the default
+    #    extension will be appended.
+    #  \param filename
+    #    New \b \e string filename
+    def SetFilename(self, filename):
+        if filename:
+            if filename.endswith(u'.'):
+                # Strip trailing periods
+                filename = filename.rstrip(u'.')
+            
+            # Allow users to manually set filename extension
+            if not u'.' in filename:
+                if self.Extension:
+                    ext = self.Extension
+                    if not ext.startswith(u'.'):
+                        ext = u'.{}'.format(ext)
+                    
+                    if not filename.endswith(ext):
+                        filename = u'{}{}'.format(filename, ext)
+        
+        return wx.FileDialog.SetFilename(self, filename)
 
 
 # FIXME: Unneeded?
