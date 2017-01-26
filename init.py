@@ -11,8 +11,8 @@
 
 import os, sys
 
-import command_line as CL
 from command_line   import GetParsedPath
+from command_line   import ParseArguments
 from command_line   import parsed_commands
 from command_line   import parsed_args_s
 from command_line   import parsed_args_v
@@ -25,7 +25,7 @@ from globals.paths  import ConcatPaths
 script_name = os.path.basename(__file__)
 
 # *** Command line arguments
-CL.ParseArguments(sys.argv[1:])
+ParseArguments(sys.argv[1:])
 
 # GetParsedPath must be called after ParseArguments
 parsed_path = GetParsedPath()
