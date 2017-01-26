@@ -24,6 +24,7 @@ from globals.execute        import GetSystemInstaller
 from globals.fileio         import WriteFile
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
+from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_MAJ
 from globals.tooltips       import SetPageToolTips
@@ -532,7 +533,7 @@ class Panel(WizardPage):
                 index = 0
                 for C in build_output:
                     try:
-                        unicode(C)
+                        GS(C)
                     
                     except UnicodeDecodeError:
                         build_output[index] = u'�'

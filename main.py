@@ -42,6 +42,7 @@ from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import PROJECT_ext
 from globals.project        import PROJECT_txt
+from globals.strings        import GS
 from startup.tests          import GetTestList
 from ui.about               import AboutDialog
 from ui.dialog              import ConfirmationDialog
@@ -386,7 +387,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         error_remote = GT(u'An error occurred attempting to contact remote website')
         
         if isinstance(current, (URLError, HTTPError)):
-            current = unicode(current)
+            current = GS(current)
             ShowErrorDialog(error_remote, current)
         
         elif isinstance(current, tuple) and current > VERSION_tuple:

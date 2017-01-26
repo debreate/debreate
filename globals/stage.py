@@ -12,6 +12,7 @@ from globals.application    import APP_name
 from globals.application    import VERSION_string
 from globals.dateinfo       import GetDate
 from globals.dateinfo       import dtfmt
+from globals.strings        import GS
 
 
 ## Creates a directory for storing temporary files
@@ -30,7 +31,7 @@ def CreateStage():
     #suffix = u'_temp'
     suffix = GetDate(dtfmt.STAMP)
     
-    stage = u'{}/{}-{}_{}'.format(stage, unicode(APP_name).lower(), VERSION_string, suffix)
+    stage = u'{}/{}-{}_{}'.format(stage, GS(APP_name).lower(), VERSION_string, suffix)
     
     if os.access(os.path.dirname(stage), os.W_OK):
         # Start with fresh directory

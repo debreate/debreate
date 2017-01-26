@@ -17,6 +17,7 @@ from globals                import ident
 from globals.application    import APP_logo
 from globals.fileio         import ReadFile
 from globals.paths          import PATH_logs
+from globals.strings        import GS
 from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanel
 from ui.dialog              import GetFileOpenDialog
@@ -253,7 +254,7 @@ class LogWindow(wx.Dialog):
                 self.log.ShowPosition(self.log.GetLastPosition())
             
             except wx.PyDeadObjectError:
-                tb_error = unicode(traceback.format_exc())
+                tb_error = GS(traceback.format_exc())
                 
                 Logger.Warn(__name__, u'Error refreshing log window. Details below:\n\n{}'.format(tb_error))
     

@@ -128,6 +128,7 @@ from dbr.workingdir         import ChangeWorkingDirectory
 from globals.application    import VERSION_string
 from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
+from globals.strings        import GS
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from main                   import MainWindow
@@ -166,7 +167,7 @@ if u'help' in parsed_args_s:
         sys.exit(help_output[0])
     
     
-    help_output = unicode(help_output[1])
+    help_output = GS(help_output[1])
     print(u'\n'.join(help_output.split(u'\n')[2:-1]))
     
     sys.exit(0)
@@ -203,7 +204,7 @@ for V in conf_values:
     if value == None:
         value = GetDefaultConfigValue(key)
     
-    Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, unicode(value), type(value))))
+    Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, GS(value), type(value))))
     
     # FIXME: ConfCode values are integers & could cause problems with config values
     if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):

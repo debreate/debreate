@@ -306,7 +306,7 @@ def CreateTempDirectory():
     if not os.access(temp_dir, os.W_OK):
         temp_dir = os.getcwd()
     
-    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, unicode(APP_name).lower(), VERSION_string)
+    temp_dir = u'{}/{}-{}_temp'.format(temp_dir, GS(APP_name).lower(), VERSION_string)
     
     if os.access(os.path.dirname(temp_dir), os.W_OK):
         # Start with fresh directory
