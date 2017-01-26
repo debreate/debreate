@@ -23,7 +23,6 @@ from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.logwindow          import LogWindow
 from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
@@ -324,13 +323,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             if u'log-window' in parsed_args_s:
                 self.menu_debug.Check(ident.LOG, True)
             
-            self.log_window = LogWindow(self, Logger.GetLogFile())
+            self.log_window = None
             
             # Window colors
             self.menu_debug.AppendItem(
                 wx.MenuItem(self.menu_debug, ident.THEME, GT(u'Toggle window colors')))
             
-            wx.EVT_MENU(self, ident.LOG, self.log_window.OnToggleWindow)
             wx.EVT_MENU(self, ident.THEME, self.OnToggleTheme)
         
         # *** Current Project Status *** #
@@ -649,6 +647,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # FIXME: Necessary?
         if not self.ProjectIsLoaded():
             self.OnProjectSaveAs(event)
+            
             return
         
         # 'Save' menu item is enabled
@@ -1108,6 +1107,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         Logger.Debug(__name__,
                 GT(u'Urecognized compression ID: {}'.format(compression_id)))
+    
+    
+    ## TODO: Doxygen
+    def SetLogWindow(self, window):
+        self.log_window = window
+        
+        wx.EVT_MENU(self, ident.LOG, self.log_window.OnToggleWindow)
     
     
     ## TODO: Doxygen
