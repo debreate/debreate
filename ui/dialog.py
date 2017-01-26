@@ -536,14 +536,26 @@ def _format_wildcard(wildcard):
     return wildcard
 
 
-## TODO: Doxygen
+## Retrieves an 'open file' dialog for display
+#  
+#  \param parent
+#    \b \e wx.Window instance that should be dialog's parent
+#  \param title
+#    Text to be shown in the dialogs's title bar
+#  \param wildcard
+#    Wildcard to filter filenames
+#  \param extension
+#    The default filename extension to use when opening a file
+#  \return
+#    \b \e StandardFileDialog instance
 def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
     if parent == None:
         parent = GetMainWindow()
     
     wildcard = _format_wildcard(wildcard)
     
-    file_open = StandardFileOpenDialog(parent, title, wildcard=wildcard)
+    file_open = StandardFileDialog(parent, title, defaultExt=extension, wildcard=wildcard,
+            style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST)
     
     return file_open
 
