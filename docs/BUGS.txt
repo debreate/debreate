@@ -9,8 +9,7 @@ Release:
   - md5sums-lists-nonexistent-file usr/share/debreate/bitmaps/browse64.pn
   - file-missing-in-md5sums usr/share/debreate/bitmaps/browse64.png
 - Appending to multiple dependencies fails (0.8)
-- Cannot open control (and possibly launcher & other) files without extension using GetFileDialog functions
-- PanelMenu pops up no matter where you click on the PanelManuBar
+- PanelMenu pops up no matter where you click on the PanelMenuBar
 - wx._core.PyDeadObjectError caused by input.essential.EssentialField.NotifyMainWindow when app is closed
 - wx 3.0:
   - 'Refresh' & 'Browse' buttons on hidden on files page if width is sized down
