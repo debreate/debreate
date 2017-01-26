@@ -272,7 +272,7 @@ class Panel(WizardPage):
         if item_count != len(self.lst_files.sources_list):
             warn_msg1 = GT(u'Exporting file list:')
             warn_msg2 = GT(u'Length of file list & source directories does not match')
-            Logger.Warning(__name__, u'{}: {}'.format(warn_msg1, warn_msg2))
+            Logger.Warn(__name__, u'{}: {}'.format(warn_msg1, warn_msg2))
         
         if item_count > 0:
             count = 0
