@@ -171,7 +171,7 @@ class StandardFileDialog(wx.FileDialog):
             # File & directory dialogs should call this function
             ChangeWorkingDirectory(self.GetDirectory())
             
-            self.EndModal(wx.ID_OK)
+            self.EndModal(self.AffirmativeId)
 
 
 # FIXME: Unneeded?
