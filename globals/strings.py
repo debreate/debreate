@@ -82,7 +82,7 @@ def GS(string):
 #  
 #  \param string
 #    \b \e String to be tested
-def StringIsNumerical(string):
+def StringIsNumeric(string):
     try:
         float(string)
         return True
