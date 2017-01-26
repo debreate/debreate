@@ -121,10 +121,6 @@ class DebreateLogger:
             # Message is shown in terminal
             print(message)
             
-            # Message is output to log file
-            if not os.path.isdir(PATH_local):
-                os.makedirs(PATH_local)
-            
             # Open log for writing
             AppendFile(self.log_file, u'{}\n'.format(message), self.no_strip)
             
