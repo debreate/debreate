@@ -155,8 +155,8 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
                     self.input_stage.SetValue(stage.GetPath())
             
             elif button_id == ident.TARGET:
-                target = GetFileSaveDialog(self, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb'),
-                        u'deb', False)
+                target = GetFileSaveDialog(self, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb',),
+                        u'deb')
                 
                 if (ShowDialog(target)):
                     self.input_target.SetValue(target.GetPath())
