@@ -177,26 +177,6 @@ class StandardFileDialog(wx.FileDialog):
         return wx.FileDialog.SetFilename(self, filename)
 
 
-# FIXME: Unneded?
-class StandardFileOpenDialog(StandardFileDialog):
-    def __init__(self, parent, title, defaultExt=wx.EmptyString,
-            wildcard=wx.FileSelectorDefaultWildcardStr):
-        
-        # Initialize parent class
-        StandardFileDialog.__init__(self, parent, title, defaultExt=defaultExt,
-                wildcard=wildcard, style=wx.FD_OPEN)
-    
-    
-    ## TODO: Doxygen
-    def OnAccept(self, event=None):
-        # File & directory dialogs should call this function
-        ChangeWorkingDirectory(self.GetDirectory())
-        
-        self.EndModal(wx.ID_OK)
-
-
-# *** MESSAGE & ERROR *** #
-
 ## Displays a dialog with message & details
 #  
 #  FIXME: Crashes if icon is wx.NullBitmap
