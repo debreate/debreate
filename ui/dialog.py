@@ -81,7 +81,7 @@ class StandardDirDialog(wx.DirDialog):
 #  
 #  FIXME: Broken
 class StandardFileDialog(wx.FileDialog):
-    def __init__(self, parent, title, default_extension=wx.EmptyString,
+    def __init__(self, parent, title=u'Choose a file', default_extension=wx.EmptyString,
                 wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
         
         # Setting os.getcwd() causes dialog to always be opened in working directory
