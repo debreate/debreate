@@ -113,28 +113,33 @@ class StandardFileDialog(wx.FileDialog):
         return False
     
     
+    def IsSaveDialog(self):
+        return self.WindowStyleFlag & wx.FD_SAVE
+    
+    
     ## TODO: Doxygen
     def OnAccept(self, event=None):
-        if self.Extension:
-            if not self.Filename.endswith(self.Extension):
-                # Adds extensions if not specified
-                self.SetFilename(self.Filename)
-        
-        if self.Path:
-            if os.path.isfile(self.Path):
-                overwrite = OverwriteDialog(self, self.Path)
-                
-                if not ShowDialog(overwrite):
-                    return
-                
-                try:
-                    os.remove(self.Path)
-                
-                except OSError:
-                    # File was removed before confirmation
-                    Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
-                    #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
-                    #print(u'FIXME: Cannot import logger')
+        if self.IsSaveDialog():
+            if self.Extension:
+                if not self.Filename.endswith(self.Extension):
+                    # Adds extensions if not specified
+                    self.SetFilename(self.Filename)
+            
+            if self.Path:
+                if os.path.isfile(self.Path):
+                    overwrite = OverwriteDialog(self, self.Path)
+                    
+                    if not ShowDialog(overwrite):
+                        return
+                    
+                    try:
+                        os.remove(self.Path)
+                    
+                    except OSError:
+                        # File was removed before confirmation
+                        Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
+                        #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
+                        #print(u'FIXME: Cannot import logger')
             
             # Because we are not using default FileDialog methods, we must set
             # directory manually.
