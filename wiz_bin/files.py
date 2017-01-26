@@ -412,7 +412,8 @@ class Panel(WizardPage):
         missing_files = []
         
         for T in targets_list:
-            if not os.path.isfile(T[1]):
+            # FIXME: Create method in FileList class to retrieve all missing files
+            if not os.path.exists(T[1]):
                 missing_files.append(T[1])
             
             source_file = os.path.basename(T[1])
@@ -423,7 +424,7 @@ class Panel(WizardPage):
         if len(missing_files):
             main_window = GetMainWindow()
             
-            err_line1 = GT(u'The following files are missing from the filesystem.')
+            err_line1 = GT(u'The following files/folders are missing from the filesystem.')
             err_line2 = GT(u'They will be highlighted on the Files page.')
             DetailedMessageDialog(main_window, title=GT(u'Warning'), icon=ICON_ERROR,
                     text=u'\n'.join((err_line1, err_line2)),
