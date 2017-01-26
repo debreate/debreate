@@ -77,17 +77,15 @@ class StandardDirDialog(wx.DirDialog):
         print(u'DEBUG: [{}] Path is not a directory: {}'.format(__name__, path))
 
 
-## TODO: Doxygen
-#  
-#  FIXME: Broken
+## A standard system file dialog modified for advanced use
 class StandardFileDialog(wx.FileDialog):
-    def __init__(self, parent, title=u'Choose a file', default_extension=wx.EmptyString,
+    def __init__(self, parent, title=u'Choose a file', defaultExt=wx.EmptyString,
                 wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE):
         
         # Setting os.getcwd() causes dialog to always be opened in working directory
         wx.FileDialog.__init__(self, parent, title, os.getcwd(), wildcard=wildcard, style=style)
         
-        self.extension = default_extension
+        self.Extension = defaultExt
         
         if style & wx.FD_SAVE:
             wx.EVT_BUTTON(self, self.AffirmativeId, self.OnAccept)
@@ -109,7 +107,7 @@ class StandardFileDialog(wx.FileDialog):
     
     ## TODO: Doxygen
     def GetExtension(self):
-        return self.extension
+        return self.Extension
     
     
     ## FIXME: Seems to be being called 3 times
@@ -118,8 +116,8 @@ class StandardFileDialog(wx.FileDialog):
         
         # Allow users to manually set filename extension
         if not self.HasExtension(filename):
-            if not filename.split(u'.')[-1] == self.extension:
-                filename = u'{}.{}'.format(filename, self.extension)
+            if not filename.split(u'.')[-1] == self.Extension:
+                filename = u'{}.{}'.format(filename, self.Extension)
         
         return filename
     
@@ -172,21 +170,21 @@ class StandardFileDialog(wx.FileDialog):
 
 # FIXME: Unneeded?
 class StandardFileSaveDialog(StandardFileDialog):
-    def __init__(self, parent, title, default_extension=wx.EmptyString,
+    def __init__(self, parent, title, defaultExt=wx.EmptyString,
             wildcard=wx.FileSelectorDefaultWildcardStr):
         
         # Initialize parent class
-        StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
+        StandardFileDialog.__init__(self, parent, title, defaultExt=defaultExt,
                 wildcard=wildcard, style=wx.FD_SAVE)
 
 
 # FIXME: Unneded?
 class StandardFileOpenDialog(StandardFileDialog):
-    def __init__(self, parent, title, default_extension=wx.EmptyString,
+    def __init__(self, parent, title, defaultExt=wx.EmptyString,
             wildcard=wx.FileSelectorDefaultWildcardStr):
         
         # Initialize parent class
-        StandardFileDialog.__init__(self, parent, title, default_extension=default_extension,
+        StandardFileDialog.__init__(self, parent, title, defaultExt=defaultExt,
                 wildcard=wildcard, style=wx.FD_OPEN)
     
     
@@ -532,7 +530,7 @@ def GetDirDialog(parent, title):
 
 
 ## TODO: Doxygen
-def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
+def GetFileOpenDialog(parent, title, ext_filters, defaultExt=None):
     if parent == None:
         parent = GetMainWindow()
     
@@ -557,7 +555,7 @@ def GetFileOpenDialog(parent, title, ext_filters, default_extension=None):
 #        Text to be shown in the dialogs's title bar
 #  \param ext_filter
 #        Wildcard to be used to filter filenames
-#  \param default_extension
+#  \param defaultExt
 #        The default filename extension to use when opening or closing a file
 #          Only applies to custom dialogs
 #  \return
@@ -571,7 +569,7 @@ def GetFileSaveDialog(parent, title, ext_filters, extension=None, confirm_overwr
     
     '''
     # FIXME: Broken
-    file_save = StandardFileSaveDialog(parent, title, default_extension=extension,
+    file_save = StandardFileSaveDialog(parent, title, defaultExt=extension,
             wildcard=ext_filters)
     '''
     
