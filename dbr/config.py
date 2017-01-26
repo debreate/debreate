@@ -13,6 +13,7 @@ import os, wx
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
 from dbr.language       import GT
+from dbr.log            import Logger
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
 from globals.paths      import PATH_home
@@ -65,7 +66,7 @@ default_config_values = {
 #  \return
 #        Value of key if found, otherwise ConfCode
 def ReadConfig(k_name, conf=default_config):
-    #Logger.Debug(__name__, GT(u'Reading configuration file: {}'.format(conf)))
+    Logger.Debug(__name__, GT(u'Reading configuration file: {}'.format(conf)), newline=True)
     
     if not os.path.isfile(conf):
         #Logger.Warning(__name__, u'Configuration file does not exist: {}'.format(conf))
