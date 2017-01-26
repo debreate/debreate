@@ -22,6 +22,8 @@ from globals.dateinfo       import GetYear
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.strings        import GS
+from globals.strings        import IsString
+from globals.strings        import StringIsNumeric
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_STRING
 
@@ -182,24 +184,19 @@ def HasAlpha(value):
 #  \return
 #        \b \e int|None
 def GetInteger(value):
-    v_type = type(value)
-    
-    if v_type in (int, float):
+    if isinstance(value, (int, float,)):
         return int(value)
     
     # Will always use there very first value, even for nested items
-    elif v_type in (tuple, list):
+    elif isinstance(value,(tuple, list,)):
         # Recursive check lists & tuples
         return GetInteger(value[0])
     
-    elif v_type in (unicode, str):
+    elif value and IsString(value):
         # Convert because of unsupported methods in str class
         value = GS(value)
         
         if HasAlpha(value):
-            return None
-        
-        if value == wx.EmptyString:
             return None
         
         # Check for negative
@@ -215,7 +212,7 @@ def GetInteger(value):
             value = value.split(u'.')[0]
             return GetInteger(value)
         
-        elif value.isnumeric() or value.isdigit():
+        elif StringIsNumeric(value):
             return int(value)
     
     return None
@@ -254,36 +251,35 @@ def GetBoolean(value):
 #  \return
 #        \b \e tuple|None
 def GetIntTuple(value):
-    v_type = type(value)
+    if isinstance(value, (tuple, list,)):
+        if len(value) > 1:
+            # Convert to list in case we need to make changes
+            value = list(value)
+            
+            for I in value:
+                t_index = value.index(I)
+                
+                if isinstance(I, (tuple, list)):
+                    I = GetIntTuple(I)
+                
+                else:
+                    I = GetInteger(I)
+                
+                if I == None:
+                    return None
+                
+                value[t_index] = I
+            
+            return tuple(value)
     
-    if (v_type in (tuple, list)) and (len(value) > 1):
-        # Convert to list in case we need to make changes
-        value = list(value)
-        
-        for I in value:
-            t_index = value.index(I)
-            
-            if isinstance(I, (tuple, list)):
-                I = GetIntTuple(I)
-            
-            else:
-                I = GetInteger(I)
-            
-            if I == None:
-                return None
-            
-            value[t_index] = I
-        
-        return tuple(value)
-    
-    elif v_type in (unicode, str):
+    elif IsString(value):
         # Remove whitespace & braces
-        for D in u' ', u'(', u')':
-            value = u''.join(value.split(D))
+        value = value.strip(u' ()')
+        value = u''.join(value.split(u' '))
         
         value = value.split(u',')
         
-        if len(value) >= 2:
+        if len(value) > 1:
             for S in value:
                 v_index = value.index(S)
                 
