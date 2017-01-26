@@ -161,6 +161,10 @@ class StandardFileDialog(wx.FileDialog):
                     #print(u'DEBUG: [{}] Items was removed before confirmation: {}'.format(__name__, self.Path))
                     #print(u'FIXME: Cannot import logger')
             
+            # Because we are not using default FileDialog methods, we must set
+            # directory manually.
+            self.SetDirectory(os.path.dirname(self.Path))
+            
             # File & directory dialogs should call this function
             ChangeWorkingDirectory(self.GetDirectory())
             
