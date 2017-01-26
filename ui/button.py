@@ -12,6 +12,7 @@ import wx
 
 from dbr.containers     import Contains
 from dbr.language       import GT
+from dbr.log            import Logger
 from globals            import ident
 from globals.bitmaps    import BUTTON_HELP
 from globals.bitmaps    import BUTTON_REFRESH
@@ -362,12 +363,9 @@ def _get_containing_sizer(parent, sizer):
 #  \param dialog
 #    Dialog instance containing the buttons
 def ReplaceStandardButtons(dialog):
-    if isinstance(dialog, wx.MessageDialog):
-        print(u'ERROR: [{}] FIXME: Cannot replace buttons on wx.MessageDialog'.format(__name__))
-        return
-    
-    elif isinstance(dialog, wx.FileDialog):
-        print(u'ERROR: [{}] FIXME: Cannot replace buttons on wx.FileDialog'.format(__name__))
+    if isinstance(dialog, (wx.FileDialog, wx.MessageDialog)):
+        Logger.Warn(__name__, u'FIXME: Cannot replace buttons on object type: {}'.format(type(dialog)))
+        
         return
     
     lyt_buttons = _get_button_sizer(dialog.GetSizer())
