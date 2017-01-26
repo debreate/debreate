@@ -577,7 +577,7 @@ class Panel(WizardPage):
                     msg_l1 = GT(u'One of the required fields is empty')
                     msg_full = u'{}: {} ➜ {}'.format(msg_l1, p_name, f_name)
                     
-                    Logger.Warning(__name__, msg_full)
+                    Logger.Warn(__name__, msg_full)
                     
                     DetailedMessageDialog(GetMainWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
                             text=msg_full).ShowModal()

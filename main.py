@@ -394,7 +394,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             if self.menu_compress.IsChecked(Z_ID):
                 return Z_ID
         
-        Logger.Warning(__name__, GT(u'Did not find compatible compression ID, using default'))
+        Logger.Warn(__name__, GT(u'Did not find compatible compression ID, using default'))
         
         return DEFAULT_COMPRESSION_ID
     
@@ -674,7 +674,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
                 WriteConfig(u'compression', compression_formats[event_id])
                 return
         
-        Logger.Warning(__name__,
+        Logger.Warn(__name__,
                 GT(u'OnSetCompression; Could not write to config, ID not found in compression formats: {}').format(event_id))
     
     

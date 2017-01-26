@@ -117,7 +117,7 @@ def ParseMountedDevices():
                     mounted_devices[device] = mount_point
     
     else:
-        Logger.Warning(__name__, u'/etc/mtab file does not exist. Mounted devices list will be empty')
+        Logger.Warn(__name__, u'/etc/mtab file does not exist. Mounted devices list will be empty')
     
     return mounted_devices
 
