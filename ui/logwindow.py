@@ -16,6 +16,7 @@ from dbr.log                import Logger
 from globals                import ident
 from globals.application    import APP_logo
 from globals.fileio         import ReadFile
+from globals.paths          import PATH_logs
 from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanel
 from ui.dialog              import GetFileOpenDialog
@@ -157,7 +158,7 @@ class LogWindow(wx.Dialog):
     
     ## Opens a new log file
     def OnOpenLogFile(self, event=None):
-        log_select = GetFileOpenDialog(self, GT(u'Open Log'))
+        log_select = GetFileOpenDialog(self, GT(u'Open Log'), directory=PATH_logs)
         
         if ShowDialog(log_select):
             log_file = log_select.GetPath()
