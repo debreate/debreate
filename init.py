@@ -250,7 +250,7 @@ if parsed_path:
     if Debreate.ProjectOpen(project_file):
         working_dir = os.path.dirname(project_file)
 
-# Set working directory
+# Set working directory (do not call os.chdir in case of opening project)
 ChangeWorkingDirectory(working_dir)
 
 Debreate.Show(True)
