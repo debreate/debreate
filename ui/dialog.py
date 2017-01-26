@@ -73,8 +73,7 @@ class StandardDirDialog(wx.DirDialog):
             self.EndModal(wx.ID_OK)
             return
         
-        # FIXME: Use Logger
-        print(u'DEBUG: [{}] Path is not a directory: {}'.format(__name__, path))
+        Logger.Debug(__name__, u'Path is not a directory: {}'.format(path))
 
 
 ## A standard system file dialog modified for advanced use
