@@ -10,6 +10,7 @@ import wx
 
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals.strings    import GS
 from globals.strings    import TextIsEmpty
 from ui.button          import ButtonCancel
 from ui.button          import ButtonClear
@@ -202,7 +203,7 @@ class CheckListDialog(wx.Dialog):
     
     
     def OnAddCustom(self, event=None):
-        custom_label = unicode(self.input_add_custom.GetValue()).strip(u' ').replace(u' ', u'_')
+        custom_label = GS(self.input_add_custom.GetValue()).strip(u' ').replace(u' ', u'_')
         if not TextIsEmpty(custom_label) and not self.check_list.LabelExists(custom_label):
             self.check_list.AddItem(custom_label, True)
             self.check_list.ScrollToEnd()
