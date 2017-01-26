@@ -104,36 +104,6 @@ class StandardFileDialog(wx.FileDialog):
         return self.Extension
     
     
-    ## FIXME: Seems to be being called 3 times
-    def GetFilename(self, *args, **kwargs):
-        filename = wx.FileDialog.GetFilename(self, *args, **kwargs)
-        
-        # Allow users to manually set filename extension
-        if not self.HasExtension(filename):
-            if not filename.split(u'.')[-1] == self.Extension:
-                filename = u'{}.{}'.format(filename, self.Extension)
-        
-        return filename
-    
-    
-    ## Fixme: Seems to be being called twice
-    def GetPath(self, *args, **kwargs):
-        path = wx.FileDialog.GetPath(self, *args, **kwargs)
-        
-        if len(path):
-            if path[-1] == u'.':
-                name_error = wx.MessageDialog(GetMainWindow(), GT(u'Error'),
-                        style=wx.ICON_ERROR|wx.OK)
-                
-                name_error.SetExtendedMessage(GT(u'Name cannot end with "{}"').format(path[-1]))
-                name_error.ShowModal()
-                
-                return None
-        
-        out_dir = os.path.dirname(path)
-        return u'{}/{}'.format(out_dir, self.GetFilename())
-    
-    
     ## TODO: Doxygen
     def HasExtension(self, path):
         if u'.' in path:
