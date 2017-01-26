@@ -123,6 +123,7 @@ from dbr.config             import GetDefaultConfigValue
 from dbr.language           import GT
 from dbr.language           import LOCALE_DIR
 from dbr.language           import TRANSLATION_DOMAIN
+from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.workingdir         import ChangeWorkingDirectory
 from globals.application    import VERSION_string
@@ -225,6 +226,11 @@ for V in conf_values:
 Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 debreate_app.SetMainWindow(Debreate)
 Debreate.InitWizard()
+
+if DebugEnabled():
+    from dbr.logwindow import LogWindow
+    
+    Debreate.SetLogWindow(LogWindow(Debreate, Logger.GetLogFile()))
 
 if conf_values[u'center']:
     Debreate.Center()
