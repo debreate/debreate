@@ -89,11 +89,11 @@ class StandardFileDialog(wx.FileDialog):
         self.SetName(name)
         self.Extension = defaultExt
         
-        if style & wx.FD_SAVE:
+        if self.WindowStyleFlag & wx.FD_SAVE:
             wx.EVT_BUTTON(self, self.AffirmativeId, self.OnAccept)
-        
-        if self.GetWindowStyleFlag() & wx.FD_CHANGE_DIR:
-            Logger.Warn(__name__, u'Found FD_CHANGE_DIR style, could conflict with OnAccept method')
+            
+            if self.WindowStyleFlag & wx.FD_CHANGE_DIR:
+                Logger.Warn(__name__, u'Found FD_CHANGE_DIR style, could conflict with OnAccept method')
         
         self.CenterOnParent()
     
