@@ -12,7 +12,7 @@ from globals.dateinfo   import GetDate
 from globals.dateinfo   import GetTime
 from globals.dateinfo   import dtfmt
 from globals.fileio     import AppendFile
-from globals.paths      import PATH_local
+from globals.paths      import PATH_logs
 
 
 ## A log class for outputting messages
@@ -36,7 +36,7 @@ class DebreateLogger:
         DEBUG: u'debug',
     }
     
-    def __init__(self, log_level=ERROR, log_path=u'{}/logs'.format(PATH_local)):
+    def __init__(self, log_level=ERROR, log_path=PATH_logs):
         ## The level at which to output log messages
         self.log_level = log_level
         
