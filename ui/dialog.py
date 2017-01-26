@@ -89,8 +89,8 @@ class StandardFileDialog(wx.FileDialog):
         
         self.extension = default_extension
         
-        # FIXME: Should use ID_SAVE & ID_OPEN
-        self.Bind(wx.EVT_BUTTON, self.OnAccept)
+        if style & wx.FD_SAVE:
+            wx.EVT_BUTTON(self, self.AffirmativeId, self.OnAccept)
         
         self.CenterOnParent()
     
