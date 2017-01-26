@@ -532,13 +532,13 @@ def _format_wildcard(wildcard):
 
 
 ## TODO: Doxygen
-def GetFileOpenDialog(parent, title, ext_filters, defaultExt=None):
+def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
     if parent == None:
         parent = GetMainWindow()
     
-    ext_filters = _format_wildcard(wildcard)
+    wildcard = _format_wildcard(wildcard)
     
-    file_open = StandardFileOpenDialog(parent, title, wildcard=ext_filters)
+    file_open = StandardFileOpenDialog(parent, title, wildcard=wildcard)
     
     return file_open
 
