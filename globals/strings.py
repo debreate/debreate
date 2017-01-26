@@ -46,21 +46,33 @@ def RemoveEmptyLines(text):
     return tuple(text)
 
 
-## A unicode compatibility function for older versions of Python
+## Checks if object is a string instance
 #  
-#  Executes a function with optional arguments that returns a string
-#  & converts it to unicode if using Python version 2.x.
-#  \param function
-#    Callable function object to execute
-#  \param args
-#    List of arguments to pass to function
-#  \return
-#    Unicode compatible string
-def GetString(string):
-    if sys.version_info[0] < 3 and isinstance(string, str):
-        string = unicode(string)
+#  Compatibility function for legacy Python versions
+def IsString(text):
+    if sys.version_info[0] <= 2:
+        return isinstance(text, (unicode, str))
     
-    return string
+    return isinstance(text, str)
+
+
+## Converts an object to a string instance
+#  
+#  Compatibility function for legacy Python versions
+#  \param item
+#    Instance to be converted to string
+#  \return
+#    Compatible string
+def GetString(item):
+    if sys.version_info[0] <= 2:
+        if not isinstance(item, unicode):
+            item = unicode(item)
+    
+    else:
+        if not isinstance(item, str):
+            item = str(item)
+    
+    return item
 
 
 ## Alias for globals.strings.GetString
@@ -72,7 +84,7 @@ def GS(string):
 #  
 #  \param string
 #    \b \e String to be tested
-def StringIsNumerical(string):
+def StringIsNumeric(string):
     try:
         float(string)
         return True
