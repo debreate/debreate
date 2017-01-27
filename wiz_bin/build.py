@@ -18,6 +18,7 @@ from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.cmdcheck       import CommandExists
 from globals.errorcodes     import dbrerrno
+from globals.execute        import GetCommandOutput
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import ReadFile
@@ -642,7 +643,7 @@ class Panel(WizardPage):
         cmd = u'{} {} -b "{}" "{}"'.format(fakeroot, packager, stage, target_file)
         Logger.Debug(__name__, GT(u'Executing: {}').format(cmd))
         
-        output = subprocess.check_output([fakeroot, packager, u'-b', stage, target_file], stderr=subprocess.STDOUT)
+        output = GetCommandOutput(fakeroot, (packager, u'-b', stage, target_file,))
         
         Logger.Debug(__name__, GT(u'Build output: {}').format(output))
         
