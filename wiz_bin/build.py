@@ -81,9 +81,9 @@ class Panel(WizardPage):
         
         if UsingTest(u'alpha'):
             # Brings up control file preview for editing
-            self.chk_ctrl_preview = CheckBoxCFG(pnl_options, label=GT(u'Preview control file for editing'),
-                    name=u'preview', cfgKey=u'buildpreview')
-            self.chk_ctrl_preview.col = 1
+            self.chk_editctrl = CheckBoxCFG(pnl_options, label=GT(u'Preview control file for editing'),
+                    name=u'editctrl')
+            self.chk_editctrl.col = 1
         
         # Option to strip binaries
         self.chk_strip = CheckBoxESS(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
