@@ -117,6 +117,15 @@ F_PACKAGE = wx.NewId()
 F_VERSION = wx.NewId()
 
 
+## IDs for input fields
+class inputid:
+    ARCH = wx.NewId()
+    LIST = wx.NewId()
+    MD5 = wx.NewId()
+    PACKAGE = wx.NewId()
+    VERSION = wx.NewId()
+
+
 ## IDs referencing manual pages
 class manid:
     # Starting ID number
