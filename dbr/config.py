@@ -55,7 +55,7 @@ default_config_values = {
     u'maximize': (GetBoolean, False),
     u'position': (GetIntTuple, (0, 0)),
     u'size': (GetIntTuple, (800, 640)),
-    u'workingdir': (unicode, PATH_home),
+    u'workingdir': (GS, PATH_home),
     u'tooltips': (GetBoolean, True),
 }
 
