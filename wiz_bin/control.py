@@ -66,12 +66,12 @@ class Panel(WizardPage):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        ti_package = TextAreaESS(pnl_require, ident.F_PACKAGE, name=txt_package.Name)
+        ti_package = TextAreaESS(pnl_require, inputid.PACKAGE, name=txt_package.Name)
         ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        ti_version = TextAreaESS(pnl_require, ident.F_VERSION, name=txt_version.Name)
+        ti_version = TextAreaESS(pnl_require, inputid.VERSION, name=txt_version.Name)
         ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
@@ -93,7 +93,7 @@ class Panel(WizardPage):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
-        sel_arch = ChoiceESS(pnl_require, ident.F_ARCH, choices=opts_arch, name=txt_arch.Name)
+        sel_arch = ChoiceESS(pnl_require, inputid.ARCH, choices=opts_arch, name=txt_arch.Name)
         sel_arch.default = 0
         sel_arch.SetSelection(sel_arch.default)
         
@@ -453,7 +453,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def GetPackageName(self):
-        return GetField(self, ident.F_PACKAGE).GetValue()
+        return GetField(self, inputid.PACKAGE).GetValue()
     
     
     ## TODO: Doxygen
