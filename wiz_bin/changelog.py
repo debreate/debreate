@@ -21,14 +21,13 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
-from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
+from output.ftarget         import FileOTarget
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
 from ui.wizard              import WizardPage
 
 
@@ -80,20 +79,7 @@ class Panel(WizardPage):
         
         # *** Target installation directory
         
-        pnl_target = BorderedPanel(self)
-        
-        # Standard destination of changelog
-        self.rb_target_standard = wx.RadioButton(pnl_target, label=u'/usr/share/doc/<package>',
-                name=u'target default', style=wx.RB_GROUP)
-        self.rb_target_standard.default = True
-        self.rb_target_standard.SetValue(self.rb_target_standard.default)
-        
-        # Custom destination of changelog
-        # FIXME: Should not use same name as default destination???
-        self.rb_target_custom = wx.RadioButton(pnl_target, name=self.rb_target_standard.Name)
-        
-        self.ti_target = PathCtrl(pnl_target, value=u'/', default=u'/')
-        self.ti_target.SetName(u'target custom')
+        self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default')
         
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
@@ -136,23 +122,6 @@ class Panel(WizardPage):
             (self.ti_email, 1, wx.EXPAND)
             ))
         
-        lyt_target_custom = BoxSizer(wx.HORIZONTAL)
-        
-        lyt_target_custom.Add(self.rb_target_custom, 0, wx.ALIGN_CENTER_VERTICAL)
-        lyt_target_custom.Add(self.ti_target, 1)
-        
-        lyt_target = BoxSizer(wx.VERTICAL)
-        
-        lyt_target.AddSpacer(5)
-        lyt_target.Add(self.rb_target_standard, 0, wx.RIGHT, 5)
-        lyt_target.AddSpacer(5)
-        lyt_target.Add(lyt_target_custom, 0, wx.EXPAND|wx.RIGHT, 5)
-        lyt_target.AddSpacer(5)
-        
-        pnl_target.SetSizer(lyt_target)
-        pnl_target.SetAutoLayout(True)
-        pnl_target.Layout()
-        
         lyt_details = wx.GridBagSizer()
         lyt_details.SetCols(3)
         lyt_details.AddGrowableRow(2)
@@ -163,7 +132,7 @@ class Panel(WizardPage):
         lyt_details.Add(wx.StaticText(self, label=GT(u'Changes')), (1, 0), flag=LEFT_BOTTOM)
         lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
         lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
-        lyt_details.Add(pnl_target, (2, 2))
+        lyt_details.Add(self.pnl_target, (2, 2))
         lyt_details.Add(self.btn_add, (3, 0), (2, 1))
         lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
         lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
@@ -228,22 +197,23 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple : Changelog target dir & text
     def ExportPage(self):
-        target = u'STANDARD'
-        if self.rb_target_custom.GetValue():
-            target = self.ti_target.GetValue()
+        target = self.pnl_target.GetPath()
+        if target == self.pnl_target.GetDefaultPath():
+            target = u'STANDARD'
         
         return (target, self.GetChangelog())
     
     
     ## TODO: Doxygen
     def GatherData(self):
-        if self.rb_target_standard.GetValue():
-            dest = u'<<DEST>>DEFAULT<</DEST>>'
+        target = self.pnl_target.GetPath()
+        if target == self.pnl_target.GetDefaultPath():
+            target = u'<<DEST>>DEFAULT<</DEST>>'
         
-        elif self.rb_target_custom.GetValue():
-            dest = u'<<DEST>>' + self.ti_target.GetValue() + u'<</DEST>>'
+        else:
+            target = u'<<DEST>>{}<</DEST>>'.format(target)
         
-        return u'\n'.join((u'<<CHANGELOG>>', dest, self.dsp_changes.GetValue(), u'<</CHANGELOG>>'))
+        return u'\n'.join((u'<<CHANGELOG>>', target, self.dsp_changes.GetValue(), u'<</CHANGELOG>>'))
     
     
     ## TODO: Doxygen
@@ -288,21 +258,20 @@ class Panel(WizardPage):
         self.ti_maintainer.Clear()
         self.ti_email.Clear()
         self.ti_changes.Clear()
-        self.rb_target_standard.SetValue(self.rb_target_standard.default)
-        self.ti_target.Reset()
+        self.pnl_target.Reset()
         self.dsp_changes.Clear()
     
     
     ## TODO: Doxygen
     def SetChangelog(self, data):
         changelog = data.split(u'\n')
-        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+        target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         
-        if dest == u'DEFAULT':
-            self.rb_target_standard.SetValue(True)
+        if target == u'DEFAULT':
+            if not self.pnl_target.UsingDefault():
+                self.pnl_target.Reset()
         
         else:
-            self.rb_target_custom.SetValue(True)
-            self.ti_target.SetValue(dest)
+            self.pnl_target.SetPath(target)
         
         self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
