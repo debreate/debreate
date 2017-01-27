@@ -17,15 +17,26 @@ from ui.layout      import BoxSizer
 ## A simple dialog for previewing text
 class TextPreview(BaseDialog):
     def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Preview'), text=wx.EmptyString,
-                pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE,
-                name=wx.DialogNameStr):
+            pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE,
+            name=wx.DialogNameStr, readonly=True):
+        
         BaseDialog.__init__(self, parent, ID, title, pos, size, style, name)
         
+        ti_style = 0
+        if readonly:
+            ti_style = wx.TE_READONLY
+        
         # FIXME: Hide caret
-        text_display = MonospaceTextArea(self, style=wx.TE_READONLY)
+        text_display = MonospaceTextArea(self, style=ti_style)
         
         if text:
             text_display.SetValue(text)
+        
+        # *** Event Handling *** #
+        
+        self.Bind(wx.EVT_BUTTON, self.OnButton)
+        
+        # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(text_display, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
@@ -48,6 +59,12 @@ class TextPreview(BaseDialog):
         
         if text_display:
             return text_display.GetValue()
+    
+    
+    ## Close dialog with button events
+    def OnButton(self, event=None):
+        if event:
+            self.EndModal(event.GetEventObject().GetId())
     
     
     ## Sets the displayed text
