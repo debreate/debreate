@@ -262,7 +262,7 @@ class Panel(WizardPage):
                 
                 # *** MD5 Checksum *** #
                 if not build_progress.WasCancelled():
-                    if self.chk_md5.IsChecked():
+                    if self.chk_md5.GetValue() and GetExecutable(u'md5sum'):
                         log_msg = log_message(GT(u'Creating MD5 checksum'), current_step+1, steps_count)
                         #log_msg = GT(u'Creating MD5 checksum')
                         #step = u'{}/{}'.format(current_step+1, steps_count)
