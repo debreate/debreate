@@ -23,6 +23,7 @@ from ui.panel               import ControlPanel
 class TextArea(wx.TextCtrl):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+        
         wx.TextCtrl.__init__(self, parent, win_id, value, pos, size, style, validator, name)
         
         # Enable to override default behavior of adding filename string
