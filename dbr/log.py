@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os
+import os, sys
 
 from globals.dateinfo   import GetDate
 from globals.dateinfo   import GetTime
@@ -109,7 +109,7 @@ class DebreateLogger:
     #  
     #  \param l_level
     #        \b \e int|str : Level at which to display the message
-    def LogMessage(self, l_level, l_script, l_message, newline=False):
+    def LogMessage(self, l_level, l_script, l_message, newline=False, pout=sys.stdout):
         l_level = self.CheckLogLevel(l_level)
         
         if (l_level in self.log_level_list) and (l_level <= self.log_level):
@@ -120,7 +120,12 @@ class DebreateLogger:
                 message = u'\n{}'.format(message)
             
             # Message is shown in terminal
-            print(message)
+            if pout not in (sys.stdout, sys.stderr,):
+                print(message)
+            
+            else:
+                # Need to manually add newline when using sys.stdout/sys.stderr
+                pout.write(u'{}\n'.format(message))
             
             # Open log for writing
             AppendFile(self.log_file, u'{}\n'.format(message), self.no_strip)
@@ -142,7 +147,7 @@ class DebreateLogger:
     
     ## Show a log message at 'error' level
     def Error(self, l_script, l_message, newline=False):
-        self.LogMessage(u'error', l_script, l_message, newline)
+        self.LogMessage(u'error', l_script, l_message, newline, pout=sys.stderr)
     
     
     ## Show a log message at 'debug' level
