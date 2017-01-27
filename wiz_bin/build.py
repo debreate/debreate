@@ -12,7 +12,7 @@ from dbr.functions          import GetBoolean
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from globals                import ident
+from dbr.md5                import WriteMD5
 from globals.application    import AUTHOR_email
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
@@ -685,44 +685,9 @@ class Panel(WizardPage):
         Logger.Debug(__name__,
                 GT(u'Creating MD5sum file in {}').format(stage_dir))
         
-        md5_list = []
-        #md5hash_size = 32
-        debian_dir = u'{}/DEBIAN'.format(stage_dir).replace(u'//', u'/')
-        text_formats = (u'text', u'script',)
+        WriteMD5(stage_dir)
         
-        for ROOT, DIRS, FILES in os.walk(stage_dir):
-            for F in FILES:
-                if ROOT != debian_dir:
-                    F = ConcatPaths((ROOT, F,))
-                    Logger.Debug(__name__, GT(u'Retrieving md5 for {}').format(F))
-                    
-                    read_format = u't'
-                    '''
-                    # Read binary by default
-                    read_format = u'b'
-                    for T in text_formats:
-                        if T in GetFileMimeType(F):
-                            read_format = u't'
-                            break
-                    '''
-                    
-                    md5 = commands.getoutput(u'{} -{} "{}"'.format(GetExecutable(u'md5sum'), read_format, F))
-                    
-                    # Need to remove stage dir from file path
-                    md5 = md5.replace(u'{}/'.format(stage_dir), u'')
-                    md5_list.append(md5)
-        
-        if not md5_list:
-            return GT(u'Could not create md5sums')
-        
-        if not os.path.isdir(debian_dir):
-            os.makedirs(debian_dir)
-        
-        md5_file = ConcatPaths((debian_dir, u'md5sums'))
-        
-        WriteFile(md5_file, md5_list)
-        
-        return GT(u'md5sums created: {}').format(md5_file)
+        return GT(u'md5sums file created: {}'.format(os.path.isfile(ConcatPaths((stage_dir, u'DEBIAN/md5sums',)))))
     
     
     ## TODO: Doxygen
