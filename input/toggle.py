@@ -14,9 +14,19 @@ from input.essential import EssentialField
 ## Standard wx.CheckBox
 class CheckBox(wx.CheckBox):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr):
+                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False):
         
         wx.CheckBox.__init__(self, parent, win_id, label, pos, size, style, name=name)
+        
+        self.default = defaultValue
+        self.tt_name = name
+        
+        self.SetValue(self.default)
+    
+    
+    ## TODO: Doxygen
+    def GetDefaultValue(self):
+        return self.default
     
     
     ## Manually emit EVT_CHECKBOX when setting value
@@ -27,6 +37,11 @@ class CheckBox(wx.CheckBox):
         wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED))
         
         return self.SetValue(state)
+    
+    
+    ## TODO: Doxygen
+    def SetDefaultValue(self, value):
+        self.default = value
 
 
 ## CheckBox class that notifies main window to mark project dirty
