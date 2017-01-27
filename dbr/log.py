@@ -180,4 +180,4 @@ Logger = DebreateLogger()
 
 ## Checks if logging level is set to 'debug'
 def DebugEnabled():
-    return Logger.GetLogLevel() == Logger.DEBUG
+    return Logger.GetLogLevel() >= Logger.DEBUG
