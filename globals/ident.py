@@ -107,6 +107,15 @@ F_PACKAGE = wx.NewId()
 F_VERSION = wx.NewId()
 
 
+## IDs for input fields
+class inputid:
+    ARCH = wx.NewId()
+    LIST = wx.NewId()
+    MD5 = wx.NewId()
+    PACKAGE = wx.NewId()
+    VERSION = wx.NewId()
+
+
 ## IDs for reference manual menu item links
 class refid:
     DEBSRC = wx.NewId()
