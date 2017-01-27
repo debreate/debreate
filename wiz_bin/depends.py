@@ -11,8 +11,8 @@ import wx
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from globals                import ident
 from globals.ident          import genid
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -95,7 +95,7 @@ class Panel(WizardPage):
         btn_clear = ButtonClear(self)
         
         # ----- List
-        self.lst_deps = ListCtrlPanelESS(self, ident.F_LIST, name=u'list')
+        self.lst_deps = ListCtrlPanelESS(self, inputid.LIST, name=u'list')
         self.lst_deps.SetSingleStyle(wx.LC_REPORT)
         self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
         self.lst_deps.InsertColumn(1, GT(u'Package(s)'))

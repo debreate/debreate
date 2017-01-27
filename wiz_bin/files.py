@@ -15,6 +15,7 @@ from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
@@ -107,7 +108,7 @@ class Panel(WizardPage):
         btn_refresh = ButtonRefresh(self)
         
         # Display area for files added to list
-        self.lst_files = FileListESS(self, ident.F_LIST, name=u'filelist')
+        self.lst_files = FileListESS(self, inputid.LIST, name=u'filelist')
         
         # *** Event Handling *** #
         
