@@ -38,6 +38,7 @@ from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
+from input.toggle           import CheckBox
 from input.toggle           import CheckBoxESS
 from startup.tests          import GetTestList
 from ui.button              import ButtonBuild64
@@ -98,7 +99,7 @@ class Panel(WizardPage):
         self.chk_lint.col = 0
         
         # Installs the deb on the system
-        self.chk_install = wx.CheckBox(pnl_options, label=GT(u'Install package after build'))
+        self.chk_install = CheckBox(pnl_options, label=GT(u'Install package after build'))
         self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
