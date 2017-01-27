@@ -22,6 +22,7 @@ class CheckBox(wx.CheckBox):
         self.default = defaultValue
         self.tt_name = name
         
+        # Initialize with default value
         self.SetValue(self.default)
     
     
@@ -42,6 +43,11 @@ class CheckBox(wx.CheckBox):
         return wx.CheckBox.GetValue(self)
     
     
+    ## Resets check box to default value
+    def Reset(self):
+        self.SetChecked(self.GetDefaultValue())
+    
+    
     ## Manually emit EVT_CHECKBOX when setting value
     #  
     #  \param state
@@ -60,7 +66,8 @@ class CheckBox(wx.CheckBox):
 ## CheckBox that updates config file when value is changed
 class CheckBoxCFG(CheckBox, ConfigField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, cfgKey=None):
+                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
+                cfgKey=None):
         
-        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name)
+        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue)
         ConfigField.__init__(self, cfgKey)
