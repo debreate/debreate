@@ -12,7 +12,7 @@ from dbr.functions          import FileUnstripped
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from dbr.md5                import MD5Hasher
+from dbr.md5                import WriteMD5
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
@@ -57,9 +57,6 @@ class Panel(WizardPage):
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = True
-        
-        # For creating md5sum hashes
-        self.md5 = MD5Hasher(self.chk_md5)
         
         # Option to strip binaries
         self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
@@ -390,7 +387,7 @@ class Panel(WizardPage):
             if u'md5sums' in task_list:
                 UpdateProgress(progress, GT(u'Creating md5sums'))
                 
-                if not self.md5.WriteMd5(stage_dir, parent=build_progress):
+                if not WriteMD5(stage_dir, parent=build_progress):
                     # Couldn't call md5sum command
                     build_progress.Cancel()
                 
