@@ -12,6 +12,7 @@ import os, wx
 
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
+from dbr.functions      import IsIntTuple
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals.fileio     import ReadFile
@@ -57,6 +58,22 @@ default_config_values = {
     u'workingdir': (unicode, PATH_home),
     u'tooltips': (GetBoolean, True),
 }
+
+
+## TODO: Doxygen
+def SetDefaultConfigKey(key, value):
+    global default_config_values
+    
+    # Default type is string
+    func = GS
+    
+    if isinstance(value, bool):
+        func = GetBoolean
+    
+    elif IsIntTuple(value):
+        func = GetIntTuple
+    
+    default_config_values[key] = (func, value,)
 
 
 ## Opens configuration & searches for key
