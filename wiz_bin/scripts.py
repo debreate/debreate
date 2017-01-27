@@ -21,7 +21,7 @@ from input.list             import ListCtrlPanel
 from input.markdown         import MarkdownDialog
 from input.pathctrl         import PATH_WARN
 from input.pathctrl         import PathCtrl
-from input.text             import MonospaceTextArea
+from input.text             import TextAreaPanel
 from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
 from ui.button              import ButtonImport
@@ -74,10 +74,10 @@ class Panel(WizardPage):
                 name=u'postrm')
         
         # Text area for each radio button
-        ti_preinst = MonospaceTextArea(self, ID_INST_PRE, name=u'script body')
-        ti_postinst = MonospaceTextArea(self, ID_INST_POST, name=u'script body')
-        ti_prerm = MonospaceTextArea(self, ID_RM_PRE, name=u'script body')
-        ti_postrm = MonospaceTextArea(self, ID_RM_POST, name=u'script body')
+        ti_preinst = TextAreaPanel(self, ID_INST_PRE, monospace=True, name=u'script body')
+        ti_postinst = TextAreaPanel(self, ID_INST_POST, monospace=True, name=u'script body')
+        ti_prerm = TextAreaPanel(self, ID_RM_PRE, monospace=True, name=u'script body')
+        ti_postrm = TextAreaPanel(self, ID_RM_POST, monospace=True, name=u'script body')
         
         for TI in ti_preinst, ti_postinst, ti_prerm, ti_postrm:
             TI.EnableDropTarget()

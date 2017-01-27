@@ -23,7 +23,6 @@ from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
 from input.pathctrl         import PathCtrl
 from input.select           import ComboBox
-from input.text             import MonospaceTextArea
 from input.text             import TextAreaPanel
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
@@ -101,7 +100,7 @@ class Panel(WizardPage):
         
         self.chk_indentation = wx.CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
         
-        self.dsp_changes = MonospaceTextArea(self, name=u'log')
+        self.dsp_changes = TextAreaPanel(self, monospace=True, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)

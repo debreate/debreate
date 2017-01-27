@@ -9,7 +9,7 @@
 import wx
 
 from dbr.language   import GT
-from input.text     import MonospaceTextArea
+from input.text     import TextAreaPanel
 from ui.dialog      import BaseDialog
 from ui.layout      import BoxSizer
 
@@ -18,7 +18,7 @@ from ui.layout      import BoxSizer
 class TextPreview(BaseDialog):
     def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Preview'), text=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE,
-            name=wx.DialogNameStr, readonly=True):
+            name=wx.DialogNameStr, monospace=True, readonly=True):
         
         BaseDialog.__init__(self, parent, ID, title, pos, size, style, name)
         
@@ -27,7 +27,7 @@ class TextPreview(BaseDialog):
             ti_style = wx.TE_READONLY
         
         # FIXME: Hide caret
-        text_display = MonospaceTextArea(self, style=ti_style)
+        text_display = TextAreaPanel(self, monospace=monospace, style=ti_style)
         
         if text:
             text_display.SetValue(text)
@@ -49,7 +49,7 @@ class TextPreview(BaseDialog):
     ## Retrieves the text area
     def GetTextArea(self):
         for C in self.GetChildren():
-            if isinstance(C, MonospaceTextArea):
+            if isinstance(C, TextAreaPanel):
                 return C
     
     

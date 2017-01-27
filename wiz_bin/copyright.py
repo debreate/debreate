@@ -22,7 +22,7 @@ from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
-from input.text             import MonospaceTextArea
+from input.text             import TextAreaPanel
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -70,7 +70,7 @@ class Panel(WizardPage):
             self.btn_template_simple.Enable(False)
         
         ## Area where license text is displayed
-        self.dsp_copyright = MonospaceTextArea(self, name=u'license')
+        self.dsp_copyright = TextAreaPanel(self, monospace=True, name=u'license')
         self.dsp_copyright.EnableDropTarget()
         
         SetPageToolTips(self)
