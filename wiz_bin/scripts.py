@@ -10,13 +10,13 @@ import os, wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes     import ERR_FILE_WRITE
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import genid
+from globals.ident          import inputid
 from globals.ident          import page_ids
 from globals.ident          import pgid
 from globals.strings        import GS
@@ -216,7 +216,7 @@ class Panel(WizardPage):
             self.lst_executables = []
             
             # Get executables from "files" tab
-            files = GetField(pgid.FILES, ident.F_LIST)
+            files = GetField(pgid.FILES, inputid.LIST)
             
             # Sets the max iterate value
             MAX = files.GetItemCount()

@@ -22,6 +22,7 @@ from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
@@ -590,7 +591,8 @@ class Panel(WizardPage):
                     
                     return
         
-        if pg_files.file_list.MissingFiles():
+        #if pg_files.file_list.MissingFiles():
+        if GetField(pg_files, inputid.LIST).MissingFiles():
             ShowErrorDialog(GT(u'Files are missing in file list'), warn=True, title=GT(u'Warning'))
             
             wizard.ShowPage(pgid.FILES)
