@@ -22,7 +22,6 @@ from globals.execute        import GetCommandOutput
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import ReadFile
-from globals.fileio         import WriteFile
 from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
