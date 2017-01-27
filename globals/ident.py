@@ -119,7 +119,10 @@ F_VERSION = wx.NewId()
 ## IDs for input fields
 class inputid:
     ARCH = wx.NewId()
+    CUSTOM = wx.NewId()
+    EMAIL = wx.NewId()
     LIST = wx.NewId()
+    MAINTAINER = wx.NewId()
     MD5 = wx.NewId()
     PACKAGE = wx.NewId()
     VERSION = wx.NewId()
