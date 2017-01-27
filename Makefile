@@ -49,6 +49,7 @@ PKG_wiz_bin = wiz_bin/*.py
 PKG_dbr = dbr/*.py
 PKG_globals = globals/*.py
 PKG_input = input/*.py
+PKG_output = output/*.py
 PKG_startup = startup/*.py
 PKG_ui = ui/*.py
 
@@ -81,6 +82,7 @@ FILES_BUILD = \
 	$(PKG_dbr) \
 	$(PKG_globals) \
 	$(PKG_input) \
+	$(PKG_output) \
 	$(PKG_startup) \
 	$(PKG_ui) \
 	$(PKG_wiz_bin)
@@ -95,6 +97,7 @@ DIRS_dist = \
 	docs \
 	globals \
 	input \
+	output \
 	man \
 	scripts \
 	startup \
@@ -154,6 +157,11 @@ install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-
 	mkdir -vp "$${datadir}/input"; \
 	for py in $(PKG_input); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}/input"; \
+	done; \
+	\
+	mkdir -vp "$${datadir}/output"; \
+	for py in $(PKG_output); do \
+		$(INSTALL_DATA) "$${py}" "$${datadir}/output"; \
 	done; \
 	\
 	mkdir -vp "$${datadir}/startup"; \
