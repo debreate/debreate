@@ -20,10 +20,10 @@ PATH_WARN = wx.NewId()
 #  
 #  FIXME: Use boolean value instead of type
 class PathCtrl(TextArea):
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=u'/', defaultValue=u'/', ctrl_type=PATH_DEFAULT,
             default=wx.EmptyString, name=wx.TextCtrlNameStr):
         
-        TextArea.__init__(self, parent, ctrl_id, value, name=name)
+        TextArea.__init__(self, parent, ctrl_id, value, defaultValue, name=name)
         
         self.ctrl_type = ctrl_type
         
@@ -64,9 +64,11 @@ class PathCtrl(TextArea):
             event.Skip()
     
     
-    ## TODO: Doxygen
+    ## Resets text area to default value
+    #  
+    #  \override input.text.TextArea.Reset
     def Reset(self):
-        self.SetValue(self.default)
+        TextArea.Reset(self)
         
         if self.ctrl_type == PATH_WARN:
             self.SetPathAvailable()
