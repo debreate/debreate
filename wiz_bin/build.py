@@ -390,7 +390,7 @@ class Panel(WizardPage):
             if u'md5sums' in task_list:
                 UpdateProgress(progress, GT(u'Creating md5sums'))
                 
-                if not self.md5.WriteMd5(build_path, stage_dir, parent=build_progress):
+                if not self.md5.WriteMd5(stage_dir, parent=build_progress):
                     # Couldn't call md5sum command
                     build_progress.Cancel()
                 
