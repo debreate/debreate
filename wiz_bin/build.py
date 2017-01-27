@@ -40,7 +40,6 @@ from globals.wizardhelper   import GetPage
 from input.toggle           import CheckBox
 from input.toggle           import CheckBoxCFG
 from input.toggle           import CheckBoxESS
-from startup.tests          import GetTestList
 from startup.tests          import UsingTest
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
@@ -114,7 +113,7 @@ class Panel(WizardPage):
         
         # *** Lintian Overrides *** #
         
-        if u'alpha' in GetTestList():
+        if UsingTest(u'alpha'):
             # FIXME: Move next to lintian check box
             self.lint_overrides = []
             btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
@@ -166,7 +165,7 @@ class Panel(WizardPage):
         lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         
-        if u'alpha' in GetTestList():
+        if UsingTest(u'alpha'):
             #lyt_main.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
             lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
         
