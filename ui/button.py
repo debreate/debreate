@@ -294,7 +294,8 @@ button_list = {
 #    Reverse order of buttons added
 #  \return
 #    \b \e BoxSizer instance containing the buttons
-def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, reverse=True):
+def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, reverse=True,
+            flag=wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, border=5):
     lyt_buttons = ButtonSizer(wx.HORIZONTAL)
     
     if reverse:
@@ -313,8 +314,14 @@ def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, re
     
     lyt_buttons.ShowLabels(show_labels)
     
-    if parent_sizer:
-        parent_sizer.Add(lyt_buttons)
+    if isinstance(parent_sizer, wx.BoxSizer):
+        parent_sizer.Add(lyt_buttons, 0, flag, border)
+        
+        return None
+    
+    # parent_sizer is boolean
+    elif parent_sizer:
+        window.GetSizer().Add(lyt_buttons, 0, flag, border)
         
         return None
     
