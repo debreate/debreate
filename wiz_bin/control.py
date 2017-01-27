@@ -516,7 +516,8 @@ class Panel(WizardPage):
         save_dialog.SetFilename(u'control')
         
         if ShowDialog(save_dialog):
-            WriteFile(save_dialog.GetPath(), control)
+            # Be sure not to strip trailing newline (dpkg is picky)
+            WriteFile(save_dialog.GetPath(), control, no_strip=u'\n')
     
     
     ## TODO: Doxygen
