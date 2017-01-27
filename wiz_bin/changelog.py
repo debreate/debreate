@@ -16,6 +16,7 @@ from globals.changes        import FormatChangelog
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
@@ -363,10 +364,10 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
-            (self.ti_package, ident.F_PACKAGE),
-            (self.ti_version, ident.F_VERSION),
-            (self.ti_maintainer, ident.F_MAINTAINER),
-            (self.ti_email, ident.F_EMAIL),
+            (self.ti_package, inputid.PACKAGE),
+            (self.ti_version, inputid.VERSION),
+            (self.ti_maintainer, inputid.MAINTAINER),
+            (self.ti_email, inputid.EMAIL),
             )
         
         for F, FID in fields:
