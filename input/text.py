@@ -21,10 +21,13 @@ from ui.panel               import ControlPanel
 
 ## Text control set up for handling file drop events
 class TextArea(wx.TextCtrl):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
+            pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
+            name=wx.TextCtrlNameStr):
         
         wx.TextCtrl.__init__(self, parent, win_id, value, pos, size, style, validator, name)
+        
+        self.default = defaultValue
         
         # Enable to override default behavior of adding filename string
         self.DragAcceptFiles(True)
@@ -39,6 +42,11 @@ class TextArea(wx.TextCtrl):
     ## Allow dropping files from file manager
     def EnableDropTarget(self, enable=True):
         self.accepts_drop = enable
+    
+    
+    ## Retrieve default value
+    def GetDefaultValue(self):
+        return self.default
     
     
     ## TODO: Doxygen
@@ -109,23 +117,37 @@ class TextArea(wx.TextCtrl):
                 GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         
         return False
+    
+    
+    ## Reset text area to default value
+    def Reset(self):
+        self.SetValue(self.default)
+    
+    
+    ## Sets the default value
+    def SetDefaultValue(self, value):
+        self.default = value
 
 
 ## TextArea that notifies main window to mark the project dirty
 class TextAreaESS(TextArea, EssentialField):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
+            pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
+            name=wx.TextCtrlNameStr):
         
-        TextArea.__init__(self, parent, win_id, value, pos, size, style, validator, name)
+        TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
+                name)
         EssentialField.__init__(self)
 
 
 ## A text control that is multiline & uses a themed border
 class TextAreaML(TextArea):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
+            pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
+            name=wx.TextCtrlNameStr):
         
-        TextArea.__init__(self, parent, win_id, value, pos, size, style|wx.TE_MULTILINE, validator, name)
+        TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style|wx.TE_MULTILINE,
+                validator, name)
     
     
     ## Sets the font size of the text area
@@ -141,10 +163,12 @@ class TextAreaML(TextArea):
 
 ## TextAreaML that notifies main window to mark the project dirty
 class TextAreaMLESS(TextAreaML, EssentialField):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, validator=wx.DefaultValidator, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
+            pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
+            name=wx.TextCtrlNameStr):
         
-        TextAreaML.__init__(self, parent, win_id, value, pos, size, style, validator, name)
+        TextAreaML.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
+                name)
         EssentialField.__init__(self)
 
 
@@ -164,15 +188,14 @@ button_H_pos = {
 
 ## Somewhat of a hack to attemtp to get rounded corners on text control border
 class TextAreaPanel(BorderedPanel, ControlPanel):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, monospace=False,
-            button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
+            monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
             name=wx.TextCtrlNameStr):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
-        self.MainCtrl = TextAreaML(self, style=style|wx.BORDER_NONE)
-        if not TextIsEmpty(value):
-            self.MainCtrl.SetValue(value)
+        self.MainCtrl = TextAreaML(self, value=value, defaultValue=defaultValue,
+                style=style|wx.BORDER_NONE)
         
         # For setting color of disabled panel
         self.clr_disabled = self.GetBackgroundColour()
@@ -255,6 +278,11 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
         return self.MainCtrl.GetCaret()
     
     
+    ## Retrieves text area's default value
+    def GetDefaultValue(self):
+        return self.MainCtrl.GetDefaultValue()
+    
+    
     ## Retrieves font that text area is using
     def GetFont(self):
         return self.MainCtrl.GetFont()
@@ -304,6 +332,16 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
         self.MainCtrl.SetFont(font)
         self.MainCtrl.SetInsertionPoint(insertion)
         self.MainCtrl.SetFocus()
+    
+    
+    ## Resets text area to default value
+    def Reset(self):
+        return self.MainCtrl.Reset()
+    
+    
+    ## Sets text area's default value
+    def SetDefaultValue(self, value):
+        return self.MainCtrl.SetDefaultValue(value)
     
     
     ## TODO: Doxygen
@@ -381,10 +419,10 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
 
 ## TextAreaPanel that notifies main window to mark the project dirty
 class TextAreaPanelESS(TextAreaPanel, EssentialField):
-    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, monospace=False,
-            button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
+            monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
             name=wx.TextCtrlNameStr):
         
-        TextAreaPanel.__init__(self, parent, win_id, value, monospace, button, pos, size,
-                style, name)
+        TextAreaPanel.__init__(self, parent, win_id, value, defaultValue, monospace, button, pos,
+                size, style, name)
         EssentialField.__init__(self)
