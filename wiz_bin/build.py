@@ -39,8 +39,10 @@ from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
 from input.toggle           import CheckBox
+from input.toggle           import CheckBoxCFG
 from input.toggle           import CheckBoxESS
 from startup.tests          import GetTestList
+from startup.tests          import UsingTest
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
 from ui.dialog              import DetailedMessageDialog
@@ -78,6 +80,12 @@ class Panel(WizardPage):
         self.chk_md5.SetName(u'MD5')
         self.chk_md5.default = True
         self.chk_md5.col = 0
+        
+        if UsingTest(u'alpha'):
+            # Brings up control file preview for editing
+            self.chk_ctrl_preview = CheckBoxCFG(pnl_options, label=GT(u'Preview control file for editing'),
+                    name=u'preview', cfgKey=u'buildpreview')
+            self.chk_ctrl_preview.col = 1
         
         # Option to strip binaries
         self.chk_strip = CheckBoxESS(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
