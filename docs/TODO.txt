@@ -77,6 +77,8 @@ Non-priority:
 - Add contributers file to docs dir
 - Option to convert between package formats (alien?)
 - Replace Makefile with CMake build system
+- Set build page options from config, not project file
+- Option to remove debreate folders from /tmp directory
 
 Undecided:
 - Scripting backend
