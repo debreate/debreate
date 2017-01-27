@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.md5
-#  
-#  FIXME: This module uses the following deprecated modules:
-#  - commands
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -67,7 +64,6 @@ def WriteMD5(stage_dir, parent=None):
         for F in FILES:
             F = u'{}/{}'.format(ROOT, F)
             
-            #md5 = commands.getoutput((u'{} -t "{}"'.format(CMD_md5sum, F)))
             md5 = GetCommandOutput(CMD_md5sum, (u'-t', F))
             
             Logger.Debug(__name__, u'WriteMD5: GetCommandOutput: {}'.format(md5))
