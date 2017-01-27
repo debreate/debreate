@@ -52,7 +52,7 @@ class Panel(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = wx.CheckBox(pnl_options, label=GT(u'Create md5sums file'))
+        self.chk_md5 = wx.CheckBox(pnl_options, inputid.MD5, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
