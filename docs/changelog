@@ -21,6 +21,7 @@
     - Legacy project (.dbp/plain text) support
   - The system '/tmp' directory is used staging project export & build prep
   - Project is marked dirty when altered
+  - Option to preview & edit control file before build
 - MISC:
   - Disabled custom dialogs
   - Rename log level argument value from 'warning' to 'warn'
