@@ -25,17 +25,16 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
-from globals.wizardhelper   import GetPage
 from input.pathctrl         import PathCtrlESS
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
 from input.text             import TextAreaPanelESS
 from input.toggle           import CheckBoxESS
+from output.ftarget         import FileOTarget
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
 from ui.wizard              import WizardPage
 
 
@@ -87,15 +86,8 @@ class Panel(WizardPage):
         
         # *** Target installation directory
         
-        pnl_target = BorderedPanel(self)
-        
-        # Standard destination of changelog
-        self.chk_target = CheckBoxESS(pnl_target, label=u'/usr/share/doc/<package>',
-                name=u'target default')
-        self.chk_target.default = True
-        
-        self.ti_target = PathCtrlESS(pnl_target, value=u'/', default=u'/')
-        self.ti_target.SetName(u'target custom')
+        self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', defaultType=CheckBoxESS,
+                customType=PathCtrlESS, name=u'target default')
         
         self.btn_add = ButtonAdd(self)
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
@@ -111,12 +103,6 @@ class Panel(WizardPage):
         
         btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
         self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
-        
-        self.chk_target.Bind(wx.EVT_CHECKBOX, self.OnSelectTarget)
-        
-        # *** Post-event Actions *** #
-        
-        self.chk_target.SetChecked(self.chk_target.default)
         
         # *** Layout *** #
         
@@ -144,18 +130,6 @@ class Panel(WizardPage):
             (self.ti_email, 1, wx.EXPAND)
             ))
         
-        lyt_target = BoxSizer(wx.VERTICAL)
-        
-        lyt_target.AddSpacer(5)
-        lyt_target.Add(self.chk_target, 0, wx.LEFT|wx.RIGHT, 5)
-        lyt_target.AddSpacer(5)
-        lyt_target.Add(self.ti_target, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_target.AddSpacer(5)
-        
-        pnl_target.SetSizer(lyt_target)
-        pnl_target.SetAutoLayout(True)
-        pnl_target.Layout()
-        
         lyt_details = wx.GridBagSizer()
         lyt_details.SetCols(3)
         lyt_details.AddGrowableRow(2)
@@ -166,7 +140,7 @@ class Panel(WizardPage):
         lyt_details.Add(wx.StaticText(self, label=GT(u'Changes')), (1, 0), flag=LEFT_BOTTOM)
         lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
         lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
-        lyt_details.Add(pnl_target, (2, 2))
+        lyt_details.Add(self.pnl_target, (2, 2))
         lyt_details.Add(self.btn_add, (3, 0), (2, 1))
         lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
         lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
@@ -242,12 +216,12 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self, stage):
-        if self.chk_target.GetValue():
-            stage = u'{}/usr/share/doc/{}'.format(stage,
-                    GetPage(pgid.CONTROL).GetPackageName()).replace(u'//', u'/')
+        target = self.pnl_target.GetPath()
         
-        else:
-            stage = u'{}/{}'.format(stage, self.ti_target.GetValue()).replace(u'//', u'/')
+        if target == self.pnl_target.GetDefaultPath():
+            target.replace(u'<package>', GetFieldValue(pgid.CONTROL, inputid.PACKAGE))
+        
+        stage = ConcatPaths((stage, target))
         
         if not os.path.isdir(stage):
             os.makedirs(stage)
@@ -271,18 +245,18 @@ class Panel(WizardPage):
     #  \return
     #        \b \e tuple(str, str) : Filename & formatted string of changelog target & body
     def Get(self, get_module=False):
-        cl_target = u'DEFAULT'
+        target = self.pnl_target.GetPath()
         
-        if not self.chk_target.GetValue():
-            cl_target = self.ti_target.GetValue()
+        if target == self.pnl_target.GetDefaultPath():
+            target = u'DEFAULT'
         
-        cl_body = self.dsp_changes.GetValue()
+        body = self.dsp_changes.GetValue()
         
-        if TextIsEmpty(cl_body):
+        if TextIsEmpty(body):
             page = None
         
         else:
-            page = u'[TARGET={}]\n\n[BODY]\n{}'.format(cl_target, cl_body)
+            page = u'[TARGET={}]\n\n[BODY]\n{}'.format(target, body)
         
         if get_module:
             page = (__name__, page,)
@@ -334,15 +308,16 @@ class Panel(WizardPage):
             if S == u'TARGET':
                 Logger.Debug(__name__, u'SECTION TARGET FOUND')
                 
-                self.chk_target.SetChecked(sections[S][0] == u'DEFAULT')
-                
-                if self.chk_target.Value:
+                if sections[S][0] == u'DEFAULT':
                     Logger.Debug(__name__, u'Using default target')
+                    
+                    if not self.pnl_target.UsingDefault():
+                        self.pnl_target.Reset()
                 
                 else:
                     Logger.Debug(__name__, GT(u'Using custom target: {}').format(sections[S][0]))
                     
-                    self.ti_target.SetValue(sections[S][0])
+                    self.pnl_target.SetPath(sections[S][0])
                 
                 continue
             
@@ -383,15 +358,6 @@ class Panel(WizardPage):
             if not TextIsEmpty(field_value):
                 F.SetValue(field_value)
     
-    
-    ## Enables/Disables custom target field
-    def OnSelectTarget(self, event=None):
-        self.ti_target.Enable(not self.chk_target.GetValue())
-        
-        if event:
-            event.Skip(True)
-    
-    
     ## TODO: Doxygen
     def Reset(self):
         self.ti_package.Clear()
@@ -401,19 +367,20 @@ class Panel(WizardPage):
         self.ti_maintainer.Clear()
         self.ti_email.Clear()
         self.ti_changes.Clear()
-        self.chk_target.SetChecked(self.chk_target.default)
-        self.ti_target.Reset()
+        self.pnl_target.Reset()
         self.dsp_changes.Clear()
     
     
     ## TODO: Doxygen
     def Set(self, data):
         changelog = data.split(u'\n')
-        dest = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+        target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         
-        self.chk_target.SetChecked(dest == u'DEFAULT')
+        if target == u'DEFAULT':
+            if not self.pnl_target.UsingDefault():
+                self.pnl_target.Reset()
         
-        if not self.chk_target.Value:
-            self.ti_target.SetValue(dest)
+        else:
+            self.pnl_target.SetPath(target)
         
         self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
