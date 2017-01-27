@@ -16,6 +16,7 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import pgid
+from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
@@ -278,13 +279,13 @@ class Panel(WizardPage):
     def ExportBuild(self, target, installed_size=0):
         self.Export(target, u'control')
         
-        absolute_filename = u'{}/control'.format(target).replace(u'//', u'/')
+        absolute_filename = ConcatPaths((target, u'control'))
         
         if not os.path.isfile(absolute_filename):
             return GT(u'Control file was not created')
         
         if installed_size:
-            control_data = ReadFile(absolute_filename, split=True)
+            control_data = ReadFile(absolute_filename, split=True, convert=list)
             
             size_line = u'Installed-Size: {}'.format(installed_size)
             if len(control_data) > 3:
@@ -293,7 +294,8 @@ class Panel(WizardPage):
             else:
                 control_data.append(size_line)
             
-            WriteFile(absolute_filename, control_data)
+            # Be sure not to strip trailing newline (dpkg is picky)
+            WriteFile(absolute_filename, control_data, no_strip=u'\n')
         
         return GT(u'Control file created: {}').format(absolute_filename)
     
