@@ -41,6 +41,7 @@ from input.toggle           import CheckBox
 from input.toggle           import CheckBoxCFG
 from input.toggle           import CheckBoxESS
 from startup.tests          import UsingTest
+from ui.button              import AddCustomButtons
 from ui.button              import ButtonBuild64
 from ui.checklist           import CheckListDialog
 from ui.dialog              import DetailedMessageDialog
@@ -53,6 +54,7 @@ from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.progress            import TimedProgressDialog
+from ui.textpreview         import TextPreview
 from ui.wizard              import WizardPage
 
 
@@ -434,6 +436,26 @@ class Panel(WizardPage):
         return None
     
     
+    ## Preview control file for editing
+    def EditControl(self):
+        pg_control = GetPage(pgid.CONTROL)
+        
+        ctrl_info = pg_control.GetCtrlInfo()
+        
+        preview = TextPreview(title=GT(u'Edit Control File'),
+                text=ctrl_info, size=(600,400), readonly=False)
+        AddCustomButtons(preview, (wx.ID_SAVE, wx.ID_CANCEL,), parent_sizer=True)
+        
+        if preview.ShowModal() == wx.ID_SAVE:
+            Logger.Debug(__name__, u'Updating control information ...')
+            
+            ctrl_info = preview.GetValue()
+            
+        
+            depends_data = pg_control.Set(ctrl_info)
+            GetPage(pgid.DEPENDS).Set(depends_data)
+    
+    
     ## TODO: Doxygen
     def Get(self, get_module=False):
         # 'install after build' is not exported to project for safety
@@ -577,6 +599,10 @@ class Panel(WizardPage):
         if event:
             event.Skip()
         
+        # Show control file preview for editing
+        if UsingTest(u'alpha') and self.chk_editctrl.GetValue():
+            self.EditControl()
+        
         wizard = self.GetWizard()
         
         pg_control = wizard.GetPage(pgid.CONTROL)
@@ -621,7 +647,6 @@ class Panel(WizardPage):
             wizard.ShowPage(pgid.FILES)
             
             return
-        
         
         ttype = GT(u'Debian Packages')
         save_dialog = GetFileSaveDialog(GetMainWindow(), GT(u'Build Package'),
