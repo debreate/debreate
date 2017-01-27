@@ -35,6 +35,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
+from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
 from input.toggle           import CheckBoxESS
