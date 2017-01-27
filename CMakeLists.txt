@@ -51,7 +51,7 @@ install(
 )
 
 install(
-    DIRECTORY dbr globals input startup ui wiz_bin wiz_src
+    DIRECTORY dbr globals input output startup ui wiz_bin wiz_src
     DESTINATION ${DATA_DIR}
     FILES_MATCHING
     PATTERN *.py
