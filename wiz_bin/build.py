@@ -604,9 +604,9 @@ class Panel(WizardPage):
         save_dialog = GetFileSaveDialog(GetMainWindow(), GT(u'Build Package'),
                 u'{} (*.deb)|*.deb'.format(ttype), u'deb')
         
-        package = GetField(pg_control, ident.F_PACKAGE)
-        version = GetField(pg_control, ident.F_VERSION)
-        arch = GetField(pg_control, ident.F_ARCH)
+        package = GetFieldValue(pg_control, inputid.PACKAGE)
+        version = GetFieldValue(pg_control, inputid.VERSION)
+        arch = GetFieldValue(pg_control, inputid.ARCH)
         save_dialog.SetFilename(u'{}_{}_{}.deb'.format(package, version, arch))
         
         if ShowDialog(save_dialog):
