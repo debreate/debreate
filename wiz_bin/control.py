@@ -316,7 +316,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    ## FIXME: Deprecated???
     def GetCtrlInfo(self):
         pg_depends = GetPage(pgid.DEPENDS)
         
@@ -445,9 +444,7 @@ class Panel(WizardPage):
                 ctrl_list.append(description)
         
         # dpkg requires empty newline at end of file
-        ctrl_list.append(u'\n')
-        
-        return u'\n'.join(ctrl_list)
+        return u'\n'.join(ctrl_list).strip(u'\n') + u'\n'
     
     
     ## TODO: Doxygen
@@ -494,16 +491,12 @@ class Panel(WizardPage):
     
     ## Show a preview of the control file
     def OnPreviewControl(self, event=None):
-        control = self.GetCtrlInfo()
+        ctrl_info = self.GetCtrlInfo()
         
-        # Ensure only one empty newline at end of preview (same as actual output)
-        control = control.rstrip(u'\n') + u'\n'
+        preview = TextPreview(title=GT(u'Control File Preview'),
+                text=ctrl_info, size=(600,400))
         
-        dia = TextPreview(title=GT(u'Control File Preview'),
-                text=control, size=(500,400))
-        
-        dia.ShowModal()
-        dia.Destroy()
+        ShowDialog(preview)
     
     
     ## Export control information to text file
