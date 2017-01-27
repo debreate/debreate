@@ -8,7 +8,8 @@
 
 import wx
 
-from input.essential import EssentialField
+from globals.wizardhelper   import FieldEnabled
+from input.essential        import EssentialField
 
 
 ## Standard wx.CheckBox
@@ -27,6 +28,18 @@ class CheckBox(wx.CheckBox):
     ## TODO: Doxygen
     def GetDefaultValue(self):
         return self.default
+    
+    
+    ## Retrieves current 'checked' state
+    #  
+    #  Differences from inherited method:
+    #  - Always returns False if the object is disabled
+    #  \override wx.CheckBox.GetValue
+    def GetValue(self):
+        if not FieldEnabled(self):
+            return False
+        
+        return wx.CheckBox.GetValue(self)
     
     
     ## Manually emit EVT_CHECKBOX when setting value
