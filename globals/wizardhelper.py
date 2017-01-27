@@ -123,41 +123,37 @@ def GetField(page, field_id, field_type=wx.Window):
 #  
 #  FIXME: field_type is currently unused
 #  
-#  \param page_id
-#        \b \e int : ID of desired page
+#  \param page
+#    \b \e Integer ID of desired page or page object
 #  \param field_id
-#        \b \e int : ID of desired field/control
+#    \b \e Integer ID of desired field/control
 #  \param field_type
 #        \b \b wx.Window : The class type that field/control should be
-#  \param return
+#  \return
 #        The retrieved value of the field/control or an error tuple
-def GetFieldValue(page_id, field_id, field_type=wx.Window):
-    page = GetWizard().GetPage(page_id)
+def GetFieldValue(page, field_id, field_type=wx.Window):
+    if isinstance(page, int):
+        page = GetWizard().GetPage(page)
     
     if not isinstance(page, wx.Window):
         # FIXME: Should have error id
-        return ErrorTuple(1,
-                GT(u'Page retrieved from page_id ({}) was not instance of a window/widget').format(page_id)
-            )
+        err_msg = GT(u'Page retrieved was not instance of a window/widget: Page name: {}').format(page.GetName())
+        return ErrorTuple(1, err_msg)
     
     field = GetField(page, field_id)
     
     if isinstance(field, ErrorTuple):
         return field
     
-    value_methods = {
-        wx.Choice: field.GetStringSelection,
-        wx.TextCtrl: field.GetValue,
-        }
+    if isinstance(field, wx.TextCtrl):
+        return field.GetValue()
     
-    for T in value_methods:
-        if isinstance(field, T):
-            return value_methods[T]()
+    if isinstance(field, wx.Choice):
+        return field.GetStringSelection()
     
     # FIXME: Should have error id
-    return ErrorTuple(1,
-            GT(u'Unrecognized field type: {} (ID: {})').format(type(field), field_id)
-        )
+    err_msg = GT(u'Unrecognized field type: {} (ID: {})').format(type(field), field_id)
+    return ErrorTuple(1, err_msg)
 
 
 ## Retrieves a menu from the menu bar
