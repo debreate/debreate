@@ -179,6 +179,7 @@ TT_launchers = {
 TT_build = {
     u'md5': GT(u'Creates a checksum for all staged files within the package'),
     u'md5_disabled': GT(u'Install md5sum package for this option'),
+    u'editctrl': GT(u'Opens preview of control file for editing before build'),
     u'strip': (
         GT(u'Discards unneeded symbols from binary files'), u'',
         GT(u'See "man 1 strip"'),
