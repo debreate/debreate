@@ -27,13 +27,14 @@ from globals.paths      import PATH_logs
 #    \b \e str : The file to which messages will be written
 class DebreateLogger:
     # Logging levels
-    INFO, WARN, ERROR, DEBUG = range(4)
+    INFO, WARN, ERROR, DEBUG, TEST = range(5)
     
     log_level_list = {
         INFO: u'info',
         WARN: u'warn',
         ERROR: u'error',
         DEBUG: u'debug',
+        TEST: u'test',
     }
     
     def __init__(self, log_level=ERROR, log_path=PATH_logs):
@@ -91,11 +92,11 @@ class DebreateLogger:
     #          or None for invalid log level
     def CheckLogLevel(self, l_level):
         
-        # Check if l_level is of type INFO, WARN, ERROR, DEBUG
+        # Check if l_level is of type INFO, WARN, ERROR, DEBUG, TEST
         if l_level in self.log_level_list:
             return l_level
         
-        # Check if l_level is a string value of 'info', 'warn', 'error', 'debug'
+        # Check if l_level is a string value of 'info', 'warn', 'error', 'debug', 'test'
         if isinstance(l_level, (unicode, str)):
             for L in self.log_level_list:
                 if l_level.lower() == self.log_level_list[L].lower():
@@ -129,19 +130,29 @@ class DebreateLogger:
                 self.no_strip = None
     
     
+    ## Show a log message at 'info' level
     def Info(self, l_script, l_message, newline=False):
         self.LogMessage(u'info', l_script, l_message, newline)
     
+    
+    ## Show a log message at 'warn' level
     def Warn(self, l_script, l_message, newline=False):
         self.LogMessage(u'warn', l_script, l_message, newline)
     
     
+    ## Show a log message at 'error' level
     def Error(self, l_script, l_message, newline=False):
         self.LogMessage(u'error', l_script, l_message, newline)
     
     
+    ## Show a log message at 'debug' level
     def Debug(self, l_script, l_message, newline=False):
         self.LogMessage(u'debug', l_script, l_message, newline)
+    
+    
+    ## Show a log message at '' level
+    def Test(self, l_script, l_message, newline=False):
+        self.LogMessage(u'test', l_script, l_message, newline)
     
     
     ## Sets the level at which messages will be output to terminal & log file
