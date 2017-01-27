@@ -32,6 +32,7 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
+from input.toggle           import CheckBox
 from ui.button              import ButtonBuild64
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
@@ -52,7 +53,7 @@ class Panel(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = wx.CheckBox(pnl_options, inputid.MD5, label=GT(u'Create md5sums file'))
+        self.chk_md5 = CheckBox(pnl_options, inputid.MD5, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
@@ -60,26 +61,26 @@ class Panel(WizardPage):
         self.chk_md5.col = 0
         
         # Option to strip binaries
-        self.chk_strip = wx.CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
+        self.chk_strip = CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
         self.chk_strip.default = True
         self.chk_strip.col = 0
         
         # Deletes the temporary build tree
-        self.chk_rmstage = wx.CheckBox(pnl_options, label=GT(u'Delete staged directory'))
+        self.chk_rmstage = CheckBox(pnl_options, label=GT(u'Delete staged directory'))
         self.chk_rmstage.SetName(u'rmstage')
         self.chk_rmstage.default = True
         self.chk_rmstage.SetValue(self.chk_rmstage.default)
         self.chk_rmstage.col = 0
         
         # Checks the output .deb for errors
-        self.chk_lint = wx.CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint = CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.SetName(u'LINTIAN')
         self.chk_lint.default = True
         self.chk_lint.col = 0
         
         # Installs the deb on the system
-        self.chk_install = wx.CheckBox(pnl_options, label=GT(u'Install package after build'))
+        self.chk_install = CheckBox(pnl_options, label=GT(u'Install package after build'))
         self.chk_install.tt_name = u'install»'
         self.chk_install.SetName(u'INSTALL')
         self.chk_install.default = False
