@@ -13,6 +13,7 @@ from dbr.log                import Logger
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.system         import GetOSDistNames
@@ -259,10 +260,10 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnImportFromControl(self, event=None):
         fields = (
-            (self.ti_package, ident.F_PACKAGE),
-            (self.ti_version, ident.F_VERSION),
-            (self.ti_maintainer, ident.F_MAINTAINER),
-            (self.ti_email, ident.F_EMAIL),
+            (self.ti_package, inputid.PACKAGE),
+            (self.ti_version, inputid.VERSION),
+            (self.ti_maintainer, inputid.MAINTAINER),
+            (self.ti_email, inputid.EMAIL),
             )
         
         for F, FID in fields:

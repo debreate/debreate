@@ -10,7 +10,6 @@ import os, traceback, wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.ident          import inputid
 from globals.ident          import pgid
@@ -74,7 +73,7 @@ class Panel(WizardPage):
         rb_usrlib = wx.RadioButton(pnl_target, label=u'/usr/lib')
         rb_locbin = wx.RadioButton(pnl_target, label=u'/usr/local/bin')
         rb_loclib = wx.RadioButton(pnl_target, label=u'/usr/local/lib')
-        self.rb_custom = wx.RadioButton(pnl_target, ident.F_CUSTOM, GT(u'Custom'))
+        self.rb_custom = wx.RadioButton(pnl_target, inputid.CUSTOM, GT(u'Custom'))
         self.rb_custom.default = True
         
         # Start with "Custom" selected
@@ -334,7 +333,7 @@ class Panel(WizardPage):
             return self.ti_target.GetValue()
         
         for target in self.grp_targets:
-            if target.GetId() != ident.F_CUSTOM and target.GetValue():
+            if target.GetId() != inputid.CUSTOM and target.GetValue():
                 return target.GetLabel()
     
     

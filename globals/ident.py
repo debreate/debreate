@@ -96,22 +96,15 @@ class pgid:
     BUILD = NewPageId(GT(u'Build'))
 
 
-# Field/Control IDs
-F_ARCH = wx.NewId()
-F_CUSTOM = wx.NewId()
-F_EMAIL = wx.NewId()
-F_LIST = wx.NewId()
-F_MAINTAINER = wx.NewId()
-F_NAME = wx.NewId()
-F_PACKAGE = wx.NewId()
-F_VERSION = wx.NewId()
-
-
 ## IDs for input fields
 class inputid:
     ARCH = wx.NewId()
+    CUSTOM = wx.NewId()
+    EMAIL = wx.NewId()
     LIST = wx.NewId()
+    MAINTAINER = wx.NewId()
     MD5 = wx.NewId()
+    NAME = wx.NewId()
     PACKAGE = wx.NewId()
     VERSION = wx.NewId()
 

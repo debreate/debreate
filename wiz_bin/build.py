@@ -13,7 +13,6 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from dbr.md5                import WriteMD5
-from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.cmdcheck       import CommandExists
@@ -22,6 +21,7 @@ from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import WriteFile
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import GS
@@ -303,7 +303,7 @@ class Panel(WizardPage):
                 build_progress.Destroy()
                 return (dbrerrno.ECNCLD, None)
             
-            package = GetField(pg_control, ident.F_PACKAGE).GetValue()
+            package = GetField(pg_control, inputid.PACKAGE).GetValue()
             
             # Make sure that the directory is available in which to place documentation
             if create_changelog or create_copyright:
@@ -565,10 +565,10 @@ class Panel(WizardPage):
             
             # Control page
             pg_control = GetPage(pgid.CONTROL)
-            fld_package = GetField(pg_control, ident.F_PACKAGE)
-            fld_version = GetField(pg_control, ident.F_VERSION)
-            fld_maint = GetField(pg_control, ident.F_MAINTAINER)
-            fld_email = GetField(pg_control, ident.F_EMAIL)
+            fld_package = GetField(pg_control, inputid.PACKAGE)
+            fld_version = GetField(pg_control, inputid.VERSION)
+            fld_maint = GetField(pg_control, inputid.MAINTAINER)
+            fld_email = GetField(pg_control, inputid.EMAIL)
             fields_control = (
                 fld_package,
                 fld_version,
@@ -610,7 +610,7 @@ class Panel(WizardPage):
             version = version.strip(u' \t')
             version = u''.join(version.split())
             
-            arch = GetField(pg_control, ident.F_ARCH).GetStringSelection()
+            arch = GetField(pg_control, inputid.ARCH).GetStringSelection()
             
             # Dialog for save destination
             ttype = GT(u'Debian packages')

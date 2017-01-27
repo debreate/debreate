@@ -11,7 +11,6 @@ from wx.combo               import OwnerDrawnComboBox
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
@@ -57,22 +56,22 @@ class Panel(WizardPage):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        ti_package = CharCtrl(pnl_require, ident.F_PACKAGE, name=txt_package.Name)
+        ti_package = CharCtrl(pnl_require, inputid.PACKAGE, name=txt_package.Name)
         ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        ti_version = CharCtrl(pnl_require, ident.F_VERSION, name=txt_version.Name)
+        ti_version = CharCtrl(pnl_require, inputid.VERSION, name=txt_version.Name)
         ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        ti_maintainer = wx.TextCtrl(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
+        ti_maintainer = wx.TextCtrl(pnl_require, inputid.MAINTAINER, name=txt_maintainer.Name)
         ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        ti_email = wx.TextCtrl(pnl_require, ident.F_EMAIL, name=txt_email.Name)
+        ti_email = wx.TextCtrl(pnl_require, inputid.EMAIL, name=txt_email.Name)
         ti_email.req = True
         
         opts_arch = (
@@ -84,7 +83,7 @@ class Panel(WizardPage):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
-        sel_arch = wx.Choice(pnl_require, ident.F_ARCH, choices=opts_arch, name=txt_arch.Name)
+        sel_arch = wx.Choice(pnl_require, inputid.ARCH, choices=opts_arch, name=txt_arch.Name)
         sel_arch.default = 0
         sel_arch.SetSelection(sel_arch.default)
         
