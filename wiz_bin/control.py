@@ -11,7 +11,6 @@ from wx.combo               import OwnerDrawnComboBox
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
@@ -76,12 +75,12 @@ class Panel(WizardPage):
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        ti_maintainer = TextAreaESS(pnl_require, ident.F_MAINTAINER, name=txt_maintainer.Name)
+        ti_maintainer = TextAreaESS(pnl_require, inputid.MAINTAINER, name=txt_maintainer.Name)
         ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        ti_email = TextAreaESS(pnl_require, ident.F_EMAIL, name=txt_email.Name)
+        ti_email = TextAreaESS(pnl_require, inputid.EMAIL, name=txt_email.Name)
         ti_email.req = True
         
         opts_arch = (
