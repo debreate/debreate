@@ -15,6 +15,7 @@ from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -390,7 +391,7 @@ class Panel(WizardPage):
             }
         
         # Get amount of items to add
-        dep_area = GetField(pg_depends, ident.F_LIST)
+        dep_area = GetField(pg_depends, inputid.LIST)
         dep_count = dep_area.GetItemCount()
         count = 0
         while count < dep_count:

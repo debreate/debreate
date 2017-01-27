@@ -12,6 +12,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
 from globals.bitmaps        import ICON_EXCLAMATION
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.strings        import TextIsEmpty
@@ -103,7 +104,7 @@ class Panel(WizardPage):
         btn_refresh = ButtonRefresh(self)
         
         # Display area for files added to list
-        self.lst_files = FileList(self, ident.F_LIST, name=u'filelist')
+        self.lst_files = FileList(self, inputid.LIST, name=u'filelist')
         
         # *** Event Handling *** #
         
