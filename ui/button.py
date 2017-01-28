@@ -8,7 +8,7 @@
 # See: docs/LICENSE.txt
 
 
-import wx
+import os, wx
 
 from dbr.containers     import Contains
 from dbr.language       import GT
@@ -16,8 +16,11 @@ from dbr.log            import Logger
 from globals            import ident
 from globals.bitmaps    import BUTTON_HELP
 from globals.bitmaps    import BUTTON_REFRESH
+from globals.bitmaps    import PATH_bitmaps
 from globals.ident      import genid
+from globals.paths      import ConcatPaths
 from globals.paths      import PATH_app
+from globals.strings    import GS
 from ui.layout          import BoxSizer
 
 
@@ -462,3 +465,41 @@ def ReplaceStandardButtons(dialog):
     
     dialog.Fit()
     dialog.Layout()
+
+
+## Creates a new custom button
+#
+#  \param parent
+#    \b \e wx.Window parent instance
+#  \param label
+#    Text to be shown on button or tooltip
+#  \param image
+#    Base name of image file to use for custom buttons
+#  \param size
+#    Image size to use for button
+#  \param btnId
+#    Object ID
+#  \param tooltip
+#    Text to display when cursor hovers over button
+#  \param name
+#    Name attribute
+#  \return
+#    ui.button.CustomButton instance or wx.Button instance if image file not found
+def CreateButton(parent, label, image, size=32, btnId=wx.ID_ANY, tooltip=None, name=None):
+    btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
+    
+    if not name:
+        name = label
+    
+    if os.path.isfile(btn_image):
+        btn = CustomButton(parent, btn_image, btnId, name=name)
+    
+    else:
+        btn = wx.Button(parent, btnId, label, name=name)
+    
+    if not tooltip:
+        tooltip = label
+    
+    btn.SetToolTipString(tooltip)
+    
+    return btn
