@@ -163,7 +163,7 @@ class TabsTemplate(BoxSizer):
     
     
     ## Change tab name & filename
-    def OnRenamePage(self, event=None):
+    def OnRenameTab(self, event=None):
         index = self.Tabs.GetSelection()
         
         return self.SetPageName(index, rename=True)
