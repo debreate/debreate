@@ -257,6 +257,41 @@ class ButtonSizer(BoxSizer):
         return BoxSizer.Insert(self, index, add_object, proportion, flag, border, userData)
     
     
+    ## Changes label for all buttons with specified ID
+    #
+    #  \param btnId
+    #    \b \e Integer ID of buttons to change labels
+    #  \param newLabel
+    #    New \b \e string label for button
+    #  \return
+    #    \b \e True if matching button found
+    def SetLabel(self, btnId, newLabel):
+        label_set = False
+        
+        for SI in self.GetChildren():
+            btn_objects = SI.GetSizer()
+            if btn_objects:
+                btn_objects = btn_objects.GetChildren()
+                
+                button = btn_objects[0].GetWindow()
+                
+                if button and button.GetId() == btnId:
+                    if isinstance(button, CustomButton):
+                        static_text = btn_objects[1].GetWindow()
+                        static_text.SetLabel(newLabel)
+                        button.SetToolTipString(newLabel)
+                        
+                        label_set = True
+                    
+                    else:
+                        button.SetLabel(newLabel)
+                        button.SetToolTipString(newLabel)
+                        
+                        label_set = True
+        
+        return label_set
+    
+    
     ## Show or hide text labels
     def ShowLabels(self, show=True):
         buttons = self.GetChildren()
