@@ -31,8 +31,6 @@ class ConfigField:
         # Set state using config file if found
         state = ReadConfig(self.ConfigKey)
         
-        print(u'\nDEBUG: ConfigField:')
-        
         ret_codes = (
             ConfCode.FILE_NOT_FOUND,
             ConfCode.KEY_NOT_DEFINED,
