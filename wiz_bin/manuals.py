@@ -36,7 +36,7 @@ class Panel(WizardPage):
         ## Override default label
         self.label = GT(u'Manual Pages')
         
-        self.tabs = TabsTemplate(self, ManPage)
+        self.Tabs = TabsTemplate(self, ManPage)
         
         # FIXME: Call after new page added???
         SetPageToolTips(self)
@@ -44,7 +44,7 @@ class Panel(WizardPage):
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(self.tabs, 1, wx.ALL|wx.EXPAND, 5)
+        lyt_main.Add(self.Tabs, 1, wx.ALL|wx.EXPAND, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
@@ -62,10 +62,10 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def AddManpage(self, name=u'manual', easy_mode=True):
         # Set 'select' argument to True to switch to new manpage
-        ret_val = self.tabs.AddPage(name, ManPage(self.tabs, name, easy_mode), select=True)
+        ret_val = self.Tabs.AddPage(name, ManPage(self.Tabs, name, easy_mode), select=True)
         
         # New page should be selected
-        #new_page = self.tabs.GetPage(self.tabs.GetSelection())
+        #new_page = self.Tabs.GetPage(self.Tabs.GetSelection())
         
         # Set up some event handling for new page
         #new_page.btn_rename.Bind(wx.EVT_BUTTON, self.OnRenamePage)
@@ -88,7 +88,7 @@ class Panel(WizardPage):
     
     ## Retrieves TabsTemplate instance
     def GetTabsTemplate(self):
-        return self.tabs
+        return self.Tabs
     
     
     ## TODO: Doxygen
@@ -110,7 +110,7 @@ class Panel(WizardPage):
     
     ## Removes all tabs & sets page to default values
     def Reset(self):
-        self.tabs.DeleteAllPages()
+        self.Tabs.DeleteAllPages()
     
     
     ## Either renames an existing page or creates a new one
@@ -161,6 +161,6 @@ class Panel(WizardPage):
             if index < 0:
                 return False
             
-            return self.tabs.SetPageText(index, new_name)
+            return self.Tabs.SetPageText(index, new_name)
         
         return self.AddManpage(new_name, easy_mode.GetValue())
