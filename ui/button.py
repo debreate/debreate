@@ -106,8 +106,8 @@ class ButtonCancel(CustomButton):
 ## TODO: Doxygen
 class ButtonClear(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_CLEAR, name=u'btn clear'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/clear32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'clear', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Clear')))
 
