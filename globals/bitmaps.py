@@ -15,7 +15,7 @@ from globals.paths  import PATH_bitmaps
 
 LOGO = ConcatPaths((PATH_bitmaps, u'debreate64.png'))
 
-ICON_ERROR = ConcatPaths((PATH_bitmaps, u'error64.png'))
+ICON_ERROR = GetBitmap(u'error', 64, u'icon')
 ICON_EXCLAMATION = ICON_ERROR
 ICON_QUESTION = GetBitmap(u'question', 64, u'icon')
 ICON_INFORMATION = ConcatPaths((PATH_bitmaps, u'information64.png'))
