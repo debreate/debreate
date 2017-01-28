@@ -115,8 +115,8 @@ class ButtonClear(CustomButton):
 ## TODO: Doxygen
 class ButtonConfirm(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_OK, name=u'btn confirm'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/confirm32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'confirm', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Confirm')))
 
