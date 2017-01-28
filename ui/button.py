@@ -150,8 +150,8 @@ class ButtonImport(CustomButton):
 ## TODO: Doxygen
 class ButtonNext(CustomButton):
     def __init__(self, parent, btn_id=ident.NEXT, name=u'btn next'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/next32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'next', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Next')))
 
@@ -159,8 +159,8 @@ class ButtonNext(CustomButton):
 ## TODO: Doxygen
 class ButtonPrev(CustomButton):
     def __init__(self, parent, btn_id=ident.PREV, name=u'btn previous'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/prev32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'prev', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Previous')))
 
