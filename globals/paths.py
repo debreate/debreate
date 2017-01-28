@@ -43,3 +43,6 @@ PATH_cache = ConcatPaths((PATH_local, u'cache'))
 
 ## Directory where log files are stored
 PATH_logs = ConcatPaths((PATH_local, u'logs'))
+
+## Directory where app bitmaps are stored
+PATH_bitmaps = u'{}/bitmaps'.format(PATH_app)

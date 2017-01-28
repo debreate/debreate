@@ -9,10 +9,8 @@
 import wx
 
 from globals.paths import ConcatPaths
-from globals.paths import PATH_app
+from globals.paths import PATH_bitmaps
 
-
-PATH_bitmaps = u'{}/bitmaps'.format(PATH_app)
 
 LOGO = ConcatPaths((PATH_bitmaps, u'debreate64.png'))
 
