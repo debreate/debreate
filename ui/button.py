@@ -168,8 +168,8 @@ class ButtonPrev(CustomButton):
 ## TODO: Doxygen
 class ButtonPreview(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_PREVIEW, name=u'btn preview'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/preview32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'preview', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Preview')))
 
@@ -177,7 +177,7 @@ class ButtonPreview(CustomButton):
 ## TODO: Doxygen
 class ButtonPreview64(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_PREVIEW, name=u'btn preview'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/preview64.png'.format(PATH_app)),
+        CustomButton.__init__(self, parent, GetBitmap(u'preview', 64, u'button'),
                 btn_id=btn_id, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Preview')))
