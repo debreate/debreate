@@ -279,7 +279,7 @@ class ManPage(wx.Panel):
         lyt_top = BoxSizer(wx.VERTICAL)
         lyt_top.Add(self.lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
         # FIXME: temp_bar height is initially wrong
-        lyt_top.Add(temp_bar, 0, wx.EXPAND|wx.BOTTOM, 5)
+        lyt_top.Add(temp_bar, 0, wx.EXPAND|wx.ALL, 5)
         
         pnl_top.SetAutoLayout(True)
         pnl_top.SetSizer(lyt_top)
