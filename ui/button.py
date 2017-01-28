@@ -42,8 +42,8 @@ class CustomButton(wx.BitmapButton):
 ## TODO: Doxygen
 class ButtonAdd(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_ADD, name=u'btn add'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/add32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'add', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Add')))
 
