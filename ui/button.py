@@ -15,7 +15,6 @@ from dbr.image          import GetBitmap
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals            import ident
-from globals.bitmaps    import BUTTON_REFRESH
 from globals.bitmaps    import PATH_bitmaps
 from globals.ident      import genid
 from globals.paths      import ConcatPaths
@@ -186,8 +185,8 @@ class ButtonPreview64(CustomButton):
 ## Button for refreshing displayed controls
 class ButtonRefresh(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_REFRESH, name=u'btn refresh'):
-        CustomButton.__init__(self, parent, BUTTON_REFRESH,
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'refresh', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Refresh')))
 
