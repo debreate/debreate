@@ -293,7 +293,7 @@ button_list = {
 #  \param reverse
 #    Reverse order of buttons added
 #  \return
-#    \b \e BoxSizer instance containing the buttons
+#    \b \e ui.button.ButtonSizer instance containing the buttons
 def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, reverse=True,
             flag=wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, border=5):
     lyt_buttons = ButtonSizer(wx.HORIZONTAL)
