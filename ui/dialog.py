@@ -23,8 +23,28 @@ from globals.wizardhelper   import GetMainWindow
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
 from ui.button              import AddCustomButtons
+from ui.button              import ButtonSizer
+from ui.button              import GetButtonSizer
 from ui.hyperlink           import Hyperlink
 from ui.layout              import BoxSizer
+
+
+## An abstract class defining method to manipulate button labels
+class ButtonDialog:
+    ## Changes the label of buttons of a given ID
+    #
+    #  \param btnId
+    #    \b \e Integer ID of buttons to change labels
+    #  \param newLabel
+    #    New \b \e string label for button
+    #  \return
+    #    Value of ui.button.ButtonSizer.SetLabel or \b \e False
+    def SetButtonLabel(self, btnId, newLabel):
+        btn_sizer = GetButtonSizer(self)
+        if isinstance(btn_sizer, ButtonSizer):
+            return btn_sizer.SetLabel(btnId, newLabel)
+        
+        return False
 
 
 ## A base dialog class
@@ -187,7 +207,7 @@ class StandardFileDialog(wx.FileDialog):
 #        \b \e unicode|str : Text to display in title bar
 #  \param icon
 #        \b \e wx.Bitmap|unicode|str : Image to display
-class DetailedMessageDialog(BaseDialog):
+class DetailedMessageDialog(BaseDialog, ButtonDialog):
     def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
             details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE, buttons=(wx.ID_OK,),
             linewrap=0):
