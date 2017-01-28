@@ -11,6 +11,7 @@
 import os, wx
 
 from dbr.containers     import Contains
+from dbr.image          import GetBitmap
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals            import ident
@@ -59,8 +60,8 @@ class ButtonAppend(CustomButton):
 ## TODO: Doxygen
 class ButtonBrowse(CustomButton):
     def __init__(self, parent, btn_id=genid.BROWSE, name=u'btn browse'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'browse', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Browse')))
 
@@ -68,8 +69,9 @@ class ButtonBrowse(CustomButton):
 ## TODO: Doxygen
 class ButtonBrowse64(CustomButton):
     def __init__(self, parent, btn_id=genid.BROWSE, name=u'btn browse'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/browse64.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        
+        CustomButton.__init__(self, parent, GetBitmap(u'browse', 64, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Browse')))
 
