@@ -143,7 +143,7 @@ class ManPage(wx.Panel):
             if event_id == manid.MULTILINE:
                 style = style|manid.MULTILINE
         
-        self.AddDocumentSection(style=style)
+        return self.AddDocumentSection(style=style)
     
     
     ## Show a confirmation dialog when closing a tab
