@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg1"
+   sodipodi:docname="btn-round-green.svg"
+   viewBox="0 0 128 128"
+   sodipodi:version="0.32"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   width="128"
+   height="128">
+  <title
+     id="title4144">Round Green Button</title>
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient1697">
+      <stop
+         id="stop1698"
+         style="stop-color:#69db0e"
+         offset="0" />
+      <stop
+         id="stop1699"
+         style="stop-color:#397607"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1076"
+       y2="466.28"
+       xlink:href="#linearGradient1697"
+       gradientUnits="userSpaceOnUse"
+       x2="520.57001"
+       y1="506.29001"
+       x1="520.57001"
+       inkscape:collect="always"
+       gradientTransform="matrix(9.1612,0,0,9.1612,-4590.89,-4258.649)" />
+    <linearGradient
+       id="linearGradient1077"
+       y2="505.07999"
+       xlink:href="#linearGradient1697"
+       gradientUnits="userSpaceOnUse"
+       x2="522.94"
+       y1="469.5"
+       x1="522.94"
+       inkscape:collect="always"
+       gradientTransform="matrix(9.1612,0,0,9.1612,-4590.89,-4258.649)" />
+    <linearGradient
+       id="linearGradient1078"
+       y2="463.47"
+       gradientUnits="userSpaceOnUse"
+       y1="183.48"
+       gradientTransform="matrix(1.5539,0,0,0.64354,-131.3079,-93.649)"
+       x2="214.59"
+       x1="213.83"
+       inkscape:collect="always">
+      <stop
+         id="stop1703"
+         style="stop-color:#ffffff;stop-opacity:.69072"
+         offset="0" />
+      <stop
+         id="stop1704"
+         style="stop-color:#ffffff;stop-opacity:0"
+         offset="1" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="0"
+     pagecolor="#ffffff"
+     inkscape:window-maximized="1"
+     inkscape:window-width="1600"
+     inkscape:zoom="1.2279853"
+     inkscape:window-x="1366"
+     showgrid="false"
+     borderopacity="1.0"
+     inkscape:current-layer="layer1"
+     inkscape:cx="-207.26181"
+     inkscape:cy="111.67597"
+     inkscape:window-height="949"
+     inkscape:pageopacity="0.0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(-139.00648,-139.42574)">
+    <g
+       id="g4167"
+       transform="matrix(0.3254442,0,0,0.3254442,136.9392,137.22201)">
+      <circle
+         id="path1070"
+         style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:12.50045776;stroke-linecap:round;stroke-linejoin:round"
+         cx="203.00648"
+         cy="203.42574"
+         r="190.40407" />
+      <path
+         id="path1713"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccc"
+         style="opacity:0.9;fill:url(#linearGradient1078);fill-rule:evenodd"
+         d="m 341.28,153.241 c 44.37,-0.97 -12.4,-123.16 -135.68,-123.81 -134.56,-0.68 -162.09,110.96 -140.72,113 0,0 36.87,5.06 71.94,14.86 56.47,15.93 125.55,-13.07 152.77,-17.29 30.34,-4.69 47.37,15.4 51.69,13.24 z" />
+    </g>
+  </g>
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>OpenClipart Library</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>Round Green Button</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benji Park</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>https://openclipart.org/detail/26193/button-green</dc:source>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
