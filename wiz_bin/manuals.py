@@ -108,6 +108,11 @@ class Panel(WizardPage):
         Logger.Debug(__name__, u'Closing tab')
     
     
+    ## Passes event to ui.notebook.TabsTemplate.OnRenameTab
+    def OnRenameTab(self, event=None):
+        self.Tabs.OnRenameTab(event)
+    
+    
     ## Removes all tabs & sets page to default values
     def Reset(self):
         self.Tabs.DeleteAllPages()
