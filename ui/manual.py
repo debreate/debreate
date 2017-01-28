@@ -18,6 +18,7 @@ from input.text             import TextAreaPanel
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonPreview
 from ui.button              import ButtonSave
+from ui.button              import CreateButton
 from ui.layout              import BoxSizer
 from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
@@ -235,10 +236,11 @@ class ManPage(wx.Panel):
             mode = mode.GetEventObject().Mode
         
         # Restart with fresh panel
+        # FIXME: Can be done without destroying children
         self.DestroyChildren()
         
-        btn_rename = wx.Button(self, label=GT(u'Rename'))
-        btn_mode = wx.Button(self, label=GT(u'Switch mode'))
+        btn_rename = CreateButton(self, GT(u'Rename'), u'rename')
+        btn_mode = CreateButton(self, GT(u'Switch mode'), u'mode')
         btn_mode.Mode = not mode
         
         # Import/Export/Preview
@@ -252,8 +254,8 @@ class ManPage(wx.Panel):
         # *** Layout *** #
         
         self.lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        self.lyt_buttons.Add(btn_rename, 0, wx.ALIGN_TOP)
-        self.lyt_buttons.Add(btn_mode, 0, wx.ALIGN_TOP|wx.LEFT, 5)
+        self.lyt_buttons.Add(btn_rename)
+        self.lyt_buttons.Add(btn_mode, 0, wx.LEFT, 5)
         self.lyt_buttons.AddStretchSpacer(1)
         self.lyt_buttons.Add(btn_browse)
         self.lyt_buttons.Add(btn_save)
