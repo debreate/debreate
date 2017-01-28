@@ -25,6 +25,3 @@ ICON_WARNING = ConcatPaths((PATH_bitmaps, u'warning64.png'))
 ICON_CLOCK = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'clock16.png')))
 ICON_GLOBE = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'globe16.png')))
 ICON_LOGO = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'debreate16.png')))
-
-BUTTON_HELP = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'question32.png')))
-BUTTON_REFRESH = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'btn-refresh32.png')))
