@@ -141,8 +141,8 @@ class ButtonHelp64(CustomButton):
 ## Button with an arrow for importing info from other pages
 class ButtonImport(CustomButton):
     def __init__(self, parent, btn_id=genid.IMPORT, name=u'btn import'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/import32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'import', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Import')))
 
