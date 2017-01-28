@@ -29,7 +29,14 @@ from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 
 
-## TODO: Doxygen
+## Panel for displaying manpage template
+#
+#  \param parent
+#    \b \e wx.Window parent instance
+#  \param name
+#    Name attribute for panel
+#  \param easy_mode
+#    If \b \e True, displays a layout with segregated fields, otherwise shows a plain text area
 class ManPage(wx.Panel):
     def __init__(self, parent, name=u'manual', easy_mode=True):
         wx.Panel.__init__(self, parent, name=name)
@@ -38,8 +45,8 @@ class ManPage(wx.Panel):
         self.SetMode(easy_mode)
     
     
-    ## Retrieves the section index that contains the object
-    #  
+    ## Retrieves the child index that contains the object
+    #
     #  \param item
     #    Object instance to search for
     #  \return
@@ -60,7 +67,14 @@ class ManPage(wx.Panel):
         return None
     
     
-    ## Adds a new section to the document
+    ## Adds a new child section to the document
+    #
+    #  \param section_name
+    #    \b \e String name of the section
+    #  \param style
+    #    \b \e Integer style comprised of globals.ident.mainid
+    #  \return
+    #    \b \e True if new section was added
     def AddDocumentSection(self, section_name=None, style=DEFAULT_MANSECT_STYLE):
         doc_section = ManSect(self.pnl_bottom, section_name, style=style)
         obj_section = doc_section.GetObject()
@@ -117,17 +131,26 @@ class ManPage(wx.Panel):
         return True
     
     
-    ## Get manpage section & contents
+    ## Retrieves manpage section & contents
+    #
+    #  \return
+    #    \b \e String \b \e tuple of section name & value
     def Get(self):
         return (self.GetSection(), self.GetValue(),)
     
     
     ## Get the manpage section number
+    #
+    #  \return
+    #    \b \e String section name
     def GetSection(self):
         return self.sel_section.GetStringSelection()
     
     
     ## Adds a new section to the document via button press
+    #
+    #  \return
+    #    Value of ui.manual.ManPage.AddDocumentSection
     def OnAddDocumentSection(self, event=None):
         style = DEFAULT_MANSECT_STYLE
         
@@ -147,16 +170,16 @@ class ManPage(wx.Panel):
     
     
     ## Show a confirmation dialog when closing a tab
-    #  
-    #  FIXME: Find children & check default values
+    #
+    #  TODO: Find children & check default values
     def OnCloseTab(self, event=None):
         pass
     
     
     ## Removes selected section from manpage document via button press
-    #  
+    #
     #  \return
-    #    \b \e True if section elements were removed
+    #    Value of ui.manual.ManPage.RemoveDocumentSection
     def OnRemoveDocumentSection(self, event=None, index=None):
         if event:
             index = self._get_object_section(event.GetEventObject())
@@ -165,7 +188,9 @@ class ManPage(wx.Panel):
     
     
     ## Removes selected section from manpage document
-    #  
+    #
+    #  \param index
+    #    \b \e Integer index of the child section to remove
     #  \return
     #    \b \e True if section elements were removed
     def RemoveDocumentSection(self, index):
@@ -192,7 +217,16 @@ class ManPage(wx.Panel):
         return False
     
     
-    ## TODO: Doxygen
+    ## Changes the displayed template mode
+    #
+    #  \b \e Easy mode dispays controls for adding individual sections. \b \e Manual
+    #  mode shows a plain text area.
+    #
+    #  \param mode
+    #    Mode to be displayed
+    #    If is event object, retrieves mode from object's attribute 'Mode'
+    #  \return
+    #    Value of either ui.manual.ManPage.SetModeEasy or ui.manual.ManPage.SetModeManual
     def SetMode(self, mode):
         print(u'\nDEBUG: SetMode')
         print(u'  Parent instance: {}'.format(type(self.Parent)))
@@ -233,7 +267,9 @@ class ManPage(wx.Panel):
         return self.SetModeManual()
     
     
-    ## TODO: Doxygen
+    ## Displays template in 'easy' mode
+    #  
+    #  Uses controls to add & edit individual sections.
     def SetModeEasy(self):
         # Add sibling panel to hold menu & rename button
         pnl_top = wx.Panel(self)
@@ -310,7 +346,9 @@ class ManPage(wx.Panel):
         self.AddDocumentSection(GT(u'See also'))
     
     
-    ## TODO: Doxygen
+    ## Displays template in 'manual' mode
+    #
+    #  Manpage document must be entered 'manually' with plain text.
     def SetModeManual(self):
         self.ManualText = TextAreaPanel(self)
         
