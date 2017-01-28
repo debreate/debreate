@@ -15,9 +15,6 @@ from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
-from ui.button              import ButtonBrowse64
-from ui.button              import ButtonPreview64
-from ui.button              import ButtonSave64
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
