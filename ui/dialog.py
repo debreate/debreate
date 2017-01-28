@@ -187,11 +187,12 @@ class StandardFileDialog(wx.FileDialog):
 #        \b \e unicode|str : Text to display in title bar
 #  \param icon
 #        \b \e wx.Bitmap|unicode|str : Image to display
-class DetailedMessageDialog(wx.Dialog):
+class DetailedMessageDialog(BaseDialog):
     def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
-            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
-            buttons=(wx.ID_OK,), linewrap=0):
-        wx.Dialog.__init__(self, parent, wx.ID_ANY, title, style=style)
+            details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE, buttons=(wx.ID_OK,),
+            linewrap=0):
+        
+        BaseDialog.__init__(self, parent, wx.ID_ANY, title, style=style)
         
         # Allow using strings for 'icon' argument
         if isinstance(icon, (unicode, str)):
