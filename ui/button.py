@@ -15,7 +15,6 @@ from dbr.image          import GetBitmap
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals            import ident
-from globals.bitmaps    import BUTTON_HELP
 from globals.bitmaps    import BUTTON_REFRESH
 from globals.bitmaps    import PATH_bitmaps
 from globals.ident      import genid
@@ -124,7 +123,8 @@ class ButtonConfirm(CustomButton):
 ## TODO: Doxygen
 class ButtonHelp(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_HELP, name=u'btn help'):
-        CustomButton.__init__(self, parent, BUTTON_HELP, btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'help', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTipString(GT(u'Help'))
 
@@ -132,8 +132,8 @@ class ButtonHelp(CustomButton):
 ## TODO: Doxygen
 class ButtonHelp64(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_HELP, name=u'btn help'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/question64.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'help', 64, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTipString(GT(u'Help'))
 
