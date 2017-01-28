@@ -50,9 +50,11 @@ class Notebook(AuiNotebook):
     #    Label displayed on tab
     #  \param page
     #    \b \e wx.Window instance that will be new page (if None, a new instance is created)
+    #  \param win_id
+    #    Window \b \e integer ID
     #  \param select
-    #    Specifies whether the page should be selected
-    #  \param bitmap:
+    #    Specifies whether the page should be displayed
+    #  \param imageId
     #    Specifies optional image
     def AddPage(self, caption, page=None, win_id=wx.ID_ANY, select=False, imageId=0):
         if not page:
@@ -75,16 +77,19 @@ class Notebook(AuiNotebook):
     #  
     #  \param caption
     #    Label displayed on tab
+    #  \param win_id
+    #    Window \b \e integer ID
     #  \param select
-    #    Specifies whether the page should be selected
-    #  \param bitmap:
+    #    Specifies whether the page should be displayed
+    #  \param imageId
     #    Specifies optional image
     def AddScrolledPage(self, caption, win_id=wx.ID_ANY, select=False, imageId=0):
         return self.AddPage(caption, ScrolledPanel(self), win_id, select, imageId)
     
     
-    ## Deletes all pages
+    ## Deletes all tabs/pages
     #  
+    #  This is overridden to add functionality to older wx versions
     #  \override wx.aui.AuiNotebook.DeleteAllPages
     def DeleteAllPages(self):
         if wx.MAJOR_VERSION > 2:
@@ -97,10 +102,12 @@ class Notebook(AuiNotebook):
 
 ## Multiple instances of a single template
 #  
+#  A ui.layout.BoxSizer that creates a ui.notebook.Notebook instance for creating
+#  multiple templates on a single ui.wizard.WizardPage.
 #  \param parent
-#    \b \e wx.Window parent instance
+#    The \b \e wx.Window parent instance
 #  \param panelClass
-#    \b \e wx.Window derived class to use for tab pages
+#    \b \e wx.Panel derived class to use for tab pages
 class TabsTemplate(BoxSizer):
     def __init__(self, parent, panelClass):
         BoxSizer.__init__(self, wx.VERTICAL)
@@ -128,27 +135,40 @@ class TabsTemplate(BoxSizer):
         self.Add(self.Tabs, 1, wx.ALL|wx.EXPAND, 5)
     
     
-    ## Check if name is okay for page filename
-    def _name_is_ok(self, name):
-        if TextIsEmpty(name):
+    ## Checks if input name is okay for using as tab name & target filename
+    #  
+    #  \param title
+    #    New \b \e string title to set as tab/page title & target filename
+    #  \return
+    #    \b \e True if name is okay
+    def _title_is_ok(self, title):
+        if TextIsEmpty(title):
             return False
         
-        return not Contains(name, (u' ', u'\t',))
+        return not Contains(title, (u' ', u'\t',))
     
     
-    ## Adds a new page to the Notebook instance
+    ## Adds a new tab/page to the ui.notebook.Notebook instance
+    #  
+    #  \param title
+    #    \b \e String title to use for new tab/page & target filename
+    #  \return
+    #    New ui.notebook.Notebook instance
     def AddPage(self, title, select=True):
         new_page = self.Panel(self.GetParent(), name=title)
         
         return self.Tabs.AddPage(title, new_page, select)
     
     
-    ## Retrieves parent window
+    ## Retrieves parent window of the ui.notebook.Notebook instance
     def GetParent(self):
         return self.Tabs.Parent
     
     
     ## Handles button press event to add a new tab/page
+    #  
+    #  \return
+    #    Value of ui.notebook.TabsTemplate.SetTabName
     def OnButtonAdd(self, event=None):
         if event:
             event.Skip(True)
@@ -161,19 +181,21 @@ class TabsTemplate(BoxSizer):
         Logger.Debug(__name__, u'Closing tab')
     
     
-    ## Change tab name & filename
+    ## Change tab/page title & target filename
     def OnRenameTab(self, event=None):
         index = self.Tabs.GetSelection()
         
         return self.SetTabName(index, rename=True)
     
     
-    ## Either renames an existing page or creates a new one
+    ## Either renames an existing tab/page or creates a new one
     #  
     #  \param index
-    #    Page index to rename (only used if 'rename' is True)
+    #    \b \e Integer index of tab/page to rename (only used if 'rename' is True)
     #  \param rename
-    #    Renames an existing page instead of creating a new one
+    #    Renames an existing tab/page instead of creating a new one
+    #  \return
+    #    Value of ui.notebook.Notebook.SetPageText or ui.notebook.TabsTemplate.AddPage
     def SetTabName(self, index=-1, rename=False):
         getname = TextEntryDialog(GetMainWindow(), GT(u'Name for new page'))
         new_name = None
@@ -205,7 +227,7 @@ class TabsTemplate(BoxSizer):
             else:
                 new_name = getname.GetValue()
             
-            valid_name = self._name_is_ok(new_name)
+            valid_name = self._title_is_ok(new_name)
             
             if valid_name:
                 break
