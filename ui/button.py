@@ -194,8 +194,8 @@ class ButtonRefresh(CustomButton):
 ## TODO: Doxygen
 class ButtonRemove(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_REMOVE, name=u'btn remove'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/del32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'remove', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Remove')))
 
