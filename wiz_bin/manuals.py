@@ -7,7 +7,6 @@
 
 
 import wx
-from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
 
 from dbr.containers         import Contains
 from dbr.language           import GT
@@ -16,7 +15,6 @@ from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
-from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
@@ -24,7 +22,7 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.manual              import ManPage
-from ui.notebook            import Notebook
+from ui.notebook            import TabsTemplate
 from ui.prompt              import TextEntryDialog
 from ui.wizard              import WizardPage
 
@@ -38,39 +36,14 @@ class Panel(WizardPage):
         ## Override default label
         self.label = GT(u'Manual Pages')
         
-        btn_add = ButtonAdd(self)
-        btn_add.SetName(u'add')
+        self.tabs = TabsTemplate(self, ManPage)
         
-        # Import/Export/Preview
-        btn_browse = ButtonBrowse64(self)
-        btn_save = ButtonSave64(self)
-        btn_preview = ButtonPreview64(self)
-        
-        self.tabs = Notebook(self)
-        
+        # FIXME: Call after new page added???
         SetPageToolTips(self)
-        
-        # *** Event Handling *** #
-        
-        btn_add.Bind(wx.EVT_BUTTON, self.OnAddManpage)
-        
-        self.tabs.Bind(EVT_AUINOTEBOOK_PAGE_CLOSE, self.OnCloseTab)
         
         # *** Layout *** #
         
-        lyt_add = BoxSizer(wx.HORIZONTAL)
-        lyt_add.Add(btn_add, 0)
-        lyt_add.Add(wx.StaticText(self, label=GT(u'Add manual')), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
-        
-        lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(lyt_add, 0, wx.ALIGN_BOTTOM)
-        lyt_buttons.AddStretchSpacer(1)
-        lyt_buttons.Add(btn_browse, 0)
-        lyt_buttons.Add(btn_save, 0, wx.LEFT, 5)
-        lyt_buttons.Add(btn_preview, 0, wx.LEFT, 5)
-        
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
         lyt_main.Add(self.tabs, 1, wx.ALL|wx.EXPAND, 5)
         
         self.SetAutoLayout(True)
@@ -113,6 +86,11 @@ class Panel(WizardPage):
         return page
     
     
+    ## Retrieves TabsTemplate instance
+    def GetTabsTemplate(self):
+        return self.tabs
+    
+    
     ## TODO: Doxygen
     def ImportFromFile(self, filename):
         pass
@@ -128,13 +106,6 @@ class Panel(WizardPage):
     #  TODO: Define
     def OnCloseTab(self, event=None):
         Logger.Debug(__name__, u'Closing tab')
-    
-    
-    ## Rename tab & manpage
-    def OnRenamePage(self, event=None):
-        index = self.tabs.GetSelection()
-        
-        return self.SetPageName(index, rename=True)
     
     
     ## Removes all tabs & sets page to default values
