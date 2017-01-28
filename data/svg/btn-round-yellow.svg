@@ -19,7 +19,7 @@
    width="128"
    height="128">
   <title
-     id="title4182">Yellow Button</title>
+     id="title4182">Round Yellow Button</title>
   <defs
      id="defs3">
     <linearGradient
@@ -85,8 +85,8 @@
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="83.907964"
-     inkscape:cy="89.428367"
+     inkscape:cx="-49.108016"
+     inkscape:cy="88.85254"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -123,11 +123,16 @@
         <dc:publisher>
           <cc:Agent
              rdf:about="http://openclipart.org/">
-            <dc:title>Openclipart Library</dc:title>
+            <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Yellow Button</dc:title>
+        <dc:title>Round Yellow Button</dc:title>
         <dc:source>https://openclipart.org/detail/26197/button-yellow</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benji Park</dc:title>
+          </cc:Agent>
+        </dc:creator>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
