@@ -331,7 +331,13 @@ def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, re
 ## Find sizer instance that contains buttons
 #  
 #  Helper function for ReplaceStandardButtons
-def _get_button_sizer(sizer):
+#
+#  \param sizer
+#    \b \e wx.Sizer or \b \e wx.Window instance to search for child button sizer
+def GetButtonSizer(sizer):
+    if isinstance(sizer, wx.Window):
+        sizer = sizer.GetSizer()
+    
     if isinstance(sizer, (ButtonSizer, wx.StdDialogButtonSizer)):
         return sizer
     
@@ -339,7 +345,7 @@ def _get_button_sizer(sizer):
         S = S.GetSizer()
         
         if S:
-            S = _get_button_sizer(S)
+            S = GetButtonSizer(S)
             
             if S:
                 return S
@@ -375,7 +381,7 @@ def ReplaceStandardButtons(dialog):
         
         return
     
-    lyt_buttons = _get_button_sizer(dialog.GetSizer())
+    lyt_buttons = GetButtonSizer(dialog.GetSizer())
     
     removed_button_ids = []
     
