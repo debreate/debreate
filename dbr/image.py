@@ -8,8 +8,8 @@
 
 import os, wx
 
-from globals.bitmaps    import PATH_bitmaps
 from globals.paths      import ConcatPaths
+from globals.paths      import PATH_bitmaps
 from globals.strings    import GS
 
 

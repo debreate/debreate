@@ -15,10 +15,9 @@ from dbr.image          import GetBitmap
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals            import ident
-from globals.bitmaps    import PATH_bitmaps
 from globals.ident      import genid
 from globals.paths      import ConcatPaths
-from globals.paths      import PATH_app
+from globals.paths      import PATH_bitmaps
 from globals.strings    import GS
 from globals.strings    import IsString
 from ui.layout          import BoxSizer
