@@ -19,7 +19,7 @@
    width="128"
    height="128">
   <title
-     id="title4154">Blue Button</title>
+     id="title4154">Round Blue Button</title>
   <defs
      id="defs3">
     <linearGradient
@@ -85,8 +85,8 @@
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="-31.25"
-     inkscape:cy="74.571297"
+     inkscape:cx="-204.5"
+     inkscape:cy="73.071297"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -182,8 +182,13 @@
             <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Blue Button</dc:title>
+        <dc:title>Round Blue Button</dc:title>
         <dc:source>https://openclipart.org/detail/26191/button-blue</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benji Park</dc:title>
+          </cc:Agent>
+        </dc:creator>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
