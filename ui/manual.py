@@ -8,23 +8,25 @@
 
 import wx
 
-from dbr.language   import GT
-from dbr.log        import Logger
-from globals        import ident
-from globals.ident  import manid
-from input.text     import TextAreaPanel
-from ui.button      import ButtonBrowse
-from ui.button      import ButtonPreview
-from ui.button      import ButtonSave
-from ui.layout      import BoxSizer
-from ui.mansect     import DEFAULT_MANSECT_STYLE
-from ui.mansect     import ManBanner
-from ui.mansect     import ManPanel
-from ui.mansect     import ManSect
-from ui.menu        import PanelMenu
-from ui.menu        import PanelMenuBar
-from ui.panel       import BorderedPanel
-from ui.panel       import ScrolledPanel
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals                import ident
+from globals.ident          import manid
+from globals.ident          import pgid
+from globals.wizardhelper   import GetPage
+from input.text             import TextAreaPanel
+from ui.button              import ButtonBrowse
+from ui.button              import ButtonPreview
+from ui.button              import ButtonSave
+from ui.layout              import BoxSizer
+from ui.mansect             import DEFAULT_MANSECT_STYLE
+from ui.mansect             import ManBanner
+from ui.mansect             import ManPanel
+from ui.mansect             import ManSect
+from ui.menu                import PanelMenu
+from ui.menu                import PanelMenuBar
+from ui.panel               import BorderedPanel
+from ui.panel               import ScrolledPanel
 
 
 ## TODO: Doxygen
@@ -210,9 +212,7 @@ class ManPage(wx.Panel):
         btn_save = ButtonSave(self)
         btn_preview = ButtonPreview(self)
         
-        # FIXME:
-        #btn_rename.Bind(wx.EVT_BUTTON, self.GetParent().GetTabsTemplate().OnRenamePage)
-        #btn_rename.Bind(wx.EVT_BUTTON, self.Parent.OnRenamePage)
+        btn_rename.Bind(wx.EVT_BUTTON, GetPage(pgid.MAN).OnRenameTab)
         btn_mode.Bind(wx.EVT_BUTTON, self.SetMode)
         
         # *** Layout *** #
