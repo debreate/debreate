@@ -18,7 +18,7 @@ LOGO = ConcatPaths((PATH_bitmaps, u'debreate64.png'))
 ICON_ERROR = GetBitmap(u'error', 64, u'icon')
 ICON_EXCLAMATION = ICON_ERROR
 ICON_QUESTION = GetBitmap(u'question', 64, u'icon')
-ICON_INFORMATION = ConcatPaths((PATH_bitmaps, u'information64.png'))
+ICON_INFORMATION = GetBitmap(u'info', 64, u'icon')
 ICON_WARNING = ConcatPaths((PATH_bitmaps, u'warning64.png'))
 
 ICON_CLOCK = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'clock16.png')))
