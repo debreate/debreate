@@ -97,8 +97,8 @@ class ButtonBuild64(CustomButton):
 ## TODO: Doxygen
 class ButtonCancel(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_CANCEL, name=u'btn cancel'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/cancel32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'cancel', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Cancel')))
 
