@@ -98,7 +98,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def OnAddManpage(self, event=None):
-        return self.SetPageName()
+        return self.SetTabName()
     
     
     ## TODO: Doxygen
@@ -124,7 +124,7 @@ class Panel(WizardPage):
     #    Page index to rename (only used if 'rename' is True)
     #  \param rename
     #    Renames an existing page instead of creating a new one
-    def SetPageName(self, index=-1, rename=False):
+    def SetTabName(self, index=-1, rename=False):
         getname = TextEntryDialog(GetMainWindow(), GT(u'Name for new manpage'))
         new_name = None
         

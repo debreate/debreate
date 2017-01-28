@@ -148,16 +148,15 @@ class TabsTemplate(BoxSizer):
         return self.Tabs.Parent
     
     
-    ## TODO: Doxygen
+    ## Handles button press event to add a new tab/page
     def OnButtonAdd(self, event=None):
         if event:
             event.Skip(True)
         
-        return self.SetPageName()
-        #return self.AddPage(u'test')
+        return self.SetTabName()
     
     
-    ## TODO: Doxygen
+    ## Handles closing tab event
     def OnCloseTab(self, event=None):
         Logger.Debug(__name__, u'Closing tab')
     
@@ -166,7 +165,7 @@ class TabsTemplate(BoxSizer):
     def OnRenameTab(self, event=None):
         index = self.Tabs.GetSelection()
         
-        return self.SetPageName(index, rename=True)
+        return self.SetTabName(index, rename=True)
     
     
     ## Either renames an existing page or creates a new one
@@ -175,7 +174,7 @@ class TabsTemplate(BoxSizer):
     #    Page index to rename (only used if 'rename' is True)
     #  \param rename
     #    Renames an existing page instead of creating a new one
-    def SetPageName(self, index=-1, rename=False):
+    def SetTabName(self, index=-1, rename=False):
         getname = TextEntryDialog(GetMainWindow(), GT(u'Name for new page'))
         new_name = None
         
