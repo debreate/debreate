@@ -21,6 +21,7 @@ from globals.ident      import genid
 from globals.paths      import ConcatPaths
 from globals.paths      import PATH_app
 from globals.strings    import GS
+from globals.strings    import IsString
 from ui.layout          import BoxSizer
 
 
@@ -214,6 +215,59 @@ class ButtonSave64(CustomButton):
                 btn_id=btn_id, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
+
+
+## TODO: Doxygen
+class LayoutButton(BoxSizer):
+    def __init__(self, button, label, parent=None, btnId=wx.ID_ANY, size=32,
+            tooltip=None, name=None, showLabel=True):
+        
+        BoxSizer.__init__(self, wx.VERTICAL)
+        
+        if IsString(button):
+            self.Button = CreateButton(parent, label, button, size, btnId, tooltip, name)
+        
+        else:
+            self.Button = button
+        
+        self.Add(self.Button, 1, wx.ALIGN_CENTER)
+        
+        if isinstance(self.Button, CustomButton):
+            if not label:
+                label = self.Button.Name
+            
+            self.Label = wx.StaticText(self.Button.GetParent(), label=label)
+            
+            self.Add(self.Label, 0, wx.ALIGN_CENTER)
+            
+            self.Show(self.Label, showLabel)
+    
+    
+    ## TODO: Doxygen
+    def Bind(self, eventType, eventHandler):
+        self.Button.Bind(eventType, eventHandler)
+    
+    
+    ## TODO: Doxygen
+    def GetLabel(self):
+        if isinstance(self.Button, CustomButton):
+            return self.Label.GetLabel()
+        
+        return self.Button.GetLabel()
+    
+    
+    ## TODO: Doxygen
+    def LabelIsShown(self):
+        if not isinstance(self.Button, CustomButton):
+            # Instance is a wx.Button
+            return True
+        
+        return self.IsShown(self.Label)
+    
+    
+    ## TODO: Doxygen
+    def ShowLabel(self, show=True):
+        self.Show(self.Label, show)
 
 
 ## BoxSizer class to distinguish between other sizers
