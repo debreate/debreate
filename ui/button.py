@@ -79,8 +79,8 @@ class ButtonBrowse64(CustomButton):
 ## TODO: Doxygen
 class ButtonBuild(CustomButton):
     def __init__(self, parent, btn_id=genid.BUILD, name=u'btn build'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/build32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'build', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Build')))
 
@@ -88,8 +88,8 @@ class ButtonBuild(CustomButton):
 ## TODO: Doxygen
 class ButtonBuild64(CustomButton):
     def __init__(self, parent, btn_id=genid.BUILD, name=u'btn build'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/build64.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'build', 64, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Build')))
 
