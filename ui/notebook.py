@@ -162,6 +162,13 @@ class TabsTemplate(BoxSizer):
         Logger.Debug(__name__, u'Closing tab')
     
     
+    ## Change tab name & filename
+    def OnRenamePage(self, event=None):
+        index = self.Tabs.GetSelection()
+        
+        return self.SetPageName(index, rename=True)
+    
+    
     ## Either renames an existing page or creates a new one
     #  
     #  \param index
