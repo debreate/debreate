@@ -6,8 +6,6 @@
 # See: docs/LICENSE.txt
 
 
-import wx
-
 from dbr.image      import GetBitmap
 from globals.paths  import ConcatPaths
 from globals.paths  import PATH_bitmaps
@@ -21,6 +19,6 @@ ICON_QUESTION = GetBitmap(u'question', 64, u'icon')
 ICON_INFORMATION = GetBitmap(u'info', 64, u'icon')
 ICON_WARNING = GetBitmap(u'warn', 64, u'icon')
 
-ICON_CLOCK = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'clock16.png')))
-ICON_GLOBE = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'globe16.png')))
-ICON_LOGO = wx.Bitmap(ConcatPaths((PATH_bitmaps, u'debreate16.png')))
+ICON_CLOCK = GetBitmap(u'clock', 16, u'icon')
+ICON_GLOBE = GetBitmap(u'globe', 16, u'icon')
+ICON_LOGO = GetBitmap(u'logo', 16, u'icon')
