@@ -203,8 +203,8 @@ class ButtonRemove(CustomButton):
 ## TODO: Doxygen
 class ButtonSave(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_SAVE, name=u'btn save'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/save32.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'save', 32, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
 
@@ -212,8 +212,8 @@ class ButtonSave(CustomButton):
 ## TODO: Doxygen
 class ButtonSave64(CustomButton):
     def __init__(self, parent, btn_id=wx.ID_SAVE, name=u'btn save'):
-        CustomButton.__init__(self, parent, wx.Bitmap(u'{}/bitmaps/save64.png'.format(PATH_app)),
-                btn_id=btn_id, name=name)
+        CustomButton.__init__(self, parent, GetBitmap(u'save', 64, u'button'), btn_id=btn_id,
+                name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
 
