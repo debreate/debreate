@@ -13,6 +13,9 @@ from dbr.log        import Logger
 from globals        import ident
 from globals.ident  import manid
 from input.text     import TextAreaPanel
+from ui.button      import ButtonBrowse
+from ui.button      import ButtonPreview
+from ui.button      import ButtonSave
 from ui.layout      import BoxSizer
 from ui.mansect     import DEFAULT_MANSECT_STYLE
 from ui.mansect     import ManBanner
@@ -189,25 +192,38 @@ class ManPage(wx.Panel):
     
     ## TODO: Doxygen
     def SetMode(self, mode):
+        print(u'\nDEBUG: SetMode')
+        print(u'  Parent instance: {}'.format(type(self.Parent)))
+        
         if isinstance(mode, wx.CommandEvent):
             mode = mode.GetEventObject().Mode
         
         # Restart with fresh panel
         self.DestroyChildren()
         
-        self.btn_rename = wx.Button(self, label=GT(u'Rename'))
-        self.btn_mode = wx.Button(self, label=GT(u'Switch mode'))
-        self.btn_mode.Mode = not mode
+        btn_rename = wx.Button(self, label=GT(u'Rename'))
+        btn_mode = wx.Button(self, label=GT(u'Switch mode'))
+        btn_mode.Mode = not mode
         
-        self.btn_rename.Bind(wx.EVT_BUTTON, self.Parent.Parent.OnRenamePage)
-        self.btn_mode.Bind(wx.EVT_BUTTON, self.SetMode)
+        # Import/Export/Preview
+        btn_browse = ButtonBrowse(self)
+        btn_save = ButtonSave(self)
+        btn_preview = ButtonPreview(self)
+        
+        # FIXME:
+        #btn_rename.Bind(wx.EVT_BUTTON, self.GetParent().GetTabsTemplate().OnRenamePage)
+        #btn_rename.Bind(wx.EVT_BUTTON, self.Parent.OnRenamePage)
+        btn_mode.Bind(wx.EVT_BUTTON, self.SetMode)
         
         # *** Layout *** #
         
         self.lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        self.lyt_buttons.Add(self.btn_rename)
+        self.lyt_buttons.Add(btn_rename, 0, wx.ALIGN_TOP)
+        self.lyt_buttons.Add(btn_mode, 0, wx.ALIGN_TOP|wx.LEFT, 5)
         self.lyt_buttons.AddStretchSpacer(1)
-        self.lyt_buttons.Add(self.btn_mode)
+        self.lyt_buttons.Add(btn_browse)
+        self.lyt_buttons.Add(btn_save)
+        self.lyt_buttons.Add(btn_preview)
         
         self.lyt_main = BoxSizer(wx.VERTICAL)
         
@@ -222,6 +238,10 @@ class ManPage(wx.Panel):
         # Add sibling panel to hold menu & rename button
         pnl_top = wx.Panel(self)
         
+        for C in self.GetChildren():
+            if isinstance(C, wx.Button):
+                C.Reparent(pnl_top)
+        
         # FIXME: Hack
         temp_bar = BorderedPanel(pnl_top)
         
@@ -233,9 +253,6 @@ class ManPage(wx.Panel):
         menu_add.Append(manid.MULTILINE, GT(u'Multi-line section'))
         
         menubar.AddItem(menu_add)
-        
-        self.btn_rename.Reparent(pnl_top)
-        self.btn_mode.Reparent(pnl_top)
         
         self.pnl_bottom = ScrolledPanel(self)
         
@@ -260,8 +277,9 @@ class ManPage(wx.Panel):
         temp_bar.SetSizer(temp_lyt)
         
         lyt_top = BoxSizer(wx.VERTICAL)
-        lyt_top.Add(temp_bar, 0, wx.EXPAND)
         lyt_top.Add(self.lyt_buttons, 0, wx.EXPAND|wx.ALL, 5)
+        # FIXME: temp_bar height is initially wrong
+        lyt_top.Add(temp_bar, 0, wx.EXPAND|wx.BOTTOM, 5)
         
         pnl_top.SetAutoLayout(True)
         pnl_top.SetSizer(lyt_top)
