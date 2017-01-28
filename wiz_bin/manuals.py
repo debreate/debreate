@@ -48,12 +48,17 @@ class Panel(WizardPage):
         self.Layout()
     
     
-    ## Check if name is okay for manpage filename
-    def _name_is_ok(self, name):
-        if TextIsEmpty(name):
+    ## Check if title is okay for manpage target filename
+    #  
+    #  \param title
+    #    New \b \e string title to be checked for whitespace & tabs
+    #  \return
+    #    \b \e True if title is okay to use
+    def _title_is_ok(self, title):
+        if TextIsEmpty(title):
             return False
         
-        return not Contains(name, (u' ', u'\t',))
+        return not Contains(title, (u' ', u'\t',))
     
     
     ## TODO: Doxygen
@@ -123,7 +128,7 @@ class Panel(WizardPage):
     #    Renames an existing page instead of creating a new one
     def SetTabName(self, index=-1, rename=False):
         getname = TextEntryDialog(GetMainWindow(), GT(u'Name for new manpage'))
-        new_name = None
+        new_title = None
         
         if not rename:
             easy_mode = wx.CheckBox(getname, label=u'Easy mode')
@@ -142,7 +147,7 @@ class Panel(WizardPage):
         valid_name = False
         
         while not valid_name:
-            if new_name and TextIsEmpty(new_name):
+            if new_title and TextIsEmpty(new_title):
                 getname.Clear()
             
             # User cancelled
@@ -150,9 +155,9 @@ class Panel(WizardPage):
                 return False
             
             else:
-                new_name = getname.GetValue()
+                new_title = getname.GetValue()
             
-            valid_name = self._name_is_ok(new_name)
+            valid_name = self._title_is_ok(new_title)
             
             if valid_name:
                 break
@@ -163,6 +168,6 @@ class Panel(WizardPage):
             if index < 0:
                 return False
             
-            return self.Tabs.SetPageText(index, new_name)
+            return self.Tabs.SetPageText(index, new_title)
         
-        return self.AddManpage(new_name, easy_mode.GetValue())
+        return self.AddManpage(new_title, easy_mode.GetValue())
