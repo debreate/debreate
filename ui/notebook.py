@@ -45,7 +45,7 @@ class Notebook(AuiNotebook):
     
     
     ## Adds a new page
-    #  
+    #
     #  \param caption
     #    Label displayed on tab
     #  \param page
@@ -74,7 +74,7 @@ class Notebook(AuiNotebook):
     
     
     ## Adds a ui.panel.ScrolledPanel instance as new page
-    #  
+    #
     #  \param caption
     #    Label displayed on tab
     #  \param win_id
@@ -88,8 +88,9 @@ class Notebook(AuiNotebook):
     
     
     ## Deletes all tabs/pages
-    #  
+    #
     #  This is overridden to add functionality to older wx versions
+    #
     #  \override wx.aui.AuiNotebook.DeleteAllPages
     def DeleteAllPages(self):
         if wx.MAJOR_VERSION > 2:
@@ -101,9 +102,10 @@ class Notebook(AuiNotebook):
 
 
 ## Multiple instances of a single template
-#  
+#
 #  A ui.layout.BoxSizer that creates a ui.notebook.Notebook instance for creating
 #  multiple templates on a single ui.wizard.WizardPage.
+#
 #  \param parent
 #    The \b \e wx.Window parent instance
 #  \param panelClass
@@ -135,12 +137,12 @@ class TabsTemplate(BoxSizer):
         self.Add(self.Tabs, 1, wx.ALL|wx.EXPAND, 5)
     
     
-    ## Checks if input name is okay for using as tab name & target filename
-    #  
+    ## Checks if input title is okay for using as tab title & target filename
+    #
     #  \param title
     #    New \b \e string title to set as tab/page title & target filename
     #  \return
-    #    \b \e True if name is okay
+    #    \b \e True if new title is okay
     def _title_is_ok(self, title):
         if TextIsEmpty(title):
             return False
@@ -149,7 +151,7 @@ class TabsTemplate(BoxSizer):
     
     
     ## Adds a new tab/page to the ui.notebook.Notebook instance
-    #  
+    #
     #  \param title
     #    \b \e String title to use for new tab/page & target filename
     #  \return
@@ -166,7 +168,7 @@ class TabsTemplate(BoxSizer):
     
     
     ## Handles button press event to add a new tab/page
-    #  
+    #
     #  \return
     #    Value of ui.notebook.TabsTemplate.SetTabName
     def OnButtonAdd(self, event=None):
@@ -177,11 +179,16 @@ class TabsTemplate(BoxSizer):
     
     
     ## Handles closing tab event
+    #
+    #  TODO: Define
     def OnCloseTab(self, event=None):
         Logger.Debug(__name__, u'Closing tab')
     
     
     ## Change tab/page title & target filename
+    #
+    #  \return
+    #    Value of ui.notebook.TabsTemplate.SetTabName
     def OnRenameTab(self, event=None):
         index = self.Tabs.GetSelection()
         
@@ -189,7 +196,7 @@ class TabsTemplate(BoxSizer):
     
     
     ## Either renames an existing tab/page or creates a new one
-    #  
+    #
     #  \param index
     #    \b \e Integer index of tab/page to rename (only used if 'rename' is True)
     #  \param rename
