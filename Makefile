@@ -185,7 +185,7 @@ install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-
 	ln -vfs "$(prefix)/$(DATADIR)/init.py" "$${bindir}/$(PACKAGE)"; \
 	\
 	$(MKDIR) "$${pixdir}"; \
-	$(INSTALL_DATA) "bitmaps/debreate64.png" "$${pixdir}/debreate.png"; \
+	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pixdir}/debreate.png"; \
 	\
 	$(call MOVE,$(INSTALLED),$${datadir}); \
 
