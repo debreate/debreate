@@ -19,8 +19,12 @@ from dbr.log    import Logger
 
 ## Class that updates the configuration file when a specific event occurs
 class ConfigField:
-    def __init__(self, cfgKey=None):
+    def __init__(self, cfgKey=None, cfgSect=None):
         self.ConfigKey = cfgKey
+        self.ConfigSection = cfgSect
+        
+        if not self.ConfigSection:
+            self.ConfigSection = u'GENERAL'
         
         if self.ConfigKey == None:
             self.ConfigKey = self.GetName()
@@ -56,6 +60,11 @@ class ConfigField:
     
     
     ## TODO: Doxygen
+    def GetConfigSection(self):
+        return self.ConfigSection
+    
+    
+    ## TODO: Doxygen
     def GetConfigValue(self):
         GETVAL = 1
         CHOICE = 2
@@ -77,9 +86,14 @@ class ConfigField:
         if event:
             event.Skip()
         
-        WriteConfig(self.ConfigKey, self.GetConfigValue())
+        WriteConfig(self.ConfigKey, self.GetConfigValue(), sectLabel=self.ConfigSection)
     
     
     ## TODO: Doxygen
     def SetConfigKey(self, cfgKey):
         self.ConfigKey = cfgKey
+    
+    
+    ## TODO: Doxygen
+    def SetConfigSection(self, cfgSect):
+        self.ConfigSection = cfgSect
