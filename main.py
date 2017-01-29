@@ -434,7 +434,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def OnAbout(self, event=None):
         about = AboutDialog(self)
         
-        about.SetGraphic(u'{}/bitmaps/debreate64.png'.format(PATH_app))
+        about.SetGraphic(LOGO)
         about.SetVersion(VERSION_string)
         about.SetDescription(GT(u'A package builder for Debian based systems'))
         about.SetAuthor(AUTHOR_name)
