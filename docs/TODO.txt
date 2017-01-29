@@ -46,7 +46,6 @@ Priority:
 - Cache lintian tags list from remote site
 - Mark project dirty when lintian overrides are changed
 - Use datestamp for project save & build stage directories
-- Start app in primary monitor
 
 Non-priority:
 - Set up manpage template creation for executables in file list
