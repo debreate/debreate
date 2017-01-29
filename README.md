@@ -70,7 +70,7 @@ To run without installing, open a terminal in the extracted root directory. Then
 
 
 
-[icon]: bitmaps/debreate64.png
+[icon]: bitmaps/icon/64/logo.png
 
 [launchpad]: https://launchpad.net/
 
