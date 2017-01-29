@@ -6,11 +6,10 @@
 # See: docs/LICENSE.txt
 
 
-# System modules
 import wx
 
-# Local modules
-from globals.paths import PATH_app
+from globals.paths import ConcatPaths
+from globals.paths import PATH_bitmaps
 
 
 # *** Application information *** #
@@ -28,7 +27,7 @@ APP_project_gh = u'https://github.com/AntumDeluge/debreate'
 APP_project_sf = u'https://sourceforge.net/projects/debreate'
 
 ## Application's logo
-APP_logo = wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
+APP_logo = wx.Icon(ConcatPaths((PATH_bitmaps, u'icon/64/logo.png')), wx.BITMAP_TYPE_PNG)
 
 ## Name of application
 APP_name = u'Debreate'
