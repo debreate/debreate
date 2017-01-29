@@ -219,14 +219,14 @@ Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
 debreate_app.SetMainWindow(Debreate)
 Debreate.InitWizard()
 
-if conf_values[u'center']:
+if conf_values[u'maximize']:
+    Debreate.Maximize()
+
+elif conf_values[u'center']:
     from system.display import CenterOnPrimaryDisplay
     
     # NOTE: May be a few pixels off
     CenterOnPrimaryDisplay(Debreate)
-
-if conf_values[u'maximize']:
-    Debreate.Maximize()
 
 working_dir = conf_values[u'workingdir']
 
