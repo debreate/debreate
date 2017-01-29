@@ -507,23 +507,21 @@ class LauncherTemplate(ScrolledPanel):
     def OnSaveLauncher(self, event=None):
         Logger.Debug(__name__, u'Export launcher ...')
         
-        # Get data to write to control file
-        menu_data = self.GetLauncherInfo().encode(u'utf-8')
+        export = GetFileSaveDialog(GetMainWindow(), GT(u'Save Launcher'))
         
-        dia = GetFileSaveDialog(GetMainWindow(), GT(u'Save Launcher'))
-        
-        if ShowDialog(dia):
-            path = dia.GetPath()
+        if ShowDialog(export):
+            target = export.GetPath()
             
             # Create a backup file
+            # FIXME: Create backup files in WriteFile function?
             overwrite = False
-            if os.path.isfile(path):
-                backup = u'{}.backup'.format(path)
-                shutil.copy(path, backup)
+            if os.path.isfile(target):
+                backup = u'{}.backup'.format(target)
+                shutil.copy(target, backup)
                 overwrite = True
             
             try:
-                WriteFile(path, menu_data)
+                self.ExportToFile(target)
                 
                 if overwrite:
                     os.remove(backup)
@@ -534,9 +532,9 @@ class LauncherTemplate(ScrolledPanel):
                 
                 ShowErrorDialog(GT(u'Save failed'), u'{}\n{}'.format(detail1, detail2), title=GT(u'Unicode Error'))
                 
-                os.remove(path)
+                os.remove(target)
                 # Restore from backup
-                shutil.move(backup, path)
+                shutil.move(backup, target)
     
     
     ## TODO: Doxygen
