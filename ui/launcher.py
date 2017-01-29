@@ -164,10 +164,10 @@ class LauncherTemplate(ScrolledPanel):
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
         
-        lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(btn_open, 0)
-        lyt_buttons.Add(btn_save, 0)
-        lyt_buttons.Add(btn_preview, 0)
+        lyt_top = BoxSizer(wx.HORIZONTAL)
+        lyt_top.Add(btn_open, 0)
+        lyt_top.Add(btn_save, 0)
+        lyt_top.Add(btn_preview, 0)
         
         lyt_cat_btn = BoxSizer(wx.HORIZONTAL)
         lyt_cat_btn.Add(btn_catadd, 0)
@@ -220,7 +220,7 @@ class LauncherTemplate(ScrolledPanel):
         # --- Page 5 Sizer --- #
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_top, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
