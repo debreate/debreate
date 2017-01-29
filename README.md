@@ -76,7 +76,7 @@ To run, launch the file named "init.py":
 
 
 
-[icon]: bitmaps/debreate64.png
+[icon]: bitmaps/icon/64/logo.png
 
 [launchpad]: https://launchpad.net/
 [wxpython]: https://wxpython.org/
