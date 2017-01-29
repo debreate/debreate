@@ -470,6 +470,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
         about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
         
+        about.AddJob(u'Benji Park', GT(u'Button Base Image Designer'))
+        
         about.SetChangelog()
         
         about.SetLicense()
