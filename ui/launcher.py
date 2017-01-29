@@ -229,7 +229,7 @@ class LauncherTemplate(ScrolledPanel):
         # *** Event handlers *** #
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
-        btn_save.Bind(wx.EVT_BUTTON, self.OnSaveLauncher)
+        btn_save.Bind(wx.EVT_BUTTON, self.OnExportLauncher)
         btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewLauncher)
         
         wx.EVT_KEY_DOWN(self.ti_category, self.SetCategory)
@@ -466,45 +466,11 @@ class LauncherTemplate(ScrolledPanel):
         return 0
     
     
-    ## Loads a .desktop launcher's data
-    #  
-    #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
-    #         'Others' field not being completely filled out.
-    def OnLoadLauncher(self, event=None):
-        dia = GetFileOpenDialog(GetMainWindow(), GT(u'Open Launcher'))
-        
-        if ShowDialog(dia):
-            path = dia.GetPath()
-            
-            data = ReadFile(path, split=True, convert=list)
-            
-            # Remove unneeded lines
-            if data[0] == u'[Desktop Entry]':
-                data = data[1:]
-            
-            self.Reset()
-            # First line needs to be changed to '1'
-            data.insert(0, u'1')
-            self.Set(u'\n'.join(data))
-    
-    
-    ## TODO: Doxygen
-    def OnPreviewLauncher(self, event=None):
-        # Show a preview of the .desktop config file
-        config = self.GetLauncherInfo()
-        
-        dia = TextPreview(title=GT(u'Menu Launcher Preview'),
-                text=config, size=(500,400))
-        
-        dia.ShowModal()
-        dia.Destroy()
-    
-    
     ## Saves launcher information to file
     #  
     #  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
     #         'Others' field not being completely filled out.
-    def OnSaveLauncher(self, event=None):
+    def OnExportLauncher(self, event=None):
         Logger.Debug(__name__, u'Export launcher ...')
         
         export = GetFileSaveDialog(GetMainWindow(), GT(u'Save Launcher'))
@@ -535,6 +501,40 @@ class LauncherTemplate(ScrolledPanel):
                 os.remove(target)
                 # Restore from backup
                 shutil.move(backup, target)
+    
+    
+    ## Loads a .desktop launcher's data
+    #  
+    #  FIXME: Might be problems with reading/writing launchers (see OnExportLauncher)
+    #         'Others' field not being completely filled out.
+    def OnLoadLauncher(self, event=None):
+        dia = GetFileOpenDialog(GetMainWindow(), GT(u'Open Launcher'))
+        
+        if ShowDialog(dia):
+            path = dia.GetPath()
+            
+            data = ReadFile(path, split=True, convert=list)
+            
+            # Remove unneeded lines
+            if data[0] == u'[Desktop Entry]':
+                data = data[1:]
+            
+            self.Reset()
+            # First line needs to be changed to '1'
+            data.insert(0, u'1')
+            self.Set(u'\n'.join(data))
+    
+    
+    ## TODO: Doxygen
+    def OnPreviewLauncher(self, event=None):
+        # Show a preview of the .desktop config file
+        config = self.GetLauncherInfo()
+        
+        dia = TextPreview(title=GT(u'Menu Launcher Preview'),
+                text=config, size=(500,400))
+        
+        dia.ShowModal()
+        dia.Destroy()
     
     
     ## TODO: Doxygen
