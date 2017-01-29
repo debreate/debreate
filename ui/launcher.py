@@ -14,14 +14,15 @@ from dbr.log                import Logger
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import inputid
 from globals.ident          import page_ids
 from globals.strings        import TextIsEmpty, GS
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrlPanelESS
-from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
 from input.text             import TextAreaPanelESS
+from input.toggle           import CheckBoxESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonClear
@@ -106,26 +107,11 @@ class LauncherTemplate(ScrolledPanel):
         self.opts_input.append(self.ti_type)
         
         # --- TERMINAL
-        opts_term = (u'true', u'false',)
-        
-        txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
-        self.labels.append(txt_term)
-        
-        self.sel_term = ChoiceESS(self, choices=opts_term, name=u'Terminal')
-        self.sel_term.default = 1
-        self.sel_term.SetSelection(self.sel_term.default)
-        self.opts_choice.append(self.sel_term)
+        chk_term = CheckBoxESS(self, inputid.TERM, GT(u'Terminal'), name=u'Terminal')
         
         # --- STARTUP NOTIFY
-        self.notify_opt = (u'true', u'false',)
-        
-        txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
-        self.labels.append(txt_notify)
-        
-        self.sel_notify = ChoiceESS(self, choices=self.notify_opt, name=u'StartupNotify')
-        self.sel_notify.default = 0
-        self.sel_notify.SetSelection(self.sel_notify.default)
-        self.opts_choice.append(self.sel_notify)
+        chk_notify = CheckBoxESS(self, inputid.NOTIFY, label=GT(u'Startup Notify'), name=u'StartupNotify',
+                defaultValue=True)
         
         # --- ENCODING
         opts_enc = (
@@ -246,14 +232,12 @@ class LauncherTemplate(ScrolledPanel):
         row += 1
         lyt_grid.Add(txt_exec, (row, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_exec, (row, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_term, (row, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.sel_term, (row, 3), flag=LEFT_CENTER)
+        lyt_grid.Add(chk_term, (row, 2), (1, 2), flag=LEFT_CENTER)
         
         row += 1
         lyt_grid.Add(txt_comm, (row, 0), flag=RIGHT_CENTER)
         lyt_grid.Add(self.ti_comm, (row, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_notify, (row, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.sel_notify, (row, 3), flag=LEFT_CENTER)
+        lyt_grid.Add(chk_notify, (row, 2), (1, 2), flag=LEFT_CENTER)
         
         row += 1
         lyt_grid.Add(txt_icon, (row, 0), flag=RIGHT_CENTER)
