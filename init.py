@@ -233,14 +233,14 @@ if DebugEnabled():
     
     Debreate.SetLogWindow(LogWindow(Debreate, Logger.GetLogFile()))
 
-if conf_values[u'center']:
+if conf_values[u'maximize']:
+    Debreate.Maximize()
+
+elif conf_values[u'center']:
     from system.display import CenterOnPrimaryDisplay
     
     # NOTE: May be a few pixels off
     CenterOnPrimaryDisplay(Debreate)
-
-if conf_values[u'maximize']:
-    Debreate.Maximize()
 
 # Set project compression
 Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
