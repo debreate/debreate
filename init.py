@@ -220,7 +220,11 @@ debreate_app.SetMainWindow(Debreate)
 Debreate.InitWizard()
 
 if conf_values[u'center']:
-    Debreate.Center()
+    from system.display import CenterOnPrimaryDisplay
+    
+    # NOTE: May be a few pixels off
+    CenterOnPrimaryDisplay(Debreate)
+
 if conf_values[u'maximize']:
     Debreate.Maximize()
 
