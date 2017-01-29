@@ -581,35 +581,38 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Shows a dialog to confirm quit and write window settings to config file
     def OnQuit(self, event=None):
-        if ConfirmationDialog(self, GT(u'Quit?'),
-                text=GT(u'You will lose any unsaved information')).Confirmed():
-            
-            maximized = self.IsMaximized()
-            
-            # Get window attributes and save to config file
-            
-            # Save default window settings if maximized
-            # FIXME: Better solution?
-            if maximized:
-                WriteConfig(u'size', GetDefaultConfigValue(u'size'))
-                WriteConfig(u'position', GetDefaultConfigValue(u'position'))
-                WriteConfig(u'center', GetDefaultConfigValue(u'center'))
-                WriteConfig(u'maximize', True)
-            
-            else:
-                WriteConfig(u'position', self.GetPositionTuple())
-                WriteConfig(u'size', self.GetSizeTuple())
-                WriteConfig(u'center', False)
-                WriteConfig(u'maximize', False)
-            
-            config_wdir = ReadConfig(u'workingdir')
-            current_wdir = os.getcwd()
-            
-            # Workaround for issues with some dialogs not writing to config
-            if config_wdir != current_wdir:
-                WriteConfig(u'workingdir', current_wdir)
-            
-            self.Destroy()
+        if self.ProjectDirty:
+            if not ConfirmationDialog(self, GT(u'Quit?'),
+                    text=GT(u'You will lose any unsaved information')).Confirmed():
+                
+                return
+        
+        maximized = self.IsMaximized()
+        
+        # Get window attributes and save to config file
+        
+        # Save default window settings if maximized
+        # FIXME: Better solution?
+        if maximized:
+            WriteConfig(u'size', GetDefaultConfigValue(u'size'))
+            WriteConfig(u'position', GetDefaultConfigValue(u'position'))
+            WriteConfig(u'center', GetDefaultConfigValue(u'center'))
+            WriteConfig(u'maximize', True)
+        
+        else:
+            WriteConfig(u'position', self.GetPositionTuple())
+            WriteConfig(u'size', self.GetSizeTuple())
+            WriteConfig(u'center', False)
+            WriteConfig(u'maximize', False)
+        
+        config_wdir = ReadConfig(u'workingdir')
+        current_wdir = os.getcwd()
+        
+        # Workaround for issues with some dialogs not writing to config
+        if config_wdir != current_wdir:
+            WriteConfig(u'workingdir', current_wdir)
+        
+        self.Destroy()
     
     
     ## Handles events from fields that are essential to project
