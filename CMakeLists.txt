@@ -70,7 +70,7 @@ if(INSTALL_MENU_LAUNCHER)
         DESTINATION ${APPS_DIR}
     )
     install(
-        FILES bitmaps/debreate64.png
+        FILES bitmaps/icon/64/logo.png
         DESTINATION ${BITMAPS_DIR}
         RENAME debreate.png
     )
