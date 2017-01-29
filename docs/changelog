@@ -22,5 +22,6 @@
   - The system '/tmp' directory is used for staging project export & build prep
   - Project is marked dirty when altered
   - Option to preview & edit control file before build
+  - Only show quit confirmation when project is marked 'modified'
 - MISC:
   - Rename log level argument value from 'warning' to 'warn'
