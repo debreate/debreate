@@ -10,7 +10,6 @@ import os, shutil, traceback, wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.errorcodes     import dbrerrno
