@@ -211,7 +211,7 @@ class Wizard(wx.Panel):
             if P.GetId() == page_id:
                 return P
         
-        return None
+        Logger.Warn(__name__, u'Page with ID {} has not been constructed'.format(page_id))
     
     
     ## Retrieves the full list of page IDs
