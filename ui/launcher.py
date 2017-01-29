@@ -269,6 +269,33 @@ class LauncherTemplate(ScrolledPanel):
         return (0, None)
     
     
+    ## Saves launcher information to text file
+    #
+    #  \param target
+    #    Filename path to export
+    #  \param executable
+    #    Set executable flag on target filename if True
+    def ExportToFile(self, target, executable=False):
+        launcher = self.GetLauncherInfo()
+        
+        WriteFile(target, launcher)
+        
+        # FIXME: Check timestamp
+        if os.path.isfile(target):
+            if executable:
+                mode = 0755
+            
+            else:
+                mode = 0644
+            
+            os.chmod(target, mode)
+            
+            if os.access(target, mode):
+                return True
+        
+        return False
+    
+    
     ## Retrieves Desktop Entry file information
     #  
     #  \return
