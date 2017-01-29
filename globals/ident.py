@@ -29,6 +29,19 @@ def AddId(id_wrapper):
     return new_id
 
 
+## Creates a ID & adds to a member list
+#
+#  \param member_list
+#    \b \e List instance to add ID to
+def NewId(member_list=None):
+    new_id = wx.NewId()
+    
+    if isinstance(member_list, list):
+        member_list.append(new_id)
+    
+    return new_id
+
+
 # *** Button IDs *** #
 PREV = wx.NewId()
 NEXT = wx.NewId()
