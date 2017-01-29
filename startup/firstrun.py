@@ -8,14 +8,15 @@
 
 import os, wx
 
-from dbr.config     import ConfCode
-from dbr.config     import InitializeConfig
-from dbr.config     import default_config
-from dbr.language   import GT
-from dbr.log        import Logger
-from globals.paths  import PATH_app
-from ui.dialog      import ShowErrorDialog
-from ui.layout      import BoxSizer
+from dbr.config             import ConfCode
+from dbr.config             import InitializeConfig
+from dbr.config             import default_config
+from dbr.image              import GetBitmap
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.application    import APP_logo
+from ui.dialog              import ShowErrorDialog
+from ui.layout              import BoxSizer
 
 
 ## Shows the first run dialog
@@ -62,7 +63,7 @@ class FirstRun(wx.Dialog):
         message2 = u'{}\n{}'.format(message2, m4)
         
         # Set the titlebar icon
-        self.SetIcon(wx.Icon(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG))
+        self.SetIcon(APP_logo)
         
         # Display a message to create a config file
         text1 = wx.StaticText(self, label=message1)
@@ -76,8 +77,7 @@ class FirstRun(wx.Dialog):
         layout_V1.Add(rm_cmd, 0, wx.TOP, 10)
         
         # Show the Debreate icon
-        dbicon = wx.Bitmap(u'{}/bitmaps/debreate64.png'.format(PATH_app), wx.BITMAP_TYPE_PNG)
-        icon = wx.StaticBitmap(self, -1, dbicon)
+        icon = wx.StaticBitmap(self, bitmap=GetBitmap(u'logo', 64, u'icon'))
         
         # Button to confirm
         self.button_ok = wx.Button(self, wx.ID_OK)
