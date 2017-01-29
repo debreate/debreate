@@ -55,6 +55,31 @@ class LauncherTemplate(ScrolledPanel):
         btn_preview = ButtonPreview64(self)
         btn_preview.SetName(u'preview')
         
+        # --- TYPE
+        opts_type = (u'Application', u'Link', u'Directory',)
+        
+        txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
+        self.ti_type = ComboBoxESS(self, value=opts_type[0], choices=opts_type, name=u'Type')
+        self.ti_type.default = self.ti_type.GetValue()
+        
+        # --- ENCODING
+        opts_enc = (
+            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
+            u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
+            u'GB 18030',
+            )
+        
+        txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
+        self.ti_enc = ComboBoxESS(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
+        self.ti_enc.default = self.ti_enc.GetValue()
+        
+        # --- TERMINAL
+        chk_term = CheckBoxESS(self, inputid.TERM, GT(u'Terminal'), name=u'Terminal')
+        
+        # --- STARTUP NOTIFY
+        chk_notify = CheckBoxESS(self, inputid.NOTIFY, label=GT(u'Startup Notify'), name=u'StartupNotify',
+                defaultValue=True)
+        
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         self.ti_name = TextAreaESS(self, name=u'Name')
@@ -75,32 +100,6 @@ class LauncherTemplate(ScrolledPanel):
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         self.ti_icon = TextAreaESS(self, name=u'Icon')
         self.ti_icon.default = wx.EmptyString
-        
-        # --- TYPE
-        opts_type = (u'Application', u'Link', u'Directory',)
-        
-        txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        
-        self.ti_type = ComboBoxESS(self, value=opts_type[0], choices=opts_type, name=u'Type')
-        self.ti_type.default = self.ti_type.GetValue()
-        
-        # --- TERMINAL
-        chk_term = CheckBoxESS(self, inputid.TERM, GT(u'Terminal'), name=u'Terminal')
-        
-        # --- STARTUP NOTIFY
-        chk_notify = CheckBoxESS(self, inputid.NOTIFY, label=GT(u'Startup Notify'), name=u'StartupNotify',
-                defaultValue=True)
-        
-        # --- ENCODING
-        opts_enc = (
-            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
-            u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
-            u'GB 18030',
-            )
-        
-        txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        self.ti_enc = ComboBoxESS(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
-        self.ti_enc.default = self.ti_enc.GetValue()
         
         # --- CATEGORIES
         opts_category = (
@@ -159,15 +158,45 @@ class LauncherTemplate(ScrolledPanel):
         
         # *** Layout *** #
         
-        CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
-        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
+        
+        lyt_opts1 = wx.FlexGridSizer()
+        lyt_opts1.SetCols(3)
+        lyt_opts1.SetRows(2)
+        
+        lyt_opts1.Add(txt_type, 0, LEFT_CENTER)
+        lyt_opts1.Add(self.ti_type, 0, wx.LEFT, 5)
+        lyt_opts1.Add(chk_term, 0, LEFT_CENTER|wx.LEFT, 5)
+        lyt_opts1.Add(txt_enc, 0, LEFT_CENTER|wx.TOP, 5)
+        lyt_opts1.Add(self.ti_enc, 0, wx.LEFT|wx.TOP, 5)
+        lyt_opts1.Add(chk_notify, 0, LEFT_CENTER|wx.LEFT|wx.TOP, 5)
         
         lyt_top = BoxSizer(wx.HORIZONTAL)
+        lyt_top.Add(lyt_opts1, 0, wx.EXPAND|wx.ALIGN_BOTTOM)
+        lyt_top.AddStretchSpacer(1)
         lyt_top.Add(btn_open, 0)
         lyt_top.Add(btn_save, 0)
         lyt_top.Add(btn_preview, 0)
+        
+        lyt_mid = wx.GridBagSizer()
+        lyt_mid.SetCols(4)
+        lyt_mid.AddGrowableCol(1)
+        lyt_mid.AddGrowableCol(3)
+        
+        # Row 1
+        row = 0
+        lyt_mid.Add(txt_name, (row, 0), flag=LEFT_CENTER)
+        lyt_mid.Add(self.ti_name, (row, 1), flag=wx.EXPAND|wx.LEFT, border=5)
+        lyt_mid.Add(txt_exec, (row, 2), flag=LEFT_CENTER|wx.LEFT, border=5)
+        lyt_mid.Add(self.ti_exec, (row, 3), flag=wx.EXPAND|wx.LEFT, border=5)
+        
+        # Row 2
+        row += 1
+        lyt_mid.Add(txt_comm, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
+        lyt_mid.Add(self.ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(self.ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         
         lyt_cat_btn = BoxSizer(wx.HORIZONTAL)
         lyt_cat_btn.Add(btn_catadd, 0)
@@ -183,45 +212,15 @@ class LauncherTemplate(ScrolledPanel):
         lyt_cat_main.Add(lyt_cat_input, 0)
         lyt_cat_main.Add(self.lst_categories, 1, wx.EXPAND|wx.LEFT, 5)
         
-        lyt_grid = wx.GridBagSizer(5, 5)
-        lyt_grid.SetCols(4)
-        lyt_grid.AddGrowableCol(1)
-        
-        row = 0
-        lyt_grid.Add(txt_name, (row, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.ti_name, (row, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_type, (row, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.ti_type, (row, 3), flag=CENTER_EXPAND)
-        
-        row += 1
-        lyt_grid.Add(txt_exec, (row, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.ti_exec, (row, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(chk_term, (row, 2), (1, 2), flag=LEFT_CENTER)
-        
-        row += 1
-        lyt_grid.Add(txt_comm, (row, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.ti_comm, (row, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(chk_notify, (row, 2), (1, 2), flag=LEFT_CENTER)
-        
-        row += 1
-        lyt_grid.Add(txt_icon, (row, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.ti_icon, (row, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_enc, (row, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(self.ti_enc, (row, 3), flag=CENTER_EXPAND)
-        
-        lyt_border = BoxSizer(wx.VERTICAL)
-        
-        lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.TOP, 5)
-        lyt_border.AddSpacer(5)
-        lyt_border.Add(txt_other, 0)
-        lyt_border.Add(self.ti_other, 1, wx.EXPAND)
-        
         # --- Page 5 Sizer --- #
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_top, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
-        lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
+        lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_mid, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_main.Add(lyt_cat_main, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(txt_other, 0)
+        lyt_main.Add(self.ti_other, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
