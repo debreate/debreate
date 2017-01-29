@@ -69,12 +69,14 @@ class FirstRun(wx.Dialog):
         text1 = wx.StaticText(self, label=message1)
         text2 = wx.StaticText(self, label=message2)
         
-        rm_cmd = wx.StaticText(self, label=u'rm -f ~/.config/debreate/config')
+        rm_cmd = wx.TextCtrl(self, value=u'rm -f ~/.config/debreate/config',
+                style=wx.TE_READONLY|wx.BORDER_NONE)
+        rm_cmd.SetBackgroundColour(self.BackgroundColour)
         
         layout_V1 = BoxSizer(wx.VERTICAL)
         layout_V1.Add(text1, 1)
         layout_V1.Add(text2, 1, wx.TOP, 15)
-        layout_V1.Add(rm_cmd, 0, wx.TOP, 10)
+        layout_V1.Add(rm_cmd, 0, wx.EXPAND|wx.TOP, 10)
         
         # Show the Debreate icon
         icon = wx.StaticBitmap(self, bitmap=GetBitmap(u'logo', 64, u'icon'))
