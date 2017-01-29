@@ -225,7 +225,7 @@ class Wizard(wx.Panel):
             if P.GetId() == page_id:
                 return P
         
-        return None
+        Logger.Warn(__name__, u'Page with ID {} has not been constructed'.format(page_id))
     
     
     ## Retrieves the full list of page IDs
@@ -469,6 +469,8 @@ class WizardPage(ScrolledPanel):
     
     
     ## This method should contain anything that needs to be initialized only after all pages are constructed
+    #
+    #  FIXME: Rename to 'OnWizardInit'???
     def InitPage(self):
         Logger.Debug(__name__, GT(u'Page {} does not override inherited method InitPage').format(self.GetName()))
         
