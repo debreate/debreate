@@ -136,7 +136,9 @@ class inputid:
     LIST = wx.NewId()
     MAINTAINER = wx.NewId()
     MD5 = wx.NewId()
+    NOTIFY = wx.NewId()
     PACKAGE = wx.NewId()
+    TERM = wx.NewId()
     VERSION = wx.NewId()
 
 
