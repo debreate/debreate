@@ -130,7 +130,7 @@ def ReadConfig(k_name, conf=default_config):
 #        \b \e unicode|str|tuple|int|bool : Value of key
 #  \return
 #        \b \e int : ConfCode
-def WriteConfig(k_name, k_value, conf=default_config):
+def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
     conf_dir = os.path.dirname(conf)
     
     if not os.path.isdir(conf_dir):
