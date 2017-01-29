@@ -200,12 +200,14 @@ class AboutDialog(wx.Dialog):
     def SetGraphic(self, graphic):
         insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
         
-        image = wx.Image(graphic)
-        image.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
+        if not isinstance(graphic, wx.Bitmap):
+            graphic = wx.Image(graphic)
+            graphic.Rescale(64, 64, wx.IMAGE_QUALITY_HIGH)
+            graphic = graphic.ConvertToBitmap()
         
         self.about_layout_V1.Insert(
             insertion_point,
-            wx.StaticBitmap(self.t_about, wx.ID_ANY, image.ConvertToBitmap()),
+            wx.StaticBitmap(self.t_about, wx.ID_ANY, graphic),
             0,
             wx.ALL|wx.ALIGN_CENTER,
             10
