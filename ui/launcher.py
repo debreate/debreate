@@ -45,66 +45,44 @@ class LauncherTemplate(ScrolledPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, name=u'launcher'):
         ScrolledPanel.__init__(self, parent, win_id, name=name)
         
-        self.opts_button = []
-        self.opts_input = []
-        self.opts_choice = []
-        self.opts_list = []
-        
-        self.labels = []
-        
         # --- Buttons to open/preview/save .desktop file
         btn_open = ButtonBrowse64(self)
         btn_open.SetName(u'open')
         
         btn_save = ButtonSave64(self)
         btn_save.SetName(u'export')
-        self.opts_button.append(btn_save)
         
         btn_preview = ButtonPreview64(self)
         btn_preview.SetName(u'preview')
-        self.opts_button.append(btn_preview)
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
-        self.labels.append(txt_name)
         self.ti_name = TextAreaESS(self, name=u'Name')
         self.ti_name.req = True
         self.ti_name.default = wx.EmptyString
-        self.opts_input.append(self.ti_name)
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-        self.labels.append(txt_exec)
-        
         self.ti_exec = TextAreaESS(self, name=u'Exec')
         self.ti_exec.default = wx.EmptyString
-        self.opts_input.append(self.ti_exec)
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
-        self.labels.append(txt_comm)
-        
         self.ti_comm = TextAreaESS(self, name=u'Comment')
         self.ti_comm.default = wx.EmptyString
-        self.opts_input.append(self.ti_comm)
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
-        self.labels.append(txt_icon)
-        
         self.ti_icon = TextAreaESS(self, name=u'Icon')
         self.ti_icon.default = wx.EmptyString
-        self.opts_input.append(self.ti_icon)
         
         # --- TYPE
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        self.labels.append(txt_type)
         
         self.ti_type = ComboBoxESS(self, value=opts_type[0], choices=opts_type, name=u'Type')
         self.ti_type.default = self.ti_type.GetValue()
-        self.opts_input.append(self.ti_type)
         
         # --- TERMINAL
         chk_term = CheckBoxESS(self, inputid.TERM, GT(u'Terminal'), name=u'Terminal')
@@ -121,11 +99,8 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        self.labels.append(txt_enc)
-        
         self.ti_enc = ComboBoxESS(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
         self.ti_enc.default = self.ti_enc.GetValue()
-        self.opts_input.append(self.ti_enc)
         
         # --- CATEGORIES
         opts_category = (
@@ -157,20 +132,15 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_category = wx.StaticText(self, label=GT(u'Category'), name=u'category')
-        self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
         self.ti_category = ComboBoxESS(self, value=opts_category[0], choices=opts_category,
                 name=txt_category.Name)
         self.ti_category.default = self.ti_category.GetValue()
-        self.opts_input.append(self.ti_category)
         
         btn_catadd = ButtonAdd(self, name=u'add category')
         btn_catdel = ButtonRemove(self, name=u'rm category')
         btn_catclr = ButtonClear(self, name=u'clear categories')
-        
-        for B in btn_catadd, btn_catdel, btn_catclr:
-            self.opts_button.append(B)
         
         # FIXME: Allow using multi-select + remove
         self.lst_categories = ListCtrlPanelESS(self)
@@ -180,18 +150,12 @@ class LauncherTemplate(ScrolledPanel):
         # For manually setting background color after enable/disable
         self.lst_categories.default_color = self.lst_categories.GetBackgroundColour()
         self.lst_categories.SetName(u'Categories')
-        self.opts_list.append(self.lst_categories)
         
         # ----- MISC
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
-        self.labels.append(txt_other)
-        
         self.ti_other = TextAreaPanelESS(self, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.ti_other.EnableDropTarget()
-        self.opts_input.append(self.ti_other)
-        
-        #self.OnToggle()
         
         # *** Layout *** #
         
