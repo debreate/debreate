@@ -84,7 +84,9 @@ class genid:
 # Page IDs
 next_page_id = 1000
 page_ids = {}
-def NewPageId(page_name=None):
+
+## Creates a new page ID & adds to a member list instance for iteration
+def NewPageId(page_name=None, member_list=None):
     global next_page_id
     
     this_page_id = next_page_id
@@ -92,21 +94,27 @@ def NewPageId(page_name=None):
     
     page_ids[this_page_id] = page_name
     
+    if isinstance(member_list, list):
+        # Add to member list for iterating
+        member_list.append(this_page_id)
+    
     return this_page_id
 
 
 ## Page IDs
 class pgid:
-    GREETING = NewPageId(GT(u'Information'))
-    CONTROL = NewPageId(GT(u'Control'))
-    DEPENDS = NewPageId(GT(u'Depends'))
-    FILES = NewPageId(GT(u'Files'))
-    MAN = NewPageId(GT(u'Man'))
-    SCRIPTS = NewPageId(GT(u'Scripts'))
-    CHANGELOG = NewPageId(GT(u'Changelog'))
-    COPYRIGHT = NewPageId(GT(u'Copyright'))
-    MENU = NewPageId(GT(u'Menu'))
-    BUILD = NewPageId(GT(u'Build'))
+    IdList = []
+    
+    GREETING = NewPageId(GT(u'Information'), IdList)
+    CONTROL = NewPageId(GT(u'Control'), IdList)
+    DEPENDS = NewPageId(GT(u'Depends'), IdList)
+    FILES = NewPageId(GT(u'Files'), IdList)
+    MAN = NewPageId(GT(u'Man'), IdList)
+    SCRIPTS = NewPageId(GT(u'Scripts'), IdList)
+    CHANGELOG = NewPageId(GT(u'Changelog'), IdList)
+    COPYRIGHT = NewPageId(GT(u'Copyright'), IdList)
+    MENU = NewPageId(GT(u'Menu'), IdList)
+    BUILD = NewPageId(GT(u'Build'), IdList)
 
 
 ## IDs for input fields
