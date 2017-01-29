@@ -9,13 +9,14 @@
 import wx
 
 from dbr.language   import GT
+from globals.ident  import pgid
 
 
 ## TODO: Doxygen
 class ErrorTuple:
     def __init__(self, error_code=None, error_string=None):
         
-        # FIXME: Shoule throw exception for wrong instance types???
+        # FIXME: Should throw exception for wrong instance types???
         self.error_code = error_code
         self.error_string = error_string
     
@@ -194,6 +195,23 @@ def GetMainWindow():
 ## TODO: Doxygen
 def GetWizard():
     return GetMainWindow().GetWizard()
+
+
+## Finds the ui.wizard.WizardPage instance where an object is located
+#
+#  \param field
+#    \b \e wx.Window instance to find parents of
+def FindPageOf(field):
+    parent = field.GetParent()
+    
+    if not parent:
+        return None
+    
+    win_id = parent.GetId()
+    if win_id in pgid.IdList:
+        return GetPage(win_id)
+    
+    return FindPageOf(parent)
 
 
 ## Checks if project is in 'dirty' state
