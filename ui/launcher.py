@@ -59,7 +59,8 @@ class LauncherTemplate(ScrolledPanel):
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        self.ti_type = ComboBoxESS(self, value=opts_type[0], choices=opts_type, name=u'Type')
+        self.ti_type = ComboBoxESS(self, inputid.TYPE, opts_type[0], choices=opts_type,
+                name=u'Type')
         self.ti_type.default = self.ti_type.GetValue()
         
         # --- ENCODING
@@ -70,35 +71,36 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        self.ti_enc = ComboBoxESS(self, value=opts_enc[2], choices=opts_enc, name=u'Encoding')
+        self.ti_enc = ComboBoxESS(self, inputid.ENC, opts_enc[2], choices=opts_enc,
+                name=u'Encoding')
         self.ti_enc.default = self.ti_enc.GetValue()
         
         # --- TERMINAL
         chk_term = CheckBoxESS(self, inputid.TERM, GT(u'Terminal'), name=u'Terminal')
         
         # --- STARTUP NOTIFY
-        chk_notify = CheckBoxESS(self, inputid.NOTIFY, label=GT(u'Startup Notify'), name=u'StartupNotify',
+        chk_notify = CheckBoxESS(self, inputid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
                 defaultValue=True)
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
-        self.ti_name = TextAreaESS(self, name=u'Name')
+        self.ti_name = TextAreaESS(self, inputid.NAME, name=u'Name')
         self.ti_name.req = True
         self.ti_name.default = wx.EmptyString
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-        self.ti_exec = TextAreaESS(self, name=u'Exec')
+        self.ti_exec = TextAreaESS(self, inputid.EXEC, name=u'Exec')
         self.ti_exec.default = wx.EmptyString
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
-        self.ti_comm = TextAreaESS(self, name=u'Comment')
+        self.ti_comm = TextAreaESS(self, inputid.DESCR, name=u'Comment')
         self.ti_comm.default = wx.EmptyString
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
-        self.ti_icon = TextAreaESS(self, name=u'Icon')
+        self.ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
         self.ti_icon.default = wx.EmptyString
         
         # --- CATEGORIES
@@ -142,7 +144,7 @@ class LauncherTemplate(ScrolledPanel):
         btn_catclr = ButtonClear(self, name=u'clear categories')
         
         # FIXME: Allow using multi-select + remove
-        self.lst_categories = ListCtrlPanelESS(self)
+        self.lst_categories = ListCtrlPanelESS(self, inputid.CAT)
         # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
         self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
@@ -152,7 +154,7 @@ class LauncherTemplate(ScrolledPanel):
         
         # ----- MISC
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
-        self.ti_other = TextAreaPanelESS(self, name=txt_other.Name)
+        self.ti_other = TextAreaPanelESS(self, inputid.OTHER, name=txt_other.Name)
         self.ti_other.default = wx.EmptyString
         self.ti_other.EnableDropTarget()
         
