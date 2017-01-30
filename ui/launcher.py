@@ -583,16 +583,12 @@ class LauncherTemplate(ScrolledPanel):
             self.Set(u'\n'.join(data))
     
     
-    ## TODO: Doxygen
+    ## Show a preview of the .desktop launcher
     def OnPreviewLauncher(self, event=None):
-        # Show a preview of the .desktop config file
-        config = self.GetLauncherInfo()
+        preview = TextPreview(title=GT(u'Menu Launcher Preview'),
+                text=self.Get(), size=(500,400))
         
-        dia = TextPreview(title=GT(u'Menu Launcher Preview'),
-                text=config, size=(500,400))
-        
-        dia.ShowModal()
-        dia.Destroy()
+        ShowDialog(preview)
     
     
     ## TODO: Doxygen
