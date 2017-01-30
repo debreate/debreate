@@ -24,11 +24,11 @@ from input.text             import TextAreaESS
 from input.text             import TextAreaPanelESS
 from input.toggle           import CheckBoxESS
 from ui.button              import ButtonAdd
-from ui.button              import ButtonBrowse64
+from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
-from ui.button              import ButtonPreview64
+from ui.button              import ButtonPreview
 from ui.button              import ButtonRemove
-from ui.button              import ButtonSave64
+from ui.button              import ButtonSave
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import GetFileSaveDialog
@@ -46,13 +46,13 @@ class LauncherTemplate(ScrolledPanel):
         ScrolledPanel.__init__(self, parent, win_id, name=name)
         
         # --- Buttons to open/preview/save .desktop file
-        btn_open = ButtonBrowse64(self)
+        btn_open = ButtonBrowse(self)
         btn_open.SetName(u'open')
         
-        btn_save = ButtonSave64(self)
+        btn_save = ButtonSave(self)
         btn_save.SetName(u'export')
         
-        btn_preview = ButtonPreview64(self)
+        btn_preview = ButtonPreview(self)
         btn_preview.SetName(u'preview')
         
         # --- TYPE
@@ -175,9 +175,9 @@ class LauncherTemplate(ScrolledPanel):
         lyt_top = BoxSizer(wx.HORIZONTAL)
         lyt_top.Add(lyt_opts1, 0, wx.EXPAND|wx.ALIGN_BOTTOM)
         lyt_top.AddStretchSpacer(1)
-        lyt_top.Add(btn_open, 0)
-        lyt_top.Add(btn_save, 0)
-        lyt_top.Add(btn_preview, 0)
+        lyt_top.Add(btn_open, 0, wx.ALIGN_TOP)
+        lyt_top.Add(btn_save, 0, wx.ALIGN_TOP)
+        lyt_top.Add(btn_preview, 0, wx.ALIGN_TOP)
         
         lyt_mid = wx.GridBagSizer()
         lyt_mid.SetCols(4)
