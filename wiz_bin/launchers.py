@@ -62,7 +62,7 @@ if UsingTest(u'alpha'):
             # *** Layout *** #
             
             lyt_main = BoxSizer(wx.VERTICAL)
-            lyt_main.Add(templates, 1, wx.EXPAND)
+            lyt_main.Add(templates, 1, wx.EXPAND|wx.ALL, 5)
             
             self.SetAutoLayout(True)
             self.SetSizer(lyt_main)

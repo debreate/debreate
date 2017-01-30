@@ -41,7 +41,7 @@ class Panel(WizardPage):
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(self.Tabs, 1, wx.ALL|wx.EXPAND, 5)
+        lyt_main.Add(self.Tabs, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
