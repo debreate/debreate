@@ -120,15 +120,23 @@ class pgid:
 ## IDs for input fields
 class inputid:
     ARCH = wx.NewId()
+    CAT = wx.NewId()
     CUSTOM = wx.NewId()
+    DESCR = wx.NewId()
     EMAIL = wx.NewId()
+    ENC = wx.NewId()
+    EXEC = wx.NewId()
+    ICON = wx.NewId()
     LIST = wx.NewId()
     MAINTAINER = wx.NewId()
     MD5 = wx.NewId()
+    MIME = wx.NewId()
     NAME = wx.NewId()
     NOTIFY = wx.NewId()
+    OTHER = wx.NewId()
     PACKAGE = wx.NewId()
     TERM = wx.NewId()
+    TYPE = wx.NewId()
     VERSION = wx.NewId()
 
 
