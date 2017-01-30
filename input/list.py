@@ -107,6 +107,15 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
         return items
     
     
+    ## Override inherited method
+    #
+    #  Makes the 'title' argument optional
+    def InsertColumn(self, index, title=wx.EmptyString, fmt=wx.LIST_FORMAT_LEFT,
+                width=wx.LIST_AUTOSIZE):
+        
+        return wx.ListView.InsertColumn(self, index, title, fmt, width)
+    
+    
     ## TODO: Doxygen
     def OnSelectAll(self, event=None):
         select_all = False
