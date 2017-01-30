@@ -157,9 +157,9 @@ class TabsTemplate(BoxSizer):
     #  \return
     #    New ui.notebook.Notebook instance
     def AddPage(self, title, select=True):
-        new_page = self.Panel(self.GetParent(), name=title)
+        new_page = self.Panel(self.Tabs, name=title)
         
-        return self.Tabs.AddPage(title, new_page, select)
+        return self.Tabs.AddPage(new_page, title=title, select=select)
     
     
     ## Retrieves parent window of the ui.notebook.Notebook instance
