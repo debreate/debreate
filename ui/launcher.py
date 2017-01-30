@@ -166,7 +166,7 @@ class LauncherTemplate(ScrolledPanel):
         lyt_opts1.SetRows(2)
         
         lyt_opts1.Add(txt_type, 0, LEFT_CENTER)
-        lyt_opts1.Add(self.ti_type, 0, wx.LEFT, 5)
+        lyt_opts1.Add(self.ti_type, 0, wx.EXPAND|wx.LEFT, 5)
         lyt_opts1.Add(chk_term, 0, LEFT_CENTER|wx.LEFT, 5)
         lyt_opts1.Add(txt_enc, 0, LEFT_CENTER|wx.TOP, 5)
         lyt_opts1.Add(self.ti_enc, 0, wx.LEFT|wx.TOP, 5)
