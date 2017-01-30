@@ -7,6 +7,7 @@
 
 
 import os, shutil, wx
+from wx.combo import OwnerDrawnComboBox
 
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -16,8 +17,12 @@ from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import inputid
 from globals.ident          import page_ids
-from globals.strings        import TextIsEmpty, GS
+from globals.strings        import GS
+from globals.strings        import TextIsEmpty
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
+from input.list             import ListCtrl
+from input.list             import ListCtrlPanel
 from input.list             import ListCtrlPanelESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
@@ -301,19 +306,70 @@ class LauncherTemplate(ScrolledPanel):
     ## Retrieves Desktop Entry file information
     #  
     #  \return
-    #        \b \e tuple(str, str, str) : File/Page name,
-    #          string formatted menu information, & filename to output
+    #    Text formatted for desktop entry file output
     def Get(self, get_module=False):
-        page = self.GetLauncherInfo()
+        l_lines = [u'[Desktop Entry]']
+        
+        id_list = (
+            inputid.VERSION,
+            inputid.ENC,
+            inputid.NAME,
+            inputid.EXEC,
+            inputid.DESCR,
+            inputid.ICON,
+            inputid.TYPE,
+            inputid.TERM,
+            inputid.NOTIFY,
+            inputid.MIME,
+            inputid.CAT,
+            inputid.OTHER,
+            )
+        
+        for ID in id_list:
+            field = GetField(self, ID)
+            
+            if field:
+                if ID == inputid.OTHER:
+                    l_lines.append(field.GetValue().strip(u' \t\r\n'))
+                    
+                    continue
+                
+                if isinstance(field, (wx.TextCtrl, OwnerDrawnComboBox,)):
+                    value = field.GetValue().strip()
+                    
+                    if not TextIsEmpty(value):
+                        l_lines.append(u'{}={}'.format(field.GetName(), value))
+                    
+                    continue
+                
+                if isinstance(field, wx.CheckBox):
+                    value = GS(field.GetValue()).lower()
+                    
+                    l_lines.append(u'{}={}'.format(field.GetName(), value))
+                    
+                    continue
+                
+                if isinstance(field, (ListCtrl, ListCtrlPanel,)):
+                    value = u';'.join(field.GetListTuple())
+                    
+                    if not value.endswith(u';'):
+                        value = u'{};'.format(value)
+                    
+                    if not TextIsEmpty(value):
+                        l_lines.append(u'{}={}'.format(field.GetName(), value))
+        
+        l_text = u'\n'.join(l_lines)
         
         if get_module:
             # FIXME: 'MENU' needed?
-            page = (__name__, page, u'MENU')
+            l_text = (__name__, l_text, u'MENU')
         
-        return page
+        return l_text
     
     
     ## Formats the launcher information for export
+    #
+    #  FIXME: Obsolete???
     def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
         
