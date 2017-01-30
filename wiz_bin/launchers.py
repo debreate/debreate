@@ -59,10 +59,6 @@ if UsingTest(u'alpha'):
             
             SetPageToolTips(self)
             
-            # *** Event Handling *** #
-            
-            wx.EVT_BUTTON(self, wx.ID_ADD, self.OnButtonAdd)
-            
             # *** Layout *** #
             
             lyt_main = BoxSizer(wx.VERTICAL)
@@ -71,11 +67,6 @@ if UsingTest(u'alpha'):
             self.SetAutoLayout(True)
             self.SetSizer(lyt_main)
             self.Layout()
-        
-        
-        ## TODO: Doxygen
-        def OnButtonAdd(self, event=None):
-            print(u'wiz_bin.launchers.Panel.OnButtonAdd')
 
 else:
     ## Page for creating a system menu launcher
