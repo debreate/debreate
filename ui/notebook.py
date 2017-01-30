@@ -110,7 +110,7 @@ class Notebook(AuiNotebook):
 #    The \b \e wx.Window parent instance
 #  \param panelClass
 #    \b \e wx.Panel derived class to use for tab pages
-class TabsTemplate(BoxSizer):
+class MultiTemplate(BoxSizer):
     def __init__(self, parent, panelClass):
         BoxSizer.__init__(self, wx.VERTICAL)
         

@@ -41,7 +41,7 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.launcher            import LauncherTemplate
 from ui.layout              import BoxSizer
-from ui.notebook            import TabsTemplate
+from ui.notebook            import MultiTemplate
 from ui.textpreview         import TextPreview
 from ui.wizard              import WizardPage
 
@@ -55,7 +55,7 @@ if UsingTest(u'alpha'):
             ## Override default label
             self.label = GT(u'Menu Launchers')
             
-            templates = TabsTemplate(self, LauncherTemplate)
+            templates = MultiTemplate(self, LauncherTemplate)
             
             SetPageToolTips(self)
             
