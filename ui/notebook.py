@@ -133,8 +133,8 @@ class TabsTemplate(BoxSizer):
         lyt_add.Add(btn_add)
         lyt_add.Add(txt_add, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
         
-        self.Add(lyt_add, 0, wx.EXPAND|wx.ALL, 5)
-        self.Add(self.Tabs, 1, wx.ALL|wx.EXPAND, 5)
+        self.Add(lyt_add, 0, wx.EXPAND)
+        self.Add(self.Tabs, 1, wx.EXPAND)
     
     
     ## Checks if input title is okay for using as tab title & target filename
