@@ -46,29 +46,29 @@ class Notebook(AuiNotebook):
     
     ## Adds a new page
     #
-    #  \param caption
-    #    Label displayed on tab
     #  \param page
     #    \b \e wx.Window instance that will be new page (if None, a new instance is created)
-    #  \param win_id
+    #  \param winId
     #    Window \b \e integer ID
+    #  \param title
+    #    Label displayed on tab
     #  \param select
     #    Specifies whether the page should be displayed
     #  \param imageId
     #    Specifies optional image
-    def AddPage(self, caption, page=None, win_id=wx.ID_ANY, select=False, imageId=0):
+    def AddPage(self, page=None, winId=wx.ID_ANY, title=u'tab', select=False, imageId=0):
         if not page:
-            page = wx.Panel(self, win_id)
+            page = wx.Panel(self, winId)
         
         # Existing instance should already have an ID
-        elif win_id != wx.ID_ANY:
-            Logger.Warn(__name__, u'Option "win_id" is only used if "page" is None')
+        elif winId != wx.ID_ANY:
+            Logger.Debug(__name__, u'Ignoring winId argument for pre-constructed page')
         
         if wx.MAJOR_VERSION <= 2:
             if not isinstance(imageId, wx.Bitmap):
                 imageId = wx.NullBitmap
         
-        AuiNotebook.AddPage(self, page, caption, select, imageId)
+        AuiNotebook.AddPage(self, page, title, select, imageId)
         
         return page
     
