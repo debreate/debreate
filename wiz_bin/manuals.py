@@ -19,7 +19,7 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.manual              import ManPage
-from ui.notebook            import TabsTemplate
+from ui.notebook            import MultiTemplate
 from ui.prompt              import TextEntryDialog
 from ui.wizard              import WizardPage
 
@@ -33,7 +33,7 @@ class Panel(WizardPage):
         ## Override default label
         self.label = GT(u'Manual Pages')
         
-        self.Tabs = TabsTemplate(self, ManPage)
+        self.Tabs = MultiTemplate(self, ManPage)
         
         # FIXME: Call after new page added???
         SetPageToolTips(self)
