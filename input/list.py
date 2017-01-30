@@ -94,6 +94,19 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
         return None
     
     
+    ## Retrieve a tuple list of contents
+    def GetListTuple(self, col=0, typeTuple=True):
+        items = []
+        
+        for INDEX in range(self.GetItemCount()):
+            items.append(self.GetItemText(INDEX, col))
+        
+        if typeTuple:
+            return tuple(items)
+        
+        return items
+    
+    
     ## TODO: Doxygen
     def OnSelectAll(self, event=None):
         select_all = False
