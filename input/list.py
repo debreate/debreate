@@ -157,7 +157,7 @@ class ListCtrl(BorderedPanel):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
-        self.MainCtrl = ListCtrl(self, style=style, validator=validator)
+        self.MainCtrl = ListCtrlBase(self, style=style, validator=validator)
         
         # Match panel background color to list control
         self.SetBackgroundColour(self.MainCtrl.GetBackgroundColour())
