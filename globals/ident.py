@@ -133,6 +133,7 @@ ZIP_ZIP = wx.NewId()
 class inputid:
     ARCH = wx.NewId()
     CAT = wx.NewId()
+    CAT2 = wx.NewId()
     CHECK = wx.NewId()
     CUSTOM = wx.NewId()
     DESCR = wx.NewId()
