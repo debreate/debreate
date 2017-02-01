@@ -10,6 +10,7 @@ import wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
+from f_export.ftarget       import FileOTarget
 from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
@@ -23,7 +24,6 @@ from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
-from output.ftarget         import FileOTarget
 from ui.button              import ButtonAdd
 from ui.button              import ButtonImport
 from ui.dialog              import DetailedMessageDialog
