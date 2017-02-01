@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package output.ftarget
+## \package f_export.ftarget
 
 # MIT licensing
 # See: docs/LICENSE.txt
