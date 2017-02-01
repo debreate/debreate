@@ -18,6 +18,7 @@ from ui.button          import ButtonConfirm
 from ui.layout          import BoxSizer
 
 
+## A checkable list
 class CheckList(wx.Panel):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.TAB_TRAVERSAL, name=wx.PanelNameStr):
@@ -28,6 +29,8 @@ class CheckList(wx.Panel):
         self.scrolled_panel = wx.ScrolledWindow(self, style=wx.VSCROLL|wx.BORDER_NONE)
         self.scrolled_panel.SetBackgroundColour(self.GetBackgroundColour())
         self.scrolled_panel.SetScrollbars(20, 20, 50, 50)
+        
+        # *** Layout *** #
         
         self.layout_scrolled = BoxSizer(wx.VERTICAL)
         
@@ -42,6 +45,12 @@ class CheckList(wx.Panel):
         self.Layout()
     
     
+    ## Add a single item to the list
+    #
+    #  \param label
+    #    Item's displayed text
+    #  \param checked
+    #    Sets item checked if True
     def AddItem(self, label, checked=False):
         # Yield for progress dialog pulse updates
         wx.Yield()
@@ -64,6 +73,12 @@ class CheckList(wx.Panel):
         self.Layout()
     
     
+    ## Adds multiple items to the list
+    #
+    #  \param labels
+    #    List of text labels to be displayed
+    #  \param checked
+    #    Sets items as checked if True
     def AddItems(self, labels, checked=False):
         for l in labels:
             Logger.Debug(__name__, u'Adding item: {} (checked={})'.format(l, checked))
@@ -71,12 +86,14 @@ class CheckList(wx.Panel):
             self.AddItem(l, checked)
     
     
+    ## Removes all items from the list
     def Clear(self):
         for C in self.scrolled_panel.GetChildren():
             if isinstance(C, wx.CheckBox) and C.GetValue():
                 C.SetValue(False)
     
     
+    ## Retrieves number of items in list that set as 'checked'
     def GetCheckedCount(self):
         checked_count = 0
         for C in self.scrolled_panel.GetChildren():
@@ -86,6 +103,7 @@ class CheckList(wx.Panel):
         return checked_count
     
     
+    ## Retrieves list of items that are set as 'checked'
     def GetCheckedLabels(self):
         checked_list = []
         
@@ -98,10 +116,17 @@ class CheckList(wx.Panel):
         return tuple(checked_list)
     
     
+    ## Retrieves a single item
+    #
+    #  \param index
+    #    Retrieve item at index
+    #  \return
+    #    True if label is found
     def GetItem(self, index):
         return self.scrolled_panel.GetChildren()[index]
     
     
+    ## Retrieves number of items in list
     def GetItemCount(self):
         if wx.MAJOR_VERSION > 2:
             return self.layout_scrolled.GetItemCount()
@@ -109,6 +134,10 @@ class CheckList(wx.Panel):
         return len(self.layout_scrolled.GetChildren())
     
     
+    ## Checks if a label is in the list
+    #
+    #  \param label
+    #    Text label to search for
     def LabelExists(self, label):
         for C in self.scrolled_panel.GetChildren():
             if isinstance(C, wx.CheckBox):
@@ -118,6 +147,7 @@ class CheckList(wx.Panel):
         return False
     
     
+    ## TODO: Doxygen
     def ScrollToEnd(self):
         self.scrolled_panel.SetScrollPos(wx.VERTICAL, self.scrolled_panel.GetScrollLines(wx.VERTICAL))
         self.scrolled_panel.Refresh()
@@ -135,6 +165,7 @@ class CheckList(wx.Panel):
 
 
 
+## TODO: Doxygen
 class CheckListDialog(wx.Dialog):
     def __init__(self, parent, ID=wx.ID_ANY, title=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr,
