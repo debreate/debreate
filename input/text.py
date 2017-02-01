@@ -14,20 +14,20 @@ from globals.fileio         import ReadFile
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetMainWindow
 from input.essential        import EssentialField
+from input.ifield           import InputField
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.panel               import ControlPanel
 
 
 ## Text control set up for handling file drop events
-class TextArea(wx.TextCtrl):
+class TextArea(wx.TextCtrl, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
             name=wx.TextCtrlNameStr):
         
         wx.TextCtrl.__init__(self, parent, win_id, value, pos, size, style, validator, name)
-        
-        self.default = defaultValue
+        InputField.__init__(self, defaultValue)
         
         # Enable to override default behavior of adding filename string
         self.DragAcceptFiles(True)
@@ -42,11 +42,6 @@ class TextArea(wx.TextCtrl):
     ## Allow dropping files from file manager
     def EnableDropTarget(self, enable=True):
         self.accepts_drop = enable
-    
-    
-    ## Retrieve default value
-    def GetDefaultValue(self):
-        return self.default
     
     
     ## TODO: Doxygen
@@ -117,16 +112,6 @@ class TextArea(wx.TextCtrl):
                 GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
         
         return False
-    
-    
-    ## Reset text area to default value
-    def Reset(self):
-        self.SetValue(self.default)
-    
-    
-    ## Sets the default value
-    def SetDefaultValue(self, value):
-        self.default = value
 
 
 ## TextArea that notifies main window to mark the project dirty
