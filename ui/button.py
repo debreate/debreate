@@ -543,7 +543,7 @@ def ReplaceStandardButtons(dialog):
 #    Name attribute
 #  \return
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
-def CreateButton(parent, label, image, size=32, btnId=wx.ID_ANY, tooltip=None, name=None):
+def CreateButton(parent, label, image, btnId=wx.ID_ANY, size=32, tooltip=None, name=None):
     btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
     
     if not name:
