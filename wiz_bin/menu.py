@@ -23,6 +23,7 @@ from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
+from input.toggle           import CheckBox
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonClear
@@ -65,17 +66,14 @@ class Panel(WizardPage):
         self.opts_button.append(btn_preview)
         
         # --- CHECKBOX
-        self.chk_enable = wx.CheckBox(self, label=GT(u'Create system menu launcher'))
-        self.chk_enable.default = False
+        self.chk_enable = CheckBox(self, label=GT(u'Create system menu launcher'))
         
         # --- Custom output filename
         self.txt_filename = wx.StaticText(self, label=GT(u'Filename'), name=u'filename')
         self.ti_filename = wx.TextCtrl(self, inputid.FNAME, name=self.txt_filename.Name)
         
-        self.chk_filename = wx.CheckBox(self, chkid.FNAME, GT(u'Use "Name" as output filename (<Name>.desktop)'),
-                name=u'filename chk')
-        self.chk_filename.default = True
-        self.chk_filename.SetValue(self.chk_filename.default)
+        self.chk_filename = CheckBox(self, chkid.FNAME, GT(u'Use "Name" as output filename (<Name>.desktop)'),
+                name=u'filename chk', defaultValue=True)
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
