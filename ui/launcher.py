@@ -149,9 +149,8 @@ class LauncherTemplate(ScrolledPanel):
         btn_catclr = ButtonClear(self, name=u'clear categories')
         
         # FIXME: Allow using multi-select + remove
-        self.lst_categories = ListCtrlPanelESS(self, inputid.CAT)
-        # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
-        self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
+        self.lst_categories = ListCtrlPanelESS(self, inputid.CAT, style=wx.LC_REPORT)
+        self.lst_categories.SetSingleStyle(wx.LC_NO_HEADER)
         
         # For manually setting background color after enable/disable
         self.lst_categories.default_color = self.lst_categories.GetBackgroundColour()
