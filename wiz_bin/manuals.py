@@ -11,6 +11,7 @@ import wx
 from dbr.containers         import Contains
 from dbr.language           import GT
 from dbr.log                import Logger
+from globals.ident          import btnid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -34,6 +35,10 @@ class Panel(WizardPage):
         self.label = GT(u'Manual Pages')
         
         self.Tabs = MultiTemplate(self, ManPage)
+        
+        self.Tabs.RenameButton(btnid.ADD, GT(u'Add Manual'))
+        self.Tabs.RenameButton(btnid.RENAME, GT(u'Rename Manual'))
+        self.Tabs.AddTabButton(GT(u'Switch Mode'), u'mode', btnid.MODE, self.OnChangeMode)
         
         # FIXME: Call after new page added???
         SetPageToolTips(self)
@@ -101,6 +106,18 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def OnAddManpage(self, event=None):
         return self.SetTabName()
+    
+    
+    ## TODO: Doxygen
+    def OnChangeMode(self, event=None):
+        tab = self.Tabs.GetCurrentTab()
+        
+        if isinstance(tab, ManPage):
+            easy_mode = tab.InEasyMode()
+            
+            tab.SetMode(not easy_mode)
+            
+            return tab.InEasyMode() != easy_mode
     
     
     ## TODO: Doxygen
