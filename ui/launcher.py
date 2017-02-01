@@ -13,6 +13,7 @@ from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from f_export.ofield        import OutputField
+from f_export.permiss       import SetFileExecutable
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
@@ -307,20 +308,7 @@ class LauncherTemplate(ScrolledPanel):
         
         WriteFile(target, launcher)
         
-        # FIXME: Check timestamp
-        if os.path.isfile(target):
-            if executable:
-                mode = 0755
-            
-            else:
-                mode = 0644
-            
-            os.chmod(target, mode)
-            
-            if os.access(target, mode):
-                return True
-        
-        return False
+        return SetFileExecutable(target)
     
     
     ## Retrieves Desktop Entry file information
