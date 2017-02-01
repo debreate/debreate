@@ -156,6 +156,15 @@ class inputid:
     VERSION = wx.NewId()
 
 
+## IDs for button controls
+class btnid:
+    ADD = wx.ID_ADD
+    CANCEL = wx.ID_CANCEL
+    CONFIRM = wx.ID_YES|wx.ID_OK
+    MODE = wx.NewId()
+    RENAME = wx.NewId()
+
+
 ## IDs referencing manual pages
 class manid:
     # Starting ID number
