@@ -23,7 +23,7 @@ from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
-from input.list             import ListCtrlPanel
+from input.list             import ListCtrl
 from input.text             import TextAreaPanel
 from ui.button              import ButtonConfirm
 from ui.dialog              import ShowErrorDialog
@@ -78,7 +78,7 @@ class AboutDialog(wx.Dialog):
         self.t_about.Layout()
         
         ## List of credits
-        self.credits = ListCtrlPanel(t_credits)
+        self.credits = ListCtrl(t_credits)
         self.credits.SetSingleStyle(wx.LC_REPORT)
         self.credits.InsertColumn(0, GT(u'Name'), width=150)
         self.credits.InsertColumn(1, GT(u'Job'), width=200)

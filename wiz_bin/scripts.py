@@ -17,7 +17,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
-from input.list             import ListCtrlPanel
+from input.list             import ListCtrl
 from input.markdown         import MarkdownDialog
 from input.pathctrl         import PATH_WARN
 from input.pathctrl         import PathCtrl
@@ -110,7 +110,7 @@ class Panel(WizardPage):
         self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
-        self.executables = ListCtrlPanel(pnl_autolink, size=(200,200), name=u'al list')
+        self.executables = ListCtrl(pnl_autolink, size=(200,200), name=u'al list')
         self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
@@ -314,7 +314,7 @@ class Panel(WizardPage):
                 i_index += 1
         
         elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
-            # FIXME: Use ListCtrlPanel.DeleteAllItems()???
+            # FIXME: Use ListCtrl.DeleteAllItems()???
             exe = self.executables.GetFirstSelected()
             if exe != -1:
                 self.executables.DeleteItem(exe)

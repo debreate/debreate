@@ -18,7 +18,7 @@ from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
-from input.list             import ListCtrlPanel
+from input.list             import ListCtrl
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
 from ui.button              import ButtonAdd
@@ -199,8 +199,8 @@ class Panel(WizardPage):
             self.opts_button.append(B)
         
         # FIXME: Allow using multi-select + remove
-        self.lst_categories = ListCtrlPanel(self)
-        # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
+        self.lst_categories = ListCtrl(self)
+        # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrl bug???)
         self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # For manually setting background color after enable/disable

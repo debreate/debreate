@@ -19,9 +19,10 @@ from ui.panel       import BorderedPanel
 
 
 ## A list control with no border
-class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
+class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
         wx.ListView.__init__(self, parent, ID, pos, size, style|wx.BORDER_NONE,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
@@ -166,9 +167,10 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
 
 
 ## Hack to make list control border have rounded edges
-class ListCtrlPanel(BorderedPanel):
+class ListCtrl(BorderedPanel):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
         BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
         self.listarea = ListCtrl(self, style=style, validator=validator)
@@ -422,14 +424,13 @@ class ListCtrlPanel(BorderedPanel):
 ## An editable list
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
+class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     def __init__(self, parent, window_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        ListCtrlPanel.__init__(self, parent, window_id, style=wx.LC_REPORT,
-                name=name)
+        ListCtrl.__init__(self, parent, window_id, style=wx.LC_REPORT, name=name)
         TextEditMixin.__init__(self)
         wx.FileDropTarget.__init__(self)
         
-        ListCtrlPanel.SetDropTarget(self, self)
+        ListCtrl.SetDropTarget(self, self)
         
         self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
         self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
@@ -520,7 +521,7 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
     
     ## TODO: Doxygen
     def DeleteAllItems(self):
-        ListCtrlPanel.DeleteAllItems(self)
+        ListCtrl.DeleteAllItems(self)
         self.sources_list = []
     
     
@@ -600,7 +601,7 @@ class FileList(ListCtrlPanel, TextEditMixin, wx.FileDropTarget):
     #  Uses parent width & its children to determine
     #    desired width.
     #  FIXME: Unknown if this bug persists in wx 3.1
-    #  FIXME: Do not override, should be inherited from ListCtrlPanel
+    #  FIXME: Do not override, should be inherited from ListCtrl
     def OnResize(self, event=None):
         if event:
             event.Skip(True)
