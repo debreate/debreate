@@ -8,41 +8,55 @@
 
 import wx
 
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.strings    import GS
-from globals.strings    import TextIsEmpty
-from ui.button          import ButtonCancel
-from ui.button          import ButtonClear
-from ui.button          import ButtonConfirm
-from ui.layout          import BoxSizer
+from dbr.language           import GT
+from dbr.log                import Logger
+from globals.ident          import genid
+from globals.strings        import GS
+from globals.strings        import TextIsEmpty
+from globals.wizardhelper   import GetField
+from ui.button              import ButtonCancel
+from ui.button              import ButtonClear
+from ui.button              import ButtonConfirm
+from ui.layout              import BoxSizer
+from ui.panel               import BorderedPanel
+from ui.panel               import ScrolledPanel
 
 
 ## A checkable list
-class CheckList(wx.Panel):
-    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.TAB_TRAVERSAL, name=wx.PanelNameStr):
-        wx.Panel.__init__(self, parent, ID, pos, size, style=style|wx.BORDER_THEME, name=name)
+class CheckList(BorderedPanel):
+    def __init__(self, parent, ID=wx.ID_ANY, items=[], pos=wx.DefaultPosition, size=wx.DefaultSize,
+            style=wx.VSCROLL, name=wx.PanelNameStr):
+        
+        BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
         
         self.SetBackgroundColour(u'white')
         
-        self.scrolled_panel = wx.ScrolledWindow(self, style=wx.VSCROLL|wx.BORDER_NONE)
-        self.scrolled_panel.SetBackgroundColour(self.GetBackgroundColour())
-        self.scrolled_panel.SetScrollbars(20, 20, 50, 50)
+        pnl_bg = ScrolledPanel(self, genid.BGPANEL, style=style|wx.TAB_TRAVERSAL|wx.BORDER_NONE)
+        pnl_bg.SetBackgroundColour(self.GetBackgroundColour())
+        pnl_bg.SetScrollbars(20, 20, 50, 50)
+        
+        # *** Event Handling *** #
+        
+        self.Bind(wx.EVT_CHECKBOX, self.OnCheckItem)
         
         # *** Layout *** #
         
-        self.layout_scrolled = BoxSizer(wx.VERTICAL)
+        lyt_bg = BoxSizer(wx.VERTICAL)
         
-        self.scrolled_panel.SetSizer(self.layout_scrolled)
-        self.scrolled_panel.SetAutoLayout(True)
+        pnl_bg.SetSizer(lyt_bg)
+        pnl_bg.SetAutoLayout(True)
         
-        layout_main = BoxSizer(wx.VERTICAL)
-        layout_main.Add(self.scrolled_panel, 1, wx.EXPAND)
+        lyt_main = BoxSizer(wx.VERTICAL)
+        lyt_main.Add(pnl_bg, 1, wx.EXPAND)
         
-        self.SetSizer(layout_main)
+        self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
+        
+        # *** Post-Layout Actions *** #
+        
+        if items:
+            self.AddItems(items)
     
     
     ## Add a single item to the list
@@ -60,8 +74,11 @@ class CheckList(wx.Panel):
         
         #Logger.Debug(__name__, GT(u'Lintian tag: {}; Set checked: {}').format(label, checked))
         
-        self.layout_scrolled.Add(wx.CheckBox(self.scrolled_panel, label=label), 1, wx.EXPAND)
-        self.layout_scrolled.Add(wx.StaticLine(self.scrolled_panel, style=wx.LI_HORIZONTAL), 0, wx.EXPAND)
+        pnl_bg = GetField(self, genid.BGPANEL)
+        lyt_bg = pnl_bg.GetSizer()
+        
+        lyt_bg.Add(wx.CheckBox(pnl_bg, label=label), 1, wx.EXPAND)
+        lyt_bg.Add(wx.StaticLine(pnl_bg, style=wx.LI_HORIZONTAL), 0, wx.EXPAND)
         
         if checked:
             check_box = self.GetItem(item_index)
@@ -69,7 +86,7 @@ class CheckList(wx.Panel):
             if isinstance(check_box, wx.CheckBox):
                 check_box.SetValue(True)
         
-        self.scrolled_panel.Layout()
+        pnl_bg.Layout()
         self.Layout()
     
     
@@ -86,18 +103,52 @@ class CheckList(wx.Panel):
             self.AddItem(l, checked)
     
     
-    ## Removes all items from the list
+    ## Sets all item states to 'unchecked'
     def Clear(self):
-        for C in self.scrolled_panel.GetChildren():
-            if isinstance(C, wx.CheckBox) and C.GetValue():
-                C.SetValue(False)
+        changed = False
+        
+        for CHK in self.GetAllItems():
+            if CHK.GetValue():
+                CHK.SetValue(False)
+                changed = True
+        
+        if changed:
+            self.PostCheckBoxEvent()
+    
+    
+    ## Retrieves all check boxes
+    #
+    #  \return
+    #    Tuple containing all children check box instances
+    def GetAllItems(self):
+        pnl_bg = GetField(self, genid.BGPANEL)
+        items = []
+        
+        for item in pnl_bg.GetChildren():
+            if isinstance(item, wx.CheckBox):
+                items.append(item)
+        
+        return tuple(items)
+    
+    
+    ## Retrieves all item labels
+    #
+    #  \return
+    #    Tuple of all check box labels
+    def GetAllLabels(self):
+        labels = []
+        
+        for CHK in self.GetAllItems():
+            labels.append(CHK.GetLabel())
+        
+        return tuple(labels)
     
     
     ## Retrieves number of items in list that set as 'checked'
     def GetCheckedCount(self):
         checked_count = 0
-        for C in self.scrolled_panel.GetChildren():
-            if isinstance(C, wx.CheckBox) and C.GetValue():
+        for CHK in self.GetAllItems():
+            if CHK.GetValue():
                 checked_count += 1
         
         return checked_count
@@ -107,11 +158,13 @@ class CheckList(wx.Panel):
     def GetCheckedLabels(self):
         checked_list = []
         
-        for C in self.scrolled_panel.GetChildren():
-            if isinstance(C, wx.CheckBox) and C.IsChecked():
-                Logger.Debug(__name__, GT(u'Retrieving checked label: {}').format(C.GetLabel()))
+        for CHK in self.GetAllItems():
+            if CHK.IsChecked():
+                label = CHK.GetLabel()
                 
-                checked_list.append(C.GetLabel())
+                Logger.Debug(__name__, GT(u'Retrieving checked label: {}').format(label))
+                
+                checked_list.append(label)
         
         return tuple(checked_list)
     
@@ -123,15 +176,66 @@ class CheckList(wx.Panel):
     #  \return
     #    True if label is found
     def GetItem(self, index):
-        return self.scrolled_panel.GetChildren()[index]
+        return self.GetAllItems()[index]
+    
+    
+    ## Retrieves an item using a label
+    #
+    #  \param label
+    #    Text label to search for
+    def GetItemByLabel(self, label):
+        labels = self.GetAllLabels()
+        
+        if label in labels:
+            return self.GetItem(labels.index(label))
     
     
     ## Retrieves number of items in list
     def GetItemCount(self):
-        if wx.MAJOR_VERSION > 2:
-            return self.layout_scrolled.GetItemCount()
+        return len(self.GetAllItems())
+    
+    
+    ## Retrieves the checked state of an item
+    #
+    #  \param index
+    #    \b \e Integer index of of item to check
+    def GetValue(self, index):
+        return self.GetItem(index).GetValue()
+    
+    
+    ## Retrieves the checked state of an item
+    #
+    #  \param label
+    #    Label whose value to get
+    #  \return
+    #    \b \e True if label's state is 'checked'
+    def GetValueByLabel(self, label):
+        item = self.GetItemByLabel(label)
         
-        return len(self.layout_scrolled.GetChildren())
+        if item:
+            return item.GetValue()
+        
+        return False
+    
+    
+    ## Checks if any item's state is 'checked'
+    #
+    #  \return
+    #    \b \e True if any item's state is 'checked'
+    def HasSelected(self):
+        for CHK in self.GetAllItems():
+            if CHK.GetValue():
+                return True
+        
+        return False
+    
+    
+    ## Check if an item's state is 'checked'
+    #
+    #  \param label
+    #    Label of item to check
+    def IsSelected(self, label):
+        return label in self.GetCheckedLabels()
     
     
     ## Checks if a label is in the list
@@ -139,30 +243,57 @@ class CheckList(wx.Panel):
     #  \param label
     #    Text label to search for
     def LabelExists(self, label):
-        for C in self.scrolled_panel.GetChildren():
-            if isinstance(C, wx.CheckBox):
-                if label == C.GetLabel():
-                    return True
+        for LABEL in self.GetAllLabels():
+            if LABEL == label:
+                return True
         
         return False
     
     
+    ## Handles check box events
+    def OnCheckItem(self, event=None):
+        self.PostCheckBoxEvent()
+    
+    
+    ## Propagates check box event to parent or target
+    #
+    #  \param target
+    #    \b \e wx.Window instance to post event to
+    def PostCheckBoxEvent(self, target=None):
+        if not target:
+            target = self.Parent
+        
+        wx.PostEvent(target, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED, self.Id))
+    
+    
     ## TODO: Doxygen
     def ScrollToEnd(self):
-        self.scrolled_panel.SetScrollPos(wx.VERTICAL, self.scrolled_panel.GetScrollLines(wx.VERTICAL))
-        self.scrolled_panel.Refresh()
+        pnl_bg = GetField(self, genid.BGPANEL)
+        
+        pnl_bg.SetScrollPos(wx.VERTICAL, pnl_bg.GetScrollLines(wx.VERTICAL))
+        
+        pnl_bg.Refresh()
         self.Refresh()
     
     
     ## TODO: Define & Doxygen
     def SetItemCheckedByLabel(self, label, checked=True):
         # FIXME: Should use a more efficient method to index & retrieve items
-        for C in self.scrolled_panel.GetChildren():
-            if isinstance(C, wx.CheckBox) and C.GetLabel() == label:
+        for C in self.GetAllItems():
+            if C.GetLabel() == label:
                 C.SetValue(checked)
                 
                 break
-
+    
+    
+    ## Sets the 'checked' state of an item
+    #
+    #  \param index
+    #    \b \e Integer index of item to manipulate
+    #  \param checked
+    #    State to set item
+    def SetValue(self, index, checked):
+        return self.GetItem(index).SetValue(checked)
 
 
 ## TODO: Doxygen
