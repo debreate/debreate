@@ -18,7 +18,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
-from input.list             import ListCtrlPanelESS
+from input.list             import ListCtrlESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonAppend
 from ui.button              import ButtonBrowse64
@@ -95,7 +95,7 @@ class Panel(WizardPage):
         btn_clear = ButtonClear(self)
         
         # ----- List
-        self.lst_deps = ListCtrlPanelESS(self, inputid.LIST, name=u'list')
+        self.lst_deps = ListCtrlESS(self, inputid.LIST, name=u'list')
         self.lst_deps.SetSingleStyle(wx.LC_REPORT)
         self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
         self.lst_deps.InsertColumn(1, GT(u'Package(s)'))

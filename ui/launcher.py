@@ -21,9 +21,9 @@ from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
+from input.list             import ListCtrl
 from input.list             import ListCtrlBase
-from input.list             import ListCtrlPanel
-from input.list             import ListCtrlPanelESS
+from input.list             import ListCtrlESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
 from input.text             import TextAreaPanelESS
@@ -149,7 +149,7 @@ class LauncherTemplate(ScrolledPanel):
         btn_catclr = ButtonClear(self, name=u'clear categories')
         
         # FIXME: Allow using multi-select + remove
-        self.lst_categories = ListCtrlPanelESS(self, inputid.CAT, style=wx.LC_REPORT)
+        self.lst_categories = ListCtrlESS(self, inputid.CAT, style=wx.LC_REPORT)
         self.lst_categories.SetSingleStyle(wx.LC_NO_HEADER)
         
         # For manually setting background color after enable/disable
@@ -348,7 +348,7 @@ class LauncherTemplate(ScrolledPanel):
                     
                     continue
                 
-                if isinstance(field, (ListCtrlBase, ListCtrlPanel,)):
+                if isinstance(field, (ListCtrlBase, ListCtrl,)):
                     value = u';'.join(field.GetListTuple())
                     
                     if not value.endswith(u';'):
