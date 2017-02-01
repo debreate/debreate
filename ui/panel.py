@@ -140,8 +140,6 @@ class SectionedPanel(ScrolledPanel):
                     break
             
             if lyt_panel:
-                print(u'\nDEBUG: Section count: {}'.format(self.GetSectionCount()))
-                
                 padding = 0
                 if self.HasSections():
                     padding = 5
@@ -158,8 +156,6 @@ class SectionedPanel(ScrolledPanel):
                 panel.SetAutoLayout(True)
                 panel.SetSizer(lyt_sect)
                 panel.Layout()
-                
-                print(u'\nDEBUG: Padding: {}'.format(padding))
                 
                 self.Sizer.Add(panel, 0, wx.EXPAND|wx.TOP, padding)
                 
