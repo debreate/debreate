@@ -115,8 +115,8 @@ class Panel(WizardPage):
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
         self.labels.append(txt_type)
         
-        ti_type = ComboBox(self, inputid.TYPE, opts_type[0], choices=opts_type, name=u'Type')
-        ti_type.default = ti_type.GetValue()
+        ti_type = ComboBox(self, inputid.TYPE, choices=opts_type, name=u'Type',
+                defaultValue=opts_type[0])
         self.opts_input.append(ti_type)
         
         # --- TERMINAL
@@ -148,8 +148,8 @@ class Panel(WizardPage):
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
         self.labels.append(txt_enc)
         
-        ti_enc = ComboBox(self, inputid.ENC, choices=opts_enc, name=u'Encoding')
-        ti_enc.default = ti_enc.GetValue()
+        ti_enc = ComboBox(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
+                defaultValue=opts_enc[2])
         self.opts_input.append(ti_enc)
         
         # --- CATEGORIES
@@ -185,8 +185,8 @@ class Panel(WizardPage):
         self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
-        ti_category = ComboBox(self, inputid.CAT, choices=opts_category, name=txt_category.Name)
-        ti_category.default = ti_category.GetValue()
+        ti_category = ComboBox(self, inputid.CAT, choices=opts_category, name=txt_category.Name,
+                defaultValue=opts_category[0])
         self.opts_input.append(ti_category)
         
         btn_catadd = ButtonAdd(self, name=u'add category')
@@ -211,7 +211,6 @@ class Panel(WizardPage):
         self.labels.append(txt_other)
         
         ti_other = TextAreaPanel(self, inputid.OTHER, name=txt_other.Name)
-        ti_other.default = wx.EmptyString
         ti_other.EnableDropTarget()
         self.opts_input.append(ti_other)
         
