@@ -8,15 +8,15 @@
 
 import os, wx
 
-from input.text import TextArea
-
 
 ## A text area that can track if it's value is an actual path on the system
-class PathCtrl(TextArea):
+#
+#  FIXME: Derive from input.text.TextArea
+class PathCtrl(wx.TextCtrl):
     def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
             default=wx.EmptyString, name=wx.TextCtrlNameStr):
         
-        TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
+        wx.TextCtrl.__init__(self, parent, win_id, value, name=name)
         
         self.Warn = warn
         
@@ -58,10 +58,8 @@ class PathCtrl(TextArea):
     
     
     ## Resets text area to default value
-    #  
-    #  \override input.text.TextArea.Reset
     def Reset(self):
-        TextArea.Reset(self)
+        self.SetValue(self.default)
         
         if self.ctrl_type == PATH_WARN:
             self.SetPathAvailable()
