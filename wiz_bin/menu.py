@@ -197,13 +197,12 @@ class Panel(WizardPage):
             self.opts_button.append(B)
         
         # FIXME: Allow using multi-select + remove
-        lst_categories = ListCtrl(self, listid.CAT)
+        lst_categories = ListCtrl(self, listid.CAT, name=u'Categories')
         # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrl bug???)
         lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # For manually setting background color after enable/disable
         lst_categories.default_color = lst_categories.GetBackgroundColour()
-        lst_categories.SetName(u'Categories')
         self.opts_list.append(lst_categories)
         
         # ----- MISC
