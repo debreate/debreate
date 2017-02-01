@@ -23,6 +23,48 @@ class Sizer(wx.Sizer):
         #self.Add(item, proportion, flag, border, userData)
     
     
+    ## Retrieves all sizers contained with the sizer
+    def GetChildSizers(self):
+        sizers = []
+        
+        for SIZER in self.GetChildren():
+            SIZER = SIZER.GetSizer()
+            
+            if SIZER:
+                sizers.append(SIZER)
+        
+        return tuple(sizers)
+    
+    
+    ## Retrieves all windows contained within the sizer
+    def GetChildWindows(self):
+        windows = []
+        
+        for WIN in self.GetChildren():
+            WIN = WIN.GetWindow()
+            
+            if WIN:
+                windows.append(WIN)
+        
+        return tuple(windows)
+    
+    
+    ## Retrieves item at give index
+    #
+    #  \param index
+    #    \b \e Integer index of item to retrieve
+    #  \param sizer
+    #    Get sizer instance instead of window
+    def GetItemAtIndex(self, index, sizer=False):
+        items = self.GetChildren()
+        
+        if items:
+            if sizer:
+                return items[0].GetSizer()
+            
+            return items[0].GetWindow()
+    
+    
     ## Returns the number of items in the sizer
     #  
     #  Compatibility method for legacy wx versions
