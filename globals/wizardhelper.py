@@ -32,6 +32,11 @@ class ErrorTuple:
     
     
     ## TODO: Doxygen
+    def GetMessage(self):
+        return self.GetString()
+    
+    
+    ## TODO: Doxygen
     def GetString(self):
         return self.error_string
     
