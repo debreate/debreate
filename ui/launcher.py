@@ -19,14 +19,13 @@ from globals.ident          import inputid
 from globals.ident          import page_ids
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
+from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.list             import ListCtrlBase
-from input.list             import ListCtrlESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
-from input.text             import TextAreaPanelESS
 from input.toggle           import CheckBoxESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
@@ -34,13 +33,16 @@ from ui.button              import ButtonClear
 from ui.button              import ButtonPreview
 from ui.button              import ButtonRemove
 from ui.button              import ButtonSave
+from ui.checklist           import CheckList
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import GetFileSaveDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
+from ui.panel               import SectionedPanel
 from ui.textpreview         import TextPreview
 from ui.wizard              import WizardPage
 
@@ -112,6 +114,14 @@ class LauncherTemplate(ScrolledPanel):
         ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType',
                 outLabel=u'MimeType')
         
+        # ----- OTHER/CUSTOM
+        txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
+        btn_other = ButtonAdd(self, name=u'btn other')
+        btn_rm_other = ButtonRemove(self, name=u'btn rm other')
+        pnl_other = SectionedPanel(self, inputid.OTHER)
+        
+        btn_rm_other.Enable(pnl_other.HasSelected())
+        
         # --- CATEGORIES
         opts_category = (
             u'2DGraphics',
@@ -142,34 +152,34 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
+        btn_catclr = ButtonClear(self) #, name=u'clear categories')
+        self.lst_categories = CheckList(self, inputid.CAT, opts_category, name=u'Categories')
         
-        # This option does not get set by importing a new project
-        self.ti_category = ComboBoxESS(self, value=opts_category[0], choices=opts_category,
-                name=txt_category.Name)
-        self.ti_category.default = self.ti_category.GetValue()
+        if not self.lst_categories.HasSelected():
+            btn_catclr.Disable()
         
-        btn_catadd = ButtonAdd(self, name=u'add category')
-        btn_catdel = ButtonRemove(self, name=u'rm category')
-        btn_catclr = ButtonClear(self, name=u'clear categories')
+        txt_catcustom = wx.StaticText(self, label=GT(u'Custom Categories'))
+        pnl_catcustom = BorderedPanel(self)
         
-        # FIXME: Allow using multi-select + remove
-        self.lst_categories = ListCtrlESS(self, inputid.CAT, style=wx.LC_REPORT)
-        self.lst_categories.SetSingleStyle(wx.LC_NO_HEADER)
+        # *** Event Handling *** #
         
-        # For manually setting background color after enable/disable
-        self.lst_categories.default_color = self.lst_categories.GetBackgroundColour()
-        self.lst_categories.SetName(u'Categories')
+        btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
+        btn_save.Bind(wx.EVT_BUTTON, self.OnExportLauncher)
+        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewLauncher)
         
-        # ----- MISC
-        txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
-        self.ti_other = TextAreaPanelESS(self, inputid.OTHER, name=txt_other.Name)
-        self.ti_other.default = wx.EmptyString
-        self.ti_other.EnableDropTarget()
+        btn_other.Bind(wx.EVT_BUTTON, self.OnOtherAdd)
+        btn_rm_other.Bind(wx.EVT_BUTTON, self.OnOtherRemove)
+        
+        btn_catclr.Bind(wx.EVT_BUTTON, self.OnClearCategories)
+        
+        wx.EVT_CHECKBOX(self, inputid.OTHER, self.OnOtherSelect)
+        wx.EVT_CHECKBOX(self, inputid.CAT, self.OnCatSelect)
         
         # *** Layout *** #
         
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        RIGHT_BOTTOM = wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM
         
         lyt_opts1 = wx.FlexGridSizer()
         lyt_opts1.SetCols(3)
@@ -213,45 +223,39 @@ class LauncherTemplate(ScrolledPanel):
         lyt_mid.Add(txt_mime, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
         lyt_mid.Add(ti_mime, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         
-        lyt_cat_btn = BoxSizer(wx.HORIZONTAL)
-        lyt_cat_btn.Add(btn_catadd, 0)
-        lyt_cat_btn.Add(btn_catdel, 0)
-        lyt_cat_btn.Add(btn_catclr, 0)
+        lyt_bottom = wx.GridBagSizer()
         
-        lyt_cat_input = BoxSizer(wx.VERTICAL)
-        lyt_cat_input.Add(txt_category, 0, LEFT_BOTTOM)
-        lyt_cat_input.Add(self.ti_category, 0, wx.TOP|wx.BOTTOM, 5)
-        lyt_cat_input.Add(lyt_cat_btn, 0)
+        row = 0
+        lyt_bottom.Add(txt_other, (row, 0), flag=LEFT_BOTTOM)
+        lyt_bottom.Add(btn_other, (row, 1), flag=RIGHT_BOTTOM)
+        lyt_bottom.Add(btn_rm_other, (row, 2), flag=RIGHT_BOTTOM)
+        lyt_bottom.Add(txt_category, (row, 3), flag=LEFT_BOTTOM|wx.LEFT, border=5)
+        lyt_bottom.Add(btn_catclr, (row, 4), flag=RIGHT_BOTTOM)
         
-        lyt_cat_main = BoxSizer(wx.HORIZONTAL)
-        lyt_cat_main.Add(lyt_cat_input, 0)
-        lyt_cat_main.Add(self.lst_categories, 1, wx.EXPAND|wx.LEFT, 5)
+        row += 1
+        lyt_bottom.Add(pnl_other, (row, 0), (3, 3), wx.EXPAND)
+        lyt_bottom.Add(self.lst_categories, (row, 3), (1, 2), wx.EXPAND|wx.LEFT, 5)
+        
+        row += 1
+        lyt_bottom.Add(txt_catcustom, (row, 3), flag=LEFT_BOTTOM|wx.LEFT|wx.TOP, border=5)
+        
+        row += 1
+        lyt_bottom.Add(pnl_catcustom, (row, 3), flag=wx.EXPAND|wx.LEFT, border=5)
+        
+        lyt_bottom.AddGrowableRow(1)
+        lyt_bottom.AddGrowableCol(1)
+        lyt_bottom.AddGrowableCol(3)
         
         # --- Page 5 Sizer --- #
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(lyt_mid, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_main.Add(lyt_cat_main, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_main.AddSpacer(5)
-        lyt_main.Add(txt_other, 0)
-        lyt_main.Add(self.ti_other, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_bottom, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
-        btn_save.Bind(wx.EVT_BUTTON, self.OnExportLauncher)
-        btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewLauncher)
-        
-        wx.EVT_KEY_DOWN(self.ti_category, self.SetCategory)
-        wx.EVT_KEY_DOWN(self.lst_categories, self.SetCategory)
-        btn_catadd.Bind(wx.EVT_BUTTON, self.SetCategory)
-        btn_catdel.Bind(wx.EVT_BUTTON, self.SetCategory)
-        btn_catclr.Bind(wx.EVT_BUTTON, self.SetCategory)
     
     
     ## TODO: Doxygen
@@ -337,10 +341,12 @@ class LauncherTemplate(ScrolledPanel):
             field = GetField(self, ID)
             
             if field:
+                '''
                 if ID == inputid.OTHER:
                     l_lines.append(field.GetValue().strip(u' \t\r\n'))
                     
                     continue
+                '''
                 
                 if isinstance(field, (wx.TextCtrl, OwnerDrawnComboBox,)):
                     value = field.GetValue().strip()
@@ -429,9 +435,11 @@ class LauncherTemplate(ScrolledPanel):
             
             desktop_list.append(u'Categories={}'.format(categories))
         
+        '''
         other = self.ti_other.GetValue()
         if not TextIsEmpty(other):
             desktop_list.append(other)
+        '''
         
         return u'\n'.join(desktop_list)
     
@@ -527,9 +535,35 @@ class LauncherTemplate(ScrolledPanel):
         if len(categories_unused):
             categories_unused = u'\n'.join(categories_unused)
             
-            self.ti_other.SetValue(categories_unused)
+            #self.ti_other.SetValue(categories_unused)
         
         return 0
+    
+    
+    ## Handles check box events from categories list
+    def OnCatSelect(self, event=None):
+        btn_cat_clr = GetField(self, wx.ID_CLEAR)
+        lst_cat = GetField(self, inputid.CAT)
+        
+        if btn_cat_clr and lst_cat:
+            if FieldEnabled(btn_cat_clr):
+                if not lst_cat.HasSelected():
+                    btn_cat_clr.Disable()
+            
+            else:
+                if lst_cat.HasSelected():
+                    btn_cat_clr.Enable()
+    
+    
+    ## Handles button event from clear categories button
+    def OnClearCategories(self, event=None):
+        cats = GetField(self, inputid.CAT)
+        
+        if cats.HasSelected():
+            clear = ConfirmationDialog(GetMainWindow(), GT(u'Confirm'), GT(u'Clear categories?'))
+            
+            if clear.Confirmed():
+                cats.Clear()
     
     
     ## Saves launcher information to file
@@ -591,12 +625,47 @@ class LauncherTemplate(ScrolledPanel):
             self.Set(u'\n'.join(data))
     
     
+    ## Adds a custom section
+    def OnOtherAdd(self, event=None):
+        pnl_other = GetField(self, inputid.OTHER)
+        pnl_other.AddSection(CustomSection(pnl_other))
+    
+    
+    ## Removes selected custom sections
+    def OnOtherRemove(self, event=None):
+        pnl_other = GetField(self, inputid.OTHER)
+        
+        # FIXME: Show confirmation dialog
+        
+        if pnl_other:
+            if pnl_other.HasSelected():
+                remove = ConfirmationDialog(GetMainWindow(), GT(u'Custom Fields'),
+                        GT(u'Remove all selected custom fields?'))
+                
+                if remove.Confirmed():
+                    pnl_other.RemoveSelected()
+            
+            btn_remove = GetField(self, wx.ID_REMOVE)
+            
+            if btn_remove and FieldEnabled(btn_remove):
+                btn_remove.Enable(pnl_other.HasSelected())
+    
+    
     ## Show a preview of the .desktop launcher
     def OnPreviewLauncher(self, event=None):
         preview = TextPreview(title=GT(u'Menu Launcher Preview'),
                 text=self.Get(), size=(500,400))
         
         ShowDialog(preview)
+    
+    
+    ## Handles enabling/disabling the other fields 'remove' button
+    def OnOtherSelect(self, event=None):
+        btn_remove = GetField(self, wx.ID_REMOVE)
+        pnl_other = GetField(self, inputid.OTHER)
+        
+        if btn_remove and pnl_other:
+            btn_remove.Enable(pnl_other.HasSelected())
     
     
     ## TODO: Doxygen
@@ -612,6 +681,8 @@ class LauncherTemplate(ScrolledPanel):
     
     
     ## TODO: Doxygen
+    #
+    #  FIXME: Deprecated???
     def SetCategory(self, event=None):
         try:
             ID = event.GetKeyCode()
@@ -742,9 +813,10 @@ class LauncherTemplate(ScrolledPanel):
                     misc_defs.pop(index)
                     
                     continue
-            
+            '''
             if misc_defs:
                 self.ti_other.SetValue(u'\n'.join(sorted(misc_defs)))
+            '''
 
 
 ## A panel that can be added as a section to ui.panel.SectionedPanel
