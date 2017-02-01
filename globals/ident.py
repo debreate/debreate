@@ -104,6 +104,17 @@ def NewPageId(page_name=None, member_list=None):
     return this_page_id
 
 
+## Abstract ID class
+class FieldId:
+    def __init__(self):
+        self.IdList = []
+    
+    
+    ## Add a new ID
+    def NewId(self):
+        return NewId(self.IdList)
+
+
 ## Page IDs
 class pgid:
     IdList = []
