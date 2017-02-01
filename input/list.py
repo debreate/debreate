@@ -29,7 +29,7 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
         self.clr_enabled = self.GetBackgroundColour()
         self.clr_disabled = parent.GetBackgroundColour()
         
-        if style & wx.LC_REPORT and not self.GetColumnCount():
+        if not self.GetColumnCount() and self.WindowStyleFlag & wx.LC_REPORT:
             self.InsertColumn(0)
         
         # *** Event Handling *** #
@@ -137,6 +137,16 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
         if selected_indexes != None:
             for index in reversed(selected_indexes):
                 self.DeleteItem(index)
+    
+    
+    ## TODO: Doxygen
+    def SetSingleStyle(self, style, add=True):
+        style_set = wx.ListView.SetSingleStyle(self, style, add)
+        
+        if not self.GetColumnCount() and self.WindowStyleFlag & wx.LC_REPORT:
+            self.InsertColumn(0)
+        
+        return style_set
 
 
 ## Hack to make list control border have rounded edges
