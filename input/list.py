@@ -24,7 +24,7 @@ from ui.panel               import ControlPanel
 
 
 ## A list control with no border
-class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
+class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         
@@ -171,12 +171,12 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
         return string_set
 
 
-## ListCtrl that notifies main window to mark project dirty
-class ListCtrlESS(ListCtrl, EssentialField):
+## ListCtrlBase that notifies main window to mark project dirty
+class ListCtrlBaseESS(ListCtrlBase, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         
-        ListCtrl.__init__(self, parent, win_id, pos, size, style, validator, name)
+        ListCtrlBase.__init__(self, parent, win_id, pos, size, style, validator, name)
         EssentialField.__init__(self)
 
 
@@ -188,10 +188,10 @@ class ListCtrlPanel(BorderedPanel, ControlPanel):
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
         if isinstance(self, EssentialField):
-            self.MainCtrl = ListCtrlESS(self, style=style, validator=validator)
+            self.MainCtrl = ListCtrlBaseESS(self, style=style, validator=validator)
         
         else:
-            self.MainCtrl = ListCtrl(self, style=style, validator=validator)
+            self.MainCtrl = ListCtrlBase(self, style=style, validator=validator)
         
         # Match panel background color to list control
         self.SetBackgroundColour(self.MainCtrl.GetBackgroundColour())
