@@ -13,15 +13,17 @@ from wx.aui import AUI_NB_TAB_MOVE
 from wx.aui import AUI_NB_TAB_SPLIT
 from wx.aui import AUI_NB_TOP
 from wx.aui import AuiNotebook
-from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSE
+from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSED
 
 from dbr.containers         import Contains
 from dbr.language           import GT
 from dbr.log                import Logger
+from globals.ident          import btnid
 from globals.strings        import TextIsEmpty
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.toggle           import CheckBox
-from ui.button              import ButtonAdd
+from ui.button              import CreateButton
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -116,25 +118,25 @@ class MultiTemplate(BoxSizer):
         
         self.Panel = panelClass
         
-        btn_add = ButtonAdd(parent)
-        txt_add = wx.StaticText(parent, label=GT(u'Add page'))
-        
         self.Tabs = Notebook(parent)
+        
+        self.TabButtonIds = []
         
         # *** Event Handling *** #
         
-        btn_add.Bind(wx.EVT_BUTTON, self.OnButtonAdd)
-        
-        self.Tabs.Bind(EVT_AUINOTEBOOK_PAGE_CLOSE, self.OnCloseTab)
+        self.Tabs.Bind(EVT_AUINOTEBOOK_PAGE_CLOSED, self.OnTabClosed)
         
         # *** Layout *** #
         
-        lyt_add = wx.BoxSizer(wx.HORIZONTAL)
-        lyt_add.Add(btn_add)
-        lyt_add.Add(txt_add, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5)
+        lyt_buttons = BoxSizer(wx.HORIZONTAL)
         
-        self.Add(lyt_add, 0, wx.EXPAND)
+        self.Add(lyt_buttons, 0, wx.EXPAND)
         self.Add(self.Tabs, 1, wx.EXPAND)
+        
+        # *** Post-Layout Actions *** #
+        
+        self.AddButton(GT(u'Add Tab'), u'add', btnid.ADD, self.OnButtonAdd)
+        self.AddTabButton(GT(u'Rename Tab'), u'rename', btnid.RENAME, self.OnRenameTab)
     
     
     ## Checks if input title is okay for using as tab title & target filename
@@ -150,6 +152,44 @@ class MultiTemplate(BoxSizer):
         return not Contains(title, (u' ', u'\t',))
     
     
+    ## Adds a new button to the parent window
+    def AddButton(self, label, image, btnId=wx.ID_ANY, handler=None):
+        lyt_buttons = self.GetButtonSizer()
+        
+        if lyt_buttons:
+            padding = 0
+            if len(lyt_buttons.GetChildren()):
+                padding = 5
+            
+            button = CreateButton(self.GetParent(), label, image, btnId)
+            
+            if button:
+                if handler:
+                    button.Bind(wx.EVT_BUTTON, handler)
+                
+                FLAG_TEXT = wx.ALIGN_CENTER_VERTICAL|wx.LEFT
+                
+                lyt_buttons.Add(button, 0, wx.LEFT, padding)
+                
+                if label:
+                    lyt_buttons.Add(wx.StaticText(self.GetParent(), label=label), 0, FLAG_TEXT, 5)
+                
+                return button
+    
+    
+    ## Adds a new button to parent window that is enabled/disabled with notebook tabs
+    def AddTabButton(self, label, image, btnId=wx.ID_ANY, handler=None):
+        button = self.AddButton(label, image, btnId, handler)
+        
+        if button:
+            if btnId not in self.TabButtonIds:
+                self.TabButtonIds.append(btnId)
+            
+            self.ToggleButtons()
+        
+        return button
+    
+    
     ## Adds a new tab/page to the ui.notebook.Notebook instance
     #
     #  \param title
@@ -159,12 +199,49 @@ class MultiTemplate(BoxSizer):
     def AddPage(self, title, select=True):
         new_page = self.Panel(self.Tabs, name=title)
         
-        return self.Tabs.AddPage(new_page, title=title, select=select)
+        added = self.Tabs.AddPage(new_page, title=title, select=select)
+        
+        self.ToggleButtons()
+        
+        return added
+    
+    
+    ## Retrieves sizer for button instances
+    def GetButtonSizer(self):
+        children = self.GetChildSizers()
+        
+        if children:
+            return children[0]
+    
+    
+    ## Retrieves window instance of currently selected tab
+    def GetCurrentPage(self):
+        return self.GetPage(self.GetSelection())
+    
+    
+    ## Alias of ui.notebook.MultiTemplate.GetCurrentPage
+    def GetCurrentTab(self):
+        return self.GetCurrentPage()
+    
+    
+    ## Retrieves window instance at given index
+    def GetPage(self, index):
+        return self.Tabs.GetPage(index)
     
     
     ## Retrieves parent window of the ui.notebook.Notebook instance
     def GetParent(self):
         return self.Tabs.Parent
+    
+    
+    ## Retrieves index of current tab
+    def GetSelection(self):
+        return self.Tabs.GetSelection()
+    
+    
+    ## Checks if the notebook currently has any tabs
+    def HasTabs(self):
+        return self.Tabs.GetPageCount() > 0
     
     
     ## Handles button press event to add a new tab/page
@@ -178,13 +255,6 @@ class MultiTemplate(BoxSizer):
         return self.SetTabName()
     
     
-    ## Handles closing tab event
-    #
-    #  TODO: Define
-    def OnCloseTab(self, event=None):
-        Logger.Debug(__name__, u'Closing tab')
-    
-    
     ## Change tab/page title & target filename
     #
     #  \return
@@ -193,6 +263,29 @@ class MultiTemplate(BoxSizer):
         index = self.Tabs.GetSelection()
         
         return self.SetTabName(index, rename=True)
+    
+    
+    ## Handles tab closed event & enables/disables rename button
+    def OnTabClosed(self, event=None):
+        self.ToggleButtons()
+    
+    
+    ## Change a button's label
+    #
+    #  FIXME: Change tooltip too???
+    def RenameButton(self, btnId, newLabel):
+        children = self.GetButtonSizer().GetChildWindows()
+        
+        for INDEX in range(len(children)):
+            # Make sure there is a label after the button
+            if len(children) > INDEX + 1:
+                child = children[INDEX]
+                
+                if isinstance(child, wx.Button) and child.Id == btnId:
+                    label = children[INDEX+1]
+                    
+                    if isinstance(label, wx.StaticText):
+                        return label.SetLabel(newLabel)
     
     
     ## Either renames an existing tab/page or creates a new one
@@ -248,3 +341,14 @@ class MultiTemplate(BoxSizer):
             return self.Tabs.SetPageText(index, new_name)
         
         return self.AddPage(new_name, easy_mode.GetValue())
+    
+    
+    ## Enables/Disables buttons
+    def ToggleButtons(self):
+        parent = self.GetParent()
+        
+        for ID in self.TabButtonIds:
+            button = GetField(parent, ID)
+            
+            if button:
+                button.Enable(self.HasTabs())
