@@ -108,6 +108,10 @@ class LauncherTemplate(ScrolledPanel):
         self.ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
         self.ti_icon.default = wx.EmptyString
         
+        txt_mime = wx.StaticText(self, label=GT(u'MIME Type'), name=u'mime')
+        ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType',
+                outLabel=u'MimeType')
+        
         # --- CATEGORIES
         opts_category = (
             u'2DGraphics',
@@ -203,6 +207,11 @@ class LauncherTemplate(ScrolledPanel):
         lyt_mid.Add(self.ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
         lyt_mid.Add(self.ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        
+        # Row 3
+        row += 1
+        lyt_mid.Add(txt_mime, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
+        lyt_mid.Add(ti_mime, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         
         lyt_cat_btn = BoxSizer(wx.HORIZONTAL)
         lyt_cat_btn.Add(btn_catadd, 0)
