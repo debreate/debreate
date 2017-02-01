@@ -15,7 +15,7 @@ PATH_DEFAULT = wx.NewId()
 PATH_WARN = wx.NewId()
 
 
-## TODO: Doxygen
+## A text area that can track if it's value is an actual path on the system
 #  
 #  FIXME: Use boolean value instead of type
 class PathCtrl(TextArea):
@@ -40,12 +40,12 @@ class PathCtrl(TextArea):
             self.SetPathAvailable()
     
     
-    ## TODO: Doxygen
+    ## Retrieves the text area's default value
     def GetDefaultValue(self):
         return self.default
     
     
-    ## TODO: Doxygen
+    ## Key events trigger checking path availability
     def OnKeyUp(self, event=None):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
@@ -75,7 +75,7 @@ class PathCtrl(TextArea):
         self.SetInsertionPointEnd()
     
     
-    ## TODO: Doxygen
+    ## If using 'Warn', changed backgroun to red if path doesn't exists on system
     def SetPathAvailable(self):
         if os.path.isdir(self.GetValue()):
             self.SetBackgroundColour(self.clr_default)
@@ -84,6 +84,6 @@ class PathCtrl(TextArea):
         self.SetBackgroundColour(u'red')
     
     
-    ## TODO: Doxygen
+    ## Sets the text area's default value
     def SetDefaultValue(self, default):
         self.default = default
