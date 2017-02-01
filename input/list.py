@@ -177,7 +177,11 @@ class ListCtrlPanel(BorderedPanel, ControlPanel):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
-        self.MainCtrl = ListCtrl(self, style=style, validator=validator)
+        if isinstance(self, EssentialField):
+            self.MainCtrl = ListCtrlESS(self, style=style, validator=validator)
+        
+        else:
+            self.MainCtrl = ListCtrl(self, style=style, validator=validator)
         
         # Match panel background color to list control
         self.SetBackgroundColour(self.MainCtrl.GetBackgroundColour())
