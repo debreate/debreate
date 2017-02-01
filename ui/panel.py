@@ -151,7 +151,7 @@ class SectionedPanel(ScrolledPanel):
                 
                 lyt_sect = BoxSizer(orient)
                 lyt_sect.Add(lyt_panel, 1, wx.EXPAND)
-                lyt_sect.Add(wx.CheckBox(panel, inputid.CHECK), 0, wx.ALIGN_CENTER_VERTICAL)
+                lyt_sect.Add(wx.CheckBox(panel, inputid.CHECK), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 10)
                 
                 panel.SetAutoLayout(True)
                 panel.SetSizer(lyt_sect)
