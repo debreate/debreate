@@ -17,14 +17,7 @@ from ui.panel               import ControlPanel
 
 ## Abstract class that sends a message to main window to mark project dirty when field is changed
 class EssentialField:
-    def __init__(self, outLabel=None):
-        
-        # Name that can be used field output labels
-        # FIXME: Move to other base classes, such as input.toggle.CheckBox???
-        self.OutLabel = outLabel
-        if self.OutLabel == None:
-            self.OutLabel = self.GetName()
-        
+    def __init__(self):
         if isinstance(self, ControlPanel):
             main_control = self.GetMainControl()
         
@@ -48,19 +41,9 @@ class EssentialField:
     
     
     ## TODO: Doxygen
-    def GetOutLabel(self):
-        return self.OutLabel
-    
-    
-    ## TODO: Doxygen
     def NotifyMainWindow(self, event=None):
         if event:
             event.Skip(True)
         
         if AppInitialized() and FieldEnabled(self):
             GetMainWindow().OnProjectChanged(event)
-    
-    
-    ## TODO: Doxygen
-    def SetOutLabel(self, outLabel):
-        self.OutLabel = outLabel
