@@ -167,6 +167,17 @@ class btnid:
     RENAME = wx.NewId()
 
 
+## IDs for check box fields
+class ChkId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.ENABLE = self.NewId()
+        self.FNAME = self.NewId()
+
+chkid = ChkId()
+
+
 ## IDs for reference manual menu item links
 class refid:
     DEBSRC = wx.NewId()
