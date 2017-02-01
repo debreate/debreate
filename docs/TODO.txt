@@ -47,6 +47,7 @@ Priority:
 - Mark project dirty when lintian overrides are changed
 - Use datestamp for project save & build stage directories
 - Change category list to checkable list with option to add custom categories
+- Set/Save build page options with config file rather than project
 
 Non-priority:
 - Set up manpage template creation for executables in file list
