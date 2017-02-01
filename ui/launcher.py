@@ -26,6 +26,7 @@ from input.list             import ListCtrl
 from input.list             import ListCtrlBase
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
+from input.toggle           import CheckBoxCFG
 from input.toggle           import CheckBoxESS
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
@@ -158,7 +159,11 @@ class LauncherTemplate(ScrolledPanel):
         if not self.lst_categories.HasSelected():
             btn_catclr.Disable()
         
-        txt_catcustom = wx.StaticText(self, label=GT(u'Custom Categories (Separate by "," or ";"'))
+        txt_catcustom = wx.StaticText(self, label=GT(u'Custom Categories (Separate by "," or ";")'))
+        # Set to 'True' to list custom categories first
+        # FIXME: Should this be saved to project instead of config???
+        self.chk_catcustom = CheckBoxCFG(self, label=GT(u'List first'), name=u'chk catcustom',
+                cfgKey=u'prioritize custom categories')
         ti_catcustom = TextAreaESS(self, inputid.CAT2, name=u'category custom')
         
         # *** Event Handling *** #
@@ -238,6 +243,7 @@ class LauncherTemplate(ScrolledPanel):
         
         row += 1
         lyt_bottom.Add(txt_catcustom, (row, 3), flag=LEFT_BOTTOM|wx.LEFT|wx.TOP, border=5)
+        lyt_bottom.Add(self.chk_catcustom, (row, 4), flag=RIGHT_BOTTOM)
         
         row += 1
         lyt_bottom.Add(ti_catcustom, (row, 3), (1, 2), flag=wx.EXPAND|wx.LEFT, border=5)
