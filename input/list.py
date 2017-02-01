@@ -483,7 +483,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         
         else:
             if os.access(source_path, os.X_OK) or executable:
-                self.SetItemTextColour(list_index, wx.RED)
+                self.SetFileExecutable(list_index)
             
             if not os.path.isfile(source_path):
                 self.SetItemBackgroundColour(list_index, COLOR_warn)
@@ -631,7 +631,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         dirty = False
         for row in range(self.GetItemCount()):
             item_color = self.DEFAULT_BG_COLOR
-            text_color = self.DEFAULT_TEXT_COLOR
+            executable = False
             row_defs = self.GetRowDefs(row)
             
             absolute_filename = u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])
@@ -647,9 +647,9 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
                 self.SetItemBackgroundColour(row, item_color)
                 
                 if os.access(absolute_filename, os.X_OK):
-                    text_color = wx.RED
+                    executable = True
                 
-                self.SetItemTextColour(row, text_color)
+                self.SetFileExecutable(row, executable)
         
         return dirty
     
@@ -678,6 +678,19 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         
         for x in range(file_count):
             self.Select(x)
+    
+    
+    ## Marks a file as executable
+    #  
+    #  \param row
+    #        \b \e int : Row to change
+    def SetFileExecutable(self, row, executable=True):
+        if executable:
+            self.SetItemTextColour(row, wx.RED)
+            
+            return
+        
+        self.SetItemTextColour(row, self.DEFAULT_TEXT_COLOR)
     
     
     ## Sorts listed items in target column alphabetially
