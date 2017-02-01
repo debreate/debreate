@@ -175,7 +175,9 @@ TT_launchers = {
         GT(u'See "Help ➜ Reference ➜ Launchers / Dekstop Entries" for more available options'), u'',
         GT(u'Warning:'),
         u'\t{}'.format(GT(u'Improperly formatted text may cause launcher to be unusable')),
-        )
+        ),
+    u'btn other': GT(u'Add a custom field'),
+    u'btn rm other': GT(u'Remove selected custom fields'),
 }
 
 TT_build = {
