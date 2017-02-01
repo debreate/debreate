@@ -14,14 +14,14 @@ import os, wx
 #  FIXME: Derive from input.text.TextArea
 class PathCtrl(wx.TextCtrl):
     def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
-            default=wx.EmptyString, name=wx.TextCtrlNameStr):
+            name=wx.TextCtrlNameStr):
         
         wx.TextCtrl.__init__(self, parent, win_id, value, name=name)
         
-        self.Warn = warn
+        # TODO: Rename to 'self.Default'
+        self.default = defaultValue
         
-        # Get the value of the textctrl so it can be restored
-        self.default = default
+        self.Warn = warn
         
         # For restoring color of text area
         self.clr_default = self.GetBackgroundColour()
@@ -29,9 +29,8 @@ class PathCtrl(wx.TextCtrl):
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
         
-        # Check if path is available on construction
-        if self.Warn:
-            self.SetPathAvailable()
+        # Set to default value & check path availability on construction
+        self.Reset()
     
     
     ## Retrieves the text area's default value
@@ -47,11 +46,8 @@ class PathCtrl(wx.TextCtrl):
             self.SetValue(u'/{}'.format(value))
             self.SetInsertionPoint(insertion_point)
         
-        # If PathCtrl is set to warn on non-existent paths, change background color to red when path
-        # doesn't exist
         value = self.GetValue()
-        if self.Warn:
-            self.SetPathAvailable()
+        self.SetPathAvailable()
         
         if event:
             event.Skip()
@@ -61,19 +57,23 @@ class PathCtrl(wx.TextCtrl):
     def Reset(self):
         self.SetValue(self.default)
         
-        if self.ctrl_type == PATH_WARN:
-            self.SetPathAvailable()
-        
+        self.SetPathAvailable()
         self.SetInsertionPointEnd()
     
     
     ## If using 'Warn', changed backgroun to red if path doesn't exists on system
     def SetPathAvailable(self):
-        if os.path.isdir(self.GetValue()):
-            self.SetBackgroundColour(self.clr_default)
-            return
-        
-        self.SetBackgroundColour(u'red')
+        if self.Warn:
+            if os.path.isdir(self.GetValue()):
+                self.SetBackgroundColour(self.clr_default)
+                return
+            
+            self.SetBackgroundColour(u'red')
+    
+    
+    ## Checks if field will show a warning when path is not available
+    def ShowsWarning(self):
+        return self.Warn
     
     
     ## Sets the text area's default value
