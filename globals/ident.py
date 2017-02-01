@@ -178,6 +178,16 @@ class ChkId(FieldId):
 chkid = ChkId()
 
 
+## IDs for list fields
+class ListId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.CAT = self.NewId()
+
+listid = ListId()
+
+
 ## IDs for reference manual menu item links
 class refid:
     DEBSRC = wx.NewId()
