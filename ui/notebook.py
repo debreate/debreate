@@ -27,6 +27,7 @@ from ui.button              import CreateButton
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from ui.manual              import ManPage
 from ui.panel               import ScrolledPanel
 from ui.prompt              import TextEntryDialog
 
@@ -196,8 +197,12 @@ class MultiTemplate(BoxSizer):
     #    \b \e String title to use for new tab/page & target filename
     #  \return
     #    New ui.notebook.Notebook instance
-    def AddPage(self, title, select=True):
-        new_page = self.Panel(self.Tabs, name=title)
+    def AddPage(self, title, select=True, checkBox=None):
+        if isinstance(checkBox, wx.CheckBox) and self.Panel == ManPage:
+            new_page = self.Panel(self.Tabs, name=title, easy_mode=checkBox.GetValue())
+        
+        else:
+            new_page = self.Panel(self.Tabs, name=title)
         
         added = self.Tabs.AddPage(new_page, title=title, select=select)
         
@@ -252,6 +257,9 @@ class MultiTemplate(BoxSizer):
         if event:
             event.Skip(True)
         
+        if self.Panel == ManPage:
+            return self.SetTabName(checkBox=GT(u'Easy Mode'), checked=True)
+        
         return self.SetTabName()
     
     
@@ -296,19 +304,19 @@ class MultiTemplate(BoxSizer):
     #    Renames an existing tab/page instead of creating a new one
     #  \return
     #    Value of ui.notebook.Notebook.SetPageText or ui.notebook.TabsTemplate.AddPage
-    def SetTabName(self, index=-1, rename=False):
+    def SetTabName(self, index=-1, rename=False, checkBox=None, checked=False):
         getname = TextEntryDialog(GetMainWindow(), GT(u'Name for new page'))
         new_name = None
         
-        if not rename:
-            easy_mode = CheckBox(getname, label=u'Easy mode')
-            easy_mode.SetValue(True)
+        if not rename and checkBox:
+            check_box = CheckBox(getname, label=checkBox)
+            check_box.SetValue(checked)
             
             sizer = getname.GetSizer()
             insert_point = len(sizer.GetChildren()) - 1
             
             sizer.InsertSpacer(insert_point, 5)
-            sizer.Insert(insert_point + 1, easy_mode, 0, wx.LEFT, 16)
+            sizer.Insert(insert_point + 1, check_box, 0, wx.LEFT, 16)
             
             getname.SetSize(sizer.GetMinSize())
             getname.Fit()
@@ -340,7 +348,10 @@ class MultiTemplate(BoxSizer):
             
             return self.Tabs.SetPageText(index, new_name)
         
-        return self.AddPage(new_name, easy_mode.GetValue())
+        if checkBox:
+            return self.AddPage(new_name, checkBox=check_box)
+        
+        return self.AddPage(new_name)
     
     
     ## Enables/Disables buttons
