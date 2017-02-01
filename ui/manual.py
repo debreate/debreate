@@ -12,13 +12,10 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
 from globals.ident          import manid
-from globals.ident          import pgid
-from globals.wizardhelper   import GetPage
 from input.text             import TextAreaPanel
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonPreview
 from ui.button              import ButtonSave
-from ui.button              import CreateButton
 from ui.layout              import BoxSizer
 from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
@@ -234,9 +231,6 @@ class ManPage(wx.Panel):
     #  \return
     #    Value of either ui.manual.ManPage.SetModeEasy or ui.manual.ManPage.SetModeManual
     def SetMode(self, mode):
-        print(u'\nDEBUG: SetMode')
-        print(u'  Parent instance: {}'.format(type(self.Parent)))
-        
         if isinstance(mode, wx.CommandEvent):
             mode = mode.GetEventObject().Mode
         
@@ -246,23 +240,14 @@ class ManPage(wx.Panel):
         # FIXME: Can be done without destroying children
         self.DestroyChildren()
         
-        btn_rename = CreateButton(self, GT(u'Rename'), u'rename')
-        btn_mode = CreateButton(self, GT(u'Switch mode'), u'mode')
-        btn_mode.Mode = not mode
-        
         # Import/Export/Preview
         btn_browse = ButtonBrowse(self)
         btn_save = ButtonSave(self)
         btn_preview = ButtonPreview(self)
         
-        btn_rename.Bind(wx.EVT_BUTTON, GetPage(pgid.MAN).OnRenameTab)
-        btn_mode.Bind(wx.EVT_BUTTON, self.SetMode)
-        
         # *** Layout *** #
         
         self.lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        self.lyt_buttons.Add(btn_rename)
-        self.lyt_buttons.Add(btn_mode, 0, wx.LEFT, 5)
         self.lyt_buttons.AddStretchSpacer(1)
         self.lyt_buttons.Add(btn_browse)
         self.lyt_buttons.Add(btn_save)
