@@ -22,6 +22,7 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.select           import ComboBox
+from input.text             import TextArea
 from input.text             import TextAreaPanel
 from input.toggle           import CheckBox
 from ui.button              import ButtonAdd
@@ -70,7 +71,7 @@ class Panel(WizardPage):
         
         # --- Custom output filename
         self.txt_filename = wx.StaticText(self, label=GT(u'Filename'), name=u'filename')
-        self.ti_filename = wx.TextCtrl(self, inputid.FNAME, name=self.txt_filename.Name)
+        self.ti_filename = TextArea(self, inputid.FNAME, name=self.txt_filename.Name)
         
         self.chk_filename = CheckBox(self, chkid.FNAME, GT(u'Use "Name" as output filename (<Name>.desktop)'),
                 name=u'filename chk', defaultValue=True)
@@ -78,33 +79,29 @@ class Panel(WizardPage):
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         self.labels.append(txt_name)
-        self.ti_name = wx.TextCtrl(self, name=u'Name')
+        self.ti_name = TextArea(self, name=u'Name')
         self.ti_name.req = True
-        self.ti_name.default = wx.EmptyString
         self.opts_input.append(self.ti_name)
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
         self.labels.append(txt_exec)
         
-        self.ti_exec = wx.TextCtrl(self, name=u'Exec')
-        self.ti_exec.default = wx.EmptyString
+        self.ti_exec = TextArea(self, name=u'Exec')
         self.opts_input.append(self.ti_exec)
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
         self.labels.append(txt_comm)
         
-        self.ti_comm = wx.TextCtrl(self, name=u'Comment')
-        self.ti_comm.default = wx.EmptyString
+        self.ti_comm = TextArea(self, name=u'Comment')
         self.opts_input.append(self.ti_comm)
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         self.labels.append(txt_icon)
         
-        self.ti_icon = wx.TextCtrl(self, name=u'Icon')
-        self.ti_icon.default = wx.EmptyString
+        self.ti_icon = TextArea(self, name=u'Icon')
         self.opts_input.append(self.ti_icon)
         
         # --- TYPE
