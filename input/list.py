@@ -263,6 +263,11 @@ class ListCtrlPanel(BorderedPanel):
         return self.listarea
     
     
+    ## Retrieve a tuple list of contents
+    def GetListTuple(self, col=0, typeTuple=True):
+        return self.MainCtrl.GetListTuple(col, typeTuple)
+    
+    
     ## TODO: Doxygen
     def GetNextItem(self, item, geometry=wx.LIST_NEXT_ALL, state=wx.LIST_STATE_DONTCARE):
         return self.listarea.GetNextItem(item, geometry, state)
