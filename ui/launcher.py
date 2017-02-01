@@ -21,7 +21,7 @@ from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
-from input.list             import ListCtrl
+from input.list             import ListCtrlBase
 from input.list             import ListCtrlPanel
 from input.list             import ListCtrlPanelESS
 from input.select           import ComboBoxESS
@@ -348,7 +348,7 @@ class LauncherTemplate(ScrolledPanel):
                     
                     continue
                 
-                if isinstance(field, (ListCtrl, ListCtrlPanel,)):
+                if isinstance(field, (ListCtrlBase, ListCtrlPanel,)):
                     value = u';'.join(field.GetListTuple())
                     
                     if not value.endswith(u';'):
