@@ -21,6 +21,7 @@ from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import WriteFile
+from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
@@ -602,8 +603,8 @@ class Panel(WizardPage):
                 
                 required.append(pg_launcher.ti_name)
                 
-                if not pg_launcher.chk_filename.GetValue():
-                    required.append(pg_launcher.ti_filename)
+                if not GetField(pg_launcher, chkid.FNAME).GetValue():
+                    required.append(GetField(pg_launcher, inputid.FNAME))
             
             for item in required:
                 if TextIsEmpty(item.GetValue()):
