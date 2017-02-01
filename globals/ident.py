@@ -78,6 +78,7 @@ UPDATE = wx.NewId()
 ## General IDs
 class genid:
     APPEND = wx.NewId()
+    BGPANEL = wx.NewId()
     BROWSE = wx.NewId()
     BUILD = wx.NewId()
     IMPORT = wx.NewId()
