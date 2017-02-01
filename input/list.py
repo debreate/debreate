@@ -20,10 +20,10 @@ from ui.panel       import BorderedPanel
 
 ## A list control with no border
 class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin):
-    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         
-        wx.ListView.__init__(self, parent, ID, pos, size, style|wx.BORDER_NONE,
+        wx.ListView.__init__(self, parent, win_id, pos, size, style|wx.BORDER_NONE,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
         
@@ -168,10 +168,10 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin):
 
 ## Hack to make list control border have rounded edges
 class ListCtrl(BorderedPanel):
-    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         
-        BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
+        BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
         self.MainCtrl = ListCtrl(self, style=style, validator=validator)
         
@@ -424,8 +424,8 @@ class ListCtrl(BorderedPanel):
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
 class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
-    def __init__(self, parent, window_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        ListCtrl.__init__(self, parent, window_id, style=wx.LC_REPORT, name=name)
+    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
+        ListCtrl.__init__(self, parent, win_id, style=wx.LC_REPORT, name=name)
         TextEditMixin.__init__(self)
         wx.FileDropTarget.__init__(self)
         
