@@ -12,6 +12,7 @@ from wx.combo import OwnerDrawnComboBox
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
+from f_export.ofield        import OutputField
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
@@ -19,6 +20,7 @@ from globals.ident          import inputid
 from globals.ident          import page_ids
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
+from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
@@ -327,6 +329,7 @@ class LauncherTemplate(ScrolledPanel):
     #    Text formatted for desktop entry file output
     def Get(self, get_module=False):
         l_lines = [u'[Desktop Entry]']
+        categories = []
         
         id_list = (
             inputid.VERSION,
@@ -340,6 +343,7 @@ class LauncherTemplate(ScrolledPanel):
             inputid.NOTIFY,
             inputid.MIME,
             inputid.CAT,
+            inputid.CAT2,
             inputid.OTHER,
             )
         
@@ -347,6 +351,11 @@ class LauncherTemplate(ScrolledPanel):
             field = GetField(self, ID)
             
             if field:
+                if isinstance(field, ErrorTuple):
+                    Logger.Warn(__name__, field.GetMessage())
+                    
+                    continue
+                
                 if ID == inputid.OTHER:
                     for INDEX in range(field.GetSectionCount()):
                         section = field.GetSection(INDEX)
@@ -354,35 +363,59 @@ class LauncherTemplate(ScrolledPanel):
                         if isinstance(section, CustomSection):
                             key = section.GetKey().strip()
                             value = section.GetValue().strip()
-                            
-                            if not TextIsEmpty(key) and not TextIsEmpty(value):
-                                l_lines.append(u'{}={}'.format(key, value))
-                    
-                    continue
                 
-                if isinstance(field, (wx.TextCtrl, OwnerDrawnComboBox,)):
-                    value = field.GetValue().strip()
+                elif ID in (inputid.CAT, inputid.CAT2):
+                    if ID == inputid.CAT2:
+                        custom_cats = []
+                        
+                        for C1 in field.GetValue().split(u','):
+                            for C2 in C1.split(u';'):
+                                if not TextIsEmpty(C2):
+                                    custom_cats.append(C2.strip())
+                        
+                        if self.chk_catcustom.GetValue():
+                            for LABEL in reversed(custom_cats):
+                                categories.insert(0, LABEL)
+                        
+                        else:
+                            for LABEL in custom_cats:
+                                categories.append(LABEL)
                     
-                    if not TextIsEmpty(value):
-                        l_lines.append(u'{}={}'.format(field.GetName(), value))
-                    
-                    continue
+                    else:
+                        for LABEL in field.GetCheckedLabels():
+                            categories.append(LABEL)
                 
-                if isinstance(field, wx.CheckBox):
-                    value = GS(field.GetValue()).lower()
+                else:
+                    if isinstance(field, OutputField):
+                        key = field.GetOutLabel()
                     
-                    l_lines.append(u'{}={}'.format(field.GetName(), value))
+                    else:
+                        key = field.GetName()
                     
-                    continue
+                    value = wx.EmptyString
+                    
+                    if isinstance(field, (wx.TextCtrl, OwnerDrawnComboBox,)):
+                        value = field.GetValue().strip()
+                    
+                    elif isinstance(field, wx.CheckBox):
+                        value = GS(field.GetValue()).lower()
+                    
+                    elif isinstance(field, (ListCtrlBase, ListCtrl,)):
+                        value = u';'.join(field.GetListTuple())
+                        
+                        if not value.endswith(u';'):
+                            value = u'{};'.format(value)
                 
-                if isinstance(field, (ListCtrlBase, ListCtrl,)):
-                    value = u';'.join(field.GetListTuple())
-                    
-                    if not value.endswith(u';'):
-                        value = u'{};'.format(value)
-                    
-                    if not TextIsEmpty(value):
-                        l_lines.append(u'{}={}'.format(field.GetName(), value))
+                if not TextIsEmpty(key) and not TextIsEmpty(value):
+                    l_lines.append(u'{}={}'.format(key, value))
+        
+        # FIXME: Categories should be organized manually by user
+        if categories:
+            categories = u';'.join(categories)
+            if not categories.endswith(u';'):
+                categories = u'{};'.format(categories)
+            
+            l_lines.append(u'Categories={}'.format(categories))
         
         l_text = u'\n'.join(l_lines)
         
