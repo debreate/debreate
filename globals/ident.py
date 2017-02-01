@@ -47,6 +47,7 @@ PREV = wx.NewId()
 NEXT = wx.NewId()
 
 # *** Custom IDs *** #
+ALIEN = wx.NewId()
 CUSTOM = wx.NewId()
 DEBUG = wx.NewId()
 DIALOGS = wx.NewId()
@@ -54,8 +55,10 @@ DIST = wx.NewId()
 EXPAND = wx.NewId()
 LOG = wx.NewId()
 MENU_TT = wx.NewId()
+MULTI = wx.NewId()
 OVERWRITE = wx.NewId()
 RENAME = wx.NewId()
+SINGLE = wx.NewId()
 STAGE = wx.NewId()
 TARGET = wx.NewId()
 THEME = wx.NewId()
@@ -63,7 +66,6 @@ THEME = wx.NewId()
 # *** Menu IDs *** #
 ACTION = wx.NewId()
 DIALOGS = wx.NewId()
-LAUNCHERS = wx.NewId()
 OPENLOGS = wx.NewId()
 OPTIONS = wx.NewId()
 PAGE = wx.NewId()
@@ -76,6 +78,7 @@ UPDATE = wx.NewId()
 ## General IDs
 class genid:
     APPEND = wx.NewId()
+    BGPANEL = wx.NewId()
     BROWSE = wx.NewId()
     BUILD = wx.NewId()
     IMPORT = wx.NewId()
@@ -121,12 +124,15 @@ class pgid:
 class inputid:
     ARCH = wx.NewId()
     CAT = wx.NewId()
+    CAT2 = wx.NewId()
+    CHECK = wx.NewId()
     CUSTOM = wx.NewId()
     DESCR = wx.NewId()
     EMAIL = wx.NewId()
     ENC = wx.NewId()
     EXEC = wx.NewId()
     ICON = wx.NewId()
+    KEY = wx.NewId()
     LIST = wx.NewId()
     MAINTAINER = wx.NewId()
     MD5 = wx.NewId()
@@ -137,7 +143,17 @@ class inputid:
     PACKAGE = wx.NewId()
     TERM = wx.NewId()
     TYPE = wx.NewId()
+    VALUE = wx.NewId()
     VERSION = wx.NewId()
+
+
+## IDs for button controls
+class btnid:
+    ADD = wx.ID_ADD
+    CANCEL = wx.ID_CANCEL
+    CONFIRM = wx.ID_YES|wx.ID_OK
+    MODE = wx.NewId()
+    RENAME = wx.NewId()
 
 
 ## IDs for reference manual menu item links
