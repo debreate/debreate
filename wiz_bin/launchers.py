@@ -59,6 +59,10 @@ if UsingTest(u'alpha'):
             
             SetPageToolTips(self)
             
+            # *** Event Handling *** #
+            
+            wx.EVT_BUTTON(self, wx.ID_ADD, self.OnAddTab)
+            
             # *** Layout *** #
             
             lyt_main = BoxSizer(wx.VERTICAL)
@@ -67,6 +71,11 @@ if UsingTest(u'alpha'):
             self.SetAutoLayout(True)
             self.SetSizer(lyt_main)
             self.Layout()
+        
+        
+        ## Updates tooltips for new tab
+        def OnAddTab(self, event=None):
+            SetPageToolTips(self)
 
 else:
     ## Page for creating a system menu launcher
