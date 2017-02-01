@@ -133,11 +133,11 @@ class TextArea(wx.TextCtrl):
 class TextAreaESS(TextArea, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
-            name=wx.TextCtrlNameStr):
+            name=wx.TextCtrlNameStr, outLabel=None):
         
         TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
                 name)
-        EssentialField.__init__(self)
+        EssentialField.__init__(self, outLabel)
 
 
 ## A text control that is multiline & uses a themed border
@@ -165,11 +165,11 @@ class TextAreaML(TextArea):
 class TextAreaMLESS(TextAreaML, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
-            name=wx.TextCtrlNameStr):
+            name=wx.TextCtrlNameStr, outLabel=None):
         
         TextAreaML.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
                 name)
-        EssentialField.__init__(self)
+        EssentialField.__init__(self, outLabel)
 
 
 MT_NO_BTN = 0
@@ -421,8 +421,8 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
 class TextAreaPanelESS(TextAreaPanel, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
-            name=wx.TextCtrlNameStr):
+            name=wx.TextCtrlNameStr, outLabel=None):
         
         TextAreaPanel.__init__(self, parent, win_id, value, defaultValue, monospace, button, pos,
                 size, style, name)
-        EssentialField.__init__(self)
+        EssentialField.__init__(self, outLabel)
