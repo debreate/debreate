@@ -21,6 +21,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
+from input.select           import Choice
 from input.select           import ComboBox
 from input.text             import TextArea
 from input.text             import TextAreaPanel
@@ -120,9 +121,8 @@ class Panel(WizardPage):
         txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
         self.labels.append(txt_term)
         
-        self.sel_term = wx.Choice(self, choices=opts_term, name=u'Terminal')
-        self.sel_term.default = 1
-        self.sel_term.SetSelection(self.sel_term.default)
+        self.sel_term = Choice(self, choices=opts_term, name=u'Terminal',
+                defaultValue=1)
         self.opts_choice.append(self.sel_term)
         
         # --- STARTUP NOTIFY
@@ -131,9 +131,7 @@ class Panel(WizardPage):
         txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
         self.labels.append(txt_notify)
         
-        self.sel_notify = wx.Choice(self, choices=self.notify_opt, name=u'StartupNotify')
-        self.sel_notify.default = 0
-        self.sel_notify.SetSelection(self.sel_notify.default)
+        self.sel_notify = Choice(self, choices=self.notify_opt, name=u'StartupNotify')
         self.opts_choice.append(self.sel_notify)
         
         # --- ENCODING
