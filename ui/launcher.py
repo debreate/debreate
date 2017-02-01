@@ -137,7 +137,7 @@ class LauncherTemplate(ScrolledPanel):
             u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
             )
         
-        txt_category = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
         
         # This option does not get set by importing a new project
         self.ti_category = ComboBoxESS(self, value=opts_category[0], choices=opts_category,
