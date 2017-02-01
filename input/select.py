@@ -11,14 +11,17 @@ from wx.combo import OwnerDrawnComboBox
 
 from dbr.font           import MONOSPACED_MD
 from globals.strings    import TextIsEmpty
+from input.ifield       import InputField
 
 
 ## Custom wx.Choice class for compatibility with older wx versions
-class Choice(wx.Choice):
+class Choice(wx.Choice, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr):
+            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
+            defaultValue=0):
         
         wx.Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
+        InputField.__init__(self, defaultValue)
     
     
     ## wx 2.8 does not define wx.Choice.Set
