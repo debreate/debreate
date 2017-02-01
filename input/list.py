@@ -117,11 +117,6 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
     
     
     ## TODO: Doxygen
-    def InsertStringItem(self, index, label):
-        return wx.ListView.InsertStringItem(self, index, label)
-    
-    
-    ## TODO: Doxygen
     def OnSelectAll(self, event=None):
         select_all = False
         if isinstance(event, wx.KeyEvent):
