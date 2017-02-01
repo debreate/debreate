@@ -158,7 +158,7 @@ class inputid:
     VERSION = wx.NewId()
 
 
-## IDs for button controls
+## IDs for button fields
 class btnid:
     ADD = wx.ID_ADD
     CANCEL = wx.ID_CANCEL
