@@ -188,6 +188,17 @@ class ListId(FieldId):
 listid = ListId()
 
 
+## IDs for choice/selection fields
+class SelId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.NOTIFY = self.NewId()
+        self.TERM = self.NewId()
+
+selid = SelId()
+
+
 ## IDs for reference manual menu item links
 class refid:
     DEBSRC = wx.NewId()
