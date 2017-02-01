@@ -137,7 +137,7 @@ class TextAreaESS(TextArea, EssentialField):
         
         TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
                 name)
-        EssentialField.__init__(self, outLabel)
+        EssentialField.__init__(self)
 
 
 ## A text control that is multiline & uses a themed border
@@ -425,4 +425,4 @@ class TextAreaPanelESS(TextAreaPanel, EssentialField):
         
         TextAreaPanel.__init__(self, parent, win_id, value, defaultValue, monospace, button, pos,
                 size, style, name)
-        EssentialField.__init__(self, outLabel)
+        EssentialField.__init__(self)
