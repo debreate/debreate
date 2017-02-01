@@ -147,6 +147,22 @@ class ListCtrl(wx.ListView, ListCtrlAutoWidthMixin):
             self.InsertColumn(0)
         
         return style_set
+    
+    
+    ## Override inherited method to post list event for EssentialField instances
+    def SetStringItem(self, *args, **kwargs):
+        string_set = wx.ListView.SetStringItem(self, *args, **kwargs)
+        
+        # FIXME: Not sure why this check is necessary here.
+        #        Without, sets project dirty at load time.
+        if GetMainWindow().ProjectIsLoaded():
+            # Cause EssentialField instances to emit event that will tell main window to mark paroject dirty
+            if isinstance(self, EssentialField) or isinstance(self.Parent, EssentialField):
+                Logger.Debug(__name__, u'EssentialField instance posting list event')
+                
+                wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT))
+        
+        return string_set
 
 
 ## Hack to make list control border have rounded edges
