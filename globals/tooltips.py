@@ -162,6 +162,8 @@ TT_launchers = {
     u'startupnotify': GT(u'Displays a notification in the system panel when launched'),
     u'encoding': GT(u'Sets the encoding that should be used to read the launcher'),
     u'category': GT(u'Categories dictate where the launcher will be located in the system menu'),
+    u'btn add': GT(u'Add a new launcher'),
+    u'btn clear': GT(u'Clear category list'),
     u'add category': GT(u'Append current category to list'),
     u'rm category': GT(u'Remove selected categories from list'),
     u'clear categories': GT(u'Clear category list'),
