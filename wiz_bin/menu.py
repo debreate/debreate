@@ -13,6 +13,8 @@ from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import chkid
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
@@ -68,9 +70,9 @@ class Panel(WizardPage):
         
         # --- Custom output filename
         self.txt_filename = wx.StaticText(self, label=GT(u'Filename'), name=u'filename')
-        self.ti_filename = wx.TextCtrl(self, name=self.txt_filename.Name)
+        self.ti_filename = wx.TextCtrl(self, inputid.FNAME, name=self.txt_filename.Name)
         
-        self.chk_filename = wx.CheckBox(self, label=GT(u'Use "Name" as output filename (<Name>.desktop)'),
+        self.chk_filename = wx.CheckBox(self, chkid.FNAME, GT(u'Use "Name" as output filename (<Name>.desktop)'),
                 name=u'filename chk')
         self.chk_filename.default = True
         self.chk_filename.SetValue(self.chk_filename.default)
