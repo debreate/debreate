@@ -199,6 +199,16 @@ class SelId(FieldId):
 selid = SelId()
 
 
+## IDs for static text fields
+class TxtId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.FNAME = self.NewId()
+
+txtid = TxtId()
+
+
 ## IDs for reference manual menu item links
 class refid:
     DEBSRC = wx.NewId()
