@@ -148,6 +148,11 @@ class ManPage(wx.Panel):
         return self.sel_section.GetStringSelection()
     
     
+    ## TODO: Doxygen
+    def InEasyMode(self):
+        return self.EasyMode
+    
+    
     ## Adds a new section to the document via button press
     #
     #  \return
@@ -234,6 +239,8 @@ class ManPage(wx.Panel):
         
         if isinstance(mode, wx.CommandEvent):
             mode = mode.GetEventObject().Mode
+        
+        self.EasyMode = mode
         
         # Restart with fresh panel
         # FIXME: Can be done without destroying children
