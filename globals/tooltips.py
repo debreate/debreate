@@ -168,6 +168,7 @@ TT_launchers = {
     u'rm category': GT(u'Remove selected categories from list'),
     u'clear categories': GT(u'Clear category list'),
     u'categories': GT(u'Categories dictate where the launcher will be located in the system menu'),
+    u'chk catcustom': GT(u'List custom categories first'),
     u'no disp': GT(u'This options means "This application exists, but don\'t display it in the menus"'),
     u'show in': GT(u'Launcher is only shown when options are satisfied'),
     u'other': (
