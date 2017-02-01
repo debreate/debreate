@@ -133,12 +133,14 @@ ZIP_ZIP = wx.NewId()
 class inputid:
     ARCH = wx.NewId()
     CAT = wx.NewId()
+    CHECK = wx.NewId()
     CUSTOM = wx.NewId()
     DESCR = wx.NewId()
     EMAIL = wx.NewId()
     ENC = wx.NewId()
     EXEC = wx.NewId()
     ICON = wx.NewId()
+    KEY = wx.NewId()
     LIST = wx.NewId()
     MAINTAINER = wx.NewId()
     MD5 = wx.NewId()
@@ -149,6 +151,7 @@ class inputid:
     PACKAGE = wx.NewId()
     TERM = wx.NewId()
     TYPE = wx.NewId()
+    VALUE = wx.NewId()
     VERSION = wx.NewId()
 
 
