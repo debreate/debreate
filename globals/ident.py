@@ -110,6 +110,13 @@ class FieldId:
         self.IdList = []
     
     
+    ## Adds a predetermined ID to ID list
+    def AddStaticId(self, static_id):
+        self.IdList.append(static_id)
+        
+        return static_id
+    
+    
     ## Add a new ID
     def NewId(self):
         return NewId(self.IdList)
