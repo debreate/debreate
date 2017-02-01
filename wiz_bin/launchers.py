@@ -14,6 +14,7 @@ from dbr.log                import Logger
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import btnid
 from globals.ident          import page_ids
 from globals.ident          import pgid
 from globals.strings        import GS
@@ -56,6 +57,9 @@ if UsingTest(u'alpha'):
             self.label = GT(u'Menu Launchers')
             
             templates = MultiTemplate(self, LauncherTemplate)
+            
+            templates.RenameButton(btnid.ADD, GT(u'Add Launcher'))
+            templates.RenameButton(btnid.RENAME, GT(u'Rename Launcher'))
             
             SetPageToolTips(self)
             
