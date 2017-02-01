@@ -26,12 +26,23 @@ def SetScrollbars(window):
     return False
 
 
+## Abstract class
+class PanelBase:
+    ## Checks if the instance has children windows
+    def HasChildren(self):
+        if isinstance(self, wx.Window):
+            return len(self.GetChildren()) > 0
+        
+        return False
+
+
 ## A wx.Panel with a border
 #  
 #  This is to work around differences in wx 3.0 with older versions
-class BorderedPanel(wx.Panel):
+class BorderedPanel(wx.Panel, PanelBase):
     def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                 style=wx.TAB_TRAVERSAL, name=wx.PanelNameStr):
+        
         wx.Panel.__init__(self, parent, ID, pos, size, style|PANEL_BORDER, name)
     
     
@@ -64,9 +75,10 @@ class BorderedPanel(wx.Panel):
 
 
 ## A wx.ScrolledWindow that sets scrollbars by default
-class ScrolledPanel(wx.ScrolledWindow):
+class ScrolledPanel(wx.ScrolledWindow, PanelBase):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                 style=wx.HSCROLL|wx.VSCROLL, name=u'scrolledPanel'):
+        
         wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
         
         SetScrollbars(self)
