@@ -11,20 +11,14 @@ import os, wx
 from input.text import TextArea
 
 
-PATH_DEFAULT = wx.NewId()
-PATH_WARN = wx.NewId()
-
-
 ## A text area that can track if it's value is an actual path on the system
-#  
-#  FIXME: Use boolean value instead of type
 class PathCtrl(TextArea):
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=u'/', defaultValue=u'/', ctrl_type=PATH_DEFAULT,
+    def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
             default=wx.EmptyString, name=wx.TextCtrlNameStr):
         
-        TextArea.__init__(self, parent, ctrl_id, value, defaultValue, name=name)
+        TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
         
-        self.ctrl_type = ctrl_type
+        self.Warn = warn
         
         # Get the value of the textctrl so it can be restored
         self.default = default
@@ -36,7 +30,7 @@ class PathCtrl(TextArea):
         wx.EVT_KEY_UP(self, self.OnKeyUp)
         
         # Check if path is available on construction
-        if self.ctrl_type == PATH_WARN:
+        if self.Warn:
             self.SetPathAvailable()
     
     
@@ -56,7 +50,7 @@ class PathCtrl(TextArea):
         # If PathCtrl is set to warn on non-existent paths, change background color to red when path
         # doesn't exist
         value = self.GetValue()
-        if self.ctrl_type == PATH_WARN:
+        if self.Warn:
             self.SetPathAvailable()
         
         if event:
