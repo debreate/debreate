@@ -341,12 +341,18 @@ class LauncherTemplate(ScrolledPanel):
             field = GetField(self, ID)
             
             if field:
-                '''
                 if ID == inputid.OTHER:
-                    l_lines.append(field.GetValue().strip(u' \t\r\n'))
+                    for INDEX in range(field.GetSectionCount()):
+                        section = field.GetSection(INDEX)
+                        
+                        if isinstance(section, CustomSection):
+                            key = section.GetKey().strip()
+                            value = section.GetValue().strip()
+                            
+                            if not TextIsEmpty(key) and not TextIsEmpty(value):
+                                l_lines.append(u'{}={}'.format(key, value))
                     
                     continue
-                '''
                 
                 if isinstance(field, (wx.TextCtrl, OwnerDrawnComboBox,)):
                     value = field.GetValue().strip()
