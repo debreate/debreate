@@ -745,3 +745,26 @@ class LauncherTemplate(ScrolledPanel):
             
             if misc_defs:
                 self.ti_other.SetValue(u'\n'.join(sorted(misc_defs)))
+
+
+## A panel that can be added as a section to ui.panel.SectionedPanel
+class CustomSection(BorderedPanel):
+    def __init__(self, parent, win_id=wx.ID_ANY):
+        BorderedPanel.__init__(self, parent, win_id)
+        
+        txt_key = wx.StaticText(self, label=GT(u'Key'))
+        txt_value = wx.StaticText(self, label=GT(u'Value'))
+        
+        ti_key = TextAreaESS(self, inputid.KEY)
+        ti_value = TextAreaESS(self, inputid.VALUE)
+        
+        # *** Layout *** #
+        
+        lyt_input = wx.FlexGridSizer()
+        lyt_input.SetRows(2)
+        lyt_input.SetCols(2)
+        
+        lyt_input.Add(txt_key, 0, wx.LEFT|wx.TOP, 5)
+        lyt_input.Add(txt_value, 0, wx.LEFT|wx.TOP, 5)
+        lyt_input.Add(ti_key, 0, wx.LEFT|wx.BOTTOM, 5)
+        lyt_input.Add(ti_value, 0, wx.LEFT|wx.BOTTOM, 5)
