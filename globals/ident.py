@@ -131,31 +131,37 @@ class pgid:
     BUILD = NewPageId(GT(u'Build'), IdList)
 
 
-## IDs for input fields
-class inputid:
-    ARCH = wx.NewId()
-    CAT = wx.NewId()
-    CAT2 = wx.NewId()
-    CHECK = wx.NewId()
-    CUSTOM = wx.NewId()
-    DESCR = wx.NewId()
-    EMAIL = wx.NewId()
-    ENC = wx.NewId()
-    EXEC = wx.NewId()
-    ICON = wx.NewId()
-    KEY = wx.NewId()
-    LIST = wx.NewId()
-    MAINTAINER = wx.NewId()
-    MD5 = wx.NewId()
-    MIME = wx.NewId()
-    NAME = wx.NewId()
-    NOTIFY = wx.NewId()
-    OTHER = wx.NewId()
-    PACKAGE = wx.NewId()
-    TERM = wx.NewId()
-    TYPE = wx.NewId()
-    VALUE = wx.NewId()
-    VERSION = wx.NewId()
+## IDs for text input fields
+class InputId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.ARCH = self.NewId()
+        self.CAT = self.NewId()
+        self.CAT2 = self.NewId()
+        self.CHECK = self.NewId()
+        self.CUSTOM = self.NewId()
+        self.DESCR = self.NewId()
+        self.EMAIL = self.NewId()
+        self.ENC = self.NewId()
+        self.EXEC = self.NewId()
+        self.FNAME = self.NewId()
+        self.ICON = self.NewId()
+        self.KEY = self.NewId()
+        self.LIST = self.NewId()
+        self.MAINTAINER = self.NewId()
+        self.MD5 = self.NewId()
+        self.MIME = self.NewId()
+        self.NAME = self.NewId()
+        self.NOTIFY = self.NewId()
+        self.OTHER = self.NewId()
+        self.PACKAGE = self.NewId()
+        self.TERM = self.NewId()
+        self.TYPE = self.NewId()
+        self.VALUE = self.NewId()
+        self.VERSION = self.NewId()
+
+inputid = InputId()
 
 
 ## IDs for button fields
