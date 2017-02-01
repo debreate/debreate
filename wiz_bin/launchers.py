@@ -21,7 +21,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetMainWindow
-from input.list             import ListCtrlPanelESS
+from input.list             import ListCtrlESS
 from input.select           import ChoiceESS
 from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
@@ -233,8 +233,8 @@ else:
                 self.opts_button.append(B)
             
             # FIXME: Allow using multi-select + remove
-            self.lst_categories = ListCtrlPanelESS(self)
-            # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrlPanel bug???)
+            self.lst_categories = ListCtrlESS(self)
+            # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrl bug???)
             self.lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
             
             # For manually setting background color after enable/disable
