@@ -835,8 +835,19 @@ class CustomSection(BorderedPanel):
         lyt_input = wx.FlexGridSizer()
         lyt_input.SetRows(2)
         lyt_input.SetCols(2)
+        lyt_input.AddGrowableCol(1)
         
         lyt_input.Add(txt_key, 0, wx.LEFT|wx.TOP, 5)
         lyt_input.Add(txt_value, 0, wx.LEFT|wx.TOP, 5)
         lyt_input.Add(ti_key, 0, wx.LEFT|wx.BOTTOM, 5)
-        lyt_input.Add(ti_value, 0, wx.LEFT|wx.BOTTOM, 5)
+        lyt_input.Add(ti_value, 1, wx.EXPAND|wx.LEFT|wx.BOTTOM, 5)
+    
+    
+    ## Retrieves the label to use for key
+    def GetKey(self):
+        return GetField(self, inputid.KEY).GetValue()
+    
+    
+    ## Retrieves the label to use for value
+    def GetValue(self):
+        return GetField(self, inputid.VALUE).GetValue()
