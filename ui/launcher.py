@@ -158,8 +158,8 @@ class LauncherTemplate(ScrolledPanel):
         if not self.lst_categories.HasSelected():
             btn_catclr.Disable()
         
-        txt_catcustom = wx.StaticText(self, label=GT(u'Custom Categories'))
-        pnl_catcustom = BorderedPanel(self)
+        txt_catcustom = wx.StaticText(self, label=GT(u'Custom Categories (Separate by "," or ";"'))
+        ti_catcustom = TextAreaESS(self, inputid.CAT2, name=u'category custom')
         
         # *** Event Handling *** #
         
@@ -240,7 +240,7 @@ class LauncherTemplate(ScrolledPanel):
         lyt_bottom.Add(txt_catcustom, (row, 3), flag=LEFT_BOTTOM|wx.LEFT|wx.TOP, border=5)
         
         row += 1
-        lyt_bottom.Add(pnl_catcustom, (row, 3), flag=wx.EXPAND|wx.LEFT, border=5)
+        lyt_bottom.Add(ti_catcustom, (row, 3), (1, 2), flag=wx.EXPAND|wx.LEFT, border=5)
         
         lyt_bottom.AddGrowableRow(1)
         lyt_bottom.AddGrowableCol(1)
