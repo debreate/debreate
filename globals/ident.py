@@ -190,8 +190,11 @@ class ChkId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
         
+        self.CAT = self.NewId()
         self.ENABLE = self.NewId()
         self.FNAME = self.NewId()
+        self.NOTIFY = self.NewId()
+        self.TERM = self.NewId()
 
 chkid = ChkId()
 
@@ -210,9 +213,6 @@ listid = ListId()
 class SelId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
-        self.NOTIFY = self.NewId()
-        self.TERM = self.NewId()
 
 selid = SelId()
 
