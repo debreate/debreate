@@ -11,11 +11,13 @@ import wx
 from dbr.language           import GT
 from dbr.log                import Logger
 from f_export.ftarget       import FileOTarget
-from globals                import ident
 from globals.bitmaps        import ICON_WARNING
 from globals.changes        import FormatChangelog
+from globals.ident          import btnid
+from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import pgid
+from globals.ident          import selid
 from globals.strings        import TextIsEmpty
 from globals.system         import GetOSDistNames
 from globals.tooltips       import SetPageToolTips
@@ -39,21 +41,21 @@ class Panel(WizardPage):
         WizardPage.__init__(self, parent, pgid.CHANGELOG)
         
         txt_package = wx.StaticText(self, label=GT(u'Package'), name=u'package')
-        self.ti_package = TextArea(self, name=txt_package.Name)
+        self.ti_package = TextArea(self, inputid.PACKAGE, name=txt_package.Name)
         
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
-        self.ti_version = TextArea(self, name=txt_version.Name)
+        self.ti_version = TextArea(self, inputid.VERSION, name=txt_version.Name)
         
         dist_names = GetOSDistNames()
         
         txt_dist = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
         
         if dist_names:
-            self.ti_dist = ComboBox(self, ident.DIST, choices=dist_names, name=txt_dist.Name)
+            self.ti_dist = ComboBox(self, inputid.DIST, choices=dist_names, name=txt_dist.Name)
         
         # Use regular text input if could not retrieve distribution names list
         else:
-            self.ti_dist = TextArea(self, ident.DIST, name=txt_dist.Name)
+            self.ti_dist = TextArea(self, inputid.DIST, name=txt_dist.Name)
         
         opts_urgency = (
             u'low',
@@ -63,13 +65,13 @@ class Panel(WizardPage):
             )
         
         txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
-        self.sel_urgency = Choice(self, choices=opts_urgency, name=txt_urgency.Name)
+        self.sel_urgency = Choice(self, selid.URGENCY, choices=opts_urgency, name=txt_urgency.Name)
         
         txt_maintainer = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
-        self.ti_maintainer = TextArea(self, name=txt_maintainer.Name)
+        self.ti_maintainer = TextArea(self, inputid.MAINTAINER, name=txt_maintainer.Name)
         
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
-        self.ti_email = TextArea(self, name=txt_email.Name)
+        self.ti_email = TextArea(self, inputid.EMAIL, name=txt_email.Name)
         
         btn_import = CreateButton(self, GT(u'Import'), u'import', btnid.IMPORT, name=u'btn import')
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
@@ -79,14 +81,16 @@ class Panel(WizardPage):
         
         # *** Target installation directory
         
-        self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default')
+        # FIXME: Should this be set by config or project file???
+        self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default',
+                pathIds=(chkid.TARGET, inputid.TARGET,))
         
         self.btn_add = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'btn add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.chk_indentation = CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
         
-        self.dsp_changes = TextAreaPanel(self, monospace=True, name=u'log')
+        self.dsp_changes = TextAreaPanel(self, inputid.CHANGES, monospace=True, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)
