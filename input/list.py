@@ -461,7 +461,6 @@ class ListCtrlESS(ListCtrl, EssentialField):
 #  Creates a ListCtrl class in which every column's text can be edited
 class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        
         ListCtrl.__init__(self, parent, win_id, style=wx.LC_REPORT, name=name)
         TextEditMixin.__init__(self)
         wx.FileDropTarget.__init__(self)
