@@ -92,6 +92,26 @@ def FieldEnabled(field):
         return field.IsEnabled()
 
 
+## Retrieves all instances of a window type from a parent window
+def GetAllTypeFields(page, fieldType):
+    # Objects that are not WizardPage instances must be passed as 'page' argument
+    if not isinstance(page, wx.Window):
+        page = GetPage(page)
+    
+    field_list = []
+    
+    # Recursively check children
+    children = page.GetChildren()
+    if children:
+        for C in children:
+            if isinstance(C, fieldType):
+                field_list.append(C)
+            
+            field_list = field_list + GetAllTypeFields(C, fieldType)
+    
+    return field_list
+
+
 ## Retrieves a field/control from a page
 #  
 #  FIXME: field_type is currently unused
@@ -105,7 +125,6 @@ def FieldEnabled(field):
 #  \return
 #        \b \e wx.Window : Field control matching field_id or None
 def GetField(page, field_id, field_type=wx.Window):
-    # NOTE: In version 0.8 this should be an instance of ui.wizard.WizardPage
     if not isinstance(page, wx.Window):
         page = GetPage(page)
     
