@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-from globals.execute import GetExecutable
-from globals.strings import IsString
 
 ## \package fields.cmdfield
 
 # MIT licensing
 # See: docs/LICENSE.txt
+
+
+from globals.execute import GetExecutable
+from globals.strings import IsString
 
 
 ## A field that requires a specific command or commands to be available on the system
