@@ -223,6 +223,8 @@ listid = ListId()
 class SelId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
+        
+        self.URGENCY = self.NewId()
 
 selid = SelId()
 
