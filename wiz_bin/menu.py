@@ -31,11 +31,11 @@ from input.text             import TextArea
 from input.text             import TextAreaPanel
 from input.toggle           import CheckBox
 from ui.button              import ButtonAdd
-from ui.button              import ButtonBrowse64
+from ui.button              import ButtonBrowse
 from ui.button              import ButtonClear
-from ui.button              import ButtonPreview64
+from ui.button              import ButtonPreview
 from ui.button              import ButtonRemove
-from ui.button              import ButtonSave64
+from ui.button              import ButtonSave
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
@@ -60,19 +60,62 @@ class Panel(WizardPage):
         self.labels = []
         
         # --- Buttons to open/preview/save .desktop file
-        btn_open = ButtonBrowse64(self)
+        btn_open = ButtonBrowse(self)
         btn_open.SetName(u'open')
         
-        btn_save = ButtonSave64(self)
+        btn_save = ButtonSave(self)
         btn_save.SetName(u'export')
         self.opts_button.append(btn_save)
         
-        btn_preview = ButtonPreview64(self)
+        btn_preview = ButtonPreview(self)
         btn_preview.SetName(u'preview')
         self.opts_button.append(btn_preview)
         
         # --- CHECKBOX
         chk_enable = CheckBox(self, chkid.ENABLE, GT(u'Create system menu launcher'))
+        
+        # --- TYPE
+        opts_type = (u'Application', u'Link', u'Directory',)
+        
+        txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
+        self.labels.append(txt_type)
+        
+        ti_type = ComboBox(self, inputid.TYPE, choices=opts_type,
+                name=u'Type', defaultValue=opts_type[0])
+        self.opts_input.append(ti_type)
+        
+        # --- ENCODING
+        opts_enc = (
+            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
+            u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
+            u'GB 18030',
+            )
+        
+        txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
+        self.labels.append(txt_enc)
+        
+        ti_enc = ComboBox(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
+                defaultValue=opts_enc[2])
+        self.opts_input.append(ti_enc)
+        
+        # --- TERMINAL
+        opts_term = (u'true', u'false',)
+        
+        txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
+        self.labels.append(txt_term)
+        
+        sel_term = Choice(self, selid.TERM, choices=opts_term, name=u'Terminal',
+                defaultValue=1)
+        self.opts_choice.append(sel_term)
+        
+        # --- STARTUP NOTIFY
+        notify_opt = (u'true', u'false',)
+        
+        txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
+        self.labels.append(txt_notify)
+        
+        sel_notify = Choice(self, selid.NOTIFY, choices=notify_opt, name=u'StartupNotify')
+        self.opts_choice.append(sel_notify)
         
         # --- Custom output filename
         txt_filename = wx.StaticText(self, txtid.FNAME, GT(u'Filename'), name=u'filename')
@@ -108,49 +151,6 @@ class Panel(WizardPage):
         
         ti_icon = TextArea(self, inputid.ICON, name=u'Icon')
         self.opts_input.append(ti_icon)
-        
-        # --- TYPE
-        opts_type = (u'Application', u'Link', u'Directory',)
-        
-        txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        self.labels.append(txt_type)
-        
-        ti_type = ComboBox(self, inputid.TYPE, choices=opts_type, name=u'Type',
-                defaultValue=opts_type[0])
-        self.opts_input.append(ti_type)
-        
-        # --- TERMINAL
-        opts_term = (u'true', u'false',)
-        
-        txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
-        self.labels.append(txt_term)
-        
-        sel_term = Choice(self, selid.TERM, choices=opts_term, name=u'Terminal',
-                defaultValue=1)
-        self.opts_choice.append(sel_term)
-        
-        # --- STARTUP NOTIFY
-        notify_opt = (u'true', u'false',)
-        
-        txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
-        self.labels.append(txt_notify)
-        
-        sel_notify = Choice(self, selid.NOTIFY, choices=notify_opt, name=u'StartupNotify')
-        self.opts_choice.append(sel_notify)
-        
-        # --- ENCODING
-        opts_enc = (
-            u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
-            u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
-            u'GB 18030',
-            )
-        
-        txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        self.labels.append(txt_enc)
-        
-        ti_enc = ComboBox(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
-                defaultValue=opts_enc[2])
-        self.opts_input.append(ti_enc)
         
         # --- CATEGORIES
         opts_category = (
@@ -217,86 +217,7 @@ class Panel(WizardPage):
         
         SetPageToolTips(self)
         
-        # *** Layout *** #
-        
-        CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
-        CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
-        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
-        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
-        RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
-        
-        lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(btn_open, 0)
-        lyt_buttons.Add(btn_save, 0)
-        lyt_buttons.Add(btn_preview, 0)
-        
-        lyt_cat_btn = BoxSizer(wx.HORIZONTAL)
-        lyt_cat_btn.Add(btn_catadd, 0)
-        lyt_cat_btn.Add(btn_catdel, 0)
-        lyt_cat_btn.Add(btn_catclr, 0)
-        
-        lyt_cat_input = BoxSizer(wx.VERTICAL)
-        lyt_cat_input.Add(txt_category, 0, LEFT_BOTTOM)
-        lyt_cat_input.Add(ti_category, 0, wx.TOP|wx.BOTTOM, 5)
-        lyt_cat_input.Add(lyt_cat_btn, 0)
-        
-        lyt_cat_main = BoxSizer(wx.HORIZONTAL)
-        lyt_cat_main.Add(lyt_cat_input, 0)
-        lyt_cat_main.Add(lst_categories, 1, wx.EXPAND|wx.LEFT, 5)
-        
-        lyt_grid = wx.GridBagSizer(5, 5)
-        lyt_grid.SetCols(4)
-        lyt_grid.AddGrowableCol(1)
-        
-        # Row 1
-        lyt_grid.Add(txt_filename, (0, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_filename, pos=(0, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
-        
-        # Row 2
-        lyt_grid.Add(txt_name, (1, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_name, (1, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_type, (1, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_type, (1, 3), flag=CENTER_EXPAND)
-        
-        # Row 3
-        lyt_grid.Add(txt_exec, (2, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_exec, (2, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_term, (2, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(sel_term, (2, 3), flag=LEFT_CENTER)
-        
-        # Row 4
-        lyt_grid.Add(txt_comm, (3, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_comm, (3, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_notify, (3, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(sel_notify, (3, 3), flag=LEFT_CENTER)
-        
-        # Row 5
-        lyt_grid.Add(txt_icon, (4, 0), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_icon, (4, 1), flag=CENTER_EXPAND)
-        lyt_grid.Add(txt_enc, (4, 2), flag=RIGHT_CENTER)
-        lyt_grid.Add(ti_enc, (4, 3), flag=CENTER_EXPAND)
-        
-        lyt_border = BoxSizer(wx.VERTICAL)
-        
-        lyt_border.Add(lyt_grid, 0, wx.EXPAND|wx.BOTTOM, 5)
-        lyt_border.Add(lyt_cat_main, 0, wx.EXPAND|wx.TOP, 5)
-        lyt_border.AddSpacer(5)
-        lyt_border.Add(txt_other, 0)
-        lyt_border.Add(ti_other, 1, wx.EXPAND)
-        
-        # --- Page 5 Sizer --- #
-        lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
-        lyt_main.Add(chk_enable, 0, wx.LEFT, 5)
-        lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
-        
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        self.Layout()
-        
-        # *** Event handlers *** #
+        # *** Event Handling *** #
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
         btn_save.Bind(wx.EVT_BUTTON, self.OnSaveLauncher)
@@ -311,6 +232,88 @@ class Panel(WizardPage):
         btn_catadd.Bind(wx.EVT_BUTTON, self.SetCategory)
         btn_catdel.Bind(wx.EVT_BUTTON, self.SetCategory)
         btn_catclr.Bind(wx.EVT_BUTTON, self.SetCategory)
+        
+        # *** Layout *** #
+        
+        LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
+        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        RIGHT_BOTTOM = wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM
+        
+        lyt_top = BoxSizer(wx.HORIZONTAL)
+        #lyt_top.Add(lyt_opts1, 0, wx.EXPAND|wx.ALIGN_BOTTOM)
+        lyt_top.Add(chk_enable, 0, LEFT_BOTTOM)
+        lyt_top.AddStretchSpacer(1)
+        lyt_top.Add(btn_open, 0, wx.ALIGN_TOP)
+        lyt_top.Add(btn_save, 0, wx.ALIGN_TOP)
+        lyt_top.Add(btn_preview, 0, wx.ALIGN_TOP)
+        
+        lyt_opts1 = wx.FlexGridSizer()
+        lyt_opts1.SetCols(4)
+        lyt_opts1.SetRows(2)
+        
+        lyt_opts1.Add(txt_type, 0, LEFT_CENTER)
+        lyt_opts1.Add(ti_type, 0, wx.EXPAND|wx.LEFT, 5)
+        lyt_opts1.Add(txt_term, 0, LEFT_CENTER|wx.LEFT, 5)
+        lyt_opts1.Add(sel_term, 0, LEFT_CENTER|wx.LEFT, 5)
+        lyt_opts1.Add(txt_enc, 0, LEFT_CENTER|wx.TOP, 5)
+        lyt_opts1.Add(ti_enc, 0, wx.LEFT|wx.TOP, 5)
+        lyt_opts1.Add(txt_notify, 0, LEFT_CENTER|wx.LEFT, 5)
+        lyt_opts1.Add(sel_notify, 0, LEFT_CENTER|wx.LEFT|wx.TOP, 5)
+        
+        lyt_mid = wx.GridBagSizer()
+        lyt_mid.SetCols(4)
+        lyt_mid.AddGrowableCol(1)
+        lyt_mid.AddGrowableCol(3)
+        
+        # Row 1
+        row = 0
+        lyt_mid.Add(txt_filename, (row, 0), flag=LEFT_CENTER)
+        lyt_mid.Add(ti_filename, (row, 1), flag=wx.EXPAND|wx.LEFT, border=5)
+        lyt_mid.Add(chk_filename, (row, 2), span=(1, 2), flag=LEFT_CENTER|wx.LEFT, border=5)
+        
+        # Row 2
+        row += 1
+        lyt_mid.Add(txt_name, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
+        lyt_mid.Add(ti_name, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(txt_exec, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_exec, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        
+        # Row 3
+        row += 1
+        lyt_mid.Add(txt_comm, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
+        lyt_mid.Add(ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        
+        lyt_bottom = wx.GridBagSizer()
+        
+        row = 0
+        lyt_bottom.Add(txt_other, (row, 0), flag=LEFT_BOTTOM)
+        lyt_bottom.Add(txt_category, (row, 2), flag=LEFT_BOTTOM|wx.LEFT, border=5)
+        lyt_bottom.Add(ti_category, (row, 3), flag=LEFT_BOTTOM|wx.LEFT, border=5)
+        lyt_bottom.Add(btn_catadd, (row, 4), flag=RIGHT_BOTTOM)
+        lyt_bottom.Add(btn_catdel, (row, 5), flag=RIGHT_BOTTOM)
+        lyt_bottom.Add(btn_catclr, (row, 6), flag=RIGHT_BOTTOM)
+        
+        row += 1
+        lyt_bottom.Add(ti_other, (row, 0), (1, 2), wx.EXPAND)
+        lyt_bottom.Add(lst_categories, (row, 2), (1, 5), wx.EXPAND|wx.LEFT, 5)
+        
+        lyt_bottom.AddGrowableRow(1)
+        lyt_bottom.AddGrowableCol(1)
+        lyt_bottom.AddGrowableCol(4)
+        
+        # --- Page 5 Sizer --- #
+        lyt_main = BoxSizer(wx.VERTICAL)
+        lyt_main.AddSpacer(5)
+        lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_opts1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_main.Add(lyt_mid, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_main.Add(lyt_bottom, 1, wx.EXPAND|wx.ALL, 5)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
     
     
     ## TODO: Doxygen
