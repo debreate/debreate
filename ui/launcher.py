@@ -18,6 +18,7 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import chkid
+from globals.ident          import btnid
 from globals.ident          import inputid
 from globals.ident          import listid
 from globals.ident          import page_ids
@@ -33,12 +34,7 @@ from input.select           import ComboBoxESS
 from input.text             import TextAreaESS
 from input.toggle           import CheckBoxCFG
 from input.toggle           import CheckBoxESS
-from ui.button              import ButtonAdd
-from ui.button              import ButtonBrowse
-from ui.button              import ButtonClear
-from ui.button              import ButtonPreview
-from ui.button              import ButtonRemove
-from ui.button              import ButtonSave
+from ui.button              import CreateButton
 from ui.checklist           import CheckList
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import GetFileOpenDialog
@@ -59,22 +55,16 @@ class LauncherTemplate(ScrolledPanel):
         ScrolledPanel.__init__(self, parent, win_id, name=name)
         
         # --- Buttons to open/preview/save .desktop file
-        btn_open = ButtonBrowse(self)
-        btn_open.SetName(u'open')
-        
-        btn_save = ButtonSave(self)
-        btn_save.SetName(u'export')
-        
-        btn_preview = ButtonPreview(self)
-        btn_preview.SetName(u'preview')
+        btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
+        btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
+        btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
         
         # --- TYPE
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        ti_type = ComboBoxESS(self, inputid.TYPE, opts_type[0], choices=opts_type,
-                name=u'Type')
-        ti_type.default = ti_type.GetValue()
+        ti_type = ComboBoxESS(self, inputid.TYPE, choices=opts_type,
+                name=u'Type', defaultValue=opts_type[0])
         
         # --- ENCODING
         opts_enc = (
@@ -84,9 +74,8 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        ti_enc = ComboBoxESS(self, inputid.ENC, opts_enc[2], choices=opts_enc,
-                name=u'Encoding')
-        ti_enc.default = ti_enc.GetValue()
+        ti_enc = ComboBoxESS(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
+                defaultValue=opts_enc[2])
         
         # --- TERMINAL
         chk_term = CheckBoxESS(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
@@ -99,22 +88,18 @@ class LauncherTemplate(ScrolledPanel):
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
         ti_name = TextAreaESS(self, inputid.NAME, name=u'Name')
         ti_name.req = True
-        ti_name.default = wx.EmptyString
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
         ti_exec = TextAreaESS(self, inputid.EXEC, name=u'Exec')
-        ti_exec.default = wx.EmptyString
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
         ti_comm = TextAreaESS(self, inputid.DESCR, name=u'Comment')
-        ti_comm.default = wx.EmptyString
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
         ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
-        ti_icon.default = wx.EmptyString
         
         txt_mime = wx.StaticText(self, label=GT(u'MIME Type'), name=u'mime')
         ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType',
@@ -122,8 +107,8 @@ class LauncherTemplate(ScrolledPanel):
         
         # ----- OTHER/CUSTOM
         txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
-        btn_other = ButtonAdd(self, name=u'btn other')
-        btn_rm_other = ButtonRemove(self, name=u'btn rm other')
+        btn_other = CreateButton(self, u'Other', u'add', name=u'btn other')
+        btn_rm_other = CreateButton(self, u'Remove Other', u'remove', name=u'btn rm other')
         pnl_other = SectionedPanel(self, inputid.OTHER)
         
         btn_rm_other.Enable(pnl_other.HasSelected())
@@ -158,7 +143,7 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
-        btn_catclr = ButtonClear(self) #, name=u'clear categories')
+        btn_catclr = CreateButton(self, GT(u'Clear'), u'clear', btnid.CLEAR, name=u'clear category')
         lst_categories = CheckList(self, listid.CAT, opts_category, name=u'Categories')
         
         if not lst_categories.HasSelected():
