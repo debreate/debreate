@@ -108,7 +108,8 @@ class LauncherTemplate(ScrolledPanel):
         # ----- OTHER/CUSTOM
         txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
         btn_other = CreateButton(self, u'Other', u'add', name=u'btn other')
-        btn_rm_other = CreateButton(self, u'Remove Other', u'remove', name=u'btn rm other')
+        btn_rm_other = CreateButton(self, u'Remove Other', u'remove', btnid.REMOVE,
+                name=u'btn rm other')
         pnl_other = SectionedPanel(self, inputid.OTHER)
         
         btn_rm_other.Enable(pnl_other.HasSelected())
