@@ -19,11 +19,13 @@ from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import listid
 from globals.ident          import page_ids
+from globals.ident          import pgid
 from globals.ident          import selid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetAllTypeFields
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.markdown         import MarkdownDialog
@@ -33,6 +35,8 @@ from ui.button              import ButtonNext
 from ui.button              import ButtonPrev
 from ui.dialog              import ShowDialog
 from ui.layout              import BoxSizer
+from ui.notebook            import MultiTemplate
+from ui.notebook            import Notebook
 from ui.panel               import ScrolledPanel
 
 
@@ -517,3 +521,19 @@ class WizardPage(ScrolledPanel):
                     
                     if isinstance(field, wx.Window):
                         field.Reset()
+        
+        # Pages that use MultiTemplate instances
+        multit_ids = (
+            pgid.MAN,
+            pgid.LAUNCHERS,
+            )
+        
+        if self.Id in multit_ids:
+            NBLIST = GetAllTypeFields(self, Notebook)
+            
+            if NBLIST:
+                for NB in NBLIST:
+                    MT = NB.GetContainingSizer()
+                    
+                    if isinstance(MT, MultiTemplate):
+                        MT.Reset()
