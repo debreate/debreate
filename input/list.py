@@ -359,6 +359,11 @@ class ListCtrl(BorderedPanel):
         self.MainCtrl.RemoveSelected()
     
     
+    ## Resets the list to default values
+    def Reset(self):
+        return self.MainCtrl.Reset()
+    
+    
     ## TODO: Doxygen
     def SetColumnWidth(self, col, width):
         self.MainCtrl.SetColumnWidth(col, width)
