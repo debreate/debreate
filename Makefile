@@ -45,6 +45,17 @@ FILES_root = \
 	command_line.py \
 	main.py
 
+PACKAGES = \
+	wiz_bin \
+	dbr \
+	f_export \
+	fields \
+	globals \
+	input \
+	startup \
+	system \
+	ui
+
 PKG_wiz_bin = wiz_bin/*.py
 PKG_dbr = dbr/*.py
 PKG_f_export = f_export/*.py
@@ -95,20 +106,12 @@ DIRS_dist = \
 	$(DIR_bitmaps) \
 	$(DIR_locale) \
 	$(DIR_templates) \
+	$(PACKAGES) \
 	data \
-	dbr \
 	debian \
 	docs \
-	f_export \
-	fields \
-	globals \
-	input \
 	man \
-	scripts \
-	startup \
-	system \
-	ui \
-	wiz_bin
+	scripts
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
@@ -128,7 +131,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-launcher install-man install-mime install-templates
+install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-packages install-bitmaps install-launcher install-man install-mime install-templates
 	@target=$(DESTDIR)$(prefix); \
 	bindir=$${target}/$(BINDIR); \
 	datadir=$${target}/$(DATADIR); \
@@ -143,51 +146,6 @@ install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-bitmaps install-
 	done; \
 	for py in $(FILES_root) $(EXTRA_FILES); do \
 		$(INSTALL_DATA) "$${py}" "$${datadir}"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/dbr"; \
-	for py in $(PKG_dbr); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/dbr"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/wiz_bin"; \
-	for py in $(PKG_wiz_bin); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/wiz_bin"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/globals"; \
-	for py in $(PKG_globals); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/globals"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/input"; \
-	for py in $(PKG_input); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/input"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/f_export"; \
-	for py in $(PKG_f_export); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/f_export"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/fields"; \
-	for py in $(PKG_fields); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/fields"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/startup"; \
-	for py in $(PKG_startup); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/startup"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/system"; \
-	for py in $(PKG_system); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/system"; \
-	done; \
-	\
-	mkdir -vp "$${datadir}/ui"; \
-	for py in $(PKG_ui); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}/ui"; \
 	done; \
 	\
 	$(MKDIR) "$${datadir}/docs"; \
@@ -224,6 +182,21 @@ uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime uni
 		done; \
 		find "$${datadir}" -type d -empty -delete; \
 	fi; \
+
+
+install-packages: $(PACKAGES)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	for pkg in $(PACKAGES); do \
+		if [ ! -d "$${data_dir}/$${pkg}" ]; then \
+			$(MKDIR) "$${data_dir}/$${pkg}"; \
+		fi; \
+		pyfiles="$${pkg}/*.py"; \
+		for py in $${pyfiles}; do \
+			echo "\nInstalling: $${py}"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}/$${pkg}"; \
+		done; \
+	done; \
 
 install-bitmaps: $(DIR_bitmaps)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -378,6 +351,9 @@ help:
 	echo "\t\t  the system"; \
 	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-mime`tput sgr0`,"; \
 	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
+	\
+	echo "\tinstall-packages"; \
+	echo "\t\t- Install application's Python modules & packages\n"; \
 	\
 	echo "\tinstall-bitmaps"; \
 	echo "\t\t- Install bitmaps used by application\n"; \
