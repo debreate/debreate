@@ -64,6 +64,11 @@ class FileOTarget(BorderedPanel):
         return self.PathCustom.GetValue()
     
     
+    ## Retrieves the object representing the default path
+    def GetDefaultObject(self):
+        return self.PathDefault
+    
+    
     ## Retrieves the default target path
     def GetDefaultPath(self):
         return self.PathDefault.GetLabel()
