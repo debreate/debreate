@@ -27,9 +27,12 @@ from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.select           import ComboBox
+from input.select           import ComboBoxESS
 from input.text             import TextArea
+from input.text             import TextAreaESS
 from input.text             import TextAreaPanel
 from input.toggle           import CheckBox
+from input.toggle           import CheckBoxESS
 from ui.button              import CreateButton
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowDialog
@@ -49,9 +52,7 @@ class Panel(WizardPage):
         
         # --- Buttons to open/preview/save .desktop file
         btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
-        
         btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
-        
         btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
         
         # --- CHECKBOX
@@ -61,8 +62,7 @@ class Panel(WizardPage):
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        
-        ti_type = ComboBox(self, inputid.TYPE, choices=opts_type,
+        ti_type = ComboBoxESS(self, inputid.TYPE, choices=opts_type,
                 name=u'Type', defaultValue=opts_type[0])
         
         # --- ENCODING
@@ -73,15 +73,14 @@ class Panel(WizardPage):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        
-        ti_enc = ComboBox(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
+        ti_enc = ComboBoxESS(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
                 defaultValue=opts_enc[2])
         
         # --- TERMINAL
-        chk_term = CheckBox(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
+        chk_term = CheckBoxESS(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
         
         # --- STARTUP NOTIFY
-        chk_notify = CheckBox(self, chkid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
+        chk_notify = CheckBoxESS(self, chkid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
                 defaultValue=True)
         
         # --- Custom output filename
@@ -93,23 +92,29 @@ class Panel(WizardPage):
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
-        ti_name = TextArea(self, inputid.NAME, name=u'Name')
+        ti_name = TextAreaESS(self, inputid.NAME, name=u'Name')
         ti_name.req = True
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-        
-        ti_exec = TextArea(self, inputid.EXEC, name=u'Exec')
+        ti_exec = TextAreaESS(self, inputid.EXEC, name=u'Exec')
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
-        
-        ti_comm = TextArea(self, inputid.DESCR, name=u'Comment')
+        ti_comm = TextAreaESS(self, inputid.DESCR, name=u'Comment')
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
+        ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
         
-        ti_icon = TextArea(self, inputid.ICON, name=u'Icon')
+        txt_mime = wx.StaticText(self, label=GT(u'MIME Type'), name=u'mime')
+        ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType',
+                outLabel=u'MimeType')
+        
+        # ----- OTHER/CUSTOM
+        txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
+        ti_other = TextAreaPanel(self, inputid.OTHER, name=txt_other.Name)
+        ti_other.EnableDropTarget()
         
         # --- CATEGORIES
         opts_category = (
@@ -140,7 +145,7 @@ class Panel(WizardPage):
             u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
             )
         
-        txt_category = wx.StaticText(self, label=GT(u'Category'), name=u'category')
+        txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
         
         # This option does not get set by importing a new project
         ti_category = ComboBox(self, inputid.CAT, choices=opts_category, name=txt_category.Name,
@@ -158,12 +163,6 @@ class Panel(WizardPage):
         # For manually setting background color after enable/disable
         lst_categories.default_color = lst_categories.GetBackgroundColour()
         
-        # ----- MISC
-        txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
-        
-        ti_other = TextAreaPanel(self, inputid.OTHER, name=txt_other.Name)
-        ti_other.EnableDropTarget()
-        
         self.OnToggle()
         
         SetPageToolTips(self)
@@ -171,7 +170,7 @@ class Panel(WizardPage):
         # *** Event Handling *** #
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnLoadLauncher)
-        btn_save.Bind(wx.EVT_BUTTON, self.OnSaveLauncher)
+        btn_save.Bind(wx.EVT_BUTTON, self.OnExportLauncher)
         btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewLauncher)
         
         chk_enable.Bind(wx.EVT_CHECKBOX, self.OnToggle)
@@ -182,7 +181,7 @@ class Panel(WizardPage):
         wx.EVT_KEY_DOWN(lst_categories, self.SetCategory)
         btn_catadd.Bind(wx.EVT_BUTTON, self.SetCategory)
         btn_catdel.Bind(wx.EVT_BUTTON, self.SetCategory)
-        btn_catclr.Bind(wx.EVT_BUTTON, self.SetCategory)
+        btn_catclr.Bind(wx.EVT_BUTTON, self.OnClearCategories)
         
         # *** Layout *** #
         
@@ -191,7 +190,6 @@ class Panel(WizardPage):
         RIGHT_BOTTOM = wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM
         
         lyt_top = BoxSizer(wx.HORIZONTAL)
-        #lyt_top.Add(lyt_opts1, 0, wx.EXPAND|wx.ALIGN_BOTTOM)
         lyt_top.Add(chk_enable, 0, LEFT_BOTTOM)
         lyt_top.AddStretchSpacer(1)
         lyt_top.Add(btn_open, 0, wx.ALIGN_TOP)
@@ -233,6 +231,11 @@ class Panel(WizardPage):
         lyt_mid.Add(ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
         lyt_mid.Add(ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        
+        # Row 4
+        row += 1
+        lyt_mid.Add(txt_mime, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
+        lyt_mid.Add(ti_mime, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         
         lyt_bottom = wx.GridBagSizer()
         
@@ -360,44 +363,22 @@ class Panel(WizardPage):
         return GetField(self, chkid.ENABLE).GetValue()
     
     
-    ## Loads a .desktop launcher's data
-    #  
-    #  FIXME: Might be problems with reading/writing launchers (see OnSaveLauncher)
-    #         'Others' field not being completely filled out.
-    def OnLoadLauncher(self, event=None):
-        dia = wx.FileDialog(GetMainWindow(), GT(u'Open Launcher'), os.getcwd(),
-                style=wx.FD_CHANGE_DIR)
+    ## Handles button event from clear categories button
+    def OnClearCategories(self, event=None):
+        cats = GetField(self, listid.CAT)
         
-        if ShowDialog(dia):
-            path = dia.GetPath()
+        if cats.GetItemCount():
+            clear = ConfirmationDialog(GetMainWindow(), GT(u'Confirm'), GT(u'Clear categories?'))
             
-            data = ReadFile(path, split=True)
-            
-            # Remove unneeded lines
-            if data[0] == u'[Desktop Entry]':
-                data = data[1:]
-            
-            self.Reset()
-            self.SetLauncherData(u'\n'.join(data))
-    
-    
-    ## TODO: Doxygen
-    def OnPreviewLauncher(self, event=None):
-        # Show a preview of the .desktop config file
-        config = self.GetLauncherInfo()
-        
-        dia = TextPreview(title=GT(u'Menu Launcher Preview'),
-                text=config, size=(500,400))
-        
-        dia.ShowModal()
-        dia.Destroy()
+            if clear.Confirmed():
+                cats.DeleteAllItems()
     
     
     ## Saves launcher information to file
     #  
     #  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
     #         'Others' field not being completely filled out.
-    def OnSaveLauncher(self, event=None):
+    def OnExportLauncher(self, event=None):
         Logger.Debug(__name__, u'Export launcher ...')
         
         # Get data to write to control file
@@ -431,6 +412,39 @@ class Panel(WizardPage):
                 os.remove(path)
                 # Restore from backup
                 shutil.move(backup, path)
+    
+    
+    ## Loads a .desktop launcher's data
+    #  
+    #  FIXME: Might be problems with reading/writing launchers (see OnExportLauncher)
+    #         'Others' field not being completely filled out.
+    def OnLoadLauncher(self, event=None):
+        dia = wx.FileDialog(GetMainWindow(), GT(u'Open Launcher'), os.getcwd(),
+                style=wx.FD_CHANGE_DIR)
+        
+        if ShowDialog(dia):
+            path = dia.GetPath()
+            
+            data = ReadFile(path, split=True)
+            
+            # Remove unneeded lines
+            if data[0] == u'[Desktop Entry]':
+                data = data[1:]
+            
+            self.Reset()
+            self.SetLauncherData(u'\n'.join(data))
+    
+    
+    ## TODO: Doxygen
+    def OnPreviewLauncher(self, event=None):
+        # Show a preview of the .desktop config file
+        config = self.GetLauncherInfo()
+        
+        dia = TextPreview(title=GT(u'Menu Launcher Preview'),
+                text=config, size=(500,400))
+        
+        dia.ShowModal()
+        dia.Destroy()
     
     
     ## TODO: Doxygen
