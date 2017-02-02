@@ -14,3 +14,13 @@ if wx.MAJOR_VERSION > 2:
 
 else:
     PANEL_BORDER = wx.BORDER_MASK
+
+
+## Layout styles for sizers
+class layout:
+    ALGN_LB = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+    ALGN_RB = wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM
+    CNTR_VERT = wx.ALIGN_CENTER_VERTICAL
+    PAD_LR = wx.LEFT|wx.RIGHT
+    PAD_LRB = PAD_LR|wx.BOTTOM
+    PAD_LRT = PAD_LR|wx.TOP
