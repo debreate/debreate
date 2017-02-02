@@ -260,7 +260,7 @@ class LauncherTemplate(ScrolledPanel):
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
         lyt_main.Add(lyt_mid, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_main.Add(lyt_bottom, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_bottom, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
