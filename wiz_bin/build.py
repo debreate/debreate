@@ -19,12 +19,15 @@ from globals.errorcodes     import dbrerrno
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
+from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
+from globals.paths          import PATH_app
 from globals.strings        import GS
+from globals.strings        import RemoveEmptyLines
 from globals.strings        import TextIsEmpty
 from globals.system         import PY_VER_MAJ
 from globals.tooltips       import SetPageToolTips
@@ -33,7 +36,10 @@ from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
 from input.toggle           import CheckBox
+from input.toggle           import CheckBoxESS
+from startup.tests          import UsingTest
 from ui.button              import ButtonBuild64
+from ui.checklist           import CheckListDialog
 from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -41,6 +47,7 @@ from ui.output              import OutputLog
 from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
+from ui.progress            import TimedProgressDialog
 from ui.wizard              import WizardPage
 
 
@@ -53,24 +60,24 @@ class Panel(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = CheckBox(pnl_options, chkid.MD5, GT(u'Create md5sums file'),
+        self.chk_md5 = CheckBoxESS(pnl_options, chkid.MD5, GT(u'Create md5sums file'),
                 name=u'MD5', defaultValue=True, commands=u'md5sum')
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.col = 0
         
         # Option to strip binaries
-        self.chk_strip = CheckBox(pnl_options, chkid.STRIP, GT(u'Strip binaries'), name=u'strip»',
+        self.chk_strip = CheckBoxESS(pnl_options, chkid.STRIP, GT(u'Strip binaries'), name=u'strip»',
                 defaultValue=True, commands=u'strip')
         self.chk_strip.col = 0
         
         # Deletes the temporary build tree
-        self.chk_rmstage = CheckBox(pnl_options, chkid.REMOVE, GT(u'Delete staged directory'),
+        self.chk_rmstage = CheckBoxESS(pnl_options, chkid.REMOVE, GT(u'Delete staged directory'),
                 name=u'rmstage', defaultValue=True)
         self.chk_rmstage.col = 0
         
         # Checks the output .deb for errors
-        self.chk_lint = CheckBox(pnl_options, chkid.LINT, GT(u'Check package for errors with lintian'),
+        self.chk_lint = CheckBoxESS(pnl_options, chkid.LINT, GT(u'Check package for errors with lintian'),
                 name=u'LINTIAN', defaultValue=True, commands=u'lintian')
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.col = 0
@@ -80,6 +87,14 @@ class Panel(WizardPage):
                 name=u'INSTALL', commands=(u'gdebi-gtk', u'gdebi-kde',))
         self.chk_install.tt_name = u'install»'
         self.chk_install.col = 0
+        
+        # *** Lintian Overrides *** #
+        
+        if UsingTest(u'alpha'):
+            # FIXME: Move next to lintian check box
+            self.lint_overrides = []
+            btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
+            btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
         btn_build = ButtonBuild64(self)
         btn_build.SetName(u'build')
@@ -126,6 +141,11 @@ class Panel(WizardPage):
                 wx.ALIGN_LEFT|wx.ALIGN_BOTTOM|wx.LEFT, 5)
         lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
+        
+        if UsingTest(u'alpha'):
+            #lyt_main.Add(wx.StaticText(self, label=GT(u'Lintian overrides')), 0, wx.LEFT, 5)
+            lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
+        
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
         lyt_main.Add(dsp_log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
@@ -824,6 +844,87 @@ class Panel(WizardPage):
         
         else:
             ShowErrorDialog(GT(u'Build preparation failed with unknown error'))
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  TODO: Show warning dialog that this could take a while
+    #  TODO: Add cancel option to progress dialog
+    #  FIXME: List should be cached so no need for re-scanning
+    def OnSetLintOverrides(self, event=None):
+        Logger.Debug(__name__, GT(u'Setting Lintian overrides...'))
+        
+        lintian_tags_file = u'{}/data/lintian/tags'.format(PATH_app)
+        
+        if not os.path.isfile(lintian_tags_file):
+            Logger.Error(__name__, u'Lintian tags file is missing: {}'.format(lintian_tags_file))
+            
+            return False
+        
+        lint_tags = RemoveEmptyLines(ReadFile(lintian_tags_file, split=True))
+        
+        if lint_tags:
+            Logger.Debug(__name__, u'Lintian tags set')
+            
+            # DEBUG: Start
+            if DebugEnabled() and len(lint_tags) > 50:
+                print(u'  Reducing tag count to 200 ...')
+                
+                lint_tags = lint_tags[:50]
+            
+            Logger.Debug(__name__, u'Processing {} tags'.format(len(lint_tags)))
+            # DEBUG: End
+            
+            
+            tag_count = len(lint_tags)
+            
+            def GetProgressMessage(message, count=tag_count):
+                return u'{} ({} {})'.format(message, count, GT(u'tags'))
+            
+            
+            progress = TimedProgressDialog(GetMainWindow(), GT(u'Building Tag List'),
+                    GetProgressMessage(GT(u'Scanning default tags')))
+            progress.Start()
+            
+            wx.Yield()
+            
+            # Create the dialog
+            overrides_dialog = CheckListDialog(GetMainWindow(), title=GT(u'Lintian Overrides'),
+                    allow_custom=True)
+            # FIXME: Needs progress dialog
+            overrides_dialog.InitCheckList(tuple(lint_tags))
+            
+            progress.SetMessage(GetProgressMessage(GT(u'Setting selected overrides')))
+            
+            for T in lint_tags:
+                if T in self.lint_overrides:
+                    overrides_dialog.SetItemCheckedByLabel(T)
+                    self.lint_overrides.remove(T)
+            
+            progress.SetMessage(GetProgressMessage(GT(u'Adding custom tags'), len(self.lint_overrides)))
+            
+            # Remaining tags should be custom entries
+            # FIXME:
+            if self.lint_overrides:
+                for T in self.lint_overrides:
+                    overrides_dialog.AddItem(T, True)
+            
+            progress.Stop()
+            
+            if overrides_dialog.ShowModal() == wx.ID_OK:
+                # Remove old overrides
+                self.lint_overrides = []
+                for L in overrides_dialog.GetCheckedLabels():
+                    Logger.Debug(__name__, GT(u'Adding Lintian override: {}').format(L))
+                    
+                    self.lint_overrides.append(L)
+            
+            return True
+        
+        else:
+            Logger.Debug(__name__, u'Setting lintian tags failed')
+            
+            return False
     
     
     ## TODO: Doxygen
