@@ -22,8 +22,11 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
+from input.select           import Choice
 from input.select           import ComboBox
+from input.text             import TextArea
 from input.text             import TextAreaPanel
+from input.toggle           import CheckBox
 from ui.button              import CreateButton
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
@@ -36,10 +39,10 @@ class Panel(WizardPage):
         WizardPage.__init__(self, parent, pgid.CHANGELOG)
         
         txt_package = wx.StaticText(self, label=GT(u'Package'), name=u'package')
-        self.ti_package = wx.TextCtrl(self, name=txt_package.Name)
+        self.ti_package = TextArea(self, name=txt_package.Name)
         
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
-        self.ti_version = wx.TextCtrl(self, name=txt_version.Name)
+        self.ti_version = TextArea(self, name=txt_version.Name)
         
         dist_names = GetOSDistNames()
         
@@ -50,7 +53,7 @@ class Panel(WizardPage):
         
         # Use regular text input if could not retrieve distribution names list
         else:
-            self.ti_dist = wx.TextCtrl(self, ident.DIST, name=txt_dist.Name)
+            self.ti_dist = TextArea(self, ident.DIST, name=txt_dist.Name)
         
         opts_urgency = (
             u'low',
@@ -60,15 +63,13 @@ class Panel(WizardPage):
             )
         
         txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
-        self.sel_urgency = wx.Choice(self, choices=opts_urgency, name=txt_urgency.Name)
-        self.sel_urgency.default = 0
-        self.sel_urgency.SetSelection(self.sel_urgency.default)
+        self.sel_urgency = Choice(self, choices=opts_urgency, name=txt_urgency.Name)
         
         txt_maintainer = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
-        self.ti_maintainer = wx.TextCtrl(self, name=txt_maintainer.Name)
+        self.ti_maintainer = TextArea(self, name=txt_maintainer.Name)
         
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
-        self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
+        self.ti_email = TextArea(self, name=txt_email.Name)
         
         btn_import = CreateButton(self, GT(u'Import'), u'import', btnid.IMPORT, name=u'btn import')
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
@@ -83,7 +84,7 @@ class Panel(WizardPage):
         self.btn_add = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'btn add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
-        self.chk_indentation = wx.CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
+        self.chk_indentation = CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
         
         self.dsp_changes = TextAreaPanel(self, monospace=True, name=u'log')
         self.dsp_changes.EnableDropTarget()
