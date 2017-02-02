@@ -532,7 +532,7 @@ def ReplaceStandardButtons(dialog):
 #  \param label
 #    Text to be shown on button or tooltip
 #  \param image
-#    Base name of image file to use for custom buttons
+#    Base name of image file to use for custom buttons (uses standard button if set to 'None')
 #  \param size
 #    Image size to use for button
 #  \param btnId
@@ -543,13 +543,14 @@ def ReplaceStandardButtons(dialog):
 #    Name attribute
 #  \return
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
-def CreateButton(parent, label, image, btnId=wx.ID_ANY, size=32, tooltip=None, name=None):
-    btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
+def CreateButton(parent, label, image=None, btnId=wx.ID_ANY, size=32, tooltip=None, name=None):
+    if image:
+        btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
     
     if not name:
         name = label
     
-    if os.path.isfile(btn_image):
+    if image and os.path.isfile(btn_image):
         btn = CustomButton(parent, btn_image, btnId, name=name)
     
     else:
