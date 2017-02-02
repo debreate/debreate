@@ -28,13 +28,26 @@ from ui.panel       import BorderedPanel
 #    Should be wx.TextCtrl or derived class
 class FileOTarget(BorderedPanel):
     def __init__(self, parent, defaultPath, win_id=-1, defaultType=CheckBox, defaultValue=True,
-            customType=PathCtrl, name=u'file_output_target'):
+            customType=PathCtrl, name=u'file_output_target', pathIds=[]):
         
         BorderedPanel.__init__(self, parent, win_id, name=name)
         
-        self.PathDefault = defaultType(self, label=defaultPath, defaultValue=defaultValue)
+        id_default = wx.ID_ANY
+        id_custom = wx.ID_ANY
         
-        self.PathCustom = customType(self)
+        if pathIds:
+            if isinstance(pathIds, int):
+                id_default = pathIds
+            
+            else:
+                id_default = pathIds[0]
+                
+                if len(pathIds) > 1:
+                    id_custom = pathIds[1]
+        
+        self.PathDefault = defaultType(self, id_default, defaultPath, defaultValue=defaultValue)
+        
+        self.PathCustom = customType(self, id_custom)
         
         # *** Event Handing *** #
         
