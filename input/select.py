@@ -11,6 +11,7 @@ from wx.combo import OwnerDrawnComboBox
 
 from dbr.font           import MONOSPACED_MD
 from globals.strings    import TextIsEmpty
+from input.essential    import EssentialField
 from input.ifield       import InputField
 
 
@@ -46,6 +47,17 @@ class Choice(wx.Choice, InputField):
         
         if cached_value:
             self.SetStringSelection(cached_value)
+
+
+## Choice class that notifies main window to mark the project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
+class ChoiceESS(Choice, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr):
+        
+        Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
+        EssentialField.__init__(self)
 
 
 ## Custom combo box that sets background colors when enabled/disabled
@@ -134,3 +146,16 @@ class ComboBox(OwnerDrawnComboBox, InputField):
         
         if not TextIsEmpty(cached_value):
             self.SetValue(cached_value)
+
+
+## ComboBox class that notifies main window to mark the project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
+class ComboBoxESS(ComboBox, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
+            name=wx.ComboBoxNameStr, monospace=False):
+        
+        ComboBox.__init__(self, parent, win_id, value, pos, size, choices, style, validator,
+                name, monospace)
+        EssentialField.__init__(self)
