@@ -124,17 +124,17 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ExportPage(self):
-        return self.GetCopyright()
+        return self.Get()
     
     
     ## TODO: Doxygen
     def GatherData(self):
-        data = self.GetCopyright()
+        data = self.Get()
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
     
-    ## TODO: Doxygen
-    def GetCopyright(self):
+    ## Retrieve contents of page
+    def Get(self):
         return self.dsp_copyright.GetValue()
     
     
