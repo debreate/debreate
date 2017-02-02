@@ -154,8 +154,8 @@ class ComboBox(OwnerDrawnComboBox, InputField):
 class ComboBoxESS(ComboBox, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
-            name=wx.ComboBoxNameStr, monospace=False):
+            name=wx.ComboBoxNameStr, monospace=False, defaultValue=wx.EmptyString):
         
         ComboBox.__init__(self, parent, win_id, value, pos, size, choices, style, validator,
-                name, monospace)
+                name, monospace, defaultValue)
         EssentialField.__init__(self)
