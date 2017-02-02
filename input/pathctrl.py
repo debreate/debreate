@@ -62,7 +62,7 @@ class PathCtrl(TextArea):
         self.SetInsertionPointEnd()
     
     
-    ## If using 'Warn', changed backgroun to red if path doesn't exists on system
+    ## If using 'Warn', changed background to red if path doesn't exists on system
     def SetPathAvailable(self):
         if self.Warn:
             if os.path.isdir(self.GetValue()):
@@ -82,10 +82,12 @@ class PathCtrl(TextArea):
         self.default = default
 
 
-## This is a dummy class to facilitate merging to & from unstable branch
+## PathCtrl that notifies main window to mark project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
 class PathCtrlESS(PathCtrl, EssentialField):
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
+    def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
             name=wx.TextCtrlNameStr):
         
-        PathCtrl.__init__(self, parent, ctrl_id, value, defaultValue, warn, name)
+        PathCtrl.__init__(self, parent, win_id, value, defaultValue, warn, name)
         EssentialField.__init__(self)
