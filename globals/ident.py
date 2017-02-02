@@ -184,6 +184,7 @@ class BtnId(FieldId):
         self.CANCEL = self.AddStaticId(wx.ID_CANCEL)
         self.CLEAR = self.AddStaticId(wx.ID_CLEAR)
         self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK)
+        self.IMPORT = self.NewId()
         self.MODE = self.NewId()
         self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW)
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE)
