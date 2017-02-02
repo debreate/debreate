@@ -13,6 +13,7 @@ from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import btnid
 from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import listid
@@ -21,6 +22,7 @@ from globals.ident          import txtid
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetAllTypeFields
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
@@ -480,25 +482,31 @@ class Panel(WizardPage):
         ti_filename.Enable(True)
     
     
-    ## TODO: Doxygen
+    ## Enables/Disables fields for creating a launcher
     def OnToggle(self, event=None):
-        enable = GetField(self, chkid.ENABLE).IsChecked()
+        enabled = GetField(self, chkid.ENABLE).IsChecked()
         
-        listctrl_bgcolor_defs = {
-            True: GetField(self, listid.CAT).default_color,
-            False: wx.Colour(214, 214, 214),
-        }
+        # Fields that should not be disabled
+        skip_ids = (
+            chkid.ENABLE,
+            btnid.BROWSE,
+            txtid.FNAME,
+            )
         
-        for group in self.opts_button, self.opts_choice, self.opts_input, \
-                self.opts_list, self.labels:
-            for O in group:
-                O.Enable(enable)
-                
-                # Small hack to gray-out ListCtrl when disabled
-                if isinstance(O, wx.ListCtrl):
-                    O.SetBackgroundColour(listctrl_bgcolor_defs[enable])
+        for LIST in inputid, chkid, listid, btnid:
+            for ID in LIST.IdList:
+                if ID not in skip_ids:
+                    field = GetField(self, ID)
+                    
+                    if isinstance(field, wx.Window):
+                        field.Enable(enabled)
         
-        GetField(self, chkid.FNAME).Enable(enable)
+        # Disable/Enable static text labels
+        st_labels = GetAllTypeFields(self, wx.StaticText)
+        for ST in st_labels:
+            if ST.Id not in skip_ids:
+                ST.Enable(enabled)
+        
         self.OnSetCustomFilename()
     
     
