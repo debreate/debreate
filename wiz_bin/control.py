@@ -22,9 +22,11 @@ from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
-from input.charctrl         import CharCtrl
-from input.select           import ComboBox
-from input.text             import TextAreaPanel
+from input.select           import ChoiceESS
+from input.select           import ComboBoxESS
+from input.text             import TextAreaESS
+from input.text             import TextAreaPanelESS
+from input.toggle           import CheckBoxESS
 from ui.button              import ButtonBrowse64
 from ui.button              import ButtonPreview64
 from ui.button              import ButtonSave64
@@ -56,22 +58,22 @@ class Panel(WizardPage):
         
         txt_package = wx.StaticText(pnl_require, label=GT(u'Package'), name=u'package')
         txt_package.req = True
-        ti_package = CharCtrl(pnl_require, inputid.PACKAGE, name=txt_package.Name)
+        ti_package = TextAreaESS(pnl_require, inputid.PACKAGE, name=txt_package.Name)
         ti_package.req = True
         
         txt_version = wx.StaticText(pnl_require, label=GT(u'Version'), name=u'version')
         txt_version.req = True
-        ti_version = CharCtrl(pnl_require, inputid.VERSION, name=txt_version.Name)
+        ti_version = TextAreaESS(pnl_require, inputid.VERSION, name=txt_version.Name)
         ti_version.req = True
         
         txt_maintainer = wx.StaticText(pnl_require, label=GT(u'Maintainer'), name=u'maintainer')
         txt_maintainer.req = True
-        ti_maintainer = wx.TextCtrl(pnl_require, inputid.MAINTAINER, name=txt_maintainer.Name)
+        ti_maintainer = TextAreaESS(pnl_require, inputid.MAINTAINER, name=txt_maintainer.Name)
         ti_maintainer.req = True
         
         txt_email = wx.StaticText(pnl_require, label=GT(u'Email'), name=u'email')
         txt_email.req = True
-        ti_email = wx.TextCtrl(pnl_require, inputid.EMAIL, name=txt_email.Name)
+        ti_email = TextAreaESS(pnl_require, inputid.EMAIL, name=txt_email.Name)
         ti_email.req = True
         
         opts_arch = (
@@ -83,7 +85,7 @@ class Panel(WizardPage):
             )
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
-        sel_arch = wx.Choice(pnl_require, inputid.ARCH, choices=opts_arch, name=txt_arch.Name)
+        sel_arch = ChoiceESS(pnl_require, inputid.ARCH, choices=opts_arch, name=txt_arch.Name)
         sel_arch.default = 0
         sel_arch.SetSelection(sel_arch.default)
         
@@ -104,7 +106,7 @@ class Panel(WizardPage):
             )
         
         txt_section = wx.StaticText(pnl_recommend, label=GT(u'Section'), name=u'section')
-        ti_section = ComboBox(pnl_recommend, choices=opts_section, name=txt_section.Name)
+        ti_section = ComboBoxESS(pnl_recommend, choices=opts_section, name=txt_section.Name)
         
         opts_priority = (
             u'optional',
@@ -115,36 +117,29 @@ class Panel(WizardPage):
             )
         
         txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
-        sel_priority = wx.Choice(pnl_recommend, choices=opts_priority, name=txt_priority.Name)
+        sel_priority = ChoiceESS(pnl_recommend, choices=opts_priority, name=txt_priority.Name)
         sel_priority.default = 0
         sel_priority.SetSelection(sel_priority.default)
         
         txt_synopsis = wx.StaticText(pnl_recommend, label=GT(u'Short Description'), name=u'synopsis')
-        ti_synopsis = wx.TextCtrl(pnl_recommend, name=txt_synopsis.Name)
+        ti_synopsis = TextAreaESS(pnl_recommend, name=txt_synopsis.Name)
         
         txt_description = wx.StaticText(pnl_recommend, label=GT(u'Long Description'), name=u'description')
-        self.ti_description = TextAreaPanel(pnl_recommend, name=txt_description.Name)
+        self.ti_description = TextAreaPanelESS(pnl_recommend, name=txt_description.Name)
         
         # *** Optional fields *** #
         
         pnl_option = BorderedPanel(pnl_bg)
         
         txt_source = wx.StaticText(pnl_option, label=GT(u'Source'), name=u'source')
-        ti_source = wx.TextCtrl(pnl_option, name=txt_source.Name)
+        ti_source = TextAreaESS(pnl_option, name=txt_source.Name)
         
         txt_homepage = wx.StaticText(pnl_option, label=GT(u'Homepage'), name=u'homepage')
-        ti_homepage = wx.TextCtrl(pnl_option, name=txt_homepage.Name)
+        ti_homepage = TextAreaESS(pnl_option, name=txt_homepage.Name)
         
         txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
-        self.chk_essential = wx.CheckBox(pnl_option, name=u'essential')
+        self.chk_essential = CheckBoxESS(pnl_option, name=u'essential')
         self.chk_essential.default = False
-        
-        # List all widgets to check if fields have changed after keypress
-        # This is for determining if the project is saved
-        self.grp_keypress = {
-            ti_package: wx.EmptyString,
-            ti_version: wx.EmptyString,
-            }
         
         self.grp_input = (
             ti_package,
@@ -171,9 +166,6 @@ class Panel(WizardPage):
         btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
         btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
         
-        for widget in self.grp_keypress:
-            wx.EVT_KEY_DOWN(widget, self.OnKeyDown)
-            wx.EVT_KEY_UP(widget, self.OnKeyUp)
         
         # *** Layout *** #
         
@@ -444,28 +436,6 @@ class Panel(WizardPage):
         browse_dialog = GetFileOpenDialog(GetMainWindow(), GT(u'Open File'))
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
-    
-    
-    ## Determins if project has been modified
-    def OnKeyDown(self, event=None):
-        for widget in self.grp_keypress:
-            self.grp_keypress[widget] = widget.GetValue()
-        
-        if event:
-            event.Skip()
-    
-    
-    ## TODO: Doxygen
-    def OnKeyUp(self, event=None):
-        modified = False
-        for widget in self.grp_keypress:
-            if widget.GetValue() != self.grp_keypress[widget]:
-                modified = True
-        
-        GetMainWindow().SetSavedStatus(modified)
-        
-        if event:
-            event.Skip()
     
     
     ## Show a preview of the control file
