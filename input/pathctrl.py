@@ -12,23 +12,17 @@ from input.essential    import EssentialField
 from input.text         import TextArea
 
 
-PATH_DEFAULT = wx.NewId()
-PATH_WARN = wx.NewId()
-
-
-## TODO: Doxygen
-#  
-#  FIXME: Use boolean value instead of type
+## A text area that can track if it's value is an actual path on the system
 class PathCtrl(TextArea):
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=u'/', defaultValue=u'/', ctrl_type=PATH_DEFAULT,
-            default=wx.EmptyString, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
+            name=wx.TextCtrlNameStr):
         
-        TextArea.__init__(self, parent, ctrl_id, value, defaultValue, name=name)
+        TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
         
-        self.ctrl_type = ctrl_type
+        # TODO: Rename to 'self.Default'
+        self.default = defaultValue
         
-        # Get the value of the textctrl so it can be restored
-        self.default = default
+        self.Warn = warn
         
         # For restoring color of text area
         self.clr_default = self.GetBackgroundColour()
@@ -36,17 +30,16 @@ class PathCtrl(TextArea):
         # Make sure first character is forward slash
         wx.EVT_KEY_UP(self, self.OnKeyUp)
         
-        # Check if path is available on construction
-        if self.ctrl_type == PATH_WARN:
-            self.SetPathAvailable()
+        # Set to default value & check path availability on construction
+        self.Reset()
     
     
-    ## TODO: Doxygen
+    ## Retrieves the text area's default value
     def GetDefaultValue(self):
         return self.default
     
     
-    ## TODO: Doxygen
+    ## Key events trigger checking path availability
     def OnKeyUp(self, event=None):
         value = self.GetValue()
         insertion_point = self.GetInsertionPoint()+1
@@ -54,46 +47,45 @@ class PathCtrl(TextArea):
             self.SetValue(u'/{}'.format(value))
             self.SetInsertionPoint(insertion_point)
         
-        # If PathCtrl is set to warn on non-existent paths, change background color to red when path
-        # doesn't exist
         value = self.GetValue()
-        if self.ctrl_type == PATH_WARN:
-            self.SetPathAvailable()
+        self.SetPathAvailable()
         
         if event:
             event.Skip()
     
     
     ## Resets text area to default value
-    #  
-    #  \override input.text.TextArea.Reset
     def Reset(self):
-        TextArea.Reset(self)
+        self.SetValue(self.default)
         
-        if self.ctrl_type == PATH_WARN:
-            self.SetPathAvailable()
-        
+        self.SetPathAvailable()
         self.SetInsertionPointEnd()
     
     
-    ## TODO: Doxygen
+    ## If using 'Warn', changed background to red if path doesn't exists on system
     def SetPathAvailable(self):
-        if os.path.isdir(self.GetValue()):
-            self.SetBackgroundColour(self.clr_default)
-            return
-        
-        self.SetBackgroundColour(u'red')
+        if self.Warn:
+            if os.path.isdir(self.GetValue()):
+                self.SetBackgroundColour(self.clr_default)
+                return
+            
+            self.SetBackgroundColour(u'red')
     
     
-    ## TODO: Doxygen
+    ## Checks if field will show a warning when path is not available
+    def ShowsWarning(self):
+        return self.Warn
+    
+    
+    ## Sets the text area's default value
     def SetDefaultValue(self, default):
         self.default = default
 
 
-## TODO: Doxygen
+## PathCtrl that notifies main window to mark project dirty
 class PathCtrlESS(PathCtrl, EssentialField):
-    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, ctrl_type=PATH_DEFAULT,
-            default=wx.EmptyString, name=wx.TextCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
+            name=wx.TextCtrlNameStr):
         
-        PathCtrl.__init__(self, parent, ctrl_id, value, ctrl_type, default, name)
+        PathCtrl.__init__(self, parent, win_id, value, defaultValue, warn, name)
         EssentialField.__init__(self)
