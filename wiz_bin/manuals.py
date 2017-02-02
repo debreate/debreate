@@ -132,11 +132,6 @@ class Panel(WizardPage):
         self.Tabs.OnRenameTab(event)
     
     
-    ## Removes all tabs & sets page to default values
-    def Reset(self):
-        self.Tabs.DeleteAllPages()
-    
-    
     ## Either renames an existing page or creates a new one
     #  
     #  \param index
