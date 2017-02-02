@@ -296,6 +296,11 @@ class MultiTemplate(BoxSizer):
                         return label.SetLabel(newLabel)
     
     
+    ## Reset notebook instance to default values
+    def Reset(self):
+        self.Tabs.DeleteAllPages()
+    
+    
     ## Either renames an existing tab/page or creates a new one
     #
     #  \param index
