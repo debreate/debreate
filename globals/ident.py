@@ -155,12 +155,15 @@ class InputId(FieldId):
         self.ARCH = self.NewId()
         self.CAT = self.NewId()
         self.CAT2 = self.NewId()
+        self.CHANGES = self.NewId()
         self.CHECK = self.NewId()
         self.CUSTOM = self.NewId()
         self.DESCR = self.NewId()
+        self.DIST = self.NewId()
         self.EMAIL = self.NewId()
         self.ENC = self.NewId()
         self.EXEC = self.NewId()
+        self.FNAME = self.NewId()
         self.ICON = self.NewId()
         self.KEY = self.NewId()
         self.LIST = self.NewId()
@@ -171,6 +174,7 @@ class InputId(FieldId):
         self.NOTIFY = self.NewId()
         self.OTHER = self.NewId()
         self.PACKAGE = self.NewId()
+        self.TARGET = self.NewId()
         self.TERM = self.NewId()
         self.TYPE = self.NewId()
         self.VALUE = self.NewId()
@@ -189,6 +193,7 @@ class BtnId(FieldId):
         self.CANCEL = self.AddStaticId(wx.ID_CANCEL)
         self.CLEAR = self.AddStaticId(wx.ID_CLEAR)
         self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK)
+        self.IMPORT = self.NewId()
         self.MODE = self.NewId()
         self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW)
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE)
@@ -206,7 +211,12 @@ class ChkId(FieldId):
         self.CAT = self.NewId()
         self.ENABLE = self.NewId()
         self.FNAME = self.NewId()
+        self.LINT = self.NewId()
+        self.MD5 = self.NewId()
         self.NOTIFY = self.NewId()
+        self.REMOVE = self.NewId()
+        self.STRIP = self.NewId()
+        self.TARGET = self.NewId()
         self.TERM = self.NewId()
 
 chkid = ChkId()
@@ -239,6 +249,8 @@ class manid:
 class SelId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
+        
+        self.URGENCY = self.NewId()
 
 selid = SelId()
 
