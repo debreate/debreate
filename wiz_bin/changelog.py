@@ -361,18 +361,6 @@ class Panel(WizardPage):
             if not TextIsEmpty(field_value):
                 F.SetValue(field_value)
     
-    ## TODO: Doxygen
-    def Reset(self):
-        self.ti_package.Clear()
-        self.ti_version.Clear()
-        self.ti_dist.Clear()
-        self.sel_urgency.SetSelection(self.sel_urgency.default)
-        self.ti_maintainer.Clear()
-        self.ti_email.Clear()
-        self.ti_changes.Clear()
-        self.pnl_target.Reset()
-        self.dsp_changes.Clear()
-    
     
     ## TODO: Doxygen
     def Set(self, data):
