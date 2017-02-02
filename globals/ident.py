@@ -183,6 +183,27 @@ class btnid:
     RENAME = wx.NewId()
 
 
+## IDs for check box fields
+class ChkId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.ENABLE = self.NewId()
+        self.FNAME = self.NewId()
+
+chkid = ChkId()
+
+
+## IDs for list fields
+class ListId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.CAT = self.NewId()
+
+listid = ListId()
+
+
 ## IDs referencing manual pages
 class manid:
     # Starting ID number
@@ -194,6 +215,27 @@ class manid:
     STATIC = AddId(current_id)
     MULTILINE = AddId(current_id)
     MUTABLE = AddId(current_id)
+
+
+## IDs for choice/selection fields
+class SelId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.NOTIFY = self.NewId()
+        self.TERM = self.NewId()
+
+selid = SelId()
+
+
+## IDs for static text fields
+class TxtId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.FNAME = self.NewId()
+
+txtid = TxtId()
 
 
 ## IDs for reference manual menu item links
