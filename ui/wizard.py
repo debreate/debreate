@@ -354,3 +354,8 @@ class WizardPage(ScrolledPanel):
         Logger.Debug(__name__, GT(u'Page {} does not override inherited method InitPage').format(self.GetName()))
         
         return False
+    
+    
+    ## Does not do anything unless overridden by inheriting methods
+    def Reset(self):
+        Logger.Debug(__name__, GT(u'Page {} does not override inherited method Reset').format(self.GetName()))
