@@ -23,6 +23,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanelESS
+from ui.button              import CreateButton
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
@@ -62,8 +63,8 @@ class Panel(WizardPage):
         self.sel_templates.default = 0
         self.sel_templates.SetSelection(self.sel_templates.default)
         
-        btn_template = wx.Button(self, label=GT(u'Generate Template'), name=u'full»')
-        self.btn_template_simple = wx.Button(self, label=GT(u'Generate Simple Template'), name=u'simple»')
+        btn_template = CreateButton(self, GT(u'Generate Template'), name=u'full»')
+        self.btn_template_simple = CreateButton(self, GT(u'Generate Simple Template'), name=u'simple»')
         
         if not self.sel_templates.GetCount():
             self.sel_templates.Enable(False)
