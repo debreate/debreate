@@ -205,6 +205,11 @@ class Wizard(wx.Panel):
             P.Export(out_dir)
     
     
+    ## Retrieves all current page instances
+    def GetAllPages(self):
+        return tuple(self.pages)
+    
+    
     ## Retrieve currently showing page
     def GetCurrentPage(self):
         for page in self.pages:
