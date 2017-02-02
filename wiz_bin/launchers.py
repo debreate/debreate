@@ -15,6 +15,8 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import btnid
+from globals.ident          import inputid
+from globals.ident          import listid
 from globals.ident          import page_ids
 from globals.ident          import pgid
 from globals.strings        import GS
@@ -55,6 +57,11 @@ if UsingTest(u'alpha'):
             
             ## Override default label
             self.label = GT(u'Menu Launchers')
+            
+            self.IgnoreResetIds = [
+                inputid.OTHER,
+                listid.CAT,
+                ]
             
             templates = MultiTemplate(self, LauncherTemplate)
             
