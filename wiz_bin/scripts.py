@@ -26,7 +26,6 @@ from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.markdown         import MarkdownDialog
-from input.pathctrl         import PATH_WARN
 from input.pathctrl         import PathCtrl
 from input.select           import ComboBoxESS
 from input.text             import TextAreaPanelESS
@@ -92,7 +91,7 @@ class Panel(WizardPage):
         
         # Auto-Link path for new link
         txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
-        self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', ctrl_type=PATH_WARN)
+        self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', warn=True)
         self.ti_autolink.SetName(u'target')
         self.ti_autolink.default = self.ti_autolink.GetValue()
         
