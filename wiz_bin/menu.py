@@ -28,12 +28,7 @@ from input.select           import ComboBox
 from input.text             import TextArea
 from input.text             import TextAreaPanel
 from input.toggle           import CheckBox
-from ui.button              import ButtonAdd
-from ui.button              import ButtonBrowse
-from ui.button              import ButtonClear
-from ui.button              import ButtonPreview
-from ui.button              import ButtonRemove
-from ui.button              import ButtonSave
+from ui.button              import CreateButton
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
@@ -58,15 +53,12 @@ class Panel(WizardPage):
         self.labels = []
         
         # --- Buttons to open/preview/save .desktop file
-        btn_open = ButtonBrowse(self)
-        btn_open.SetName(u'open')
+        btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
         
-        btn_save = ButtonSave(self)
-        btn_save.SetName(u'export')
+        btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
         self.opts_button.append(btn_save)
         
-        btn_preview = ButtonPreview(self)
-        btn_preview.SetName(u'preview')
+        btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
         self.opts_button.append(btn_preview)
         
         # --- CHECKBOX
@@ -175,9 +167,9 @@ class Panel(WizardPage):
                 defaultValue=opts_category[0])
         self.opts_input.append(ti_category)
         
-        btn_catadd = ButtonAdd(self, name=u'add category')
-        btn_catdel = ButtonRemove(self, name=u'rm category')
-        btn_catclr = ButtonClear(self, name=u'clear categories')
+        btn_catadd = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'add category')
+        btn_catdel = CreateButton(self, GT(u'Remove'), u'remove', btnid.REMOVE, name=u'rm category')
+        btn_catclr = CreateButton(self, GT(u'Clear'), u'clear', btnid.CLEAR, name=u'clear category')
         
         for B in btn_catadd, btn_catdel, btn_catclr:
             self.opts_button.append(B)
