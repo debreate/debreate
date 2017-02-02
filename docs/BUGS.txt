@@ -1,7 +1,6 @@
 -- Known Bugs --
 
 Must be fixed before release:
-- ComboBox choices on changelog page are deleted when Reset is called
 - PathCtrl.Reset not working correctly (perhaps conflicts with InputField.Reset)
 
 Priority:
