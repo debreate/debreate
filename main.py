@@ -691,7 +691,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if ConfirmationDialog(self, text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
             return False
         
-        for page in self.all_pages:
+        for page in self.Wizard.GetAllPages():
             page.Reset()
         
         self.SetTitle(default_title)
