@@ -4,6 +4,7 @@ Next Release:
   - 'List files individually' & 'Preserve top-level directories' should be saved to config
 - Scripts page:
   - Scan listed directories for executables
+- Set list of field IDs to be ignored when 'Reset' called on WizardPage
 
 Priority:
 - Use globals.thread module for all threading activity
