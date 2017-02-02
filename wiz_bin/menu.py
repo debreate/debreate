@@ -108,8 +108,7 @@ class Panel(WizardPage):
         ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
         
         txt_mime = wx.StaticText(self, label=GT(u'MIME Type'), name=u'mime')
-        ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType',
-                outLabel=u'MimeType')
+        ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType')    
         
         # ----- OTHER/CUSTOM
         txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
