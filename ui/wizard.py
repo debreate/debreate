@@ -191,6 +191,11 @@ class Wizard(wx.Panel):
             raise TypeError(u'Must be bool or int value')
     
     
+    ## Retrieves all current page instances
+    def GetAllPages(self):
+        return tuple(self.pages)
+    
+    
     ## Retrieve currently showing page
     def GetCurrentPage(self):
         for page in self.pages:
