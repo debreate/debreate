@@ -28,7 +28,7 @@ def TextIsEmpty(text):
 def RemoveEmptyLines(text):
     fmt_string = False
     
-    if isinstance(text, (unicode, str)):
+    if IsString(text):
         fmt_string = True
         text = text.split(u'\n')
     
@@ -64,12 +64,11 @@ def IsString(text):
 #  \return
 #    Compatible string
 def GetString(item):
-    if sys.version_info[0] <= 2:
-        if not isinstance(item, unicode):
+    if not IsString(item):
+        if sys.version_info[0] <= 2:
             item = unicode(item)
-    
-    else:
-        if not isinstance(item, str):
+        
+        else:
             item = str(item)
     
     return item
