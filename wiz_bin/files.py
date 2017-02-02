@@ -18,7 +18,7 @@ from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetMainWindow
-from input.list             import FileList
+from input.list             import FileListESS
 from input.toggle           import CheckBoxCFG
 from ui.button              import ButtonAdd
 from ui.button              import ButtonBrowse
@@ -81,6 +81,7 @@ class Panel(WizardPage):
         self.rb_custom.SetValue(self.rb_custom.default)
         
         # group buttons together
+        # FIXME: Unnecessary???
         self.grp_targets = (
             rb_bin,
             rb_usrbin,
@@ -104,7 +105,7 @@ class Panel(WizardPage):
         btn_refresh = ButtonRefresh(self)
         
         # Display area for files added to list
-        self.lst_files = FileList(self, inputid.LIST, name=u'filelist')
+        self.lst_files = FileListESS(self, inputid.LIST, name=u'filelist')
         
         # *** Event Handling *** #
         
@@ -323,6 +324,11 @@ class Panel(WizardPage):
         return self.tree_dirs
     
     
+    ## Retrieve number of files in list
+    def GetFileCount(self):
+        return self.lst_files.GetItemCount()
+    
+    
     ## Retrieves FileList instances
     def GetListInstance(self):
         return self.lst_files
@@ -539,13 +545,14 @@ class Panel(WizardPage):
         self.lst_files.RemoveSelected()
     
     
-    ## TODO: Doxygen
+    ## Resets all fields on page to default values
     def Reset(self):
-        self.chk_individuals.SetValue(self.chk_individuals.default)
-        self.rb_custom.SetValue(self.rb_custom.default)
-        self.OnSetDestination()
-        self.ti_target.SetValue(self.ti_target.default)
         self.lst_files.DeleteAllItems()
+    
+    
+    ## TODO: Doxygen
+    def SelectAll(self):
+        self.lst_files.SelectAll()
     
     
     ## TODO: Doxygen
