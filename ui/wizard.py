@@ -12,10 +12,15 @@ from dbr.event              import ChangePageEvent
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import chkid
+from globals.ident          import inputid
+from globals.ident          import listid
 from globals.ident          import page_ids
+from globals.ident          import selid
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.markdown         import MarkdownDialog
 from startup.tests          import GetTestList
@@ -339,6 +344,9 @@ class WizardPage(ScrolledPanel):
         
         ## Label to show in title & menu
         self.label = None
+        
+        ## List of IDs that should not be reset
+        self.IgnoreResetIds = []
     
     
     ## TODO: Doxygen
@@ -356,6 +364,23 @@ class WizardPage(ScrolledPanel):
         return False
     
     
-    ## Does not do anything unless overridden by inheriting methods
+    ## Resets page fields to default settings
+    #
+    #  Set the IgnoreResetIds attribute for any field that should not be reset
     def Reset(self):
-        Logger.Debug(__name__, GT(u'Page {} does not override inherited method Reset').format(self.GetName()))
+        field_ids = (
+            chkid,
+            inputid,
+            listid,
+            selid,
+            )
+        
+        for IDTYPE in field_ids:
+            idlist = IDTYPE.IdList
+            
+            for ID in idlist:
+                if ID not in self.IgnoreResetIds:
+                    field = GetField(self, ID)
+                    
+                    if isinstance(field, wx.Window):
+                        field.Reset()
