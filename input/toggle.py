@@ -61,6 +61,12 @@ class CheckBox(wx.CheckBox):
     ## TODO: Doxygen
     def SetDefaultValue(self, value):
         self.default = value
+    
+    
+    ## Override inherited method to not allow changing value if disabled
+    def SetValue(self, value):
+        if FieldEnabled(self):
+            return wx.CheckBox.SetValue(self, value)
 
 
 ## CheckBox that updates config file when value is changed
