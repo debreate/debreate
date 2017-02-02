@@ -254,19 +254,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def Reset(self):
-        self.ti_package.Clear()
-        self.ti_version.Clear()
-        self.ti_dist.Clear()
-        self.sel_urgency.SetSelection(self.sel_urgency.default)
-        self.ti_maintainer.Clear()
-        self.ti_email.Clear()
-        self.ti_changes.Clear()
-        self.pnl_target.Reset()
-        self.dsp_changes.Clear()
-    
-    
-    ## TODO: Doxygen
     def SetChangelog(self, data):
         changelog = data.split(u'\n')
         target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
