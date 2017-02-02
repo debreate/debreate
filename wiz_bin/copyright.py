@@ -79,6 +79,13 @@ class Panel(WizardPage):
         if self.sel_templates.IsEnabled():
             self.OnSelectTemplate(self.sel_templates)
         
+        # *** Event Handling *** #
+        
+        self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
+        
+        btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
+        
         # *** Layout *** #
         
         # Putting the generate buttons in their own sizer & making them
@@ -101,13 +108,6 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Event handlers *** #
-        
-        self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
-        
-        btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
     
     
     ## TODO: Doxygen
