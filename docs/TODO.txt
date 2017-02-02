@@ -5,6 +5,7 @@ Next Release:
 - Scripts page:
   - Scan listed directories for executables
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
+- Set field IDs for all pages to work with 'Reset' method
 
 Priority:
 - Use globals.thread module for all threading activity
