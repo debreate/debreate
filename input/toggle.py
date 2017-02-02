@@ -8,17 +8,20 @@
 
 import wx
 
+from fields.cmdfield        import CommandField
 from globals.wizardhelper   import FieldEnabled
 from input.cfgfield         import ConfigField
 from input.essential        import EssentialField
 
 
 ## Standard wx.CheckBox
-class CheckBox(wx.CheckBox):
+class CheckBox(wx.CheckBox, CommandField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False):
+                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
+                commands=None, requireAll=False):
         
         wx.CheckBox.__init__(self, parent, win_id, label, pos, size, style, name=name)
+        CommandField.__init__(self, commands, requireAll)
         
         self.default = defaultValue
         self.tt_name = name
