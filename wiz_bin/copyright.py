@@ -285,7 +285,7 @@ class Panel(WizardPage):
     
     
     ## Sets the text of the displayed copyright
-    def SetCopyright(self, data):
+    def Set(self, data):
         self.dsp_copyright.SetValue(data)
     
     
