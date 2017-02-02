@@ -15,7 +15,6 @@ from dbr.log                import Logger
 from dbr.md5                import WriteMD5
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
-from globals.cmdcheck       import CommandExists
 from globals.errorcodes     import dbrerrno
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
@@ -54,37 +53,32 @@ class Panel(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = CheckBox(pnl_options, inputid.MD5, label=GT(u'Create md5sums file'))
+        self.chk_md5 = CheckBox(pnl_options, chkid.MD5, GT(u'Create md5sums file'),
+                name=u'MD5', defaultValue=True, commands=u'md5sum')
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
-        self.chk_md5.SetName(u'MD5')
-        self.chk_md5.default = True
         self.chk_md5.col = 0
         
         # Option to strip binaries
-        self.chk_strip = CheckBox(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
-        self.chk_strip.default = True
+        self.chk_strip = CheckBox(pnl_options, chkid.STRIP, GT(u'Strip binaries'), name=u'strip»',
+                defaultValue=True, commands=u'strip')
         self.chk_strip.col = 0
         
         # Deletes the temporary build tree
-        self.chk_rmstage = CheckBox(pnl_options, label=GT(u'Delete staged directory'))
-        self.chk_rmstage.SetName(u'rmstage')
-        self.chk_rmstage.default = True
-        self.chk_rmstage.SetValue(self.chk_rmstage.default)
+        self.chk_rmstage = CheckBox(pnl_options, chkid.REMOVE, GT(u'Delete staged directory'),
+                name=u'rmstage', defaultValue=True)
         self.chk_rmstage.col = 0
         
         # Checks the output .deb for errors
-        self.chk_lint = CheckBox(pnl_options, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint = CheckBox(pnl_options, chkid.LINT, GT(u'Check package for errors with lintian'),
+                name=u'LINTIAN', defaultValue=True, commands=u'lintian')
         self.chk_lint.tt_name = u'lintian»'
-        self.chk_lint.SetName(u'LINTIAN')
-        self.chk_lint.default = True
         self.chk_lint.col = 0
         
         # Installs the deb on the system
-        self.chk_install = CheckBox(pnl_options, label=GT(u'Install package after build'))
+        self.chk_install = CheckBox(pnl_options, label=GT(u'Install package after build'),
+                name=u'INSTALL', commands=(u'gdebi-gtk', u'gdebi-kde',))
         self.chk_install.tt_name = u'install»'
-        self.chk_install.SetName(u'INSTALL')
-        self.chk_install.default = False
         self.chk_install.col = 0
         
         btn_build = ButtonBuild64(self)
@@ -139,10 +133,6 @@ class Panel(WizardPage):
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
-        
-        # *** Post-layout functions *** #
-        
-        self.InitDefaultSettings()
     
     
     ## The actual build process
@@ -731,26 +721,6 @@ class Panel(WizardPage):
         return u'<<BUILD>>\n{}\n<</BUILD>>'.format(u'\n'.join(build_list))
     
     
-    ## Sets up page with default settings
-    def InitDefaultSettings(self):
-        # md5sum file
-        option_list = (
-            (self.chk_md5, GetExecutable(u'md5sum'),),
-            (self.chk_strip, GetExecutable(u'strip'),),
-            (self.chk_rmstage, True,),
-            (self.chk_lint, GetExecutable(u'lintian'),),
-            (self.chk_install, GetSystemInstaller(),),
-            )
-        
-        for option, command in option_list:
-            # FIXME: Commands should be updated globally
-            if not isinstance(command, bool):
-                command = CommandExists(command)
-            
-            option.Enable(bool(command))
-            option.SetValue(FieldEnabled(option) and option.default)
-    
-    
     ## Installs the built .deb package onto the system
     #  
     #  Uses the system's package installer:
@@ -854,11 +824,6 @@ class Panel(WizardPage):
         
         else:
             ShowErrorDialog(GT(u'Build preparation failed with unknown error'))
-    
-    
-    ## TODO: Doxygen
-    def Reset(self):
-        self.InitDefaultSettings()
     
     
     ## TODO: Doxygen
