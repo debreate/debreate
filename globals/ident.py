@@ -179,13 +179,18 @@ class InputId(FieldId):
 inputid = InputId()
 
 
-## IDs for button controls
-class btnid:
-    ADD = wx.ID_ADD
-    CANCEL = wx.ID_CANCEL
-    CONFIRM = wx.ID_YES|wx.ID_OK
-    MODE = wx.NewId()
-    RENAME = wx.NewId()
+## IDs for button fields
+class BtnId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.ADD = self.AddStaticId(wx.ID_ADD)
+        self.CANCEL = self.AddStaticId(wx.ID_CANCEL)
+        self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK)
+        self.MODE = self.NewId()
+        self.RENAME = self.NewId()
+
+btnid = BtnId()
 
 
 ## IDs for check box fields
