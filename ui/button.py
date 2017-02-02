@@ -14,6 +14,7 @@ from dbr.containers     import Contains
 from dbr.image          import GetBitmap
 from dbr.language       import GT
 from dbr.log            import Logger
+from fields.cmdfield    import CommandField
 from globals            import ident
 from globals.ident      import genid
 from globals.paths      import ConcatPaths
@@ -23,17 +24,27 @@ from globals.strings    import IsString
 from ui.layout          import BoxSizer
 
 
+## Standard button that inherits CommandField
+class Button(wx.Button, CommandField):
+    def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=0, name=wx.ButtonNameStr, commands=None, requireAll=False):
+        
+        wx.Button.__init__(self, parent, win_id, label, pos, size, style, name=name)
+        CommandField.__init__(self, commands, requireAll)
+
+
 ## The same as wx.BitmapButton but defaults to style=wx.NO_BORDER
-class CustomButton(wx.BitmapButton):
+class CustomButton(wx.BitmapButton, CommandField):
     def __init__(self, parent, bitmap, btn_id=wx.ID_ANY, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.NO_BORDER, validator=wx.DefaultValidator,
-            name=wx.ButtonNameStr):
+            name=wx.ButtonNameStr, commands=None, requireAll=False):
         
         if not isinstance(bitmap, wx.Bitmap):
             bitmap = wx.Bitmap(bitmap)
         
         wx.BitmapButton.__init__(self, parent, btn_id, bitmap, pos, size, style|wx.NO_BORDER,
                 validator, name)
+        CommandField.__init__(self, commands, requireAll)
 
 
 ## TODO: Doxygen
@@ -543,7 +554,9 @@ def ReplaceStandardButtons(dialog):
 #    Name attribute
 #  \return
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
-def CreateButton(parent, label, image=None, btnId=wx.ID_ANY, size=32, tooltip=None, name=None):
+def CreateButton(parent, label, image=None, btnId=wx.ID_ANY, size=32, tooltip=None, name=None,
+            commands=None, requireAll=False):
+    
     if image:
         btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
     
@@ -551,10 +564,12 @@ def CreateButton(parent, label, image=None, btnId=wx.ID_ANY, size=32, tooltip=No
         name = label
     
     if image and os.path.isfile(btn_image):
-        btn = CustomButton(parent, btn_image, btnId, name=name)
+        btn = CustomButton(parent, btn_image, btnId, name=name, commands=commands,
+                requireAll=requireAll)
     
     else:
-        btn = wx.Button(parent, btnId, label, name=name)
+        btn = Button(parent, btnId, label, name=name, commands=commands,
+                requireAll=requireAll)
     
     if not tooltip:
         tooltip = label
