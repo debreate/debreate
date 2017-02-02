@@ -26,6 +26,7 @@ from input.text             import TextAreaPanelESS
 from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from ui.style               import layout as lyt
 from ui.wizard              import WizardPage
 
 
@@ -96,14 +97,14 @@ class Panel(WizardPage):
         
         lyt_label = BoxSizer(wx.HORIZONTAL)
         lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
-                wx.ALIGN_CENTER_VERTICAL)
-        lyt_label.Add(self.sel_templates, 0, wx.LEFT, 5)
+                lyt.CNTR_VERT)
+        lyt_label.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
         lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_label, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|lyt.PAD_LRB, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
