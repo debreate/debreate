@@ -203,6 +203,7 @@ class ChkId(FieldId):
         self.ENABLE = self.NewId()
         self.FNAME = self.NewId()
         self.NOTIFY = self.NewId()
+        self.TARGET = self.NewId()
         self.TERM = self.NewId()
 
 chkid = ChkId()
