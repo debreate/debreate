@@ -202,7 +202,11 @@ class ChkId(FieldId):
         self.CAT = self.NewId()
         self.ENABLE = self.NewId()
         self.FNAME = self.NewId()
+        self.LINT = self.NewId()
+        self.MD5 = self.NewId()
         self.NOTIFY = self.NewId()
+        self.REMOVE = self.NewId()
+        self.STRIP = self.NewId()
         self.TARGET = self.NewId()
         self.TERM = self.NewId()
 
