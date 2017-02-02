@@ -24,11 +24,14 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import ErrorTuple
 from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
+from input.pathctrl         import PathCtrlESS
 from input.select           import Choice
 from input.select           import ComboBox
 from input.text             import TextArea
 from input.text             import TextAreaPanel
+from input.text             import TextAreaPanelESS
 from input.toggle           import CheckBox
+from input.toggle           import CheckBoxESS
 from ui.button              import CreateButton
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
@@ -83,14 +86,14 @@ class Panel(WizardPage):
         
         # FIXME: Should this be set by config or project file???
         self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default',
-                pathIds=(chkid.TARGET, inputid.TARGET,))
+                defaultType=CheckBoxESS, customType=PathCtrlESS, pathIds=(chkid.TARGET, inputid.TARGET,))
         
         self.btn_add = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'btn add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.chk_indentation = CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
         
-        self.dsp_changes = TextAreaPanel(self, inputid.CHANGES, monospace=True, name=u'log')
+        self.dsp_changes = TextAreaPanelESS(self, inputid.CHANGES, monospace=True, name=u'log')
         self.dsp_changes.EnableDropTarget()
         
         SetPageToolTips(self)
