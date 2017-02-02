@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package export.__init__
+## \package f_export
 
 # MIT licensing
 # See: docs/LICENSE.txt
