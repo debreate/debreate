@@ -74,9 +74,11 @@ def GetString(item):
     return item
 
 
-## Alias for globals.strings.GetString
-def GS(string):
-    return GetString(string)
+if sys.version_info[0] <= 2:
+    GS = unicode
+
+else:
+    GS = str
 
 
 ## Tests if a string can be converted to int or float
