@@ -42,10 +42,13 @@ class InputField:
                     
                     return self.Selection == self.default
         
+        elif isinstance(self, wx.ListCtrl):
+            #  FIXME: What to do if default value is not 'None'
+            if self.default == None:
+                return self.DeleteAllItems()
+        
         else:
             self.SetValue(self.default)
-        
-        return self.Value == self.default
     
     
     ## Sets the field's default value
