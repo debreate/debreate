@@ -17,7 +17,9 @@ from f_export.permiss       import SetFileExecutable
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import chkid
 from globals.ident          import inputid
+from globals.ident          import listid
 from globals.ident          import page_ids
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
@@ -70,9 +72,9 @@ class LauncherTemplate(ScrolledPanel):
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        self.ti_type = ComboBoxESS(self, inputid.TYPE, opts_type[0], choices=opts_type,
+        ti_type = ComboBoxESS(self, inputid.TYPE, opts_type[0], choices=opts_type,
                 name=u'Type')
-        self.ti_type.default = self.ti_type.GetValue()
+        ti_type.default = ti_type.GetValue()
         
         # --- ENCODING
         opts_enc = (
@@ -82,37 +84,37 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        self.ti_enc = ComboBoxESS(self, inputid.ENC, opts_enc[2], choices=opts_enc,
+        ti_enc = ComboBoxESS(self, inputid.ENC, opts_enc[2], choices=opts_enc,
                 name=u'Encoding')
-        self.ti_enc.default = self.ti_enc.GetValue()
+        ti_enc.default = ti_enc.GetValue()
         
         # --- TERMINAL
-        chk_term = CheckBoxESS(self, inputid.TERM, GT(u'Terminal'), name=u'Terminal')
+        chk_term = CheckBoxESS(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
         
         # --- STARTUP NOTIFY
-        chk_notify = CheckBoxESS(self, inputid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
+        chk_notify = CheckBoxESS(self, chkid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
                 defaultValue=True)
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
-        self.ti_name = TextAreaESS(self, inputid.NAME, name=u'Name')
-        self.ti_name.req = True
-        self.ti_name.default = wx.EmptyString
+        ti_name = TextAreaESS(self, inputid.NAME, name=u'Name')
+        ti_name.req = True
+        ti_name.default = wx.EmptyString
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-        self.ti_exec = TextAreaESS(self, inputid.EXEC, name=u'Exec')
-        self.ti_exec.default = wx.EmptyString
+        ti_exec = TextAreaESS(self, inputid.EXEC, name=u'Exec')
+        ti_exec.default = wx.EmptyString
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
-        self.ti_comm = TextAreaESS(self, inputid.DESCR, name=u'Comment')
-        self.ti_comm.default = wx.EmptyString
+        ti_comm = TextAreaESS(self, inputid.DESCR, name=u'Comment')
+        ti_comm.default = wx.EmptyString
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
-        self.ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
-        self.ti_icon.default = wx.EmptyString
+        ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
+        ti_icon.default = wx.EmptyString
         
         txt_mime = wx.StaticText(self, label=GT(u'MIME Type'), name=u'mime')
         ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType',
@@ -157,15 +159,15 @@ class LauncherTemplate(ScrolledPanel):
         
         txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
         btn_catclr = ButtonClear(self) #, name=u'clear categories')
-        self.lst_categories = CheckList(self, inputid.CAT, opts_category, name=u'Categories')
+        lst_categories = CheckList(self, listid.CAT, opts_category, name=u'Categories')
         
-        if not self.lst_categories.HasSelected():
+        if not lst_categories.HasSelected():
             btn_catclr.Disable()
         
         txt_catcustom = wx.StaticText(self, label=GT(u'Custom Categories (Separate by "," or ";")'))
         # Set to 'True' to list custom categories first
         # FIXME: Should this be saved to project instead of config???
-        self.chk_catcustom = CheckBoxCFG(self, label=GT(u'List first'), name=u'chk catcustom',
+        chk_catcustom = CheckBoxCFG(self, chkid.CAT, GT(u'List first'), name=u'chk catcustom',
                 cfgKey=u'prioritize custom categories')
         ti_catcustom = TextAreaESS(self, inputid.CAT2, name=u'category custom')
         
@@ -181,7 +183,7 @@ class LauncherTemplate(ScrolledPanel):
         btn_catclr.Bind(wx.EVT_BUTTON, self.OnClearCategories)
         
         wx.EVT_CHECKBOX(self, inputid.OTHER, self.OnOtherSelect)
-        wx.EVT_CHECKBOX(self, inputid.CAT, self.OnCatSelect)
+        wx.EVT_CHECKBOX(self, listid.CAT, self.OnCatSelect)
         
         # *** Layout *** #
         
@@ -194,10 +196,10 @@ class LauncherTemplate(ScrolledPanel):
         lyt_opts1.SetRows(2)
         
         lyt_opts1.Add(txt_type, 0, LEFT_CENTER)
-        lyt_opts1.Add(self.ti_type, 0, wx.EXPAND|wx.LEFT, 5)
+        lyt_opts1.Add(ti_type, 0, wx.EXPAND|wx.LEFT, 5)
         lyt_opts1.Add(chk_term, 0, LEFT_CENTER|wx.LEFT, 5)
         lyt_opts1.Add(txt_enc, 0, LEFT_CENTER|wx.TOP, 5)
-        lyt_opts1.Add(self.ti_enc, 0, wx.LEFT|wx.TOP, 5)
+        lyt_opts1.Add(ti_enc, 0, wx.LEFT|wx.TOP, 5)
         lyt_opts1.Add(chk_notify, 0, LEFT_CENTER|wx.LEFT|wx.TOP, 5)
         
         lyt_top = BoxSizer(wx.HORIZONTAL)
@@ -215,16 +217,16 @@ class LauncherTemplate(ScrolledPanel):
         # Row 1
         row = 0
         lyt_mid.Add(txt_name, (row, 0), flag=LEFT_CENTER)
-        lyt_mid.Add(self.ti_name, (row, 1), flag=wx.EXPAND|wx.LEFT, border=5)
+        lyt_mid.Add(ti_name, (row, 1), flag=wx.EXPAND|wx.LEFT, border=5)
         lyt_mid.Add(txt_exec, (row, 2), flag=LEFT_CENTER|wx.LEFT, border=5)
-        lyt_mid.Add(self.ti_exec, (row, 3), flag=wx.EXPAND|wx.LEFT, border=5)
+        lyt_mid.Add(ti_exec, (row, 3), flag=wx.EXPAND|wx.LEFT, border=5)
         
         # Row 2
         row += 1
         lyt_mid.Add(txt_comm, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
-        lyt_mid.Add(self.ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
-        lyt_mid.Add(self.ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
         
         # Row 3
         row += 1
@@ -242,11 +244,11 @@ class LauncherTemplate(ScrolledPanel):
         
         row += 1
         lyt_bottom.Add(pnl_other, (row, 0), (3, 3), wx.EXPAND)
-        lyt_bottom.Add(self.lst_categories, (row, 3), (1, 2), wx.EXPAND|wx.LEFT, 5)
+        lyt_bottom.Add(lst_categories, (row, 3), (1, 2), wx.EXPAND|wx.LEFT, 5)
         
         row += 1
         lyt_bottom.Add(txt_catcustom, (row, 3), flag=LEFT_BOTTOM|wx.LEFT|wx.TOP, border=5)
-        lyt_bottom.Add(self.chk_catcustom, (row, 4), flag=RIGHT_BOTTOM)
+        lyt_bottom.Add(chk_catcustom, (row, 4), flag=RIGHT_BOTTOM)
         
         row += 1
         lyt_bottom.Add(ti_catcustom, (row, 3), (1, 2), flag=wx.EXPAND|wx.LEFT, border=5)
@@ -330,7 +332,7 @@ class LauncherTemplate(ScrolledPanel):
             inputid.TERM,
             inputid.NOTIFY,
             inputid.MIME,
-            inputid.CAT,
+            listid.CAT,
             inputid.CAT2,
             inputid.OTHER,
             )
@@ -352,7 +354,7 @@ class LauncherTemplate(ScrolledPanel):
                             key = section.GetKey().strip()
                             value = section.GetValue().strip()
                 
-                elif ID in (inputid.CAT, inputid.CAT2):
+                elif ID in (listid.CAT, inputid.CAT2):
                     if ID == inputid.CAT2:
                         custom_cats = []
                         
@@ -361,7 +363,7 @@ class LauncherTemplate(ScrolledPanel):
                                 if not TextIsEmpty(C2):
                                     custom_cats.append(C2.strip())
                         
-                        if self.chk_catcustom.GetValue():
+                        if GetField(self, chkid.CAT).GetValue():
                             for LABEL in reversed(custom_cats):
                                 categories.insert(0, LABEL)
                         
@@ -420,25 +422,25 @@ class LauncherTemplate(ScrolledPanel):
     def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
         
-        name = self.ti_name.GetValue()
+        name = GetField(self, inputid.NAME).GetValue()
         if not TextIsEmpty(name):
             desktop_list.append(u'Name={}'.format(name))
         
         desktop_list.append(u'Version=1.0')
         
-        executable = self.ti_exec.GetValue()
+        executable = GetField(self, inputid.EXEC).GetValue()
         if not TextIsEmpty(executable):
             desktop_list.append(u'Exec={}'.format(executable))
         
-        comment = self.ti_comm.GetValue()
+        comment = GetField(self, inputid.DESCR).GetValue()
         if not TextIsEmpty(comment):
             desktop_list.append(u'Comment={}'.format(comment))
         
-        icon = self.ti_icon.GetValue()
+        icon = GetField(self, inputid.ICON).GetValue()
         if not TextIsEmpty(icon):
             desktop_list.append(u'Icon={}'.format(icon))
         
-        launcher_type = self.ti_type.GetValue()
+        launcher_type = GetField(self, inputid.TYPE).GetValue()
         if not TextIsEmpty(launcher_type):
             desktop_list.append(u'Type={}'.format(launcher_type))
         
@@ -446,17 +448,18 @@ class LauncherTemplate(ScrolledPanel):
         
         desktop_list.append(u'StartupNotify={}'.format(GS(self.sel_notify.GetSelection() == 0).lower()))
         
-        encoding = self.ti_enc.GetValue()
+        encoding = GetField(self, inputid.ENC).GetValue()
         if not TextIsEmpty(encoding):
             desktop_list.append(u'Encoding={}'.format(encoding))
         
+        lst_categories = GetField(self, listid.CAT)
         categories = []
-        cat_total = self.lst_categories.GetItemCount()
+        cat_total = lst_categories.GetItemCount()
         count = 0
         while count < cat_total:
-            C = self.lst_categories.GetItemText(count)
+            C = lst_categories.GetItemText(count)
             if not TextIsEmpty(C):
-                categories.append(self.lst_categories.GetItemText(count))
+                categories.append(lst_categories.GetItemText(count))
             
             count += 1
         
@@ -480,7 +483,7 @@ class LauncherTemplate(ScrolledPanel):
     ## Retrieves the filename to be used for the menu launcher
     def GetOutputFilename(self):
         # FIXME: Use tab 'name' or 'title' attribute
-        return self.ti_name.GetValue().strip(u' ').replace(u' ', u'_')
+        return GetField(self, inputid.NAME).GetValue().strip(u' ').replace(u' ', u'_')
     
     
     ## Overrides ui.wizard.GetRequiredField
@@ -536,12 +539,14 @@ class LauncherTemplate(ScrolledPanel):
                             return True
                     
                     elif option in self.opts_list:
-                        if key == self.lst_categories.GetName():
+                        lst_categories = GetField(self, listid.CAT)
+                        
+                        if key == lst_categories.GetName():
                             value = value.split(u';')
                             
                             if value:
                                 for X, val in enumerate(value):
-                                    self.lst_categories.InsertStringItem(X, val)
+                                    lst_categories.InsertStringItem(X, val)
                                 return True
             
             return False
@@ -576,7 +581,7 @@ class LauncherTemplate(ScrolledPanel):
     ## Handles check box events from categories list
     def OnCatSelect(self, event=None):
         btn_cat_clr = GetField(self, wx.ID_CLEAR)
-        lst_cat = GetField(self, inputid.CAT)
+        lst_cat = GetField(self, listid.CAT)
         
         if btn_cat_clr and lst_cat:
             if FieldEnabled(btn_cat_clr):
@@ -590,7 +595,7 @@ class LauncherTemplate(ScrolledPanel):
     
     ## Handles button event from clear categories button
     def OnClearCategories(self, event=None):
-        cats = GetField(self, inputid.CAT)
+        cats = GetField(self, listid.CAT)
         
         if cats.HasSelected():
             clear = ConfirmationDialog(GetMainWindow(), GT(u'Confirm'), GT(u'Clear categories?'))
@@ -727,19 +732,21 @@ class LauncherTemplate(ScrolledPanel):
         cat = cat.split()
         cat = u''.join(cat)
         
+        lst_categories = GetField(self, listid.CAT)
+        
         if ID in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
-            self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), cat)
+            lst_categories.InsertStringItem(lst_categories.GetItemCount(), cat)
         
         elif ID in (wx.ID_REMOVE, wx.WXK_DELETE):
-            if self.lst_categories.GetItemCount() and self.lst_categories.GetSelectedItemCount():
-                cur_cat = self.lst_categories.GetFirstSelected()
-                self.lst_categories.DeleteItem(cur_cat)
+            if lst_categories.GetItemCount() and lst_categories.GetSelectedItemCount():
+                cur_cat = lst_categories.GetFirstSelected()
+                lst_categories.DeleteItem(cur_cat)
         
         elif ID == wx.ID_CLEAR:
-            if self.lst_categories.GetItemCount():
+            if lst_categories.GetItemCount():
                 if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
                         GT(u'Clear categories?')).ShowModal() in (wx.ID_OK, wx.OK):
-                    self.lst_categories.DeleteAllItems()
+                    lst_categories.DeleteAllItems()
         
         if event:
             event.Skip()
@@ -786,12 +793,12 @@ class LauncherTemplate(ScrolledPanel):
             
             # Fields using SetValue() function
             set_value_fields = (
-                (u'Name', self.ti_name),
-                (u'Exec', self.ti_exec),
-                (u'Comment', self.ti_comm),
-                (u'Icon', self.ti_icon),
-                (u'Type', self.ti_type),
-                (u'Encoding', self.ti_enc),
+                (u'Name', GetField(self, inputid.NAME)),
+                (u'Exec', GetField(self, inputid.EXEC)),
+                (u'Comment', GetField(self, inputid.DESCR)),
+                (u'Icon', GetField(self, inputid.ICON)),
+                (u'Type', GetField(self, inputid.TYPE)),
+                (u'Encoding', GetField(self, inputid.ENC)),
                 )
             
             for label, control in set_value_fields:
@@ -817,9 +824,10 @@ class LauncherTemplate(ScrolledPanel):
                     pass
             
             try:
+                lst_categories = GetField(self, listid.CAT)
                 categories = tuple(data_defs[u'Categories'].split(u';'))
                 for C in categories:
-                    self.lst_categories.InsertStringItem(self.lst_categories.GetItemCount(), C)
+                    lst_categories.InsertStringItem(lst_categories.GetItemCount(), C)
                 
                 data_defs_remove.append(u'Categories')
             
