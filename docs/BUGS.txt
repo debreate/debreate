@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- ComboBox choices on changelog page are deleted when Reset is called
 
 Priority:
 - Generate template button on copyright page moves header for system licenses
