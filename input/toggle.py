@@ -77,16 +77,19 @@ class CheckBox(wx.CheckBox, CommandField):
 class CheckBoxCFG(CheckBox, ConfigField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
-                cfgKey=None, cfgSect=None):
+                commands=None, requireAll=False, cfgKey=None, cfgSect=None):
         
-        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue)
+        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue,
+                commands, requireAll)
         ConfigField.__init__(self, cfgKey, cfgSect)
 
 
 ## CheckBox class that notifies main window to mark project dirty
 class CheckBoxESS(CheckBox, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
-                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False):
+                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
+                commands=None, requireAll=False):
         
-        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue)
+        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue,
+                commands, requireAll)
         EssentialField.__init__(self)
