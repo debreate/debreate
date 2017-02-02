@@ -12,14 +12,17 @@ from wx.combo import OwnerDrawnComboBox
 from dbr.font           import MONOSPACED_MD
 from globals.strings    import TextIsEmpty
 from input.essential    import EssentialField
+from input.ifield       import InputField
 
 
 ## Custom wx.Choice class for compatibility with older wx versions
-class Choice(wx.Choice):
+class Choice(wx.Choice, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr):
+            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
+            defaultValue=0):
         
         wx.Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
+        InputField.__init__(self, defaultValue)
     
     
     ## wx 2.8 does not define wx.Choice.Set
@@ -79,13 +82,14 @@ class ChoiceESS(Choice, EssentialField):
 #            - Keyboard:     Emits EVT_TEXT
 #            - Drop-down:    Emits EVT_COMBOBOX & EVT_TEXT
 #            - Mouse scroll: Emits EVT_COMBOBOX & EVT_TEXT (Note: Doesn't scroll until after drop-down select)
-class ComboBox(OwnerDrawnComboBox):
+class ComboBox(OwnerDrawnComboBox, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
-            name=wx.ComboBoxNameStr, monospace=False):
+            name=wx.ComboBoxNameStr, monospace=False, defaultValue=wx.EmptyString):
         
         OwnerDrawnComboBox.__init__(self, parent, win_id, value, pos, size, choices, style,
                 validator, name)
+        InputField.__init__(self, defaultValue)
         
         if wx.MAJOR_VERSION < 3:
             self.clr_disabled = self.GetBackgroundColour()
@@ -154,6 +158,7 @@ class ComboBoxESS(ComboBox, EssentialField):
         
         # *** Event Handling *** #
         
+        # FIXME: Move to input.essential.EssentialField???
         self.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheelEvent)
     
     
