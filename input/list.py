@@ -14,18 +14,21 @@ from dbr.colors     import COLOR_warn
 from dbr.language   import GT
 from dbr.log        import Logger
 from globals.paths  import ConcatPaths
+from input.ifield   import InputField
 from ui.layout      import BoxSizer
 from ui.panel       import BorderedPanel
 
 
 ## A list control with no border
-class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin):
+class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr,
+            defaultValue=None):
         
         wx.ListView.__init__(self, parent, win_id, pos, size, style|wx.BORDER_NONE,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
+        InputField.__init__(self, defaultValue)
         
         self.clr_enabled = self.GetBackgroundColour()
         self.clr_disabled = parent.GetBackgroundColour()
