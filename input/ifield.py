@@ -15,9 +15,10 @@ from globals.strings import IsString
 
 ## An input field that sets a default value
 class InputField:
-    def __init__(self, defaultValue):
+    def __init__(self, defaultValue, outLabel=None):
         # TODO: Rename to 'self.Default'
         self.default = defaultValue
+        self.OutputLabel = outLabel
         
         # Initialize with default value
         self.Reset()
@@ -26,6 +27,16 @@ class InputField:
     ## Retrieves the field's default value
     def GetDefaultValue(self):
         return self.default
+    
+    
+    ## Retrieves label for text output
+    def GetOutputLabel(self):
+        return self.OutputLabel
+    
+    
+    ## TODO: Doxygen
+    def HasOutputLabel(self):
+        return IsString(self.OutputLabel) and self.OutputLabel != wx.EmptyString
     
     
     ## Resets field to default value
