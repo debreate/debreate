@@ -17,7 +17,6 @@ from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import listid
 from globals.ident          import pgid
-from globals.ident          import selid
 from globals.ident          import txtid
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
@@ -25,7 +24,6 @@ from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
-from input.select           import Choice
 from input.select           import ComboBox
 from input.text             import TextArea
 from input.text             import TextAreaPanel
@@ -99,23 +97,11 @@ class Panel(WizardPage):
         self.opts_input.append(ti_enc)
         
         # --- TERMINAL
-        opts_term = (u'true', u'false',)
-        
-        txt_term = wx.StaticText(self, label=GT(u'Terminal'), name=u'terminal')
-        self.labels.append(txt_term)
-        
-        sel_term = Choice(self, selid.TERM, choices=opts_term, name=u'Terminal',
-                defaultValue=1)
-        self.opts_choice.append(sel_term)
+        chk_term = CheckBox(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
         
         # --- STARTUP NOTIFY
-        notify_opt = (u'true', u'false',)
-        
-        txt_notify = wx.StaticText(self, label=GT(u'Startup Notify'), name=u'startupnotify')
-        self.labels.append(txt_notify)
-        
-        sel_notify = Choice(self, selid.NOTIFY, choices=notify_opt, name=u'StartupNotify')
-        self.opts_choice.append(sel_notify)
+        chk_notify = CheckBox(self, chkid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
+                defaultValue=True)
         
         # --- Custom output filename
         txt_filename = wx.StaticText(self, txtid.FNAME, GT(u'Filename'), name=u'filename')
@@ -248,17 +234,15 @@ class Panel(WizardPage):
         lyt_top.Add(btn_preview, 0, wx.ALIGN_TOP)
         
         lyt_opts1 = wx.FlexGridSizer()
-        lyt_opts1.SetCols(4)
+        lyt_opts1.SetCols(3)
         lyt_opts1.SetRows(2)
         
         lyt_opts1.Add(txt_type, 0, LEFT_CENTER)
         lyt_opts1.Add(ti_type, 0, wx.EXPAND|wx.LEFT, 5)
-        lyt_opts1.Add(txt_term, 0, LEFT_CENTER|wx.LEFT, 5)
-        lyt_opts1.Add(sel_term, 0, LEFT_CENTER|wx.LEFT, 5)
+        lyt_opts1.Add(chk_term, 0, LEFT_CENTER|wx.LEFT, 5)
         lyt_opts1.Add(txt_enc, 0, LEFT_CENTER|wx.TOP, 5)
         lyt_opts1.Add(ti_enc, 0, wx.LEFT|wx.TOP, 5)
-        lyt_opts1.Add(txt_notify, 0, LEFT_CENTER|wx.LEFT, 5)
-        lyt_opts1.Add(sel_notify, 0, LEFT_CENTER|wx.LEFT|wx.TOP, 5)
+        lyt_opts1.Add(chk_notify, 0, LEFT_CENTER|wx.LEFT|wx.TOP, 5)
         
         lyt_mid = wx.GridBagSizer()
         lyt_mid.SetCols(4)
@@ -362,9 +346,9 @@ class Panel(WizardPage):
         if not TextIsEmpty(launcher_type):
             desktop_list.append(u'Type={}'.format(launcher_type))
         
-        desktop_list.append(u'Terminal={}'.format(GS(GetField(self, selid.TERM).GetSelection() == 0).lower()))
+        desktop_list.append(u'Terminal={}'.format(GS(GetField(self, chkid.TERM).GetValue()).lower()))
         
-        desktop_list.append(u'StartupNotify={}'.format(GS(GetField(self, selid.NOTIFY).GetSelection() == 0).lower()))
+        desktop_list.append(u'StartupNotify={}'.format(GS(GetField(self, chkid.NOTIFY).GetValue()).lower()))
         
         encoding = GetField(self, inputid.ENC).GetValue()
         if not TextIsEmpty(encoding):
@@ -645,15 +629,19 @@ class Panel(WizardPage):
                     except KeyError:
                         pass
                 
-                # Fields using SetSelection() function
-                set_selection_fields = (
-                    (u'Terminal', GetField(self, selid.TERM)),
-                    (u'StartupNotify', GetField(self, selid.NOTIFY)),
+                check_box_fields = (
+                    (u'Terminal', GetField(self, chkid.TERM)),
+                    (u'StartupNotify', GetField(self, chkid.NOTIFY)),
                     )
                 
-                for label, control in set_selection_fields:
+                for label, control in check_box_fields:
                     try:
-                        control.SetStringSelection(data_defs[label].lower())
+                        if data_defs[label].lower() == u'true':
+                            control.SetValue(True)
+                        
+                        else:
+                            control.SetValue(False)
+                        
                         data_defs_remove.append(label)
                     
                     except KeyError:
