@@ -11,6 +11,7 @@ import wx
 from fields.cmdfield        import CommandField
 from globals.wizardhelper   import FieldEnabled
 from input.cfgfield         import ConfigField
+from input.essential        import EssentialField
 
 
 ## Standard wx.CheckBox
@@ -80,3 +81,14 @@ class CheckBoxCFG(CheckBox, ConfigField):
         
         CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue)
         ConfigField.__init__(self, cfgKey, cfgSect)
+
+
+## CheckBox class that notifies main window to mark project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
+class CheckBoxESS(CheckBox, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
+                size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False):
+        
+        CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue)
+        EssentialField.__init__(self)
