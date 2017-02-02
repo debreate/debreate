@@ -15,8 +15,14 @@ from startup.startup        import AppInitialized
 from ui.panel               import ControlPanel
 
 
-## Abstract class that sends a message to main window to mark project dirty when field is changed
+## This is a dummy class to facilitate merging to & from unstable branch
 class EssentialField:
+    def __init__(self):
+        pass
+
+
+## Abstract class that sends a message to main window to mark project dirty when field is changed
+class EssentialFieldUnused:
     def __init__(self):
         
         if isinstance(self, ControlPanel):
@@ -41,6 +47,7 @@ class EssentialField:
             main_control.Bind(wx.EVT_LIST_INSERT_ITEM, self.NotifyMainWindow)
     
     
+    ## TODO: Doxygen
     def NotifyMainWindow(self, event=None):
         if event:
             event.Skip(True)

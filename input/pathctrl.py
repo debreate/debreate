@@ -8,7 +8,8 @@
 
 import os, wx
 
-from input.text import TextArea
+from input.essential    import EssentialField
+from input.text         import TextArea
 
 
 ## A text area that can track if it's value is an actual path on the system
@@ -79,3 +80,12 @@ class PathCtrl(TextArea):
     ## Sets the text area's default value
     def SetDefaultValue(self, default):
         self.default = default
+
+
+## This is a dummy class to facilitate merging to & from unstable branch
+class PathCtrlESS(PathCtrl, EssentialField):
+    def __init__(self, parent, ctrl_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
+            name=wx.TextCtrlNameStr):
+        
+        PathCtrl.__init__(self, parent, ctrl_id, value, defaultValue, warn, name)
+        EssentialField.__init__(self)

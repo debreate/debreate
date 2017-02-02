@@ -10,13 +10,15 @@ import os, wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.mixins.listctrl import TextEditMixin
 
-from dbr.colors     import COLOR_warn
-from dbr.language   import GT
-from dbr.log        import Logger
-from globals.paths  import ConcatPaths
-from input.ifield   import InputField
-from ui.layout      import BoxSizer
-from ui.panel       import BorderedPanel
+from dbr.colors         import COLOR_warn
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.paths      import ConcatPaths
+from input.essential    import EssentialField
+from input.ifield       import InputField
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.panel           import ControlPanel
 
 
 ## A list control with no border
@@ -153,14 +155,29 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
         return style_set
 
 
+## ListCtrlBase that notifies main window to mark project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
+class ListCtrlBaseESS(ListCtrlBase, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
+        ListCtrlBase.__init__(self, parent, win_id, pos, size, style, validator, name)
+        EssentialField.__init__(self)
+
+
 ## Hack to make list control border have rounded edges
-class ListCtrl(BorderedPanel):
+class ListCtrl(BorderedPanel, ControlPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
-        self.MainCtrl = ListCtrlBase(self, style=style, validator=validator)
+        if isinstance(self, EssentialField):
+            self.MainCtrl = ListCtrlBaseESS(self, style=style, validator=validator)
+        
+        else:
+            self.MainCtrl = ListCtrlBase(self, style=style, validator=validator)
         
         # Match panel background color to list control
         self.SetBackgroundColour(self.MainCtrl.GetBackgroundColour())
@@ -410,6 +427,17 @@ class ListCtrl(BorderedPanel):
     ## TODO: Doxygen
     def SetWindowStyleFlag(self, *args, **kwargs):
         return self.MainCtrl.SetWindowStyleFlag(*args, **kwargs)
+
+
+## ListCtrl that notifies main window to mark project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
+class ListCtrlESS(ListCtrl, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+        
+        ListCtrl.__init__(self, parent, win_id, pos, size, style, validator, name)
+        EssentialField.__init__(self)
 
 
 ## An editable list
@@ -713,3 +741,12 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     #  TODO: Define & execute with context menu
     def ToggleExecutable(self):
         pass
+
+
+## FileList that notifies main window to mark project dirty
+#
+#  This is a dummy class to facilitate merging to & from unstable branch
+class FileListESS(FileList, EssentialField):
+    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
+        FileList.__init__(self, parent, win_id, name)
+        EssentialField.__init__(self)
