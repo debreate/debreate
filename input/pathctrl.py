@@ -8,15 +8,15 @@
 
 import os, wx
 
+from input.text import TextArea
+
 
 ## A text area that can track if it's value is an actual path on the system
-#
-#  FIXME: Derive from input.text.TextArea
-class PathCtrl(wx.TextCtrl):
+class PathCtrl(TextArea):
     def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
             name=wx.TextCtrlNameStr):
         
-        wx.TextCtrl.__init__(self, parent, win_id, value, name=name)
+        TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
         
         # TODO: Rename to 'self.Default'
         self.default = defaultValue
