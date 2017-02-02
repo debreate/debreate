@@ -47,21 +47,12 @@ class Panel(WizardPage):
         ## Override default label
         self.label = GT(u'Menu Launcher')
         
-        self.opts_button = []
-        self.opts_input = []
-        self.opts_choice = []
-        self.opts_list = []
-        
-        self.labels = []
-        
         # --- Buttons to open/preview/save .desktop file
         btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
         
         btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
-        self.opts_button.append(btn_save)
         
         btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
-        self.opts_button.append(btn_preview)
         
         # --- CHECKBOX
         chk_enable = CheckBox(self, chkid.ENABLE, GT(u'Create system menu launcher'))
@@ -70,11 +61,9 @@ class Panel(WizardPage):
         opts_type = (u'Application', u'Link', u'Directory',)
         
         txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
-        self.labels.append(txt_type)
         
         ti_type = ComboBox(self, inputid.TYPE, choices=opts_type,
                 name=u'Type', defaultValue=opts_type[0])
-        self.opts_input.append(ti_type)
         
         # --- ENCODING
         opts_enc = (
@@ -84,11 +73,9 @@ class Panel(WizardPage):
             )
         
         txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-        self.labels.append(txt_enc)
         
         ti_enc = ComboBox(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
                 defaultValue=opts_enc[2])
-        self.opts_input.append(ti_enc)
         
         # --- TERMINAL
         chk_term = CheckBox(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
@@ -106,31 +93,23 @@ class Panel(WizardPage):
         
         # --- NAME (menu)
         txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
-        self.labels.append(txt_name)
         ti_name = TextArea(self, inputid.NAME, name=u'Name')
         ti_name.req = True
-        self.opts_input.append(ti_name)
         
         # --- EXECUTABLE
         txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-        self.labels.append(txt_exec)
         
         ti_exec = TextArea(self, inputid.EXEC, name=u'Exec')
-        self.opts_input.append(ti_exec)
         
         # --- COMMENT
         txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
-        self.labels.append(txt_comm)
         
         ti_comm = TextArea(self, inputid.DESCR, name=u'Comment')
-        self.opts_input.append(ti_comm)
         
         # --- ICON
         txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
-        self.labels.append(txt_icon)
         
         ti_icon = TextArea(self, inputid.ICON, name=u'Icon')
-        self.opts_input.append(ti_icon)
         
         # --- CATEGORIES
         opts_category = (
@@ -162,19 +141,14 @@ class Panel(WizardPage):
             )
         
         txt_category = wx.StaticText(self, label=GT(u'Category'), name=u'category')
-        self.labels.append(txt_category)
         
         # This option does not get set by importing a new project
         ti_category = ComboBox(self, inputid.CAT, choices=opts_category, name=txt_category.Name,
                 defaultValue=opts_category[0])
-        self.opts_input.append(ti_category)
         
         btn_catadd = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'add category')
         btn_catdel = CreateButton(self, GT(u'Remove'), u'remove', btnid.REMOVE, name=u'rm category')
         btn_catclr = CreateButton(self, GT(u'Clear'), u'clear', btnid.CLEAR, name=u'clear category')
-        
-        for B in btn_catadd, btn_catdel, btn_catclr:
-            self.opts_button.append(B)
         
         # FIXME: Allow using multi-select + remove
         lst_categories = ListCtrl(self, listid.CAT, name=u'Categories')
@@ -183,15 +157,12 @@ class Panel(WizardPage):
         
         # For manually setting background color after enable/disable
         lst_categories.default_color = lst_categories.GetBackgroundColour()
-        self.opts_list.append(lst_categories)
         
         # ----- MISC
         txt_other = wx.StaticText(self, label=GT(u'Other'), name=u'other')
-        self.labels.append(txt_other)
         
         ti_other = TextAreaPanel(self, inputid.OTHER, name=txt_other.Name)
         ti_other.EnableDropTarget()
-        self.opts_input.append(ti_other)
         
         self.OnToggle()
         
@@ -510,25 +481,22 @@ class Panel(WizardPage):
         self.OnSetCustomFilename()
     
     
-    ## TODO: Doxygen
+    ## Resets all fields to default values
     def Reset(self):
         chk_filename = GetField(self, chkid.FNAME)
         
         chk_filename.SetValue(chk_filename.default)
         GetField(self, inputid.FNAME).Clear()
         
-        for O in self.opts_input:
-            O.SetValue(O.default)
+        for IDS in inputid, chkid, listid:
+            idlist = IDS.IdList
+            
+            for ID in idlist:
+                field = GetField(self, ID)
+                
+                if isinstance(field, wx.Window):
+                    field.Reset()
         
-        for O in self.opts_choice:
-            O.SetSelection(O.default)
-        
-        for O in self.opts_list:
-            O.DeleteAllItems()
-        
-        chk_enable = GetField(self, chkid.ENABLE)
-        
-        chk_enable.SetValue(chk_enable.default)
         self.OnToggle()
     
     
