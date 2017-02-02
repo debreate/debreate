@@ -257,7 +257,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def SetChangelog(self, data):
+    def Set(self, data):
         changelog = data.split(u'\n')
         target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
         

@@ -653,7 +653,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-        self.page_clog.SetChangelog(clog_data)
+        self.page_clog.Set(clog_data)
         
         # *** Get Copyright Data *** #
         try:
