@@ -185,10 +185,15 @@ class BtnId(FieldId):
         FieldId.__init__(self)
         
         self.ADD = self.AddStaticId(wx.ID_ADD)
+        self.BROWSE = self.NewId()
         self.CANCEL = self.AddStaticId(wx.ID_CANCEL)
+        self.CLEAR = self.AddStaticId(wx.ID_CLEAR)
         self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK)
         self.MODE = self.NewId()
+        self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW)
+        self.REMOVE = self.AddStaticId(wx.ID_REMOVE)
         self.RENAME = self.NewId()
+        self.SAVE = self.AddStaticId(wx.ID_SAVE)
 
 btnid = BtnId()
 
