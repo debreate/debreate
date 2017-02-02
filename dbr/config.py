@@ -8,7 +8,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import os, sys, wx
 
 from dbr.functions      import GetBoolean
 from dbr.functions      import GetIntTuple
@@ -241,9 +241,19 @@ def _check_config_values(keys):
     for KEY in keys:
         try:
             if not isinstance(keys[KEY], type(default_config_values[KEY][1])):
+                sys.stderr.write(u'Config error:\n')
+                sys.stderr.write(u'  Key: {}\n'.format(KEY))
+                sys.stderr.write(u'  Value: {}\n'.format(keys[KEY]))
+                sys.stderr.write(u'  Value type: {}\n'.format(type(keys[KEY])))
+                sys.stderr.write(u'  Target type: {}\n'.format(type(default_config_values[KEY][1])))
+                sys.stderr.write(u'Bad value type\n')
+                
                 return False
         
         except KeyError:
+            sys.stderr.write(u'Config error:\n')
+            sys.stderr.write(u'  KeyError: {}\n'.format(KEY))
+            
             return False
     
     return True
