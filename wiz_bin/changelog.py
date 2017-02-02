@@ -24,8 +24,7 @@ from globals.wizardhelper   import GetFieldValue
 from globals.wizardhelper   import GetMainWindow
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
-from ui.button              import ButtonAdd
-from ui.button              import ButtonImport
+from ui.button              import CreateButton
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
 from ui.wizard              import WizardPage
@@ -71,7 +70,7 @@ class Panel(WizardPage):
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
         self.ti_email = wx.TextCtrl(self, name=txt_email.Name)
         
-        btn_import = ButtonImport(self)
+        btn_import = CreateButton(self, GT(u'Import'), u'import', btnid.IMPORT, name=u'btn import')
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
         
         # Changes input
@@ -81,7 +80,7 @@ class Panel(WizardPage):
         
         self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default')
         
-        self.btn_add = ButtonAdd(self)
+        self.btn_add = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'btn add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.chk_indentation = wx.CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
