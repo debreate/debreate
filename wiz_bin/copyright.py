@@ -255,6 +255,7 @@ class Panel(WizardPage):
                         offset = center_header
                     
                     else:
+                        # Use the longest line found in the text to center the header
                         longest_line = GetLongestLine(license_text)
                         
                         Logger.Debug(__name__, u'Longest line: {}'.format(longest_line))
@@ -283,6 +284,11 @@ class Panel(WizardPage):
                     license_text.insert(0, header)
                 
                 license_text = u'\n'.join(license_text)
+            
+            if not license_text:
+                ShowErrorDialog(GT(u'License template is empty'))
+                
+                return
             
             self.dsp_copyright.Clear()
             self.dsp_copyright.SetValue(license_text)
