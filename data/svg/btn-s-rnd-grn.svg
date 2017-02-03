@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg1"
+   sodipodi:docname="btn-s-rnd-grn.svg"
+   viewBox="0 0 128 128"
+   sodipodi:version="0.32"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   width="128"
+   height="128">
+  <title
+     id="title4144">Round Green S Button</title>
+  <defs
+     id="defs3">
+    <linearGradient
+       id="linearGradient1697">
+      <stop
+         id="stop1698"
+         style="stop-color:#69db0e"
+         offset="0" />
+      <stop
+         id="stop1699"
+         style="stop-color:#397607"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1076"
+       y2="466.28"
+       xlink:href="#linearGradient1697"
+       gradientUnits="userSpaceOnUse"
+       x2="520.57001"
+       y1="506.29001"
+       x1="520.57001"
+       inkscape:collect="always"
+       gradientTransform="matrix(2.9814594,0,0,2.9814594,-1357.1393,-1248.7306)" />
+    <linearGradient
+       id="linearGradient1077"
+       y2="505.07999"
+       xlink:href="#linearGradient1697"
+       gradientUnits="userSpaceOnUse"
+       x2="522.94"
+       y1="469.5"
+       x1="522.94"
+       inkscape:collect="always"
+       gradientTransform="matrix(2.9814594,0,0,2.9814594,-1357.1393,-1248.7306)" />
+    <linearGradient
+       id="linearGradient1078"
+       y2="463.47"
+       gradientUnits="userSpaceOnUse"
+       y1="183.48"
+       gradientTransform="matrix(0.50570774,0,0,0.20943636,94.205806,106.74449)"
+       x2="214.59"
+       x1="213.83"
+       inkscape:collect="always">
+      <stop
+         id="stop1703"
+         style="stop-color:#ffffff;stop-opacity:.69072"
+         offset="0" />
+      <stop
+         id="stop1704"
+         style="stop-color:#ffffff;stop-opacity:0"
+         offset="1" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="0"
+     pagecolor="#ffffff"
+     inkscape:window-maximized="1"
+     inkscape:window-width="1600"
+     inkscape:zoom="3.6203867"
+     inkscape:window-x="1366"
+     showgrid="false"
+     borderopacity="1.0"
+     inkscape:current-layer="layer1"
+     inkscape:cx="12.103402"
+     inkscape:cy="78.046449"
+     inkscape:window-height="949"
+     inkscape:pageopacity="0.0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(-139.00648,-139.42574)">
+    <g
+       id="g4162">
+      <circle
+         id="path1070"
+         style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:4.06820154;stroke-linecap:round;stroke-linejoin:round"
+         cx="203.00648"
+         cy="203.42574"
+         r="61.9659" />
+      <g
+         id="flowRoot4165"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:128.36198425px;line-height:125%;font-family:'Droid Serif';-inkscape-font-specification:'Droid Serif Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="translate(715.46098,-505.7099)">
+        <path
+           id="path4160"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Droid Serif';-inkscape-font-specification:'Droid Serif Bold';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m -513.48866,744.92406 q -6.95712,0 -11.90859,-1.12818 -4.88878,-1.12818 -8.02262,-3.13384 -3.07116,-2.00565 -4.51273,-4.76343 -1.37888,-2.75778 -1.37888,-5.95429 0,-3.13384 1.19085,-5.01414 1.25354,-1.94298 3.07117,-3.00849 1.8803,-1.0655 3.94863,-1.37888 2.06833,-0.37606 3.76061,-0.37606 0,4.01131 1.00282,7.20782 1.00283,3.19652 2.82046,5.45288 1.81762,2.19369 4.32469,3.38454 2.56975,1.19086 5.70359,1.19086 3.32186,0 5.70358,-0.68944 2.44439,-0.68945 3.94864,-1.88031 1.56692,-1.25353 2.31904,-2.82045 0.75212,-1.62959 0.75212,-3.38454 0,-2.13101 -0.8148,-3.76061 -0.75212,-1.69227 -2.56975,-3.13384 -1.81762,-1.50424 -4.88878,-2.88313 -3.00849,-1.44156 -7.52121,-3.00848 -5.20217,-1.81763 -9.21349,-3.82328 -3.94863,-2.06834 -6.70641,-4.63808 -2.6951,-2.63243 -4.13666,-5.95429 -1.37889,-3.38455 -1.37889,-7.70924 0,-5.1395 1.94298,-8.96278 2.00565,-3.82328 5.6409,-6.33035 3.63526,-2.56975 8.71207,-3.82328 5.07682,-1.25354 11.28182,-1.25354 6.07964,0 10.34166,1.06551 4.26202,1.00283 6.95712,2.6951 2.6951,1.69227 3.94864,3.82328 1.25353,2.13101 1.25353,4.3247 0,4.32469 -3.07116,6.58105 -3.00848,2.25637 -10.02828,2.25637 0,-6.39303 -2.88313,-9.90293 -2.82045,-3.57257 -8.39868,-3.57257 -2.06834,0 -4.01132,0.50141 -1.8803,0.50141 -3.32186,1.50424 -1.37889,1.00283 -2.25637,2.50707 -0.8148,1.44157 -0.8148,3.44722 0,2.06834 0.75213,3.69793 0.81479,1.6296 2.75777,3.13384 2.00566,1.44156 5.3902,2.94581 3.38455,1.50424 8.64939,3.32186 4.26202,1.50425 7.8346,3.44723 3.63525,1.8803 6.205,4.38737 2.63242,2.44439 4.07399,5.64091 1.44156,3.13383 1.44156,7.20782 0,5.32753 -1.8803,9.52687 -1.81763,4.19934 -5.3902,7.08247 -3.57258,2.88313 -8.77475,4.45005 -5.20217,1.50424 -11.8459,1.50424 z" />
+      </g>
+      <path
+         id="path1713"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccc"
+         style="opacity:0.9;fill:url(#linearGradient1078);fill-rule:evenodd"
+         d="m 248.0068,187.0934 c 14.43996,-0.31568 -4.03551,-40.0817 -44.15627,-40.29324 -43.79177,-0.2213 -52.75125,36.11129 -45.79651,36.77519 0,0 11.99913,1.64675 23.41246,4.8361 18.37783,5.18433 40.85951,-4.25355 49.71811,-5.62693 9.87397,-1.52633 15.41629,5.01184 16.82221,4.30888 z" />
+    </g>
+  </g>
+  <metadata
+     id="metadata17">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>OpenClipart Library</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>Round Green S Button</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Benji Park/Jordan Irwin</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>https://openclipart.org/detail/26193/button-green</dc:source>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
