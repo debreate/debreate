@@ -21,6 +21,7 @@ from globals.errorcodes     import errno
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
+from globals.ident          import btnid
 from globals.ident          import pgid
 from globals.ident          import selid
 from globals.strings        import TextIsEmpty
@@ -70,6 +71,9 @@ class Panel(WizardPage):
         self.sel_templates.default = 0
         self.sel_templates.SetSelection(self.sel_templates.default)
         
+        btn_open = CreateButton(self, GT(u'Opening Containing Folder'), u'browse', btnid.BROWSE,
+                name=u'btn opendir', commands=u'xdg-open')
+        
         btn_template = CreateButton(self, GT(u'Generate Template'), name=u'full»')
         self.btn_template_simple = CreateButton(self, GT(u'Generate Simple Template'), name=u'simple»')
         
@@ -92,6 +96,7 @@ class Panel(WizardPage):
         
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
+        btn_open.Bind(wx.EVT_BUTTON, self.OnOpenPath)
         btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
         self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
         
@@ -107,6 +112,7 @@ class Panel(WizardPage):
         lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
                 lyt.CNTR_VERT)
         lyt_label.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
+        lyt_label.Add(btn_open, 0, wx.LEFT, 5)
         lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
         
         lyt_main = BoxSizer(wx.VERTICAL)
