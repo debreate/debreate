@@ -18,6 +18,8 @@ from dbr.templates          import local_licenses_path
 from globals.constants      import system_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import errno
+from globals.execute        import ExecuteCommand
+from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.ident          import pgid
 from globals.ident          import selid
@@ -296,6 +298,36 @@ class Panel(WizardPage):
             self.dsp_copyright.SetInsertionPoint(0)
         
         self.dsp_copyright.SetFocus()
+    
+    
+    ## Opens directory containing currently selected license
+    def OnOpenPath(self, event=None):
+        print(u'\nDEBUG: OnOpenPath:')
+        
+        CMD_open = GetExecutable(u'xdg-open')
+        
+        print(u'  Using command: {}'.format(CMD_open))
+        
+        if CMD_open:
+            path = self.GetLicensePath()
+            if not path:
+                #Logger.Error(__name__, u'Error retrieving template path: {}'.format(self.GetCurrentTemplateName()))
+                ShowErrorDialog(GT(u'Error retrieving template path: {}').format(self.GetCurrentTemplateName()))
+                
+                return False
+            
+            path = os.path.dirname(path)
+            
+            print(u'  Opening path: {}'.format(path))
+            
+            if os.path.isdir(path):
+                print(u'  Path exists')
+                
+                ExecuteCommand(CMD_open, (path,))
+                
+                return True
+        
+        return False
     
     
     ## Enables/Disables simple template button
