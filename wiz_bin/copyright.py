@@ -22,6 +22,7 @@ from globals.ident          import pgid
 from globals.ident          import selid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.select           import Choice
 from input.text             import TextAreaPanelESS
@@ -140,6 +141,11 @@ class Panel(WizardPage):
     ## Retrieve contents of page
     def Get(self):
         return self.dsp_copyright.GetValue()
+    
+    
+    ## Retrieves the name of the template currently selected
+    def GetCurrentTemplateName(self):
+        return GetField(self, selid.LICENSE).GetStringSelection()
     
     
     ## TODO: Doxygen
