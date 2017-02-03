@@ -23,6 +23,7 @@ from globals.ident          import pgid
 from globals.ident          import selid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
 from input.select           import Choice
@@ -152,6 +153,11 @@ class Panel(WizardPage):
             page = (__name__, page,)
         
         return page
+    
+    
+    ## Retrieves the name of the template currently selected
+    def GetCurrentTemplateName(self):
+        return GetField(self, selid.LICENSE).GetStringSelection()
     
     
     ## TODO: Doxygen
