@@ -227,7 +227,7 @@ class Panel(WizardPage):
         
         if self.DestroyLicenseText():
             if not template_file or not os.path.isfile(template_file):
-                ShowErrorDialog(u'{}: {}'.format(GT(u'Could not locate license file'), self.GetCurrentTemplateName()))
+                ShowErrorDialog(GT(u'Could not locate license file: {}').format(self.GetCurrentTemplateName()))
                 
                 return
             
