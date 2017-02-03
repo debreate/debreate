@@ -38,20 +38,42 @@ local_templates_path = u'{}/templates'.format(PATH_local)
 #  <templates_path>/licenses
 local_licenses_path = u'{}/licenses'.format(local_templates_path)
 
-# FIXME: Rename to 'global_licenses_templates'
-application_licenses_templates = []
-for PATH, DIRS, FILES in os.walk(application_licenses_path):
-    for F in FILES:
-        if os.path.isfile(u'{}/{}'.format(PATH, F)):
-            application_licenses_templates.append(F)
-            Logger.Debug(__name__, u'Loaded global license: {}'.format(F))
+licenses_app = []
+licenses_local = []
 
-local_licenses_templates = []
-for PATH, DIRS, FILES in os.walk(local_licenses_path):
-    for F in FILES:
-        if os.path.isfile(u'{}/{}'.format(PATH, F)):
-            local_licenses_templates.append(F)
-            Logger.Debug(__name__, u'Loaded local license: {}'.format(F))
+
+## Initializes/Refreshes the app licenses list
+#
+#  FIXME: Rename to "GetAppLicenseTemplates" & don't set global list
+def SetAppLicenseTemplates():
+    global licenses_app
+    
+    # Clear old values
+    licenses_app = []
+    
+    for PATH, DIRS, FILES in os.walk(application_licenses_path):
+        for F in FILES:
+            if os.path.isfile(u'{}/{}'.format(PATH, F)):
+                licenses_app.append(F)
+                
+                Logger.Debug(__name__, u'Loaded global license: {}'.format(F))
+
+
+## Initializes/Refreshes the local licenses list
+#
+#  FIXME: Rename to "GetLocalLicenseTemplates" & don't set global list
+def SetLocalLicenseTemplates():
+    global licenses_local
+    
+    # Clear old values
+    licenses_local = []
+    
+    for PATH, DIRS, FILES in os.walk(local_licenses_path):
+        for F in FILES:
+            if os.path.isfile(u'{}/{}'.format(PATH, F)):
+                licenses_local.append(F)
+                
+                Logger.Debug(__name__, u'Loaded local license: {}'.format(F))
 
 
 ## Retrieves the absolute path of a license template
@@ -68,10 +90,10 @@ def GetLicenseTemplateFile(l_name):
     l_template = None
     
     # Check local templates first
-    if l_name in local_licenses_templates:
+    if l_name in licenses_local:
         l_template = u'{}/{}'.format(local_licenses_path, l_name)
     
-    elif l_name in application_licenses_templates:
+    elif l_name in licenses_app:
         l_template = u'{}/{}'.format(application_licenses_path, l_name)
     
     
@@ -89,11 +111,15 @@ def GetLicenseTemplateFile(l_name):
 #  Then retrieved from <PATH_app>/templates/licenses. Only files that
 #  don't already exist in local path are added.
 def GetLicenseTemplatesList():
+    # Refresh lists of available templates
+    SetAppLicenseTemplates()
+    SetLocalLicenseTemplates()
+    
     # Use local templates first if available
-    templates_list = local_licenses_templates[:]
+    templates_list = licenses_local[:]
     
     # Retrieve licenses that are not available from local path
-    for LIC in application_licenses_templates:
+    for LIC in licenses_app:
         if LIC not in templates_list:
             templates_list.append(LIC)
     
