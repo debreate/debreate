@@ -187,6 +187,7 @@ class BtnId(FieldId):
         self.IMPORT = self.NewId()
         self.MODE = self.NewId()
         self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW)
+        self.REFRESH = self.AddStaticId(wx.ID_REFRESH)
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE)
         self.RENAME = self.NewId()
         self.SAVE = self.AddStaticId(wx.ID_SAVE)
