@@ -74,7 +74,7 @@ class Panel(WizardPage):
         btn_open = CreateButton(self, GT(u'Opening Containing Folder'), u'browse', btnid.BROWSE,
                 name=u'btn opendir', commands=u'xdg-open')
         
-        btn_template = CreateButton(self, GT(u'Generate Template'), name=u'full»')
+        btn_template = CreateButton(self, GT(u'Generate Full Template'), name=u'full»')
         self.btn_template_simple = CreateButton(self, GT(u'Generate Simple Template'), name=u'simple»')
         
         if not self.sel_templates.GetCount():
