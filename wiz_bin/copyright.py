@@ -20,10 +20,12 @@ from globals.dateinfo       import GetYear
 from globals.errorcodes     import errno
 from globals.fileio         import ReadFile
 from globals.ident          import pgid
+from globals.ident          import selid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetMainWindow
 from globals.wizardhelper   import GetPage
+from input.select           import Choice
 from input.text             import TextAreaPanelESS
 from ui.button              import CreateButton
 from ui.dialog              import ConfirmationDialog
@@ -61,7 +63,7 @@ class Panel(WizardPage):
         opts_licenses.sort(key=unicode.lower)
         
         ## A list of available license templates
-        self.sel_templates = wx.Choice(self, choices=opts_licenses, name=u'list»')
+        self.sel_templates = Choice(self, selid.LICENSE, choices=opts_licenses, name=u'list»')
         self.sel_templates.default = 0
         self.sel_templates.SetSelection(self.sel_templates.default)
         
