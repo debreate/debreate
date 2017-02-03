@@ -161,7 +161,11 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GetLicensePath(self, template_name):
+    def GetLicensePath(self, template_name=None):
+        # Default to currently selected template
+        if not template_name:
+            template_name = self.GetCurrentTemplateName()
+        
         # User templates have priority
         license_path = u'{}/{}'.format(local_licenses_path, template_name)
         if os.path.isfile(license_path):
