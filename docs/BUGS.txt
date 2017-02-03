@@ -4,7 +4,6 @@ Must be fixed before release:
 - PathCtrl.Reset not working correctly (perhaps conflicts with InputField.Reset)
 
 Priority:
-- Generate template button on copyright page moves header for system licenses
 - Error if user deletes license template while app is open & attempts to generate:
   - TypeError: coercing to Unicode: need string or buffer, NoneType found
 
