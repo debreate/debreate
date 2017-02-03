@@ -250,6 +250,7 @@ class SelId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
         
+        self.LICENSE = self.NewId()
         self.URGENCY = self.NewId()
 
 selid = SelId()
