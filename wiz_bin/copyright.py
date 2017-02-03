@@ -100,17 +100,17 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        lyt_label = BoxSizer(wx.HORIZONTAL)
-        lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
+        lyt_top = BoxSizer(wx.HORIZONTAL)
+        lyt_top.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
                 lyt.CNTR_VERT)
-        lyt_label.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
-        lyt_label.Add(btn_template, 0, wx.LEFT, 5)
-        lyt_label.Add(self.btn_template_simple)
-        lyt_label.Add(btn_open)
+        lyt_top.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
+        lyt_top.Add(btn_template, 0, wx.LEFT, 5)
+        lyt_top.Add(self.btn_template_simple)
+        lyt_top.Add(btn_open)
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_label, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_top, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
         lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|lyt.PAD_LRB, 5)
         
         self.SetAutoLayout(True)
