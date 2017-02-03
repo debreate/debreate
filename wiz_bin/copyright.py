@@ -196,7 +196,7 @@ class Panel(WizardPage):
             
             Logger.Debug(__name__, u'Copying license {}'.format(template_file))
             
-            license_text = ReadFile(template_file)
+            license_text = ReadFile(template_file, no_strip=u' ')
             
             # Number defines how many empty lines to add after the copyright header
             # Boolean/Integer defines whether copyright header should be centered/offset
@@ -261,9 +261,7 @@ class Panel(WizardPage):
                 
                 return
             
-            self.dsp_copyright.Clear()
             self.dsp_copyright.SetValue(license_text)
-            
             self.dsp_copyright.SetInsertionPoint(0)
         
         self.dsp_copyright.SetFocus()
