@@ -129,7 +129,8 @@ no_lic_templates = GT(u'No license templates available')
 TT_copyright = {
     u'list_disabled': no_lic_templates,
     u'full': (
-        u'{}\n'.format(GT(u'Copies a full system, app, or local license')),
+        GT(u'Full Template'), u'',
+        GT(u'Copies a full system, app, or local license'),
         GT(u'SYSTEM:'), u'\t{}'.format(GT(u'Copies text from a license stored in')),
         u'\t/usr/share/common-licenses',
         GT(u'APP:'), u'\t{}'.format(GT(u'Copies a template distributed with Debreate')),
@@ -137,8 +138,11 @@ TT_copyright = {
         u'\t{}'.format(local_templates_path),
         ),
     u'full_disabled': no_lic_templates,
-    u'simple': GT(u'Creates a copyright header & short reference to a standard license in /usr/share/common-licenses'),
-    u'simple_disabled': no_lic_templates,
+    u'short': (
+        GT(u'Short Template'), u'',
+        GT(u'Creates a copyright header & short reference to a standard system license in /usr/share/common-licenses'),
+        ),
+    u'short_disabled': no_lic_templates,
 }
 
 TT_menu = {
