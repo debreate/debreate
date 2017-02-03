@@ -71,11 +71,11 @@ class Panel(WizardPage):
         self.sel_templates.default = 0
         self.sel_templates.SetSelection(self.sel_templates.default)
         
-        btn_open = CreateButton(self, GT(u'Opening Containing Folder'), u'browse', btnid.BROWSE,
+        btn_template = CreateButton(self, GT(u'Full Template'), u'full', name=u'full»')
+        self.btn_template_simple = CreateButton(self, GT(u'Short Template'), u'short',
+                name=u'short»')
+        btn_open = CreateButton(self, GT(u'Open Template Directory'), u'browse', btnid.BROWSE,
                 name=u'btn opendir', commands=u'xdg-open')
-        
-        btn_template = CreateButton(self, GT(u'Generate Full Template'), name=u'full»')
-        self.btn_template_simple = CreateButton(self, GT(u'Generate Simple Template'), name=u'short»')
         
         if not self.sel_templates.GetCount():
             self.sel_templates.Enable(False)
@@ -102,18 +102,13 @@ class Panel(WizardPage):
         
         # *** Layout *** #
         
-        # Putting the generate buttons in their own sizer & making them
-        # them the same width looks nicer.
-        lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(btn_template, 1)
-        lyt_buttons.Add(self.btn_template_simple, 1)
-        
         lyt_label = BoxSizer(wx.HORIZONTAL)
         lyt_label.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
                 lyt.CNTR_VERT)
         lyt_label.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
-        lyt_label.Add(btn_open, 0, wx.LEFT, 5)
-        lyt_label.Add(lyt_buttons, 1, wx.LEFT, 150)
+        lyt_label.Add(btn_template, 0, wx.LEFT, 5)
+        lyt_label.Add(self.btn_template_simple)
+        lyt_label.Add(btn_open)
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
