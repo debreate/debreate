@@ -72,35 +72,6 @@ def GetLicenses(path):
 def GetSysLicenses():
     return GetLicenses(sys_licenses_path)
 
-## Initializes/Refreshes the app licenses list
-def GetAppLicenses():
-    # Clear old values
-    licenses_app = []
-    
-    for PATH, DIRS, FILES in os.walk(app_licenses_path):
-        for F in FILES:
-            if os.path.isfile(u'{}/{}'.format(PATH, F)):
-                licenses_app.append(F)
-                
-                Logger.Debug(__name__, u'Loaded global license: {}'.format(F))
-    
-    return sorted(licenses_app, key=GS.lower)
-
-
-## Initializes/Refreshes the local licenses list
-def GetLocalLicenses():
-    # Clear old values
-    licenses_local = []
-    
-    for PATH, DIRS, FILES in os.walk(local_licenses_path):
-        for F in FILES:
-            if os.path.isfile(u'{}/{}'.format(PATH, F)):
-                licenses_local.append(F)
-                
-                Logger.Debug(__name__, u'Loaded local license: {}'.format(F))
-    
-    return sorted(licenses_local, key=GS.lower)
-
 
 ## Join the app & local licenses lists
 def GetCustomLicenses():
