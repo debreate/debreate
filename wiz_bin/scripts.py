@@ -10,6 +10,7 @@ import os, wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
+from globals.fileio         import ReadFile
 from globals.ident          import genid
 from globals.ident          import inputid
 from globals.ident          import pgid
@@ -52,6 +53,11 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.SCRIPTS)
         
+        preinst = DebianScript(self, ID_INST_PRE)
+        postinst = DebianScript(self, ID_INST_POST)
+        prerm = DebianScript(self, ID_RM_PRE)
+        postrm = DebianScript(self, ID_RM_POST)
+        
         # Check boxes for choosing scripts
         chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
         chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
@@ -65,28 +71,23 @@ class Panel(WizardPage):
         
         # Radio buttons for displaying between pre- and post- install scripts
         # FIXME: Names settings for tooltips are confusing
-        rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'),
-                name=u'preinst', style=wx.RB_GROUP)
-        rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'),
-                name=u'postinst')
-        rb_prerm = wx.RadioButton(self, ID_RM_PRE, GT(u'Pre-Remove'),
-                name=u'prerm')
-        rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'),
-                name=u'postrm')
-        
-        preinst = DebianScript(self, ID_INST_PRE)
-        postinst = DebianScript(self, ID_INST_POST)
-        prerm = DebianScript(self, ID_RM_PRE)
-        postrm = DebianScript(self, ID_RM_POST)
+        rb_preinst = wx.RadioButton(self, preinst.GetId(), GT(u'Pre-Install'),
+                name=preinst.FileName, style=wx.RB_GROUP)
+        rb_postinst = wx.RadioButton(self, postinst.GetId(), GT(u'Post-Install'),
+                name=postinst.FileName)
+        rb_prerm = wx.RadioButton(self, prerm.GetId(), GT(u'Pre-Remove'),
+                name=prerm.FileName)
+        rb_postrm = wx.RadioButton(self, postrm.GetId(), GT(u'Post-Remove'),
+                name=postrm.FileName)
         
         self.script_objects = (
-            (chk_preinst, rb_preinst, preinst,),
-            (chk_postinst, rb_postinst, postinst,),
-            (chk_prerm, rb_prerm, prerm,),
-            (chk_postrm, rb_postrm, postrm,),
+            (preinst, chk_preinst, rb_preinst,),
+            (postinst, chk_postinst, rb_postinst,),
+            (prerm, chk_prerm, rb_prerm,),
+            (postrm, chk_postrm, rb_postrm,),
             )
         
-        for CHK, RB, TI in self.script_objects:
+        for DS, CHK, RB in self.script_objects:
             CHK.Hide()
         
         # Set script text areas to default enabled/disabled setting
@@ -124,7 +125,7 @@ class Panel(WizardPage):
         
         # *** Event Handling *** #
         
-        for CHK, RB, TI in self.script_objects:
+        for DS, CHK, RB in self.script_objects:
             RB.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
         
         wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExe)
@@ -156,8 +157,8 @@ class Panel(WizardPage):
         lyt_left = BoxSizer(wx.VERTICAL)
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
         
-        for CHK, RB, TI in self.script_objects:
-            lyt_left.Add(TI, 1, wx.EXPAND)
+        for DS, CHK, RB, in self.script_objects:
+            lyt_left.Add(DS, 1, wx.EXPAND)
         
         # Auto-Link/Right side
         lyt_ti_autolink = BoxSizer(wx.HORIZONTAL)
@@ -188,7 +189,7 @@ class Panel(WizardPage):
         lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
         
         lyt_main = BoxSizer(wx.HORIZONTAL)
-        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
+        lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.ALL, 5)
         lyt_main.Add(lyt_right, 0, wx.RIGHT|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
@@ -318,6 +319,26 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    #
+    #  FIXME: Should be done in DebianScript class method???
+    def ImportFromFile(self, filename):
+        Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
+        
+        script_name = filename.split(u'-')[-1]
+        script_object = None
+        
+        for DS, CHK, RB in self.script_objects:
+            if script_name == DS.GetFilename():
+                script_object = DS
+                
+                break
+        
+        # Loading the actual text
+        if script_object != None:
+            script_object.SetValue(ReadFile(filename))
+    
+    
+    ## TODO: Doxygen
     def IsOkay(self):
         for chk in self.script_ojects:
             chk = chk[0]
@@ -337,9 +358,9 @@ class Panel(WizardPage):
         if total > 0:
             non_empty_scripts = []
             
-            for CHK, RB, TI in self.script_objects[1], self.script_objects[2]:
-                if not TextIsEmpty(TI.GetValue()):
-                    non_empty_scripts.append(RB.GetLabel())
+            for DS in self.script_objects[1][0], self.script_objects[2][0]:
+                if not TextIsEmpty(DS.GetValue()):
+                    non_empty_scripts.append(DS.GetName())
             
             # Warn about overwriting previous post-install & pre-remove scripts
             if non_empty_scripts:
@@ -370,8 +391,8 @@ class Panel(WizardPage):
                 overwrite.Destroy()
                 del warn_msg, overwrite
             
-            self.script_objects[1][0].SetValue(True)
-            self.script_objects[2][0].SetValue(True)
+            for CHK in self.script_objects[1][1], self.script_objects[2][1]:
+                CHK.SetValue(True)
             
             # Update scripts' text area enabled status
             self.OnToggleScripts()
@@ -397,8 +418,8 @@ class Panel(WizardPage):
             postinst = u'\n\n'.join(postinst_list)
             prerm = u'\n\n'.join(prerm_list)
             
-            self.script_objects[1][2].SetValue(u'#!/bin/bash -e\n\n{}'.format(postinst))
-            self.script_objects[2][2].SetValue(u'#!/bin/bash -e\n\n{}'.format(prerm))
+            self.script_objects[1][0].SetValue(u'#!/bin/bash -e\n\n{}'.format(postinst))
+            self.script_objects[2][0].SetValue(u'#!/bin/bash -e\n\n{}'.format(prerm))
             
             DetailedMessageDialog(main_window, GT(u'Success'),
                     text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
@@ -419,19 +440,19 @@ class Panel(WizardPage):
     def OnToggleScripts(self, event=None):
         Logger.Debug(__name__, u'Toggling scripts')
         
-        for CHK, RB, TI in self.script_objects:
-            TI.Enable(CHK.GetValue())
+        for DS, CHK, RB in self.script_objects:
+            DS.Enable(CHK.GetValue())
     
     
     ## Resets all fields on page to default values
     def Reset(self):
-        for CHK, RB, TI in self.script_objects:
-            CHK.SetValue(False)
-            TI.Clear()
+        for DS, CHK, RB in self.script_objects:
+            CHK.Reset()
+            DS.Reset()
         
         self.OnToggleScripts()
         
-        self.script_objects[0][1].SetValue(True)
+        self.script_objects[0][2].SetValue(True)
         self.ScriptSelect(None)
         
         self.ti_autolink.Reset()
@@ -440,29 +461,24 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     def ScriptSelect(self, event=None):
-        for CHK, RB, TI in self.script_objects:
+        for DS, CHK, RB in self.script_objects:
             if RB.GetValue():
                 CHK.Show()
-                TI.Show()
+                DS.Show()
             
             else:
                 CHK.Hide()
-                TI.Hide()
+                DS.Hide()
         
         self.Layout()
     
     
     ## TODO: Doxygen
     def Set(self, data):
-        chk_preinst = self.script_objects[0][0]
-        chk_postinst = self.script_objects[1][0]
-        chk_prerm = self.script_objects[2][0]
-        chk_postrm = self.script_objects[3][0]
-        
-        ti_preinst = self.script_objects[0][2]
-        ti_postinst = self.script_objects[1][2]
-        ti_prerm = self.script_objects[2][2]
-        ti_postrm = self.script_objects[3][2]
+        chk_preinst = self.script_objects[0][1]
+        chk_postinst = self.script_objects[1][1]
+        chk_prerm = self.script_objects[2][1]
+        chk_postrm = self.script_objects[3][1]
         
         preinst = (
             data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0].split(u'\n'),
@@ -491,16 +507,16 @@ class Panel(WizardPage):
         self.OnToggleScripts()
         
         if chk_preinst.GetValue():
-            ti_preinst.SetValue(u'\n'.join(preinst[0]))
+            self.script_objects[0][0].SetValue(u'\n'.join(preinst[0]))
         
         if chk_postinst.GetValue():
-            ti_postinst.SetValue(u'\n'.join(postinst[0]))
+            self.script_objects[1][0].SetValue(u'\n'.join(postinst[0]))
         
         if chk_prerm.GetValue():
-            ti_prerm.SetValue(u'\n'.join(prerm[0]))
+            self.script_objects[2][0].SetValue(u'\n'.join(prerm[0]))
         
         if chk_postrm.GetValue():
-            ti_postrm.SetValue(u'\n'.join(postrm[0]))
+            self.script_objects[3][0].SetValue(u'\n'.join(postrm[0]))
 
 
 ## Class defining a Debian package script
@@ -614,12 +630,12 @@ class DebianScript(wx.Panel):
             suffix = u'Uninstall'
         
         if (prefix != None) and (suffix != None):
-            self.script_name = GT(u'{}-{}'.format(prefix, suffix))
+            self.ScriptName = GT(u'{}-{}'.format(prefix, suffix))
     
     
     ## Fills the script
     #  
     #  \param value
-    #        \b \e unicode|str : Text to be displayed
+    #    Text to be displayed
     def SetValue(self, value):
         self.ScriptBody.SetValue(value)
