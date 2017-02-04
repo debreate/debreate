@@ -17,6 +17,7 @@ from dbr.templates          import GetLocalLicenses
 from dbr.templates          import GetSysLicenses
 from dbr.templates          import sys_licenses_path
 from globals.dateinfo       import GetYear
+from globals.errorcodes     import dbrerrno
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
@@ -166,6 +167,31 @@ class Panel(WizardPage):
     ## Retrieves the name of the template currently selected
     def GetSelectedName(self):
         return GetField(self, selid.LICENSE).GetStringSelection()
+    
+    
+    ## Sets page's fields from opened file
+    def ImportFromFile(self, filename):
+        if not os.path.isfile(filename):
+            return dbrerrno.ENOENT
+        
+        copyright_data = ReadFile(filename, split=True)
+        
+        # Remove preceding empty lines
+        remove_index = 0
+        for I in copyright_data:
+            if not TextIsEmpty(I):
+                break
+            
+            remove_index += 1
+        
+        for I in reversed(range(remove_index)):
+            copyright_data.remove(copyright_data[I])
+        
+        copyright_data = u'\n'.join(copyright_data)
+        
+        self.dsp_copyright.SetValue(copyright_data)
+        
+        return 0
     
     
     ## Checks if page can be exported or or added to build
