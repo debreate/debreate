@@ -100,6 +100,6 @@ def GetLicenseTemplateFile(l_name):
         
         return
     
-    Logger.Info(__name__, GT(u'Loading license template: {}'.format(template_path)))
+    Logger.Debug(__name__, GT(u'Loading license template: {}'.format(template_path)))
     
     return template_path
