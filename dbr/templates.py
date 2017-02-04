@@ -25,24 +25,24 @@ sys_licenses_path = u'/usr/share/common-licenses'
 #  Path to application templates stored in the system Debreate directory.
 #  <PATH_app>/templates
 #  FIXME: Should be stored elsewhere? /etc? /lib?
-application_templates_path = u'{}/templates'.format(PATH_app)
+app_templates_path = ConcatPaths((PATH_app, u'templates'))
 
 ## Application licenses
 #  
 #  Path to license templates stored in the Debreate data directory
 #  FIXME: Rename to 'global_licenses_path'
 #  <PATH_app>/templates/li
-application_licenses_path = u'{}/licenses'.format(application_templates_path)
+app_licenses_path = ConcatPaths((app_templates_path, u'licenses'))
 
 ## Local templates directory
 #  
 #  <PATH_local>/templates
-local_templates_path = u'{}/templates'.format(PATH_local)
+local_templates_path = ConcatPaths((PATH_local, u'templates'))
 
 ## License templates directory
 #  
 #  <templates_path>/licenses
-local_licenses_path = u'{}/licenses'.format(local_templates_path)
+local_licenses_path = ConcatPaths((local_templates_path, u'licenses'))
 
 
 ## Retrieves a list of licenses installed on the system
@@ -64,7 +64,7 @@ def GetAppLicenseTemplates():
     # Clear old values
     licenses_app = []
     
-    for PATH, DIRS, FILES in os.walk(application_licenses_path):
+    for PATH, DIRS, FILES in os.walk(app_licenses_path):
         for F in FILES:
             if os.path.isfile(u'{}/{}'.format(PATH, F)):
                 licenses_app.append(F)
@@ -109,7 +109,7 @@ def GetLicenseTemplateFile(l_name):
         template_path = ConcatPaths((local_licenses_path, l_name))
     
     elif l_name in GetAppLicenseTemplates():
-        template_path = ConcatPaths((application_licenses_path, l_name))
+        template_path = ConcatPaths((app_licenses_path, l_name))
     
     if not template_path or not os.path.isfile(template_path):
         Logger.Warn(__name__, GT(u'License template not found: {}'.format(template_path)))
