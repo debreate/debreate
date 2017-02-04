@@ -631,8 +631,6 @@ class Panel(WizardPage):
     
     
     ## Resets all fields on page to default values
-    #  
-    #  \override ui.wizard.Wizard.ImportFromFile
     def Reset(self):
         self.lst_files.DeleteAllItems()
     
