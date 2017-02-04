@@ -70,15 +70,7 @@ def GetLicenses(path):
 #  
 #  Common system license files are located in /usr/share/common-licenses.
 def GetSysLicenses():
-    license_list = []
-    
-    for PATH, DIRS, FILES in os.walk(sys_licenses_path):
-        for F in FILES:
-            if os.path.isfile(u'{}/{}'.format(sys_licenses_path, F)):
-                license_list.append(F)
-    
-    return sorted(license_list)
-
+    return GetLicenses(sys_licenses_path)
 
 ## Initializes/Refreshes the app licenses list
 def GetAppLicenses():
