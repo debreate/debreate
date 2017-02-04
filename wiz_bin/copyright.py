@@ -194,7 +194,7 @@ class Panel(WizardPage):
         return 0
     
     
-    ## TODO: Doxygen
+    ## Checks if page can be exported or or added to build
     def IsOkay(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
