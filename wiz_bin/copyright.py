@@ -11,7 +11,8 @@ import os, wx
 from dbr.functions          import GetLongestLine
 from dbr.language           import GT
 from dbr.log                import Logger
-from dbr.templates          import GetLicenseTemplatesList
+from dbr.templates          import GetCustomLicenses
+from dbr.templates          import GetLicenses
 from dbr.templates          import GetSysLicenses
 from dbr.templates          import app_licenses_path
 from dbr.templates          import local_licenses_path
@@ -23,6 +24,7 @@ from globals.fileio         import ReadFile
 from globals.ident          import btnid
 from globals.ident          import pgid
 from globals.ident          import selid
+from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
 from globals.wizardhelper   import GetField
@@ -46,7 +48,7 @@ class Panel(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.COPYRIGHT)
         
-        self.local_templates = []
+        self.custom_licenses = []
         
         ## A list of available license templates
         self.sel_templates = Choice(self, selid.LICENSE, name=u'list»')
@@ -277,22 +279,21 @@ class Panel(WizardPage):
     ## Repopulates template list
     def OnRefreshTemplateList(self, event=None):
         # FIXME: Ignore symbolic links???
-        opts_licenses = GetSysLicenses()
+        self.custom_licenses = GetLicenses(local_licenses_path)
         
-        # FIXME: Change variable name to "self.builtin_licenses"???
-        self.local_templates = GetLicenseTemplatesList()
+        licenses = list(self.custom_licenses)
         
-        # Do not use local license templates if already located on system
-        # FIXME: "local" (not "app") templates should take precedence over "system"
-        for lic in opts_licenses:
-            if lic in self.local_templates:
-                self.local_templates.remove(lic)
+        # System licenses are not added to "custom" list
+        for LIC in GetSysLicenses():
+            if LIC not in licenses:
+                licenses.append(LIC)
         
-        # Add the remaining licenses to the selection list
-        for lic in self.local_templates:
-            opts_licenses.append(lic)
+        for LIC in GetCustomLicenses():
+            if LIC not in licenses:
+                licenses.append(LIC)
+                self.custom_licenses.append(LIC)
         
-        opts_licenses.sort(key=unicode.lower)
+        self.custom_licenses.sort(key=GS.lower)
         
         sel_templates = GetField(self, selid.LICENSE)
         
@@ -300,7 +301,7 @@ class Panel(WizardPage):
         if sel_templates.GetCount():
             selected = sel_templates.GetStringSelection()
         
-        sel_templates.Set(opts_licenses)
+        sel_templates.Set(sorted(licenses, key=GS.lower))
         
         if selected:
             if not sel_templates.SetStringSelection(selected):
@@ -323,7 +324,7 @@ class Panel(WizardPage):
         if choice:
             template = choice.GetString(choice.GetSelection())
             
-            if template in self.local_templates:
+            if template in self.custom_licenses:
                 self.btn_template_simple.Disable()
             
             else:
