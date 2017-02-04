@@ -130,10 +130,10 @@ def GetLicenseTemplateFile(l_name):
     template_path = None
     
     # Check local templates first
-    if l_name in GetLocalLicenses():
+    if l_name in GetLicenses(local_licenses_path):
         template_path = ConcatPaths((local_licenses_path, l_name))
     
-    elif l_name in GetAppLicenses():
+    elif l_name in GetLicenses(app_licenses_path):
         template_path = ConcatPaths((app_licenses_path, l_name))
     
     if not template_path or not os.path.isfile(template_path):
