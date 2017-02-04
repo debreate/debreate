@@ -107,7 +107,7 @@ class Notebook(AuiNotebook):
 ## Multiple instances of a single template
 #
 #  A ui.layout.BoxSizer that creates a ui.notebook.Notebook instance for creating
-#  multiple templates on a single ui.wizard.WizardPage.
+#  multiple templates on a single wiz.wizard.WizardPage.
 #
 #  \param parent
 #    The \b \e wx.Window parent instance

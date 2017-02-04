@@ -22,7 +22,7 @@ class DebreateApp(wx.App):
         return self.MainWindow
     
     
-    ## Retrieves the ui.wizard.Wizard instance
+    ## Retrieves the wiz.wizard.Wizard instance
     def GetWizard(self):
         if self.MainWindow:
             return self.MainWindow.GetWizard()
