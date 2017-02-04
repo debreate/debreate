@@ -15,12 +15,14 @@ from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
+from globals.wizardhelper   import FieldEnabled
 from globals.wizardhelper   import GetField
 from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.markdown         import MarkdownDialog
 from input.pathctrl         import PathCtrl
 from input.text             import TextAreaPanel
+from input.text             import TextAreaPanelESS
 from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
 from ui.button              import ButtonImport
@@ -504,3 +506,124 @@ class Panel(WizardPage):
         
         if chk_postrm.GetValue():
             ti_postrm.SetValue(u'\n'.join(postrm[0]))
+
+
+## Class defining a Debian package script
+#  
+#  A script's filename is one of 'preinst', 'prerm',
+#    'postinst', or 'postrm'. Scripts are stored in the
+#    (FIXME: Don't remember section name) section of the package & are executed in the
+#    order dictated by the naming convention:
+#    'Pre Install', 'Pre Remove/Uninstall',
+#    'Post Install', & 'Post Remove/Uninstall'.
+class DebianScript(wx.Panel):
+    def __init__(self, parent, scriptId):
+        wx.Panel.__init__(self, parent, scriptId)
+        
+        ## Filename used for exporting script
+        self.FileName = id_definitions[scriptId].lower()
+        
+        ## String name used for display in the application
+        self.ScriptName = None
+        self.SetScriptName()
+        
+        self.ScriptBody = TextAreaPanelESS(self, self.GetId(), monospace=True)
+        
+        # *** Layout *** #
+        
+        lyt_main = BoxSizer(wx.VERTICAL)
+        lyt_main.Add(self.ScriptBody, 1, wx.EXPAND|wx.TOP, 5)
+        
+        self.SetSizer(lyt_main)
+        self.SetAutoLayout(True)
+        self.Layout()
+        
+        # Scripts are hidden by default
+        self.Hide()
+    
+    
+    ## TODO: Doxygen
+    def Disable(self):
+        return self.Enable(False)
+    
+    
+    ## TODO: Doxygen
+    def Enable(self, enable=True):
+        return self.ScriptBody.Enable(enable)
+    
+    
+    ## Retrieves the filename to use for exporting
+    #  
+    #  \return
+    #        \b \e str : Script filename
+    def GetFilename(self):
+        return self.FileName
+    
+    
+    ## Retrieves the script's name for display
+    #  
+    #  \return
+    #        \b \e str : String representation of script's name
+    def GetName(self):
+        return self.ScriptName
+    
+    
+    ## TODO: Doxygen
+    def IsEnabled(self):
+        return FieldEnabled(self.ScriptBody)
+    
+    
+    ## Sets the name of the script to be displayed
+    #  
+    #  Sets the displayed script name to a value of either 'Pre Install',
+    #    'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.FileName'
+    #    is used to determine the displayed name.
+    #  TODO: Add strings to GetText translations
+    def SetScriptName(self):
+        prefix = None
+        suffix = None
+        
+        if u'pre' in self.FileName:
+            prefix = u'Pre'
+            suffix = self.FileName.split(u'pre')[1]
+        
+        elif u'post' in self.FileName:
+            prefix = u'Post'
+            suffix = self.FileName.split(u'post')[1]
+        
+        if suffix.lower() == u'inst':
+            suffix = u'Install'
+        
+        elif suffix.lower() == u'rm':
+            suffix = u'Uninstall'
+        
+        if (prefix != None) and (suffix != None):
+            self.script_name = GT(u'{}-{}'.format(prefix, suffix))
+    
+    
+    ## TODO: Doxygen
+    def GetValue(self):
+        return self.ScriptBody.GetValue()
+    
+    
+    ## Retrieves whether or not the script is used & should be exported
+    #  
+    #  The text area is checked &, if not empty, signifies that
+    #    the user want to export the script.
+    #  \return
+    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
+    def IsOkay(self):
+        return not TextIsEmpty(self.ScriptBody.GetValue())
+    
+    
+    ## Resets all members to default values
+    def Reset(self):
+        self.ScriptBody.Clear()
+    
+    
+    ## Fills the script
+    #  
+    #  \param value
+    #        \b \e unicode|str : Text to be displayed
+    def SetValue(self, value):
+        self.ScriptBody.SetValue(value)
