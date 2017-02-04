@@ -15,7 +15,6 @@ from urllib2    import urlopen
 from dbr.language           import GT
 from globals.application    import APP_project_gh
 from globals.application    import VERSION_dev
-from globals.constants      import system_licenses_path
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.strings        import GS
@@ -103,20 +102,6 @@ def RequirePython(version):
         raise ValueError(error)
     
     raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
-
-
-## Retrieves a list of licenses installed on the system
-#  
-#  Common system license files are located in /usr/share/common-licenses.
-def GetSystemLicensesList():
-    license_list = []
-    
-    for PATH, DIRS, FILES in os.walk(system_licenses_path):
-        for F in FILES:
-            if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
-                license_list.append(F)
-    
-    return sorted(license_list)
 
 
 ## Checks if a string contains any alphabetic characters
