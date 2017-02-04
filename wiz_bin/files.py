@@ -39,7 +39,7 @@ from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.tree                import DirectoryTreePanel
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 # Set the maximum file count to process without showing progress dialog
@@ -349,7 +349,7 @@ class Panel(WizardPage):
     
     ## TODO: Doxygen
     #  
-    #  \override ui.wizard.Wizard.ImportFromFile
+    #  \override wiz.wizard.Wizard.ImportFromFile
     def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         

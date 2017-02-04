@@ -117,7 +117,7 @@ def GetAllTypeFields(page, fieldType):
 #  FIXME: field_type is currently unused
 #  
 #  \param page
-#        \b \e ui.wizard.WizardPage : The page to search
+#        \b \e wiz.wizard.WizardPage : The page to search
 #  \param field_id
 #        \b \e int : ID of desired field/control
 #  \param field_type
@@ -221,7 +221,7 @@ def GetWizard():
     return GetMainWindow().GetWizard()
 
 
-## Finds the ui.wizard.WizardPage instance where an object is located
+## Finds the wiz.wizard.WizardPage instance where an object is located
 #
 #  \param field
 #    \b \e wx.Window instance to find parents of

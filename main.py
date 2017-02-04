@@ -53,7 +53,7 @@ from ui.layout              import BoxSizer
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
-from ui.wizard              import Wizard
+from wiz.wizard             import Wizard
 from wiz_bin.build          import Panel as PageBuild
 from wiz_bin.changelog      import Panel as PageChangelog
 from wiz_bin.control        import Panel as PageControl
@@ -121,7 +121,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_file.AppendItem(mitm_quit)
         
         # *** Page Menu *** #
-        ## This menu is filled from ui.wizard.Wizard.SetPages
+        ## This menu is filled from wiz.wizard.Wizard.SetPages
         self.menu_page = wx.Menu()
         
         # ----- Options Menu
@@ -276,12 +276,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Retrieves the Wizard instance
     #  
     #  \return
-    #        ui.wizard.Wizard
+    #        wiz.wizard.Wizard
     def GetWizard(self):
         return self.Wizard
     
     
-    ## Sets the pages in the ui.wizard.Wizard instance
+    ## Sets the pages in the wiz.wizard.Wizard instance
     def InitWizard(self):
         PageGreeting(self.Wizard)
         PageControl(self.Wizard)

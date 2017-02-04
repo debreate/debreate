@@ -39,7 +39,7 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.textpreview         import TextPreview
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## Page for creating a system menu launcher

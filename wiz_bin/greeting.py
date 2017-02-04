@@ -12,7 +12,7 @@ from dbr.language   import GT
 from globals.ident  import pgid
 from ui.hyperlink   import Hyperlink
 from ui.layout      import BoxSizer
-from ui.wizard      import WizardPage
+from wiz.wizard     import WizardPage
 
 
 ## TODO: Doxygen

@@ -37,7 +37,7 @@ from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.textpreview         import TextPreview
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## This panel displays the field input of the control file

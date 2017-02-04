@@ -32,7 +32,7 @@ from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ID_INST_PRE = wx.NewId()
