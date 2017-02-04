@@ -523,6 +523,7 @@ class DebianScript(wx.Panel):
         self.SetScriptName()
         
         self.ScriptBody = TextAreaPanelESS(self, self.GetId(), monospace=True)
+        self.ScriptBody.EnableDropTarget()
         
         # *** Layout *** #
         
