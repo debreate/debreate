@@ -15,7 +15,7 @@ from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import GetSysLicenses
 from dbr.templates          import application_licenses_path
 from dbr.templates          import local_licenses_path
-from globals.constants      import system_licenses_path
+from dbr.templates          import sys_licenses_path
 from globals.dateinfo       import GetYear
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
@@ -152,7 +152,7 @@ class Panel(WizardPage):
         if os.path.isfile(license_path):
             return license_path
         
-        license_path = u'{}/{}'.format(system_licenses_path, template_name)
+        license_path = u'{}/{}'.format(sys_licenses_path, template_name)
         if os.path.isfile(license_path):
             return license_path
         
@@ -337,7 +337,7 @@ class Panel(WizardPage):
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
             
-            license_path = u'{}/{}'.format(system_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
+            license_path = u'{}/{}'.format(sys_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
             
             self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
             self.dsp_copyright.SetInsertionPoint(0)
