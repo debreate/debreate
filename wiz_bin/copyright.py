@@ -17,7 +17,7 @@ from dbr.templates          import GetLocalLicenses
 from dbr.templates          import GetSysLicenses
 from dbr.templates          import sys_licenses_path
 from globals.dateinfo       import GetYear
-from globals.errorcodes     import errno
+from globals.errorcodes     import dbrerrno
 from globals.execute        import ExecuteCommand
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
@@ -172,7 +172,7 @@ class Panel(WizardPage):
     ## Sets page's fields from opened file
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
-            return errno.ENOENT
+            return dbrerrno.ENOENT
         
         copyright_data = ReadFile(filename, split=True)
         
