@@ -565,6 +565,11 @@ class DebianScript(wx.Panel):
     
     
     ## TODO: Doxygen
+    def GetValue(self):
+        return self.ScriptBody.GetValue()
+    
+    
+    ## TODO: Doxygen
     def IsEnabled(self):
         return FieldEnabled(self.ScriptBody)
     
