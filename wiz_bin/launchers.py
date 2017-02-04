@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wiz_bin.menu
+## \package wiz_bin.launchers
 
 # MIT licensing
 # See: docs/LICENSE.txt
