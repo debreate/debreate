@@ -144,21 +144,3 @@ def GetLicenseTemplateFile(l_name):
     Logger.Info(__name__, GT(u'Loading license template: {}'.format(template_path)))
     
     return template_path
-
-
-## Function to retrieve available license templates
-#  
-#  Licenses are retrieved first from <HOME>/.local/share/debreate/templates/licenses.
-#  Then retrieved from <PATH_app>/templates/licenses. Only files that
-#  don't already exist in local path are added.
-def GetLicenseTemplatesList():
-    # Use local templates first if available
-    templates_list = GetLocalLicenses()
-    
-    # Retrieve licenses that are not available from local path
-    for LIC in GetAppLicenses():
-        if LIC not in templates_list:
-            templates_list.append(LIC)
-    
-    # Return an alphabetically sorted list
-    return sorted(templates_list, key=GS.lower)
