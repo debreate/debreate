@@ -10,11 +10,14 @@ import os
 
 from dbr.language       import GT
 from dbr.log            import Logger
-from globals.constants  import system_licenses_path
 from globals.paths      import ConcatPaths
 from globals.paths      import PATH_app
 from globals.paths      import PATH_local
 from globals.strings    import GS
+
+
+## System common licenses
+sys_licenses_path = u'/usr/share/common-licenses'
 
 
 ## Application templates
@@ -48,9 +51,9 @@ local_licenses_path = u'{}/licenses'.format(local_templates_path)
 def GetSysLicenses():
     license_list = []
     
-    for PATH, DIRS, FILES in os.walk(system_licenses_path):
+    for PATH, DIRS, FILES in os.walk(sys_licenses_path):
         for F in FILES:
-            if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
+            if os.path.isfile(u'{}/{}'.format(sys_licenses_path, F)):
                 license_list.append(F)
     
     return sorted(license_list)
