@@ -19,6 +19,7 @@ from globals.ident          import genid
 from globals.ident          import inputid
 from globals.ident          import page_ids
 from globals.ident          import pgid
+from globals.paths          import ConcatPaths
 from globals.strings        import GS
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
@@ -38,6 +39,7 @@ from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
+from ui.style               import layout as lyt
 from ui.wizard              import WizardPage
 
 
@@ -67,13 +69,13 @@ class Panel(WizardPage):
         # Radio buttons for displaying between pre- and post- install scripts
         # FIXME: Names settings for tooltips are confusing
         rb_preinst = wx.RadioButton(self, preinst.GetId(), preinst.GetName(),
-                name=preinst.script_filename, style=wx.RB_GROUP)
+                name=preinst.FileName, style=wx.RB_GROUP)
         rb_postinst = wx.RadioButton(self, postinst.GetId(), postinst.GetName(),
-                name=postinst.script_filename)
+                name=postinst.FileName)
         rb_prerm = wx.RadioButton(self, prerm.GetId(), prerm.GetName(),
-                name=prerm.script_filename)
+                name=prerm.FileName)
         rb_postrm = wx.RadioButton(self, postrm.GetId(), postrm.GetName(),
-                name=postrm.script_filename)
+                name=postrm.FileName)
         
         self.script_objects = (
             (preinst, rb_preinst,),
@@ -478,43 +480,41 @@ shell_descriptions = {
 #    'Pre Install', 'Pre Remove/Uninstall',
 #    'Post Install', & 'Post Remove/Uninstall'.
 class DebianScript(wx.Panel):
-    def __init__(self, parent, script_id):
-        wx.Panel.__init__(self, parent, script_id)
-        
-        self.parent = parent
+    def __init__(self, parent, scriptId):
+        wx.Panel.__init__(self, parent, scriptId)
         
         ## Filename used for exporting script
-        self.script_filename = id_definitions[script_id].lower()
+        self.FileName = id_definitions[scriptId].lower()
         
         ## String name used for display in the application
-        self.script_name = None
-        self.__set_script_name()
+        self.ScriptName = None
+        self.SetScriptName()
         
         shell_options = []
         shell_options.append(u'/bin/sh')  # Place /bin/sh as first item
         for P in u'/bin/', u'/usr/bin/', u'/usr/bin/env ':
-            for S in sorted(shell_descriptions, key=unicode.lower):
+            for S in sorted(shell_descriptions, key=GS.lower):
                 if S == u'sh':
                     pass
                 
                 else:
                     shell_options.append(P + S)
         
-        self.shell = ComboBoxESS(self, self.GetId(), choices=shell_options, monospace=True)
-        self.shell.default = u'/bin/bash'
-        self.shell.SetStringSelection(self.shell.default)
+        self.Shell = ComboBoxESS(self, self.GetId(), choices=shell_options, monospace=True,
+                defaultValue=u'/bin/bash')
         
-        self.script_body = TextAreaPanelESS(self, self.GetId(), monospace=True)
+        self.ScriptBody = TextAreaPanelESS(self, self.GetId(), monospace=True)
+        self.ScriptBody.EnableDropTarget()
         
         # *** Layout *** #
         
         lyt_shell = BoxSizer(wx.HORIZONTAL)
-        lyt_shell.Add(wx.StaticText(self, label=u'#!'), 0, wx.RIGHT|wx.ALIGN_CENTER_VERTICAL, 5)
-        lyt_shell.Add(self.shell, 1)
+        lyt_shell.Add(wx.StaticText(self, label=u'#!'), 0, lyt.CNTR_VERT|wx.RIGHT, 5)
+        lyt_shell.Add(self.Shell, 1)
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.Add(lyt_shell, 0)
-        lyt_main.Add(self.script_body, 1, wx.EXPAND|wx.TOP, 5)
+        lyt_main.Add(self.ScriptBody, 1, wx.EXPAND|wx.TOP, 5)
         
         self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
@@ -522,34 +522,6 @@ class DebianScript(wx.Panel):
         
         # Scripts are hidden by default
         self.Hide()
-    
-    
-    ## Sets the name of the script to be displayed
-    #  
-    #  Sets the displayed script name to a value of either 'Pre Install',
-    #    'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.script_filename'
-    #    is used to determine the displayed name.
-    #  TODO: Add strings to GetText translations
-    def __set_script_name(self):
-        prefix = None
-        suffix = None
-        
-        if u'pre' in self.script_filename:
-            prefix = u'Pre'
-            suffix = self.script_filename.split(u'pre')[1]
-        
-        elif u'post' in self.script_filename:
-            prefix = u'Post'
-            suffix = self.script_filename.split(u'post')[1]
-        
-        if suffix.lower() == u'inst':
-            suffix = u'Install'
-        
-        elif suffix.lower() == u'rm':
-            suffix = u'Uninstall'
-        
-        if (prefix != None) and (suffix != None):
-            self.script_name = GT(u'{}-{}'.format(prefix, suffix))
     
     
     ## Exports the script to a text file
@@ -563,21 +535,23 @@ class DebianScript(wx.Panel):
     def Export(self, out_dir, executable=True, build=False):
         if not os.path.isdir(out_dir):
             Logger.Error(__name__, GT(u'Directory not available: {}'.format(out_dir)))
+            
             return (ERR_DIR_NOT_AVAILABLE, __name__)
         
         if build:
-            absolute_filename = u'{}/{}'.format(out_dir, self.script_filename).replace(u'//', u'/')
+            absolute_filename = ConcatPaths((out_dir, self.FileName))
+        
         else:
-            absolute_filename = u'{}/{}-{}'.format(out_dir, page_ids[self.parent.GetId()].upper(), self.script_filename)
+            filename = u'{}-{}'.format(page_ids[self.Parent.GetId()].upper(), self.FileName)
+            absolute_filename = ConcatPaths((out_dir, filename))
         
-        script_text = u'{}\n\n{}'.format(self.GetShebang(), self.script_body.GetValue())
-        
-        #add_newline = script_text.split(u'\n')[-1] != u''
+        script_text = u'{}\n\n{}'.format(self.GetShebang(), self.ScriptBody.GetValue())
         
         WriteFile(absolute_filename, script_text)
         
         if not os.path.isfile(absolute_filename):
             Logger.Error(__name__, GT(u'Could not write to file: {}'.format(absolute_filename)))
+            
             return (ERR_FILE_WRITE, __name__)
         
         if executable:
@@ -591,7 +565,7 @@ class DebianScript(wx.Panel):
     #  \return
     #        \b \e str : Script filename
     def GetFilename(self):
-        return self.script_filename
+        return self.FileName
     
     
     ## Retrieves the script's name for display
@@ -599,7 +573,7 @@ class DebianScript(wx.Panel):
     #  \return
     #        \b \e str : String representation of script's name
     def GetName(self):
-        return self.script_name
+        return self.ScriptName
     
     
     ## Retrieves the description of a shell for display
@@ -607,7 +581,7 @@ class DebianScript(wx.Panel):
     #  \return
     #        \b \e str : Description or None if using custom shell
     def GetSelectedShellDescription(self):
-        selected_shell = self.shell.GetValue()
+        selected_shell = self.Shell.GetValue()
         
         if selected_shell in shell_descriptions:
             return shell_descriptions[selected_shell]
@@ -617,7 +591,7 @@ class DebianScript(wx.Panel):
     
     ## TODO: Doxygen
     def GetShebang(self):
-        shell = self.shell.GetValue()
+        shell = self.Shell.GetValue()
         
         if shell.startswith(u'/usr/bin/env '):
             shell = u'#!{}\nset -e'.format(shell)
@@ -629,7 +603,7 @@ class DebianScript(wx.Panel):
     
     ## TODO: Doxygen
     def GetValue(self):
-        return self.script_body.GetValue()
+        return self.ScriptBody.GetValue()
     
     
     ## Retrieves whether or not the script is used & should be exported
@@ -639,32 +613,55 @@ class DebianScript(wx.Panel):
     #  \return
     #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
     def IsOkay(self):
-        return (not TextIsEmpty(self.script_body.GetValue()))
+        return not TextIsEmpty(self.ScriptBody.GetValue())
     
     
     ## Resets all members to default values
     def Reset(self):
-        self.shell.SetStringSelection(self.shell.default)
-        self.script_body.Clear()
+        self.Shell.SetStringSelection(self.Shell.GetDefaultValue())
+        self.ScriptBody.Clear()
     
     
-    ## TODO: Doxygen
-    def SetScript(self, value):
-        self.SetValue(value)
+    ## Sets the name of the script to be displayed
+    #  
+    #  Sets the displayed script name to a value of either 'Pre Install',
+    #    'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.FileName'
+    #    is used to determine the displayed name.
+    #  TODO: Add strings to GetText translations
+    def SetScriptName(self):
+        prefix = None
+        suffix = None
+        
+        if u'pre' in self.FileName:
+            prefix = u'Pre'
+            suffix = self.FileName.split(u'pre')[1]
+        
+        elif u'post' in self.FileName:
+            prefix = u'Post'
+            suffix = self.FileName.split(u'post')[1]
+        
+        if suffix.lower() == u'inst':
+            suffix = u'Install'
+        
+        elif suffix.lower() == u'rm':
+            suffix = u'Uninstall'
+        
+        if (prefix != None) and (suffix != None):
+            self.ScriptName = GT(u'{}-{}'.format(prefix, suffix))
     
     
     ## TODO: Doxygen
     def SetShell(self, shell, forced=False):
         if forced:
-            self.shell.SetValue(shell)
+            self.Shell.SetValue(shell)
             return
         
-        self.shell.SetStringSelection(shell)
+        self.Shell.SetStringSelection(shell)
     
     
     ## Fills the script
     #  
     #  \param value
-    #        \b \e unicode|str : Text to be displayed
+    #    Text to be displayed
     def SetValue(self, value):
-        self.script_body.SetValue(value)
+        self.ScriptBody.SetValue(value)
