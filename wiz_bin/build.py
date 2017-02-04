@@ -608,7 +608,7 @@ class Panel(WizardPage):
             # Check to make sure that all required fields have values
             required = list(fields_control)
             
-            if pg_launcher.IsBuildExportable():
+            if pg_launcher.IsOkay():
                 task_list[u'launcher'] = pg_launcher.ExportPage()
                 
                 required.append(pg_launcher.ti_name)
@@ -687,7 +687,7 @@ class Panel(WizardPage):
                 prebuild_progress.Update(progress, GT(u'Checking {}').format(id_string))
                 
                 wizard_page = GetPage(PID)
-                if wizard_page.IsBuildExportable():
+                if wizard_page.IsOkay():
                     task_list[id_string] = wizard_page.ExportPage()
                 
                 progress += 1

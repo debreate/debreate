@@ -168,8 +168,8 @@ class Panel(WizardPage):
         return GetField(self, selid.LICENSE).GetStringSelection()
     
     
-    ## Tells the app whether this page should be added to build
-    def IsBuildExportable(self):
+    ## Checks if page can be exported or or added to build
+    def IsOkay(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
     

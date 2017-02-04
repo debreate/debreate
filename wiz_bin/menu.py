@@ -358,7 +358,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsBuildExportable(self):
+    def IsOkay(self):
         return GetField(self, chkid.ENABLE).GetValue()
     
     

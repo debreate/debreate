@@ -229,7 +229,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsBuildExportable(self):
+    def IsOkay(self):
         return not TextIsEmpty(self.dsp_changes.GetValue())
     
     

@@ -321,7 +321,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsBuildExportable(self):
+    def IsOkay(self):
         for chk in self.script_ojects:
             chk = chk[0]
             if chk.GetValue():
