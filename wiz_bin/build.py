@@ -457,7 +457,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         # 'install after build' is not exported to project for safety
         
         fields = {}
@@ -482,7 +482,7 @@ class Panel(WizardPage):
         if page == wx.EmptyString:
             page = None
         
-        if get_module:
+        if getModule:
             page = (__name__, page,)
         
         return page

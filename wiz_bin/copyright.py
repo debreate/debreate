@@ -138,13 +138,13 @@ class Panel(WizardPage):
     #  
     #  \return
     #        \b \e tuple(str, str) : Filename & copyright/license text
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         page = self.dsp_copyright.GetValue()
         
         if TextIsEmpty(page):
             page = None
         
-        if get_module:
+        if getModule:
             page = (__name__, page,)
         
         return page
