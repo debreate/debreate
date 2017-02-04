@@ -275,7 +275,7 @@ class Panel(WizardPage):
             else:
                 self.btn_template_simple.Enable()
             
-            self.SetTemplateToolTip()
+            self.SetLicenseTooltip()
     
     
     ## TODO: Doxygen
@@ -389,8 +389,8 @@ class Panel(WizardPage):
         self.dsp_copyright.SetValue(data)
     
     
-    ## TODO: Doxygen
-    def SetTemplateToolTip(self):
+    ## Changes the Choice instance's tooltip for the current license
+    def SetLicenseTooltip(self):
         license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
         license_path = self.GetLicensePath(license_name)
         
