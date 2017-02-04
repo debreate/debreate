@@ -102,6 +102,18 @@ def GetLocalLicenses():
     return sorted(licenses_local, key=GS.lower)
 
 
+## Join the app & local licenses lists
+def GetCustomLicenses():
+    # Local licenses take priority
+    licenses = GetLicenses(local_licenses_path)
+    
+    for LIC in GetLicenses(app_licenses_path):
+        if LIC not in licenses:
+            licenses.append(LIC)
+    
+    return sorted(licenses, key=GS.lower)
+
+
 ## Retrieves the absolute path of a license template
 #
 #  FIXME: Rename to "GetLicenseTemplatePath"
