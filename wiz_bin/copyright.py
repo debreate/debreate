@@ -151,11 +151,6 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GetCopyright(self):
-        return self.dsp_copyright.GetValue()
-    
-    
-    ## TODO: Doxygen
     def GetLicensePath(self, template_name):
         # User templates have priority
         license_path = u'{}/{}'.format(local_licenses_path, template_name)
