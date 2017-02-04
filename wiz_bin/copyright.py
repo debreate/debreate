@@ -12,7 +12,7 @@ from dbr.functions          import GetLongestLine
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.templates          import GetCustomLicenses
-from dbr.templates          import GetLicenses
+from dbr.templates          import GetLocalLicenses
 from dbr.templates          import GetSysLicenses
 from dbr.templates          import app_licenses_path
 from dbr.templates          import local_licenses_path
@@ -316,7 +316,7 @@ class Panel(WizardPage):
     ## Repopulates template list
     def OnRefreshTemplateList(self, event=None):
         # FIXME: Ignore symbolic links???
-        self.custom_licenses = GetLicenses(local_licenses_path)
+        self.custom_licenses = GetLocalLicenses()
         
         licenses = list(self.custom_licenses)
         

@@ -73,6 +73,11 @@ def GetSysLicenses():
     return GetLicenses(sys_licenses_path)
 
 
+## Retrieves a list of licenses located under the ".local" directory of the user's home path
+def GetLocalLicenses():
+    return GetLicenses(local_licenses_path)
+
+
 ## Join the app & local licenses lists
 def GetCustomLicenses():
     # Local licenses take priority
