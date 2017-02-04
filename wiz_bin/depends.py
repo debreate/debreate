@@ -40,6 +40,9 @@ class Panel(WizardPage):
         ## Override default label
         self.label = GT(u'Dependencies and Conflicts')
         
+        # Bypass checking this page for build
+        self.prebuild_check = False
+        
         # Buttons to open, save, & preview control file
         self.btn_open = ButtonBrowse64(self)
         self.btn_save = ButtonSave64(self)
@@ -188,6 +191,17 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def GetDefaultCategory(self):
         return self.default_category
+    
+    
+    ## TODO: Doxygen
+    def ImportFromFile(self, d_type, d_string):
+        Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
+        
+        values = d_string.split(u', ')
+        
+        for V in values:
+            self.lst_deps.InsertStringItem(0, d_type)
+            self.lst_deps.SetStringItem(0, 1, V)
     
     
     ## TODO: Doxygen
