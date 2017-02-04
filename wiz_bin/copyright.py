@@ -149,11 +149,6 @@ class Panel(WizardPage):
         return page
     
     
-    ## Retrieves the name of the template currently selected
-    def GetCurrentTemplateName(self):
-        return GetField(self, selid.LICENSE).GetStringSelection()
-    
-    
     ## Retrieves license path
     #
     #  \param licName
@@ -164,9 +159,14 @@ class Panel(WizardPage):
     def GetLicensePath(self, licName=None):
         # Default to currently selected template
         if not licName:
-            licName = self.GetCurrentTemplateName()
+            licName = self.GetSelectedName()
         
         return GetLicenseTemplateFile(licName)
+    
+    
+    ## Retrieves the name of the template currently selected
+    def GetSelectedName(self):
+        return GetField(self, selid.LICENSE).GetStringSelection()
     
     
     ## TODO: Doxygen
@@ -206,7 +206,7 @@ class Panel(WizardPage):
         
         if self.DestroyLicenseText():
             if not template_file or not os.path.isfile(template_file):
-                ShowErrorDialog(GT(u'Could not locate license file: {}').format(self.GetCurrentTemplateName()))
+                ShowErrorDialog(GT(u'Could not locate license file: {}').format(self.GetSelectedName()))
                 
                 return
             
@@ -291,7 +291,7 @@ class Panel(WizardPage):
             path = self.GetLicensePath()
             
             if not path:
-                ShowErrorDialog(GT(u'Error retrieving template path: {}').format(self.GetCurrentTemplateName()))
+                ShowErrorDialog(GT(u'Error retrieving template path: {}').format(self.GetSelectedName()))
                 
                 return False
             
