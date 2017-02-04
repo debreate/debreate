@@ -60,7 +60,7 @@ def GetSysLicenses():
 
 
 ## Initializes/Refreshes the app licenses list
-def GetAppLicenseTemplates():
+def GetAppLicenses():
     # Clear old values
     licenses_app = []
     
@@ -75,7 +75,7 @@ def GetAppLicenseTemplates():
 
 
 ## Initializes/Refreshes the local licenses list
-def GetLocalLicenseTemplates():
+def GetLocalLicenses():
     # Clear old values
     licenses_local = []
     
@@ -105,10 +105,10 @@ def GetLicenseTemplateFile(l_name):
     template_path = None
     
     # Check local templates first
-    if l_name in GetLocalLicenseTemplates():
+    if l_name in GetLocalLicenses():
         template_path = ConcatPaths((local_licenses_path, l_name))
     
-    elif l_name in GetAppLicenseTemplates():
+    elif l_name in GetAppLicenses():
         template_path = ConcatPaths((app_licenses_path, l_name))
     
     if not template_path or not os.path.isfile(template_path):
@@ -128,10 +128,10 @@ def GetLicenseTemplateFile(l_name):
 #  don't already exist in local path are added.
 def GetLicenseTemplatesList():
     # Use local templates first if available
-    templates_list = GetLocalLicenseTemplates()
+    templates_list = GetLocalLicenses()
     
     # Retrieve licenses that are not available from local path
-    for LIC in GetAppLicenseTemplates():
+    for LIC in GetAppLicenses():
         if LIC not in templates_list:
             templates_list.append(LIC)
     
