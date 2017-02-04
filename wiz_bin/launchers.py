@@ -413,14 +413,14 @@ else:
         #  \return
         #        \b \e tuple(str, str, str) : File/Page name,
         #          string formatted menu information, & filename to output
-        def Get(self, get_module=False):
+        def Get(self, getModule=False):
             if not self.chk_enable.GetValue():
                 page = None
             
             else:
                 page = self.GetLauncherInfo()
             
-            if get_module:
+            if getModule:
                 # FIXME: 'MENU' needed?
                 page = (__name__, page, u'MENU')
             

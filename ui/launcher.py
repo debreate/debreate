@@ -303,7 +303,7 @@ class LauncherTemplate(ScrolledPanel):
     #  
     #  \return
     #    Text formatted for desktop entry file output
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         l_lines = [u'[Desktop Entry]']
         categories = []
         
@@ -395,7 +395,7 @@ class LauncherTemplate(ScrolledPanel):
         
         l_text = u'\n'.join(l_lines)
         
-        if get_module:
+        if getModule:
             # FIXME: 'MENU' needed?
             l_text = (__name__, l_text, u'MENU')
         

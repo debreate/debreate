@@ -83,11 +83,11 @@ class Panel(WizardPage):
     ## Retrieves manpages info for text output
     #  
     #  TODO: Nothing here yet
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         # TODO:
         page = None
         
-        if get_module:
+        if getModule:
             page = (__name__, page,)
         
         return page

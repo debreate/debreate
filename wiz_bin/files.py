@@ -300,7 +300,7 @@ class Panel(WizardPage):
     #  
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         item_count = self.lst_files.GetItemCount()
         
         if not item_count:
@@ -333,7 +333,7 @@ class Panel(WizardPage):
             
             page = u'\n'.join(files_data)
         
-        if get_module:
+        if getModule:
             page = (__name__, page,)
         
         return page

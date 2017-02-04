@@ -247,7 +247,7 @@ class Panel(WizardPage):
     #    by braces ([, ]).
     #  \return
     #        \b \e tuple(str, str) : Filename & formatted string of changelog target & body
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         target = self.pnl_target.GetPath()
         
         if target == self.pnl_target.GetDefaultPath():
@@ -261,7 +261,7 @@ class Panel(WizardPage):
         else:
             page = u'[TARGET={}]\n\n[BODY]\n{}'.format(target, body)
         
-        if get_module:
+        if getModule:
             page = (__name__, page,)
         
         return page
