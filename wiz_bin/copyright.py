@@ -169,7 +169,7 @@ class Panel(WizardPage):
         return GetField(self, selid.LICENSE).GetStringSelection()
     
     
-    ## TODO: Doxygen
+    ## Sets page's fields from opened file
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return errno.ENOENT
