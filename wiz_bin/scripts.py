@@ -21,7 +21,6 @@ from globals.wizardhelper   import GetMainWindow
 from input.list             import ListCtrl
 from input.markdown         import MarkdownDialog
 from input.pathctrl         import PathCtrl
-from input.text             import TextAreaPanel
 from input.text             import TextAreaPanelESS
 from ui.button              import ButtonBuild
 from ui.button              import ButtonHelp64
@@ -65,6 +64,7 @@ class Panel(WizardPage):
             S.Bind(wx.EVT_CHECKBOX, self.OnToggleScripts)
         
         # Radio buttons for displaying between pre- and post- install scripts
+        # FIXME: Names settings for tooltips are confusing
         rb_preinst = wx.RadioButton(self, ID_INST_PRE, GT(u'Pre-Install'),
                 name=u'preinst', style=wx.RB_GROUP)
         rb_postinst = wx.RadioButton(self, ID_INST_POST, GT(u'Post-Install'),
@@ -74,25 +74,20 @@ class Panel(WizardPage):
         rb_postrm = wx.RadioButton(self, ID_RM_POST, GT(u'Post-Remove'),
                 name=u'postrm')
         
-        # Text area for each radio button
-        ti_preinst = TextAreaPanel(self, ID_INST_PRE, monospace=True, name=u'script body')
-        ti_postinst = TextAreaPanel(self, ID_INST_POST, monospace=True, name=u'script body')
-        ti_prerm = TextAreaPanel(self, ID_RM_PRE, monospace=True, name=u'script body')
-        ti_postrm = TextAreaPanel(self, ID_RM_POST, monospace=True, name=u'script body')
-        
-        for TI in ti_preinst, ti_postinst, ti_prerm, ti_postrm:
-            TI.EnableDropTarget()
+        preinst = DebianScript(self, ID_INST_PRE)
+        postinst = DebianScript(self, ID_INST_POST)
+        prerm = DebianScript(self, ID_RM_PRE)
+        postrm = DebianScript(self, ID_RM_POST)
         
         self.script_objects = (
-            (chk_preinst, rb_preinst, ti_preinst,),
-            (chk_postinst, rb_postinst, ti_postinst,),
-            (chk_prerm, rb_prerm, ti_prerm,),
-            (chk_postrm, rb_postrm, ti_postrm,),
+            (chk_preinst, rb_preinst, preinst,),
+            (chk_postinst, rb_postinst, postinst,),
+            (chk_prerm, rb_prerm, prerm,),
+            (chk_postrm, rb_postrm, postrm,),
             )
         
         for CHK, RB, TI in self.script_objects:
             CHK.Hide()
-            TI.Hide()
         
         # Set script text areas to default enabled/disabled setting
         self.OnToggleScripts()
