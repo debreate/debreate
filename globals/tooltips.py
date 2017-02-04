@@ -11,6 +11,7 @@
 import wx
 
 from dbr.language           import GT
+from dbr.log                import Logger
 from dbr.templates          import local_templates_path
 from globals.changes        import section_delims
 from globals.execute        import GetSystemInstaller
@@ -257,8 +258,17 @@ def SetPageToolTips(parent, page_id=None):
         for C in control_list:
             try:
                 name = C.tt_name.lower()
+            
             except AttributeError:
-                name = C.GetName().lower()
+                print(u'Getting name from: {}'.format(type(C)))
+                
+                try:
+                    name = C.GetName().lower()
+                
+                except AttributeError:
+                    Logger.Warn(__name__, u'Object has not name, not setting tooltip: {}'.format(type(C)))
+                    
+                    continue
             
             required = False
             if name:
