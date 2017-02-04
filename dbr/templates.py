@@ -10,6 +10,7 @@ import os
 
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals.constants  import system_licenses_path
 from globals.paths      import ConcatPaths
 from globals.paths      import PATH_app
 from globals.paths      import PATH_local
@@ -39,6 +40,20 @@ local_templates_path = u'{}/templates'.format(PATH_local)
 #  
 #  <templates_path>/licenses
 local_licenses_path = u'{}/licenses'.format(local_templates_path)
+
+
+## Retrieves a list of licenses installed on the system
+#  
+#  Common system license files are located in /usr/share/common-licenses.
+def GetSysLicenses():
+    license_list = []
+    
+    for PATH, DIRS, FILES in os.walk(system_licenses_path):
+        for F in FILES:
+            if os.path.isfile(u'{}/{}'.format(system_licenses_path, F)):
+                license_list.append(F)
+    
+    return sorted(license_list)
 
 
 ## Initializes/Refreshes the app licenses list
