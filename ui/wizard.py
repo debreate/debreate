@@ -495,8 +495,8 @@ class WizardPage(ScrolledPanel):
     
     
     ## TODO: Doxygen
-    def IsExportable(self):
-        Logger.Warn(__name__, GT(u'Page {} does not override inherited method IsExportable').format(self.GetName()))
+    def IsOkay(self):
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method IsOkay').format(self.GetName()))
         
         return False
     
