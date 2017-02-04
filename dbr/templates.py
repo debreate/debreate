@@ -92,6 +92,9 @@ def GetLicenseTemplateFile(l_name):
     elif l_name in GetFiles(app_licenses_path):
         template_path = ConcatPaths((app_licenses_path, l_name))
     
+    elif l_name in GetFiles(sys_licenses_path):
+        template_path = ConcatPaths((sys_licenses_path, l_name))
+    
     if not template_path or not os.path.isfile(template_path):
         Logger.Warn(__name__, GT(u'License template not found: {}'.format(template_path)))
         
