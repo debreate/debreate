@@ -306,10 +306,10 @@ class Panel(WizardPage):
     #        \b \e bool : If True, only string-formatted info is returned
     #  \return
     #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         page = self.GetCtrlInfo()
         
-        if get_module:
+        if getModule:
             page = (__name__, page,)
         
         return page

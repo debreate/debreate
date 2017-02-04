@@ -433,7 +433,7 @@ class WizardPage(ScrolledPanel):
     
     
     ## TODO: Doxygen
-    def Get(self, get_module=False):
+    def Get(self, getModule=False):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
