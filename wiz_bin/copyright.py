@@ -133,7 +133,7 @@ class Panel(WizardPage):
         return (0, None)
     
     
-    ## Retrieve copyright/license text
+    ## Retrieves copyright/license text
     #  
     #  \return
     #        \b \e tuple(str, str) : Filename & copyright/license text
