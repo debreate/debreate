@@ -8,6 +8,8 @@
 - Force main window to show on primary display at initial startup
 - User Interface:
   - Changed layout of menu launcher page
+- Use bitmap buttons on copyright page
+- Added 'refresh' & 'open directory' buttons to copyright page
 
 0.7.13
 - Fixes:
