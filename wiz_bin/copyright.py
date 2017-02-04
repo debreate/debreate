@@ -12,10 +12,9 @@ from dbr.functions          import GetLongestLine
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.templates          import GetCustomLicenses
+from dbr.templates          import GetLicenseTemplateFile
 from dbr.templates          import GetLocalLicenses
 from dbr.templates          import GetSysLicenses
-from dbr.templates          import app_licenses_path
-from dbr.templates          import local_licenses_path
 from dbr.templates          import sys_licenses_path
 from globals.dateinfo       import GetYear
 from globals.errorcodes     import errno
@@ -155,28 +154,19 @@ class Panel(WizardPage):
         return GetField(self, selid.LICENSE).GetStringSelection()
     
     
-    ## TODO: Doxygen
+    ## Retrieves license path
     #
-    #  FIXME: Use functions from dbr.templates???
-    def GetLicensePath(self, template_name=None):
+    #  \param licName
+    #    License file basename to search for
+    #    If 'None', uses currently selected license
+    #  \return
+    #    Full path to license file if found
+    def GetLicensePath(self, licName=None):
         # Default to currently selected template
-        if not template_name:
-            template_name = self.GetCurrentTemplateName()
+        if not licName:
+            licName = self.GetCurrentTemplateName()
         
-        # User templates have priority
-        license_path = u'{}/{}'.format(local_licenses_path, template_name)
-        if os.path.isfile(license_path):
-            return license_path
-        
-        license_path = u'{}/{}'.format(sys_licenses_path, template_name)
-        if os.path.isfile(license_path):
-            return license_path
-        
-        license_path = u'{}/{}'.format(app_licenses_path, template_name)
-        if os.path.isfile(license_path):
-            return license_path
-        
-        return None
+        return GetLicenseTemplateFile(licName)
     
     
     ## TODO: Doxygen
