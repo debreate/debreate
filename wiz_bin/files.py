@@ -435,7 +435,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsExportable(self):
+    def IsOkay(self):
         return not self.lst_files.IsEmpty()
     
     

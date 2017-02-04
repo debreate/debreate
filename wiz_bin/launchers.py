@@ -605,7 +605,7 @@ else:
         
         
         ## TODO: Doxygen
-        def IsExportable(self):
+        def IsOkay(self):
             return self.chk_enable.IsChecked()
         
         

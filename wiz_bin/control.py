@@ -476,8 +476,8 @@ class Panel(WizardPage):
     
     ## Tells the build script whether page should be built
     #  
-    #  \override ui.wizard.WizardPage.IsExportable
-    def IsExportable(self):
+    #  \override ui.wizard.WizardPage.IsOkay
+    def IsOkay(self):
         # Build page must always be built
         return True
     
