@@ -45,6 +45,27 @@ local_templates_path = ConcatPaths((PATH_local, u'templates'))
 local_licenses_path = ConcatPaths((local_templates_path, u'licenses'))
 
 
+## Retrieves all files from the given path
+#
+#  FIXME: Should be renamed to "GetFiles" & moved to a "files" or "general" module
+#
+#  \param path
+#    Directory to search for license templates
+def GetLicenses(path):
+    licenses = []
+    
+    for PATH, DIRS, FILES in os.walk(path):
+        for F in FILES:
+            license_path = ConcatPaths((path, F))
+            
+            if os.path.isfile(license_path):
+                licenses.append(F)
+                
+                Logger.Debug(__name__, u'Loaded license: {}'.format(license_path))
+    
+    return sorted(licenses, key=GS.lower)
+
+
 ## Retrieves a list of licenses installed on the system
 #  
 #  Common system license files are located in /usr/share/common-licenses.
