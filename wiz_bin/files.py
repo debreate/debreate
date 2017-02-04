@@ -10,7 +10,10 @@ import os, traceback, wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
+from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
+from globals.errorcodes     import dbrerrno
+from globals.fileio         import ReadFile
 from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
@@ -342,6 +345,64 @@ class Panel(WizardPage):
         for target in self.grp_targets:
             if target.GetId() != inputid.CUSTOM and target.GetValue():
                 return target.GetLabel()
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  \override ui.wizard.Wizard.ImportFromFile
+    def ImportFromFile(self, filename):
+        Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
+        
+        if not os.path.isfile(filename):
+            return dbrerrno.ENOENT
+        
+        files_data = ReadFile(filename, split=True)
+        
+        # Lines beginning with these characters will be ignored
+        ignore_characters = (
+            u'',
+            u' ',
+            u'#',
+        )
+        
+        target = None
+        targets_list = []
+        
+        for L in files_data:
+            if not TextIsEmpty(L) and L[0] not in ignore_characters:
+                if u'[' in L and u']' in L:
+                    target = L.split(u'[')[-1].split(u']')[0]
+                    continue
+                
+                if target:
+                    executable = (len(L) > 1 and L[-2:] == u' *')
+                    if executable:
+                        L = L[:-2]
+                    
+                    targets_list.append((target, L, executable))
+        
+        missing_files = []
+        
+        for T in targets_list:
+            # FIXME: Create method in FileList class to retrieve all missing files
+            if not os.path.exists(T[1]):
+                missing_files.append(T[1])
+            
+            source_file = os.path.basename(T[1])
+            source_dir = os.path.dirname(T[1])
+            
+            self.lst_files.AddFile(source_file, source_dir, T[0], executable=T[2])
+        
+        if len(missing_files):
+            main_window = GetMainWindow()
+            
+            err_line1 = GT(u'The following files/folders are missing from the filesystem.')
+            err_line2 = GT(u'They will be highlighted on the Files page.')
+            DetailedMessageDialog(main_window, title=GT(u'Warning'), icon=ICON_ERROR,
+                    text=u'\n'.join((err_line1, err_line2)),
+                    details=u'\n'.join(missing_files)).ShowModal()
+        
+        return 0
     
     
     ## TODO: Doxygen
