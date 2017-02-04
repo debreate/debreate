@@ -10,6 +10,9 @@
 
 import codecs, os
 
+from globals.paths      import ConcatPaths
+from globals.strings    import GS
+
 
 ## TODO: Doxygen
 def AppendFile(filename, contents, no_strip=None, input_only=False):
@@ -91,3 +94,20 @@ def WriteFile(filename, contents, no_strip=None):
         return False
     
     return True
+
+
+## Retrieves a list of all files from the given path
+#
+#  \param path
+#    Directory to search for license templates
+def GetFiles(path):
+    licenses = []
+    
+    for PATH, DIRS, FILES in os.walk(path):
+        for F in FILES:
+            license_path = ConcatPaths((path, F))
+            
+            if os.path.isfile(license_path):
+                licenses.append(F)
+    
+    return sorted(licenses, key=GS.lower)
