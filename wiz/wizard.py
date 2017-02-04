@@ -18,10 +18,12 @@ from globals.fileio         import WriteFile
 from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import listid
+from globals.ident          import menuid
 from globals.ident          import page_ids
 from globals.ident          import pgid
 from globals.ident          import selid
 from globals.strings        import TextIsEmpty
+from globals.system         import mimport
 from globals.tooltips       import TT_wiz_next
 from globals.tooltips       import TT_wiz_prev
 from globals.wizardhelper   import FieldEnabled
@@ -34,6 +36,7 @@ from ui.button              import ButtonHelp
 from ui.button              import ButtonNext
 from ui.button              import ButtonPrev
 from ui.dialog              import ShowDialog
+from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.notebook            import MultiTemplate
 from ui.notebook            import Notebook
@@ -125,6 +128,48 @@ class Wizard(wx.Panel):
         self.SetSizer(lyt_main)
         self.SetAutoLayout(True)
         self.Layout()
+    
+    
+    ## Add a new page to the wizard
+    #
+    #  \param page
+    #    Must either be a WizardPage instance or the string suffix of the page's moduls
+    def AddPage(self, page):
+        if not isinstance(page, WizardPage):
+            pagemod = u'wiz.pg{}'.format(page)
+            page = mimport(pagemod).Page(self)
+        
+        main_window = GetMainWindow()
+        lyt_main = self.GetSizer()
+        
+        # Must already be child
+        err_msg = None
+        if not isinstance(page, WizardPage):
+            err_msg = u'not WizardPage instance'
+        
+        elif page not in self.GetChildren():
+            err_msg = u'not child of wizard'
+        
+        elif page in lyt_main.GetChildWindows():
+            err_msg = u'page is already added to wizard'
+        
+        if err_msg:
+            ShowErrorDialog(u'Cannot add page, {}'.format(err_msg))
+            
+            return
+        
+        lyt_main.Add(page, 1, wx.EXPAND)
+        self.pages.append(page)
+        
+        # Add to page menu
+        page_menu = main_window.GetMenu(menuid.PAGE)
+        
+        page_menu.AppendItem(
+            wx.MenuItem(page_menu, page.Id, page.GetLabel(),
+            kind=wx.ITEM_RADIO))
+        
+        # Bind menu event to ID
+        wx.EVT_MENU(main_window, page.Id, main_window.OnMenuChangePage)
     
     
     ## TODO: Doxygen
