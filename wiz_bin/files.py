@@ -601,11 +601,6 @@ class Panel(WizardPage):
         self.btn_browse.Enable(enable)
     
     
-    ## TODO: Doxygen
-    def RemoveSelected(self, event=None):
-        self.lst_files.RemoveSelected()
-    
-    
     ## Resets all fields on page to default values
     def Reset(self):
         self.lst_files.DeleteAllItems()
