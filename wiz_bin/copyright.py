@@ -54,7 +54,7 @@ class Panel(WizardPage):
         self.sel_templates.default = 0
         
         # Initialize the template list
-        self.OnRefreshTemplateList()
+        self.OnRefreshList()
         
         btn_template = CreateButton(self, GT(u'Full Template'), u'full', name=u'full»')
         self.btn_template_simple = CreateButton(self, GT(u'Short Template'), u'short',
@@ -77,16 +77,16 @@ class Panel(WizardPage):
         
         # Initiate tooltip for drop-down selector
         if self.sel_templates.IsEnabled():
-            self.OnSelectTemplate(self.sel_templates)
+            self.OnSelectLicense(self.sel_templates)
         
         # *** Event Handling *** #
         
-        self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
+        self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectLicense)
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnOpenPath)
-        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshTemplateList)
-        btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
+        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshList)
+        btn_template.Bind(wx.EVT_BUTTON, self.OnTemplateFull)
+        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnTemplateShort)
         
         # *** Layout *** #
         
@@ -173,8 +173,87 @@ class Panel(WizardPage):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
     
+    ## Opens directory containing currently selected license
+    def OnOpenPath(self, event=None):
+        CMD_open = GetExecutable(u'xdg-open')
+        
+        if CMD_open:
+            path = self.GetLicensePath()
+            
+            if not path:
+                ShowErrorDialog(GT(u'Error retrieving template path: {}').format(self.GetSelectedName()))
+                
+                return False
+            
+            path = os.path.dirname(path)
+            
+            if os.path.isdir(path):
+                ExecuteCommand(CMD_open, (path,))
+                
+                return True
+        
+        return False
+    
+    
+    ## Repopulates template list
+    def OnRefreshList(self, event=None):
+        # FIXME: Ignore symbolic links???
+        self.custom_licenses = GetLocalLicenses()
+        
+        licenses = list(self.custom_licenses)
+        
+        # System licenses are not added to "custom" list
+        for LIC in GetSysLicenses():
+            if LIC not in licenses:
+                licenses.append(LIC)
+        
+        for LIC in GetCustomLicenses():
+            if LIC not in licenses:
+                licenses.append(LIC)
+                self.custom_licenses.append(LIC)
+        
+        self.custom_licenses.sort(key=GS.lower)
+        
+        sel_templates = GetField(self, selid.LICENSE)
+        
+        selected = None
+        if sel_templates.GetCount():
+            selected = sel_templates.GetStringSelection()
+        
+        sel_templates.Set(sorted(licenses, key=GS.lower))
+        
+        if selected:
+            if not sel_templates.SetStringSelection(selected):
+                # Selected template file was not found
+                sel_templates.SetSelection(sel_templates.GetDefaultValue())
+                
+                # Update short template button enabled state
+                self.OnSelectLicense()
+        
+        else:
+            sel_templates.SetSelection(sel_templates.GetDefaultValue())
+    
+    
+    ## Enables/Disables simple template button
+    #  
+    #  Simple template generation is only available
+    #  for system  licenses.
+    def OnSelectLicense(self, event=None):
+        choice = GetField(self, selid.LICENSE)
+        if choice:
+            template = choice.GetString(choice.GetSelection())
+            
+            if template in self.custom_licenses:
+                self.btn_template_simple.Disable()
+            
+            else:
+                self.btn_template_simple.Enable()
+            
+            self.SetTemplateToolTip()
+    
+    
     ## TODO: Doxygen
-    def OnFullTemplate(self, event=None):
+    def OnTemplateFull(self, event=None):
         selected_template = self.sel_templates.GetStringSelection()
         template_file = self.GetLicensePath(selected_template)
         
@@ -257,87 +336,8 @@ class Panel(WizardPage):
         self.dsp_copyright.SetFocus()
     
     
-    ## Opens directory containing currently selected license
-    def OnOpenPath(self, event=None):
-        CMD_open = GetExecutable(u'xdg-open')
-        
-        if CMD_open:
-            path = self.GetLicensePath()
-            
-            if not path:
-                ShowErrorDialog(GT(u'Error retrieving template path: {}').format(self.GetSelectedName()))
-                
-                return False
-            
-            path = os.path.dirname(path)
-            
-            if os.path.isdir(path):
-                ExecuteCommand(CMD_open, (path,))
-                
-                return True
-        
-        return False
-    
-    
-    ## Repopulates template list
-    def OnRefreshTemplateList(self, event=None):
-        # FIXME: Ignore symbolic links???
-        self.custom_licenses = GetLocalLicenses()
-        
-        licenses = list(self.custom_licenses)
-        
-        # System licenses are not added to "custom" list
-        for LIC in GetSysLicenses():
-            if LIC not in licenses:
-                licenses.append(LIC)
-        
-        for LIC in GetCustomLicenses():
-            if LIC not in licenses:
-                licenses.append(LIC)
-                self.custom_licenses.append(LIC)
-        
-        self.custom_licenses.sort(key=GS.lower)
-        
-        sel_templates = GetField(self, selid.LICENSE)
-        
-        selected = None
-        if sel_templates.GetCount():
-            selected = sel_templates.GetStringSelection()
-        
-        sel_templates.Set(sorted(licenses, key=GS.lower))
-        
-        if selected:
-            if not sel_templates.SetStringSelection(selected):
-                # Selected template file was not found
-                sel_templates.SetSelection(sel_templates.GetDefaultValue())
-                
-                # Update short template button enabled state
-                self.OnSelectTemplate()
-        
-        else:
-            sel_templates.SetSelection(sel_templates.GetDefaultValue())
-    
-    
-    ## Enables/Disables simple template button
-    #  
-    #  Simple template generation is only available
-    #  for system  licenses.
-    def OnSelectTemplate(self, event=None):
-        choice = GetField(self, selid.LICENSE)
-        if choice:
-            template = choice.GetString(choice.GetSelection())
-            
-            if template in self.custom_licenses:
-                self.btn_template_simple.Disable()
-            
-            else:
-                self.btn_template_simple.Enable()
-            
-            self.SetTemplateToolTip()
-    
-    
     ## TODO: Doxygen
-    def OnSimpleTemplate(self, event=None):
+    def OnTemplateShort(self, event=None):
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
             
@@ -355,7 +355,7 @@ class Panel(WizardPage):
         
         if self.sel_templates.IsEnabled():
             self.sel_templates.SetSelection(self.sel_templates.default)
-            self.OnSelectTemplate(self.sel_templates)
+            self.OnSelectLicense(self.sel_templates)
     
     
     ## Sets the text of the displayed copyright
