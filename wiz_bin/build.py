@@ -412,7 +412,7 @@ class Panel(WizardPage):
                     wx.Yield()
                     prep_progress.Update(current_step, msg_label.format(p_label, current_step+1, steps_count))
                     
-                    if P.IsExportable():
+                    if P.IsOkay():
                         pg_build_ids.append(p_id)
                     
                     current_step += 1

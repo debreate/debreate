@@ -182,7 +182,7 @@ class Panel(WizardPage):
         return_code = (0, None)
         
         for S, O in self.script_objects:
-            if S.IsExportable():
+            if S.IsOkay():
                 return_code = S.Export(out_dir, False)
                 
                 if return_code[0]:
@@ -200,7 +200,7 @@ class Panel(WizardPage):
         
         # FIXME: Should have error check
         for S, RB in self.script_objects:
-            if S.IsExportable():
+            if S.IsOkay():
                 S.Export(stage, build=True)
         
         return (dbrerrno.SUCCESS, None)
@@ -320,9 +320,9 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsExportable(self):
+    def IsOkay(self):
         for S, RB in self.script_objects:
-            if S.IsExportable():
+            if S.IsOkay():
                 return True
     
     
@@ -638,7 +638,7 @@ class DebianScript(wx.Panel):
     #    the user want to export the script.
     #  \return
     #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
-    def IsExportable(self):
+    def IsOkay(self):
         return (not TextIsEmpty(self.script_body.GetValue()))
     
     

@@ -195,7 +195,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def IsExportable(self):
+    def IsOkay(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
     
