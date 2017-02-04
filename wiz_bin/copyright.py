@@ -156,6 +156,8 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
+    #
+    #  FIXME: Use functions from dbr.templates???
     def GetLicensePath(self, template_name=None):
         # Default to currently selected template
         if not template_name:
