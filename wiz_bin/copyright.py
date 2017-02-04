@@ -13,7 +13,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.templates          import GetLicenseTemplatesList
 from dbr.templates          import GetSysLicenses
-from dbr.templates          import application_licenses_path
+from dbr.templates          import app_licenses_path
 from dbr.templates          import local_licenses_path
 from dbr.templates          import sys_licenses_path
 from globals.dateinfo       import GetYear
@@ -156,7 +156,7 @@ class Panel(WizardPage):
         if os.path.isfile(license_path):
             return license_path
         
-        license_path = u'{}/{}'.format(application_licenses_path, template_name)
+        license_path = u'{}/{}'.format(app_licenses_path, template_name)
         if os.path.isfile(license_path):
             return license_path
         
