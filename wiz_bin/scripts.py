@@ -228,7 +228,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GatherData(self):
+    def GetSaveData(self):
         # Custom dictionary of scripts
         script_list = (
             (self.script_ojects[0][0], self.script_ojects[0][2], u'PREINST'),

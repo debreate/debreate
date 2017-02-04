@@ -127,12 +127,6 @@ class Panel(WizardPage):
         return self.Get()
     
     
-    ## TODO: Doxygen
-    def GatherData(self):
-        data = self.Get()
-        return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
-    
-    
     ## Retrieves copyright/license text
     #  
     #  \return
@@ -162,6 +156,12 @@ class Panel(WizardPage):
             licName = self.GetSelectedName()
         
         return GetLicenseTemplateFile(licName)
+    
+    
+    ## TODO: Doxygen
+    def GetSaveData(self):
+        data = self.Get()
+        return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
     
     ## Retrieves the name of the template currently selected

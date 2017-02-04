@@ -719,7 +719,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GatherData(self):
+    def GetSaveData(self):
         build_list = []
         
         options = (

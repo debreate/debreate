@@ -273,12 +273,6 @@ class Panel(WizardPage):
         return self.GetCtrlInfo()
     
     
-    ## Saving project
-    def GatherData(self):
-        data = self.GetCtrlInfo()
-        return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
-    
-    
     ## TODO: Doxygen
     def GetCtrlInfo(self):
         pg_depends = GetPage(pgid.DEPENDS)
@@ -409,6 +403,12 @@ class Panel(WizardPage):
         
         # dpkg requires empty newline at end of file
         return u'\n'.join(ctrl_list).strip(u'\n') + u'\n'
+    
+    
+    ## Saving project
+    def GetSaveData(self):
+        data = self.GetCtrlInfo()
+        return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
     
     
     ## TODO: Doxygen

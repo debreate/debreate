@@ -479,10 +479,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         def SaveIt(path):
                 # Gather data from different pages
-                data = (self.page_control.GatherData(), self.page_files.GatherData(),
-                        self.page_scripts.GatherData(), self.page_clog.GatherData(),
-                        self.page_cpright.GatherData(), self.page_menu.GatherData(),
-                        self.page_build.GatherData())
+                data = (self.page_control.GetSaveData(), self.page_files.GetSaveData(),
+                        self.page_scripts.GetSaveData(), self.page_clog.GetSaveData(),
+                        self.page_cpright.GetSaveData(), self.page_menu.GetSaveData(),
+                        self.page_build.GetSaveData())
                 
                 # Create a backup of the project
                 overwrite = False

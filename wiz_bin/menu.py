@@ -272,21 +272,6 @@ class Panel(WizardPage):
         return self.GetLauncherInfo()
     
     
-    ## TODO: Doxygen
-    def GatherData(self):
-        if GetField(self, chkid.ENABLE).GetValue():
-            data = self.GetLauncherInfo()
-            data = u'\n'.join(data.split(u'\n')[1:])
-            
-            if not GetField(self, chkid.FNAME).GetValue():
-                data = u'[FILENAME={}]\n{}'.format(GetField(self, inputid.FNAME).GetValue(), data)
-            
-            return u'<<MENU>>\n1\n{}\n<</MENU>>'.format(data)
-        
-        else:
-            return u'<<MENU>>\n0\n<</MENU>>'
-    
-    
     ## Formats the launcher information for export
     def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
@@ -355,6 +340,21 @@ class Panel(WizardPage):
                 return filename
         
         return GetField(self, inputid.NAME).GetValue().strip(u' ').replace(u' ', u'_')
+    
+    
+    ## TODO: Doxygen
+    def GetSaveData(self):
+        if GetField(self, chkid.ENABLE).GetValue():
+            data = self.GetLauncherInfo()
+            data = u'\n'.join(data.split(u'\n')[1:])
+            
+            if not GetField(self, chkid.FNAME).GetValue():
+                data = u'[FILENAME={}]\n{}'.format(GetField(self, inputid.FNAME).GetValue(), data)
+            
+            return u'<<MENU>>\n1\n{}\n<</MENU>>'.format(data)
+        
+        else:
+            return u'<<MENU>>\n0\n<</MENU>>'
     
     
     ## TODO: Doxygen

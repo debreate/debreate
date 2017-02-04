@@ -263,11 +263,38 @@ class Panel(WizardPage):
     ## TODO: Doxygen
     def ExportBuild(self):
         # Remove section delimeters & first line which is just an integer
-        return self.GatherData().split(u'\n')[2:-1]
+        return self.GetSaveData().split(u'\n')[2:-1]
     
     
     ## TODO: Doxygen
-    def GatherData(self):
+    def GetDestValue(self, event=None):
+        if not TextIsEmpty(self.ti_target.GetValue()):
+            if self.ti_target.GetValue()[0] == u'/':
+                self.prev_dest_value = self.ti_target.GetValue()
+        
+        if event:
+            event.Skip()
+    
+    
+    ## Retrieve DirectoryTreePanel instance
+    #  
+    #  Used in input.list.FileList for referencing size
+    def GetDirTreePanel(self):
+        return self.tree_dirs
+    
+    
+    ## Retrieve number of files in list
+    def GetFileCount(self):
+        return self.lst_files.GetItemCount()
+    
+    
+    ## Retrieves FileList instances
+    def GetListInstance(self):
+        return self.lst_files
+    
+    
+    ## TODO: Doxygen
+    def GetSaveData(self):
         file_list = []
         item_count = self.lst_files.GetItemCount()
         
@@ -305,33 +332,6 @@ class Panel(WizardPage):
         else:
             # Place a "0" in FILES field if we are not saving any files
             return u'<<FILES>>\n0\n<</FILES>>'
-    
-    
-    ## TODO: Doxygen
-    def GetDestValue(self, event=None):
-        if not TextIsEmpty(self.ti_target.GetValue()):
-            if self.ti_target.GetValue()[0] == u'/':
-                self.prev_dest_value = self.ti_target.GetValue()
-        
-        if event:
-            event.Skip()
-    
-    
-    ## Retrieve DirectoryTreePanel instance
-    #  
-    #  Used in input.list.FileList for referencing size
-    def GetDirTreePanel(self):
-        return self.tree_dirs
-    
-    
-    ## Retrieve number of files in list
-    def GetFileCount(self):
-        return self.lst_files.GetItemCount()
-    
-    
-    ## Retrieves FileList instances
-    def GetListInstance(self):
-        return self.lst_files
     
     
     ## Retrieves the target output directory

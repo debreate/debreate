@@ -212,7 +212,12 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def GatherData(self):
+    def GetChangelog(self):
+        return self.dsp_changes.GetValue()
+    
+    
+    ## TODO: Doxygen
+    def GetSaveData(self):
         target = self.pnl_target.GetPath()
         if target == self.pnl_target.GetDefaultPath():
             target = u'<<DEST>>DEFAULT<</DEST>>'
@@ -221,11 +226,6 @@ class Panel(WizardPage):
             target = u'<<DEST>>{}<</DEST>>'.format(target)
         
         return u'\n'.join((u'<<CHANGELOG>>', target, self.dsp_changes.GetValue(), u'<</CHANGELOG>>'))
-    
-    
-    ## TODO: Doxygen
-    def GetChangelog(self):
-        return self.dsp_changes.GetValue()
     
     
     ## TODO: Doxygen
