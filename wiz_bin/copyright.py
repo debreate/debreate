@@ -123,7 +123,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ExportPage(self):
+    def ExportBuild(self):
         return self.Get()
     
     

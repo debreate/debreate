@@ -457,7 +457,7 @@ class Panel(WizardPage):
             installed_size = installed_size[0]
             
             # Insert Installed-Size into control file
-            control_data = pg_control.ExportPage().split(u'\n')
+            control_data = pg_control.ExportBuild().split(u'\n')
             control_data.insert(2, u'Installed-Size: {}'.format(installed_size))
             
             progress += 1
@@ -609,7 +609,7 @@ class Panel(WizardPage):
             required = list(fields_control)
             
             if pg_launcher.IsOkay():
-                task_list[u'launcher'] = pg_launcher.ExportPage()
+                task_list[u'launcher'] = pg_launcher.ExportBuild()
                 
                 required.append(pg_launcher.ti_name)
                 
@@ -688,7 +688,7 @@ class Panel(WizardPage):
                 
                 wizard_page = GetPage(PID)
                 if wizard_page.IsOkay():
-                    task_list[id_string] = wizard_page.ExportPage()
+                    task_list[id_string] = wizard_page.ExportBuild()
                 
                 progress += 1
             

@@ -209,7 +209,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ExportPage(self):
+    def ExportBuild(self):
         script_controls = {
             u'preinst': (self.script_ojects[0][0], self.script_ojects[0][2],),
             u'postinst': (self.script_ojects[1][0], self.script_ojects[1][2],),

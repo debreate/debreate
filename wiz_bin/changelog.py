@@ -203,7 +203,7 @@ class Panel(WizardPage):
     #  
     #  \return
     #        \b \e tuple : Changelog target dir & text
-    def ExportPage(self):
+    def ExportBuild(self):
         target = self.pnl_target.GetPath()
         if target == self.pnl_target.GetDefaultPath():
             target = u'STANDARD'

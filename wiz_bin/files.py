@@ -261,7 +261,7 @@ class Panel(WizardPage):
     
     
     ## TODO: Doxygen
-    def ExportPage(self):
+    def ExportBuild(self):
         # Remove section delimeters & first line which is just an integer
         return self.GatherData().split(u'\n')[2:-1]
     
