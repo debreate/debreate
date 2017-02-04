@@ -133,9 +133,20 @@ class Panel(WizardPage):
         return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
     
     
-    ## Retrieve contents of page
-    def Get(self):
-        return self.dsp_copyright.GetValue()
+    ## Retrieves copyright/license text
+    #  
+    #  \return
+    #        \b \e tuple(str, str) : Filename & copyright/license text
+    def Get(self, getModule=False):
+        page = self.dsp_copyright.GetValue()
+        
+        if TextIsEmpty(page):
+            page = None
+        
+        if getModule:
+            page = (__name__, page,)
+        
+        return page
     
     
     ## Retrieves the name of the template currently selected
