@@ -17,8 +17,8 @@ from f_export.permiss       import SetFileExecutable
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
-from globals.ident          import chkid
 from globals.ident          import btnid
+from globals.ident          import chkid
 from globals.ident          import inputid
 from globals.ident          import listid
 from globals.ident          import page_ids
@@ -46,7 +46,7 @@ from ui.panel               import BorderedPanel
 from ui.panel               import ScrolledPanel
 from ui.panel               import SectionedPanel
 from ui.textpreview         import TextPreview
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## Template for individual launchers
@@ -472,7 +472,7 @@ class LauncherTemplate(ScrolledPanel):
         return GetField(self, inputid.NAME).GetValue().strip(u' ').replace(u' ', u'_')
     
     
-    ## Overrides ui.wizard.GetRequiredField
+    ## Overrides wiz.wizard.GetRequiredField
     def GetRequiredFields(self, children=None):
         required_fields = list(WizardPage.GetRequiredFields(self, children=children))
         
