@@ -60,6 +60,8 @@ class Panel(WizardPage):
         btn_template = CreateButton(self, GT(u'Full Template'), u'full', name=u'full»')
         self.btn_template_simple = CreateButton(self, GT(u'Short Template'), u'short',
                 name=u'short»')
+        btn_refresh = CreateButton(self, GT(u'Refresh Template List'), u'refresh', btnid.REFRESH,
+                name=u'btn refresh')
         btn_open = CreateButton(self, GT(u'Open Template Directory'), u'browse', btnid.BROWSE,
                 name=u'btn opendir', commands=u'xdg-open')
         
@@ -83,6 +85,7 @@ class Panel(WizardPage):
         self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectTemplate)
         
         btn_open.Bind(wx.EVT_BUTTON, self.OnOpenPath)
+        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshTemplateList)
         btn_template.Bind(wx.EVT_BUTTON, self.OnFullTemplate)
         self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnSimpleTemplate)
         
@@ -94,6 +97,7 @@ class Panel(WizardPage):
         lyt_top.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
         lyt_top.Add(btn_template, 0, wx.LEFT, 5)
         lyt_top.Add(self.btn_template_simple)
+        lyt_top.Add(btn_refresh)
         lyt_top.Add(btn_open)
         
         lyt_main = BoxSizer(wx.VERTICAL)
