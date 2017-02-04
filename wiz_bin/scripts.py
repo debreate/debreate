@@ -574,6 +574,21 @@ class DebianScript(wx.Panel):
         return FieldEnabled(self.ScriptBody)
     
     
+    ## Retrieves whether or not the script is used & should be exported
+    #  
+    #  The text area is checked &, if not empty, signifies that
+    #    the user want to export the script.
+    #  \return
+    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
+    def IsOkay(self):
+        return not TextIsEmpty(self.ScriptBody.GetValue())
+    
+    
+    ## Resets all members to default values
+    def Reset(self):
+        self.ScriptBody.Clear()
+    
+    
     ## Sets the name of the script to be displayed
     #  
     #  Sets the displayed script name to a value of either 'Pre Install',
@@ -600,26 +615,6 @@ class DebianScript(wx.Panel):
         
         if (prefix != None) and (suffix != None):
             self.script_name = GT(u'{}-{}'.format(prefix, suffix))
-    
-    
-    ## TODO: Doxygen
-    def GetValue(self):
-        return self.ScriptBody.GetValue()
-    
-    
-    ## Retrieves whether or not the script is used & should be exported
-    #  
-    #  The text area is checked &, if not empty, signifies that
-    #    the user want to export the script.
-    #  \return
-    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
-    def IsOkay(self):
-        return not TextIsEmpty(self.ScriptBody.GetValue())
-    
-    
-    ## Resets all members to default values
-    def Reset(self):
-        self.ScriptBody.Clear()
     
     
     ## Fills the script
