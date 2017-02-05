@@ -52,7 +52,7 @@ from wiz.wizard             import WizardPage
 
 
 ## Build page
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.BUILD)
         

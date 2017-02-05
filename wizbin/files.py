@@ -50,7 +50,7 @@ warning_threshhold = 1000
 
 
 ## Class defining controls for the "Paths" page
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.FILES)
         

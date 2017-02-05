@@ -54,15 +54,15 @@ from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
 from wiz.wizard             import Wizard
-from wizbin.build           import Panel as PageBuild
-from wizbin.changelog       import Panel as PageChangelog
-from wizbin.control         import Panel as PageControl
-from wizbin.copyright       import Panel as PageCopyright
-from wizbin.depends         import Panel as PageDepends
-from wizbin.files           import Panel as PageFiles
-from wizbin.greeting        import Panel as PageGreeting
-from wizbin.launchers       import Panel as PageMenu
-from wizbin.scripts         import Panel as PageScripts
+from wizbin.build           import Page as PageBuild
+from wizbin.changelog       import Page as PageChangelog
+from wizbin.control         import Page as PageControl
+from wizbin.copyright       import Page as PageCopyright
+from wizbin.depends         import Page as PageDepends
+from wizbin.files           import Page as PageFiles
+from wizbin.greeting        import Page as PageGreeting
+from wizbin.launchers       import Page as PageMenu
+from wizbin.scripts         import Page as PageScripts
 
 
 default_title = GT(u'Debreate - Debian Package Builder')

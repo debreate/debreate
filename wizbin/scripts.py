@@ -49,7 +49,7 @@ id_definitions = {
 
 
 ## Scripts page
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.SCRIPTS)
         

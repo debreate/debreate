@@ -43,7 +43,7 @@ from wiz.wizard             import WizardPage
 
 
 ## Page for creating a system menu launcher
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.MENU) #, name=GT(u'Menu Launcher'))
         

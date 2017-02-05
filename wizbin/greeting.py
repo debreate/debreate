@@ -16,7 +16,7 @@ from wiz.wizard     import WizardPage
 
 
 ## TODO: Doxygen
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.GREETING)
         

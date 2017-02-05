@@ -41,7 +41,7 @@ from wiz.wizard             import WizardPage
 
 
 ## This panel displays the field input of the control file
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.CONTROL)
         
