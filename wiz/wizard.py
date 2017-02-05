@@ -10,7 +10,6 @@ import traceback, wx
 
 from dbr.event          import ChangePageEvent
 from dbr.language       import GT
-from dbr.log            import DebugEnabled
 from dbr.log            import Logger
 from globals            import ident
 from globals.ident      import chkid
@@ -382,7 +381,7 @@ class Wizard(wx.Panel):
     
     
     ## Sets up the wizard for 'binary' mode
-    def SetModeBin(self):
+    def SetModeBin(self, startPage=1):
         self.Reset()
         
         mods = [
@@ -396,13 +395,10 @@ class Wizard(wx.Panel):
             u'build',
             ]
         
-        if u'alpha' in GetTestList() or DebugEnabled():
-            mods.insert(3, u'manuals')
-        
         for M in mods:
             self.AddPage(M)
         
-        self.Initialize(1)
+        self.Initialize(startPage)
     
     
     ## Sets up the wizard for 'source' mode
