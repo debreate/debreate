@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wiz_bin.scripts
+## \package wizbin.scripts
 
 # MIT licensing
 # See: docs/LICENSE.txt
