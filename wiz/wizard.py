@@ -119,6 +119,63 @@ class Wizard(wx.Panel):
         self.Layout()
     
     
+    ## Add a new page to the wizard
+    #
+    #  \param page
+    #    Must either be a WizardPage instance or the string suffix of the page's moduls
+    def AddPage(self, page):
+        err_msg = None
+        err_det = None
+        
+        if not isinstance(page, WizardPage):
+            try:
+                pagemod = u'wizbin.{}'.format(page)
+                page = mimport(pagemod).Page(self)
+            
+            except ImportError:
+                err_msg = u'module does not exist'
+                err_det = traceback.format_exc()
+        
+        lyt_main = self.GetSizer()
+        
+        if not err_msg:
+            # Must already be child
+            if not isinstance(page, WizardPage):
+                err_msg = u'not WizardPage instance'
+            
+            elif page not in self.GetChildren():
+                err_msg = u'not child of wizard'
+            
+            elif page in lyt_main.GetChildWindows():
+                err_msg = u'page is already added to wizard'
+        
+        if err_msg:
+            err_msg = u'Cannot add page, {}'.format(err_msg)
+            
+            if err_det:
+                ShowErrorDialog(err_msg, err_det)
+            
+            else:
+                ShowErrorDialog(err_msg)
+            
+            return
+        
+        main_window = GetMainWindow()
+        
+        lyt_main.Add(page, 1, wx.EXPAND)
+        self.pages.append(page)
+        
+        # Add to page menu
+        page_menu = GetMenu(menuid.PAGE)
+        
+        page_menu.AppendItem(
+            wx.MenuItem(page_menu, page.Id, page.GetLabel(),
+            kind=wx.ITEM_RADIO))
+        
+        # Bind menu event to ID
+        wx.EVT_MENU(main_window, page.Id, main_window.OnMenuChangePage)
+    
+    
     ## TODO: Doxygen
     def ChangePage(self, event=None):
         event_id = event.GetEventObject().GetId()
@@ -143,7 +200,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        GetMainWindow().menu_page.Check(page_id, True)
+        GetMenu(menuid.PAGE).Check(page_id, True)
     
     
     ## TODO: Doxygen
@@ -196,6 +253,16 @@ class Wizard(wx.Panel):
             raise TypeError(u'Must be bool or int value')
     
     
+    ## TODO: Doxygen
+    def ExportPages(self, page_list, out_dir):
+        for P in page_list:
+            # Support using list of IDs instead of WizardPage instances
+            if not isinstance(P, WizardPage):
+                P = self.GetPage(P)
+            
+            P.Export(out_dir)
+    
+    
     ## Retrieves all current page instances
     def GetAllPages(self):
         return tuple(self.pages)
@@ -237,6 +304,21 @@ class Wizard(wx.Panel):
         return tuple(page_ids)
     
     
+    ## Initailize the wizard
+    def Initialize(self, showPage=0):
+        if self.pages:
+            self.ID_FIRST = self.pages[0].Id
+            self.ID_LAST = self.pages[-1].Id
+        
+        if not showPage:
+            self.ShowPage(self.ID_FIRST)
+        
+        else:
+            self.ShowPage(self.pages[showPage].Id)
+        
+        self.Layout()
+    
+    
     ## Uses children WizardPage instances to set pages
     def InitPages(self):
         pages = []
@@ -256,6 +338,70 @@ class Wizard(wx.Panel):
         page_help.SetText(GT(u'Help information for page "{}"'.format(label)))
         
         ShowDialog(page_help)
+    
+    
+    ## Remove a page from the wizard & memory
+    #
+    #  \param pageId
+    #    \b \e Integer ID of the page to remove
+    def RemovePage(self, pageId):
+        page = self.GetPage(pageId)
+        
+        if page in self.pages:
+            self.pages.pop(self.pages.index(page))
+        
+        lyt_main = self.GetSizer()
+        if page in lyt_main.GetChildWindows():
+            lyt_main.Remove(page)
+        
+        self.Layout()
+        
+        # Remove from page menu
+        GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Remove(pageId).Destroy()
+    
+    
+    ## Reset all but greeting page
+    def Reset(self):
+        for PAGE in reversed(self.pages):
+            if PAGE.Id != pgid.GREETING:
+                self.RemovePage(PAGE.Id)
+        
+        self.Initialize()
+    
+    
+    ## TODO: Doxygen
+    def ResetPagesInfo(self):
+        for page in self.pages:
+            page.Reset()
+    
+    
+    ## Sets up the wizard for 'binary' mode
+    def SetModeBin(self):
+        self.Reset()
+        
+        mods = [
+            u'control',
+            u'depends',
+            u'files',
+            u'scripts',
+            u'changelog',
+            u'copyright',
+            u'launchers',
+            u'build',
+            ]
+        
+        if u'alpha' in GetTestList() or DebugEnabled():
+            mods.insert(3, u'manuals')
+        
+        for M in mods:
+            self.AddPage(M)
+        
+        self.Initialize(1)
+    
+    
+    ## Sets up the wizard for 'source' mode
+    def SetModeSrc(self):
+        self.Reset()
     
     
     ## TODO: Doxygen
