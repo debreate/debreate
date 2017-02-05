@@ -60,11 +60,9 @@ class Page(WizardPage):
         
         self.chk_individuals = CheckBoxCFG(pnl_treeopts, label=GT(u'List files individually'),
                 name=u'individually', cfgSect=u'FILES')
-        self.chk_individuals.default = False
         
         self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, label=GT(u'Preserve top-level directories'),
                 name=u'top-level', cfgSect=u'FILES')
-        self.chk_preserve_top.default = False
         
         self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
         
