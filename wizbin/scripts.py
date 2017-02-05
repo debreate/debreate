@@ -107,8 +107,8 @@ class Page(WizardPage):
         self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
-        self.executables = ListCtrl(pnl_autolink, size=(200,200), name=u'al list')
-        self.executables.SetSingleStyle(wx.LC_SINGLE_SEL)
+        self.Executables = ListCtrl(pnl_autolink, size=(200,200), name=u'al list')
+        self.Executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
         btn_al_import = ButtonImport(pnl_autolink)
@@ -172,7 +172,7 @@ class Page(WizardPage):
         
         lyt_autolink = BoxSizer(wx.VERTICAL)
         lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
-        lyt_autolink.Add(self.executables, 3, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
+        lyt_autolink.Add(self.Executables, 3, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
         lyt_autolink.Add(lyt_btn_autolink, 0, wx.ALIGN_CENTER_HORIZONTAL)
         lyt_autolink.Add(btn_help, 1, wx.ALIGN_CENTER)
         
@@ -252,7 +252,7 @@ class Page(WizardPage):
         event_id = event.GetId()
         if event_id == genid.IMPORT:
             # First clear the Auto-Link display and the executable list
-            self.executables.DeleteAllItems()
+            self.Executables.DeleteAllItems()
             self.lst_executables = []
             
             # Get executables from "files" tab
@@ -295,12 +295,12 @@ class Page(WizardPage):
                             else:
                                 dest_path = file_target.GetText()
                             
-                            exe_index = self.executables.GetItemCount()
+                            exe_index = self.Executables.GetItemCount()
                             
                             # Put "destination/filename" together in executable list
                             self.lst_executables.insert(exe_index, u'{}/{}'.format(dest_path, filename))
-                            self.executables.InsertStringItem(exe_index, filename)
-                            self.executables.SetItemTextColour(exe_index, wx.RED)
+                            self.Executables.InsertStringItem(exe_index, filename)
+                            self.Executables.SetItemTextColour(exe_index, wx.RED)
                         
                         else:
                             Logger.Warn(__name__, u'{}: The executables destination is not valid'.format(__name__))
@@ -312,9 +312,9 @@ class Page(WizardPage):
         
         elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
             # FIXME: Use ListCtrl.DeleteAllItems()???
-            exe = self.executables.GetFirstSelected()
+            exe = self.Executables.GetFirstSelected()
             if exe != -1:
-                self.executables.DeleteItem(exe)
+                self.Executables.DeleteItem(exe)
                 self.lst_executables.remove(self.lst_executables[exe])
     
     
@@ -456,7 +456,7 @@ class Page(WizardPage):
         self.ScriptSelect(None)
         
         self.ti_autolink.Reset()
-        self.executables.DeleteAllItems()
+        self.Executables.DeleteAllItems()
     
     
     ## TODO: Doxygen
