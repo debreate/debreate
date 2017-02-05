@@ -8,10 +8,10 @@
 
 import wx
 
-from globals.ident          import inputid
-from globals.wizardhelper   import GetField
-from ui.layout              import BoxSizer
-from ui.style               import PANEL_BORDER
+from globals.ident  import inputid
+from ui.layout      import BoxSizer
+from ui.style       import PANEL_BORDER
+from wiz.helper     import GetField
 
 
 ## Global function for setting & updating scrolled window scrollbars

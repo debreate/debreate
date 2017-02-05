@@ -21,7 +21,6 @@ from globals.system         import FILE_distnames
 from globals.system         import GetOSDistNames
 from globals.system         import UpdateDistNamesCache
 from globals.threads        import Thread
-from globals.wizardhelper   import GetField
 from ui.dialog              import BaseDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
@@ -29,6 +28,7 @@ from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.progress            import ProgressDialog
 from ui.textpreview         import TextPreview
+from wiz.helper             import GetField
 
 
 ## Dialog displaying controls for updating distribution names cache file

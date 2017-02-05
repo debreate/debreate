@@ -32,11 +32,6 @@ from globals.strings        import GS
 from globals.strings        import RemoveEmptyLines
 from globals.strings        import TextIsEmpty
 from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetFieldValue
-from globals.wizardhelper   import GetMainWindow
-from globals.wizardhelper   import GetPage
 from input.toggle           import CheckBox
 from input.toggle           import CheckBoxCFG
 from input.toggle           import CheckBoxESS
@@ -55,6 +50,11 @@ from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.progress            import TimedProgressDialog
 from ui.textpreview         import TextPreview
+from wiz.helper             import FieldEnabled
+from wiz.helper             import GetField
+from wiz.helper             import GetFieldValue
+from wiz.helper             import GetMainWindow
+from wiz.helper             import GetPage
 from wiz.wizard             import WizardPage
 
 
