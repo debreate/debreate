@@ -73,17 +73,8 @@ from ui.layout              import BoxSizer
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
-from wiz.pginit             import Panel as PageGreeting
+from wiz.pginit             import Page as PageInit
 from wiz.wizard             import Wizard
-from wizbin.build           import Panel as PageBuild
-from wizbin.changelog       import Panel as PageChangelog
-from wizbin.control         import Panel as PageControl
-from wizbin.copyright       import Panel as PageCopyright
-from wizbin.depends         import Panel as PageDepends
-from wizbin.files           import Panel as PageFiles
-from wizbin.launchers       import Panel as PageLaunchers
-from wizbin.manuals         import Panel as PageMan
-from wizbin.scripts         import Panel as PageScripts
 
 
 default_title = GT(u'Debreate - Debian Package Builder')
@@ -416,26 +407,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Sets the pages in the wiz.wizard.Wizard instance
     def InitWizard(self):
-        pg_info = PageGreeting(self.Wizard)
-        pg_info.SetInfo()
-        PageControl(self.Wizard)
-        PageDepends(self.Wizard)
-        PageFiles(self.Wizard)
+        pg_init = PageInit(self.Wizard)
+        pg_init.SetInfo()
         
-        # TODO: finish manpage section
-        if u'alpha' in GetTestList() or DebugEnabled():
-            PageMan(self.Wizard)
-        
-        PageScripts(self.Wizard)
-        PageChangelog(self.Wizard)
-        PageCopyright(self.Wizard)
-        PageLaunchers(self.Wizard)
-        pg_build = PageBuild(self.Wizard)
-        
-        # Action menu events
-        wx.EVT_MENU(self, genid.BUILD, pg_build.OnBuild)
-        
-        self.Wizard.InitPages()
+        self.Wizard.AddPage(pg_init)
+        self.Wizard.Initialize()
     
     
     ## Opens a dialog box with information about the program
