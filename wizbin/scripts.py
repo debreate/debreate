@@ -256,19 +256,16 @@ class Page(WizardPage):
             self.lst_executables = []
             
             # Get executables from "files" tab
-            files = GetField(pgid.FILES, inputid.LIST)
+            file_list = GetField(pgid.FILES, inputid.LIST)
             
-            # Sets the max iterate value
-            MAX = files.GetItemCount()
-            i_index = 0
-            while i_index < MAX:
+            for INDEX in range(file_list.GetItemCount()):
                 # Searches for executables (distinguished by red text)
-                if files.FileIsExecutable(i_index):
+                if file_list.FileIsExecutable(INDEX):
                     # Get the filename from the source
-                    filename = os.path.basename(files.GetItemText(i_index))
+                    file_name = os.path.basename(file_list.GetItemText(INDEX))
                     
                     # Where the file linked to will be installed
-                    file_target = files.GetItem(i_index, 1)
+                    file_target = file_list.GetItem(INDEX, 1)
                     
                     try:
                         # If destination doesn't start with "/" do not include executable
@@ -298,8 +295,8 @@ class Page(WizardPage):
                             exe_index = self.Executables.GetItemCount()
                             
                             # Put "destination/filename" together in executable list
-                            self.lst_executables.insert(exe_index, u'{}/{}'.format(dest_path, filename))
-                            self.Executables.InsertStringItem(exe_index, filename)
+                            self.lst_executables.insert(exe_index, u'{}/{}'.format(dest_path, file_name))
+                            self.Executables.InsertStringItem(exe_index, file_name)
                             self.Executables.SetItemTextColour(exe_index, wx.RED)
                         
                         else:
@@ -307,8 +304,6 @@ class Page(WizardPage):
                     
                     except IndexError:
                         Logger.Warn(__name__, u'{}: The executables destination is not available'.format(__name__))
-                
-                i_index += 1
         
         elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
             # FIXME: Use ListCtrl.Reset()???
