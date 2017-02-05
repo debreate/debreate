@@ -8,36 +8,36 @@
 
 import os, wx
 
-from dbr.functions          import GetLongestLine
-from dbr.language           import GT
-from dbr.log                import Logger
-from dbr.templates          import GetCustomLicenses
-from dbr.templates          import GetLicenseTemplateFile
-from dbr.templates          import GetLocalLicenses
-from dbr.templates          import GetSysLicenses
-from dbr.templates          import sys_licenses_path
-from globals.dateinfo       import GetYear
-from globals.errorcodes     import dbrerrno
-from globals.execute        import ExecuteCommand
-from globals.execute        import GetExecutable
-from globals.fileio         import ReadFile
-from globals.ident          import btnid
-from globals.ident          import pgid
-from globals.ident          import selid
-from globals.strings        import GS
-from globals.strings        import TextIsEmpty
-from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from globals.wizardhelper   import GetPage
-from input.select           import Choice
-from input.text             import TextAreaPanelESS
-from ui.button              import CreateButton
-from ui.dialog              import ConfirmationDialog
-from ui.dialog              import ShowErrorDialog
-from ui.layout              import BoxSizer
-from ui.style               import layout as lyt
-from wiz.wizard             import WizardPage
+from dbr.functions      import GetLongestLine
+from dbr.language       import GT
+from dbr.log            import Logger
+from dbr.templates      import GetCustomLicenses
+from dbr.templates      import GetLicenseTemplateFile
+from dbr.templates      import GetLocalLicenses
+from dbr.templates      import GetSysLicenses
+from dbr.templates      import sys_licenses_path
+from globals.dateinfo   import GetYear
+from globals.errorcodes import dbrerrno
+from globals.execute    import ExecuteCommand
+from globals.execute    import GetExecutable
+from globals.fileio     import ReadFile
+from globals.ident      import btnid
+from globals.ident      import pgid
+from globals.ident      import selid
+from globals.strings    import GS
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from input.select       import Choice
+from input.text         import TextAreaPanelESS
+from ui.button          import CreateButton
+from ui.dialog          import ConfirmationDialog
+from ui.dialog          import ShowErrorDialog
+from ui.layout          import BoxSizer
+from ui.style           import layout as lyt
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
+from wiz.helper         import GetPage
+from wiz.wizard         import WizardPage
 
 
 # Globals

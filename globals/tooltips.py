@@ -10,12 +10,12 @@
 
 import wx
 
-from dbr.language           import GT
-from dbr.templates          import local_templates_path
-from globals.changes        import section_delims
-from globals.execute        import GetSystemInstaller
-from globals.ident          import pgid
-from globals.wizardhelper   import FieldEnabled
+from dbr.language       import GT
+from dbr.templates      import local_templates_path
+from globals.changes    import section_delims
+from globals.execute    import GetSystemInstaller
+from globals.ident      import pgid
+from wiz.helper         import FieldEnabled
 
 
 # *** Wizard buttons ***#

@@ -8,9 +8,9 @@
 
 import wx
 
-from globals.wizardhelper   import GetMainWindow
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
+from ui.layout  import BoxSizer
+from ui.panel   import BorderedPanel
+from wiz.helper import GetMainWindow
 
 
 ## A menu bar that stores an ID along with a menu
