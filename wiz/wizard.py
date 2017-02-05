@@ -496,6 +496,14 @@ class WizardPage(ScrolledPanel):
         
         ## List of IDs that should not be reset
         self.IgnoreResetIds = []
+        
+        # Is added to prebuild check list
+        self.prebuild_check = True
+    
+    
+    ## TODO: Doxygen
+    def Get(self):
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
     ## TODO: Doxygen
@@ -506,9 +514,50 @@ class WizardPage(ScrolledPanel):
         return self.label
     
     
+    ## Retrieves all fields that cannot be left blank for build
+    #  
+    #  \param children
+    #        \b \e list|tuple : The controls to be checked
+    #  \return
+    #        \b \e tuple : List of controls marked as required
+    def GetRequiredFields(self, children=None):
+        required_fields = []
+        
+        if children == None:
+            children = self.GetChildren()
+        
+        for C in children:
+            for RF in self.GetRequiredFields(C.GetChildren()):
+                required_fields.append(RF)
+            
+            # FIXME: Better way to mark fields as required???
+            try:
+                if C.req:
+                    required_fields.append(C)
+            
+            except AttributeError:
+                pass
+        
+        return tuple(required_fields)
+    
+    
+    ## TODO: Doxygen
+    def ImportFromFile(self, filename):
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
+    
+    
     ## This method should contain anything that needs to be initialized only after all pages are constructed
+    #
+    #  FIXME: Rename to 'OnWizardInit'???
     def InitPage(self):
         Logger.Debug(__name__, GT(u'Page {} does not override inherited method InitPage').format(self.GetName()))
+        
+        return False
+    
+    
+    ## TODO: Doxygen
+    def IsOkay(self):
+        Logger.Warn(__name__, GT(u'Page {} does not override inherited method IsOkay').format(self.GetName()))
         
         return False
     
