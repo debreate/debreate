@@ -520,6 +520,30 @@ class BasicFileList(ListCtrl):
         return False
     
     
+    
+    ## Retrieves the basename of the file's path
+    #
+    #  \param item
+    #    Can be integer index, file path string, or FileItem instance
+    #  \return
+    #    \b \e String representation of the filename
+    def GetBasename(self, item):
+        return self.GetFileItem(item).GetBasename()
+    
+    
+    ## Retrieves all file basenames in list
+    #
+    #  \return
+    #    \b \e Tuple list of string file basenames
+    def GetBasenames(self):
+        basenames = []
+        
+        for FILE in self.Files:
+            basenames.append(FILE.GetBasename())
+        
+        return tuple(basenames)
+    
+    
     ## Retrieves all executables
     def GetExecutables(self):
         exe_list = []
@@ -586,6 +610,19 @@ class BasicFileList(ListCtrl):
     #    Can be \b \e Integer index, string path, or FileName instance
     def GetTarget(self, item):
         return self.GetFileItem(item).GetTarget()
+    
+    
+    ## Retrieves all target paths from files
+    #
+    #  \return
+    #    \b \e Tuple list of all target paths
+    def GetTargets(self):
+        targets = []
+        
+        for FILE in self.Files:
+            targets.append(FILE.GetTarget())
+        
+        return tuple(targets)
     
     
     ## Inserts new globals.fileio.FileItem instance to list at given index
