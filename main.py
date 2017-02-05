@@ -568,7 +568,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
         
         else:
-            for M in self.menu_page.GetMenuItems():
+            for M in self.GetMenu(menuid.PAGE).GetMenuItems():
                 if M.IsChecked():
                     page_id = M.GetId()
                     
@@ -729,8 +729,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ID = self.Wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
         
-        if not self.menu_page.IsChecked(ID):
-            self.menu_page.Check(ID, True)
+        menu_page = self.GetMenu(menuid.PAGE)
+        if not menu_page.IsChecked(ID):
+            menu_page.Check(ID, True)
     
     
     ## Opens web links from the help menu
@@ -1092,7 +1093,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if self.ProjectDirty != dirty:
             self.ProjectDirty = dirty
-            self.GetMenuBar().GetMenuById(menuid.FILE).Enable(wx.ID_SAVE, self.ProjectDirty)
+            self.GetMenu(menuid.FILE).Enable(wx.ID_SAVE, self.ProjectDirty)
             
             title = self.GetTitle()
             
@@ -1112,7 +1113,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \param compression_id
     #        \b \e int : Compression ID to search for in menu iteration
     def SetCompression(self, compression_id):
-        for Z in self.GetMenuBar().GetMenuById(menuid.COMPRESS).GetMenuItems():
+        for Z in self.menu_compress.GetMenuItems():
             Z_ID = Z.GetId()
             
             if compression_id == Z_ID:
