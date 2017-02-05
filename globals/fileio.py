@@ -12,6 +12,60 @@ import codecs, os
 
 from globals.paths      import ConcatPaths
 from globals.strings    import GS
+from globals.strings    import IsString
+from globals.strings    import TextIsEmpty
+
+
+## An object that represents a file
+class FileItem:
+    def __init__(self, path, target=None):
+        self.Path = path
+        self.Target = target
+    
+    
+    ## Checks if the file exists on the filesystem
+    def Exists(self):
+        return os.path.isfile(self.Path)
+    
+    
+    ## Retrieves file's basename
+    def GetBasename(self):
+        return os.path.basename(self.Path)
+    
+    
+    ## Retrieves file's full path
+    def GetPath(self):
+        return self.Path
+    
+    
+    ## Retrieves file's target directory
+    def GetTarget(self):
+        return self.Target
+    
+    
+    ## Checks if the file has a target installation directory
+    def HasTarget(self):
+        return IsString(self.Target) and not TextIsEmpty(self.Target)
+    
+    
+    ## Checks if the item represented is a directory
+    def IsDirectory(self):
+        return os.path.isdir(self.Path)
+    
+    
+    ## Checks if file is executable
+    def IsExecutable(self):
+        return os.access(self.Path, os.X_OK)
+    
+    
+    ## Sets file's path & basename
+    def SetPath(self, path):
+        self.Path = path
+    
+    
+    ## Sets file's target directory
+    def SetTarget(self, target):
+        self.Target = target
 
 
 ## TODO: Doxygen
