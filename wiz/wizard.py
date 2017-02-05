@@ -321,6 +321,9 @@ class Wizard(wx.Panel):
         else:
             self.ShowPage(self.pages[showPage].Id)
         
+        for PAGE in self.pages:
+            PAGE.InitPage()
+        
         self.Layout()
     
     
