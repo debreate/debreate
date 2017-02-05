@@ -334,6 +334,21 @@ class Wizard(wx.Panel):
                         page.ImportFromFile(u'{}/{}'.format(PATH, F))
     
     
+    ## Initailize the wizard
+    def Initialize(self, showPage=0):
+        if self.pages:
+            self.ID_FIRST = self.pages[0].Id
+            self.ID_LAST = self.pages[-1].Id
+        
+        if not showPage:
+            self.ShowPage(self.ID_FIRST)
+        
+        else:
+            self.ShowPage(self.pages[showPage].Id)
+        
+        self.Layout()
+    
+    
     ## Uses children WizardPage instances to set pages
     def InitPages(self):
         pages = []
