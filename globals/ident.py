@@ -242,6 +242,7 @@ class MenuId(FieldId):
         self.HELP = self.AddStaticId(wx.ID_HELP)
         self.NEW = self.AddStaticId(wx.ID_NEW)
         self.OPEN = self.AddStaticId(wx.ID_OPEN)
+        self.OPENLOGS = self.NewId()
         self.OPTIONS = self.NewId()
         self.PAGE = self.NewId()
         self.QBUILD = self.NewId()
