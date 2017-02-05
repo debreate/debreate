@@ -116,7 +116,7 @@ class Page(WizardPage):
         
         # *** Event Handling *** #
         
-        for S, RB in self.script_objects:
+        for DS, RB in self.script_objects:
             wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
         
         wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExes)
@@ -139,8 +139,8 @@ class Page(WizardPage):
         lyt_left = BoxSizer(wx.VERTICAL)
         lyt_left.Add(lyt_sel_script, 0, wx.EXPAND|wx.BOTTOM, 5)
         
-        for S, RB in self.script_objects:
-            lyt_left.Add(S, 1, wx.EXPAND)
+        for DS, RB in self.script_objects:
+            lyt_left.Add(DS, 1, wx.EXPAND)
         
         # Auto-Link/Right side
         lyt_ti_autolink = BoxSizer(wx.HORIZONTAL)
@@ -183,9 +183,9 @@ class Page(WizardPage):
     def Export(self, out_dir):
         return_code = (0, None)
         
-        for S, O in self.script_objects:
-            if S.IsOkay():
-                return_code = S.Export(out_dir, False)
+        for DS, RB in self.script_objects:
+            if DS.IsOkay():
+                return_code = DS.Export(out_dir, False)
                 
                 if return_code[0]:
                     return return_code
@@ -201,9 +201,9 @@ class Page(WizardPage):
             os.makedirs(stage)
         
         # FIXME: Should have error check
-        for S, RB in self.script_objects:
-            if S.IsOkay():
-                S.Export(stage, build=True)
+        for DS, RB in self.script_objects:
+            if DS.IsOkay():
+                DS.Export(stage, build=True)
         
         return (dbrerrno.SUCCESS, None)
     
@@ -283,9 +283,9 @@ class Page(WizardPage):
         script_name = filename.split(u'-')[-1]
         script_object = None
         
-        for S, O in self.script_objects:
-            if script_name == S.GetFilename():
-                script_object = S
+        for DS, RB in self.script_objects:
+            if script_name == DS.GetFilename():
+                script_object = DS
                 break
         
         # Loading the actual text
@@ -320,8 +320,8 @@ class Page(WizardPage):
     
     ## TODO: Doxygen
     def IsOkay(self):
-        for S, RB in self.script_objects:
-            if S.IsOkay():
+        for DS, RB in self.script_objects:
+            if DS.IsOkay():
                 return True
     
     
@@ -335,9 +335,9 @@ class Page(WizardPage):
         if total > 0:
             non_empty_scripts = []
             
-            for SCRIPT in self.script_objects[1][0], self.script_objects[2][0]:
-                if not TextIsEmpty(SCRIPT.GetValue()):
-                    non_empty_scripts.append(SCRIPT.GetName())
+            for DS in self.script_objects[1][0], self.script_objects[2][0]:
+                if not TextIsEmpty(DS.GetValue()):
+                    non_empty_scripts.append(DS.GetName())
             
             # Warn about overwriting previous post-install & pre-remove scripts
             if non_empty_scripts:
@@ -409,8 +409,8 @@ class Page(WizardPage):
     
     ## Resets all fields on page to default values
     def Reset(self):
-        for S, O in self.script_objects:
-            S.Reset()
+        for DS, RB in self.script_objects:
+            DS.Reset()
         
         self.ti_autolink.Reset()
         self.Executables.Reset()
@@ -418,11 +418,12 @@ class Page(WizardPage):
     
     ## TODO: Doxygen
     def ScriptSelect(self, event=None):
-        for S, RB in self.script_objects:
+        for DS, RB in self.script_objects:
             if RB.GetValue():
-                S.Show()
+                DS.Show()
+            
             else:
-                S.Hide()
+                DS.Hide()
         
         self.Layout()
     
