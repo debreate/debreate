@@ -47,32 +47,14 @@ PREV = wx.NewId()
 NEXT = wx.NewId()
 
 # *** Custom IDs *** #
-ALIEN = wx.NewId()
-CUSTOM = wx.NewId()
 DEBUG = wx.NewId()
-DIALOGS = wx.NewId()
 DIST = wx.NewId()
 EXPAND = wx.NewId()
 LOG = wx.NewId()
-MENU_TT = wx.NewId()
-MULTI = wx.NewId()
-OVERWRITE = wx.NewId()
 RENAME = wx.NewId()
 SINGLE = wx.NewId()
 STAGE = wx.NewId()
 TARGET = wx.NewId()
-THEME = wx.NewId()
-
-# *** Menu IDs *** #
-ACTION = wx.NewId()
-DIALOGS = wx.NewId()
-OPENLOGS = wx.NewId()
-OPTIONS = wx.NewId()
-PAGE = wx.NewId()
-QBUILD = wx.NewId()
-THEME = wx.NewId()
-TOOLTIPS = wx.NewId()
-UPDATE = wx.NewId()
 
 
 ## General IDs
@@ -163,7 +145,6 @@ class InputId(FieldId):
         self.EMAIL = self.NewId()
         self.ENC = self.NewId()
         self.EXEC = self.NewId()
-        self.FNAME = self.NewId()
         self.ICON = self.NewId()
         self.KEY = self.NewId()
         self.LIST = self.NewId()
@@ -174,7 +155,6 @@ class InputId(FieldId):
         self.NOTIFY = self.NewId()
         self.OTHER = self.NewId()
         self.PACKAGE = self.NewId()
-        self.TARGET = self.NewId()
         self.TERM = self.NewId()
         self.TYPE = self.NewId()
         self.VALUE = self.NewId()
