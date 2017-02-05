@@ -22,7 +22,6 @@ from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
 from dbr.log                import Logger
-from globals                import ident
 from globals.application    import APP_homepage
 from globals.application    import APP_project_gh
 from globals.application    import APP_project_sf
@@ -170,7 +169,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help = wx.Menu()
         
         # ----- Version update
-        mitm_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for update'),
+        mitm_update = wx.MenuItem(menu_help, menuid.UPDATE, GT(u'Check for update'),
                 GT(u'Check if a new version is available for download'))
         mitm_update.SetBitmap(ICON_LOGO)
         
