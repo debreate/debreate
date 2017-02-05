@@ -100,14 +100,19 @@ def WriteFile(filename, contents, no_strip=None):
 #
 #  \param path
 #    Directory to search for license templates
-def GetFiles(path):
-    licenses = []
+def GetFiles(path, flag=None):
+    file_list = []
     
     for PATH, DIRS, FILES in os.walk(path):
         for F in FILES:
-            license_path = ConcatPaths((path, F))
+            file_path = ConcatPaths((path, F))
             
-            if os.path.isfile(license_path):
-                licenses.append(F)
+            if os.path.isfile(file_path):
+                # Don't add files that do not match 'flag' attributes
+                if flag:
+                    if not os.access(file_path, flag):
+                        continue
+                
+                file_list.append(F)
     
-    return sorted(licenses, key=GS.lower)
+    return sorted(file_list, key=GS.lower)
