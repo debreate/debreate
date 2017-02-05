@@ -55,7 +55,7 @@ from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.progress            import TimedProgressDialog
 from ui.textpreview         import TextPreview
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## Build page

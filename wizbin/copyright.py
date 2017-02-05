@@ -37,7 +37,7 @@ from ui.dialog              import ConfirmationDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from ui.style               import layout as lyt
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 # Globals

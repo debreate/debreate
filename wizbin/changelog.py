@@ -39,7 +39,7 @@ from input.toggle           import CheckBoxESS
 from ui.button              import CreateButton
 from ui.dialog              import DetailedMessageDialog
 from ui.layout              import BoxSizer
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## Changelog page

@@ -22,7 +22,7 @@ from ui.layout              import BoxSizer
 from ui.manual              import ManPage
 from ui.notebook            import MultiTemplate
 from ui.prompt              import TextEntryDialog
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## Manual pages page

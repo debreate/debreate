@@ -46,7 +46,7 @@ from ui.launcher            import LauncherTemplate
 from ui.layout              import BoxSizer
 from ui.notebook            import MultiTemplate
 from ui.textpreview         import TextPreview
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 if UsingTest(u'alpha'):

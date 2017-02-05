@@ -29,7 +29,7 @@ from ui.button              import ButtonSave64
 from ui.dialog              import ConfirmationDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 ## Page defining dependencies
