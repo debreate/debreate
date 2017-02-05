@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, wx
+import os, traceback, wx
 
 from dbr.event              import ChangePageEvent
 from dbr.language           import GT
@@ -135,28 +135,43 @@ class Wizard(wx.Panel):
     #  \param page
     #    Must either be a WizardPage instance or the string suffix of the page's moduls
     def AddPage(self, page):
-        if not isinstance(page, WizardPage):
-            pagemod = u'wiz.pg{}'.format(page)
-            page = mimport(pagemod).Page(self)
+        err_msg = None
+        err_det = None
         
-        main_window = GetMainWindow()
+        if not isinstance(page, WizardPage):
+            try:
+                pagemod = u'wizbin.{}'.format(page)
+                page = mimport(pagemod).Page(self)
+            
+            except ImportError:
+                err_msg = u'module does not exist'
+                err_det = traceback.format_exc()
+        
         lyt_main = self.GetSizer()
         
-        # Must already be child
-        err_msg = None
-        if not isinstance(page, WizardPage):
-            err_msg = u'not WizardPage instance'
-        
-        elif page not in self.GetChildren():
-            err_msg = u'not child of wizard'
-        
-        elif page in lyt_main.GetChildWindows():
-            err_msg = u'page is already added to wizard'
+        if not err_msg:
+            # Must already be child
+            if not isinstance(page, WizardPage):
+                err_msg = u'not WizardPage instance'
+            
+            elif page not in self.GetChildren():
+                err_msg = u'not child of wizard'
+            
+            elif page in lyt_main.GetChildWindows():
+                err_msg = u'page is already added to wizard'
         
         if err_msg:
-            ShowErrorDialog(u'Cannot add page, {}'.format(err_msg))
+            err_msg = u'Cannot add page, {}'.format(err_msg)
+            
+            if err_det:
+                ShowErrorDialog(err_msg, err_det)
+            
+            else:
+                ShowErrorDialog(err_msg)
             
             return
+        
+        main_window = GetMainWindow()
         
         lyt_main.Add(page, 1, wx.EXPAND)
         self.pages.append(page)
