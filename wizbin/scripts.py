@@ -213,7 +213,7 @@ class Page(WizardPage):
         event_id = event.GetId()
         if event_id == genid.IMPORT:
             # First clear the Auto-Link display and the executable list
-            self.Executables.DeleteAllItems()
+            self.Executables.Reset()
             self.lst_executables = []
             
             # Get executables from "files" tab
@@ -272,7 +272,7 @@ class Page(WizardPage):
                 i_index += 1
         
         elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
-            # FIXME: Use ListCtrl.DeleteAllItems()???
+            # FIXME: Use ListCtrl.Reset()???
             exe = self.Executables.GetFirstSelected()
             if exe != -1:
                 self.Executables.DeleteItem(exe)
@@ -416,7 +416,7 @@ class Page(WizardPage):
             S.Reset()
         
         self.ti_autolink.Reset()
-        self.Executables.DeleteAllItems()
+        self.Executables.Reset()
     
     
     ## TODO: Doxygen
