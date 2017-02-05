@@ -271,6 +271,11 @@ class ListCtrl(BorderedPanel, ControlPanel):
         return self.MainCtrl.GetColumnWidth(col)
     
     
+    ## Retrieves number of files in list
+    def GetCount(self):
+        return self.GetItemCount()
+    
+    
     ## TODO: Doxygen
     def GetCountPerPage(self):
         return self.MainCtrl.GetCountPerPage()
@@ -513,11 +518,6 @@ class BasicFileList(ListCtrl):
             return True
         
         return False
-    
-    
-    ## Retrieves number of files in list
-    def GetCount(self):
-        return self.GetItemCount()
     
     
     ## Retrieves all executables
