@@ -111,7 +111,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             ]
         
         if testing:
-            mitems_file.append((ident.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
+            mitems_file.append((menuid.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
         
         # Adding all menus to menu bar
         
