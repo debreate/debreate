@@ -15,7 +15,9 @@ from dbr.language       import GT
 from dbr.log            import Logger
 from globals.constants  import FTYPE_EXE
 from globals.constants  import file_types_defs
+from globals.fileio     import FileItem
 from globals.paths      import ConcatPaths
+from globals.strings    import IsString
 from input.essential    import EssentialField
 from input.ifield       import InputField
 from ui.layout          import BoxSizer
@@ -452,8 +454,159 @@ class ListCtrlESS(ListCtrl, EssentialField):
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
         
         ListCtrl.__init__(self, parent, win_id, pos, size, style, validator, name)
-                #essential=True)
         EssentialField.__init__(self)
+
+
+## List control intended for managing files
+#
+#  TODO: Derive FileList from this
+class BasicFileList(ListCtrl):
+    def __init__(self, parent, win_id=wx.ID_ANY, highlightExes=False, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=wx.LC_ICON, name=wx.ListCtrlNameStr):
+        
+        ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name)
+        
+        self.HighlightExes = highlightExes
+        
+        ## List of globals.fileio.FileItem instances
+        self.Files = []
+    
+    
+    ## Adds new globals.fileio.FileItem instance to end of list
+    #
+    #  \param item
+    #    Either the path to a file or a FileItem instance
+    #  \param target
+    #    File's target installation directory (only if item is not FileItem instance)
+    #  \return
+    #    \b \e True if successfully added to list
+    def Add(self, item, target=None):
+        return self.Insert(self.GetCount(), item, target)
+    
+    
+    ## Appends new globals.fileio.FileItem instance to end of list
+    #
+    #  Alias of input.list.BasicFileList.Add
+    #  
+    #  \param item
+    #    Either the path to a file or a FileItem instance
+    #  \param target
+    #    File's target installation directory (only if item is not FileItem instance)
+    #  \return
+    #    \b \e True if successfully added to list
+    def Append(self, item, target=None):
+        return self.Add(item, target)
+    
+    
+    ## Deletes an item from the file list
+    #
+    #  \param item
+    #    Can be integer index, file path string, or FileItem instance
+    #  \return
+    #    \b \e True if the file item was deleted from list
+    def Delete(self, item):
+        if isinstance(item, FileItem):
+            item = self.Files.index(item)
+        
+        elif IsString(item):
+            for FILE in self.Files:
+                if FILE.GetPath() == item:
+                    item = self.Files.index(FILE)
+                    
+                    break
+                
+                return False
+        
+        if self.DeleteItem(item):
+            self.Files.Pop(item)
+            
+            return True
+        
+        return False
+    
+    
+    ## Retrieves number of files in list
+    def GetCount(self):
+        return self.GetItemCount()
+    
+    
+    ## Retrieves all executables
+    def GetExecutables(self):
+        exe_list = []
+        for FILE in self.Files:
+            if FILE.IsExecutable():
+                exe_list.append(FILE.GetPath())
+        
+        return exe_list
+    
+    
+    ## Retrieves full path of file
+    #
+    #  \param item
+    #    Can be item index or FileName instance
+    def GetPath(self, item):
+        if not isinstance(item, FileItem):
+            item = self.Files[item]
+        
+        return item.GetPath()
+    
+    
+    ## Retrieves all file paths
+    def GetPaths(self):
+        paths = []
+        for FILE in self.Files:
+            paths.append(FILE.GetPath())
+        
+        return tuple(paths)
+    
+    
+    ## Retrieves target path of file
+    #
+    #  \param item
+    #    Can be item index, string path, or FileItem instance
+    def GetTarget(self, item):
+        # First retrieve FileItem instance
+        if IsString(item):
+            for FILE in self.FILES:
+                if FILE.GetPath() == item:
+                    item = FILE
+        
+        elif isinstance(item, int):
+            item = self.Files[item]
+        
+        return item.GetTarget()
+    
+    
+    ## Inserts new globals.fileio.FileItem instance to list at given index
+    #
+    #  \param index
+    #    \b \e Integer index at wich to insert itme
+    #  \param item
+    #    Either the path to a file or a FileItem instance
+    #  \param target
+    #    File's target installation directory (only if item is not FileItem instance)
+    #  \return
+    #    \b \e True if successfully added to list
+    def Insert(self, index, item, target=None):
+        if IsString(item):
+            item = FileItem(item, target)
+        
+        if self.InsertStringItem(index, item.GetPath()) >= 0:
+            self.Files.insert(index, item)
+            
+            if self.HighlightExes:
+                self.SetItemTextColour(index, wx.RED)
+            
+            return True
+        
+        return False
+    
+    
+    ## Removes an item from the file list
+    #
+    #  Alias of input.list.BasicFileList.Delete
+    def Remove(self, item):
+        return self.Delete(item)
 
 
 ## An editable list
