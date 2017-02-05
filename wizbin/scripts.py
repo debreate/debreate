@@ -8,39 +8,39 @@
 
 import os, wx
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
-from globals.errorcodes     import ERR_FILE_WRITE
-from globals.errorcodes     import dbrerrno
-from globals.fileio         import ReadFile
-from globals.fileio         import WriteFile
-from globals.ident          import genid
-from globals.ident          import inputid
-from globals.ident          import page_ids
-from globals.ident          import pgid
-from globals.paths          import ConcatPaths
-from globals.strings        import GS
-from globals.strings        import TextIsEmpty
-from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from input.list             import ListCtrl
-from input.markdown         import MarkdownDialog
-from input.pathctrl         import PathCtrl
-from input.select           import ComboBoxESS
-from input.text             import TextAreaPanelESS
-from ui.button              import ButtonBuild
-from ui.button              import ButtonHelp64
-from ui.button              import ButtonImport
-from ui.button              import ButtonRemove
-from ui.dialog              import ConfirmationDialog
-from ui.dialog              import DetailedMessageDialog
-from ui.dialog              import ShowDialog
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
-from ui.style               import layout as lyt
-from wiz.wizard             import WizardPage
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
+from globals.errorcodes import ERR_FILE_WRITE
+from globals.errorcodes import dbrerrno
+from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
+from globals.ident      import genid
+from globals.ident      import inputid
+from globals.ident      import page_ids
+from globals.ident      import pgid
+from globals.paths      import ConcatPaths
+from globals.strings    import GS
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from input.list         import ListCtrl
+from input.markdown     import MarkdownDialog
+from input.pathctrl     import PathCtrl
+from input.select       import ComboBoxESS
+from input.text         import TextAreaPanelESS
+from ui.button          import ButtonBuild
+from ui.button          import ButtonHelp64
+from ui.button          import ButtonImport
+from ui.button          import ButtonRemove
+from ui.dialog          import ConfirmationDialog
+from ui.dialog          import DetailedMessageDialog
+from ui.dialog          import ShowDialog
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.style           import layout as lyt
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
+from wiz.wizard         import WizardPage
 
 
 ID_INST_PRE = wx.NewId()

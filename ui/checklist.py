@@ -8,18 +8,18 @@
 
 import wx
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.ident          import genid
-from globals.strings        import GS
-from globals.strings        import TextIsEmpty
-from globals.wizardhelper   import GetField
-from ui.button              import ButtonCancel
-from ui.button              import ButtonClear
-from ui.button              import ButtonConfirm
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
-from ui.panel               import ScrolledPanel
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.ident      import genid
+from globals.strings    import GS
+from globals.strings    import TextIsEmpty
+from ui.button          import ButtonCancel
+from ui.button          import ButtonClear
+from ui.button          import ButtonConfirm
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.panel           import ScrolledPanel
+from wiz.helper         import GetField
 
 
 ## A checkable list

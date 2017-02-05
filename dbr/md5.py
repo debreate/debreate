@@ -8,16 +8,16 @@
 
 import os
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.execute        import GetCommandOutput
-from globals.execute        import GetExecutable
-from globals.fileio         import WriteFile
-from globals.ident          import inputid
-from globals.ident          import pgid
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from ui.dialog              import ErrorDialog
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.execute    import GetCommandOutput
+from globals.execute    import GetExecutable
+from globals.fileio     import WriteFile
+from globals.ident      import inputid
+from globals.ident      import pgid
+from ui.dialog          import ErrorDialog
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
 
 
 ## Creates a file of md5 hashes for files within the staged directory

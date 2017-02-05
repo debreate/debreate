@@ -10,18 +10,18 @@ import os, wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.mixins.listctrl import TextEditMixin
 
-from dbr.colors             import COLOR_warn
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.constants      import FTYPE_EXE
-from globals.constants      import file_types_defs
-from globals.paths          import ConcatPaths
-from globals.wizardhelper   import GetMainWindow
-from input.essential        import EssentialField
-from input.ifield           import InputField
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
-from ui.panel               import ControlPanel
+from dbr.colors         import COLOR_warn
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.constants  import FTYPE_EXE
+from globals.constants  import file_types_defs
+from globals.paths      import ConcatPaths
+from input.essential    import EssentialField
+from input.ifield       import InputField
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.panel           import ControlPanel
+from wiz.helper         import GetMainWindow
 
 
 ## A list control with no border

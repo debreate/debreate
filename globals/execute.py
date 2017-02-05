@@ -12,9 +12,9 @@ import os, subprocess, wx
 from subprocess import PIPE
 from subprocess import STDOUT
 
-from dbr.language           import GT
-from globals.cmdcheck       import CommandExists
-from globals.wizardhelper   import GetMainWindow
+from dbr.language       import GT
+from globals.cmdcheck   import CommandExists
+from wiz.helper         import GetMainWindow
 
 
 ## TODO: Doxygen

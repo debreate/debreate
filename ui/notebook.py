@@ -15,21 +15,21 @@ from wx.aui import AUI_NB_TOP
 from wx.aui import AuiNotebook
 from wx.aui import EVT_AUINOTEBOOK_PAGE_CLOSED
 
-from dbr.containers         import Contains
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.ident          import btnid
-from globals.strings        import TextIsEmpty
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from input.toggle           import CheckBox
-from ui.button              import CreateButton
-from ui.dialog              import ShowDialog
-from ui.dialog              import ShowErrorDialog
-from ui.layout              import BoxSizer
-from ui.manual              import ManPage
-from ui.panel               import ScrolledPanel
-from ui.prompt              import TextEntryDialog
+from dbr.containers     import Contains
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.ident      import btnid
+from globals.strings    import TextIsEmpty
+from input.toggle       import CheckBox
+from ui.button          import CreateButton
+from ui.dialog          import ShowDialog
+from ui.dialog          import ShowErrorDialog
+from ui.layout          import BoxSizer
+from ui.manual          import ManPage
+from ui.panel           import ScrolledPanel
+from ui.prompt          import TextEntryDialog
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
 
 
 # ???: What is TAB_SPLIT for?

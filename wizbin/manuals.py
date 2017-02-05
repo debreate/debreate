@@ -8,21 +8,21 @@
 
 import wx
 
-from dbr.containers         import Contains
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.ident          import btnid
-from globals.ident          import pgid
-from globals.strings        import TextIsEmpty
-from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import GetMainWindow
-from ui.dialog              import ShowDialog
-from ui.dialog              import ShowErrorDialog
-from ui.layout              import BoxSizer
-from ui.manual              import ManPage
-from ui.notebook            import MultiTemplate
-from ui.prompt              import TextEntryDialog
-from wiz.wizard             import WizardPage
+from dbr.containers     import Contains
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.ident      import btnid
+from globals.ident      import pgid
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from ui.dialog          import ShowDialog
+from ui.dialog          import ShowErrorDialog
+from ui.layout          import BoxSizer
+from ui.manual          import ManPage
+from ui.notebook        import MultiTemplate
+from ui.prompt          import TextEntryDialog
+from wiz.helper         import GetMainWindow
+from wiz.wizard         import WizardPage
 
 
 ## Manual pages page
