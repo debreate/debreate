@@ -222,6 +222,7 @@ class MenuId(FieldId):
         self.EXIT = self.AddStaticId(wx.ID_EXIT)
         self.FILE = self.AddStaticId(wx.ID_FILE)
         self.HELP = self.AddStaticId(wx.ID_HELP)
+        self.LOG = self.NewId()
         self.NEW = self.AddStaticId(wx.ID_NEW)
         self.OPEN = self.AddStaticId(wx.ID_OPEN)
         self.OPENLOGS = self.NewId()
@@ -230,6 +231,7 @@ class MenuId(FieldId):
         self.QBUILD = self.NewId()
         self.SAVE = self.AddStaticId(wx.ID_SAVE)
         self.SAVEAS = self.AddStaticId(wx.ID_SAVEAS)
+        self.THEME = self.NewId()
         self.TOOLTIPS = self.NewId()
         self.UPDATE = self.NewId()
 
