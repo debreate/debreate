@@ -564,7 +564,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         filename = self.GetFilename(row)
         source_dir = self.GetSource(row)
         target_dir = self.GetTarget(row)
-        executable = self.FileIsExecutable(row)
+        executable = self.IsExecutable(row)
         
         return (filename, source_dir, target_dir, executable)
     
@@ -599,6 +599,14 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     ## Checks if the file list is empty
     def IsEmpty(self):
         return not self.GetItemCount()
+    
+    
+    ## Retrieves is the item at 'i_index' is executable
+    #  
+    #  \param i_index
+    #        \b \e int : The list row to check
+    def IsExecutable(self, index):
+        return self.GetItemTextColour(index) == wx.RED
     
     
     ## TODO: Doxygen
