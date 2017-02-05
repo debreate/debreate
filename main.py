@@ -306,7 +306,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help.AppendItem(mitm_help)
         menu_help.AppendItem(mitm_about)
         
-        menubar.Append(self.menu_page, GT(u'Page'), menuid.PAGE)
         menubar.Append(menu_action, GT(u'Action'), menuid.ACTION)
         
         if menu_opt.GetMenuItemCount():
