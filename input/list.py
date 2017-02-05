@@ -525,15 +525,33 @@ class BasicFileList(ListCtrl):
         return exe_list
     
     
+    ## Retrieves globals.fileio.FileItem instance
+    #
+    #  \param item
+    #    Can be item index, string path, or FileItem instance
+    #  \return
+    #    \b \e FileItem instance
+    def GetFileItem(self, item):
+        if IsString(item):
+            for FILE in self.Files:
+                if FILE.GetPath() == item:
+                    item = FILE
+                    
+                    break
+        
+        elif isinstance(item, int):
+            item = self.Files[item]
+        
+        if isinstance(item, FileItem):
+            return item
+    
+    
     ## Retrieves full path of file
     #
     #  \param item
-    #    Can be item index or FileName instance
+    #    Can be \b \e Integer index, string path, or FileName instance
     def GetPath(self, item):
-        if not isinstance(item, FileItem):
-            item = self.Files[item]
-        
-        return item.GetPath()
+        return self.GetFileItem(item).GetPath()
     
     
     ## Retrieves all file paths
@@ -548,18 +566,9 @@ class BasicFileList(ListCtrl):
     ## Retrieves target path of file
     #
     #  \param item
-    #    Can be item index, string path, or FileItem instance
+    #    Can be \b \e Integer index, string path, or FileName instance
     def GetTarget(self, item):
-        # First retrieve FileItem instance
-        if IsString(item):
-            for FILE in self.FILES:
-                if FILE.GetPath() == item:
-                    item = FILE
-        
-        elif isinstance(item, int):
-            item = self.Files[item]
-        
-        return item.GetTarget()
+        return self.GetFileItem(item).GetTarget()
     
     
     ## Inserts new globals.fileio.FileItem instance to list at given index
@@ -567,14 +576,13 @@ class BasicFileList(ListCtrl):
     #  \param index
     #    \b \e Integer index at wich to insert itme
     #  \param item
-    #    Either the path to a file or a FileItem instance
+    #    Can be \b \e Integer index, string path, or FileName instance
     #  \param target
     #    File's target installation directory (only if item is not FileItem instance)
     #  \return
     #    \b \e True if successfully added to list
     def Insert(self, index, item, target=None):
-        if IsString(item):
-            item = FileItem(item, target)
+        item = self.GetFileItem(item)
         
         if self.InsertStringItem(index, item.GetPath()) >= 0:
             self.Files.insert(index, item)
