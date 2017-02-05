@@ -189,6 +189,7 @@ class BtnId(FieldId):
         FieldId.__init__(self)
         
         self.ADD = self.AddStaticId(wx.ID_ADD)
+        self.BIN = self.NewId()
         self.BROWSE = self.NewId()
         self.CANCEL = self.AddStaticId(wx.ID_CANCEL)
         self.CLEAR = self.AddStaticId(wx.ID_CLEAR)
@@ -200,6 +201,7 @@ class BtnId(FieldId):
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE)
         self.RENAME = self.NewId()
         self.SAVE = self.AddStaticId(wx.ID_SAVE)
+        self.SRC = self.NewId()
 
 btnid = BtnId()
 
@@ -244,6 +246,33 @@ class manid:
     STATIC = AddId(current_id)
     MULTILINE = AddId(current_id)
     MUTABLE = AddId(current_id)
+
+
+## IDs for menus
+class MenuId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.ABOUT = self.AddStaticId(wx.ID_ABOUT)
+        self.ACTION = self.NewId()
+        self.ALIEN = self.NewId()
+        self.COMPRESS = self.NewId()
+        self.DEBUG = self.NewId()
+        self.DIST = self.NewId()
+        self.EXIT = self.AddStaticId(wx.ID_EXIT)
+        self.FILE = self.AddStaticId(wx.ID_FILE)
+        self.HELP = self.AddStaticId(wx.ID_HELP)
+        self.NEW = self.AddStaticId(wx.ID_NEW)
+        self.OPEN = self.AddStaticId(wx.ID_OPEN)
+        self.OPTIONS = self.NewId()
+        self.PAGE = self.NewId()
+        self.QBUILD = self.NewId()
+        self.SAVE = self.AddStaticId(wx.ID_SAVE)
+        self.SAVEAS = self.AddStaticId(wx.ID_SAVEAS)
+        self.TOOLTIPS = self.NewId()
+        self.UPDATE = self.NewId()
+
+menuid = MenuId()
 
 
 ## IDs for choice/selection fields
