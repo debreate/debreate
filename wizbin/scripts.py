@@ -88,9 +88,6 @@ class Page(WizardPage):
         
         pnl_autolink = BorderedPanel(self)
         
-        # Executable list - generate button will make scripts to link to files in this list
-        self.lst_executables = []
-        
         # Auto-Link path for new link
         txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
         self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', warn=True)
@@ -99,7 +96,6 @@ class Page(WizardPage):
         
         # Auto-Link executables to be linked
         self.Executables = BasicFileList(pnl_autolink, size=(200, 200), name=u'al list')
-        self.Executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
         btn_al_import = ButtonImport(pnl_autolink)
@@ -214,20 +210,18 @@ class Page(WizardPage):
         if event_id == genid.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.Executables.Reset()
-            self.lst_executables = []
             
             # Get executables from "files" tab
             file_list = GetField(pgid.FILES, inputid.LIST)
             
             for INDEX in range(file_list.GetItemCount()):
-                # Searches for executables (distinguished by red text)
+                # Get the filename from the source
+                file_name = file_list.GetFilename(INDEX, basename=True)
+                # Where the file linked to will be installed
+                file_target = file_list.GetItem(INDEX, 1)
+                
+                # Search for executables (distinguished by red text)
                 if file_list.IsExecutable(INDEX):
-                    # Get the filename from the source
-                    file_name = os.path.basename(file_list.GetItemText(INDEX))
-                    
-                    # Where the file linked to will be installed
-                    file_target = file_list.GetItem(INDEX, 2)
-                    
                     try:
                         # If destination doesn't start with "/" do not include executable
                         if file_target.GetText()[0] == u'/':
@@ -253,12 +247,7 @@ class Page(WizardPage):
                             else:
                                 dest_path = file_target.GetText()
                             
-                            exe_index = self.Executables.GetItemCount()
-                            
-                            # Put "destination/filename" together in executable list
-                            self.lst_executables.insert(exe_index, u'{}/{}'.format(dest_path, file_name))
-                            self.Executables.InsertStringItem(exe_index, file_name)
-                            self.Executables.SetItemTextColour(exe_index, wx.RED)
+                            self.Executables.Append(file_name, dest_path)
                         
                         else:
                             Logger.Warn(__name__, u'{}: The executables destination is not valid'.format(__name__))
@@ -267,11 +256,7 @@ class Page(WizardPage):
                         Logger.Warn(__name__, u'{}: The executables destination is not available'.format(__name__))
         
         elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
-            # FIXME: Use ListCtrl.Reset()???
-            exe = self.Executables.GetFirstSelected()
-            if exe != -1:
-                self.Executables.DeleteItem(exe)
-                self.lst_executables.remove(self.lst_executables[exe])
+            self.Executables.RemoveSelected()
     
     
     ## TODO: Doxygen
@@ -286,6 +271,7 @@ class Page(WizardPage):
         for DS, RB in self.script_objects:
             if script_name == DS.GetFilename():
                 script_object = DS
+                
                 break
         
         # Loading the actual text
@@ -330,7 +316,7 @@ class Page(WizardPage):
         main_window = GetMainWindow()
         
         # Get the amount of links to be created
-        total = len(self.lst_executables)
+        total = self.Executables.GetCount()
         
         if total > 0:
             non_empty_scripts = []
@@ -372,9 +358,10 @@ class Page(WizardPage):
             postinst_list = []
             prerm_list = []
             
-            e_index = 0
-            while e_index < total:
-                filename = os.path.basename(self.lst_executables[e_index])
+            for INDEX in range(total):
+                source_path = self.Executables.GetPath(INDEX)
+                filename = self.Executables.GetBasename(INDEX)
+                
                 if u'.' in filename:
                     linkname = u'.'.join(filename.split(u'.')[:-1])
                     link = u'{}/{}'.format(link_path, linkname)
@@ -382,9 +369,8 @@ class Page(WizardPage):
                 else:
                     link = u'{}/{}'.format(link_path, filename)
                 
-                postinst_list.append(u'ln -fs "{}" "{}"'.format(self.lst_executables[e_index], link))
+                postinst_list.append(u'ln -fs "{}" "{}"'.format(source_path, link))
                 prerm_list.append(u'rm -f "{}"'.format(link))
-                e_index += 1
             
             postinst = u'\n\n'.join(postinst_list)
             prerm = u'\n\n'.join(prerm_list)
