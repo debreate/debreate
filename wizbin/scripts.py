@@ -95,7 +95,8 @@ class Page(WizardPage):
         self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
-        self.Executables = BasicFileList(pnl_autolink, size=(200, 200), name=u'al list')
+        self.Executables = BasicFileList(pnl_autolink, size=(200, 200), hlExes=True,
+                name=u'al list')
         
         # Auto-Link import, generate and remove buttons
         btn_al_import = ButtonImport(pnl_autolink)
