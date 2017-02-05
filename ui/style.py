@@ -18,9 +18,11 @@ else:
 
 ## Layout styles for sizers
 class layout:
+    ALGN_C = wx.ALIGN_CENTER
+    ALGN_CH = wx.ALIGN_CENTER_HORIZONTAL
+    ALGN_CV = wx.ALIGN_CENTER_VERTICAL
     ALGN_LB = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
     ALGN_RB = wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM
-    CNTR_VERT = wx.ALIGN_CENTER_VERTICAL
     PAD_LR = wx.LEFT|wx.RIGHT
     PAD_LRB = PAD_LR|wx.BOTTOM
     PAD_LRT = PAD_LR|wx.TOP
