@@ -509,7 +509,7 @@ class DebianScript(wx.Panel):
         # *** Layout *** #
         
         lyt_shell = BoxSizer(wx.HORIZONTAL)
-        lyt_shell.Add(wx.StaticText(self, label=u'#!'), 0, lyt.CNTR_VERT|wx.RIGHT, 5)
+        lyt_shell.Add(wx.StaticText(self, label=u'#!'), 0, lyt.ALGN_CV|wx.RIGHT, 5)
         lyt_shell.Add(self.Shell, 1)
         
         lyt_main = BoxSizer(wx.VERTICAL)
