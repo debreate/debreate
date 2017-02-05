@@ -43,6 +43,7 @@ from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.ident          import genid
+from globals.ident          import menuid
 from globals.ident          import pgid
 from globals.ident          import refid
 from globals.mime           import GetFileMimeType
@@ -301,14 +302,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         menubar = MenuBar(self)
         
-        menubar.Append(self.menu_file, GT(u'File'), wx.ID_FILE)
-        menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
-        menubar.Append(menu_action, GT(u'Action'), ident.ACTION)
+        menubar.Append(self.menu_file, GT(u'File'), menuid.FILE)
+        menubar.Append(self.menu_page, GT(u'Page'), menuid.PAGE)
+        menubar.Append(menu_action, GT(u'Action'), menuid.ACTION)
         
         if menu_opt.GetMenuItemCount():
-            menubar.Append(menu_opt, GT(u'Options'), ident.OPTIONS)
+            menubar.Append(menu_opt, GT(u'Options'), menuid.OPTIONS)
         
-        menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
+        menubar.Append(menu_help, GT(u'Help'), menuid.HELP)
         
         self.Wizard = Wizard(self)
         
@@ -316,7 +317,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if DebugEnabled():
             self.menu_debug = wx.Menu()
             
-            menubar.Append(self.menu_debug, GT(u'Debug'), ident.DEBUG)
+            menubar.Append(self.menu_debug, GT(u'Debug'), menuid.DEBUG)
             
             self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ident.LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
