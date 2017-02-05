@@ -23,7 +23,7 @@ from globals.paths      import ConcatPaths
 from globals.strings    import GS
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
-from input.list         import ListCtrl
+from input.list         import BasicFileList
 from input.markdown     import MarkdownDialog
 from input.pathctrl     import PathCtrl
 from input.select       import ComboBoxESS
@@ -98,7 +98,7 @@ class Page(WizardPage):
         self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
-        self.Executables = ListCtrl(pnl_autolink, size=(200,200), name=u'al list')
+        self.Executables = BasicFileList(pnl_autolink, size=(200, 200), name=u'al list')
         self.Executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
