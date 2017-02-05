@@ -445,6 +445,9 @@ class WizardPage(ScrolledPanel):
     def __init__(self, parent, page_id):
         ScrolledPanel.__init__(self, parent, page_id)
         
+        # Pages should not be shown until wizard is initialized
+        self.Hide()
+        
         self.SetName(page_ids[self.GetId()])
         
         ## Label to show in title & menu
