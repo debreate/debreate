@@ -211,7 +211,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        GetMainWindow().menu_page.Check(page_id, True)
+        GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Check(page_id, True)
     
     
     ## TODO: Doxygen
@@ -381,19 +381,22 @@ class Wizard(wx.Panel):
             raise TypeError(u'Argument 2 of Wizard.SetPages() must be List or Tuple')
         
         for PAGE in pages:
-            self.pages.append(PAGE)
-            self.pages_ids[PAGE.GetId()] = PAGE.GetName().upper()
-            self.GetSizer().Insert(1, PAGE, 1, wx.EXPAND)
-            
-            pg_id = PAGE.GetId()
-            
-            # Add pages to main menu
-            main_window.menu_page.AppendItem(
-                wx.MenuItem(main_window.menu_page, pg_id, PAGE.GetLabel(),
-                kind=wx.ITEM_RADIO))
-            
-            # Bind menu event to ID
-            wx.EVT_MENU(main_window, pg_id, main_window.OnMenuChangePage)
+            if PAGE.GetId() != pgid.GREETING:
+                self.pages.append(PAGE)
+                self.pages_ids[PAGE.GetId()] = PAGE.GetName().upper()
+                self.GetSizer().Insert(1, PAGE, 1, wx.EXPAND)
+                
+                page_id = PAGE.GetId()
+                
+                # Add pages to main menu
+                page_menu = main_window.GetMenu(menuid.PAGE)
+                
+                page_menu.AppendItem(
+                    wx.MenuItem(page_menu, page_id, PAGE.GetLabel(),
+                    kind=wx.ITEM_RADIO))
+                
+                # Bind menu event to ID
+                wx.EVT_MENU(main_window, page_id, main_window.OnMenuChangePage)
         
         # Initailize functions that can only be called after all pages are constructed
         for PAGE in pages:
