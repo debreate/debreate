@@ -73,6 +73,7 @@ from ui.layout              import BoxSizer
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
+from wiz.pginit             import Panel as PageGreeting
 from wiz.wizard             import Wizard
 from wizbin.build           import Panel as PageBuild
 from wizbin.changelog       import Panel as PageChangelog
@@ -80,7 +81,6 @@ from wizbin.control         import Panel as PageControl
 from wizbin.copyright       import Panel as PageCopyright
 from wizbin.depends         import Panel as PageDepends
 from wizbin.files           import Panel as PageFiles
-from wizbin.greeting        import Panel as PageGreeting
 from wizbin.launchers       import Panel as PageLaunchers
 from wizbin.manuals         import Panel as PageMan
 from wizbin.scripts         import Panel as PageScripts
