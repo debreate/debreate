@@ -536,12 +536,19 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         self.sources_list = []
     
     
-    ## TODO: Doxygen
+    ## Retrieves the filename at given index
     #  
     #  \param i_index
-    #        \b \e int : The list row
-    def GetFilename(self, i_index):
-        return self.GetItemText(i_index)
+    #    \b \e Integer row of the item
+    #  \param basename
+    #    If \b \e True, only retrives the file's basename
+    def GetFilename(self, index, basename=False):
+        filename = self.GetItemText(index)
+        
+        if basename:
+            filename = os.path.basename(filename)
+        
+        return filename
     
     
     ## TODO: Doxygen
