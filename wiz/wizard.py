@@ -354,6 +354,35 @@ class Wizard(wx.Panel):
         ShowDialog(page_help)
     
     
+    ## Remove a page from the wizard & memory
+    #
+    #  \param pageId
+    #    \b \e Integer ID of the page to remove
+    def RemovePage(self, pageId):
+        page = self.GetPage(pageId)
+        
+        if page in self.pages:
+            self.pages.pop(self.pages.index(page))
+        
+        lyt_main = self.GetSizer()
+        if page in lyt_main.GetChildWindows():
+            lyt_main.Remove(page)
+        
+        self.Layout()
+        
+        # Remove from page menu
+        GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Remove(pageId).Destroy()
+    
+    
+    ## Reset all but greeting page
+    def Reset(self):
+        for PAGE in reversed(self.pages):
+            if PAGE.Id != pgid.GREETING:
+                self.RemovePage(PAGE.Id)
+        
+        self.Initialize()
+    
+    
     ## TODO: Doxygen
     def ResetPagesInfo(self):
         for page in self.pages:
