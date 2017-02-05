@@ -260,8 +260,6 @@ def SetPageToolTips(parent, page_id=None):
                 name = C.tt_name.lower()
             
             except AttributeError:
-                print(u'Getting name from: {}'.format(type(C)))
-                
                 try:
                     name = C.GetName().lower()
                 
