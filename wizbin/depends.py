@@ -33,7 +33,7 @@ from wiz.wizard             import WizardPage
 
 
 ## Page defining dependencies
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.DEPENDS)
         

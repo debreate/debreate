@@ -45,7 +45,7 @@ copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
 
 
 ## Copyright page
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.COPYRIGHT)
         

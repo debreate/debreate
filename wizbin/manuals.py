@@ -26,7 +26,7 @@ from wiz.wizard             import WizardPage
 
 
 ## Manual pages page
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
         WizardPage.__init__(self, parent, pgid.MAN)

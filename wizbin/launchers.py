@@ -51,7 +51,7 @@ from wiz.wizard             import WizardPage
 
 if UsingTest(u'alpha'):
     ## Page for creating a system launchers
-    class Panel(WizardPage):
+    class Page(WizardPage):
         def __init__(self, parent):
             WizardPage.__init__(self, parent, pgid.LAUNCHERS)
             
@@ -90,7 +90,7 @@ if UsingTest(u'alpha'):
 
 else:
     ## Page for creating a system menu launcher
-    class Panel(WizardPage):
+    class Page(WizardPage):
         def __init__(self, parent):
             WizardPage.__init__(self, parent, pgid.LAUNCHERS)
             
