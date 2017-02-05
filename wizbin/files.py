@@ -39,7 +39,7 @@ from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.tree                import DirectoryTreePanel
-from ui.wizard              import WizardPage
+from wiz.wizard             import WizardPage
 
 
 # Set the maximum file count to process without showing progress dialog
