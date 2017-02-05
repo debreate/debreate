@@ -10,6 +10,7 @@ import os, traceback, wx
 
 from dbr.event              import ChangePageEvent
 from dbr.language           import GT
+from dbr.log                import DebugEnabled
 from dbr.log                import Logger
 from globals                import ident
 from globals.errorcodes     import ERR_DIR_NOT_AVAILABLE
@@ -387,6 +388,35 @@ class Wizard(wx.Panel):
     def ResetPagesInfo(self):
         for page in self.pages:
             page.Reset()
+    
+    
+    ## Sets up the wizard for 'binary' mode
+    def SetModeBin(self):
+        self.Reset()
+        
+        mods = [
+            u'control',
+            u'depends',
+            u'files',
+            u'scripts',
+            u'changelog',
+            u'copyright',
+            u'launchers',
+            u'build',
+            ]
+        
+        if u'alpha' in GetTestList() or DebugEnabled():
+            mods.insert(3, u'manuals')
+        
+        for M in mods:
+            self.AddPage(M)
+        
+        self.Initialize(1)
+    
+    
+    ## Sets up the wizard for 'source' mode
+    def SetModeSrc(self):
+        self.Reset()
     
     
     ## TODO: Doxygen
