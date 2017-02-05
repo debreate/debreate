@@ -17,6 +17,7 @@ from dbr.config             import WriteConfig
 from dbr.event              import EVT_CHANGE_PAGE
 from dbr.functions          import GetCurrentVersion
 from dbr.functions          import UsingDevelopmentVersion
+from dbr.help               import HelpDialog
 from dbr.icon               import Icon
 from dbr.language           import GT
 from dbr.log                import DebugEnabled
@@ -36,6 +37,8 @@ from globals.bitmaps        import LOGO
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
+from globals.ident          import menuid
+from globals.ident          import pgid
 from globals.ident          import refid
 from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import PATH_app
@@ -54,15 +57,7 @@ from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
 from wiz.wizard             import Wizard
-from wizbin.build           import Page as PageBuild
-from wizbin.changelog       import Page as PageChangelog
-from wizbin.control         import Page as PageControl
-from wizbin.copyright       import Page as PageCopyright
-from wizbin.depends         import Page as PageDepends
-from wizbin.files           import Page as PageFiles
-from wizbin.greeting        import Page as PageGreeting
-from wizbin.launchers       import Page as PageMenu
-from wizbin.scripts         import Page as PageScripts
+from wizbin.greeting        import Page as PageInit
 
 
 default_title = GT(u'Debreate - Debian Package Builder')
@@ -80,6 +75,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             wx.GetApp().SetTopWindow(self)
         
+        testing = u'alpha' in GetTestList() or DebugEnabled()
+        
         if DebugEnabled():
             self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
         
@@ -88,54 +85,65 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # ----- Set Titlebar Icon
         self.SetIcon(Icon(LOGO))
         
-        # ----- Status Bar
+        # *** Status Bar *** #
         StatusBar(self)
         
-        # *** File Menu *** #
+        # *** Menus *** #
+        menubar = MenuBar(self)
+        
         menu_file = wx.Menu()
         
-        mitm_new = wx.MenuItem(menu_file, wx.ID_NEW, GT(u'New project'),
-                help=GT(u'Start a new project'))
-        mitm_open = wx.MenuItem(menu_file, wx.ID_OPEN, GT(u'Open'),
-                help=GT(u'Open a previously saved project'))
-        mitm_save = wx.MenuItem(menu_file, wx.ID_SAVE, GT(u'Save'),
-                help=GT(u'Save current project'))
-        mitm_saveas = wx.MenuItem(menu_file, wx.ID_SAVEAS, GT(u'Save as'),
-                help=GT(u'Save current project with a new filename'))
+        menubar.Append(menu_file, GT(u'File'), menuid.FILE)
+        # This menu is filled from wiz.wizard.Wizard.SetPages
+        menubar.Append(wx.Menu(), GT(u'Page'), menuid.PAGE)
         
-        # Quick Build
-        mitm_quickbuild = wx.MenuItem(menu_file, ident.QBUILD, GT(u'Quick Build'),
-                GT(u'Build a package from an existing build tree'))
-        mitm_quickbuild.SetBitmap(ICON_CLOCK)
+        # *** File Menu *** #
         
-        mitm_quit = wx.MenuItem(menu_file, wx.ID_EXIT, GT(u'Quit'),
-                help=GT(u'Exit Debreate'))
+        mitems_file = [
+            (menuid.NEW, GT(u'New project'), GT(u'Start a new project'),),
+            (menuid.OPEN, GT(u'Open'), GT(u'Open a previously saved project'),),
+            (menuid.SAVE, GT(u'Save'), GT(u'Save current project'),),
+            (menuid.SAVEAS, GT(u'Save as'), GT(u'Save current project with a new filename'),),
+            None,
+            (menuid.QBUILD, GT(u'Quick Build'), GT(u'Build a package from an existing build tree'), ICON_CLOCK,),
+            None,
+            (menuid.EXIT, GT(u'Quit'), GT(u'Exit Debreate'),),
+            ]
         
-        menu_file.AppendItem(mitm_new)
-        menu_file.AppendItem(mitm_open)
-        menu_file.AppendItem(mitm_save)
-        menu_file.AppendItem(mitm_saveas)
-        menu_file.AppendSeparator()
-        menu_file.AppendItem(mitm_quickbuild)
-        menu_file.AppendSeparator()
-        menu_file.AppendItem(mitm_quit)
+        if testing:
+            mitems_file.append((ident.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
         
-        # *** Page Menu *** #
-        ## This menu is filled from wiz.wizard.Wizard.SetPages
-        self.menu_page = wx.Menu()
+        # Adding all menus to menu bar
+        
+        mitems = (
+            mitems_file,
+            )
+        
+        for menu_list in mitems:
+            for mitem in menu_list:
+                print(u'Instance: {}'.format(type(mitem)))
+                if not mitem:
+                    menu_file.AppendSeparator()
+                
+                else:
+                    itm = wx.MenuItem(menu_file, mitem[0], mitem[1], mitem[2])
+                    if len(mitem) > 3:
+                        itm.SetBitmap(mitem[3])
+                    
+                    menu_file.AppendItem(itm)
         
         # ----- Options Menu
         self.menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(self.menu_opt, menuid.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
             self.menu_opt.AppendItem(self.opt_tooltips)
         
-        if self.menu_opt.FindItemById(ident.TOOLTIPS):
+        if self.menu_opt.FindItemById(menuid.TOOLTIPS):
             show_tooltips = ReadConfig(u'tooltips')
             if show_tooltips != ConfCode.KEY_NO_EXIST:
                 self.opt_tooltips.Check(show_tooltips)
@@ -148,14 +156,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if GetExecutable(u'xdg-open'):
-            mitm_logs_open = wx.MenuItem(self.menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            mitm_logs_open = wx.MenuItem(self.menu_opt, menuid.OPENLOGS, GT(u'Open logs directory'))
             self.menu_opt.AppendItem(mitm_logs_open)
             
-            wx.EVT_MENU(self, ident.OPENLOGS, self.OnLogDirOpen)
+            wx.EVT_MENU(self, menuid.OPENLOGS, self.OnLogDirOpen)
         
         # *** OS distribution names cache *** #
         
-        opt_distname_cache = wx.MenuItem(self.menu_opt, ident.DIST, GT(u'Update dist names cache'),
+        opt_distname_cache = wx.MenuItem(self.menu_opt, menuid.DIST, GT(u'Update dist names cache'),
                 GT(u'Creates/Updates list of distribution names for changelog page'))
         self.menu_opt.AppendItem(opt_distname_cache)
         
@@ -225,15 +233,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help.AppendItem(mitm_help)
         menu_help.AppendItem(mitm_about)
         
-        menubar = MenuBar(self)
-        
-        menubar.Append(menu_file, GT(u'File'), wx.ID_FILE)
-        menubar.Append(self.menu_page, GT(u'Page'), ident.PAGE)
-        
         if self.menu_opt.GetMenuItemCount():
-            menubar.Append(self.menu_opt, GT(u'Options'), ident.OPTIONS)
+            menubar.Append(self.menu_opt, GT(u'Options'), menuid.OPTIONS)
         
-        menubar.Append(menu_help, GT(u'Help'), wx.ID_HELP)
+        menubar.Append(menu_help, GT(u'Help'), menuid.HELP)
         
         self.Wizard = Wizard(self)
         
@@ -244,19 +247,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Event Handling *** #
         
-        wx.EVT_MENU(self, wx.ID_NEW, self.OnProjectNew)
-        wx.EVT_MENU(self, wx.ID_OPEN, self.OnProjectOpen)
-        wx.EVT_MENU(self, wx.ID_SAVE, self.OnProjectSave)
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnProjectSave)
-        wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
-        wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
+        wx.EVT_MENU(self, menuid.NEW, self.OnProjectNew)
+        wx.EVT_MENU(self, menuid.OPEN, self.OnProjectOpen)
+        wx.EVT_MENU(self, menuid.SAVE, self.OnProjectSave)
+        wx.EVT_MENU(self, menuid.SAVEAS, self.OnProjectSave)
+        wx.EVT_MENU(self, menuid.QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, menuid.EXIT, self.OnQuit)
         
-        wx.EVT_MENU(self, ident.TOOLTIPS, self.OnToggleToolTips)
-        wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
+        wx.EVT_MENU(self, menuid.TOOLTIPS, self.OnToggleToolTips)
+        wx.EVT_MENU(self, menuid.DIST, self.OnUpdateDistNamesCache)
         
-        wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
-        wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
-        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
+        wx.EVT_MENU(self, menuid.UPDATE, self.OnCheckUpdate)
+        wx.EVT_MENU(self, menuid.HELP, self.OnHelp)
+        wx.EVT_MENU(self, menuid.ABOUT, self.OnAbout)
         
         self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
         
@@ -273,6 +276,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.Layout()
     
     
+    ## Retrieves menu by ID
+    def GetMenu(self, menuId):
+        return self.GetMenuBar().GetMenuById(menuId)
+    
+    
     ## Retrieves the Wizard instance
     #  
     #  \return
@@ -283,17 +291,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Sets the pages in the wiz.wizard.Wizard instance
     def InitWizard(self):
-        PageGreeting(self.Wizard)
-        PageControl(self.Wizard)
-        PageDepends(self.Wizard)
-        PageFiles(self.Wizard)
-        PageScripts(self.Wizard)
-        PageChangelog(self.Wizard)
-        PageCopyright(self.Wizard)
-        PageMenu(self.Wizard)
-        PageBuild(self.Wizard)
-        
-        self.Wizard.InitPages()
+        self.Wizard.AddPage(PageInit(self.Wizard))
+        self.Wizard.SetModeBin(0)
     
     
     ## TODO: Doxygen
@@ -396,8 +395,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             current = u'{}.{}.{}'.format(current[0], current[1], current[2])
             l1 = GT(u'Version {} is available!').format(current)
             l2 = GT(u'Would you like to go to Debreate\'s website?')
-            update = ConfirmationDialog(self, GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed()
-            if update:
+            if ConfirmationDialog(self, GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed():
                 wx.LaunchDefaultBrowser(APP_homepage)
         
         elif isinstance(current, (unicode, str)):
@@ -409,19 +407,25 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     
     ## Action to take when 'Help' is selected from the help menu
     #  
-    #  First tries to open pdf help file. If fails tries
-    #  to open html help file. If fails opens debreate usage
-    #  webpage
+    #  Opens a help dialog if using 'alpha' test. Otherwise, opens
+    #  PDF usage document. If openening usage document fails, attempts
+    #  to open web browser in remote usage page.
+    #  TODO: Use dialog as main method
     def OnHelp(self, event=None):
-        wx.Yield()
-        status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
-        if status:
-            wx.Yield()
-            status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
+        if u'alpha' in GetTestList():
+            HelpDialog(self).ShowModal()
         
-        if status:
+        else:
+            # First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
             wx.Yield()
-            webbrowser.open(u'http://debreate.sourceforge.net/usage')
+            status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
+            if status:
+                wx.Yield()
+                status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
+            
+            if status:
+                wx.Yield()
+                webbrowser.open(u'http://debreate.sourceforge.net/usage')
     
     
     ## Opens the logs directory in the system's default file manager
@@ -431,18 +435,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
     
     
-    ## Changes wizard page
-    #  
-    #  \param event
-    #        \b \e wx.MenuEvent|int : The event or integer to use as page ID
+    ## Changes wizard page from menu
     def OnMenuChangePage(self, event=None):
         if isinstance(event, int):
-            event_id = event
+            page_id = event
         
         else:
-            event_id = event.GetId()
+            page_id = event.GetId()
         
-        self.Wizard.ShowPage(event_id)
+        self.Wizard.ShowPage(page_id)
     
     
     ## TODO: Doxygen
@@ -567,6 +568,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             self.Destroy()
     
     
+    ## TODO: Doxygen
+    def OnToggleTheme(self, event=None):
+        self.ToggleTheme(self)
+    
+    
     ## Shows or hides tooltips
     def OnToggleToolTips(self, event=None):
         enabled = self.opt_tooltips.IsChecked()
@@ -585,8 +591,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         ID = self.Wizard.GetCurrentPageId()
         Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
         
-        if not self.menu_page.IsChecked(ID):
-            self.menu_page.Check(ID, True)
+        menu_page = self.GetMenu(menuid.PAGE)
+        if not menu_page.IsChecked(ID):
+            menu_page.Check(ID, True)
     
     
     ## Opens web links from the help menu
@@ -640,36 +647,36 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-        depends_data = self.page_control.Set(control_data)
-        self.page_depends.Set(depends_data)
+        depends_data = self.self.Wizard.GetPage(pgid.CONTROL).Set(control_data)
+        self.Wizard.GetPage(pgid.DEPENDS).Set(depends_data)
         
         # *** Get Files Data *** #
         files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
-        opened = self.page_files.Set(files_data)
+        opened = self.Wizard.GetPage(pgid.FILES).Set(files_data)
         
         # *** Get Scripts Data *** #
         scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
-        self.page_scripts.Set(scripts_data)
+        self.Wizard.GetPage(pgid.SCRIPTS).Set(scripts_data)
         
         # *** Get Changelog Data *** #
         clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
-        self.page_clog.Set(clog_data)
+        self.Wizard.GetPage(pgid.CHANGELOG).Set(clog_data)
         
         # *** Get Copyright Data *** #
         try:
             cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
-            self.page_cpright.Set(cpright_data)
+            self.Wizard.GetPage(pgid.COPYRIGHT).Set(cpright_data)
         
         except IndexError:
             pass
         
         # *** Get Menu Data *** #
-        menu_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
-        self.page_menu.SetLauncherData(menu_data, enabled=True)
+        m_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
+        self.Wizard.GetPage(pgid.MENU).SetLauncherData(m_data, enabled=True)
         
         # Get Build Data
         build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
-        self.page_build.Set(build_data)
+        self.Wizard.GetPage(pgid.BUILD).Set(build_data)
         
         return opened
     
@@ -708,3 +715,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             title = self.GetTitle()
             if self.IsSaved() and title != default_title:
                 self.SetTitle(u'{}*'.format(title))
+    
+    
+    ## TODO: Doxygen
+    #  
+    #  TODO: Finish definition
+    def ToggleTheme(self, window):
+        for C in window.GetChildren():
+            self.ToggleTheme(C)
+        
+        bg_color = window.GetBackgroundColour()
+        fg_color = window.GetForegroundColour()
+        
+        window.SetBackgroundColour(fg_color)
+        window.SetForegroundColour(bg_color)
