@@ -450,13 +450,17 @@ class ListCtrlESS(ListCtrl, EssentialField):
 ## List control intended for managing files
 #
 #  TODO: Derive FileList from this
+#
+#  \param hlExex
+#    If \b \e True, will highlight executable files with red text
 class BasicFileList(ListCtrl):
-    def __init__(self, parent, win_id=wx.ID_ANY, highlightExes=False, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, style=wx.LC_ICON, name=wx.ListCtrlNameStr):
+    def __init__(self, parent, win_id=wx.ID_ANY, hlExes=False, pos=wx.DefaultPosition,
+            size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
+            name=wx.ListCtrlNameStr):
         
         ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name)
         
-        self.HighlightExes = highlightExes
+        self.HLExes = hlExes
         
         ## List of globals.fileio.FileItem instances
         self.Files = []
@@ -623,15 +627,14 @@ class BasicFileList(ListCtrl):
     def Insert(self, index, item, target=None):
         item = self.GetFileItem(item)
         
-        if self.InsertStringItem(index, item.GetPath()) >= 0:
-            self.Files.insert(index, item)
-            
-            if self.HighlightExes:
-                self.SetItemTextColour(index, wx.RED)
-            
-            return True
+        self.InsertStringItem(index, item.GetPath())
         
-        return False
+        self.Files.insert(index, item)
+        
+        if self.HLExes:
+            self.SetItemTextColour(index, wx.RED)
+        
+        return item in self.Files
     
     
     ## Removes an item from the file list
