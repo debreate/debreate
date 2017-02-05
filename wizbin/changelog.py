@@ -43,7 +43,7 @@ from wiz.wizard             import WizardPage
 
 
 ## Changelog page
-class Panel(WizardPage):
+class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.CHANGELOG)
         
