@@ -128,7 +128,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             ]
         
         if testing:
-            mitems_file.append((ident.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
+            mitems_file.append((menuid.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
         
         # Adding all menus to menu bar
         
@@ -161,14 +161,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_opt = wx.Menu()
         
         # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(menu_opt, ident.TOOLTIPS, GT(u'Show tooltips'),
+        self.opt_tooltips = wx.MenuItem(menu_opt, menuid.TOOLTIPS, GT(u'Show tooltips'),
                 GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
         
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
             menu_opt.AppendItem(self.opt_tooltips)
         
-        if menu_opt.FindItemById(ident.TOOLTIPS):
+        if menu_opt.FindItemById(menuid.TOOLTIPS):
             show_tooltips = ReadConfig(u'tooltips')
             if show_tooltips != ConfCode.KEY_NO_EXIST:
                 self.opt_tooltips.Check(show_tooltips)
@@ -220,14 +220,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Option Menu: open logs directory *** #
         
         if GetExecutable(u'xdg-open'):
-            mitm_logs_open = wx.MenuItem(menu_opt, ident.OPENLOGS, GT(u'Open logs directory'))
+            mitm_logs_open = wx.MenuItem(menu_opt, menuid.OPENLOGS, GT(u'Open logs directory'))
             menu_opt.AppendItem(mitm_logs_open)
             
-            wx.EVT_MENU(menu_opt, ident.OPENLOGS, self.OnLogDirOpen)
+            wx.EVT_MENU(menu_opt, menuid.OPENLOGS, self.OnLogDirOpen)
         
         # *** OS distribution names cache *** #
         
-        opt_distname_cache = wx.MenuItem(menu_opt, ident.DIST, GT(u'Update dist names cache'),
+        opt_distname_cache = wx.MenuItem(menu_opt, menuid.DIST, GT(u'Update dist names cache'),
                 GT(u'Creates/Updates list of distribution names for changelog page'))
         menu_opt.AppendItem(opt_distname_cache)
         
@@ -235,7 +235,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help = wx.Menu()
         
         # ----- Version update
-        mitm_update = wx.MenuItem(menu_help, ident.UPDATE, GT(u'Check for update'),
+        mitm_update = wx.MenuItem(menu_help, menuid.UPDATE, GT(u'Check for update'),
                 GT(u'Check if a new version is available for download'))
         mitm_update.SetBitmap(ICON_LOGO)
         
@@ -312,19 +312,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             
             menubar.Append(self.menu_debug, GT(u'Debug'), menuid.DEBUG)
             
-            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, ident.LOG, GT(u'Show log'),
+            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, menuid.LOG, GT(u'Show log'),
                     GT(u'Toggle debug log window'), kind=wx.ITEM_CHECK))
             
             if u'log-window' in parsed_args_s:
-                self.menu_debug.Check(ident.LOG, True)
+                self.menu_debug.Check(menuid.LOG, True)
             
             self.log_window = None
             
             # Window colors
             self.menu_debug.AppendItem(
-                wx.MenuItem(self.menu_debug, ident.THEME, GT(u'Toggle window colors')))
+                wx.MenuItem(self.menu_debug, menuid.THEME, GT(u'Toggle window colors')))
             
-            wx.EVT_MENU(self, ident.THEME, self.OnToggleTheme)
+            wx.EVT_MENU(self, menuid.THEME, self.OnToggleTheme)
         
         # *** Current Project Status *** #
         
@@ -676,10 +676,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         Logger.Debug(__name__, GT(u'Toggling log window'))
         
         if event != None:
-            self.ShowLogWindow(self.menu_debug.IsChecked(ident.DEBUG))
+            self.ShowLogWindow(self.menu_debug.IsChecked(menuid.DEBUG))
             return
         
-        self.menu_debug.Check(ident.DEBUG, self.log_window.IsShown())
+        self.menu_debug.Check(menuid.DEBUG, self.log_window.IsShown())
     
     
     ## TODO: Doxygen
@@ -1108,7 +1108,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     def SetLogWindow(self, window):
         self.log_window = window
         
-        wx.EVT_MENU(self, ident.LOG, self.log_window.OnToggleWindow)
+        wx.EVT_MENU(self, menuid.LOG, self.log_window.OnToggleWindow)
     
     
     ## TODO: Doxygen
@@ -1117,8 +1117,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         self.log_window.Show(show)
         
-        if self.menu_debug.IsChecked(ident.DEBUG) != show:
-            self.menu_debug.Check(ident.DEBUG, show)
+        if self.menu_debug.IsChecked(menuid.DEBUG) != show:
+            self.menu_debug.Check(menuid.DEBUG, show)
     
     
     ## TODO: Doxygen
