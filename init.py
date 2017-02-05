@@ -39,7 +39,7 @@ if u'compile' in parsed_commands:
     compile_dirs = (
         u'dbr',
         u'globals',
-        u'wiz_bin',
+        u'wizbin',
         )
     
     if not os.access(PATH_app, os.W_OK):
