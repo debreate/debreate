@@ -567,6 +567,14 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         return filename
     
     
+    ## Retrieves an item's path
+    def GetPath(self, index):
+        file_dir = self.sources_list[index]
+        file_name = self.GetItemText(index, self.filename_col)
+        
+        return ConcatPaths((file_dir, file_name))
+    
+    
     ## TODO: Doxygen
     def GetRowData(self, row):
         filename = self.GetFilename(row)
