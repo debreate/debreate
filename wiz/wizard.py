@@ -42,6 +42,7 @@ from ui.layout              import BoxSizer
 from ui.notebook            import MultiTemplate
 from ui.notebook            import Notebook
 from ui.panel               import ScrolledPanel
+from wiz.helper             import GetMenu
 
 
 ## Wizard class for Debreate
@@ -178,7 +179,7 @@ class Wizard(wx.Panel):
         self.pages.append(page)
         
         # Add to page menu
-        page_menu = main_window.GetMenu(menuid.PAGE)
+        page_menu = GetMenu(menuid.PAGE)
         
         page_menu.AppendItem(
             wx.MenuItem(page_menu, page.Id, page.GetLabel(),
