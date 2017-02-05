@@ -16,4 +16,4 @@ from globals.wizardhelper import GetMainWindow
 #  \retun
 #    The \b \e wx.Menu instance
 def GetMenu(menuId):
-    return GetMainWindow().GetMenu()
+    return GetMainWindow().GetMenu(menuId)
