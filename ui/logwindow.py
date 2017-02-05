@@ -18,12 +18,12 @@ from globals.application    import APP_logo
 from globals.fileio         import ReadFile
 from globals.paths          import PATH_logs
 from globals.strings        import GS
-from globals.wizardhelper   import GetMainWindow
 from input.text             import TextAreaPanel
 from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from wiz.helper             import GetMainWindow
 
 
 # How often the log window will be refreshed

@@ -8,25 +8,25 @@
 
 import os, traceback, wx
 
-from dbr.colors             import COLOR_executable
-from dbr.colors             import COLOR_warn
-from dbr.functions          import MouseInsideWindow
-from dbr.image              import GetCursor
-from dbr.imagelist          import sm_DirectoryImageList as ImageList
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals                import ident
-from globals.devices        import GetMountedStorageDevices
-from globals.execute        import ExecuteCommand
-from globals.execute        import GetExecutable
-from globals.mime           import GetFileMimeType
-from globals.paths          import ConcatPaths
-from globals.paths          import PATH_home
-from globals.wizardhelper   import GetMainWindow
-from ui.dialog              import ConfirmationDialog
-from ui.dialog              import ShowErrorDialog
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
+from dbr.colors         import COLOR_executable
+from dbr.colors         import COLOR_warn
+from dbr.functions      import MouseInsideWindow
+from dbr.image          import GetCursor
+from dbr.imagelist      import sm_DirectoryImageList as ImageList
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals            import ident
+from globals.devices    import GetMountedStorageDevices
+from globals.execute    import ExecuteCommand
+from globals.execute    import GetExecutable
+from globals.mime       import GetFileMimeType
+from globals.paths      import ConcatPaths
+from globals.paths      import PATH_home
+from ui.dialog          import ConfirmationDialog
+from ui.dialog          import ShowErrorDialog
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from wiz.helper         import GetMainWindow
 
 
 ## A wxcustom tree item

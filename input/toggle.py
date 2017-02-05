@@ -8,10 +8,10 @@
 
 import wx
 
-from fields.cmdfield        import CommandField
-from globals.wizardhelper   import FieldEnabled
-from input.cfgfield         import ConfigField
-from input.essential        import EssentialField
+from fields.cmdfield    import CommandField
+from input.cfgfield     import ConfigField
+from input.essential    import EssentialField
+from wiz.helper         import FieldEnabled
 
 
 ## Standard wx.CheckBox

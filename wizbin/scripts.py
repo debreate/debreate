@@ -8,31 +8,31 @@
 
 import os, wx
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.fileio         import ReadFile
-from globals.ident          import genid
-from globals.ident          import inputid
-from globals.ident          import pgid
-from globals.strings        import TextIsEmpty
-from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from input.list             import ListCtrl
-from input.markdown         import MarkdownDialog
-from input.pathctrl         import PathCtrl
-from input.text             import TextAreaPanelESS
-from ui.button              import ButtonBuild
-from ui.button              import ButtonHelp64
-from ui.button              import ButtonImport
-from ui.button              import ButtonRemove
-from ui.dialog              import ConfirmationDialog
-from ui.dialog              import DetailedMessageDialog
-from ui.dialog              import ShowDialog
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
-from wiz.wizard             import WizardPage
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.fileio     import ReadFile
+from globals.ident      import genid
+from globals.ident      import inputid
+from globals.ident      import pgid
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from input.list         import ListCtrl
+from input.markdown     import MarkdownDialog
+from input.pathctrl     import PathCtrl
+from input.text         import TextAreaPanelESS
+from ui.button          import ButtonBuild
+from ui.button          import ButtonHelp64
+from ui.button          import ButtonImport
+from ui.button          import ButtonRemove
+from ui.dialog          import ConfirmationDialog
+from ui.dialog          import DetailedMessageDialog
+from ui.dialog          import ShowDialog
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from wiz.helper         import FieldEnabled
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
+from wiz.wizard         import WizardPage
 
 
 ID_INST_PRE = wx.NewId()

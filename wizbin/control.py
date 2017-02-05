@@ -7,37 +7,37 @@
 
 
 import os, wx
-from wx.combo               import OwnerDrawnComboBox
+from wx.combo           import OwnerDrawnComboBox
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.errorcodes     import dbrerrno
-from globals.fileio         import ReadFile
-from globals.fileio         import WriteFile
-from globals.ident          import inputid
-from globals.ident          import pgid
-from globals.strings        import TextIsEmpty
-from globals.tooltips       import SetPageToolTips
-from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from globals.wizardhelper   import GetPage
-from input.select           import ChoiceESS
-from input.select           import ComboBoxESS
-from input.text             import TextAreaESS
-from input.text             import TextAreaPanelESS
-from input.toggle           import CheckBoxESS
-from ui.button              import ButtonBrowse64
-from ui.button              import ButtonPreview64
-from ui.button              import ButtonSave64
-from ui.dialog              import GetFileOpenDialog
-from ui.dialog              import GetFileSaveDialog
-from ui.dialog              import ShowDialog
-from ui.dialog              import ShowErrorDialog
-from ui.layout              import BoxSizer
-from ui.panel               import BorderedPanel
-from ui.textpreview         import TextPreview
-from wiz.wizard             import WizardPage
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals.errorcodes import dbrerrno
+from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
+from globals.ident      import inputid
+from globals.ident      import pgid
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from input.select       import ChoiceESS
+from input.select       import ComboBoxESS
+from input.text         import TextAreaESS
+from input.text         import TextAreaPanelESS
+from input.toggle       import CheckBoxESS
+from ui.button          import ButtonBrowse64
+from ui.button          import ButtonPreview64
+from ui.button          import ButtonSave64
+from ui.dialog          import GetFileOpenDialog
+from ui.dialog          import GetFileSaveDialog
+from ui.dialog          import ShowDialog
+from ui.dialog          import ShowErrorDialog
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.textpreview     import TextPreview
+from wiz.helper         import FieldEnabled
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
+from wiz.helper         import GetPage
+from wiz.wizard         import WizardPage
 
 
 ## This panel displays the field input of the control file

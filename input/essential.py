@@ -9,10 +9,10 @@
 import wx
 from wx.combo import OwnerDrawnComboBox
 
-from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetMainWindow
-from startup.startup        import AppInitialized
-from ui.panel               import ControlPanel
+from startup.startup    import AppInitialized
+from ui.panel           import ControlPanel
+from wiz.helper         import FieldEnabled
+from wiz.helper         import GetMainWindow
 
 
 ## This is a dummy class to facilitate merging to & from unstable branch

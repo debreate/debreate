@@ -8,28 +8,28 @@
 
 import wx
 
-from dbr.event              import ChangePageEvent
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals                import ident
-from globals.ident          import chkid
-from globals.ident          import inputid
-from globals.ident          import listid
-from globals.ident          import page_ids
-from globals.ident          import selid
-from globals.tooltips       import TT_wiz_next
-from globals.tooltips       import TT_wiz_prev
-from globals.wizardhelper   import FieldEnabled
-from globals.wizardhelper   import GetField
-from globals.wizardhelper   import GetMainWindow
-from input.markdown         import MarkdownDialog
-from startup.tests          import GetTestList
-from ui.button              import ButtonHelp
-from ui.button              import ButtonNext
-from ui.button              import ButtonPrev
-from ui.dialog              import ShowDialog
-from ui.layout              import BoxSizer
-from ui.panel               import ScrolledPanel
+from dbr.event          import ChangePageEvent
+from dbr.language       import GT
+from dbr.log            import Logger
+from globals            import ident
+from globals.ident      import chkid
+from globals.ident      import inputid
+from globals.ident      import listid
+from globals.ident      import page_ids
+from globals.ident      import selid
+from globals.tooltips   import TT_wiz_next
+from globals.tooltips   import TT_wiz_prev
+from input.markdown     import MarkdownDialog
+from startup.tests      import GetTestList
+from ui.button          import ButtonHelp
+from ui.button          import ButtonNext
+from ui.button          import ButtonPrev
+from ui.dialog          import ShowDialog
+from ui.layout          import BoxSizer
+from ui.panel           import ScrolledPanel
+from wiz.helper         import FieldEnabled
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
 
 
 ## Wizard class for Debreate

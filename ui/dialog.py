@@ -19,7 +19,6 @@ from globals.moduleaccess   import ModuleAccessCtrl
 from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty
-from globals.wizardhelper   import GetMainWindow
 from input.select           import ComboBox
 from input.text             import TextAreaPanel
 from ui.button              import AddCustomButtons
@@ -27,6 +26,7 @@ from ui.button              import ButtonSizer
 from ui.button              import GetButtonSizer
 from ui.hyperlink           import Hyperlink
 from ui.layout              import BoxSizer
+from wiz.helper             import GetMainWindow
 
 
 ## An abstract class defining method to manipulate button labels
