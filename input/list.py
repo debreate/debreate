@@ -547,14 +547,6 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         return True
     
     
-    ## Retrieves is the item at 'i_index' is executable
-    #  
-    #  \param i_index
-    #        \b \e int : The list row to check
-    def FileIsExecutable(self, i_index):
-        return self.GetItemText(i_index, self.type_col) == file_types_defs[FTYPE_EXE]
-    
-    
     ## TODO: Doxygen
     def DeleteAllItems(self):
         ListCtrl.DeleteAllItems(self)
