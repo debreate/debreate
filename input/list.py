@@ -596,6 +596,11 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         return self.GetItemText(i_index, self.target_col)
     
     
+    ## Checks if item at index is a directory
+    def IsDirectory(self, index):
+        return os.path.isdir(self.GetPath(index))
+    
+    
     ## Checks if the file list is empty
     def IsEmpty(self):
         return not self.GetItemCount()
