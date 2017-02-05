@@ -119,9 +119,9 @@ class Page(WizardPage):
         for S, RB in self.script_objects:
             wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
         
-        wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExes)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
-        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExe)
+        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExes)
         wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
         
         # *** Layout *** #
@@ -209,7 +209,7 @@ class Page(WizardPage):
     
     
     ## Imports executables from files page for Auto-Link
-    def ImportExe(self, event=None):
+    def ImportExes(self, event=None):
         event_id = event.GetId()
         if event_id == genid.IMPORT:
             # First clear the Auto-Link display and the executable list
