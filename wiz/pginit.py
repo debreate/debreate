@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package wizbin.info
+## \package wiz.pginit
 
 # MIT licensing
 # See: docs/LICENSE.txt

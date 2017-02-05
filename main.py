@@ -56,8 +56,8 @@ from ui.layout              import BoxSizer
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
+from wiz.pginit             import Page as PageInit
 from wiz.wizard             import Wizard
-from wizbin.greeting        import Page as PageInit
 
 
 default_title = GT(u'Debreate - Debian Package Builder')
