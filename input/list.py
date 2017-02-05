@@ -505,17 +505,7 @@ class BasicFileList(ListCtrl):
     #  \return
     #    \b \e True if the file item was deleted from list
     def Delete(self, item):
-        if isinstance(item, FileItem):
-            item = self.Files.index(item)
-        
-        elif IsString(item):
-            for FILE in self.Files:
-                if FILE.GetPath() == item:
-                    item = self.Files.index(FILE)
-                    
-                    break
-                
-                return False
+        item = self.GetIndex(item)
         
         if self.DeleteItem(item):
             self.Files.Pop(item)
@@ -559,6 +549,18 @@ class BasicFileList(ListCtrl):
         
         if isinstance(item, FileItem):
             return item
+    
+    
+    ## Retrieves the index of given item
+    #
+    #  \param item
+    #    Can be \b \e FileItem instance or string representing file path
+    #  \return
+    #    \b \e Integer index of given item
+    def GetIndex(self, item):
+        item = self.GetFileItem(item)
+        
+        return self.Files.index(item)
     
     
     ## Retrieves full path of file
