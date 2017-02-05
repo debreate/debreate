@@ -617,6 +617,16 @@ class BasicFileList(ListCtrl):
     #  Alias of input.list.BasicFileList.Delete
     def Remove(self, item):
         return self.Delete(item)
+    
+    
+    ## Resets the list to default value (empty)
+    def Reset(self):
+        if ListCtrl.Reset(self):
+            self.Files = []
+            
+            return True
+        
+        return False
 
 
 ## An editable list
