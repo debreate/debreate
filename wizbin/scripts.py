@@ -221,7 +221,7 @@ class Page(WizardPage):
             
             for INDEX in range(file_list.GetItemCount()):
                 # Searches for executables (distinguished by red text)
-                if file_list.FileIsExecutable(INDEX):
+                if file_list.IsExecutable(INDEX):
                     # Get the filename from the source
                     file_name = os.path.basename(file_list.GetItemText(INDEX))
                     
