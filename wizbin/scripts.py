@@ -10,6 +10,8 @@ import os, wx
 
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals.fileio     import FileItem
+from globals.fileio     import GetFiles
 from globals.fileio     import ReadFile
 from globals.ident      import genid
 from globals.ident      import inputid
@@ -257,11 +259,17 @@ class Page(WizardPage):
             for INDEX in range(file_list.GetItemCount()):
                 # Get the filename from the source
                 file_name = file_list.GetFilename(INDEX, basename=True)
+                file_path = file_list.GetPath(INDEX)
                 # Where the file linked to will be installed
                 file_target = file_list.GetItem(INDEX, 1)
                 
+                # Walk directory to find executables
+                if file_list.IsDirectory(INDEX):
+                    for EXE in GetFiles(file_path, os.X_OK):
+                        self.Executables.Append(FileItem(EXE, file_target))
+                
                 # Search for executables (distinguished by red text)
-                if file_list.IsExecutable(INDEX):
+                elif file_list.IsExecutable(INDEX):
                     try:
                         # If destination doesn't start with "/" do not include executable
                         if file_target.GetText()[0] == u'/':
