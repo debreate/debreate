@@ -14,6 +14,7 @@ from dbr.log            import Logger
 from globals.errorcodes import dbrerrno
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
+from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import pgid
 from globals.paths      import ConcatPaths
@@ -24,9 +25,7 @@ from input.select       import ComboBoxESS
 from input.text         import TextAreaESS
 from input.text         import TextAreaPanelESS
 from input.toggle       import CheckBoxESS
-from ui.button          import ButtonBrowse64
-from ui.button          import ButtonPreview64
-from ui.button          import ButtonSave64
+from ui.button          import CreateButton
 from ui.dialog          import GetFileOpenDialog
 from ui.dialog          import GetFileSaveDialog
 from ui.dialog          import ShowDialog
@@ -55,9 +54,9 @@ class Page(WizardPage):
         pnl_bg = wx.Panel(self)
         
         # Buttons to open, save, & preview control file
-        btn_open = ButtonBrowse64(pnl_bg)
-        btn_save = ButtonSave64(pnl_bg)
-        btn_preview = ButtonPreview64(pnl_bg)
+        btn_open = CreateButton(pnl_bg, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
+        btn_save = CreateButton(pnl_bg, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
+        btn_preview = CreateButton(pnl_bg, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
         
         # *** Required fields *** #
         
