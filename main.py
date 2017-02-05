@@ -111,46 +111,52 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # ----- Set Titlebar Icon
         self.SetIcon(Icon(LOGO))
         
-        # ----- Status Bar
+        # *** Status Bar *** #
         StatusBar(self)
         
+        # *** Menus *** #
+        menubar = MenuBar(self)
+        
+        menu_file = wx.Menu()
+        
+        menubar.Append(menu_file, GT(u'File'), menuid.FILE)
+        # This menu is filled from wiz.wizard.Wizard.SetPages
+        menubar.Append(wx.Menu(), GT(u'Page'), menuid.PAGE)
+        
         # *** File Menu *** #
-        self.menu_file = wx.Menu()
         
-        mitm_new = wx.MenuItem(self.menu_file, wx.ID_NEW, GT(u'New project'),
-                help=GT(u'Start a new project'))
-        mitm_open = wx.MenuItem(self.menu_file, wx.ID_OPEN, GT(u'Open'),
-                help=GT(u'Open a previously saved project'))
-        mitm_save = wx.MenuItem(self.menu_file, wx.ID_SAVE, GT(u'Save'),
-                help=GT(u'Save current project'))
-        mitm_saveas = wx.MenuItem(self.menu_file, wx.ID_SAVEAS, GT(u'Save as'),
-                help=GT(u'Save current project with a new filename'))
-        
-        # Quick Build
-        mitm_quickbuild = wx.MenuItem(self.menu_file, ident.QBUILD, GT(u'Quick Build'),
-                GT(u'Build a package from an existing build tree'))
-        mitm_quickbuild.SetBitmap(ICON_CLOCK)
-        
-        mitm_quit = wx.MenuItem(self.menu_file, wx.ID_EXIT, GT(u'Quit'),
-                help=GT(u'Exit Debreate'))
-        
-        self.menu_file.AppendItem(mitm_new)
-        self.menu_file.AppendItem(mitm_open)
-        self.menu_file.AppendItem(mitm_save)
-        self.menu_file.AppendItem(mitm_saveas)
-        self.menu_file.AppendSeparator()
-        self.menu_file.AppendItem(mitm_quickbuild)
+        mitems_file = [
+            (menuid.NEW, GT(u'New project'), GT(u'Start a new project'),),
+            (menuid.OPEN, GT(u'Open'), GT(u'Open a previously saved project'),),
+            (menuid.SAVE, GT(u'Save'), GT(u'Save current project'),),
+            (menuid.SAVEAS, GT(u'Save as'), GT(u'Save current project with a new filename'),),
+            None,
+            (menuid.QBUILD, GT(u'Quick Build'), GT(u'Build a package from an existing build tree'), ICON_CLOCK,),
+            None,
+            (menuid.EXIT, GT(u'Quit'), GT(u'Exit Debreate'),),
+            ]
         
         if testing:
-            mitm_alien = wx.MenuItem(self.menu_file, ident.ALIEN, GT(u'Convert packages'))
-            self.menu_file.AppendItem(mitm_alien)
+            mitems_file.append((ident.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
         
-        self.menu_file.AppendSeparator()
-        self.menu_file.AppendItem(mitm_quit)
+        # Adding all menus to menu bar
         
-        # *** Page Menu *** #
-        ## This menu is filled from ui.wizard.Wizard.SetPages
-        self.menu_page = wx.Menu()
+        mitems = (
+            mitems_file,
+            )
+        
+        for menu_list in mitems:
+            for mitem in menu_list:
+                print(u'Instance: {}'.format(type(mitem)))
+                if not mitem:
+                    menu_file.AppendSeparator()
+                
+                else:
+                    itm = wx.MenuItem(menu_file, mitem[0], mitem[1], mitem[2])
+                    if len(mitem) > 3:
+                        itm.SetBitmap(mitem[3])
+                    
+                    menu_file.AppendItem(itm)
         
         # *** Action Menu *** #
         menu_action = wx.Menu()
@@ -300,9 +306,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         menu_help.AppendItem(mitm_help)
         menu_help.AppendItem(mitm_about)
         
-        menubar = MenuBar(self)
-        
-        menubar.Append(self.menu_file, GT(u'File'), menuid.FILE)
         menubar.Append(self.menu_page, GT(u'Page'), menuid.PAGE)
         menubar.Append(menu_action, GT(u'Action'), menuid.ACTION)
         
@@ -343,19 +346,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Event Handling *** #
         
-        wx.EVT_MENU(self, wx.ID_NEW, self.OnProjectNew)
-        wx.EVT_MENU(self, wx.ID_OPEN, self.OnProjectOpen)
-        wx.EVT_MENU(self, wx.ID_SAVE, self.OnProjectSave)
-        wx.EVT_MENU(self, wx.ID_SAVEAS, self.OnProjectSaveAs)
-        wx.EVT_MENU(self, ident.QBUILD, self.OnQuickBuild)
-        wx.EVT_MENU(self, wx.ID_EXIT, self.OnQuit)
+        wx.EVT_MENU(self, menuid.NEW, self.OnProjectNew)
+        wx.EVT_MENU(self, menuid.OPEN, self.OnProjectOpen)
+        wx.EVT_MENU(self, menuid.SAVE, self.OnProjectSave)
+        wx.EVT_MENU(self, menuid.SAVEAS, self.OnProjectSaveAs)
+        wx.EVT_MENU(self, menuid.QBUILD, self.OnQuickBuild)
+        wx.EVT_MENU(self, menuid.EXIT, self.OnQuit)
         
-        wx.EVT_MENU(self, ident.TOOLTIPS, self.OnToggleToolTips)
-        wx.EVT_MENU(self, ident.DIST, self.OnUpdateDistNamesCache)
+        wx.EVT_MENU(self, menuid.TOOLTIPS, self.OnToggleToolTips)
+        wx.EVT_MENU(self, menuid.DIST, self.OnUpdateDistNamesCache)
         
-        wx.EVT_MENU(self, ident.UPDATE, self.OnCheckUpdate)
-        wx.EVT_MENU(self, wx.ID_HELP, self.OnHelp)
-        wx.EVT_MENU(self, wx.ID_ABOUT, self.OnAbout)
+        wx.EVT_MENU(self, menuid.UPDATE, self.OnCheckUpdate)
+        wx.EVT_MENU(self, menuid.HELP, self.OnHelp)
+        wx.EVT_MENU(self, menuid.ABOUT, self.OnAbout)
         
         self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
         
@@ -402,12 +405,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     ## Retrieves the Wizard instance
     #  
     #  \return
-    #        ui.wizard.Wizard
+    #        wiz.wizard.Wizard
     def GetWizard(self):
         return self.Wizard
     
     
-    ## Sets the pages in the ui.wizard.Wizard instance
+    ## Sets the pages in the wiz.wizard.Wizard instance
     def InitWizard(self):
         pg_info = PageGreeting(self.Wizard)
         pg_info.SetInfo()
