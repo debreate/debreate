@@ -560,17 +560,21 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if event:
             page_id = event.GetId()
+            
             Logger.Debug(__name__, GT(u'Page ID from menu event: {}').format(page_id))
         
         else:
             for M in self.menu_page.GetMenuItems():
                 if M.IsChecked():
                     page_id = M.GetId()
+                    
                     Logger.Debug(__name__, GT(u'Page ID from menu item: {}').format(page_id))
+                    
                     break
         
         if page_id == None:
             Logger.Error(__name__, GT(u'Could not get page ID'))
+            
             return
         
         self.Wizard.ShowPage(page_id)
@@ -1084,7 +1088,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         if self.ProjectDirty != dirty:
             self.ProjectDirty = dirty
-            self.menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
+            self.GetMenuBar().GetMenuById(menuid.FILE).Enable(wx.ID_SAVE, self.ProjectDirty)
             
             title = self.GetTitle()
             
@@ -1104,7 +1108,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #  \param compression_id
     #        \b \e int : Compression ID to search for in menu iteration
     def SetCompression(self, compression_id):
-        for Z in self.menu_compress.GetMenuItems():
+        for Z in self.GetMenuBar().GetMenuById(menuid.COMPRESS).GetMenuItems():
             Z_ID = Z.GetId()
             
             if compression_id == Z_ID:
