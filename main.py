@@ -402,6 +402,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         return DEFAULT_COMPRESSION_ID
     
     
+    ## Retrieves menu by ID
+    def GetMenu(self, menuId):
+        return self.GetMenuBar().GetMenuById(menuId)
+    
+    
     ## Retrieves the Wizard instance
     #  
     #  \return
