@@ -11,6 +11,7 @@ import wx
 from dbr.language       import GT
 from dbr.log            import DebugEnabled
 from dbr.log            import Logger
+from globals.ident      import btnid
 from globals.ident      import genid
 from globals.ident      import inputid
 from globals.ident      import pgid
@@ -19,11 +20,9 @@ from globals.tooltips   import SetPageToolTips
 from input.list         import ListCtrlESS
 from ui.button          import ButtonAdd
 from ui.button          import ButtonAppend
-from ui.button          import ButtonBrowse64
 from ui.button          import ButtonClear
-from ui.button          import ButtonPreview64
 from ui.button          import ButtonRemove
-from ui.button          import ButtonSave64
+from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
@@ -44,9 +43,9 @@ class Page(WizardPage):
         self.prebuild_check = False
         
         # Buttons to open, save, & preview control file
-        self.btn_open = ButtonBrowse64(self)
-        self.btn_save = ButtonSave64(self)
-        self.btn_preview = ButtonPreview64(self)
+        self.btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
+        self.btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
+        self.btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
         
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
