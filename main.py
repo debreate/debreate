@@ -341,7 +341,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         self.ProjectDirty = False
         self.dirty_mark = u' *'
         
-        self.menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
+        menu_file.Enable(wx.ID_SAVE, self.ProjectDirty)
         
         # *** Event Handling *** #
         
