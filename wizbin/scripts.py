@@ -16,7 +16,7 @@ from globals.ident      import inputid
 from globals.ident      import pgid
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
-from input.list         import ListCtrl
+from input.list         import BasicFileList
 from input.markdown     import MarkdownDialog
 from input.pathctrl     import PathCtrl
 from input.text         import TextAreaPanelESS
@@ -107,7 +107,7 @@ class Page(WizardPage):
         self.ti_autolink.default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
-        self.Executables = ListCtrl(pnl_autolink, size=(200,200), name=u'al list')
+        self.Executables = BasicFileList(pnl_autolink, size=(200, 200), name=u'al list')
         self.Executables.SetSingleStyle(wx.LC_SINGLE_SEL)
         
         # Auto-Link import, generate and remove buttons
