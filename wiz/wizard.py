@@ -614,14 +614,6 @@ class WizardPage(ScrolledPanel):
         return tuple(required_fields)
     
     
-    ## Retrieve the parent Wizard instance
-    #  
-    #  \return
-    #    \b \e dbr.Wizard
-    def GetWizard(self):
-        return self.GetParent()
-    
-    
     ## TODO: Doxygen
     def ImportFromFile(self, filename):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
