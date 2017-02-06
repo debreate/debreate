@@ -11,11 +11,15 @@
 import threading as thr
 
 
-## TODO: Doxygen
+## Standard thread class with renamed methods
 class Thread(thr.Thread):
     def __init__(self, function, *args):
         
         thr.Thread.__init__(self, target=function, args=args)
+    
+    
+    def Clear(self):
+        return self.clear()
     
     
     ## Retrieves the thread identifier
@@ -28,7 +32,7 @@ class Thread(thr.Thread):
     
     ## Alias for start method
     def Start(self):
-        self.start()
+        return self.start()
 
 
 active_threads = []
