@@ -56,6 +56,7 @@ from wiz.helper             import GetField
 from wiz.helper             import GetFieldValue
 from wiz.helper             import GetMainWindow
 from wiz.helper             import GetPage
+from wiz.helper             import GetWizard
 from wiz.wizard             import WizardPage
 
 
@@ -195,7 +196,7 @@ class Page(WizardPage):
         def log_message(msg, current_step, total_steps):
             return u'{} ({}/{})'.format(msg, current_step, total_steps)
         
-        wizard = self.GetWizard()
+        wizard = GetWizard()
         pages_build_ids = self.BuildPrep()
         
         if pages_build_ids != None:
@@ -375,7 +376,7 @@ class Page(WizardPage):
     #  \return
     #        \b \e tuple containing data & label for each page
     def BuildPrep(self):
-        wizard = self.GetWizard()
+        wizard = GetWizard()
         prep_ids = []
         
         for P in wizard.pages:
@@ -604,7 +605,7 @@ class Page(WizardPage):
         if UsingTest(u'alpha') and self.chk_editctrl.GetValue():
             self.EditControl()
         
-        wizard = self.GetWizard()
+        wizard = GetWizard()
         
         pg_control = wizard.GetPage(pgid.CONTROL)
         pg_files = wizard.GetPage(pgid.FILES)
