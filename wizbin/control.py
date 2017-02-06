@@ -295,7 +295,7 @@ class Page(WizardPage):
                 control_data.append(size_line)
             
             # Be sure not to strip trailing newline (dpkg is picky)
-            WriteFile(absolute_filename, control_data, no_strip=u'\n')
+            WriteFile(absolute_filename, control_data, noStrip=u'\n')
         
         return GT(u'Control file created: {}').format(absolute_filename)
     
@@ -509,7 +509,7 @@ class Page(WizardPage):
         
         if ShowDialog(save_dialog):
             # Be sure not to strip trailing newline (dpkg is picky)
-            WriteFile(save_dialog.GetPath(), control, no_strip=u'\n')
+            WriteFile(save_dialog.GetPath(), control, noStrip=u'\n')
     
     
     ## TODO: Doxygen
