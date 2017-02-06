@@ -18,6 +18,8 @@ thr = threading
 class Thread(thr.Thread):
     def __init__(self, function, *args):
         thr.Thread.__init__(self, target=function, args=args)
+        
+        self.Active = False
     
     
     ## Retrieves the thread identifier
@@ -26,7 +28,7 @@ class Thread(thr.Thread):
     
     ## Tests if thread is active
     def IsActive(self):
-        return self.is_alive()
+        return self.Active
     
     ## Alias for start method
     def Start(self):
