@@ -54,7 +54,6 @@ class LogWindow(wx.Dialog):
         self.main_process_id = os.getpid()
         self.log_poll_thread = None
         self.THREAD_ID = None
-        self.MAIN_THREAD_ID = thread.get_ident()
         
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
         
@@ -220,7 +219,6 @@ class LogWindow(wx.Dialog):
     ## Creates a thread that polls for changes in log file
     def PollLogFile(self, args=None):
         self.log_poll_thread = threading.current_thread()
-        self.log_poll_thread.name = u'log_poll_thread'
         
         previous_timestamp = os.stat(self.log_file).st_mtime
         while self.IsShown():
