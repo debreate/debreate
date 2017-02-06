@@ -270,4 +270,11 @@ class LogWindow(wx.Dialog):
         self.RefreshLog()
         self.Show(True)
         
-        self.LogPollThread.Start()
+        if not self.LogPollThread.IsActive():
+            Logger.Debug(__name__, u'Starting log polling thread ...')
+            
+            self.LogPollThread.Start()
+        
+        else:
+            Logger.Debug(__name__, u'Log polling thread is already started')
+            
