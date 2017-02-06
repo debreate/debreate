@@ -8,18 +8,16 @@
 # See: docs/LICENSE.txt
 
 
-import threading as thr
+import threading
+
+
+thr = threading
 
 
 ## Standard thread class with renamed methods
 class Thread(thr.Thread):
     def __init__(self, function, *args):
-        
         thr.Thread.__init__(self, target=function, args=args)
-    
-    
-    def Clear(self):
-        return self.clear()
     
     
     ## Retrieves the thread identifier
