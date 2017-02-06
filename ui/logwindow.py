@@ -15,7 +15,7 @@ from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
 from globals.application    import APP_logo
-from globals.fileio         import ReadFile
+from globals.fileio         import FileItem
 from globals.ident          import menuid
 from globals.paths          import PATH_logs
 from globals.strings        import GS
@@ -51,9 +51,8 @@ class LogWindow(wx.Dialog):
         
         self.SetIcon(APP_logo)
         
-        self.LogFile = logFile
-        
-        self.SetTitle(self.LogFile)
+        self.LogFile = FileItem(logFile)
+        self.SetTitle()
         
         self.LogPollThread = None
         
@@ -106,7 +105,7 @@ class LogWindow(wx.Dialog):
         # Make sure log window is not shown at initialization
         self.Show(False)
         
-        self.log_timestamp = os.stat(self.LogFile).st_mtime
+        self.log_timestamp = os.stat(self.LogFile.GetPath()).st_mtime
     
     
     ## Destructor clears the log polling thead
@@ -225,9 +224,9 @@ class LogWindow(wx.Dialog):
     def PollLogFile(self, args=None):
         self.LogPollThread = threading.current_thread()
         
-        previous_timestamp = os.stat(self.LogFile).st_mtime
+        previous_timestamp = os.stat(self.LogFile.GetPath()).st_mtime
         while self.IsShown():
-            current_timestamp = os.stat(self.LogFile).st_mtime
+            current_timestamp = os.stat(self.LogFile.GetPath()).st_mtime
             
             if current_timestamp != previous_timestamp:
                 print(u'Log timestamp changed, loading new log ...')
@@ -241,8 +240,8 @@ class LogWindow(wx.Dialog):
     
     ## Fills log with text file contents
     def RefreshLog(self, event=None):
-        if os.path.isfile(self.LogFile):
-            log_data = ReadFile(self.LogFile)
+        if self.LogFile.IsFile():
+            log_data = self.LogFile.Read()
             
             if not self.DspLog.IsEmpty():
                 self.DspLog.Clear()
@@ -266,9 +265,16 @@ class LogWindow(wx.Dialog):
     #  \param logFile
     #    Absolute path of file to load
     def SetLogFile(self, logFile):
-        self.LogFile = logFile
+        self.LogFile = FileItem(logFile)
         self.RefreshLog()
-        self.SetTitle(self.LogFile)
+        self.SetTitle()
+    
+    
+    ## Updates the window's title using path of log file
+    def SetTitle(self):
+        new_title = self.LogFile.GetPath()
+        if new_title:
+            return wx.Dialog.SetTitle(self, new_title)
     
     
     ## Shows the log window
