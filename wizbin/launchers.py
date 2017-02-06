@@ -267,11 +267,6 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## TODO: Doxygen
-    def ExportBuild(self):
-        return self.GetLauncherInfo()
-    
-    
     ## Retrieves page data for export
     def Get(self):
         return self.GetLauncherInfo()

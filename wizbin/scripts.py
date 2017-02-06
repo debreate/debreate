@@ -205,25 +205,6 @@ class Page(WizardPage):
             self.ti_autolink.SetBackgroundColour((255, 255, 255, 255))
     
     
-    ## TODO: Doxygen
-    def ExportBuild(self):
-        script_controls = {
-            u'preinst': (self.script_ojects[0][0], self.script_ojects[0][2],),
-            u'postinst': (self.script_ojects[1][0], self.script_ojects[1][2],),
-            u'prerm': (self.script_ojects[2][0], self.script_ojects[2][2],),
-            u'postrm': (self.script_ojects[3][0], self.script_ojects[3][2],),
-        }
-        
-        script_list = []
-        
-        for S in script_controls:
-            chk, te = script_controls[S]
-            if chk.GetValue():
-                script_list.append((S, te.GetValue()))
-        
-        return tuple(script_list)
-    
-    
     ## Retrieves page data from fields
     def Get(self):
         scripts = {}

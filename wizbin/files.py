@@ -261,11 +261,6 @@ class Page(WizardPage):
             event.Skip()
     
     
-    ## TODO: Doxygen
-    def ExportBuild(self):
-        return self.Get()
-    
-    
     ## Retrieves page data from fields
     def Get(self):
         # Remove section delimeters & first line which is just an integer

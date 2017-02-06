@@ -199,14 +199,6 @@ class Page(WizardPage):
         self.ti_changes.SetFocus()
     
     
-    ## TODO: Doxygen
-    #  
-    #  \return
-    #        \b \e tuple : Changelog target dir & text
-    def ExportBuild(self):
-        return self.Get()
-    
-    
     ## Retrieves page data from fields
     #  
     #  \return

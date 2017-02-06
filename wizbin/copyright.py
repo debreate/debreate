@@ -122,11 +122,6 @@ class Page(WizardPage):
         return True
     
     
-    ## TODO: Doxygen
-    def ExportBuild(self):
-        return self.Get()
-    
-    
     ## Retrieves copyright/license text
     #  
     #  \return

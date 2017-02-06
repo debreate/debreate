@@ -428,8 +428,11 @@ class Page(WizardPage):
                 UpdateProgress(progress, GT(u'Creating scripts'))
                 
                 scripts = task_list[u'scripts']
-                for script_name, script_text in scripts:
-                    script_filename = ConcatPaths((u'{}/DEBIAN'.format(stage_dir), script_name))
+                for SCRIPT in scripts:
+                    script_name = SCRIPT
+                    script_text = scripts[SCRIPT]
+                    
+                    script_filename = ConcatPaths((stage_dir, u'DEBIAN', script_name))
                     
                     WriteFile(script_filename, script_text)
                     
@@ -457,7 +460,7 @@ class Page(WizardPage):
             installed_size = installed_size[0]
             
             # Insert Installed-Size into control file
-            control_data = pg_control.ExportBuild().split(u'\n')
+            control_data = pg_control.Get().split(u'\n')
             control_data.insert(2, u'Installed-Size: {}'.format(installed_size))
             
             progress += 1
@@ -609,7 +612,7 @@ class Page(WizardPage):
             required = list(fields_control)
             
             if pg_launcher.IsOkay():
-                task_list[u'launcher'] = pg_launcher.ExportBuild()
+                task_list[u'launcher'] = pg_launcher.Get()
                 
                 required.append(GetField(pg_launcher, inputid.NAME))
                 
@@ -688,8 +691,7 @@ class Page(WizardPage):
                 
                 wizard_page = GetPage(PID)
                 if wizard_page.IsOkay():
-                    # TODO: Replace WizardPage.ExportBuild with WizardPage.Get
-                    task_list[id_string] = wizard_page.ExportBuild()
+                    task_list[id_string] = wizard_page.Get()
                 
                 progress += 1
             
