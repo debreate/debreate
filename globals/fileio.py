@@ -68,35 +68,46 @@ class FileItem:
         self.Target = target
 
 
-## TODO: Doxygen
-def AppendFile(filename, contents, no_strip=None, input_only=False):
-    contents = u'{}\n{}'.format(ReadFile(filename, no_strip=no_strip), contents)
+## Append text to end of a file
+#
+#  \param path
+#    Absolute path of file to read/write
+#  \param contents
+#    Text to be written to file
+#  \param noStrip
+#    \b \e String of leading & trailing characters to not strip
+#  \param inputOnly
+#    Only strip characters from text read from file
+def AppendFile(path, contents, noStrip=None, inputOnly=False):
+    contents = u'{}\n{}'.format(ReadFile(path, noStrip=noStrip), contents)
     
-    # Only strip characters from text read from file
-    if input_only:
-        no_strip = None
+    if inputOnly:
+        noStrip = None
     
-    WriteFile(filename, contents, no_strip)
+    WriteFile(path, contents, noStrip)
 
 
 ## Retrieves the contents of a text file using utf-8 encoding
-#  
-#  \param filename
-#    \b \e string : Path to filename to read
+#
+#  \param path
+#    Absolute path of file to read
 #  \param split
-#    \b \e bool : If True, output will be split into a list or tuple
+#    If \b \e True, splits the text into a list
 #  \param convert
-#    \b \e tuple|list : Converts the output to value type if 'split' is True
-def ReadFile(filename, split=False, convert=tuple, no_strip=None):
+#    Type of list to split contents into (can be \b \e tuple or \b \e list)
+#    FIXME: Use boolean???
+#  \param noStrip
+#    \b \e String of leading & trailing characters to not strip
+def ReadFile(path, split=False, convert=tuple, noStrip=None):
     chars = u' \t\n\r'
-    if no_strip:
-        for C in no_strip:
+    if noStrip:
+        for C in noStrip:
             chars = chars.replace(C, u'')
     
-    if not os.path.isfile(filename):
+    if not os.path.isfile(path):
         return
     
-    FILE_BUFFER = codecs.open(filename, u'r', u'utf-8')
+    FILE_BUFFER = codecs.open(path, u'r', u'utf-8')
     contents = u''.join(FILE_BUFFER).strip(chars)
     FILE_BUFFER.close()
     
@@ -109,19 +120,20 @@ def ReadFile(filename, split=False, convert=tuple, no_strip=None):
 
 
 ## Outputs text content to file using utf-8 encoding
-#  
+#
 #  FIXME: Needs exception handling
 #  FIXME: Set backup & restore on error/failure
-#  \param filename
-#    File to write to
+#
+#  \param path
+#    Absolute path of file to write
 #  \param contents
-#    Text to write to file
-#  \param no_strip
-#    Characters to not strip from contents
-def WriteFile(filename, contents, no_strip=None):
+#    Text to be written to file
+#  \param noStrip
+#    \b \e String of leading & trailing characters to not strip
+def WriteFile(path, contents, noStrip=None):
     chars = u' \t\n\r'
-    if no_strip:
-        for C in no_strip:
+    if noStrip:
+        for C in noStrip:
             chars = chars.replace(C, u'')
     
     # Ensure we are dealing with a string
@@ -130,21 +142,21 @@ def WriteFile(filename, contents, no_strip=None):
     
     contents = contents.strip(chars)
     
-    if u'/' in filename:
-        target_dir = os.path.dirname(filename)
+    if u'/' in path:
+        target_dir = os.path.dirname(path)
     
     else:
         target_dir = os.getcwd()
-        filename = u'{}/{}'.format(target_dir, filename)
+        path = u'{}/{}'.format(target_dir, path)
     
     if not os.path.isdir(target_dir):
         os.makedirs(target_dir)
     
-    FILE_BUFFER = codecs.open(filename, u'w', encoding=u'utf-8')
+    FILE_BUFFER = codecs.open(path, u'w', encoding=u'utf-8')
     FILE_BUFFER.write(contents)
     FILE_BUFFER.close()
     
-    if not os.path.isfile(filename):
+    if not os.path.isfile(path):
         return False
     
     return True
@@ -154,6 +166,8 @@ def WriteFile(filename, contents, no_strip=None):
 #
 #  \param path
 #    Directory to search for license templates
+#  \param flag
+#    Filter files with given permission flags
 def GetFiles(path, flag=None):
     file_list = []
     
@@ -170,3 +184,28 @@ def GetFiles(path, flag=None):
                 file_list.append(F)
     
     return sorted(file_list, key=GS.lower)
+
+
+## Retrieve's a file's timestamp
+#
+#  \param path
+#    Absolute path of file to read
+#  \return
+#    \b \e Float formatted timestamp
+def GetTimestamp(path):
+    if isinstance(path, FileItem):
+        path = path.GetPath()
+    
+    return os.stat(path).st_mtime
+
+
+## Checks if a file has been modified via timestamp
+#
+#  \param path
+#    Absolute path of file to read
+#  \param prevStamp
+#    The previously saved timestamp
+#  \return
+#    \b \e True if timestamps are not the same
+def TimestampChanged(path, prevStamp):
+    return GetTimestamp(path) != prevStamp

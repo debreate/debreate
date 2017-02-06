@@ -480,7 +480,7 @@ class Page(WizardPage):
             # Perhaps because string is not null terminated???
             control_data = u'{}\n\n'.format(control_data)
             
-            WriteFile(u'{}/DEBIAN/control'.format(stage_dir), control_data, no_strip=u'\n')
+            WriteFile(u'{}/DEBIAN/control'.format(stage_dir), control_data, noStrip=u'\n')
             
             progress += 1
             

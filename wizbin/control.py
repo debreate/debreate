@@ -458,7 +458,7 @@ class Page(WizardPage):
         
         if ShowDialog(save_dialog):
             # Be sure not to strip trailing newline (dpkg is picky)
-            WriteFile(save_dialog.GetPath(), control, no_strip=u'\n')
+            WriteFile(save_dialog.GetPath(), control, noStrip=u'\n')
     
     
     ## TODO: Doxygen
