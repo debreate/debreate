@@ -36,6 +36,7 @@ from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.progress        import PD_DEFAULT_STYLE
 from ui.progress        import ProgressDialog
+from ui.style           import layout as lyt
 from ui.tree            import DirectoryTreePanel
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetMainWindow
@@ -137,8 +138,8 @@ class Page(WizardPage):
         
         lyt_treeopts = BoxSizer(wx.VERTICAL)
         lyt_treeopts.AddSpacer(5)
-        lyt_treeopts.Add(self.chk_individuals, 0, wx.LEFT|wx.RIGHT, 5)
-        lyt_treeopts.Add(self.chk_preserve_top, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_treeopts.Add(self.chk_individuals, 0, lyt.PAD_LR, 5)
+        lyt_treeopts.Add(self.chk_preserve_top, 0, lyt.PAD_LR, 5)
         lyt_treeopts.AddSpacer(5)
         
         pnl_treeopts.SetSizer(lyt_treeopts)
@@ -152,7 +153,7 @@ class Page(WizardPage):
         lyt_target = wx.GridSizer(3, 2, 5, 5)
         
         for item in self.grp_targets:
-            lyt_target.Add(item, 0, wx.LEFT|wx.RIGHT, 5)
+            lyt_target.Add(item, 0, lyt.PAD_LR, 5)
         
         pnl_target.SetAutoLayout(True)
         pnl_target.SetSizer(lyt_target)
@@ -189,8 +190,8 @@ class Page(WizardPage):
             lyt_main.AddGrowableCol(0, 1)
         
         lyt_main.AddGrowableCol(1, 2)
-        lyt_main.Add(lyt_left, PROP_LEFT, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
-        lyt_main.Add(lyt_right, PROP_RIGHT, wx.EXPAND|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_left, PROP_LEFT, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_right, PROP_RIGHT, wx.EXPAND|lyt.PAD_RB, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)

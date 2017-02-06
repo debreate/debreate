@@ -27,6 +27,7 @@ from ui.dialog              import ShowMessageDialog
 from ui.layout              import BoxSizer
 from ui.panel               import BorderedPanel
 from ui.progress            import ProgressDialog
+from ui.style               import layout as lyt
 from ui.textpreview         import TextPreview
 from wiz.helper             import GetField
 
@@ -78,7 +79,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         lyt_types.AddSpacer(5)
         
         for CHK in (self.chk_unstable, self.chk_obsolete, self.chk_generic,):
-            lyt_types.Add(CHK, 0, wx.LEFT|wx.RIGHT, 5)
+            lyt_types.Add(CHK, 0, lyt.PAD_LR, 5)
         
         lyt_types.AddSpacer(5)
         
@@ -92,8 +93,8 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
         lyt_buttons.Add(btn_clear, 1)
         
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(txt_types, 0, wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_main.Add(pnl_types, 0, wx.ALIGN_CENTER|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(txt_types, 0, wx.ALIGN_CENTER|lyt.PAD_LRT, 5)
+        lyt_main.Add(pnl_types, 0, wx.ALIGN_CENTER|lyt.PAD_LR, 5)
         lyt_main.Add(lyt_buttons, 1, wx.ALIGN_CENTER|wx.ALL, 5)
         
         self.SetAutoLayout(True)
