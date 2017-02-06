@@ -224,6 +224,19 @@ class Page(WizardPage):
         return tuple(script_list)
     
     
+    ## Retrieves page data from fields
+    def Get(self):
+        scripts = {
+            
+            }
+        
+        for DS, CHK, RB in self.script_objects:
+            if CHK.GetValue():
+                scripts[DS.GetFilename()] = DS.GetValue()
+        
+        return scripts
+    
+    
     ## TODO: Doxygen
     def GetSaveData(self):
         # Custom dictionary of scripts
