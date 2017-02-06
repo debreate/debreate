@@ -35,6 +35,7 @@ from ui.style               import layout as lyt
 GAUGE_MAX = 100
 
 
+## A dialog that takes a pre-formatted directory tree & creates a .deb package
 class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, title=GT(u'Quick Build'), pos=wx.DefaultPosition,
@@ -116,7 +117,12 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         self.build_error = None
     
     
-    ## TODO: Doxygen
+    ## Build process is done in background thread
+    #
+    #  \param stage
+    #    Location of the source formatted directory tree
+    #  \param target
+    #    Absolute output target filename
     def Build(self, stage, target):
         completed_status = (0, GT(u'errors'))
         
@@ -145,7 +151,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         self.Enable()
     
     
-    ## TODO: Doxygen
+    ## Opens directory stage for target & file save dialog for target
     def OnBrowse(self, event=None):
         if event:
             button_id = event.GetEventObject().GetId()
@@ -164,7 +170,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
                     self.input_target.SetValue(target.GetPath())
     
     
-    ## TODO: Doxygen
+    ## Checks & preps when build button is pressed
     #  
     #  TODO: Check timestamp of created .deb package (should be done for main build as well)
     def OnBuild(self, event=None):
@@ -237,7 +243,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         self.EndModal(True)
     
     
-    ## TODO: Doxygen
+    ## Closes the progress dialog & shows status message when timer is stopped
     def OnTimerStop(self, event=None):
         Logger.Debug(__name__, u'OnTimerStop')
         
