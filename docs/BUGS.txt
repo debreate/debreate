@@ -16,7 +16,6 @@ Non-priority:
   - Credits list does not expand completely on right edge
 - Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command
   - Find a workaround to display these as binary executables in directory tree
-- 'None' is written to first line of log file output
 - Error occurs sometimes after add changelog entries:
   - (init.py:4644) Gtk-CRITICAL **: IA__gtk_main_quit: assertion 'main_loops != NULL' failed
 - Progress dialogs could potentially resize outside of display boundaries
