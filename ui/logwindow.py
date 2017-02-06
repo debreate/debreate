@@ -16,6 +16,7 @@ from dbr.log                import Logger
 from globals                import ident
 from globals.application    import APP_logo
 from globals.fileio         import ReadFile
+from globals.ident          import menuid
 from globals.paths          import PATH_logs
 from globals.strings        import GS
 from input.text             import TextAreaPanel
@@ -24,6 +25,7 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
 from wiz.helper             import GetMainWindow
+from wiz.helper             import GetMenu
 
 
 # How often the log window will be refreshed
@@ -174,15 +176,15 @@ class LogWindow(wx.Dialog):
     
     ## Guarantess that menu item is synched with window's shown status
     def OnShow(self, event=None):
-        main_window = GetMainWindow()
+        menu_debug = GetMenu(menuid.DEBUG)
         
         # In case main window has been destroyed, but sub thread still active
-        if main_window:
+        if GetMainWindow():
             window_shown = self.IsShown()
-            m_checked = main_window.menu_debug.IsChecked(ident.LOG)
+            m_checked = menu_debug.IsChecked(menuid.LOG)
             
             if m_checked != window_shown:
-                main_window.menu_debug.Check(ident.LOG, window_shown)
+                menu_debug.Check(menuid.LOG, window_shown)
         
         else:
             Logger.Warn(__name__, u'Log thread still active!')
@@ -198,13 +200,13 @@ class LogWindow(wx.Dialog):
         
         # Make sure the main window has not been destroyed before showing log
         if main_window and main_window.IsShown():
-            if main_window.menu_debug.IsChecked(ident.LOG):
+            if GetMenu(menuid.DEBUG).IsChecked(menuid.LOG):
                 self.ShowLog()
     
     
     ## Toggles the log window shown or hidden
     def OnToggleWindow(self, event=None):
-        show = GetMainWindow().menu_debug.IsChecked(ident.LOG)
+        show = GetMenu(menuid.DEBUG).IsChecked(menuid.LOG)
         
         if show:
             self.ShowLog()
