@@ -93,8 +93,8 @@ class Page(WizardPage):
         
         lyt_top = BoxSizer(wx.HORIZONTAL)
         lyt_top.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
-                lyt.CNTR_VERT)
-        lyt_top.Add(self.sel_templates, 0, lyt.CNTR_VERT|wx.LEFT, 5)
+                lyt.ALGN_CV)
+        lyt_top.Add(self.sel_templates, 0, lyt.ALGN_CV|wx.LEFT, 5)
         lyt_top.Add(btn_template, 0, wx.LEFT, 5)
         lyt_top.Add(self.btn_template_simple)
         lyt_top.Add(btn_refresh)
