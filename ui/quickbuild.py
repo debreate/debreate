@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, thread, traceback, wx
+import os, traceback, wx
 
 from dbr.event              import EVT_TIMER_STOP
 from dbr.functions          import BuildDebPackage
@@ -18,6 +18,7 @@ from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import ConcatPaths
+from globals.threads        import Thread
 from ui.button              import ButtonBrowse
 from ui.button              import ButtonBuild
 from ui.button              import ButtonCancel
@@ -227,7 +228,8 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         self.Disable()
         self.timer.Start(100)
         
-        self.build_thread = thread.start_new_thread(self.Build, (stage, target))
+        # Start new thread for background process
+        Thread(self.Build, stage, target).Start()
     
     
     ## Closes the Quick Build dialog & destroys instance
