@@ -12,6 +12,7 @@ Priority:
 - Add lintian overrides option
 
 Non-priority:
+- Create 'zoom' button image (magnifying glass)
 - Add build option for 'create deb' or 'do not create deb'
 - Add build option to stage files in temp dir or target dir
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
