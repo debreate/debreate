@@ -213,7 +213,7 @@ class Wizard(wx.Panel):
         # Show the indexed page
         self.ShowPage(page_id)
         
-        GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Check(page_id, True)
+        GetMenu(menuid.PAGE).Check(page_id, True)
     
     
     ## TODO: Doxygen
