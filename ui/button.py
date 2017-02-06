@@ -22,6 +22,7 @@ from globals.paths      import PATH_bitmaps
 from globals.strings    import GS
 from globals.strings    import IsString
 from ui.layout          import BoxSizer
+from ui.style           import layout as lyt
 
 
 ## Standard button that inherits CommandField
@@ -402,7 +403,7 @@ button_list = {
 #  \return
 #    \b \e ui.button.ButtonSizer instance containing the buttons
 def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, reverse=True,
-            flag=wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, border=5):
+            flag=wx.ALIGN_RIGHT|lyt.PAD_RB, border=5):
     lyt_buttons = ButtonSizer(wx.HORIZONTAL)
     
     if reverse:

@@ -26,6 +26,7 @@ from ui.button              import ButtonSizer
 from ui.button              import GetButtonSizer
 from ui.hyperlink           import Hyperlink
 from ui.layout              import BoxSizer
+from ui.style               import layout as lyt
 from wiz.helper             import GetMainWindow
 
 
@@ -239,8 +240,8 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
         lyt_main.SetCols(3)
         lyt_main.AddGrowableRow(3)
         lyt_main.AddGrowableCol(2)
-        lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|wx.LEFT|wx.RIGHT|wx.BOTTOM, 20)
-        lyt_main.Add(txt_message, (0, 1), (1, 2), wx.RIGHT|wx.TOP, 20)
+        lyt_main.Add(icon, (0, 0), (5, 1), wx.ALIGN_TOP|lyt.PAD_LR|wx.BOTTOM, 20)
+        lyt_main.Add(txt_message, (0, 1), (1, 2), lyt.PAD_RT, 20)
         lyt_main.Add(self.lyt_urls, (1, 1), (1, 2), wx.RIGHT, 5)
         
         self.SetAutoLayout(True)
@@ -271,7 +272,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
         self.lyt_buttons = AddCustomButtons(self, button_ids)
         
         self.Sizer.Add(self.lyt_buttons, (4, 2),
-                flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|wx.RIGHT|wx.TOP|wx.BOTTOM, border=5)
+                flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|lyt.PAD_RTB, border=5)
     
     
     ## Adds a clickable link to the dialog

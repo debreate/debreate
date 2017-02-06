@@ -19,6 +19,7 @@ from ui.button          import ButtonConfirm
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.panel           import ScrolledPanel
+from ui.style           import layout as lyt
 from wiz.helper         import GetField
 
 
@@ -336,7 +337,7 @@ class CheckListDialog(wx.Dialog):
             self.input_add_custom = wx.TextCtrl(self)
             
             layout_add_custom = BoxSizer(wx.HORIZONTAL)
-            layout_add_custom.Add(btn_add_custom, 0, wx.LEFT|wx.RIGHT, 5)
+            layout_add_custom.Add(btn_add_custom, 0, lyt.PAD_LR, 5)
             layout_add_custom.Add(self.input_add_custom, 1, wx.RIGHT, 5)
             
             layout_main.Insert(1, layout_add_custom, 0, wx.EXPAND)
