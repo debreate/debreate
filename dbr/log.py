@@ -48,7 +48,7 @@ class DebreateLogger:
         self.log_file = u'{}/{}.log'.format(self.log_path, GetDate(dtfmt.LOG))
         
         # Forces space between header & first log entry (changed to None after first entry)
-        self.no_strip = u'\n'
+        self.noStrip = u'\n'
         
         self.OnInit()
     
@@ -69,7 +69,7 @@ class DebreateLogger:
         '''
         
         # Write header to log file
-        AppendFile(self.log_file, log_header, no_strip=u'\n')
+        AppendFile(self.log_file, log_header, noStrip=u'\n')
     
     
     def OnClose(self):
@@ -80,7 +80,7 @@ class DebreateLogger:
             
             log_footer = u'\n--------------- Log End:   {} ---------------\n\n'.format(date_time)
             
-            AppendFile(self.log_file, log_footer, no_strip=u'\n')
+            AppendFile(self.log_file, log_footer, noStrip=u'\n')
     
     
     ## Checks if log can be written at supplied level
@@ -128,11 +128,11 @@ class DebreateLogger:
                 pout.write(u'{}\n'.format(message))
             
             # Open log for writing
-            AppendFile(self.log_file, u'{}\n'.format(message), self.no_strip)
+            AppendFile(self.log_file, u'{}\n'.format(message), self.noStrip)
             
             # Allow stripping leading & trailing newlines from opened log file
-            if self.no_strip:
-                self.no_strip = None
+            if self.noStrip:
+                self.noStrip = None
     
     
     ## Show a log message at 'info' level
