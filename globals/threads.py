@@ -62,6 +62,24 @@ class Thread(thr.Thread):
         return self.join()
     
     
+    ## Executes target under new thread
+    def start(self):
+        try:
+            thr.Thread.start(self)
+            self.Active = True
+        
+        # Do not try to restart thread if already started
+        except RuntimeError:
+            Logger.Debug(__name__, u'ThreadStart: Thread is active, cannot restart')
+            
+            # In case active state has been changed
+            self.Active = True
+            
+            pass
+        
+        return self.IsActive()
+    
+    
     ## Alias for start method
     def Start(self):
         return self.start()
