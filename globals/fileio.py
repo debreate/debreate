@@ -130,7 +130,9 @@ class FileItem:
 #  \param inputOnly
 #    Only strip characters from text read from file
 def AppendFile(path, contents, noStrip=None, inputOnly=False):
-    contents = u'{}\n{}'.format(ReadFile(path, noStrip=noStrip), contents)
+    # Do not append to non-existent file
+    if os.path.isfile(path):
+        contents = u'{}\n{}'.format(ReadFile(path, noStrip=noStrip), contents)
     
     if inputOnly:
         noStrip = None
