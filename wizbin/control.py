@@ -31,6 +31,7 @@ from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
+from ui.style           import layout as lyt
 from ui.textpreview     import TextPreview
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetField
@@ -168,7 +169,7 @@ class Page(WizardPage):
         
         # *** Layout *** #
         
-        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_BOTTOM = lyt.ALGN_LB
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL|wx.RIGHT
         
         # Buttons

@@ -44,6 +44,7 @@ from ui.panel           import BorderedPanel
 from ui.progress        import PD_DEFAULT_STYLE
 from ui.progress        import ProgressDialog
 from ui.progress        import TimedProgressDialog
+from ui.style           import layout as lyt
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetField
 from wiz.helper         import GetMainWindow
@@ -138,7 +139,7 @@ class Page(WizardPage):
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(wx.StaticText(self, label=GT(u'Extra Options')), 0,
-                wx.ALIGN_LEFT|wx.ALIGN_BOTTOM|wx.LEFT, 5)
+                lyt.ALGN_LB|wx.LEFT, 5)
         lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         

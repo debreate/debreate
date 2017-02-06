@@ -35,6 +35,7 @@ from ui.dialog          import ConfirmationDialog
 from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
+from ui.style           import layout as lyt
 from ui.textpreview     import TextPreview
 from wiz.helper         import GetAllTypeFields
 from wiz.helper         import GetField
@@ -185,7 +186,7 @@ class Page(WizardPage):
         # *** Layout *** #
         
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
-        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_BOTTOM = lyt.ALGN_LB
         RIGHT_BOTTOM = wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM
         
         lyt_top = BoxSizer(wx.HORIZONTAL)
