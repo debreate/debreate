@@ -220,10 +220,10 @@ class Page(WizardPage):
     def GetSaveData(self):
         # Custom dictionary of scripts
         script_list = (
-            (self.script_ojects[0][0], self.script_ojects[0][2], u'PREINST'),
-            (self.script_ojects[1][0], self.script_ojects[1][2], u'POSTINST'),
-            (self.script_ojects[2][0], self.script_ojects[2][2], u'PRERM'),
-            (self.script_ojects[3][0], self.script_ojects[3][2], u'POSTRM')
+            (self.script_objects[0][0], self.script_objects[0][2], u'PREINST'),
+            (self.script_objects[1][0], self.script_objects[1][2], u'POSTINST'),
+            (self.script_objects[2][0], self.script_objects[2][2], u'PRERM'),
+            (self.script_objects[3][0], self.script_objects[3][2], u'POSTRM')
         )
         
         # Create a list to return the data
@@ -321,7 +321,7 @@ class Page(WizardPage):
     
     ## Checks if one or more scripts can be exported
     def IsOkay(self):
-        for chk in self.script_ojects:
+        for chk in self.script_objects:
             chk = chk[0]
             if chk.GetValue():
                 return True
