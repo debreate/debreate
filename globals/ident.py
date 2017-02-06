@@ -155,6 +155,7 @@ class InputId(FieldId):
         self.NOTIFY = self.NewId()
         self.OTHER = self.NewId()
         self.PACKAGE = self.NewId()
+        self.TARGET = self.NewId()
         self.TERM = self.NewId()
         self.TYPE = self.NewId()
         self.VALUE = self.NewId()
