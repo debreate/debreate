@@ -84,6 +84,13 @@ if UsingTest(u'alpha'):
             self.Layout()
         
         
+        ## Retrieves data from all launchers
+        #
+        #  TODO: Define
+        def Get(self, getModule=False):
+            pass
+        
+        
         ## Updates tooltips for new tab
         def OnAddTab(self, event=None):
             SetPageToolTips(self)
