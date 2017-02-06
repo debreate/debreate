@@ -204,6 +204,14 @@ class Page(WizardPage):
     #  \return
     #        \b \e tuple : Changelog target dir & text
     def ExportBuild(self):
+        return self.Get()
+    
+    
+    ## Retrieves page data from fields
+    #  
+    #  \return
+    #        \b \e tuple : Changelog target dir & text
+    def Get(self):
         target = self.pnl_target.GetPath()
         if target == self.pnl_target.GetDefaultPath():
             target = u'STANDARD'
