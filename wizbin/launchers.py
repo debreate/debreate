@@ -272,6 +272,11 @@ class Page(WizardPage):
         return self.GetLauncherInfo()
     
     
+    ## Retrieves page data for export
+    def Get(self):
+        return self.GetLauncherInfo()
+    
+    
     ## Formats the launcher information for export
     def GetLauncherInfo(self):
         desktop_list = [u'[Desktop Entry]']
