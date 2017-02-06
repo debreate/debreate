@@ -611,7 +611,7 @@ class Page(WizardPage):
             if pg_launcher.IsOkay():
                 task_list[u'launcher'] = pg_launcher.ExportBuild()
                 
-                required.append(pg_launcher.ti_name)
+                required.append(GetField(pg_launcher, inputid.NAME))
                 
                 if not GetField(pg_launcher, chkid.FNAME).GetValue():
                     required.append(GetField(pg_launcher, inputid.FNAME))
