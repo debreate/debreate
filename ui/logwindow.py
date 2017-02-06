@@ -16,11 +16,13 @@ from dbr.log                import Logger
 from globals                import ident
 from globals.application    import APP_logo
 from globals.fileio         import FileItem
+from globals.ident          import btnid
 from globals.ident          import menuid
 from globals.paths          import PATH_logs
 from globals.strings        import GS
 from globals.threads        import Thread
 from input.text             import TextAreaPanel
+from ui.button              import CreateButton
 from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
@@ -61,19 +63,19 @@ class LogWindow(wx.Dialog):
         self.DspLog.font_size = 8
         self.DspLog.SetFont(GetMonospacedFont(self.DspLog.font_size))
         
-        btn_open = wx.Button(self, wx.ID_OPEN)
-        btn_font = wx.Button(self, wx.ID_PREVIEW_ZOOM, GT(u'Font Size'))
-        btn_refresh = wx.Button(self, wx.ID_REFRESH)
-        btn_hide = wx.Button(self, wx.ID_CLOSE, GT(u'Hide'))
+        btn_open = CreateButton(self, GT(u'Open and Display Log File'), u'browse', btnid.BROWSE)
+        btn_font = CreateButton(self, GT(u'Zoom Text'), u'zoom', btnid.ZOOM)
+        btn_refresh = CreateButton(self, GT(u'Refresh'), u'refresh', btnid.REFRESH)
+        btn_hide = CreateButton(self, GT(u'Hide'), u'hide', btnid.CLOSE)
         
         # *** Event Handling *** #
         
         EVT_REFRESH_LOG(self, wx.ID_ANY, self.OnLogTimestampChanged)
         
-        wx.EVT_BUTTON(self, wx.ID_OPEN, self.OnOpenLogFile)
-        wx.EVT_BUTTON(self, wx.ID_PREVIEW_ZOOM, self.OnChangeFont)
-        wx.EVT_BUTTON(self, wx.ID_REFRESH, self.RefreshLog)
-        wx.EVT_BUTTON(self, wx.ID_CLOSE, self.OnClose)
+        wx.EVT_BUTTON(self, btnid.BROWSE, self.OnOpenLogFile)
+        wx.EVT_BUTTON(self, btnid.ZOOM, self.OnChangeFont)
+        wx.EVT_BUTTON(self, btnid.REFRESH, self.RefreshLog)
+        wx.EVT_BUTTON(self, btnid.CLOSE, self.OnClose)
         
         wx.EVT_CLOSE(self, self.OnClose)
         wx.EVT_SHOW(self, self.OnShow)
