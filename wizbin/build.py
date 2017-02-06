@@ -688,6 +688,7 @@ class Page(WizardPage):
                 
                 wizard_page = GetPage(PID)
                 if wizard_page.IsOkay():
+                    # TODO: Replace WizardPage.ExportBuild with WizardPage.Get
                     task_list[id_string] = wizard_page.ExportBuild()
                 
                 progress += 1
