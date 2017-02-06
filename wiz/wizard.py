@@ -410,7 +410,7 @@ class Wizard(wx.Panel):
     
     
     ## Sets up the wizard for 'binary' mode
-    def SetModeBin(self):
+    def SetModeBin(self, startPage=1):
         self.Reset()
         
         mods = [
@@ -430,7 +430,7 @@ class Wizard(wx.Panel):
         for M in mods:
             self.AddPage(M)
         
-        self.Initialize(1)
+        self.Initialize(startPage)
     
     
     ## Sets up the wizard for 'source' mode
@@ -539,8 +539,6 @@ class WizardPage(ScrolledPanel):
     
     
     ## TODO: Doxygen
-    #  
-    #  Child class must define 'Get' method.
     def Export(self, out_dir, out_name=wx.EmptyString):
         if not os.path.isdir(out_dir):
             Logger.Debug(__name__, u'Directory does not exist: {}'.format(out_dir))
