@@ -327,7 +327,7 @@ class Page(WizardPage):
             script_object.SetValue(ReadFile(filename))
     
     
-    ## TODO: Doxygen
+    ## Checks if one or more scripts can be exported
     def IsOkay(self):
         for chk in self.script_ojects:
             chk = chk[0]
