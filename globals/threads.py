@@ -22,6 +22,8 @@ class Thread(thr.Thread):
         thr.Thread.__init__(self, target=function, args=args)
         
         self.Active = False
+        # TODO: Retrieve target exit value
+        self.ExitVal = None
     
     
     def __del__(self):
