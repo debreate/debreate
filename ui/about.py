@@ -38,6 +38,7 @@ from ui.button              import ButtonConfirm
 from ui.dialog              import ShowErrorDialog
 from ui.hyperlink           import Hyperlink
 from ui.layout              import BoxSizer
+from ui.style               import layout as lyt
 
 
 # Font for the name
@@ -187,7 +188,7 @@ class AboutDialog(wx.Dialog):
         
         sizer = BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
-        sizer.Add(btn_confirm, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.TOP|wx.BOTTOM, 5)
+        sizer.Add(btn_confirm, 0, wx.ALIGN_RIGHT|lyt.PAD_RTB, 5)
         
         self.SetSizer(sizer)
         self.Layout()

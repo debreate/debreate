@@ -17,6 +17,7 @@ from dbr.log                import Logger
 from globals.application    import APP_logo
 from ui.dialog              import ShowErrorDialog
 from ui.layout              import BoxSizer
+from ui.style               import layout as lyt
 
 
 ## Shows the first run dialog
@@ -94,8 +95,8 @@ class FirstRun(wx.Dialog):
         
         # Set Layout
         sizer = BoxSizer(wx.VERTICAL)
-        sizer.Add(border_box, 1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM|wx.TOP, 5)
+        sizer.Add(border_box, 1, wx.EXPAND|lyt.PAD_LR, 5)
+        sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|lyt.PAD_RB|wx.TOP, 5)
         
         self.SetSizer(sizer)
         self.Layout()

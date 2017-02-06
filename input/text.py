@@ -17,6 +17,7 @@ from input.ifield       import InputField
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.panel           import ControlPanel
+from ui.style           import layout as lyt
 from wiz.helper         import GetMainWindow
 
 
@@ -382,10 +383,10 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
             
             btn_text_size = wx.Button(self, label=GT(u'Text Size'))
             if button in (MT_BTN_TL, MT_BTN_TR):
-                lyt_main.Insert(0, btn_text_size, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
+                lyt_main.Insert(0, btn_text_size, 0, button_H_pos[button]|lyt.PAD_LR, 5)
             
             else:
-                lyt_main.Add(btn_text_size, 0, button_H_pos[button]|wx.LEFT|wx.RIGHT, 5)
+                lyt_main.Add(btn_text_size, 0, button_H_pos[button]|lyt.PAD_LR, 5)
             
             btn_text_size.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
             
