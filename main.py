@@ -138,7 +138,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         for menu_list in mitems:
             for mitem in menu_list:
-                print(u'Instance: {}'.format(type(mitem)))
                 if not mitem:
                     menu_file.AppendSeparator()
                 
