@@ -31,6 +31,7 @@ from ui.dialog          import DetailedMessageDialog
 from ui.dialog          import ShowDialog
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
+from ui.style           import layout as lyt
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetField
 from wiz.helper         import GetMainWindow
@@ -161,19 +162,19 @@ class Page(WizardPage):
         
         # Auto-Link/Right side
         lyt_ti_autolink = BoxSizer(wx.HORIZONTAL)
-        lyt_ti_autolink.Add(txt_autolink, 0, wx.ALIGN_CENTER)
-        lyt_ti_autolink.Add(self.ti_autolink, 1, wx.ALIGN_CENTER)
+        lyt_ti_autolink.Add(txt_autolink, 0, lyt.ALGN_C)
+        lyt_ti_autolink.Add(self.ti_autolink, 1, lyt.ALGN_C)
         
         lyt_btn_autolink = BoxSizer(wx.HORIZONTAL)
         lyt_btn_autolink.Add(btn_al_import, 0)
-        lyt_btn_autolink.Add(btn_al_remove, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_btn_autolink.Add(btn_al_remove, 0, lyt.PAD_LR, 5)
         lyt_btn_autolink.Add(btn_al_generate, 0)
         
         lyt_autolink = BoxSizer(wx.VERTICAL)
-        lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|wx.LEFT|wx.TOP|wx.RIGHT, 5)
-        lyt_autolink.Add(self.Executables, 3, wx.EXPAND|wx.TOP|wx.LEFT|wx.RIGHT, 5)
-        lyt_autolink.Add(lyt_btn_autolink, 0, wx.ALIGN_CENTER_HORIZONTAL)
-        lyt_autolink.Add(btn_help, 1, wx.ALIGN_CENTER)
+        lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|lyt.PAD_LRT, 5)
+        lyt_autolink.Add(self.Executables, 3, wx.EXPAND|lyt.PAD_LRT, 5)
+        lyt_autolink.Add(lyt_btn_autolink, 0, lyt.ALGN_CH)
+        lyt_autolink.Add(btn_help, 1, lyt.ALGN_C)
         
         pnl_autolink.SetSizer(lyt_autolink)
         pnl_autolink.SetAutoLayout(True)
@@ -184,7 +185,7 @@ class Page(WizardPage):
         # Line up panels to look even
         lyt_right.AddSpacer(32)
         lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
-                0, wx.ALIGN_LEFT|wx.ALIGN_BOTTOM)
+                0, lyt.ALGN_LB)
         lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
         
         lyt_main = BoxSizer(wx.HORIZONTAL)
