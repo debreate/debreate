@@ -31,6 +31,7 @@
   - 'List files individually' & 'Preserve top-level directories' should be saved to config
 
 Priority:
+- Change button images for 'full' & 'short' on copyright page
 - Use globals.thread module for all threading activity
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Files page: Optional filter for hidden files & folders
