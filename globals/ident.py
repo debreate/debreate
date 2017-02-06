@@ -174,6 +174,7 @@ class BtnId(FieldId):
         self.BROWSE = self.NewId()
         self.CANCEL = self.AddStaticId(wx.ID_CANCEL)
         self.CLEAR = self.AddStaticId(wx.ID_CLEAR)
+        self.CLOSE = self.AddStaticId(wx.ID_CLOSE)
         self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK)
         self.IMPORT = self.NewId()
         self.MODE = self.NewId()
@@ -183,6 +184,7 @@ class BtnId(FieldId):
         self.RENAME = self.NewId()
         self.SAVE = self.AddStaticId(wx.ID_SAVE)
         self.SRC = self.NewId()
+        self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM)
 
 btnid = BtnId()
 
