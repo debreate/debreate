@@ -26,6 +26,7 @@ from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
+from ui.style           import layout as lyt
 from wiz.helper         import GetMainWindow
 from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
@@ -119,7 +120,7 @@ class Page(WizardPage):
         
         # *** Layout *** #
         
-        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_BOTTOM = lyt.ALGN_LB
         
         lyt_top = wx.GridBagSizer()
         lyt_top.SetCols(6)
