@@ -49,6 +49,7 @@ from ui.panel               import BorderedPanel
 from ui.progress            import PD_DEFAULT_STYLE
 from ui.progress            import ProgressDialog
 from ui.progress            import TimedProgressDialog
+from ui.style               import layout as lyt
 from ui.textpreview         import TextPreview
 from wiz.helper             import FieldEnabled
 from wiz.helper             import GetField
@@ -141,7 +142,7 @@ class Page(WizardPage):
         prev_row = next_row
         for CHK in pnl_options.Children:
             row = next_row
-            FLAGS = wx.LEFT|wx.RIGHT
+            FLAGS = lyt.PAD_LR
             
             if CHK.col:
                 row = prev_row
@@ -163,7 +164,7 @@ class Page(WizardPage):
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(wx.StaticText(self, label=GT(u'Extra Options')), 0,
-                wx.ALIGN_LEFT|wx.ALIGN_BOTTOM|wx.LEFT, 5)
+                lyt.ALGN_LB|wx.LEFT, 5)
         lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
         
@@ -172,8 +173,8 @@ class Page(WizardPage):
             lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
         
         lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
-        lyt_main.Add(dsp_log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_buttons, 0, lyt.ALGN_C)
+        lyt_main.Add(dsp_log, 2, wx.EXPAND|lyt.PAD_LRB, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)

@@ -36,6 +36,7 @@ from input.toggle       import CheckBoxESS
 from ui.button          import CreateButton
 from ui.dialog          import DetailedMessageDialog
 from ui.layout          import BoxSizer
+from ui.style           import layout as lyt
 from wiz.helper         import ErrorTuple
 from wiz.helper         import GetFieldValue
 from wiz.helper         import GetMainWindow
@@ -109,7 +110,7 @@ class Page(WizardPage):
         
         # *** Layout *** #
         
-        LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
+        LEFT_BOTTOM = lyt.ALGN_LB
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
         
