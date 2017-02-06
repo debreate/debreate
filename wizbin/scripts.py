@@ -226,9 +226,7 @@ class Page(WizardPage):
     
     ## Retrieves page data from fields
     def Get(self):
-        scripts = {
-            
-            }
+        scripts = {}
         
         for DS, CHK, RB in self.script_objects:
             if CHK.GetValue():
