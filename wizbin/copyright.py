@@ -102,7 +102,7 @@ class Page(WizardPage):
         
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_top, 0, wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_top, 0, lyt.PAD_LR|wx.BOTTOM, 5)
         lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|lyt.PAD_LRB, 5)
         
         self.SetAutoLayout(True)

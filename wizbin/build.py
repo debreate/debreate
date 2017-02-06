@@ -117,7 +117,7 @@ class Page(WizardPage):
         prev_row = next_row
         for CHK in pnl_options.Children:
             row = next_row
-            FLAGS = wx.LEFT|wx.RIGHT
+            FLAGS = lyt.PAD_LR
             
             if CHK.col:
                 row = prev_row
@@ -149,7 +149,7 @@ class Page(WizardPage):
         
         lyt_main.AddSpacer(5)
         lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
-        lyt_main.Add(dsp_log, 2, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(dsp_log, 2, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)

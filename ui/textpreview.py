@@ -12,6 +12,7 @@ from dbr.language   import GT
 from input.text     import TextAreaPanel
 from ui.dialog      import BaseDialog
 from ui.layout      import BoxSizer
+from ui.style       import layout as lyt
 
 
 ## A simple dialog for previewing text
@@ -39,7 +40,7 @@ class TextPreview(BaseDialog):
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(text_display, 1, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(text_display, 1, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)

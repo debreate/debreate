@@ -169,8 +169,8 @@ class Page(WizardPage):
         lyt_main = BoxSizer(wx.VERTICAL)
         # Spacer is less on this page because text is aligned to bottom
         lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_main.Add(lyt_mid, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(lyt_top, 0, wx.EXPAND|lyt.PAD_LR, 5)
+        lyt_main.Add(lyt_mid, 0, lyt.PAD_LR, 5)
         lyt_main.Add(lyt_list, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)

@@ -204,8 +204,8 @@ class Page(WizardPage):
         lyt_opts1.Add(ti_type, 0, wx.EXPAND|wx.LEFT, 5)
         lyt_opts1.Add(chk_term, 0, LEFT_CENTER|wx.LEFT, 5)
         lyt_opts1.Add(txt_enc, 0, LEFT_CENTER|wx.TOP, 5)
-        lyt_opts1.Add(ti_enc, 0, wx.LEFT|wx.TOP, 5)
-        lyt_opts1.Add(chk_notify, 0, LEFT_CENTER|wx.LEFT|wx.TOP, 5)
+        lyt_opts1.Add(ti_enc, 0, lyt.PAD_LT, 5)
+        lyt_opts1.Add(chk_notify, 0, LEFT_CENTER|lyt.PAD_LT, 5)
         
         lyt_mid = wx.GridBagSizer()
         lyt_mid.SetCols(4)
@@ -221,21 +221,21 @@ class Page(WizardPage):
         # Row 2
         row += 1
         lyt_mid.Add(txt_name, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
-        lyt_mid.Add(ti_name, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
-        lyt_mid.Add(txt_exec, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
-        lyt_mid.Add(ti_exec, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_name, (row, 1), flag=wx.EXPAND|lyt.PAD_LT, border=5)
+        lyt_mid.Add(txt_exec, (row, 2), flag=LEFT_CENTER|lyt.PAD_LT, border=5)
+        lyt_mid.Add(ti_exec, (row, 3), flag=wx.EXPAND|lyt.PAD_LT, border=5)
         
         # Row 3
         row += 1
         lyt_mid.Add(txt_comm, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
-        lyt_mid.Add(ti_comm, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
-        lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|wx.LEFT|wx.TOP, border=5)
-        lyt_mid.Add(ti_icon, (row, 3), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_comm, (row, 1), flag=wx.EXPAND|lyt.PAD_LT, border=5)
+        lyt_mid.Add(txt_icon, (row, 2), flag=LEFT_CENTER|lyt.PAD_LT, border=5)
+        lyt_mid.Add(ti_icon, (row, 3), flag=wx.EXPAND|lyt.PAD_LT, border=5)
         
         # Row 4
         row += 1
         lyt_mid.Add(txt_mime, (row, 0), flag=LEFT_CENTER|wx.TOP, border=5)
-        lyt_mid.Add(ti_mime, (row, 1), flag=wx.EXPAND|wx.LEFT|wx.TOP, border=5)
+        lyt_mid.Add(ti_mime, (row, 1), flag=wx.EXPAND|lyt.PAD_LT, border=5)
         
         lyt_bottom = wx.GridBagSizer()
         
@@ -258,9 +258,9 @@ class Page(WizardPage):
         # --- Page 5 Sizer --- #
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_top, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        lyt_main.Add(lyt_opts1, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
-        lyt_main.Add(lyt_mid, 0, wx.EXPAND|wx.LEFT|wx.RIGHT|wx.TOP, 5)
+        lyt_main.Add(lyt_top, 0, wx.EXPAND|lyt.PAD_LR, 5)
+        lyt_main.Add(lyt_opts1, 0, wx.EXPAND|lyt.PAD_LRT, 5)
+        lyt_main.Add(lyt_mid, 0, wx.EXPAND|lyt.PAD_LRT, 5)
         lyt_main.Add(lyt_bottom, 1, wx.EXPAND|wx.ALL, 5)
         
         self.SetAutoLayout(True)

@@ -28,6 +28,7 @@ from ui.dialog              import ShowDialog
 from ui.dialog              import ShowErrorDialog
 from ui.dialog              import ShowMessageDialog
 from ui.layout              import BoxSizer
+from ui.style               import layout as lyt
 
 
 GAUGE_MAX = 100
@@ -92,12 +93,12 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         Lbtn_H1.Add(btn_cancel, 1, wx.ALIGN_BOTTOM|wx.LEFT, 2)
         
         Lguage_H1 = BoxSizer(wx.HORIZONTAL)
-        Lguage_H1.Add(self.gauge, 1, wx.LEFT|wx.RIGHT, 5)
+        Lguage_H1.Add(self.gauge, 1, lyt.PAD_LR, 5)
         
         Lmain_V = BoxSizer(wx.VERTICAL)
         Lmain_V.AddSpacer(1, wx.EXPAND)
-        Lmain_V.Add(Lstage_H1, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
-        Lmain_V.Add(Ltarget_H1, -1, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        Lmain_V.Add(Lstage_H1, -1, wx.EXPAND|lyt.PAD_LR, 5)
+        Lmain_V.Add(Ltarget_H1, -1, wx.EXPAND|lyt.PAD_LR, 5)
         Lmain_V.Add(Lbtn_H1, -1, wx.ALIGN_CENTER|wx.ALL, 5)
         Lmain_V.Add(Lguage_H1, -1, wx.EXPAND|wx.ALL, 5)
         Lmain_V.AddSpacer(1, wx.EXPAND)

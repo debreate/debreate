@@ -190,7 +190,7 @@ class Page(WizardPage):
         
         lyt_main = BoxSizer(wx.HORIZONTAL)
         lyt_main.Add(lyt_left, 1, wx.EXPAND|wx.ALL, 5)
-        lyt_main.Add(lyt_right, 0, wx.RIGHT|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_right, 0, lyt.PAD_RB, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)

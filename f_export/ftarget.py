@@ -12,6 +12,7 @@ from input.pathctrl import PathCtrl
 from input.toggle   import CheckBox
 from ui.layout      import BoxSizer
 from ui.panel       import BorderedPanel
+from ui.style       import layout as lyt
 
 
 ## A class that defines a standard target check box & custom target text input area
@@ -58,9 +59,9 @@ class FileOTarget(BorderedPanel):
         lyt_main = BoxSizer(wx.VERTICAL)
         
         lyt_main.AddSpacer(5)
-        lyt_main.Add(self.PathDefault, 0, wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(self.PathDefault, 0, lyt.PAD_LR, 5)
         lyt_main.AddSpacer(5)
-        lyt_main.Add(self.PathCustom, 0, wx.EXPAND|wx.LEFT|wx.RIGHT, 5)
+        lyt_main.Add(self.PathCustom, 0, wx.EXPAND|lyt.PAD_LR, 5)
         lyt_main.AddSpacer(5)
         
         self.SetAutoLayout(True)
