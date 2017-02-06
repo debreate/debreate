@@ -410,7 +410,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         pg_init.SetInfo()
         
         self.Wizard.AddPage(pg_init)
-        self.Wizard.Initialize()
+        self.Wizard.SetModeBin(0)
     
     
     ## Opens a dialog box with information about the program
