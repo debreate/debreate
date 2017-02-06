@@ -43,6 +43,7 @@ from ui.dialog          import ShowErrorDialog
 from ui.launcher        import LauncherTemplate
 from ui.layout          import BoxSizer
 from ui.notebook        import MultiTemplate
+from ui.style           import layout as lyt
 from ui.textpreview     import TextPreview
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetMainWindow
@@ -284,12 +285,6 @@ else:
             
             # *** Layout *** #
             
-            CENTER_EXPAND = wx.ALIGN_CENTER_VERTICAL|wx.EXPAND
-            CENTER_RIGHT = wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT
-            LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
-            LEFT_BOTTOM = wx.ALIGN_LEFT|wx.ALIGN_BOTTOM
-            RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
-            
             lyt_buttons = BoxSizer(wx.HORIZONTAL)
             lyt_buttons.Add(btn_open, 0)
             lyt_buttons.Add(btn_save, 0)
@@ -301,8 +296,8 @@ else:
             lyt_cat_btn.Add(btn_catclr, 0)
             
             lyt_cat_input = BoxSizer(wx.VERTICAL)
-            lyt_cat_input.Add(txt_category, 0, LEFT_BOTTOM)
-            lyt_cat_input.Add(self.ti_category, 0, wx.TOP|wx.BOTTOM, 5)
+            lyt_cat_input.Add(txt_category, 0, lyt.ALGN_LB)
+            lyt_cat_input.Add(self.ti_category, 0, lyt.PAD_TB, 5)
             lyt_cat_input.Add(lyt_cat_btn, 0)
             
             lyt_cat_main = BoxSizer(wx.HORIZONTAL)
@@ -314,33 +309,33 @@ else:
             lyt_grid.AddGrowableCol(1)
             
             # Row 1
-            lyt_grid.Add(self.txt_filename, (0, 0), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_filename, pos=(0, 1), flag=CENTER_EXPAND)
-            lyt_grid.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=CENTER_RIGHT)
+            lyt_grid.Add(self.txt_filename, (0, 0), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_filename, pos=(0, 1), flag=wx.EXPAND|lyt.ALGN_CV)
+            lyt_grid.Add(self.chk_filename, pos=(0, 2), span=(1, 2), flag=lyt.ALGN_CR)
             
             # Row 2
-            lyt_grid.Add(txt_name, (1, 0), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_name, (1, 1), flag=CENTER_EXPAND)
-            lyt_grid.Add(txt_type, (1, 2), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_type, (1, 3), flag=CENTER_EXPAND)
+            lyt_grid.Add(txt_name, (1, 0), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_name, (1, 1), flag=wx.EXPAND|lyt.ALGN_CV)
+            lyt_grid.Add(txt_type, (1, 2), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_type, (1, 3), flag=wx.EXPAND|lyt.ALGN_CV)
             
             # Row 3
-            lyt_grid.Add(txt_exec, (2, 0), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_exec, (2, 1), flag=CENTER_EXPAND)
-            lyt_grid.Add(txt_term, (2, 2), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.sel_term, (2, 3), flag=LEFT_CENTER)
+            lyt_grid.Add(txt_exec, (2, 0), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_exec, (2, 1), flag=wx.EXPAND|lyt.ALGN_CV)
+            lyt_grid.Add(txt_term, (2, 2), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.sel_term, (2, 3), flag=lyt.ALGN_CL)
             
             # Row 4
-            lyt_grid.Add(txt_comm, (3, 0), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_comm, (3, 1), flag=CENTER_EXPAND)
-            lyt_grid.Add(txt_notify, (3, 2), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.sel_notify, (3, 3), flag=LEFT_CENTER)
+            lyt_grid.Add(txt_comm, (3, 0), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_comm, (3, 1), flag=wx.EXPAND|lyt.ALGN_CV)
+            lyt_grid.Add(txt_notify, (3, 2), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.sel_notify, (3, 3), flag=lyt.ALGN_CL)
             
             # Row 5
-            lyt_grid.Add(txt_icon, (4, 0), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_icon, (4, 1), flag=CENTER_EXPAND)
-            lyt_grid.Add(txt_enc, (4, 2), flag=RIGHT_CENTER)
-            lyt_grid.Add(self.ti_enc, (4, 3), flag=CENTER_EXPAND)
+            lyt_grid.Add(txt_icon, (4, 0), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_icon, (4, 1), flag=wx.EXPAND|lyt.ALGN_CV)
+            lyt_grid.Add(txt_enc, (4, 2), flag=lyt.ALGN_CR)
+            lyt_grid.Add(self.ti_enc, (4, 3), flag=wx.EXPAND|lyt.ALGN_CV)
             
             lyt_border = BoxSizer(wx.VERTICAL)
             
@@ -353,7 +348,7 @@ else:
             # --- Page 5 Sizer --- #
             lyt_main = BoxSizer(wx.VERTICAL)
             lyt_main.AddSpacer(5)
-            lyt_main.Add(lyt_buttons, 0, wx.ALIGN_RIGHT|wx.RIGHT|wx.BOTTOM, 5)
+            lyt_main.Add(lyt_buttons, 0, lyt.ALGN_R|lyt.PAD_RB, 5)
             lyt_main.Add(self.chk_enable, 0, wx.LEFT, 5)
             lyt_main.Add(lyt_border, 1, wx.EXPAND|wx.ALL, 5)
             
