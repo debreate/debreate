@@ -365,7 +365,7 @@ class Wizard(wx.Panel):
         self.Layout()
         
         # Remove from page menu
-        GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Remove(pageId).Destroy()
+        GetMenu(menuid.PAGE).Remove(pageId).Destroy()
     
     
     ## Reset all but greeting page
