@@ -10,6 +10,8 @@
 
 import threading
 
+from dbr.log import Logger
+
 
 thr = threading
 
@@ -20,6 +22,10 @@ class Thread(thr.Thread):
         thr.Thread.__init__(self, target=function, args=args)
         
         self.Active = False
+    
+    
+    def __del__(self):
+        Logger.Debug(__name__, u'Destroying Thread instance; Thread is active: {}'.format(self.IsActive()))
     
     
     ## Retrieves the thread identifier
