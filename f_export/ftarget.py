@@ -121,7 +121,7 @@ class FileOTarget(BorderedPanel):
         
         self.PathCustom.SetValue(path)
         
-        return self.PathCustom.Value == path and not self.Path.Value
+        return self.PathCustom.GetValue() == path and not self.PathDefault.GetValue()
     
     
     ## Check if using default path
