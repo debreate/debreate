@@ -269,6 +269,11 @@ class Page(WizardPage):
     
     ## TODO: Doxygen
     def ExportBuild(self):
+        return self.Get()
+    
+    
+    ## Retrieves page data from fields
+    def Get(self):
         return self.GetCtrlInfo()
     
     
