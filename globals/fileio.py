@@ -150,16 +150,16 @@ def AppendFile(path, contents, noStrip=None, inputOnly=False):
 #  \param noStrip
 #    \b \e String of leading & trailing characters to not strip
 def ReadFile(path, split=False, convert=tuple, noStrip=None):
-    chars = u' \t\n\r'
+    strip_chars = u' \t\n\r'
     if noStrip:
         for C in noStrip:
-            chars = chars.replace(C, u'')
+            strip_chars = strip_chars.replace(C, u'')
     
     if not os.path.isfile(path):
         return
     
     FILE_BUFFER = codecs.open(path, u'r', u'utf-8')
-    contents = u''.join(FILE_BUFFER).strip(chars)
+    contents = u''.join(FILE_BUFFER).strip(strip_chars)
     FILE_BUFFER.close()
     
     if split:
@@ -182,16 +182,16 @@ def ReadFile(path, split=False, convert=tuple, noStrip=None):
 #  \param noStrip
 #    \b \e String of leading & trailing characters to not strip
 def WriteFile(path, contents, noStrip=None):
-    chars = u' \t\n\r'
+    strip_chars = u' \t\n\r'
     if noStrip:
         for C in noStrip:
-            chars = chars.replace(C, u'')
+            strip_chars = strip_chars.replace(C, u'')
     
     # Ensure we are dealing with a string
     if isinstance(contents, (tuple, list)):
         contents = u'\n'.join(contents)
     
-    contents = contents.strip(chars)
+    contents = contents.strip(strip_chars)
     
     if u'/' in path:
         target_dir = os.path.dirname(path)
