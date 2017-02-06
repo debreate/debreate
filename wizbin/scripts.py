@@ -313,7 +313,7 @@ class Page(WizardPage):
             script_object.SetValue(script_data)
     
     
-    ## TODO: Doxygen
+    ## Checks if one or more scripts can be exported
     def IsOkay(self):
         for DS, RB in self.script_objects:
             if DS.IsOkay():
