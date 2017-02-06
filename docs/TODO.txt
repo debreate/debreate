@@ -51,6 +51,7 @@ Priority:
 - Set/Save build page options with config file rather than project
 
 Non-priority:
+- Create 'zoom' button image (magnifying glass)
 - Add build option for 'create deb' or 'do not create deb'
 - Add build option to stage files in temp dir or target dir
 - Set up manpage template creation for executables in file list
