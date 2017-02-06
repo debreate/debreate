@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, thread, threading, time, traceback, wx
+import os, time, traceback, wx
 
 from dbr.event              import EVT_REFRESH_LOG
 from dbr.event              import RefreshLogEvent
@@ -19,6 +19,7 @@ from globals.fileio         import FileItem
 from globals.ident          import menuid
 from globals.paths          import PATH_logs
 from globals.strings        import GS
+from globals.threads        import Thread
 from input.text             import TextAreaPanel
 from ui.dialog              import GetFileOpenDialog
 from ui.dialog              import ShowDialog
@@ -54,7 +55,7 @@ class LogWindow(wx.Dialog):
         self.LogFile = FileItem(logFile)
         self.SetTitle()
         
-        self.LogPollThread = None
+        self.LogPollThread = Thread(self.PollLogFile)
         
         self.DspLog = TextAreaPanel(self, style=wx.TE_READONLY)
         self.DspLog.font_size = 8
@@ -104,14 +105,6 @@ class LogWindow(wx.Dialog):
         
         # Make sure log window is not shown at initialization
         self.Show(False)
-        
-        self.log_timestamp = os.stat(self.LogFile.GetPath()).st_mtime
-    
-    
-    ## Destructor clears the log polling thead
-    def __del__(self):
-        if self.LogPollThread and self.LogPollThread.is_alive():
-            self.LogPollThread.clear()
     
     
     ## Positions the log window relative to the main window
@@ -222,18 +215,11 @@ class LogWindow(wx.Dialog):
     
     ## Creates a thread that polls for changes in log file
     def PollLogFile(self, args=None):
-        self.LogPollThread = threading.current_thread()
-        
-        previous_timestamp = os.stat(self.LogFile.GetPath()).st_mtime
-        while self.IsShown():
-            current_timestamp = os.stat(self.LogFile.GetPath()).st_mtime
-            
-            if current_timestamp != previous_timestamp:
+        while self and self.IsShown():
+            if self.LogFile.TimestampChanged():
                 print(u'Log timestamp changed, loading new log ...')
                 
                 wx.PostEvent(self, RefreshLogEvent(0))
-                
-                previous_timestamp = current_timestamp
             
             time.sleep(LOG_WINDOW_REFRESH_INTERVAL)
     
@@ -282,4 +268,4 @@ class LogWindow(wx.Dialog):
         self.RefreshLog()
         self.Show(True)
         
-        thread.start_new_thread(self.PollLogFile, ())
+        self.LogPollThread.Start()
