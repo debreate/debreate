@@ -645,7 +645,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         # *** Get Control Data *** #
         control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
-        depends_data = self.self.Wizard.GetPage(pgid.CONTROL).Set(control_data)
+        depends_data = self.Wizard.GetPage(pgid.CONTROL).Set(control_data)
         self.Wizard.GetPage(pgid.DEPENDS).Set(depends_data)
         
         # *** Get Files Data *** #
