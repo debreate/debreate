@@ -1,8 +1,6 @@
 -- Known Bugs --
 
 Release:
-- QuickBuild
-  - Successive building in same instance sessions causes app to freeze
 - md5sum produces different hash for binary files than debuild
 - Lintian reports:
   - no-section-field
@@ -14,19 +12,12 @@ Release:
   - 'Refresh' & 'Browse' buttons on hidden on files page if width is sized down
 
 Priority:
-- Generate template button on copyright page moves header for system licenses
-- Error if user deletes license template while app is open & attempts to generate:
-  - TypeError: coercing to Unicode: need string or buffer, NoneType found
 
 Non-priority:
 - Log window has some issues with wx.Yield (only affects debugging mode)
 - Detailed progress dialog does not always size correctly on construction
-- Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
-  - Always occurs with wx 3.0
-  - Only occurs when using 'WriteText' method in wx 2.8
 - wx 2.8:
   - Taskbar icon does not show up
-  - 'Changes' text control is small on Changelog page
 - wx 3.0 only:
   - Credits list does not expand completely on right edge
 - Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command
