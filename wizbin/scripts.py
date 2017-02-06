@@ -207,6 +207,17 @@ class Page(WizardPage):
         return (dbrerrno.SUCCESS, None)
     
     
+    ## Retrieves page data from fields
+    def Get(self):
+        scripts = {}
+        
+        for DS, RB in self.script_objects:
+            if not TextIsEmpty(DS.GetValue()):
+                scripts[DS.GetFilename()] = DS.GetValue()
+        
+        return scripts
+    
+    
     ## Imports executables from files page for Auto-Link
     def ImportExes(self, event=None):
         event_id = event.GetId()
