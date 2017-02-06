@@ -291,7 +291,7 @@ class Page(WizardPage):
             
             Logger.Debug(__name__, u'Copying license {}'.format(template_file))
             
-            license_text = ReadFile(template_file, no_strip=u' ')
+            license_text = ReadFile(template_file, noStrip=u' ')
             
             # Number defines how many empty lines to add after the copyright header
             # Boolean/Integer defines whether copyright header should be centered/offset
