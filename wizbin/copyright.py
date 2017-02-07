@@ -374,7 +374,7 @@ class Page(WizardPage):
         self.dsp_copyright.Clear()
         
         if self.sel_templates.IsEnabled():
-            self.sel_templates.SetSelection(self.sel_templates.Default)
+            self.sel_templates.Reset()
             self.OnSelectLicense(self.sel_templates)
     
     
