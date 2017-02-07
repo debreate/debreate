@@ -21,6 +21,7 @@ from globals.execute    import GetExecutable
 from globals.execute    import GetSystemInstaller
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
+from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
@@ -34,7 +35,7 @@ from globals.tooltips   import SetPageToolTips
 from input.toggle       import CheckBox
 from input.toggle       import CheckBoxESS
 from startup.tests      import UsingTest
-from ui.button          import ButtonBuild64
+from ui.button          import CreateButton
 from ui.checklist       import CheckListDialog
 from ui.dialog          import DetailedMessageDialog
 from ui.dialog          import ShowErrorDialog
@@ -94,11 +95,10 @@ class Page(WizardPage):
         if UsingTest(u'alpha'):
             # FIXME: Move next to lintian check box
             self.lint_overrides = []
-            btn_lint_overrides = wx.Button(self, label=GT(u'Lintian overrides'))
+            btn_lint_overrides = CreateButton(self, GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
-        btn_build = ButtonBuild64(self)
-        btn_build.SetName(u'build')
+        btn_build = CreateButton(self, GT(u'Build'), u'build', btnid.BUILD, 64)
         
         # Display log
         dsp_log = OutputLog(self)
