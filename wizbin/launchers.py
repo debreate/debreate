@@ -160,9 +160,6 @@ class Page(WizardPage):
         # Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrl bug???)
         lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
         
-        # For manually setting background color after enable/disable
-        lst_categories.default_color = lst_categories.GetBackgroundColour()
-        
         self.OnToggle()
         
         SetPageToolTips(self)
