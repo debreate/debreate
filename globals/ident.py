@@ -149,7 +149,6 @@ class InputId(FieldId):
         self.KEY = self.NewId()
         self.LIST = self.NewId()
         self.MAINTAINER = self.NewId()
-        self.MD5 = self.NewId()
         self.MIME = self.NewId()
         self.NAME = self.NewId()
         self.NOTIFY = self.NewId()
