@@ -18,6 +18,7 @@ from globals.ident      import pgid
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.list         import ListCtrlESS
+from input.select       import Choice
 from ui.button          import ButtonAdd
 from ui.button          import ButtonAppend
 from ui.button          import ButtonClear
@@ -61,8 +62,7 @@ class Page(WizardPage):
             u'<<',
             )
         
-        self.sel_operator = wx.Choice(self, choices=opts_operator, name=u'operator')
-        self.sel_operator.Default = 0
+        self.sel_operator = Choice(self, choices=opts_operator, name=u'operator')
         self.sel_operator.SetSelection(self.sel_operator.Default)
         
         self.ti_version = wx.TextCtrl(self, name=u'version')
