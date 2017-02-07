@@ -19,6 +19,7 @@ from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.list         import ListCtrlESS
 from input.select       import Choice
+from input.text         import TextArea
 from ui.button          import ButtonAdd
 from ui.button          import ButtonAppend
 from ui.button          import ButtonClear
@@ -52,7 +53,7 @@ class Page(WizardPage):
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
         
-        self.ti_package = wx.TextCtrl(self, size=(300,25), name=u'package')
+        self.ti_package = TextArea(self, size=(300,25), name=u'package')
         
         opts_operator = (
             u'>=',
@@ -64,7 +65,7 @@ class Page(WizardPage):
         
         self.sel_operator = Choice(self, choices=opts_operator, name=u'operator')
         
-        self.ti_version = wx.TextCtrl(self, name=u'version')
+        self.ti_version = TextArea(self, name=u'version')
         
         self.ti_package.SetSize((100,50))
         
