@@ -27,12 +27,12 @@ from ui.panel           import ControlPanel
 class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr,
-            defaultValue=None):
+            defaultValue=None, required=False, outLabel=None):
         
         wx.ListView.__init__(self, parent, win_id, pos, size, style|wx.BORDER_NONE,
                 validator, name)
         ListCtrlAutoWidthMixin.__init__(self)
-        InputField.__init__(self, defaultValue)
+        InputField.__init__(self, defaultValue, required, outLabel)
         
         self.clr_enabled = self.GetBackgroundColour()
         self.clr_disabled = parent.GetBackgroundColour()
@@ -162,24 +162,29 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
 #  This is a dummy class to facilitate merging to & from unstable branch
 class ListCtrlBaseESS(ListCtrlBase, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr,
+            defaultValue=None, required=False, outLabel=None):
         
-        ListCtrlBase.__init__(self, parent, win_id, pos, size, style, validator, name)
+        ListCtrlBase.__init__(self, parent, win_id, pos, size, style, validator, name,
+                defaultValue, required, outLabel)
         EssentialField.__init__(self)
 
 
 ## Hack to make list control border have rounded edges
 class ListCtrl(BorderedPanel, ControlPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr,
+            defaultValue=None, required=False, outLabel=None):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
         if isinstance(self, EssentialField):
-            self.MainCtrl = ListCtrlBaseESS(self, style=style, validator=validator)
+            self.MainCtrl = ListCtrlBaseESS(self, style=style, validator=validator,
+                    defaultValue=defaultValue, required=required, outLabel=outLabel)
         
         else:
-            self.MainCtrl = ListCtrlBase(self, style=style, validator=validator)
+            self.MainCtrl = ListCtrlBase(self, style=style, validator=validator,
+                    defaultValue=defaultValue, required=required, outLabel=outLabel)
         
         # Match panel background color to list control
         self.SetBackgroundColour(self.MainCtrl.GetBackgroundColour())
@@ -364,6 +369,11 @@ class ListCtrl(BorderedPanel, ControlPanel):
         self.MainCtrl.InsertStringItem(index, label)
     
     
+    ## Checks if field is required for building
+    def IsRequired(self):
+        return self.MainCtrl.IsRequired()
+    
+    
     ## Some bug workarounds for resizing the list & its columns in wx 3.0
     #  
     #  The last column is automatically expanded to fill
@@ -441,9 +451,11 @@ class ListCtrl(BorderedPanel, ControlPanel):
 #  This is a dummy class to facilitate merging to & from unstable branch
 class ListCtrlESS(ListCtrl, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr):
+            style=wx.LC_ICON, validator=wx.DefaultValidator, name=wx.ListCtrlNameStr,
+            defaultValue=None, required=False, outLabel=None):
         
-        ListCtrl.__init__(self, parent, win_id, pos, size, style, validator, name)
+        ListCtrl.__init__(self, parent, win_id, pos, size, style, validator, name,
+                defaultValue, required, outLabel)
         EssentialField.__init__(self)
 
 
@@ -456,9 +468,10 @@ class ListCtrlESS(ListCtrl, EssentialField):
 class BasicFileList(ListCtrl):
     def __init__(self, parent, win_id=wx.ID_ANY, hlExes=False, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
-            name=wx.ListCtrlNameStr):
+            name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name)
+        ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name,
+                defaultValue=defaultValue, required=required, outLabel=outLabel)
         
         # Highlights executables in red if 'True'
         self.HLExes = hlExes
@@ -659,8 +672,11 @@ class BasicFileList(ListCtrl):
 #  
 #  Creates a ListCtrl class in which every column's text can be edited
 class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
-    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        ListCtrl.__init__(self, parent, win_id, style=wx.LC_REPORT, name=name)
+    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr, defaultValue=None,
+            required=False, outLabel=None):
+        
+        ListCtrl.__init__(self, parent, win_id, style=wx.LC_REPORT, name=name,
+                defaultValue=defaultValue, required=required, outLabel=outLabel)
         TextEditMixin.__init__(self)
         wx.FileDropTarget.__init__(self)
         
@@ -982,6 +998,8 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
 #
 #  This is a dummy class to facilitate merging to & from unstable branch
 class FileListESS(FileList, EssentialField):
-    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr):
-        FileList.__init__(self, parent, win_id, name)
+    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr, defaultValue=None,
+            required=False, outLabel=None):
+        
+        FileList.__init__(self, parent, win_id, name, defaultValue, required, outLabel)
         EssentialField.__init__(self)
