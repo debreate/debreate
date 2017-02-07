@@ -13,7 +13,7 @@ from dbr.log            import Logger
 from globals.execute    import GetCommandOutput
 from globals.execute    import GetExecutable
 from globals.fileio     import WriteFile
-from globals.ident      import inputid
+from globals.ident      import chkid
 from globals.ident      import pgid
 from ui.dialog          import ErrorDialog
 from wiz.helper         import GetField
@@ -36,7 +36,7 @@ def WriteMD5(stage_dir, parent=None):
         if not parent:
             parent = GetMainWindow()
         
-        md5_label = GetField(pgid.BUILD, inputid.MD5).GetLabel()
+        md5_label = GetField(pgid.BUILD, chkid.MD5).GetLabel()
         
         err_msg1 = GT(u'The "md5sum" command was not found on the system.')
         err_msg2 = GT(u'Uncheck the "{}" box.').format(md5_label)
