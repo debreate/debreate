@@ -25,10 +25,10 @@ from wiz.helper         import GetMainWindow
 class TextArea(wx.TextCtrl, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
-            name=wx.TextCtrlNameStr, outLabel=None):
+            name=wx.TextCtrlNameStr, required=False, outLabel=None):
         
         wx.TextCtrl.__init__(self, parent, win_id, value, pos, size, style, validator, name)
-        InputField.__init__(self, defaultValue, outLabel)
+        InputField.__init__(self, defaultValue, required, outLabel)
         
         # Enable to override default behavior of adding filename string
         self.DragAcceptFiles(True)
@@ -119,10 +119,10 @@ class TextArea(wx.TextCtrl, InputField):
 class TextAreaESS(TextArea, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
-            name=wx.TextCtrlNameStr, outLabel=None):
+            name=wx.TextCtrlNameStr, required=False, outLabel=None):
         
         TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
-                name, outLabel)
+                name, required, outLabel)
         EssentialField.__init__(self)
 
 
@@ -130,10 +130,10 @@ class TextAreaESS(TextArea, EssentialField):
 class TextAreaML(TextArea):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
-            name=wx.TextCtrlNameStr, outLabel=None):
+            name=wx.TextCtrlNameStr, required=False, outLabel=None):
         
         TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style|wx.TE_MULTILINE,
-                validator, name, outLabel)
+                validator, name, required, outLabel)
     
     
     ## Sets the font size of the text area
@@ -151,10 +151,10 @@ class TextAreaML(TextArea):
 class TextAreaMLESS(TextAreaML, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
-            name=wx.TextCtrlNameStr, outLabel=None):
+            name=wx.TextCtrlNameStr, required=False, outLabel=None):
         
         TextAreaML.__init__(self, parent, win_id, value, defaultValue, pos, size, style, validator,
-                name, outLabel)
+                name, required, outLabel)
         EssentialField.__init__(self)
 
 
@@ -176,12 +176,12 @@ button_H_pos = {
 class TextAreaPanel(BorderedPanel, ControlPanel):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
-            name=wx.TextCtrlNameStr, outLabel=None):
+            name=wx.TextCtrlNameStr, required=False, outLabel=None):
         
         BorderedPanel.__init__(self, parent, win_id, pos, size, name=name)
         
         self.MainCtrl = TextAreaML(self, value=value, defaultValue=defaultValue,
-                style=style|wx.BORDER_NONE, outLabel=outLabel)
+                style=style|wx.BORDER_NONE, required=required, outLabel=outLabel)
         
         # For setting color of disabled panel
         self.clr_disabled = self.GetBackgroundColour()
@@ -299,6 +299,11 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
         return self.MainCtrl.IsEmpty()
     
     
+    ## Checks if field is required for building
+    def IsRequired(self):
+        return self.MainCtrl.IsRequired()
+    
+    
     ## TODO: Doxygen
     def OnToggleTextSize(self, event=None):
         # Save insertion point
@@ -407,8 +412,8 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
 class TextAreaPanelESS(TextAreaPanel, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
             monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
-            name=wx.TextCtrlNameStr, outLabel=None):
+            name=wx.TextCtrlNameStr, required=False, outLabel=None):
         
         TextAreaPanel.__init__(self, parent, win_id, value, defaultValue, monospace, button, pos,
-                size, style, name, outLabel)
+                size, style, name, required, outLabel)
         EssentialField.__init__(self)
