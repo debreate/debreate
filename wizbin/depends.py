@@ -63,7 +63,6 @@ class Page(WizardPage):
             )
         
         self.sel_operator = Choice(self, choices=opts_operator, name=u'operator')
-        self.sel_operator.SetSelection(self.sel_operator.Default)
         
         self.ti_version = wx.TextCtrl(self, name=u'version')
         
@@ -222,7 +221,7 @@ class Page(WizardPage):
                 break
         
         self.ti_package.Clear()
-        self.sel_operator.SetSelection(self.sel_operator.Default)
+        self.sel_operator.Reset()
         self.ti_version.Clear()
         self.lst_deps.DeleteAllItems()
     
