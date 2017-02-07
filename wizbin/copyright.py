@@ -53,7 +53,6 @@ class Page(WizardPage):
         
         ## A list of available license templates
         self.sel_templates = Choice(self, selid.LICENSE, name=u'list»')
-        self.sel_templates.Default = 0
         
         # Initialize the template list
         self.OnRefreshList()
