@@ -231,8 +231,8 @@ class ManBanner(ManSectBase):
         txt_section = wx.StaticText(self.Panel, label=GT(u'Section'))
         
         self.sel_section = Choice(self.Panel, choices=tuple(sections))
-        self.sel_section.default = u'1'
-        self.sel_section.SetStringSelection(self.sel_section.default)
+        self.sel_section.Default = u'1'
+        self.sel_section.SetStringSelection(self.sel_section.Default)
         
         # Section description that changes with EVT_CHOICE
         self.label_section = wx.StaticText(self.Panel)

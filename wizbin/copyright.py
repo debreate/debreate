@@ -53,7 +53,7 @@ class Page(WizardPage):
         
         ## A list of available license templates
         self.sel_templates = Choice(self, selid.LICENSE, name=u'list»')
-        self.sel_templates.default = 0
+        self.sel_templates.Default = 0
         
         # Initialize the template list
         self.OnRefreshList()
@@ -380,7 +380,7 @@ class Page(WizardPage):
         self.dsp_copyright.Clear()
         
         if self.sel_templates.IsEnabled():
-            self.sel_templates.SetSelection(self.sel_templates.default)
+            self.sel_templates.SetSelection(self.sel_templates.Default)
             self.OnSelectLicense(self.sel_templates)
     
     
