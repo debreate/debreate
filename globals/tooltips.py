@@ -14,6 +14,7 @@ from dbr.language       import GT
 from dbr.templates      import local_templates_path
 from globals.changes    import section_delims
 from globals.execute    import GetSystemInstaller
+from globals.ident      import btnid
 from globals.ident      import pgid
 from wiz.helper         import FieldEnabled
 
@@ -200,7 +201,7 @@ TT_build = {
         GT(u'See "Help ➜ Reference ➜ Lintian Tags Explanation"'),
         ),
     u'lintian_disabled': GT(u'Install lintian package for this option'),
-    u'build': GT(u'Start building'),
+    btnid.BUILD: GT(u'Start building'),
     u'install': (
         GT(u'Install package using a system installer after build'), u'',
         u'{} {}'.format(GT(u'System installer set to:'), GetSystemInstaller()),
@@ -242,8 +243,8 @@ def SetToolTip(tooltip, control, required=False):
 
 ## Sets multiple tooltips at once
 def SetToolTips(tooltip, control_list, required=False):
-    for C in control_list:
-        SetToolTip(tooltip, C, required)
+    for FIELD in control_list:
+        SetToolTip(tooltip, FIELD, required)
 
 
 def SetPageToolTips(parent, page_id=None):
@@ -253,33 +254,48 @@ def SetPageToolTips(parent, page_id=None):
         page_id = parent.GetId()
     
     # Recursively set tooltips for children
-    for C in parent.GetChildren():
-        control_list.append(C)
+    for FIELD in parent.GetChildren():
+        control_list.append(FIELD)
         
-        sub_children = C.GetChildren()
+        sub_children = FIELD.GetChildren()
         if sub_children:
-            SetPageToolTips(C, page_id)
+            SetPageToolTips(FIELD, page_id)
     
     if page_id in TT_pages:
-        for C in control_list:
-            try:
-                name = C.tt_name.lower()
-            except AttributeError:
-                name = C.GetName().lower()
+        for FIELD in control_list:
+            tooltip = None
             
-            required = False
-            if name:
-                if u'*' in name[-2:]:
-                    #name = name[:name.index(u'*')]
-                    required = True
+            # Use ID first
+            field_id = FIELD.GetId()
+            if field_id in TT_pages[page_id]:
+                print(u'\nDEBUG: SetPageToolTips:')
+                print(u'  Using ID')
+                print(u'  Page ID: {}'.format(page_id))
+                print(u'  Build page: {}'.format(page_id == pgid.BUILD))
                 
-                # The » character causes a different tooltip to be set for disabled fields
-                if u'»' in name[-2:] and not FieldEnabled(C):
-                    name = u'{}_disabled'.format(name)
-                
-                name = name.replace(u'*', u'')
-                name = name.replace(u'»', u'')
+                tooltip = TT_pages[page_id][field_id]
             
-            if name in TT_pages[page_id]:
-                tooltip = TT_pages[page_id][name]
-                SetToolTip(tooltip, C, required)
+            else:
+                try:
+                    name = FIELD.tt_name.lower()
+                except AttributeError:
+                    name = FIELD.GetName().lower()
+                
+                required = False
+                if name:
+                    if u'*' in name[-2:]:
+                        #name = name[:name.index(u'*')]
+                        required = True
+                    
+                    # The » character causes a different tooltip to be set for disabled fields
+                    if u'»' in name[-2:] and not FieldEnabled(FIELD):
+                        name = u'{}_disabled'.format(name)
+                    
+                    name = name.replace(u'*', u'')
+                    name = name.replace(u'»', u'')
+                
+                if name in TT_pages[page_id]:
+                    tooltip = TT_pages[page_id][name]
+            
+            if tooltip:
+                SetToolTip(tooltip, FIELD, required)
