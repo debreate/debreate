@@ -15,6 +15,7 @@ from globals.ident      import btnid
 from globals.ident      import pgid
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
+from input.toggle       import CheckBox
 from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
@@ -143,8 +144,7 @@ class Page(WizardPage):
         new_title = None
         
         if not rename:
-            easy_mode = wx.CheckBox(getname, label=u'Easy mode')
-            easy_mode.SetValue(True)
+            easy_mode = CheckBox(getname, label=u'Easy mode', defaultValue=True)
             
             sizer = getname.GetSizer()
             insert_point = len(sizer.GetChildren()) - 1
