@@ -19,10 +19,10 @@ from input.ifield       import InputField
 class Choice(wx.Choice, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
-            defaultValue=0):
+            defaultValue=0, required=False, outLabel=None):
         
         wx.Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
-        InputField.__init__(self, defaultValue)
+        InputField.__init__(self, defaultValue, required, outLabel)
     
     
     ## wx 2.8 does not define wx.Choice.Set
@@ -54,9 +54,11 @@ class Choice(wx.Choice, InputField):
 #  This is a dummy class to facilitate merging to & from unstable branch
 class ChoiceESS(Choice, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr):
+            choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
+            defaultValue=0, required=False, outLabel=None):
         
-        Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
+        Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name,
+                defaultValue, required, outLabel)
         EssentialField.__init__(self)
 
 
@@ -87,11 +89,12 @@ class ChoiceESS(Choice, EssentialField):
 class ComboBox(OwnerDrawnComboBox, InputField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
-            name=wx.ComboBoxNameStr, monospace=False, defaultValue=wx.EmptyString):
+            name=wx.ComboBoxNameStr, monospace=False, defaultValue=wx.EmptyString,
+            required=False, outLabel=None):
         
         OwnerDrawnComboBox.__init__(self, parent, win_id, value, pos, size, choices, style,
                 validator, name)
-        InputField.__init__(self, defaultValue)
+        InputField.__init__(self, defaultValue, required, outLabel)
         
         if wx.MAJOR_VERSION < 3:
             self.clr_disabled = self.GetBackgroundColour()
@@ -154,8 +157,9 @@ class ComboBox(OwnerDrawnComboBox, InputField):
 class ComboBoxESS(ComboBox, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,
-            name=wx.ComboBoxNameStr, monospace=False, defaultValue=wx.EmptyString):
+            name=wx.ComboBoxNameStr, monospace=False, defaultValue=wx.EmptyString,
+            required=False, outLabel=None):
         
         ComboBox.__init__(self, parent, win_id, value, pos, size, choices, style, validator,
-                name, monospace, defaultValue)
+                name, monospace, defaultValue, required, outLabel)
         EssentialField.__init__(self)
