@@ -86,8 +86,8 @@ class Page(WizardPage):
         
         txt_arch = wx.StaticText(pnl_require, label=GT(u'Architecture'), name=u'architecture')
         sel_arch = ChoiceESS(pnl_require, inputid.ARCH, choices=opts_arch, name=txt_arch.Name)
-        sel_arch.default = 0
-        sel_arch.SetSelection(sel_arch.default)
+        sel_arch.Default = 0
+        sel_arch.SetSelection(sel_arch.Default)
         
         # *** Recommended fields *** #
         
@@ -118,8 +118,8 @@ class Page(WizardPage):
         
         txt_priority = wx.StaticText(pnl_recommend, label=GT(u'Priority'), name=u'priority')
         sel_priority = ChoiceESS(pnl_recommend, choices=opts_priority, name=txt_priority.Name)
-        sel_priority.default = 0
-        sel_priority.SetSelection(sel_priority.default)
+        sel_priority.Default = 0
+        sel_priority.SetSelection(sel_priority.Default)
         
         txt_synopsis = wx.StaticText(pnl_recommend, label=GT(u'Short Description'), name=u'synopsis')
         ti_synopsis = TextAreaESS(pnl_recommend, name=txt_synopsis.Name)
@@ -139,7 +139,7 @@ class Page(WizardPage):
         
         txt_essential = wx.StaticText(pnl_option, label=GT(u'Essential'), name=u'essential')
         self.chk_essential = CheckBoxESS(pnl_option, name=u'essential')
-        self.chk_essential.default = False
+        self.chk_essential.Default = False
         
         self.grp_input = (
             ti_package,
@@ -481,9 +481,9 @@ class Page(WizardPage):
                 I.Clear()
         
         for S in self.grp_select:
-            S.SetSelection(S.default)
+            S.SetSelection(S.Default)
         
-        self.chk_essential.SetValue(self.chk_essential.default)
+        self.chk_essential.SetValue(self.chk_essential.Default)
     
     
     ## Opening Project/File & Setting Fields

@@ -104,7 +104,7 @@ class Page(WizardPage):
         txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
         self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', warn=True)
         self.ti_autolink.SetName(u'target')
-        self.ti_autolink.default = self.ti_autolink.GetValue()
+        self.ti_autolink.Default = self.ti_autolink.GetValue()
         
         # Auto-Link executables to be linked
         self.Executables = BasicFileList(pnl_autolink, size=(200, 200), hlExes=True,

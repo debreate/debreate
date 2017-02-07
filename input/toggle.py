@@ -23,16 +23,16 @@ class CheckBox(wx.CheckBox, CommandField):
         wx.CheckBox.__init__(self, parent, win_id, label, pos, size, style, name=name)
         CommandField.__init__(self, commands, requireAll)
         
-        self.default = defaultValue
+        self.Default = defaultValue
         self.tt_name = name
         
         # Initialize with default value
-        self.SetValue(self.default)
+        self.SetValue(self.Default)
     
     
     ## TODO: Doxygen
     def GetDefaultValue(self):
-        return self.default
+        return self.Default
     
     
     ## Retrieves current 'checked' state
@@ -64,7 +64,7 @@ class CheckBox(wx.CheckBox, CommandField):
     
     ## TODO: Doxygen
     def SetDefaultValue(self, value):
-        self.default = value
+        self.Default = value
     
     
     ## Override inherited method to not allow changing value if disabled

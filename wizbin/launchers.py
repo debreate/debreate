@@ -499,7 +499,7 @@ class Page(WizardPage):
     def Reset(self):
         chk_filename = GetField(self, chkid.FNAME)
         
-        chk_filename.SetValue(chk_filename.default)
+        chk_filename.SetValue(chk_filename.Default)
         GetField(self, inputid.FNAME).Clear()
         
         for IDS in inputid, chkid, listid:
