@@ -20,6 +20,7 @@ from globals.paths      import ConcatPaths
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.list         import FileListESS
+from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
 from ui.button          import ButtonAdd
 from ui.button          import ButtonBrowse
@@ -99,8 +100,7 @@ class Page(WizardPage):
         btn_clear = ButtonClear(self)
         
         self.prev_dest_value = u'/usr/bin'
-        self.ti_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
-        self.ti_target.Default = u'/usr/bin'
+        self.ti_target = TextArea(self, defaultValue=self.prev_dest_value, name=u'target')
         
         self.btn_browse = ButtonBrowse(self)
         
