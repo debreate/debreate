@@ -10,14 +10,15 @@
 
 import wx
 
-from globals.strings import IsString
+from globals.strings    import IsString
+from wiz.helper         import FieldEnabled
 
 
 ## An input field that sets a default value
 class InputField:
-    def __init__(self, defaultValue, outLabel=None):
-        # TODO: Rename to 'self.Default'
+    def __init__(self, defaultValue, required=False, outLabel=None):
         self.Default = defaultValue
+        self.Required = required
         self.OutputLabel = outLabel
         
         # Initialize with default value
@@ -37,6 +38,17 @@ class InputField:
     ## TODO: Doxygen
     def HasOutputLabel(self):
         return IsString(self.OutputLabel) and self.OutputLabel != wx.EmptyString
+    
+    
+    ## Checks if field is required for building
+    #
+    #  \return
+    #    \b \e True if the field is enabled & 'Required' attribute set to 'True'
+    def IsRequired(self):
+        if FieldEnabled(self) and self.Required:
+            return True
+        
+        return False
     
     
     ## Resets field to default value
