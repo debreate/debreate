@@ -71,9 +71,9 @@ class Page(WizardPage):
         
         pnl_categories = BorderedPanel(self)
         
-        self.default_category = u'Depends'
+        self.DefaultCategory = u'Depends'
         
-        rb_dep = wx.RadioButton(pnl_categories, label=GT(u'Depends'), name=self.default_category, style=wx.RB_GROUP)
+        rb_dep = wx.RadioButton(pnl_categories, label=GT(u'Depends'), name=self.DefaultCategory, style=wx.RB_GROUP)
         rb_pre = wx.RadioButton(pnl_categories, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
         rb_rec = wx.RadioButton(pnl_categories, label=GT(u'Recommends'), name=u'Recommends')
         rb_sug = wx.RadioButton(pnl_categories, label=GT(u'Suggests'), name=u'Suggests')
@@ -190,7 +190,7 @@ class Page(WizardPage):
     
     ## TODO: Doxygen
     def GetDefaultCategory(self):
-        return self.default_category
+        return self.DefaultCategory
     
     
     ## TODO: Doxygen
@@ -217,7 +217,7 @@ class Page(WizardPage):
     ## Resets all fields on page to default values
     def Reset(self):
         for C in self.categories:
-            if C.GetName() == self.default_category:
+            if C.GetName() == self.DefaultCategory:
                 C.SetValue(True)
                 break
         
