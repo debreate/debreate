@@ -22,7 +22,7 @@ from globals.execute        import GetCommandOutput
 from globals.execute        import GetExecutable
 from globals.execute        import GetSystemInstaller
 from globals.fileio         import ReadFile
-from globals.ident          import inputid
+from globals.ident          import inputid, chkid
 from globals.ident          import pgid
 from globals.paths          import ConcatPaths
 from globals.paths          import PATH_app
@@ -76,7 +76,7 @@ class Page(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = CheckBoxESS(pnl_options, inputid.MD5, label=GT(u'Create md5sums file'))
+        self.chk_md5 = CheckBoxESS(pnl_options, chkid.MD5, label=GT(u'Create md5sums file'))
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.SetName(u'MD5')
