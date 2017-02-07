@@ -631,7 +631,7 @@ class Page(WizardPage):
     
     ## Resets all fields on page to default values
     def Reset(self):
-        self.lst_files.DeleteAllItems()
+        self.lst_files.Reset()
     
     
     ## TODO: Doxygen
