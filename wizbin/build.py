@@ -78,43 +78,41 @@ class Page(WizardPage):
         
         pnl_options = BorderedPanel(self)
         
-        self.chk_md5 = CheckBoxESS(pnl_options, chkid.MD5, label=GT(u'Create md5sums file'))
+        self.chk_md5 = CheckBoxESS(pnl_options, chkid.MD5, GT(u'Create md5sums file'),
+                name=u'MD5', defaultValue=True)
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
-        self.chk_md5.SetName(u'MD5')
-        self.chk_md5.Default = True
         self.chk_md5.col = 0
         
         if UsingTest(u'alpha'):
             # Brings up control file preview for editing
-            self.chk_editctrl = CheckBoxCFG(pnl_options, label=GT(u'Preview control file for editing'),
+            self.chk_editctrl = CheckBoxCFG(pnl_options, chkid.EDIT, GT(u'Preview control file for editing'),
                     name=u'editctrl')
             self.chk_editctrl.col = 1
         
+        # TODO: Use CheckBoxCFG instead of CheckBoxESS:
+        #           Fields will be set from config instead of project file
+        
         # Option to strip binaries
-        self.chk_strip = CheckBoxESS(pnl_options, label=GT(u'Strip binaries'), name=u'strip»')
-        self.chk_strip.Default = True
+        self.chk_strip = CheckBoxESS(pnl_options, chkid.STRIP, GT(u'Strip binaries'),
+                name=u'strip»', defaultValue=True)
         self.chk_strip.col = 0
         
         # Deletes the temporary build tree
-        self.chk_rmstage = CheckBoxESS(pnl_options, label=GT(u'Delete staged directory'))
-        self.chk_rmstage.SetName(u'RMSTAGE')
-        self.chk_rmstage.Default = True
-        self.chk_rmstage.SetValue(self.chk_rmstage.Default)
+        self.chk_rmstage = CheckBoxESS(pnl_options, chkid.DELETE, GT(u'Delete staged directory'),
+                name =u'RMSTAGE', defaultValue=True)
         self.chk_rmstage.col = 0
         
         # Checks the output .deb for errors
-        self.chk_lint = CheckBoxESS(pnl_options, label=GT(u'Check package for errors with lintian'))
+        self.chk_lint = CheckBoxESS(pnl_options, chkid.LINT, GT(u'Check package for errors with lintian'),
+                name=u'LINTIAN', defaultValue=True)
         self.chk_lint.tt_name = u'lintian»'
-        self.chk_lint.SetName(u'LINTIAN')
-        self.chk_lint.Default = True
         self.chk_lint.col = 0
         
         # Installs the deb on the system
-        self.chk_install = CheckBox(pnl_options, label=GT(u'Install package after build'))
+        self.chk_install = CheckBox(pnl_options, chkid.INSTALL, GT(u'Install package after build'),
+                name=u'INSTALL')
         self.chk_install.tt_name = u'install»'
-        self.chk_install.SetName(u'INSTALL')
-        self.chk_install.Default = False
         self.chk_install.col = 0
         
         # *** Lintian Overrides *** #
