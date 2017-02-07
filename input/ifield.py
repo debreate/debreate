@@ -16,8 +16,7 @@ from globals.strings import IsString
 ## An input field that sets a default value
 class InputField:
     def __init__(self, defaultValue, outLabel=None):
-        # TODO: Rename to 'self.Default'
-        self.default = defaultValue
+        self.Default = defaultValue
         self.OutputLabel = outLabel
         
         # Initialize with default value
@@ -26,7 +25,7 @@ class InputField:
     
     ## Retrieves the field's default value
     def GetDefaultValue(self):
-        return self.default
+        return self.Default
     
     
     ## Retrieves label for text output
@@ -43,25 +42,25 @@ class InputField:
     def Reset(self):
         if isinstance(self, wx.Choice):
             if self.GetCount():
-                if IsString(self.default):
-                    self.SetStringSelection(self.default)
+                if IsString(self.Default):
+                    self.SetStringSelection(self.Default)
                     
-                    return self.StringSelection == self.default
+                    return self.StringSelection == self.Default
                 
                 else:
-                    self.SetSelection(self.default)
+                    self.SetSelection(self.Default)
                     
-                    return self.Selection == self.default
+                    return self.Selection == self.Default
         
         elif isinstance(self, wx.ListCtrl):
             #  FIXME: What to do if default value is not 'None'
-            if self.default == None:
+            if self.Default == None:
                 return self.DeleteAllItems()
         
         else:
-            self.SetValue(self.default)
+            self.SetValue(self.Default)
     
     
     ## Sets the field's default value
     def SetDefaultValue(self, value):
-        self.default = value
+        self.Default = value

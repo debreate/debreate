@@ -695,10 +695,10 @@ class LauncherTemplate(ScrolledPanel):
     ## TODO: Doxygen
     def Reset(self):
         for O in self.opts_input:
-            O.SetValue(O.default)
+            O.SetValue(O.Default)
         
         for O in self.opts_choice:
-            O.SetSelection(O.default)
+            O.SetSelection(O.Default)
         
         for O in self.opts_list:
             O.DeleteAllItems()

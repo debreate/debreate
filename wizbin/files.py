@@ -77,10 +77,10 @@ class Page(WizardPage):
         rb_locbin = wx.RadioButton(pnl_target, label=u'/usr/local/bin')
         rb_loclib = wx.RadioButton(pnl_target, label=u'/usr/local/lib')
         self.rb_custom = wx.RadioButton(pnl_target, inputid.CUSTOM, GT(u'Custom'))
-        self.rb_custom.default = True
+        self.rb_custom.Default = True
         
         # Start with "Custom" selected
-        self.rb_custom.SetValue(self.rb_custom.default)
+        self.rb_custom.SetValue(self.rb_custom.Default)
         
         # group buttons together
         # FIXME: Unnecessary???
@@ -100,7 +100,7 @@ class Page(WizardPage):
         
         self.prev_dest_value = u'/usr/bin'
         self.ti_target = wx.TextCtrl(self, value=self.prev_dest_value, name=u'target')
-        self.ti_target.default = u'/usr/bin'
+        self.ti_target.Default = u'/usr/bin'
         
         self.btn_browse = ButtonBrowse(self)
         

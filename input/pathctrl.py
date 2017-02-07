@@ -21,7 +21,7 @@ class PathCtrl(TextArea):
         TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
         
         # TODO: Rename to 'self.Default'
-        self.default = defaultValue
+        self.Default = defaultValue
         
         self.Warn = warn
         
@@ -37,7 +37,7 @@ class PathCtrl(TextArea):
     
     ## Retrieves the text area's default value
     def GetDefaultValue(self):
-        return self.default
+        return self.Default
     
     
     ## Key events trigger checking path availability
@@ -86,7 +86,7 @@ class PathCtrl(TextArea):
     
     ## Sets the text area's default value
     def SetDefaultValue(self, default):
-        self.default = default
+        self.Default = default
 
 
 ## PathCtrl that notifies main window to mark project dirty
