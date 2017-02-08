@@ -6,9 +6,8 @@
 # See: docs/LICENSE.txt
 
 
-import os, traceback, wx
+import os, wx
 
-from dbr.log            import Logger
 from input.essential    import EssentialField
 from input.text         import TextArea
 
@@ -65,7 +64,7 @@ class PathCtrl(TextArea):
     
     ## If using 'Warn', changed background to red if path doesn't exists on system
     def SetPathAvailable(self):
-        # FIXME: How to get PathCtrl initialized before InputField.Reset is called in constructor???
+        # input.ifield.InputField calls 'Reset' before PathCtrl is constructed
         try:
             if self.Warn:
                 if os.path.isdir(self.GetValue()):
@@ -75,8 +74,7 @@ class PathCtrl(TextArea):
                 self.SetBackgroundColour(u'red')
         
         except AttributeError:
-            Logger.Warn(__name__,
-                    u'PathCtrl not initialized before "Reset" called: Traceback below:\n\n{}'.format(traceback.format_exc()))
+            pass
     
     
     ## Checks if field will show a warning when path is not available
