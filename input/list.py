@@ -13,9 +13,8 @@ from wx.lib.mixins.listctrl import TextEditMixin
 from dbr.colors         import COLOR_warn
 from dbr.language       import GT
 from dbr.log            import Logger
-from globals.constants  import FTYPE_EXE
-from globals.constants  import file_types_defs
 from globals.fileio     import FileItem
+from globals.mime       import GetFileMimeType
 from globals.paths      import ConcatPaths
 from globals.strings    import IsString
 from input.essential    import EssentialField
@@ -746,6 +745,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         self.InsertStringItem(list_index, filename)
         self.SetStringItem(list_index, self.source_col, source_dir)
         self.SetStringItem(list_index, self.target_col, target_dir)
+        self.SetStringItem(list_index, self.type_col, GetFileMimeType(source_path))
         
         if os.path.isdir(source_path):
             self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
@@ -981,13 +981,10 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     #    Row index of item
     def SetFileExecutable(self, row, executable=True):
         if executable:
-            self.SetStringItem(row, self.type_col, file_types_defs[FTYPE_EXE])
             self.SetItemTextColour(row, wx.RED)
             
             return
         
-        # FIXME: Delete item rather than setting to wx.EmptyString???
-        self.SetStringItem(row, self.type_col, wx.EmptyString)
         self.SetItemTextColour(row, self.DEFAULT_TEXT_COLOR)
     
     
