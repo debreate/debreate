@@ -48,9 +48,9 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
     
     
     ## Add items to end of list
-    #  
+    #
     #  \param items
-    #        String item or string items list
+    #    String item or string items list
     def AppendStringItem(self, items):
         if items:
             row_index = self.GetItemCount()
@@ -365,7 +365,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
     
     
     ## TODO: Doxygen
-    #  
+    #
     #  FIXME: imageIndex unused; Unknown purpose, not documented
     def InsertStringItem(self, index, label, imageIndex=None):
         self.MainCtrl.InsertStringItem(index, label)
@@ -377,7 +377,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
     
     
     ## Some bug workarounds for resizing the list & its columns in wx 3.0
-    #  
+    #
     #  The last column is automatically expanded to fill
     #    the remaining space.
     #  FIXME: Unknown if this bug persists in wx 3.1
@@ -497,7 +497,7 @@ class BasicFileList(ListCtrl):
     ## Appends new globals.fileio.FileItem instance to end of list
     #
     #  Alias of input.list.BasicFileList.Add
-    #  
+    #
     #  \param item
     #    Either the path to a file or a FileItem instance
     #  \param target
@@ -671,7 +671,7 @@ class BasicFileList(ListCtrl):
 
 
 ## An editable list
-#  
+#
 #  Creates a ListCtrl class in which every column's text can be edited
 class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr, defaultValue=None,
@@ -694,12 +694,12 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         self.type_col = 3
         
         # FIXME: Way to do this dynamically?
-        col_width = 150  # self.GetSize()[0] / 4
+        col_width = 150
         
         self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
         self.InsertColumn(self.source_col, GT(u'Source Directory'), width=col_width)
         self.InsertColumn(self.target_col, GT(u'Staged Target'), width=col_width)
-        # Last column is automatcially stretched to fill remaining size
+        # Last column is automatically stretched to fill remaining size
         self.InsertColumn(self.type_col, GT(u'File Type'))
         
         # Legacy versions of wx don't set sizes correctly in constructor
@@ -816,22 +816,28 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         return row_defs
     
     
-    ## TODO: Doxygen
-    #  
-    #  \param i_index
-    #        \b \e int : List row
-    def GetSource(self, i_index):
-        return self.GetItemText(i_index, self.source_col)
+    ## Retrieves the source path of a file
+    #
+    #  \param row
+    #    Row index of item
+    def GetSource(self, row):
+        return self.GetItemText(row, self.source_col)
     
     
-    ## TODO: Doxygen
-    def GetTarget(self, i_index):
-        return self.GetItemText(i_index, self.target_col)
+    ## Retrieves target directory of a file
+    #
+    #  \param row
+    #    Row index of item
+    def GetTarget(self, row):
+        return self.GetItemText(row, self.target_col)
     
     
-    ## Checks if item at index is a directory
-    def IsDirectory(self, index):
-        return os.path.isdir(self.GetPath(index))
+    ## Checks if an item is a directory
+    #
+    #  \param row
+    #    Row index of item
+    def IsDirectory(self, row):
+        return os.path.isdir(self.GetPath(row))
     
     
     ## Checks if the file list is empty
@@ -839,12 +845,12 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         return not self.GetItemCount()
     
     
-    ## Retrieves is the item at 'i_index' is executable
-    #  
-    #  \param i_index
-    #        \b \e int : The list row to check
-    def IsExecutable(self, index):
-        return self.GetItemTextColour(index) == wx.RED
+    ## Checks if an item is executable
+    #
+    #  \param row
+    #    Row index of item
+    def IsExecutable(self, row):
+        return self.GetItemTextColour(row) == wx.RED
     
     
     ## TODO: Doxygen
@@ -858,7 +864,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     
     ## Defines actions to take when left-click or left-double-click event occurs
-    #  
+    #
     #  The super method is overridden to ensure that 'event.Skip' is called.
     #  TODO: Notify wxPython project of 'event.Skip' error
     def OnLeftDown(self, event=None):
@@ -869,7 +875,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     
     ## Works around resize bug in wx 3.0
-    #  
+    #
     #  Uses parent width & its children to determine
     #    desired width.
     #  FIXME: Unknown if this bug persists in wx 3.1
@@ -897,10 +903,10 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     
     ## Opens an editor for target
-    #  
+    #
     #  The super method is overridden to only
     #  allow editing the "target" column.
-    #  
+    #
     #  \param col
     #    \b \e int : Column received from the
     #                event (replaced with "target" column)
@@ -911,9 +917,10 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     
     ## Refresh file list
-    #  
+    #
     #  Missing files are marked with a distinct color.
     #  TODO: Update executable status
+    #
     #  \return
     #        \b \e bool : True if files are missing, False if all okay
     def RefreshFileList(self):
@@ -960,7 +967,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
             selected_count = self.GetSelectedItemCount()
     
     
-    ## TODO: Doxygen
+    ## Selects all items in the list
     def SelectAll(self):
         file_count = self.GetItemCount()
         
@@ -969,9 +976,9 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     
     ## Marks a file as executable
-    #  
+    #
     #  \param row
-    #        \b \e int : Row to change
+    #    Row index of item
     def SetFileExecutable(self, row, executable=True):
         if executable:
             self.SetStringItem(row, self.type_col, file_types_defs[FTYPE_EXE])
@@ -985,14 +992,14 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     
     ## Sorts listed items in target column alphabetially
-    #  
+    #
     #  TODO: Sort listed items
     def Sort(self):
         pass
     
     
     ## Toggles executable flag for selected list items
-    #  
+    #
     #  TODO: Define & execute with context menu
     def ToggleExecutable(self):
         pass
