@@ -79,7 +79,7 @@ class Page(WizardPage):
         pnl_options = BorderedPanel(self)
         
         self.chk_md5 = CheckBoxESS(pnl_options, chkid.MD5, GT(u'Create md5sums file'),
-                name=u'MD5', defaultValue=True)
+                name=u'MD5', defaultValue=True, commands=u'md5sum')
         # The » character denotes that an alternate tooltip should be shown if the control is disabled
         self.chk_md5.tt_name = u'md5»'
         self.chk_md5.col = 0
@@ -95,7 +95,7 @@ class Page(WizardPage):
         
         # Option to strip binaries
         self.chk_strip = CheckBoxESS(pnl_options, chkid.STRIP, GT(u'Strip binaries'),
-                name=u'strip»', defaultValue=True)
+                name=u'strip»', defaultValue=True, commands=u'strip')
         self.chk_strip.col = 0
         
         # Deletes the temporary build tree
@@ -105,13 +105,13 @@ class Page(WizardPage):
         
         # Checks the output .deb for errors
         self.chk_lint = CheckBoxESS(pnl_options, chkid.LINT, GT(u'Check package for errors with lintian'),
-                name=u'LINTIAN', defaultValue=True)
+                name=u'LINTIAN', defaultValue=True, commands=u'lintian')
         self.chk_lint.tt_name = u'lintian»'
         self.chk_lint.col = 0
         
         # Installs the deb on the system
         self.chk_install = CheckBox(pnl_options, chkid.INSTALL, GT(u'Install package after build'),
-                name=u'INSTALL')
+                name=u'INSTALL', commands=(u'gdebi-gtk', u'gdebi-kde',))
         self.chk_install.tt_name = u'install»'
         self.chk_install.col = 0
         
@@ -123,7 +123,7 @@ class Page(WizardPage):
             btn_lint_overrides = CreateButton(self, GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
-        btn_build = CreateButton(self, GT(u'Buildit'), u'build', btnid.BUILD, 64)
+        btn_build = CreateButton(self, GT(u'Build'), u'build', btnid.BUILD, 64)
         
         # Display log
         dsp_log = OutputLog(self)
@@ -373,7 +373,7 @@ class Page(WizardPage):
     ## TODO: Doxygen
     #  
     #  \return
-    #        \b \e tuple containing data & label for each page
+    #    \b \e tuple containing data & label for each page
     def BuildPrep(self):
         wizard = GetWizard()
         prep_ids = []
@@ -828,6 +828,7 @@ class Page(WizardPage):
     
     ## TODO: Doxygen
     def Set(self, data):
+        # ???: Redundant
         self.Reset()
         build_data = data.split(u'\n')
         
