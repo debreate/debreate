@@ -69,13 +69,13 @@ class Page(WizardPage):
         self.chk_md5.col = 0
         
         # Option to strip binaries
-        self.chk_strip = CheckBoxESS(pnl_options, chkid.STRIP, GT(u'Strip binaries'), name=u'strip»',
-                defaultValue=True, commands=u'strip')
+        self.chk_strip = CheckBoxESS(pnl_options, chkid.STRIP, GT(u'Strip binaries'),
+                name=u'strip»', defaultValue=True, commands=u'strip')
         self.chk_strip.col = 0
         
         # Deletes the temporary build tree
-        self.chk_rmstage = CheckBoxESS(pnl_options, chkid.REMOVE, GT(u'Delete staged directory'),
-                name=u'rmstage', defaultValue=True)
+        self.chk_rmstage = CheckBoxESS(pnl_options, chkid.DELETE, GT(u'Delete staged directory'),
+                name=u'RMSTAGE', defaultValue=True)
         self.chk_rmstage.col = 0
         
         # Checks the output .deb for errors
@@ -85,7 +85,7 @@ class Page(WizardPage):
         self.chk_lint.col = 0
         
         # Installs the deb on the system
-        self.chk_install = CheckBox(pnl_options, label=GT(u'Install package after build'),
+        self.chk_install = CheckBox(pnl_options, chkid.INSTALL, GT(u'Install package after build'),
                 name=u'INSTALL', commands=(u'gdebi-gtk', u'gdebi-kde',))
         self.chk_install.tt_name = u'install»'
         self.chk_install.col = 0
@@ -148,15 +148,15 @@ class Page(WizardPage):
             lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
         
         lyt_main.AddSpacer(5)
-        lyt_main.Add(lyt_buttons, 0, wx.ALIGN_CENTER)
-        lyt_main.Add(dsp_log, 2, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
+        lyt_main.Add(lyt_buttons, 0, lyt.ALGN_C)
+        lyt_main.Add(dsp_log, 2, wx.EXPAND|lyt.PAD_LRB, 5)
         
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()
     
     
-    ## The actual build process
+    ## Method that builds the actual Debian package
     #  
     #  \param task_list
     #        \b \e dict : Task string IDs & page data
@@ -582,7 +582,7 @@ class Page(WizardPage):
     ## TODO: Doxygen
     #  
     #  \return
-    #        \b \e tuple : Return code & build details
+    #    \b \e tuple containing Return code & build details
     def BuildPrep(self):
         # Declare these here in case of error before dialogs created
         save_dia = None
@@ -966,21 +966,22 @@ class Page(WizardPage):
     
     ## TODO: Doxygen
     def SetSummary(self, event=None):
-        main_window = GetMainWindow()
+        pg_scripts = GetPage(pgid.SCRIPTS)
         
         # Make sure the page is not destroyed so no error is thrown
         if self:
             # Set summary when "Build" page is shown
             # Get the file count
-            files_total = main_window.page_files.dest_area.GetItemCount()
+            files_total = GetPage(pgid.FILES).GetFileCount()
             f = GT(u'File Count')
             file_count = u'{}: {}'.format(f, files_total)
+            
             # Scripts to make
             scripts_to_make = []
-            scripts = ((u'preinst', main_window.page_scripts.chk_preinst),
-                (u'postinst', main_window.page_scripts.chk_postinst),
-                (u'prerm', main_window.page_scripts.chk_prerm),
-                (u'postrm', main_window.page_scripts.chk_postrm))
+            scripts = ((u'preinst', pg_scripts.chk_preinst),
+                (u'postinst', pg_scripts.chk_postinst),
+                (u'prerm', pg_scripts.chk_prerm),
+                (u'postrm', pg_scripts.chk_postrm))
             
             for script in scripts:
                 if script[1].IsChecked():
