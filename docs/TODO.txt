@@ -3,6 +3,7 @@ Next Release:
   - Scan listed directories for executables
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
 - Set field IDs for all pages to work with 'Reset' method
+- List files & folders after opening project same as saved
 
 Priority:
 - Change button images for 'full' & 'short' on copyright page
