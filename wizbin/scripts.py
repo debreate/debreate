@@ -22,6 +22,7 @@ from input.list         import BasicFileList
 from input.markdown     import MarkdownDialog
 from input.pathctrl     import PathCtrl
 from input.text         import TextAreaPanelESS
+from input.toggle       import CheckBox
 from ui.button          import ButtonBuild
 from ui.button          import ButtonHelp64
 from ui.button          import ButtonImport
@@ -62,10 +63,10 @@ class Page(WizardPage):
         postrm = DebianScript(self, ID_RM_POST)
         
         # Check boxes for choosing scripts
-        chk_preinst = wx.CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
-        chk_postinst = wx.CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
-        chk_prerm = wx.CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
-        chk_postrm = wx.CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
+        chk_preinst = CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
+        chk_postinst = CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
+        chk_prerm = CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
+        chk_postrm = CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
         
         for S in chk_preinst, chk_postinst, chk_prerm, chk_postrm:
             S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
