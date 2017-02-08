@@ -13,6 +13,8 @@ from wx.lib.mixins.listctrl import TextEditMixin
 from dbr.colors         import COLOR_warn
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals.constants  import FTYPE_EXE
+from globals.constants  import file_types_defs
 from globals.fileio     import FileItem
 from globals.paths      import ConcatPaths
 from globals.strings    import IsString
@@ -687,17 +689,18 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         self.FOLDER_TEXT_COLOR = wx.BLUE
         
         self.filename_col = 0
-        self.target_col = 1
-        
-        # Stores the information for file sources paths
-        self.sources_list = []
+        self.source_col = 1
+        self.target_col = 2
+        self.type_col = 3
         
         # FIXME: Way to do this dynamically?
         col_width = 150  # self.GetSize()[0] / 4
         
-        self.InsertColumn(self.filename_col, GT(u'File / Folder'), width=col_width)
+        self.InsertColumn(self.filename_col, GT(u'File'), width=col_width)
+        self.InsertColumn(self.source_col, GT(u'Source Directory'), width=col_width)
+        self.InsertColumn(self.target_col, GT(u'Staged Target'), width=col_width)
         # Last column is automatcially stretched to fill remaining size
-        self.InsertColumn(self.target_col, GT(u'Staged Target'))
+        self.InsertColumn(self.type_col, GT(u'File Type'))
         
         # Legacy versions of wx don't set sizes correctly in constructor
         if wx.MAJOR_VERSION < 3:
@@ -741,14 +744,14 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         Logger.Debug(__name__, GT(u'Adding file: {}').format(source_path))
         
         self.InsertStringItem(list_index, filename)
+        self.SetStringItem(list_index, self.source_col, source_dir)
         self.SetStringItem(list_index, self.target_col, target_dir)
-        
-        self.sources_list.insert(list_index, source_dir)
         
         if os.path.isdir(source_path):
             self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
         
         else:
+            # TODO: Use 'GetFileMimeType' module to determine file type
             if os.access(source_path, os.X_OK) or executable:
                 self.SetFileExecutable(list_index)
             
@@ -764,7 +767,6 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     ## TODO: Doxygen
     def DeleteAllItems(self):
         ListCtrl.DeleteAllItems(self)
-        self.sources_list = []
     
     
     ## Retrieves the filename at given index
@@ -819,7 +821,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     #  \param i_index
     #        \b \e int : List row
     def GetSource(self, i_index):
-        return self.sources_list[i_index]
+        return self.GetItemText(i_index, self.source_col)
     
     
     ## TODO: Doxygen
@@ -955,7 +957,6 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
                                                                           )))
             
             self.DeleteItem(current_selected)
-            self.sources_list.pop(current_selected)
             selected_count = self.GetSelectedItemCount()
     
     
@@ -973,10 +974,13 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     #        \b \e int : Row to change
     def SetFileExecutable(self, row, executable=True):
         if executable:
+            self.SetStringItem(row, self.type_col, file_types_defs[FTYPE_EXE])
             self.SetItemTextColour(row, wx.RED)
             
             return
         
+        # FIXME: Delete item rather than setting to wx.EmptyString???
+        self.SetStringItem(row, self.type_col, wx.EmptyString)
         self.SetItemTextColour(row, self.DEFAULT_TEXT_COLOR)
     
     
