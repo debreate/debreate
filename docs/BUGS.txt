@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Release:
+- PathCtrl.Reset not working correctly (perhaps conflicts with InputField.Reset)
 - md5sum produces different hash for binary files than debuild
 - Lintian reports:
   - no-section-field
