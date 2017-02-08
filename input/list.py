@@ -460,6 +460,7 @@ class BasicFileList(ListCtrl):
         
         ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name)
         
+        # Highlights executables in red if 'True'
         self.HLExes = hlExes
         
         ## List of globals.fileio.FileItem instances
