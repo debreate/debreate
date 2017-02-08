@@ -55,6 +55,7 @@ from ui.layout              import BoxSizer
 from ui.menu                import MenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
+from wiz.helper             import GetPage
 from wiz.pginit             import Page as PageInit
 from wiz.wizard             import Wizard
 
@@ -478,10 +479,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         
         def SaveIt(path):
                 # Gather data from different pages
-                data = (self.page_control.GetSaveData(), self.page_files.GetSaveData(),
-                        self.page_scripts.GetSaveData(), self.page_clog.GetSaveData(),
-                        self.page_cpright.GetSaveData(), self.page_menu.GetSaveData(),
-                        self.page_build.GetSaveData())
+                data = (
+                    GetPage(pgid.CONTROL).GetSaveData(),
+                    GetPage(pgid.FILES).GetSaveData(),
+                    GetPage(pgid.SCRIPTS).GetSaveData(),
+                    GetPage(pgid.CHANGELOG).GetSaveData(),
+                    GetPage(pgid.COPYRIGHT).GetSaveData(),
+                    GetPage(pgid.MENU).GetSaveData(),
+                    GetPage(pgid.BUILD).GetSaveData(),
+                    )
                 
                 # Create a backup of the project
                 overwrite = False
