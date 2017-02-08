@@ -23,7 +23,6 @@ from input.ifield       import InputField
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.panel           import ControlPanel
-from wiz.helper         import GetMainWindow
 
 
 ## A list control with no border
@@ -158,22 +157,6 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
             self.InsertColumn(0)
         
         return style_set
-    
-    
-    ## Override inherited method to post list event for EssentialField instances
-    def SetStringItem(self, *args, **kwargs):
-        string_set = wx.ListView.SetStringItem(self, *args, **kwargs)
-        
-        # FIXME: Not sure why this check is necessary here.
-        #        Without, sets project dirty at load time.
-        if GetMainWindow().ProjectIsLoaded():
-            # Cause EssentialField instances to emit event that will tell main window to mark paroject dirty
-            if isinstance(self, EssentialField) or isinstance(self.Parent, EssentialField):
-                Logger.Debug(__name__, u'EssentialField instance posting list event')
-                
-                wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT))
-        
-        return string_set
 
 
 ## ListCtrlBase that notifies main window to mark project dirty
