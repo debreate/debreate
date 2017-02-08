@@ -782,7 +782,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     
     ## Retrieves an item's path
     def GetPath(self, index):
-        file_dir = self.sources_list[index]
+        file_dir = self.GetItemText(index, self.source_col)
         file_name = self.GetItemText(index, self.filename_col)
         
         return ConcatPaths((file_dir, file_name))
