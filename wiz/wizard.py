@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ## \package wiz.wizard
+#
+#  The wizard interface
 
 # MIT licensing
 # See: docs/LICENSE.txt
