@@ -25,7 +25,7 @@ class DebreateLogger:
     # Logging levels
     INFO, WARN, ERROR, DEBUG, TEST = range(5)
     
-    log_level_list = {
+    LogLevelList = {
         INFO: u'info',
         WARN: u'warn',
         ERROR: u'error',
@@ -97,13 +97,13 @@ class DebreateLogger:
     def CheckLogLevel(self, level):
         
         # Check if level is of type INFO, WARN, ERROR, DEBUG, TEST
-        if level in self.LogLevel_list:
+        if level in self.LogLevelList:
             return level
         
         # Check if level is a string value of 'info', 'warn', 'error', 'debug', 'test'
         if isinstance(level, (unicode, str)):
-            for L in self.LogLevel_list:
-                if level.lower() == self.LogLevel_list[L].lower():
+            for L in self.LogLevelList:
+                if level.lower() == self.LogLevelList[L].lower():
                     return L
         
         return None
@@ -124,8 +124,8 @@ class DebreateLogger:
     def LogMessage(self, level, module, message, newline=False, pout=sys.stdout):
         level = self.CheckLogLevel(level)
         
-        if (level in self.LogLevel_list) and (level <= self.LogLevel):
-            l_string = self.LogLevel_list[level].upper()
+        if (level in self.LogLevelList) and (level <= self.LogLevel):
+            l_string = self.LogLevelList[level].upper()
             message = u'{}: [{}] {}'.format(l_string, module, message)
             
             if newline:
@@ -221,13 +221,13 @@ class DebreateLogger:
         if level.isdigit():
             level = int(level)
         
-        if level in self.LogLevel_list:
+        if level in self.LogLevelList:
             self.LogLevel = level
             log_set = True
         
         elif isinstance(level, (unicode, str)):
-            for L in self.LogLevel_list:
-                if level.lower() == self.LogLevel_list[L].lower():
+            for L in self.LogLevelList:
+                if level.lower() == self.LogLevelList[L].lower():
                     self.LogLevel = L
                     log_set = True
         
