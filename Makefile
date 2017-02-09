@@ -244,8 +244,10 @@ install-man: $(FILES_man)
 uninstall-man:
 	@target="$(DESTDIR)$(prefix)"; \
 	man_dir="$${target}/$(DATAROOT)/man"; \
-	echo "Manual dir: $${man_dir}"; \
-	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
+	if [ -d "$${man_dir}" ]; then \
+		echo "Manual dir: $${man_dir}"; \
+		find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
+	fi; \
 
 install-mime: $(FILE_mime) install-icons
 	@target="$(DESTDIR)$(prefix)"; \
