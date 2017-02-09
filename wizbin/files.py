@@ -44,15 +44,19 @@ from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
 
-# Set the maximum file count to process without showing progress dialog
+## Maximum file count to process before showing progress dialog
 efficiency_threshold = 250
 
-# Set the maximum file count to process without showing warning dialog
+## Maximum file count to process before showing warning dialog
 warning_threshhold = 1000
 
 
 ## Class defining controls for the "Paths" page
 class Page(WizardPage):
+    ## Constructor
+    #
+    #  \param parent
+    #    Parent <b><i>wx.Window</i></b> instance
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.FILES)
         
@@ -200,12 +204,14 @@ class Page(WizardPage):
         SetPageToolTips(self)
     
     
-    ## Adds files to the list
-    #  
+    ## Adds files to file list
+    #
     #  \param dirs
-    #    \b \e dict : dict[dir] = [file list]
+    #    <b><i>dict</i></b>: dict[dir] = [file list]
+    #  \param file_count
+    #    Number of explicit files being added to list
     #  \param show_dialog
-    #    \b \e bool : If True, shows a progress dialog
+    #    If <b><i>True</i></b>, displays a progress dialog
     def AddPaths(self, dirs, file_count=None, show_dialog=False):
         target = self.GetTarget()
         
@@ -262,7 +268,10 @@ class Page(WizardPage):
             event.Skip()
     
     
-    ## TODO: Doxygen
+    ## FIXME: Deprecated
+    #
+    #  \param target
+    #    Absolute file path to export
     def ExportBuild(self, target):
         if not os.path.isdir(target):
             return (dbrerrno.ENOENT, GT(u'Target directory does not exist: {}').format(target))
@@ -296,9 +305,13 @@ class Page(WizardPage):
     
     
     ## Retrieves information on files to be packaged
-    #  
+    #
+    #  \param getModule
+    #    If <b><i>True</i></b>, retrieves a tuple containing module name & page data,
+    #    otherwise only returns <b><i>string</i></b> data
     #  \return
-    #        \b \e tuple(str, str) : A tuple containing the filename & a list of files with their targets formatted for text output
+    #    <b><i>tuple(str, str)</i></b>: A <b><i>tuple</i></b> containing the filename
+    #    & a list of files with their targets formatted for text output
     def Get(self, getModule=False):
         item_count = self.lst_files.GetItemCount()
         
@@ -338,7 +351,9 @@ class Page(WizardPage):
         return page
     
     
-    ## TODO: Doxygen
+    ## Retrieves target destination set by user input
+    #
+    #  TODO: Rename to 'GetTarget' or 'GetInputTarget'
     def GetDestValue(self, event=None):
         if not TextIsEmpty(self.ti_target.GetValue()):
             if self.ti_target.GetValue()[0] == u'/':
@@ -348,24 +363,35 @@ class Page(WizardPage):
             event.Skip()
     
     
-    ## Retrieve DirectoryTreePanel instance
-    #  
+    ## Retrieves the directory tree object used by this page
+    #
     #  Used in input.list.FileList for referencing size
+    #
+    #  \return
+    #    <b><i>ui.tree.DirectoryTreePanel</i></b> instance
     def GetDirTreePanel(self):
         return self.tree_dirs
     
     
-    ## Retrieve number of files in list
+    ## Retrieves number of files in list
+    #
+    #  \return
+    #    <b><i>Integer</i></b> count of items in file list
     def GetFileCount(self):
         return self.lst_files.GetItemCount()
     
     
-    ## Retrieves FileList instances
+    ## Retrieves the file list object used by this page
+    #
+    #  \return
+    #    <b><i>input.list.FileList</i></b> instance
     def GetListInstance(self):
         return self.lst_files
     
     
     ## Retrieves the target output directory
+    #
+    #  FIXME: Duplicate of wizbin.files.Page.GetDestValue?
     def GetTarget(self):
         if FieldEnabled(self.ti_target):
             return self.ti_target.GetValue()
@@ -375,8 +401,10 @@ class Page(WizardPage):
                 return target.GetLabel()
     
     
-    ## TODO: Doxygen
-    #  
+    ## Accepts a file path to read & parse to fill the page's fields
+    #
+    #  \param filename
+    #    Absolute path of formatted text file to read
     #  \override ui.wizard.Wizard.ImportFromFile
     def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
@@ -433,15 +461,21 @@ class Page(WizardPage):
         return 0
     
     
-    ## TODO: Doxygen
+    ## Checks if the page is ready for export/build
+    #
+    #  \return
+    #    <b><i>True</i></b> if the file list (self.lst_files) is not empty
     def IsOkay(self):
         return not self.lst_files.IsEmpty()
     
     
     ## Reads files & directories & preps for loading into list
-    #  
+    #
     #  \param paths_list
-    #    \b \e tuple|list : List of string values of files & directories to be added
+    #    <b><i>List/Tuple</i></b> of <b><i>string</i></b> values representing
+    #    files & directories to be added
+    #  \return
+    #    Value of wizbin.files.Page.AddPaths, or <b><i>False</i></b> in case of error
     def LoadPaths(self, paths_list):
         if isinstance(paths_list, tuple):
             paths_list = list(paths_list)
@@ -573,14 +607,20 @@ class Page(WizardPage):
         return self.AddPaths(dir_list, file_count, show_dialog=file_count >= efficiency_threshold)
     
     
-    ## TODO: Doxygen
+    ## Handles event emitted by 'browse' button
+    #
+    #  Opens a directory dialog to select a custom output target
     def OnBrowse(self, event=None):
         dia = GetDirDialog(GetMainWindow(), GT(u'Choose Target Directory'))
         if ShowDialog(dia):
             self.ti_target.SetValue(dia.GetPath())
     
     
-    ## TODO: Doxygen
+    ## Handles event emitted by 'clear' button
+    #
+    #  Displays confirmation dialog to clear list if not empty
+    #
+    #  TODO: Rename to OnClearList?
     def OnClearFileList(self, event=None):
         if self.lst_files.GetItemCount():
             if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
@@ -589,23 +629,40 @@ class Page(WizardPage):
     
     
     ## Adds files to list from file manager drop
-    #  
-    #  FIXME: Need method AddDirectory or AddFileList (No longer needed???)
+    #
+    #  Note that this method should not be renamed as 'OnDropFiles'
+    #  is the implicit handler for wx.FileDropTarget (<- correct class???)
+    #
+    #  \param file_list
+    #    <b><i>List</i></b> of files dropped from file manager
+    #  \return
+    #    Value of wizbin.files.Page.LoadPaths
     def OnDropFiles(self, file_list):
-        self.LoadPaths(file_list)
+        return self.LoadPaths(file_list)
     
     
-    ## Files & directories added from directory tree
+    ## Handles files & directories added from ui.tree.DirectoryTreePanel object
+    #  (self.tree_dirs)
+    #
+    #  Actually bypasses DirectoryTreePanel & directly accesses
+    #  ui.tree.DirectoryTree.GetSelectedPaths
     def OnImportFromTree(self, event=None):
-        self.LoadPaths(self.DirTree.GetSelectedPaths())
+        return self.LoadPaths(self.DirTree.GetSelectedPaths())
     
     
-    ## TODO: Doxygen
+    ## Updates files' status in the file list
+    #
+    #  Refreshes files' executable & available status
+    #
+    #  \return
+    #    Value of self.lst_files.RefreshFileList
     def OnRefreshFileList(self, event=None):
-        self.lst_files.RefreshFileList()
+        return self.lst_files.RefreshFileList()
     
     
-    ## TODO: Doxygen
+    ## Handles event emitted by 'remove' button
+    #
+    #  Removes all currently selected/highlighted files in list
     def OnRemoveSelected(self, event=None):
         try:
             modifier = event.GetModifiers()
@@ -621,7 +678,10 @@ class Page(WizardPage):
             self.lst_files.SelectAll()
     
     
-    ## Event handler that disables the custom destination if the corresponding radio button isn't selected
+    ## Handles enabling/disabling the custom target field if the corresponding
+    #  when a target radio button is selected
+    #
+    #  TODO: Rename to 'OnSetTarget' or 'OnSelectTarget'
     def OnSetDestination(self, event=None):
         enable = self.rb_custom.GetValue()
         
@@ -629,17 +689,28 @@ class Page(WizardPage):
         self.btn_browse.Enable(enable)
     
     
-    ## Resets all fields on page to default values
+    ## Resets page's fields to default values
+    #
+    #  \return
+    #    Value of self.lst_files.Reset
     def Reset(self):
-        self.lst_files.Reset()
+        return self.lst_files.Reset()
     
     
-    ## TODO: Doxygen
+    ## Selects all files in the list
+    #
+    #  \return
+    #    Value of self.lst_files.SelectAll
     def SelectAll(self):
-        self.lst_files.SelectAll()
+        return self.lst_files.SelectAll()
     
     
-    ## TODO: Doxygen
+    ## Sets the page's fields
+    #
+    #  \param data
+    #    The text information to parse
+    #  \return
+    #    <b><i>True</i></b> if the data was imported correctly
     def Set(self, data):
         # Clear files list
         self.lst_files.DeleteAllItems()
