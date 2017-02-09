@@ -40,8 +40,8 @@ FILES_root = \
 	command_line.py \
 	main.py
 
-FILES_wiz_bin = wiz_bin/*.py
-FILES_wiz_src = wiz_src/*.py
+PKG_wizbin = wiz_bin/*.py
+PKG_wizsrc = wiz_src/*.py
 
 FILES_doc = \
 	docs/BUGS.txt \
@@ -69,8 +69,8 @@ PACKAGES = \
 FILES_build = \
 	$(FILES_executable) \
 	$(FILES_root) \
-	$(FILES_wiz_bin) \
-	$(FILES_wiz_src) \
+	$(PKG_wizbin) \
+	$(PKG_wizsrc) \
 	$(FILES_doc) \
 	$(FILES_bitmap) \
 	$(FILES_data)
@@ -174,12 +174,12 @@ install: build locale install-packages install-data $(FILES_build) $(DIRS_build)
 		done; \
 		\
 		$(MKDIR) "$${data_dir}/wiz_bin"; \
-		for py in $(FILES_wiz_bin); do \
+		for py in $(PKG_wizbin); do \
 			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_bin"; \
 		done; \
 		\
 		$(MKDIR) "$${data_dir}/wiz_src"; \
-		for py in $(FILES_wiz_src); do \
+		for py in $(PKG_wizsrc); do \
 			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_src"; \
 		done; \
 		\
