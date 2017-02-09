@@ -43,7 +43,8 @@ define MOVE =
 	chmod -c $(PERM_DATA) "$${target_file}"
 endef
 
-UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
+UNINSTALL_FOLDER = find "$1" -type f -print -delete; find "$1" -type d -empty -print -delete
+
 
 FILES_executable = \
 	init.py
