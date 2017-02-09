@@ -268,11 +268,6 @@ def SetPageToolTips(parent, page_id=None):
             # Use ID first
             field_id = FIELD.GetId()
             if field_id in TT_pages[page_id]:
-                print(u'\nDEBUG: SetPageToolTips:')
-                print(u'  Using ID')
-                print(u'  Page ID: {}'.format(page_id))
-                print(u'  Build page: {}'.format(page_id == pgid.BUILD))
-                
                 tooltip = TT_pages[page_id][field_id]
             
             else:
