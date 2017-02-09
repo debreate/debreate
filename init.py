@@ -121,8 +121,9 @@ debreate_app = DebreateApp()
 from dbr.config             import ConfCode
 from dbr.config             import GetAllConfigKeys
 from dbr.config             import GetDefaultConfigValue
-from dbr.language           import DIR_locale
+from dbr.language           import GetLocaleDir
 from dbr.language           import GT
+from dbr.language           import SetLocaleDir
 from dbr.language           import TRANSLATION_DOMAIN
 from dbr.log                import Logger
 from dbr.workingdir         import ChangeWorkingDirectory
@@ -139,8 +140,8 @@ from startup.startup        import SetAppInitialized
 
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
-    DIR_locale = ConcatPaths((PREFIX, u'share/locale'))
-    gettext.install(TRANSLATION_DOMAIN, DIR_locale, unicode=True)
+    SetLocaleDir(ConcatPaths((PREFIX, u'share/locale')))
+    gettext.install(TRANSLATION_DOMAIN, GetLocaleDir(), unicode=True)
 
 
 if u'.py' in script_name:

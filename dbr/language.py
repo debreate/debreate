@@ -24,3 +24,20 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale, unicode=True)
 #    \b \e unicode|str : String to be converted to unicode & translated
 def GT(str_value):
     return _(GS(str_value))
+
+
+## Retrieves the path of gettext locale translations
+def GetLocaleDir():
+    global DIR_locale
+    
+    return DIR_locale
+
+
+## Sets the path for the gettext locale translations
+#
+#  \param path
+#    New directory location
+def SetLocaleDir(path):
+    global DIR_locale
+    
+    DIR_locale = path
