@@ -242,7 +242,6 @@ uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 		done; \
 		find "$${data_dir}" -type d -empty -delete; \
 	fi; \
-	\
 
 install-data: $(INSTALLED)
 	@target="$(DESTDIR)$(prefix)"; \
