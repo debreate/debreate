@@ -10,7 +10,6 @@ TARGET = $(DESTDIR)$(prefix)
 PACKAGE = debreate
 VERSION = <version>
 BINDIR = bin
-LIBDIR = lib
 DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
@@ -63,53 +62,53 @@ PACKAGES = \
 	system \
 	ui
 
-PKG_wizbin = wiz_bin/*.py
-PKG_wizsrc = wiz_src/*.py
+PKG_wizbin = wizbin/*.py
+PKG_wizsrc = wizsrc/*.py
+PKG_dbr = dbr/*.py
+PKG_f_export = f_export/*.py
+PKG_fields = fields/*.py
+PKG_globals = globals/*.py
+PKG_input = input/*.py
+PKG_startup = startup/*.py
+PKG_system = system/*.py
+PKG_ui = ui/*.py
+
+FILES_extra = \
+	README.md \
+	INFO
 
 FILES_doc = \
-	docs/BUGS.txt \
 	docs/changelog \
-	docs/release_notes \
-	docs/TODO.txt \
 	docs/usage.pdf
-
-FILES_bitmap = bitmaps/*.png
 
 FILES_man = \
 	man/man1/$(PACKAGE).1
 
-FILES_data = \
-	data/$(FILE_launcher)
-
-PACKAGE_dbr = dbr/*.py
-
-PACKAGE_globals = globals/*.py
-
-PACKAGES = \
-	$(PACKAGE_dbr) \
-	$(PACKAGE_globals)
-
-FILES_build = \
-	$(FILES_executable) \
-	$(FILES_root) \
-	$(PKG_wizbin) \
-	$(PKG_wizsrc) \
-	$(FILES_doc) \
-	$(FILES_bitmap) \
-	$(FILES_data)
-
 FILES_dist = \
 	$(FILES_executable) \
 	$(FILES_root) \
-	INFO \
-	Makefile \
-	README.md \
+	$(FILES_extra) \
+	Makefile.in \
 	setup.py
-
 
 DIR_bitmaps = bitmaps
 DIR_locale = locale
 DIR_templates = templates
+
+FILES_build = \
+	$(FILES_executable) \
+	$(FILES_root) \
+	$(FILES_doc) \
+	$(PKG_dbr) \
+	$(PKG_f_export) \
+	$(PKG_fields) \
+	$(PKG_globals) \
+	$(PKG_input) \
+	$(PKG_startup) \
+	$(PKG_system) \
+	$(PKG_ui) \
+	$(PKG_wizbin) \
+	$(PKG_wizsrc)
 
 DIRS_build = \
 	templates
@@ -129,8 +128,6 @@ PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
 FILE_launcher = $(PACKAGE).desktop
 FILE_mime = data/mime/$(PACKAGE).xml
-LOGO = bitmaps/$(PACKAGE)64.png
-CHANGELOG = docs/changelog
 LICENSE = docs/LICENSE.txt
 DOXYGEN_CONFIG = docs/Doxyfile
 INSTALLED = INSTALLED
@@ -158,66 +155,34 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: locale install-packages install-data $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
-	@exec=bin/$(PACKAGE); \
-	if [ ! -f "$${exec}" ]; then \
-		echo "\n\tERROR: ./bin/`tput bold`$(PACKAGE)`tput sgr0` executable not present\n"; \
-		\
-		echo "\t- Please run `tput bold`make`tput sgr0`, `tput bold`make build`tput sgr0`, or `tput bold`make all`tput sgr0`"; \
-		echo "\t  to create it, then re-run `tput bold`make install`tput sgr0`\n"; \
-		exit 1; \
+install: locale $(FILES_build) $(DIRS_build) $(INSTALLED)_file install-packages install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime
+	target=$(DESTDIR)$(prefix); \
+	bin_dir=$${target}/$(BINDIR); \
+	data_dir=$${target}/$(DATADIR); \
+	pix_dir=$${target}/$(PIXDIR); \
 	\
-	else \
-		target=$(DESTDIR)$(prefix); \
-		bin_dir=$${target}/$(BINDIR); \
-		data_dir=$${target}/$(DATADIR); \
-		apps_dir=$${target}/$(APPSDIR); \
-		pix_dir=$${target}/$(PIXDIR); \
-		\
-		echo "\nprefix set to $(prefix)"; \
-		echo "Install target set to $${target}\n"; \
-		\
-		mkdir -vp "$${target}/$(DATADIR)"; \
-		for py in $(FILES_executable); do \
-			$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
-		done; \
-		for py in $(FILES_root); do \
-			$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
-		done; \
-		\
-		$(MKDIR) "$${data_dir}/wiz_bin"; \
-		for py in $(PKG_wizbin); do \
-			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_bin"; \
-		done; \
-		\
-		$(MKDIR) "$${data_dir}/wiz_src"; \
-		for py in $(PKG_wizsrc); do \
-			$(INSTALL_DATA) "$${py}" "$${data_dir}/wiz_src"; \
-		done; \
-		\
-		mkdir -vp "$${data_dir}/bitmaps"; \
-		for png in $(FILES_bitmap); do \
-			$(INSTALL_DATA) "$${png}" "$${data_dir}/bitmaps"; \
-		done; \
-		\
-		for d in $(DIRS_build); do \
-			$(INSTALL_FOLDER) "$${d}" "$${data_dir}"; \
-		done; \
-		\
-		$(MKDIR) "$${bin_dir}"; \
-		$(INSTALL_EXEC) "$${exec}" "$${bin_dir}"; \
-		\
-		$(MKDIR) "$${pix_dir}"; \
-		$(INSTALL_DATA) "bitmaps/$(PACKAGE)64.png" "$${pix_dir}/$(PACKAGE).png"; \
-		\
-		$(MKDIR) "$${apps_dir}"; \
-		$(INSTALL_EXEC) "data/$(FILE_launcher)" "$${apps_dir}"; \
+	echo "\nprefix set to $(prefix)"; \
+	echo "Install target set to $${target}\n"; \
 	\
-	fi; \
+	mkdir -vp "$${target}/$(DATADIR)"; \
+	for py in $(FILES_executable); do \
+		$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
+	done; \
+	for py in $(FILES_root); do \
+		$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
+	done; \
 	\
-	echo "\nInstallation complete"; \
+	for d in $(DIRS_build); do \
+		$(INSTALL_FOLDER) "$${d}" "$${data_dir}"; \
+	done; \
+	\
+	$(MKDIR) "$${bin_dir}"; \
+	$(INSTALL_EXEC) "$${exec}" "$${bin_dir}"; \
+	\
+	$(MKDIR) "$${pix_dir}"; \
+	$(INSTALL_DATA) "bitmaps/$(PACKAGE)64.png" "$${pix_dir}/$(PACKAGE).png"; \
 
-uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
+uninstall: uninstall-launcher uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	@target="$(DESTDIR)$(prefix)"; \
 	bin_dir="$${target}/$(BINDIR)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -227,7 +192,6 @@ uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
 	\
-	$(UNINSTALL) "$${apps_dir}/$(FILE_launcher)"; \
 	$(UNINSTALL) "$${pix_dir}/$(PACKAGE).png"; \
 	$(UNINSTALL) "$${bin_dir}/$(PACKAGE)"; \
 	\
@@ -246,6 +210,7 @@ install-bitmaps: $(DIR_bitmaps)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
 
+# FIXME: Unnecessary???
 uninstall-bitmaps:
 	@target="$(DESTDIR)$(prefix)"; \
 	bitmaps_dir="$${target}/$(DATADIR)/bitmaps"; \
@@ -386,6 +351,7 @@ install-templates: $(DIR_templates)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
 
+# FIXME: Unnecessary???
 uninstall-templates:
 	@target="$(DESTDIR)$(prefix)"; \
 	templates_dir="$${target}/$(DATADIR)/templates"; \
@@ -423,10 +389,7 @@ dist: distclean deb-clean $(FILES_dist) $(DIRS_dist)
 	file "$(PACKAGE_dist)"; \
 
 #.PHONY: debian
-deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
-	@echo "Copying changelog to debian directory ..."; \
-	cp -vf "$(CHANGELOG)" "debian/changelog"; \
-	\
+deb-prep: $(TEMPLATES_scripts)
 	echo "Creating Debian scripts ..."; \
 	for f in $(TEMPLATES_scripts); do \
 		name=$$(echo "$${f}" | sed -e 's:^.....::g' -e 's:...$$::g'); \
