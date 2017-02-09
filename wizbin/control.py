@@ -279,8 +279,15 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## TODO: Doxygen
-    def ExportBuild(self, target, installed_size=0):
+    ## Export instructions specifically for build phase
+    #
+    #  \param target
+    #    Path of filename to write
+    #  \param installedSize
+    #    Manually set installed size for package?
+    #  \return
+    #    <b><i>Tuple</i></b> containing a return code & string value of page data
+    def ExportBuild(self, target, installedSize=0):
         self.Export(target, u'control')
         
         absolute_filename = ConcatPaths((target, u'control'))
@@ -288,10 +295,10 @@ class Page(WizardPage):
         if not os.path.isfile(absolute_filename):
             return GT(u'Control file was not created')
         
-        if installed_size:
+        if installedSize:
             control_data = ReadFile(absolute_filename, split=True, convert=list)
             
-            size_line = u'Installed-Size: {}'.format(installed_size)
+            size_line = u'Installed-Size: {}'.format(installedSize)
             if len(control_data) > 3:
                 control_data.insert(3, size_line)
             
@@ -306,10 +313,13 @@ class Page(WizardPage):
     
     ## Retrieves information for control file export
     #  
-    #  \param string_format
-    #        \b \e bool : If True, only string-formatted info is returned
+    #  \param getModule
+    #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+    #    & page data, otherwise return only page data string
     #  \return
-    #        \b \e tuple(str, str) : A tuple containing the filename & a string representation of control file formatted for text output
+    #    A <b><i>tuple</i></b> containing the filename & a string representation
+    #    of control file formatted for text output
+    #  \override wiz.wizard.WizardPage.Get
     def Get(self, getModule=False):
         page = self.GetCtrlInfo()
         
@@ -319,7 +329,10 @@ class Page(WizardPage):
         return page
     
     
-    ## TODO: Doxygen
+    ## Retrieves field values & formats into plain text for output to file
+    #
+    #  \return
+    #    Control file text
     def GetCtrlInfo(self):
         pg_depends = GetPage(pgid.DEPENDS)
         
@@ -451,22 +464,29 @@ class Page(WizardPage):
         return u'\n'.join(ctrl_list).strip(u'\n') + u'\n'
     
     
-    ## TODO: Doxygen
+    ## Retrieves the name from the 'package' field
+    #
+    #  \return
+    #    <b><i>String</i></b> package name
     def GetPackageName(self):
         return GetField(self, inputid.PACKAGE).GetValue()
     
     
-    ## TODO: Doxygen
-    #  
+    ## Reads & parses page data from a formatted text file
+    #
     #  TODO: Use 'Set'/'SetPage' method
-    def ImportFromFile(self, file_path):
-        Logger.Debug(__name__, GT(u'Importing file: {}'.format(file_path)))
+    #
+    #  \param filename
+    #    File path to open
+    #  \override wiz.wizard.WizardPage.ImportFromFile
+    def ImportFromFile(self, filename):
+        Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         
-        if not os.path.isfile(file_path):
-            ShowErrorDialog(GT(u'File does not exist: {}'.format(file_path)), linewrap=600)
+        if not os.path.isfile(filename):
+            ShowErrorDialog(GT(u'File does not exist: {}'.format(filename)), linewrap=600)
             return dbrerrno.ENOENT
         
-        file_text = ReadFile(file_path)
+        file_text = ReadFile(filename)
         
         page_depends = GetPage(pgid.DEPENDS)
         
@@ -479,21 +499,21 @@ class Page(WizardPage):
     
     
     ## Tells the build script whether page should be built
-    #  
-    #  \override ui.wizard.WizardPage.IsOkay
+    #
+    #  \override wiz.wizard.WizardPage.IsOkay
     def IsOkay(self):
         # Build page must always be built
         return True
     
     
-    ## TODO: Doxygen
+    ## Displays a file open dialog for selecting a text file to read
     def OnBrowse(self, event=None):
         browse_dialog = GetFileOpenDialog(GetMainWindow(), GT(u'Open File'))
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
     
     
-    ## Show a preview of the control file
+    ## Creates a formatted preview of the control file text
     def OnPreviewControl(self, event=None):
         ctrl_info = self.GetCtrlInfo()
         
@@ -503,7 +523,7 @@ class Page(WizardPage):
         ShowDialog(preview)
     
     
-    ## Export control information to text file
+    ## Opens a file save dialog to export control file data
     def OnSave(self, event=None):
         # Get data to write to control file
         control = self.GetCtrlInfo()
@@ -526,6 +546,8 @@ class Page(WizardPage):
     
     
     ## Resets all fields on page to default values
+    #
+    #  \override wiz.wizard.WizardPage.Reset
     def Reset(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options
@@ -541,7 +563,12 @@ class Page(WizardPage):
         self.chk_essential.SetValue(self.chk_essential.Default)
     
     
-    ## Opening Project/File & Setting Fields
+    ## Fills page's fields with input data
+    #
+    #  \param data
+    #    Text to be parsed for values
+    #  \return
+    #    Leftover text to fill out 'Dependecies' page fields
     def Set(self, data):
         # Decode to unicode string if input is byte string
         if isinstance(data, str):
