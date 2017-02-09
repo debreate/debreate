@@ -1,21 +1,31 @@
 # -*- coding: utf-8 -*-
 
+## \package wizsrc.control
 
-from wx import \
-    BoxSizer as wxBoxSizer, \
-    NewId as wxNewId, \
-    Panel as wxPanel
-from wx import \
-    VERTICAL as wxVERTICAL
-
-from dbr.language import GT
+# MIT licensing
+# See: docs/LICENSE.txt
 
 
-ID = wxNewId()
+import wx
+
+from wiz.wizard     import WizardPage
+from globals.ident  import pgid
+from ui.layout      import BoxSizer
 
 
-class Panel(wxPanel):
-    def __init__(self, parent, name=GT(u'Control')):
-        wxPanel.__init__(self, parent, ID, name=name)
+## Control page for source builds
+class Page(WizardPage):
+    ## Constructor
+    #
+    #  \param
+    #    Parent <b><i>wx.Window</i></b> instance
+    def __init__(self, parent):
+        WizardPage.__init__(self, parent, pgid.CONTROL)
         
-        page_layout = wxBoxSizer(wxVERTICAL)
+        # *** Layout *** #
+        
+        lyt_main = BoxSizer(wx.VERTICAL)
+        
+        self.SetAutoLayout(True)
+        self.SetSizer(lyt_main)
+        self.Layout()
