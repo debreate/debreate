@@ -49,7 +49,7 @@ class Page(WizardPage):
         WizardPage.__init__(self, parent, pgid.MENU) #, name=GT(u'Menu Launcher'))
         
         ## Override default label
-        self.label = GT(u'Menu Launcher')
+        self.Label = GT(u'Menu Launcher')
         
         # --- Buttons to open/preview/save .desktop file
         btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')

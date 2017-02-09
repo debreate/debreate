@@ -499,7 +499,7 @@ class WizardPage(ScrolledPanel):
         self.SetName(page_ids[self.GetId()])
         
         ## Label to show in title & menu
-        self.label = None
+        self.Label = None
         
         ## List of IDs that should not be reset
         self.IgnoreResetIds = []
@@ -515,10 +515,10 @@ class WizardPage(ScrolledPanel):
     
     ## TODO: Doxygen
     def GetLabel(self):
-        if self.label == None:
+        if self.Label == None:
             return self.GetName()
         
-        return self.label
+        return self.Label
     
     
     ## Retrieves all fields that cannot be left blank for build
