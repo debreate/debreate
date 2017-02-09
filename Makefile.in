@@ -21,9 +21,6 @@ ICONTHEME = <icon-theme>
 MIMEDIR = $(DATAROOT)/mime/packages
 MIMEICONSDIR = $(ICONTHEME)/scalable/mimetypes
 
-SUBDIRS = \
-	data
-
 PERM_DATA = 0644
 PERM_EXEC = 0755
 
