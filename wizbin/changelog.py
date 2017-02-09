@@ -163,7 +163,7 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## TODO: Doxygen
+    ## Formats input text from 'changes' field for new entry in changelog
     def AddInfo(self, event=None):
         new_changes = self.ti_changes.GetValue()
         
@@ -204,10 +204,12 @@ class Page(WizardPage):
         self.ti_changes.SetFocus()
     
     
-    ## Retrieves page data from fields
-    #  
+    ## Retrieves changelog text
+    #
+    #  The output is a text file that uses sections defined by braces ([, ])
+    #
     #  \return
-    #        \b \e tuple : Changelog target dir & text
+    #    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
     def Get(self):
         target = self.pnl_target.GetPath()
         if target == self.pnl_target.GetDefaultPath():
@@ -216,7 +218,10 @@ class Page(WizardPage):
         return (target, self.GetChangelog())
     
     
-    ## TODO: Doxygen
+    ## Retrieves plain text of the changelog field
+    #
+    #  \return
+    #    Formatted changelog text
     def GetChangelog(self):
         return self.dsp_changes.GetValue()
     
@@ -233,12 +238,15 @@ class Page(WizardPage):
         return u'\n'.join((u'<<CHANGELOG>>', target, self.dsp_changes.GetValue(), u'<</CHANGELOG>>'))
     
     
-    ## TODO: Doxygen
+    ## Checks the page's fields for exporting
+    #
+    #  \return
+    #    <b><i>False</i></b> if page cannot be exported
     def IsOkay(self):
         return not TextIsEmpty(self.dsp_changes.GetValue())
     
     
-    ## TODO: Doxygen
+    ## Imports select field values from the 'Control' page
     def OnImportFromControl(self, event=None):
         fields = (
             (self.ti_package, inputid.PACKAGE),
@@ -261,7 +269,10 @@ class Page(WizardPage):
                 F.SetValue(field_value)
     
     
-    ## TODO: Doxygen
+    ## Sets values of page's fields with given input
+    #
+    #  \param data
+    #    Text to parse for values
     def Set(self, data):
         changelog = data.split(u'\n')
         target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
