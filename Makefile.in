@@ -158,22 +158,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-build:
-	@exec=bin/$(PACKAGE); \
-	echo "\nprefix set to \"$(prefix)\""; \
-	\
-	exec_script=\#"!/bin/sh\n\n$(prefix)/$(DATAROOT)/$(PACKAGE)/init.py \$$@"; \
-	\
-	mkdir -vp "bin"; \
-	echo "Creating executable \"$${exec}\" ..."; \
-	echo "$${exec_script}\n" > "$${exec}"; \
-	\
-	echo "Creating \"$(INSTALLED)\" file ..."; \
-	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
-	\
-	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
-
-install: build locale install-packages install-data $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
+install: locale install-packages install-data $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
 		echo "\n\tERROR: ./bin/`tput bold`$(PACKAGE)`tput sgr0` executable not present\n"; \
