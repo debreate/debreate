@@ -133,6 +133,16 @@ def FormatMethods():
                 if lines[INDEX+1].strip() == '<td></td>':
                     remove_indexes.append(INDEX+1)
             
+            elif 'class="memname"' in LINE:
+                if 'def ' in LINE:
+                    LINE = LINE.replace('def ', '')
+                
+                if '.__init__ ' in LINE:
+                    LINE = LINE.replace('.__init__ ', '')
+                
+                if module in LINE:
+                    LINE = LINE.replace(module, '')
+            
             elif params:
                 # Entered class method
                 if LINE.strip() == '</tr>':
@@ -141,19 +151,11 @@ def FormatMethods():
                         remove_indexes += [INDEX, INDEX+1]
                 
                 elif 'class="memname"' in LINE:
-                    strip_def = 'def {}'.format(module)
-                    
-                    if strip_def in LINE:
-                        LINE = LINE.replace(strip_def, '')
-                    
                     if ' </td>' in LINE:
                         LINE = LINE.replace(' </td>', '(</td>')
                         
                         if lines[INDEX+1].strip() == '<td>(</td>':
                             remove_indexes.append(INDEX+1)
-                    
-                    if '.__init__' in LINE:
-                        LINE = LINE.replace('.__init__', '')
             
             if LINE != lines[INDEX]:
                 lines[INDEX] = LINE
