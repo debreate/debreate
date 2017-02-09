@@ -3,6 +3,7 @@
 
 # FIXME: "dist" rule compiles gettext locales
 
+# This is written to 'prefix' in 'build' rule, then read in 'install'
 prefix = <prefix>
 TARGET = $(DESTDIR)$(prefix)
 
