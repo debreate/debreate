@@ -28,6 +28,10 @@ from wiz.wizard         import WizardPage
 
 ## Manual pages page
 class Page(WizardPage):
+    ## Constructor
+    #
+    #  \param parent
+    #    Parent <b><i>wx.Window</i></b> instance
     def __init__(self, parent):
         # TODO: Add to Gettext locale files
         WizardPage.__init__(self, parent, pgid.MAN)
