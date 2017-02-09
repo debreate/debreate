@@ -144,6 +144,10 @@ all:
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
 
+$(INSTALLED)_file:
+	@echo "Creating \"$(INSTALLED)\" file ..."; \
+	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
+
 build:
 	@exec=bin/$(PACKAGE); \
 	echo "\nprefix set to \"$(prefix)\""; \
