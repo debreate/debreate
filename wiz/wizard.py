@@ -540,8 +540,18 @@ class WizardPage(ScrolledPanel):
         self.prebuild_check = True
     
     
-    ## TODO: Doxygen
-    def Export(self, out_dir, out_name=wx.EmptyString):
+    ## Collects page's data & exports it to file
+    #
+    #  \param target
+    #    Absolute filename path for output
+    def Export(self, target):
+        page_data = self.Get()
+        
+        return WriteFile(target, page_data)
+    
+    
+    ## FIXME: Deprecated
+    def ExportDeprecated(self, out_dir, out_name=wx.EmptyString):
         if not os.path.isdir(out_dir):
             Logger.Debug(__name__, u'Directory does not exist: {}'.format(out_dir))
             return ERR_DIR_NOT_AVAILABLE
