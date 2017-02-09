@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ## \package wiz.helper
+#
+#  Support functions for accessing wizard pages & attributes
 
 # MIT licensing
 # See: docs/LICENSE.txt
