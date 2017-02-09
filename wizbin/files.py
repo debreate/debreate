@@ -208,25 +208,25 @@ class Page(WizardPage):
     #
     #  \param dirs
     #    <b><i>dict</i></b>: dict[dir] = [file list]
-    #  \param file_count
+    #  \param fileCount
     #    Number of explicit files being added to list
-    #  \param show_dialog
+    #  \param showDialog
     #    If <b><i>True</i></b>, displays a progress dialog
-    def AddPaths(self, dirs, file_count=None, show_dialog=False):
+    def AddPaths(self, dirs, fileCount=None, showDialog=False):
         target = self.GetTarget()
         
-        if file_count == None:
-            file_count = 0
+        if fileCount == None:
+            fileCount = 0
             for D in dirs:
                 for F in dirs[D]:
-                    file_count += 1
+                    fileCount += 1
         
         progress = None
         
-        Logger.Debug(__name__, u'Adding {} files ...'.format(file_count))
+        Logger.Debug(__name__, u'Adding {} files ...'.format(fileCount))
         
-        if show_dialog:
-            progress = ProgressDialog(GetMainWindow(), GT(u'Adding Files'), maximum=file_count,
+        if showDialog:
+            progress = ProgressDialog(GetMainWindow(), GT(u'Adding Files'), maximum=fileCount,
                     style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
             progress.Show()
         
@@ -440,16 +440,16 @@ class Page(WizardPage):
     
     ## Reads files & directories & preps for loading into list
     #
-    #  \param paths_list
+    #  \param pathsList
     #    <b><i>List/Tuple</i></b> of <b><i>string</i></b> values representing
     #    files & directories to be added
     #  \return
     #    Value of wizbin.files.Page.AddPaths, or <b><i>False</i></b> in case of error
-    def LoadPaths(self, paths_list):
-        if isinstance(paths_list, tuple):
-            paths_list = list(paths_list)
+    def LoadPaths(self, pathsList):
+        if isinstance(pathsList, tuple):
+            pathsList = list(pathsList)
         
-        if not paths_list or not isinstance(paths_list, list):
+        if not pathsList or not isinstance(pathsList, list):
             return False
         
         file_list = []
@@ -465,19 +465,19 @@ class Page(WizardPage):
         prep.Show()
         
         if not self.chk_preserve_top.GetValue():
-            for INDEX in reversed(range(len(paths_list))):
-                path = paths_list[INDEX]
+            for INDEX in reversed(range(len(pathsList))):
+                path = pathsList[INDEX]
                 if os.path.isdir(path):
                     # Remove top-level directory from list
-                    paths_list.pop(INDEX)
+                    pathsList.pop(INDEX)
                     
                     insert_index = INDEX
                     for P in os.listdir(path):
-                        paths_list.insert(insert_index, ConcatPaths((path, P)))
+                        pathsList.insert(insert_index, ConcatPaths((path, P)))
                         insert_index += 1
         
         try:
-            for P in paths_list:
+            for P in pathsList:
                 if prep.WasCancelled():
                     prep.Destroy()
                     return False
@@ -573,7 +573,7 @@ class Page(WizardPage):
             if not ConfirmationDialog(GetMainWindow(), text=count_warnmsg).Confirmed():
                 return False
         
-        return self.AddPaths(dir_list, file_count, show_dialog=file_count >= efficiency_threshold)
+        return self.AddPaths(dir_list, file_count, showDialog=file_count >= efficiency_threshold)
     
     
     ## Handles event emitted by 'browse' button
@@ -602,12 +602,12 @@ class Page(WizardPage):
     #  Note that this method should not be renamed as 'OnDropFiles'
     #  is the implicit handler for wx.FileDropTarget (<- correct class???)
     #
-    #  \param file_list
+    #  \param fileList
     #    <b><i>List</i></b> of files dropped from file manager
     #  \return
     #    Value of wizbin.files.Page.LoadPaths
-    def OnDropFiles(self, file_list):
-        return self.LoadPaths(file_list)
+    def OnDropFiles(self, fileList):
+        return self.LoadPaths(fileList)
     
     
     ## Handles files & directories added from ui.tree.DirectoryTreePanel object
