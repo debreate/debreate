@@ -13,12 +13,28 @@ import os
 from globals.strings import GS
 
 
-def ConcatPaths(path_list):
-    if not isinstance(path_list, (list, tuple)):
-        # FIXME: Need error checking
-        return None
+## Joints multiple strings into a single path
+#
+#  \param pathList
+#    <b><i>List</i></b> of strings to be concatenated
+#  \param tail
+#    Strings to be concatenated to root argument (pathList)
+def ConcatPaths(pathList, *tail):
+    if not isinstance(pathList, (list, tuple)):
+        root = pathList
+        if not tail:
+            # Return cleaned up root without any concatenation
+            return root.rstrip(u'/').replace(u'//', u'/')
+        
+        # Join tail arguments
+        tail = u'/'.join(tail).strip(u'/').replace(u'//', u'/')
+        
+        if not root:
+            return tail
+        
+        return u'{}/{}'.format(root, tail).replace(u'//', u'/')
     
-    return u'/'.join(path_list).replace(u'//', u'/')
+    return u'/'.join(pathList).replace(u'//', u'/')
 
 
 # *** System paths *** #
