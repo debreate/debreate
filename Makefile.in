@@ -243,6 +243,21 @@ uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 		find "$${data_dir}" -type d -empty -delete; \
 	fi; \
 
+install-bitmaps: $(DIR_bitmaps)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
+
+uninstall-bitmaps:
+	@target="$(DESTDIR)$(prefix)"; \
+	bitmaps_dir="$${target}/$(DATADIR)/bitmaps"; \
+	if [ -d "$${bitmaps_dir}" ]; then \
+		$(call UNINSTALL_FOLDER,$${bitmaps_dir}); \
+	fi; \
+
 install-data: $(INSTALLED)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -294,6 +309,15 @@ uninstall-icons:
 		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*\\.svg" -delete; \
 		find "$${icons_dir}" -type d -empty -delete; \
 	fi; \
+
+install-launcher: data/$(FILE_launcher)
+	@apps_dir=$(TARGET)/$(APPSDIR); \
+	$(MKDIR) "$${apps_dir}"; \
+	$(INSTALL_DATA) "data/$(FILE_launcher)" "$${apps_dir}"; \
+
+uninstall-launcher:
+	@apps_dir=$(TARGET)/$(APPSDIR); \
+	$(UNINSTALL) "$${apps_dir}/$(FILE_launcher)"; \
 
 install-locale: $(DIR_locale)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -358,6 +382,21 @@ install-packages: $(PACKAGES)
 		fi; \
 		$(INSTALL_DATA) "$${pkg}" "$${target}"; \
 	done; \
+
+install-templates: $(DIR_templates)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
+
+uninstall-templates:
+	@target="$(DESTDIR)$(prefix)"; \
+	templates_dir="$${target}/$(DATADIR)/templates"; \
+	if [ -d "$${templates_dir}" ]; then \
+		$(call UNINSTALL_FOLDER,$${templates_dir}); \
+	fi; \
 
 doc-html: $(DOXYGEN_CONFIG)
 	@doxygen "$(DOXYGEN_CONFIG)"; \
@@ -478,6 +517,12 @@ help:
 	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`, `tput bold`uninstall-man`tput sgr0`,"; \
 	echo "\t\t  `tput bold`uninstall-doc`tput sgr0`, & `tput bold`uninstall-locale`tput sgr0`\n"; \
 	\
+	echo "\tinstall-bitmaps"; \
+	echo "\t\t- Install bitmaps used by application\n"; \
+	\
+	echo "\tuninstall-bitmaps"; \
+	echo "\t\t- Remove bitmaps used by application\n"; \
+	\
 	echo "\tinstall-data"; \
 	echo "\t\t- Install misc. data files onto the system\n"; \
 	\
@@ -494,6 +539,12 @@ help:
 	\
 	echo "\tuninstall-icons"; \
 	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
+	\
+	echo "\tinstall-launcher"; \
+	echo "\t\t- Install system menu launcher\n"; \
+	\
+	echo "\tuninstall-launcher"; \
+	echo "\t\t- Remove system menu launcher\n"; \
 	\
 	echo "\tinstall-locale"; \
 	echo "\t\t- Install gettext locale translations\n"; \
@@ -520,6 +571,12 @@ help:
 	echo "\tinstall-packages"; \
 	echo "\t\t- Install Debreate's sub-packages"; \
 	echo "\t\t- Called by `tput bold`install`tput sgr0`\n"; \
+	\
+	echo "\tinstall-templates"; \
+	echo "\t\t- Install template files used by application\n"; \
+	\
+	echo "\tuninstall-templates"; \
+	echo "\t\t- Remove application template files\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
