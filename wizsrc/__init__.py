@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-## \package wiz_src
+## \package wizsrc
 #
-#  Pages only used for source packaging
+#  Wizard pages related to source package building
 
 # MIT licensing
 # See: docs/LICENSE.txt

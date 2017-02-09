@@ -2,7 +2,7 @@
 
 ## \package input
 #  
-#  Package for custom input control
+#  Package for custom input controls
 
 # MIT licensing
 # See: docs/LICENSE.txt
