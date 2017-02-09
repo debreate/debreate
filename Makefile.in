@@ -564,3 +564,14 @@ help:
 	echo "\t\t  `tput bold`init.py`tput sgr0` script"; \
 	echo "\t\t- If used with `tput bold`uninstall`tput sgr0` it must match that of"; \
 	echo "\t\t  the `tput bold`install`tput sgr0` invocation\n"; \
+	\
+	echo "Notes on Environment Variables:"; \
+	\
+	echo "\tCurrently Debreate does not use a build setup system (such as"; \
+	echo "\tGNU Autotools or CMake), so the \"prefix\" variable is static."; \
+	echo "\tThis means that when calling `tput bold`make uninstall`tput sgr0`, \"prefix\" must"; \
+	echo "\tbe set to the same as it was for `tput bold`make install`tput sgr0`. The same goes"; \
+	echo "\tfor the \"DESTDIR\" variable.\n"; \
+	\
+	echo "\tE.g. if `tput bold`make install prefix=/usr`tput sgr0` was called, then `tput bold`make"; \
+	echo "\tuninstall prefix=/usr`tput sgr0` must be called to uninstall.\n"; \
