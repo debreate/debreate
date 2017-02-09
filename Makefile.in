@@ -465,6 +465,13 @@ distclean: clean
 	@echo "Cleaning distribution ..."; \
 	rm -vf "$(PACKAGE_dist)"; \
 
+doc-clean:
+	@rm -vrf docs/doxygen
+
+locale-clean:
+	@find locale -type f -name "*\.mo" -delete; \
+	find locale -type d -empty -delete; \
+
 deb-clean:
 	@rm -vrf "debian/$(PACKAGE)"
 	@DEBUILD_FILES="\
@@ -474,13 +481,6 @@ deb-clean:
 	for f in preinst postinst prerm postrm; do \
 		rm -vf "debian/$${f}"; \
 	done; \
-
-doc-clean:
-	@rm -vrf docs/doxygen
-
-locale-clean:
-	@find locale -type f -name "*\.mo" -delete; \
-	find locale -type d -empty -delete; \
 
 help:
 	@echo "Usage:"; \
