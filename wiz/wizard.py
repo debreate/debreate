@@ -490,6 +490,12 @@ class Wizard(wx.Panel):
 
 ## Parent class for wizard pages
 class WizardPage(ScrolledPanel):
+    ## Constructor
+    #
+    #  \param parent
+    #    Parent <b><i>wx.Window</i></b> instance
+    #  \param page_id
+    #    Identifier to use for page
     def __init__(self, parent, page_id):
         ScrolledPanel.__init__(self, parent, page_id)
         
