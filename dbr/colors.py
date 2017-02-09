@@ -9,11 +9,16 @@
 from wx import Colour as Color
 
 
-# Yellow
+## Color used for tooltip backgrounds (yellow)
+#
+#  FIXME: Unused?
 COLOR_tooltip = Color(255, 255, 0)
-# Red-orange
+
+## Color used for warnings (red-orange)
 COLOR_warn = Color(255, 143, 115)
-# Red
+
+## Color used for errors (red)
 COLOR_error = Color(255, 0, 0)
 
+## Text color of executable files (red)
 COLOR_executable = COLOR_error
