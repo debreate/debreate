@@ -235,7 +235,7 @@ class ManBanner(ManSectBase):
         self.sel_section.SetStringSelection(self.sel_section.Default)
         
         # Section description that changes with EVT_CHOICE
-        self.label_section = wx.StaticText(self.Panel)
+        self.LabelSection = wx.StaticText(self.Panel)
         self.SetSectionLabel()
         
         txt_date = wx.StaticText(self.Panel, label=GT(u'Date'))
@@ -260,7 +260,7 @@ class ManBanner(ManSectBase):
         lyt_section = BoxSizer(wx.HORIZONTAL)
         lyt_section.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_section.Add(self.label_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+        lyt_section.Add(self.LabelSection, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
         
         lyt_date = wx.GridBagSizer()
         lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
@@ -307,7 +307,7 @@ class ManBanner(ManSectBase):
         if section in sections:
             Logger.Debug(__name__, u'Setting section to {}'.format(section))
             
-            self.label_section.SetLabel(sections[section])
+            self.LabelSection.SetLabel(sections[section])
             return True
         
         return False
