@@ -16,15 +16,11 @@ from globals.paths      import PATH_logs
 
 
 ## A log class for outputting messages
-#  
+#
 #  TODO: Add 'quiet' (0) log level.
-#  
+#
 #  A log that will output messages to the terminal &
 #    a log text file.
-#  \param log_level
-#    \b \e int|str : The level at which messages will be output (default is 2 (ERROR))
-#  \param log_path
-#    \b \e str : The file to which messages will be written
 class DebreateLogger:
     # Logging levels
     INFO, WARN, ERROR, DEBUG, TEST = range(5)
@@ -37,6 +33,12 @@ class DebreateLogger:
         TEST: u'test',
     }
     
+    ## Constructor
+    #
+    #  \param log_level
+    #    \b \e int|str : The level at which messages will be output (default is 2 (ERROR))
+    #  \param log_path
+    #    \b \e str : The file to which messages will be written
     def __init__(self, log_level=ERROR, log_path=PATH_logs):
         ## The level at which to output log messages
         self.log_level = log_level
@@ -53,6 +55,7 @@ class DebreateLogger:
         self.OnInit()
     
     
+    ## Opens a log file or creates a new one & adds log header with timestamp
     def OnInit(self):
         if not os.path.isdir(self.log_path):
             os.makedirs(self.log_path)
@@ -72,6 +75,7 @@ class DebreateLogger:
         AppendFile(self.log_file, log_header, noStrip=u'\n')
     
     
+    ## Adds footer with timestamp to log file
     def OnClose(self):
         # Don't write to log if user deleted it
         if os.path.isfile(self.log_file):
@@ -106,9 +110,17 @@ class DebreateLogger:
     
     
     ## Prints a message to stdout & logs to file
-    #  
+    #
     #  \param l_level
-    #        \b \e int|str : Level at which to display the message
+    #    Level at which to display the message
+    #  \param l_script
+    #    Name of the script/module where the message originates
+    #  \param l_message
+    #    Message to display
+    #  \param newline
+    #    If <b><i>True</i></b>, prepends an empty line to beginning of message
+    #  \param pout
+    #    Stream to which message should be output (stdout/stderr)
     def LogMessage(self, l_level, l_script, l_message, newline=False, pout=sys.stdout):
         l_level = self.CheckLogLevel(l_level)
         
@@ -136,26 +148,63 @@ class DebreateLogger:
     
     
     ## Show a log message at 'info' level
+    #
+    #  \param l_script
+    #    Name of the script/module where the message originates
+    #  \param l_message
+    #    Message to display
+    #  \param newline
+    #    If <b><i>True</i></b>, prepends an empty line to beginning of message
     def Info(self, l_script, l_message, newline=False):
         self.LogMessage(u'info', l_script, l_message, newline)
     
     
     ## Show a log message at 'warn' level
+    #
+    #  \param l_script
+    #    Name of the script/module where the message originates
+    #  \param l_message
+    #    Message to display
+    #  \param newline
+    #    If <b><i>True</i></b>, prepends an empty line to beginning of message
     def Warn(self, l_script, l_message, newline=False):
         self.LogMessage(u'warn', l_script, l_message, newline)
     
     
     ## Show a log message at 'error' level
+    #
+    #  Messages at 'error' level are written to stderr
+    #
+    #  \param l_script
+    #    Name of the script/module where the message originates
+    #  \param l_message
+    #    Message to display
+    #  \param newline
+    #    If <b><i>True</i></b>, prepends an empty line to beginning of message
     def Error(self, l_script, l_message, newline=False):
         self.LogMessage(u'error', l_script, l_message, newline, pout=sys.stderr)
     
     
     ## Show a log message at 'debug' level
+    #
+    #  \param l_script
+    #    Name of the script/module where the message originates
+    #  \param l_message
+    #    Message to display
+    #  \param newline
+    #    If <b><i>True</i></b>, prepends an empty line to beginning of message
     def Debug(self, l_script, l_message, newline=False):
         self.LogMessage(u'debug', l_script, l_message, newline)
     
     
     ## Show a log message at '' level
+    #
+    #  \param l_script
+    #    Name of the script/module where the message originates
+    #  \param l_message
+    #    Message to display
+    #  \param newline
+    #    If <b><i>True</i></b>, prepends an empty line to beginning of message
     def Test(self, l_script, l_message, newline=False):
         self.LogMessage(u'test', l_script, l_message, newline)
     
@@ -164,6 +213,8 @@ class DebreateLogger:
     #  
     #  \param l_level
     #        Level at which to print & output messages
+    #  \return
+    #    <b><i>True</i></b> if log level successfully set
     def SetLogLevel(self, l_level):
         log_set = False
         
@@ -183,17 +234,28 @@ class DebreateLogger:
         return log_set
     
     
+    ## Retrieves the current logging level
+    #
+    #  \return
+    #    <b><i>Integer</i></b> logging level
     def GetLogLevel(self):
         return self.log_level
     
     
+    ## Retrieves the current file be written to
+    #
+    #  \return
+    #    <b><i>String</i></b> path of log file
     def GetLogFile(self):
         return self.log_file
 
 
-# Instantiate logger with default level & output path
+## Instantiated logger with default level & output path
 Logger = DebreateLogger()
 
 ## Checks if logging level is set to 'debug'
+#
+#  \return
+#    <b><i>True</i></b> if logging level is 'debug'
 def DebugEnabled():
     return Logger.GetLogLevel() >= Logger.DEBUG
