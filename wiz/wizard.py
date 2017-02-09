@@ -43,15 +43,13 @@ from wiz.helper         import GetMenu
 class Wizard(wx.Panel):
     ## Constructor
     #
-    #  TODO: Rename param 'page_list' to 'pageList'
-    #
     #  \param parent
     #    Parent <b><i>wx.Window</i></b> instance
-    #  \param page_list
+    #  \param pageList
     #    <b><i>List</i></b> of wiz.wizard.WizardPage instances to initialize
     #    wizard with
-    def __init__(self, parent, page_list=None):
-        wx.Panel.__init__(self, parent, wx.ID_ANY, page_list)
+    def __init__(self, parent, pageList=None):
+        wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
         
         testing = u'alpha' in GetTestList()
         
@@ -270,13 +268,13 @@ class Wizard(wx.Panel):
     
     
     ## TODO: Doxygen
-    def ExportPages(self, page_list, out_dir):
-        for P in page_list:
+    def ExportPages(self, pageList, outDir):
+        for P in pageList:
             # Support using list of IDs instead of WizardPage instances
             if not isinstance(P, WizardPage):
                 P = self.GetPage(P)
             
-            P.Export(out_dir)
+            P.Export(outDir)
     
     
     ## Retrieves all current page instances
@@ -299,12 +297,12 @@ class Wizard(wx.Panel):
     
     
     ## TODO: Doxygen
-    def GetPage(self, page_id):
+    def GetPage(self, pageId):
         for P in self.pages:
-            if P.GetId() == page_id:
+            if P.GetId() == pageId:
                 return P
         
-        Logger.Warn(__name__, u'Page with ID {} has not been constructed'.format(page_id))
+        Logger.Warn(__name__, u'Page with ID {} has not been constructed'.format(pageId))
     
     
     ## Retrieves the full list of page IDs
@@ -471,22 +469,22 @@ class Wizard(wx.Panel):
     
     
     ## TODO: Doxygen
-    def ShowPage(self, page_id):
+    def ShowPage(self, pageId):
         for p in self.pages:
-            if p.GetId() != page_id:
+            if p.GetId() != pageId:
                 p.Hide()
             
             else:
                 p.Show()
                 self.txt_title.SetLabel(p.GetLabel())
         
-        if page_id == self.ID_FIRST:
+        if pageId == self.ID_FIRST:
             self.btn_prev.Enable(False)
         
         elif not FieldEnabled(self.btn_prev):
             self.btn_prev.Enable(True)
         
-        if page_id == self.ID_LAST:
+        if pageId == self.ID_LAST:
             self.btn_next.Enable(False)
         
         elif not FieldEnabled(self.btn_next):
@@ -503,10 +501,10 @@ class WizardPage(ScrolledPanel):
     #
     #  \param parent
     #    Parent <b><i>wx.Window</i></b> instance
-    #  \param page_id
+    #  \param pageId
     #    Identifier to use for page
-    def __init__(self, parent, page_id):
-        ScrolledPanel.__init__(self, parent, page_id)
+    def __init__(self, parent, pageId):
+        ScrolledPanel.__init__(self, parent, pageId)
         
         # Pages should not be shown until wizard is initialized
         self.Hide()
