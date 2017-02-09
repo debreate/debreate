@@ -28,6 +28,7 @@ INSTALL_EXEC = install -vm ${PERM_EXEC}
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
+LINK = ln -vfs
 
 define MOVE =
 	target_dir=$2; \
@@ -110,9 +111,6 @@ FILES_build = \
 	$(PKG_wizbin) \
 	$(PKG_wizsrc)
 
-DIRS_build = \
-	templates
-
 DIRS_dist = \
 	$(DIR_bitmaps) \
 	$(DIR_locale) \
@@ -128,8 +126,8 @@ PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
 FILE_launcher = $(PACKAGE).desktop
 FILE_mime = data/mime/$(PACKAGE).xml
-LICENSE = docs/LICENSE.txt
-DOXYGEN_CONFIG = docs/Doxyfile
+FILE_license = docs/LICENSE.txt
+FILE_doxyfile = docs/Doxyfile
 INSTALLED = INSTALLED
 
 MIME_prefix = application
@@ -155,8 +153,8 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: locale $(FILES_build) $(DIRS_build) $(INSTALLED)_file install-packages install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime
-	target=$(DESTDIR)$(prefix); \
+install: locale $(FILES_build) $(INSTALLED)_file install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime install-packages install-templates
+	@target=$(DESTDIR)$(prefix); \
 	bin_dir=$${target}/$(BINDIR); \
 	data_dir=$${target}/$(DATADIR); \
 	pix_dir=$${target}/$(PIXDIR); \
@@ -164,7 +162,7 @@ install: locale $(FILES_build) $(DIRS_build) $(INSTALLED)_file install-packages 
 	echo "\nprefix set to $(prefix)"; \
 	echo "Install target set to $${target}\n"; \
 	\
-	mkdir -vp "$${target}/$(DATADIR)"; \
+	$(MKDIR) "$${target}/$(DATADIR)"; \
 	for py in $(FILES_executable); do \
 		$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
 	done; \
@@ -172,17 +170,13 @@ install: locale $(FILES_build) $(DIRS_build) $(INSTALLED)_file install-packages 
 		$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
 	done; \
 	\
-	for d in $(DIRS_build); do \
-		$(INSTALL_FOLDER) "$${d}" "$${data_dir}"; \
-	done; \
-	\
 	$(MKDIR) "$${bin_dir}"; \
-	$(INSTALL_EXEC) "$${exec}" "$${bin_dir}"; \
+	$(LINK) "$(prefix)/$(DATADIR)/init.py" "$${bin_dir}/$(PACKAGE)"; \
 	\
 	$(MKDIR) "$${pix_dir}"; \
-	$(INSTALL_DATA) "bitmaps/$(PACKAGE)64.png" "$${pix_dir}/$(PACKAGE).png"; \
+	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pix_dir}/$(PACKAGE).png"; \
 
-uninstall: uninstall-launcher uninstall-mime uninstall-man uninstall-doc uninstall-locale
+uninstall: uninstall-doc uninstall-launcher uninstall-locale uninstall-man uninstall-mime
 	@target="$(DESTDIR)$(prefix)"; \
 	bin_dir="$${target}/$(BINDIR)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -210,28 +204,21 @@ install-bitmaps: $(DIR_bitmaps)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
 
-# FIXME: Unnecessary???
-uninstall-bitmaps:
-	@target="$(DESTDIR)$(prefix)"; \
-	bitmaps_dir="$${target}/$(DATADIR)/bitmaps"; \
-	if [ -d "$${bitmaps_dir}" ]; then \
-		$(call UNINSTALL_FOLDER,$${bitmaps_dir}); \
-	fi; \
-
 install-data: $(INSTALLED)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_dir="$${target}/$(DATADIR)"; \
 	if [ ! -d "$${data_dir}" ]; then \
 		$(MKDIR) "$${data_dir}"; \
 	fi; \
-	$(INSTALL_DATA) "$(INSTALLED)" "$${data_dir}"; \
+	\
+	$(call MOVE,$(INSTALLED),$${data_dir}); \
 
-install-doc: $(FILES_doc) $(LICENSE)
+install-doc: $(FILES_doc) $(FILE_license)
 	@target="$(DESTDIR)$(prefix)"; \
 	doc_dir="$${target}/$(DOCDIR)"; \
 	\
 	echo "\nInstalling documentation ..."; \
-	mkdir -vp "$${doc_dir}"; \
+	$(MKDIR) "$${doc_dir}"; \
 	for doc in $(FILES_doc); do \
 		$(INSTALL_DATA) "$${doc}" "$${doc_dir}"; \
 	done; \
@@ -239,7 +226,7 @@ install-doc: $(FILES_doc) $(LICENSE)
 	echo "\nCompressing changelog ..."; \
 	gzip -vf "$${doc_dir}/changelog"; \
 	\
-	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
+	$(INSTALL_DATA) "$(FILE_license)" "$${doc_dir}/copyright"; \
 
 uninstall-doc:
 	@target="$(DESTDIR)$(prefix)"; \
@@ -264,10 +251,8 @@ uninstall-icons:
 	@target="$(DESTDIR)$(prefix)"; \
 	icons_dir="$${target}/$(ICONTHEME)"; \
 	if [ -d "$${icons_dir}" ]; then \
-		mime_dbp="$(MIME_prefix)-$(MIME_dbp)"; \
-		#$(UNINSTALL) "$${mime_dbp}.svg" "$${mime_dbp}z.svg"; \
-		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*\\.svg" -delete; \
-		find "$${icons_dir}" -type d -empty -delete; \
+		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*" -print -delete; \
+		find "$${icons_dir}" -type d -empty -print -delete; \
 	fi; \
 
 install-launcher: data/$(FILE_launcher)
@@ -289,7 +274,6 @@ install-locale: $(DIR_locale)
 	for mo in `find $(DIR_locale) -type f -name "*.mo"`; do \
 		mo=$$(echo "$${mo}" | sed -e 's:^.......::'); \
 		modir="$${locale_dir}/$$(dirname $${mo})"; \
-		#td="$${locale_dir}/`dirname \"$${mo}\"`"; \
 		if [ ! -d "$${modir}" ]; then \
 			$(MKDIR) "$${modir}"; \
 		fi; \
@@ -317,8 +301,10 @@ install-man: $(FILES_man)
 uninstall-man:
 	@target="$(DESTDIR)$(prefix)"; \
 	man_dir="$${target}/$(DATAROOT)/man"; \
-	echo "Manual dir: $${man_dir}"; \
-	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
+	if [ -d "$${man_dir}" ]; then \
+		echo "Manual dir: $${man_dir}"; \
+		find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
+	fi; \
 
 install-mime: $(FILE_mime) install-icons
 	@target="$(DESTDIR)$(prefix)"; \
@@ -334,13 +320,17 @@ uninstall-mime: uninstall-icons
 	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
 
 install-packages: $(PACKAGES)
-	@for pkg in $(PACKAGES); do \
-		target="$(TARGET)/$(DATADIR)/$$(dirname $${pkg})"; \
-		echo "target=$${target}"; \
-		if [ ! -d "$${target}" ]; then \
-			$(MKDIR) "$${target}"; \
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	for pkg in $(PACKAGES); do \
+		if [ ! -d "$${data_dir}/$${pkg}" ]; then \
+			$(MKDIR) "$${data_dir}/$${pkg}"; \
 		fi; \
-		$(INSTALL_DATA) "$${pkg}" "$${target}"; \
+		pyfiles="$${pkg}/*.py"; \
+		for py in $${pyfiles}; do \
+			echo "\nInstalling: $${py}"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}/$${pkg}"; \
+		done; \
 	done; \
 
 install-templates: $(DIR_templates)
@@ -351,16 +341,8 @@ install-templates: $(DIR_templates)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
 
-# FIXME: Unnecessary???
-uninstall-templates:
-	@target="$(DESTDIR)$(prefix)"; \
-	templates_dir="$${target}/$(DATADIR)/templates"; \
-	if [ -d "$${templates_dir}" ]; then \
-		$(call UNINSTALL_FOLDER,$${templates_dir}); \
-	fi; \
-
-doc-html: $(DOXYGEN_CONFIG)
-	@doxygen "$(DOXYGEN_CONFIG)"
+doc-html: $(FILE_doxyfile)
+	@doxygen "$(FILE_doxyfile)"
 
 doxygen-format: doc-html
 	@./scripts/doxygen-format.py
@@ -370,7 +352,6 @@ doxygen-format: doc-html
 locale:
 	@echo "Building gettext locales ..."; \
 	locale_dir="$$(pwd)/locale"; \
-	#echo "$${locale_dir}"; \
 	for f in $$(find "$${locale_dir}" -type f -name "*.po"); do \
 		lc_dir=$$(dirname "$${f}")/LC_MESSAGES; \
 		echo "$${lc_dir}"; \
@@ -419,12 +400,11 @@ clean: doc-clean locale-clean
 	@find ./ -type f -name "*.pyc" -print -delete; \
 	rm -vf "./bin/$(PACKAGE)"; \
 	if [ -d "./bin" ]; then \
-		$(UNINSTALL_FOLDER) "./bin"; \
+		$(call UNINSTALL_FOLDER,./bin); \
 	fi; \
-	#rm -vf "./prefix"; \
 	rm -vf "$(INSTALLED)"; \
 
-distclean: clean
+distclean: clean deb-clean
 	@echo "Cleaning distribution ..."; \
 	rm -vf "$(PACKAGE_dist)"; \
 
@@ -462,20 +442,18 @@ help:
 	echo "\tinstall"; \
 	echo "\t\t- Install `tput bold`$(PACKAGE)`tput sgr0` executable & data files onto"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`,"; \
-	echo "\t\t  `tput bold`install-mime`tput sgr0`, & `tput bold`install-man`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`install-data`tput sgr0`, `tput bold`install-doc`tput sgr0`, `tput bold`install-launcher`tput sgr0`,"; \
+	echo "\t\t  `tput bold`install-locale`tput sgr0`, `tput bold`install-man`tput sgr0`, & `tput bold`install-mime`tput sgr0`\n"; \
 	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`, `tput bold`uninstall-man`tput sgr0`,"; \
-	echo "\t\t  `tput bold`uninstall-doc`tput sgr0`, & `tput bold`uninstall-locale`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`uninstall-doc`tput sgr0`, `tput bold`uninstall-launcher`tput sgr0`,"; \
+	echo "\t\t  `tput bold`uninstall-locale`tput sgr0`, `tput bold`uninstall-man`tput sgr0`, `tput bold`uninstall-mime`tput sgr0`,"; \
+	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
 	\
 	echo "\tinstall-bitmaps"; \
 	echo "\t\t- Install bitmaps used by application\n"; \
-	\
-	echo "\tuninstall-bitmaps"; \
-	echo "\t\t- Uninstall bitmaps used by application\n"; \
 	\
 	echo "\tinstall-data"; \
 	echo "\t\t- Install misc. data files onto the system\n"; \
@@ -523,14 +501,11 @@ help:
 	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
 	\
 	echo "\tinstall-packages"; \
-	echo "\t\t- Install Debreate's sub-packages"; \
+	echo "\t\t- Install Debreate's Python packages"; \
 	echo "\t\t- Called by `tput bold`install`tput sgr0`\n"; \
 	\
 	echo "\tinstall-templates"; \
 	echo "\t\t- Install template files used by application\n"; \
-	\
-	echo "\tuninstall-templates"; \
-	echo "\t\t- Remove application template files\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
@@ -580,7 +555,8 @@ help:
 	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
 	\
 	echo "\tdistclean"; \
-	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`deb-clean`tput sgr0`\n"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0`, `tput bold`deb-clean`tput sgr0`, & delete compressed"; \
+	echo "\t\t  distribution package archive\n"; \
 	\
 	echo "\tdoc-clean"; \
 	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
