@@ -2,7 +2,6 @@
 # Use "setup.py" to create actual Makefile
 
 # FIXME: "dist" rule compiles gettext locales
-# TODO: Organize rules
 
 prefix = <prefix>
 TARGET = $(DESTDIR)$(prefix)
@@ -145,33 +144,6 @@ build:
 	\
 	echo "\nBuild complete. Now execute `tput bold`make install`tput sgr0`.\n"; \
 
-# FIXME: May need to make adjustments
-.PHONY: locale
-locale:
-	@echo "Building gettext locales ..."; \
-	locale_dir="$$(pwd)/locale"; \
-	#echo "$${locale_dir}"; \
-	for f in $$(find "$${locale_dir}" -type f -name "*.po"); do \
-		lc_dir=$$(dirname "$${f}")/LC_MESSAGES; \
-		echo "$${lc_dir}"; \
-		if [ ! -d "$${lc_dir}" ]; then \
-			$(MKDIR) "$${lc_dir}"; \
-		fi; \
-		msgfmt -v "$${f}" -o "$${lc_dir}/$(PACKAGE).mo"; \
-	done; \
-
-locale-clean:
-	@find locale -type f -name "*\.mo" -delete; \
-	find locale -type d -empty -delete; \
-
-install-data: $(INSTALLED)
-	@target="$(DESTDIR)$(prefix)"; \
-	data_dir="$${target}/$(DATADIR)"; \
-	if [ ! -d "$${data_dir}" ]; then \
-		$(MKDIR) "$${data_dir}"; \
-	fi; \
-	$(INSTALL_DATA) "$(INSTALLED)" "$${data_dir}"; \
-
 install: build locale install-packages install-data $(FILES_build) $(DIRS_build) install-doc install-locale install-mime install-man
 	@exec=bin/$(PACKAGE); \
 	if [ ! -f "$${exec}" ]; then \
@@ -231,114 +203,6 @@ install: build locale install-packages install-data $(FILES_build) $(DIRS_build)
 	\
 	echo "\nInstallation complete"; \
 
-install-packages: $(DATA_packages)
-	@for f in $(DATA_packages); do \
-		target="$(TARGET)/$(DATADIR)/$$(dirname $${f})"; \
-		echo "target=$${target}"; \
-		if [ ! -d "$${target}" ]; then \
-			$(MKDIR) "$${target}"; \
-		fi; \
-		$(INSTALL_DATA) "$${f}" "$${target}"; \
-	done; \
-
-install-doc: $(FILES_doc) $(LICENSE)
-	@target="$(DESTDIR)$(prefix)"; \
-	doc_dir="$${target}/$(DOCDIR)"; \
-	\
-	echo "\nInstalling documentation ..."; \
-	mkdir -vp "$${doc_dir}"; \
-	for doc in $(FILES_doc); do \
-		$(INSTALL_DATA) "$${doc}" "$${doc_dir}"; \
-	done; \
-	\
-	echo "\nCompressing changelog ..."; \
-	gzip -vf "$${doc_dir}/changelog"; \
-	\
-	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
-
-install-locale: $(DIR_locale)
-	@target="$(DESTDIR)$(prefix)"; \
-	locale_dir="$${target}/$(LOCALEDIR)"; \
-	echo "Installing locale files ..."; \
-	if [ ! -d "$${locale_dir}" ]; then \
-		$(MKDIR) "$${locale_dir}"; \
-	fi; \
-	for mo in `find $(DIR_locale) -type f -name "*.mo"`; do \
-		mo=$$(echo "$${mo}" | sed -e 's:^.......::'); \
-		modir="$${locale_dir}/$$(dirname $${mo})"; \
-		#td="$${locale_dir}/`dirname \"$${mo}\"`"; \
-		if [ ! -d "$${modir}" ]; then \
-			$(MKDIR) "$${modir}"; \
-		fi; \
-		$(INSTALL_DATA) "locale/$${mo}" "$${modir}"; \
-	done; \
-
-install-icons: $(MIME_icons)
-	@target="$(DESTDIR)$(prefix)"; \
-	icons_dir="$${target}/$(MIMEICONSDIR)"; \
-	$(MKDIR) "$${icons_dir}"; \
-	for i in $(MIME_icons); do \
-		$(INSTALL_DATA) "$${i}" "$${icons_dir}"; \
-	done; \
-
-install-mime: $(MIMEFILE) install-icons
-	@target="$(DESTDIR)$(prefix)"; \
-	mime_dir="$${target}/$(MIMEDIR)"; \
-	if [ ! -d "$${mime_dir}" ]; then \
-		$(MKDIR) "$${mime_dir}"; \
-	fi; \
-	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
-
-install-man: $(FILES_man)
-	@target="$(DESTDIR)$(prefix)"; \
-	data_root="$${target}/$(DATAROOT)"; \
-	for f in $(FILES_man); do \
-		filename=$$(basename "$${f}") && mandir="$${data_root}/$$(dirname $${f})"; \
-		if [ ! -d "$${mandir}" ]; then \
-			$(MKDIR) "$${mandir}"; \
-		fi; \
-		$(INSTALL_DATA) "$${f}" "$${mandir}"; \
-		gzip -vf9 "$${mandir}/$${filename}"; \
-	done; \
-
-uninstall-icons:
-	@target="$(DESTDIR)$(prefix)"; \
-	icons_dir="$${target}/$(ICONTHEME)"; \
-	if [ -d "$${icons_dir}" ]; then \
-		mime_dbp="$(MIME_prefix)-$(MIME_dbp)"; \
-		#$(UNINSTALL) "$${mime_dbp}.svg" "$${mime_dbp}z.svg"; \
-		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*\\.svg" -delete; \
-		find "$${icons_dir}" -type d -empty -delete; \
-	fi; \
-
-uninstall-mime: uninstall-icons
-	@target="$(DESTDIR)$(prefix)"; \
-	mime_dir="$${target}/$(MIMEDIR)"; \
-	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
-
-uninstall-man:
-	@target="$(DESTDIR)$(prefix)"; \
-	man_dir="$${target}/$(DATAROOT)/man"; \
-	echo "Manual dir: $${man_dir}"; \
-	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
-
-uninstall-doc:
-	@target="$(DESTDIR)$(prefix)"; \
-	doc_dir="$${target}/$(DOCDIR)"; \
-	\
-	if [ -d "$${doc_dir}" ]; then \
-		for f in `find "$${doc_dir}" -type f`; do \
-			$(UNINSTALL) "$${f}"; \
-		done; \
-		find "$${doc_dir}" -type d -empty -delete; \
-	fi; \
-
-uninstall-locale:
-	@target="$(DESTDIR)$(prefix)"; \
-	locale_dir="$${target}/$(LOCALEDIR)"; \
-	echo "Uninstalling locale files ..."; \
-	find "$${locale_dir}" -type f -name "$(PACKAGE)\.mo" -delete; \
-
 uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	@target="$(DESTDIR)$(prefix)"; \
 	bin_dir="$${target}/$(BINDIR)"; \
@@ -361,6 +225,155 @@ uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	fi; \
 	\
 
+install-data: $(INSTALLED)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	$(INSTALL_DATA) "$(INSTALLED)" "$${data_dir}"; \
+
+install-doc: $(FILES_doc) $(LICENSE)
+	@target="$(DESTDIR)$(prefix)"; \
+	doc_dir="$${target}/$(DOCDIR)"; \
+	\
+	echo "\nInstalling documentation ..."; \
+	mkdir -vp "$${doc_dir}"; \
+	for doc in $(FILES_doc); do \
+		$(INSTALL_DATA) "$${doc}" "$${doc_dir}"; \
+	done; \
+	\
+	echo "\nCompressing changelog ..."; \
+	gzip -vf "$${doc_dir}/changelog"; \
+	\
+	$(INSTALL_DATA) "$(LICENSE)" "$${doc_dir}/copyright"; \
+
+uninstall-doc:
+	@target="$(DESTDIR)$(prefix)"; \
+	doc_dir="$${target}/$(DOCDIR)"; \
+	\
+	if [ -d "$${doc_dir}" ]; then \
+		for f in `find "$${doc_dir}" -type f`; do \
+			$(UNINSTALL) "$${f}"; \
+		done; \
+		find "$${doc_dir}" -type d -empty -delete; \
+	fi; \
+
+install-icons: $(MIME_icons)
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(MIMEICONSDIR)"; \
+	$(MKDIR) "$${icons_dir}"; \
+	for i in $(MIME_icons); do \
+		$(INSTALL_DATA) "$${i}" "$${icons_dir}"; \
+	done; \
+
+uninstall-icons:
+	@target="$(DESTDIR)$(prefix)"; \
+	icons_dir="$${target}/$(ICONTHEME)"; \
+	if [ -d "$${icons_dir}" ]; then \
+		mime_dbp="$(MIME_prefix)-$(MIME_dbp)"; \
+		#$(UNINSTALL) "$${mime_dbp}.svg" "$${mime_dbp}z.svg"; \
+		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*\\.svg" -delete; \
+		find "$${icons_dir}" -type d -empty -delete; \
+	fi; \
+
+install-locale: $(DIR_locale)
+	@target="$(DESTDIR)$(prefix)"; \
+	locale_dir="$${target}/$(LOCALEDIR)"; \
+	echo "Installing locale files ..."; \
+	if [ ! -d "$${locale_dir}" ]; then \
+		$(MKDIR) "$${locale_dir}"; \
+	fi; \
+	for mo in `find $(DIR_locale) -type f -name "*.mo"`; do \
+		mo=$$(echo "$${mo}" | sed -e 's:^.......::'); \
+		modir="$${locale_dir}/$$(dirname $${mo})"; \
+		#td="$${locale_dir}/`dirname \"$${mo}\"`"; \
+		if [ ! -d "$${modir}" ]; then \
+			$(MKDIR) "$${modir}"; \
+		fi; \
+		$(INSTALL_DATA) "locale/$${mo}" "$${modir}"; \
+	done; \
+
+uninstall-locale:
+	@target="$(DESTDIR)$(prefix)"; \
+	locale_dir="$${target}/$(LOCALEDIR)"; \
+	echo "Uninstalling locale files ..."; \
+	find "$${locale_dir}" -type f -name "$(PACKAGE)\.mo" -delete; \
+
+install-man: $(FILES_man)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_root="$${target}/$(DATAROOT)"; \
+	for f in $(FILES_man); do \
+		filename=$$(basename "$${f}") && mandir="$${data_root}/$$(dirname $${f})"; \
+		if [ ! -d "$${mandir}" ]; then \
+			$(MKDIR) "$${mandir}"; \
+		fi; \
+		$(INSTALL_DATA) "$${f}" "$${mandir}"; \
+		gzip -vf9 "$${mandir}/$${filename}"; \
+	done; \
+
+uninstall-man:
+	@target="$(DESTDIR)$(prefix)"; \
+	man_dir="$${target}/$(DATAROOT)/man"; \
+	echo "Manual dir: $${man_dir}"; \
+	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
+
+install-mime: $(MIMEFILE) install-icons
+	@target="$(DESTDIR)$(prefix)"; \
+	mime_dir="$${target}/$(MIMEDIR)"; \
+	if [ ! -d "$${mime_dir}" ]; then \
+		$(MKDIR) "$${mime_dir}"; \
+	fi; \
+	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
+
+uninstall-mime: uninstall-icons
+	@target="$(DESTDIR)$(prefix)"; \
+	mime_dir="$${target}/$(MIMEDIR)"; \
+	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
+
+install-packages: $(DATA_packages)
+	@for f in $(DATA_packages); do \
+		target="$(TARGET)/$(DATADIR)/$$(dirname $${f})"; \
+		echo "target=$${target}"; \
+		if [ ! -d "$${target}" ]; then \
+			$(MKDIR) "$${target}"; \
+		fi; \
+		$(INSTALL_DATA) "$${f}" "$${target}"; \
+	done; \
+
+doc-html: $(DOXYGEN_CONFIG)
+	@doxygen "$(DOXYGEN_CONFIG)"; \
+	echo "\nOptimizing Doxygen HTML docs for Python ...\n"; \
+	find docs/doxygen -type f -exec sed -i -e 's/def //' {} +; \
+	find docs/doxygen -type f -exec sed -i -e 's/def&#160;//' {} +; \
+	find docs/doxygen -type f -exec sed -i -e 's/class &#160;//' {} +; \
+	\
+	# Removes whitespace before parameters \
+	find docs/doxygen -type f -exec sed -i -e '/<td class="paramtype">/c\' {} +; \
+
+# FIXME: May need to make adjustments
+.PHONY: locale
+locale:
+	@echo "Building gettext locales ..."; \
+	locale_dir="$$(pwd)/locale"; \
+	#echo "$${locale_dir}"; \
+	for f in $$(find "$${locale_dir}" -type f -name "*.po"); do \
+		lc_dir=$$(dirname "$${f}")/LC_MESSAGES; \
+		echo "$${lc_dir}"; \
+		if [ ! -d "$${lc_dir}" ]; then \
+			$(MKDIR) "$${lc_dir}"; \
+		fi; \
+		msgfmt -v "$${f}" -o "$${lc_dir}/$(PACKAGE).mo"; \
+	done; \
+
+dist: distclean deb-clean $(FILES_dist) $(DIRS_dist)
+	@echo "Creating distribution package ..."; \
+	if [ -f "$(PACKAGE_dist)" ]; then \
+		rm -v "$(PACKAGE_dist)"; \
+	fi; \
+	tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist); \
+	file "$(PACKAGE_dist)"; \
+
 #.PHONY: debian
 deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 	@echo "Copying changelog to debian directory ..."; \
@@ -376,6 +389,9 @@ deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 		chmod -v 0755 "debian/$${name}"; \
 	done; \
 
+debianize: dist
+	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i
+
 deb-bin: deb-clean deb-prep
 	@debuild -b -uc -us
 
@@ -387,19 +403,6 @@ deb-src: deb-clean deb-prep
 
 deb-src-signed: deb-clean deb-prep
 	@debuild -S -sa
-
-debianize: dist
-	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i
-
-doc-html: $(DOXYGEN_CONFIG)
-	@doxygen "$(DOXYGEN_CONFIG)"; \
-	echo "\nOptimizing Doxygen HTML docs for Python ...\n"; \
-	find docs/doxygen -type f -exec sed -i -e 's/def //' {} +; \
-	find docs/doxygen -type f -exec sed -i -e 's/def&#160;//' {} +; \
-	find docs/doxygen -type f -exec sed -i -e 's/class &#160;//' {} +; \
-	\
-	# Removes whitespace before parameters \
-	find docs/doxygen -type f -exec sed -i -e '/<td class="paramtype">/c\' {} +; \
 
 clean: doc-clean locale-clean
 	@find ./ -type f -name "*.pyc" -print -delete; \
@@ -427,13 +430,9 @@ deb-clean:
 doc-clean:
 	@rm -vrf docs/doxygen
 
-dist: distclean deb-clean $(FILES_dist) $(DIRS_dist)
-	@echo "Creating distribution package ..."; \
-	if [ -f "$(PACKAGE_dist)" ]; then \
-		rm -v "$(PACKAGE_dist)"; \
-	fi; \
-	tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist); \
-	file "$(PACKAGE_dist)"; \
+locale-clean:
+	@find locale -type f -name "*\.mo" -delete; \
+	find locale -type d -empty -delete; \
 
 help:
 	@echo "Usage:"; \
@@ -455,61 +454,61 @@ help:
 	echo "\t\t- Calls `tput bold`install-doc`tput sgr0`, `tput bold`install-locale`tput sgr0`,"; \
 	echo "\t\t  `tput bold`install-mime`tput sgr0`, & `tput bold`install-man`tput sgr0`\n"; \
 	\
-	echo "\tinstall-data"; \
-	echo "\t\t- Install misc. data files onto the system\n"; \
-	\
-	echo "\tinstall-doc"; \
-	echo "\t\t- Install documentation files\n"; \
-	\
-	echo "\tinstall-locale"; \
-	echo "\t\t- Install gettext locale translations\n"; \
-	\
-	echo "\tinstall-mime"; \
-	echo "\t\t- Register MimeType information for Debreate"; \
-	echo "\t\t  projects"; \
-	echo "\t\t- Calls `tput bold`install-icons`tput sgr0`\n"; \
-	\
-	echo "\tinstall-icons"; \
-	echo "\t\t- Install icons for Debreate projects MimeType"; \
-	echo "\t\t  registration\n"; \
-	\
-	echo "\tinstall-man"; \
-	echo "\t\t- Install & compress Manpage files\n"; \
-	\
-	echo "\tinstall-packages"; \
-	echo "\t\t- Install Debreate's sub-packages"; \
-	echo "\t\t- Called by `tput bold`install`tput sgr0`\n"; \
-	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
 	echo "\t\t- Calls `tput bold`uninstall-mime`tput sgr0`, `tput bold`uninstall-man`tput sgr0`,"; \
 	echo "\t\t  `tput bold`uninstall-doc`tput sgr0`, & `tput bold`uninstall-locale`tput sgr0`\n"; \
 	\
-	echo "\tuninstall-mime"; \
-	echo "\t\t- Unregister Debreate project MimeType"; \
-	echo "\t\t  information"; \
-	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
+	echo "\tinstall-data"; \
+	echo "\t\t- Install misc. data files onto the system\n"; \
 	\
-	echo "\tuninstall-icons"; \
-	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
-	\
-	echo "\tuninstall-man"; \
-	echo "\t\t- Remove Debreate Manpages from system\n"; \
+	echo "\tinstall-doc"; \
+	echo "\t\t- Install documentation files\n"; \
 	\
 	echo "\tuninstall-doc"; \
 	echo "\t\t- Remove Debreate documentation files from"; \
 	echo "\t\t  system\n"; \
 	\
+	echo "\tinstall-icons"; \
+	echo "\t\t- Install icons for Debreate projects MimeType"; \
+	echo "\t\t  registration\n"; \
+	\
+	echo "\tuninstall-icons"; \
+	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
+	\
+	echo "\tinstall-locale"; \
+	echo "\t\t- Install gettext locale translations\n"; \
+	\
 	echo "\tuninstall-locale"; \
 	echo "\t\t- Remove Gettext translation files from system\n"; \
+	\
+	echo "\tinstall-man"; \
+	echo "\t\t- Install & compress Manpage files\n"; \
+	\
+	echo "\tuninstall-man"; \
+	echo "\t\t- Remove Debreate Manpages from system\n"; \
+	\
+	echo "\tinstall-mime"; \
+	echo "\t\t- Register MimeType information for Debreate"; \
+	echo "\t\t  projects"; \
+	echo "\t\t- Calls `tput bold`install-icons`tput sgr0`\n"; \
+	\
+	echo "\tuninstall-mime"; \
+	echo "\t\t- Unregister Debreate project MimeType"; \
+	echo "\t\t  information"; \
+	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
+	\
+	echo "\tinstall-packages"; \
+	echo "\t\t- Install Debreate's sub-packages"; \
+	echo "\t\t- Called by `tput bold`install`tput sgr0`\n"; \
+	\
+	echo "\tdist"; \
+	echo "\t\t- Create a source distribution package\n"; \
 	\
 	echo "\tdoc-html"; \
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
 	echo "\t\t- Requires `tput bold`doxygen`tput sgr0` command (apt install doxygen)\n"; \
-	\
-	echo "\tdist"; \
-	echo "\t\t- Create a source distribution package\n"; \
 	\
 	echo "\tdeb-prep"; \
 	echo "\t\t- Prepares debian directory for build &"; \
@@ -540,14 +539,14 @@ help:
 	echo "\t\t- Delete Debreate binary & any compiled Python"; \
 	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
 	\
+	echo "\tdistclean"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`deb-clean`tput sgr0`\n"; \
+	\
 	echo "\tdoc-clean"; \
 	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
 	\
 	echo "\tdeb-clean"; \
-	echo "\t\t- Delete files create by `tput bold`deb-bin`tput sgr0`\n"; \
-	\
-	echo "\tdistclean"; \
-	echo "\t\t- Run `tput bold`clean`tput sgr0` & `tput bold`deb-clean`tput sgr0`\n"; \
+	echo "\t\t- Delete files created by `tput bold`deb-bin`tput sgr0`\n"; \
 	\
 	echo "Environment Variables:"; \
 	\
