@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-## \package main
+## \page main.py Main Window Interface
+#
+#  Defines interface of the main window.
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -63,8 +65,14 @@ from wiz.wizard             import Wizard
 default_title = GT(u'Debreate - Debian Package Builder')
 
 
-## TODO: Doxygen
+## The main window interface
 class MainWindow(wx.Frame, ModuleAccessCtrl):
+    ## Constructor
+    #
+    #  \param pos
+    #    <b><i>Integer tuple</i></b> or <b><i>wx.Point</i></b> instance indicating the screen position of the window
+    #  \param size
+    #    <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
         ModuleAccessCtrl.__init__(self, __name__)
