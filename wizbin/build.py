@@ -193,9 +193,9 @@ class Page(WizardPage):
     #  
     #  TODO: Test for errors when building deb package with other filename extension
     #  TODO: Remove deprecated methods that this one replaces
-    #  \param out_file
+    #  \param outFile
     #        \b \e str|unicode : Absolute path to target file
-    def Build(self, out_file):
+    def Build(self, outFile):
         def log_message(msg, current_step, total_steps):
             return u'{} ({}/{})'.format(msg, current_step, total_steps)
         
@@ -314,7 +314,7 @@ class Page(WizardPage):
                     build_progress.Update(current_step, log_msg)
                     
                     build_summary.append(u'\n{}:'.format(log_msg))
-                    build_summary.append(self.OnBuildCreatePackage(stage, out_file))
+                    build_summary.append(self.OnBuildCreatePackage(stage, outFile))
                     
                     current_step += 1
                 
@@ -327,7 +327,7 @@ class Page(WizardPage):
                         build_progress.Update(current_step, log_msg)
                         
                         build_summary.append(u'\n{}:'.format(log_msg))
-                        build_summary.append(self.OnBuildCheckPackage(out_file))
+                        build_summary.append(self.OnBuildCheckPackage(outFile))
                         
                         current_step += 1
                 
@@ -374,10 +374,10 @@ class Page(WizardPage):
         return
     
     
-    ## TODO: Doxygen
-    #  
+    ## Checks pages for export & gets a count of how many tasks need be executed
+    #
     #  \return
-    #    \b \e tuple containing data & label for each page
+    #    <b><i>Tuple</i></b> containing data & label for each page
     def BuildPrep(self):
         wizard = GetWizard()
         prep_ids = []
@@ -463,7 +463,9 @@ class Page(WizardPage):
             GetPage(pgid.DEPENDS).Set(depends_data)
     
     
-    ## TODO: Doxygen
+    ## Retrieves page data from fields
+    #
+    #  \override wiz.wizard.WizardPage.Get
     def Get(self, getModule=False):
         # 'install after build' is not exported to project for safety
         
@@ -495,7 +497,9 @@ class Page(WizardPage):
         return page
     
     
-    ## TODO: Doxygen
+    ## Reads & parses page data from a formatted text file
+    #
+    #  \override wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -521,6 +525,8 @@ class Page(WizardPage):
     
     
     ## Sets up page with default settings
+    #
+    #  FIXME: Deprecated/Replace with 'Reset' method???
     def InitDefaultSettings(self):
         self.build_options = []
         
@@ -545,14 +551,14 @@ class Page(WizardPage):
     
     
     ## Installs the built .deb package onto the system
-    #  
-    #  Uses the system's package installer:
-    #    gdebi if available or dpkg
-    #  
+    #
+    #  Uses the system's package installer: gdebi-gtk or gdebi-kde if available
+    #
     #  Shows a success dialog if installed. Otherwise shows an
     #  error dialog.
+    #
     #  \param package
-    #        \b \e unicode|str : Path to package to be installed
+    #    Path of package to be installed
     def InstallPackage(self, package):
         system_installer = GetSystemInstaller()
         
@@ -601,7 +607,9 @@ class Page(WizardPage):
             return
     
     
-    ## TODO: Doxygen
+    ## Handles event emitted by the 'build' button
+    #
+    #  Checks if required fields are filled & opens a file save dialog
     def OnBuild(self, event=None):
         if event:
             event.Skip()
@@ -647,7 +655,6 @@ class Page(WizardPage):
                     
                     return
         
-        #if pg_files.file_list.MissingFiles():
         if GetField(pg_files, inputid.LIST).MissingFiles():
             ShowErrorDialog(GT(u'Files are missing in file list'), warn=True, title=GT(u'Warning'))
             
@@ -668,20 +675,28 @@ class Page(WizardPage):
             self.Build(save_dialog.GetPath())
     
     
-    ## TODO: Doxygen
-    def OnBuildCheckPackage(self, target_package):
+    ## Checks the final package for error with the lintian command
+    #
+    #  \param targetPackage
+    #    Path of package to check
+    def OnBuildCheckPackage(self, targetPackage):
         Logger.Debug(__name__,
-                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(target_package)))
+                GT(u'Checking package "{}" for lintian errors ...').format(os.path.basename(targetPackage)))
         
         # FIXME: commands module deprecated?
-        output = commands.getoutput(u'{} "{}"'.format(GetExecutable(u'lintian'), target_package))
+        output = commands.getoutput(u'{} "{}"'.format(GetExecutable(u'lintian'), targetPackage))
         
         return output
     
     
-    ## TODO: Doxygen
-    def OnBuildCreatePackage(self, stage, target_file):
-        Logger.Debug(__name__, GT(u'Creating {} from {}').format(target_file, stage))
+    ## Handles the process of building the package from the formatted stage directory
+    #
+    #  \param stage
+    #    Path to formatted temporary staged directory
+    #  \param targetFile
+    #    Path of the target output .deb package
+    def OnBuildCreatePackage(self, stage, targetFile):
+        Logger.Debug(__name__, GT(u'Creating {} from {}').format(targetFile, stage))
         
         packager = GetExecutable(u'dpkg-deb')
         fakeroot = GetExecutable(u'fakeroot')
@@ -694,10 +709,10 @@ class Page(WizardPage):
         Logger.Debug(__name__, GT(u'System packager: {}').format(packager))
         
         # DEBUG:
-        cmd = u'{} {} -b "{}" "{}"'.format(fakeroot, packager, stage, target_file)
+        cmd = u'{} {} -b "{}" "{}"'.format(fakeroot, packager, stage, targetFile)
         Logger.Debug(__name__, GT(u'Executing: {}').format(cmd))
         
-        output = GetCommandOutput(fakeroot, (packager, u'-b', stage, target_file,))
+        output = GetCommandOutput(fakeroot, (packager, u'-b', stage, targetFile,))
         
         Logger.Debug(__name__, GT(u'Build output: {}').format(output))
         
@@ -705,13 +720,13 @@ class Page(WizardPage):
     
     
     ## Retrieves total size of directory contents
-    #  
-    #  TODO: Move this method to control page
-    #  
+    #
+    #  TODO: Move this method to control page???
+    #
     #  \param stage
-    #        \b \e unicode|str : Directory to scan
+    #    Path to formatted staged directory to scan file sizes
     #  \return
-    #        \b \e int : Integer representing installed size
+    #    <b><i>Integer</i></b> value representing installed size of all files in package
     def OnBuildGetInstallSize(self, stage):
         Logger.Debug(__name__, GT(u'Retrieving installed size for {}').format(stage))
         
@@ -729,24 +744,26 @@ class Page(WizardPage):
         return installed_size
     
     
-    ## TODO: Doxygen
-    # 
-    # FIXME: Hashes for .png images (binary files???) is not the same as those
-    #        produced by debuild
-    # TODO:  Create global md5 function???
-    #  \param stage_dir
-    #    Temporary directory where to scan files
-    def OnBuildMD5Sum(self, stage_dir):
+    ## Creates an 'md5sum' file & populates with hashes for all files contained in package
+    #
+    #  FIXME: Hashes for .png images (binary files???) is not the same as those
+    #         produced by debuild
+    #
+    #  \param stage
+    #    Staged directory where files are scanned
+    #  \return
+    #    <b><i>String</i></b> message of result
+    def OnBuildMD5Sum(self, stage):
         Logger.Debug(__name__,
-                GT(u'Creating MD5sum file in {}').format(stage_dir))
+                GT(u'Creating MD5sum file in {}').format(stage))
         
-        WriteMD5(stage_dir)
+        WriteMD5(stage)
         
-        return GT(u'md5sums file created: {}'.format(os.path.isfile(ConcatPaths((stage_dir, u'DEBIAN/md5sums',)))))
+        return GT(u'md5sums file created: {}'.format(os.path.isfile(ConcatPaths((stage, u'DEBIAN/md5sums',)))))
     
     
-    ## TODO: Doxygen
-    #  
+    ## Retrieves list of available lintian tags (WIP)
+    #
     #  TODO: Show warning dialog that this could take a while
     #  TODO: Add cancel option to progress dialog
     #  FIXME: List should be cached so no need for re-scanning
@@ -826,13 +843,18 @@ class Page(WizardPage):
             return False
     
     
-    ## TODO: Doxygen
+    ## Resets page's fields to default settings
+    #
+    #  \override wiz.wizard.WizardPage.Reset
     def Reset(self):
         for O in self.build_options:
             O.SetValue(O.Default)
     
     
-    ## TODO: Doxygen
+    ## Sets page's fields data
+    #
+    #  \param data
+    #    <b><i>Text</i></b> to be parsed for values
     def Set(self, data):
         # ???: Redundant
         self.Reset()
@@ -847,7 +869,7 @@ class Page(WizardPage):
             self.chk_lint.SetValue(int(build_data[2]))
     
     
-    ## TODO: Doxygen
+    ## Sets the build summary for display & review after package is created
     def SetSummary(self, event=None):
         pg_scripts = GetPage(pgid.SCRIPTS)
         
