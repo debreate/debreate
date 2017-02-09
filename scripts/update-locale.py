@@ -10,7 +10,7 @@ import commands, errno, os, subprocess, sys, time
 from scripts_globals import ConcatPaths
 from scripts_globals import GetInfoValue
 from scripts_globals import required_locale_files
-from scripts_globals import root_dir
+from scripts_globals import DIR_root
 
 
 # FIXME: This script used the deprecated module 'commands'
@@ -21,7 +21,7 @@ for F in required_locale_files:
         print('[ERROR] Required file not found: {}'.format(F))
         sys.exit(errno.ENOENT)
 
-DIR_locale = ConcatPaths(root_dir, 'locale')
+DIR_locale = ConcatPaths(DIR_root, 'locale')
 
 if not os.path.isdir(DIR_locale):
     print('ERROR: Locale directory does not exist: {}'.format(DIR_locale))
@@ -87,7 +87,7 @@ gt_email = '--msgid-bugs-address={}'.format(EMAIL)
 
 # Output
 gt_domain = '--default-domain={}'.format(PACKAGE.lower())
-gt_directory = '--directory="{}"'.format(root_dir)
+gt_directory = '--directory="{}"'.format(DIR_root)
 gt_output = '-i -o {}'.format(FILE_pot)
 
 # Misc
