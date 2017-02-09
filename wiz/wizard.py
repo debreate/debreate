@@ -62,9 +62,9 @@ class Wizard(wx.Panel):
         testing = u'alpha' in GetTestList()
         
         # List of pages available in the wizard
-        self.pages = []
+        self.Pages = []
         
-        self.pages_ids = {}
+        self.PagesIds = {}
         
         # IDs for first & last pages
         self.ID_FIRST = None
@@ -185,7 +185,7 @@ class Wizard(wx.Panel):
         main_window = GetMainWindow()
         
         lyt_main.Add(page, 1, wx.EXPAND)
-        self.pages.append(page)
+        self.Pages.append(page)
         
         # Add to page menu
         page_menu = GetMenu(menuid.PAGE)
@@ -203,9 +203,9 @@ class Wizard(wx.Panel):
         event_id = event.GetEventObject().GetId()
         
         # Get index of currently shown page
-        for page in self.pages:
+        for page in self.Pages:
             if page.IsShown():
-                index = self.pages.index(page)
+                index = self.Pages.index(page)
                 
                 break
         
@@ -214,10 +214,10 @@ class Wizard(wx.Panel):
                 index -= 1
         
         elif event_id == ident.NEXT:
-            if index != len(self.pages) - 1:
+            if index != len(self.Pages) - 1:
                 index += 1
         
-        page_id = self.pages[index].GetId()
+        page_id = self.Pages[index].GetId()
         
         # Show the indexed page
         self.ShowPage(page_id)
@@ -227,10 +227,10 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def ClearPages(self):
-        for page in self.pages:
+        for page in self.Pages:
             self.GetSizer().Remove(page)
         
-        self.pages = []
+        self.Pages = []
         
         # Re-enable the buttons if they have been disabled
         self.EnableNext()
@@ -287,12 +287,12 @@ class Wizard(wx.Panel):
     
     ## Retrieves all current page instances
     def GetAllPages(self):
-        return tuple(self.pages)
+        return tuple(self.Pages)
     
     
     ## Retrieve currently showing page
     def GetCurrentPage(self):
-        for page in self.pages:
+        for page in self.Pages:
             if page.IsShown():
                 return page
     
@@ -306,7 +306,7 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def GetPage(self, pageId):
-        for P in self.pages:
+        for P in self.Pages:
             if P.GetId() == pageId:
                 return P
         
@@ -320,7 +320,7 @@ class Wizard(wx.Panel):
     def GetPagesIdList(self):
         page_ids = []
         
-        for P in self.pages:
+        for P in self.Pages:
             page_ids.append(P.GetId())
         
         return tuple(page_ids)
@@ -333,7 +333,7 @@ class Wizard(wx.Panel):
     def ImportPagesInfo(self, filesDir):
         for PATH, DIRS, FILES in os.walk(filesDir):
             for F in FILES:
-                for page in self.pages:
+                for page in self.Pages:
                     page_name = page_ids[page.GetId()].upper()
                     n_index = len(page_name)
                     
@@ -346,17 +346,17 @@ class Wizard(wx.Panel):
     
     ## Initailize the wizard
     def Initialize(self, showPage=0):
-        if self.pages:
-            self.ID_FIRST = self.pages[0].Id
-            self.ID_LAST = self.pages[-1].Id
+        if self.Pages:
+            self.ID_FIRST = self.Pages[0].Id
+            self.ID_LAST = self.Pages[-1].Id
         
         if not showPage:
             self.ShowPage(self.ID_FIRST)
         
         else:
-            self.ShowPage(self.pages[showPage].Id)
+            self.ShowPage(self.Pages[showPage].Id)
         
-        for PAGE in self.pages:
+        for PAGE in self.Pages:
             PAGE.InitPage()
         
         self.Layout()
@@ -390,8 +390,8 @@ class Wizard(wx.Panel):
     def RemovePage(self, pageId):
         page = self.GetPage(pageId)
         
-        if page in self.pages:
-            self.pages.pop(self.pages.index(page))
+        if page in self.Pages:
+            self.Pages.pop(self.Pages.index(page))
         
         lyt_main = self.GetSizer()
         if page in lyt_main.GetChildWindows():
@@ -405,7 +405,7 @@ class Wizard(wx.Panel):
     
     ## Reset all but greeting page
     def Reset(self):
-        for PAGE in reversed(self.pages):
+        for PAGE in reversed(self.Pages):
             if PAGE.Id != pgid.GREETING:
                 self.RemovePage(PAGE.Id)
         
@@ -414,7 +414,7 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def ResetPagesInfo(self):
-        for page in self.pages:
+        for page in self.Pages:
             page.Reset()
     
     
@@ -469,8 +469,8 @@ class Wizard(wx.Panel):
         
         for PAGE in pages:
             if PAGE.GetId() != pgid.GREETING:
-                self.pages.append(PAGE)
-                self.pages_ids[PAGE.GetId()] = PAGE.GetName().upper()
+                self.Pages.append(PAGE)
+                self.PagesIds[PAGE.GetId()] = PAGE.GetName().upper()
                 self.GetSizer().Insert(1, PAGE, 1, wx.EXPAND)
                 
                 page_id = PAGE.GetId()
@@ -502,7 +502,7 @@ class Wizard(wx.Panel):
     
     ## TODO: Doxygen
     def ShowPage(self, pageId):
-        for p in self.pages:
+        for p in self.Pages:
             if p.GetId() != pageId:
                 p.Hide()
             
