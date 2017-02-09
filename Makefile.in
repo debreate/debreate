@@ -401,14 +401,10 @@ uninstall-templates:
 	fi; \
 
 doc-html: $(DOXYGEN_CONFIG)
-	@doxygen "$(DOXYGEN_CONFIG)"; \
-	echo "\nOptimizing Doxygen HTML docs for Python ...\n"; \
-	find docs/doxygen -type f -exec sed -i -e 's/def //' {} +; \
-	find docs/doxygen -type f -exec sed -i -e 's/def&#160;//' {} +; \
-	find docs/doxygen -type f -exec sed -i -e 's/class &#160;//' {} +; \
-	\
-	# Removes whitespace before parameters \
-	find docs/doxygen -type f -exec sed -i -e '/<td class="paramtype">/c\' {} +; \
+	@doxygen "$(DOXYGEN_CONFIG)"
+
+doxygen-format: doc-html
+	@./scripts/doxygen-format.py
 
 # FIXME: May need to make adjustments
 .PHONY: locale
@@ -586,6 +582,10 @@ help:
 	echo "\tdoc-html"; \
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
 	echo "\t\t- Requires `tput bold`doxygen`tput sgr0` command (apt install doxygen)\n"; \
+	\
+	echo "\tdoxygen-format"; \
+	echo "\t\t- Build Doxygen HTML files & add customizations"; \
+	echo "\t\t- Calls `tput bold`doc-html`tput sgr0`\n"; \
 	\
 	echo "\tlocale"; \
 	echo "\t\t- Build locale translations"; \
