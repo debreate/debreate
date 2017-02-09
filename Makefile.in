@@ -62,7 +62,7 @@ PACKAGE_dbr = dbr/*.py
 
 PACKAGE_globals = globals/*.py
 
-DATA_packages = \
+PACKAGES = \
 	$(PACKAGE_dbr) \
 	$(PACKAGE_globals)
 
@@ -333,14 +333,14 @@ uninstall-mime: uninstall-icons
 	mime_dir="$${target}/$(MIMEDIR)"; \
 	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
 
-install-packages: $(DATA_packages)
-	@for f in $(DATA_packages); do \
-		target="$(TARGET)/$(DATADIR)/$$(dirname $${f})"; \
+install-packages: $(PACKAGES)
+	@for pkg in $(PACKAGES); do \
+		target="$(TARGET)/$(DATADIR)/$$(dirname $${pkg})"; \
 		echo "target=$${target}"; \
 		if [ ! -d "$${target}" ]; then \
 			$(MKDIR) "$${target}"; \
 		fi; \
-		$(INSTALL_DATA) "$${f}" "$${target}"; \
+		$(INSTALL_DATA) "$${pkg}" "$${target}"; \
 	done; \
 
 doc-html: $(DOXYGEN_CONFIG)
