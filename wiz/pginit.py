@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 ## \package wiz.pginit
+#
+#  The initial wizard page
 
 # MIT licensing
 # See: docs/LICENSE.txt
@@ -15,7 +17,7 @@ from ui.layout      import BoxSizer
 from wiz.wizard     import WizardPage
 
 
-## TODO: Doxygen
+## The initial wizard page
 class Page(WizardPage):
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.GREETING)
