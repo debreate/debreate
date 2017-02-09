@@ -60,6 +60,7 @@ if not os.path.isfile(FILE_info):
     print('[ERROR] Required file not found: {}'.format(FILE_info))
     sys.exit(errno.ENOENT)
 
+FILE_doxyfile = '{}/docs/Doxyfile'.format(DIR_root)
 FILE_locale = '{}/locale/debreate.pot'.format(DIR_root)
 PY_app = '{}/globals/application.py'.format(DIR_root)
 
@@ -94,6 +95,7 @@ required_locale_files = (
 
 version_files = {
     'application': PY_app,
+    'doxyfile': FILE_doxyfile,
     'locale': FILE_locale,
     'makefile': FILE_make,
 }
