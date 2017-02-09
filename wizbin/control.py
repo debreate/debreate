@@ -42,6 +42,10 @@ from wiz.wizard         import WizardPage
 
 ## This panel displays the field input of the control file
 class Page(WizardPage):
+    ## Constructor
+    #
+    #  \param parent
+    #    Parent <b><i>wx.Window</i></b> instance
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.CONTROL)
         

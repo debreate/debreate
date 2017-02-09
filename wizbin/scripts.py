@@ -54,6 +54,10 @@ id_definitions = {
 
 ## Scripts page
 class Page(WizardPage):
+    ## Constructor
+    #
+    #  \param parent
+    #    Parent <b><i>wx.Window</i></b> instance
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.SCRIPTS)
         
