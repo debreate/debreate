@@ -1,4 +1,5 @@
-# This is a generic Makefile. It will only work on systems with GNU make.
+# This is a generic Makefile.
+# It will only work on systems with GNU make.
 
 # This is written to 'prefix' in 'build' rule, then read in 'install'
 prefix=/usr/local
@@ -46,7 +47,7 @@ FILES_root = \
 	main.py
 
 PACKAGES = \
-	wiz_bin \
+	wizbin \
 	dbr \
 	f_export \
 	fields \
@@ -56,7 +57,7 @@ PACKAGES = \
 	system \
 	ui
 
-PKG_wiz_bin = wiz_bin/*.py
+PKG_wizbin = wizbin/*.py
 PKG_dbr = dbr/*.py
 PKG_f_export = f_export/*.py
 PKG_fields = fields/*.py
@@ -88,10 +89,10 @@ DIR_bitmaps = bitmaps
 DIR_locale = locale
 DIR_templates = templates
 
-FILES_BUILD = \
+FILES_build = \
+	$(FILES_executable) \
 	$(FILES_root) \
 	$(FILES_doc) \
-	$(FILES_executable) \
 	$(PKG_dbr) \
 	$(PKG_f_export) \
 	$(PKG_fields) \
@@ -100,7 +101,7 @@ FILES_BUILD = \
 	$(PKG_startup) \
 	$(PKG_system) \
 	$(PKG_ui) \
-	$(PKG_wiz_bin)
+	$(PKG_wizbin)
 
 DIRS_dist = \
 	$(DIR_bitmaps) \
@@ -135,7 +136,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-packages install-bitmaps install-launcher install-man install-mime install-templates
+install: $(FILES_build) $(DIR_locale) $(INSTALLED)_file install-packages install-bitmaps install-launcher install-man install-mime install-templates
 	@target=$(DESTDIR)$(prefix); \
 	bin_dir=$${target}/$(BINDIR); \
 	data_dir=$${target}/$(DATADIR); \
@@ -187,21 +188,6 @@ uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime uni
 		find "$${data_dir}" -type d -empty -delete; \
 	fi; \
 
-
-install-packages: $(PACKAGES)
-	@target="$(DESTDIR)$(prefix)"; \
-	data_dir="$${target}/$(DATADIR)"; \
-	for pkg in $(PACKAGES); do \
-		if [ ! -d "$${data_dir}/$${pkg}" ]; then \
-			$(MKDIR) "$${data_dir}/$${pkg}"; \
-		fi; \
-		pyfiles="$${pkg}/*.py"; \
-		for py in $${pyfiles}; do \
-			echo "\nInstalling: $${py}"; \
-			$(INSTALL_DATA) "$${py}" "$${data_dir}/$${pkg}"; \
-		done; \
-	done; \
-
 install-bitmaps: $(DIR_bitmaps)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -210,6 +196,7 @@ install-bitmaps: $(DIR_bitmaps)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
 
+# FIXME: Unnecessary???
 uninstall-bitmaps:
 	@target="$(DESTDIR)$(prefix)"; \
 	bitmaps_dir="$${target}/$(DATADIR)/bitmaps"; \
@@ -273,6 +260,20 @@ uninstall-mime: uninstall-icons
 	mime_dir="$${target}/$(MIMEDIR)"; \
 	$(UNINSTALL) "$${mime_dir}/$(PACKAGE).xml"; \
 
+install-packages: $(PACKAGES)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	for pkg in $(PACKAGES); do \
+		if [ ! -d "$${data_dir}/$${pkg}" ]; then \
+			$(MKDIR) "$${data_dir}/$${pkg}"; \
+		fi; \
+		pyfiles="$${pkg}/*.py"; \
+		for py in $${pyfiles}; do \
+			echo "\nInstalling: $${py}"; \
+			$(INSTALL_DATA) "$${py}" "$${data_dir}/$${pkg}"; \
+		done; \
+	done; \
+
 install-templates: $(DIR_templates)
 	@target="$(DESTDIR)$(prefix)"; \
 	data_dir="$${target}/$(DATADIR)"; \
@@ -281,6 +282,7 @@ install-templates: $(DIR_templates)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
 
+# FIXME: Unnecessary???
 uninstall-templates:
 	@target="$(DESTDIR)$(prefix)"; \
 	templates_dir="$${target}/$(DATADIR)/templates"; \
@@ -288,25 +290,13 @@ uninstall-templates:
 		$(call UNINSTALL_FOLDER,$${templates_dir}); \
 	fi; \
 
-dist: deb-clean
-	@echo "Creating distribution package ..."
-	@if [ -f "$(PACKAGE_dist)" ]; then \
+dist: distclean deb-clean
+	@echo "Creating distribution package ..."; \
+	if [ -f "$(PACKAGE_dist)" ]; then \
 		rm -v "$(PACKAGE_dist)"; \
-	fi
-	@tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist)
-	@file "$(PACKAGE_dist)"
-
-clean:
-	@find ./ -type f -name "*.pyc" -print -delete; \
-	rm -vf "./bin/$(PACKAGE)"; \
-	if [ -d "./bin" ]; then \
-		$(call UNINSTALL_FOLDER,./bin); \
 	fi; \
-	rm -vf "./prefix"; \
-	rm -vf "$(INSTALLED)"; \
-
-distclean: clean deb-clean
-	@rm -vf "$(PACKAGE_dist)"
+	tar -cJf "$(PACKAGE_dist)" $(FILES_dist) $(DIRS_dist); \
+	file "$(PACKAGE_dist)"; \
 
 debianize: dist
 	@dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i
@@ -322,6 +312,21 @@ deb-src: deb-clean
 
 deb-src-signed: deb-clean
 	@debuild -S -sa
+
+clean: doc-clean
+	@find ./ -type f -name "*.pyc" -print -delete; \
+	rm -vf "./bin/$(PACKAGE)"; \
+	if [ -d "./bin" ]; then \
+		$(call UNINSTALL_FOLDER,./bin); \
+	fi; \
+	rm -vf "$(INSTALLED)"; \
+
+distclean: clean deb-clean
+	@echo "Cleaning distribution ..."; \
+	rm -vf "$(PACKAGE_dist)"; \
+
+doc-clean:
+	@rm -vrf docs/doxygen
 
 deb-clean:
 	@rm -vrf "debian/$(PACKAGE)"
@@ -353,11 +358,8 @@ help:
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-mime`tput sgr0`,"; \
+	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-man`tput sgr0`,"; \
 	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
-	\
-	echo "\tinstall-packages"; \
-	echo "\t\t- Install application's Python modules & packages\n"; \
 	\
 	echo "\tinstall-bitmaps"; \
 	echo "\t\t- Install bitmaps used by application\n"; \
@@ -394,6 +396,10 @@ help:
 	echo "\t\t  information"; \
 	echo "\t\t- Calls `tput bold`uninstall-icons`tput sgr0`\n"; \
 	\
+	echo "\tinstall-packages"; \
+	echo "\t\t- Install Debreate's Python packages"; \
+	echo "\t\t- Called by `tput bold`install`tput sgr0`\n"; \
+	\
 	echo "\tinstall-templates"; \
 	echo "\t\t- Install template files used by application\n"; \
 	\
@@ -403,13 +409,13 @@ help:
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
 	\
-	echo "\tdistclean"; \
-	echo "\t\t- Run `tput bold`clean`tput sgr0`, `tput bold`deb-clean`tput sgr0`, & delete compressed"; \
-	echo "\t\t  distribution package archive\n"; \
+	echo "\tdoc-html"; \
+	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
+	echo "\t\t- Requires `tput bold`doxygen`tput sgr0` command (apt install doxygen)\n"; \
 	\
-	echo "\tclean"; \
-	echo "\t\t- Delete Debreate binary & any compiled Python"; \
-	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
+	echo "\tdoxygen-format"; \
+	echo "\t\t- Build Doxygen HTML files & add customizations"; \
+	echo "\t\t- Calls `tput bold`doc-html`tput sgr0`\n"; \
 	\
 	echo "\tdebianize"; \
 	echo "\t\t- Configure source for building a Debian package"; \
@@ -434,6 +440,17 @@ help:
 	echo "\t\t- Create a source distribution package & sign"; \
 	echo "\t\t  the .changes file for upload to a repository"; \
 	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
+	\
+	echo "\tclean"; \
+	echo "\t\t- Delete Debreate binary & any compiled Python"; \
+	echo "\t\t  bytecode (.pyc) from the working directory\n"; \
+	\
+	echo "\tdistclean"; \
+	echo "\t\t- Run `tput bold`clean`tput sgr0`, `tput bold`deb-clean`tput sgr0`, & delete compressed"; \
+	echo "\t\t  distribution package archive\n"; \
+	\
+	echo "\tdoc-clean"; \
+	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
 	\
 	echo "\tdeb-clean"; \
 	echo "\t\t- Delete files created by `tput bold`debuild`tput sgr0`\n"; \
