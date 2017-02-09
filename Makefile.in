@@ -54,7 +54,7 @@ FILES_man = \
 	man/man1/$(PACKAGE).1
 
 FILES_data = \
-	data/$(MENU)
+	data/$(FILE_launcher)
 
 PACKAGE_dbr = dbr/*.py
 
@@ -102,7 +102,7 @@ DIRS_dist = \
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
-MENU = $(PACKAGE).desktop
+FILE_launcher = $(PACKAGE).desktop
 LOGO = bitmaps/$(PACKAGE)64.png
 CHANGELOG = docs/changelog
 LICENSE = docs/LICENSE.txt
@@ -197,7 +197,7 @@ install: build locale install-packages install-data $(FILES_build) $(DIRS_build)
 		$(INSTALL_DATA) "bitmaps/$(PACKAGE)64.png" "$${pix_dir}/$(PACKAGE).png"; \
 		\
 		$(MKDIR) "$${apps_dir}"; \
-		$(INSTALL_EXEC) "data/$(MENU)" "$${apps_dir}"; \
+		$(INSTALL_EXEC) "data/$(FILE_launcher)" "$${apps_dir}"; \
 	\
 	fi; \
 	\
@@ -213,7 +213,7 @@ uninstall: uninstall-mime uninstall-man uninstall-doc uninstall-locale
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
 	\
-	$(UNINSTALL) "$${apps_dir}/$(MENU)"; \
+	$(UNINSTALL) "$${apps_dir}/$(FILE_launcher)"; \
 	$(UNINSTALL) "$${pix_dir}/$(PACKAGE).png"; \
 	$(UNINSTALL) "$${bin_dir}/$(PACKAGE)"; \
 	\
