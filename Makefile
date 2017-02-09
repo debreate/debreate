@@ -168,7 +168,7 @@ install: $(FILES_build) $(DIR_locale) $(INSTALLED)_file install-packages install
 	\
 	$(call MOVE,$(INSTALLED),$${data_dir}); \
 
-uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime uninstall-templates
+uninstall: uninstall-launcher uninstall-man uninstall-mime
 	@target=$(DESTDIR)$(prefix); \
 	bin_dir=$${target}/$(BINDIR); \
 	data_dir=$${target}/$(DATADIR); \
@@ -195,14 +195,6 @@ install-bitmaps: $(DIR_bitmaps)
 		$(MKDIR) "$${data_dir}"; \
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
-
-# FIXME: Unnecessary???
-uninstall-bitmaps:
-	@target="$(DESTDIR)$(prefix)"; \
-	bitmaps_dir="$${target}/$(DATADIR)/bitmaps"; \
-	if [ -d "$${bitmaps_dir}" ]; then \
-		$(call UNINSTALL_FOLDER,$${bitmaps_dir}); \
-	fi; \
 
 install-icons: $(MIME_icons)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -284,14 +276,6 @@ install-templates: $(DIR_templates)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
 
-# FIXME: Unnecessary???
-uninstall-templates:
-	@target="$(DESTDIR)$(prefix)"; \
-	templates_dir="$${target}/$(DATADIR)/templates"; \
-	if [ -d "$${templates_dir}" ]; then \
-		$(call UNINSTALL_FOLDER,$${templates_dir}); \
-	fi; \
-
 dist: distclean deb-clean
 	@echo "Creating distribution package ..."; \
 	if [ -f "$(PACKAGE_dist)" ]; then \
@@ -366,9 +350,6 @@ help:
 	echo "\tinstall-bitmaps"; \
 	echo "\t\t- Install bitmaps used by application\n"; \
 	\
-	echo "\tuninstall-bitmaps"; \
-	echo "\t\t- Uninstall bitmaps used by application\n"; \
-	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
 	echo "\t\t  registration\n"; \
@@ -404,9 +385,6 @@ help:
 	\
 	echo "\tinstall-templates"; \
 	echo "\t\t- Install template files used by application\n"; \
-	\
-	echo "\tuninstall-templates"; \
-	echo "\t\t- Remove application template files\n"; \
 	\
 	echo "\tdist"; \
 	echo "\t\t- Create a source distribution package\n"; \
