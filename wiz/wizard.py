@@ -41,6 +41,15 @@ from wiz.helper         import GetMenu
 
 ## Wizard class for Debreate
 class Wizard(wx.Panel):
+    ## Constructor
+    #
+    #  TODO: Rename param 'page_list' to 'pageList'
+    #
+    #  \param parent
+    #    Parent <b><i>wx.Window</i></b> instance
+    #  \param page_list
+    #    <b><i>List</i></b> of wiz.wizard.WizardPage instances to initialize
+    #    wizard with
     def __init__(self, parent, page_list=None):
         wx.Panel.__init__(self, parent, wx.ID_ANY, page_list)
         
