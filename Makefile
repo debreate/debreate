@@ -1,6 +1,8 @@
 # This is a generic Makefile.
 # It will only work on systems with GNU make.
 
+# FIXME: "dist" rule compiles gettext locales
+
 # This is written to 'prefix' in 'build' rule, then read in 'install'
 prefix=/usr/local
 TARGET = $(DESTDIR)$(prefix)
@@ -149,7 +151,7 @@ install: locale $(FILES_build) $(INSTALLED)_file install-bitmaps install-data in
 	echo "\nprefix set to $(prefix)"; \
 	echo "Install target set to $${target}\n"; \
 	\
-	mkdir -vp "$${target}/$(DATADIR)"; \
+	$(MKDIR) "$${target}/$(DATADIR)"; \
 	for py in $(FILES_executable); do \
 		$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
 	done; \
@@ -161,7 +163,7 @@ install: locale $(FILES_build) $(INSTALLED)_file install-bitmaps install-data in
 	$(LINK) "$(prefix)/$(DATADIR)/init.py" "$${bin_dir}/$(PACKAGE)"; \
 	\
 	$(MKDIR) "$${pix_dir}"; \
-	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pix_dir}/debreate.png"; \
+	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pix_dir}/$(PACKAGE).png"; \
 
 uninstall: uninstall-launcher uninstall-locale uninstall-man uninstall-mime
 	@target="$(DESTDIR)$(prefix)"; \
@@ -224,7 +226,7 @@ uninstall-icons:
 	@target="$(DESTDIR)$(prefix)"; \
 	icons_dir="$${target}/$(ICONTHEME)"; \
 	if [ -d "$${icons_dir}" ]; then \
-		find "$${icons_dir}" -type f -name "application-x-dbp*" -print -delete; \
+		find "$${icons_dir}" -type f -name "$(MIME_prefix)-$(MIME_dbp)*" -print -delete; \
 		find "$${icons_dir}" -type d -empty -print -delete; \
 	fi; \
 
@@ -314,8 +316,8 @@ install-templates: $(DIR_templates)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
 
-doc-html: $(DOXYGEN_CONFIG)
-	@doxygen "$(DOXYGEN_CONFIG)"
+doc-html: $(FILE_doxyfile)
+	@doxygen "$(FILE_doxyfile)"
 
 doxygen-format: doc-html
 	@./scripts/doxygen-format.py
