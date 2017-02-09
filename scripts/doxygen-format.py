@@ -7,7 +7,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, sys
+import os, re, sys
 
 from scripts_globals import ConcatPaths
 from scripts_globals import DIR_root
@@ -37,6 +37,51 @@ for ROOT, DIRS, FILES in os.walk(DIR_html):
             
             else:
                 files_rest.append(HTML)
+
+
+## Converts leftover markdown syntax to HTML
+def FormatMarkdown():
+    global DIR_html
+    
+    FILE_index = ConcatPaths((DIR_html, 'index.html'))
+    
+    if os.path.isfile(FILE_index):
+        print('Formatting markdown ...')
+        
+        FILE_BUFFER = open(FILE_index, 'r')
+        text = FILE_BUFFER.read()
+        FILE_BUFFER.close()
+        
+        # Bold & italic text
+        new_text = re.sub(r'\*\*\*(.*?)\*\*\*', r'<b><i>\1</i></b>', text)
+        new_text = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', new_text)
+        new_text = re.sub(r'\*(.*?)\*', r'<i>\1</i>', new_text)
+        
+        # Anchors
+        lines = new_text.split('\n')
+        for INDEX in range(len(lines)):
+            LINE = lines[INDEX]
+            
+            if '<h3>' in LINE:
+                name = LINE.strip(' \t><').replace('><', '').split('>')[-1].split('<')[0].lower().replace(' ', '-')
+                
+                LINE = LINE.replace('<h3>', '<h3 id="{}">'.format(name))
+                if LINE != lines[INDEX]:
+                    lines[INDEX] = LINE
+        
+        new_text = '\n'.join(lines)
+        
+        if new_text != text:
+            FILE_BUFFER = open(FILE_index, 'w')
+            FILE_BUFFER.write(new_text)
+            FILE_BUFFER.close()
+            
+            return True
+    
+    else:
+        print('ERROR: Index file not found: {}'.format(FILE_index))
+    
+    return False
 
 
 def FormatMethods():
@@ -171,4 +216,5 @@ def FormatMethods():
             FILE_BUFFER.close()
 
 
+FormatMarkdown()
 FormatMethods()
