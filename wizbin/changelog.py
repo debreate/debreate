@@ -167,7 +167,7 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## TODO: Doxygen
+    ## Formats input text from 'changes' field for new entry in changelog
     def AddInfo(self, event=None):
         new_changes = self.ti_changes.GetValue()
         
@@ -208,7 +208,15 @@ class Page(WizardPage):
         self.ti_changes.SetFocus()
     
     
-    ## TODO: Doxygen
+    ## Exports page's data to file
+    #
+    #  \param out_dir
+    #    Target directory where file will be written
+    #  \out_name
+    #    Filename of output file
+    #  \compress
+    #    If <b><i>True</i></b>, compresses file with gzip
+    #  \override wiz.wizard.WizardPage.Export
     def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
         ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
         
@@ -222,7 +230,12 @@ class Page(WizardPage):
         return ret_value
     
     
-    ## TODO: Doxygen
+    ## Export instructions specifically for build phase
+    #
+    #  \param stage
+    #    Formatted staged directory where file heirarchy is temporarily kept
+    #  \return
+    #    <b><i>Tuple</i></b> containing a return code & string value of page data
     def ExportBuild(self, stage):
         target = self.pnl_target.GetPath()
         
@@ -246,12 +259,16 @@ class Page(WizardPage):
         return(0, export_summary)
     
     
-    ## Retrieves changelog information
-    #  
-    #  The output is a text file that uses sections defined
-    #    by braces ([, ]).
+    ## Retrieves changelog text
+    #
+    #  The output is a text file that uses sections defined by braces ([, ])
+    #
+    #  \param getModule
+    #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+    #    & page data, otherwise return only page data string
     #  \return
-    #        \b \e tuple(str, str) : Filename & formatted string of changelog target & body
+    #    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
+    #  \override wiz.wizard.WizardPage.Get
     def Get(self, getModule=False):
         target = self.pnl_target.GetPath()
         
@@ -272,12 +289,19 @@ class Page(WizardPage):
         return page
     
     
-    ## TODO: Doxygen
+    ## Retrieves plain text of the changelog field
+    #
+    #  \return
+    #    Formatted changelog text
     def GetChangelog(self):
         return self.dsp_changes.GetValue()
     
     
-    ## TODO: Doxygen
+    ## Reads & parses page data from a formatted text file
+    #
+    #  \param filename
+    #    File path to open
+    #  \override wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -339,12 +363,16 @@ class Page(WizardPage):
         return 0
     
     
-    ## TODO: Doxygen
+    ## Checks the page's fields for exporting
+    #
+    #  \return
+    #    <b><i>False</i></b> if page cannot be exported
+    #  \override wiz.wizard.WizardPage.IsOkay
     def IsOkay(self):
         return not TextIsEmpty(self.dsp_changes.GetValue())
     
     
-    ## TODO: Doxygen
+    ## Imports select field values from the 'Control' page
     def OnImportFromControl(self, event=None):
         fields = (
             (self.ti_package, inputid.PACKAGE),
@@ -367,7 +395,10 @@ class Page(WizardPage):
                 F.SetValue(field_value)
     
     
-    ## TODO: Doxygen
+    ## Sets values of page's fields with given input
+    #
+    #  \param data
+    #    Text to parse for values
     def Set(self, data):
         changelog = data.split(u'\n')
         target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
