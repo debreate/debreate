@@ -231,7 +231,7 @@ class Page(WizardPage):
             build_summary.append(u'{}:'.format(log_msg))
             
             try:
-                for P in wizard.pages:
+                for P in wizard.GetAllPages():
                     if build_progress.WasCancelled():
                         break
                     
@@ -382,7 +382,9 @@ class Page(WizardPage):
         wizard = GetWizard()
         prep_ids = []
         
-        for P in wizard.pages:
+        pages = wizard.GetAllPages()
+        
+        for P in pages:
             if P.prebuild_check:
                 Logger.Debug(__name__, GT(u'Pre-build check for page "{}"'.format(P.GetName())))
                 prep_ids.append(P.GetId())
@@ -404,7 +406,7 @@ class Page(WizardPage):
                     msg_label2.format(current_step, steps_count), maximum=steps_count,
                     style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
             
-            for P in wizard.pages:
+            for P in pages:
                 if prep_progress.WasCancelled():
                     break
                 
@@ -638,7 +640,7 @@ class Page(WizardPage):
                     DetailedMessageDialog(GetMainWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
                             text=msg_full).ShowModal()
                     
-                    for P in wizard.pages:
+                    for P in wizard.GetAllPages():
                         if P.GetLabel() == p_name:
                             Logger.Debug(__name__, GT(u'Showing page with required field: {}').format(p_name))
                             wizard.ShowPage(P.GetId())
