@@ -115,11 +115,15 @@ DIRS_dist = \
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
-FILE_launcher = debreate.desktop
+FILE_launcher = $(PACKAGE).desktop
 FILE_mime = data/mime/$(PACKAGE).xml
 INSTALLED = INSTALLED
 
-MIME_icons = data/svg/application-x-dbp.svg
+MIME_prefix = application
+MIME_dbp = x-dbp
+
+MIME_icons = \
+	data/svg/$(MIME_prefix)-$(MIME_dbp).svg
 
 all:
 	@echo "\n\tNothing to be done"; \
@@ -133,54 +137,54 @@ $(INSTALLED)_file:
 
 install: $(FILES_BUILD) $(DIR_locale) $(INSTALLED)_file install-packages install-bitmaps install-launcher install-man install-mime install-templates
 	@target=$(DESTDIR)$(prefix); \
-	bindir=$${target}/$(BINDIR); \
-	datadir=$${target}/$(DATADIR); \
-	pixdir=$${target}/$(PIXDIR); \
+	bin_dir=$${target}/$(BINDIR); \
+	data_dir=$${target}/$(DATADIR); \
+	pix_dir=$${target}/$(PIXDIR); \
 	\
 	echo "\nprefix set to $(prefix)"; \
 	echo "Install target set to $${target}\n"; \
 	\
 	mkdir -vp "$${target}/$(DATADIR)"; \
 	for py in $(FILES_executable); do \
-		$(INSTALL_EXEC) "$${py}" "$${datadir}"; \
+		$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
 	done; \
 	for py in $(FILES_root) $(EXTRA_FILES); do \
-		$(INSTALL_DATA) "$${py}" "$${datadir}"; \
+		$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
 	done; \
 	\
-	$(MKDIR) "$${datadir}/docs"; \
+	$(MKDIR) "$${data_dir}/docs"; \
 	for doc in $(FILES_doc); do \
-		$(INSTALL_DATA) "$${doc}" "$${datadir}/docs"; \
+		$(INSTALL_DATA) "$${doc}" "$${data_dir}/docs"; \
 	done; \
 	\
-	$(INSTALL_FOLDER) $(DIR_locale) "$${datadir}"; \
+	$(INSTALL_FOLDER) $(DIR_locale) "$${data_dir}"; \
 	\
-	$(MKDIR) "$${bindir}"; \
-	ln -vfs "$(prefix)/$(DATADIR)/init.py" "$${bindir}/$(PACKAGE)"; \
+	$(MKDIR) "$${bin_dir}"; \
+	ln -vfs "$(prefix)/$(DATADIR)/init.py" "$${bin_dir}/$(PACKAGE)"; \
 	\
-	$(MKDIR) "$${pixdir}"; \
-	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pixdir}/debreate.png"; \
+	$(MKDIR) "$${pix_dir}"; \
+	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pix_dir}/debreate.png"; \
 	\
-	$(call MOVE,$(INSTALLED),$${datadir}); \
+	$(call MOVE,$(INSTALLED),$${data_dir}); \
 
 uninstall: uninstall-bitmaps uninstall-launcher uninstall-man uninstall-mime uninstall-templates
 	@target=$(DESTDIR)$(prefix); \
-	bindir=$${target}/$(BINDIR); \
-	datadir=$${target}/$(DATADIR); \
-	appsdir=$${target}/$(APPSDIR); \
-	pixdir=$${target}/$(PIXDIR); \
+	bin_dir=$${target}/$(BINDIR); \
+	data_dir=$${target}/$(DATADIR); \
+	apps_dir=$${target}/$(APPSDIR); \
+	pix_dir=$${target}/$(PIXDIR); \
 	\
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
 	\
-	$(UNINSTALL) "$${pixdir}/debreate.png"; \
-	$(UNINSTALL) "$${bindir}/$(PACKAGE)"; \
+	$(UNINSTALL) "$${pix_dir}/$(PACKAGE).png"; \
+	$(UNINSTALL) "$${bin_dir}/$(PACKAGE)"; \
 	\
-	if [ -d "$${datadir}" ]; then \
-		for f in `find "$${datadir}" -type f`; do \
+	if [ -d "$${data_dir}" ]; then \
+		for f in `find "$${data_dir}" -type f`; do \
 			$(UNINSTALL) "$${f}"; \
 		done; \
-		find "$${datadir}" -type d -empty -delete; \
+		find "$${data_dir}" -type d -empty -delete; \
 	fi; \
 
 
@@ -359,26 +363,26 @@ help:
 	echo "\t\t- Install bitmaps used by application\n"; \
 	\
 	echo "\tuninstall-bitmaps"; \
-	echo "\t\t- Remove bitmaps used by application\n"; \
+	echo "\t\t- Uninstall bitmaps used by application\n"; \
 	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
 	echo "\t\t  registration\n"; \
 	\
 	echo "\tuninstall-icons"; \
-	echo "\t\t- Remove Debreate MimeType icons\n"; \
+	echo "\t\t- Uninstall Debreate MimeType icons\n"; \
 	\
 	echo "\tinstall-launcher"; \
 	echo "\t\t- Install system menu launcher\n"; \
 	\
 	echo "\tuninstall-launcher"; \
-	echo "\t\t- Remove system menu launcher\n"; \
+	echo "\t\t- Uninstall system menu launcher\n"; \
 	\
 	echo "\tinstall-man"; \
-	echo "\t\t- Install & compress Manpage file(s)\n"; \
+	echo "\t\t- Install & compress manual page(s)\n"; \
 	\
 	echo "\tuninstall-man"; \
-	echo "\t\t- Remove Debreate Manpage(s)\n"; \
+	echo "\t\t- Uninstall Debreate manual page(s)\n"; \
 	\
 	echo "\tinstall-mime"; \
 	echo "\t\t- Register MimeType information for Debreate"; \
@@ -451,7 +455,7 @@ help:
 	\
 	echo "Notes on Environment Variables:"; \
 	\
-	echo "\tCurrent Debreate does not use a build setup system (such as"; \
+	echo "\tCurrently Debreate does not use a build setup system (such as"; \
 	echo "\tGNU Autotools or CMake), so the \"prefix\" variable is static."; \
 	echo "\tThis means that when calling `tput bold`make uninstall`tput sgr0`, \"prefix\" must"; \
 	echo "\tbe set to the same as it was for `tput bold`make install`tput sgr0`. The same goes"; \
