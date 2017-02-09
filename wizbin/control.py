@@ -272,12 +272,19 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## Retrieves page data from fields
+    ## Retrieves information for control file export
+    #
+    #  \return
+    #    A <b><i>tuple</i></b> containing the filename & a string representation
+    #    of control file formatted for text output
     def Get(self):
         return self.GetCtrlInfo()
     
     
-    ## TODO: Doxygen
+    ## Retrieves field values & formats into plain text for output to file
+    #
+    #  \return
+    #    Control file text
     def GetCtrlInfo(self):
         pg_depends = GetPage(pgid.DEPENDS)
         
@@ -415,15 +422,21 @@ class Page(WizardPage):
         return u'<<CTRL>>\n{}<</CTRL>>'.format(data)
     
     
-    ## TODO: Doxygen
-    def ImportFromFile(self, file_path):
-        Logger.Debug(__name__, GT(u'Importing file: {}'.format(file_path)))
+    ## Reads & parses page data from a formatted text file
+    #
+    #  TODO: Use 'Set'/'SetPage' method
+    #
+    #  \param filename
+    #    File path to open
+    #  \override wiz.wizard.WizardPage.ImportFromFile
+    def ImportFromFile(self, filename):
+        Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         
-        if not os.path.isfile(file_path):
-            ShowErrorDialog(GT(u'File does not exist: {}'.format(file_path)), linewrap=600)
+        if not os.path.isfile(filename):
+            ShowErrorDialog(GT(u'File does not exist: {}'.format(filename)), linewrap=600)
             return dbrerrno.ENOENT
         
-        file_text = ReadFile(file_path)
+        file_text = ReadFile(filename)
         
         page_depends = GetPage(pgid.DEPENDS)
         
@@ -435,14 +448,14 @@ class Page(WizardPage):
         page_depends.Set(depends_data)
     
     
-    ## TODO: Doxygen
+    ## Displays a file open dialog for selecting a text file to read
     def OnBrowse(self, event=None):
         browse_dialog = GetFileOpenDialog(GetMainWindow(), GT(u'Open File'))
         if ShowDialog(browse_dialog):
             self.ImportFromFile(browse_dialog.GetPath())
     
     
-    ## Show a preview of the control file
+    ## Creates a formatted preview of the control file text
     def OnPreviewControl(self, event=None):
         ctrl_info = self.GetCtrlInfo()
         
@@ -452,7 +465,7 @@ class Page(WizardPage):
         ShowDialog(preview)
     
     
-    ## Export control information to text file
+    ## Opens a file save dialog to export control file data
     def OnSave(self, event=None):
         # Get data to write to control file
         control = self.GetCtrlInfo()
@@ -490,7 +503,12 @@ class Page(WizardPage):
         self.chk_essential.SetValue(self.chk_essential.Default)
     
     
-    ## Opening Project/File & Setting Fields
+    ## Fills page's fields with input data
+    #
+    #  \param data
+    #    Text to be parsed for values
+    #  \return
+    #    Leftover text to fill out 'Dependecies' page fields
     def Set(self, data):
         # Decode to unicode string if input is byte string
         if isinstance(data, str):
