@@ -12,6 +12,8 @@ DATAROOT = share
 DATADIR = $(DATAROOT)/$(PACKAGE)
 APPSDIR = $(DATAROOT)/applications
 PIXDIR = $(DATAROOT)/pixmaps
+DOCDIR = $(DATADIR)/docs
+LOCALEDIR = $(DATAROOT)/locale
 ICONTHEME = $(DATAROOT)/icons/gnome
 MIMEDIR = $(DATAROOT)/mime/packages
 MIMEICONSDIR = $(ICONTHEME)/scalable/mimetypes
@@ -24,6 +26,7 @@ INSTALL_EXEC = install -vm ${PERM_EXEC}
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
+LINK = ln -vfs
 
 define MOVE =
 	target_dir=$2; \
@@ -73,7 +76,6 @@ FILES_extra = \
 
 FILES_doc = \
 	docs/changelog \
-	docs/LICENSE.txt \
 	docs/usage.pdf
 
 FILES_man = \
@@ -118,6 +120,8 @@ PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
 FILE_launcher = $(PACKAGE).desktop
 FILE_mime = data/mime/$(PACKAGE).xml
+FILE_license = docs/LICENSE.txt
+FILE_doxyfile = docs/Doxyfile
 INSTALLED = INSTALLED
 
 MIME_prefix = application
@@ -136,7 +140,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_build) $(DIR_locale) $(INSTALLED)_file install-packages install-bitmaps install-launcher install-man install-mime install-templates
+install: locale $(FILES_build) $(INSTALLED)_file install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime install-packages install-templates
 	@target=$(DESTDIR)$(prefix); \
 	bin_dir=$${target}/$(BINDIR); \
 	data_dir=$${target}/$(DATADIR); \
@@ -149,31 +153,22 @@ install: $(FILES_build) $(DIR_locale) $(INSTALLED)_file install-packages install
 	for py in $(FILES_executable); do \
 		$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
 	done; \
-	for py in $(FILES_root) $(EXTRA_FILES); do \
+	for py in $(FILES_root); do \
 		$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
 	done; \
 	\
-	$(MKDIR) "$${data_dir}/docs"; \
-	for doc in $(FILES_doc); do \
-		$(INSTALL_DATA) "$${doc}" "$${data_dir}/docs"; \
-	done; \
-	\
-	$(INSTALL_FOLDER) $(DIR_locale) "$${data_dir}"; \
-	\
 	$(MKDIR) "$${bin_dir}"; \
-	ln -vfs "$(prefix)/$(DATADIR)/init.py" "$${bin_dir}/$(PACKAGE)"; \
+	$(LINK) "$(prefix)/$(DATADIR)/init.py" "$${bin_dir}/$(PACKAGE)"; \
 	\
 	$(MKDIR) "$${pix_dir}"; \
 	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pix_dir}/debreate.png"; \
-	\
-	$(call MOVE,$(INSTALLED),$${data_dir}); \
 
-uninstall: uninstall-launcher uninstall-man uninstall-mime
-	@target=$(DESTDIR)$(prefix); \
-	bin_dir=$${target}/$(BINDIR); \
-	data_dir=$${target}/$(DATADIR); \
-	apps_dir=$${target}/$(APPSDIR); \
-	pix_dir=$${target}/$(PIXDIR); \
+uninstall: uninstall-launcher uninstall-locale uninstall-man uninstall-mime
+	@target="$(DESTDIR)$(prefix)"; \
+	bin_dir="$${target}/$(BINDIR)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	apps_dir="$${target}/$(APPSDIR)"; \
+	pix_dir="$${target}/$(PIXDIR)"; \
 	\
 	echo "\nprefix set to $(prefix)"; \
 	echo "Uninstall target set to $${target}\n"; \
@@ -195,6 +190,27 @@ install-bitmaps: $(DIR_bitmaps)
 		$(MKDIR) "$${data_dir}"; \
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_bitmaps)" "$${data_dir}"; \
+
+install-data: $(INSTALLED)
+	@target="$(DESTDIR)$(prefix)"; \
+	data_dir="$${target}/$(DATADIR)"; \
+	if [ ! -d "$${data_dir}" ]; then \
+		$(MKDIR) "$${data_dir}"; \
+	fi; \
+	\
+	$(call MOVE,$(INSTALLED),$${data_dir}); \
+
+install-doc: $(FILES_doc) $(FILE_license)
+	@target="$(DESTDIR)$(prefix)"; \
+	doc_dir="$${target}/$(DOCDIR)"; \
+	\
+	echo "\nInstalling documentation ..."; \
+	$(MKDIR) "$${doc_dir}"; \
+	for doc in $(FILES_doc); do \
+		$(INSTALL_DATA) "$${doc}" "$${doc_dir}"; \
+	done; \
+	\
+	$(INSTALL_DATA) "$(FILE_license)" "$${doc_dir}"; \
 
 install-icons: $(MIME_icons)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -220,6 +236,28 @@ install-launcher: data/$(FILE_launcher)
 uninstall-launcher:
 	@apps_dir=$(TARGET)/$(APPSDIR); \
 	$(UNINSTALL) "$${apps_dir}/$(FILE_launcher)"; \
+
+install-locale: $(DIR_locale)
+	@target="$(DESTDIR)$(prefix)"; \
+	locale_dir="$${target}/$(LOCALEDIR)"; \
+	echo "Installing locale files ..."; \
+	if [ ! -d "$${locale_dir}" ]; then \
+		$(MKDIR) "$${locale_dir}"; \
+	fi; \
+	for mo in `find $(DIR_locale) -type f -name "*.mo"`; do \
+		mo=$$(echo "$${mo}" | sed -e 's:^.......::'); \
+		modir="$${locale_dir}/$$(dirname $${mo})"; \
+		if [ ! -d "$${modir}" ]; then \
+			$(MKDIR) "$${modir}"; \
+		fi; \
+		$(INSTALL_DATA) "locale/$${mo}" "$${modir}"; \
+	done; \
+
+uninstall-locale:
+	@target="$(DESTDIR)$(prefix)"; \
+	locale_dir="$${target}/$(LOCALEDIR)"; \
+	echo "Uninstalling locale files ..."; \
+	find "$${locale_dir}" -type f -name "$(PACKAGE)\.mo" -delete; \
 
 install-man: $(FILES_man)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -276,7 +314,27 @@ install-templates: $(DIR_templates)
 	fi; \
 	$(INSTALL_FOLDER) "$(DIR_templates)" "$${data_dir}"; \
 
-dist: distclean deb-clean
+doc-html: $(DOXYGEN_CONFIG)
+	@doxygen "$(DOXYGEN_CONFIG)"
+
+doxygen-format: doc-html
+	@./scripts/doxygen-format.py
+
+# FIXME: May need to make adjustments
+.PHONY: locale
+locale:
+	@echo "Building gettext locales ..."; \
+	locale_dir="$$(pwd)/locale"; \
+	for f in $$(find "$${locale_dir}" -type f -name "*.po"); do \
+		lc_dir=$$(dirname "$${f}")/LC_MESSAGES; \
+		echo "$${lc_dir}"; \
+		if [ ! -d "$${lc_dir}" ]; then \
+			$(MKDIR) "$${lc_dir}"; \
+		fi; \
+		msgfmt -v "$${f}" -o "$${lc_dir}/$(PACKAGE).mo"; \
+	done; \
+
+dist: distclean deb-clean $(FILES_dist) $(DIRS_dist)
 	@echo "Creating distribution package ..."; \
 	if [ -f "$(PACKAGE_dist)" ]; then \
 		rm -v "$(PACKAGE_dist)"; \
@@ -299,7 +357,7 @@ deb-src: deb-clean
 deb-src-signed: deb-clean
 	@debuild -S -sa
 
-clean: doc-clean
+clean: doc-clean locale-clean
 	@find ./ -type f -name "*.pyc" -print -delete; \
 	rm -vf "./bin/$(PACKAGE)"; \
 	if [ -d "./bin" ]; then \
@@ -313,6 +371,10 @@ distclean: clean deb-clean
 
 doc-clean:
 	@rm -vrf docs/doxygen
+
+locale-clean:
+	@find locale -type f -name "*\.mo" -delete; \
+	find locale -type d -empty -delete; \
 
 deb-clean:
 	@rm -vrf "debian/$(PACKAGE)"
@@ -338,17 +400,23 @@ help:
 	echo "\tinstall"; \
 	echo "\t\t- Install `tput bold`$(PACKAGE)`tput sgr0` executable & data files onto"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`install-launcher`tput sgr0`, `tput bold`install-man`tput sgr0`,"; \
-	echo "\t\t  & `tput bold`install-mime`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`install-data`tput sgr0`, `tput bold`install-doc`tput sgr0`, `tput bold`install-launcher`tput sgr0`,"; \
+	echo "\t\t  `tput bold`install-locale`tput sgr0`, `tput bold`install-man`tput sgr0`, & `tput bold`install-mime`tput sgr0`\n"; \
 	\
 	echo "\tuninstall"; \
 	echo "\t\t- Remove all installed Debreate files from"; \
 	echo "\t\t  the system"; \
-	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-man`tput sgr0`,"; \
-	echo "\t\t  & `tput bold`uninstall-mime`tput sgr0`\n"; \
+	echo "\t\t- Calls `tput bold`uninstall-launcher`tput sgr0`, `tput bold`uninstall-locale`tput sgr0`,"; \
+	echo "\t\t  `tput bold`uninstall-man`tput sgr0`, & `tput bold`uninstall-mime`tput sgr0`\n"; \
 	\
 	echo "\tinstall-bitmaps"; \
 	echo "\t\t- Install bitmaps used by application\n"; \
+	\
+	echo "\tinstall-data"; \
+	echo "\t\t- Install misc. data files onto the system\n"; \
+	\
+	echo "\tinstall-doc"; \
+	echo "\t\t- Install documentation files\n"; \
 	\
 	echo "\tinstall-icons"; \
 	echo "\t\t- Install icons for Debreate projects MimeType"; \
@@ -362,6 +430,12 @@ help:
 	\
 	echo "\tuninstall-launcher"; \
 	echo "\t\t- Uninstall system menu launcher\n"; \
+	\
+	echo "\tinstall-locale"; \
+	echo "\t\t- Install gettext locale translations\n"; \
+	\
+	echo "\tuninstall-locale"; \
+	echo "\t\t- Remove Gettext translation files from system\n"; \
 	\
 	echo "\tinstall-man"; \
 	echo "\t\t- Install & compress manual page(s)\n"; \
@@ -397,6 +471,10 @@ help:
 	echo "\t\t- Build Doxygen HTML files & add customizations"; \
 	echo "\t\t- Calls `tput bold`doc-html`tput sgr0`\n"; \
 	\
+	echo "\tlocale"; \
+	echo "\t\t- Build locale translations"; \
+	echo "\t\t- Requires `tput bold`gettext`tput sgr0` command\n"; \
+	\
 	echo "\tdebianize"; \
 	echo "\t\t- Configure source for building a Debian package"; \
 	echo "\t\t  (not necessary, should already be configured)"; \
@@ -431,6 +509,9 @@ help:
 	\
 	echo "\tdoc-clean"; \
 	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
+	\
+	echo "\tlocale-clean"; \
+	echo "\t\t- Clean compiled locale files from source\n"; \
 	\
 	echo "\tdeb-clean"; \
 	echo "\t\t- Delete files created by `tput bold`debuild`tput sgr0`\n"; \
