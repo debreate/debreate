@@ -492,9 +492,9 @@ help:
 	echo "\thelp"; \
 	echo "\t\t- Show this help dialog\n"; \
 	\
-	echo "\tall|build"; \
-	echo "\t\t- Create `tput bold`$(PACKAGE)`tput sgr0` executable (same as invoking"; \
-	echo "\t\t  `tput bold`make`tput sgr0` with no arguments)\n"; \
+	echo "\tall"; \
+	echo "\t\t- Does nothing (same as invoking `tput bold`make`tput sgr0` with no"; \
+	echo "\t\t  arguments)\n"; \
 	\
 	echo "\tinstall"; \
 	echo "\t\t- Install `tput bold`$(PACKAGE)`tput sgr0` executable & data files onto"; \
@@ -512,7 +512,7 @@ help:
 	echo "\t\t- Install bitmaps used by application\n"; \
 	\
 	echo "\tuninstall-bitmaps"; \
-	echo "\t\t- Remove bitmaps used by application\n"; \
+	echo "\t\t- Uninstall bitmaps used by application\n"; \
 	\
 	echo "\tinstall-data"; \
 	echo "\t\t- Install misc. data files onto the system\n"; \
@@ -529,13 +529,13 @@ help:
 	echo "\t\t  registration\n"; \
 	\
 	echo "\tuninstall-icons"; \
-	echo "\t\t- Remove Debreate MimeType icons from system\n"; \
+	echo "\t\t- Uninstall Debreate MimeType icons\n"; \
 	\
 	echo "\tinstall-launcher"; \
 	echo "\t\t- Install system menu launcher\n"; \
 	\
 	echo "\tuninstall-launcher"; \
-	echo "\t\t- Remove system menu launcher\n"; \
+	echo "\t\t- Uninstall system menu launcher\n"; \
 	\
 	echo "\tinstall-locale"; \
 	echo "\t\t- Install gettext locale translations\n"; \
@@ -544,10 +544,10 @@ help:
 	echo "\t\t- Remove Gettext translation files from system\n"; \
 	\
 	echo "\tinstall-man"; \
-	echo "\t\t- Install & compress Manpage files\n"; \
+	echo "\t\t- Install & compress manual page(s)\n"; \
 	\
 	echo "\tuninstall-man"; \
-	echo "\t\t- Remove Debreate Manpages from system\n"; \
+	echo "\t\t- Uninstall Debreate manual page(s)\n"; \
 	\
 	echo "\tinstall-mime"; \
 	echo "\t\t- Register MimeType information for Debreate"; \
@@ -595,19 +595,22 @@ help:
 	\
 	echo "\tdeb-bin"; \
 	echo "\t\t- Build a Debian (.deb) package for installation"; \
-	echo "\t\t- Uses `tput bold`debbuild`tput sgr0` command (apt install devscripts)\n"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
 	echo "\tdeb-bin-signed"; \
 	echo "\t\t- Build a Debian (.deb) package for installation"; \
-	echo "\t\t  & sign the .changes file\n"; \
+	echo "\t\t  & sign the .changes file"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
 	echo "\tdeb-src"; \
 	echo "\t\t- Create a source distribution package with"; \
-	echo "\t\t  Debian .dsc, .build, & .changes files\n"; \
+	echo "\t\t  Debian .dsc, .build, & .changes files"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
 	echo "\tdeb-src-signed"; \
 	echo "\t\t- Create a source distribution package & sign"; \
-	echo "\t\t  the .changes file for upload to a repository\n"; \
+	echo "\t\t  the .changes file for upload to a repository"; \
+	echo "\t\t- Uses `tput bold`debuild`tput sgr0` command (apt install devscripts)\n"; \
 	\
 	echo "\tclean"; \
 	echo "\t\t- Delete Debreate binary & any compiled Python"; \
@@ -623,7 +626,7 @@ help:
 	echo "\t\t- Clean compiled locale files from source\n"; \
 	\
 	echo "\tdeb-clean"; \
-	echo "\t\t- Delete files created by `tput bold`deb-bin`tput sgr0`\n"; \
+	echo "\t\t- Delete files created by `tput bold`debuild`tput sgr0`\n"; \
 	\
 	echo "Environment Variables:"; \
 	\
