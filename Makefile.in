@@ -106,7 +106,7 @@ MENU = $(PACKAGE).desktop
 LOGO = bitmaps/$(PACKAGE)64.png
 CHANGELOG = docs/changelog
 LICENSE = docs/LICENSE.txt
-MIMEFILE = data/mime/$(PACKAGE).xml
+FILE_mime = data/mime/$(PACKAGE).xml
 DOXYGEN_CONFIG = docs/Doxyfile
 INSTALLED = INSTALLED
 
@@ -318,13 +318,13 @@ uninstall-man:
 	echo "Manual dir: $${man_dir}"; \
 	find "$${man_dir}/man1" -type f -name "$(PACKAGE)\.1\.gz" -delete; \
 
-install-mime: $(MIMEFILE) install-icons
+install-mime: $(FILE_mime) install-icons
 	@target="$(DESTDIR)$(prefix)"; \
 	mime_dir="$${target}/$(MIMEDIR)"; \
 	if [ ! -d "$${mime_dir}" ]; then \
 		$(MKDIR) "$${mime_dir}"; \
 	fi; \
-	$(INSTALL_DATA) "$(MIMEFILE)" "$${mime_dir}"; \
+	$(INSTALL_DATA) "$(FILE_mime)" "$${mime_dir}"; \
 
 uninstall-mime: uninstall-icons
 	@target="$(DESTDIR)$(prefix)"; \
