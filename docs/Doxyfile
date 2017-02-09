@@ -784,8 +784,16 @@ WARN_LOGFILE           =
 INPUT                  = init.py \
                          main.py \
                          dbr \
-                         wiz_bin \
-                         wiz_src \
+                         f_export \
+                         fields \
+                         globals \
+                         input \
+                         startup \
+                         system \
+                         ui \
+                         wiz \
+                         wizbin \
+                         wizsrc \
                          README.md
 
 # This tag can be used to specify the character encoding of the source files
