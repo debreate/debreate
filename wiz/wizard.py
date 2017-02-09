@@ -144,7 +144,7 @@ class Wizard(wx.Panel):
     ## Add a new page to the wizard
     #
     #  \param page
-    #    Must either be a WizardPage instance or the string suffix of the page's moduls
+    #    Must either be a wiz.wizard.WizardPage instance or the string suffix of the page's module
     def AddPage(self, page):
         err_msg = None
         err_det = None
@@ -198,7 +198,7 @@ class Wizard(wx.Panel):
         wx.EVT_MENU(main_window, page.Id, main_window.OnMenuChangePage)
     
     
-    ## TODO: Doxygen
+    ## Handles displaying a new page when commanded
     def ChangePage(self, event=None):
         event_id = event.GetEventObject().GetId()
         
@@ -225,7 +225,7 @@ class Wizard(wx.Panel):
         GetMenu(menuid.PAGE).Check(page_id, True)
     
     
-    ## TODO: Doxygen
+    ## Deletes all pages from the wizard
     def ClearPages(self):
         for page in self.Pages:
             self.GetSizer().Remove(page)
@@ -237,17 +237,21 @@ class Wizard(wx.Panel):
         self.EnablePrev()
     
     
-    ## TODO: Doxygen
+    ## Disables the 'next' page button when displaying the last page
     def DisableNext(self):
         self.EnableNext(False)
     
     
-    ## TODO: Doxygen
+    ## Disables 'previous' page button when displaying the first page
     def DisablePrev(self):
         self.EnablePrev(False)
     
     
-    ## TODO: Doxygen
+    ## Enables/Disables 'next' page button dependent on if the last
+    #  page is displayed
+    #
+    #  \param value
+    #    Button is enabled <b><i>True</i></b>, disabled otherwise
     def EnableNext(self, value=True):
         if isinstance(value, (bool, int)):
             if value:
@@ -261,7 +265,11 @@ class Wizard(wx.Panel):
             raise TypeError(u'Must be bool or int value')
     
     
-    ## TODO: Doxygen
+    ## Enables/Disables 'previous' page button dependent on if the last
+    #  page is displayed
+    #
+    #  \param value
+    #    Button is enabled <b><i>True</i></b>, disabled otherwise
     def EnablePrev(self, value=True):
         if isinstance(value, (bool, int)):
             if value:
@@ -275,7 +283,14 @@ class Wizard(wx.Panel):
             raise TypeError(u'Must be bool or int value')
     
     
-    ## TODO: Doxygen
+    ## Exports pages individually by calling wiz.wizard.WizardPage.Export
+    #
+    #  Filename output is handled by classes inheriting WizardPage
+    #
+    #  \param pageList
+    #    List of WizardPage instances, or page IDs, to be exported
+    #  \param outDir
+    #    Path to target directory
     def ExportPages(self, pageList, outDir):
         for P in pageList:
             # Support using list of IDs instead of WizardPage instances
@@ -285,26 +300,40 @@ class Wizard(wx.Panel):
             P.Export(outDir)
     
     
-    ## Retrieves all current page instances
+    ## Retrieves all current wiz.wizard.WizardPage instances
+    #
+    #  \return
+    #    <b><i>Tuple</i></b> list of currently available wizard pages
     def GetAllPages(self):
         return tuple(self.Pages)
     
     
-    ## Retrieve currently showing page
+    ## Retrieves currently displayed page
+    #
+    #  \return
+    #    wiz.wizard.WizardPage instance
     def GetCurrentPage(self):
         for page in self.Pages:
             if page.IsShown():
                 return page
     
     
-    ## Retrieve currently showing page's ID
+    ## Retrieve currently displayed page's ID
+    #
+    #  \return
+    #    <b><i>Integer</i></b> ID of page
     def GetCurrentPageId(self):
         current_page = self.GetCurrentPage()
         if current_page:
             return current_page.GetId()
     
     
-    ## TODO: Doxygen
+    ## Retrieves a page by ID
+    #
+    #  \param pageId
+    #    <b><i>Integer</i></b> ID of desired page
+    #  \return
+    #    wiz.wizard.WizardPage instance or <b><i>None</i></b> if ID not found
     def GetPage(self, pageId):
         for P in self.Pages:
             if P.GetId() == pageId:
@@ -314,9 +343,9 @@ class Wizard(wx.Panel):
     
     
     ## Retrieves the full list of page IDs
-    #  
+    #
     #  \return
-    #        \b e\ tuple : List of all page IDs
+    #    <b><i>Tuple</i></b> list of all current pages IDs
     def GetPagesIdList(self):
         page_ids = []
         
@@ -327,9 +356,11 @@ class Wizard(wx.Panel):
     
     
     ## Fills information for each page when project file is opened
-    #  
+    #
+    #  Each page imports a file by parsing the filename
+    #
     #  \param filesDir
-    #        \b \e unicode|str : Path to directory where project files have been extracted
+    #    Path to directory where project files have been extracted
     def ImportPagesInfo(self, filesDir):
         for PATH, DIRS, FILES in os.walk(filesDir):
             for F in FILES:
@@ -344,7 +375,10 @@ class Wizard(wx.Panel):
                         page.ImportFromFile(u'{}/{}'.format(PATH, F))
     
     
-    ## Initailize the wizard
+    ## Initializes wizard by displaying an intial page
+    #
+    #  \param showPage
+    #    <b><i>Integer</i></b> index of page to be shown
     def Initialize(self, showPage=0):
         if self.Pages:
             self.ID_FIRST = self.Pages[0].Id
@@ -362,7 +396,10 @@ class Wizard(wx.Panel):
         self.Layout()
     
     
-    ## Uses children WizardPage instances to set pages
+    ## Uses children wiz.wizard.WizardPage instances to set pages
+    #
+    #  \return
+    #    Value of wiz.wizard.Wizard.SetPages
     def InitPages(self):
         pages = []
         
@@ -373,7 +410,9 @@ class Wizard(wx.Panel):
         return self.SetPages(pages)
     
     
-    ## Show a help dialog for current page
+    ## Handles event emitted by 'help' button
+    #
+    #  Shows a help dialog for currently displayed page
     def OnHelpButton(self, event=None):
         label = self.GetCurrentPage().GetLabel()
         page_help = MarkdownDialog(self, title=GT(u'Help'), readonly=True)
@@ -383,10 +422,10 @@ class Wizard(wx.Panel):
         ShowDialog(page_help)
     
     
-    ## Remove a page from the wizard & memory
+    ## Removes a page from the wizard & memory
     #
     #  \param pageId
-    #    \b \e Integer ID of the page to remove
+    #    <b><i>Integer</i></b> ID of the page to be removed
     def RemovePage(self, pageId):
         page = self.GetPage(pageId)
         
@@ -400,25 +439,34 @@ class Wizard(wx.Panel):
         self.Layout()
         
         # Remove from page menu
+        # FIXME: Use 'GetMenu' function
         GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Remove(pageId).Destroy()
     
     
-    ## Reset all but greeting page
+    ## Resets all but greeting page
+    #
+    #  \return
+    #    Value of wiz.wizard.Wizard.Initialize
     def Reset(self):
         for PAGE in reversed(self.Pages):
             if PAGE.Id != pgid.GREETING:
                 self.RemovePage(PAGE.Id)
         
-        self.Initialize()
+        return self.Initialize()
     
     
-    ## TODO: Doxygen
+    ## Resets each page's fields to default settings
+    #
+    #  Calls wiz.wizard.WizardPage.Reset
     def ResetPagesInfo(self):
         for page in self.Pages:
             page.Reset()
     
     
     ## Sets up the wizard for 'binary' mode
+    #
+    #  \param startPage
+    #    <b><i>Integer</i></b> index of page to be initially displayed
     def SetModeBin(self, startPage=1):
         self.Reset()
         
@@ -443,11 +491,18 @@ class Wizard(wx.Panel):
     
     
     ## Sets up the wizard for 'source' mode
+    #
+    #  FIXME: WIP
     def SetModeSrc(self):
         self.Reset()
     
     
-    ## TODO: Doxygen
+    ## Organizes wiz.wizard.WizardPage instances for displaying as pages in wizard
+    #
+    #  FIXME: Deprecated???
+    #
+    #  \param pages
+    #    List of pages owned by wizard to be used
     def SetPages(self, pages):
         self.ID_FIRST = pages[0].GetId()
         self.ID_LAST = pages[-1].GetId()
@@ -494,13 +549,21 @@ class Wizard(wx.Panel):
         self.Layout()
     
     
-    ## TODO: Doxygen
+    ## Sets the text displayed in the wizard title bar
+    #
+    #  \param title
+    #    Text to be displayed
     def SetTitle(self, title):
         self.txt_title.SetLabel(title)
         self.Layout()
     
     
-    ## TODO: Doxygen
+    ## Sets or changes the displayed page
+    #
+    #  Posts a 'change page' event to notify the main window
+    #
+    #  \param pageId
+    #    globals.ident.pgid of the page to be displayed
     def ShowPage(self, pageId):
         for p in self.Pages:
             if p.GetId() != pageId:
@@ -527,7 +590,7 @@ class Wizard(wx.Panel):
         wx.PostEvent(GetMainWindow(), ChangePageEvent(0))
 
 
-## Parent class for wizard pages
+## Inherited class for wizard pages
 class WizardPage(ScrolledPanel):
     ## Constructor
     #
@@ -593,18 +656,27 @@ class WizardPage(ScrolledPanel):
     
     
     ## Exports data for the build process
+    #
+    #  \param target
+    #    Filename path to be exported
     def ExportBuild(self, target):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method ExportBuild').format(self.GetName()))
         
         return (dbrerrno.SUCCESS, None)
     
     
-    ## TODO: Doxygen
+    ## Retrieves the page's field's data
+    #
+    #  \param getModule
+    #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+    #    & page data, otherwise return only page data string
     def Get(self, getModule=False):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
-    ## TODO: Doxygen
+    ## Retrieves the page's label
+    #
+    #  if wiz.wizard.WizardPage.Label is not set, returns the wiz.wizard.WizardPage.Name attribute
     def GetLabel(self):
         if self.Label == None:
             return self.GetName()
@@ -613,11 +685,13 @@ class WizardPage(ScrolledPanel):
     
     
     ## Retrieves all fields that cannot be left blank for build
-    #  
+    #
+    #  FIXME: Should only require page ID
+    #
     #  \param children
-    #        \b \e list|tuple : The controls to be checked
+    #    <b><i>List/Tuple</i></b> of the fields to be checked
     #  \return
-    #        \b \e tuple : List of controls marked as required
+    #    <b><i>Tuple</i></b> list of fields marked as required
     def GetRequiredFields(self, children=None):
         required_fields = []
         
@@ -639,12 +713,16 @@ class WizardPage(ScrolledPanel):
         return tuple(required_fields)
     
     
-    ## TODO: Doxygen
+    ## Reads & parses page data from a formatted text file
+    #
+    #  \param filename
+    #    File path to open
     def ImportFromFile(self, filename):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
     
     
-    ## This method should contain anything that needs to be initialized only after all pages are constructed
+    ## This method can be used to access page members that are only available
+    #  after the wizard has been completely initialized
     #
     #  FIXME: Rename to 'OnWizardInit'???
     def InitPage(self):
@@ -653,16 +731,20 @@ class WizardPage(ScrolledPanel):
         return False
     
     
-    ## TODO: Doxygen
+    ## Checks the page's fields for exporting
+    #
+    #  \return
+    #    <b><i>False</i></b> if page cannot be exported
     def IsOkay(self):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method IsOkay').format(self.GetName()))
         
         return False
     
     
-    ## Resets page fields to default settings
+    ## Resets page's fields to default settings
     #
-    #  Set the IgnoreResetIds attribute for any field that should not be reset
+    #  Set the wiz.wizard.WizardPage.IgnoreResetIds attribute for any field
+    #  that should not be reset
     def Reset(self):
         field_ids = (
             chkid,
