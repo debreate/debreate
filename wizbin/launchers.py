@@ -64,3 +64,9 @@ class Page(WizardPage):
     ## Updates tooltips for new tab
     def OnAddTab(self, event=None):
         SetPageToolTips(self)
+    
+    
+    ## FIXME: Not defined
+    def Set(self, data):
+        print(u'\nFIXME: Launchers.Set: Not defined')
+        print(u'Data:\n{}'.format(data))
