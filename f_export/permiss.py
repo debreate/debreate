@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package output.perm
+## \package f_export.permiss
 
 # MIT licensing
 # See: docs/LICENSE.txt
