@@ -106,7 +106,7 @@ def RequirePython(version):
 
 ## Checks if a string contains any alphabetic characters
 #  
-#  \param
+#  \param value
 #        \b \e unicode|str : String to check
 #  \return
 #        \b \e bool : Alphabet characters found
