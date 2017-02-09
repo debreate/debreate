@@ -512,6 +512,10 @@ help:
 	echo "\t\t- Build Doxygen HTML files in docs/doxygen"; \
 	echo "\t\t- Requires `tput bold`doxygen`tput sgr0` command (apt install doxygen)\n"; \
 	\
+	echo "\tlocale"; \
+	echo "\t\t- Build locale translations"; \
+	echo "\t\t- Requires `tput bold`gettext`tput sgr0` command\n"; \
+	\
 	echo "\tdeb-prep"; \
 	echo "\t\t- Prepares debian directory for build &"; \
 	echo "\t\t  distribution\n"; \
@@ -546,6 +550,9 @@ help:
 	\
 	echo "\tdoc-clean"; \
 	echo "\t\t- Delete Doxygen HTML files from docs/doxygen.\n"; \
+	\
+	echo "\tlocale-clean"; \
+	echo "\t\t- Clean compiled locale files from source\n"; \
 	\
 	echo "\tdeb-clean"; \
 	echo "\t\t- Delete files created by `tput bold`deb-bin`tput sgr0`\n"; \
