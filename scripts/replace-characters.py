@@ -9,7 +9,7 @@ import os, re, sys
 
 from scripts_globals import ConcatPaths
 from scripts_globals import lprint
-from scripts_globals import root_dir
+from scripts_globals import DIR_root
 
 
 # Regular expression patterns used to extract substrings
@@ -33,7 +33,7 @@ replacements = {
 TESTING = False
 
 if TESTING:
-    test_file = ConcatPaths(root_dir, 'test.py')
+    test_file = ConcatPaths(DIR_root, 'test.py')
     
     if not os.path.isfile(test_file):
         FILE_BUFFER = open(test_file, 'w')
@@ -56,7 +56,7 @@ def PerformSubstitution(filename, unbiased=False):
     if unbiased:
         print('\nWARNING: Using unbiased scan (will not check for string literals)\n')
     
-    F_relative = filename.replace('{}/'.format(root_dir), '')
+    F_relative = filename.replace('{}/'.format(DIR_root), '')
     
     if TESTING:
         # Only perform testing on 'test.py' file in root directory
@@ -176,19 +176,19 @@ exclude_dirs = (
 root_files = []
 root_dirs = []
 
-for OBJECT in sorted(os.listdir(root_dir)):
+for OBJECT in sorted(os.listdir(DIR_root)):
     if os.path.isfile(OBJECT) and OBJECT.endswith('.py'):
-        root_files.append(ConcatPaths(root_dir, OBJECT))
+        root_files.append(ConcatPaths(DIR_root, OBJECT))
         
         continue
     
     if os.path.isdir(OBJECT) and OBJECT not in exclude_dirs:
-        root_dirs.append(ConcatPaths(root_dir, OBJECT))
+        root_dirs.append(ConcatPaths(DIR_root, OBJECT))
 
 root_files = tuple(root_files)
 root_dirs = tuple(root_dirs)
 
-if root_files and root_dir not in exclude_dirs:
+if root_files and DIR_root not in exclude_dirs:
     for F in root_files:
         if os.path.isfile(F):
             PerformSubstitution(F)

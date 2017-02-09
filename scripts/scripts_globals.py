@@ -51,29 +51,29 @@ def ConcatPaths(pathList, tail=None):
     return '/'.join(pathList).replace('//', '/')
 
 
-scripts_dir = os.path.dirname(__file__)
-root_dir = os.path.dirname(scripts_dir)
+DIR_scripts = os.path.dirname(__file__)
+DIR_root = os.path.dirname(DIR_scripts)
 
-FILE_info = '{}/INFO'.format(root_dir)
+FILE_info = '{}/INFO'.format(DIR_root)
 
 if not os.path.isfile(FILE_info):
     print('[ERROR] Required file not found: {}'.format(FILE_info))
     sys.exit(errno.ENOENT)
 
-FILE_locale = '{}/locale/debreate.pot'.format(root_dir)
-PY_app = '{}/globals/application.py'.format(root_dir)
+FILE_locale = '{}/locale/debreate.pot'.format(DIR_root)
+PY_app = '{}/globals/application.py'.format(DIR_root)
 
-FILE_make = '{}/Makefile'.format(root_dir)
-FILE_changelog = '{}/docs/changelog'.format(root_dir)
+FILE_make = '{}/Makefile'.format(DIR_root)
+FILE_changelog = '{}/docs/changelog'.format(DIR_root)
 FILE_changelog_debian = 'debian/changelog'
 
-f_opened = open(FILE_info)
-data_INFO = f_opened.read().split('\n')
-f_opened.close()
+FILE_BUFFER = open(FILE_info)
+INFO_data = FILE_BUFFER.read().split('\n')
+FILE_BUFFER.close()
 
-keys_INFO = {}
+INFO_keys = {}
 
-for L in data_INFO:
+for L in INFO_data:
     if len(L):
         # Skip lines that begin with hashtag or whitespace
         if L[0] not in ('#', ' '):
@@ -82,11 +82,11 @@ for L in data_INFO:
                 value = key[1]
                 key = key[0].upper()
                 
-                keys_INFO[key] = value
+                INFO_keys[key] = value
 
 
 def GetInfoValue(key):
-    return keys_INFO[key.upper()]
+    return INFO_keys[key.upper()]
 
 
 required_locale_files = (
