@@ -1,7 +1,8 @@
 #! /usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 
-## Script to set configurations and launch Debreate
+## \page init.py Initialization Script
+#  Script to set configurations and launch Debreate
 #  
 #  Checks if the config file exists in ~/.config/debreate. If
 #  not, a new file will be created (~/.config/debreate/config).
