@@ -23,13 +23,15 @@ MIMEICONSDIR = $(ICONTHEME)/scalable/mimetypes
 SUBDIRS = \
 	data
 
-INSTALL_DATA = install -vm 0644
-INSTALL_EXEC = install -vm 0755
+PERM_DATA = 0644
+PERM_EXEC = 0755
+
+INSTALL_DATA = install -vm ${PERM_DATA}
+INSTALL_EXEC = install -vm ${PERM_EXEC}
 INSTALL_FOLDER = cp -vR
 MKDIR = mkdir -vp
 UNINSTALL = rm -vf
 UNINSTALL_FOLDER = rmdir -v --ignore-fail-on-non-empty
-
 
 FILES_executable = \
 	init.py
@@ -386,7 +388,7 @@ deb-prep: $(CHANGELOG) $(TEMPLATES_scripts)
 		cp -vf "data/$${name}.in" "debian/$${name}"; \
 		echo "Modifying script debian/$${name} ..."; \
 		sed -i -e "s|<prefix>|$(prefix)|" "debian/$${name}"; \
-		chmod -v 0755 "debian/$${name}"; \
+		chmod -v ${PERM_EXEC} "debian/$${name}"; \
 	done; \
 
 debianize: dist
