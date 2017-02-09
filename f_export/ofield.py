@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package output.field
+## \package f_export.ofield
 
 # MIT licensing
 # See: docs/LICENSE.txt
