@@ -33,11 +33,22 @@ def lprint(message, line=None):
     print(message)
 
 
-def ConcatPaths(root, tail):
-    if not root:
-        return tail.replace('//', '/')
+def ConcatPaths(pathList, tail=None):
+    if not isinstance(pathList, (list, tuple)):
+        root = pathList
+        if not tail:
+            # Return cleaned up root without any concatenation
+            return root.rstrip('/').replace('//', '/')
+        
+        # Join tail arguments
+        tail = '/'.join(tail).strip('/').replace('//', '/')
+        
+        if not root:
+            return tail
+        
+        return '{}/{}'.format(root, tail).replace('//', '/')
     
-    return '{}/{}'.format(root, tail).replace('//', '/')
+    return '/'.join(pathList).replace('//', '/')
 
 
 scripts_dir = os.path.dirname(__file__)
