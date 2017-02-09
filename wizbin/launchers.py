@@ -26,7 +26,7 @@ class Page(WizardPage):
         WizardPage.__init__(self, parent, pgid.LAUNCHERS)
         
         ## Override default label
-        self.label = GT(u'Menu Launchers')
+        self.Label = GT(u'Menu Launchers')
         
         self.IgnoreResetIds = [
             inputid.OTHER,

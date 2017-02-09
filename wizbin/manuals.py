@@ -33,7 +33,7 @@ class Page(WizardPage):
         WizardPage.__init__(self, parent, pgid.MAN)
         
         ## Override default label
-        self.label = GT(u'Manual Pages')
+        self.Label = GT(u'Manual Pages')
         
         self.Tabs = MultiTemplate(self, ManPage)
         
