@@ -51,6 +51,18 @@ FILES_root = \
 	command_line.py \
 	main.py
 
+PACKAGES = \
+	wizbin \
+	wizsrc \
+	dbr \
+	f_export \
+	fields \
+	globals \
+	input \
+	startup \
+	system \
+	ui
+
 PKG_wizbin = wiz_bin/*.py
 PKG_wizsrc = wiz_src/*.py
 
@@ -106,16 +118,12 @@ DIRS_dist = \
 	$(DIR_bitmaps) \
 	$(DIR_locale) \
 	$(DIR_templates) \
-	bitmaps \
+	$(PACKAGES) \
 	data \
-	dbr \
 	debian \
 	docs \
-	globals \
 	man \
-	scripts \
-	wiz_bin \
-	wiz_src
+	scripts
 
 PACKAGE_dist = $(PACKAGE)_$(VERSION).tar.xz
 
