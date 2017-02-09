@@ -94,14 +94,18 @@ FILES_dist = \
 	README.md \
 	setup.py
 
+
+DIR_bitmaps = bitmaps
 DIR_locale = locale
+DIR_templates = templates
 
 DIRS_build = \
 	templates
 
 DIRS_dist = \
-	$(DIRS_build) \
+	$(DIR_bitmaps) \
 	$(DIR_locale) \
+	$(DIR_templates) \
 	bitmaps \
 	data \
 	dbr \
