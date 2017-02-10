@@ -375,7 +375,7 @@ class Wizard(wx.Panel):
                         page.ImportFromFile(u'{}/{}'.format(PATH, F))
     
     
-    ## Initializes wizard by displaying an intial page
+    ## Initializes wizard by displaying an initial page
     #
     #  \param showPage
     #    <b><i>Integer</i></b> index of page to be shown
@@ -439,8 +439,7 @@ class Wizard(wx.Panel):
         self.Layout()
         
         # Remove from page menu
-        # FIXME: Use 'GetMenu' function
-        GetMainWindow().GetMenuBar().GetMenuById(menuid.PAGE).Remove(pageId).Destroy()
+        GetMenu(menuid.PAGE).Remove(pageId).Destroy()
     
     
     ## Resets all but greeting page
@@ -503,6 +502,7 @@ class Wizard(wx.Panel):
     #
     #  \param pages
     #    List of pages owned by wizard to be used
+    #  \deprecated
     def SetPages(self, pages):
         self.ID_FIRST = pages[0].GetId()
         self.ID_LAST = pages[-1].GetId()
