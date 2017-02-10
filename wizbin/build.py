@@ -102,7 +102,7 @@ class Page(WizardPage):
             btn_lint_overrides = CreateButton(self, GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
-        btn_build = CreateButton(self, GT(u'Build'), u'build', btnid.BUILD, 64)
+        btn_build = CreateButton(self, GT(u'Build'), btnid.BUILD, u'build', 64)
         
         # Display log
         dsp_log = OutputLog(self)

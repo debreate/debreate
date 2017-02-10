@@ -543,19 +543,19 @@ def ReplaceStandardButtons(dialog):
 #    \b \e wx.Window parent instance
 #  \param label
 #    Text to be shown on button or tooltip
+#  \param btnId
+#    Object ID
 #  \param image
 #    Base name of image file to use for custom buttons (uses standard button if set to 'None')
 #  \param size
 #    Image size to use for button
-#  \param btnId
-#    Object ID
 #  \param tooltip
 #    Text to display when cursor hovers over button
 #  \param name
 #    Name attribute
 #  \return
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
-def CreateButton(parent, label, image=None, btnId=wx.ID_ANY, size=32, tooltip=None, name=None,
+def CreateButton(parent, label, btnId=wx.ID_ANY, image=None, size=32, tooltip=None, name=None,
             commands=None, requireAll=False):
     
     if image:
