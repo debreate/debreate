@@ -50,9 +50,9 @@ class Page(WizardPage):
         self.prebuild_check = False
         
         # Buttons to open, save, & preview control file
-        self.btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
-        self.btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
-        self.btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
+        self.btn_open = CreateButton(self, GT(u'Browse'), btnid.BROWSE, u'browse', name=u'btn browse')
+        self.btn_save = CreateButton(self, GT(u'Save'), btnid.SAVE, u'save', name=u'btn save')
+        self.btn_preview = CreateButton(self, GT(u'Preview'), btnid.PREVIEW, u'preview', name=u'btn preview')
         
         txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
         txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')

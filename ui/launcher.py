@@ -55,9 +55,9 @@ class LauncherTemplate(ScrolledPanel):
         ScrolledPanel.__init__(self, parent, win_id, name=name)
         
         # --- Buttons to open/preview/save .desktop file
-        btn_open = CreateButton(self, GT(u'Browse'), u'browse', btnid.BROWSE, name=u'btn browse')
-        btn_save = CreateButton(self, GT(u'Save'), u'save', btnid.SAVE, name=u'btn save')
-        btn_preview = CreateButton(self, GT(u'Preview'), u'preview', btnid.PREVIEW, name=u'btn preview')
+        btn_open = CreateButton(self, GT(u'Browse'), btnid.BROWSE, u'browse', name=u'btn browse')
+        btn_save = CreateButton(self, GT(u'Save'), btnid.SAVE, u'save', name=u'btn save')
+        btn_preview = CreateButton(self, GT(u'Preview'), btnid.PREVIEW, u'preview', name=u'btn preview')
         
         # --- TYPE
         opts_type = (u'Application', u'Link', u'Directory',)
@@ -107,8 +107,8 @@ class LauncherTemplate(ScrolledPanel):
         
         # ----- OTHER/CUSTOM
         txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
-        btn_other = CreateButton(self, u'Other', u'add', name=u'btn other')
-        btn_rm_other = CreateButton(self, u'Remove Other', u'remove', btnid.REMOVE,
+        btn_other = CreateButton(self, u'Other', image=u'add', name=u'btn other')
+        btn_rm_other = CreateButton(self, u'Remove Other', btnid.REMOVE, u'remove',
                 name=u'btn rm other')
         pnl_other = SectionedPanel(self, inputid.OTHER)
         
@@ -144,7 +144,7 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
-        btn_catclr = CreateButton(self, GT(u'Clear'), u'clear', btnid.CLEAR, name=u'clear category')
+        btn_catclr = CreateButton(self, GT(u'Clear'), btnid.CLEAR, u'clear', name=u'clear category')
         lst_categories = CheckList(self, listid.CAT, opts_category, name=u'Categories')
         
         if not lst_categories.HasSelected():
