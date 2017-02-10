@@ -39,7 +39,6 @@ class CheckBox(wx.CheckBox, CommandField):
     #  
     #  Differences from inherited method:
     #  - Always returns False if the object is disabled
-    #  \override wx.CheckBox.GetValue
     def GetValue(self):
         if not FieldEnabled(self):
             return False

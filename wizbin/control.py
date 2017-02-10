@@ -428,7 +428,6 @@ class Page(WizardPage):
     #
     #  \param filename
     #    File path to open
-    #  \override wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         

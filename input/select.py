@@ -29,7 +29,6 @@ class Choice(wx.Choice, InputField):
     #  
     #  \param items
     #    List of items to be set
-    #  \override wx.Choice.Set
     def Set(self, items):
         cached_value = self.GetStringSelection()
         

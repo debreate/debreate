@@ -27,8 +27,7 @@ class MenuBar(wx.MenuBar):
     
     
     ## Append a menu to the end of menu bar
-    #  
-    #  \override wx.MenuBar.Append
+    #
     #  \param menu
     #    \b \e wx.Menu : Menu to be appended
     #  \param title
@@ -42,7 +41,7 @@ class MenuBar(wx.MenuBar):
     
     
     ## Finds a wx.Menu by ID
-    #  
+    #
     #  \param ID
     #    \b \e int : ID to search for in menu bar
     #  \return
@@ -54,8 +53,7 @@ class MenuBar(wx.MenuBar):
     
     
     ## Insert a menu to a specified position in the menu bar
-    #  
-    #  \override wx.MenuBar.Insert
+    #
     #  \param index
     #    \b \e int : Position index to insert menu
     #  \param menu

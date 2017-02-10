@@ -262,8 +262,7 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## Override inherited method to return custom PathItem instances
-    #  
-    #  \override wx.TreeCtrl.AddRoot
+    #
     #  \param label
     #    \b \e string : Text shown on item
     #  \param path
@@ -569,8 +568,6 @@ class DirectoryTree(wx.TreeCtrl):
     
     
     ## Get selected item
-    #  
-    #  \override wx.TreeCtrl.GetSelection
     def GetSelection(self):
         # wx 3.0 does not allow use of GetSelection with TR_MULTIPLE flag
         if wx.MAJOR_VERSION <= 2:
