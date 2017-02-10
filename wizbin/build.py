@@ -104,7 +104,7 @@ class Page(WizardPage):
         
         # Deletes the temporary build tree
         self.chk_rmstage = CheckBoxESS(pnl_options, chkid.DELETE, GT(u'Delete staged directory'),
-                name =u'RMSTAGE', defaultValue=True)
+                name=u'RMSTAGE', defaultValue=True)
         self.chk_rmstage.col = 0
         
         # Checks the output .deb for errors
@@ -881,6 +881,7 @@ class Page(WizardPage):
                 (u'postinst', pg_scripts.chk_postinst),
                 (u'prerm', pg_scripts.chk_prerm),
                 (u'postrm', pg_scripts.chk_postrm))
+            
             for script in scripts:
                 if script[1].IsChecked():
                     scripts_to_make.append(script[0])
