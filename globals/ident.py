@@ -332,9 +332,9 @@ class MenuId(FieldId):
         self.COMPRESS = self.NewId()
         self.DEBUG = self.NewId()
         self.DIST = self.NewId()
-        self.EXIT = self.AddStaticId(wx.ID_EXIT)
+        self.EXIT = btnid.EXIT
         self.FILE = self.AddStaticId(wx.ID_FILE)
-        self.HELP = self.AddStaticId(wx.ID_HELP)
+        self.HELP = btnid.HELP
         self.LOG = self.NewId()
         self.NEW = self.AddStaticId(wx.ID_NEW)
         self.OPEN = self.AddStaticId(wx.ID_OPEN)
@@ -342,7 +342,7 @@ class MenuId(FieldId):
         self.OPTIONS = self.NewId()
         self.PAGE = self.NewId()
         self.QBUILD = self.NewId()
-        self.SAVE = self.AddStaticId(wx.ID_SAVE)
+        self.SAVE = btnid.SAVE
         self.SAVEAS = self.AddStaticId(wx.ID_SAVEAS)
         self.THEME = self.NewId()
         self.TOOLTIPS = self.NewId()
