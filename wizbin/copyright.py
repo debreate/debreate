@@ -129,7 +129,7 @@ class Page(WizardPage):
         return True
     
     
-    ## \copydoc wiz.wizard.WizardPage.ExportBuild
+    ## \see wiz.wizard.WizardPage.ExportBuild
     def ExportBuild(self, stage):
         stage = u'{}/usr/share/doc/{}'.format(stage, GetPage(pgid.CONTROL).GetPackageName()).replace(u'//', u'/')
         
@@ -141,7 +141,6 @@ class Page(WizardPage):
     
     ## Retrieves copyright/license text
     #
-    #  \copydoc wiz.wizard.WizardPage.Get
     #  \return
     #    <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
     def Get(self, getModule=False):
@@ -177,8 +176,6 @@ class Page(WizardPage):
     
     
     ## Sets page's fields from opened file
-    #
-    #  \copydoc wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -204,8 +201,6 @@ class Page(WizardPage):
     
     
     ## Checks if page can be exported or or added to build
-    #
-    #  \copydoc wiz.wizard.WizardPage.IsOkay
     def IsOkay(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
