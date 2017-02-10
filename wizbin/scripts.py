@@ -305,9 +305,12 @@ class Page(WizardPage):
             self.Executables.RemoveSelected()
     
     
-    ## TODO: Doxygen
+    ## Reads & parses page data from a formatted text file
     #
     #  FIXME: Should be done in DebianScript class method???
+    #
+    #  \param filename
+    #    File path to open
     def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
         
@@ -321,11 +324,15 @@ class Page(WizardPage):
                 break
         
         # Loading the actual text
+        # FIXME: Should be done in class method
         if script_object != None:
             script_object.SetValue(ReadFile(filename))
     
     
     ## Checks if one or more scripts can be exported
+    #
+    #  \return
+    #    <b><i>True</i></b> if page is ready for export
     def IsOkay(self):
         for chk in self.script_objects:
             chk = chk[0]
@@ -412,7 +419,7 @@ class Page(WizardPage):
                     text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
     
     
-    ## TODO: Doxygen
+    ## Displays an information dialog about Auto-Link when help button is pressed
     def OnHelpButton(self, event=None):
         al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'))
         description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
@@ -446,7 +453,7 @@ class Page(WizardPage):
         self.Executables.Reset()
     
     
-    ## TODO: Doxygen
+    ## Changes current displayed script
     def ScriptSelect(self, event=None):
         for DS, CHK, RB in self.script_objects:
             if RB.GetValue():
@@ -460,7 +467,10 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## TODO: Doxygen
+    ## Sets the page's fields
+    #
+    #  \param data
+    #    Text to parse for field values
     def Set(self, data):
         chk_preinst = self.script_objects[0][1]
         chk_postinst = self.script_objects[1][1]
@@ -515,6 +525,12 @@ class Page(WizardPage):
 #    'Pre Install', 'Pre Remove/Uninstall',
 #    'Post Install', & 'Post Remove/Uninstall'.
 class DebianScript(wx.Panel):
+    ## Constructor
+    #
+    #  \param parent
+    #    The <b><i>wx.Window</i></b> parent instance
+    #  \param scriptId
+    #    Unique <b><i>integer</i></b> identifier for script
     def __init__(self, parent, scriptId):
         wx.Panel.__init__(self, parent, scriptId)
         
@@ -552,22 +568,22 @@ class DebianScript(wx.Panel):
     
     
     ## Retrieves the filename to use for exporting
-    #  
+    #
     #  \return
-    #        \b \e str : Script filename
+    #    Script filename
     def GetFilename(self):
         return self.FileName
     
     
     ## Retrieves the script's name for display
-    #  
+    #
     #  \return
-    #        \b \e str : String representation of script's name
+    #    <b><i>String</i></b> representation of script's name
     def GetName(self):
         return self.ScriptName
     
     
-    ## TODO: Doxygen
+    ## Retrieves the text body of the script
     def GetValue(self):
         return self.ScriptBody.GetValue()
     
@@ -577,12 +593,13 @@ class DebianScript(wx.Panel):
         return FieldEnabled(self.ScriptBody)
     
     
-    ## Retrieves whether or not the script is used & should be exported
-    #  
+    ## Checks if the script is used & can be exported
+    #
     #  The text area is checked &, if not empty, signifies that
-    #    the user want to export the script.
+    #  the user want to export the script.
+    #
     #  \return
-    #        \b \e bool : 'True' if text area is not empty, 'False' otherwise
+    #    <b><i>True</i></b> if text area is not empty, <b><i>False</i></b> otherwise
     def IsOkay(self):
         return not TextIsEmpty(self.ScriptBody.GetValue())
     
@@ -593,10 +610,10 @@ class DebianScript(wx.Panel):
     
     
     ## Sets the name of the script to be displayed
-    #  
+    #
     #  Sets the displayed script name to a value of either 'Pre Install',
-    #    'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.FileName'
-    #    is used to determine the displayed name.
+    #  'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.FileName'
+    #  is used to determine the displayed name.
     #  TODO: Add strings to GetText translations
     def SetScriptName(self):
         prefix = None
@@ -621,8 +638,8 @@ class DebianScript(wx.Panel):
     
     
     ## Fills the script
-    #  
+    #
     #  \param value
-    #    Text to be displayed
+    #    Text to be entered into the script body
     def SetValue(self, value):
         self.ScriptBody.SetValue(value)
