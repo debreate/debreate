@@ -93,10 +93,14 @@ class FieldId:
     
     
     ## Adds a predetermined ID to ID list
-    def AddStaticId(self, static_id):
-        self.IdList.append(static_id)
+    #
+    #  \param staticId
+    #    <b><i>integer</i></b>:
+    #      Predefined ID to set
+    def AddStaticId(self, staticId):
+        self.IdList.append(staticId)
         
-        return static_id
+        return staticId
     
     
     ## Add a new ID
