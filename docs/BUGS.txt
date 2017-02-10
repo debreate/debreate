@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Release:
+- Executables fail to import to scripts page
 - md5sum produces different hash for binary files than debuild
 - Lintian reports:
   - no-section-field
