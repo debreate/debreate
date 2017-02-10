@@ -185,19 +185,23 @@ class Page(WizardPage):
     ## Add a category & dependency to end of list
     #  
     #  \param category
-    #        \b \e unicode|str : Category label
+    #    Category label
     #  \param value
-    #        \b \e unicode|str : Dependency value
+    #    Dependency value
     def AppendDependency(self, category, value):
         self.lst_deps.AppendStringItem((category, value))
     
     
-    ## TODO: Doxygen
+    ## Retrieves the default category to use
     def GetDefaultCategory(self):
         return self.DefaultCategory
     
     
-    ## TODO: Doxygen
+    ## Reads & parses page data from a formatted text file
+    #
+    #  \param filename
+    #    File path to open
+    #  \see wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, d_type, d_string):
         Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
         
@@ -208,7 +212,7 @@ class Page(WizardPage):
             self.lst_deps.SetStringItem(0, 1, V)
     
     
-    ## TODO: Doxygen
+    ## \see wiz.wizard.WizardPage.InitPage
     def InitPage(self):
         control_page = GetPage(pgid.CONTROL)
         self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
@@ -231,7 +235,7 @@ class Page(WizardPage):
         self.lst_deps.DeleteAllItems()
     
     
-    ## TODO: Doxygen
+    ## Adds/Appends/Removes dependency to list
     def SetDepends(self, event=None):
         try:
             key_id = event.GetKeyCode()
@@ -304,7 +308,10 @@ class Page(WizardPage):
             event.Skip()
     
     
-    ## TODO: Doxygen
+    ## Sets the page's fields data
+    #
+    #  \param data
+    #    Text to parse for field values
     def Set(self, data):
         self.lst_deps.DeleteAllItems()
         for item in data:
