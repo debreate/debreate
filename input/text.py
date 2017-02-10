@@ -353,7 +353,6 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
     
     ## Sets the font size of the text in the text area
     #  
-    #  \override ui.textinput.MultilineTextCtrl.SetFontSize
     def SetFontSize(self, point_size):
         self.MainCtrl.SetFontSize(point_size)
     

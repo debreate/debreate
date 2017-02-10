@@ -31,8 +31,7 @@ class MenuBar(wx.MenuBar):
     
     
     ## Append a menu to the end of menu bar
-    #  
-    #  \override wx.MenuBar.Append
+    #
     #  \param menu
     #    \b \e wx.Menu : Menu to be appended
     #  \param title
@@ -46,7 +45,7 @@ class MenuBar(wx.MenuBar):
     
     
     ## Finds a wx.Menu by ID
-    #  
+    #
     #  \param ID
     #    \b \e int : ID to search for in menu bar
     #  \return
@@ -58,8 +57,7 @@ class MenuBar(wx.MenuBar):
     
     
     ## Insert a menu to a specified position in the menu bar
-    #  
-    #  \override wx.MenuBar.Insert
+    #
     #  \param index
     #    \b \e int : Position index to insert menu
     #  \param menu
@@ -164,7 +162,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Create a PanelMenu instance & add it to menu bar
-    #  
+    #
     #  \param label
     #    Text displayed for menu
     #  \param win_id
@@ -175,7 +173,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Add a PanelMenu instance to menu bar
-    #  
+    #
     #  \param menu
     #    \b \e PanelMenu instance to be added
     #  \param label
@@ -204,7 +202,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Find a menu within the menu bar that matches a given ID
-    #  
+    #
     #  \param win_id
     #    \b \e Integer ID to scan for
     #  \return
@@ -216,7 +214,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Find a menu within the menu bar at given index
-    #  
+    #
     #  \param index
     #    Index of item to return
     #  \return
@@ -226,7 +224,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Find a menu within the menu bar that matches a given label
-    #  
+    #
     #  \param label
     #    \b \e String label to scan for
     #  \return
@@ -237,7 +235,7 @@ class PanelMenuBar(BorderedPanel):
                 return M
     
     
-    ## Find the index withint the menu bar of a give item
+    ## Find the index within the menu bar of a give item
     def GetMenuIndex(self, menu):
         if menu == None:
             return None
@@ -255,7 +253,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Retrieves a standard list of all menus in menu bar
-    #  
+    #
     #  FIXME: Need a failsafe for non-PanelMenu objects???
     #  \return
     #    \b \e Tuple list of found menus
@@ -273,7 +271,7 @@ class PanelMenuBar(BorderedPanel):
     
     
     ## Action to take when menu is selected
-    #  
+    #
     #  FIXME: Needs to find the menu item that was selected
     def OnSelect(self, event=None):
         if event:

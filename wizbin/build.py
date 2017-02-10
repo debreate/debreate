@@ -464,8 +464,6 @@ class Page(WizardPage):
     
     
     ## Retrieves page data from fields
-    #
-    #  \override wiz.wizard.WizardPage.Get
     def Get(self, getModule=False):
         # 'install after build' is not exported to project for safety
         
@@ -498,8 +496,6 @@ class Page(WizardPage):
     
     
     ## Reads & parses page data from a formatted text file
-    #
-    #  \override wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -844,8 +840,6 @@ class Page(WizardPage):
     
     
     ## Resets page's fields to default settings
-    #
-    #  \override wiz.wizard.WizardPage.Reset
     def Reset(self):
         for O in self.build_options:
             O.SetValue(O.Default)
