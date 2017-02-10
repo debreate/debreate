@@ -114,7 +114,10 @@ class Page(WizardPage):
         self.Layout()
     
     
-    ## TODO: Doxygen
+    ## Displays a confirmation dialog to clear the text area if it is not empty
+    #
+    #  \return
+    #    <b><i>True</i></b>, if user confirmed
     def DestroyLicenseText(self):
         if not TextIsEmpty(self.dsp_copyright.GetValue()):
             warn_msg = GT(u'This will destroy all license text.')
@@ -126,7 +129,7 @@ class Page(WizardPage):
         return True
     
     
-    ## TODO: Doxygen
+    ## \copydoc wiz.wizard.WizardPage.ExportBuild
     def ExportBuild(self, stage):
         stage = u'{}/usr/share/doc/{}'.format(stage, GetPage(pgid.CONTROL).GetPackageName()).replace(u'//', u'/')
         
@@ -137,9 +140,10 @@ class Page(WizardPage):
     
     
     ## Retrieves copyright/license text
-    #  
+    #
+    #  \copydoc wiz.wizard.WizardPage.Get
     #  \return
-    #        \b \e tuple(str, str) : Filename & copyright/license text
+    #    <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
     def Get(self, getModule=False):
         page = self.dsp_copyright.GetValue()
         
@@ -173,6 +177,8 @@ class Page(WizardPage):
     
     
     ## Sets page's fields from opened file
+    #
+    #  \copydoc wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -198,6 +204,8 @@ class Page(WizardPage):
     
     
     ## Checks if page can be exported or or added to build
+    #
+    #  \copydoc wiz.wizard.WizardPage.IsOkay
     def IsOkay(self):
         return not TextIsEmpty(self.dsp_copyright.GetValue())
     
@@ -281,7 +289,7 @@ class Page(WizardPage):
             self.SetLicenseTooltip()
     
     
-    ## TODO: Doxygen
+    ## Generates a full license template
     def OnTemplateFull(self, event=None):
         selected_template = self.sel_templates.GetStringSelection()
         template_file = self.GetLicensePath(selected_template)
@@ -365,7 +373,7 @@ class Page(WizardPage):
         self.dsp_copyright.SetFocus()
     
     
-    ## TODO: Doxygen
+    ## Generates a short reference template for a system license
     def OnTemplateShort(self, event=None):
         if self.DestroyLicenseText():
             self.dsp_copyright.Clear()
@@ -388,6 +396,9 @@ class Page(WizardPage):
     
     
     ## Sets the text of the displayed copyright
+    #
+    #  \param data
+    #    Text to parse for field values
     def Set(self, data):
         self.dsp_copyright.SetValue(data)
     
