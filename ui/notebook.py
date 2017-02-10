@@ -94,7 +94,6 @@ class Notebook(AuiNotebook):
     #
     #  This is overridden to add functionality to older wx versions
     #
-    #  \override wx.aui.AuiNotebook.DeleteAllPages
     def DeleteAllPages(self):
         if wx.MAJOR_VERSION > 2:
             return AuiNotebook.DeleteAllPages(self)

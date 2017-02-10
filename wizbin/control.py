@@ -319,7 +319,6 @@ class Page(WizardPage):
     #  \return
     #    A <b><i>tuple</i></b> containing the filename & a string representation
     #    of control file formatted for text output
-    #  \override wiz.wizard.WizardPage.Get
     def Get(self, getModule=False):
         page = self.GetCtrlInfo()
         
@@ -478,7 +477,6 @@ class Page(WizardPage):
     #
     #  \param filename
     #    File path to open
-    #  \override wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing file: {}'.format(filename)))
         
@@ -499,8 +497,6 @@ class Page(WizardPage):
     
     
     ## Tells the build script whether page should be built
-    #
-    #  \override wiz.wizard.WizardPage.IsOkay
     def IsOkay(self):
         # Build page must always be built
         return True
@@ -546,8 +542,6 @@ class Page(WizardPage):
     
     
     ## Resets all fields on page to default values
-    #
-    #  \override wiz.wizard.WizardPage.Reset
     def Reset(self):
         for I in self.grp_input:
             # Calling 'Clear' on ComboBox removes all options

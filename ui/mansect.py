@@ -368,8 +368,6 @@ class ManSection(ManSectBase):
     
     
     ## Retrieve the main sizer object
-    #  
-    #  \override ui.mansect.ManSectBase.GetObject
     def GetObject(self, section_name=None, multiline=False, static=False, expand=False,
                 removable=False):
         if static:

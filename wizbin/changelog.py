@@ -216,7 +216,6 @@ class Page(WizardPage):
     #    Filename of output file
     #  \compress
     #    If <b><i>True</i></b>, compresses file with gzip
-    #  \override wiz.wizard.WizardPage.Export
     def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
         ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
         
@@ -268,7 +267,6 @@ class Page(WizardPage):
     #    & page data, otherwise return only page data string
     #  \return
     #    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
-    #  \override wiz.wizard.WizardPage.Get
     def Get(self, getModule=False):
         target = self.pnl_target.GetPath()
         
@@ -301,7 +299,6 @@ class Page(WizardPage):
     #
     #  \param filename
     #    File path to open
-    #  \override wiz.wizard.WizardPage.ImportFromFile
     def ImportFromFile(self, filename):
         if not os.path.isfile(filename):
             return dbrerrno.ENOENT
@@ -367,7 +364,6 @@ class Page(WizardPage):
     #
     #  \return
     #    <b><i>False</i></b> if page cannot be exported
-    #  \override wiz.wizard.WizardPage.IsOkay
     def IsOkay(self):
         return not TextIsEmpty(self.dsp_changes.GetValue())
     

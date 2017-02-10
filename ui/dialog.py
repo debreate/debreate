@@ -64,7 +64,6 @@ class BaseDialog(wx.Dialog):
     
     ## Centers on parent then shows dialog in modal form
     #  
-    #  \override wx.Dialog.ShowModal
     def ShowModal(self):
         if self.GetParent():
             self.CenterOnParent()

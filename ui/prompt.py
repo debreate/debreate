@@ -53,7 +53,6 @@ class TextEntryDialog(wx.TextEntryDialog):
     
     ## Ends a modal dialog, passing a value to be returned from the wxDialog::ShowModal invocation
     #  
-    #  \override wx.TextEntryDialog.EndModal
     def EndModal(self, retCode):
         self.StoreValue()
         self.StoreInsertionPoint()
@@ -153,7 +152,6 @@ class TextEntryDialog(wx.TextEntryDialog):
     #  
     #  Differences from inherited method:
     #  - Replaces insertion point & sets focus back on text area
-    #  \override wx.TextEntryDialog.ShowModal
     def ShowModal(self):
         if self.stored_value:
             self.RestoreValue()
