@@ -627,6 +627,8 @@ class WizardPage(ScrolledPanel):
     
     
     ## FIXME: Deprecated
+    #
+    #  \deprecated
     def ExportDeprecated(self, outDir, outName=wx.EmptyString):
         if not os.path.isdir(outDir):
             Logger.Debug(__name__, u'Directory does not exist: {}'.format(outDir))
