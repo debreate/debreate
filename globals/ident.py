@@ -109,19 +109,54 @@ class FieldId:
 
 
 ## Page IDs
-class pgid:
-    IdList = []
+class PageId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.Labels = {}
+        
+        self.GREETING = self.NewId(GT(u'Greeting'))
+        self.CONTROL = self.NewId(GT(u'Control'))
+        self.DEPENDS = self.NewId(GT(u'Depends'))
+        self.FILES = self.NewId(GT(u'Files'))
+        self.MAN = self.NewId(GT(u'Man'))
+        self.SCRIPTS = self.NewId(GT(u'Scripts'))
+        self.CHANGELOG = self.NewId(GT(u'Changelog'))
+        self.COPYRIGHT = self.NewId(GT(u'Copyright'))
+        self.LAUNCHERS = self.NewId(GT(u'Menu'))
+        self.BUILD = self.NewId(GT(u'Build'))
     
-    GREETING = NewPageId(GT(u'Greeting'), IdList)
-    CONTROL = NewPageId(GT(u'Control'), IdList)
-    DEPENDS = NewPageId(GT(u'Depends'), IdList)
-    FILES = NewPageId(GT(u'Files'), IdList)
-    MAN = NewPageId(GT(u'Man'), IdList)
-    SCRIPTS = NewPageId(GT(u'Scripts'), IdList)
-    CHANGELOG = NewPageId(GT(u'Changelog'), IdList)
-    COPYRIGHT = NewPageId(GT(u'Copyright'), IdList)
-    LAUNCHERS = NewPageId(GT(u'Menu'), IdList)
-    BUILD = NewPageId(GT(u'Build'), IdList)
+    
+    ## Adds a predetermined ID to ID list & text label to label list
+    #
+    #  \param staticId
+    #    <b><i>integer</i></b>:
+    #      Predefined ID to set
+    #  \param label
+    #    <b><i>string</i></b>
+    #      Page label/title
+    def AddStaticId(self, staticId, label):
+        new_id = FieldId.AddStaticId(self, staticId)
+        
+        self.Labels[new_id] = label
+        
+        return new_id
+    
+    
+    ## Add a new ID & text label to label list
+    #
+    #  param label
+    #    <b><i>string</i></b>:
+    #      Page label/title
+    def NewId(self, label):
+        #new_id = FieldId.NewId(self)
+        new_id = NewPageId(label, self.IdList)
+        
+        self.Labels[new_id] = label
+        
+        return new_id
+
+pgid = PageId()
 
 
 # *** Compression format IDs *** #
