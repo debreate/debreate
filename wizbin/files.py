@@ -405,7 +405,6 @@ class Page(WizardPage):
     #
     #  \param filename
     #    Absolute path of formatted text file to read
-    #  \override ui.wizard.Wizard.ImportFromFile
     def ImportFromFile(self, filename):
         Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
         
