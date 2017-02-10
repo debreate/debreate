@@ -27,31 +27,31 @@ from ui.style           import layout as lyt
 
 ## Standard button that inherits CommandField
 class Button(wx.Button, CommandField):
-    def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
+    def __init__(self, parent, btnId=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=0, name=wx.ButtonNameStr, commands=None, requireAll=False):
         
-        wx.Button.__init__(self, parent, win_id, label, pos, size, style, name=name)
+        wx.Button.__init__(self, parent, btnId, label, pos, size, style, name=name)
         CommandField.__init__(self, commands, requireAll)
 
 
 ## The same as wx.BitmapButton but defaults to style=wx.NO_BORDER
 class CustomButton(wx.BitmapButton, CommandField):
-    def __init__(self, parent, bitmap, btn_id=wx.ID_ANY, pos=wx.DefaultPosition,
+    def __init__(self, parent, bitmap, btnId=wx.ID_ANY, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.NO_BORDER, validator=wx.DefaultValidator,
             name=wx.ButtonNameStr, commands=None, requireAll=False):
         
         if not isinstance(bitmap, wx.Bitmap):
             bitmap = wx.Bitmap(bitmap)
         
-        wx.BitmapButton.__init__(self, parent, btn_id, bitmap, pos, size, style|wx.NO_BORDER,
+        wx.BitmapButton.__init__(self, parent, btnId, bitmap, pos, size, style|wx.NO_BORDER,
                 validator, name)
         CommandField.__init__(self, commands, requireAll)
 
 
 ## TODO: Doxygen
 class ButtonAdd(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_ADD, name=u'btn add'):
-        CustomButton.__init__(self, parent, GetBitmap(u'add', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_ADD, name=u'btn add'):
+        CustomButton.__init__(self, parent, GetBitmap(u'add', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Add')))
@@ -59,8 +59,8 @@ class ButtonAdd(CustomButton):
 
 ## TODO: Doxygen
 class ButtonAppend(CustomButton):
-    def __init__(self, parent, btn_id=genid.APPEND, name=u'btn append'):
-        CustomButton.__init__(self, parent, GetBitmap(u'append', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=genid.APPEND, name=u'btn append'):
+        CustomButton.__init__(self, parent, GetBitmap(u'append', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Append')))
@@ -68,8 +68,8 @@ class ButtonAppend(CustomButton):
 
 ## TODO: Doxygen
 class ButtonBrowse(CustomButton):
-    def __init__(self, parent, btn_id=genid.BROWSE, name=u'btn browse'):
-        CustomButton.__init__(self, parent, GetBitmap(u'browse', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=genid.BROWSE, name=u'btn browse'):
+        CustomButton.__init__(self, parent, GetBitmap(u'browse', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Browse')))
@@ -77,9 +77,9 @@ class ButtonBrowse(CustomButton):
 
 ## TODO: Doxygen
 class ButtonBrowse64(CustomButton):
-    def __init__(self, parent, btn_id=genid.BROWSE, name=u'btn browse'):
+    def __init__(self, parent, btnId=genid.BROWSE, name=u'btn browse'):
         
-        CustomButton.__init__(self, parent, GetBitmap(u'browse', 64, u'button'), btn_id=btn_id,
+        CustomButton.__init__(self, parent, GetBitmap(u'browse', 64, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Browse')))
@@ -87,8 +87,8 @@ class ButtonBrowse64(CustomButton):
 
 ## TODO: Doxygen
 class ButtonBuild(CustomButton):
-    def __init__(self, parent, btn_id=genid.BUILD, name=u'btn build'):
-        CustomButton.__init__(self, parent, GetBitmap(u'build', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=genid.BUILD, name=u'btn build'):
+        CustomButton.__init__(self, parent, GetBitmap(u'build', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Build')))
@@ -96,8 +96,8 @@ class ButtonBuild(CustomButton):
 
 ## TODO: Doxygen
 class ButtonBuild64(CustomButton):
-    def __init__(self, parent, btn_id=genid.BUILD, name=u'btn build'):
-        CustomButton.__init__(self, parent, GetBitmap(u'build', 64, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=genid.BUILD, name=u'btn build'):
+        CustomButton.__init__(self, parent, GetBitmap(u'build', 64, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Build')))
@@ -105,8 +105,8 @@ class ButtonBuild64(CustomButton):
 
 ## TODO: Doxygen
 class ButtonCancel(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_CANCEL, name=u'btn cancel'):
-        CustomButton.__init__(self, parent, GetBitmap(u'cancel', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_CANCEL, name=u'btn cancel'):
+        CustomButton.__init__(self, parent, GetBitmap(u'cancel', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Cancel')))
@@ -114,8 +114,8 @@ class ButtonCancel(CustomButton):
 
 ## TODO: Doxygen
 class ButtonClear(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_CLEAR, name=u'btn clear'):
-        CustomButton.__init__(self, parent, GetBitmap(u'clear', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_CLEAR, name=u'btn clear'):
+        CustomButton.__init__(self, parent, GetBitmap(u'clear', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Clear')))
@@ -123,8 +123,8 @@ class ButtonClear(CustomButton):
 
 ## TODO: Doxygen
 class ButtonConfirm(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_OK, name=u'btn confirm'):
-        CustomButton.__init__(self, parent, GetBitmap(u'confirm', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_OK, name=u'btn confirm'):
+        CustomButton.__init__(self, parent, GetBitmap(u'confirm', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Confirm')))
@@ -132,8 +132,8 @@ class ButtonConfirm(CustomButton):
 
 ## TODO: Doxygen
 class ButtonHelp(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_HELP, name=u'btn help'):
-        CustomButton.__init__(self, parent, GetBitmap(u'help', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_HELP, name=u'btn help'):
+        CustomButton.__init__(self, parent, GetBitmap(u'help', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTipString(GT(u'Help'))
@@ -141,8 +141,8 @@ class ButtonHelp(CustomButton):
 
 ## TODO: Doxygen
 class ButtonHelp64(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_HELP, name=u'btn help'):
-        CustomButton.__init__(self, parent, GetBitmap(u'help', 64, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_HELP, name=u'btn help'):
+        CustomButton.__init__(self, parent, GetBitmap(u'help', 64, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTipString(GT(u'Help'))
@@ -150,8 +150,8 @@ class ButtonHelp64(CustomButton):
 
 ## Button with an arrow for importing info from other pages
 class ButtonImport(CustomButton):
-    def __init__(self, parent, btn_id=genid.IMPORT, name=u'btn import'):
-        CustomButton.__init__(self, parent, GetBitmap(u'import', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=genid.IMPORT, name=u'btn import'):
+        CustomButton.__init__(self, parent, GetBitmap(u'import', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Import')))
@@ -159,8 +159,8 @@ class ButtonImport(CustomButton):
 
 ## TODO: Doxygen
 class ButtonNext(CustomButton):
-    def __init__(self, parent, btn_id=ident.NEXT, name=u'btn next'):
-        CustomButton.__init__(self, parent, GetBitmap(u'next', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=ident.NEXT, name=u'btn next'):
+        CustomButton.__init__(self, parent, GetBitmap(u'next', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Next')))
@@ -168,8 +168,8 @@ class ButtonNext(CustomButton):
 
 ## TODO: Doxygen
 class ButtonPrev(CustomButton):
-    def __init__(self, parent, btn_id=ident.PREV, name=u'btn previous'):
-        CustomButton.__init__(self, parent, GetBitmap(u'prev', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=ident.PREV, name=u'btn previous'):
+        CustomButton.__init__(self, parent, GetBitmap(u'prev', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Previous')))
@@ -177,8 +177,8 @@ class ButtonPrev(CustomButton):
 
 ## TODO: Doxygen
 class ButtonPreview(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_PREVIEW, name=u'btn preview'):
-        CustomButton.__init__(self, parent, GetBitmap(u'preview', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_PREVIEW, name=u'btn preview'):
+        CustomButton.__init__(self, parent, GetBitmap(u'preview', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Preview')))
@@ -186,17 +186,17 @@ class ButtonPreview(CustomButton):
 
 ## TODO: Doxygen
 class ButtonPreview64(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_PREVIEW, name=u'btn preview'):
+    def __init__(self, parent, btnId=wx.ID_PREVIEW, name=u'btn preview'):
         CustomButton.__init__(self, parent, GetBitmap(u'preview', 64, u'button'),
-                btn_id=btn_id, name=name)
+                btnId=btnId, name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Preview')))
 
 
 ## Button for refreshing displayed controls
 class ButtonRefresh(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_REFRESH, name=u'btn refresh'):
-        CustomButton.__init__(self, parent, GetBitmap(u'refresh', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_REFRESH, name=u'btn refresh'):
+        CustomButton.__init__(self, parent, GetBitmap(u'refresh', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Refresh')))
@@ -204,8 +204,8 @@ class ButtonRefresh(CustomButton):
 
 ## TODO: Doxygen
 class ButtonRemove(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_REMOVE, name=u'btn remove'):
-        CustomButton.__init__(self, parent, GetBitmap(u'remove', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_REMOVE, name=u'btn remove'):
+        CustomButton.__init__(self, parent, GetBitmap(u'remove', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Remove')))
@@ -213,8 +213,8 @@ class ButtonRemove(CustomButton):
 
 ## TODO: Doxygen
 class ButtonSave(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_SAVE, name=u'btn save'):
-        CustomButton.__init__(self, parent, GetBitmap(u'save', 32, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_SAVE, name=u'btn save'):
+        CustomButton.__init__(self, parent, GetBitmap(u'save', 32, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
@@ -222,8 +222,8 @@ class ButtonSave(CustomButton):
 
 ## TODO: Doxygen
 class ButtonSave64(CustomButton):
-    def __init__(self, parent, btn_id=wx.ID_SAVE, name=u'btn save'):
-        CustomButton.__init__(self, parent, GetBitmap(u'save', 64, u'button'), btn_id=btn_id,
+    def __init__(self, parent, btnId=wx.ID_SAVE, name=u'btn save'):
+        CustomButton.__init__(self, parent, GetBitmap(u'save', 64, u'button'), btnId=btnId,
                 name=name)
         
         self.SetToolTip(wx.ToolTip(GT(u'Save')))
