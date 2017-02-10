@@ -607,7 +607,10 @@ class WizardPage(ScrolledPanel):
         self.SetName(page_ids[self.GetId()])
         
         ## Label to show in title & menu
-        self.Label = None
+        self.Label = wx.EmptyString
+        
+        if not self.Label and self.Id in pgid.Labels:
+            self.Label = pgid.Labels[self.Id]
         
         ## List of IDs that should not be reset
         self.IgnoreResetIds = []
