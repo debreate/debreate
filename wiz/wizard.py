@@ -347,7 +347,7 @@ class Wizard(wx.Panel):
         return tuple(page_ids)
     
     
-    ## Initializes wizard by displaying an intial page
+    ## Initializes wizard by displaying an initial page
     #
     #  \param showPage
     #    <b><i>Integer</i></b> index of page to be shown
