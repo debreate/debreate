@@ -199,7 +199,11 @@ class BtnId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
         
+        ## Image labels associated with button IDs
+        self.Images = {}
+        
         self.ADD = self.AddStaticId(wx.ID_ADD)
+        self.APPEND = self.NewId()
         self.BIN = self.NewId()
         self.BROWSE = self.NewId()
         self.BUILD = self.NewId()
@@ -207,6 +211,10 @@ class BtnId(FieldId):
         self.CLEAR = self.AddStaticId(wx.ID_CLEAR)
         self.CLOSE = self.AddStaticId(wx.ID_CLOSE)
         self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK)
+        self.EXIT = self.AddStaticId(wx.ID_EXIT)
+        self.FULL = self.NewId()
+        self.HELP = self.AddStaticId(wx.ID_HELP)
+        self.HIDE = self.NewId()
         self.IMPORT = self.NewId()
         self.MODE = self.NewId()
         self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW)
@@ -214,8 +222,48 @@ class BtnId(FieldId):
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE)
         self.RENAME = self.NewId()
         self.SAVE = self.AddStaticId(wx.ID_SAVE)
+        self.SHORT = self.NewId()
         self.SRC = self.NewId()
         self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM)
+    
+    
+    ## Adds a predetermined ID to ID list & optional bitmap image reference
+    #
+    #  \param staticId
+    #    <b><i>integer</i></b>:
+    #      Predefined ID to set
+    #  \param imageName
+    #    <b><i>string</i></b>:
+    #      Image file basename
+    def AddStaticId(self, staticId, imageName=None):
+        self.Images[staticId] = imageName
+        
+        return FieldId.AddStaticId(self, staticId)
+    
+    
+    ## Retrieves the image linked to the ID
+    #
+    #  \param btnId
+    #    Requested button ID
+    #  \return
+    #    <b><i>string</i></b>:
+    #      Image label associated with button ID (<b><i>None</i></b> if ID has no image)
+    def GetImage(self, btnId):
+        if btnId in self.Images:
+            return self.Images[btnId]
+    
+    
+    ## Adds a new ID & optional bitmap image reference
+    #
+    #  \param imageName
+    #    <b><i>string</i></b>:
+    #      Image file basename
+    def NewId(self, imageName=None):
+        new_id = FieldId.NewId(self)
+        
+        self.Images[new_id] = imageName
+        
+        return new_id
 
 btnid = BtnId()
 
