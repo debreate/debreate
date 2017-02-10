@@ -94,7 +94,7 @@ class Page(WizardPage):
         # *** Target installation directory
         
         # FIXME: Should this be set by config or project file???
-        self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>' , name=u'target default',
+        self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default',
                 defaultType=CheckBoxESS, customType=PathCtrlESS, pathIds=(chkid.TARGET, inputid.TARGET,))
         
         self.btn_add = CreateButton(self, GT(u'Add'), u'add', btnid.ADD, name=u'btn add')
