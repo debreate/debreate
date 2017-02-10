@@ -346,6 +346,8 @@ class Page(WizardPage):
         for DS, RB in self.script_objects:
             if DS.IsOkay():
                 return True
+        
+        return False
     
     
     ## Creates scripts that link the executables
