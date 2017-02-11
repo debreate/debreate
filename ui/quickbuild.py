@@ -16,12 +16,11 @@ from dbr.timer              import DebreateTimer
 from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
+from globals.ident          import btnid
 from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import ConcatPaths
 from globals.threads        import Thread
-from ui.button              import ButtonBrowse
-from ui.button              import ButtonBuild
-from ui.button              import ButtonCancel
+from ui.button              import CreateButton
 from ui.dialog              import GetDirDialog
 from ui.dialog              import GetFileSaveDialog
 from ui.dialog              import OverwriteDialog
@@ -48,21 +47,21 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         self.input_stage = wx.TextCtrl(self)
         self.input_stage.SetToolTip(wx.ToolTip(GT(u'Root directory of build tree')))
         
-        btn_browse_stage = ButtonBrowse(self, ident.STAGE)
+        btn_browse_stage = CreateButton(self, ident.STAGE, image=u'browse')
         btn_browse_stage.Bind(wx.EVT_BUTTON, self.OnBrowse)
         
         label_target = wx.StaticText(self, label=GT(u'Target file'))
         self.input_target = wx.TextCtrl(self)
         self.input_target.SetToolTip(wx.ToolTip(GT(u'Target output file')))
         
-        btn_browse_target = ButtonBrowse(self, ident.TARGET)
+        btn_browse_target = CreateButton(self, ident.TARGET, image=u'browse')
         btn_browse_target.Bind(wx.EVT_BUTTON, self.OnBrowse)
         
-        btn_build = ButtonBuild(self)
+        btn_build = CreateButton(self, btnid.BUILD)
         btn_build.SetToolTip(wx.ToolTip(GT(u'Start building')))
         btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
         
-        btn_cancel = ButtonCancel(self)
+        btn_cancel = CreateButton(self, btnid.CANCEL)
         btn_cancel.SetToolTip(wx.ToolTip(GT(u'Cancel build')))
         btn_cancel.Bind(wx.EVT_BUTTON, self.OnClose)
         
