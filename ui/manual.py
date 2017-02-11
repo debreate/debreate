@@ -11,11 +11,10 @@ import wx
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals                import ident
+from globals.ident          import btnid
 from globals.ident          import manid
 from input.text             import TextAreaPanel
-from ui.button              import ButtonBrowse
-from ui.button              import ButtonPreview
-from ui.button              import ButtonSave
+from ui.button              import CreateButton
 from ui.layout              import BoxSizer
 from ui.mansect             import DEFAULT_MANSECT_STYLE
 from ui.mansect             import ManBanner
@@ -241,9 +240,9 @@ class ManPage(wx.Panel):
         self.DestroyChildren()
         
         # Import/Export/Preview
-        btn_browse = ButtonBrowse(self)
-        btn_save = ButtonSave(self)
-        btn_preview = ButtonPreview(self)
+        btn_browse = CreateButton(self, btnid.BROWSE)
+        btn_save = CreateButton(self, btnid.SAVE)
+        btn_preview = CreateButton(self, btnid.PREVIEW)
         
         # *** Layout *** #
         
