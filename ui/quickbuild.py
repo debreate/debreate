@@ -61,8 +61,8 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         btn_build.SetToolTip(wx.ToolTip(GT(u'Start building')))
         btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
         
-        btn_cancel = CreateButton(self, btnid.CANCEL)
-        btn_cancel.SetToolTip(wx.ToolTip(GT(u'Cancel build')))
+        btn_cancel = CreateButton(self, btnid.EXIT)
+        btn_cancel.SetToolTip(wx.ToolTip(GT(u'Close dialog')))
         btn_cancel.Bind(wx.EVT_BUTTON, self.OnClose)
         
         self.gauge = wx.Gauge(self, GAUGE_MAX)
