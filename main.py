@@ -44,7 +44,6 @@ from globals.compression    import compression_mimetypes
 from globals.errorcodes     import dbrerrno
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
-from globals.ident          import genid
 from globals.ident          import menuid
 from globals.ident          import pgid
 from globals.ident          import refid
@@ -159,7 +158,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         # *** Action Menu *** #
         menu_action = wx.Menu()
         
-        mitm_build = wx.MenuItem(menu_action, genid.BUILD, GT(u'Build'),
+        mitm_build = wx.MenuItem(menu_action, menuid.BUILD, GT(u'Build'),
                 GT(u'Start building .deb package'))
         
         menu_action.AppendItem(mitm_build)
