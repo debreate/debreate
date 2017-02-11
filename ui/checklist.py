@@ -10,12 +10,11 @@ import wx
 
 from dbr.language       import GT
 from dbr.log            import Logger
+from globals.ident      import btnid
 from globals.ident      import genid
 from globals.strings    import GS
 from globals.strings    import TextIsEmpty
-from ui.button          import ButtonCancel
-from ui.button          import ButtonClear
-from ui.button          import ButtonConfirm
+from ui.button          import CreateButton
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
 from ui.panel           import ScrolledPanel
@@ -311,9 +310,9 @@ class CheckListDialog(wx.Dialog):
         
         layout_buttons = BoxSizer(wx.HORIZONTAL)
         
-        btn_clear = ButtonClear(self)
-        btn_confirm = ButtonConfirm(self)
-        btn_cancel = ButtonCancel(self)
+        btn_clear = CreateButton(self, btnid.CLEAR)
+        btn_confirm = CreateButton(self, btnid.CONFIRM)
+        btn_cancel = CreateButton(self, btnid.CANCEL)
         
         btn_clear.Bind(wx.EVT_BUTTON, self.OnClearList)
         
