@@ -582,11 +582,11 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
         else:
             button = CustomButton(parent, image, btnId, name=name, commands=commands,
                     requireAll=requireAll)
-        
-        if not tooltip:
-            tooltip = label
-        
-        button.SetToolTipString(tooltip)
+            
+            if not tooltip:
+                tooltip = label
+            
+            button.SetToolTipString(tooltip)
     
     # Use a standard button
     if not button:
