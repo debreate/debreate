@@ -558,17 +558,21 @@ def ReplaceStandardButtons(dialog):
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
 def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size=32, tooltip=None, name=None,
             commands=None, requireAll=False):
-    if not name:
-        name = label
-    
     if not image:
         image = btnid.GetImage(btnId)
     
-    image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
+    # Use titleized version of the image name for the label
+    if not label and image:
+        label = image.title()
+    
+    if not name:
+        name = label
     
     button = None
     
     if image:
+        image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
+        
         if not os.path.isfile(image):
             Logger.Warn(
                     __name__,
