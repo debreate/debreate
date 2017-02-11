@@ -123,7 +123,7 @@ class ButtonClear(CustomButton):
 
 ## TODO: Doxygen
 class ButtonConfirm(CustomButton):
-    def __init__(self, parent, btnId=wx.ID_OK, name=u'btn confirm'):
+    def __init__(self, parent, btnId=btnid.CONFIRM, name=u'btn confirm'):
         CustomButton.__init__(self, parent, GetBitmap(u'confirm', 32, u'button'), btnId=btnId,
                 name=name)
         
@@ -384,7 +384,7 @@ class ButtonSizer(BoxSizer):
 
 button_list = {
     wx.ID_CANCEL: ButtonCancel,
-    wx.ID_OK: ButtonConfirm,
+    btnid.CONFIRM: ButtonConfirm,
     wx.ID_HELP: ButtonHelp,
     wx.ID_SAVE: ButtonSave,
     }
