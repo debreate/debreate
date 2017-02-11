@@ -43,22 +43,6 @@ def NewId(member_list=None):
     return new_id
 
 
-# *** Custom IDs *** #
-DIST = wx.NewId()
-EXPAND = wx.NewId()
-RENAME = wx.NewId()
-SINGLE = wx.NewId()
-
-
-## General IDs
-class genid:
-    APPEND = wx.NewId()
-    BGPANEL = wx.NewId()
-    BROWSE = wx.NewId()
-    BUILD = wx.NewId()
-    IMPORT = wx.NewId()
-
-
 # Page IDs
 next_page_id = 1000
 page_ids = {}
