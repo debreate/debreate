@@ -229,6 +229,8 @@ class ButtonId(FieldId):
         self.SAVE = self.AddStaticId(wx.ID_SAVE, u'save')
         self.SHORT = self.NewId(u'short')
         self.SRC = self.NewId()
+        self.STAGE = self.NewId()
+        self.TARGET = self.NewId()
         self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, u'zoom')
     
     
