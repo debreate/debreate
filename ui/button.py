@@ -382,14 +382,6 @@ class ButtonSizer(BoxSizer):
                 window.Layout()
 
 
-button_list = {
-    wx.ID_CANCEL: ButtonCancel,
-    btnid.CONFIRM: ButtonConfirm,
-    wx.ID_HELP: ButtonHelp,
-    wx.ID_SAVE: ButtonSave,
-    }
-
-
 ## TODO: Doxygen
 #  
 #  \param button_ids
@@ -410,14 +402,7 @@ def AddCustomButtons(window, button_ids, parent_sizer=None, show_labels=True, re
         button_ids = reversed(button_ids)
     
     for ID in button_ids:
-        if ID in button_list:
-            new_button = button_list[ID](window)
-            lyt_buttons.Add(new_button, 1)
-            
-            continue
-        
-        # Use a standard button if custom button not available
-        new_button = wx.Button(window, ID)
+        new_button = CreateButton(window, ID)
         lyt_buttons.Add(new_button, 0, wx.ALIGN_CENTER)
     
     lyt_buttons.ShowLabels(show_labels)
@@ -523,12 +508,7 @@ def ReplaceStandardButtons(dialog):
     FLAGS = 0
     
     for ID in removed_button_ids:
-        if ID in button_list:
-            lyt_buttons.Add(button_list[ID](dialog), 0, FLAGS, 5)
-        
-        else:
-            # Failsafe to add regular wx.Button
-            lyt_buttons.Add(wx.Button(dialog, ID), 0, FLAGS, 5)
+        lyt_buttons.Add(CreateButton(dialog, ID), 0, FLAGS, 5)
         
         if not FLAGS:
             FLAGS = wx.LEFT
