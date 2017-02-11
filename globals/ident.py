@@ -328,10 +328,12 @@ class MenuId(FieldId):
         self.ABOUT = self.AddStaticId(wx.ID_ABOUT)
         self.ACTION = self.NewId()
         self.ALIEN = self.NewId()
+        self.BUILD = self.NewId()
         self.COMPRESS = self.NewId()
         self.DEBUG = self.NewId()
         self.DIST = self.NewId()
         self.EXIT = btnid.EXIT
+        self.EXPAND = self.NewId()
         self.FILE = self.AddStaticId(wx.ID_FILE)
         self.HELP = btnid.HELP
         self.LOG = self.NewId()
@@ -341,6 +343,7 @@ class MenuId(FieldId):
         self.OPTIONS = self.NewId()
         self.PAGE = self.NewId()
         self.QBUILD = self.NewId()
+        self.RENAME = btnid.RENAME
         self.SAVE = btnid.SAVE
         self.SAVEAS = self.AddStaticId(wx.ID_SAVEAS)
         self.THEME = self.NewId()
