@@ -315,6 +315,7 @@ class manid:
     CHOICE = AddId(current_id)
     EXPAND = AddId(current_id)
     REMOVABLE = AddId(current_id)
+    SINGLE = AddId(current_id)
     STATIC = AddId(current_id)
     MULTILINE = AddId(current_id)
     MUTABLE = AddId(current_id)
