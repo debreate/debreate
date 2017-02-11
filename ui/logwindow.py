@@ -13,7 +13,6 @@ from dbr.event              import RefreshLogEvent
 from dbr.font               import GetMonospacedFont
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.application    import APP_logo
 from globals.fileio         import FileItem
 from globals.ident          import btnid
@@ -50,7 +49,7 @@ def GetLogWindowRefreshInterval():
 #    Absolute path to file where log contents are written/read
 class LogWindow(wx.Dialog):
     def __init__(self, parent, logFile):
-        wx.Dialog.__init__(self, parent, ident.DEBUG, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
         
         self.SetIcon(APP_logo)
         
