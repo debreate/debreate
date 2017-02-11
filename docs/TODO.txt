@@ -8,7 +8,6 @@ Next Release:
 Priority:
 - Change button images for 'full' & 'short' on copyright page
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
-- Add option for creating manpages
 - Add lintian overrides option
 
 Non-priority:
