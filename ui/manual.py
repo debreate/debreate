@@ -10,7 +10,6 @@ import wx
 
 from dbr.language           import GT
 from dbr.log                import Logger
-from globals                import ident
 from globals.ident          import btnid
 from globals.ident          import manid
 from input.text             import TextAreaPanel
@@ -278,7 +277,7 @@ class ManPage(wx.Panel):
         menubar.HideBorder()
         
         menu_add = PanelMenu(menubar, label=GT(u'Add'))
-        menu_add.Append(ident.SINGLE, GT(u'Single line section'))
+        menu_add.Append(manid.SINGLE, GT(u'Single line section'))
         menu_add.Append(manid.MULTILINE, GT(u'Multi-line section'))
         
         menubar.AddItem(menu_add)
@@ -293,7 +292,7 @@ class ManPage(wx.Panel):
         
         # *** Event Handling *** #
         
-        wx.EVT_MENU(self, ident.SINGLE, self.OnAddDocumentSection)
+        wx.EVT_MENU(self, manid.SINGLE, self.OnAddDocumentSection)
         wx.EVT_MENU(self, manid.MULTILINE, self.OnAddDocumentSection)
         
         # *** Layout *** #
