@@ -11,8 +11,9 @@ from wx.richtext import RE_MULTILINE
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
-from ui.button import ButtonConfirm
-from ui.layout import BoxSizer
+from globals.ident  import btnid
+from ui.button      import CreateButton
+from ui.layout      import BoxSizer
 
 
 ## Class to parse & display Markdown text
@@ -43,7 +44,7 @@ class MarkdownDialog(wx.Dialog):
         layout_V1.Add(self.markdown, 1, wx.ALL|wx.EXPAND, 5)
         
         if style & wx.OK:
-            self.btn_confirm = ButtonConfirm(self)
+            self.btn_confirm = CreateButton(self, btnid.CONFIRM)
             layout_V1.Add(self.btn_confirm, 0, wx.ALL|wx.ALIGN_RIGHT, 5)
         
         self.SetAutoLayout(True)
