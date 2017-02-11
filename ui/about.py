@@ -19,13 +19,14 @@ from globals.constants      import INSTALLED
 from globals.constants      import PREFIX
 from globals.dateinfo       import GetYear
 from globals.fileio         import ReadFile
+from globals.ident          import btnid
 from globals.mime           import GetFileMimeType
 from globals.paths          import PATH_app
 from globals.system         import PY_VER_STRING
 from globals.system         import WX_VER_STRING
 from input.list             import ListCtrl
 from input.text             import TextAreaPanel
-from ui.button              import ButtonConfirm
+from ui.button              import CreateButton
 from ui.dialog              import ShowErrorDialog
 from ui.hyperlink           import Hyperlink
 from ui.layout              import BoxSizer
@@ -148,9 +149,8 @@ class AboutDialog(wx.Dialog):
         sys_info.SetSizer(sysinfo_layout_V1)
         sys_info.Layout()
         
-        
         # Button to close the dialog
-        btn_confirm = ButtonConfirm(self)
+        btn_confirm = CreateButton(self, btnid.CONFIRM)
         
         sizer = BoxSizer(wx.VERTICAL)
         sizer.Add(tabs, 1, wx.EXPAND)
