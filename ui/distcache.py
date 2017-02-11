@@ -13,8 +13,8 @@ from dbr.event              import EVT_TIMER_STOP
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.timer              import DebreateTimer
-from globals                import ident
 from globals.fileio         import ReadFile
+from globals.ident          import inputid
 from globals.ident          import pgid
 from globals.moduleaccess   import ModuleAccessCtrl
 from globals.system         import FILE_distnames
@@ -131,7 +131,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
             os.remove(FILE_distnames)
             
             # Update list on changelog page
-            distname_input = GetField(pgid.CHANGELOG, ident.DIST)
+            distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
             if isinstance(distname_input, OwnerDrawnComboBox):
                 distname_input.Set(GetOSDistNames())
             
@@ -197,7 +197,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
             cache_updated = os.path.isfile(FILE_distnames)
             
             if cache_updated:
-                distname_input = GetField(pgid.CHANGELOG, ident.DIST)
+                distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
                 
                 if isinstance(distname_input, OwnerDrawnComboBox):
                     distname_input.Set(GetOSDistNames())
