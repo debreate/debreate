@@ -568,11 +568,20 @@ def CreateButton(parent, label, btnId=wx.ID_ANY, image=None, size=32, tooltip=No
     
     button = None
     
-    if image and os.path.isfile(image):
-        button = CustomButton(parent, image, btnId, name=name, commands=commands,
-                requireAll=requireAll)
+    if image:
+        if not os.path.isfile(image):
+            Logger.Warn(
+                    __name__,
+                    u'CreateButton: Attempted to set not-existent image for button (ID {}):'.format(btnId),
+                    details=image
+                    )
+        
+        else:
+            button = CustomButton(parent, image, btnId, name=name, commands=commands,
+                    requireAll=requireAll)
     
-    else:
+    # Use a standard button
+    if not button:
         button = Button(parent, btnId, label, name=name, commands=commands,
                 requireAll=requireAll)
     
