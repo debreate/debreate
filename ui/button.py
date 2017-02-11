@@ -544,9 +544,9 @@ def ReplaceStandardButtons(dialog):
 #  \param label
 #    Text to be shown on button or tooltip
 #  \param btnId
-#    Object ID
+#    <b><i>Integer identifier (if 'None', ID will be set to wx.ID_ANY)
 #  \param image
-#    Base name of image file to use for custom buttons (uses standard button if set to 'None')
+#    Base name of image file to use for custom buttons (uses standard image if set to 'None')
 #  \param size
 #    Image size to use for button
 #  \param tooltip
