@@ -41,22 +41,34 @@ def lprint(message, line=None):
     print(message)
 
 
-def ConcatPaths(pathList, tail=None):
-    if not isinstance(pathList, (list, tuple)):
-        root = pathList
-        if not tail:
-            # Return cleaned up root without any concatenation
-            return root.rstrip('/').replace('//', '/')
-        
-        # Join tail arguments
-        tail = '/'.join(tail).strip('/').replace('//', '/')
-        
-        if not root:
-            return tail
-        
-        return '{}/{}'.format(root, tail).replace('//', '/')
+## Join one or more strings into a path
+def ConcatPaths(pathList, *tail):
+    # Convert string arg to list
+    if IsString(pathList):
+        pathList = [pathList,]
     
-    return '/'.join(pathList).replace('//', '/')
+    # Make sure we are working with a list instance
+    pathList = list(pathList)
+    
+    # Append tail arguments
+    if tail:
+        pathList += tail
+    
+    # Clean up tail arguments
+    for INDEX in range(len(pathList)):
+        pathList[INDEX] = pathList[INDEX].strip('/')
+    
+    path = '/'.join(pathList)
+    
+    while '//' in path:
+        path = path.replace('//', '/')
+    
+    # FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
+    absolute = True
+    if absolute and not path.startswith('/'):
+        path = '/' + path
+    
+    return path
 
 
 DIR_scripts = os.path.dirname(__file__)
