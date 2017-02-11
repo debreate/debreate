@@ -15,7 +15,6 @@ from dbr.image          import GetBitmap
 from dbr.language       import GT
 from dbr.log            import Logger
 from fields.cmdfield    import CommandField
-from globals            import ident
 from globals.ident      import btnid
 from globals.ident      import genid
 from globals.paths      import ConcatPaths
@@ -160,7 +159,7 @@ class ButtonImport(CustomButton):
 
 ## TODO: Doxygen
 class ButtonNext(CustomButton):
-    def __init__(self, parent, btnId=ident.NEXT, name=u'btn next'):
+    def __init__(self, parent, btnId=btnid.NEXT, name=u'btn next'):
         CustomButton.__init__(self, parent, GetBitmap(u'next', 32, u'button'), btnId=btnId,
                 name=name)
         
@@ -169,7 +168,7 @@ class ButtonNext(CustomButton):
 
 ## TODO: Doxygen
 class ButtonPrev(CustomButton):
-    def __init__(self, parent, btnId=ident.PREV, name=u'btn previous'):
+    def __init__(self, parent, btnId=btnid.PREV, name=u'btn previous'):
         CustomButton.__init__(self, parent, GetBitmap(u'prev', 32, u'button'), btnId=btnId,
                 name=name)
         
