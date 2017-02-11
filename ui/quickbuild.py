@@ -13,7 +13,6 @@ from dbr.functions          import BuildDebPackage
 from dbr.language           import GT
 from dbr.log                import Logger
 from dbr.timer              import DebreateTimer
-from globals                import ident
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.ident          import btnid
@@ -47,14 +46,14 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         self.input_stage = wx.TextCtrl(self)
         self.input_stage.SetToolTip(wx.ToolTip(GT(u'Root directory of build tree')))
         
-        btn_browse_stage = CreateButton(self, ident.STAGE, image=u'browse')
+        btn_browse_stage = CreateButton(self, btnid.STAGE, image=u'browse')
         btn_browse_stage.Bind(wx.EVT_BUTTON, self.OnBrowse)
         
         label_target = wx.StaticText(self, label=GT(u'Target file'))
         self.input_target = wx.TextCtrl(self)
         self.input_target.SetToolTip(wx.ToolTip(GT(u'Target output file')))
         
-        btn_browse_target = CreateButton(self, ident.TARGET, image=u'browse')
+        btn_browse_target = CreateButton(self, btnid.TARGET, image=u'browse')
         btn_browse_target.Bind(wx.EVT_BUTTON, self.OnBrowse)
         
         btn_build = CreateButton(self, btnid.BUILD)
@@ -155,13 +154,13 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         if event:
             button_id = event.GetEventObject().GetId()
             
-            if button_id == ident.STAGE:
+            if button_id == btnid.STAGE:
                 stage = GetDirDialog(self, GT(u'Choose Directory'))
                 
                 if (ShowDialog(stage)):
                     self.input_stage.SetValue(stage.GetPath())
             
-            elif button_id == ident.TARGET:
+            elif button_id == btnid.TARGET:
                 target = GetFileSaveDialog(self, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb',),
                         u'deb')
                 
