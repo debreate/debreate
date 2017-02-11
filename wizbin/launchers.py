@@ -56,9 +56,9 @@ class Page(WizardPage):
         self.Label = GT(u'Menu Launcher')
         
         # --- Buttons to open/preview/save .desktop file
-        btn_open = CreateButton(self, GT(u'Browse'), btnid.BROWSE, u'browse', name=u'btn browse')
-        btn_save = CreateButton(self, GT(u'Save'), btnid.SAVE, u'save', name=u'btn save')
-        btn_preview = CreateButton(self, GT(u'Preview'), btnid.PREVIEW, u'preview', name=u'btn preview')
+        btn_open = CreateButton(self, btnid.BROWSE, GT(u'Browse'), u'browse', name=u'btn browse')
+        btn_save = CreateButton(self, btnid.SAVE, GT(u'Save'), u'save', name=u'btn save')
+        btn_preview = CreateButton(self, btnid.PREVIEW, GT(u'Preview'), u'preview', name=u'btn preview')
         
         # --- CHECKBOX
         chk_enable = CheckBox(self, chkid.ENABLE, GT(u'Create system menu launcher'))
@@ -155,9 +155,9 @@ class Page(WizardPage):
         ti_category = ComboBox(self, inputid.CAT, choices=opts_category, name=txt_category.Name,
                 defaultValue=opts_category[0])
         
-        btn_catadd = CreateButton(self, GT(u'Add'), btnid.ADD, u'add', name=u'add category')
-        btn_catdel = CreateButton(self, GT(u'Remove'), btnid.REMOVE, u'remove', name=u'rm category')
-        btn_catclr = CreateButton(self, GT(u'Clear'), btnid.CLEAR, u'clear', name=u'clear category')
+        btn_catadd = CreateButton(self, btnid.ADD, GT(u'Add'), u'add', name=u'add category')
+        btn_catdel = CreateButton(self, btnid.REMOVE, GT(u'Remove'), u'remove', name=u'rm category')
+        btn_catclr = CreateButton(self, btnid.CLEAR, GT(u'Clear'), u'clear', name=u'clear category')
         
         # FIXME: Allow using multi-select + remove
         lst_categories = ListCtrl(self, listid.CAT, name=u'Categories')

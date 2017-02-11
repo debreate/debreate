@@ -52,9 +52,9 @@ class Page(WizardPage):
         pnl_bg = wx.Panel(self)
         
         # Buttons to open, save, & preview control file
-        btn_open = CreateButton(pnl_bg, GT(u'Browse'), btnid.BROWSE, u'browse', name=u'btn browse')
-        btn_save = CreateButton(pnl_bg, GT(u'Save'), btnid.SAVE, u'save', name=u'btn save')
-        btn_preview = CreateButton(pnl_bg, GT(u'Preview'), btnid.PREVIEW, u'preview', name=u'btn preview')
+        btn_open = CreateButton(pnl_bg, btnid.BROWSE, GT(u'Browse'), u'browse', name=u'btn browse')
+        btn_save = CreateButton(pnl_bg, btnid.SAVE, GT(u'Save'), u'save', name=u'btn save')
+        btn_preview = CreateButton(pnl_bg, btnid.PREVIEW, GT(u'Preview'), u'preview', name=u'btn preview')
         
         # *** Required fields *** #
         

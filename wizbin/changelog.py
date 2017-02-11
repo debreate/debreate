@@ -81,7 +81,7 @@ class Page(WizardPage):
         txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
         self.ti_email = TextArea(self, inputid.EMAIL, name=txt_email.Name)
         
-        btn_import = CreateButton(self, GT(u'Import'), btnid.IMPORT, u'import', name=u'btn import')
+        btn_import = CreateButton(self, btnid.IMPORT, GT(u'Import'), u'import', name=u'btn import')
         txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
         
         # Changes input
@@ -93,7 +93,7 @@ class Page(WizardPage):
         self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default',
                 defaultType=CheckBoxESS, customType=PathCtrlESS, pathIds=(chkid.TARGET, inputid.TARGET,))
         
-        self.btn_add = CreateButton(self, GT(u'Add'), btnid.ADD, u'add', name=u'btn add')
+        self.btn_add = CreateButton(self, btnid.ADD, GT(u'Add'), u'add', name=u'btn add')
         txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
         
         self.chk_indentation = CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
