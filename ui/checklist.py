@@ -11,7 +11,7 @@ import wx
 from dbr.language       import GT
 from dbr.log            import Logger
 from globals.ident      import btnid
-from globals.ident      import genid
+from globals.ident      import pnlid
 from globals.strings    import GS
 from globals.strings    import TextIsEmpty
 from ui.button          import CreateButton
@@ -31,7 +31,7 @@ class CheckList(BorderedPanel):
         
         self.SetBackgroundColour(u'white')
         
-        pnl_bg = ScrolledPanel(self, genid.BGPANEL, style=style|wx.TAB_TRAVERSAL|wx.BORDER_NONE)
+        pnl_bg = ScrolledPanel(self, pnlid.BACKGROUND, style=style|wx.TAB_TRAVERSAL|wx.BORDER_NONE)
         pnl_bg.SetBackgroundColour(self.GetBackgroundColour())
         pnl_bg.SetScrollbars(20, 20, 50, 50)
         
@@ -74,7 +74,7 @@ class CheckList(BorderedPanel):
         
         #Logger.Debug(__name__, GT(u'Lintian tag: {}; Set checked: {}').format(label, checked))
         
-        pnl_bg = GetField(self, genid.BGPANEL)
+        pnl_bg = GetField(self, pnlid.BACKGROUND)
         lyt_bg = pnl_bg.GetSizer()
         
         lyt_bg.Add(wx.CheckBox(pnl_bg, label=label), 1, wx.EXPAND)
@@ -121,7 +121,7 @@ class CheckList(BorderedPanel):
     #  \return
     #    Tuple containing all children check box instances
     def GetAllItems(self):
-        pnl_bg = GetField(self, genid.BGPANEL)
+        pnl_bg = GetField(self, pnlid.BACKGROUND)
         items = []
         
         for item in pnl_bg.GetChildren():
@@ -268,7 +268,7 @@ class CheckList(BorderedPanel):
     
     ## TODO: Doxygen
     def ScrollToEnd(self):
-        pnl_bg = GetField(self, genid.BGPANEL)
+        pnl_bg = GetField(self, pnlid.BACKGROUND)
         
         pnl_bg.SetScrollPos(wx.VERTICAL, pnl_bg.GetScrollLines(wx.VERTICAL))
         
