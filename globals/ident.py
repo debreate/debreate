@@ -10,7 +10,8 @@
 
 import wx
 
-from dbr.language import GT
+from dbr.language   import GT
+from dbr.log        import Logger
 
 
 ## Creates a new bitwise compatible ID
@@ -251,6 +252,8 @@ class BtnId(FieldId):
     def GetImage(self, btnId):
         if btnId in self.Images:
             return self.Images[btnId]
+        
+        Logger.Warn(__name__, u'ButtonId.GetImage: Requested button ID {} with no associated image'.format(btnId))
     
     
     ## Adds a new ID & optional bitmap image reference
