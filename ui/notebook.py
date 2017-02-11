@@ -161,7 +161,7 @@ class MultiTemplate(BoxSizer):
             if len(lyt_buttons.GetChildren()):
                 padding = 5
             
-            button = CreateButton(self.GetParent(), label, btnId, image)
+            button = CreateButton(self.GetParent(), btnId, label, image)
             
             if button:
                 if handler:

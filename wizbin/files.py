@@ -96,15 +96,15 @@ class Page(WizardPage):
             )
         
         # ----- Add/Remove/Clear buttons
-        btn_add = CreateButton(self, GT(u'Add'), btnid.ADD)
-        btn_remove = CreateButton(self, GT(u'Remove'), btnid.REMOVE)
-        btn_clear = CreateButton(self, GT(u'Clear'), btnid.CLEAR)
+        btn_add = CreateButton(self, btnid.ADD, GT(u'Add'))
+        btn_remove = CreateButton(self, btnid.REMOVE, GT(u'Remove'))
+        btn_clear = CreateButton(self, btnid.CLEAR, GT(u'Clear'))
         
         self.prev_dest_value = u'/usr/bin'
         self.ti_target = TextArea(self, defaultValue=self.prev_dest_value, name=u'target')
         
-        self.btn_browse = CreateButton(self, GT(u'Browse'), btnid.BROWSE)
-        btn_refresh = CreateButton(self, GT(u'Refresh'), btnid.REFRESH)
+        self.btn_browse = CreateButton(self, btnid.BROWSE, GT(u'Browse'))
+        btn_refresh = CreateButton(self, btnid.REFRESH, GT(u'Refresh'))
         
         # Display area for files added to list
         self.lst_files = FileListESS(self, inputid.LIST, name=u'filelist')

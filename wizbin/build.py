@@ -124,10 +124,10 @@ class Page(WizardPage):
         if UsingTest(u'alpha'):
             # FIXME: Move next to lintian check box
             self.lint_overrides = []
-            btn_lint_overrides = CreateButton(self, GT(u'Lintian overrides'))
+            btn_lint_overrides = CreateButton(self, label=GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
         
-        btn_build = CreateButton(self, GT(u'Build'), btnid.BUILD, u'build', 64)
+        btn_build = CreateButton(self, btnid.BUILD, GT(u'Build'), u'build', 64)
         
         # Display log
         dsp_log = OutputLog(self)

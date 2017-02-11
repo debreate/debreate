@@ -238,7 +238,7 @@ class LayoutButton(BoxSizer):
         BoxSizer.__init__(self, wx.VERTICAL)
         
         if IsString(button):
-            self.Button = CreateButton(parent, label, button, size, btnId, tooltip, name)
+            self.Button = CreateButton(parent, btnId, label, button, size, tooltip, name)
         
         else:
             self.Button = button
@@ -556,7 +556,7 @@ def ReplaceStandardButtons(dialog):
 #    Name attribute
 #  \return
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
-def CreateButton(parent, label, btnId=wx.ID_ANY, image=None, size=32, tooltip=None, name=None,
+def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size=32, tooltip=None, name=None,
             commands=None, requireAll=False):
     if not name:
         name = label
@@ -579,15 +579,15 @@ def CreateButton(parent, label, btnId=wx.ID_ANY, image=None, size=32, tooltip=No
         else:
             button = CustomButton(parent, image, btnId, name=name, commands=commands,
                     requireAll=requireAll)
+        
+        if not tooltip:
+            tooltip = label
+        
+        button.SetToolTipString(tooltip)
     
     # Use a standard button
     if not button:
         button = Button(parent, btnId, label, name=name, commands=commands,
                 requireAll=requireAll)
-    
-    if not tooltip:
-        tooltip = label
-    
-    button.SetToolTipString(tooltip)
     
     return button
