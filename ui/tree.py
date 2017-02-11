@@ -19,6 +19,7 @@ from globals            import ident
 from globals.devices    import GetMountedStorageDevices
 from globals.execute    import ExecuteCommand
 from globals.execute    import GetExecutable
+from globals.ident      import menuid
 from globals.mime       import GetFileMimeType
 from globals.paths      import ConcatPaths
 from globals.paths      import PATH_home
@@ -208,8 +209,8 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu = wx.Menu()
         
         mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add to project'))
-        mitm_expand = wx.MenuItem(self.ctx_menu, ident.EXPAND, GT(u'Expand'))
-        mitm_rename = wx.MenuItem(self.ctx_menu, ident.RENAME, GT(u'Rename'))
+        mitm_expand = wx.MenuItem(self.ctx_menu, menuid.EXPAND, GT(u'Expand'))
+        mitm_rename = wx.MenuItem(self.ctx_menu, menuid.RENAME, GT(u'Rename'))
         mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT(u'Refresh'))
         
         self.ctx_menu.AppendItem(mitm_add)
@@ -242,8 +243,8 @@ class DirectoryTree(wx.TreeCtrl):
         
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
         
-        wx.EVT_MENU(self, ident.EXPAND, self.OnMenuSelect)
-        wx.EVT_MENU(self, ident.RENAME, self.OnMenuSelect)
+        wx.EVT_MENU(self, menuid.EXPAND, self.OnMenuSelect)
+        wx.EVT_MENU(self, menuid.RENAME, self.OnMenuSelect)
         wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
         wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
         
@@ -711,11 +712,11 @@ class DirectoryTree(wx.TreeCtrl):
             
             for ITEM in selected:
                 if ITEM.Type != u'folder':
-                    removed_expand = self.ctx_menu.Remove(ident.EXPAND)
+                    removed_expand = self.ctx_menu.Remove(menuid.EXPAND)
                     break
         
         elif isinstance(selected[0], PathItem) and selected[0].Type != u'folder':
-            removed_expand = self.ctx_menu.Remove(ident.EXPAND)
+            removed_expand = self.ctx_menu.Remove(menuid.EXPAND)
         
         elif selected and isinstance(selected[0], wx.TreeItemId) and selected[0] == self.root_item:
             Logger.Debug(__name__, u'Root item selected')
@@ -723,7 +724,7 @@ class DirectoryTree(wx.TreeCtrl):
             # Only allow expand/collapse & refresh for root item
             removed_menus = []
             
-            menu_ids = [wx.ID_ADD, None, ident.RENAME,]
+            menu_ids = [wx.ID_ADD, None, menuid.RENAME,]
             if self.trash:
                 menu_ids.append(wx.ID_DELETE)
             
@@ -739,7 +740,7 @@ class DirectoryTree(wx.TreeCtrl):
             if not self.IsExpanded(self.root_item):
                 expand_label= GT(u'Expand')
             
-            self.ctx_menu.SetLabel(ident.EXPAND, expand_label)
+            self.ctx_menu.SetLabel(menuid.EXPAND, expand_label)
             
             self.PopupMenu(self.ctx_menu)
             
@@ -761,7 +762,7 @@ class DirectoryTree(wx.TreeCtrl):
                         expand_label = GT(u'Expand')
                         break
                 
-                self.ctx_menu.SetLabel(ident.EXPAND, expand_label)
+                self.ctx_menu.SetLabel(menuid.EXPAND, expand_label)
             
             for ITEM in self.mount_list:
                 if ITEM in selected:
@@ -769,7 +770,7 @@ class DirectoryTree(wx.TreeCtrl):
                     allow_trash = False
                     break
             
-            self.ctx_menu.Enable(ident.RENAME, allow_rename)
+            self.ctx_menu.Enable(menuid.RENAME, allow_rename)
             
             if self.trash:
                 self.ctx_menu.Enable(wx.ID_DELETE, allow_trash)
@@ -950,8 +951,8 @@ class DirectoryTree(wx.TreeCtrl):
         if event:
             event_id = event.GetId()
             
-            if event_id == ident.EXPAND:
-                expand = event.GetEventObject().GetLabel(ident.EXPAND).lower() == u'expand'
+            if event_id == menuid.EXPAND:
+                expand = event.GetEventObject().GetLabel(menuid.EXPAND).lower() == u'expand'
                 selected = self.GetSelections()
                 
                 if expand:
@@ -962,7 +963,7 @@ class DirectoryTree(wx.TreeCtrl):
                     for ITEM in selected:
                         self.Collapse(ITEM)
             
-            elif event_id == ident.RENAME:
+            elif event_id == menuid.RENAME:
                 selected = self.GetSelection()
                 self.EditLabel(selected.GetBaseItem())
             
