@@ -17,7 +17,7 @@ from globals.fileio     import FileItem
 from globals.fileio     import GetFiles
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
-from globals.ident      import genid
+from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import page_ids
 from globals.ident      import pgid
@@ -30,10 +30,7 @@ from input.markdown     import MarkdownDialog
 from input.pathctrl     import PathCtrl
 from input.select       import ComboBoxESS
 from input.text         import TextAreaPanelESS
-from ui.button          import ButtonBuild
-from ui.button          import ButtonHelp64
-from ui.button          import ButtonImport
-from ui.button          import ButtonRemove
+from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import DetailedMessageDialog
 from ui.dialog          import ShowDialog
@@ -105,12 +102,12 @@ class Page(WizardPage):
                 name=u'al list')
         
         # Auto-Link import, generate and remove buttons
-        btn_al_import = ButtonImport(pnl_autolink)
-        btn_al_remove = ButtonRemove(pnl_autolink)
-        btn_al_generate = ButtonBuild(pnl_autolink)
+        btn_al_import = CreateButton(pnl_autolink, btnid.IMPORT)
+        btn_al_remove = CreateButton(pnl_autolink, btnid.REMOVE)
+        btn_al_generate = CreateButton(pnl_autolink, image=u'build')
         
         # Auto-Link help
-        btn_help = ButtonHelp64(pnl_autolink)
+        btn_help = CreateButton(pnl_autolink, btnid.HELP, size=64)
         
         # Initialize script display
         self.ScriptSelect(None)
@@ -122,10 +119,10 @@ class Page(WizardPage):
         for DS, RB in self.script_objects:
             wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
         
-        wx.EVT_BUTTON(btn_al_import, genid.IMPORT, self.ImportExes)
+        wx.EVT_BUTTON(btn_al_import, btnid.IMPORT, self.ImportExes)
         wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
-        wx.EVT_BUTTON(btn_al_remove, wx.ID_REMOVE, self.ImportExes)
-        wx.EVT_BUTTON(btn_help, wx.ID_HELP, self.OnHelpButton)
+        wx.EVT_BUTTON(btn_al_remove, btnid.REMOVE, self.ImportExes)
+        wx.EVT_BUTTON(btn_help, btnid.HELP, self.OnHelpButton)
         
         # *** Layout *** #
         
@@ -232,7 +229,7 @@ class Page(WizardPage):
     ## Imports executables from files page for Auto-Link
     def ImportExes(self, event=None):
         event_id = event.GetId()
-        if event_id == genid.IMPORT:
+        if event_id == btnid.IMPORT:
             # First clear the Auto-Link display and the executable list
             self.Executables.Reset()
             
@@ -286,7 +283,7 @@ class Page(WizardPage):
                     except IndexError:
                         Logger.Warn(__name__, u'{}: The executables destination is not available'.format(__name__))
         
-        elif event_id in (wx.ID_REMOVE, wx.WXK_DELETE):
+        elif event_id in (btnid.REMOVE, wx.WXK_DELETE):
             self.Executables.RemoveSelected()
     
     
