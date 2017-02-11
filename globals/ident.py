@@ -218,7 +218,7 @@ class ButtonId(FieldId):
         self.MODE = self.NewId(u'mode')
         self.NEXT = self.NewId(u'next')
         self.PREV = self.NewId(u'prev')
-        self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, u'prefiew')
+        self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, u'preview')
         self.REFRESH = self.AddStaticId(wx.ID_REFRESH, u'refresh')
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE, u'remove')
         self.RENAME = self.NewId(u'rename')
