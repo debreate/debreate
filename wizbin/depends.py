@@ -12,7 +12,6 @@ from dbr.language       import GT
 from dbr.log            import DebugEnabled
 from dbr.log            import Logger
 from globals.ident      import btnid
-from globals.ident      import genid
 from globals.ident      import inputid
 from globals.ident      import pgid
 from globals.strings    import TextIsEmpty
@@ -20,10 +19,6 @@ from globals.tooltips   import SetPageToolTips
 from input.list         import ListCtrlESS
 from input.select       import Choice
 from input.text         import TextArea
-from ui.button          import ButtonAdd
-from ui.button          import ButtonAppend
-from ui.button          import ButtonClear
-from ui.button          import ButtonRemove
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.layout          import BoxSizer
@@ -93,10 +88,10 @@ class Page(WizardPage):
         )
         
         # Buttons to add and remove dependencies from the list
-        btn_add = ButtonAdd(self)
-        btn_append = ButtonAppend(self)
-        btn_remove = ButtonRemove(self)
-        btn_clear = ButtonClear(self)
+        btn_add = CreateButton(self, btnid.ADD)
+        btn_append = CreateButton(self, btnid.APPEND)
+        btn_remove = CreateButton(self, btnid.REMOVE)
+        btn_clear = CreateButton(self, btnid.CLEAR)
         
         # ----- List
         self.lst_deps = ListCtrlESS(self, inputid.LIST, name=u'list')
@@ -248,7 +243,7 @@ class Page(WizardPage):
         ver = self.ti_version.GetValue()
         addver = u'({}{})'.format(oper, ver)
         
-        if key_id in (wx.ID_ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+        if key_id in (btnid.ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
             if TextIsEmpty(addname):
                 return
             
@@ -264,7 +259,7 @@ class Page(WizardPage):
             else:
                 self.AppendDependency(category, u'{} {}'.format(addname, addver))
         
-        elif key_id == genid.APPEND:
+        elif key_id == btnid.APPEND:
             selected_count = self.lst_deps.GetSelectedItemCount()
             
             Logger.Debug(__name__, u'Appending to {} items'.format(selected_count))
@@ -295,10 +290,10 @@ class Page(WizardPage):
                     
                     self.lst_deps.SetStringItem(listrow, 1, new_text)
         
-        elif key_id in (wx.ID_REMOVE, wx.WXK_DELETE):
+        elif key_id in (btnid.REMOVE, wx.WXK_DELETE):
             self.lst_deps.RemoveSelected()
         
-        elif key_id == wx.ID_CLEAR:
+        elif key_id == btnid.CLEAR:
             if self.lst_deps.GetItemCount():
                 if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
                         GT(u'Clear all dependencies?')).ShowModal() in (wx.ID_OK, wx.OK):
