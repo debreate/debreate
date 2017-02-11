@@ -48,8 +48,6 @@ DIST = wx.NewId()
 EXPAND = wx.NewId()
 RENAME = wx.NewId()
 SINGLE = wx.NewId()
-STAGE = wx.NewId()
-TARGET = wx.NewId()
 
 
 ## General IDs
