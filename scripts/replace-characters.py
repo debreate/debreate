@@ -27,6 +27,7 @@ replacements = {
     ' -> ': (' ➜ ', ('build', 'files',)),
     ' (C) ': (' © ',),
     ' (c) ': (' © ',),
+    ' **bullet**': ('•',),
     }
 
 # For running test without risk of making changes to regular files
