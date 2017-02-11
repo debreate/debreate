@@ -31,9 +31,7 @@ from globals.tooltips   import TT_wiz_next
 from globals.tooltips   import TT_wiz_prev
 from input.markdown     import MarkdownDialog
 from startup.tests      import GetTestList
-from ui.button          import ButtonHelp
-from ui.button          import ButtonNext
-from ui.button          import ButtonPrev
+from ui.button          import CreateButton
 from ui.dialog          import ShowDialog
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
@@ -72,7 +70,7 @@ class Wizard(wx.Panel):
         
         if testing:
             # Help button
-            btn_help = ButtonHelp(self)
+            btn_help = CreateButton(self, btnid.HELP)
             btn_help.SetToolTipString(GT(u'Page help'))
         
         # A Header for the wizard
@@ -89,9 +87,9 @@ class Wizard(wx.Panel):
         self.txt_title.SetFont(headerfont)
         
         # Previous and Next buttons
-        self.btn_prev = ButtonPrev(self)
+        self.btn_prev = CreateButton(self, btnid.PREV)
         self.btn_prev.SetToolTip(TT_wiz_prev)
-        self.btn_next = ButtonNext(self)
+        self.btn_next = CreateButton(self, btnid.NEXT)
         self.btn_next.SetToolTip(TT_wiz_next)
         
         # These widgets are put into a list so that they are not automatically hidden
