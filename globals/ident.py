@@ -202,7 +202,7 @@ inputid = InputId()
 
 
 ## IDs for button fields
-class BtnId(FieldId):
+class ButtonId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
         
@@ -276,7 +276,7 @@ class BtnId(FieldId):
         
         return new_id
 
-btnid = BtnId()
+btnid = ButtonId()
 
 
 ## IDs for check box fields
