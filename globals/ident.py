@@ -209,7 +209,7 @@ class ButtonId(FieldId):
         self.CANCEL = self.AddStaticId(wx.ID_CANCEL, u'cancel')
         self.CLEAR = self.AddStaticId(wx.ID_CLEAR, u'clear')
         self.CLOSE = self.AddStaticId(wx.ID_CLOSE)
-        self.CONFIRM = self.AddStaticId(wx.ID_YES|wx.ID_OK, u'confirm')
+        self.CONFIRM = self.AddStaticId(wx.ID_OK, u'confirm')
         self.EXIT = self.AddStaticId(wx.ID_EXIT, u'exit')
         self.FULL = self.NewId(u'full')
         self.HELP = self.AddStaticId(wx.ID_HELP, u'help')
