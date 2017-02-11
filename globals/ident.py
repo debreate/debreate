@@ -354,6 +354,16 @@ class MenuId(FieldId):
 menuid = MenuId()
 
 
+## IDs for panels
+class PanelId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.BACKGROUND = self.NewId()
+
+pnlid = PanelId()
+
+
 ## IDs for choice/selection fields
 class SelId(FieldId):
     def __init__(self):
