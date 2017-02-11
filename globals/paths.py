@@ -11,6 +11,7 @@
 import os
 
 from globals.strings import GS
+from globals.strings import IsString
 
 
 ## Joints multiple strings into a single path
@@ -20,21 +21,32 @@ from globals.strings import GS
 #  \param tail
 #    Strings to be concatenated to root argument (pathList)
 def ConcatPaths(pathList, *tail):
-    if not isinstance(pathList, (list, tuple)):
-        root = pathList
-        if not tail:
-            # Return cleaned up root without any concatenation
-            return root.rstrip(u'/').replace(u'//', u'/')
-        
-        # Join tail arguments
-        tail = u'/'.join(tail).strip(u'/').replace(u'//', u'/')
-        
-        if not root:
-            return tail
-        
-        return u'{}/{}'.format(root, tail).replace(u'//', u'/')
+    # Convert string arg to list
+    if IsString(pathList):
+        pathList = [pathList,]
     
-    return u'/'.join(pathList).replace(u'//', u'/')
+    # Make sure we are working with a list instance
+    pathList = list(pathList)
+    
+    # Append tail arguments
+    if tail:
+        pathList += tail
+    
+    # Clean up tail arguments
+    for INDEX in range(len(pathList)):
+        pathList[INDEX] = pathList[INDEX].strip(u'/')
+    
+    path = u'/'.join(pathList)
+    
+    while u'//' in path:
+        path = path.replace(u'//', u'/')
+    
+    # FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
+    absolute = True
+    if absolute and not path.startswith(u'/'):
+        path = u'/' + path
+    
+    return path
 
 
 # *** System paths *** #
