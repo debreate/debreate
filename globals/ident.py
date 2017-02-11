@@ -43,13 +43,9 @@ def NewId(member_list=None):
     return new_id
 
 
-# *** Button IDs *** #
-
 # *** Custom IDs *** #
-DEBUG = wx.NewId()
 DIST = wx.NewId()
 EXPAND = wx.NewId()
-LOG = wx.NewId()
 RENAME = wx.NewId()
 SINGLE = wx.NewId()
 STAGE = wx.NewId()
