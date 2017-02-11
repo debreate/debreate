@@ -13,6 +13,7 @@ from globals.dateinfo   import GetTime
 from globals.dateinfo   import dtfmt
 from globals.fileio     import AppendFile
 from globals.paths      import PATH_logs
+from globals.strings    import IsString
 
 
 ## A log class for outputting messages
@@ -121,12 +122,20 @@ class DebreateLogger:
     #    If <b><i>True</i></b>, prepends an empty line to beginning of message
     #  \param pout
     #    Stream to which message should be output (stdout/stderr)
-    def LogMessage(self, level, module, message, newline=False, pout=sys.stdout):
+    def LogMessage(self, level, module, message, details=[], newline=False, pout=sys.stdout):
         level = self.CheckLogLevel(level)
         
         if (level in self.LogLevelList) and (level <= self.LogLevel):
             l_string = self.LogLevelList[level].upper()
             message = u'{}: [{}] {}'.format(l_string, module, message)
+            
+            if details:
+                if IsString(details):
+                    message += u'\n  • {}'.format(details)
+                
+                else:
+                    for ITEM in details:
+                        message += u'\n  • {}'.format(ITEM)
             
             if newline:
                 message = u'\n{}'.format(message)
@@ -155,8 +164,8 @@ class DebreateLogger:
     #    Message to display
     #  \param newline
     #    If <b><i>True</i></b>, prepends an empty line to beginning of message
-    def Info(self, module, message, newline=False):
-        self.LogMessage(u'info', module, message, newline)
+    def Info(self, module, message, details=[], newline=False):
+        self.LogMessage(u'info', module, message, details=details, newline=newline)
     
     
     ## Show a log message at 'warn' level
@@ -167,8 +176,8 @@ class DebreateLogger:
     #    Message to display
     #  \param newline
     #    If <b><i>True</i></b>, prepends an empty line to beginning of message
-    def Warn(self, module, message, newline=False):
-        self.LogMessage(u'warn', module, message, newline)
+    def Warn(self, module, message, details=[], newline=False):
+        self.LogMessage(u'warn', module, message, details=details, newline=newline)
     
     
     ## Show a log message at 'error' level
@@ -181,8 +190,8 @@ class DebreateLogger:
     #    Message to display
     #  \param newline
     #    If <b><i>True</i></b>, prepends an empty line to beginning of message
-    def Error(self, module, message, newline=False):
-        self.LogMessage(u'error', module, message, newline, pout=sys.stderr)
+    def Error(self, module, message, details=[], newline=False):
+        self.LogMessage(u'error', module, message, details=details, newline=newline, pout=sys.stderr)
     
     
     ## Show a log message at 'debug' level
@@ -193,8 +202,8 @@ class DebreateLogger:
     #    Message to display
     #  \param newline
     #    If <b><i>True</i></b>, prepends an empty line to beginning of message
-    def Debug(self, module, message, newline=False):
-        self.LogMessage(u'debug', module, message, newline)
+    def Debug(self, module, message, details=[], newline=False):
+        self.LogMessage(u'debug', module, message, details=details, newline=newline)
     
     
     ## Show a log message at '' level
@@ -205,8 +214,8 @@ class DebreateLogger:
     #    Message to display
     #  \param newline
     #    If <b><i>True</i></b>, prepends an empty line to beginning of message
-    def Test(self, module, message, newline=False):
-        self.LogMessage(u'test', module, message, newline)
+    def Test(self, module, message, details=[], newline=False):
+        self.LogMessage(u'test', module, message, details=details, newline=newline)
     
     
     ## Sets the level at which messages will be output to terminal & log file
