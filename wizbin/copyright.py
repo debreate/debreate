@@ -61,12 +61,12 @@ class Page(WizardPage):
         # Initialize the template list
         self.OnRefreshList()
         
-        btn_template = CreateButton(self, GT(u'Full Template'), image=u'full', name=u'full»')
-        self.btn_template_simple = CreateButton(self, GT(u'Short Template'), image=u'short',
+        btn_template = CreateButton(self, label=GT(u'Full Template'), image=u'full', name=u'full»')
+        self.btn_template_simple = CreateButton(self, label=GT(u'Short Template'), image=u'short',
                 name=u'short»')
-        btn_refresh = CreateButton(self, GT(u'Refresh Template List'), btnid.REFRESH, u'refresh',
+        btn_refresh = CreateButton(self, btnid.REFRESH, GT(u'Refresh Template List'), u'refresh',
                 name=u'btn refresh')
-        btn_open = CreateButton(self, GT(u'Open Template Directory'), btnid.BROWSE, u'browse',
+        btn_open = CreateButton(self, btnid.BROWSE, GT(u'Open Template Directory'), u'browse',
                 name=u'btn opendir', commands=u'xdg-open')
         
         if not self.sel_templates.GetCount():

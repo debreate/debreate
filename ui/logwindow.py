@@ -63,10 +63,10 @@ class LogWindow(wx.Dialog):
         self.DspLog.font_size = 8
         self.DspLog.SetFont(GetMonospacedFont(self.DspLog.font_size))
         
-        btn_open = CreateButton(self, GT(u'Open and Display Log File'), btnid.BROWSE, u'browse')
-        btn_font = CreateButton(self, GT(u'Zoom Text'), btnid.ZOOM, u'zoom')
-        btn_refresh = CreateButton(self, GT(u'Refresh'), btnid.REFRESH, u'refresh')
-        btn_hide = CreateButton(self, GT(u'Hide'), btnid.CLOSE, u'hide')
+        btn_open = CreateButton(self, btnid.BROWSE, GT(u'Open and Display Log File'), u'browse')
+        btn_font = CreateButton(self, btnid.ZOOM, GT(u'Zoom Text'), u'zoom')
+        btn_refresh = CreateButton(self, btnid.REFRESH, GT(u'Refresh'), u'refresh')
+        btn_hide = CreateButton(self, btnid.CLOSE, GT(u'Hide'), u'hide')
         
         # *** Event Handling *** #
         
