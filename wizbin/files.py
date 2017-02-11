@@ -14,6 +14,7 @@ from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.errorcodes import dbrerrno
 from globals.fileio     import ReadFile
+from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import pgid
 from globals.paths      import ConcatPaths
@@ -22,11 +23,7 @@ from globals.tooltips   import SetPageToolTips
 from input.list         import FileListESS
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
-from ui.button          import ButtonAdd
-from ui.button          import ButtonBrowse
-from ui.button          import ButtonClear
-from ui.button          import ButtonRefresh
-from ui.button          import ButtonRemove
+from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import DetailedMessageDialog
 from ui.dialog          import GetDirDialog
@@ -99,16 +96,15 @@ class Page(WizardPage):
             )
         
         # ----- Add/Remove/Clear buttons
-        btn_add = ButtonAdd(self)
-        btn_remove = ButtonRemove(self)
-        btn_clear = ButtonClear(self)
+        btn_add = CreateButton(self, GT(u'Add'), btnid.ADD)
+        btn_remove = CreateButton(self, GT(u'Remove'), btnid.REMOVE)
+        btn_clear = CreateButton(self, GT(u'Clear'), btnid.CLEAR)
         
         self.prev_dest_value = u'/usr/bin'
         self.ti_target = TextArea(self, defaultValue=self.prev_dest_value, name=u'target')
         
-        self.btn_browse = ButtonBrowse(self)
-        
-        btn_refresh = ButtonRefresh(self)
+        self.btn_browse = CreateButton(self, GT(u'Browse'), btnid.BROWSE)
+        btn_refresh = CreateButton(self, GT(u'Refresh'), btnid.REFRESH)
         
         # Display area for files added to list
         self.lst_files = FileListESS(self, inputid.LIST, name=u'filelist')
