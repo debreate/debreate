@@ -16,6 +16,7 @@ from dbr.language       import GT
 from dbr.log            import Logger
 from fields.cmdfield    import CommandField
 from globals            import ident
+from globals.ident      import btnid
 from globals.ident      import genid
 from globals.paths      import ConcatPaths
 from globals.paths      import PATH_bitmaps
@@ -544,7 +545,7 @@ def ReplaceStandardButtons(dialog):
 #  \param label
 #    Text to be shown on button or tooltip
 #  \param btnId
-#    <b><i>Integer identifier (if 'None', ID will be set to wx.ID_ANY)
+#    <b><i>Integer identifier
 #  \param image
 #    Base name of image file to use for custom buttons (uses standard image if set to 'None')
 #  \param size
@@ -557,12 +558,13 @@ def ReplaceStandardButtons(dialog):
 #    ui.button.CustomButton instance or wx.Button instance if image file not found
 def CreateButton(parent, label, btnId=wx.ID_ANY, image=None, size=32, tooltip=None, name=None,
             commands=None, requireAll=False):
-    
-    if image:
-        btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
-    
     if not name:
         name = label
+    
+    if not image:
+        image = btnid.GetImage(btnId)
+    
+    btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
     
     if image and os.path.isfile(btn_image):
         btn = CustomButton(parent, btn_image, btnId, name=name, commands=commands,
