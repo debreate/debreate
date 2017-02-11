@@ -13,12 +13,14 @@ from dbr.log            import Logger
 from globals.dateinfo   import GetDayInt
 from globals.dateinfo   import GetMonthInt
 from globals.dateinfo   import GetYear
+from globals.ident      import btnid
 from globals.ident      import manid
 from input.select       import Choice
 from input.select       import ComboBox
 from input.text         import TextArea
 from input.text         import TextAreaPanel
-from ui.button          import ButtonRemove
+from ui.button          import CreateButton
+from ui.button          import CustomButton
 from ui.dialog          import ShowErrorDialog
 from ui.layout          import BoxSizer
 from ui.panel           import BorderedPanel
@@ -100,7 +102,7 @@ class ManSectBase2(ManSectBase):
         
         if style & manid.REMOVABLE:
             self.lyt_main.AddStretchSpacer(1)
-            self.lyt_main.Add(ButtonRemove(self.Panel), 0, wx.TOP|wx.BOTTOM, 5)
+            self.lyt_main.Add(CreateButton(self.Panel, btnid.REMOVE), 0, wx.TOP|wx.BOTTOM, 5)
         
         self.Panel.SetSizer(self.lyt_main)
     
@@ -161,7 +163,7 @@ class ManSectBase2(ManSectBase):
     ## Retrieve RemoveButton instance
     def GetButton(self):
         for FIELD in self.Panel.GetChildren():
-            if isinstance(FIELD, ButtonRemove):
+            if isinstance(FIELD, CustomButton) and FIELD.GetId() == btnid.REMOVE:
                 return FIELD
     
     
@@ -401,7 +403,7 @@ class ManSection(ManSectBase):
             self.lyt_main.AddGrowableCol(1)
         
         if removable:
-            self.btn_remove = ButtonRemove(self.Parent)
+            self.btn_remove = CreateButton(self.Parent, btnid.REMOVE)
             
             self.lyt_main.Add(self.btn_remove, (0, 2), flag=wx.RIGHT, border=5)
         
