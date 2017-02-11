@@ -14,10 +14,10 @@ from dbr.event          import ChangePageEvent
 from dbr.language       import GT
 from dbr.log            import DebugEnabled
 from dbr.log            import Logger
-from globals            import ident
 from globals.errorcodes import ERR_DIR_NOT_AVAILABLE
 from globals.errorcodes import dbrerrno
 from globals.fileio     import WriteFile
+from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import listid
@@ -209,11 +209,11 @@ class Wizard(wx.Panel):
                 
                 break
         
-        if event_id == ident.PREV:
+        if event_id == btnid.PREV:
             if index != 0:
                 index -= 1
         
-        elif event_id == ident.NEXT:
+        elif event_id == btnid.NEXT:
             if index != len(self.Pages) - 1:
                 index += 1
         

@@ -44,8 +44,6 @@ def NewId(member_list=None):
 
 
 # *** Button IDs *** #
-PREV = wx.NewId()
-NEXT = wx.NewId()
 
 # *** Custom IDs *** #
 DEBUG = wx.NewId()
@@ -226,6 +224,8 @@ class BtnId(FieldId):
         self.HIDE = self.NewId(u'hide')
         self.IMPORT = self.NewId(u'import')
         self.MODE = self.NewId(u'mode')
+        self.NEXT = self.NewId(u'next')
+        self.PREV = self.NewId(u'prev')
         self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, u'prefiew')
         self.REFRESH = self.AddStaticId(wx.ID_REFRESH, u'refresh')
         self.REMOVE = self.AddStaticId(wx.ID_REMOVE, u'remove')
