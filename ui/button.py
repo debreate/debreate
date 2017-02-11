@@ -564,19 +564,21 @@ def CreateButton(parent, label, btnId=wx.ID_ANY, image=None, size=32, tooltip=No
     if not image:
         image = btnid.GetImage(btnId)
     
-    btn_image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
+    image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
     
-    if image and os.path.isfile(btn_image):
-        btn = CustomButton(parent, btn_image, btnId, name=name, commands=commands,
+    button = None
+    
+    if image and os.path.isfile(image):
+        button = CustomButton(parent, image, btnId, name=name, commands=commands,
                 requireAll=requireAll)
     
     else:
-        btn = Button(parent, btnId, label, name=name, commands=commands,
+        button = Button(parent, btnId, label, name=name, commands=commands,
                 requireAll=requireAll)
     
     if not tooltip:
         tooltip = label
     
-    btn.SetToolTipString(tooltip)
+    button.SetToolTipString(tooltip)
     
-    return btn
+    return button
