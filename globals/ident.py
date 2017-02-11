@@ -225,6 +225,8 @@ class ButtonId(FieldId):
         self.SAVE = self.AddStaticId(wx.ID_SAVE, u'save')
         self.SHORT = self.NewId(u'short')
         self.SRC = self.NewId()
+        self.STAGE = self.NewId()
+        self.TARGET = self.NewId()
         self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, u'zoom')
     
     
@@ -311,10 +313,12 @@ class MenuId(FieldId):
         self.ABOUT = self.AddStaticId(wx.ID_ABOUT)
         self.ACTION = self.NewId()
         self.ALIEN = self.NewId()
+        self.BUILD = self.NewId()
         self.COMPRESS = self.NewId()
         self.DEBUG = self.NewId()
         self.DIST = self.NewId()
         self.EXIT = btnid.EXIT
+        self.EXPAND = self.NewId()
         self.FILE = self.AddStaticId(wx.ID_FILE)
         self.HELP = btnid.HELP
         self.LOG = self.NewId()
@@ -324,6 +328,7 @@ class MenuId(FieldId):
         self.OPTIONS = self.NewId()
         self.PAGE = self.NewId()
         self.QBUILD = self.NewId()
+        self.RENAME = btnid.RENAME
         self.SAVE = btnid.SAVE
         self.SAVEAS = self.AddStaticId(wx.ID_SAVEAS)
         self.THEME = self.NewId()
@@ -331,6 +336,16 @@ class MenuId(FieldId):
         self.UPDATE = self.NewId()
 
 menuid = MenuId()
+
+
+## IDs for panels
+class PanelId(FieldId):
+    def __init__(self):
+        FieldId.__init__(self)
+        
+        self.BACKGROUND = self.NewId()
+
+pnlid = PanelId()
 
 
 ## IDs for choice/selection fields
