@@ -6,7 +6,6 @@ Next Release:
 - List files & folders after opening project same as saved
 
 Priority:
-- Change button images for 'full' & 'short' on copyright page
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Add lintian overrides option
 
