@@ -11,7 +11,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg1"
-   sodipodi:docname="btn-f-round-green.svg"
+   sodipodi:docname="btn-full.svg"
    viewBox="0 0 128 128"
    sodipodi:version="0.32"
    version="1.1"
@@ -19,7 +19,7 @@
    width="128"
    height="128">
   <title
-     id="title4144">Round Green F Button</title>
+     id="title4144">Full Button</title>
   <defs
      id="defs3">
     <linearGradient
@@ -85,8 +85,8 @@
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="46.205426"
-     inkscape:cy="79.151303"
+     inkscape:cx="4.9218486"
+     inkscape:cy="65.449865"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -99,7 +99,7 @@
      inkscape:groupmode="layer"
      transform="translate(-139.00648,-139.42574)">
     <g
-       id="g4174">
+       id="g4151">
       <circle
          id="path1070"
          style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:4.06820154;stroke-linecap:round;stroke-linejoin:round"
@@ -107,13 +107,14 @@
          cy="203.42574"
          r="61.9659" />
       <g
-         id="flowRoot4780-3"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:128.36198425px;line-height:125%;font-family:'Droid Serif';-inkscape-font-specification:'Droid Serif Bold';letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         transform="translate(171.23594,152.06823)">
+         id="flowRoot4780"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="translate(173.09398,159.91566)">
         <path
-           id="path4172"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Droid Serif';-inkscape-font-specification:'Droid Serif Bold';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 1.9990808,100.71545 0,-6.831767 2.8204537,0 q 1.3788885,0 2.9458073,-0.250707 1.6295955,-0.313384 2.9458072,-1.190859 1.378889,-0.877474 2.256363,-2.50707 0.940151,-1.629595 0.940151,-4.387372 l 0,-44.876553 -11.4071682,0 0,-8.774745 11.4071682,0 0,-4.763433 q 0,-5.954291 1.504242,-10.592371 1.566919,-4.700756 4.763433,-7.8972705 3.259191,-3.259191 8.210655,-4.9514633 4.951463,-1.6922722 11.720552,-1.6922722 6.204998,0 10.341664,0.752121 4.136665,0.6894442 6.581058,2.005656 2.444394,1.253535 3.447222,2.9458072 1.065504,1.6922723 1.065504,3.6979288 0,4.324695 -3.948635,6.330351 -3.885958,2.005656 -11.845906,2.005656 0,-1.566918 -0.313383,-3.384544 -0.313384,-1.817626 -1.065505,-3.384545 -0.752121,-1.566918 -2.005656,-2.569747 -1.190858,-1.0655043 -3.008484,-1.0655043 -1.566919,0 -2.6951,0.8774743 -1.128182,0.814798 -1.880303,2.695101 -0.689444,1.817625 -1.002828,4.763433 -0.313384,2.945807 -0.313384,7.207826 l 0,7.019796 17.674844,0 0,8.774745 -17.674844,0 0,44.876553 q 0,2.757777 0.877475,4.387372 0.940151,1.629596 2.256363,2.50707 1.378888,0.877475 2.945807,1.190859 1.629596,0.250707 3.008484,0.250707 l 6.016968,0 0,6.831767 -46.5688252,0 z" />
+           id="path4187"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 2.5,74.201328 c 0,5.6975 4.6225,10.32 10.32,10.32 5.6975,0 10.32,-4.6225 10.32,-10.32 l 0,-20.1025 20.9625,0 c 4.4075,0 8.0625,-3.655 8.0625,-8.17 0,-4.4075 -3.655,-8.0625 -8.0625,-8.0625 l -20.9625,0 0,-18.705 25.9075,0 c 4.515,0 8.2775,-3.7625 8.2775,-8.385 0,-4.5149999 -3.7625,-8.2774999 -8.2775,-8.2774999 l -37.41,0 c -5.9125,0 -9.1375,3.225 -9.1375,9.1374999 l 0,62.565 z"
+           inkscape:connector-curvature="0" />
       </g>
       <path
          id="path1713"
@@ -138,13 +139,14 @@
             <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Round Green F Button</dc:title>
+        <dc:title>Full Button</dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Benji Park/Jordan Irwin</dc:title>
+            <dc:title>Benji Park / Jordan Irwin</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:source>https://openclipart.org/detail/26193/button-green</dc:source>
+        <dc:source></dc:source>
+        <dc:description>Button base: https://openclipart.org/detail/26193/button-green</dc:description>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">

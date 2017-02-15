@@ -11,7 +11,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg1"
-   sodipodi:docname="btn-mode.svg"
+   sodipodi:docname="btn-help.svg"
    viewBox="0 0 128 128"
    sodipodi:version="0.32"
    version="1.1"
@@ -19,21 +19,9 @@
    width="128"
    height="128">
   <title
-     id="title4154">Mode Button</title>
+     id="title4154">Help Button</title>
   <defs
      id="defs3">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient4183">
-      <stop
-         style="stop-color:#000000;stop-opacity:1;"
-         offset="0"
-         id="stop4185" />
-      <stop
-         style="stop-color:#000000;stop-opacity:0;"
-         offset="1"
-         id="stop4187" />
-    </linearGradient>
     <linearGradient
        id="linearGradient1697">
       <stop
@@ -83,24 +71,6 @@
          style="stop-color:#ffffff;stop-opacity:0"
          offset="1" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4183"
-       id="linearGradient4229"
-       gradientUnits="userSpaceOnUse"
-       x1="157.8829"
-       y1="191.41519"
-       x2="189.95255"
-       y2="191.41519" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4183"
-       id="linearGradient4242"
-       gradientUnits="userSpaceOnUse"
-       x1="157.8829"
-       y1="191.41519"
-       x2="189.95255"
-       y2="191.41519" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -110,13 +80,13 @@
      pagecolor="#ffffff"
      inkscape:window-maximized="1"
      inkscape:window-width="1600"
-     inkscape:zoom="2.8284271"
+     inkscape:zoom="4"
      inkscape:window-x="1366"
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="-58.706243"
-     inkscape:cy="109.54478"
+     inkscape:cx="-3.288893"
+     inkscape:cy="69.492961"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -124,48 +94,13 @@
      fit-margin-right="0"
      fit-margin-bottom="0" />
   <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="hidden text"
-     style="display:none"
-     sodipodi:insensitive="true">
-    <flowRoot
-       transform="matrix(1.1517094,0,0,1.1517094,-169.79332,-178.22855)"
-       style="font-style:normal;font-weight:normal;font-size:111.45344543px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.32142854px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       id="flowRoot4217"
-       xml:space="preserve"><flowRegion
-         style="fill:url(#linearGradient4229);fill-opacity:1;stroke-width:2.32142854px"
-         id="flowRegion4219"><rect
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:5.38903046px;stroke-opacity:1"
-           y="132.9073"
-           x="164.90353"
-           height="195.74013"
-           width="236.83858"
-           id="rect4221" /></flowRegion><flowPara
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.32142854px;stroke-opacity:1"
-         id="flowPara4223">A</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot4234"
-       style="font-style:normal;font-weight:normal;font-size:111.45344543px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.32142854px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(1.1517094,0,0,1.1517094,-181.32807,-178.22855)"><flowRegion
-         id="flowRegion4236"
-         style="fill:url(#linearGradient4242);fill-opacity:1;stroke-width:2.32142854px"><rect
-           id="rect4238"
-           width="236.83858"
-           height="195.74013"
-           x="164.90353"
-           y="132.9073"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:5.38903046px;stroke-opacity:1" /></flowRegion><flowPara
-         id="flowPara4240"
-         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.32142854px;stroke-opacity:1">M</flowPara></flowRoot>  </g>
-  <g
      id="layer1"
      inkscape:label="Main"
      inkscape:groupmode="layer"
      transform="translate(-138.99649,-139.37474)"
      style="display:inline">
     <g
-       id="g4185">
+       id="g4171">
       <circle
          inkscape:label="Background"
          style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:4.06820154;stroke-linecap:round;stroke-linejoin:round"
@@ -224,13 +159,13 @@
          x="138.99649"
          y="139.37474" />
       <g
-         id="flowRoot4234-9"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         transform="translate(154.05774,159.17357)">
+         id="flowRoot4154"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+         transform="translate(132.58524,114.45599)">
         <path
-           id="path4191"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 2.875,76.074922 c 0,5.2675 4.3,9.5675 9.675,9.5675 5.2675,0 9.5675,-4.3 9.5675,-9.5675 l 0,-46.1175 0.645,0 c 0.215,1.3975 0.5375,2.9025 0.86,4.4075 0.5375,2.58 1.505,6.1275 2.6875,9.5675 l 12.1475,34.5075 c 1.3975,4.085 5.375,7.2025 10.105,7.2025 4.6225,0 8.7075,-3.1175 10.105,-7.2025 l 12.04,-34.5075 c 1.1825,-3.44 2.15,-6.88 2.6875,-9.5675 l 0.86,-4.4075 0.645,0 0,45.6875 c 0,5.4825 4.515,9.9975 9.9975,9.9975 5.59,0 10.105,-4.515 10.105,-9.9975 l 0,-57.62 c 0,-8.3850001 -6.88,-15.2650001 -15.265,-15.2650001 -6.665,0 -12.47,4.3 -14.5125,10.2125001 l -12.7925,36.6575 c -1.075,3.01 -1.6125,5.375 -2.0425,7.2025 l -0.5375,3.01 -0.645,0 -0.5375,-3.01 c -0.3225,-1.8275 -0.9675,-4.3 -1.935,-7.2025 L 33.9425,13.402422 C 31.7925,7.1674219 25.88,2.7599219 18.8925,2.7599219 c -8.815,0 -16.0175,7.2025 -16.0175,16.0175001 l 0,57.2975 z"
+           id="path4163"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
+           d="m 41.5475,64.785 c 0,5.0525 4.1925,9.245 9.245,9.245 3.7625,0 6.88,-2.15 8.385,-5.375 1.935,-4.1925 5.2675,-6.235 10.4275,-6.235 6.45,0 9.89,3.5475 9.89,8.385 0,5.0525 -2.795,7.4175 -9.3525,12.04 -6.9875,4.945 -10.32,8.2775 -10.32,14.2975 0,6.02 4.8375,7.6325 8.815,7.6325 3.225,0 6.3425,-0.645 8.6,-3.655 C 80.0325,97.3575 79.28,95.745 86.16,91.015 94.2225,85.425 99.275,81.0175 99.275,69.8375 99.275,55.54 88.6325,46.725 69.82,46.725 c -13.4375,0 -28.2725,6.665 -28.2725,18.06 z m 16.125,56.8675 c 0,5.2675 4.1925,9.46 9.3525,9.46 l 3.01,0 c 5.16,0 9.3525,-4.1925 9.3525,-9.3525 0,-5.2675 -4.1925,-9.46 -9.3525,-9.46 l -3.01,0 c -5.16,0 -9.3525,4.1925 -9.3525,9.3525 z"
            inkscape:connector-curvature="0" />
       </g>
       <path
@@ -260,15 +195,14 @@
             <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Mode Button</dc:title>
-        <dc:source></dc:source>
+        <dc:title>Help Button</dc:title>
+        <dc:source />
         <dc:creator>
           <cc:Agent>
             <dc:title>Benji Park / Jordan Irwin</dc:title>
           </cc:Agent>
         </dc:creator>
         <dc:description>Button base: https://openclipart.org/detail/26191/button-blue</dc:description>
-        <dc:date></dc:date>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
