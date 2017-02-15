@@ -11,7 +11,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg1"
-   sodipodi:docname="btn-refresh.svg"
+   sodipodi:docname="btn-help.svg"
    viewBox="0 0 128 128"
    sodipodi:version="0.32"
    version="1.1"
@@ -19,7 +19,7 @@
    width="128"
    height="128">
   <title
-     id="title4154">Refresh Button</title>
+     id="title4154">Help Button</title>
   <defs
      id="defs3">
     <linearGradient
@@ -80,13 +80,13 @@
      pagecolor="#ffffff"
      inkscape:window-maximized="1"
      inkscape:window-width="1600"
-     inkscape:zoom="1.4142136"
+     inkscape:zoom="4"
      inkscape:window-x="1366"
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="36.412447"
-     inkscape:cy="93.63016"
+     inkscape:cx="-3.288893"
+     inkscape:cy="69.492961"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -159,15 +159,14 @@
          x="138.99649"
          y="139.37474" />
       <g
-         id="flowRoot4319"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:125px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         transform="translate(333.74023,421.30163)">
+         id="flowRoot4154"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+         transform="translate(132.58524,114.45599)">
         <path
-           sodipodi:nodetypes="ccssccscccsccccccccccscccscccsccc"
-           inkscape:connector-curvature="0"
-           id="path4167"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:125px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m -148.52979,-235.41346 c -2.4414,2.40071 -4.31314,5.14729 -5.61523,8.23974 -1.2207,3.01107 -1.83105,6.26628 -1.83105,9.76563 0,3.37728 0.61035,6.57145 1.83105,9.58252 1.22071,3.01107 3.09245,5.75765 5.61523,8.23974 2.23796,2.23796 4.9642,4.06902 8.17872,5.49317 2.76693,1.26139 5.92041,1.89209 9.46045,1.89209 3.54003,0 6.77489,-0.6307 9.70458,-1.89209 3.09245,-1.30209 5.81869,-3.13314 8.17872,-5.49317 2.44141,-2.40071 4.31315,-5.14729 5.61523,-8.23974 1.2207,-3.01107 1.83105,-6.20524 1.83105,-9.58252 0,-3.49935 -0.61035,-6.75456 -1.83105,-9.76563 -1.26139,-3.09245 -3.15348,-5.83903 -5.67627,-8.23974 l 0,8.69295 c -2.29741,4.71389 -10.25838,4.75102 -12.51221,0 l 0,-25.53866 c 0.61789,-3.8547 2.8352,-5.60107 6.04248,-6.04248 l 25.763532,0 c 3.745186,1.66144 4.01659,10.97293 0,12.51221 l -8.917822,0 c 3.946938,4.1097 6.876625,8.4432 8.78906,13.00049 1.993815,4.80143 2.990722,9.92839 2.990722,15.38086 0,5.3304 -0.996907,10.39632 -2.990722,15.19775 -1.912435,4.55729 -4.842122,8.89079 -8.78906,13.00049 -3.86556,3.66211 -8.15837,6.57145 -12.87842,8.72803 -4.63867,1.95313 -9.70459,2.92969 -15.19775,2.92969 -5.49317,0 -10.55909,-0.97656 -15.19776,-2.92969 -4.72005,-2.15658 -9.01286,-5.06592 -12.87842,-8.72803 -3.94694,-4.1097 -6.87663,-8.4432 -8.78906,-13.00049 -1.99381,-4.80143 -2.99072,-9.86735 -2.99072,-15.19775 0,-5.45247 0.99691,-10.57943 2.99072,-15.38086 1.91243,-4.55729 4.84212,-8.89079 8.78906,-13.00049 5.52485,-2.19928 12.24775,4.57603 10.31494,10.37598 z" />
+           id="path4163"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
+           d="m 41.5475,64.785 c 0,5.0525 4.1925,9.245 9.245,9.245 3.7625,0 6.88,-2.15 8.385,-5.375 1.935,-4.1925 5.2675,-6.235 10.4275,-6.235 6.45,0 9.89,3.5475 9.89,8.385 0,5.0525 -2.795,7.4175 -9.3525,12.04 -6.9875,4.945 -10.32,8.2775 -10.32,14.2975 0,6.02 4.8375,7.6325 8.815,7.6325 3.225,0 6.3425,-0.645 8.6,-3.655 C 80.0325,97.3575 79.28,95.745 86.16,91.015 94.2225,85.425 99.275,81.0175 99.275,69.8375 99.275,55.54 88.6325,46.725 69.82,46.725 c -13.4375,0 -28.2725,6.665 -28.2725,18.06 z m 16.125,56.8675 c 0,5.2675 4.1925,9.46 9.3525,9.46 l 3.01,0 c 5.16,0 9.3525,-4.1925 9.3525,-9.3525 0,-5.2675 -4.1925,-9.46 -9.3525,-9.46 l -3.01,0 c -5.16,0 -9.3525,4.1925 -9.3525,9.3525 z"
+           inkscape:connector-curvature="0" />
       </g>
       <path
          inkscape:label="Shine"
@@ -196,7 +195,7 @@
             <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Refresh Button</dc:title>
+        <dc:title>Help Button</dc:title>
         <dc:source />
         <dc:creator>
           <cc:Agent>

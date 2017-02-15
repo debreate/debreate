@@ -19,7 +19,7 @@
    width="128"
    height="128">
   <title
-     id="title4154">Round Blue Button</title>
+     id="title4154">Mode Button</title>
   <defs
      id="defs3">
     <linearGradient
@@ -115,8 +115,8 @@
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="65.532428"
-     inkscape:cy="82.627176"
+     inkscape:cx="-58.706243"
+     inkscape:cy="109.54478"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -165,7 +165,7 @@
      transform="translate(-138.99649,-139.37474)"
      style="display:inline">
     <g
-       id="g4170">
+       id="g4185">
       <circle
          inkscape:label="Background"
          style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:4.06820154;stroke-linecap:round;stroke-linejoin:round"
@@ -224,13 +224,14 @@
          x="138.99649"
          y="139.37474" />
       <g
-         id="flowRoot4277"
-         style="font-style:normal;font-weight:normal;font-size:111.45344543px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.95510199;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-         transform="matrix(1.0470086,0,0,1.0470086,-20.029038,-9.560354)">
+         id="flowRoot4234-9"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="translate(154.05774,159.17357)">
         <path
-           id="path4292"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.95510199;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-           d="m 175.84284,162.74933 16.38061,0 20.73426,55.29136 20.8431,-55.29136 16.38061,0 0,81.25 -10.72086,0 0,-71.34544 -20.95194,55.72672 -11.04739,0 -20.95194,-55.72672 0,71.34544 -10.66645,0 0,-81.25 z" />
+           id="path4191"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 2.875,76.074922 c 0,5.2675 4.3,9.5675 9.675,9.5675 5.2675,0 9.5675,-4.3 9.5675,-9.5675 l 0,-46.1175 0.645,0 c 0.215,1.3975 0.5375,2.9025 0.86,4.4075 0.5375,2.58 1.505,6.1275 2.6875,9.5675 l 12.1475,34.5075 c 1.3975,4.085 5.375,7.2025 10.105,7.2025 4.6225,0 8.7075,-3.1175 10.105,-7.2025 l 12.04,-34.5075 c 1.1825,-3.44 2.15,-6.88 2.6875,-9.5675 l 0.86,-4.4075 0.645,0 0,45.6875 c 0,5.4825 4.515,9.9975 9.9975,9.9975 5.59,0 10.105,-4.515 10.105,-9.9975 l 0,-57.62 c 0,-8.3850001 -6.88,-15.2650001 -15.265,-15.2650001 -6.665,0 -12.47,4.3 -14.5125,10.2125001 l -12.7925,36.6575 c -1.075,3.01 -1.6125,5.375 -2.0425,7.2025 l -0.5375,3.01 -0.645,0 -0.5375,-3.01 c -0.3225,-1.8275 -0.9675,-4.3 -1.935,-7.2025 L 33.9425,13.402422 C 31.7925,7.1674219 25.88,2.7599219 18.8925,2.7599219 c -8.815,0 -16.0175,7.2025 -16.0175,16.0175001 l 0,57.2975 z"
+           inkscape:connector-curvature="0" />
       </g>
       <path
          inkscape:label="Shine"
@@ -259,13 +260,15 @@
             <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Round Blue Button</dc:title>
-        <dc:source>https://openclipart.org/detail/26191/button-blue</dc:source>
+        <dc:title>Mode Button</dc:title>
+        <dc:source></dc:source>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Benji Park</dc:title>
+            <dc:title>Benji Park / Jordan Irwin</dc:title>
           </cc:Agent>
         </dc:creator>
+        <dc:description>Button base: https://openclipart.org/detail/26191/button-blue</dc:description>
+        <dc:date></dc:date>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
