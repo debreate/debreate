@@ -4,6 +4,7 @@ Next Release:
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
 - Set field IDs for all pages to work with 'Reset' method
 - List files & folders after opening project same as saved
+- Add option to copy symbolic links directly instead of reference
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
