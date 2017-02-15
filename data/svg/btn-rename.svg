@@ -19,7 +19,7 @@
    width="128"
    height="128">
   <title
-     id="title4154">Round Blue Button</title>
+     id="title4154">Rename Button</title>
   <defs
      id="defs3">
     <linearGradient
@@ -106,8 +106,8 @@
      showgrid="false"
      borderopacity="1.0"
      inkscape:current-layer="layer1"
-     inkscape:cx="-0.9058656"
-     inkscape:cy="116.8986"
+     inkscape:cx="-7.3422493"
+     inkscape:cy="115.19971"
      inkscape:window-height="949"
      inkscape:pageopacity="0.0"
      fit-margin-top="0"
@@ -142,7 +142,7 @@
      transform="translate(-138.99649,-139.37474)"
      style="display:inline">
     <g
-       id="g4165">
+       id="g4180">
       <circle
          inkscape:label="Background"
          style="fill:url(#linearGradient1076);stroke:url(#linearGradient1077);stroke-width:4.06820154;stroke-linecap:round;stroke-linejoin:round"
@@ -201,13 +201,14 @@
          x="138.99649"
          y="139.37474" />
       <g
-         id="flowRoot4162"
-         style="font-style:normal;font-weight:normal;font-size:111.45344543px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.86827458;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-         transform="matrix(1.1517094,0,0,1.1517094,-30.796834,-38.853815)">
+         id="flowRoot4217-9"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         transform="translate(162.83376,189.37669)">
         <path
-           id="path4232"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.86827458;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-           d="m 202.99874,173.57904 -14.91126,40.43453 29.87693,0 -14.96567,-40.43453 z m -6.20396,-10.82971 12.46233,0 30.96534,81.25 -11.42834,0 -7.4012,-20.8431 -36.62508,0 -7.40121,20.8431 -11.59159,0 31.01975,-81.25 z" />
+           id="path4199"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:107.5px;line-height:100%;font-family:Jellee;-inkscape-font-specification:'Jellee, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 3.2364844,46.086797 c 0,5.16 4.1925,9.3525 9.3524996,9.3525 4.3,0 7.8475,-2.6875 9.03,-6.5575 l 3.5475,-11.5025 29.24,0 3.5475,11.2875 c 1.29,3.87 4.945,6.7725 9.3525,6.7725 5.375,0 9.7825,-4.4075 9.7825,-9.7825 0,-1.075 -0.215,-2.15 -0.5375,-3.225 l -20.21,-58.48 c -2.2575,-6.665 -8.6,-11.395 -16.0175,-11.395 -7.525,0 -13.8675,4.73 -16.125,11.395 l -20.4249996,59.125 c -0.3225,0.9675 -0.5375,1.935 -0.5375,3.01 z m 26.9824996,-24.6175 5.16,-16.4475001 c 1.6125,-5.16000003 2.58,-8.9225 3.7625,-13.6525 l 1.29,0 c 1.075,4.73 2.0425,8.49249997 3.7625,13.6525 l 5.16,16.4475001 -19.135,0 z"
+           inkscape:connector-curvature="0" />
       </g>
       <path
          inkscape:label="Shine"
@@ -236,13 +237,14 @@
             <dc:title>OpenClipart Library</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:title>Round Blue Button</dc:title>
-        <dc:source>https://openclipart.org/detail/26191/button-blue</dc:source>
+        <dc:title>Rename Button</dc:title>
+        <dc:source></dc:source>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Benji Park</dc:title>
+            <dc:title>Benji Park / Jordan Irwin</dc:title>
           </cc:Agent>
         </dc:creator>
+        <dc:description>Button base: https://openclipart.org/detail/26191/button-blue</dc:description>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
