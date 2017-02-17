@@ -319,11 +319,6 @@ class Page(WizardPage):
         file_list = []
         item_count = self.lst_files.GetItemCount()
         
-        if item_count != len(self.lst_files.sources_list):
-            warn_msg1 = GT(u'Exporting file list:')
-            warn_msg2 = GT(u'Length of file list & source directories does not match')
-            Logger.Warn(__name__, u'{}: {}'.format(warn_msg1, warn_msg2))
-        
         if item_count > 0:
             count = 0
             while count < item_count:
