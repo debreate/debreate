@@ -16,6 +16,12 @@ from globals.paths      import PATH_logs
 from globals.strings    import IsString
 
 
+## Verbosity levels at which the logger will output text
+class LogLevel:
+    # Logging levels
+    INFO, WARN, ERROR, DEBUG, TEST = range(5)
+
+
 ## A log class for outputting messages
 #
 #  TODO: Add 'quiet' (0) log level.
@@ -23,15 +29,12 @@ from globals.strings    import IsString
 #  A log that will output messages to the terminal &
 #    a log text file.
 class DebreateLogger:
-    # Logging levels
-    INFO, WARN, ERROR, DEBUG, TEST = range(5)
-    
     LogLevelList = {
-        INFO: u'info',
-        WARN: u'warn',
-        ERROR: u'error',
-        DEBUG: u'debug',
-        TEST: u'test',
+        LogLevel.INFO: u'info',
+        LogLevel.WARN: u'warn',
+        LogLevel.ERROR: u'error',
+        LogLevel.DEBUG: u'debug',
+        LogLevel.TEST: u'test',
     }
     
     ## Constructor
@@ -40,7 +43,7 @@ class DebreateLogger:
     #    \b \e int|str : The level at which messages will be output (default is 2 (ERROR))
     #  \param logsPath
     #    \b \e str : The file to which messages will be written
-    def __init__(self, level=ERROR, logsPath=PATH_logs):
+    def __init__(self, level=LogLevel.ERROR, logsPath=PATH_logs):
         ## The level at which to output messages
         self.LogLevel = level
         
@@ -267,4 +270,4 @@ Logger = DebreateLogger()
 #  \return
 #    <b><i>True</i></b> if logging level is 'debug'
 def DebugEnabled():
-    return Logger.GetLogLevel() >= Logger.DEBUG
+    return Logger.GetLogLevel() >= LogLevel.DEBUG
