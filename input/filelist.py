@@ -24,8 +24,6 @@ from input.list         import ListCtrl
 
 ## List control intended for managing files
 #
-#  TODO: Derive FileList from this
-#
 #  \param hlExex
 #    If \b \e True, will highlight executable files with red text
 class BasicFileList(ListCtrl, TextEditMixin):
@@ -235,13 +233,12 @@ class BasicFileList(ListCtrl, TextEditMixin):
 ## An editable list
 #
 #  Creates a ListCtrl class in which every column's text can be edited
-class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
-    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr, defaultValue=None,
-            required=False, outLabel=None):
+class FileList(BasicFileList, wx.FileDropTarget):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        ListCtrl.__init__(self, parent, win_id, style=wx.LC_REPORT, name=name,
+        BasicFileList.__init__(self, parent, win_id, True, pos, size, name=name,
                 defaultValue=defaultValue, required=required, outLabel=outLabel)
-        TextEditMixin.__init__(self)
         wx.FileDropTarget.__init__(self)
         
         ListCtrl.SetDropTarget(self, self)
@@ -584,8 +581,9 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
 
 ## FileList that notifies main window to mark project dirty
 class FileListESS(FileList, EssentialField):
-    def __init__(self, parent, win_id=wx.ID_ANY, name=wx.ListCtrlNameStr, defaultValue=None,
-            required=False, outLabel=None):
+    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+            name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        FileList.__init__(self, parent, win_id, name, defaultValue, required, outLabel)
+        FileList.__init__(self, parent, win_id, pos, size, name, defaultValue, required,
+                outLabel)
         EssentialField.__init__(self)
