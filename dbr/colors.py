@@ -22,3 +22,6 @@ COLOR_error = Color(255, 0, 0)
 
 ## Text color of executable files (red)
 COLOR_executable = COLOR_error
+
+## Text color of symbolic links (green)
+COLOR_link = Color(76, 153, 0)
