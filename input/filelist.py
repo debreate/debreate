@@ -39,11 +39,11 @@ class BasicFileList(ListCtrl):
         # Highlights executables in red if 'True'
         self.HLExes = hlExes
         
-        ## List of globals.fileio.FileItem instances
+        ## List of globals.fileitem.FileItem instances
         self.Files = []
     
     
-    ## Adds new globals.fileio.FileItem instance to end of list
+    ## Adds new globals.fileitem.FileItem instance to end of list
     #
     #  \param item
     #    Either the path to a file or a FileItem instance
@@ -55,7 +55,7 @@ class BasicFileList(ListCtrl):
         return self.Insert(self.GetCount(), item, target)
     
     
-    ## Appends new globals.fileio.FileItem instance to end of list
+    ## Appends new globals.fileitem.FileItem instance to end of list
     #
     #  Alias of input.list.BasicFileList.Add
     #
@@ -120,7 +120,7 @@ class BasicFileList(ListCtrl):
         return exe_list
     
     
-    ## Retrieves globals.fileio.FileItem instance
+    ## Retrieves globals.fileitem.FileItem instance
     #
     #  \param item
     #    Can be item index, string path, or FileItem instance
@@ -191,7 +191,7 @@ class BasicFileList(ListCtrl):
         return tuple(targets)
     
     
-    ## Inserts new globals.fileio.FileItem instance to list at given index
+    ## Inserts new globals.fileitem.FileItem instance to list at given index
     #
     #  \param index
     #    \b \e Integer index at wich to insert itme
