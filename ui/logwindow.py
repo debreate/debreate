@@ -14,7 +14,7 @@ from dbr.font               import GetMonospacedFont
 from dbr.language           import GT
 from dbr.log                import Logger
 from globals.application    import APP_logo
-from globals.fileio         import FileItem
+from globals.fileitem       import FileItem
 from globals.ident          import btnid
 from globals.ident          import menuid
 from globals.paths          import PATH_logs

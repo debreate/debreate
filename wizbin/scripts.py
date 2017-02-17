@@ -16,7 +16,7 @@ from globals.errorcodes import dbrerrno
 from globals.fileio     import GetFiles
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
-from globals.filetype   import FileItem
+from globals.fileitem   import FileItem
 from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import page_ids
