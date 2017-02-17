@@ -15,7 +15,7 @@ from dbr.colors         import COLOR_link
 from dbr.colors         import COLOR_warn
 from dbr.language       import GT
 from dbr.log            import Logger
-from globals.fileio     import FileItem
+from globals.filetype   import FileItem
 from globals.mime       import GetFileMimeType
 from globals.paths      import ConcatPaths
 from globals.strings    import IsString
