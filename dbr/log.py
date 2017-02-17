@@ -13,6 +13,7 @@ from globals.dateinfo   import GetTime
 from globals.dateinfo   import dtfmt
 from globals.fileio     import AppendFile
 from globals.paths      import PATH_logs
+from globals.strings    import GetModuleString
 from globals.strings    import IsString
 
 
@@ -118,7 +119,8 @@ class DebreateLogger:
     #  \param level
     #    Level at which to display the message
     #  \param module
-    #    Name of the script/module where the message originates
+    #    Name of the script/module or the globals.moduleaccess.ModuleAccessCtrl
+    #    instance where the message originates
     #  \param message
     #    Message to display
     #  \param newline
@@ -127,6 +129,10 @@ class DebreateLogger:
     #    Stream to which message should be output (stdout/stderr)
     def LogMessage(self, level, module, message, details=[], newline=False, pout=sys.stdout):
         level = self.CheckLogLevel(level)
+        
+        # Use the object to retrieve module string
+        if not IsString(module):
+            module = GetModuleString(module)
         
         if (level in self.LogLevelList) and (level <= self.LogLevel):
             l_string = self.LogLevelList[level].upper()
