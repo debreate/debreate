@@ -20,7 +20,7 @@ from globals.ident      import pgid
 from globals.paths      import ConcatPaths
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
-from input.list         import FileListESS
+from input.filelist     import FileListESS
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
 from ui.button          import CreateButton

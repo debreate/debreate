@@ -18,7 +18,7 @@ from globals.ident      import inputid
 from globals.ident      import pgid
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
-from input.list         import BasicFileList
+from input.filelist     import BasicFileList
 from input.markdown     import MarkdownDialog
 from input.pathctrl     import PathCtrl
 from input.text         import TextAreaPanelESS
