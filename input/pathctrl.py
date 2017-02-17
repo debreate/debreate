@@ -64,7 +64,7 @@ class PathCtrl(TextArea):
     
     ## If using 'Warn', changed background to red if path doesn't exists on system
     def SetPathAvailable(self):
-        # input.ifield.InputField calls 'Reset' before PathCtrl is constructed
+        # fields.ifield.InputField calls 'Reset' before PathCtrl is constructed
         try:
             if self.Warn:
                 if os.path.isdir(self.GetValue()):
