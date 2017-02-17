@@ -141,9 +141,6 @@ def GetFiles(path, flag=None):
 #  \return
 #    \b \e Float formatted timestamp
 def GetTimestamp(path):
-    if isinstance(path, FileItem):
-        path = path.GetPath()
-    
     return os.stat(path).st_mtime
 
 
