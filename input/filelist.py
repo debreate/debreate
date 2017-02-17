@@ -194,7 +194,7 @@ class BasicFileList(ListCtrl):
     ## Inserts new globals.fileitem.FileItem instance to list at given index
     #
     #  \param index
-    #    \b \e Integer index at wich to insert itme
+    #    \b \e Integer index at which to insert item
     #  \param item
     #    Can be \b \e Integer index, string path, or FileName instance
     #  \param target
@@ -567,7 +567,7 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         self.SetItemTextColour(row, self.DEFAULT_TEXT_COLOR)
     
     
-    ## Sorts listed items in target column alphabetially
+    ## Sorts listed items in target column alphabetically
     #
     #  TODO: Sort listed items
     def Sort(self):
