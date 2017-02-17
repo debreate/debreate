@@ -25,3 +25,6 @@ COLOR_executable = COLOR_error
 
 ## Text color of symbolic links (green)
 COLOR_link = Color(76, 153, 0)
+
+## Text color of directories (blue)
+COLOR_dir = Color(0, 0, 255)
