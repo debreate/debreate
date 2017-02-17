@@ -40,7 +40,7 @@ class BasicFileList(ListCtrl):
         self.HLExes = hlExes
         
         ## List of globals.fileitem.FileItem instances
-        self.Files = []
+        self.FileItems = []
     
     
     ## Adds new globals.fileitem.FileItem instance to end of list
@@ -79,7 +79,7 @@ class BasicFileList(ListCtrl):
         item = self.GetIndex(item)
         
         if self.DeleteItem(item):
-            self.Files.Pop(item)
+            self.FileItems.Pop(item)
             
             return True
         
@@ -104,7 +104,7 @@ class BasicFileList(ListCtrl):
     def GetBasenames(self):
         basenames = []
         
-        for FILE in self.Files:
+        for FILE in self.FileItems:
             basenames.append(FILE.GetBasename())
         
         return tuple(basenames)
@@ -113,7 +113,7 @@ class BasicFileList(ListCtrl):
     ## Retrieves all executables
     def GetExecutables(self):
         exe_list = []
-        for FILE in self.Files:
+        for FILE in self.FileItems:
             if FILE.IsExecutable():
                 exe_list.append(FILE.GetPath())
         
@@ -128,14 +128,14 @@ class BasicFileList(ListCtrl):
     #    \b \e FileItem instance
     def GetFileItem(self, item):
         if IsString(item):
-            for FILE in self.Files:
+            for FILE in self.FileItems:
                 if FILE.GetPath() == item:
                     item = FILE
                     
                     break
         
         elif isinstance(item, int):
-            item = self.Files[item]
+            item = self.FileItems[item]
         
         if isinstance(item, FileItem):
             return item
@@ -150,7 +150,7 @@ class BasicFileList(ListCtrl):
     def GetIndex(self, item):
         item = self.GetFileItem(item)
         
-        return self.Files.index(item)
+        return self.FileItems.index(item)
     
     
     ## Retrieves full path of file
@@ -164,7 +164,7 @@ class BasicFileList(ListCtrl):
     ## Retrieves all file paths
     def GetPaths(self):
         paths = []
-        for FILE in self.Files:
+        for FILE in self.FileItems:
             paths.append(FILE.GetPath())
         
         return tuple(paths)
@@ -185,7 +185,7 @@ class BasicFileList(ListCtrl):
     def GetTargets(self):
         targets = []
         
-        for FILE in self.Files:
+        for FILE in self.FileItems:
             targets.append(FILE.GetTarget())
         
         return tuple(targets)
@@ -206,12 +206,12 @@ class BasicFileList(ListCtrl):
         
         self.InsertStringItem(index, item.GetPath())
         
-        self.Files.insert(index, item)
+        self.FileItems.insert(index, item)
         
         if self.HLExes:
             self.SetItemTextColour(index, wx.RED)
         
-        return item in self.Files
+        return item in self.FileItems
     
     
     ## Removes an item from the file list
@@ -224,7 +224,7 @@ class BasicFileList(ListCtrl):
     ## Resets the list to default value (empty)
     def Reset(self):
         if ListCtrl.Reset(self):
-            self.Files = []
+            self.FileItems = []
             
             return True
         
