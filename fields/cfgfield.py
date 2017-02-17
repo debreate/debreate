@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package input.cfgfield
+## \package fields.cfgfield
 #  
 #  Fields that affect settings
 

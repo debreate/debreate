@@ -8,8 +8,8 @@
 
 import wx
 
+from fields.cfgfield    import ConfigField
 from fields.cmdfield    import CommandField
-from input.cfgfield     import ConfigField
 from input.essential    import EssentialField
 from wiz.helper         import FieldEnabled
 
