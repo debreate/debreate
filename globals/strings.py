@@ -63,13 +63,12 @@ def IsString(text):
 #    Instance to be converted to string
 #  \return
 #    Compatible string
-def GetString(item):
-    if not IsString(item):
-        if sys.version_info[0] <= 2:
-            item = unicode(item)
-        
-        else:
-            item = str(item)
+def ToString(item):
+    if sys.version_info[0] <= 2:
+        item = unicode(item)
+    
+    else:
+        item = str(item)
     
     return item
 
