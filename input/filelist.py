@@ -23,10 +23,29 @@ from input.list         import ListCtrl
 
 
 ## List control intended for managing files
-#
-#  \param hlExex
-#    If \b \e True, will highlight executable files with red text
 class BasicFileList(ListCtrl, TextEditMixin):
+    ## Constructor
+    #
+    #  \param parent
+    #    <b><i>wx.Window</i></b> parent instance
+    #  \param win_id
+    #    <b><i>Integer</i></b> identifier
+    #  \param hlExes
+    #    If <b><i>True</i></b>, will highlight executable files with red text
+    #  \param pos
+    #    <b><i>wx.Window</i></b> position
+    #  \param size
+    #    <b><i>wx.Window</i></b> size
+    #  \param style
+    #    <b><i>wx.ListCtrl</i></b> style
+    #  \param name
+    #    <b><i>wx.Window</i></b> name attribute
+    #  \param defaultValue
+    #    \see input.ifield.InputField.Default
+    #  \param required
+    #    \see input.ifield.InputField.Required
+    #  \param outLabel
+    #    \see input.ifield.InputField.OutputLabel
     def __init__(self, parent, win_id=wx.ID_ANY, hlExes=False, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
@@ -230,10 +249,26 @@ class BasicFileList(ListCtrl, TextEditMixin):
         return False
 
 
-## An editable list
-#
-#  Creates a ListCtrl class in which every column's text can be edited
+## An editable list of files
 class FileList(BasicFileList, wx.FileDropTarget):
+    ## Constructor
+    #
+    #  \param parent
+    #    <b><i>wx.Window</i></b> parent instance
+    #  \param win_id
+    #    <b><i>Integer</i></b> identifier
+    #  \param pos
+    #    <b><i>wx.Window</i></b> position
+    #  \param size
+    #    <b><i>wx.Window</i></b> size
+    #  \param name
+    #    <b><i>wx.Window</i></b> name attribute
+    #  \param defaultValue
+    #    \see input.ifield.InputField.Default
+    #  \param required
+    #    \see input.ifield.InputField.Required
+    #  \param outLabel
+    #    \see input.ifield.InputField.OutputLabel
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
@@ -581,6 +616,24 @@ class FileList(BasicFileList, wx.FileDropTarget):
 
 ## FileList that notifies main window to mark project dirty
 class FileListESS(FileList, EssentialField):
+    ## Constructor
+    #
+    #  \param parent
+    #    <b><i>wx.Window</i></b> parent instance
+    #  \param win_id
+    #    <b><i>Integer</i></b> identifier
+    #  \param pos
+    #    <b><i>wx.Window</i></b> position
+    #  \param size
+    #    <b><i>wx.Window</i></b> size
+    #  \param name
+    #    <b><i>wx.Window</i></b> name attribute
+    #  \param defaultValue
+    #    \see input.ifield.InputField.Default
+    #  \param required
+    #    \see input.ifield.InputField.Required
+    #  \param outLabel
+    #    \see input.ifield.InputField.OutputLabel
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
