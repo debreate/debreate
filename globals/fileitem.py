@@ -33,6 +33,11 @@ class FileItem:
         
         # Timestamp is set at construction
         self.Timestamp = GetTimestamp(self.Path)
+        
+        # Defaults to normal file
+        self.Type = FileType.NORM
+        
+        self.SetType()
     
     
     ## Checks if the file exists on the filesystem
@@ -61,6 +66,11 @@ class FileItem:
     #        Call 'TimestampChanged' to update
     def GetTimestamp(self):
         return self.Timestamp
+    
+    
+    ## Retrieves the file type (normal file, directory, symbolic link, or executable)
+    def GetType(self):
+        return self.Type
     
     
     ## Checks if the file has a target installation directory
@@ -107,6 +117,18 @@ class FileItem:
     ## Sets file's target directory
     def SetTarget(self, target):
         self.Target = target
+    
+    
+    ## Sets file type
+    def SetType(self):
+        if os.path.isdir(self.Path):
+            self.Type = FileType.DIR
+        
+        elif os.path.islink(self.Path):
+            self.Type = FileType.LINK
+        
+        elif os.access(self.Path, os.X_OK):
+            self.Type = FileType.EXEC
     
     
     ## Checks if timestamp has been modified & updates
