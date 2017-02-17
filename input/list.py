@@ -10,6 +10,8 @@ import os, wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from wx.lib.mixins.listctrl import TextEditMixin
 
+from dbr.colors         import COLOR_executable
+from dbr.colors         import COLOR_link
 from dbr.colors         import COLOR_warn
 from dbr.language       import GT
 from dbr.log            import Logger
@@ -943,25 +945,26 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         dirty = False
         for row in range(self.GetItemCount()):
             item_color = self.DEFAULT_BG_COLOR
-            executable = False
+            text_color = self.DEFAULT_TEXT_COLOR
             row_defs = self.GetRowDefs(row)
             
             absolute_filename = u'{}/{}'.format(row_defs[u'source'], row_defs[u'filename'])
             
-            if os.path.isdir(absolute_filename):
-                self.SetItemTextColour(row, self.FOLDER_TEXT_COLOR)
+            if not os.path.exists(absolute_filename):
+                item_color = COLOR_warn
+                dirty = True
             
-            else:
-                if not os.path.isfile(absolute_filename):
-                    item_color = COLOR_warn
-                    dirty = True
-                
-                self.SetItemBackgroundColour(row, item_color)
-                
-                if os.access(absolute_filename, os.X_OK):
-                    executable = True
-                
-                self.SetFileExecutable(row, executable)
+            elif os.path.isdir(absolute_filename):
+                text_color = self.FOLDER_TEXT_COLOR
+            
+            elif self.IsSymlink(row):
+                text_color = COLOR_link
+            
+            elif os.access(absolute_filename, os.X_OK):
+                text_color = COLOR_executable
+            
+            self.SetItemTextColour(row, text_color)
+            self.SetItemBackgroundColour(row, item_color)
         
         return dirty
     
