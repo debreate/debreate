@@ -41,11 +41,11 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #  \param name
     #    <b><i>wx.Window</i></b> name attribute
     #  \param defaultValue
-    #    \see input.ifield.InputField.Default
+    #    \see fields.ifield.InputField.Default
     #  \param required
-    #    \see input.ifield.InputField.Required
+    #    \see fields.ifield.InputField.Required
     #  \param outLabel
-    #    \see input.ifield.InputField.OutputLabel
+    #    \see fields.ifield.InputField.OutputLabel
     def __init__(self, parent, win_id=wx.ID_ANY, hlExe=False, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
@@ -264,11 +264,11 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #  \param name
     #    <b><i>wx.Window</i></b> name attribute
     #  \param defaultValue
-    #    \see input.ifield.InputField.Default
+    #    \see fields.ifield.InputField.Default
     #  \param required
-    #    \see input.ifield.InputField.Required
+    #    \see fields.ifield.InputField.Required
     #  \param outLabel
-    #    \see input.ifield.InputField.OutputLabel
+    #    \see fields.ifield.InputField.OutputLabel
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
@@ -629,11 +629,11 @@ class FileListESS(FileList, EssentialField):
     #  \param name
     #    <b><i>wx.Window</i></b> name attribute
     #  \param defaultValue
-    #    \see input.ifield.InputField.Default
+    #    \see fields.ifield.InputField.Default
     #  \param required
-    #    \see input.ifield.InputField.Required
+    #    \see fields.ifield.InputField.Required
     #  \param outLabel
-    #    \see input.ifield.InputField.OutputLabel
+    #    \see fields.ifield.InputField.OutputLabel
     def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
