@@ -100,3 +100,58 @@ def StringIsVersioned(string):
             return False
     
     return True
+
+
+## Retrieves a class instance's module name string
+#
+#  \param item
+#    Object instance
+#  \param className
+#    If <b><i>True</i></b>, returns class object's name instead of module name
+#  \param full
+#    If <b><i>True</i></b>, return entire module/class string without parsing
+def GetModuleString(item, className=False, full=False):
+    module = ToString(item.__class__)
+    
+    # Strip extra characters
+    if u'\'' in module:
+        module = module[module.index(u'\'')+1:].split(u'\'')[0]
+    
+    if full:
+        return module
+    
+    module = module.split(u'.')
+    
+    if className:
+        return module[-1]
+    
+    return u'.'.join(module[:-1])
+
+
+## Retrieves an instance's method name in the format of "Class.Method"
+#
+#  \param function
+#    Function object
+#  \param includeModule
+#    Prepend module name to string for class methods
+def GetFunctionString(function, includeModule=False):
+    function = ToString(function).strip(u'<>')
+    
+    if function.startswith(u'bound method '):
+        function = function.split(u'<')
+        
+        module = function[1].split(u';')[0]
+        function = function[0].lstrip(u'bound method ').split(u' ')[0]
+        
+        if includeModule:
+            class_name = function.split(u'.')[0]
+            
+            if u'.{}'.format(class_name) in module:
+                module = module.replace(u'.{}'.format(class_name), u'')
+            
+            function = u'{}.{}'.format(module, function)
+    
+    else:
+        function = function.split(u' ')[1]
+    
+    return function
