@@ -28,13 +28,14 @@ from input.list         import ListCtrl
 #
 #  \param hlExex
 #    If \b \e True, will highlight executable files with red text
-class BasicFileList(ListCtrl):
+class BasicFileList(ListCtrl, TextEditMixin):
     def __init__(self, parent, win_id=wx.ID_ANY, hlExes=False, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
         ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name,
                 defaultValue=defaultValue, required=required, outLabel=outLabel)
+        TextEditMixin.__init__(self)
         
         # Highlights executables in red if 'True'
         self.HLExes = hlExes
