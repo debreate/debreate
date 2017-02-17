@@ -832,6 +832,14 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
         return self.GetItemText(row, self.target_col)
     
     
+    ## Retrieves mime type of a file
+    #
+    #  \param row
+    #    Row index of item
+    def GetType(self, row):
+        return self.GetItemText(row, self.type_col)
+    
+    
     ## Checks if an item is a directory
     #
     #  \param row
@@ -851,6 +859,14 @@ class FileList(ListCtrl, TextEditMixin, wx.FileDropTarget):
     #    Row index of item
     def IsExecutable(self, row):
         return self.GetItemTextColour(row) == wx.RED
+    
+    
+    ## Checks if an item is a symbolic link
+    #
+    #  \param row
+    #    Row index of item
+    def IsSymlink(self, row):
+        return u'symlink' in self.GetType(row)
     
     
     ## TODO: Doxygen
