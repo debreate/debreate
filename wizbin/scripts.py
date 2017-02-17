@@ -25,7 +25,7 @@ from globals.paths      import ConcatPaths
 from globals.strings    import GS
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
-from input.list         import BasicFileList
+from input.filelist     import BasicFileList
 from input.markdown     import MarkdownDialog
 from input.pathctrl     import PathCtrl
 from input.select       import ComboBoxESS
