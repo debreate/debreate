@@ -30,7 +30,7 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #    <b><i>wx.Window</i></b> parent instance
     #  \param win_id
     #    <b><i>Integer</i></b> identifier
-    #  \param hlExes
+    #  \param hlExe
     #    If <b><i>True</i></b>, will highlight executable files with red text
     #  \param pos
     #    <b><i>wx.Window</i></b> position
@@ -46,7 +46,7 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #    \see input.ifield.InputField.Required
     #  \param outLabel
     #    \see input.ifield.InputField.OutputLabel
-    def __init__(self, parent, win_id=wx.ID_ANY, hlExes=False, pos=wx.DefaultPosition,
+    def __init__(self, parent, win_id=wx.ID_ANY, hlExe=False, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
@@ -55,7 +55,7 @@ class BasicFileList(ListCtrl, TextEditMixin):
         TextEditMixin.__init__(self)
         
         # Highlights executables in red if 'True'
-        self.HLExes = hlExes
+        self.HLExe = hlExe
         
         ## List of globals.fileitem.FileItem instances
         self.FileItems = []
@@ -226,7 +226,7 @@ class BasicFileList(ListCtrl, TextEditMixin):
         
         self.FileItems.insert(index, item)
         
-        if self.HLExes:
+        if self.HLExe:
             self.SetItemTextColour(index, wx.RED)
         
         return item in self.FileItems
