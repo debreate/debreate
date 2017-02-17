@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package input.ifield
+## \package fields.ifield
 #
 #  Input fields
 

@@ -10,9 +10,9 @@ import wx
 from wx.combo import OwnerDrawnComboBox
 
 from dbr.font           import MONOSPACED_MD
+from fields.ifield      import InputField
 from globals.strings    import TextIsEmpty
 from input.essential    import EssentialField
-from input.ifield       import InputField
 
 
 ## Custom wx.Choice class for compatibility with older wx versions
