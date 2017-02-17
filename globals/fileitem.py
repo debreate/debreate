@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-## \package globals.filetype
+## \package globals.fileitem
 
 # MIT licensing
 # See: docs/LICENSE.txt

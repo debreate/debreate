@@ -12,7 +12,7 @@ from dbr.language       import GT
 from dbr.log            import Logger
 from globals.fileio     import GetFiles
 from globals.fileio     import ReadFile
-from globals.filetype   import FileItem
+from globals.fileitem   import FileItem
 from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import pgid
