@@ -816,7 +816,7 @@ class Page(WizardPage):
         
         if ret_code == dbrerrno.FEMPTY:
             err_dia = DetailedMessageDialog(GetMainWindow(), GT(u'Cannot Continue'), ICON_EXCLAMATION,
-                    text=u'{}\n{}'.format(GT(u'One of the required fields is empty'), build_prep))
+                    text=u'{}\n{}'.format(GT(u'One of the required fields is empty:'), build_prep))
             err_dia.ShowModal()
             err_dia.Destroy()
             
