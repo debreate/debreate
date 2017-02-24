@@ -28,7 +28,7 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #
     #  \param parent
     #    <b><i>wx.Window</i></b> parent instance
-    #  \param win_id
+    #  \param winId
     #    <b><i>Integer</i></b> identifier
     #  \param hlExe
     #    If <b><i>True</i></b>, will highlight executable files with red text
@@ -46,11 +46,11 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #    \see fields.ifield.InputField.Required
     #  \param outLabel
     #    \see fields.ifield.InputField.OutputLabel
-    def __init__(self, parent, win_id=wx.ID_ANY, hlExe=False, pos=wx.DefaultPosition,
+    def __init__(self, parent, winId=wx.ID_ANY, hlExe=False, pos=wx.DefaultPosition,
             size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        ListCtrl.__init__(self, parent, win_id, pos, size, style, name=name,
+        ListCtrl.__init__(self, parent, winId, pos, size, style, name=name,
                 defaultValue=defaultValue, required=required, outLabel=outLabel)
         TextEditMixin.__init__(self)
         
@@ -257,7 +257,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #
     #  \param parent
     #    <b><i>wx.Window</i></b> parent instance
-    #  \param win_id
+    #  \param winId
     #    <b><i>Integer</i></b> identifier
     #  \param pos
     #    <b><i>wx.Window</i></b> position
@@ -271,10 +271,10 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #    \see fields.ifield.InputField.Required
     #  \param outLabel
     #    \see fields.ifield.InputField.OutputLabel
-    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+    def __init__(self, parent, winId=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        BasicFileList.__init__(self, parent, win_id, True, pos, size, name=name,
+        BasicFileList.__init__(self, parent, winId, True, pos, size, name=name,
                 defaultValue=defaultValue, required=required, outLabel=outLabel)
         wx.FileDropTarget.__init__(self)
         
@@ -622,7 +622,7 @@ class FileListESS(FileList, EssentialField):
     #
     #  \param parent
     #    <b><i>wx.Window</i></b> parent instance
-    #  \param win_id
+    #  \param winId
     #    <b><i>Integer</i></b> identifier
     #  \param pos
     #    <b><i>wx.Window</i></b> position
@@ -636,9 +636,9 @@ class FileListESS(FileList, EssentialField):
     #    \see fields.ifield.InputField.Required
     #  \param outLabel
     #    \see fields.ifield.InputField.OutputLabel
-    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+    def __init__(self, parent, winId=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        FileList.__init__(self, parent, win_id, pos, size, name, defaultValue, required,
+        FileList.__init__(self, parent, winId, pos, size, name, defaultValue, required,
                 outLabel)
         EssentialField.__init__(self)
