@@ -142,9 +142,11 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #
     #  \param item
     #    Can be item index, string path, or FileItem instance
+    #  \param target
+    #    Target installation dir for file
     #  \return
     #    \b \e FileItem instance
-    def GetFileItem(self, item):
+    def GetFileItem(self, item, target=None):
         if IsString(item):
             for FILE in self.FileItems:
                 if FILE.GetPath() == item:
