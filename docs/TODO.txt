@@ -31,6 +31,7 @@
   - 'List files individually' & 'Preserve top-level directories' should be saved to config
 
 Priority:
+- Delete ModuleAccessCtrl class
 - Change button images for 'full' & 'short' on copyright page
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Files page: Optional filter for hidden files & folders
