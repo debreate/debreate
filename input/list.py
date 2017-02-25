@@ -213,6 +213,14 @@ class ListCtrl(BorderedPanel, ControlPanel):
         self.MainCtrl.ClearAll()
     
     
+    ## Removes all columns from the main control
+    #
+    #  \return
+    #    ListCtrlBase.DeleteAllColumns
+    def DeleteAllColumns(self):
+        return self.MainCtrl.DeleteAllColumns()
+    
+    
     ## TODO: Doxygen
     def DeleteAllItems(self):
         self.MainCtrl.DeleteAllItems()
