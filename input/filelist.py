@@ -354,30 +354,30 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #  
     #  \param filename
     #        \b \e unicode|str : Basename of file
-    #  \param source_dir
+    #  \param sourceDir
     #        \b \e unicode|str : Directory where file is located
-    #  \param target_dir
+    #  \param targetDir
     #        \b \e unicode|str : Target directory where file will ultimately be installed
     #  \param executable
     #        \b \e bool : Whether or not the file should be marked as executable
     #  \return
     #        \b \e bool : True if file exists on the filesystem
-    def AddFile(self, filename, source_dir, target_dir=None, executable=False):
+    def AddFile(self, filename, sourceDir, targetDir=None, executable=False):
         list_index = self.GetItemCount()
         
         # Method can be called with two argements: absolute filename & target directory
-        if target_dir == None:
-            target_dir = source_dir
-            source_dir = os.path.dirname(filename)
+        if targetDir == None:
+            targetDir = sourceDir
+            sourceDir = os.path.dirname(filename)
             filename = os.path.basename(filename)
         
-        source_path = ConcatPaths((source_dir, filename))
+        source_path = ConcatPaths((sourceDir, filename))
         
         Logger.Debug(__name__, GT(u'Adding file: {}').format(source_path))
         
         self.InsertStringItem(list_index, filename)
-        self.SetStringItem(list_index, columns.SOURCE, source_dir)
-        self.SetStringItem(list_index, columns.TARGET, target_dir)
+        self.SetStringItem(list_index, columns.SOURCE, sourceDir)
+        self.SetStringItem(list_index, columns.TARGET, targetDir)
         self.SetStringItem(list_index, columns.TYPE, GetFileMimeType(source_path))
         
         if os.path.isdir(source_path):
