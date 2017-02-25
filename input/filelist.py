@@ -27,6 +27,43 @@ FL_HEADER = wx.LC_ICON|wx.LC_REPORT
 FL_NO_HEADER = wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER
 
 
+## FileList columns
+class FileListColumns:
+    Columns = range(4)
+    FILENAME, SOURCE, TARGET, TYPE = Columns
+    
+    Labels = {
+        FILENAME: u'File',
+        SOURCE: u'Source Directory',
+        TARGET: u'Staged Target',
+        TYPE: u'File Type',
+        }
+    
+    
+    ## Retrieves string label for column
+    #
+    #  \param col
+    #    Column <b><i>integer</i></b> index
+    #  \return
+    #    <b><i>String</i></b> label of column
+    def GetLabel(self, col):
+        return self.Labels[col]
+    
+    
+    ## Retrieves column index from string label
+    #
+    #  \param label
+    #    <b><i>String</i></b> label to search for
+    #  \return
+    #    <b><i>Integer</i></b> index of column, or <b><i>None</i></b>
+    def GetColumnByLabel(self, label):
+        for COL in self.Labels:
+            if self.Labels[COL] == label:
+                return COL
+
+columns = FileListColumns()
+
+
 ## List control intended for managing files
 class BasicFileList(ListCtrl, TextEditMixin):
     ## Constructor
