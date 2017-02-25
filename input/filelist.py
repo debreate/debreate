@@ -338,19 +338,10 @@ class FileList(BasicFileList, wx.FileDropTarget):
         self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
         self.FOLDER_TEXT_COLOR = wx.BLUE
         
-        self.ColFilename = 0
-        self.ColSource = 1
-        self.ColTarget = 2
-        self.ColType = 3
-        
         # FIXME: Way to do this dynamically?
         col_width = 150
         
-        self.InsertColumn(self.ColFilename, GT(u'File'), width=col_width)
-        self.InsertColumn(self.ColSource, GT(u'Source Directory'), width=col_width)
-        self.InsertColumn(self.ColTarget, GT(u'Staged Target'), width=col_width)
-        # Last column is automatically stretched to fill remaining size
-        self.InsertColumn(self.ColType, GT(u'File Type'))
+        self.SetColumns(columns.GetAllLabels(), col_width)
         
         # Legacy versions of wx don't set sizes correctly in constructor
         if wx.MAJOR_VERSION < 3:
@@ -394,9 +385,9 @@ class FileList(BasicFileList, wx.FileDropTarget):
         Logger.Debug(__name__, GT(u'Adding file: {}').format(source_path))
         
         self.InsertStringItem(list_index, filename)
-        self.SetStringItem(list_index, self.ColSource, source_dir)
-        self.SetStringItem(list_index, self.ColTarget, target_dir)
-        self.SetStringItem(list_index, self.ColType, GetFileMimeType(source_path))
+        self.SetStringItem(list_index, columns.SOURCE, source_dir)
+        self.SetStringItem(list_index, columns.TARGET, target_dir)
+        self.SetStringItem(list_index, columns.TYPE, GetFileMimeType(source_path))
         
         if os.path.isdir(source_path):
             self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
@@ -437,8 +428,8 @@ class FileList(BasicFileList, wx.FileDropTarget):
     
     ## Retrieves an item's path
     def GetPath(self, index):
-        file_dir = self.GetItemText(index, self.ColSource)
-        file_name = self.GetItemText(index, self.ColFilename)
+        file_dir = self.GetItemText(index, columns.SOURCE)
+        file_name = self.GetItemText(index, columns.FILENAME)
         
         return ConcatPaths((file_dir, file_name))
     
@@ -472,7 +463,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #  \param row
     #    Row index of item
     def GetSource(self, row):
-        return self.GetItemText(row, self.ColSource)
+        return self.GetItemText(row, columns.SOURCE)
     
     
     ## Retrieves target directory of a file
@@ -480,7 +471,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #  \param row
     #    Row index of item
     def GetTarget(self, row):
-        return self.GetItemText(row, self.ColTarget)
+        return self.GetItemText(row, columns.TARGET)
     
     
     ## Retrieves mime type of a file
@@ -488,7 +479,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #  \param row
     #    Row index of item
     def GetType(self, row):
-        return self.GetItemText(row, self.ColType)
+        return self.GetItemText(row, columns.TYPE)
     
     
     ## Checks if an item is a directory
@@ -580,7 +571,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
     #  \param row
     #    \b \e int : Row index to be edited
     def OpenEditor(self, col, row):
-        TextEditMixin.OpenEditor(self, self.ColTarget, row)
+        TextEditMixin.OpenEditor(self, columns.TARGET, row)
     
     
     ## Refresh file list
