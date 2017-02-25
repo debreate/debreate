@@ -76,6 +76,24 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
         return wx.ListView.Enable(self, *args, **kwargs)
     
     
+    ## Retrieves the string label of a given column
+    def GetColumnLabel(self, col):
+        return self.GetColumn(col).GetText()
+    
+    
+    ## Retrieves labels for all columns
+    #
+    #  \return
+    #    <b><i>String</i></b> list of all column labels
+    def GetColumnLabels(self):
+        labels = []
+        
+        for COL in range(self.GetColumnCount()):
+            labels.append(self.GetColumnLabel(COL))
+        
+        return labels
+    
+    
     ## TODO: Doxygen
     def GetSelectedIndexes(self):
         selected_indexes = []
@@ -148,6 +166,35 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
             self.InsertColumn(0)
         
         return style_set
+    
+    
+    ## Sets the string label for a given column
+    def SetColumnLabel(self, col, label):
+        col_info = self.GetColumn(col)
+        col_info.SetText(label)
+        
+        return self.SetColumn(col, col_info)
+    
+    
+    ## Sets list's column count & labels
+    #
+    #  \param labels
+    #    List of string labels for column headers
+    #  \param colWidth
+    #    <b><i>Integer</b></i> width of each column
+    def SetColumns(self, labels, colWidth):
+        # Remove previous columns
+        self.DeleteAllColumns()
+        
+        cols = range(len(labels))
+        for INDEX in cols:
+            if INDEX == cols[-1]:
+                # Last column fills remaining space
+                self.InsertColumn(INDEX, labels[INDEX])
+                
+                continue
+            
+            self.InsertColumn(INDEX, labels[INDEX], width=colWidth)
 
 
 ## ListCtrlBase that notifies main window to mark project dirty
@@ -253,6 +300,19 @@ class ListCtrl(BorderedPanel, ControlPanel):
     ## TODO: Doxygen
     def GetColumnCount(self):
         return self.MainCtrl.GetColumnCount()
+    
+    
+    ## Retrieves the string label of a given column
+    def GetColumnLabel(self, col):
+        return self.MainCtrl.GetColumnLabel(col)
+    
+    
+    ## Retrieves labels for all columns
+    #
+    #  \return
+    #    <b><i>String</i></b> list of all column labels
+    def GetColumnLabels(self):
+        return self.MainCtrl.GetColumnLabels()
     
     
     ## TODO: Doxygen
@@ -397,6 +457,21 @@ class ListCtrl(BorderedPanel, ControlPanel):
     ## Resets the list to default values
     def Reset(self):
         return self.MainCtrl.Reset()
+    
+    
+    ## Sets the string label for a given column
+    def SetColumnLabel(self, col, label):
+        return self.MainCtrl.SetColumnLabel(col, label)
+    
+    
+    ## Sets list's column count & labels
+    #
+    #  \param labels
+    #    List of string labels for column headers
+    #  \param colWidth
+    #    <b><i>Integer</b></i> width of each column
+    def SetColumns(self, labels, colWidth):
+        return self.MainCtrl.SetColumns(labels, colWidth)
     
     
     ## TODO: Doxygen
