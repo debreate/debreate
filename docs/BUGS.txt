@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Must be fixed before release:
+- Page labels not showing up in wx 2.8
 
 Priority:
 
