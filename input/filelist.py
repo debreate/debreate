@@ -345,15 +345,6 @@ class FileList(BasicFileList, wx.FileDropTarget):
         
         self.SetColumns(columns.GetAllLabels(), col_width)
         
-        # Legacy versions of wx don't set sizes correctly in constructor
-        if wx.MAJOR_VERSION < 3:
-            for col in range(3):
-                if col == 0:
-                    self.SetColumnWidth(col, 100)
-                    continue
-                
-                self.SetColumnWidth(col, 200)
-        
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnLeftDown)
         
         # Resize bug hack
