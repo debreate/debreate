@@ -636,7 +636,7 @@ class Page(WizardPage):
                 if not isinstance(F, wx.StaticText) and TextIsEmpty(F.GetValue()):
                     f_name = F.GetName()
                     
-                    msg_l1 = GT(u'One of the required fields is empty')
+                    msg_l1 = GT(u'One of the required fields is empty:')
                     msg_full = u'{}: {} ➜ {}'.format(msg_l1, p_name, f_name)
                     
                     Logger.Warn(__name__, msg_full)
