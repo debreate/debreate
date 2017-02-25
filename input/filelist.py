@@ -40,6 +40,20 @@ class FileListColumns:
         }
     
     
+    ## Retrieves all labels
+    #
+    #  \return
+    #    <b><i>String</i></b> list of column labels
+    def GetAllLabels(self):
+        labels = [] # sorted(self.Labels)
+        
+        # Converts to list of column indexes
+        for COL in sorted(self.Labels):
+            labels.append(self.Labels[COL])
+        
+        return labels
+    
+    
     ## Retrieves string label for column
     #
     #  \param col
