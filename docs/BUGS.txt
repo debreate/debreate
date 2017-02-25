@@ -13,6 +13,7 @@ Release:
   - 'Refresh' & 'Browse' buttons on hidden on files page if width is sized down
 - 'Build' button causes AttributeError:
   - 'Page' object has no attribute 'chk_enable'
+- Page labels not showing up in wx 2.8
 
 Priority:
 
