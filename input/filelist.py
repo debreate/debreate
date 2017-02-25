@@ -22,6 +22,11 @@ from input.essential    import EssentialField
 from input.list         import ListCtrl
 
 
+# ListCtrl report view style constants
+FL_HEADER = wx.LC_ICON|wx.LC_REPORT
+FL_NO_HEADER = wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER
+
+
 ## List control intended for managing files
 class BasicFileList(ListCtrl, TextEditMixin):
     ## Constructor
@@ -47,8 +52,8 @@ class BasicFileList(ListCtrl, TextEditMixin):
     #  \param outLabel
     #    \see fields.ifield.InputField.OutputLabel
     def __init__(self, parent, winId=wx.ID_ANY, hlExe=False, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, style=wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER,
-            name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
+            size=wx.DefaultSize, style=FL_NO_HEADER, name=wx.ListCtrlNameStr,
+            defaultValue=None, required=False, outLabel=None):
         
         ListCtrl.__init__(self, parent, winId, pos, size, style, name=name,
                 defaultValue=defaultValue, required=required, outLabel=outLabel)
@@ -274,7 +279,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
     def __init__(self, parent, winId=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             name=wx.ListCtrlNameStr, defaultValue=None, required=False, outLabel=None):
         
-        BasicFileList.__init__(self, parent, winId, True, pos, size, name=name,
+        BasicFileList.__init__(self, parent, winId, True, pos, size, style=FL_HEADER, name=name,
                 defaultValue=defaultValue, required=required, outLabel=outLabel)
         wx.FileDropTarget.__init__(self)
         
