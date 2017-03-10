@@ -29,6 +29,7 @@
 - Add option to preserve/trip top-level directory in directory tree
 - Files page:
   - 'List files individually' & 'Preserve top-level directories' should be saved to config
+- Define action for 'Build' action menu item
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
