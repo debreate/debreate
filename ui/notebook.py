@@ -113,12 +113,12 @@ class Notebook(AuiNotebook):
 #  \param panelClass
 #    \b \e wx.Panel derived class to use for tab pages
 class MultiTemplate(BoxSizer):
-    def __init__(self, parent, panelClass):
+    def __init__(self, parent, panelClass, winId=wx.ID_ANY):
         BoxSizer.__init__(self, wx.VERTICAL)
         
         self.Panel = panelClass
         
-        self.Tabs = Notebook(parent)
+        self.Tabs = Notebook(parent, winId)
         
         self.TabButtonIds = []
         
