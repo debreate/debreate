@@ -101,6 +101,22 @@ class Notebook(AuiNotebook):
         # Reversing only used for deleting pages from right to left (not necessary)
         for INDEX in reversed(range(self.GetPageCount())):
             self.DeletePage(INDEX)
+    
+    
+    ## Sets the page's text/title & updates the Name attribute
+    #
+    #  \param index
+    #    Desired page's <b><i>integer</i></b> index
+    #  \param newName
+    #    <b><i>String</i></b> label of new title & name
+    #  \return
+    #    <b><i>True</i></b> if newName & page title match
+    def Rename(self, index, newName):
+        page = self.GetPage(index)
+        page.SetName(newName)
+        self.SetPageText(index, page.GetName())
+        
+        return self.GetPageText(index) == newName
 
 
 ## Multiple instances of a single template
