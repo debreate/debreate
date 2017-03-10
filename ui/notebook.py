@@ -38,10 +38,10 @@ DEFAULT_NB_STYLE = AUI_NB_TOP|AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_ON_A
 
 ## Custom notebook class for compatibility with legacy wx versions
 class Notebook(AuiNotebook):
-    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+    def __init__(self, parent, winId=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=DEFAULT_NB_STYLE, name=u'notebook'):
         
-        AuiNotebook.__init__(self, parent, win_id, pos, size, style)
+        AuiNotebook.__init__(self, parent, winId, pos, size, style)
         
         # wx.aui.AuiNotebook does not allow setting name from constructor
         self.Name = name
@@ -80,14 +80,14 @@ class Notebook(AuiNotebook):
     #
     #  \param caption
     #    Label displayed on tab
-    #  \param win_id
+    #  \param winId
     #    Window \b \e integer ID
     #  \param select
     #    Specifies whether the page should be displayed
     #  \param imageId
     #    Specifies optional image
-    def AddScrolledPage(self, caption, win_id=wx.ID_ANY, select=False, imageId=0):
-        return self.AddPage(caption, ScrolledPanel(self), win_id, select, imageId)
+    def AddScrolledPage(self, caption, winId=wx.ID_ANY, select=False, imageId=0):
+        return self.AddPage(caption, ScrolledPanel(self), winId, select, imageId)
     
     
     ## Deletes all tabs/pages
