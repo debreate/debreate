@@ -120,6 +120,19 @@ class PageId(FieldId):
         return new_id
     
     
+    ## Retrieves string label for given page ID
+    #
+    #  \return
+    #    <b><i>String</i></b> label or empty string if ID not found
+    def GetIdLabel(self, pageId):
+        if pageId in self.Labels:
+            return self.Labels[pageId]
+        
+        Logger.Warn(__name__, u'Label for ID {} not found'.format(pageId))
+        
+        return wx.EmptyString
+    
+    
     ## Add a new ID & text label to label list
     #
     #  param label
