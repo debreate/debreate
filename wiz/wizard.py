@@ -604,8 +604,8 @@ class WizardPage(ScrolledPanel):
         
         self.SetName(page_ids[self.GetId()])
         
-        ## Label to show in title & menu
-        self.Label = pgid.GetIdLabel(self.Id)
+        ## Label to show in title & menu (NOTE: Cannot use 'self.Label' in wx 2.8)
+        self.Title = pgid.GetIdLabel(self.Id)
         
         ## List of IDs that should not be reset
         self.IgnoreResetIds = []
@@ -676,12 +676,12 @@ class WizardPage(ScrolledPanel):
     
     ## Retrieves the page's label
     #
-    #  if wiz.wizard.WizardPage.Label is not set, returns the wiz.wizard.WizardPage.Name attribute
+    #  if wiz.wizard.WizardPage.Title is not set, returns the wiz.wizard.WizardPage.Name attribute
     def GetLabel(self):
-        if self.Label == None:
+        if self.Title == None:
             return self.GetName()
         
-        return self.Label
+        return self.Title
     
     
     ## Retrieves all fields that cannot be left blank for build
