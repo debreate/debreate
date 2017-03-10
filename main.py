@@ -48,7 +48,6 @@ from globals.ident          import menuid
 from globals.ident          import pgid
 from globals.ident          import refid
 from globals.mime           import GetFileMimeType
-from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
 from globals.project        import ID_PROJ_A
@@ -82,7 +81,7 @@ default_title = GT(u'Debreate - Debian Package Builder')
 
 
 ## The main window interface
-class MainWindow(wx.Frame, ModuleAccessCtrl):
+class MainWindow(wx.Frame):
     ## Constructor
     #
     #  \param pos
@@ -91,7 +90,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     #    <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
     def __init__(self, pos, size):
         wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
-        ModuleAccessCtrl.__init__(self, __name__)
         
         # Make sure that this frame is set as the top window
         if not wx.GetApp().GetTopWindow() == self:

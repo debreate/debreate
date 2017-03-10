@@ -119,7 +119,7 @@ class DebreateLogger:
     #  \param level
     #    Level at which to display the message
     #  \param module
-    #    Name of the script/module or the globals.moduleaccess.ModuleAccessCtrl
+    #    Name of the script/module
     #    instance where the message originates
     #  \param message
     #    Message to display

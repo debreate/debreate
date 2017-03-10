@@ -16,7 +16,6 @@ from dbr.timer              import DebreateTimer
 from globals.errorcodes     import dbrerrno
 from globals.fileio         import ReadFile
 from globals.ident          import btnid
-from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import ConcatPaths
 from globals.threads        import Thread
 from ui.button              import CreateButton
@@ -34,11 +33,10 @@ GAUGE_MAX = 100
 
 
 ## A dialog that takes a pre-formatted directory tree & creates a .deb package
-class QuickBuild(wx.Dialog, ModuleAccessCtrl):
+class QuickBuild(wx.Dialog):
     def __init__(self, parent):
         wx.Dialog.__init__(self, parent, title=GT(u'Quick Build'), pos=wx.DefaultPosition,
                 size=wx.Size(400,260))
-        ModuleAccessCtrl.__init__(self, __name__)
         
         self.title = self.GetTitle()
         
