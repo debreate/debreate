@@ -378,7 +378,7 @@ class MultiTemplate(BoxSizer):
             if index < 0:
                 return False
             
-            return self.Tabs.SetPageText(index, new_name)
+            return self.Tabs.Rename(index, new_name)
         
         if checkBox:
             return self.AddPage(new_name, checkBox=check_box)
