@@ -236,7 +236,7 @@ class Page(WizardPage):
                         break
                     
                     if P.GetId() in pages_build_ids:
-                        p_label = P.GetLabel()
+                        p_label = P.GetTitle()
                         
                         log_msg = log_message(
                             GT(u'Processing page "{}"').format(p_label), current_step+1, steps_count)
@@ -411,7 +411,7 @@ class Page(WizardPage):
                     break
                 
                 p_id = P.GetId()
-                p_label = P.GetLabel()
+                p_label = P.GetTitle()
                 
                 if p_id in prep_ids:
                     Logger.Debug(__name__, msg_label.format(p_label, current_step+1, steps_count))
@@ -647,7 +647,7 @@ class Page(WizardPage):
                             text=msg_full).ShowModal()
                     
                     for P in wizard.GetAllPages():
-                        if P.GetLabel() == p_name:
+                        if P.GetTitle() == p_name:
                             Logger.Debug(__name__, GT(u'Showing page with required field: {}').format(p_name))
                             wizard.ShowPage(P.GetId())
                     
