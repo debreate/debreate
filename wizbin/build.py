@@ -624,9 +624,11 @@ class Page(WizardPage):
             GT(u'Control'): pg_control.GetRequiredFields(),
         }
         
-        if pg_launcher.chk_enable.GetValue():
+        # Check if launchers are enabled for build
+        if pg_launcher.GetLaunchersCount():
             required_fields[GT(u'Menu Launcher')] = pg_launcher.GetRequiredFields()
             
+            # FIXME: Old code won't work with multiple launchers
             for RF in required_fields[GT(u'Menu Launcher')]:
                 Logger.Debug(__name__, GT(u'Required field (Menu Launcher): {}').format(RF.GetName()))
         
