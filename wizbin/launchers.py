@@ -18,6 +18,7 @@ from globals.tooltips   import SetPageToolTips
 from ui.launcher        import LauncherTemplate
 from ui.layout          import BoxSizer
 from ui.notebook        import MultiTemplate
+from wiz.helper         import GetField
 from wiz.wizard         import WizardPage
 
 
@@ -64,6 +65,11 @@ class Page(WizardPage):
     #  TODO: Define
     def Get(self, getModule=False):
         pass
+    
+    
+    ## Retrieves number of launchers for export or build
+    def GetLaunchersCount(self):
+        return GetField(self, pnlid.TABS).GetPageCount()
     
     
     ## Updates tooltips for new tab
