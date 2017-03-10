@@ -103,6 +103,18 @@ class Notebook(AuiNotebook):
             self.DeletePage(INDEX)
     
     
+    ## Retrieves all panel instances of all tabs/pages
+    #
+    #  \return
+    #    <b><i>Tuple</i></b> list of all available pages
+    def GetAllPages(self):
+        pages = []
+        for INDEX in range(self.GetPageCount()):
+            pages.append(self.GetPage(INDEX))
+        
+        return tuple(pages)
+    
+    
     ## Sets the page's text/title & updates the Name attribute
     #
     #  \param index
