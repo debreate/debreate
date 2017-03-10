@@ -14,6 +14,10 @@ Release:
 - 'Build' button causes AttributeError:
   - 'Page' object has no attribute 'chk_enable'
 - Page labels not showing up in wx 2.8
+- wizbin.control: TypeError in ExportBuild method
+  - "Export() takes exactly 2 arguments (3 given)"
+- Cannot save project:
+  - globals.fileio.WriteFile: IOError: "Is a directory ..."
 
 Priority:
 
