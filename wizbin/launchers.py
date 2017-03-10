@@ -13,6 +13,7 @@ from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import listid
 from globals.ident      import pgid
+from globals.ident      import pnlid
 from globals.tooltips   import SetPageToolTips
 from ui.launcher        import LauncherTemplate
 from ui.layout          import BoxSizer
@@ -37,7 +38,7 @@ class Page(WizardPage):
             listid.CAT,
             ]
         
-        templates = MultiTemplate(self, LauncherTemplate)
+        templates = MultiTemplate(self, LauncherTemplate, pnlid.TABS)
         
         templates.RenameButton(btnid.ADD, GT(u'Add Launcher'))
         templates.RenameButton(btnid.RENAME, GT(u'Rename Launcher'))
