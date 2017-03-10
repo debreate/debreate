@@ -189,7 +189,7 @@ class Wizard(wx.Panel):
         page_menu = GetMenu(menuid.PAGE)
         
         page_menu.AppendItem(
-            wx.MenuItem(page_menu, page.Id, page.GetLabel(),
+            wx.MenuItem(page_menu, page.Id, page.GetTitle(),
             kind=wx.ITEM_RADIO))
         
         # Bind menu event to ID
@@ -412,7 +412,7 @@ class Wizard(wx.Panel):
     #
     #  Shows a help dialog for currently displayed page
     def OnHelpButton(self, event=None):
-        label = self.GetCurrentPage().GetLabel()
+        label = self.GetCurrentPage().GetTitle()
         page_help = MarkdownDialog(self, title=GT(u'Help'), readonly=True)
         
         page_help.SetText(GT(u'Help information for page "{}"'.format(label)))
@@ -532,7 +532,7 @@ class Wizard(wx.Panel):
                 page_menu = main_window.GetMenu(menuid.PAGE)
                 
                 page_menu.AppendItem(
-                    wx.MenuItem(page_menu, page_id, PAGE.GetLabel(),
+                    wx.MenuItem(page_menu, page_id, PAGE.GetTitle(),
                     kind=wx.ITEM_RADIO))
                 
                 # Bind menu event to ID
@@ -569,7 +569,7 @@ class Wizard(wx.Panel):
             
             else:
                 p.Show()
-                self.txt_title.SetLabel(p.GetLabel())
+                self.txt_title.SetLabel(p.GetTitle())
         
         if pageId == self.ID_FIRST:
             self.btn_prev.Enable(False)
@@ -674,16 +674,6 @@ class WizardPage(ScrolledPanel):
         Logger.Warn(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
     
     
-    ## Retrieves the page's label
-    #
-    #  if wiz.wizard.WizardPage.Title is not set, returns the wiz.wizard.WizardPage.Name attribute
-    def GetLabel(self):
-        if TextIsEmpty(self.Title) or self.Title == None:
-            return self.GetName()
-        
-        return self.Title
-    
-    
     ## Retrieves all fields that cannot be left blank for build
     #
     #  FIXME: Should only require page ID
@@ -711,6 +701,16 @@ class WizardPage(ScrolledPanel):
                 pass
         
         return tuple(required_fields)
+    
+    
+    ## Retrieves the page's label
+    #
+    #  if wiz.wizard.WizardPage.Title is not set, returns the wiz.wizard.WizardPage.Name attribute
+    def GetTitle(self):
+        if TextIsEmpty(self.Title) or self.Title == None:
+            return self.GetName()
+        
+        return self.Title
     
     
     ## Reads & parses page data from a formatted text file
