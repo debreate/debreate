@@ -344,6 +344,7 @@ class PanelId(FieldId):
         FieldId.__init__(self)
         
         self.BACKGROUND = self.NewId()
+        self.TABS = self.NewId()
 
 pnlid = PanelId()
 
