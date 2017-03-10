@@ -678,7 +678,7 @@ class WizardPage(ScrolledPanel):
     #
     #  if wiz.wizard.WizardPage.Title is not set, returns the wiz.wizard.WizardPage.Name attribute
     def GetLabel(self):
-        if self.Title == None:
+        if TextIsEmpty(self.Title) or self.Title == None:
             return self.GetName()
         
         return self.Title
