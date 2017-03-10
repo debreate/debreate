@@ -15,7 +15,6 @@ from globals.bitmaps        import ICON_ERROR
 from globals.bitmaps        import ICON_EXCLAMATION
 from globals.bitmaps        import ICON_INFORMATION
 from globals.bitmaps        import ICON_QUESTION
-from globals.moduleaccess   import ModuleAccessCtrl
 from globals.project        import project_wildcards
 from globals.project        import supported_suffixes
 from globals.strings        import TextIsEmpty
@@ -648,9 +647,6 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
     if not parent:
         module_name = __name__
     
-    elif isinstance(parent, ModuleAccessCtrl):
-        module_name = parent.GetModuleName()
-    
     else:
         module_name = parent.GetName()
     
@@ -668,9 +664,6 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, par
             linewrap=0):
     if not parent:
         parent = GetMainWindow()
-    
-    if not module and isinstance(parent, ModuleAccessCtrl):
-        module = parent.GetModuleName()
     
     logger_text = text
     if isinstance(text, (tuple, list)):

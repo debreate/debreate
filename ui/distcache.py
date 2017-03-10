@@ -16,7 +16,6 @@ from dbr.timer              import DebreateTimer
 from globals.fileio         import ReadFile
 from globals.ident          import inputid
 from globals.ident          import pgid
-from globals.moduleaccess   import ModuleAccessCtrl
 from globals.system         import FILE_distnames
 from globals.system         import GetOSDistNames
 from globals.system         import UpdateDistNamesCache
@@ -33,11 +32,10 @@ from wiz.helper             import GetField
 
 
 ## Dialog displaying controls for updating distribution names cache file
-class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
+class DistNamesCacheDialog(BaseDialog):
     def __init__(self):
         BaseDialog.__init__(self, title=GT(u'Update Dist Names Cache'),
                 style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
-        ModuleAccessCtrl.__init__(self, __name__)
         
         self.SetMinSize(wx.Size(300, 150))
         
