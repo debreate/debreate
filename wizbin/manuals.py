@@ -36,8 +36,8 @@ class Page(WizardPage):
         # TODO: Add to Gettext locale files
         WizardPage.__init__(self, parent, pgid.MAN)
         
-        ## Override default label
-        self.Label = GT(u'Manual Pages')
+        # Override default title
+        self.SetTitle(GT(u'Manual Pages'))
         
         self.Tabs = MultiTemplate(self, ManPage)
         
