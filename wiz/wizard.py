@@ -568,7 +568,7 @@ class Wizard(wx.Panel):
             
             else:
                 p.Show()
-                self.txt_title.SetLabel(p.GetTitle())
+                self.SetTitle(p.GetTitle())
         
         if pageId == self.ID_FIRST:
             self.btn_prev.Enable(False)
