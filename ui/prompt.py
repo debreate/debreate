@@ -26,6 +26,9 @@ class TextEntryDialog(wx.TextEntryDialog):
         
         # *** Event Handling *** #
         
+        # Enable using 'Enter/Return' keys to confirm
+        wx.EVT_KEY_DOWN(self.GetTextCtrl(), self.OnConfirm)
+        
         bound_id = None
         for FIELD in self.GetChildren():
             field_id = FIELD.GetId()
@@ -86,24 +89,32 @@ class TextEntryDialog(wx.TextEntryDialog):
     
     ## Extra actions to take when pressing 'OK/Confirm' button
     #  
-    #  - Stores insertion point for updating when dialog is shown again
+    #  Stores insertion point for updating when dialog is shown again
     #  FIXME: Event not propagating from inherited class
     def OnConfirm(self, event=None):
+        event_id = None
+        
         self.stored_insertion = self.GetInsertionPoint()
         
         if event:
-            event_object = event.GetEventObject()
-            
-            if isinstance(event_object, wx.Button):
-                event_id = event_object.GetId()
+            # Enable using 'Enter/Return' keys to confirm
+            if isinstance(event, wx.KeyEvent):
+                if event.GetKeyCode() in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER,):
+                    event_id = wx.ID_OK
+                
+                event.Skip()
             
             else:
-                event_id = event.GetId()
+                event_object = event.GetEventObject()
+                
+                if isinstance(event_object, wx.Button):
+                    event_id = event_object.GetId()
+                
+                else:
+                    event_id = event.GetId()
         
-        else:
-            event_id = wx.ID_OK
-        
-        self.EndModal(event_id)
+        if event_id:
+            self.EndModal(event_id)
     
     
     ## Sets TextCtrl instance's insertion point from stored value
