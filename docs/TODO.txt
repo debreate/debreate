@@ -30,6 +30,7 @@
 - Files page:
   - 'List files individually' & 'Preserve top-level directories' should be saved to config
 - Define action for 'Build' action menu item
+- Allow manually organizing categories for launchers
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
