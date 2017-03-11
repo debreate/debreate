@@ -553,7 +553,6 @@ class Wizard(wx.Panel):
     #    Text to be displayed
     def SetTitle(self, title):
         self.txt_title.SetLabel(title)
-        self.Layout()
     
     
     ## Sets or changes the displayed page
