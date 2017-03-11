@@ -299,8 +299,8 @@ class LauncherTemplate(ScrolledPanel):
         return SetFileExecutable(target)
     
     
-    ## Retrieves Desktop Entry file information
-    #  
+    ## Retrieves Desktop Entry file output information
+    #
     #  \return
     #    Text formatted for desktop entry file output
     def Get(self, getModule=False):
@@ -324,7 +324,17 @@ class LauncherTemplate(ScrolledPanel):
             )
         
         for ID in id_list:
-            field = GetField(self, ID)
+            key = wx.EmptyString
+            value = wx.EmptyString
+            field = None
+            
+            # TODO: Allow setting custom launcher version
+            if ID == inputid.VERSION:
+                key = u'Version'
+                value = u'1.0'
+            
+            else:
+                field = GetField(self, ID)
             
             if field:
                 if isinstance(field, ErrorTuple):
@@ -339,6 +349,11 @@ class LauncherTemplate(ScrolledPanel):
                         if isinstance(section, CustomSection):
                             key = section.GetKey().strip()
                             value = section.GetValue().strip()
+                    
+                        if not TextIsEmpty(key) and not TextIsEmpty(value):
+                            l_lines.append(u'{}={}'.format(key, value))
+                    
+                    continue
                 
                 elif ID in (listid.CAT, inputid.CAT2):
                     if ID == inputid.CAT2:
@@ -381,9 +396,9 @@ class LauncherTemplate(ScrolledPanel):
                         
                         if not value.endswith(u';'):
                             value = u'{};'.format(value)
-                
-                if not TextIsEmpty(key) and not TextIsEmpty(value):
-                    l_lines.append(u'{}={}'.format(key, value))
+            
+            if not TextIsEmpty(key) and not TextIsEmpty(value):
+                l_lines.append(u'{}={}'.format(key, value))
         
         # FIXME: Categories should be organized manually by user
         if categories:
