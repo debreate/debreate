@@ -777,3 +777,11 @@ class WizardPage(ScrolledPanel):
                     
                     if isinstance(MT, MultiTemplate):
                         MT.Reset()
+    
+    
+    ## Sets the custom title for the page
+    #
+    #  \param title
+    #    Text to display for title
+    def SetTitle(self, title):
+        self.Title = title
