@@ -62,9 +62,15 @@ class Page(WizardPage):
     
     ## Retrieves data from all launchers
     #
-    #  TODO: Define
+    #  \return
+    #    Name:Data <b><i>tuple</i></b> list
     def Get(self, getModule=False):
-        pass
+        launchers_data = []
+        
+        for LAUNCHER in GetField(self, pnlid.TABS).GetAllPages():
+            launchers_data.append((LAUNCHER.GetName(), LAUNCHER.Get(),))
+        
+        return tuple(launchers_data)
     
     
     ## Retrieves number of launchers for export or build
