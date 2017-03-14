@@ -29,17 +29,17 @@ msgstr ""
 
 # ## Title bar
 msgid "Debreate - Debian Package Builder"
-msgstr "Debreate - Empaquetador de Debian"
+msgstr "Debreate - Constructor de paquetes Debian"
 
 # ## First run message
 msgid "Debreate First Run"
-msgstr "Ejecución Primera de Debreate"
+msgstr "Primera ejecución de Debreate"
 
 msgid "Thank you for using Debreate."
 msgstr "Gracias por usar Debreate"
 
 msgid "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
-msgstr "Este mensaje se demuestra al ejecución primera, o si el archivo de configuración se desarregla. La configuración predeterminada ya será creado. Para eliminar este archivo, ejecutar la orden siguiente:"
+msgstr "Este mensaje sólo se muestra en la primera ejecución, o si el archivo de configuración se corrompe. El archivo de configuración por defecto ya ha sido creado. Para eliminar este archivo, ejecutar la siguiente orden:"
 
 # ## Menu and Status bars
 msgid "File"
@@ -55,7 +55,7 @@ msgid "Help"
 msgstr "Ayuda"
 
 msgid "Start a new project"
-msgstr "Iniciar proyecto nuevo"
+msgstr "Iniciar nuevo proyecto"
 
 msgid "Open"
 msgstr "Abrir"
@@ -67,73 +67,73 @@ msgid "Save current project"
 msgstr "Guardar proyecto actual"
 
 msgid "Save current project with a new filename"
-msgstr "Guardar proyecto actual con nombre nuevo"
+msgstr "Guardar proyecto actual con un nombre nuevo"
 
 msgid "Quick Build"
-msgstr "Construyo Rápido"
+msgstr "Construcción Rápida"
 
 msgid "Build a package from an existing build tree"
-msgstr "Construir un paquete de una ruta existente"
+msgstr "Construir un paquete desde una ruta existente"
 
 msgid "Information"
 msgstr "Información"
 
 msgid "Go to Information section"
-msgstr "Pasar a la sección de Información"
+msgstr "Ir a la sección de Información"
 
 msgid "Control"
 msgstr ""
 
 msgid "Go to Control section"
-msgstr "Pasar a la sección de Control"
+msgstr "Ir a la sección de Control"
 
 msgid "Dependencies"
 msgstr "Dependencias"
 
 msgid "Go to Dependencies section"
-msgstr "Pasar a la sección de Dependencias"
+msgstr "Ir a la sección de Dependencias"
 
 msgid "Files"
 msgstr "Archivos"
 
 msgid "Go to Files section"
-msgstr "Pasar a la sección de Archivos"
+msgstr "Ir a la sección de Archivos"
 
 msgid "Scripts"
 msgstr ""
 
 msgid "Go to Scripts section"
-msgstr "Pasar a la sección de Scripts"
+msgstr "Ir a la sección de Scripts"
 
 msgid "Changelog"
 msgstr "Registro de Cambios"
 
 msgid "Go to Changelog section"
-msgstr "Pasar a la sección de Registro de Cambios"
+msgstr "Ir a la sección de Registro de Cambios"
 
 msgid "Copyright"
-msgstr "Derecho de Autor"
+msgstr "Derechos de Autor"
 
 msgid "Go to Copyright section"
-msgstr "Pasar a la sección Derecho de Autor"
+msgstr "Ir a la sección Derechos de Autor"
 
 msgid "Menu Launcher"
-msgstr "Acceso Directo del Menú"
+msgstr "Acceso Directo en el Menú"
 
 msgid "Go to Menu Launcher section"
-msgstr "Pasar a la sección Acceso Directo"
+msgstr "Ir a la sección Acceso Directo"
 
 msgid "Build"
 msgstr "Empaquetar"
 
 msgid "Go to Build section"
-msgstr "Pasar a la sección del Empaquetar"
+msgstr "Ir a la sección del Empaquetar"
 
 msgid "Use Custom Dialogs"
 msgstr "Utilizar Diálogos Adaptados"
 
 msgid "Use System or Custom Save/Open Dialogs"
-msgstr "Utilizar Dialogos del Systema o Personalizados"
+msgstr "Utilizar Dialogos del Sistema o Personalizados"
 
 msgid "Check for Update"
 msgstr "Verificación de Actualización"
@@ -163,11 +163,11 @@ msgid "Building debs from Source"
 msgstr "Empaquetar deb de la Fuente"
 
 msgid "Lintian Tags Explanation"
-msgstr "Explicación de los Etiquetas de Lintian"
+msgstr "Explicación de las Etiquetas de Lintian"
 
 # ## Dialogs
 msgid "Start New Project"
-msgstr "Iniciar Proyecto Nuevo"
+msgstr "Iniciar Nuevo Proyecto"
 
 msgid "You will lose any unsaved information"
 msgstr "Se perderá la información no guardada"
@@ -185,34 +185,34 @@ msgid "Debreate project files"
 msgstr "Archivos de proyecto de Debreate"
 
 msgid "Not a valid Debreate project"
-msgstr "No es proyecto válido de Debreate"
+msgstr "No es un proyecto válido de Debreate"
 
 msgid "Error"
 msgstr ""
 
 msgid "Save failed"
-msgstr "Al guardar se falló"
+msgstr "Fallo al guardar"
 
 msgid "Quit?"
 msgstr "¿Cerrar?"
 
 msgid "A package builder for Debian based systems"
-msgstr "Un empaquetador para systemas con sede en Debian"
+msgstr "Un empaquetador para sistemas basados en Debian"
 
 msgid "New Folder"
-msgstr "Carpeta Nueva"
+msgstr "Nueva Carpeta"
 
 msgid "Rename"
 msgstr "Renombrar"
 
 msgid "Move to Trash"
-msgstr "Mudar a la Papelera"
+msgstr "Mover a la Papelera"
 
 msgid "Permission Denied"
-msgstr "Permiso Negado"
+msgstr "Permiso Denegado"
 
 msgid "Name already used in current directory"
-msgstr "Ya está en uso el nombre en directorio actual"
+msgstr "Ya está en uso el nombre en el directorio actual"
 
 msgid "Choose Directory"
 msgstr "Elegir un Directorio"
@@ -221,10 +221,10 @@ msgid "Save File"
 msgstr "Guardar Archivo"
 
 msgid "Bad File Name"
-msgstr "Nombre del Archivo Mal"
+msgstr "Nombre del Archivo No Valido"
 
 msgid "File Exists"
-msgstr "Archivo Existe"
+msgstr "El Archivo Existe"
 
 msgid "Overwrite File?"
 msgstr "¿Sobrescribir el Archivo?"
@@ -244,7 +244,7 @@ msgstr "Se trata de una versión de desarrollo, no hay actualizaciones disponibl
 
 # ## About dialog
 msgid "Credits"
-msgstr "Reconocimiento"
+msgstr "Créditos"
 
 msgid "Job"
 msgstr "Tarea"
@@ -253,10 +253,10 @@ msgid "License"
 msgstr "Licencia"
 
 msgid "Developer"
-msgstr "Desarrollo"
+msgstr "Desarrollador"
 
 msgid "Packager"
-msgstr "Empaque"
+msgstr "Empaquetador"
 
 msgid "Translation"
 msgstr "Traducción"
@@ -272,7 +272,7 @@ msgstr "Versión de wxPython: {}"
 
 # ## Button tool tips
 msgid "Next"
-msgstr "Adelante"
+msgstr "Siguiente"
 
 msgid "Previous"
 msgstr "Atrás"
@@ -312,10 +312,10 @@ msgid "Welcome to Debreate!"
 msgstr "¡Bienvenido a Debreate!"
 
 msgid "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
-msgstr "Debreate asiste en consruir los paquetes de instalación para systemas con sede en Debian. Usar las flechas al superior derecha o el menú de \"Página\" para navegar a través del programa. Para información sobre los paquetes de Debian utilizar los enlaces de referencia en la menú de \"Ayuda\"."
+msgstr "Debreate es un asistente para consruir paquetes de instalación para sistemas basados en Debian. Use las flechas situadas en la parte superior derecha o el menú de \"Página\" para navegar a través del programa. Para obtener más información sobre los paquetes de Debian utilizar los enlaces de referencia en el menú de \"Ayuda\"."
 
 msgid "For a video tutorial check the link below."
-msgstr "Para un video instructivo de hacer clic en el enlace mas abajo."
+msgstr "Para ver un video instructivo haga clic en el enlace situado abajo."
 
 msgid "Building a Debian Package with Debreate"
 msgstr "Construyendo un Paquete de Debian con Debreate"
@@ -392,7 +392,7 @@ msgid "Recommends"
 msgstr "Recomienda"
 
 msgid "Package is highly recommended and will be installed by default"
-msgstr "El paquete está recomendada altamente y se instalará"
+msgstr "El paquete está altamente recomendado y se instalará"
 
 msgid "Suggests"
 msgstr "Sugiere"
@@ -404,25 +404,25 @@ msgid "Enhances"
 msgstr "Mejora a"
 
 msgid "This package may be useful to enhanced package"
-msgstr "Este paquete será útil para el mejorado"
+msgstr "Este paquete será útil para mejorarlo"
 
 msgid "Conflicts"
-msgstr "En Conflicto de"
+msgstr "En Conflicto con"
 
 msgid "Package will be removed from the system if it is installed"
-msgstr "El Paquete se desinstalará de la systema si está instalado"
+msgstr "El Paquete se desinstalará del sistema si está instalado"
 
 msgid "Replaces"
 msgstr "Reemplaza a"
 
 msgid "Package or its files may be overwritten"
-msgstr "Puede que el paquete o sus archivos se sobrescriben"
+msgstr "Puede que el paquete o sus archivos se sobrescriban"
 
 msgid "Breaks"
 msgstr "Rompe"
 
 msgid "Package conflicts and will be de-configured"
-msgstr "El paquete está en conflicto y será desconfigurado"
+msgstr "El paquete entra en conflicto y se desconfigurará"
 
 msgid "Category"
 msgstr "Categoría"
@@ -434,7 +434,7 @@ msgid "Confirm"
 msgstr "Confirmar"
 
 msgid "Clear all dependencies?"
-msgstr "¿Vaciar de todas las dependencias?"
+msgstr "Limpiar todas las dependencias?"
 
 # ## Files section
 msgid "Add Folder"
@@ -453,22 +453,22 @@ msgid "Custom"
 msgstr "Personalizado"
 
 msgid "Choose Target Directory"
-msgstr "Eligir un Directorio de Destino"
+msgstr "Elegir un Directorio de Destino"
 
 msgid "Progress"
-msgstr "Progreso completo"
+msgstr "Progreso"
 
 msgid "Getting files from %s"
-msgstr "Recogiendo archivos de %s"
+msgstr "Obteniendo archivos de %s"
 
 msgid "Clear all files?"
-msgstr "¿Vaciar de todos los archivos?"
+msgstr "¿Vaciar todos los archivos?"
 
 msgid "Missing Files"
 msgstr "Archivos Ausentes"
 
 msgid "Could not locate the following files:"
-msgstr "Los archivos siguientes no se encuentran:"
+msgstr "No se pueden encontrar los siguientes archivos:"
 
 # ## Scripts section
 msgid "Make this script"
@@ -496,7 +496,7 @@ msgid "Import executables from Files section"
 msgstr "Importar los Ejecutables de la sección de Archivos"
 
 msgid "Generate scripts"
-msgstr "Producir scripts"
+msgstr "Generar scripts"
 
 msgid "Path Warning"
 msgstr "Aviso de la Ruta"
@@ -508,36 +508,36 @@ msgid "Success"
 msgstr "Éxito"
 
 msgid "post-install and pre-remove scripts generated"
-msgstr "Los scripts de de post-instalación y pre-desinstalación se producieron"
+msgstr "Los scripts de de post-instalación y pre-desinstalación se generaron"
 
 msgid "Auto-Link Help"
-msgstr "Ayuda de Enlaces"
+msgstr "Enlaces de Ayuda"
 
 msgid "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
-msgstr "Debreate ofrece una función Enlace Automática de ejecutables. Lo que hace es encuentra cualquier ejecutable en la sección de Archivos y crea un script de anterior de instalación que va a crear enlaces simbólicos con ellos en la ruta especificada. Esto es útil si va a instalar ejecutables en un directorio que no se encuentra en la ruta del sistema, pero quieren acceder a él desde el PATH. Por ejemplo, si instala un ejecutable  \"bar\" en el directorio \"/usr/share/foo\" con el fin de ejecutar \"bar\" desde un terminal en la que habría que escribir /usr/share/foo/bar. Enlace Automática puede ser usado para ubicar un enlace a \"bar\" en algún lugar de la ruta del sistema como \"/usr/bin\". Entonces todo lo que se necesita escribir es \"bar\" para ejecutar el programa. Enlace Automática también crea un script de posterior de instalación que elimina el enlace después de retirar el paquete."
+msgstr "Debreate ofrece una función de Auto-Enlazado de ejecutables. Se encarga de localizar cualquier ejecutable en la sección de Archivos y crea un script. Creará enlaces simbólicos con ellos en la ruta especificada. Esto es útil si va a instalar ejecutables en un directorio que no se encuentra en la ruta del sistema, pero quieren acceder a él desde el PATH. Por ejemplo, si instala un ejecutable  \"bar\" en el directorio \"/usr/share/foo\" con el fin de ejecutar \"bar\" desde un terminal en el que habría que escribir /usr/share/foo/bar. El Enlace Automático puede ser usado para ubicar un enlace a \"bar\" en algún lugar de la ruta del sistema como \"/usr/bin\". Entonces todo lo que se necesita escribir es \"bar\" para ejecutar el programa. El Enlace Automático también crea un script posterior de instalación, que elimina el enlace después de desinstalar el paquete."
 
 msgid "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
-msgstr "Como usar Enlace Automático: Presione el botón IMPORTAR para importar cualquier ejecutable desde la sección de Archivos. Presione el botón GENERAR. Scripts anteriores y posteriores a la instalación se crea secuencias de comandos que colocará enlaces simbólicos a los ejecutables en la ruta que aparece arriba."
+msgstr "Como usar El Enlace Automático: Presione el botón IMPORTAR para importar cualquier ejecutable desde la sección de Archivos. Presione el botón GENERAR. Los Scripts anteriores y posteriores a la instalación, se crearán secuencias de comandos que colocará enlaces simbólicos a los ejecutables en la ruta que aparece arriba."
 
 # ## Changelog section
 msgid "Distribution"
 msgstr "Distribución"
 
 msgid "Urgency"
-msgstr "Urgencia"
+msgstr "Urgente"
 
 msgid "Changes"
 msgstr "Cambios"
 
 msgid "Import information from Control section"
-msgstr "Importar la información de la seccion de Control"
+msgstr "Importar la información de la sección de Control"
 
 # ## Menu section
 msgid "Open launcher file"
-msgstr "Abrir archivo de acceso directo"
+msgstr "Abrir el archivo de acceso directo"
 
 msgid "Create system menu launcher"
-msgstr "Crear un acceso directo del menú del sistema"
+msgstr "Crear un acceso directo en el menú del sistema"
 
 msgid "Name"
 msgstr "Nombre"
@@ -549,19 +549,19 @@ msgid "Executable"
 msgstr "Ejecutable"
 
 msgid "Executable to be launched"
-msgstr "Archivo ejecutable de estar iniciado"
+msgstr "Archivo ejecutable que va a ser lanzado"
 
 msgid "Comment"
 msgstr "Comentario"
 
 msgid "Text displayed when mouse hovers over launcher"
-msgstr "Descripción emergente del acceso"
+msgstr "Descripción que se mostrará cuando el ratón esté encima en el lanzador"
 
 msgid "Icon"
 msgstr "Icono"
 
 msgid "Icon to be displayed for the launcher"
-msgstr "Icono del acceso"
+msgstr "Icono en el lanzador"
 
 msgid "Type"
 msgstr "Tipo"
@@ -570,22 +570,22 @@ msgid "Terminal"
 msgstr ""
 
 msgid "Specifies whether application should be run from a terminal"
-msgstr "Especifica si el programa se inicia de un terminal"
+msgstr "Especifica si el programa se inicia en un terminal"
 
 msgid "Startup Notify"
-msgstr "Notificación del inicio"
+msgstr "Notificación al inicio"
 
 msgid "Displays a notification in the system panel when launched"
-msgstr "Demuestra una notificación en el panel del system al iniciarse"
+msgstr "Muestra una notificación en el panel del sistema al iniciarse"
 
 msgid "Encoding"
 msgstr "Codificación"
 
 msgid "Other"
-msgstr "Cualquier demas"
+msgstr "Otro"
 
 msgid "Delete all categories?"
-msgstr "¿Vaciar de todas las categorías?"
+msgstr "¿Vaciar todas las categorías?"
 
 msgid "Save Launcher"
 msgstr "Guardar el Acceso"
@@ -598,7 +598,7 @@ msgid "Extra options"
 msgstr "Opciones Adicionales"
 
 msgid "Create md5sums file"
-msgstr "Crear archivo de md5sums"
+msgstr "Crear archivo md5sums"
 
 msgid "Install md5sum package for this option"
 msgstr "Instalar el paquete md5sum para esta opción"
@@ -610,7 +610,7 @@ msgid "Delete build tree"
 msgstr "Eliminar la ruta provisional"
 
 msgid "Delete temporary directory tree after package has been created"
-msgstr "Elimanar la ruta provisional despeus de construir el paquete"
+msgstr "Eliminar la ruta temporal después de construir el paquete"
 
 msgid "Check package for errors with lintian"
 msgstr "Comprobar al paquete con lintian"
@@ -619,16 +619,16 @@ msgid "Install lintian package for this option"
 msgstr "Instalar el paquete lintian para esta opción"
 
 msgid "Install package after build"
-msgstr "¿Instalar el paquete despues de construir?"
+msgstr "¿Instalar el paquete después de construir?"
 
 msgid "Start building"
-msgstr "Iniciar el construyo"
+msgstr "Iniciarl la construcción"
 
 msgid "Can't Continue"
 msgstr "No Se Puede Continuar"
 
 msgid "One of the required fields is empty"
-msgstr "Un campo obligatorio está vacío"
+msgstr "Uno de los campo obligatorio está vacío"
 
 msgid "Debian Packages"
 msgstr "Paquetes de Debian"
@@ -643,22 +643,22 @@ msgid "Checking files"
 msgstr "Comprobando los archivos"
 
 msgid "Checking scripts"
-msgstr "Comprobando los scrips"
+msgstr "Comprobando los scripts"
 
 msgid "Checking changelog"
 msgstr "Comprobando el registro de cambios"
 
 msgid "Checking copyright"
-msgstr "Comprobando el propiedad intelectual"
+msgstr "Comprobando la propiedad intelectual"
 
 msgid "Checking menu launcher"
-msgstr "Comprobando el acceso directo del menú"
+msgstr "Comprobando el acceso directo en el menú"
 
 msgid "Checking create md5sums"
-msgstr "Comprobando el crear md5sums"
+msgstr "Comprobando la creación del md5sums"
 
 msgid "Checking delete build tree"
-msgstr "Comprobando el elimar la ruta provisional"
+msgstr "Comprobando el borrado de la ruta temporal"
 
 msgid "Checking lintian"
 msgstr "Comprobando lintian"
@@ -673,49 +673,49 @@ msgid "Copying files"
 msgstr "Copiando los archivos"
 
 msgid "Creating changelog"
-msgstr "Creando el registro de cambios"
+msgstr "Generando el registro de cambios"
 
 msgid "Creating copyright"
-msgstr "Creando el propiedad intelectual"
+msgstr "Generando la propiedad intelectual"
 
 msgid "Creating menu launcher"
-msgstr "Creando el acceso directo del menú"
+msgstr "Generando el acceso directo en el menú"
 
 msgid "Creating md5sums"
-msgstr "Creando md5sums"
+msgstr "Generando md5sums"
 
 msgid "Creating control file"
-msgstr "Creando el archivo de control"
+msgstr "Generando el archivo de control"
 
 msgid "Creating scripts"
-msgstr "Creando los guiones"
+msgstr "Generando los scripts"
 
 msgid "Running dpkg"
 msgstr "Ejecutando dpkg"
 
 msgid "Removing temp directory"
-msgstr "Eliminando la ruta provisional"
+msgstr "Eliminando la ruta temporal"
 
 msgid "An error occurred when trying to delete the build tree"
-msgstr "Se occurió un error al intentar eliminar la ruta provisional"
+msgstr "Ocurrió un error al intentar eliminar la ruta temporal"
 
 msgid "Checking package for errors"
-msgstr "Comprobando el paquete para errores"
+msgstr "Buscando errores en el paquete"
 
 msgid "Lintian Errors"
 msgstr "Errores de Lintian"
 
 msgid "Lintian found some issues with the package."
-msgstr "Encontró lintian a unas problemas con el paquete."
+msgstr "Lintian encontró algún problema en el paquete."
 
 msgid "Details saved to %s"
-msgstr "Se guardó unas detalles a %s"
+msgstr "Se guardaron los detalles en %s"
 
 msgid "Package created successfully"
-msgstr "Se construyó el paquete"
+msgstr "Paquete construido con éxito"
 
 msgid "Getting administrative privileges from user"
-msgstr "Obtener privilegios administrativos de usuario"
+msgstr "Obtener permisos de administrador para el usuario"
 
 msgid "Password"
 msgstr "Contraseña"
@@ -733,7 +733,7 @@ msgid "Could not install %s"
 msgstr "No se pudo instalar %s"
 
 msgid "Password mismatch, try again"
-msgstr "Contraseña no coincide, vuelva a intentarlo"
+msgstr "Las Contraseñas no coinciden, vuelva a intentarlo"
 
 msgid "Authenticated"
 msgstr "Autenticado"
@@ -746,8 +746,7 @@ msgstr "El paquete se instaló con éxito"
 
 # ## Quick build
 msgid "Path to build tree"
-msgstr "Ruta al directorio del construyo"
+msgstr "Ruta al directorio de construcción"
 
 msgid "Could not locate \"%s\""
 msgstr "No se encuentra \"%s\""
-
