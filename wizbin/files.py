@@ -20,6 +20,7 @@ from globals.ident      import pgid
 from globals.paths      import ConcatPaths
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
+from input.filelist     import columns
 from input.filelist     import FileListESS
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
@@ -323,8 +324,9 @@ class Page(WizardPage):
             count = 0
             while count < item_count:
                 filename = self.lst_files.GetItemText(count)
-                target = self.lst_files.GetItem(count, 1).GetText()
-                absolute_filename = ConcatPaths((self.lst_files.sources_list[count], filename))
+                source = self.lst_files.GetItem(count, columns.SOURCE).GetText()
+                target = self.lst_files.GetItem(count, columns.TARGET).GetText()
+                absolute_filename = ConcatPaths((source, filename))
                 
                 # Populate list with tuples of ('src', 'file', 'dest')
                 if self.lst_files.GetItemTextColour(count) == (255, 0, 0):
