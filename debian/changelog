@@ -1,11 +1,26 @@
-debreate (0.7.next15) xenial; urgency=low
+debreate (0.7.next16) xenial; urgency=low
 
   * Test modes:
     'alpha'
     - Enables features that aren't ready for release
-  * Option to preserve top-level directories in file list
+  * Some code merged from unstable branch
+  * Rename log level argument value from 'warning' to 'warn'
+  * Force main window to show on primary display at initial startup
+  * User Interface:
+    Changed layout of menu launcher page
+    Use bitmap buttons on copyright page
+    Added 'refresh' & 'open directory' buttons to copyright page
+    Update some bitmap images
+    Show source directory in file list
+    Option to preserve top-level directories in file list (adding files is currently broken)
+    Use checkbox for changelog target instead of radio button
+    Change layout of menu launcher page
+  * Help reference:
+    Link to Debian manual page for overriding Lintian tags
+    Link to unofficial page for writing manual pages
+  * Working on fixing marking project dirty (WIP)
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Fri, 20 Jan 2017 09:16:03 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 08 Nov 2017 13:30:19 -0800
 
 
 debreate (0.7.13) xenial; urgency=high
