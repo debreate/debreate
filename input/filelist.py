@@ -23,8 +23,8 @@ from input.list         import ListCtrl
 
 
 # ListCtrl report view style constants
-FL_HEADER = wx.LC_ICON|wx.LC_REPORT
-FL_NO_HEADER = wx.LC_ICON|wx.LC_REPORT|wx.LC_NO_HEADER
+FL_HEADER = wx.LC_REPORT
+FL_NO_HEADER = wx.LC_REPORT|wx.LC_NO_HEADER
 
 
 ## FileList columns
