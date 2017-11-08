@@ -1,3 +1,10 @@
+debreate (0.7.next16-1) xenial; urgency=high
+
+  * Added missing package "wiz" to build
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 08 Nov 2017 14:11:24 -0800
+
+
 debreate (0.7.next16) xenial; urgency=low
 
   * Test modes:
@@ -19,8 +26,9 @@ debreate (0.7.next16) xenial; urgency=low
     Link to Debian manual page for overriding Lintian tags
     Link to unofficial page for writing manual pages
   * Working on fixing marking project dirty (WIP)
+  * Lintian tags are listed in data/lintian/tags
 
- -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 08 Nov 2017 13:30:19 -0800
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 08 Nov 2017 14:10:33 -0800
 
 
 debreate (0.7.13) xenial; urgency=high
