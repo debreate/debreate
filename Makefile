@@ -52,7 +52,6 @@ FILES_root = \
 	main.py
 
 PACKAGES = \
-	wizbin \
 	dbr \
 	f_export \
 	fields \
@@ -60,9 +59,10 @@ PACKAGES = \
 	input \
 	startup \
 	system \
-	ui
+	ui \
+	wiz \
+	wizbin
 
-PKG_wizbin = wizbin/*.py
 PKG_dbr = dbr/*.py
 PKG_f_export = f_export/*.py
 PKG_fields = fields/*.py
@@ -71,6 +71,8 @@ PKG_input = input/*.py
 PKG_startup = startup/*.py
 PKG_system = system/*.py
 PKG_ui = ui/*.py
+PKG_wiz = wiz/*.py
+PKG_wizbin = wizbin/*.py
 
 FILES_extra = \
 	README.md \
@@ -105,6 +107,7 @@ FILES_build = \
 	$(PKG_startup) \
 	$(PKG_system) \
 	$(PKG_ui) \
+	$(PKG_wiz) \
 	$(PKG_wizbin)
 
 DIRS_dist = \
