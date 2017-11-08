@@ -65,9 +65,13 @@ class Page(WizardPage):
         
         # Check boxes for choosing scripts
         chk_preinst = CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
+        preinst.SetCheckBox(chk_preinst)
         chk_postinst = CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
+        postinst.SetCheckBox(chk_postinst)
         chk_prerm = CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
+        prerm.SetCheckBox(chk_prerm)
         chk_postrm = CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
+        postrm.SetCheckBox(chk_postrm)
         
         for S in chk_preinst, chk_postinst, chk_prerm, chk_postrm:
             S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
@@ -85,6 +89,7 @@ class Page(WizardPage):
         rb_postrm = wx.RadioButton(self, postrm.GetId(), GT(u'Post-Remove'),
                 name=postrm.FileName)
         
+        # TODO: Remove check boxes from lists (no longer needed)
         self.script_objects = (
             (preinst, chk_preinst, rb_preinst,),
             (postinst, chk_postinst, rb_postinst,),
@@ -213,7 +218,7 @@ class Page(WizardPage):
         scripts = {}
         
         for DS, CHK, RB in self.script_objects:
-            if CHK.GetValue():
+            if DS.IsChecked():
                 scripts[DS.GetFilename()] = DS.GetValue()
         
         return scripts
@@ -232,8 +237,8 @@ class Page(WizardPage):
         # Create a list to return the data
         data = []
         for group in script_list:
-            if group[0].GetValue():
-                data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[1].GetValue(), group[2]))
+            if group[0].IsChecked():
+                data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[0].GetValue(), group[2]))
             
             else:
                 data.append(u'<<{}>>\n0\n<</{}>>'.format(group[2], group[2]))
@@ -331,9 +336,8 @@ class Page(WizardPage):
     #  \return
     #    <b><i>True</i></b> if page is ready for export
     def IsOkay(self):
-        for chk in self.script_objects:
-            chk = chk[0]
-            if chk.GetValue():
+        for DS, CHK, RB in self.script_objects:
+            if DS.IsChecked():
                 return True
         
         return False
@@ -382,8 +386,10 @@ class Page(WizardPage):
                 overwrite.Destroy()
                 del warn_msg, overwrite
             
-            for CHK in self.script_objects[1][1], self.script_objects[2][1]:
-                CHK.SetValue(True)
+            #for CHK in self.script_objects[1][1], self.script_objects[2][1]:
+            #    CHK.SetValue(True)
+            for DS in self.script_objects[1][1], self.script_objects[2][1]:
+                DS.SetChecked(True)
             
             # Update scripts' text area enabled status
             self.OnToggleScripts()
@@ -432,13 +438,12 @@ class Page(WizardPage):
         Logger.Debug(__name__, u'Toggling scripts')
         
         for DS, CHK, RB in self.script_objects:
-            DS.Enable(CHK.GetValue())
+            DS.Enable(DS.IsChecked())
     
     
     ## Resets all fields on page to default values
     def Reset(self):
         for DS, CHK, RB in self.script_objects:
-            CHK.Reset()
             DS.Reset()
         
         self.OnToggleScripts()
@@ -454,11 +459,9 @@ class Page(WizardPage):
     def ScriptSelect(self, event=None):
         for DS, CHK, RB in self.script_objects:
             if RB.GetValue():
-                CHK.Show()
                 DS.Show()
             
             else:
-                CHK.Hide()
                 DS.Hide()
         
         self.Layout()
@@ -541,6 +544,8 @@ class DebianScript(wx.Panel):
         self.ScriptBody = TextAreaPanelESS(self, self.GetId(), monospace=True)
         self.ScriptBody.EnableDropTarget()
         
+        self.Check = None
+        
         # *** Layout *** #
         
         lyt_main = BoxSizer(wx.VERTICAL)
@@ -586,6 +591,23 @@ class DebianScript(wx.Panel):
     
     
     ## TODO: Doxygen
+    def Hide(self):
+        if self.Check:
+            self.Check.Hide()
+        
+        return wx.Panel.Hide(self)
+    
+    
+    ## TODO: Doxygen
+    def IsChecked(self):
+        # FIXME: Should check if field is wx.CheckBox
+        if self.Check:
+            return self.Check.IsChecked()
+        
+        return False
+    
+    
+    ## TODO: Doxygen
     def IsEnabled(self):
         return FieldEnabled(self.ScriptBody)
     
@@ -604,6 +626,18 @@ class DebianScript(wx.Panel):
     ## Resets all members to default values
     def Reset(self):
         self.ScriptBody.Clear()
+        if self.Check:
+            self.Check.Reset()
+    
+    
+    ## TODO: Doxygen
+    def SetCheckBox(self, check_box):
+        self.Check = check_box
+    
+    
+    ## TODO: Doxygen
+    def SetChecked(self, value=True):
+        self.Check.SetValue(value)
     
     
     ## Sets the name of the script to be displayed
@@ -640,3 +674,11 @@ class DebianScript(wx.Panel):
     #    Text to be entered into the script body
     def SetValue(self, value):
         self.ScriptBody.SetValue(value)
+    
+    
+    ## TODO: Doxygen
+    def Show(self):
+        if self.Check:
+            self.Check.Show()
+        
+        return wx.Panel.Show(self)
