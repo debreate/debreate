@@ -39,7 +39,7 @@ class Page(WizardPage):
         WizardPage.__init__(self, parent, pgid.DEPENDS)
         
         ## Override default label
-        self.Label = GT(u'Dependencies and Conflicts')
+        self.PLabel = GT(u'Dependencies and Conflicts')
         
         # Bypass checking this page for build
         self.prebuild_check = False
