@@ -18,6 +18,7 @@
   - Link to Debian manual page for overriding Lintian tags
   - Link to unofficial page for writing manual pages
 - Working on fixing marking project dirty (WIP)
+- Lintian tags are listed in data/lintian/tags
 
 0.7.13
 - Fixes:
