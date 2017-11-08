@@ -599,6 +599,11 @@ class WizardPage(ScrolledPanel):
         return self.PLabel
     
     
+    ## Sets page's label
+    def SetLabel(self, label):
+        self.PLabel = label
+    
+    
     ## Retrieves all fields that cannot be left blank for build
     #
     #  FIXME: Should only require page ID
