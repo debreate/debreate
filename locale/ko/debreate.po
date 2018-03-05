@@ -1,0 +1,803 @@
+# Debreate - Debian Package Creator
+# Copyright Â© 2016 Jordan Irwin
+# This file is distributed under the same license as the debreate software, source, &/or package.
+# Jordan Irwin <antumdeluge@gmail.com>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Debreate 0.8.0\n"
+"Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
+"POT-Creation-Date: 2016-09-19 01:41-0700\n"
+"PO-Revision-Date: 2018-03-05 18:48+0900\n"
+"Last-Translator: \n"
+"Language-Team: Lee Yunseok <thericke00@gmail.com>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 1.5.7\n"
+"Language: ko\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+# WARNING:
+# If "%s" or "{}" is in the msgid be sure to put it in the msgstr
+# otherwise, text will not be displayed correctly or parts of
+# Debreate may not function.
+#
+# If you do not wish to translate a line just leave its
+# msgstr blank
+#
+# ## Program name
+msgid "Debreate"
+msgstr "데브리에이트(Debreate)"
+
+# ## Title bar
+msgid "Debreate - Debian Package Builder"
+msgstr "데브리에이트 - 데비안 패키지 빌더"
+
+# ## First run message
+msgid "Debreate First Run"
+msgstr "데브리에이트 시작하기"
+
+msgid "Thank you for using Debreate."
+msgstr "데브리에이트를 이용해주셔서 감사합니다."
+
+msgid ""
+"This message only displays on the first run, or if the configuration file "
+"becomes corrupted. The default configuration file will now be created. To "
+"delete this file, type the following command in a terminal:"
+msgstr ""
+"이 메시지는 처음 실행되거나 설정 파일이 손상된 경우에만 표시됩니다. 이제 기"
+"본 설정 파일이 생성될 것입니다. 이 파일을 지우기 위해 터미널에 입력해야 하는 "
+"명령:"
+
+# ## Menu and Status bars
+msgid "File"
+msgstr "파일"
+
+msgid "Page"
+msgstr "페이지"
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Help"
+msgstr "도움말"
+
+msgid "Start a new project"
+msgstr "새 프로젝트"
+
+msgid "Open"
+msgstr "열기"
+
+msgid "Open a previously saved project"
+msgstr "저장된 프로젝트 열기"
+
+msgid "Save current project"
+msgstr "프로젝트 저장"
+
+msgid "Save current project with a new filename"
+msgstr "새 이름으로 프로젝트 저장"
+
+msgid "Quick Build"
+msgstr "빠른 빌드"
+
+msgid "Build a package from an existing build tree"
+msgstr "기존 빌드 트리로부터 패키지 빌드하기"
+
+msgid "Information"
+msgstr "정보"
+
+msgid "Go to Information section"
+msgstr "정보 섹션으로 이동"
+
+msgid "Control"
+msgstr "컨트롤"
+
+msgid "Go to Control section"
+msgstr "컨트롤 섹션으로 이동"
+
+msgid "Dependencies"
+msgstr "종속성"
+
+msgid "Go to Dependencies section"
+msgstr "종속성 섹션으로 이동"
+
+msgid "Files"
+msgstr "파일"
+
+msgid "Go to Files section"
+msgstr "파일 섹션으로 이동"
+
+msgid "Scripts"
+msgstr "스크립트"
+
+msgid "Go to Scripts section"
+msgstr "스크립트 섹션으로 이동"
+
+msgid "Changelog"
+msgstr "체인지로그"
+
+msgid "Go to Changelog section"
+msgstr "체인지로그 섹션으로 이동"
+
+msgid "Copyright"
+msgstr "카피라이트"
+
+msgid "Go to Copyright section"
+msgstr "카피라이트 섹션으로 이동"
+
+msgid "Menu Launcher"
+msgstr "메뉴 런처"
+
+msgid "Go to Menu Launcher section"
+msgstr "메뉴 런처 섹션으로 이동"
+
+msgid "Build"
+msgstr "빌드"
+
+msgid "Go to Build section"
+msgstr "빌드 섹션으로 이동"
+
+msgid "Use Custom Dialogs"
+msgstr "커스텀 다이어그 사용"
+
+msgid "Use System or Custom Save/Open Dialogs"
+msgstr "시스팀 또는 커스텀 다이어그 저장/열기 사용"
+
+msgid "Check for Update"
+msgstr "업데이트 확인"
+
+msgid "Reference"
+msgstr "참고"
+
+msgid "Open a usage document"
+msgstr "사용법 문서 열기"
+
+msgid "About"
+msgstr "정보"
+
+msgid "About Debreate"
+msgstr "데브리에이트에 대해"
+
+msgid "Debian Policy Manual"
+msgstr "데비안 정책 안내서"
+
+msgid "Control Files"
+msgstr "컨트롤 파일"
+
+msgid "Ubuntu Policy Manual"
+msgstr "우분투(Ubuntu) 정책 안내서"
+
+msgid "Building debs from Source"
+msgstr "소스로부터 DEB 빌드하기"
+
+msgid "Lintian Tags Explanation"
+msgstr "린티안(Lintian) 태그 설명"
+
+# ## Dialogs
+msgid "Start New Project"
+msgstr "새 프로젝트"
+
+msgid "You will lose any unsaved information"
+msgstr "저장하지 않은 정보를 잃게 됩니다."
+
+msgid "Open File"
+msgstr "파일 열기"
+
+msgid "Open Debreate Project"
+msgstr "데브리에트 프로젝트 열기"
+
+msgid "Save Debreate Project"
+msgstr "데브리에이트 프로젝트 저장"
+
+msgid "Debreate project files"
+msgstr "데브리에이트 프로젝트 파일"
+
+msgid "Not a valid Debreate project"
+msgstr "유효한 데브리에이트 프로젝트가 아닙니다"
+
+msgid "Error"
+msgstr "에러"
+
+msgid "Save failed"
+msgstr "저장하지 못했습니다"
+
+msgid "Quit?"
+msgstr "종료할까요?"
+
+msgid "A package builder for Debian based systems"
+msgstr "데비안 기반 시스템 패키지 빌더"
+
+msgid "New Folder"
+msgstr "새 폴더"
+
+msgid "Rename"
+msgstr "이름 변경"
+
+msgid "Move to Trash"
+msgstr "휴지통으로 이동"
+
+msgid "Permission Denied"
+msgstr "권한이 없습니다"
+
+msgid "Name already used in current directory"
+msgstr "현재 디렉토리에서 이미 사용된 이름입니다"
+
+msgid "Choose Directory"
+msgstr "디렉토리 선택"
+
+msgid "Save File"
+msgstr "파일 저장"
+
+msgid "Bad File Name"
+msgstr "잘못된 파일 이름입니다"
+
+msgid "File Exists"
+msgstr "파일이 존재합니다"
+
+msgid "Overwrite File?"
+msgstr "파일을 덮어씌울까요?"
+
+msgid "Version %s is available!"
+msgstr "버전 %는 사용 가능합니다!"
+
+msgid "Would you like to go to Debreate's website?"
+msgstr "데브리에이트의 웹사이트에 가보시겠어요?"
+
+msgid "Debreate is up to date!"
+msgstr "최신 버전입니다!"
+
+msgid "This is a development version, no updates available"
+msgstr "이것은 개발 버전으로, 사용 가능한 업데이트가 없습니다"
+
+# ## About dialog
+msgid "Credits"
+msgstr "만든이"
+
+msgid "Job"
+msgstr "동료"
+
+msgid "License"
+msgstr "라이선스"
+
+msgid "Developer"
+msgstr "개발자"
+
+msgid "Packager"
+msgstr "공급자"
+
+msgid "Translation"
+msgstr "번역"
+
+msgid "System Information"
+msgstr "시스템 정보"
+
+msgid "Python version: {}"
+msgstr "파이썬 버전: {}"
+
+msgid "wxPython version: {}"
+msgstr "wx파이썬 버전: {}"
+
+# ## Button tool tips
+msgid "Next"
+msgstr "다음"
+
+msgid "Previous"
+msgstr "이전"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Remove"
+msgstr "제거"
+
+msgid "Clear"
+msgstr "초기화"
+
+msgid "Append"
+msgstr "더하기"
+
+msgid "Import"
+msgstr "들여오기"
+
+msgid "Browse"
+msgstr "찾아보기"
+
+msgid "Ok"
+msgstr "확인"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Preview"
+msgstr "미리보기"
+
+msgid "Save"
+msgstr "저장"
+
+# ## Information section
+msgid "Welcome to Debreate!"
+msgstr "디브리에이트에 오신 것을 환영합니다!"
+
+msgid ""
+"Debreate aids in building packages for installation on Debian based systems. "
+"Use the arrows located in the top-right corner or the \"Page\" menu to "
+"navigate through the program. For some information on Debian packages use "
+"the reference links in the \"Help\" menu."
+msgstr "데브리에이트는 데비안 기반의 시스템에 설치하기 위한 패키지 "
+
+msgid "For a video tutorial check the link below."
+msgstr "비디오 튜토리얼은 아래 링크를 확인하세요."
+
+msgid "Building a Debian Package with Debreate"
+msgstr "데브리에이트로 데비안 패키지 "
+
+# ## Control section
+msgid "Required"
+msgstr "필수"
+
+msgid "Package"
+msgstr "패키지"
+
+msgid "Version"
+msgstr "버전"
+
+msgid "Maintainer"
+msgstr "메인테이너"
+
+msgid "Email"
+msgstr "전자우편주소"
+
+msgid "Architecture"
+msgstr "아키텍쳐"
+
+msgid "Recommended"
+msgstr "권장"
+
+msgid "Section"
+msgstr "섹션"
+
+msgid "Priority"
+msgstr "우선순위"
+
+msgid "Short Description"
+msgstr "요약 설명"
+
+msgid "Long Description"
+msgstr "자세한 설명"
+
+msgid "Optional"
+msgstr "선택 항목"
+
+msgid "Source"
+msgstr "소스"
+
+msgid "Homepage"
+msgstr "웹사이트"
+
+msgid "Essential"
+msgstr "에센셜"
+
+msgid "Save Control Information"
+msgstr "컨트롤 정보 저장"
+
+# ## Dependencies and Conflicts section
+msgid "Dependencies and Conflicts"
+msgstr "종속성 및 충돌"
+
+msgid "Categories"
+msgstr "범주"
+
+msgid "Depends"
+msgstr "의존성"
+
+msgid "Package will need to be installed"
+msgstr "패키지를 설치해야 합니다"
+
+msgid "Pre-Depends"
+msgstr "사전-의존성"
+
+msgid "Package will need to be installed and configured first"
+msgstr "패키지를 먼저 설치 및 설정해야 합니다."
+
+msgid "Recommends"
+msgstr "권장"
+
+msgid "Package is highly recommended and will be installed by default"
+msgstr "패키지는 적극 권장되며 기본적으로 설치됩니다"
+
+msgid "Suggests"
+msgstr "제안"
+
+msgid ""
+"Package may be useful but is not necessary and will not be installed by "
+"default"
+msgstr "페키지는 유용할 수 있으나 필수는 아니며 기본적으로 설치되지 않습니다"
+
+msgid "Enhances"
+msgstr "향상"
+
+msgid "This package may be useful to enhanced package"
+msgstr "패키지는 향상된 패키지에 유용할 수 있습니다"
+
+msgid "Conflicts"
+msgstr "충돌"
+
+msgid "Package will be removed from the system if it is installed"
+msgstr "패키지를 설치한다면 시스템으로부터 제거될 것입니다"
+
+msgid "Replaces"
+msgstr "대체"
+
+msgid "Package or its files may be overwritten"
+msgstr "패키지 또는 그 파일들은 덮어씌워질 것입니다"
+
+msgid "Breaks"
+msgstr "깨짐"
+
+msgid "Package conflicts and will be de-configured"
+msgstr "패키지 충돌이 발생하며 설정이 해제됩니다"
+
+msgid "Category"
+msgstr "범주"
+
+msgid "Package(s)"
+msgstr "패키지(들)"
+
+msgid "Confirm"
+msgstr "확인"
+
+msgid "Clear all dependencies?"
+msgstr "모든 종속성을 초기화할까요?"
+
+# ## Files section
+msgid "Add Folder"
+msgstr "폴더 추가"
+
+msgid "Add File"
+msgstr "파일 추가"
+
+msgid "Refresh"
+msgstr "새로고침"
+
+msgid "Target"
+msgstr "타겟"
+
+msgid "Custom"
+msgstr "커스텀"
+
+msgid "Choose Target Directory"
+msgstr "타겟 디렉토리 선택"
+
+msgid "Progress"
+msgstr "진행"
+
+msgid "Getting files from %s"
+msgstr "%s에서 파일 가져오기"
+
+msgid "Clear all files?"
+msgstr "모든 파일을 초기화하시겠습니까?"
+
+msgid "Missing Files"
+msgstr "누락된 파일"
+
+msgid "Could not locate the following files:"
+msgstr "다음 파일들을 찾을 수 없습니다:"
+
+# ## Scripts section
+msgid "Make this script"
+msgstr "이 스크립트 만들기"
+
+msgid "Pre-Install"
+msgstr "사전 설치"
+
+msgid "Post-Install"
+msgstr "사후 설치"
+
+msgid "Pre-Remove"
+msgstr "사전 제거"
+
+msgid "Post-Remove"
+msgstr "사후 제거"
+
+msgid "Auto-Link Executables"
+msgstr "자동 연결 실행파일"
+
+msgid "Path"
+msgstr "경로"
+
+msgid "Import executables from Files section"
+msgstr "파일 섹션에서 실행파일 들여오기"
+
+msgid "Generate scripts"
+msgstr "스크립트 생성"
+
+msgid "Path Warning"
+msgstr "경로 경고"
+
+msgid "Path %s does not exist. Continue?"
+msgstr "%s 경로가 없습니다. 계속할까요?"
+
+msgid "Success"
+msgstr "성공"
+
+msgid "post-install and pre-remove scripts generated"
+msgstr "설치 후와 사전 제거 스크립트 생성"
+
+msgid "Auto-Link Help"
+msgstr "자동 연결 도움말"
+
+msgid ""
+"Debreate offers an Auto-Link Executables feature. What this does is finds "
+"any executables in the Files section and creates a postinst script that will "
+"create soft links to them in the specified path. This is useful if you are "
+"installing executables to a directory that is not found in the system PATH "
+"but want to access it from the PATH. For example, if you install an "
+"executable \"bar\" to the directory \"/usr/share/foo\" in order to execute "
+"\"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link "
+"can be used to place a link to \"bar\" somewhere on the system path like \"/"
+"usr/bin\". Then all that needs to be typed is bar to execute the program. "
+"Auto-Link also creates a prerm script that will delete the link upon "
+"removing the package."
+msgstr ""
+"디브리에이트는 자동 연결 실행파일 기능을 제공합니다. 이것은 파일 섹션에서 실"
+"행 파일을 찾고 지정된 경로에서 파일 링크를 소프트 링크로 생성하는 설치 후 스"
+"크립트를 작성합니다. 이는 시스템 경로에 없는 디렉토리에 실행 파일을 설치하지"
+"만 경로에서 액세스하는 경우에 유용합니다. 예를 들어, 터미널에서 \"bar\"를 실"
+"행하기 위해 \"bar\"디렉토리를 \"/usr/share/foo\"디렉토리에 설치하려면 /usr/ "
+"share/foo/bar를 입력해야 합니다. 자동 연결은 \"/usr/bin\"과 같은 시스템 경로"
+"의 어딘가에 \"bar\"연결을 배치하는 데 사용할 수 있습니다. 그런 다음 프로그램"
+"을 실행하기 위해 입력해야하는 것은 모두 bar입니다. 자동 연결은 또한 패키지를 "
+"제거할 때 링크를 삭제하는 사전 제거 스크립트를 만듭니다."
+
+msgid ""
+"How to use Auto-Link: Press the IMPORT button to import any executables from "
+"the Files section. Then press the GENERATE button. Post-Install and Pre-"
+"Remove scripts will be created that will place symbolic links to your "
+"executables in the path displayed above."
+msgstr ""
+"자동 연결 사용법: 들여오기 버튼으로 파일 섹션에서 어떤 실행파일을 들여옵니"
+"다. 그다음 생성 버튼을 누릅니다. 위에 표시된 경로에서 실행 파일에 대한 심볼"
+"릭 링크를 배치하는 설치 후 및 사전 제거 스크립트가 작성됩니다."
+
+# ## Changelog section
+msgid "Distribution"
+msgstr "배포"
+
+msgid "Urgency"
+msgstr "중요도"
+
+msgid "Changes"
+msgstr "변경 사항"
+
+msgid "Import information from Control section"
+msgstr "컨트롤 섹션에서 정보 들여오기"
+
+# ## Copyright section
+msgid "Available Templates"
+msgstr "사용 가능한 템플릿"
+
+msgid "Generate Template"
+msgstr "템플릿 생성"
+
+msgid "Generate Linked Template"
+msgstr "연결된 템플릿 생성"
+
+# ## Menu section
+msgid "Open launcher file"
+msgstr "런처 파일 열기"
+
+msgid "Create system menu launcher"
+msgstr "시스템 메뉴 런처 생성"
+
+msgid "Name"
+msgstr "이름"
+
+msgid "Text for the launcher"
+msgstr "런처의 문자열"
+
+msgid "Executable"
+msgstr "실행 파일"
+
+msgid "Executable to be launched"
+msgstr "실행할 실행 파일"
+
+msgid "Comment"
+msgstr "코멘트"
+
+msgid "Text displayed when mouse hovers over launcher"
+msgstr "런처에 커서를 올렸을 때 보여질 문자열"
+
+msgid "Icon"
+msgstr "ㅇ이콘"
+
+msgid "Icon to be displayed for the launcher"
+msgstr "런처에 표시될 아이콘"
+
+msgid "Type"
+msgstr "형식"
+
+msgid "Terminal"
+msgstr "터미널"
+
+msgid "Specifies whether application should be run from a terminal"
+msgstr "응용 프로그램의 터미널 실행 여부"
+
+msgid "Startup Notify"
+msgstr "시작 알림"
+
+msgid "Displays a notification in the system panel when launched"
+msgstr "시작할 때 시스템 패널에 표시할 알림"
+
+msgid "Encoding"
+msgstr "엔코딩"
+
+msgid "Other"
+msgstr "기타"
+
+msgid "Delete all categories?"
+msgstr "모든 범주를 삭제할까요?"
+
+msgid "Save Launcher"
+msgstr "런처 저장"
+
+msgid "Open Launcher"
+msgstr "런처 열기"
+
+# ## Build section
+msgid "Extra options"
+msgstr "추가 옵션"
+
+msgid "Create md5sums file"
+msgstr "MD5체크섬 파일 생성"
+
+msgid "Install md5sum package for this option"
+msgstr "이 옵션을 위해 MD5 체크섭 패키지 설치"
+
+msgid "Create checksums for files in package"
+msgstr "패키지에 체크섬 생성"
+
+msgid "Delete build tree"
+msgstr "빌드 트리 삭제"
+
+msgid "Delete temporary directory tree after package has been created"
+msgstr "패키지가 생성된 후 임시 디렉토리 트리 삭제"
+
+msgid "Check package for errors with lintian"
+msgstr "린티안으로 패키지 에러 확인"
+
+msgid "Install lintian package for this option"
+msgstr "이 옵션을 위해 린티안 패키지 설치"
+
+msgid "Install package after build"
+msgstr "빌드후 패키지 설치"
+
+msgid "Start building"
+msgstr "빌드 시작"
+
+msgid "Can't Continue"
+msgstr "계속할 수 없습니다"
+
+msgid "One of the required fields is empty"
+msgstr "필수 입력란이 비었습니다"
+
+msgid "Debian Packages"
+msgstr "데비안 패키지"
+
+msgid "Preparing to build"
+msgstr "빌드 준비"
+
+msgid "Gathering control information"
+msgstr "컨트롤 정보 수집"
+
+msgid "Checking files"
+msgstr "파일 체크중"
+
+msgid "Checking scripts"
+msgstr "스크립트 체크중ㅇ"
+
+msgid "Checking changelog"
+msgstr "체인지로그 체크중"
+
+msgid "Checking copyright"
+msgstr "카피라이트 체크중"
+
+msgid "Checking menu launcher"
+msgstr "메뉴 런처 체크중"
+
+msgid "Checking create md5sums"
+msgstr "MD5 체크섭 생성 체크중"
+
+msgid "Checking delete build tree"
+msgstr "빌드 트리 제거 체크중"
+
+msgid "Checking lintian"
+msgstr "린티안 체크중"
+
+msgid "Building"
+msgstr "빌드중"
+
+msgid "Preparing build tree"
+msgstr "빌드 트리 준비"
+
+msgid "Copying files"
+msgstr "파일 복사중"
+
+msgid "Creating changelog"
+msgstr "체인지로그 생성중"
+
+msgid "Creating copyright"
+msgstr "카피라이트 생성중"
+
+msgid "Creating menu launcher"
+msgstr "메뉴 런처 생성중"
+
+msgid "Creating md5sums"
+msgstr "MD5 체크섬 생성중"
+
+msgid "Creating control file"
+msgstr "컨트롤 파일 생성중"
+
+msgid "Creating scripts"
+msgstr "스크립트 생성중"
+
+msgid "Running dpkg"
+msgstr "dpkg 실행중"
+
+msgid "Removing temp directory"
+msgstr "임시 디렉토리 제거중"
+
+msgid "An error occurred when trying to delete the build tree"
+msgstr "빌드 트리 제거를 시도하는 중 에러가 발생했습니다"
+
+msgid "Checking package for errors"
+msgstr "패키지의 에러 체크중"
+
+msgid "Lintian Errors"
+msgstr "린티안 에러"
+
+msgid "Lintian found some issues with the package."
+msgstr "린티안이 패키지의 문제를 발견했습니다"
+
+msgid "Details saved to %s"
+msgstr "%s에 상세정보를 저장했습니다"
+
+msgid "Package created successfully"
+msgstr "패키지가 성공적으로 생성됐습니다"
+
+msgid "Getting administrative privileges from user"
+msgstr "사용자로부터 관리 권한을 얻고 있습니다"
+
+msgid "Password"
+msgstr "비밀번호"
+
+msgid "Installing Package"
+msgstr "패키지 설치중"
+
+msgid "Empty password: Cancelling"
+msgstr "비어있는 비밀번호: 취소중"
+
+msgid "Authentication failure"
+msgstr "인증 실패"
+
+msgid "Could not install %s"
+msgstr "%s를 설치할 수 없습니다"
+
+msgid "Password mismatch, try again"
+msgstr "비밀번호가 틀렸습니다. 다시 시도해주세요."
+
+msgid "Authenticated"
+msgstr "인증됐습니다"
+
+msgid "The package failed to install"
+msgstr "패키지 설치가 실패했습니다"
+
+msgid "The package installed successfully"
+msgstr "패키지 설치가 성공했습니다"
+
+# ## Quick build
+msgid "Path to build tree"
+msgstr "빌드 트리 경로"
+
+msgid "Could not locate \"%s\""
+msgstr "\"%s\"를 찾을 수 없습니다"
