@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Debreate 0.8.0\n"
 "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
 "POT-Creation-Date: 2016-09-19 01:41-0700\n"
-"PO-Revision-Date: 2018-03-06 11:41+0900\n"
+"PO-Revision-Date: 2018-03-24 17:36+0900\n"
 "Last-Translator: Lee Yunseok <thericke00@gmail.com>\n"
 "Language-Team: Lee Yunseok <thericke00@gmail.com>\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -334,7 +334,7 @@ msgid "For a video tutorial check the link below."
 msgstr "비디오 튜토리얼은 아래 링크를 확인하세요."
 
 msgid "Building a Debian Package with Debreate"
-msgstr "데브리에이트로 데비안 패키지 "
+msgstr "데브리에이트로 데비안 패키지 만들기"
 
 # ## Control section
 msgid "Required"
