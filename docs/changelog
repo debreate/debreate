@@ -19,6 +19,7 @@
   - Link to unofficial page for writing manual pages
 - Working on fixing marking project dirty (WIP)
 - Lintian tags are listed in data/lintian/tags
+- Leave trailing newline character (\n) in md5sums file to prevent read error by Lintian
 
 0.7.13
 - Fixes:

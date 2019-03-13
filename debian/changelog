@@ -1,3 +1,10 @@
+debreate (0.7.next16-2) xenial; urgency=low
+
+  * Leave trailing newline character (\n) in md5sums file to prevent read error by Lintian
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Wed, 13 Mar 2019 04:22:08 -0700
+
+
 debreate (0.7.next16-1) xenial; urgency=high
 
   * Added missing package "wiz" to build

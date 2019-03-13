@@ -79,4 +79,4 @@ def WriteMD5(stage_dir, parent=None):
         md5_list.append(sum_join)
     
     # Create the md5sums file in the "DEBIAN" directory
-    return WriteFile(u'{}/DEBIAN/md5sums'.format(stage_dir), u'{}\n'.format(u'\n'.join(md5_list)))
+    return WriteFile(u'{}/DEBIAN/md5sums'.format(stage_dir), u'{}\n'.format(u'\n'.join(md5_list)), u'\n')
