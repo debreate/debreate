@@ -6,9 +6,9 @@
 # See: docs/LICENSE.txt
 
 
-from dbr.image      import GetBitmap
-from globals.paths  import ConcatPaths
-from globals.paths  import PATH_bitmaps
+from dbr.image		import GetBitmap
+from globals.paths	import ConcatPaths
+from globals.paths	import PATH_bitmaps
 
 
 LOGO = ConcatPaths((PATH_bitmaps, u'icon/64/logo.png'))

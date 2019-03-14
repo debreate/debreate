@@ -44,7 +44,7 @@ VERSION_string = u'{}.{}.{}'.format(VERSION_maj, VERSION_min, VERSION_rel)
 # Development version: Increment for every development release
 VERSION_dev = 1
 if VERSION_dev:
-    VERSION_string = u'{}-dev{}'.format(VERSION_string, VERSION_dev)
+	VERSION_string = u'{}-dev{}'.format(VERSION_string, VERSION_dev)
 
 
 # *** Author information *** #
