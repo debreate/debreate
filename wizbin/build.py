@@ -98,6 +98,7 @@ class Page(WizardPage):
 
         if UsingTest(u'alpha'):
             # FIXME: Move next to lintian check box
+            Logger.Info(__name__, u'Enabling alpha feature "lintian overrides" option')
             self.lint_overrides = []
             btn_lint_overrides = CreateButton(self, label=GT(u'Lintian overrides'))
             btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
