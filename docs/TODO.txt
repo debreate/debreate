@@ -8,7 +8,8 @@ Next Release:
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
-- Add lintian overrides option
+- Finish lintian overrides option
+- Cache lintian tags in local directory
 
 Non-priority:
 - Create 'zoom' button image (magnifying glass)
