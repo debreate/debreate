@@ -11,8 +11,8 @@ import os
 from dbr.colors			import COLOR_dir
 from dbr.colors			import COLOR_executable
 from dbr.colors			import COLOR_link
-from globals.fileio		import GetTimestamp
-from globals.fileio		import ReadFile
+from fileio.fileio		import GetTimestamp
+from fileio.fileio		import ReadFile
 from globals.strings	import IsString
 from globals.strings	import TextIsEmpty
 

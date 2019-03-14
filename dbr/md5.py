@@ -10,9 +10,9 @@ import os
 
 from dbr.language		import GT
 from dbr.log			import Logger
+from fileio.fileio		import WriteFile
 from globals.execute	import GetCommandOutput
 from globals.execute	import GetExecutable
-from globals.fileio		import WriteFile
 from globals.ident		import chkid
 from globals.ident		import pgid
 from ui.dialog			import ErrorDialog

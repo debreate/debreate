@@ -16,11 +16,11 @@ from dbr.templates		import GetLicenseTemplateFile
 from dbr.templates		import GetLocalLicenses
 from dbr.templates		import GetSysLicenses
 from dbr.templates		import sys_licenses_path
+from fileio.fileio		import ReadFile
 from globals.dateinfo	import GetYear
 from globals.errorcodes	import dbrerrno
 from globals.execute	import ExecuteCommand
 from globals.execute	import GetExecutable
-from globals.fileio		import ReadFile
 from globals.ident		import btnid
 from globals.ident		import pgid
 from globals.ident		import selid

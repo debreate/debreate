@@ -9,7 +9,7 @@
 import os
 
 from dbr.log		import Logger
-from globals.fileio	import ReadFile
+from fileio.fileio	import ReadFile
 from globals.paths	import ConcatPaths
 
 

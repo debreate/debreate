@@ -10,10 +10,10 @@ import os, traceback, wx
 
 from dbr.language		import GT
 from dbr.log			import Logger
+from fileio.fileio		import ReadFile
 from globals.bitmaps	import ICON_ERROR
 from globals.bitmaps	import ICON_EXCLAMATION
 from globals.errorcodes	import dbrerrno
-from globals.fileio		import ReadFile
 from globals.ident		import btnid
 from globals.ident		import inputid
 from globals.ident		import pgid

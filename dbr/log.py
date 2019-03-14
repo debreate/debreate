@@ -8,10 +8,10 @@
 
 import os, sys
 
+from fileio.fileio		import AppendFile
 from globals.dateinfo	import GetDate
 from globals.dateinfo	import GetTime
 from globals.dateinfo	import dtfmt
-from globals.fileio		import AppendFile
 from globals.paths		import PATH_logs
 from globals.strings	import GetModuleString
 from globals.strings	import IsString

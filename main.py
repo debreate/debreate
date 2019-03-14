@@ -22,6 +22,8 @@ from dbr.icon				import Icon
 from dbr.language			import GT
 from dbr.log				import DebugEnabled
 from dbr.log				import Logger
+from fileio.fileio			import ReadFile
+from fileio.fileio			import WriteFile
 from globals.application	import APP_homepage
 from globals.application	import APP_project_gh
 from globals.application	import APP_project_sf
@@ -31,8 +33,6 @@ from globals.application	import VERSION_string
 from globals.application	import VERSION_tuple
 from globals.bitmaps		import LOGO
 from globals.execute		import GetExecutable
-from globals.fileio			import ReadFile
-from globals.fileio			import WriteFile
 from globals.ident			import menuid
 from globals.ident			import pgid
 from globals.moduleaccess	import ModuleAccessCtrl

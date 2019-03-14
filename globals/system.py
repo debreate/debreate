@@ -10,8 +10,8 @@ from importlib import  import_module
 import os, sys, wx
 
 from dbr.containers		import Contains
-from globals.fileio		import ReadFile
-from globals.fileio		import WriteFile
+from fileio.fileio		import ReadFile
+from fileio.fileio		import WriteFile
 from globals.paths		import ConcatPaths
 from globals.paths		import PATH_cache
 from globals.remote		import GetRemotePageText

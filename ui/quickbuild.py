@@ -13,8 +13,8 @@ from dbr.functions			import BuildDebPackage
 from dbr.language			import GT
 from dbr.log				import Logger
 from dbr.timer				import DebreateTimer
+from fileio.fileio			import ReadFile
 from globals.errorcodes		import dbrerrno
-from globals.fileio			import ReadFile
 from globals.ident			import btnid
 from globals.moduleaccess	import ModuleAccessCtrl
 from globals.paths			import ConcatPaths

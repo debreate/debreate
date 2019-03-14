@@ -10,8 +10,8 @@ import os, wx
 
 from dbr.language		import GT
 from dbr.log			import Logger
-from globals.fileio		import GetFiles
-from globals.fileio		import ReadFile
+from fileio.fileio		import GetFiles
+from fileio.fileio		import ReadFile
 from globals.fileitem	import FileItem
 from globals.ident		import btnid
 from globals.ident		import inputid

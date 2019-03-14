@@ -11,7 +11,7 @@ import time, wx
 from dbr.font			import MONOSPACED_LG
 from dbr.language		import GT
 from fields.ifield		import InputField
-from globals.fileio		import ReadFile
+from fileio.fileio		import ReadFile
 from globals.strings	import TextIsEmpty
 from input.essential	import EssentialField
 from ui.layout			import BoxSizer
