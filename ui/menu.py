@@ -8,77 +8,77 @@
 
 import wx
 
-from dbr.config         import ConfCode
-from dbr.config         import GetDefaultConfigValue
-from dbr.config         import ReadConfig
-from dbr.language       import GT
-from dbr.log            import DebugEnabled
-from globals.bitmaps    import ICON_CLOCK
-from globals.bitmaps    import ICON_GLOBE
-from globals.bitmaps    import ICON_LOGO
-from globals.execute    import GetExecutable
-from globals.ident      import menuid, refid
-from startup.tests      import GetTestList
+from dbr.config			import ConfCode
+from dbr.config			import GetDefaultConfigValue
+from dbr.config			import ReadConfig
+from dbr.language		import GT
+from dbr.log			import DebugEnabled
+from globals.bitmaps	import ICON_CLOCK
+from globals.bitmaps	import ICON_GLOBE
+from globals.bitmaps	import ICON_LOGO
+from globals.execute	import GetExecutable
+from globals.ident		import menuid, refid
+from startup.tests		import GetTestList
 
 
 ## A menu bar that stores an ID along with a menu
 class MenuBar(wx.MenuBar):
-    ## Constructor
-    #
-    #  \param parent
-    #    <b><i>wx.Window</i></b> parent window of the menu bar
-    #    If not None, automatically sets itself as parent's menu bar
-    #  \param style
-    #    Menu bar style represented by an <b><i>integer</i></b> value
-    def __init__(self, parent=None, style=0):
-        wx.MenuBar.__init__(self, style)
+	## Constructor
+	#
+	#  \param parent
+	#	<b><i>wx.Window</i></b> parent window of the menu bar
+	#	If not None, automatically sets itself as parent's menu bar
+	#  \param style
+	#	Menu bar style represented by an <b><i>integer</i></b> value
+	def __init__(self, parent=None, style=0):
+		wx.MenuBar.__init__(self, style)
 
-        self.id_list = []
+		self.id_list = []
 
-        if isinstance(parent, wx.Frame):
-            parent.SetMenuBar(self)
-
-
-    ## Append a menu to the end of menu bar
-    #
-    #  \param menu
-    #    <b><i>wx.Menu</i></b> instance to be appended
-    #  \param title
-    #    Label to be displayed in the menu bar
-    #  \param menuId
-    #    Unique <b><i>integer</i></b> identifier to store for menu
-    def Append(self, menu, title, menuId):
-        self.id_list.append(menuId)
-
-        return wx.MenuBar.Append(self, menu, title)
+		if isinstance(parent, wx.Frame):
+			parent.SetMenuBar(self)
 
 
-    ## Finds a wx.Menu by ID
-    #
-    #  \param menuId
-    #    Menu <b><i>integer</i></b> identifier to search for in menu bar
-    #  \return
-    #    The <b><i>wx.Menu</i></b> with using identifier
-    def GetMenuById(self, menuId):
-        m_index = self.id_list.index(menuId)
+	## Append a menu to the end of menu bar
+	#
+	#  \param menu
+	#	<b><i>wx.Menu</i></b> instance to be appended
+	#  \param title
+	#	Label to be displayed in the menu bar
+	#  \param menuId
+	#	Unique <b><i>integer</i></b> identifier to store for menu
+	def Append(self, menu, title, menuId):
+		self.id_list.append(menuId)
 
-        return self.GetMenu(m_index)
+		return wx.MenuBar.Append(self, menu, title)
 
 
-    ## Insert a menu to a specified position in the menu bar
-    #
-    #  \param index
-    #    Position index to insert menu
-    #  \param menu
-    #    <b><i>wx.Menu</i></b> instance to be inserted
-    #  \param title
-    #    Label to be displayed in the menu bar
-    #  \param menuId
-    #    Unique <b><i>integer</i></b> identifier to store for menu
-    def Insert(self, index, menu, title, menuId):
-        self.id_list.insert(index, menuId)
+	## Finds a wx.Menu by ID
+	#
+	#  \param menuId
+	#	Menu <b><i>integer</i></b> identifier to search for in menu bar
+	#  \return
+	#	The <b><i>wx.Menu</i></b> with using identifier
+	def GetMenuById(self, menuId):
+		m_index = self.id_list.index(menuId)
 
-        return wx.MenuBar.Insert(self, index, menu, title)
+		return self.GetMenu(m_index)
+
+
+	## Insert a menu to a specified position in the menu bar
+	#
+	#  \param index
+	#	Position index to insert menu
+	#  \param menu
+	#	<b><i>wx.Menu</i></b> instance to be inserted
+	#  \param title
+	#	Label to be displayed in the menu bar
+	#  \param menuId
+	#	Unique <b><i>integer</i></b> identifier to store for menu
+	def Insert(self, index, menu, title, menuId):
+		self.id_list.insert(index, menuId)
+
+		return wx.MenuBar.Insert(self, index, menu, title)
 
 
 ## Creates the main menu bar.
@@ -86,154 +86,154 @@ class MenuBar(wx.MenuBar):
 # \param parent Main wx.Frame window
 # \return New MenuBar instance
 def createMenuBar(parent):
-    testing = u'alpha' in GetTestList() or DebugEnabled()
+	testing = u'alpha' in GetTestList() or DebugEnabled()
 
-    menubar = MenuBar(parent)
+	menubar = MenuBar(parent)
 
-    menu_file = wx.Menu()
+	menu_file = wx.Menu()
 
-    menubar.Append(menu_file, GT(u'File'), menuid.FILE)
-    # This menu is filled from wiz.wizard.Wizard.SetPages
-    menubar.Append(wx.Menu(), GT(u'Page'), menuid.PAGE)
+	menubar.Append(menu_file, GT(u'File'), menuid.FILE)
+	# This menu is filled from wiz.wizard.Wizard.SetPages
+	menubar.Append(wx.Menu(), GT(u'Page'), menuid.PAGE)
 
-    # *** File Menu *** #
+	# *** File Menu *** #
 
-    mitems_file = [
-        (menuid.NEW, GT(u'New project'), GT(u'Start a new project'),),
-        (menuid.OPEN, GT(u'Open'), GT(u'Open a previously saved project'),),
-        (menuid.SAVE, GT(u'Save'), GT(u'Save current project'),),
-        (menuid.SAVEAS, GT(u'Save as'), GT(u'Save current project with a new filename'),),
-        None,
-        (menuid.QBUILD, GT(u'Quick Build'), GT(u'Build a package from an existing build tree'), ICON_CLOCK,),
-        None,
-        (menuid.EXIT, GT(u'Quit'), GT(u'Exit Debreate'),),
-        ]
+	mitems_file = [
+		(menuid.NEW, GT(u'New project'), GT(u'Start a new project'),),
+		(menuid.OPEN, GT(u'Open'), GT(u'Open a previously saved project'),),
+		(menuid.SAVE, GT(u'Save'), GT(u'Save current project'),),
+		(menuid.SAVEAS, GT(u'Save as'), GT(u'Save current project with a new filename'),),
+		None,
+		(menuid.QBUILD, GT(u'Quick Build'), GT(u'Build a package from an existing build tree'), ICON_CLOCK,),
+		None,
+		(menuid.EXIT, GT(u'Quit'), GT(u'Exit Debreate'),),
+		]
 
-    if testing:
-        mitems_file.append((menuid.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
+	if testing:
+		mitems_file.append((menuid.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
 
-    # Adding all menus to menu bar
+	# Adding all menus to menu bar
 
-    mitems = (
-        mitems_file,
-        )
+	mitems = (
+		mitems_file,
+		)
 
-    for menu_list in mitems:
-        for mitem in menu_list:
-            if not mitem:
-                menu_file.AppendSeparator()
+	for menu_list in mitems:
+		for mitem in menu_list:
+			if not mitem:
+				menu_file.AppendSeparator()
 
-            else:
-                itm = wx.MenuItem(menu_file, mitem[0], mitem[1], mitem[2])
-                if len(mitem) > 3:
-                    itm.SetBitmap(mitem[3])
+			else:
+				itm = wx.MenuItem(menu_file, mitem[0], mitem[1], mitem[2])
+				if len(mitem) > 3:
+					itm.SetBitmap(mitem[3])
 
-                menu_file.AppendItem(itm)
+				menu_file.AppendItem(itm)
 
-    # ----- Options Menu
-    parent.menu_opt = wx.Menu()
+	# ----- Options Menu
+	parent.menu_opt = wx.Menu()
 
-    # Show/Hide tooltips
-    parent.opt_tooltips = wx.MenuItem(parent.menu_opt, menuid.TOOLTIPS, GT(u'Show tooltips'),
-            GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
+	# Show/Hide tooltips
+	parent.opt_tooltips = wx.MenuItem(parent.menu_opt, menuid.TOOLTIPS, GT(u'Show tooltips'),
+			GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
 
-    # A bug with wx 2.8 does not allow tooltips to be toggled off
-    if wx.MAJOR_VERSION > 2:
-        parent.menu_opt.AppendItem(parent.opt_tooltips)
+	# A bug with wx 2.8 does not allow tooltips to be toggled off
+	if wx.MAJOR_VERSION > 2:
+		parent.menu_opt.AppendItem(parent.opt_tooltips)
 
-    if parent.menu_opt.FindItemById(menuid.TOOLTIPS):
-        show_tooltips = ReadConfig(u'tooltips')
-        if show_tooltips != ConfCode.KEY_NO_EXIST:
-            parent.opt_tooltips.Check(show_tooltips)
+	if parent.menu_opt.FindItemById(menuid.TOOLTIPS):
+		show_tooltips = ReadConfig(u'tooltips')
+		if show_tooltips != ConfCode.KEY_NO_EXIST:
+			parent.opt_tooltips.Check(show_tooltips)
 
-        else:
-            parent.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
+		else:
+			parent.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
 
-        parent.OnToggleToolTips()
+		parent.OnToggleToolTips()
 
-    # *** Option Menu: open logs directory *** #
+	# *** Option Menu: open logs directory *** #
 
-    if GetExecutable(u'xdg-open'):
-        mitm_logs_open = wx.MenuItem(parent.menu_opt, menuid.OPENLOGS, GT(u'Open logs directory'))
-        parent.menu_opt.AppendItem(mitm_logs_open)
+	if GetExecutable(u'xdg-open'):
+		mitm_logs_open = wx.MenuItem(parent.menu_opt, menuid.OPENLOGS, GT(u'Open logs directory'))
+		parent.menu_opt.AppendItem(mitm_logs_open)
 
-        wx.EVT_MENU(parent, menuid.OPENLOGS, parent.OnLogDirOpen)
+		wx.EVT_MENU(parent, menuid.OPENLOGS, parent.OnLogDirOpen)
 
-    # *** OS distribution names cache *** #
+	# *** OS distribution names cache *** #
 
-    opt_distname_cache = wx.MenuItem(parent.menu_opt, menuid.DIST, GT(u'Update dist names cache'),
-            GT(u'Creates/Updates list of distribution names for changelog page'))
-    parent.menu_opt.AppendItem(opt_distname_cache)
+	opt_distname_cache = wx.MenuItem(parent.menu_opt, menuid.DIST, GT(u'Update dist names cache'),
+			GT(u'Creates/Updates list of distribution names for changelog page'))
+	parent.menu_opt.AppendItem(opt_distname_cache)
 
-    # ----- Help Menu
-    menu_help = wx.Menu()
+	# ----- Help Menu
+	menu_help = wx.Menu()
 
-    # ----- Version update
-    mitm_update = wx.MenuItem(menu_help, menuid.UPDATE, GT(u'Check for update'),
-            GT(u'Check if a new version is available for download'))
-    mitm_update.SetBitmap(ICON_LOGO)
+	# ----- Version update
+	mitm_update = wx.MenuItem(menu_help, menuid.UPDATE, GT(u'Check for update'),
+			GT(u'Check if a new version is available for download'))
+	mitm_update.SetBitmap(ICON_LOGO)
 
-    menu_help.AppendItem(mitm_update)
-    menu_help.AppendSeparator()
+	menu_help.AppendItem(mitm_update)
+	menu_help.AppendSeparator()
 
-    # Menu with links to the Debian Policy Manual webpages
-    parent.menu_policy = wx.Menu()
+	# Menu with links to the Debian Policy Manual webpages
+	parent.menu_policy = wx.Menu()
 
-    policy_links = (
-        (refid.DPM, GT(u'Debian Policy Manual'),
-                u'https://www.debian.org/doc/debian-policy',),
-        (refid.DPMCtrl, GT(u'Control files'),
-                u'https://www.debian.org/doc/debian-policy/ch-controlfields.html',),
-        (refid.DPMLog, GT(u'Changelog'),
-                u'https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
-        (refid.UPM, GT(u'Ubuntu Policy Manual'),
-                u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',),
-        (refid.LINT_TAGS, GT(u'Lintian Tags Explanation'),
-                u'https://lintian.debian.org/tags-all.html',),
-        (refid.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
-                u'https://lintian.debian.org/manual/section-2.4.html',),
-        (refid.LAUNCHERS, GT(u'Launchers / Desktop entries'),
-                u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
-        # Unofficial links
-        None,
-        (refid.DEBSRC, GT(u'Building debs from Source'),
-                u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
-        (refid.MAN, GT(u'Writing manual pages'),
-                u'https://liw.fi/manpages/',),
-        )
+	policy_links = (
+		(refid.DPM, GT(u'Debian Policy Manual'),
+				u'https://www.debian.org/doc/debian-policy',),
+		(refid.DPMCtrl, GT(u'Control files'),
+				u'https://www.debian.org/doc/debian-policy/ch-controlfields.html',),
+		(refid.DPMLog, GT(u'Changelog'),
+				u'https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
+		(refid.UPM, GT(u'Ubuntu Policy Manual'),
+				u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',),
+		(refid.LINT_TAGS, GT(u'Lintian Tags Explanation'),
+				u'https://lintian.debian.org/tags-all.html',),
+		(refid.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
+				u'https://lintian.debian.org/manual/section-2.4.html',),
+		(refid.LAUNCHERS, GT(u'Launchers / Desktop entries'),
+				u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
+		# Unofficial links
+		None,
+		(refid.DEBSRC, GT(u'Building debs from Source'),
+				u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
+		(refid.MAN, GT(u'Writing manual pages'),
+				u'https://liw.fi/manpages/',),
+		)
 
-    for LINK in policy_links:
-        if not LINK:
-            parent.menu_policy.AppendSeparator()
+	for LINK in policy_links:
+		if not LINK:
+			parent.menu_policy.AppendSeparator()
 
-        elif len(LINK) > 2:
-            link_id = LINK[0]
-            label = LINK[1]
-            url = LINK[2]
+		elif len(LINK) > 2:
+			link_id = LINK[0]
+			label = LINK[1]
+			url = LINK[2]
 
-            if len(LINK) > 3:
-                icon = LINK[3]
+			if len(LINK) > 3:
+				icon = LINK[3]
 
-            else:
-                icon = ICON_GLOBE
+			else:
+				icon = ICON_GLOBE
 
-            mitm = wx.MenuItem(parent.menu_policy, link_id, label, url)
-            mitm.SetBitmap(icon)
-            parent.menu_policy.AppendItem(mitm)
+			mitm = wx.MenuItem(parent.menu_policy, link_id, label, url)
+			mitm.SetBitmap(icon)
+			parent.menu_policy.AppendItem(mitm)
 
-            wx.EVT_MENU(parent, link_id, parent.OpenPolicyManual)
+			wx.EVT_MENU(parent, link_id, parent.OpenPolicyManual)
 
-    mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
-    mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
+	mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+	mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
 
-    menu_help.AppendMenu(-1, GT(u'Reference'), parent.menu_policy)
-    menu_help.AppendSeparator()
-    menu_help.AppendItem(mitm_help)
-    menu_help.AppendItem(mitm_about)
+	menu_help.AppendMenu(-1, GT(u'Reference'), parent.menu_policy)
+	menu_help.AppendSeparator()
+	menu_help.AppendItem(mitm_help)
+	menu_help.AppendItem(mitm_about)
 
-    if parent.menu_opt.GetMenuItemCount():
-        menubar.Append(parent.menu_opt, GT(u'Options'), menuid.OPTIONS)
+	if parent.menu_opt.GetMenuItemCount():
+		menubar.Append(parent.menu_opt, GT(u'Options'), menuid.OPTIONS)
 
-    menubar.Append(menu_help, GT(u'Help'), menuid.HELP)
+	menubar.Append(menu_help, GT(u'Help'), menuid.HELP)
 
-    return menubar
+	return menubar

@@ -9,310 +9,310 @@
 
 
 import commands, os, re, traceback, subprocess, wx
-from urllib2    import URLError
-from urllib2    import urlopen
+from urllib2	import URLError
+from urllib2	import urlopen
 
-from dbr.language           import GT
-from globals.application    import APP_project_gh
-from globals.application    import VERSION_dev
-from globals.errorcodes     import dbrerrno
-from globals.execute        import GetExecutable
-from globals.strings        import GS
-from globals.strings        import IsString
-from globals.strings        import StringIsNumeric
-from globals.system         import PY_VER_STRING
+from dbr.language			import GT
+from globals.application	import APP_project_gh
+from globals.application	import VERSION_dev
+from globals.errorcodes		import dbrerrno
+from globals.execute		import GetExecutable
+from globals.strings		import GS
+from globals.strings		import IsString
+from globals.strings		import StringIsNumeric
+from globals.system			import PY_VER_STRING
 
 
 ## Get the current version of the application
 #
 #  \param remote
-#    Website URL to parse for update
+#	Website URL to parse for update
 #  \return
-#        Application's version tuple
+#		Application's version tuple
 def GetCurrentVersion(remote=APP_project_gh):
-    try:
-        version = os.path.basename(urlopen(u'{}/releases/latest'.format(remote)).geturl())
+	try:
+		version = os.path.basename(urlopen(u'{}/releases/latest'.format(remote)).geturl())
 
-        if u'-' in version:
-            version = version.split(u'-')[0]
-        version = version.split(u'.')
+		if u'-' in version:
+			version = version.split(u'-')[0]
+		version = version.split(u'.')
 
-        cutoff_index = 0
-        for C in version[0]:
-            if not C.isdigit():
-                cutoff_index += 1
-                continue
+		cutoff_index = 0
+		for C in version[0]:
+			if not C.isdigit():
+				cutoff_index += 1
+				continue
 
-            break
+			break
 
-        version[0] = version[0][cutoff_index:]
-        for V in version:
-            if not V.isdigit():
-                return u'Cannot parse release: {}'.format(tuple(version))
+		version[0] = version[0][cutoff_index:]
+		for V in version:
+			if not V.isdigit():
+				return u'Cannot parse release: {}'.format(tuple(version))
 
-            version[version.index(V)] = int(V)
+			version[version.index(V)] = int(V)
 
-        return tuple(version)
+		return tuple(version)
 
-    except URLError, err:
-        return err
+	except URLError, err:
+		return err
 
 
 ## TODO: Doxygen
 def GetContainerItemCount(container):
-    if wx.MAJOR_VERSION > 2:
-        return container.GetItemCount()
+	if wx.MAJOR_VERSION > 2:
+		return container.GetItemCount()
 
-    return len(container.GetChildren())
+	return len(container.GetChildren())
 
 
 ## TODO: Doxygen
 def GetLongestLine(lines):
-    if isinstance(lines, (unicode, str)):
-        lines = lines.split(u'\n')
+	if isinstance(lines, (unicode, str)):
+		lines = lines.split(u'\n')
 
-    longest = 0
+	longest = 0
 
-    for LI in lines:
-        l_length = len(LI)
-        if l_length > longest:
-            longest = l_length
+	for LI in lines:
+		l_length = len(LI)
+		if l_length > longest:
+			longest = l_length
 
-    return longest
+	return longest
 
 
 ## Checks if the system is using a specific version of Python
 #
 #  FIXME: This function is currently not used anywhere in the code
 #  \param version
-#        The minimal version that should be required
+#		The minimal version that should be required
 def RequirePython(version):
-    error = u'Incompatible python version'
-    t = type(version)
-    if t == type(u''):
-        if version == PY_VER_STRING[0:3]:
-            return
+	error = u'Incompatible python version'
+	t = type(version)
+	if t == type(u''):
+		if version == PY_VER_STRING[0:3]:
+			return
 
-        raise ValueError(error)
+		raise ValueError(error)
 
-    elif t == type([]) or t == type(()):
-        if PY_VER_STRING[0:3] in version:
-            return
+	elif t == type([]) or t == type(()):
+		if PY_VER_STRING[0:3] in version:
+			return
 
-        raise ValueError(error)
+		raise ValueError(error)
 
-    raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
+	raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
 
 
 ## Checks if a string contains any alphabetic characters
 #
 #  \param value
-#        \b \e unicode|str : String to check
+#		\b \e unicode|str : String to check
 #  \return
-#        \b \e bool : Alphabet characters found
+#		\b \e bool : Alphabet characters found
 def HasAlpha(value):
-    return (re.search(u'[a-zA-Z]', GS(value)) != None)
+	return (re.search(u'[a-zA-Z]', GS(value)) != None)
 
 
 ## Finds integer value from a string, float, tuple, or list
 #
 #  \param value
-#        Value to be checked for integer equivalent
+#		Value to be checked for integer equivalent
 #  \return
-#        \b \e int|None
+#		\b \e int|None
 def GetInteger(value):
-    if isinstance(value, (int, float,)):
-        return int(value)
+	if isinstance(value, (int, float,)):
+		return int(value)
 
-    # Will always use there very first value, even for nested items
-    elif isinstance(value,(tuple, list,)):
-        # Recursive check lists & tuples
-        return GetInteger(value[0])
+	# Will always use there very first value, even for nested items
+	elif isinstance(value,(tuple, list,)):
+		# Recursive check lists & tuples
+		return GetInteger(value[0])
 
-    elif value and IsString(value):
-        # Convert because of unsupported methods in str class
-        value = GS(value)
+	elif value and IsString(value):
+		# Convert because of unsupported methods in str class
+		value = GS(value)
 
-        if HasAlpha(value):
-            return None
+		if HasAlpha(value):
+			return None
 
-        # Check for negative
-        if value[0] == u'-':
-            if value.count(u'-') <= 1:
-                value = GetInteger(value[1:])
+		# Check for negative
+		if value[0] == u'-':
+			if value.count(u'-') <= 1:
+				value = GetInteger(value[1:])
 
-                if value != None:
-                    return -value
+				if value != None:
+					return -value
 
-        # Check for tuple
-        elif u'.' in value:
-            value = value.split(u'.')[0]
-            return GetInteger(value)
+		# Check for tuple
+		elif u'.' in value:
+			value = value.split(u'.')[0]
+			return GetInteger(value)
 
-        elif StringIsNumeric(value):
-            return int(value)
+		elif StringIsNumeric(value):
+			return int(value)
 
-    return None
+	return None
 
 
 ## Finds a boolean value from a string, integer, float, or boolean
 #
 #  \param value
-#        Value to be checked for boolean equivalent
+#		Value to be checked for boolean equivalent
 #  \return
-#        \b \e bool|None
+#		\b \e bool|None
 def GetBoolean(value):
-    v_type = type(value)
+	v_type = type(value)
 
-    if v_type == bool:
-        return value
+	if v_type == bool:
+		return value
 
-    elif v_type in (int, float):
-        return bool(value)
+	elif v_type in (int, float):
+		return bool(value)
 
-    elif v_type in (unicode, str):
-        int_value = GetInteger(value)
-        if int_value != None:
-            return bool(int_value)
+	elif v_type in (unicode, str):
+		int_value = GetInteger(value)
+		if int_value != None:
+			return bool(int_value)
 
-        if value in (u'True', u'False'):
-            return value == u'True'
+		if value in (u'True', u'False'):
+			return value == u'True'
 
-    return None
+	return None
 
 
 ## Finds a tuple value from a string, tuple, or list
 #
 #  \param value
-#        Value to be checked for tuple equivalent
+#		Value to be checked for tuple equivalent
 #  \return
-#        \b \e tuple|None
+#		\b \e tuple|None
 def GetIntTuple(value):
-    if isinstance(value, (tuple, list,)):
-        if len(value) > 1:
-            # Convert to list in case we need to make changes
-            value = list(value)
+	if isinstance(value, (tuple, list,)):
+		if len(value) > 1:
+			# Convert to list in case we need to make changes
+			value = list(value)
 
-            for I in value:
-                t_index = value.index(I)
+			for I in value:
+				t_index = value.index(I)
 
-                if isinstance(I, (tuple, list)):
-                    I = GetIntTuple(I)
+				if isinstance(I, (tuple, list)):
+					I = GetIntTuple(I)
 
-                else:
-                    I = GetInteger(I)
+				else:
+					I = GetInteger(I)
 
-                if I == None:
-                    return None
+				if I == None:
+					return None
 
-                value[t_index] = I
+				value[t_index] = I
 
-            return tuple(value)
+			return tuple(value)
 
-    elif IsString(value):
-        # Remove whitespace & braces
-        value = value.strip(u' ()')
-        value = u''.join(value.split(u' '))
+	elif IsString(value):
+		# Remove whitespace & braces
+		value = value.strip(u' ()')
+		value = u''.join(value.split(u' '))
 
-        value = value.split(u',')
+		value = value.split(u',')
 
-        if len(value) > 1:
-            for S in value:
-                v_index = value.index(S)
+		if len(value) > 1:
+			for S in value:
+				v_index = value.index(S)
 
-                S = GetInteger(S)
+				S = GetInteger(S)
 
-                if S == None:
-                    return None
+				if S == None:
+					return None
 
-                value[v_index] = S
+				value[v_index] = S
 
-            # Convert return value from list to tuple
-            return tuple(value)
+			# Convert return value from list to tuple
+			return tuple(value)
 
-    return None
+	return None
 
 
 def IsInteger(value):
-    return GetInteger(value) != None
+	return GetInteger(value) != None
 
 
 def IsBoolean(value):
-    return GetBoolean(value) != None
+	return GetBoolean(value) != None
 
 
 def IsIntTuple(value):
-    return GetIntTuple(value) != None
+	return GetIntTuple(value) != None
 
 
 ## Checks if file is binary & needs stripped
 #
 #  FIXME: Handle missing 'file' command
 def FileUnstripped(file_name):
-    CMD_file = GetExecutable(u'file')
+	CMD_file = GetExecutable(u'file')
 
-    if CMD_file:
-        output = commands.getoutput(u'{} "{}"'.format(CMD_file, file_name))
+	if CMD_file:
+		output = commands.getoutput(u'{} "{}"'.format(CMD_file, file_name))
 
-        if u': ' in output:
-            output = output.split(u': ')[1]
+		if u': ' in output:
+			output = output.split(u': ')[1]
 
-        output = output.split(u', ')
+		output = output.split(u', ')
 
-        if u'not stripped' in output:
-            return True
+		if u'not stripped' in output:
+			return True
 
-        return False
+		return False
 
-    print(u'ERROR: "file" command does not exist on system')
+	print(u'ERROR: "file" command does not exist on system')
 
-    return False
+	return False
 
 
 def BuildBinaryPackageFromTree(root_dir, filename):
-    if not os.path.isdir(root_dir):
-        return dbrerrno.ENOENT
+	if not os.path.isdir(root_dir):
+		return dbrerrno.ENOENT
 
-    # DEBUG
-    cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
-    print(u'DEBUG: Issuing command: {}'.format(cmd))
+	# DEBUG
+	cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
+	print(u'DEBUG: Issuing command: {}'.format(cmd))
 
-    #output = commands.getstatusoutput(cmd)
+	#output = commands.getstatusoutput(cmd)
 
-    return 0
+	return 0
 
 
 def UsingDevelopmentVersion():
-    return VERSION_dev != 0
+	return VERSION_dev != 0
 
 
 def BuildDebPackage(stage_dir, target_file):
-    packager = GetExecutable(u'dpkg-deb')
-    fakeroot = GetExecutable(u'fakeroot')
+	packager = GetExecutable(u'dpkg-deb')
+	fakeroot = GetExecutable(u'fakeroot')
 
-    if not fakeroot or not packager:
-        return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))
+	if not fakeroot or not packager:
+		return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))
 
-    packager = os.path.basename(packager)
+	packager = os.path.basename(packager)
 
-    try:
-        output = subprocess.check_output([fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+	try:
+		output = subprocess.check_output([fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
 
-    except:
-        return (dbrerrno.EAGAIN, traceback.format_exc())
+	except:
+		return (dbrerrno.EAGAIN, traceback.format_exc())
 
-    return (dbrerrno.SUCCESS, output)
+	return (dbrerrno.SUCCESS, output)
 
 
 ## Check if mouse is within the rectangle area of a window
 def MouseInsideWindow(window):
-    # Only need to find size because ScreenToClient method gets mouse pos
-    # relative to window.
-    win_size = window.GetSizeTuple()
-    mouse_pos = window.ScreenToClient(wx.GetMousePosition())
+	# Only need to find size because ScreenToClient method gets mouse pos
+	# relative to window.
+	win_size = window.GetSizeTuple()
+	mouse_pos = window.ScreenToClient(wx.GetMousePosition())
 
-    # Subtracting from width & height compensates for visual boundaries
-    inside_x = 0 <= mouse_pos[0] <= win_size[0]-4
-    inside_y = 0 <= mouse_pos[1] <= win_size[1]-3
+	# Subtracting from width & height compensates for visual boundaries
+	inside_x = 0 <= mouse_pos[0] <= win_size[0]-4
+	inside_y = 0 <= mouse_pos[1] <= win_size[1]-3
 
-    return inside_x and inside_y
+	return inside_x and inside_y

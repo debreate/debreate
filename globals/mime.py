@@ -6,15 +6,15 @@
 # See: docs/LICENSE.txt
 
 
-from globals.execute    import GetCommandOutput
-from globals.execute    import GetExecutable
+from globals.execute import GetCommandOutput
+from globals.execute import GetExecutable
 
 
 ## TODO: Doxygen
 def GetFileMimeType(filename):
-    CMD_file = GetExecutable(u'file')
+	CMD_file = GetExecutable(u'file')
 
-    if not CMD_file:
-        return None
+	if not CMD_file:
+		return None
 
-    return GetCommandOutput(CMD_file, (u'--mime-type', u'--brief', filename,))
+	return GetCommandOutput(CMD_file, (u'--mime-type', u'--brief', filename,))

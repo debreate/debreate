@@ -14,18 +14,18 @@ initialized = False
 ## Checks the initialization state of the app
 #
 #  \return
-#    \b \e True if initialization is complete
+#	\b \e True if initialization is complete
 def AppInitialized():
-    global initialized
+	global initialized
 
-    return initialized
+	return initialized
 
 
 ## Sets the app's initialization state
 #
 #  \param init
-#    \b \e True means initialization complete
+#	\b \e True means initialization complete
 def SetAppInitialized(init=True):
-    global initialized
+	global initialized
 
-    initialized = init
+	initialized = init

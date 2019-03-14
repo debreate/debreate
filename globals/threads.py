@@ -18,71 +18,71 @@ thr = threading
 
 ## Standard thread class with renamed methods
 class Thread(thr.Thread):
-    def __init__(self, function, *args):
-        thr.Thread.__init__(self, target=function, args=args)
+	def __init__(self, function, *args):
+		thr.Thread.__init__(self, target=function, args=args)
 
-        self.Active = False
-        # TODO: Retrieve target exit value
-        self.ExitVal = None
-
-
-    def __del__(self):
-        Logger.Debug(__name__, u'Destroying Thread instance; Thread is active: {}'.format(self.IsActive()))
+		self.Active = False
+		# TODO: Retrieve target exit value
+		self.ExitVal = None
 
 
-    ## Exits the thread & sets inactive
-    #
-    #  Alias of globals.threads.Thread.Join
-    def Exit(self):
-        return self.Join()
+	def __del__(self):
+		Logger.Debug(__name__, u'Destroying Thread instance; Thread is active: {}'.format(self.IsActive()))
 
 
-    ## Retrieves the thread identifier
-    def GetId(self):
-        return self.ident
-
-    ## Tests if thread is active
-    def IsActive(self):
-        return self.Active
+	## Exits the thread & sets inactive
+	#
+	#  Alias of globals.threads.Thread.Join
+	def Exit(self):
+		return self.Join()
 
 
-    ## Exits the thread & sets inactive
-    def join(self):
-        if self.IsActive():
-            Logger.Debug(__name__, u'Joining thread ...')
+	## Retrieves the thread identifier
+	def GetId(self):
+		return self.ident
 
-            thr.Thread.join(self)
-            self.Active = False
-
-
-    ## Exits the thread & sets inactive
-    #
-    #  Alias of globals.threads.Thread.join
-    def Join(self):
-        return self.join()
+	## Tests if thread is active
+	def IsActive(self):
+		return self.Active
 
 
-    ## Executes target under new thread
-    def start(self):
-        try:
-            thr.Thread.start(self)
-            self.Active = True
+	## Exits the thread & sets inactive
+	def join(self):
+		if self.IsActive():
+			Logger.Debug(__name__, u'Joining thread ...')
 
-        # Do not try to restart thread if already started
-        except RuntimeError:
-            Logger.Debug(__name__, u'ThreadStart: Thread is active, cannot restart')
-
-            # In case active state has been changed
-            self.Active = True
-
-            pass
-
-        return self.IsActive()
+			thr.Thread.join(self)
+			self.Active = False
 
 
-    ## Alias for start method
-    def Start(self):
-        return self.start()
+	## Exits the thread & sets inactive
+	#
+	#  Alias of globals.threads.Thread.join
+	def Join(self):
+		return self.join()
+
+
+	## Executes target under new thread
+	def start(self):
+		try:
+			thr.Thread.start(self)
+			self.Active = True
+
+		# Do not try to restart thread if already started
+		except RuntimeError:
+			Logger.Debug(__name__, u'ThreadStart: Thread is active, cannot restart')
+
+			# In case active state has been changed
+			self.Active = True
+
+			pass
+
+		return self.IsActive()
+
+
+	## Alias for start method
+	def Start(self):
+		return self.start()
 
 
 active_threads = []
@@ -91,33 +91,33 @@ active_threads = []
 ## Creates a new thread for processing
 #
 #  \return
-#    \b \e Integer thread ID if successfully activated
+#	\b \e Integer thread ID if successfully activated
 def CreateThread(function, *args):
-    global active_threads
+	global active_threads
 
-    new_thread = Thread(function, args)
-    thread_id = new_thread.GetId()
+	new_thread = Thread(function, args)
+	thread_id = new_thread.GetId()
 
-    if new_thread.IsActive() and thread_id not in active_threads:
-        active_threads.append(thread_id)
+	if new_thread.IsActive() and thread_id not in active_threads:
+		active_threads.append(thread_id)
 
-        return thread_id
+		return thread_id
 
-    return None
+	return None
 
 
 ## Ends an active thread
 #
 #  TODO: Define
 #  \param thread_id
-#    \b \e Integer ID of the thread to kill
+#	\b \e Integer ID of the thread to kill
 #  \return
-#    \b \e True if thread was successfully killed
+#	\b \e True if thread was successfully killed
 def KillThread(thread_id):
-    global active_threads
+	global active_threads
 
-    if thread_id not in active_threads:
-        return False
+	if thread_id not in active_threads:
+		return False
 
-    # REMOVEME:
-    return False
+	# REMOVEME:
+	return False
