@@ -317,7 +317,7 @@ class Page(WizardPage):
 			if u'strip' in task_list:
 				UpdateProgress(progress, GT(u'Stripping binaries'))
 
-				for ROOT, DIRS, FILES in os.walk(stage_dir):
+				for ROOT, DIRS, FILES in os.walk(stage_dir): #@UnusedVariable
 					for F in FILES:
 						# Don't check files in DEBIAN directory
 						if ROOT != DIR_debian:

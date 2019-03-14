@@ -169,7 +169,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## Opens a dialog box with information about the program
-	def OnAbout(self, event=None):
+	def OnAbout(self, event=None): #@UnusedVariable
 		about = AboutDialog(self)
 
 		about.SetGraphic(LOGO)
@@ -219,7 +219,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## Checks for new release availability
-	def OnCheckUpdate(self, event=None):
+	def OnCheckUpdate(self, event=None): #@UnusedVariable
 		update_test = u'update-fail' in GetTestList()
 
 		if UsingDevelopmentVersion() and not update_test:
@@ -264,7 +264,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	#  PDF usage document. If openening usage document fails, attempts
 	#  to open web browser in remote usage page.
 	#  TODO: Use dialog as main method
-	def OnHelp(self, event=None):
+	def OnHelp(self, event=None): #@UnusedVariable
 		if u'alpha' in GetTestList():
 			HelpDialog(self).ShowModal()
 
@@ -282,7 +282,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## Opens the logs directory in the system's default file manager
-	def OnLogDirOpen(self, event=None):
+	def OnLogDirOpen(self, event=None): #@UnusedVariable
 		Logger.Debug(__name__, GT(u'Opening log directory ...'))
 
 		subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
@@ -300,12 +300,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## TODO: Doxygen
-	def OnProjectNew(self, event=None):
+	def OnProjectNew(self, event=None): #@UnusedVariable
 		self.ResetPages()
 
 
 	## TODO: Doxygen
-	def OnProjectOpen(self, event=None):
+	def OnProjectOpen(self, event=None): #@UnusedVariable
 		projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
 		d = GT(u'Debreate project files')
 
@@ -397,14 +397,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## TODO: Doxygen
-	def OnQuickBuild(self, event=None):
+	def OnQuickBuild(self, event=None): #@UnusedVariable
 		QB = QuickBuild(self)
 		QB.ShowModal()
 		QB.Destroy()
 
 
 	## Shows a dialog to confirm quit and write window settings to config file
-	def OnQuit(self, event=None):
+	def OnQuit(self, event=None): #@UnusedVariable
 		if ConfirmationDialog(self, GT(u'Quit?'),
 				text=GT(u'You will lose any unsaved information')).ShowModal() in (wx.ID_OK, wx.OK):
 
@@ -427,12 +427,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## TODO: Doxygen
-	def OnToggleTheme(self, event=None):
+	def OnToggleTheme(self, event=None): #@UnusedVariable
 		self.ToggleTheme(self)
 
 
 	## Shows or hides tooltips
-	def OnToggleToolTips(self, event=None):
+	def OnToggleToolTips(self, event=None): #@UnusedVariable
 		enabled = self.opt_tooltips.IsChecked()
 		wx.ToolTip.Enable(enabled)
 
@@ -440,12 +440,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 
 	## Opens a dialog for creating/updating list of distribution names cache file
-	def OnUpdateDistNamesCache(self, event=None):
+	def OnUpdateDistNamesCache(self, event=None): #@UnusedVariable
 		DistNamesCacheDialog().ShowModal()
 
 
 	## Updates the page menu to reflect current page
-	def OnWizardBtnPage(self, event=None):
+	def OnWizardBtnPage(self, event=None): #@UnusedVariable
 		ID = self.Wizard.GetCurrentPageId()
 		Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
 
