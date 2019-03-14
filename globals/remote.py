@@ -16,8 +16,8 @@ def GetRemotePageText(remote_url):
         URL_BUFFER = urlopen(remote_url)
         page_text = URL_BUFFER.read()
         URL_BUFFER.close()
-        
+
         return page_text
-    
+
     except HTTPError or URLError:
         return None

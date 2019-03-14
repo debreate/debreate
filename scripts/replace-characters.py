@@ -21,7 +21,7 @@ pattern1 = r'\'(.+?)\''
 pattern2 = r'\"(.+?)\"'
 
 # Characters/Strings to be replaced in source code
-# 
+#
 #    original: (replacement, (exclude-file-list))
 replacements = {
     ' -> ': (' ➜ ', ('build', 'files',)),
@@ -35,7 +35,7 @@ TESTING = False
 
 if TESTING:
     test_file = ConcatPaths(DIR_root, 'test.py')
-    
+
     if not os.path.isfile(test_file):
         FILE_BUFFER = open(test_file, 'w')
         FILE_BUFFER.write('\n\
@@ -48,7 +48,7 @@ arrow6 = arrow5\n\n\
 arrow7 = "->   \\r  "\n\n\
 finaltest = " - outer-pre - \\" - inner - \\" - outer-pro - "\n')
         FILE_BUFFER.close()
-    
+
     # Replaceable string for testing
     replacements['arrow'] = 'AR'
 
@@ -56,94 +56,94 @@ finaltest = " - outer-pre - \\" - inner - \\" - outer-pro - "\n')
 def PerformSubstitution(filename, unbiased=False):
     if unbiased:
         print('\nWARNING: Using unbiased scan (will not check for string literals)\n')
-    
+
     F_relative = filename.replace('{}/'.format(DIR_root), '')
-    
+
     if TESTING:
         # Only perform testing on 'test.py' file in root directory
         if F_relative.rstrip('.py') != 'test':
             print('[TESTING] Skipping file: {}'.format(filename))
-            
+
             return False
-    
+
     FILE_BUFFER = open(filename, 'r')
     # TODO: Split the text into lines for accurate checking
     original_text = FILE_BUFFER.read()
     FILE_BUFFER.close()
-    
+
     for OLD in replacements:
         if OLD in original_text:
             excludes = None
             NEW = replacements[OLD]
-            
+
             if isinstance(NEW, (tuple, list)):
                 excludes = None
                 if len(NEW) > 1:
                     excludes = NEW[1]
-                
+
                 NEW = NEW[0]
-            
+
             if excludes and os.path.basename(filename).rstrip('.py') in excludes:
                 print('\n{}: Excluding file from replacement of text "{}"'.format(F_relative, OLD))
-                
+
                 continue
-            
+
             # DEBUG LINE
             print('\nChecking for string "{}" in file: {}'.format(OLD, filename))
-            
+
             changed_lines = original_text.split('\n')
-            
+
             line_number = 0
             for LI in changed_lines:
                 line_index = line_number
                 line_number += 1
-                
+
                 if LI.strip() and OLD in LI:
                     # DEBUG LINE
                     print('Found line: {}'.format(LI.strip()))
-                    
+
                     # Only searching string literals
                     substrings = re.findall(pattern1, LI) + re.findall(pattern2, LI)
-                    
+
                     # DEBUG LINE
                     #lprint('Substrings: {}'.format(substrings), line_number)
-                    
+
                     string_literal = unbiased
-                    
+
                     if not string_literal:
                         for SS in substrings:
                             if OLD in SS:
                                 string_literal = True
                                 break
-                    
+
                     # Source is not within a string literal
                     if not string_literal:
                         # DEBUG LINE
                         lprint('Source string ({}) not within a string literal'.format(OLD), line_number)
-                        
+
                         continue
-                    
+
                     # DEBUG START
                     #str_index = LI.index(OLD)
-                    
+
                     #lprint('Source string ({}) found at line index {}'.format(OLD, str_index), line_number)
                     # DEBUG END
-                    
+
                     changed_lines[line_index] = LI.replace(OLD, NEW)
-            
+
             changed_lines = '\n'.join(changed_lines)
-            
+
             if changed_lines != original_text:
                 print('Writing changes to file ...')
-                
+
                 FILE_BUFFER = open(filename, 'w')
                 FILE_BUFFER.write(changed_lines)
                 FILE_BUFFER.close()
-                
+
                 return True
-            
+
             print('Not found')
-    
+
     return False
 
 
@@ -155,7 +155,7 @@ if args:
         if os.path.isfile(FILE):
             # Use unbiased scan for non-source files
             PerformSubstitution(FILE, unbiased=not FILE.endswith('.py'))
-    
+
     sys.exit(0)
 
 
@@ -180,9 +180,9 @@ root_dirs = []
 for OBJECT in sorted(os.listdir(DIR_root)):
     if os.path.isfile(OBJECT) and OBJECT.endswith('.py'):
         root_files.append(ConcatPaths(DIR_root, OBJECT))
-        
+
         continue
-    
+
     if os.path.isdir(OBJECT) and OBJECT not in exclude_dirs:
         root_dirs.append(ConcatPaths(DIR_root, OBJECT))
 
@@ -200,6 +200,6 @@ if root_dirs:
             for F in FILES:
                 if F.endswith('.py'):
                     F = ConcatPaths(ROOT, F)
-                    
+
                     if os.path.isfile(F):
                         PerformSubstitution(F)

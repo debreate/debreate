@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package globals.debugging
-#  
+#
 #  Helper functions for printing debugging messages to terminal
 
 # MIT licensing
@@ -17,7 +17,7 @@ def lineno():
 
 
 ## Prints a message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param mode
@@ -32,19 +32,19 @@ def HelperMessage(message, mode, script=None, line=None, newline=True):
     if script:
         if line:
             script = u'{}:{}'.format(script, line)
-        
+
         message = u'[{}] {}'.format(script, message)
-    
+
     message = u'{}: {}'.format(mode.upper(), message)
-    
+
     if newline:
         message = u'\n{}'.format(message)
-    
+
     print(message)
 
 
 ## Prints a DEBUG message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param script
@@ -58,7 +58,7 @@ def DebugMessage(message, script=None, line=None, newline=True):
 
 
 ## Prints a FIXME message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param script
@@ -72,7 +72,7 @@ def FixmeMessage(message, script=None, line=None, newline=True):
 
 
 ## Prints a TODO message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param script

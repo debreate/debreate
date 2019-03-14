@@ -30,25 +30,25 @@ def AddChanges(changes_file):
     if not os.path.isfile(changes_file):
         print('ERROR: File does not exist: {}'.format(changes_file))
         sys.exit(errno.ENOENT)
-    
+
     FILE = open(changes_file)
     changes_data = FILE.read().split('\n')
     FILE.close()
-    
+
     changes_lines = []
     for LI in changes_data:
         if len(LI):
             # Only recognize lines that begin with an alphabetic letter or number
             if LI[0].isalnum():
                 changes_lines.append(LI)
-            
+
             # These lines are indented
             elif LI.strip(' ') and LI.strip(' ')[0] in ('-', '*', '\t'):
                 changes_lines.append(LI.strip(' '))
-    
+
     if len(changes_lines):
         return changes_lines
-    
+
     return None
 
 
@@ -57,7 +57,7 @@ new_version = GetInfoValue('VERSION')
 dev_version = GetInfoValue('VERSION_dev')
 if dev_version.isdigit():
     dev_version = int(dev_version)
-    
+
     if dev_version:
         new_version = '{}-dev{}'.format(new_version, dev_version)
 
@@ -69,15 +69,15 @@ if len(sys.argv) > 1:
 if CHANGES != None and len(CHANGES):
     for LI in CHANGES:
         l_index = CHANGES.index(LI)
-        
+
         # These lines are indented
         if LI[0] in ('-', '*', '\t'):
             # Remove delimter & strip whitespace
             CHANGES[l_index] = '  - {}'.format(LI[1:].strip(' '))
             continue
-        
+
         CHANGES[l_index] = '- {}'.format(CHANGES[l_index])
-    
+
     CHANGES = '\n'.join(CHANGES)
 else:
     CHANGES = '- <add changes here>'
@@ -90,7 +90,7 @@ if not new_log:
     cl_data = open(file_CHANGELOG, 'r')
     cl_text = cl_data.read()
     cl_data.close()
-    
+
     # Check if log is empty
     new_log = (''.join(''.join(cl_text.split(' ')).split('\n')) == '')
 
@@ -103,7 +103,7 @@ else:
         if LI.startswith(new_version):
             print('There is already an entry for version {}, exiting ...'.format(new_version))
             sys.exit(0)
-    
+
     cl_text = '{}\n\n{}'.format(entry_string, cl_text)
 
 cl_data = open(file_CHANGELOG, 'w')

@@ -19,53 +19,53 @@ class CheckBox(wx.CheckBox, CommandField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
                 commands=None, requireAll=False):
-        
+
         wx.CheckBox.__init__(self, parent, win_id, label, pos, size, style, name=name)
         CommandField.__init__(self, commands, requireAll)
-        
+
         self.Default = defaultValue
         self.tt_name = name
-        
+
         # Initialize with default value
         self.SetValue(self.Default)
-    
-    
+
+
     ## TODO: Doxygen
     def GetDefaultValue(self):
         return self.Default
-    
-    
+
+
     ## Retrieves current 'checked' state
-    #  
+    #
     #  Differences from inherited method:
     #  - Always returns False if the object is disabled
     def GetValue(self):
         if not FieldEnabled(self):
             return False
-        
+
         return wx.CheckBox.GetValue(self)
-    
-    
+
+
     ## Resets check box to default value
     def Reset(self):
         self.SetChecked(self.GetDefaultValue())
-    
-    
+
+
     ## Manually emit EVT_CHECKBOX when setting value
-    #  
+    #
     #  \param state
     #    If \b \e True, the check is on, otherwise it is off
     def SetChecked(self, state=True):
         wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED))
-        
+
         return self.SetValue(state)
-    
-    
+
+
     ## TODO: Doxygen
     def SetDefaultValue(self, value):
         self.Default = value
-    
-    
+
+
     ## Override inherited method to not allow changing value if disabled
     def SetValue(self, value):
         if FieldEnabled(self):
@@ -77,7 +77,7 @@ class CheckBoxCFG(CheckBox, ConfigField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
                 commands=None, requireAll=False, cfgKey=None, cfgSect=None):
-        
+
         CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue,
                 commands, requireAll)
         ConfigField.__init__(self, cfgKey, cfgSect)
@@ -90,7 +90,7 @@ class CheckBoxESS(CheckBox, EssentialField):
     def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
                 size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
                 commands=None, requireAll=False):
-        
+
         CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue,
                 commands, requireAll)
         EssentialField.__init__(self)

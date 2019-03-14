@@ -10,34 +10,34 @@ import os, sys, errno
 def IsString(item):
     if sys.version_info[0] <= 2:
         return isinstance(item, (unicode, str))
-    
+
     return isinstance(item, str)
 
 
 def PrependStringZeros(string):
     longest = 4
     difference = longest - len(string)
-    
+
     for X in range(difference):
         string = '0{}'.format(string)
-    
+
     return string
 
 
 def lprint(message, line=None):
     newlines = 0
-    
+
     if isinstance(message, (unicode, str)):
         while message.startswith('\n'):
             newlines += 1
             message = message[1:]
-    
+
     if line != None:
         message = '[L:{}] {}'.format(PrependStringZeros(str(line)), message)
-    
+
     for X in range(newlines):
         message = '\n{}'.format(message)
-    
+
     print(message)
 
 
@@ -46,28 +46,28 @@ def ConcatPaths(pathList, *tail):
     # Convert string arg to list
     if IsString(pathList):
         pathList = [pathList,]
-    
+
     # Make sure we are working with a list instance
     pathList = list(pathList)
-    
+
     # Append tail arguments
     if tail:
         pathList += tail
-    
+
     # Clean up tail arguments
     for INDEX in range(len(pathList)):
         pathList[INDEX] = pathList[INDEX].strip('/')
-    
+
     path = '/'.join(pathList)
-    
+
     while '//' in path:
         path = path.replace('//', '/')
-    
+
     # FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
     absolute = True
     if absolute and not path.startswith('/'):
         path = '/' + path
-    
+
     return path
 
 
@@ -102,7 +102,7 @@ for L in INFO_data:
                 key = L.split('=')
                 value = key[1]
                 key = key[0].upper()
-                
+
                 INFO_keys[key] = value
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package globals.paths
-#  
+#
 #  Global paths used in the app
 
 # MIT licensing
@@ -24,28 +24,28 @@ def ConcatPaths(pathList, *tail):
     # Convert string arg to list
     if IsString(pathList):
         pathList = [pathList,]
-    
+
     # Make sure we are working with a list instance
     pathList = list(pathList)
-    
+
     # Append tail arguments
     if tail:
         pathList += tail
-    
+
     # Clean up tail arguments
     for INDEX in range(len(pathList)):
         pathList[INDEX] = pathList[INDEX].strip(u'/')
-    
+
     path = u'/'.join(pathList)
-    
+
     while u'//' in path:
         path = path.replace(u'//', u'/')
-    
+
     # FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
     absolute = True
     if absolute and not path.startswith(u'/'):
         path = u'/' + path
-    
+
     return path
 
 
@@ -59,7 +59,7 @@ def ConcatPaths(pathList, *tail):
 PATH_app = GS(os.path.dirname(os.path.dirname(__file__)))
 
 ## User's home directory
-#  
+#
 #  Used to set config directory.
 PATH_home = GS(os.getenv(u'HOME'))
 

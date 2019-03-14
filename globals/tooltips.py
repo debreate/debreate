@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package globals.tooltips
-#  
+#
 #  Defines tooltips that have longer texts
 
 # MIT licensing
@@ -224,14 +224,14 @@ TT_pages = {
 def SetToolTip(tooltip, control, required=False):
     if isinstance(tooltip, wx.ToolTip):
         tooltip = tooltip.GetTip()
-    
+
     elif isinstance(tooltip, (tuple, list)):
         tooltip = u'\n'.join(tooltip)
-    
+
     if tooltip:
         if required:
             tooltip = u'{}\n\n{}'.format(tooltip, GT(u'Required'))
-        
+
         control.SetToolTipString(tooltip)
 
 
@@ -243,54 +243,54 @@ def SetToolTips(tooltip, control_list, required=False):
 
 def SetPageToolTips(parent, page_id=None):
     control_list = []
-    
+
     if not page_id:
         page_id = parent.GetId()
-    
+
     # Recursively set tooltips for children
     for FIELD in parent.GetChildren():
         control_list.append(FIELD)
-        
+
         sub_children = FIELD.GetChildren()
         if sub_children:
             SetPageToolTips(FIELD, page_id)
-    
+
     if page_id in TT_pages:
         for FIELD in control_list:
             tooltip = None
-            
+
             # Use ID first
             field_id = FIELD.GetId()
             if field_id in TT_pages[page_id]:
                 tooltip = TT_pages[page_id][field_id]
-            
+
             else:
                 try:
                     name = FIELD.tt_name.lower()
-                
+
                 except AttributeError:
                     try:
                         name = FIELD.GetName().lower()
-                    
+
                     except AttributeError:
                         Logger.Warn(__name__, u'Object has no name, not setting tooltip: {}'.format(type(FIELD)))
-                        
+
                         continue
-                
+
                 required = False
                 if name:
                     if u'*' in name[-2:]:
                         required = True
-                    
+
                     # The » character causes a different tooltip to be set for disabled fields
                     if u'»' in name[-2:] and not FieldEnabled(FIELD):
                         name = u'{}_disabled'.format(name)
-                    
+
                     name = name.replace(u'*', u'')
                     name = name.replace(u'»', u'')
-                
+
                 if name in TT_pages[page_id]:
                     tooltip = TT_pages[page_id][name]
-            
+
             if tooltip:
                 SetToolTip(tooltip, FIELD, required)

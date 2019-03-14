@@ -23,16 +23,16 @@ section_delims = u'*-+#'
 
 def _strip_line(line, preserve_indent=False):
     chars = u' \t'
-    
+
     if preserve_indent:
         return line.rstrip(chars)
-    
+
     return line.strip(chars)
 
 
 def _format_section(line, preserve_indent=False):
     global section_delims
-    
+
     return u'  * {}'.format(_strip_line(line, preserve_indent).lstrip(u' \t{}'.format(section_delims)))
 
 
@@ -40,23 +40,23 @@ def _format_section(line, preserve_indent=False):
 def _format_lines(lines, preserve_indent=False):
     if isinstance(lines, tuple):
         lines = list(lines)
-    
+
     if lines:
         global section_delims
-        
+
         for INDEX in range(len(lines)):
             if INDEX == 0:
                 # First line will always start with an asterix
                 lines[INDEX] = _format_section(lines[INDEX], preserve_indent)
                 continue
-            
+
             # Make sure line is not empty before setting section
             if lines[INDEX] and lines[INDEX].lstrip(u' \t')[0] in section_delims:
                 lines[INDEX] = _format_section(lines[INDEX], preserve_indent)
-            
+
             else:
                 lines[INDEX] = u'    {}'.format(_strip_line(lines[INDEX], preserve_indent))
-    
+
     return tuple(lines)
 
 
@@ -67,7 +67,7 @@ def _get_cl_timestamp():
 
 
 ## Function to format text Debian changelog standards
-#  
+#
 #  \param text
 #    \b \e String to be formatted
 #  \return
@@ -76,19 +76,19 @@ def FormatChangelog(text, name=APP_name, version=VERSION_string, dist=OS_codenam
             urgency=u'low', packager=AUTHOR_name, email=AUTHOR_email, preserve_indent=False):
     if TextIsEmpty(text):
         return None
-    
+
     # Remove leading & trailing whitespace & empty lines & split into
     # list of lines.
     lines = text.strip(u' \t\n\r').split(u'\n')
-    
+
     if not lines:
         return None
-    
+
     lines = RemoveEmptyLines(lines)
     lines = _format_lines(lines, preserve_indent)
-    
+
     text = u'\n'.join(lines)
     header = u'{} ({}) {}; urgency={}\n'.format(name, version, dist, urgency)
     footer = u'\n -- {} <{}>  {}'.format(packager, email, _get_cl_timestamp())
-    
+
     return u'\n'.join((header, text, footer))

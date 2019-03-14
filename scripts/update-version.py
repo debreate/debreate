@@ -26,9 +26,9 @@ def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
     FILE = open(filename, 'r')
     lines_orig = FILE.read().split('\n')
     FILE.close()
-    
+
     lines_new = list(lines_orig)
-    
+
     for l in lines_new:
         l_index = lines_new.index(l)
         if l.strip(' ').startswith(testline):
@@ -36,15 +36,15 @@ def UpdateSingleLineFile(filename, testline, newvalue=VERSION, suffix=''):
             ws = ''
             if l.startswith(' '):
                 ws = l.split(testline)[0]
-            
+
             lines_new[l_index] = '{}{}{}{}'.format(ws, testline, newvalue, suffix)
-            
+
             # Only change first instance
             break
-    
+
     if lines_new != lines_orig:
         print('Writing new version information to {}'.format(filename))
-        
+
         FILE = open(filename, 'w')
         FILE.write('\n'.join(lines_new))
         FILE.close()

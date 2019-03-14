@@ -21,13 +21,13 @@ def SetFileExecutable(target, executable=True):
     if os.path.isfile(target):
         if executable:
             mode = 0755
-        
+
         else:
             mode = 0644
-        
+
         os.chmod(target, mode)
-        
+
         if os.access(target, mode):
             return True
-    
+
     return False

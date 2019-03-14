@@ -15,10 +15,10 @@ from dbr.event import TimerStopEvent
 class DebreateTimer(wx.Timer):
     def __init__(self, owner, ID=wx.ID_ANY):
         wx.Timer.__init__(self, owner, ID)
-    
+
     def Stop(self, *args, **kwargs):
         return_value = wx.Timer.Stop(self, *args, **kwargs)
-        
+
         wx.PostEvent(self.GetOwner(), TimerStopEvent(0))
-        
+
         return return_value

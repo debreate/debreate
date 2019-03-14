@@ -3,7 +3,7 @@
 
 ## \page init.py Initialization Script
 #  Script to set configurations and launch Debreate
-#  
+#
 #  Checks if the config file exists in ~/.config/debreate. If
 #  not, a new file will be created (~/.config/debreate/config).
 #  If the config file already exists but is corrupted, it will
@@ -35,56 +35,56 @@ parsed_path = GetParsedPath()
 # Compiles python source into bytecode
 if u'compile' in parsed_commands:
     import compileall, errno
-    
-    
+
+
     compile_dirs = (
         u'dbr',
         u'globals',
         u'wizbin',
         )
-    
+
     if not os.access(PATH_app, os.W_OK):
         print(u'ERROR: No write privileges for {}'.format(PATH_app))
         sys.exit(errno.EACCES)
-    
+
     print(u'Compiling Python modules (.py) to bytecode (.pyc) ...\n')
-    
+
     print(u'Compiling root directory: {}'.format(PATH_app))
     for F in os.listdir(PATH_app):
         if os.path.isfile(F) and F.endswith(u'.py') and F != u'init.py':
             F = ConcatPaths((PATH_app, F))
             compileall.compile_file(F)
-    
+
     print
-    
+
     for D in os.listdir(PATH_app):
         D = ConcatPaths((PATH_app, D))
         if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
             print(u'Compiling directory: {}'.format(D))
             compileall.compile_dir(D)
             print
-    
+
     sys.exit(0)
 
 
 if u'clean' in parsed_commands:
     import errno
-    
-    
+
+
     if not os.access(PATH_app, os.W_OK):
         print(u'ERROR: No write privileges for {}'.format(PATH_app))
         sys.exit(errno.EACCES)
-    
+
     print(u'Cleaning Python bytecode (.pyc) ...\n')
-    
+
     for ROOT, DIRS, FILES in os.walk(PATH_app):
         for F in FILES:
             F = ConcatPaths((ROOT, F))
-            
+
             if os.path.isfile(F) and F.endswith(u'.pyc'):
                 print(u'Removing file: {}'.format(F))
                 os.remove(F)
-    
+
     sys.exit(0)
 
 
@@ -94,7 +94,7 @@ import wxversion
 if u'legacy' in parsed_commands:
     try:
         wxversion.select([u'2.8'])
-    
+
     except wxversion.VersionError:
         print(u'Warning: Could not find legacy version of wx on system. Reverting to default settings.')
 
@@ -151,27 +151,27 @@ exit_now = 0
 
 if u'version' in parsed_args_s:
     print(VERSION_string)
-    
+
     sys.exit(0)
 
 
 if u'help' in parsed_args_s:
     if INSTALLED:
         help_output = commands.getstatusoutput(u'man debreate')
-    
+
     else:
         help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(PATH_app))
-    
-    
+
+
     if help_output[0]:
         print(u'ERROR: Could not locate manpage')
-        
+
         sys.exit(help_output[0])
-    
-    
+
+
     help_output = GS(help_output[1])
     print(u'\n'.join(help_output.split(u'\n')[2:-1]))
-    
+
     sys.exit(0)
 
 
@@ -189,31 +189,31 @@ conf_values = GetAllConfigKeys()
 
 if not conf_values:
     Logger.Debug(script_name, u'Launching First Run dialog ...')
-    
+
     first_run = LaunchFirstRun(debreate_app)
     if not first_run == ConfCode.SUCCESS:
-        
+
         sys.exit(first_run)
-    
+
     conf_values = GetAllConfigKeys()
 
 # Check that all configuration values are okay
 for V in conf_values:
     key = V
     value = conf_values[V]
-    
+
     # ???: Redundant???
     if value == None:
         value = GetDefaultConfigValue(key)
-    
+
     Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, GS(value), type(value))))
-    
+
     # FIXME: ConfCode values are integers & could cause problems with config values
     if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
         first_run = LaunchFirstRun(debreate_app)
         if not first_run == ConfCode.SUCCESS:
             sys.exit(first_run)
-        
+
         break
 
 
@@ -226,7 +226,7 @@ if conf_values[u'maximize']:
 
 elif conf_values[u'center']:
     from system.display import CenterOnPrimaryDisplay
-    
+
     # NOTE: May be a few pixels off
     CenterOnPrimaryDisplay(Debreate)
 
@@ -235,7 +235,7 @@ working_dir = conf_values[u'workingdir']
 if parsed_path:
     project_file = parsed_path
     Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
-    
+
     if Debreate.OpenProject(project_file):
         working_dir = os.path.dirname(project_file)
 

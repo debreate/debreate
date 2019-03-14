@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package dbr.event
-#  
+#
 #  Custom event types & binders
 
 # MIT licensing

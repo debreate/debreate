@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ## \package globals.constants
-#  
+#
 #  Global variables used throughout the application & should remain constant.
 #  TODO: Rename or delete
 
@@ -26,21 +26,21 @@ if os.path.isfile(u'{}/INSTALLED'.format(PATH_app)):
 
 def GetPrefix():
     global PATH_app, INSTALLED
-    
+
     if not INSTALLED:
         return PATH_app
-    
+
     lines = ReadFile(u'{}/INSTALLED'.format(PATH_app), split=True)
-    
+
     for L in lines:
         if u'=' in L:
             key = L.split(u'=')
             value = key[1]
             key = key[0]
-            
+
             if key.lower() == u'prefix':
                 return value
-    
+
     return PATH_app
 
 
