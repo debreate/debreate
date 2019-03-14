@@ -12,9 +12,7 @@ import os, shutil, subprocess, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
-from dbr.config             import ConfCode
 from dbr.config             import GetDefaultConfigValue
-from dbr.config             import ReadConfig
 from dbr.config             import WriteConfig
 from dbr.event              import EVT_CHANGE_PAGE
 from dbr.functions          import GetCurrentVersion
@@ -31,16 +29,12 @@ from globals.application    import AUTHOR_email
 from globals.application    import AUTHOR_name
 from globals.application    import VERSION_string
 from globals.application    import VERSION_tuple
-from globals.bitmaps        import ICON_CLOCK
-from globals.bitmaps        import ICON_GLOBE
-from globals.bitmaps        import ICON_LOGO
 from globals.bitmaps        import LOGO
 from globals.execute        import GetExecutable
 from globals.fileio         import ReadFile
 from globals.fileio         import WriteFile
 from globals.ident          import menuid
 from globals.ident          import pgid
-from globals.ident          import refid
 from globals.moduleaccess   import ModuleAccessCtrl
 from globals.paths          import PATH_app
 from globals.paths          import PATH_local
@@ -54,7 +48,7 @@ from ui.dialog              import DetailedMessageDialog
 from ui.dialog              import ShowErrorDialog
 from ui.distcache           import DistNamesCacheDialog
 from ui.layout              import BoxSizer
-from ui.menu                import MenuBar
+from ui.menu                import createMenuBar
 from ui.quickbuild          import QuickBuild
 from ui.statusbar           import StatusBar
 from wiz.helper             import GetPage
@@ -83,8 +77,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
             wx.GetApp().SetTopWindow(self)
 
-        testing = u'alpha' in GetTestList() or DebugEnabled()
-
         if DebugEnabled():
             self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
 
@@ -97,153 +89,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         StatusBar(self)
 
         # *** Menus *** #
-        menubar = MenuBar(self)
-
-        menu_file = wx.Menu()
-
-        menubar.Append(menu_file, GT(u'File'), menuid.FILE)
-        # This menu is filled from wiz.wizard.Wizard.SetPages
-        menubar.Append(wx.Menu(), GT(u'Page'), menuid.PAGE)
-
-        # *** File Menu *** #
-
-        mitems_file = [
-            (menuid.NEW, GT(u'New project'), GT(u'Start a new project'),),
-            (menuid.OPEN, GT(u'Open'), GT(u'Open a previously saved project'),),
-            (menuid.SAVE, GT(u'Save'), GT(u'Save current project'),),
-            (menuid.SAVEAS, GT(u'Save as'), GT(u'Save current project with a new filename'),),
-            None,
-            (menuid.QBUILD, GT(u'Quick Build'), GT(u'Build a package from an existing build tree'), ICON_CLOCK,),
-            None,
-            (menuid.EXIT, GT(u'Quit'), GT(u'Exit Debreate'),),
-            ]
-
-        if testing:
-            mitems_file.append((menuid.ALIEN, GT(u'Convert packages'), GT(u'Convert between package types')))
-
-        # Adding all menus to menu bar
-
-        mitems = (
-            mitems_file,
-            )
-
-        for menu_list in mitems:
-            for mitem in menu_list:
-                if not mitem:
-                    menu_file.AppendSeparator()
-
-                else:
-                    itm = wx.MenuItem(menu_file, mitem[0], mitem[1], mitem[2])
-                    if len(mitem) > 3:
-                        itm.SetBitmap(mitem[3])
-
-                    menu_file.AppendItem(itm)
-
-        # ----- Options Menu
-        self.menu_opt = wx.Menu()
-
-        # Show/Hide tooltips
-        self.opt_tooltips = wx.MenuItem(self.menu_opt, menuid.TOOLTIPS, GT(u'Show tooltips'),
-                GT(u'Show or hide tooltips'), kind=wx.ITEM_CHECK)
-
-        # A bug with wx 2.8 does not allow tooltips to be toggled off
-        if wx.MAJOR_VERSION > 2:
-            self.menu_opt.AppendItem(self.opt_tooltips)
-
-        if self.menu_opt.FindItemById(menuid.TOOLTIPS):
-            show_tooltips = ReadConfig(u'tooltips')
-            if show_tooltips != ConfCode.KEY_NO_EXIST:
-                self.opt_tooltips.Check(show_tooltips)
-
-            else:
-                self.opt_tooltips.Check(GetDefaultConfigValue(u'tooltips'))
-
-            self.OnToggleToolTips()
-
-        # *** Option Menu: open logs directory *** #
-
-        if GetExecutable(u'xdg-open'):
-            mitm_logs_open = wx.MenuItem(self.menu_opt, menuid.OPENLOGS, GT(u'Open logs directory'))
-            self.menu_opt.AppendItem(mitm_logs_open)
-
-            wx.EVT_MENU(self, menuid.OPENLOGS, self.OnLogDirOpen)
-
-        # *** OS distribution names cache *** #
-
-        opt_distname_cache = wx.MenuItem(self.menu_opt, menuid.DIST, GT(u'Update dist names cache'),
-                GT(u'Creates/Updates list of distribution names for changelog page'))
-        self.menu_opt.AppendItem(opt_distname_cache)
-
-        # ----- Help Menu
-        menu_help = wx.Menu()
-
-        # ----- Version update
-        mitm_update = wx.MenuItem(menu_help, menuid.UPDATE, GT(u'Check for update'),
-                GT(u'Check if a new version is available for download'))
-        mitm_update.SetBitmap(ICON_LOGO)
-
-        menu_help.AppendItem(mitm_update)
-        menu_help.AppendSeparator()
-
-        # Menu with links to the Debian Policy Manual webpages
-        self.menu_policy = wx.Menu()
-
-        policy_links = (
-            (refid.DPM, GT(u'Debian Policy Manual'),
-                    u'https://www.debian.org/doc/debian-policy',),
-            (refid.DPMCtrl, GT(u'Control files'),
-                    u'https://www.debian.org/doc/debian-policy/ch-controlfields.html',),
-            (refid.DPMLog, GT(u'Changelog'),
-                    u'https://www.debian.org/doc/debian-policy/ch-source.html#s-dpkgchangelog',),
-            (refid.UPM, GT(u'Ubuntu Policy Manual'),
-                    u'http://people.canonical.com/~cjwatson/ubuntu-policy/policy.html/',),
-            (refid.LINT_TAGS, GT(u'Lintian Tags Explanation'),
-                    u'https://lintian.debian.org/tags-all.html',),
-            (refid.LINT_OVERRIDE, GT(u'Overriding Lintian Tags'),
-                    u'https://lintian.debian.org/manual/section-2.4.html',),
-            (refid.LAUNCHERS, GT(u'Launchers / Desktop entries'),
-                    u'https://www.freedesktop.org/wiki/Specifications/desktop-entry-spec/',),
-            # Unofficial links
-            None,
-            (refid.DEBSRC, GT(u'Building debs from Source'),
-                    u'http://www.quietearth.us/articles/2006/08/16/Building-deb-package-from-source',), # This is here only temporarily for reference
-            (refid.MAN, GT(u'Writing manual pages'),
-                    u'https://liw.fi/manpages/',),
-            )
-
-        for LINK in policy_links:
-            if not LINK:
-                self.menu_policy.AppendSeparator()
-
-            elif len(LINK) > 2:
-                link_id = LINK[0]
-                label = LINK[1]
-                url = LINK[2]
-
-                if len(LINK) > 3:
-                    icon = LINK[3]
-
-                else:
-                    icon = ICON_GLOBE
-
-                mitm = wx.MenuItem(self.menu_policy, link_id, label, url)
-                mitm.SetBitmap(icon)
-                self.menu_policy.AppendItem(mitm)
-
-                wx.EVT_MENU(self, link_id, self.OpenPolicyManual)
-
-        mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
-        mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
-
-        menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
-        menu_help.AppendSeparator()
-        menu_help.AppendItem(mitm_help)
-        menu_help.AppendItem(mitm_about)
-
-        if self.menu_opt.GetMenuItemCount():
-            menubar.Append(self.menu_opt, GT(u'Options'), menuid.OPTIONS)
-
-        menubar.Append(menu_help, GT(u'Help'), menuid.HELP)
+        createMenuBar(self)
 
         self.Wizard = Wizard(self)
 
