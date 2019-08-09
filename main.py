@@ -8,7 +8,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, subprocess, webbrowser, wx
+import os, subprocess, urllib, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
@@ -517,18 +517,17 @@ class MainWindow(wx.Frame):
 	def OnHelp(self, event=None):
 		if u'alpha' in GetTestList():
 			HelpDialog(self).ShowModal()
-
 		else:
-			# First tries to open pdf help file. If fails tries to open html help file. If fails opens debreate usage webpage
-			wx.Yield()
-			status = subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
-			if status:
+			url_manual = u'https://debreate.wordpress.com/manual/'
+			# NOTE: use urllib.request.urlopen for Python 3
+			url_state = urllib.urlopen(url_manual).getcode()
+			if url_state == 200:
 				wx.Yield()
-				status = subprocess.call([u'xdg-open', u'{}/docs/usage'.format(PATH_app)])
-
-			if status:
+				webbrowser.open(url_manual)
+			else:
+				# open local document
 				wx.Yield()
-				webbrowser.open(u'https://debreate.wordpress.com/manual/')
+				subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
 
 
 	## Opens the logs directory in the system's default file manager
