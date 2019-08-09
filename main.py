@@ -8,7 +8,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, shutil, subprocess, urllib, webbrowser, wx
+import os, shutil, subprocess, urllib, webbrowser, wx, wx.html
 from urllib2 import HTTPError
 from urllib2 import URLError
 
@@ -38,12 +38,14 @@ from globals.execute		import GetExecutable
 from globals.ident			import menuid
 from globals.ident			import pgid
 from globals.moduleaccess	import ModuleAccessCtrl
+from globals.paths			import ConcatPaths
 from globals.paths			import PATH_app
 from globals.paths			import PATH_cache
 from globals.paths			import PATH_local
 from globals.project		import PROJECT_ext
 from globals.project		import PROJECT_txt
 from globals.strings		import GS
+from globals.threads		import Thread
 from startup.tests			import GetTestList
 from ui.about				import AboutDialog
 from ui.dialog				import ConfirmationDialog
@@ -52,6 +54,7 @@ from ui.dialog				import ShowErrorDialog
 from ui.distcache			import DistNamesCacheDialog
 from ui.layout				import BoxSizer
 from ui.menu				import createMenuBar
+from ui.progress			import ProgressDialog
 from ui.quickbuild			import QuickBuild
 from ui.statusbar			import StatusBar
 from wiz.helper				import GetPage
@@ -268,6 +271,25 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 			DetailedMessageDialog(self, GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
 
 
+	def __cacheManualFiles(self, args):
+		url_manual = args[0]
+		manual_cache = args[1]
+		manual_index = args[2]
+		main_dir = os.getcwd()
+		os.chdir(manual_cache)
+
+		try:
+			subprocess.Popen([u'wget', u'-rkp', u'-nd', u'-np', u'-H', u'-D',
+					u'debreate.wordpress.com,antumdeluge.github.io', url_manual]).communicate()
+			# FIXME: use Python commands
+			subprocess.Popen([u'sed', u'-i', u'-e', u's|<a.*>||g', u'-e', u's|</a>||g', manual_index]).communicate()
+		except:
+			# FIXME: show error message
+			pass
+
+		os.chdir(main_dir)
+		self.timer.Stop()
+
 	## Calls Pulse method on progress dialog when timer event occurs
 	def __onTimerEvent(self, event=None):
 		if self.progress:
@@ -294,12 +316,38 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 		if u'alpha' in GetTestList():
 			HelpDialog(self).ShowModal()
 		else:
+			# FIXME: files should be re-cached when Debreate upgraded to new version
+			# TODO: trim unneeded text
+			cached = False
+			manual_cache = ConcatPaths(PATH_cache, u'manual')
+			manual_index = ConcatPaths(manual_cache, u'index.html')
+			if not os.path.isdir(manual_cache):
+				os.makedirs(manual_cache)
+			elif os.path.isfile(manual_index):
+				cached = True
 			url_manual = u'https://debreate.wordpress.com/manual/'
 			# NOTE: use urllib.request.urlopen for Python 3
-			url_state = urllib.urlopen(url_manual).getcode()
+			manual_data = urllib.urlopen(url_manual)
+			url_state = manual_data.getcode()
 			if url_state == 200:
+				# cache files
+				if not cached:
+					self.progress = ProgressDialog(self, message=GT(u'Caching manual files'),
+							style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+					self.Disable()
+					self.timer.Start(100)
+					Thread(self.__cacheManualFiles, (url_manual, manual_cache, manual_index,)).Start()
+					self.progress.ShowModal()
+				manual_dialog = wx.Dialog(self, title=u'Debreate Manual', size=(800,500), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+				manual = wx.html.HtmlWindow(manual_dialog)
 				wx.Yield()
-				webbrowser.open(url_manual)
+				if manual.LoadFile(manual_index):
+					manual_dialog.CenterOnParent()
+					manual_dialog.ShowModal()
+				else:
+					wx.Yield()
+					webbrowser.open(url_manual)
+				manual_dialog.Destroy()
 			else:
 				# open local document
 				wx.Yield()
