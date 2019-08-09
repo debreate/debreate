@@ -8,7 +8,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, subprocess, urllib, webbrowser, wx
+import os, shutil, subprocess, urllib, webbrowser, wx
 from urllib2 import HTTPError
 from urllib2 import URLError
 
@@ -158,8 +158,10 @@ class MainWindow(wx.Frame):
 
 		mitm_build = wx.MenuItem(menu_action, menuid.BUILD, GT(u'Build'),
 				GT(u'Start building .deb package'))
+		mitm_ccache = wx.MenuItem(menu_action, menuid.CCACHE, GT(u'Clear local cache'))
 
 		menu_action.AppendItem(mitm_build)
+		menu_action.AppendItem(mitm_ccache)
 
 		# ----- Options Menu
 		menu_opt = wx.Menu()
@@ -347,6 +349,8 @@ class MainWindow(wx.Frame):
 		wx.EVT_MENU(self, menuid.QBUILD, self.OnQuickBuild)
 		wx.EVT_MENU(self, menuid.EXIT, self.OnQuit)
 
+		wx.EVT_MENU(self, menuid.CCACHE, self.OnClearCache)
+
 		wx.EVT_MENU(self, menuid.TOOLTIPS, self.OnToggleToolTips)
 		wx.EVT_MENU(self, menuid.DIST, self.OnUpdateDistNamesCache)
 
@@ -467,6 +471,9 @@ class MainWindow(wx.Frame):
 		about.ShowModal()
 		about.Destroy()
 
+	def OnClearCache(self, event=None):
+		if os.path.isdir(PATH_cache):
+			shutil.rmtree(PATH_cache)
 
 	## Checks for new release availability
 	def OnCheckUpdate(self, event=None):
