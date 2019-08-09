@@ -528,7 +528,7 @@ class MainWindow(wx.Frame):
 
 			if status:
 				wx.Yield()
-				webbrowser.open(u'http://debreate.sourceforge.net/usage')
+				webbrowser.open(u'https://debreate.wordpress.com/manual/')
 
 
 	## Opens the logs directory in the system's default file manager
