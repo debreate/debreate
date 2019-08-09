@@ -293,12 +293,12 @@ class MainWindow(wx.Frame):
 
 				wx.EVT_MENU(self, link_id, self.OpenPolicyManual)
 
-		mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+		mitm_manual = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Manual'), GT(u'Open a usage document'))
 		mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
 
 		menu_help.AppendMenu(-1, GT(u'Reference'), self.menu_policy)
 		menu_help.AppendSeparator()
-		menu_help.AppendItem(mitm_help)
+		menu_help.AppendItem(mitm_manual)
 		menu_help.AppendItem(mitm_about)
 
 		menubar.Append(menu_action, GT(u'Action'), menuid.ACTION)
