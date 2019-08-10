@@ -270,6 +270,9 @@ class BasicFileList(ListCtrl, TextEditMixin):
 
 	## Inserts new globals.fileitem.FileItem instance to list at given index
 	#
+	#  FIXME: `target` not used
+	#  FIXME: this is broken if `item` is not FileItem instance
+	#
 	#  \param index
 	#	\b \e Integer index at which to insert item
 	#  \param item
