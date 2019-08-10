@@ -380,7 +380,10 @@ class FileList(BasicFileList, wx.FileDropTarget):
 		self.SetStringItem(list_index, columns.TARGET, targetDir)
 		self.SetStringItem(list_index, columns.TYPE, GetFileMimeType(source_path))
 
-		if os.path.isdir(source_path):
+		if os.path.islink(source_path):
+			self.SetItemTextColour(list_index, COLOR_link)
+
+		elif os.path.isdir(source_path):
 			self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
 
 		else:

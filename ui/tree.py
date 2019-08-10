@@ -9,6 +9,7 @@
 import os, traceback, wx
 
 from dbr.colors			import COLOR_executable
+from dbr.colors			import COLOR_link
 from dbr.colors			import COLOR_warn
 from dbr.functions		import MouseInsideWindow
 from dbr.image			import GetCursor
@@ -305,6 +306,9 @@ class DirectoryTree(wx.TreeCtrl):
 
 		elif os.access(path, os.X_OK):
 			self.SetItemTextColour(base_item, COLOR_executable)
+
+		if os.path.islink(path):
+			self.SetItemTextColour(base_item, COLOR_link)
 
 		self.item_list.append(tree_item)
 
