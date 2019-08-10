@@ -711,16 +711,17 @@ class Page(WizardPage):
 				current_file -= 1
 				executable = False
 
-				absolute_filename = files_data[current_file].split(u' -> ')[0]
+				file_info = files_data[current_file].split(u' -> ')
+				absolute_filename = file_info[0]
 
 				if absolute_filename[-1] == u'*':
 					# Set executable flag and remove "*"
 					executable = True
 					absolute_filename = absolute_filename[:-1]
 
-				filename = os.path.basename(absolute_filename)
-				source_dir = os.path.dirname(absolute_filename)
-				target_dir = files_data[current_file].split(u' -> ')[2]
+				filename = file_info[1]
+				source_dir = absolute_filename[:len(absolute_filename) - len(filename)]
+				target_dir = file_info[2]
 
 				if not self.lst_files.AddFile(filename, source_dir, target_dir, executable):
 					Logger.Warn(__name__, GT(u'File not found: {}').format(absolute_filename))
