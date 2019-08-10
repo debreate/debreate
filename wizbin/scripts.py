@@ -10,12 +10,12 @@ import os, wx
 
 from dbr.language		import GT
 from dbr.log			import Logger
-from fileio.fileio		import GetFiles
 from fileio.fileio		import ReadFile
 from globals.fileitem	import FileItem
 from globals.ident		import btnid
 from globals.ident		import inputid
 from globals.ident		import pgid
+from globals.paths		import ConcatPaths
 from globals.strings	import TextIsEmpty
 from globals.tooltips	import SetPageToolTips
 from input.filelist		import BasicFileList
@@ -253,55 +253,22 @@ class Page(WizardPage):
 			# First clear the Auto-Link display and the executable list
 			self.Executables.Reset()
 
-			# Get executables from "files" tab
 			file_list = GetField(pgid.FILES, inputid.LIST)
+			for EXE in file_list.GetExecutables(False):
+				INDEX = file_list.GetIndex(EXE)
 
-			for INDEX in range(file_list.GetItemCount()):
 				# Get the filename from the source
 				file_name = file_list.GetFilename(INDEX, basename=True)
+				#file_name = EXE.GetBasename()
 				file_path = file_list.GetPath(INDEX)
 				# Where the file linked to will be installed
-				file_target = file_list.GetItem(INDEX, 1)
+				# FIXME: FileItem.GetTarget() is not accurate
+				file_target = file_list.GetTarget(EXE)
 
-				# Walk directory to find executables
-				if file_list.IsDirectory(INDEX):
-					for EXE in GetFiles(file_path, os.X_OK):
-						self.Executables.Append(FileItem(EXE, file_target))
+				# DEBUG:
+				print(u'Filename: {}\nFilepath: {}\nTarget: {}'.format(file_name, file_path, file_target))
 
-				# Search for executables (distinguished by red text)
-				elif file_list.IsExecutable(INDEX):
-					try:
-						# If destination doesn't start with "/" do not include executable
-						if file_target.GetText()[0] == u'/':
-							if file_target.GetText()[-1] == u'/' or file_target.GetText()[-1] == u' ':
-								# In case the full path of the destination is "/" keep going
-								if len(file_target.GetText()) == 1:
-									dest_path = u''
-
-								else:
-									search = True
-									# Set the number of spaces to remove from dest path in case of multiple "/"
-									slashes = 1
-									while search:
-										# Find the number of slashes/spaces at the end of the filename
-										endline = slashes - 1
-										if file_target.GetText()[-slashes] == u'/' or file_target.GetText()[-slashes] == u' ':
-											slashes += 1
-
-										else:
-											dest_path = file_target.GetText()[:-endline]
-											search = False
-
-							else:
-								dest_path = file_target.GetText()
-
-							self.Executables.Append(file_name, dest_path)
-
-						else:
-							Logger.Warn(__name__, u'{}: The executables destination is not valid'.format(__name__))
-
-					except IndexError:
-						Logger.Warn(__name__, u'{}: The executables destination is not available'.format(__name__))
+				self.Executables.Add(FileItem(file_path, ConcatPaths(file_target, file_name)))
 
 		elif event_id in (btnid.REMOVE, wx.WXK_DELETE):
 			self.Executables.RemoveSelected()
@@ -399,7 +366,7 @@ class Page(WizardPage):
 			prerm_list = []
 
 			for INDEX in range(total):
-				source_path = self.Executables.GetPath(INDEX)
+				source_path = self.Executables.GetTarget(INDEX)
 				filename = self.Executables.GetBasename(INDEX)
 
 				if u'.' in filename:
