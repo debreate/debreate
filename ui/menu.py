@@ -165,6 +165,9 @@ def createMenuBar(parent):
 			GT(u'Creates/Updates list of distribution names for changelog page'))
 	parent.menu_opt.AppendItem(opt_distname_cache)
 
+	mitm_ccache = wx.MenuItem(parent.menu_opt, menuid.CCACHE, GT(u'Clear local cache'))
+	parent.menu_opt.AppendItem(mitm_ccache)
+
 	# ----- Help Menu
 	menu_help = wx.Menu()
 
@@ -235,5 +238,9 @@ def createMenuBar(parent):
 		menubar.Append(parent.menu_opt, GT(u'Options'), menuid.OPTIONS)
 
 	menubar.Append(menu_help, GT(u'Help'), menuid.HELP)
+
+	# catching menu events
+
+	wx.EVT_MENU(parent, menuid.CCACHE, parent.OnClearCache)
 
 	return menubar

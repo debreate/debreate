@@ -292,6 +292,7 @@ class MenuId(FieldId):
 		self.ACTION = self.NewId()
 		self.ALIEN = self.NewId()
 		self.BUILD = self.NewId()
+		self.CCACHE = self.NewId()
 		self.COMPRESS = self.NewId()
 		self.DEBUG = self.NewId()
 		self.DIST = self.NewId()

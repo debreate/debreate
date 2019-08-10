@@ -37,6 +37,7 @@ from globals.ident			import menuid
 from globals.ident			import pgid
 from globals.moduleaccess	import ModuleAccessCtrl
 from globals.paths			import PATH_app
+from globals.paths			import PATH_cache
 from globals.paths			import PATH_local
 from globals.project		import PROJECT_ext
 from globals.project		import PROJECT_txt
@@ -451,6 +452,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 		menu_page = self.GetMenu(menuid.PAGE)
 		if not menu_page.IsChecked(ID):
 			menu_page.Check(ID, True)
+
+
+	## Deletes cache directory located at ~/.local/share/debreate/cache
+	def OnClearCache(self, event=None):
+		if os.path.isdir(PATH_cache):
+			shutil.rmtree(PATH_cache)
 
 
 	## Opens web links from the help menu
