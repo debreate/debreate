@@ -396,10 +396,12 @@ class FileList(BasicFileList, wx.FileDropTarget):
 
 			if not os.path.isfile(source_path):
 				self.SetItemBackgroundColour(list_index, COLOR_warn)
+				self.FileItems.insert(list_index, FileItem(source_path, targetDir))
 
 				# File was added but does not exist on filesystem
 				return False
 
+		self.FileItems.insert(list_index, FileItem(source_path, targetDir))
 		return True
 
 
