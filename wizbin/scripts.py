@@ -109,7 +109,7 @@ class Page(WizardPage):
 
 		# Auto-Link path for new link
 		txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
-		self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', warn=True)
+		self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', defaultValue=u'/usr/bin', warn=True)
 		self.ti_autolink.SetName(u'target')
 		self.ti_autolink.Default = self.ti_autolink.GetValue()
 
