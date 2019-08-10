@@ -468,6 +468,9 @@ class FileList(BasicFileList, wx.FileDropTarget):
 	#  \param row
 	#	Row index of item
 	def GetTarget(self, row):
+		if isinstance(row, FileItem):
+			row = self.GetIndex(row)
+
 		return self.GetItemText(row, columns.TARGET)
 
 
