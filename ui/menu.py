@@ -223,12 +223,12 @@ def createMenuBar(parent):
 
 			wx.EVT_MENU(parent, link_id, parent.OpenPolicyManual)
 
-	mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Help'), GT(u'Open a usage document'))
+	mitm_manual = wx.MenuItem(menu_help, wx.ID_HELP, GT(u'Manual'), GT(u'Open a usage document'))
 	mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT(u'About'), GT(u'About Debreate'))
 
 	menu_help.AppendMenu(-1, GT(u'Reference'), parent.menu_policy)
 	menu_help.AppendSeparator()
-	menu_help.AppendItem(mitm_help)
+	menu_help.AppendItem(mitm_manual)
 	menu_help.AppendItem(mitm_about)
 
 	if parent.menu_opt.GetMenuItemCount():
