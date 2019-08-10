@@ -311,6 +311,7 @@ class MenuId(FieldId):
 		self.SAVE = btnid.SAVE
 		self.SAVEAS = self.AddStaticId(wx.ID_SAVEAS)
 		self.THEME = self.NewId()
+		self.TOGGLEHIDDEN = self.NewId()
 		self.TOOLTIPS = self.NewId()
 		self.UPDATE = self.NewId()
 

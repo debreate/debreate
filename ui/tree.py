@@ -210,12 +210,15 @@ class DirectoryTree(wx.TreeCtrl):
 		mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT(u'Add to project'))
 		mitm_expand = wx.MenuItem(self.ctx_menu, menuid.EXPAND, GT(u'Expand'))
 		mitm_rename = wx.MenuItem(self.ctx_menu, menuid.RENAME, GT(u'Rename'))
+		mitm_togglehidden = wx.MenuItem(self.ctx_menu, menuid.TOGGLEHIDDEN, GT(u'Show Hidden'),
+				kind=wx.ITEM_CHECK)
 		mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT(u'Refresh'))
 
 		self.ctx_menu.AppendItem(mitm_add)
 		self.ctx_menu.AppendItem(mitm_expand)
 		self.ctx_menu.AppendItem(mitm_rename)
 		self.ctx_menu.AppendSeparator()
+		self.ctx_menu.AppendItem(mitm_togglehidden)
 		self.ctx_menu.AppendItem(mitm_refresh)
 
 		# FIXME: Hack
@@ -245,6 +248,7 @@ class DirectoryTree(wx.TreeCtrl):
 		wx.EVT_MENU(self, menuid.EXPAND, self.OnMenuSelect)
 		wx.EVT_MENU(self, menuid.RENAME, self.OnMenuSelect)
 		wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
+		wx.EVT_MENU(self, menuid.TOGGLEHIDDEN, self.OnRefresh)
 		wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
 
 		self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
@@ -393,7 +397,9 @@ class DirectoryTree(wx.TreeCtrl):
 						# Ignore filtered items
 						filtered = False
 						for FILTER in self.exclude_pattern:
-							if LABEL.startswith(FILTER):
+							if FILTER == u'.' and self.IsHiddenShown():
+								pass
+							elif LABEL.startswith(FILTER):
 								filtered = True
 								break
 
@@ -997,6 +1003,11 @@ class DirectoryTree(wx.TreeCtrl):
 
 		if event:
 			event.Skip()
+
+
+	## Checks menu item state
+	def IsHiddenShown(self):
+		return self.ctx_menu.FindItemById(menuid.TOGGLEHIDDEN).IsChecked()
 
 
 	## Refreshes the tree's displayed layout
