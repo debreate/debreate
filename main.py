@@ -15,6 +15,7 @@ from urllib2 import URLError
 from dbr.config				import GetDefaultConfigValue
 from dbr.config				import WriteConfig
 from dbr.event				import EVT_CHANGE_PAGE
+from dbr.event				import EVT_TIMER_STOP
 from dbr.functions			import GetCurrentVersion
 from dbr.functions			import UsingDevelopmentVersion
 from dbr.help				import HelpDialog
@@ -22,6 +23,7 @@ from dbr.icon				import Icon
 from dbr.language			import GT
 from dbr.log				import DebugEnabled
 from dbr.log				import Logger
+from dbr.timer				import DebreateTimer
 from fileio.fileio			import ReadFile
 from fileio.fileio			import WriteFile
 from globals.application	import APP_homepage
@@ -71,6 +73,13 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	def __init__(self, pos, size):
 		wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
 		ModuleAccessCtrl.__init__(self, __name__)
+
+		self.timer = DebreateTimer(self)
+		# placeholder for progress dialog
+		self.progress = None
+
+		self.Bind(wx.EVT_TIMER, self.__onTimerEvent)
+		self.Bind(EVT_TIMER_STOP, self.__onTimerStop)
 
 		# Make sure that this frame is set as the top window
 		if not wx.GetApp().GetTopWindow() == self:
@@ -257,6 +266,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 		else:
 			DetailedMessageDialog(self, GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
+
+
+	## Calls Pulse method on progress dialog when timer event occurs
+	def __onTimerEvent(self, event=None):
+		if self.progress:
+			self.progress.Pulse()
+
+	def __onTimerStop(self, event=None):
+		if self.progress:
+			self.progress.EndModal(0)
+			self.progress = None
+
+		if not self.IsEnabled():
+			self.Enable()
+
+		return not self.progress
 
 
 	## Action to take when 'Help' is selected from the help menu
