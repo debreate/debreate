@@ -15,6 +15,7 @@ from globals.bitmaps	import ICON_ERROR
 from globals.bitmaps	import ICON_EXCLAMATION
 from globals.errorcodes	import dbrerrno
 from globals.ident		import btnid
+from globals.ident		import chkid
 from globals.ident		import inputid
 from globals.ident		import pgid
 from globals.paths		import ConcatPaths
@@ -67,6 +68,9 @@ class Page(WizardPage):
 
 		self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, label=GT(u'Preserve top-level directories'),
 				name=u'top-level', cfgSect=u'FILES')
+
+		self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT(u'Don\'t follow symbolic links'),
+				defaultValue=True, name=u'nofollow-symlink', cfgSect=u'FILES')
 
 		self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
 
@@ -141,6 +145,7 @@ class Page(WizardPage):
 		lyt_treeopts.AddSpacer(5)
 		lyt_treeopts.Add(self.chk_individuals, 0, lyt.PAD_LR, 5)
 		lyt_treeopts.Add(self.chk_preserve_top, 0, lyt.PAD_LR, 5)
+		lyt_treeopts.Add(self.chk_nofollow_symlink, 0, lyt.PAD_LR, 5)
 		lyt_treeopts.AddSpacer(5)
 
 		pnl_treeopts.SetSizer(lyt_treeopts)

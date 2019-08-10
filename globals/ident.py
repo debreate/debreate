@@ -267,6 +267,7 @@ class ChkId(FieldId):
 		self.NOTIFY = self.NewId()
 		self.REMOVE = self.NewId()
 		self.STRIP = self.NewId()
+		self.SYMLINK = self.NewId()
 		self.TARGET = self.NewId()
 		self.TERM = self.NewId()
 

@@ -263,6 +263,43 @@ class Page(WizardPage):
 			if u'files' in task_list:
 				UpdateProgress(progress, GT(u'Copying files'))
 
+				no_follow_link = GetField(GetPage(pgid.FILES), chkid.SYMLINK).IsChecked()
+
+				# TODO: move this into a file functions module
+				def _copy(f_src, f_tgt, exe=False):
+					# NOTE: Python 3 appears to have follow_symlinks option for shutil.copy
+					# FIXME: copying nested symbolic link may not work
+
+					if os.path.isdir(f_src):
+						if os.path.islink(f_src) and no_follow_link:
+							Logger.Debug(__name__, u'Adding directory symbolic link to stage: {}'.format(f_tgt))
+
+							os.symlink(os.readlink(f_src), f_tgt)
+						else:
+							Logger.Debug(__name__, u'Adding directory to stage: {}'.format(f_tgt))
+
+							shutil.copytree(f_src, f_tgt)
+							os.chmod(target_file, 0755)
+					elif os.path.isfile(f_src):
+						if os.path.islink(f_src) and no_follow_link:
+							Logger.Debug(__name__, u'Adding file symbolic link to stage: {}'.format(f_tgt))
+
+							os.symlink(os.readlink(f_src), f_tgt)
+						else:
+							if exe:
+								Logger.Debug(__name__, u'Adding executable to stage: {}'.format(f_tgt))
+							else:
+								Logger.Debug(__name__, u'Adding file to stage: {}'.format(f_tgt))
+
+							shutil.copy(f_src, f_tgt)
+
+							# Set FILE permissions
+							if exe:
+								os.chmod(f_tgt, 0755)
+
+							else:
+								os.chmod(f_tgt, 0644)
+
 				files_data = task_list[u'files']
 				for FILE in files_data:
 					file_defs = FILE.split(u' -> ')
@@ -277,29 +314,10 @@ class Page(WizardPage):
 					# Remove asteriks from exectuables
 					exe = False
 					if source_file[-1] == u'*':
-						Logger.Debug(__name__, u'Adding executable to stage: {}'.format(target_file))
 						exe = True
 						source_file = source_file[:-1]
 
-					if os.path.isdir(source_file):
-						Logger.Debug(__name__, u'Adding directory to stage: {}'.format(target_file))
-
-						# HACK: Use os.path.dirname to avoid OSError: File exists
-						shutil.copytree(source_file, u'{}/{}'.format(target_dir, os.path.basename(source_file)))
-
-						os.chmod(target_file, 0755)
-
-					else:
-						Logger.Debug(__name__, u'Adding file to stage: {}'.format(target_file))
-
-						shutil.copy(source_file, target_dir)
-
-						# Set FILE permissions
-						if exe:
-							os.chmod(target_file, 0755)
-
-						else:
-							os.chmod(target_file, 0644)
+					_copy(source_file, u'{}/{}'.format(target_dir, os.path.basename(source_file)))
 
 					# Individual files
 					progress += 1
