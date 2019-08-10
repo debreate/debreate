@@ -214,8 +214,11 @@ class BasicFileList(ListCtrl, TextEditMixin):
 		elif isinstance(item, int):
 			item = self.FileItems[item]
 
-		if isinstance(item, FileItem):
-			return item
+		if not isinstance(item, FileItem):
+			Logger.Warn(__name__, u'Could not convert to FileItem: {}'.format(item))
+			return None
+
+		return item
 
 
 	## Retrieves the index of given item
