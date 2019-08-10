@@ -185,11 +185,14 @@ class BasicFileList(ListCtrl, TextEditMixin):
 
 
 	## Retrieves all executables
-	def GetExecutables(self):
+	def GetExecutables(self, strings=True):
 		exe_list = []
 		for FILE in self.FileItems:
 			if FILE.IsExecutable():
-				exe_list.append(FILE.GetPath())
+				if strings:
+					exe_list.append(FILE.GetPath())
+				else:
+					exe_list.append(FILE)
 
 		return exe_list
 
