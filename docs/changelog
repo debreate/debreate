@@ -20,6 +20,18 @@
 - Working on fixing marking project dirty (WIP)
 - Lintian tags are listed in data/lintian/tags
 - Leave trailing newline character (\n) in md5sums file to prevent read error by Lintian
+- Menu 'Help -> Help' renamed to 'Help -> Manual'
+- Help manual now cached & displayed from https://debreate.wordpress.com/manual/
+- Added menu option to clear local cache directory
+- Made auto-link help dialog read-only
+- Files' relative paths are preserved when opening project
+- Toggle visibility of hidden items in directory tree
+- Symbolic links are displayed in green on Files page
+- Added option to not follow symbolic links when copying files to build package
+- Fixed problems with items in file list not being added/removed properly
+- Fixed default value of auto-link target
+- Fixed auto-link executables function
+- Importing into auto-link executables list scans for nested executables
 
 0.7.13
 - Fixes:

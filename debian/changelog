@@ -1,3 +1,21 @@
+debreate (0.7.next17) xenial; urgency=low
+
+  * Menu 'Help -> Help' renamed to 'Help -> Manual'
+  * Help manual now cached & displayed from https://debreate.wordpress.com/manual/
+  * Added menu option to clear local cache directory
+  * Made auto-link help dialog read-only
+  * Files' relative paths are preserved when opening project
+  * Toggle visibility of hidden items in directory tree
+  * Symbolic links are displayed in green on Files page
+  * Added option to not follow symbolic links when copying files to build package
+  * Fixed problems with items in file list not being added/removed properly
+  * Fixed default value of auto-link target
+  * Fixed auto-link executables function
+  * Importing into auto-link executables list scans for nested executables
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 11 Aug 2019 15:38:49 -0700
+
+
 debreate (0.7.next16-2) xenial; urgency=low
 
   * Leave trailing newline character (\n) in md5sums file to prevent read error by Lintian
