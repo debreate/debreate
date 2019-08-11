@@ -66,7 +66,7 @@ class Page(WizardPage):
 		self.chk_individuals = CheckBoxCFG(pnl_treeopts, label=GT(u'List files individually'),
 				name=u'individually', cfgSect=u'FILES')
 
-		self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, label=GT(u'Preserve top-level directories'),
+		self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, chkid.TOPLEVEL, GT(u'Preserve top-level directories'),
 				name=u'top-level', cfgSect=u'FILES')
 
 		self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT(u'Don\'t follow symbolic links'),
