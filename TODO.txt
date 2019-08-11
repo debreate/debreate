@@ -6,6 +6,7 @@ Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Finish lintian overrides option
 - Cache lintian tags in local directory
+- Check for files being overwritten by duplicate items in file list before build
 
 Non-priority:
 - Create 'zoom' button image (magnifying glass)
