@@ -153,12 +153,15 @@ class BasicFileList(ListCtrl, TextEditMixin):
 	#	\b \e True if the file item was deleted from list
 	def Delete(self, item):
 		item = self.GetIndex(item)
+		filename = self.GetPath(item)
 
 		if self.DeleteItem(item):
-			self.FileItems.Pop(item)
+			self.FileItems.pop(item)
 
+			Logger.Debug(__name__, u'Deleted item from BasicFileList: {}'.format(filename))
 			return True
 
+		Logger.Warn(__name__, u'Failed to deleted item from BasicFilelist: {}'.format(filename))
 		return False
 
 
@@ -324,6 +327,8 @@ class BasicFileList(ListCtrl, TextEditMixin):
 
 
 ## An editable list of files
+#
+# FIXME: use methods from BasicFileList
 class FileList(BasicFileList, wx.FileDropTarget):
 	## Constructor
 	#
@@ -422,7 +427,13 @@ class FileList(BasicFileList, wx.FileDropTarget):
 
 	## TODO: Doxygen
 	def DeleteAllItems(self):
-		ListCtrl.DeleteAllItems(self)
+		if ListCtrl.DeleteAllItems(self):
+			self.FileItems = []
+		else:
+			Logger.Warn(__name__, u'Failed to delete all items from FileList')
+
+		Logger.Debug(__name__, u'Visual item count: {}'.format(self.GetItemCount()))
+		Logger.Debug(__name__, u'Acutal item count: {}'.format(len(self.FileItems)))
 
 
 	## Retrieves the filename at given index
@@ -642,8 +653,16 @@ class FileList(BasicFileList, wx.FileDropTarget):
 																		selected_total
 																		)))
 
-			self.DeleteItem(current_selected)
+			deleted = self.DeleteItem(current_selected)
 			selected_count = self.GetSelectedItemCount()
+
+			if deleted:
+				self.FileItems.pop(current_selected)
+			else:
+				Logger.Warn(__name__, u'Failed to delete item from Filelist: index: {}'.format(current_selected))
+
+			Logger.Debug(__name__, u'Visual item count: {}'.format(self.GetItemCount()))
+			Logger.Debug(__name__, u'Actual item count: {}'.format(len(self.FileItems)))
 
 
 	## Selects all items in the list
