@@ -223,6 +223,13 @@ class BasicFileList(ListCtrl, TextEditMixin):
 		return item
 
 
+	## Retrieves all file items
+	#
+	# @treturn list
+	def GetFileItems(self):
+		return self.FileItems
+
+
 	## Retrieves the index of given item
 	#
 	#  \param item
