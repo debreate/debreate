@@ -27,12 +27,14 @@ class FileType:
 
 ## An object that represents a file
 class FileItem:
-	def __init__(self, path, target=None):
+	def __init__(self, path, target=None, ignore_timestamp=False):
 		self.Path = path
 		self.Target = target
 
 		# Timestamp is set at construction
-		self.Timestamp = GetTimestamp(self.Path)
+		self.Timestamp = None
+		if not ignore_timestamp:
+			self.Timestamp = GetTimestamp(self.Path)
 
 		# Defaults to normal file
 		self.Type = FileType.NORM
