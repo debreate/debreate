@@ -1,6 +1,7 @@
 -- Known Bugs --
 
 Mandatory:
+- BasicFileList.FileItems are out of order when item is deleted from list
 
 Priority:
 

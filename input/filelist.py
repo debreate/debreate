@@ -114,6 +114,8 @@ class BasicFileList(ListCtrl, TextEditMixin):
 		self.HLExe = hlExe
 
 		## List of globals.fileitem.FileItem instances
+		# FIXME: items in this list are out-of-order when items deleted from BaseFileList
+		#        Check `BaseFileList.Delete`
 		self.FileItems = []
 
 
