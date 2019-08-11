@@ -7,6 +7,6 @@ VERSION_dev=17
 AUTHOR=Jordan Irwin
 EMAIL=antumdeluge@gmail.com
 
-# Distribution details
-DIST=xenial
+# Debian/Ubuntu distribution details
+DIST=bionic
 URGENCY=low
