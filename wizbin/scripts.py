@@ -260,15 +260,11 @@ class Page(WizardPage):
 				# Get the filename from the source
 				file_name = file_list.GetFilename(INDEX, basename=True)
 				#file_name = EXE.GetBasename()
-				file_path = file_list.GetPath(INDEX)
 				# Where the file linked to will be installed
 				# FIXME: FileItem.GetTarget() is not accurate
 				file_target = file_list.GetTarget(EXE)
 
-				# DEBUG:
-				print(u'Filename: {}\nFilepath: {}\nTarget: {}'.format(file_name, file_path, file_target))
-
-				self.Executables.Add(FileItem(file_path, ConcatPaths(file_target, file_name)))
+				self.Executables.Add(FileItem(file_name, ConcatPaths(file_target, file_name), ignore_timestamp=True))
 
 		elif event_id in (btnid.REMOVE, wx.WXK_DELETE):
 			self.Executables.RemoveSelected()
