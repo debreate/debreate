@@ -432,6 +432,9 @@ class FileList(BasicFileList, wx.FileDropTarget):
 	#  \param basename
 	#	If \b \e True, only retrives the file's basename
 	def GetFilename(self, index, basename=False):
+		if isinstance(index, FileItem):
+			index = self.GetIndex(index)
+
 		filename = self.GetItemText(index)
 
 		if basename:
