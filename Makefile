@@ -383,7 +383,7 @@ locale-clean:
 	find locale -type d -empty -delete; \
 
 deb-clean:
-	@rm -vrf "debian/$(PACKAGE)"
+	@rm -vrf "debian/$(PACKAGE)" "debian/.debhelper"
 	@DEBUILD_FILES="\
 	debian/debhelper-build-stamp debian/$(PACKAGE).debhelper.log \
 	debian/$(PACKAGE).substvars debian/files"; \
