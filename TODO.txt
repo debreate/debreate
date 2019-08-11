@@ -1,12 +1,12 @@
 Mandatory:
-- Set list of field IDs to be ignored when 'Reset' called on WizardPage
-- Set field IDs for all pages to work with 'Reset' method
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Finish lintian overrides option
 - Cache lintian tags in local directory
 - Check for files being overwritten by duplicate items in file list before build
+- Set list of field IDs to be ignored when 'Reset' called on WizardPage
+- Set field IDs for all pages to work with 'Reset' method
 
 Non-priority:
 - Create 'zoom' button image (magnifying glass)
