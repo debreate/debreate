@@ -55,6 +55,7 @@ PACKAGES = \
 	dbr \
 	f_export \
 	fields \
+	fileio \
 	globals \
 	input \
 	startup \

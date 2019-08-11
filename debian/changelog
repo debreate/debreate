@@ -1,3 +1,10 @@
+debreate (0.7.next17-1) bionic; urgency=high
+
+  * Fix missing package 'fileio' in build
+
+ -- Jordan Irwin <antumdeluge@gmail.com>  Sun, 11 Aug 2019 16:36:05 -0700
+
+
 debreate (0.7.next17) xenial; urgency=low
 
   * Menu 'Help -> Help' renamed to 'Help -> Manual'
