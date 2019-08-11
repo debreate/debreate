@@ -258,7 +258,7 @@ class Page(WizardPage):
 				INDEX = file_list.GetIndex(EXE)
 
 				# Get the filename from the source
-				file_name = file_list.GetFilename(INDEX, basename=True)
+				file_name = file_list.GetFilename(INDEX)
 				#file_name = EXE.GetBasename()
 				# Where the file linked to will be installed
 				# FIXME: FileItem.GetTarget() is not accurate
