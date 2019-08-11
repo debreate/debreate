@@ -1,6 +1,6 @@
 -- Known Bugs --
 
-Must be fixed before release:
+Mandatory:
 
 Priority:
 
