@@ -13,6 +13,7 @@ from dbr.log			import Logger
 from fileio.fileio		import ReadFile
 from globals.fileitem	import FileItem
 from globals.ident		import btnid
+from globals.ident		import chkid
 from globals.ident		import inputid
 from globals.ident		import pgid
 from globals.paths		import ConcatPaths
@@ -254,7 +255,9 @@ class Page(WizardPage):
 			self.Executables.Reset()
 
 			file_list = GetField(pgid.FILES, inputid.LIST)
-			for EXE in file_list.GetExecutables(False):
+			exe_list = file_list.GetExecutables(False)
+
+			for EXE in exe_list:
 				INDEX = file_list.GetIndex(EXE)
 
 				# Get the filename from the source
@@ -265,6 +268,38 @@ class Page(WizardPage):
 				file_target = file_list.GetTarget(EXE)
 
 				self.Executables.Add(FileItem(file_name, ConcatPaths(file_target, file_name), ignore_timestamp=True))
+
+			# retrieve nested executables
+			# FIXME: symlinks may cause problems here
+			for FITEM in file_list.GetFileItems():
+				if FITEM.IsDirectory():
+					# recurse into subdirectories
+					toplevel = FITEM.GetPath()
+					for ROOT, DIRS, FILES in os.walk(toplevel):
+						for FILE in FILES:
+							fullpath = ConcatPaths(ROOT, FILE)
+							DIR = os.path.dirname(fullpath[len(toplevel):]).strip(u'/')
+							relpath = ConcatPaths(FITEM.GetBasename(), DIR, FILE).strip(u'/')
+
+							if os.path.isfile(fullpath) and os.access(fullpath, os.X_OK):
+								fulltarget = ConcatPaths(FITEM.GetTarget(), relpath)
+
+								# check if item is already added to list
+								duplicate = False
+								for EXE in exe_list:
+									existingtarget = ConcatPaths(EXE.GetTarget(), file_list.GetFilename(EXE))
+									if fulltarget == existingtarget:
+										duplicate = True
+										break
+
+								if duplicate:
+									Logger.Warn(__name__, u'Not adding executable with duplicate target: {}'.format(fulltarget))
+									continue
+
+								Logger.Debug(__name__, u'Adding nested executable: {}'.format(relpath))
+								self.Executables.Add(
+										FileItem(relpath, ConcatPaths(FITEM.GetTarget(), relpath),
+												ignore_timestamp=True))
 
 		elif event_id in (btnid.REMOVE, wx.WXK_DELETE):
 			self.Executables.RemoveSelected()
