@@ -270,12 +270,12 @@ class ListCtrl(BorderedPanel, ControlPanel):
 
 	## TODO: Doxygen
 	def DeleteAllItems(self):
-		self.MainCtrl.DeleteAllItems()
+		return self.MainCtrl.DeleteAllItems()
 
 
 	## TODO: Doxygen
 	def DeleteItem(self, item):
-		self.MainCtrl.DeleteItem(item)
+		return self.MainCtrl.DeleteItem(item)
 
 
 	## Disables the panel & list control
