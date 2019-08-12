@@ -1,6 +1,10 @@
 -- Known Bugs --
 
 Mandatory:
+- Generated timestamp in changelog is "None"
+- Lintian errors in generated package:
+  - non-standard-dir-perm: 0775 != 0755
+  - non-standard-file-perm: 0664 != 0644
 
 Priority:
 
