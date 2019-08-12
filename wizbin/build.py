@@ -279,7 +279,7 @@ class Page(WizardPage):
 							Logger.Debug(__name__, u'Adding directory to stage: {}'.format(f_tgt))
 
 							shutil.copytree(f_src, f_tgt)
-							os.chmod(target_file, 0755)
+							os.chmod(f_tgt, 0o0755)
 					elif os.path.isfile(f_src):
 						if os.path.islink(f_src) and no_follow_link:
 							Logger.Debug(__name__, u'Adding file symbolic link to stage: {}'.format(f_tgt))
@@ -295,10 +295,10 @@ class Page(WizardPage):
 
 							# Set FILE permissions
 							if exe:
-								os.chmod(f_tgt, 0755)
+								os.chmod(f_tgt, 0o0755)
 
 							else:
-								os.chmod(f_tgt, 0644)
+								os.chmod(f_tgt, 0o0644)
 
 				files_data = task_list[u'files']
 				for FILE in files_data:
@@ -317,7 +317,7 @@ class Page(WizardPage):
 						exe = True
 						source_file = source_file[:-1]
 
-					_copy(source_file, u'{}/{}'.format(target_dir, os.path.basename(source_file)))
+					_copy(source_file, u'{}/{}'.format(target_dir, os.path.basename(source_file)), exe)
 
 					# Individual files
 					progress += 1
@@ -520,6 +520,19 @@ class Page(WizardPage):
 
 			# Move the working directory becuase dpkg seems to have problems with spaces in path
 			os.chdir(working_dir)
+
+			# HACK to fix file/dir permissions
+			for ROOT, DIRS, FILES in os.walk(stage_dir):
+				for D in DIRS:
+					D = u'{}/{}'.format(ROOT, D)
+					os.chmod(D, 0o0755)
+				for F in FILES:
+					F = u'{}/{}'.format(ROOT, F)
+					if os.access(F, os.X_OK):
+						os.chmod(F, 0o0755)
+					else:
+						os.chmod(F, 0o0644)
+
 			# FIXME: Should check for working fakeroot & dpkg-deb executables
 			build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(GetExecutable(u'fakeroot'), GetExecutable(u'dpkg-deb'), c_tree, deb_package)))
 
