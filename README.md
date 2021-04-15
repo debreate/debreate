@@ -56,6 +56,11 @@ This is the recommended method if you are not installing from a remote APT/PPA r
 To run without installing, open a terminal in the extracted root directory. Then launch the file named "init.py" (***./init.py*** or ***python init.py***). It should execute via mouse-click for the system's file manager as well.
 
 
+### [Licensing](#table-of-contents)
+
+* [MIT](docs/LICENSE.txt)
+
+
 ### [Links](#table-of-contents)
 * [Homepage](https://antumdeluge.github.io/debreate-web)
 * [GitHub project page](https://github.com/AntumDeluge/debreate)
