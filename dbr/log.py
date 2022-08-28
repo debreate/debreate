@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package dbr.log
 
 # MIT licensing

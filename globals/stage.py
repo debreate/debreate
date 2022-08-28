@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.stage
 
 # MIT licensing

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package wiz.pginit
 #
 #  The initial wizard page

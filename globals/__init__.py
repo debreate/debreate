@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals
 #
 #  General helper modules

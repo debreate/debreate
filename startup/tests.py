@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package startup.tests
 #
 #  Sets list of tests to be checked through app

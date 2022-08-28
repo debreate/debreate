@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package startup
 #
 #  Modules related to application initialization

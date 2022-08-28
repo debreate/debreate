@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.debugging
 #
 #  Helper functions for printing debugging messages to terminal

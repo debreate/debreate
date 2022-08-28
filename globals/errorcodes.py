@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.errno
 #
 #  Redefines & adds some new codes to the system errno module

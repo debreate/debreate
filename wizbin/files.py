@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package wizbin.files
 
 # MIT licensing

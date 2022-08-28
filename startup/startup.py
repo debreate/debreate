@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package startup.startup
 #
 #  Used mainly to prevent project being marked dirty at startup

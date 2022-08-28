@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package fileio.fileio
 #
 #  File I/O operations

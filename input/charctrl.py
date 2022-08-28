@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package input.charctrl
 #
 #  This script is used for field data that cannot use certain characters

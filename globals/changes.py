@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.changes
 
 # MIT licensing

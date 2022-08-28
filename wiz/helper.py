@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package wiz.helper
 #
 #  Support functions for accessing wizard pages & attributes

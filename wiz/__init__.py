@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package wiz
 #
 #  The wizard interface classes & functions

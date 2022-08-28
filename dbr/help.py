@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package dbr.help
 
 # MIT licensing

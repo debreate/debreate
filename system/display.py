@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package system.display
 
 # MIT licensing

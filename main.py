@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \page main.py Main Window Interface
 #
 #  Defines interface of the main window.

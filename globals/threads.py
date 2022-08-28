@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.threads
 #
 #  WARNING: Standard Python module 'threads' cannot be imported here

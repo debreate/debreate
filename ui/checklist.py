@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package ui.checklist
 
 # MIT licensing

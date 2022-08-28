@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package input.essential
 
 # MIT licensing

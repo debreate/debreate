@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.devices
 
 # MIT licensing

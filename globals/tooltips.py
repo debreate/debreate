@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.tooltips
 #
 #  Defines tooltips that have longer texts

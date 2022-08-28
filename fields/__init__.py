@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package fields
 #
 #  User interface input fields

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.remote
 
 # MIT licensing

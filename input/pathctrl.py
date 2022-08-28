@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package input.pathctrl
 
 # MIT licensing

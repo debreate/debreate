@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.constants
 #
 #  Global variables used throughout the application & should remain constant.

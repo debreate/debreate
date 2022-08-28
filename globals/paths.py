@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.paths
 #
 #  Global paths used in the app

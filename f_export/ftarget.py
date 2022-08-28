@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package f_export.ftarget
 
 # MIT licensing

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package fields.cfgfield
 #
 #  Fields that affect settings
