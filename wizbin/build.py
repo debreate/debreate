@@ -4,7 +4,7 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, shutil, subprocess, traceback, wx
+import os, shutil, subprocess, traceback, wx
 
 from dbr.functions		import FileUnstripped
 from dbr.language		import GT
@@ -381,8 +381,8 @@ class Page(WizardPage):
 				if CMD_gzip:
 					UpdateProgress(progress, GT(u'Compressing changelog'))
 					c = u'{} -n --best "{}/changelog"'.format(CMD_gzip, changelog_target)
-					clog_status = commands.getstatusoutput(c.encode(u'utf-8'))
-					if clog_status[0]:
+					res = subprocess.run([c.encode("utf-8")])
+					if res.returncode != 0:
 						ShowErrorDialog(GT(u'Could not compress changelog'), clog_status[1], warn=True, title=GT(u'Warning'))
 
 				progress += 1
@@ -532,7 +532,8 @@ class Page(WizardPage):
 						os.chmod(F, 0o0644)
 
 			# FIXME: Should check for working fakeroot & dpkg-deb executables
-			build_status = commands.getstatusoutput((u'{} {} -b "{}" "{}"'.format(GetExecutable(u'fakeroot'), GetExecutable(u'dpkg-deb'), c_tree, deb_package)))
+			res = subprocess.run([GetExecutable("fakeroot"), GetExecutable("dpkg-deb"), "-b", c_tree, deb_package])
+			build_status = (res.returncode, res.stdout)
 
 			progress += 1
 
@@ -563,7 +564,7 @@ class Page(WizardPage):
 
 				# FIXME: Should be set as class memeber?
 				CMD_lintian = GetExecutable(u'lintian')
-				errors = commands.getoutput((u'{} {}'.format(CMD_lintian, deb)))
+				errors = subprocess.run([CMD_lintian, deb]).stdout
 
 				if errors != wx.EmptyString:
 					e1 = GT(u'Lintian found some issues with the package.')

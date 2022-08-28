@@ -102,7 +102,7 @@ if not wxversion._selected:
 	wxversion.select([u'3.0', u'2.8'])
 
 
-import commands, gettext, wx
+import subprocess, gettext, wx
 
 # Python & wx.Python encoding to UTF-8
 if (sys.getdefaultencoding() != u'utf-8'):
@@ -156,10 +156,12 @@ if u'version' in parsed_args_s:
 
 if u'help' in parsed_args_s:
 	if INSTALLED:
-		help_output = commands.getstatusoutput(u'man debreate')
+		res = subprocess.run(["man", "debreate"])
 
 	else:
-		help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(PATH_app))
+		res = subprocess.run(["man", "--manpath=\"{}/man\"".format(PATH_app), "debreate"])
+
+	help_output = (res.returncode, res.stdout)
 
 
 	if help_output[0]:

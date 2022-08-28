@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, re, traceback, subprocess, wx
+import os, re, traceback, subprocess, wx
 from urllib.error   import URLError
 from urllib.request import urlopen
 
@@ -250,7 +250,7 @@ def FileUnstripped(file_name):
 	CMD_file = GetExecutable(u'file')
 
 	if CMD_file:
-		output = commands.getoutput(u'{} "{}"'.format(CMD_file, file_name))
+		output = subprocess.run([CMD_file, file_name]).stdout
 
 		if u': ' in output:
 			output = output.split(u': ')[1]
@@ -275,7 +275,8 @@ def BuildBinaryPackageFromTree(root_dir, filename):
 	cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
 	print(u'DEBUG: Issuing command: {}'.format(cmd))
 
-	#output = commands.getstatusoutput(cmd)
+	#res = subprocess.run([cmd])
+	#output = (res.returncode, res.stdout)
 
 	return 0
 

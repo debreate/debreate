@@ -4,7 +4,7 @@
 # See: docs/LICENSE.txt
 
 
-import commands, os, wx
+import subprocess, os, wx
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
@@ -28,11 +28,11 @@ def ParseManpage():
 	if os.path.isfile(app_man):
 		# FIXME: Should text if application is installed on system
 		c_man = u'man --manpath={} {} debreate'.format(local_manpath, man_section)
-		c_output = commands.getstatusoutput(c_man)
+		res = subprocess.run([c_man])
 
 		# Command exited successfully
-		if not c_output[0]:
-			help_text = c_output[1]
+		if res.returncode == 0:
+			help_text = res.stdout
 
 	return help_text
 
