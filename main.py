@@ -7,8 +7,8 @@
 
 
 import os, shutil, subprocess, urllib, webbrowser, wx, wx.html
-from urllib2 import HTTPError
-from urllib2 import URLError
+from urllib.error import HTTPError
+from urllib.error import URLError
 
 from dbr.config				import GetDefaultConfigValue
 from dbr.config				import WriteConfig

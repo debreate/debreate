@@ -4,9 +4,9 @@
 # See: docs/LICENSE.txt
 
 
-from urllib2 import HTTPError
-from urllib2 import URLError
-from urllib2 import urlopen
+from urllib.error   import HTTPError
+from urllib.error   import URLError
+from urllib.request import urlopen
 
 
 def GetRemotePageText(remote_url):

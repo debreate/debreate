@@ -7,8 +7,8 @@
 
 
 import commands, os, re, traceback, subprocess, wx
-from urllib2	import URLError
-from urllib2	import urlopen
+from urllib.error   import URLError
+from urllib.request import urlopen
 
 from dbr.language			import GT
 from globals.application	import APP_project_gh
@@ -52,7 +52,7 @@ def GetCurrentVersion(remote=APP_project_gh):
 
 		return tuple(version)
 
-	except URLError, err:
+	except (URLError, err):
 		return err
 
 
