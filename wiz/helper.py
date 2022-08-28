@@ -67,7 +67,7 @@ class ErrorTuple:
 	## TODO: Doxygen
 	def SetString(self, error_string):
 		# FIXME: Should throw exception for wrong instance type???
-		if not isinstance(error_string, (unicode, str)):
+		if not isinstance(error_string, str):
 			return 1
 
 		self.error_string = error_string

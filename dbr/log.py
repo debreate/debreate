@@ -104,7 +104,7 @@ class DebreateLogger:
 			return level
 
 		# Check if level is a string value of 'info', 'warn', 'error', 'debug', 'test'
-		if isinstance(level, (unicode, str)):
+		if isinstance(level, str):
 			for L in self.LogLevelList:
 				if level.lower() == self.LogLevelList[L].lower():
 					return L
@@ -241,7 +241,7 @@ class DebreateLogger:
 			self.LogLevel = level
 			log_set = True
 
-		elif isinstance(level, (unicode, str)):
+		elif isinstance(level, str):
 			for L in self.LogLevelList:
 				if level.lower() == self.LogLevelList[L].lower():
 					self.LogLevel = L

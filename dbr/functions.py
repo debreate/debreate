@@ -66,7 +66,7 @@ def GetContainerItemCount(container):
 
 ## TODO: Doxygen
 def GetLongestLine(lines):
-	if isinstance(lines, (unicode, str)):
+	if isinstance(lines, str):
 		lines = lines.split(u'\n')
 
 	longest = 0
@@ -168,7 +168,7 @@ def GetBoolean(value):
 	elif v_type in (int, float):
 		return bool(value)
 
-	elif v_type in (unicode, str):
+	elif v_type == str:
 		int_value = GetInteger(value)
 		if int_value != None:
 			return bool(int_value)

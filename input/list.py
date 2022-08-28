@@ -43,7 +43,7 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
 	def AppendStringItem(self, items):
 		if items:
 			row_index = self.GetItemCount()
-			if isinstance(items, (unicode, str)):
+			if isinstance(items, str):
 				self.InsertStringItem(row_index, items)
 
 			elif isinstance(items, (tuple, list)):

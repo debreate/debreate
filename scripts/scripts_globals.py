@@ -9,7 +9,7 @@ import os, sys, errno
 ## Check if an item is a string
 def IsString(item):
 	if sys.version_info[0] <= 2:
-		return isinstance(item, (unicode, str))
+		return isinstance(item, str)
 
 	return isinstance(item, str)
 
@@ -27,7 +27,7 @@ def PrependStringZeros(string):
 def lprint(message, line=None):
 	newlines = 0
 
-	if isinstance(message, (unicode, str)):
+	if isinstance(message, str):
 		while message.startswith('\n'):
 			newlines += 1
 			message = message[1:]

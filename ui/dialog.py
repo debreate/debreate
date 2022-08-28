@@ -213,7 +213,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 		BaseDialog.__init__(self, parent, wx.ID_ANY, title, style=style)
 
 		# Allow using strings for 'icon' argument
-		if isinstance(icon, (unicode, str)):
+		if isinstance(icon, str):
 			icon = wx.Bitmap(icon)
 
 		icon = wx.StaticBitmap(self, wx.ID_ANY, icon)

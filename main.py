@@ -262,7 +262,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 			if ConfirmationDialog(self, GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed():
 				wx.LaunchDefaultBrowser(APP_homepage)
 
-		elif isinstance(current, (unicode, str)):
+		elif isinstance(current, str):
 			ShowErrorDialog(error_remote, current)
 
 		else:

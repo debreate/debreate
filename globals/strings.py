@@ -49,7 +49,7 @@ def RemoveEmptyLines(text):
 #  Compatibility function for legacy Python versions
 def IsString(text):
 	if sys.version_info[0] <= 2:
-		return isinstance(text, (unicode, str))
+		return isinstance(text, str)
 
 	return isinstance(text, str)
 

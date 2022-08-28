@@ -27,7 +27,7 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
 
 	main_window = GetMainWindow()
 
-	if isinstance(args, (unicode, str)):
+	if isinstance(args, str):
 		cmd_line = [args,]
 
 	else:
@@ -94,7 +94,7 @@ def GetExecutable(cmd):
 	found_command = CommandExists(cmd)
 
 	if not found_command and cmd in alternatives:
-		if isinstance(alternatives[cmd], (unicode, str)):
+		if isinstance(alternatives[cmd], str):
 			found_command = alternatives[cmd]
 
 		else:

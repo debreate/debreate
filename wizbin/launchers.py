@@ -553,7 +553,7 @@ class Page(WizardPage):
 	#	\b \e bool : Launcher will be flagged for export if True
 	def SetLauncherData(self, data, enabled=True):
 		# Make sure we are dealing with a list
-		if isinstance(data, (unicode, str)):
+		if isinstance(data, str):
 			data = data.split(u'\n')
 
 		# Data list is not empty
