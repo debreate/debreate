@@ -18,18 +18,18 @@ from globals.strings		import GS
 #  \return
 #	Path to new stage directory, or None if failed
 def CreateStage():
-	stage = u'/tmp'
+	stage = "/tmp"
 
 	# Use current working directory if no write access to /tmp
 	if not os.access(stage, os.W_OK):
 		stage = os.getcwd()
 
-	#suffix = u'{}{}{}_'.format(GetYear(), GetMonthInt(), GetDayInt())
+	#suffix = "{}{}{}_".format(GetYear(), GetMonthInt(), GetDayInt())
 
-	#suffix = u'_temp'
+	#suffix = "_temp"
 	suffix = GetDate(dtfmt.STAMP)
 
-	stage = u'{}/{}-{}_{}'.format(stage, GS(APP_name).lower(), VERSION_string, suffix)
+	stage = "{}/{}-{}_{}".format(stage, GS(APP_name).lower(), VERSION_string, suffix)
 
 	if os.access(os.path.dirname(stage), os.W_OK):
 		# Start with fresh directory

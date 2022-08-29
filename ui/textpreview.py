@@ -15,7 +15,7 @@ from ui.style		import layout as lyt
 
 ## A simple dialog for previewing text
 class TextPreview(BaseDialog):
-	def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Preview'), text=wx.EmptyString,
+	def __init__(self, parent=None, ID=wx.ID_ANY, title=GT("Preview"), text=wx.EmptyString,
 			pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE,
 			name=wx.DialogNameStr, monospace=True, readonly=True):
 

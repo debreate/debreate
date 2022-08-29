@@ -48,117 +48,117 @@ class Page(WizardPage):
 	#  \param parent
 	#	Parent <b><i>wx.Window</i></b> instance
 	def __init__(self, parent):
-		WizardPage.__init__(self, parent, pgid.MENU) #, name=GT(u'Menu Launcher'))
+		WizardPage.__init__(self, parent, pgid.MENU) #, name=GT("Menu Launcher"))
 
 		## Override default label
-		self.Label = GT(u'Menu Launcher')
+		self.Label = GT("Menu Launcher")
 
 		# --- Buttons to open/preview/save .desktop file
-		btn_open = CreateButton(self, btnid.BROWSE, GT(u'Browse'), u'browse', name=u'btn browse')
-		btn_save = CreateButton(self, btnid.SAVE, GT(u'Save'), u'save', name=u'btn save')
-		btn_preview = CreateButton(self, btnid.PREVIEW, GT(u'Preview'), u'preview', name=u'btn preview')
+		btn_open = CreateButton(self, btnid.BROWSE, GT("Browse"), "browse", name="btn browse")
+		btn_save = CreateButton(self, btnid.SAVE, GT("Save"), "save", name="btn save")
+		btn_preview = CreateButton(self, btnid.PREVIEW, GT("Preview"), "preview", name="btn preview")
 
 		# --- CHECKBOX
-		chk_enable = CheckBox(self, chkid.ENABLE, GT(u'Create system menu launcher'))
+		chk_enable = CheckBox(self, chkid.ENABLE, GT("Create system menu launcher"))
 
 		# --- TYPE
-		opts_type = (u'Application', u'Link', u'Directory',)
+		opts_type = ("Application", "Link", "Directory",)
 
-		txt_type = wx.StaticText(self, label=GT(u'Type'), name=u'type')
+		txt_type = wx.StaticText(self, label=GT("Type"), name="type")
 		ti_type = ComboBoxESS(self, inputid.TYPE, choices=opts_type,
-				name=u'Type', defaultValue=opts_type[0])
+				name="Type", defaultValue=opts_type[0])
 
 		# --- ENCODING
 		opts_enc = (
-			u'UTF-1', u'UTF-7', u'UTF-8', u'CESU-8', u'UTF-EBCDIC',
-			u'UTF-16', u'UTF-32', u'SCSU', u'BOCU-1', u'Punycode',
-			u'GB 18030',
+			"UTF-1", "UTF-7", "UTF-8", "CESU-8", "UTF-EBCDIC",
+			"UTF-16", "UTF-32", "SCSU", "BOCU-1", "Punycode",
+			"GB 18030",
 			)
 
-		txt_enc = wx.StaticText(self, label=GT(u'Encoding'), name=u'encoding')
-		ti_enc = ComboBoxESS(self, inputid.ENC, choices=opts_enc, name=u'Encoding',
+		txt_enc = wx.StaticText(self, label=GT("Encoding"), name="encoding")
+		ti_enc = ComboBoxESS(self, inputid.ENC, choices=opts_enc, name="Encoding",
 				defaultValue=opts_enc[2])
 
 		# --- TERMINAL
-		chk_term = CheckBoxESS(self, chkid.TERM, GT(u'Terminal'), name=u'Terminal')
+		chk_term = CheckBoxESS(self, chkid.TERM, GT("Terminal"), name="Terminal")
 
 		# --- STARTUP NOTIFY
-		chk_notify = CheckBoxESS(self, chkid.NOTIFY, GT(u'Startup Notify'), name=u'StartupNotify',
+		chk_notify = CheckBoxESS(self, chkid.NOTIFY, GT("Startup Notify"), name="StartupNotify",
 				defaultValue=True)
 
 		# --- Custom output filename
-		txt_filename = wx.StaticText(self, txtid.FNAME, GT(u'Filename'), name=u'filename')
+		txt_filename = wx.StaticText(self, txtid.FNAME, GT("Filename"), name="filename")
 		ti_filename = TextArea(self, inputid.FNAME, name=txt_filename.Name)
 
-		chk_filename = CheckBox(self, chkid.FNAME, GT(u'Use "Name" as output filename (<Name>.desktop)'),
-				name=u'filename chk', defaultValue=True)
+		chk_filename = CheckBox(self, chkid.FNAME, GT("Use "Name" as output filename (<Name>.desktop)"),
+				name="filename chk", defaultValue=True)
 
 		# --- NAME (menu)
-		txt_name = wx.StaticText(self, label=GT(u'Name'), name=u'name*')
-		ti_name = TextAreaESS(self, inputid.NAME, name=u'Name')
+		txt_name = wx.StaticText(self, label=GT("Name"), name="name*")
+		ti_name = TextAreaESS(self, inputid.NAME, name="Name")
 		ti_name.req = True
 
 		# --- EXECUTABLE
-		txt_exec = wx.StaticText(self, label=GT(u'Executable'), name=u'exec')
-		ti_exec = TextAreaESS(self, inputid.EXEC, name=u'Exec')
+		txt_exec = wx.StaticText(self, label=GT("Executable"), name="exec")
+		ti_exec = TextAreaESS(self, inputid.EXEC, name="Exec")
 
 		# --- COMMENT
-		txt_comm = wx.StaticText(self, label=GT(u'Comment'), name=u'comment')
-		ti_comm = TextAreaESS(self, inputid.DESCR, name=u'Comment')
+		txt_comm = wx.StaticText(self, label=GT("Comment"), name="comment")
+		ti_comm = TextAreaESS(self, inputid.DESCR, name="Comment")
 
 		# --- ICON
-		txt_icon = wx.StaticText(self, label=GT(u'Icon'), name=u'icon')
-		ti_icon = TextAreaESS(self, inputid.ICON, name=u'Icon')
+		txt_icon = wx.StaticText(self, label=GT("Icon"), name="icon")
+		ti_icon = TextAreaESS(self, inputid.ICON, name="Icon")
 
-		txt_mime = wx.StaticText(self, label=GT(u'MIME Type'), name=u'mime')
-		ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name=u'MimeType')
+		txt_mime = wx.StaticText(self, label=GT("MIME Type"), name="mime")
+		ti_mime = TextAreaESS(self, inputid.MIME, defaultValue=wx.EmptyString, name="MimeType")
 
 		# ----- OTHER/CUSTOM
-		txt_other = wx.StaticText(self, label=GT(u'Custom Fields'), name=u'other')
+		txt_other = wx.StaticText(self, label=GT("Custom Fields"), name="other")
 		ti_other = TextAreaPanel(self, inputid.OTHER, name=txt_other.Name)
 		ti_other.EnableDropTarget()
 
 		# --- CATEGORIES
 		opts_category = (
-			u'2DGraphics',
-			u'Accessibility', u'Application', u'ArcadeGame', u'Archiving', u'Audio', u'AudioVideo',
-			u'BlocksGame', u'BoardGame',
-			u'Calculator', u'Calendar', u'CardGame', u'Compression', u'ContactManagement', u'Core',
-			u'DesktopSettings', u'Development', u'Dictionary', u'DiscBurning', u'Documentation',
-			u'Email',
-			u'FileManager', u'FileTransfer',
-			u'Game', u'GNOME', u'Graphics', u'GTK',
-			u'HardwareSettings',
-			u'InstantMessaging',
-			u'KDE',
-			u'LogicGame',
-			u'Math', u'Monitor',
-			u'Network',
-			u'OCR', u'Office',
-			u'P2P', u'PackageManager', u'Photography', u'Player', u'Presentation', u'Printing',
-			u'Qt',
-			u'RasterGraphics', u'Recorder', u'RemoteAccess',
-			u'Scanning', u'Screensaver', u'Security', u'Settings', u'Spreadsheet', u'System',
-			u'Telephony', u'TerminalEmulator', u'TextEditor',
-			u'Utility',
-			u'VectorGraphics', u'Video', u'Viewer',
-			u'WordProcessor', u'Wine', u'Wine-Programs-Accessories',
-			u'X-GNOME-NetworkSettings', u'X-GNOME-PersonalSettings', u'X-GNOME-SystemSettings',
-			u'X-KDE-More', u'X-Red-Hat-Base', u'X-SuSE-ControlCenter-System',
+			"2DGraphics",
+			"Accessibility", "Application", "ArcadeGame", "Archiving", "Audio", "AudioVideo",
+			"BlocksGame", "BoardGame",
+			"Calculator", "Calendar", "CardGame", "Compression", "ContactManagement", "Core",
+			"DesktopSettings", "Development", "Dictionary", "DiscBurning", "Documentation",
+			"Email",
+			"FileManager", "FileTransfer",
+			"Game", "GNOME", "Graphics", "GTK",
+			"HardwareSettings",
+			"InstantMessaging",
+			"KDE",
+			"LogicGame",
+			"Math", "Monitor",
+			"Network",
+			"OCR", "Office",
+			"P2P", "PackageManager", "Photography", "Player", "Presentation", "Printing",
+			"Qt",
+			"RasterGraphics", "Recorder", "RemoteAccess",
+			"Scanning", "Screensaver", "Security", "Settings", "Spreadsheet", "System",
+			"Telephony", "TerminalEmulator", "TextEditor",
+			"Utility",
+			"VectorGraphics", "Video", "Viewer",
+			"WordProcessor", "Wine", "Wine-Programs-Accessories",
+			"X-GNOME-NetworkSettings", "X-GNOME-PersonalSettings", "X-GNOME-SystemSettings",
+			"X-KDE-More", "X-Red-Hat-Base", "X-SuSE-ControlCenter-System",
 			)
 
-		txt_category = wx.StaticText(self, label=GT(u'Categories'), name=u'category')
+		txt_category = wx.StaticText(self, label=GT("Categories"), name="category")
 
 		# This option does not get set by importing a new project
 		ti_category = ComboBox(self, inputid.CAT, choices=opts_category, name=txt_category.Name,
 				defaultValue=opts_category[0])
 
-		btn_catadd = CreateButton(self, btnid.ADD, GT(u'Add'), u'add', name=u'add category')
-		btn_catdel = CreateButton(self, btnid.REMOVE, GT(u'Remove'), u'remove', name=u'rm category')
-		btn_catclr = CreateButton(self, btnid.CLEAR, GT(u'Clear'), u'clear', name=u'clear category')
+		btn_catadd = CreateButton(self, btnid.ADD, GT("Add"), "add", name="add category")
+		btn_catdel = CreateButton(self, btnid.REMOVE, GT("Remove"), "remove", name="rm category")
+		btn_catclr = CreateButton(self, btnid.CLEAR, GT("Clear"), "clear", name="clear category")
 
 		# FIXME: Allow using multi-select + remove
-		lst_categories = ListCtrl(self, listid.CAT, name=u'Categories')
+		lst_categories = ListCtrl(self, listid.CAT, name="Categories")
 		# Can't set LC_SINGLE_SEL in constructor for wx 3.0 (ListCtrl bug???)
 		lst_categories.SetSingleStyle(wx.LC_SINGLE_SEL)
 
@@ -274,37 +274,37 @@ class Page(WizardPage):
 
 	## Formats the launcher information for export
 	def GetLauncherInfo(self):
-		desktop_list = [u'[Desktop Entry]']
+		desktop_list = ["[Desktop Entry]"]
 
 		name = GetField(self, inputid.NAME).GetValue()
 		if not TextIsEmpty(name):
-			desktop_list.append(u'Name={}'.format(name))
+			desktop_list.append("Name={}".format(name))
 
-		desktop_list.append(u'Version=1.0')
+		desktop_list.append("Version=1.0")
 
 		executable = GetField(self, inputid.EXEC).GetValue()
 		if not TextIsEmpty(executable):
-			desktop_list.append(u'Exec={}'.format(executable))
+			desktop_list.append("Exec={}".format(executable))
 
 		comment = GetField(self, inputid.DESCR).GetValue()
 		if not TextIsEmpty(comment):
-			desktop_list.append(u'Comment={}'.format(comment))
+			desktop_list.append("Comment={}".format(comment))
 
 		icon = GetField(self, inputid.ICON).GetValue()
 		if not TextIsEmpty(icon):
-			desktop_list.append(u'Icon={}'.format(icon))
+			desktop_list.append("Icon={}".format(icon))
 
 		launcher_type = GetField(self, inputid.TYPE).GetValue()
 		if not TextIsEmpty(launcher_type):
-			desktop_list.append(u'Type={}'.format(launcher_type))
+			desktop_list.append("Type={}".format(launcher_type))
 
-		desktop_list.append(u'Terminal={}'.format(GS(GetField(self, chkid.TERM).GetValue()).lower()))
+		desktop_list.append("Terminal={}".format(GS(GetField(self, chkid.TERM).GetValue()).lower()))
 
-		desktop_list.append(u'StartupNotify={}'.format(GS(GetField(self, chkid.NOTIFY).GetValue()).lower()))
+		desktop_list.append("StartupNotify={}".format(GS(GetField(self, chkid.NOTIFY).GetValue()).lower()))
 
 		encoding = GetField(self, inputid.ENC).GetValue()
 		if not TextIsEmpty(encoding):
-			desktop_list.append(u'Encoding={}'.format(encoding))
+			desktop_list.append("Encoding={}".format(encoding))
 
 		lst_categories = GetField(self, listid.CAT)
 		categories = []
@@ -319,42 +319,42 @@ class Page(WizardPage):
 
 		# Add a final semi-colon if categories is not empty
 		if categories:
-			categories = u';'.join(categories)
-			if categories[-1] != u';':
-				categories = u'{};'.format(categories)
+			categories = ";".join(categories)
+			if categories[-1] != ";":
+				categories = "{};".format(categories)
 
-			desktop_list.append(u'Categories={}'.format(categories))
+			desktop_list.append("Categories={}".format(categories))
 
 		other = GetField(self, inputid.OTHER).GetValue()
 		if not TextIsEmpty(other):
 			desktop_list.append(other)
 
-		return u'\n'.join(desktop_list)
+		return "\n".join(desktop_list)
 
 
 	## Retrieves the filename to be used for the menu launcher
 	def GetOutputFilename(self):
 		if not GetField(self, chkid.FNAME).GetValue():
-			filename = GetField(self, inputid.FNAME).GetValue().strip(u' ').replace(u' ', u'_')
+			filename = GetField(self, inputid.FNAME).GetValue().strip(" ").replace(" ", "_")
 			if not TextIsEmpty(filename):
 				return filename
 
-		return GetField(self, inputid.NAME).GetValue().strip(u' ').replace(u' ', u'_')
+		return GetField(self, inputid.NAME).GetValue().strip(" ").replace(" ", "_")
 
 
 	## TODO: Doxygen
 	def GetSaveData(self):
 		if GetField(self, chkid.ENABLE).GetValue():
 			data = self.GetLauncherInfo()
-			data = u'\n'.join(data.split(u'\n')[1:])
+			data = "\n".join(data.split("\n")[1:])
 
 			if not GetField(self, chkid.FNAME).GetValue():
-				data = u'[FILENAME={}]\n{}'.format(GetField(self, inputid.FNAME).GetValue(), data)
+				data = "[FILENAME={}]\n{}".format(GetField(self, inputid.FNAME).GetValue(), data)
 
-			return u'<<MENU>>\n1\n{}\n<</MENU>>'.format(data)
+			return "<<MENU>>\n1\n{}\n<</MENU>>".format(data)
 
 		else:
-			return u'<<MENU>>\n0\n<</MENU>>'
+			return "<<MENU>>\n0\n<</MENU>>"
 
 
 	## TODO: Doxygen
@@ -367,7 +367,7 @@ class Page(WizardPage):
 		cats = GetField(self, listid.CAT)
 
 		if cats.GetItemCount():
-			clear = ConfirmationDialog(GetMainWindow(), GT(u'Confirm'), GT(u'Clear categories?'))
+			clear = ConfirmationDialog(GetMainWindow(), GT("Confirm"), GT("Clear categories?"))
 
 			if clear.Confirmed():
 				cats.DeleteAllItems()
@@ -378,12 +378,12 @@ class Page(WizardPage):
 	#  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
 	#		 'Others' field not being completely filled out.
 	def OnExportLauncher(self, event=None):
-		Logger.Debug(__name__, u'Export launcher ...')
+		Logger.Debug(__name__, "Export launcher ...")
 
 		# Get data to write to control file
-		menu_data = self.GetLauncherInfo().encode(u'utf-8')
+		menu_data = self.GetLauncherInfo().encode("utf-8")
 
-		dia = wx.FileDialog(GetMainWindow(), GT(u'Save Launcher'), os.getcwd(),
+		dia = wx.FileDialog(GetMainWindow(), GT("Save Launcher"), os.getcwd(),
 			style=wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
 
 		if ShowDialog(dia):
@@ -392,7 +392,7 @@ class Page(WizardPage):
 			# Create a backup file
 			overwrite = False
 			if os.path.isfile(path):
-				backup = u'{}.backup'.format(path)
+				backup = "{}.backup".format(path)
 				shutil.copy(path, backup)
 				overwrite = True
 
@@ -403,10 +403,10 @@ class Page(WizardPage):
 					os.remove(backup)
 
 			except UnicodeEncodeError:
-				detail1 = GT(u'Unfortunately Debreate does not support unicode yet.')
-				detail2 = GT(u'Remove any non-ASCII characters from your project.')
+				detail1 = GT("Unfortunately Debreate does not support unicode yet.")
+				detail2 = GT("Remove any non-ASCII characters from your project.")
 
-				ShowErrorDialog(GT(u'Save failed'), u'{}\n{}'.format(detail1, detail2), title=GT(u'Unicode Error'))
+				ShowErrorDialog(GT("Save failed"), "{}\n{}".format(detail1, detail2), title=GT("Unicode Error"))
 
 				os.remove(path)
 				# Restore from backup
@@ -418,7 +418,7 @@ class Page(WizardPage):
 	#  FIXME: Might be problems with reading/writing launchers (see OnExportLauncher)
 	#		 'Others' field not being completely filled out.
 	def OnLoadLauncher(self, event=None):
-		dia = wx.FileDialog(GetMainWindow(), GT(u'Open Launcher'), os.getcwd(),
+		dia = wx.FileDialog(GetMainWindow(), GT("Open Launcher"), os.getcwd(),
 				style=wx.FD_CHANGE_DIR)
 
 		if ShowDialog(dia):
@@ -427,11 +427,11 @@ class Page(WizardPage):
 			data = ReadFile(path, split=True)
 
 			# Remove unneeded lines
-			if data[0] == u'[Desktop Entry]':
+			if data[0] == "[Desktop Entry]":
 				data = data[1:]
 
 			self.Reset()
-			self.SetLauncherData(u'\n'.join(data))
+			self.SetLauncherData("\n".join(data))
 
 
 	## TODO: Doxygen
@@ -439,7 +439,7 @@ class Page(WizardPage):
 		# Show a preview of the .desktop config file
 		config = self.GetLauncherInfo()
 
-		dia = TextPreview(title=GT(u'Menu Launcher Preview'),
+		dia = TextPreview(title=GT("Menu Launcher Preview"),
 				text=config, size=(500,400))
 
 		dia.ShowModal()
@@ -523,7 +523,7 @@ class Page(WizardPage):
 
 		cat = GetField(self, inputid.CAT).GetValue()
 		cat = cat.split()
-		cat = u''.join(cat)
+		cat = "".join(cat)
 
 		lst_categories = GetField(self, listid.CAT)
 
@@ -537,8 +537,8 @@ class Page(WizardPage):
 
 		elif ID == wx.ID_CLEAR:
 			if lst_categories.GetItemCount():
-				if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
-						GT(u'Clear categories?')).ShowModal() in (wx.ID_OK, wx.OK):
+				if ConfirmationDialog(GetMainWindow(), GT("Confirm"),
+						GT("Clear categories?")).ShowModal() in (wx.ID_OK, wx.OK):
 					lst_categories.DeleteAllItems()
 
 		if event:
@@ -554,20 +554,20 @@ class Page(WizardPage):
 	def SetLauncherData(self, data, enabled=True):
 		# Make sure we are dealing with a list
 		if isinstance(data, str):
-			data = data.split(u'\n')
+			data = data.split("\n")
 
 		# Data list is not empty
 		if data:
-			Logger.Debug(__name__, u'Loading launcher')
+			Logger.Debug(__name__, "Loading launcher")
 
 			if data[0].isnumeric():
 				enabled = int(data.pop(0)) > 0
 
 			if DebugEnabled():
 				for L in data:
-					print(u'  Launcher line: {}'.format(L))
+					print("  Launcher line: {}".format(L))
 
-			Logger.Debug(__name__, u'Enabling launcher: {}'.format(enabled))
+			Logger.Debug(__name__, "Enabling launcher: {}".format(enabled))
 
 			if enabled:
 				GetField(self, chkid.ENABLE).SetValue(True)
@@ -577,16 +577,16 @@ class Page(WizardPage):
 				misc_defs = []
 
 				for L in data:
-					if u'=' in L:
-						if L[0] == u'[' and L[-1] == u']':
-							key = L[1:-1].split(u'=')
+					if "=" in L:
+						if L[0] == "[" and L[-1] == "]":
+							key = L[1:-1].split("=")
 							value = key[1]
 							key = key[0]
 
-							misc_defs.append(u'{}={}'.format(key, value))
+							misc_defs.append("{}={}".format(key, value))
 
 						else:
-							key = L.split(u'=')
+							key = L.split("=")
 							value = key[1]
 							key = key[0]
 
@@ -594,12 +594,12 @@ class Page(WizardPage):
 
 				# Fields using SetValue() function
 				set_value_fields = (
-					(u'Name', GetField(self, inputid.NAME)),
-					(u'Exec', GetField(self, inputid.EXEC)),
-					(u'Comment', GetField(self, inputid.DESCR)),
-					(u'Icon', GetField(self, inputid.ICON)),
-					(u'Type', GetField(self, inputid.TYPE)),
-					(u'Encoding', GetField(self, inputid.ENC)),
+					("Name", GetField(self, inputid.NAME)),
+					("Exec", GetField(self, inputid.EXEC)),
+					("Comment", GetField(self, inputid.DESCR)),
+					("Icon", GetField(self, inputid.ICON)),
+					("Type", GetField(self, inputid.TYPE)),
+					("Encoding", GetField(self, inputid.ENC)),
 					)
 
 				for label, control in set_value_fields:
@@ -611,13 +611,13 @@ class Page(WizardPage):
 						pass
 
 				check_box_fields = (
-					(u'Terminal', GetField(self, chkid.TERM)),
-					(u'StartupNotify', GetField(self, chkid.NOTIFY)),
+					("Terminal", GetField(self, chkid.TERM)),
+					("StartupNotify", GetField(self, chkid.NOTIFY)),
 					)
 
 				for label, control in check_box_fields:
 					try:
-						if data_defs[label].lower() == u'true':
+						if data_defs[label].lower() == "true":
 							control.SetValue(True)
 
 						else:
@@ -630,11 +630,11 @@ class Page(WizardPage):
 
 				try:
 					lst_categories = GetField(self, listid.CAT)
-					categories = tuple(data_defs[u'Categories'].split(u';'))
+					categories = tuple(data_defs["Categories"].split(";"))
 					for C in categories:
 						lst_categories.InsertStringItem(lst_categories.GetItemCount(), C)
 
-					data_defs_remove.append(u'Categories')
+					data_defs_remove.append("Categories")
 
 				except KeyError:
 					pass
@@ -645,18 +645,18 @@ class Page(WizardPage):
 
 				# Add any leftover keys to misc/other
 				for K in data_defs:
-					if K not in (u'Version',):
-						misc_defs.append(u'{}={}'.format(K, data_defs[K]))
+					if K not in ("Version",):
+						misc_defs.append("{}={}".format(K, data_defs[K]))
 
 				for index in reversed(range(len(misc_defs))):
 					K = misc_defs[index]
 
 					# Set custom filename
-					if u'FILENAME=' in K:
-						filename = K.replace(u'FILENAME=', u'')
+					if "FILENAME=" in K:
+						filename = K.replace("FILENAME=", "")
 
 						if not TextIsEmpty(filename):
-							Logger.Debug(__name__, u'Setting custom filename: {}'.format(filename))
+							Logger.Debug(__name__, "Setting custom filename: {}".format(filename))
 
 							GetField(self, inputid.FNAME).SetValue(filename)
 							GetField(self, chkid.FNAME).SetValue(False)
@@ -667,6 +667,6 @@ class Page(WizardPage):
 						continue
 
 				if misc_defs:
-					GetField(self, inputid.OTHER).SetValue(u'\n'.join(sorted(misc_defs)))
+					GetField(self, inputid.OTHER).SetValue("\n".join(sorted(misc_defs)))
 
 				self.OnToggle()

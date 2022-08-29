@@ -83,12 +83,12 @@ class TextArea(wx.TextCtrl, InputField):
 			filename = filename[0]
 
 		if not TextIsEmpty(self.GetValue()):
-			msg_li1 = GT(u'This will delete all text')
-			msg_li2 = GT(u'Continue?')
+			msg_li1 = GT("This will delete all text")
+			msg_li2 = GT("Continue?")
 
 			# FIXME: Use custom dialogs (currently cannot import)
-			message = wx.MessageDialog(GetMainWindow(), u'{}\n\n{}'.format(msg_li1, msg_li2),
-					GT(u'Warning'), wx.OK|wx.CANCEL|wx.ICON_WARNING)
+			message = wx.MessageDialog(GetMainWindow(), "{}\n\n{}".format(msg_li1, msg_li2),
+					GT("Warning"), wx.OK|wx.CANCEL|wx.ICON_WARNING)
 
 			confirmed = message.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES)
 
@@ -106,9 +106,9 @@ class TextArea(wx.TextCtrl, InputField):
 		except UnicodeDecodeError:
 			pass
 
-		#ShowErrorDialog(GT(u'There was an error reading file: {}').format(filename))
-		wx.MessageDialog(GetMainWindow(), GT(u'There was an error reading file: {}').format(filename),
-				GT(u'Error'), wx.OK|wx.ICON_ERROR).ShowModal()
+		#ShowErrorDialog(GT("There was an error reading file: {}").format(filename))
+		wx.MessageDialog(GetMainWindow(), GT("There was an error reading file: {}").format(filename),
+				GT("Error"), wx.OK|wx.ICON_ERROR).ShowModal()
 
 		return False
 
@@ -383,7 +383,7 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
 		if button:
 			lyt_main = self.GetSizer()
 
-			btn_text_size = wx.Button(self, label=GT(u'Text Size'))
+			btn_text_size = wx.Button(self, label=GT("Text Size"))
 			if button in (MT_BTN_TL, MT_BTN_TR):
 				lyt_main.Insert(0, btn_text_size, 0, button_H_pos[button]|lyt.PAD_LR, 5)
 

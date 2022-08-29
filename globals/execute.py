@@ -17,13 +17,13 @@ from wiz.helper			import GetMainWindow
 
 ## TODO: Doxygen
 def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
-	if elevate and pword.strip(u' \t\n') == wx.EmptyString:
-		return (None, GT(u'Empty password'))
+	if elevate and pword.strip(" \t\n") == wx.EmptyString:
+		return (None, GT("Empty password"))
 
-	CMD_sudo = GetExecutable(u'sudo')
+	CMD_sudo = GetExecutable("sudo")
 
 	if not CMD_sudo:
-		return (None, GT(u'Super user command (sudo) not available'))
+		return (None, GT("Super user command (sudo) not available"))
 
 	main_window = GetMainWindow()
 
@@ -39,12 +39,12 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
 
 	# FIXME: Better way to execute commands
 	if elevate:
-		cmd_line.insert(0, u'sudo')
-		cmd_line.insert(1, u'-S')
+		cmd_line.insert(0, "sudo")
+		cmd_line.insert(1, "-S")
 
-		cmd_line = u' '.join(cmd_line)
+		cmd_line = " ".join(cmd_line)
 
-		cmd_output = os.popen(u'echo {} | {}'.format(pword, cmd_line)).read()
+		cmd_output = os.popen("echo {} | {}".format(pword, cmd_line)).read()
 
 	else:
 		cmd_output = subprocess.Popen(cmd_line, stdout=PIPE, stderr=PIPE)
@@ -63,7 +63,7 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
 				stdout = cmd_output.stderr
 
 			else:
-				stdout = u'{}\n{}'.format(stdout, cmd_output.stderr)
+				stdout = "{}\n{}".format(stdout, cmd_output.stderr)
 
 		returncode = cmd_output.returncode
 
@@ -82,13 +82,13 @@ def GetCommandOutput(cmd, args=[]):
 	output = subprocess.Popen(command_line, stdout=PIPE, stderr=STDOUT).communicate()[0]
 
 	# The Popen command adds a newline character at end of output
-	return output.rstrip(u'\n')
+	return output.rstrip("\n")
 
 
 ## Retrieves executable it exists on system
 def GetExecutable(cmd):
 	alternatives = {
-		u'fakeroot': u'fakeroot-sysv',
+		"fakeroot": "fakeroot-sysv",
 		}
 
 	found_command = CommandExists(cmd)
@@ -107,9 +107,9 @@ def GetExecutable(cmd):
 
 
 def GetSystemInstaller():
-	system_installer = GetExecutable(u'gdebi-gtk')
+	system_installer = GetExecutable("gdebi-gtk")
 
 	if not system_installer:
-		system_installer = GetExecutable(u'gdebi-kde')
+		system_installer = GetExecutable("gdebi-kde")
 
 	return system_installer

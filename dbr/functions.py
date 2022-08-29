@@ -29,11 +29,11 @@ from globals.system			import PY_VER_STRING
 #		Application's version tuple
 def GetCurrentVersion(remote=APP_project_gh):
 	try:
-		version = os.path.basename(urlopen(u'{}/releases/latest'.format(remote)).geturl())
+		version = os.path.basename(urlopen("{}/releases/latest".format(remote)).geturl())
 
-		if u'-' in version:
-			version = version.split(u'-')[0]
-		version = version.split(u'.')
+		if "-" in version:
+			version = version.split("-")[0]
+		version = version.split(".")
 
 		cutoff_index = 0
 		for C in version[0]:
@@ -46,7 +46,7 @@ def GetCurrentVersion(remote=APP_project_gh):
 		version[0] = version[0][cutoff_index:]
 		for V in version:
 			if not V.isdigit():
-				return u'Cannot parse release: {}'.format(tuple(version))
+				return "Cannot parse release: {}".format(tuple(version))
 
 			version[version.index(V)] = int(V)
 
@@ -67,7 +67,7 @@ def GetContainerItemCount(container):
 ## TODO: Doxygen
 def GetLongestLine(lines):
 	if isinstance(lines, str):
-		lines = lines.split(u'\n')
+		lines = lines.split("\n")
 
 	longest = 0
 
@@ -85,9 +85,9 @@ def GetLongestLine(lines):
 #  \param version
 #		The minimal version that should be required
 def RequirePython(version):
-	error = u'Incompatible python version'
+	error = "Incompatible python version"
 	t = type(version)
-	if t == type(u''):
+	if t == type(""):
 		if version == PY_VER_STRING[0:3]:
 			return
 
@@ -99,7 +99,7 @@ def RequirePython(version):
 
 		raise ValueError(error)
 
-	raise ValueError(u'Wrong type for argument 1 of RequirePython(version)')
+	raise ValueError("Wrong type for argument 1 of RequirePython(version)")
 
 
 ## Checks if a string contains any alphabetic characters
@@ -109,7 +109,7 @@ def RequirePython(version):
 #  \return
 #		\b \e bool : Alphabet characters found
 def HasAlpha(value):
-	return (re.search(u'[a-zA-Z]', GS(value)) != None)
+	return (re.search("[a-zA-Z]", GS(value)) != None)
 
 
 ## Finds integer value from a string, float, tuple, or list
@@ -135,16 +135,16 @@ def GetInteger(value):
 			return None
 
 		# Check for negative
-		if value[0] == u'-':
-			if value.count(u'-') <= 1:
+		if value[0] == "-":
+			if value.count("-") <= 1:
 				value = GetInteger(value[1:])
 
 				if value != None:
 					return -value
 
 		# Check for tuple
-		elif u'.' in value:
-			value = value.split(u'.')[0]
+		elif "." in value:
+			value = value.split(".")[0]
 			return GetInteger(value)
 
 		elif StringIsNumeric(value):
@@ -173,8 +173,8 @@ def GetBoolean(value):
 		if int_value != None:
 			return bool(int_value)
 
-		if value in (u'True', u'False'):
-			return value == u'True'
+		if value in ("True", "False"):
+			return value == "True"
 
 	return None
 
@@ -209,10 +209,10 @@ def GetIntTuple(value):
 
 	elif IsString(value):
 		# Remove whitespace & braces
-		value = value.strip(u' ()')
-		value = u''.join(value.split(u' '))
+		value = value.strip(" ()")
+		value = "".join(value.split(" "))
 
-		value = value.split(u',')
+		value = value.split(",")
 
 		if len(value) > 1:
 			for S in value:
@@ -247,22 +247,22 @@ def IsIntTuple(value):
 #
 #  FIXME: Handle missing 'file' command
 def FileUnstripped(file_name):
-	CMD_file = GetExecutable(u'file')
+	CMD_file = GetExecutable("file")
 
 	if CMD_file:
 		output = subprocess.run([CMD_file, file_name]).stdout
 
-		if u': ' in output:
-			output = output.split(u': ')[1]
+		if ": " in output:
+			output = output.split(": ")[1]
 
-		output = output.split(u', ')
+		output = output.split(", ")
 
-		if u'not stripped' in output:
+		if "not stripped" in output:
 			return True
 
 		return False
 
-	print(u'ERROR: "file" command does not exist on system')
+	print("ERROR: "file" command does not exist on system")
 
 	return False
 
@@ -272,8 +272,8 @@ def BuildBinaryPackageFromTree(root_dir, filename):
 		return dbrerrno.ENOENT
 
 	# DEBUG
-	cmd = u'fakeroot dpkg-deb -v -b "{}" "{}"'.format(root_dir, filename)
-	print(u'DEBUG: Issuing command: {}'.format(cmd))
+	cmd = "fakeroot dpkg-deb -v -b "{}" "{}"".format(root_dir, filename)
+	print("DEBUG: Issuing command: {}".format(cmd))
 
 	#res = subprocess.run([cmd])
 	#output = (res.returncode, res.stdout)
@@ -286,16 +286,16 @@ def UsingDevelopmentVersion():
 
 
 def BuildDebPackage(stage_dir, target_file):
-	packager = GetExecutable(u'dpkg-deb')
-	fakeroot = GetExecutable(u'fakeroot')
+	packager = GetExecutable("dpkg-deb")
+	fakeroot = GetExecutable("fakeroot")
 
 	if not fakeroot or not packager:
-		return (dbrerrno.ENOENT, GT(u'Cannot run "fakeroot dpkg"'))
+		return (dbrerrno.ENOENT, GT("Cannot run "fakeroot dpkg""))
 
 	packager = os.path.basename(packager)
 
 	try:
-		output = subprocess.check_output([fakeroot, packager, u'-b', stage_dir, target_file], stderr=subprocess.STDOUT)
+		output = subprocess.check_output([fakeroot, packager, "-b", stage_dir, target_file], stderr=subprocess.STDOUT)
 
 	except:
 		return (dbrerrno.EAGAIN, traceback.format_exc())

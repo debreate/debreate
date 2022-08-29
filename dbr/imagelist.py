@@ -20,37 +20,37 @@ class DirectoryImageList(wx.ImageList):
 		directory_images = []
 
 		custom_images = (
-			u'audio-generic',
-			u'computer',
-			u'drive-fixed',
-			u'drive-floppy',
-			u'drive-removable',
-			u'executable-binary',
-			u'executable-script',
-			u'failsafe',
-			u'folder',
-			u'folder-home',
-			u'folder-home-open',
-			u'folder-open',
-			u'file',
-			u'image-generic',
-			u'symlink',
-			u'video-generic',
+			"audio-generic",
+			"computer",
+			"drive-fixed",
+			"drive-floppy",
+			"drive-removable",
+			"executable-binary",
+			"executable-script",
+			"failsafe",
+			"folder",
+			"folder-home",
+			"folder-home-open",
+			"folder-open",
+			"file",
+			"image-generic",
+			"symlink",
+			"video-generic",
 			)
 
 		for I in custom_images:
 			directory_images.append((GetBitmap(I), I))
 
 		stock_images = (
-			(wx.ART_CDROM, u'cdrom'),
-			(wx.ART_EXECUTABLE_FILE, u'executable-binary'),
-			(wx.ART_FLOPPY, u'drive-floppy'),
-			(wx.ART_FOLDER, u'folder'),
-			(wx.ART_FOLDER_OPEN, u'folder-open'),
-			(wx.ART_HARDDISK, u'drive-fixed'),
-			(wx.ART_MISSING_IMAGE, u'failsafe'),
-			(wx.ART_NORMAL_FILE, u'file'),
-			(wx.ART_REMOVABLE, u'drive-removable'),
+			(wx.ART_CDROM, "cdrom"),
+			(wx.ART_EXECUTABLE_FILE, "executable-binary"),
+			(wx.ART_FLOPPY, "drive-floppy"),
+			(wx.ART_FOLDER, "folder"),
+			(wx.ART_FOLDER_OPEN, "folder-open"),
+			(wx.ART_HARDDISK, "drive-fixed"),
+			(wx.ART_MISSING_IMAGE, "failsafe"),
+			(wx.ART_NORMAL_FILE, "file"),
+			(wx.ART_REMOVABLE, "drive-removable"),
 			)
 
 		# Use available stock images if a custom image has not been defined
@@ -65,16 +65,16 @@ class DirectoryImageList(wx.ImageList):
 				directory_images.append(SI)
 
 		aliases = (
-			(u'audio-generic', (u'audio', u'audio-file', u'file-audio',)),
-			(u'executable-binary', (u'executable', u'executable-file', u'file-executable',)),
-			(u'executable-script', (u'executable-text', u'text-executable',)),
-			(u'file', (u'normal file',)),
-			(u'drive-floppy', (u'floppy', u'floppy-drive',)),
-			(u'drive-fixed', (u'hard-disk', u'harddisk', u'hard-drive', u'fixed-drive', u'drive',)),
-			(u'drive-removable', (u'removable', u'removable-drive',)),
-			(u'image-generic', (u'image', u'image-file', u'file-image',)),
-			(u'symlink', (u'symbolic-link', u'shortcut',)),
-			(u'video-generic', (u'video', u'video-file', u'file-video',)),
+			("audio-generic", ("audio", "audio-file", "file-audio",)),
+			("executable-binary", ("executable", "executable-file", "file-executable",)),
+			("executable-script", ("executable-text", "text-executable",)),
+			("file", ("normal file",)),
+			("drive-floppy", ("floppy", "floppy-drive",)),
+			("drive-fixed", ("hard-disk", "harddisk", "hard-drive", "fixed-drive", "drive",)),
+			("drive-removable", ("removable", "removable-drive",)),
+			("image-generic", ("image", "image-file", "file-image",)),
+			("symlink", ("symbolic-link", "shortcut",)),
+			("video-generic", ("video", "video-file", "file-video",)),
 			)
 
 		self.Images = {}
@@ -91,12 +91,12 @@ class DirectoryImageList(wx.ImageList):
 			IMAGE = IMAGE[0]
 
 			if isinstance(IMAGE, wx.Bitmap):
-				Logger.Debug(__name__, u'Adding wx.Bitmap to image list')
+				Logger.Debug(__name__, "Adding wx.Bitmap to image list")
 
 				self.Add(IMAGE)
 
 			else:
-				Logger.Debug(__name__, u'Adding bitmap from wx.ArtProvider')
+				Logger.Debug(__name__, "Adding bitmap from wx.ArtProvider")
 
 				self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
 
@@ -111,7 +111,7 @@ class DirectoryImageList(wx.ImageList):
 		if description in self.Images:
 			return self.Images[description]
 
-		return self.Images[u'failsafe']
+		return self.Images["failsafe"]
 
 
 ## Image list used for ui.tree.DirectoryTree

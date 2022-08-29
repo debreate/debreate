@@ -38,7 +38,7 @@ from wiz.wizard			import WizardPage
 
 
 # Globals
-copyright_header = GT(u'Copyright © {} <copyright holder(s)> [<email>]')
+copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
 
 
 ## Copyright page
@@ -53,18 +53,18 @@ class Page(WizardPage):
 		self.custom_licenses = []
 
 		## A list of available license templates
-		self.sel_templates = Choice(self, selid.LICENSE, name=u'list»')
+		self.sel_templates = Choice(self, selid.LICENSE, name="list»")
 
 		# Initialize the template list
 		self.OnRefreshList()
 
-		btn_template = CreateButton(self, label=GT(u'Full Template'), image=u'full', name=u'full»')
-		self.btn_template_simple = CreateButton(self, label=GT(u'Short Template'), image=u'short',
-				name=u'short»')
-		btn_refresh = CreateButton(self, btnid.REFRESH, GT(u'Refresh Template List'), u'refresh',
-				name=u'btn refresh')
-		btn_open = CreateButton(self, btnid.BROWSE, GT(u'Open Template Directory'), u'browse',
-				name=u'btn opendir', commands=u'xdg-open')
+		btn_template = CreateButton(self, label=GT("Full Template"), image="full", name="full»")
+		self.btn_template_simple = CreateButton(self, label=GT("Short Template"), image="short",
+				name="short»")
+		btn_refresh = CreateButton(self, btnid.REFRESH, GT("Refresh Template List"), "refresh",
+				name="btn refresh")
+		btn_open = CreateButton(self, btnid.BROWSE, GT("Open Template Directory"), "browse",
+				name="btn opendir", commands="xdg-open")
 
 		if not self.sel_templates.GetCount():
 			self.sel_templates.Enable(False)
@@ -72,7 +72,7 @@ class Page(WizardPage):
 			self.btn_template_simple.Enable(False)
 
 		## Area where license text is displayed
-		self.dsp_copyright = TextAreaPanelESS(self, monospace=True, name=u'license')
+		self.dsp_copyright = TextAreaPanelESS(self, monospace=True, name="license")
 		self.dsp_copyright.EnableDropTarget()
 
 		SetPageToolTips(self)
@@ -93,7 +93,7 @@ class Page(WizardPage):
 		# *** Layout *** #
 
 		lyt_top = BoxSizer(wx.HORIZONTAL)
-		lyt_top.Add(wx.StaticText(self, label=GT(u'Available Templates')), 0,
+		lyt_top.Add(wx.StaticText(self, label=GT("Available Templates")), 0,
 				lyt.ALGN_CV)
 		lyt_top.Add(self.sel_templates, 0, lyt.ALGN_CV|wx.LEFT, 5)
 		lyt_top.Add(btn_template, 0, wx.LEFT, 5)
@@ -117,8 +117,8 @@ class Page(WizardPage):
 	#	<b><i>True</i></b>, if user confirmed
 	def DestroyLicenseText(self):
 		if not TextIsEmpty(self.dsp_copyright.GetValue()):
-			warn_msg = GT(u'This will destroy all license text.')
-			warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
+			warn_msg = GT("This will destroy all license text.")
+			warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
 			if ConfirmationDialog(GetMainWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
 				return False
@@ -160,7 +160,7 @@ class Page(WizardPage):
 	## TODO: Doxygen
 	def GetSaveData(self):
 		data = self.Get()
-		return u'<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>'.format(data)
+		return "<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>".format(data)
 
 
 	## Retrieves the name of the template currently selected
@@ -186,7 +186,7 @@ class Page(WizardPage):
 		for I in reversed(range(remove_index)):
 			copyright_data.remove(copyright_data[I])
 
-		copyright_data = u'\n'.join(copyright_data)
+		copyright_data = "\n".join(copyright_data)
 
 		self.dsp_copyright.SetValue(copyright_data)
 
@@ -200,13 +200,13 @@ class Page(WizardPage):
 
 	## Opens directory containing currently selected license
 	def OnOpenPath(self, event=None):
-		CMD_open = GetExecutable(u'xdg-open')
+		CMD_open = GetExecutable("xdg-open")
 
 		if CMD_open:
 			path = self.GetLicensePath()
 
 			if not path:
-				ShowErrorDialog(GT(u'Error retrieving template path: {}').format(self.GetSelectedName()))
+				ShowErrorDialog(GT("Error retrieving template path: {}").format(self.GetSelectedName()))
 
 				return False
 
@@ -284,24 +284,24 @@ class Page(WizardPage):
 
 		if self.DestroyLicenseText():
 			if not template_file or not os.path.isfile(template_file):
-				ShowErrorDialog(GT(u'Could not locate license file: {}').format(self.GetSelectedName()))
+				ShowErrorDialog(GT("Could not locate license file: {}").format(self.GetSelectedName()))
 
 				return
 
-			Logger.Debug(__name__, u'Copying license {}'.format(template_file))
+			Logger.Debug(__name__, "Copying license {}".format(template_file))
 
-			license_text = ReadFile(template_file, noStrip=u' ')
+			license_text = ReadFile(template_file, noStrip=" ")
 
 			# Number defines how many empty lines to add after the copyright header
 			# Boolean/Integer defines whether copyright header should be centered/offset
 			add_header = {
-				u'Artistic': (1, True),
-				u'BSD': (0, False),
+				"Artistic": (1, True),
+				"BSD": (0, False),
 			}
 
 			template_name = os.path.basename(template_file)
 			if template_name in add_header:
-				license_text = license_text.split(u'\n')
+				license_text = license_text.split("\n")
 
 				empty_lines = add_header[template_name][0]
 				for L in range(empty_lines):
@@ -311,7 +311,7 @@ class Page(WizardPage):
 
 				center_header = add_header[template_name][1]
 				if center_header:
-					Logger.Debug(__name__, u'Centering header...')
+					Logger.Debug(__name__, "Centering header...")
 
 					offset = 0
 
@@ -323,22 +323,22 @@ class Page(WizardPage):
 						# Use the longest line found in the text to center the header
 						longest_line = GetLongestLine(license_text)
 
-						Logger.Debug(__name__, u'Longest line: {}'.format(longest_line))
+						Logger.Debug(__name__, "Longest line: {}".format(longest_line))
 
 						header_length = len(header)
 						if header_length < longest_line:
 							offset = (longest_line - header_length) / 2
 
 					if offset:
-						Logger.Debug(__name__, u'Offset: {}'.format(offset))
+						Logger.Debug(__name__, "Offset: {}".format(offset))
 
-						header = u'{}{}'.format(u' ' * offset, header)
+						header = "{}{}".format(" " * offset, header)
 
 				# Special changes for BSD license
-				if template_name == u'BSD':
+				if template_name == "BSD":
 					line_index = 0
 					for LI in license_text:
-						if u'copyright (c)' in LI.lower():
+						if "copyright (c)" in LI.lower():
 							license_text[line_index] = header
 
 							break
@@ -348,10 +348,10 @@ class Page(WizardPage):
 				else:
 					license_text.insert(0, header)
 
-				license_text = u'\n'.join(license_text)
+				license_text = "\n".join(license_text)
 
 			if not license_text:
-				ShowErrorDialog(GT(u'License template is empty'))
+				ShowErrorDialog(GT("License template is empty"))
 
 				return
 
@@ -366,9 +366,9 @@ class Page(WizardPage):
 		if self.DestroyLicenseText():
 			self.dsp_copyright.Clear()
 
-			license_path = u'{}/{}'.format(sys_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
+			license_path = "{}/{}".format(sys_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
 
-			self.dsp_copyright.WriteText(u'{}\n\n{}'.format(copyright_header.format(GetYear()), license_path))
+			self.dsp_copyright.WriteText("{}\n\n{}".format(copyright_header.format(GetYear()), license_path))
 			self.dsp_copyright.SetInsertionPoint(0)
 
 		self.dsp_copyright.SetFocus()

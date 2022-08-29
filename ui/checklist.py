@@ -27,7 +27,7 @@ class CheckList(BorderedPanel):
 
 		BorderedPanel.__init__(self, parent, ID, pos, size, name=name)
 
-		self.SetBackgroundColour(u'white')
+		self.SetBackgroundColour("white")
 
 		pnl_bg = ScrolledPanel(self, pnlid.BACKGROUND, style=style|wx.TAB_TRAVERSAL|wx.BORDER_NONE)
 		pnl_bg.SetBackgroundColour(self.GetBackgroundColour())
@@ -70,7 +70,7 @@ class CheckList(BorderedPanel):
 		# FIXME: Static lines are counted
 		item_index = self.GetItemCount()
 
-		#Logger.Debug(__name__, GT(u'Lintian tag: {}; Set checked: {}').format(label, checked))
+		#Logger.Debug(__name__, GT("Lintian tag: {}; Set checked: {}").format(label, checked))
 
 		pnl_bg = GetField(self, pnlid.BACKGROUND)
 		lyt_bg = pnl_bg.GetSizer()
@@ -96,7 +96,7 @@ class CheckList(BorderedPanel):
 	#	Sets items as checked if True
 	def AddItems(self, labels, checked=False):
 		for l in labels:
-			Logger.Debug(__name__, u'Adding item: {} (checked={})'.format(l, checked))
+			Logger.Debug(__name__, "Adding item: {} (checked={})".format(l, checked))
 
 			self.AddItem(l, checked)
 
@@ -160,7 +160,7 @@ class CheckList(BorderedPanel):
 			if CHK.IsChecked():
 				label = CHK.GetLabel()
 
-				Logger.Debug(__name__, GT(u'Retrieving checked label: {}').format(label))
+				Logger.Debug(__name__, GT("Retrieving checked label: {}").format(label))
 
 				checked_list.append(label)
 
@@ -328,7 +328,7 @@ class CheckListDialog(wx.Dialog):
 		layout_main.Add(layout_buttons, 0, wx.EXPAND|wx.BOTTOM, 5)
 
 		if allow_custom:
-			btn_add_custom = wx.Button(self, label=GT(u'Add custom'))
+			btn_add_custom = wx.Button(self, label=GT("Add custom"))
 			btn_add_custom.Bind(wx.EVT_BUTTON, self.OnAddCustom)
 
 			self.input_add_custom = wx.TextCtrl(self)
@@ -363,7 +363,7 @@ class CheckListDialog(wx.Dialog):
 
 
 	def OnAddCustom(self, event=None):
-		custom_label = GS(self.input_add_custom.GetValue()).strip(u' ').replace(u' ', u'_')
+		custom_label = GS(self.input_add_custom.GetValue()).strip(" ").replace(" ", "_")
 		if not TextIsEmpty(custom_label) and not self.check_list.LabelExists(custom_label):
 			self.check_list.AddItem(custom_label, True)
 			self.check_list.ScrollToEnd()
@@ -371,7 +371,7 @@ class CheckListDialog(wx.Dialog):
 
 	def OnClearList(self, event=None):
 		if self.GetCheckedCount():
-			warn_dialog = wx.MessageDialog(self, GT(u'Clear Lintian overrides list?'), GT(u'Warning'),
+			warn_dialog = wx.MessageDialog(self, GT("Clear Lintian overrides list?"), GT("Warning"),
 					style=wx.YES_NO|wx.NO_DEFAULT|wx.ICON_WARNING)
 			warn_dialog.CenterOnParent()
 

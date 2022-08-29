@@ -60,7 +60,7 @@ from wiz.pginit				import Page as PageInit
 from wiz.wizard				import Wizard
 
 
-default_title = GT(u'Debreate - Debian Package Builder')
+default_title = GT("Debreate - Debian Package Builder")
 
 
 ## The main window interface
@@ -84,12 +84,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 		# Make sure that this frame is set as the top window
 		if not wx.GetApp().GetTopWindow() == self:
-			Logger.Debug(__name__, GT(u'Setting MainWindow instance as top window'))
+			Logger.Debug(__name__, GT("Setting MainWindow instance as top window"))
 
 			wx.GetApp().SetTopWindow(self)
 
 		if DebugEnabled():
-			self.SetTitle(u'{} ({})'.format(default_title, GT(u'debugging')))
+			self.SetTitle("{} ({})".format(default_title, GT("debugging")))
 
 		self.SetMinSize(wx.Size(640, 400))
 
@@ -172,7 +172,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	## TODO: Doxygen
 	def IsSaved(self):
 		title = self.GetTitle()
-		if title[-1] == u'*':
+		if title[-1] == "*":
 			return False
 
 		else:
@@ -185,41 +185,41 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 		about.SetGraphic(LOGO)
 		about.SetVersion(VERSION_string)
-		about.SetDescription(GT(u'A package builder for Debian based systems'))
+		about.SetDescription(GT("A package builder for Debian based systems"))
 		about.SetAuthor(AUTHOR_name)
 
 		about.SetWebsites((
-			(GT(u'Homepage'), APP_homepage),
-			(GT(u'GitHub Project'), APP_project_gh),
-			(GT(u'Sourceforge Project'), APP_project_sf),
+			(GT("Homepage"), APP_homepage),
+			(GT("GitHub Project"), APP_project_gh),
+			(GT("Sourceforge Project"), APP_project_sf),
 		))
 
 		about.AddJobs(
 			AUTHOR_name,
 			(
-				GT(u'Head Developer'),
-				GT(u'Packager'),
-				u'{} (es, it)'.format(GT(u'Translation')),
+				GT("Head Developer"),
+				GT("Packager"),
+				"{} (es, it)".format(GT("Translation")),
 			),
 			AUTHOR_email
 		)
 
 		about.AddJobs(
-			u'Hugo Posnic',
+			"Hugo Posnic",
 			(
-				GT(u'Code Contributor'),
-				GT(u'Website Designer & Author'),
+				GT("Code Contributor"),
+				GT("Website Designer & Author"),
 			),
-			u'hugo.posnic@gmail.com'
+			"hugo.posnic@gmail.com"
 		)
 
-		about.AddJob(u'Lander Usategui San Juan', GT(u'General Contributor'), u'lander@erlerobotics.com')
+		about.AddJob("Lander Usategui San Juan", GT("General Contributor"), "lander@erlerobotics.com")
 
-		about.AddTranslator(u'Karim Oulad Chalha', u'herr.linux88@gmail.com', u'ar', )
-		about.AddTranslator(u'Philippe Dalet', u'philippe.dalet@ac-toulouse.fr', u'fr')
-		about.AddTranslator(u'Zhmurkov Sergey', u'zhmsv@yandex.ru', u'ru')
+		about.AddTranslator("Karim Oulad Chalha", "herr.linux88@gmail.com", "ar", )
+		about.AddTranslator("Philippe Dalet", "philippe.dalet@ac-toulouse.fr", "fr")
+		about.AddTranslator("Zhmurkov Sergey", "zhmsv@yandex.ru", "ru")
 
-		about.AddJob(u'Benji Park', GT(u'Button Base Image Designer'))
+		about.AddJob("Benji Park", GT("Button Base Image Designer"))
 
 		about.SetChangelog()
 
@@ -231,42 +231,42 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 	## Checks for new release availability
 	def OnCheckUpdate(self, event=None): #@UnusedVariable
-		update_test = u'update-fail' in GetTestList()
+		update_test = "update-fail" in GetTestList()
 
 		if UsingDevelopmentVersion() and not update_test:
-			DetailedMessageDialog(self, GT(u'Update'),
-					text=GT(u'Update checking is disabled in development versions')).ShowModal()
+			DetailedMessageDialog(self, GT("Update"),
+					text=GT("Update checking is disabled in development versions")).ShowModal()
 			return
 
 		wx.SafeYield()
 
 		if update_test:
 			# Set a bad url to force error
-			current = GetCurrentVersion(u'http://dummyurl.blah/')
+			current = GetCurrentVersion("http://dummyurl.blah/")
 
 		else:
 			current = GetCurrentVersion()
 
-		Logger.Debug(__name__, GT(u'URL request result: {}').format(current))
+		Logger.Debug(__name__, GT("URL request result: {}").format(current))
 
-		error_remote = GT(u'An error occurred attempting to contact remote website')
+		error_remote = GT("An error occurred attempting to contact remote website")
 
 		if isinstance(current, (URLError, HTTPError)):
 			current = GS(current)
 			ShowErrorDialog(error_remote, current)
 
 		elif isinstance(current, tuple) and current > VERSION_tuple:
-			current = u'{}.{}.{}'.format(current[0], current[1], current[2])
-			l1 = GT(u'Version {} is available!').format(current)
-			l2 = GT(u'Would you like to go to Debreate\'s website?')
-			if ConfirmationDialog(self, GT(u'Update'), u'{}\n\n{}'.format(l1, l2)).Confirmed():
+			current = "{}.{}.{}".format(current[0], current[1], current[2])
+			l1 = GT("Version {} is available!").format(current)
+			l2 = GT("Would you like to go to Debreate\"s website?')
+			if ConfirmationDialog(self, GT("Update"), "{}\n\n{}".format(l1, l2)).Confirmed():
 				wx.LaunchDefaultBrowser(APP_homepage)
 
 		elif isinstance(current, str):
 			ShowErrorDialog(error_remote, current)
 
 		else:
-			DetailedMessageDialog(self, GT(u'Debreate'), text=GT(u'Debreate is up to date!')).ShowModal()
+			DetailedMessageDialog(self, GT("Debreate"), text=GT("Debreate is up to date!")).ShowModal()
 
 
 	def __cacheManualFiles(self, args):
@@ -277,10 +277,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 		os.chdir(manual_cache)
 
 		try:
-			subprocess.Popen([u'wget', u'-rkp', u'-nd', u'-np', u'-H', u'-D',
-					u'debreate.wordpress.com,antumdeluge.github.io', url_manual]).communicate()
+			subprocess.Popen(["wget", "-rkp", "-nd", "-np", "-H", "-D",
+					"debreate.wordpress.com,antumdeluge.github.io", url_manual]).communicate()
 			# FIXME: use Python commands
-			subprocess.Popen([u'sed', u'-i', u'-e', u's|<a.*>||g', u'-e', u's|</a>||g', manual_index]).communicate()
+			subprocess.Popen(["sed", "-i", "-e", "s|<a.*>||g", "-e", "s|</a>||g", manual_index]).communicate()
 		except:
 			# FIXME: show error message
 			pass
@@ -311,32 +311,32 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	#  to open web browser in remote usage page.
 	#  TODO: Use dialog as main method
 	def OnHelp(self, event=None): #@UnusedVariable
-		if u'alpha' in GetTestList():
+		if "alpha" in GetTestList():
 			HelpDialog(self).ShowModal()
 		else:
 			# FIXME: files should be re-cached when Debreate upgraded to new version
 			# TODO: trim unneeded text
 			cached = False
-			manual_cache = ConcatPaths(PATH_cache, u'manual')
-			manual_index = ConcatPaths(manual_cache, u'index.html')
+			manual_cache = ConcatPaths(PATH_cache, "manual")
+			manual_index = ConcatPaths(manual_cache, "index.html")
 			if not os.path.isdir(manual_cache):
 				os.makedirs(manual_cache)
 			elif os.path.isfile(manual_index):
 				cached = True
-			url_manual = u'https://debreate.wordpress.com/manual/'
+			url_manual = "https://debreate.wordpress.com/manual/"
 			# NOTE: use urllib.request.urlopen for Python 3
 			manual_data = urllib.urlopen(url_manual)
 			url_state = manual_data.getcode()
 			if url_state == 200:
 				# cache files
 				if not cached:
-					self.progress = ProgressDialog(self, message=GT(u'Caching manual files'),
+					self.progress = ProgressDialog(self, message=GT("Caching manual files"),
 							style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
 					self.Disable()
 					self.timer.Start(100)
 					Thread(self.__cacheManualFiles, (url_manual, manual_cache, manual_index,)).Start()
 					self.progress.ShowModal()
-				manual_dialog = wx.Dialog(self, title=u'Debreate Manual', size=(800,500), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+				manual_dialog = wx.Dialog(self, title="Debreate Manual", size=(800,500), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 				manual = wx.html.HtmlWindow(manual_dialog)
 				wx.Yield()
 				if manual.LoadFile(manual_index):
@@ -349,14 +349,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 			else:
 				# open local document
 				wx.Yield()
-				subprocess.call([u'xdg-open', u'{}/docs/usage.pdf'.format(PATH_app)])
+				subprocess.call(["xdg-open", "{}/docs/usage.pdf".format(PATH_app)])
 
 
 	## Opens the logs directory in the system's default file manager
 	def OnLogDirOpen(self, event=None): #@UnusedVariable
-		Logger.Debug(__name__, GT(u'Opening log directory ...'))
+		Logger.Debug(__name__, GT("Opening log directory ..."))
 
-		subprocess.check_output([GetExecutable(u'xdg-open'), u'{}/logs'.format(PATH_local)], stderr=subprocess.STDOUT)
+		subprocess.check_output([GetExecutable("xdg-open"), "{}/logs".format(PATH_local)], stderr=subprocess.STDOUT)
 
 
 	## Changes wizard page from menu
@@ -377,11 +377,11 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 	## TODO: Doxygen
 	def OnProjectOpen(self, event=None): #@UnusedVariable
-		projects_filter = u'|*.{};*.{}'.format(PROJECT_ext, PROJECT_txt)
-		d = GT(u'Debreate project files')
+		projects_filter = "|*.{};*.{}".format(PROJECT_ext, PROJECT_txt)
+		d = GT("Debreate project files")
 
-		dia = wx.FileDialog(self, GT(u'Open Debreate Project'), os.getcwd(), u'',
-				u'{}{}'.format(d, projects_filter), wx.FD_CHANGE_DIR)
+		dia = wx.FileDialog(self, GT("Open Debreate Project"), os.getcwd(), "",
+				"{}{}".format(d, projects_filter), wx.FD_CHANGE_DIR)
 		if dia.ShowModal() != wx.ID_OK:
 			return
 
@@ -417,22 +417,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 				# Create a backup of the project
 				overwrite = False
 				if os.path.isfile(path):
-					backup = u'{}.backup'.format(path)
+					backup = "{}.backup".format(path)
 					shutil.copy(path, backup)
 					overwrite = True
 
 				# This try statement can be removed when unicode support is enabled
 				try:
-					WriteFile(path, u'[DEBREATE-{}]\n{}'.format(VERSION_string, u'\n'.join(data)))
+					WriteFile(path, "[DEBREATE-{}]\n{}".format(VERSION_string, "\n".join(data)))
 
 					if overwrite:
 						os.remove(backup)
 
 				except UnicodeEncodeError:
-					detail1 = GT(u'Unfortunately Debreate does not support unicode yet.')
-					detail2 = GT(u'Remove any non-ASCII characters from your project.')
+					detail1 = GT("Unfortunately Debreate does not support unicode yet.")
+					detail2 = GT("Remove any non-ASCII characters from your project.")
 
-					ShowErrorDialog(GT(u'Save failed'), u'{}\n{}'.format(detail1, detail2), title=GT(u'Unicode Error'))
+					ShowErrorDialog(GT("Save failed"), "{}\n{}".format(detail1, detail2), title=GT("Unicode Error"))
 
 					if overwrite:
 						os.remove(path)
@@ -440,16 +440,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 						shutil.move(backup, path)
 
 		def OnSaveAs():
-			dbp = u'|*.dbp'
-			d = GT(u'Debreate project files')
-			dia = wx.FileDialog(self, GT(u'Save Debreate Project'), os.getcwd(), u'', u'{}{}'.format(d, dbp),
+			dbp = "|*.dbp"
+			d = GT("Debreate project files")
+			dia = wx.FileDialog(self, GT("Save Debreate Project"), os.getcwd(), "", "{}{}".format(d, dbp),
 									wx.FD_SAVE|wx.FD_CHANGE_DIR|wx.FD_OVERWRITE_PROMPT)
 			if dia.ShowModal() == wx.ID_OK:
 				filename = dia.GetFilename()
-				if filename.split(u'.')[-1] == u'dbp':
-					filename = u'.'.join(filename.split(u'.')[:-1])
+				if filename.split(".")[-1] == "dbp":
+					filename = ".".join(filename.split(".")[:-1])
 
-				self.LoadedProject = u'{}/{}.dbp'.format(os.path.split(dia.GetPath())[0], filename)
+				self.LoadedProject = "{}/{}.dbp".format(os.path.split(dia.GetPath())[0], filename)
 
 				SaveIt(self.LoadedProject)
 
@@ -476,23 +476,23 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 	## Shows a dialog to confirm quit and write window settings to config file
 	def OnQuit(self, event=None): #@UnusedVariable
-		if ConfirmationDialog(self, GT(u'Quit?'),
-				text=GT(u'You will lose any unsaved information')).ShowModal() in (wx.ID_OK, wx.OK):
+		if ConfirmationDialog(self, GT("Quit?"),
+				text=GT("You will lose any unsaved information")).ShowModal() in (wx.ID_OK, wx.OK):
 
 			maximized = self.IsMaximized()
-			WriteConfig(u'maximize', maximized)
+			WriteConfig("maximize", maximized)
 
 			if maximized:
-				WriteConfig(u'position', GetDefaultConfigValue(u'position'))
-				WriteConfig(u'size', GetDefaultConfigValue(u'size'))
-				WriteConfig(u'center', True)
+				WriteConfig("position", GetDefaultConfigValue("position"))
+				WriteConfig("size", GetDefaultConfigValue("size"))
+				WriteConfig("center", True)
 
 			else:
-				WriteConfig(u'position', self.GetPositionTuple())
-				WriteConfig(u'size', self.GetSizeTuple())
-				WriteConfig(u'center', False)
+				WriteConfig("position", self.GetPositionTuple())
+				WriteConfig("size", self.GetSizeTuple())
+				WriteConfig("center", False)
 
-			WriteConfig(u'workingdir', os.getcwd())
+			WriteConfig("workingdir", os.getcwd())
 
 			self.Destroy()
 
@@ -507,7 +507,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 		enabled = self.opt_tooltips.IsChecked()
 		wx.ToolTip.Enable(enabled)
 
-		WriteConfig(u'tooltips', enabled)
+		WriteConfig("tooltips", enabled)
 
 
 	## Opens a dialog for creating/updating list of distribution names cache file
@@ -518,7 +518,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	## Updates the page menu to reflect current page
 	def OnWizardBtnPage(self, event=None): #@UnusedVariable
 		ID = self.Wizard.GetCurrentPageId()
-		Logger.Debug(__name__, GT(u'Event: EVT_CHANGE_PAGE, Page ID: {}').format(ID))
+		Logger.Debug(__name__, GT("Event: EVT_CHANGE_PAGE, Page ID: {}").format(ID))
 
 		menu_page = self.GetMenu(menuid.PAGE)
 		if not menu_page.IsChecked(ID):
@@ -541,7 +541,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 		else:
 			Logger.Error(__name__,
-					u'Cannot open policy manual link with object type {}'.format(type(event)))
+					"Cannot open policy manual link with object type {}".format(type(event)))
 
 			return
 
@@ -559,58 +559,58 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	#  \param project_file
 	#	\b \e unicode|str : Path to project file
 	def OpenProject(self, project_file):
-		Logger.Debug(__name__, u'Opening project: {}'.format(project_file))
+		Logger.Debug(__name__, "Opening project: {}".format(project_file))
 
 		if not os.path.isfile(project_file):
-			ShowErrorDialog(GT(u'Could not open project file'),
-					GT(u'File does not exist or is not a regular file: {}').format(project_file))
+			ShowErrorDialog(GT("Could not open project file"),
+					GT("File does not exist or is not a regular file: {}").format(project_file))
 			return False
 
 		data = ReadFile(project_file)
 
-		lines = data.split(u'\n')
+		lines = data.split("\n")
 
 		# FIXME: Need a better way to determine valid project
-		app = lines[0].lstrip(u'[')
-		if not app.startswith(u'DEBREATE'):
-			ShowErrorDialog(GT(u'Could not open project file'),
-					GT(u'Not a valid Debreate project: {}').format(project_file))
+		app = lines[0].lstrip("[")
+		if not app.startswith("DEBREATE"):
+			ShowErrorDialog(GT("Could not open project file"),
+					GT("Not a valid Debreate project: {}").format(project_file))
 			return False
 
 		if self.LoadedProject and not self.ResetPages():
 			return False
 
 		# *** Get Control Data *** #
-		control_data = data.split(u'<<CTRL>>\n')[1].split(u'\n<</CTRL>>')[0]
+		control_data = data.split("<<CTRL>>\n")[1].split("\n<</CTRL>>")[0]
 		depends_data = self.Wizard.GetPage(pgid.CONTROL).Set(control_data)
 		self.Wizard.GetPage(pgid.DEPENDS).Set(depends_data)
 
 		# *** Get Files Data *** #
-		files_data = data.split(u'<<FILES>>\n')[1].split(u'\n<</FILES>>')[0]
+		files_data = data.split("<<FILES>>\n")[1].split("\n<</FILES>>")[0]
 		opened = self.Wizard.GetPage(pgid.FILES).Set(files_data)
 
 		# *** Get Scripts Data *** #
-		scripts_data = data.split(u'<<SCRIPTS>>\n')[1].split(u'\n<</SCRIPTS>>')[0]
+		scripts_data = data.split("<<SCRIPTS>>\n")[1].split("\n<</SCRIPTS>>")[0]
 		self.Wizard.GetPage(pgid.SCRIPTS).Set(scripts_data)
 
 		# *** Get Changelog Data *** #
-		clog_data = data.split(u'<<CHANGELOG>>\n')[1].split(u'\n<</CHANGELOG>>')[0]
+		clog_data = data.split("<<CHANGELOG>>\n")[1].split("\n<</CHANGELOG>>")[0]
 		self.Wizard.GetPage(pgid.CHANGELOG).Set(clog_data)
 
 		# *** Get Copyright Data *** #
 		try:
-			cpright_data = data.split(u'<<COPYRIGHT>>\n')[1].split(u'\n<</COPYRIGHT')[0]
+			cpright_data = data.split("<<COPYRIGHT>>\n")[1].split("\n<</COPYRIGHT")[0]
 			self.Wizard.GetPage(pgid.COPYRIGHT).Set(cpright_data)
 
 		except IndexError:
 			pass
 
 		# *** Get Menu Data *** #
-		m_data = data.split(u'<<MENU>>\n')[1].split(u'\n<</MENU>>')[0]
+		m_data = data.split("<<MENU>>\n")[1].split("\n<</MENU>>")[0]
 		self.Wizard.GetPage(pgid.MENU).SetLauncherData(m_data, enabled=True)
 
 		# Get Build Data
-		build_data = data.split(u'<<BUILD>>\n')[1].split(u'\n<</BUILD')[0]#.split(u'\n')
+		build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
 		self.Wizard.GetPage(pgid.BUILD).Set(build_data)
 
 		return opened
@@ -619,16 +619,16 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	## TODO: Doxygen
 	def ProjectChanged(self, event=None):
 		if DebugEnabled():
-			Logger.Debug(__name__, u'MainWindow.OnProjectChanged:')
-			print(u'  Object: {}'.format(event.GetEventObject()))
+			Logger.Debug(__name__, "MainWindow.OnProjectChanged:")
+			print("  Object: {}".format(event.GetEventObject()))
 
 		self.ProjectDirty = True
 
 
 	## TODO: Doxygen
 	def ResetPages(self):
-		warn_msg = GT(u'You will lose any unsaved information.')
-		warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
+		warn_msg = GT("You will lose any unsaved information.")
+		warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
 		if ConfirmationDialog(self, text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
 			return False
@@ -649,7 +649,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 		if status: # If status is changing to unsaved this is True
 			title = self.GetTitle()
 			if self.IsSaved() and title != default_title:
-				self.SetTitle(u'{}*'.format(title))
+				self.SetTitle("{}*".format(title))
 
 
 	## TODO: Doxygen

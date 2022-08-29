@@ -33,26 +33,26 @@ from wiz.helper				import GetField
 ## Dialog displaying controls for updating distribution names cache file
 class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 	def __init__(self):
-		BaseDialog.__init__(self, title=GT(u'Update Dist Names Cache'),
+		BaseDialog.__init__(self, title=GT("Update Dist Names Cache"),
 				style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 		ModuleAccessCtrl.__init__(self, __name__)
 
 		self.SetMinSize(wx.Size(300, 150))
 
-		txt_types = wx.StaticText(self, label=GT(u'Include the following:'))
+		txt_types = wx.StaticText(self, label=GT("Include the following:"))
 
 		pnl_types = BorderedPanel(self)
 
-		self.chk_unstable = wx.CheckBox(pnl_types, label=GT(u'Unstable'))
-		self.chk_obsolete = wx.CheckBox(pnl_types, label=GT(u'Obsolete'))
-		self.chk_generic = wx.CheckBox(pnl_types, label=GT(u'Generic (Debian names only)'))
+		self.chk_unstable = wx.CheckBox(pnl_types, label=GT("Unstable"))
+		self.chk_obsolete = wx.CheckBox(pnl_types, label=GT("Obsolete"))
+		self.chk_generic = wx.CheckBox(pnl_types, label=GT("Generic (Debian names only)"))
 
-		self.btn_preview = wx.Button(self, label=GT(u'Preview cache'))
-		btn_update = wx.Button(self, label=GT(u'Update cache'))
-		btn_clear = wx.Button(self, label=GT(u'Clear cache'))
+		self.btn_preview = wx.Button(self, label=GT("Preview cache"))
+		btn_update = wx.Button(self, label=GT("Update cache"))
+		btn_clear = wx.Button(self, label=GT("Clear cache"))
 
 		# Keep preview dialog in memory so position/size is saved
-		self.preview = TextPreview(self, title=GT(u'Available Distribution Names'),
+		self.preview = TextPreview(self, title=GT("Available Distribution Names"),
 				size=(500,400))
 
 		# Is instantiated as ProgressDialog when OnUpdateCache is called
@@ -169,7 +169,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 			self.timer.Start(100)
 
 			if not self.timer.IsRunning():
-				self.error_message = GT(u'Could not start progress dialog timer')
+				self.error_message = GT("Could not start progress dialog timer")
 				self.CheckErrors()
 				return False
 
@@ -180,7 +180,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
 			# Create the progress dialog & start timer
 			# NOTE: Progress dialog is reset by timer stop event
-			self.progress = ProgressDialog(self, message=GT(u'Contacting remote sites'),
+			self.progress = ProgressDialog(self, message=GT("Contacting remote sites"),
 					style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
 
 			# Use ShowModal to wait for timer to stop before continuing
@@ -202,7 +202,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
 				else:
 					ShowMessageDialog(
-						GT(u'The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page'),
+						GT("The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"),
 						parent=self, linewrap=410)
 
 			self.btn_preview.Enable(cache_updated)
@@ -220,10 +220,10 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
 			cache_exists = os.path.isfile(FILE_distnames)
 
-			err_msg = GT(u'An error occurred when trying to update the distribution names cache')
-			err_msg2 = GT(u'The cache file exists but may not have been updated')
+			err_msg = GT("An error occurred when trying to update the distribution names cache")
+			err_msg2 = GT("The cache file exists but may not have been updated")
 			if cache_exists:
-				err_msg = u'{}\n\n{}'.format(err_msg, err_msg2)
+				err_msg = "{}\n\n{}".format(err_msg, err_msg2)
 
 			ShowErrorDialog(err_msg, traceback.format_exc(), self)
 
@@ -237,7 +237,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 	#  Called from a new thread
 	#  FIXME: Show error if could not contact 1 or more remote sites???
 	def UpdateCache(self, args=None):
-		Logger.Debug(__name__, GT(u'Updating cache ...'))
+		Logger.Debug(__name__, GT("Updating cache ..."))
 
 		UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
 				self.chk_generic.GetValue())

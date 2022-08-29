@@ -60,10 +60,10 @@ class LogWindow(wx.Dialog):
 		self.DspLog.font_size = 8
 		self.DspLog.SetFont(GetMonospacedFont(self.DspLog.font_size))
 
-		btn_open = CreateButton(self, btnid.BROWSE, GT(u'Open and Display Log File'), u'browse')
-		btn_font = CreateButton(self, btnid.ZOOM, GT(u'Zoom Text'), u'zoom')
-		btn_refresh = CreateButton(self, btnid.REFRESH, GT(u'Refresh'), u'refresh')
-		btn_hide = CreateButton(self, btnid.CLOSE, GT(u'Hide'), u'hide')
+		btn_open = CreateButton(self, btnid.BROWSE, GT("Open and Display Log File"), "browse")
+		btn_font = CreateButton(self, btnid.ZOOM, GT("Zoom Text"), "zoom")
+		btn_refresh = CreateButton(self, btnid.REFRESH, GT("Refresh"), "refresh")
+		btn_hide = CreateButton(self, btnid.CLOSE, GT("Hide"), "hide")
 
 		# *** Event Handling *** #
 
@@ -139,7 +139,7 @@ class LogWindow(wx.Dialog):
 
 				return
 
-		Logger.Error(__name__, GT(u'Can\'t change log window font'))
+		Logger.Error(__name__, GT("Can\"t change log window font'))
 
 
 	## Hides the log window when close event occurs
@@ -154,7 +154,7 @@ class LogWindow(wx.Dialog):
 
 	## Opens a new log file
 	def OnOpenLogFile(self, event=None):
-		log_select = GetFileOpenDialog(self, GT(u'Open Log'), directory=PATH_logs)
+		log_select = GetFileOpenDialog(self, GT("Open Log"), directory=PATH_logs)
 
 		if ShowDialog(log_select):
 			logFile = log_select.GetPath()
@@ -164,7 +164,7 @@ class LogWindow(wx.Dialog):
 
 				return
 
-			ShowErrorDialog(u'{}: {}'.format(GT(u'File does not exist'), logFile),
+			ShowErrorDialog("{}: {}".format(GT("File does not exist"), logFile),
 					parent=self)
 
 
@@ -181,7 +181,7 @@ class LogWindow(wx.Dialog):
 				menu_debug.Check(menuid.LOG, window_shown)
 
 		else:
-			Logger.Warn(__name__, u'Log thread still active!')
+			Logger.Warn(__name__, "Log thread still active!")
 
 
 	## Use an event to show the log window
@@ -216,7 +216,7 @@ class LogWindow(wx.Dialog):
 	def PollLogFile(self, args=None):
 		while self and self.IsShown():
 			if self.LogFile.TimestampChanged():
-				print(u'Log timestamp changed, loading new log ...')
+				print("Log timestamp changed, loading new log ...")
 
 				wx.PostEvent(self, RefreshLogEvent(0))
 
@@ -242,7 +242,7 @@ class LogWindow(wx.Dialog):
 			except wx.PyDeadObjectError:
 				tb_error = GS(traceback.format_exc())
 
-				Logger.Warn(__name__, u'Error refreshing log window. Details below:\n\n{}'.format(tb_error))
+				Logger.Warn(__name__, "Error refreshing log window. Details below:\n\n{}".format(tb_error))
 
 
 	## Changes the file to be loaded & displayed
@@ -268,9 +268,9 @@ class LogWindow(wx.Dialog):
 		self.Show(True)
 
 		if not self.LogPollThread.IsActive():
-			Logger.Debug(__name__, u'Starting log polling thread ...')
+			Logger.Debug(__name__, "Starting log polling thread ...")
 
 			self.LogPollThread.Start()
 
 		else:
-			Logger.Debug(__name__, u'Log polling thread is already started')
+			Logger.Debug(__name__, "Log polling thread is already started")

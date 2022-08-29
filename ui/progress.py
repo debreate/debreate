@@ -19,7 +19,7 @@ PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
-	def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
+	def __init__(self, parent, title=GT("Progress"), message=wx.EmptyString, size=None, maximum=100,
 			style=PD_DEFAULT_STYLE, detailed=False, resize=True):
 		wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
 
@@ -41,7 +41,7 @@ class ProgressDialog(wx.ProgressDialog):
 		if detailed:
 			lyt_main = self.GetSizer()
 
-			self.txt_tasks = wx.StaticText(self, label=u'{} / {}'.format(0, maximum))
+			self.txt_tasks = wx.StaticText(self, label="{} / {}".format(0, maximum))
 
 			children = self.GetChildren()
 
@@ -93,12 +93,12 @@ class ProgressDialog(wx.ProgressDialog):
 		main_window = GetMainWindow()
 
 		if not FieldEnabled(main_window):
-			Logger.Debug(__name__, u'Re-enabling main window')
+			Logger.Debug(__name__, "Re-enabling main window")
 
 			main_window.Enable()
 
 		if self.Parent and not FieldEnabled(self.Parent):
-			Logger.Debug(__name__, u'Re-enabling parent')
+			Logger.Debug(__name__, "Re-enabling parent")
 
 			self.Parent.Enable()
 
@@ -208,7 +208,7 @@ class ProgressDialog(wx.ProgressDialog):
 		update_value = wx.ProgressDialog.Update(self, *args, **kwargs)
 
 		if self.detailed:
-			self.txt_tasks.SetLabel(u'{} / {}'.format(args[0], self.GetRange()))
+			self.txt_tasks.SetLabel("{} / {}".format(args[0], self.GetRange()))
 
 		if self.resize:
 			self.UpdateSize()
@@ -279,7 +279,7 @@ class ProgressDialog(wx.ProgressDialog):
 #
 #  TODO: Finish defining
 class TimedProgressDialog(ProgressDialog):
-	def __init__(self, parent, title=GT(u'Progress'), message=wx.EmptyString, size=None, maximum=100,
+	def __init__(self, parent, title=GT("Progress"), message=wx.EmptyString, size=None, maximum=100,
 			style=PD_DEFAULT_STYLE, detailed=False, resize=True, interval=100):
 		ProgressDialog.__init__(self, parent, title, message, size, maximum, style, detailed, resize)
 
@@ -310,7 +310,7 @@ class TimedProgressDialog(ProgressDialog):
 
 	## TODO: Doxygen
 	def OnTimerStop(self, event=None):
-		Logger.Debug(__name__, u'Destroying TimedProgressDialog instance')
+		Logger.Debug(__name__, "Destroying TimedProgressDialog instance")
 
 		if wx.MAJOR_VERSION <= 2:
 			# Dialog needs to be closed before destroying for wx 2.8
@@ -321,13 +321,13 @@ class TimedProgressDialog(ProgressDialog):
 
 	## Starts the timer & begins pulsing dialog
 	def Start(self):
-		Logger.Debug(__name__, u'Starting TimedProgressDialog timer ...')
+		Logger.Debug(__name__, "Starting TimedProgressDialog timer ...")
 
 		self.Timer.Start(self.Interval)
 
 
 	## Stops the timer & destroys the progress dialog
 	def Stop(self):
-		Logger.Debug(__name__, u'Stopping TimedProgressDialog timer ...')
+		Logger.Debug(__name__, "Stopping TimedProgressDialog timer ...")
 
 		self.Timer.Stop()

@@ -25,7 +25,7 @@ class Thread(thr.Thread):
 
 
 	def __del__(self):
-		Logger.Debug(__name__, u'Destroying Thread instance; Thread is active: {}'.format(self.IsActive()))
+		Logger.Debug(__name__, "Destroying Thread instance; Thread is active: {}".format(self.IsActive()))
 
 
 	## Exits the thread & sets inactive
@@ -47,7 +47,7 @@ class Thread(thr.Thread):
 	## Exits the thread & sets inactive
 	def join(self):
 		if self.IsActive():
-			Logger.Debug(__name__, u'Joining thread ...')
+			Logger.Debug(__name__, "Joining thread ...")
 
 			thr.Thread.join(self)
 			self.Active = False
@@ -68,7 +68,7 @@ class Thread(thr.Thread):
 
 		# Do not try to restart thread if already started
 		except RuntimeError:
-			Logger.Debug(__name__, u'ThreadStart: Thread is active, cannot restart')
+			Logger.Debug(__name__, "ThreadStart: Thread is active, cannot restart")
 
 			# In case active state has been changed
 			self.Active = True

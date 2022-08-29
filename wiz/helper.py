@@ -158,7 +158,7 @@ def GetField(page, field_id, field_type=wx.Window):
 					field.GetId() == field_id:
 				return field
 
-	return ErrorTuple(1, GT(u'Field ID does not exist or match any fields: {}').format(field_id))
+	return ErrorTuple(1, GT("Field ID does not exist or match any fields: {}").format(field_id))
 
 
 ## Retrieves the input value of a field/control
@@ -179,7 +179,7 @@ def GetFieldValue(page, field_id, field_type=wx.Window):
 
 	if not isinstance(page, wx.Window):
 		# FIXME: Should have error id
-		err_msg = GT(u'Page retrieved was not instance of a window/widget: Page name: {}').format(page.GetName())
+		err_msg = GT("Page retrieved was not instance of a window/widget: Page name: {}").format(page.GetName())
 		return ErrorTuple(1, err_msg)
 
 	field = GetField(page, field_id)
@@ -194,7 +194,7 @@ def GetFieldValue(page, field_id, field_type=wx.Window):
 		return field.GetStringSelection()
 
 	# FIXME: Should have error id
-	err_msg = GT(u'Unrecognized field type: {} (ID: {})').format(type(field), field_id)
+	err_msg = GT("Unrecognized field type: {} (ID: {})").format(type(field), field_id)
 	return ErrorTuple(1, err_msg)
 
 

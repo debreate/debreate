@@ -41,10 +41,10 @@ ID_RM_PRE = wx.NewId()
 ID_RM_POST = wx.NewId()
 
 id_definitions = {
-	ID_INST_PRE: u'preinst',
-	ID_INST_POST: u'postinst',
-	ID_RM_PRE: u'prerm',
-	ID_RM_POST: u'postrm',
+	ID_INST_PRE: "preinst",
+	ID_INST_POST: "postinst",
+	ID_RM_PRE: "prerm",
+	ID_RM_POST: "postrm",
 }
 
 
@@ -63,29 +63,29 @@ class Page(WizardPage):
 		postrm = DebianScript(self, ID_RM_POST)
 
 		# Check boxes for choosing scripts
-		chk_preinst = CheckBox(self, ID_INST_PRE, GT(u'Make this script'), name=GT(u'Pre-Install'))
+		chk_preinst = CheckBox(self, ID_INST_PRE, GT("Make this script"), name=GT("Pre-Install"))
 		preinst.SetCheckBox(chk_preinst)
-		chk_postinst = CheckBox(self, ID_INST_POST, GT(u'Make this script'), name=GT(u'Post-Install'))
+		chk_postinst = CheckBox(self, ID_INST_POST, GT("Make this script"), name=GT("Post-Install"))
 		postinst.SetCheckBox(chk_postinst)
-		chk_prerm = CheckBox(self, ID_RM_PRE, GT(u'Make this script'), name=GT(u'Pre-Remove'))
+		chk_prerm = CheckBox(self, ID_RM_PRE, GT("Make this script"), name=GT("Pre-Remove"))
 		prerm.SetCheckBox(chk_prerm)
-		chk_postrm = CheckBox(self, ID_RM_POST, GT(u'Make this script'), name=GT(u'Post-Remove'))
+		chk_postrm = CheckBox(self, ID_RM_POST, GT("Make this script"), name=GT("Post-Remove"))
 		postrm.SetCheckBox(chk_postrm)
 
 		for S in chk_preinst, chk_postinst, chk_prerm, chk_postrm:
-			S.SetToolTipString(u'{} {}'.format(S.GetName(), GT(u'script will be created from text below')))
+			S.SetToolTipString("{} {}".format(S.GetName(), GT("script will be created from text below")))
 
 			S.Bind(wx.EVT_CHECKBOX, self.OnToggleScripts)
 
 		# Radio buttons for displaying between pre- and post- install scripts
 		# FIXME: Names settings for tooltips are confusing
-		rb_preinst = wx.RadioButton(self, preinst.GetId(), GT(u'Pre-Install'),
+		rb_preinst = wx.RadioButton(self, preinst.GetId(), GT("Pre-Install"),
 				name=preinst.FileName, style=wx.RB_GROUP)
-		rb_postinst = wx.RadioButton(self, postinst.GetId(), GT(u'Post-Install'),
+		rb_postinst = wx.RadioButton(self, postinst.GetId(), GT("Post-Install"),
 				name=postinst.FileName)
-		rb_prerm = wx.RadioButton(self, prerm.GetId(), GT(u'Pre-Remove'),
+		rb_prerm = wx.RadioButton(self, prerm.GetId(), GT("Pre-Remove"),
 				name=prerm.FileName)
-		rb_postrm = wx.RadioButton(self, postrm.GetId(), GT(u'Post-Remove'),
+		rb_postrm = wx.RadioButton(self, postrm.GetId(), GT("Post-Remove"),
 				name=postrm.FileName)
 
 		# TODO: Remove check boxes from lists (no longer needed)
@@ -107,19 +107,19 @@ class Page(WizardPage):
 		pnl_autolink = BorderedPanel(self)
 
 		# Auto-Link path for new link
-		txt_autolink = wx.StaticText(pnl_autolink, label=GT(u'Path'), name=u'target')
-		self.ti_autolink = PathCtrl(pnl_autolink, value=u'/usr/bin', defaultValue=u'/usr/bin', warn=True)
-		self.ti_autolink.SetName(u'target')
+		txt_autolink = wx.StaticText(pnl_autolink, label=GT("Path"), name="target")
+		self.ti_autolink = PathCtrl(pnl_autolink, value="/usr/bin", defaultValue="/usr/bin", warn=True)
+		self.ti_autolink.SetName("target")
 		self.ti_autolink.Default = self.ti_autolink.GetValue()
 
 		# Auto-Link executables to be linked
 		self.Executables = BasicFileList(pnl_autolink, size=(200, 200), hlExe=True,
-				name=u'al list')
+				name="al list")
 
 		# Auto-Link import, generate and remove buttons
 		btn_al_import = CreateButton(pnl_autolink, btnid.IMPORT)
 		btn_al_remove = CreateButton(pnl_autolink, btnid.REMOVE)
-		btn_al_generate = CreateButton(pnl_autolink, image=u'build')
+		btn_al_generate = CreateButton(pnl_autolink, image="build")
 
 		# Auto-Link help
 		btn_help = CreateButton(pnl_autolink, btnid.HELP, size=64)
@@ -190,7 +190,7 @@ class Page(WizardPage):
 		lyt_right = BoxSizer(wx.VERTICAL)
 		# Line up panels to look even
 		lyt_right.AddSpacer(32)
-		lyt_right.Add(wx.StaticText(self, label=GT(u'Auto-Link Executables')),
+		lyt_right.Add(wx.StaticText(self, label=GT("Auto-Link Executables")),
 				0, lyt.ALGN_LB)
 		lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
 
@@ -227,22 +227,22 @@ class Page(WizardPage):
 	def GetSaveData(self):
 		# Custom dictionary of scripts
 		script_list = (
-			(self.script_objects[0][0], self.script_objects[0][2], u'PREINST'),
-			(self.script_objects[1][0], self.script_objects[1][2], u'POSTINST'),
-			(self.script_objects[2][0], self.script_objects[2][2], u'PRERM'),
-			(self.script_objects[3][0], self.script_objects[3][2], u'POSTRM')
+			(self.script_objects[0][0], self.script_objects[0][2], "PREINST"),
+			(self.script_objects[1][0], self.script_objects[1][2], "POSTINST"),
+			(self.script_objects[2][0], self.script_objects[2][2], "PRERM"),
+			(self.script_objects[3][0], self.script_objects[3][2], "POSTRM")
 		)
 
 		# Create a list to return the data
 		data = []
 		for group in script_list:
 			if group[0].IsChecked():
-				data.append(u'<<{}>>\n1\n{}\n<</{}>>'.format(group[2], group[0].GetValue(), group[2]))
+				data.append("<<{}>>\n1\n{}\n<</{}>>".format(group[2], group[0].GetValue(), group[2]))
 
 			else:
-				data.append(u'<<{}>>\n0\n<</{}>>'.format(group[2], group[2]))
+				data.append("<<{}>>\n0\n<</{}>>".format(group[2], group[2]))
 
-		return u'<<SCRIPTS>>\n{}\n<</SCRIPTS>>'.format(u'\n'.join(data))
+		return "<<SCRIPTS>>\n{}\n<</SCRIPTS>>".format("\n".join(data))
 
 
 	## Imports executables from files page for Auto-Link
@@ -276,8 +276,8 @@ class Page(WizardPage):
 					for ROOT, DIRS, FILES in os.walk(toplevel):
 						for FILE in FILES:
 							fullpath = ConcatPaths(ROOT, FILE)
-							DIR = os.path.dirname(fullpath[len(toplevel):]).strip(u'/')
-							relpath = ConcatPaths(FITEM.GetBasename(), DIR, FILE).strip(u'/')
+							DIR = os.path.dirname(fullpath[len(toplevel):]).strip("/")
+							relpath = ConcatPaths(FITEM.GetBasename(), DIR, FILE).strip("/")
 
 							if os.path.isfile(fullpath) and os.access(fullpath, os.X_OK):
 								fulltarget = ConcatPaths(FITEM.GetTarget(), relpath)
@@ -291,10 +291,10 @@ class Page(WizardPage):
 										break
 
 								if duplicate:
-									Logger.Warn(__name__, u'Not adding executable with duplicate target: {}'.format(fulltarget))
+									Logger.Warn(__name__, "Not adding executable with duplicate target: {}".format(fulltarget))
 									continue
 
-								Logger.Debug(__name__, u'Adding nested executable: {}'.format(relpath))
+								Logger.Debug(__name__, "Adding nested executable: {}".format(relpath))
 								self.Executables.Add(
 										FileItem(relpath, ConcatPaths(FITEM.GetTarget(), relpath),
 												ignore_timestamp=True))
@@ -310,9 +310,9 @@ class Page(WizardPage):
 	#  \param filename
 	#	File path to open
 	def ImportFromFile(self, filename):
-		Logger.Debug(__name__, GT(u'Importing script: {}').format(filename))
+		Logger.Debug(__name__, GT("Importing script: {}").format(filename))
 
-		script_name = filename.split(u'-')[-1]
+		script_name = filename.split("-")[-1]
 		script_object = None
 
 		for DS, CHK, RB in self.script_objects:
@@ -355,8 +355,8 @@ class Page(WizardPage):
 
 			# Warn about overwriting previous post-install & pre-remove scripts
 			if non_empty_scripts:
-				warn_msg = GT(u'The following scripts will be overwritten if you continue: {}')
-				warn_msg = u'{}\n\n{}'.format(warn_msg.format(u', '.join(non_empty_scripts)), GT(u'Continue?'))
+				warn_msg = GT("The following scripts will be overwritten if you continue: {}")
+				warn_msg = "{}\n\n{}".format(warn_msg.format(", ".join(non_empty_scripts)), GT("Continue?"))
 
 				overwrite = ConfirmationDialog(main_window, text=warn_msg)
 
@@ -371,8 +371,8 @@ class Page(WizardPage):
 
 			# Warn about linking in a directory that does not exist on the current filesystem
 			if not os.path.isdir(link_path):
-				warn_msg = GT(u'Path "{}" does not exist.')
-				warn_msg = u'{}\n\n{}'.format(warn_msg, GT(u'Continue?'))
+				warn_msg = GT("Path "{}" does not exist.")
+				warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
 				overwrite = ConfirmationDialog(main_window, text=warn_msg.format(link_path))
 
@@ -398,40 +398,40 @@ class Page(WizardPage):
 				source_path = self.Executables.GetTarget(INDEX)
 				filename = self.Executables.GetBasename(INDEX)
 
-				if u'.' in filename:
-					linkname = u'.'.join(filename.split(u'.')[:-1])
-					link = u'{}/{}'.format(link_path, linkname)
+				if "." in filename:
+					linkname = ".".join(filename.split(".")[:-1])
+					link = "{}/{}".format(link_path, linkname)
 
 				else:
-					link = u'{}/{}'.format(link_path, filename)
+					link = "{}/{}".format(link_path, filename)
 
-				postinst_list.append(u'ln -fs "{}" "{}"'.format(source_path, link))
-				prerm_list.append(u'rm -f "{}"'.format(link))
+				postinst_list.append("ln -fs "{}" "{}"".format(source_path, link))
+				prerm_list.append("rm -f "{}"".format(link))
 
-			postinst = u'\n\n'.join(postinst_list)
-			prerm = u'\n\n'.join(prerm_list)
+			postinst = "\n\n".join(postinst_list)
+			prerm = "\n\n".join(prerm_list)
 
-			self.script_objects[1][0].SetValue(u'#!/bin/bash -e\n\n{}'.format(postinst))
-			self.script_objects[2][0].SetValue(u'#!/bin/bash -e\n\n{}'.format(prerm))
+			self.script_objects[1][0].SetValue("#!/bin/bash -e\n\n{}".format(postinst))
+			self.script_objects[2][0].SetValue("#!/bin/bash -e\n\n{}".format(prerm))
 
-			DetailedMessageDialog(main_window, GT(u'Success'),
-					text=GT(u'Post-Install and Pre-Remove scripts generated')).ShowModal()
+			DetailedMessageDialog(main_window, GT("Success"),
+					text=GT("Post-Install and Pre-Remove scripts generated")).ShowModal()
 
 
 	## Displays an information dialog about Auto-Link when help button is pressed
 	def OnHelpButton(self, event=None):
-		al_help = MarkdownDialog(self, title=GT(u'Auto-Link Help'), readonly=True)
-		description = GT(u'Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.')
-		instructions = GT(u'How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.')
+		al_help = MarkdownDialog(self, title=GT("Auto-Link Help"), readonly=True)
+		description = GT("Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.")
+		instructions = GT("How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.")
 
-		al_help.SetText(u'{}\n\n{}'.format(description, instructions))
+		al_help.SetText("{}\n\n{}".format(description, instructions))
 
 		ShowDialog(al_help)
 
 
 	## TODO: Doxygen
 	def OnToggleScripts(self, event=None):
-		Logger.Debug(__name__, u'Toggling scripts')
+		Logger.Debug(__name__, "Toggling scripts")
 
 		for DS, CHK, RB in self.script_objects:
 			DS.Enable(DS.IsChecked())
@@ -474,19 +474,19 @@ class Page(WizardPage):
 		chk_postrm = self.script_objects[3][1]
 
 		preinst = (
-			data.split(u'<<PREINST>>\n')[1].split(u'\n<</PREINST>>')[0].split(u'\n'),
+			data.split("<<PREINST>>\n")[1].split("\n<</PREINST>>")[0].split("\n"),
 			chk_preinst,
 			)
 		postinst = (
-			data.split(u'<<POSTINST>>\n')[1].split(u'\n<</POSTINST>>')[0].split(u'\n'),
+			data.split("<<POSTINST>>\n")[1].split("\n<</POSTINST>>")[0].split("\n"),
 			chk_postinst,
 			)
 		prerm = (
-			data.split(u'<<PRERM>>\n')[1].split(u'\n<</PRERM>>')[0].split(u'\n'),
+			data.split("<<PRERM>>\n")[1].split("\n<</PRERM>>")[0].split("\n"),
 			chk_prerm,
 			)
 		postrm = (
-			data.split(u'<<POSTRM>>\n')[1].split(u'\n<</POSTRM>>')[0].split(u'\n'),
+			data.split("<<POSTRM>>\n")[1].split("\n<</POSTRM>>")[0].split("\n"),
 			chk_postrm,
 			)
 
@@ -500,16 +500,16 @@ class Page(WizardPage):
 		self.OnToggleScripts()
 
 		if chk_preinst.GetValue():
-			self.script_objects[0][0].SetValue(u'\n'.join(preinst[0]))
+			self.script_objects[0][0].SetValue("\n".join(preinst[0]))
 
 		if chk_postinst.GetValue():
-			self.script_objects[1][0].SetValue(u'\n'.join(postinst[0]))
+			self.script_objects[1][0].SetValue("\n".join(postinst[0]))
 
 		if chk_prerm.GetValue():
-			self.script_objects[2][0].SetValue(u'\n'.join(prerm[0]))
+			self.script_objects[2][0].SetValue("\n".join(prerm[0]))
 
 		if chk_postrm.GetValue():
-			self.script_objects[3][0].SetValue(u'\n'.join(postrm[0]))
+			self.script_objects[3][0].SetValue("\n".join(postrm[0]))
 
 
 ## Class defining a Debian package script
@@ -646,22 +646,22 @@ class DebianScript(wx.Panel):
 		prefix = None
 		suffix = None
 
-		if u'pre' in self.FileName:
-			prefix = u'Pre'
-			suffix = self.FileName.split(u'pre')[1]
+		if "pre" in self.FileName:
+			prefix = "Pre"
+			suffix = self.FileName.split("pre")[1]
 
-		elif u'post' in self.FileName:
-			prefix = u'Post'
-			suffix = self.FileName.split(u'post')[1]
+		elif "post" in self.FileName:
+			prefix = "Post"
+			suffix = self.FileName.split("post")[1]
 
-		if suffix.lower() == u'inst':
-			suffix = u'Install'
+		if suffix.lower() == "inst":
+			suffix = "Install"
 
-		elif suffix.lower() == u'rm':
-			suffix = u'Uninstall'
+		elif suffix.lower() == "rm":
+			suffix = "Uninstall"
 
 		if (prefix != None) and (suffix != None):
-			self.ScriptName = GT(u'{}-{}'.format(prefix, suffix))
+			self.ScriptName = GT("{}-{}".format(prefix, suffix))
 
 
 	## Fills the script

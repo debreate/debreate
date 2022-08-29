@@ -27,7 +27,7 @@ from ui.style		import layout as lyt
 #	Should be wx.TextCtrl or derived class
 class FileOTarget(BorderedPanel):
 	def __init__(self, parent, defaultPath, win_id=-1, defaultType=CheckBox, defaultValue=True,
-			customType=PathCtrl, name=u'file_output_target', pathIds=[]):
+			customType=PathCtrl, name="file_output_target", pathIds=[]):
 
 		BorderedPanel.__init__(self, parent, win_id, name=name)
 

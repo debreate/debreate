@@ -14,9 +14,9 @@ ERR_FILE_READ = wx.NewId()
 ERR_FILE_WRITE = wx.NewId()
 
 error_definitions = {
-	ERR_DIR_NOT_AVAILABLE: u'Directory Not Available',
-	ERR_FILE_READ: u'Could Not Read File',
-	ERR_FILE_WRITE: u'Could Not Write File',
+	ERR_DIR_NOT_AVAILABLE: "Directory Not Available",
+	ERR_FILE_READ: "Could Not Read File",
+	ERR_FILE_WRITE: "Could Not Write File",
 }
 
 
@@ -32,9 +32,9 @@ def AddNewCode(code_def):
 dbrerrno = errno
 
 dbrerrno.SUCCESS = 0
-dbrerrno.errorcode[dbrerrno.SUCCESS] = u'SUCCESS'
+dbrerrno.errorcode[dbrerrno.SUCCESS] = "SUCCESS"
 
-dbrerrno.EBADFT = AddNewCode(u'EBADFT')
-dbrerrno.ECNCLD = AddNewCode(u'ECNCLD')
-dbrerrno.FEMPTY = AddNewCode(u'FEMPTY')
-dbrerrno.EUNKNOWN = AddNewCode(u'EUNKNOWN')
+dbrerrno.EBADFT = AddNewCode("EBADFT")
+dbrerrno.ECNCLD = AddNewCode("ECNCLD")
+dbrerrno.FEMPTY = AddNewCode("FEMPTY")
+dbrerrno.EUNKNOWN = AddNewCode("EUNKNOWN")

@@ -46,15 +46,15 @@ class Page(WizardPage):
 	def __init__(self, parent):
 		WizardPage.__init__(self, parent, pgid.CHANGELOG)
 
-		txt_package = wx.StaticText(self, label=GT(u'Package'), name=u'package')
+		txt_package = wx.StaticText(self, label=GT("Package"), name="package")
 		self.ti_package = TextArea(self, inputid.PACKAGE, name=txt_package.Name)
 
-		txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
+		txt_version = wx.StaticText(self, label=GT("Version"), name="version")
 		self.ti_version = TextArea(self, inputid.VERSION, name=txt_version.Name)
 
 		dist_names = GetOSDistNames()
 
-		txt_dist = wx.StaticText(self, label=GT(u'Distribution'), name=u'dist')
+		txt_dist = wx.StaticText(self, label=GT("Distribution"), name="dist")
 
 		if dist_names:
 			self.ti_dist = ComboBox(self, inputid.DIST, choices=dist_names, name=txt_dist.Name)
@@ -64,39 +64,39 @@ class Page(WizardPage):
 			self.ti_dist = TextArea(self, inputid.DIST, name=txt_dist.Name)
 
 		opts_urgency = (
-			u'low',
-			u'medium',
-			u'high',
-			u'emergency',
+			"low",
+			"medium",
+			"high",
+			"emergency",
 			)
 
-		txt_urgency = wx.StaticText(self, label=GT(u'Urgency'), name=u'urgency')
+		txt_urgency = wx.StaticText(self, label=GT("Urgency"), name="urgency")
 		self.sel_urgency = Choice(self, selid.URGENCY, choices=opts_urgency, name=txt_urgency.Name)
 
-		txt_maintainer = wx.StaticText(self, label=GT(u'Maintainer'), name=u'maintainer')
+		txt_maintainer = wx.StaticText(self, label=GT("Maintainer"), name="maintainer")
 		self.ti_maintainer = TextArea(self, inputid.MAINTAINER, name=txt_maintainer.Name)
 
-		txt_email = wx.StaticText(self, label=GT(u'Email'), name=u'email')
+		txt_email = wx.StaticText(self, label=GT("Email"), name="email")
 		self.ti_email = TextArea(self, inputid.EMAIL, name=txt_email.Name)
 
-		btn_import = CreateButton(self, btnid.IMPORT, GT(u'Import'), u'import', name=u'btn import')
-		txt_import = wx.StaticText(self, label=GT(u'Import information from Control page'))
+		btn_import = CreateButton(self, btnid.IMPORT, GT("Import"), "import", name="btn import")
+		txt_import = wx.StaticText(self, label=GT("Import information from Control page"))
 
 		# Changes input
-		self.ti_changes = TextAreaPanel(self, size=(20,150), name=u'changes')
+		self.ti_changes = TextAreaPanel(self, size=(20,150), name="changes")
 
 		# *** Target installation directory
 
 		# FIXME: Should this be set by config or project file???
-		self.pnl_target = FileOTarget(self, u'/usr/share/doc/<package>', name=u'target default',
+		self.pnl_target = FileOTarget(self, "/usr/share/doc/<package>", name="target default",
 				defaultType=CheckBoxESS, customType=PathCtrlESS, pathIds=(chkid.TARGET, inputid.TARGET,))
 
-		self.btn_add = CreateButton(self, btnid.ADD, GT(u'Add'), u'add', name=u'btn add')
-		txt_add = wx.StaticText(self, label=GT(u'Insert new changelog entry'))
+		self.btn_add = CreateButton(self, btnid.ADD, GT("Add"), "add", name="btn add")
+		txt_add = wx.StaticText(self, label=GT("Insert new changelog entry"))
 
-		self.chk_indentation = CheckBox(self, label=GT(u'Preserve indentation'), name=u'indent')
+		self.chk_indentation = CheckBox(self, label=GT("Preserve indentation"), name="indent")
 
-		self.dsp_changes = TextAreaPanelESS(self, inputid.CHANGES, monospace=True, name=u'log')
+		self.dsp_changes = TextAreaPanelESS(self, inputid.CHANGES, monospace=True, name="log")
 		self.dsp_changes.EnableDropTarget()
 
 		SetPageToolTips(self)
@@ -139,8 +139,8 @@ class Page(WizardPage):
 
 		lyt_details.Add(btn_import, (0, 0))
 		lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
-		lyt_details.Add(wx.StaticText(self, label=GT(u'Changes')), (1, 0), flag=LEFT_BOTTOM)
-		lyt_details.Add(wx.StaticText(self, label=GT(u'Target')), (1, 2), flag=LEFT_BOTTOM)
+		lyt_details.Add(wx.StaticText(self, label=GT("Changes")), (1, 0), flag=LEFT_BOTTOM)
+		lyt_details.Add(wx.StaticText(self, label=GT("Target")), (1, 2), flag=LEFT_BOTTOM)
 		lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
 		lyt_details.Add(self.pnl_target, (2, 2))
 		lyt_details.Add(self.btn_add, (3, 0), (2, 1))
@@ -152,7 +152,7 @@ class Page(WizardPage):
 		lyt_main.Add(lyt_info, 0, wx.EXPAND|lyt.PAD_LR, 5)
 		lyt_main.AddSpacer(10)
 		lyt_main.Add(lyt_details, 1, wx.EXPAND|lyt.PAD_LR, 5)
-		lyt_main.Add(wx.StaticText(self, label=u'Changelog Output'),
+		lyt_main.Add(wx.StaticText(self, label="Changelog Output"),
 				0, LEFT_BOTTOM|lyt.PAD_LT, 5)
 		lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
 
@@ -166,8 +166,8 @@ class Page(WizardPage):
 		new_changes = self.ti_changes.GetValue()
 
 		if TextIsEmpty(new_changes):
-			DetailedMessageDialog(GetMainWindow(), GT(u'Warning'), ICON_WARNING,
-					GT(u'"Changes" section is empty')).ShowModal()
+			DetailedMessageDialog(GetMainWindow(), GT("Warning"), ICON_WARNING,
+					GT(""Changes" section is empty")).ShowModal()
 
 			self.ti_changes.SetInsertionPointEnd()
 			self.ti_changes.SetFocus()
@@ -185,15 +185,15 @@ class Page(WizardPage):
 				maintainer, email, self.chk_indentation.GetValue())
 
 		# Clean up leading & trailing whitespace in old changes
-		old_changes = self.dsp_changes.GetValue().strip(u' \t\n\r')
+		old_changes = self.dsp_changes.GetValue().strip(" \t\n\r")
 
 		# Only append newlines if log isn't already empty
 		if not TextIsEmpty(old_changes):
-			new_changes = u'{}\n\n\n{}'.format(new_changes, old_changes)
+			new_changes = "{}\n\n\n{}".format(new_changes, old_changes)
 
 		# Add empty line to end of log
-		if not new_changes.endswith(u'\n'):
-			new_changes = u'{}\n'.format(new_changes)
+		if not new_changes.endswith("\n"):
+			new_changes = "{}\n".format(new_changes)
 
 		self.dsp_changes.SetValue(new_changes)
 
@@ -211,7 +211,7 @@ class Page(WizardPage):
 	def Get(self):
 		target = self.pnl_target.GetPath()
 		if target == self.pnl_target.GetDefaultPath():
-			target = u'STANDARD'
+			target = "STANDARD"
 
 		return (target, self.GetChangelog())
 
@@ -228,12 +228,12 @@ class Page(WizardPage):
 	def GetSaveData(self):
 		target = self.pnl_target.GetPath()
 		if target == self.pnl_target.GetDefaultPath():
-			target = u'<<DEST>>DEFAULT<</DEST>>'
+			target = "<<DEST>>DEFAULT<</DEST>>"
 
 		else:
-			target = u'<<DEST>>{}<</DEST>>'.format(target)
+			target = "<<DEST>>{}<</DEST>>".format(target)
 
-		return u'\n'.join((u'<<CHANGELOG>>', target, self.dsp_changes.GetValue(), u'<</CHANGELOG>>'))
+		return "\n".join(("<<CHANGELOG>>", target, self.dsp_changes.GetValue(), "<</CHANGELOG>>"))
 
 
 	## Checks the page's fields for exporting
@@ -257,9 +257,9 @@ class Page(WizardPage):
 			field_value = GetFieldValue(pgid.CONTROL, FID)
 
 			if isinstance(field_value, ErrorTuple):
-				err_msg1 = GT(u'Got error when attempting to retrieve field value')
-				err_msg2 = u'\tError code: {}\n\tError message: {}'.format(field_value.GetCode(), field_value.GetString())
-				Logger.Error(__name__, u'{}:\n{}'.format(err_msg1, err_msg2))
+				err_msg1 = GT("Got error when attempting to retrieve field value")
+				err_msg2 = "\tError code: {}\n\tError message: {}".format(field_value.GetCode(), field_value.GetString())
+				Logger.Error(__name__, "{}:\n{}".format(err_msg1, err_msg2))
 
 				continue
 
@@ -272,14 +272,14 @@ class Page(WizardPage):
 	#  \param data
 	#	Text to parse for values
 	def Set(self, data):
-		changelog = data.split(u'\n')
-		target = changelog[0].split(u'<<DEST>>')[1].split(u'<</DEST>>')[0]
+		changelog = data.split("\n")
+		target = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]
 
-		if target == u'DEFAULT':
+		if target == "DEFAULT":
 			if not self.pnl_target.UsingDefault():
 				self.pnl_target.Reset()
 
 		else:
 			self.pnl_target.SetPath(target)
 
-		self.dsp_changes.SetValue(u'\n'.join(changelog[1:]))
+		self.dsp_changes.SetValue("\n".join(changelog[1:]))

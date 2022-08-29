@@ -47,7 +47,7 @@ class Wizard(wx.Panel):
 	def __init__(self, parent, pageList=None):
 		wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
 
-		testing = u'alpha' in GetTestList()
+		testing = "alpha" in GetTestList()
 
 		# List of pages available in the wizard
 		self.Pages = []
@@ -61,14 +61,14 @@ class Wizard(wx.Panel):
 		if testing:
 			# Help button
 			btn_help = CreateButton(self, btnid.HELP)
-			btn_help.SetToolTipString(GT(u'Page help'))
+			btn_help.SetToolTipString(GT("Page help"))
 
 		# A Header for the wizard
 		pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
 		pnl_title.SetBackgroundColour((10, 47, 162))
 
 		# Text displayed from objects "name" - object.GetName()
-		self.txt_title = wx.StaticText(pnl_title, label=GT(u'Title'))
+		self.txt_title = wx.StaticText(pnl_title, label=GT("Title"))
 		self.txt_title.SetForegroundColour((255, 255, 255))
 
 		# font to use in the header
@@ -139,11 +139,11 @@ class Wizard(wx.Panel):
 
 		if not isinstance(page, WizardPage):
 			try:
-				pagemod = u'wizbin.{}'.format(page)
+				pagemod = "wizbin.{}".format(page)
 				page = mimport(pagemod).Page(self)
 
 			except ImportError:
-				err_msg = u'module does not exist'
+				err_msg = "module does not exist"
 				err_det = traceback.format_exc()
 
 		lyt_main = self.GetSizer()
@@ -151,16 +151,16 @@ class Wizard(wx.Panel):
 		if not err_msg:
 			# Must already be child
 			if not isinstance(page, WizardPage):
-				err_msg = u'not WizardPage instance'
+				err_msg = "not WizardPage instance"
 
 			elif page not in self.GetChildren():
-				err_msg = u'not child of wizard'
+				err_msg = "not child of wizard"
 
 			elif page in lyt_main.GetChildWindows():
-				err_msg = u'page is already added to wizard'
+				err_msg = "page is already added to wizard"
 
 		if err_msg:
-			err_msg = u'Cannot add page, {}'.format(err_msg)
+			err_msg = "Cannot add page, {}".format(err_msg)
 
 			if err_det:
 				ShowErrorDialog(err_msg, err_det)
@@ -250,7 +250,7 @@ class Wizard(wx.Panel):
 
 		else:
 			# FIXME: Should not raise error here???
-			raise TypeError(u'Must be bool or int value')
+			raise TypeError("Must be bool or int value")
 
 
 	## Enables/Disables 'previous' page button dependent on if the last
@@ -268,7 +268,7 @@ class Wizard(wx.Panel):
 
 		else:
 			# FIXME: Should not raise error here???
-			raise TypeError(u'Must be bool or int value')
+			raise TypeError("Must be bool or int value")
 
 
 	## Exports pages individually by calling wiz.wizard.WizardPage.Export
@@ -327,7 +327,7 @@ class Wizard(wx.Panel):
 			if P.GetId() == pageId:
 				return P
 
-		Logger.Warn(__name__, u'Page with ID {} has not been constructed'.format(pageId))
+		Logger.Warn(__name__, "Page with ID {} has not been constructed".format(pageId))
 
 
 	## Retrieves the full list of page IDs
@@ -383,9 +383,9 @@ class Wizard(wx.Panel):
 	#  Shows a help dialog for currently displayed page
 	def OnHelpButton(self, event=None):
 		label = self.GetCurrentPage().GetLabel()
-		page_help = MarkdownDialog(self, title=GT(u'Help'), readonly=True)
+		page_help = MarkdownDialog(self, title=GT("Help"), readonly=True)
 
-		page_help.SetText(GT(u'Help information for page "{}"'.format(label)))
+		page_help.SetText(GT("Help information for page "{}"".format(label)))
 
 		ShowDialog(page_help)
 
@@ -438,14 +438,14 @@ class Wizard(wx.Panel):
 		self.Reset()
 
 		mods = [
-			u'control',
-			u'depends',
-			u'files',
-			u'scripts',
-			u'changelog',
-			u'copyright',
-			u'launchers',
-			u'build',
+			"control",
+			"depends",
+			"files",
+			"scripts",
+			"changelog",
+			"copyright",
+			"launchers",
+			"build",
 			]
 
 		for M in mods:
@@ -485,7 +485,7 @@ class Wizard(wx.Panel):
 
 		if not isinstance(pages, (list, tuple)):
 			# FIXME: Should not raise error here???
-			raise TypeError(u'Argument 2 of Wizard.SetPages() must be List or Tuple')
+			raise TypeError("Argument 2 of Wizard.SetPages() must be List or Tuple")
 
 		for PAGE in pages:
 			self.Pages.append(PAGE)
@@ -584,7 +584,7 @@ class WizardPage(ScrolledPanel):
 
 	## Retrieves the page's field's data
 	def Get(self):
-		Logger.Warn(__name__, GT(u'Page {} does not override inherited method Get').format(self.GetName()))
+		Logger.Warn(__name__, GT("Page {} does not override inherited method Get").format(self.GetName()))
 
 
 	## Retrieves the page's label
@@ -636,7 +636,7 @@ class WizardPage(ScrolledPanel):
 	#  \param filename
 	#	File path to open
 	def ImportFromFile(self, filename):
-		Logger.Warn(__name__, GT(u'Page {} does not override inherited method ImportFromFile').format(self.GetName()))
+		Logger.Warn(__name__, GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
 
 
 	## This method can be used to access page members that are only available
@@ -644,7 +644,7 @@ class WizardPage(ScrolledPanel):
 	#
 	#  FIXME: Rename to 'OnWizardInit'???
 	def InitPage(self):
-		Logger.Debug(__name__, GT(u'Page {} does not override inherited method InitPage').format(self.GetName()))
+		Logger.Debug(__name__, GT("Page {} does not override inherited method InitPage").format(self.GetName()))
 
 		return False
 
@@ -654,7 +654,7 @@ class WizardPage(ScrolledPanel):
 	#  \return
 	#	<b><i>False</i></b> if page cannot be exported
 	def IsOkay(self):
-		Logger.Warn(__name__, GT(u'Page {} does not override inherited method IsOkay').format(self.GetName()))
+		Logger.Warn(__name__, GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
 
 		return False
 

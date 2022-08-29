@@ -61,14 +61,14 @@ class Page(WizardPage):
 
 		pnl_treeopts = BorderedPanel(self)
 
-		self.chk_individuals = CheckBoxCFG(pnl_treeopts, label=GT(u'List files individually'),
-				name=u'individually', cfgSect=u'FILES')
+		self.chk_individuals = CheckBoxCFG(pnl_treeopts, label=GT("List files individually"),
+				name="individually", cfgSect="FILES")
 
-		self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, chkid.TOPLEVEL, GT(u'Preserve top-level directories'),
-				name=u'top-level', cfgSect=u'FILES')
+		self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, chkid.TOPLEVEL, GT("Preserve top-level directories"),
+				name="top-level", cfgSect="FILES")
 
-		self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT(u'Don\'t follow symbolic links'),
-				defaultValue=True, name=u'nofollow-symlink', cfgSect=u'FILES')
+		self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT("Don\"t follow symbolic links'),
+				defaultValue=True, name="nofollow-symlink", cfgSect="FILES")
 
 		self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
 
@@ -76,12 +76,12 @@ class Page(WizardPage):
 		pnl_target = BorderedPanel(self)
 
 		# choices of destination
-		rb_bin = wx.RadioButton(pnl_target, label=u'/bin', style=wx.RB_GROUP)
-		rb_usrbin = wx.RadioButton(pnl_target, label=u'/usr/bin')
-		rb_usrlib = wx.RadioButton(pnl_target, label=u'/usr/lib')
-		rb_locbin = wx.RadioButton(pnl_target, label=u'/usr/local/bin')
-		rb_loclib = wx.RadioButton(pnl_target, label=u'/usr/local/lib')
-		self.rb_custom = wx.RadioButton(pnl_target, inputid.CUSTOM, GT(u'Custom'))
+		rb_bin = wx.RadioButton(pnl_target, label="/bin", style=wx.RB_GROUP)
+		rb_usrbin = wx.RadioButton(pnl_target, label="/usr/bin")
+		rb_usrlib = wx.RadioButton(pnl_target, label="/usr/lib")
+		rb_locbin = wx.RadioButton(pnl_target, label="/usr/local/bin")
+		rb_loclib = wx.RadioButton(pnl_target, label="/usr/local/lib")
+		self.rb_custom = wx.RadioButton(pnl_target, inputid.CUSTOM, GT("Custom"))
 		self.rb_custom.Default = True
 
 		# Start with "Custom" selected
@@ -103,14 +103,14 @@ class Page(WizardPage):
 		btn_remove = CreateButton(self, btnid.REMOVE)
 		btn_clear = CreateButton(self, btnid.CLEAR)
 
-		self.prev_dest_value = u'/usr/bin'
-		self.ti_target = TextArea(self, defaultValue=self.prev_dest_value, name=u'target')
+		self.prev_dest_value = "/usr/bin"
+		self.ti_target = TextArea(self, defaultValue=self.prev_dest_value, name="target")
 
 		self.btn_browse = CreateButton(self, btnid.BROWSE)
 		btn_refresh = CreateButton(self, btnid.REFRESH)
 
 		# Display area for files added to list
-		self.lst_files = FileListESS(self, inputid.LIST, name=u'filelist')
+		self.lst_files = FileListESS(self, inputid.LIST, name="filelist")
 
 		# *** Event Handling *** #
 
@@ -150,7 +150,7 @@ class Page(WizardPage):
 
 		lyt_left = BoxSizer(wx.VERTICAL)
 		lyt_left.AddSpacer(10)
-		lyt_left.Add(wx.StaticText(self, label=GT(u'Directory options')), 0, wx.ALIGN_BOTTOM)
+		lyt_left.Add(wx.StaticText(self, label=GT("Directory options")), 0, wx.ALIGN_BOTTOM)
 		lyt_left.Add(pnl_treeopts, 0, wx.EXPAND|wx.ALIGN_LEFT|wx.BOTTOM, 5)
 		lyt_left.Add(self.tree_dirs, 1, wx.EXPAND)
 
@@ -177,7 +177,7 @@ class Page(WizardPage):
 
 		lyt_right = BoxSizer(wx.VERTICAL)
 		lyt_right.AddSpacer(10)
-		lyt_right.Add(wx.StaticText(self, label=GT(u'Target')))
+		lyt_right.Add(wx.StaticText(self, label=GT("Target")))
 		lyt_right.Add(pnl_target, 0, wx.TOP, 5)
 		lyt_right.Add(lyt_buttons, 0, wx.EXPAND)
 		lyt_right.Add(self.lst_files, 5, wx.EXPAND|wx.TOP, 5)
@@ -223,10 +223,10 @@ class Page(WizardPage):
 
 		progress = None
 
-		Logger.Debug(__name__, u'Adding {} files ...'.format(fileCount))
+		Logger.Debug(__name__, "Adding {} files ...".format(fileCount))
 
 		if showDialog:
-			progress = ProgressDialog(GetMainWindow(), GT(u'Adding Files'), maximum=fileCount,
+			progress = ProgressDialog(GetMainWindow(), GT("Adding Files"), maximum=fileCount,
 					style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
 			progress.Show()
 
@@ -239,7 +239,7 @@ class Page(WizardPage):
 
 				if progress:
 					wx.Yield()
-					progress.Update(completed, GT(u'Adding file {}').format(F))
+					progress.Update(completed, GT("Adding file {}").format(F))
 
 				self.lst_files.AddFile(F, D, target)
 
@@ -260,7 +260,7 @@ class Page(WizardPage):
 			self.ti_target.SetValue(self.prev_dest_value)
 			self.ti_target.SetInsertionPoint(-1)
 
-		elif self.ti_target.GetValue()[0] != u'/':
+		elif self.ti_target.GetValue()[0] != "/":
 			self.ti_target.SetValue(self.prev_dest_value)
 			self.ti_target.SetInsertionPoint(-1)
 
@@ -274,7 +274,7 @@ class Page(WizardPage):
 	#	A list of files with their targets formatted for text output
 	def Get(self):
 		# Remove section delimeters & first line which is just an integer
-		return self.GetSaveData().split(u'\n')[2:-1]
+		return self.GetSaveData().split("\n")[2:-1]
 
 
 	## Retrieves target destination set by user input
@@ -282,7 +282,7 @@ class Page(WizardPage):
 	#  TODO: Rename to 'GetTarget' or 'GetInputTarget'
 	def GetDestValue(self, event=None):
 		if not TextIsEmpty(self.ti_target.GetValue()):
-			if self.ti_target.GetValue()[0] == u'/':
+			if self.ti_target.GetValue()[0] == "/":
 				self.prev_dest_value = self.ti_target.GetValue()
 
 		if event:
@@ -334,7 +334,7 @@ class Page(WizardPage):
 				# Populate list with tuples of ('src', 'file', 'dest')
 				if self.lst_files.GetItemTextColour(count) == (255, 0, 0):
 					# Mark file as executable
-					file_list.append((u'{}*'.format(absolute_filename), filename, target))
+					file_list.append(("{}*".format(absolute_filename), filename, target))
 
 				else:
 					file_list.append((absolute_filename, filename, target))
@@ -343,16 +343,16 @@ class Page(WizardPage):
 
 			return_list = []
 			for F in file_list:
-				f0 = u'{}'.encode(u'utf-8').format(F[0])
-				f1 = u'{}'.encode(u'utf-8').format(F[1])
-				f2 = u'{}'.encode(u'utf-8').format(F[2])
-				return_list.append(u'{} -> {} -> {}'.format(f0, f1, f2))
+				f0 = "{}".encode("utf-8").format(F[0])
+				f1 = "{}".encode("utf-8").format(F[1])
+				f2 = "{}".encode("utf-8").format(F[2])
+				return_list.append("{} -> {} -> {}".format(f0, f1, f2))
 
-			return u'<<FILES>>\n1\n{}\n<</FILES>>'.format(u'\n'.join(return_list))
+			return "<<FILES>>\n1\n{}\n<</FILES>>".format("\n".join(return_list))
 
 		else:
 			# Place a "0" in FILES field if we are not saving any files
-			return u'<<FILES>>\n0\n<</FILES>>'
+			return "<<FILES>>\n0\n<</FILES>>"
 
 
 	## Retrieves the target output directory
@@ -372,7 +372,7 @@ class Page(WizardPage):
 	#  \param filename
 	#	Absolute path of formatted text file to read
 	def ImportFromFile(self, filename):
-		Logger.Debug(__name__, GT(u'Importing page info from {}').format(filename))
+		Logger.Debug(__name__, GT("Importing page info from {}").format(filename))
 
 		if not os.path.isfile(filename):
 			return dbrerrno.ENOENT
@@ -381,9 +381,9 @@ class Page(WizardPage):
 
 		# Lines beginning with these characters will be ignored
 		ignore_characters = (
-			u'',
-			u' ',
-			u'#',
+			"",
+			" ",
+			"#",
 		)
 
 		target = None
@@ -391,12 +391,12 @@ class Page(WizardPage):
 
 		for L in files_data:
 			if not TextIsEmpty(L) and L[0] not in ignore_characters:
-				if u'[' in L and u']' in L:
-					target = L.split(u'[')[-1].split(u']')[0]
+				if "[" in L and "]" in L:
+					target = L.split("[")[-1].split("]")[0]
 					continue
 
 				if target:
-					executable = (len(L) > 1 and L[-2:] == u' *')
+					executable = (len(L) > 1 and L[-2:] == " *")
 					if executable:
 						L = L[:-2]
 
@@ -417,11 +417,11 @@ class Page(WizardPage):
 		if len(missing_files):
 			main_window = GetMainWindow()
 
-			err_line1 = GT(u'The following files/folders are missing from the filesystem.')
-			err_line2 = GT(u'They will be highlighted on the Files page.')
-			DetailedMessageDialog(main_window, title=GT(u'Warning'), icon=ICON_ERROR,
-					text=u'\n'.join((err_line1, err_line2)),
-					details=u'\n'.join(missing_files)).ShowModal()
+			err_line1 = GT("The following files/folders are missing from the filesystem.")
+			err_line2 = GT("They will be highlighted on the Files page.")
+			DetailedMessageDialog(main_window, title=GT("Warning"), icon=ICON_ERROR,
+					text="\n".join((err_line1, err_line2)),
+					details="\n".join(missing_files)).ShowModal()
 
 		return 0
 
@@ -451,7 +451,7 @@ class Page(WizardPage):
 		file_list = []
 		dir_list = {}
 
-		prep = ProgressDialog(GetMainWindow(), GT(u'Processing Files'), GT(u'Scanning files ...'),
+		prep = ProgressDialog(GetMainWindow(), GT("Processing Files"), GT("Scanning files ..."),
 				style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT)
 
 		# Only update the gauge every N files (hack until I figure out timer)
@@ -500,7 +500,7 @@ class Page(WizardPage):
 							return False
 
 						wx.Yield()
-						prep.SetMessage(GT(u'Scanning directory {} ...').format(ROOT))
+						prep.SetMessage(GT("Scanning directory {} ...").format(ROOT))
 
 						count += 1
 						if count >= update_interval:
@@ -520,8 +520,8 @@ class Page(WizardPage):
 								count = 0
 
 							# os.path.dirname preserves top level directory
-							ROOT = ROOT.replace(os.path.dirname(P), u'').strip(u'/')
-							F = u'{}/{}'.format(ROOT, F).strip(u'/')
+							ROOT = ROOT.replace(os.path.dirname(P), "").strip("/")
+							F = "{}/{}".format(ROOT, F).strip("/")
 
 							if F not in dir_list[parent_dir]:
 								dir_list[parent_dir].append(F)
@@ -529,12 +529,12 @@ class Page(WizardPage):
 		except:
 			prep.Destroy()
 
-			ShowErrorDialog(GT(u'Could not retrieve file list'), traceback.format_exc())
+			ShowErrorDialog(GT("Could not retrieve file list"), traceback.format_exc())
 
 			return False
 
 		wx.Yield()
-		prep.Pulse(GT(u'Counting Files'))
+		prep.Pulse(GT("Counting Files"))
 
 		file_count = len(file_list)
 
@@ -562,9 +562,9 @@ class Page(WizardPage):
 			dir_list[f_dir].append(f_name)
 
 		if file_count > warning_threshhold:
-			count_warnmsg = GT(u'Importing {} files'.format(file_count))
-			count_warnmsg = u'{}. {}.'.format(count_warnmsg, GT(u'This could take a VERY long time'))
-			count_warnmsg = u'{}\n{}'.format(count_warnmsg, GT(u'Are you sure you want to continue?'))
+			count_warnmsg = GT("Importing {} files".format(file_count))
+			count_warnmsg = "{}. {}.".format(count_warnmsg, GT("This could take a VERY long time"))
+			count_warnmsg = "{}\n{}".format(count_warnmsg, GT("Are you sure you want to continue?"))
 
 			if not ConfirmationDialog(GetMainWindow(), text=count_warnmsg).Confirmed():
 				return False
@@ -576,7 +576,7 @@ class Page(WizardPage):
 	#
 	#  Opens a directory dialog to select a custom output target
 	def OnBrowse(self, event=None):
-		dia = GetDirDialog(GetMainWindow(), GT(u'Choose Target Directory'))
+		dia = GetDirDialog(GetMainWindow(), GT("Choose Target Directory"))
 		if ShowDialog(dia):
 			self.ti_target.SetValue(dia.GetPath())
 
@@ -588,8 +588,8 @@ class Page(WizardPage):
 	#  TODO: Rename to OnClearList?
 	def OnClearFileList(self, event=None):
 		if self.lst_files.GetItemCount():
-			if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
-						GT(u'Clear all files?')).Confirmed():
+			if ConfirmationDialog(GetMainWindow(), GT("Confirm"),
+						GT("Clear all files?")).Confirmed():
 				self.lst_files.DeleteAllItems()
 
 
@@ -679,7 +679,7 @@ class Page(WizardPage):
 	def Set(self, data):
 		# Clear files list
 		self.lst_files.DeleteAllItems()
-		files_data = data.split(u'\n')
+		files_data = data.split("\n")
 		if int(files_data[0]):
 			# Get file count from list minus first item "1"
 			files_total = len(files_data)
@@ -690,7 +690,7 @@ class Page(WizardPage):
 			progress = None
 
 			if files_total >= efficiency_threshold:
-				progress = ProgressDialog(GetMainWindow(), GT(u'Adding Files'), maximum=files_total,
+				progress = ProgressDialog(GetMainWindow(), GT("Adding Files"), maximum=files_total,
 						style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
 
 				wx.Yield()
@@ -703,21 +703,21 @@ class Page(WizardPage):
 
 					# Project continues opening even if file import is cancelled
 					msg = (
-						GT(u'File import did not complete.'),
-						GT(u'Project files may be missing in file list.'),
+						GT("File import did not complete."),
+						GT("Project files may be missing in file list."),
 						)
 
-					ShowMessageDialog(u'\n'.join(msg), GT(u'Import Cancelled'))
+					ShowMessageDialog("\n".join(msg), GT("Import Cancelled"))
 
 					return False
 
 				current_file -= 1
 				executable = False
 
-				file_info = files_data[current_file].split(u' -> ')
+				file_info = files_data[current_file].split(" -> ")
 				absolute_filename = file_info[0]
 
-				if absolute_filename[-1] == u'*':
+				if absolute_filename[-1] == "*":
 					# Set executable flag and remove "*"
 					executable = True
 					absolute_filename = absolute_filename[:-1]
@@ -727,25 +727,25 @@ class Page(WizardPage):
 				target_dir = file_info[2]
 
 				if not self.lst_files.AddFile(filename, source_dir, target_dir, executable):
-					Logger.Warn(__name__, GT(u'File not found: {}').format(absolute_filename))
+					Logger.Warn(__name__, GT("File not found: {}").format(absolute_filename))
 					missing_files.append(absolute_filename)
 
 				if progress:
 					update_value = files_total - current_file
 
 					wx.Yield()
-					progress.Update(update_value+1, GT(u'Imported file {} of {}').format(update_value, files_total))
+					progress.Update(update_value+1, GT("Imported file {} of {}").format(update_value, files_total))
 
 			if progress:
 				progress.Destroy()
 
-			Logger.Debug(__name__, u'Missing file count: {}'.format(len(missing_files)))
+			Logger.Debug(__name__, "Missing file count: {}".format(len(missing_files)))
 
 			# If files are missing show a message
 			if missing_files:
-				alert = DetailedMessageDialog(GetMainWindow(), GT(u'Missing Files'),
-						ICON_EXCLAMATION, GT(u'Could not locate the following files:'),
-						u'\n'.join(missing_files))
+				alert = DetailedMessageDialog(GetMainWindow(), GT("Missing Files"),
+						ICON_EXCLAMATION, GT("Could not locate the following files:"),
+						"\n".join(missing_files))
 				alert.ShowModal()
 
 			return True

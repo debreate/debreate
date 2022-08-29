@@ -14,7 +14,7 @@ import sys
 #  \param text
 #		The string to be checked
 def TextIsEmpty(text):
-	return not text.strip(u' \t\n\r')
+	return not text.strip(" \t\n\r")
 
 
 ## Removes empty lines from a string or string list
@@ -28,7 +28,7 @@ def RemoveEmptyLines(text):
 
 	if IsString(text):
 		fmt_string = True
-		text = text.split(u'\n')
+		text = text.split("\n")
 
 	elif isinstance(text, tuple):
 		text = list(text)
@@ -39,7 +39,7 @@ def RemoveEmptyLines(text):
 			text.pop(INDEX)
 
 	if fmt_string:
-		return u'\n'.join(text)
+		return "\n".join(text)
 
 	return tuple(text)
 
@@ -93,7 +93,7 @@ def StringIsNumeric(string):
 
 ## Tests if a string is formatted for versioning
 def StringIsVersioned(string):
-	for P in string.split(u'.'):
+	for P in string.split("."):
 		if not P.isnumeric():
 			return False
 
@@ -112,18 +112,18 @@ def GetModuleString(item, className=False, full=False):
 	module = ToString(item.__class__)
 
 	# Strip extra characters
-	if u'\'' in module:
-		module = module[module.index(u'\'')+1:].split(u'\'')[0]
+	if "'" in module:
+		module = module[module.index("'")+1:].split("'")[0]
 
 	if full:
 		return module
 
-	module = module.split(u'.')
+	module = module.split(".")
 
 	if className:
 		return module[-1]
 
-	return u'.'.join(module[:-1])
+	return ".".join(module[:-1])
 
 
 ## Retrieves an instance's method name in the format of "Class.Method"
@@ -133,23 +133,23 @@ def GetModuleString(item, className=False, full=False):
 #  \param includeModule
 #	Prepend module name to string for class methods
 def GetFunctionString(function, includeModule=False):
-	function = ToString(function).strip(u'<>')
+	function = ToString(function).strip("<>")
 
-	if function.startswith(u'bound method '):
-		function = function.split(u'<')
+	if function.startswith("bound method "):
+		function = function.split("<")
 
-		module = function[1].split(u';')[0]
-		function = function[0].lstrip(u'bound method ').split(u' ')[0]
+		module = function[1].split(";")[0]
+		function = function[0].lstrip("bound method ").split(" ")[0]
 
 		if includeModule:
-			class_name = function.split(u'.')[0]
+			class_name = function.split(".")[0]
 
-			if u'.{}'.format(class_name) in module:
-				module = module.replace(u'.{}'.format(class_name), u'')
+			if ".{}".format(class_name) in module:
+				module = module.replace(".{}".format(class_name), "")
 
-			function = u'{}.{}'.format(module, function)
+			function = "{}.{}".format(module, function)
 
 	else:
-		function = function.split(u' ')[1]
+		function = function.split(" ")[1]
 
 	return function

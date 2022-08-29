@@ -78,7 +78,7 @@ class BorderedPanel(wx.Panel, PanelBase):
 ## A wx.ScrolledWindow that sets scrollbars by default
 class ScrolledPanel(wx.ScrolledWindow, PanelBase):
 	def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-				style=wx.HSCROLL|wx.VSCROLL, name=u'scrolledPanel'):
+				style=wx.HSCROLL|wx.VSCROLL, name="scrolledPanel"):
 
 		wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
 
@@ -104,7 +104,7 @@ class ScrolledPanel(wx.ScrolledWindow, PanelBase):
 ## A ui.panel.ScrolledPanel that defines methods to add child sections
 class SectionedPanel(ScrolledPanel):
 	def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-				scrollDir=wx.VERTICAL, name=u'sectionedPanel'):
+				scrollDir=wx.VERTICAL, name="sectionedPanel"):
 
 		style = wx.VSCROLL
 		if scrollDir == wx.HORIZONTAL:

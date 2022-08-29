@@ -29,11 +29,11 @@ class LogLevel:
 #	a log text file.
 class DebreateLogger:
 	LogLevelList = {
-		LogLevel.INFO: u'info',
-		LogLevel.WARN: u'warn',
-		LogLevel.ERROR: u'error',
-		LogLevel.DEBUG: u'debug',
-		LogLevel.TEST: u'test',
+		LogLevel.INFO: "info",
+		LogLevel.WARN: "warn",
+		LogLevel.ERROR: "error",
+		LogLevel.DEBUG: "debug",
+		LogLevel.TEST: "test",
 	}
 
 	## Constructor
@@ -50,10 +50,10 @@ class DebreateLogger:
 		self.LogsDir = logsPath
 
 		## Log file path
-		self.LogFile = u'{}/{}.log'.format(self.LogsDir, GetDate(dtfmt.LOG))
+		self.LogFile = "{}/{}.log".format(self.LogsDir, GetDate(dtfmt.LOG))
 
 		## Forces space between header & first log entry (changed to None after first entry)
-		self.NoStrip = u'\n'
+		self.NoStrip = "\n"
 
 		self.OnInit()
 
@@ -64,18 +64,18 @@ class DebreateLogger:
 			os.makedirs(self.LogsDir)
 
 		# Initialize the log with date & time
-		date_time = u'{} {}'.format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
+		date_time = "{} {}".format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
 
-		log_header = u'--------------- Log Start: {} ---------------\n'.format(date_time)
+		log_header = "--------------- Log Start: {} ---------------\n".format(date_time)
 
 		'''
 		# Add whitespace for new entries
 		if os.path.isfile(self.LogFile):
-			log_header = u'\n\n{}'.format(log_header)
+			log_header = "\n\n{}".format(log_header)
 		'''
 
 		# Write header to log file
-		AppendFile(self.LogFile, log_header, noStrip=u'\n')
+		AppendFile(self.LogFile, log_header, noStrip="\n")
 
 
 	## Adds footer with timestamp to log file
@@ -83,11 +83,11 @@ class DebreateLogger:
 		# Don't write to log if user deleted it
 		if os.path.isfile(self.LogFile):
 			# Close the log with date & time
-			date_time = u'{} {}'.format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
+			date_time = "{} {}".format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
 
-			log_footer = u'\n--------------- Log End:   {} ---------------\n\n'.format(date_time)
+			log_footer = "\n--------------- Log End:   {} ---------------\n\n".format(date_time)
 
-			AppendFile(self.LogFile, log_footer, noStrip=u'\n')
+			AppendFile(self.LogFile, log_footer, noStrip="\n")
 
 
 	## Checks if log can be written at supplied level
@@ -134,18 +134,18 @@ class DebreateLogger:
 
 		if (level in self.LogLevelList) and (level <= self.LogLevel):
 			l_string = self.LogLevelList[level].upper()
-			message = u'{}: [{}] {}'.format(l_string, module, message)
+			message = "{}: [{}] {}".format(l_string, module, message)
 
 			if details:
 				if IsString(details):
-					message += u'\n  • {}'.format(details)
+					message += "\n  • {}".format(details)
 
 				else:
 					for ITEM in details:
-						message += u'\n  • {}'.format(ITEM)
+						message += "\n  • {}".format(ITEM)
 
 			if newline:
-				message = u'\n{}'.format(message)
+				message = "\n{}".format(message)
 
 			# Message is shown in terminal
 			if pout not in (sys.stdout, sys.stderr,):
@@ -153,10 +153,10 @@ class DebreateLogger:
 
 			else:
 				# Need to manually add newline when using sys.stdout/sys.stderr
-				pout.write(u'{}\n'.format(message))
+				pout.write("{}\n".format(message))
 
 			# Open log for writing
-			AppendFile(self.LogFile, u'{}\n'.format(message), self.NoStrip)
+			AppendFile(self.LogFile, "{}\n".format(message), self.NoStrip)
 
 			# Allow stripping leading & trailing newlines from opened log file
 			if self.NoStrip:
@@ -172,7 +172,7 @@ class DebreateLogger:
 	#  \param newline
 	#	If <b><i>True</i></b>, prepends an empty line to beginning of message
 	def Info(self, module, message, details=[], newline=False):
-		self.LogMessage(u'info', module, message, details=details, newline=newline)
+		self.LogMessage("info", module, message, details=details, newline=newline)
 
 
 	## Show a log message at 'warn' level
@@ -184,7 +184,7 @@ class DebreateLogger:
 	#  \param newline
 	#	If <b><i>True</i></b>, prepends an empty line to beginning of message
 	def Warn(self, module, message, details=[], newline=False):
-		self.LogMessage(u'warn', module, message, details=details, newline=newline)
+		self.LogMessage("warn", module, message, details=details, newline=newline)
 
 
 	## Show a log message at 'error' level
@@ -198,7 +198,7 @@ class DebreateLogger:
 	#  \param newline
 	#	If <b><i>True</i></b>, prepends an empty line to beginning of message
 	def Error(self, module, message, details=[], newline=False):
-		self.LogMessage(u'error', module, message, details=details, newline=newline, pout=sys.stderr)
+		self.LogMessage("error", module, message, details=details, newline=newline, pout=sys.stderr)
 
 
 	## Show a log message at 'debug' level
@@ -210,7 +210,7 @@ class DebreateLogger:
 	#  \param newline
 	#	If <b><i>True</i></b>, prepends an empty line to beginning of message
 	def Debug(self, module, message, details=[], newline=False):
-		self.LogMessage(u'debug', module, message, details=details, newline=newline)
+		self.LogMessage("debug", module, message, details=details, newline=newline)
 
 
 	## Show a log message at '' level
@@ -222,7 +222,7 @@ class DebreateLogger:
 	#  \param newline
 	#	If <b><i>True</i></b>, prepends an empty line to beginning of message
 	def Test(self, module, message, details=[], newline=False):
-		self.LogMessage(u'test', module, message, details=details, newline=newline)
+		self.LogMessage("test", module, message, details=details, newline=newline)
 
 
 	## Sets the level at which messages will be output to terminal & log file

@@ -19,10 +19,10 @@ class Icon(wx.Icon):
 	def GetBitmapType(self, filename):
 		if filename:
 			bm_types = {
-				u'png': wx.BITMAP_TYPE_PNG,
+				"png": wx.BITMAP_TYPE_PNG,
 				}
 
-			suffix = filename.split(u'.')[-1]
+			suffix = filename.split(".")[-1]
 			if suffix in bm_types:
 				return bm_types[suffix]
 

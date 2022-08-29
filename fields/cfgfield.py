@@ -22,7 +22,7 @@ class ConfigField:
 		self.ConfigSection = cfgSect
 
 		if not self.ConfigSection:
-			self.ConfigSection = u'GENERAL'
+			self.ConfigSection = "GENERAL"
 
 		if self.ConfigKey == None:
 			self.ConfigKey = self.GetName()
@@ -44,7 +44,7 @@ class ConfigField:
 			self.SetValue(state)
 
 		else:
-			Logger.Debug(__name__, u'Key not found: {}'.format(self.ConfigKey))
+			Logger.Debug(__name__, "Key not found: {}".format(self.ConfigKey))
 
 		# *** Event Handling *** #
 

@@ -12,7 +12,7 @@ from input.text			import TextArea
 
 ## A text area that can track if it's value is an actual path on the system
 class PathCtrl(TextArea):
-	def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
+	def __init__(self, parent, win_id=wx.ID_ANY, value="/", defaultValue="/", warn=False,
 			name=wx.TextCtrlNameStr):
 
 		TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
@@ -41,8 +41,8 @@ class PathCtrl(TextArea):
 	def OnKeyUp(self, event=None):
 		value = self.GetValue()
 		insertion_point = self.GetInsertionPoint()+1
-		if value == wx.EmptyString or value[0] != u'/':
-			self.SetValue(u'/{}'.format(value))
+		if value == wx.EmptyString or value[0] != "/":
+			self.SetValue("/{}".format(value))
 			self.SetInsertionPoint(insertion_point)
 
 		value = self.GetValue()
@@ -69,7 +69,7 @@ class PathCtrl(TextArea):
 					self.SetBackgroundColour(self.clr_default)
 					return
 
-				self.SetBackgroundColour(u'red')
+				self.SetBackgroundColour("red")
 
 		except AttributeError:
 			pass
@@ -89,7 +89,7 @@ class PathCtrl(TextArea):
 #
 #  This is a dummy class to facilitate merging to & from unstable branch
 class PathCtrlESS(PathCtrl, EssentialField):
-	def __init__(self, parent, win_id=wx.ID_ANY, value=u'/', defaultValue=u'/', warn=False,
+	def __init__(self, parent, win_id=wx.ID_ANY, value="/", defaultValue="/", warn=False,
 			name=wx.TextCtrlNameStr):
 
 		PathCtrl.__init__(self, parent, win_id, value, defaultValue, warn, name)

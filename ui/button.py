@@ -284,7 +284,7 @@ def _get_containing_sizer(parent, sizer):
 #	Dialog instance containing the buttons
 def ReplaceStandardButtons(dialog):
 	if isinstance(dialog, (wx.FileDialog, wx.MessageDialog)):
-		Logger.Warn(__name__, u'FIXME: Cannot replace buttons on object type: {}'.format(type(dialog)))
+		Logger.Warn(__name__, "FIXME: Cannot replace buttons on object type: {}".format(type(dialog)))
 
 		return
 
@@ -364,12 +364,12 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
 	button = None
 
 	if image:
-		image = ConcatPaths((PATH_bitmaps, u'button', GS(size), u'{}.png'.format(image)))
+		image = ConcatPaths((PATH_bitmaps, "button", GS(size), "{}.png".format(image)))
 
 		if not os.path.isfile(image):
 			Logger.Warn(
 					__name__,
-					u'CreateButton: Attempted to set not-existent image for button (ID {}):'.format(btnId),
+					"CreateButton: Attempted to set not-existent image for button (ID {}):".format(btnId),
 					details=image
 					)
 

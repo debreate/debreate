@@ -10,9 +10,9 @@ from globals.execute import GetExecutable
 
 ## TODO: Doxygen
 def GetFileMimeType(filename):
-	CMD_file = GetExecutable(u'file')
+	CMD_file = GetExecutable("file")
 
 	if not CMD_file:
 		return None
 
-	return GetCommandOutput(CMD_file, (u'--mime-type', u'--brief', filename,))
+	return GetCommandOutput(CMD_file, ("--mime-type", "--brief", filename,))

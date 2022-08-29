@@ -12,10 +12,10 @@ from ui.layout import BoxSizer
 
 
 # FIXME: This should use a global manpage file
-#app_man = u'{}/man/debreate.1'
-app_man = u'man/man1/debreate.1'
-local_manpath = u'man'
-man_section = u'1'
+#app_man = "{}/man/debreate.1"
+app_man = "man/man1/debreate.1"
+local_manpath = "man"
+man_section = "1"
 
 
 ## Parses & returns Debreate's manpage as RichText
@@ -23,11 +23,11 @@ man_section = u'1'
 #  \return
 #	   RichText help reference
 def ParseManpage():
-	help_text = u'ERROR: Could not parse \'{}\''.format(app_man)
+	help_text = "ERROR: Could not parse \"{}\''.format(app_man)
 
 	if os.path.isfile(app_man):
 		# FIXME: Should text if application is installed on system
-		c_man = u'man --manpath={} {} debreate'.format(local_manpath, man_section)
+		c_man = "man --manpath={} {} debreate".format(local_manpath, man_section)
 		res = subprocess.run([c_man])
 
 		# Command exited successfully
@@ -40,7 +40,7 @@ def ParseManpage():
 ## TODO: Doxygen
 class HelpDialog(wx.Dialog):
 	def __init__(self, parent):
-		wx.Dialog.__init__(self, parent, wx.ID_HELP, u'Help',
+		wx.Dialog.__init__(self, parent, wx.ID_HELP, "Help",
 						   style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 
 		dialog_size = wx.Size(200, 200)

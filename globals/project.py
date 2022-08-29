@@ -14,8 +14,8 @@ ID_PROJ_T = wx.NewId()
 ID_PROJ_M = wx.NewId()
 
 ## Default project filename extension
-PROJECT_ext = u'dbp'
-PROJECT_txt = u'txt'
+PROJECT_ext = "dbp"
+PROJECT_txt = "txt"
 
 ## Filename suffixes that can be opened
 supported_suffixes = (
@@ -23,7 +23,7 @@ supported_suffixes = (
 	PROJECT_txt,
 )
 
-PROJ_DEF_L = GT(u'Debreate project files')
+PROJ_DEF_L = GT("Debreate project files")
 
 project_wildcards = {
 	ID_PROJ_L: (PROJ_DEF_L, (PROJECT_ext, PROJECT_txt)),

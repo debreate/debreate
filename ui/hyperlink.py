@@ -56,7 +56,7 @@ class Hyperlink(wx.Panel):
 		webbrowser.open(self.url)
 
 		if not self.clicked:
-			self.text.SetForegroundColour(u'purple')
+			self.text.SetForegroundColour("purple")
 			self.clicked = True
 
 		if event:

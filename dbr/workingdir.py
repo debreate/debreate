@@ -21,17 +21,17 @@ from globals.paths	import PATH_home
 #		\b \e unicode|str : Path to set as new working directory
 def ChangeWorkingDirectory(target_dir):
 	if DebugEnabled():
-		Logger.Debug(__name__, u'ChangeWorkingDirectory: {}'.format(target_dir), newline=True)
-		print(u'  Working dir before: {}'.format(os.getcwd()))
+		Logger.Debug(__name__, "ChangeWorkingDirectory: {}".format(target_dir), newline=True)
+		print("  Working dir before: {}".format(os.getcwd()))
 
 	success = False
 
 	try:
 		os.chdir(target_dir)
-		config_dir = ReadConfig(u'workingdir')
+		config_dir = ReadConfig("workingdir")
 
 		if config_dir != target_dir:
-			WriteConfig(u'workingdir', target_dir)
+			WriteConfig("workingdir", target_dir)
 			success = True
 
 	except OSError:
@@ -40,6 +40,6 @@ def ChangeWorkingDirectory(target_dir):
 			os.chdir(PATH_home)
 
 	if DebugEnabled():
-		print(u'  Working dir after:  {}\n'.format(os.getcwd()))
+		print("  Working dir after:  {}\n".format(os.getcwd()))
 
 	return success

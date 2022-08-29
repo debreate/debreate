@@ -34,32 +34,32 @@ GAUGE_MAX = 100
 ## A dialog that takes a pre-formatted directory tree & creates a .deb package
 class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 	def __init__(self, parent):
-		wx.Dialog.__init__(self, parent, title=GT(u'Quick Build'), pos=wx.DefaultPosition,
+		wx.Dialog.__init__(self, parent, title=GT("Quick Build"), pos=wx.DefaultPosition,
 				size=wx.Size(400,260))
 		ModuleAccessCtrl.__init__(self, __name__)
 
 		self.title = self.GetTitle()
 
-		label_stage = wx.StaticText(self, label=GT(u'Staged directory tree'))
+		label_stage = wx.StaticText(self, label=GT("Staged directory tree"))
 		self.input_stage = wx.TextCtrl(self)
-		self.input_stage.SetToolTip(wx.ToolTip(GT(u'Root directory of build tree')))
+		self.input_stage.SetToolTip(wx.ToolTip(GT("Root directory of build tree")))
 
-		btn_browse_stage = CreateButton(self, btnid.STAGE, image=u'browse')
+		btn_browse_stage = CreateButton(self, btnid.STAGE, image="browse")
 		btn_browse_stage.Bind(wx.EVT_BUTTON, self.OnBrowse)
 
-		label_target = wx.StaticText(self, label=GT(u'Target file'))
+		label_target = wx.StaticText(self, label=GT("Target file"))
 		self.input_target = wx.TextCtrl(self)
-		self.input_target.SetToolTip(wx.ToolTip(GT(u'Target output file')))
+		self.input_target.SetToolTip(wx.ToolTip(GT("Target output file")))
 
-		btn_browse_target = CreateButton(self, btnid.TARGET, image=u'browse')
+		btn_browse_target = CreateButton(self, btnid.TARGET, image="browse")
 		btn_browse_target.Bind(wx.EVT_BUTTON, self.OnBrowse)
 
 		btn_build = CreateButton(self, btnid.BUILD)
-		btn_build.SetToolTip(wx.ToolTip(GT(u'Start building')))
+		btn_build.SetToolTip(wx.ToolTip(GT("Start building")))
 		btn_build.Bind(wx.EVT_BUTTON, self.OnBuild)
 
 		btn_cancel = CreateButton(self, btnid.EXIT)
-		btn_cancel.SetToolTip(wx.ToolTip(GT(u'Close dialog')))
+		btn_cancel.SetToolTip(wx.ToolTip(GT("Close dialog")))
 		btn_cancel.Bind(wx.EVT_BUTTON, self.OnClose)
 
 		self.gauge = wx.Gauge(self, GAUGE_MAX)
@@ -120,30 +120,30 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 	#  \param target
 	#	Absolute output target filename
 	def Build(self, stage, target):
-		completed_status = (0, GT(u'errors'))
+		completed_status = (0, GT("errors"))
 
 		try:
 			output = BuildDebPackage(stage, target)
 			if output[0] == dbrerrno.SUCCESS:
-				completed_status = (GAUGE_MAX, GT(u'finished'))
+				completed_status = (GAUGE_MAX, GT("finished"))
 
 			else:
 				self.build_error = (
-					GT(u'Could not build .deb package'),
-					GT(u'Is the staged directory formatted correctly?'),
+					GT("Could not build .deb package"),
+					GT("Is the staged directory formatted correctly?"),
 					stage,
 					output[1],
 				)
 
 		except:
 			self.build_error = (
-				GT(u'An unhandled error occured'),
+				GT("An unhandled error occured"),
 				traceback.format_exc(),
 				)
 
 		self.timer.Stop()
 		self.gauge.SetValue(completed_status[0])
-		self.SetTitle(u'{} ({})'.format(self.title, completed_status[1]))
+		self.SetTitle("{} ({})".format(self.title, completed_status[1]))
 		self.Enable()
 
 
@@ -153,14 +153,14 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 			button_id = event.GetEventObject().GetId()
 
 			if button_id == btnid.STAGE:
-				stage = GetDirDialog(self, GT(u'Choose Directory'))
+				stage = GetDirDialog(self, GT("Choose Directory"))
 
 				if (ShowDialog(stage)):
 					self.input_stage.SetValue(stage.GetPath())
 
 			elif button_id == btnid.TARGET:
-				target = GetFileSaveDialog(self, GT(u'Choose Filename'), (GT(u'Debian packages'), u'*.deb',),
-						u'deb')
+				target = GetFileSaveDialog(self, GT("Choose Filename"), (GT("Debian packages"), "*.deb",),
+						"deb")
 
 				if (ShowDialog(target)):
 					self.input_target.SetValue(target.GetPath())
@@ -171,13 +171,13 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 	#  TODO: Check timestamp of created .deb package (should be done for main build as well)
 	def OnBuild(self, event=None):
 		stage = self.input_stage.GetValue()
-		target = self.input_target.GetValue().rstrip(u'/')
+		target = self.input_target.GetValue().rstrip("/")
 
 		# Attempt to use DEBIAN/control file to set output filename. This is normally
 		# done automatically by the dpkg command, but we need to set it manually to
 		# check for overwriting a file.
 		if os.path.isdir(target):
-			control_file = ConcatPaths((stage, u'DEBIAN/control'))
+			control_file = ConcatPaths((stage, "DEBIAN/control"))
 			if os.path.isfile(control_file):
 				control_lines = ReadFile(control_file, split=True)
 
@@ -186,33 +186,33 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 				arch = None
 
 				for LINE in control_lines:
-					if LINE.startswith(u'Package:'):
-						name = LINE.replace(u'Package: ', u'').strip()
+					if LINE.startswith("Package:"):
+						name = LINE.replace("Package: ", "").strip()
 
-					elif LINE.startswith(u'Version:'):
-						version = LINE.replace(u'Version: ', u'').strip()
+					elif LINE.startswith("Version:"):
+						version = LINE.replace("Version: ", "").strip()
 
-					elif LINE.startswith(u'Architecture:'):
-						arch = LINE.replace(u'Architecture: ', u'').strip()
+					elif LINE.startswith("Architecture:"):
+						arch = LINE.replace("Architecture: ", "").strip()
 
 				if name and version and arch:
-					target = ConcatPaths((target, u'{}.deb'.format(u'_'.join((name, version, arch,)))))
+					target = ConcatPaths((target, "{}.deb".format("_".join((name, version, arch,)))))
 
 		# Automatically add .deb filename extension if not present
-		elif not target.lower().endswith(u'.deb'):
-			target = u'{}.deb'.format(target)
+		elif not target.lower().endswith(".deb"):
+			target = "{}.deb".format(target)
 
 		if not os.path.isdir(stage):
-			ShowErrorDialog(GT(u'Stage directory does not exist'), stage, self, True)
+			ShowErrorDialog(GT("Stage directory does not exist"), stage, self, True)
 			return
 
 		target_path = os.path.dirname(target)
 		if not os.path.isdir(target_path):
-			ShowErrorDialog(GT(u'Target directory does not exist'), target_path, self, True)
+			ShowErrorDialog(GT("Target directory does not exist"), target_path, self, True)
 			return
 
 		elif not os.access(target_path, os.W_OK):
-			ShowErrorDialog(GT(u'No write access to target directory'), target_path, self, True)
+			ShowErrorDialog(GT("No write access to target directory"), target_path, self, True)
 			return
 
 		# Update the text input if target altered
@@ -224,7 +224,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 			if not OverwriteDialog(self, target).Confirmed():
 				return
 
-		self.SetTitle(u'{} ({})'.format(self.title, GT(u'in progress')))
+		self.SetTitle("{} ({})".format(self.title, GT("in progress")))
 
 		# Don't allow dialog to be closed while build in progress
 		self.Disable()
@@ -241,13 +241,13 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 
 	## Closes the progress dialog & shows status message when timer is stopped
 	def OnTimerStop(self, event=None):
-		Logger.Debug(__name__, u'OnTimerStop')
+		Logger.Debug(__name__, "OnTimerStop")
 
 		if not self.timer.IsRunning():
-			Logger.Debug(__name__, GT(u'Timer is stopped'))
+			Logger.Debug(__name__, GT("Timer is stopped"))
 
 		else:
-			Logger.Debug(__name__, GT(u'Timer is running'))
+			Logger.Debug(__name__, GT("Timer is running"))
 
 		if self.build_error:
 			error_lines = self.build_error[:-1]
@@ -261,11 +261,11 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 			return
 
 		msg_lines = (
-			GT(u'Quick build complete'),
+			GT("Quick build complete"),
 			self.input_target.GetValue(),
 			)
 
-		ShowMessageDialog(msg_lines, GT(u'Build Complete'), module=__name__)
+		ShowMessageDialog(msg_lines, GT("Build Complete"), module=__name__)
 
 
 	## Updates the progress bar
@@ -273,7 +273,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 		if event:
 			if isinstance(event, wx.TimerEvent):
 				if not self.timer.IsRunning():
-					Logger.Debug(__name__, GT(u'Timer stopped. Stopping gauge ...'))
+					Logger.Debug(__name__, GT("Timer stopped. Stopping gauge ..."))
 
 					return
 

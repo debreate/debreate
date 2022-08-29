@@ -13,7 +13,7 @@ from globals.strings import TextIsEmpty
 
 # List of characters that cannot be entered
 # NOTE: 46 = ".", 47 = "/"
-invalid_chars = (u'/', u'\\', u'_')
+invalid_chars = ("/", "\\", "_")
 
 
 ## A customized text area that disallows certain character input
@@ -33,14 +33,14 @@ class CharCtrl(wx.TextCtrl):
 		original_text = text
 
 		# Remove whitespace
-		for C in (u' ', u'\t'):
+		for C in (" ", "\t"):
 			if C in text:
-				text = text.replace(C, u'-')
+				text = text.replace(C, "-")
 
 		if not TextIsEmpty(text):
 			for C in invalid_chars:
 				if C in text:
-					text = text.replace(C, u'-')
+					text = text.replace(C, "-")
 
 			if text != original_text:
 				self.SetValue(text)

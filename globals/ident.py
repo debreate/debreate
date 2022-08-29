@@ -90,16 +90,16 @@ class PageId(FieldId):
 
 		self.Labels = {}
 
-		self.GREETING = self.NewId(GT(u'Information'))
-		self.CONTROL = self.NewId(GT(u'Control'))
-		self.DEPENDS = self.NewId(GT(u'Depends'))
-		self.FILES = self.NewId(GT(u'Files'))
-		self.MAN = self.NewId(GT(u'Man'))
-		self.SCRIPTS = self.NewId(GT(u'Scripts'))
-		self.CHANGELOG = self.NewId(GT(u'Changelog'))
-		self.COPYRIGHT = self.NewId(GT(u'Copyright'))
-		self.MENU = self.NewId(GT(u'Menu'))
-		self.BUILD = self.NewId(GT(u'Build'))
+		self.GREETING = self.NewId(GT("Information"))
+		self.CONTROL = self.NewId(GT("Control"))
+		self.DEPENDS = self.NewId(GT("Depends"))
+		self.FILES = self.NewId(GT("Files"))
+		self.MAN = self.NewId(GT("Man"))
+		self.SCRIPTS = self.NewId(GT("Scripts"))
+		self.CHANGELOG = self.NewId(GT("Changelog"))
+		self.COPYRIGHT = self.NewId(GT("Copyright"))
+		self.MENU = self.NewId(GT("Menu"))
+		self.BUILD = self.NewId(GT("Build"))
 
 
 	## Adds a predetermined ID to ID list & text label to label list
@@ -177,33 +177,33 @@ class ButtonId(FieldId):
 		## Image labels associated with button IDs
 		self.Images = {}
 
-		self.ADD = self.AddStaticId(wx.ID_ADD, u'add')
-		self.APPEND = self.NewId(u'append')
+		self.ADD = self.AddStaticId(wx.ID_ADD, "add")
+		self.APPEND = self.NewId("append")
 		self.BIN = self.NewId()
-		self.BROWSE = self.NewId(u'browse')
-		self.BUILD = self.NewId(u'build')
-		self.CANCEL = self.AddStaticId(wx.ID_CANCEL, u'cancel')
-		self.CLEAR = self.AddStaticId(wx.ID_CLEAR, u'clear')
+		self.BROWSE = self.NewId("browse")
+		self.BUILD = self.NewId("build")
+		self.CANCEL = self.AddStaticId(wx.ID_CANCEL, "cancel")
+		self.CLEAR = self.AddStaticId(wx.ID_CLEAR, "clear")
 		self.CLOSE = self.AddStaticId(wx.ID_CLOSE)
-		self.CONFIRM = self.AddStaticId(wx.ID_OK, u'confirm')
-		self.EXIT = self.AddStaticId(wx.ID_EXIT, u'exit')
-		self.FULL = self.NewId(u'full')
-		self.HELP = self.AddStaticId(wx.ID_HELP, u'help')
-		self.HIDE = self.NewId(u'hide')
-		self.IMPORT = self.NewId(u'import')
-		self.MODE = self.NewId(u'mode')
-		self.NEXT = self.NewId(u'next')
-		self.PREV = self.NewId(u'prev')
-		self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, u'preview')
-		self.REFRESH = self.AddStaticId(wx.ID_REFRESH, u'refresh')
-		self.REMOVE = self.AddStaticId(wx.ID_REMOVE, u'remove')
-		self.RENAME = self.NewId(u'rename')
-		self.SAVE = self.AddStaticId(wx.ID_SAVE, u'save')
-		self.SHORT = self.NewId(u'short')
+		self.CONFIRM = self.AddStaticId(wx.ID_OK, "confirm")
+		self.EXIT = self.AddStaticId(wx.ID_EXIT, "exit")
+		self.FULL = self.NewId("full")
+		self.HELP = self.AddStaticId(wx.ID_HELP, "help")
+		self.HIDE = self.NewId("hide")
+		self.IMPORT = self.NewId("import")
+		self.MODE = self.NewId("mode")
+		self.NEXT = self.NewId("next")
+		self.PREV = self.NewId("prev")
+		self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, "preview")
+		self.REFRESH = self.AddStaticId(wx.ID_REFRESH, "refresh")
+		self.REMOVE = self.AddStaticId(wx.ID_REMOVE, "remove")
+		self.RENAME = self.NewId("rename")
+		self.SAVE = self.AddStaticId(wx.ID_SAVE, "save")
+		self.SHORT = self.NewId("short")
 		self.SRC = self.NewId()
 		self.STAGE = self.NewId()
 		self.TARGET = self.NewId()
-		self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, u'zoom')
+		self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, "zoom")
 
 
 	## Adds a predetermined ID to ID list & optional bitmap image reference
@@ -231,7 +231,7 @@ class ButtonId(FieldId):
 		if btnId in self.Images:
 			return self.Images[btnId]
 
-		Logger.Warn(__name__, u'ButtonId.GetImage: Requested button ID {} with no associated image'.format(btnId))
+		Logger.Warn(__name__, "ButtonId.GetImage: Requested button ID {} with no associated image".format(btnId))
 
 
 	## Adds a new ID & optional bitmap image reference

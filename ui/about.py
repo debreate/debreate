@@ -47,7 +47,7 @@ class AboutDialog(wx.Dialog):
 	#  \param title
 	#		Text to be shown in the title bar
 	def __init__(self, parent, size=(600,558)):
-		wx.Dialog.__init__(self, parent, wx.ID_ABOUT, GT(u'About'), size=size,
+		wx.Dialog.__init__(self, parent, wx.ID_ABOUT, GT("About"), size=size,
 						style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 
 		self.SetMinSize(wx.Size(400, 375))
@@ -63,10 +63,10 @@ class AboutDialog(wx.Dialog):
 		t_license = wx.Panel(tabs, -1)
 
 		# Add pages to tabbed interface
-		tabs.AddPage(self.t_about, GT(u'About'))
-		tabs.AddPage(t_credits, GT(u'Credits'))
-		tabs.AddPage(t_changelog, GT(u'Changelog'))
-		tabs.AddPage(t_license, GT(u'License'))
+		tabs.AddPage(self.t_about, GT("About"))
+		tabs.AddPage(t_credits, GT("Credits"))
+		tabs.AddPage(t_changelog, GT("Changelog"))
+		tabs.AddPage(t_license, GT("License"))
 
 		# FIXME: Center verticall on about tab
 		self.about_layout_V1 = BoxSizer(wx.VERTICAL)
@@ -80,9 +80,9 @@ class AboutDialog(wx.Dialog):
 		## List of credits
 		self.credits = ListCtrl(t_credits)
 		self.credits.SetSingleStyle(wx.LC_REPORT)
-		self.credits.InsertColumn(0, GT(u'Name'), width=150)
-		self.credits.InsertColumn(1, GT(u'Job'), width=200)
-		self.credits.InsertColumn(2, GT(u'Email'), width=240)
+		self.credits.InsertColumn(0, GT("Name"), width=150)
+		self.credits.InsertColumn(1, GT("Job"), width=200)
+		self.credits.InsertColumn(2, GT("Email"), width=240)
 
 		credits_sizer = BoxSizer(wx.VERTICAL)
 		credits_sizer.Add(self.credits, 1, wx.EXPAND)
@@ -115,22 +115,22 @@ class AboutDialog(wx.Dialog):
 
 		# System info
 		sys_info = wx.Panel(tabs, -1)
-		tabs.AddPage(sys_info, GT(u'System Information'))
+		tabs.AddPage(sys_info, GT("System Information"))
 
 		## System's <a href="https://www.python.org/">Python</a> version
 		self.py_info = wx.StaticText(sys_info, -1,
-				GT(u'Python version: {}').format(PY_VER_STRING))
+				GT("Python version: {}").format(PY_VER_STRING))
 
 		## System's <a href="https://wxpython.org/">wxPython</a> version
 		self.wx_info = wx.StaticText(sys_info, -1,
-				GT(u'wxPython version: {}').format(WX_VER_STRING))
+				GT("wxPython version: {}").format(WX_VER_STRING))
 
 		## Debreate's installation prefix
 		install_prefix = wx.StaticText(sys_info,
-				label=GT(u'App location: {}').format(PATH_app))
+				label=GT("App location: {}").format(PATH_app))
 
 		if INSTALLED:
-			install_prefix.SetLabel(GT(u'Installation prefix: {}').format(PREFIX))
+			install_prefix.SetLabel(GT("Installation prefix: {}").format(PREFIX))
 
 		self.py_info.SetFont(sys_info_font)
 		self.wx_info.SetFont(sys_info_font)
@@ -190,7 +190,7 @@ class AboutDialog(wx.Dialog):
 
 		app_label = wx.StaticText(
 			self.t_about,
-			label=u'{} {}'.format(APP_name, version)
+			label="{} {}".format(APP_name, version)
 		)
 		app_label.SetFont(bigfont)
 
@@ -285,7 +285,7 @@ class AboutDialog(wx.Dialog):
 		next_item = self.credits.GetItemCount()
 		self.credits.InsertStringItem(next_item, name)
 		self.credits.SetStringItem(next_item, 2, email)
-		self.credits.SetStringItem(next_item, 1, GT(u'Developer'))
+		self.credits.SetStringItem(next_item, 1, GT("Developer"))
 
 
 	## Adds a packager to the list of credits
@@ -298,7 +298,7 @@ class AboutDialog(wx.Dialog):
 		next_item = self.credits.GetItemCount()
 		self.credits.InsertStringItem(next_item, name)
 		self.credits.SetStringItem(next_item, 2, email)
-		self.credits.SetStringItem(next_item, 1, GT(u'Packager'))
+		self.credits.SetStringItem(next_item, 1, GT("Packager"))
 
 
 	## Adds a translator to the list of credits
@@ -310,8 +310,8 @@ class AboutDialog(wx.Dialog):
 	#  \param lang
 	#		\b \e str : Locale code for the translation
 	def AddTranslator(self, name, email, lang):
-		job = GT(u'Translation')
-		job = u'{} ({})'.format(job, lang)
+		job = GT("Translation")
+		job = "{} ({})".format(job, lang)
 		next_item = self.credits.GetItemCount()
 		self.credits.InsertStringItem(next_item, name)
 		self.credits.SetStringItem(next_item, 2, email)
@@ -345,7 +345,7 @@ class AboutDialog(wx.Dialog):
 	#		\b \e unicode|str : Optional contributer's email address
 	def AddJobs(self, name, jobs, email=wx.EmptyString):
 		if isinstance(jobs, str) or isinstance(jobs, unicode):
-			Logger.Debug(__name__, GT(u'Converting string argument "jobs" to tuple'))
+			Logger.Debug(__name__, GT("Converting string argument "jobs" to tuple"))
 			jobs = (jobs,)
 
 		for x, value in enumerate(jobs):
@@ -377,26 +377,26 @@ class AboutDialog(wx.Dialog):
 		#   under the applications root directory. The
 		#   install script or Makefile should change this
 		#   to reflect installed path.
-		CHANGELOG = u'{}/docs/changelog'.format(PATH_app)
+		CHANGELOG = "{}/docs/changelog".format(PATH_app)
 
 		if os.path.isfile(CHANGELOG):
 			changelog_mimetype = GetFileMimeType(CHANGELOG)
 
-			Logger.Debug(__name__, GT(u'Changelog mimetype: {}').format(changelog_mimetype))
+			Logger.Debug(__name__, GT("Changelog mimetype: {}").format(changelog_mimetype))
 
 			# Set log text in case of read error
-			log_text = GT(u'Error reading changelog: {}\n\t').format(CHANGELOG)
-			log_text = u'{}{}'.format(log_text,
-									GT(u'Cannot decode, unrecognized mimetype: {}').format(changelog_mimetype))
+			log_text = GT("Error reading changelog: {}\n\t").format(CHANGELOG)
+			log_text = "{}{}".format(log_text,
+									GT("Cannot decode, unrecognized mimetype: {}").format(changelog_mimetype))
 
-			if changelog_mimetype == u'text/plain':
+			if changelog_mimetype == "text/plain":
 				log_text = ReadFile(CHANGELOG)
 
 			else:
 				ShowErrorDialog(log_text, parent=self)
 
 		else:
-			log_text = GT(u'ERROR: Could not locate changelog file:\n\t\'{}\' not found'.format(CHANGELOG))
+			log_text = GT("ERROR: Could not locate changelog file:\n\t\"{}\' not found'.format(CHANGELOG))
 
 		self.changelog.SetValue(log_text)
 		self.changelog.SetInsertionPoint(0)
@@ -413,15 +413,15 @@ class AboutDialog(wx.Dialog):
 		#   under the applications root directory. The
 		#   install script or Makefile should change this
 		#   to reflect installed path.
-		license_path = u'{}/docs/LICENSE.txt'.format(PATH_app)
+		license_path = "{}/docs/LICENSE.txt".format(PATH_app)
 
 		if os.path.isfile(license_path):
 			lic_text = ReadFile(license_path)
 
 		else:
-			lic_text = GT(u'ERROR: Could not locate license file:\n\t\'{}\' not found'.format(license_path))
-			lic_text += u'\n\nCopyright © {} {} <{}>'.format(GetYear(), AUTHOR_name, AUTHOR_email)
-			lic_text += u'\n\nhttps://opensource.org/licenses/MIT'
+			lic_text = GT("ERROR: Could not locate license file:\n\t\"{}\' not found'.format(license_path))
+			lic_text += "\n\nCopyright © {} {} <{}>".format(GetYear(), AUTHOR_name, AUTHOR_email)
+			lic_text += "\n\nhttps://opensource.org/licenses/MIT"
 
 		self.license.SetValue(lic_text)
 		self.license.SetInsertionPoint(0)

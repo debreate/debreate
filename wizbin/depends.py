@@ -37,47 +37,47 @@ class Page(WizardPage):
 		WizardPage.__init__(self, parent, pgid.DEPENDS)
 
 		## Override default label
-		self.SetLabel(GT(u'Dependencies and Conflicts'))
+		self.SetLabel(GT("Dependencies and Conflicts"))
 
 		# Bypass checking this page for build
 		self.prebuild_check = False
 
 		# Buttons to open, save, & preview control file
-		self.btn_open = CreateButton(self, btnid.BROWSE, GT(u'Browse'), u'browse', name=u'btn browse')
-		self.btn_save = CreateButton(self, btnid.SAVE, GT(u'Save'), u'save', name=u'btn save')
-		self.btn_preview = CreateButton(self, btnid.PREVIEW, GT(u'Preview'), u'preview', name=u'btn preview')
+		self.btn_open = CreateButton(self, btnid.BROWSE, GT("Browse"), "browse", name="btn browse")
+		self.btn_save = CreateButton(self, btnid.SAVE, GT("Save"), "save", name="btn save")
+		self.btn_preview = CreateButton(self, btnid.PREVIEW, GT("Preview"), "preview", name="btn preview")
 
-		txt_package = wx.StaticText(self, label=GT(u'Dependency/Conflict Package Name'), name=u'package')
-		txt_version = wx.StaticText(self, label=GT(u'Version'), name=u'version')
+		txt_package = wx.StaticText(self, label=GT("Dependency/Conflict Package Name"), name="package")
+		txt_version = wx.StaticText(self, label=GT("Version"), name="version")
 
-		self.ti_package = TextArea(self, size=(300,25), name=u'package')
+		self.ti_package = TextArea(self, size=(300,25), name="package")
 
 		opts_operator = (
-			u'>=',
-			u'<=',
-			u'=',
-			u'>>',
-			u'<<',
+			">=",
+			"<=",
+			"=",
+			">>",
+			"<<",
 			)
 
-		self.sel_operator = Choice(self, choices=opts_operator, name=u'operator')
+		self.sel_operator = Choice(self, choices=opts_operator, name="operator")
 
-		self.ti_version = TextArea(self, name=u'version')
+		self.ti_version = TextArea(self, name="version")
 
 		self.ti_package.SetSize((100,50))
 
 		pnl_categories = BorderedPanel(self)
 
-		self.DefaultCategory = u'Depends'
+		self.DefaultCategory = "Depends"
 
-		rb_dep = wx.RadioButton(pnl_categories, label=GT(u'Depends'), name=self.DefaultCategory, style=wx.RB_GROUP)
-		rb_pre = wx.RadioButton(pnl_categories, label=GT(u'Pre-Depends'), name=u'Pre-Depends')
-		rb_rec = wx.RadioButton(pnl_categories, label=GT(u'Recommends'), name=u'Recommends')
-		rb_sug = wx.RadioButton(pnl_categories, label=GT(u'Suggests'), name=u'Suggests')
-		rb_enh = wx.RadioButton(pnl_categories, label=GT(u'Enhances'), name=u'Enhances')
-		rb_con = wx.RadioButton(pnl_categories, label=GT(u'Conflicts'), name=u'Conflicts')
-		rb_rep = wx.RadioButton(pnl_categories, label=GT(u'Replaces'), name=u'Replaces')
-		rb_break = wx.RadioButton(pnl_categories, label=GT(u'Breaks'), name=u'Breaks')
+		rb_dep = wx.RadioButton(pnl_categories, label=GT("Depends"), name=self.DefaultCategory, style=wx.RB_GROUP)
+		rb_pre = wx.RadioButton(pnl_categories, label=GT("Pre-Depends"), name="Pre-Depends")
+		rb_rec = wx.RadioButton(pnl_categories, label=GT("Recommends"), name="Recommends")
+		rb_sug = wx.RadioButton(pnl_categories, label=GT("Suggests"), name="Suggests")
+		rb_enh = wx.RadioButton(pnl_categories, label=GT("Enhances"), name="Enhances")
+		rb_con = wx.RadioButton(pnl_categories, label=GT("Conflicts"), name="Conflicts")
+		rb_rep = wx.RadioButton(pnl_categories, label=GT("Replaces"), name="Replaces")
+		rb_break = wx.RadioButton(pnl_categories, label=GT("Breaks"), name="Breaks")
 
 		self.categories = (
 			rb_dep, rb_pre, rb_rec,
@@ -92,10 +92,10 @@ class Page(WizardPage):
 		btn_clear = CreateButton(self, btnid.CLEAR)
 
 		# ----- List
-		self.lst_deps = ListCtrlESS(self, inputid.LIST, name=u'list')
+		self.lst_deps = ListCtrlESS(self, inputid.LIST, name="list")
 		self.lst_deps.SetSingleStyle(wx.LC_REPORT)
-		self.lst_deps.InsertColumn(0, GT(u'Category'), width=150)
-		self.lst_deps.InsertColumn(1, GT(u'Package(s)'))
+		self.lst_deps.InsertColumn(0, GT("Category"), width=150)
+		self.lst_deps.InsertColumn(1, GT("Package(s)"))
 
 		# wx 3.0 compatibility
 		if wx.MAJOR_VERSION < 3:
@@ -156,7 +156,7 @@ class Page(WizardPage):
 		lyt_mid = wx.GridBagSizer()
 		lyt_mid.SetCols(2)
 
-		lyt_mid.Add(wx.StaticText(self, label=u'Categories'), (0, 0), (1, 1), LEFT_BOTTOM)
+		lyt_mid.Add(wx.StaticText(self, label="Categories"), (0, 0), (1, 1), LEFT_BOTTOM)
 		lyt_mid.Add(pnl_categories, (1, 0), flag=wx.RIGHT, border=5)
 		lyt_mid.Add(lyt_buttons, (1, 1), flag=wx.ALIGN_BOTTOM)
 
@@ -196,9 +196,9 @@ class Page(WizardPage):
 	#	File path to open
 	#  \see wiz.wizard.WizardPage.ImportFromFile
 	def ImportFromFile(self, d_type, d_string):
-		Logger.Debug(__name__, GT(u'Importing {}: {}'.format(d_type, d_string)))
+		Logger.Debug(__name__, GT("Importing {}: {}".format(d_type, d_string)))
 
-		values = d_string.split(u', ')
+		values = d_string.split(", ")
 
 		for V in values:
 			self.lst_deps.InsertStringItem(0, d_type)
@@ -239,7 +239,7 @@ class Page(WizardPage):
 		addname = self.ti_package.GetValue()
 		oper = self.sel_operator.GetStringSelection()
 		ver = self.ti_version.GetValue()
-		addver = u'({}{})'.format(oper, ver)
+		addver = "({}{})".format(oper, ver)
 
 		if key_id in (btnid.ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
 			if TextIsEmpty(addname):
@@ -255,23 +255,23 @@ class Page(WizardPage):
 				self.AppendDependency(category, addname)
 
 			else:
-				self.AppendDependency(category, u'{} {}'.format(addname, addver))
+				self.AppendDependency(category, "{} {}".format(addname, addver))
 
 		elif key_id == btnid.APPEND:
 			selected_count = self.lst_deps.GetSelectedItemCount()
 
-			Logger.Debug(__name__, u'Appending to {} items'.format(selected_count))
+			Logger.Debug(__name__, "Appending to {} items".format(selected_count))
 
 			if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
 				selected_rows = self.lst_deps.GetSelectedIndexes()
 
 				if DebugEnabled():
-					Logger.Debug(__name__, u'Selected rows:')
+					Logger.Debug(__name__, "Selected rows:")
 					for R in selected_rows:
-						print(u'\t{}'.format(R))
+						print("\t{}".format(R))
 
 				for listrow in selected_rows:
-					Logger.Debug(__name__, u'Setting list row: {}'.format(listrow))
+					Logger.Debug(__name__, "Setting list row: {}".format(listrow))
 
 					# Get item from second column
 					colitem = self.lst_deps.GetItem(listrow, 1)
@@ -279,12 +279,12 @@ class Page(WizardPage):
 					prev_text = colitem.GetText()
 
 					if not TextIsEmpty(ver):
-						new_text = u'{} | {} {}'.format(prev_text, addname, addver)
+						new_text = "{} | {} {}".format(prev_text, addname, addver)
 
 					else:
-						new_text = u'{} | {}'.format(prev_text, addname)
+						new_text = "{} | {}".format(prev_text, addname)
 
-					Logger.Debug(__name__, u'Appended item: {}'.format(new_text))
+					Logger.Debug(__name__, "Appended item: {}".format(new_text))
 
 					self.lst_deps.SetStringItem(listrow, 1, new_text)
 
@@ -293,8 +293,8 @@ class Page(WizardPage):
 
 		elif key_id == btnid.CLEAR:
 			if self.lst_deps.GetItemCount():
-				if ConfirmationDialog(GetMainWindow(), GT(u'Confirm'),
-						GT(u'Clear all dependencies?')).ShowModal() in (wx.ID_OK, wx.OK):
+				if ConfirmationDialog(GetMainWindow(), GT("Confirm"),
+						GT("Clear all dependencies?")).ShowModal() in (wx.ID_OK, wx.OK):
 					self.lst_deps.DeleteAllItems()
 
 		if event:

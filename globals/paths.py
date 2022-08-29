@@ -32,17 +32,17 @@ def ConcatPaths(pathList, *tail):
 
 	# Clean up tail arguments
 	for INDEX in range(len(pathList)):
-		pathList[INDEX] = pathList[INDEX].strip(u'/')
+		pathList[INDEX] = pathList[INDEX].strip("/")
 
-	path = u'/'.join(pathList)
+	path = "/".join(pathList)
 
-	while u'//' in path:
-		path = path.replace(u'//', u'/')
+	while "//" in path:
+		path = path.replace("//", "/")
 
 	# FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
 	absolute = True
-	if absolute and not path.startswith(u'/'):
-		path = u'/' + path
+	if absolute and not path.startswith("/"):
+		path = "/" + path
 
 	return path
 
@@ -59,16 +59,16 @@ PATH_app = GS(os.path.dirname(os.path.dirname(__file__)))
 ## User's home directory
 #
 #  Used to set config directory.
-PATH_home = GS(os.getenv(u'HOME'))
+PATH_home = GS(os.getenv("HOME"))
 
 ## Local folder to store files such as custom templates
-PATH_local = ConcatPaths((PATH_home, u'.local/share/debreate'))
+PATH_local = ConcatPaths((PATH_home, ".local/share/debreate"))
 
 ## Directory where cache files are stored
-PATH_cache = ConcatPaths((PATH_local, u'cache'))
+PATH_cache = ConcatPaths((PATH_local, "cache"))
 
 ## Directory where log files are stored
-PATH_logs = ConcatPaths((PATH_local, u'logs'))
+PATH_logs = ConcatPaths((PATH_local, "logs"))
 
 ## Directory where app bitmaps are stored
-PATH_bitmaps = u'{}/bitmaps'.format(PATH_app)
+PATH_bitmaps = "{}/bitmaps".format(PATH_app)

@@ -9,8 +9,8 @@ import os, gettext
 from globals.strings import GS
 
 
-TRANSLATION_DOMAIN = u'debreate'
-DIR_locale = os.path.join(os.path.dirname(os.path.dirname(__file__)), u'locale')
+TRANSLATION_DOMAIN = "debreate"
+DIR_locale = os.path.join(os.path.dirname(os.path.dirname(__file__)), "locale")
 
 gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 

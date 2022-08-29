@@ -16,8 +16,8 @@ class CommandField:
 		self.RequireAll = requireAll
 
 		if commands:
-			if IsString(self.Commands) and u' ' in self.Commands:
-				self.Commands = self.Commands.split(u' ')
+			if IsString(self.Commands) and " " in self.Commands:
+				self.Commands = self.Commands.split(" ")
 				self.Commands = RemoveEmptyLines(self.Commands)
 
 		# Check for the commands when the object is constructed

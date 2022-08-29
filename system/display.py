@@ -42,23 +42,23 @@ def GetPrimaryDisplayRect():
 			# Reorder for compatibility with xrandr output
 			rect = (rect[2], rect[3], rect[0], rect[1],)
 
-			Logger.Debug(__name__, u'GetPrimaryDisplayRect: Using wx.Display')
+			Logger.Debug(__name__, "GetPrimaryDisplayRect: Using wx.Display")
 
 	# Fall back to using xrandr
 	if not rect:
-		CMD_xrand = GetExecutable(u'xrandr')
+		CMD_xrand = GetExecutable("xrandr")
 
 		if not CMD_xrand:
 			return None
 
-		output = GetCommandOutput(CMD_xrand).split(u'\n')
+		output = GetCommandOutput(CMD_xrand).split("\n")
 
 		for LINE in output:
 			LINE = LINE.lower()
-			if u'primary' in LINE:
-				LINE = LINE.split(u'primary')[1].strip().split(u' ')[0]
-				posX = LINE.split(u'x')
-				posY = posX[1].split(u'+')
+			if "primary" in LINE:
+				LINE = LINE.split("primary")[1].strip().split(" ")[0]
+				posX = LINE.split("x")
+				posY = posX[1].split("+")
 				posX = posX[0]
 				width = posY[1]
 				height = posY[2]
@@ -73,7 +73,7 @@ def GetPrimaryDisplayRect():
 
 					rect[INDEX] = int(X)
 
-				Logger.Debug(__name__, u'GetPrimaryDisplayRect: Using xrandr')
+				Logger.Debug(__name__, "GetPrimaryDisplayRect: Using xrandr")
 
 				break
 
@@ -86,11 +86,11 @@ def GetPrimaryDisplayRect():
 #  \param window
 #	\b \e wx.Window instance to be centered
 def CenterOnPrimaryDisplay(window):
-	Logger.Debug(__name__, u'Attempting to center window: {} ({})'.format(window.Name, window))
+	Logger.Debug(__name__, "Attempting to center window: {} ({})".format(window.Name, window))
 
 	display_rect = GetPrimaryDisplayRect()
 
-	Logger.Debug(__name__, u'Primary display: {}'.format(display_rect))
+	Logger.Debug(__name__, "Primary display: {}".format(display_rect))
 
 	if not display_rect:
 		return False
@@ -108,16 +108,16 @@ def CenterOnPrimaryDisplay(window):
 	debug = DebugEnabled()
 
 	if debug:
-		print(u'  X difference: {}'.format(x_diff))
-		print(u'  Y difference: {}'.format(y_diff))
+		print("  X difference: {}".format(x_diff))
+		print("  Y difference: {}".format(y_diff))
 
 	# NOTE: May be a few pixels off
 	pos_x = dx + x_diff
 	pos_y = dy + y_diff
 
 	if debug:
-		print(u'\n  Theoretical position: {}'.format((pos_x, pos_y,)))
-		print(u'  Actual Position:	  {}'.format(window.GetPositionTuple()))
+		print("\n  Theoretical position: {}".format((pos_x, pos_y,)))
+		print("  Actual Position:	  {}".format(window.GetPositionTuple()))
 
 	window.SetPosition((pos_x, pos_y))
 

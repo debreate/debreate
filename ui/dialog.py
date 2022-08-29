@@ -52,7 +52,7 @@ class ButtonDialog:
 #	* Border is always resizable.
 #	* Centers on parent when ShowModal is called.
 class BaseDialog(wx.Dialog):
-	def __init__(self, parent=None, ID=wx.ID_ANY, title=GT(u'Title'), pos=wx.DefaultPosition,
+	def __init__(self, parent=None, ID=wx.ID_ANY, title=GT("Title"), pos=wx.DefaultPosition,
 				size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr):
 		if parent == None:
 			parent = GetMainWindow()
@@ -91,14 +91,14 @@ class StandardDirDialog(wx.DirDialog):
 			self.EndModal(wx.ID_OK)
 			return
 
-		Logger.Debug(__name__, u'Path is not a directory: {}'.format(path))
+		Logger.Debug(__name__, "Path is not a directory: {}".format(path))
 
 
 ## A standard system file dialog modified for advanced use
 class StandardFileDialog(wx.FileDialog):
-	def __init__(self, parent, title=u'Choose a file', defaultDir=None, defaultFile=u'',
+	def __init__(self, parent, title="Choose a file", defaultDir=None, defaultFile="",
 			defaultExt=None, wildcard=wx.FileSelectorDefaultWildcardStr, style=wx.FD_DEFAULT_STYLE,
-			pos=wx.DefaultPosition, size=wx.DefaultSize, name=u'filedlg'):
+			pos=wx.DefaultPosition, size=wx.DefaultSize, name="filedlg"):
 
 		if not defaultDir:
 			defaultDir = os.getcwd()
@@ -114,7 +114,7 @@ class StandardFileDialog(wx.FileDialog):
 			wx.EVT_BUTTON(self, self.AffirmativeId, self.OnAccept)
 
 			if self.WindowStyleFlag & wx.FD_CHANGE_DIR:
-				Logger.Warn(__name__, u'Found FD_CHANGE_DIR style, could conflict with OnAccept method')
+				Logger.Warn(__name__, "Found FD_CHANGE_DIR style, could conflict with OnAccept method")
 
 		self.CenterOnParent()
 
@@ -126,8 +126,8 @@ class StandardFileDialog(wx.FileDialog):
 
 	## TODO: Doxygen
 	def HasExtension(self, path):
-		if u'.' in path:
-			if path.split(u'.')[-1] != u'':
+		if "." in path:
+			if path.split(".")[-1] != "":
 				return True
 
 		return False
@@ -158,7 +158,7 @@ class StandardFileDialog(wx.FileDialog):
 
 					except OSError:
 						# File was removed before confirmation
-						Logger.Debug(__name__, u'Item was removed before confirmation: {}'.format(self.Path))
+						Logger.Debug(__name__, "Item was removed before confirmation: {}".format(self.Path))
 
 		# Because we are not using default FileDialog methods, we must set
 		# directory manually.
@@ -179,19 +179,19 @@ class StandardFileDialog(wx.FileDialog):
 	#	New \b \e string filename
 	def SetFilename(self, filename):
 		if filename:
-			if filename.endswith(u'.'):
+			if filename.endswith("."):
 				# Strip trailing periods
-				filename = filename.rstrip(u'.')
+				filename = filename.rstrip(".")
 
 			# Allow users to manually set filename extension
-			if not u'.' in filename:
+			if not "." in filename:
 				if self.Extension:
 					ext = self.Extension
-					if not ext.startswith(u'.'):
-						ext = u'.{}'.format(ext)
+					if not ext.startswith("."):
+						ext = ".{}".format(ext)
 
 					if not filename.endswith(ext):
-						filename = u'{}{}'.format(filename, ext)
+						filename = "{}{}".format(filename, ext)
 
 		return wx.FileDialog.SetFilename(self, filename)
 
@@ -206,7 +206,7 @@ class StandardFileDialog(wx.FileDialog):
 #  \param icon
 #		\b \e wx.Bitmap|unicode|str : Image to display
 class DetailedMessageDialog(BaseDialog, ButtonDialog):
-	def __init__(self, parent, title=GT(u'Message'), icon=ICON_INFORMATION, text=wx.EmptyString,
+	def __init__(self, parent, title=GT("Message"), icon=ICON_INFORMATION, text=wx.EmptyString,
 			details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE, buttons=(wx.ID_OK,),
 			linewrap=0):
 
@@ -300,8 +300,8 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 	def CreateDetailedView(self, details):
 		# Controls have not been constructed yet
 		if TextIsEmpty(self.details):
-			self.btn_details = wx.ToggleButton(self, label=GT(u'Details'))
-			#btn_copy = wx.Button(self, label=GT(u'Copy details'))
+			self.btn_details = wx.ToggleButton(self, label=GT("Details"))
+			#btn_copy = wx.Button(self, label=GT("Copy details"))
 
 			self.dsp_details = TextAreaPanel(self, value=details,
 					style=wx.TE_READONLY)
@@ -373,37 +373,37 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 	#  FIXME: Layout initially wrong
 	#  TODO: Allow copying details to clipboard
 	def OnCopyDetails(self, event=None):
-		print(u'DEBUG: Copying details to clipboard ...')
+		print("DEBUG: Copying details to clipboard ...")
 
-		DetailedMessageDialog(self, u'FIXME', ICON_EXCLAMATION,
-				u'Copying details to clipboard not functional').ShowModal()
+		DetailedMessageDialog(self, "FIXME", ICON_EXCLAMATION,
+				"Copying details to clipboard not functional").ShowModal()
 		return
 
 		cb_set = False
 
 		clipboard = wx.Clipboard()
 		if clipboard.Open():
-			print(u'DEBUG: Clipboard opened')
+			print("DEBUG: Clipboard opened")
 
 			details = wx.TextDataObject(self.dsp_details.GetValue())
-			print(u'DEBUG: Details set to:\n{}'.format(details.GetText()))
+			print("DEBUG: Details set to:\n{}".format(details.GetText()))
 
 			clipboard.Clear()
-			print(u'DEBUG: Clipboard cleared')
+			print("DEBUG: Clipboard cleared")
 
 			cb_set = clipboard.SetData(details)
-			print(u'DEBUG: Clipboard data set')
+			print("DEBUG: Clipboard data set")
 
 			clipboard.Flush()
-			print(u'DEBUG: Clipboard flushed')
+			print("DEBUG: Clipboard flushed")
 
 			clipboard.Close()
-			print(u'DEBUG: Clipboard cloased')
+			print("DEBUG: Clipboard cloased")
 
 		del clipboard
-		print(u'DEBUG: Clipboard object deleted')
+		print("DEBUG: Clipboard object deleted")
 
-		wx.MessageBox(u'FIXME: Details not copied to clipboard', GT(u'Debug'))
+		wx.MessageBox("FIXME: Details not copied to clipboard", GT("Debug"))
 
 
 	## Override inherited method to center on parent window first
@@ -447,7 +447,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 
 ## Dialog that gives the option to confirm or cancel
 class ConfirmationDialog(DetailedMessageDialog):
-	def __init__(self, parent, title=GT(u'Warning'), text=wx.EmptyString,
+	def __init__(self, parent, title=GT("Warning"), text=wx.EmptyString,
 			style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER, buttons=(wx.ID_OK, wx.ID_CANCEL,)):
 
 		DetailedMessageDialog.__init__(self, parent, title, icon=ICON_QUESTION,
@@ -456,7 +456,7 @@ class ConfirmationDialog(DetailedMessageDialog):
 
 ## Dialog for the main window when a modified project is being closed
 class ConfirmSaveDialog(DetailedMessageDialog):
-	def __init__(self, parent, title=GT(u'Warning'), text=wx.EmptyString,
+	def __init__(self, parent, title=GT("Warning"), text=wx.EmptyString,
 			style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER,
 			buttons=(wx.ID_OK, wx.ID_CANCEL, wx.ID_SAVE,)):
 
@@ -478,14 +478,14 @@ class ConfirmSaveDialog(DetailedMessageDialog):
 ## TODO: Doxygen
 class OverwriteDialog(ConfirmationDialog):
 	def __init__(self, parent, filename):
-		text = u'{}\n\n{}'.format(GT(u'Overwrite file?'), filename)
+		text = "{}\n\n{}".format(GT("Overwrite file?"), filename)
 
-		ConfirmationDialog.__init__(self, parent, GT(u'File Exists'), text)
+		ConfirmationDialog.__init__(self, parent, GT("File Exists"), text)
 
 
 ## Message dialog that shows an error & details
 class ErrorDialog(DetailedMessageDialog):
-	def __init__(self, parent, title=GT(u'Error'), text=GT(u'An error has occurred'),
+	def __init__(self, parent, title=GT("Error"), text=GT("An error has occurred"),
 			details=wx.EmptyString, linewrap=0):
 		DetailedMessageDialog.__init__(self, parent, title, ICON_ERROR, text, details,
 				linewrap=linewrap)
@@ -506,16 +506,16 @@ def GetDialogWildcards(ID):
 	wildcards = list(project_wildcards[ID][1])
 
 	for X in range(len(wildcards)):
-		wildcards[X] = u'.{}'.format(wildcards[X])
+		wildcards[X] = ".{}".format(wildcards[X])
 
 	# Don't show list of suffixes in dialog's description
 	if project_wildcards[ID][1] != supported_suffixes:
-		proj_def = u'{} ({})'.format(proj_def, u', '.join(wildcards))
+		proj_def = "{} ({})".format(proj_def, ", ".join(wildcards))
 
 	for X in range(len(wildcards)):
-		wildcards[X] = u'*{}'.format(wildcards[X])
+		wildcards[X] = "*{}".format(wildcards[X])
 
-	return (proj_def, u';'.join(wildcards))
+	return (proj_def, ";".join(wildcards))
 
 
 ## TODO: Doxygen
@@ -531,7 +531,7 @@ def GetDirDialog(parent, title):
 ## Formats a wildcard list into a string
 def _format_wildcard(wildcard):
 	if isinstance(wildcard, (list, tuple)):
-		wildcard = u'|'.join(wildcard)
+		wildcard = "|".join(wildcard)
 
 	return wildcard
 
@@ -624,7 +624,7 @@ def ShowDialog(dialog, center=wx.BOTH):
 #		\b \e str|unicode: Module where error was caught (used for Logger output)
 #  \param warn
 #		\b \e bool: Show log message as warning instead of error
-def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Error'),
+def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Error"),
 			linewrap=0):
 	# Instantiate Logger message type so it can be optionally changed
 	PrintLogMessage = Logger.Error
@@ -634,11 +634,11 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
 	logger_text = text
 
 	if isinstance(text, (tuple, list)):
-		logger_text = u'; '.join(text)
-		text = u'\n'.join(text)
+		logger_text = "; ".join(text)
+		text = "\n".join(text)
 
 	if details:
-		logger_text = u'{}:\n{}'.format(logger_text, details)
+		logger_text = "{}:\n{}".format(logger_text, details)
 
 	if parent == False:
 		parent = GetMainWindow()
@@ -662,7 +662,7 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT(u'Err
 
 
 ## A function that displays a modal message dialog on the main window
-def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, parent=None,
+def ShowMessageDialog(text, title=GT("Message"), details=None, module=None, parent=None,
 			linewrap=0):
 	if not parent:
 		parent = GetMainWindow()
@@ -672,11 +672,11 @@ def ShowMessageDialog(text, title=GT(u'Message'), details=None, module=None, par
 
 	logger_text = text
 	if isinstance(text, (tuple, list)):
-		logger_text = u'; '.join(text)
-		text = u'\n'.join(text)
+		logger_text = "; ".join(text)
+		text = "\n".join(text)
 
 	if details:
-		logger_text = u'{}:\n{}'.format(logger_text, details)
+		logger_text = "{}:\n{}".format(logger_text, details)
 
 	message_dialog = DetailedMessageDialog(parent, title, ICON_INFORMATION, text, linewrap=linewrap)
 	if details:
