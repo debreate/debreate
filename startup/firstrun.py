@@ -30,7 +30,7 @@ def LaunchFirstRun(debreate_app):
 
 	if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
 		msg_l1 = GT("An error occurred trying to create the configuration file:")
-		msg_l2 = GT("Please report this error to Debreate\"s developers')
+		msg_l2 = GT("Please report this error to Debreate's developers")
 		ShowErrorDialog("{} {}\n\n{}".format(msg_l1, default_config, msg_l2))
 
 		return init_conf_code

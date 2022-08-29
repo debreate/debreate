@@ -258,7 +258,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 		elif isinstance(current, tuple) and current > VERSION_tuple:
 			current = "{}.{}.{}".format(current[0], current[1], current[2])
 			l1 = GT("Version {} is available!").format(current)
-			l2 = GT("Would you like to go to Debreate\"s website?')
+			l2 = GT("Would you like to go to Debreate's website?")
 			if ConfirmationDialog(self, GT("Update"), "{}\n\n{}".format(l1, l2)).Confirmed():
 				wx.LaunchDefaultBrowser(APP_homepage)
 

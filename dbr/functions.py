@@ -262,7 +262,7 @@ def FileUnstripped(file_name):
 
 		return False
 
-	print("ERROR: "file" command does not exist on system")
+	print("ERROR: \"file\" command does not exist on system")
 
 	return False
 
@@ -272,7 +272,7 @@ def BuildBinaryPackageFromTree(root_dir, filename):
 		return dbrerrno.ENOENT
 
 	# DEBUG
-	cmd = "fakeroot dpkg-deb -v -b "{}" "{}"".format(root_dir, filename)
+	cmd = "fakeroot dpkg-deb -v -b \"{}\" \"{}\"".format(root_dir, filename)
 	print("DEBUG: Issuing command: {}".format(cmd))
 
 	#res = subprocess.run([cmd])
@@ -290,7 +290,7 @@ def BuildDebPackage(stage_dir, target_file):
 	fakeroot = GetExecutable("fakeroot")
 
 	if not fakeroot or not packager:
-		return (dbrerrno.ENOENT, GT("Cannot run "fakeroot dpkg""))
+		return (dbrerrno.ENOENT, GT("Cannot run \"fakeroot dpkg\""))
 
 	packager = os.path.basename(packager)
 

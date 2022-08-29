@@ -385,7 +385,7 @@ class Wizard(wx.Panel):
 		label = self.GetCurrentPage().GetLabel()
 		page_help = MarkdownDialog(self, title=GT("Help"), readonly=True)
 
-		page_help.SetText(GT("Help information for page "{}"".format(label)))
+		page_help.SetText(GT("Help information for page \"{}\"".format(label)))
 
 		ShowDialog(page_help)
 

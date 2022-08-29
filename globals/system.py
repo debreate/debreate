@@ -49,7 +49,7 @@ def GetOSInfo(key, upstream=False):
 
 	for L in release_data:
 		if L.startswith(key):
-			value = L.replace("{}=".format(key), "").replace(""", "")
+			value = L.replace("{}=".format(key), "").replace("\"", "")
 			break
 
 	return value
@@ -107,7 +107,7 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
 		for INDEX in range(len(page_html)):
 			LINE = page_html[INDEX].lower()
 
-			if "<p class="line862">" in LINE and LINE.strip().endswith("</td>"):
+			if "<p class=\"line862\">" in LINE and LINE.strip().endswith("</td>"):
 				stable_version = LINE.split("</td>")[0].split(">")[-1].strip()
 
 				if StringIsVersioned(stable_version):
@@ -144,12 +144,12 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 		for INDEX in range(len(page_html)):
 			LINE = page_html[INDEX].lower()
 
-			if "id="current"" in LINE and len(current) < 2:
+			if "id=\"current\"" in LINE and len(current) < 2:
 				current.append(INDEX + 8)
 
 				continue
 
-			if "id="future"" in LINE:
+			if "id=\"future\"" in LINE:
 				if len(current) < 2:
 					current.append(INDEX)
 
@@ -158,7 +158,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 
 				continue
 
-			if "id="end_of_life"" in LINE:
+			if "id=\"end_of_life\"" in LINE:
 				if unstable and len(future) < 2:
 					future.append(INDEX)
 
@@ -171,7 +171,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 		# Lines containing these strings will be ignored
 		skip_lines = (
 			"releasenotes",
-			"class="http",
+			"class=\"http",
 			)
 
 		# Add names in order of newest first
@@ -182,7 +182,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 			for LINE in future:
 				LINE = LINE.lower()
 
-				if "class="line891"" in LINE and not Contains(LINE, skip_lines):
+				if "class=\"line891\"" in LINE and not Contains(LINE, skip_lines):
 					name = LINE.split("</a>")[0].split(">")[-1].strip().split(" ")[0]
 
 					if name and name not in dist_names:
@@ -194,7 +194,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 			for LINE in current:
 				LINE = LINE.lower()
 
-				if "class="line891"" in LINE and not Contains(LINE, skip_lines):
+				if "class=\"line891\"" in LINE and not Contains(LINE, skip_lines):
 					name = LINE.split("</a>")[0].split(">")[-1].strip().split(" ")[0]
 					if name and name not in dist_names:
 						dist_names.append(name)
@@ -209,7 +209,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 			for LINE in eol:
 				LINE = LINE.lower()
 
-				if "class="line891"" in LINE and not Contains(LINE, skip_lines):
+				if "class=\"line891\"" in LINE and not Contains(LINE, skip_lines):
 					name = LINE.split("</a>")[0].split(">")[-1].strip().split(" ")[0]
 
 					if name and name not in dist_names:
@@ -235,7 +235,7 @@ def _get_mint_distnames():
 		for INDEX in range(len(page_html)):
 			LINE = page_html[INDEX].lower()
 
-			if "href="release.php?id=" in LINE:
+			if "href=\"release.php?id=" in LINE:
 				name = LINE.split("</a>")[0].split(">")[-1].strip()
 
 				if name and not StringIsVersioned(name) and name not in dist_names:

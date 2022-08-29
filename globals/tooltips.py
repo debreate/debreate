@@ -28,8 +28,8 @@ TT_control = {
 	"btn preview": GT("Preview control file"),
 	"package": GT("Name of the package/software"),
 	"version": GT("Package/Software release version"),
-	"maintainer": GT("Package/Software maintainer\"s full name'),
-	"email": GT("Package/Software maintainer\"s email address'),
+	"maintainer": GT("Package/Software maintainer's full name"),
+	"email": GT("Package/Software maintainer's email address"),
 	"architecture": (
 		GT("Platform on which package/software is meant to run"), "",
 		GT("all = platform independent"),
@@ -43,7 +43,7 @@ TT_control = {
 		),
 	"source": GT("Name of upstream source package"),
 	"homepage": GT("Upstream source homepage URL"),
-	"essential": GT("Whether this package is essential for system\"s stability'),
+	"essential": GT("Whether this package is essential for system's stability"),
 }
 
 TT_depends = {
@@ -74,7 +74,7 @@ TT_files = {
 	"btn remove": GT("Remove selected files from list"),
 	"btn clear": GT("Clear file list"),
 	"btn browse": GT("Browse for target installation directory"),
-	"btn refresh": GT("Update files\" executable status & availability'),
+	"btn refresh": GT("Update files' executable status & availability"),
 	"target": GT("Target installation directory for file(s)"),
 	"filelist": (
 			GT("Files to be added to package & their target directories"), "",
@@ -107,7 +107,7 @@ TT_changelog = {
 	"version": TT_control["version"],
 	"dist": (
 		GT("Name of Debian/Ubuntu/etc. target distribution"), "",
-		GT("See "Options ➜ Update dist names cache" to update this list.")
+		GT("See \"Options ➜ Update dist names cache\" to update this list.")
 		),
 	"urgency": TT_control["priority"],
 	"maintainer": TT_control["maintainer"],
@@ -150,7 +150,7 @@ TT_menu = {
 	"export": GT("Export launcher to text file"),
 	"preview": GT("Preview launcher text"),
 	"filename": GT("Custom filename to use for launcher"),
-	"filename chk": GT("Unless checked, the value of "Filename" will be used for the launcher\"s output filename'),
+	"filename chk": GT("Unless checked, the value of \"Filename\" will be used for the launcher's output filename"),
 	"name": GT("Name to be displayed for the launcher"),
 	"exec": GT("Executable to be launched"),
 	"comment": GT("Text displayed when cursor hovers over launcher"),
@@ -169,11 +169,11 @@ TT_menu = {
 	"rm category": GT("Remove selected categories from list"),
 	"clear categories": GT("Clear category list"),
 	"categories": GT("Categories dictate where the launcher will be located in the system menu"),
-	"no disp": GT("This options means "This application exists, but don\"t display it in the menus"'),
+	"no disp": GT("This options means \"This application exists, but don't display it in the menus\""),
 	"show in": GT("Launcher is only shown when options are satisfied"),
 	"other": (
 		GT("Miscellaneous fields not available above"), "",
-		GT("See "Help ➜ Reference ➜ Launchers / Dekstop Entries" for more available options"), "",
+		GT("See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"), "",
 		GT("Warning:"),
 		"\t{}".format(GT("Improperly formatted text may cause launcher to be unusable")),
 		)
@@ -184,13 +184,13 @@ TT_build = {
 	"md5_disabled": GT("Install md5sum package for this option"),
 	"strip": (
 		GT("Discards unneeded symbols from binary files"), "",
-		GT("See "man 1 strip""),
+		GT("See \"man 1 strip\""),
 		),
 	"strip_disabled": GT("Install binutils package for this option"),
 	"rmstage": GT("Delete staged directory tree after package has been created"),
 	"lintian": (
 		GT("Checks the package for warnings & errors according to lintian specifications"), "",
-		GT("See "Help ➜ Reference ➜ Lintian Tags Explanation""),
+		GT("See \"Help ➜ Reference ➜ Lintian Tags Explanation\""),
 		),
 	"lintian_disabled": GT("Install lintian package for this option"),
 	btnid.BUILD: GT("Start building"),

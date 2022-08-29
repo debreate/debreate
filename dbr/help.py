@@ -23,7 +23,7 @@ man_section = "1"
 #  \return
 #	   RichText help reference
 def ParseManpage():
-	help_text = "ERROR: Could not parse \"{}\''.format(app_man)
+	help_text = "ERROR: Could not parse '{}'".format(app_man)
 
 	if os.path.isfile(app_man):
 		# FIXME: Should text if application is installed on system

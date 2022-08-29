@@ -345,7 +345,7 @@ class AboutDialog(wx.Dialog):
 	#		\b \e unicode|str : Optional contributer's email address
 	def AddJobs(self, name, jobs, email=wx.EmptyString):
 		if isinstance(jobs, str) or isinstance(jobs, unicode):
-			Logger.Debug(__name__, GT("Converting string argument "jobs" to tuple"))
+			Logger.Debug(__name__, GT("Converting string argument \"jobs\" to tuple"))
 			jobs = (jobs,)
 
 		for x, value in enumerate(jobs):
@@ -396,7 +396,7 @@ class AboutDialog(wx.Dialog):
 				ShowErrorDialog(log_text, parent=self)
 
 		else:
-			log_text = GT("ERROR: Could not locate changelog file:\n\t\"{}\' not found'.format(CHANGELOG))
+			log_text = GT("ERROR: Could not locate changelog file:\n\t'{}' not found".format(CHANGELOG))
 
 		self.changelog.SetValue(log_text)
 		self.changelog.SetInsertionPoint(0)
@@ -419,7 +419,7 @@ class AboutDialog(wx.Dialog):
 			lic_text = ReadFile(license_path)
 
 		else:
-			lic_text = GT("ERROR: Could not locate license file:\n\t\"{}\' not found'.format(license_path))
+			lic_text = GT("ERROR: Could not locate license file:\n\t'{}' not found".format(license_path))
 			lic_text += "\n\nCopyright © {} {} <{}>".format(GetYear(), AUTHOR_name, AUTHOR_email)
 			lic_text += "\n\nhttps://opensource.org/licenses/MIT"
 
