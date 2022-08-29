@@ -29,7 +29,7 @@ PY_VER_STRING = "{}.{}.{}".format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
 
 # *** wxWidgets Info *** #
 
-WX_VER_STRING = "{}.{}.{}".format(wx.MAJOR_VERSION, wx.MINOR_VERSION, wx.RELEASE_VERSION)
+WX_VER_STRING = wx.__version__
 
 
 # *** Operating System Info *** #
