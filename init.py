@@ -104,13 +104,6 @@ if not wxversion._selected:
 
 import subprocess, gettext, wx
 
-# Python & wx.Python encoding to UTF-8
-if (sys.getdefaultencoding() != u'utf-8'):
-	reload(sys)
-	# FIXME: Recommended not to use
-	sys.setdefaultencoding(u'utf-8')
-wx.SetDefaultPyEncoding('UTF-8')
-
 
 from dbr.app import DebreateApp
 

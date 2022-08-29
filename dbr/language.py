@@ -12,7 +12,7 @@ from globals.strings import GS
 TRANSLATION_DOMAIN = u'debreate'
 DIR_locale = os.path.join(os.path.dirname(os.path.dirname(__file__)), u'locale')
 
-gettext.install(TRANSLATION_DOMAIN, DIR_locale, unicode=True)
+gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 
 
 ## Ensure gettext
