@@ -5,7 +5,7 @@
 
 
 import wx
-from wx.combo import OwnerDrawnComboBox
+from wx.adv import OwnerDrawnComboBox
 
 from dbr.font			import MONOSPACED_MD
 from fields.ifield		import InputField

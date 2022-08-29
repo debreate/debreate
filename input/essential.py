@@ -5,7 +5,7 @@
 
 
 import wx
-from wx.combo import OwnerDrawnComboBox
+from wx.adv import OwnerDrawnComboBox
 
 from startup.startup	import AppInitialized
 from ui.panel			import ControlPanel
