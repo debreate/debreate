@@ -36,7 +36,6 @@ value_args = (
 cmds = (
 	"clean",
 	"compile",
-	"legacy",
 	"test",
 )
 
