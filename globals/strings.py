@@ -47,35 +47,27 @@ def RemoveEmptyLines(text):
 ## Checks if object is a string instance
 #
 #  Compatibility function for legacy Python versions
+#
+#  FIXME: deprecated
 def IsString(text):
-	if sys.version_info[0] <= 2:
-		return isinstance(text, str)
-
 	return isinstance(text, str)
 
 
 ## Converts an object to a string instance
 #
 #  Compatibility function for legacy Python versions
+#
+#  FIXME: deprecated
+#
 #  \param item
 #	Instance to be converted to string
 #  \return
 #	Compatible string
 def ToString(item):
-	if sys.version_info[0] <= 2:
-		item = unicode(item)
-
-	else:
-		item = str(item)
-
-	return item
+	return str(item)
 
 
-if sys.version_info[0] <= 2:
-	GS = unicode
-
-else:
-	GS = str
+GS = str
 
 
 ## Tests if a string can be converted to int or float
