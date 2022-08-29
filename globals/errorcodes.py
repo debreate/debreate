@@ -20,7 +20,7 @@ error_definitions = {
 }
 
 
-current_code = errno.errorcode.keys()[-1]
+current_code = sorted(errno.errorcode.keys())[-1]
 def AddNewCode(code_def):
 	global current_code
 
