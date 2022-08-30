@@ -264,7 +264,7 @@ def SetPageToolTips(parent, page_id=None):
 
 			else:
 				try:
-					name = FIELD.tt_name.lower()
+					name = str(FIELD.tt_name).lower()
 
 				except AttributeError:
 					try:
