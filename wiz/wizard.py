@@ -39,13 +39,16 @@ from wiz.helper			import GetMenu
 class Wizard(wx.Panel):
 	## Constructor
 	#
+	#  FIXME: `pageList` param unused?
+	#
 	#  \param parent
 	#	Parent <b><i>wx.Window</i></b> instance
 	#  \param pageList
 	#	<b><i>List</i></b> of wiz.wizard.WizardPage instances to initialize
 	#	wizard with
 	def __init__(self, parent, pageList=None):
-		wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
+		# ~ wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
+		wx.Panel.__init__(self, parent, wx.ID_ANY)
 
 		testing = "alpha" in GetTestList()
 
