@@ -459,7 +459,8 @@ class Page(WizardPage):
 					WriteFile(script_filename, script_text)
 
 					# Make sure scipt path is wrapped in quotes to avoid whitespace errors
-					os.chmod(script_filename, 0755)
+					# FIXME: both commands appear to do the same thing?
+					os.chmod(script_filename, 0o0755)
 					os.system(("chmod +x \"{}\"".format(script_filename)))
 
 					# Individual scripts
