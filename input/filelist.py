@@ -353,7 +353,8 @@ class FileList(BasicFileList, wx.FileDropTarget):
 				defaultValue=defaultValue, required=required, outLabel=outLabel)
 		wx.FileDropTarget.__init__(self)
 
-		ListCtrl.SetDropTarget(self, self)
+		# FIXME: file list drop target broken
+		# ~ ListCtrl.SetDropTarget(self, self)
 
 		self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
 		self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
