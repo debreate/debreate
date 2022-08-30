@@ -87,7 +87,9 @@ class ScrolledPanel(wx.ScrolledWindow, PanelBase):
 
 	## Override inherited method to also update the scrollbars
 	def Layout(self):
-		layout = wx.ScrolledWindow.Layout(self)
+		# ~ layout = super().Layout()
+		# FIXME: not sure this workaround is correct
+		layout = self.GetParent().Layout()
 
 		self.UpdateScrollbars()
 
@@ -98,7 +100,9 @@ class ScrolledPanel(wx.ScrolledWindow, PanelBase):
 	def UpdateScrollbars(self):
 		sizer = self.GetSizer()
 		if sizer:
-			self.SetVirtualSize(sizer.GetMinSize())
+			# ~ self.SetVirtualSize(sizer.GetMinSize())
+			# FIXME: not sure this workaround is correct
+			self.GetParent().SetVirtualSize(sizer.GetMinSize())
 
 
 ## A ui.panel.ScrolledPanel that defines methods to add child sections
