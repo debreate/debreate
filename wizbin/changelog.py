@@ -112,7 +112,7 @@ class Page(WizardPage):
 		LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
 		RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
 
-		lyt_info = wx.FlexGridSizer(2, 6)
+		lyt_info = wx.FlexGridSizer(2, 6, 0, 0)
 
 		lyt_info.AddGrowableCol(1)
 		lyt_info.AddGrowableCol(3)

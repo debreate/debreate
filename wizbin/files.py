@@ -185,7 +185,7 @@ class Page(WizardPage):
 		PROP_LEFT = 0
 		PROP_RIGHT = 1
 
-		lyt_main = wx.FlexGridSizer(1, 2)
+		lyt_main = wx.FlexGridSizer(1, 2, 0, 0)
 		lyt_main.AddGrowableRow(0)
 
 		# Directory tree size issues with wx 2.8

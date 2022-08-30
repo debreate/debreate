@@ -195,9 +195,7 @@ class Page(WizardPage):
 		lyt_top.Add(btn_save, 0, wx.ALIGN_TOP)
 		lyt_top.Add(btn_preview, 0, wx.ALIGN_TOP)
 
-		lyt_opts1 = wx.FlexGridSizer()
-		lyt_opts1.SetCols(3)
-		lyt_opts1.SetRows(2)
+		lyt_opts1 = wx.FlexGridSizer(2, 3, 0, 0)
 
 		lyt_opts1.Add(txt_type, 0, LEFT_CENTER)
 		lyt_opts1.Add(ti_type, 0, wx.EXPAND|wx.LEFT, 5)

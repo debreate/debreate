@@ -36,7 +36,7 @@ class Page(WizardPage):
 
 		# *** Layout *** #
 
-		lyt_info = wx.GridSizer()
+		lyt_info = wx.GridSizer(1, 1, 0, 0)
 		lyt_info.Add(txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
 
 		lyt_main = BoxSizer(wx.VERTICAL)

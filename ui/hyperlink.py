@@ -42,9 +42,9 @@ class Hyperlink(wx.Panel):
 		self.text.SetForegroundColour(wx.Colour(0, 0, 255))
 
 		layout_V1 = BoxSizer(wx.VERTICAL)
-		layout_V1.AddSpacer(1, wx.EXPAND)
+		layout_V1.AddStretchSpacer(1)
 		layout_V1.Add(self.text_bg, 0, wx.ALIGN_CENTER)
-		layout_V1.AddSpacer(1, wx.EXPAND)
+		layout_V1.AddStretchSpacer(1)
 
 		self.SetAutoLayout(True)
 		self.SetSizer(layout_V1)

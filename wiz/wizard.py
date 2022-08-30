@@ -103,7 +103,7 @@ class Wizard(wx.Panel):
 		# *** Layout *** #
 
 		# Position the text in the header
-		lyt_title = wx.GridSizer(1, 1)
+		lyt_title = wx.GridSizer(1, 1, 0, 0)
 		lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
 
 		pnl_title.SetSizer(lyt_title)
