@@ -118,7 +118,7 @@ from startup.startup		import SetAppInitialized
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
 	SetLocaleDir(ConcatPaths((PREFIX, "share/locale")))
-	gettext.install(TRANSLATION_DOMAIN, GetLocaleDir(), unicode=True)
+	gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 
 if ".py" in script_name:
