@@ -224,7 +224,7 @@ ChangeWorkingDirectory(working_dir)
 Debreate.Show(True)
 
 # Wait for window to be constructed (prevents being marked as dirty project after initialization)
-wx.Yield()
+wx.GetApp().Yield()
 
 # Set initializaton state to 'True'
 SetAppInitialized()

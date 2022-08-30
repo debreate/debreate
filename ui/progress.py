@@ -64,7 +64,7 @@ class ProgressDialog(wx.ProgressDialog):
 
 				# Preserve original width
 				self.SetSize(wx.Size(dimensions_original[0], dimensions_new[1]))
-				wx.Yield()
+				wx.GetApp().Yield()
 
 		if parent:
 			self.CenterOnParent()

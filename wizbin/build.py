@@ -228,7 +228,7 @@ class Page(WizardPage):
 			task_msg = GT("Preparing build tree")
 			Logger.Debug(__name__, task_msg)
 
-			wx.Yield()
+			wx.GetApp().Yield()
 			build_progress = ProgressDialog(GetMainWindow(), GT("Building"), task_msg,
 					maximum=task_count,
 					style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
@@ -249,12 +249,12 @@ class Page(WizardPage):
 				if message:
 					Logger.Debug(__name__, "{} ({})".format(message, task_eval))
 
-					wx.Yield()
+					wx.GetApp().Yield()
 					build_progress.Update(current_task, message)
 
 					return
 
-				wx.Yield()
+				wx.GetApp().Yield()
 				build_progress.Update(current_task)
 
 			# *** Files *** #
@@ -579,7 +579,7 @@ class Page(WizardPage):
 				progress += 1
 
 			# Close progress dialog
-			wx.Yield()
+			wx.GetApp().Yield()
 			build_progress.Update(progress)
 			build_progress.Destroy()
 
@@ -711,7 +711,7 @@ class Page(WizardPage):
 
 			progress = 0
 
-			wx.Yield()
+			wx.GetApp().Yield()
 			prebuild_progress = ProgressDialog(GetMainWindow(), GT("Preparing to build"),
 					maximum=prep_task_count)
 
@@ -723,7 +723,7 @@ class Page(WizardPage):
 				prebuild_progress.CenterOnParent()
 
 			for PID, id_string in page_checks:
-				wx.Yield()
+				wx.GetApp().Yield()
 				prebuild_progress.Update(progress, GT("Checking {}").format(id_string))
 
 				wizard_page = GetPage(PID)
@@ -733,7 +733,7 @@ class Page(WizardPage):
 				progress += 1
 
 			for task_check, id_string in other_checks:
-				wx.Yield()
+				wx.GetApp().Yield()
 				prebuild_progress.Update(progress, GT("Testing for: {}").format(task_check.GetLabel()))
 
 				if task_check.GetValue():
@@ -742,7 +742,7 @@ class Page(WizardPage):
 				progress += 1
 
 			# Close progress dialog
-			wx.Yield()
+			wx.GetApp().Yield()
 			prebuild_progress.Update(progress)
 			prebuild_progress.Destroy()
 
@@ -808,7 +808,7 @@ class Page(WizardPage):
 
 		install_cmd = (system_installer, package,)
 
-		wx.Yield()
+		wx.GetApp().Yield()
 		# FIXME: Use ExecuteCommand here
 		install_output = subprocess.Popen(install_cmd)
 
@@ -926,7 +926,7 @@ class Page(WizardPage):
 					GetProgressMessage(GT("Scanning default tags")))
 			progress.Start()
 
-			wx.Yield()
+			wx.GetApp().Yield()
 
 			# Create the dialog
 			overrides_dialog = CheckListDialog(GetMainWindow(), title=GT("Lintian Overrides"),

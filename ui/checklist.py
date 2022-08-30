@@ -65,7 +65,7 @@ class CheckList(BorderedPanel):
 	#	Sets item checked if True
 	def AddItem(self, label, checked=False):
 		# Yield for progress dialog pulse updates
-		wx.Yield()
+		wx.GetApp().Yield()
 
 		# FIXME: Static lines are counted
 		item_index = self.GetItemCount()

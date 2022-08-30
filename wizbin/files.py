@@ -238,7 +238,7 @@ class Page(WizardPage):
 					return False
 
 				if progress:
-					wx.Yield()
+					wx.GetApp().Yield()
 					progress.Update(completed, GT("Adding file {}").format(F))
 
 				self.lst_files.AddFile(F, D, target)
@@ -246,7 +246,7 @@ class Page(WizardPage):
 				completed += 1
 
 		if progress:
-			wx.Yield()
+			wx.GetApp().Yield()
 			progress.Update(completed)
 
 			progress.Destroy()
@@ -480,7 +480,7 @@ class Page(WizardPage):
 
 				count += 1
 				if count >= update_interval:
-					wx.Yield()
+					wx.GetApp().Yield()
 					prep.Pulse()
 					count = 0
 
@@ -499,12 +499,12 @@ class Page(WizardPage):
 							prep.Destroy()
 							return False
 
-						wx.Yield()
+						wx.GetApp().Yield()
 						prep.SetMessage(GT("Scanning directory {} ...").format(ROOT))
 
 						count += 1
 						if count >= update_interval:
-							wx.Yield()
+							wx.GetApp().Yield()
 							prep.Pulse()
 							count = 0
 
@@ -515,7 +515,7 @@ class Page(WizardPage):
 
 							count += 1
 							if count >= update_interval:
-								wx.Yield()
+								wx.GetApp().Yield()
 								prep.Pulse()
 								count = 0
 
@@ -533,7 +533,7 @@ class Page(WizardPage):
 
 			return False
 
-		wx.Yield()
+		wx.GetApp().Yield()
 		prep.Pulse(GT("Counting Files"))
 
 		file_count = len(file_list)
@@ -545,7 +545,7 @@ class Page(WizardPage):
 
 				count += 1
 				if count >= update_interval:
-					wx.Yield()
+					wx.GetApp().Yield()
 					prep.Pulse()
 					count = 0
 
@@ -693,7 +693,7 @@ class Page(WizardPage):
 				progress = ProgressDialog(GetMainWindow(), GT("Adding Files"), maximum=files_total,
 						style=PD_DEFAULT_STYLE|wx.PD_CAN_ABORT)
 
-				wx.Yield()
+				wx.GetApp().Yield()
 				progress.Show()
 
 			current_file = files_total
@@ -733,7 +733,7 @@ class Page(WizardPage):
 				if progress:
 					update_value = files_total - current_file
 
-					wx.Yield()
+					wx.GetApp().Yield()
 					progress.Update(update_value+1, GT("Imported file {} of {}").format(update_value, files_total))
 
 			if progress:

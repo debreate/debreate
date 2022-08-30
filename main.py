@@ -338,17 +338,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 					self.progress.ShowModal()
 				manual_dialog = wx.Dialog(self, title="Debreate Manual", size=(800,500), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 				manual = wx.html.HtmlWindow(manual_dialog)
-				wx.Yield()
+				wx.GetApp().Yield()
 				if manual.LoadFile(manual_index):
 					manual_dialog.CenterOnParent()
 					manual_dialog.ShowModal()
 				else:
-					wx.Yield()
+					wx.GetApp().Yield()
 					webbrowser.open(url_manual)
 				manual_dialog.Destroy()
 			else:
 				# open local document
-				wx.Yield()
+				wx.GetApp().Yield()
 				subprocess.call(["xdg-open", "{}/docs/usage.pdf".format(PATH_app)])
 
 

@@ -66,7 +66,7 @@ class TextArea(wx.TextCtrl, InputField):
 			bgcolor = main_object.GetBackgroundColour()
 			main_object.SetBackgroundColour(wx.RED)
 
-			wx.Yield()
+			wx.GetApp().Yield()
 			time.sleep(0.1)
 
 			main_object.SetBackgroundColour(bgcolor)
