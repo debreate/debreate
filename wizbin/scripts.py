@@ -73,7 +73,7 @@ class Page(WizardPage):
 		postrm.SetCheckBox(chk_postrm)
 
 		for S in chk_preinst, chk_postinst, chk_prerm, chk_postrm:
-			S.SetToolTipString("{} {}".format(S.GetName(), GT("script will be created from text below")))
+			S.SetToolTip("{} {}".format(S.GetName(), GT("script will be created from text below")))
 
 			S.Bind(wx.EVT_CHECKBOX, self.OnToggleScripts)
 

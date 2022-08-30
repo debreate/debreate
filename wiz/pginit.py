@@ -32,7 +32,7 @@ class Page(WizardPage):
 
 		lnk_video = Hyperlink(self, wx.ID_ANY, GT("Building a Debian Package with Debreate"),
 				"http://www.youtube.com/watch?v=kx4D5eL6HKE")
-		lnk_video.SetToolTipString(lnk_video.url)
+		lnk_video.SetToolTip(lnk_video.url)
 
 		# *** Layout *** #
 

@@ -230,7 +230,7 @@ def SetToolTip(tooltip, control, required=False):
 		if required:
 			tooltip = "{}\n\n{}".format(tooltip, GT("Required"))
 
-		control.SetToolTipString(tooltip)
+		control.SetToolTip(tooltip)
 
 
 ## Sets multiple tooltips at once

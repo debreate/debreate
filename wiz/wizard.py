@@ -64,7 +64,7 @@ class Wizard(wx.Panel):
 		if testing:
 			# Help button
 			btn_help = CreateButton(self, btnid.HELP)
-			btn_help.SetToolTipString(GT("Page help"))
+			btn_help.SetToolTip(GT("Page help"))
 
 		# A Header for the wizard
 		pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
