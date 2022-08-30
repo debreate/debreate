@@ -344,7 +344,7 @@ class AboutDialog(wx.Dialog):
 	#  \param email
 	#		\b \e unicode|str : Optional contributer's email address
 	def AddJobs(self, name, jobs, email=wx.EmptyString):
-		if isinstance(jobs, str) or isinstance(jobs, unicode):
+		if isinstance(jobs, str):
 			Logger.Debug(__name__, GT("Converting string argument \"jobs\" to tuple"))
 			jobs = (jobs,)
 
