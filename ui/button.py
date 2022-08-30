@@ -42,6 +42,13 @@ class CustomButton(wx.BitmapButton, CommandField):
 				validator, name)
 		CommandField.__init__(self, commands, requireAll)
 
+	## Convenience method.
+	#
+	#  FIXME: deprecated
+	def GetToolTipString(self):
+		print("DEBUG: deprecated call to CustomButton.GetToolTipString")
+		return self.GetToolTipText()
+
 
 ## TODO: Doxygen
 class LayoutButton(BoxSizer):
