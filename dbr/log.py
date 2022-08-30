@@ -95,7 +95,7 @@ class DebreateLogger:
 	#  \param level
 	#		\b \e int|str : The desired message level to output
 	#  \return
-	#		\b \e tuple container int & unicode/str values of output level,
+	#		\b \e tuple container int & str values of output level,
 	#		  or None for invalid log level
 	def CheckLogLevel(self, level):
 

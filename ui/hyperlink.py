@@ -18,9 +18,9 @@ from ui.layout import BoxSizer
 #  \param ID
 #		\b \e int : Identifier
 #  \param label
-#		\b \e unicode|str : Text displayed on hyperlink
+#		\b \e str : Text displayed on hyperlink
 #  \param url
-#		\b \e unicode|str : Link to open when hyperlink clicked
+#		\b \e str : Link to open when hyperlink clicked
 class Hyperlink(wx.Panel):
 	def __init__(self, parent, ID, label, url):
 		wx.Panel.__init__(self, parent, ID)

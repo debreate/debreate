@@ -18,7 +18,7 @@ from globals.paths	import PATH_home
 #  This method should be called in code instead of os.chdir
 #	unless there is an explicit reason to do otherwise.
 #  \param target_dir
-#		\b \e unicode|str : Path to set as new working directory
+#		\b \e str : Path to set as new working directory
 def ChangeWorkingDirectory(target_dir):
 	if DebugEnabled():
 		Logger.Debug(__name__, "ChangeWorkingDirectory: {}".format(target_dir), newline=True)

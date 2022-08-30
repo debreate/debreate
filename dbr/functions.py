@@ -105,7 +105,7 @@ def RequirePython(version):
 ## Checks if a string contains any alphabetic characters
 #
 #  \param value
-#		\b \e unicode|str : String to check
+#		\b \e str : String to check
 #  \return
 #		\b \e bool : Alphabet characters found
 def HasAlpha(value):

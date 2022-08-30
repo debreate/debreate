@@ -202,9 +202,9 @@ class StandardFileDialog(wx.FileDialog):
 #  \param parent
 #		\b \e wx.Window : The parent window
 #  \param title
-#		\b \e unicode|str : Text to display in title bar
+#		\b \e str : Text to display in title bar
 #  \param icon
-#		\b \e wx.Bitmap|unicode|str : Image to display
+#		\b \e wx.Bitmap|str : Image to display
 class DetailedMessageDialog(BaseDialog, ButtonDialog):
 	def __init__(self, parent, title=GT("Message"), icon=ICON_INFORMATION, text=wx.EmptyString,
 			details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE, buttons=(wx.ID_OK,),
@@ -296,7 +296,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 	## Adds buttons & details text to dialog
 	#
 	#  \param details
-	#		\b \e unicode|str : Detailed text to show in dialog
+	#		\b \e str : Detailed text to show in dialog
 	def CreateDetailedView(self, details):
 		# Controls have not been constructed yet
 		if TextIsEmpty(self.details):
@@ -613,15 +613,15 @@ def ShowDialog(dialog, center=wx.BOTH):
 #  Dialog is orphaned if parent is None so it can be displayed
 #  without main window in cases of initialization errors.
 #  \param text
-#		\b \e str|unicode: Explanation of error
+#		\b \e str: Explanation of error
 #  \param details
-#		\b \e str|unicode: Extended details of error
+#		\b \e str: Extended details of error
 #  \param parent
 #	\b \e Parent window of new dialog
 #	If False, parent is set to main window
 #	If None, dialog is orphaned
 #  \param module
-#		\b \e str|unicode: Module where error was caught (used for Logger output)
+#		\b \e str: Module where error was caught (used for Logger output)
 #  \param warn
 #		\b \e bool: Show log message as warning instead of error
 def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Error"),

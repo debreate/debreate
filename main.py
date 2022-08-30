@@ -557,7 +557,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 	## Tests project type & calls correct method to read project file
 	#
 	#  \param project_file
-	#	\b \e unicode|str : Path to project file
+	#	\b \e str : Path to project file
 	def OpenProject(self, project_file):
 		Logger.Debug(__name__, "Opening project: {}".format(project_file))
 

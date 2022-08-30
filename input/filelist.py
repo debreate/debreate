@@ -375,11 +375,11 @@ class FileList(BasicFileList, wx.FileDropTarget):
 	## TODO: Doxygen
 	#
 	#  \param filename
-	#		\b \e unicode|str : Basename of file
+	#		\b \e str : Basename of file
 	#  \param sourceDir
-	#		\b \e unicode|str : Directory where file is located
+	#		\b \e str : Directory where file is located
 	#  \param targetDir
-	#		\b \e unicode|str : Target directory where file will ultimately be installed
+	#		\b \e str : Target directory where file will ultimately be installed
 	#  \param executable
 	#		\b \e bool : Whether or not the file should be marked as executable
 	#  \return

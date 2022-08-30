@@ -164,9 +164,9 @@ class Page(WizardPage):
 	#  \param task_list
 	#		\b \e dict : Task string IDs & page data
 	#  \param build_path
-	#		\b \e unicode|str : Directory where .deb will be output
+	#		\b \e str : Directory where .deb will be output
 	#  \param filename
-	#		\b \e unicode|str : Basename of output file without .deb extension
+	#		\b \e str : Basename of output file without .deb extension
 	#  \return
 	#		\b \e dbrerror : SUCCESS if build completed successfully
 	def Build(self, task_list, build_path, filename):
@@ -789,7 +789,7 @@ class Page(WizardPage):
 	#  Shows a success dialog if installed. Otherwise shows an
 	#  error dialog.
 	#  \param package
-	#		\b \e unicode|str : Path to package to be installed
+	#		\b \e str : Path to package to be installed
 	def InstallPackage(self, package):
 		system_installer = GetSystemInstaller()
 

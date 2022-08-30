@@ -77,7 +77,7 @@ def SetDefaultConfigKey(key, value):
 ## Opens configuration & searches for key
 #
 #  \param k_name
-#		\b \e unicode|str : Key to search for
+#		\b \e str : Key to search for
 #  \return
 #		Value of key if found, otherwise ConfCode
 def ReadConfig(k_name, conf=default_config):
@@ -123,9 +123,9 @@ def ReadConfig(k_name, conf=default_config):
 ## Writes a key=value combination to configuration
 #
 #  \param k_name
-#		\b \e unicode|str : Key to write
+#		\b \e str : Key to write
 #  \param k_value
-#		\b \e unicode|str|tuple|int|bool : Value of key
+#		\b \e str|tuple|int|bool : Value of key
 #  \return
 #		\b \e int : ConfCode
 def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
@@ -208,7 +208,7 @@ def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
 ## Function used to create the inital configuration file
 #
 #  \param conf
-#		\b \e unicode|str : File to be written
+#		\b \e str : File to be written
 #  \return
 #		\b \e ConfCode
 def InitializeConfig(conf=default_config):
@@ -224,7 +224,7 @@ def InitializeConfig(conf=default_config):
 ## Retrieves default configuration value for a key
 #
 #  \param key
-#		\b \e unicode|str : Key to check
+#		\b \e str : Key to check
 #  \return
 #		Default value for the key or ConfCode.KEY_NO_EXIST
 def GetDefaultConfigValue(key):

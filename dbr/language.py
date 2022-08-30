@@ -17,9 +17,11 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 
 ## Ensure gettext
 #
+#  FIXME: depracated?
+#
 #  This is a workaround for Python 2
 #  \param str_value
-#	\b \e unicode|str : String to be converted to unicode & translated
+#	\b \e str : String to be translated
 def GT(str_value):
 	return _(GS(str_value))
 

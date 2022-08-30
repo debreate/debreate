@@ -338,11 +338,11 @@ class AboutDialog(wx.Dialog):
 	## Adds list of jobs for single contributer
 	#
 	#  \param name
-	#		\b \e unicode|str : Contributer's name
+	#		\b \e str : Contributer's name
 	#  \param jobs
 	#		\b \e string \b \e list|tuple : Contributer's jobs
 	#  \param email
-	#		\b \e unicode|str : Optional contributer's email address
+	#		\b \e str : Optional contributer's email address
 	def AddJobs(self, name, jobs, email=wx.EmptyString):
 		if isinstance(jobs, str):
 			Logger.Debug(__name__, GT("Converting string argument \"jobs\" to tuple"))

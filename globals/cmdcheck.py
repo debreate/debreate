@@ -16,9 +16,9 @@ import subprocess
 #	a True value & the location to the executable
 #	is returned.
 #  \param cmd
-#		\b \e unicode|str : Command to check for
+#		\b \e str : Command to check for
 #  \return
-#		\b \e unicode|str|None : A string path to executable or None if not found
+#		\b \e str|None : A string path to executable or None if not found
 def CommandExists(cmd):
 	res = subprocess.run(["which", cmd])
 	cmd_result = res.returncode
