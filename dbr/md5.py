@@ -36,8 +36,8 @@ def WriteMD5(stage_dir, parent=None):
 
 		md5_label = GetField(pgid.BUILD, chkid.MD5).GetLabel()
 
-		err_msg1 = GT("The "md5sum" command was not found on the system.")
-		err_msg2 = GT("Uncheck the "{}" box.").format(md5_label)
+		err_msg1 = GT("The \"md5sum\" command was not found on the system.")
+		err_msg2 = GT("Uncheck the \"{}\" box.").format(md5_label)
 		err_msg3 = GT("Please report this error to one of the following addresses:")
 		err_url1 = "https://github.com/AntumDeluge/debreate/issues"
 		err_url2 = "https://sourceforge.net/p/debreate/bugs/"

@@ -371,7 +371,7 @@ class Page(WizardPage):
 
 			# Warn about linking in a directory that does not exist on the current filesystem
 			if not os.path.isdir(link_path):
-				warn_msg = GT("Path "{}" does not exist.")
+				warn_msg = GT("Path \"{}\" does not exist.")
 				warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
 				overwrite = ConfirmationDialog(main_window, text=warn_msg.format(link_path))
@@ -405,8 +405,8 @@ class Page(WizardPage):
 				else:
 					link = "{}/{}".format(link_path, filename)
 
-				postinst_list.append("ln -fs "{}" "{}"".format(source_path, link))
-				prerm_list.append("rm -f "{}"".format(link))
+				postinst_list.append("ln -fs \"{}\" \"{}\"".format(source_path, link))
+				prerm_list.append("rm -f \"{}\"".format(link))
 
 			postinst = "\n\n".join(postinst_list)
 			prerm = "\n\n".join(prerm_list)
@@ -421,7 +421,7 @@ class Page(WizardPage):
 	## Displays an information dialog about Auto-Link when help button is pressed
 	def OnHelpButton(self, event=None):
 		al_help = MarkdownDialog(self, title=GT("Auto-Link Help"), readonly=True)
-		description = GT("Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable "bar" to the directory "/usr/share/foo" in order to execute "bar" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to "bar" somewhere on the system path like "/usr/bin". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.")
+		description = GT("Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package.")
 		instructions = GT("How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above.")
 
 		al_help.SetText("{}\n\n{}".format(description, instructions))

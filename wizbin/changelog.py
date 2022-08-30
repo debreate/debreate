@@ -167,7 +167,7 @@ class Page(WizardPage):
 
 		if TextIsEmpty(new_changes):
 			DetailedMessageDialog(GetMainWindow(), GT("Warning"), ICON_WARNING,
-					GT(""Changes" section is empty")).ShowModal()
+					GT("\"Changes\" section is empty")).ShowModal()
 
 			self.ti_changes.SetInsertionPointEnd()
 			self.ti_changes.SetFocus()

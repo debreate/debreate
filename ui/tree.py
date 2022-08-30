@@ -662,7 +662,7 @@ class DirectoryTree(wx.TreeCtrl):
 				continue
 
 			else:
-				Logger.Debug(__name__, "PathItem instance for "{}" directory already exists".format(DEV.MountPoint))
+				Logger.Debug(__name__, "PathItem instance for \"{}\" directory already exists".format(DEV.MountPoint))
 
 
 	## TODO: Doxygen
@@ -1075,7 +1075,7 @@ class DirectoryTree(wx.TreeCtrl):
 		path_list = []
 		for I in item_list:
 			if not os.access(I.Path, os.W_OK):
-				ShowErrorDialog(GT("Cannot move "{}" to trash, no write access").format(I.Path),
+				ShowErrorDialog(GT("Cannot move \"{}\" to trash, no write access").format(I.Path),
 						warn=True)
 
 				return False
@@ -1101,7 +1101,7 @@ class DirectoryTree(wx.TreeCtrl):
 			# Confirm that paths were removed
 			for P in path_list:
 				if os.path.exists(P):
-					Logger.Debug(__name__, "Failed to remove "{}"".format(P))
+					Logger.Debug(__name__, "Failed to remove \"{}\"".format(P))
 
 					return False
 

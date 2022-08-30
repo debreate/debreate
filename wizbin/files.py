@@ -67,7 +67,7 @@ class Page(WizardPage):
 		self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, chkid.TOPLEVEL, GT("Preserve top-level directories"),
 				name="top-level", cfgSect="FILES")
 
-		self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT("Don\"t follow symbolic links'),
+		self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT("Don't follow symbolic links"),
 				defaultValue=True, name="nofollow-symlink", cfgSect="FILES")
 
 		self.tree_dirs = DirectoryTreePanel(self, size=(300,20))

@@ -96,7 +96,7 @@ class Page(WizardPage):
 
 		if UsingTest("alpha"):
 			# FIXME: Move next to lintian check box
-			Logger.Info(__name__, "Enabling alpha feature "lintian overrides" option")
+			Logger.Info(__name__, "Enabling alpha feature \"lintian overrides\" option")
 			self.lint_overrides = []
 			btn_lint_overrides = CreateButton(self, label=GT("Lintian overrides"))
 			btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
@@ -221,7 +221,7 @@ class Page(WizardPage):
 					return (dbrerrno.EEXIST, None)
 
 			# Actual path to new .deb
-			deb = ""{}/{}.deb"".format(build_path, filename)
+			deb = "\"{}/{}.deb\"".format(build_path, filename)
 
 			progress = 0
 
@@ -380,7 +380,7 @@ class Page(WizardPage):
 
 				if CMD_gzip:
 					UpdateProgress(progress, GT("Compressing changelog"))
-					c = "{} -n --best "{}/changelog"".format(CMD_gzip, changelog_target)
+					c = "{} -n --best \"{}/changelog\"".format(CMD_gzip, changelog_target)
 					res = subprocess.run([c.encode("utf-8")])
 					if res.returncode != 0:
 						ShowErrorDialog(GT("Could not compress changelog"), clog_status[1], warn=True, title=GT("Warning"))
@@ -460,7 +460,7 @@ class Page(WizardPage):
 
 					# Make sure scipt path is wrapped in quotes to avoid whitespace errors
 					os.chmod(script_filename, 0755)
-					os.system(("chmod +x "{}"".format(script_filename)))
+					os.system(("chmod +x \"{}\"".format(script_filename)))
 
 					# Individual scripts
 					progress += 1
@@ -477,7 +477,7 @@ class Page(WizardPage):
 			UpdateProgress(progress, GT("Getting installed size"))
 
 			# Get installed-size
-			installed_size = os.popen(("du -hsk "{}"".format(stage_dir))).readlines()
+			installed_size = os.popen(("du -hsk \"{}\"".format(stage_dir))).readlines()
 			installed_size = installed_size[0].split("\t")
 			installed_size = installed_size[0]
 

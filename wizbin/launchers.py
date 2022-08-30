@@ -90,7 +90,7 @@ class Page(WizardPage):
 		txt_filename = wx.StaticText(self, txtid.FNAME, GT("Filename"), name="filename")
 		ti_filename = TextArea(self, inputid.FNAME, name=txt_filename.Name)
 
-		chk_filename = CheckBox(self, chkid.FNAME, GT("Use "Name" as output filename (<Name>.desktop)"),
+		chk_filename = CheckBox(self, chkid.FNAME, GT("Use \"Name\" as output filename (<Name>.desktop)"),
 				name="filename chk", defaultValue=True)
 
 		# --- NAME (menu)
