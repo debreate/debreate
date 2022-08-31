@@ -380,10 +380,9 @@ class Page(WizardPage):
 
 				if CMD_gzip:
 					UpdateProgress(progress, GT("Compressing changelog"))
-					c = "{} -n --best \"{}/changelog\"".format(CMD_gzip, changelog_target)
-					res = subprocess.run([c.encode("utf-8")])
+					res = subprocess.run([CMD_gzip, "-n", "--best", "{}/changelog".format(changelog_target)], stdout=subprocess.PIPE)
 					if res.returncode != 0:
-						ShowErrorDialog(GT("Could not compress changelog"), clog_status[1], warn=True, title=GT("Warning"))
+						ShowErrorDialog(GT("Could not compress changelog"), res.stdout.decode("utf-8"), warn=True, title=GT("Warning"))
 
 				progress += 1
 
