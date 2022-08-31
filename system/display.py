@@ -95,7 +95,7 @@ def CenterOnPrimaryDisplay(window):
 	if not display_rect:
 		return False
 
-	window_size = window.GetSizeTuple()
+	window_size = window.GetSize().Get()
 
 	dx = display_rect[2]
 	dy = display_rect[3]

@@ -717,7 +717,7 @@ class Page(WizardPage):
 
 			if wx.MAJOR_VERSION < 3:
 				# Resize dialog for better fit
-				pb_size = prebuild_progress.GetSizeTuple()
+				pb_size = prebuild_progress.GetSize().Get()
 				pb_size = (pb_size[0]+200, pb_size[1])
 				prebuild_progress.SetSize(pb_size)
 				prebuild_progress.CenterOnParent()

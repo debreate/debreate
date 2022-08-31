@@ -307,7 +307,7 @@ def BuildDebPackage(stage_dir, target_file):
 def MouseInsideWindow(window):
 	# Only need to find size because ScreenToClient method gets mouse pos
 	# relative to window.
-	win_size = window.GetSizeTuple()
+	win_size = window.GetSize().Get()
 	mouse_pos = window.ScreenToClient(wx.GetMousePosition())
 
 	# Subtracting from width & height compensates for visual boundaries
