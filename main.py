@@ -6,7 +6,7 @@
 # See: docs/LICENSE.txt
 
 
-import os, shutil, subprocess, urllib, webbrowser, wx, wx.html
+import os, shutil, subprocess, urllib, webbrowser, wx.html
 from urllib.error import HTTPError
 from urllib.error import URLError
 
