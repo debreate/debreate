@@ -1,7 +1,7 @@
 Mandatory:
 - Add 'provides' to Dependencies and Conflicts page
 - Fix file list drop target
-- Fix layout of "Files" page
+- Fix broken FileList class (cannot call FileList.Layout())
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition

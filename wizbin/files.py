@@ -110,7 +110,9 @@ class Page(WizardPage):
 		btn_refresh = CreateButton(self, btnid.REFRESH)
 
 		# Display area for files added to list
-		self.lst_files = FileListESS(self, inputid.LIST, name="filelist")
+		# FIXME: FileList class broken, cannot call FileList.Layout()
+		# ~ self.lst_files = FileListESS(self, inputid.LIST, name="filelist")
+		self.lst_files = wx.StaticText(self, label="FIXME: FileList broken")
 
 		# *** Event Handling *** #
 
@@ -133,7 +135,7 @@ class Page(WizardPage):
 		self.ti_target.Bind(wx.EVT_KEY_UP, self.CheckDest)
 
 		# Key events for file list
-		self.lst_files.Bind(wx.EVT_KEY_DOWN, self.OnRemoveSelected)
+		# ~ self.lst_files.Bind(wx.EVT_KEY_DOWN, self.OnRemoveSelected)
 
 		self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
 
