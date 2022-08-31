@@ -44,16 +44,16 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
 		if items:
 			row_index = self.GetItemCount()
 			if isinstance(items, str):
-				self.InsertStringItem(row_index, items)
+				self.InsertItem(row_index, items)
 
 			elif isinstance(items, (tuple, list)):
-				self.InsertStringItem(row_index, items[0])
+				self.InsertItem(row_index, items[0])
 
 				if len(items) > 1:
 					column_index = 0
 					for I  in items[1:]:
 						column_index += 1
-						self.SetStringItem(row_index, column_index, I)
+						self.SetItem(row_index, column_index, I)
 
 
 	## Disables the list control
@@ -425,7 +425,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
 	#
 	#  FIXME: imageIndex unused; Unknown purpose, not documented
 	def InsertStringItem(self, index, label, imageIndex=None):
-		self.MainCtrl.InsertStringItem(index, label)
+		self.MainCtrl.InsertItem(index, label)
 
 
 	## Checks if field is required for building
@@ -507,7 +507,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
 	#
 	#  FIXME: imageId unused; Unknown purpose, not documented
 	def SetStringItem(self, index, col, label, imageId=None):
-		self.MainCtrl.SetStringItem(index, col, label)
+		self.MainCtrl.SetItem(index, col, label)
 
 
 	## TODO: Doxygen
