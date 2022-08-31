@@ -21,9 +21,8 @@ import subprocess
 #		\b \e str|None : A string path to executable or None if not found
 def CommandExists(cmd):
 	res = subprocess.run(["which", cmd], stdout=subprocess.PIPE)
-	cmd_result = res.returncode
 
-	if cmd_result == 0:
+	if res.returncode == 0:
 		# convert from bytes to string & remove trailing lines
 		return res.stdout.decode("utf-8").replace("\r\n", "\n").split("\n")[0]
 
