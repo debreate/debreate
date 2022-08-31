@@ -325,7 +325,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 				cached = True
 			url_manual = "https://debreate.wordpress.com/manual/"
 			# NOTE: use urllib.request.urlopen for Python 3
-			manual_data = urllib.urlopen(url_manual)
+			manual_data = urllib.request.urlopen(url_manual)
 			url_state = manual_data.getcode()
 			if url_state == 200:
 				# cache files
