@@ -42,13 +42,6 @@ class CustomButton(wx.BitmapButton, CommandField):
 				validator, name)
 		CommandField.__init__(self, commands, requireAll)
 
-	## Convenience method.
-	#
-	#  FIXME: deprecated
-	def GetToolTipString(self):
-		print("DEBUG: deprecated call to CustomButton.GetToolTipString")
-		return self.GetToolTipText()
-
 
 ## TODO: Doxygen
 class LayoutButton(BoxSizer):
@@ -118,7 +111,7 @@ class ButtonSizer(BoxSizer):
 		else:
 			if isinstance(button, CustomButton):
 				if label == None:
-					label = button.GetToolTipString()
+					label = button.GetToolTipText()
 
 				add_object = BoxSizer(wx.VERTICAL)
 				add_object.Add(button, 0, wx.ALIGN_CENTER)
@@ -139,7 +132,7 @@ class ButtonSizer(BoxSizer):
 	def Insert(self, index, button, proportion=0, flag=0, border=0, label=None, userData=None):
 		if isinstance(button, CustomButton):
 			if label == None:
-				label = button.GetToolTipString()
+				label = button.GetToolTipText()
 
 			add_object = BoxSizer(wx.VERTICAL)
 			add_object.Add(button, 0, wx.ALIGN_CENTER)
