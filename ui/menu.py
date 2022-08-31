@@ -126,7 +126,7 @@ def createMenuBar(parent):
 				if len(mitem) > 3:
 					itm.SetBitmap(mitem[3])
 
-				menu_file.AppendItem(itm)
+				menu_file.Append(itm)
 
 	# ----- Options Menu
 	parent.menu_opt = wx.Menu()
@@ -137,7 +137,7 @@ def createMenuBar(parent):
 
 	# A bug with wx 2.8 does not allow tooltips to be toggled off
 	if wx.MAJOR_VERSION > 2:
-		parent.menu_opt.AppendItem(parent.opt_tooltips)
+		parent.menu_opt.Append(parent.opt_tooltips)
 
 	if parent.menu_opt.FindItemById(menuid.TOOLTIPS):
 		show_tooltips = ReadConfig("tooltips")
@@ -153,7 +153,7 @@ def createMenuBar(parent):
 
 	if GetExecutable("xdg-open"):
 		mitm_logs_open = wx.MenuItem(parent.menu_opt, menuid.OPENLOGS, GT("Open logs directory"))
-		parent.menu_opt.AppendItem(mitm_logs_open)
+		parent.menu_opt.Append(mitm_logs_open)
 
 		wx.EVT_MENU(parent, menuid.OPENLOGS, parent.OnLogDirOpen)
 
@@ -161,10 +161,10 @@ def createMenuBar(parent):
 
 	opt_distname_cache = wx.MenuItem(parent.menu_opt, menuid.DIST, GT("Update dist names cache"),
 			GT("Creates/Updates list of distribution names for changelog page"))
-	parent.menu_opt.AppendItem(opt_distname_cache)
+	parent.menu_opt.Append(opt_distname_cache)
 
 	mitm_ccache = wx.MenuItem(parent.menu_opt, menuid.CCACHE, GT("Clear local cache"))
-	parent.menu_opt.AppendItem(mitm_ccache)
+	parent.menu_opt.Append(mitm_ccache)
 
 	# ----- Help Menu
 	menu_help = wx.Menu()
@@ -174,7 +174,7 @@ def createMenuBar(parent):
 			GT("Check if a new version is available for download"))
 	mitm_update.SetBitmap(ICON_LOGO)
 
-	menu_help.AppendItem(mitm_update)
+	menu_help.Append(mitm_update)
 	menu_help.AppendSeparator()
 
 	# Menu with links to the Debian Policy Manual webpages
@@ -220,7 +220,7 @@ def createMenuBar(parent):
 
 			mitm = wx.MenuItem(parent.menu_policy, link_id, label, url)
 			mitm.SetBitmap(icon)
-			parent.menu_policy.AppendItem(mitm)
+			parent.menu_policy.Append(mitm)
 
 			wx.EVT_MENU(parent, link_id, parent.OpenPolicyManual)
 
@@ -229,8 +229,8 @@ def createMenuBar(parent):
 
 	menu_help.AppendMenu(-1, GT("Reference"), parent.menu_policy)
 	menu_help.AppendSeparator()
-	menu_help.AppendItem(mitm_manual)
-	menu_help.AppendItem(mitm_about)
+	menu_help.Append(mitm_manual)
+	menu_help.Append(mitm_about)
 
 	if parent.menu_opt.GetMenuItemCount():
 		menubar.Append(parent.menu_opt, GT("Options"), menuid.OPTIONS)

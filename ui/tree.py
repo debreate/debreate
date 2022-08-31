@@ -213,12 +213,12 @@ class DirectoryTree(wx.TreeCtrl):
 				kind=wx.ITEM_CHECK)
 		mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT("Refresh"))
 
-		self.ctx_menu.AppendItem(mitm_add)
-		self.ctx_menu.AppendItem(mitm_expand)
-		self.ctx_menu.AppendItem(mitm_rename)
+		self.ctx_menu.Append(mitm_add)
+		self.ctx_menu.Append(mitm_expand)
+		self.ctx_menu.Append(mitm_rename)
 		self.ctx_menu.AppendSeparator()
-		self.ctx_menu.AppendItem(mitm_togglehidden)
-		self.ctx_menu.AppendItem(mitm_refresh)
+		self.ctx_menu.Append(mitm_togglehidden)
+		self.ctx_menu.Append(mitm_refresh)
 
 		# FIXME: Hack
 		self.trash = False
