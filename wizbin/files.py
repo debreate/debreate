@@ -116,10 +116,10 @@ class Page(WizardPage):
 
 		# create an event to enable/disable custom widget
 		for item in self.grp_targets:
-			wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
+			item.Bind(wx.EVT_RADIOBUTTON, self.OnSetDestination, id=wx.ID_ANY)
 
 		# Context menu events for directory tree
-		wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
+		self.Bind(wx.EVT_MENU, self.OnImportFromTree, id=wx.ID_ADD)
 
 		# Button events
 		btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)
@@ -129,11 +129,11 @@ class Page(WizardPage):
 		btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
 
 		# ???: Not sure what these do
-		wx.EVT_KEY_DOWN(self.ti_target, self.GetDestValue)
-		wx.EVT_KEY_UP(self.ti_target, self.CheckDest)
+		self.ti_target.Bind(wx.EVT_KEY_DOWN, self.GetDestValue)
+		self.ti_target.Bind(wx.EVT_KEY_UP, self.CheckDest)
 
 		# Key events for file list
-		wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
+		self.lst_files.Bind(wx.EVT_KEY_DOWN, self.OnRemoveSelected)
 
 		self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
 

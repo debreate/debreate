@@ -186,7 +186,7 @@ class Wizard(wx.Panel):
 			kind=wx.ITEM_RADIO))
 
 		# Bind menu event to ID
-		wx.EVT_MENU(main_window, page.Id, main_window.OnMenuChangePage)
+		main_window.Bind(wx.EVT_MENU, main_window.OnMenuChangePage, id=page.Id)
 
 
 	## Handles displaying a new page when commanded

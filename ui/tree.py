@@ -234,7 +234,7 @@ class DirectoryTree(wx.TreeCtrl):
 		# *** Event handlers *** #
 
 		self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
-		wx.EVT_KEY_DOWN(self, self.OnDoubleClick)
+		self.Bind(wx.EVT_KEY_DOWN, self.OnDoubleClick)
 		self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
 
 		self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
@@ -244,11 +244,11 @@ class DirectoryTree(wx.TreeCtrl):
 
 		self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
 
-		wx.EVT_MENU(self, menuid.EXPAND, self.OnMenuSelect)
-		wx.EVT_MENU(self, menuid.RENAME, self.OnMenuSelect)
-		wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
-		wx.EVT_MENU(self, menuid.TOGGLEHIDDEN, self.OnRefresh)
-		wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
+		self.Bind(wx.EVT_MENU, self.OnMenuSelect, id=menuid.EXPAND)
+		self.Bind(wx.EVT_MENU, self.OnMenuSelect, id=menuid.RENAME)
+		self.Bind(wx.EVT_MENU, self.OnMenuSelect, id=wx.ID_DELETE)
+		self.Bind(wx.EVT_MENU, self.OnRefresh, id=menuid.TOGGLEHIDDEN)
+		self.Bind(wx.EVT_MENU, self.OnRefresh, id=wx.ID_REFRESH)
 
 		self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
 

@@ -134,10 +134,10 @@ class Page(WizardPage):
 		for DS, CHK, RB in self.script_objects:
 			RB.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect)
 
-		wx.EVT_BUTTON(btn_al_import, btnid.IMPORT, self.ImportExes)
-		wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
-		wx.EVT_BUTTON(btn_al_remove, btnid.REMOVE, self.ImportExes)
-		wx.EVT_BUTTON(btn_help, btnid.HELP, self.OnHelpButton)
+		btn_al_import.Bind(wx.EVT_BUTTON, self.ImportExes, id=btnid.IMPORT)
+		btn_al_generate.Bind(wx.EVT_BUTTON, self.OnGenerate, id=wx.ID_ANY)
+		btn_al_remove.Bind(wx.EVT_BUTTON, self.ImportExes, id=btnid.REMOVE)
+		btn_help.Bind(wx.EVT_BUTTON, self.OnHelpButton, id=btnid.HELP)
 
 		# *** Layout *** #
 

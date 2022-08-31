@@ -33,7 +33,7 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
 
 		# *** Event Handling *** #
 
-		wx.EVT_KEY_DOWN(self, self.OnSelectAll)
+		self.Bind(wx.EVT_KEY_DOWN, self.OnSelectAll)
 
 
 	## Add items to end of list

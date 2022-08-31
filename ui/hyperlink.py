@@ -35,9 +35,9 @@ class Hyperlink(wx.Panel):
 		self.FONT_HIGHLIGHT = self.text.GetFont()
 		self.FONT_HIGHLIGHT.SetUnderlined(True)
 
-		wx.EVT_LEFT_DOWN(self.text, self.OnLeftClick)
-		wx.EVT_ENTER_WINDOW(self.text_bg, self.OnMouseOver)
-		wx.EVT_LEAVE_WINDOW(self.text_bg, self.OnMouseOut)
+		self.text.Bind(wx.EVT_LEFT_DOWN, self.OnLeftClick)
+		self.text_bg.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseOver)
+		self.text_bg.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseOut)
 
 		self.text.SetForegroundColour(wx.Colour(0, 0, 255))
 

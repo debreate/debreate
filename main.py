@@ -111,24 +111,24 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
 		# *** Event Handling *** #
 
-		wx.EVT_MENU(self, menuid.NEW, self.OnProjectNew)
-		wx.EVT_MENU(self, menuid.OPEN, self.OnProjectOpen)
-		wx.EVT_MENU(self, menuid.SAVE, self.OnProjectSave)
-		wx.EVT_MENU(self, menuid.SAVEAS, self.OnProjectSave)
-		wx.EVT_MENU(self, menuid.QBUILD, self.OnQuickBuild)
-		wx.EVT_MENU(self, menuid.EXIT, self.OnQuit)
+		self.Bind(wx.EVT_MENU, self.OnProjectNew, id=menuid.NEW)
+		self.Bind(wx.EVT_MENU, self.OnProjectOpen, id=menuid.OPEN)
+		self.Bind(wx.EVT_MENU, self.OnProjectSave, id=menuid.SAVE)
+		self.Bind(wx.EVT_MENU, self.OnProjectSave, id=menuid.SAVEAS)
+		self.Bind(wx.EVT_MENU, self.OnQuickBuild, id=menuid.QBUILD)
+		self.Bind(wx.EVT_MENU, self.OnQuit, id=menuid.EXIT)
 
-		wx.EVT_MENU(self, menuid.TOOLTIPS, self.OnToggleToolTips)
-		wx.EVT_MENU(self, menuid.DIST, self.OnUpdateDistNamesCache)
+		self.Bind(wx.EVT_MENU, self.OnToggleToolTips, id=menuid.TOOLTIPS)
+		self.Bind(wx.EVT_MENU, self.OnUpdateDistNamesCache, id=menuid.DIST)
 
-		wx.EVT_MENU(self, menuid.UPDATE, self.OnCheckUpdate)
-		wx.EVT_MENU(self, menuid.HELP, self.OnHelp)
-		wx.EVT_MENU(self, menuid.ABOUT, self.OnAbout)
+		self.Bind(wx.EVT_MENU, self.OnCheckUpdate, id=menuid.UPDATE)
+		self.Bind(wx.EVT_MENU, self.OnHelp, id=menuid.HELP)
+		self.Bind(wx.EVT_MENU, self.OnAbout, id=menuid.ABOUT)
 
 		self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
 
 		# Custom close event shows a dialog box to confirm quit
-		wx.EVT_CLOSE(self, self.OnQuit)
+		self.Bind(wx.EVT_CLOSE, self.OnQuit)
 
 		# *** Layout *** #
 

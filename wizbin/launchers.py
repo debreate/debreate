@@ -176,8 +176,8 @@ class Page(WizardPage):
 
 		chk_filename.Bind(wx.EVT_CHECKBOX, self.OnSetCustomFilename)
 
-		wx.EVT_KEY_DOWN(ti_category, self.SetCategory)
-		wx.EVT_KEY_DOWN(lst_categories, self.SetCategory)
+		ti_category.Bind(wx.EVT_KEY_DOWN, self.SetCategory)
+		lst_categories.Bind(wx.EVT_KEY_DOWN, self.SetCategory)
 		btn_catadd.Bind(wx.EVT_BUTTON, self.SetCategory)
 		btn_catdel.Bind(wx.EVT_BUTTON, self.SetCategory)
 		btn_catclr.Bind(wx.EVT_BUTTON, self.OnClearCategories)

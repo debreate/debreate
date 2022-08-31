@@ -222,7 +222,7 @@ def createMenuBar(parent):
 			mitm.SetBitmap(icon)
 			parent.menu_policy.Append(mitm)
 
-			wx.EVT_MENU(parent, link_id, parent.OpenPolicyManual)
+			parent.Bind(wx.EVT_MENU, parent.OpenPolicyManual, id=link_id)
 
 	mitm_manual = wx.MenuItem(menu_help, wx.ID_HELP, GT("Manual"), GT("Open a usage document"))
 	mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT("About"), GT("About Debreate"))
@@ -239,6 +239,6 @@ def createMenuBar(parent):
 
 	# catching menu events
 
-	wx.EVT_MENU(parent, menuid.CCACHE, parent.OnClearCache)
+	parent.Bind(wx.EVT_MENU, parent.OnClearCache, id=menuid.CCACHE)
 
 	return menubar
