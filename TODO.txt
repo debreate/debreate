@@ -1,5 +1,7 @@
 Mandatory:
 - Add 'provides' to Dependencies and Conflicts page
+- Fix file list drop target
+- Fix layout of "Files" page
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
@@ -8,6 +10,9 @@ Priority:
 - Check for files being overwritten by duplicate items in file list before build
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
 - Set field IDs for all pages to work with 'Reset' method
+- Allow config fields to be optional so first run window doesn't show for missing
+- Fix Gtk issue where window position cannot be set at startup:
+  - Gtk-CRITICAL **: 18:08:55.826: gtk_distribute_natural_allocation: assertion 'extra_space >= 0' failed
 
 Non-priority:
 - Create 'zoom' button image (magnifying glass)
