@@ -44,7 +44,7 @@ class PathItem:
 		self.Path = path
 		self.Label = label
 		self.Children = []
-		self.Type = None
+		self.Type = ""
 
 		if self.Path:
 			self.Type = GetFileMimeType(self.Path)
