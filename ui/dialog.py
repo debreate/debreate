@@ -605,7 +605,7 @@ def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
 def ShowDialog(dialog, center=wx.BOTH):
 	dialog.CenterOnParent(center)
 
-	return dialog.ShowModal() in (wx.OK, wx.ID_OK, wx.YES, wx.ID_YES, wx.OPEN, wx.ID_OPEN,)
+	return dialog.ShowModal() in (wx.ID_OK, wx.YES, wx.ID_YES, wx.ID_OPEN)
 
 
 ## Displays an instance of ErrorDialog class
