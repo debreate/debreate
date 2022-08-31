@@ -9,6 +9,7 @@ Priority:
 - Allow config fields to be optional so first run window doesn't show for missing
 - Fix Gtk issue where window position cannot be set at startup:
   - Gtk-CRITICAL **: 18:08:55.826: gtk_distribute_natural_allocation: assertion 'extra_space >= 0' failed
+- Fix about dialog
 
 Non-priority:
 - Create 'zoom' button image (magnifying glass)
