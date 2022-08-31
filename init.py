@@ -11,13 +11,13 @@
 
 import os, sys
 
-from command_line	import GetParsedPath
-from command_line	import ParseArguments
-from command_line	import parsed_commands
-from command_line	import parsed_args_s
-from command_line	import parsed_args_v
-from globals.paths	import PATH_app
-from globals.paths	import ConcatPaths
+from command_line  import GetParsedPath
+from command_line  import ParseArguments
+from command_line  import parsed_commands
+from command_line  import parsed_args_s
+from command_line  import parsed_args_v
+from globals.paths import PATH_app
+from globals.paths import ConcatPaths
 
 
 ## Module name displayed for Logger output.
@@ -95,24 +95,24 @@ from dbr.app import DebreateApp
 # Initialize app before importing local modules
 debreate_app = DebreateApp()
 
-from dbr.config				import ConfCode
-from dbr.config				import GetAllConfigKeys
-from dbr.config				import GetDefaultConfigValue
-from dbr.language			import GetLocaleDir
-from dbr.language			import GT
-from dbr.language			import SetLocaleDir
-from dbr.language			import TRANSLATION_DOMAIN
-from dbr.log				import Logger
-from dbr.workingdir			import ChangeWorkingDirectory
-from globals.application	import VERSION_string
-from globals.constants		import INSTALLED
-from globals.constants		import PREFIX
-from globals.strings		import GS
-from globals.system			import PY_VER_STRING
-from globals.system			import WX_VER_STRING
-from main					import MainWindow
-from startup.firstrun		import LaunchFirstRun
-from startup.startup		import SetAppInitialized
+from dbr.config          import ConfCode
+from dbr.config          import GetAllConfigKeys
+from dbr.config          import GetDefaultConfigValue
+from dbr.language        import GetLocaleDir
+from dbr.language        import GT
+from dbr.language        import SetLocaleDir
+from dbr.language        import TRANSLATION_DOMAIN
+from dbr.log             import Logger
+from dbr.workingdir      import ChangeWorkingDirectory
+from globals.application import VERSION_string
+from globals.constants   import INSTALLED
+from globals.constants   import PREFIX
+from globals.strings     import GS
+from globals.system      import PY_VER_STRING
+from globals.system      import WX_VER_STRING
+from main                import MainWindow
+from startup.firstrun    import LaunchFirstRun
+from startup.startup     import SetAppInitialized
 
 
 # FIXME: How to check if text domain is set correctly?

@@ -6,26 +6,26 @@
 
 import os, traceback, wx
 
-from dbr.event				import EVT_TIMER_STOP
-from dbr.functions			import BuildDebPackage
-from dbr.language			import GT
-from dbr.log				import Logger
-from dbr.timer				import DebreateTimer
-from fileio.fileio			import ReadFile
-from globals.errorcodes		import dbrerrno
-from globals.ident			import btnid
-from globals.moduleaccess	import ModuleAccessCtrl
-from globals.paths			import ConcatPaths
-from globals.threads		import Thread
-from ui.button				import CreateButton
-from ui.dialog				import GetDirDialog
-from ui.dialog				import GetFileSaveDialog
-from ui.dialog				import OverwriteDialog
-from ui.dialog				import ShowDialog
-from ui.dialog				import ShowErrorDialog
-from ui.dialog				import ShowMessageDialog
-from ui.layout				import BoxSizer
-from ui.style				import layout as lyt
+from dbr.event            import EVT_TIMER_STOP
+from dbr.functions        import BuildDebPackage
+from dbr.language         import GT
+from dbr.log              import Logger
+from dbr.timer            import DebreateTimer
+from fileio.fileio        import ReadFile
+from globals.errorcodes   import dbrerrno
+from globals.ident        import btnid
+from globals.moduleaccess import ModuleAccessCtrl
+from globals.paths        import ConcatPaths
+from globals.threads      import Thread
+from ui.button            import CreateButton
+from ui.dialog            import GetDirDialog
+from ui.dialog            import GetFileSaveDialog
+from ui.dialog            import OverwriteDialog
+from ui.dialog            import ShowDialog
+from ui.dialog            import ShowErrorDialog
+from ui.dialog            import ShowMessageDialog
+from ui.layout            import BoxSizer
+from ui.style             import layout as lyt
 
 
 GAUGE_MAX = 100

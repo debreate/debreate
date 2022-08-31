@@ -6,26 +6,26 @@
 
 import os, time, traceback, wx
 
-from dbr.event				import EVT_REFRESH_LOG
-from dbr.event				import RefreshLogEvent
-from dbr.font				import GetMonospacedFont
-from dbr.language			import GT
-from dbr.log				import Logger
-from globals.application	import APP_logo
-from globals.fileitem		import FileItem
-from globals.ident			import btnid
-from globals.ident			import menuid
-from globals.paths			import PATH_logs
-from globals.strings		import GS
-from globals.threads		import Thread
-from input.text				import TextAreaPanel
-from ui.button				import CreateButton
-from ui.dialog				import GetFileOpenDialog
-from ui.dialog				import ShowDialog
-from ui.dialog				import ShowErrorDialog
-from ui.layout				import BoxSizer
-from wiz.helper				import GetMainWindow
-from wiz.helper				import GetMenu
+from dbr.event           import EVT_REFRESH_LOG
+from dbr.event           import RefreshLogEvent
+from dbr.font            import GetMonospacedFont
+from dbr.language        import GT
+from dbr.log             import Logger
+from globals.application import APP_logo
+from globals.fileitem    import FileItem
+from globals.ident       import btnid
+from globals.ident       import menuid
+from globals.paths       import PATH_logs
+from globals.strings     import GS
+from globals.threads     import Thread
+from input.text          import TextAreaPanel
+from ui.button           import CreateButton
+from ui.dialog           import GetFileOpenDialog
+from ui.dialog           import ShowDialog
+from ui.dialog           import ShowErrorDialog
+from ui.layout           import BoxSizer
+from wiz.helper          import GetMainWindow
+from wiz.helper          import GetMenu
 
 
 # How often the log window will be refreshed

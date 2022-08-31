@@ -6,39 +6,39 @@
 
 import os, traceback, wx
 
-from dbr.language		import GT
-from dbr.log			import Logger
-from fileio.fileio		import ReadFile
-from globals.bitmaps	import ICON_ERROR
-from globals.bitmaps	import ICON_EXCLAMATION
-from globals.errorcodes	import dbrerrno
-from globals.ident		import btnid
-from globals.ident		import chkid
-from globals.ident		import inputid
-from globals.ident		import pgid
-from globals.paths		import ConcatPaths
-from globals.strings	import TextIsEmpty
-from globals.tooltips	import SetPageToolTips
-from input.filelist		import FileListESS
-from input.filelist		import columns
-from input.text			import TextArea
-from input.toggle		import CheckBoxCFG
-from ui.button			import CreateButton
-from ui.dialog			import ConfirmationDialog
-from ui.dialog			import DetailedMessageDialog
-from ui.dialog			import GetDirDialog
-from ui.dialog			import ShowDialog
-from ui.dialog			import ShowErrorDialog
-from ui.dialog			import ShowMessageDialog
-from ui.layout			import BoxSizer
-from ui.panel			import BorderedPanel
-from ui.progress		import PD_DEFAULT_STYLE
-from ui.progress		import ProgressDialog
-from ui.style			import layout as lyt
-from ui.tree			import DirectoryTreePanel
-from wiz.helper			import FieldEnabled
-from wiz.helper			import GetMainWindow
-from wiz.wizard			import WizardPage
+from dbr.language       import GT
+from dbr.log            import Logger
+from fileio.fileio      import ReadFile
+from globals.bitmaps    import ICON_ERROR
+from globals.bitmaps    import ICON_EXCLAMATION
+from globals.errorcodes import dbrerrno
+from globals.ident      import btnid
+from globals.ident      import chkid
+from globals.ident      import inputid
+from globals.ident      import pgid
+from globals.paths      import ConcatPaths
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from input.filelist     import FileListESS
+from input.filelist     import columns
+from input.text         import TextArea
+from input.toggle       import CheckBoxCFG
+from ui.button          import CreateButton
+from ui.dialog          import ConfirmationDialog
+from ui.dialog          import DetailedMessageDialog
+from ui.dialog          import GetDirDialog
+from ui.dialog          import ShowDialog
+from ui.dialog          import ShowErrorDialog
+from ui.dialog          import ShowMessageDialog
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.progress        import PD_DEFAULT_STYLE
+from ui.progress        import ProgressDialog
+from ui.style           import layout as lyt
+from ui.tree            import DirectoryTreePanel
+from wiz.helper         import FieldEnabled
+from wiz.helper         import GetMainWindow
+from wiz.wizard         import WizardPage
 
 
 ## Maximum file count to process before showing progress dialog

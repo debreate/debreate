@@ -6,8 +6,8 @@
 
 import os, wx
 
-from input.essential	import EssentialField
-from input.text			import TextArea
+from input.essential import EssentialField
+from input.text      import TextArea
 
 
 ## A text area that can track if it's value is an actual path on the system

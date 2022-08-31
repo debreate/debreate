@@ -8,11 +8,11 @@
 
 import wx
 
-from dbr.config	import ConfCode
-from dbr.config	import ReadConfig
-from dbr.config	import SetDefaultConfigKey
-from dbr.config	import WriteConfig
-from dbr.log	import Logger
+from dbr.config import ConfCode
+from dbr.config import ReadConfig
+from dbr.config import SetDefaultConfigKey
+from dbr.config import WriteConfig
+from dbr.log    import Logger
 
 
 ## Class that updates the configuration file when a specific event occurs

@@ -4,9 +4,9 @@
 # See: docs/LICENSE.txt
 
 
-from globals.cmdcheck	import CommandExists
-from globals.strings	import IsString
-from globals.strings	import RemoveEmptyLines
+from globals.cmdcheck import CommandExists
+from globals.strings  import IsString
+from globals.strings  import RemoveEmptyLines
 
 
 ## A field that requires a specific command or commands to be available on the system

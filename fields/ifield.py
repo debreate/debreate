@@ -8,8 +8,8 @@
 
 import wx
 
-from globals.strings	import IsString
-from wiz.helper			import FieldEnabled
+from globals.strings import IsString
+from wiz.helper      import FieldEnabled
 
 
 ## An input field that sets a default value

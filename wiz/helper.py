@@ -8,8 +8,8 @@
 
 import wx
 
-from dbr.language	import GT
-from globals.ident	import pgid
+from dbr.language  import GT
+from globals.ident import pgid
 
 
 ## TODO: Doxygen

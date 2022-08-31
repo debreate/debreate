@@ -8,31 +8,31 @@
 
 import traceback, wx
 
-from dbr.event			import ChangePageEvent
-from dbr.language		import GT
-from dbr.log			import Logger
-from globals.ident		import btnid
-from globals.ident		import chkid
-from globals.ident		import inputid
-from globals.ident		import listid
-from globals.ident		import menuid
-from globals.ident		import page_ids
-from globals.ident		import pgid
-from globals.ident		import selid
-from globals.system		import mimport
-from globals.tooltips	import TT_wiz_next
-from globals.tooltips	import TT_wiz_prev
-from input.markdown		import MarkdownDialog
-from startup.tests		import GetTestList
-from ui.button			import CreateButton
-from ui.dialog			import ShowDialog
-from ui.dialog			import ShowErrorDialog
-from ui.layout			import BoxSizer
-from ui.panel			import ScrolledPanel
-from wiz.helper			import FieldEnabled
-from wiz.helper			import GetField
-from wiz.helper			import GetMainWindow
-from wiz.helper			import GetMenu
+from dbr.event        import ChangePageEvent
+from dbr.language     import GT
+from dbr.log          import Logger
+from globals.ident    import btnid
+from globals.ident    import chkid
+from globals.ident    import inputid
+from globals.ident    import listid
+from globals.ident    import menuid
+from globals.ident    import page_ids
+from globals.ident    import pgid
+from globals.ident    import selid
+from globals.system   import mimport
+from globals.tooltips import TT_wiz_next
+from globals.tooltips import TT_wiz_prev
+from input.markdown   import MarkdownDialog
+from startup.tests    import GetTestList
+from ui.button        import CreateButton
+from ui.dialog        import ShowDialog
+from ui.dialog        import ShowErrorDialog
+from ui.layout        import BoxSizer
+from ui.panel         import ScrolledPanel
+from wiz.helper       import FieldEnabled
+from wiz.helper       import GetField
+from wiz.helper       import GetMainWindow
+from wiz.helper       import GetMenu
 
 
 ## Wizard class for Debreate

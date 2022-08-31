@@ -4,17 +4,17 @@
 # See: docs/LICENSE.txt
 
 
-from importlib import  import_module
 import os, sys, wx
+from importlib import import_module
 
-from dbr.containers		import Contains
-from fileio.fileio		import ReadFile
-from fileio.fileio		import WriteFile
-from globals.paths		import ConcatPaths
-from globals.paths		import PATH_cache
-from globals.remote		import GetRemotePageText
-from globals.strings	import RemoveEmptyLines
-from globals.strings	import StringIsVersioned
+from dbr.containers  import Contains
+from fileio.fileio   import ReadFile
+from fileio.fileio   import WriteFile
+from globals.paths   import ConcatPaths
+from globals.paths   import PATH_cache
+from globals.remote  import GetRemotePageText
+from globals.strings import RemoveEmptyLines
+from globals.strings import StringIsVersioned
 
 
 mimport = import_module

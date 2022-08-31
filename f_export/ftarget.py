@@ -6,11 +6,11 @@
 
 import wx
 
-from input.pathctrl	import PathCtrl
-from input.toggle	import CheckBox
-from ui.layout		import BoxSizer
-from ui.panel		import BorderedPanel
-from ui.style		import layout as lyt
+from input.pathctrl import PathCtrl
+from input.toggle   import CheckBox
+from ui.layout      import BoxSizer
+from ui.panel       import BorderedPanel
+from ui.style       import layout as lyt
 
 
 ## A class that defines a standard target check box & custom target text input area

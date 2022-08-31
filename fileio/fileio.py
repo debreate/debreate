@@ -8,8 +8,8 @@
 
 import codecs, os
 
-from globals.paths		import ConcatPaths
-from globals.strings	import GS
+from globals.paths   import ConcatPaths
+from globals.strings import GS
 
 
 ## Append text to end of a file

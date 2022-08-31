@@ -6,17 +6,17 @@
 
 import wx
 
-from dbr.config			import ConfCode
-from dbr.config			import GetDefaultConfigValue
-from dbr.config			import ReadConfig
-from dbr.language		import GT
-from dbr.log			import DebugEnabled
-from globals.bitmaps	import ICON_CLOCK
-from globals.bitmaps	import ICON_GLOBE
-from globals.bitmaps	import ICON_LOGO
-from globals.execute	import GetExecutable
-from globals.ident		import menuid, refid
-from startup.tests		import GetTestList
+from dbr.config      import ConfCode
+from dbr.config      import GetDefaultConfigValue
+from dbr.config      import ReadConfig
+from dbr.language    import GT
+from dbr.log         import DebugEnabled
+from globals.bitmaps import ICON_CLOCK
+from globals.bitmaps import ICON_GLOBE
+from globals.bitmaps import ICON_LOGO
+from globals.execute import GetExecutable
+from globals.ident   import menuid, refid
+from startup.tests   import GetTestList
 
 
 ## A menu bar that stores an ID along with a menu

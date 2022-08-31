@@ -6,16 +6,16 @@
 
 import os, wx
 
-from dbr.config				import ConfCode
-from dbr.config				import InitializeConfig
-from dbr.config				import default_config
-from dbr.image				import GetBitmap
-from dbr.language			import GT
-from dbr.log				import Logger
-from globals.application	import APP_logo
-from ui.dialog				import ShowErrorDialog
-from ui.layout				import BoxSizer
-from ui.style				import layout as lyt
+from dbr.config          import ConfCode
+from dbr.config          import InitializeConfig
+from dbr.config          import default_config
+from dbr.image           import GetBitmap
+from dbr.language        import GT
+from dbr.log             import Logger
+from globals.application import APP_logo
+from ui.dialog           import ShowErrorDialog
+from ui.layout           import BoxSizer
+from ui.style            import layout as lyt
 
 
 ## Shows the first run dialog

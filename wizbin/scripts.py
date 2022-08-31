@@ -6,33 +6,33 @@
 
 import os, wx
 
-from dbr.language		import GT
-from dbr.log			import Logger
-from fileio.fileio		import ReadFile
-from globals.fileitem	import FileItem
-from globals.ident		import btnid
-from globals.ident		import chkid
-from globals.ident		import inputid
-from globals.ident		import pgid
-from globals.paths		import ConcatPaths
-from globals.strings	import TextIsEmpty
-from globals.tooltips	import SetPageToolTips
-from input.filelist		import BasicFileList
-from input.markdown		import MarkdownDialog
-from input.pathctrl		import PathCtrl
-from input.text			import TextAreaPanelESS
-from input.toggle		import CheckBox
-from ui.button			import CreateButton
-from ui.dialog			import ConfirmationDialog
-from ui.dialog			import DetailedMessageDialog
-from ui.dialog			import ShowDialog
-from ui.layout			import BoxSizer
-from ui.panel			import BorderedPanel
-from ui.style			import layout as lyt
-from wiz.helper			import FieldEnabled
-from wiz.helper			import GetField
-from wiz.helper			import GetMainWindow
-from wiz.wizard			import WizardPage
+from dbr.language     import GT
+from dbr.log          import Logger
+from fileio.fileio    import ReadFile
+from globals.fileitem import FileItem
+from globals.ident    import btnid
+from globals.ident    import chkid
+from globals.ident    import inputid
+from globals.ident    import pgid
+from globals.paths    import ConcatPaths
+from globals.strings  import TextIsEmpty
+from globals.tooltips import SetPageToolTips
+from input.filelist   import BasicFileList
+from input.markdown   import MarkdownDialog
+from input.pathctrl   import PathCtrl
+from input.text       import TextAreaPanelESS
+from input.toggle     import CheckBox
+from ui.button        import CreateButton
+from ui.dialog        import ConfirmationDialog
+from ui.dialog        import DetailedMessageDialog
+from ui.dialog        import ShowDialog
+from ui.layout        import BoxSizer
+from ui.panel         import BorderedPanel
+from ui.style         import layout as lyt
+from wiz.helper       import FieldEnabled
+from wiz.helper       import GetField
+from wiz.helper       import GetMainWindow
+from wiz.wizard       import WizardPage
 
 
 ID_INST_PRE = wx.NewId()

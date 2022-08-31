@@ -8,11 +8,11 @@
 
 import wx
 
-from dbr.language	import GT
-from globals.ident	import pgid
-from ui.hyperlink	import Hyperlink
-from ui.layout		import BoxSizer
-from wiz.wizard		import WizardPage
+from dbr.language  import GT
+from globals.ident import pgid
+from ui.hyperlink  import Hyperlink
+from ui.layout     import BoxSizer
+from wiz.wizard    import WizardPage
 
 
 ## The initial wizard page

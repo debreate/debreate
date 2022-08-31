@@ -7,10 +7,10 @@
 import wx
 from wx.adv import OwnerDrawnComboBox
 
-from dbr.font			import MONOSPACED_MD
-from fields.ifield		import InputField
-from globals.strings	import TextIsEmpty
-from input.essential	import EssentialField
+from dbr.font        import MONOSPACED_MD
+from fields.ifield   import InputField
+from globals.strings import TextIsEmpty
+from input.essential import EssentialField
 
 
 ## Custom wx.Choice class for compatibility with older wx versions

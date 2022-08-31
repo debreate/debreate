@@ -7,35 +7,35 @@
 import os, wx
 from wx.adv import OwnerDrawnComboBox
 
-from dbr.language		import GT
-from dbr.log			import Logger
-from fileio.fileio		import ReadFile
-from fileio.fileio		import WriteFile
-from globals.errorcodes	import dbrerrno
-from globals.ident		import btnid
-from globals.ident		import inputid
-from globals.ident		import pgid
-from globals.strings	import TextIsEmpty
-from globals.tooltips	import SetPageToolTips
-from input.select		import ChoiceESS
-from input.select		import ComboBoxESS
-from input.text			import TextAreaESS
-from input.text			import TextAreaPanelESS
-from input.toggle		import CheckBoxESS
-from ui.button			import CreateButton
-from ui.dialog			import GetFileOpenDialog
-from ui.dialog			import GetFileSaveDialog
-from ui.dialog			import ShowDialog
-from ui.dialog			import ShowErrorDialog
-from ui.layout			import BoxSizer
-from ui.panel			import BorderedPanel
-from ui.style			import layout as lyt
-from ui.textpreview		import TextPreview
-from wiz.helper			import FieldEnabled
-from wiz.helper			import GetField
-from wiz.helper			import GetMainWindow
-from wiz.helper			import GetPage
-from wiz.wizard			import WizardPage
+from dbr.language       import GT
+from dbr.log            import Logger
+from fileio.fileio      import ReadFile
+from fileio.fileio      import WriteFile
+from globals.errorcodes import dbrerrno
+from globals.ident      import btnid
+from globals.ident      import inputid
+from globals.ident      import pgid
+from globals.strings    import TextIsEmpty
+from globals.tooltips   import SetPageToolTips
+from input.select       import ChoiceESS
+from input.select       import ComboBoxESS
+from input.text         import TextAreaESS
+from input.text         import TextAreaPanelESS
+from input.toggle       import CheckBoxESS
+from ui.button          import CreateButton
+from ui.dialog          import GetFileOpenDialog
+from ui.dialog          import GetFileSaveDialog
+from ui.dialog          import ShowDialog
+from ui.dialog          import ShowErrorDialog
+from ui.layout          import BoxSizer
+from ui.panel           import BorderedPanel
+from ui.style           import layout as lyt
+from ui.textpreview     import TextPreview
+from wiz.helper         import FieldEnabled
+from wiz.helper         import GetField
+from wiz.helper         import GetMainWindow
+from wiz.helper         import GetPage
+from wiz.wizard         import WizardPage
 
 
 ## This panel displays the field input of the control file

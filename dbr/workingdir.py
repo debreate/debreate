@@ -6,11 +6,11 @@
 
 import os
 
-from dbr.config		import ReadConfig
-from dbr.config		import WriteConfig
-from dbr.log		import DebugEnabled
-from dbr.log		import Logger
-from globals.paths	import PATH_home
+from dbr.config    import ReadConfig
+from dbr.config    import WriteConfig
+from dbr.log       import DebugEnabled
+from dbr.log       import Logger
+from globals.paths import PATH_home
 
 
 ## Changes working directory & writes to config

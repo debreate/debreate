@@ -4,8 +4,8 @@
 # See: docs/LICENSE.txt
 
 
-from datetime	import datetime
-from time		import strftime
+from datetime import datetime
+from time     import strftime
 
 from globals.strings import GS
 

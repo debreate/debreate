@@ -6,29 +6,29 @@
 
 import os, wx
 
-from dbr.font				import MONOSPACED_MD
-from dbr.functions			import GetContainerItemCount
-from dbr.language			import GT
-from dbr.log				import Logger
-from fileio.fileio			import ReadFile
-from globals.application	import APP_name
-from globals.application	import AUTHOR_email
-from globals.application	import AUTHOR_name
-from globals.constants		import INSTALLED
-from globals.constants		import PREFIX
-from globals.dateinfo		import GetYear
-from globals.ident			import btnid
-from globals.mime			import GetFileMimeType
-from globals.paths			import PATH_app
-from globals.system			import PY_VER_STRING
-from globals.system			import WX_VER_STRING
-from input.list				import ListCtrl
-from input.text				import TextAreaPanel
-from ui.button				import CreateButton
-from ui.dialog				import ShowErrorDialog
-from ui.hyperlink			import Hyperlink
-from ui.layout				import BoxSizer
-from ui.style				import layout as lyt
+from dbr.font            import MONOSPACED_MD
+from dbr.functions       import GetContainerItemCount
+from dbr.language        import GT
+from dbr.log             import Logger
+from fileio.fileio       import ReadFile
+from globals.application import APP_name
+from globals.application import AUTHOR_email
+from globals.application import AUTHOR_name
+from globals.constants   import INSTALLED
+from globals.constants   import PREFIX
+from globals.dateinfo    import GetYear
+from globals.ident       import btnid
+from globals.mime        import GetFileMimeType
+from globals.paths       import PATH_app
+from globals.system      import PY_VER_STRING
+from globals.system      import WX_VER_STRING
+from input.list          import ListCtrl
+from input.text          import TextAreaPanel
+from ui.button           import CreateButton
+from ui.dialog           import ShowErrorDialog
+from ui.hyperlink        import Hyperlink
+from ui.layout           import BoxSizer
+from ui.style            import layout as lyt
 
 
 # Font for the name

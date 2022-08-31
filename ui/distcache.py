@@ -7,27 +7,27 @@
 import os, traceback, wx
 from wx.adv import OwnerDrawnComboBox
 
-from dbr.event				import EVT_TIMER_STOP
-from dbr.language			import GT
-from dbr.log				import Logger
-from dbr.timer				import DebreateTimer
-from fileio.fileio			import ReadFile
-from globals.ident			import inputid
-from globals.ident			import pgid
-from globals.moduleaccess	import ModuleAccessCtrl
-from globals.system			import FILE_distnames
-from globals.system			import GetOSDistNames
-from globals.system			import UpdateDistNamesCache
-from globals.threads		import Thread
-from ui.dialog				import BaseDialog
-from ui.dialog				import ShowErrorDialog
-from ui.dialog				import ShowMessageDialog
-from ui.layout				import BoxSizer
-from ui.panel				import BorderedPanel
-from ui.progress			import ProgressDialog
-from ui.style				import layout as lyt
-from ui.textpreview			import TextPreview
-from wiz.helper				import GetField
+from dbr.event            import EVT_TIMER_STOP
+from dbr.language         import GT
+from dbr.log              import Logger
+from dbr.timer            import DebreateTimer
+from fileio.fileio        import ReadFile
+from globals.ident        import inputid
+from globals.ident        import pgid
+from globals.moduleaccess import ModuleAccessCtrl
+from globals.system       import FILE_distnames
+from globals.system       import GetOSDistNames
+from globals.system       import UpdateDistNamesCache
+from globals.threads      import Thread
+from ui.dialog            import BaseDialog
+from ui.dialog            import ShowErrorDialog
+from ui.dialog            import ShowMessageDialog
+from ui.layout            import BoxSizer
+from ui.panel             import BorderedPanel
+from ui.progress          import ProgressDialog
+from ui.style             import layout as lyt
+from ui.textpreview       import TextPreview
+from wiz.helper           import GetField
 
 
 ## Dialog displaying controls for updating distribution names cache file
