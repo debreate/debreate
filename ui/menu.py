@@ -155,7 +155,7 @@ def createMenuBar(parent):
 		mitm_logs_open = wx.MenuItem(parent.menu_opt, menuid.OPENLOGS, GT("Open logs directory"))
 		parent.menu_opt.Append(mitm_logs_open)
 
-		wx.EVT_MENU(parent, menuid.OPENLOGS, parent.OnLogDirOpen)
+		parent.Bind(wx.EVT_MENU, parent.OnLogDirOpen, id=menuid.OPENLOGS)
 
 	# *** OS distribution names cache *** #
 
