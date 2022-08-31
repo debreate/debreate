@@ -614,6 +614,9 @@ msgstr ""
 msgid "Install md5sum package for this option"
 msgstr ""
 
+msig    "Provides"
+msgstr  ""
+
 msgid "Create checksums for files in package"
 msgstr ""
 
