@@ -326,8 +326,11 @@ class BasicFileList(ListCtrl, TextEditMixin):
 
 ## An editable list of files
 #
-# FIXME: use methods from BasicFileList
-class FileList(BasicFileList, wx.FileDropTarget):
+#  FIXME:
+#  - use methods from BasicFileList
+#  - FileDropTarget broken
+# ~ class FileList(BasicFileList, wx.FileDropTarget):
+class FileList(BasicFileList):
 	## Constructor
 	#
 	#  \param parent
@@ -351,7 +354,7 @@ class FileList(BasicFileList, wx.FileDropTarget):
 
 		BasicFileList.__init__(self, parent, winId, True, pos, size, style=FL_HEADER, name=name,
 				defaultValue=defaultValue, required=required, outLabel=outLabel)
-		wx.FileDropTarget.__init__(self)
+		# ~ wx.FileDropTarget.__init__(self)
 
 		# FIXME: file list drop target broken
 		# ~ ListCtrl.SetDropTarget(self, self)
