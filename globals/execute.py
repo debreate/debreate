@@ -79,7 +79,7 @@ def GetCommandOutput(cmd, args=[]):
 	command_line = list(args)
 	command_line.insert(0, cmd)
 
-	output = subprocess.Popen(command_line, stdout=PIPE, stderr=STDOUT).communicate()[0]
+	output = subprocess.Popen(command_line, stdout=PIPE, stderr=STDOUT).communicate()[0].decode("utf-8")
 
 	# The Popen command adds a newline character at end of output
 	return output.rstrip("\n")
