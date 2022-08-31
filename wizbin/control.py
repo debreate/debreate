@@ -508,7 +508,7 @@ class Page(WizardPage):
 	#	Leftover text to fill out 'Dependecies' page fields
 	def Set(self, data):
 		# Decode to unicode string if input is byte string
-		if isinstance(data, str):
+		if isinstance(data, bytes):
 			data = data.decode("utf-8")
 
 		# Strip leading & trailing spaces, tabs, & newlines
