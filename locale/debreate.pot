@@ -1250,6 +1250,10 @@ msgstr  ""
 msgid   "Progress"
 msgstr  ""
 
+#: dbr/depends.py
+msig    "Provides"
+msgstr  ""
+
 #: dbr/about.py:122
 msgid   "Python version: {}"
 msgstr  ""

@@ -372,6 +372,7 @@ class Page(WizardPage):
 		enh_list = [] # Enhances
 		con_list = [] # Conflicts
 		rep_list = [] # Replaces
+		pvd_list = [] # Provides
 		brk_list = [] # Breaks
 
 		all_deps = {
@@ -382,6 +383,7 @@ class Page(WizardPage):
 			"Enhances": enh_list,
 			"Conflicts": con_list,
 			"Replaces": rep_list,
+			"Provides": pvd_list,
 			"Breaks": brk_list,
 			}
 
@@ -524,6 +526,7 @@ class Page(WizardPage):
 			["Enhances"],
 			["Conflicts"],
 			["Replaces"],
+			["Provides"],
 			["Breaks"],
 			)
 

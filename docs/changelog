@@ -32,6 +32,7 @@
 - Fixed default value of auto-link target
 - Fixed auto-link executables function
 - Importing into auto-link executables list scans for nested executables
+- Added "Provides" option to dependencies & conflicts page
 
 0.7.13
 - Fixes:

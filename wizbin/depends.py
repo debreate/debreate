@@ -77,12 +77,13 @@ class Page(WizardPage):
 		rb_enh = wx.RadioButton(pnl_categories, label=GT("Enhances"), name="Enhances")
 		rb_con = wx.RadioButton(pnl_categories, label=GT("Conflicts"), name="Conflicts")
 		rb_rep = wx.RadioButton(pnl_categories, label=GT("Replaces"), name="Replaces")
+		rb_pvd = wx.RadioButton(pnl_categories, label=GT("Provides"), name="Provides")
 		rb_break = wx.RadioButton(pnl_categories, label=GT("Breaks"), name="Breaks")
 
 		self.categories = (
 			rb_dep, rb_pre, rb_rec,
 			rb_sug, rb_enh, rb_con,
-			rb_rep, rb_break,
+			rb_rep, rb_pvd, rb_break,
 		)
 
 		# Buttons to add and remove dependencies from the list
@@ -135,7 +136,7 @@ class Page(WizardPage):
 		lyt_top.Add(self.sel_operator, (2, 1), flag=wx.ALIGN_CENTER_VERTICAL)
 		lyt_top.Add(self.ti_version, (2, 2), flag=wx.ALIGN_CENTER_VERTICAL)
 
-		lyt_categories = wx.GridSizer(4, 2, 5, 5)
+		lyt_categories = wx.GridSizer(5, 2, 5, 5)
 
 		for C in self.categories:
 			lyt_categories.Add(C, 0)

@@ -1,5 +1,3 @@
-Mandatory:
-- Add 'provides' to Dependencies and Conflicts page
 
 Priority:
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
