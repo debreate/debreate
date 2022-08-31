@@ -488,8 +488,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 				WriteConfig("center", True)
 
 			else:
-				WriteConfig("position", self.GetPositionTuple())
-				WriteConfig("size", self.GetSizeTuple())
+				WriteConfig("position", self.GetPosition().Get())
+				WriteConfig("size", self.GetSize().Get())
 				WriteConfig("center", False)
 
 			WriteConfig("workingdir", os.getcwd())
