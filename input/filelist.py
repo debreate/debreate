@@ -324,12 +324,19 @@ class BasicFileList(ListCtrl, TextEditMixin):
 		return False
 
 
+class _FileDropTarget(wx.FileDropTarget):
+	def __init__(self, window):
+		wx.FileDropTarget.__init__(self)
+		self.window = window
+
+	def OnDropFiles(self, x, y, filename):
+		self.window.OnDropFiles(filename)
+
+
 ## An editable list of files
 #
 #  FIXME:
 #  - use methods from BasicFileList
-#  - FileDropTarget broken
-# ~ class FileList(BasicFileList, wx.FileDropTarget):
 class FileList(BasicFileList):
 	## Constructor
 	#
@@ -354,10 +361,9 @@ class FileList(BasicFileList):
 
 		BasicFileList.__init__(self, parent, winId, True, pos, size, style=FL_HEADER, name=name,
 				defaultValue=defaultValue, required=required, outLabel=outLabel)
-		# ~ wx.FileDropTarget.__init__(self)
 
-		# FIXME: file list drop target broken
-		# ~ ListCtrl.SetDropTarget(self, self)
+		dt = _FileDropTarget(parent)
+		parent.SetDropTarget(dt)
 
 		self.DEFAULT_BG_COLOR = self.GetBackgroundColour()
 		self.DEFAULT_TEXT_COLOR = self.GetForegroundColour()
@@ -547,11 +553,6 @@ class FileList(BasicFileList):
 	## TODO: Doxygen
 	def MissingFiles(self):
 		return self.RefreshFileList()
-
-
-	## Action to take when a file/folder is dropped onto the list from a file manager
-	def OnDropFiles(self, x, y, filename):
-		self.GetParent().OnDropFiles(filename)
 
 
 	## Defines actions to take when left-click or left-double-click event occurs
