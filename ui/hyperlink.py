@@ -71,7 +71,7 @@ class Hyperlink(wx.Panel):
 
 	## TODO: Doxygen
 	def OnMouseOver(self, event=None):
-		self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+		self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
 		self.text.SetFont(self.FONT_HIGHLIGHT)
 
 		if event:
