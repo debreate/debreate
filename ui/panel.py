@@ -5,6 +5,7 @@
 
 
 import wx
+from wx.lib.scrolledpanel import ScrolledPanel as sp
 
 from globals.ident import inputid
 from ui.layout     import BoxSizer
@@ -76,33 +77,11 @@ class BorderedPanel(wx.Panel, PanelBase):
 
 
 ## A wx.ScrolledWindow that sets scrollbars by default
-class ScrolledPanel(wx.ScrolledWindow, PanelBase):
+class ScrolledPanel(sp, PanelBase):
 	def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
 				style=wx.HSCROLL|wx.VSCROLL, name="scrolledPanel"):
-
-		wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
-
-		SetScrollbars(self)
-
-
-	## Override inherited method to also update the scrollbars
-	def Layout(self):
-		# ~ layout = super().Layout()
-		# FIXME: not sure this workaround is correct
-		layout = self.GetParent().Layout()
-
-		self.UpdateScrollbars()
-
-		return layout
-
-
-	## Refresh the panel's size so scrollbars will update
-	def UpdateScrollbars(self):
-		sizer = self.GetSizer()
-		if sizer:
-			# ~ self.SetVirtualSize(sizer.GetMinSize())
-			# FIXME: not sure this workaround is correct
-			self.GetParent().SetVirtualSize(sizer.GetMinSize())
+		sp.__init__(self, parent, win_id, pos, size, style, name)
+		sp.SetupScrolling(self)
 
 
 ## A ui.panel.ScrolledPanel that defines methods to add child sections
