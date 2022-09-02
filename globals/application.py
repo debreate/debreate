@@ -33,13 +33,13 @@ APP_name = "Debreate"
 # *** Version information *** #
 
 VERSION_maj = 0
-VERSION_min = 7
-VERSION_rev = 13
+VERSION_min = 8
+VERSION_rev = 0
 VERSION_tuple = (VERSION_maj, VERSION_min, VERSION_rev)
 VERSION_string = "{}.{}.{}".format(VERSION_maj, VERSION_min, VERSION_rev)
 
 # Development version: Increment for every development release
-VERSION_dev = 17
+VERSION_dev = 1
 if VERSION_dev:
 	VERSION_string = "{}-dev{}".format(VERSION_string, VERSION_dev)
 
