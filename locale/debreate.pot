@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.8\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2022-09-02 16:11-0700\n"
+        "POT-Creation-Date: 2022-09-02 16:23-0700\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,2079 +22,1555 @@ msgstr  "Project-Id-Version: Debreate 0.8\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: wizbin/changelog.py:172
 msgid   "\"Changes\" section is empty"
 msgstr  ""
 
-#: wizbin/build.py:798
 msgid   "A compatible package manager could not be found on the system"
 msgstr  ""
 
-#: main.py:188
 msgid   "A package builder for Debian based systems"
 msgstr  ""
 
-#: globals/tooltips.py:136
 msgid   "APP:"
 msgstr  ""
 
-#: ui/about.py:50 ui/about.py:66 ui/menu.py:228
 msgid   "About"
 msgstr  ""
 
-#: ui/menu.py:228
 msgid   "About Debreate"
 msgstr  ""
 
-#: wizbin/changelog.py:94 wizbin/launchers.py:156
 msgid   "Add"
 msgstr  ""
 
-#: globals/tooltips.py:65
 msgid   "Add as alternative to selected dependency packages in list"
 msgstr  ""
 
-#: ui/checklist.py:331
 msgid   "Add custom"
 msgstr  ""
 
-#: globals/tooltips.py:64
 msgid   "Add dependency package to list"
 msgstr  ""
 
-#: globals/tooltips.py:88
 msgid   "Add manpage"
 msgstr  ""
 
-#: globals/tooltips.py:73
 msgid   "Add selected file/folder to list"
 msgstr  ""
 
-#: ui/tree.py:209
 msgid   "Add to project"
 msgstr  ""
 
-#: wizbin/files.py:230 wizbin/files.py:694
 msgid   "Adding Files"
 msgstr  ""
 
-#: wizbin/build.py:957
 msgid   "Adding Lintian override: {}"
 msgstr  ""
 
-#: wizbin/build.py:943
 msgid   "Adding custom tags"
 msgstr  ""
 
-#: wizbin/files.py:243
 msgid   "Adding file {}"
 msgstr  ""
 
-#: input/filelist.py:407
 msgid   "Adding file: {}"
 msgstr  ""
 
-#: ui/dialog.py:488
 msgid   "An error has occurred"
 msgstr  ""
 
-#: main.py:252
 msgid   "An error occurred attempting to contact remote website"
 msgstr  ""
 
-#: wizbin/build.py:832
 msgid   "An error occurred during installation"
 msgstr  ""
 
-#: startup/firstrun.py:32
 msgid   "An error occurred trying to create the configuration file:"
 msgstr  ""
 
-#: wizbin/build.py:552
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  ""
 
-#: ui/distcache.py:223
 msgid   "An error occurred when trying to update the distribution names cache"
 msgstr  ""
 
-#: ui/quickbuild.py:140
 msgid   "An unhandled error occured"
 msgstr  ""
 
-#: wizbin/build.py:818
 msgid   "An unknown error occurred"
 msgstr  ""
 
-#: ui/about.py:130
 msgid   "App location: {}"
 msgstr  ""
 
-#: globals/tooltips.py:168
 msgid   "Append current category to list"
 msgstr  ""
 
-#: globals/tooltips.py:160
 msgid   "Application:"
 msgstr  ""
 
-#: wizbin/control.py:89
 msgid   "Architecture"
 msgstr  ""
 
-#: wizbin/files.py:568
 msgid   "Are you sure you want to continue?"
 msgstr  ""
 
-#: wizbin/build.py:805
 msgid   "Attempting to install package: {}"
 msgstr  ""
 
-#: wizbin/scripts.py:194
 msgid   "Auto-Link Executables"
 msgstr  ""
 
-#: wizbin/scripts.py:423
 msgid   "Auto-Link Help"
 msgstr  ""
 
-#: ui/distcache.py:55
 msgid   "Available Distribution Names"
 msgstr  ""
 
-#: wizbin/copyright.py:96
 msgid   "Available Templates"
 msgstr  ""
 
-#: globals/tooltips.py:81
 msgid   "Blue text = directory"
 msgstr  ""
 
-#: wizbin/depends.py:81
 msgid   "Breaks"
 msgstr  ""
 
-#: wizbin/control.py:53 wizbin/depends.py:46 wizbin/launchers.py:57
 msgid   "Browse"
 msgstr  ""
 
-#: globals/tooltips.py:76
 msgid   "Browse for target installation directory"
 msgstr  ""
 
-#: globals/ident.py:102 wizbin/build.py:104
 msgid   "Build"
 msgstr  ""
 
-#: ui/quickbuild.py:268
 msgid   "Build Complete"
 msgstr  ""
 
-#: ui/menu.py:105
 msgid   "Build a package from an existing build tree"
 msgstr  ""
 
-#: wizbin/build.py:882
 msgid   "Build preparation failed"
 msgstr  ""
 
-#: wizbin/build.py:885
 msgid   "Build preparation failed with unknown error"
 msgstr  ""
 
-#: wizbin/build.py:232
 msgid   "Building"
 msgstr  ""
 
-#: wizbin/build.py:924
 msgid   "Building Tag List"
 msgstr  ""
 
-#: wiz/pginit.py:33
 msgid   "Building a Debian Package with Debreate"
 msgstr  ""
 
-#: ui/menu.py:200
 msgid   "Building debs from Source"
 msgstr  ""
 
-#: main.py:222
 msgid   "Button Base Image Designer"
 msgstr  ""
 
-#: main.py:333
 msgid   "Caching manual files"
 msgstr  ""
 
-#: ui/logwindow.py:142
 msgid   "Can\"t change log window font'))"
 msgstr  ""
 
-#: wizbin/build.py:219 wizbin/build.py:849
 msgid   "Cannot Continue"
 msgstr  ""
 
-#: dbr/config.py:136
 msgid   "Cannot create config directory, file exists"
 msgstr  ""
 
-#: ui/about.py:390
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  ""
 
-#: wizbin/build.py:797
 msgid   "Cannot install package"
 msgstr  ""
 
-#: ui/tree.py:1078
 msgid   "Cannot move \"{}\" to trash, no write access"
 msgstr  ""
 
-#: dbr/config.py:165
 msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
-#: dbr/functions.py:293
 msgid   "Cannot run \"fakeroot dpkg\""
 msgstr  ""
 
-#: wizbin/launchers.py:150
 msgid   "Categories"
 msgstr  ""
 
-#: globals/tooltips.py:167 globals/tooltips.py:171
 msgid   "Categories dictate where the launcher will be located in the system menu"
 msgstr  ""
 
-#: wizbin/depends.py:98
 msgid   "Category"
 msgstr  ""
 
-#: globals/ident.py:99 ui/about.py:68 ui/menu.py:188
 msgid   "Changelog"
 msgstr  ""
 
-#: ui/about.py:385
 msgid   "Changelog mimetype: {}"
 msgstr  ""
 
-#: wizbin/changelog.py:142
 msgid   "Changes"
 msgstr  ""
 
-#: ui/menu.py:173
 msgid   "Check for update"
 msgstr  ""
 
-#: ui/menu.py:174
 msgid   "Check if a new version is available for download"
 msgstr  ""
 
-#: wizbin/build.py:84
 msgid   "Check package for errors with lintian"
 msgstr  ""
 
-#: wizbin/build.py:563
 msgid   "Checking package for errors"
 msgstr  ""
 
-#: wizbin/build.py:726
 msgid   "Checking {}"
 msgstr  ""
 
-#: globals/tooltips.py:192
 msgid   "Checks the package for warnings & errors according to lintian specifications"
 msgstr  ""
 
-#: ui/quickbuild.py:156
 msgid   "Choose Directory"
 msgstr  ""
 
-#: ui/quickbuild.py:162
 msgid   "Choose Filename"
 msgstr  ""
 
-#: wizbin/files.py:580
 msgid   "Choose Target Directory"
 msgstr  ""
 
-#: wizbin/launchers.py:158
 msgid   "Clear"
 msgstr  ""
 
-#: ui/checklist.py:374
 msgid   "Clear Lintian overrides list?"
 msgstr  ""
 
-#: wizbin/depends.py:300
 msgid   "Clear all dependencies?"
 msgstr  ""
 
-#: wizbin/files.py:593
 msgid   "Clear all files?"
 msgstr  ""
 
-#: ui/distcache.py:52
 msgid   "Clear cache"
 msgstr  ""
 
-#: wizbin/launchers.py:372 wizbin/launchers.py:543
 msgid   "Clear categories?"
 msgstr  ""
 
-#: globals/tooltips.py:170
 msgid   "Clear category list"
 msgstr  ""
 
-#: globals/tooltips.py:75
 msgid   "Clear file list"
 msgstr  ""
 
-#: ui/menu.py:166
 msgid   "Clear local cache"
 msgstr  ""
 
-#: globals/tooltips.py:67
 msgid   "Clear the list of dependency packages"
 msgstr  ""
 
-#: ui/quickbuild.py:62
 msgid   "Close dialog"
 msgstr  ""
 
-#: main.py:210
 msgid   "Code Contributor"
 msgstr  ""
 
-#: ui/tree.py:746 ui/tree.py:766
 msgid   "Collapse"
 msgstr  ""
 
-#: wizbin/build.py:828
 msgid   "Command executed: {}"
 msgstr  ""
 
-#: wizbin/launchers.py:106
 msgid   "Comment"
 msgstr  ""
 
-#: wizbin/build.py:382
 msgid   "Compressing changelog"
 msgstr  ""
 
-#: init.py:188
 msgid   "Configuration key \"{}\" = \"{}\", type: {}"
 msgstr  ""
 
-#: dbr/config.py:143
 msgid   "Configuration key not found"
 msgstr  ""
 
-#: wizbin/files.py:592 wizbin/depends.py:299 wizbin/launchers.py:372
-#: wizbin/launchers.py:542
 msgid   "Confirm"
 msgstr  ""
 
-#: wizbin/depends.py:78
 msgid   "Conflicts"
 msgstr  ""
 
-#: ui/distcache.py:183
 msgid   "Contacting remote sites"
 msgstr  ""
 
-#: globals/tooltips.py:162
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
 
-#: main.py:631 input/text.py:87 wizbin/scripts.py:359 wizbin/scripts.py:375
-#: wizbin/copyright.py:121
 msgid   "Continue?"
 msgstr  ""
 
-#: globals/ident.py:94
 msgid   "Control"
 msgstr  ""
 
-#: wizbin/control.py:461
 msgid   "Control File Preview"
 msgstr  ""
 
-#: ui/menu.py:186
 msgid   "Control files"
 msgstr  ""
 
-#: ui/menu.py:111
 msgid   "Convert between package types"
 msgstr  ""
 
-#: ui/menu.py:111
 msgid   "Convert packages"
 msgstr  ""
 
-#: ui/about.py:348
 msgid   "Converting string argument \"jobs\" to tuple"
 msgstr  ""
 
-#: globals/tooltips.py:133
 msgid   "Copies a full system, app, or local license"
 msgstr  ""
 
-#: globals/tooltips.py:136
 msgid   "Copies a template distributed with Debreate"
 msgstr  ""
 
-#: globals/tooltips.py:137
 msgid   "Copies a user-defined template from"
 msgstr  ""
 
-#: globals/tooltips.py:134
 msgid   "Copies text from a license stored in"
 msgstr  ""
 
-#: wizbin/build.py:262
 msgid   "Copying files"
 msgstr  ""
 
-#: globals/ident.py:100
 msgid   "Copyright"
 msgstr  ""
 
-#: wizbin/copyright.py:41
 msgid   "Copyright © {} <copyright holder(s)> [<email>]"
 msgstr  ""
 
-#: ui/quickbuild.py:132
 msgid   "Could not build .deb package"
 msgstr  ""
 
-#: wizbin/build.py:385
 msgid   "Could not compress changelog"
 msgstr  ""
 
-#: wizbin/build.py:218
 msgid   "Could not free stage directory: {}"
 msgstr  ""
 
-#: wizbin/build.py:817
 msgid   "Could not install package: {}"
 msgstr  ""
 
-#: wizbin/copyright.py:287
 msgid   "Could not locate license file: {}"
 msgstr  ""
 
-#: wizbin/files.py:748
 msgid   "Could not locate the following files:"
 msgstr  ""
 
-#: main.py:565 main.py:576
 msgid   "Could not open project file"
 msgstr  ""
 
-#: wizbin/files.py:533
 msgid   "Could not retrieve file list"
 msgstr  ""
 
-#: ui/distcache.py:172
 msgid   "Could not start progress dialog timer"
 msgstr  ""
 
-#: wizbin/files.py:538
 msgid   "Counting Files"
 msgstr  ""
 
-#: wizbin/build.py:67
 msgid   "Create md5sums file"
 msgstr  ""
 
-#: wizbin/launchers.py:62
 msgid   "Create system menu launcher"
 msgstr  ""
 
-#: globals/tooltips.py:183
 msgid   "Creates a checksum for all staged files within the package"
 msgstr  ""
 
-#: globals/tooltips.py:143
 msgid   "Creates a copyright header & short reference to a standard system license in /usr/share/common-licenses"
 msgstr  ""
 
-#: ui/menu.py:163
 msgid   "Creates/Updates list of distribution names for changelog page"
 msgstr  ""
 
-#: wizbin/build.py:364
 msgid   "Creating changelog"
 msgstr  ""
 
-#: wizbin/build.py:495
 msgid   "Creating control file"
 msgstr  ""
 
-#: wizbin/build.py:395
 msgid   "Creating copyright"
 msgstr  ""
 
-#: wizbin/build.py:435
 msgid   "Creating md5sums"
 msgstr  ""
 
-#: wizbin/build.py:410
 msgid   "Creating menu launcher"
 msgstr  ""
 
-#: wizbin/build.py:449
 msgid   "Creating scripts"
 msgstr  ""
 
-#: ui/about.py:67
 msgid   "Credits"
 msgstr  ""
 
-#: wizbin/files.py:84
 msgid   "Custom"
 msgstr  ""
 
-#: wizbin/launchers.py:117
 msgid   "Custom Fields"
 msgstr  ""
 
-#: globals/tooltips.py:152
 msgid   "Custom filename to use for launcher"
 msgstr  ""
 
-#: ui/menu.py:184
 msgid   "Debian Policy Manual"
 msgstr  ""
 
-#: ui/quickbuild.py:162 wizbin/build.py:681
 msgid   "Debian packages"
 msgstr  ""
 
-#: main.py:269
 msgid   "Debreate"
 msgstr  ""
 
-#: main.py:63
 msgid   "Debreate - Debian Package Builder"
 msgstr  ""
 
-#: startup/firstrun.py:52
 msgid   "Debreate First Run"
 msgstr  ""
 
-#: wiz/pginit.py:24
 msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
 msgstr  ""
 
-#: main.py:269
 msgid   "Debreate is up to date!"
 msgstr  ""
 
-#: wizbin/scripts.py:424
 msgid   "Debreate offers an Auto-Link Executables feature. What this does is finds any executables in the Files section and creates a postinst script that will create soft links to them in the specified path. This is useful if you are installing executables to a directory that is not found in the system PATH but want to access it from the PATH. For example, if you install an executable \"bar\" to the directory \"/usr/share/foo\" in order to execute \"bar\" from a terminal you would have to type /usr/share/foo/bar. Auto-Link can be used to place a link to \"bar\" somewhere on the system path like \"/usr/bin\". Then all that needs to be typed is bar to execute the program. Auto-Link also creates a prerm script that will delete the link upon removing the package."
 msgstr  ""
 
-#: main.py:381 main.py:444 globals/project.py:26
 msgid   "Debreate project files"
 msgstr  ""
 
-#: ui/dialog.py:406
 msgid   "Debug"
 msgstr  ""
 
-#: ui/tree.py:1087
 msgid   "Delete"
 msgstr  ""
 
-#: wizbin/build.py:79
 msgid   "Delete staged directory"
 msgstr  ""
 
-#: globals/tooltips.py:190
 msgid   "Delete staged directory tree after package has been created"
 msgstr  ""
 
-#: wizbin/depends.py:40
 msgid   "Dependencies and Conflicts"
 msgstr  ""
 
-#: globals/tooltips.py:68
 msgid   "Dependencies to be added"
 msgstr  ""
 
-#: wizbin/depends.py:50
 msgid   "Dependency/Conflict Package Name"
 msgstr  ""
 
-#: globals/ident.py:95 wizbin/depends.py:73
 msgid   "Depends"
 msgstr  ""
 
-#: ui/dialog.py:303
 msgid   "Details"
 msgstr  ""
 
-#: ui/tree.py:1172
 msgid   "Details below:"
 msgstr  ""
 
-#: wizbin/build.py:571
 msgid   "Details saved to {}"
 msgstr  ""
 
-#: ui/about.py:288
 msgid   "Developer"
 msgstr  ""
 
-#: wizbin/files.py:153
 msgid   "Directory options"
 msgstr  ""
 
-#: globals/tooltips.py:97
 msgid   "Directory where scripts should create symlinks"
 msgstr  ""
 
-#: globals/tooltips.py:162
 msgid   "Directory:"
 msgstr  ""
 
-#: globals/tooltips.py:186
 msgid   "Discards unneeded symbols from binary files"
 msgstr  ""
 
-#: globals/tooltips.py:165
 msgid   "Displays a notification in the system panel when launched"
 msgstr  ""
 
-#: wizbin/changelog.py:57
 msgid   "Distribution"
 msgstr  ""
 
-#: globals/tooltips.py:124
 msgid   "Do not strip preceding whitespace from regular lines"
 msgstr  ""
 
-#: wizbin/files.py:70
 msgid   "Don't follow symbolic links"
 msgstr  ""
 
-#: ui/about.py:399
 msgid   "ERROR: Could not locate changelog file:\n"
         "\t'{}' not found"
 msgstr  ""
 
-#: ui/about.py:422
 msgid   "ERROR: Could not locate license file:\n"
         "\t'{}' not found"
 msgstr  ""
 
-#: ui/about.py:85 wizbin/control.py:76 wizbin/changelog.py:79
 msgid   "Email"
 msgstr  ""
 
-#: globals/execute.py:21
 msgid   "Empty password"
 msgstr  ""
 
-#: wizbin/launchers.py:78
 msgid   "Encoding"
 msgstr  ""
 
-#: wizbin/depends.py:77
 msgid   "Enhances"
 msgstr  ""
 
-#: dbr/config.py:136 dbr/config.py:143 dbr/config.py:150 dbr/config.py:165
-#: input/text.py:111 ui/dialog.py:488 ui/dialog.py:627
 msgid   "Error"
 msgstr  ""
 
-#: ui/about.py:388
 msgid   "Error reading changelog: {}\n"
         "\t"
 msgstr  ""
 
-#: wizbin/copyright.py:209
 msgid   "Error retrieving template path: {}"
 msgstr  ""
 
-#: wizbin/control.py:142
 msgid   "Essential"
 msgstr  ""
 
-#: main.py:521
 msgid   "Event: EVT_CHANGE_PAGE, Page ID: {}"
 msgstr  ""
 
-#: wizbin/launchers.py:102
 msgid   "Executable"
 msgstr  ""
 
-#: globals/tooltips.py:155
 msgid   "Executable to be launched"
 msgstr  ""
 
-#: globals/tooltips.py:98
 msgid   "Executables from file list to be linked against"
 msgstr  ""
 
-#: ui/menu.py:107
 msgid   "Exit Debreate"
 msgstr  ""
 
-#: ui/tree.py:210 ui/tree.py:748 ui/tree.py:769
 msgid   "Expand"
 msgstr  ""
 
-#: globals/tooltips.py:150
 msgid   "Export launcher to text file"
 msgstr  ""
 
-#: wizbin/control.py:301 wizbin/control.py:356
 msgid   "Exporting {} field"
 msgstr  ""
 
-#: wizbin/build.py:144
 msgid   "Extra Options"
 msgstr  ""
 
-#: ui/tree.py:1171
 msgid   "Failed to set cursor"
 msgstr  ""
 
-#: wiz/helper.py:161
 msgid   "Field ID does not exist or match any fields: {}"
 msgstr  ""
 
-#: ui/menu.py:93
 msgid   "File"
 msgstr  ""
 
-#: wizbin/build.py:1011
 msgid   "File Count"
 msgstr  ""
 
-#: ui/dialog.py:483
 msgid   "File Exists"
 msgstr  ""
 
-#: ui/logwindow.py:167
 msgid   "File does not exist"
 msgstr  ""
 
-#: main.py:566
 msgid   "File does not exist or is not a regular file: {}"
 msgstr  ""
 
-#: wizbin/control.py:435
 msgid   "File does not exist: {}"
 msgstr  ""
 
-#: wizbin/files.py:707
 msgid   "File import did not complete."
 msgstr  ""
 
-#: input/filelist.py:592
 msgid   "File list failed to resize. Forcing manual resize to target width: {}"
 msgstr  ""
 
-#: wizbin/files.py:731
 msgid   "File not found: {}"
 msgstr  ""
 
-#: wizbin/launchers.py:90
 msgid   "Filename"
 msgstr  ""
 
-#: globals/ident.py:96
 msgid   "Files"
 msgstr  ""
 
-#: globals/tooltips.py:72
 msgid   "Files from selected directories will be added individually to list"
 msgstr  ""
 
-#: globals/tooltips.py:80
 msgid   "Files to be added to package & their target directories"
 msgstr  ""
 
-#: wiz/pginit.py:25
 msgid   "For a video tutorial check the link below."
 msgstr  ""
 
-#: globals/tooltips.py:125
 msgid   "Formatted changelog entries (editable)"
 msgstr  ""
 
-#: globals/tooltips.py:132 wizbin/copyright.py:61
 msgid   "Full Template"
 msgstr  ""
 
-#: main.py:216
 msgid   "General Contributor"
 msgstr  ""
 
-#: globals/tooltips.py:101
 msgid   "Generate scripts"
 msgstr  ""
 
-#: ui/distcache.py:48
 msgid   "Generic (Debian names only)"
 msgstr  ""
 
-#: wizbin/build.py:477
 msgid   "Getting installed size"
 msgstr  ""
 
-#: main.py:193
 msgid   "GitHub Project"
 msgstr  ""
 
-#: wizbin/changelog.py:262
 msgid   "Got error when attempting to retrieve field value"
 msgstr  ""
 
-#: main.py:200
 msgid   "Head Developer"
 msgstr  ""
 
-#: ui/menu.py:238 wiz/wizard.py:389
 msgid   "Help"
 msgstr  ""
 
-#: wiz/wizard.py:391
 msgid   "Help information for page \"{}\""
 msgstr  ""
 
-#: ui/logwindow.py:66
 msgid   "Hide"
 msgstr  ""
 
-#: ui/tree.py:635
 msgid   "Home directory"
 msgstr  ""
 
-#: main.py:192 wizbin/control.py:139
 msgid   "Homepage"
 msgstr  ""
 
-#: globals/tooltips.py:102
 msgid   "How to use Auto-Link"
 msgstr  ""
 
-#: wizbin/scripts.py:425
 msgid   "How to use Auto-Link: Press the IMPORT button to import any executables from the Files section. Then press the GENERATE button. Post-Install and Pre-Remove scripts will be created that will place symbolic links to your executables in the path displayed above."
 msgstr  ""
 
-#: wizbin/launchers.py:110
 msgid   "Icon"
 msgstr  ""
 
-#: globals/tooltips.py:157
 msgid   "Icon to be displayed for the launcher"
 msgstr  ""
 
-#: wizbin/changelog.py:82
 msgid   "Import"
 msgstr  ""
 
-#: wizbin/files.py:711
 msgid   "Import Cancelled"
 msgstr  ""
 
-#: globals/tooltips.py:99
 msgid   "Import files marked as executable from Files page"
 msgstr  ""
 
-#: globals/tooltips.py:122 wizbin/changelog.py:83
 msgid   "Import information from Control page"
 msgstr  ""
 
-#: globals/tooltips.py:149
 msgid   "Import launcher from file"
 msgstr  ""
 
-#: wizbin/files.py:738
 msgid   "Imported file {} of {}"
 msgstr  ""
 
-#: wizbin/control.py:432
 msgid   "Importing file: {}"
 msgstr  ""
 
-#: wizbin/files.py:376
 msgid   "Importing page info from {}"
 msgstr  ""
 
-#: wizbin/scripts.py:313
 msgid   "Importing script: {}"
 msgstr  ""
 
-#: wizbin/files.py:566
 msgid   "Importing {} files"
 msgstr  ""
 
-#: wizbin/depends.py:202
 msgid   "Importing {}: {}"
 msgstr  ""
 
-#: globals/tooltips.py:178
 msgid   "Improperly formatted text may cause launcher to be unusable"
 msgstr  ""
 
-#: ui/distcache.py:42
 msgid   "Include the following:"
 msgstr  ""
 
-#: globals/ident.py:93
 msgid   "Information"
 msgstr  ""
 
-#: wizbin/changelog.py:95
 msgid   "Insert new changelog entry"
 msgstr  ""
 
-#: globals/tooltips.py:189
 msgid   "Install binutils package for this option"
 msgstr  ""
 
-#: globals/tooltips.py:121
 msgid   "Install changelog to custom directory"
 msgstr  ""
 
-#: globals/tooltips.py:120
 msgid   "Install changelog to standard directory"
 msgstr  ""
 
-#: globals/tooltips.py:195
 msgid   "Install lintian package for this option"
 msgstr  ""
 
-#: globals/tooltips.py:184
 msgid   "Install md5sum package for this option"
 msgstr  ""
 
-#: wizbin/build.py:90
 msgid   "Install package after build"
 msgstr  ""
 
-#: globals/tooltips.py:198
 msgid   "Install package using a system installer after build"
 msgstr  ""
 
-#: ui/about.py:133
 msgid   "Installation prefix: {}"
 msgstr  ""
 
-#: globals/tooltips.py:202
 msgid   "Installation requires one of the following utilities:"
 msgstr  ""
 
-#: wizbin/build.py:806
 msgid   "Installing with {}"
 msgstr  ""
 
-#: ui/quickbuild.py:133
 msgid   "Is the staged directory formatted correctly?"
 msgstr  ""
 
-#: ui/about.py:84
 msgid   "Job"
 msgstr  ""
 
-#: globals/tooltips.py:137
 msgid   "LOCAL:"
 msgstr  ""
 
-#: globals/tooltips.py:173
 msgid   "Launcher is only shown when options are satisfied"
 msgstr  ""
 
-#: ui/menu.py:196
 msgid   "Launchers / Desktop entries"
 msgstr  ""
 
-#: ui/about.py:69
 msgid   "License"
 msgstr  ""
 
-#: wizbin/copyright.py:354
 msgid   "License template is empty"
 msgstr  ""
 
-#: dbr/templates.py:97
 msgid   "License template not found: {}"
 msgstr  ""
 
-#: globals/tooltips.py:161
 msgid   "Link:"
 msgstr  ""
 
-#: wizbin/build.py:575
 msgid   "Lintian Errors"
 msgstr  ""
 
-#: wizbin/build.py:931
 msgid   "Lintian Overrides"
 msgstr  ""
 
-#: ui/menu.py:192
 msgid   "Lintian Tags Explanation"
 msgstr  ""
 
-#: wizbin/build.py:570
 msgid   "Lintian found some issues with the package."
 msgstr  ""
 
-#: wizbin/build.py:101
 msgid   "Lintian overrides"
 msgstr  ""
 
-#: wizbin/files.py:64
 msgid   "List files individually"
 msgstr  ""
 
-#: globals/tooltips.py:116
 msgid   "List new changes here, separated one per line"
 msgstr  ""
 
-#: dbr/templates.py:101
 msgid   "Loading license template: {}"
 msgstr  ""
 
-#: wizbin/control.py:129
 msgid   "Long Description"
 msgstr  ""
 
-#: wizbin/launchers.py:113
 msgid   "MIME Type"
 msgstr  ""
 
-#: wizbin/control.py:71 wizbin/changelog.py:76
 msgid   "Maintainer"
 msgstr  ""
 
-#: wizbin/scripts.py:66 wizbin/scripts.py:68 wizbin/scripts.py:70
-#: wizbin/scripts.py:72
 msgid   "Make this script"
 msgstr  ""
 
-#: globals/ident.py:97
 msgid   "Man"
 msgstr  ""
 
-#: ui/menu.py:227
 msgid   "Manual"
 msgstr  ""
 
-#: globals/ident.py:101
 msgid   "Menu"
 msgstr  ""
 
-#: wizbin/launchers.py:54
 msgid   "Menu Launcher"
 msgstr  ""
 
-#: wizbin/launchers.py:444
 msgid   "Menu Launcher Preview"
 msgstr  ""
 
-#: ui/dialog.py:209 ui/dialog.py:665
 msgid   "Message"
 msgstr  ""
 
-#: globals/tooltips.py:175
 msgid   "Miscellaneous fields not available above"
 msgstr  ""
 
-#: wizbin/files.py:747
 msgid   "Missing Files"
 msgstr  ""
 
-#: globals/tooltips.py:41
 msgid   "More detailed description"
 msgstr  ""
 
-#: ui/tree.py:1085
 msgid   "Move the following items to trash?"
 msgstr  ""
 
-#: globals/tooltips.py:42
 msgid   "Multiple lines can be used here, but lintian will complain if they are too long"
 msgstr  ""
 
-#: ui/about.py:83 wizbin/launchers.py:97
 msgid   "Name"
 msgstr  ""
 
-#: ui/tree.py:900
 msgid   "Name already exists:"
 msgstr  ""
 
-#: globals/tooltips.py:109
 msgid   "Name of Debian/Ubuntu/etc. target distribution"
 msgstr  ""
 
-#: globals/tooltips.py:53
 msgid   "Name of dependency/conflicting package"
 msgstr  ""
 
-#: globals/tooltips.py:29
 msgid   "Name of the package/software"
 msgstr  ""
 
-#: globals/tooltips.py:44
 msgid   "Name of upstream source package"
 msgstr  ""
 
-#: globals/tooltips.py:154
 msgid   "Name to be displayed for the launcher"
 msgstr  ""
 
-#: ui/menu.py:100
 msgid   "New project"
 msgstr  ""
 
-#: globals/tooltips.py:23
 msgid   "Next page"
 msgstr  ""
 
-#: globals/tooltips.py:128
 msgid   "No license templates available"
 msgstr  ""
 
-#: ui/quickbuild.py:215
 msgid   "No write access to target directory"
 msgstr  ""
 
-#: main.py:577
 msgid   "Not a valid Debreate project: {}"
 msgstr  ""
 
-#: dbr/config.py:196
 msgid   "Not writing empty text to configuration"
 msgstr  ""
 
-#: ui/distcache.py:47
 msgid   "Obsolete"
 msgstr  ""
 
-#: globals/tooltips.py:39
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
-#: wizbin/build.py:850
 msgid   "One of the required fields is empty:"
 msgstr  ""
 
-#: ui/menu.py:101
 msgid   "Open"
 msgstr  ""
 
-#: main.py:383
 msgid   "Open Debreate Project"
 msgstr  ""
 
-#: wizbin/control.py:452
 msgid   "Open File"
 msgstr  ""
 
-#: wizbin/launchers.py:423
 msgid   "Open Launcher"
 msgstr  ""
 
-#: ui/logwindow.py:157
 msgid   "Open Log"
 msgstr  ""
 
-#: wizbin/copyright.py:66
 msgid   "Open Template Directory"
 msgstr  ""
 
-#: ui/menu.py:101
 msgid   "Open a previously saved project"
 msgstr  ""
 
-#: ui/menu.py:227
 msgid   "Open a usage document"
 msgstr  ""
 
-#: ui/logwindow.py:63
 msgid   "Open and Display Log File"
 msgstr  ""
 
-#: ui/menu.py:155
 msgid   "Open logs directory"
 msgstr  ""
 
-#: globals/tooltips.py:26
 msgid   "Open pre-formatted control text"
 msgstr  ""
 
-#: main.py:357
 msgid   "Opening log directory ..."
 msgstr  ""
 
-#: init.py:216
 msgid   "Opening project from argument: {}"
 msgstr  ""
 
-#: globals/tooltips.py:54
 msgid   "Operator"
 msgstr  ""
 
-#: wizbin/control.py:256
 msgid   "Optional"
 msgstr  ""
 
-#: ui/menu.py:236
 msgid   "Options"
 msgstr  ""
 
-#: ui/menu.py:194
 msgid   "Overriding Lintian Tags"
 msgstr  ""
 
-#: ui/dialog.py:481
 msgid   "Overwrite file?"
 msgstr  ""
 
-#: wizbin/control.py:61 wizbin/changelog.py:49
 msgid   "Package"
 msgstr  ""
 
-#: wizbin/build.py:874
 msgid   "Package build failed"
 msgstr  ""
 
-#: wizbin/build.py:877
 msgid   "Package build failed with unknown error"
 msgstr  ""
 
-#: globals/tooltips.py:63
 msgid   "Package conflicts and will be de-configured"
 msgstr  ""
 
-#: wizbin/build.py:865
 msgid   "Package created successfully"
 msgstr  ""
 
-#: globals/tooltips.py:58
 msgid   "Package is highly recommended and will be installed by default"
 msgstr  ""
 
-#: globals/tooltips.py:59
 msgid   "Package may be useful but is not necessary and will not be installed by default"
 msgstr  ""
 
-#: globals/tooltips.py:62
 msgid   "Package or its files may be overwritten"
 msgstr  ""
 
-#: globals/tooltips.py:61
 msgid   "Package will be removed from the system if it is installed"
 msgstr  ""
 
-#: globals/tooltips.py:56
 msgid   "Package will need to be installed"
 msgstr  ""
 
-#: globals/tooltips.py:57
 msgid   "Package will need to be installed and configured first"
 msgstr  ""
 
-#: wizbin/depends.py:99
 msgid   "Package(s)"
 msgstr  ""
 
-#: globals/tooltips.py:32
 msgid   "Package/Software maintainer's email address"
 msgstr  ""
 
-#: globals/tooltips.py:31
 msgid   "Package/Software maintainer's full name"
 msgstr  ""
 
-#: globals/tooltips.py:30
 msgid   "Package/Software release version"
 msgstr  ""
 
-#: main.py:201 ui/about.py:301
 msgid   "Packager"
 msgstr  ""
 
-#: ui/menu.py:95
 msgid   "Page"
 msgstr  ""
 
-#: wiz/wizard.py:67
 msgid   "Page help"
 msgstr  ""
 
-#: wiz/helper.py:182
 msgid   "Page retrieved was not instance of a window/widget: Page name: {}"
 msgstr  ""
 
-#: wiz/wizard.py:590
 msgid   "Page {} does not override inherited method Get"
 msgstr  ""
 
-#: wiz/wizard.py:642
 msgid   "Page {} does not override inherited method ImportFromFile"
 msgstr  ""
 
-#: wiz/wizard.py:650
 msgid   "Page {} does not override inherited method InitPage"
 msgstr  ""
 
-#: wiz/wizard.py:660
 msgid   "Page {} does not override inherited method IsOkay"
 msgstr  ""
 
-#: wizbin/scripts.py:110
 msgid   "Path"
 msgstr  ""
 
-#: wizbin/scripts.py:374
 msgid   "Path \"{}\" does not exist."
 msgstr  ""
 
-#: globals/tooltips.py:34
 msgid   "Platform on which package/software is meant to run"
 msgstr  ""
 
-#: startup/firstrun.py:33
 msgid   "Please report this error to Debreate's developers"
 msgstr  ""
 
-#: dbr/md5.py:41
 msgid   "Please report this error to one of the following addresses:"
 msgstr  ""
 
-#: wizbin/scripts.py:68 wizbin/scripts.py:84
 msgid   "Post-Install"
 msgstr  ""
 
-#: wizbin/scripts.py:418
 msgid   "Post-Install and Pre-Remove scripts generated"
 msgstr  ""
 
-#: wizbin/scripts.py:72 wizbin/scripts.py:88
 msgid   "Post-Remove"
 msgstr  ""
 
-#: wizbin/depends.py:74
 msgid   "Pre-Depends"
 msgstr  ""
 
-#: wizbin/scripts.py:66 wizbin/scripts.py:82
 msgid   "Pre-Install"
 msgstr  ""
 
-#: wizbin/scripts.py:70 wizbin/scripts.py:86
 msgid   "Pre-Remove"
 msgstr  ""
 
-#: wizbin/build.py:228
 msgid   "Preparing build tree"
 msgstr  ""
 
-#: wizbin/build.py:714
 msgid   "Preparing to build"
 msgstr  ""
 
-#: globals/tooltips.py:123
 msgid   "Prepend above changes as new log entry"
 msgstr  ""
 
-#: wizbin/changelog.py:97
 msgid   "Preserve indentation"
 msgstr  ""
 
-#: wizbin/files.py:67
 msgid   "Preserve top-level directories"
 msgstr  ""
 
-#: ui/textpreview.py:18 wizbin/control.py:55 wizbin/depends.py:48
-#: wizbin/launchers.py:59
 msgid   "Preview"
 msgstr  ""
 
-#: ui/distcache.py:50
 msgid   "Preview cache"
 msgstr  ""
 
-#: globals/tooltips.py:28
 msgid   "Preview control file"
 msgstr  ""
 
-#: globals/tooltips.py:151
 msgid   "Preview launcher text"
 msgstr  ""
 
-#: globals/tooltips.py:22
 msgid   "Previous page"
 msgstr  ""
 
-#: wizbin/control.py:121
 msgid   "Priority"
 msgstr  ""
 
-#: wizbin/build.py:827
 msgid   "Process returned code {}"
 msgstr  ""
 
-#: wizbin/files.py:455
 msgid   "Processing Files"
 msgstr  ""
 
-#: ui/progress.py:22 ui/progress.py:282
 msgid   "Progress"
 msgstr  ""
 
-#: wizbin/files.py:708
 msgid   "Project files may be missing in file list."
 msgstr  ""
 
-#: wizbin/depends.py:80
 msgid   "Provides"
 msgstr  ""
 
-#: ui/about.py:122
 msgid   "Python version: {}"
 msgstr  ""
 
-#: ui/quickbuild.py:37 ui/menu.py:105
 msgid   "Quick Build"
 msgstr  ""
 
-#: ui/quickbuild.py:264
 msgid   "Quick build complete"
 msgstr  ""
 
-#: ui/menu.py:107
 msgid   "Quit"
 msgstr  ""
 
-#: main.py:479
 msgid   "Quit?"
 msgstr  ""
 
-#: dbr/config.py:84
 msgid   "Reading configuration file: {}"
 msgstr  ""
 
-#: wizbin/control.py:254
 msgid   "Recommended"
 msgstr  ""
 
-#: wizbin/depends.py:75
 msgid   "Recommends"
 msgstr  ""
 
-#: globals/tooltips.py:83
 msgid   "Red background = missing file/directory"
 msgstr  ""
 
-#: globals/tooltips.py:82
 msgid   "Red text = executable"
 msgstr  ""
 
-#: ui/menu.py:230
 msgid   "Reference"
 msgstr  ""
 
-#: ui/tree.py:214 ui/logwindow.py:65
 msgid   "Refresh"
 msgstr  ""
 
-#: wizbin/copyright.py:64
 msgid   "Refresh Template List"
 msgstr  ""
 
-#: wizbin/launchers.py:157
 msgid   "Remove"
 msgstr  ""
 
-#: main.py:433 wizbin/launchers.py:409
 msgid   "Remove any non-ASCII characters from your project."
 msgstr  ""
 
-#: globals/tooltips.py:169
 msgid   "Remove selected categories from list"
 msgstr  ""
 
-#: globals/tooltips.py:66
 msgid   "Remove selected dependency package from list"
 msgstr  ""
 
-#: globals/tooltips.py:100
 msgid   "Remove selected executables from list"
 msgstr  ""
 
-#: globals/tooltips.py:74
 msgid   "Remove selected files from list"
 msgstr  ""
 
-#: input/filelist.py:655
 msgid   "Removing selected item {} of {}"
 msgstr  ""
 
-#: wizbin/build.py:546
 msgid   "Removing temp directory"
 msgstr  ""
 
-#: ui/tree.py:211
 msgid   "Rename"
 msgstr  ""
 
-#: wizbin/depends.py:79
 msgid   "Replaces"
 msgstr  ""
 
-#: globals/tooltips.py:231 wizbin/control.py:252
 msgid   "Required"
 msgstr  ""
 
-#: ui/checklist.py:163
 msgid   "Retrieving checked label: {}"
 msgstr  ""
 
-#: ui/quickbuild.py:45
 msgid   "Root directory of build tree"
 msgstr  ""
 
-#: wizbin/build.py:513
 msgid   "Running dpkg"
 msgstr  ""
 
-#: globals/tooltips.py:134
 msgid   "SYSTEM:"
 msgstr  ""
 
-#: ui/menu.py:102 wizbin/control.py:54 wizbin/build.py:682 wizbin/depends.py:47
-#: wizbin/launchers.py:58
 msgid   "Save"
 msgstr  ""
 
-#: wizbin/control.py:472
 msgid   "Save Control Information"
 msgstr  ""
 
-#: main.py:445
 msgid   "Save Debreate Project"
 msgstr  ""
 
-#: wizbin/launchers.py:388
 msgid   "Save Launcher"
 msgstr  ""
 
-#: ui/menu.py:103
 msgid   "Save as"
 msgstr  ""
 
-#: globals/tooltips.py:27
 msgid   "Save control information to text"
 msgstr  ""
 
-#: ui/menu.py:102
 msgid   "Save current project"
 msgstr  ""
 
-#: ui/menu.py:103
 msgid   "Save current project with a new filename"
 msgstr  ""
 
-#: main.py:435 wizbin/launchers.py:411
 msgid   "Save failed"
 msgstr  ""
 
-#: wizbin/build.py:925
 msgid   "Scanning default tags"
 msgstr  ""
 
-#: wizbin/files.py:504
 msgid   "Scanning directory {} ..."
 msgstr  ""
 
-#: wizbin/files.py:455
 msgid   "Scanning files ..."
 msgstr  ""
 
-#: globals/tooltips.py:95
 msgid   "Script run after package uninstall completes"
 msgstr  ""
 
-#: globals/tooltips.py:92
 msgid   "Script run before package install begins"
 msgstr  ""
 
-#: globals/tooltips.py:94
 msgid   "Script run before package uninstall begins"
 msgstr  ""
 
-#: globals/tooltips.py:96
 msgid   "Script text body"
 msgstr  ""
 
-#: globals/ident.py:98 wizbin/build.py:1025
 msgid   "Scripts"
 msgstr  ""
 
-#: globals/tooltips.py:93
 msgid   "Scrtipt run after package install completes"
 msgstr  ""
 
-#: wizbin/control.py:110
 msgid   "Section"
 msgstr  ""
 
-#: globals/tooltips.py:37
 msgid   "Section under which package managers will list this package"
 msgstr  ""
 
-#: globals/tooltips.py:176
 msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
 msgstr  ""
 
-#: globals/tooltips.py:193
 msgid   "See \"Help ➜ Reference ➜ Lintian Tags Explanation\""
 msgstr  ""
 
-#: globals/tooltips.py:110
 msgid   "See \"Options ➜ Update dist names cache\" to update this list."
 msgstr  ""
 
-#: globals/tooltips.py:187
 msgid   "See \"man 1 strip\""
 msgstr  ""
 
-#: globals/tooltips.py:166
 msgid   "Sets the encoding that should be used to read the launcher"
 msgstr  ""
 
-#: wizbin/build.py:894
 msgid   "Setting Lintian overrides..."
 msgstr  ""
 
-#: main.py:87
 msgid   "Setting MainWindow instance as top window"
 msgstr  ""
 
-#: wizbin/build.py:936
 msgid   "Setting selected overrides"
 msgstr  ""
 
-#: wizbin/control.py:126
 msgid   "Short Description"
 msgstr  ""
 
-#: globals/tooltips.py:142 wizbin/copyright.py:62
 msgid   "Short Template"
 msgstr  ""
 
-#: globals/tooltips.py:161
 msgid   "Shortcut to a web URL"
 msgstr  ""
 
-#: globals/tooltips.py:160
 msgid   "Shortcut to an application"
 msgstr  ""
 
-#: ui/tree.py:212
 msgid   "Show Hidden"
 msgstr  ""
 
-#: ui/menu.py:136
 msgid   "Show or hide tooltips"
 msgstr  ""
 
-#: ui/menu.py:135
 msgid   "Show tooltips"
 msgstr  ""
 
-#: wizbin/control.py:136
 msgid   "Source"
 msgstr  ""
 
-#: main.py:194
 msgid   "Sourceforge Project"
 msgstr  ""
 
-#: globals/tooltips.py:164
 msgid   "Specifies whether application should be run in a terminal"
 msgstr  ""
 
-#: ui/quickbuild.py:206
 msgid   "Stage directory does not exist"
 msgstr  ""
 
-#: ui/quickbuild.py:43
 msgid   "Staged directory tree"
 msgstr  ""
 
-#: ui/menu.py:100
 msgid   "Start a new project"
 msgstr  ""
 
-#: globals/tooltips.py:196 ui/quickbuild.py:58
 msgid   "Start building"
 msgstr  ""
 
-#: wizbin/launchers.py:86
 msgid   "Startup Notify"
 msgstr  ""
 
-#: wizbin/build.py:74
 msgid   "Strip binaries"
 msgstr  ""
 
-#: wizbin/build.py:334
 msgid   "Stripping binaries"
 msgstr  ""
 
-#: wizbin/scripts.py:417 wizbin/build.py:864
 msgid   "Success"
 msgstr  ""
 
-#: wizbin/depends.py:76
 msgid   "Suggests"
 msgstr  ""
 
-#: globals/execute.py:26
 msgid   "Super user command (sudo) not available"
 msgstr  ""
 
-#: ui/tree.py:199
 msgid   "System"
 msgstr  ""
 
-#: ui/about.py:118
 msgid   "System Information"
 msgstr  ""
 
-#: globals/tooltips.py:199
 msgid   "System installer set to:"
 msgstr  ""
 
-#: wizbin/files.py:181 wizbin/changelog.py:144
 msgid   "Target"
 msgstr  ""
 
-#: ui/quickbuild.py:211
 msgid   "Target directory does not exist"
 msgstr  ""
 
-#: ui/quickbuild.py:50
 msgid   "Target file"
 msgstr  ""
 
-#: globals/tooltips.py:78
 msgid   "Target installation directory for file(s)"
 msgstr  ""
 
-#: ui/quickbuild.py:52
 msgid   "Target output file"
 msgstr  ""
 
-#: wizbin/launchers.py:83
 msgid   "Terminal"
 msgstr  ""
 
-#: wizbin/build.py:736
 msgid   "Testing for: {}"
 msgstr  ""
 
-#: input/text.py:386
 msgid   "Text Size"
 msgstr  ""
 
-#: globals/tooltips.py:156
 msgid   "Text displayed when cursor hovers over launcher"
 msgstr  ""
 
-#: startup/firstrun.py:58
 msgid   "Thank you for using Debreate."
 msgstr  ""
 
-#: dbr/md5.py:39
 msgid   "The \"md5sum\" command was not found on the system."
 msgstr  ""
 
-#: ui/distcache.py:224
 msgid   "The cache file exists but may not have been updated"
 msgstr  ""
 
-#: startup/firstrun.py:55
 msgid   "The default configuration file will now be created."
 msgstr  ""
 
-#: ui/distcache.py:205
 msgid   "The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"
 msgstr  ""
 
-#: globals/tooltips.py:117
 msgid   "The first line will be prepended with an asterix (*) automatically. To denote any other sections, put one of the following as the first character on the line:"
 msgstr  ""
 
-#: wizbin/files.py:421
 msgid   "The following files/folders are missing from the filesystem."
 msgstr  ""
 
-#: wizbin/scripts.py:358
 msgid   "The following scripts will be overwritten if you continue: {}"
 msgstr  ""
 
-#: input/text.py:110
 msgid   "There was an error reading file: {}"
 msgstr  ""
 
-#: wizbin/files.py:422
 msgid   "They will be highlighted on the Files page."
 msgstr  ""
 
-#: wizbin/files.py:567
 msgid   "This could take a VERY long time"
 msgstr  ""
 
-#: startup/firstrun.py:54
 msgid   "This message only displays on the first run, or if\n"
         "the configuration file becomes corrupted."
 msgstr  ""
 
-#: globals/tooltips.py:172
 msgid   "This options means \"This application exists, but don't display it in the menus\""
 msgstr  ""
 
-#: globals/tooltips.py:60
 msgid   "This package may be useful to enhanced package"
 msgstr  ""
 
-#: input/text.py:86
 msgid   "This will delete all text"
 msgstr  ""
 
-#: wizbin/copyright.py:120
 msgid   "This will destroy all license text."
 msgstr  ""
 
-#: ui/quickbuild.py:250
 msgid   "Timer is running"
 msgstr  ""
 
-#: ui/quickbuild.py:247
 msgid   "Timer is stopped"
 msgstr  ""
 
-#: ui/quickbuild.py:276
 msgid   "Timer stopped. Stopping gauge ..."
 msgstr  ""
 
-#: ui/dialog.py:55 wiz/wizard.py:74
 msgid   "Title"
 msgstr  ""
 
-#: startup/firstrun.py:56
 msgid   "To delete this file, type the following command in a\n"
         "terminal:"
 msgstr  ""
 
-#: wizbin/build.py:200
 msgid   "Total tasks: {}"
 msgstr  ""
 
-#: main.py:202 ui/about.py:313
 msgid   "Translation"
 msgstr  ""
 
-#: ui/tree.py:227
 msgid   "Trash"
 msgstr  ""
 
-#: wizbin/launchers.py:67
 msgid   "Type"
 msgstr  ""
 
-#: globals/tooltips.py:159
 msgid   "Type of launcher"
 msgstr  ""
 
-#: main.py:250
 msgid   "URL request result: {}"
 msgstr  ""
 
-#: ui/menu.py:190
 msgid   "Ubuntu Policy Manual"
 msgstr  ""
 
-#: dbr/md5.py:40
 msgid   "Uncheck the \"{}\" box."
 msgstr  ""
 
-#: main.py:432 wizbin/launchers.py:408
 msgid   "Unfortunately Debreate does not support unicode yet."
 msgstr  ""
 
-#: main.py:435 wizbin/launchers.py:411
 msgid   "Unicode Error"
 msgstr  ""
 
-#: globals/tooltips.py:153
 msgid   "Unless checked, the value of \"Filename\" will be used for the launcher's output filename"
 msgstr  ""
 
-#: wiz/helper.py:197
 msgid   "Unrecognized field type: {} (ID: {})"
 msgstr  ""
 
-#: ui/distcache.py:46
 msgid   "Unstable"
 msgstr  ""
 
-#: main.py:237 main.py:262
 msgid   "Update"
 msgstr  ""
 
-#: ui/distcache.py:36
 msgid   "Update Dist Names Cache"
 msgstr  ""
 
-#: ui/distcache.py:51
 msgid   "Update cache"
 msgstr  ""
 
-#: main.py:238
 msgid   "Update checking is disabled in development versions"
 msgstr  ""
 
-#: ui/menu.py:162
 msgid   "Update dist names cache"
 msgstr  ""
 
-#: globals/tooltips.py:77
 msgid   "Update files' executable status & availability"
 msgstr  ""
 
-#: ui/distcache.py:240
 msgid   "Updating cache ..."
 msgstr  ""
 
-#: globals/tooltips.py:45
 msgid   "Upstream source homepage URL"
 msgstr  ""
 
-#: wizbin/changelog.py:73
 msgid   "Urgency"
 msgstr  ""
 
-#: globals/tooltips.py:38
 msgid   "Urgency of this package update"
 msgstr  ""
 
-#: wizbin/launchers.py:93
 msgid   "Use \"Name\" as output filename (<Name>.desktop)"
 msgstr  ""
 
-#: wizbin/control.py:66 wizbin/depends.py:51 wizbin/changelog.py:52
 msgid   "Version"
 msgstr  ""
 
-#: globals/tooltips.py:55
 msgid   "Version corresponing to package name and operator"
 msgstr  ""
 
-#: main.py:260
 msgid   "Version {} is available!"
 msgstr  ""
 
-#: dbr/config.py:196 input/text.py:91 ui/dialog.py:450 ui/dialog.py:459
-#: ui/checklist.py:374 wizbin/files.py:423 wizbin/build.py:385
-#: wizbin/changelog.py:171
 msgid   "Warning"
 msgstr  ""
 
-#: globals/tooltips.py:177
 msgid   "Warning:"
 msgstr  ""
 
-#: main.py:211
 msgid   "Website Designer & Author"
 msgstr  ""
 
-#: wiz/pginit.py:23
 msgid   "Welcome to Debreate!"
 msgstr  ""
 
-#: globals/tooltips.py:46
 msgid   "Whether this package is essential for system's stability"
 msgstr  ""
 
-#: main.py:261
 msgid   "Would you like to go to Debreate's website?"
 msgstr  ""
 
-#: ui/menu.py:202
 msgid   "Writing manual pages"
 msgstr  ""
 
-#: dbr/config.py:150
 msgid   "Wrong value type for configuration key"
 msgstr  ""
 
-#: main.py:480
 msgid   "You will lose any unsaved information"
 msgstr  ""
 
-#: main.py:630
 msgid   "You will lose any unsaved information."
 msgstr  ""
 
-#: ui/logwindow.py:64
 msgid   "Zoom Text"
 msgstr  ""
 
-#: globals/tooltips.py:35
 msgid   "all = platform independent"
 msgstr  ""
 
-#: main.py:92
 msgid   "debugging"
 msgstr  ""
 
-#: ui/quickbuild.py:123
 msgid   "errors"
 msgstr  ""
 
-#: ui/quickbuild.py:128
 msgid   "finished"
 msgstr  ""
 
-#: globals/tooltips.py:203
 msgid   "gdebi-gtk, gdebi-kde"
 msgstr  ""
 
-#: ui/quickbuild.py:227
 msgid   "in progress"
 msgstr  ""
 
-#: wizbin/scripts.py:76
 msgid   "script will be created from text below"
 msgstr  ""
 
-#: globals/constants.py:55
 msgid   "script/executable"
 msgstr  ""
 
-#: wizbin/build.py:921
 msgid   "tags"
 msgstr  ""
 
-#: ui/about.py:126
 msgid   "wxPython version: {}"
 msgstr  ""
 
-#: wizbin/scripts.py:664
 msgid   "{}-{}"
 msgstr  ""

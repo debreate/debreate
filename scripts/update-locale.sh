@@ -42,6 +42,7 @@ xgettext \
 	--indent \
 	--no-wrap \
 	--sort-output \
+	--no-location \
 	--copyright-holder="${author}" \
 	--package-name="${appname}" \
 	--package-version="${appver}" \
