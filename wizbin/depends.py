@@ -128,13 +128,15 @@ class Page(WizardPage):
 		lyt_top.Add(txt_package, (1, 0), flag=LEFT_BOTTOM)
 		lyt_top.Add(txt_version, (1, 2), flag=LEFT_BOTTOM)
 		lyt_top.Add(self.btn_open, (0, 3), (4, 1), wx.ALIGN_RIGHT)
-		lyt_top.Add(self.btn_save, (0, 4), (4, 1))
-		lyt_top.Add(self.btn_preview, (0, 5), (4, 1))
+		lyt_top.Add(self.btn_save, (0, 4), (4, 1), wx.LEFT, 5)
+		lyt_top.Add(self.btn_preview, (0, 5), (4, 1), wx.LEFT, 5)
 
 		# Row 2
 		lyt_top.Add(self.ti_package, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-		lyt_top.Add(self.sel_operator, (2, 1), flag=wx.ALIGN_CENTER_VERTICAL)
-		lyt_top.Add(self.ti_version, (2, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+		lyt_top.Add(self.sel_operator, (2, 1),
+				flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=5)
+		lyt_top.Add(self.ti_version, (2, 2),
+				flag=wx.ALIGN_CENTER_VERTICAL|wx.LEFT, border=5)
 
 		lyt_categories = wx.GridSizer(5, 2, 5, 5)
 
@@ -149,9 +151,9 @@ class Page(WizardPage):
 
 		lyt_buttons.AddMany((
 			(btn_add, 0, wx.ALIGN_CENTER_VERTICAL),
-			(btn_append, 0, wx.ALIGN_CENTER_VERTICAL),
-			(btn_remove, 0, wx.ALIGN_CENTER_VERTICAL),
-			(btn_clear, 0, wx.ALIGN_CENTER_VERTICAL),
+			(btn_append, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5),
+			(btn_remove, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5),
+			(btn_clear, 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 5),
 			))
 
 		lyt_mid = wx.GridBagSizer()

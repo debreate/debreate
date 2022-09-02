@@ -152,7 +152,7 @@ class Page(WizardPage):
 
 		lyt_main.AddSpacer(5)
 		lyt_main.Add(lyt_buttons, 0, lyt.ALGN_C)
-		lyt_main.Add(dsp_log, 2, wx.EXPAND|lyt.PAD_LRB, 5)
+		lyt_main.Add(dsp_log, 2, wx.EXPAND|wx.ALL, 5)
 
 		self.SetAutoLayout(True)
 		self.SetSizer(lyt_main)

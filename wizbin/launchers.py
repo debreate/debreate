@@ -192,8 +192,8 @@ class Page(WizardPage):
 		lyt_top.Add(chk_enable, 0, LEFT_BOTTOM)
 		lyt_top.AddStretchSpacer(1)
 		lyt_top.Add(btn_open, 0, wx.ALIGN_TOP)
-		lyt_top.Add(btn_save, 0, wx.ALIGN_TOP)
-		lyt_top.Add(btn_preview, 0, wx.ALIGN_TOP)
+		lyt_top.Add(btn_save, 0, wx.ALIGN_TOP|wx.LEFT, 5)
+		lyt_top.Add(btn_preview, 0, wx.ALIGN_TOP|wx.LEFT, 5)
 
 		lyt_opts1 = wx.FlexGridSizer(2, 3, 0, 0)
 
@@ -238,15 +238,19 @@ class Page(WizardPage):
 
 		row = 0
 		lyt_bottom.Add(txt_other, (row, 0), flag=LEFT_BOTTOM)
-		lyt_bottom.Add(txt_category, (row, 2), flag=LEFT_BOTTOM|wx.LEFT, border=5)
-		lyt_bottom.Add(ti_category, (row, 3), flag=LEFT_BOTTOM|wx.LEFT, border=5)
+		lyt_bottom.Add(txt_category, (row, 2), flag=LEFT_BOTTOM|wx.LEFT,
+				border=5)
+		lyt_bottom.Add(ti_category, (row, 3), flag=LEFT_BOTTOM|wx.LEFT,
+				border=5)
 		lyt_bottom.Add(btn_catadd, (row, 4), flag=RIGHT_BOTTOM)
-		lyt_bottom.Add(btn_catdel, (row, 5), flag=RIGHT_BOTTOM)
-		lyt_bottom.Add(btn_catclr, (row, 6), flag=RIGHT_BOTTOM)
+		lyt_bottom.Add(btn_catdel, (row, 5), flag=RIGHT_BOTTOM|wx.LEFT,
+				border=5)
+		lyt_bottom.Add(btn_catclr, (row, 6), flag=RIGHT_BOTTOM|wx.LEFT,
+				border=5)
 
 		row += 1
-		lyt_bottom.Add(ti_other, (row, 0), (1, 2), wx.EXPAND)
-		lyt_bottom.Add(lst_categories, (row, 2), (1, 5), wx.EXPAND|wx.LEFT, 5)
+		lyt_bottom.Add(ti_other, (row, 0), (1, 2), wx.EXPAND|wx.TOP, 5)
+		lyt_bottom.Add(lst_categories, (row, 2), (1, 5), wx.EXPAND|wx.LEFT|wx.TOP, 5)
 
 		lyt_bottom.AddGrowableRow(1)
 		lyt_bottom.AddGrowableCol(1)

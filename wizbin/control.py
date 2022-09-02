@@ -177,8 +177,8 @@ class Page(WizardPage):
 		# Buttons
 		lyt_buttons = BoxSizer(wx.HORIZONTAL)
 		lyt_buttons.Add(btn_open, 0)
-		lyt_buttons.Add(btn_save, 0)
-		lyt_buttons.Add(btn_preview, 0)
+		lyt_buttons.Add(btn_save, 0, wx.LEFT, 5)
+		lyt_buttons.Add(btn_preview, 0, wx.LEFT, 5)
 
 		# Required fields
 		lyt_require = wx.FlexGridSizer(0, 4, 5, 5)

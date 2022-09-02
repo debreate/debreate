@@ -97,9 +97,9 @@ class Page(WizardPage):
 				lyt.ALGN_CV)
 		lyt_top.Add(self.sel_templates, 0, lyt.ALGN_CV|wx.LEFT, 5)
 		lyt_top.Add(btn_template, 0, wx.LEFT, 5)
-		lyt_top.Add(self.btn_template_simple)
-		lyt_top.Add(btn_refresh)
-		lyt_top.Add(btn_open)
+		lyt_top.Add(self.btn_template_simple, 0, wx.LEFT, 5)
+		lyt_top.Add(btn_refresh, 0, wx.LEFT, 5)
+		lyt_top.Add(btn_open, 0, wx.LEFT, 5)
 
 		lyt_main = BoxSizer(wx.VERTICAL)
 		lyt_main.AddSpacer(10)
