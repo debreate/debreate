@@ -150,7 +150,7 @@ class Page(WizardPage):
 
 		lyt_left = BoxSizer(wx.VERTICAL)
 		lyt_left.AddSpacer(10)
-		lyt_left.Add(wx.StaticText(self, label=GT("Directory options")), 0, wx.ALIGN_BOTTOM)
+		lyt_left.Add(wx.StaticText(self, label=GT("Directory options")), 0)
 		lyt_left.Add(pnl_treeopts, 0, wx.EXPAND|wx.ALIGN_LEFT|wx.BOTTOM, 5)
 		lyt_left.Add(self.tree_dirs, 1, wx.EXPAND)
 

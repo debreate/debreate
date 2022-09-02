@@ -190,8 +190,8 @@ class Page(WizardPage):
 		lyt_right = BoxSizer(wx.VERTICAL)
 		# Line up panels to look even
 		lyt_right.AddSpacer(32)
-		lyt_right.Add(wx.StaticText(self, label=GT("Auto-Link Executables")),
-				0, lyt.ALGN_LB)
+		lyt_right.Add(wx.StaticText(self,
+				label=GT("Auto-Link Executables")), 0)
 		lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
 
 		lyt_main = BoxSizer(wx.HORIZONTAL)
