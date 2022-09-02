@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2016-12-09 02:02-0800\n"
+        "POT-Creation-Date: 2022-09-02 16:11-0700\n"
         "PO-Revision-Date: 2016-12-09 03:01-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Italian <antumdeluge@gmail.com>\n"
@@ -28,11 +28,11 @@ msgstr  "Sezione \"Modifiche\" è vuota"
 msgid   "A compatible package manager could not be found on the system"
 msgstr  ""
 
-msgid   "A file named \"{}\" already exists. Do you want to replace it?"
-msgstr  ""
-
 msgid   "A package builder for Debian based systems"
 msgstr  "Un costruttore di pacchetto per sistemi basati su Debian"
+
+msgid   "APP:"
+msgstr  ""
 
 msgid   "About"
 msgstr  "Informazioni"
@@ -43,13 +43,10 @@ msgstr  "Informazioni su Debreate"
 msgid   "Add"
 msgstr  "Aggiungere"
 
-msgid   "Add File"
-msgstr  "Aggiungi File"
-
-msgid   "Add Folder"
-msgstr  "Aggiungi Cartella"
-
 msgid   "Add as alternative to selected dependency packages in list"
+msgstr  ""
+
+msgid   "Add custom"
 msgstr  ""
 
 msgid   "Add dependency package to list"
@@ -61,26 +58,50 @@ msgstr  ""
 msgid   "Add selected file/folder to list"
 msgstr  ""
 
-msgid   "Adding file: {}/{}"
+msgid   "Add to project"
 msgstr  ""
 
-msgid   "An error occurred attempting to contact remote website:"
+msgid   "Adding Files"
+msgstr  ""
+
+msgid   "Adding Lintian override: {}"
+msgstr  ""
+
+msgid   "Adding custom tags"
+msgstr  ""
+
+msgid   "Adding file {}"
+msgstr  ""
+
+msgid   "Adding file: {}"
+msgstr  ""
+
+msgid   "An error has occurred"
+msgstr  ""
+
+msgid   "An error occurred attempting to contact remote website"
 msgstr  ""
 
 msgid   "An error occurred during installation"
 msgstr  ""
 
+msgid   "An error occurred trying to create the configuration file:"
+msgstr  ""
+
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Si è verificato un errore quando si tenta di eliminare la directory temporanea"
+
+msgid   "An error occurred when trying to update the distribution names cache"
+msgstr  ""
+
+msgid   "An unhandled error occured"
+msgstr  ""
 
 msgid   "An unknown error occurred"
 msgstr  ""
 
 msgid   "App location: {}"
 msgstr  ""
-
-msgid   "Append"
-msgstr  "Allegare"
 
 msgid   "Append current category to list"
 msgstr  ""
@@ -103,8 +124,14 @@ msgstr  "Collegamento Automatico"
 msgid   "Auto-Link Help"
 msgstr  "Guida di Collegamento Automatico"
 
-msgid   "Bad File Name"
-msgstr  "Cattive Nome del File"
+msgid   "Available Distribution Names"
+msgstr  ""
+
+msgid   "Available Templates"
+msgstr  ""
+
+msgid   "Blue text = directory"
+msgstr  ""
 
 msgid   "Breaks"
 msgstr  "Rompe"
@@ -133,16 +160,22 @@ msgstr  "La preparazione di costruzione non è riuscita con un errore sconosciut
 msgid   "Building"
 msgstr  "Costruzione del pacchetto"
 
+msgid   "Building Tag List"
+msgstr  ""
+
 msgid   "Building a Debian Package with Debreate"
 msgstr  "Costruire un Pacchetto Debian con Debreate"
 
-msgid   "Building debs from source"
-msgstr  "Costruzione di pacchetti dal sorgente"
+msgid   "Building debs from Source"
+msgstr  ""
 
-msgid   "Cancel"
-msgstr  "Annulla"
+msgid   "Button Base Image Designer"
+msgstr  ""
 
-msgid   "Cancel build"
+msgid   "Caching manual files"
+msgstr  ""
+
+msgid   "Can\"t change log window font'))"
 msgstr  ""
 
 msgid   "Cannot Continue"
@@ -157,11 +190,17 @@ msgstr  ""
 msgid   "Cannot install package"
 msgstr  ""
 
+msgid   "Cannot move \"{}\" to trash, no write access"
+msgstr  ""
+
 msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
 msgid   "Cannot run \"fakeroot dpkg\""
 msgstr  ""
+
+msgid   "Categories"
+msgstr  "Categorie"
 
 msgid   "Categories dictate where the launcher will be located in the system menu"
 msgstr  ""
@@ -208,11 +247,17 @@ msgstr  "Scegliere la Directory di Destinazione"
 msgid   "Clear"
 msgstr  "Svuotare"
 
+msgid   "Clear Lintian overrides list?"
+msgstr  ""
+
 msgid   "Clear all dependencies?"
 msgstr  "Rimuovere tutte le dipendenze?"
 
 msgid   "Clear all files?"
 msgstr  "Rimuovere tutte le file?"
+
+msgid   "Clear cache"
+msgstr  ""
 
 msgid   "Clear categories?"
 msgstr  ""
@@ -223,10 +268,19 @@ msgstr  ""
 msgid   "Clear file list"
 msgstr  ""
 
+msgid   "Clear local cache"
+msgstr  ""
+
 msgid   "Clear the list of dependency packages"
 msgstr  ""
 
+msgid   "Close dialog"
+msgstr  ""
+
 msgid   "Code Contributor"
+msgstr  ""
+
+msgid   "Collapse"
 msgstr  ""
 
 msgid   "Command executed: {}"
@@ -250,6 +304,9 @@ msgstr  "Conferma"
 msgid   "Conflicts"
 msgstr  "Conflitti"
 
+msgid   "Contacting remote sites"
+msgstr  ""
+
 msgid   "Container of meta data of a menu entry"
 msgstr  ""
 
@@ -265,7 +322,25 @@ msgstr  ""
 msgid   "Control files"
 msgstr  "File di controllo"
 
+msgid   "Convert between package types"
+msgstr  ""
+
+msgid   "Convert packages"
+msgstr  ""
+
 msgid   "Converting string argument \"jobs\" to tuple"
+msgstr  ""
+
+msgid   "Copies a full system, app, or local license"
+msgstr  ""
+
+msgid   "Copies a template distributed with Debreate"
+msgstr  ""
+
+msgid   "Copies a user-defined template from"
+msgstr  ""
+
+msgid   "Copies text from a license stored in"
 msgstr  ""
 
 msgid   "Copying files"
@@ -274,13 +349,13 @@ msgstr  "Copia dei file"
 msgid   "Copyright"
 msgstr  ""
 
+msgid   "Copyright © {} <copyright holder(s)> [<email>]"
+msgstr  ""
+
 msgid   "Could not build .deb package"
 msgstr  ""
 
 msgid   "Could not compress changelog"
-msgstr  ""
-
-msgid   "Could not create configuration, exiting ..."
 msgstr  ""
 
 msgid   "Could not free stage directory: {}"
@@ -290,8 +365,23 @@ msgstr  ""
 msgid   "Could not install package: {}"
 msgstr  "Impossibile installare {}"
 
+msgid   "Could not locate license file: {}"
+msgstr  ""
+
 msgid   "Could not locate the following files:"
 msgstr  "I file seguenti sono mancanti:"
+
+msgid   "Could not open project file"
+msgstr  ""
+
+msgid   "Could not retrieve file list"
+msgstr  ""
+
+msgid   "Could not start progress dialog timer"
+msgstr  ""
+
+msgid   "Counting Files"
+msgstr  ""
 
 msgid   "Create md5sums file"
 msgstr  "Creare il file md5sums"
@@ -302,7 +392,10 @@ msgstr  "Creare un lanciatore per il menu di sistema"
 msgid   "Creates a checksum for all staged files within the package"
 msgstr  ""
 
-msgid   "Creates a simple license that references the system's common license path"
+msgid   "Creates a copyright header & short reference to a standard system license in /usr/share/common-licenses"
+msgstr  ""
+
+msgid   "Creates/Updates list of distribution names for changelog page"
 msgstr  ""
 
 msgid   "Creating changelog"
@@ -328,6 +421,9 @@ msgstr  "Riconoscimento"
 
 msgid   "Custom"
 msgstr  "Personalizzato"
+
+msgid   "Custom Fields"
+msgstr  ""
 
 msgid   "Custom filename to use for launcher"
 msgstr  ""
@@ -362,15 +458,15 @@ msgstr  "Debreate File di Progetto"
 msgid   "Debug"
 msgstr  ""
 
-msgid   "Delete build tree"
-msgstr  "Eliminar la ruta temporal"
+msgid   "Delete"
+msgstr  ""
+
+msgid   "Delete staged directory"
+msgstr  ""
 
 #, fuzzy
 msgid   "Delete staged directory tree after package has been created"
 msgstr  "Eliminar la directory temporanea dopo il pacchetto è stato creato"
-
-msgid   "Dependencies"
-msgstr  "Dipendenze"
 
 msgid   "Dependencies and Conflicts"
 msgstr  "Dipendenze e Conflitti"
@@ -388,11 +484,17 @@ msgstr  "Dipende"
 msgid   "Details"
 msgstr  "Dettagli"
 
+msgid   "Details below:"
+msgstr  ""
+
 msgid   "Details saved to {}"
 msgstr  "Dettagli salvati a {}"
 
 msgid   "Developer"
 msgstr  "Sviluppo"
+
+msgid   "Directory options"
+msgstr  ""
 
 msgid   "Directory where scripts should create symlinks"
 msgstr  ""
@@ -400,11 +502,20 @@ msgstr  ""
 msgid   "Directory:"
 msgstr  ""
 
+msgid   "Discards unneeded symbols from binary files"
+msgstr  ""
+
 msgid   "Displays a notification in the system panel when launched"
 msgstr  "Visualizza una notifica nel pannello di sistema all'avvio"
 
 msgid   "Distribution"
 msgstr  "Distribuzione"
+
+msgid   "Do not strip preceding whitespace from regular lines"
+msgstr  ""
+
+msgid   "Don't follow symbolic links"
+msgstr  ""
 
 msgid   "ERROR: Could not locate changelog file:\n"
         "\t'{}' not found"
@@ -429,18 +540,18 @@ msgstr  "Migliora"
 msgid   "Error"
 msgstr  "Errore"
 
-msgid   "Error ID"
-msgstr  ""
-
 msgid   "Error reading changelog: {}\n"
         "\t"
 msgstr  ""
 
-msgid   "Error: Can't change log window font"
+msgid   "Error retrieving template path: {}"
 msgstr  ""
 
 msgid   "Essential"
 msgstr  "Essenziale"
+
+msgid   "Event: EVT_CHANGE_PAGE, Page ID: {}"
+msgstr  ""
 
 msgid   "Executable"
 msgstr  "Eseguibile"
@@ -454,13 +565,10 @@ msgstr  ""
 msgid   "Exit Debreate"
 msgstr  ""
 
-msgid   "Expected string for staging target, instead got"
+msgid   "Expand"
 msgstr  ""
 
 msgid   "Export launcher to text file"
-msgstr  ""
-
-msgid   "Exporting file list:"
 msgstr  ""
 
 msgid   "Exporting {} field"
@@ -468,6 +576,9 @@ msgstr  ""
 
 msgid   "Extra Options"
 msgstr  "Opzioni Aggiuntive"
+
+msgid   "Failed to set cursor"
+msgstr  ""
 
 msgid   "Field ID does not exist or match any fields: {}"
 msgstr  ""
@@ -484,6 +595,15 @@ msgstr  "Nome Esiste"
 msgid   "File does not exist"
 msgstr  ""
 
+msgid   "File does not exist or is not a regular file: {}"
+msgstr  ""
+
+msgid   "File does not exist: {}"
+msgstr  ""
+
+msgid   "File import did not complete."
+msgstr  ""
+
 msgid   "File list failed to resize. Forcing manual resize to target width: {}"
 msgstr  ""
 
@@ -496,10 +616,10 @@ msgstr  ""
 msgid   "Files"
 msgstr  "File"
 
-msgid   "Files to be added to package & their target directories"
+msgid   "Files from selected directories will be added individually to list"
 msgstr  ""
 
-msgid   "Font Size"
+msgid   "Files to be added to package & their target directories"
 msgstr  ""
 
 msgid   "For a video tutorial check the link below."
@@ -508,17 +628,17 @@ msgstr  "Per un video didattico clicca sul link sottostante."
 msgid   "Formatted changelog entries (editable)"
 msgstr  ""
 
-msgid   "General Contributor"
+msgid   "Full Template"
 msgstr  ""
 
-msgid   "Generate Template"
+msgid   "General Contributor"
 msgstr  ""
 
 msgid   "Generate scripts"
 msgstr  "Genera script"
 
-msgid   "Getting files from {}"
-msgstr  "Raccolta di file da {}"
+msgid   "Generic (Debian names only)"
+msgstr  ""
 
 msgid   "Getting installed size"
 msgstr  ""
@@ -526,37 +646,7 @@ msgstr  ""
 msgid   "GitHub Project"
 msgstr  ""
 
-msgid   "Go to Build section"
-msgstr  "Vai alla sezione Costruire"
-
-msgid   "Go to Changelog section"
-msgstr  "Vai alla sezione Registro delle Modifiche"
-
-msgid   "Go to Control section"
-msgstr  "Vai alla sezione Controllo"
-
-msgid   "Go to Copyright section"
-msgstr  "Vai alla sezione Copyright"
-
-msgid   "Go to Dependencies section"
-msgstr  "Vai alla sezione Dipendenze"
-
-msgid   "Go to Files section"
-msgstr  "Vai alla sezione File"
-
-msgid   "Go to Information section"
-msgstr  "Vai alla sezione Informazioni"
-
-msgid   "Go to Menu launcher section"
-msgstr  ""
-
-msgid   "Go to Scripts section"
-msgstr  "Vai alla sezione Script"
-
 msgid   "Got error when attempting to retrieve field value"
-msgstr  ""
-
-msgid   "Greeting"
 msgstr  ""
 
 msgid   "Head Developer"
@@ -565,7 +655,13 @@ msgstr  ""
 msgid   "Help"
 msgstr  "Guida"
 
+msgid   "Help information for page \"{}\""
+msgstr  ""
+
 msgid   "Hide"
+msgstr  ""
+
+msgid   "Home directory"
 msgstr  ""
 
 msgid   "Homepage"
@@ -586,6 +682,9 @@ msgstr  "Di icona lanciatore"
 msgid   "Import"
 msgstr  "Importare"
 
+msgid   "Import Cancelled"
+msgstr  ""
+
 msgid   "Import files marked as executable from Files page"
 msgstr  ""
 
@@ -595,16 +694,37 @@ msgstr  ""
 msgid   "Import launcher from file"
 msgstr  ""
 
+msgid   "Imported file {} of {}"
+msgstr  ""
+
+msgid   "Importing file: {}"
+msgstr  ""
+
+msgid   "Importing page info from {}"
+msgstr  ""
+
+msgid   "Importing script: {}"
+msgstr  ""
+
 msgid   "Importing {} files"
 msgstr  ""
 
+msgid   "Importing {}: {}"
+msgstr  ""
+
 msgid   "Improperly formatted text may cause launcher to be unusable"
+msgstr  ""
+
+msgid   "Include the following:"
 msgstr  ""
 
 msgid   "Information"
 msgstr  "Informazioni"
 
 msgid   "Insert new changelog entry"
+msgstr  ""
+
+msgid   "Install binutils package for this option"
 msgstr  ""
 
 msgid   "Install changelog to custom directory"
@@ -640,17 +760,20 @@ msgstr  ""
 msgid   "Job"
 msgstr  "Compito"
 
+msgid   "LOCAL:"
+msgstr  ""
+
 msgid   "Launcher is only shown when options are satisfied"
 msgstr  ""
 
 msgid   "Launchers / Desktop entries"
 msgstr  ""
 
-msgid   "Length of file list & source directories does not match"
-msgstr  ""
-
 msgid   "License"
 msgstr  "Licenza"
+
+msgid   "License template is empty"
+msgstr  ""
 
 msgid   "License template not found: {}"
 msgstr  ""
@@ -661,10 +784,19 @@ msgstr  ""
 msgid   "Lintian Errors"
 msgstr  "Errori di Lintian"
 
+msgid   "Lintian Overrides"
+msgstr  ""
+
+msgid   "Lintian Tags Explanation"
+msgstr  "Spiegazione di Tag Lintian"
+
 msgid   "Lintian found some issues with the package."
 msgstr  "Lintian trovato alcuni problemi con il pacchetto."
 
-msgid   "Lintian tags explanation"
+msgid   "Lintian overrides"
+msgstr  ""
+
+msgid   "List files individually"
 msgstr  ""
 
 msgid   "List new changes here, separated one per line"
@@ -676,6 +808,9 @@ msgstr  ""
 msgid   "Long Description"
 msgstr  "Descrizione Dettagliata"
 
+msgid   "MIME Type"
+msgstr  ""
+
 msgid   "Maintainer"
 msgstr  "Manutentore"
 
@@ -685,11 +820,17 @@ msgstr  "Crea questo script"
 msgid   "Man"
 msgstr  ""
 
+msgid   "Manual"
+msgstr  ""
+
 msgid   "Menu"
 msgstr  ""
 
 msgid   "Menu Launcher"
 msgstr  "Lanciatore del Menu"
+
+msgid   "Menu Launcher Preview"
+msgstr  ""
 
 msgid   "Message"
 msgstr  ""
@@ -703,8 +844,8 @@ msgstr  "Assenti i File"
 msgid   "More detailed description"
 msgstr  ""
 
-msgid   "Move to Trash"
-msgstr  "Spostare nel Cestino"
+msgid   "Move the following items to trash?"
+msgstr  ""
 
 msgid   "Multiple lines can be used here, but lintian will complain if they are too long"
 msgstr  ""
@@ -712,10 +853,7 @@ msgstr  ""
 msgid   "Name"
 msgstr  "Nome"
 
-msgid   "Name already used in current directory"
-msgstr  "Nome in uso nella directory corrente"
-
-msgid   "Name cannot end with \"{}\""
+msgid   "Name already exists:"
 msgstr  ""
 
 msgid   "Name of Debian/Ubuntu/etc. target distribution"
@@ -733,38 +871,32 @@ msgstr  ""
 msgid   "Name to be displayed for the launcher"
 msgstr  ""
 
-msgid   "New Folder"
-msgstr  "Nuova Cartella"
-
 msgid   "New project"
 msgstr  ""
-
-msgid   "Next"
-msgstr  "Prossimo"
 
 msgid   "Next page"
 msgstr  ""
 
-msgid   "No system licenses found in {}"
+msgid   "No license templates available"
 msgstr  ""
 
 msgid   "No write access to target directory"
 msgstr  ""
 
-msgid   "Not a valid Debreate project"
-msgstr  "Debreate progetto non valida"
-
-msgid   "Not set as top window"
+msgid   "Not a valid Debreate project: {}"
 msgstr  ""
 
 msgid   "Not writing empty text to configuration"
 msgstr  ""
 
+msgid   "Obsolete"
+msgstr  ""
+
 msgid   "One line descriptions/synopsys"
 msgstr  ""
 
-msgid   "One of the required fields is empty"
-msgstr  "Uno dei campi obbligatori è vuoto"
+msgid   "One of the required fields is empty:"
+msgstr  ""
 
 msgid   "Open"
 msgstr  "Apri"
@@ -781,11 +913,17 @@ msgstr  "Importa un di Menu Lanciatore"
 msgid   "Open Log"
 msgstr  ""
 
+msgid   "Open Template Directory"
+msgstr  ""
+
 msgid   "Open a previously saved project"
 msgstr  "Apri un progetto precedentemente salvato"
 
 msgid   "Open a usage document"
 msgstr  "Apri un documento di utilizzo"
+
+msgid   "Open and Display Log File"
+msgstr  ""
 
 msgid   "Open logs directory"
 msgstr  ""
@@ -808,11 +946,11 @@ msgstr  "Opzionale"
 msgid   "Options"
 msgstr  "Opzioni"
 
-msgid   "Other"
-msgstr  "Qualsiasi Altro"
+msgid   "Overriding Lintian Tags"
+msgstr  ""
 
-msgid   "Overwrite File?"
-msgstr  "Sovrascrivere il File?"
+msgid   "Overwrite file?"
+msgstr  ""
 
 msgid   "Package"
 msgstr  "Pacchetto"
@@ -837,10 +975,6 @@ msgstr  "Pacchetto può essere utile ma non è necessario e non verrà installat
 
 msgid   "Package or its files may be overwritten"
 msgstr  "Pacchetto o i file possono essere sovrascritti"
-
-#, fuzzy
-msgid   "Package was installed to system"
-msgstr  "Il pacchetto installato con successo"
 
 msgid   "Package will be removed from the system if it is installed"
 msgstr  "Pacchetto verrà rimosso dal sistema se è installato"
@@ -869,7 +1003,22 @@ msgstr  "Imballaggio"
 msgid   "Page"
 msgstr  "Pagina"
 
-msgid   "Page retrieved from page_id ({}) was not instance of a window/widget"
+msgid   "Page help"
+msgstr  ""
+
+msgid   "Page retrieved was not instance of a window/widget: Page name: {}"
+msgstr  ""
+
+msgid   "Page {} does not override inherited method Get"
+msgstr  ""
+
+msgid   "Page {} does not override inherited method ImportFromFile"
+msgstr  ""
+
+msgid   "Page {} does not override inherited method InitPage"
+msgstr  ""
+
+msgid   "Page {} does not override inherited method IsOkay"
 msgstr  ""
 
 msgid   "Path"
@@ -878,10 +1027,10 @@ msgstr  "Percorso"
 msgid   "Path \"{}\" does not exist."
 msgstr  "Percorso \"{}\" non esiste."
 
-msgid   "Permission Denied"
-msgstr  "Autorizzazione Negata"
-
 msgid   "Platform on which package/software is meant to run"
+msgstr  ""
+
+msgid   "Please report this error to Debreate's developers"
 msgstr  ""
 
 msgid   "Please report this error to one of the following addresses:"
@@ -914,17 +1063,23 @@ msgstr  "Preparazione del costruire"
 msgid   "Prepend above changes as new log entry"
 msgstr  ""
 
+msgid   "Preserve indentation"
+msgstr  ""
+
+msgid   "Preserve top-level directories"
+msgstr  ""
+
 msgid   "Preview"
 msgstr  "Anteprima"
+
+msgid   "Preview cache"
+msgstr  ""
 
 msgid   "Preview control file"
 msgstr  ""
 
 msgid   "Preview launcher text"
 msgstr  ""
-
-msgid   "Previous"
-msgstr  "Precedente"
 
 msgid   "Previous page"
 msgstr  ""
@@ -941,6 +1096,12 @@ msgstr  ""
 msgid   "Progress"
 msgstr  "Progresso"
 
+msgid   "Project files may be missing in file list."
+msgstr  ""
+
+msgid   "Provides"
+msgstr  ""
+
 msgid   "Python version: {}"
 msgstr  ""
 
@@ -956,11 +1117,20 @@ msgstr  ""
 msgid   "Quit?"
 msgstr  "Esci?"
 
+msgid   "Reading configuration file: {}"
+msgstr  ""
+
 msgid   "Recommended"
 msgstr  "Consigliato"
 
 msgid   "Recommends"
 msgstr  "Raccomanda"
+
+msgid   "Red background = missing file/directory"
+msgstr  ""
+
+msgid   "Red text = executable"
+msgstr  ""
 
 msgid   "Reference"
 msgstr  "Riferimenti"
@@ -968,8 +1138,14 @@ msgstr  "Riferimenti"
 msgid   "Refresh"
 msgstr  "Aggiorna"
 
+msgid   "Refresh Template List"
+msgstr  ""
+
 msgid   "Remove"
 msgstr  "Rimuovere"
+
+msgid   "Remove any non-ASCII characters from your project."
+msgstr  ""
 
 msgid   "Remove selected categories from list"
 msgstr  ""
@@ -992,14 +1168,14 @@ msgstr  "Eliminare la directory temporanea"
 msgid   "Rename"
 msgstr  "Rinominare"
 
-msgid   "Replace"
-msgstr  ""
-
 msgid   "Replaces"
 msgstr  "Sostituisce"
 
 msgid   "Required"
 msgstr  "Obbligatorio"
+
+msgid   "Retrieving checked label: {}"
+msgstr  ""
 
 #, fuzzy
 msgid   "Root directory of build tree"
@@ -1007,6 +1183,9 @@ msgstr  "Percorso directory temporanea"
 
 msgid   "Running dpkg"
 msgstr  "Esecuzione di dpkg"
+
+msgid   "SYSTEM:"
+msgstr  ""
 
 msgid   "Save"
 msgstr  "Salva"
@@ -1016,9 +1195,6 @@ msgstr  "Salvare le Informazioni di Controllo"
 
 msgid   "Save Debreate Project"
 msgstr  "Salva Progetto di Debreate"
-
-msgid   "Save File"
-msgstr  "Salvare il File"
 
 msgid   "Save Launcher"
 msgstr  "Salva di Menu Lanciatore"
@@ -1037,6 +1213,15 @@ msgstr  "Salva il progetto in corso con nuovo nome"
 
 msgid   "Save failed"
 msgstr  "Salva fallito"
+
+msgid   "Scanning default tags"
+msgstr  ""
+
+msgid   "Scanning directory {} ..."
+msgstr  ""
+
+msgid   "Scanning files ..."
+msgstr  ""
 
 msgid   "Script run after package uninstall completes"
 msgstr  ""
@@ -1065,22 +1250,40 @@ msgstr  ""
 msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
 msgstr  ""
 
-msgid   "See: Help ➜ Reference ➜ Lintian Tags Explanation"
+msgid   "See \"Help ➜ Reference ➜ Lintian Tags Explanation\""
 msgstr  ""
 
-msgid   "Select license to reference"
+msgid   "See \"Options ➜ Update dist names cache\" to update this list."
+msgstr  ""
+
+msgid   "See \"man 1 strip\""
 msgstr  ""
 
 msgid   "Sets the encoding that should be used to read the launcher"
 msgstr  ""
 
+msgid   "Setting Lintian overrides..."
+msgstr  ""
+
+msgid   "Setting MainWindow instance as top window"
+msgstr  ""
+
+msgid   "Setting selected overrides"
+msgstr  ""
+
 msgid   "Short Description"
 msgstr  "Breve Descrizione"
+
+msgid   "Short Template"
+msgstr  ""
 
 msgid   "Shortcut to a web URL"
 msgstr  ""
 
 msgid   "Shortcut to an application"
+msgstr  ""
+
+msgid   "Show Hidden"
 msgstr  ""
 
 msgid   "Show or hide tooltips"
@@ -1101,9 +1304,6 @@ msgstr  ""
 msgid   "Stage directory does not exist"
 msgstr  ""
 
-msgid   "Staged Target"
-msgstr  ""
-
 msgid   "Staged directory tree"
 msgstr  ""
 
@@ -1116,6 +1316,12 @@ msgstr  "Avviare il Costruire"
 msgid   "Startup Notify"
 msgstr  "Avviso di Apertura"
 
+msgid   "Strip binaries"
+msgstr  ""
+
+msgid   "Stripping binaries"
+msgstr  ""
+
 msgid   "Success"
 msgstr  "Successo"
 
@@ -1123,6 +1329,9 @@ msgid   "Suggests"
 msgstr  "Suggerisce"
 
 msgid   "Super user command (sudo) not available"
+msgstr  ""
+
+msgid   "System"
 msgstr  ""
 
 msgid   "System Information"
@@ -1164,13 +1373,28 @@ msgstr  "Grazie per utilizzare Debreate"
 msgid   "The \"md5sum\" command was not found on the system."
 msgstr  ""
 
+msgid   "The cache file exists but may not have been updated"
+msgstr  ""
+
 msgid   "The default configuration file will now be created."
 msgstr  ""
 
-msgid   "The file already exists in \"{}\". Replacing it will overwrite its contents."
+msgid   "The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"
+msgstr  ""
+
+msgid   "The first line will be prepended with an asterix (*) automatically. To denote any other sections, put one of the following as the first character on the line:"
+msgstr  ""
+
+msgid   "The following files/folders are missing from the filesystem."
 msgstr  ""
 
 msgid   "The following scripts will be overwritten if you continue: {}"
+msgstr  ""
+
+msgid   "There was an error reading file: {}"
+msgstr  ""
+
+msgid   "They will be highlighted on the Files page."
 msgstr  ""
 
 msgid   "This could take a VERY long time"
@@ -1186,7 +1410,10 @@ msgstr  ""
 msgid   "This package may be useful to enhanced package"
 msgstr  "Questo pacchetto sarà utile per il migliorato"
 
-msgid   "This will destroy all license text. Do you want to continue?"
+msgid   "This will delete all text"
+msgstr  ""
+
+msgid   "This will destroy all license text."
 msgstr  ""
 
 msgid   "Timer is running"
@@ -1211,6 +1438,9 @@ msgstr  ""
 msgid   "Translation"
 msgstr  "Traduzione"
 
+msgid   "Trash"
+msgstr  ""
+
 msgid   "Type"
 msgstr  "Tipo"
 
@@ -1226,7 +1456,7 @@ msgstr  "Politica Manuale di Ubuntu"
 msgid   "Uncheck the \"{}\" box."
 msgstr  ""
 
-msgid   "Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project."
+msgid   "Unfortunately Debreate does not support unicode yet."
 msgstr  ""
 
 msgid   "Unicode Error"
@@ -1238,13 +1468,28 @@ msgstr  ""
 msgid   "Unrecognized field type: {} (ID: {})"
 msgstr  ""
 
+msgid   "Unstable"
+msgstr  ""
+
 msgid   "Update"
 msgstr  ""
 
-msgid   "Update checking not supported in development versions"
+msgid   "Update Dist Names Cache"
+msgstr  ""
+
+msgid   "Update cache"
+msgstr  ""
+
+msgid   "Update checking is disabled in development versions"
+msgstr  ""
+
+msgid   "Update dist names cache"
 msgstr  ""
 
 msgid   "Update files' executable status & availability"
+msgstr  ""
+
+msgid   "Updating cache ..."
 msgstr  ""
 
 msgid   "Upstream source homepage URL"
@@ -1258,12 +1503,6 @@ msgstr  ""
 
 msgid   "Use \"Name\" as output filename (<Name>.desktop)"
 msgstr  ""
-
-msgid   "Use custom dialogs"
-msgstr  "Utilizzare finestre di dialogo personalizzate"
-
-msgid   "Use system or custom save/open dialogs"
-msgstr  "Utilizzare le finestre di salvataggio/apertura del sistema o personalizzate"
 
 msgid   "Version"
 msgstr  "Versione"
@@ -1289,11 +1528,11 @@ msgstr  "Benvenuti a Debreate!"
 msgid   "Whether this package is essential for system's stability"
 msgstr  ""
 
-msgid   "Window ID"
-msgstr  ""
-
 msgid   "Would you like to go to Debreate's website?"
 msgstr  "Vuoi visitare al sitio web di Debreate?"
+
+msgid   "Writing manual pages"
+msgstr  ""
 
 msgid   "Wrong value type for configuration key"
 msgstr  ""
@@ -1302,6 +1541,9 @@ msgid   "You will lose any unsaved information"
 msgstr  "Informazioni non salvate andranno perse"
 
 msgid   "You will lose any unsaved information."
+msgstr  ""
+
+msgid   "Zoom Text"
 msgstr  ""
 
 msgid   "all = platform independent"
@@ -1319,9 +1561,6 @@ msgstr  ""
 msgid   "gdebi-gtk, gdebi-kde"
 msgstr  ""
 
-msgid   "gzip decompress; Code: {}, Output: {}"
-msgstr  ""
-
 msgid   "in progress"
 msgstr  ""
 
@@ -1331,14 +1570,23 @@ msgstr  ""
 msgid   "script/executable"
 msgstr  ""
 
-msgid   "wx.TimerEvent ID: {}"
-msgstr  ""
-
-msgid   "wx.TimerEvent type: {}"
+msgid   "tags"
 msgstr  ""
 
 msgid   "wxPython version: {}"
 msgstr  ""
+
+msgid   "{}-{}"
+msgstr  ""
+
+#~ msgid        "Add File"
+#~ msgstr       "Aggiungi File"
+
+#~ msgid        "Add Folder"
+#~ msgstr       "Aggiungi Cartella"
+
+#~ msgid        "Append"
+#~ msgstr       "Allegare"
 
 #~ msgid        "Authenticated"
 #~ msgstr       "Autenticato"
@@ -1346,8 +1594,14 @@ msgstr  ""
 #~ msgid        "Authentication failure"
 #~ msgstr       "Errore di autenticazione"
 
-#~ msgid        "Categories"
-#~ msgstr       "Categorie"
+#~ msgid        "Bad File Name"
+#~ msgstr       "Cattive Nome del File"
+
+#~ msgid        "Building debs from source"
+#~ msgstr       "Costruzione di pacchetti dal sorgente"
+
+#~ msgid        "Cancel"
+#~ msgstr       "Annulla"
 
 #~ msgid        "Checking changelog"
 #~ msgstr       "Esaminando il registro dei modifiche"
@@ -1382,8 +1636,14 @@ msgstr  ""
 #~ msgid        "Delete all categories?"
 #~ msgstr       "Rimuovere tutte le categorie?"
 
+#~ msgid        "Delete build tree"
+#~ msgstr       "Eliminar la ruta temporal"
+
 #~ msgid        "Delete temporary directory tree after package has been created"
 #~ msgstr       "Eliminar la directory temporanea dopo il pacchetto è stato creato"
+
+#~ msgid        "Dependencies"
+#~ msgstr       "Dipendenze"
 
 #~ msgid        "Empty password: Cancelling"
 #~ msgstr       "Password vuota: Cancellazione"
@@ -1397,8 +1657,35 @@ msgstr  ""
 #~ msgid        "Getting administrative privileges from user"
 #~ msgstr       "Ottenere privilegi amministrativi da utente"
 
+#~ msgid        "Getting files from {}"
+#~ msgstr       "Raccolta di file da {}"
+
+#~ msgid        "Go to Build section"
+#~ msgstr       "Vai alla sezione Costruire"
+
+#~ msgid        "Go to Changelog section"
+#~ msgstr       "Vai alla sezione Registro delle Modifiche"
+
+#~ msgid        "Go to Control section"
+#~ msgstr       "Vai alla sezione Controllo"
+
+#~ msgid        "Go to Copyright section"
+#~ msgstr       "Vai alla sezione Copyright"
+
+#~ msgid        "Go to Dependencies section"
+#~ msgstr       "Vai alla sezione Dipendenze"
+
+#~ msgid        "Go to Files section"
+#~ msgstr       "Vai alla sezione File"
+
+#~ msgid        "Go to Information section"
+#~ msgstr       "Vai alla sezione Informazioni"
+
 #~ msgid        "Go to Menu Launcher section"
 #~ msgstr       "Vai alla sezione Lanciatore di Menu"
+
+#~ msgid        "Go to Scripts section"
+#~ msgstr       "Vai alla sezione Script"
 
 #~ msgid        "Import executables from Files section"
 #~ msgstr       "Importare file eseguibili da sezione Files"
@@ -1409,11 +1696,36 @@ msgstr  ""
 #~ msgid        "Installing Package"
 #~ msgstr       "L'installazione del pacchetto"
 
-#~ msgid        "Lintian Tags Explanation"
-#~ msgstr       "Spiegazione di Tag Lintian"
+#~ msgid        "Move to Trash"
+#~ msgstr       "Spostare nel Cestino"
+
+#~ msgid        "Name already used in current directory"
+#~ msgstr       "Nome in uso nella directory corrente"
+
+#~ msgid        "New Folder"
+#~ msgstr       "Nuova Cartella"
+
+#~ msgid        "Next"
+#~ msgstr       "Prossimo"
+
+#~ msgid        "Not a valid Debreate project"
+#~ msgstr       "Debreate progetto non valida"
+
+#~ msgid        "One of the required fields is empty"
+#~ msgstr       "Uno dei campi obbligatori è vuoto"
 
 #~ msgid        "Open launcher file"
 #~ msgstr       "Apri di file lanciatore"
+
+#~ msgid        "Other"
+#~ msgstr       "Qualsiasi Altro"
+
+#~ msgid        "Overwrite File?"
+#~ msgstr       "Sovrascrivere il File?"
+
+#, fuzzy
+#~ msgid        "Package was installed to system"
+#~ msgstr       "Il pacchetto installato con successo"
 
 #~ msgid        "Password mismatch, try again"
 #~ msgstr       "Mancata corrispondenza di password, riprovare"
@@ -1423,6 +1735,15 @@ msgstr  ""
 
 #~ msgid        "Path to build tree"
 #~ msgstr       "Percorso directory temporanea"
+
+#~ msgid        "Permission Denied"
+#~ msgstr       "Autorizzazione Negata"
+
+#~ msgid        "Previous"
+#~ msgstr       "Precedente"
+
+#~ msgid        "Save File"
+#~ msgstr       "Salvare il File"
 
 #~ msgid        "Specifies whether application should be run from a terminal"
 #~ msgstr       "Specifica se il programma viene avviato da un terminale"
@@ -1438,3 +1759,9 @@ msgstr  ""
 
 #~ msgid        "This message only displays on the first run, or if the configuration file becomes corrupted. The default configuration file will now be created. To delete this file, type the following command in a terminal:"
 #~ msgstr       "Questo messaggio viene visualizzato solo alla prima esecuzione, o se il file di configurazione risulta danneggiato. Ora verrà creato il file di configurazione predefinita. Per eliminare questo file, digitare il seguente comando in un terminale:"
+
+#~ msgid        "Use custom dialogs"
+#~ msgstr       "Utilizzare finestre di dialogo personalizzate"
+
+#~ msgid        "Use system or custom save/open dialogs"
+#~ msgstr       "Utilizzare le finestre di salvataggio/apertura del sistema o personalizzate"
