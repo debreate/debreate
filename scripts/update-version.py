@@ -53,7 +53,7 @@ def UpdateSingleLineFile(filename, testline, newvalue=".".join(version), suffix=
 
 UpdateSingleLineFile(version_files["application"], "VERSION_maj = ", newvalue=ver_maj)
 UpdateSingleLineFile(version_files["application"], "VERSION_min = ", newvalue=ver_min)
-UpdateSingleLineFile(version_files["application"], "VERSION_rel = ", newvalue=ver_rev)
+UpdateSingleLineFile(version_files["application"], "VERSION_rev = ", newvalue=ver_rev)
 UpdateSingleLineFile(version_files["application"], "VERSION_dev = ", newvalue=ver_dev)
 UpdateSingleLineFile(version_files["doxyfile"], "PROJECT_NUMBER		 = ")
 UpdateSingleLineFile(version_files["locale"], "\"Project-Id-Version: Debreate ", suffix="\\n\"")
