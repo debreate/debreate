@@ -139,7 +139,7 @@ class LogWindow(wx.Dialog):
 
 				return
 
-		Logger.Error(__name__, GT("Can\"t change log window font'))
+		Logger.Error(__name__, GT("Can't change log window font"))
 
 
 	## Hides the log window when close event occurs

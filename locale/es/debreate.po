@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2022-09-02 16:11-0700\n"
+        "POT-Creation-Date: 2022-09-02 16:42-0700\n"
         "PO-Revision-Date: 2016-12-09 02:57-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Spanish <antumdeluge@gmail.com>\n"
@@ -175,7 +175,7 @@ msgstr  ""
 msgid   "Caching manual files"
 msgstr  ""
 
-msgid   "Can\"t change log window font'))"
+msgid   "Can't change log window font"
 msgstr  ""
 
 msgid   "Cannot Continue"
