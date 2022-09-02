@@ -35,8 +35,12 @@ APP_name = "Debreate"
 VERSION_maj = 0
 VERSION_min = 8
 VERSION_rev = 0
-VERSION_tuple = (VERSION_maj, VERSION_min, VERSION_rev)
-VERSION_string = "{}.{}.{}".format(VERSION_maj, VERSION_min, VERSION_rev)
+VERSION_tuple = [VERSION_maj, VERSION_min]
+VERSION_string = "{}.{}".format(VERSION_maj, VERSION_min)
+if VERSION_rev > 0:
+		VERSION_tuple.append(VERSION_rev)
+		VERSION_string += ".{}".format(VERSION_rev)
+VERSION_tuple = tuple(VERSION_tuple)
 
 # Development version: Increment for every development release
 VERSION_dev = 1
