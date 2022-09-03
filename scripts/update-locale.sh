@@ -8,29 +8,32 @@ dir_root="$(pwd)"
 
 file_pot="${dir_root}/locale/debreate.pot"
 
+
 # parse version info (don't import file directly because of whitespace in values)
-echo "Parsing app information ..."
+echo -e "\nParsing app information ..."
 appinfo=$(cat "INFO")
 appname=$(echo "${appinfo}" | grep "^NAME=" | sed 's/^NAME=//')
 appver=$(echo "${appinfo}" | grep "^VERSION=" | sed 's/^VERSION=//')
 author=$(echo "${appinfo}" | grep "^AUTHOR=" | sed 's/^AUTHOR=//')
 email=$(echo "${appinfo}" | grep "^EMAIL=" | sed 's/^EMAIL=//')
 
+
 # parse source files
-echo "Gathering list of files to check for translatable strings ..."
+echo -e "\nGathering list of files to check for translatable strings ..."
 source_list=("command_line.py" "init.py" "main.py")
 for subdir in dbr globals f_export fields fileio input startup system ui wiz wizbin; do
 	source_list+=($(find "${subdir}" -type f -name "*.py"))
 done
 
+
 # update translatable strings
-echo "Updating Gettext template ..."
+echo -e "\nUpdating locale template ..."
 
 # check for xgettext command
 which xgettext > /dev/null 2>&1
 res=$?
 if [ ${res} -ne 0 ]; then
-	echo "ERROR: xgettext command not found"
+	echo -e "\nERROR: xgettext command not found"
 	# FIXME: correct errno
 	exit 1
 fi
@@ -73,20 +76,21 @@ echo "${pre}
 ${notes}
 ${post}" > "${file_pot}"
 
-echo "Updating individual language files ..."
+
+echo -e "\nUpdating locale translations ..."
 
 which msgmerge > /dev/null 2>&1
 res=$?
 if [ ${res} -ne 0 ]; then
-	echo "ERROR: msgmerge command not found"
+	echo -e "\nERROR: msgmerge command not found"
 	# FIXME: correct errno
 	exit 1
 fi
 
 language_files=($(find "locale/" -type f -name "*.po"))
 
-for lang in ${language_files[@]}; do
-	echo -e "\nUpdating: ${lang} ..."
+for file_po in ${language_files[@]}; do
+	echo "Updating: ${file_po} ..."
 	msgmerge \
 		--update \
 		--indent \
@@ -96,6 +100,29 @@ for lang in ${language_files[@]}; do
 		--no-wrap \
 		--backup=none \
 		--previous \
-		"${lang}" \
+		"${file_po}" \
 		"${file_pot}"
+done
+
+
+# compile .mo files
+# FIXME: this should be done at time of build/release
+echo -e "\nCompiling locale translations ..."
+
+which msgfmt > /dev/null 2>&1
+res=$?
+if [ ${res} -ne 0 ]; then
+	echo -e "\nERROR: msgfmt command not found"
+	# FIXME: correct errno
+	exit 1
+fi
+
+for file_po in ${language_files[@]}; do
+	dir_lang="$(dirname "${file_po}")"
+	dir_target="${dir_lang}/LC_MESSAGES"
+	lang="$(basename "${dir_lang}")"
+	echo "Compiling language ${lang} ..."
+	msgfmt \
+		--output-file="${dir_target}/debreate.mo" \
+		"${file_po}"
 done
