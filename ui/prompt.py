@@ -13,170 +13,170 @@ from ui.button          import ReplaceStandardButtons
 
 ## Custom TextEntryDialog that defines Clear method
 class TextEntryDialog(wx.TextEntryDialog):
-	def __init__(self, parent, message, caption="Please enter text", defaultValue="",
-			pos=wx.DefaultPosition, style=wx.OK|wx.CANCEL|wx.CENTER):
-		wx.TextEntryDialog.__init__(self, parent, message, caption, defaultValue, style, pos)
+  def __init__(self, parent, message, caption="Please enter text", defaultValue="",
+      pos=wx.DefaultPosition, style=wx.OK|wx.CANCEL|wx.CENTER):
+    wx.TextEntryDialog.__init__(self, parent, message, caption, defaultValue, style, pos)
 
-		ReplaceStandardButtons(self)
+    ReplaceStandardButtons(self)
 
-		self.stored_value = wx.EmptyString
-		self.stored_insertion = 0
+    self.stored_value = wx.EmptyString
+    self.stored_insertion = 0
 
-		# *** Event Handling *** #
+    # *** Event Handling *** #
 
-		# Enable using 'Enter/Return' keys to confirm
-		wx.EVT_KEY_DOWN(self.GetTextCtrl(), self.OnConfirm)
+    # Enable using 'Enter/Return' keys to confirm
+    wx.EVT_KEY_DOWN(self.GetTextCtrl(), self.OnConfirm)
 
-		bound_id = None
-		for FIELD in self.GetChildren():
-			field_id = FIELD.GetId()
-			if isinstance(FIELD, wx.Button) and field_id == wx.ID_OK:
-				FIELD.Bind(wx.EVT_BUTTON, self.OnConfirm)
+    bound_id = None
+    for FIELD in self.GetChildren():
+      field_id = FIELD.GetId()
+      if isinstance(FIELD, wx.Button) and field_id == wx.ID_OK:
+        FIELD.Bind(wx.EVT_BUTTON, self.OnConfirm)
 
-				bound_id = field_id
+        bound_id = field_id
 
-		if not bound_id:
-			Logger.Warn(__name__, "Confirm button was not bound to button event, insertion point will not be updated")
+    if not bound_id:
+      Logger.Warn(__name__, "Confirm button was not bound to button event, insertion point will not be updated")
 
-		elif bound_id != wx.ID_OK:
-			Logger.Warn(__name__, "Button event was bound to button with non-ID ID_OK: {}".format(bound_id))
-
-
-	## Clear the text input
-	#
-	#  \return
-	#    \b \e True if text input is empty
-	def Clear(self):
-		self.SetValue(wx.EmptyString)
-
-		return TextIsEmpty(self.Value)
+    elif bound_id != wx.ID_OK:
+      Logger.Warn(__name__, "Button event was bound to button with non-ID ID_OK: {}".format(bound_id))
 
 
-	## Ends a modal dialog, passing a value to be returned from the wxDialog::ShowModal invocation
-	#
-	def EndModal(self, retCode):
-		self.StoreValue()
-		self.StoreInsertionPoint()
+  ## Clear the text input
+  #
+  #  \return
+  #    \b \e True if text input is empty
+  def Clear(self):
+    self.SetValue(wx.EmptyString)
 
-		return wx.TextEntryDialog.EndModal(self, retCode)
-
-
-	## Retrieves insertion point of the TextCtrl instance
-	#
-	#  \return
-	#    Index of insertion point
-	def GetInsertionPoint(self):
-		text_ctrl = self.GetTextCtrl()
-		if text_ctrl:
-			return text_ctrl.GetInsertionPoint()
+    return TextIsEmpty(self.Value)
 
 
-	## Retrieve dialog's TextCtrl instance
-	def GetTextCtrl(self):
-		for FIELD in self.GetChildren():
-			if isinstance(FIELD, wx.TextCtrl):
-				return FIELD
+  ## Ends a modal dialog, passing a value to be returned from the wxDialog::ShowModal invocation
+  #
+  def EndModal(self, retCode):
+    self.StoreValue()
+    self.StoreInsertionPoint()
+
+    return wx.TextEntryDialog.EndModal(self, retCode)
 
 
-	## Retrieves value from TextCtrl instance
-	def GetValue(self):
-		text_ctrl = self.GetTextCtrl()
-		if text_ctrl:
-			return self.GetTextCtrl().GetValue()
+  ## Retrieves insertion point of the TextCtrl instance
+  #
+  #  \return
+  #    Index of insertion point
+  def GetInsertionPoint(self):
+    text_ctrl = self.GetTextCtrl()
+    if text_ctrl:
+      return text_ctrl.GetInsertionPoint()
 
 
-	## Extra actions to take when pressing 'OK/Confirm' button
-	#
-	#  Stores insertion point for updating when dialog is shown again
-	#  FIXME: Event not propagating from inherited class
-	def OnConfirm(self, event=None):
-		event_id = None
-
-		self.stored_insertion = self.GetInsertionPoint()
-
-		if event:
-			# Enable using 'Enter/Return' keys to confirm
-			if isinstance(event, wx.KeyEvent):
-				if event.GetKeyCode() in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER,):
-					event_id = wx.ID_OK
-
-				event.Skip()
-
-			else:
-				event_object = event.GetEventObject()
-
-				if isinstance(event_object, wx.Button):
-					event_id = event_object.GetId()
-
-				else:
-					event_id = event.GetId()
-
-		if event_id:
-			self.EndModal(event_id)
+  ## Retrieve dialog's TextCtrl instance
+  def GetTextCtrl(self):
+    for FIELD in self.GetChildren():
+      if isinstance(FIELD, wx.TextCtrl):
+        return FIELD
 
 
-	## Sets TextCtrl instance's insertion point from stored value
-	def RestoreInsertionPoint(self):
-		self.SetInsertionPoint(self.stored_insertion)
-
-		# Reset to default
-		self.stored_insertion = 0
-
-
-	## Sets TextCtrl instance's value from stored value
-	def RestoreValue(self):
-		self.SetValue(self.stored_value.strip())
-
-		# Reset to default
-		self.stored_value = wx.EmptyString
+  ## Retrieves value from TextCtrl instance
+  def GetValue(self):
+    text_ctrl = self.GetTextCtrl()
+    if text_ctrl:
+      return self.GetTextCtrl().GetValue()
 
 
-	## Set insertion point of TextCtrl instance
-	#
-	#  FIXME: Not working
-	#  \param point
-	#    Index at with to set carat
-	def SetInsertionPoint(self, pos):
-		text_ctrl = self.GetTextCtrl()
-		if text_ctrl:
-			text_ctrl.SetInsertionPoint(pos)
+  ## Extra actions to take when pressing 'OK/Confirm' button
+  #
+  #  Stores insertion point for updating when dialog is shown again
+  #  FIXME: Event not propagating from inherited class
+  def OnConfirm(self, event=None):
+    event_id = None
 
-			return True
+    self.stored_insertion = self.GetInsertionPoint()
 
-		return False
+    if event:
+      # Enable using 'Enter/Return' keys to confirm
+      if isinstance(event, wx.KeyEvent):
+        if event.GetKeyCode() in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER,):
+          event_id = wx.ID_OK
 
+        event.Skip()
 
-	## Set insertion point of TextContrl to end
-	def SetInsertionPointEnd(self):
-		text_ctrl = self.GetTextCtrl()
-		if text_ctrl:
-			text_ctrl.SetInsertionPointEnd()
+      else:
+        event_object = event.GetEventObject()
 
-			return True
+        if isinstance(event_object, wx.Button):
+          event_id = event_object.GetId()
 
-		return False
+        else:
+          event_id = event.GetId()
 
-
-	## Show modal dialog
-	#
-	#  Differences from inherited method:
-	#  - Replaces insertion point & sets focus back on text area
-	def ShowModal(self):
-		if self.stored_value:
-			self.RestoreValue()
-			self.RestoreInsertionPoint()
-
-		# Put focus back on text control
-		self.SetFocus()
-
-		return wx.TextEntryDialog.ShowModal(self)
+    if event_id:
+      self.EndModal(event_id)
 
 
-	## Stores TextCtrl instance's insertion point
-	def StoreInsertionPoint(self):
-		self.stored_insertion = self.GetInsertionPoint()
+  ## Sets TextCtrl instance's insertion point from stored value
+  def RestoreInsertionPoint(self):
+    self.SetInsertionPoint(self.stored_insertion)
+
+    # Reset to default
+    self.stored_insertion = 0
 
 
-	## Stores TextCtrl instance's value
-	def StoreValue(self):
-		self.stored_value = self.GetValue()
+  ## Sets TextCtrl instance's value from stored value
+  def RestoreValue(self):
+    self.SetValue(self.stored_value.strip())
+
+    # Reset to default
+    self.stored_value = wx.EmptyString
+
+
+  ## Set insertion point of TextCtrl instance
+  #
+  #  FIXME: Not working
+  #  \param point
+  #    Index at with to set carat
+  def SetInsertionPoint(self, pos):
+    text_ctrl = self.GetTextCtrl()
+    if text_ctrl:
+      text_ctrl.SetInsertionPoint(pos)
+
+      return True
+
+    return False
+
+
+  ## Set insertion point of TextContrl to end
+  def SetInsertionPointEnd(self):
+    text_ctrl = self.GetTextCtrl()
+    if text_ctrl:
+      text_ctrl.SetInsertionPointEnd()
+
+      return True
+
+    return False
+
+
+  ## Show modal dialog
+  #
+  #  Differences from inherited method:
+  #  - Replaces insertion point & sets focus back on text area
+  def ShowModal(self):
+    if self.stored_value:
+      self.RestoreValue()
+      self.RestoreInsertionPoint()
+
+    # Put focus back on text control
+    self.SetFocus()
+
+    return wx.TextEntryDialog.ShowModal(self)
+
+
+  ## Stores TextCtrl instance's insertion point
+  def StoreInsertionPoint(self):
+    self.stored_insertion = self.GetInsertionPoint()
+
+
+  ## Stores TextCtrl instance's value
+  def StoreValue(self):
+    self.stored_value = self.GetValue()

@@ -36,97 +36,97 @@ DEFAULT_NB_STYLE = AUI_NB_TOP|AUI_NB_TAB_SPLIT|AUI_NB_TAB_MOVE|AUI_NB_CLOSE_ON_A
 
 ## Custom notebook class for compatibility with legacy wx versions
 class Notebook(AuiNotebook):
-	def __init__(self, parent, winId=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-			style=DEFAULT_NB_STYLE, name="notebook"):
+  def __init__(self, parent, winId=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+      style=DEFAULT_NB_STYLE, name="notebook"):
 
-		AuiNotebook.__init__(self, parent, winId, pos, size, style)
+    AuiNotebook.__init__(self, parent, winId, pos, size, style)
 
-		# wx.aui.AuiNotebook does not allow setting name from constructor
-		self.Name = name
-
-
-	## Adds a new page
-	#
-	#  \param page
-	#    \b \e wx.Window instance that will be new page (if None, a new instance is created)
-	#  \param winId
-	#    Window \b \e integer ID
-	#  \param title
-	#    Label displayed on tab
-	#  \param select
-	#    Specifies whether the page should be displayed
-	#  \param imageId
-	#    Specifies optional image
-	def AddPage(self, page=None, winId=wx.ID_ANY, title="tab", select=False, imageId=0):
-		if not page:
-			page = wx.Panel(self, winId)
-
-		# Existing instance should already have an ID
-		elif winId != wx.ID_ANY:
-			Logger.Debug(__name__, "Ignoring winId argument for pre-constructed page")
-
-		if wx.MAJOR_VERSION <= 2:
-			if not isinstance(imageId, wx.Bitmap):
-				imageId = wx.NullBitmap
-
-		AuiNotebook.AddPage(self, page, title, select, imageId)
-
-		return page
+    # wx.aui.AuiNotebook does not allow setting name from constructor
+    self.Name = name
 
 
-	## Adds a ui.panel.ScrolledPanel instance as new page
-	#
-	#  \param caption
-	#    Label displayed on tab
-	#  \param winId
-	#    Window \b \e integer ID
-	#  \param select
-	#    Specifies whether the page should be displayed
-	#  \param imageId
-	#    Specifies optional image
-	def AddScrolledPage(self, caption, winId=wx.ID_ANY, select=False, imageId=0):
-		return self.AddPage(caption, ScrolledPanel(self), winId, select, imageId)
+  ## Adds a new page
+  #
+  #  \param page
+  #    \b \e wx.Window instance that will be new page (if None, a new instance is created)
+  #  \param winId
+  #    Window \b \e integer ID
+  #  \param title
+  #    Label displayed on tab
+  #  \param select
+  #    Specifies whether the page should be displayed
+  #  \param imageId
+  #    Specifies optional image
+  def AddPage(self, page=None, winId=wx.ID_ANY, title="tab", select=False, imageId=0):
+    if not page:
+      page = wx.Panel(self, winId)
+
+    # Existing instance should already have an ID
+    elif winId != wx.ID_ANY:
+      Logger.Debug(__name__, "Ignoring winId argument for pre-constructed page")
+
+    if wx.MAJOR_VERSION <= 2:
+      if not isinstance(imageId, wx.Bitmap):
+        imageId = wx.NullBitmap
+
+    AuiNotebook.AddPage(self, page, title, select, imageId)
+
+    return page
 
 
-	## Deletes all tabs/pages
-	#
-	#  This is overridden to add functionality to older wx versions
-	#
-	def DeleteAllPages(self):
-		if wx.MAJOR_VERSION > 2:
-			return AuiNotebook.DeleteAllPages(self)
-
-		# Reversing only used for deleting pages from right to left (not necessary)
-		for INDEX in reversed(range(self.GetPageCount())):
-			self.DeletePage(INDEX)
-
-
-	## Retrieves all panel instances of all tabs/pages
-	#
-	#  \return
-	#    <b><i>Tuple</i></b> list of all available pages
-	def GetAllPages(self):
-		pages = []
-		for INDEX in range(self.GetPageCount()):
-			pages.append(self.GetPage(INDEX))
-
-		return tuple(pages)
+  ## Adds a ui.panel.ScrolledPanel instance as new page
+  #
+  #  \param caption
+  #    Label displayed on tab
+  #  \param winId
+  #    Window \b \e integer ID
+  #  \param select
+  #    Specifies whether the page should be displayed
+  #  \param imageId
+  #    Specifies optional image
+  def AddScrolledPage(self, caption, winId=wx.ID_ANY, select=False, imageId=0):
+    return self.AddPage(caption, ScrolledPanel(self), winId, select, imageId)
 
 
-	## Sets the page's text/title & updates the Name attribute
-	#
-	#  \param index
-	#    Desired page's <b><i>integer</i></b> index
-	#  \param newName
-	#    <b><i>String</i></b> label of new title & name
-	#  \return
-	#    <b><i>True</i></b> if newName & page title match
-	def Rename(self, index, newName):
-		page = self.GetPage(index)
-		page.SetName(newName)
-		self.SetPageText(index, page.GetName())
+  ## Deletes all tabs/pages
+  #
+  #  This is overridden to add functionality to older wx versions
+  #
+  def DeleteAllPages(self):
+    if wx.MAJOR_VERSION > 2:
+      return AuiNotebook.DeleteAllPages(self)
 
-		return self.GetPageText(index) == newName
+    # Reversing only used for deleting pages from right to left (not necessary)
+    for INDEX in reversed(range(self.GetPageCount())):
+      self.DeletePage(INDEX)
+
+
+  ## Retrieves all panel instances of all tabs/pages
+  #
+  #  \return
+  #    <b><i>Tuple</i></b> list of all available pages
+  def GetAllPages(self):
+    pages = []
+    for INDEX in range(self.GetPageCount()):
+      pages.append(self.GetPage(INDEX))
+
+    return tuple(pages)
+
+
+  ## Sets the page's text/title & updates the Name attribute
+  #
+  #  \param index
+  #    Desired page's <b><i>integer</i></b> index
+  #  \param newName
+  #    <b><i>String</i></b> label of new title & name
+  #  \return
+  #    <b><i>True</i></b> if newName & page title match
+  def Rename(self, index, newName):
+    page = self.GetPage(index)
+    page.SetName(newName)
+    self.SetPageText(index, page.GetName())
+
+    return self.GetPageText(index) == newName
 
 
 ## Multiple instances of a single template
@@ -139,257 +139,257 @@ class Notebook(AuiNotebook):
 #  \param panelClass
 #    \b \e wx.Panel derived class to use for tab pages
 class MultiTemplate(BoxSizer):
-	def __init__(self, parent, panelClass, winId=wx.ID_ANY):
-		BoxSizer.__init__(self, wx.VERTICAL)
+  def __init__(self, parent, panelClass, winId=wx.ID_ANY):
+    BoxSizer.__init__(self, wx.VERTICAL)
 
-		self.Panel = panelClass
+    self.Panel = panelClass
 
-		self.Tabs = Notebook(parent, winId)
+    self.Tabs = Notebook(parent, winId)
 
-		self.TabButtonIds = []
+    self.TabButtonIds = []
 
-		# *** Event Handling *** #
+    # *** Event Handling *** #
 
-		self.Tabs.Bind(EVT_AUINOTEBOOK_PAGE_CLOSED, self.OnTabClosed)
+    self.Tabs.Bind(EVT_AUINOTEBOOK_PAGE_CLOSED, self.OnTabClosed)
 
-		# *** Layout *** #
+    # *** Layout *** #
 
-		lyt_buttons = BoxSizer(wx.HORIZONTAL)
+    lyt_buttons = BoxSizer(wx.HORIZONTAL)
 
-		self.Add(lyt_buttons, 0, wx.EXPAND)
-		self.Add(self.Tabs, 1, wx.EXPAND)
+    self.Add(lyt_buttons, 0, wx.EXPAND)
+    self.Add(self.Tabs, 1, wx.EXPAND)
 
-		# *** Post-Layout Actions *** #
+    # *** Post-Layout Actions *** #
 
-		self.AddButton(GT("Add Tab"), "add", btnid.ADD, self.OnButtonAdd)
-		self.AddTabButton(GT("Rename Tab"), "rename", btnid.RENAME, self.OnRenameTab)
+    self.AddButton(GT("Add Tab"), "add", btnid.ADD, self.OnButtonAdd)
+    self.AddTabButton(GT("Rename Tab"), "rename", btnid.RENAME, self.OnRenameTab)
 
 
-	## Checks if input title is okay for using as tab title & target filename
-	#
-	#  \param title
-	#    New \b \e string title to set as tab/page title & target filename
-	#  \return
-	#    \b \e True if new title is okay
-	def _title_is_ok(self, title):
-		if TextIsEmpty(title):
-			return False
+  ## Checks if input title is okay for using as tab title & target filename
+  #
+  #  \param title
+  #    New \b \e string title to set as tab/page title & target filename
+  #  \return
+  #    \b \e True if new title is okay
+  def _title_is_ok(self, title):
+    if TextIsEmpty(title):
+      return False
 
-		return not Contains(title, (" ", "\t",))
+    return not Contains(title, (" ", "\t",))
 
 
-	## Adds a new button to the parent window
-	def AddButton(self, label, image, btnId=wx.ID_ANY, handler=None):
-		lyt_buttons = self.GetButtonSizer()
+  ## Adds a new button to the parent window
+  def AddButton(self, label, image, btnId=wx.ID_ANY, handler=None):
+    lyt_buttons = self.GetButtonSizer()
 
-		if lyt_buttons:
-			padding = 0
-			if len(lyt_buttons.GetChildren()):
-				padding = 5
+    if lyt_buttons:
+      padding = 0
+      if len(lyt_buttons.GetChildren()):
+        padding = 5
 
-			button = CreateButton(self.GetParent(), btnId, label, image)
+      button = CreateButton(self.GetParent(), btnId, label, image)
 
-			if button:
-				if handler:
-					button.Bind(wx.EVT_BUTTON, handler)
+      if button:
+        if handler:
+          button.Bind(wx.EVT_BUTTON, handler)
 
-				FLAG_TEXT = wx.ALIGN_CENTER_VERTICAL|wx.LEFT
+        FLAG_TEXT = wx.ALIGN_CENTER_VERTICAL|wx.LEFT
 
-				lyt_buttons.Add(button, 0, wx.LEFT, padding)
+        lyt_buttons.Add(button, 0, wx.LEFT, padding)
 
-				if label:
-					lyt_buttons.Add(wx.StaticText(self.GetParent(), label=label), 0, FLAG_TEXT, 5)
+        if label:
+          lyt_buttons.Add(wx.StaticText(self.GetParent(), label=label), 0, FLAG_TEXT, 5)
 
-				return button
+        return button
 
 
-	## Adds a new button to parent window that is enabled/disabled with notebook tabs
-	def AddTabButton(self, label, image, btnId=wx.ID_ANY, handler=None):
-		button = self.AddButton(label, image, btnId, handler)
+  ## Adds a new button to parent window that is enabled/disabled with notebook tabs
+  def AddTabButton(self, label, image, btnId=wx.ID_ANY, handler=None):
+    button = self.AddButton(label, image, btnId, handler)
 
-		if button:
-			if btnId not in self.TabButtonIds:
-				self.TabButtonIds.append(btnId)
+    if button:
+      if btnId not in self.TabButtonIds:
+        self.TabButtonIds.append(btnId)
 
-			self.ToggleButtons()
+      self.ToggleButtons()
 
-		return button
+    return button
 
 
-	## Adds a new tab/page to the ui.notebook.Notebook instance
-	#
-	#  \param title
-	#    \b \e String title to use for new tab/page & target filename
-	#  \return
-	#    New ui.notebook.Notebook instance
-	def AddPage(self, title, select=True, checkBox=None):
-		if isinstance(checkBox, wx.CheckBox) and self.Panel == ManPage:
-			new_page = self.Panel(self.Tabs, name=title, easy_mode=checkBox.GetValue())
+  ## Adds a new tab/page to the ui.notebook.Notebook instance
+  #
+  #  \param title
+  #    \b \e String title to use for new tab/page & target filename
+  #  \return
+  #    New ui.notebook.Notebook instance
+  def AddPage(self, title, select=True, checkBox=None):
+    if isinstance(checkBox, wx.CheckBox) and self.Panel == ManPage:
+      new_page = self.Panel(self.Tabs, name=title, easy_mode=checkBox.GetValue())
 
-		else:
-			new_page = self.Panel(self.Tabs, name=title)
+    else:
+      new_page = self.Panel(self.Tabs, name=title)
 
-		added = self.Tabs.AddPage(new_page, title=title, select=select)
+    added = self.Tabs.AddPage(new_page, title=title, select=select)
 
-		self.ToggleButtons()
+    self.ToggleButtons()
 
-		return added
+    return added
 
 
-	## Retrieves sizer for button instances
-	def GetButtonSizer(self):
-		children = self.GetChildSizers()
+  ## Retrieves sizer for button instances
+  def GetButtonSizer(self):
+    children = self.GetChildSizers()
 
-		if children:
-			return children[0]
+    if children:
+      return children[0]
 
 
-	## Retrieves window instance of currently selected tab
-	def GetCurrentPage(self):
-		return self.GetPage(self.GetSelection())
+  ## Retrieves window instance of currently selected tab
+  def GetCurrentPage(self):
+    return self.GetPage(self.GetSelection())
 
 
-	## Alias of ui.notebook.MultiTemplate.GetCurrentPage
-	def GetCurrentTab(self):
-		return self.GetCurrentPage()
+  ## Alias of ui.notebook.MultiTemplate.GetCurrentPage
+  def GetCurrentTab(self):
+    return self.GetCurrentPage()
 
 
-	## Retrieves window instance at given index
-	def GetPage(self, index):
-		return self.Tabs.GetPage(index)
+  ## Retrieves window instance at given index
+  def GetPage(self, index):
+    return self.Tabs.GetPage(index)
 
 
-	## Retrieves parent window of the ui.notebook.Notebook instance
-	def GetParent(self):
-		return self.Tabs.Parent
+  ## Retrieves parent window of the ui.notebook.Notebook instance
+  def GetParent(self):
+    return self.Tabs.Parent
 
 
-	## Retrieves index of current tab
-	def GetSelection(self):
-		return self.Tabs.GetSelection()
+  ## Retrieves index of current tab
+  def GetSelection(self):
+    return self.Tabs.GetSelection()
 
 
-	## Checks if the notebook currently has any tabs
-	def HasTabs(self):
-		return self.Tabs.GetPageCount() > 0
+  ## Checks if the notebook currently has any tabs
+  def HasTabs(self):
+    return self.Tabs.GetPageCount() > 0
 
 
-	## Handles button press event to add a new tab/page
-	#
-	#  \return
-	#    Value of ui.notebook.TabsTemplate.SetTabName
-	def OnButtonAdd(self, event=None):
-		if event:
-			event.Skip(True)
+  ## Handles button press event to add a new tab/page
+  #
+  #  \return
+  #    Value of ui.notebook.TabsTemplate.SetTabName
+  def OnButtonAdd(self, event=None):
+    if event:
+      event.Skip(True)
 
-		if self.Panel == ManPage:
-			return self.SetTabName(checkBox=GT("Easy Mode"), checked=True)
+    if self.Panel == ManPage:
+      return self.SetTabName(checkBox=GT("Easy Mode"), checked=True)
 
-		return self.SetTabName()
+    return self.SetTabName()
 
 
-	## Change tab/page title & target filename
-	#
-	#  \return
-	#    Value of ui.notebook.TabsTemplate.SetTabName
-	def OnRenameTab(self, event=None):
-		index = self.Tabs.GetSelection()
+  ## Change tab/page title & target filename
+  #
+  #  \return
+  #    Value of ui.notebook.TabsTemplate.SetTabName
+  def OnRenameTab(self, event=None):
+    index = self.Tabs.GetSelection()
 
-		return self.SetTabName(index, rename=True)
+    return self.SetTabName(index, rename=True)
 
 
-	## Handles tab closed event & enables/disables rename button
-	def OnTabClosed(self, event=None):
-		self.ToggleButtons()
+  ## Handles tab closed event & enables/disables rename button
+  def OnTabClosed(self, event=None):
+    self.ToggleButtons()
 
 
-	## Change a button's label
-	#
-	#  FIXME: Change tooltip too???
-	def RenameButton(self, btnId, newLabel):
-		children = self.GetButtonSizer().GetChildWindows()
+  ## Change a button's label
+  #
+  #  FIXME: Change tooltip too???
+  def RenameButton(self, btnId, newLabel):
+    children = self.GetButtonSizer().GetChildWindows()
 
-		for INDEX in range(len(children)):
-			# Make sure there is a label after the button
-			if len(children) > INDEX + 1:
-				child = children[INDEX]
+    for INDEX in range(len(children)):
+      # Make sure there is a label after the button
+      if len(children) > INDEX + 1:
+        child = children[INDEX]
 
-				if isinstance(child, wx.Button) and child.Id == btnId:
-					label = children[INDEX+1]
+        if isinstance(child, wx.Button) and child.Id == btnId:
+          label = children[INDEX+1]
 
-					if isinstance(label, wx.StaticText):
-						return label.SetLabel(newLabel)
+          if isinstance(label, wx.StaticText):
+            return label.SetLabel(newLabel)
 
 
-	## Reset notebook instance to default values
-	def Reset(self):
-		self.Tabs.DeleteAllPages()
+  ## Reset notebook instance to default values
+  def Reset(self):
+    self.Tabs.DeleteAllPages()
 
 
-	## Either renames an existing tab/page or creates a new one
-	#
-	#  \param index
-	#    \b \e Integer index of tab/page to rename (only used if 'rename' is True)
-	#  \param rename
-	#    Renames an existing tab/page instead of creating a new one
-	#  \return
-	#    Value of ui.notebook.Notebook.SetPageText or ui.notebook.TabsTemplate.AddPage
-	def SetTabName(self, index=-1, rename=False, checkBox=None, checked=False):
-		getname = TextEntryDialog(GetMainWindow(), GT("Name for new page"))
-		new_name = None
+  ## Either renames an existing tab/page or creates a new one
+  #
+  #  \param index
+  #    \b \e Integer index of tab/page to rename (only used if 'rename' is True)
+  #  \param rename
+  #    Renames an existing tab/page instead of creating a new one
+  #  \return
+  #    Value of ui.notebook.Notebook.SetPageText or ui.notebook.TabsTemplate.AddPage
+  def SetTabName(self, index=-1, rename=False, checkBox=None, checked=False):
+    getname = TextEntryDialog(GetMainWindow(), GT("Name for new page"))
+    new_name = None
 
-		if not rename and checkBox:
-			check_box = CheckBox(getname, label=checkBox)
-			check_box.SetValue(checked)
+    if not rename and checkBox:
+      check_box = CheckBox(getname, label=checkBox)
+      check_box.SetValue(checked)
 
-			sizer = getname.GetSizer()
-			insert_point = len(sizer.GetChildren()) - 1
+      sizer = getname.GetSizer()
+      insert_point = len(sizer.GetChildren()) - 1
 
-			sizer.InsertSpacer(insert_point, 5)
-			sizer.Insert(insert_point + 1, check_box, 0, wx.LEFT, 16)
+      sizer.InsertSpacer(insert_point, 5)
+      sizer.Insert(insert_point + 1, check_box, 0, wx.LEFT, 16)
 
-			getname.SetSize(sizer.GetMinSize())
-			getname.Fit()
-			getname.CenterOnParent()
+      getname.SetSize(sizer.GetMinSize())
+      getname.Fit()
+      getname.CenterOnParent()
 
-		valid_name = False
+    valid_name = False
 
-		while not valid_name:
-			if new_name and TextIsEmpty(new_name):
-				getname.Clear()
+    while not valid_name:
+      if new_name and TextIsEmpty(new_name):
+        getname.Clear()
 
-			# User cancelled
-			if not ShowDialog(getname):
-				return False
+      # User cancelled
+      if not ShowDialog(getname):
+        return False
 
-			else:
-				new_name = getname.GetValue()
+      else:
+        new_name = getname.GetValue()
 
-			valid_name = self._title_is_ok(new_name)
+      valid_name = self._title_is_ok(new_name)
 
-			if valid_name:
-				break
+      if valid_name:
+        break
 
-			ShowErrorDialog(GT("Page name cannot contain whitespace"), warn=True)
+      ShowErrorDialog(GT("Page name cannot contain whitespace"), warn=True)
 
-		if rename:
-			if index < 0:
-				return False
+    if rename:
+      if index < 0:
+        return False
 
-			return self.Tabs.Rename(index, new_name)
+      return self.Tabs.Rename(index, new_name)
 
-		if checkBox:
-			return self.AddPage(new_name, checkBox=check_box)
+    if checkBox:
+      return self.AddPage(new_name, checkBox=check_box)
 
-		return self.AddPage(new_name)
+    return self.AddPage(new_name)
 
 
-	## Enables/Disables buttons
-	def ToggleButtons(self):
-		parent = self.GetParent()
+  ## Enables/Disables buttons
+  def ToggleButtons(self):
+    parent = self.GetParent()
 
-		for ID in self.TabButtonIds:
-			button = GetField(parent, ID)
+    for ID in self.TabButtonIds:
+      button = GetField(parent, ID)
 
-			if button:
-				button.Enable(self.HasTabs())
+      if button:
+        button.Enable(self.HasTabs())

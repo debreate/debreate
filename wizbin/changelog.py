@@ -43,365 +43,365 @@ from wiz.wizard         import WizardPage
 
 ## Changelog page
 class Page(WizardPage):
-	## Constructor
-	#
-	#  \param parent
-	#    Parent <b><i>wx.Window</i></b> instance
-	def __init__(self, parent):
-		WizardPage.__init__(self, parent, pgid.CHANGELOG)
-
-		txt_package = wx.StaticText(self, label=GT("Package"), name="package")
-		self.ti_package = TextArea(self, inputid.PACKAGE, name=txt_package.Name)
-
-		txt_version = wx.StaticText(self, label=GT("Version"), name="version")
-		self.ti_version = TextArea(self, inputid.VERSION, name=txt_version.Name)
-
-		dist_names = GetOSDistNames()
-
-		txt_dist = wx.StaticText(self, label=GT("Distribution"), name="dist")
-
-		if dist_names:
-			self.ti_dist = ComboBox(self, inputid.DIST, choices=dist_names, name=txt_dist.Name)
-
-		# Use regular text input if could not retrieve distribution names list
-		else:
-			self.ti_dist = TextArea(self, inputid.DIST, name=txt_dist.Name)
-
-		opts_urgency = (
-			"low",
-			"medium",
-			"high",
-			"emergency",
-			)
-
-		txt_urgency = wx.StaticText(self, label=GT("Urgency"), name="urgency")
-		self.sel_urgency = Choice(self, selid.URGENCY, choices=opts_urgency, name=txt_urgency.Name)
-
-		txt_maintainer = wx.StaticText(self, label=GT("Maintainer"), name="maintainer")
-		self.ti_maintainer = TextArea(self, inputid.MAINTAINER, name=txt_maintainer.Name)
+  ## Constructor
+  #
+  #  \param parent
+  #    Parent <b><i>wx.Window</i></b> instance
+  def __init__(self, parent):
+    WizardPage.__init__(self, parent, pgid.CHANGELOG)
+
+    txt_package = wx.StaticText(self, label=GT("Package"), name="package")
+    self.ti_package = TextArea(self, inputid.PACKAGE, name=txt_package.Name)
+
+    txt_version = wx.StaticText(self, label=GT("Version"), name="version")
+    self.ti_version = TextArea(self, inputid.VERSION, name=txt_version.Name)
+
+    dist_names = GetOSDistNames()
+
+    txt_dist = wx.StaticText(self, label=GT("Distribution"), name="dist")
+
+    if dist_names:
+      self.ti_dist = ComboBox(self, inputid.DIST, choices=dist_names, name=txt_dist.Name)
+
+    # Use regular text input if could not retrieve distribution names list
+    else:
+      self.ti_dist = TextArea(self, inputid.DIST, name=txt_dist.Name)
+
+    opts_urgency = (
+      "low",
+      "medium",
+      "high",
+      "emergency",
+      )
+
+    txt_urgency = wx.StaticText(self, label=GT("Urgency"), name="urgency")
+    self.sel_urgency = Choice(self, selid.URGENCY, choices=opts_urgency, name=txt_urgency.Name)
+
+    txt_maintainer = wx.StaticText(self, label=GT("Maintainer"), name="maintainer")
+    self.ti_maintainer = TextArea(self, inputid.MAINTAINER, name=txt_maintainer.Name)
 
-		txt_email = wx.StaticText(self, label=GT("Email"), name="email")
-		self.ti_email = TextArea(self, inputid.EMAIL, name=txt_email.Name)
-
-		btn_import = CreateButton(self, btnid.IMPORT, GT("Import"), "import", name="btn import")
-		txt_import = wx.StaticText(self, label=GT("Import information from Control page"))
-
-		# Changes input
-		self.ti_changes = TextAreaPanel(self, size=(20,150), name="changes")
-
-		# *** Target installation directory
-
-		# FIXME: Should this be set by config or project file???
-		self.pnl_target = FileOTarget(self, "/usr/share/doc/<package>", name="target default",
-				defaultType=CheckBoxESS, customType=PathCtrlESS, pathIds=(chkid.TARGET, inputid.TARGET,))
-
-		self.btn_add = CreateButton(self, btnid.ADD, GT("Add"), "add", name="btn add")
-		txt_add = wx.StaticText(self, label=GT("Insert new changelog entry"))
-
-		self.chk_indentation = CheckBox(self, label=GT("Preserve indentation"), name="indent")
+    txt_email = wx.StaticText(self, label=GT("Email"), name="email")
+    self.ti_email = TextArea(self, inputid.EMAIL, name=txt_email.Name)
+
+    btn_import = CreateButton(self, btnid.IMPORT, GT("Import"), "import", name="btn import")
+    txt_import = wx.StaticText(self, label=GT("Import information from Control page"))
+
+    # Changes input
+    self.ti_changes = TextAreaPanel(self, size=(20,150), name="changes")
+
+    # *** Target installation directory
+
+    # FIXME: Should this be set by config or project file???
+    self.pnl_target = FileOTarget(self, "/usr/share/doc/<package>", name="target default",
+        defaultType=CheckBoxESS, customType=PathCtrlESS, pathIds=(chkid.TARGET, inputid.TARGET,))
+
+    self.btn_add = CreateButton(self, btnid.ADD, GT("Add"), "add", name="btn add")
+    txt_add = wx.StaticText(self, label=GT("Insert new changelog entry"))
+
+    self.chk_indentation = CheckBox(self, label=GT("Preserve indentation"), name="indent")
 
-		self.dsp_changes = TextAreaPanelESS(self, inputid.CHANGES, monospace=True, name="log")
-		self.dsp_changes.EnableDropTarget()
+    self.dsp_changes = TextAreaPanelESS(self, inputid.CHANGES, monospace=True, name="log")
+    self.dsp_changes.EnableDropTarget()
 
-		SetPageToolTips(self)
-
-		# *** Event Handling *** #
+    SetPageToolTips(self)
+
+    # *** Event Handling *** #
 
-		btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
-		self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
+    btn_import.Bind(wx.EVT_BUTTON, self.OnImportFromControl)
+    self.btn_add.Bind(wx.EVT_BUTTON, self.AddInfo)
 
-		# *** Layout *** #
+    # *** Layout *** #
 
-		LEFT_BOTTOM = lyt.ALGN_LB
-		LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
-		RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
-
-		lyt_info = wx.FlexGridSizer(2, 6, 0, 0)
-
-		lyt_info.AddGrowableCol(1)
-		lyt_info.AddGrowableCol(3)
-		lyt_info.AddGrowableCol(5)
-		lyt_info.AddMany((
-			(txt_package, 0, RIGHT_CENTER|wx.RIGHT, 5),
-			(self.ti_package, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
-			(txt_version, 0, RIGHT_CENTER|wx.RIGHT, 5),
-			(self.ti_version, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
-			(txt_dist, 0, RIGHT_CENTER|wx.RIGHT, 5),
-			(self.ti_dist, 1, wx.EXPAND|wx.BOTTOM, 5),
-			(txt_urgency, 0, RIGHT_CENTER|wx.RIGHT, 5),
-			(self.sel_urgency, 1, wx.RIGHT, 5),
-			(txt_maintainer, 0, RIGHT_CENTER|wx.RIGHT, 5),
-			(self.ti_maintainer, 1, wx.EXPAND|wx.RIGHT, 5),
-			(txt_email, 0, RIGHT_CENTER|wx.RIGHT, 5),
-			(self.ti_email, 1, wx.EXPAND)
-			))
+    LEFT_BOTTOM = lyt.ALGN_LB
+    LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
+    RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
+
+    lyt_info = wx.FlexGridSizer(2, 6, 0, 0)
+
+    lyt_info.AddGrowableCol(1)
+    lyt_info.AddGrowableCol(3)
+    lyt_info.AddGrowableCol(5)
+    lyt_info.AddMany((
+      (txt_package, 0, RIGHT_CENTER|wx.RIGHT, 5),
+      (self.ti_package, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
+      (txt_version, 0, RIGHT_CENTER|wx.RIGHT, 5),
+      (self.ti_version, 1, wx.EXPAND|wx.BOTTOM|wx.RIGHT, 5),
+      (txt_dist, 0, RIGHT_CENTER|wx.RIGHT, 5),
+      (self.ti_dist, 1, wx.EXPAND|wx.BOTTOM, 5),
+      (txt_urgency, 0, RIGHT_CENTER|wx.RIGHT, 5),
+      (self.sel_urgency, 1, wx.RIGHT, 5),
+      (txt_maintainer, 0, RIGHT_CENTER|wx.RIGHT, 5),
+      (self.ti_maintainer, 1, wx.EXPAND|wx.RIGHT, 5),
+      (txt_email, 0, RIGHT_CENTER|wx.RIGHT, 5),
+      (self.ti_email, 1, wx.EXPAND)
+      ))
 
-		lyt_details = wx.GridBagSizer()
-		lyt_details.SetCols(3)
-		lyt_details.AddGrowableRow(2)
-		lyt_details.AddGrowableCol(1)
+    lyt_details = wx.GridBagSizer()
+    lyt_details.SetCols(3)
+    lyt_details.AddGrowableRow(2)
+    lyt_details.AddGrowableCol(1)
 
-		lyt_details.Add(btn_import, (0, 0))
-		lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
-		lyt_details.Add(wx.StaticText(self, label=GT("Changes")), (1, 0), flag=LEFT_BOTTOM)
-		lyt_details.Add(wx.StaticText(self, label=GT("Target")), (1, 2), flag=LEFT_BOTTOM)
-		lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
-		lyt_details.Add(self.pnl_target, (2, 2))
-		lyt_details.Add(self.btn_add, (3, 0), (2, 1))
-		lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
-		lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
+    lyt_details.Add(btn_import, (0, 0))
+    lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
+    lyt_details.Add(wx.StaticText(self, label=GT("Changes")), (1, 0), flag=LEFT_BOTTOM)
+    lyt_details.Add(wx.StaticText(self, label=GT("Target")), (1, 2), flag=LEFT_BOTTOM)
+    lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
+    lyt_details.Add(self.pnl_target, (2, 2))
+    lyt_details.Add(self.btn_add, (3, 0), (2, 1))
+    lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
+    lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
 
-		lyt_main = BoxSizer(wx.VERTICAL)
-		lyt_main.AddSpacer(10)
-		lyt_main.Add(lyt_info, 0, wx.EXPAND|lyt.PAD_LR, 5)
-		lyt_main.AddSpacer(10)
-		lyt_main.Add(lyt_details, 1, wx.EXPAND|lyt.PAD_LR, 5)
-		lyt_main.Add(wx.StaticText(self, label="Changelog Output"),
-				0, lyt.ALGN_L|lyt.PAD_LT, 5)
-		lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
+    lyt_main = BoxSizer(wx.VERTICAL)
+    lyt_main.AddSpacer(10)
+    lyt_main.Add(lyt_info, 0, wx.EXPAND|lyt.PAD_LR, 5)
+    lyt_main.AddSpacer(10)
+    lyt_main.Add(lyt_details, 1, wx.EXPAND|lyt.PAD_LR, 5)
+    lyt_main.Add(wx.StaticText(self, label="Changelog Output"),
+        0, lyt.ALGN_L|lyt.PAD_LT, 5)
+    lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
 
-		self.SetAutoLayout(True)
-		self.SetSizer(lyt_main)
-		self.Layout()
+    self.SetAutoLayout(True)
+    self.SetSizer(lyt_main)
+    self.Layout()
 
 
-	## Formats input text from 'changes' field for new entry in changelog
-	def AddInfo(self, event=None):
-		new_changes = self.ti_changes.GetValue()
+  ## Formats input text from 'changes' field for new entry in changelog
+  def AddInfo(self, event=None):
+    new_changes = self.ti_changes.GetValue()
 
-		if TextIsEmpty(new_changes):
-			DetailedMessageDialog(GetMainWindow(), GT("Warning"), ICON_WARNING,
-					GT("\"Changes\" section is empty")).ShowModal()
+    if TextIsEmpty(new_changes):
+      DetailedMessageDialog(GetMainWindow(), GT("Warning"), ICON_WARNING,
+          GT("\"Changes\" section is empty")).ShowModal()
 
-			self.ti_changes.SetInsertionPointEnd()
-			self.ti_changes.SetFocus()
+      self.ti_changes.SetInsertionPointEnd()
+      self.ti_changes.SetFocus()
 
-			return
+      return
 
-		package = self.ti_package.GetValue()
-		version = self.ti_version.GetValue()
-		dist = self.ti_dist.GetValue()
-		urgency = self.sel_urgency.GetStringSelection()
-		maintainer = self.ti_maintainer.GetValue()
-		email = self.ti_email.GetValue()
+    package = self.ti_package.GetValue()
+    version = self.ti_version.GetValue()
+    dist = self.ti_dist.GetValue()
+    urgency = self.sel_urgency.GetStringSelection()
+    maintainer = self.ti_maintainer.GetValue()
+    email = self.ti_email.GetValue()
 
-		new_changes = FormatChangelog(new_changes, package, version, dist, urgency,
-				maintainer, email, self.chk_indentation.GetValue())
+    new_changes = FormatChangelog(new_changes, package, version, dist, urgency,
+        maintainer, email, self.chk_indentation.GetValue())
 
-		# Clean up leading & trailing whitespace in old changes
-		old_changes = self.dsp_changes.GetValue().strip(" \t\n\r")
+    # Clean up leading & trailing whitespace in old changes
+    old_changes = self.dsp_changes.GetValue().strip(" \t\n\r")
 
-		# Only append newlines if log isn't already empty
-		if not TextIsEmpty(old_changes):
-			new_changes = "{}\n\n\n{}".format(new_changes, old_changes)
+    # Only append newlines if log isn't already empty
+    if not TextIsEmpty(old_changes):
+      new_changes = "{}\n\n\n{}".format(new_changes, old_changes)
 
-		# Add empty line to end of log
-		if not new_changes.endswith("\n"):
-			new_changes = "{}\n".format(new_changes)
+    # Add empty line to end of log
+    if not new_changes.endswith("\n"):
+      new_changes = "{}\n".format(new_changes)
 
-		self.dsp_changes.SetValue(new_changes)
+    self.dsp_changes.SetValue(new_changes)
 
-		# Clear "Changes" text
-		self.ti_changes.Clear()
-		self.ti_changes.SetFocus()
+    # Clear "Changes" text
+    self.ti_changes.Clear()
+    self.ti_changes.SetFocus()
 
 
-	## Exports page's data to file
-	#
-	#  \param out_dir
-	#    Target directory where file will be written
-	#  \out_name
-	#    Filename of output file
-	#  \compress
-	#    If <b><i>True</i></b>, compresses file with gzip
-	def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
-		ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
+  ## Exports page's data to file
+  #
+  #  \param out_dir
+  #    Target directory where file will be written
+  #  \out_name
+  #    Filename of output file
+  #  \compress
+  #    If <b><i>True</i></b>, compresses file with gzip
+  def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
+    ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
 
-		absolute_filename = "{}/{}".format(out_dir, out_name).replace("//", "/")
+    absolute_filename = "{}/{}".format(out_dir, out_name).replace("//", "/")
 
-		CMD_gzip = GetExecutable("gzip")
+    CMD_gzip = GetExecutable("gzip")
 
-		if compress and CMD_gzip:
-			subprocess.run([CMD_gzip, "-n9", absolute_filename])
+    if compress and CMD_gzip:
+      subprocess.run([CMD_gzip, "-n9", absolute_filename])
 
-		return ret_value
+    return ret_value
 
 
-	## Export instructions specifically for build phase
-	#
-	#  \param stage
-	#    Formatted staged directory where file heirarchy is temporarily kept
-	#  \return
-	#    <b><i>Tuple</i></b> containing a return code & string value of page data
-	def ExportBuild(self, stage):
-		target = self.pnl_target.GetPath()
+  ## Export instructions specifically for build phase
+  #
+  #  \param stage
+  #    Formatted staged directory where file heirarchy is temporarily kept
+  #  \return
+  #    <b><i>Tuple</i></b> containing a return code & string value of page data
+  def ExportBuild(self, stage):
+    target = self.pnl_target.GetPath()
 
-		if target == self.pnl_target.GetDefaultPath():
-			target.replace("<package>", GetFieldValue(pgid.CONTROL, inputid.PACKAGE))
+    if target == self.pnl_target.GetDefaultPath():
+      target.replace("<package>", GetFieldValue(pgid.CONTROL, inputid.PACKAGE))
 
-		stage = ConcatPaths((stage, target))
+    stage = ConcatPaths((stage, target))
 
-		if not os.path.isdir(stage):
-			os.makedirs(stage)
+    if not os.path.isdir(stage):
+      os.makedirs(stage)
 
-		# FIXME: Allow user to set filename
-		self.Export(stage, "changelog", True)
+    # FIXME: Allow user to set filename
+    self.Export(stage, "changelog", True)
 
-		export_summary = GT("Changelog export failed")
-		changelog = ConcatPaths((stage, "changelog.gz"))
+    export_summary = GT("Changelog export failed")
+    changelog = ConcatPaths((stage, "changelog.gz"))
 
-		if os.path.isfile(changelog):
-			export_summary = GT("Changelog export to: {}").format(changelog)
+    if os.path.isfile(changelog):
+      export_summary = GT("Changelog export to: {}").format(changelog)
 
-		return(0, export_summary)
+    return(0, export_summary)
 
 
-	## Retrieves changelog text
-	#
-	#  The output is a text file that uses sections defined by braces ([, ])
-	#
-	#  \param getModule
-	#    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
-	#    & page data, otherwise return only page data string
-	#  \return
-	#    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
-	def Get(self, getModule=False):
-		target = self.pnl_target.GetPath()
+  ## Retrieves changelog text
+  #
+  #  The output is a text file that uses sections defined by braces ([, ])
+  #
+  #  \param getModule
+  #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+  #    & page data, otherwise return only page data string
+  #  \return
+  #    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
+  def Get(self, getModule=False):
+    target = self.pnl_target.GetPath()
 
-		if target == self.pnl_target.GetDefaultPath():
-			target = "DEFAULT"
+    if target == self.pnl_target.GetDefaultPath():
+      target = "DEFAULT"
 
-		body = self.dsp_changes.GetValue()
+    body = self.dsp_changes.GetValue()
 
-		if TextIsEmpty(body):
-			page = None
+    if TextIsEmpty(body):
+      page = None
 
-		else:
-			page = "[TARGET={}]\n\n[BODY]\n{}".format(target, body)
+    else:
+      page = "[TARGET={}]\n\n[BODY]\n{}".format(target, body)
 
-		if getModule:
-			page = (__name__, page,)
+    if getModule:
+      page = (__name__, page,)
 
-		return page
+    return page
 
 
-	## Retrieves plain text of the changelog field
-	#
-	#  \return
-	#    Formatted changelog text
-	def GetChangelog(self):
-		return self.dsp_changes.GetValue()
+  ## Retrieves plain text of the changelog field
+  #
+  #  \return
+  #    Formatted changelog text
+  def GetChangelog(self):
+    return self.dsp_changes.GetValue()
 
 
-	## Reads & parses page data from a formatted text file
-	#
-	#  \param filename
-	#    File path to open
-	def ImportFromFile(self, filename):
-		if not os.path.isfile(filename):
-			return dbrerrno.ENOENT
+  ## Reads & parses page data from a formatted text file
+  #
+  #  \param filename
+  #    File path to open
+  def ImportFromFile(self, filename):
+    if not os.path.isfile(filename):
+      return dbrerrno.ENOENT
 
-		clog_data = ReadFile(filename, split=True)
+    clog_data = ReadFile(filename, split=True)
 
-		sections = {}
+    sections = {}
 
-		def parse_section(key, lines):
-			value = "\n".join(lines).split("\n[")[0]
+    def parse_section(key, lines):
+      value = "\n".join(lines).split("\n[")[0]
 
-			if "=" in key:
-				key = key.split("=")
-				value = (key[-1], value)
-				key = key[0]
+      if "=" in key:
+        key = key.split("=")
+        value = (key[-1], value)
+        key = key[0]
 
-			sections[key] = value
+      sections[key] = value
 
-		# NOTE: This would need to be changed were more sections added to project file
-		for L in clog_data:
-			line_index = clog_data.index(L)
+    # NOTE: This would need to be changed were more sections added to project file
+    for L in clog_data:
+      line_index = clog_data.index(L)
 
-			if not TextIsEmpty(L) and "[" in L and "]" in L:
-				L = L.split("[")[-1].split("]")[0]
-				parse_section(L, clog_data[line_index+1:])
+      if not TextIsEmpty(L) and "[" in L and "]" in L:
+        L = L.split("[")[-1].split("]")[0]
+        parse_section(L, clog_data[line_index+1:])
 
-		for S in sections:
-			Logger.Debug(__name__, GT("Changelog section: \"{}\", Value:\n{}").format(S, sections[S]))
+    for S in sections:
+      Logger.Debug(__name__, GT("Changelog section: \"{}\", Value:\n{}").format(S, sections[S]))
 
-			if isinstance(sections[S], (tuple, list)):
-				value_index = 0
-				for I in sections[S]:
-					Logger.Debug(__name__, GT("Value {}: {}").format(value_index, I))
-					value_index += 1
+      if isinstance(sections[S], (tuple, list)):
+        value_index = 0
+        for I in sections[S]:
+          Logger.Debug(__name__, GT("Value {}: {}").format(value_index, I))
+          value_index += 1
 
-			if S == "TARGET":
-				Logger.Debug(__name__, "SECTION TARGET FOUND")
+      if S == "TARGET":
+        Logger.Debug(__name__, "SECTION TARGET FOUND")
 
-				if sections[S][0] == "DEFAULT":
-					Logger.Debug(__name__, "Using default target")
+        if sections[S][0] == "DEFAULT":
+          Logger.Debug(__name__, "Using default target")
 
-					if not self.pnl_target.UsingDefault():
-						self.pnl_target.Reset()
+          if not self.pnl_target.UsingDefault():
+            self.pnl_target.Reset()
 
-				else:
-					Logger.Debug(__name__, GT("Using custom target: {}").format(sections[S][0]))
+        else:
+          Logger.Debug(__name__, GT("Using custom target: {}").format(sections[S][0]))
 
-					self.pnl_target.SetPath(sections[S][0])
+          self.pnl_target.SetPath(sections[S][0])
 
-				continue
+        continue
 
-			if S == "BODY":
-				Logger.Debug(__name__, "SECTION BODY FOUND")
+      if S == "BODY":
+        Logger.Debug(__name__, "SECTION BODY FOUND")
 
-				self.dsp_changes.SetValue(sections[S])
+        self.dsp_changes.SetValue(sections[S])
 
-				continue
+        continue
 
-		return 0
+    return 0
 
 
-	## Checks the page's fields for exporting
-	#
-	#  \return
-	#    <b><i>False</i></b> if page cannot be exported
-	def IsOkay(self):
-		return not TextIsEmpty(self.dsp_changes.GetValue())
+  ## Checks the page's fields for exporting
+  #
+  #  \return
+  #    <b><i>False</i></b> if page cannot be exported
+  def IsOkay(self):
+    return not TextIsEmpty(self.dsp_changes.GetValue())
 
 
-	## Imports select field values from the 'Control' page
-	def OnImportFromControl(self, event=None):
-		fields = (
-			(self.ti_package, inputid.PACKAGE),
-			(self.ti_version, inputid.VERSION),
-			(self.ti_maintainer, inputid.MAINTAINER),
-			(self.ti_email, inputid.EMAIL),
-			)
+  ## Imports select field values from the 'Control' page
+  def OnImportFromControl(self, event=None):
+    fields = (
+      (self.ti_package, inputid.PACKAGE),
+      (self.ti_version, inputid.VERSION),
+      (self.ti_maintainer, inputid.MAINTAINER),
+      (self.ti_email, inputid.EMAIL),
+      )
 
-		for F, FID in fields:
-			field_value = GetFieldValue(pgid.CONTROL, FID)
+    for F, FID in fields:
+      field_value = GetFieldValue(pgid.CONTROL, FID)
 
-			if isinstance(field_value, ErrorTuple):
-				err_msg1 = GT("Got error when attempting to retrieve field value")
-				err_msg2 = "\tError code: {}\n\tError message: {}".format(field_value.GetCode(), field_value.GetString())
-				Logger.Error(__name__, "{}:\n{}".format(err_msg1, err_msg2))
+      if isinstance(field_value, ErrorTuple):
+        err_msg1 = GT("Got error when attempting to retrieve field value")
+        err_msg2 = "\tError code: {}\n\tError message: {}".format(field_value.GetCode(), field_value.GetString())
+        Logger.Error(__name__, "{}:\n{}".format(err_msg1, err_msg2))
 
-				continue
+        continue
 
-			if not TextIsEmpty(field_value):
-				F.SetValue(field_value)
+      if not TextIsEmpty(field_value):
+        F.SetValue(field_value)
 
 
-	## Sets values of page's fields with given input
-	#
-	#  \param data
-	#    Text to parse for values
-	def Set(self, data):
-		changelog = data.split("\n")
-		target = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]
+  ## Sets values of page's fields with given input
+  #
+  #  \param data
+  #    Text to parse for values
+  def Set(self, data):
+    changelog = data.split("\n")
+    target = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]
 
-		if target == "DEFAULT":
-			if not self.pnl_target.UsingDefault():
-				self.pnl_target.Reset()
+    if target == "DEFAULT":
+      if not self.pnl_target.UsingDefault():
+        self.pnl_target.Reset()
 
-		else:
-			self.pnl_target.SetPath(target)
+    else:
+      self.pnl_target.SetPath(target)
 
-		self.dsp_changes.SetValue("\n".join(changelog[1:]))
+    self.dsp_changes.SetValue("\n".join(changelog[1:]))

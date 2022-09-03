@@ -20,9 +20,9 @@ import subprocess
 #  \return
 #        \b \e str|None : A string path to executable or None if not found
 def CommandExists(cmd):
-	res = subprocess.run(["which", cmd], capture_output=True)
+  res = subprocess.run(["which", cmd], capture_output=True)
 
-	if res.returncode == 0:
-		return res.stdout.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n").split("\n")[0]
+  if res.returncode == 0:
+    return res.stdout.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n").split("\n")[0]
 
-	return None
+  return None

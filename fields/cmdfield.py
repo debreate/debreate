@@ -11,45 +11,45 @@ from globals.strings    import RemoveEmptyLines
 
 ## A field that requires a specific command or commands to be available on the system
 class CommandField:
-	def __init__(self, commands=None, requireAll=False):
-		self.Commands = commands
-		self.RequireAll = requireAll
+  def __init__(self, commands=None, requireAll=False):
+    self.Commands = commands
+    self.RequireAll = requireAll
 
-		if commands:
-			if IsString(self.Commands) and " " in self.Commands:
-				self.Commands = self.Commands.split(" ")
-				self.Commands = RemoveEmptyLines(self.Commands)
+    if commands:
+      if IsString(self.Commands) and " " in self.Commands:
+        self.Commands = self.Commands.split(" ")
+        self.Commands = RemoveEmptyLines(self.Commands)
 
-		# Check for the commands when the object is constructed
-		self.Check()
+    # Check for the commands when the object is constructed
+    self.Check()
 
 
-	## Disables the field if a command not found on system
-	def Check(self):
-		if self.Commands:
-			enabled = True
+  ## Disables the field if a command not found on system
+  def Check(self):
+    if self.Commands:
+      enabled = True
 
-			if IsString(self.Commands):
-				# FIXME: CommandExists should return boolean
-				#self.Enable(not not CommandExists(self.Commands))
-				enabled = not not CommandExists(self.Commands)
+      if IsString(self.Commands):
+        # FIXME: CommandExists should return boolean
+        #self.Enable(not not CommandExists(self.Commands))
+        enabled = not not CommandExists(self.Commands)
 
-			else:
-				if self.RequireAll:
-					for CMD in self.Commands:
-						if not CommandExists(CMD):
-							enabled = False
+      else:
+        if self.RequireAll:
+          for CMD in self.Commands:
+            if not CommandExists(CMD):
+              enabled = False
 
-							break
+              break
 
-				else:
-					cmd_found = False
-					for CMD in self.Commands:
-						if CommandExists(CMD):
-							cmd_found = True
+        else:
+          cmd_found = False
+          for CMD in self.Commands:
+            if CommandExists(CMD):
+              cmd_found = True
 
-							break
+              break
 
-					enabled = cmd_found
+          enabled = cmd_found
 
-			self.Enable(enabled)
+      self.Enable(enabled)

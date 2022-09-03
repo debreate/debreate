@@ -19,14 +19,14 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 #  \param str_value
 #    \b \e str : String to be translated
 def GT(str_value):
-	return _(GS(str_value))
+  return _(GS(str_value))
 
 
 ## Retrieves the path of gettext locale translations
 def GetLocaleDir():
-	global DIR_locale
+  global DIR_locale
 
-	return DIR_locale
+  return DIR_locale
 
 
 ## Sets the path for the gettext locale translations
@@ -34,6 +34,6 @@ def GetLocaleDir():
 #  \param path
 #    New directory location
 def SetLocaleDir(path):
-	global DIR_locale
+  global DIR_locale
 
-	DIR_locale = path
+  DIR_locale = path
