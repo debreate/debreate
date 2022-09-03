@@ -9,9 +9,9 @@
 
 import os, wx
 
-from dbr.language  import GT
-from fileio.fileio import ReadFile
-from globals.paths import PATH_app
+from dbr.language   import GT
+from globals.fileio import ReadFile
+from globals.paths  import PATH_app
 
 
 # Local modules

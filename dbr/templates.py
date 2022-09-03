@@ -8,7 +8,7 @@ import os
 
 from dbr.language    import GT
 from dbr.log         import Logger
-from fileio.fileio   import GetFiles
+from globals.fileio  import GetFiles
 from globals.paths   import ConcatPaths
 from globals.paths   import PATH_app
 from globals.paths   import PATH_local

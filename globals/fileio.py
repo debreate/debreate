@@ -1,4 +1,4 @@
-## \package fileio.fileio
+## \package globals.fileio
 #
 #  File I/O operations
 

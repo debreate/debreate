@@ -10,9 +10,9 @@ from wx.adv import OwnerDrawnComboBox
 
 from dbr.language       import GT
 from dbr.log            import Logger
-from fileio.fileio      import ReadFile
-from fileio.fileio      import WriteFile
 from globals.errorcodes import dbrerrno
+from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
 from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import pgid

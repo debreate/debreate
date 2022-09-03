@@ -9,8 +9,8 @@ import os, shutil, wx
 from dbr.language     import GT
 from dbr.log          import DebugEnabled
 from dbr.log          import Logger
-from fileio.fileio    import ReadFile
-from fileio.fileio    import WriteFile
+from globals.fileio   import ReadFile
+from globals.fileio   import WriteFile
 from globals.ident    import btnid
 from globals.ident    import chkid
 from globals.ident    import inputid

@@ -12,7 +12,7 @@ from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
 from dbr.log              import Logger
 from dbr.timer            import DebreateTimer
-from fileio.fileio        import ReadFile
+from globals.fileio       import ReadFile
 from globals.ident        import inputid
 from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl

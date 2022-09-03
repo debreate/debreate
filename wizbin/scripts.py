@@ -8,7 +8,7 @@ import os, wx
 
 from dbr.language     import GT
 from dbr.log          import Logger
-from fileio.fileio    import ReadFile
+from globals.fileio   import ReadFile
 from globals.fileitem import FileItem
 from globals.ident    import btnid
 from globals.ident    import chkid

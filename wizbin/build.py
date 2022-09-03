@@ -11,14 +11,14 @@ from dbr.language       import GT
 from dbr.log            import DebugEnabled
 from dbr.log            import Logger
 from dbr.md5            import WriteMD5
-from fileio.fileio      import ReadFile
-from fileio.fileio      import WriteFile
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.errorcodes import dbrerrno
 from globals.execute    import ExecuteCommand
 from globals.execute    import GetExecutable
 from globals.execute    import GetSystemInstaller
+from globals.fileio     import ReadFile
+from globals.fileio     import WriteFile
 from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid

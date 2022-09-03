@@ -13,8 +13,8 @@ from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
 from dbr.log         import Logger
-from fileio.fileio   import ReadFile
-from fileio.fileio   import WriteFile
+from globals.fileio  import ReadFile
+from globals.fileio  import WriteFile
 from globals.paths   import PATH_home
 from globals.strings import GS
 from globals.strings import TextIsEmpty
