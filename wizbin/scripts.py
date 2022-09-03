@@ -153,8 +153,8 @@ class Page(WizardPage):
     lyt_autolink = BoxSizer(wx.VERTICAL)
     lyt_autolink.Add(lyt_ti_autolink, 0, wx.EXPAND|lyt.PAD_LRT, 5)
     lyt_autolink.Add(self.Executables, 3, wx.EXPAND|lyt.PAD_LRT, 5)
-    lyt_autolink.Add(lyt_btn_autolink, 0, lyt.ALGN_CH)
-    lyt_autolink.Add(btn_help, 1, lyt.ALGN_C)
+    lyt_autolink.Add(lyt_btn_autolink, 0, lyt.ALGN_CH|wx.TOP, 5)
+    lyt_autolink.Add(btn_help, 1, lyt.ALGN_C|wx.TOP|wx.BOTTOM, 5)
 
     pnl_autolink.SetSizer(lyt_autolink)
     pnl_autolink.SetAutoLayout(True)
@@ -164,8 +164,8 @@ class Page(WizardPage):
     lyt_right = BoxSizer(wx.VERTICAL)
     # Line up panels to look even
     lyt_right.AddSpacer(44)
-    lyt_right.Add(wx.StaticText(self, label=GT("Auto-Link Executables")),
-        0, lyt.ALGN_L)
+    lyt_right.Add(wx.StaticText(self,
+        label=GT("Auto-Link Executables")), 0, lyt.ALGN_L)
     lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
 
     lyt_main = BoxSizer(wx.HORIZONTAL)

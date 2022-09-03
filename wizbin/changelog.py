@@ -143,11 +143,13 @@ class Page(WizardPage):
 
     lyt_details.Add(btn_import, (0, 0))
     lyt_details.Add(txt_import, (0, 1), flag=LEFT_CENTER)
-    lyt_details.Add(wx.StaticText(self, label=GT("Changes")), (1, 0), flag=LEFT_BOTTOM)
-    lyt_details.Add(wx.StaticText(self, label=GT("Target")), (1, 2), flag=LEFT_BOTTOM)
+    lyt_details.Add(wx.StaticText(self, label=GT("Changes")), (1, 0),
+        flag=LEFT_BOTTOM|wx.TOP, border=5)
+    lyt_details.Add(wx.StaticText(self, label=GT("Target")), (1, 2),
+        flag=LEFT_BOTTOM)
     lyt_details.Add(self.ti_changes, (2, 0), (1, 2), wx.EXPAND|wx.RIGHT, 5)
     lyt_details.Add(self.pnl_target, (2, 2))
-    lyt_details.Add(self.btn_add, (3, 0), (2, 1))
+    lyt_details.Add(self.btn_add, (3, 0), (2, 1), wx.TOP, 5)
     lyt_details.Add(txt_add, (3, 1), flag=LEFT_BOTTOM|wx.TOP, border=5)
     lyt_details.Add(self.chk_indentation, (4, 1), flag=LEFT_BOTTOM)
 
