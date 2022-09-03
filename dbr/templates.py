@@ -48,24 +48,24 @@ local_licenses_path = ConcatPaths((local_templates_path, "licenses"))
 #
 #  Common system license files are located in /usr/share/common-licenses.
 def GetSysLicenses():
-    return GetFiles(sys_licenses_path)
+	return GetFiles(sys_licenses_path)
 
 
 ## Retrieves a list of licenses located under the ".local" directory of the user's home path
 def GetLocalLicenses():
-    return GetFiles(local_licenses_path)
+	return GetFiles(local_licenses_path)
 
 
 ## Join the app & local licenses lists
 def GetCustomLicenses():
-    # Local licenses take priority
-    licenses = GetFiles(local_licenses_path)
+	# Local licenses take priority
+	licenses = GetFiles(local_licenses_path)
 
-    for LIC in GetFiles(app_licenses_path):
-        if LIC not in licenses:
-            licenses.append(LIC)
+	for LIC in GetFiles(app_licenses_path):
+		if LIC not in licenses:
+			licenses.append(LIC)
 
-    return sorted(licenses, key=GS.lower)
+	return sorted(licenses, key=GS.lower)
 
 
 ## Retrieves the absolute path of a license template
@@ -81,23 +81,23 @@ def GetCustomLicenses():
 #  \return
 #        Absolute path of template file
 def GetLicenseTemplateFile(l_name):
-    template_path = None
+	template_path = None
 
-    # Check local templates first
-    if l_name in GetFiles(local_licenses_path):
-        template_path = ConcatPaths((local_licenses_path, l_name))
+	# Check local templates first
+	if l_name in GetFiles(local_licenses_path):
+		template_path = ConcatPaths((local_licenses_path, l_name))
 
-    elif l_name in GetFiles(app_licenses_path):
-        template_path = ConcatPaths((app_licenses_path, l_name))
+	elif l_name in GetFiles(app_licenses_path):
+		template_path = ConcatPaths((app_licenses_path, l_name))
 
-    elif l_name in GetFiles(sys_licenses_path):
-        template_path = ConcatPaths((sys_licenses_path, l_name))
+	elif l_name in GetFiles(sys_licenses_path):
+		template_path = ConcatPaths((sys_licenses_path, l_name))
 
-    if not template_path or not os.path.isfile(template_path):
-        Logger.Warn(__name__, GT("License template not found: {}".format(template_path)))
+	if not template_path or not os.path.isfile(template_path):
+		Logger.Warn(__name__, GT("License template not found: {}".format(template_path)))
 
-        return
+		return
 
-    Logger.Debug(__name__, GT("Loading license template: {}".format(template_path)))
+	Logger.Debug(__name__, GT("Loading license template: {}".format(template_path)))
 
-    return template_path
+	return template_path

@@ -11,7 +11,7 @@ import inspect
 
 ## Retrieves line number of script
 def lineno():
-    return inspect.currentframe().f_back.f_lineno
+	return inspect.currentframe().f_back.f_lineno
 
 
 ## Prints a message to the terminal
@@ -27,18 +27,18 @@ def lineno():
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def HelperMessage(message, mode, script=None, line=None, newline=True):
-    if script:
-        if line:
-            script = "{}:{}".format(script, line)
+	if script:
+		if line:
+			script = "{}:{}".format(script, line)
 
-        message = "[{}] {}".format(script, message)
+		message = "[{}] {}".format(script, message)
 
-    message = "{}: {}".format(mode.upper(), message)
+	message = "{}: {}".format(mode.upper(), message)
 
-    if newline:
-        message = "\n{}".format(message)
+	if newline:
+		message = "\n{}".format(message)
 
-    print(message)
+	print(message)
 
 
 ## Prints a DEBUG message to the terminal
@@ -52,7 +52,7 @@ def HelperMessage(message, mode, script=None, line=None, newline=True):
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def DebugMessage(message, script=None, line=None, newline=True):
-    HelperMessage(message, "DEBUG", script, line, newline)
+	HelperMessage(message, "DEBUG", script, line, newline)
 
 
 ## Prints a FIXME message to the terminal
@@ -66,7 +66,7 @@ def DebugMessage(message, script=None, line=None, newline=True):
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def FixmeMessage(message, script=None, line=None, newline=True):
-    HelperMessage(message, "FIXME", script, line, newline)
+	HelperMessage(message, "FIXME", script, line, newline)
 
 
 ## Prints a TODO message to the terminal
@@ -80,4 +80,4 @@ def FixmeMessage(message, script=None, line=None, newline=True):
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def TodoMessage(message, script=None, line=None, newline=True):
-    HelperMessage(message, "TODO", script, line, newline)
+	HelperMessage(message, "TODO", script, line, newline)

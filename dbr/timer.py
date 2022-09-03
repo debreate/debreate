@@ -11,12 +11,12 @@ from dbr.event import TimerStopEvent
 
 ## A custom timer that posts a TimerStopEvent when Stop() is called
 class DebreateTimer(wx.Timer):
-    def __init__(self, owner, ID=wx.ID_ANY):
-        wx.Timer.__init__(self, owner, ID)
+	def __init__(self, owner, ID=wx.ID_ANY):
+		wx.Timer.__init__(self, owner, ID)
 
-    def Stop(self, *args, **kwargs):
-        return_value = wx.Timer.Stop(self, *args, **kwargs)
+	def Stop(self, *args, **kwargs):
+		return_value = wx.Timer.Stop(self, *args, **kwargs)
 
-        wx.PostEvent(self.GetOwner(), TimerStopEvent(0))
+		wx.PostEvent(self.GetOwner(), TimerStopEvent(0))
 
-        return return_value
+		return return_value

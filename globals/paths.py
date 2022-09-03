@@ -19,32 +19,32 @@ from globals.strings import IsString
 #  \param tail
 #    Strings to be concatenated to root argument (pathList)
 def ConcatPaths(pathList, *tail):
-    # Convert string arg to list
-    if IsString(pathList):
-        pathList = [pathList,]
+	# Convert string arg to list
+	if IsString(pathList):
+		pathList = [pathList,]
 
-    # Make sure we are working with a list instance
-    pathList = list(pathList)
+	# Make sure we are working with a list instance
+	pathList = list(pathList)
 
-    # Append tail arguments
-    if tail:
-        pathList += tail
+	# Append tail arguments
+	if tail:
+		pathList += tail
 
-    # Clean up tail arguments
-    for INDEX in range(len(pathList)):
-        pathList[INDEX] = pathList[INDEX].strip("/")
+	# Clean up tail arguments
+	for INDEX in range(len(pathList)):
+		pathList[INDEX] = pathList[INDEX].strip("/")
 
-    path = "/".join(pathList)
+	path = "/".join(pathList)
 
-    while "//" in path:
-        path = path.replace("//", "/")
+	while "//" in path:
+		path = path.replace("//", "/")
 
-    # FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
-    absolute = True
-    if absolute and not path.startswith("/"):
-        path = "/" + path
+	# FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
+	absolute = True
+	if absolute and not path.startswith("/"):
+		path = "/" + path
 
-    return path
+	return path
 
 
 # *** System paths *** #

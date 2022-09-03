@@ -26,39 +26,39 @@ from ui.panel           import BorderedPanel
 
 # List of sections & definitions
 sections = {
-    "1": GT("General commands"),
-    "2": GT("System calls"),
-    "3": GT("Library functions"),
-    "4": GT("Special files and drivers"),
-    "5": GT("File formats and conventions"),
-    "6": GT("Games and screensavers"),
-    "7": GT("Miscellanea"),
-    "8": GT("System administration commands and daemons"),
-    }
+	"1": GT("General commands"),
+	"2": GT("System calls"),
+	"3": GT("Library functions"),
+	"4": GT("Special files and drivers"),
+	"5": GT("File formats and conventions"),
+	"6": GT("Games and screensavers"),
+	"7": GT("Miscellanea"),
+	"8": GT("System administration commands and daemons"),
+	}
 
 DEFAULT_MANSECT_STYLE = manid.MUTABLE|manid.REMOVABLE
 
 
 ## Special Panel class to distinguish from other instances
 class ManPanel(BorderedPanel):
-    def __init__(self, parent):
-        BorderedPanel.__init__(self, parent)
+	def __init__(self, parent):
+		BorderedPanel.__init__(self, parent)
 
 
 ## Base class for manpage parts
 class ManSectBase:
-    def __init__(self, parent):
-        self.Parent = parent
+	def __init__(self, parent):
+		self.Parent = parent
 
-        self.lyt_main = BoxSizer(wx.HORIZONTAL)
-
-
-    def GetParent(self):
-        return self.Parent
+		self.lyt_main = BoxSizer(wx.HORIZONTAL)
 
 
-    def GetSizer(self):
-        return self.lyt_main
+	def GetParent(self):
+		return self.Parent
+
+
+	def GetSizer(self):
+		return self.lyt_main
 
 
 ## Secondary base class for manpage parts
@@ -66,156 +66,156 @@ class ManSectBase:
 #  \param label
 #    Only used if style is STATIC
 class ManSectBase2(ManSectBase):
-    def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
-        ManSectBase.__init__(self, parent)
+	def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
+		ManSectBase.__init__(self, parent)
 
-        self.Style = style
+		self.Style = style
 
-        if self.HasStyle((manid.CHOICE & manid.MUTABLE)):
-            # FIXME: Raise exception
-            Logger.Error(__name__, "Cannot use CHOICE and MUTABLE styles together")
-            return
+		if self.HasStyle((manid.CHOICE & manid.MUTABLE)):
+			# FIXME: Raise exception
+			Logger.Error(__name__, "Cannot use CHOICE and MUTABLE styles together")
+			return
 
-        # Allow adding multiple instances of object
-        # FIXME: Unused???
-        self.Multiple = True
+		# Allow adding multiple instances of object
+		# FIXME: Unused???
+		self.Multiple = True
 
-        self.Panel = ManPanel(parent)
+		self.Panel = ManPanel(parent)
 
-        if self.HasStyle(manid.CHOICE):
-            self.Label = Choice(self.Panel)
+		if self.HasStyle(manid.CHOICE):
+			self.Label = Choice(self.Panel)
 
-        elif self.HasStyle(manid.MUTABLE):
-            self.Label = ComboBox(self.Panel)
+		elif self.HasStyle(manid.MUTABLE):
+			self.Label = ComboBox(self.Panel)
 
-        else:
-            self.Label = wx.StaticText(self.Panel)
+		else:
+			self.Label = wx.StaticText(self.Panel)
 
-            if label:
-                self.Label.SetLabel(label)
+			if label:
+				self.Label.SetLabel(label)
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        self.lyt_main.Add(self.Label, -1, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.LEFT, 5)
+		self.lyt_main.Add(self.Label, -1, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_LEFT|wx.LEFT, 5)
 
-        if style & manid.REMOVABLE:
-            self.lyt_main.AddStretchSpacer(1)
-            self.lyt_main.Add(CreateButton(self.Panel, btnid.REMOVE), 0, wx.TOP|wx.BOTTOM, 5)
+		if style & manid.REMOVABLE:
+			self.lyt_main.AddStretchSpacer(1)
+			self.lyt_main.Add(CreateButton(self.Panel, btnid.REMOVE), 0, wx.TOP|wx.BOTTOM, 5)
 
-        self.Panel.SetSizer(self.lyt_main)
-
-
-    ## TODO: Doxygen
-    def _add_field(self, label, window, count=1, expand=False):
-        if isinstance(label, str):
-            label = wx.StaticText(self.Parent, label=label)
-
-        lyt_field = BoxSizer(wx.HORIZONTAL)
-
-        for X in range(count):
-            if expand:
-                lyt_field.Add(window, 1, wx.EXPAND)
-                continue
-
-            lyt_field.Add(window, 1)
-
-        self.lyt_main.Add(label, 0, wx.ALIGN_BOTTOM|wx.LEFT, 5)
-
-        if expand:
-            self.lyt_main.Add(lyt_field, 1, wx.EXPAND|wx.LEFT|wx.BOTTOM, 5)
-
-        else:
-            self.lyt_main.Add(lyt_field, 1, wx.LEFT|wx.BOTTOM, 5)
-
-        self.Parent.Layout()
+		self.Panel.SetSizer(self.lyt_main)
 
 
-    ## Retrieves the section label or StaticText instance
-    #
-    #  \param string
-    #    If \b \e True, retrieves string value, otherwise retrieves StaticText instance
-    #  \return
-    #    \b \e String or \b \e wx.StaticText instance
-    def GetLabel(self, string=True):
-        if string:
-            label = self.Label.GetLabel()
+	## TODO: Doxygen
+	def _add_field(self, label, window, count=1, expand=False):
+		if isinstance(label, str):
+			label = wx.StaticText(self.Parent, label=label)
 
-            # DEBUG: Line
-            print("\nDEBUG: ui.mansect.SingleLineSect.GetLabel: Label type: {}".format(type(label)))
+		lyt_field = BoxSizer(wx.HORIZONTAL)
 
-            return label
+		for X in range(count):
+			if expand:
+				lyt_field.Add(window, 1, wx.EXPAND)
+				continue
 
-        return self.Label
+			lyt_field.Add(window, 1)
 
+		self.lyt_main.Add(label, 0, wx.ALIGN_BOTTOM|wx.LEFT, 5)
 
-    ## TODO: Doxygen
-    def GetLabelObject(self):
-        return self.GetLabel(False)
+		if expand:
+			self.lyt_main.Add(lyt_field, 1, wx.EXPAND|wx.LEFT|wx.BOTTOM, 5)
 
+		else:
+			self.lyt_main.Add(lyt_field, 1, wx.LEFT|wx.BOTTOM, 5)
 
-    ## Retrieve the main object
-    def GetObject(self):
-        return self.Panel
+		self.Parent.Layout()
 
 
-    ## Retrieve RemoveButton instance
-    def GetButton(self):
-        for FIELD in self.Panel.GetChildren():
-            if isinstance(FIELD, CustomButton) and FIELD.GetId() == btnid.REMOVE:
-                return FIELD
+	## Retrieves the section label or StaticText instance
+	#
+	#  \param string
+	#    If \b \e True, retrieves string value, otherwise retrieves StaticText instance
+	#  \return
+	#    \b \e String or \b \e wx.StaticText instance
+	def GetLabel(self, string=True):
+		if string:
+			label = self.Label.GetLabel()
+
+			# DEBUG: Line
+			print("\nDEBUG: ui.mansect.SingleLineSect.GetLabel: Label type: {}".format(type(label)))
+
+			return label
+
+		return self.Label
 
 
-    ## Retrieve styling used by instance
-    def GetStyle(self):
-        return self.Style
+	## TODO: Doxygen
+	def GetLabelObject(self):
+		return self.GetLabel(False)
 
 
-    ## Check if instance is using style
-    def HasStyle(self, style):
-        return self.Style & style
+	## Retrieve the main object
+	def GetObject(self):
+		return self.Panel
 
 
-    ## Checks multiple instances can be uses
-    def MultipleAllowed(self):
-        return self.Multiple
+	## Retrieve RemoveButton instance
+	def GetButton(self):
+		for FIELD in self.Panel.GetChildren():
+			if isinstance(FIELD, CustomButton) and FIELD.GetId() == btnid.REMOVE:
+				return FIELD
 
 
-    ## Sets the section label
-    #
-    #  \param label
-    #    \b \e String value or wx.StaticText instance for new label
-    def SetLabel(self, label):
-        if isinstance(label, wx.StaticText):
-            label = label.GetLabel()
+	## Retrieve styling used by instance
+	def GetStyle(self):
+		return self.Style
 
-        self.Label.SetLabel(label)
+
+	## Check if instance is using style
+	def HasStyle(self, style):
+		return self.Style & style
+
+
+	## Checks multiple instances can be uses
+	def MultipleAllowed(self):
+		return self.Multiple
+
+
+	## Sets the section label
+	#
+	#  \param label
+	#    \b \e String value or wx.StaticText instance for new label
+	def SetLabel(self, label):
+		if isinstance(label, wx.StaticText):
+			label = label.GetLabel()
+
+		self.Label.SetLabel(label)
 
 
 ## General section
 class ManSect(ManSectBase2):
-    def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
-        ManSectBase2.__init__(self, parent, label, style)
+	def __init__(self, parent, label=None, style=DEFAULT_MANSECT_STYLE):
+		ManSectBase2.__init__(self, parent, label, style)
 
-        FLAGS = wx.EXPAND|wx.LEFT|wx.ALIGN_CENTER_VERTICAL
-        FLAGS_MAIN = wx.ALIGN_CENTER_VERTICAL
+		FLAGS = wx.EXPAND|wx.LEFT|wx.ALIGN_CENTER_VERTICAL
+		FLAGS_MAIN = wx.ALIGN_CENTER_VERTICAL
 
-        if self.HasStyle(manid.MULTILINE):
-            self.Input = TextAreaPanel(self.Panel)
-            #FLAGS = wx.EXPAND|FLAGS
-            FLAGS_MAIN = wx.EXPAND|FLAGS_MAIN
+		if self.HasStyle(manid.MULTILINE):
+			self.Input = TextAreaPanel(self.Panel)
+			#FLAGS = wx.EXPAND|FLAGS
+			FLAGS_MAIN = wx.EXPAND|FLAGS_MAIN
 
-        else:
-            self.Input = TextArea(self.Panel)
+		else:
+			self.Input = TextArea(self.Panel)
 
-        lyt_input = BoxSizer(wx.VERTICAL)
-        lyt_input.Add(self.Input, 1, FLAGS, 5)
-        #lyt_input = wx.GridBagSizer()
-        #lyt_input.AddGrowableCol(0)
+		lyt_input = BoxSizer(wx.VERTICAL)
+		lyt_input.Add(self.Input, 1, FLAGS, 5)
+		#lyt_input = wx.GridBagSizer()
+		#lyt_input.AddGrowableCol(0)
 
-        #lyt_input.Add(self.Input, (0, 0), flag=FLAGS, border=5)
+		#lyt_input.Add(self.Input, (0, 0), flag=FLAGS, border=5)
 
-        lyt_main = self.GetSizer()
-        lyt_main.Insert(1, lyt_input, 3, FLAGS_MAIN)
+		lyt_main = self.GetSizer()
+		lyt_main.Insert(1, lyt_input, 3, FLAGS_MAIN)
 
 
 ## TODO: Doxygen
@@ -223,203 +223,203 @@ class ManSect(ManSectBase2):
 #  This section is required
 #  FIXME: Should derive from wx.Panel/BorderedPanel???
 class ManBanner(ManSectBase):
-    def __init__(self, parent):
-        ManSectBase.__init__(self, parent)
+	def __init__(self, parent):
+		ManSectBase.__init__(self, parent)
 
-        self.Panel = BorderedPanel(parent)
+		self.Panel = BorderedPanel(parent)
 
-        txt_section = wx.StaticText(self.Panel, label=GT("Section"))
+		txt_section = wx.StaticText(self.Panel, label=GT("Section"))
 
-        self.sel_section = Choice(self.Panel, choices=tuple(sections))
-        self.sel_section.Default = "1"
-        self.sel_section.SetStringSelection(self.sel_section.Default)
+		self.sel_section = Choice(self.Panel, choices=tuple(sections))
+		self.sel_section.Default = "1"
+		self.sel_section.SetStringSelection(self.sel_section.Default)
 
-        # Section description that changes with EVT_CHOICE
-        self.LabelSection = wx.StaticText(self.Panel)
-        self.SetSectionLabel()
+		# Section description that changes with EVT_CHOICE
+		self.LabelSection = wx.StaticText(self.Panel)
+		self.SetSectionLabel()
 
-        txt_date = wx.StaticText(self.Panel, label=GT("Date"))
-        spin_year = wx.SpinCtrl(self.Panel, min=1900, max=2100, initial=GetYear(string_value=False))
-        spin_month = wx.SpinCtrl(self.Panel, min=1, max=12, initial=GetMonthInt())
-        spin_day = wx.SpinCtrl(self.Panel, min=1, max=31, initial=GetDayInt())
+		txt_date = wx.StaticText(self.Panel, label=GT("Date"))
+		spin_year = wx.SpinCtrl(self.Panel, min=1900, max=2100, initial=GetYear(string_value=False))
+		spin_month = wx.SpinCtrl(self.Panel, min=1, max=12, initial=GetMonthInt())
+		spin_day = wx.SpinCtrl(self.Panel, min=1, max=31, initial=GetDayInt())
 
-        # FIXME: What is this for?
-        txt_unknown1 = wx.StaticText(self.Panel, label=GT("Unknown"))
-        ti_unknown1 = wx.TextCtrl(self.Panel)
+		# FIXME: What is this for?
+		txt_unknown1 = wx.StaticText(self.Panel, label=GT("Unknown"))
+		ti_unknown1 = wx.TextCtrl(self.Panel)
 
-        # FIXME: What is this for?
-        txt_unknown2 = wx.StaticText(self.Panel, label=GT("Unknown"))
-        ti_unknown2 = wx.TextCtrl(self.Panel)
+		# FIXME: What is this for?
+		txt_unknown2 = wx.StaticText(self.Panel, label=GT("Unknown"))
+		ti_unknown2 = wx.TextCtrl(self.Panel)
 
-        # *** Event Handling *** #
+		# *** Event Handling *** #
 
-        self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
+		self.sel_section.Bind(wx.EVT_CHOICE, self.OnSetSection)
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        lyt_section = BoxSizer(wx.HORIZONTAL)
-        lyt_section.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
-        lyt_section.Add(self.LabelSection, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+		lyt_section = BoxSizer(wx.HORIZONTAL)
+		lyt_section.Add(txt_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+		lyt_section.Add(self.sel_section, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
+		lyt_section.Add(self.LabelSection, 0, wx.LEFT|wx.RIGHT|wx.ALIGN_CENTER, 5)
 
-        lyt_date = wx.GridBagSizer()
-        lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
-        lyt_date.Add(wx.StaticText(self.Panel, label=GT("Year")), (0, 1))
-        lyt_date.Add(wx.StaticText(self.Panel, label=GT("Month")), (0, 2))
-        lyt_date.Add(wx.StaticText(self.Panel, label=GT("Day")), (0, 3))
-        lyt_date.Add(spin_year, (1, 1), flag=wx.LEFT, border=5)
-        lyt_date.Add(spin_month, (1, 2))
-        lyt_date.Add(spin_day, (1, 3))
+		lyt_date = wx.GridBagSizer()
+		lyt_date.Add(txt_date, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+		lyt_date.Add(wx.StaticText(self.Panel, label=GT("Year")), (0, 1))
+		lyt_date.Add(wx.StaticText(self.Panel, label=GT("Month")), (0, 2))
+		lyt_date.Add(wx.StaticText(self.Panel, label=GT("Day")), (0, 3))
+		lyt_date.Add(spin_year, (1, 1), flag=wx.LEFT, border=5)
+		lyt_date.Add(spin_month, (1, 2))
+		lyt_date.Add(spin_day, (1, 3))
 
-        lyt_uknwn1 = BoxSizer(wx.HORIZONTAL)
-        lyt_uknwn1.Add(txt_unknown1, 0, wx.ALIGN_CENTER_VERTICAL)
-        lyt_uknwn1.Add(ti_unknown1, 0, wx.LEFT, 5)
+		lyt_uknwn1 = BoxSizer(wx.HORIZONTAL)
+		lyt_uknwn1.Add(txt_unknown1, 0, wx.ALIGN_CENTER_VERTICAL)
+		lyt_uknwn1.Add(ti_unknown1, 0, wx.LEFT, 5)
 
-        lyt_uknwn2 = BoxSizer(wx.HORIZONTAL)
-        lyt_uknwn2.Add(txt_unknown2, 0, wx.ALIGN_CENTER_VERTICAL)
-        lyt_uknwn2.Add(ti_unknown2, 0, wx.LEFT, 5)
+		lyt_uknwn2 = BoxSizer(wx.HORIZONTAL)
+		lyt_uknwn2.Add(txt_unknown2, 0, wx.ALIGN_CENTER_VERTICAL)
+		lyt_uknwn2.Add(ti_unknown2, 0, wx.LEFT, 5)
 
-        # Change orientation of main sizer to vertical
-        self.lyt_main = BoxSizer(wx.VERTICAL)
-        self.lyt_main.Add(lyt_section, 0, wx.TOP, 5)
-        self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
-        self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
-        self.lyt_main.Add(lyt_uknwn2, 0, wx.TOP, 5)
+		# Change orientation of main sizer to vertical
+		self.lyt_main = BoxSizer(wx.VERTICAL)
+		self.lyt_main.Add(lyt_section, 0, wx.TOP, 5)
+		self.lyt_main.Add(lyt_date, 0, wx.TOP, 5)
+		self.lyt_main.Add(lyt_uknwn1, 0, wx.TOP, 5)
+		self.lyt_main.Add(lyt_uknwn2, 0, wx.TOP, 5)
 
-        self.Panel.SetSizer(self.lyt_main)
-
-
-    ## Retrieve main object instance
-    def GetPanel(self):
-        return self.Panel
+		self.Panel.SetSizer(self.lyt_main)
 
 
-    ## TODO: Doxygen
-    def OnSetSection(self, event=None):
-        self.SetSectionLabel(self.sel_section.GetStringSelection())
+	## Retrieve main object instance
+	def GetPanel(self):
+		return self.Panel
 
 
-    ## Updates the label for the current section
-    def SetSectionLabel(self, section=None):
-        if section == None:
-            section = self.sel_section.GetStringSelection()
+	## TODO: Doxygen
+	def OnSetSection(self, event=None):
+		self.SetSectionLabel(self.sel_section.GetStringSelection())
 
-        if section in sections:
-            Logger.Debug(__name__, "Setting section to {}".format(section))
 
-            self.LabelSection.SetLabel(sections[section])
-            return True
+	## Updates the label for the current section
+	def SetSectionLabel(self, section=None):
+		if section == None:
+			section = self.sel_section.GetStringSelection()
 
-        return False
+		if section in sections:
+			Logger.Debug(__name__, "Setting section to {}".format(section))
+
+			self.LabelSection.SetLabel(sections[section])
+			return True
+
+		return False
 
 
 ## TODO: Doxygen
 class ManSectName(ManSectBase):
-    def __init__(self, parent):
-        ManSectBase.__init__(self, parent)
+	def __init__(self, parent):
+		ManSectBase.__init__(self, parent)
 
-        self._add_field(GT("Program"), wx.TextCtrl(parent))
-        self._add_field(GT("Description"), wx.TextCtrl(parent))
+		self._add_field(GT("Program"), wx.TextCtrl(parent))
+		self._add_field(GT("Description"), wx.TextCtrl(parent))
 
 
 ## TODO: Doxygen
 class ManSectSynopsis(ManSectBase):
-    def __init__(self, parent):
-        ManSectBase.__init__(self, parent)
+	def __init__(self, parent):
+		ManSectBase.__init__(self, parent)
 
-        self._add_field(GT("Synopsis"), TextAreaPanel(parent), expand=True)
+		self._add_field(GT("Synopsis"), TextAreaPanel(parent), expand=True)
 
 
 ## Generic manpage section
 class ManSection(ManSectBase):
-    def __init__(self, parent):
-        ManSectBase.__init__(self, parent)
+	def __init__(self, parent):
+		ManSectBase.__init__(self, parent)
 
-        self.sections = (
-            GT("Name"),
-            GT("Synopsis"),
-            GT("Configuration"),
-            GT("Description"),
-            GT("Options"),
-            GT("Exit status"),
-            GT("Return value"),
-            GT("Errors"),
-            GT("Environment"),
-            GT("Files"),
-            GT("Versions"),
-            GT("Conforming to"),
-            GT("Notes"),
-            GT("Bugs"),
-            GT("Example"),
-            )
+		self.sections = (
+			GT("Name"),
+			GT("Synopsis"),
+			GT("Configuration"),
+			GT("Description"),
+			GT("Options"),
+			GT("Exit status"),
+			GT("Return value"),
+			GT("Errors"),
+			GT("Environment"),
+			GT("Files"),
+			GT("Versions"),
+			GT("Conforming to"),
+			GT("Notes"),
+			GT("Bugs"),
+			GT("Example"),
+			)
 
-        self.sect_name = None
-        # FIXME: Replace with checkbox
-        self.btn_remove = None
+		self.sect_name = None
+		# FIXME: Replace with checkbox
+		self.btn_remove = None
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        self.lyt_main = wx.GridBagSizer()
-
-
-    ## Retrieve the remove button
-    def GetButton(self):
-        return self.btn_remove
+		self.lyt_main = wx.GridBagSizer()
 
 
-    ## Retrieve the main sizer object
-    def GetObject(self, section_name=None, multiline=False, static=False, expand=False,
-                removable=False):
-        if static:
-            try:
-                self.sect_name = wx.StaticText(self.Parent, label=section_name)
-
-            except TypeError:
-                err_l1 = GT("Could not remove section")
-                err_l2 = GT("Please report this problem to the developers")
-                ShowErrorDialog("{}\n\n{}".format(err_l1, err_l2), traceback.format_exc())
-
-                return None
-
-        else:
-            self.sect_name = Choice(self.Parent, choices=self.sections)
-
-        if multiline:
-            value = TextAreaPanel(self.Parent)
-            FLAG_VALUE = wx.EXPAND|wx.LEFT
-            FLAG_LABEL = wx.ALIGN_TOP
-
-        else:
-            value = TextArea(self.Parent)
-            FLAG_VALUE = wx.ALIGN_CENTER_VERTICAL|wx.LEFT
-            FLAG_LABEL = wx.ALIGN_CENTER_VERTICAL
-
-        self.lyt_main.Add(self.sect_name, (0, 0), flag=FLAG_LABEL)
-        self.lyt_main.Add(value, (0, 1), flag=FLAG_VALUE, border=5)
-
-        if expand:
-            self.lyt_main.AddGrowableCol(1)
-
-        if removable:
-            self.btn_remove = CreateButton(self.Parent, btnid.REMOVE)
-
-            self.lyt_main.Add(self.btn_remove, (0, 2), flag=wx.RIGHT, border=5)
-
-        return ManSectBase.GetObject(self)
+	## Retrieve the remove button
+	def GetButton(self):
+		return self.btn_remove
 
 
-    ## TODO: Doxygen
-    def SetSectionName(self, section_name):
-        if isinstance(self.sect_name, (ComboBox, wx.TextCtrl,)):
-            self.sect_name.SetValue(section_name)
+	## Retrieve the main sizer object
+	def GetObject(self, section_name=None, multiline=False, static=False, expand=False,
+				removable=False):
+		if static:
+			try:
+				self.sect_name = wx.StaticText(self.Parent, label=section_name)
 
-            return True
+			except TypeError:
+				err_l1 = GT("Could not remove section")
+				err_l2 = GT("Please report this problem to the developers")
+				ShowErrorDialog("{}\n\n{}".format(err_l1, err_l2), traceback.format_exc())
 
-        elif isinstance(self.sect_name, wx.StaticText):
-            self.sect_name.SetLabel(section_name)
+				return None
 
-            return True
+		else:
+			self.sect_name = Choice(self.Parent, choices=self.sections)
 
-        Logger.Warn(__name__, "Could not set section name: {}".format(section_name))
+		if multiline:
+			value = TextAreaPanel(self.Parent)
+			FLAG_VALUE = wx.EXPAND|wx.LEFT
+			FLAG_LABEL = wx.ALIGN_TOP
 
-        return False
+		else:
+			value = TextArea(self.Parent)
+			FLAG_VALUE = wx.ALIGN_CENTER_VERTICAL|wx.LEFT
+			FLAG_LABEL = wx.ALIGN_CENTER_VERTICAL
+
+		self.lyt_main.Add(self.sect_name, (0, 0), flag=FLAG_LABEL)
+		self.lyt_main.Add(value, (0, 1), flag=FLAG_VALUE, border=5)
+
+		if expand:
+			self.lyt_main.AddGrowableCol(1)
+
+		if removable:
+			self.btn_remove = CreateButton(self.Parent, btnid.REMOVE)
+
+			self.lyt_main.Add(self.btn_remove, (0, 2), flag=wx.RIGHT, border=5)
+
+		return ManSectBase.GetObject(self)
+
+
+	## TODO: Doxygen
+	def SetSectionName(self, section_name):
+		if isinstance(self.sect_name, (ComboBox, wx.TextCtrl,)):
+			self.sect_name.SetValue(section_name)
+
+			return True
+
+		elif isinstance(self.sect_name, wx.StaticText):
+			self.sect_name.SetLabel(section_name)
+
+			return True
+
+		Logger.Warn(__name__, "Could not set section name: {}".format(section_name))
+
+		return False

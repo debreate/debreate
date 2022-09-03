@@ -13,17 +13,17 @@ from ui.layout      import BoxSizer
 
 ## Control page for source builds
 class Page(WizardPage):
-    ## Constructor
-    #
-    #  \param parent
-    #    Parent <b><i>wx.Window</i></b> instance
-    def __init__(self, parent):
-        WizardPage.__init__(self, parent, pgid.CONTROL)
+	## Constructor
+	#
+	#  \param parent
+	#    Parent <b><i>wx.Window</i></b> instance
+	def __init__(self, parent):
+		WizardPage.__init__(self, parent, pgid.CONTROL)
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        lyt_main = BoxSizer(wx.VERTICAL)
+		lyt_main = BoxSizer(wx.VERTICAL)
 
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        self.Layout()
+		self.SetAutoLayout(True)
+		self.SetSizer(lyt_main)
+		self.Layout()

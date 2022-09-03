@@ -16,16 +16,16 @@ import os
 #  \param executable
 #    Sets or removes executable bit
 def SetFileExecutable(target, executable=True):
-    if os.path.isfile(target):
-        if executable:
-            mode = 0o0755
+	if os.path.isfile(target):
+		if executable:
+			mode = 0o0755
 
-        else:
-            mode = 0o0644
+		else:
+			mode = 0o0644
 
-        os.chmod(target, mode)
+		os.chmod(target, mode)
 
-        if os.access(target, mode):
-            return True
+		if os.access(target, mode):
+			return True
 
-    return False
+	return False

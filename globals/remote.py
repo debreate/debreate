@@ -10,12 +10,12 @@ from urllib.request import urlopen
 
 
 def GetRemotePageText(remote_url):
-    try:
-        URL_BUFFER = urlopen(remote_url)
-        page_text = URL_BUFFER.read()
-        URL_BUFFER.close()
+	try:
+		URL_BUFFER = urlopen(remote_url)
+		page_text = URL_BUFFER.read()
+		URL_BUFFER.close()
 
-        return page_text
+		return page_text
 
-    except HTTPError or URLError:
-        return None
+	except HTTPError or URLError:
+		return None

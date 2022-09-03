@@ -19,236 +19,236 @@ from wiz.helper     import GetField
 #  \return
 #    \b \e True if scrollbars were set
 def SetScrollbars(window):
-    if isinstance(window, wx.ScrolledWindow):
-        window.SetScrollbars(20, 20, 0, 0)
+	if isinstance(window, wx.ScrolledWindow):
+		window.SetScrollbars(20, 20, 0, 0)
 
-        return True
+		return True
 
-    return False
+	return False
 
 
 ## Abstract class
 class PanelBase:
-    ## Checks if the instance has children windows
-    def HasChildren(self):
-        if isinstance(self, wx.Window):
-            return len(self.GetChildren()) > 0
+	## Checks if the instance has children windows
+	def HasChildren(self):
+		if isinstance(self, wx.Window):
+			return len(self.GetChildren()) > 0
 
-        return False
+		return False
 
 
 ## A wx.Panel with a border
 #
 #  This is to work around differences in wx 3.0 with older versions
 class BorderedPanel(wx.Panel, PanelBase):
-    def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-                style=wx.TAB_TRAVERSAL, name=wx.PanelNameStr):
+	def __init__(self, parent, ID=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+				style=wx.TAB_TRAVERSAL, name=wx.PanelNameStr):
 
-        wx.Panel.__init__(self, parent, ID, pos, size, style|PANEL_BORDER, name)
-
-
-    ## Hide the panel's border
-    def HideBorder(self):
-        return self.ShowBorder(False)
+		wx.Panel.__init__(self, parent, ID, pos, size, style|PANEL_BORDER, name)
 
 
-    ## Show or hide the panel's border
-    #
-    #  \param show
-    #    If \b \e True, show border, otherwise hide
-    #  \return
-    #    \b \e True if border visible state changed
-    def ShowBorder(self, show=True):
-        style = self.GetWindowStyleFlag()
+	## Hide the panel's border
+	def HideBorder(self):
+		return self.ShowBorder(False)
 
-        if show:
-            if not style & PANEL_BORDER:
-                self.SetWindowStyleFlag(style|PANEL_BORDER)
 
-                return True
+	## Show or hide the panel's border
+	#
+	#  \param show
+	#    If \b \e True, show border, otherwise hide
+	#  \return
+	#    \b \e True if border visible state changed
+	def ShowBorder(self, show=True):
+		style = self.GetWindowStyleFlag()
 
-        elif style & PANEL_BORDER:
-            self.SetWindowStyleFlag(style&~PANEL_BORDER)
+		if show:
+			if not style & PANEL_BORDER:
+				self.SetWindowStyleFlag(style|PANEL_BORDER)
 
-            return True
+				return True
 
-        return False
+		elif style & PANEL_BORDER:
+			self.SetWindowStyleFlag(style&~PANEL_BORDER)
+
+			return True
+
+		return False
 
 
 ## A wx.ScrolledWindow that sets scrollbars by default
 class ScrolledPanel(wx.ScrolledWindow, PanelBase):
-    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-                style=wx.HSCROLL|wx.VSCROLL, name="scrolledPanel"):
+	def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+				style=wx.HSCROLL|wx.VSCROLL, name="scrolledPanel"):
 
-        wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
+		wx.ScrolledWindow.__init__(self, parent, win_id, pos, size, style, name)
 
-        SetScrollbars(self)
-
-
-    ## Override inherited method to also update the scrollbars
-    def Layout(self):
-        layout = wx.ScrolledWindow.Layout(self)
-
-        self.UpdateScrollbars()
-
-        return layout
+		SetScrollbars(self)
 
 
-    ## Refresh the panel's size so scrollbars will update
-    def UpdateScrollbars(self):
-        sizer = self.GetSizer()
-        if sizer:
-            self.SetVirtualSize(sizer.GetMinSize())
+	## Override inherited method to also update the scrollbars
+	def Layout(self):
+		layout = wx.ScrolledWindow.Layout(self)
+
+		self.UpdateScrollbars()
+
+		return layout
+
+
+	## Refresh the panel's size so scrollbars will update
+	def UpdateScrollbars(self):
+		sizer = self.GetSizer()
+		if sizer:
+			self.SetVirtualSize(sizer.GetMinSize())
 
 
 ## A ui.panel.ScrolledPanel that defines methods to add child sections
 class SectionedPanel(ScrolledPanel):
-    def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-                scrollDir=wx.VERTICAL, name="sectionedPanel"):
+	def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
+				scrollDir=wx.VERTICAL, name="sectionedPanel"):
 
-        style = wx.VSCROLL
-        if scrollDir == wx.HORIZONTAL:
-            style = wx.HSCROLL
+		style = wx.VSCROLL
+		if scrollDir == wx.HORIZONTAL:
+			style = wx.HSCROLL
 
-        ScrolledPanel.__init__(self, parent, win_id, pos, size, style, name)
+		ScrolledPanel.__init__(self, parent, win_id, pos, size, style, name)
 
-        # *** Event Handling *** #
+		# *** Event Handling *** #
 
-        self.Bind(wx.EVT_CHECKBOX, self.OnSelect)
+		self.Bind(wx.EVT_CHECKBOX, self.OnSelect)
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        lyt_main = BoxSizer(scrollDir)
+		lyt_main = BoxSizer(scrollDir)
 
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-
-
-    ## TODO: Doxygen
-    def AddSection(self, panel):
-        pnl_fields = panel.GetChildren()
-
-        if pnl_fields:
-            lyt_panel = None
-
-            for FIELD in pnl_fields:
-                lyt_panel = FIELD.GetContainingSizer()
-
-                if lyt_panel:
-                    break
-
-            if lyt_panel:
-                padding = 0
-                if self.HasSections():
-                    padding = 5
-
-                # Section orientation should be opposite of main
-                orient = wx.HORIZONTAL
-                if self.Sizer.GetOrientation() == wx.HORIZONTAL:
-                    orient = wx.VERTICAL
-
-                lyt_sect = BoxSizer(orient)
-                lyt_sect.Add(lyt_panel, 1, wx.EXPAND)
-                lyt_sect.Add(wx.CheckBox(panel, inputid.CHECK), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 10)
-
-                panel.SetAutoLayout(True)
-                panel.SetSizer(lyt_sect)
-                panel.Layout()
-
-                self.Sizer.Add(panel, 0, wx.EXPAND|wx.TOP, padding)
-
-                self.Layout()
-
-                return True
-
-        return False
+		self.SetAutoLayout(True)
+		self.SetSizer(lyt_main)
 
 
-    ## TODO: Doxygen
-    def GetSection(self, index):
-        return self.GetChildren()[index]
+	## TODO: Doxygen
+	def AddSection(self, panel):
+		pnl_fields = panel.GetChildren()
+
+		if pnl_fields:
+			lyt_panel = None
+
+			for FIELD in pnl_fields:
+				lyt_panel = FIELD.GetContainingSizer()
+
+				if lyt_panel:
+					break
+
+			if lyt_panel:
+				padding = 0
+				if self.HasSections():
+					padding = 5
+
+				# Section orientation should be opposite of main
+				orient = wx.HORIZONTAL
+				if self.Sizer.GetOrientation() == wx.HORIZONTAL:
+					orient = wx.VERTICAL
+
+				lyt_sect = BoxSizer(orient)
+				lyt_sect.Add(lyt_panel, 1, wx.EXPAND)
+				lyt_sect.Add(wx.CheckBox(panel, inputid.CHECK), 0, wx.ALIGN_CENTER_VERTICAL|wx.LEFT, 10)
+
+				panel.SetAutoLayout(True)
+				panel.SetSizer(lyt_sect)
+				panel.Layout()
+
+				self.Sizer.Add(panel, 0, wx.EXPAND|wx.TOP, padding)
+
+				self.Layout()
+
+				return True
+
+		return False
 
 
-    ## Retrieves number of sections
-    def GetSectionCount(self):
-        return len(self.Sizer.GetChildWindows())
+	## TODO: Doxygen
+	def GetSection(self, index):
+		return self.GetChildren()[index]
 
 
-    ## TODO: Doxygen
-    def GetSectionIndex(self, item):
-        sections = self.GetChildren()
-
-        if item in sections:
-            return sections.index(item)
+	## Retrieves number of sections
+	def GetSectionCount(self):
+		return len(self.Sizer.GetChildWindows())
 
 
-    ## Check if any sections have been added
-    def HasSections(self):
-        return self.GetSectionCount() > 0
+	## TODO: Doxygen
+	def GetSectionIndex(self, item):
+		sections = self.GetChildren()
+
+		if item in sections:
+			return sections.index(item)
 
 
-    ## Checks if any sections are selected
-    def HasSelected(self):
-        for SECT in self.GetChildren():
-            if self.IsSelected(SECT):
-                return True
-
-        return False
+	## Check if any sections have been added
+	def HasSections(self):
+		return self.GetSectionCount() > 0
 
 
-    ## Checks if section check box state is 'checked'
-    def IsSelected(self, section):
-        if isinstance(section, int):
-            section = self.GetSection(section)
+	## Checks if any sections are selected
+	def HasSelected(self):
+		for SECT in self.GetChildren():
+			if self.IsSelected(SECT):
+				return True
 
-        return GetField(section, inputid.CHECK).GetValue()
-
-
-    ## TODO: Doxygen
-    def OnSelect(self, event=None):
-        self.PostCheckBoxEvent()
+		return False
 
 
-    ## TODO: Doxygen
-    def PostCheckBoxEvent(self, target=None):
-        if not target:
-            target = self.Parent
+	## Checks if section check box state is 'checked'
+	def IsSelected(self, section):
+		if isinstance(section, int):
+			section = self.GetSection(section)
 
-        wx.PostEvent(target, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED, self.Id))
-
-
-    ## TODO: Doxygen
-    def RemoveSection(self, item):
-        if isinstance(item, int):
-            item = self.GetSection(item)
-
-        self.Sizer.Detach(item)
-        removed = item.Destroy()
-
-        # Remove padding of first item
-        first_section = self.Sizer.GetItemAtIndex(0)
-        if first_section:
-            self.Sizer.Detach(first_section)
-            self.Sizer.Insert(0, first_section, 0, wx.EXPAND)
-
-        self.Layout()
-
-        return removed
+		return GetField(section, inputid.CHECK).GetValue()
 
 
-    ## Removes all sections that are selected
-    def RemoveSelected(self):
-        for SECT in reversed(self.GetChildren()):
-            selected = self.IsSelected(SECT)
+	## TODO: Doxygen
+	def OnSelect(self, event=None):
+		self.PostCheckBoxEvent()
 
-            if selected:
-                self.RemoveSection(SECT)
+
+	## TODO: Doxygen
+	def PostCheckBoxEvent(self, target=None):
+		if not target:
+			target = self.Parent
+
+		wx.PostEvent(target, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED, self.Id))
+
+
+	## TODO: Doxygen
+	def RemoveSection(self, item):
+		if isinstance(item, int):
+			item = self.GetSection(item)
+
+		self.Sizer.Detach(item)
+		removed = item.Destroy()
+
+		# Remove padding of first item
+		first_section = self.Sizer.GetItemAtIndex(0)
+		if first_section:
+			self.Sizer.Detach(first_section)
+			self.Sizer.Insert(0, first_section, 0, wx.EXPAND)
+
+		self.Layout()
+
+		return removed
+
+
+	## Removes all sections that are selected
+	def RemoveSelected(self):
+		for SECT in reversed(self.GetChildren()):
+			selected = self.IsSelected(SECT)
+
+			if selected:
+				self.RemoveSection(SECT)
 
 
 ## Class designed for custom controls parented with a BorderedPanel
 class ControlPanel:
-    ## Retrieve main child of panel
-    #
-    #  Intended for use in input.essential.EssentialField
-    def GetMainControl(self):
-        return self.MainCtrl
+	## Retrieve main child of panel
+	#
+	#  Intended for use in input.essential.EssentialField
+	def GetMainControl(self):
+		return self.MainCtrl

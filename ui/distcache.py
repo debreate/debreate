@@ -31,213 +31,213 @@ from wiz.helper             import GetField
 
 ## Dialog displaying controls for updating distribution names cache file
 class DistNamesCacheDialog(BaseDialog):
-    def __init__(self):
-        BaseDialog.__init__(self, title=GT("Update Dist Names Cache"),
-                style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+	def __init__(self):
+		BaseDialog.__init__(self, title=GT("Update Dist Names Cache"),
+				style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 
-        self.SetMinSize(wx.Size(300, 150))
+		self.SetMinSize(wx.Size(300, 150))
 
-        txt_types = wx.StaticText(self, label=GT("Include the following:"))
+		txt_types = wx.StaticText(self, label=GT("Include the following:"))
 
-        pnl_types = BorderedPanel(self)
+		pnl_types = BorderedPanel(self)
 
-        self.chk_unstable = wx.CheckBox(pnl_types, label=GT("Unstable"))
-        self.chk_obsolete = wx.CheckBox(pnl_types, label=GT("Obsolete"))
-        self.chk_generic = wx.CheckBox(pnl_types, label=GT("Generic (Debian names only)"))
+		self.chk_unstable = wx.CheckBox(pnl_types, label=GT("Unstable"))
+		self.chk_obsolete = wx.CheckBox(pnl_types, label=GT("Obsolete"))
+		self.chk_generic = wx.CheckBox(pnl_types, label=GT("Generic (Debian names only)"))
 
-        self.btn_preview = wx.Button(self, label=GT("Preview cache"))
-        btn_update = wx.Button(self, label=GT("Update cache"))
-        btn_clear = wx.Button(self, label=GT("Clear cache"))
+		self.btn_preview = wx.Button(self, label=GT("Preview cache"))
+		btn_update = wx.Button(self, label=GT("Update cache"))
+		btn_clear = wx.Button(self, label=GT("Clear cache"))
 
-        # Keep preview dialog in memory so position/size is saved
-        self.preview = TextPreview(self, title=GT("Available Distribution Names"),
-                size=(500,400))
+		# Keep preview dialog in memory so position/size is saved
+		self.preview = TextPreview(self, title=GT("Available Distribution Names"),
+				size=(500,400))
 
-        # Is instantiated as ProgressDialog when OnUpdateCache is called
-        self.progress = None
-        self.timer = DebreateTimer(self)
+		# Is instantiated as ProgressDialog when OnUpdateCache is called
+		self.progress = None
+		self.timer = DebreateTimer(self)
 
-        # For setting error messages from other threads
-        self.error_message = None
+		# For setting error messages from other threads
+		self.error_message = None
 
-        # *** Event Handling *** #
+		# *** Event Handling *** #
 
-        self.btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewCache)
-        btn_update.Bind(wx.EVT_BUTTON, self.OnUpdateCache)
-        btn_clear.Bind(wx.EVT_BUTTON, self.OnClearCache)
+		self.btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewCache)
+		btn_update.Bind(wx.EVT_BUTTON, self.OnUpdateCache)
+		btn_clear.Bind(wx.EVT_BUTTON, self.OnClearCache)
 
-        self.Bind(wx.EVT_TIMER, self.OnTimerEvent)
-        self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
+		self.Bind(wx.EVT_TIMER, self.OnTimerEvent)
+		self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        lyt_types = BoxSizer(wx.VERTICAL)
-        lyt_types.AddSpacer(5)
+		lyt_types = BoxSizer(wx.VERTICAL)
+		lyt_types.AddSpacer(5)
 
-        for CHK in (self.chk_unstable, self.chk_obsolete, self.chk_generic,):
-            lyt_types.Add(CHK, 0, lyt.PAD_LR, 5)
+		for CHK in (self.chk_unstable, self.chk_obsolete, self.chk_generic,):
+			lyt_types.Add(CHK, 0, lyt.PAD_LR, 5)
 
-        lyt_types.AddSpacer(5)
+		lyt_types.AddSpacer(5)
 
-        pnl_types.SetAutoLayout(True)
-        pnl_types.SetSizerAndFit(lyt_types)
-        pnl_types.Layout()
+		pnl_types.SetAutoLayout(True)
+		pnl_types.SetSizerAndFit(lyt_types)
+		pnl_types.Layout()
 
-        lyt_buttons = BoxSizer(wx.HORIZONTAL)
-        lyt_buttons.Add(self.btn_preview, 1)
-        lyt_buttons.Add(btn_update, 1)
-        lyt_buttons.Add(btn_clear, 1)
+		lyt_buttons = BoxSizer(wx.HORIZONTAL)
+		lyt_buttons.Add(self.btn_preview, 1)
+		lyt_buttons.Add(btn_update, 1)
+		lyt_buttons.Add(btn_clear, 1)
 
-        lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.Add(txt_types, 0, wx.ALIGN_CENTER|lyt.PAD_LRT, 5)
-        lyt_main.Add(pnl_types, 0, wx.ALIGN_CENTER|lyt.PAD_LR, 5)
-        lyt_main.Add(lyt_buttons, 1, wx.ALIGN_CENTER|wx.ALL, 5)
+		lyt_main = BoxSizer(wx.VERTICAL)
+		lyt_main.Add(txt_types, 0, wx.ALIGN_CENTER|lyt.PAD_LRT, 5)
+		lyt_main.Add(pnl_types, 0, wx.ALIGN_CENTER|lyt.PAD_LR, 5)
+		lyt_main.Add(lyt_buttons, 1, wx.ALIGN_CENTER|wx.ALL, 5)
 
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        self.Layout()
+		self.SetAutoLayout(True)
+		self.SetSizer(lyt_main)
+		self.Layout()
 
-        # *** Post-layout Actions *** #
+		# *** Post-layout Actions *** #
 
-        if not os.path.isfile(FILE_distnames):
-            self.btn_preview.Disable()
+		if not os.path.isfile(FILE_distnames):
+			self.btn_preview.Disable()
 
-        if self.Parent:
-            self.CenterOnParent()
+		if self.Parent:
+			self.CenterOnParent()
 
 
-    ## Checks for present error message & displays dialog
-    #
-    #  \return
-    #    \b \e False if no errors present
-    def CheckErrors(self):
-        if self.error_message:
-            ShowErrorDialog(self.error_message, parent=self, linewrap=410)
+	## Checks for present error message & displays dialog
+	#
+	#  \return
+	#    \b \e False if no errors present
+	def CheckErrors(self):
+		if self.error_message:
+			ShowErrorDialog(self.error_message, parent=self, linewrap=410)
 
-            # Clear error message & return
-            self.error_message = None
-            return True
+			# Clear error message & return
+			self.error_message = None
+			return True
 
-        return False
+		return False
 
 
-    ## Deletes the distribution names cache file
-    def OnClearCache(self, event=None):
-        if os.path.isfile(FILE_distnames):
-            os.remove(FILE_distnames)
+	## Deletes the distribution names cache file
+	def OnClearCache(self, event=None):
+		if os.path.isfile(FILE_distnames):
+			os.remove(FILE_distnames)
 
-            # Update list on changelog page
-            distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
-            if isinstance(distname_input, OwnerDrawnComboBox):
-                distname_input.Set(GetOSDistNames())
+			# Update list on changelog page
+			distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
+			if isinstance(distname_input, OwnerDrawnComboBox):
+				distname_input.Set(GetOSDistNames())
 
-            self.btn_preview.Disable()
+			self.btn_preview.Disable()
 
-        cache_exists = os.path.exists(FILE_distnames)
+		cache_exists = os.path.exists(FILE_distnames)
 
-        self.btn_preview.Enable(cache_exists)
-        return not cache_exists
+		self.btn_preview.Enable(cache_exists)
+		return not cache_exists
 
 
-    ## Opens cache file for previewing
-    def OnPreviewCache(self, event=None):
-        self.preview.SetValue(ReadFile(FILE_distnames))
-        self.preview.ShowModal()
+	## Opens cache file for previewing
+	def OnPreviewCache(self, event=None):
+		self.preview.SetValue(ReadFile(FILE_distnames))
+		self.preview.ShowModal()
 
 
-    ## Calls Pulse method on progress dialog when timer event occurs
-    def OnTimerEvent(self, event=None):
-        if self.progress:
-            self.progress.Pulse()
+	## Calls Pulse method on progress dialog when timer event occurs
+	def OnTimerEvent(self, event=None):
+		if self.progress:
+			self.progress.Pulse()
 
 
-    ## Closes & resets the progress dialog to None when timer stops
-    def OnTimerStop(self, event=None):
-        if self.progress:
-            self.progress.EndModal(0)
-            self.progress = None
+	## Closes & resets the progress dialog to None when timer stops
+	def OnTimerStop(self, event=None):
+		if self.progress:
+			self.progress.EndModal(0)
+			self.progress = None
 
-        return not self.progress
+		return not self.progress
 
 
-    ## Creates/Updates the distribution names cache file
-    def OnUpdateCache(self, event=None):
-        try:
-            # Timer must be started before executing new thread
-            self.timer.Start(100)
+	## Creates/Updates the distribution names cache file
+	def OnUpdateCache(self, event=None):
+		try:
+			# Timer must be started before executing new thread
+			self.timer.Start(100)
 
-            if not self.timer.IsRunning():
-                self.error_message = GT("Could not start progress dialog timer")
-                self.CheckErrors()
-                return False
+			if not self.timer.IsRunning():
+				self.error_message = GT("Could not start progress dialog timer")
+				self.CheckErrors()
+				return False
 
-            self.Disable()
+			self.Disable()
 
-            # Start new thread for updating cache in background
-            Thread(self.UpdateCache, None).Start()
+			# Start new thread for updating cache in background
+			Thread(self.UpdateCache, None).Start()
 
-            # Create the progress dialog & start timer
-            # NOTE: Progress dialog is reset by timer stop event
-            self.progress = ProgressDialog(self, message=GT("Contacting remote sites"),
-                    style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+			# Create the progress dialog & start timer
+			# NOTE: Progress dialog is reset by timer stop event
+			self.progress = ProgressDialog(self, message=GT("Contacting remote sites"),
+					style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
 
-            # Use ShowModal to wait for timer to stop before continuing
-            self.progress.ShowModal()
+			# Use ShowModal to wait for timer to stop before continuing
+			self.progress.ShowModal()
 
-            self.Enable()
+			self.Enable()
 
-            if self.CheckErrors():
-                return False
+			if self.CheckErrors():
+				return False
 
-            # FIXME: Should check timestamps to make sure file was updated
-            cache_updated = os.path.isfile(FILE_distnames)
+			# FIXME: Should check timestamps to make sure file was updated
+			cache_updated = os.path.isfile(FILE_distnames)
 
-            if cache_updated:
-                distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
+			if cache_updated:
+				distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
 
-                if isinstance(distname_input, OwnerDrawnComboBox):
-                    distname_input.Set(GetOSDistNames())
+				if isinstance(distname_input, OwnerDrawnComboBox):
+					distname_input.Set(GetOSDistNames())
 
-                else:
-                    ShowMessageDialog(
-                        GT("The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"),
-                        parent=self, linewrap=410)
+				else:
+					ShowMessageDialog(
+						GT("The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"),
+						parent=self, linewrap=410)
 
-            self.btn_preview.Enable(cache_updated)
+			self.btn_preview.Enable(cache_updated)
 
-            return cache_updated
+			return cache_updated
 
-        except:
-            # Make sure dialog is re-enabled
-            self.Enable()
+		except:
+			# Make sure dialog is re-enabled
+			self.Enable()
 
-            # Make sure progress dialog & background thread instances are reset to None
-            if self.progress:
-                self.progress.EndModal(0)
-                self.progress = None
+			# Make sure progress dialog & background thread instances are reset to None
+			if self.progress:
+				self.progress.EndModal(0)
+				self.progress = None
 
-            cache_exists = os.path.isfile(FILE_distnames)
+			cache_exists = os.path.isfile(FILE_distnames)
 
-            err_msg = GT("An error occurred when trying to update the distribution names cache")
-            err_msg2 = GT("The cache file exists but may not have been updated")
-            if cache_exists:
-                err_msg = "{}\n\n{}".format(err_msg, err_msg2)
+			err_msg = GT("An error occurred when trying to update the distribution names cache")
+			err_msg2 = GT("The cache file exists but may not have been updated")
+			if cache_exists:
+				err_msg = "{}\n\n{}".format(err_msg, err_msg2)
 
-            ShowErrorDialog(err_msg, traceback.format_exc(), self)
+			ShowErrorDialog(err_msg, traceback.format_exc(), self)
 
-            self.btn_preview.Enable(cache_exists)
+			self.btn_preview.Enable(cache_exists)
 
-        return False
+		return False
 
 
-    ## Method that does the actual updating of the names cache list
-    #
-    #  Called from a new thread
-    #  FIXME: Show error if could not contact 1 or more remote sites???
-    def UpdateCache(self, args=None):
-        Logger.Debug(__name__, GT("Updating cache ..."))
+	## Method that does the actual updating of the names cache list
+	#
+	#  Called from a new thread
+	#  FIXME: Show error if could not contact 1 or more remote sites???
+	def UpdateCache(self, args=None):
+		Logger.Debug(__name__, GT("Updating cache ..."))
 
-        UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
-                self.chk_generic.GetValue())
+		UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
+				self.chk_generic.GetValue())
 
-        self.timer.Stop()
+		self.timer.Stop()

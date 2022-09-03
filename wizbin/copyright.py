@@ -44,365 +44,365 @@ copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
 
 ## Copyright page
 class Page(WizardPage):
-    ## Constructor
-    #
-    #  \param parent
-    #    Parent <b><i>wx.Window</i></b> instance
-    def __init__(self, parent):
-        WizardPage.__init__(self, parent, pgid.COPYRIGHT)
+	## Constructor
+	#
+	#  \param parent
+	#    Parent <b><i>wx.Window</i></b> instance
+	def __init__(self, parent):
+		WizardPage.__init__(self, parent, pgid.COPYRIGHT)
 
-        self.custom_licenses = []
+		self.custom_licenses = []
 
-        ## A list of available license templates
-        self.sel_templates = Choice(self, selid.LICENSE, name="list»")
+		## A list of available license templates
+		self.sel_templates = Choice(self, selid.LICENSE, name="list»")
 
-        # Initialize the template list
-        self.OnRefreshList()
+		# Initialize the template list
+		self.OnRefreshList()
 
-        btn_template = CreateButton(self, label=GT("Full Template"), image="full", name="full»")
-        self.btn_template_simple = CreateButton(self, label=GT("Short Template"), image="short",
-                name="short»")
-        btn_refresh = CreateButton(self, btnid.REFRESH, GT("Refresh Template List"), "refresh",
-                name="btn refresh")
-        btn_open = CreateButton(self, btnid.BROWSE, GT("Open Template Directory"), "browse",
-                name="btn opendir", commands="xdg-open")
+		btn_template = CreateButton(self, label=GT("Full Template"), image="full", name="full»")
+		self.btn_template_simple = CreateButton(self, label=GT("Short Template"), image="short",
+				name="short»")
+		btn_refresh = CreateButton(self, btnid.REFRESH, GT("Refresh Template List"), "refresh",
+				name="btn refresh")
+		btn_open = CreateButton(self, btnid.BROWSE, GT("Open Template Directory"), "browse",
+				name="btn opendir", commands="xdg-open")
 
-        if not self.sel_templates.GetCount():
-            self.sel_templates.Enable(False)
-            btn_template.Enable(False)
-            self.btn_template_simple.Enable(False)
+		if not self.sel_templates.GetCount():
+			self.sel_templates.Enable(False)
+			btn_template.Enable(False)
+			self.btn_template_simple.Enable(False)
 
-        ## Area where license text is displayed
-        self.dsp_copyright = TextAreaPanelESS(self, monospace=True, name="license")
-        self.dsp_copyright.EnableDropTarget()
+		## Area where license text is displayed
+		self.dsp_copyright = TextAreaPanelESS(self, monospace=True, name="license")
+		self.dsp_copyright.EnableDropTarget()
 
-        SetPageToolTips(self)
+		SetPageToolTips(self)
 
-        # Initiate tooltip for drop-down selector
-        if self.sel_templates.IsEnabled():
-            self.OnSelectLicense(self.sel_templates)
+		# Initiate tooltip for drop-down selector
+		if self.sel_templates.IsEnabled():
+			self.OnSelectLicense(self.sel_templates)
 
-        # *** Event Handling *** #
+		# *** Event Handling *** #
 
-        self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectLicense)
+		self.sel_templates.Bind(wx.EVT_CHOICE, self.OnSelectLicense)
 
-        btn_open.Bind(wx.EVT_BUTTON, self.OnOpenPath)
-        btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshList)
-        btn_template.Bind(wx.EVT_BUTTON, self.OnTemplateFull)
-        self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnTemplateShort)
+		btn_open.Bind(wx.EVT_BUTTON, self.OnOpenPath)
+		btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshList)
+		btn_template.Bind(wx.EVT_BUTTON, self.OnTemplateFull)
+		self.btn_template_simple.Bind(wx.EVT_BUTTON, self.OnTemplateShort)
 
-        # *** Layout *** #
+		# *** Layout *** #
 
-        lyt_top = BoxSizer(wx.HORIZONTAL)
-        lyt_top.Add(wx.StaticText(self, label=GT("Available Templates")), 0,
-                lyt.ALGN_CV)
-        lyt_top.Add(self.sel_templates, 0, lyt.ALGN_CV|wx.LEFT, 5)
-        lyt_top.Add(btn_template, 0, wx.LEFT, 5)
-        lyt_top.Add(self.btn_template_simple)
-        lyt_top.Add(btn_refresh)
-        lyt_top.Add(btn_open)
+		lyt_top = BoxSizer(wx.HORIZONTAL)
+		lyt_top.Add(wx.StaticText(self, label=GT("Available Templates")), 0,
+				lyt.ALGN_CV)
+		lyt_top.Add(self.sel_templates, 0, lyt.ALGN_CV|wx.LEFT, 5)
+		lyt_top.Add(btn_template, 0, wx.LEFT, 5)
+		lyt_top.Add(self.btn_template_simple)
+		lyt_top.Add(btn_refresh)
+		lyt_top.Add(btn_open)
 
-        lyt_main = BoxSizer(wx.VERTICAL)
-        lyt_main.AddSpacer(10)
-        lyt_main.Add(lyt_top, 0, lyt.PAD_LR|wx.BOTTOM, 5)
-        lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|lyt.PAD_LRB, 5)
+		lyt_main = BoxSizer(wx.VERTICAL)
+		lyt_main.AddSpacer(10)
+		lyt_main.Add(lyt_top, 0, lyt.PAD_LR|wx.BOTTOM, 5)
+		lyt_main.Add(self.dsp_copyright, 1, wx.EXPAND|lyt.PAD_LRB, 5)
 
-        self.SetAutoLayout(True)
-        self.SetSizer(lyt_main)
-        self.Layout()
+		self.SetAutoLayout(True)
+		self.SetSizer(lyt_main)
+		self.Layout()
 
 
-    ## Displays a confirmation dialog to clear the text area if it is not empty
-    #
-    #  \return
-    #    <b><i>True</i></b>, if user confirmed
-    def DestroyLicenseText(self):
-        if not TextIsEmpty(self.dsp_copyright.GetValue()):
-            warn_msg = GT("This will destroy all license text.")
-            warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
+	## Displays a confirmation dialog to clear the text area if it is not empty
+	#
+	#  \return
+	#    <b><i>True</i></b>, if user confirmed
+	def DestroyLicenseText(self):
+		if not TextIsEmpty(self.dsp_copyright.GetValue()):
+			warn_msg = GT("This will destroy all license text.")
+			warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
-            if ConfirmationDialog(GetMainWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
-                return False
+			if ConfirmationDialog(GetMainWindow(), text=warn_msg).ShowModal() not in (wx.ID_OK, wx.OK):
+				return False
 
-        return True
+		return True
 
 
-    ## \see wiz.wizard.WizardPage.ExportBuild
-    def ExportBuild(self, stage):
-        stage = "{}/usr/share/doc/{}".format(stage, GetPage(pgid.CONTROL).GetPackageName()).replace("//", "/")
+	## \see wiz.wizard.WizardPage.ExportBuild
+	def ExportBuild(self, stage):
+		stage = "{}/usr/share/doc/{}".format(stage, GetPage(pgid.CONTROL).GetPackageName()).replace("//", "/")
 
-        # FIXME: Should be error check
-        self.Export(stage, "copyright")
+		# FIXME: Should be error check
+		self.Export(stage, "copyright")
 
-        return (0, None)
+		return (0, None)
 
 
-    ## Retrieves copyright/license text
-    #
-    #  \return
-    #    <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
-    def Get(self, getModule=False):
-        page = self.dsp_copyright.GetValue()
+	## Retrieves copyright/license text
+	#
+	#  \return
+	#    <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
+	def Get(self, getModule=False):
+		page = self.dsp_copyright.GetValue()
 
-        if TextIsEmpty(page):
-            page = None
+		if TextIsEmpty(page):
+			page = None
 
-        if getModule:
-            page = (__name__, page,)
+		if getModule:
+			page = (__name__, page,)
 
-        return page
+		return page
 
 
-    ## Retrieves license path
-    #
-    #  \param licName
-    #    License file basename to search for
-    #    If 'None', uses currently selected license
-    #  \return
-    #    Full path to license file if found
-    def GetLicensePath(self, licName=None):
-        # Default to currently selected template
-        if not licName:
-            licName = self.GetSelectedName()
+	## Retrieves license path
+	#
+	#  \param licName
+	#    License file basename to search for
+	#    If 'None', uses currently selected license
+	#  \return
+	#    Full path to license file if found
+	def GetLicensePath(self, licName=None):
+		# Default to currently selected template
+		if not licName:
+			licName = self.GetSelectedName()
 
-        return GetLicenseTemplateFile(licName)
+		return GetLicenseTemplateFile(licName)
 
 
-    ## Retrieves the name of the template currently selected
-    def GetSelectedName(self):
-        return GetField(self, selid.LICENSE).GetStringSelection()
+	## Retrieves the name of the template currently selected
+	def GetSelectedName(self):
+		return GetField(self, selid.LICENSE).GetStringSelection()
 
 
-    ## Sets page's fields from opened file
-    def ImportFromFile(self, filename):
-        if not os.path.isfile(filename):
-            return dbrerrno.ENOENT
+	## Sets page's fields from opened file
+	def ImportFromFile(self, filename):
+		if not os.path.isfile(filename):
+			return dbrerrno.ENOENT
 
-        copyright_data = ReadFile(filename, split=True)
+		copyright_data = ReadFile(filename, split=True)
 
-        # Remove preceding empty lines
-        remove_index = 0
-        for I in copyright_data:
-            if not TextIsEmpty(I):
-                break
+		# Remove preceding empty lines
+		remove_index = 0
+		for I in copyright_data:
+			if not TextIsEmpty(I):
+				break
 
-            remove_index += 1
+			remove_index += 1
 
-        for I in reversed(range(remove_index)):
-            copyright_data.remove(copyright_data[I])
+		for I in reversed(range(remove_index)):
+			copyright_data.remove(copyright_data[I])
 
-        copyright_data = "\n".join(copyright_data)
+		copyright_data = "\n".join(copyright_data)
 
-        self.dsp_copyright.SetValue(copyright_data)
+		self.dsp_copyright.SetValue(copyright_data)
 
-        return 0
+		return 0
 
 
-    ## Checks if page can be exported or or added to build
-    def IsOkay(self):
-        return not TextIsEmpty(self.dsp_copyright.GetValue())
+	## Checks if page can be exported or or added to build
+	def IsOkay(self):
+		return not TextIsEmpty(self.dsp_copyright.GetValue())
 
 
-    ## Opens directory containing currently selected license
-    def OnOpenPath(self, event=None):
-        CMD_open = GetExecutable("xdg-open")
+	## Opens directory containing currently selected license
+	def OnOpenPath(self, event=None):
+		CMD_open = GetExecutable("xdg-open")
 
-        if CMD_open:
-            path = self.GetLicensePath()
+		if CMD_open:
+			path = self.GetLicensePath()
 
-            if not path:
-                ShowErrorDialog(GT("Error retrieving template path: {}").format(self.GetSelectedName()))
+			if not path:
+				ShowErrorDialog(GT("Error retrieving template path: {}").format(self.GetSelectedName()))
 
-                return False
+				return False
 
-            path = os.path.dirname(path)
+			path = os.path.dirname(path)
 
-            if os.path.isdir(path):
-                ExecuteCommand(CMD_open, (path,))
+			if os.path.isdir(path):
+				ExecuteCommand(CMD_open, (path,))
 
-                return True
+				return True
 
-        return False
+		return False
 
 
-    ## Repopulates template list
-    def OnRefreshList(self, event=None):
-        # FIXME: Ignore symbolic links???
-        self.custom_licenses = GetLocalLicenses()
+	## Repopulates template list
+	def OnRefreshList(self, event=None):
+		# FIXME: Ignore symbolic links???
+		self.custom_licenses = GetLocalLicenses()
 
-        licenses = list(self.custom_licenses)
+		licenses = list(self.custom_licenses)
 
-        # System licenses are not added to "custom" list
-        for LIC in GetSysLicenses():
-            if LIC not in licenses:
-                licenses.append(LIC)
+		# System licenses are not added to "custom" list
+		for LIC in GetSysLicenses():
+			if LIC not in licenses:
+				licenses.append(LIC)
 
-        for LIC in GetCustomLicenses():
-            if LIC not in licenses:
-                licenses.append(LIC)
-                self.custom_licenses.append(LIC)
+		for LIC in GetCustomLicenses():
+			if LIC not in licenses:
+				licenses.append(LIC)
+				self.custom_licenses.append(LIC)
 
-        self.custom_licenses.sort(key=GS.lower)
+		self.custom_licenses.sort(key=GS.lower)
 
-        sel_templates = GetField(self, selid.LICENSE)
+		sel_templates = GetField(self, selid.LICENSE)
 
-        selected = None
-        if sel_templates.GetCount():
-            selected = sel_templates.GetStringSelection()
+		selected = None
+		if sel_templates.GetCount():
+			selected = sel_templates.GetStringSelection()
 
-        sel_templates.Set(sorted(licenses, key=GS.lower))
+		sel_templates.Set(sorted(licenses, key=GS.lower))
 
-        if selected:
-            if not sel_templates.SetStringSelection(selected):
-                # Selected template file was not found
-                sel_templates.SetSelection(sel_templates.GetDefaultValue())
+		if selected:
+			if not sel_templates.SetStringSelection(selected):
+				# Selected template file was not found
+				sel_templates.SetSelection(sel_templates.GetDefaultValue())
 
-                # Update short template button enabled state
-                self.OnSelectLicense()
+				# Update short template button enabled state
+				self.OnSelectLicense()
 
-        else:
-            sel_templates.SetSelection(sel_templates.GetDefaultValue())
+		else:
+			sel_templates.SetSelection(sel_templates.GetDefaultValue())
 
 
-    ## Enables/Disables simple template button
-    #
-    #  Simple template generation is only available
-    #  for system  licenses.
-    def OnSelectLicense(self, event=None):
-        choice = GetField(self, selid.LICENSE)
-        if choice:
-            template = choice.GetString(choice.GetSelection())
+	## Enables/Disables simple template button
+	#
+	#  Simple template generation is only available
+	#  for system  licenses.
+	def OnSelectLicense(self, event=None):
+		choice = GetField(self, selid.LICENSE)
+		if choice:
+			template = choice.GetString(choice.GetSelection())
 
-            if template in self.custom_licenses:
-                self.btn_template_simple.Disable()
+			if template in self.custom_licenses:
+				self.btn_template_simple.Disable()
 
-            else:
-                self.btn_template_simple.Enable()
+			else:
+				self.btn_template_simple.Enable()
 
-            self.SetLicenseTooltip()
+			self.SetLicenseTooltip()
 
 
-    ## Generates a full license template
-    def OnTemplateFull(self, event=None):
-        selected_template = self.sel_templates.GetStringSelection()
-        template_file = self.GetLicensePath(selected_template)
+	## Generates a full license template
+	def OnTemplateFull(self, event=None):
+		selected_template = self.sel_templates.GetStringSelection()
+		template_file = self.GetLicensePath(selected_template)
 
-        if self.DestroyLicenseText():
-            if not template_file or not os.path.isfile(template_file):
-                ShowErrorDialog(GT("Could not locate license file: {}").format(self.GetSelectedName()))
+		if self.DestroyLicenseText():
+			if not template_file or not os.path.isfile(template_file):
+				ShowErrorDialog(GT("Could not locate license file: {}").format(self.GetSelectedName()))
 
-                return
+				return
 
-            Logger.Debug(__name__, "Copying license {}".format(template_file))
+			Logger.Debug(__name__, "Copying license {}".format(template_file))
 
-            license_text = ReadFile(template_file, noStrip=" ")
+			license_text = ReadFile(template_file, noStrip=" ")
 
-            # Number defines how many empty lines to add after the copyright header
-            # Boolean/Integer defines whether copyright header should be centered/offset
-            add_header = {
-                "Artistic": (1, True),
-                "BSD": (0, False),
-            }
+			# Number defines how many empty lines to add after the copyright header
+			# Boolean/Integer defines whether copyright header should be centered/offset
+			add_header = {
+				"Artistic": (1, True),
+				"BSD": (0, False),
+			}
 
-            template_name = os.path.basename(template_file)
-            if template_name in add_header:
-                license_text = license_text.split("\n")
+			template_name = os.path.basename(template_file)
+			if template_name in add_header:
+				license_text = license_text.split("\n")
 
-                empty_lines = add_header[template_name][0]
-                for L in range(empty_lines):
-                    license_text.insert(0, wx.EmptyString)
+				empty_lines = add_header[template_name][0]
+				for L in range(empty_lines):
+					license_text.insert(0, wx.EmptyString)
 
-                header = copyright_header.format(GetYear())
+				header = copyright_header.format(GetYear())
 
-                center_header = add_header[template_name][1]
-                if center_header:
-                    Logger.Debug(__name__, "Centering header...")
+				center_header = add_header[template_name][1]
+				if center_header:
+					Logger.Debug(__name__, "Centering header...")
 
-                    offset = 0
+					offset = 0
 
-                    # Don't use isinstance() here because boolean is an instance of integer
-                    if type(center_header) == int:
-                        offset = center_header
+					# Don't use isinstance() here because boolean is an instance of integer
+					if type(center_header) == int:
+						offset = center_header
 
-                    else:
-                        # Use the longest line found in the text to center the header
-                        longest_line = GetLongestLine(license_text)
+					else:
+						# Use the longest line found in the text to center the header
+						longest_line = GetLongestLine(license_text)
 
-                        Logger.Debug(__name__, "Longest line: {}".format(longest_line))
+						Logger.Debug(__name__, "Longest line: {}".format(longest_line))
 
-                        header_length = len(header)
-                        if header_length < longest_line:
-                            offset = (longest_line - header_length) / 2
+						header_length = len(header)
+						if header_length < longest_line:
+							offset = (longest_line - header_length) / 2
 
-                    if offset:
-                        Logger.Debug(__name__, "Offset: {}".format(offset))
+					if offset:
+						Logger.Debug(__name__, "Offset: {}".format(offset))
 
-                        header = "{}{}".format(" " * offset, header)
+						header = "{}{}".format(" " * offset, header)
 
-                # Special changes for BSD license
-                if template_name == "BSD":
-                    line_index = 0
-                    for LI in license_text:
-                        if "copyright (c)" in LI.lower():
-                            license_text[line_index] = header
+				# Special changes for BSD license
+				if template_name == "BSD":
+					line_index = 0
+					for LI in license_text:
+						if "copyright (c)" in LI.lower():
+							license_text[line_index] = header
 
-                            break
+							break
 
-                        line_index += 1
+						line_index += 1
 
-                else:
-                    license_text.insert(0, header)
+				else:
+					license_text.insert(0, header)
 
-                license_text = "\n".join(license_text)
+				license_text = "\n".join(license_text)
 
-            if not license_text:
-                ShowErrorDialog(GT("License template is empty"))
+			if not license_text:
+				ShowErrorDialog(GT("License template is empty"))
 
-                return
+				return
 
-            self.dsp_copyright.SetValue(license_text)
-            self.dsp_copyright.SetInsertionPoint(0)
+			self.dsp_copyright.SetValue(license_text)
+			self.dsp_copyright.SetInsertionPoint(0)
 
-        self.dsp_copyright.SetFocus()
+		self.dsp_copyright.SetFocus()
 
 
-    ## Generates a short reference template for a system license
-    def OnTemplateShort(self, event=None):
-        if self.DestroyLicenseText():
-            self.dsp_copyright.Clear()
+	## Generates a short reference template for a system license
+	def OnTemplateShort(self, event=None):
+		if self.DestroyLicenseText():
+			self.dsp_copyright.Clear()
 
-            license_path = "{}/{}".format(sys_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
+			license_path = "{}/{}".format(sys_licenses_path, self.sel_templates.GetString(self.sel_templates.GetSelection()))
 
-            self.dsp_copyright.WriteText("{}\n\n{}".format(copyright_header.format(GetYear()), license_path))
-            self.dsp_copyright.SetInsertionPoint(0)
+			self.dsp_copyright.WriteText("{}\n\n{}".format(copyright_header.format(GetYear()), license_path))
+			self.dsp_copyright.SetInsertionPoint(0)
 
-        self.dsp_copyright.SetFocus()
+		self.dsp_copyright.SetFocus()
 
 
-    ## Resets all page fields to default values
-    def Reset(self):
-        self.dsp_copyright.Clear()
+	## Resets all page fields to default values
+	def Reset(self):
+		self.dsp_copyright.Clear()
 
-        if self.sel_templates.IsEnabled():
-            self.sel_templates.Reset()
-            self.OnSelectLicense(self.sel_templates)
+		if self.sel_templates.IsEnabled():
+			self.sel_templates.Reset()
+			self.OnSelectLicense(self.sel_templates)
 
 
-    ## Sets the text of the displayed copyright
-    #
-    #  \param data
-    #    Text to parse for field values
-    def Set(self, data):
-        self.dsp_copyright.SetValue(data)
+	## Sets the text of the displayed copyright
+	#
+	#  \param data
+	#    Text to parse for field values
+	def Set(self, data):
+		self.dsp_copyright.SetValue(data)
 
 
-    ## Changes the Choice instance's tooltip for the current license
-    def SetLicenseTooltip(self):
-        license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
-        license_path = self.GetLicensePath(license_name)
+	## Changes the Choice instance's tooltip for the current license
+	def SetLicenseTooltip(self):
+		license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
+		license_path = self.GetLicensePath(license_name)
 
-        if license_path:
-            self.sel_templates.SetToolTip(wx.ToolTip(license_path))
-            return
+		if license_path:
+			self.sel_templates.SetToolTip(wx.ToolTip(license_path))
+			return
 
-        self.sel_templates.SetToolTip(None)
+		self.sel_templates.SetToolTip(None)

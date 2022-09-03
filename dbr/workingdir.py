@@ -20,26 +20,26 @@ from globals.paths  import PATH_home
 #  \param target_dir
 #        \b \e str : Path to set as new working directory
 def ChangeWorkingDirectory(target_dir):
-    if DebugEnabled():
-        Logger.Debug(__name__, "ChangeWorkingDirectory: {}".format(target_dir), newline=True)
-        print("  Working dir before: {}".format(os.getcwd()))
+	if DebugEnabled():
+		Logger.Debug(__name__, "ChangeWorkingDirectory: {}".format(target_dir), newline=True)
+		print("  Working dir before: {}".format(os.getcwd()))
 
-    success = False
+	success = False
 
-    try:
-        os.chdir(target_dir)
-        config_dir = ReadConfig("workingdir")
+	try:
+		os.chdir(target_dir)
+		config_dir = ReadConfig("workingdir")
 
-        if config_dir != target_dir:
-            WriteConfig("workingdir", target_dir)
-            success = True
+		if config_dir != target_dir:
+			WriteConfig("workingdir", target_dir)
+			success = True
 
-    except OSError:
-        # Default to the user's home directory
-        if os.path.isdir(PATH_home):
-            os.chdir(PATH_home)
+	except OSError:
+		# Default to the user's home directory
+		if os.path.isdir(PATH_home):
+			os.chdir(PATH_home)
 
-    if DebugEnabled():
-        print("  Working dir after:  {}\n".format(os.getcwd()))
+	if DebugEnabled():
+		print("  Working dir after:  {}\n".format(os.getcwd()))
 
-    return success
+	return success
