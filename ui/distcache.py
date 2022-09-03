@@ -5,6 +5,7 @@
 
 
 import os, traceback, wx
+
 from wx.adv import OwnerDrawnComboBox
 
 from dbr.event       import EVT_TIMER_STOP

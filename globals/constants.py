@@ -7,8 +7,7 @@
 # See: docs/LICENSE.txt
 
 
-import os
-import wx
+import os, wx
 
 from dbr.language   import GT
 from globals.fileio import ReadFile

@@ -8,8 +8,8 @@
 import os, re, sys
 
 from scripts_globals import ConcatPaths
-from scripts_globals import lprint
 from scripts_globals import DIR_root
+from scripts_globals import lprint
 
 
 # Regular expression patterns used to extract substrings
