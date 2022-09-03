@@ -21,23 +21,23 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 #
 #  This is a workaround for Python 2
 #  \param str_value
-#	\b \e str : String to be translated
+#  \b \e str : String to be translated
 def GT(str_value):
-	return _(GS(str_value))
+  return _(GS(str_value))
 
 
 ## Retrieves the path of gettext locale translations
 def GetLocaleDir():
-	global DIR_locale
+  global DIR_locale
 
-	return DIR_locale
+  return DIR_locale
 
 
 ## Sets the path for the gettext locale translations
 #
 #  \param path
-#	New directory location
+#  New directory location
 def SetLocaleDir(path):
-	global DIR_locale
+  global DIR_locale
 
-	DIR_locale = path
+  DIR_locale = path

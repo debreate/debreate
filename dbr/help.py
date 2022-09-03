@@ -21,40 +21,40 @@ man_section = "1"
 ## Parses & returns Debreate's manpage as RichText
 #
 #  \return
-#	   RichText help reference
+#     RichText help reference
 def ParseManpage():
-	help_text = "ERROR: Could not parse '{}'".format(app_man)
+  help_text = "ERROR: Could not parse '{}'".format(app_man)
 
-	if os.path.isfile(app_man):
-		# FIXME: Should text if application is installed on system
-		c_man = "man --manpath={} {} debreate".format(local_manpath, man_section)
-		res = subprocess.run([c_man])
+  if os.path.isfile(app_man):
+    # FIXME: Should text if application is installed on system
+    c_man = "man --manpath={} {} debreate".format(local_manpath, man_section)
+    res = subprocess.run([c_man])
 
-		# Command exited successfully
-		if res.returncode == 0:
-			help_text = res.stdout
+    # Command exited successfully
+    if res.returncode == 0:
+      help_text = res.stdout
 
-	return help_text
+  return help_text
 
 
 ## TODO: Doxygen
 class HelpDialog(wx.Dialog):
-	def __init__(self, parent):
-		wx.Dialog.__init__(self, parent, wx.ID_HELP, "Help",
-						   style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+  def __init__(self, parent):
+    wx.Dialog.__init__(self, parent, wx.ID_HELP, "Help",
+               style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 
-		dialog_size = wx.Size(200, 200)
+    dialog_size = wx.Size(200, 200)
 
-		self.SetSize(wx.DefaultSize)
-		self.SetMinSize(dialog_size)
+    self.SetSize(wx.DefaultSize)
+    self.SetMinSize(dialog_size)
 
-		bg = wx.Panel(self)
+    bg = wx.Panel(self)
 
-		help_display = RichTextCtrl(bg, style=RE_READONLY)
+    help_display = RichTextCtrl(bg, style=RE_READONLY)
 
-		sizer_v1 = BoxSizer(wx.VERTICAL)
-		sizer_v1.Add(help_display, 1, wx.EXPAND)
+    sizer_v1 = BoxSizer(wx.VERTICAL)
+    sizer_v1.Add(help_display, 1, wx.EXPAND)
 
-		bg.SetSizer(sizer_v1)
-		bg.SetAutoLayout(True)
-		bg.Layout()
+    bg.SetSizer(sizer_v1)
+    bg.SetAutoLayout(True)
+    bg.Layout()

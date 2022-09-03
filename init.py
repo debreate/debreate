@@ -33,58 +33,58 @@ parsed_path = GetParsedPath()
 
 # Compiles python source into bytecode
 if "compile" in parsed_commands:
-	import compileall, errno
+  import compileall, errno
 
 
-	compile_dirs = (
-		"dbr",
-		"globals",
-		"wizbin",
-		)
+  compile_dirs = (
+    "dbr",
+    "globals",
+    "wizbin",
+    )
 
-	if not os.access(PATH_app, os.W_OK):
-		print("ERROR: No write privileges for {}".format(PATH_app))
-		sys.exit(errno.EACCES)
+  if not os.access(PATH_app, os.W_OK):
+    print("ERROR: No write privileges for {}".format(PATH_app))
+    sys.exit(errno.EACCES)
 
-	print("Compiling Python modules (.py) to bytecode (.pyc) ...\n")
+  print("Compiling Python modules (.py) to bytecode (.pyc) ...\n")
 
-	print("Compiling root directory: {}".format(PATH_app))
-	for F in os.listdir(PATH_app):
-		if os.path.isfile(F) and F.endswith(".py") and F != "init.py":
-			F = ConcatPaths((PATH_app, F))
-			compileall.compile_file(F)
+  print("Compiling root directory: {}".format(PATH_app))
+  for F in os.listdir(PATH_app):
+    if os.path.isfile(F) and F.endswith(".py") and F != "init.py":
+      F = ConcatPaths((PATH_app, F))
+      compileall.compile_file(F)
 
-	print
+  print
 
-	for D in os.listdir(PATH_app):
-		D = ConcatPaths((PATH_app, D))
-		if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
-			print("Compiling directory: {}".format(D))
-			compileall.compile_dir(D)
-			print
+  for D in os.listdir(PATH_app):
+    D = ConcatPaths((PATH_app, D))
+    if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
+      print("Compiling directory: {}".format(D))
+      compileall.compile_dir(D)
+      print
 
-	sys.exit(0)
+  sys.exit(0)
 
 
 if "clean" in parsed_commands:
-	import errno
+  import errno
 
 
-	if not os.access(PATH_app, os.W_OK):
-		print("ERROR: No write privileges for {}".format(PATH_app))
-		sys.exit(errno.EACCES)
+  if not os.access(PATH_app, os.W_OK):
+    print("ERROR: No write privileges for {}".format(PATH_app))
+    sys.exit(errno.EACCES)
 
-	print("Cleaning Python bytecode (.pyc) ...\n")
+  print("Cleaning Python bytecode (.pyc) ...\n")
 
-	for ROOT, DIRS, FILES in os.walk(PATH_app):
-		for F in FILES:
-			F = ConcatPaths((ROOT, F))
+  for ROOT, DIRS, FILES in os.walk(PATH_app):
+    for F in FILES:
+      F = ConcatPaths((ROOT, F))
 
-			if os.path.isfile(F) and F.endswith(".pyc"):
-				print("Removing file: {}".format(F))
-				os.remove(F)
+      if os.path.isfile(F) and F.endswith(".pyc"):
+        print("Removing file: {}".format(F))
+        os.remove(F)
 
-	sys.exit(0)
+  sys.exit(0)
 
 
 import subprocess, gettext, wx
@@ -117,45 +117,45 @@ from startup.startup     import SetAppInitialized
 
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
-	SetLocaleDir(ConcatPaths((PREFIX, "share/locale")))
-	gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
+  SetLocaleDir(ConcatPaths((PREFIX, "share/locale")))
+  gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 
 if ".py" in script_name:
-	script_name = script_name.split(".py")[0]
+  script_name = script_name.split(".py")[0]
 
 exit_now = 0
 
 if "version" in parsed_args_s:
-	print(VERSION_string)
+  print(VERSION_string)
 
-	sys.exit(0)
+  sys.exit(0)
 
 
 if "help" in parsed_args_s:
-	if INSTALLED:
-		res = subprocess.run(["man", "debreate"])
+  if INSTALLED:
+    res = subprocess.run(["man", "debreate"])
 
-	else:
-		res = subprocess.run(["man", "--manpath=\"{}/man\"".format(PATH_app), "debreate"])
+  else:
+    res = subprocess.run(["man", "--manpath=\"{}/man\"".format(PATH_app), "debreate"])
 
-	help_output = (res.returncode, res.stdout)
-
-
-	if help_output[0]:
-		print("ERROR: Could not locate manpage")
-
-		sys.exit(help_output[0])
+  help_output = (res.returncode, res.stdout)
 
 
-	help_output = GS(help_output[1])
-	print("\n".join(help_output.split("\n")[2:-1]))
+  if help_output[0]:
+    print("ERROR: Could not locate manpage")
 
-	sys.exit(0)
+    sys.exit(help_output[0])
+
+
+  help_output = GS(help_output[1])
+  print("\n".join(help_output.split("\n")[2:-1]))
+
+  sys.exit(0)
 
 
 if "log-level" in parsed_args_v:
-	Logger.SetLogLevel(parsed_args_v["log-level"])
+  Logger.SetLogLevel(parsed_args_v["log-level"])
 
 
 Logger.Info(script_name, "Python version: {}".format(PY_VER_STRING))
@@ -167,33 +167,33 @@ Logger.Info(script_name, "Logging level: {}".format(Logger.GetLogLevel()))
 conf_values = GetAllConfigKeys()
 
 if not conf_values:
-	Logger.Debug(script_name, "Launching First Run dialog ...")
+  Logger.Debug(script_name, "Launching First Run dialog ...")
 
-	first_run = LaunchFirstRun(debreate_app)
-	if not first_run == ConfCode.SUCCESS:
+  first_run = LaunchFirstRun(debreate_app)
+  if not first_run == ConfCode.SUCCESS:
 
-		sys.exit(first_run)
+    sys.exit(first_run)
 
-	conf_values = GetAllConfigKeys()
+  conf_values = GetAllConfigKeys()
 
 # Check that all configuration values are okay
 for V in conf_values:
-	key = V
-	value = conf_values[V]
+  key = V
+  value = conf_values[V]
 
-	# ???: Redundant???
-	if value == None:
-		value = GetDefaultConfigValue(key)
+  # ???: Redundant???
+  if value == None:
+    value = GetDefaultConfigValue(key)
 
-	Logger.Debug(script_name, GT("Configuration key \"{}\" = \"{}\", type: {}".format(key, GS(value), type(value))))
+  Logger.Debug(script_name, GT("Configuration key \"{}\" = \"{}\", type: {}".format(key, GS(value), type(value))))
 
-	# FIXME: ConfCode values are integers & could cause problems with config values
-	if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
-		first_run = LaunchFirstRun(debreate_app)
-		if not first_run == ConfCode.SUCCESS:
-			sys.exit(first_run)
+  # FIXME: ConfCode values are integers & could cause problems with config values
+  if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
+    first_run = LaunchFirstRun(debreate_app)
+    if not first_run == ConfCode.SUCCESS:
+      sys.exit(first_run)
 
-		break
+    break
 
 
 Debreate = MainWindow(conf_values["position"], conf_values["size"])
@@ -201,22 +201,22 @@ debreate_app.SetMainWindow(Debreate)
 Debreate.InitWizard()
 
 if conf_values["maximize"]:
-	Debreate.Maximize()
+  Debreate.Maximize()
 
 elif conf_values["center"]:
-	from system.display import CenterOnPrimaryDisplay
+  from system.display import CenterOnPrimaryDisplay
 
-	# NOTE: May be a few pixels off
-	CenterOnPrimaryDisplay(Debreate)
+  # NOTE: May be a few pixels off
+  CenterOnPrimaryDisplay(Debreate)
 
 working_dir = conf_values["workingdir"]
 
 if parsed_path:
-	project_file = parsed_path
-	Logger.Debug(script_name, GT("Opening project from argument: {}").format(project_file))
+  project_file = parsed_path
+  Logger.Debug(script_name, GT("Opening project from argument: {}").format(project_file))
 
-	if Debreate.OpenProject(project_file):
-		working_dir = os.path.dirname(project_file)
+  if Debreate.OpenProject(project_file):
+    working_dir = os.path.dirname(project_file)
 
 # Set working directory
 ChangeWorkingDirectory(working_dir)

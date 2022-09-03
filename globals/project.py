@@ -19,12 +19,12 @@ PROJECT_txt = "txt"
 
 ## Filename suffixes that can be opened
 supported_suffixes = (
-	PROJECT_ext,
-	PROJECT_txt,
+  PROJECT_ext,
+  PROJECT_txt,
 )
 
 PROJ_DEF_L = GT("Debreate project files")
 
 project_wildcards = {
-	ID_PROJ_L: (PROJ_DEF_L, (PROJECT_ext, PROJECT_txt)),
+  ID_PROJ_L: (PROJ_DEF_L, (PROJECT_ext, PROJECT_txt)),
 }

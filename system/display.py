@@ -17,108 +17,108 @@ from globals.strings import StringIsNumeric
 #
 #  FIXME: Use 1 or 2 alternate methods (wx.Display???)
 def GetPrimaryDisplayRect():
-	rect = None
+  rect = None
 
-	# wx 3.0 does not recognize primary display correctly
-	# TODO: File bug report
-	if wx.MAJOR_VERSION <=2:
-		primary = None
+  # wx 3.0 does not recognize primary display correctly
+  # TODO: File bug report
+  if wx.MAJOR_VERSION <=2:
+    primary = None
 
-		# Try to find the primary display within first 10 displays
-		for X in range(10):
-			try:
-				dsp = wx.Display(X)
-				if dsp.IsPrimary():
-					primary = dsp
+    # Try to find the primary display within first 10 displays
+    for X in range(10):
+      try:
+        dsp = wx.Display(X)
+        if dsp.IsPrimary():
+          primary = dsp
 
-					break
+          break
 
-			except AssertionError:
-				pass
+      except AssertionError:
+        pass
 
-		if primary:
-			rect = primary.GetGeometry()
+    if primary:
+      rect = primary.GetGeometry()
 
-			# Reorder for compatibility with xrandr output
-			rect = (rect[2], rect[3], rect[0], rect[1],)
+      # Reorder for compatibility with xrandr output
+      rect = (rect[2], rect[3], rect[0], rect[1],)
 
-			Logger.Debug(__name__, "GetPrimaryDisplayRect: Using wx.Display")
+      Logger.Debug(__name__, "GetPrimaryDisplayRect: Using wx.Display")
 
-	# Fall back to using xrandr
-	if not rect:
-		CMD_xrand = GetExecutable("xrandr")
+  # Fall back to using xrandr
+  if not rect:
+    CMD_xrand = GetExecutable("xrandr")
 
-		if not CMD_xrand:
-			return None
+    if not CMD_xrand:
+      return None
 
-		output = GetCommandOutput(CMD_xrand).split("\n")
+    output = GetCommandOutput(CMD_xrand).split("\n")
 
-		for LINE in output:
-			LINE = LINE.lower()
-			if "primary" in LINE:
-				LINE = LINE.split("primary")[1].strip().split(" ")[0]
-				posX = LINE.split("x")
-				posY = posX[1].split("+")
-				posX = posX[0]
-				width = posY[1]
-				height = posY[2]
-				posY = posY[0]
+    for LINE in output:
+      LINE = LINE.lower()
+      if "primary" in LINE:
+        LINE = LINE.split("primary")[1].strip().split(" ")[0]
+        posX = LINE.split("x")
+        posY = posX[1].split("+")
+        posX = posX[0]
+        width = posY[1]
+        height = posY[2]
+        posY = posY[0]
 
-				rect = [posX, posY, width, height,]
-				for INDEX in range(len(rect)):
-					X = rect[INDEX]
-					if not StringIsNumeric(X):
-						# FIXME: Break out of second loop & call continue on first?
-						return None
+        rect = [posX, posY, width, height,]
+        for INDEX in range(len(rect)):
+          X = rect[INDEX]
+          if not StringIsNumeric(X):
+            # FIXME: Break out of second loop & call continue on first?
+            return None
 
-					rect[INDEX] = int(X)
+          rect[INDEX] = int(X)
 
-				Logger.Debug(__name__, "GetPrimaryDisplayRect: Using xrandr")
+        Logger.Debug(__name__, "GetPrimaryDisplayRect: Using xrandr")
 
-				break
+        break
 
-	if rect:
-		return tuple(rect)
+  if rect:
+    return tuple(rect)
 
 
 ## Centers the window on the primary display
 #
 #  \param window
-#	\b \e wx.Window instance to be centered
+#  \b \e wx.Window instance to be centered
 def CenterOnPrimaryDisplay(window):
-	Logger.Debug(__name__, "Attempting to center window: {} ({})".format(window.Name, window))
+  Logger.Debug(__name__, "Attempting to center window: {} ({})".format(window.Name, window))
 
-	display_rect = GetPrimaryDisplayRect()
+  display_rect = GetPrimaryDisplayRect()
 
-	Logger.Debug(__name__, "Primary display: {}".format(display_rect))
+  Logger.Debug(__name__, "Primary display: {}".format(display_rect))
 
-	if not display_rect:
-		return False
+  if not display_rect:
+    return False
 
-	window_size = window.GetSize().Get()
+  window_size = window.GetSize().Get()
 
-	dx = display_rect[2]
-	dy = display_rect[3]
-	dw = display_rect[0]
-	dh = display_rect[1]
+  dx = display_rect[2]
+  dy = display_rect[3]
+  dw = display_rect[0]
+  dh = display_rect[1]
 
-	x_diff = (dw - window_size[0]) / 2
-	y_diff = (dh - window_size[1]) / 2
+  x_diff = (dw - window_size[0]) / 2
+  y_diff = (dh - window_size[1]) / 2
 
-	debug = DebugEnabled()
+  debug = DebugEnabled()
 
-	if debug:
-		print("  X difference: {}".format(x_diff))
-		print("  Y difference: {}".format(y_diff))
+  if debug:
+    print("  X difference: {}".format(x_diff))
+    print("  Y difference: {}".format(y_diff))
 
-	# NOTE: May be a few pixels off
-	pos_x = dx + x_diff
-	pos_y = dy + y_diff
+  # NOTE: May be a few pixels off
+  pos_x = dx + x_diff
+  pos_y = dy + y_diff
 
-	if debug:
-		print("\n  Theoretical position: {}".format((pos_x, pos_y,)))
-		print("  Actual Position:	  {}".format(window.GetPositionTuple()))
+  if debug:
+    print("\n  Theoretical position: {}".format((pos_x, pos_y,)))
+    print("  Actual Position:	  {}".format(window.GetPositionTuple()))
 
-	window.SetPosition((pos_x, pos_y))
+  window.SetPosition((pos_x, pos_y))
 
-	return True
+  return True

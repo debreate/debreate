@@ -16,113 +16,113 @@ from ui.style       import layout as lyt
 ## A class that defines a standard target check box & custom target text input area
 #
 #  \param defaultPath
-#	Default install target
+#  Default install target
 #  \param win_id
-#	Window ID
+#  Window ID
 #  \param defaultType
-#	Should be either \b \e CheckBox or derived class
+#  Should be either \b \e CheckBox or derived class
 #  \param defaultValue
-#	\b \e Boolean to set default path check box value to checked or not (default is True)
+#  \b \e Boolean to set default path check box value to checked or not (default is True)
 #  \param customType
-#	Should be wx.TextCtrl or derived class
+#  Should be wx.TextCtrl or derived class
 class FileOTarget(BorderedPanel):
-	def __init__(self, parent, defaultPath, win_id=-1, defaultType=CheckBox, defaultValue=True,
-			customType=PathCtrl, name="file_output_target", pathIds=[]):
+  def __init__(self, parent, defaultPath, win_id=-1, defaultType=CheckBox, defaultValue=True,
+      customType=PathCtrl, name="file_output_target", pathIds=[]):
 
-		BorderedPanel.__init__(self, parent, win_id, name=name)
+    BorderedPanel.__init__(self, parent, win_id, name=name)
 
-		id_default = wx.ID_ANY
-		id_custom = wx.ID_ANY
+    id_default = wx.ID_ANY
+    id_custom = wx.ID_ANY
 
-		if pathIds:
-			if isinstance(pathIds, int):
-				id_default = pathIds
+    if pathIds:
+      if isinstance(pathIds, int):
+        id_default = pathIds
 
-			else:
-				id_default = pathIds[0]
+      else:
+        id_default = pathIds[0]
 
-				if len(pathIds) > 1:
-					id_custom = pathIds[1]
+        if len(pathIds) > 1:
+          id_custom = pathIds[1]
 
-		self.PathDefault = defaultType(self, id_default, defaultPath, defaultValue=defaultValue)
+    self.PathDefault = defaultType(self, id_default, defaultPath, defaultValue=defaultValue)
 
-		self.PathCustom = customType(self, id_custom)
+    self.PathCustom = customType(self, id_custom)
 
-		# *** Event Handing *** #
+    # *** Event Handing *** #
 
-		self.PathDefault.Bind(wx.EVT_CHECKBOX, self.OnSelectTarget)
+    self.PathDefault.Bind(wx.EVT_CHECKBOX, self.OnSelectTarget)
 
-		# *** Layout *** #
+    # *** Layout *** #
 
-		lyt_main = BoxSizer(wx.VERTICAL)
+    lyt_main = BoxSizer(wx.VERTICAL)
 
-		lyt_main.AddSpacer(5)
-		lyt_main.Add(self.PathDefault, 0, lyt.PAD_LR, 5)
-		lyt_main.AddSpacer(5)
-		lyt_main.Add(self.PathCustom, 0, wx.EXPAND|lyt.PAD_LR, 5)
-		lyt_main.AddSpacer(5)
+    lyt_main.AddSpacer(5)
+    lyt_main.Add(self.PathDefault, 0, lyt.PAD_LR, 5)
+    lyt_main.AddSpacer(5)
+    lyt_main.Add(self.PathCustom, 0, wx.EXPAND|lyt.PAD_LR, 5)
+    lyt_main.AddSpacer(5)
 
-		self.SetAutoLayout(True)
-		self.SetSizer(lyt_main)
-		self.Layout()
+    self.SetAutoLayout(True)
+    self.SetSizer(lyt_main)
+    self.Layout()
 
-		# *** Post Layout/Event Actions *** #
+    # *** Post Layout/Event Actions *** #
 
-		self.PathDefault.SetChecked(self.PathDefault.GetDefaultValue())
-
-
-	## Retrieves the custom set target path
-	def GetCustomPath(self):
-		return self.PathCustom.GetValue()
+    self.PathDefault.SetChecked(self.PathDefault.GetDefaultValue())
 
 
-	## Retrieves the object representing the default path
-	def GetDefaultObject(self):
-		return self.PathDefault
+  ## Retrieves the custom set target path
+  def GetCustomPath(self):
+    return self.PathCustom.GetValue()
 
 
-	## Retrieves the default target path
-	def GetDefaultPath(self):
-		return self.PathDefault.GetLabel()
+  ## Retrieves the object representing the default path
+  def GetDefaultObject(self):
+    return self.PathDefault
 
 
-	## Retrieves currently selected path
-	def GetPath(self):
-		if self.PathDefault.GetValue():
-			return self.GetDefaultPath()
-
-		return self.GetCustomPath()
+  ## Retrieves the default target path
+  def GetDefaultPath(self):
+    return self.PathDefault.GetLabel()
 
 
-	## Enables/Disables custom target field
-	def OnSelectTarget(self, event=None):
-		self.PathCustom.Enable(not self.PathDefault.GetValue())
+  ## Retrieves currently selected path
+  def GetPath(self):
+    if self.PathDefault.GetValue():
+      return self.GetDefaultPath()
 
-		if event:
-			event.Skip(True)
-
-
-	## Reset controls to default settings
-	def Reset(self):
-		self.PathDefault.Reset()
-		self.PathCustom.Reset()
+    return self.GetCustomPath()
 
 
-	## Selects custom path & sets value
-	#
-	#  \param path
-	#	New value for custom path
-	#  \return
-	#	\b \e True if using custom path & is equal to 'path' parameter
-	def SetPath(self, path):
-		if self.PathDefault.GetValue():
-			self.PathDefault.SetChecked(False)
+  ## Enables/Disables custom target field
+  def OnSelectTarget(self, event=None):
+    self.PathCustom.Enable(not self.PathDefault.GetValue())
 
-		self.PathCustom.SetValue(path)
-
-		return self.PathCustom.GetValue() == path and not self.PathDefault.GetValue()
+    if event:
+      event.Skip(True)
 
 
-	## Check if using default path
-	def UsingDefault(self):
-		return self.PathDefault.GetValue()
+  ## Reset controls to default settings
+  def Reset(self):
+    self.PathDefault.Reset()
+    self.PathCustom.Reset()
+
+
+  ## Selects custom path & sets value
+  #
+  #  \param path
+  #  New value for custom path
+  #  \return
+  #  \b \e True if using custom path & is equal to 'path' parameter
+  def SetPath(self, path):
+    if self.PathDefault.GetValue():
+      self.PathDefault.SetChecked(False)
+
+    self.PathCustom.SetValue(path)
+
+    return self.PathCustom.GetValue() == path and not self.PathDefault.GetValue()
+
+
+  ## Check if using default path
+  def UsingDefault(self):
+    return self.PathDefault.GetValue()

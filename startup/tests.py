@@ -11,9 +11,9 @@ from dbr.log import Logger
 
 ## List of available tests
 available_tests = (
-	"alpha",
-	"update-fail",
-	)
+  "alpha",
+  "update-fail",
+  )
 
 ## List is populated from 'test' command arguments
 #  This should be imported by init script
@@ -23,15 +23,15 @@ test_list = []
 #
 #  This should be imported form modules other than init script
 def GetTestList():
-	return test_list
+  return test_list
 
 
 ## Check if a test is currently in use
 #
 #  \param test
-#	\b \e String name of test to check for
+#  \b \e String name of test to check for
 def UsingTest(test):
-	if test not in available_tests:
-		Logger.Warn(__name__, "Requested test not available: {}".format(test))
+  if test not in available_tests:
+    Logger.Warn(__name__, "Requested test not available: {}".format(test))
 
-	return test in test_list
+  return test in test_list
