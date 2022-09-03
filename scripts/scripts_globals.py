@@ -124,3 +124,16 @@ debian_files = {
     'changelog': FILE_changelog,
     'changelog debian': FILE_changelog_debian,
     }
+
+
+src_excludes = ("bitmaps", "debian", "locale", "man", "scripts",
+		"templates", "data", "docs", "build")
+
+source_files = ["command_line.py", "init.py", "main.py"]
+for subdir in os.listdir(DIR_root):
+	if not subdir.startswith(".") and not subdir.startswith("_") \
+			and not subdir in src_excludes:
+		for ROOT, DIRS, FILES in os.walk(subdir):
+			for f in FILES:
+				if f.endswith(".py"):
+					source_files.append(os.path.join(subdir, f))
