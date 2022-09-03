@@ -21,17 +21,13 @@ for filename in source_files:
   for idx in range(len(lines_orig)):
     line = lines_orig[idx]
 
-    # TEMP:
-    while line.lstrip("\t").startswith("    "):
-      line = line.replace("    ", "\t", 1)
+    while line.lstrip(" ").startswith("\t"):
+      # replace leading tab with 2 spaces
+      line = line.replace("\t", "  ", 1)
 
-    # ~ while line.lstrip(" ").startswith("\t"):
-      # ~ # replace leading tab with 2 spaces
-      # ~ line = line.replace("\t", "  ", 1)
-
-    # ~ while "#\t" in line:
-      # ~ # replace comments with tabs
-      # ~ line = line.replace("#\t", "#  ")
+    while "#\t" in line:
+      # replace comments with tabs
+      line = line.replace("#\t", "#  ")
 
     lines_new.append(line)
 
