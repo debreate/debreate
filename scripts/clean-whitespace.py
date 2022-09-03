@@ -28,6 +28,7 @@ for filename in source_files:
       # replace comments with tabs
       line = line.replace("#\t", "#  ")
 
+    line = line.rstrip()
     lines_new.append(line)
 
   if lines_new != lines_orig:
