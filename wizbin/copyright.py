@@ -47,7 +47,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.COPYRIGHT)
 
@@ -115,7 +115,7 @@ class Page(WizardPage):
   ## Displays a confirmation dialog to clear the text area if it is not empty
   #
   #  \return
-  #    <b><i>True</i></b>, if user confirmed
+  #      <b><i>True</i></b>, if user confirmed
   def DestroyLicenseText(self):
     if not TextIsEmpty(self.dsp_copyright.GetValue()):
       warn_msg = GT("This will destroy all license text.")
@@ -140,7 +140,7 @@ class Page(WizardPage):
   ## Retrieves copyright/license text
   #
   #  \return
-  #    <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
+  #      <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
   def Get(self, getModule=False):
     page = self.dsp_copyright.GetValue()
 
@@ -156,10 +156,10 @@ class Page(WizardPage):
   ## Retrieves license path
   #
   #  \param licName
-  #    License file basename to search for
-  #    If 'None', uses currently selected license
+  #      License file basename to search for
+  #      If 'None', uses currently selected license
   #  \return
-  #    Full path to license file if found
+  #      Full path to license file if found
   def GetLicensePath(self, licName=None):
     # Default to currently selected template
     if not licName:
@@ -391,7 +391,7 @@ class Page(WizardPage):
   ## Sets the text of the displayed copyright
   #
   #  \param data
-  #    Text to parse for field values
+  #      Text to parse for field values
   def Set(self, data):
     self.dsp_copyright.SetValue(data)
 

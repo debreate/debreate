@@ -58,7 +58,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.SCRIPTS)
 
@@ -180,7 +180,7 @@ class Page(WizardPage):
   ## Collects page's data & exports it to file
   #
   #  \param target
-  #    Absolute filename path for output
+  #      Absolute filename path for output
   #  \see wiz.wizard.WizardPage.Export
   def Export(self, out_dir):
     return_code = (0, None)
@@ -198,7 +198,7 @@ class Page(WizardPage):
   ## Exports data for the build process
   #
   #  \param target
-  #    Filename path to be exported
+  #      Filename path to be exported
   def ExportBuild(self, stage):
     stage = "{}/DEBIAN".format(stage).replace("//", "/")
 
@@ -290,7 +290,7 @@ class Page(WizardPage):
   #  FIXME: Should be done in DebianScript class method???
   #
   #  \param filename
-  #    File path to open
+  #      File path to open
   def ImportFromFile(self, filename):
     Logger.Debug(__name__, GT("Importing script: {}").format(filename))
 
@@ -336,7 +336,7 @@ class Page(WizardPage):
   ## Checks if one or more scripts can be exported
   #
   #  \return
-  #    <b><i>True</i></b> if page is ready for export
+  #      <b><i>True</i></b> if page is ready for export
   def IsOkay(self):
     for DS, RB in self.script_objects:
       if DS.IsOkay():
@@ -451,7 +451,7 @@ class Page(WizardPage):
   ## Sets the page's fields
   #
   #  \param data
-  #    Text to parse for field values
+  #      Text to parse for field values
   def Set(self, data):
     preinst = data.split("<<PREINST>>\n")[1].split("\n<</PREINST>>")[0]
     postinst = data.split("<<POSTINST>>\n")[1].split("\n<</POSTINST>>")[0]
@@ -495,18 +495,19 @@ shell_descriptions = {
 ## Class defining a Debian package script
 #
 #  A script's filename is one of 'preinst', 'prerm',
-#    'postinst', or 'postrm'. Scripts are stored in the
-#    (FIXME: Don't remember section name) section of the package & are executed in the
-#    order dictated by the naming convention:
+#  'postinst', or 'postrm'. Scripts are stored in the
+#  (FIXME: Don't remember section name) section of the
+#  package & are executed in the order dictated by the
+#  naming convention:
 #    'Pre Install', 'Pre Remove/Uninstall',
 #    'Post Install', & 'Post Remove/Uninstall'.
 class DebianScript(wx.Panel):
   ## Constructor
   #
   #  \param parent
-  #    The <b><i>wx.Window</i></b> parent instance
+  #      The <b><i>wx.Window</i></b> parent instance
   #  \param scriptId
-  #    Unique <b><i>integer</i></b> identifier for script
+  #      Unique <b><i>integer</i></b> identifier for script
   def __init__(self, parent, scriptId):
     wx.Panel.__init__(self, parent, scriptId)
 
@@ -554,11 +555,11 @@ class DebianScript(wx.Panel):
   ## Exports the script to a text file
   #
   #  \param out_dir
-  #    Target directory of output file
+  #      Target directory of output file
   #  \param executable
-  #    If <b><i>True</i></b>, sets the files executable bit
+  #      If <b><i>True</i></b>, sets the files executable bit
   #  \param build
-  #    If <b><i>True</i></b>, format output for final build
+  #      If <b><i>True</i></b>, format output for final build
   def Export(self, out_dir, executable=True, build=False):
     if not os.path.isdir(out_dir):
       Logger.Error(__name__, GT("Directory not available: {}".format(out_dir)))
@@ -590,7 +591,7 @@ class DebianScript(wx.Panel):
   ## Retrieves the filename to use for exporting
   #
   #  \return
-  #    Script filename
+  #      Script filename
   def GetFilename(self):
     return self.FileName
 
@@ -598,7 +599,7 @@ class DebianScript(wx.Panel):
   ## Retrieves the script's name for display
   #
   #  \return
-  #    <b><i>String</i></b> representation of script's name
+  #      <b><i>String</i></b> representation of script's name
   def GetName(self):
     return self.ScriptName
 
@@ -606,7 +607,7 @@ class DebianScript(wx.Panel):
   ## Retrieves the description of a shell for display
   #
   #  \return
-  #    Description or <b><i>None</i></b> if using custom shell
+  #      Description or <b><i>None</i></b> if using custom shell
   def GetSelectedShellDescription(self):
     selected_shell = self.Shell.GetValue()
 
@@ -640,7 +641,7 @@ class DebianScript(wx.Panel):
   #  the user want to export the script.
   #
   #  \return
-  #    <b><i>True</i></b> if text area is not empty, <b><i>False</i></b> otherwise
+  #      <b><i>True</i></b> if text area is not empty, <b><i>False</i></b> otherwise
   def IsOkay(self):
     return not TextIsEmpty(self.ScriptBody.GetValue())
 
@@ -682,9 +683,9 @@ class DebianScript(wx.Panel):
   ## Sets the shell/shebang line to use for script
   #
   #  \param shell
-  #    Path to desired shell
+  #      Path to desired shell
   #  \param forced
-  #    ???
+  #      ???
   def SetShell(self, shell, forced=False):
     if forced:
       self.Shell.SetValue(shell)
@@ -696,6 +697,6 @@ class DebianScript(wx.Panel):
   ## Fills the script
   #
   #  \param value
-  #    Text to be entered into the script body
+  #      Text to be entered into the script body
   def SetValue(self, value):
     self.ScriptBody.SetValue(value)
