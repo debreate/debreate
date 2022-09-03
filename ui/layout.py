@@ -9,7 +9,7 @@
 import wx
 
 
-class Sizer(wx.Sizer):
+class _SizerBase:
     ## Retains spacer at end of items
     #
     #  FIXME: Detect spacer as last item, otherwise call Add instead of Insert
@@ -91,6 +91,11 @@ class Sizer(wx.Sizer):
         return None
 
 
-class BoxSizer(Sizer, wx.BoxSizer):
+class Sizer(wx.Sizer, _SizerBase):
+	def __init__(self):
+		wx.Sizer.__init__(self)
+
+
+class BoxSizer(wx.BoxSizer, _SizerBase):
     def __init__(self, orient):
         wx.BoxSizer.__init__(self, orient)

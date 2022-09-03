@@ -26,7 +26,7 @@ class PathCtrl(TextArea):
         self.clr_default = self.GetBackgroundColour()
 
         # Make sure first character is forward slash
-        wx.EVT_KEY_UP(self, self.OnKeyUp)
+        self.Bind(wx.EVT_KEY_UP, self.OnKeyUp)
 
         # Set to default value & check path availability on construction
         self.Reset()

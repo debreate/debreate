@@ -111,10 +111,10 @@ class Page(WizardPage):
 
         # create an event to enable/disable custom widget
         for item in self.grp_targets:
-            wx.EVT_RADIOBUTTON(item, wx.ID_ANY, self.OnSetDestination)
+            item.Bind(wx.EVT_RADIOBUTTON, self.OnSetDestination, id=wx.ID_ANY)
 
         # Context menu events for directory tree
-        wx.EVT_MENU(self, wx.ID_ADD, self.OnImportFromTree)
+        self.Bind(wx.EVT_MENU, self.OnImportFromTree, id=wx.ID_ADD)
 
         # Button events
         btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)
@@ -124,11 +124,11 @@ class Page(WizardPage):
         btn_refresh.Bind(wx.EVT_BUTTON, self.OnRefreshFileList)
 
         # ???: Not sure what these do
-        wx.EVT_KEY_DOWN(self.ti_target, self.GetDestValue)
-        wx.EVT_KEY_UP(self.ti_target, self.CheckDest)
+        self.ti_target.Bind(wx.EVT_KEY_DOWN, self.GetDestValue)
+        self.ti_target.Bind(wx.EVT_KEY_UP, self.CheckDest)
 
         # Key events for file list
-        wx.EVT_KEY_DOWN(self.lst_files, self.OnRemoveSelected)
+        self.lst_files.Bind(wx.EVT_KEY_DOWN, self.OnRemoveSelected)
 
         self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
 
@@ -144,7 +144,7 @@ class Page(WizardPage):
 
         lyt_left = BoxSizer(wx.VERTICAL)
         lyt_left.AddSpacer(10)
-        lyt_left.Add(wx.StaticText(self, label=GT("Directory options")), 0, wx.ALIGN_BOTTOM)
+        lyt_left.Add(wx.StaticText(self, label=GT("Directory options")), 0)
         lyt_left.Add(pnl_treeopts, 0, wx.EXPAND|wx.ALIGN_LEFT|wx.BOTTOM, 5)
         lyt_left.Add(self.tree_dirs, 1, wx.EXPAND)
 
@@ -179,7 +179,7 @@ class Page(WizardPage):
         PROP_LEFT = 0
         PROP_RIGHT = 1
 
-        lyt_main = wx.FlexGridSizer(1, 2)
+        lyt_main = wx.FlexGridSizer(1, 2, 0, 0)
         lyt_main.AddGrowableRow(0)
 
         # Directory tree size issues with wx 2.8

@@ -111,7 +111,7 @@ class ButtonSizer(BoxSizer):
         else:
             if isinstance(button, CustomButton):
                 if label == None:
-                    label = button.GetToolTipString()
+                    label = button.GetToolTipText()
 
                 add_object = BoxSizer(wx.VERTICAL)
                 add_object.Add(button, 0, wx.ALIGN_CENTER)
@@ -132,7 +132,7 @@ class ButtonSizer(BoxSizer):
     def Insert(self, index, button, proportion=0, flag=0, border=0, label=None, userData=None):
         if isinstance(button, CustomButton):
             if label == None:
-                label = button.GetToolTipString()
+                label = button.GetToolTipText()
 
             add_object = BoxSizer(wx.VERTICAL)
             add_object.Add(button, 0, wx.ALIGN_CENTER)
@@ -166,13 +166,13 @@ class ButtonSizer(BoxSizer):
                     if isinstance(button, CustomButton):
                         static_text = btn_objects[1].GetWindow()
                         static_text.SetLabel(newLabel)
-                        button.SetToolTipString(newLabel)
+                        button.SetToolTip(newLabel)
 
                         label_set = True
 
                     else:
                         button.SetLabel(newLabel)
-                        button.SetToolTipString(newLabel)
+                        button.SetToolTip(newLabel)
 
                         label_set = True
 
@@ -380,7 +380,7 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
             if not tooltip:
                 tooltip = label
 
-            button.SetToolTipString(tooltip)
+            button.SetToolTip(tooltip)
 
     # Use a standard button
     if not button:

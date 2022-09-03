@@ -46,7 +46,7 @@ class Page(WizardPage):
 
         # *** Event Handling *** #
 
-        wx.EVT_BUTTON(self, wx.ID_ADD, self.OnAddTab)
+        self.Bind(wx.EVT_BUTTON, self.OnAddTab, id=wx.ID_ADD)
 
         # *** Layout *** #
 

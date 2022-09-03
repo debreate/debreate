@@ -115,12 +115,12 @@ class Page(WizardPage):
         # *** Event Handling *** #
 
         for DS, RB in self.script_objects:
-            wx.EVT_RADIOBUTTON(RB, RB.GetId(), self.ScriptSelect)
+            RB.Bind(wx.EVT_RADIOBUTTON, self.ScriptSelect, id=RB.GetId())
 
-        wx.EVT_BUTTON(btn_al_import, btnid.IMPORT, self.ImportExes)
-        wx.EVT_BUTTON(btn_al_generate, wx.ID_ANY, self.OnGenerate)
-        wx.EVT_BUTTON(btn_al_remove, btnid.REMOVE, self.ImportExes)
-        wx.EVT_BUTTON(btn_help, btnid.HELP, self.OnHelpButton)
+        btn_al_import.Bind(wx.EVT_BUTTON, self.ImportExes, id=btnid.IMPORT)
+        btn_al_generate.Bind(wx.EVT_BUTTON, self.OnGenerate, id=wx.ID_ANY)
+        btn_al_remove.Bind(wx.EVT_BUTTON, self.ImportExes, id=btnid.REMOVE)
+        btn_help.Bind(wx.EVT_BUTTON, self.OnHelpButton, id=btnid.HELP)
 
         # *** Layout *** #
 
@@ -165,7 +165,7 @@ class Page(WizardPage):
         # Line up panels to look even
         lyt_right.AddSpacer(44)
         lyt_right.Add(wx.StaticText(self, label=GT("Auto-Link Executables")),
-                0, lyt.ALGN_LB)
+                0, lyt.ALGN_L)
         lyt_right.Add(pnl_autolink, 0, wx.EXPAND)
 
         lyt_main = BoxSizer(wx.HORIZONTAL)

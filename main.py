@@ -149,7 +149,7 @@ class MainWindow(wx.Frame):
                     if len(mitem) > 3:
                         itm.SetBitmap(mitem[3])
 
-                    menu_file.AppendItem(itm)
+                    menu_file.Append(itm)
 
         # *** Action Menu *** #
         menu_action = wx.Menu()
@@ -157,7 +157,7 @@ class MainWindow(wx.Frame):
         mitm_build = wx.MenuItem(menu_action, menuid.BUILD, GT("Build"),
                 GT("Start building .deb package"))
 
-        menu_action.AppendItem(mitm_build)
+        menu_action.Append(mitm_build)
 
         # ----- Options Menu
         menu_opt = wx.Menu()
@@ -168,7 +168,7 @@ class MainWindow(wx.Frame):
 
         # A bug with wx 2.8 does not allow tooltips to be toggled off
         if wx.MAJOR_VERSION > 2:
-            menu_opt.AppendItem(self.opt_tooltips)
+            menu_opt.Append(self.opt_tooltips)
 
         if menu_opt.FindItemById(menuid.TOOLTIPS):
             show_tooltips = ReadConfig("tooltips")
@@ -210,8 +210,8 @@ class MainWindow(wx.Frame):
             opts_compress.insert(3, opt_z_xz)
 
         for OPT in opts_compress:
-            self.menu_compress.AppendItem(OPT)
-            wx.EVT_MENU(self.menu_compress, OPT.GetId(), self.OnSetCompression)
+            self.menu_compress.Append(OPT)
+            self.menu_compress.Bind(wx.EVT_MENU, self.OnSetCompression, id=OPT.GetId())
 
         # Default compression
         self.menu_compress.Check(ident.ZIP_BZ2, True)
@@ -223,15 +223,15 @@ class MainWindow(wx.Frame):
 
         if GetExecutable("xdg-open"):
             mitm_logs_open = wx.MenuItem(menu_opt, menuid.OPENLOGS, GT("Open logs directory"))
-            menu_opt.AppendItem(mitm_logs_open)
+            menu_opt.Append(mitm_logs_open)
 
-            wx.EVT_MENU(menu_opt, menuid.OPENLOGS, self.OnLogDirOpen)
+            menu_opt.Bind(wx.EVT_MENU, self.OnLogDirOpen, id=menuid.OPENLOGS)
 
         # *** OS distribution names cache *** #
 
         opt_distname_cache = wx.MenuItem(menu_opt, menuid.DIST, GT("Update dist names cache"),
                 GT("Creates/Updates list of distribution names for changelog page"))
-        menu_opt.AppendItem(opt_distname_cache)
+        menu_opt.Append(opt_distname_cache)
 
         # ----- Help Menu
         menu_help = wx.Menu()
@@ -241,7 +241,7 @@ class MainWindow(wx.Frame):
                 GT("Check if a new version is available for download"))
         mitm_update.SetBitmap(ICON_LOGO)
 
-        menu_help.AppendItem(mitm_update)
+        menu_help.Append(mitm_update)
         menu_help.AppendSeparator()
 
         # Menu with links to the Debian Policy Manual webpages
@@ -287,17 +287,17 @@ class MainWindow(wx.Frame):
 
                 mitm = wx.MenuItem(self.menu_policy, link_id, label, url)
                 mitm.SetBitmap(icon)
-                self.menu_policy.AppendItem(mitm)
+                self.menu_policy.Append(mitm)
 
-                wx.EVT_MENU(self, link_id, self.OpenPolicyManual)
+                self.Bind(wx.EVT_MENU, self.OpenPolicyManual, id=link_id)
 
         mitm_help = wx.MenuItem(menu_help, wx.ID_HELP, GT("Help"), GT("Open a usage document"))
         mitm_about = wx.MenuItem(menu_help, wx.ID_ABOUT, GT("About"), GT("About Debreate"))
 
-        menu_help.AppendMenu(-1, GT("Reference"), self.menu_policy)
+        menu_help.Append(-1, GT("Reference"), self.menu_policy)
         menu_help.AppendSeparator()
-        menu_help.AppendItem(mitm_help)
-        menu_help.AppendItem(mitm_about)
+        menu_help.Append(mitm_help)
+        menu_help.Append(mitm_about)
 
         menubar.Append(menu_action, GT("Action"), menuid.ACTION)
 
@@ -314,7 +314,7 @@ class MainWindow(wx.Frame):
 
             menubar.Append(self.menu_debug, GT("Debug"), menuid.DEBUG)
 
-            self.menu_debug.AppendItem(wx.MenuItem(self.menu_debug, menuid.LOG, GT("Show log"),
+            self.menu_debug.Append(wx.MenuItem(self.menu_debug, menuid.LOG, GT("Show log"),
                     GT("Toggle debug log window"), kind=wx.ITEM_CHECK))
 
             if "log-window" in parsed_args_s:
@@ -323,7 +323,7 @@ class MainWindow(wx.Frame):
             self.log_window = None
 
             # Window colors
-            self.menu_debug.AppendItem(
+            self.menu_debug.Append(
                 wx.MenuItem(self.menu_debug, menuid.THEME, GT("Toggle window colors")))
 
             wx.EVT_MENU(self, menuid.THEME, self.OnToggleTheme)
@@ -338,24 +338,24 @@ class MainWindow(wx.Frame):
 
         # *** Event Handling *** #
 
-        wx.EVT_MENU(self, menuid.NEW, self.OnProjectNew)
-        wx.EVT_MENU(self, menuid.OPEN, self.OnProjectOpen)
-        wx.EVT_MENU(self, menuid.SAVE, self.OnProjectSave)
-        wx.EVT_MENU(self, menuid.SAVEAS, self.OnProjectSaveAs)
-        wx.EVT_MENU(self, menuid.QBUILD, self.OnQuickBuild)
-        wx.EVT_MENU(self, menuid.EXIT, self.OnQuit)
+        self.Bind(wx.EVT_MENU, self.OnProjectNew, id=menuid.NEW)
+        self.Bind(wx.EVT_MENU, self.OnProjectOpen, id=menuid.OPEN)
+        self.Bind(wx.EVT_MENU, self.OnProjectSave, id=menuid.SAVE)
+        self.Bind(wx.EVT_MENU, self.OnProjectSaveAs, id=menuid.SAVEAS)
+        self.Bind(wx.EVT_MENU, self.OnQuickBuild, id=menuid.QBUILD)
+        self.Bind(wx.EVT_MENU, self.OnQuit, id=menuid.EXIT)
 
-        wx.EVT_MENU(self, menuid.TOOLTIPS, self.OnToggleToolTips)
-        wx.EVT_MENU(self, menuid.DIST, self.OnUpdateDistNamesCache)
+        self.Bind(wx.EVT_MENU, self.OnToggleToolTips, id=menuid.TOOLTIPS)
+        self.Bind(wx.EVT_MENU, self.OnUpdateDistNamesCache, id=menuid.DIST)
 
-        wx.EVT_MENU(self, menuid.UPDATE, self.OnCheckUpdate)
-        wx.EVT_MENU(self, menuid.HELP, self.OnHelp)
-        wx.EVT_MENU(self, menuid.ABOUT, self.OnAbout)
+        self.Bind(wx.EVT_MENU, self.OnCheckUpdate, id=menuid.UPDATE)
+        self.Bind(wx.EVT_MENU, self.OnHelp, id=menuid.HELP)
+        self.Bind(wx.EVT_MENU, self.OnAbout, id=menuid.ABOUT)
 
         self.Bind(EVT_CHANGE_PAGE, self.OnWizardBtnPage)
 
         # Custom close event shows a dialog box to confirm quit
-        wx.EVT_CLOSE(self, self.OnQuit)
+        self.Bind(wx.EVT_CLOSE, self.OnQuit)
 
         # *** Layout *** #
 
@@ -590,8 +590,8 @@ class MainWindow(wx.Frame):
             WriteConfig("maximize", True)
 
         else:
-            WriteConfig("position", self.GetPositionTuple())
-            WriteConfig("size", self.GetSizeTuple())
+            WriteConfig("position", self.GetPosition().Get())
+            WriteConfig("size", self.GetSize().Get())
             WriteConfig("center", False)
             WriteConfig("maximize", False)
 

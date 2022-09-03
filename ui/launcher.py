@@ -5,7 +5,7 @@
 
 
 import os, shutil, wx
-from wx.combo import OwnerDrawnComboBox
+from wx.adv import OwnerDrawnComboBox
 
 from dbr.language       import GT
 from dbr.log            import DebugEnabled

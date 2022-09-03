@@ -41,11 +41,11 @@ class Page(WizardPage):
 
         lnk_video = Hyperlink(self, wx.ID_ANY, GT("Building a Debian Package with Debreate"),
                 "http://www.youtube.com/watch?v=kx4D5eL6HKE")
-        lnk_video.SetToolTipString(lnk_video.url)
+        lnk_video.SetToolTip(lnk_video.url)
 
         # *** Layout *** #
 
-        lyt_info = wx.GridSizer()
+        lyt_info = wx.GridSizer(1, 1, 0, 0)
         lyt_info.Add(self.txt_info, 1, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
 
         lyt_main = BoxSizer(wx.VERTICAL)

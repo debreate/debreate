@@ -105,15 +105,15 @@ class Page(WizardPage):
 
         # *** Event Handling *** #
 
-        wx.EVT_KEY_DOWN(self.ti_package, self.SetDepends)
-        wx.EVT_KEY_DOWN(self.ti_version, self.SetDepends)
+        self.ti_package.Bind(wx.EVT_KEY_DOWN, self.SetDepends)
+        self.ti_version.Bind(wx.EVT_KEY_DOWN, self.SetDepends)
 
         btn_add.Bind(wx.EVT_BUTTON, self.SetDepends)
         btn_append.Bind(wx.EVT_BUTTON, self.SetDepends)
         btn_remove.Bind(wx.EVT_BUTTON, self.SetDepends)
         btn_clear.Bind(wx.EVT_BUTTON, self.SetDepends)
 
-        wx.EVT_KEY_DOWN(self.lst_deps, self.SetDepends)
+        self.lst_deps.Bind(wx.EVT_KEY_DOWN, self.SetDepends)
 
         # *** Layout *** #
 

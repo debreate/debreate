@@ -33,7 +33,7 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
 
         # *** Event Handling *** #
 
-        wx.EVT_KEY_DOWN(self, self.OnSelectAll)
+        self.Bind(wx.EVT_KEY_DOWN, self.OnSelectAll)
 
 
     ## Add items to end of list
@@ -423,7 +423,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
     #
     #  FIXME: imageIndex unused; Unknown purpose, not documented
     def InsertStringItem(self, index, label, imageIndex=None):
-        self.MainCtrl.InsertStringItem(index, label)
+        self.MainCtrl.InsertItem(index, label)
 
 
     ## Checks if field is required for building
@@ -505,7 +505,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
     #
     #  FIXME: imageId unused; Unknown purpose, not documented
     def SetStringItem(self, index, col, label, imageId=None):
-        self.MainCtrl.SetStringItem(index, col, label)
+        self.MainCtrl.SetItem(index, col, label)
 
 
     ## TODO: Doxygen

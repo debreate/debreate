@@ -16,7 +16,7 @@ class StatusBar(wx.StatusBar):
         sb_style = wx.ST_SIZEGRIP
 
     def __init__(self, parent, ID=wx.ID_ANY, style=sb_style,
-                name=wx.StatusLineNameStr):
+                name="Status"):
         wx.StatusBar.__init__(self, parent, ID, style, name)
 
         parent.SetStatusBar(self)

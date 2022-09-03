@@ -164,7 +164,7 @@ class Page(WizardPage):
         lyt_main = BoxSizer(wx.VERTICAL)
         lyt_main.AddSpacer(10)
         lyt_main.Add(wx.StaticText(self, label=GT("Extra Options")), 0,
-                lyt.ALGN_LB|wx.LEFT, 5)
+                lyt.ALGN_L|wx.LEFT, 5)
         lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
         lyt_main.AddSpacer(5)
 

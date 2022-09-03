@@ -35,16 +35,16 @@ class Hyperlink(wx.Panel):
         self.FONT_HIGHLIGHT = self.text.GetFont()
         self.FONT_HIGHLIGHT.SetUnderlined(True)
 
-        wx.EVT_LEFT_DOWN(self.text, self.OnLeftClick)
-        wx.EVT_ENTER_WINDOW(self.text_bg, self.OnMouseOver)
-        wx.EVT_LEAVE_WINDOW(self.text_bg, self.OnMouseOut)
+        self.text.Bind(wx.EVT_LEFT_DOWN, self.OnLeftClick)
+        self.text_bg.Bind(wx.EVT_ENTER_WINDOW, self.OnMouseOver)
+        self.text_bg.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseOut)
 
         self.text.SetForegroundColour(wx.Colour(0, 0, 255))
 
         layout_V1 = BoxSizer(wx.VERTICAL)
-        layout_V1.AddSpacer(1, wx.EXPAND)
+        layout_V1.AddStretchSpacer(1)
         layout_V1.Add(self.text_bg, 0, wx.ALIGN_CENTER)
-        layout_V1.AddSpacer(1, wx.EXPAND)
+        layout_V1.AddStretchSpacer(1)
 
         self.SetAutoLayout(True)
         self.SetSizer(layout_V1)
@@ -71,7 +71,7 @@ class Hyperlink(wx.Panel):
 
     ## TODO: Doxygen
     def OnMouseOver(self, event=None):
-        self.SetCursor(wx.StockCursor(wx.CURSOR_HAND))
+        self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
         self.text.SetFont(self.FONT_HIGHLIGHT)
 
         if event:

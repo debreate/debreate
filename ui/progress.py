@@ -56,11 +56,11 @@ class ProgressDialog(wx.ProgressDialog):
                 lyt_main.Insert(t_index+1, self.txt_tasks, 0, wx.ALIGN_CENTER|wx.TOP, 5)
                 lyt_main.Layout()
 
-                dimensions_original = self.GetSizeTuple()
+                dimensions_original = self.GetSize().Get()
 
                 self.Fit()
 
-                dimensions_new = self.GetSizeTuple()
+                dimensions_new = self.GetSize().Get()
 
                 # Preserve original width
                 self.SetSize(wx.Size(dimensions_original[0], dimensions_new[1]))
@@ -70,7 +70,7 @@ class ProgressDialog(wx.ProgressDialog):
             self.CenterOnParent()
 
         # Find the initial position to test if dialog has been moved by user
-        self.initial_posY = self.GetPositionTuple()[1]
+        self.initial_posY = self.GetPosition().Get()[1]
 
         self.user_moved = False
 
@@ -222,16 +222,16 @@ class ProgressDialog(wx.ProgressDialog):
     #  FIXME: Dialog could potentially resize outsize of display boundaries
     def UpdateSize(self):
         if not self.user_moved:
-            if self.GetPositionTuple()[1] != self.initial_posY:
+            if self.GetPosition().Get()[1] != self.initial_posY:
                 self.user_moved = True
 
         resize = True
-        size = self.GetSizeTuple()
+        size = self.GetSize().Get()
         parent = self.GetParent()
 
         if parent:
             # Don't resize if dialog is already as big or bigger than parent
-            if size[0] >= parent.GetSizeTuple()[0]:
+            if size[0] >= parent.GetSize().Get()[0]:
                 resize = False
 
         if resize:
@@ -239,12 +239,12 @@ class ProgressDialog(wx.ProgressDialog):
             target_width = 0
 
             for C in children:
-                child_width = C.GetSizeTuple()[0]
+                child_width = C.GetSize().Get()[0]
                 if child_width > target_width:
                     target_width = child_width
 
             if children:
-                padding_x = children[0].GetPositionTuple()[0]
+                padding_x = children[0].GetPosition().Get()[0]
 
                 # Add padding
                 target_width += (padding_x * 2)

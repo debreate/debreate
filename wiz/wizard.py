@@ -47,13 +47,16 @@ from wiz.helper         import GetMenu
 class Wizard(wx.Panel):
     ## Constructor
     #
+    #  FIXME: `pagelist` param unused?
+    #
     #  \param parent
     #    Parent <b><i>wx.Window</i></b> instance
     #  \param pageList
     #    <b><i>List</i></b> of wiz.wizard.WizardPage instances to initialize
     #    wizard with
     def __init__(self, parent, pageList=None):
-        wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
+        # ~ wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
+        wx.Panel.__init__(self, parent, wx.ID_ANY)
 
         testing = "alpha" in GetTestList()
 
@@ -69,7 +72,7 @@ class Wizard(wx.Panel):
         if testing:
             # Help button
             btn_help = CreateButton(self, btnid.HELP)
-            btn_help.SetToolTipString(GT("Page help"))
+            btn_help.SetToolTip(GT("Page help"))
 
         # A Header for the wizard
         pnl_title = wx.Panel(self, style=wx.RAISED_BORDER)
@@ -111,7 +114,7 @@ class Wizard(wx.Panel):
         # *** Layout *** #
 
         # Position the text in the header
-        lyt_title = wx.GridSizer(1, 1)
+        lyt_title = wx.GridSizer(1, 1, 0, 0)
         lyt_title.Add(self.txt_title, 0, wx.ALIGN_CENTER|wx.ALIGN_CENTER_VERTICAL)
 
         pnl_title.SetSizer(lyt_title)
@@ -186,12 +189,12 @@ class Wizard(wx.Panel):
         # Add to page menu
         page_menu = GetMenu(menuid.PAGE)
 
-        page_menu.AppendItem(
+        page_menu.Append(
             wx.MenuItem(page_menu, page.Id, page.GetTitle(),
             kind=wx.ITEM_RADIO))
 
         # Bind menu event to ID
-        wx.EVT_MENU(main_window, page.Id, main_window.OnMenuChangePage)
+        main_window.Bind(wx.EVT_MENU, main_window.OnMenuChangePage, id=page.Id)
 
 
     ## Handles displaying a new page when commanded
@@ -529,7 +532,7 @@ class Wizard(wx.Panel):
                 # Add pages to main menu
                 page_menu = main_window.GetMenu(menuid.PAGE)
 
-                page_menu.AppendItem(
+                page_menu.Append(
                     wx.MenuItem(page_menu, page_id, PAGE.GetTitle(),
                     kind=wx.ITEM_RADIO))
 

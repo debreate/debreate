@@ -211,11 +211,11 @@ class DirectoryTree(wx.TreeCtrl):
         mitm_rename = wx.MenuItem(self.ctx_menu, menuid.RENAME, GT("Rename"))
         mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT("Refresh"))
 
-        self.ctx_menu.AppendItem(mitm_add)
-        self.ctx_menu.AppendItem(mitm_expand)
-        self.ctx_menu.AppendItem(mitm_rename)
+        self.ctx_menu.Append(mitm_add)
+        self.ctx_menu.Append(mitm_expand)
+        self.ctx_menu.Append(mitm_rename)
         self.ctx_menu.AppendSeparator()
-        self.ctx_menu.AppendItem(mitm_refresh)
+        self.ctx_menu.Append(mitm_refresh)
 
         # FIXME: Hack
         self.trash = False
@@ -231,7 +231,7 @@ class DirectoryTree(wx.TreeCtrl):
         # *** Event handlers *** #
 
         self.Bind(wx.EVT_LEFT_DCLICK, self.OnDoubleClick)
-        wx.EVT_KEY_DOWN(self, self.OnDoubleClick)
+        self.Bind(wx.EVT_KEY_DOWN, self.OnDoubleClick)
         self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
 
         self.Bind(wx.EVT_TREE_ITEM_EXPANDED, self.OnExpand)
@@ -241,10 +241,10 @@ class DirectoryTree(wx.TreeCtrl):
 
         self.Bind(wx.EVT_CONTEXT_MENU, self.OnContextMenu)
 
-        wx.EVT_MENU(self, menuid.EXPAND, self.OnMenuSelect)
-        wx.EVT_MENU(self, menuid.RENAME, self.OnMenuSelect)
-        wx.EVT_MENU(self, wx.ID_DELETE, self.OnMenuSelect)
-        wx.EVT_MENU(self, wx.ID_REFRESH, self.OnRefresh)
+        self.Bind(wx.EVT_MENU, self.OnMenuSelect, id=menuid.EXPAND)
+        self.Bind(wx.EVT_MENU, self.OnMenuSelect, id=menuid.RENAME)
+        self.Bind(wx.EVT_MENU, self.OnMenuSelect, id=wx.ID_DELETE)
+        self.Bind(wx.EVT_MENU, self.OnRefresh, id=wx.ID_REFRESH)
 
         self.Bind(wx.EVT_TREE_END_LABEL_EDIT, self.OnEndLabelEdit)
 

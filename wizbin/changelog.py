@@ -116,7 +116,7 @@ class Page(WizardPage):
         LEFT_CENTER = wx.ALIGN_LEFT|wx.ALIGN_CENTER_VERTICAL
         RIGHT_CENTER = wx.ALIGN_RIGHT|wx.ALIGN_CENTER_VERTICAL
 
-        lyt_info = wx.FlexGridSizer(2, 6)
+        lyt_info = wx.FlexGridSizer(2, 6, 0, 0)
 
         lyt_info.AddGrowableCol(1)
         lyt_info.AddGrowableCol(3)
@@ -157,7 +157,7 @@ class Page(WizardPage):
         lyt_main.AddSpacer(10)
         lyt_main.Add(lyt_details, 1, wx.EXPAND|lyt.PAD_LR, 5)
         lyt_main.Add(wx.StaticText(self, label="Changelog Output"),
-                0, LEFT_BOTTOM|lyt.PAD_LT, 5)
+                0, lyt.ALGN_L|lyt.PAD_LT, 5)
         lyt_main.Add(self.dsp_changes, 1, wx.EXPAND|lyt.PAD_LR|wx.BOTTOM, 5)
 
         self.SetAutoLayout(True)
