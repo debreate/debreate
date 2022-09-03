@@ -52,7 +52,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #  Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.SCRIPTS)
 
@@ -307,7 +307,7 @@ class Page(WizardPage):
   #  FIXME: Should be done in DebianScript class method???
   #
   #  \param filename
-  #  File path to open
+  #      File path to open
   def ImportFromFile(self, filename):
     Logger.Debug(__name__, GT("Importing script: {}").format(filename))
 
@@ -465,7 +465,7 @@ class Page(WizardPage):
   ## Sets the page's fields
   #
   #  \param data
-  #  Text to parse for field values
+  #      Text to parse for field values
   def Set(self, data):
     chk_preinst = self.script_objects[0][1]
     chk_postinst = self.script_objects[1][1]
@@ -515,17 +515,18 @@ class Page(WizardPage):
 #
 #  A script's filename is one of 'preinst', 'prerm',
 #  'postinst', or 'postrm'. Scripts are stored in the
-#  (FIXME: Don't remember section name) section of the package & are executed in the
-#  order dictated by the naming convention:
-#  'Pre Install', 'Pre Remove/Uninstall',
-#  'Post Install', & 'Post Remove/Uninstall'.
+#  (FIXME: Don't remember section name) section of the
+#  package & are executed in the order dictated by the
+#  naming convention:
+#    'Pre Install', 'Pre Remove/Uninstall',
+#    'Post Install', & 'Post Remove/Uninstall'.
 class DebianScript(wx.Panel):
   ## Constructor
   #
   #  \param parent
-  #  The <b><i>wx.Window</i></b> parent instance
+  #      The <b><i>wx.Window</i></b> parent instance
   #  \param scriptId
-  #  Unique <b><i>integer</i></b> identifier for script
+  #      Unique <b><i>integer</i></b> identifier for script
   def __init__(self, parent, scriptId):
     wx.Panel.__init__(self, parent, scriptId)
 
@@ -567,7 +568,7 @@ class DebianScript(wx.Panel):
   ## Retrieves the filename to use for exporting
   #
   #  \return
-  #  Script filename
+  #      Script filename
   def GetFilename(self):
     return self.FileName
 
@@ -575,7 +576,7 @@ class DebianScript(wx.Panel):
   ## Retrieves the script's name for display
   #
   #  \return
-  #  <b><i>String</i></b> representation of script's name
+  #      <b><i>String</i></b> representation of script's name
   def GetName(self):
     return self.ScriptName
 
@@ -613,7 +614,7 @@ class DebianScript(wx.Panel):
   #  the user want to export the script.
   #
   #  \return
-  #  <b><i>True</i></b> if text area is not empty, <b><i>False</i></b> otherwise
+  #      <b><i>True</i></b> if text area is not empty, <b><i>False</i></b> otherwise
   def IsOkay(self):
     return not TextIsEmpty(self.ScriptBody.GetValue())
 
@@ -666,7 +667,7 @@ class DebianScript(wx.Panel):
   ## Fills the script
   #
   #  \param value
-  #  Text to be entered into the script body
+  #      Text to be entered into the script body
   def SetValue(self, value):
     self.ScriptBody.SetValue(value)
 
