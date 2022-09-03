@@ -56,7 +56,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #  Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.BUILD)
 
@@ -162,13 +162,13 @@ class Page(WizardPage):
   ## Method that builds the actual Debian package
   #
   #  \param task_list
-  #  	\b \e dict : Task string IDs & page data
+  #      \b \e dict : Task string IDs & page data
   #  \param build_path
-  #  	\b \e str : Directory where .deb will be output
+  #      \b \e str : Directory where .deb will be output
   #  \param filename
-  #  	\b \e str : Basename of output file without .deb extension
+  #      \b \e str : Basename of output file without .deb extension
   #  \return
-  #  	\b \e dbrerror : SUCCESS if build completed successfully
+  #      \b \e dbrerror : SUCCESS if build completed successfully
   def Build(self, task_list, build_path, filename):
     # Declare this here in case of error before progress dialog created
     build_progress = None
@@ -617,7 +617,7 @@ class Page(WizardPage):
   ## TODO: Doxygen
   #
   #  \return
-  #  \b \e tuple containing Return code & build details
+  #      \b \e tuple containing Return code & build details
   def BuildPrep(self):
     # Declare these here in case of error before dialogs created
     save_dia = None
@@ -787,8 +787,9 @@ class Page(WizardPage):
   #
   #  Shows a success dialog if installed. Otherwise shows an
   #  error dialog.
+  #
   #  \param package
-  #  	\b \e str : Path to package to be installed
+  #      \b \e str : Path to package to be installed
   def InstallPackage(self, package):
     system_installer = GetSystemInstaller()
 
@@ -969,8 +970,8 @@ class Page(WizardPage):
   ## TODO: Doxygen
   #
   #  TODO: Use string names in project file but retain
-  #  	compatibility with older projects that use
-  #  	integer values.
+  #        compatibility with older projects that use
+  #        integer values.
   def Set(self, data):
     # ???: Redundant
     self.Reset()

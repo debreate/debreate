@@ -329,7 +329,7 @@ class Page(WizardPage):
   ## Checks if one or more scripts can be exported
   #
   #  \return
-  #  <b><i>True</i></b> if page is ready for export
+  #      <b><i>True</i></b> if page is ready for export
   def IsOkay(self):
     for DS, CHK, RB in self.script_objects:
       if DS.IsChecked():

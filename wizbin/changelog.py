@@ -42,7 +42,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #  Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.CHANGELOG)
 
@@ -209,7 +209,7 @@ class Page(WizardPage):
   #  The output is a text file that uses sections defined by braces ([, ])
   #
   #  \return
-  #  <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
+  #      <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
   def Get(self):
     target = self.pnl_target.GetPath()
     if target == self.pnl_target.GetDefaultPath():
@@ -221,7 +221,7 @@ class Page(WizardPage):
   ## Retrieves plain text of the changelog field
   #
   #  \return
-  #  Formatted changelog text
+  #      Formatted changelog text
   def GetChangelog(self):
     return self.dsp_changes.GetValue()
 
@@ -241,7 +241,7 @@ class Page(WizardPage):
   ## Checks the page's fields for exporting
   #
   #  \return
-  #  <b><i>False</i></b> if page cannot be exported
+  #      <b><i>False</i></b> if page cannot be exported
   def IsOkay(self):
     return not TextIsEmpty(self.dsp_changes.GetValue())
 
@@ -272,7 +272,7 @@ class Page(WizardPage):
   ## Sets values of page's fields with given input
   #
   #  \param data
-  #  Text to parse for values
+  #      Text to parse for values
   def Set(self, data):
     changelog = data.split("\n")
     target = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]

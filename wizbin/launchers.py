@@ -46,7 +46,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #  Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.MENU) #, name=GT("Menu Launcher"))
 
@@ -550,9 +550,9 @@ class Page(WizardPage):
   ## Fills out launcher information from loaded file
   #
   #  \param data
-  #  Information to fill out menu launcher fields
+  #      Information to fill out menu launcher fields
   #  \param enabled
-  #  \b \e bool : Launcher will be flagged for export if True
+  #      \b \e bool : Launcher will be flagged for export if True
   def SetLauncherData(self, data, enabled=True):
     # Make sure we are dealing with a list
     if isinstance(data, str):

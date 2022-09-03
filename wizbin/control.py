@@ -44,7 +44,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #  Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.CONTROL)
 
@@ -274,8 +274,8 @@ class Page(WizardPage):
   ## Retrieves information for control file export
   #
   #  \return
-  #  A <b><i>tuple</i></b> containing the filename & a string representation
-  #  of control file formatted for text output
+  #      A <b><i>tuple</i></b> containing the filename & a string representation
+  #      of control file formatted for text output
   def Get(self):
     return self.GetCtrlInfo()
 
@@ -283,7 +283,7 @@ class Page(WizardPage):
   ## Retrieves field values & formats into plain text for output to file
   #
   #  \return
-  #  Control file text
+  #      Control file text
   def GetCtrlInfo(self):
     pg_depends = GetPage(pgid.DEPENDS)
 
@@ -428,7 +428,7 @@ class Page(WizardPage):
   #  TODO: Use 'Set'/'SetPage' method
   #
   #  \param filename
-  #  File path to open
+  #      File path to open
   def ImportFromFile(self, filename):
     Logger.Debug(__name__, GT("Importing file: {}".format(filename)))
 
@@ -506,9 +506,9 @@ class Page(WizardPage):
   ## Fills page's fields with input data
   #
   #  \param data
-  #  Text to be parsed for values
+  #      Text to be parsed for values
   #  \return
-  #  Leftover text to fill out 'Dependecies' page fields
+  #      Leftover text to fill out 'Dependecies' page fields
   def Set(self, data):
     # Decode to unicode string if input is byte string
     if isinstance(data, bytes):
