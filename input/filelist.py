@@ -5,6 +5,7 @@
 
 
 import os, wx
+
 from wx.lib.mixins.listctrl import TextEditMixin
 
 from dbr.colors       import COLOR_executable

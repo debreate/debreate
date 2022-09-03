@@ -5,6 +5,7 @@
 
 
 import subprocess, os, wx
+
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
 
