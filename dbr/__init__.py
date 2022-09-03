@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package dbr
 #
 #  User interface helper modules

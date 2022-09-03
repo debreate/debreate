@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package wizsrc.control
 
 # MIT licensing
@@ -21,11 +19,11 @@ class Page(WizardPage):
     #    Parent <b><i>wx.Window</i></b> instance
     def __init__(self, parent):
         WizardPage.__init__(self, parent, pgid.CONTROL)
-        
+
         # *** Layout *** #
-        
+
         lyt_main = BoxSizer(wx.VERTICAL)
-        
+
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
         self.Layout()

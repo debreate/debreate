@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.fileio
 #
 #  File I/O operations
@@ -27,11 +25,11 @@ from globals.strings    import GS
 def AppendFile(path, contents, noStrip=None, inputOnly=False):
     # Do not append to non-existent file
     if os.path.isfile(path):
-        contents = u'{}\n{}'.format(ReadFile(path, noStrip=noStrip), contents)
-    
+        contents = "{}\n{}".format(ReadFile(path, noStrip=noStrip), contents)
+
     if inputOnly:
         noStrip = None
-    
+
     WriteFile(path, contents, noStrip)
 
 
@@ -47,21 +45,21 @@ def AppendFile(path, contents, noStrip=None, inputOnly=False):
 #  \param noStrip
 #    \b \e String of leading & trailing characters to not strip
 def ReadFile(path, split=False, convert=tuple, noStrip=None):
-    strip_chars = u' \t\n\r'
+    strip_chars = " \t\n\r"
     if noStrip:
         for C in noStrip:
-            strip_chars = strip_chars.replace(C, u'')
-    
+            strip_chars = strip_chars.replace(C, "")
+
     if not os.path.isfile(path):
         return
-    
-    FILE_BUFFER = codecs.open(path, u'r', u'utf-8')
-    contents = u''.join(FILE_BUFFER).strip(strip_chars)
+
+    FILE_BUFFER = codecs.open(path, "r", "utf-8")
+    contents = "".join(FILE_BUFFER).strip(strip_chars)
     FILE_BUFFER.close()
-    
+
     if split:
-        contents = convert(contents.split(u'\n'))
-    
+        contents = convert(contents.split("\n"))
+
     # FIXME: Should return contents even if it is empty string or list
     if contents:
         return contents
@@ -79,34 +77,34 @@ def ReadFile(path, split=False, convert=tuple, noStrip=None):
 #  \param noStrip
 #    \b \e String of leading & trailing characters to not strip
 def WriteFile(path, contents, noStrip=None):
-    strip_chars = u' \t\n\r'
+    strip_chars = " \t\n\r"
     if noStrip:
         for C in noStrip:
-            strip_chars = strip_chars.replace(C, u'')
-    
+            strip_chars = strip_chars.replace(C, "")
+
     # Ensure we are dealing with a string
     if isinstance(contents, (tuple, list)):
-        contents = u'\n'.join(contents)
-    
+        contents = "\n".join(contents)
+
     contents = contents.strip(strip_chars)
-    
-    if u'/' in path:
+
+    if "/" in path:
         target_dir = os.path.dirname(path)
-    
+
     else:
         target_dir = os.getcwd()
-        path = u'{}/{}'.format(target_dir, path)
-    
+        path = "{}/{}".format(target_dir, path)
+
     if not os.path.isdir(target_dir):
         os.makedirs(target_dir)
-    
-    FILE_BUFFER = codecs.open(path, u'w', encoding=u'utf-8')
+
+    FILE_BUFFER = codecs.open(path, "w", encoding="utf-8")
     FILE_BUFFER.write(contents)
     FILE_BUFFER.close()
-    
+
     if not os.path.isfile(path):
         return False
-    
+
     return True
 
 
@@ -118,19 +116,19 @@ def WriteFile(path, contents, noStrip=None):
 #    Filter files with given permission flags
 def GetFiles(path, flag=None):
     file_list = []
-    
+
     for PATH, DIRS, FILES in os.walk(path):
         for F in FILES:
             file_path = ConcatPaths((path, F))
-            
+
             if os.path.isfile(file_path):
                 # Don't add files that do not match 'flag' attributes
                 if flag:
                     if not os.access(file_path, flag):
                         continue
-                
+
                 file_list.append(F)
-    
+
     return sorted(file_list, key=GS.lower)
 
 

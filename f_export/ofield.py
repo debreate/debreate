@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package f_export.ofield
 
 # MIT licensing
@@ -13,13 +11,13 @@ class OutputField:
         self.OutLabel = outLabel
         if self.OutLabel == None:
             self.OutLabel = self.GetName()
-    
-    
+
+
     ## Retrieves label for exporting to text file
     def GetOutLabel(self):
         return self.OutLabel
-    
-    
+
+
     ## Sets the output label
     #
     #  \param outLabel

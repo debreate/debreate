@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package ui.menu
 
 # MIT licensing
@@ -24,13 +22,13 @@ class MenuBar(wx.MenuBar):
     #    Menu bar style represented by an <b><i>integer</i></b> value
     def __init__(self, parent=None, style=0):
         wx.MenuBar.__init__(self, style)
-        
+
         self.id_list = []
-        
+
         if isinstance(parent, wx.Frame):
             parent.SetMenuBar(self)
-    
-    
+
+
     ## Append a menu to the end of menu bar
     #
     #  \param menu
@@ -41,10 +39,10 @@ class MenuBar(wx.MenuBar):
     #    Unique <b><i>integer</i></b> identifier to store for menu
     def Append(self, menu, title, menuId):
         self.id_list.append(menuId)
-        
+
         return wx.MenuBar.Append(self, menu, title)
-    
-    
+
+
     ## Finds a wx.Menu by ID
     #
     #  \param menuId
@@ -53,10 +51,10 @@ class MenuBar(wx.MenuBar):
     #    The <b><i>wx.Menu</i></b> with using identifier
     def GetMenuById(self, menuId):
         m_index = self.id_list.index(menuId)
-        
+
         return self.GetMenu(m_index)
-    
-    
+
+
     ## Insert a menu to a specified position in the menu bar
     #
     #  \param index
@@ -69,7 +67,7 @@ class MenuBar(wx.MenuBar):
     #    Unique <b><i>integer</i></b> identifier to store for menu
     def Insert(self, index, menu, title, menuId):
         self.id_list.insert(index, menuId)
-        
+
         return wx.MenuBar.Insert(self, index, menu, title)
 
 
@@ -85,27 +83,27 @@ class PanelMenu(wx.StaticText):
     #    Text label displayed for menu item
     #  \param name
     #    The menu's name attribute
-    def __init__(self, parent=None, winId=wx.ID_ANY, label=wx.EmptyString, name=u'menu'):
+    def __init__(self, parent=None, winId=wx.ID_ANY, label=wx.EmptyString, name="menu"):
         if not parent:
             parent = GetMainWindow()
-        
+
         wx.StaticText.__init__(self, parent, winId, label, name=name)
-        
+
         self.fg_orig = self.GetForegroundColour()
-        
+
         # Begin with deselected state
         self.Selected = False
-        
+
         self.Menu = wx.Menu()
-        
+
         # *** Event Handling *** #
-        
+
         self.Bind(wx.EVT_LEFT_DOWN, self.OnSelect)
-        
+
         self.Bind(wx.EVT_MENU, self.OnMenuClose)
         self.Bind(wx.EVT_MENU_CLOSE, self.OnMenuClose)
-    
-    
+
+
     ## Append an item the the menu
     #
     #  \param menuId
@@ -114,45 +112,45 @@ class PanelMenu(wx.StaticText):
     #    Text label displayed for menu item
     def Append(self, menuId, label):
         self.Menu.Append(menuId, label)
-    
-    
+
+
     ## Checks if menu is in selected state
     def IsSelected(self):
         return self.Selected
-    
-    
+
+
     ## Handles action to take when a menu is closed/collapsed
     def OnMenuClose(self, event=None):
         self.Select(False)
-        
+
         if event:
             event.Skip()
-    
-    
+
+
     ## Passes the event to be handled by the parent instance
     def OnSelect(self, event=None):
         if event:
             # Send event to parent PanelMenuBar instance
             wx.PostEvent(self.Parent, event)
-    
-    
+
+
     ## Sets menu selected state
-    #  
+    #
     #  \param selected
     #    Sets state to selected value
     def Select(self, select=True):
         if select and not self.Selected:
             self.SetForegroundColour(wx.WHITE)
             self.Selected = True
-            
+
             self.PopupMenu(self.Menu)
-        
+
         elif not select and self.Selected:
             # Reset to deselected state
             self.SetForegroundColour(self.fg_orig)
             self.Selected = False
-    
-    
+
+
     ## Toggles selected state
     def ToggleSelected(self):
         self.Select(not self.Selected)
@@ -166,23 +164,23 @@ class PanelMenuBar(BorderedPanel):
     #    <b><i>wx.Window</i></b> parent instance
     #  \param winId
     #    <b><i>Integer</i></b> identifier used for menu bar
-    def __init__(self, parent, winId=wx.ID_ANY, name=u'menubar'):
+    def __init__(self, parent, winId=wx.ID_ANY, name="menubar"):
         BorderedPanel.__init__(self, parent, winId, name=name)
-        
+
         self.Padding = 5
-        
+
         # *** Event Handling *** #
-        
+
         self.Bind(wx.EVT_LEFT_DOWN, self.OnSelect)
-        
+
         # *** Layout *** #
-        
+
         lyt_main = BoxSizer(wx.HORIZONTAL)
-        
+
         self.SetAutoLayout(True)
         self.SetSizer(lyt_main)
-    
-    
+
+
     ## Create a PanelMenu instance & add it to menu bar
     #
     #  \param label
@@ -192,8 +190,8 @@ class PanelMenuBar(BorderedPanel):
     def Add(self, label, winId=wx.ID_ANY):
         new_menu = PanelMenu(self, winId, label)
         self.AddItem(new_menu)
-    
-    
+
+
     ## Add a PanelMenu instance to menu bar
     #
     #  \param menu
@@ -203,26 +201,26 @@ class PanelMenuBar(BorderedPanel):
     def AddItem(self, menu, label=None):
         if label:
             menu.SetLabel(label)
-        
+
         if not menu.Parent == self:
             menu.Reparent(self)
-        
+
         lyt = self.GetSizer()
         lyt.Add(menu, 0, wx.ALL, self.Padding)
-        
+
         self.Layout()
-    
-    
+
+
     ## Alias for ui.menu.PanelMenuBar.Add
     def Append(self, label, winId=wx.ID_ANY):
         self.Add(label, winId)
-    
-    
+
+
     ## Alias for ui.menu.PanelMenuBar.AddItem
     def AppendItem(self, menu, label=None):
         self.AddItem(menu, label)
-    
-    
+
+
     ## Find a menu within the menu bar that matches a given ID
     #
     #  \param winId
@@ -233,8 +231,8 @@ class PanelMenuBar(BorderedPanel):
         for M in self.GetMenuList():
             if M.GetId() == win_id:
                 return M
-    
-    
+
+
     ## Find a menu within the menu bar at given index
     #
     #  \param index
@@ -243,8 +241,8 @@ class PanelMenuBar(BorderedPanel):
     #    <b><i>ui.menu.PanelMenu</i></b> instance at menu index
     def GetMenuByIndex(self, index):
         return self.GetMenuList()[index]
-    
-    
+
+
     ## Find a menu within the menu bar that matches a given label
     #
     #  \param label
@@ -255,8 +253,8 @@ class PanelMenuBar(BorderedPanel):
         for M in self.GetMenuList():
             if M.GetLabel() == label:
                 return M
-    
-    
+
+
     ## Find the index within the menu bar of a give item
     #
     #  \param menu
@@ -266,19 +264,19 @@ class PanelMenuBar(BorderedPanel):
     def GetMenuIndex(self, menu):
         if menu == None:
             return None
-        
+
         menu_list = self.GetMenuList()
-        
+
         for M in menu_list:
             if M == menu:
                 return menu_list.index(M)
-    
-    
+
+
     ## Retrieve number of menus in bar
     def GetMenuCount(self):
         return len(self.GetMenuList())
-    
-    
+
+
     ## Retrieves a standard list of all menus in menu bar
     #
     #  FIXME: Need a failsafe for non-PanelMenu objects???
@@ -287,17 +285,17 @@ class PanelMenuBar(BorderedPanel):
     #    <b><i>Tuple</i></b> list of found menus
     def GetMenuList(self):
         menu_list = []
-        
+
         # Convert wx.SizerItem to PanelMenu
         for SI in self.GetSizer().GetChildren():
             menu = SI.GetWindow()
-            
+
             if isinstance(menu, PanelMenu):
                 menu_list.append(menu)
-        
+
         return tuple(menu_list)
-    
-    
+
+
     ## Action to take when menu is selected
     #
     #  FIXME: Needs to find the menu item that was selected
@@ -305,7 +303,7 @@ class PanelMenuBar(BorderedPanel):
     def OnSelect(self, event=None):
         if event:
             # DEBUG: Start
-            print(u'DEBUGGING: PanelMenuBar.OnSelect')
-            
+            print("DEBUGGING: PanelMenuBar.OnSelect")
+
             self.GetMenuByIndex(0).ToggleSelected()
             # DEBUG: End

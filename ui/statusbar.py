@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package ui.statusbar
 
 # MIT licensing
@@ -13,12 +11,12 @@ import wx
 class StatusBar(wx.StatusBar):
     if wx.MAJOR_VERSION > 2:
         sb_style = wx.STB_DEFAULT_STYLE
-    
+
     else:
         sb_style = wx.ST_SIZEGRIP
-    
+
     def __init__(self, parent, ID=wx.ID_ANY, style=sb_style,
                 name=wx.StatusLineNameStr):
         wx.StatusBar.__init__(self, parent, ID, style, name)
-        
+
         parent.SetStatusBar(self)

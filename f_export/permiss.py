@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package f_export.permiss
 
 # MIT licensing
@@ -20,14 +18,14 @@ import os
 def SetFileExecutable(target, executable=True):
     if os.path.isfile(target):
         if executable:
-            mode = 0755
-        
+            mode = 0o0755
+
         else:
-            mode = 0644
-        
+            mode = 0o0644
+
         os.chmod(target, mode)
-        
+
         if os.access(target, mode):
             return True
-    
+
     return False

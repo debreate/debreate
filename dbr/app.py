@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package dbr.app
 
 # MIT licensing
@@ -14,18 +12,18 @@ class DebreateApp(wx.App):
     ## Constructor
     def __init__(self):
         wx.App.__init__(self)
-        
+
         self.MainWindow = None
-    
-    
+
+
     ## Retrieves the main window
     #
     #  \return
     #    <b><i>main.MainWindow</i></b> instance
     def GetMainWindow(self):
         return self.MainWindow
-    
-    
+
+
     ## Retrieves the wizard
     #
     #  \return
@@ -33,8 +31,8 @@ class DebreateApp(wx.App):
     def GetWizard(self):
         if self.MainWindow:
             return self.MainWindow.GetWizard()
-    
-    
+
+
     ## Set the main window instance
     #
     #  \param window

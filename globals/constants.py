@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.constants
-#  
+#
 #  Global variables used throughout the application & should remain constant.
 #  TODO: Rename or delete
 
@@ -21,26 +19,26 @@ from globals.paths  import PATH_app
 # *** Debreate Information *** #
 ## Determins if the application is running as portable or installed
 INSTALLED = False
-if os.path.isfile(u'{}/INSTALLED'.format(PATH_app)):
+if os.path.isfile("{}/INSTALLED".format(PATH_app)):
     INSTALLED = True
 
 def GetPrefix():
     global PATH_app, INSTALLED
-    
+
     if not INSTALLED:
         return PATH_app
-    
-    lines = ReadFile(u'{}/INSTALLED'.format(PATH_app), split=True)
-    
+
+    lines = ReadFile("{}/INSTALLED".format(PATH_app), split=True)
+
     for L in lines:
-        if u'=' in L:
-            key = L.split(u'=')
+        if "=" in L:
+            key = L.split("=")
             value = key[1]
             key = key[0]
-            
-            if key.lower() == u'prefix':
+
+            if key.lower() == "prefix":
                 return value
-    
+
     return PATH_app
 
 
@@ -55,5 +53,5 @@ DEFAULT_POS = (0, 0)
 FTYPE_EXE = wx.NewId()
 
 file_types_defs = {
-    FTYPE_EXE: GT(u'script/executable'),
+    FTYPE_EXE: GT("script/executable"),
 }

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package dbr.font
 
 
@@ -28,10 +26,10 @@ MONOSPACED_MD = wx.Font(SIZE_MD, wx.FONTFAMILY_TELETYPE,
 MONOSPACED_LG = wx.Font(SIZE_LG, wx.FONTFAMILY_TELETYPE,
                              wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
-MONOSPACED_SM.name = u'monospaced_sm'
-MONOSPACED_MS.name = u'monospaced_ms'
-MONOSPACED_MD.name = u'monospaced_md'
-MONOSPACED_LG.name = u'monospaced_lg'
+MONOSPACED_SM.name = "monospaced_sm"
+MONOSPACED_MS.name = "monospaced_ms"
+MONOSPACED_MD.name = "monospaced_md"
+MONOSPACED_LG.name = "monospaced_lg"
 
 
 # Tooltip font

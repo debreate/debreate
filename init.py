@@ -1,9 +1,8 @@
-#! /usr/bin/env python2.7
-# -*- coding: utf-8 -*-
+#! /usr/bin/env python3
 
 ## \page init.py Initialization Script
 #  Script to set configurations and launch Debreate
-#  
+#
 #  Checks if the config file exists in ~/.config/debreate. If
 #  not, a new file will be created (~/.config/debreate/config).
 #  If the config file already exists but is corrupted, it will
@@ -33,58 +32,58 @@ parsed_path = GetParsedPath()
 
 
 # Compiles python source into bytecode
-if u'compile' in parsed_commands:
+if "compile" in parsed_commands:
     import compileall, errno
-    
-    
+
+
     compile_dirs = (
-        u'dbr',
-        u'globals',
-        u'wizbin',
+        "dbr",
+        "globals",
+        "wizbin",
         )
-    
+
     if not os.access(PATH_app, os.W_OK):
-        print(u'ERROR: No write privileges for {}'.format(PATH_app))
+        print("ERROR: No write privileges for {}".format(PATH_app))
         sys.exit(errno.EACCES)
-    
-    print(u'Compiling Python modules (.py) to bytecode (.pyc) ...\n')
-    
-    print(u'Compiling root directory: {}'.format(PATH_app))
+
+    print("Compiling Python modules (.py) to bytecode (.pyc) ...\n")
+
+    print("Compiling root directory: {}".format(PATH_app))
     for F in os.listdir(PATH_app):
-        if os.path.isfile(F) and F.endswith(u'.py') and F != u'init.py':
+        if os.path.isfile(F) and F.endswith(".py") and F != "init.py":
             F = ConcatPaths((PATH_app, F))
             compileall.compile_file(F)
-    
+
     print
-    
+
     for D in os.listdir(PATH_app):
         D = ConcatPaths((PATH_app, D))
         if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
-            print(u'Compiling directory: {}'.format(D))
+            print("Compiling directory: {}".format(D))
             compileall.compile_dir(D)
             print
-    
+
     sys.exit(0)
 
 
-if u'clean' in parsed_commands:
+if "clean" in parsed_commands:
     import errno
-    
-    
+
+
     if not os.access(PATH_app, os.W_OK):
-        print(u'ERROR: No write privileges for {}'.format(PATH_app))
+        print("ERROR: No write privileges for {}".format(PATH_app))
         sys.exit(errno.EACCES)
-    
-    print(u'Cleaning Python bytecode (.pyc) ...\n')
-    
+
+    print("Cleaning Python bytecode (.pyc) ...\n")
+
     for ROOT, DIRS, FILES in os.walk(PATH_app):
         for F in FILES:
             F = ConcatPaths((ROOT, F))
-            
-            if os.path.isfile(F) and F.endswith(u'.pyc'):
-                print(u'Removing file: {}'.format(F))
+
+            if os.path.isfile(F) and F.endswith(".pyc"):
+                print("Removing file: {}".format(F))
                 os.remove(F)
-    
+
     sys.exit(0)
 
 
@@ -93,24 +92,24 @@ import wxversion
 
 if u'legacy' in parsed_commands:
     try:
-        wxversion.select([u'2.8'])
-    
+        wxversion.select(["2.8"])
+
     except wxversion.VersionError:
-        print(u'Warning: Could not find legacy version of wx on system. Reverting to default settings.')
+        print("Warning: Could not find legacy version of wx on system. Reverting to default settings.")
 
 # Ensure that "legacy" version isn't already in use
 if not wxversion._selected:
-    wxversion.select([u'3.0', u'2.8'])
+    wxversion.select(["3.0", "2.8"])
 
 
-import commands, gettext, wx
+import gettext, subprocess, wx
 
 # Python & wx.Python encoding to UTF-8
-if (sys.getdefaultencoding() != u'utf-8'):
+if (sys.getdefaultencoding() != "utf-8"):
     reload(sys)
     # FIXME: Recommended not to use
-    sys.setdefaultencoding(u'utf-8')
-wx.SetDefaultPyEncoding('UTF-8')
+    sys.setdefaultencoding("utf-8")
+wx.SetDefaultPyEncoding("UTF-8")
 
 
 from dbr.app import DebreateApp
@@ -142,117 +141,117 @@ from startup.startup        import SetAppInitialized
 
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
-    SetLocaleDir(ConcatPaths((PREFIX, u'share/locale')))
-    gettext.install(TRANSLATION_DOMAIN, GetLocaleDir(), unicode=True)
+    SetLocaleDir(ConcatPaths((PREFIX, "share/locale")))
+    gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 
-if u'.py' in script_name:
-    script_name = script_name.split(u'.py')[0]
+if ".py" in script_name:
+    script_name = script_name.split(".py")[0]
 
 exit_now = 0
 
-if u'version' in parsed_args_s:
+if "version" in parsed_args_s:
     print(VERSION_string)
-    
+
     sys.exit(0)
 
 
-if u'help' in parsed_args_s:
+if "help" in parsed_args_s:
     if INSTALLED:
-        help_output = commands.getstatusoutput(u'man debreate')
-    
+        res = subprocess.run(["man", "debreate"], capture_output=True)
+
     else:
-        help_output = commands.getstatusoutput(u'man --manpath="{}/man" debreate'.format(PATH_app))
-    
-    
+        res = subprocess.run(["man", "--manpath=\"{}/man\"".format(PATH_app), "debreate"], capture_output=True)
+
+    help_output = (res.returncode, res.stdout.decode("utf-8"))
     if help_output[0]:
-        print(u'ERROR: Could not locate manpage')
-        
+        print("ERROR: Could not locate manpage")
+
         sys.exit(help_output[0])
-    
-    
+
+
     help_output = GS(help_output[1])
-    print(u'\n'.join(help_output.split(u'\n')[2:-1]))
-    
+    print("\n".join(help_output.split("\n")[2:-1]))
+
     sys.exit(0)
 
 
-if u'log-level' in parsed_args_v:
-    Logger.SetLogLevel(parsed_args_v[u'log-level'])
+if "log-level" in parsed_args_v:
+    Logger.SetLogLevel(parsed_args_v["log-level"])
 
 
-Logger.Info(script_name, u'Python version: {}'.format(PY_VER_STRING))
-Logger.Info(script_name, u'wx.Python version: {}'.format(WX_VER_STRING))
-Logger.Info(script_name, u'Debreate version: {}'.format(VERSION_string))
-Logger.Info(script_name, u'Logging level: {}'.format(Logger.GetLogLevel()))
+Logger.Info(script_name, "Python version: {}".format(PY_VER_STRING))
+Logger.Info(script_name, "wx.Python version: {}".format(WX_VER_STRING))
+Logger.Info(script_name, "Debreate version: {}".format(VERSION_string))
+Logger.Info(script_name, "Logging level: {}".format(Logger.GetLogLevel()))
 
 # Check for & parse existing configuration
 conf_values = GetAllConfigKeys()
 
 if not conf_values:
-    Logger.Debug(script_name, u'Launching First Run dialog ...')
-    
+    Logger.Debug(script_name, "Launching First Run dialog ...")
+
     first_run = LaunchFirstRun(debreate_app)
     if not first_run == ConfCode.SUCCESS:
-        
+
         sys.exit(first_run)
-    
+
     conf_values = GetAllConfigKeys()
 
 # Check that all configuration values are okay
 for V in conf_values:
     key = V
     value = conf_values[V]
-    
+
     # ???: Redundant???
     if value == None:
         value = GetDefaultConfigValue(key)
-    
-    Logger.Debug(script_name, GT(u'Configuration key "{}" = "{}", type: {}'.format(key, GS(value), type(value))))
-    
+
+    Logger.Debug(script_name, GT("Configuration key \"{}\" = \"{}\", type: {}".format(key, GS(value), type(value))))
+
     # FIXME: ConfCode values are integers & could cause problems with config values
     if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
         first_run = LaunchFirstRun(debreate_app)
         if not first_run == ConfCode.SUCCESS:
             sys.exit(first_run)
-        
+
         break
 
 
-Debreate = MainWindow(conf_values[u'position'], conf_values[u'size'])
+Debreate = MainWindow(conf_values["position"], conf_values["size"])
 debreate_app.SetMainWindow(Debreate)
 Debreate.InitWizard()
 
 if DebugEnabled():
     from ui.logwindow import LogWindow
-    
+
     # Log window refresh interval
-    if u'log-interval' in parsed_args_v:
+    if "log-interval" in parsed_args_v:
         from ui.logwindow import SetLogWindowRefreshInterval
-        
-        if GS(parsed_args_v[u'log-interval']).isnumeric():
-            SetLogWindowRefreshInterval(int(parsed_args_v[u'log-interval']))
-    
+
+        if GS(parsed_args_v["log-interval"]).isnumeric():
+            SetLogWindowRefreshInterval(int(parsed_args_v["log-interval"]))
+
     Debreate.SetLogWindow(LogWindow(Debreate, Logger.GetLogFile()))
 
-if conf_values[u'maximize']:
+if conf_values["maximize"]:
     Debreate.Maximize()
 
-elif conf_values[u'center']:
+elif conf_values["center"]:
     from system.display import CenterOnPrimaryDisplay
-    
+
     # NOTE: May be a few pixels off
     CenterOnPrimaryDisplay(Debreate)
 
 # Set project compression
-Debreate.SetCompression(GetCompressionId(conf_values[u'compression']))
+Debreate.SetCompression(GetCompressionId(conf_values["compression"]))
 
-working_dir = conf_values[u'workingdir']
+working_dir = conf_values["workingdir"]
 
 if parsed_path:
     project_file = parsed_path
-    Logger.Debug(script_name, GT(u'Opening project from argument: {}').format(project_file))
-    
+    Logger.Debug(script_name, GT("Opening project from argument: {}").format(project_file))
+
     if Debreate.ProjectOpen(project_file):
         working_dir = os.path.dirname(project_file)
 

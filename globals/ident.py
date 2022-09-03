@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.ident
-#  
+#
 #  Miscellaneous IDs
 
 # MIT licensing
@@ -15,9 +13,9 @@ from dbr.log        import Logger
 
 
 ## Creates a new bitwise compatible ID
-#  
+#
 #  Along with return a new ID, it also updates the id_wrapper reference
-#  
+#
 #  FIXME: Better method than using a list to pass reference?
 #  \param id_wrapper
 #    \b \e List instance to reference ID number so can be incremented
@@ -26,7 +24,7 @@ from dbr.log        import Logger
 def AddId(id_wrapper):
     new_id = id_wrapper[0]
     id_wrapper[0] *= 2
-    
+
     return new_id
 
 
@@ -36,10 +34,10 @@ def AddId(id_wrapper):
 #    \b \e List instance to add ID to
 def NewId(member_list=None):
     new_id = wx.NewId()
-    
+
     if isinstance(member_list, list):
         member_list.append(new_id)
-    
+
     return new_id
 
 
@@ -50,16 +48,16 @@ page_ids = {}
 ## Creates a new page ID & adds to a member list instance for iteration
 def NewPageId(page_name=None, member_list=None):
     global next_page_id
-    
+
     this_page_id = next_page_id
     next_page_id += 1
-    
+
     page_ids[this_page_id] = page_name
-    
+
     if isinstance(member_list, list):
         # Add to member list for iterating
         member_list.append(this_page_id)
-    
+
     return this_page_id
 
 
@@ -67,8 +65,8 @@ def NewPageId(page_name=None, member_list=None):
 class FieldId:
     def __init__(self):
         self.IdList = []
-    
-    
+
+
     ## Adds a predetermined ID to ID list
     #
     #  \param staticId
@@ -76,10 +74,10 @@ class FieldId:
     #      Predefined ID to set
     def AddStaticId(self, staticId):
         self.IdList.append(staticId)
-        
+
         return staticId
-    
-    
+
+
     ## Add a new ID
     def NewId(self):
         return NewId(self.IdList)
@@ -89,21 +87,21 @@ class FieldId:
 class PageId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.Labels = {}
-        
-        self.GREETING = self.NewId(GT(u'Greeting'))
-        self.CONTROL = self.NewId(GT(u'Control'))
-        self.DEPENDS = self.NewId(GT(u'Depends'))
-        self.FILES = self.NewId(GT(u'Files'))
-        self.MAN = self.NewId(GT(u'Man'))
-        self.SCRIPTS = self.NewId(GT(u'Scripts'))
-        self.CHANGELOG = self.NewId(GT(u'Changelog'))
-        self.COPYRIGHT = self.NewId(GT(u'Copyright'))
-        self.LAUNCHERS = self.NewId(GT(u'Menu'))
-        self.BUILD = self.NewId(GT(u'Build'))
-    
-    
+
+        self.GREETING = self.NewId(GT("Greeting"))
+        self.CONTROL = self.NewId(GT("Control"))
+        self.DEPENDS = self.NewId(GT("Depends"))
+        self.FILES = self.NewId(GT("Files"))
+        self.MAN = self.NewId(GT("Man"))
+        self.SCRIPTS = self.NewId(GT("Scripts"))
+        self.CHANGELOG = self.NewId(GT("Changelog"))
+        self.COPYRIGHT = self.NewId(GT("Copyright"))
+        self.LAUNCHERS = self.NewId(GT("Menu"))
+        self.BUILD = self.NewId(GT("Build"))
+
+
     ## Adds a predetermined ID to ID list & text label to label list
     #
     #  \param staticId
@@ -114,12 +112,12 @@ class PageId(FieldId):
     #      Page label/title
     def AddStaticId(self, staticId, label):
         new_id = FieldId.AddStaticId(self, staticId)
-        
+
         self.Labels[new_id] = label
-        
+
         return new_id
-    
-    
+
+
     ## Retrieves string label for given page ID
     #
     #  \return
@@ -127,12 +125,12 @@ class PageId(FieldId):
     def GetIdLabel(self, pageId):
         if pageId in self.Labels:
             return self.Labels[pageId]
-        
-        Logger.Warn(__name__, u'Label for ID {} not found'.format(pageId))
-        
+
+        Logger.Warn(__name__, "Label for ID {} not found".format(pageId))
+
         return wx.EmptyString
-    
-    
+
+
     ## Add a new ID & text label to label list
     #
     #  param label
@@ -141,9 +139,9 @@ class PageId(FieldId):
     def NewId(self, label):
         #new_id = FieldId.NewId(self)
         new_id = NewPageId(label, self.IdList)
-        
+
         self.Labels[new_id] = label
-        
+
         return new_id
 
 pgid = PageId()
@@ -162,7 +160,7 @@ ZIP_ZIP = wx.NewId()
 class InputId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.ARCH = self.NewId()
         self.CAT = self.NewId()
         self.CAT2 = self.NewId()
@@ -194,39 +192,39 @@ inputid = InputId()
 class ButtonId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         ## Image labels associated with button IDs
         self.Images = {}
-        
-        self.ADD = self.AddStaticId(wx.ID_ADD, u'add')
-        self.APPEND = self.NewId(u'append')
+
+        self.ADD = self.AddStaticId(wx.ID_ADD, "add")
+        self.APPEND = self.NewId("append")
         self.BIN = self.NewId()
-        self.BROWSE = self.NewId(u'browse')
-        self.BUILD = self.NewId(u'build')
-        self.CANCEL = self.AddStaticId(wx.ID_CANCEL, u'cancel')
-        self.CLEAR = self.AddStaticId(wx.ID_CLEAR, u'clear')
+        self.BROWSE = self.NewId("browse")
+        self.BUILD = self.NewId("build")
+        self.CANCEL = self.AddStaticId(wx.ID_CANCEL, "cancel")
+        self.CLEAR = self.AddStaticId(wx.ID_CLEAR, "clear")
         self.CLOSE = self.AddStaticId(wx.ID_CLOSE)
-        self.CONFIRM = self.AddStaticId(wx.ID_OK, u'confirm')
-        self.EXIT = self.AddStaticId(wx.ID_EXIT, u'exit')
-        self.FULL = self.NewId(u'full')
-        self.HELP = self.AddStaticId(wx.ID_HELP, u'help')
-        self.HIDE = self.NewId(u'hide')
-        self.IMPORT = self.NewId(u'import')
-        self.MODE = self.NewId(u'mode')
-        self.NEXT = self.NewId(u'next')
-        self.PREV = self.NewId(u'prev')
-        self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, u'preview')
-        self.REFRESH = self.AddStaticId(wx.ID_REFRESH, u'refresh')
-        self.REMOVE = self.AddStaticId(wx.ID_REMOVE, u'remove')
-        self.RENAME = self.NewId(u'rename')
-        self.SAVE = self.AddStaticId(wx.ID_SAVE, u'save')
-        self.SHORT = self.NewId(u'short')
+        self.CONFIRM = self.AddStaticId(wx.ID_OK, "confirm")
+        self.EXIT = self.AddStaticId(wx.ID_EXIT, "exit")
+        self.FULL = self.NewId("full")
+        self.HELP = self.AddStaticId(wx.ID_HELP, "help")
+        self.HIDE = self.NewId("hide")
+        self.IMPORT = self.NewId("import")
+        self.MODE = self.NewId("mode")
+        self.NEXT = self.NewId("next")
+        self.PREV = self.NewId("prev")
+        self.PREVIEW = self.AddStaticId(wx.ID_PREVIEW, "preview")
+        self.REFRESH = self.AddStaticId(wx.ID_REFRESH, "refresh")
+        self.REMOVE = self.AddStaticId(wx.ID_REMOVE, "remove")
+        self.RENAME = self.NewId("rename")
+        self.SAVE = self.AddStaticId(wx.ID_SAVE, "save")
+        self.SHORT = self.NewId("short")
         self.SRC = self.NewId()
         self.STAGE = self.NewId()
         self.TARGET = self.NewId()
-        self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, u'zoom')
-    
-    
+        self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, "zoom")
+
+
     ## Adds a predetermined ID to ID list & optional bitmap image reference
     #
     #  \param staticId
@@ -237,10 +235,10 @@ class ButtonId(FieldId):
     #      Image file basename
     def AddStaticId(self, staticId, imageName=None):
         self.Images[staticId] = imageName
-        
+
         return FieldId.AddStaticId(self, staticId)
-    
-    
+
+
     ## Retrieves the image linked to the ID
     #
     #  \param btnId
@@ -251,10 +249,10 @@ class ButtonId(FieldId):
     def GetImage(self, btnId):
         if btnId in self.Images:
             return self.Images[btnId]
-        
-        Logger.Warn(__name__, u'ButtonId.GetImage: Requested button ID {} with no associated image'.format(btnId))
-    
-    
+
+        Logger.Warn(__name__, "ButtonId.GetImage: Requested button ID {} with no associated image".format(btnId))
+
+
     ## Adds a new ID & optional bitmap image reference
     #
     #  \param imageName
@@ -262,9 +260,9 @@ class ButtonId(FieldId):
     #      Image file basename
     def NewId(self, imageName=None):
         new_id = FieldId.NewId(self)
-        
+
         self.Images[new_id] = imageName
-        
+
         return new_id
 
 btnid = ButtonId()
@@ -274,7 +272,7 @@ btnid = ButtonId()
 class ChkId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.CAT = self.NewId()
         self.DELETE = self.AddStaticId(wx.ID_DELETE)
         self.EDIT = self.AddStaticId(wx.ID_EDIT)
@@ -296,7 +294,7 @@ chkid = ChkId()
 class ListId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.CAT = self.NewId()
 
 listid = ListId()
@@ -306,7 +304,7 @@ listid = ListId()
 class manid:
     # Starting ID number
     current_id = [1]
-    
+
     CHOICE = AddId(current_id)
     EXPAND = AddId(current_id)
     REMOVABLE = AddId(current_id)
@@ -320,7 +318,7 @@ class manid:
 class MenuId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.ABOUT = self.AddStaticId(wx.ID_ABOUT)
         self.ACTION = self.NewId()
         self.ALIEN = self.NewId()
@@ -353,7 +351,7 @@ menuid = MenuId()
 class PanelId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.BACKGROUND = self.NewId()
         self.TABS = self.NewId()
 
@@ -364,7 +362,7 @@ pnlid = PanelId()
 class SelId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.LICENSE = self.NewId()
         self.URGENCY = self.NewId()
 
@@ -375,7 +373,7 @@ selid = SelId()
 class TxtId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.FNAME = self.NewId()
 
 txtid = TxtId()
@@ -385,7 +383,7 @@ txtid = TxtId()
 class RefId(FieldId):
     def __init__(self):
         FieldId.__init__(self)
-        
+
         self.DEBSRC = self.NewId()
         self.DPM = self.NewId()
         self.DPMCtrl = self.NewId()

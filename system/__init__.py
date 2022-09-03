@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ## \package system
 #
 #  Functions related to the local system

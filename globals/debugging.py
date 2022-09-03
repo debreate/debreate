@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
 ## \package globals.debugging
-#  
+#
 #  Helper functions for printing debugging messages to terminal
 
 # MIT licensing
@@ -17,7 +15,7 @@ def lineno():
 
 
 ## Prints a message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param mode
@@ -31,20 +29,20 @@ def lineno():
 def HelperMessage(message, mode, script=None, line=None, newline=True):
     if script:
         if line:
-            script = u'{}:{}'.format(script, line)
-        
-        message = u'[{}] {}'.format(script, message)
-    
-    message = u'{}: {}'.format(mode.upper(), message)
-    
+            script = "{}:{}".format(script, line)
+
+        message = "[{}] {}".format(script, message)
+
+    message = "{}: {}".format(mode.upper(), message)
+
     if newline:
-        message = u'\n{}'.format(message)
-    
+        message = "\n{}".format(message)
+
     print(message)
 
 
 ## Prints a DEBUG message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param script
@@ -54,11 +52,11 @@ def HelperMessage(message, mode, script=None, line=None, newline=True):
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def DebugMessage(message, script=None, line=None, newline=True):
-    HelperMessage(message, u'DEBUG', script, line, newline)
+    HelperMessage(message, "DEBUG", script, line, newline)
 
 
 ## Prints a FIXME message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param script
@@ -68,11 +66,11 @@ def DebugMessage(message, script=None, line=None, newline=True):
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def FixmeMessage(message, script=None, line=None, newline=True):
-    HelperMessage(message, u'FIXME', script, line, newline)
+    HelperMessage(message, "FIXME", script, line, newline)
 
 
 ## Prints a TODO message to the terminal
-#  
+#
 #  \param message
 #    \b \e string : Text do be output
 #  \param script
@@ -82,4 +80,4 @@ def FixmeMessage(message, script=None, line=None, newline=True):
 #  \param newline
 #    \b \e bool : If True, prepends an empty newline to printed message
 def TodoMessage(message, script=None, line=None, newline=True):
-    HelperMessage(message, u'TODO', script, line, newline)
+    HelperMessage(message, "TODO", script, line, newline)
