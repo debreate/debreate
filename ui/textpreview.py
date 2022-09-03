@@ -6,11 +6,11 @@
 
 import wx
 
-from dbr.language   import GT
-from input.text     import TextAreaPanel
-from ui.dialog      import BaseDialog
-from ui.layout      import BoxSizer
-from ui.style       import layout as lyt
+from dbr.language import GT
+from input.text   import TextAreaPanel
+from ui.dialog    import BaseDialog
+from ui.layout    import BoxSizer
+from ui.style     import layout as lyt
 
 
 ## A simple dialog for previewing text

@@ -9,15 +9,15 @@ import os, re, traceback, subprocess, wx
 from urllib.error   import URLError
 from urllib.request import urlopen
 
-from dbr.language           import GT
-from globals.application    import APP_project_gh
-from globals.application    import VERSION_dev
-from globals.errorcodes     import dbrerrno
-from globals.execute        import GetExecutable
-from globals.strings        import GS
-from globals.strings        import IsString
-from globals.strings        import StringIsNumeric
-from globals.system         import PY_VER_STRING
+from dbr.language        import GT
+from globals.application import APP_project_gh
+from globals.application import VERSION_dev
+from globals.errorcodes  import dbrerrno
+from globals.execute     import GetExecutable
+from globals.strings     import GS
+from globals.strings     import IsString
+from globals.strings     import StringIsNumeric
+from globals.system      import PY_VER_STRING
 
 
 ## Get the current version of the application

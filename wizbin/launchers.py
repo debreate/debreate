@@ -6,18 +6,18 @@
 
 import wx
 
-from dbr.language       import GT
-from globals.ident      import btnid
-from globals.ident      import inputid
-from globals.ident      import listid
-from globals.ident      import pgid
-from globals.ident      import pnlid
-from globals.tooltips   import SetPageToolTips
-from ui.launcher        import LauncherTemplate
-from ui.layout          import BoxSizer
-from ui.notebook        import MultiTemplate
-from wiz.helper         import GetField
-from wiz.wizard         import WizardPage
+from dbr.language     import GT
+from globals.ident    import btnid
+from globals.ident    import inputid
+from globals.ident    import listid
+from globals.ident    import pgid
+from globals.ident    import pnlid
+from globals.tooltips import SetPageToolTips
+from ui.launcher      import LauncherTemplate
+from ui.layout        import BoxSizer
+from ui.notebook      import MultiTemplate
+from wiz.helper       import GetField
+from wiz.wizard       import WizardPage
 
 
 ## Page for creating a system launchers

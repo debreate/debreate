@@ -6,9 +6,9 @@
 
 import wx
 
-from wiz.wizard     import WizardPage
-from globals.ident  import pgid
-from ui.layout      import BoxSizer
+from wiz.wizard    import WizardPage
+from globals.ident import pgid
+from ui.layout     import BoxSizer
 
 
 ## Control page for source builds

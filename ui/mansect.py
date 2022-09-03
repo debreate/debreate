@@ -6,22 +6,22 @@
 
 import traceback, wx
 
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.dateinfo   import GetDayInt
-from globals.dateinfo   import GetMonthInt
-from globals.dateinfo   import GetYear
-from globals.ident      import btnid
-from globals.ident      import manid
-from input.select       import Choice
-from input.select       import ComboBox
-from input.text         import TextArea
-from input.text         import TextAreaPanel
-from ui.button          import CreateButton
-from ui.button          import CustomButton
-from ui.dialog          import ShowErrorDialog
-from ui.layout          import BoxSizer
-from ui.panel           import BorderedPanel
+from dbr.language     import GT
+from dbr.log          import Logger
+from globals.dateinfo import GetDayInt
+from globals.dateinfo import GetMonthInt
+from globals.dateinfo import GetYear
+from globals.ident    import btnid
+from globals.ident    import manid
+from input.select     import Choice
+from input.select     import ComboBox
+from input.text       import TextArea
+from input.text       import TextAreaPanel
+from ui.button        import CreateButton
+from ui.button        import CustomButton
+from ui.dialog        import ShowErrorDialog
+from ui.layout        import BoxSizer
+from ui.panel         import BorderedPanel
 
 
 # List of sections & definitions

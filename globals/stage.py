@@ -6,11 +6,11 @@
 
 import os, shutil
 
-from globals.application    import APP_name
-from globals.application    import VERSION_string
-from globals.dateinfo       import GetDate
-from globals.dateinfo       import dtfmt
-from globals.strings        import GS
+from globals.application import APP_name
+from globals.application import VERSION_string
+from globals.dateinfo    import GetDate
+from globals.dateinfo    import dtfmt
+from globals.strings     import GS
 
 
 ## Creates a directory for storing temporary files

@@ -6,9 +6,9 @@
 
 import wx
 
-from dbr.log            import Logger
-from globals.strings    import TextIsEmpty
-from ui.button          import ReplaceStandardButtons
+from dbr.log         import Logger
+from globals.strings import TextIsEmpty
+from ui.button       import ReplaceStandardButtons
 
 
 ## Custom TextEntryDialog that defines Clear method

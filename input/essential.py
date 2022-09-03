@@ -7,10 +7,10 @@
 import wx
 from wx.adv import OwnerDrawnComboBox
 
-from startup.startup    import AppInitialized
-from ui.panel           import ControlPanel
-from wiz.helper         import FieldEnabled
-from wiz.helper         import GetMainWindow
+from startup.startup import AppInitialized
+from ui.panel        import ControlPanel
+from wiz.helper      import FieldEnabled
+from wiz.helper      import GetMainWindow
 
 
 ## Abstract class that sends a message to main window to mark project dirty when field is changed

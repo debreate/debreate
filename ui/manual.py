@@ -6,21 +6,21 @@
 
 import wx
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.ident          import btnid
-from globals.ident          import manid
-from input.text             import TextAreaPanel
-from ui.button              import CreateButton
-from ui.layout              import BoxSizer
-from ui.mansect             import DEFAULT_MANSECT_STYLE
-from ui.mansect             import ManBanner
-from ui.mansect             import ManPanel
-from ui.mansect             import ManSect
-from ui.menu                import PanelMenu
-from ui.menu                import PanelMenuBar
-from ui.panel               import BorderedPanel
-from ui.panel               import ScrolledPanel
+from dbr.language  import GT
+from dbr.log       import Logger
+from globals.ident import btnid
+from globals.ident import manid
+from input.text    import TextAreaPanel
+from ui.button     import CreateButton
+from ui.layout     import BoxSizer
+from ui.mansect    import DEFAULT_MANSECT_STYLE
+from ui.mansect    import ManBanner
+from ui.mansect    import ManPanel
+from ui.mansect    import ManSect
+from ui.menu       import PanelMenu
+from ui.menu       import PanelMenuBar
+from ui.panel      import BorderedPanel
+from ui.panel      import ScrolledPanel
 
 
 ## Panel for displaying manpage template

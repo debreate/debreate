@@ -6,25 +6,25 @@
 
 import wx
 
-from dbr.language       import GT
-from dbr.log            import DebugEnabled
-from dbr.log            import Logger
-from globals.ident      import btnid
-from globals.ident      import inputid
-from globals.ident      import pgid
-from globals.strings    import TextIsEmpty
-from globals.tooltips   import SetPageToolTips
-from input.list         import ListCtrlESS
-from input.select       import Choice
-from input.text         import TextArea
-from ui.button          import CreateButton
-from ui.dialog          import ConfirmationDialog
-from ui.layout          import BoxSizer
-from ui.panel           import BorderedPanel
-from ui.style           import layout as lyt
-from wiz.helper         import GetMainWindow
-from wiz.helper         import GetPage
-from wiz.wizard         import WizardPage
+from dbr.language     import GT
+from dbr.log          import DebugEnabled
+from dbr.log          import Logger
+from globals.ident    import btnid
+from globals.ident    import inputid
+from globals.ident    import pgid
+from globals.strings  import TextIsEmpty
+from globals.tooltips import SetPageToolTips
+from input.list       import ListCtrlESS
+from input.select     import Choice
+from input.text       import TextArea
+from ui.button        import CreateButton
+from ui.dialog        import ConfirmationDialog
+from ui.layout        import BoxSizer
+from ui.panel         import BorderedPanel
+from ui.style         import layout as lyt
+from wiz.helper       import GetMainWindow
+from wiz.helper       import GetPage
+from wiz.wizard       import WizardPage
 
 
 ## Page defining dependencies

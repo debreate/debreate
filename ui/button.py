@@ -8,16 +8,16 @@
 
 import os, wx
 
-from dbr.containers     import Contains
-from dbr.log            import Logger
-from fields.cmdfield    import CommandField
-from globals.ident      import btnid
-from globals.paths      import ConcatPaths
-from globals.paths      import PATH_bitmaps
-from globals.strings    import GS
-from globals.strings    import IsString
-from ui.layout          import BoxSizer
-from ui.style           import layout as lyt
+from dbr.containers  import Contains
+from dbr.log         import Logger
+from fields.cmdfield import CommandField
+from globals.ident   import btnid
+from globals.paths   import ConcatPaths
+from globals.paths   import PATH_bitmaps
+from globals.strings import GS
+from globals.strings import IsString
+from ui.layout       import BoxSizer
+from ui.style        import layout as lyt
 
 
 ## Standard button that inherits CommandField

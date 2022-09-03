@@ -6,17 +6,17 @@
 
 import time, wx
 
-from dbr.font           import MONOSPACED_LG
-from dbr.language       import GT
-from fields.ifield      import InputField
-from globals.fileio     import ReadFile
-from globals.strings    import TextIsEmpty
-from input.essential    import EssentialField
-from ui.layout          import BoxSizer
-from ui.panel           import BorderedPanel
-from ui.panel           import ControlPanel
-from ui.style           import layout as lyt
-from wiz.helper         import GetMainWindow
+from dbr.font        import MONOSPACED_LG
+from dbr.language    import GT
+from fields.ifield   import InputField
+from globals.fileio  import ReadFile
+from globals.strings import TextIsEmpty
+from input.essential import EssentialField
+from ui.layout       import BoxSizer
+from ui.panel        import BorderedPanel
+from ui.panel        import ControlPanel
+from ui.style        import layout as lyt
+from wiz.helper      import GetMainWindow
 
 
 ## Text control set up for handling file drop events

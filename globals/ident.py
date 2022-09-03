@@ -8,8 +8,8 @@
 
 import wx
 
-from dbr.language   import GT
-from dbr.log        import Logger
+from dbr.language import GT
+from dbr.log      import Logger
 
 
 ## Creates a new bitwise compatible ID

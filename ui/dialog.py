@@ -6,25 +6,25 @@
 
 import os, wx
 
-from dbr.language           import GT
-from dbr.log                import Logger
-from dbr.workingdir         import ChangeWorkingDirectory
-from globals.bitmaps        import ICON_ERROR
-from globals.bitmaps        import ICON_EXCLAMATION
-from globals.bitmaps        import ICON_INFORMATION
-from globals.bitmaps        import ICON_QUESTION
-from globals.project        import project_wildcards
-from globals.project        import supported_suffixes
-from globals.strings        import TextIsEmpty
-from input.select           import ComboBox
-from input.text             import TextAreaPanel
-from ui.button              import AddCustomButtons
-from ui.button              import ButtonSizer
-from ui.button              import GetButtonSizer
-from ui.hyperlink           import Hyperlink
-from ui.layout              import BoxSizer
-from ui.style               import layout as lyt
-from wiz.helper             import GetMainWindow
+from dbr.language    import GT
+from dbr.log         import Logger
+from dbr.workingdir  import ChangeWorkingDirectory
+from globals.bitmaps import ICON_ERROR
+from globals.bitmaps import ICON_EXCLAMATION
+from globals.bitmaps import ICON_INFORMATION
+from globals.bitmaps import ICON_QUESTION
+from globals.project import project_wildcards
+from globals.project import supported_suffixes
+from globals.strings import TextIsEmpty
+from input.select    import ComboBox
+from input.text      import TextAreaPanel
+from ui.button       import AddCustomButtons
+from ui.button       import ButtonSizer
+from ui.button       import GetButtonSizer
+from ui.hyperlink    import Hyperlink
+from ui.layout       import BoxSizer
+from ui.style        import layout as lyt
+from wiz.helper      import GetMainWindow
 
 
 ## An abstract class defining method to manipulate button labels

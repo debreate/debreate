@@ -7,11 +7,11 @@
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
-from fields.ifield      import InputField
-from input.essential    import EssentialField
-from ui.layout          import BoxSizer
-from ui.panel           import BorderedPanel
-from ui.panel           import ControlPanel
+from fields.ifield   import InputField
+from input.essential import EssentialField
+from ui.layout       import BoxSizer
+from ui.panel        import BorderedPanel
+from ui.panel        import ControlPanel
 
 
 ## A list control with no border

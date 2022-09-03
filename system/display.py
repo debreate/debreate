@@ -6,11 +6,11 @@
 
 import wx
 
-from dbr.log            import DebugEnabled
-from dbr.log            import Logger
-from globals.execute    import GetCommandOutput
-from globals.execute    import GetExecutable
-from globals.strings    import StringIsNumeric
+from dbr.log         import DebugEnabled
+from dbr.log         import Logger
+from globals.execute import GetCommandOutput
+from globals.execute import GetExecutable
+from globals.strings import StringIsNumeric
 
 
 ## Retrieves dimensions of primary display

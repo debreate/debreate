@@ -6,38 +6,38 @@
 
 import os, shutil, subprocess, wx
 
-from dbr.font               import MONOSPACED_MD
-from dbr.functions          import GetContainerItemCount
-from dbr.language           import GT
-from dbr.log                import Logger
-from globals.application    import APP_name
-from globals.application    import AUTHOR_email
-from globals.application    import AUTHOR_name
-from globals.constants      import INSTALLED
-from globals.constants      import PREFIX
-from globals.dateinfo       import GetYear
-from globals.execute        import GetExecutable
-from globals.fileio         import ReadFile
-from globals.ident          import btnid
-from globals.mime           import GetFileMimeType
-from globals.paths          import PATH_app
-from globals.stage          import CreateStage
-from globals.stage          import RemoveStage
-from globals.system         import OS_codename
-from globals.system         import OS_name
-from globals.system         import OS_upstream_codename
-from globals.system         import OS_upstream_name
-from globals.system         import OS_upstream_version
-from globals.system         import OS_version
-from globals.system         import PY_VER_STRING
-from globals.system         import WX_VER_STRING
-from input.list             import ListCtrl
-from input.text             import TextAreaPanel
-from ui.button              import CreateButton
-from ui.dialog              import ShowErrorDialog
-from ui.hyperlink           import Hyperlink
-from ui.layout              import BoxSizer
-from ui.style               import layout as lyt
+from dbr.font            import MONOSPACED_MD
+from dbr.functions       import GetContainerItemCount
+from dbr.language        import GT
+from dbr.log             import Logger
+from globals.application import APP_name
+from globals.application import AUTHOR_email
+from globals.application import AUTHOR_name
+from globals.constants   import INSTALLED
+from globals.constants   import PREFIX
+from globals.dateinfo    import GetYear
+from globals.execute     import GetExecutable
+from globals.fileio      import ReadFile
+from globals.ident       import btnid
+from globals.mime        import GetFileMimeType
+from globals.paths       import PATH_app
+from globals.stage       import CreateStage
+from globals.stage       import RemoveStage
+from globals.system      import OS_codename
+from globals.system      import OS_name
+from globals.system      import OS_upstream_codename
+from globals.system      import OS_upstream_name
+from globals.system      import OS_upstream_version
+from globals.system      import OS_version
+from globals.system      import PY_VER_STRING
+from globals.system      import WX_VER_STRING
+from input.list          import ListCtrl
+from input.text          import TextAreaPanel
+from ui.button           import CreateButton
+from ui.dialog           import ShowErrorDialog
+from ui.hyperlink        import Hyperlink
+from ui.layout           import BoxSizer
+from ui.style            import layout as lyt
 
 
 # Font for the name

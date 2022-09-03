@@ -7,17 +7,17 @@
 import os, wx
 from wx.lib.mixins.listctrl import TextEditMixin
 
-from dbr.colors         import COLOR_executable
-from dbr.colors         import COLOR_link
-from dbr.colors         import COLOR_warn
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.fileitem   import FileItem
-from globals.mime       import GetFileMimeType
-from globals.paths      import ConcatPaths
-from globals.strings    import IsString
-from input.essential    import EssentialField
-from input.list         import ListCtrl
+from dbr.colors       import COLOR_executable
+from dbr.colors       import COLOR_link
+from dbr.colors       import COLOR_warn
+from dbr.language     import GT
+from dbr.log          import Logger
+from globals.fileitem import FileItem
+from globals.mime     import GetFileMimeType
+from globals.paths    import ConcatPaths
+from globals.strings  import IsString
+from input.essential  import EssentialField
+from input.list       import ListCtrl
 
 
 # ListCtrl report view style constants

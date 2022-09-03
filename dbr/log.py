@@ -6,13 +6,13 @@
 
 import os, sys
 
-from globals.dateinfo   import GetDate
-from globals.dateinfo   import GetTime
-from globals.dateinfo   import dtfmt
-from globals.fileio     import AppendFile
-from globals.paths      import PATH_logs
-from globals.strings    import GetModuleString
-from globals.strings    import IsString
+from globals.dateinfo import GetDate
+from globals.dateinfo import GetTime
+from globals.dateinfo import dtfmt
+from globals.fileio   import AppendFile
+from globals.paths    import PATH_logs
+from globals.strings  import GetModuleString
+from globals.strings  import IsString
 
 
 ## Verbosity levels at which the logger will output text

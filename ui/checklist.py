@@ -6,18 +6,18 @@
 
 import wx
 
-from dbr.language       import GT
-from dbr.log            import Logger
-from globals.ident      import btnid
-from globals.ident      import pnlid
-from globals.strings    import GS
-from globals.strings    import TextIsEmpty
-from ui.button          import CreateButton
-from ui.layout          import BoxSizer
-from ui.panel           import BorderedPanel
-from ui.panel           import ScrolledPanel
-from ui.style           import layout as lyt
-from wiz.helper         import GetField
+from dbr.language    import GT
+from dbr.log         import Logger
+from globals.ident   import btnid
+from globals.ident   import pnlid
+from globals.strings import GS
+from globals.strings import TextIsEmpty
+from ui.button       import CreateButton
+from ui.layout       import BoxSizer
+from ui.panel        import BorderedPanel
+from ui.panel        import ScrolledPanel
+from ui.style        import layout as lyt
+from wiz.helper      import GetField
 
 
 ## A checkable list

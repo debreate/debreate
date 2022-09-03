@@ -6,9 +6,9 @@
 
 import os, wx
 
-from globals.paths      import ConcatPaths
-from globals.paths      import PATH_bitmaps
-from globals.strings    import GS
+from globals.paths   import ConcatPaths
+from globals.paths   import PATH_bitmaps
+from globals.strings import GS
 
 
 ## Retrieves an image from bitmaps dir & creates a wx.Cursor
