@@ -87,29 +87,7 @@ if "clean" in parsed_commands:
     sys.exit(0)
 
 
-# Modules to define required version of wx
-import wxversion
-
-if u'legacy' in parsed_commands:
-    try:
-        wxversion.select(["2.8"])
-
-    except wxversion.VersionError:
-        print("Warning: Could not find legacy version of wx on system. Reverting to default settings.")
-
-# Ensure that "legacy" version isn't already in use
-if not wxversion._selected:
-    wxversion.select(["3.0", "2.8"])
-
-
 import gettext, subprocess, wx
-
-# Python & wx.Python encoding to UTF-8
-if (sys.getdefaultencoding() != "utf-8"):
-    reload(sys)
-    # FIXME: Recommended not to use
-    sys.setdefaultencoding("utf-8")
-wx.SetDefaultPyEncoding("UTF-8")
 
 
 from dbr.app import DebreateApp
