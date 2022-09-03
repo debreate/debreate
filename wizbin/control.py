@@ -45,7 +45,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.CONTROL)
 
@@ -281,11 +281,11 @@ class Page(WizardPage):
   ## Export instructions specifically for build phase
   #
   #  \param target
-  #    Path of filename to write
+  #      Path of filename to write
   #  \param installedSize
-  #    Manually set installed size for package?
+  #      Manually set installed size for package?
   #  \return
-  #    <b><i>Tuple</i></b> containing a return code & string value of page data
+  #      <b><i>Tuple</i></b> containing a return code & string value of page data
   def ExportBuild(self, target, installedSize=0):
     self.Export(target, "control")
 
@@ -313,11 +313,11 @@ class Page(WizardPage):
   ## Retrieves information for control file export
   #
   #  \param getModule
-  #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
-  #    & page data, otherwise return only page data string
+  #      If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+  #      & page data, otherwise return only page data string
   #  \return
-  #    A <b><i>tuple</i></b> containing the filename & a string representation
-  #    of control file formatted for text output
+  #      A <b><i>tuple</i></b> containing the filename & a string representation
+  #      of control file formatted for text output
   def Get(self, getModule=False):
     page = self.GetCtrlInfo()
 
@@ -330,7 +330,7 @@ class Page(WizardPage):
   ## Retrieves field values & formats into plain text for output to file
   #
   #  \return
-  #    Control file text
+  #      Control file text
   def GetCtrlInfo(self):
     pg_depends = GetPage(pgid.DEPENDS)
 
@@ -467,7 +467,7 @@ class Page(WizardPage):
   ## Retrieves the name from the 'package' field
   #
   #  \return
-  #    <b><i>String</i></b> package name
+  #      <b><i>String</i></b> package name
   def GetPackageName(self):
     return GetField(self, inputid.PACKAGE).GetValue()
 
@@ -477,7 +477,7 @@ class Page(WizardPage):
   #  TODO: Use 'Set'/'SetPage' method
   #
   #  \param filename
-  #    File path to open
+  #      File path to open
   def ImportFromFile(self, filename):
     Logger.Debug(__name__, GT("Importing file: {}".format(filename)))
 
@@ -561,9 +561,9 @@ class Page(WizardPage):
   ## Fills page's fields with input data
   #
   #  \param data
-  #    Text to be parsed for values
+  #      Text to be parsed for values
   #  \return
-  #    Leftover text to fill out 'Dependecies' page fields
+  #      Leftover text to fill out 'Dependecies' page fields
   def Set(self, data):
     # Strip leading & trailing spaces, tabs, & newlines
     data = data.strip(" \t\n")

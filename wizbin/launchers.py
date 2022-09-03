@@ -25,7 +25,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.LAUNCHERS)
 
@@ -61,7 +61,7 @@ class Page(WizardPage):
   ## Retrieves data from all launchers
   #
   #  \return
-  #    Name:Data <b><i>tuple</i></b> list
+  #      Name:Data <b><i>tuple</i></b> list
   def Get(self, getModule=False):
     launchers_data = []
 

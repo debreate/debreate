@@ -29,7 +29,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     # TODO: Add to Gettext locale files
     WizardPage.__init__(self, parent, pgid.MAN)
@@ -59,9 +59,9 @@ class Page(WizardPage):
   ## Check if title is okay for manpage target filename
   #
   #  \param title
-  #    New <b><i>string</i></b> title to be checked for whitespace & tabs
+  #      New <b><i>string</i></b> title to be checked for whitespace & tabs
   #  \return
-  #    <b><i>True</i></b> if title is okay to use
+  #      <b><i>True</i></b> if title is okay to use
   def _title_is_ok(self, title):
     if TextIsEmpty(title):
       return False
@@ -72,10 +72,10 @@ class Page(WizardPage):
   ## Adds a new tab representing a manual page
   #
   #  \param name
-  #    Title & target output filename to use for manual
+  #      Title & target output filename to use for manual
   #  \param easyMode
-  #    If <b><i>True</i></b>, interface displays multiple fields, otherwise
-  #    uses plain text area
+  #      If <b><i>True</i></b>, interface displays multiple fields, otherwise
+  #      uses plain text area
   def AddManpage(self, name="manual", easyMode=True):
     # Set 'select' argument to True to switch to new manpage
     ret_val = self.Tabs.AddPage(name, ManPage(self.Tabs, name, easyMode), select=True)
@@ -94,8 +94,8 @@ class Page(WizardPage):
   #  TODO: Nothing here yet
   #
   #  \param getModule
-  #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
-  #    & page data, otherwise return only page data string
+  #      If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+  #      & page data, otherwise return only page data string
   #  \see wiz.wizard.WizardPage.Get
   def Get(self, getModule=False):
     # TODO:
@@ -117,7 +117,7 @@ class Page(WizardPage):
   #  TODO: Define
   #
   #  \param filename
-  #    File path to open
+  #      File path to open
   #  \see wiz.wizard.WizardPage.ImportFromFile
   def ImportFromFile(self, filename):
     pass
@@ -155,11 +155,11 @@ class Page(WizardPage):
   ## Either renames an existing page or creates a new one
   #
   #  \param index
-  #    Page index to rename (only used if 'rename' is True)
+  #      Page index to rename (only used if 'rename' is True)
   #  \param rename
-  #    Renames an existing page instead of creating a new one
+  #      Renames an existing page instead of creating a new one
   #  \return
-  #    Value of wizbin.manuals.Page.AddManpage or wizbin.manuals.Page.Tabs.SetPageText
+  #      Value of wizbin.manuals.Page.AddManpage or wizbin.manuals.Page.Tabs.SetPageText
   def SetTabName(self, index=-1, rename=False):
     getname = TextEntryDialog(GetMainWindow(), GT("Name for new manpage"))
     new_title = None

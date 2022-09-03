@@ -51,7 +51,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.FILES)
 
@@ -202,11 +202,11 @@ class Page(WizardPage):
   ## Adds files to file list
   #
   #  \param dirs
-  #    <b><i>dict</i></b>: dict[dir] = [file list]
+  #      <b><i>dict</i></b>: dict[dir] = [file list]
   #  \param fileCount
-  #    Number of explicit files being added to list
+  #      Number of explicit files being added to list
   #  \param showDialog
-  #    If <b><i>True</i></b>, displays a progress dialog
+  #      If <b><i>True</i></b>, displays a progress dialog
   def AddPaths(self, dirs, fileCount=None, showDialog=False):
     target = self.GetTarget()
 
@@ -266,7 +266,7 @@ class Page(WizardPage):
   ## FIXME: Deprecated
   #
   #  \param target
-  #    Absolute file path to export
+  #      Absolute file path to export
   def ExportBuild(self, target):
     if not os.path.isdir(target):
       return (dbrerrno.ENOENT, GT("Target directory does not exist: {}").format(target))
@@ -302,11 +302,11 @@ class Page(WizardPage):
   ## Retrieves information on files to be packaged
   #
   #  \param getModule
-  #    If <b><i>True</i></b>, retrieves a tuple containing module name & page data,
-  #    otherwise only returns <b><i>string</i></b> data
+  #      If <b><i>True</i></b>, retrieves a tuple containing module name & page data,
+  #      otherwise only returns <b><i>string</i></b> data
   #  \return
-  #    <b><i>tuple(str, str)</i></b>: A <b><i>tuple</i></b> containing the filename
-  #    & a list of files with their targets formatted for text output
+  #      <b><i>tuple(str, str)</i></b>: A <b><i>tuple</i></b> containing the filename
+  #      & a list of files with their targets formatted for text output
   def Get(self, getModule=False):
     item_count = self.lst_files.GetItemCount()
 
@@ -363,7 +363,7 @@ class Page(WizardPage):
   #  Used in input.list.FileList for referencing size
   #
   #  \return
-  #    <b><i>ui.tree.DirectoryTreePanel</i></b> instance
+  #      <b><i>ui.tree.DirectoryTreePanel</i></b> instance
   def GetDirTreePanel(self):
     return self.tree_dirs
 
@@ -371,7 +371,7 @@ class Page(WizardPage):
   ## Retrieves number of files in list
   #
   #  \return
-  #    <b><i>Integer</i></b> count of items in file list
+  #      <b><i>Integer</i></b> count of items in file list
   def GetFileCount(self):
     return self.lst_files.GetItemCount()
 
@@ -379,7 +379,7 @@ class Page(WizardPage):
   ## Retrieves the file list object used by this page
   #
   #  \return
-  #    <b><i>input.list.FileList</i></b> instance
+  #      <b><i>input.list.FileList</i></b> instance
   def GetListInstance(self):
     return self.lst_files
 
@@ -399,7 +399,7 @@ class Page(WizardPage):
   ## Accepts a file path to read & parse to fill the page's fields
   #
   #  \param filename
-  #    Absolute path of formatted text file to read
+  #      Absolute path of formatted text file to read
   def ImportFromFile(self, filename):
     Logger.Debug(__name__, GT("Importing page info from {}").format(filename))
 
@@ -458,7 +458,7 @@ class Page(WizardPage):
   ## Checks if the page is ready for export/build
   #
   #  \return
-  #    <b><i>True</i></b> if the file list (self.lst_files) is not empty
+  #      <b><i>True</i></b> if the file list (self.lst_files) is not empty
   def IsOkay(self):
     return not self.lst_files.IsEmpty()
 
@@ -466,10 +466,10 @@ class Page(WizardPage):
   ## Reads files & directories & preps for loading into list
   #
   #  \param pathsList
-  #    <b><i>List/Tuple</i></b> of <b><i>string</i></b> values representing
-  #    files & directories to be added
+  #      <b><i>List/Tuple</i></b> of <b><i>string</i></b> values representing
+  #      files & directories to be added
   #  \return
-  #    Value of wizbin.files.Page.AddPaths, or <b><i>False</i></b> in case of error
+  #      Value of wizbin.files.Page.AddPaths, or <b><i>False</i></b> in case of error
   def LoadPaths(self, pathsList):
     if isinstance(pathsList, tuple):
       pathsList = list(pathsList)
@@ -628,9 +628,9 @@ class Page(WizardPage):
   #  is the implicit handler for wx.FileDropTarget (<- correct class???)
   #
   #  \param fileList
-  #    <b><i>List</i></b> of files dropped from file manager
+  #      <b><i>List</i></b> of files dropped from file manager
   #  \return
-  #    Value of wizbin.files.Page.LoadPaths
+  #      Value of wizbin.files.Page.LoadPaths
   def OnDropFiles(self, fileList):
     return self.LoadPaths(fileList)
 
@@ -649,7 +649,7 @@ class Page(WizardPage):
   #  Refreshes files' executable & available status
   #
   #  \return
-  #    Value of self.lst_files.RefreshFileList
+  #      Value of self.lst_files.RefreshFileList
   def OnRefreshFileList(self, event=None):
     return self.lst_files.RefreshFileList()
 
@@ -686,7 +686,7 @@ class Page(WizardPage):
   ## Resets page's fields to default values
   #
   #  \return
-  #    Value of self.lst_files.Reset
+  #      Value of self.lst_files.Reset
   def Reset(self):
     return self.lst_files.Reset()
 
@@ -694,7 +694,7 @@ class Page(WizardPage):
   ## Selects all files in the list
   #
   #  \return
-  #    Value of self.lst_files.SelectAll
+  #      Value of self.lst_files.SelectAll
   def SelectAll(self):
     return self.lst_files.SelectAll()
 
@@ -702,9 +702,9 @@ class Page(WizardPage):
   ## Sets the page's fields
   #
   #  \param data
-  #    The text information to parse
+  #      The text information to parse
   #  \return
-  #    <b><i>True</i></b> if the data was imported correctly
+  #      <b><i>True</i></b> if the data was imported correctly
   def Set(self, data):
     # Clear files list
     self.lst_files.DeleteAllItems()

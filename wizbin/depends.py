@@ -32,7 +32,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.DEPENDS)
 
@@ -181,9 +181,9 @@ class Page(WizardPage):
   ## Add a category & dependency to end of list
   #
   #  \param category
-  #    Category label
+  #      Category label
   #  \param value
-  #    Dependency value
+  #      Dependency value
   def AppendDependency(self, category, value):
     self.lst_deps.AppendStringItem((category, value))
 
@@ -196,7 +196,7 @@ class Page(WizardPage):
   ## Reads & parses page data from a formatted text file
   #
   #  \param filename
-  #    File path to open
+  #      File path to open
   #  \see wiz.wizard.WizardPage.ImportFromFile
   def ImportFromFile(self, d_type, d_string):
     Logger.Debug(__name__, GT("Importing {}: {}".format(d_type, d_string)))
@@ -307,7 +307,7 @@ class Page(WizardPage):
   ## Sets the page's fields data
   #
   #  \param data
-  #    Text to parse for field values
+  #      Text to parse for field values
   def Set(self, data):
     self.lst_deps.DeleteAllItems()
     for item in data:

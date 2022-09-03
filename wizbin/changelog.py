@@ -46,7 +46,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.CHANGELOG)
 
@@ -211,11 +211,11 @@ class Page(WizardPage):
   ## Exports page's data to file
   #
   #  \param out_dir
-  #    Target directory where file will be written
+  #      Target directory where file will be written
   #  \out_name
-  #    Filename of output file
+  #      Filename of output file
   #  \compress
-  #    If <b><i>True</i></b>, compresses file with gzip
+  #      If <b><i>True</i></b>, compresses file with gzip
   def Export(self, out_dir, out_name=wx.EmptyString, compress=False):
     ret_value = WizardPage.Export(self, out_dir, out_name=out_name)
 
@@ -232,9 +232,9 @@ class Page(WizardPage):
   ## Export instructions specifically for build phase
   #
   #  \param stage
-  #    Formatted staged directory where file heirarchy is temporarily kept
+  #      Formatted staged directory where file heirarchy is temporarily kept
   #  \return
-  #    <b><i>Tuple</i></b> containing a return code & string value of page data
+  #      <b><i>Tuple</i></b> containing a return code & string value of page data
   def ExportBuild(self, stage):
     target = self.pnl_target.GetPath()
 
@@ -263,10 +263,10 @@ class Page(WizardPage):
   #  The output is a text file that uses sections defined by braces ([, ])
   #
   #  \param getModule
-  #    If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
-  #    & page data, otherwise return only page data string
+  #      If <b><i>True</i></b>, returns a <b><i>tuple</b></i> of the module name
+  #      & page data, otherwise return only page data string
   #  \return
-  #    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
+  #      <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
   def Get(self, getModule=False):
     target = self.pnl_target.GetPath()
 
@@ -290,7 +290,7 @@ class Page(WizardPage):
   ## Retrieves plain text of the changelog field
   #
   #  \return
-  #    Formatted changelog text
+  #      Formatted changelog text
   def GetChangelog(self):
     return self.dsp_changes.GetValue()
 
@@ -298,7 +298,7 @@ class Page(WizardPage):
   ## Reads & parses page data from a formatted text file
   #
   #  \param filename
-  #    File path to open
+  #      File path to open
   def ImportFromFile(self, filename):
     if not os.path.isfile(filename):
       return dbrerrno.ENOENT
@@ -363,7 +363,7 @@ class Page(WizardPage):
   ## Checks the page's fields for exporting
   #
   #  \return
-  #    <b><i>False</i></b> if page cannot be exported
+  #      <b><i>False</i></b> if page cannot be exported
   def IsOkay(self):
     return not TextIsEmpty(self.dsp_changes.GetValue())
 
@@ -394,7 +394,7 @@ class Page(WizardPage):
   ## Sets values of page's fields with given input
   #
   #  \param data
-  #    Text to parse for values
+  #      Text to parse for values
   def Set(self, data):
     changelog = data.split("\n")
     target = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]

@@ -63,7 +63,7 @@ class Page(WizardPage):
   ## Constructor
   #
   #  \param parent
-  #    Parent <b><i>wx.Window</i></b> instance
+  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.BUILD)
 
@@ -189,8 +189,9 @@ class Page(WizardPage):
   #
   #  TODO: Test for errors when building deb package with other filename extension
   #  TODO: Remove deprecated methods that this one replaces
+  #
   #  \param outFile
-  #        \b \e str : Absolute path to target file
+  #      \b \e str : Absolute path to target file
   def Build(self, outFile):
     def log_message(msg, current_step, total_steps):
       return "{} ({}/{})".format(msg, current_step, total_steps)
@@ -373,7 +374,7 @@ class Page(WizardPage):
   ## Checks pages for export & gets a count of how many tasks need be executed
   #
   #  \return
-  #    <b><i>Tuple</i></b> containing data & label for each page
+  #      <b><i>Tuple</i></b> containing data & label for each page
   def BuildPrep(self):
     wizard = GetWizard()
     prep_ids = []
@@ -550,7 +551,7 @@ class Page(WizardPage):
   #  error dialog.
   #
   #  \param package
-  #    Path of package to be installed
+  #      Path of package to be installed
   def InstallPackage(self, package):
     system_installer = GetSystemInstaller()
 
@@ -672,7 +673,7 @@ class Page(WizardPage):
   ## Checks the final package for error with the lintian command
   #
   #  \param targetPackage
-  #    Path of package to check
+  #      Path of package to check
   def OnBuildCheckPackage(self, targetPackage):
     Logger.Debug(__name__,
         GT("Checking package \"{}\" for lintian errors ...").format(os.path.basename(targetPackage)))
@@ -685,9 +686,9 @@ class Page(WizardPage):
   ## Handles the process of building the package from the formatted stage directory
   #
   #  \param stage
-  #    Path to formatted temporary staged directory
+  #      Path to formatted temporary staged directory
   #  \param targetFile
-  #    Path of the target output .deb package
+  #      Path of the target output .deb package
   def OnBuildCreatePackage(self, stage, targetFile):
     Logger.Debug(__name__, GT("Creating {} from {}").format(targetFile, stage))
 
@@ -717,9 +718,9 @@ class Page(WizardPage):
   #  TODO: Move this method to control page???
   #
   #  \param stage
-  #    Path to formatted staged directory to scan file sizes
+  #      Path to formatted staged directory to scan file sizes
   #  \return
-  #    <b><i>Integer</i></b> value representing installed size of all files in package
+  #      <b><i>Integer</i></b> value representing installed size of all files in package
   def OnBuildGetInstallSize(self, stage):
     Logger.Debug(__name__, GT("Retrieving installed size for {}").format(stage))
 
@@ -743,9 +744,9 @@ class Page(WizardPage):
   #         produced by debuild
   #
   #  \param stage
-  #    Staged directory where files are scanned
+  #      Staged directory where files are scanned
   #  \return
-  #    <b><i>String</i></b> message of result
+  #      <b><i>String</i></b> message of result
   def OnBuildMD5Sum(self, stage):
     Logger.Debug(__name__,
         GT("Creating MD5sum file in {}").format(stage))
@@ -845,7 +846,7 @@ class Page(WizardPage):
   ## Sets page's fields data
   #
   #  \param data
-  #    <b><i>Text</i></b> to be parsed for values
+  #      <b><i>Text</i></b> to be parsed for values
   def Set(self, data):
     # ???: Redundant
     self.Reset()
