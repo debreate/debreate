@@ -344,9 +344,9 @@ class Page(WizardPage):
 
       return_list = []
       for F in file_list:
-        f0 = "{}".encode("utf-8").format(F[0])
-        f1 = "{}".encode("utf-8").format(F[1])
-        f2 = "{}".encode("utf-8").format(F[2])
+        f0 = "{}".format(F[0])
+        f1 = "{}".format(F[1])
+        f2 = "{}".format(F[2])
         return_list.append("{} -> {} -> {}".format(f0, f1, f2))
 
       return "<<FILES>>\n1\n{}\n<</FILES>>".format("\n".join(return_list))
