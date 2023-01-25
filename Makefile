@@ -55,7 +55,6 @@ PACKAGES = \
 	dbr \
 	f_export \
 	fields \
-	fileio \
 	globals \
 	input \
 	startup \
@@ -128,7 +127,7 @@ FILE_launcher = $(PACKAGE).desktop
 FILE_mime = data/mime/$(PACKAGE).xml
 FILE_license = docs/LICENSE.txt
 FILE_doxyfile = docs/Doxyfile
-INSTALLED = INSTALLED
+# INSTALLED = INSTALLED
 
 MIME_prefix = application
 MIME_dbp = x-dbp
@@ -146,7 +145,7 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: locale $(FILES_build) $(INSTALLED)_file install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime install-packages install-templates
+install: $(FILES_build)  install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime install-packages install-templates
 	@target=$(DESTDIR)$(prefix); \
 	bin_dir=$${target}/$(BINDIR); \
 	data_dir=$${target}/$(DATADIR); \
