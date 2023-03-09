@@ -5,7 +5,7 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
-import argparse, codecs, errno, gzip, os, re, shutil, sys
+import argparse, codecs, errno, gzip, os, re, shutil, sys, types
 
 
 dir_root = os.path.normpath(os.path.dirname(__file__))
@@ -14,7 +14,7 @@ package_name = "debreate"
 package_version = 0.8
 
 
-# --- logging --- #
+# --- misc. functions --- #
 
 def log(lvl="", msg=None):
   if msg == None:
@@ -30,6 +30,8 @@ def log(lvl="", msg=None):
       print(msg)
   else:
     print("ERROR: unkown log level: {}".format(lvl))
+
+print_help: types.FunctionType
 
 
 # --- configuration & command line options --- #
@@ -94,8 +96,25 @@ def parseConfig(path):
 
   return conf
 
+class Config:
+  def __init__(self, conf):
+    self.conf = conf
+
+  def get(self, key, default=None):
+    if key in self.conf:
+      return self.conf[key]
+    if default != None:
+      return default
+    log("error", "unknown configuration key: {}".format(key))
+    sys.exit(1)
 
 # --- helper functions --- #
+
+def joinPath(*paths):
+  path = ""
+  for p in paths:
+    path = os.path.join(path, p)
+  return os.path.normpath(path)
 
 def getInstallPath(subpath=None, stripped=False):
   path = options.prefix
@@ -116,6 +135,9 @@ def getDocDir(stripped=False):
 
 def getManDir(prefix, stripped=False):
   return getInstallPath("share/man/{}".format(prefix), stripped)
+
+def getIconsDir(stripped=False):
+  return getInstallPath("share/icons/gnome", stripped)
 
 def checkWriteTree(_dir):
   if os.path.isfile(_dir):
@@ -144,6 +166,8 @@ def makeDir(_dir):
     os.makedirs(_dir)
 
 def installFile(file_source, dir_target, name=None, perm=0o664):
+  file_source = os.path.normpath(file_source)
+  dir_target = os.path.normpath(dir_target)
   if os.path.isdir(file_source):
     log("error", "cannot copy file, source is a directory: {}".format(file_source))
     sys.exit(errno.EISDIR)
@@ -165,6 +189,8 @@ def installExecutable(file_source, dir_target, name=None):
   installFile(file_source, dir_target, name, 0o775)
 
 def installDir(dir_source, dir_target, name=None, _filter=""):
+  dir_source = os.path.normpath(dir_source)
+  dir_target = os.path.normpath(dir_target)
   if os.path.isfile(dir_source):
     log("error", "cannot copy directory, source is a file: {}".format(dir_source))
     sys.exit(errno.ENOTDIR)
@@ -172,7 +198,7 @@ def installDir(dir_source, dir_target, name=None, _filter=""):
     log("error", "source directory not found: {}".format(dir_source))
     sys.exit(errno.ENOENT)
   name = os.path.basename(dir_source) if not name else name
-  path_target = os.path.normpath(os.path.join(dir_target, name))
+  path_target = joinPath(dir_target, name)
   for basename in os.listdir(dir_source):
     absname = os.path.join(dir_source, basename)
     if os.path.isfile(absname):
@@ -182,6 +208,9 @@ def installDir(dir_source, dir_target, name=None, _filter=""):
       installDir(absname, path_target, None, _filter)
 
 def uninstallFile(file_target):
+  file_target = os.path.normpath(file_target)
+  if not os.path.isfile(file_target):
+    return
   checkWriteFile(file_target)
   if os.path.isfile(file_target) or os.path.islink(file_target):
     os.remove(file_target)
@@ -191,6 +220,7 @@ def uninstallFile(file_target):
     log("deleted file -> '{}'".format(file_target))
 
 def uninstallDir(dir_target):
+  dir_target = os.path.normpath(dir_target)
   if os.path.isfile(dir_target):
     log("error", "cannot delete directory, target is a file: {}".format(dir_target))
     sys.exit(errno.ENOTDIR)
@@ -215,6 +245,7 @@ def uninstallDir(dir_target):
     log("error", "an unknown error occurred while trying to remove directory: {}".format(dir_target))
 
 def writeFile(file_target, file_data, binary=False, perm=0o664):
+  file_target = os.path.normpath(file_target)
   checkWriteFile(file_target)
   if os.path.lexists(file_target):
     os.remove(file_target)
@@ -235,6 +266,8 @@ def writeFile(file_target, file_data, binary=False, perm=0o664):
   log("new file -> '{}' (perm={})".format(file_target, oct(perm).lstrip("0o")))
 
 def createFileLink(file_source, link_target):
+  file_source = os.path.normpath(file_source)
+  link_target = os.path.normpath(link_target)
   checkWriteFile(link_target)
   if os.path.lexists(link_target):
     os.unlink(link_target)
@@ -248,6 +281,7 @@ def createFileLink(file_source, link_target):
   log("new link -> '{}' ({})".format(link_target, file_source))
 
 def compressFile(file_source, file_target):
+  file_source = os.path.normpath(file_source)
   checkReadFile(file_source)
 
   fropen = codecs.open(file_source, "rb")
@@ -259,29 +293,28 @@ def compressFile(file_source, file_target):
 
 # --- install targets --- #
 
-config = {}
+config: Config
 
 def targetInstallApp():
   log()
   log("installing app files ...")
 
-  dirs_main = config["dirs_main"] if "dirs_main" in config else ()
-  files_main = config["files_main"] if "files_main" in config else ()
+  dirs_main = config.get("dirs_main")
+  files_main = config.get("files_main")
 
   dir_target = getDataDir()
   for _dir in dirs_main:
     installDir(os.path.join(dir_root, _dir), dir_target, _filter="\.py$")
   for _file in files_main:
     installFile(os.path.join(dir_root, _file), dir_target)
-  if "executable" in config:
-    installExecutable(os.path.join(dir_root, config["executable"]), dir_target)
-    createFileLink(os.path.join(getDataDir(stripped=True), config["executable"]), os.path.join(getBinDir(), package_name))
+  installExecutable(os.path.join(dir_root, config.get("executable")), dir_target)
+  createFileLink(os.path.join(getDataDir(stripped=True), config.get("executable")), os.path.join(getBinDir(), package_name))
 
 def targetInstallData():
   log()
   log("installing data files ...")
 
-  dirs_data = config["dirs_data"] if "dirs_data" in config else ()
+  dirs_data = config.get("dirs_data")
   dir_target = getDataDir()
   for _dir in dirs_data:
     installDir(os.path.join(dir_root, _dir), dir_target)
@@ -291,7 +324,7 @@ def targetInstallDoc():
   log()
   log("installing doc files ...")
 
-  files_doc = config["files_doc"] if "files_doc" in config else ()
+  files_doc = config.get("files_doc")
   dir_target = getDocDir()
   for _file in files_doc:
     installFile(os.path.join(dir_root, _file), dir_target)
@@ -301,7 +334,7 @@ def targetInstallDoc():
     # ~ link_target = os.path.join(dir_target, _file)
     # ~ createFileLink(file_source, link_target)
 
-  files_man = config["files_man"] if "files_man" in config else ()
+  files_man = config.get("files_man")
   for _file in files_man:
     file_man = os.path.basename(_file)
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
@@ -312,7 +345,33 @@ def targetInstallLocale():
   log("installing locale files ...")
   # TODO:
 
+def targetInstallMimeInfo(install=True):
+  log()
+  msg = "installing mime type files ..."
+  if not install:
+    msg = "un" + msg
+  log(msg)
+
+  mime_prefix = config.get("dbp_mime_prefix")
+  mime_type = config.get("dbp_mime")
+  dir_conf = joinPath(getInstallPath(), "share/mime", mime_prefix)
+  dir_icons = joinPath(getIconsDir(), "scalable/mimetype")
+  mime_conf = joinPath(dir_root, "data/mime/{}.xml".format(package_name))
+  mime_icon = joinPath(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
+  if install:
+    installFile(mime_conf, dir_conf, mime_type + ".xml")
+    installFile(mime_icon, dir_icons)
+  else:
+    uninstallFile(joinPath(dir_conf, mime_type + ".xml"))
+    uninstallFile(joinPath(dir_icons, mime_prefix + "-" + mime_type + ".svg"))
+
 def targetInstall():
+  if options.prefix == None:
+    log("error", "'prefix' option is required for 'install' target.")
+    log()
+    print_help()
+    sys.exit(errno.EINVAL)
+
   log()
   log("installing ...")
 
@@ -320,15 +379,22 @@ def targetInstall():
   targetInstallData()
   targetInstallDoc()
   targetInstallLocale()
+  targetInstallMimeInfo()
 
 def targetUninstall():
+  if options.prefix == None:
+    log("error", "'prefix' option is required for 'uninstall' target.")
+    log()
+    print_help()
+    sys.exit(errno.EINVAL)
+
   log()
   log("uninstalling ...")
 
   uninstallFile(os.path.join(getBinDir(), package_name))
   uninstallDir(getDataDir())
   uninstallDir(getDocDir())
-  files_man = config["files_man"] if "files_man" in config else ()
+  files_man = config.get("files_man")
   for _file in files_man:
     file_man = os.path.basename(_file) + ".gz"
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
@@ -336,36 +402,41 @@ def targetUninstall():
 
   # TODO: uninstall locale files
 
+  targetInstallMimeInfo(False)
+
+def targetDist():
+  # TODO:
+  pass
+
+def targetBinary():
+  # TODO:
+  pass
+
+targets = {
+  "install": targetInstall,
+  "uninstall": targetUninstall,
+  "dist": targetDist,
+  "binary": targetBinary
+}
+
 
 # --- execution insertion point --- #
 
 def main():
-  global options, config
+  global options, config, print_help
 
   args_parser = parseCommandLine()
+  print_help = args_parser.print_help
   options = args_parser.parse_args()
-  config = parseConfig(os.path.join(dir_root, "install.conf"))
+  if not options.dir:
+    options.dir = "/"
+  config = Config(parseConfig(os.path.join(dir_root, "install.conf")))
 
-  if options.target == "install":
-    if options.prefix == None:
-      log("error", "'prefix' option is required for 'install' target.")
-      log()
-      args_parser.print_help()
-      sys.exit(errno.EINVAL)
-    targetInstall()
-  elif options.target == "uninstall":
-    if options.prefix == None:
-      log("error", "'prefix' option is required for 'uninsteall' target.")
-      log()
-      args_parser.print_help()
-      sys.exit(errno.EINVAL)
-    targetUninstall()
-  elif options.target == "dist":
-    log()
-    log("building source package ...")
-  elif options.target == "binary":
-    log()
-    log("buiding binary package")
+  if options.target not in targets:
+    log("error", "unknown target: \"{}\"".format(options.target))
+    sys.exit(1)
+
+  targets[options.target]()
 
 if __name__ == "__main__":
   main()
