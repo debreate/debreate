@@ -5,11 +5,11 @@ Maintainer: Jordan Irwin <antumdeluge@gmail.com>
 Build-Depends: debhelper (>=9), python|python3
 Standards-Version: 3.9.7
 Homepage: https://antumdeluge.github.io/debreate-web/
-X-Python-Version: >= 2.6
+X-Python-Version: >= 3.0
 
 Package: debreate
 Architecture: all
-Depends: ${misc:Depends}, python2.7, python-wxgtk3.0|python-wxgtk2.8|python3-wxgtk4.0, fakeroot, dpkg (>=1.0.0), file, util-linux (>=2.0.0), debianutils (>=4.0.0)
+Depends: ${misc:Depends}, python3, python3-wxgtk4.1 (>=4.1.1), fakeroot, dpkg (>=1.0.0), file, util-linux (>=2.0.0), debianutils (>=4.0.0)
 Recommends: lintian, coreutils (>=8.0), xdg-utils, man-db, gzip (>=1.0), binutils, gvfs-bin, x11-server-utils
 Suggests: gdebi|gdebi-kde
 Description: Debian Package Builder
