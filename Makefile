@@ -136,8 +136,7 @@ MIME_icons = \
 	data/svg/$(MIME_prefix)-$(MIME_dbp).svg
 
 all:
-	@echo "\n\tWARNING: This Makefile is deprecated. Use \"install.py\"."; \
-	echo "\n\n\tNothing to be done"; \
+	@echo "\n\n\tNothing to be done"; \
 	echo "\trun one of the following:"; \
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
@@ -146,48 +145,11 @@ $(INSTALLED)_file:
 	@echo "Creating \"$(INSTALLED)\" file ..."; \
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
-install: $(FILES_build)  install-bitmaps install-data install-doc install-launcher install-locale install-man install-mime install-packages install-templates
-	@target=$(DESTDIR)$(prefix); \
-	bin_dir=$${target}/$(BINDIR); \
-	data_dir=$${target}/$(DATADIR); \
-	pix_dir=$${target}/$(PIXDIR); \
-	\
-	echo "\nprefix set to $(prefix)"; \
-	echo "Install target set to $${target}\n"; \
-	\
-	$(MKDIR) "$${target}/$(DATADIR)"; \
-	for py in $(FILES_executable); do \
-		$(INSTALL_EXEC) "$${py}" "$${data_dir}"; \
-	done; \
-	for py in $(FILES_root); do \
-		$(INSTALL_DATA) "$${py}" "$${data_dir}"; \
-	done; \
-	\
-	$(MKDIR) "$${bin_dir}"; \
-	$(LINK) "$(prefix)/$(DATADIR)/init.py" "$${bin_dir}/$(PACKAGE)"; \
-	\
-	$(MKDIR) "$${pix_dir}"; \
-	$(INSTALL_DATA) "bitmaps/icon/64/logo.png" "$${pix_dir}/$(PACKAGE).png"; \
+install:
+	@python install.py --target install --dir "$(DESTDIR)" --prefix "$(prefix)"
 
-uninstall: uninstall-launcher uninstall-locale uninstall-man uninstall-mime
-	@target="$(DESTDIR)$(prefix)"; \
-	bin_dir="$${target}/$(BINDIR)"; \
-	data_dir="$${target}/$(DATADIR)"; \
-	apps_dir="$${target}/$(APPSDIR)"; \
-	pix_dir="$${target}/$(PIXDIR)"; \
-	\
-	echo "\nprefix set to $(prefix)"; \
-	echo "Uninstall target set to $${target}\n"; \
-	\
-	$(UNINSTALL) "$${pix_dir}/$(PACKAGE).png"; \
-	$(UNINSTALL) "$${bin_dir}/$(PACKAGE)"; \
-	\
-	if [ -d "$${data_dir}" ]; then \
-		for f in `find "$${data_dir}" -type f`; do \
-			$(UNINSTALL) "$${f}"; \
-		done; \
-		find "$${data_dir}" -type d -empty -delete; \
-	fi; \
+uninstall:
+	@python install.py --target uninstall --dir "$(DESTDIR)" --prefix "$(prefix)"
 
 install-bitmaps: $(DIR_bitmaps)
 	@target="$(DESTDIR)$(prefix)"; \
@@ -390,8 +352,7 @@ deb-clean:
 	rm -vf $${DEBUILD_FILES}; \
 
 help:
-	@echo "\n\tWARNING: This Makefile is deprecated. Use \"install.py\"."; \
-	echo "\n\nUsage:"; \
+	@echo "Usage:"; \
 	\
 	echo "\tmake [command]\n"; \
 	\
