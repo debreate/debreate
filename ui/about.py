@@ -377,7 +377,10 @@ class AboutDialog(wx.Dialog):
     #   under the applications root directory. The
     #   install script or Makefile should change this
     #   to reflect installed path.
-    CHANGELOG = "{}/docs/changelog".format(PATH_app)
+    if INSTALLED:
+      CHANGELOG = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/changelog"))
+    else:
+      CHANGELOG = os.path.normpath(os.path.join(PATH_app, "docs/changelog"))
 
     if os.path.isfile(CHANGELOG):
       changelog_mimetype = GetFileMimeType(CHANGELOG)
@@ -413,7 +416,10 @@ class AboutDialog(wx.Dialog):
     #   under the applications root directory. The
     #   install script or Makefile should change this
     #   to reflect installed path.
-    license_path = "{}/docs/LICENSE.txt".format(PATH_app)
+    if INSTALLED:
+      license_path = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/LICENSE.txt"))
+    else:
+      license_path = os.path.normpath(os.path.join(PATH_app, "docs/LICENSE.txt"))
 
     if os.path.isfile(license_path):
       lic_text = ReadFile(license_path)
