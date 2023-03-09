@@ -354,15 +354,15 @@ def targetInstallMimeInfo(install=True):
 
   mime_prefix = config.get("dbp_mime_prefix")
   mime_type = config.get("dbp_mime")
-  dir_conf = joinPath(getInstallPath(), "share/mime", mime_prefix)
+  dir_conf = joinPath(getInstallPath(), "share/mime/packages")
   dir_icons = joinPath(getIconsDir(), "scalable/mimetype")
   mime_conf = joinPath(dir_root, "data/mime/{}.xml".format(package_name))
   mime_icon = joinPath(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
   if install:
-    installFile(mime_conf, dir_conf, mime_type + ".xml")
+    installFile(mime_conf, dir_conf)
     installFile(mime_icon, dir_icons)
   else:
-    uninstallFile(joinPath(dir_conf, mime_type + ".xml"))
+    uninstallFile(joinPath(dir_conf, package_name + ".xml"))
     uninstallFile(joinPath(dir_icons, mime_prefix + "-" + mime_type + ".svg"))
 
 def targetInstall():
