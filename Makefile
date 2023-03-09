@@ -136,7 +136,8 @@ MIME_icons = \
 	data/svg/$(MIME_prefix)-$(MIME_dbp).svg
 
 all:
-	@echo "\n\tNothing to be done"; \
+	@echo "\n\tWARNING: This Makefile is deprecated. Use \"install.py\"."; \
+	echo "\n\n\tNothing to be done"; \
 	echo "\trun one of the following:"; \
 	echo "\n\t\t`tput bold`make install`tput sgr0` to install Debreate"; \
 	echo "\t\t`tput bold`make help`tput sgr0`    to show a list of options\n"; \
@@ -389,7 +390,8 @@ deb-clean:
 	rm -vf $${DEBUILD_FILES}; \
 
 help:
-	@echo "Usage:"; \
+	@echo "\n\tWARNING: This Makefile is deprecated. Use \"install.py\"."; \
+	echo "\n\nUsage:"; \
 	\
 	echo "\tmake [command]\n"; \
 	\
