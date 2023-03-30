@@ -50,6 +50,9 @@ def getBitmapsDir():
 #  \param tail
 #  Strings to be concatenated to root argument (pathList)
 def ConcatPaths(pathList, *tail):
+  # ~ logger.deprecated(__name__, ConcatPaths.__name__, "os.path.join and os.path.normpath")
+  print("WARNING: " + __name__ + "." + ConcatPaths.__name__ + " is deprecated, use os.path.join and os.pathnormpath instead")
+
   # Convert string arg to list
   if IsString(pathList):
     pathList = [pathList,]
@@ -61,21 +64,10 @@ def ConcatPaths(pathList, *tail):
   if tail:
     pathList += tail
 
-  # Clean up tail arguments
-  for INDEX in range(len(pathList)):
-    pathList[INDEX] = pathList[INDEX].strip("/")
+  for idx in range(len(pathList)):
+    pathList[idx] = os.path.normpath(pathList[idx])
 
-  path = "/".join(pathList)
-
-  while "//" in path:
-    path = path.replace("//", "/")
-
-  # FIXME: How to add 'absolute' argument with ambiguous arg count for 'tail'
-  absolute = True
-  if absolute and not path.startswith("/"):
-    path = "/" + path
-
-  return path
+  return os.path.join(*pathList)
 
 
 # *** System paths *** #
