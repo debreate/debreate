@@ -6,7 +6,6 @@
 
 import os, wx
 
-from globals.paths   import ConcatPaths
 from globals.paths   import getBitmapsDir
 from globals.strings import GS
 
@@ -27,16 +26,16 @@ def GetImagePath(name, size=16, cat=None, img_type="png"):
   name = "{}.{}".format(name, img_type)
 
   if cat:
-    paths = (getBitmapsDir(), cat, GS(size), name)
+    b_paths = (getBitmapsDir(), cat, GS(size), name)
 
   else:
-    paths = (getBitmapsDir(), GS(size), name)
+    b_paths = (getBitmapsDir(), GS(size), name)
 
-  image_path = ConcatPaths(paths)
+  image_path = os.path.join(*b_paths)
 
   # Attempt to use failsafe image if file does not exists
   if not os.path.isfile(image_path):
-    image_path = ConcatPaths((getBitmapsDir(), GS(size), "failsafe.png"))
+    image_path = os.path.join(getBitmapsDir(), GS(size), "failsafe.png")
 
   # Last resort is to retrun None if a failsafe image was not found
   if not os.path.isfile(image_path):
@@ -83,6 +82,6 @@ def GetBitmap(name, size=16, cat=None, img_type="png"):
 
   if not image_path:
     #return wx.NullBitmap
-    return wx.Bitmap(ConcatPaths((getBitmapsDir(), "24", "failsafe.png")))
+    return wx.Bitmap(os.path.join(getBitmapsDir(), "24", "failsafe.png"))
 
   return wx.Bitmap(image_path, wx.BITMAP_TYPE_PNG)

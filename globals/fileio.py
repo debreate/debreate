@@ -8,7 +8,6 @@
 
 import codecs, os
 
-from globals.paths   import ConcatPaths
 from globals.strings import GS
 
 
@@ -119,7 +118,7 @@ def GetFiles(path, flag=None):
 
   for PATH, DIRS, FILES in os.walk(path):
     for F in FILES:
-      file_path = ConcatPaths((path, F))
+      file_path = os.path.join(path, F)
 
       if os.path.isfile(file_path):
         # Don't add files that do not match 'flag' attributes

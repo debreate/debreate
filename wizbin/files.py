@@ -16,7 +16,6 @@ from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.paths      import ConcatPaths
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.filelist     import FileListESS
@@ -330,7 +329,7 @@ class Page(WizardPage):
         filename = self.lst_files.GetItemText(count)
         source = self.lst_files.GetItem(count, columns.SOURCE).GetText()
         target = self.lst_files.GetItem(count, columns.TARGET).GetText()
-        absolute_filename = ConcatPaths((source, filename))
+        absolute_filename = os.path.join(source, filename)
 
         # Populate list with tuples of ('src', 'file', 'dest')
         if self.lst_files.GetItemTextColour(count) == (255, 0, 0):
@@ -470,7 +469,7 @@ class Page(WizardPage):
 
           insert_index = INDEX
           for P in os.listdir(path):
-            pathsList.insert(insert_index, ConcatPaths((path, P)))
+            pathsList.insert(insert_index, os.path.join(path, P))
             insert_index += 1
 
     try:

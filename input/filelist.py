@@ -15,7 +15,6 @@ from dbr.language     import GT
 from dbr.log          import Logger
 from globals.fileitem import FileItem
 from globals.mime     import GetFileMimeType
-from globals.paths    import ConcatPaths
 from globals.strings  import IsString
 from input.essential  import EssentialField
 from input.list       import ListCtrl
@@ -403,7 +402,7 @@ class FileList(BasicFileList):
       sourceDir = os.path.dirname(filename)
       filename = os.path.basename(filename)
 
-    source_path = ConcatPaths((sourceDir, filename))
+    source_path = os.path.join(sourceDir, filename)
 
     Logger.Debug(__name__, GT("Adding file: {}").format(source_path))
 
@@ -468,7 +467,7 @@ class FileList(BasicFileList):
     file_dir = self.GetItemText(index, columns.SOURCE)
     file_name = self.GetItemText(index, columns.FILENAME)
 
-    return ConcatPaths((file_dir, file_name))
+    return os.path.join(file_dir, file_name)
 
 
   ## TODO: Doxygen

@@ -405,7 +405,7 @@ class DirectoryTree(wx.TreeCtrl):
                 break
 
             if not filtered:
-              child_path = paths.ConcatPaths((item_path, LABEL))
+              child_path = os.path.join(item_path, LABEL)
 
               if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
                 dirs.append((LABEL, child_path,))
@@ -565,14 +565,14 @@ class DirectoryTree(wx.TreeCtrl):
   #  TODO: Define method
   def GetSelectedPaths(self):
     selected = self.GetSelections()
-    paths = []
+    s_paths = []
 
     for S in selected:
       # Ensure that all selected items are PathItem instances
       if isinstance(S, PathItem):
-        paths.append(S.Path)
+        s_paths.append(S.Path)
 
-    return tuple(paths)
+    return tuple(s_paths)
 
 
   ## Get selected item
@@ -894,7 +894,7 @@ class DirectoryTree(wx.TreeCtrl):
 
       new_label = event.GetLabel()
       item_dir = os.path.dirname(item.Path)
-      new_path = paths.ConcatPaths((item_dir, new_label))
+      new_path = os.path.join(item_di, new_label)
 
       try:
         if os.path.exists(new_path):

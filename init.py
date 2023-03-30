@@ -56,13 +56,13 @@ if "compile" in parsed_commands:
   print("Compiling root directory: {}".format(dir_app))
   for F in os.listdir(dir_app):
     if os.path.isfile(F) and F.endswith(".py") and F != "init.py":
-      F = paths.ConcatPaths((dir_app, F))
+      F = os.path.join(dir_app, F)
       compileall.compile_file(F)
 
   print
 
   for D in os.listdir(dir_app):
-    D = paths.ConcatPaths((dir_app, D))
+    D = os.path.join(dir_app, D)
     if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
       print("Compiling directory: {}".format(D))
       compileall.compile_dir(D)
@@ -80,7 +80,7 @@ if "clean" in parsed_commands:
 
   for ROOT, DIRS, FILES in os.walk(dir_app):
     for F in FILES:
-      F = paths.ConcatPaths((ROOT, F))
+      F = os.path.join(ROOT, F)
 
       if os.path.isfile(F) and F.endswith(".pyc"):
         print("Removing file: {}".format(F))
@@ -136,7 +136,7 @@ from startup.startup     import SetAppInitialized
 
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
-  SetLocaleDir(paths.ConcatPaths((PREFIX, "share/locale")))
+  SetLocalDir(os.path.join(PREFIX, "share", "locale"))
   gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 

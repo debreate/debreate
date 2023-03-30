@@ -37,32 +37,3 @@ def getLogsDir():
 
 def getBitmapsDir():
   return os.path.join(getAppDir(), "bitmaps")
-
-## Joints multiple strings into a single path
-#
-#  \deprecated
-#    Just use os.path.join & os.path.normpath
-#
-#  \param pathList
-#  <b><i>List</i></b> of strings to be concatenated
-#  \param tail
-#  Strings to be concatenated to root argument (pathList)
-def ConcatPaths(pathList, *tail):
-  # ~ logger.deprecated(__name__, ConcatPaths.__name__, "os.path.join and os.path.normpath")
-  print("WARNING: " + __name__ + "." + ConcatPaths.__name__ + " is deprecated, use os.path.join and os.pathnormpath instead")
-
-  # Convert string arg to list
-  if IsString(pathList):
-    pathList = [pathList,]
-
-  # Make sure we are working with a list instance
-  pathList = list(pathList)
-
-  # Append tail arguments
-  if tail:
-    pathList += tail
-
-  for idx in range(len(pathList)):
-    pathList[idx] = os.path.normpath(pathList[idx])
-
-  return os.path.join(*pathList)

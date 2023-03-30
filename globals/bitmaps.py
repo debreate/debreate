@@ -4,12 +4,13 @@
 # See: docs/LICENSE.txt
 
 
+import os.path.join
+
 from dbr.image     import GetBitmap
-from globals.paths import ConcatPaths
 from globals.paths import getBitmapsDir
 
 
-LOGO = ConcatPaths((getBitmapsDir(), "icon/64/logo.png"))
+LOGO = os.path.join(getBitmapsDir(), "icon", "64", "logo.png")
 
 ICON_ERROR = GetBitmap("error", 64, "icon")
 ICON_EXCLAMATION = ICON_ERROR

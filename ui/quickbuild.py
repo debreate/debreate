@@ -15,7 +15,6 @@ from globals.errorcodes   import dbrerrno
 from globals.fileio       import ReadFile
 from globals.ident        import btnid
 from globals.moduleaccess import ModuleAccessCtrl
-from globals.paths        import ConcatPaths
 from globals.threads      import Thread
 from ui.button            import CreateButton
 from ui.dialog            import GetDirDialog
@@ -177,7 +176,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     # done automatically by the dpkg command, but we need to set it manually to
     # check for overwriting a file.
     if os.path.isdir(target):
-      control_file = ConcatPaths((stage, "DEBIAN/control"))
+      control_file = os.path.join(stage, "DEBIAN", "control")
       if os.path.isfile(control_file):
         control_lines = ReadFile(control_file, split=True)
 
@@ -196,7 +195,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
             arch = LINE.replace("Architecture: ", "").strip()
 
         if name and version and arch:
-          target = ConcatPaths((target, "{}.deb".format("_".join((name, version, arch,)))))
+          target = os.path.join(target, "{}.deb".format("_".join((name, version, arch))))
 
     # Automatically add .deb filename extension if not present
     elif not target.lower().endswith(".deb"):

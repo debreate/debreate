@@ -8,8 +8,8 @@ import os
 
 from dbr.language    import GT
 from dbr.log         import Logger
-from globals         import paths
 from globals.fileio  import GetFiles
+from globals.paths   import getAppDir, getLocalDir
 from globals.strings import GS
 
 
@@ -22,24 +22,24 @@ sys_licenses_path = "/usr/share/common-licenses"
 #  Path to application templates stored in the system Debreate directory.
 #  <app_dir>/templates
 #  FIXME: Should be stored elsewhere? /etc? /lib?
-app_templates_path = paths.ConcatPaths((paths.getAppDir(), "templates"))
+app_templates_path = os.path.join(getAppDir(), "templates")
 
 ## Application licenses
 #
 #  Path to license templates stored in the Debreate data directory
 #  FIXME: Rename to 'global_licenses_path'
 #  <app_dir>/templates/li
-app_licenses_path = paths.ConcatPaths((app_templates_path, "licenses"))
+app_licenses_path = os.path.join(app_templates_path, "licenses")
 
 ## Local templates directory
 #
 #  <data_dir>/templates
-local_templates_path = paths.ConcatPaths((paths.getLocalDir(), "templates"))
+local_templates_path = os.path.join(getLocalDir(), "templates")
 
 ## License templates directory
 #
 #  <templates_dir>/licenses
-local_licenses_path = paths.ConcatPaths((local_templates_path, "licenses"))
+local_licenses_path = os.path.join(local_templates_path, "licenses")
 
 
 ## Retrieves a list of licenses installed on the system
@@ -83,13 +83,13 @@ def GetLicenseTemplateFile(l_name):
 
   # Check local templates first
   if l_name in GetFiles(local_licenses_path):
-    template_path = paths.ConcatPaths((local_licenses_path, l_name))
+    template_path = os.path.join(local_licenses_path, l_name)
 
   elif l_name in GetFiles(app_licenses_path):
-    template_path = paths.ConcatPaths((app_licenses_path, l_name))
+    template_path = os.path.join(app_licenses_path, l_name)
 
   elif l_name in GetFiles(sys_licenses_path):
-    template_path = paths.ConcatPaths((sys_licenses_path, l_name))
+    template_path = os.path.join(sys_licenses_path, l_name)
 
   if not template_path or not os.path.isfile(template_path):
     Logger.Warn(__name__, GT("License template not found: {}".format(template_path)))

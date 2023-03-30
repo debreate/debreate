@@ -314,8 +314,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       # FIXME: files should be re-cached when Debreate upgraded to new version
       # TODO: trim unneeded text
       cached = False
-      manual_cache = paths.ConcatPaths(paths.getCacheDir(), "manual")
-      manual_index = paths.ConcatPaths(manual_cache, "index.html")
+      manual_cache = os.path.join(paths.getCacheDir(), "manual")
+      manual_index = os.path.join(manual_cache, "index.html")
       if not os.path.isdir(manual_cache):
         os.makedirs(manual_cache)
       elif os.path.isfile(manual_index):

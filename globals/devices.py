@@ -8,7 +8,6 @@ import os
 
 from dbr.log        import Logger
 from globals.fileio import ReadFile
-from globals.paths  import ConcatPaths
 
 
 ## Class that represents a mounted storage device
@@ -22,7 +21,7 @@ class StorageDevice:
     label_dir = "/dev/disk/by-label"
     if os.path.isdir(label_dir):
       for LABEL in os.listdir(label_dir):
-        link = ConcatPaths((label_dir, LABEL))
+        link = os.path.join(label_dir, LABEL)
 
         if os.path.islink(link):
           link_node = os.path.realpath(link)
@@ -61,7 +60,7 @@ class StorageDevice:
     if os.path.isdir(type_dir):
       node_types = os.listdir(type_dir)
       for TYPE in node_types:
-        link = ConcatPaths((type_dir, TYPE))
+        link = os.path.join(type_dir, TYPE)
 
         if os.path.islink(link):
           link_node = os.path.realpath(link)

@@ -11,7 +11,7 @@ from importlib import import_module
 from dbr.containers  import Contains
 from globals.fileio  import ReadFile
 from globals.fileio  import WriteFile
-from globals         import paths
+from globals.paths   import getCacheDir
 from globals.remote  import GetRemotePageText
 from globals.strings import RemoveEmptyLines
 from globals.strings import StringIsVersioned
@@ -64,7 +64,7 @@ OS_upstream_version = GetOSInfo("DISTRIB_RELEASE", True)
 OS_upstream_codename = GetOSInfo("DISTRIB_CODENAME", True)
 
 ## File where distribution code names cache is stored
-FILE_distnames = paths.ConcatPaths((paths.getCacheDir(), "distnames"))
+FILE_distnames = os.path.join(getCacheDir(), "distnames")
 
 ## Retrieves distribution names from remote Debian site
 #

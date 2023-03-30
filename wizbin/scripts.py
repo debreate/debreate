@@ -13,7 +13,6 @@ from globals.fileitem import FileItem
 from globals.ident    import btnid
 from globals.ident    import inputid
 from globals.ident    import pgid
-from globals.paths    import ConcatPaths
 from globals.strings  import TextIsEmpty
 from globals.tooltips import SetPageToolTips
 from input.filelist   import BasicFileList
@@ -264,7 +263,7 @@ class Page(WizardPage):
         # FIXME: FileItem.GetTarget() is not accurate
         file_target = file_list.GetTarget(EXE)
 
-        self.Executables.Add(FileItem(file_name, ConcatPaths(file_target, file_name), ignore_timestamp=True))
+        self.Executables.Add(FileItem(file_name, os.path.join(file_target, file_name), ignore_timestamp=True))
 
       # retrieve nested executables
       # FIXME: symlinks may cause problems here
@@ -274,17 +273,17 @@ class Page(WizardPage):
           toplevel = FITEM.GetPath()
           for ROOT, DIRS, FILES in os.walk(toplevel):
             for FILE in FILES:
-              fullpath = ConcatPaths(ROOT, FILE)
+              fullpath = os.path.join(ROOT, FILE)
               DIR = os.path.dirname(fullpath[len(toplevel):]).strip("/")
-              relpath = ConcatPaths(FITEM.GetBasename(), DIR, FILE).strip("/")
+              relpath = os.path.join(FITEM.GetBasename(), DIR, FILE).strip("/")
 
               if os.path.isfile(fullpath) and os.access(fullpath, os.X_OK):
-                fulltarget = ConcatPaths(FITEM.GetTarget(), relpath)
+                fulltarget = os.path.join(FITEM.GetTarget(), relpath)
 
                 # check if item is already added to list
                 duplicate = False
                 for EXE in exe_list:
-                  existingtarget = ConcatPaths(EXE.GetTarget(), file_list.GetFilename(EXE))
+                  existingtarget = os.path.join(EXE.GetTarget(), file_list.GetFilename(EXE))
                   if fulltarget == existingtarget:
                     duplicate = True
                     break
@@ -295,7 +294,7 @@ class Page(WizardPage):
 
                 Logger.Debug(__name__, "Adding nested executable: {}".format(relpath))
                 self.Executables.Add(
-                    FileItem(relpath, ConcatPaths(FITEM.GetTarget(), relpath),
+                    FileItem(relpath, os.path.join(FITEM.GetTarget(), relpath),
                         ignore_timestamp=True))
 
     elif event_id in (btnid.REMOVE, wx.WXK_DELETE):
