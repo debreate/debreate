@@ -430,7 +430,7 @@ def main():
   options = args_parser.parse_args()
   if not options.dir:
     options.dir = "/"
-  config = Config(parseConfig(os.path.join(dir_root, "install.conf")))
+  config = Config(parseConfig(os.path.join(dir_root, "build.conf")))
 
   if options.target not in targets:
     log("error", "unknown target: \"{}\"".format(options.target))
