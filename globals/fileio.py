@@ -88,7 +88,7 @@ def WriteFile(path, contents, noStrip=None):
 
   contents = contents.strip(strip_chars)
 
-  if "/" in path:
+  if os.sep in path:
     target_dir = os.path.dirname(path)
 
   else:
