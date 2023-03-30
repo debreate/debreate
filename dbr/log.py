@@ -6,24 +6,25 @@
 
 import os, sys
 
-from globals.dateinfo import GetDate
-from globals.dateinfo import GetTime
-from globals.dateinfo import dtfmt
+import util
+
+from globals import paths
 from globals.fileio   import AppendFile
-from globals.paths    import PATH_logs
 from globals.strings  import GetModuleString
 from globals.strings  import IsString
+from util.logger      import LogLevel
 
+logger = util.getLogger()
 
-## Verbosity levels at which the logger will output text
-class LogLevel:
-  # Logging levels
-  INFO, WARN, ERROR, DEBUG, TEST = range(5)
-
+# backward compat
+LogLevel.TEST = LogLevel.DEBUG + 1
 
 ## A log class for outputting messages
 #
 #  TODO: Add 'quiet' (0) log level.
+#
+#  @deprecated
+#    Use util.logger.
 #
 #  A log that will output messages to the terminal &
 #  a log text file.
@@ -42,7 +43,9 @@ class DebreateLogger:
   #  \b \e int|str : The level at which messages will be output (default is 2 (ERROR))
   #  \param logsPath
   #  \b \e str : The file to which messages will be written
-  def __init__(self, level=LogLevel.ERROR, logsPath=PATH_logs):
+  def __init__(self, level=LogLevel.ERROR, logsPath=paths.getLogsDir()):
+    logger.deprecated(__name__, DebreateLogger.__name__, "util.logger.getLogger")
+
     ## The level at which to output messages
     self.LogLevel = level
 
@@ -50,7 +53,7 @@ class DebreateLogger:
     self.LogsDir = logsPath
 
     ## Log file path
-    self.LogFile = "{}/{}.log".format(self.LogsDir, GetDate(dtfmt.LOG))
+    self.LogFile = logger.getLogFile()
 
     ## Forces space between header & first log entry (changed to None after first entry)
     self.NoStrip = "\n"
@@ -60,34 +63,14 @@ class DebreateLogger:
 
   ## Opens a log file or creates a new one & adds log header with timestamp
   def OnInit(self):
-    if not os.path.isdir(self.LogsDir):
-      os.makedirs(self.LogsDir)
-
-    # Initialize the log with date & time
-    date_time = "{} {}".format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
-
-    log_header = "--------------- Log Start: {} ---------------\n".format(date_time)
-
-    '''
-    # Add whitespace for new entries
-    if os.path.isfile(self.LogFile):
-      log_header = "\n\n{}".format(log_header)
-    '''
-
-    # Write header to log file
-    AppendFile(self.LogFile, log_header, noStrip="\n")
+    logger.deprecated(__name__, self.OnInit.__name__, "util.logger.Logger.startLogging")
+    logger.startLogging()
 
 
   ## Adds footer with timestamp to log file
   def OnClose(self):
-    # Don't write to log if user deleted it
-    if os.path.isfile(self.LogFile):
-      # Close the log with date & time
-      date_time = "{} {}".format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
-
-      log_footer = "\n--------------- Log End:   {} ---------------\n\n".format(date_time)
-
-      AppendFile(self.LogFile, log_footer, noStrip="\n")
+    logger.deprecated(__name__, self.OnClose.__name__, "util.logger.Logger.endLogging")
+    logger.endLogging()
 
 
   ## Checks if log can be written at supplied level
@@ -98,6 +81,7 @@ class DebreateLogger:
   #  	\b \e tuple container int & str values of output level,
   #  	  or None for invalid log level
   def CheckLogLevel(self, level):
+    logger.deprecated(__name__, self.CheckLogLevel.__name__)
 
     # Check if level is of type INFO, WARN, ERROR, DEBUG, TEST
     if level in self.LogLevelList:
@@ -126,6 +110,8 @@ class DebreateLogger:
   #  \param pout
   #  Stream to which message should be output (stdout/stderr)
   def LogMessage(self, level, module, message, details=[], newline=False, pout=sys.stdout):
+    logger.deprecated(__name__, self.LogMessage.__name__, "util.logger.Logger.log")
+
     level = self.CheckLogLevel(level)
 
     # Use the object to retrieve module string
@@ -172,6 +158,8 @@ class DebreateLogger:
   #  \param newline
   #  If <b><i>True</i></b>, prepends an empty line to beginning of message
   def Info(self, module, message, details=[], newline=False):
+    logger.deprecated(__name__, self.Info.__name__, "util.logger.Logger.info")
+
     self.LogMessage("info", module, message, details=details, newline=newline)
 
 
@@ -184,6 +172,8 @@ class DebreateLogger:
   #  \param newline
   #  If <b><i>True</i></b>, prepends an empty line to beginning of message
   def Warn(self, module, message, details=[], newline=False):
+    logger.deprecated(__name__, self.Warn.__name__, "util.logger.Logger.warn")
+
     self.LogMessage("warn", module, message, details=details, newline=newline)
 
 
@@ -198,6 +188,8 @@ class DebreateLogger:
   #  \param newline
   #  If <b><i>True</i></b>, prepends an empty line to beginning of message
   def Error(self, module, message, details=[], newline=False):
+    logger.deprecated(__name__, self.Error.__name__, "util.logger.Logger.error")
+
     self.LogMessage("error", module, message, details=details, newline=newline, pout=sys.stderr)
 
 
@@ -210,6 +202,8 @@ class DebreateLogger:
   #  \param newline
   #  If <b><i>True</i></b>, prepends an empty line to beginning of message
   def Debug(self, module, message, details=[], newline=False):
+    logger.deprecated(__name__, self.Debug.__name__, "util.logger.Logger.debug")
+
     self.LogMessage("debug", module, message, details=details, newline=newline)
 
 
@@ -222,6 +216,8 @@ class DebreateLogger:
   #  \param newline
   #  If <b><i>True</i></b>, prepends an empty line to beginning of message
   def Test(self, module, message, details=[], newline=False):
+    logger.deprecated(__name__, self.Test.__name__)
+
     self.LogMessage("test", module, message, details=details, newline=newline)
 
 
@@ -232,6 +228,8 @@ class DebreateLogger:
   #  \return
   #  <b><i>True</i></b> if log level successfully set
   def SetLogLevel(self, level):
+    logger.deprecated(__name__, self.SetLogLevel.__name__, "util.logger.Logger.setLevel")
+
     log_set = False
 
     if level.isdigit():
@@ -255,6 +253,8 @@ class DebreateLogger:
   #  \return
   #  <b><i>Integer</i></b> logging level
   def GetLogLevel(self):
+    logger.deprecated(__name__, self.GetLogLevel.__name__, "util.logger.Logger.getLevel")
+
     return self.LogLevel
 
 
@@ -263,6 +263,8 @@ class DebreateLogger:
   #  \return
   #  <b><i>String</i></b> path of log file
   def GetLogFile(self):
+    logger.deprecated(__name__, self.GetLogFile.__name__)
+
     return self.LogFile
 
 
@@ -274,4 +276,6 @@ Logger = DebreateLogger()
 #  \return
 #  <b><i>True</i></b> if logging level is 'debug'
 def DebugEnabled():
+  logger.deprecated(__name__, DebugEnabled.__name__)
+
   return Logger.GetLogLevel() >= LogLevel.DEBUG

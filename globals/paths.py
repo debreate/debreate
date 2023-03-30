@@ -6,13 +6,44 @@
 # See: docs/LICENSE.txt
 
 
-import os
+import os, sys
 
 from globals.strings import GS
 from globals.strings import IsString
 
 
+## Directory where app is installed
+#  HACK: test
+#  HACK: Call os.path.dirname twice to get root directory.
+#    This is necessary because this variable is
+#    declared from a sub-directory.
+PATH_app = GS(os.path.dirname(os.path.dirname(__file__)))
+
+def getAppDir():
+  return PATH_app
+
+def getHomeDir():
+  if sys.platform == "win32":
+    return os.getenv("USERPROFILE")
+  else:
+    return os.getenv("HOME")
+
+def getLocalDir():
+  return os.path.join(getHomeDir(), os.path.normpath(".local/share/debreate"))
+
+def getCacheDir():
+  return os.path.join(getLocalDir(), "cache")
+
+def getLogsDir():
+  return os.path.join(getLocalDir(), "logs")
+
+def getBitmapsDir():
+  return os.path.join(getAppDir(), "bitmaps")
+
 ## Joints multiple strings into a single path
+#
+#  \deprecated
+#    Just use os.path.join & os.path.normpath
 #
 #  \param pathList
 #  <b><i>List</i></b> of strings to be concatenated
@@ -49,25 +80,26 @@ def ConcatPaths(pathList, *tail):
 
 # *** System paths *** #
 
-## Directory where app is installed
-#  HACK: test
-#  HACK: Call os.path.dirname twice to get root directory.
-#  	This is necessary because this variable is
-#  	declared from a sub-directory.
-PATH_app = GS(os.path.dirname(os.path.dirname(__file__)))
-
 ## User's home directory
+#
+#  \deprecated
 #
 #  Used to set config directory.
 PATH_home = GS(os.getenv("HOME"))
 
 ## Local folder to store files such as custom templates
+#
+#  \deprecated
 PATH_local = ConcatPaths((PATH_home, ".local/share/debreate"))
 
 ## Directory where cache files are stored
+#
+#  \deprecated
 PATH_cache = ConcatPaths((PATH_local, "cache"))
 
 ## Directory where log files are stored
+#
+#  \deprecated
 PATH_logs = ConcatPaths((PATH_local, "logs"))
 
 ## Directory where app bitmaps are stored

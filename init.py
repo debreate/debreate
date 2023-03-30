@@ -9,7 +9,9 @@
 #  reset it to its default settings.
 
 
-import os, sys
+import errno, os, sys
+
+import util
 
 from command_line  import GetParsedPath
 from command_line  import ParseArguments
@@ -19,6 +21,8 @@ from command_line  import parsed_args_v
 from globals.paths import PATH_app
 from globals.paths import ConcatPaths
 
+logger = util.getLogger()
+logger.startLogging()
 
 ## Module name displayed for Logger output.
 #  Should be set to 'init' or actual name of executable script.
@@ -33,7 +37,7 @@ parsed_path = GetParsedPath()
 
 # Compiles python source into bytecode
 if "compile" in parsed_commands:
-  import compileall, errno
+  import compileall
 
 
   compile_dirs = (
@@ -67,9 +71,6 @@ if "compile" in parsed_commands:
 
 
 if "clean" in parsed_commands:
-  import errno
-
-
   if not os.access(PATH_app, os.W_OK):
     print("ERROR: No write privileges for {}".format(PATH_app))
     sys.exit(errno.EACCES)
@@ -231,6 +232,6 @@ SetAppInitialized()
 
 debreate_app.MainLoop()
 
-Logger.OnClose()
+logger.endLogging()
 
 sys.exit(0)
