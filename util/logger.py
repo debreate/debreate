@@ -21,16 +21,29 @@ class LogLevel:
   SILENT, ERROR, WARN, INFO, DEBUG = range(0, 5)
 
   strings = {
-    SILENT: "",
-    ERROR: "ERROR",
-    WARN: "WARNING",
-    INFO: "INFO",
-    DEBUG: "DEBUG"
+    "": SILENT,
+    "ERROR": ERROR,
+    "WARN": WARN,
+    "INFO": INFO,
+    "DEBUG": DEBUG
   }
 
   @staticmethod
+  def getDefault():
+    return LogLevel.INFO
+
+  @staticmethod
   def toString(loglevel):
-    return LogLevel.strings[loglevel]
+    for st in LogLevel.strings:
+      if LogLevel.strings[st] == loglevel:
+        if st == "WARN":
+          st = "WARNING"
+        return st
+    return LogLevel.getDefault()
+
+  @staticmethod
+  def fromString(st):
+    return LogLevel.strings[st] if st in LogLevel.strings else LogLevel.getDefault()
 
 class Logger:
   loglevel = LogLevel.INFO
@@ -61,6 +74,11 @@ class Logger:
     AppendFile(self.logfile, footer, noStrip="\n")
 
   def setLevel(self, loglevel):
+    if type(loglevel) == str:
+      loglevel_up = loglevel.upper()
+      if not loglevel_up in LogLevel.strings:
+        self.warn("invalid logging level: " + loglevel)
+      loglevel = LogLevel.fromString(loglevel_up)
     self.loglevel = loglevel
 
   def getLevel(self):

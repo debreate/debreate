@@ -173,7 +173,7 @@ if "help" in parsed_args_s:
 
 
 if "log-level" in parsed_args_v:
-  Logger.SetLogLevel(parsed_args_v["log-level"])
+  logger.setLevel(parsed_args_v["log-level"])
 
 
 Logger.Info(script_name, "Python version: {}".format(PY_VER_STRING))
@@ -250,5 +250,3 @@ SetAppInitialized()
 debreate_app.MainLoop()
 
 logger.endLogging()
-
-sys.exit(0)
