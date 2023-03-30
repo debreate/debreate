@@ -6,4 +6,5 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
-from util.logger import getLogger
+from util.depends import getExecutable
+from util.logger  import getLogger

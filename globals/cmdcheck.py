@@ -3,8 +3,7 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
-
-import subprocess
+import util
 
 
 ## Check if a command is available on the system
@@ -20,10 +19,5 @@ import subprocess
 #  \return
 #  	\b \e str|None : A string path to executable or None if not found
 def CommandExists(cmd):
-  res = subprocess.run(["which", cmd], stdout=subprocess.PIPE)
-
-  if res.returncode == 0:
-    # convert from bytes to string & remove trailing lines
-    return res.stdout.decode("utf-8").replace("\r\n", "\n").split("\n")[0]
-
-  return None
+  util.getLogger().deprecated(__name__, CommandExists.__name__, "util.getExecutable")
+  return util.getExecutable(cmd)
