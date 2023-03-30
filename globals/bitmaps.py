@@ -6,10 +6,10 @@
 
 from dbr.image     import GetBitmap
 from globals.paths import ConcatPaths
-from globals.paths import PATH_bitmaps
+from globals.paths import getBitmapsDir
 
 
-LOGO = ConcatPaths((PATH_bitmaps, "icon/64/logo.png"))
+LOGO = ConcatPaths((getBitmapsDir(), "icon/64/logo.png"))
 
 ICON_ERROR = GetBitmap("error", 64, "icon")
 ICON_EXCLAMATION = ICON_ERROR

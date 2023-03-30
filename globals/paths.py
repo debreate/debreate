@@ -12,15 +12,13 @@ from globals.strings import GS
 from globals.strings import IsString
 
 
-## Directory where app is installed
-#  HACK: test
-#  HACK: Call os.path.dirname twice to get root directory.
-#    This is necessary because this variable is
-#    declared from a sub-directory.
-PATH_app = GS(os.path.dirname(os.path.dirname(__file__)))
-
 def getAppDir():
-  return PATH_app
+  ## Directory where app is installed
+  #  HACK: test
+  #  HACK: Call os.path.dirname twice to get root directory.
+  #    This is necessary because this variable is
+  #    declared from a sub-directory.
+  return GS(os.path.dirname(os.path.dirname(__file__)))
 
 def getHomeDir():
   if sys.platform == "win32":
@@ -68,31 +66,3 @@ def ConcatPaths(pathList, *tail):
     pathList[idx] = os.path.normpath(pathList[idx])
 
   return os.path.join(*pathList)
-
-
-# *** System paths *** #
-
-## User's home directory
-#
-#  \deprecated
-#
-#  Used to set config directory.
-PATH_home = GS(os.getenv("HOME"))
-
-## Local folder to store files such as custom templates
-#
-#  \deprecated
-PATH_local = ConcatPaths((PATH_home, ".local/share/debreate"))
-
-## Directory where cache files are stored
-#
-#  \deprecated
-PATH_cache = ConcatPaths((PATH_local, "cache"))
-
-## Directory where log files are stored
-#
-#  \deprecated
-PATH_logs = ConcatPaths((PATH_local, "logs"))
-
-## Directory where app bitmaps are stored
-PATH_bitmaps = "{}/bitmaps".format(PATH_app)

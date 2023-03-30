@@ -11,11 +11,11 @@ from dbr.event           import RefreshLogEvent
 from dbr.font            import GetMonospacedFont
 from dbr.language        import GT
 from dbr.log             import Logger
+from globals             import paths
 from globals.application import APP_logo
 from globals.fileitem    import FileItem
 from globals.ident       import btnid
 from globals.ident       import menuid
-from globals.paths       import PATH_logs
 from globals.strings     import GS
 from globals.threads     import Thread
 from input.text          import TextAreaPanel
@@ -154,7 +154,7 @@ class LogWindow(wx.Dialog):
 
   ## Opens a new log file
   def OnOpenLogFile(self, event=None):
-    log_select = GetFileOpenDialog(self, GT("Open Log"), directory=PATH_logs)
+    log_select = GetFileOpenDialog(self, GT("Open Log"), directory=paths.getLogsDir())
 
     if ShowDialog(log_select):
       logFile = log_select.GetPath()

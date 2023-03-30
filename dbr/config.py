@@ -13,9 +13,9 @@ from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
 from dbr.log         import Logger
+from globals         import paths
 from globals.fileio  import ReadFile
 from globals.fileio  import WriteFile
-from globals.paths   import PATH_home
 from globals.strings import GS
 from globals.strings import TextIsEmpty
 
@@ -44,7 +44,7 @@ class ConfCode:
 config_version = (1, 1)
 
 # Default configuration
-default_config_dir = "{}/.config/debreate".format(PATH_home)
+default_config_dir = "{}/.config/debreate".format(paths.getHomeDir())
 default_config = "{}/config".format(default_config_dir)
 
 # name = (function, default value)
@@ -53,7 +53,7 @@ default_config_values = {
   "maximize": (GetBoolean, False),
   "position": (GetIntTuple, (0, 0)),
   "size": (GetIntTuple, (800, 640)),
-  "workingdir": (GS, PATH_home),
+  "workingdir": (GS, paths.getHomeDir()),
   "tooltips": (GetBoolean, True),
 }
 

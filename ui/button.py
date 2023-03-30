@@ -11,9 +11,8 @@ import os, wx
 from dbr.containers  import Contains
 from dbr.log         import Logger
 from fields.cmdfield import CommandField
+from globals         import paths
 from globals.ident   import btnid
-from globals.paths   import ConcatPaths
-from globals.paths   import PATH_bitmaps
 from globals.strings import GS
 from globals.strings import IsString
 from ui.layout       import BoxSizer
@@ -364,7 +363,7 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
   button = None
 
   if image:
-    image = ConcatPaths((PATH_bitmaps, "button", GS(size), "{}.png".format(image)))
+    image = paths.ConcatPaths((paths.getBitmapsDir(), "button", GS(size), "{}.png".format(image)))
 
     if not os.path.isfile(image):
       Logger.Warn(

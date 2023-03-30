@@ -14,13 +14,12 @@ from dbr.image       import GetCursor
 from dbr.imagelist   import sm_DirectoryImageList as ImageList
 from dbr.language    import GT
 from dbr.log         import Logger
+from globals         import paths
 from globals.devices import GetMountedStorageDevices
 from globals.execute import ExecuteCommand
 from globals.execute import GetExecutable
 from globals.ident   import menuid
 from globals.mime    import GetFileMimeType
-from globals.paths   import ConcatPaths
-from globals.paths   import PATH_home
 from ui.dialog       import ConfirmationDialog
 from ui.dialog       import ShowErrorDialog
 from ui.layout       import BoxSizer
@@ -177,7 +176,7 @@ class PathItem:
 #  TODO: Set current path when item selected
 #  TODO: Add option for refreshing tree (ReCreateTree?)
 class DirectoryTree(wx.TreeCtrl):
-  def __init__(self, parent, w_id=wx.ID_ANY, path=PATH_home, exclude_pattern=[".*",],
+  def __init__(self, parent, w_id=wx.ID_ANY, path=paths.getHomeDir(), exclude_pattern=[".*",],
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE,
       validator=wx.DefaultValidator, name=wx.TreeCtrlNameStr):
 
@@ -406,7 +405,7 @@ class DirectoryTree(wx.TreeCtrl):
                 break
 
             if not filtered:
-              child_path = ConcatPaths((item_path, LABEL))
+              child_path = paths.ConcatPaths((item_path, LABEL))
 
               if os.path.isdir(child_path) and os.access(child_path, os.R_OK):
                 dirs.append((LABEL, child_path,))
@@ -477,9 +476,10 @@ class DirectoryTree(wx.TreeCtrl):
   #
   #  Should always be first item in root list
   def GetHomeItem(self):
+    dir_home = paths.getHomeDir()
     if self.mount_list:
       for ITEM in self.mount_list:
-        if ITEM.Path == PATH_home:
+        if ITEM.Path == dir_home:
           return ITEM
 
     return None
@@ -630,9 +630,10 @@ class DirectoryTree(wx.TreeCtrl):
   ## Creates all mount items for tree
   def InitMountItems(self):
     # Failsafe conditional in case of errors reading user home directory
-    home_exists = os.path.isdir(PATH_home)
+    dir_home = paths.getHomeDir()
+    home_exists = os.path.isdir(dir_home)
     if home_exists:
-      home_item = self.AppendItem(self.root_item, GT("Home directory"), PATH_home,
+      home_item = self.AppendItem(self.root_item, GT("Home directory"), dir_home,
           ImageList.GetImageIndex("folder-home"),
           expImage=ImageList.GetImageIndex("folder-home-open"))
 
@@ -643,7 +644,7 @@ class DirectoryTree(wx.TreeCtrl):
 
     for DEV in stdevs:
       # Do not re-add home directory in case it is mounted on its own partition
-      if DEV.MountPoint == PATH_home:
+      if DEV.MountPoint == dir_home:
         continue
 
       add_item = os.path.ismount(DEV.MountPoint)
@@ -893,7 +894,7 @@ class DirectoryTree(wx.TreeCtrl):
 
       new_label = event.GetLabel()
       item_dir = os.path.dirname(item.Path)
-      new_path = ConcatPaths((item_dir, new_label))
+      new_path = paths.ConcatPaths((item_dir, new_label))
 
       try:
         if os.path.exists(new_path):
@@ -1028,7 +1029,7 @@ class DirectoryTree(wx.TreeCtrl):
         expanded = self.IsExpanded(selected)
 
       else:
-        selected_path = PATH_home
+        selected_path = paths.getHomeDir()
         expanded = True
 
       Logger.Debug(__name__, "Selected path: {}".format(selected_path))

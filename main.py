@@ -22,6 +22,7 @@ from dbr.language         import GT
 from dbr.log              import DebugEnabled
 from dbr.log              import Logger
 from dbr.timer            import DebreateTimer
+from globals              import paths
 from globals.application  import APP_homepage
 from globals.application  import APP_project_gh
 from globals.application  import APP_project_sf
@@ -36,10 +37,6 @@ from globals.fileio       import WriteFile
 from globals.ident        import menuid
 from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl
-from globals.paths        import ConcatPaths
-from globals.paths        import PATH_app
-from globals.paths        import PATH_cache
-from globals.paths        import PATH_local
 from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
 from globals.strings      import GS
@@ -317,8 +314,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       # FIXME: files should be re-cached when Debreate upgraded to new version
       # TODO: trim unneeded text
       cached = False
-      manual_cache = ConcatPaths(PATH_cache, "manual")
-      manual_index = ConcatPaths(manual_cache, "index.html")
+      manual_cache = paths.ConcatPaths(paths.getCacheDir(), "manual")
+      manual_index = paths.ConcatPaths(manual_cache, "index.html")
       if not os.path.isdir(manual_cache):
         os.makedirs(manual_cache)
       elif os.path.isfile(manual_index):
@@ -349,14 +346,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       else:
         # open local document
         wx.GetApp().Yield()
-        subprocess.call(["xdg-open", "{}/docs/usage.pdf".format(PATH_app)])
+        subprocess.call(["xdg-open", "{}/docs/usage.pdf".format(paths.getAppDir())])
 
 
   ## Opens the logs directory in the system's default file manager
   def OnLogDirOpen(self, event=None): #@UnusedVariable
     Logger.Debug(__name__, GT("Opening log directory ..."))
 
-    subprocess.check_output([GetExecutable("xdg-open"), "{}/logs".format(PATH_local)], stderr=subprocess.STDOUT)
+    subprocess.check_output([GetExecutable("xdg-open"), "{}/logs".format(paths.getLocalDir())], stderr=subprocess.STDOUT)
 
 
   ## Changes wizard page from menu
@@ -527,8 +524,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## Deletes cache directory located at ~/.local/share/debreate/cache
   def OnClearCache(self, event=None):
-    if os.path.isdir(PATH_cache):
-      shutil.rmtree(PATH_cache)
+    dir_cache = paths.getCacheDir()
+    if os.path.isdir(dir_cache):
+      shutil.rmtree(dir_cache)
 
 
   ## Opens web links from the help menu

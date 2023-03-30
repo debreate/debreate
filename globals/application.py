@@ -6,8 +6,7 @@
 
 import wx
 
-from globals.paths import ConcatPaths
-from globals.paths import PATH_bitmaps
+from globals import paths
 
 
 # *** Application information *** #
@@ -24,7 +23,7 @@ APP_project_gh = "https://github.com/AntumDeluge/debreate"
 APP_project_sf = "https://sourceforge.net/projects/debreate"
 
 ## Application's logo
-APP_logo = wx.Icon(ConcatPaths((PATH_bitmaps, "icon/64/logo.png")), wx.BITMAP_TYPE_PNG)
+APP_logo = wx.Icon(paths.ConcatPaths((paths.getBitmapsDir(), "icon/64/logo.png")), wx.BITMAP_TYPE_PNG)
 
 ## Name of application
 APP_name = "Debreate"

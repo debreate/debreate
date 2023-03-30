@@ -10,7 +10,7 @@ from dbr.config    import ReadConfig
 from dbr.config    import WriteConfig
 from dbr.log       import DebugEnabled
 from dbr.log       import Logger
-from globals.paths import PATH_home
+from globals       import paths
 
 
 ## Changes working directory & writes to config
@@ -36,8 +36,9 @@ def ChangeWorkingDirectory(target_dir):
 
   except OSError:
     # Default to the user's home directory
-    if os.path.isdir(PATH_home):
-      os.chdir(PATH_home)
+    dir_home = paths.getHomeDir()
+    if os.path.isdir(dir_home):
+      os.chdir(dir_home)
 
   if DebugEnabled():
     print("  Working dir after:  {}\n".format(os.getcwd()))

@@ -18,8 +18,7 @@ from command_line  import ParseArguments
 from command_line  import parsed_commands
 from command_line  import parsed_args_s
 from command_line  import parsed_args_v
-from globals.paths import PATH_app
-from globals.paths import ConcatPaths
+from globals       import paths
 
 logger = util.getLogger()
 logger.startLogging()
@@ -34,6 +33,8 @@ ParseArguments(sys.argv[1:])
 # GetParsedPath must be called after ParseArguments
 parsed_path = GetParsedPath()
 
+dir_app = paths.getAppDir()
+
 
 # Compiles python source into bytecode
 if "compile" in parsed_commands:
@@ -46,22 +47,22 @@ if "compile" in parsed_commands:
     "wizbin",
     )
 
-  if not os.access(PATH_app, os.W_OK):
-    print("ERROR: No write privileges for {}".format(PATH_app))
+  if not os.access(dir_app, os.W_OK):
+    print("ERROR: No write privileges for {}".format(dir_app))
     sys.exit(errno.EACCES)
 
   print("Compiling Python modules (.py) to bytecode (.pyc) ...\n")
 
-  print("Compiling root directory: {}".format(PATH_app))
-  for F in os.listdir(PATH_app):
+  print("Compiling root directory: {}".format(dir_app))
+  for F in os.listdir(dir_app):
     if os.path.isfile(F) and F.endswith(".py") and F != "init.py":
-      F = ConcatPaths((PATH_app, F))
+      F = paths.ConcatPaths((dir_app, F))
       compileall.compile_file(F)
 
   print
 
-  for D in os.listdir(PATH_app):
-    D = ConcatPaths((PATH_app, D))
+  for D in os.listdir(dir_app):
+    D = paths.ConcatPaths((dir_app, D))
     if os.path.isdir(D) and os.path.basename(D) in compile_dirs:
       print("Compiling directory: {}".format(D))
       compileall.compile_dir(D)
@@ -71,15 +72,15 @@ if "compile" in parsed_commands:
 
 
 if "clean" in parsed_commands:
-  if not os.access(PATH_app, os.W_OK):
-    print("ERROR: No write privileges for {}".format(PATH_app))
+  if not os.access(dir_app, os.W_OK):
+    print("ERROR: No write privileges for {}".format(dir_app))
     sys.exit(errno.EACCES)
 
   print("Cleaning Python bytecode (.pyc) ...\n")
 
-  for ROOT, DIRS, FILES in os.walk(PATH_app):
+  for ROOT, DIRS, FILES in os.walk(dir_app):
     for F in FILES:
-      F = ConcatPaths((ROOT, F))
+      F = paths.ConcatPaths((ROOT, F))
 
       if os.path.isfile(F) and F.endswith(".pyc"):
         print("Removing file: {}".format(F))
@@ -135,7 +136,7 @@ from startup.startup     import SetAppInitialized
 
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
-  SetLocaleDir(ConcatPaths((PREFIX, "share/locale")))
+  SetLocaleDir(paths.ConcatPaths((PREFIX, "share/locale")))
   gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 
@@ -155,7 +156,7 @@ if "help" in parsed_args_s:
     res = subprocess.run(["man", "debreate"])
 
   else:
-    res = subprocess.run(["man", "--manpath=\"{}/man\"".format(PATH_app), "debreate"])
+    res = subprocess.run(["man", "--manpath=\"{}/man\"".format(dir_app), "debreate"])
 
   help_output = (res.returncode, res.stdout)
 

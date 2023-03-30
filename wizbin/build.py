@@ -11,6 +11,7 @@ from dbr.language       import GT
 from dbr.log            import DebugEnabled
 from dbr.log            import Logger
 from dbr.md5            import WriteMD5
+from globals            import paths
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.errorcodes import dbrerrno
@@ -23,8 +24,6 @@ from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.paths      import ConcatPaths
-from globals.paths      import PATH_app
 from globals.strings    import GS
 from globals.strings    import RemoveEmptyLines
 from globals.strings    import TextIsEmpty
@@ -233,7 +232,7 @@ class Page(WizardPage):
           maximum=task_count,
           style=PD_DEFAULT_STYLE|wx.PD_ELAPSED_TIME|wx.PD_ESTIMATED_TIME|wx.PD_CAN_ABORT)
 
-      DIR_debian = ConcatPaths((stage_dir, "DEBIAN"))
+      DIR_debian = paths.ConcatPaths((stage_dir, "DEBIAN"))
 
       # Make a fresh build tree
       os.makedirs(DIR_debian)
@@ -337,7 +336,7 @@ class Page(WizardPage):
           for F in FILES:
             # Don't check files in DEBIAN directory
             if ROOT != DIR_debian:
-              F = ConcatPaths((ROOT, F))
+              F = paths.ConcatPaths((ROOT, F))
 
               if FileUnstripped(F):
                 Logger.Debug(__name__, "Unstripped file: {}".format(F))
@@ -366,10 +365,10 @@ class Page(WizardPage):
         # If changelog will be installed to default directory
         changelog_target = task_list["changelog"][0]
         if changelog_target == "STANDARD":
-          changelog_target = ConcatPaths(("{}/usr/share/doc".format(stage_dir), package))
+          changelog_target = paths.ConcatPaths(("{}/usr/share/doc".format(stage_dir), package))
 
         else:
-          changelog_target = ConcatPaths((stage_dir, changelog_target))
+          changelog_target = paths.ConcatPaths((stage_dir, changelog_target))
 
         if not os.path.isdir(changelog_target):
           os.makedirs(changelog_target)
@@ -453,7 +452,7 @@ class Page(WizardPage):
           script_name = SCRIPT
           script_text = scripts[SCRIPT]
 
-          script_filename = ConcatPaths((stage_dir, "DEBIAN", script_name))
+          script_filename = paths.ConcatPaths((stage_dir, "DEBIAN", script_name))
 
           WriteFile(script_filename, script_text)
 
@@ -894,7 +893,7 @@ class Page(WizardPage):
   def OnSetLintOverrides(self, event=None):
     Logger.Debug(__name__, GT("Setting Lintian overrides..."))
 
-    lintian_tags_file = "{}/data/lintian/tags".format(PATH_app)
+    lintian_tags_file = "{}/data/lintian/tags".format(paths.getAppDir())
 
     if not os.path.isfile(lintian_tags_file):
       Logger.Error(__name__, "Lintian tags file is missing: {}".format(lintian_tags_file))

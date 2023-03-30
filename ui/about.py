@@ -10,6 +10,7 @@ from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
 from dbr.language        import GT
 from dbr.log             import Logger
+from globals             import paths
 from globals.application import APP_name
 from globals.application import AUTHOR_email
 from globals.application import AUTHOR_name
@@ -19,7 +20,6 @@ from globals.dateinfo    import GetYear
 from globals.fileio      import ReadFile
 from globals.ident       import btnid
 from globals.mime        import GetFileMimeType
-from globals.paths       import PATH_app
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
 from input.list          import ListCtrl
@@ -127,7 +127,7 @@ class AboutDialog(wx.Dialog):
 
     ## Debreate's installation prefix
     install_prefix = wx.StaticText(sys_info,
-        label=GT("App location: {}").format(PATH_app))
+        label=GT("App location: {}").format(paths.getAppDir()))
 
     if INSTALLED:
       install_prefix.SetLabel(GT("Installation prefix: {}").format(PREFIX))
@@ -380,7 +380,7 @@ class AboutDialog(wx.Dialog):
     if INSTALLED:
       CHANGELOG = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/changelog"))
     else:
-      CHANGELOG = os.path.normpath(os.path.join(PATH_app, "docs/changelog"))
+      CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog"))
 
     if os.path.isfile(CHANGELOG):
       changelog_mimetype = GetFileMimeType(CHANGELOG)
@@ -419,7 +419,7 @@ class AboutDialog(wx.Dialog):
     if INSTALLED:
       license_path = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/LICENSE.txt"))
     else:
-      license_path = os.path.normpath(os.path.join(PATH_app, "docs/LICENSE.txt"))
+      license_path = os.path.normpath(os.path.join(paths.getAppDir(), "docs/LICENSE.txt"))
 
     if os.path.isfile(license_path):
       lic_text = ReadFile(license_path)

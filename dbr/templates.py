@@ -8,10 +8,8 @@ import os
 
 from dbr.language    import GT
 from dbr.log         import Logger
+from globals         import paths
 from globals.fileio  import GetFiles
-from globals.paths   import ConcatPaths
-from globals.paths   import PATH_app
-from globals.paths   import PATH_local
 from globals.strings import GS
 
 
@@ -22,26 +20,26 @@ sys_licenses_path = "/usr/share/common-licenses"
 ## Application templates
 #
 #  Path to application templates stored in the system Debreate directory.
-#  <PATH_app>/templates
+#  <app_dir>/templates
 #  FIXME: Should be stored elsewhere? /etc? /lib?
-app_templates_path = ConcatPaths((PATH_app, "templates"))
+app_templates_path = paths.ConcatPaths((paths.getAppDir(), "templates"))
 
 ## Application licenses
 #
 #  Path to license templates stored in the Debreate data directory
 #  FIXME: Rename to 'global_licenses_path'
-#  <PATH_app>/templates/li
-app_licenses_path = ConcatPaths((app_templates_path, "licenses"))
+#  <app_dir>/templates/li
+app_licenses_path = paths.ConcatPaths((app_templates_path, "licenses"))
 
 ## Local templates directory
 #
-#  <PATH_local>/templates
-local_templates_path = ConcatPaths((PATH_local, "templates"))
+#  <data_dir>/templates
+local_templates_path = paths.ConcatPaths((paths.getLocalDir(), "templates"))
 
 ## License templates directory
 #
-#  <templates_path>/licenses
-local_licenses_path = ConcatPaths((local_templates_path, "licenses"))
+#  <templates_dir>/licenses
+local_licenses_path = paths.ConcatPaths((local_templates_path, "licenses"))
 
 
 ## Retrieves a list of licenses installed on the system
@@ -74,7 +72,7 @@ def GetCustomLicenses():
 #  Templates are checked for first in local directory
 #  (<HOME>/.local/share/debreate/templates/licenses)
 #  then in the application's directory
-#  (<PATH_app>/templates/licenses).
+#  (<app_dir>/templates/licenses).
 #
 #  \param l_name
 #  	The filename of the template
@@ -85,13 +83,13 @@ def GetLicenseTemplateFile(l_name):
 
   # Check local templates first
   if l_name in GetFiles(local_licenses_path):
-    template_path = ConcatPaths((local_licenses_path, l_name))
+    template_path = paths.ConcatPaths((local_licenses_path, l_name))
 
   elif l_name in GetFiles(app_licenses_path):
-    template_path = ConcatPaths((app_licenses_path, l_name))
+    template_path = paths.ConcatPaths((app_licenses_path, l_name))
 
   elif l_name in GetFiles(sys_licenses_path):
-    template_path = ConcatPaths((sys_licenses_path, l_name))
+    template_path = paths.ConcatPaths((sys_licenses_path, l_name))
 
   if not template_path or not os.path.isfile(template_path):
     Logger.Warn(__name__, GT("License template not found: {}".format(template_path)))

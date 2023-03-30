@@ -10,24 +10,25 @@
 import os, wx
 
 from dbr.language   import GT
+from globals        import paths
 from globals.fileio import ReadFile
-from globals.paths  import PATH_app
 
 
 # Local modules
 # *** Debreate Information *** #
 ## Determins if the application is running as portable or installed
 INSTALLED = False
-if os.path.isfile("{}/INSTALLED".format(PATH_app)):
+if os.path.isfile("{}/INSTALLED".format(paths.getAppDir())):
   INSTALLED = True
 
 def GetPrefix():
-  global PATH_app, INSTALLED
+  global INSTALLED
 
+  dir_app = paths.getAppDir()
   if not INSTALLED:
-    return PATH_app
+    return dir_app
 
-  lines = ReadFile("{}/INSTALLED".format(PATH_app), split=True)
+  lines = ReadFile("{}/INSTALLED".format(dir_app), split=True)
 
   for L in lines:
     if "=" in L:
@@ -38,7 +39,7 @@ def GetPrefix():
       if key.lower() == "prefix":
         return value
 
-  return PATH_app
+  return dir_app
 
 
 PREFIX = GetPrefix()
