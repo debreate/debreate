@@ -7,6 +7,8 @@
 
 import argparse, codecs, errno, gzip, os, re, shutil, sys, types
 
+if sys.platform == "win32":
+  import ctypes
 
 dir_root = os.path.normpath(os.path.dirname(__file__))
 
@@ -109,6 +111,12 @@ class Config:
     sys.exit(1)
 
 # --- helper functions --- #
+
+def checkAdmin():
+  if sys.platform == "win32":
+    return ctypes.windll.shell32.IsUserAnAdmin() != 0
+  else:
+    return os.getuid() == 0
 
 def joinPath(*paths):
   path = ""
@@ -274,6 +282,9 @@ def createFileLink(file_source, link_target):
   else:
     makeDir(os.path.dirname(link_target))
 
+  if sys.platform == "win32" and not checkAdmin():
+    log("error", "administrator privileges required on Windows platform to create symbolic links")
+    sys.exit(1)
   os.symlink(file_source, link_target)
   if not os.path.islink(link_target):
     log("error", "an unknown error occurred while trying to create symbolic link: {}".format(link_target))
