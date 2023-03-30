@@ -94,12 +94,12 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     Lguage_H1.Add(self.gauge, 1, lyt.PAD_LR, 5)
 
     Lmain_V = BoxSizer(wx.VERTICAL)
-    Lmain_V.AddSpacer(1, wx.EXPAND)
+    Lmain_V.AddSpacer(1)
     Lmain_V.Add(Lstage_H1, -1, wx.EXPAND|lyt.PAD_LR, 5)
     Lmain_V.Add(Ltarget_H1, -1, wx.EXPAND|lyt.PAD_LR, 5)
     Lmain_V.Add(Lbtn_H1, -1, wx.ALIGN_CENTER|wx.ALL, 5)
     Lmain_V.Add(Lguage_H1, -1, wx.EXPAND|wx.ALL, 5)
-    Lmain_V.AddSpacer(1, wx.EXPAND)
+    Lmain_V.AddSpacer(1)
 
     self.SetAutoLayout(True)
     self.SetSizer(Lmain_V)
