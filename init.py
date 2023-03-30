@@ -88,8 +88,25 @@ if "clean" in parsed_commands:
   sys.exit(0)
 
 
-import subprocess, gettext, wx
+import subprocess, gettext
 
+wx = util.getModule("wx")
+
+if not wx:
+  # FIXME: need a platform independent method to display a command input prompt
+  print("Debreate requires wxPython, do you want me to try to download and install it?")
+  if input("yes/no (this could take a while): ").lower().strip() not in ("y", "yes"):
+    logger.error("wxPython not found, cannot continue")
+    sys.exit(errno.ENOENT)
+  util.installModule("wheel")
+  util.installModule("setuptools")
+  util.installModule("wx", "wxpython==4.1.1")
+  wx = util.getModule("wx")
+  if not wx:
+    logger.error("failed to install wxPython")
+    sys.exit(errno.ENOENT)
+
+util.checkWx()
 
 from dbr.app import DebreateApp
 
