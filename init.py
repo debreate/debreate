@@ -177,16 +177,16 @@ if "log-level" in parsed_args_v:
   logger.setLevel(parsed_args_v["log-level"])
 
 
-Logger.Info(script_name, "Python version: {}".format(PY_VER_STRING))
-Logger.Info(script_name, "wx.Python version: {}".format(WX_VER_STRING))
-Logger.Info(script_name, "Debreate version: {}".format(VERSION_string))
-Logger.Info(script_name, "Logging level: {}".format(Logger.GetLogLevel()))
+logger.info("Python version: {}".format(PY_VER_STRING))
+logger.info("wx.Python version: {}".format(WX_VER_STRING))
+logger.info("Debreate version: {}".format(VERSION_string))
+logger.info("Logging level: {}".format(logger.getLevel()))
 
 # Check for & parse existing configuration
 conf_values = GetAllConfigKeys()
 
 if not conf_values:
-  Logger.Debug(script_name, "Launching First Run dialog ...")
+  logger.debug("Launching First Run dialog ...")
 
   first_run = LaunchFirstRun(debreate_app)
   if not first_run == ConfCode.SUCCESS:
@@ -204,7 +204,7 @@ for V in conf_values:
   if value == None:
     value = GetDefaultConfigValue(key)
 
-  Logger.Debug(script_name, GT("Configuration key \"{}\" = \"{}\", type: {}".format(key, GS(value), type(value))))
+  logger.debug(GT("Configuration key \"{}\" = \"{}\", type: {}".format(key, GS(value), type(value))))
 
   # FIXME: ConfCode values are integers & could cause problems with config values
   if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
@@ -232,7 +232,7 @@ working_dir = conf_values["workingdir"]
 
 if parsed_path:
   project_file = parsed_path
-  Logger.Debug(script_name, GT("Opening project from argument: {}").format(project_file))
+  logger.debug(GT("Opening project from argument: {}").format(project_file))
 
   if Debreate.OpenProject(project_file):
     working_dir = os.path.dirname(project_file)

@@ -8,17 +8,20 @@ import os, wx
 
 from wx.lib.mixins.listctrl import TextEditMixin
 
+import util
+
 from dbr.colors       import COLOR_executable
 from dbr.colors       import COLOR_link
 from dbr.colors       import COLOR_warn
 from dbr.language     import GT
-from dbr.log          import Logger
 from globals.fileitem import FileItem
 from globals.mime     import GetFileMimeType
 from globals.strings  import IsString
 from input.essential  import EssentialField
 from input.list       import ListCtrl
 
+
+logger = util.getLogger()
 
 # ListCtrl report view style constants
 FL_HEADER = wx.LC_REPORT
@@ -156,10 +159,10 @@ class BasicFileList(ListCtrl, TextEditMixin):
     if self.DeleteItem(item):
       self.FileItems.pop(item)
 
-      Logger.Debug(__name__, "Deleted item from BasicFileList: {}".format(filename))
+      logger.debug("Deleted item from BasicFileList: {}".format(filename))
       return True
 
-    Logger.Warn(__name__, "Failed to deleted item from BasicFilelist: {}".format(filename))
+    logger.warn("Failed to deleted item from BasicFilelist: {}".format(filename))
     return False
 
 
@@ -218,7 +221,7 @@ class BasicFileList(ListCtrl, TextEditMixin):
       item = self.FileItems[item]
 
     if not isinstance(item, FileItem):
-      Logger.Warn(__name__, "Could not convert to FileItem: {}".format(item))
+      logger.warn("Could not convert to FileItem: {}".format(item))
       return None
 
     return item
@@ -404,7 +407,7 @@ class FileList(BasicFileList):
 
     source_path = os.path.join(sourceDir, filename)
 
-    Logger.Debug(__name__, GT("Adding file: {}").format(source_path))
+    logger.debug(GT("Adding file: {}").format(source_path))
 
     self.InsertStringItem(list_index, filename)
     self.SetStringItem(list_index, columns.SOURCE, sourceDir)
@@ -438,10 +441,10 @@ class FileList(BasicFileList):
     if ListCtrl.DeleteAllItems(self):
       self.FileItems = []
     else:
-      Logger.Warn(__name__, "Failed to delete all items from FileList")
+      logger.warn("Failed to delete all items from FileList")
 
-    Logger.Debug(__name__, "Visual item count: {}".format(self.GetItemCount()))
-    Logger.Debug(__name__, "Acutal item count: {}".format(len(self.FileItems)))
+    logger.debug("Visual item count: {}".format(self.GetItemCount()))
+    logger.debug("Acutal item count: {}".format(len(self.FileItems)))
 
 
   ## Retrieves the filename at given index
@@ -588,8 +591,7 @@ class FileList(BasicFileList):
     if width > 0 and target_width > 0:
       if width != target_width:
 
-        Logger.Debug(__name__,
-            GT("File list failed to resize. Forcing manual resize to target width: {}").format(target_width))
+        logger.debug(GT("File list failed to resize. Forcing manual resize to target width: {}").format(target_width))
 
         self.SetSize(wx.Size(target_width, height))
 
@@ -651,8 +653,7 @@ class FileList(BasicFileList):
     while selected_count:
       current_selected = self.GetFirstSelected()
 
-      Logger.Debug(__name__,
-          GT("Removing selected item {} of {}".format(selected_total - selected_count + 1,
+      logger.debug(GT("Removing selected item {} of {}".format(selected_total - selected_count + 1,
                                     selected_total
                                     )))
 
@@ -662,10 +663,10 @@ class FileList(BasicFileList):
       if deleted:
         self.FileItems.pop(current_selected)
       else:
-        Logger.Warn(__name__, "Failed to delete item from Filelist: index: {}".format(current_selected))
+        logger.warn("Failed to delete item from Filelist: index: {}".format(current_selected))
 
-      Logger.Debug(__name__, "Visual item count: {}".format(self.GetItemCount()))
-      Logger.Debug(__name__, "Actual item count: {}".format(len(self.FileItems)))
+      logger.debug("Visual item count: {}".format(self.GetItemCount()))
+      logger.debug("Actual item count: {}".format(len(self.FileItems)))
 
 
   ## Selects all items in the list

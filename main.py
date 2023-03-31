@@ -10,6 +10,8 @@ import os, shutil, subprocess, urllib, webbrowser, wx.html
 from urllib.error import HTTPError
 from urllib.error import URLError
 
+import util
+
 from dbr.config           import GetDefaultConfigValue
 from dbr.config           import WriteConfig
 from dbr.event            import EVT_CHANGE_PAGE
@@ -20,7 +22,6 @@ from dbr.help             import HelpDialog
 from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.log              import DebugEnabled
-from dbr.log              import Logger
 from dbr.timer            import DebreateTimer
 from globals              import paths
 from globals.application  import APP_homepage
@@ -57,6 +58,7 @@ from wiz.pginit           import Page as PageInit
 from wiz.wizard           import Wizard
 
 
+logger = util.getLogger()
 default_title = GT("Debreate - Debian Package Builder")
 
 
@@ -81,7 +83,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
     # Make sure that this frame is set as the top window
     if not wx.GetApp().GetTopWindow() == self:
-      Logger.Debug(__name__, GT("Setting MainWindow instance as top window"))
+      logger.debug(GT("Setting MainWindow instance as top window"))
 
       wx.GetApp().SetTopWindow(self)
 
@@ -244,7 +246,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     else:
       current = GetCurrentVersion()
 
-    Logger.Debug(__name__, GT("URL request result: {}").format(current))
+    logger.debug(GT("URL request result: {}").format(current))
 
     error_remote = GT("An error occurred attempting to contact remote website")
 
@@ -351,7 +353,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## Opens the logs directory in the system's default file manager
   def OnLogDirOpen(self, event=None): #@UnusedVariable
-    Logger.Debug(__name__, GT("Opening log directory ..."))
+    logger.debug(GT("Opening log directory ..."))
 
     subprocess.check_output([GetExecutable("xdg-open"), "{}/logs".format(paths.getLocalDir())], stderr=subprocess.STDOUT)
 
@@ -515,7 +517,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   ## Updates the page menu to reflect current page
   def OnWizardBtnPage(self, event=None): #@UnusedVariable
     ID = self.Wizard.GetCurrentPageId()
-    Logger.Debug(__name__, GT("Event: EVT_CHANGE_PAGE, Page ID: {}").format(ID))
+    logger.debug(GT("Event: EVT_CHANGE_PAGE, Page ID: {}").format(ID))
 
     menu_page = self.GetMenu(menuid.PAGE)
     if not menu_page.IsChecked(ID):
@@ -538,8 +540,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       event_id = event
 
     else:
-      Logger.Error(__name__,
-          "Cannot open policy manual link with object type {}".format(type(event)))
+      logger.error("Cannot open policy manual link with object type {}".format(type(event)))
 
       return
 
@@ -557,7 +558,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   #  \param project_file
   #  \b \e str : Path to project file
   def OpenProject(self, project_file):
-    Logger.Debug(__name__, "Opening project: {}".format(project_file))
+    logger.debug("Opening project: {}".format(project_file))
 
     if not os.path.isfile(project_file):
       ShowErrorDialog(GT("Could not open project file"),
@@ -617,7 +618,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   ## TODO: Doxygen
   def ProjectChanged(self, event=None):
     if DebugEnabled():
-      Logger.Debug(__name__, "MainWindow.OnProjectChanged:")
+      logger.debug("MainWindow.OnProjectChanged:")
       print("  Object: {}".format(event.GetEventObject()))
 
     self.ProjectDirty = True

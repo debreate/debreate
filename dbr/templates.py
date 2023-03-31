@@ -6,12 +6,15 @@
 
 import os
 
+import util
+
 from dbr.language    import GT
-from dbr.log         import Logger
 from globals.fileio  import GetFiles
 from globals.paths   import getAppDir, getLocalDir
 from globals.strings import GS
 
+
+logger = util.getLogger()
 
 ## System common licenses
 sys_licenses_path = "/usr/share/common-licenses"
@@ -92,10 +95,10 @@ def GetLicenseTemplateFile(l_name):
     template_path = os.path.join(sys_licenses_path, l_name)
 
   if not template_path or not os.path.isfile(template_path):
-    Logger.Warn(__name__, GT("License template not found: {}".format(template_path)))
+    logger.warn(GT("License template not found: {}".format(template_path)))
 
     return
 
-  Logger.Debug(__name__, GT("Loading license template: {}".format(template_path)))
+  logger.debug(GT("Loading license template: {}".format(template_path)))
 
   return template_path

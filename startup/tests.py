@@ -6,8 +6,10 @@
 # See: docs/LICENSE.txt
 
 
-from dbr.log import Logger
+import util
 
+
+logger = util.getLogger()
 
 ## List of available tests
 available_tests = (
@@ -32,6 +34,6 @@ def GetTestList():
 #  \b \e String name of test to check for
 def UsingTest(test):
   if test not in available_tests:
-    Logger.Warn(__name__, "Requested test not available: {}".format(test))
+    logger.warn("Requested test not available: {}".format(test))
 
   return test in test_list

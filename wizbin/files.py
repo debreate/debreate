@@ -6,8 +6,9 @@
 
 import os, traceback, wx
 
+import util
+
 from dbr.language       import GT
-from dbr.log            import Logger
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.errorcodes import dbrerrno
@@ -40,6 +41,8 @@ from wiz.helper         import FieldEnabled
 from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
+
+logger = util.getLogger()
 
 ## Maximum file count to process before showing progress dialog
 efficiency_threshold = 250
@@ -224,7 +227,7 @@ class Page(WizardPage):
 
     progress = None
 
-    Logger.Debug(__name__, "Adding {} files ...".format(fileCount))
+    logger.debug("Adding {} files ...".format(fileCount))
 
     if showDialog:
       progress = ProgressDialog(GetMainWindow(), GT("Adding Files"), maximum=fileCount,
@@ -373,7 +376,7 @@ class Page(WizardPage):
   #  \param filename
   #      Absolute path of formatted text file to read
   def ImportFromFile(self, filename):
-    Logger.Debug(__name__, GT("Importing page info from {}").format(filename))
+    logger.debug(GT("Importing page info from {}").format(filename))
 
     if not os.path.isfile(filename):
       return dbrerrno.ENOENT
@@ -728,7 +731,7 @@ class Page(WizardPage):
         target_dir = file_info[2]
 
         if not self.lst_files.AddFile(filename, source_dir, target_dir, executable):
-          Logger.Warn(__name__, GT("File not found: {}").format(absolute_filename))
+          logger.warn(GT("File not found: {}").format(absolute_filename))
           missing_files.append(absolute_filename)
 
         if progress:
@@ -740,7 +743,7 @@ class Page(WizardPage):
       if progress:
         progress.Destroy()
 
-      Logger.Debug(__name__, "Missing file count: {}".format(len(missing_files)))
+      logger.debug("Missing file count: {}".format(len(missing_files)))
 
       # If files are missing show a message
       if missing_files:

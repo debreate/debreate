@@ -6,10 +6,11 @@
 
 import os, shutil, subprocess, traceback, wx
 
+import util
+
 from dbr.functions      import FileUnstripped
 from dbr.language       import GT
 from dbr.log            import DebugEnabled
-from dbr.log            import Logger
 from dbr.md5            import WriteMD5
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
@@ -49,6 +50,8 @@ from wiz.helper         import GetMainWindow
 from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
 
+
+logger = util.getLogger()
 
 ## Build page
 class Page(WizardPage):
@@ -95,7 +98,7 @@ class Page(WizardPage):
 
     if UsingTest("alpha"):
       # FIXME: Move next to lintian check box
-      Logger.Info(__name__, "Enabling alpha feature \"lintian overrides\" option")
+      logger.info("Enabling alpha feature \"lintian overrides\" option")
       self.lint_overrides = []
       btn_lint_overrides = CreateButton(self, label=GT("Lintian overrides"))
       btn_lint_overrides.Bind(wx.EVT_BUTTON, self.OnSetLintOverrides)
@@ -225,7 +228,7 @@ class Page(WizardPage):
       progress = 0
 
       task_msg = GT("Preparing build tree")
-      Logger.Debug(__name__, task_msg)
+      logger.debug(task_msg)
 
       wx.GetApp().Yield()
       build_progress = ProgressDialog(GetMainWindow(), GT("Building"), task_msg,
@@ -246,7 +249,7 @@ class Page(WizardPage):
         task_eval = "{} / {}".format(current_task, task_count)
 
         if message:
-          Logger.Debug(__name__, "{} ({})".format(message, task_eval))
+          logger.debug("{} ({})".format(message, task_eval))
 
           wx.GetApp().Yield()
           build_progress.Update(current_task, message)
@@ -269,24 +272,24 @@ class Page(WizardPage):
 
           if os.path.isdir(f_src):
             if os.path.islink(f_src) and no_follow_link:
-              Logger.Debug(__name__, "Adding directory symbolic link to stage: {}".format(f_tgt))
+              logger.debug("Adding directory symbolic link to stage: {}".format(f_tgt))
 
               os.symlink(os.readlink(f_src), f_tgt)
             else:
-              Logger.Debug(__name__, "Adding directory to stage: {}".format(f_tgt))
+              logger.debug("Adding directory to stage: {}".format(f_tgt))
 
               shutil.copytree(f_src, f_tgt)
               os.chmod(f_tgt, 0o0755)
           elif os.path.isfile(f_src):
             if os.path.islink(f_src) and no_follow_link:
-              Logger.Debug(__name__, "Adding file symbolic link to stage: {}".format(f_tgt))
+              logger.debug("Adding file symbolic link to stage: {}".format(f_tgt))
 
               os.symlink(os.readlink(f_src), f_tgt)
             else:
               if exe:
-                Logger.Debug(__name__, "Adding executable to stage: {}".format(f_tgt))
+                logger.debug("Adding executable to stage: {}".format(f_tgt))
               else:
-                Logger.Debug(__name__, "Adding file to stage: {}".format(f_tgt))
+                logger.debug("Adding file to stage: {}".format(f_tgt))
 
               shutil.copy(f_src, f_tgt)
 
@@ -339,7 +342,7 @@ class Page(WizardPage):
               F = os.path.join(ROOT, F)
 
               if FileUnstripped(F):
-                Logger.Debug(__name__, "Unstripped file: {}".format(F))
+                logger.debug("Unstripped file: {}".format(F))
 
                 # FIXME: Strip command should be set as class member?
                 ExecuteCommand(GetExecutable("strip"), F)
@@ -802,8 +805,8 @@ class Page(WizardPage):
 
       return
 
-    Logger.Info(__name__, GT("Attempting to install package: {}").format(package))
-    Logger.Info(__name__, GT("Installing with {}").format(system_installer))
+    logger.info(GT("Attempting to install package: {}").format(package))
+    logger.info(GT("Installing with {}").format(system_installer))
 
     install_cmd = (system_installer, package,)
 
@@ -891,19 +894,19 @@ class Page(WizardPage):
   #  TODO: Add cancel option to progress dialog
   #  FIXME: List should be cached so no need for re-scanning
   def OnSetLintOverrides(self, event=None):
-    Logger.Debug(__name__, GT("Setting Lintian overrides..."))
+    logger.debug(GT("Setting Lintian overrides..."))
 
     lintian_tags_file = "{}/data/lintian/tags".format(getAppDir())
 
     if not os.path.isfile(lintian_tags_file):
-      Logger.Error(__name__, "Lintian tags file is missing: {}".format(lintian_tags_file))
+      logger.error("Lintian tags file is missing: {}".format(lintian_tags_file))
 
       return False
 
     lint_tags = RemoveEmptyLines(ReadFile(lintian_tags_file, split=True))
 
     if lint_tags:
-      Logger.Debug(__name__, "Lintian tags set")
+      logger.debug("Lintian tags set")
 
       # DEBUG: Start
       if DebugEnabled() and len(lint_tags) > 50:
@@ -911,7 +914,7 @@ class Page(WizardPage):
 
         lint_tags = lint_tags[:50]
 
-      Logger.Debug(__name__, "Processing {} tags".format(len(lint_tags)))
+      logger.debug("Processing {} tags".format(len(lint_tags)))
       # DEBUG: End
 
 
@@ -954,14 +957,14 @@ class Page(WizardPage):
         # Remove old overrides
         self.lint_overrides = []
         for L in overrides_dialog.GetCheckedLabels():
-          Logger.Debug(__name__, GT("Adding Lintian override: {}").format(L))
+          logger.debug(GT("Adding Lintian override: {}").format(L))
 
           self.lint_overrides.append(L)
 
       return True
 
     else:
-      Logger.Debug(__name__, "Setting lintian tags failed")
+      logger.debug("Setting lintian tags failed")
 
       return False
 

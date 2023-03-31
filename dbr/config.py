@@ -8,17 +8,20 @@
 
 import os, sys, wx
 
+import util
+
 from dbr.functions   import GetBoolean
 from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
-from dbr.log         import Logger
 from globals         import paths
 from globals.fileio  import ReadFile
 from globals.fileio  import WriteFile
 from globals.strings import GS
 from globals.strings import TextIsEmpty
 
+
+logger = util.getLogger()
 
 ## Configuration codes
 class ConfCode:
@@ -81,10 +84,10 @@ def SetDefaultConfigKey(key, value):
 #  \return
 #  	Value of key if found, otherwise ConfCode
 def ReadConfig(k_name, conf=default_config):
-  Logger.Debug(__name__, GT("Reading configuration file: {}".format(conf)), newline=True)
+  logger.debug(GT("Reading configuration file: {}".format(conf)), newline=True)
 
   if not os.path.isfile(conf):
-    #Logger.Warning(__name__, "Configuration file does not exist: {}".format(conf))
+    #logger.warn("Configuration file does not exist: {}".format(conf))
     return ConfCode.FILE_NOT_FOUND
 
   # Use the string '__test__' for test when app is initialized
@@ -93,7 +96,7 @@ def ReadConfig(k_name, conf=default_config):
 
   # Only read pre-defined keys
   if k_name not in default_config_values:
-    #Logger.Warning(__name__, "Undefined key, not attempting to retrieve value: {}".format(k_name))
+    #logger.warn("Undefined key, not attempting to retrieve value: {}".format(k_name))
     return ConfCode.KEY_NOT_DEFINED
 
   conf_lines = ReadFile(conf)
@@ -109,11 +112,11 @@ def ReadConfig(k_name, conf=default_config):
         if k_name == key:
           value = default_config_values[key][0](value)
 
-          #Logger.Debug(__name__, "Retrieved key-value: {}={}, value type: {}".format(key, value, type(value)))
+          #logger.debug("Retrieved key-value: {}={}, value type: {}".format(key, value, type(value)))
           return value
 
     if k_name in default_config_values:
-      #Logger.Debug(__name__, "Configuration does not contain key, retrieving default value: {}".format(k_name))
+      #logger.debug("Configuration does not contain key, retrieving default value: {}".format(k_name))
 
       return GetDefaultConfigValue(k_name)
 

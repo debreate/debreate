@@ -6,8 +6,9 @@
 
 import os, wx
 
+import util
+
 from dbr.language     import GT
-from dbr.log          import Logger
 from globals.fileio   import ReadFile
 from globals.fileitem import FileItem
 from globals.ident    import btnid
@@ -32,6 +33,8 @@ from wiz.helper       import GetField
 from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
+
+logger = util.getLogger()
 
 ID_INST_PRE = wx.NewId()
 ID_INST_POST = wx.NewId()
@@ -289,10 +292,10 @@ class Page(WizardPage):
                     break
 
                 if duplicate:
-                  Logger.Warn(__name__, "Not adding executable with duplicate target: {}".format(fulltarget))
+                  logger.warn("Not adding executable with duplicate target: {}".format(fulltarget))
                   continue
 
-                Logger.Debug(__name__, "Adding nested executable: {}".format(relpath))
+                logger.debug("Adding nested executable: {}".format(relpath))
                 self.Executables.Add(
                     FileItem(relpath, os.path.join(FITEM.GetTarget(), relpath),
                         ignore_timestamp=True))
@@ -308,7 +311,7 @@ class Page(WizardPage):
   #  \param filename
   #      File path to open
   def ImportFromFile(self, filename):
-    Logger.Debug(__name__, GT("Importing script: {}").format(filename))
+    logger.debug(GT("Importing script: {}").format(filename))
 
     script_name = filename.split("-")[-1]
     script_object = None
@@ -429,7 +432,7 @@ class Page(WizardPage):
 
   ## TODO: Doxygen
   def OnToggleScripts(self, event=None):
-    Logger.Debug(__name__, "Toggling scripts")
+    logger.debug("Toggling scripts")
 
     for DS, CHK, RB in self.script_objects:
       DS.Enable(DS.IsChecked())

@@ -6,10 +6,11 @@
 
 import os, wx
 
+import util
+
 from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
 from dbr.language        import GT
-from dbr.log             import Logger
 from globals             import paths
 from globals.application import APP_name
 from globals.application import AUTHOR_email
@@ -30,6 +31,8 @@ from ui.hyperlink        import Hyperlink
 from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
 
+
+logger = util.getLogger()
 
 # Font for the name
 bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
@@ -345,7 +348,7 @@ class AboutDialog(wx.Dialog):
   #  	\b \e str : Optional contributer's email address
   def AddJobs(self, name, jobs, email=wx.EmptyString):
     if isinstance(jobs, str):
-      Logger.Debug(__name__, GT("Converting string argument \"jobs\" to tuple"))
+      logger.debug(GT("Converting string argument \"jobs\" to tuple"))
       jobs = (jobs,)
 
     for x, value in enumerate(jobs):
@@ -385,7 +388,7 @@ class AboutDialog(wx.Dialog):
     if os.path.isfile(CHANGELOG):
       changelog_mimetype = GetFileMimeType(CHANGELOG)
 
-      Logger.Debug(__name__, GT("Changelog mimetype: {}").format(changelog_mimetype))
+      logger.debug(GT("Changelog mimetype: {}").format(changelog_mimetype))
 
       # Set log text in case of read error
       log_text = GT("Error reading changelog: {}\n\t").format(CHANGELOG)

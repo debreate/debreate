@@ -6,9 +6,12 @@
 
 import wx
 
-from dbr.image import GetBitmap
-from dbr.log   import Logger
+import util
 
+from dbr.image import GetBitmap
+
+
+logger = util.getLogger()
 
 ## List of images used by ui.tree.DirectoryTree
 #
@@ -91,12 +94,12 @@ class DirectoryImageList(wx.ImageList):
       IMAGE = IMAGE[0]
 
       if isinstance(IMAGE, wx.Bitmap):
-        Logger.Debug(__name__, "Adding wx.Bitmap to image list")
+        logger.debug("Adding wx.Bitmap to image list")
 
         self.Add(IMAGE)
 
       else:
-        Logger.Debug(__name__, "Adding bitmap from wx.ArtProvider")
+        logger.debug("Adding bitmap from wx.ArtProvider")
 
         self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
 

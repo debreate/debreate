@@ -8,8 +8,9 @@ import os, wx
 
 from wx.adv import OwnerDrawnComboBox
 
+import util
+
 from dbr.language       import GT
-from dbr.log            import Logger
 from globals.errorcodes import dbrerrno
 from globals.fileio     import ReadFile
 from globals.fileio     import WriteFile
@@ -38,6 +39,8 @@ from wiz.helper         import GetMainWindow
 from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
 
+
+logger = util.getLogger()
 
 ## This panel displays the field input of the control file
 class Page(WizardPage):
@@ -299,7 +302,7 @@ class Page(WizardPage):
       field_value = field.GetValue()
 
       if FieldEnabled(field) and not TextIsEmpty(field_value):
-        Logger.Debug(__name__, GT("Exporting {} field").format(field_name))
+        logger.debug(GT("Exporting {} field").format(field_name))
 
         # Strip leading & trailing spaces, tabs, & newlines
         field_value = field_value.strip(" \t\n")
@@ -335,7 +338,7 @@ class Page(WizardPage):
             # Append email to end of maintainer string
             for ctrl_index in range(len(ctrl_list)):
               if ctrl_list[ctrl_index].startswith("Maintainer: "):
-                Logger.Debug(__name__, "Found maintainer")
+                logger.debug("Found maintainer")
                 ctrl_list[ctrl_index] = "{} <{}>".format(ctrl_list[ctrl_index], field_value)
                 break
 
@@ -354,7 +357,7 @@ class Page(WizardPage):
       field_value = field.GetStringSelection()
 
       if FieldEnabled(field) and not TextIsEmpty(field_value):
-        Logger.Debug(__name__, GT("Exporting {} field").format(field_name))
+        logger.debug(GT("Exporting {} field").format(field_name))
 
         # Strip leading & trailing spaces, tabs, & newlines
         field_value = field_value.strip(" \t\n")
@@ -430,7 +433,7 @@ class Page(WizardPage):
   #  \param filename
   #      File path to open
   def ImportFromFile(self, filename):
-    Logger.Debug(__name__, GT("Importing file: {}".format(filename)))
+    logger.debug(GT("Importing file: {}".format(filename)))
 
     if not os.path.isfile(filename):
       ShowErrorDialog(GT("File does not exist: {}".format(filename)), linewrap=600)
@@ -540,7 +543,7 @@ class Page(WizardPage):
         value = ": ".join(key[1:]) # For dependency fields that have ": " in description
         key = key[0]
 
-        Logger.Debug(__name__, "Found key: {}".format(key))
+        logger.debug("Found key: {}".format(key))
 
         if key == self.chk_essential.GetName().title() and value.lower() in ("yes", "true"):
           self.chk_essential.SetValue(True)

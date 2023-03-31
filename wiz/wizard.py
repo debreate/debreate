@@ -8,9 +8,10 @@
 
 import traceback, wx
 
+import util
+
 from dbr.event        import ChangePageEvent
 from dbr.language     import GT
-from dbr.log          import Logger
 from globals.ident    import btnid
 from globals.ident    import chkid
 from globals.ident    import inputid
@@ -34,6 +35,8 @@ from wiz.helper       import GetField
 from wiz.helper       import GetMainWindow
 from wiz.helper       import GetMenu
 
+
+logger = util.getLogger()
 
 ## Wizard class for Debreate
 class Wizard(wx.Panel):
@@ -330,7 +333,7 @@ class Wizard(wx.Panel):
       if P.GetId() == pageId:
         return P
 
-    Logger.Warn(__name__, "Page with ID {} has not been constructed".format(pageId))
+    logger.warn("Page with ID {} has not been constructed".format(pageId))
 
 
   ## Retrieves the full list of page IDs
@@ -587,7 +590,7 @@ class WizardPage(ScrolledPanel):
 
   ## Retrieves the page's field's data
   def Get(self):
-    Logger.Warn(__name__, GT("Page {} does not override inherited method Get").format(self.GetName()))
+    logger.warn(GT("Page {} does not override inherited method Get").format(self.GetName()))
 
 
   ## Retrieves the page's label
@@ -639,7 +642,7 @@ class WizardPage(ScrolledPanel):
   #  \param filename
   #  File path to open
   def ImportFromFile(self, filename):
-    Logger.Warn(__name__, GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
+    logger.warn(GT("Page {} does not override inherited method ImportFromFile").format(self.GetName()))
 
 
   ## This method can be used to access page members that are only available
@@ -647,7 +650,7 @@ class WizardPage(ScrolledPanel):
   #
   #  FIXME: Rename to 'OnWizardInit'???
   def InitPage(self):
-    Logger.Debug(__name__, GT("Page {} does not override inherited method InitPage").format(self.GetName()))
+    logger.debug(GT("Page {} does not override inherited method InitPage").format(self.GetName()))
 
     return False
 
@@ -657,7 +660,7 @@ class WizardPage(ScrolledPanel):
   #  \return
   #  <b><i>False</i></b> if page cannot be exported
   def IsOkay(self):
-    Logger.Warn(__name__, GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
+    logger.warn(GT("Page {} does not override inherited method IsOkay").format(self.GetName()))
 
     return False
 

@@ -6,10 +6,13 @@
 
 import os
 
-from dbr.log        import Logger
+import util
+
 from globals.fileio import ReadFile
 from globals.paths  import getSystemRoot
 
+
+logger = util.getLogger()
 
 ## Class that represents a mounted storage device
 class StorageDevice:
@@ -27,7 +30,7 @@ class StorageDevice:
         if os.path.islink(link):
           link_node = os.path.realpath(link)
           if link_node == self.Node:
-            Logger.Debug(__name__, "Found label for {}: {}".format(self.Node, LABEL))
+            logger.debug("Found label for {}: {}".format(self.Node, LABEL))
 
             self.Label = LABEL
             break
@@ -71,7 +74,7 @@ class StorageDevice:
             TYPE = TYPE.lower()
 
             if "usb" in TYPE.split("-"):
-              Logger.Debug(__name__, "{} is a removable drive".format(self.Node))
+              logger.debug("{} is a removable drive".format(self.Node))
 
               self.Type = "removable"
 
@@ -115,7 +118,7 @@ def ParseMountedDevices():
           mounted_devices[device] = mount_point
 
   else:
-    Logger.Warn(__name__, "/etc/mtab file does not exist. Mounted devices list will be empty")
+    logger.warn("/etc/mtab file does not exist. Mounted devices list will be empty")
 
   return mounted_devices
 

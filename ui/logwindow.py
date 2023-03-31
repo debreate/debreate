@@ -6,11 +6,12 @@
 
 import os, time, traceback, wx
 
+import util
+
 from dbr.event           import EVT_REFRESH_LOG
 from dbr.event           import RefreshLogEvent
 from dbr.font            import GetMonospacedFont
 from dbr.language        import GT
-from dbr.log             import Logger
 from globals             import paths
 from globals.application import APP_logo
 from globals.fileitem    import FileItem
@@ -27,6 +28,8 @@ from ui.layout           import BoxSizer
 from wiz.helper          import GetMainWindow
 from wiz.helper          import GetMenu
 
+
+logger = util.getLogger()
 
 # How often the log window will be refreshed
 LOG_WINDOW_REFRESH_INTERVAL = 1
@@ -139,7 +142,7 @@ class LogWindow(wx.Dialog):
 
         return
 
-    Logger.Error(__name__, GT("Can't change log window font"))
+    logger.error(GT("Can't change log window font"))
 
 
   ## Hides the log window when close event occurs
@@ -181,7 +184,7 @@ class LogWindow(wx.Dialog):
         menu_debug.Check(menuid.LOG, window_shown)
 
     else:
-      Logger.Warn(__name__, "Log thread still active!")
+      logger.warn("Log thread still active!")
 
 
   ## Use an event to show the log window
@@ -242,7 +245,7 @@ class LogWindow(wx.Dialog):
       except wx.PyDeadObjectError:
         tb_error = GS(traceback.format_exc())
 
-        Logger.Warn(__name__, "Error refreshing log window. Details below:\n\n{}".format(tb_error))
+        logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))
 
 
   ## Changes the file to be loaded & displayed
@@ -268,9 +271,9 @@ class LogWindow(wx.Dialog):
     self.Show(True)
 
     if not self.LogPollThread.IsActive():
-      Logger.Debug(__name__, "Starting log polling thread ...")
+      logger.debug("Starting log polling thread ...")
 
       self.LogPollThread.Start()
 
     else:
-      Logger.Debug(__name__, "Log polling thread is already started")
+      logger.debug("Log polling thread is already started")

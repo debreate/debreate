@@ -21,7 +21,7 @@ LogLevel.TEST = LogLevel.DEBUG + 1
 
 ## A log class for outputting messages
 #
-#  TODO: Add 'quiet' (0) log level.
+#  TODO: delete
 #
 #  @deprecated
 #    Use util.logger.

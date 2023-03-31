@@ -6,8 +6,9 @@
 
 import os
 
+import util
+
 from dbr.language    import GT
-from dbr.log         import Logger
 from globals.execute import GetCommandOutput
 from globals.execute import GetExecutable
 from globals.fileio  import WriteFile
@@ -17,6 +18,8 @@ from ui.dialog       import ErrorDialog
 from wiz.helper      import GetField
 from wiz.helper      import GetMainWindow
 
+
+logger = util.getLogger()
 
 ## Creates a file of md5 hashes for files within the staged directory
 #
@@ -42,8 +45,7 @@ def WriteMD5(stage_dir, parent=None):
     err_url1 = "https://github.com/AntumDeluge/debreate/issues"
     err_url2 = "https://sourceforge.net/p/debreate/bugs/"
 
-    Logger.Error(__name__,
-        "{} {} {}\n\t{}\n\t{}".format(err_msg1, err_msg2, err_msg3, err_url1, err_url2))
+    logger.error("{} {} {}\n\t{}\n\t{}".format(err_msg1, err_msg2, err_msg3, err_url1, err_url2))
 
     md5_error = ErrorDialog(parent, text="{}\n{}\n\n{}".format(err_msg1, err_msg2, err_msg3))
     md5_error.AddURL(err_url1)
@@ -64,7 +66,7 @@ def WriteMD5(stage_dir, parent=None):
 
       md5 = GetCommandOutput(CMD_md5sum, ("-t", F))
 
-      Logger.Debug(__name__, "WriteMD5: GetCommandOutput: {}".format(md5))
+      logger.debug("WriteMD5: GetCommandOutput: {}".format(md5))
 
       temp_list.append(md5)
 

@@ -6,9 +6,10 @@
 
 import os, shutil, wx
 
+import util
+
 from dbr.language     import GT
 from dbr.log          import DebugEnabled
-from dbr.log          import Logger
 from globals.fileio   import ReadFile
 from globals.fileio   import WriteFile
 from globals.ident    import btnid
@@ -40,6 +41,8 @@ from wiz.helper       import GetField
 from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
+
+logger = util.getLogger()
 
 ## Page for creating a system menu launcher
 class Page(WizardPage):
@@ -380,7 +383,7 @@ class Page(WizardPage):
   #  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
   #  	 'Others' field not being completely filled out.
   def OnExportLauncher(self, event=None):
-    Logger.Debug(__name__, "Export launcher ...")
+    logger.debug("Export launcher ...")
 
     # Get data to write to control file
     menu_data = self.GetLauncherInfo().encode("utf-8")
@@ -560,7 +563,7 @@ class Page(WizardPage):
 
     # Data list is not empty
     if data:
-      Logger.Debug(__name__, "Loading launcher")
+      logger.debug("Loading launcher")
 
       if data[0].isnumeric():
         enabled = int(data.pop(0)) > 0
@@ -569,7 +572,7 @@ class Page(WizardPage):
         for L in data:
           print("  Launcher line: {}".format(L))
 
-      Logger.Debug(__name__, "Enabling launcher: {}".format(enabled))
+      logger.debug("Enabling launcher: {}".format(enabled))
 
       if enabled:
         GetField(self, chkid.ENABLE).SetValue(True)
@@ -658,7 +661,7 @@ class Page(WizardPage):
             filename = K.replace("FILENAME=", "")
 
             if not TextIsEmpty(filename):
-              Logger.Debug(__name__, "Setting custom filename: {}".format(filename))
+              logger.debug("Setting custom filename: {}".format(filename))
 
               GetField(self, inputid.FNAME).SetValue(filename)
               GetField(self, chkid.FNAME).SetValue(False)

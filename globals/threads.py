@@ -8,11 +8,11 @@
 
 import threading
 
-from dbr.log import Logger
+import util
 
 
+logger = util.getLogger()
 thr = threading
-
 
 ## Standard thread class with renamed methods
 class Thread(thr.Thread):
@@ -25,7 +25,7 @@ class Thread(thr.Thread):
 
 
   def __del__(self):
-    Logger.Debug(__name__, "Destroying Thread instance; Thread is active: {}".format(self.IsActive()))
+    logger.debug("Destroying Thread instance; Thread is active: {}".format(self.IsActive()))
 
 
   ## Exits the thread & sets inactive
@@ -47,7 +47,7 @@ class Thread(thr.Thread):
   ## Exits the thread & sets inactive
   def join(self):
     if self.IsActive():
-      Logger.Debug(__name__, "Joining thread ...")
+      logger.debug("Joining thread ...")
 
       thr.Thread.join(self)
       self.Active = False
@@ -68,7 +68,7 @@ class Thread(thr.Thread):
 
     # Do not try to restart thread if already started
     except RuntimeError:
-      Logger.Debug(__name__, "ThreadStart: Thread is active, cannot restart")
+      logger.debug("ThreadStart: Thread is active, cannot restart")
 
       # In case active state has been changed
       self.Active = True

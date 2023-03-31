@@ -6,21 +6,26 @@
 
 import wx
 
+import util
+
 from dbr.log         import DebugEnabled
-from dbr.log         import Logger
 from globals.execute import GetCommandOutput
 from globals.execute import GetExecutable
 from globals.strings import StringIsNumeric
 
 
+logger = util.getLogger()
+
 ## Retrieves dimensions of primary display
 #
-#  FIXME: Use 1 or 2 alternate methods (wx.Display???)
+#  TODO:
+#  - use 1 or 2 alternate methods (wx.Display???)
+#  - make platform independent
 def GetPrimaryDisplayRect():
   rect = None
 
   # wx 3.0 does not recognize primary display correctly
-  # TODO: File bug report
+  # FIXME: version 2 no longer supported
   if wx.MAJOR_VERSION <=2:
     primary = None
 
@@ -42,7 +47,7 @@ def GetPrimaryDisplayRect():
       # Reorder for compatibility with xrandr output
       rect = (rect[2], rect[3], rect[0], rect[1],)
 
-      Logger.Debug(__name__, "GetPrimaryDisplayRect: Using wx.Display")
+      logger.debug("GetPrimaryDisplayRect: Using wx.Display")
 
   # Fall back to using xrandr
   if not rect:
@@ -73,7 +78,7 @@ def GetPrimaryDisplayRect():
 
           rect[INDEX] = int(X)
 
-        Logger.Debug(__name__, "GetPrimaryDisplayRect: Using xrandr")
+        logger.debug("GetPrimaryDisplayRect: Using xrandr")
 
         break
 
@@ -83,14 +88,17 @@ def GetPrimaryDisplayRect():
 
 ## Centers the window on the primary display
 #
+#  TODO:
+#  - make platform independent
+#
 #  \param window
 #  \b \e wx.Window instance to be centered
 def CenterOnPrimaryDisplay(window):
-  Logger.Debug(__name__, "Attempting to center window: {} ({})".format(window.Name, window))
+  logger.debug("Attempting to center window: {} ({})".format(window.Name, window))
 
   display_rect = GetPrimaryDisplayRect()
 
-  Logger.Debug(__name__, "Primary display: {}".format(display_rect))
+  logger.debug("Primary display: {}".format(display_rect))
 
   if not display_rect:
     return False

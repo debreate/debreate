@@ -8,8 +8,9 @@
 
 import os, wx
 
+import util
+
 from dbr.containers  import Contains
-from dbr.log         import Logger
 from fields.cmdfield import CommandField
 from globals.ident   import btnid
 from globals.paths   import getBitmapsDir
@@ -18,6 +19,8 @@ from globals.strings import IsString
 from ui.layout       import BoxSizer
 from ui.style        import layout as lyt
 
+
+logger = util.getLogger()
 
 ## Standard button that inherits CommandField
 class Button(wx.Button, CommandField):
@@ -283,7 +286,7 @@ def _get_containing_sizer(parent, sizer):
 #  Dialog instance containing the buttons
 def ReplaceStandardButtons(dialog):
   if isinstance(dialog, (wx.FileDialog, wx.MessageDialog)):
-    Logger.Warn(__name__, "FIXME: Cannot replace buttons on object type: {}".format(type(dialog)))
+    logger.warn("FIXME: Cannot replace buttons on object type: {}".format(type(dialog)))
 
     return
 
@@ -366,11 +369,11 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
     image = os.path.join(getBitmapsDir(), "button", GS(size), "{}.png".format(image))
 
     if not os.path.isfile(image):
-      Logger.Warn(
-          __name__,
-          "CreateButton: Attempted to set not-existent image for button (ID {}):".format(btnId),
-          details=image
-          )
+      # FIXME: 'details' param like old logger had
+      logger.warn(
+          "CreateButton: Attempted to set not-existent image for button (ID {}):".format(btnId))
+          # ~ details=image
+          # ~ )
 
     else:
       button = CustomButton(parent, image, btnId, name=name, commands=commands,

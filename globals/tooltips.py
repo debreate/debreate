@@ -8,8 +8,9 @@
 
 import wx
 
+import util
+
 from dbr.language    import GT
-from dbr.log         import Logger
 from dbr.templates   import local_templates_path
 from globals.changes import section_delims
 from globals.execute import GetSystemInstaller
@@ -17,6 +18,8 @@ from globals.ident   import btnid
 from globals.ident   import pgid
 from wiz.helper      import FieldEnabled
 
+
+logger = util.getLogger()
 
 # *** Wizard buttons ***#
 TT_wiz_prev = wx.ToolTip(GT("Previous page"))
@@ -271,7 +274,7 @@ def SetPageToolTips(parent, page_id=None):
             name = FIELD.GetName().lower()
 
           except AttributeError:
-            Logger.Warn(__name__, "Object has no name, not setting tooltip: {}".format(type(FIELD)))
+            logger.warn("Object has no name, not setting tooltip: {}".format(type(FIELD)))
 
             continue
 

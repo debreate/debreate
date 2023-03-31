@@ -6,8 +6,9 @@
 
 import wx
 
+import util
+
 from dbr.language    import GT
-from dbr.log         import Logger
 from globals.ident   import btnid
 from globals.ident   import pnlid
 from globals.strings import GS
@@ -19,6 +20,8 @@ from ui.panel        import ScrolledPanel
 from ui.style        import layout as lyt
 from wiz.helper      import GetField
 
+
+logger = util.getLogger()
 
 ## A checkable list
 class CheckList(BorderedPanel):
@@ -70,7 +73,7 @@ class CheckList(BorderedPanel):
     # FIXME: Static lines are counted
     item_index = self.GetItemCount()
 
-    #Logger.Debug(__name__, GT("Lintian tag: {}; Set checked: {}").format(label, checked))
+    #logger.debug(GT("Lintian tag: {}; Set checked: {}").format(label, checked))
 
     pnl_bg = GetField(self, pnlid.BACKGROUND)
     lyt_bg = pnl_bg.GetSizer()
@@ -96,7 +99,7 @@ class CheckList(BorderedPanel):
   #  Sets items as checked if True
   def AddItems(self, labels, checked=False):
     for l in labels:
-      Logger.Debug(__name__, "Adding item: {} (checked={})".format(l, checked))
+      logger.debug("Adding item: {} (checked={})".format(l, checked))
 
       self.AddItem(l, checked)
 
@@ -160,7 +163,7 @@ class CheckList(BorderedPanel):
       if CHK.IsChecked():
         label = CHK.GetLabel()
 
-        Logger.Debug(__name__, GT("Retrieving checked label: {}").format(label))
+        logger.debug(GT("Retrieving checked label: {}").format(label))
 
         checked_list.append(label)
 

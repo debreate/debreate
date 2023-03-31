@@ -6,8 +6,9 @@
 
 import os, wx
 
+import util
+
 from dbr.language         import GT
-from dbr.log              import Logger
 from dbr.workingdir       import ChangeWorkingDirectory
 from globals.bitmaps      import ICON_ERROR
 from globals.bitmaps      import ICON_EXCLAMATION
@@ -27,6 +28,8 @@ from ui.layout            import BoxSizer
 from ui.style             import layout as lyt
 from wiz.helper           import GetMainWindow
 
+
+logger = util.getLogger()
 
 ## An abstract class defining method to manipulate button labels
 class ButtonDialog:
@@ -91,7 +94,7 @@ class StandardDirDialog(wx.DirDialog):
       self.EndModal(wx.ID_OK)
       return
 
-    Logger.Debug(__name__, "Path is not a directory: {}".format(path))
+    logger.debug("Path is not a directory: {}".format(path))
 
 
 ## A standard system file dialog modified for advanced use
@@ -114,7 +117,7 @@ class StandardFileDialog(wx.FileDialog):
       wx.EVT_BUTTON(self, self.AffirmativeId, self.OnAccept)
 
       if self.WindowStyleFlag & wx.FD_CHANGE_DIR:
-        Logger.Warn(__name__, "Found FD_CHANGE_DIR style, could conflict with OnAccept method")
+        logger.warn("Found FD_CHANGE_DIR style, could conflict with OnAccept method")
 
     self.CenterOnParent()
 
@@ -158,7 +161,7 @@ class StandardFileDialog(wx.FileDialog):
 
           except OSError:
             # File was removed before confirmation
-            Logger.Debug(__name__, "Item was removed before confirmation: {}".format(self.Path))
+            logger.debug("Item was removed before confirmation: {}".format(self.Path))
 
     # Because we are not using default FileDialog methods, we must set
     # directory manually.
@@ -627,9 +630,9 @@ def ShowDialog(dialog, center=wx.BOTH):
 def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Error"),
       linewrap=0):
   # Instantiate Logger message type so it can be optionally changed
-  PrintLogMessage = Logger.Error
+  PrintLogMessage = logger.error
   if warn:
-    PrintLogMessage = Logger.Warn
+    PrintLogMessage = logger.warn
 
   logger_text = text
 
@@ -652,7 +655,8 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Erro
   else:
     module_name = parent.GetName()
 
-  PrintLogMessage(module_name, logger_text)
+  # ~ PrintLogMessage(module_name, logger_text)
+  PrintLogMessage(logger_text)
 
   error_dialog = ErrorDialog(parent, title, text, linewrap=linewrap)
   if details:
@@ -682,6 +686,7 @@ def ShowMessageDialog(text, title=GT("Message"), details=None, module=None, pare
   if details:
     message_dialog.SetDetails(details)
 
-  Logger.Debug(module, logger_text)
+  # ~ Logger.Debug(module, logger_text)
+  logger.debug(logger_text)
 
   message_dialog.ShowModal()

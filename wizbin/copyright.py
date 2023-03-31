@@ -6,9 +6,10 @@
 
 import os, wx
 
+import util
+
 from dbr.functions      import GetLongestLine
 from dbr.language       import GT
-from dbr.log            import Logger
 from dbr.templates      import GetCustomLicenses
 from dbr.templates      import GetLicenseTemplateFile
 from dbr.templates      import GetLocalLicenses
@@ -36,6 +37,8 @@ from wiz.helper         import GetField
 from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
+
+logger = util.getLogger()
 
 # Globals
 copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
@@ -288,7 +291,7 @@ class Page(WizardPage):
 
         return
 
-      Logger.Debug(__name__, "Copying license {}".format(template_file))
+      logger.debug("Copying license {}".format(template_file))
 
       license_text = ReadFile(template_file, noStrip=" ")
 
@@ -311,7 +314,7 @@ class Page(WizardPage):
 
         center_header = add_header[template_name][1]
         if center_header:
-          Logger.Debug(__name__, "Centering header...")
+          logger.debug("Centering header...")
 
           offset = 0
 
@@ -323,14 +326,14 @@ class Page(WizardPage):
             # Use the longest line found in the text to center the header
             longest_line = GetLongestLine(license_text)
 
-            Logger.Debug(__name__, "Longest line: {}".format(longest_line))
+            logger.debug("Longest line: {}".format(longest_line))
 
             header_length = len(header)
             if header_length < longest_line:
               offset = (longest_line - header_length) / 2
 
           if offset:
-            Logger.Debug(__name__, "Offset: {}".format(offset))
+            logger.debug("Offset: {}".format(offset))
 
             header = "{}{}".format(" " * offset, header)
 

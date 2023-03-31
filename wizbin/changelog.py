@@ -6,8 +6,9 @@
 
 import wx
 
+import util
+
 from dbr.language     import GT
-from dbr.log          import Logger
 from f_export.ftarget import FileOTarget
 from globals.bitmaps  import ICON_WARNING
 from globals.changes  import FormatChangelog
@@ -36,6 +37,8 @@ from wiz.helper       import GetFieldValue
 from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
+
+logger = util.getLogger()
 
 ## Changelog page
 class Page(WizardPage):
@@ -261,7 +264,7 @@ class Page(WizardPage):
       if isinstance(field_value, ErrorTuple):
         err_msg1 = GT("Got error when attempting to retrieve field value")
         err_msg2 = "\tError code: {}\n\tError message: {}".format(field_value.GetCode(), field_value.GetString())
-        Logger.Error(__name__, "{}:\n{}".format(err_msg1, err_msg2))
+        logger.error("{}:\n{}".format(err_msg1, err_msg2))
 
         continue
 

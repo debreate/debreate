@@ -6,9 +6,10 @@
 
 import wx
 
+import util
+
 from dbr.language     import GT
 from dbr.log          import DebugEnabled
-from dbr.log          import Logger
 from globals.ident    import btnid
 from globals.ident    import inputid
 from globals.ident    import pgid
@@ -26,6 +27,8 @@ from wiz.helper       import GetMainWindow
 from wiz.helper       import GetPage
 from wiz.wizard       import WizardPage
 
+
+logger = util.getLogger()
 
 ## Page defining dependencies
 class Page(WizardPage):
@@ -199,7 +202,7 @@ class Page(WizardPage):
   #      File path to open
   #  \see wiz.wizard.WizardPage.ImportFromFile
   def ImportFromFile(self, d_type, d_string):
-    Logger.Debug(__name__, GT("Importing {}: {}".format(d_type, d_string)))
+    logger.debug(GT("Importing {}: {}".format(d_type, d_string)))
 
     values = d_string.split(", ")
 
@@ -263,18 +266,18 @@ class Page(WizardPage):
     elif key_id == btnid.APPEND:
       selected_count = self.lst_deps.GetSelectedItemCount()
 
-      Logger.Debug(__name__, "Appending to {} items".format(selected_count))
+      logger.debug("Appending to {} items".format(selected_count))
 
       if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
         selected_rows = self.lst_deps.GetSelectedIndexes()
 
         if DebugEnabled():
-          Logger.Debug(__name__, "Selected rows:")
+          logger.debug("Selected rows:")
           for R in selected_rows:
             print("\t{}".format(R))
 
         for listrow in selected_rows:
-          Logger.Debug(__name__, "Setting list row: {}".format(listrow))
+          logger.debug("Setting list row: {}".format(listrow))
 
           # Get item from second column
           colitem = self.lst_deps.GetItem(listrow, 1)
@@ -287,7 +290,7 @@ class Page(WizardPage):
           else:
             new_text = "{} | {}".format(prev_text, addname)
 
-          Logger.Debug(__name__, "Appended item: {}".format(new_text))
+          logger.debug("Appended item: {}".format(new_text))
 
           self.lst_deps.SetStringItem(listrow, 1, new_text)
 

@@ -8,9 +8,10 @@ import os, traceback, wx
 
 from wx.adv import OwnerDrawnComboBox
 
+import util
+
 from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
-from dbr.log              import Logger
 from dbr.timer            import DebreateTimer
 from globals.fileio       import ReadFile
 from globals.ident        import inputid
@@ -30,6 +31,8 @@ from ui.style             import layout as lyt
 from ui.textpreview       import TextPreview
 from wiz.helper           import GetField
 
+
+logger = util.getLogger()
 
 ## Dialog displaying controls for updating distribution names cache file
 class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
@@ -238,7 +241,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
   #  Called from a new thread
   #  FIXME: Show error if could not contact 1 or more remote sites???
   def UpdateCache(self, args=None):
-    Logger.Debug(__name__, GT("Updating cache ..."))
+    logger.debug(GT("Updating cache ..."))
 
     UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
         self.chk_generic.GetValue())

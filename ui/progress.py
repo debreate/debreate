@@ -6,14 +6,16 @@
 
 import wx
 
+import util
+
 from dbr.event    import EVT_TIMER_STOP
 from dbr.language import GT
-from dbr.log      import Logger
 from dbr.timer    import DebreateTimer
 from wiz.helper   import FieldEnabled
 from wiz.helper   import GetMainWindow
 
 
+logger = util.getLogger()
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 
 
@@ -93,12 +95,12 @@ class ProgressDialog(wx.ProgressDialog):
     main_window = GetMainWindow()
 
     if not FieldEnabled(main_window):
-      Logger.Debug(__name__, "Re-enabling main window")
+      logger.debug("Re-enabling main window")
 
       main_window.Enable()
 
     if self.Parent and not FieldEnabled(self.Parent):
-      Logger.Debug(__name__, "Re-enabling parent")
+      logger.debug("Re-enabling parent")
 
       self.Parent.Enable()
 
@@ -310,7 +312,7 @@ class TimedProgressDialog(ProgressDialog):
 
   ## TODO: Doxygen
   def OnTimerStop(self, event=None):
-    Logger.Debug(__name__, "Destroying TimedProgressDialog instance")
+    logger.debug("Destroying TimedProgressDialog instance")
 
     if wx.MAJOR_VERSION <= 2:
       # Dialog needs to be closed before destroying for wx 2.8
@@ -321,13 +323,13 @@ class TimedProgressDialog(ProgressDialog):
 
   ## Starts the timer & begins pulsing dialog
   def Start(self):
-    Logger.Debug(__name__, "Starting TimedProgressDialog timer ...")
+    logger.debug("Starting TimedProgressDialog timer ...")
 
     self.Timer.Start(self.Interval)
 
 
   ## Stops the timer & destroys the progress dialog
   def Stop(self):
-    Logger.Debug(__name__, "Stopping TimedProgressDialog timer ...")
+    logger.debug("Stopping TimedProgressDialog timer ...")
 
     self.Timer.Stop()

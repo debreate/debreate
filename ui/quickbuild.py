@@ -6,10 +6,11 @@
 
 import os, traceback, wx
 
+import util
+
 from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
-from dbr.log              import Logger
 from dbr.timer            import DebreateTimer
 from globals.errorcodes   import dbrerrno
 from globals.fileio       import ReadFile
@@ -27,6 +28,7 @@ from ui.layout            import BoxSizer
 from ui.style             import layout as lyt
 
 
+logger = util.getLogger()
 GAUGE_MAX = 100
 
 
@@ -240,13 +242,13 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 
   ## Closes the progress dialog & shows status message when timer is stopped
   def OnTimerStop(self, event=None):
-    Logger.Debug(__name__, "OnTimerStop")
+    logger.debug("OnTimerStop")
 
     if not self.timer.IsRunning():
-      Logger.Debug(__name__, GT("Timer is stopped"))
+      logger.debug(GT("Timer is stopped"))
 
     else:
-      Logger.Debug(__name__, GT("Timer is running"))
+      logger.debug(GT("Timer is running"))
 
     if self.build_error:
       error_lines = self.build_error[:-1]
@@ -272,7 +274,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     if event:
       if isinstance(event, wx.TimerEvent):
         if not self.timer.IsRunning():
-          Logger.Debug(__name__, GT("Timer stopped. Stopping gauge ..."))
+          logger.debug(GT("Timer stopped. Stopping gauge ..."))
 
           return
 

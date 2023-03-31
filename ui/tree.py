@@ -6,6 +6,8 @@
 
 import os, traceback, wx
 
+import util
+
 from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
 from dbr.colors      import COLOR_warn
@@ -13,7 +15,6 @@ from dbr.functions   import MouseInsideWindow
 from dbr.image       import GetCursor
 from dbr.imagelist   import sm_DirectoryImageList as ImageList
 from dbr.language    import GT
-from dbr.log         import Logger
 from globals         import paths
 from globals.devices import GetMountedStorageDevices
 from globals.execute import ExecuteCommand
@@ -26,6 +27,8 @@ from ui.layout       import BoxSizer
 from ui.panel        import BorderedPanel
 from wiz.helper      import GetMainWindow
 
+
+logger = util.getLogger()
 
 ## A wxcustom tree item
 #
@@ -86,7 +89,7 @@ class PathItem:
       if self.ImageIndex == ImageList.GetImageIndex("failsafe"):
         self.ImageIndex = ImageList.GetImageIndex("file")
 
-      Logger.Debug(__name__, "PathItem type: {} ({})".format(self.Type, self.Path))
+      logger.debug("PathItem type: {} ({})".format(self.Type, self.Path))
 
 
   ## TODO: Doxygen
@@ -428,7 +431,7 @@ class DirectoryTree(wx.TreeCtrl):
             item.AddChild(child)
 
         except OSError:
-          Logger.Warn(__name__, "No such file or directory: {}".format(item_path))
+          logger.warn("No such file or directory: {}".format(item_path))
 
     # Recursively expand parent items
     parent = self.GetItemParent(item)
@@ -457,7 +460,7 @@ class DirectoryTree(wx.TreeCtrl):
       for CHILD in children:
         in_path = CHILD.Path in path
         if in_path:
-          Logger.Debug(__name__, "Expanding path: {}".format(CHILD.Path))
+          logger.debug("Expanding path: {}".format(CHILD.Path))
 
           self.Expand(CHILD)
           children = self.GetItemChildren(CHILD)
@@ -656,14 +659,14 @@ class DirectoryTree(wx.TreeCtrl):
             break
 
       if add_item:
-        Logger.Debug(__name__, "Adding new mount PathItem instance: {}".format(DEV.Label))
+        logger.debug("Adding new mount PathItem instance: {}".format(DEV.Label))
 
         self.mount_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
             ImageList.GetImageIndex(DEV.Type)))
         continue
 
       else:
-        Logger.Debug(__name__, "PathItem instance for \"{}\" directory already exists".format(DEV.MountPoint))
+        logger.debug("PathItem instance for \"{}\" directory already exists".format(DEV.MountPoint))
 
 
   ## TODO: Doxygen
@@ -727,7 +730,7 @@ class DirectoryTree(wx.TreeCtrl):
       removed_expand = self.ctx_menu.Remove(menuid.EXPAND)
 
     elif selected and isinstance(selected[0], wx.TreeItemId) and selected[0] == self.root_item:
-      Logger.Debug(__name__, "Root item selected")
+      logger.debug("Root item selected")
 
       # Only allow expand/collapse & refresh for root item
       removed_menus = []
@@ -790,7 +793,7 @@ class DirectoryTree(wx.TreeCtrl):
         self.ctx_menu.InsertItem(1, removed_expand)
 
     else:
-      Logger.Debug(__name__, "No items were selected")
+      logger.debug("No items were selected")
 
 
   ## TODO: Doxygen
@@ -842,7 +845,7 @@ class DirectoryTree(wx.TreeCtrl):
 
       self.dragging = True
 
-      Logger.Debug(__name__, "Dragging!!!")
+      logger.debug("Dragging!!!")
 
       # Show a 'dragging' cursor
       self.UpdateCursor()
@@ -864,7 +867,7 @@ class DirectoryTree(wx.TreeCtrl):
       target_window = self.Parent.Parent.GetListInstance()
       dropped = MouseInsideWindow(target_window)
 
-      Logger.Debug(__name__, "Dropped inside file list: {}".format(dropped))
+      logger.debug("Dropped inside file list: {}".format(dropped))
 
       if dropped:
         self.Parent.Parent.OnImportFromTree()
@@ -881,7 +884,7 @@ class DirectoryTree(wx.TreeCtrl):
   def OnEndLabelEdit(self, event=None):
     if event:
       if event.IsEditCancelled():
-        Logger.Debug(__name__, "Vetoing due to cancelled edit")
+        logger.debug("Vetoing due to cancelled edit")
 
         event.Veto()
         return
@@ -912,11 +915,11 @@ class DirectoryTree(wx.TreeCtrl):
           I.Path = new_path
 
       except OSError:
-        Logger.Debug(__name__, "Item not renamed, traceback details below:\n\n{}".format(traceback.format_exc()))
+        logger.debug("Item not renamed, traceback details below:\n\n{}".format(traceback.format_exc()))
 
         event.Veto()
 
-      Logger.Debug(__name__, "New item path: {}".format(item.Path))
+      logger.debug("New item path: {}".format(item.Path))
 
 
   ## TODO: Doxygen
@@ -1032,7 +1035,7 @@ class DirectoryTree(wx.TreeCtrl):
         selected_path = paths.getHomeDir()
         expanded = True
 
-      Logger.Debug(__name__, "Selected path: {}".format(selected_path))
+      logger.debug("Selected path: {}".format(selected_path))
 
     self.DeleteAllItems()
 
@@ -1093,20 +1096,20 @@ class DirectoryTree(wx.TreeCtrl):
       arg_list.insert(0, "-f")
       ExecuteCommand(GetExecutable("gvfs-trash"), arg_list)
 
-      Logger.Debug(__name__, "Paths deleted")
+      logger.debug("Paths deleted")
 
       self.DeleteItems(item_list)
 
-      Logger.Debug(__name__, "Items deleted")
+      logger.debug("Items deleted")
 
       # Confirm that paths were removed
       for P in path_list:
         if os.path.exists(P):
-          Logger.Debug(__name__, "Failed to remove \"{}\"".format(P))
+          logger.debug("Failed to remove \"{}\"".format(P))
 
           return False
 
-      Logger.Debug(__name__, "Items successfully moved to trash")
+      logger.debug("Items successfully moved to trash")
 
       return True
 
@@ -1171,7 +1174,7 @@ class DirectoryTree(wx.TreeCtrl):
     except TypeError:
       err_l1 = GT("Failed to set cursor")
       err_l2 = GT("Details below:")
-      Logger.Error(__name__, "\n	{}\n	{}\n\n{}".format(err_l1, err_l2, traceback.format_exc()))
+      logger.error("\n	{}\n	{}\n\n{}".format(err_l1, err_l2, traceback.format_exc()))
 
 
 ## Directory tree with a nicer border

@@ -8,12 +8,15 @@
 
 import wx
 
+import util
+
 from dbr.config import ConfCode
 from dbr.config import ReadConfig
 from dbr.config import SetDefaultConfigKey
 from dbr.config import WriteConfig
-from dbr.log    import Logger
 
+
+logger = util.getLogger()
 
 ## Class that updates the configuration file when a specific event occurs
 class ConfigField:
@@ -44,7 +47,7 @@ class ConfigField:
       self.SetValue(state)
 
     else:
-      Logger.Debug(__name__, "Key not found: {}".format(self.ConfigKey))
+      logger.debug("Key not found: {}".format(self.ConfigKey))
 
     # *** Event Handling *** #
 
