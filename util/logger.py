@@ -17,6 +17,11 @@ from globals.dateinfo import dtfmt
 from globals.fileio   import AppendFile
 
 
+## Logs events to console & log file.
+#
+#  TODO:
+#    - add timestamps
+#    - show module name
 class LogLevel:
   SILENT, ERROR, WARN, INFO, DEBUG = range(0, 5)
 
@@ -87,7 +92,7 @@ class Logger:
   def getLogFile(self):
     return self.logfile
 
-  def log(self, lvl, msg=""):
+  def log(self, lvl, msg="", newline=False):
     if not msg:
       msg = lvl
       lvl = LogLevel.INFO
@@ -97,28 +102,30 @@ class Logger:
     if lvl == LogLevel.ERROR:
       stream = sys.stderr
     msg = (LogLevel.toString(lvl) + ":").ljust(9) + msg
+    if newline:
+      msg = "\n" + msg
     stream.write(msg + "\n")
     # output to log file
     if self.logfile and os.path.isfile(self.logfile):
       AppendFile(self.logfile, msg, noStrip="\n")
 
-  def debug(self, msg):
-    self.log(LogLevel.DEBUG, msg)
+  def debug(self, msg, newline=False):
+    self.log(LogLevel.DEBUG, msg, newline)
 
-  def info(self, msg):
-    self.log(LogLevel.INFO, msg)
+  def info(self, msg, newline=False):
+    self.log(LogLevel.INFO, msg, newline)
 
-  def warn(self, msg):
-    self.log(LogLevel.WARN, msg)
+  def warn(self, msg, newline=False):
+    self.log(LogLevel.WARN, msg, newline)
 
-  def error(self, msg):
-    self.log(LogLevel.ERROR, msg)
+  def error(self, msg, newline=False):
+    self.log(LogLevel.ERROR, msg, newline)
 
-  def deprecated(self, module, name, alt=None):
+  def deprecated(self, module, name, alt=None, newline=False):
     msg = module + "." + name + " is deprecated"
     if alt:
       msg += ", use " + alt + " instead"
-    self.warn(msg)
+    self.warn(msg, newline)
 
 
 # exported instance
