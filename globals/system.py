@@ -319,7 +319,12 @@ def GetOSDistNames():
         for NAME in cached_names[OS]:
           dist_names.append(NAME)
 
-  # Only check system for dist names if could not be loaded from cache file
+  if sys.platform == "win32":
+    return tuple(dist_names)
+
+  # --- calls specific to non-Windows systems --- #
+
+  # Only check system for dist names if unable to load from cache file
   if not dist_names:
     # Ubuntu & Linux Mint distributions
     global OS_codename, OS_upstream_codename
@@ -328,14 +333,14 @@ def GetOSDistNames():
       if CN and CN not in dist_names:
         dist_names.append(CN)
 
-    # Debian distributions
-    FILE_debian = "/etc/debian_version"
+    # platform available Debian distributions
+    FILE_debian = os.path.normpath("/etc/debian_version")
     if os.path.isfile(FILE_debian):
       debian_names = RemoveEmptyLines(ReadFile(FILE_debian, split=True))[:1]
 
       # Usable names should all be on first line
-      if "/" in debian_names[0]:
-        debian_names = sorted(debian_names[0].split("/"))
+      if os.sep in debian_names[0]:
+        debian_names = sorted(debian_names[0].split(os.sep))
 
       for NAME in reversed(debian_names):
         if NAME not in dist_names:

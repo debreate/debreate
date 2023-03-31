@@ -6,13 +6,16 @@
 
 import os, wx
 
+from globals.paths   import getSystemRoot
 from input.essential import EssentialField
 from input.text      import TextArea
 
 
+sys_root = getSystemRoot()
+
 ## A text area that can track if it's value is an actual path on the system
 class PathCtrl(TextArea):
-  def __init__(self, parent, win_id=wx.ID_ANY, value="/", defaultValue="/", warn=False,
+  def __init__(self, parent, win_id=wx.ID_ANY, value=sys_root, defaultValue=sys_root, warn=False,
       name=wx.TextCtrlNameStr):
 
     TextArea.__init__(self, parent, win_id, value, defaultValue, name=name)
@@ -41,7 +44,7 @@ class PathCtrl(TextArea):
   def OnKeyUp(self, event=None):
     value = self.GetValue()
     insertion_point = self.GetInsertionPoint()+1
-    if value == wx.EmptyString or value[0] != "/":
+    if value == wx.EmptyString or value[0] != sys_root:
       self.SetValue("/{}".format(value))
       self.SetInsertionPoint(insertion_point)
 
@@ -89,7 +92,7 @@ class PathCtrl(TextArea):
 #
 #  This is a dummy class to facilitate merging to & from unstable branch
 class PathCtrlESS(PathCtrl, EssentialField):
-  def __init__(self, parent, win_id=wx.ID_ANY, value="/", defaultValue="/", warn=False,
+  def __init__(self, parent, win_id=wx.ID_ANY, value=sys_root, defaultValue=sys_root, warn=False,
       name=wx.TextCtrlNameStr):
 
     PathCtrl.__init__(self, parent, win_id, value, defaultValue, warn, name)

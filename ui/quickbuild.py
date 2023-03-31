@@ -170,7 +170,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
   #  TODO: Check timestamp of created .deb package (should be done for main build as well)
   def OnBuild(self, event=None):
     stage = self.input_stage.GetValue()
-    target = self.input_target.GetValue().rstrip("/")
+    target = self.input_target.GetValue().rstrip(os.sep)
 
     # Attempt to use DEBIAN/control file to set output filename. This is normally
     # done automatically by the dpkg command, but we need to set it manually to

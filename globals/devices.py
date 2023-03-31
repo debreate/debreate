@@ -8,6 +8,7 @@ import os
 
 from dbr.log        import Logger
 from globals.fileio import ReadFile
+from globals.paths  import getSystemRoot
 
 
 ## Class that represents a mounted storage device
@@ -33,7 +34,7 @@ class StorageDevice:
 
     # As last resort just use mount point basename
     if not self.Label:
-      if mount_point == "/":
+      if mount_point == getSystemRoot():
         self.Label = mount_point
 
       else:

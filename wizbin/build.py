@@ -402,7 +402,7 @@ class Page(WizardPage):
         return (dbrerrno.ECNCLD, None)
 
       # Characters that should not be in filenames
-      invalid_chars = (" ", "/")
+      invalid_chars = (" ", "/", "\\")
 
       # *** Menu launcher *** #
       if "launcher" in task_list:

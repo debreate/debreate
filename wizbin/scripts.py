@@ -274,8 +274,8 @@ class Page(WizardPage):
           for ROOT, DIRS, FILES in os.walk(toplevel):
             for FILE in FILES:
               fullpath = os.path.join(ROOT, FILE)
-              DIR = os.path.dirname(fullpath[len(toplevel):]).strip("/")
-              relpath = os.path.join(FITEM.GetBasename(), DIR, FILE).strip("/")
+              DIR = os.path.dirname(fullpath[len(toplevel):]).strip(os.sep)
+              relpath = os.path.join(FITEM.GetBasename(), DIR, FILE).strip(os.sep)
 
               if os.path.isfile(fullpath) and os.access(fullpath, os.X_OK):
                 fulltarget = os.path.join(FITEM.GetTarget(), relpath)

@@ -52,7 +52,7 @@ def parseCommandLine():
           + " 'install' (default): Install the application." \
           + " 'dist': Create a source distribution package." \
           + " 'binary': Create a portable package.")
-  args_parser.add_argument("-d", "--dir", default="/", help="Installation target root directory.")
+  args_parser.add_argument("-d", "--dir", default=getSystemRoot(), help="Installation target root directory.")
   args_parser.add_argument("-p", "--prefix", help="Installation prefix.")
   return args_parser
 
@@ -112,6 +112,13 @@ class Config:
 
 # --- helper functions --- #
 
+def getSystemRoot():
+  sys_root = "/"
+  if sys.platform == "win32":
+    sys_root = os.getenv("SystemDrive") or "C:"
+    sys_root += "\\"
+  return sys_root
+
 def checkAdmin():
   if sys.platform == "win32":
     return ctypes.windll.shell32.IsUserAnAdmin() != 0
@@ -127,7 +134,7 @@ def joinPath(*paths):
 def getInstallPath(subpath=None, stripped=False):
   path = options.prefix
   if not stripped:
-    path = os.path.join(options.dir, path.strip("/"))
+    path = os.path.join(options.dir, path.strip(os.sep))
   if subpath:
     path = os.path.join(path, subpath)
   return os.path.normpath(path)
@@ -440,7 +447,7 @@ def main():
   print_help = args_parser.print_help
   options = args_parser.parse_args()
   if not options.dir:
-    options.dir = "/"
+    options.dir = getSystemRoot()
   config = Config(parseConfig(os.path.join(dir_root, "build.conf")))
 
   if options.target not in targets:

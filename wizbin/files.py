@@ -16,6 +16,7 @@ from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
+from globals.paths      import getSystemRoot
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.filelist     import FileListESS
@@ -260,7 +261,7 @@ class Page(WizardPage):
       self.ti_target.SetValue(self.prev_dest_value)
       self.ti_target.SetInsertionPoint(-1)
 
-    elif self.ti_target.GetValue()[0] != "/":
+    elif self.ti_target.GetValue()[0] != getSystemRoot():
       self.ti_target.SetValue(self.prev_dest_value)
       self.ti_target.SetInsertionPoint(-1)
 
@@ -282,7 +283,7 @@ class Page(WizardPage):
   #  TODO: Rename to 'GetTarget' or 'GetInputTarget'
   def GetDestValue(self, event=None):
     if not TextIsEmpty(self.ti_target.GetValue()):
-      if self.ti_target.GetValue()[0] == "/":
+      if self.ti_target.GetValue()[0] == getSystemRoot():
         self.prev_dest_value = self.ti_target.GetValue()
 
     if event:
@@ -520,8 +521,8 @@ class Page(WizardPage):
                 count = 0
 
               # os.path.dirname preserves top level directory
-              ROOT = ROOT.replace(os.path.dirname(P), "").strip("/")
-              F = "{}/{}".format(ROOT, F).strip("/")
+              ROOT = ROOT.replace(os.path.dirname(P), "").strip(os.sep)
+              F = "{}/{}".format(ROOT, F).strip(os.sep)
 
               if F not in dir_list[parent_dir]:
                 dir_list[parent_dir].append(F)
