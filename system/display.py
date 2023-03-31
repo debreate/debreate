@@ -8,7 +8,6 @@ import wx
 
 import util
 
-from dbr.log         import DebugEnabled
 from globals.execute import GetCommandOutput
 from globals.execute import GetExecutable
 from globals.strings import StringIsNumeric
@@ -113,7 +112,7 @@ def CenterOnPrimaryDisplay(window):
   x_diff = (dw - window_size[0]) / 2
   y_diff = (dh - window_size[1]) / 2
 
-  debug = DebugEnabled()
+  debug = logger.debugging()
 
   if debug:
     print("  X difference: {}".format(x_diff))

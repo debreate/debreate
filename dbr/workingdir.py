@@ -10,7 +10,6 @@ import util
 
 from dbr.config    import ReadConfig
 from dbr.config    import WriteConfig
-from dbr.log       import DebugEnabled
 from globals       import paths
 
 
@@ -23,7 +22,7 @@ logger = util.getLogger()
 #  \param target_dir
 #  	\b \e str : Path to set as new working directory
 def ChangeWorkingDirectory(target_dir):
-  if DebugEnabled():
+  if logger.debugging():
     logger.debug("ChangeWorkingDirectory: {}".format(target_dir), newline=True)
     print("  Working dir before: {}".format(os.getcwd()))
 
@@ -43,7 +42,7 @@ def ChangeWorkingDirectory(target_dir):
     if os.path.isdir(dir_home):
       os.chdir(dir_home)
 
-  if DebugEnabled():
+  if logger.debugging():
     print("  Working dir after:  {}\n".format(os.getcwd()))
 
   return success

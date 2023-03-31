@@ -6,8 +6,6 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
-# TODO: replace calls to dbr.log
-
 import errno, os, sys
 
 from globals          import paths
@@ -91,6 +89,9 @@ class Logger:
 
   def getLogFile(self):
     return self.logfile
+
+  def debugging(self):
+    return self.getLevel() >= LogLevel.DEBUG
 
   def log(self, lvl, msg="", details=None, newline=False):
     if not msg:

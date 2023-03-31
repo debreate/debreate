@@ -21,7 +21,6 @@ from dbr.functions        import UsingDevelopmentVersion
 from dbr.help             import HelpDialog
 from dbr.icon             import Icon
 from dbr.language         import GT
-from dbr.log              import DebugEnabled
 from dbr.timer            import DebreateTimer
 from globals              import paths
 from globals.application  import APP_homepage
@@ -87,7 +86,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
       wx.GetApp().SetTopWindow(self)
 
-    if DebugEnabled():
+    if logger.debugging():
       self.SetTitle("{} ({})".format(default_title, GT("debugging")))
 
     self.SetMinSize(wx.Size(640, 400))
@@ -617,7 +616,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## TODO: Doxygen
   def ProjectChanged(self, event=None):
-    if DebugEnabled():
+    if logger.debugging():
       logger.debug("MainWindow.OnProjectChanged:")
       print("  Object: {}".format(event.GetEventObject()))
 

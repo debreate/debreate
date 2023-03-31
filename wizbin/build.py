@@ -10,7 +10,6 @@ import util
 
 from dbr.functions      import FileUnstripped
 from dbr.language       import GT
-from dbr.log            import DebugEnabled
 from dbr.md5            import WriteMD5
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
@@ -198,7 +197,7 @@ class Page(WizardPage):
       if "scripts" in task_list:
         task_count += len(task_list["scripts"])
 
-      if DebugEnabled():
+      if logger.debugging():
         task_msg = GT("Total tasks: {}").format(task_count)
         print("DEBUG: [{}] {}".format(__name__, task_msg))
         for T in task_list:
@@ -909,7 +908,7 @@ class Page(WizardPage):
       logger.debug("Lintian tags set")
 
       # DEBUG: Start
-      if DebugEnabled() and len(lint_tags) > 50:
+      if logger.debugging() and len(lint_tags) > 50:
         print("  Reducing tag count to 200 ...")
 
         lint_tags = lint_tags[:50]

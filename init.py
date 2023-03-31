@@ -121,7 +121,6 @@ from dbr.language        import GetLocaleDir
 from dbr.language        import GT
 from dbr.language        import SetLocaleDir
 from dbr.language        import TRANSLATION_DOMAIN
-from dbr.log             import Logger
 from dbr.workingdir      import ChangeWorkingDirectory
 from globals.application import VERSION_string
 from globals.constants   import INSTALLED

@@ -9,7 +9,6 @@ import os, shutil, wx
 import util
 
 from dbr.language     import GT
-from dbr.log          import DebugEnabled
 from globals.fileio   import ReadFile
 from globals.fileio   import WriteFile
 from globals.ident    import btnid
@@ -568,7 +567,7 @@ class Page(WizardPage):
       if data[0].isnumeric():
         enabled = int(data.pop(0)) > 0
 
-      if DebugEnabled():
+      if logger.debugging():
         for L in data:
           print("  Launcher line: {}".format(L))
 

@@ -1,4 +1,4 @@
-## \package dbr.logwindow
+## \package ui
 
 # MIT licensing
 # See: docs/LICENSE.txt

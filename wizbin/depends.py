@@ -9,7 +9,6 @@ import wx
 import util
 
 from dbr.language     import GT
-from dbr.log          import DebugEnabled
 from globals.ident    import btnid
 from globals.ident    import inputid
 from globals.ident    import pgid
@@ -271,7 +270,7 @@ class Page(WizardPage):
       if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
         selected_rows = self.lst_deps.GetSelectedIndexes()
 
-        if DebugEnabled():
+        if logger.debugging():
           logger.debug("Selected rows:")
           for R in selected_rows:
             print("\t{}".format(R))

@@ -6,11 +6,12 @@
 
 import wx
 
+import util
+
 from dbr.config      import ConfCode
 from dbr.config      import GetDefaultConfigValue
 from dbr.config      import ReadConfig
 from dbr.language    import GT
-from dbr.log         import DebugEnabled
 from globals.bitmaps import ICON_CLOCK
 from globals.bitmaps import ICON_GLOBE
 from globals.bitmaps import ICON_LOGO
@@ -18,6 +19,8 @@ from globals.execute import GetExecutable
 from globals.ident   import menuid, refid
 from startup.tests   import GetTestList
 
+
+logger = util.getLogger()
 
 ## A menu bar that stores an ID along with a menu
 class MenuBar(wx.MenuBar):
@@ -84,7 +87,7 @@ class MenuBar(wx.MenuBar):
 # \param parent Main wx.Frame window
 # \return New MenuBar instance
 def createMenuBar(parent):
-  testing = "alpha" in GetTestList() or DebugEnabled()
+  testing = "alpha" in GetTestList() or logger.debugging()
 
   menubar = MenuBar(parent)
 

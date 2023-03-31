@@ -19,7 +19,7 @@ TimerStopEvent = NewCommandEvent()
 EVT_TIMER_STOP = TimerStopEvent[1]
 TimerStopEvent = TimerStopEvent[0]
 
-## Event to post when dbr.log.LogWindow.PollLogFile is called
+## Event to post when ui.logwindow.LogWindow.PollLogFile is called
 RefreshLogEvent = NewCommandEvent()
 EVT_REFRESH_LOG = RefreshLogEvent[1]
 RefreshLogEvent = RefreshLogEvent[0]
