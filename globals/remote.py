@@ -15,6 +15,9 @@ def GetRemotePageText(remote_url):
     page_text = URL_BUFFER.read()
     URL_BUFFER.close()
 
+    if type(page_text) == bytes:
+        # convert to a string
+        page_text = page_text.decode("utf-8")
     return page_text
 
   except HTTPError or URLError:

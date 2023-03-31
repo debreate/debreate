@@ -1,11 +1,5 @@
 -- Known Bugs --
 
-URGENT:
-- error stalls downloading distnames cache:
-      File "/home/jordan/Development/Debreate/code/globals/system.py", line 100, in _get_debian_distnames
-        page_html = GetRemotePageText(ref_site).split("\n")
-    AttributeError: 'NoneType' object has no attribute 'split'
-
 Mandatory:
 - Generated timestamp in changelog is "None"
 

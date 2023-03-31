@@ -97,9 +97,10 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
     dist_names.append("sid")
     dist_names.append("stretch")
 
-  page_html = GetRemotePageText(ref_site).split("\n")
+  page_html = GetRemotePageText(ref_site)
 
   if page_html:
+    page_html = page_html.split("\n")
     # Only add up to max_dists to list
     max_dists = 6
     dists_added = 0
@@ -129,7 +130,7 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
 #  NOTE: If site layout changes, function will need updated
 def _get_ubuntu_distnames(unstable=True, obsolete=False):
   ref_site = "https://wiki.ubuntu.com/Releases"
-  page_html = GetRemotePageText(ref_site).split("\n")
+  page_html = GetRemotePageText(ref_site)
 
   dist_names = []
   current = []
@@ -141,6 +142,7 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
     eol = []
 
   if page_html:
+    page_html = page_html.split("\n")
     for INDEX in range(len(page_html)):
       LINE = page_html[INDEX].lower()
 
@@ -227,11 +229,12 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 #  NOTE: If site layout changes, function will need updated
 def _get_mint_distnames():
   ref_site = "https://www.linuxmint.com/download_all.php"
-  page_html = GetRemotePageText(ref_site).split("\n")
+  page_html = GetRemotePageText(ref_site)
 
   dist_names = []
 
   if page_html:
+    page_html = page_html.split("\n")
     for INDEX in range(len(page_html)):
       LINE = page_html[INDEX].lower()
 
