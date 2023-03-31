@@ -1,5 +1,8 @@
 
 Priority:
+- use wget or urllib module instead of calling system command
+- fix widget layout in GTK dialogs
+- use XML or JSON for config file
 - Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Finish lintian overrides option
 - Cache lintian tags in local directory
