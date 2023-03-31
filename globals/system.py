@@ -9,12 +9,12 @@ import os, sys, wx
 from importlib import import_module
 
 from dbr.containers  import Contains
-from globals.fileio  import ReadFile
-from globals.fileio  import WriteFile
 from globals.paths   import getCacheDir
 from globals.remote  import GetRemotePageText
 from globals.strings import RemoveEmptyLines
 from globals.strings import StringIsVersioned
+from libdbr.fileio   import readFile
+from libdbr.fileio   import writeFile
 
 
 mimport = import_module
@@ -43,7 +43,7 @@ def GetOSInfo(key, upstream=False):
   if not os.path.isfile(lsb_release):
     return None
 
-  release_data = ReadFile(lsb_release, split=True)
+  release_data = readFile(lsb_release).split("\n")
 
   value = None
 
@@ -249,7 +249,7 @@ def _get_mint_distnames():
 #  \param deprecated
 #  If \b \e True, includes obsolete Ubuntu distributions
 #  \return
-#  \b \e Boolean value of WriteFile
+#  \b \e Boolean value of writeFile
 def UpdateDistNamesCache(unstable=True, obsolete=False, generic=False):
   global FILE_distnames
 
@@ -261,7 +261,7 @@ def UpdateDistNamesCache(unstable=True, obsolete=False, generic=False):
   section_ubuntu = "[UBUNTU]\n{}".format("\n".join(ubuntu_distnames))
   section_mint = "[LINUX MINT]\n{}".format("\n".join(mint_distnames))
 
-  return WriteFile(FILE_distnames, "\n\n".join((section_debian, section_ubuntu, section_mint)))
+  return writeFile(FILE_distnames, "\n\n".join((section_debian, section_ubuntu, section_mint)))
 
 
 ## Retrieves distribution names from cache file
@@ -277,7 +277,7 @@ def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
     if not UpdateDistNamesCache(unstable, obsolete, generic):
       return None
 
-  text_temp = ReadFile(FILE_distnames)
+  text_temp = readFile(FILE_distnames)
 
   dist_names = {}
 
@@ -336,7 +336,7 @@ def GetOSDistNames():
     # platform available Debian distributions
     FILE_debian = os.path.normpath("/etc/debian_version")
     if os.path.isfile(FILE_debian):
-      debian_names = RemoveEmptyLines(ReadFile(FILE_debian, split=True))[:1]
+      debian_names = RemoveEmptyLines(readFile(FILE_debian).split("\n"))[:1]
 
       # Usable names should all be on first line
       if os.sep in debian_names[0]:

@@ -15,10 +15,10 @@ from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
 from globals         import paths
-from globals.fileio  import ReadFile
-from globals.fileio  import WriteFile
 from globals.strings import GS
 from globals.strings import TextIsEmpty
+from libdbr.fileio   import readFile
+from libdbr.fileio   import writeFile
 
 
 logger = util.getLogger()
@@ -99,7 +99,7 @@ def ReadConfig(k_name, conf=default_config):
     #logger.warn("Undefined key, not attempting to retrieve value: {}".format(k_name))
     return ConfCode.KEY_NOT_DEFINED
 
-  conf_lines = ReadFile(conf)
+  conf_lines = readFile(conf)
   if conf_lines:
     conf_lines = conf_lines.split("\n")
 
@@ -168,11 +168,9 @@ def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
       print("{}: {}: {}".format(GT("Error"), GT("Cannot open config for writing, directory exists"), conf))
       return ConfCode.ERR_WRITE
 
-    conf_text = ReadFile(conf)
-
-    # FIXME: ReadFile returns None type if config file exists but is empty
-    if conf_text == None:
-      conf_text = ""
+    conf_text = ""
+    if os.path.isfile(conf):
+      conf_text = readFile(conf)
 
   else:
     conf_text = "[CONFIG-{}.{}]".format(GS(config_version[0]), GS(config_version[1]))
@@ -200,7 +198,7 @@ def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
     return ConfCode.ERR_WRITE
 
   # Actual writing to configuration
-  WriteFile(conf, conf_text)
+  writeFile(conf, conf_text)
 
   if os.path.isfile(conf):
     return ConfCode.SUCCESS

@@ -19,7 +19,6 @@ from globals.dateinfo   import GetYear
 from globals.errorcodes import dbrerrno
 from globals.execute    import ExecuteCommand
 from globals.execute    import GetExecutable
-from globals.fileio     import ReadFile
 from globals.ident      import btnid
 from globals.ident      import pgid
 from globals.ident      import selid
@@ -28,6 +27,7 @@ from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
+from libdbr.fileio      import readFile
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import ShowErrorDialog
@@ -176,7 +176,7 @@ class Page(WizardPage):
     if not os.path.isfile(filename):
       return dbrerrno.ENOENT
 
-    copyright_data = ReadFile(filename, split=True)
+    copyright_data = readFile(filename).split("\n")
 
     # Remove preceding empty lines
     remove_index = 0
@@ -293,7 +293,7 @@ class Page(WizardPage):
 
       logger.debug("Copying license {}".format(template_file))
 
-      license_text = ReadFile(template_file, noStrip=" ")
+      license_text = readFile(template_file)
 
       # Number defines how many empty lines to add after the copyright header
       # Boolean/Integer defines whether copyright header should be centered/offset

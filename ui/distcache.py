@@ -13,7 +13,6 @@ import util
 from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
-from globals.fileio       import ReadFile
 from globals.ident        import inputid
 from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl
@@ -21,6 +20,7 @@ from globals.system       import FILE_distnames
 from globals.system       import GetOSDistNames
 from globals.system       import UpdateDistNamesCache
 from globals.threads      import Thread
+from libdbr.fileio        import readFile
 from ui.dialog            import BaseDialog
 from ui.dialog            import ShowErrorDialog
 from ui.dialog            import ShowMessageDialog
@@ -147,7 +147,7 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
   ## Opens cache file for previewing
   def OnPreviewCache(self, event=None):
-    self.preview.SetValue(ReadFile(FILE_distnames))
+    self.preview.SetValue(readFile(FILE_distnames))
     self.preview.ShowModal()
 
 

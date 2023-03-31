@@ -32,8 +32,6 @@ from globals.application  import VERSION_string
 from globals.application  import VERSION_tuple
 from globals.bitmaps      import LOGO
 from globals.execute      import GetExecutable
-from globals.fileio       import ReadFile
-from globals.fileio       import WriteFile
 from globals.ident        import menuid
 from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl
@@ -41,6 +39,8 @@ from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
 from globals.strings      import GS
 from globals.threads      import Thread
+from libdbr.fileio        import readFile
+from libdbr.fileio        import writeFile
 from startup.tests        import GetTestList
 from ui.about             import AboutDialog
 from ui.dialog            import ConfirmationDialog
@@ -421,7 +421,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
         # This try statement can be removed when unicode support is enabled
         try:
-          WriteFile(path, "[DEBREATE-{}]\n{}".format(VERSION_string, "\n".join(data)))
+          writeFile(path, "[DEBREATE-{}]\n{}".format(VERSION_string, "\n".join(data)))
 
           if overwrite:
             os.remove(backup)
@@ -564,7 +564,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
           GT("File does not exist or is not a regular file: {}").format(project_file))
       return False
 
-    data = ReadFile(project_file)
+    data = readFile(project_file)
 
     lines = data.split("\n")
 

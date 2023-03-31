@@ -9,7 +9,6 @@ import os, wx
 import util
 
 from dbr.language     import GT
-from globals.fileio   import ReadFile
 from globals.fileitem import FileItem
 from globals.ident    import btnid
 from globals.ident    import inputid
@@ -21,6 +20,7 @@ from input.markdown   import MarkdownDialog
 from input.pathctrl   import PathCtrl
 from input.text       import TextAreaPanelESS
 from input.toggle     import CheckBox
+from libdbr.fileio    import readFile
 from ui.button        import CreateButton
 from ui.dialog        import ConfirmationDialog
 from ui.dialog        import DetailedMessageDialog
@@ -325,7 +325,7 @@ class Page(WizardPage):
     # Loading the actual text
     # FIXME: Should be done in class method
     if script_object != None:
-      script_object.SetValue(ReadFile(filename))
+      script_object.SetValue(readFile(filename))
 
 
   ## Checks if one or more scripts can be exported

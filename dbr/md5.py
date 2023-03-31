@@ -11,9 +11,9 @@ import util
 from dbr.language    import GT
 from globals.execute import GetCommandOutput
 from globals.execute import GetExecutable
-from globals.fileio  import WriteFile
 from globals.ident   import chkid
 from globals.ident   import pgid
+from libdbr.fileio   import writeFile
 from ui.dialog       import ErrorDialog
 from wiz.helper      import GetField
 from wiz.helper      import GetMainWindow
@@ -80,4 +80,4 @@ def WriteMD5(stage_dir, parent=None):
 
   # Create the md5sums file in the "DEBIAN" directory
   # NOTE: lintian ignores the last character of the file, so should end with newline character (\n)
-  return WriteFile("{}/DEBIAN/md5sums".format(stage_dir), "{}\n".format("\n".join(md5_list)), "\n")
+  return writeFile("{}/DEBIAN/md5sums".format(stage_dir), "{}\n".format("\n".join(md5_list)))

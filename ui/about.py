@@ -18,13 +18,13 @@ from globals.application import AUTHOR_name
 from globals.constants   import INSTALLED
 from globals.constants   import PREFIX
 from globals.dateinfo    import GetYear
-from globals.fileio      import ReadFile
 from globals.ident       import btnid
 from globals.mime        import GetFileMimeType
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
 from input.list          import ListCtrl
 from input.text          import TextAreaPanel
+from libdbr.fileio       import readFile
 from ui.button           import CreateButton
 from ui.dialog           import ShowErrorDialog
 from ui.hyperlink        import Hyperlink
@@ -396,7 +396,7 @@ class AboutDialog(wx.Dialog):
                   GT("Cannot decode, unrecognized mimetype: {}").format(changelog_mimetype))
 
       if changelog_mimetype == "text/plain":
-        log_text = ReadFile(CHANGELOG)
+        log_text = readFile(CHANGELOG)
 
       else:
         ShowErrorDialog(log_text, parent=self)
@@ -425,7 +425,7 @@ class AboutDialog(wx.Dialog):
       license_path = os.path.normpath(os.path.join(paths.getAppDir(), "docs/LICENSE.txt"))
 
     if os.path.isfile(license_path):
-      lic_text = ReadFile(license_path)
+      lic_text = readFile(license_path)
 
     else:
       lic_text = GT("ERROR: Could not locate license file:\n\t'{}' not found".format(license_path))

@@ -13,10 +13,10 @@ from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
 from globals.errorcodes   import dbrerrno
-from globals.fileio       import ReadFile
 from globals.ident        import btnid
 from globals.moduleaccess import ModuleAccessCtrl
 from globals.threads      import Thread
+from libdbr.fileio        import readFile
 from ui.button            import CreateButton
 from ui.dialog            import GetDirDialog
 from ui.dialog            import GetFileSaveDialog
@@ -180,7 +180,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     if os.path.isdir(target):
       control_file = os.path.join(stage, "DEBIAN", "control")
       if os.path.isfile(control_file):
-        control_lines = ReadFile(control_file, split=True)
+        control_lines = readFile(control_file).split("\n")
 
         name = None
         version = None

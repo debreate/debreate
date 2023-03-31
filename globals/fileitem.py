@@ -10,9 +10,9 @@ from dbr.colors      import COLOR_dir
 from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
 from globals.fileio  import GetTimestamp
-from globals.fileio  import ReadFile
 from globals.strings import IsString
 from globals.strings import TextIsEmpty
+from libdbr.fileio   import readFile
 
 
 ## TODO: Doxygen
@@ -106,7 +106,7 @@ class FileItem:
   #  \param noStrip
   #  \b \e String of leading & trailing characters to not strip
   def Read(self, split=False, convert=tuple, noStrip=None):
-    return ReadFile(self.Path, split, convert, noStrip)
+    return convert(readFile(self.Path).split("\n"))
 
 
   ## Sets file's path & basename

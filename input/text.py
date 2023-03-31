@@ -9,9 +9,9 @@ import time, wx
 from dbr.font        import MONOSPACED_LG
 from dbr.language    import GT
 from fields.ifield   import InputField
-from globals.fileio  import ReadFile
 from globals.strings import TextIsEmpty
 from input.essential import EssentialField
+from libdbr.fileio   import readFile
 from ui.layout       import BoxSizer
 from ui.panel        import BorderedPanel
 from ui.panel        import ControlPanel
@@ -96,7 +96,7 @@ class TextArea(wx.TextCtrl, InputField):
         return False
 
     try:
-      input_text = ReadFile(filename)
+      input_text = readFile(filename)
 
       if input_text:
         self.SetValue(input_text)

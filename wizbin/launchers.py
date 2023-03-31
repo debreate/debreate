@@ -9,8 +9,6 @@ import os, shutil, wx
 import util
 
 from dbr.language     import GT
-from globals.fileio   import ReadFile
-from globals.fileio   import WriteFile
 from globals.ident    import btnid
 from globals.ident    import chkid
 from globals.ident    import inputid
@@ -28,6 +26,8 @@ from input.text       import TextAreaESS
 from input.text       import TextAreaPanel
 from input.toggle     import CheckBox
 from input.toggle     import CheckBoxESS
+from libdbr.fileio    import readFile
+from libdbr.fileio    import writeFile
 from ui.button        import CreateButton
 from ui.dialog        import ConfirmationDialog
 from ui.dialog        import ShowDialog
@@ -401,7 +401,7 @@ class Page(WizardPage):
         overwrite = True
 
       try:
-        WriteFile(path, menu_data)
+        writeFile(path, menu_data)
 
         if overwrite:
           os.remove(backup)
@@ -428,7 +428,7 @@ class Page(WizardPage):
     if ShowDialog(dia):
       path = dia.GetPath()
 
-      data = ReadFile(path, split=True)
+      data = readFile(path).split("\n")
 
       # Remove unneeded lines
       if data[0] == "[Desktop Entry]":

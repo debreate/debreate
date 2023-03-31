@@ -12,8 +12,6 @@ import util
 
 from dbr.language       import GT
 from globals.errorcodes import dbrerrno
-from globals.fileio     import ReadFile
-from globals.fileio     import WriteFile
 from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import pgid
@@ -24,6 +22,8 @@ from input.select       import ComboBoxESS
 from input.text         import TextAreaESS
 from input.text         import TextAreaPanelESS
 from input.toggle       import CheckBoxESS
+from libdbr.fileio      import readFile
+from libdbr.fileio      import writeFile
 from ui.button          import CreateButton
 from ui.dialog          import GetFileOpenDialog
 from ui.dialog          import GetFileSaveDialog
@@ -439,7 +439,7 @@ class Page(WizardPage):
       ShowErrorDialog(GT("File does not exist: {}".format(filename)), linewrap=600)
       return dbrerrno.ENOENT
 
-    file_text = ReadFile(filename)
+    file_text = readFile(filename)
 
     page_depends = GetPage(pgid.DEPENDS)
 
@@ -478,7 +478,7 @@ class Page(WizardPage):
 
     if ShowDialog(save_dialog):
       # Be sure not to strip trailing newline (dpkg is picky)
-      WriteFile(save_dialog.GetPath(), control, noStrip="\n")
+      writeFile(save_dialog.GetPath(), control)
 
 
   ## TODO: Doxygen

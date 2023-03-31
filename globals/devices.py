@@ -8,8 +8,8 @@ import os
 
 import util
 
-from globals.fileio import ReadFile
-from libdbr.paths   import getSystemRoot
+from libdbr.fileio import readFile
+from libdbr.paths  import getSystemRoot
 
 
 logger = util.getLogger()
@@ -98,7 +98,7 @@ def ParseMountedDevices():
   mounted_devices = {}
 
   if os.path.isfile("/etc/mtab"):
-    mtab = ReadFile("/etc/mtab", split=True, convert=list)
+    mtab = readFile("/etc/mtab").split("\n")
 
     # Only keep lines referring to devices directory
     for X in reversed(range(len(mtab))):

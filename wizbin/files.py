@@ -12,7 +12,6 @@ from dbr.language       import GT
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.errorcodes import dbrerrno
-from globals.fileio     import ReadFile
 from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
@@ -23,6 +22,7 @@ from input.filelist     import FileListESS
 from input.filelist     import columns
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
+from libdbr.fileio      import readFile
 from libdbr.paths       import getSystemRoot
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
@@ -381,7 +381,7 @@ class Page(WizardPage):
     if not os.path.isfile(filename):
       return dbrerrno.ENOENT
 
-    files_data = ReadFile(filename, split=True)
+    files_data = readFile(filename).split("\n")
 
     # Lines beginning with these characters will be ignored
     ignore_characters = (

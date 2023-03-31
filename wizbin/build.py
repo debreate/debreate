@@ -17,8 +17,6 @@ from globals.errorcodes import dbrerrno
 from globals.execute    import ExecuteCommand
 from globals.execute    import GetExecutable
 from globals.execute    import GetSystemInstaller
-from globals.fileio     import ReadFile
-from globals.fileio     import WriteFile
 from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
@@ -31,6 +29,8 @@ from globals.system     import PY_VER_MAJ
 from globals.tooltips   import SetPageToolTips
 from input.toggle       import CheckBox
 from input.toggle       import CheckBoxESS
+from libdbr.fileio      import readFile
+from libdbr.fileio      import writeFile
 from startup.tests      import UsingTest
 from ui.button          import CreateButton
 from ui.checklist       import CheckListDialog
@@ -375,7 +375,7 @@ class Page(WizardPage):
         if not os.path.isdir(changelog_target):
           os.makedirs(changelog_target)
 
-        WriteFile("{}/changelog".format(changelog_target), task_list["changelog"][1])
+        writeFile("{}/changelog".format(changelog_target), task_list["changelog"][1])
 
         CMD_gzip = GetExecutable("gzip")
 
@@ -395,7 +395,7 @@ class Page(WizardPage):
       if create_copyright:
         UpdateProgress(progress, GT("Creating copyright"))
 
-        WriteFile("{}/usr/share/doc/{}/copyright".format(stage_dir, package), task_list["copyright"])
+        writeFile("{}/usr/share/doc/{}/copyright".format(stage_dir, package), task_list["copyright"])
 
         progress += 1
 
@@ -422,7 +422,7 @@ class Page(WizardPage):
         if not os.path.isdir(menu_dir):
           os.makedirs(menu_dir)
 
-        WriteFile("{}/{}.desktop".format(menu_dir, menu_filename), task_list["launcher"])
+        writeFile("{}/{}.desktop".format(menu_dir, menu_filename), task_list["launcher"])
 
         progress += 1
 
@@ -456,7 +456,7 @@ class Page(WizardPage):
 
           script_filename = os.path.join(stage_dir, "DEBIAN", script_name)
 
-          WriteFile(script_filename, script_text)
+          writeFile(script_filename, script_text)
 
           # Make sure scipt path is wrapped in quotes to avoid whitespace errors
           # FIXME: both commands appear to do the same thing?
@@ -502,7 +502,7 @@ class Page(WizardPage):
       # Perhaps because string is not null terminated???
       control_data = "{}\n\n".format(control_data)
 
-      WriteFile("{}/DEBIAN/control".format(stage_dir), control_data, noStrip="\n")
+      writeFile("{}/DEBIAN/control".format(stage_dir), control_data)
 
       progress += 1
 
@@ -571,7 +571,7 @@ class Page(WizardPage):
           e1 = GT("Lintian found some issues with the package.")
           e2 = GT("Details saved to {}").format(filename)
 
-          WriteFile("{}/{}.lintian".format(build_path, filename), errors)
+          writeFile("{}/{}.lintian".format(build_path, filename), errors)
 
           DetailedMessageDialog(build_progress, GT("Lintian Errors"),
               ICON_INFORMATION, "{}\n{}.lintian".format(e1, e2), errors).ShowModal()
@@ -902,7 +902,7 @@ class Page(WizardPage):
 
       return False
 
-    lint_tags = RemoveEmptyLines(ReadFile(lintian_tags_file, split=True))
+    lint_tags = RemoveEmptyLines(readFile(lintian_tags_file).split("\n"))
 
     if lint_tags:
       logger.debug("Lintian tags set")

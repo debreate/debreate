@@ -9,9 +9,9 @@
 
 import os, wx
 
-from dbr.language   import GT
-from globals        import paths
-from globals.fileio import ReadFile
+from dbr.language  import GT
+from globals       import paths
+from libdbr.fileio import readFile
 
 
 # Local modules
@@ -28,7 +28,7 @@ def GetPrefix():
   if not INSTALLED:
     return dir_app
 
-  lines = ReadFile("{}/INSTALLED".format(dir_app), split=True)
+  lines = readFile("{}/INSTALLED".format(dir_app)).split("\n")
 
   for L in lines:
     if "=" in L:
