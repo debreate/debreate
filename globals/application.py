@@ -4,7 +4,7 @@
 # See: docs/LICENSE.txt
 
 
-import os.path.join
+import os.path
 import wx
 
 from globals.paths import getBitmapsDir

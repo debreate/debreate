@@ -4,7 +4,7 @@
 # See: docs/LICENSE.txt
 
 
-import os.path.join
+import os.path
 
 from dbr.image     import GetBitmap
 from globals.paths import getBitmapsDir
