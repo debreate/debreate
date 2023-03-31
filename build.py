@@ -5,7 +5,7 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
-import argparse, codecs, errno, gzip, os, re, shutil, sys, types
+import argparse, codecs, errno, gzip, os, re, shutil, subprocess, sys, types
 
 if sys.platform == "win32":
   import ctypes
@@ -50,7 +50,7 @@ def parseCommandLine():
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
   args_parser.add_argument("-q", "--quiet", action="store_true", help="Don't print detailed information.")
-  args_parser.add_argument("-t", "--target", choices=("install", "uninstall", "dist", "binary"),
+  args_parser.add_argument("-t", "--target", choices=("install", "uninstall", "dist", "binary", "deb-clean"),
       default="install", help="Build type." \
           + " 'install' (default): Install the application." \
           + " 'dist': Create a source distribution package." \
@@ -425,19 +425,26 @@ def targetUninstall():
 
   targetInstallMimeInfo(False)
 
+def targetDebClean():
+  for _dir in ("debian/debreate", "debian/.debhelper"):
+    uninstallDir(os.path.join(dir_root, os.path.normpath(_dir)))
+  for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
+    uninstallFile(os.path.join(dir_root, os.path.normpath(_file)))
+
 def targetDist():
   # TODO:
   pass
 
 def targetBinary():
-  # TODO:
-  pass
+  targetDebClean()
+  subprocess.run(("debuild", "-b", "-uc", "-us"))
 
 targets = {
   "install": targetInstall,
   "uninstall": targetUninstall,
   "dist": targetDist,
-  "binary": targetBinary
+  "binary": targetBinary,
+  "deb-clean": targetDebClean
 }
 
 
