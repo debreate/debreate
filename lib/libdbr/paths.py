@@ -39,3 +39,6 @@ def getExecutable(cmd):
       if _isExecutable(filepath):
         return filepath
   return None
+
+def commandExists(cmd):
+  return getExecutable(cmd) != None
