@@ -6,6 +6,7 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
+import errno
 import subprocess
 import sys
 
