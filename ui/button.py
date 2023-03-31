@@ -369,11 +369,9 @@ def CreateButton(parent, btnId=wx.ID_ANY, label=wx.EmptyString, image=None, size
     image = os.path.join(getBitmapsDir(), "button", GS(size), "{}.png".format(image))
 
     if not os.path.isfile(image):
-      # FIXME: 'details' param like old logger had
       logger.warn(
-          "CreateButton: Attempted to set not-existent image for button (ID {}):".format(btnId))
-          # ~ details=image
-          # ~ )
+          "CreateButton: Attempted to set not-existent image for button (ID {}):".format(btnId),
+          details=image)
 
     else:
       button = CustomButton(parent, image, btnId, name=name, commands=commands,

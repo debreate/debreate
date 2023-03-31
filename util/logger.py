@@ -92,7 +92,7 @@ class Logger:
   def getLogFile(self):
     return self.logfile
 
-  def log(self, lvl, msg="", newline=False):
+  def log(self, lvl, msg="", details=None, newline=False):
     if not msg:
       msg = lvl
       lvl = LogLevel.INFO
@@ -102,6 +102,12 @@ class Logger:
     if lvl == LogLevel.ERROR:
       stream = sys.stderr
     msg = (LogLevel.toString(lvl) + ":").ljust(9) + msg
+    if details:
+      if type(details) == str:
+        msg += "\n  • {}".format(details)
+      else:
+        for line in details:
+          msg += "\n  • {}".format(line)
     if newline:
       msg = "\n" + msg
     stream.write(msg + "\n")
@@ -109,17 +115,17 @@ class Logger:
     if self.logfile and os.path.isfile(self.logfile):
       AppendFile(self.logfile, msg, noStrip="\n")
 
-  def debug(self, msg, newline=False):
-    self.log(LogLevel.DEBUG, msg, newline)
+  def debug(self, msg, details=None, newline=False):
+    self.log(LogLevel.DEBUG, msg, details, newline)
 
-  def info(self, msg, newline=False):
-    self.log(LogLevel.INFO, msg, newline)
+  def info(self, msg, details=None, newline=False):
+    self.log(LogLevel.INFO, msg, details, newline)
 
-  def warn(self, msg, newline=False):
-    self.log(LogLevel.WARN, msg, newline)
+  def warn(self, msg, details=None, newline=False):
+    self.log(LogLevel.WARN, msg, details, newline)
 
-  def error(self, msg, newline=False):
-    self.log(LogLevel.ERROR, msg, newline)
+  def error(self, msg, details=None, newline=False):
+    self.log(LogLevel.ERROR, msg, details, newline)
 
   def deprecated(self, module, name, alt=None, newline=False):
     msg = module + "." + name + " is deprecated"
