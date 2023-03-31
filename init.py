@@ -11,6 +11,9 @@
 
 import errno, os, sys
 
+# update module search path to include local 'lib' directory
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
+
 import util
 
 from command_line  import GetParsedPath
@@ -34,9 +37,6 @@ ParseArguments(sys.argv[1:])
 parsed_path = GetParsedPath()
 
 dir_app = paths.getAppDir()
-
-# update module search path to include local 'lib' directory
-sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
 
 
 # Compiles python source into bytecode

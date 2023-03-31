@@ -12,7 +12,7 @@ from globals          import paths
 from globals.dateinfo import GetDate
 from globals.dateinfo import GetTime
 from globals.dateinfo import dtfmt
-from globals.fileio   import AppendFile
+from libdbr.fileio    import appendFile
 
 
 ## Logs events to console & log file.
@@ -66,7 +66,7 @@ class Logger:
     date_time = "{} {}".format(date_start, time_start)
     header = "--------------- Log Start: {} ---------------\n".format(date_time)
     # write header to log file
-    AppendFile(self.logfile, header, noStrip="\n")
+    appendFile(self.logfile, header)
 
   def endLogging(self):
     if not self.logfile or not os.path.isfile(self.logfile):
@@ -74,7 +74,7 @@ class Logger:
       return
     date_time = "{} {}".format(GetDate(dtfmt.LOG), GetTime(dtfmt.LOG))
     footer = "\n--------------- Log End:   {} ---------------\n\n".format(date_time)
-    AppendFile(self.logfile, footer, noStrip="\n")
+    appendFile(self.logfile, footer)
 
   def setLevel(self, loglevel):
     if type(loglevel) == str:
@@ -114,7 +114,7 @@ class Logger:
     stream.write(msg + "\n")
     # output to log file
     if self.logfile and os.path.isfile(self.logfile):
-      AppendFile(self.logfile, msg, noStrip="\n")
+      appendFile(self.logfile, msg)
 
   def debug(self, msg, details=None, newline=False):
     self.log(LogLevel.DEBUG, msg, details, newline)

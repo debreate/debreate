@@ -8,8 +8,12 @@
 
 import codecs, os
 
+import util
+
 from globals.strings import GS
 
+
+logger = util.getLogger()
 
 ## Append text to end of a file
 #
@@ -22,6 +26,8 @@ from globals.strings import GS
 #  \param inputOnly
 #  Only strip characters from text read from file
 def AppendFile(path, contents, noStrip=None, inputOnly=False):
+  logger.deprecated(__name__, AppendFile.__name__, "libdbr.fileio.appendFile")
+
   # Do not append to non-existent file
   if os.path.isfile(path):
     contents = "{}\n{}".format(ReadFile(path, noStrip=noStrip), contents)
@@ -44,6 +50,8 @@ def AppendFile(path, contents, noStrip=None, inputOnly=False):
 #  \param noStrip
 #  \b \e String of leading & trailing characters to not strip
 def ReadFile(path, split=False, convert=tuple, noStrip=None):
+  logger.deprecated(__name__, ReadFile.__name__, "libdbr.fileio.readFile")
+
   strip_chars = " \t\n\r"
   if noStrip:
     for C in noStrip:
@@ -76,6 +84,8 @@ def ReadFile(path, split=False, convert=tuple, noStrip=None):
 #  \param noStrip
 #  \b \e String of leading & trailing characters to not strip
 def WriteFile(path, contents, noStrip=None):
+  logger.deprecated(__name__, WriteFile.__name__, "libdbr.fileio.writeFile")
+
   strip_chars = " \t\n\r"
   if noStrip:
     for C in noStrip:
@@ -114,6 +124,8 @@ def WriteFile(path, contents, noStrip=None):
 #  \param flag
 #  Filter files with given permission flags
 def GetFiles(path, flag=None):
+  logger.deprecated(__name__, GetFiles.__name__, "os.listdir")
+
   file_list = []
 
   for PATH, DIRS, FILES in os.walk(path):
@@ -138,6 +150,8 @@ def GetFiles(path, flag=None):
 #  \return
 #  \b \e Float formatted timestamp
 def GetTimestamp(path):
+  logger.deprecated(__name__, GetTimestamp.__name__, "libdbr.fileio.checkTimestamp")
+
   return os.stat(path).st_mtime
 
 
@@ -150,4 +164,6 @@ def GetTimestamp(path):
 #  \return
 #  \b \e True if timestamps are not the same
 def TimestampChanged(path, prevStamp):
+  logger.deprecated(__name__, TimestampChanged.__name__, "libdbr.fileio.checkTimestamp")
+
   return GetTimestamp(path) != prevStamp
