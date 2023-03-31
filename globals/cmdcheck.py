@@ -5,6 +5,8 @@
 
 import util
 
+from libdbr.paths import getExecutable
+
 
 ## Check if a command is available on the system
 #
@@ -19,5 +21,5 @@ import util
 #  \return
 #  	\b \e str|None : A string path to executable or None if not found
 def CommandExists(cmd):
-  util.getLogger().deprecated(__name__, CommandExists.__name__, "util.getExecutable")
-  return util.getExecutable(cmd)
+  util.getLogger().deprecated(__name__, CommandExists.__name__, "lib.libdbr.paths.getExecutable")
+  return getExecutable(cmd)

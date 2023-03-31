@@ -10,6 +10,9 @@ import argparse, codecs, errno, gzip, os, re, shutil, sys, types
 if sys.platform == "win32":
   import ctypes
 
+# update module search path to include local 'lib' directory
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
+
 dir_root = os.path.normpath(os.path.dirname(__file__))
 
 package_name = "debreate"

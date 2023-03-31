@@ -6,7 +6,7 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
-import os, sys
+import sys
 
 import util.logger
 
@@ -55,26 +55,3 @@ def checkWx():
     tmp = ".".join(str(wx_min).strip("[]").split(", "))
     logger.error("wxPython minimum required version is {}, found {}".format(tmp, wx.__version__))
     sys.exit(1)
-
-def _isExecutable(filepath):
-  if not os.path.exists(filepath) or os.path.isdir(filepath):
-    return False
-  if sys.platform == "win32":
-    return True
-  return os.access(filepath, os.X_OK)
-
-def getExecutable(cmd):
-  path = os.get_exec_path()
-  path_ext = os.getenv("PATHEXT") or []
-  if type(path_ext) == str:
-    path_ext = path_ext.split(";") if sys.platform == "win32" else path_ext.split(":")
-
-  for _dir in path:
-    filepath = os.path.join(_dir, cmd)
-    if _isExecutable(filepath):
-      return filepath
-    for ext in path_ext:
-      filepath = filepath + "." + ext
-      if _isExecutable(filepath):
-        return filepath
-  return None
