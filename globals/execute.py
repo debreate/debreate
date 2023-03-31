@@ -10,9 +10,9 @@ import os, subprocess, wx
 from subprocess import PIPE
 from subprocess import STDOUT
 
-from dbr.language     import GT
-from globals.cmdcheck import CommandExists
-from wiz.helper       import GetMainWindow
+from dbr.language import GT
+from libdbr.paths import getExecutable
+from wiz.helper   import GetMainWindow
 
 
 ## TODO: Doxygen
@@ -91,7 +91,7 @@ def GetExecutable(cmd):
     "fakeroot": "fakeroot-sysv",
     }
 
-  found_command = CommandExists(cmd)
+  found_command = getExecutable(cmd)
 
   if not found_command and cmd in alternatives:
     if isinstance(alternatives[cmd], str):
@@ -99,7 +99,7 @@ def GetExecutable(cmd):
 
     else:
       for ALT in alternatives[cmd]:
-        found_command = CommandExists(ALT)
+        found_command = getExecutable(ALT)
         if found_command:
           break
 

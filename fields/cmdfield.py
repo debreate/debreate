@@ -4,9 +4,9 @@
 # See: docs/LICENSE.txt
 
 
-from globals.cmdcheck import CommandExists
 from globals.strings  import IsString
 from globals.strings  import RemoveEmptyLines
+from libdbr.paths     import commandExists
 
 
 ## A field that requires a specific command or commands to be available on the system
@@ -30,14 +30,12 @@ class CommandField:
       enabled = True
 
       if IsString(self.Commands):
-        # FIXME: CommandExists should return boolean
-        #self.Enable(not not CommandExists(self.Commands))
-        enabled = not not CommandExists(self.Commands)
+        enabled = commandExists(self.Commands)
 
       else:
         if self.RequireAll:
           for CMD in self.Commands:
-            if not CommandExists(CMD):
+            if not commandExists(CMD):
               enabled = False
 
               break
@@ -45,7 +43,7 @@ class CommandField:
         else:
           cmd_found = False
           for CMD in self.Commands:
-            if CommandExists(CMD):
+            if commandExists(CMD):
               cmd_found = True
 
               break
