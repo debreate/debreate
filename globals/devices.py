@@ -9,7 +9,7 @@ import os
 import util
 
 from globals.fileio import ReadFile
-from globals.paths  import getSystemRoot
+from libdbr.paths   import getSystemRoot
 
 
 logger = util.getLogger()

@@ -17,13 +17,13 @@ from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.paths      import getSystemRoot
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.filelist     import FileListESS
 from input.filelist     import columns
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
+from libdbr.paths       import getSystemRoot
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import DetailedMessageDialog

@@ -12,13 +12,6 @@ from globals.strings import GS
 from globals.strings import IsString
 
 
-def getSystemRoot():
-  sys_root = "/"
-  if sys.platform == "win32":
-    sys_root = os.getenv("SystemDrive") or "C:"
-    sys_root += "\\"
-  return sys_root
-
 def getAppDir():
   ## Directory where app is installed
   #  HACK: test

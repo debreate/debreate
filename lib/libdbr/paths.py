@@ -10,6 +10,13 @@ import os
 import sys
 
 
+def getSystemRoot():
+  sys_root = "/"
+  if sys.platform == "win32":
+    sys_root = os.getenv("SystemDrive") or "C:"
+    sys_root += "\\"
+  return sys_root
+
 def _isExecutable(filepath):
   if not os.path.exists(filepath) or os.path.isdir(filepath):
     return False

@@ -6,9 +6,9 @@
 
 import os, wx
 
-from globals.paths   import getSystemRoot
 from input.essential import EssentialField
 from input.text      import TextArea
+from libdbr.paths    import getSystemRoot
 
 
 sys_root = getSystemRoot()
