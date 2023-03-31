@@ -6,6 +6,7 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
+import subprocess
 import sys
 
 import util.logger
