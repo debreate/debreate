@@ -23,10 +23,6 @@ from libdbr.paths  import getSystemRoot
 
 dir_root = os.path.normpath(os.path.dirname(__file__))
 
-# TODO: move these variables into build.conf
-package_name = "debreate"
-package_version = 0.8
-
 logger = getLogger()
 
 
@@ -278,9 +274,12 @@ targets = {
 # --- execution insertion point --- #
 
 def main():
-  global options, printUsage
+  global options, printUsage, package_name, package_version
 
   config.setFile(os.path.join(dir_root, "build.conf")).load()
+
+  package_name = config.getValue("package_name")
+  package_version = float(config.getValue("package_version"))
 
   args_parser = parseCommandLine()
   printUsage = args_parser.print_help
