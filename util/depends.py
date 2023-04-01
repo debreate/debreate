@@ -10,10 +10,10 @@ import errno
 import subprocess
 import sys
 
-import util.logger
+from libdbr.logger import getLogger
 
 
-logger = util.logger.getLogger()
+logger = getLogger()
 modules = {}
 
 def installModule(name, package=None):

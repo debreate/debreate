@@ -9,4 +9,4 @@
 from util.depends import checkWx
 from util.depends import getModule
 from util.depends import installModule
-from util.logger  import getLogger
+from libdbr.logger import getLogger
