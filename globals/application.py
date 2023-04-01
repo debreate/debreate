@@ -43,7 +43,7 @@ if VERSION_rev > 0:
 VERSION_tuple = tuple(VERSION_tuple)
 
 # Development version: Increment for every development release
-VERSION_dev = 1
+VERSION_dev = 2
 if VERSION_dev:
   VERSION_string = "{}-dev{}".format(VERSION_string, VERSION_dev)
 
