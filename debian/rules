@@ -8,8 +8,10 @@ export PYBUILD_NAME=debreate
 %:
 	dh $@
 
+override_dh_auto_build:
+
 override_dh_auto_install:
-	dh_auto_install -- prefix=/usr
+	python3 build.py -t install -p "/usr" -d "debian/$(PYBUILD_NAME)"
 
 # If you need to rebuild the Sphinx documentation
 # Add spinxdoc to the dh --with line

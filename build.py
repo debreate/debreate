@@ -1,138 +1,82 @@
 #!/usr/bin/env python3
 
-# This file is part of the Debreate Debian Package Builder software.
-#
-# MIT licensing
-# See: docs/LICENSE.txt
+# ****************************************************
+# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# ****************************************************
+# * This software is licensed under the MIT license. *
+# * See: docs/LICENSE.txt for details.               *
+# ****************************************************
 
-import argparse, codecs, errno, gzip, os, re, shutil, subprocess, sys, types
+import argparse
+import codecs
+import errno
+import gzip
+import os
+import subprocess
+import sys
+import types
 
 if sys.platform == "win32":
   import ctypes
 
-# update module search path to include local 'lib' directory
-sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
+# include libdbr in module search path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
+
+from libdbr        import config
+from libdbr        import fileio
+from libdbr        import paths
+from libdbr        import tasks
+from libdbr.logger import getLogger
+
 
 dir_root = os.path.normpath(os.path.dirname(__file__))
 
-package_name = "debreate"
-package_version = 0.8
+logger = getLogger()
 
 
 # --- misc. functions --- #
 
-def log(lvl="", msg=None):
-  if msg == None:
-    msg = lvl
-    lvl = "info"
-  lvl = lvl.lower()
-  if lvl == "error":
-    print("ERROR: {}".format(msg))
-  elif lvl == "warn":
-    print("WARNING: {}".format(msg))
-  elif lvl == "info":
-    if not options.quiet:
-      print(msg)
-  else:
-    print("ERROR: unknown log level: {}".format(lvl))
-
-print_help: types.FunctionType
+printUsage: types.FunctionType
 
 
 # --- configuration & command line options --- #
 
-def parseCommandLine():
+def parseCommandLine(task_list):
+  task_help = []
+  for t in task_list:
+    task_help.append(t + ": " + task_list[t])
   args_parser = argparse.ArgumentParser(
       prog=os.path.basename(sys.argv[0]),
       description="Debreate installer script",
       add_help=False)
-  args_parser.version = str(package_version)
+  args_parser.version = package_version
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
   args_parser.add_argument("-q", "--quiet", action="store_true", help="Don't print detailed information.")
-  args_parser.add_argument("-t", "--target", choices=("install", "uninstall", "dist", "binary", "deb-clean"),
-      default="install", help="Build type." \
-          + " 'install' (default): Install the application." \
-          + " 'dist': Create a source distribution package." \
-          + " 'binary': Create a portable package.")
-  args_parser.add_argument("-d", "--dir", default=getSystemRoot(), help="Installation target root directory.")
+  # ~ args_parser.add_argument("-t", "--task", choices=("install", "uninstall", "dist", "binary", "clean-deb"),
+  args_parser.add_argument("-t", "--task", choices=tuple(task_list),
+      default="install", help="\n".join(task_help))
+  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(), help="Installation target root directory.")
   args_parser.add_argument("-p", "--prefix", help="Installation prefix.")
   return args_parser
 
-def parseConfig(path):
-  if not os.path.exists(path):
-    print("ERROR: cannot read config, file does not exist: {}".format(path))
-    sys.exit(errno.ENOENT)
-  if os.path.isdir(path):
-    print("ERROR: cannot read config, target is a directory: {}".format(path))
-    sys.exit(errno.EISDIR)
-
-  fopen = codecs.open(path, "r", "utf-8")
-  lines = fopen.read().replace("\r\n", "\n").replace("\r", "\n").split("\n")
-  fopen.close()
-
-  conf = {}
-  for lineidx in range(len(lines)):
-    l = lines[lineidx]
-    line = l.strip()
-    if not line or line.startswith("#"):
-      continue
-    if not "=" in line:
-      print("ERROR: malformed line in configuration ({}:{}): \"{}\"".format(path, lineidx+1, l))
-      sys.exit(1)
-    tmp = line.split("=", 1)
-    key = tmp[0].strip()
-    if not key:
-      log("error", "malformed line in configuration ({}:{}): \"{}\"".format(path, lineidx+1, l))
-      sys.exit(1)
-    if key.startswith("dirs_") or key.startswith("files_") or ";" in tmp[1]:
-      value = []
-      for v in tmp[1].split(";"):
-        v = v.strip()
-        if v:
-          value.append(v)
-      value = tuple(value)
-    else:
-      value = tmp[1].strip()
-    if not value:
-      log("warn", "configuration key without value ({}:{}): \"{}\"".format(path, lineidx+1, l))
-    else:
-      conf[key] = value
-
-  return conf
-
-class Config:
-  def __init__(self, conf):
-    self.conf = conf
-
-  def get(self, key, default=None):
-    if key in self.conf:
-      return self.conf[key]
-    if default != None:
-      return default
-    log("error", "unknown configuration key: {}".format(key))
-    sys.exit(1)
-
 # --- helper functions --- #
 
-def getSystemRoot():
-  sys_root = "/"
-  if sys.platform == "win32":
-    sys_root = os.getenv("SystemDrive") or "C:"
-    sys_root += "\\"
-  return sys_root
+def exitWithError(msg, code=1, usage=False):
+  logger.error(msg)
+  if usage:
+    printUsage()
+  sys.exit(code)
+
+def checkError(res):
+  if res[0] != 0:
+    exitWithError(res[1], res[0])
 
 def checkAdmin():
   if sys.platform == "win32":
     return ctypes.windll.shell32.IsUserAnAdmin() != 0
   else:
     return os.getuid() == 0
-
-def joinPath(*paths):
-  path = ""
-  for p in paths:
-    path = os.path.join(path, p)
-  return os.path.normpath(path)
 
 def getInstallPath(subpath=None, stripped=False):
   path = options.prefix
@@ -159,129 +103,22 @@ def getIconsDir(stripped=False):
 
 def checkWriteTree(_dir):
   if os.path.isfile(_dir):
-    log("error", "cannot write to directory, file exists: {}".format(dir_target))
-    sys.exit(errno.EEXIST)
+    exitWithError("cannot write to directory, file exists: {}".format(dir_target), errno.EEXIST)
   while _dir.strip() and not os.path.isdir(_dir):
     _dir = os.path.dirname(_dir)
   if not os.access(_dir, os.W_OK):
-    log("error", "cannot write to directory, insufficient permissions: {}".format(_dir))
-    sys.exit(errno.EACCES)
+    exitWithError("cannot write to directory, insufficient permissions: {}".format(_dir), errno.EACCES)
 
 def checkWriteFile(_file):
   checkWriteTree(os.path.dirname(_file))
   if os.path.isfile(_file) and not os.access(_file, os.W_OK):
-    log("error", "cannot overwrite file, insufficient permissions: {}".format(_file))
-    sys.exit(errno.EACCES)
+    exitWithError("cannot overwrite file, insufficient permissions: {}".format(_file), errno.EACCES)
 
 def checkReadFile(_file):
   if not os.path.isfile(_file):
-    log("error", "cannot read file, does not exist: {}".format(_file))
+    exitWithError("cannot read file, does not exist: {}".format(_file), errno.ENOENT)
   if not os.access(_file, os.R_OK):
-    log("error", "cannot read file, insufficient permissions: {}".format(_file))
-
-def makeDir(_dir):
-  if not os.path.exists(_dir):
-    os.makedirs(_dir)
-
-def installFile(file_source, dir_target, name=None, perm=0o664):
-  file_source = os.path.normpath(file_source)
-  dir_target = os.path.normpath(dir_target)
-  if os.path.isdir(file_source):
-    log("error", "cannot copy file, source is a directory: {}".format(file_source))
-    sys.exit(errno.EISDIR)
-  name = os.path.basename(file_source) if not name else name
-  file_target = os.path.join(dir_target, name)
-  checkWriteFile(file_target)
-  makeDir(dir_target)
-  # delete old file so we can check if new copy succeeded
-  if os.path.isfile(file_target):
-    os.remove(file_target)
-  shutil.copy(file_source, file_target)
-  if not os.path.isfile(file_target):
-    log("error", "an unknown error occurred while trying to copy file: {}".format(file_target))
-    sys.exit(errno.ENOENT)
-  os.chmod(file_target, perm)
-  log("'{}' -> '{}' (perm={})".format(file_source, file_target, oct(perm).lstrip("0o")))
-
-def installExecutable(file_source, dir_target, name=None):
-  installFile(file_source, dir_target, name, 0o775)
-
-def installDir(dir_source, dir_target, name=None, _filter=""):
-  dir_source = os.path.normpath(dir_source)
-  dir_target = os.path.normpath(dir_target)
-  if os.path.isfile(dir_source):
-    log("error", "cannot copy directory, source is a file: {}".format(dir_source))
-    sys.exit(errno.ENOTDIR)
-  if not os.path.isdir(dir_source):
-    log("error", "source directory not found: {}".format(dir_source))
-    sys.exit(errno.ENOENT)
-  name = os.path.basename(dir_source) if not name else name
-  path_target = joinPath(dir_target, name)
-  for basename in os.listdir(dir_source):
-    absname = os.path.join(dir_source, basename)
-    if os.path.isfile(absname):
-      if re.search(_filter, basename):
-        installFile(absname, path_target)
-    elif os.path.isdir(absname):
-      installDir(absname, path_target, None, _filter)
-
-def uninstallFile(file_target):
-  file_target = os.path.normpath(file_target)
-  if not os.path.isfile(file_target):
-    return
-  checkWriteFile(file_target)
-  if os.path.isfile(file_target) or os.path.islink(file_target):
-    os.remove(file_target)
-  if os.path.isfile(file_target):
-    log("error", "failed to remove file: {}".format(file_target))
-  else:
-    log("deleted file -> '{}'".format(file_target))
-
-def uninstallDir(dir_target):
-  dir_target = os.path.normpath(dir_target)
-  if os.path.isfile(dir_target):
-    log("error", "cannot delete directory, target is a file: {}".format(dir_target))
-    sys.exit(errno.ENOTDIR)
-  if not os.path.isdir(dir_target):
-    return
-
-  for basename in os.listdir(dir_target):
-    absname = os.path.join(dir_target, basename)
-    if os.path.isfile(absname) or os.path.islink(absname):
-      uninstallFile(absname)
-    elif os.path.isdir(absname):
-      uninstallDir(absname)
-
-  try:
-    if len(os.listdir(dir_target)) == 0:
-      os.rmdir(dir_target)
-    if os.path.isdir(dir_target):
-      raise OSError
-    else:
-      log("deleted directory -> '{}'".format(dir_target))
-  except:
-    log("error", "an unknown error occurred while trying to remove directory: {}".format(dir_target))
-
-def writeFile(file_target, file_data, binary=False, perm=0o664):
-  file_target = os.path.normpath(file_target)
-  checkWriteFile(file_target)
-  if os.path.lexists(file_target):
-    os.remove(file_target)
-  else:
-    makeDir(os.path.dirname(file_target))
-
-  if binary:
-    fopen = codecs.open(file_target, "wb")
-  else:
-    fopen = codecs.open(file_target, "w", "utf-8")
-  fopen.write(file_data)
-  fopen.close()
-
-  if not os.path.isfile(file_target):
-    log("error", "an unknown error occurred while trying to create file: {}".format(file_target))
-    sys.exit(errno.ENOENT)
-  os.chmod(file_target, perm)
-  log("new file -> '{}' (perm={})".format(file_target, oct(perm).lstrip("0o")))
+    exitWithError("cannot read file, insufficient permissions: {}".format(_file), errno.EPERM)
 
 def createFileLink(file_source, link_target):
   file_source = os.path.normpath(file_source)
@@ -290,16 +127,16 @@ def createFileLink(file_source, link_target):
   if os.path.lexists(link_target):
     os.unlink(link_target)
   else:
-    makeDir(os.path.dirname(link_target))
+    fileio.makeDir(os.path.dirname(link_target))
 
   if sys.platform == "win32" and not checkAdmin():
-    log("error", "administrator privileges required on Windows platform to create symbolic links")
+    logger.error("administrator privileges required on Windows platform to create symbolic links")
     sys.exit(1)
   os.symlink(file_source, link_target)
   if not os.path.islink(link_target):
-    log("error", "an unknown error occurred while trying to create symbolic link: {}".format(link_target))
+    logger.error("an unknown error occurred while trying to create symbolic link: {}".format(link_target))
     sys.exit(errno.ENOENT)
-  log("new link -> '{}' ({})".format(link_target, file_source))
+  logger.info("new link -> '{}' ({})".format(link_target, file_source))
 
 def compressFile(file_source, file_target):
   file_source = os.path.normpath(file_source)
@@ -309,162 +146,225 @@ def compressFile(file_source, file_target):
   file_data = fropen.read()
   fropen.read()
 
-  writeFile(file_target, gzip.compress(file_data), binary=True)
+  fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=True)
 
 
-# --- install targets --- #
+# --- build tasks --- #
 
-config: Config
+def stageApp(prefix):
+  print()
+  logger.info("staging app files ...")
 
-def targetInstallApp():
-  log()
-  log("installing app files ...")
+  dirs_app = config.getValue("dirs_app").split(";")
+  files_app = config.getValue("files_app").split(";")
 
-  dirs_main = config.get("dirs_main")
-  files_main = config.get("files_main")
+  dir_target = paths.join(prefix, package_name)
+  for _dir in dirs_app:
+    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=True)))
+  for _file in files_app:
+    checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)))
+  exe = config.getValue("executable")
+  checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
 
-  dir_target = getDataDir()
-  for _dir in dirs_main:
-    installDir(os.path.join(dir_root, _dir), dir_target, _filter="\.py$")
-  for _file in files_main:
-    installFile(os.path.join(dir_root, _file), dir_target)
-  installExecutable(os.path.join(dir_root, config.get("executable")), dir_target)
-  createFileLink(os.path.join(getDataDir(stripped=True), config.get("executable")), os.path.join(getBinDir(), package_name))
+  # add desktop menu file
+  file_menu = "{}.desktop".format(package_name)
+  checkError((fileio.copyFile(paths.join(dir_root, "data", file_menu), paths.join(prefix, "applications", file_menu), verbose=True)))
 
-def targetInstallData():
-  log()
-  log("installing data files ...")
+def stageData(prefix):
+  print()
+  logger.info("staging data files ...")
 
-  dirs_data = config.get("dirs_data")
-  dir_target = getDataDir()
+  dirs_data = config.getValue("dirs_data").split(";")
+
+  dir_target = paths.join(prefix, package_name)
   for _dir in dirs_data:
-    installDir(os.path.join(dir_root, _dir), dir_target)
-  writeFile(os.path.join(dir_target, "INSTALLED"), "prefix={}".format(options.prefix))
+    checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=True)))
+  # copy icon to pixmaps directory
+  checkError((fileio.copyFile(paths.join(dir_target, "bitmaps/icon/64/logo.png"), paths.join(prefix, "pixmaps", package_name + ".png"), verbose=True)))
 
-def targetInstallDoc():
-  log()
-  log("installing doc files ...")
+def stageDoc(prefix):
+  print()
+  logger.info("staging doc files ...")
 
-  files_doc = config.get("files_doc")
-  dir_target = getDocDir()
+  files_doc = config.getValue("files_doc").split(";")
+
+  dir_target = paths.join(prefix, "doc/{}".format(package_name))
   for _file in files_doc:
-    installFile(os.path.join(dir_root, _file), dir_target)
-  # ~ dir_target = os.path.join(getDataDir(), "docs")
-  # ~ for _file in ("changelog", "LICENSE.txt"):
-    # ~ file_source = os.path.join(getDocDir(stripped=True), _file)
-    # ~ link_target = os.path.join(dir_target, _file)
-    # ~ createFileLink(file_source, link_target)
+    fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)
 
-  files_man = config.get("files_man")
+  files_man = config.getValue("files_man").split(";")
   for _file in files_man:
-    file_man = os.path.basename(_file)
-    dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    compressFile(os.path.join(dir_root, _file), os.path.join(dir_man, file_man + ".gz"))
+    basename = os.path.basename(_file)
+    dir_man = paths.join(prefix, "man/{}".format(os.path.basename(os.path.dirname(_file))))
+    compressFile(paths.join(dir_root, _file), paths.join(dir_man, basename + ".gz"))
 
-def targetInstallLocale():
-  log()
-  log("installing locale files ...")
+def stageLocale(prefix):
+  print()
+  logger.info("staging locale files ...")
   # TODO:
 
-def targetInstallMimeInfo(install=True):
-  log()
-  msg = "installing mime type files ..."
-  if not install:
-    msg = "un" + msg
-  log(msg)
+def stageMimeInfo(prefix):
+  print()
+  logger.info("staging mime type files ...")
 
-  mime_prefix = config.get("dbp_mime_prefix")
-  mime_type = config.get("dbp_mime")
-  dir_conf = joinPath(getInstallPath(), "share/mime/packages")
-  dir_icons = joinPath(getIconsDir(), "scalable/mimetype")
-  mime_conf = joinPath(dir_root, "data/mime/{}.xml".format(package_name))
-  mime_icon = joinPath(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
-  if install:
-    installFile(mime_conf, dir_conf)
-    installFile(mime_icon, dir_icons)
-  else:
-    uninstallFile(joinPath(dir_conf, package_name + ".xml"))
-    uninstallFile(joinPath(dir_icons, mime_prefix + "-" + mime_type + ".svg"))
+  dir_conf = paths.join(prefix, "mime/packages")
+  # FIXME: need system independent directory
+  dir_icons = paths.join(prefix, "icons/gnome/scalable/mimetype")
 
-def targetInstall():
+  mime_prefix = config.getValue("dbp_mime_prefix")
+  mime_type = config.getValue("dbp_mime")
+  mime_conf = paths.join(dir_root, "data/mime/{}.xml".format(package_name))
+  mime_icon = paths.join(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
+  conf_target = paths.join(dir_conf, "{}.xml".format(package_name))
+  icon_target = paths.join(dir_icons, "application-x-dbp.svg")
+  checkError((fileio.copyFile(mime_conf, conf_target, verbose=True)))
+  checkError((fileio.copyFile(mime_icon, icon_target, verbose=True)))
+
+def taskInstall():
   if options.prefix == None:
-    log("error", "'prefix' option is required for 'install' target.")
-    log()
-    print_help()
+    exitWithError("'prefix' option is required for 'install' task.", errno.EINVAL, True)
+
+  print()
+  logger.info("installing ...")
+
+  tasks.run("stage")
+  dir_stage = paths.join(dir_root, "build/stage")
+  dir_install = paths.join(options.dir, options.prefix)
+
+  for obj in os.listdir(dir_stage):
+    abspath = paths.join(dir_stage, obj)
+    if not os.path.isdir(abspath):
+      checkError((fileio.moveFile(abspath, dir_install, obj, verbose=True)))
+    else:
+      checkError((fileio.moveDir(abspath, dir_install, obj, verbose=True)))
+  checkError((fileio.deleteDir(dir_stage, verbose=True)))
+
+  dir_data = paths.join(dir_install, "share", package_name)
+  dir_bin = paths.join(dir_install, "bin")
+
+  # set executable
+  os.chmod(paths.join(dir_data, "init.py"), 0o775)
+
+  createFileLink(paths.join(options.prefix, "share", package_name, config.getValue("executable")), paths.join(dir_bin, package_name))
+  fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
+
+def taskStage():
+  tasks.run("clean-stage")
+  dir_stage = paths.join(dir_root, "build/stage")
+  dir_data = paths.join(dir_stage, "share")
+  stageApp(dir_data)
+  stageData(dir_data)
+  stageDoc(dir_data)
+  stageLocale(dir_data)
+  stageMimeInfo(dir_data)
+
+# FIXME: include --dir parameter in uninstall
+def taskUninstall():
+  if options.prefix == None:
+    logger.error("'prefix' option is required for 'uninstall' task.")
+    print()
+    printUsage()
     sys.exit(errno.EINVAL)
 
-  log()
-  log("installing ...")
+  print()
+  logger.info("uninstalling ...")
 
-  targetInstallApp()
-  targetInstallData()
-  targetInstallDoc()
-  targetInstallLocale()
-  targetInstallMimeInfo()
-
-def targetUninstall():
-  if options.prefix == None:
-    log("error", "'prefix' option is required for 'uninstall' target.")
-    log()
-    print_help()
-    sys.exit(errno.EINVAL)
-
-  log()
-  log("uninstalling ...")
-
-  uninstallFile(os.path.join(getBinDir(), package_name))
-  uninstallDir(getDataDir())
-  uninstallDir(getDocDir())
-  files_man = config.get("files_man")
+  checkError((fileio.deleteFile(os.path.join(getBinDir(), package_name), True)))
+  checkError((fileio.deleteDir(getDataDir(), True)))
+  checkError((fileio.deleteDir(getDocDir(), True)))
+  files_man = config.getValue("files_man").split(";")
   for _file in files_man:
     file_man = os.path.basename(_file) + ".gz"
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    uninstallFile(os.path.join(dir_man, file_man))
+    checkError((fileio.deleteFile(os.path.join(dir_man, file_man), True)))
 
   # TODO: uninstall locale files
 
-  targetInstallMimeInfo(False)
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/icons/gnome/scalable/mimetype/application-x-dbp.svg"), True)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/mime/packages/{}.xml".format(package_name)), True)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/applications", package_name + ".desktop"), True)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/pixmaps", package_name + ".png"), True)))
 
-def targetDebClean():
+def taskClean():
+  dir_build = paths.join(dir_root, "build")
+  fileio.deleteDir(dir_build, verbose=True)
+
+def taskCleanStage():
+  dir_stage = paths.join(dir_root, "build/stage")
+  fileio.deleteDir(dir_stage, verbose=True)
+
+def taskCleanDeb():
   for _dir in ("debian/debreate", "debian/.debhelper"):
-    uninstallDir(os.path.join(dir_root, os.path.normpath(_dir)))
+    fileio.deleteDir(os.path.join(dir_root, os.path.normpath(_dir)), True)
   for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
-    uninstallFile(os.path.join(dir_root, os.path.normpath(_file)))
+    fileio.deleteFile(os.path.join(dir_root, os.path.normpath(_file)), True)
 
-def targetDist():
+def taskDist():
   # TODO:
   pass
 
-def targetBinary():
-  targetDebClean()
+def taskDebBinary():
+  taskCleanDeb()
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
-targets = {
-  "install": targetInstall,
-  "uninstall": targetUninstall,
-  "dist": targetDist,
-  "binary": targetBinary,
-  "deb-clean": targetDebClean
-}
+  dir_parent = os.path.dirname(dir_root)
+  dir_dist = paths.join(dir_root, "build/dist")
+  fileio.makeDir(dir_dist)
+  # FIXME: determine .deb package name
+  for obj in os.listdir(dir_parent):
+    if not obj.endswith(".deb"):
+      continue
+    abspath = paths.join(dir_parent, obj)
+    if os.path.isfile(abspath):
+      fileio.moveFile(abspath, dir_dist, obj, verbose=True)
 
+def taskPortable():
+  tasks.run("stage")
+  dir_build = paths.join(dir_root, "build")
+  dir_data = paths.join(dir_build, "stage/share/debreate")
+  dir_dist = paths.join(dir_build, "dist")
+  file_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version))
+  # FIXME: packDir should create parent directory
+  fileio.makeDir(dir_dist, verbose=True)
+  fileio.packDir(dir_data, file_dist, verbose=True)
+
+def addTask(task_list, name, action, desc):
+  tasks.add(name, action)
+  task_list[name] = desc
+
+def initTasks(task_list):
+  addTask(task_list, "install", taskInstall, "Install application files.")
+  addTask(task_list, "uninstall", taskUninstall, "Uninstall application files.")
+  addTask(task_list, "stage", taskStage, "Stage files for distribution (same as `-t install -p (root_dir)/build/stage`)")
+  addTask(task_list, "dist", taskDist, "Create a source distribution package (TODO).")
+  addTask(task_list, "deb-bin", taskDebBinary, "Build binary Debian package for installation.")
+  addTask(task_list, "portable", taskPortable, "Create portable distribution package.")
+  addTask(task_list, "clean", taskClean, "Remove files from build directory.")
+  addTask(task_list, "clean-stage", taskCleanStage, "Remove files from stage directory.")
+  addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
+  return task_list
 
 # --- execution insertion point --- #
 
 def main():
-  global options, config, print_help
+  global options, printUsage, package_name, package_version
 
-  args_parser = parseCommandLine()
-  print_help = args_parser.print_help
+  config.setFile(os.path.join(dir_root, "build.conf")).load()
+
+  package_name = config.getValue("package")
+  package_version = config.getValue("version")
+
+  args_parser = parseCommandLine(initTasks({}))
+  printUsage = args_parser.print_help
   options = args_parser.parse_args()
   if not options.dir:
-    options.dir = getSystemRoot()
-  config = Config(parseConfig(os.path.join(dir_root, "build.conf")))
+    options.dir = paths.getSystemRoot()
 
-  if options.target not in targets:
-    log("error", "unknown target: \"{}\"".format(options.target))
+  task = tasks.get(options.task)
+  if not task:
+    logger.error("unknown task ({})".format(options.task))
     sys.exit(1)
-
-  targets[options.target]()
+  task()
 
 if __name__ == "__main__":
   main()
