@@ -6,46 +6,13 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
-import errno
-import subprocess
 import sys
 
 from libdbr.logger import getLogger
+from libdbr.modules import getModule
 
 
 logger = getLogger()
-modules = {}
-
-def installModule(name, package=None):
-  if package == None:
-    package = name
-  if name in modules:
-    logger.warn("not re-installing module: {}".format(name))
-    return 0
-  try:
-    modules[name] = __import__(name)
-    logger.warn("not re-installing module: {}".format(name))
-    return 0
-  except ModuleNotFoundError:
-    pass
-  logger.info("installing module: {}".format(name))
-  subprocess.run((sys.executable, "-m", "pip", "install", package))
-  res = 0
-  try:
-    modules[name] = __import__(name)
-  except ModuleNotFoundError:
-    logger.error("unable to install module: {}".format(name))
-    res = errno.ENOENT
-  return res
-
-def getModule(name):
-  if name not in modules:
-    try:
-      modules[name] = __import__(name)
-    except ModuleNotFoundError:
-      logger.warn("module not available: {}".format(name))
-      return None
-  return modules[name]
 
 def checkWx():
   wx = getModule("wx")

@@ -6,7 +6,7 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
-from util.depends import checkWx
-from util.depends import getModule
-from util.depends import installModule
-from libdbr.logger import getLogger
+from util.depends   import checkWx
+from libdbr.modules import getModule
+from libdbr.modules import installModule
+from libdbr.logger  import getLogger
