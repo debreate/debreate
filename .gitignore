@@ -3,12 +3,12 @@
 *.new
 
 # Eclipse project files & directories
-/.project
-/.pydevproject
-/.settings/
+.project
+.pydevproject
+.settings/
 
 # Netbeans project directory
-/nbproject/
+nbproject/
 
 # Compiled Python bytecode
 *.pyc
@@ -17,19 +17,19 @@
 #*.mo
 
 # Build output files & directories
-Makefile
-/bin
-/build
-/INSTALLED
+#Makefile
+bin
+build
+INSTALLED
 
 # Debian dist files
-#/debian/changelog
-/debian/debreate
-/debian/debhelper-build-stamp
-/debian/debreate.debhelper.log
-/debian/debreate.substvars
-/debian/files
-/debian/debreate.*.debhelper
+#debian/changelog
+debian/debreate
+debian/debhelper-build-stamp
+debian/debreate.debhelper.log
+debian/debreate.substvars
+debian/files
+debian/*.debhelper
 
 # Distrubution archives
 *.tar.*
