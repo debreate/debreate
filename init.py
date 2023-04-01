@@ -11,8 +11,8 @@
 
 import errno, os, sys
 
-# update module search path to include local 'lib' directory
-sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
+# include libdbr in module search path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
 import util
 
@@ -138,7 +138,7 @@ from startup.startup     import SetAppInitialized
 
 # FIXME: How to check if text domain is set correctly?
 if INSTALLED:
-  SetLocalDir(os.path.join(PREFIX, "share", "locale"))
+  SetLocaleDir(os.path.join(PREFIX, "share", "locale"))
   gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 

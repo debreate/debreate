@@ -63,6 +63,8 @@ default_config_values = {
 
 ## TODO: Doxygen
 def SetDefaultConfigKey(key, value):
+  logger.deprecated(__name__, SetDefaultConfigKey.__name__, "libdbr.config")
+
   global default_config_values
 
   # Default type is string
@@ -84,6 +86,8 @@ def SetDefaultConfigKey(key, value):
 #  \return
 #  	Value of key if found, otherwise ConfCode
 def ReadConfig(k_name, conf=default_config):
+  logger.deprecated(__name__, ReadConfig.__name__, "libdbr.config.getValue")
+
   logger.debug(GT("Reading configuration file: {}".format(conf)), newline=True)
 
   if not os.path.isfile(conf):
@@ -132,6 +136,8 @@ def ReadConfig(k_name, conf=default_config):
 #  \return
 #  	\b \e int : ConfCode
 def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
+  logger.deprecated(__name__, WriteConfig.__name__, "libdbr.config.setValue & libdbr.config.save")
+
   conf_dir = os.path.dirname(conf)
 
   if not os.path.isdir(conf_dir):
@@ -213,6 +219,8 @@ def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
 #  \return
 #  	\b \e ConfCode
 def InitializeConfig(conf=default_config):
+  logger.deprecated(__name__, InitializeConfig.__name__, "libdbr.config.setFile & libdbr.config.load")
+
   for V in default_config_values:
     exit_code = WriteConfig(V, default_config_values[V][1], conf)
 
@@ -229,6 +237,8 @@ def InitializeConfig(conf=default_config):
 #  \return
 #  	Default value for the key or ConfCode.KEY_NO_EXIST
 def GetDefaultConfigValue(key):
+  logger.deprecated(__name__, GetDefaultConfigValue.__name__, "libdbr.config.getValue")
+
   if key in default_config:
     return default_config_values[key][1]
 
@@ -263,6 +273,8 @@ def _check_config_values(keys):
 #  \return
 #  Configuration keys found in config file or None if error occurred
 def GetAllConfigKeys():
+  logger.deprecated(__name__, GetAllConfigKeys.__name__, "libdbr.config.getKeys")
+
   keys = {}
 
   # Read key/values from configuration file

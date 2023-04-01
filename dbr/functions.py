@@ -250,7 +250,7 @@ def FileUnstripped(file_name):
   CMD_file = GetExecutable("file")
 
   if CMD_file:
-    output = subprocess.run([CMD_file, file_name]).stdout
+    output = subprocess.run([CMD_file, file_name], capture_output=True).stdout.decode("utf-8")
 
     if ": " in output:
       output = output.split(": ")[1]

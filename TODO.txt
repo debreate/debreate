@@ -17,6 +17,7 @@ Priority:
 - Fix layout of Files page (widgets not shrinking with window resize)
 
 Non-priority:
+- use standard directories for logs
 - Create 'zoom' button image (magnifying glass)
 - Add build option for 'create deb' or 'do not create deb'
 - Add build option to stage files in temp dir or target dir
