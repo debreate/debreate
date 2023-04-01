@@ -170,7 +170,7 @@ button_H_pos = {
 }
 
 
-## Somewhat of a hack to attemtp to get rounded corners on text control border
+## Somewhat of a hack to attempt to get rounded corners on text control border
 class TextAreaPanel(BorderedPanel, ControlPanel):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,

@@ -72,7 +72,7 @@ if CHANGES != None and len(CHANGES):
 
 		# These lines are indented
 		if LI[0] in ('-', '*', '\t'):
-			# Remove delimter & strip whitespace
+			# Remove delimiter & strip whitespace
 			CHANGES[l_index] = '  - {}'.format(LI[1:].strip(' '))
 			continue
 

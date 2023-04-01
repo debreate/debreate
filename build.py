@@ -34,7 +34,7 @@ def log(lvl="", msg=None):
     if not options.quiet:
       print(msg)
   else:
-    print("ERROR: unkown log level: {}".format(lvl))
+    print("ERROR: unknown log level: {}".format(lvl))
 
 print_help: types.FunctionType
 

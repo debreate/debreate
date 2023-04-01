@@ -71,7 +71,7 @@ class AboutDialog(wx.Dialog):
     tabs.AddPage(t_changelog, GT("Changelog"))
     tabs.AddPage(t_license, GT("License"))
 
-    # FIXME: Center verticall on about tab
+    # FIXME: Center vertical on about tab
     self.about_layout_V1 = BoxSizer(wx.VERTICAL)
     self.about_layout_V1.AddStretchSpacer()
     self.about_layout_V1.AddStretchSpacer()
@@ -338,7 +338,7 @@ class AboutDialog(wx.Dialog):
       self.credits.SetStringItem(next_item, 2, email)
 
 
-  ## Adds list of jobs for single contributer
+  ## Adds list of jobs for single contributor
   #
   #  \param name
   #  	\b \e str : Contributer's name

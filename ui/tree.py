@@ -74,7 +74,7 @@ class PathItem:
         self.Type = "video"
 
       else:
-        # Exctract second part of MIME type
+        # Extract second part of MIME type
         self.Type = self.Type.split("/")[-1]
 
         if self.Type in executables_binary:

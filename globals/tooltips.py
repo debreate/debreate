@@ -39,7 +39,7 @@ TT_control = {
     ),
   "section": GT("Section under which package managers will list this package"),
   "priority": GT("Urgency of this package update"),
-  "synopsis": GT("One line descriptions/synopsys"),
+  "synopsis": GT("One line descriptions/synopsis"),
   "description": (
     GT("More detailed description"), "",
     GT("Multiple lines can be used here, but lintian will complain if they are too long")
@@ -55,7 +55,7 @@ TT_depends = {
   "btn preview": TT_control["btn preview"],
   "package": GT("Name of dependency/conflicting package"),
   "operator": GT("Operator"),
-  "version": GT("Version corresponing to package name and operator"),
+  "version": GT("Version corresponding to package name and operator"),
   "depends": GT("Package will need to be installed"),
   "pre-depends": GT("Package will need to be installed and configured first"),
   "recommends": GT("Package is highly recommended and will be installed by default"),
@@ -176,7 +176,7 @@ TT_menu = {
   "show in": GT("Launcher is only shown when options are satisfied"),
   "other": (
     GT("Miscellaneous fields not available above"), "",
-    GT("See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"), "",
+    GT("See \"Help ➜ Reference ➜ Launchers / Desktop Entries\" for more available options"), "",
     GT("Warning:"),
     "\t{}".format(GT("Improperly formatted text may cause launcher to be unusable")),
     )

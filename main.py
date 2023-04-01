@@ -305,7 +305,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   ## Action to take when 'Help' is selected from the help menu
   #
   #  Opens a help dialog if using 'alpha' test. Otherwise, opens
-  #  PDF usage document. If openening usage document fails, attempts
+  #  PDF usage document. If opening usage document fails, attempts
   #  to open web browser in remote usage page.
   #  TODO: Use dialog as main method
   def OnHelp(self, event=None): #@UnusedVariable

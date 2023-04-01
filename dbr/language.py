@@ -17,7 +17,7 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 
 ## Ensure gettext
 #
-#  FIXME: depracated?
+#  FIXME: deprecated?
 #
 #  This is a workaround for Python 2
 #  \param str_value

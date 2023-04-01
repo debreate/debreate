@@ -16,7 +16,7 @@ from libdbr.fileio import readFile
 
 # Local modules
 # *** Debreate Information *** #
-## Determins if the application is running as portable or installed
+## Determines if the application is running as portable or installed
 INSTALLED = False
 if os.path.isfile("{}/INSTALLED".format(paths.getAppDir())):
   INSTALLED = True

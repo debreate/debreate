@@ -206,7 +206,7 @@ def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
   return ConfCode.ERR_WRITE
 
 
-## Function used to create the inital configuration file
+## Function used to create the initial configuration file
 #
 #  \param conf
 #  	\b \e str : File to be written

@@ -27,7 +27,7 @@ Project files:
 - Can be opened from 'File ➜ Open' menu
 - Can be opened from command line
   - Both absolute & relative paths
-- Can be opened from sytem file manager if associated with MIME type
+- Can be opened from system file manager if associated with MIME type
 - Error dialog displays for invalid/non-existent project files
 - 'File ➜ New project' resets all pages' fields
 - 'File ➜ Save' only opens dialog if no project is currently loaded

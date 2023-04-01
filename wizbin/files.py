@@ -277,7 +277,7 @@ class Page(WizardPage):
   #  \return
   #      A list of files with their targets formatted for text output
   def Get(self):
-    # Remove section delimeters & first line which is just an integer
+    # Remove section delimiters & first line which is just an integer
     return self.GetSaveData().split("\n")[2:-1]
 
 

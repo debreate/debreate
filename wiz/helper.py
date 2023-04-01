@@ -48,7 +48,7 @@ class ErrorTuple:
 
   ## TODO: Doxygen
   def Set(self, error_code, error_string):
-    # FIXME: Shoule throw exception for wrong instance types???
+    # FIXME: Should throw exception for wrong instance types???
     self.error_code = error_code
     self.error_string = error_string
 
@@ -207,7 +207,7 @@ def GetMainWindow():
 #
 #  \param menuId
 #  \b \e Integer ID of desired menu
-#  \retun
+#  \return
 #  The \b \e wx.Menu instance
 def GetMenu(menuId):
   return GetMainWindow().GetMenu(menuId)

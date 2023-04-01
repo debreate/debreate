@@ -247,7 +247,7 @@ Debreate.Show(True)
 # Wait for window to be constructed (prevents being marked as dirty project after initialization)
 wx.GetApp().Yield()
 
-# Set initializaton state to 'True'
+# Set initialization state to 'True'
 SetAppInitialized()
 
 debreate_app.MainLoop()

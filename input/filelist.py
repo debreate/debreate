@@ -399,7 +399,7 @@ class FileList(BasicFileList):
   def AddFile(self, filename, sourceDir, targetDir=None, executable=False):
     list_index = self.GetItemCount()
 
-    # Method can be called with two argements: absolute filename & target directory
+    # Method can be called with two arguments: absolute filename & target directory
     if targetDir == None:
       targetDir = sourceDir
       sourceDir = os.path.dirname(filename)
@@ -444,7 +444,7 @@ class FileList(BasicFileList):
       logger.warn("Failed to delete all items from FileList")
 
     logger.debug("Visual item count: {}".format(self.GetItemCount()))
-    logger.debug("Acutal item count: {}".format(len(self.FileItems)))
+    logger.debug("Actual item count: {}".format(len(self.FileItems)))
 
 
   ## Retrieves the filename at given index
@@ -452,7 +452,7 @@ class FileList(BasicFileList):
   #  \param i_index
   #  \b \e Integer row of the item
   #  \param basename
-  #  If \b \e True, only retrives the file's basename
+  #  If \b \e True, only retrieves the file's basename
   def GetFilename(self, index, basename=False):
     if isinstance(index, FileItem):
       index = self.GetIndex(index)

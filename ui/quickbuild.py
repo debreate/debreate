@@ -138,7 +138,7 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 
     except:
       self.build_error = (
-        GT("An unhandled error occured"),
+        GT("An unhandled error occurred"),
         traceback.format_exc(),
         )
 

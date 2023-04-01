@@ -37,7 +37,7 @@ def GetImagePath(name, size=16, cat=None, img_type="png"):
   if not os.path.isfile(image_path):
     image_path = os.path.join(getBitmapsDir(), GS(size), "failsafe.png")
 
-  # Last resort is to retrun None if a failsafe image was not found
+  # Last resort is to return None if a failsafe image was not found
   if not os.path.isfile(image_path):
     return None
 

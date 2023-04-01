@@ -508,7 +508,7 @@ class Wizard(wx.Panel):
       # Bind menu event to ID
       wx.EVT_MENU(main_window, pg_id, main_window.OnMenuChangePage)
 
-    # Initailize functions that can only be called after all pages are constructed
+    # Initialize functions that can only be called after all pages are constructed
     for PAGE in pages:
       PAGE.InitPage()
 

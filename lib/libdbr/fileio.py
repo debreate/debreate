@@ -10,10 +10,10 @@ import codecs
 import os
 
 
-# line ending delimeter
+# line ending delimiter
 _le = "\n"
 
-## Sets line ending delimeter
+## Sets line ending delimiter
 #
 #  @param delim
 #    Value to use for file line endings.
@@ -50,7 +50,7 @@ def readFile(filepath):
 ## Writes text data to a file without preserving previous contents.
 #
 #  @param filepath
-#    Path fo file to be written.
+#    Path to file to be written.
 #  @param data
 #    String or list of strings to export.
 def writeFile(filepath, data):

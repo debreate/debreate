@@ -310,7 +310,7 @@ class Page(WizardPage):
           if not os.path.isdir(target_dir):
             os.makedirs(target_dir)
 
-          # Remove asteriks from exectuables
+          # Remove asterisks from executables
           exe = False
           if source_file[-1] == "*":
             exe = True
@@ -458,7 +458,7 @@ class Page(WizardPage):
 
           writeFile(script_filename, script_text)
 
-          # Make sure scipt path is wrapped in quotes to avoid whitespace errors
+          # Make sure script path is wrapped in quotes to avoid whitespace errors
           # FIXME: both commands appear to do the same thing?
           os.chmod(script_filename, 0o0755)
           os.system(("chmod +x \"{}\"".format(script_filename)))
@@ -517,7 +517,7 @@ class Page(WizardPage):
       c_tree = os.path.split(stage_dir)[1]
       deb_package = "{}.deb".format(filename)
 
-      # Move the working directory becuase dpkg seems to have problems with spaces in path
+      # Move the working directory because dpkg seems to have problems with spaces in path
       os.chdir(working_dir)
 
       # HACK to fix file/dir permissions
@@ -563,7 +563,7 @@ class Page(WizardPage):
       if "lintian" in task_list:
         UpdateProgress(progress, GT("Checking package for errors"))
 
-        # FIXME: Should be set as class memeber?
+        # FIXME: Should be set as class member?
         CMD_lintian = GetExecutable("lintian")
         errors = subprocess.run([CMD_lintian, deb]).stdout
 
@@ -583,7 +583,7 @@ class Page(WizardPage):
       build_progress.Update(progress)
       build_progress.Destroy()
 
-      # Build completed successfullly
+      # Build completed successfully
       if not build_status[0]:
         return (dbrerrno.SUCCESS, deb_package)
 
