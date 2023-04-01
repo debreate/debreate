@@ -1,12 +1,12 @@
 # Application details
 NAME=Debreate
 VERSION=0.8
-VERSION_dev=1
+VERSION_dev=2
 
 # Developer details
 AUTHOR=Jordan Irwin
 EMAIL=antumdeluge@gmail.com
 
 # Debian/Ubuntu distribution details
-DIST=bionic
+DIST=jammy
 URGENCY=low
