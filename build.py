@@ -166,6 +166,10 @@ def stageApp(prefix):
   exe = config.getValue("executable")
   checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
 
+  # add desktop menu file
+  file_menu = "{}.desktop".format(package_name)
+  checkError((fileio.copyFile(paths.join(dir_root, "data", file_menu), paths.join(prefix, "applications", file_menu), verbose=True)))
+
 def stageData(prefix):
   print()
   logger.info("staging data files ...")
@@ -175,6 +179,8 @@ def stageData(prefix):
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_data:
     checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=True)))
+  # copy icon to pixmaps directory
+  checkError((fileio.copyFile(paths.join(dir_target, "bitmaps/icon/64/logo.png"), paths.join(prefix, "pixmaps", package_name + ".png"), verbose=True)))
 
 def stageDoc(prefix):
   print()
@@ -276,6 +282,8 @@ def taskUninstall():
 
   checkError((fileio.deleteFile(paths.join(options.prefix, "share/icons/gnome/scalable/mimetype/application-x-dbp.svg"), True)))
   checkError((fileio.deleteFile(paths.join(options.prefix, "share/mime/packages/{}.xml".format(package_name)), True)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/applications", package_name + ".desktop"), True)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/pixmaps", package_name + ".png"), True)))
 
 def taskClean():
   dir_build = paths.join(dir_root, "build")
