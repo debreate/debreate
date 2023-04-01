@@ -32,3 +32,24 @@ jobs:
           version=$(grep "^version = " build.conf | sed -e 's/^version = //')
           echo "configuring character generator version ${version} ..."
           echo "ver=${version}" >> $GITHUB_ENV
+
+      - name: Install Build Dependencies
+        run: sudo apt install debhelper devscripts
+
+      - name: Build Portable Package
+        run: python3 build.py -t portable
+
+      - name: Build .deb Package
+        run: python3 build.py -t deb-bin
+
+      - name: DEBUG
+        run: ls build/dist/
+
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          name: 'Version ${{ env.ver }}'
+          #~ body_path: release_notes.tmp
+          files: build/dist/*
+          prerelease: true
