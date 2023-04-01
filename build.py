@@ -307,6 +307,16 @@ def taskDebBinary():
   taskCleanDeb()
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
+def taskPortable():
+  tasks.run("stage")
+  dir_build = paths.join(dir_root, "build")
+  dir_data = paths.join(dir_build, "stage/share/debreate")
+  dir_dist = paths.join(dir_build, "dist")
+  file_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version))
+  # FIXME: packDir should create parent directory
+  fileio.makeDir(dir_dist, verbose=True)
+  fileio.packDir(dir_data, file_dist, verbose=True)
+
 def addTask(task_list, name, action, desc):
   tasks.add(name, action)
   task_list[name] = desc
@@ -317,6 +327,7 @@ def initTasks(task_list):
   addTask(task_list, "stage", taskStage, "Stage files for distribution (same as `-t install -p (root_dir)/build/stage`)")
   addTask(task_list, "dist", taskDist, "Create a source distribution package (TODO).")
   addTask(task_list, "deb-bin", taskDebBinary, "Build binary Debian package for installation.")
+  addTask(task_list, "portable", taskPortable, "Create portable distribution package.")
   addTask(task_list, "clean", taskClean, "Remove files from build directory.")
   addTask(task_list, "clean-stage", taskCleanStage, "Remove files from stage directory.")
   addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
