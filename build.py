@@ -15,11 +15,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 
 
 from libdbr        import config
+from libdbr        import fileio
+from libdbr        import paths
 from libdbr.logger import getLogger
+from libdbr.paths  import getSystemRoot
 
 
 dir_root = os.path.normpath(os.path.dirname(__file__))
 
+# TODO: move these variables into build.conf
 package_name = "debreate"
 package_version = 0.8
 
@@ -28,7 +32,7 @@ logger = getLogger()
 
 # --- misc. functions --- #
 
-print_help: types.FunctionType
+printUsage: types.FunctionType
 
 
 # --- configuration & command line options --- #
@@ -47,30 +51,27 @@ def parseCommandLine():
           + " 'install' (default): Install the application." \
           + " 'dist': Create a source distribution package." \
           + " 'binary': Create a portable package.")
-  args_parser.add_argument("-d", "--dir", default=getSystemRoot(), help="Installation target root directory.")
+  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(), help="Installation target root directory.")
   args_parser.add_argument("-p", "--prefix", help="Installation prefix.")
   return args_parser
 
 # --- helper functions --- #
 
-def getSystemRoot():
-  sys_root = "/"
-  if sys.platform == "win32":
-    sys_root = os.getenv("SystemDrive") or "C:"
-    sys_root += "\\"
-  return sys_root
+def exitWithError(msg, code=1, usage=False):
+  logger.error(msg)
+  if usage:
+    printUsage()
+  sys.exit(code)
+
+def checkError(res):
+  if res[0] != 0:
+    exitWithError(res[1], res[0])
 
 def checkAdmin():
   if sys.platform == "win32":
     return ctypes.windll.shell32.IsUserAnAdmin() != 0
   else:
     return os.getuid() == 0
-
-def joinPath(*paths):
-  path = ""
-  for p in paths:
-    path = os.path.join(path, p)
-  return os.path.normpath(path)
 
 def getInstallPath(subpath=None, stripped=False):
   path = options.prefix
@@ -97,129 +98,22 @@ def getIconsDir(stripped=False):
 
 def checkWriteTree(_dir):
   if os.path.isfile(_dir):
-    logger.error("cannot write to directory, file exists: {}".format(dir_target))
-    sys.exit(errno.EEXIST)
+    exitWithError("cannot write to directory, file exists: {}".format(dir_target), errno.EEXIST)
   while _dir.strip() and not os.path.isdir(_dir):
     _dir = os.path.dirname(_dir)
   if not os.access(_dir, os.W_OK):
-    logger.error("cannot write to directory, insufficient permissions: {}".format(_dir))
-    sys.exit(errno.EACCES)
+    exitWithError("cannot write to directory, insufficient permissions: {}".format(_dir), errno.EACCES)
 
 def checkWriteFile(_file):
   checkWriteTree(os.path.dirname(_file))
   if os.path.isfile(_file) and not os.access(_file, os.W_OK):
-    logger.error("cannot overwrite file, insufficient permissions: {}".format(_file))
-    sys.exit(errno.EACCES)
+    exitWithError("cannot overwrite file, insufficient permissions: {}".format(_file), errno.EACCES)
 
 def checkReadFile(_file):
   if not os.path.isfile(_file):
-    logger.error("cannot read file, does not exist: {}".format(_file))
+    exitWithError("cannot read file, does not exist: {}".format(_file), errno.ENOENT)
   if not os.access(_file, os.R_OK):
-    logger.error("cannot read file, insufficient permissions: {}".format(_file))
-
-def makeDir(_dir):
-  if not os.path.exists(_dir):
-    os.makedirs(_dir)
-
-def installFile(file_source, dir_target, name=None, perm=0o664):
-  file_source = os.path.normpath(file_source)
-  dir_target = os.path.normpath(dir_target)
-  if os.path.isdir(file_source):
-    logger.error("cannot copy file, source is a directory: {}".format(file_source))
-    sys.exit(errno.EISDIR)
-  name = os.path.basename(file_source) if not name else name
-  file_target = os.path.join(dir_target, name)
-  checkWriteFile(file_target)
-  makeDir(dir_target)
-  # delete old file so we can check if new copy succeeded
-  if os.path.isfile(file_target):
-    os.remove(file_target)
-  shutil.copy(file_source, file_target)
-  if not os.path.isfile(file_target):
-    logger.error("an unknown error occurred while trying to copy file: {}".format(file_target))
-    sys.exit(errno.ENOENT)
-  os.chmod(file_target, perm)
-  logger.info("'{}' -> '{}' (perm={})".format(file_source, file_target, oct(perm).lstrip("0o")))
-
-def installExecutable(file_source, dir_target, name=None):
-  installFile(file_source, dir_target, name, 0o775)
-
-def installDir(dir_source, dir_target, name=None, _filter=""):
-  dir_source = os.path.normpath(dir_source)
-  dir_target = os.path.normpath(dir_target)
-  if os.path.isfile(dir_source):
-    logger.error("cannot copy directory, source is a file: {}".format(dir_source))
-    sys.exit(errno.ENOTDIR)
-  if not os.path.isdir(dir_source):
-    logger.error("source directory not found: {}".format(dir_source))
-    sys.exit(errno.ENOENT)
-  name = os.path.basename(dir_source) if not name else name
-  path_target = joinPath(dir_target, name)
-  for basename in os.listdir(dir_source):
-    absname = os.path.join(dir_source, basename)
-    if os.path.isfile(absname):
-      if re.search(_filter, basename):
-        installFile(absname, path_target)
-    elif os.path.isdir(absname):
-      installDir(absname, path_target, None, _filter)
-
-def uninstallFile(file_target):
-  file_target = os.path.normpath(file_target)
-  if not os.path.isfile(file_target):
-    return
-  checkWriteFile(file_target)
-  if os.path.isfile(file_target) or os.path.islink(file_target):
-    os.remove(file_target)
-  if os.path.isfile(file_target):
-    logger.error("failed to remove file: {}".format(file_target))
-  else:
-    logger.info("deleted file -> '{}'".format(file_target))
-
-def uninstallDir(dir_target):
-  dir_target = os.path.normpath(dir_target)
-  if os.path.isfile(dir_target):
-    logger.error("cannot delete directory, target is a file: {}".format(dir_target))
-    sys.exit(errno.ENOTDIR)
-  if not os.path.isdir(dir_target):
-    return
-
-  for basename in os.listdir(dir_target):
-    absname = os.path.join(dir_target, basename)
-    if os.path.isfile(absname) or os.path.islink(absname):
-      uninstallFile(absname)
-    elif os.path.isdir(absname):
-      uninstallDir(absname)
-
-  try:
-    if len(os.listdir(dir_target)) == 0:
-      os.rmdir(dir_target)
-    if os.path.isdir(dir_target):
-      raise OSError
-    else:
-      logger.info("deleted directory -> '{}'".format(dir_target))
-  except:
-    logger.error("an unknown error occurred while trying to remove directory: {}".format(dir_target))
-
-def writeFile(file_target, file_data, binary=False, perm=0o664):
-  file_target = os.path.normpath(file_target)
-  checkWriteFile(file_target)
-  if os.path.lexists(file_target):
-    os.remove(file_target)
-  else:
-    makeDir(os.path.dirname(file_target))
-
-  if binary:
-    fopen = codecs.open(file_target, "wb")
-  else:
-    fopen = codecs.open(file_target, "w", "utf-8")
-  fopen.write(file_data)
-  fopen.close()
-
-  if not os.path.isfile(file_target):
-    logger.error("an unknown error occurred while trying to create file: {}".format(file_target))
-    sys.exit(errno.ENOENT)
-  os.chmod(file_target, perm)
-  logger.info("new file -> '{}' (perm={})".format(file_target, oct(perm).lstrip("0o")))
+    exitWithError("cannot read file, insufficient permissions: {}".format(_file), errno.EPERM)
 
 def createFileLink(file_source, link_target):
   file_source = os.path.normpath(file_source)
@@ -228,7 +122,7 @@ def createFileLink(file_source, link_target):
   if os.path.lexists(link_target):
     os.unlink(link_target)
   else:
-    makeDir(os.path.dirname(link_target))
+    fileio.makeDir(os.path.dirname(link_target))
 
   if sys.platform == "win32" and not checkAdmin():
     logger.error("administrator privileges required on Windows platform to create symbolic links")
@@ -247,7 +141,7 @@ def compressFile(file_source, file_target):
   file_data = fropen.read()
   fropen.read()
 
-  writeFile(file_target, gzip.compress(file_data), binary=True)
+  fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=True)
 
 
 # --- install targets --- #
@@ -261,10 +155,13 @@ def targetInstallApp():
 
   dir_target = getDataDir()
   for _dir in dirs_main:
-    installDir(os.path.join(dir_root, _dir), dir_target, _filter="\.py$")
+    # DEBUG:
+    print("copy dir: {}".format(_dir))
+    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", verbose=True)))
   for _file in files_main:
-    installFile(os.path.join(dir_root, _file), dir_target)
-  installExecutable(os.path.join(dir_root, config.getValue("executable")), dir_target)
+    checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)))
+  exe = config.getValue("executable")
+  checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
   createFileLink(os.path.join(getDataDir(stripped=True), config.getValue("executable")), os.path.join(getBinDir(), package_name))
 
 def targetInstallData():
@@ -274,8 +171,8 @@ def targetInstallData():
   dirs_data = config.getValue("dirs_data").split(";")
   dir_target = getDataDir()
   for _dir in dirs_data:
-    installDir(os.path.join(dir_root, _dir), dir_target)
-  writeFile(os.path.join(dir_target, "INSTALLED"), "prefix={}".format(options.prefix))
+    checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=True)))
+  fileio.writeFile(os.path.join(dir_target, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
 
 def targetInstallDoc():
   print()
@@ -284,18 +181,13 @@ def targetInstallDoc():
   files_doc = config.getValue("files_doc").split(";")
   dir_target = getDocDir()
   for _file in files_doc:
-    installFile(os.path.join(dir_root, _file), dir_target)
-  # ~ dir_target = os.path.join(getDataDir(), "docs")
-  # ~ for _file in ("changelog", "LICENSE.txt"):
-    # ~ file_source = os.path.join(getDocDir(stripped=True), _file)
-    # ~ link_target = os.path.join(dir_target, _file)
-    # ~ createFileLink(file_source, link_target)
+    fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)
 
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
     file_man = os.path.basename(_file)
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    compressFile(os.path.join(dir_root, _file), os.path.join(dir_man, file_man + ".gz"))
+    compressFile(paths.join(dir_root, _file), paths.join(dir_man, file_man + ".gz"))
 
 def targetInstallLocale():
   print()
@@ -311,23 +203,22 @@ def targetInstallMimeInfo(install=True):
 
   mime_prefix = config.getValue("dbp_mime_prefix")
   mime_type = config.getValue("dbp_mime")
-  dir_conf = joinPath(getInstallPath(), "share/mime/packages")
-  dir_icons = joinPath(getIconsDir(), "scalable/mimetype")
-  mime_conf = joinPath(dir_root, "data/mime/{}.xml".format(package_name))
-  mime_icon = joinPath(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
+  dir_conf = paths.join(getInstallPath(), "share/mime/packages")
+  dir_icons = paths.join(getIconsDir(), "scalable/mimetype")
+  mime_conf = paths.join(dir_root, "data/mime/{}.xml".format(package_name))
+  mime_icon = paths.join(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
+  conf_target = paths.join(dir_conf, mime_conf[len(dir_root)+1:])
+  icon_target = paths.join(dir_icons, mime_icon[len(dir_root)+1:])
   if install:
-    installFile(mime_conf, dir_conf)
-    installFile(mime_icon, dir_icons)
+    checkError((fileio.copyFile(mime_conf, conf_target, verbose=True)))
+    checkError((fileio.copyFile(mime_icon, icon_target, verbose=True)))
   else:
-    uninstallFile(joinPath(dir_conf, package_name + ".xml"))
-    uninstallFile(joinPath(dir_icons, mime_prefix + "-" + mime_type + ".svg"))
+    checkError((fileio.deleteFile(conf_target, True)))
+    checkError((fileio.deleteFile(icon_target, True)))
 
 def targetInstall():
   if options.prefix == None:
-    logger.error("'prefix' option is required for 'install' target.")
-    print()
-    print_help()
-    sys.exit(errno.EINVAL)
+    exitWithError("'prefix' option is required for 'install' target.", errno.EINVAL, True)
 
   print()
   logger.info("installing ...")
@@ -342,20 +233,20 @@ def targetUninstall():
   if options.prefix == None:
     logger.error("'prefix' option is required for 'uninstall' target.")
     print()
-    print_help()
+    printUsage()
     sys.exit(errno.EINVAL)
 
   print()
   logger.info("uninstalling ...")
 
-  uninstallFile(os.path.join(getBinDir(), package_name))
-  uninstallDir(getDataDir())
-  uninstallDir(getDocDir())
+  checkError((fileio.deleteFile(os.path.join(getBinDir(), package_name), True)))
+  checkError((fileio.deleteDir(getDataDir(), True)))
+  checkError((fileio.deleteDir(getDocDir(), True)))
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
     file_man = os.path.basename(_file) + ".gz"
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    uninstallFile(os.path.join(dir_man, file_man))
+    checkError((fileio.deleteFile(os.path.join(dir_man, file_man), True)))
 
   # TODO: uninstall locale files
 
@@ -363,9 +254,9 @@ def targetUninstall():
 
 def targetDebClean():
   for _dir in ("debian/debreate", "debian/.debhelper"):
-    uninstallDir(os.path.join(dir_root, os.path.normpath(_dir)))
+    fileio.deleteDir(os.path.join(dir_root, os.path.normpath(_dir)), True)
   for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
-    uninstallFile(os.path.join(dir_root, os.path.normpath(_file)))
+    fileio.deleteFile(os.path.join(dir_root, os.path.normpath(_file)), True)
 
 def targetDist():
   # TODO:
@@ -387,15 +278,15 @@ targets = {
 # --- execution insertion point --- #
 
 def main():
-  global options, print_help
+  global options, printUsage
 
   config.setFile(os.path.join(dir_root, "build.conf")).load()
 
   args_parser = parseCommandLine()
-  print_help = args_parser.print_help
+  printUsage = args_parser.print_help
   options = args_parser.parse_args()
   if not options.dir:
-    options.dir = getSystemRoot()
+    options.dir = paths.getSystemRoot()
 
   if options.target not in targets:
     logger.error("unknown target: \"{}\"".format(options.target))
