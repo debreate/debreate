@@ -42,9 +42,6 @@ jobs:
       - name: Build .deb Package
         run: python3 build.py -t deb-bin
 
-      - name: DEBUG
-        run: ls build/dist/
-
       - name: Publish
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
