@@ -25,6 +25,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 from libdbr        import config
 from libdbr        import fileio
 from libdbr        import paths
+from libdbr        import tasks
 from libdbr.logger import getLogger
 
 
@@ -49,7 +50,7 @@ def parseCommandLine():
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
   args_parser.add_argument("-q", "--quiet", action="store_true", help="Don't print detailed information.")
-  args_parser.add_argument("-t", "--target", choices=("install", "uninstall", "dist", "binary", "deb-clean"),
+  args_parser.add_argument("-t", "--task", choices=("install", "uninstall", "dist", "binary", "deb-clean"),
       default="install", help="Build type." \
           + " 'install' (default): Install the application." \
           + " 'dist': Create a source distribution package." \
@@ -147,9 +148,9 @@ def compressFile(file_source, file_target):
   fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=True)
 
 
-# --- install targets --- #
+# --- build tasks --- #
 
-def targetInstallApp():
+def taskInstallApp():
   print()
   logger.info("installing app files ...")
 
@@ -165,7 +166,7 @@ def targetInstallApp():
   checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
   createFileLink(os.path.join(getDataDir(stripped=True), config.getValue("executable")), os.path.join(getBinDir(), package_name))
 
-def targetInstallData():
+def taskInstallData():
   print()
   logger.info("installing data files ...")
 
@@ -175,7 +176,7 @@ def targetInstallData():
     checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=True)))
   fileio.writeFile(os.path.join(dir_target, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
 
-def targetInstallDoc():
+def taskInstallDoc():
   print()
   logger.info("installing doc files ...")
 
@@ -190,12 +191,12 @@ def targetInstallDoc():
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
     compressFile(paths.join(dir_root, _file), paths.join(dir_man, file_man + ".gz"))
 
-def targetInstallLocale():
+def taskInstallLocale():
   print()
   logger.info("installing locale files ...")
   # TODO:
 
-def targetInstallMimeInfo(install=True):
+def taskInstallMimeInfo(install=True):
   print()
   msg = "installing mime type files ..."
   if not install:
@@ -217,22 +218,23 @@ def targetInstallMimeInfo(install=True):
     checkError((fileio.deleteFile(conf_target, True)))
     checkError((fileio.deleteFile(icon_target, True)))
 
-def targetInstall():
+def taskInstall():
   if options.prefix == None:
-    exitWithError("'prefix' option is required for 'install' target.", errno.EINVAL, True)
+    exitWithError("'prefix' option is required for 'install' task.", errno.EINVAL, True)
 
   print()
   logger.info("installing ...")
 
-  targetInstallApp()
-  targetInstallData()
-  targetInstallDoc()
-  targetInstallLocale()
-  targetInstallMimeInfo()
+  # TODO: add to command-line tasks list
+  taskInstallApp()
+  taskInstallData()
+  taskInstallDoc()
+  taskInstallLocale()
+  taskInstallMimeInfo()
 
-def targetUninstall():
+def taskUninstall():
   if options.prefix == None:
-    logger.error("'prefix' option is required for 'uninstall' target.")
+    logger.error("'prefix' option is required for 'uninstall' task.")
     print()
     printUsage()
     sys.exit(errno.EINVAL)
@@ -251,30 +253,28 @@ def targetUninstall():
 
   # TODO: uninstall locale files
 
-  targetInstallMimeInfo(False)
+  taskInstallMimeInfo(False)
 
-def targetDebClean():
+def taskDebClean():
   for _dir in ("debian/debreate", "debian/.debhelper"):
     fileio.deleteDir(os.path.join(dir_root, os.path.normpath(_dir)), True)
   for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
     fileio.deleteFile(os.path.join(dir_root, os.path.normpath(_file)), True)
 
-def targetDist():
+def taskDist():
   # TODO:
   pass
 
-def targetBinary():
-  targetDebClean()
+def taskBinary():
+  taskDebClean()
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
-targets = {
-  "install": targetInstall,
-  "uninstall": targetUninstall,
-  "dist": targetDist,
-  "binary": targetBinary,
-  "deb-clean": targetDebClean
-}
-
+def initTasks():
+  tasks.add("install", taskInstall)
+  tasks.add("uninstall", taskUninstall)
+  tasks.add("dist", taskDist)
+  tasks.add("binary", taskBinary)
+  tasks.add("deb-clean", taskDebClean)
 
 # --- execution insertion point --- #
 
@@ -286,17 +286,19 @@ def main():
   package_name = config.getValue("package_name")
   package_version = float(config.getValue("package_version"))
 
+  initTasks()
+
   args_parser = parseCommandLine()
   printUsage = args_parser.print_help
   options = args_parser.parse_args()
   if not options.dir:
     options.dir = paths.getSystemRoot()
 
-  if options.target not in targets:
-    logger.error("unknown target: \"{}\"".format(options.target))
+  task = tasks.get(options.task)
+  if not task:
+    logger.error("unknown task ({})".format(options.task))
     sys.exit(1)
-
-  targets[options.target]()
+  task()
 
 if __name__ == "__main__":
   main()
