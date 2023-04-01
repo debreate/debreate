@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 
-# This file is part of the Debreate Debian Package Builder software.
-#
-# MIT licensing
-# See: docs/LICENSE.txt
+# ****************************************************
+# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# ****************************************************
+# * This software is licensed under the MIT license. *
+# * See: docs/LICENSE.txt for details.               *
+# ****************************************************
 
-import argparse, codecs, errno, gzip, os, re, shutil, subprocess, sys, types
+import argparse
+import codecs
+import errno
+import gzip
+import os
+import subprocess
+import sys
+import types
 
 if sys.platform == "win32":
   import ctypes
@@ -13,12 +22,10 @@ if sys.platform == "win32":
 # include libdbr in module search path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
-
 from libdbr        import config
 from libdbr        import fileio
 from libdbr        import paths
 from libdbr.logger import getLogger
-from libdbr.paths  import getSystemRoot
 
 
 dir_root = os.path.normpath(os.path.dirname(__file__))
@@ -151,8 +158,6 @@ def targetInstallApp():
 
   dir_target = getDataDir()
   for _dir in dirs_main:
-    # DEBUG:
-    print("copy dir: {}".format(_dir))
     checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", verbose=True)))
   for _file in files_main:
     checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)))
