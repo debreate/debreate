@@ -49,7 +49,7 @@ def parseCommandLine(task_list):
       prog=os.path.basename(sys.argv[0]),
       description="Debreate installer script",
       add_help=False)
-  args_parser.version = str(package_version)
+  args_parser.version = package_version
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
   args_parser.add_argument("-q", "--quiet", action="store_true", help="Don't print detailed information.")
@@ -352,7 +352,7 @@ def main():
   config.setFile(os.path.join(dir_root, "build.conf")).load()
 
   package_name = config.getValue("package")
-  package_version = float(config.getValue("version"))
+  package_version = config.getValue("version")
 
   args_parser = parseCommandLine(initTasks({}))
   printUsage = args_parser.print_help
