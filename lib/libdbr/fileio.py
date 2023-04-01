@@ -344,35 +344,53 @@ def copyExecutable(source, target, name=None, verbose=False):
 #    Optional directory name to use (assumes `target` is parent directory).
 #  @param _filter
 #    Optional file filter.
+#  @param exclude
+#    Optional excludes filter.
 #  @param verbose
 #    If true, print extra information.
 #  @return
 #    Error code & message.
-def copyDir(source, target, name=None, mode=__perm["d"], _filter="", verbose=False):
+def copyDir(source, target, name=None, mode=__perm["d"], _filter="", exclude=None, verbose=False):
   if name:
     target = os.path.join(target, name)
+  else:
+    name = os.path.basename(target)
+  if exclude and re.search(exclude, name):
+    if verbose:
+      print("excluding directory from copy: '{}'".format(name))
+    return 0, None
   err, msg = __checkDirExists(source, "copy")
   if err != 0:
     return err, msg
-  err, msg = __checkNotExists(target, "copy directory")
-  if err != 0:
-    return err, msg
-  err, msg = makeDir(target, False)
-  if err != 0:
-    return err, msg
+  # ~ err, msg = __checkNotExists(target, "copy directory")
+  # ~ if err != 0:
+    # ~ return err, msg
+  contents = os.listdir(source)
+  if len(contents) == 0:
+    if verbose:
+      print("directory empty, not copying: '{}'".format(source))
+    return 0, None
+  if not os.path.isdir(target):
+    err, msg = makeDir(target, False)
+    if err != 0:
+      return err, msg
+    os.chmod(target, mode)
   if not os.path.isdir(target):
     return 1, "failed to copy directory, an unknown error occurred: {}".format(target)
-  os.chmod(target, mode)
   if verbose:
     print("copy '{}' -> '{}' (mode={})".format(source, target, oct(mode)[2:]))
-  for obj in os.listdir(source):
+  for obj in contents:
+    if exclude and re.search(exclude, obj):
+      if verbose:
+        print("excluding pattern from copy: '{}'".format(obj))
+      continue
     objsource = os.path.join(source, obj)
     objtarget = os.path.join(target, obj)
     if not os.path.isdir(objsource):
       if re.search(_filter, obj):
         err, msg = copyFile(objsource, objtarget, None, mode-0o111, verbose)
     else:
-      err, msg = copyDir(objsource, objtarget, None, mode, _filter, verbose)
+      err, msg = copyDir(objsource, objtarget, None, mode, _filter, exclude, verbose)
     if err != 0:
       return err, msg
   return 0, None
@@ -428,22 +446,28 @@ def moveDir(source, target, name=None, mode=__perm["d"], verbose=False):
   err, msg = __checkDirExists(source, "move")
   if err != 0:
     return err, msg
-  err, msg = __checkNotExists(target, "move directory")
-  if err != 0:
-    return err, msg
-  err, msg = makeDir(target, False)
-  if err != 0:
-    return err, msg
+  # ~ err, msg = __checkNotExists(target, "move directory")
+  # ~ if err != 0:
+    # ~ return err, msg
+  contents = os.listdir(source)
+  if len(contents) == 0:
+    if verbose:
+      print("directory empty, not moving: '{}'".format(source))
+    return 0, None
+  if not os.path.isdir(target):
+    err, msg = makeDir(target, False)
+    if err != 0:
+      return err, msg
+    os.chmod(target, mode)
   if not os.path.isdir(target):
     return 1, "failed to move directory, an unknown error occurred: {}".format(target)
-  os.chmod(target, mode)
-  for obj in os.listdir(source):
+  for obj in contents:
     objsource = os.path.join(source, obj)
     objtarget = os.path.join(target, obj)
     if not os.path.isdir(objsource):
-      err, msg = moveFile(objsource, objtarget, None, verbose)
+      err, msg = moveFile(objsource, objtarget, None, mode-0o111, verbose)
     else:
-      err, msg = moveDir(objsource, objtarget, None, verbose)
+      err, msg = moveDir(objsource, objtarget, None, mode, verbose)
     if err != 0:
       return err, msg
   err, msg = deleteDir(source, False)
