@@ -2,6 +2,7 @@
 
 Mandatory:
 - Generated timestamp in changelog is "None"
+- file selection via directory tree broken
 
 Priority:
 
