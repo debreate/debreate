@@ -158,7 +158,7 @@ def stageApp(prefix):
   dirs_app = config.getValue("dirs_app").split(";")
   files_app = config.getValue("files_app").split(";")
 
-  dir_target = paths.join(prefix, config.getValue("package_name"))
+  dir_target = paths.join(prefix, package_name)
   for _dir in dirs_app:
     checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=True)))
   for _file in files_app:
@@ -329,8 +329,8 @@ def main():
 
   config.setFile(os.path.join(dir_root, "build.conf")).load()
 
-  package_name = config.getValue("package_name")
-  package_version = float(config.getValue("package_version"))
+  package_name = config.getValue("package")
+  package_version = float(config.getValue("version"))
 
   args_parser = parseCommandLine(initTasks({}))
   printUsage = args_parser.print_help
