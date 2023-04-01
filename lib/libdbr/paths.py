@@ -10,6 +10,15 @@ import os
 import sys
 
 
+## Normalizes & joins path names.
+#
+#  @param paths
+#    Path names to normalize.
+#  @return
+#    Formatted string
+def join(*paths):
+  return os.path.normpath(os.path.join(*paths))
+
 ## Retrieves root directory for current system.
 #
 #  @return
