@@ -10,6 +10,10 @@ import os
 import sys
 
 
+## Retrieves root directory for current system.
+#
+#  @return
+#    System root node string.
 def getSystemRoot():
   sys_root = "/"
   if sys.platform == "win32":
@@ -17,13 +21,25 @@ def getSystemRoot():
     sys_root += "\\"
   return sys_root
 
-def _isExecutable(filepath):
+## Checks if a file is marked as executable for the current user.
+#
+#  @param filepath
+#    Path to file to check.
+#  @return
+#    True if current user can execute file.
+def __isExecutable(filepath):
   if not os.path.exists(filepath) or os.path.isdir(filepath):
     return False
   if sys.platform == "win32":
     return True
   return os.access(filepath, os.X_OK)
 
+## Retrieves an executable from PATH environment variable.
+#
+#  @param cmd
+#    Command basename.
+#  @return
+#    String path to executable or None if file not found.
 def getExecutable(cmd):
   path = os.get_exec_path()
   path_ext = os.getenv("PATHEXT") or []
@@ -32,13 +48,19 @@ def getExecutable(cmd):
 
   for _dir in path:
     filepath = os.path.join(_dir, cmd)
-    if _isExecutable(filepath):
+    if __isExecutable(filepath):
       return filepath
     for ext in path_ext:
       filepath = filepath + "." + ext
-      if _isExecutable(filepath):
+      if __isExecutable(filepath):
         return filepath
   return None
 
+## Checks if an executable is available from PATH environment variable.
+#
+#  @param cmd
+#    Command basename.
+#  @return
+#    True if file found.
 def commandExists(cmd):
   return getExecutable(cmd) != None
