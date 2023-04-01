@@ -41,7 +41,10 @@ printUsage: types.FunctionType
 
 # --- configuration & command line options --- #
 
-def parseCommandLine():
+def parseCommandLine(task_list):
+  task_help = []
+  for t in task_list:
+    task_help.append(t + ": " + task_list[t])
   args_parser = argparse.ArgumentParser(
       prog=os.path.basename(sys.argv[0]),
       description="Debreate installer script",
@@ -50,11 +53,9 @@ def parseCommandLine():
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
   args_parser.add_argument("-q", "--quiet", action="store_true", help="Don't print detailed information.")
-  args_parser.add_argument("-t", "--task", choices=("install", "uninstall", "dist", "binary", "deb-clean"),
-      default="install", help="Build type." \
-          + " 'install' (default): Install the application." \
-          + " 'dist': Create a source distribution package." \
-          + " 'binary': Create a portable package.")
+  # ~ args_parser.add_argument("-t", "--task", choices=("install", "uninstall", "dist", "binary", "clean-deb"),
+  args_parser.add_argument("-t", "--task", choices=tuple(task_list),
+      default="install", help="\n".join(task_help))
   args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(), help="Installation target root directory.")
   args_parser.add_argument("-p", "--prefix", help="Installation prefix.")
   return args_parser
@@ -150,73 +151,68 @@ def compressFile(file_source, file_target):
 
 # --- build tasks --- #
 
-def taskInstallApp():
+def stageApp(prefix):
   print()
-  logger.info("installing app files ...")
+  logger.info("staging app files ...")
 
   dirs_app = config.getValue("dirs_app").split(";")
   files_app = config.getValue("files_app").split(";")
 
-  dir_target = getDataDir()
+  dir_target = paths.join(prefix, config.getValue("package_name"))
   for _dir in dirs_app:
-    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", verbose=True)))
+    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=True)))
   for _file in files_app:
     checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)))
   exe = config.getValue("executable")
   checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
-  createFileLink(os.path.join(getDataDir(stripped=True), config.getValue("executable")), os.path.join(getBinDir(), package_name))
 
-def taskInstallData():
+def stageData(prefix):
   print()
-  logger.info("installing data files ...")
+  logger.info("staging data files ...")
 
   dirs_data = config.getValue("dirs_data").split(";")
-  dir_target = getDataDir()
+
+  dir_target = paths.join(prefix, package_name)
   for _dir in dirs_data:
     checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=True)))
-  fileio.writeFile(os.path.join(dir_target, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
 
-def taskInstallDoc():
+def stageDoc(prefix):
   print()
-  logger.info("installing doc files ...")
+  logger.info("staging doc files ...")
 
   files_doc = config.getValue("files_doc").split(";")
-  dir_target = getDocDir()
+
+  dir_target = paths.join(prefix, "doc/{}".format(package_name))
   for _file in files_doc:
     fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)
 
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
-    file_man = os.path.basename(_file)
-    dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    compressFile(paths.join(dir_root, _file), paths.join(dir_man, file_man + ".gz"))
+    basename = os.path.basename(_file)
+    dir_man = paths.join(prefix, "man/{}".format(os.path.basename(os.path.dirname(_file))))
+    compressFile(paths.join(dir_root, _file), paths.join(dir_man, basename + ".gz"))
 
-def taskInstallLocale():
+def stageLocale(prefix):
   print()
-  logger.info("installing locale files ...")
+  logger.info("staging locale files ...")
   # TODO:
 
-def taskInstallMimeInfo(install=True):
+def stageMimeInfo(prefix):
   print()
-  msg = "installing mime type files ..."
-  if not install:
-    msg = "un" + msg
-  logger.info(msg)
+  logger.info("staging mime type files ...")
+
+  dir_conf = paths.join(prefix, "mime/packages")
+  # FIXME: need system independent directory
+  dir_icons = paths.join(prefix, "icons/gnome/scalable/mimetype")
 
   mime_prefix = config.getValue("dbp_mime_prefix")
   mime_type = config.getValue("dbp_mime")
-  dir_conf = paths.join(getInstallPath(), "share/mime/packages")
-  dir_icons = paths.join(getIconsDir(), "scalable/mimetype")
   mime_conf = paths.join(dir_root, "data/mime/{}.xml".format(package_name))
   mime_icon = paths.join(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
-  conf_target = paths.join(dir_conf, mime_conf[len(dir_root)+1:])
-  icon_target = paths.join(dir_icons, mime_icon[len(dir_root)+1:])
-  if install:
-    checkError((fileio.copyFile(mime_conf, conf_target, verbose=True)))
-    checkError((fileio.copyFile(mime_icon, icon_target, verbose=True)))
-  else:
-    checkError((fileio.deleteFile(conf_target, True)))
-    checkError((fileio.deleteFile(icon_target, True)))
+  conf_target = paths.join(dir_conf, "{}.xml".format(package_name))
+  icon_target = paths.join(dir_icons, "application-x-dbp.svg")
+  checkError((fileio.copyFile(mime_conf, conf_target, verbose=True)))
+  checkError((fileio.copyFile(mime_icon, icon_target, verbose=True)))
 
 def taskInstall():
   if options.prefix == None:
@@ -225,12 +221,34 @@ def taskInstall():
   print()
   logger.info("installing ...")
 
-  # TODO: add to command-line tasks list
-  taskInstallApp()
-  taskInstallData()
-  taskInstallDoc()
-  taskInstallLocale()
-  taskInstallMimeInfo()
+  tasks.run("stage")
+  dir_stage = paths.join(dir_root, "build/stage")
+  for obj in os.listdir(dir_stage):
+    abspath = paths.join(dir_stage, obj)
+    if not os.path.isdir(abspath):
+      checkError((fileio.moveFile(abspath, options.prefix, obj, verbose=True)))
+    else:
+      checkError((fileio.moveDir(abspath, options.prefix, obj, verbose=True)))
+  checkError((fileio.deleteDir(dir_stage, verbose=True)))
+
+  dir_data = paths.join(options.prefix, "share", package_name)
+  dir_bin = paths.join(options.prefix, "bin")
+
+  # set executable
+  os.chmod(paths.join(dir_data, "init.py"), 0o775)
+
+  createFileLink(paths.join(dir_data, config.getValue("executable")), paths.join(dir_bin, package_name))
+  fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
+
+def taskStage():
+  tasks.run("clean-stage")
+  dir_stage = paths.join(dir_root, "build/stage")
+  dir_data = paths.join(dir_stage, "share")
+  stageApp(dir_data)
+  stageData(dir_data)
+  stageDoc(dir_data)
+  stageLocale(dir_data)
+  stageMimeInfo(dir_data)
 
 def taskUninstall():
   if options.prefix == None:
@@ -253,9 +271,18 @@ def taskUninstall():
 
   # TODO: uninstall locale files
 
-  taskInstallMimeInfo(False)
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/icons/gnome/scalable/mimetype/application-x-dbp.svg"), True)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/mime/packages/{}.xml".format(package_name)), True)))
 
-def taskDebClean():
+def taskClean():
+  dir_build = paths.join(dir_root, "build")
+  fileio.deleteDir(dir_build, verbose=True)
+
+def taskCleanStage():
+  dir_stage = paths.join(dir_root, "build/stage")
+  fileio.deleteDir(dir_stage, verbose=True)
+
+def taskCleanDeb():
   for _dir in ("debian/debreate", "debian/.debhelper"):
     fileio.deleteDir(os.path.join(dir_root, os.path.normpath(_dir)), True)
   for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
@@ -265,16 +292,24 @@ def taskDist():
   # TODO:
   pass
 
-def taskBinary():
-  taskDebClean()
+def taskDebBinary():
+  taskCleanDeb()
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
-def initTasks():
-  tasks.add("install", taskInstall)
-  tasks.add("uninstall", taskUninstall)
-  tasks.add("dist", taskDist)
-  tasks.add("binary", taskBinary)
-  tasks.add("deb-clean", taskDebClean)
+def addTask(task_list, name, action, desc):
+  tasks.add(name, action)
+  task_list[name] = desc
+
+def initTasks(task_list):
+  addTask(task_list, "install", taskInstall, "Install application files.")
+  addTask(task_list, "uninstall", taskUninstall, "Uninstall application files.")
+  addTask(task_list, "stage", taskStage, "Stage files for distribution (same as `-t install -p (root_dir)/build/stage`)")
+  addTask(task_list, "dist", taskDist, "Create a source distribution package (TODO).")
+  addTask(task_list, "deb-bin", taskDebBinary, "Build binary Debian package for installation.")
+  addTask(task_list, "clean", taskClean, "Remove files from build directory.")
+  addTask(task_list, "clean-stage", taskCleanStage, "Remove files from stage directory.")
+  addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
+  return task_list
 
 # --- execution insertion point --- #
 
@@ -286,9 +321,7 @@ def main():
   package_name = config.getValue("package_name")
   package_version = float(config.getValue("package_version"))
 
-  initTasks()
-
-  args_parser = parseCommandLine()
+  args_parser = parseCommandLine(initTasks({}))
   printUsage = args_parser.print_help
   options = args_parser.parse_args()
   if not options.dir:
