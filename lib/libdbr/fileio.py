@@ -68,6 +68,11 @@ def readFile(filepath):
 #  @param verbose
 #    If true, print extra information.
 def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
+  if data == None:
+    msg = __name__ + "." + writeFile.__name__ + ": 'data' parameter cannot be None"
+    __logger.error(msg)
+    raise TypeError(msg)
+    return False
   if type(data) in (list, tuple):
     data = "\n".join(data)
   # make sure parent directory exists
@@ -77,7 +82,7 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
     if err != 0:
       __logger.error(msg)
       raise Exception(msg)
-      return
+      return False
   if binary:
     fout = codecs.open(filepath, "wb")
     fout.write(data)
@@ -88,6 +93,7 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   os.chmod(filepath, mode)
   if verbose:
     print("create file '{}' (mode={})".format(filepath, oct(mode)[2:]))
+  return True
 
 ## Writes text data to a file while preserving previous contents.
 #
@@ -100,6 +106,11 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
 #  @param verbose
 #    If true, print extra information.
 def appendFile(filepath, data, mode=__perm["f"], verbose=False):
+  if data == None:
+    msg = __name__ + "." + appendFile.__name__ + ": 'data' parameter cannot be None"
+    __logger.error(msg)
+    raise TypeError(msg)
+    return False
   fin_data = []
   # don't try to append to file that doesn't exist
   if os.path.isfile(filepath):
@@ -108,7 +119,7 @@ def appendFile(filepath, data, mode=__perm["f"], verbose=False):
     fin_data += list(data)
   else:
     fin_data.append(data)
-  writeFile(filepath, fin_data, False, mode, verbose)
+  return writeFile(filepath, fin_data, False, mode, verbose)
 
 
 __timestamps = {}
