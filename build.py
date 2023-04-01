@@ -223,21 +223,23 @@ def taskInstall():
 
   tasks.run("stage")
   dir_stage = paths.join(dir_root, "build/stage")
+  dir_install = paths.join(options.dir, options.prefix)
+
   for obj in os.listdir(dir_stage):
     abspath = paths.join(dir_stage, obj)
     if not os.path.isdir(abspath):
-      checkError((fileio.moveFile(abspath, options.prefix, obj, verbose=True)))
+      checkError((fileio.moveFile(abspath, dir_install, obj, verbose=True)))
     else:
-      checkError((fileio.moveDir(abspath, options.prefix, obj, verbose=True)))
+      checkError((fileio.moveDir(abspath, dir_install, obj, verbose=True)))
   checkError((fileio.deleteDir(dir_stage, verbose=True)))
 
-  dir_data = paths.join(options.prefix, "share", package_name)
-  dir_bin = paths.join(options.prefix, "bin")
+  dir_data = paths.join(dir_install, "share", package_name)
+  dir_bin = paths.join(dir_install, "bin")
 
   # set executable
   os.chmod(paths.join(dir_data, "init.py"), 0o775)
 
-  createFileLink(paths.join(dir_data, config.getValue("executable")), paths.join(dir_bin, package_name))
+  createFileLink(paths.join(options.prefix, "share", package_name, config.getValue("executable")), paths.join(dir_bin, package_name))
   fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
 
 def taskStage():
@@ -250,6 +252,7 @@ def taskStage():
   stageLocale(dir_data)
   stageMimeInfo(dir_data)
 
+# FIXME: include --dir parameter in uninstall
 def taskUninstall():
   if options.prefix == None:
     logger.error("'prefix' option is required for 'uninstall' task.")

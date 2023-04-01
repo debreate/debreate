@@ -146,10 +146,10 @@ $(INSTALLED)_file:
 	echo "prefix=$(prefix)\n" > "$(INSTALLED)"; \
 
 install:
-	@python3 build.py --target install --dir "$(DESTDIR)" --prefix "$(prefix)"
+	@python3 build.py -t install -d "$(DESTDIR)" -p "$(prefix)"
 
 uninstall:
-	@python3 build.py --target uninstall --dir "$(DESTDIR)" --prefix "$(prefix)"
+	@python3 build.py -t uninstall -d "$(DESTDIR)" -p "$(prefix)"
 
 install-bitmaps: $(DIR_bitmaps)
 	@target="$(DESTDIR)$(prefix)"; \
