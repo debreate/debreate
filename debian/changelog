@@ -1,4 +1,4 @@
-debreate (0.8-dev2) jammy; urgency=low
+debreate (0.8-dev3) jammy; urgency=low
 
   * support Python 3
     drop supprt for Python 2
