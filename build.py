@@ -307,6 +307,17 @@ def taskDebBinary():
   taskCleanDeb()
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
+  dir_parent = os.path.dirname(dir_root)
+  dir_dist = paths.join(dir_root, "build/dist")
+  fileio.makeDir(dir_dist)
+  # FIXME: determine .deb package name
+  for obj in os.listdir(dir_parent):
+    if not obj.endswith(".deb"):
+      continue
+    abspath = paths.join(dir_parent, obj)
+    if os.path.isfile(abspath):
+      fileio.moveFile(abspath, dir_dist, obj, verbose=True)
+
 def taskPortable():
   tasks.run("stage")
   dir_build = paths.join(dir_root, "build")
