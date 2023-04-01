@@ -17,7 +17,12 @@ import sys
 #  @return
 #    Formatted string
 def join(*paths):
-  return os.path.normpath(os.path.join(*paths))
+  path = ""
+  for p in paths:
+    if path:
+      path += os.sep
+    path += p
+  return os.path.normpath(path)
 
 ## Retrieves root directory for current system.
 #
