@@ -23,7 +23,7 @@ __completed = []
 #    Task identifier.
 #  @param action
 #    Function to call for task.
-def add(name, action):
+def add(name, action, desc=None):
   action_type = type(action)
   if action_type != types.FunctionType:
     msg = "task action must be a function ({}), found {}".format(name, action_type)
@@ -32,7 +32,7 @@ def add(name, action):
     return
   if name in __tasklist:
     __logger.warn("overwriting task ({})".format(name))
-  __tasklist[name] = action
+  __tasklist[name] = {"action": action, "desc": desc}
 
 ## Removes a task from the task list.
 #
@@ -44,16 +44,29 @@ def remove(name):
     return
   del __tasklist[name]
 
-## Retrieves a task.
+## Retrieves a task or the task list.
 #
 #  @param name
 #    Task identifier.
 #  @return
-#    Task action or none if not found.
-def get(name):
+#    Task action or none if not found or task list if name not specified.
+def get(name=None):
+  if name != None and name not in __tasklist:
+    msg = "invalid task ({})".format(name)
+    __logger.error(msg)
+    raise TypeError(msg)
+    return None
   if name in __tasklist:
-    return __tasklist[name]
-  return None
+    return __tasklist[name]["action"]
+  # make a copy of the task list
+  return dict(__tasklist)
+
+## Retrieves available tasks.
+#
+#  @return
+#    List of task names.
+def getNames():
+  return tuple(__tasklist)
 
 ## Runs a task.
 #
@@ -72,7 +85,10 @@ def run(name, *args, **kwargs):
   if name in __completed:
     __logger.warn("not re-running task ({})".format(name))
     return 0
-  res = __tasklist[name](*args, **kwargs)
+  res = __tasklist[name]["action"](*args, **kwargs)
+  # allow returning none to be same as no error
+  if res == None:
+    res = 0
   res_type = type(res)
   if res_type != int:
     msg = "invalid return type from task ({}): {}".format(name, res_type)
