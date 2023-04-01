@@ -154,13 +154,13 @@ def taskInstallApp():
   print()
   logger.info("installing app files ...")
 
-  dirs_main = config.getValue("dirs_main").split(";")
-  files_main = config.getValue("files_main").split(";")
+  dirs_app = config.getValue("dirs_app").split(";")
+  files_app = config.getValue("files_app").split(";")
 
   dir_target = getDataDir()
-  for _dir in dirs_main:
+  for _dir in dirs_app:
     checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", verbose=True)))
-  for _file in files_main:
+  for _file in files_app:
     checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)))
   exe = config.getValue("executable")
   checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
