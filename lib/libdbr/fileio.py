@@ -70,6 +70,14 @@ def readFile(filepath):
 def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   if type(data) in (list, tuple):
     data = "\n".join(data)
+  # make sure parent directory exists
+  dir_parent = os.path.dirname(filepath)
+  if dir_parent and not os.path.exists(dir_parent):
+    err, msg = makeDir(dir_parent, verbose=verbose)
+    if err != 0:
+      __logger.error(msg)
+      raise Exception(msg)
+      return
   if binary:
     fout = codecs.open(filepath, "wb")
     fout.write(data)
