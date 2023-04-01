@@ -11,8 +11,8 @@
 
 import errno, os, sys
 
-# update module search path to include local 'lib' directory
-sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
+# include libdbr in module search path
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
 import util
 

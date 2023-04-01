@@ -11,7 +11,7 @@ if sys.platform == "win32":
   import ctypes
 
 # include libdbr in module search path
-sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "lib")))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
 
 from libdbr        import config
