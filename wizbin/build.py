@@ -458,10 +458,7 @@ class Page(WizardPage):
 
           writeFile(script_filename, script_text)
 
-          # Make sure scipt path is wrapped in quotes to avoid whitespace errors
-          # FIXME: both commands appear to do the same thing?
-          os.chmod(script_filename, 0o0755)
-          os.system(("chmod +x \"{}\"".format(script_filename)))
+          os.chmod(script_filename, 0o0775)
 
           # Individual scripts
           progress += 1
@@ -524,13 +521,13 @@ class Page(WizardPage):
       for ROOT, DIRS, FILES in os.walk(stage_dir):
         for D in DIRS:
           D = "{}/{}".format(ROOT, D)
-          os.chmod(D, 0o0755)
+          os.chmod(D, 0o0775)
         for F in FILES:
           F = "{}/{}".format(ROOT, F)
           if os.access(F, os.X_OK):
-            os.chmod(F, 0o0755)
+            os.chmod(F, 0o0775)
           else:
-            os.chmod(F, 0o0644)
+            os.chmod(F, 0o0664)
 
       # FIXME: Should check for working fakeroot & dpkg-deb executables
       res = subprocess.run([GetExecutable("fakeroot"), GetExecutable("dpkg-deb"), "-b", c_tree, deb_package],
