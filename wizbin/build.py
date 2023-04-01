@@ -253,7 +253,7 @@ class Page(WizardPage):
           wx.GetApp().Yield()
           build_progress.Update(current_task, message)
 
-          return
+          return (None, None)
 
         wx.GetApp().Yield()
         build_progress.Update(current_task)
@@ -533,8 +533,9 @@ class Page(WizardPage):
             os.chmod(F, 0o0644)
 
       # FIXME: Should check for working fakeroot & dpkg-deb executables
-      res = subprocess.run([GetExecutable("fakeroot"), GetExecutable("dpkg-deb"), "-b", c_tree, deb_package])
-      build_status = (res.returncode, res.stdout)
+      res = subprocess.run([GetExecutable("fakeroot"), GetExecutable("dpkg-deb"), "-b", c_tree, deb_package],
+          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+      build_status = (res.returncode, res.stdout.decode("utf-8"))
 
       progress += 1
 
@@ -565,7 +566,7 @@ class Page(WizardPage):
 
         # FIXME: Should be set as class memeber?
         CMD_lintian = GetExecutable("lintian")
-        errors = subprocess.run([CMD_lintian, deb]).stdout
+        errors = subprocess.run([CMD_lintian, deb], capture_output=True).stdout.decode("utf-8")
 
         if errors != wx.EmptyString:
           e1 = GT("Lintian found some issues with the package.")
