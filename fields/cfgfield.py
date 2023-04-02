@@ -42,7 +42,6 @@ class ConfigField:
       ConfCode.KEY_NO_EXIST,
       )
 
-    # FIXME:
     if state not in (ret_codes):
       self.SetValue(state)
 
@@ -54,6 +53,17 @@ class ConfigField:
     if isinstance(self, wx.CheckBox):
       self.Bind(wx.EVT_CHECKBOX, self.OnToggle)
 
+  ## Re-define in inheriting classes.
+  def GetDefaultValue(self):
+    return ""
+
+  ## Re-define in inheriting classes.
+  def GetName(self):
+    return ""
+
+  ## Re-define in inheriting classes.
+  def SetValue(self, value):
+    pass
 
   ## TODO: Doxygen
   def GetConfigKey(self):

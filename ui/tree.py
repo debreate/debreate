@@ -830,7 +830,7 @@ class DirectoryTree(wx.TreeCtrl):
 
       else:
         # FIXME: Better method?
-        self.Parent.Parent.OnImportFromTree()
+        self.GetParent().GetParent().OnImportFromTree()
 
         # Return focus to tree for keyboard control
         self.SetFocus()
@@ -864,13 +864,13 @@ class DirectoryTree(wx.TreeCtrl):
       # Reset cursor to default
       self.UpdateCursor(True)
 
-      target_window = self.Parent.Parent.GetListInstance()
+      target_window = self.GetParent().GetParent().GetListInstance()
       dropped = MouseInsideWindow(target_window)
 
       logger.debug("Dropped inside file list: {}".format(dropped))
 
       if dropped:
-        self.Parent.Parent.OnImportFromTree()
+        self.GetParent().GetParent().OnImportFromTree()
 
       # WARNING: Skipping event causes selection to change in directory tree
       #  	  if multiple items selected.

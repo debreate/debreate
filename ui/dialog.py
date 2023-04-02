@@ -271,7 +271,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
   def AddButtons(self, button_ids):
     self.lyt_buttons = AddCustomButtons(self, button_ids)
 
-    self.Sizer.Add(self.lyt_buttons, (4, 2),
+    self.GetSizer().Add(self.lyt_buttons, (4, 2),
         flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|lyt.PAD_RTB, border=5)
 
 

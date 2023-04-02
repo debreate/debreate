@@ -127,7 +127,8 @@ class SectionedPanel(ScrolledPanel):
 
         # Section orientation should be opposite of main
         orient = wx.HORIZONTAL
-        if self.Sizer.GetOrientation() == wx.HORIZONTAL:
+        sz = self.GetSizer()
+        if sz.GetOrientation() == wx.HORIZONTAL:
           orient = wx.VERTICAL
 
         lyt_sect = BoxSizer(orient)
@@ -138,7 +139,7 @@ class SectionedPanel(ScrolledPanel):
         panel.SetSizer(lyt_sect)
         panel.Layout()
 
-        self.Sizer.Add(panel, 0, wx.EXPAND|wx.TOP, padding)
+        sz.Add(panel, 0, wx.EXPAND|wx.TOP, padding)
 
         self.Layout()
 
@@ -154,7 +155,7 @@ class SectionedPanel(ScrolledPanel):
 
   ## Retrieves number of sections
   def GetSectionCount(self):
-    return len(self.Sizer.GetChildWindows())
+    return len(self.GetSizer().GetChildWindows())
 
 
   ## TODO: Doxygen
@@ -205,14 +206,15 @@ class SectionedPanel(ScrolledPanel):
     if isinstance(item, int):
       item = self.GetSection(item)
 
-    self.Sizer.Detach(item)
+    sz = self.GetSizer()
+    sz.Detach(item)
     removed = item.Destroy()
 
     # Remove padding of first item
-    first_section = self.Sizer.GetItemAtIndex(0)
+    first_section = sz.GetItemAtIndex(0)
     if first_section:
-      self.Sizer.Detach(first_section)
-      self.Sizer.Insert(0, first_section, 0, wx.EXPAND)
+      sz.Detach(first_section)
+      sz.Insert(0, first_section, 0, wx.EXPAND)
 
     self.Layout()
 
@@ -230,6 +232,8 @@ class SectionedPanel(ScrolledPanel):
 
 ## Class designed for custom controls parented with a BorderedPanel
 class ControlPanel:
+  MainCtrl = None
+
   ## Retrieve main child of panel
   #
   #  Intended for use in input.essential.EssentialField

@@ -75,3 +75,7 @@ class InputField:
   ## Sets the field's default value
   def SetDefaultValue(self, value):
     self.Default = value
+
+  ## Re-define in inheriting classes.
+  def SetValue(self, value):
+    pass

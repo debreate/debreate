@@ -98,9 +98,9 @@ class ComboBox(OwnerDrawnComboBox, InputField):
       self.clr_enabled = self.GetTextCtrl().GetBackgroundColour()
 
     if monospace:
-      self.TextCtrl.SetFont(MONOSPACED_MD)
+      self.GetTextCtrl().SetFont(MONOSPACED_MD)
       # FIXME: This doesn't work (use monospace in popup list)
-      self.PopupControl.GetControl().SetFont(MONOSPACED_MD)
+      self.GetPopupControl().GetControl().SetFont(MONOSPACED_MD)
 
 
   ## TODO: Doxygen

@@ -6,12 +6,17 @@
 
 ## Defines a label to be used for exporting to text file
 class OutputField:
+  Name = None
+
   def __init__(self, outLabel=None):
     # Name that can be used field output labels
     self.OutLabel = outLabel
     if self.OutLabel == None:
       self.OutLabel = self.GetName()
 
+  ## Re-define in inheriting classes
+  def GetName(self):
+    return self.Name
 
   ## Retrieves label for exporting to text file
   def GetOutLabel(self):

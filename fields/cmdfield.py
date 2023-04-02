@@ -51,3 +51,7 @@ class CommandField:
           enabled = cmd_found
 
       self.Enable(enabled)
+
+  ## Re-define in inheriting classes
+  def Enable(self, enabled):
+    pass

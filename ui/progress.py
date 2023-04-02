@@ -102,7 +102,7 @@ class ProgressDialog(wx.ProgressDialog):
     if self.Parent and not FieldEnabled(self.Parent):
       logger.debug("Re-enabling parent")
 
-      self.Parent.Enable()
+      self.GetParent().Enable()
 
     if wx.MAJOR_VERSION < 3:
       self.EndModal(0)

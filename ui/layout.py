@@ -20,6 +20,13 @@ class _SizerBase:
 
     #self.Add(item, proportion, flag, border, userData)
 
+  ## Re-define in inherited classes
+  def Insert(self, idx, item, proportion, flag, border, userData):
+    pass
+
+  ## Re-define in inherited classes
+  def GetChildren(self):
+    return list()
 
   ## Retrieves all sizers contained with the sizer
   def GetChildSizers(self):
