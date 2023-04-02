@@ -6,6 +6,27 @@ on:
     branches: [master]
 
 jobs:
+  wx-4-0:
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup dependencies
+        run: |
+          sudo apt install python3-wxgtk4.0
+          python3 -m pip install pylint mypy
+
+      - name: check with Pylint
+        run: pylint ./
+
+      - name: check with Mypy
+        run: mypy
+
   wx-4-1-1:
     runs-on: ubuntu-22.04
     defaults:

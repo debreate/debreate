@@ -16,7 +16,8 @@ logger = getLogger()
 
 def checkWx():
   wx = getModule("wx")
-  wx_min = [4, 1, 1]
+  wx_min = [4, 0, 7]
+  wx_rec = [4, 1, 1]
   wx_ver = []
   for v in wx.__version__.split("."):
     wx_ver.append(int(v))
@@ -24,3 +25,6 @@ def checkWx():
     tmp = ".".join(str(wx_min).strip("[]").split(", "))
     logger.error("wxPython minimum required version is {}, found {}".format(tmp, wx.__version__))
     sys.exit(1)
+  if wx_ver < wx_rec:
+    tmp = ".".join(str(wx_rec).strip("[]").split(", "))
+    logger.warn("minimum recommened version of wxPython is {}, but found {}, app may not function as intended".format(tmp, wx.__version__))
