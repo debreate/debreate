@@ -563,7 +563,7 @@ class FileList(BasicFileList):
   #  The super method is overridden to ensure that 'event.Skip' is called.
   #  TODO: Notify wxPython project of 'event.Skip' error
   def OnLeftDown(self, event=None):
-    TextEditMixin.OnLeftDown(self, event=None)
+    TextEditMixin.OnLeftDown(self)
 
     if event:
       event.Skip()

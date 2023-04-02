@@ -52,7 +52,7 @@ def GetCurrentVersion(remote=APP_project_gh):
 
     return tuple(version)
 
-  except (URLError, err):
+  except URLError as err:
     return err
 
 
@@ -137,10 +137,10 @@ def GetInteger(value):
     # Check for negative
     if value[0] == "-":
       if value.count("-") <= 1:
-        value = GetInteger(value[1:])
+        i_value = GetInteger(value[1:])
 
-        if value != None:
-          return -value
+        if type(i_value) == int:
+          return -int(i_value)
 
     # Check for tuple
     elif "." in value:

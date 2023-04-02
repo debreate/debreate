@@ -23,7 +23,7 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 #  \param str_value
 #  \b \e str : String to be translated
 def GT(str_value):
-  return _(GS(str_value))
+  return gettext.gettext(GS(str_value))
 
 
 ## Retrieves the path of gettext locale translations

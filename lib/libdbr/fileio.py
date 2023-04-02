@@ -70,7 +70,6 @@ def readFile(filepath):
 def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   if data == None:
     msg = __name__ + "." + writeFile.__name__ + ": 'data' parameter cannot be None"
-    __logger.error(msg)
     raise TypeError(msg)
     return False
   if type(data) in (list, tuple):
@@ -80,7 +79,6 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   if dir_parent and not os.path.exists(dir_parent):
     err, msg = makeDir(dir_parent, verbose=verbose)
     if err != 0:
-      __logger.error(msg)
       raise Exception(msg)
       return False
   if binary:
@@ -108,7 +106,6 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
 def appendFile(filepath, data, mode=__perm["f"], verbose=False):
   if data == None:
     msg = __name__ + "." + appendFile.__name__ + ": 'data' parameter cannot be None"
-    __logger.error(msg)
     raise TypeError(msg)
     return False
   fin_data = []

@@ -897,7 +897,7 @@ class DirectoryTree(wx.TreeCtrl):
 
       new_label = event.GetLabel()
       item_dir = os.path.dirname(item.Path)
-      new_path = os.path.join(item_di, new_label)
+      new_path = os.path.join(item_dir, new_label)
 
       try:
         if os.path.exists(new_path):
