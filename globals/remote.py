@@ -20,5 +20,5 @@ def GetRemotePageText(remote_url):
         page_text = page_text.decode("utf-8")
     return page_text
 
-  except HTTPError or URLError:
+  except (HTTPError, URLError):
     return None

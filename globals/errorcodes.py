@@ -5,8 +5,10 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
-
-import wx, errno
+import copy
+import errno
+import types
+import wx
 
 
 # TODO: Convert these to dbrerror
@@ -20,17 +22,19 @@ error_definitions = {
   ERR_FILE_WRITE: "Could Not Write File",
 }
 
+dbrerrno = types.new_class("dbrerrno")
+for attr in errno.__dict__:
+  setattr(dbrerrno, attr, copy.deepcopy(errno.__dict__[attr]))
 
-current_code = sorted(errno.errorcode.keys())[-1]
+current_code = sorted(dbrerrno.errorcode.keys())[-1]
 def AddNewCode(code_def):
   global current_code
 
   current_code += 1
-  errno.errorcode[current_code] = code_def
+  dbrerrno.errorcode[current_code] = code_def
 
   return current_code
 
-dbrerrno = errno
 
 dbrerrno.SUCCESS = 0
 dbrerrno.errorcode[dbrerrno.SUCCESS] = "SUCCESS"
