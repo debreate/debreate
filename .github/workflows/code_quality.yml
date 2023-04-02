@@ -4,6 +4,8 @@ name: Code Quality Check
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
   wx-4-0:
