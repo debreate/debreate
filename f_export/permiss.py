@@ -6,6 +6,10 @@
 
 import os
 
+from libdbr.logger import getLogger
+
+
+__logger = getLogger()
 
 ## Sets files executable bit
 #
@@ -16,6 +20,8 @@ import os
 #  \param executable
 #  Sets or removes executable bit
 def SetFileExecutable(target, executable=True):
+  __logger.deprecated(__name__, SetFileExecutable.__name__, "os.chmod")
+
   if os.path.isfile(target):
     if executable:
       mode = 0o775
