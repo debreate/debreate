@@ -35,8 +35,8 @@ from ui.style            import layout as lyt
 logger = util.getLogger()
 
 # Font for the name
-bigfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
-sys_info_font = wx.Font(14, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+bigfont = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
+sys_info_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
 
 
 ## Dialog that shows information about the application

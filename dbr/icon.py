@@ -26,7 +26,4 @@ class Icon(wx.Icon):
       if suffix in bm_types:
         return bm_types[suffix]
 
-    if wx.MAJOR_VERSION > 2:
-      return wx.BITMAP_DEFAULT_TYPE
-
     return wx.BITMAP_TYPE_ANY

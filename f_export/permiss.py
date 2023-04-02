@@ -18,10 +18,10 @@ import os
 def SetFileExecutable(target, executable=True):
   if os.path.isfile(target):
     if executable:
-      mode = 0755
+      mode = 0o775
 
     else:
-      mode = 0644
+      mode = 0o664
 
     os.chmod(target, mode)
 

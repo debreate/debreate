@@ -441,7 +441,7 @@ class ListCtrl(BorderedPanel, ControlPanel):
   def OnResize(self, event=None):
     if (self.GetWindowStyleFlag()) & wx.LC_REPORT:
       # FIXME: -10 should be a dynamic number set by the sizer's padding
-      self.SetSize(wx.Size(self.GetParent().Size[0] - 10, self.Size[1]))
+      self.SetSize(wx.Size(self.GetParent().GetSize().Width - 10, self.GetSize().Height))
 
     if event:
       event.Skip()

@@ -13,7 +13,7 @@ class StatusBar(wx.StatusBar):
     sb_style = wx.STB_DEFAULT_STYLE
 
   else:
-    sb_style = wx.ST_SIZEGRIP
+    sb_style = wx.STB_SIZEGRIP
 
   def __init__(self, parent, ID=wx.ID_ANY, style=sb_style,
         name="Status"):

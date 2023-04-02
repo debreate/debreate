@@ -103,7 +103,7 @@ def getIconsDir(stripped=False):
 
 def checkWriteTree(_dir):
   if os.path.isfile(_dir):
-    exitWithError("cannot write to directory, file exists: {}".format(dir_target), errno.EEXIST)
+    exitWithError("cannot write to directory, file exists: {}".format(_dir), errno.EEXIST)
   while _dir.strip() and not os.path.isdir(_dir):
     _dir = os.path.dirname(_dir)
   if not os.access(_dir, os.W_OK):

@@ -78,7 +78,7 @@ class Wizard(wx.Panel):
     self.txt_title.SetForegroundColour((255, 255, 255))
 
     # font to use in the header
-    headerfont = wx.Font(18, wx.DEFAULT, wx.NORMAL, wx.BOLD)
+    headerfont = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
 
     self.txt_title.SetFont(headerfont)
 

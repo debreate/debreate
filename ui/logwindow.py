@@ -242,7 +242,7 @@ class LogWindow(wx.Dialog):
         wx.SafeYield()
         self.DspLog.ShowPosition(self.DspLog.GetLastPosition())
 
-      except wx.PyDeadObjectError:
+      except RuntimeError:
         tb_error = GS(traceback.format_exc())
 
         logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))

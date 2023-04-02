@@ -145,7 +145,7 @@ class StandardFileDialog(wx.FileDialog):
   def OnAccept(self, event=None):
     if self.IsSaveDialog():
       if self.Extension:
-        if not self.Filename.endswith(self.Extension):
+        if not self.GetFilename().endswith(self.Extension):
           # Adds extensions if not specified
           self.SetFilename(self.Filename)
 
