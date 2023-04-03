@@ -52,8 +52,7 @@ def parseCommandLine(task_list):
   args_parser.version = package_version
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
-  args_parser.add_argument("-q", "--quiet", action="store_true", help="Don't print detailed information.")
-  # ~ args_parser.add_argument("-t", "--task", choices=("install", "uninstall", "dist", "binary", "clean-deb"),
+  args_parser.add_argument("--verbose", action="store_true", help="Print detailed information.")
   args_parser.add_argument("-t", "--task", choices=tuple(task_list),
       default="install", help="\n".join(task_help))
   args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(), help="Installation target root directory.")
@@ -146,10 +145,10 @@ def compressFile(file_source, file_target):
   file_data = fropen.read()
   fropen.read()
 
-  fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=True)
+  fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=options.verbose)
 
 
-# --- build tasks --- #
+# --- file staging functions --- #
 
 def stageApp(prefix):
   print()
@@ -160,15 +159,15 @@ def stageApp(prefix):
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_app:
-    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=True)))
+    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=options.verbose)))
   for _file in files_app:
-    checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)))
+    checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=options.verbose)))
   exe = config.getValue("executable")
-  checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=True)))
+  checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=options.verbose)))
 
   # add desktop menu file
   file_menu = "{}.desktop".format(package_name)
-  checkError((fileio.copyFile(paths.join(dir_root, "data", file_menu), paths.join(prefix, "applications", file_menu), verbose=True)))
+  checkError((fileio.copyFile(paths.join(dir_root, "data", file_menu), paths.join(prefix, "applications", file_menu), verbose=options.verbose)))
 
 def stageData(prefix):
   print()
@@ -178,9 +177,9 @@ def stageData(prefix):
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_data:
-    checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=True)))
+    checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=options.verbose)))
   # copy icon to pixmaps directory
-  checkError((fileio.copyFile(paths.join(dir_target, "bitmaps/icon/64/logo.png"), paths.join(prefix, "pixmaps", package_name + ".png"), verbose=True)))
+  checkError((fileio.copyFile(paths.join(dir_target, "bitmaps/icon/64/logo.png"), paths.join(prefix, "pixmaps", package_name + ".png"), verbose=options.verbose)))
 
 def stageDoc(prefix):
   print()
@@ -190,7 +189,7 @@ def stageDoc(prefix):
 
   dir_target = paths.join(prefix, "doc/{}".format(package_name))
   for _file in files_doc:
-    fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=True)
+    fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=options.verbose)
 
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
@@ -217,8 +216,11 @@ def stageMimeInfo(prefix):
   mime_icon = paths.join(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
   conf_target = paths.join(dir_conf, "{}.xml".format(package_name))
   icon_target = paths.join(dir_icons, "application-x-dbp.svg")
-  checkError((fileio.copyFile(mime_conf, conf_target, verbose=True)))
-  checkError((fileio.copyFile(mime_icon, icon_target, verbose=True)))
+  checkError((fileio.copyFile(mime_conf, conf_target, verbose=options.verbose)))
+  checkError((fileio.copyFile(mime_icon, icon_target, verbose=options.verbose)))
+
+
+# --- build tasks --- #
 
 def taskInstall():
   if options.prefix == None:
@@ -234,10 +236,10 @@ def taskInstall():
   for obj in os.listdir(dir_stage):
     abspath = paths.join(dir_stage, obj)
     if not os.path.isdir(abspath):
-      checkError((fileio.moveFile(abspath, dir_install, obj, verbose=True)))
+      checkError((fileio.moveFile(abspath, dir_install, obj, verbose=options.verbose)))
     else:
-      checkError((fileio.moveDir(abspath, dir_install, obj, verbose=True)))
-  checkError((fileio.deleteDir(dir_stage, verbose=True)))
+      checkError((fileio.moveDir(abspath, dir_install, obj, verbose=options.verbose)))
+  checkError((fileio.deleteDir(dir_stage, verbose=options.verbose)))
 
   dir_data = paths.join(dir_install, "share", package_name)
   dir_bin = paths.join(dir_install, "bin")
@@ -246,7 +248,7 @@ def taskInstall():
   os.chmod(paths.join(dir_data, "init.py"), 0o775)
 
   createFileLink(paths.join(options.prefix, "share", package_name, config.getValue("executable")), paths.join(dir_bin, package_name))
-  fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
+  fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=options.verbose)
 
 def taskUpdateVersion():
   ver_string = package_version
@@ -268,23 +270,23 @@ def taskUpdateVersion():
   if len(ver) > 2:
     repl.append((r"^VERSION_rev = .*$", "VERSION_rev = {}".format(ver[2])))
   repl.append((r"^VERSION_dev = .*$", "VERSION_dev = {}".format(ver_dev)))
-  fileio.replace(paths.join(dir_root, "globals/application.py"), repl, count=1, verbose=True)
+  fileio.replace(paths.join(dir_root, "globals/application.py"), repl, count=1, verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "docs/Doxyfile"), r"^PROJECT_NUMBER         = .*",
-      "PROJECT_NUMBER         = {}".format(ver_string), count=1, verbose=True)
+      "PROJECT_NUMBER         = {}".format(ver_string), count=1, verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "locale/debreate.pot"),
       r'"Project-Id-Version: Debreate .*\\n"$',
-      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string), count=1, verbose=True)
+      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string), count=1, verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "Makefile"), r"^VERSION = .*$",
-      "VERSION = {}".format(ver_string), count=1, verbose=True)
+      "VERSION = {}".format(ver_string), count=1, verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string, count=1, fl=True,
-      verbose=True)
+      verbose=options.verbose)
 
   repl = [
     (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
     (r"^VERSION_dev=.*$", "VERSION_dev={}".format(ver_dev))
   ]
   # INFO file is deprecated, should be removed in future versions
-  fileio.replace(paths.join(dir_root, "INFO"), repl, count=1, verbose=True)
+  fileio.replace(paths.join(dir_root, "INFO"), repl, count=1, verbose=options.verbose)
 
 def taskStage():
   tasks.run("update-version")
@@ -329,14 +331,14 @@ def taskClean():
   logger.info("cleaning build files ...")
 
   dir_build = paths.join(dir_root, "build")
-  fileio.deleteDir(dir_build, verbose=True)
+  fileio.deleteDir(dir_build, verbose=options.verbose)
 
 def taskCleanStage():
   print()
   logger.info("cleaning staged files ...")
 
   dir_stage = paths.join(dir_root, "build/stage")
-  fileio.deleteDir(dir_stage, verbose=True)
+  fileio.deleteDir(dir_stage, verbose=options.verbose)
 
 def taskCleanDeb():
   print()
@@ -367,7 +369,7 @@ def taskDebBinary():
       continue
     abspath = paths.join(dir_parent, obj)
     if os.path.isfile(abspath):
-      fileio.moveFile(abspath, dir_dist, obj, verbose=True)
+      fileio.moveFile(abspath, dir_dist, obj, verbose=options.verbose)
 
 def taskPortable():
   tasks.run("stage")
@@ -379,10 +381,10 @@ def taskPortable():
   dir_dist = paths.join(dir_build, "dist")
   file_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version))
   # FIXME: packDir should create parent directory
-  fileio.makeDir(dir_dist, verbose=True)
-  fileio.packDir(dir_data, file_dist, verbose=True)
+  fileio.makeDir(dir_dist, verbose=options.verbose)
+  fileio.packDir(dir_data, file_dist, verbose=options.verbose)
 
-def taskRunTests(verbose=False):
+def taskRunTests():
   from libdbr.misc import runTest
 
   dir_tests = paths.join(dir_root, "tests")
@@ -411,12 +413,12 @@ def taskRunTests(verbose=False):
   logger.info("running introspection tests (failure is ok) ...")
   for test_name in introspect_tests:
     # for debugging, it is ok if these tests fail
-    res, err = runTest(test_name, introspect_tests[test_name], verbose=verbose)
+    res, err = runTest(test_name, introspect_tests[test_name], verbose=options.verbose)
     logger.info("result: {}, message: {}".format(res, err))
   print()
   logger.info("running standard tests ...")
   for test_name in standard_tests:
-    res, err = runTest(test_name, standard_tests[test_name], verbose=verbose)
+    res, err = runTest(test_name, standard_tests[test_name], verbose=options.verbose)
     if res != 0:
       logger.error("{}: failed".format(test_name))
       sys.exit(res)
