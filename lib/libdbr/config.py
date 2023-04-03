@@ -39,9 +39,13 @@ def setFile(filepath):
 #
 #  @return
 #    List of file contents.
-def __parseLines():
+#  @param filepath
+#    Parse filepath instead of path set with setFile
+def __parseLines(filepath=None):
+  if filepath != None:
+    __config_file = filepath
   if not __config_file:
-    __logger.error("cannot parse config, file path not set with 'setFile'")
+    __logger.error("cannot parse config, file path not set with 'setFile' & 'filepath' arg not set")
     return []
   if not os.path.isfile(__config_file):
     __logger.error("cannot parse config, file doesn't exist: {}".format(__config_file))
@@ -77,8 +81,10 @@ def __parseLines():
 #
 #  @return
 #    Dictionary of key-value pairs.
-def parseFile():
-  lines = __parseLines()
+#  @param filepath
+#    Parse filepath instead of path set with setFile
+def parseFile(filepath=None):
+  lines = __parseLines(filepath)
   tmp = {}
   for line in lines:
     # get key-value pairs
@@ -102,10 +108,12 @@ def load():
 #    Key identifier.
 #  @param default
 #    Default value if key is not present in config.
-def getValue(key, default=None):
+#  @param filepath
+#    Parse filepath instead of path set with setFile
+def getValue(key, default=None, filepath=None):
   tmp = dict(__config_cache)
-  if not tmp:
-    tmp = parseFile()
+  if not tmp or filepath != None:
+    tmp = parseFile(filepath)
   if key not in tmp:
     value = default
   else:
