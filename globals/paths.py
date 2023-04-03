@@ -10,9 +10,14 @@ import os, sys
 
 from globals.strings import GS
 from globals.strings import IsString
+from libdbr.logger   import getLogger
 
+
+logger = getLogger()
 
 def getAppDir():
+  logger.deprecated(__name__, getAppDir.__name__, "libdbr.paths.getAppDir")
+
   ## Directory where app is installed
   #  HACK: test
   #  HACK: Call os.path.dirname twice to get root directory.
@@ -21,6 +26,8 @@ def getAppDir():
   return GS(os.path.dirname(os.path.dirname(__file__)))
 
 def getHomeDir():
+  logger.deprecated(__name__, getHomeDir.__name__, "libdbr.paths.getHomeDir")
+
   if sys.platform == "win32":
     return os.getenv("USERPROFILE")
   else:

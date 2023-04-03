@@ -44,6 +44,16 @@ def getAppPath():
 def getAppDir():
   return os.path.dirname(getAppPath())
 
+## Retrieves current user's home directory.
+#
+#  @return
+#    Absolute path to home directory.
+def getHomeDir():
+  if sys.platform == "win32":
+    return os.getenv("USERPROFILE")
+  else:
+    return os.getenv("HOME")
+
 ## Retrieves root directory for current system.
 #
 #  @return
