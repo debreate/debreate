@@ -275,6 +275,9 @@ def taskUpdateVersion():
   ver_string = package_version
   ver = ver_string.split(".")
   ver_dev = int(config.getValue("version_dev", 0))
+  ver_string_full = ver_string
+  if ver_dev > 0:
+    ver_string_full += "-dev{}".format(ver_dev)
 
   print()
   print("package:     {}".format(package_name))
@@ -291,16 +294,18 @@ def taskUpdateVersion():
   if len(ver) > 2:
     repl.append((r"^VERSION_rev = .*$", "VERSION_rev = {}".format(ver[2])))
   repl.append((r"^VERSION_dev = .*$", "VERSION_dev = {}".format(ver_dev)))
-  fileio.replace(paths.join(dir_root, "globals/application.py"), repl, count=1, verbose=options.verbose)
+  fileio.replace(paths.join(dir_root, "globals/application.py"), repl, count=1,
+      verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "docs/Doxyfile"), r"^PROJECT_NUMBER         = .*",
-      "PROJECT_NUMBER         = {}".format(ver_string), count=1, verbose=options.verbose)
+      "PROJECT_NUMBER         = {}".format(ver_string_full), count=1, verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "locale/debreate.pot"),
       r'"Project-Id-Version: Debreate .*\\n"$',
-      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string), count=1, verbose=options.verbose)
-  fileio.replace(paths.join(dir_root, "Makefile"), r"^VERSION = .*$",
-      "VERSION = {}".format(ver_string), count=1, verbose=options.verbose)
-  fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string, count=1, fl=True,
+      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string_full), count=1,
       verbose=options.verbose)
+  fileio.replace(paths.join(dir_root, "Makefile"), r"^VERSION = .*$",
+      "VERSION = {}".format(ver_string_full), count=1, verbose=options.verbose)
+  fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string_full, count=1,
+      fl=True, verbose=options.verbose)
 
   repl = [
     (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
