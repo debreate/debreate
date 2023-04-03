@@ -325,14 +325,23 @@ def taskUninstall():
   checkError((fileio.deleteFile(paths.join(options.prefix, "share/pixmaps", package_name + ".png"), True)))
 
 def taskClean():
+  print()
+  logger.info("cleaning build files ...")
+
   dir_build = paths.join(dir_root, "build")
   fileio.deleteDir(dir_build, verbose=True)
 
 def taskCleanStage():
+  print()
+  logger.info("cleaning staged files ...")
+
   dir_stage = paths.join(dir_root, "build/stage")
   fileio.deleteDir(dir_stage, verbose=True)
 
 def taskCleanDeb():
+  print()
+  logger.info("cleaning temporary Debian files ...")
+
   for _dir in ("debian/debreate", "debian/.debhelper"):
     fileio.deleteDir(os.path.join(dir_root, os.path.normpath(_dir)), True)
   for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
@@ -344,6 +353,9 @@ def taskDist():
 
 def taskDebBinary():
   taskCleanDeb()
+  print()
+  logger.info("building Debian binary package ...")
+
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
   dir_parent = os.path.dirname(dir_root)
@@ -359,6 +371,9 @@ def taskDebBinary():
 
 def taskPortable():
   tasks.run("stage")
+  print()
+  logger.info("building portable binary backage ...")
+
   dir_build = paths.join(dir_root, "build")
   dir_data = paths.join(dir_build, "stage/share/debreate")
   dir_dist = paths.join(dir_build, "dist")
