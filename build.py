@@ -359,6 +359,7 @@ def taskClean():
 
   dir_build = paths.join(dir_root, "build")
   fileio.deleteDir(dir_build, verbose=options.verbose)
+  tasks.run("clean-deb")
 
 def taskCleanStage():
   print()
