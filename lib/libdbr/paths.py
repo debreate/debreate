@@ -108,3 +108,30 @@ def getExecutable(cmd):
 #    True if file found.
 def commandExists(cmd):
   return getExecutable(cmd) != None
+
+
+__terminals = (
+  ("x-terminal-emulator", "-e"),
+  ("xterm", "-e"),
+  ("qterminal", "-e"),
+  ("xfce4-terminal", "-x"),
+  ("lxterminal", "-e"),
+  ("rxvt", "-e"),
+  ("xvt", "-e"),
+  # FIXME: app does not launch after successfully installing wxPython with input from gnome-terminal
+  ("gnome-terminal", "--"),
+  ("mate-terminal", "--")
+)
+
+## Attempts to retrieve a usable terminal emulator for the system.
+#
+#  @return
+#    Terminal executable & parameter to execute a sub-command.
+def getSystemTerminal():
+  if sys.platform == "win32":
+    return getExecutable("cmd"), None
+  for pair in __terminals:
+    texec = getExecutable(pair[0])
+    if texec:
+      return texec, pair[1]
+  return None, None
