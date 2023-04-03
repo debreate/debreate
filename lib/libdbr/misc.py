@@ -13,6 +13,7 @@ import importlib
 import traceback
 import types
 
+from libdbr        import fileio
 from libdbr.logger import getLogger
 
 
@@ -30,6 +31,32 @@ def generateMD5Hash(data):
   tmp = hashlib.md5()
   tmp.update(data)
   return tmp.hexdigest()
+
+## Parses most recent changes from a changelog-style file.
+#
+#  @param changelog
+#    Path to changelog file.
+#  @return
+#    String containing topmost section of changelog data.
+def getLatestChanges(changelog):
+  data = fileio.readFile(changelog)
+  if not data:
+    return ""
+  changes = []
+  in_changes = False
+  for li in data.split("\n"):
+    if li.strip():
+      in_changes = True
+      changes.append(li)
+    elif in_changes:
+      break
+  if changes:
+    # remove first line if it is a section header
+    header = changes[0].strip()
+    if not header.startswith("-") and not header.startswith("*"):
+      changes.pop(0)
+    return "\n".join(changes)
+  return ""
 
 ## Run a Unit test.
 #
