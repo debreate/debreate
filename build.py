@@ -202,9 +202,7 @@ def stageLocale(prefix):
   logger.info("staging locale files ...")
 
   dir_source = paths.join(dir_root, "locale")
-  # ~ dir_target = paths.join(prefix, "locale")
-  # TODO: use system locale directory when installed
-  dir_target = paths.join(prefix, package_name, "locale")
+  dir_target = paths.join(prefix, "locale")
 
   for ROOT, DIRS, FILES in os.walk(dir_source):
     for basename in FILES:
@@ -337,21 +335,33 @@ def taskUninstall():
   print()
   logger.info("uninstalling ...")
 
-  checkError((fileio.deleteFile(os.path.join(getBinDir(), package_name), True)))
-  checkError((fileio.deleteDir(getDataDir(), True)))
-  checkError((fileio.deleteDir(getDocDir(), True)))
+  checkError((fileio.deleteFile(os.path.join(getBinDir(), package_name), options.verbose)))
+  checkError((fileio.deleteDir(getDataDir(), options.verbose)))
+  checkError((fileio.deleteDir(getDocDir(), options.verbose)))
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
     file_man = os.path.basename(_file) + ".gz"
     dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    checkError((fileio.deleteFile(os.path.join(dir_man, file_man), True)))
+    checkError((fileio.deleteFile(os.path.join(dir_man, file_man), options.verbose)))
 
-  # TODO: uninstall locale files
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/icons/gnome/scalable/mimetype/application-x-dbp.svg"), options.verbose)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/mime/packages/{}.xml".format(package_name)), options.verbose)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/applications", package_name + ".desktop"), options.verbose)))
+  checkError((fileio.deleteFile(paths.join(options.prefix, "share/pixmaps", package_name + ".png"), options.verbose)))
 
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/icons/gnome/scalable/mimetype/application-x-dbp.svg"), True)))
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/mime/packages/{}.xml".format(package_name)), True)))
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/applications", package_name + ".desktop"), True)))
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/pixmaps", package_name + ".png"), True)))
+  dir_loc = paths.join(dir_root, "locale")
+  if os.path.isdir(dir_loc):
+    logger.info("uninstalling locale files ...")
+    for ROOT, DIRS, FILES in os.walk(dir_loc):
+      for basename in FILES:
+        if not basename.endswith(".po"):
+          continue
+        rel_path = paths.join(ROOT, basename)[len(dir_loc)+1:]
+        loc_code = os.path.split(rel_path)[0]
+        mo_target = paths.join(options.prefix, "share/locale", loc_code, "LC_MESSAGES",
+            basename[0:-2] + "mo")
+        if os.path.isfile(mo_target):
+          checkError((fileio.deleteFile(mo_target, options.verbose)))
 
 def taskClean():
   print()

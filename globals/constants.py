@@ -12,7 +12,10 @@ import os, wx
 from dbr.language  import GT
 from globals       import paths
 from libdbr.fileio import readFile
+from libdbr.logger import getLogger
 
+
+__logger = getLogger()
 
 # Local modules
 # *** Debreate Information *** #
@@ -22,6 +25,8 @@ if os.path.isfile("{}/INSTALLED".format(paths.getAppDir())):
   INSTALLED = True
 
 def GetPrefix():
+  __logger.deprecated(__name__, GetPrefix.__name__, "util.appinfo.getInstallPrefix")
+
   global INSTALLED
 
   dir_app = paths.getAppDir()

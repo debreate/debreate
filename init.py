@@ -40,11 +40,7 @@ parsed_path = GetParsedPath()
 
 dir_app = paths.getAppDir()
 
-if util.appinfo.isPortable():
-  setTranslator(paths.join(paths.getAppDir(), "locale"))
-  # FIXME: use system locale directory when installed
-else:
-  setTranslator(paths.join(paths.getAppDir(), "locale"))
+setTranslator(util.appinfo.getLocaleDir())
 
 # Compiles python source into bytecode
 if "compile" in parsed_commands:
