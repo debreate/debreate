@@ -422,7 +422,7 @@ class AboutDialog(wx.Dialog):
     if INSTALLED:
       license_path = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/LICENSE.txt"))
     else:
-      license_path = os.path.normpath(os.path.join(paths.getAppDir(), "docs/LICENSE.txt"))
+      license_path = os.path.normpath(os.path.join(paths.getAppDir(), "LICENSE.txt"))
 
     if os.path.isfile(license_path):
       lic_text = readFile(license_path)
