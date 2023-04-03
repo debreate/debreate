@@ -200,7 +200,28 @@ def stageDoc(prefix):
 def stageLocale(prefix):
   print()
   logger.info("staging locale files ...")
-  # TODO:
+
+  dir_source = paths.join(dir_root, "locale")
+  # ~ dir_target = paths.join(prefix, "locale")
+  # TODO: use system locale directory when installed
+  dir_target = paths.join(prefix, package_name, "locale")
+
+  for ROOT, DIRS, FILES in os.walk(dir_source):
+    for basename in FILES:
+      if not basename.endswith(".po"):
+        continue
+      filepath = paths.join(ROOT, basename)
+      loc_code = os.path.basename(os.path.split(filepath)[0])
+      loc_dir = paths.join(dir_target, loc_code, "LC_MESSAGES")
+      fileio.makeDir(loc_dir)
+      mo_target = paths.join(loc_dir, basename[0:-2] + "mo")
+      # FIXME: Python library for compiling translations?
+      cmd_args = ["msgfmt", "-o", mo_target, filepath]
+      if options.verbose:
+        cmd_args.insert(1, "-v")
+      subprocess.run(cmd_args, check=True)
+      if options.verbose:
+        print("compile locale '{}'".format(mo_target))
 
 def stageMimeInfo(prefix):
   print()
