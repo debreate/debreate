@@ -11,6 +11,13 @@
 import hashlib
 
 
+
+## Creates a hash from string or bytes data.
+#
+#  @param data
+#    String or bytes data to process.
+#  @return
+#    MD5 hex hash string.
 def generateMD5Hash(data):
   if type(data) == str:
     data = data.encode()
