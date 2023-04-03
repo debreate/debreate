@@ -147,24 +147,15 @@ if "version" in parsed_args_s:
 
 
 if "help" in parsed_args_s:
-  if INSTALLED:
-    res = subprocess.run(["man", "debreate"])
-
+  if util.appinfo.isPortable():
+    res = subprocess.run(["man", "--manpath=\"{}/man\"".format(dir_app), "debreate"],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
   else:
-    res = subprocess.run(["man", "--manpath=\"{}/man\"".format(dir_app), "debreate"])
-
-  help_output = (res.returncode, res.stdout)
-
-
-  if help_output[0]:
-    print("ERROR: Could not locate manpage")
-
-    sys.exit(help_output[0])
-
-
-  help_output = GS(help_output[1])
-  print("\n".join(help_output.split("\n")[2:-1]))
-
+    res = subprocess.run(["man", "debreate"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  if res.returncode != 0:
+    print("ERROR: Could not locate manpage: {}".format(res.stderr.decode("utf-8")))
+    sys.exit(res.returncode)
+  print("\n".join(res.stdout.decode("utf-8").split("\n")[2:-1]))
   sys.exit(0)
 
 
