@@ -21,7 +21,13 @@ def join(*paths):
   for p in paths:
     if path:
       path += os.sep
-    path += p
+    if type(p) in (list, tuple):
+      # ensure list is mutable
+      p = list(p)
+      while len(p) > 0:
+        path = join(path, p.pop(0))
+    else:
+      path += p
   return os.path.normpath(path)
 
 ## Retrieves executed script.
