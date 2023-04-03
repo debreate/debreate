@@ -17,13 +17,14 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 import globals.paths
 import util
 
-from command_line      import GetParsedPath
-from command_line      import ParseArguments
-from command_line      import parsed_commands
-from command_line      import parsed_args_s
-from command_line      import parsed_args_v
-from libdbr            import paths
-from dbr.language      import setTranslator
+from command_line import GetParsedPath
+from command_line import ParseArguments
+from command_line import parsed_commands
+from command_line import parsed_args_s
+from command_line import parsed_args_v
+from libdbr       import paths
+from libdbr       import sysinfo
+from dbr.language import setTranslator
 
 logger = util.getLogger()
 logger.startLogging(globals.paths.getLogsDir())
@@ -94,6 +95,7 @@ if "clean" in parsed_commands:
 
   sys.exit(0)
 
+logger.info("operating system name: {}".format(sysinfo.getOSName()))
 
 import subprocess, gettext
 
