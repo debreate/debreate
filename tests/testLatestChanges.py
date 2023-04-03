@@ -15,5 +15,7 @@ from libdbr.misc import getLatestChanges
 def init():
   changelog = paths.join(paths.getAppDir(), "docs/changelog")
   assert os.path.isfile(changelog)
-  changes = getLatestChanges(changelog)
-  assert changes.strip() != ""
+  changes = getLatestChanges(changelog).split("\n")
+  assert len(changes) > 0
+  for li in changes:
+    assert li.strip() != ""
