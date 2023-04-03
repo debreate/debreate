@@ -5,14 +5,13 @@
 
 
 from globals.execute import GetCommandOutput
-from globals.execute import GetExecutable
+from libdbr          import paths
 
 
 ## TODO: Doxygen
 def GetFileMimeType(filename):
-  CMD_file = GetExecutable("file")
-
+  # FIXME: need platform independent method to get mimetypes
+  CMD_file = paths.getExecutable("file")
   if not CMD_file:
-    return None
-
+    return "application/octet-stream"
   return GetCommandOutput(CMD_file, ("--mime-type", "--brief", filename,))
