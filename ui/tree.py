@@ -1117,7 +1117,10 @@ class DirectoryTree(wx.TreeCtrl):
 
 
   ## Make sure image list cannot be changed
-  def SetImageList(self):
+  #
+  #  @param _faux
+  #    Unused parameter in case called with an attempt to change image list.
+  def SetImageList(self, _dummy=None):
     return wx.TreeCtrl.SetImageList(self, ImageList)
 
 
