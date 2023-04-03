@@ -3,16 +3,19 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
-
-import os, gettext
+import gettext
+import os
 
 from globals.strings import GS
+from libdbr.logger   import getLogger
 
+
+__logger = getLogger()
 
 TRANSLATION_DOMAIN = "debreate"
-DIR_locale = os.path.join(os.path.dirname(os.path.dirname(__file__)), "locale")
+DIR_locale = ""
 
-gettext.install(TRANSLATION_DOMAIN, DIR_locale)
+__translator = None
 
 
 ## Ensure gettext
@@ -23,21 +26,28 @@ gettext.install(TRANSLATION_DOMAIN, DIR_locale)
 #  \param str_value
 #  \b \e str : String to be translated
 def GT(str_value):
-  return gettext.gettext(GS(str_value))
+  if not __translator:
+    return GS(str_value)
+  return __translator(GS(str_value))
 
 
 ## Retrieves the path of gettext locale translations
 def GetLocaleDir():
-  global DIR_locale
+  __logger.deprecated(__name__, GetLocaleDir.__init__)
 
   return DIR_locale
 
 
-## Sets the path for the gettext locale translations
+## Sets locale translator.
 #
-#  \param path
-#  New directory location
-def SetLocaleDir(path):
-  global DIR_locale
-
+#  @param path
+#    Directory to search for gettext locale translations.
+def setTranslator(path):
+  global __translator, DIR_locale
   DIR_locale = path
+  try:
+    __translator = gettext.translation(TRANSLATION_DOMAIN, path).gettext
+  except FileNotFoundError:
+    __translator = None
+
+  __logger.debug("locale directory: {}".format(path))

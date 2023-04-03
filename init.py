@@ -17,12 +17,13 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 import globals.paths
 import util
 
-from command_line  import GetParsedPath
-from command_line  import ParseArguments
-from command_line  import parsed_commands
-from command_line  import parsed_args_s
-from command_line  import parsed_args_v
-from libdbr        import paths
+from command_line      import GetParsedPath
+from command_line      import ParseArguments
+from command_line      import parsed_commands
+from command_line      import parsed_args_s
+from command_line      import parsed_args_v
+from libdbr            import paths
+from dbr.language      import setTranslator
 
 logger = util.getLogger()
 logger.startLogging(globals.paths.getLogsDir())
@@ -39,6 +40,11 @@ parsed_path = GetParsedPath()
 
 dir_app = paths.getAppDir()
 
+if util.appinfo.isPortable():
+  setTranslator(paths.join(paths.getAppDir(), "locale"))
+  # FIXME: use system locale directory when installed
+else:
+  setTranslator(paths.join(paths.getAppDir(), "locale"))
 
 # Compiles python source into bytecode
 if "compile" in parsed_commands:
@@ -123,24 +129,14 @@ from dbr.config          import GetAllConfigKeys
 from dbr.config          import GetDefaultConfigValue
 from dbr.language        import GetLocaleDir
 from dbr.language        import GT
-from dbr.language        import SetLocaleDir
-from dbr.language        import TRANSLATION_DOMAIN
 from dbr.workingdir      import ChangeWorkingDirectory
 from globals.application import VERSION_string
-from globals.constants   import INSTALLED
-from globals.constants   import PREFIX
 from globals.strings     import GS
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
 from main                import MainWindow
 from startup.firstrun    import LaunchFirstRun
 from startup.startup     import SetAppInitialized
-
-
-# FIXME: How to check if text domain is set correctly?
-if INSTALLED:
-  SetLocaleDir(os.path.join(PREFIX, "share", "locale"))
-  gettext.install(TRANSLATION_DOMAIN, GetLocaleDir())
 
 
 if ".py" in script_name:
