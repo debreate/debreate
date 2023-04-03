@@ -8,7 +8,10 @@ from datetime import datetime
 from time     import strftime
 
 from globals.strings import GS
+from libdbr.logger   import getLogger
 
+
+logger = getLogger()
 
 ## Formatting methods for dates & times
 #
@@ -26,6 +29,8 @@ class dtfmt:
 #  \return
 #  \b \e String representation of digit
 def _digit_to_string(number):
+  logger.deprecated(__name__, _digit_to_string.__name__, "libdbr.dateinfo.digitToString")
+
   if number < 10:
     return GS("0{}".format(number))
 
@@ -38,6 +43,8 @@ def _digit_to_string(number):
 #  \return
 #  \b \e String representation of the current year
 def GetYear(fmt=dtfmt.DEFAULT, string_value=True):
+  logger.deprecated(__name__, GetYear.__name__, "libdbr.dateinfo.getYear")
+
   year = GS(strftime("%Y"))
 
   if not string_value:
@@ -48,6 +55,8 @@ def GetYear(fmt=dtfmt.DEFAULT, string_value=True):
 
 ## TODO: Doxygen
 def GetMonthInt(string_value=False):
+  logger.deprecated(__name__, GetMonthInt.__name__, "libdbr.dateinfo.getMonth")
+
   month = GS(strftime("%m"))
 
   if not string_value:
@@ -58,6 +67,8 @@ def GetMonthInt(string_value=False):
 
 ## TODO: Doxygen
 def GetDayInt(string_value=False):
+  logger.deprecated(__name__, GetDayInt.__name__, "libdbr.dateinfo.getDay")
+
   day = GS(strftime("%d"))
 
   if not string_value:
@@ -73,6 +84,8 @@ def GetDayInt(string_value=False):
 #  \return
 #  \b \e String representation of date
 def GetDate(fmt=dtfmt.DEFAULT):
+  logger.deprecated(__name__, GetDate.__name__, "libdbr.dateinfo.getDate")
+
   yr = GetYear()
 
   if fmt == dtfmt.CL:
@@ -90,6 +103,8 @@ def GetDate(fmt=dtfmt.DEFAULT):
 
 ## Retrieves current time
 def GetTime(fmt=dtfmt.DEFAULT):
+  logger.deprecated(__name__, GetTime.__name__, "libdbr.dateinfo.getTime")
+
   ms = None
   current_time = None
 
@@ -109,4 +124,6 @@ def GetTime(fmt=dtfmt.DEFAULT):
 
 ## Retrieves current time zone
 def GetTimeZone(fmt=dtfmt.DEFAULT):
+  logger.deprecated(__name__, GetTimeZone.__name__, "libdbr.dateinfo.getTimeZone")
+
   return GS(strftime("%z"))

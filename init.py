@@ -14,6 +14,7 @@ import errno, os, sys
 # include libdbr in module search path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
+import globals.paths
 import util
 
 from command_line  import GetParsedPath
@@ -21,10 +22,10 @@ from command_line  import ParseArguments
 from command_line  import parsed_commands
 from command_line  import parsed_args_s
 from command_line  import parsed_args_v
-from globals       import paths
+from libdbr        import paths
 
 logger = util.getLogger()
-logger.startLogging()
+logger.startLogging(globals.paths.getLogsDir())
 
 ## Module name displayed for Logger output.
 #  Should be set to 'init' or actual name of executable script.
