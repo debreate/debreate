@@ -643,6 +643,9 @@ msgstr  ""
 msgid   "GitHub Project"
 msgstr  ""
 
+msgid   "GitLab Project"
+msgstr  ""
+
 msgid   "Got error when attempting to retrieve field value"
 msgstr  ""
 

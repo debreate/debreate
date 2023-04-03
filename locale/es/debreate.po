@@ -646,6 +646,9 @@ msgstr  "Determinando tamaño de la instalación"
 msgid   "GitHub Project"
 msgstr  "Página del Proyecto en GitHub"
 
+msgid   "GitLab Project"
+msgstr  "Página del Proyecto en GitLab"
+
 msgid   "Got error when attempting to retrieve field value"
 msgstr  ""
 
@@ -1296,7 +1299,7 @@ msgid   "Source"
 msgstr  "Fuente"
 
 msgid   "Sourceforge Project"
-msgstr  "Página del Proyecto en Sourceforge"
+msgstr  "Página del Proyecto en SourceForge"
 
 msgid   "Specifies whether application should be run in a terminal"
 msgstr  ""

@@ -25,6 +25,7 @@ from dbr.timer            import DebreateTimer
 from globals              import paths
 from globals.application  import APP_homepage
 from globals.application  import APP_project_gh
+from globals.application  import APP_project_gl
 from globals.application  import APP_project_sf
 from globals.application  import AUTHOR_email
 from globals.application  import AUTHOR_name
@@ -189,6 +190,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     about.SetWebsites((
       (GT("Homepage"), APP_homepage),
       (GT("GitHub Project"), APP_project_gh),
+      (GT("GitLab Project"), APP_project_gl),
       (GT("Sourceforge Project"), APP_project_sf),
     ))
 

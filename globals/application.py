@@ -12,15 +12,18 @@ from globals.paths import getBitmapsDir
 
 # *** Application information *** #
 ## Debreate's main homepage
-APP_homepage = "https://antumdeluge.github.io/debreate-web/"
+APP_homepage = "https://debreate.github.io/"
 
 ## The old SF homepage
 APP_homepage_sf = "http://debreate.sourceforge.net/"
 
 ## GitHub project page
-APP_project_gh = "https://github.com/AntumDeluge/debreate"
+APP_project_gh = "https://github.com/debreate/debreate"
 
-## Sourceforge project page
+## GitLab project page
+APP_project_gl = "https://gitlab.com/AntumDeluge/debreate"
+
+## SourceForge project page
 APP_project_sf = "https://sourceforge.net/projects/debreate"
 
 ## Application's logo
