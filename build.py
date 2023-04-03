@@ -248,7 +248,46 @@ def taskInstall():
   createFileLink(paths.join(options.prefix, "share", package_name, config.getValue("executable")), paths.join(dir_bin, package_name))
   fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=True)
 
+def taskUpdateVersion():
+  ver_string = package_version
+  ver = ver_string.split(".")
+  ver_dev = int(config.getValue("version_dev", 0))
+
+  print()
+  print("package:     {}".format(package_name))
+  print("version:     {}".format(package_version))
+  print("dev version: {}".format(ver_dev))
+
+  print()
+  logger.info("updating version information ...")
+
+  repl = [
+    (r"^VERSION_maj = .*$", "VERSION_maj = {}".format(ver[0])),
+    (r"^VERSION_min = .*$", "VERSION_min = {}".format(ver[1]))
+  ]
+  if len(ver) > 2:
+    repl.append((r"^VERSION_rev = .*$", "VERSION_rev = {}".format(ver[2])))
+  repl.append((r"^VERSION_dev = .*$", "VERSION_dev = {}".format(ver_dev)))
+  fileio.replace(paths.join(dir_root, "globals/application.py"), repl, count=1, verbose=True)
+  fileio.replace(paths.join(dir_root, "docs/Doxyfile"), r"^PROJECT_NUMBER         = .*",
+      "PROJECT_NUMBER         = {}".format(ver_string), count=1, verbose=True)
+  fileio.replace(paths.join(dir_root, "locale/debreate.pot"),
+      r'"Project-Id-Version: Debreate .*\\n"$',
+      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string), count=1, verbose=True)
+  fileio.replace(paths.join(dir_root, "Makefile"), r"^VERSION = .*$",
+      "VERSION = {}".format(ver_string), count=1, verbose=True)
+  fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string, count=1, fl=True,
+      verbose=True)
+
+  repl = [
+    (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
+    (r"^VERSION_dev=.*$", "VERSION_dev={}".format(ver_dev))
+  ]
+  # INFO file is deprecated, should be removed in future versions
+  fileio.replace(paths.join(dir_root, "INFO"), repl, count=1, verbose=True)
+
 def taskStage():
+  tasks.run("update-version")
   tasks.run("clean-stage")
   dir_stage = paths.join(dir_root, "build/stage")
   dir_data = paths.join(dir_stage, "share")
@@ -342,6 +381,7 @@ def initTasks(task_list):
   addTask(task_list, "clean", taskClean, "Remove files from build directory.")
   addTask(task_list, "clean-stage", taskCleanStage, "Remove files from stage directory.")
   addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
+  addTask(task_list, "update-version", taskUpdateVersion, "Update version information from build.conf.")
   return task_list
 
 # --- execution insertion point --- #
