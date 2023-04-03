@@ -64,7 +64,7 @@ def runTest(test_name, test_file=None, verbose=False):
     return 1, msg
   try:
     res = [test_data.init()]
-  except AssertionError:
+  except:
     # XXX: is there a standard code for assertion errors?
     res = [1, traceback.format_exc()]
   err = None
