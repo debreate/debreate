@@ -7,8 +7,10 @@ on:
   pull_request:
     branches: [master]
 
+# TODO: run tests on more platforms (BSD, Windows, OS X, etc.)
+
 jobs:
-  unit-tests:
+  unit-tests-ubuntu:
     runs-on: ubuntu-22.04
     defaults:
       run:
