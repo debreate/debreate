@@ -637,3 +637,56 @@ def unpackArchive(filepath, dir_target=None, verbose=False):
   # return to original directory
   os.chdir(dir_start)
   return 0, None
+
+## Replace a pattern in a file.
+#
+#  @param filepath
+#    Path to file to be updated.
+#  @param patterns
+#    Pattern to search for in file or list of pattern=replacement tuples.
+#  @param replacement
+#    Replacement string.
+#  @param count
+#    Number of instances to replace.
+#  @param flags
+#    Flags to pass to regex matcher.
+#  @param fl
+#    If true, only replace first non-whitespace line of file.
+#  @param verbose
+#    If true, print extra information.
+def replace(filepath, patterns, replacement=None, count=0, flags=re.M, fl=False, verbose=False):
+  if type(patterns) not in (list, tuple):
+    patterns = [(patterns, replacement)]
+  data_old = readFile(filepath)
+  if not data_old:
+    if verbose:
+      print("(" + __name__ + "." + replace.__name__ + ") no data found in '{}'".format(filepath))
+    return
+  data_head = data_old
+  data_tail = []
+  if fl:
+    data_head = []
+    in_head = True
+    for li in data_old.split("\n"):
+      if in_head:
+        data_head.append(li)
+      else:
+        data_tail.append(li)
+      if li.strip():
+        in_head = False
+    data_head = "\n".join(data_head)
+
+  for pair in patterns:
+    p_search = pair[0]
+    p_replace = pair[1]
+    if p_search == None or p_replace == None:
+      print("WARNING: (" + __name__ + "." + replace.__name__ + ") pattern or replacement was None type")
+      continue
+    data_head = re.sub(p_search, p_replace, data_head, count, flags)
+
+  if fl:
+    data_head = "\n".join([data_head] + data_tail)
+  if data_head != data_old:
+    writeFile(filepath, data_head)
+    if verbose:
+      print("updated file '{}'".format(filepath))
