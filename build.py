@@ -304,8 +304,9 @@ def taskUpdateVersion():
       verbose=options.verbose)
   fileio.replace(paths.join(dir_root, "Makefile"), r"^VERSION = .*$",
       "VERSION = {}".format(ver_string_full), count=1, verbose=options.verbose)
-  fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string_full, count=1,
-      fl=True, verbose=options.verbose)
+  if ver_dev == 0:
+    fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string_full, count=1,
+        fl=True, verbose=options.verbose)
 
   repl = [
     (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
