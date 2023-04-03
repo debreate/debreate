@@ -24,6 +24,20 @@ def join(*paths):
     path += p
   return os.path.normpath(path)
 
+## Retrieves executed script.
+#
+#  @return
+#    Absolute path to script filename.
+def getScriptPath():
+  return os.path.realpath(sys.argv[0])
+
+## Retrieves directory of executed script.
+#
+#  @return
+#    Absolute path to script parent directory.
+def getAppRoot():
+  return os.path.dirname(getScriptPath())
+
 ## Retrieves root directory for current system.
 #
 #  @return
