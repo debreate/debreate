@@ -382,6 +382,47 @@ def taskPortable():
   fileio.makeDir(dir_dist, verbose=True)
   fileio.packDir(dir_data, file_dist, verbose=True)
 
+def taskRunTests(verbose=False):
+  from libdbr.misc import runTest
+
+  dir_tests = paths.join(dir_root, "tests")
+  if not os.path.isdir(dir_tests):
+    return
+
+  # add tests directory to module search path
+  sys.path.insert(0, dir_tests)
+  introspect_tests = {}
+  standard_tests = {}
+
+  for ROOT, DIRS, FILES in os.walk(dir_tests):
+    for basename in FILES:
+      if not basename.endswith(".py") or not basename.startswith("test"):
+        continue
+      test_file = paths.join(ROOT, basename)
+      if os.path.isdir(test_file):
+        continue
+      test_name = test_file[len(dir_tests)+1:-3].replace(os.sep, ".")
+      if test_name.startswith("introspect."):
+        introspect_tests[test_name] = test_file
+      else:
+        standard_tests[test_name] = test_file
+
+  print()
+  logger.info("running introspection tests (failure is ok) ...")
+  for test_name in introspect_tests:
+    # for debugging, it is ok if these tests fail
+    res, err = runTest(test_name, introspect_tests[test_name], verbose=verbose)
+    logger.info("result: {}, message: {}".format(res, err))
+  print()
+  logger.info("running standard tests ...")
+  for test_name in standard_tests:
+    res, err = runTest(test_name, standard_tests[test_name], verbose=verbose)
+    if res != 0:
+      logger.error("{}: failed".format(test_name))
+      sys.exit(res)
+    else:
+      logger.info("{}: OK".format(test_name))
+
 def addTask(task_list, name, action, desc):
   tasks.add(name, action)
   task_list[name] = desc
@@ -397,6 +438,7 @@ def initTasks(task_list):
   addTask(task_list, "clean-stage", taskCleanStage, "Remove files from stage directory.")
   addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
   addTask(task_list, "update-version", taskUpdateVersion, "Update version information from build.conf.")
+  addTask(task_list, "run-tests", taskRunTests, "Run configured tests.")
   return task_list
 
 # --- execution insertion point --- #
