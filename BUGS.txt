@@ -2,7 +2,7 @@
 
 Mandatory:
 - Generated timestamp in changelog is "None"
-- file selection via directory tree broken
+- file selection via directory tree broken in wx 4.1
 
 Priority:
 

@@ -22,9 +22,10 @@ from command_line import ParseArguments
 from command_line import parsed_commands
 from command_line import parsed_args_s
 from command_line import parsed_args_v
+from dbr.language import setTranslator
 from libdbr       import paths
 from libdbr       import sysinfo
-from dbr.language import setTranslator
+from startup      import wxprompt
 
 logger = util.getLogger()
 logger.startLogging(globals.paths.getLogsDir())
@@ -102,14 +103,35 @@ import subprocess, gettext
 wx = util.getModule("wx")
 
 if not wx:
-  # FIXME: need a platform independent method to display a command input prompt
-  print("Debreate requires wxPython, do you want me to try to download and install it?")
-  if input("yes/no (this could take a while): ").lower().strip() not in ("y", "yes"):
-    logger.error("wxPython not found, cannot continue")
-    sys.exit(errno.ENOENT)
-  util.installModule("wheel")
-  util.installModule("setuptools")
-  util.installModule("wx", "wxpython==4.1.1")
+  if sys.stdout.isatty():
+    res = wxprompt.promptForWxInstall()
+  else:
+    cmd_args = [paths.join(paths.getAppDir(), "startup/wxprompt.py")]
+    os_name = sysinfo.getOSName()
+    t_param = None
+    if os_name == "win32":
+      # simply execute Python as console app
+      t_exec = paths.getExecutable("python3") or paths.getExecutable("python")
+      cmd_args.insert(0, t_exec)
+    else:
+      cmd_args.insert(0, sys.executable)
+      t_exec, t_param = paths.getSystemTerminal()
+      if not t_exec:
+        logger.error("install wxPython to use Debreate ({} -m pip install wxPython)".format(sys.executable))
+        sys.exit(errno.ENOENT)
+      if t_param:
+        cmd_args.insert(0, t_param)
+      cmd_args.insert(0, t_exec)
+    msg = "prompting for user input with terminal program: {}".format(t_exec)
+    if t_param:
+      msg += " " + t_param
+    logger.info(msg)
+    res = subprocess.run(cmd_args).returncode
+
+  logger.debug("terminal execution result: {} ({})".format(res, type(res)))
+
+  if res != 0:
+    sys.exit(res)
   wx = util.getModule("wx")
   if not wx:
     logger.error("failed to install wxPython")
