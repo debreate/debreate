@@ -42,15 +42,15 @@ def setFile(filepath):
 #  @param filepath
 #    Parse filepath instead of path set with setFile
 def __parseLines(filepath=None):
-  if filepath != None:
-    __config_file = filepath
-  if not __config_file:
+  if filepath == None:
+    filepath = __config_file
+  if not filepath:
     __logger.error("cannot parse config, file path not set with 'setFile' & 'filepath' arg not set")
     return []
-  if not os.path.isfile(__config_file):
-    __logger.error("cannot parse config, file doesn't exist: {}".format(__config_file))
+  if not os.path.isfile(filepath):
+    __logger.error("cannot parse config, file doesn't exist: {}".format(filepath))
     return []
-  lines_in = readFile(__config_file).split("\n")
+  lines_in = readFile(filepath).split("\n")
   lines = []
   lidx = 0
   for line_orig in lines_in:
