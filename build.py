@@ -486,7 +486,8 @@ def initTasks(task_list):
 def main():
   global options, printUsage, package_name, package_version
 
-  config.setFile(os.path.join(dir_root, "build.conf")).load()
+  config.setFile(os.path.join(dir_root, "build.conf"))
+  config.load()
 
   package_name = config.getValue("package")
   package_version = config.getValue("version")

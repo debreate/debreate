@@ -13,8 +13,6 @@
 import os
 import re
 
-import libdbr
-
 from libdbr.fileio import readFile
 from libdbr.fileio import writeFile
 from libdbr.logger import getLogger
@@ -28,12 +26,9 @@ __config_cache = {}
 #
 #  @param filepath
 #    String path to file.
-#  @return
-#    libdbr.config module.
 def setFile(filepath):
   global __config_file
   __config_file = filepath
-  return libdbr.config
 
 ## Parses config file data into a managable list.
 #
