@@ -25,10 +25,10 @@ jobs:
           python3 -m pip install pylint mypy
 
       - name: check with Pylint
-        run: pylint ./
+        run: pylint -v ./
 
       - name: check with Mypy
-        run: mypy
+        run: mypy -v
 
   wx-4-1-1-ubuntu:
     runs-on: ubuntu-22.04
@@ -48,10 +48,10 @@ jobs:
           python3 -m pip install wxPython==4.1.1
 
       - name: check with Pylint
-        run: pylint ./
+        run: pylint -v ./
 
       - name: check with Mypy
-        run: mypy
+        run: mypy -v
 
   wx-latest-ubuntu:
     runs-on: ubuntu-22.04
@@ -71,10 +71,10 @@ jobs:
           python3 -m pip install wxPython
 
       - name: check with Pylint
-        run: pylint ./
+        run: pylint -v ./
 
       - name: check with Mypy
-        run: mypy
+        run: mypy -v
 
   #~ wx-latest-windows:
     #~ runs-on: windows-2019
@@ -120,7 +120,7 @@ jobs:
             mingw-w64-x86_64-mypy
 
       - name: check with Pylint
-        run: pylint ./
+        run: pylint -v ./
 
       - name: check with Mypy
-        run: mypy
+        run: mypy -v
