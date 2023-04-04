@@ -174,10 +174,10 @@ class _Logger:
     stream = sys.stdout
     if lvl == _LogLevel.ERROR:
       stream = sys.stderr
-    prefix = (_LogLevel.toString(lvl) + ":")#.ljust(9)
+    prefix = (_LogLevel.toString(lvl) + ":")
     if self.id:
       prefix += " (" + self.id + ")"
-    msg = prefix.ljust(12) + " " + msg
+    msg = prefix.ljust(30) + " | " + msg
     if details:
       if type(details) == str:
         msg += "\n  • {}".format(details)
