@@ -75,7 +75,7 @@ def checkAdmin():
   if sys.platform == "win32":
     return ctypes.windll.shell32.IsUserAnAdmin() != 0
   else:
-    return os.getuid() == 0
+    return os.getuid() == 0 # pylint: disable=no-member
 
 def getInstallPath(subpath=None, stripped=False):
   path = options.prefix
