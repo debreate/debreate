@@ -13,7 +13,6 @@ import types
 
 from libdbr          import dateinfo
 from libdbr          import fileio
-from libdbr          import paths
 from libdbr.dateinfo import dtfmt
 
 
@@ -63,7 +62,7 @@ class Logger:
   #  @param callback
   #    Action to notify the main app to shutdown.
   def startLogging(self, logsdir=None, callback=None):
-    self.logsdir = logsdir
+    self.logsdir = os.path.normpath(logsdir) if logsdir != None else logsdir
     self.callback = callback
 
     if not os.path.isdir(self.logsdir):
@@ -73,7 +72,7 @@ class Logger:
       os.makedirs(self.logsdir)
     date_start = dateinfo.getDate(dtfmt.LOG)
     time_start = dateinfo.getTime(dtfmt.LOG)
-    self.logfile = paths.join(self.logsdir, date_start+".txt")
+    self.logfile = os.path.join(self.logsdir, date_start + ".txt")
 
     date_time = "{} {}".format(date_start, time_start)
     header = "--------------- Log Start: {} ---------------\n".format(date_time)
