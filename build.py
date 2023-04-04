@@ -422,6 +422,13 @@ def taskPortable():
   fileio.makeDir(dir_dist, verbose=options.verbose)
   fileio.packDir(dir_data, file_dist, verbose=options.verbose)
 
+def taskPrintChanges():
+  from libdbr.misc   import getLatestChanges
+
+  changelog = paths.join(paths.getAppDir(), "docs/changelog")
+  if os.path.isfile(changelog):
+    print(getLatestChanges(changelog))
+
 def taskRunTests():
   from libdbr.unittest import runTest
 
@@ -479,6 +486,7 @@ def initTasks(task_list):
   addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
   addTask(task_list, "update-version", taskUpdateVersion, "Update version information from build.conf.")
   addTask(task_list, "run-tests", taskRunTests, "Run configured tests.")
+  addTask(task_list, "print-changes", taskPrintChanges, "Print most recent changes from changelog to stdout.")
   return task_list
 
 # --- execution insertion point --- #
