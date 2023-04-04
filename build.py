@@ -423,7 +423,7 @@ def taskPortable():
   fileio.packDir(dir_data, file_dist, verbose=options.verbose)
 
 def taskRunTests():
-  from libdbr.misc import runTest
+  from libdbr.unittest import runTest
 
   dir_tests = paths.join(dir_root, "tests")
   if not os.path.isdir(dir_tests):

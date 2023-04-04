@@ -5,18 +5,28 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
+import errno
+import os
+import subprocess
+import wx
 
-import os, subprocess, wx
 from subprocess import PIPE
 from subprocess import STDOUT
 
-from dbr.language import GT
-from libdbr.paths import getExecutable
-from wiz.helper   import GetMainWindow
+import libdbr.bin
 
+from dbr.language  import GT
+from libdbr.logger import getLogger
+from libdbr.paths  import getExecutable
+from wiz.helper    import GetMainWindow
+
+
+__logger = getLogger()
 
 ## TODO: Doxygen
 def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
+  __logger.deprecated(__name__, ExecuteCommand.__name__, "globals.executeElevated")
+
   if elevate and pword.strip(" \t\n") == wx.EmptyString:
     return (None, GT("Empty password"))
 
@@ -76,17 +86,15 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
 
 ## TODO: Doxygen
 def GetCommandOutput(cmd, args=[]):
-  command_line = list(args)
-  command_line.insert(0, cmd)
+  __logger.deprecated(__name__, GetCommandOutput.__name__, "libdbr.bin.execute")
 
-  output = subprocess.Popen(command_line, stdout=PIPE, stderr=STDOUT).communicate()[0].decode("utf-8")
-
-  # The Popen command adds a newline character at end of output
-  return output.rstrip("\n")
-
+  code, output = libdbr.bin.execute(cmd, args)
+  return output
 
 ## Retrieves executable it exists on system
 def GetExecutable(cmd):
+  __logger.deprecated(__name__, GetExecutable.__name__, "libdbr.paths.getExecutable")
+
   alternatives = {
     "fakeroot": "fakeroot-sysv",
     }

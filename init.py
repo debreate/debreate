@@ -229,6 +229,12 @@ Debreate = MainWindow(conf_values["position"], conf_values["size"])
 debreate_app.SetMainWindow(Debreate)
 Debreate.InitWizard()
 
+def logger_callback():
+  logger.debug("shutting down app from logger")
+  Debreate.saveConfigAndShutdown()
+
+logger.setCallback(logger_callback)
+
 if conf_values["maximize"]:
   Debreate.Maximize()
 

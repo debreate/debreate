@@ -9,6 +9,20 @@
 import os
 import sys
 
+from libdbr import fileinfo
+from libdbr import sysinfo
+
+
+## Normalizes path strings.
+#
+#  @param path
+#    String to be normalized.
+#  @return
+#    Path with system dependent prefix & node delimiters.
+def normalize(path):
+  if sys.platform == "win32" and path.startswith(os.sep):
+    path = os.path.join(getSystemRoot(), path.lstrip(os.sep))
+  return os.path.normpath(path)
 
 ## Normalizes & joins path names.
 #
@@ -28,7 +42,7 @@ def join(*paths):
         path = join(path, p.pop(0))
     else:
       path += p
-  return os.path.normpath(path)
+  return normalize(path)
 
 ## Retrieves executed script.
 #
@@ -49,34 +63,43 @@ def getAppDir():
 #  @return
 #    Absolute path to home directory.
 def getHomeDir():
-  if sys.platform == "win32":
+  if sysinfo.getOSName() == "win32":
     return os.getenv("USERPROFILE")
   else:
     return os.getenv("HOME")
+
+
+# cache directory for fast retrieval
+__sys_root = None
 
 ## Retrieves root directory for current system.
 #
 #  @return
 #    System root node string.
 def getSystemRoot():
-  sys_root = "/"
-  if sys.platform == "win32":
-    sys_root = os.getenv("SystemDrive") or "C:"
-    sys_root += "\\"
-  return sys_root
+  global __sys_root
+  if __sys_root:
+    return __sys_root
 
-## Checks if a file is marked as executable for the current user.
-#
-#  @param filepath
-#    Path to file to check.
-#  @return
-#    True if current user can execute file.
-def __isExecutable(filepath):
-  if not os.path.exists(filepath) or os.path.isdir(filepath):
-    return False
-  if sys.platform == "win32":
-    return True
-  return os.access(filepath, os.X_OK)
+  os_name = sysinfo.getOSName()
+  __sys_root = os.sep
+  if os_name == "win32":
+    __sys_root = os.getenv("SystemDrive", "C:")
+    __sys_root += "\\"
+  elif os_name == "msys":
+    msys_prefix = os.path.dirname(os.getenv("MSYSTEM_PREFIX", ""))
+    if sysinfo.getCoreName() == "msys":
+      msys_prefix = os.path.dirname(msys_prefix)
+    if msys_prefix:
+      __sys_root = msys_prefix + os.sep
+  return __sys_root
+
+## Retrieves the relative root for a subsystem such as MSYS.
+def getSubSystemRoot():
+  sys_root = getSystemRoot()
+  if sys_root and sysinfo.getOSName() == "msys":
+    sys_root = sys_root[len(sys_root)-1:]
+  return sys_root
 
 ## Retrieves an executable from PATH environment variable.
 #
@@ -92,11 +115,11 @@ def getExecutable(cmd):
 
   for _dir in path:
     filepath = os.path.join(_dir, cmd)
-    if __isExecutable(filepath):
+    if fileinfo.isExecutable(filepath):
       return filepath
     for ext in path_ext:
       filepath = filepath + "." + ext
-      if __isExecutable(filepath):
+      if fileinfo.isExecutable(filepath):
         return filepath
   return None
 

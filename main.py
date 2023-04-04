@@ -478,24 +478,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   def OnQuit(self, event=None): #@UnusedVariable
     if ConfirmationDialog(self, GT("Quit?"),
         text=GT("You will lose any unsaved information")).ShowModal() in (wx.ID_OK, wx.OK):
+      self.saveConfigAndShutdown()
 
-      maximized = self.IsMaximized()
-      WriteConfig("maximize", maximized)
-
-      if maximized:
-        WriteConfig("position", GetDefaultConfigValue("position"))
-        WriteConfig("size", GetDefaultConfigValue("size"))
-        WriteConfig("center", True)
-
-      else:
-        WriteConfig("position", self.GetPosition().Get())
-        WriteConfig("size", self.GetSize().Get())
-        WriteConfig("center", False)
-
-      WriteConfig("workingdir", os.getcwd())
-
-      self.Destroy()
-
+  ## Stores configuration settings & closes app.
+  def saveConfigAndShutdown(self):
+    maximized = self.IsMaximized()
+    WriteConfig("maximize", maximized)
+    if maximized:
+      WriteConfig("position", GetDefaultConfigValue("position"))
+      WriteConfig("size", GetDefaultConfigValue("size"))
+      WriteConfig("center", True)
+    else:
+      WriteConfig("position", self.GetPosition().Get())
+      WriteConfig("size", self.GetSize().Get())
+      WriteConfig("center", False)
+    WriteConfig("workingdir", os.getcwd())
+    self.Destroy()
 
   ## TODO: Doxygen
   def OnToggleTheme(self, event=None): #@UnusedVariable
