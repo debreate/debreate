@@ -45,10 +45,13 @@ def checkSystemRoot():
 
 def checkExecutables():
   # check for common system dependent executable files
-  shell = paths.normalize("/usr/bin/shell")
-  if __os_name == "win32":
-    shell = paths.join(paths.getSystemRoot(), "Windows", "System32", "cmd.exe")
+  shell = paths.normalize("/usr/bin/sh")
+  if sys.platform == "win32":
+    if __os_name == "win32":
+      shell = paths.join(paths.getSystemRoot(), "Windows", "System32", "cmd.exe")
+    else:
+      shell = paths.normalize("/usr/bin/shell")
   elif not os.path.exists(shell) or os.path.isdir(shell):
-    shell = paths.normalize("/bin/shell")
+    shell = paths.normalize("/bin/sh")
   assert os.path.exists(shell) and not os.path.isdir(shell)
   assert fileinfo.isExecutable(shell)
