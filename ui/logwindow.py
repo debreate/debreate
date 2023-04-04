@@ -29,7 +29,7 @@ from wiz.helper          import GetMainWindow
 from wiz.helper          import GetMenu
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 # How often the log window will be refreshed
 LOG_WINDOW_REFRESH_INTERVAL = 1

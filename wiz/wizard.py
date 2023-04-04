@@ -36,7 +36,7 @@ from wiz.helper       import GetMainWindow
 from wiz.helper       import GetMenu
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Wizard class for Debreate
 class Wizard(wx.Panel):

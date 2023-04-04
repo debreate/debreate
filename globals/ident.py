@@ -13,7 +13,7 @@ import util
 from dbr.language import GT
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Creates a new bitwise compatible ID
 #

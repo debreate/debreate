@@ -11,7 +11,7 @@ import threading
 import util
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 thr = threading
 
 ## Standard thread class with renamed methods

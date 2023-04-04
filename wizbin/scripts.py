@@ -34,7 +34,7 @@ from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ID_INST_PRE = wx.NewId()
 ID_INST_POST = wx.NewId()

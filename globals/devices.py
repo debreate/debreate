@@ -12,7 +12,7 @@ from libdbr.fileio import readFile
 from libdbr.paths  import getSystemRoot
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Class that represents a mounted storage device
 class StorageDevice:

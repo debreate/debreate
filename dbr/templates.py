@@ -14,7 +14,7 @@ from globals.paths   import getAppDir, getLocalDir
 from globals.strings import GS
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## System common licenses
 sys_licenses_path = "/usr/share/common-licenses"

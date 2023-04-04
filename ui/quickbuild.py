@@ -28,7 +28,7 @@ from ui.layout            import BoxSizer
 from ui.style             import layout as lyt
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 GAUGE_MAX = 100
 
 

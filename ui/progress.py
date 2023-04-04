@@ -15,7 +15,7 @@ from wiz.helper   import FieldEnabled
 from wiz.helper   import GetMainWindow
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 
 

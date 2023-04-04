@@ -13,7 +13,7 @@ import util
 from globals.strings import GS
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 
 ## Retrieves a list of all files from the given path

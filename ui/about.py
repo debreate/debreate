@@ -32,7 +32,7 @@ from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 # Font for the name
 bigfont = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)

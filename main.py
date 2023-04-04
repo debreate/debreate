@@ -58,7 +58,7 @@ from wiz.pginit           import Page as PageInit
 from wiz.wizard           import Wizard
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 default_title = GT("Debreate - Debian Package Builder")
 
 

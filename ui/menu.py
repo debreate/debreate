@@ -20,7 +20,7 @@ from globals.ident   import menuid, refid
 from startup.tests   import GetTestList
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## A menu bar that stores an ID along with a menu
 class MenuBar(wx.MenuBar):

@@ -19,7 +19,7 @@ from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Shows the first run dialog
 def LaunchFirstRun(debreate_app):

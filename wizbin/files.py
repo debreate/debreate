@@ -42,7 +42,7 @@ from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Maximum file count to process before showing progress dialog
 efficiency_threshold = 250

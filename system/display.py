@@ -13,7 +13,7 @@ from globals.execute import GetExecutable
 from globals.strings import StringIsNumeric
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Retrieves dimensions of primary display
 #

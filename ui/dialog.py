@@ -29,7 +29,7 @@ from ui.style             import layout as lyt
 from wiz.helper           import GetMainWindow
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## An abstract class defining method to manipulate button labels
 class ButtonDialog:

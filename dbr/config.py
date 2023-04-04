@@ -21,7 +21,7 @@ from libdbr.fileio   import readFile
 from libdbr.fileio   import writeFile
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Configuration codes
 class ConfCode:

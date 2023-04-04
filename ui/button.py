@@ -20,7 +20,7 @@ from ui.layout       import BoxSizer
 from ui.style        import layout as lyt
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Standard button that inherits CommandField
 class Button(wx.Button, CommandField):

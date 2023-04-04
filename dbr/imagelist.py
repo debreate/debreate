@@ -11,7 +11,7 @@ import util
 from dbr.image import GetBitmap
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## List of images used by ui.tree.DirectoryTree
 #

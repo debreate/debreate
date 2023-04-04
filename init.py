@@ -27,7 +27,9 @@ from libdbr       import paths
 from libdbr       import sysinfo
 from startup      import wxprompt
 
-logger = util.getLogger()
+module_insertion = ".".join(os.path.basename(os.path.realpath(__file__)).split(".")[0:-1])
+
+logger = util.getLogger(module_insertion)
 logger.startLogging(globals.paths.getLogsDir())
 
 ## Module name displayed for Logger output.

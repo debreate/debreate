@@ -19,7 +19,7 @@ from globals.ident   import pgid
 from wiz.helper      import FieldEnabled
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 # *** Wizard buttons ***#
 TT_wiz_prev = wx.ToolTip(GT("Previous page"))

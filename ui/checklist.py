@@ -21,7 +21,7 @@ from ui.style        import layout as lyt
 from wiz.helper      import GetField
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## A checkable list
 class CheckList(BorderedPanel):

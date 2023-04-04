@@ -40,7 +40,7 @@ from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## This panel displays the field input of the control file
 class Page(WizardPage):

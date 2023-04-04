@@ -13,7 +13,7 @@ from dbr.config    import WriteConfig
 from globals       import paths
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Changes working directory & writes to config
 #

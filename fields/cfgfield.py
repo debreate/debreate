@@ -16,7 +16,7 @@ from dbr.config import SetDefaultConfigKey
 from dbr.config import WriteConfig
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Class that updates the configuration file when a specific event occurs
 class ConfigField:

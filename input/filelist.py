@@ -21,7 +21,7 @@ from input.essential  import EssentialField
 from input.list       import ListCtrl
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 # ListCtrl report view style constants
 FL_HEADER = wx.LC_REPORT

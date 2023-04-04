@@ -50,7 +50,7 @@ from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Build page
 class Page(WizardPage):

@@ -28,7 +28,7 @@ from ui.panel        import BorderedPanel
 from wiz.helper      import GetMainWindow
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## A wxcustom tree item
 #

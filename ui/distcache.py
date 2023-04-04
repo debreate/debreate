@@ -32,7 +32,7 @@ from ui.textpreview       import TextPreview
 from wiz.helper           import GetField
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Dialog displaying controls for updating distribution names cache file
 class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):

@@ -18,7 +18,7 @@ from wiz.helper      import GetField
 from wiz.helper      import GetMainWindow
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## Creates a file of md5 hashes for files within the staged directory
 #

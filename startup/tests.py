@@ -9,7 +9,7 @@
 import util
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 ## List of available tests
 available_tests = (

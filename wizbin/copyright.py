@@ -38,7 +38,7 @@ from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger()
+logger = util.getLogger(__name__)
 
 # Globals
 copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
