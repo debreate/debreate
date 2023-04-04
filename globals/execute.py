@@ -22,9 +22,32 @@ from wiz.helper    import GetMainWindow
 
 __logger = getLogger()
 
+## Executes a command with elevated privileges.
+#
+#  @param cmd
+#    File to be executed.
+#  @param args
+#    Arguments to pass to command.
+#  @return
+#    Program exit code & command output.
+def elevated(cmd, *args, pword, check=False):
+  if not pword.strip():
+    return 1, GT("Empty password")
+  sudo = getExecutable("sudo")
+  if not sudo:
+    return errno.ENOENT, GT("Super user command (sudo) not available")
+  main_window = GetMainWindow()
+  # disable input to main window while processing
+  main_window.Enable(False)
+  cmd_line = "echo {} | {}".format(pword, " ".join(["sudo -S", cmd] + args))
+  # FIXME: should this be done with subprocess module?
+  res = os.popen(cmd_line).read()
+  main_window.Enable(True)
+  return 0, res
+
 ## TODO: Doxygen
 def ExecuteCommand(cmd, args=[], elevate=False, pword=""):
-  __logger.deprecated(__name__, ExecuteCommand.__name__, "globals.executeElevated")
+  __logger.deprecated(__name__, ExecuteCommand.__name__, "globals.elevated")
 
   if elevate and pword.strip(" \t\n") == "":
     return (None, GT("Empty password"))
