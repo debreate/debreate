@@ -6,8 +6,9 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+  workflow_dispatch:
 
-# TODO: run tests on more platforms (BSD, Windows, OS X, etc.)
+# TODO: run tests on more platforms (BSD, OS X, etc.)
 
 jobs:
   unit-tests-ubuntu:
@@ -19,6 +20,42 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+
+      - name: run tests
+        run: python3 build.py -t run-tests
+
+  unit-tests-windows:
+    runs-on: windows-2019
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup Python
+        uses: actions/setup-python@v3.1.3
+
+      - name: run tests
+        run: python build.py -t run-tests
+
+  unit-tests-msys:
+    runs-on: windows-2019
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: setup MSYS2 & dependencies
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            mingw-w64-x86_64-python
 
       - name: run tests
         run: python3 build.py -t run-tests
