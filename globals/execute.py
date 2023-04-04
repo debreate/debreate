@@ -8,7 +8,6 @@
 import errno
 import os
 import subprocess
-import wx
 
 from subprocess import PIPE
 from subprocess import STDOUT
@@ -24,10 +23,10 @@ from wiz.helper    import GetMainWindow
 __logger = getLogger()
 
 ## TODO: Doxygen
-def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
+def ExecuteCommand(cmd, args=[], elevate=False, pword=""):
   __logger.deprecated(__name__, ExecuteCommand.__name__, "globals.executeElevated")
 
-  if elevate and pword.strip(" \t\n") == wx.EmptyString:
+  if elevate and pword.strip(" \t\n") == "":
     return (None, GT("Empty password"))
 
   CMD_sudo = GetExecutable("sudo")
@@ -62,14 +61,14 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=wx.EmptyString):
 
   main_window.Enable(True)
 
-  stdout = wx.EmptyString
+  stdout = ""
 
   if isinstance(cmd_output, subprocess.Popen):
     if cmd_output.stdout:
       stdout = cmd_output.stdout
 
     if cmd_output.stderr:
-      if stdout == wx.EmptyString:
+      if stdout == "":
         stdout = cmd_output.stderr
 
       else:
