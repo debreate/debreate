@@ -383,6 +383,9 @@ def copyExecutable(source, target, name=None, verbose=False):
 
 ## Copies a directory on the filesystem.
 #
+#  # FIXME: copyDir should ignore empty sub-directories by default
+#  # TODO: rename "_filter" parameter to "include"
+#
 #  @param source
 #    Path to directory to be copied.
 #  @param target
