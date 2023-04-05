@@ -341,30 +341,39 @@ def taskUpdateVersion():
   # INFO file is deprecated, should be removed in future versions
   fileio.replace(paths.join(dir_app, "INFO"), repl, count=1, verbose=options.verbose)
 
+def taskClean():
+  tasks.run(("clean-deb", "clean-stage", "clean-dist"))
+
+  print()
+  logger.info("removing build directory ...")
+
+  dir_build = paths.join(dir_app, "build")
+  checkError((fileio.deleteDir(dir_build, verbose=options.verbose)))
+
 def taskCleanStage():
   print()
   logger.info("removing temporary staged build files ...")
 
   dir_stage = paths.join(dir_app, "build/stage")
-  fileio.deleteDir(dir_stage, verbose=options.verbose)
+  checkError((fileio.deleteDir(dir_stage, verbose=options.verbose)))
 
 def taskCleanDeb():
   print()
   logger.info("removing temporary Debian build files ...")
 
   for _dir in ("debian/debreate", "debian/.debhelper"):
-    fileio.deleteDir(paths.join(dir_app, _dir), verbose=options.verbose)
+    checkError((fileio.deleteDir(paths.join(dir_app, _dir), verbose=options.verbose)))
   for _file in (
       "debian/debhelper-build-stamp", "debian/debreate.debhelper.log",
       "debian/debreate.substvars", "debian/files"):
-    fileio.deleteFile(paths.join(dir_app, _file), verbose=options.verbose)
+    checkError((fileio.deleteFile(paths.join(dir_app, _file), verbose=options.verbose)))
 
 def taskCleanDist():
   print()
   logger.info("removing built distribution packages ...")
 
-  dir_dist = paths.join(dir_app, "build", "dist")
-  fileio.deleteDir(dir_dist, verbose=options.verbose)
+  dir_dist = paths.join(dir_app, "build/dist")
+  checkError((fileio.deleteDir(dir_dist, verbose=options.verbose)))
 
 def taskDistSource():
   print()
@@ -471,6 +480,7 @@ def initTasks(task_list):
   addTask(task_list, "dist-source", taskDistSource, "Build a source distribution package (TODO).")
   addTask(task_list, "dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
   addTask(task_list, "dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
+  addTask(task_list, "clean", taskClean, "Remove all temporary build files.")
   addTask(task_list, "clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")
   addTask(task_list, "clean-deb", taskCleanDeb, "Remove temporary build files from 'debian'" \

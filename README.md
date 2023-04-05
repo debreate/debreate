@@ -143,6 +143,8 @@ Build Tasks:
     - Build a portable binary .zip distribution package.
 - `dist-deb`
     - Build a binary Debian distribution package.
+- `clean`
+    - Remove all temporary build files.
 - `clean-stage`
     - Remove temporary build files from 'build/stage' directory.
 - `clean-deb`
