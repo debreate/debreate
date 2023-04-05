@@ -52,7 +52,8 @@ def parseCommandLine(task_list):
   args_parser.version = package_version
   args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
   args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
-  args_parser.add_argument("--verbose", action="store_true", help="Print detailed information.")
+  args_parser.add_argument("-V", "--verbose", action="store_true",
+      help="Include detailed task information.")
   args_parser.add_argument("-t", "--task", choices=tuple(task_list),
       default="install", help="\n".join(task_help))
   args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(), help="Installation target root directory.")
