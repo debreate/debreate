@@ -493,9 +493,9 @@ class Page(WizardPage):
 
     for S, CHK in (preinst, postinst, prerm, postrm):
       if S[0].isnumeric() and int(S[0]) > 0:
-        CHK.SetValue(True)
+        CHK.SetValue(True) # pylint: disable=no-member (false-positive on some systems)
         # Remove unneeded integer
-        S.pop(0)
+        S.pop(0) # pylint: disable=no-member (false-positive on some systems)
 
     # Enable/Disable scripts text areas
     self.OnToggleScripts()
