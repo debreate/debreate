@@ -1,106 +1,282 @@
+
 ![][icon]
 
-## Debreate - Debian Package Builder
+# Debreate - Debian Package Builder
 
 
-### Table of Contents
-* [Description](#description)
-* [Dependencies](#dependencies)
-* [Installation](#installation)
-* [Standalone Use](#standalone-use)
-* [Links](#links)
-* [Other Pages](#other-pages)
+<a name="toc">
+## Table of Contents
+</a>
+
+- [Description](#description)
+- [Explanation](#explanation)
+- [Requirements](#requirements)
+- [Building](#build)
+    - [Build Script](#build-script)
+    - [Makefile](#build-make)
+    - [Building .deb Package](#build-deb)
+- [Standalone/Portable](#portable)
+- [Licensing](#licensing)
+- [Links](#links)
+    - [Project Pages](#links-proj)
+    - [Downloads](#links-dl)
+    - [Other Pages](#links-other)
 
 
-### [Description](#table-of-contents)
+<a name="description">
+## [Description](#toc)
+</a>
 
-Debreate is a utility to aid in creating [Debian (.deb)][wiki.deb] packages. Currently it only supports binary packaging which allows packaging of pre-compiled or scripted applications, media, artwork, etc. for personal distribution. Plans for using backends such as [dh_make][pkg.dh-make] & debuild (available in [devscripts][pkg.devscripts] package) for creating source packages are in the works. But source packaging can be quite different & is a must if you want to get your packages into a distribution's official repositories or a [Launchpad][launchpad] [Personal Package Archive (PPA)][wiki.ppa]. The latter from which [Debreate has recently become available][ppa.debreate].
-
-The definition of Debian source packages may be a little confusing (as it was for me) for those that are new to the Debian format, or perhaps packaging in general. Debian source packages are essentially no different than common tarballed source archives & they can be available in many of the popular formats such as Gzip (.tar.gz), BZip2 (.tar.bz2), XZ (tar.xz), Lzip (tar.lzip), etc. To build Debian binary packages from source code, it must first be "debianized". Debianization involves creating a directory called 'debian' within the source root folder. Files with instructions, meta data, & more are placed within to instruct Debian tools, such as debuild, on how the source must be compiled & packaged into the final .deb. This is the process that must be taken to host software on repositories such as Lauchpad's PPA system. The debianized source is uploaded, then built & packaged on-site automatically. The resulting binary package (.deb) is published to the target PPA.
-
-
-### [Dependencies](#table-of-contents)
-
-Debreate needs these packages installed to run:
-* [python][pkg.python] (version 2.7 is supported)
-    * The goal is to eventually port to Python 3.
-        * Currently, wxPython only supports up to version 2.7.
-* [python-wxgtk3][pkg.python-wxgtk3] or [python-wxgtk2.8][pkg.python-wxgtk2.8] (wxPython)
-* [python-wxversion][pkg.python-wxversion]
-* [dpkg][pkg.dpkg]
-    * If you are running a Debian/Ubuntu based system, then this is most likely already installed.
-* [fakeroot][pkg.fakeroot]
-* [coreutils][pkg.coreutils]
-
-These packages are recommended & enable some features:
-* [lintian][pkg.lintian]
-
-If the package [gvfs-bin][pkg.gvfs-bin] is installed, there will be an option to use custom save/open dialogs. But, this is not recommended as these dialogs are currently very buggy. It is possible the option will be removed completely in future releases.
+Debreate is a utility to aid in creating [Debian (.deb)][page.deb] packages. Currently it only
+supports binary packaging (_note that the term "binary package" is used loosely, as such packages
+can contain scripts & non-code items such as media images, audio, & more_) for personal
+distribution. Plans for using backends such as [dh_make][home.dh-make] & [debuild][pkg.devscripts]
+for creating source packages are in the works. But source packaging can be quite different & is a
+must if you want to get your packages into a distribution's official repositories or a
+[Launchpad][home.launchpad] [Personal Package Archive (PPA)][page.ppa]. The latter from which
+[Debreate is available][ppa.debreate].
 
 
-### [Installation](#table-of-contents)
+<a name="explanation">
+## [Explanation](#toc)
+</a>
 
-#### Using make command
+The definition of "Debian source package" may be a little confusing, as it was for me, for those
+that are new to the [Debian format][deb-policy], or perhaps new to packaging in general. Debian
+source packages are essentially no different than common [tarballed source archives][page.tar] &
+they can be available in many of the popular formats such as [Gzip (.tar.gz)][home.gzip],
+[BZip2 (.tar.bz2)][home.bzip2], [XZ (tar.xz)][home.xz-utils], [Lzip (tar.lzip)][home.lzip], et al.
 
-The source uses a generic [Makefile][wiki.makefile] for "building" (because I don't know how to use [GNU Autotools][gnu-autotools] or [CMake][cmake] very well yet). The source is not actually built, but the Makefile simply installs the scripts onto the system. Just open a terminal in the extracted root directory & execute ***make install*** with [superuser privileges][wiki.superuser]. To uninstall, execute ***make uninstall***. For more information, execute ***make help***.
+To build Debian binary packages (.deb) from source, it must first be "debianized". A source package
+can be debianized using one of two methods:
 
-#### Creating .deb package & using installer
+1. __[internal/native][deb-policy.native]:__
 
-If you have devscripts installed, you can execute ***make deb-bin*** to build the debian package (.deb). To install the package, type ***dpkg --install ../debreate_\<version\>_all.deb*** with superuser privileges, or open in a GUI package installer such as [gdebi][pkg.gdebi].
+    Instructions for the build utilities
+    are included within the source package in a directory labelled "debian".
 
-This is the recommended method if you are not installing from a remote APT/PPA repository.
+2. __external:__
 
+    Instructions are contained within a separate package distributed alogside the original source.
 
-### [Standalone Use](#table-of-contents)
+The debian directory, or package, contains files with instructions & meta data on how the source is
+to be patched, compiled, & built into a binary format.
 
-To run without installing, open a terminal in the extracted root directory. Then launch the file named "init.py" (***./init.py*** or ***python init.py***). It should execute via mouse-click for the system's file manager as well.
-
-
-### [Licensing](#table-of-contents)
-
-* [MIT](docs/LICENSE.txt)
-
-
-### [Links](#table-of-contents)
-* [Homepage](https://antumdeluge.github.io/debreate-web)
-* [GitHub project page](https://github.com/AntumDeluge/debreate)
-* [SourceForge project page](https://sourceforge.net/projects/debreate)
-* [PPA][ppa.debreate]
-* [Development PPA][ppa.debreate-dev]
+Source packaging is a must for inclusion of software in official repositories or PPAs. The
+debianized package is uploaded to repo/PPA host server where it is built into a binary package &
+published for release in .deb format. This differs from systems such as [Arch's ABS][bs.arch] &
+[FreeBSD's Ports][bs.freebsd] build systems where only the instructions files are stored on the
+host server. Downloading of source packages from the upstream maintainer is done as part of the
+build process.
 
 
-### [Other Pages](#table-of-contents)
-* [OpenDesktop](https://www.opendesktop.org/content/show.php?content=101776)
-* [alternativeTo](http://alternativeto.net/software/debreate/)
+<a name="requirements">
+## [Requirements](#toc)
+</a>
 
+Debreate requires the following software:
+
+- [Python][home.python] (tested with version 3.10, 2.x not supported) ([Ubuntu package][pkg.python3])
+- [wxPython][home.wxpython] (version 4.0 required, 4.1.1 recommended)
+    - Packaged as [_python3-wxgtk*_][pkg.wxpython] on Debian/Ubuntu.
+    - Available via [Pypi][pip.wxpython].
+- [dpkg][home.dpkg] ([Ubuntu package][pkg.dpkg])
+    - If you are running a Debian/Ubuntu based system this is most likely already installed.
+- [fakeroot][home.fakeroot] ([Ubuntu package][pkg.fakeroot])
+
+These packages are recommended to enable some features:
+
+- [lintian][home.lintian] ([Ubuntu package][pkg.lintian])
+
+
+<a name="build">
+## [Building](#toc)
+</a>
+
+<a name="build-script">
+### [Build Script](#toc)
+</a>
+
+The software comes bundled with a _build.py_ script to facilitate the build process & other tasks.
+Note that Debreate is written in a [scripting language][page.scripting], so building does not
+include any compiling of source code. The build script is used for staging the necessary files into
+a directory structure for packaging & installation.
+
+<a name="build-script-usage">
+#### Script Usage
+</a>
+
+The build script is invoked as `python3 build.py [args]` or `./build.py [args]`.
+
+<a name="build-script-args">
+Arguments:
+</a>
+
+- `-h|--help`
+    - Show help information.
+- `-v|--version`
+    - Show Debreate version.
+- `-V|--verbose`
+    - Include detailed task information when printing to stdout.
+- `-t|--task <task>`
+    - Task to be executed (see [Build Tasks](#build-script-tasks)).
+- `-p|--prefix <directory>`
+    - Path prefix to directory where files are to be installed.
+- `-d|--dir <directory>`
+    - Target directory (defaults to /usr). This is useful for directing the script to place files
+      in a temporary directory rather than the intended installation path. It is equivalent to the
+      "[DESTDIR][bs.gnu-destdir]" environment variable used by [GNU make][bs.gnu-make].
+
+<a name="build-script-tasks">
+Build Tasks:
+</a>
+
+- `stage`
+    - Prepare files for installation or distribution.
+- `install`
+    - Install files to directory specified by `--prefix` argument.
+- `uninstall`
+    - Uninstall files from directory specified by by `--prefix` argument.
+- `dist-source`
+    - Build a source distribution package.
+- `dist-bin`
+    - Build a portable binary .zip distribution package.
+- `dist-deb`
+    - Build a binary Debian distribution package.
+- `clean-stage`
+    - Remove temporary build files from 'build/stage' directory.
+- `clean-deb`
+    - Remove temporary build files from 'debian' directory.
+- `clean-dist`
+    - Remove built packages from 'build/dist' directory.
+- `update-version`
+    - Update relevant files with version information from 'build.conf'.
+- `test`
+    - Run configured unit tests from 'tests' directory.
+- `changes`
+    - Print most recent changes from 'doc/changelog' to stdout.
+
+
+<a name="build-make">
+### [Makefile](#toc)
+</a>
+
+_(deprecated: it is recommended to use the [accompanying build script](#build-script))_
+
+A generic [Makefile][page.makefile] is included for building with the [make][page.make] command. The
+It can be used to install the application's files onto the system. Open a terminal in the directory
+where the source code is located & execute `make install` with [superuser privileges]
+[page.superuser]. To uninstall, execute `make uninstall`.
+
+
+<a name="build-deb">
+### [Building .deb Package](#toc)
+</a>
+
+If you have [devscripts][pkg.devscripts] installed, you can execute `python3 build.py dist-deb` to
+build the debian package (.deb). The package will be located in the 'build/dist' directory. To
+install execute `dpkg --install build/dist/debreate_\<version\>_all.deb` with [superuser privileges]
+[page.superuser]. Or open the package with a GUI installer such as [gdebi][pkg.gdebi] or [QAPT]
+[pkg.qapt].
+
+
+<a name="portable">
+## [Standalone/Portable](#toc)
+</a>
+
+To run without installation simply execute the file named "init.py" (from a terminal `./init.py` or
+`python3 init.py`).
+
+<a name="licensing">
+## [Licensing](#toc)
+</a>
+
+Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
+
+
+<a name="links">
+## [Links](#toc)
+</a>
+
+
+<a name="links-proj">
+### [Project Pages](#toc)
+
+- [Homepage](https://debreate.github.io/)
+- [GitHub project][proj.gh]
+- [GitLab project][proj.gl]
+- [SourceForge project][proj.sf]
+- [PPA][ppa.debreate]
+- [Development PPA][ppa.debreate-dev]
+
+
+<a name="links-dl">
+### [Downloads](#toc)
+</a>
+
+- [stable](https://github.com/debreate/debreate/releases/latest)
+- [latest](https://github.com/debreate/debreate/releases)
+- [PPA stable][ppa.debreate]
+- [PPA development][ppa.debreate-dev]
+
+
+<a name="links-other">
+### [Other Pages](#toc)
+</a>
+
+- [OpenDesktop](https://www.opendesktop.org/p/1129667)
+- [AlternativeTo](https://alternativeto.net/software/debreate/)
+- [Open Hub](https://www.openhub.net/p/debreate)
 
 
 [icon]: bitmaps/icon/64/logo.png
 
-[launchpad]: https://launchpad.net/
+[bs.arch]: https://wiki.archlinux.org/title/Arch_Build_System
+[bs.freebsd]: https://www.freebsd.org/ports/
+[bs.gnu]: https://www.gnu.org/software/automake/manual/html_node/GNU-Build-System.html
+[bs.gnu-destdir]: https://www.gnu.org/prep/standards/html_node/DESTDIR.html
+[bs.gnu-make]: https://www.gnu.org/software/make/
 
-[wiki.deb]: https://en.wikipedia.org/wiki/Deb_(file_format)
-[wiki.makefile]: https://en.wikipedia.org/wiki/Makefile
-[wiki.ppa]: https://en.wikipedia.org/wiki/Personal_Package_Archive
-[wiki.superuser]: https://en.wikipedia.org/wiki/Superuser
+[deb-policy]: https://www.debian.org/doc/debian-policy/
+[deb-policy.native]: https://www.debian.org/doc/manuals/maint-guide/advanced.en.html#native-dh-make
+
+[home.bzip2]: https://sourceware.org/bzip2/
+[home.dh-make]: https://salsa.debian.org/debian/dh-make
+[home.dpkg]: https://wiki.debian.org/Teams/Dpkg
+[home.fakeroot]: https://salsa.debian.org/clint/fakeroot
+[home.gzip]: https://www.gzip.org/
+[home.launchpad]: https://launchpad.net/
+[home.lintian]: https://lintian.debian.org/
+[home.lzip]: https://www.nongnu.org/lzip/
+[home.python]: https://python.org/
+[home.wxpython]: https://wxpython.org/
+[home.xz-utils]: https://tukaani.org/xz/
+
+[page.deb]: https://wikipedia.org/wiki/Deb_(file_format)
+[page.make]: https://en.wikipedia.org/wiki/Make_(software)
+[page.makefile]: https://wikipedia.org/wiki/Makefile
+[page.ppa]: https://wikipedia.org/wiki/Ubuntu#Package_Archives
+[page.scripting]: https://wikipedia.org/wiki/Scripting_language
+[page.superuser]: https://wikipedia.org/wiki/Superuser
+[page.tar]: https://wikipedia.org/wiki/Tar_(computing)
+
+[pip.wxpython]: https://pypi.org/project/wxPython/
+
+[pkg.devscripts]: https://packages.ubuntu.com/devscripts
+[pkg.dh-make]: https://packages.ubuntu.com/dh-make
+[pkg.dpkg]: https://packages.ubuntu.com/dpkg
+[pkg.fakeroot]: https://packages.ubuntu.com/fakeroot
+[pkg.gdebi]: https://packages.ubuntu.com/gdebi
+[pkg.gvfs-bin]: https://packages.ubuntu.com/gvfs-bin
+[pkg.lintian]: http://packages.ubuntu.com/lintian
+[pkg.python3]: https://packages.ubuntu.com/python3
+[pkg.qapt]: https://packages.ubuntu.com/qapt-deb-installer
+[pkg.wxpython]: https://packages.ubuntu.com/python3-wxgtk4.0
 
 [ppa.debreate]: https://launchpad.net/~antumdeluge/+archive/ubuntu/debreate
 [ppa.debreate-dev]: https://launchpad.net/~antumdeluge/+archive/ubuntu/debreate-dev
 
-[pkg.coreutils]: http://packages.ubuntu.com/coreutils
-[pkg.devscripts]: http://packages.ubuntu.com/devscripts
-[pkg.dh-make]: http://packages.ubuntu.com/dh-make
-[pkg.dpkg]: http://packages.ubuntu.com/dpkg
-[pkg.fakeroot]: http://packages.ubuntu.com/fakeroot
-[pkg.gdebi]: http://packages.ubuntu.com/gdebi
-[pkg.gvfs-bin]: http://packages.ubuntu.com/gvfs-bin
-[pkg.lintian]: http://packages.ubuntu.com/lintian
-[pkg.python]: http://packages.ubuntu.com/python2.7
-[pkg.python-wxversion]: http://packages.ubuntu.com/python-wxversion
-[pkg.python-wxgtk2.8]: http://packages.ubuntu.com/python-wxgtk2.8
-[pkg.python-wxgtk3]: http://packages.ubuntu.com/python-wxgtk3
-
-[ubu.wily.python-wxgtk]: http://packages.ubuntu.com/wily/python-wxgtk2.8
-
-[cmake]: https://cmake.org/
-[gnu-autotools]: https://en.wikipedia.org/wiki/GNU_Build_System
+[proj.gh]: https://github.com/debreate/debreate
+[proj.gh.libdbr]: https://github.com/debreate/libdbr
+[proj.gl]: https://gitlab.com/AntumDeluge/debreate
+[proj.sf]: https://sourceforge.net/projects/debreate
