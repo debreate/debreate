@@ -324,7 +324,6 @@ def taskStage():
   stageLocale(dir_data)
   stageMimeInfo(dir_data)
 
-# FIXME: include --dir parameter in uninstall
 def taskUninstall():
   if options.prefix == None:
     logger.error("'prefix' option is required for 'uninstall' task.")
@@ -335,33 +334,54 @@ def taskUninstall():
   print()
   logger.info("uninstalling ...")
 
-  checkError((fileio.deleteFile(os.path.join(getBinDir(), package_name), options.verbose)))
-  checkError((fileio.deleteDir(getDataDir(), options.verbose)))
-  checkError((fileio.deleteDir(getDocDir(), options.verbose)))
-  files_man = config.getValue("files_man").split(";")
-  for _file in files_man:
+  root_install = paths.join(options.dir, options.prefix)
+  root_bin = paths.join(root_install, "bin")
+  root_data = paths.join(root_install, "share")
+  root_menu = paths.join(root_data, "applications")
+  root_doc = paths.join(root_data, "doc")
+  root_man = paths.join(root_data, "man")
+  root_mime = paths.join(root_data, "mime/packages")
+  root_locale = paths.join(root_data, "locale")
+  root_pixmaps = paths.join(root_data, "pixmaps")
+  root_icons = paths.join(root_data, "icons/gnome") # FIXME: need system independed path
+
+  logger.info("uninstalling app files ...")
+
+  remove_files = (
+    paths.join(root_bin, package_name),
+    paths.join(root_menu, package_name + ".desktop"),
+    paths.join(root_mime, package_name + ".xml"),
+    paths.join(root_pixmaps, package_name + ".png"),
+    paths.join(root_icons, "scalable/mimetype/{}-{}.svg"
+        .format(config.getValue("dbp_mime_prefix"), config.getValue("dbp_mime")))
+  )
+
+  for rm_f in remove_files:
+    checkError((fileio.deleteFile(rm_f, verbose=options.verbose)))
+
+  remove_files_man = config.getValue("files_man").split(";")
+  for _file in remove_files_man:
     file_man = os.path.basename(_file) + ".gz"
-    dir_man = getManDir(os.path.basename(os.path.dirname(_file)))
-    checkError((fileio.deleteFile(os.path.join(dir_man, file_man), options.verbose)))
+    dir_man = paths.join(root_man, os.path.basename(os.path.dirname(_file)))
+    checkError((fileio.deleteFile(paths.join(dir_man, file_man), verbose=options.verbose)))
 
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/icons/gnome/scalable/mimetype/application-x-dbp.svg"), options.verbose)))
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/mime/packages/{}.xml".format(package_name)), options.verbose)))
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/applications", package_name + ".desktop"), options.verbose)))
-  checkError((fileio.deleteFile(paths.join(options.prefix, "share/pixmaps", package_name + ".png"), options.verbose)))
+  source_loc = paths.join(dir_app, "locale")
+  if os.path.isdir(source_loc):
+    tags_loc = []
+    for obj in os.listdir(source_loc):
+      if os.path.isdir(paths.join(source_loc, obj)):
+        tags_loc.append(obj)
+    for tag in tags_loc:
+      file_mo = paths.join(root_locale, tag, "LC_MESSAGES/{}.mo".format(package_name))
+      checkError((fileio.deleteFile(file_mo, verbose=options.verbose)))
+  logger.info("uninstalling app directories ...")
+  remove_dirs = (
+    paths.join(root_data, package_name),
+    paths.join(root_doc, package_name)
+  )
 
-  dir_loc = paths.join(dir_root, "locale")
-  if os.path.isdir(dir_loc):
-    logger.info("uninstalling locale files ...")
-    for ROOT, DIRS, FILES in os.walk(dir_loc):
-      for basename in FILES:
-        if not basename.endswith(".po"):
-          continue
-        rel_path = paths.join(ROOT, basename)[len(dir_loc)+1:]
-        loc_code = os.path.split(rel_path)[0]
-        mo_target = paths.join(options.prefix, "share/locale", loc_code, "LC_MESSAGES",
-            basename[0:-2] + "mo")
-        if os.path.isfile(mo_target):
-          checkError((fileio.deleteFile(mo_target, options.verbose)))
+  for rm_d in remove_dirs:
+    checkError((fileio.deleteDir(rm_d, verbose=options.verbose)))
 
 def taskClean():
   print()
