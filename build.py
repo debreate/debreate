@@ -118,7 +118,7 @@ def compressFile(file_source, file_target):
 
   fropen = codecs.open(file_source, "rb")
   file_data = fropen.read()
-  fropen.read()
+  fropen.close()
 
   fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=options.verbose)
 
