@@ -16,9 +16,6 @@ import subprocess
 import sys
 import types
 
-if sys.platform == "win32":
-  import ctypes
-
 # include libdbr in module search path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
@@ -26,10 +23,11 @@ from libdbr        import config
 from libdbr        import fileio
 from libdbr        import paths
 from libdbr        import tasks
+from libdbr        import userinfo
 from libdbr.logger import getLogger
 
 
-dir_root = os.path.normpath(os.path.dirname(__file__))
+dir_app = os.path.normpath(os.path.dirname(__file__))
 
 logger = getLogger()
 
@@ -50,14 +48,20 @@ def parseCommandLine(task_list):
       description="Debreate installer script",
       add_help=False)
   args_parser.version = package_version
-  args_parser.add_argument("-h", "--help", action="help", help="Show this help message and exit.")
-  args_parser.add_argument("-v", "--version", action="version", help="Show Debreate version and exit.")
+  args_parser.add_argument("-h", "--help", action="help",
+      help="Show help information.")
+  args_parser.add_argument("-v", "--version", action="version",
+      help="Show Debreate version.")
   args_parser.add_argument("-V", "--verbose", action="store_true",
-      help="Include detailed task information.")
-  args_parser.add_argument("-t", "--task", choices=tuple(task_list),
-      default="install", help="\n".join(task_help))
-  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(), help="Installation target root directory.")
-  args_parser.add_argument("-p", "--prefix", help="Installation prefix.")
+      help="Include detailed task information when printing to stdout.")
+  args_parser.add_argument("-t", "--task", choices=tuple(task_list), default="install",
+      help="\n".join(task_help))
+  args_parser.add_argument("-p", "--prefix",
+      help="Path prefix to directory where files are to be installed.")
+  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot() + "usr",
+      help="Target directory (defaults to /usr). This is useful for directing the script" \
+          + " to place the files in a temporary directory, rather than the intended installation" \
+          + " path.")
   return args_parser
 
 # --- helper functions --- #
@@ -71,35 +75,6 @@ def exitWithError(msg, code=1, usage=False):
 def checkError(res):
   if res[0] != 0:
     exitWithError(res[1], res[0])
-
-def checkAdmin():
-  if sys.platform == "win32":
-    return ctypes.windll.shell32.IsUserAnAdmin() != 0
-  else:
-    return os.getuid() == 0 # pylint: disable=no-member
-
-def getInstallPath(subpath=None, stripped=False):
-  path = options.prefix
-  if not stripped:
-    path = os.path.join(options.dir, path.strip(os.sep))
-  if subpath:
-    path = os.path.join(path, subpath)
-  return os.path.normpath(path)
-
-def getBinDir(stripped=False):
-  return getInstallPath("bin", stripped)
-
-def getDataDir(stripped=False):
-  return getInstallPath("share/{}".format(package_name), stripped)
-
-def getDocDir(stripped=False):
-  return getInstallPath("share/doc/{}".format(package_name), stripped)
-
-def getManDir(prefix, stripped=False):
-  return getInstallPath("share/man/{}".format(prefix), stripped)
-
-def getIconsDir(stripped=False):
-  return getInstallPath("share/icons/gnome", stripped)
 
 def checkWriteTree(_dir):
   if os.path.isfile(_dir):
@@ -129,14 +104,13 @@ def createFileLink(file_source, link_target):
   else:
     fileio.makeDir(os.path.dirname(link_target))
 
-  if sys.platform == "win32" and not checkAdmin():
-    logger.error("administrator privileges required on Windows platform to create symbolic links")
-    sys.exit(1)
+  if sys.platform == "win32" and not userinfo.isAdmin():
+    exitWithError("administrator privileges required on Windows platform to create symbolic links")
   os.symlink(file_source, link_target)
   if not os.path.islink(link_target):
-    logger.error("an unknown error occurred while trying to create symbolic link: {}".format(link_target))
-    sys.exit(errno.ENOENT)
-  logger.info("new link -> '{}' ({})".format(link_target, file_source))
+    exitWithError("an unknown error occurred while trying to create symbolic link: {}".format(link_target))
+  if options.verbose:
+    logger.info("new link -> '{}' ({})".format(link_target, file_source))
 
 def compressFile(file_source, file_target):
   file_source = os.path.normpath(file_source)
@@ -160,15 +134,15 @@ def stageApp(prefix):
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_app:
-    checkError((fileio.copyDir(paths.join(dir_root, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=options.verbose)))
+    checkError((fileio.copyDir(paths.join(dir_app, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=options.verbose)))
   for _file in files_app:
-    checkError((fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=options.verbose)))
+    checkError((fileio.copyFile(paths.join(dir_app, _file), dir_target, _file, verbose=options.verbose)))
   exe = config.getValue("executable")
-  checkError((fileio.copyExecutable(paths.join(dir_root, exe), dir_target, exe, verbose=options.verbose)))
+  checkError((fileio.copyExecutable(paths.join(dir_app, exe), dir_target, exe, verbose=options.verbose)))
 
   # add desktop menu file
   file_menu = "{}.desktop".format(package_name)
-  checkError((fileio.copyFile(paths.join(dir_root, "data", file_menu), paths.join(prefix, "applications", file_menu), verbose=options.verbose)))
+  checkError((fileio.copyFile(paths.join(dir_app, "data", file_menu), paths.join(prefix, "applications", file_menu), verbose=options.verbose)))
 
 def stageData(prefix):
   print()
@@ -178,7 +152,7 @@ def stageData(prefix):
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_data:
-    checkError((fileio.copyDir(os.path.join(dir_root, _dir), dir_target, _dir, verbose=options.verbose)))
+    checkError((fileio.copyDir(paths.join(dir_app, _dir), dir_target, _dir, verbose=options.verbose)))
   # copy icon to pixmaps directory
   checkError((fileio.copyFile(paths.join(dir_target, "bitmaps/icon/64/logo.png"), paths.join(prefix, "pixmaps", package_name + ".png"), verbose=options.verbose)))
 
@@ -190,19 +164,19 @@ def stageDoc(prefix):
 
   dir_target = paths.join(prefix, "doc/{}".format(package_name))
   for _file in files_doc:
-    fileio.copyFile(paths.join(dir_root, _file), dir_target, _file, verbose=options.verbose)
+    fileio.copyFile(paths.join(dir_app, _file), dir_target, _file, verbose=options.verbose)
 
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
     basename = os.path.basename(_file)
     dir_man = paths.join(prefix, "man/{}".format(os.path.basename(os.path.dirname(_file))))
-    compressFile(paths.join(dir_root, _file), paths.join(dir_man, basename + ".gz"))
+    compressFile(paths.join(dir_app, _file), paths.join(dir_man, basename + ".gz"))
 
 def stageLocale(prefix):
   print()
   logger.info("staging locale files ...")
 
-  dir_source = paths.join(dir_root, "locale")
+  dir_source = paths.join(dir_app, "locale")
   dir_target = paths.join(prefix, "locale")
 
   for ROOT, DIRS, FILES in os.walk(dir_source):
@@ -232,8 +206,8 @@ def stageMimeInfo(prefix):
 
   mime_prefix = config.getValue("dbp_mime_prefix")
   mime_type = config.getValue("dbp_mime")
-  mime_conf = paths.join(dir_root, "data/mime/{}.xml".format(package_name))
-  mime_icon = paths.join(dir_root, "data/svg", mime_prefix + "-" + mime_type + ".svg")
+  mime_conf = paths.join(dir_app, "data/mime/{}.xml".format(package_name))
+  mime_icon = paths.join(dir_app, "data/svg", mime_prefix + "-" + mime_type + ".svg")
   conf_target = paths.join(dir_conf, "{}.xml".format(package_name))
   icon_target = paths.join(dir_icons, "application-x-dbp.svg")
   checkError((fileio.copyFile(mime_conf, conf_target, verbose=options.verbose)))
@@ -241,6 +215,17 @@ def stageMimeInfo(prefix):
 
 
 # --- build tasks --- #
+
+def taskStage():
+  tasks.run("update-version")
+  tasks.run("clean-stage")
+  dir_stage = paths.join(dir_app, "build/stage")
+  dir_data = paths.join(dir_stage, "share")
+  stageApp(dir_data)
+  stageData(dir_data)
+  stageDoc(dir_data)
+  stageLocale(dir_data)
+  stageMimeInfo(dir_data)
 
 def taskInstall():
   if options.prefix == None:
@@ -250,7 +235,7 @@ def taskInstall():
   logger.info("installing ...")
 
   tasks.run("stage")
-  dir_stage = paths.join(dir_root, "build/stage")
+  dir_stage = paths.join(dir_app, "build/stage")
   dir_install = paths.join(options.dir, options.prefix)
 
   for obj in os.listdir(dir_stage):
@@ -270,67 +255,9 @@ def taskInstall():
   createFileLink(paths.join(options.prefix, "share", package_name, config.getValue("executable")), paths.join(dir_bin, package_name))
   fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=options.verbose)
 
-def taskUpdateVersion():
-  ver_string = package_version
-  ver = ver_string.split(".")
-  ver_dev = int(config.getValue("version_dev", 0))
-  ver_string_full = ver_string
-  if ver_dev > 0:
-    ver_string_full += "-dev{}".format(ver_dev)
-
-  print()
-  print("package:     {}".format(package_name))
-  print("version:     {}".format(package_version))
-  print("dev version: {}".format(ver_dev))
-
-  print()
-  logger.info("updating version information ...")
-
-  repl = [
-    (r"^VERSION_maj = .*$", "VERSION_maj = {}".format(ver[0])),
-    (r"^VERSION_min = .*$", "VERSION_min = {}".format(ver[1]))
-  ]
-  if len(ver) > 2:
-    repl.append((r"^VERSION_rev = .*$", "VERSION_rev = {}".format(ver[2])))
-  repl.append((r"^VERSION_dev = .*$", "VERSION_dev = {}".format(ver_dev)))
-  fileio.replace(paths.join(dir_root, "globals/application.py"), repl, count=1,
-      verbose=options.verbose)
-  fileio.replace(paths.join(dir_root, "docs/Doxyfile"), r"^PROJECT_NUMBER         = .*",
-      "PROJECT_NUMBER         = {}".format(ver_string_full), count=1, verbose=options.verbose)
-  fileio.replace(paths.join(dir_root, "locale/debreate.pot"),
-      r'"Project-Id-Version: Debreate .*\\n"$',
-      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string_full), count=1,
-      verbose=options.verbose)
-  fileio.replace(paths.join(dir_root, "Makefile"), r"^VERSION = .*$",
-      "VERSION = {}".format(ver_string_full), count=1, verbose=options.verbose)
-  if ver_dev == 0:
-    fileio.replace(paths.join(dir_root, "docs/changelog"), r"^next$", ver_string_full, count=1,
-        fl=True, verbose=options.verbose)
-
-  repl = [
-    (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
-    (r"^VERSION_dev=.*$", "VERSION_dev={}".format(ver_dev))
-  ]
-  # INFO file is deprecated, should be removed in future versions
-  fileio.replace(paths.join(dir_root, "INFO"), repl, count=1, verbose=options.verbose)
-
-def taskStage():
-  tasks.run("update-version")
-  tasks.run("clean-stage")
-  dir_stage = paths.join(dir_root, "build/stage")
-  dir_data = paths.join(dir_stage, "share")
-  stageApp(dir_data)
-  stageData(dir_data)
-  stageDoc(dir_data)
-  stageLocale(dir_data)
-  stageMimeInfo(dir_data)
-
 def taskUninstall():
   if options.prefix == None:
-    logger.error("'prefix' option is required for 'uninstall' task.")
-    print()
-    printUsage()
-    sys.exit(errno.EINVAL)
+    exitWithError("'prefix' option is required for 'uninstall' task.", errno.EINVAL, True)
 
   print()
   logger.info("uninstalling ...")
@@ -372,10 +299,13 @@ def taskUninstall():
     for obj in os.listdir(source_loc):
       if os.path.isdir(paths.join(source_loc, obj)):
         tags_loc.append(obj)
+
     for tag in tags_loc:
       file_mo = paths.join(root_locale, tag, "LC_MESSAGES/{}.mo".format(package_name))
       checkError((fileio.deleteFile(file_mo, verbose=options.verbose)))
+
   logger.info("uninstalling app directories ...")
+
   remove_dirs = (
     paths.join(root_data, package_name),
     paths.join(root_doc, package_name)
@@ -384,35 +314,100 @@ def taskUninstall():
   for rm_d in remove_dirs:
     checkError((fileio.deleteDir(rm_d, verbose=options.verbose)))
 
-def taskClean():
-  print()
-  logger.info("cleaning build files ...")
+def taskUpdateVersion():
+  ver_string = package_version
+  ver = ver_string.split(".")
+  ver_dev = int(config.getValue("version_dev", 0))
+  ver_string_full = ver_string
+  if ver_dev > 0:
+    ver_string_full += "-dev{}".format(ver_dev)
 
-  dir_build = paths.join(dir_root, "build")
-  fileio.deleteDir(dir_build, verbose=options.verbose)
-  tasks.run("clean-deb")
+  print()
+  print("package:     {}".format(package_name))
+  print("version:     {}".format(package_version))
+  print("dev version: {}".format(ver_dev))
+
+  print()
+  logger.info("updating version information ...")
+
+  repl = [
+    (r"^VERSION_maj = .*$", "VERSION_maj = {}".format(ver[0])),
+    (r"^VERSION_min = .*$", "VERSION_min = {}".format(ver[1]))
+  ]
+  if len(ver) > 2:
+    repl.append((r"^VERSION_rev = .*$", "VERSION_rev = {}".format(ver[2])))
+  repl.append((r"^VERSION_dev = .*$", "VERSION_dev = {}".format(ver_dev)))
+  fileio.replace(paths.join(dir_app, "globals/application.py"), repl, count=1,
+      verbose=options.verbose)
+  fileio.replace(paths.join(dir_app, "docs/Doxyfile"), r"^PROJECT_NUMBER         = .*",
+      "PROJECT_NUMBER         = {}".format(ver_string_full), count=1, verbose=options.verbose)
+  fileio.replace(paths.join(dir_app, "locale/debreate.pot"),
+      r'"Project-Id-Version: Debreate .*\\n"$',
+      '"Project-Id-Version: Debreate {}\\\\n"'.format(ver_string_full), count=1,
+      verbose=options.verbose)
+  fileio.replace(paths.join(dir_app, "Makefile"), r"^VERSION = .*$",
+      "VERSION = {}".format(ver_string_full), count=1, verbose=options.verbose)
+  if ver_dev == 0:
+    fileio.replace(paths.join(dir_app, "docs/changelog"), r"^next$", ver_string_full, count=1,
+        fl=True, verbose=options.verbose)
+
+  repl = [
+    (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
+    (r"^VERSION_dev=.*$", "VERSION_dev={}".format(ver_dev))
+  ]
+  # INFO file is deprecated, should be removed in future versions
+  fileio.replace(paths.join(dir_app, "INFO"), repl, count=1, verbose=options.verbose)
 
 def taskCleanStage():
   print()
-  logger.info("cleaning staged files ...")
+  logger.info("removing temporary staged build files ...")
 
-  dir_stage = paths.join(dir_root, "build/stage")
+  dir_stage = paths.join(dir_app, "build/stage")
   fileio.deleteDir(dir_stage, verbose=options.verbose)
 
 def taskCleanDeb():
   print()
-  logger.info("cleaning temporary Debian files ...")
+  logger.info("removing temporary Debian build files ...")
 
   for _dir in ("debian/debreate", "debian/.debhelper"):
-    fileio.deleteDir(os.path.join(dir_root, os.path.normpath(_dir)), True)
-  for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
-    fileio.deleteFile(os.path.join(dir_root, os.path.normpath(_file)), True)
+    fileio.deleteDir(paths.join(dir_app, _dir), verbose=options.verbose)
+  for _file in (
+      "debian/debhelper-build-stamp", "debian/debreate.debhelper.log",
+      "debian/debreate.substvars", "debian/files"):
+    fileio.deleteFile(paths.join(dir_app, _file), verbose=options.verbose)
+
+def taskCleanDist():
+  print()
+  logger.info("removing built distribution packages ...")
+
+  dir_dist = paths.join(dir_app, "build", "dist")
+  fileio.deleteDir(dir_dist, verbose=options.verbose)
 
 def taskDistSource():
+  print()
   # ~ logger.info("building source distribution package ...")
   logger.warn("building source distribution package not yet implemented")
 
   # TODO:
+
+def taskDistBin():
+  tasks.run("stage")
+
+  print()
+  logger.info("building portable binary distribution package ...")
+
+  dir_build = paths.join(dir_app, "build")
+  dir_data = paths.join(dir_build, "stage/share/debreate")
+  dir_dist = paths.join(dir_build, "dist")
+  pkg_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version))
+  # FIXME: packDir should create parent directory
+  fileio.makeDir(dir_dist, verbose=options.verbose)
+  fileio.packDir(dir_data, pkg_dist, verbose=options.verbose)
+
+  if os.path.isfile(pkg_dist):
+    logger.info("built package '{}'".format(pkg_dist))
+  else:
+    exitWithError("failed to build portable binary package", errno.ENOENT)
 
 def taskDistDeb():
   tasks.run("clean-deb")
@@ -422,8 +417,8 @@ def taskDistDeb():
 
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
-  dir_parent = os.path.dirname(dir_root)
-  dir_dist = paths.join(dir_root, "build/dist")
+  dir_parent = os.path.dirname(dir_app)
+  dir_dist = paths.join(dir_app, "build/dist")
   fileio.makeDir(dir_dist)
   # FIXME: determine .deb package name
   for obj in os.listdir(dir_parent):
@@ -432,19 +427,6 @@ def taskDistDeb():
     abspath = paths.join(dir_parent, obj)
     if os.path.isfile(abspath):
       fileio.moveFile(abspath, dir_dist, obj, verbose=options.verbose)
-
-def taskDistBin():
-  tasks.run("stage")
-  print()
-  logger.info("building portable binary backage ...")
-
-  dir_build = paths.join(dir_root, "build")
-  dir_data = paths.join(dir_build, "stage/share/debreate")
-  dir_dist = paths.join(dir_build, "dist")
-  file_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version))
-  # FIXME: packDir should create parent directory
-  fileio.makeDir(dir_dist, verbose=options.verbose)
-  fileio.packDir(dir_data, file_dist, verbose=options.verbose)
 
 def taskPrintChanges():
   from libdbr.misc   import getLatestChanges
@@ -456,7 +438,7 @@ def taskPrintChanges():
 def taskRunTests():
   from libdbr.unittest import runTest
 
-  dir_tests = paths.join(dir_root, "tests")
+  dir_tests = paths.join(dir_app, "tests")
   if not os.path.isdir(dir_tests):
     return
 
@@ -489,8 +471,7 @@ def taskRunTests():
   for test_name in standard_tests:
     res, err = runTest(test_name, standard_tests[test_name], verbose=options.verbose)
     if res != 0:
-      logger.error("{}: failed".format(test_name))
-      sys.exit(res)
+      exitWithError("{}: failed".format(test_name), res)
     else:
       logger.info("{}: OK".format(test_name))
 
@@ -507,10 +488,11 @@ def initTasks(task_list):
   addTask(task_list, "dist-source", taskDistSource, "Build a source distribution package (TODO).")
   addTask(task_list, "dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
   addTask(task_list, "dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
-  addTask(task_list, "clean", taskClean, "Remove files from build directory.")
   addTask(task_list, "clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")
   addTask(task_list, "clean-deb", taskCleanDeb, "Remove temporary build files from 'debian'" \
+      + " directory.")
+  addTask(task_list, "clean-dist", taskCleanDist, "Remove built packages from 'build/dist'" \
       + " directory.")
   addTask(task_list, "update-version", taskUpdateVersion, "Update relevant files with version" \
       + " information from 'build.conf'.")
@@ -524,7 +506,7 @@ def initTasks(task_list):
 def main():
   global options, printUsage, package_name, package_version
 
-  config.setFile(os.path.join(dir_root, "build.conf"))
+  config.setFile(paths.join(dir_app, "build.conf"))
   config.load()
 
   package_name = config.getValue("package")
@@ -538,8 +520,7 @@ def main():
 
   task = tasks.get(options.task)
   if not task:
-    logger.error("unknown task ({})".format(options.task))
-    sys.exit(1)
+    exitWithError("unknown task ({})".format(options.task), usage=True)
   task()
 
 if __name__ == "__main__":
