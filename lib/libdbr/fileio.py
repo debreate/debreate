@@ -6,12 +6,19 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+import bz2
 import codecs
 import errno
+import gzip
+import lzma
 import os
 import re
 import shutil
+import tarfile
+import zipfile
+import zlib
 
+from tarfile import TarFile
 from zipfile import ZipFile
 
 
@@ -35,13 +42,38 @@ def setLineEndings(delim):
 #    String to be cleaned.
 #  @return
 #    Formatted string.
-def _cleanLineEndings(data):
+def __cleanLE(data):
   global __le
 
   data = data.replace("\r\n", "\n").replace("\r", "\n")
   if __le != "\n":
     data = data.replace("\n", __le)
   return data
+
+## Creates an empty file.
+#
+#  @param target
+#    Target filepath.
+#  @param binary
+#    Create a binary file instead of text.
+#  @param verbose
+#    If true, print extra information.
+#  @return
+#    Error code & message.
+def createFile(target, binary=False, verbose=False):
+  err, msg = __checkNotExists(target, action="create file")
+  if err != 0:
+    return err, msg
+  if binary:
+    fout = codecs.open(target, "wb")
+  else:
+    fout = codecs.open(target, "w", "utf-8")
+  fout.close()
+  if not os.path.isfile(target):
+    return errno.ENOENT, "failed to create file '{}'".format(target)
+  if verbose:
+    print("created empty file '{}'".format(target))
+  return 0, None
 
 ## Reads data from a text file.
 #
@@ -53,9 +85,11 @@ def readFile(filepath):
   fin = codecs.open(filepath, "r", "utf-8")
   data = fin.read()
   fin.close()
-  return _cleanLineEndings(data)
+  return __cleanLE(data)
 
 ## Writes text or binary data to a file without preserving previous contents.
+#
+#  FIXME: should return integer instead of boolean
 #
 #  @param filepath
 #    Path to file to be written.
@@ -71,7 +105,7 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   if data == None:
     msg = __name__ + "." + writeFile.__name__ + ": 'data' parameter cannot be None"
     raise TypeError(msg)
-    return False
+    return False, msg
   if type(data) in (list, tuple):
     data = "\n".join(data)
   # make sure parent directory exists
@@ -80,18 +114,18 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
     err, msg = makeDir(dir_parent, verbose=verbose)
     if err != 0:
       raise Exception(msg)
-      return False
+      return False, msg
   if binary:
     fout = codecs.open(filepath, "wb")
     fout.write(data)
   else:
     fout = codecs.open(filepath, "w", "utf-8")
-    fout.write(_cleanLineEndings(data))
+    fout.write(__cleanLE(data))
   fout.close()
   os.chmod(filepath, mode)
   if verbose:
     print("create file '{}' (mode={})".format(filepath, oct(mode)[2:]))
-  return True
+  return True, None
 
 ## Writes text data to a file while preserving previous contents.
 #
@@ -146,23 +180,28 @@ def checkTimestamp(filepath):
 #  @return
 #    Error code & message.
 def __checkNotExists(target, action=None, add_parent=False):
-  err = errno.EEXIST
+  err = 0
   msg = ""
   if action:
     msg += "cannot " + action + ", "
 
-  if os.path.exists(target):
-    if os.path.isdir(target):
-      err = errno.EISDIR
-      msg += "directory"
-    else:
-      msg += "file"
+  if os.path.isdir(target):
+    err = errno.EISDIR
+    msg += "directory"
+  elif os.path.islink(target):
+    err = errno.EEXIST
+    msg += "link"
+  elif os.path.exists(target):
+    err = errno.EEXIST
+    msg += "file"
+
+  if err != 0:
     msg += " exists: {}".format(target)
     return err, msg
 
   if add_parent:
     dir_parent = os.path.dirname(target)
-    if not os.path.exists(dir_parent):
+    if not os.path.lexists(dir_parent):
       os.makedirs(dir_parent)
     elif not os.path.isdir(dir_parent):
       return err, "cannot create directory, file exists: {}".format(dir_parent)
@@ -180,7 +219,7 @@ def __checkNotDir(target, action=None):
   msg = ""
   if action:
     msg += "cannot " + action + ", "
-  if os.path.exists(target) and os.path.isdir(target):
+  if os.path.isdir(target):
     return errno.EISDIR, msg + "directory exists: {}".format(target)
   return 0, None
 
@@ -257,11 +296,11 @@ def makeDir(dirpath, mode=__perm["d"], verbose=False):
 #  @return
 #    Error code & message.
 def deleteFile(filepath, verbose=False):
-  if os.path.exists(filepath) or os.path.islink(filepath):
+  if os.path.lexists(filepath):
     if os.path.isdir(filepath):
       return errno.EISDIR, "cannot delete file, directory exists: {}".format(filepath)
     os.remove(filepath)
-    if os.path.exists(filepath) or os.path.islink(filepath):
+    if os.path.lexists(filepath):
       return 1, "failed to delete file, an unknown error occured: {}".format(filepath)
     if verbose:
       print("delete file '{}'".format(filepath))
@@ -276,7 +315,7 @@ def deleteFile(filepath, verbose=False):
 #  @return
 #    Error code & message.
 def deleteDir(dirpath, verbose=False):
-  if os.path.exists(dirpath):
+  if os.path.lexists(dirpath):
     if not os.path.isdir(dirpath):
       return errno.EEXIST, "cannot delete directory, file exists: {}".format(dirpath)
     for obj in os.listdir(dirpath):
@@ -290,7 +329,7 @@ def deleteDir(dirpath, verbose=False):
     if len(os.listdir(dirpath)) != 0:
       return errno.ENOTEMPTY, "failed to delete directory, not empty: {}".format(dirpath)
     os.rmdir(dirpath)
-    if os.path.exists(dirpath):
+    if os.path.lexists(dirpath):
       return 1, "failed to delete directory, an unknown error occurred: {}".format(dirpath)
     if verbose:
       print("delete directory '{}'".format(dirpath))
@@ -320,7 +359,7 @@ def copyFile(source, target, name=None, mode=__perm["f"], verbose=False):
   if err != 0:
     return err, msg
   shutil.copyfile(source, target)
-  if not os.path.exists(target):
+  if not os.path.lexists(target):
     return 1, "failed to copy file, an unknown error occurred: {}".format(target)
   os.chmod(target, mode)
   if verbose:
@@ -427,7 +466,7 @@ def moveFile(source, target, name=None, mode=__perm["f"], verbose=False):
   if err != 0:
     return err, msg
   shutil.move(source, target)
-  if os.path.exists(source) or not os.path.exists(target):
+  if os.path.lexists(source) or not os.path.lexists(target):
     return 1, "failed to move file, an unknown error occurred: {}".format(target)
   os.chmod(target, mode)
   if verbose:
@@ -485,7 +524,65 @@ def moveDir(source, target, name=None, mode=__perm["d"], verbose=False):
     print("move '{}' -> '{}' (mode={})".format(source, target, oct(mode)[2:]))
   return 0, None
 
-## Compresses a file into a zip archive.
+
+# supported compression formats (empty string for uncompressed)
+__compression_formats = {"zip": ZipFile, "zlib": zlib, "gz": gzip, "bz2": bz2, "xz": lzma}
+# ~ __archive_formats = ["", "zip"] + list(__compression_formats)
+__archive_formats = ["", "zip", "gz", "bz2", "xz"]
+
+## Retrieves supported compression formats dictionary.
+def getCompressionFormats():
+  return __compression_formats
+
+## Retrieves supported archive formats list.
+def getArchiveFormats():
+  return __archive_formats
+
+## Compresses a single file.
+#
+#  @param source
+#    Path to file to be added.
+#  @param target
+#    Target filename to be created.
+#  @param form
+#    Compression format.
+#  @param rmsrc
+#    If true, delete source file after compression succeeds.
+#  @param verbose
+#    If true, print extra information.
+#  @return
+#    Error code & message.
+def compressFile(source, target, form="gz", rmsrc=False, verbose=False):
+  if form not in __compression_formats:
+    msg = "unsupported compression format '{}'".format(form)
+    # ~ raise TypeError(msg)
+    return 1, msg
+
+  if form == "zip":
+    err, msg = packFile(source, target, form="zip", verbose=verbose)
+  else:
+    err, msg = __checkFileExists(source, action="compress file")
+    if err != 0:
+      return err, msg
+    err, msg = __checkNotExists(target, action="compress file")
+    if err != 0:
+      return err, msg
+
+    fin = codecs.open(source, "rb")
+    data = fin.read()
+    fin.close()
+
+    err, msg = writeFile(target, __compression_formats[form].compress(data), binary=True,
+        verbose=verbose)
+    if type(err) == bool:
+      err = 0 if err else 1
+
+  if err == 0:
+    if rmsrc:
+      err, msg = deleteFile(source, verbose=verbose)
+  return err, msg
+
+## Compresses a file into a zip or tar archive.
 #
 #  TODO:
 #  - support more archive formats
@@ -495,6 +592,8 @@ def moveDir(source, target, name=None, mode=__perm["d"], verbose=False):
 #    Path to file to be added.
 #  @param archive
 #    Path to archive or open archive stream.
+#  @param form
+#    Compression format.
 #  @param amend
 #    Add to without deleting old contents.
 #  @param mode
@@ -503,19 +602,42 @@ def moveDir(source, target, name=None, mode=__perm["d"], verbose=False):
 #    If true, print extra information.
 #  @return
 #    Error code & message.
-def packFile(sourcefile, archive, amend=False, mode=__perm["f"], verbose=False):
+def packFile(sourcefile, archive, form="zip", amend=False, mode=__perm["f"], verbose=False):
+  if form not in __archive_formats:
+    msg = "unsupported compression format '{}'".format(form)
+    raise TypeError(msg)
+    return 1, msg
   err, msg = __checkFileExists(sourcefile)
   if err != 0:
     return err, msg
-  new_archive = type(archive) != ZipFile
+  a_type = type(archive)
+  new_archive = a_type != ZipFile and a_type != TarFile
   zopen = archive
+  # for amending compressed tarballs
+  contents = []
   if new_archive:
-    err, msg = __checkNotDir(archive, "create zip")
+    err, msg = __checkNotDir(archive, "create archive")
     if err != 0:
       return err, msg
     # create a new archive file
-    zopen = ZipFile(archive, "a" if amend else "w")
-  zopen.write(sourcefile)
+    if form == "zip":
+      zopen = ZipFile(archive, "a" if amend else "w")
+    elif form == "":
+      zopen = tarfile.open(archive, "a" if amend else "w")
+    else:
+      # amending a compressed tarfile not possible, must create a new one
+      if amend and os.path.isfile(archive):
+        # get contents of existing file before overwriting
+        tmp = tarfile.open(archive, "r:")
+        contents = tmp.getmembers()
+        tmp.close()
+      zopen = tarfile.open(archive, "w:" + form)
+  if type(zopen) == ZipFile:
+    zopen.write(sourcefile)
+  else:
+    for t_info in contents:
+      zopen.addfile(t_info)
+    zopen.add(sourcefile)
   if verbose:
     print("compress '{}' => '{}'".format(sourcefile, archive))
   # if ZipFile was passed, calling instruction should close the file
@@ -536,6 +658,8 @@ def packFile(sourcefile, archive, amend=False, mode=__perm["f"], verbose=False):
 #    Path to directory to be added.
 #  @param archive
 #    Path to archive.
+#  @param form
+#    Compression format.
 #  @param incroot
 #    If true, include parent directory tree.
 #  @param amend
@@ -546,11 +670,16 @@ def packFile(sourcefile, archive, amend=False, mode=__perm["f"], verbose=False):
 #    If true, print extra information.
 #  @return
 #    Error code & message.
-def packDir(sourcedir, archive, incroot=False, amend=False, mode=__perm["f"], verbose=False):
+def packDir(sourcedir, archive, form="zip", incroot=False, amend=False, mode=__perm["f"],
+    verbose=False):
+  if form not in __archive_formats:
+    msg = "unsupported compression format '{}'".format(form)
+    raise TypeError(msg)
+    return 1, msg
   err, msg = __checkDirExists(sourcedir)
   if err != 0:
     return err, msg
-  err, msg = __checkNotDir(archive, "create zip")
+  err, msg = __checkNotDir(archive, "create archive")
   if err != 0:
     return err, msg
 
@@ -573,17 +702,30 @@ def packDir(sourcedir, archive, incroot=False, amend=False, mode=__perm["f"], ve
     os.chdir(dir_start)
     idx_trim = len(dir_start) + 1
 
-  zopen = ZipFile(archive, "a" if amend else "w")
-  z_count_start = len(zopen.namelist())
+  # for amending compressed tarballs
+  contents = []
+  if form == "zip":
+    zopen = ZipFile(archive, "a" if amend else "w")
+  elif form == "":
+    zopen = tarfile.open(archive, "a" if amend else "w")
+  else:
+    # amending a compressed tarfile not possible, must create a new one
+    if amend and os.path.isfile(archive):
+      # get contents of existing file before overwriting
+      tmp = tarfile.open(archive, "r:")
+      contents = tmp.getmembers()
+      tmp.close()
+    zopen = tarfile.open(archive, "w:" + form)
+  z_count_start = len(zopen.namelist()) if form == "zip" else len(zopen.getnames())
   for ROOT, DIRS, FILES in os.walk(dir_abs):
     for f in FILES:
       f = os.path.join(ROOT, f)[idx_trim:]
-      err, msg = packFile(f, zopen, True, verbose)
+      err, msg = packFile(f, zopen, form=form, amend=True, verbose=verbose)
       if err != 0:
         # make sure to close stream in case of error
         zopen.close()
         return err, msg
-  z_count_end = len(zopen.namelist())
+  z_count_end = len(zopen.namelist()) if form == "zip" else len(zopen.getnames())
   zopen.close()
   os.chmod(archive, mode)
 
@@ -622,7 +764,7 @@ def unpackArchive(filepath, dir_target=None, verbose=False):
   if dir_target == None:
     dir_target = os.path.join(dir_parent, os.path.basename(filepath).lower().split(".zip")[0])
 
-  if os.path.exists(dir_target):
+  if os.path.lexists(dir_target):
     if not os.path.isdir(dir_target):
       return errno.EEXIST, "cannot extract zip, file exists: {}".format(dir_target)
     shutil.rmtree(dir_target)
@@ -631,14 +773,17 @@ def unpackArchive(filepath, dir_target=None, verbose=False):
   os.chdir(dir_target)
   if verbose:
     print("extracting contents of {} ...".format(filepath))
-  zopen = ZipFile(filepath, "r")
+  if zipfile.is_zipfile(filepath):
+    zopen = ZipFile(filepath, "r")
+  elif tarfile.is_tarfile(filepath):
+    zopen = tarfile.open(filepath, "r:*")
   zopen.extractall()
   zopen.close()
   # return to original directory
   os.chdir(dir_start)
   return 0, None
 
-## Replace a pattern in a file.
+## Replace a pattern in a text file.
 #
 #  @param filepath
 #    Path to file to be updated.
