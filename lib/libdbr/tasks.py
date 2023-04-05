@@ -79,6 +79,12 @@ def getNames():
 #  @return
 #    Error result from running task.
 def run(name, *args, **kwargs):
+  if type(name) in (list, tuple):
+    for n in name:
+      res = run(n, *args, **kwargs)
+      if res != 0:
+        return res
+    return 0
   if not name in __tasklist:
     __logger.error("invalid task ({}), not running".format(name))
     return errno.ENOENT
@@ -94,7 +100,7 @@ def run(name, *args, **kwargs):
     msg = "invalid return type from task ({}): {}".format(name, res_type)
     __logger.error(msg)
     raise TypeError(msg)
-    return 1
+    return 1 # FIXME: code isn't processed past an exception error
   return res
 
 ## Removes task from completed list so can be re-run.
