@@ -36,14 +36,17 @@ jobs:
       - name: install build dependencies
         run: sudo apt install debhelper devscripts
 
+      - name: build source package
+        run: python3 build.py -t dist-source
+
       - name: build portable package
-        run: python3 build.py -t portable
+        run: python3 build.py -t dist-bin
 
       - name: build .deb package
-        run: python3 build.py -t deb-bin
+        run: python3 build.py -t dist-deb
 
       - name: prepare release information
-        run: echo "Changes:\n\n$(python3 build.py -t print-changes)" > release_notes.tmp
+        run: echo "Changes:\n\n$(python3 build.py -t changes)" > release_notes.tmp
 
       - name: publish
         uses: softprops/action-gh-release@v1

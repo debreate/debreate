@@ -407,14 +407,17 @@ def taskCleanDeb():
   for _file in ("debian/debhelper-build-stamp", "debian/debreate.debhelper.log", "debian/debreate.substvars", "debian/files"):
     fileio.deleteFile(os.path.join(dir_root, os.path.normpath(_file)), True)
 
-def taskDist():
-  # TODO:
-  pass
+def taskDistSource():
+  # ~ logger.info("building source distribution package ...")
+  logger.warn("building source distribution package not yet implemented")
 
-def taskDebBinary():
-  taskCleanDeb()
+  # TODO:
+
+def taskDistDeb():
+  tasks.run("clean-deb")
+
   print()
-  logger.info("building Debian binary package ...")
+  logger.info("building Debian binary distribution package ...")
 
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
@@ -429,7 +432,7 @@ def taskDebBinary():
     if os.path.isfile(abspath):
       fileio.moveFile(abspath, dir_dist, obj, verbose=options.verbose)
 
-def taskPortable():
+def taskDistBin():
   tasks.run("stage")
   print()
   logger.info("building portable binary backage ...")
@@ -495,18 +498,24 @@ def addTask(task_list, name, action, desc):
   task_list[name] = desc
 
 def initTasks(task_list):
-  addTask(task_list, "install", taskInstall, "Install application files.")
-  addTask(task_list, "uninstall", taskUninstall, "Uninstall application files.")
-  addTask(task_list, "stage", taskStage, "Stage files for distribution (same as `-t install -p (root_dir)/build/stage`)")
-  addTask(task_list, "dist", taskDist, "Create a source distribution package (TODO).")
-  addTask(task_list, "deb-bin", taskDebBinary, "Build binary Debian package for installation.")
-  addTask(task_list, "portable", taskPortable, "Create portable distribution package.")
+  addTask(task_list, "stage", taskStage, "Prepare files for installation or distribution.")
+  addTask(task_list, "install", taskInstall, "Install files to directory specified by `--prefix`" \
+      + " argument.")
+  addTask(task_list, "uninstall", taskUninstall, "Uninstall files from directory specified by" \
+      + " `--prefix` argument.")
+  addTask(task_list, "dist-source", taskDistSource, "Build a source distribution package (TODO).")
+  addTask(task_list, "dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
+  addTask(task_list, "dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
   addTask(task_list, "clean", taskClean, "Remove files from build directory.")
-  addTask(task_list, "clean-stage", taskCleanStage, "Remove files from stage directory.")
-  addTask(task_list, "clean-deb", taskCleanDeb, "Clean up temporary files from .deb package builds.")
-  addTask(task_list, "update-version", taskUpdateVersion, "Update version information from build.conf.")
-  addTask(task_list, "run-tests", taskRunTests, "Run configured tests.")
-  addTask(task_list, "print-changes", taskPrintChanges, "Print most recent changes from changelog to stdout.")
+  addTask(task_list, "clean-stage", taskCleanStage, "Remove temporary build files from" \
+      + " 'build/stage' directory.")
+  addTask(task_list, "clean-deb", taskCleanDeb, "Remove temporary build files from 'debian'" \
+      + " directory.")
+  addTask(task_list, "update-version", taskUpdateVersion, "Update relevant files with version" \
+      + " information from 'build.conf'.")
+  addTask(task_list, "test", taskRunTests, "Run configured unit tests from 'tests' directory.")
+  addTask(task_list, "changes", taskPrintChanges, "Print most recent changes from 'doc/changelog'" \
+      + " to stdout.")
   return task_list
 
 # --- execution insertion point --- #
