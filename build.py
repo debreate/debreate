@@ -42,7 +42,7 @@ def parseCommandLine(task_list):
   for t in task_list:
     task_help.append(t + ": " + task_list[t])
   args_parser = argparse.ArgumentParser(
-      prog=os.path.basename(sys.argv[0]),
+      formatter_class=argparse.RawTextHelpFormatter,
       description="Debreate installer script",
       add_help=False)
   args_parser.version = package_version
@@ -54,10 +54,10 @@ def parseCommandLine(task_list):
       help="Include detailed task information when printing to stdout.")
   args_parser.add_argument("-t", "--task", choices=tuple(task_list), default="install",
       help="\n".join(task_help))
-  args_parser.add_argument("-p", "--prefix",
+  args_parser.add_argument("-p", "--prefix", default=paths.getSystemRoot() + "usr",
       help="Path prefix to directory where files are to be installed.")
-  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot() + "usr",
-      help="Target directory (defaults to /usr). This is useful for directing the script" \
+  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(),
+      help="Target directory (defaults to system root). This is useful for directing the script" \
           + " to place the files in a temporary directory, rather than the intended installation" \
           + " path.")
   return args_parser

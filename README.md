@@ -123,7 +123,7 @@ Arguments:
 - `-p|--prefix <directory>`
     - Path prefix to directory where files are to be installed.
 - `-d|--dir <directory>`
-    - Target directory (defaults to /usr). This is useful for directing the script to place files
+    - Target directory (defaults to system root). This is useful for directing the script to place files
       in a temporary directory rather than the intended installation path. It is equivalent to the
       "[DESTDIR][bs.gnu-destdir]" environment variable used by [GNU make][bs.gnu-make].
 
