@@ -37,7 +37,7 @@ def installModule(name, package=None):
     __logger.warn("not re-installing module: {}".format(name))
     return 0
   try:
-    installed[name] = __import__(name)
+    installed[name] = importlib.import_module(name)
     __logger.warn("not re-installing module: {}".format(name))
     return 0
   except ModuleNotFoundError:
@@ -46,7 +46,7 @@ def installModule(name, package=None):
   subprocess.run((sys.executable, "-m", "pip", "install", package))
   res = 0
   try:
-    installed[name] = __import__(name)
+    installed[name] = importlib.import_module(name)
   except ModuleNotFoundError:
     __logger.error("unable to install module: {}".format(name))
     res = errno.ENOENT

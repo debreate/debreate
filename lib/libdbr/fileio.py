@@ -257,11 +257,11 @@ def makeDir(dirpath, mode=__perm["d"], verbose=False):
 #  @return
 #    Error code & message.
 def deleteFile(filepath, verbose=False):
-  if os.path.exists(filepath):
+  if os.path.exists(filepath) or os.path.islink(filepath):
     if os.path.isdir(filepath):
       return errno.EISDIR, "cannot delete file, directory exists: {}".format(filepath)
     os.remove(filepath)
-    if os.path.exists(filepath):
+    if os.path.exists(filepath) or os.path.islink(filepath):
       return 1, "failed to delete file, an unknown error occured: {}".format(filepath)
     if verbose:
       print("delete file '{}'".format(filepath))
