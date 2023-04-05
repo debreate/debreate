@@ -8,9 +8,7 @@
 # ****************************************************
 
 import argparse
-import codecs
 import errno
-import gzip
 import os
 import subprocess
 import sys
@@ -89,12 +87,6 @@ def checkWriteFile(_file):
   if os.path.isfile(_file) and not os.access(_file, os.W_OK):
     exitWithError("cannot overwrite file, insufficient permissions: {}".format(_file), errno.EACCES)
 
-def checkReadFile(_file):
-  if not os.path.isfile(_file):
-    exitWithError("cannot read file, does not exist: {}".format(_file), errno.ENOENT)
-  if not os.access(_file, os.R_OK):
-    exitWithError("cannot read file, insufficient permissions: {}".format(_file), errno.EPERM)
-
 def createFileLink(file_source, link_target):
   file_source = os.path.normpath(file_source)
   link_target = os.path.normpath(link_target)
@@ -111,16 +103,6 @@ def createFileLink(file_source, link_target):
     exitWithError("an unknown error occurred while trying to create symbolic link: {}".format(link_target))
   if options.verbose:
     logger.info("new link -> '{}' ({})".format(link_target, file_source))
-
-def compressFile(file_source, file_target):
-  file_source = os.path.normpath(file_source)
-  checkReadFile(file_source)
-
-  fropen = codecs.open(file_source, "rb")
-  file_data = fropen.read()
-  fropen.close()
-
-  fileio.writeFile(file_target, gzip.compress(file_data), binary=True, verbose=options.verbose)
 
 
 # --- file staging functions --- #
@@ -170,7 +152,8 @@ def stageDoc(prefix):
   for _file in files_man:
     basename = os.path.basename(_file)
     dir_man = paths.join(prefix, "man/{}".format(os.path.basename(os.path.dirname(_file))))
-    compressFile(paths.join(dir_app, _file), paths.join(dir_man, basename + ".gz"))
+    checkError((fileio.compressFile(paths.join(dir_app, _file),
+        paths.join(dir_man, basename + ".gz"), verbose=options.verbose)))
 
 def stageLocale(prefix):
   print()
