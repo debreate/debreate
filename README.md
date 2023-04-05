@@ -5,7 +5,7 @@
 
 
 <a name="toc">
-## Table of Contents
+<h2>Table of Contents</h2>
 </a>
 
 - [Description](#description)
@@ -24,7 +24,7 @@
 
 
 <a name="description">
-## [Description](#toc)
+<h2><a href="#toc">Description</a></h2>
 </a>
 
 Debreate is a utility to aid in creating [Debian (.deb)][page.deb] packages. Currently it only
@@ -38,7 +38,7 @@ must if you want to get your packages into a distribution's official repositorie
 
 
 <a name="explanation">
-## [Explanation](#toc)
+<h2><a href="#toc">Explanation</a></h2>
 </a>
 
 The definition of "Debian source package" may be a little confusing, as it was for me, for those
@@ -71,7 +71,7 @@ build process.
 
 
 <a name="requirements">
-## [Requirements](#toc)
+<h2><a href="#toc">Requirements</a></h2>
 </a>
 
 Debreate requires the following software:
@@ -90,11 +90,11 @@ These packages are recommended to enable some features:
 
 
 <a name="build">
-## [Building](#toc)
+<h2><a href="#toc">Building</a></h2>
 </a>
 
 <a name="build-script">
-### [Build Script](#toc)
+<h3><a href="#toc">Build Script</a></h3>
 </a>
 
 The software comes bundled with a _build.py_ script to facilitate the build process & other tasks.
@@ -103,7 +103,7 @@ include any compiling of source code. The build script is used for staging the n
 a directory structure for packaging & installation.
 
 <a name="build-script-usage">
-#### Script Usage
+<h4>Script Usage</h4>
 </a>
 
 The build script is invoked as `python3 build.py [args]` or `./build.py [args]`.
@@ -160,7 +160,7 @@ Build Tasks:
 
 
 <a name="build-make">
-### [Makefile](#toc)
+<h3><a href="#toc">Makefile</a></h3>
 </a>
 
 _(deprecated: it is recommended to use the [accompanying build script](#build-script))_
@@ -172,7 +172,7 @@ where the source code is located & execute `make install` with [superuser privil
 
 
 <a name="build-deb">
-### [Building .deb Package](#toc)
+<h3><a href="#toc">Building .deb Package</a></h3>
 </a>
 
 If you have [devscripts][pkg.devscripts] installed, you can execute `python3 build.py dist-deb` to
@@ -183,26 +183,26 @@ install execute `dpkg --install build/dist/debreate_\<version\>_all.deb` with [s
 
 
 <a name="portable">
-## [Standalone/Portable](#toc)
+<h2><a href="#toc">Standalone/Portable</a></h2>
 </a>
 
 To run without installation simply execute the file named "init.py" (from a terminal `./init.py` or
 `python3 init.py`).
 
 <a name="licensing">
-## [Licensing](#toc)
+<h2><a href="#toc">Licensing</a></h2>
 </a>
 
 Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 
 
 <a name="links">
-## [Links](#toc)
+<h2><a href="#toc">Links</a></h2>
 </a>
 
 
 <a name="links-proj">
-### [Project Pages](#toc)
+<h3><a href="#toc">Project Pages</a></h3>
 
 - [Homepage](https://debreate.github.io/)
 - [GitHub project][proj.gh]
@@ -213,7 +213,7 @@ Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 
 
 <a name="links-dl">
-### [Downloads](#toc)
+<h3><a href="#toc">Downloads</a></h3>
 </a>
 
 - [stable](https://github.com/debreate/debreate/releases/latest)
@@ -223,7 +223,7 @@ Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 
 
 <a name="links-other">
-### [Other Pages](#toc)
+<h3><a href="#toc">Other Pages</a></h3>
 </a>
 
 - [OpenDesktop](https://www.opendesktop.org/p/1129667)
