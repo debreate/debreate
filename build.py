@@ -435,13 +435,18 @@ def taskDistDeb():
   dir_parent = os.path.dirname(dir_app)
   dir_dist = paths.join(dir_app, "build/dist")
   fileio.makeDir(dir_dist)
-  # FIXME: determine .deb package name
+  deb_prefix = package_name + "_" + package_version \
+      + ("" if package_version_dev == 0 else "-dev{}".format(package_version_dev)) + "_"
+  deb_name = deb_prefix + "all.deb"
+  checkError((fileio.moveFile(paths.join(dir_parent, deb_name), dir_dist, deb_name,
+      verbose=options.verbose)))
+  # clean up files created by helper scripts
   for obj in os.listdir(dir_parent):
-    if not obj.endswith(".deb"):
-      continue
     abspath = paths.join(dir_parent, obj)
-    if os.path.isfile(abspath):
-      fileio.moveFile(abspath, dir_dist, obj, verbose=options.verbose)
+    if not os.path.isfile(abspath):
+      continue
+    if obj.startswith(deb_prefix) and obj.split(".")[-1] in ("build", "buildinfo", "changes"):
+      checkError((fileio.deleteFile(abspath, verbose=options.verbose)))
 
 def taskPrintChanges():
   changelog = paths.join(paths.getAppDir(), "docs/changelog")
