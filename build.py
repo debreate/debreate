@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 
 from libdbr        import config
 from libdbr        import fileio
+from libdbr        import misc
 from libdbr        import paths
 from libdbr        import tasks
 from libdbr        import userinfo
@@ -196,6 +197,19 @@ def stageMimeInfo(prefix):
   checkError((fileio.copyFile(mime_conf, conf_target, verbose=options.verbose)))
   checkError((fileio.copyFile(mime_icon, icon_target, verbose=options.verbose)))
 
+## Formats changes for Debianized changelog
+def getChangesDeb():
+  changelog = paths.join(paths.getAppDir(), "docs/changelog")
+  if not os.path.isfile(changelog):
+    return
+  changes = misc.getLatestChanges(changelog)
+  deb_info = config.getKeyedValue("deb_info")
+  deb_info["package"] = package_name
+  deb_info["version"] = package_version
+  if package_version_dev > 0:
+    deb_info["version"] = "{}-dev{}".format(deb_info["version"], package_version_dev)
+  return misc.formatDebianChanges(changes, deb_info)
+
 
 # --- build tasks --- #
 
@@ -333,6 +347,8 @@ def taskUpdateVersion():
   if ver_dev == 0:
     fileio.replace(paths.join(dir_app, "docs/changelog"), r"^next$", ver_string_full, count=1,
         fl=True, verbose=options.verbose)
+  # ~ fileio.replace(paths.join(dir_app, "docs/changelog"), r"^(?!\s*$).+", ver_string_full, count=1,
+      # ~ fl=True, verbose=options.verbose)
 
   repl = [
     (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
@@ -361,11 +377,12 @@ def taskCleanDeb():
   print()
   logger.info("removing temporary Debian build files ...")
 
+  # TODO: configure files & directories in build.conf
   for _dir in ("debian/debreate", "debian/.debhelper"):
     checkError((fileio.deleteDir(paths.join(dir_app, _dir), verbose=options.verbose)))
   for _file in (
       "debian/debhelper-build-stamp", "debian/debreate.debhelper.log",
-      "debian/debreate.substvars", "debian/files"):
+      "debian/debreate.substvars", "debian/files", "debian/changelog"):
     checkError((fileio.deleteFile(paths.join(dir_app, _file), verbose=options.verbose)))
 
 def taskCleanDist():
@@ -407,6 +424,12 @@ def taskDistDeb():
   print()
   logger.info("building Debian binary distribution package ...")
 
+  root_debian = paths.join(dir_app, "debian")
+  file_changelog = paths.join(root_debian, "changelog")
+
+  # create changelog for release
+  fileio.writeFile(file_changelog, getChangesDeb(), verbose=options.verbose)
+
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
   dir_parent = os.path.dirname(dir_app)
@@ -421,11 +444,13 @@ def taskDistDeb():
       fileio.moveFile(abspath, dir_dist, obj, verbose=options.verbose)
 
 def taskPrintChanges():
-  from libdbr.misc   import getLatestChanges
-
   changelog = paths.join(paths.getAppDir(), "docs/changelog")
-  if os.path.isfile(changelog):
-    print(getLatestChanges(changelog))
+  if not os.path.isfile(changelog):
+    return
+  print(misc.getLatestChanges(changelog))
+
+def taskPrintChangesDeb():
+  print(getChangesDeb())
 
 def taskRunTests():
   from libdbr.unittest import runTest
@@ -492,18 +517,24 @@ def initTasks(task_list):
   addTask(task_list, "test", taskRunTests, "Run configured unit tests from 'tests' directory.")
   addTask(task_list, "changes", taskPrintChanges, "Print most recent changes from 'doc/changelog'" \
       + " to stdout.")
+  addTask(task_list, "changes-deb", taskPrintChangesDeb, "Print most recent changes from"
+      + "'doc/changelog' in Debianized format to stdout.")
   return task_list
 
 # --- execution insertion point --- #
 
 def main():
-  global options, printUsage, package_name, package_version
+  global options, printUsage, package_name, package_version, package_version_dev
 
   config.setFile(paths.join(dir_app, "build.conf"))
   config.load()
 
   package_name = config.getValue("package")
   package_version = config.getValue("version")
+  package_version_dev = 0
+  tmp = config.getValue("version_dev")
+  if tmp:
+    package_version_dev = int(tmp)
 
   args_parser = parseCommandLine(initTasks({}))
   printUsage = args_parser.print_help
