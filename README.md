@@ -179,7 +179,7 @@ If you have [devscripts][pkg.devscripts] installed, you can execute `python3 bui
 build the debian package (.deb). The package will be located in the 'build/dist' directory. To
 install execute `dpkg --install build/dist/debreate_\<version\>_all.deb` with
 [superuser privileges][page.superuser]. Or open the package with a GUI installer such as
-[gdebi][pkg.gdebi] or[QAPT][pkg.qapt].
+[gdebi][pkg.gdebi] or [QAPT][pkg.qapt].
 
 
 <a name="portable">
