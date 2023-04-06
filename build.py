@@ -26,8 +26,6 @@ from libdbr        import userinfo
 from libdbr.logger import getLogger
 
 
-dir_app = os.path.normpath(os.path.dirname(__file__))
-
 script_name = os.path.basename(sys.argv[0])
 logger = getLogger(script_name)
 
@@ -529,11 +527,16 @@ def initTasks(task_list):
 # --- execution insertion point --- #
 
 def main():
-  global options, printUsage, package_name, package_version, package_version_dev
+  global dir_app
+  dir_app = paths.getAppDir()
+
+  # ensure current working directory is app location
+  os.chdir(dir_app)
 
   config.setFile(paths.join(dir_app, "build.conf"))
   config.load()
 
+  global package_name, package_version, package_version_dev
   package_name = config.getValue("package")
   package_version = config.getValue("version")
   package_version_dev = 0
@@ -541,6 +544,7 @@ def main():
   if tmp:
     package_version_dev = int(tmp)
 
+  global options, printUsage
   args_parser = parseCommandLine(initTasks({}))
   printUsage = args_parser.print_help
   options = args_parser.parse_args()
