@@ -118,6 +118,31 @@ def getValue(key, default=None, filepath=None):
     return
   return value
 
+## Retrievies a key=value formatted string from config.
+#
+#  Entries not containing '=' denoting a value are set as flags.
+#
+#  @param key
+#    Key identifier.
+#  @param filepath
+#    Parse filepath instead of path set with setFile
+#  @return
+#    Dictionary or None.
+def getKeyedValue(key, filepath=None):
+  value = getValue(key, "", filepath).split(";")
+  if not value:
+    return
+  res = {}
+  for li in value:
+    li = li.strip()
+    if "=" not in li:
+      # set flag for non-key=value types
+      res[li] = True
+    else:
+      tmp = li.split("=", 1)
+      res[tmp[0].strip()] = tmp[1].strip()
+  return res
+
 ## Retrievies configuration keys.
 #
 #  @return

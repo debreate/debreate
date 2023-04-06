@@ -105,6 +105,9 @@ def getTime(fmt=dtfmt.DEFAULT):
     else:
       # format: HH:MM:SS.mmm
       current_time = "{}.{}".format(strftime("%T"), ms)
+  else:
+    # format: HH:MM:SS
+    current_time = strftime("%H:%M:%S")
   return current_time
 
 ## Retrieves current time zone.
@@ -115,3 +118,7 @@ def getTime(fmt=dtfmt.DEFAULT):
 #    String representation of timezone.
 def getTimeZone(fmt=dtfmt.DEFAULT):
   return strftime("%z")
+
+## Retrievies a date string formatted for Debian changelog.
+def getDebianizedDate():
+  return "{} {} {}".format(getDate(dtfmt.CL), getTime(dtfmt.CL), getTimeZone(dtfmt.CL))
