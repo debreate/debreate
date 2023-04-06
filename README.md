@@ -280,5 +280,5 @@ Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 
 [proj.gh]: https://github.com/debreate/debreate
 [proj.gh.libdbr]: https://github.com/debreate/libdbr
-[proj.gl]: https://gitlab.com/AntumDeluge/debreate
+[proj.gl]: https://gitlab.com/debreate/debreate
 [proj.sf]: https://sourceforge.net/projects/debreate
