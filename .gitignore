@@ -36,3 +36,6 @@ debian/*.debhelper
 
 # Doxygen documentation output
 docs/doxygen
+
+# temporary test files
+test.py
