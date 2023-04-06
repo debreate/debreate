@@ -28,8 +28,8 @@ from libdbr.logger import getLogger
 
 dir_app = os.path.normpath(os.path.dirname(__file__))
 
-logger = getLogger()
-
+script_name = os.path.basename(sys.argv[0])
+logger = getLogger(script_name)
 
 # --- misc. functions --- #
 
