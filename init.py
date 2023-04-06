@@ -23,18 +23,23 @@ from command_line import parsed_commands
 from command_line import parsed_args_s
 from command_line import parsed_args_v
 from dbr.language import setTranslator
+from libdbr       import compat
 from libdbr       import paths
 from libdbr       import sysinfo
 from startup      import wxprompt
 
-module_insertion = ".".join(os.path.basename(os.path.realpath(__file__)).split(".")[0:-1])
 
-logger = util.getLogger(module_insertion)
+# module name displayed for logger output.
+script_name = os.path.basename(os.path.realpath(__file__))
+
+logger = util.getLogger(script_name)
 logger.startLogging(globals.paths.getLogsDir())
 
-## Module name displayed for Logger output.
-#  Should be set to 'init' or actual name of executable script.
-script_name = os.path.basename(__file__)
+# check for compatible Python version
+err, msg = compat.checkPython((3, 10))
+if err != 0:
+  logger.error(msg)
+  sys.exit(err)
 
 # *** Command line arguments
 ParseArguments(sys.argv[1:])
