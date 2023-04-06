@@ -13,6 +13,7 @@ from globals.paths   import getCacheDir
 from globals.remote  import GetRemotePageText
 from globals.strings import RemoveEmptyLines
 from globals.strings import StringIsVersioned
+from libdbr          import strings
 from libdbr.fileio   import readFile
 from libdbr.fileio   import writeFile
 
@@ -21,10 +22,11 @@ mimport = import_module
 
 
 # *** Python Info *** #
-PY_VER_MAJ = sys.version_info[0]
-PY_VER_MIN = sys.version_info[1]
-PY_VER_REL = sys.version_info[2]
-PY_VER_STRING = "{}.{}.{}".format(PY_VER_MAJ, PY_VER_MIN, PY_VER_REL)
+PY_VER = tuple(sys.version_info[0:3])
+PY_VER_MAJ = PY_VER[0]
+PY_VER_MIN = PY_VER[1]
+PY_VER_REL = PY_VER[2]
+PY_VER_STRING = strings.toString(PY_VER, ".")
 
 
 # *** wxWidgets Info *** #
