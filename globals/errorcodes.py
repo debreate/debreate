@@ -11,6 +11,8 @@ import types
 import wx
 
 
+# mypy: disable-error-code="attr-defined"
+
 # TODO: Convert these to dbrerror
 ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
@@ -27,19 +29,16 @@ for attr in errno.__dict__:
   setattr(dbrerrno, attr, copy.deepcopy(errno.__dict__[attr]))
 
 current_code = sorted(dbrerrno.errorcode.keys())[-1]
-def AddNewCode(code_def):
+def addCode(_id):
   global current_code
-
   current_code += 1
-  dbrerrno.errorcode[current_code] = code_def
+  setattr(dbrerrno, _id, current_code)
 
-  return current_code
+setattr(dbrerrno, "addCode", addCode)
+# REMOVEME:
+setattr(dbrerrno, "SUCCESS", 0)
 
-
-dbrerrno.SUCCESS = 0
-dbrerrno.errorcode[dbrerrno.SUCCESS] = "SUCCESS"
-
-dbrerrno.EBADFT = AddNewCode("EBADFT")
-dbrerrno.ECNCLD = AddNewCode("ECNCLD")
-dbrerrno.FEMPTY = AddNewCode("FEMPTY")
-dbrerrno.EUNKNOWN = AddNewCode("EUNKNOWN")
+dbrerrno.addCode("EBADFT")
+dbrerrno.addCode("ECNCLD")
+dbrerrno.addCode("FEMPTY")
+dbrerrno.addCode("EUNKNOWN")
