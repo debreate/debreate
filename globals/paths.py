@@ -8,6 +8,8 @@
 
 import os, sys
 
+import libdbr.paths
+
 from globals.strings import GS
 from globals.strings import IsString
 from libdbr.logger   import Logger
@@ -28,13 +30,15 @@ def getAppDir():
 def getHomeDir():
   logger.deprecated(__name__, getHomeDir.__name__, "libdbr.paths.getHomeDir")
 
-  if sys.platform == "win32":
-    return os.getenv("USERPROFILE")
-  else:
-    return os.getenv("HOME")
+  # ~ if sys.platform == "win32":
+    # ~ return os.getenv("USERPROFILE")
+  # ~ else:
+    # ~ return os.getenv("HOME")
+
+  return libdbr.paths.getHomeDir()
 
 def getLocalDir():
-  return os.path.join(getHomeDir(), os.path.normpath(".local/share/debreate"))
+  return os.path.join(libdbr.paths.getHomeDir(), os.path.normpath(".local/share/debreate"))
 
 def getCacheDir():
   return os.path.join(getLocalDir(), "cache")

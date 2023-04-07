@@ -13,12 +13,12 @@ from dbr.functions   import MouseInsideWindow
 from dbr.image       import GetCursor
 from dbr.imagelist   import sm_DirectoryImageList as ImageList
 from dbr.language    import GT
-from globals         import paths
 from globals.devices import GetMountedStorageDevices
 from globals.execute import ExecuteCommand
 from globals.execute import GetExecutable
 from globals.ident   import menuid
 from globals.mime    import GetFileMimeType
+from libdbr          import paths
 from libdbr.logger   import Logger
 from ui.dialog       import ConfirmationDialog
 from ui.dialog       import ShowErrorDialog

@@ -12,9 +12,9 @@ from dbr.functions   import GetBoolean
 from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
-from globals         import paths
 from globals.strings import GS
 from globals.strings import TextIsEmpty
+from libdbr          import paths
 from libdbr.fileio   import readFile
 from libdbr.fileio   import writeFile
 from libdbr.logger   import Logger
