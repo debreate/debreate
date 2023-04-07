@@ -162,9 +162,9 @@ from globals.application import VERSION_string
 from globals.strings     import GS
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
-from main                import MainWindow
 from startup.firstrun    import LaunchFirstRun
 from startup.startup     import SetAppInitialized
+from ui.main             import MainWindow
 
 
 if ".py" in script_name:
