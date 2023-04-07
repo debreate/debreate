@@ -49,7 +49,7 @@ def parseCommandLine():
       formatter_class=argparse.RawTextHelpFormatter,
       description="Debreate installer script",
       add_help=False)
-  args_parser.version = package_version
+  args_parser.version = package_version_full
   args_parser.add_argument("-h", "--help", action="help",
       help="Show help information.")
   args_parser.add_argument("-v", "--version", action="version",
