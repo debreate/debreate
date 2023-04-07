@@ -24,11 +24,8 @@ jobs:
           sudo apt install python3-wxgtk4.0
           python3 -m pip install pylint mypy
 
-      - name: check with Pylint
-        run: pylint -v ./
-
-      - name: check with Mypy
-        run: mypy -v
+      - name: check code
+        run: python3 build.py -t check-code -V
 
   wx-4-1-1-ubuntu:
     runs-on: ubuntu-22.04
@@ -47,11 +44,8 @@ jobs:
           # build fails if attrdict is not installed before preparing wxPython
           python3 -m pip install wxPython==4.1.1
 
-      - name: check with Pylint
-        run: pylint -v ./
-
-      - name: check with Mypy
-        run: mypy -v
+      - name: check code
+        run: python3 build.py -t check-code -V
 
   wx-latest-ubuntu:
     runs-on: ubuntu-22.04
@@ -70,11 +64,8 @@ jobs:
           # build fails if attrdict is not installed before preparing wxPython
           python3 -m pip install wxPython
 
-      - name: check with Pylint
-        run: pylint -v ./
-
-      - name: check with Mypy
-        run: mypy -v
+      - name: check code
+        run: python3 build.py -t check-code -V
 
   #~ wx-latest-windows:
     #~ runs-on: windows-2019
@@ -94,11 +85,8 @@ jobs:
           #~ python -m pip install wheel setuptools attrdict3 requests pylint mypy
           #~ python -m pip install wxPython
 
-      #~ - name: check with Pylint
-        #~ run: python -m pylint ./
-
-      #~ - name: check with Mypy
-        #~ run: python -m mypy
+      #~ - name: check code
+        #~ run: python build.py -t check-code -V
 
   wx-latest-msys:
     runs-on: windows-2019
@@ -119,8 +107,5 @@ jobs:
             mingw-w64-x86_64-python-pylint
             mingw-w64-x86_64-mypy
 
-      - name: check with Pylint
-        run: pylint -v ./
-
-      - name: check with Mypy
-        run: mypy -v
+      - name: check code
+        run: python3 build.py -t check-code -V

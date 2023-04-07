@@ -451,6 +451,17 @@ def taskDistDeb():
     if obj.startswith(deb_prefix) and obj.split(".")[-1] in ("build", "buildinfo", "changes"):
       checkError((fileio.deleteFile(abspath, verbose=options.verbose)))
 
+def taskCheckCode():
+  print()
+  for action in ("pylint", "mypy"):
+    logger.info("checking code with {} ...".format(action))
+    params = [action, dir_app]
+    if options.verbose:
+      params.insert(1, "-v")
+    res = subprocess.run(params)
+    if res.returncode != 0:
+      return res.returncode
+
 def taskPrintChanges():
   changelog = paths.join(paths.getAppDir(), "docs/changelog")
   if not os.path.isfile(changelog):
@@ -526,6 +537,7 @@ def initTasks():
   addTask("update-version", taskUpdateVersion, "Update relevant files with version" \
       + " information from 'build.conf'.")
   addTask("test", taskRunTests, "Run configured unit tests from 'tests' directory.")
+  addTask("check-code", taskCheckCode, "Check code with pylint & mypy.")
   addTask("changes", taskPrintChanges, "Print most recent changes from 'doc/changelog'" \
       + " to stdout.")
   addTask("changes-deb", taskPrintChangesDeb, "Print most recent changes from"
