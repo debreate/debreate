@@ -9,6 +9,7 @@
 </a>
 
 - [Description](#description)
+- [Licensing](#licensing)
 - [Explanation](#explanation)
 - [Requirements](#requirements)
 - [Building](#build)
@@ -16,7 +17,6 @@
     - [Makefile](#build-make)
     - [Building .deb Package](#build-deb)
 - [Standalone/Portable](#portable)
-- [Licensing](#licensing)
 - [Links](#links)
     - [Project Pages](#links-proj)
     - [Downloads](#links-dl)
@@ -35,6 +35,13 @@ for creating source packages are in the works. But source packaging can be quite
 must if you want to get your packages into a distribution's official repositories or a
 [Launchpad][home.launchpad] [Personal Package Archive (PPA)][page.ppa]. The latter from which
 [Debreate is available][ppa.debreate].
+
+
+<a name="licensing">
+<h2><a href="#toc">Licensing</a></h2>
+</a>
+
+Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 
 
 <a name="explanation">
@@ -190,12 +197,6 @@ install execute `dpkg --install build/dist/debreate_\<version\>_all.deb` with
 
 To run without installation simply execute the file named "init.py" (from a terminal `./init.py` or
 `python3 init.py`).
-
-<a name="licensing">
-<h2><a href="#toc">Licensing</a></h2>
-</a>
-
-Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 
 
 <a name="links">
