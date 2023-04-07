@@ -442,7 +442,7 @@ def taskDistBin():
   dir_build = paths.join(dir_app, "build")
   dir_data = paths.join(dir_build, "stage/share/debreate")
   dir_dist = paths.join(dir_build, "dist")
-  pkg_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version))
+  pkg_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version_full))
   # FIXME: packDir should create parent directory
   fileio.makeDir(dir_dist, verbose=options.verbose)
   fileio.packDir(dir_data, pkg_dist, verbose=options.verbose)
