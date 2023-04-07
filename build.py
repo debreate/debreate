@@ -459,6 +459,9 @@ def taskPrintChangesDeb():
 def taskRunTests():
   from libdbr.unittest import runTest
 
+  # enable debugging for tests
+  Logger.setLevel(LogLevel.DEBUG)
+
   dir_tests = paths.join(dir_app, "tests")
   if not os.path.isdir(dir_tests):
     return
