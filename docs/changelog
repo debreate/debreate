@@ -3,6 +3,7 @@ next
   - drop support for Python 2
 - support wxPython 4
   - drop support for wxPython 2.7 & 3
+- logging improvements
 - Test modes:
   - 'alpha'
     - Enables features that aren't ready for release
