@@ -37,7 +37,7 @@ printUsage: types.FunctionType
 
 # --- configuration & command line options --- #
 
-def parseCommandLine(task_list):
+def parseCommandLine():
   task_help = []
   for t in task_list:
     task_help.append(t + ": " + task_list[t])
@@ -499,34 +499,33 @@ def taskRunTests():
     else:
       logger.info("{}: OK".format(test_name))
 
-def addTask(task_list, name, action, desc):
+def addTask(name, action, desc):
   tasks.add(name, action)
   task_list[name] = desc
 
-def initTasks(task_list):
-  addTask(task_list, "stage", taskStage, "Prepare files for installation or distribution.")
-  addTask(task_list, "install", taskInstall, "Install files to directory specified by `--prefix`" \
+def initTasks():
+  addTask("stage", taskStage, "Prepare files for installation or distribution.")
+  addTask("install", taskInstall, "Install files to directory specified by `--prefix`" \
       + " argument.")
-  addTask(task_list, "uninstall", taskUninstall, "Uninstall files from directory specified by" \
+  addTask("uninstall", taskUninstall, "Uninstall files from directory specified by" \
       + " `--prefix` argument.")
-  addTask(task_list, "dist-source", taskDistSource, "Build a source distribution package (TODO).")
-  addTask(task_list, "dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
-  addTask(task_list, "dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
-  addTask(task_list, "clean", taskClean, "Remove all temporary build files.")
-  addTask(task_list, "clean-stage", taskCleanStage, "Remove temporary build files from" \
+  addTask("dist-source", taskDistSource, "Build a source distribution package (TODO).")
+  addTask("dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
+  addTask("dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
+  addTask("clean", taskClean, "Remove all temporary build files.")
+  addTask("clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")
-  addTask(task_list, "clean-deb", taskCleanDeb, "Remove temporary build files from 'debian'" \
+  addTask("clean-deb", taskCleanDeb, "Remove temporary build files from 'debian'" \
       + " directory.")
-  addTask(task_list, "clean-dist", taskCleanDist, "Remove built packages from 'build/dist'" \
+  addTask("clean-dist", taskCleanDist, "Remove built packages from 'build/dist'" \
       + " directory.")
-  addTask(task_list, "update-version", taskUpdateVersion, "Update relevant files with version" \
+  addTask("update-version", taskUpdateVersion, "Update relevant files with version" \
       + " information from 'build.conf'.")
-  addTask(task_list, "test", taskRunTests, "Run configured unit tests from 'tests' directory.")
-  addTask(task_list, "changes", taskPrintChanges, "Print most recent changes from 'doc/changelog'" \
+  addTask("test", taskRunTests, "Run configured unit tests from 'tests' directory.")
+  addTask("changes", taskPrintChanges, "Print most recent changes from 'doc/changelog'" \
       + " to stdout.")
-  addTask(task_list, "changes-deb", taskPrintChangesDeb, "Print most recent changes from"
+  addTask("changes-deb", taskPrintChangesDeb, "Print most recent changes from"
       + "'doc/changelog' in Debianized format to stdout.")
-  return task_list
 
 # --- execution insertion point --- #
 
@@ -548,8 +547,10 @@ def main():
   if tmp:
     package_version_dev = int(tmp)
 
-  global options, printUsage
-  args_parser = parseCommandLine(initTasks({}))
+  global options, printUsage, task_list
+  task_list = {}
+  initTasks()
+  args_parser = parseCommandLine()
   printUsage = args_parser.print_help
   options = args_parser.parse_args()
   if not options.dir:
