@@ -8,18 +8,17 @@
 
 import wx
 
-import util
-
 from dbr.language    import GT
 from dbr.templates   import local_templates_path
 from globals.changes import section_delims
 from globals.execute import GetSystemInstaller
 from globals.ident   import btnid
 from globals.ident   import pgid
+from libdbr.logger   import Logger
 from wiz.helper      import FieldEnabled
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 # *** Wizard buttons ***#
 TT_wiz_prev = wx.ToolTip(GT("Previous page"))

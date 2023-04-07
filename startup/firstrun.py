@@ -6,20 +6,19 @@
 
 import os, wx
 
-import util
-
 from dbr.config          import ConfCode
 from dbr.config          import InitializeConfig
 from dbr.config          import default_config
 from dbr.image           import GetBitmap
 from dbr.language        import GT
 from globals.application import APP_logo
+from libdbr.logger       import Logger
 from ui.dialog           import ShowErrorDialog
 from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Shows the first run dialog
 def LaunchFirstRun(debreate_app):

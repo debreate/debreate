@@ -6,8 +6,6 @@
 
 import os, traceback, wx
 
-import util
-
 from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
 from dbr.colors      import COLOR_warn
@@ -21,6 +19,7 @@ from globals.execute import ExecuteCommand
 from globals.execute import GetExecutable
 from globals.ident   import menuid
 from globals.mime    import GetFileMimeType
+from libdbr.logger   import Logger
 from ui.dialog       import ConfirmationDialog
 from ui.dialog       import ShowErrorDialog
 from ui.layout       import BoxSizer
@@ -28,7 +27,7 @@ from ui.panel        import BorderedPanel
 from wiz.helper      import GetMainWindow
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## A wxcustom tree item
 #

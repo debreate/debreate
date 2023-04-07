@@ -6,8 +6,6 @@
 
 import os, traceback, wx
 
-import util
-
 from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import BuildDebPackage
 from dbr.language         import GT
@@ -17,6 +15,7 @@ from globals.ident        import btnid
 from globals.moduleaccess import ModuleAccessCtrl
 from globals.threads      import Thread
 from libdbr.fileio        import readFile
+from libdbr.logger        import Logger
 from ui.button            import CreateButton
 from ui.dialog            import GetDirDialog
 from ui.dialog            import GetFileSaveDialog
@@ -28,7 +27,7 @@ from ui.layout            import BoxSizer
 from ui.style             import layout as lyt
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 GAUGE_MAX = 100
 
 

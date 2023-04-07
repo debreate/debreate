@@ -6,13 +6,12 @@
 
 import wx
 
-import util
-
 from dbr.language    import GT
 from globals.ident   import btnid
 from globals.ident   import pnlid
 from globals.strings import GS
 from globals.strings import TextIsEmpty
+from libdbr.logger   import Logger
 from ui.button       import CreateButton
 from ui.layout       import BoxSizer
 from ui.panel        import BorderedPanel
@@ -21,7 +20,7 @@ from ui.style        import layout as lyt
 from wiz.helper      import GetField
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## A checkable list
 class CheckList(BorderedPanel):

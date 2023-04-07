@@ -6,8 +6,6 @@
 
 import os, wx
 
-import util
-
 from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
 from dbr.language        import GT
@@ -25,6 +23,7 @@ from globals.system      import WX_VER_STRING
 from input.list          import ListCtrl
 from input.text          import TextAreaPanel
 from libdbr.fileio       import readFile
+from libdbr.logger       import Logger
 from ui.button           import CreateButton
 from ui.dialog           import ShowErrorDialog
 from ui.hyperlink        import Hyperlink
@@ -32,7 +31,7 @@ from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 # Font for the name
 bigfont = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)

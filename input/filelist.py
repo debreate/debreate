@@ -8,8 +8,6 @@ import os, wx
 
 from wx.lib.mixins.listctrl import TextEditMixin
 
-import util
-
 from dbr.colors       import COLOR_executable
 from dbr.colors       import COLOR_link
 from dbr.colors       import COLOR_warn
@@ -19,9 +17,10 @@ from globals.mime     import GetFileMimeType
 from globals.strings  import IsString
 from input.essential  import EssentialField
 from input.list       import ListCtrl
+from libdbr.logger    import Logger
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 # ListCtrl report view style constants
 FL_HEADER = wx.LC_REPORT

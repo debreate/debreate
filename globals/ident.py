@@ -8,12 +8,11 @@
 
 import wx
 
-import util
+from dbr.language  import GT
+from libdbr.logger import Logger
 
-from dbr.language import GT
 
-
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Creates a new bitwise compatible ID
 #

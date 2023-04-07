@@ -5,11 +5,10 @@
 # MIT licensing
 # See: docs/LICENSE.txt
 
+from libdbr.logger import Logger
 
-import util
 
-
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## List of available tests
 available_tests = (

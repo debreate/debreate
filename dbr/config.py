@@ -8,8 +8,6 @@
 
 import os, sys, wx
 
-import util
-
 from dbr.functions   import GetBoolean
 from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
@@ -19,9 +17,10 @@ from globals.strings import GS
 from globals.strings import TextIsEmpty
 from libdbr.fileio   import readFile
 from libdbr.fileio   import writeFile
+from libdbr.logger   import Logger
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Configuration codes
 class ConfCode:

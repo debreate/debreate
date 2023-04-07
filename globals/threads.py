@@ -8,10 +8,9 @@
 
 import threading
 
-import util
+from libdbr.logger import Logger
 
-
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 thr = threading
 
 ## Standard thread class with renamed methods

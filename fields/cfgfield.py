@@ -8,15 +8,14 @@
 
 import wx
 
-import util
+from dbr.config    import ConfCode
+from dbr.config    import ReadConfig
+from dbr.config    import SetDefaultConfigKey
+from dbr.config    import WriteConfig
+from libdbr.logger import Logger
 
-from dbr.config import ConfCode
-from dbr.config import ReadConfig
-from dbr.config import SetDefaultConfigKey
-from dbr.config import WriteConfig
 
-
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Class that updates the configuration file when a specific event occurs
 class ConfigField:

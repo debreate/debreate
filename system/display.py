@@ -6,14 +6,13 @@
 
 import wx
 
-import util
-
 from globals.execute import GetCommandOutput
 from globals.execute import GetExecutable
 from globals.strings import StringIsNumeric
+from libdbr.logger   import Logger
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Retrieves dimensions of primary display
 #

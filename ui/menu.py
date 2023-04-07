@@ -6,8 +6,6 @@
 
 import wx
 
-import util
-
 from dbr.config      import ConfCode
 from dbr.config      import GetDefaultConfigValue
 from dbr.config      import ReadConfig
@@ -17,10 +15,11 @@ from globals.bitmaps import ICON_GLOBE
 from globals.bitmaps import ICON_LOGO
 from globals.execute import GetExecutable
 from globals.ident   import menuid, refid
+from libdbr.logger   import Logger
 from startup.tests   import GetTestList
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## A menu bar that stores an ID along with a menu
 class MenuBar(wx.MenuBar):

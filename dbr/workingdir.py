@@ -6,14 +6,13 @@
 
 import os
 
-import util
-
 from dbr.config    import ReadConfig
 from dbr.config    import WriteConfig
 from globals       import paths
+from libdbr.logger import Logger
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Changes working directory & writes to config
 #

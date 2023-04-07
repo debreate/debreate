@@ -10,4 +10,3 @@ from util           import appinfo
 from util.depends   import checkWx
 from libdbr.modules import getModule
 from libdbr.modules import installModule
-from libdbr.logger  import getLogger

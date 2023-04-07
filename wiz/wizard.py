@@ -8,8 +8,6 @@
 
 import traceback, wx
 
-import util
-
 from dbr.event        import ChangePageEvent
 from dbr.language     import GT
 from globals.ident    import btnid
@@ -24,6 +22,7 @@ from globals.system   import mimport
 from globals.tooltips import TT_wiz_next
 from globals.tooltips import TT_wiz_prev
 from input.markdown   import MarkdownDialog
+from libdbr.logger    import Logger
 from startup.tests    import GetTestList
 from ui.button        import CreateButton
 from ui.dialog        import ShowDialog
@@ -36,7 +35,7 @@ from wiz.helper       import GetMainWindow
 from wiz.helper       import GetMenu
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Wizard class for Debreate
 class Wizard(wx.Panel):

@@ -8,19 +8,18 @@
 
 import os, wx
 
-import util
-
 from dbr.containers  import Contains
 from fields.cmdfield import CommandField
 from globals.ident   import btnid
 from globals.paths   import getBitmapsDir
 from globals.strings import GS
 from globals.strings import IsString
+from libdbr.logger   import Logger
 from ui.layout       import BoxSizer
 from ui.style        import layout as lyt
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Standard button that inherits CommandField
 class Button(wx.Button, CommandField):

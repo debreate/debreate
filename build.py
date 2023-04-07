@@ -23,11 +23,12 @@ from libdbr        import misc
 from libdbr        import paths
 from libdbr        import tasks
 from libdbr        import userinfo
-from libdbr.logger import getLogger
+from libdbr.logger import LogLevel
+from libdbr.logger import Logger
 
 
 script_name = os.path.basename(sys.argv[0])
-logger = getLogger(script_name)
+logger = Logger(script_name)
 
 # --- misc. functions --- #
 

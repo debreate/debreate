@@ -6,8 +6,6 @@
 
 import os, wx
 
-import util
-
 from dbr.language         import GT
 from dbr.workingdir       import ChangeWorkingDirectory
 from globals.bitmaps      import ICON_ERROR
@@ -20,6 +18,7 @@ from globals.project      import supported_suffixes
 from globals.strings      import TextIsEmpty
 from input.select         import ComboBox
 from input.text           import TextAreaPanel
+from libdbr.logger        import Logger
 from ui.button            import AddCustomButtons
 from ui.button            import ButtonSizer
 from ui.button            import GetButtonSizer
@@ -29,7 +28,7 @@ from ui.style             import layout as lyt
 from wiz.helper           import GetMainWindow
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## An abstract class defining method to manipulate button labels
 class ButtonDialog:

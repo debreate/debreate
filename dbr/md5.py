@@ -6,19 +6,18 @@
 
 import os
 
-import util
-
 from dbr.language    import GT
 from globals.ident   import chkid
 from globals.ident   import pgid
 from libdbr.fileio   import writeFile
+from libdbr.logger   import Logger
 from libdbr.misc     import generateMD5Hash
 from ui.dialog       import ErrorDialog
 from wiz.helper      import GetField
 from wiz.helper      import GetMainWindow
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Creates a file of md5 hashes for files within the staged directory
 #

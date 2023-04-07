@@ -6,15 +6,14 @@
 
 import os
 
-import util
-
 from dbr.language    import GT
 from globals.fileio  import GetFiles
 from globals.paths   import getAppDir, getLocalDir
 from globals.strings import GS
+from libdbr.logger   import Logger
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## System common licenses
 sys_licenses_path = "/usr/share/common-licenses"

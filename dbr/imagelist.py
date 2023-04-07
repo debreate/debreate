@@ -6,12 +6,11 @@
 
 import wx
 
-import util
+from dbr.image     import GetBitmap
+from libdbr.logger import Logger
 
-from dbr.image import GetBitmap
 
-
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## List of images used by ui.tree.DirectoryTree
 #

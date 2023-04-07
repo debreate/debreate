@@ -8,8 +8,6 @@ import os, traceback, wx
 
 from wx.adv import OwnerDrawnComboBox
 
-import util
-
 from dbr.event            import EVT_TIMER_STOP
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
@@ -21,6 +19,7 @@ from globals.system       import GetOSDistNames
 from globals.system       import UpdateDistNamesCache
 from globals.threads      import Thread
 from libdbr.fileio        import readFile
+from libdbr.logger        import Logger
 from ui.dialog            import BaseDialog
 from ui.dialog            import ShowErrorDialog
 from ui.dialog            import ShowMessageDialog
@@ -32,7 +31,7 @@ from ui.textpreview       import TextPreview
 from wiz.helper           import GetField
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Dialog displaying controls for updating distribution names cache file
 class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):

@@ -10,8 +10,6 @@ import os, shutil, subprocess, urllib, webbrowser, wx.html
 from urllib.error import HTTPError
 from urllib.error import URLError
 
-import util
-
 from dbr.config           import GetDefaultConfigValue
 from dbr.config           import WriteConfig
 from dbr.event            import EVT_CHANGE_PAGE
@@ -42,6 +40,7 @@ from globals.strings      import GS
 from globals.threads      import Thread
 from libdbr.fileio        import readFile
 from libdbr.fileio        import writeFile
+from libdbr.logger        import Logger
 from startup.tests        import GetTestList
 from ui.about             import AboutDialog
 from ui.dialog            import ConfirmationDialog
@@ -58,7 +57,7 @@ from wiz.pginit           import Page as PageInit
 from wiz.wizard           import Wizard
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 default_title = GT("Debreate - Debian Package Builder")
 
 

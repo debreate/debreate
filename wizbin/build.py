@@ -6,8 +6,6 @@
 
 import os, shutil, subprocess, traceback, wx
 
-import util
-
 from dbr.functions      import FileUnstripped
 from dbr.language       import GT
 from dbr.md5            import WriteMD5
@@ -31,6 +29,7 @@ from input.toggle       import CheckBox
 from input.toggle       import CheckBoxESS
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
+from libdbr.logger      import Logger
 from startup.tests      import UsingTest
 from ui.button          import CreateButton
 from ui.checklist       import CheckListDialog
@@ -50,7 +49,7 @@ from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Build page
 class Page(WizardPage):

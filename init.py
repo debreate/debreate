@@ -17,22 +17,23 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 import globals.paths
 import util
 
-from command_line import GetParsedPath
-from command_line import ParseArguments
-from command_line import parsed_commands
-from command_line import parsed_args_s
-from command_line import parsed_args_v
-from dbr.language import setTranslator
-from libdbr       import compat
-from libdbr       import paths
-from libdbr       import sysinfo
-from startup      import wxprompt
+from command_line  import GetParsedPath
+from command_line  import ParseArguments
+from command_line  import parsed_commands
+from command_line  import parsed_args_s
+from command_line  import parsed_args_v
+from dbr.language  import setTranslator
+from libdbr        import compat
+from libdbr        import paths
+from libdbr        import sysinfo
+from libdbr.logger import Logger
+from startup       import wxprompt
 
 
 # module name displayed for logger output.
 script_name = os.path.basename(os.path.realpath(__file__))
 
-logger = util.getLogger(script_name)
+logger = Logger(script_name)
 logger.startLogging(globals.paths.getLogsDir())
 
 # check for compatible Python version

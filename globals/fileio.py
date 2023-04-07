@@ -8,12 +8,11 @@
 
 import codecs, os
 
-import util
-
 from globals.strings import GS
+from libdbr.logger   import Logger
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 
 ## Retrieves a list of all files from the given path

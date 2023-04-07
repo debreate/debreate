@@ -6,16 +6,15 @@
 
 import wx
 
-import util
+from dbr.event     import EVT_TIMER_STOP
+from dbr.language  import GT
+from dbr.timer     import DebreateTimer
+from libdbr.logger import Logger
+from wiz.helper    import FieldEnabled
+from wiz.helper    import GetMainWindow
 
-from dbr.event    import EVT_TIMER_STOP
-from dbr.language import GT
-from dbr.timer    import DebreateTimer
-from wiz.helper   import FieldEnabled
-from wiz.helper   import GetMainWindow
 
-
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 
 
