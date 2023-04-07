@@ -14,6 +14,7 @@ if __name__ != "__main__":
 import argparse
 import errno
 import os
+import re
 import subprocess
 import sys
 import types
@@ -360,6 +361,17 @@ def taskUpdateVersion():
   # INFO file is deprecated, should be removed in future versions
   fileio.replace(paths.join(dir_app, "INFO"), repl, count=1, verbose=options.verbose)
 
+def __cleanByteCode(_dir):
+  if os.path.basename(_dir) == "__pycache__":
+    checkError((fileio.deleteDir(_dir, verbose=options.verbose)))
+    return
+  for obj in os.listdir(_dir):
+    abspath = paths.join(_dir, obj)
+    if os.path.isdir(abspath):
+      __cleanByteCode(abspath)
+    elif obj.endswith(".pyc") and os.path.lexists(abspath):
+      checkError((fileio.deleteFile(abspath, verbose=options.verbose)))
+
 def taskClean():
   tasks.run(("clean-deb", "clean-stage", "clean-dist"))
 
@@ -368,6 +380,15 @@ def taskClean():
 
   dir_build = paths.join(dir_app, "build")
   checkError((fileio.deleteDir(dir_build, verbose=options.verbose)))
+
+  excludes = config.getValue("exclude_clean_dirs").split(";")
+  for ROOT, DIRS, FILES in os.walk(dir_app):
+    for _dir in DIRS:
+      abspath = paths.join(ROOT, _dir)
+      relpath = abspath[len(dir_app)+1:]
+      if re.match(r"^({})".format("|".join(excludes)), relpath, flags=re.M):
+        continue
+      __cleanByteCode(abspath)
 
 def taskCleanStage():
   print()
