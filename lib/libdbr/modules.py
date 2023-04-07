@@ -13,10 +13,10 @@ import importlib
 import subprocess
 import sys
 
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
-__logger = getLogger()
+__logger = Logger(__name__)
 installed = {}
 
 ## Installs a Python module.

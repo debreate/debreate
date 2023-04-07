@@ -10,10 +10,10 @@ import importlib
 import traceback
 import types
 
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
-__logger = getLogger()
+__logger = Logger(__name__)
 
 ## Run a Unit test.
 #

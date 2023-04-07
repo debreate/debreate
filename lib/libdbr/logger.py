@@ -17,7 +17,7 @@ from libdbr.dateinfo import dtfmt
 
 
 ## Logging level enumeration.
-class _LogLevel:
+class LogLevel:
   SILENT, ERROR, WARN, INFO, DEBUG = range(0, 5)
 
   strings = {
@@ -30,28 +30,28 @@ class _LogLevel:
 
   @staticmethod
   def getDefault():
-    return _LogLevel.INFO
+    return LogLevel.INFO
 
   @staticmethod
   def toString(loglevel):
-    for st in _LogLevel.strings:
-      if _LogLevel.strings[st] == loglevel:
+    for st in LogLevel.strings:
+      if LogLevel.strings[st] == loglevel:
         if st == "WARN":
           st = "WARNING"
         return st
-    return _LogLevel.getDefault()
+    return LogLevel.getDefault()
 
   @staticmethod
   def fromString(st):
-    return _LogLevel.strings[st] if st in _LogLevel.strings else _LogLevel.getDefault()
+    return LogLevel.strings[st] if st in LogLevel.strings else LogLevel.getDefault()
 
 ## Class for logging messages to stdout/stdin & file.
 #
 #  TODO:
 #    - add timestamps
-class _Logger:
+class Logger:
   initialized = False
-  loglevel = _LogLevel.INFO
+  loglevel = LogLevel.INFO
   logfile = None
   logsdir = None
   callback: types.FunctionType = None
@@ -67,38 +67,38 @@ class _Logger:
   #    Action to notify the main app to shutdown.
   @staticmethod
   def startLogging(logsdir=None, callback: types.FunctionType=None):
-    if _Logger.initialized:
-      _Logger.warn(_Logger, "tried to re-inizialize logging")
+    if Logger.initialized:
+      Logger.warn(Logger, "tried to re-inizialize logging")
       return
-    _Logger.initialized = True
-    _Logger.logsdir = os.path.normpath(logsdir) if logsdir != None else logsdir
-    _Logger.callback = callback
+    Logger.initialized = True
+    Logger.logsdir = os.path.normpath(logsdir) if logsdir != None else logsdir
+    Logger.callback = callback
 
-    if not os.path.isdir(_Logger.logsdir):
-      if os.path.exists(_Logger.logsdir):
-        _Logger.error(_Logger,
-            "cannot create logs directory, file exists: {}".format(_Logger.logsdir))
+    if not os.path.isdir(Logger.logsdir):
+      if os.path.exists(Logger.logsdir):
+        Logger.error(Logger,
+            "cannot create logs directory, file exists: {}".format(Logger.logsdir))
         sys.exit(errno.EEXIST)
-      os.makedirs(_Logger.logsdir)
+      os.makedirs(Logger.logsdir)
     date_start = dateinfo.getDate(dtfmt.LOG)
     time_start = dateinfo.getTime(dtfmt.LOG)
-    _Logger.logfile = os.path.join(_Logger.logsdir, date_start + ".txt")
+    Logger.logfile = os.path.join(Logger.logsdir, date_start + ".txt")
 
     date_time = "{} {}".format(date_start, time_start)
     header = "--------------- Log Start: {} ---------------\n".format(date_time)
     # write header to log file
-    fileio.appendFile(_Logger.logfile, header)
+    fileio.appendFile(Logger.logfile, header)
 
   ## Appends footer to log file.
   @staticmethod
   def endLogging():
-    if not _Logger.logfile or not os.path.isfile(_Logger.logfile):
+    if not Logger.logfile or not os.path.isfile(Logger.logfile):
       # initialization failed or user deleted log file
       return
     date_time = "{} {}".format(dateinfo.getDate(dtfmt.LOG), dateinfo.getTime(dtfmt.LOG))
     footer = "\n--------------- Log End:   {} ---------------\n\n".format(date_time)
-    fileio.appendFile(_Logger.logfile, footer)
-    _Logger.logfile = None
+    fileio.appendFile(Logger.logfile, footer)
+    Logger.logfile = None
 
   ## Ends logging & shuts down app.
   #
@@ -106,9 +106,9 @@ class _Logger:
   #    Exit code.
   @staticmethod
   def shutdown(ret=0):
-    _Logger.endLogging()
-    if type(_Logger.callback) == types.FunctionType:
-      _Logger.callback() # pylint: disable=not-callable
+    Logger.endLogging()
+    if type(Logger.callback) == types.FunctionType:
+      Logger.callback() # pylint: disable=not-callable
 
   ## Sets the callback action for when the app should shutdown.
   #
@@ -116,7 +116,7 @@ class _Logger:
   #    Action to notify the main app to shutdown.
   @staticmethod
   def setCallback(callback):
-    _Logger.callback = callback
+    Logger.callback = callback
 
   ## Sets verbosity of logger output.
   #
@@ -126,10 +126,10 @@ class _Logger:
   def setLevel(loglevel):
     if type(loglevel) == str:
       loglevel_up = loglevel.upper()
-      if not loglevel_up in _LogLevel.strings:
-        _Logger.warn(_Logger, "invalid logging level: " + loglevel)
-      loglevel = _LogLevel.fromString(loglevel_up)
-    _Logger.loglevel = loglevel
+      if not loglevel_up in LogLevel.strings:
+        Logger.warn(Logger, "invalid logging level: " + loglevel)
+      loglevel = LogLevel.fromString(loglevel_up)
+    Logger.loglevel = loglevel
 
   ## Retrieves level of verbosity.
   #
@@ -137,7 +137,7 @@ class _Logger:
   #    Verbosity.
   @staticmethod
   def getLevel():
-    return _Logger.loglevel
+    return Logger.loglevel
 
   ## Retrieves log file.
   #
@@ -145,15 +145,15 @@ class _Logger:
   #    Path to log file.
   @staticmethod
   def getLogFile():
-    return _Logger.logfile
+    return Logger.logfile
 
   ## Checks if debugging is enabled.
   #
   #  @return
-  #  True if logging level is >= _LogLevel.DEBUG.
+  #  True if logging level is >= LogLevel.DEBUG.
   @staticmethod
   def debugging():
-    return _Logger.getLevel() >= _LogLevel.DEBUG
+    return Logger.getLevel() >= LogLevel.DEBUG
 
   ## Logs a message.
   #
@@ -168,13 +168,13 @@ class _Logger:
   def log(self, lvl, msg="", details=None, newline=False):
     if not msg:
       msg = lvl
-      lvl = _LogLevel.INFO
-    if _Logger.loglevel == _LogLevel.SILENT or _Logger.loglevel < lvl:
+      lvl = LogLevel.INFO
+    if Logger.loglevel == LogLevel.SILENT or Logger.loglevel < lvl:
       return
     stream = sys.stdout
-    if lvl == _LogLevel.ERROR:
+    if lvl == LogLevel.ERROR:
       stream = sys.stderr
-    prefix = (_LogLevel.toString(lvl) + ":")
+    prefix = (LogLevel.toString(lvl) + ":")
     if self.id:
       prefix += " (" + self.id + ")"
     msg = prefix.ljust(30) + " | " + msg
@@ -188,8 +188,8 @@ class _Logger:
       msg = "\n" + msg
     stream.write(msg + "\n")
     # output to log file
-    if _Logger.logfile and os.path.isfile(_Logger.logfile):
-      fileio.appendFile(_Logger.logfile, msg)
+    if Logger.logfile and os.path.isfile(Logger.logfile):
+      fileio.appendFile(Logger.logfile, msg)
 
   ## Logs a message at debug level.
   #
@@ -200,7 +200,7 @@ class _Logger:
   #  @param newline
   #    If true, appends a newline to end of message.
   def debug(self, msg, details=None, newline=False):
-    self.log(_LogLevel.DEBUG, msg, details, newline)
+    self.log(LogLevel.DEBUG, msg, details, newline)
 
   ## Logs a message at info level.
   #
@@ -211,7 +211,7 @@ class _Logger:
   #  @param newline
   #    If true, appends a newline to end of message.
   def info(self, msg, details=None, newline=False):
-    self.log(_LogLevel.INFO, msg, details, newline)
+    self.log(LogLevel.INFO, msg, details, newline)
 
   ## Logs a message at warning level.
   #
@@ -222,7 +222,7 @@ class _Logger:
   #  @param newline
   #    If true, appends a newline to end of message.
   def warn(self, msg, details=None, newline=False):
-    self.log(_LogLevel.WARN, msg, details, newline)
+    self.log(LogLevel.WARN, msg, details, newline)
 
   ## Logs a message at error level.
   #
@@ -233,7 +233,7 @@ class _Logger:
   #  @param newline
   #    If true, appends a newline to end of message.
   def error(self, msg, details=None, newline=False):
-    self.log(_LogLevel.ERROR, msg, details, newline)
+    self.log(LogLevel.ERROR, msg, details, newline)
 
   ## Logs a message denoting deprecation of an element.
   #
@@ -250,13 +250,3 @@ class _Logger:
     if alt:
       msg += ", use " + alt + " instead"
     self.warn(msg, newline)
-
-
-## Retrieves a logger.
-#
-#  @param _id
-#    Optional ID to display in log messages.
-#  @return
-#    Logger instance.
-def getLogger(_id=None):
-  return _Logger(_id)

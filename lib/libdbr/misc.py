@@ -13,7 +13,7 @@ import re
 
 from libdbr import dateinfo
 from libdbr import fileio
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
 ## Creates a hash from string or bytes data.
@@ -126,6 +126,6 @@ def formatDebianChanges(changes, info, indent=0, tabs=False):
       res += "\n"
     return res
   except KeyError as e:
-    getLogger(__name__ + "." + formatDebianChanges.__name__) \
+    Logger(__name__ + "." + formatDebianChanges.__name__) \
         .error("missing required info key {}".format(e))
   return ""

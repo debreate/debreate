@@ -9,10 +9,10 @@
 import errno
 import types
 
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
-__logger = getLogger()
+__logger = Logger(__name__)
 
 __tasklist = {}
 __completed = []

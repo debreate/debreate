@@ -15,10 +15,10 @@ import re
 
 from libdbr.fileio import readFile
 from libdbr.fileio import writeFile
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
-__logger = getLogger()
+__logger = Logger(__name__)
 __config_file = None
 __config_cache = {}
 
