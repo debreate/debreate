@@ -440,7 +440,8 @@ def taskDistBin():
   logger.info("building portable binary distribution package ...")
 
   dir_build = paths.join(dir_app, "build")
-  dir_data = paths.join(dir_build, "stage/share/debreate")
+  root_data = paths.join(dir_build, "stage/share")
+  dir_data = paths.join(root_data, package_name)
   dir_dist = paths.join(dir_build, "dist")
   pkg_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version_full))
   # FIXME: packDir should create parent directory
@@ -452,7 +453,10 @@ def taskDistBin():
   for _file in config.getValue("files_bdist_data").split(";"):
     checkError((fileio.packFile(_file, pkg_dist, amend=True, verbose=options.verbose)))
 
-  # TODO: locale
+  dir_locale = paths.join(root_data, "locale")
+  os.chdir(root_data)
+  checkError((fileio.packDir(dir_locale, pkg_dist, incroot=True, amend=True, verbose=options.verbose)))
+  os.chdir(dir_app)
 
   if os.path.isfile(pkg_dist):
     logger.info("built package '{}'".format(pkg_dist))
