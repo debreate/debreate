@@ -7,6 +7,10 @@
 # * See: docs/LICENSE.txt for details.               *
 # ****************************************************
 
+if __name__ != "__main__":
+  print("ERROR: this build script cannot be imported as a module")
+  exit(1)
+
 import argparse
 import errno
 import os
