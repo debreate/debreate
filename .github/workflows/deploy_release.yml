@@ -36,13 +36,13 @@ jobs:
         run: sudo apt install debhelper devscripts
 
       - name: build source package
-        run: python3 build.py -t dist-source
+        run: python3 build.py -t dist-source -V
 
       - name: build portable package
-        run: python3 build.py -t dist-bin
+        run: python3 build.py -t dist-bin -V
 
       - name: build .deb package
-        run: python3 build.py -t dist-deb
+        run: python3 build.py -t dist-deb -V
 
       - name: prepare release information
         run: echo "Changes:\n\n$(python3 build.py -t changes)" > release_notes.tmp
