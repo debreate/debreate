@@ -64,7 +64,7 @@ can be debianized using one of two methods:
 
 2. __external:__
 
-    Instructions are contained within a separate package distributed alogside the original source.
+    Instructions are contained within a separate package distributed alongside the original source.
 
 The debian directory, or package, contains files with instructions & meta data on how the source is
 to be patched, compiled, & built into a binary format.
