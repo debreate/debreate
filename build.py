@@ -22,14 +22,15 @@ import types
 # include libdbr in module search path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
-from libdbr        import config
-from libdbr        import fileio
-from libdbr        import misc
-from libdbr        import paths
-from libdbr        import tasks
-from libdbr        import userinfo
-from libdbr.logger import LogLevel
-from libdbr.logger import Logger
+from libdbr         import config
+from libdbr         import fileio
+from libdbr         import misc
+from libdbr         import paths
+from libdbr         import tasks
+from libdbr         import userinfo
+from libdbr.logger  import LogLevel
+from libdbr.logger  import Logger
+from libdbr.strings import sstyle
 
 
 script_name = os.path.basename(sys.argv[0])
@@ -45,7 +46,7 @@ printUsage: types.FunctionType
 def parseCommandLine():
   task_help = []
   for t in task_list:
-    task_help.append(t + ": " + task_list[t])
+    task_help.append(sstyle("<bold>{}</bold>: {}".format(t, task_list[t])))
   args_parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter,
       description="Debreate installer script",
@@ -595,8 +596,8 @@ def initTasks():
       + " `--prefix` argument.")
   addTask("dist-source", taskDistSource, "Build a source distribution package.")
   addTask("dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
-  addTask("dist-deb", taskDistDeb,
-      "Build a binary Debian distribution package. Requires `debuild` (apt install devscripts).")
+  addTask("dist-deb", taskDistDeb, sstyle("Build a binary Debian distribution package." \
+      + " Requires <bold>debuild</bold> (<em>apt install devscripts</em>)."))
   addTask("clean", taskClean, "Remove all temporary build files.")
   addTask("clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")
