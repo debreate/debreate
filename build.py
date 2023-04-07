@@ -474,6 +474,8 @@ def taskDistDeb():
 
   # create changelog for release
   fileio.writeFile(file_changelog, getChangesDeb(), verbose=options.verbose)
+  if not os.path.isfile(file_changelog):
+    exitWithError("failed to created Debian changelog", errno.ENOENT)
 
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
@@ -483,8 +485,12 @@ def taskDistDeb():
   deb_prefix = package_name + "_" + package_version \
       + ("" if package_version_dev == 0 else "-dev{}".format(package_version_dev)) + "_"
   deb_name = deb_prefix + "all.deb"
+  deb_target = paths.join(dir_dist, deb_name)
+  if os.path.isfile(deb_target):
+    checkError((fileio.deleteFile(deb_target, verbose=options.verbose)))
   checkError((fileio.moveFile(paths.join(dir_parent, deb_name), dir_dist, deb_name,
       verbose=options.verbose)))
+
   # clean up files created by helper scripts
   for obj in os.listdir(dir_parent):
     abspath = paths.join(dir_parent, obj)
@@ -568,7 +574,8 @@ def initTasks():
       + " `--prefix` argument.")
   addTask("dist-source", taskDistSource, "Build a source distribution package.")
   addTask("dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
-  addTask("dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
+  addTask("dist-deb", taskDistDeb,
+      "Build a binary Debian distribution package. Requires `debuild` (apt install devscripts).")
   addTask("clean", taskClean, "Remove all temporary build files.")
   addTask("clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")
