@@ -1,5 +1,6 @@
 
 Priority:
+- examine changelog changes before release
 - add option to set locale manually
 - close progress dialogs on errors so program doesn't freeze
 - use wget or urllib module instead of calling system command
