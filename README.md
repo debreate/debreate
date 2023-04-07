@@ -155,6 +155,8 @@ Build Tasks:
     - Update relevant files with version information from 'build.conf'.
 - `test`
     - Run configured unit tests from 'tests' directory.
+- `check-code`
+    - Check code with [pylint][proj.pylint] & [mypy][].
 - `changes`
     - Print most recent changes from 'doc/changelog' to stdout.
 
@@ -253,6 +255,7 @@ Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 [home.python]: https://python.org/
 [home.wxpython]: https://wxpython.org/
 [home.xz-utils]: https://tukaani.org/xz/
+[mypy]: https://mypy-lang.org/
 
 [page.deb]: https://wikipedia.org/wiki/Deb_(file_format)
 [page.make]: https://en.wikipedia.org/wiki/Make_(software)
@@ -281,4 +284,5 @@ Debreate & [libdbr][proj.gh.libdbr] are licensed under [MIT](LICENSE.txt).
 [proj.gh]: https://github.com/debreate/debreate
 [proj.gh.libdbr]: https://github.com/debreate/libdbr
 [proj.gl]: https://gitlab.com/debreate/debreate
+[proj.pylint]: https://github.com/pylint-dev/pylint
 [proj.sf]: https://sourceforge.net/projects/debreate
