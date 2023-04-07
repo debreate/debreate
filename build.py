@@ -445,7 +445,14 @@ def taskDistBin():
   pkg_dist = paths.join(dir_dist, "{}_{}_portable.zip".format(package_name, package_version_full))
   # FIXME: packDir should create parent directory
   fileio.makeDir(dir_dist, verbose=options.verbose)
-  fileio.packDir(dir_data, pkg_dist, verbose=options.verbose)
+  checkError((fileio.packDir(dir_data, pkg_dist, verbose=options.verbose)))
+
+  for _dir in config.getValue("dirs_bdist_data").split(";"):
+    checkError((fileio.packDir(_dir, pkg_dist, incroot=True, amend=True, verbose=options.verbose)))
+  for _file in config.getValue("files_bdist_data").split(";"):
+    checkError((fileio.packFile(_file, pkg_dist, amend=True, verbose=options.verbose)))
+
+  # TODO: locale
 
   if os.path.isfile(pkg_dist):
     logger.info("built package '{}'".format(pkg_dist))
