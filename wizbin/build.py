@@ -119,7 +119,7 @@ class Page(WizardPage):
 
     next_row = 0
     prev_row = next_row
-    for CHK in pnl_options.Children:
+    for CHK in pnl_options.GetChildren():
       row = next_row
       FLAGS = lyt.PAD_LR
 
