@@ -396,11 +396,42 @@ def taskCleanDist():
   checkError((fileio.deleteDir(dir_dist, verbose=options.verbose)))
 
 def taskDistSource():
-  print()
-  # ~ logger.info("building source distribution package ...")
-  logger.warn("building source distribution package not yet implemented")
+  tasks.run("clean-stage")
 
-  # TODO:
+  print()
+  logger.info("building source distribution package ...")
+
+  root_stage = paths.join(dir_app, "build/stage")
+  root_dist = paths.join(dir_app, "build/dist")
+
+  for _dir in config.getValue("dirs_dist_py").split(";"):
+    abspath = paths.join(dir_app, _dir)
+    checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), exclude=r"^(.*\.pyc|__pycache__)$", verbose=options.verbose)))
+  for _dir in config.getValue("dirs_dist_data").split(";"):
+    abspath = paths.join(dir_app, _dir)
+    checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), verbose=options.verbose)))
+  for _file in config.getValue("files_dist_data").split(";"):
+    abspath = paths.join(dir_app, _file)
+    checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
+  for _file in config.getValue("files_dist_py").split(";"):
+    abspath = paths.join(dir_app, _file)
+    checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
+  for _file in config.getValue("files_dist_exe").split(";"):
+    abspath = paths.join(dir_app, _file)
+    checkError((fileio.copyExecutable(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
+
+  pkg_dist = paths.join(root_dist, package_name + "_" + package_version_full + ".tar.xz")
+
+  # FIXME: parent directory should be created automatically
+  if not os.path.isdir(root_dist):
+    fileio.makeDir(root_dist, verbose=options.verbose)
+
+  checkError((fileio.packDir(root_stage, pkg_dist, form="xz", verbose=options.verbose)))
+
+  if os.path.isfile(pkg_dist):
+    logger.info("built package '{}'".format(pkg_dist))
+  else:
+    exitWithError("failed to build source package", errno.ENOENT)
 
 def taskDistBin():
   tasks.run("stage")
@@ -524,7 +555,7 @@ def initTasks():
       + " argument.")
   addTask("uninstall", taskUninstall, "Uninstall files from directory specified by" \
       + " `--prefix` argument.")
-  addTask("dist-source", taskDistSource, "Build a source distribution package (TODO).")
+  addTask("dist-source", taskDistSource, "Build a source distribution package.")
   addTask("dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
   addTask("dist-deb", taskDistDeb, "Build a binary Debian distribution package.")
   addTask("clean", taskClean, "Remove all temporary build files.")
@@ -555,13 +586,16 @@ def main():
   config.setFile(paths.join(dir_app, "build.conf"))
   config.load()
 
-  global package_name, package_version, package_version_dev
+  global package_name, package_version, package_version_dev, package_version_full
   package_name = config.getValue("package")
   package_version = config.getValue("version")
   package_version_dev = 0
   tmp = config.getValue("version_dev")
   if tmp:
     package_version_dev = int(tmp)
+  package_version_full = package_version
+  if package_version_dev > 0:
+    package_version_full = "{}-dev{}".format(package_version_full, package_version_dev)
 
   global options, printUsage, task_list
   task_list = {}
