@@ -45,7 +45,7 @@ jobs:
         run: python3 build.py -t dist-deb -V
 
       - name: prepare release information
-        run: echo "Changes:\n\n$(python3 build.py -t changes)" > release_notes.tmp
+        run: echo -e "Changes:\n\n$(python3 build.py -t changes)" > release_notes.tmp
 
       - name: publish
         uses: softprops/action-gh-release@v1
