@@ -56,7 +56,7 @@ def parseCommandLine():
       help="Show Debreate version.")
   args_parser.add_argument("-V", "--verbose", action="store_true",
       help="Include detailed task information when printing to stdout.")
-  args_parser.add_argument("-t", "--task", choices=tuple(task_list), default="install",
+  args_parser.add_argument("-t", "--task",
       help="\n".join(task_help))
   args_parser.add_argument("-p", "--prefix", default=paths.getSystemRoot() + "usr",
       help="Path prefix to directory where files are to be installed.")
@@ -569,13 +569,19 @@ def main():
   args_parser = parseCommandLine()
   printUsage = args_parser.print_help
   options = args_parser.parse_args()
-  if not options.dir:
-    options.dir = paths.getSystemRoot()
 
-  task = tasks.get(options.task)
-  if not task:
-    exitWithError("unknown task ({})".format(options.task), usage=True)
-  task()
+  if not options.task:
+    exitWithError("task argument not supplied", usage=True)
+  t_ids = options.task.split(",")
+  # check all request task IDs
+  for _id in t_ids:
+    if not _id in task_list:
+      exitWithError("unknown task ({})".format(options.task), usage=True)
+  # run tasks
+  for _id in t_ids:
+    err = tasks.run(_id)
+    if err != 0:
+      sys.exit(err)
 
 if __name__ == "__main__":
   main()
