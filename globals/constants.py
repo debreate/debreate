@@ -12,10 +12,10 @@ import os, wx
 from dbr.language  import GT
 from globals       import paths
 from libdbr.fileio import readFile
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
-__logger = getLogger()
+__logger = Logger()
 
 # Local modules
 # *** Debreate Information *** #

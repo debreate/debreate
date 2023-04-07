@@ -10,10 +10,10 @@ import os, sys
 
 from globals.strings import GS
 from globals.strings import IsString
-from libdbr.logger   import getLogger
+from libdbr.logger   import Logger
 
 
-logger = getLogger()
+logger = Logger()
 
 def getAppDir():
   logger.deprecated(__name__, getAppDir.__name__, "libdbr.paths.getAppDir")

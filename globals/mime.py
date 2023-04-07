@@ -6,10 +6,10 @@
 
 from globals.execute import GetCommandOutput
 from libdbr          import paths
-from libdbr.logger   import getLogger
+from libdbr.logger   import Logger
 
 
-__logger = getLogger()
+__logger = Logger()
 
 ## TODO: Doxygen
 def GetFileMimeType(filename):

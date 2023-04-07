@@ -7,10 +7,10 @@ import gettext
 import os
 
 from globals.strings import GS
-from libdbr.logger   import getLogger
+from libdbr.logger   import Logger
 
 
-__logger = getLogger()
+__logger = Logger()
 
 TRANSLATION_DOMAIN = "debreate"
 DIR_locale = ""

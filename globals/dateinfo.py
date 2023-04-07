@@ -8,10 +8,10 @@ from datetime import datetime
 from time     import strftime
 
 from globals.strings import GS
-from libdbr.logger   import getLogger
+from libdbr.logger   import Logger
 
 
-logger = getLogger()
+logger = Logger()
 
 ## Formatting methods for dates & times
 #

@@ -8,11 +8,11 @@
 
 import sys
 
-from libdbr.logger import getLogger
+from libdbr.logger  import Logger
 from libdbr.modules import getModule
 
 
-logger = getLogger()
+logger = Logger()
 
 def checkWx():
   wx = getModule("wx")

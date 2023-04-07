@@ -6,10 +6,10 @@
 
 import os
 
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 
 
-__logger = getLogger()
+__logger = Logger()
 
 ## Sets files executable bit
 #

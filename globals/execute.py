@@ -15,12 +15,12 @@ from subprocess import STDOUT
 import libdbr.bin
 
 from dbr.language  import GT
-from libdbr.logger import getLogger
+from libdbr.logger import Logger
 from libdbr.paths  import getExecutable
 from wiz.helper    import GetMainWindow
 
 
-__logger = getLogger()
+__logger = Logger()
 
 ## Executes a command with elevated privileges.
 #

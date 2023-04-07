@@ -16,11 +16,11 @@ if __name__ == "__main__":
 
 from libdbr         import paths
 from libdbr         import sysinfo
-from libdbr.logger  import getLogger
+from libdbr.logger  import Logger
 from libdbr.modules import installModule
 
 
-__logger = getLogger()
+__logger = Logger()
 
 def promptForWxInstall():
   print("Debreate requires wxPython, do you want me to try to download and install it?")
