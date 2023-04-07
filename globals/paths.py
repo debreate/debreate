@@ -13,7 +13,7 @@ from globals.strings import IsString
 from libdbr.logger   import Logger
 
 
-logger = Logger()
+logger = Logger(__name__)
 
 def getAppDir():
   logger.deprecated(__name__, getAppDir.__name__, "libdbr.paths.getAppDir")

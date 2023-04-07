@@ -20,7 +20,7 @@ from libdbr.paths  import getExecutable
 from wiz.helper    import GetMainWindow
 
 
-__logger = Logger()
+__logger = Logger(__name__)
 
 ## Executes a command with elevated privileges.
 #

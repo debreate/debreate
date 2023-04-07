@@ -9,7 +9,7 @@ import os
 from libdbr.logger import Logger
 
 
-__logger = Logger()
+__logger = Logger(__name__)
 
 ## Sets files executable bit
 #

@@ -20,7 +20,7 @@ from libdbr.logger  import Logger
 from libdbr.modules import installModule
 
 
-__logger = Logger()
+__logger = Logger(__name__)
 
 def promptForWxInstall():
   print("Debreate requires wxPython, do you want me to try to download and install it?")

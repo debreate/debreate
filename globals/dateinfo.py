@@ -11,7 +11,7 @@ from globals.strings import GS
 from libdbr.logger   import Logger
 
 
-logger = Logger()
+logger = Logger(__name__)
 
 ## Formatting methods for dates & times
 #

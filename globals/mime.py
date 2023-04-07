@@ -9,7 +9,7 @@ from libdbr          import paths
 from libdbr.logger   import Logger
 
 
-__logger = Logger()
+__logger = Logger(__name__)
 
 ## TODO: Doxygen
 def GetFileMimeType(filename):

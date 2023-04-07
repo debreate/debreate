@@ -10,7 +10,7 @@ from globals.strings import GS
 from libdbr.logger   import Logger
 
 
-__logger = Logger()
+__logger = Logger(__name__)
 
 TRANSLATION_DOMAIN = "debreate"
 DIR_locale = ""

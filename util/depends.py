@@ -12,7 +12,7 @@ from libdbr.logger  import Logger
 from libdbr.modules import getModule
 
 
-logger = Logger()
+logger = Logger(__name__)
 
 def checkWx():
   wx = getModule("wx")

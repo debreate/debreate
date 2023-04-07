@@ -15,7 +15,7 @@ from libdbr.fileio import readFile
 from libdbr.logger import Logger
 
 
-__logger = Logger()
+__logger = Logger(__name__)
 
 # Local modules
 # *** Debreate Information *** #
