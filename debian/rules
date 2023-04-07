@@ -10,6 +10,11 @@ export PYBUILD_NAME=debreate
 
 override_dh_auto_build:
 
+override_dh_auto_clean:
+
+override_dh_auto_test:
+	python3 build.py -t test
+
 override_dh_auto_install:
 	python3 build.py -t install -p "/usr" -d "debian/$(PYBUILD_NAME)"
 
