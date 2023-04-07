@@ -23,14 +23,13 @@ jobs:
 
       - name: configure
         run: |
-          version=$(echo ${{ github.ref_name }})
-          if [[ "${version}" =~ ^v[0-9] ]]; then
+          package=$(grep "^package = " build.conf | head -n 1 | sed -e 's/^package = //')
+          version=$(python3 build.py -v)
+          if [[ "${{ github.ref_name }}" =~ ^v[0-9] ]]; then
             echo "using GitHub ref version ..."
-            version=$(echo ${version} | sed 's/^v//')
-            sed -i -e "s/^version = .*$/version = ${version}/" build.conf
+            version=$(echo ${{ github.ref_name }} | sed 's/^v//')
           fi
-          version=$(grep "^version = " build.conf | sed -e 's/^version = //')
-          echo "configuring character generator version ${version} ..."
+          echo "configuring ${package} version ${version} ..."
           echo "ver=${version}" >> $GITHUB_ENV
 
       - name: install build dependencies
