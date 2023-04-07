@@ -202,7 +202,7 @@ def stageMimeInfo(prefix):
 
 ## Formats changes for Debianized changelog
 def getChangesDeb():
-  changelog = paths.join(paths.getAppDir(), "docs/changelog")
+  changelog = paths.join(paths.getAppDir(), "docs/changelog.txt")
   if not os.path.isfile(changelog):
     return
   changes = misc.getLatestChanges(changelog)
@@ -348,9 +348,9 @@ def taskUpdateVersion():
   fileio.replace(paths.join(dir_app, "Makefile"), r"^VERSION = .*$",
       "VERSION = {}".format(ver_string_full), count=1, verbose=options.verbose)
   if ver_dev == 0:
-    fileio.replace(paths.join(dir_app, "docs/changelog"), r"^next$", ver_string_full, count=1,
+    fileio.replace(paths.join(dir_app, "docs/changelog.txt"), r"^next$", ver_string_full, count=1,
         fl=True, verbose=options.verbose)
-  # ~ fileio.replace(paths.join(dir_app, "docs/changelog"), r"^(?!\s*$).+", ver_string_full, count=1,
+  # ~ fileio.replace(paths.join(dir_app, "docs/changelog.txt"), r"^(?!\s*$).+", ver_string_full, count=1,
       # ~ fl=True, verbose=options.verbose)
 
   repl = [
@@ -463,7 +463,7 @@ def taskCheckCode():
       return res.returncode
 
 def taskPrintChanges():
-  changelog = paths.join(paths.getAppDir(), "docs/changelog")
+  changelog = paths.join(paths.getAppDir(), "docs/changelog.txt")
   if not os.path.isfile(changelog):
     return
   print(misc.getLatestChanges(changelog))

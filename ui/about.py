@@ -380,9 +380,9 @@ class AboutDialog(wx.Dialog):
     #   install script or Makefile should change this
     #   to reflect installed path.
     if INSTALLED:
-      CHANGELOG = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/changelog"))
+      CHANGELOG = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/changelog.txt"))
     else:
-      CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog"))
+      CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog.txt"))
 
     if os.path.isfile(CHANGELOG):
       changelog_mimetype = GetFileMimeType(CHANGELOG)

@@ -85,7 +85,7 @@ FILE_locale = '{}/locale/debreate.pot'.format(DIR_root)
 PY_app = '{}/globals/application.py'.format(DIR_root)
 
 FILE_make = '{}/Makefile'.format(DIR_root)
-FILE_changelog = '{}/docs/changelog'.format(DIR_root)
+FILE_changelog = '{}/docs/changelog.txt'.format(DIR_root)
 FILE_changelog_debian = 'debian/changelog'
 
 FILE_BUFFER = open(FILE_info)
