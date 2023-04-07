@@ -6,8 +6,6 @@
 
 import wx
 
-import util
-
 from dbr.language     import GT
 from globals.ident    import btnid
 from globals.ident    import inputid
@@ -17,6 +15,7 @@ from globals.tooltips import SetPageToolTips
 from input.list       import ListCtrlESS
 from input.select     import Choice
 from input.text       import TextArea
+from libdbr.logger    import Logger
 from ui.button        import CreateButton
 from ui.dialog        import ConfirmationDialog
 from ui.layout        import BoxSizer
@@ -27,7 +26,7 @@ from wiz.helper       import GetPage
 from wiz.wizard       import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Page defining dependencies
 class Page(WizardPage):

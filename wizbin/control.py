@@ -8,8 +8,6 @@ import os, wx
 
 from wx.adv import OwnerDrawnComboBox
 
-import util
-
 from dbr.language       import GT
 from globals.errorcodes import dbrerrno
 from globals.ident      import btnid
@@ -24,6 +22,7 @@ from input.text         import TextAreaPanelESS
 from input.toggle       import CheckBoxESS
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
+from libdbr.logger      import Logger
 from ui.button          import CreateButton
 from ui.dialog          import GetFileOpenDialog
 from ui.dialog          import GetFileSaveDialog
@@ -40,7 +39,7 @@ from wiz.helper         import GetPage
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## This panel displays the field input of the control file
 class Page(WizardPage):

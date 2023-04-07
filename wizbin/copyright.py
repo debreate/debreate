@@ -6,8 +6,6 @@
 
 import os, wx
 
-import util
-
 from dbr.functions      import GetLongestLine
 from dbr.language       import GT
 from dbr.templates      import GetCustomLicenses
@@ -28,6 +26,7 @@ from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
 from libdbr.fileio      import readFile
+from libdbr.logger      import Logger
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import ShowErrorDialog
@@ -38,7 +37,7 @@ from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 # Globals
 copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")

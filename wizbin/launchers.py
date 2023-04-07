@@ -6,8 +6,6 @@
 
 import os, shutil, wx
 
-import util
-
 from dbr.language     import GT
 from globals.ident    import btnid
 from globals.ident    import chkid
@@ -28,6 +26,7 @@ from input.toggle     import CheckBox
 from input.toggle     import CheckBoxESS
 from libdbr.fileio    import readFile
 from libdbr.fileio    import writeFile
+from libdbr.logger    import Logger
 from ui.button        import CreateButton
 from ui.dialog        import ConfirmationDialog
 from ui.dialog        import ShowDialog
@@ -41,7 +40,7 @@ from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Page for creating a system menu launcher
 class Page(WizardPage):

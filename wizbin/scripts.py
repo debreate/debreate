@@ -6,8 +6,6 @@
 
 import os, wx
 
-import util
-
 from dbr.language     import GT
 from globals.fileitem import FileItem
 from globals.ident    import btnid
@@ -21,6 +19,7 @@ from input.pathctrl   import PathCtrl
 from input.text       import TextAreaPanelESS
 from input.toggle     import CheckBox
 from libdbr.fileio    import readFile
+from libdbr.logger    import Logger
 from ui.button        import CreateButton
 from ui.dialog        import ConfirmationDialog
 from ui.dialog        import DetailedMessageDialog
@@ -34,7 +33,7 @@ from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ID_INST_PRE = wx.NewId()
 ID_INST_POST = wx.NewId()

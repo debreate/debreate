@@ -6,8 +6,6 @@
 
 import os, traceback, wx
 
-import util
-
 from dbr.language       import GT
 from globals.bitmaps    import ICON_ERROR
 from globals.bitmaps    import ICON_EXCLAMATION
@@ -23,6 +21,7 @@ from input.filelist     import columns
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
 from libdbr.fileio      import readFile
+from libdbr.logger      import Logger
 from libdbr.paths       import getSystemRoot
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
@@ -42,7 +41,7 @@ from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Maximum file count to process before showing progress dialog
 efficiency_threshold = 250

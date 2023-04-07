@@ -6,8 +6,6 @@
 
 import wx
 
-import util
-
 from dbr.language     import GT
 from f_export.ftarget import FileOTarget
 from globals.bitmaps  import ICON_WARNING
@@ -28,6 +26,7 @@ from input.text       import TextAreaPanel
 from input.text       import TextAreaPanelESS
 from input.toggle     import CheckBox
 from input.toggle     import CheckBoxESS
+from libdbr.logger    import Logger
 from ui.button        import CreateButton
 from ui.dialog        import DetailedMessageDialog
 from ui.layout        import BoxSizer
@@ -38,7 +37,7 @@ from wiz.helper       import GetMainWindow
 from wiz.wizard       import WizardPage
 
 
-logger = util.getLogger(__name__)
+logger = Logger(__name__)
 
 ## Changelog page
 class Page(WizardPage):
