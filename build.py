@@ -499,12 +499,12 @@ def taskRunTests():
       else:
         standard_tests[test_name] = test_file
 
-  # ~ print()
-  # ~ logger.info("running introspection tests (failure is ok) ...")
-  # ~ for test_name in introspect_tests:
-    # ~ # for debugging, it is ok if these tests fail
-    # ~ res, err = runTest(test_name, introspect_tests[test_name], verbose=options.verbose)
-    # ~ logger.info("result: {}, message: {}".format(res, err))
+  print()
+  logger.info("running introspection tests (failure is ok) ...")
+  for test_name in introspect_tests:
+    # for debugging, it is ok if these tests fail
+    res, err = runTest(test_name, introspect_tests[test_name], verbose=options.verbose)
+    logger.info("result: {}, message: {}".format(res, err))
   print()
   logger.info("running standard tests ...")
   for test_name in standard_tests:

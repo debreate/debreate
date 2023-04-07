@@ -1,0 +1,54 @@
+[DEBREATE-0.7]
+<<CTRL>>
+Package: debreate
+Version: 0.8-dev5
+Maintainer: Jordan Irwin <antumdeluge@gmail.com>
+Section: devel
+Source: https://github.com/debreate/debreate
+Homepage: https://debreate.github.io/
+Architecture: all
+Priority: optional
+Description: Debian Package Builder
+ Debreate is a utility to aid in creating Debian (.deb) packages. Currently it
+ only supports binary packaging (note that the term "binary package" is
+ used loosely, as such packages can contain scripts & non-code items such
+ as media images, audio, & more) for personal distribution. Plans for using
+ backends such as dh_make & debuild for creating source packages are in
+ the works. But source packaging can be quite different & is a must if you
+ want to get your packages into a distribution's official repositories or a
+ Launchpad Personal Package Archive (PPA). The latter from which
+ Debreate is available.
+<</CTRL>>
+<<FILES>>
+0
+<</FILES>>
+<<SCRIPTS>>
+<<PREINST>>
+0
+<</PREINST>>
+<<POSTINST>>
+0
+<</POSTINST>>
+<<PRERM>>
+0
+<</PRERM>>
+<<POSTRM>>
+0
+<</POSTRM>>
+<</SCRIPTS>>
+<<CHANGELOG>>
+<<DEST>>DEFAULT<</DEST>>
+
+<</CHANGELOG>>
+<<COPYRIGHT>>
+None
+<</COPYRIGHT>>
+<<MENU>>
+0
+<</MENU>>
+<<BUILD>>
+1
+1
+1
+strip
+<</BUILD>>
