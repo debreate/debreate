@@ -17,6 +17,7 @@
     - [Makefile](#build-make)
     - [Building .deb Package](#build-deb)
 - [Standalone/Portable](#portable)
+- [Usage](#usage)
 - [Links](#links)
     - [Project Pages](#links-proj)
     - [Downloads](#links-dl)
@@ -172,12 +173,11 @@ Build Tasks:
 <h3><a href="#toc">Makefile</a></h3>
 </a>
 
-_(deprecated: it is recommended to use the [accompanying build script](#build-script))_
-
-A generic [Makefile][page.makefile] is included for building with the [make][page.make] command. The
-It can be used to install the application's files onto the system. Open a terminal in the directory
-where the source code is located & execute `make install` with
-[superuser privileges][page.superuser]. To uninstall, execute `make uninstall`.
+A generic [Makefile][page.makefile] is included for building with a GNU compliant [make][page.make]
+command. It is simply a wrapper for the targets executed by the `build.py` script. Open a terminal
+in the directory where the source code is located & execute `make install` with
+[superuser privileges][page.superuser]. To uninstall, execute `make uninstall`. Use the environment
+variables `prefix` & `DESTDIR` to control the installation target directory.
 
 
 <a name="build-deb">
@@ -197,6 +197,14 @@ install execute `dpkg --install build/dist/debreate_\<version\>_all.deb` with
 
 To run without installation simply execute the file named "init.py" (from a terminal `./init.py` or
 `python3 init.py`).
+
+
+<a name="usage">
+<h2><a href="#toc">Usage</a></h2>
+</a>
+
+Sorry, not up-to-date usage information yet. But you can have a look at this
+[old PDF document](https://debreate.sourceforge.net/res/doc/usage_en.pdf) if you like.
 
 
 <a name="links">
