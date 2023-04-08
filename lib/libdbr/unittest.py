@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## Unit testing functions.
+#
+#  @package libdbr.unittest
+
 import importlib
 import traceback
 import types
@@ -70,3 +74,69 @@ def runTest(test_name, test_file=None, verbose=False):
       msg += ": " + err
     __logger.error(msg)
   return res, err
+
+
+# -- assertion checking functions -- #
+
+## Checks if a result is `True`.
+#
+#  @param a1
+#    Expression result.
+def assertTrue(a1):
+  a_type = type(a1)
+  if a_type != bool:
+    raise AssertionError("expected 'bool' but got '{}'".format(a_type))
+  if a1 != True:
+    raise AssertionError("expected 'a1 == True' but got 'a1 == {}'".format(a1))
+
+## Checks if a result is `False`.
+#
+#  @param a1
+#    Expression result.
+def assertFalse(a1):
+  a_type = type(a1)
+  if a_type != bool:
+    raise AssertionError("expected 'bool' but got '{}'".format(a_type))
+  if a1 == True:
+    raise AssertionError("expected 'a1 == False' but got 'a1 == {}'".format(a1))
+
+## Checks if two objects are the same.
+#
+#  @param a1
+#    Left object to compare.
+#  @param a2
+#    Right object to compare.
+def assertEquals(a1, a2):
+  if a1 != a2:
+    raise AssertionError("expected '{}' but got '{}'".format(a1, a2))
+
+## Checks if two objects are not the same.
+#
+#  @param a1
+#    Left object to compare.
+#  @param a2
+#    Right object to compare.
+def assertNotEquals(a1, a2):
+  if a1 == a2:
+    raise AssertionError("expected 'a1 != a2' but got '{} == {}'".format(a1, a2))
+
+## Checks if a result is `None`.
+#
+#  @param a1
+#    Expression result.
+def assertNone(a1):
+  if a1 != None:
+    raise AssertionError("expected 'None' but got '{}'".format(a1))
+
+## Checks if a result is not `None`.
+#
+#  @param a1
+#    Expression result.
+def assertNotNone(a1):
+  if a1 == None:
+    raise AssertionError("expected value but got 'None'")
+
+## Alias for `assertNone`.
+assertNull = assertNone
+## Alias for `assertNotNone`.
+assertNotNull = assertNotNone

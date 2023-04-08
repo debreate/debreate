@@ -8,13 +8,16 @@
 
 import os
 import sys
+import typing
 
 from libdbr import fileinfo
 from libdbr import sysinfo
 from libdbr import userinfo
 
 
-__cache = {}
+__cache: typing.Dict[str, typing.Any] = {
+  "executables": {}
+}
 
 ## Normalizes path strings.
 #
@@ -52,14 +55,23 @@ def join(*paths):
 #  @return
 #    Absolute path to script filename.
 def getAppPath():
-  return os.path.realpath(sys.argv[0])
+  if "path_app" in __cache:
+    return __cache["path_app"]
+  __cache["path_app"] = os.path.realpath(sys.argv[0])
+  return __cache["path_app"]
 
 ## Retrieves directory of executed script.
 #
 #  @return
 #    Absolute path to script parent directory.
 def getAppDir():
-  return os.path.dirname(getAppPath())
+  if "dir_app" in __cache:
+    return __cache["dir_app"]
+  dir_app = getAppPath()
+  if not os.path.isdir(dir_app):
+    dir_app = os.path.dirname(dir_app)
+  __cache["dir_app"] = dir_app
+  return __cache["dir_app"]
 
 ## Retrieves current user's home directory.
 #
@@ -128,6 +140,9 @@ def getTempDir():
 #  @return
 #    String path to executable or None if file not found.
 def getExecutable(cmd):
+  if cmd in __cache["executables"]:
+    return __cache["executables"][cmd]
+
   path = os.get_exec_path()
   path_ext = os.getenv("PATHEXT") or []
   if type(path_ext) == str:
@@ -136,10 +151,12 @@ def getExecutable(cmd):
   for _dir in path:
     filepath = os.path.join(_dir, cmd)
     if fileinfo.isExecutable(filepath):
+      __cache["executables"][cmd] = filepath
       return filepath
     for ext in path_ext:
       filepath = filepath + "." + ext
       if fileinfo.isExecutable(filepath):
+        __cache["executables"][cmd] = filepath
         return filepath
   return None
 

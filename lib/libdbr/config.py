@@ -13,6 +13,7 @@
 import os
 import re
 
+from libdbr        import strings
 from libdbr.fileio import readFile
 from libdbr.fileio import writeFile
 from libdbr.logger import Logger
@@ -21,6 +22,7 @@ from libdbr.logger import Logger
 __logger = Logger(__name__)
 __config_file = None
 __config_cache = {}
+__config_defaults = {}
 
 ## Sets path to config file for read/write.
 #
@@ -29,6 +31,61 @@ __config_cache = {}
 def setFile(filepath):
   global __config_file
   __config_file = filepath
+
+## Retrieved configured file.
+#
+#  @return
+#    Path to configuration file.
+def getFile():
+  return __config_file
+
+## Retrieves the default value for a key.
+#
+#  @param key
+#    Key identifier.
+#  @return
+#    Default value or `None` if key not set.
+def getDefault(key):
+  if key in __config_defaults:
+    return __config_defaults[key]
+  return None
+
+## Retrieves entire dictionary of default values.
+#
+#  @return
+#    Dictionary.
+def getDefaults():
+  return __config_defaults
+
+## Stores a default value to be used for key.
+#
+#  @param key
+#    Key identifier.
+#  @param value
+#    Value to be stored.
+def setDefault(key, value):
+  __config_defaults[key] = value
+
+## Stores a group of default values.
+#
+#  @param defaults
+#    Dictionary containing keys & values.
+def setDefaults(defaults):
+  for key in defaults:
+    __config_defaults[key] = defaults[key]
+
+## Unsets a default value.
+#
+#  @param key
+#    Key identifier.
+def unsetDefault(key):
+  if key in __config_defaults:
+    del __config_defaults[key]
+
+## Clears all stored defaults.
+def clearDefaults():
+  for key in __config_defaults:
+    del __config_defaults[key]
 
 ## Parses config file data into a managable list.
 #
@@ -99,6 +156,7 @@ def load():
 
 ## Retrievies a value from config.
 #
+#  @todo add functions for getInt, getFloat, getBool, etc.
 #  @param key
 #    Key identifier.
 #  @param default
@@ -114,8 +172,10 @@ def getValue(key, default=None, filepath=None):
   else:
     value = tmp[key]
   if value == None:
+    if key in __config_defaults:
+      return __config_defaults[key]
     __logger.error("key '{}' not found in config and default value not set".format(key))
-    return
+    return None
   return value
 
 ## Retrievies a key=value formatted string from config.
@@ -126,10 +186,14 @@ def getValue(key, default=None, filepath=None):
 #    Key identifier.
 #  @param filepath
 #    Parse filepath instead of path set with setFile
+#  @param sep
+#    Delimiter to use for splitting strings.
+#  @param _type
+#    Convert values to specified data type.
 #  @return
 #    Dictionary or None.
-def getKeyedValue(key, filepath=None):
-  value = getValue(key, "", filepath).split(";")
+def getKeyedValue(key, filepath=None, sep=";", _type=str):
+  value = getValue(key, "", filepath).split(sep)
   if not value:
     return
   res = {}
@@ -140,8 +204,50 @@ def getKeyedValue(key, filepath=None):
       res[li] = True
     else:
       tmp = li.split("=", 1)
-      res[tmp[0].strip()] = tmp[1].strip()
+      res[tmp[0].strip()] = _type(tmp[1].strip())
   return res
+
+## Retrieves a boolean value from config.
+#
+#  @param key
+#    Key identifier.
+#  @param default
+#    Default value if key is not present in config.
+#  @param filepath
+#    Parse filepath instead of path set with setFile.
+#  @return
+#    Boolean or tuple with error info.
+def getBool(key, default=None, filepath=None):
+  return strings.boolFromString(getValue(key, default, filepath))
+
+## Retrieves an integer value from config.
+#
+#  @param key
+#    Key identifier.
+#  @param default
+#    Default value if key is not present in config.
+#  @param filepath
+#    Parse filepath instead of path set with setFile.
+#  @return
+#    Boolean or tuple with error info.
+def getInt(key, default=None, filepath=None):
+  res = getFloat(key, default, filepath)
+  if type(res) == tuple:
+    return res
+  return int(res)
+
+## Retrieves a float value from config.
+#
+#  @param key
+#    Key identifier.
+#  @param default
+#    Default value if key is not present in config.
+#  @param filepath
+#    Parse filepath instead of path set with setFile.
+#  @return
+#    Boolean or tuple with error info.
+def getFloat(key, default=None, filepath=None):
+  return strings.floatFromString(getValue(key, default, filepath))
 
 ## Retrievies configuration keys.
 #
@@ -159,6 +265,8 @@ def getKeys():
 #  @param value
 #    Value to be set.
 def setValue(key, value):
+  if type(value) != str:
+    value = strings.toString(value, ";")
   __config_cache[key.strip()] = value.strip()
 
 ## Writes configuration data to file.
@@ -176,8 +284,8 @@ def save(update=True):
     if type(line) == str:
       lines.append(line)
       continue
-    key = lines_old[0]
-    value = lines_old[1]
+    key = line[0]
+    value = line[1]
     if key in tmp:
       value = tmp[key]
       del tmp[key]
@@ -185,7 +293,9 @@ def save(update=True):
   # new keys
   for key in tmp:
     lines.append(key + " = " + tmp[key])
-  writeFile(__config_file, lines)
-  # update cache
-  if update:
-    load()
+  err, msg = writeFile(__config_file, lines)
+  if err == 0:
+    # update cache
+    if update:
+      load()
+  return err, msg

@@ -104,8 +104,7 @@ def readFile(filepath):
 def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   if data == None:
     msg = __name__ + "." + writeFile.__name__ + ": 'data' parameter cannot be None"
-    raise TypeError(msg)
-    return False, msg
+    return TypeError(msg), msg
   if type(data) in (list, tuple):
     data = "\n".join(data)
   # make sure parent directory exists
@@ -113,8 +112,7 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   if dir_parent and not os.path.exists(dir_parent):
     err, msg = makeDir(dir_parent, verbose=verbose)
     if err != 0:
-      raise Exception(msg)
-      return False, msg
+      return Exception(msg), msg
   if binary:
     fout = codecs.open(filepath, "wb")
     fout.write(data)
@@ -125,7 +123,7 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
   os.chmod(filepath, mode)
   if verbose:
     print("create file '{}' (mode={})".format(filepath, oct(mode)[2:]))
-  return True, None
+  return 0, None
 
 ## Writes text data to a file while preserving previous contents.
 #
@@ -140,8 +138,7 @@ def writeFile(filepath, data, binary=False, mode=__perm["f"], verbose=False):
 def appendFile(filepath, data, mode=__perm["f"], verbose=False):
   if data == None:
     msg = __name__ + "." + appendFile.__name__ + ": 'data' parameter cannot be None"
-    raise TypeError(msg)
-    return False
+    return TypeError(msg), msg
   fin_data = []
   # don't try to append to file that doesn't exist
   if os.path.isfile(filepath):
@@ -150,7 +147,8 @@ def appendFile(filepath, data, mode=__perm["f"], verbose=False):
     fin_data += list(data)
   else:
     fin_data.append(data)
-  return writeFile(filepath, fin_data, False, mode, verbose)
+  err, msg = writeFile(filepath, fin_data, False, mode, verbose)
+  return err, msg
 
 
 __timestamps = {}
@@ -585,10 +583,9 @@ def compressFile(source, target, form="gz", rmsrc=False, verbose=False):
       err, msg = deleteFile(source, verbose=verbose)
   return err, msg
 
-## Compresses a file into a zip or tar archive.
+## Compresses a file into a zip or tarball archive.
 #
 #  TODO:
-#  - support more archive formats
 #  - set permissions of archived files
 #
 #  @param sourcefile
@@ -651,10 +648,9 @@ def packFile(sourcefile, archive, form="zip", amend=False, mode=__perm["f"], ver
       print("added one file to archive '{}' (mode={})".format(archive, oct(mode)[2:]))
   return 0, None
 
-## Compresses a directory into a zip archive.
+## Compresses a directory into a zip or tarball archive.
 #
 #  TODO:
-#  - support more archive formats
 #  - set permissions of archived files
 #
 #  @param sourcedir
@@ -746,9 +742,7 @@ def packDir(sourcedir, archive, form="zip", incroot=False, amend=False, mode=__p
       print("added {} file(s) to archive '{}' (mode={})".format(z_count_diff, archive, oct(mode)[2:]))
   return 0, None
 
-## Extracts contents of a zip archive.
-#
-#  TODO: support more archive formats
+## Extracts contents of a zip or tarball archive.
 #
 #  @param filepath
 #    Path to archive.
@@ -809,7 +803,7 @@ def replace(filepath, patterns, replacement=None, count=0, flags=re.M, fl=False,
   if not data_old:
     if verbose:
       print("(" + __name__ + "." + replace.__name__ + ") no data found in '{}'".format(filepath))
-    return
+    return 0, None
   data_head = data_old
   data_tail = []
   if fl:
@@ -832,9 +826,11 @@ def replace(filepath, patterns, replacement=None, count=0, flags=re.M, fl=False,
       continue
     data_head = re.sub(p_search, p_replace, data_head, count, flags)
 
+  err, msg = 0, None
   if fl:
     data_head = "\n".join([data_head] + data_tail)
   if data_head != data_old:
-    writeFile(filepath, data_head)
-    if verbose:
+    err, msg = writeFile(filepath, data_head)
+    if err == 0 and verbose:
       print("updated file '{}'".format(filepath))
+  return err, msg

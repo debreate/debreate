@@ -6,8 +6,20 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
-# string handling
+## String handling.
+#
+#  @package libdbr.strings
 
+import sys
+import traceback
+
+
+## Debugging helper function.
+def __printError(msg):
+  sys.stderr.write("ERROR: ({}) {}\n".format(__name__, msg))
+
+
+__from_handlers = {"str": str.__call__}
 
 ## Convert an object to string.
 #
@@ -23,11 +35,136 @@ def toString(obj, sep=""):
     for i in obj:
       if res:
         res += sep
-      res += str(i)
+      res += toString(i) # FIXME: do we need to pass 'sep' argument?
   else:
     res = str(obj)
   return res
 
+## Converts a string to another type.
+#
+#  @param st
+#    String to be converted.
+#  @param handler
+#    Handler determining return type.
+#  @return
+#    Type instance represented by `st`.
+def fromString(st, handler=str):
+  if handler == str:
+    # no need to convert to same type
+    return st
+  return __from_handlers[handler.__name__](st)
+
+## Converts a string value to boolean.
+#
+#  Note: if string is not a compatible boolean format, False is returned
+#
+#  @param st
+#    String to parse.
+def boolFromString(st):
+  if st.lower() == "true":
+    return True
+  try:
+    tmp = float(st)
+    return tmp != 0
+  except ValueError:
+    pass
+  return False
+__from_handlers["bool"] = boolFromString
+
+## Converts a string to integer.
+#
+#  @param st
+#    String to parse.
+#  @param verbose
+#    Print extra debugging information.
+#  @return
+#    Integer value.
+def intFromString(st, verbose=False):
+  # ~ i = None
+  # ~ try:
+    # ~ i = int(st)
+  # ~ except ValueError as e:
+    # ~ msg = "cannot convert '{}' to type 'int'\n{}".format(st, traceback.format_exc)
+    # ~ if verbose:
+      # ~ __printError(msg)
+    # ~ return e, msg
+  # ~ return i
+  res = floatFromString(st, verbose)
+  if type(res) == float:
+    return int(res)
+  return res
+__from_handlers["int"] = intFromString
+
+## Converts a string to float.
+#
+#  @param st
+#    String to parse.
+#  @param verbose
+#    Print extra debugging information.
+#  @return
+#    Ingeger value.
+def floatFromString(st, verbose=False):
+  f = None
+  try:
+    f = float(st)
+  except ValueError as e:
+    if verbose:
+      __printError("cannot convert '{}' to type 'float'\n{}".format(st, traceback.format_exc))
+    return None
+  return f
+__from_handlers["float"] = floatFromString
+
+## Converts a string to list.
+#
+#  @param st
+#    String to parse.
+#  @param sep
+#    Delimiting character to separate string.
+#  @param _type
+#    Data type that list should contain.
+#  @param verbose
+#    Print extra debugging information.
+#  @return
+#    List or tuple with error code & message.
+def listFromString(st, sep=";", _type=str, verbose=False):
+  l = []
+  for c in st.split(sep):
+    try:
+      res = __from_handlers[_type.__name__](c)
+      if res != None:
+        l.append(res)
+    except ValueError as e:
+      if verbose:
+        __printError("cannot convert '{}' to type '{}'\n{}".format(c, _type, traceback.format_exc))
+      return None
+  return l or None
+__from_handlers["list"] = listFromString
+__from_handlers["tuple"] = listFromString
+# FIXME: 'dict' should have a special handler
+__from_handlers["dict"] = listFromString
+
+## Converts a string to a list of integers.
+#
+#  @param st
+#    String to parse.
+#  @param sep
+#    Delimiting character to separate string.
+#  @param _type
+#    Data type that list should contain.
+#  @param verbose
+#    Print extra debugging information.
+#  @return
+#    List or tuple.
+def intListFromString(st, sep=";", verbose=False):
+  return listFromString(st, sep, int, verbose)
+__from_handlers["int_list"] = intListFromString
+
+# hack for backward compatibility with Debreate's old config management
+# ~ int_list = types.new_class("int_list")
+def dummyFunction(lst):
+  return tuple(lst)
+int_list = dummyFunction
+int_list.__name__ = "int_list"
 
 __sgrstyles = {
   "end": 0,
