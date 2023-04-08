@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 # ****************************************************
-# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# * Copyright © 2023 - Jordan Irwin (AntumDeluge)    *
 # ****************************************************
 # * This software is licensed under the MIT license. *
-# * See: docs/LICENSE.txt for details.               *
+# * See: LICENSE.txt for details.                    *
 # ****************************************************
 
 if __name__ != "__main__":
@@ -30,7 +30,7 @@ from libdbr         import tasks
 from libdbr         import userinfo
 from libdbr.logger  import LogLevel
 from libdbr.logger  import Logger
-from libdbr.strings import sstyle
+from libdbr.strings import sgr
 
 
 script_name = os.path.basename(sys.argv[0])
@@ -46,7 +46,7 @@ printUsage: types.FunctionType
 def parseCommandLine():
   task_help = []
   for t in task_list:
-    task_help.append(sstyle("<bold>{}</bold>: {}".format(t, task_list[t])))
+    task_help.append(sgr("<bold>{}</bold>: {}".format(t, task_list[t])))
   args_parser = argparse.ArgumentParser(
       formatter_class=argparse.RawTextHelpFormatter,
       description="Debreate installer script",
@@ -596,7 +596,7 @@ def initTasks():
       + " `--prefix` argument.")
   addTask("dist-source", taskDistSource, "Build a source distribution package.")
   addTask("dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
-  addTask("dist-deb", taskDistDeb, sstyle("Build a binary Debian distribution package." \
+  addTask("dist-deb", taskDistDeb, sgr("Build a binary Debian distribution package." \
       + " Requires <bold>debuild</bold> (<em>apt install devscripts</em>)."))
   addTask("clean", taskClean, "Remove all temporary build files.")
   addTask("clean-stage", taskCleanStage, "Remove temporary build files from" \

@@ -29,7 +29,7 @@ def toString(obj, sep=""):
   return res
 
 
-__sstyles = {
+__sgrstyles = {
   "end": 0,
   "bold": 1,
   "faint": 2,
@@ -70,11 +70,11 @@ __sstyles = {
 }
 
 for _idx in range(1, 10):
-  __sstyles["afont{}".format(_idx)] = _idx + 10
+  __sgrstyles["afont{}".format(_idx)] = _idx + 10
 for _idx in range(1, 9):
-  __sstyles["fg{}".format(_idx)] = _idx + 29
+  __sgrstyles["fg{}".format(_idx)] = _idx + 29
 for _idx in range(1, 9):
-  __sstyles["bg{}".format(_idx)] = _idx + 39
+  __sgrstyles["bg{}".format(_idx)] = _idx + 39
 
 ## Formats a stylized string for terminal output.
 #
@@ -82,7 +82,7 @@ for _idx in range(1, 9):
 #    String to be formatted.
 #  @return
 #    String formatted using ANSI escape codes (Select Graphic Rendition).
-def sstyle(st):
-  for key in __sstyles:
-    st = st.replace("<{}>".format(key), "\033[{}m".format(__sstyles[key]))
+def sgr(st):
+  for key in __sgrstyles:
+    st = st.replace("<{}>".format(key), "\033[{}m".format(__sgrstyles[key]))
   return st
