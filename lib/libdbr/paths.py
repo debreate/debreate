@@ -11,7 +11,10 @@ import sys
 
 from libdbr import fileinfo
 from libdbr import sysinfo
+from libdbr import userinfo
 
+
+__cache = {}
 
 ## Normalizes path strings.
 #
@@ -68,31 +71,27 @@ def getHomeDir():
   else:
     return os.getenv("HOME")
 
-
-# cache directory for fast retrieval
-__sys_root = None
-
 ## Retrieves root directory for current system.
 #
 #  @return
 #    System root node string.
 def getSystemRoot():
-  global __sys_root
-  if __sys_root:
-    return __sys_root
+  # check cache first
+  if "sys_root" in __cache:
+    return __cache["sys_root"]
 
   os_name = sysinfo.getOSName()
-  __sys_root = os.sep
+  __cache["sys_root"] = os.sep
   if os_name == "win32":
-    __sys_root = os.getenv("SystemDrive", "C:")
-    __sys_root += "\\"
+    __cache["sys_root"] = os.getenv("SystemDrive", "C:")
+    __cache["sys_root"] += "\\"
   elif os_name == "msys":
     msys_prefix = os.path.dirname(os.getenv("MSYSTEM_PREFIX", ""))
     if sysinfo.getCoreName() == "msys":
       msys_prefix = os.path.dirname(msys_prefix)
     if msys_prefix:
-      __sys_root = msys_prefix + os.sep
-  return __sys_root
+      __cache["sys_root"] = msys_prefix + os.sep
+  return __cache["sys_root"]
 
 ## Retrieves the relative root for a subsystem such as MSYS.
 def getSubSystemRoot():
@@ -100,6 +99,27 @@ def getSubSystemRoot():
   if sys_root and sysinfo.getOSName() == "msys":
     sys_root = sys_root[len(sys_root)-1:]
   return sys_root
+
+## Retrieves directory to be used for temporary storage.
+#
+#  @return
+#    System or user temporary directory.
+def getTempDir():
+  # check cache first
+  if "dir_temp" in __cache:
+    return __cache["dir_temp"]
+
+  tmp = None
+  if sysinfo.getOSName() == "win32":
+    if userinfo.isAdmin():
+      tmp = join(getSystemRoot(), "Windows", "Temp")
+    else:
+      tmp = os.getenv("TEMP")
+      if not tmp:
+        tmp = os.getenv("TMP")
+  # cache for faster subsequent calls
+  __cache["dir_temp"] = tmp or "/tmp"
+  return __cache["dir_temp"]
 
 ## Retrieves an executable from PATH environment variable.
 #
