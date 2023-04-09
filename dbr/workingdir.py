@@ -6,9 +6,8 @@
 
 import os
 
-from dbr.config    import ReadConfig
-from dbr.config    import WriteConfig
 from globals       import paths
+from libdbr        import config
 from libdbr.logger import Logger
 
 
@@ -29,10 +28,11 @@ def ChangeWorkingDirectory(target_dir):
 
   try:
     os.chdir(target_dir)
-    config_dir = ReadConfig("workingdir")
+    config_dir = config.getValue("workingdir")
 
     if config_dir != target_dir:
-      WriteConfig("workingdir", target_dir)
+      config.setValue("workingdir", target_dir)
+      config.save()
       success = True
 
   except OSError:

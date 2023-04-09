@@ -16,7 +16,6 @@ from dbr.templates      import sys_licenses_path
 from globals.dateinfo   import GetYear
 from globals.errorcodes import dbrerrno
 from globals.execute    import ExecuteCommand
-from globals.execute    import GetExecutable
 from globals.ident      import btnid
 from globals.ident      import pgid
 from globals.ident      import selid
@@ -25,6 +24,7 @@ from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
+from libdbr             import paths
 from libdbr.fileio      import readFile
 from libdbr.logger      import Logger
 from ui.button          import CreateButton
@@ -202,7 +202,7 @@ class Page(WizardPage):
 
   ## Opens directory containing currently selected license
   def OnOpenPath(self, event=None):
-    CMD_open = GetExecutable("xdg-open")
+    CMD_open = paths.getExecutable("xdg-open")
 
     if CMD_open:
       path = self.GetLicensePath()

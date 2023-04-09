@@ -15,7 +15,6 @@ from dbr.imagelist   import sm_DirectoryImageList as ImageList
 from dbr.language    import GT
 from globals.devices import GetMountedStorageDevices
 from globals.execute import ExecuteCommand
-from globals.execute import GetExecutable
 from globals.ident   import menuid
 from globals.mime    import GetFileMimeType
 from libdbr          import paths
@@ -224,7 +223,7 @@ class DirectoryTree(wx.TreeCtrl):
     # FIXME: Hack
     self.trash = False
 
-    if GetExecutable("gvfs-trash"):
+    if paths.getExecutable("gvfs-trash"):
       mitm_delete = wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT("Trash"))
       self.ctx_menu.InsertItem(2, mitm_delete)
       self.trash = True
@@ -1093,7 +1092,7 @@ class DirectoryTree(wx.TreeCtrl):
       arg_list = list(path_list)
       # Use 'force' argument to avoid crash on non-existing paths
       arg_list.insert(0, "-f")
-      ExecuteCommand(GetExecutable("gvfs-trash"), arg_list)
+      ExecuteCommand(paths.getExecutable("gvfs-trash"), arg_list)
 
       logger.debug("Paths deleted")
 

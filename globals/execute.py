@@ -15,8 +15,8 @@ from subprocess import STDOUT
 import libdbr.bin
 
 from dbr.language  import GT
+from libdbr        import paths
 from libdbr.logger import Logger
-from libdbr.paths  import getExecutable
 from wiz.helper    import GetMainWindow
 
 
@@ -33,7 +33,7 @@ __logger = Logger(__name__)
 def elevated(cmd, *args, pword, check=False):
   if not pword.strip():
     return 1, GT("Empty password")
-  sudo = getExecutable("sudo")
+  sudo = paths.getExecutable("sudo")
   if not sudo:
     return errno.ENOENT, GT("Super user command (sudo) not available")
   main_window = GetMainWindow()
@@ -52,7 +52,7 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=""):
   if elevate and pword.strip(" \t\n") == "":
     return (None, GT("Empty password"))
 
-  CMD_sudo = GetExecutable("sudo")
+  CMD_sudo = paths.getExecutable("sudo")
 
   if not CMD_sudo:
     return (None, GT("Super user command (sudo) not available"))
@@ -113,33 +113,11 @@ def GetCommandOutput(cmd, args=[]):
   code, output = libdbr.bin.execute(cmd, args)
   return output
 
-## Retrieves executable it exists on system
-def GetExecutable(cmd):
-  __logger.deprecated(__name__, GetExecutable.__name__, "libdbr.paths.getExecutable")
-
-  alternatives = {
-    "fakeroot": "fakeroot-sysv",
-    }
-
-  found_command = getExecutable(cmd)
-
-  if not found_command and cmd in alternatives:
-    if isinstance(alternatives[cmd], str):
-      found_command = alternatives[cmd]
-
-    else:
-      for ALT in alternatives[cmd]:
-        found_command = getExecutable(ALT)
-        if found_command:
-          break
-
-  return found_command
-
 
 def GetSystemInstaller():
-  system_installer = GetExecutable("gdebi-gtk")
+  system_installer = paths.getExecutable("gdebi-gtk")
 
   if not system_installer:
-    system_installer = GetExecutable("gdebi-kde")
+    system_installer = paths.getExecutable("gdebi-kde")
 
   return system_installer

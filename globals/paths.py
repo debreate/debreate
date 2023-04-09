@@ -17,15 +17,15 @@ from libdbr.logger   import Logger
 
 logger = Logger(__name__)
 
-def getAppDir():
-  logger.deprecated(__name__, getAppDir.__name__, "libdbr.paths.getAppDir")
+# ~ def getAppDir():
+  # ~ logger.deprecated(__name__, getAppDir.__name__, "libdbr.paths.getAppDir")
 
-  ## Directory where app is installed
-  #  HACK: test
-  #  HACK: Call os.path.dirname twice to get root directory.
-  #    This is necessary because this variable is
-  #    declared from a sub-directory.
-  return GS(os.path.dirname(os.path.dirname(__file__)))
+  # ~ ## Directory where app is installed
+  # ~ #  HACK: test
+  # ~ #  HACK: Call os.path.dirname twice to get root directory.
+  # ~ #    This is necessary because this variable is
+  # ~ #    declared from a sub-directory.
+  # ~ return GS(os.path.dirname(os.path.dirname(__file__)))
 
 def getHomeDir():
   logger.deprecated(__name__, getHomeDir.__name__, "libdbr.paths.getHomeDir")
@@ -47,4 +47,4 @@ def getLogsDir():
   return os.path.join(getLocalDir(), "logs")
 
 def getBitmapsDir():
-  return os.path.join(getAppDir(), "bitmaps")
+  return os.path.join(libdbr.paths.getAppDir(), "bitmaps")

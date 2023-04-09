@@ -10,8 +10,9 @@ import os, shutil, subprocess, urllib, webbrowser, wx.html
 from urllib.error import HTTPError
 from urllib.error import URLError
 
+import globals.paths
+
 from dbr.config           import GetDefaultConfigValue
-from dbr.config           import WriteConfig
 from dbr.event            import EVT_CHANGE_PAGE
 from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import GetCurrentVersion
@@ -20,7 +21,6 @@ from dbr.help             import HelpDialog
 from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
-from globals              import paths
 from globals.application  import APP_homepage
 from globals.application  import APP_project_gh
 from globals.application  import APP_project_gl
@@ -30,7 +30,6 @@ from globals.application  import AUTHOR_name
 from globals.application  import VERSION_string
 from globals.application  import VERSION_tuple
 from globals.bitmaps      import LOGO
-from globals.execute      import GetExecutable
 from globals.ident        import menuid
 from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl
@@ -38,6 +37,8 @@ from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
 from globals.strings      import GS
 from globals.threads      import Thread
+from libdbr               import config
+from libdbr               import paths
 from libdbr.fileio        import readFile
 from libdbr.fileio        import writeFile
 from libdbr.logger        import Logger
@@ -70,7 +71,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   #  \param size
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
   def __init__(self, pos, size):
-    wx.Frame.__init__(self, None, wx.ID_ANY, default_title, pos, size)
+    wx.Frame.__init__(self, None, wx.ID_ANY, default_title, wx.Point(pos[0], pos[1]), wx.Size(size[0], size[1]))
     ModuleAccessCtrl.__init__(self, __name__)
 
     self.timer = DebreateTimer(self)
@@ -316,7 +317,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       # FIXME: files should be re-cached when Debreate upgraded to new version
       # TODO: trim unneeded text
       cached = False
-      manual_cache = os.path.join(paths.getCacheDir(), "manual")
+      manual_cache = os.path.join(globals.paths.getCacheDir(), "manual")
       manual_index = os.path.join(manual_cache, "index.html")
       if not os.path.isdir(manual_cache):
         os.makedirs(manual_cache)
@@ -355,7 +356,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   def OnLogDirOpen(self, event=None): #@UnusedVariable
     logger.debug(GT("Opening log directory ..."))
 
-    subprocess.check_output([GetExecutable("xdg-open"), "{}/logs".format(paths.getLocalDir())], stderr=subprocess.STDOUT)
+    subprocess.check_output([paths.getExecutable("xdg-open"), "{}/logs".format(globals.paths.getLocalDir())], stderr=subprocess.STDOUT)
 
 
   ## Changes wizard page from menu
@@ -482,16 +483,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   ## Stores configuration settings & closes app.
   def saveConfigAndShutdown(self):
     maximized = self.IsMaximized()
-    WriteConfig("maximize", maximized)
+    config.setValue("maximize", maximized)
     if maximized:
-      WriteConfig("position", GetDefaultConfigValue("position"))
-      WriteConfig("size", GetDefaultConfigValue("size"))
-      WriteConfig("center", True)
+      config.setValue("position", GetDefaultConfigValue("position"))
+      config.setValue("size", GetDefaultConfigValue("size"))
+      config.setValue("center", True)
     else:
-      WriteConfig("position", self.GetPosition().Get())
-      WriteConfig("size", self.GetSize().Get())
-      WriteConfig("center", False)
-    WriteConfig("workingdir", os.getcwd())
+      config.setValue("position", self.GetPosition().Get())
+      config.setValue("size", self.GetSize().Get())
+      config.setValue("center", False)
+    config.setValue("workingdir", os.getcwd())
+    config.save()
     self.Destroy()
 
   ## TODO: Doxygen
@@ -504,7 +506,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     enabled = self.opt_tooltips.IsChecked()
     wx.ToolTip.Enable(enabled)
 
-    WriteConfig("tooltips", enabled)
+    config.setValue("tooltips", enabled)
+    config.save()
 
 
   ## Opens a dialog for creating/updating list of distribution names cache file
@@ -524,7 +527,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## Deletes cache directory located at ~/.local/share/debreate/cache
   def OnClearCache(self, event=None):
-    dir_cache = paths.getCacheDir()
+    dir_cache = globals.paths.getCacheDir()
     if os.path.isdir(dir_cache):
       shutil.rmtree(dir_cache)
 

@@ -13,13 +13,11 @@ from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.errorcodes import dbrerrno
 from globals.execute    import ExecuteCommand
-from globals.execute    import GetExecutable
 from globals.execute    import GetSystemInstaller
 from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.paths      import getAppDir
 from globals.strings    import GS
 from globals.strings    import RemoveEmptyLines
 from globals.strings    import TextIsEmpty
@@ -27,6 +25,7 @@ from globals.system     import PY_VER_MAJ
 from globals.tooltips   import SetPageToolTips
 from input.toggle       import CheckBox
 from input.toggle       import CheckBoxESS
+from libdbr             import paths
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
@@ -343,7 +342,7 @@ class Page(WizardPage):
                 logger.debug("Unstripped file: {}".format(F))
 
                 # FIXME: Strip command should be set as class member?
-                ExecuteCommand(GetExecutable("strip"), F)
+                ExecuteCommand(paths.getExecutable("strip"), F)
 
         progress += 1
 
@@ -376,7 +375,7 @@ class Page(WizardPage):
 
         writeFile("{}/changelog".format(changelog_target), task_list["changelog"][1])
 
-        CMD_gzip = GetExecutable("gzip")
+        CMD_gzip = paths.getExecutable("gzip")
 
         if CMD_gzip:
           UpdateProgress(progress, GT("Compressing changelog"))
@@ -529,7 +528,7 @@ class Page(WizardPage):
             os.chmod(F, 0o0664)
 
       # FIXME: Should check for working fakeroot & dpkg-deb executables
-      res = subprocess.run([GetExecutable("fakeroot"), GetExecutable("dpkg-deb"), "-b", c_tree, deb_package],
+      res = subprocess.run([paths.getExecutable("fakeroot"), paths.getExecutable("dpkg-deb"), "-b", c_tree, deb_package],
           stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
       build_status = (res.returncode, res.stdout.decode("utf-8"))
 
@@ -561,7 +560,7 @@ class Page(WizardPage):
         UpdateProgress(progress, GT("Checking package for errors"))
 
         # FIXME: Should be set as class member?
-        CMD_lintian = GetExecutable("lintian")
+        CMD_lintian = paths.getExecutable("lintian")
         errors = subprocess.run([CMD_lintian, deb], capture_output=True).stdout.decode("utf-8")
 
         if errors != wx.EmptyString:
@@ -892,7 +891,7 @@ class Page(WizardPage):
   def OnSetLintOverrides(self, event=None):
     logger.debug(GT("Setting Lintian overrides..."))
 
-    lintian_tags_file = "{}/data/lintian/tags".format(getAppDir())
+    lintian_tags_file = "{}/data/lintian/tags".format(paths.getAppDir())
 
     if not os.path.isfile(lintian_tags_file):
       logger.error("Lintian tags file is missing: {}".format(lintian_tags_file))
@@ -975,7 +974,7 @@ class Page(WizardPage):
     self.Reset()
     build_data = data.split("\n")
 
-    if GetExecutable("md5sum"):
+    if paths.getExecutable("md5sum"):
       try:
         self.chk_md5.SetValue(int(build_data[0]))
 
@@ -988,14 +987,14 @@ class Page(WizardPage):
     except IndexError:
       pass
 
-    if GetExecutable("lintian"):
+    if paths.getExecutable("lintian"):
       try:
         self.chk_lint.SetValue(int(build_data[2]))
 
       except IndexError:
         pass
 
-    self.chk_strip.SetValue(GetExecutable("strip") and "strip" in build_data)
+    self.chk_strip.SetValue(paths.getExecutable("strip") and "strip" in build_data)
 
 
   ## TODO: Doxygen

@@ -8,13 +8,13 @@ import wx
 
 from dbr.config      import ConfCode
 from dbr.config      import GetDefaultConfigValue
-from dbr.config      import ReadConfig
 from dbr.language    import GT
 from globals.bitmaps import ICON_CLOCK
 from globals.bitmaps import ICON_GLOBE
 from globals.bitmaps import ICON_LOGO
-from globals.execute import GetExecutable
 from globals.ident   import menuid, refid
+from libdbr          import config
+from libdbr          import paths
 from libdbr.logger   import Logger
 from startup.tests   import GetTestList
 
@@ -142,7 +142,7 @@ def createMenuBar(parent):
     parent.menu_opt.Append(parent.opt_tooltips)
 
   if parent.menu_opt.FindItemById(menuid.TOOLTIPS):
-    show_tooltips = ReadConfig("tooltips")
+    show_tooltips = config.getBool("tooltips")
     if show_tooltips != ConfCode.KEY_NO_EXIST:
       parent.opt_tooltips.Check(show_tooltips)
 
@@ -153,7 +153,7 @@ def createMenuBar(parent):
 
   # *** Option Menu: open logs directory *** #
 
-  if GetExecutable("xdg-open"):
+  if paths.getExecutable("xdg-open"):
     mitm_logs_open = wx.MenuItem(parent.menu_opt, menuid.OPENLOGS, GT("Open logs directory"))
     parent.menu_opt.Append(mitm_logs_open)
 

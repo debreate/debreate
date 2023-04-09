@@ -9,12 +9,12 @@ import os, wx
 from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
 from dbr.language        import GT
-from globals             import paths
+# ~ from globals             import paths
 from globals.application import APP_name
 from globals.application import AUTHOR_email
 from globals.application import AUTHOR_name
 from globals.constants   import INSTALLED
-from globals.constants   import PREFIX
+# ~ from globals.constants   import PREFIX
 from globals.dateinfo    import GetYear
 from globals.ident       import btnid
 from globals.mime        import GetFileMimeType
@@ -22,6 +22,7 @@ from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
 from input.list          import ListCtrl
 from input.text          import TextAreaPanel
+from libdbr              import paths
 from libdbr.fileio       import readFile
 from libdbr.logger       import Logger
 from ui.button           import CreateButton
@@ -29,6 +30,7 @@ from ui.dialog           import ShowErrorDialog
 from ui.hyperlink        import Hyperlink
 from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
+from util                import appinfo
 
 
 logger = Logger(__name__)
@@ -132,7 +134,7 @@ class AboutDialog(wx.Dialog):
         label=GT("App location: {}").format(paths.getAppDir()))
 
     if INSTALLED:
-      install_prefix.SetLabel(GT("Installation prefix: {}").format(PREFIX))
+      install_prefix.SetLabel(GT("Installation prefix: {}").format(appinfo.getInstallPrefix()))
 
     self.py_info.SetFont(sys_info_font)
     self.wx_info.SetFont(sys_info_font)
@@ -380,7 +382,7 @@ class AboutDialog(wx.Dialog):
     #   install script or Makefile should change this
     #   to reflect installed path.
     if INSTALLED:
-      CHANGELOG = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/changelog.txt"))
+      CHANGELOG = os.path.normpath(os.path.join(appinfo.getInstallPrefix(), "share/doc/debreate/changelog.txt"))
     else:
       CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog.txt"))
 
@@ -419,7 +421,7 @@ class AboutDialog(wx.Dialog):
     #   install script or Makefile should change this
     #   to reflect installed path.
     if INSTALLED:
-      license_path = os.path.normpath(os.path.join(PREFIX, "share/doc/debreate/LICENSE.txt"))
+      license_path = os.path.normpath(os.path.join(appinfo.getInstallPrefix(), "share/doc/debreate/LICENSE.txt"))
     else:
       license_path = os.path.normpath(os.path.join(paths.getAppDir(), "LICENSE.txt"))
 

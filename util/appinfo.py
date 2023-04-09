@@ -12,6 +12,8 @@ from libdbr import fileio
 from libdbr import paths
 
 
+__cache = {}
+
 ## Checks if app is running portably.
 #
 #  @return
@@ -25,6 +27,9 @@ def isPortable():
 #  @return
 #    Absolute path of installation directory prefix.
 def getInstallPrefix():
+  if "install_prefix" in __cache:
+    return __cache["install_prefix"]
+
   if isPortable():
     return paths.getAppDir()
   prefix = ""
@@ -39,7 +44,8 @@ def getInstallPrefix():
         if key== "prefix":
           prefix = value
           break
-  return prefix
+  __cache["install_prefix"] = prefix
+  return __cache["install_prefix"]
 
 ## Retrieves location where locale files are stored.
 #

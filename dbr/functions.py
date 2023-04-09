@@ -14,11 +14,11 @@ from dbr.language        import GT
 from globals.application import APP_project_gh
 from globals.application import VERSION_dev
 from globals.errorcodes  import dbrerrno
-from globals.execute     import GetExecutable
 from globals.strings     import GS
 from globals.strings     import IsString
 from globals.strings     import StringIsNumeric
 from globals.system      import PY_VER_STRING
+from libdbr              import paths
 
 
 ## Get the current version of the application
@@ -247,7 +247,7 @@ def IsIntTuple(value):
 #
 #  FIXME: Handle missing 'file' command
 def FileUnstripped(file_name):
-  CMD_file = GetExecutable("file")
+  CMD_file = paths.getExecutable("file")
 
   if CMD_file:
     output = subprocess.run([CMD_file, file_name], capture_output=True).stdout.decode("utf-8")
@@ -286,8 +286,8 @@ def UsingDevelopmentVersion():
 
 
 def BuildDebPackage(stage_dir, target_file):
-  packager = GetExecutable("dpkg-deb")
-  fakeroot = GetExecutable("fakeroot")
+  packager = paths.getExecutable("dpkg-deb")
+  fakeroot = paths.getExecutable("fakeroot")
 
   if not fakeroot or not packager:
     return (dbrerrno.ENOENT, GT("Cannot run \"fakeroot dpkg\""))

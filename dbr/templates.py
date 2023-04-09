@@ -8,8 +8,9 @@ import os
 
 from dbr.language    import GT
 from globals.fileio  import GetFiles
-from globals.paths   import getAppDir, getLocalDir
+from globals.paths   import getLocalDir
 from globals.strings import GS
+from libdbr          import paths
 from libdbr.logger   import Logger
 
 
@@ -24,7 +25,7 @@ sys_licenses_path = "/usr/share/common-licenses"
 #  Path to application templates stored in the system Debreate directory.
 #  <app_dir>/templates
 #  FIXME: Should be stored elsewhere? /etc? /lib?
-app_templates_path = os.path.join(getAppDir(), "templates")
+app_templates_path = os.path.join(paths.getAppDir(), "templates")
 
 ## Application licenses
 #

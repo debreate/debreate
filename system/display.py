@@ -7,8 +7,8 @@
 import wx
 
 from globals.execute import GetCommandOutput
-from globals.execute import GetExecutable
 from globals.strings import StringIsNumeric
+from libdbr          import paths
 from libdbr.logger   import Logger
 
 
@@ -49,7 +49,7 @@ def GetPrimaryDisplayRect():
 
   # Fall back to using xrandr
   if not rect:
-    CMD_xrand = GetExecutable("xrandr")
+    CMD_xrand = paths.getExecutable("xrandr")
 
     if not CMD_xrand:
       return None

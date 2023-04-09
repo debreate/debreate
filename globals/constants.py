@@ -10,9 +10,10 @@
 import os, wx
 
 from dbr.language  import GT
-from globals       import paths
+from libdbr        import paths
 from libdbr.fileio import readFile
 from libdbr.logger import Logger
+from util          import appinfo
 
 
 __logger = Logger(__name__)
@@ -24,30 +25,30 @@ INSTALLED = False
 if os.path.isfile("{}/INSTALLED".format(paths.getAppDir())):
   INSTALLED = True
 
-def GetPrefix():
-  __logger.deprecated(__name__, GetPrefix.__name__, "util.appinfo.getInstallPrefix")
+# ~ def GetPrefix():
+  # ~ __logger.deprecated(__name__, GetPrefix.__name__, "util.appinfo.getInstallPrefix")
 
-  global INSTALLED
+  # ~ global INSTALLED
 
-  dir_app = paths.getAppDir()
-  if not INSTALLED:
-    return dir_app
+  # ~ dir_app = paths.getAppDir()
+  # ~ if not INSTALLED:
+    # ~ return dir_app
 
-  lines = readFile("{}/INSTALLED".format(dir_app)).split("\n")
+  # ~ lines = readFile("{}/INSTALLED".format(dir_app)).split("\n")
 
-  for L in lines:
-    if "=" in L:
-      key = L.split("=")
-      value = key[1]
-      key = key[0]
+  # ~ for L in lines:
+    # ~ if "=" in L:
+      # ~ key = L.split("=")
+      # ~ value = key[1]
+      # ~ key = key[0]
 
-      if key.lower() == "prefix":
-        return value
+      # ~ if key.lower() == "prefix":
+        # ~ return value
 
-  return dir_app
+  # ~ return dir_app
 
 
-PREFIX = GetPrefix()
+# ~ PREFIX = appinfo.getInstallPrefix()
 
 # *** Default *** #
 DEFAULT_SIZE = (800, 650)

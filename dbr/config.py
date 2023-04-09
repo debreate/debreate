@@ -14,7 +14,9 @@ from dbr.functions   import IsIntTuple
 from dbr.language    import GT
 from globals.strings import GS
 from globals.strings import TextIsEmpty
+from libdbr          import config
 from libdbr          import paths
+from libdbr          import strings
 from libdbr.fileio   import readFile
 from libdbr.fileio   import writeFile
 from libdbr.logger   import Logger
@@ -78,139 +80,6 @@ def SetDefaultConfigKey(key, value):
   default_config_values[key] = (func, value,)
 
 
-## Opens configuration & searches for key
-#
-#  \param k_name
-#  	\b \e str : Key to search for
-#  \return
-#  	Value of key if found, otherwise ConfCode
-def ReadConfig(k_name, conf=default_config):
-  logger.deprecated(__name__, ReadConfig.__name__, "libdbr.config.getValue")
-
-  logger.debug(GT("Reading configuration file: {}".format(conf)), newline=True)
-
-  if not os.path.isfile(conf):
-    #logger.warn("Configuration file does not exist: {}".format(conf))
-    return ConfCode.FILE_NOT_FOUND
-
-  # Use the string '__test__' for test when app is initialized
-  if k_name == "__test__":
-    return ConfCode.SUCCESS
-
-  # Only read pre-defined keys
-  if k_name not in default_config_values:
-    #logger.warn("Undefined key, not attempting to retrieve value: {}".format(k_name))
-    return ConfCode.KEY_NOT_DEFINED
-
-  conf_lines = readFile(conf)
-  if conf_lines:
-    conf_lines = conf_lines.split("\n")
-
-    for L in conf_lines:
-      if "=" in L:
-        key = L.split("=")
-        value = key[1]
-        key = key[0]
-
-        if k_name == key:
-          value = default_config_values[key][0](value)
-
-          #logger.debug("Retrieved key-value: {}={}, value type: {}".format(key, value, type(value)))
-          return value
-
-    if k_name in default_config_values:
-      #logger.debug("Configuration does not contain key, retrieving default value: {}".format(k_name))
-
-      return GetDefaultConfigValue(k_name)
-
-  return ConfCode.KEY_NO_EXIST
-
-
-## Writes a key=value combination to configuration
-#
-#  \param k_name
-#  	\b \e str : Key to write
-#  \param k_value
-#  	\b \e str|tuple|int|bool : Value of key
-#  \return
-#  	\b \e int : ConfCode
-def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
-  logger.deprecated(__name__, WriteConfig.__name__, "libdbr.config.setValue & libdbr.config.save")
-
-  conf_dir = os.path.dirname(conf)
-
-  if not os.path.isdir(conf_dir):
-    if os.path.exists(conf_dir):
-      print("{}: {}: {}".format(GT("Error"), GT("Cannot create config directory, file exists"), conf_dir))
-      return ConfCode.ERR_WRITE
-
-    os.makedirs(conf_dir)
-
-  # Only write pre-defined keys
-  if k_name not in default_config_values:
-    print("{}: {}: {}".format(GT("Error"), GT("Configuration key not found"), k_name))
-    return ConfCode.KEY_NOT_DEFINED
-
-  # Make sure we are writing the correct type
-  k_value = default_config_values[k_name][0](k_value)
-
-  if k_value == None:
-    print("{}: {}: {}".format(GT("Error"), GT("Wrong value type for configuration key"), k_name))
-    return ConfCode.WRONG_TYPE
-
-  # tuple is the only type we need to format
-  if isinstance(k_value, tuple):
-    k_value = "{},{}".format(GS(k_value[0]), GS(k_value[1]))
-
-  else:
-    k_value = GS(k_value)
-
-  conf_text = wx.EmptyString
-
-  # Save current config to buffer
-  if os.path.exists(conf):
-    if not os.path.isfile(conf):
-      print("{}: {}: {}".format(GT("Error"), GT("Cannot open config for writing, directory exists"), conf))
-      return ConfCode.ERR_WRITE
-
-    conf_text = ""
-    if os.path.isfile(conf):
-      conf_text = readFile(conf)
-
-  else:
-    conf_text = "[CONFIG-{}.{}]".format(GS(config_version[0]), GS(config_version[1]))
-
-  conf_lines = conf_text.split("\n")
-
-  key_exists = False
-  for L in conf_lines:
-    l_index = conf_lines.index(L)
-    if "=" in L:
-      key = L.split("=")[0]
-
-      if k_name == key:
-        key_exists = True
-
-        conf_lines[l_index] = "{}={}".format(k_name, k_value)
-
-  if not key_exists:
-    conf_lines.append("{}={}".format(k_name, k_value))
-
-  conf_text = "\n".join(conf_lines)
-
-  if TextIsEmpty(conf_text):
-    print("{}: {}".format(GT("Warning"), GT("Not writing empty text to configuration")))
-    return ConfCode.ERR_WRITE
-
-  # Actual writing to configuration
-  writeFile(conf, conf_text)
-
-  if os.path.isfile(conf):
-    return ConfCode.SUCCESS
-
-  return ConfCode.ERR_WRITE
-
-
 ## Function used to create the initial configuration file
 #
 #  \param conf
@@ -218,14 +87,10 @@ def WriteConfig(k_name, k_value, conf=default_config, sectLabel=None):
 #  \return
 #  	\b \e ConfCode
 def InitializeConfig(conf=default_config):
-  logger.deprecated(__name__, InitializeConfig.__name__, "libdbr.config.setFile & libdbr.config.load")
-
+  config.setFile(conf)
   for V in default_config_values:
-    exit_code = WriteConfig(V, default_config_values[V][1], conf)
-
-    if exit_code != ConfCode.SUCCESS:
-      return exit_code
-
+    config.setValue(V, default_config_values[V][1])
+  config.save()
   return ConfCode.SUCCESS
 
 
@@ -236,8 +101,6 @@ def InitializeConfig(conf=default_config):
 #  \return
 #  	Default value for the key or ConfCode.KEY_NO_EXIST
 def GetDefaultConfigValue(key):
-  logger.deprecated(__name__, GetDefaultConfigValue.__name__, "libdbr.config.getValue")
-
   if key in default_config:
     return default_config_values[key][1]
 
@@ -274,11 +137,20 @@ def _check_config_values(keys):
 def GetAllConfigKeys():
   logger.deprecated(__name__, GetAllConfigKeys.__name__, "libdbr.config.getKeys")
 
+  if not config.getFile():
+    config.setFile(default_config)
+
   keys = {}
 
   # Read key/values from configuration file
   for KEY in default_config_values:
-    keys[KEY] = ReadConfig(KEY)
+    handler = type(default_config_values[KEY][1])
+    # hack
+    if handler in (list, tuple):
+      handler = strings.int_list
+    keys[KEY] = strings.fromString(config.getValue(KEY), handler=handler)
+    if type(keys[KEY]) != handler:
+      keys[KEY] = handler(keys[KEY])
 
   if not _check_config_values(keys):
     return None

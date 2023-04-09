@@ -9,9 +9,8 @@
 import wx
 
 from dbr.config    import ConfCode
-from dbr.config    import ReadConfig
 from dbr.config    import SetDefaultConfigKey
-from dbr.config    import WriteConfig
+from libdbr        import config
 from libdbr.logger import Logger
 
 
@@ -33,7 +32,7 @@ class ConfigField:
     SetDefaultConfigKey(self.ConfigKey, self.GetDefaultValue())
 
     # Set state using config file if found
-    state = ReadConfig(self.ConfigKey)
+    state = config.getBool(self.ConfigKey, "False")
 
     ret_codes = (
       ConfCode.FILE_NOT_FOUND,
@@ -96,7 +95,8 @@ class ConfigField:
     if event:
       event.Skip()
 
-    WriteConfig(self.ConfigKey, self.GetConfigValue(), sectLabel=self.ConfigSection)
+    config.setValue(self.ConfigKey, self.GetConfigValue())
+    config.save()
 
 
   ## TODO: Doxygen
