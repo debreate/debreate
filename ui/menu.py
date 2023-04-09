@@ -6,6 +6,8 @@
 
 import wx
 
+import dbr.config
+
 from dbr.config      import ConfCode
 from dbr.config      import GetDefaultConfigValue
 from dbr.language    import GT
@@ -142,7 +144,7 @@ def createMenuBar(parent):
     parent.menu_opt.Append(parent.opt_tooltips)
 
   if parent.menu_opt.FindItemById(menuid.TOOLTIPS):
-    show_tooltips = config.getBool("tooltips")
+    show_tooltips = config.getBool("tooltips", dbr.config.getDefault("tooltips"))
     if show_tooltips != ConfCode.KEY_NO_EXIST:
       parent.opt_tooltips.Check(show_tooltips)
 

@@ -485,12 +485,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     maximized = self.IsMaximized()
     config.setValue("maximize", maximized)
     if maximized:
-      config.setValue("position", GetDefaultConfigValue("position"))
-      config.setValue("size", GetDefaultConfigValue("size"))
+      config.setValue("position", GetDefaultConfigValue("position"), ",")
+      config.setValue("size", GetDefaultConfigValue("size"), ",")
       config.setValue("center", True)
     else:
-      config.setValue("position", self.GetPosition().Get())
-      config.setValue("size", self.GetSize().Get())
+      config.setValue("position", self.GetPosition().Get(), ",")
+      config.setValue("size", self.GetSize().Get(), ",")
       config.setValue("center", False)
     config.setValue("workingdir", os.getcwd())
     config.save()

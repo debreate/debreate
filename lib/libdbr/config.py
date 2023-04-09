@@ -249,6 +249,26 @@ def getInt(key, default=None, filepath=None):
 def getFloat(key, default=None, filepath=None):
   return strings.floatFromString(getValue(key, default, filepath))
 
+## Retrieves a list value from config.
+#
+#  @param key
+#    Key identifier.
+#  @param default
+#    Default value if key is not present in config.
+#  @param sep
+#    List separation delimiter.
+#  @param handler
+#    Type handler for list contents.
+#  @param filepath
+#    Parse filepath instead of path set with setFile.
+#  @return
+#    List.
+def getList(key, default=None, sep=";", handler=str, filepath=None):
+  res = getValue(key, default)
+  if res:
+    res = strings.listFromString(res, sep, handler)
+  return res
+
 ## Retrievies configuration keys.
 #
 #  @return
@@ -264,9 +284,11 @@ def getKeys():
 #    Key identifier.
 #  @param value
 #    Value to be set.
-def setValue(key, value):
+#  @param sep
+#    List delimiter.
+def setValue(key, value, sep=";"):
   if type(value) != str:
-    value = strings.toString(value, ";")
+    value = strings.toString(value, sep)
   __config_cache[key.strip()] = value.strip()
 
 ## Writes configuration data to file.

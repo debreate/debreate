@@ -162,7 +162,7 @@ __from_handlers["int_list"] = intListFromString
 # hack for backward compatibility with Debreate's old config management
 # ~ int_list = types.new_class("int_list")
 def dummyFunction(lst):
-  return tuple(lst)
+  return tuple(lst) if lst else ()
 int_list = dummyFunction
 int_list.__name__ = "int_list"
 

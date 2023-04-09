@@ -52,21 +52,47 @@ default_config_dir = "{}/.config/debreate".format(paths.getHomeDir())
 default_config = "{}/config".format(default_config_dir)
 
 # name = (function, default value)
-default_config_values = {
-  "center": (GetBoolean, True),
-  "maximize": (GetBoolean, False),
-  "position": (GetIntTuple, (0, 0)),
-  "size": (GetIntTuple, (800, 640)),
-  "workingdir": (GS, paths.getHomeDir()),
-  "tooltips": (GetBoolean, True),
+# ~ default_config_values = {
+  # ~ "center": (GetBoolean, True),
+  # ~ "maximize": (GetBoolean, False),
+  # ~ "position": (GetIntTuple, (0, 0)),
+  # ~ "size": (GetIntTuple, (800, 640)),
+  # ~ "workingdir": (GS, paths.getHomeDir()),
+  # ~ "tooltips": (GetBoolean, True),
+# ~ }
+
+__defaults = {
+  "center": "True",
+  "maximize": "False",
+  "position": "0,0",
+  "size": "800,640",
+  "workingdir": paths.getHomeDir(),
+  "tooltips": "True"
 }
+
+def getConfiguration():
+  if not config.getFile():
+    config.setFile(default_config)
+  return {
+    "center": config.getBool("center", __defaults["center"]),
+    "maximize": config.getBool("maximize", __defaults["maximize"]),
+    "position": tuple(config.getList("position", __defaults["position"], ",", int)),
+    "size": tuple(config.getList("size", __defaults["size"], ",", int)),
+    "workingdir": config.getValue("workingdir", __defaults["workingdir"]),
+    "tooltips": config.getBool("tooltips", __defaults["tooltips"])
+  }
+
+def getDefault(key):
+  if key not in __defaults:
+    return None
+  return __defaults[key]
 
 
 ## TODO: Doxygen
 def SetDefaultConfigKey(key, value):
   logger.deprecated(__name__, SetDefaultConfigKey.__name__, "libdbr.config")
 
-  global default_config_values
+  # ~ global default_config_values
 
   # Default type is string
   func = GS
@@ -77,7 +103,8 @@ def SetDefaultConfigKey(key, value):
   elif IsIntTuple(value):
     func = GetIntTuple
 
-  default_config_values[key] = (func, value,)
+  # ~ default_config_values[key] = (func, value,)
+  __defaults[key] = strings.toString(value)
 
 
 ## Function used to create the initial configuration file
@@ -130,29 +157,34 @@ def _check_config_values(keys):
   return True
 
 
-## Reads in all values found in configuration file
-#
-#  \return
-#  Configuration keys found in config file or None if error occurred
-def GetAllConfigKeys():
-  logger.deprecated(__name__, GetAllConfigKeys.__name__, "libdbr.config.getKeys")
+# ~ ## Reads in all values found in configuration file
+# ~ #
+# ~ #  \return
+# ~ #  Configuration keys found in config file or None if error occurred
+# ~ def GetAllConfigKeys():
+  # ~ logger.deprecated(__name__, GetAllConfigKeys.__name__, "libdbr.config.getKeys")
 
-  if not config.getFile():
-    config.setFile(default_config)
+  # ~ if not config.getFile():
+    # ~ config.setFile(default_config)
 
-  keys = {}
+  # ~ keys = {}
 
-  # Read key/values from configuration file
-  for KEY in default_config_values:
-    handler = type(default_config_values[KEY][1])
-    # hack
-    if handler in (list, tuple):
-      handler = strings.int_list
-    keys[KEY] = strings.fromString(config.getValue(KEY), handler=handler)
-    if type(keys[KEY]) != handler:
-      keys[KEY] = handler(keys[KEY])
+  # ~ # what a mess this is!
 
-  if not _check_config_values(keys):
-    return None
+  # ~ # Read key/values from configuration file
+  # ~ for KEY in default_config_values:
+    # ~ handler = type(default_config_values[KEY][1])
+    # ~ # hack
+    # ~ if handler in (list, tuple):
+      # ~ handler = strings.int_list
+    # ~ default_value = None
+    # ~ if KEY in default_config_values:
+      # ~ default_value = strings.toString(default_config_values[KEY][1], sep=",")
+    # ~ keys[KEY] = strings.fromString(config.getValue(KEY, default_value), handler=handler)
+    # ~ if type(keys[KEY]) != handler:
+      # ~ keys[KEY] = handler(keys[KEY])
 
-  return keys
+  # ~ if not _check_config_values(keys):
+    # ~ return None
+
+  # ~ return keys

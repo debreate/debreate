@@ -152,8 +152,10 @@ from dbr.app import DebreateApp
 # Initialize app before importing local modules
 debreate_app = DebreateApp()
 
+import dbr.config
+
 from dbr.config          import ConfCode
-from dbr.config          import GetAllConfigKeys
+# ~ from dbr.config          import GetAllConfigKeys
 from dbr.config          import GetDefaultConfigValue
 from dbr.language        import GetLocaleDir
 from dbr.language        import GT
@@ -201,7 +203,8 @@ logger.info("Debreate version: {}".format(VERSION_string))
 logger.info("Logging level: {}".format(logger.getLevel()))
 
 # Check for & parse existing configuration
-conf_values = GetAllConfigKeys()
+# ~ conf_values = GetAllConfigKeys()
+conf_values = dbr.config.getConfiguration()
 
 if not conf_values:
   logger.debug("Launching First Run dialog ...")
@@ -211,7 +214,8 @@ if not conf_values:
 
     sys.exit(first_run)
 
-  conf_values = GetAllConfigKeys()
+  # ~ conf_values = GetAllConfigKeys()
+  conf_values = dbr.config.getConfiguration()
 
 # Check that all configuration values are okay
 for V in conf_values:
