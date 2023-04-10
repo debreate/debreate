@@ -83,6 +83,19 @@ def getHomeDir():
   else:
     return os.getenv("HOME")
 
+## Retrieves user's local data storage directory.
+def getUserDataRoot():
+  if sysinfo.getOSName() == "win32":
+    return os.getenv("APPDATA")
+  return join(getHomeDir(), ".local/share")
+
+## Retrieves user's local configuration directory.
+def getUserConfigRoot():
+  if sysinfo.getOSName() == "win32":
+    # FIXME: is this correct?
+    return os.getenv("APPDATA")
+  return join(getHomeDir(), ".config")
+
 ## Retrieves root directory for current system.
 #
 #  @return

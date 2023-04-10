@@ -52,7 +52,9 @@ def fromString(st, handler=str):
   if handler == str:
     # no need to convert to same type
     return st
-  return __from_handlers[handler.__name__](st)
+  if handler.__name__ in __from_handlers:
+    return __from_handlers[handler.__name__](st)
+  return handler(st)
 
 ## Converts a string value to boolean.
 #
