@@ -35,7 +35,6 @@ from libdbr        import paths
 from libdbr        import sysinfo
 from libdbr.logger import Logger
 from startup       import wxprompt
-from system        import display
 
 
 # module name displayed for logger output.
@@ -172,6 +171,7 @@ from globals.strings     import GS
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
 from startup             import firstrun
+from system              import display
 from startup             import startup
 from ui.main             import MainWindow
 

@@ -14,8 +14,8 @@ import subprocess
 
 import wx
 
-from libdbr          import paths
-from libdbr.logger   import Logger
+from libdbr        import paths
+from libdbr.logger import Logger
 
 
 __logger = Logger(__name__)
