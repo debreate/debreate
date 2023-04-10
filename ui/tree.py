@@ -439,6 +439,7 @@ class DirectoryTree(wx.TreeCtrl):
     if isinstance(item, PathItem):
       item = item.GetBaseItem()
 
+    # FIXME: broken on Windows
     return wx.TreeCtrl.Expand(self, item)
 
 
