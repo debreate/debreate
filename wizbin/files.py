@@ -1,10 +1,17 @@
-## \package wizbin.files
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## @module wizbin.files
 
-import os, traceback, wx
+import os
+import traceback
+
+import wx
 
 from dbr.language       import GT
 from globals.bitmaps    import ICON_ERROR

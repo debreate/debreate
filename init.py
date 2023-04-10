@@ -160,6 +160,7 @@ from dbr.app import DebreateApp
 debreate_app = DebreateApp()
 
 import dbr.config
+import ui.main
 
 from dbr.config          import ConfCode
 from dbr.config          import GetDefaultConfigValue
@@ -173,7 +174,6 @@ from globals.system      import WX_VER_STRING
 from startup             import firstrun
 from system              import display
 from startup             import startup
-from ui.main             import MainWindow
 
 
 if ".py" in script_name:
@@ -210,7 +210,7 @@ logger.info("Debreate version: {}".format(VERSION_string))
 logger.info("Logging level: {}".format(logger.getLevel()))
 
 
-Debreate = MainWindow()
+Debreate = ui.main.MainWindow()
 debreate_app.SetMainWindow(Debreate)
 
 first_run = startup.initConfig()

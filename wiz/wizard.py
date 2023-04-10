@@ -1,12 +1,18 @@
-## \package wiz.wizard
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## The wizard interface
 #
-#  The wizard interface
+#  @module wiz.wizard
 
-# MIT licensing
-# See: docs/LICENSE.txt
+import traceback
 
-
-import traceback, wx
+import wx
 
 from dbr.event        import ChangePageEvent
 from dbr.language     import GT
