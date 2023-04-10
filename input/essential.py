@@ -1,14 +1,18 @@
-## \package input.essential
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2017-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## @module input.essential
 
 import wx
 from wx.adv import OwnerDrawnComboBox
 
-from startup.startup import AppInitialized
 from ui.panel        import ControlPanel
+from startup         import startup
 from wiz.helper      import FieldEnabled
 from wiz.helper      import GetMainWindow
 
@@ -50,5 +54,5 @@ class EssentialFieldUnused:
     if event:
       event.Skip(True)
 
-    if AppInitialized() and FieldEnabled(self):
+    if startup.initialized and FieldEnabled(self):
       GetMainWindow().OnProjectChanged(event)

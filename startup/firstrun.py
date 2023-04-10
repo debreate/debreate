@@ -1,102 +1,93 @@
-## \package startup.firstrun
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2017-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## Handles creation of first run dialog.
+#
+#  @module startup.firstrun
 
-import os, wx
+import wx
 
-from dbr.config          import ConfCode
-from dbr.config          import InitializeConfig
-from dbr.config          import default_config
-from dbr.image           import GetBitmap
 from dbr.language        import GT
-from globals.application import APP_logo
+from libdbr              import paths
 from libdbr.logger       import Logger
-from ui.dialog           import ShowErrorDialog
-from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
 
 
-logger = Logger(__name__)
-
-## Shows the first run dialog
-def LaunchFirstRun(debreate_app):
-  FR_dialog = FirstRun()
-  debreate_app.SetTopWindow(FR_dialog)
-  FR_dialog.ShowModal()
-
-  init_conf_code = InitializeConfig()
-
-  logger.debug("Configuration initialized: {}".format(init_conf_code == ConfCode.SUCCESS))
-
-  if (init_conf_code != ConfCode.SUCCESS) or (not os.path.isfile(default_config)):
-    msg_l1 = GT("An error occurred trying to create the configuration file:")
-    msg_l2 = GT("Please report this error to Debreate's developers")
-    ShowErrorDialog("{} {}\n\n{}".format(msg_l1, default_config, msg_l2))
-
-    return init_conf_code
-
-  FR_dialog.Destroy()
-
-  # Delete first run dialog from memory
-  del(FR_dialog)
-
-  return init_conf_code
+__logger = Logger(__name__)
 
 
-## Dialog shown when Debreate is run for first time
+## Shows the first run dialog.
+def launch():
+  __logger.debug("launching first run dialog ...")
+
+  app = wx.GetApp()
+  fr = __buildDialog(app.GetMainWindow())
+  fr_size = wx.Size(450, 300)
+  fr.SetSize(fr_size)
+  fr.CenterOnParent()
+  fr.ShowModal()
+
+
+## Builds first run dialog.
 #
-#  If configuration file is not found or corrupted
-#  this dialog is shown.
-class FirstRun(wx.Dialog):
-  def __init__(self):
-    wx.Dialog.__init__(self, None, wx.ID_ANY, GT("Debreate First Run"), size=(450,300))
+#  @param parent
+#    Parent window for modal.
+def __buildDialog(parent):
+  fr = wx.Dialog(parent, wx.ID_ANY, GT("Debreate First Run"))
 
-    m2 = GT("This message only displays on the first run, or if\nthe configuration file becomes corrupted.")
-    m3 = GT("The default configuration file will now be created.")
-    m4 = GT("To delete this file, type the following command in a\nterminal:")
+  m2 = GT("This message only displays on the first run, or if\nthe configuration file becomes corrupted.")
+  m3 = GT("The default configuration file will now be created.")
+  m4 = GT("To delete this file, type the following command in a\nterminal:")
 
-    message1 = GT("Thank you for using Debreate.")
-    message1 = "{}\n\n{}".format(message1, m2)
+  message1 = GT("Thank you for using Debreate.")
+  message1 = "{}\n\n{}".format(message1, m2)
 
-    message2 = m3
-    message2 = "{}\n{}".format(message2, m4)
+  message2 = m3
+  message2 = "{}\n{}".format(message2, m4)
 
-    # Set the titlebar icon
-    self.SetIcon(APP_logo)
+  path_icon = paths.join(paths.getAppDir(), "bitmaps/icon/64/logo.png")
+  # set the titlebar icon
+  APP_logo = wx.Icon(path_icon, wx.BITMAP_TYPE_PNG)
+  fr.SetIcon(APP_logo)
 
-    # Display a message to create a config file
-    text1 = wx.StaticText(self, label=message1)
-    text2 = wx.StaticText(self, label=message2)
+  # Display a message to create a config file
+  text1 = wx.StaticText(fr, label=message1)
+  text2 = wx.StaticText(fr, label=message2)
 
-    rm_cmd = wx.TextCtrl(self, value="rm -f ~/.config/debreate/config",
-        style=wx.TE_READONLY|wx.BORDER_NONE)
-    rm_cmd.SetBackgroundColour(self.BackgroundColour)
+  rm_cmd = wx.TextCtrl(fr, value="rm -f ~/.config/debreate/config",
+      style=wx.TE_READONLY|wx.BORDER_NONE)
+  rm_cmd.SetBackgroundColour(fr.BackgroundColour)
 
-    layout_V1 = BoxSizer(wx.VERTICAL)
-    layout_V1.Add(text1, 1)
-    layout_V1.Add(text2, 1, wx.TOP, 15)
-    layout_V1.Add(rm_cmd, 0, wx.EXPAND|wx.TOP, 10)
+  layout_V1 = wx.BoxSizer(wx.VERTICAL)
+  layout_V1.Add(text1, 1)
+  layout_V1.Add(text2, 1, wx.TOP, 15)
+  layout_V1.Add(rm_cmd, 0, wx.EXPAND|wx.TOP, 10)
 
-    # Show the Debreate icon
-    icon = wx.StaticBitmap(self, bitmap=GetBitmap("logo", 64, "icon"))
+  # Show the Debreate icon
+  icon = wx.StaticBitmap(fr, bitmap=wx.Bitmap(path_icon))
 
-    # Button to confirm
-    self.button_ok = wx.Button(self, wx.ID_OK)
+  # Button to confirm
+  fr.button_ok = wx.Button(fr, wx.ID_OK)
 
-    # Nice border
-    self.border = wx.StaticBox(self, -1)
-    border_box = wx.StaticBoxSizer(self.border, wx.HORIZONTAL)
-    border_box.AddSpacer(10)
-    border_box.Add(icon, 0, wx.ALIGN_CENTER)
-    border_box.AddSpacer(10)
-    border_box.Add(layout_V1, 1, wx.ALIGN_CENTER)
+  # Nice border
+  fr.border = wx.StaticBox(fr, -1)
+  border_box = wx.StaticBoxSizer(fr.border, wx.HORIZONTAL)
+  border_box.AddSpacer(10)
+  border_box.Add(icon, 0, wx.ALIGN_CENTER)
+  border_box.AddSpacer(10)
+  border_box.Add(layout_V1, 1, wx.ALIGN_CENTER)
 
-    # Set Layout
-    sizer = BoxSizer(wx.VERTICAL)
-    sizer.Add(border_box, 1, wx.EXPAND|lyt.PAD_LR, 5)
-    sizer.Add(self.button_ok, 0, wx.ALIGN_RIGHT|lyt.PAD_RB|wx.TOP, 5)
+  # Set Layout
+  sizer = wx.BoxSizer(wx.VERTICAL)
+  sizer.Add(border_box, 1, wx.EXPAND|lyt.PAD_LR, 5)
+  sizer.Add(fr.button_ok, 0, wx.ALIGN_RIGHT|lyt.PAD_RB|wx.TOP, 5)
 
-    self.SetSizer(sizer)
-    self.Layout()
+  fr.SetSizer(sizer)
+  fr.Layout()
+
+  return fr

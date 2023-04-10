@@ -1,9 +1,14 @@
-## \page main.py Main Window Interface
-#
-#  Defines interface of the main window.
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## Defines interface of the main window.
+#
+#  @module ui.main Main Window Interface
 
 
 import os, shutil, subprocess, urllib, webbrowser, wx.html
@@ -62,7 +67,7 @@ logger = Logger(__name__)
 default_title = GT("Debreate - Debian Package Builder")
 
 
-## The main window interface
+## The main window interface.
 class MainWindow(wx.Frame, ModuleAccessCtrl):
   ## Constructor
   #
@@ -70,8 +75,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Point</i></b> instance indicating the screen position of the window
   #  \param size
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
-  def __init__(self, pos, size):
-    wx.Frame.__init__(self, None, wx.ID_ANY, default_title, wx.Point(pos[0], pos[1]), wx.Size(size[0], size[1]))
+  def __init__(self):#, pos, size):
+    wx.Frame.__init__(self, None, wx.ID_ANY)
     ModuleAccessCtrl.__init__(self, __name__)
 
     self.timer = DebreateTimer(self)

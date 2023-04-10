@@ -1,87 +1,60 @@
-## \package system.display
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2017-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## Display handling.
+#
+#  @module system.display
+
+import subprocess
 
 import wx
 
-from globals.execute import GetCommandOutput
-from globals.strings import StringIsNumeric
 from libdbr          import paths
 from libdbr.logger   import Logger
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
-## Retrieves dimensions of primary display
+## Retrieves dimensions of primary display.
 #
 #  TODO:
 #  - use 1 or 2 alternate methods (wx.Display???)
 #  - make platform independent
-def GetPrimaryDisplayRect():
-  rect = None
+#
+#  @return
+#    Dictionary containing x,y coordinates & width & height of primary display.
+def __getPrimaryRect():
+  xrandr = paths.getExecutable("xrandr")
+  if not xrandr:
+    __logger.info("'xrandr' not found, cannot determine center of primary display")
+    return None
+  res = subprocess.run([xrandr], check=True, stdout=subprocess.PIPE)
+  if res.returncode != 0:
+    __logger.info("'xrandr' execution failed, cannot determine center of primary display")
+    return None
+  disp_line = None
+  for li in res.stdout.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+    if " connected primary " in li:
+      disp_line = li
+      break
+  if not disp_line:
+    __logger.info("cannot determine primary display from 'xrandr' output")
+    return None
+  disp = disp_line.split(" connected primary ", 1)[1].strip().split(" ")[0]
+  tmp = disp.replace("x", "+", 1).split("+")
+  if len(tmp) < 4:
+    __logger.info("cannot determine primary display dimensions from 'xrandr' output")
+    return None
+  rect = {"x": int(tmp[2]), "y": int(tmp[3]), "w": int(tmp[0]), "h": int(tmp[1])}
 
-  # wx 3.0 does not recognize primary display correctly
-  # FIXME: version 2 no longer supported
-  if wx.MAJOR_VERSION <=2:
-    primary = None
+  __logger.info("display rect '{}'".format(rect))
 
-    # Try to find the primary display within first 10 displays
-    for X in range(10):
-      try:
-        dsp = wx.Display(X)
-        if dsp.IsPrimary():
-          primary = dsp
-
-          break
-
-      except AssertionError:
-        pass
-
-    if primary:
-      rect = primary.GetGeometry()
-
-      # Reorder for compatibility with xrandr output
-      rect = (rect[2], rect[3], rect[0], rect[1],)
-
-      logger.debug("GetPrimaryDisplayRect: Using wx.Display")
-
-  # Fall back to using xrandr
-  if not rect:
-    CMD_xrand = paths.getExecutable("xrandr")
-
-    if not CMD_xrand:
-      return None
-
-    output = GetCommandOutput(CMD_xrand).split("\n")
-
-    for LINE in output:
-      LINE = LINE.lower()
-      if "primary" in LINE:
-        LINE = LINE.split("primary")[1].strip().split(" ")[0]
-        posX = LINE.split("x")
-        posY = posX[1].split("+")
-        posX = posX[0]
-        width = posY[1]
-        height = posY[2]
-        posY = posY[0]
-
-        rect = [posX, posY, width, height,]
-        for INDEX in range(len(rect)):
-          X = rect[INDEX]
-          if not StringIsNumeric(X):
-            # FIXME: Break out of second loop & call continue on first?
-            return None
-
-          rect[INDEX] = int(X)
-
-        logger.debug("GetPrimaryDisplayRect: Using xrandr")
-
-        break
-
-  if rect:
-    return tuple(rect)
+  return rect
 
 
 ## Centers the window on the primary display
@@ -89,42 +62,24 @@ def GetPrimaryDisplayRect():
 #  TODO:
 #  - make platform independent
 #
-#  \param window
-#  \b \e wx.Window instance to be centered
-def CenterOnPrimaryDisplay(window):
-  logger.debug("Attempting to center window: {} ({})".format(window.Name, window))
+#  @param window
+#    wx.Window instance to be centered.
+#  @param size
+#    Override detected size from window.
+def centerOnPrimary(window, size=None):
+  __logger.debug("Attempting to center window: {} ({})".format(window.Name, window))
 
-  display_rect = GetPrimaryDisplayRect()
+  rect = __getPrimaryRect()
+  if not rect:
+    # fallback to built-in method
+    window.Center()
+    return
 
-  logger.debug("Primary display: {}".format(display_rect))
+  w_size = window.GetSize() if not size else size
+  pos_x = int((rect["w"] - w_size.GetWidth()) / 2)
+  pos_y = int((rect["h"] - w_size.GetHeight()) / 2)
 
-  if not display_rect:
-    return False
+  window.SetPosition(wx.Point(pos_x, pos_y))
 
-  window_size = window.GetSize().Get()
-
-  dx = display_rect[2]
-  dy = display_rect[3]
-  dw = display_rect[0]
-  dh = display_rect[1]
-
-  x_diff = (dw - window_size[0]) / 2
-  y_diff = (dh - window_size[1]) / 2
-
-  debug = logger.debugging()
-
-  if debug:
-    print("  X difference: {}".format(x_diff))
-    print("  Y difference: {}".format(y_diff))
-
-  # NOTE: May be a few pixels off
-  pos_x = dx + x_diff
-  pos_y = dy + y_diff
-
-  if debug:
-    print("\n  Theoretical position: {}".format((pos_x, pos_y,)))
-    print("  Actual Position:	  {}".format(window.GetPositionTuple()))
-
-  window.SetPosition((pos_x, pos_y))
-
-  return True
+  __logger.debug("theoretical position: {}".format((pos_x, pos_y,)))
+  __logger.debug("Actual Position:      {}".format(window.GetPosition().Get()))

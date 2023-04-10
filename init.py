@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 
-## \page init.py Initialization Script
-#  Script to set configurations and launch Debreate
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## Script to set configurations & launch Debreate.
 #
 #  Checks if the config file exists in ~/.config/debreate. If
 #  not, a new file will be created (~/.config/debreate/config).
 #  If the config file already exists but is corrupted, it will
 #  reset it to its default settings.
-
+#
+#  @page init.py Initialization Script
 
 import errno, os, sys
 
@@ -28,6 +35,7 @@ from libdbr        import paths
 from libdbr        import sysinfo
 from libdbr.logger import Logger
 from startup       import wxprompt
+from system        import display
 
 
 # module name displayed for logger output.
@@ -149,13 +157,12 @@ util.checkWx()
 
 from dbr.app import DebreateApp
 
-# Initialize app before importing local modules
+# initialize app before importing local modules
 debreate_app = DebreateApp()
 
 import dbr.config
 
 from dbr.config          import ConfCode
-# ~ from dbr.config          import GetAllConfigKeys
 from dbr.config          import GetDefaultConfigValue
 from dbr.language        import GetLocaleDir
 from dbr.language        import GT
@@ -164,8 +171,8 @@ from globals.application import VERSION_string
 from globals.strings     import GS
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
-from startup.firstrun    import LaunchFirstRun
-from startup.startup     import SetAppInitialized
+from startup             import firstrun
+from startup             import startup
 from ui.main             import MainWindow
 
 
@@ -202,61 +209,25 @@ logger.info("wx.Python version: {}".format(WX_VER_STRING))
 logger.info("Debreate version: {}".format(VERSION_string))
 logger.info("Logging level: {}".format(logger.getLevel()))
 
-# Check for & parse existing configuration
-# ~ conf_values = GetAllConfigKeys()
+
+Debreate = MainWindow()
+debreate_app.SetMainWindow(Debreate)
+
+first_run = startup.initConfig()
 conf_values = dbr.config.getConfiguration()
 
-if not conf_values:
-  logger.debug("Launching First Run dialog ...")
-
-  first_run = LaunchFirstRun(debreate_app)
-  if not first_run == ConfCode.SUCCESS:
-
-    sys.exit(first_run)
-
-  # ~ conf_values = GetAllConfigKeys()
-  conf_values = dbr.config.getConfiguration()
-
-# Check that all configuration values are okay
-for V in conf_values:
-  key = V
-  value = conf_values[V]
-
-  # ???: Redundant???
-  if value == None:
-    value = GetDefaultConfigValue(key)
-
-  logger.debug(GT("Configuration key \"{}\" = \"{}\", type: {}".format(key, GS(value), type(value))))
-
-  # FIXME: ConfCode values are integers & could cause problems with config values
-  if conf_values[V] in (ConfCode.FILE_NOT_FOUND, ConfCode.KEY_NOT_DEFINED, ConfCode.KEY_NO_EXIST,):
-    first_run = LaunchFirstRun(debreate_app)
-    if not first_run == ConfCode.SUCCESS:
-      sys.exit(first_run)
-
-    break
-
-
-Debreate = MainWindow(conf_values["position"], conf_values["size"])
-debreate_app.SetMainWindow(Debreate)
-Debreate.InitWizard()
+working_dir = conf_values["workingdir"]
+Debreate.SetSize(wx.Size(conf_values["size"][0], conf_values["size"][1]))
+Debreate.SetPosition(wx.Point(conf_values["position"][0], conf_values["position"][1]))
+if conf_values["maximize"]:
+  Debreate.Maximize()
+elif conf_values["center"]:
+  display.centerOnPrimary(Debreate)
 
 def logger_callback():
   logger.debug("shutting down app from logger")
   Debreate.saveConfigAndShutdown()
-
 logger.setCallback(logger_callback)
-
-if conf_values["maximize"]:
-  Debreate.Maximize()
-
-elif conf_values["center"]:
-  from system.display import CenterOnPrimaryDisplay
-
-  # NOTE: May be a few pixels off
-  CenterOnPrimaryDisplay(Debreate)
-
-working_dir = conf_values["workingdir"]
 
 if parsed_path:
   project_file = parsed_path
@@ -268,13 +239,16 @@ if parsed_path:
 # Set working directory
 ChangeWorkingDirectory(working_dir)
 
+Debreate.InitWizard()
 Debreate.Show(True)
+if first_run:
+  firstrun.launch()
 
 # Wait for window to be constructed (prevents being marked as dirty project after initialization)
-wx.GetApp().Yield()
+# ~ wx.GetApp().Yield()
 
 # Set initialization state to 'True'
-SetAppInitialized()
+# ~ SetAppInitialized()
 
 debreate_app.MainLoop()
 
