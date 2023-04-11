@@ -139,6 +139,14 @@ class Logger:
   def getLevel():
     return Logger.loglevel
 
+  ## Retrieves level of verbosity.
+  #
+  #  @return
+  #    Verbosity string representation.
+  @staticmethod
+  def getLevelString():
+    return LogLevel.toString(Logger.loglevel)
+
   ## Retrieves log file.
   #
   #  @return
