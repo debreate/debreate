@@ -258,7 +258,11 @@ class ProgressDialog(wx.ProgressDialog):
           if parent and not self.user_moved:
             self.CenterOnParent()
 
-      self.GetSizer().Layout()
+      sizer = self.GetSizer()
+      if sizer:
+        sizer.Layout()
+      else:
+        self.Layout()
 
 
   ## Override wx.ProgressDialog.WasCancelled method for compatibility wx older wx versions
