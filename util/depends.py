@@ -29,7 +29,7 @@ def getWxVersion():
 
 def checkWx():
   wx_min = [4, 0, 7]
-  wx_rec = [4, 1, 1]
+  wx_rec = [4, 2, 0]
   wx_ver = list(getWxVersion())
   if wx_ver < wx_min:
     tmp = ".".join(str(wx_min).strip("[]").split(", "))
