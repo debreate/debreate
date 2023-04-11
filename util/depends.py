@@ -23,7 +23,18 @@ def checkWx():
     wx_ver.append(int(v))
   if wx_ver < wx_min:
     tmp = ".".join(str(wx_min).strip("[]").split(", "))
-    logger.error("wxPython minimum required version is {}, found {}".format(tmp, wx.__version__))
+    msg = "wxPython minimum required version is {}, found {}".format(tmp, wx.__version__)
+    logger.error(msg)
+    # attempt to show a dialog
+    try:
+      app = wx.App()
+      dialog = wx.MessageDialog(None, msg, "wx Version Error", wx.OK|wx.ICON_ERROR)
+      app.SetTopWindow(dialog)
+      dialog.ShowModal()
+      dialog.Destroy()
+      app.MainLoop()
+    except:
+      pass
     sys.exit(1)
   if wx_ver < wx_rec:
     tmp = ".".join(str(wx_rec).strip("[]").split(", "))
