@@ -11,7 +11,14 @@
 #  @module ui.main Main Window Interface
 
 
-import os, shutil, subprocess, urllib, webbrowser, wx.html
+import os
+import shutil
+import subprocess
+import sys
+import urllib
+import webbrowser
+import wx.html
+
 from urllib.error import HTTPError
 from urllib.error import URLError
 
@@ -359,9 +366,20 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## Opens the logs directory in the system's default file manager
   def OnLogDirOpen(self, event=None): #@UnusedVariable
-    logger.debug(GT("Opening log directory ..."))
-
-    subprocess.check_output([paths.getExecutable("xdg-open"), "{}/logs".format(globals.paths.getLocalDir())], stderr=subprocess.STDOUT)
+    dir_logs = globals.paths.getLogsDir()
+    if os.path.isdir(dir_logs):
+      cmd_xdg = paths.getExecutable("xdg-open")
+      logger.debug(GT("Opening log directory ..."))
+      if sys.platform == "win32":
+        os.startfile(paths.normalize(dir_logs, strict=True))
+      elif cmd_xdg:
+        res = subprocess.run((cmd_xdg, dir_logs), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if res.returncode != 0:
+          logger.error("failed to open directory: {}".format(res.stdout.decode("utf-8")))
+      else:
+        logger.error("cannot determine method to handle opening directories")
+      return
+    logger.debug("log directory not available")
 
 
   ## Changes wizard page from menu
