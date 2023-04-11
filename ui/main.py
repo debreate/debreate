@@ -99,8 +99,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
       wx.GetApp().SetTopWindow(self)
 
+    title_st = default_title
     if logger.debugging():
-      self.SetTitle("{} ({})".format(default_title, GT("debugging")))
+      title_st += " (" + GT("debugging") + ")"
+    self.SetTitle(title_st)
 
     self.SetMinSize(wx.Size(640, 400))
 
