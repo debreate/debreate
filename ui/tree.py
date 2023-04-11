@@ -48,7 +48,7 @@ class PathItem:
       path = wx.EmptyString
 
     self.Item = item
-    self.Path = path
+    self.Path = paths.normalize(path, strict=True)
     self.Label = label
     self.Children = []
     self.Type = ""
@@ -174,7 +174,7 @@ class PathItem:
   ## TODO: Doxygen
   def SetItem(self, item, path):
     self.Item = item
-    self.Item.Path = path
+    self.Item.Path = paths.normalize(path, strict=True)
 
 
 ## A customized directory tree that is compatible with older wx versions
@@ -192,13 +192,15 @@ class DirectoryTree(wx.TreeCtrl):
         style=style|wx.TR_HAS_BUTTONS|wx.TR_MULTIPLE|wx.BORDER_NONE,
         validator=validator, name=name)
 
+    logger.deprecated(DirectoryTree, alt=wx.GenericDirCtrl)
+
     self.AssignImageList()
 
     # FIXME: Use regular expressions
     #self.exclude_pattern = list(exclude_pattern)
     self.exclude_pattern = ["."]
 
-    self.current_path = path
+    self.current_path = paths.normalize(path, strict=True)
 
     # NOTE: Use individual items children???
     self.item_list = []
@@ -443,11 +445,19 @@ class DirectoryTree(wx.TreeCtrl):
     if parent:
       self.Expand(parent)
 
+    base_item = item
     if isinstance(item, PathItem):
-      item = item.GetBaseItem()
+      if not item.HasChildren():
+        logger.warn("path '{}' does not have children".format(item.GetPath()))
+        return True
+      base_item = item.GetBaseItem()
 
     # FIXME: broken on Windows
-    return wx.TreeCtrl.Expand(self, item)
+    if not base_item.IsOk():
+      logger.error("'PathItem' ({}) is corrupted".format(item.GetPath()))
+      return False
+    return wx.TreeCtrl.Expand(self, base_item)
+    # ~ return True
 
 
   ## Expands a mounted item all the way down path
@@ -1158,7 +1168,7 @@ class DirectoryTree(wx.TreeCtrl):
   #  \param path
   #  \b \e string : New path to be set
   def SetPath(self, path):
-    self.current_path = path
+    self.current_path = paths.normalize(path, strict=True)
 
 
   ## Sets the visible cursor on the Files page dependent on drag-&-drop state
@@ -1192,21 +1202,48 @@ class DirectoryTreePanel(BorderedPanel):
       style=wx.TAB_TRAVERSAL, name="DirTreePnl"):
     BorderedPanel.__init__(self, parent, w_id, pos, size, style, name)
 
-    self.DirTree = DirectoryTree(self)
+    # ~ self.DirTree = DirectoryTree(self)
+    self.DirTree = None
 
     # Give easy access of instance to parent
-    parent.DirTree = self.DirTree
+    # ~ parent.DirTree = self.DirTree
 
     # *** Layout *** #
 
-    lyt_main = BoxSizer(wx.VERTICAL)
-    lyt_main.Add(self.DirTree, 1, wx.EXPAND)
+    # ~ layout = BoxSizer(wx.VERTICAL)
+
+    # ~ lyt_main = BoxSizer(wx.VERTICAL)
+    # ~ lyt_main.Add(self.DirTree, 1, wx.EXPAND)
 
     self.SetAutoLayout(True)
-    self.SetSizer(lyt_main)
+    self.SetSizer(BoxSizer(wx.VERTICAL))
     self.Layout()
 
 
   ## Retrieve DirectoryTree instance so methods can be called from within other objects
   def GetDirectoryTree(self):
+    logger.deprecated(self.GetDirectoryTree, alt=self.getTree)# "DirectoryTreePanel.getTree")
+
+    return self.getTree()
+
+  ## Retrieves the directory tree.
+  #
+  #  @return
+  #    `DirectoryTree` instance.
+  def getTree(self):
     return self.DirTree
+
+  ## Sets directory tree for this panel.
+  #
+  #  @param tree
+  #    `DirectoryTree` instance to use.
+  def setTree(self, tree):
+    sizer = self.GetSizer()
+    old_tree = self.getTree()
+    if old_tree == None:
+      sizer.Add(tree, 1, wx.EXPAND)
+    else:
+      sizer.Replace(old_tree, tree)
+      old_tree.Destroy()
+    self.DirTree = tree
+    self.Layout()
