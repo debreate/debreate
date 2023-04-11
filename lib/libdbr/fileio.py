@@ -75,6 +75,9 @@ def createFile(target, binary=False, verbose=False):
     print("created empty file '{}'".format(target))
   return 0, None
 
+## Alias for `createFile`.
+touch = createFile
+
 ## Reads data from a text file.
 #
 #  @param filepath

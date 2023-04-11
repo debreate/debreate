@@ -237,15 +237,15 @@ def getExecutable(cmd):
     path_ext = path_ext.split(";") if sys.platform == "win32" else path_ext.split(":")
 
   for _dir in path:
-    filepath = os.path.join(_dir, cmd)
+    filepath = join(_dir, cmd)
     if fileinfo.isExecutable(filepath):
       __cache["executables"][cmd] = filepath
       return filepath
     for ext in path_ext:
-      filepath = filepath + "." + ext
-      if fileinfo.isExecutable(filepath):
-        __cache["executables"][cmd] = filepath
-        return filepath
+      ext_filepath = filepath + ext
+      if fileinfo.isExecutable(ext_filepath):
+        __cache["executables"][cmd] = ext_filepath
+        return ext_filepath
   return None
 
 ## Checks if an executable is available from PATH environment variable.

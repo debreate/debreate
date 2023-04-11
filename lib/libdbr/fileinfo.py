@@ -6,6 +6,7 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+import mimetypes
 import os
 import sys
 
@@ -22,15 +23,21 @@ __default = "application/octet-stream"
 #  @return
 #    MimeType ID string.
 def getMimeType(filepath):
-  # FIXME: need platform independent method to get mimetypes
+  f_info = None
+
   cmd_file = paths.getExecutable("file")
-  if not cmd_file:
-    return __default
-  code, output = execute(cmd_file, "--mime-type", "--brief", filepath)
-  # 'file' command always returns 0
-  if not output or "cannot open" in output:
-    return __default
-  return output
+  f_exists = os.path.isfile(filepath)
+  if f_exists and cmd_file:
+    code, output = execute(cmd_file, "--mime-type", "--brief", filepath)
+    f_info = output
+
+  if not f_info:
+    # fallback to checking by file extension
+    f_info = mimetypes.guess_type(filepath)[0]
+    if not f_info and f_exists:
+      f_info = __default
+
+  return f_info
 
 
 ## Checks if a file is marked as executable for the current user.
