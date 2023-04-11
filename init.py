@@ -111,7 +111,7 @@ if "clean" in parsed_commands:
 
   sys.exit(0)
 
-logger.info("operating system name: {}".format(sysinfo.getOSName()))
+logger.info("system name: {}".format(sysinfo.getOSName()))
 
 import subprocess, gettext
 
@@ -205,9 +205,9 @@ if "log-level" in parsed_args_v:
 
 
 logger.info("Python version: {}".format(PY_VER_STRING))
-logger.info("wx.Python version: {}".format(WX_VER_STRING))
+logger.info("wxPython version: {}".format(WX_VER_STRING))
 logger.info("Debreate version: {}".format(VERSION_string))
-logger.info("Logging level: {}".format(logger.getLevel()))
+logger.info("logging level: {}".format(logger.getLevelString()))
 
 
 Debreate = ui.main.MainWindow()
