@@ -245,16 +245,36 @@ class Logger:
 
   ## Logs a message denoting deprecation of an element.
   #
-  #  @param module
-  #    Name of module containing element.
+  #  @param obj
+  #    Object or name of deprecated object.
   #  @param name
-  #    Element name.
+  #    Element name (deprecated).
   #  @param alt
   #    Information about alternatives.
   #  @param newline
   #    If true, appends a newline to end of message.
-  def deprecated(self, module, name, alt=None, newline=False):
-    msg = module + "." + name + " is deprecated"
-    if alt:
-      msg += ", use " + alt + " instead"
+  def deprecated(self, obj, name=None, alt=None, newline=False):
+    if name != None:
+      self.deprecated("Logger.deprecated(obj, name)", alt="Logger.deprecated(obj)")
+
+    alt_st = alt
+    if type(alt) != str:
+      alt_st = alt.__module__ if hasattr(alt, "__module__") else ""
+      if hasattr(alt, "__self__") and hasattr(alt.__self__, "__class__"):
+        alt_st += "." + alt.__self__.__class__.__name__
+      alt_st += "." + (alt.__name__ if hasattr(alt, "__name__") else str(alt))
+
+    obj_st = obj
+    if type(obj) != str:
+      obj_st = obj.__module__ if hasattr(obj, "__module__") else ""
+      if hasattr(obj, "__self__") and hasattr(obj.__self__, "__class__"):
+        obj_st += "." + obj.__self__.__class__.__name__
+      obj_st += "." + (obj.__name__ if hasattr(obj, "__name__") else str(obj))
+
+    msg = obj_st
+    if name != None:
+      msg += "." + name
+    msg += " is deprecated"
+    if alt_st != None:
+      msg += ", use " + alt_st + " instead"
     self.warn(msg, newline)

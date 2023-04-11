@@ -23,20 +23,35 @@ __cache: typing.Dict[str, typing.Any] = {
 #
 #  @param path
 #    String to be normalized.
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    Path with system dependent prefix & node delimiters.
-def normalize(path):
-  if sys.platform == "win32" and path.startswith(os.sep):
-    path = os.path.join(getSystemRoot(), path.lstrip(os.sep))
-  return os.path.normpath(path)
+def normalize(path, strict=False):
+  sep = os.sep
+  if strict and sys.platform == "win32":
+    sep = "\\"
+  # clean up node delimiters
+  path = path.replace("/", sep).replace("\\", sep)
+  if path.startswith(sep):
+    if strict and sys.platform == "win32" and sysinfo.getOSName() != "win32":
+      path = getSubSystemRoot() + path.lstrip(sep)
+    else:
+      path = getSystemRoot() + path.lstrip(sep)
+  # ~ return os.path.normpath(path)
+  if not path.strip():
+    path = "."
+  return path.replace("{0}{0}".format(sep), sep)
 
 ## Normalizes & joins path names.
 #
 #  @param paths
 #    Path names to normalize.
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    Formatted string
-def join(*paths):
+def join(*paths, strict=False):
   path = ""
   for p in paths:
     if path:
@@ -48,13 +63,15 @@ def join(*paths):
         path = join(path, p.pop(0))
     else:
       path += p
-  return normalize(path)
+  return normalize(path, strict=strict)
 
 ## Retrieves executed script.
 #
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    Absolute path to script filename.
-def getAppPath():
+def getAppPath(strict=False):
   if "path_app" in __cache:
     return __cache["path_app"]
   __cache["path_app"] = os.path.realpath(sys.argv[0])
@@ -62,12 +79,14 @@ def getAppPath():
 
 ## Retrieves directory of executed script.
 #
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    Absolute path to script parent directory.
-def getAppDir():
+def getAppDir(strict=False):
   if "dir_app" in __cache:
     return __cache["dir_app"]
-  dir_app = getAppPath()
+  dir_app = getAppPath(strict=strict)
   if not os.path.isdir(dir_app):
     dir_app = os.path.dirname(dir_app)
   __cache["dir_app"] = dir_app
@@ -75,76 +94,132 @@ def getAppDir():
 
 ## Retrieves current user's home directory.
 #
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    Absolute path to home directory.
-def getHomeDir():
+def getUserHome(strict=False):
   if sysinfo.getOSName() == "win32":
     return os.getenv("USERPROFILE")
   else:
-    return os.getenv("HOME")
+    return normalize(os.getenv("HOME"), strict=strict)
+
+## Retrieves current user's home directory.
+#
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
+#  @return
+#    Absolute path to home directory.
+def getHomeDir(strict=False):
+  print("WARNING: {} is deprecated, use {} instead" \
+      .format(__name__ + "." + getHomeDir.__name__, __name__ + "." + getUserHome.__name__))
+
+  return getUserHome(strict=strict)
 
 ## Retrieves user's local data storage directory.
-def getUserDataRoot():
+#
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
+#  @return
+#    Path to data directory.
+def getUserDataRoot(strict=False):
   if sysinfo.getOSName() == "win32":
     return os.getenv("APPDATA")
-  return join(getHomeDir(), ".local/share")
+  return join(getHomeDir(), ".local/share", strict=strict)
 
 ## Retrieves user's local configuration directory.
-def getUserConfigRoot():
+#
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
+#  @return
+#    Path to config directory.
+def getUserConfigRoot(strict=False):
   if sysinfo.getOSName() == "win32":
     # FIXME: is this correct?
     return os.getenv("APPDATA")
-  return join(getHomeDir(), ".config")
+  return join(getHomeDir(), ".config", strict=strict)
 
 ## Retrieves root directory for current system.
 #
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    System root node string.
-def getSystemRoot():
+def getSystemRoot(strict=False):
   # check cache first
-  if "sys_root" in __cache:
+  if not strict and "sys_root" in __cache:
     return __cache["sys_root"]
 
+  sep = os.sep
+  if strict and sys.platform == "win32":
+    sep = "\\"
+
   os_name = sysinfo.getOSName()
-  __cache["sys_root"] = os.sep
+  # ~ __cache["sys_root"] = sep
+  sys_root = sep
   if os_name == "win32":
-    __cache["sys_root"] = os.getenv("SystemDrive", "C:")
-    __cache["sys_root"] += "\\"
+    sys_root = os.getenv("SystemDrive", "C:") + sep
   elif os_name == "msys":
     msys_prefix = os.path.dirname(os.getenv("MSYSTEM_PREFIX", ""))
     if sysinfo.getCoreName() == "msys":
       msys_prefix = os.path.dirname(msys_prefix)
     if msys_prefix:
-      __cache["sys_root"] = msys_prefix + os.sep
-  return __cache["sys_root"]
+      sys_root = normalize(msys_prefix, strict=strict) + sep
+
+  # don't cache if using strict
+  if not strict:
+    __cache["sys_root"] = sys_root
+
+  return sys_root
 
 ## Retrieves the relative root for a subsystem such as MSYS.
-def getSubSystemRoot():
-  sys_root = getSystemRoot()
-  if sys_root and sysinfo.getOSName() == "msys":
-    sys_root = sys_root[len(sys_root)-1:]
-  return sys_root
+#
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
+#  @return
+#    SubSystem root node string.
+def getSubSystemRoot(strict=False):
+  # check cache first
+  if not strict and "subsys_root" in __cache:
+    return __cache["subsys_root"]
+
+  subsys_root = getSystemRoot(strict=strict)
+  if subsys_root and sysinfo.getOSName() == "msys":
+    subsys_root = subsys_root[len(subsys_root)-1:]
+
+  # don't cache if using strict
+  if not strict:
+    __cache["subsys_root"] = subsys_root
+
+  return subsys_root
 
 ## Retrieves directory to be used for temporary storage.
 #
+#  @param strict
+#    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    System or user temporary directory.
-def getTempDir():
+def getTempDir(strict=False):
   # check cache first
-  if "dir_temp" in __cache:
+  if not strict and "dir_temp" in __cache:
     return __cache["dir_temp"]
 
-  tmp = None
+  dir_temp = None
   if sysinfo.getOSName() == "win32":
     if userinfo.isAdmin():
-      tmp = join(getSystemRoot(), "Windows", "Temp")
+      dir_temp = join(getSystemRoot(strict=strict), "Windows", "Temp")
     else:
-      tmp = os.getenv("TEMP")
-      if not tmp:
-        tmp = os.getenv("TMP")
-  # cache for faster subsequent calls
-  __cache["dir_temp"] = tmp or "/tmp"
-  return __cache["dir_temp"]
+      dir_temp = os.getenv("TEMP")
+      if not dir_temp:
+        dir_temp = os.getenv("TMP")
+  # default to Posix temp directory
+  dir_temp = dir_temp or "/tmp"
+
+  # don't cache if using strict
+  if not strict:
+    __cache["dir_temp"] = dir_temp
+
+  return dir_temp
 
 ## Retrieves an executable from PATH environment variable.
 #
