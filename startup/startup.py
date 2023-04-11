@@ -13,6 +13,7 @@
 import os
 
 from libdbr import config
+from libdbr import fileio
 from libdbr import logger
 from libdbr import paths
 
@@ -33,7 +34,18 @@ def initLogging():
 def initConfig():
   first_run = True
 
-  file_cfg = paths.join(paths.getUserConfigRoot(), "debreate", "config")
+  conf_root = paths.getUserConfigRoot()
+  file_cfg_legacy = paths.join(conf_root, "debreate", "config")
+  file_cfg = paths.join(paths.join(conf_root, "debreate.conf"))
+
+  if os.path.isfile(file_cfg_legacy) and not os.path.exists(file_cfg):
+    __logger.debug("moving old config '{}' to '{}'".format(file_cfg_legacy, file_cfg))
+    fileio.moveFile(file_cfg_legacy, file_cfg)
+    # clean up old directory
+    dir_cfg_legacy = os.path.dirname(file_cfg_legacy)
+    if len(os.listdir(dir_cfg_legacy)) == 0:
+      fileio.deleteDir(dir_cfg_legacy)
+
   config.setFile(file_cfg)
   if os.path.isfile(file_cfg):
     __logger.info("loading config from '{}'".format(file_cfg))
