@@ -13,10 +13,10 @@ from dbr.colors       import COLOR_link
 from dbr.colors       import COLOR_warn
 from dbr.language     import GT
 from globals.fileitem import FileItem
-from globals.mime     import GetFileMimeType
 from globals.strings  import IsString
 from input.essential  import EssentialField
 from input.list       import ListCtrl
+from libdbr           import fileinfo
 from libdbr.logger    import Logger
 
 
@@ -411,7 +411,7 @@ class FileList(BasicFileList):
     self.InsertStringItem(list_index, filename)
     self.SetStringItem(list_index, columns.SOURCE, sourceDir)
     self.SetStringItem(list_index, columns.TARGET, targetDir)
-    self.SetStringItem(list_index, columns.TYPE, GetFileMimeType(source_path))
+    self.SetStringItem(list_index, columns.TYPE, fileinfo.getMimeType(source_path))
 
     if os.path.islink(source_path):
       self.SetItemTextColour(list_index, COLOR_link)
@@ -420,7 +420,7 @@ class FileList(BasicFileList):
       self.SetItemTextColour(list_index, self.FOLDER_TEXT_COLOR)
 
     else:
-      # TODO: Use 'GetFileMimeType' module to determine file type
+      # TODO: Use 'libdbr.fileinfo.getMimeType' module to determine file type
       if os.access(source_path, os.X_OK) or executable:
         self.SetFileExecutable(list_index)
 

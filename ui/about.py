@@ -17,11 +17,11 @@ from globals.constants   import INSTALLED
 # ~ from globals.constants   import PREFIX
 from globals.dateinfo    import GetYear
 from globals.ident       import btnid
-from globals.mime        import GetFileMimeType
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
 from input.list          import ListCtrl
 from input.text          import TextAreaPanel
+from libdbr              import fileinfo
 from libdbr              import paths
 from libdbr.fileio       import readFile
 from libdbr.logger       import Logger
@@ -387,7 +387,7 @@ class AboutDialog(wx.Dialog):
       CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog.txt"))
 
     if os.path.isfile(CHANGELOG):
-      changelog_mimetype = GetFileMimeType(CHANGELOG)
+      changelog_mimetype = fileinfo.getMimeType(CHANGELOG)
 
       logger.debug(GT("Changelog mimetype: {}").format(changelog_mimetype))
 

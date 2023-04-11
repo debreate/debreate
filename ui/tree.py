@@ -23,7 +23,7 @@ from dbr.language    import GT
 from globals.devices import GetMountedStorageDevices
 from globals.execute import ExecuteCommand
 from globals.ident   import menuid
-from globals.mime    import GetFileMimeType
+from libdbr          import fileinfo
 from libdbr          import paths
 from libdbr.logger   import Logger
 from ui.dialog       import ConfirmationDialog
@@ -54,7 +54,7 @@ class PathItem:
     self.Type = ""
 
     if self.Path:
-      self.Type = GetFileMimeType(self.Path)
+      self.Type = fileinfo.getMimeType(self.Path)
 
       executables_binary = (
         "x-executable",
