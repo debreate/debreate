@@ -27,9 +27,9 @@ from input.filelist     import FileListESS
 from input.filelist     import columns
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
+from libdbr             import paths
 from libdbr.fileio      import readFile
 from libdbr.logger      import Logger
-from libdbr.paths       import getSystemRoot
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
 from ui.dialog          import DetailedMessageDialog
@@ -80,6 +80,7 @@ class Page(WizardPage):
         defaultValue=True, name="nofollow-symlink", cfgSect="FILES")
 
     self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
+    self.tree_dirs.setTree(wx.GenericDirCtrl(self.tree_dirs, dir=paths.getUserHome()))
 
     # ----- Target path
     pnl_target = BorderedPanel(self)
@@ -270,7 +271,7 @@ class Page(WizardPage):
       self.ti_target.SetValue(self.prev_dest_value)
       self.ti_target.SetInsertionPoint(-1)
 
-    elif self.ti_target.GetValue()[0] != getSystemRoot():
+    elif self.ti_target.GetValue()[0] != paths.getSystemRoot():
       self.ti_target.SetValue(self.prev_dest_value)
       self.ti_target.SetInsertionPoint(-1)
 
@@ -292,7 +293,7 @@ class Page(WizardPage):
   #  TODO: Rename to 'GetTarget' or 'GetInputTarget'
   def GetDestValue(self, event=None):
     if not TextIsEmpty(self.ti_target.GetValue()):
-      if self.ti_target.GetValue()[0] == getSystemRoot():
+      if self.ti_target.GetValue()[0] == paths.getSystemRoot():
         self.prev_dest_value = self.ti_target.GetValue()
 
     if event:
