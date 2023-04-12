@@ -1,53 +1,34 @@
 
 Priority:
+- mark system license templates by different color text
 - examine changelog changes before release
-- add option to set locale manually
+- add option to override system locale
 - close progress dialogs on errors so program doesn't freeze
 - use wget or urllib module instead of calling system command
 - fix widget layout in GTK dialogs
-- use XML or JSON for config file
-- Test if user's home directory listed twice in directory tree if mounted on separate partition
 - Finish lintian overrides option
 - Cache lintian tags in local directory
 - Check for files being overwritten by duplicate items in file list before build
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
 - Set field IDs for all pages to work with 'Reset' method
-- Allow config fields to be optional so first run window doesn't show for missing
-- Fix Gtk issue where window position cannot be set at startup:
-  - Gtk-CRITICAL **: 18:08:55.826: gtk_distribute_natural_allocation: assertion 'extra_space >= 0' failed
-- Add check for wxPython version 4.1.1
 - Fix layout of Files page (widgets not shrinking with window resize)
 
 Non-priority:
 - use standard directories for logs
 - Create 'zoom' button image (magnifying glass)
-- Add build option for 'create deb' or 'do not create deb'
-- Add build option to stage files in temp dir or target dir
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
 - Add custom field option to Control
-- Add 'provides' field to Control
-- Add MIME type field to launcher/menu
 - Use custom buttons for template generation on Copyright page
 - Add option to eject removable drive from directory tree context menu
 - Create timer-based progress dialog class
-- Create a Python 2.x/3.x compatibility function for UTF-8 strings
-  - This could optionally be done on the dbr.language.GT function
-- Config file should not be required to exist before launching main app window
-- Option for make/cmake to create portable release
 - Add PIP build
 - Add option to build standalone installers
 - Add wizard to build packages from source
 - Create release notes for install from TODO & BUGS lists
-- Use Python's built-in module 'md5' for creating hashes
-- Startup window in primary monitor
-- Update missing path status in file list after selecting item
 - Add customizable filter for directory tree
-- Add refresh button on copyright page for updating templates list
 - Support multi-select for categories on launcher/menu page
 - Add alternate tooltip for 'strip' option if disabled
 - Add alternate tooltip for 'lintian' option if disabled
 - Add alternate tooltip for 'install' option if disabled
 - Don't show 'unknown error' if package build was cancelled
-- Support Python 3
-  - Use PIP wxPython package instead of system
-- Use XML format for .dbp project files
+- Use XML format for .dbp project files (maybe)
