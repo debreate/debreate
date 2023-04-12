@@ -485,12 +485,7 @@ def taskDistBin():
   else:
     exitWithError("failed to build portable binary package", errno.ENOENT)
 
-def taskDistDeb():
-  tasks.run("clean-deb")
-
-  print()
-  logger.info("building Debian binary distribution package ...")
-
+def __buildDebChangelog():
   root_debian = paths.join(dir_app, "debian")
   file_changelog = paths.join(root_debian, "changelog")
 
@@ -499,6 +494,13 @@ def taskDistDeb():
   if not os.path.isfile(file_changelog):
     exitWithError("failed to created Debian changelog", errno.ENOENT)
 
+def taskDistDeb():
+  tasks.run("clean-deb")
+
+  print()
+  logger.info("building Debian binary distribution package ...")
+
+  __buildDebChangelog()
   subprocess.run(("debuild", "-b", "-uc", "-us"))
 
   dir_parent = os.path.dirname(dir_app)
@@ -520,6 +522,15 @@ def taskDistDeb():
       continue
     if obj.startswith(deb_prefix) and obj.split(".")[-1] in ("build", "buildinfo", "changes"):
       checkError((fileio.deleteFile(abspath, verbose=options.verbose)))
+
+def taskDebSource():
+  tasks.run("clean-deb")
+
+  print()
+  logger.info("building Debian source package ...")
+
+  __buildDebChangelog()
+  subprocess.run(("debuild", "-S", "-sa"), check=True)
 
 def taskCheckCode():
   print()
@@ -598,6 +609,8 @@ def initTasks():
   addTask("dist-bin", taskDistBin, "Build a portable binary .zip distribution package.")
   addTask("dist-deb", taskDistDeb, sgr("Build a binary Debian distribution package." \
       + " Requires <bold>debuild</bold> (<em>apt install devscripts</em>)."))
+  addTask("deb-source", taskDebSource,
+      "Build a signed Debian source package for uploading to repo or PPA.")
   addTask("clean", taskClean, "Remove all temporary build files.")
   addTask("clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")

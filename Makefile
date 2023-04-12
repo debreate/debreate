@@ -44,9 +44,8 @@ dist-deb-src:
 	@#debuild -S -uc -us \
 	echo "dist-deb-src: feature not available"
 
-dist-deb-src-signed:
-	@#debuild -S -sa \
-	echo "dist-deb-src-signed: feature not available"
+deb-source:
+	@python3 build.py -t deb-source
 
 debianize: dist
 	@#dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i \
@@ -113,6 +112,9 @@ help:
 	echo "\tdist-deb"; \
 	echo "\t\t- Build a binary Debian distribution package."; \
 	echo "\t\t- Requires `tput bold`debuild`tput sgr0` (apt install devscripts).\n"; \
+	\
+	echo "\tdeb-source"; \
+	echo "\t\t- Build a signed Debian source package for uploading to repo or PPA.\n"; \
 	\
 	echo "\tclean"; \
 	echo "\t\t- Remove all temporary build files.\n"; \
