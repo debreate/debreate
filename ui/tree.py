@@ -177,13 +177,41 @@ class PathItem:
     self.Item.Path = paths.normalize(path, strict=True)
 
 
+class DirectoryTree(wx.GenericDirCtrl):
+  def __init__(self, parent, id=wx.ID_ANY, path=paths.getHomeDir()):
+    super().__init__(parent, id, path, style=wx.DIRCTRL_DEFAULT_STYLE|wx.DIRCTRL_MULTIPLE)
+
+    self.ctx_menu = wx.Menu()
+
+    mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT("Add to project"))
+    mitm_expand = wx.MenuItem(self.ctx_menu, menuid.EXPAND, GT("Expand"))
+    mitm_rename = wx.MenuItem(self.ctx_menu, menuid.RENAME, GT("Rename"))
+    mitm_togglehidden = wx.MenuItem(self.ctx_menu, menuid.TOGGLEHIDDEN, GT("Show Hidden"),
+        kind=wx.ITEM_CHECK)
+    mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT("Refresh"))
+
+    self.ctx_menu.Append(mitm_add)
+    self.ctx_menu.Append(mitm_expand)
+    self.ctx_menu.Append(mitm_rename)
+    self.ctx_menu.AppendSeparator()
+    self.ctx_menu.Append(mitm_togglehidden)
+    self.ctx_menu.Append(mitm_refresh)
+
+    self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
+
+  def onContextMenu(self, evt):
+    logger.debug("context menu activated")
+
+    self.PopupMenu(self.ctx_menu)
+
+
 ## A customized directory tree that is compatible with older wx versions
 #
 #  TODO: Add method GetFilePaths
 #  TODO: Change icon when directory expanded/collapsed
 #  TODO: Set current path when item selected
 #  TODO: Add option for refreshing tree (ReCreateTree?)
-class DirectoryTree(wx.TreeCtrl):
+class _DirectoryTree(wx.TreeCtrl):
   def __init__(self, parent, w_id=wx.ID_ANY, path=paths.getHomeDir(), exclude_pattern=[".*",],
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE,
       validator=wx.DefaultValidator, name=wx.TreeCtrlNameStr):
@@ -192,7 +220,7 @@ class DirectoryTree(wx.TreeCtrl):
         style=style|wx.TR_HAS_BUTTONS|wx.TR_MULTIPLE|wx.BORDER_NONE,
         validator=validator, name=name)
 
-    logger.deprecated(DirectoryTree, alt=wx.GenericDirCtrl)
+    logger.deprecated(_DirectoryTree, alt=wx.GenericDirCtrl)
 
     self.AssignImageList()
 

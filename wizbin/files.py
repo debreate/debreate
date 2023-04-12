@@ -42,7 +42,9 @@ from ui.panel           import BorderedPanel
 from ui.progress        import PD_DEFAULT_STYLE
 from ui.progress        import ProgressDialog
 from ui.style           import layout as lyt
+from ui.tree            import DirectoryTree
 from ui.tree            import DirectoryTreePanel
+from util               import depends
 from wiz.helper         import FieldEnabled
 from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
@@ -80,7 +82,8 @@ class Page(WizardPage):
         defaultValue=True, name="nofollow-symlink", cfgSect="FILES")
 
     self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
-    self.tree_dirs.setTree(wx.GenericDirCtrl(self.tree_dirs, dir=paths.getUserHome()))
+    # ~ self.tree_dirs.setTree(wx.GenericDirCtrl(self.tree_dirs, dir=paths.getUserHome()))
+    self.tree_dirs.setTree(DirectoryTree(self.tree_dirs))
 
     # ----- Target path
     pnl_target = BorderedPanel(self)
@@ -623,7 +626,12 @@ class Page(WizardPage):
   #  Actually bypasses DirectoryTreePanel & directly accesses
   #  ui.tree.DirectoryTree.GetSelectedPaths
   def OnImportFromTree(self, event=None):
-    return self.LoadPaths(self.DirTree.GetSelectedPaths())
+    selection = []
+    if depends.getWxVersion() < (4, 2, 0):
+      logger.error("directory tree is broken for this version of wxPython")
+    else:
+      selection = self.tree_dirs.getTree().GetPaths()
+    return self.LoadPaths(selection)
 
 
   ## Updates files' status in the file list
