@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+#DEBHELPER#
+
 # Script to compile Debreate's source into Python bytecode
 
 debreate compile

@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+#DEBHELPER#
+
 # Script to clean up residual files that might be left behind after uninstall
 
 prefix=/usr

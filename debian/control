@@ -2,10 +2,10 @@ Source: debreate
 Section: devel
 Priority: optional
 Maintainer: Jordan Irwin <antumdeluge@gmail.com>
-Build-Depends: debhelper (>=9), python|python3
+Build-Depends: debhelper (>=10), python3
 Standards-Version: 3.9.7
-Homepage: https://antumdeluge.github.io/debreate-web/
-X-Python-Version: >= 3.0
+Homepage: https://debreate.github.io/
+X-Python-Version: >= 3.10
 
 Package: debreate
 Architecture: all
