@@ -59,7 +59,7 @@ def __buildDialog(parent):
   text1 = wx.StaticText(fr, label=message1)
   text2 = wx.StaticText(fr, label=message2)
 
-  rm_cmd = wx.TextCtrl(fr, value="rm -f ~/.config/debreate/config",
+  rm_cmd = wx.TextCtrl(fr, value="rm -f ~/.config/debreate.conf",
       style=wx.TE_READONLY|wx.BORDER_NONE)
   rm_cmd.SetBackgroundColour(fr.BackgroundColour)
 
