@@ -1,8 +1,12 @@
-## \package globals.changes
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2017-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## @module globals.changes
 
 from globals.application import APP_name
 from globals.application import AUTHOR_email

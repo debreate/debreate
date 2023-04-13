@@ -1,4 +1,4 @@
-## \package dbr.templates
+## @module dbr.templates
 
 # MIT licensing
 # See: docs/LICENSE.txt

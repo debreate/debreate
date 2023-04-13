@@ -1,4 +1,4 @@
-## \package wizbin.copyright
+## @module wizbin.copyright
 
 # MIT licensing
 # See: docs/LICENSE.txt

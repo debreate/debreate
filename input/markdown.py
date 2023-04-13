@@ -1,8 +1,12 @@
-## \package input.markdown
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## @module input.markdown
 
 import wx
 from wx.richtext import RE_MULTILINE

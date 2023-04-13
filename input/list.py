@@ -1,8 +1,12 @@
-## \package input.list
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
+## @module input.list
 
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin

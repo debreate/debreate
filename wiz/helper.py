@@ -1,10 +1,14 @@
-## \package wiz.helper
+
+# ******************************************************
+# * Copyright © 2017-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module wiz.helper
 #
 #  Support functions for accessing wizard pages & attributes
-
-# MIT licensing
-# See: docs/LICENSE.txt
-
 
 import wx
 

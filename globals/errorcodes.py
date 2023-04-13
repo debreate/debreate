@@ -1,9 +1,14 @@
-## \package globals.errno
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module globals.errno
 #
 #  Redefines & adds some new codes to the system errno module
-
-# MIT licensing
-# See: docs/LICENSE.txt
 
 import copy
 import errno

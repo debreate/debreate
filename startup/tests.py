@@ -1,9 +1,14 @@
-## \package startup.tests
+
+# ******************************************************
+# * Copyright © 2017-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module startup.tests
 #
 #  Sets list of tests to be checked through app
-
-# MIT licensing
-# See: docs/LICENSE.txt
 
 from libdbr.logger import Logger
 

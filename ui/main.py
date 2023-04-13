@@ -10,7 +10,6 @@
 #
 #  @module ui.main Main Window Interface
 
-
 import os
 import shutil
 import subprocess

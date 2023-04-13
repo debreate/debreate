@@ -1,10 +1,14 @@
-## \package globals.tooltips
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module globals.tooltips
 #
 #  Defines tooltips that have longer texts
-
-# MIT licensing
-# See: docs/LICENSE.txt
-
 
 import wx
 

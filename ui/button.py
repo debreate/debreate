@@ -1,10 +1,14 @@
-## \package ui.buttons
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module ui.buttons
 #
 #  Custom buttons for application
-
-# MIT licensing
-# See: docs/LICENSE.txt
-
 
 import os, wx
 

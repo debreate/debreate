@@ -1,10 +1,14 @@
-## \package dbr.event
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module dbr.event
 #
 #  Custom event types & binders
-
-# MIT licensing
-# See: docs/LICENSE.txt
-
 
 from wx.lib.newevent import NewCommandEvent
 

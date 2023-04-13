@@ -1,10 +1,14 @@
-## \package globals.fileio
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
+## @module globals.fileio
 #
 #  File I/O operations
-
-# MIT licensing
-# See: docs/LICENSE.txt
-
 
 import codecs, os
 
