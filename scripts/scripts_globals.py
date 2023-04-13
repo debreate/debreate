@@ -129,7 +129,7 @@ debian_files = {
 src_excludes = ("bitmaps", "debian", "locale", "man", "scripts",
 		"templates", "data", "docs", "build")
 
-source_files = ["command_line.py", "init.py", "main.py"]
+source_files = ["init.py"]
 for subdir in os.listdir(DIR_root):
 	if not subdir.startswith(".") and not subdir.startswith("_") \
 			and not subdir in src_excludes:

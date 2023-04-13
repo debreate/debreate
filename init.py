@@ -24,16 +24,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "li
 import globals.paths
 import util
 
-from command_line  import GetParsedPath
-from command_line  import ParseArguments
-from command_line  import parsed_commands
-from command_line  import parsed_args_s
-from command_line  import parsed_args_v
 from dbr.language  import setTranslator
 from libdbr        import compat
 from libdbr        import paths
 from libdbr        import sysinfo
 from libdbr.logger import Logger
+from startup       import command_line
 from startup       import wxprompt
 
 
@@ -50,17 +46,17 @@ if err != 0:
   sys.exit(err)
 
 # *** Command line arguments
-ParseArguments(sys.argv[1:])
+command_line.ParseArguments(sys.argv[1:])
 
-# GetParsedPath must be called after ParseArguments
-parsed_path = GetParsedPath()
+# command_line.GetParsedPath must be called after command_line.ParseArguments
+parsed_path = command_line.GetParsedPath()
 
 dir_app = paths.getAppDir()
 
 setTranslator(util.appinfo.getLocaleDir())
 
 # Compiles python source into bytecode
-if "compile" in parsed_commands:
+if "compile" in command_line.parsed_commands:
   import compileall
 
 
@@ -94,7 +90,7 @@ if "compile" in parsed_commands:
   sys.exit(0)
 
 
-if "clean" in parsed_commands:
+if "clean" in command_line.parsed_commands:
   if not os.access(dir_app, os.W_OK):
     print("ERROR: No write privileges for {}".format(dir_app))
     sys.exit(errno.EACCES)
@@ -181,13 +177,13 @@ if ".py" in script_name:
 
 exit_now = 0
 
-if "version" in parsed_args_s:
+if "version" in command_line.parsed_args_s:
   print(VERSION_string)
 
   sys.exit(0)
 
 
-if "help" in parsed_args_s:
+if "help" in command_line.parsed_args_s:
   if util.appinfo.isPortable():
     res = subprocess.run(["man", "--manpath=\"{}/man\"".format(dir_app), "debreate"],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -200,8 +196,8 @@ if "help" in parsed_args_s:
   sys.exit(0)
 
 
-if "log-level" in parsed_args_v:
-  logger.setLevel(parsed_args_v["log-level"])
+if "log-level" in command_line.parsed_args_v:
+  logger.setLevel(command_line.parsed_args_v["log-level"])
 
 
 logger.info("Python version: {}".format(PY_VER_STRING))
