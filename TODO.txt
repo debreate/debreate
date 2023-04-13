@@ -12,7 +12,6 @@ Priority:
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
 - Set field IDs for all pages to work with 'Reset' method
 - Fix layout of Files page (widgets not shrinking with window resize)
-- use python argpase module
 
 Non-priority:
 - use standard directories for logs

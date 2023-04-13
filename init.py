@@ -43,22 +43,23 @@ logger.startLogging(globals.paths.getLogsDir())
 err, msg = compat.checkPython((3, 10))
 if err != 0:
   logger.error(msg)
+  logger.endLogging()
   sys.exit(err)
 
-# *** Command line arguments
-command_line.ParseArguments(sys.argv[1:])
+# initialize command line parser
+command_line.init(os.path.basename(sys.argv[0]))
 
-# command_line.GetParsedPath must be called after command_line.ParseArguments
-parsed_path = command_line.GetParsedPath()
+logger.setLevel(command_line.options.log_level)
+
+parsed_path = command_line.options.project
 
 dir_app = paths.getAppDir()
 
 setTranslator(util.appinfo.getLocaleDir())
 
 # Compiles python source into bytecode
-if "compile" in command_line.parsed_commands:
+if command_line.options.command == "compile":
   import compileall
-
 
   compile_dirs = (
     "dbr",
@@ -90,7 +91,7 @@ if "compile" in command_line.parsed_commands:
   sys.exit(0)
 
 
-if "clean" in command_line.parsed_commands:
+if command_line.options.command == "clean":
   if not os.access(dir_app, os.W_OK):
     print("ERROR: No write privileges for {}".format(dir_app))
     sys.exit(errno.EACCES)
@@ -174,31 +175,6 @@ from startup             import startup
 
 if ".py" in script_name:
   script_name = script_name.split(".py")[0]
-
-exit_now = 0
-
-if "version" in command_line.parsed_args_s:
-  print(VERSION_string)
-
-  sys.exit(0)
-
-
-if "help" in command_line.parsed_args_s:
-  if util.appinfo.isPortable():
-    res = subprocess.run(["man", "--manpath=\"{}/man\"".format(dir_app), "debreate"],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-  else:
-    res = subprocess.run(["man", "debreate"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-  if res.returncode != 0:
-    print("ERROR: Could not locate manpage: {}".format(res.stderr.decode("utf-8")))
-    sys.exit(res.returncode)
-  print("\n".join(res.stdout.decode("utf-8").split("\n")[2:-1]))
-  sys.exit(0)
-
-
-if "log-level" in command_line.parsed_args_v:
-  logger.setLevel(command_line.parsed_args_v["log-level"])
-
 
 logger.info("Python version: {}".format(PY_VER_STRING))
 logger.info("wxPython version: {}".format(WX_VER_STRING))
