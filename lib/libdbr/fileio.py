@@ -153,23 +153,6 @@ def appendFile(filepath, data, mode=__perm["f"], verbose=False):
   err, msg = writeFile(filepath, fin_data, False, mode, verbose)
   return err, msg
 
-
-__timestamps = {}
-
-## Checks a files timestamp information.
-#
-#  @param filepath
-#    Path to file to be checked.
-#  @return
-#    Timestamp string & flag denoting change from a previous timestamp.
-def checkTimestamp(filepath):
-  changed = False
-  ts = os.stat(filepath).st_mtime
-  if filepath in __timestamps:
-    changed = ts != __timestamps[filepath]
-  __timestamps[filepath] = ts
-  return ts, changed
-
 ## Checks if a target file or directory exists
 #
 #  @param target

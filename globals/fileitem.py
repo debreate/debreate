@@ -15,6 +15,7 @@ from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
 from globals.strings import IsString
 from globals.strings import TextIsEmpty
+from libdbr          import fileinfo
 from libdbr          import fileio
 
 
@@ -35,7 +36,7 @@ class FileItem:
     # Timestamp is set at construction
     self.Timestamp = None
     if not ignore_timestamp:
-      self.Timestamp = fileio.checkTimestamp(self.Path)
+      self.Timestamp = fileinfo.checkTimestamp(self.Path)
 
     # Defaults to normal file
     self.Type = FileType.NORM
@@ -138,11 +139,11 @@ class FileItem:
   def TimestampChanged(self):
     # Set file's timestamp if not already done
     if not self.Timestamp:
-      self.Timestamp = fileio.checkTimestamp(self.Path)
+      self.Timestamp = fileinfo.checkTimestamp(self.Path)
 
       return False
 
-    current_stamp = fileio.checkTimestamp(self.Path)
+    current_stamp = fileinfo.checkTimestamp(self.Path)
 
     if current_stamp != self.Timestamp:
       self.Timestamp = current_stamp
