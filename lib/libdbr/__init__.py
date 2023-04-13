@@ -9,7 +9,7 @@
 
 version_major = 0
 version_minor = 1
-version_dev = 5
+version_dev = 7
 version_tuple = (version_major, version_minor)
 
 ## Retrieves version information as a string.

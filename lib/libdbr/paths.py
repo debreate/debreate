@@ -110,6 +110,8 @@ def getUserHome(strict=False):
 #    If `True`, don't use Posix-style paths under MSYS.
 #  @return
 #    Absolute path to home directory.
+#  @deprecated
+#    Use `libdbr.paths.getUserHome`.
 def getHomeDir(strict=False):
   print("WARNING: {} is deprecated, use {} instead" \
       .format(__name__ + "." + getHomeDir.__name__, __name__ + "." + getUserHome.__name__))
@@ -125,7 +127,7 @@ def getHomeDir(strict=False):
 def getUserDataRoot(strict=False):
   if sysinfo.getOSName() == "win32":
     return os.getenv("APPDATA")
-  return join(getHomeDir(), ".local/share", strict=strict)
+  return join(getUserHome(), ".local/share", strict=strict)
 
 ## Retrieves user's local configuration directory.
 #
@@ -137,7 +139,7 @@ def getUserConfigRoot(strict=False):
   if sysinfo.getOSName() == "win32":
     # FIXME: is this correct?
     return os.getenv("APPDATA")
-  return join(getHomeDir(), ".config", strict=strict)
+  return join(getUserHome(), ".config", strict=strict)
 
 ## Retrieves root directory for current system.
 #

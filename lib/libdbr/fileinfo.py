@@ -8,6 +8,7 @@
 
 import mimetypes
 import os
+import re
 import sys
 
 from libdbr     import paths
@@ -53,3 +54,39 @@ def isExecutable(filepath):
   if sys.platform == "win32":
     return True
   return os.access(filepath, os.X_OK)
+
+## Retrieves a list of files under a directory.
+#
+#  @param _dir
+#    Directory to search.
+#  @param recursive
+#    Include sub-directories.
+#  @param absolute
+#    Return absolute paths.
+#  @param include
+#    Pattern to include files.
+#  @param exclude
+#    Pattern to exclude files.
+def getFileList(_dir, recursive=True, absolute=True, include="", exclude=""):
+  file_list = []
+  if os.path.isfile(_dir):
+    file_list.append(_dir)
+  elif os.path.isdir(_dir):
+    if recursive:
+      for ROOT, DIRS, FILES in os.walk(_dir):
+        for f in FILES:
+          if re.match(include, f) and not (re.match(exclude, f) if exclude else False):
+            if absolute:
+              f = paths.join(ROOT, f)
+            file_list.append(f)
+    else:
+      for obj in os.listdir(_dir):
+        abspath = paths.join(_dir, obj)
+        if os.path.isdir(abspath):
+          continue
+        if re.match(include, obj) and not (re.match(exclude, obj) if exclude else False):
+          if absolute:
+            file_list.append(abspath)
+          else:
+            file_list.append(obj)
+  return file_list
