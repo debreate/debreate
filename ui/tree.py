@@ -178,7 +178,7 @@ class PathItem:
 
 
 class DirectoryTree(wx.GenericDirCtrl):
-  def __init__(self, parent, id=wx.ID_ANY, path=paths.getHomeDir()):
+  def __init__(self, parent, id=wx.ID_ANY, path=paths.getUserHome()):
     super().__init__(parent, id, path, style=wx.DIRCTRL_DEFAULT_STYLE|wx.DIRCTRL_MULTIPLE)
 
     self.ctx_menu = wx.Menu()
@@ -212,7 +212,7 @@ class DirectoryTree(wx.GenericDirCtrl):
 #  TODO: Set current path when item selected
 #  TODO: Add option for refreshing tree (ReCreateTree?)
 class _DirectoryTree(wx.TreeCtrl):
-  def __init__(self, parent, w_id=wx.ID_ANY, path=paths.getHomeDir(), exclude_pattern=[".*",],
+  def __init__(self, parent, w_id=wx.ID_ANY, path=paths.getUserHome(), exclude_pattern=[".*",],
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE,
       validator=wx.DefaultValidator, name=wx.TreeCtrlNameStr):
 
@@ -523,7 +523,7 @@ class _DirectoryTree(wx.TreeCtrl):
   #
   #  Should always be first item in root list
   def GetHomeItem(self):
-    dir_home = paths.getHomeDir()
+    dir_home = paths.getUserHome()
     if self.mount_list:
       for ITEM in self.mount_list:
         if ITEM.Path == dir_home:
@@ -677,7 +677,7 @@ class _DirectoryTree(wx.TreeCtrl):
   ## Creates all mount items for tree
   def InitMountItems(self):
     # Failsafe conditional in case of errors reading user home directory
-    dir_home = paths.getHomeDir()
+    dir_home = paths.getUserHome()
     home_exists = os.path.isdir(dir_home)
     if home_exists:
       home_item = self.AppendItem(self.root_item, GT("Home directory"), dir_home,
@@ -1076,7 +1076,7 @@ class _DirectoryTree(wx.TreeCtrl):
         expanded = self.IsExpanded(selected)
 
       else:
-        selected_path = paths.getHomeDir()
+        selected_path = paths.getUserHome()
         expanded = True
 
       logger.debug("Selected path: {}".format(selected_path))

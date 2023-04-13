@@ -10,8 +10,8 @@
 
 import os
 
-from globals       import paths
 from libdbr        import config
+from libdbr        import paths
 from libdbr.logger import Logger
 
 
@@ -41,7 +41,7 @@ def ChangeWorkingDirectory(target_dir):
 
   except OSError:
     # Default to the user's home directory
-    dir_home = paths.getHomeDir()
+    dir_home = paths.getUserHome()
     if os.path.isdir(dir_home):
       os.chdir(dir_home)
 

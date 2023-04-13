@@ -51,7 +51,7 @@ class ConfCode:
 config_version = (1, 1)
 
 # Default configuration
-default_config_dir = "{}/.config/debreate".format(paths.getHomeDir())
+default_config_dir = "{}/.config/debreate".format(paths.getUserHome())
 default_config = "{}/config".format(default_config_dir)
 
 # helper class
@@ -87,7 +87,7 @@ __defaults = {
   "maximize": "False",
   "position": "0,0",
   "size": "800,640",
-  "workingdir": paths.getHomeDir(),
+  "workingdir": paths.getUserHome(),
   "tooltips": "True"
 }
 

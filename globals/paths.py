@@ -39,10 +39,10 @@ def getHomeDir():
   # ~ else:
     # ~ return os.getenv("HOME")
 
-  return libdbr.paths.getHomeDir()
+  return libdbr.paths.getUserHome()
 
 def getLocalDir():
-  return os.path.join(libdbr.paths.getHomeDir(), os.path.normpath(".local/share/debreate"))
+  return os.path.join(libdbr.paths.getUserHome(), os.path.normpath(".local/share/debreate"))
 
 def getCacheDir():
   return os.path.join(getLocalDir(), "cache")

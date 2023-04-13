@@ -13,10 +13,9 @@ import os
 from dbr.colors      import COLOR_dir
 from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
-from globals.fileio  import GetTimestamp
 from globals.strings import IsString
 from globals.strings import TextIsEmpty
-from libdbr.fileio   import readFile
+from libdbr          import fileio
 
 
 ## TODO: Doxygen
@@ -36,7 +35,7 @@ class FileItem:
     # Timestamp is set at construction
     self.Timestamp = None
     if not ignore_timestamp:
-      self.Timestamp = GetTimestamp(self.Path)
+      self.Timestamp = fileio.checkTimestamp(self.Path)
 
     # Defaults to normal file
     self.Type = FileType.NORM
@@ -110,7 +109,7 @@ class FileItem:
   #  \param noStrip
   #  \b \e String of leading & trailing characters to not strip
   def Read(self, split=False, convert=tuple, noStrip=None):
-    return convert(readFile(self.Path).split("\n"))
+    return convert(fileio.readFile(self.Path).split("\n"))
 
 
   ## Sets file's path & basename
@@ -139,11 +138,11 @@ class FileItem:
   def TimestampChanged(self):
     # Set file's timestamp if not already done
     if not self.Timestamp:
-      self.Timestamp = GetTimestamp(self.Path)
+      self.Timestamp = fileio.checkTimestamp(self.Path)
 
       return False
 
-    current_stamp = GetTimestamp(self.Path)
+    current_stamp = fileio.checkTimestamp(self.Path)
 
     if current_stamp != self.Timestamp:
       self.Timestamp = current_stamp

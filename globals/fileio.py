@@ -12,6 +12,8 @@
 
 import codecs, os
 
+import libdbr
+
 from globals.strings import GS
 from libdbr.logger   import Logger
 
@@ -26,7 +28,7 @@ logger = Logger(__name__)
 #  \param flag
 #  Filter files with given permission flags
 def GetFiles(path, flag=None):
-  logger.deprecated(__name__, GetFiles.__name__, "os.listdir")
+  logger.deprecated(GetFiles, alt=libdbr.fileinfo.getFileList)
 
   file_list = []
 
@@ -52,7 +54,7 @@ def GetFiles(path, flag=None):
 #  \return
 #  \b \e Float formatted timestamp
 def GetTimestamp(path):
-  logger.deprecated(__name__, GetTimestamp.__name__, "libdbr.fileio.checkTimestamp")
+  logger.deprecated(GetTimestamp, alt=libdbr.fileio.checkTimestamp)
 
   return os.stat(path).st_mtime
 
@@ -66,6 +68,6 @@ def GetTimestamp(path):
 #  \return
 #  \b \e True if timestamps are not the same
 def TimestampChanged(path, prevStamp):
-  logger.deprecated(__name__, TimestampChanged.__name__, "libdbr.fileio.checkTimestamp")
+  logger.deprecated(TimestampChanged, alt=libdbr.fileio.checkTimestamp)
 
   return GetTimestamp(path) != prevStamp
