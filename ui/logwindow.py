@@ -14,8 +14,8 @@ from dbr.event           import EVT_REFRESH_LOG
 from dbr.event           import RefreshLogEvent
 from dbr.font            import GetMonospacedFont
 from dbr.language        import GT
+from globals             import bitmaps
 from globals             import paths
-from globals.application import APP_logo
 from globals.fileitem    import FileItem
 from globals.ident       import btnid
 from globals.ident       import menuid
@@ -55,7 +55,7 @@ class LogWindow(wx.Dialog):
   def __init__(self, parent, logFile):
     wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
 
-    self.SetIcon(APP_logo)
+    self.SetIcon(wx.Icon(bitmaps.LOGO, wx.BITMAP_TYPE_PNG))
 
     self.LogFile = FileItem(logFile)
     self.SetTitle()

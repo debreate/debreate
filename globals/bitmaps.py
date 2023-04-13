@@ -8,13 +8,12 @@
 
 ## @module globals.bitmaps
 
-import os.path
-
 from dbr.image     import GetBitmap
 from globals.paths import getBitmapsDir
+from libdbr        import paths
 
 
-LOGO = os.path.join(getBitmapsDir(), "icon", "64", "logo.png")
+LOGO = paths.join(getBitmapsDir(), "icon", "64", "logo.png")
 
 ICON_ERROR = GetBitmap("error", 64, "icon")
 ICON_EXCLAMATION = ICON_ERROR

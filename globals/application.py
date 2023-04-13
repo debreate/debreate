@@ -9,7 +9,6 @@
 ## @module globals.application
 
 import os.path
-import wx
 
 from globals.paths import getBitmapsDir
 
@@ -29,9 +28,6 @@ APP_project_gl = "https://gitlab.com/AntumDeluge/debreate"
 
 ## SourceForge project page
 APP_project_sf = "https://sourceforge.net/projects/debreate"
-
-## Application's logo
-APP_logo = wx.Icon(os.path.join(getBitmapsDir(), "icon", "64", "logo.png"), wx.BITMAP_TYPE_PNG)
 
 ## Name of application
 APP_name = "Debreate"

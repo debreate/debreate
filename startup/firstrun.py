@@ -12,10 +12,11 @@
 
 import wx
 
-from dbr.language        import GT
-from libdbr              import paths
-from libdbr.logger       import Logger
-from ui.style            import layout as lyt
+from dbr.language  import GT
+from globals       import bitmaps
+from libdbr        import paths
+from libdbr.logger import Logger
+from ui.style      import layout as lyt
 
 
 __logger = Logger(__name__)
@@ -52,8 +53,7 @@ def __buildDialog(parent):
 
   path_icon = paths.join(paths.getAppDir(), "bitmaps/icon/64/logo.png")
   # set the titlebar icon
-  APP_logo = wx.Icon(path_icon, wx.BITMAP_TYPE_PNG)
-  fr.SetIcon(APP_logo)
+  fr.SetIcon(wx.Icon(bitmaps.LOGO, wx.BITMAP_TYPE_PNG))
 
   # Display a message to create a config file
   text1 = wx.StaticText(fr, label=message1)
