@@ -11,6 +11,7 @@
 #  @package libdbr.unittest
 
 import importlib
+import re
 import traceback
 import types
 
@@ -140,3 +141,34 @@ def assertNotNone(a1):
 assertNull = assertNone
 ## Alias for `assertNotNone`.
 assertNotNull = assertNotNone
+
+## Exception class thrown when an expression was intended to fail.
+#
+#  @param msg
+#    Optional message to display.
+class ExpressionSuccessError(AssertionError):
+  def __init__(self, msg=None):
+    super().__init__(msg)
+
+## Checks that an expression fails.
+#
+#  @param exp
+#    Callable expression.
+#  @param args
+#    Positional arguments to pass to expression.
+#  @param kwargs
+#    Keyword arguments to pass to expression.
+def assertError(exp, *args, **kwargs):
+  exp_string = "{}(".format(exp.__name__)
+  arg_list = str(args).strip("(),").split(", ")
+  kwarg_string = re.sub(r"'(.*?)': (.*?)[,|}]", r"\1=\2,", str(kwargs)).strip("{},")
+  for k in kwarg_string.split(", "):
+    arg_list.append(k)
+  exp_string += ", ".join(arg_list).rstrip(" ,") + ")"
+
+  try:
+    exp(*args, **kwargs)
+    raise ExpressionSuccessError("expected error but expression '{}' succeeded".format(exp_string))
+  except Exception as e:
+    if type(e) in (TypeError, ExpressionSuccessError):
+      raise e

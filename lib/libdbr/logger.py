@@ -16,34 +16,130 @@ from libdbr          import fileio
 from libdbr.dateinfo import dtfmt
 
 
+## Exception class for log level errors.
+#
+#  @param msg
+#    Optional text to display with error.
+class LogLevelError(Exception):
+  def __init__(self, msg=None):
+    super().__init__(msg)
+
 ## Logging level enumeration.
 class LogLevel:
-  SILENT, ERROR, WARN, INFO, DEBUG = range(0, 5)
+  ## Integer representations of logging levels.
+  __levels = range(0, 5)
+  SILENT, ERROR, WARN, INFO, DEBUG = __levels
 
-  strings = {
-    "": SILENT,
-    "ERROR": ERROR,
-    "WARN": WARN,
-    "INFO": INFO,
-    "DEBUG": DEBUG
-  }
+  ## String representations of logging levels.
+  __level_names = ()
+  ## Default logging level.
+  __default = INFO
 
+  ## Checks for a valid level representation.
+  #
+  #  @param level
+  #    Passed value to be checked.
+  #  @return
+  #    Error or None.
+  @staticmethod
+  def check(level):
+    try:
+      # allow string integer representations
+      level = int(level)
+    except ValueError:
+      pass
+    l_type = type(level)
+    if l_type == int:
+      if level not in LogLevel.__levels:
+        return LogLevelError("level must be within range '{}-{}', found '{}'".format(
+            LogLevel.__levels[0], LogLevel.__levels[-1], level))
+      return level
+    if l_type == str:
+      v_up = level.upper()
+      l_names = LogLevel.getLevelsNames()
+      if v_up not in l_names:
+        return LogLevelError("level must be one of '{}', found '{}'".format("|".join(l_names), level))
+      return v_up
+    return LogLevelError("level type must be 'int' or 'str', found '{}'".format(l_type))
+
+  ## Retrivies default logging level.
+  #
+  #  @return
+  #    Default log level.
   @staticmethod
   def getDefault():
-    return LogLevel.INFO
+    return LogLevel.__default
 
+  ## Sets default logging level.
+  #
+  #  @param level
+  #    Logging level.
   @staticmethod
-  def toString(loglevel):
-    for st in LogLevel.strings:
-      if LogLevel.strings[st] == loglevel:
-        if st == "WARN":
-          st = "WARNING"
-        return st
-    return LogLevel.getDefault()
+  def setDefault(level):
+    level = LogLevel.check(level)
+    if isinstance(level, Exception):
+      raise level
 
+    if type(level) == str:
+      level = LogLevel.fromString(level)
+    LogLevel.__default = level
+
+  ## Converts logging level to string representation.
+  #
+  #  @param level
+  #    Logging level.
+  #  @return
+  #    Logging level string representation.
   @staticmethod
-  def fromString(st):
-    return LogLevel.strings[st] if st in LogLevel.strings else LogLevel.getDefault()
+  def toString(level):
+    level = LogLevel.check(level)
+    if isinstance(level, Exception):
+      raise level
+
+    for lname in LogLevel.getLevelsNames():
+      if level == getattr(LogLevel, lname):
+        return lname
+    return LogLevel.toString(LogLevel.getDefault())
+
+  ## Converts logging level from string representation.
+  #
+  #  @param level
+  #    Logging level string representation.
+  #  @return
+  #    Logging level.
+  @staticmethod
+  def fromString(level):
+    level = LogLevel.check(level)
+    if isinstance(level, Exception):
+      raise level
+
+    if type(level) == str and hasattr(LogLevel, level):
+      return getattr(LogLevel, level)
+    return level
+
+  ## Retrieves available logging levels.
+  #
+  #  @return
+  #    List of logging levels.
+  @staticmethod
+  def getLevels():
+    return tuple(LogLevel.__levels)
+
+  ## Retrieves available logging levels.
+  #
+  #  @return
+  #    List of logging levels string representations.
+  @staticmethod
+  def getLevelsNames():
+    if LogLevel.__level_names:
+      return LogLevel.__level_names
+    lnames = []
+    for attr in vars(LogLevel):
+      if attr.startswith("_") or type(getattr(LogLevel, attr)) != int:
+        continue
+      lnames.append(attr)
+    LogLevel.__level_names = tuple(lnames)
+    return LogLevel.__level_names
 
 ## Class for logging messages to stdout/stdin & file.
 #
@@ -51,7 +147,7 @@ class LogLevel:
 #    - add timestamps
 class Logger:
   initialized = False
-  loglevel = LogLevel.INFO
+  loglevel = LogLevel.getDefault()
   logfile = None
   logsdir = None
   callback: types.FunctionType = None
@@ -124,12 +220,7 @@ class Logger:
   #    Verbosity level.
   @staticmethod
   def setLevel(loglevel):
-    if type(loglevel) == str:
-      loglevel_up = loglevel.upper()
-      if not loglevel_up in LogLevel.strings:
-        Logger.warn(Logger, "invalid logging level: " + loglevel)
-      loglevel = LogLevel.fromString(loglevel_up)
-    Logger.loglevel = loglevel
+    Logger.loglevel = LogLevel.fromString(loglevel)
 
   ## Retrieves level of verbosity.
   #
@@ -185,6 +276,8 @@ class Logger:
     prefix = (LogLevel.toString(lvl) + ":")
     if self.id:
       prefix += " (" + self.id + ")"
+    if isinstance(msg, Exception):
+      msg = str(msg)
     msg = prefix.ljust(30) + " | " + msg
     if details:
       if type(details) == str:
@@ -258,7 +351,7 @@ class Logger:
       self.deprecated("Logger.deprecated(obj, name)", alt="Logger.deprecated(obj)")
 
     alt_st = alt
-    if type(alt) != str:
+    if alt != None and type(alt) != str:
       alt_st = alt.__module__ if hasattr(alt, "__module__") else ""
       if hasattr(alt, "__self__") and hasattr(alt.__self__, "__class__"):
         alt_st += "." + alt.__self__.__class__.__name__
