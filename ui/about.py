@@ -8,17 +8,17 @@
 
 ## @module ui.about
 
-import os, wx
+import os
+
+import wx
 
 from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
 from dbr.language        import GT
-# ~ from globals             import paths
 from globals.application import APP_name
 from globals.application import AUTHOR_email
 from globals.application import AUTHOR_name
 from globals.constants   import INSTALLED
-# ~ from globals.constants   import PREFIX
 from globals.dateinfo    import GetYear
 from globals.ident       import btnid
 from globals.system      import PY_VER_STRING
@@ -88,9 +88,12 @@ class AboutDialog(wx.Dialog):
     ## List of credits
     self.credits = ListCtrl(t_credits)
     self.credits.SetSingleStyle(wx.LC_REPORT)
+    if self.credits.GetColumnCount() > 0:
+      # SetSingleStyle adds a column
+      self.credits.DeleteAllColumns()
     self.credits.InsertColumn(0, GT("Name"), width=150)
     self.credits.InsertColumn(1, GT("Job"), width=200)
-    self.credits.InsertColumn(2, GT("Email"), width=240)
+    self.credits.InsertColumn(2, GT("Email"), width=wx.LIST_AUTOSIZE_USEHEADER)
 
     credits_sizer = BoxSizer(wx.VERTICAL)
     credits_sizer.Add(self.credits, 1, wx.EXPAND)

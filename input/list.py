@@ -32,9 +32,6 @@ class ListCtrlBase(wx.ListView, ListCtrlAutoWidthMixin, InputField):
     self.clr_enabled = self.GetBackgroundColour()
     self.clr_disabled = parent.GetBackgroundColour()
 
-    if not self.GetColumnCount() and self.WindowStyleFlag & wx.LC_REPORT:
-      self.InsertColumn(0)
-
     # *** Event Handling *** #
 
     self.Bind(wx.EVT_KEY_DOWN, self.OnSelectAll)

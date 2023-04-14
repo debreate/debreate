@@ -12,8 +12,6 @@ non-priority:
 - Detailed progress dialog does not always size correctly on construction
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
   - Always occurs with wx 3.0
-- wx 3.0 only:
-  - Credits list does not expand completely on right edge
 - Some binary executables are recognized as 'application/x-sharedlib' MIME type from 'file' command
   - Find a workaround to display these as binary executables in directory tree
 - Error occurs sometimes after add changelog entries:
