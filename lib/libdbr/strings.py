@@ -21,6 +21,19 @@ def __printError(msg):
 
 __from_handlers = {"str": str.__call__}
 
+## Ensures working with strings.
+#
+#  @param st
+#    String or bytes object to check.
+#  @return
+#    String value.
+def __check_string(st):
+  if type(st) == bytes:
+    st = st.decode("utf-8")
+  if type(st) != str:
+    raise TypeError("value must be string, found '{}'".format(type(st)))
+  return st
+
 ## Convert an object to string.
 #
 #  @param obj
@@ -241,3 +254,44 @@ def sgr(st):
   for key in __sgrstyles:
     st = st.replace("<{}>".format(key), "\033[{}m".format(__sgrstyles[key]))
   return st
+
+## Checks if a string is only whitespace.
+#
+#  @param st
+#    String or bytes object to check.
+#  @return
+#    `True` if string contains only whitespace characters.
+def isEmpty(st):
+  # ensure working with string
+  st = __check_string(st)
+  return st.strip() == ""
+
+## Checks if a string represents an integer value.
+#
+#  @param st
+#    String or bytes object to check.
+#  @return
+#    `True` if string contains only integers.
+def isInteger(st):
+  # ensure working with string
+  st = __check_string(st)
+  try:
+    int(st)
+  except ValueError:
+    return False
+  return True
+
+## Checks if a string represents a numberic value.
+#
+#  @param st
+#    String or bytes object to check.
+#  @return
+#    `True` if string can be parsed as a float.
+def isNumeric(st):
+  # ensure working with string
+  st = __check_string(st)
+  try:
+    float(st)
+  except ValueError:
+    return False
+  return True
