@@ -72,15 +72,21 @@ OS_upstream_codename = GetOSInfo("DISTRIB_CODENAME", True)
 ## File where distribution code names cache is stored
 FILE_distnames = os.path.join(getCacheDir(), "distnames")
 
-## Retrieves distribution names from remote Debian site
+## Retrieves distribution names from remote Debian site.
 #
-#  NOTE: If site layout changes, function will need updated
-#  \param obsolete
-#  Include obsolete distributions
-#  \param unstable
-#  Include testing & unstable distributions
-#  \param generic
-#  Include generic names 'oldstable', 'stable', 'testing', & 'unstable'
+#  Release information is parsed from https://wiki.debian.org/DebianReleases. The default function
+#  is to include name of current production release.
+#
+#  NOTE: If site layout changes, function will need updated.
+#
+#  @param unstable
+#    If `True`, includes "sid" & "stretch".
+#  @param obsolete
+#    If `True`, includes "obsolete".
+#  @param generic
+#    If `True`, includes "oldstable". If `unstable` is `True`, also includes "unstable" & "testing".
+#  @return
+#    List of available distribution names.
 def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
   ref_site = "https://wiki.debian.org/DebianReleases"
 
@@ -131,9 +137,19 @@ def _get_debian_distnames(unstable=True, obsolete=False, generic=False):
   return dist_names
 
 
-## Retrieves distribution names from remote Ubuntu site
+## Retrieves distribution names from remote Ubuntu site.
 #
-#  NOTE: If site layout changes, function will need updated
+#  Release information is parsed from https://wiki.ubuntu.com/Releases. The default function is to
+#  include names of all currently supported LTS releases.
+#
+#  NOTE: If site layout changes, function will need updated.
+#
+#  @param unstable
+#    If `True`, includes next LTS release.
+#  @param obsolete
+#    If `True`, includes first six listed _end of life_ releases.
+#  @return
+#    List of available distribution names.
 def _get_ubuntu_distnames(unstable=True, obsolete=False):
   ref_site = "https://wiki.ubuntu.com/Releases"
   page_html = GetRemotePageText(ref_site)
@@ -230,9 +246,15 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
   return dist_names
 
 
-## Retrieves distribution names from remote Linux Mint site
+## Retrieves distribution names from remote Linux Mint site.
 #
-#  NOTE: If site layout changes, function will need updated
+#  Release information is parsed from https://www.linuxmint.com/download_all.php. The default
+#  function is to include name of current production release.
+#
+#  @fixme
+#    Broken.
+#  @return
+#    List of available distribution names.
 def _get_mint_distnames():
   ref_site = "https://www.linuxmint.com/download_all.php"
   page_html = GetRemotePageText(ref_site)
@@ -312,9 +334,12 @@ def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
   return (dist_names)
 
 
-## Get a list of available system release codenames
+## Get a list of available system release codenames.
 #
 #  FIXME: unstable, obsolete, & generic names should only be added if specified
+#
+#  @return
+#    List of available distribution names.
 def GetOSDistNames():
   global FILE_distnames
 
