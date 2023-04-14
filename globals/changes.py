@@ -8,18 +8,21 @@
 
 ## @module globals.changes
 
+import globals.dateinfo
+
 from globals.application import APP_name
 from globals.application import AUTHOR_email
 from globals.application import AUTHOR_name
 from globals.application import VERSION_string
-from globals.dateinfo    import GetDate
-from globals.dateinfo    import GetTime
-from globals.dateinfo    import GetTimeZone
-from globals.dateinfo    import dtfmt
 from globals.strings     import RemoveEmptyLines
 from globals.strings     import TextIsEmpty
 from globals.system      import OS_codename
+from libdbr              import dateinfo
+from libdbr.dateinfo     import dtfmt
+from libdbr.logger       import Logger
 
+
+__logger = Logger(__name__)
 
 section_delims = "*-+#"
 
@@ -64,8 +67,11 @@ def _format_lines(lines, preserve_indent=False):
 
 ## Formats date & time for changelog
 def _get_cl_timestamp():
-  fmt = dtfmt.CL
-  return "{} {} {}".format(GetDate(fmt), GetTime(fmt), GetTimeZone(fmt))
+  __logger.deprecated(_get_cl_timestamp, alt="libdbr.dateinfo.getDebianizedDate")
+
+  fmt = globals.dateinfo.dtfmt.CL
+  return "{} {} {}".format(globals.dateinfo.GetDate(fmt), dateinfo.getTime(dtfmt.CL),
+      globals.dateinfo.GetTimeZone(fmt))
 
 
 ## Function to format text Debian changelog standards
@@ -76,6 +82,8 @@ def _get_cl_timestamp():
 #  Debian changelog format
 def FormatChangelog(text, name=APP_name, version=VERSION_string, dist=OS_codename,
       urgency="low", packager=AUTHOR_name, email=AUTHOR_email, preserve_indent=False):
+  __logger.deprecated(FormatChangelog, alt="libdbr.misc.formatDebianChanges")
+
   if TextIsEmpty(text):
     return None
 

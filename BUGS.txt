@@ -1,12 +1,12 @@
+
 -- Known Bugs --
 
-Mandatory:
-- Generated timestamp in changelog is "None"
+required for release:
 
-Priority:
+priority:
 - system information tab in about dialog does not layout properly until after resize
 
-Non-priority:
+non-priority:
 - file selection via directory tree broken in wx 4.0 & 4.1
 - Detailed progress dialog does not always size correctly on construction
 - Menu/Launcher page: Text in 'Other' text area is highlighted in gray when imported
