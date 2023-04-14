@@ -11,17 +11,26 @@
 #  @module ui.main Main Window Interface
 
 import os
+import re
 import shutil
 import subprocess
 import sys
+import traceback
 import urllib
 import webbrowser
+
+_have_wget = False
+try:
+  import wget
+  _have_wget = True
+except ModuleNotFoundError:
+  pass
 
 from urllib.error import HTTPError
 from urllib.error import URLError
 
 import wx
-import wx.html
+import wx.html2
 
 import globals.paths
 
@@ -85,6 +94,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   def __init__(self):#, pos, size):
     wx.Frame.__init__(self, None, wx.ID_ANY)
     ModuleAccessCtrl.__init__(self, __name__)
+
+    self.error = {}
 
     self.timer = DebreateTimer(self)
     # placeholder for progress dialog
@@ -283,23 +294,33 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       DetailedMessageDialog(self, GT("Debreate"), text=GT("Debreate is up to date!")).ShowModal()
 
 
-  def __cacheManualFiles(self, args):
-    url_manual = args[0]
-    manual_cache = args[1]
-    manual_index = args[2]
-    main_dir = os.getcwd()
+  def __resetError(self):
+    self.error = {}
+
+  def __cacheManualFiles(self, *args, **kwargs):
+    manual_url = "https://debreate.github.io/help/usage.html"
+    logger.debug("caching manual from {}".format(manual_url))
+
+    manual_cache = args[0]
+    dir_orig = os.getcwd()
     os.chdir(manual_cache)
 
     try:
-      subprocess.Popen(["wget", "-rkp", "-nd", "-np", "-H", "-D",
-          "debreate.wordpress.com,antumdeluge.github.io", url_manual]).communicate()
-      # FIXME: use Python commands
-      subprocess.Popen(["sed", "-i", "-e", "s|<a.*>||g", "-e", "s|</a>||g", manual_index]).communicate()
+      cmd_wget = paths.getExecutable("wget")
+      if cmd_wget:
+        subprocess.run([cmd_wget, "-rkp", "-nd", "-np", "-D", "debreate.github.io",
+            manual_url])
+      elif _have_wget:
+        # wget module does not download required accompanying files
+        wget.download(manual_url)
+      else:
+        # TODO: fallback to urllib
+        pass
     except:
-      # FIXME: show error message
-      pass
+      self.error["message"] = "the following error occurred when trying to cache remote manual pages"
+      self.error["details"] = traceback.format_exc()
 
-    os.chdir(main_dir)
+    os.chdir(dir_orig)
     self.timer.Stop()
 
   ## Calls Pulse method on progress dialog when timer event occurs
@@ -346,7 +367,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         if self.error:
           msg = self.error["message"]
           msg = GT(re.sub(r"^(.)", msg[0].title(), msg))
-          # ~ msg = msg[0].title() +
           ShowErrorDialog(msg, self.error["details"])
           self.__resetError()
       if os.path.isfile(manual_index):

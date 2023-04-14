@@ -4,12 +4,11 @@
 required for release:
 - examine changelog changes before release
 - close progress dialogs on errors so program doesn't freeze
-- use wget or urllib module instead of calling system command
 - Check for files being overwritten by duplicate items in file list before build
 - add confirmation dialog to clear local cache
-- cache manual from new homepage
 
 priority:
+- fallback to urllib if wget command not found
 - mark system license templates by different color text
 - add option to override system locale
 - fix widget layout in GTK dialogs
