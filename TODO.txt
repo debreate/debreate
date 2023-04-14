@@ -1,23 +1,25 @@
 
-Priority:
-- mark system license templates by different color text
+required for release
 - examine changelog changes before release
-- add option to override system locale
 - close progress dialogs on errors so program doesn't freeze
 - use wget or urllib module instead of calling system command
+- Check for files being overwritten by duplicate items in file list before build
+- add confirmation dialog to clear local cache
+- cache manual from new homepage
+
+priority
+- mark system license templates by different color text
+- add option to override system locale
 - fix widget layout in GTK dialogs
 - Finish lintian overrides option
 - Cache lintian tags in local directory
-- Check for files being overwritten by duplicate items in file list before build
 - Set list of field IDs to be ignored when 'Reset' called on WizardPage
 - Set field IDs for all pages to work with 'Reset' method
 - Fix layout of Files page (widgets not shrinking with window resize)
 - create manpage dynamically
-- add confirmation dialog to clear local cache
-- cache manual from new homepage
+- create AppImage standalone installer package
 
-Non-priority:
-- use standard directories for logs
+non-priority
 - Create 'zoom' button image (magnifying glass)
 - Set custom images in imagelist.DirectoryImageList dynamically using bitmaps found in MIME directory
 - Add custom field option to Control
@@ -25,7 +27,6 @@ Non-priority:
 - Add option to eject removable drive from directory tree context menu
 - Create timer-based progress dialog class
 - Add PIP build
-- Add option to build standalone installers
 - Add wizard to build packages from source
 - Create release notes for install from TODO & BUGS lists
 - Add customizable filter for directory tree
