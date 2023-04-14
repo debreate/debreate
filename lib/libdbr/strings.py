@@ -10,6 +10,7 @@
 #
 #  @package libdbr.strings
 
+import re
 import sys
 import traceback
 
@@ -34,24 +35,27 @@ def __check_string(st):
     raise TypeError("value must be string, found '{}'".format(type(st)))
   return st
 
-## Convert an object to string.
+## Convert a compatible type to string.
 #
 #  @param obj
 #    Object to be converted.
 #  @param sep
 #    Separation delimiter in case of obj being a list type.
 #  @return
-#    String containing string representations of vales in list.
+#    String representation.
 def toString(obj, sep=""):
   res = ""
-  if type(obj) in (list, tuple, dict):
+  o_type = type(obj)
+  if o_type in (list, tuple, dict):
     for i in obj:
       if res:
         res += sep
       res += toString(i) # FIXME: do we need to pass 'sep' argument?
-  else:
+  elif o_type not in (str, bytes):
     res = str(obj)
-  return res
+  else:
+    res = obj
+  return __check_string(res)
 
 ## Converts a string to another type.
 #
@@ -295,3 +299,13 @@ def isNumeric(st):
   except ValueError:
     return False
   return True
+
+## Checks if string contains any alphabetic characters.
+#
+#  @param st
+#    String or bytes object to check.
+#  @return
+#    `True` if any alphabet characters exist in string.
+def hasAlpha(st):
+  st = toString(st)
+  return re.search("[A-z]", st) != None
