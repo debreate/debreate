@@ -5,6 +5,7 @@ required for release:
 
 priority:
 - system information tab in about dialog does not layout properly until after resize
+- can't disable tooltips under Gtk
 
 non-priority:
 - file selection via directory tree broken in wx 4.0 & 4.1
