@@ -29,7 +29,7 @@ from globals.tooltips import TT_wiz_next
 from globals.tooltips import TT_wiz_prev
 from input.markdown   import MarkdownDialog
 from libdbr.logger    import Logger
-from startup.tests    import GetTestList
+from startup          import tests
 from ui.button        import CreateButton
 from ui.dialog        import ShowDialog
 from ui.dialog        import ShowErrorDialog
@@ -58,7 +58,7 @@ class Wizard(wx.Panel):
     # ~ wx.Panel.__init__(self, parent, wx.ID_ANY, pageList)
     wx.Panel.__init__(self, parent, wx.ID_ANY)
 
-    testing = "alpha" in GetTestList()
+    testing = tests.isActive("alpha")
 
     # List of pages available in the wizard
     self.Pages = []

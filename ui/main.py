@@ -53,7 +53,7 @@ from libdbr               import paths
 from libdbr.fileio        import readFile
 from libdbr.fileio        import writeFile
 from libdbr.logger        import Logger
-from startup.tests        import GetTestList
+from startup              import tests
 from ui.about             import AboutDialog
 from ui.dialog            import ConfirmationDialog
 from ui.dialog            import DetailedMessageDialog
@@ -244,7 +244,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## Checks for new release availability
   def OnCheckUpdate(self, event=None): #@UnusedVariable
-    update_test = "update-fail" in GetTestList()
+    update_test = tests.isActive("update-fail")
 
     if UsingDevelopmentVersion() and not update_test:
       DetailedMessageDialog(self, GT("Update"),
@@ -324,7 +324,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   #  to open web browser in remote usage page.
   #  TODO: Use dialog as main method
   def OnHelp(self, event=None): #@UnusedVariable
-    if "alpha" in GetTestList():
+    if tests.isActive("alpha"):
       HelpDialog(self).ShowModal()
     else:
       # FIXME: files should be re-cached when Debreate upgraded to new version

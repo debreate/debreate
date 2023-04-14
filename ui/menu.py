@@ -22,7 +22,7 @@ from globals.ident   import menuid, refid
 from libdbr          import config
 from libdbr          import paths
 from libdbr.logger   import Logger
-from startup.tests   import GetTestList
+from startup         import tests
 
 
 logger = Logger(__name__)
@@ -92,7 +92,7 @@ class MenuBar(wx.MenuBar):
 # \param parent Main wx.Frame window
 # \return New MenuBar instance
 def createMenuBar(parent):
-  testing = "alpha" in GetTestList() or logger.debugging()
+  testing = tests.isActive("alpha") or logger.debugging()
 
   menubar = MenuBar(parent)
 

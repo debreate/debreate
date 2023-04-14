@@ -33,7 +33,7 @@ from libdbr             import paths
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
-from startup.tests      import UsingTest
+from startup            import tests
 from ui.button          import CreateButton
 from ui.checklist       import CheckListDialog
 from ui.dialog          import DetailedMessageDialog
@@ -97,7 +97,7 @@ class Page(WizardPage):
 
     # *** Lintian Overrides *** #
 
-    if UsingTest("alpha"):
+    if tests.isActive("alpha"):
       # FIXME: Move next to lintian check box
       logger.info("Enabling alpha feature \"lintian overrides\" option")
       self.lint_overrides = []
@@ -149,7 +149,7 @@ class Page(WizardPage):
     lyt_main.Add(pnl_options, 0, wx.LEFT, 5)
     lyt_main.AddSpacer(5)
 
-    if UsingTest("alpha"):
+    if tests.isActive("alpha"):
       #lyt_main.Add(wx.StaticText(self, label=GT("Lintian overrides")), 0, wx.LEFT, 5)
       lyt_main.Add(btn_lint_overrides, 0, wx.LEFT, 5)
 

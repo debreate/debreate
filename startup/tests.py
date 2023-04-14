@@ -10,34 +10,40 @@
 #
 #  Sets list of tests to be checked through app
 
-from libdbr.logger import Logger
+from libdbr.logger  import Logger
+from libdbr.strings import sgr
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
-## List of available tests
-available_tests = (
-  "alpha",
-  "update-fail",
-  )
+## List of available tests.
+__available = {
+  "alpha": "Enables features not ready for stable release.",
+  "update-fail": "Forces update check to fail."
+}
 
-## List is populated from 'test' command arguments
-#  This should be imported by init script
-test_list = []
+## Active tests enabled with --test from the command line.
+__active = []
 
-## Get the current list of tests to be run
+## Checks if a test is active.
 #
-#  This should be imported form modules other than init script
-def GetTestList():
-  return test_list
+#  @param _id
+#    String test identifier.
+#  @return
+#    `True` if id is in active list.
+def isActive(_id):
+  if _id not in __available:
+    __logger.warn("requested test ID '{}' not available".format(_id))
+  return _id in __active
 
-
-## Check if a test is currently in use
+## Activates a test.
 #
-#  \param test
-#  \b \e String name of test to check for
-def UsingTest(test):
-  if test not in available_tests:
-    logger.warn("Requested test not available: {}".format(test))
-
-  return test in test_list
+#  @param _id
+#    String test identifier.
+def activate(_id):
+  if _id not in __available:
+    raise TypeError(sgr("unknown test ID '<bold>{}</bold>'".format(_id)))
+  if _id in __active:
+    __logger.warn("test ID '{}' already active".format(_id))
+    return
+  __active.append(_id)
