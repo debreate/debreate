@@ -13,6 +13,8 @@ Priority:
 - Set field IDs for all pages to work with 'Reset' method
 - Fix layout of Files page (widgets not shrinking with window resize)
 - create manpage dynamically
+- add confirmation dialog to clear local cache
+- cache manual from new homepage
 
 Non-priority:
 - use standard directories for logs
