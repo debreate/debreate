@@ -12,21 +12,31 @@
 
 import sys
 
+import libdbr.strings
 
-## Checks if a text string is empty
+from libdbr.logger import Logger
+
+
+__logger = Logger(__name__)
+
+## Checks if a text string is empty.
 #
-#  \param text
-#  	The string to be checked
+#  @param text
+#    The string to be checked.
+#  @deprecated
+#    Use `libdbr.strings.isEmpty`.
 def TextIsEmpty(text):
+  __logger.deprecated(TextIsEmpty, alt=libdbr.strings.isEmpty)
+
   return not text.strip(" \t\n\r")
 
 
-## Removes empty lines from a string or string list
+## Removes empty lines from a string or string list.
 #
-#  \param text
-#  \b \e String or \b \e list to be checked
-#  \return
-#  \b \e String or \b \e tuple with empty lines removed
+#  @param text
+#    String or \b \e list to be checked.
+#  @return
+#    String or \b \e tuple with empty lines removed.
 def RemoveEmptyLines(text):
   fmt_string = False
 
@@ -48,37 +58,51 @@ def RemoveEmptyLines(text):
   return tuple(text)
 
 
-## Checks if object is a string instance
+## Checks if object is a string instance.
 #
-#  Compatibility function for legacy Python versions
+#  Compatibility function for legacy Python versions.
 #
-#  FIXME: deprecated
+#  @param text
+#    String to check.
+#  @deprecated
 def IsString(text):
+  __logger.deprecated(IsString)
+
   return isinstance(text, str)
 
 
-## Converts an object to a string instance
+## Converts an object to a string instance.
 #
-#  Compatibility function for legacy Python versions
+#  Compatibility function for legacy Python versions.
 #
-#  FIXME: deprecated
-#
-#  \param item
-#  Instance to be converted to string
-#  \return
-#  Compatible string
+#  @param item
+#    Instance to be converted to string.
+#  @return
+#    Compatible string.
+#  @deprecated
+#    Use `libdbr.strings.toString`.
 def ToString(item):
-  return str(item)
+  __logger.deprecated(ToString, alt=libdbr.strings.toString)
+
+  return libdbr.strings.toString(item)
 
 
-GS = str
+## @deprecated
+def GS(st):
+  __logger.deprecated(GS)
+
+  return str(st)
 
 
-## Tests if a string can be converted to int or float
+## Tests if a string can be converted to int or float.
 #
-#  \param string
-#  \b \e String to be tested
+#  @param string
+#    String to be tested.
+#  @deprecated
+#    Use `libdbr.strings.isNumeric`.
 def StringIsNumeric(string):
+  __logger.deprecated(StringIsNumeric, alt=libdbr.strings.isNumeric)
+
   try:
     float(string)
     return True
@@ -87,7 +111,12 @@ def StringIsNumeric(string):
     return False
 
 
-## Tests if a string is formatted for versioning
+## Tests if a string is formatted for versioning.
+#
+#  @param string
+#    String to be checked.
+#  @return
+#    `True` if string is formatted to represent versioning information.
 def StringIsVersioned(string):
   for P in string.split("."):
     if not P.isnumeric():
@@ -96,14 +125,16 @@ def StringIsVersioned(string):
   return True
 
 
-## Retrieves a class instance's module name string
+## Retrieves a class instance's module name string.
 #
-#  \param item
-#  Object instance
-#  \param className
-#  If <b><i>True</i></b>, returns class object's name instead of module name
-#  \param full
-#  If <b><i>True</i></b>, return entire module/class string without parsing
+#  @param item
+#    Object instance.
+#  @param className
+#    If `True`, returns class object's name instead of module name.
+#  @param full
+#    If `True`, return entire module/class string without parsing.
+#  @return
+#    String representation.
 def GetModuleString(item, className=False, full=False):
   module = ToString(item.__class__)
 
@@ -122,12 +153,14 @@ def GetModuleString(item, className=False, full=False):
   return ".".join(module[:-1])
 
 
-## Retrieves an instance's method name in the format of "Class.Method"
+## Retrieves an instance's method name in the format of "Class.Method".
 #
-#  \param function
-#  Function object
-#  \param includeModule
-#  Prepend module name to string for class methods
+#  @param function
+#    Function object.
+#  @param includeModule
+#    Prepend module name to string for class methods.
+#  @return
+#    String representation.
 def GetFunctionString(function, includeModule=False):
   function = ToString(function).strip("<>")
 

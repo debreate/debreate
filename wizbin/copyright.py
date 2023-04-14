@@ -1,10 +1,16 @@
+
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
+
 ## @module wizbin.copyright
 
-# MIT licensing
-# See: docs/LICENSE.txt
+import os
 
-
-import os, wx
+import wx
 
 from dbr.functions      import GetLongestLine
 from dbr.language       import GT
@@ -19,7 +25,6 @@ from globals.execute    import ExecuteCommand
 from globals.ident      import btnid
 from globals.ident      import pgid
 from globals.ident      import selid
-from globals.strings    import GS
 from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
@@ -37,18 +42,17 @@ from wiz.helper         import GetMainWindow
 from wiz.wizard         import WizardPage
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
 # Globals
 copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
 
 
-## Copyright page
+## Copyright page.
+#
+#  @param parent
+#    Parent `wx.Window` instance.
 class Page(WizardPage):
-  ## Constructor
-  #
-  #  \param parent
-  #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.COPYRIGHT)
 
@@ -113,10 +117,10 @@ class Page(WizardPage):
     self.Layout()
 
 
-  ## Displays a confirmation dialog to clear the text area if it is not empty
+  ## Displays a confirmation dialog to clear the text area if it is not empty.
   #
-  #  \return
-  #      <b><i>True</i></b>, if user confirmed
+  #  @return
+  #    `True`, if user confirmed.
   def DestroyLicenseText(self):
     if not TextIsEmpty(self.dsp_copyright.GetValue()):
       warn_msg = GT("This will destroy all license text.")
@@ -128,10 +132,10 @@ class Page(WizardPage):
     return True
 
 
-  ## Retrieves copyright/license text
+  ## Retrieves copyright/license text.
   #
-  #  \return
-  #      <b><i>tuple(str, str)</i></b>: Filename & copyright/license text
+  #  @return
+  #    `tuple(str, str)`: Filename & copyright/license text.
   def Get(self, getModule=False):
     page = self.dsp_copyright.GetValue()
 
@@ -144,13 +148,12 @@ class Page(WizardPage):
     return page
 
 
-  ## Retrieves license path
+  ## Retrieves license path.
   #
-  #  \param licName
-  #      License file basename to search for
-  #      If 'None', uses currently selected license
-  #  \return
-  #      Full path to license file if found
+  #  @param licName
+  #    License file basename to search for. If `None`, uses currently selected license.
+  #  @return
+  #    Full path to license file if found.
   def GetLicensePath(self, licName=None):
     # Default to currently selected template
     if not licName:
@@ -165,12 +168,18 @@ class Page(WizardPage):
     return "<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>".format(data)
 
 
-  ## Retrieves the name of the template currently selected
+  ## Retrieves template name.
+  #
+  #  @return
+  #    Currently selected template.
   def GetSelectedName(self):
     return GetField(self, selid.LICENSE).GetStringSelection()
 
 
-  ## Sets page's fields from opened file
+  ## Sets page's fields from opened file.
+  #
+  #  @param filename
+  #    File from which data is imported.
   def ImportFromFile(self, filename):
     if not os.path.isfile(filename):
       return dbrerrno.ENOENT
@@ -195,12 +204,15 @@ class Page(WizardPage):
     return 0
 
 
-  ## Checks if page can be exported or or added to build
+  ## Checks if page can be exported or or added to build.
+  #
+  #  @return
+  #    `True` if export is possible.
   def IsOkay(self):
     return not TextIsEmpty(self.dsp_copyright.GetValue())
 
 
-  ## Opens directory containing currently selected license
+  ## Opens directory containing currently selected license.
   def OnOpenPath(self, event=None):
     CMD_open = paths.getExecutable("xdg-open")
 
@@ -222,7 +234,7 @@ class Page(WizardPage):
     return False
 
 
-  ## Repopulates template list
+  ## Repopulates template list.
   def OnRefreshList(self, event=None):
     # FIXME: Ignore symbolic links???
     self.custom_licenses = GetLocalLicenses()
@@ -239,7 +251,7 @@ class Page(WizardPage):
         licenses.append(LIC)
         self.custom_licenses.append(LIC)
 
-    self.custom_licenses.sort(key=GS.lower)
+    self.custom_licenses.sort(key=str.lower)
 
     sel_templates = GetField(self, selid.LICENSE)
 
@@ -247,7 +259,7 @@ class Page(WizardPage):
     if sel_templates.GetCount():
       selected = sel_templates.GetStringSelection()
 
-    sel_templates.Set(sorted(licenses, key=GS.lower))
+    sel_templates.Set(sorted(licenses, key=str.lower))
 
     if selected:
       if not sel_templates.SetStringSelection(selected):
@@ -261,10 +273,9 @@ class Page(WizardPage):
       sel_templates.SetSelection(sel_templates.GetDefaultValue())
 
 
-  ## Enables/Disables simple template button
+  ## Enables/Disables simple template button.
   #
-  #  Simple template generation is only available
-  #  for system  licenses.
+  #  Simple template generation is only available for system  licenses.
   def OnSelectLicense(self, event=None):
     choice = GetField(self, selid.LICENSE)
     if choice:
@@ -279,7 +290,7 @@ class Page(WizardPage):
       self.SetLicenseTooltip()
 
 
-  ## Generates a full license template
+  ## Generates a full license template.
   def OnTemplateFull(self, event=None):
     selected_template = self.sel_templates.GetStringSelection()
     template_file = self.GetLicensePath(selected_template)
@@ -290,7 +301,7 @@ class Page(WizardPage):
 
         return
 
-      logger.debug("Copying license {}".format(template_file))
+      __logger.debug("Copying license {}".format(template_file))
 
       license_text = readFile(template_file)
 
@@ -313,7 +324,7 @@ class Page(WizardPage):
 
         center_header = add_header[template_name][1]
         if center_header:
-          logger.debug("Centering header...")
+          __logger.debug("Centering header...")
 
           offset = 0
 
@@ -325,14 +336,14 @@ class Page(WizardPage):
             # Use the longest line found in the text to center the header
             longest_line = GetLongestLine(license_text)
 
-            logger.debug("Longest line: {}".format(longest_line))
+            __logger.debug("Longest line: {}".format(longest_line))
 
             header_length = len(header)
             if header_length < longest_line:
               offset = (longest_line - header_length) / 2
 
           if offset:
-            logger.debug("Offset: {}".format(offset))
+            __logger.debug("Offset: {}".format(offset))
 
             header = "{}{}".format(" " * offset, header)
 
@@ -363,7 +374,7 @@ class Page(WizardPage):
     self.dsp_copyright.SetFocus()
 
 
-  ## Generates a short reference template for a system license
+  ## Generates a short reference template for a system license.
   def OnTemplateShort(self, event=None):
     if self.DestroyLicenseText():
       self.dsp_copyright.Clear()
@@ -376,7 +387,7 @@ class Page(WizardPage):
     self.dsp_copyright.SetFocus()
 
 
-  ## Resets all page fields to default values
+  ## Resets all page fields to default values.
   def Reset(self):
     self.dsp_copyright.Clear()
 
@@ -385,15 +396,15 @@ class Page(WizardPage):
       self.OnSelectLicense(self.sel_templates)
 
 
-  ## Sets the text of the displayed copyright
+  ## Sets the text of the displayed copyright.
   #
-  #  \param data
-  #      Text to parse for field values
+  #  @param data
+  #    Text to parse for field values.
   def Set(self, data):
     self.dsp_copyright.SetValue(data)
 
 
-  ## Changes the Choice instance's tooltip for the current license
+  ## Changes the Choice instance's tooltip for the current license.
   def SetLicenseTooltip(self):
     license_name = self.sel_templates.GetString(self.sel_templates.GetSelection())
     license_path = self.GetLicensePath(license_name)

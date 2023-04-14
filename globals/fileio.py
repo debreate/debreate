@@ -10,24 +10,28 @@
 #
 #  File I/O operations
 
-import codecs, os
+import codecs
+import os
 
-from globals.strings import GS
 from libdbr          import fileinfo
 from libdbr.logger   import Logger
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
 
-## Retrieves a list of all files from the given path
+## Retrieves a list of all files from the given path.
 #
-#  \param path
-#  Directory to search for license templates
-#  \param flag
-#  Filter files with given permission flags
+#  @param path
+#    Directory to search for license templates.
+#  @param flag
+#    Filter files with given permission flags.
+#  @return
+#    List of files found under `path`.
+#  @deprecated
+#    Use `libdbr.fileinfo.getFileList`.
 def GetFiles(path, flag=None):
-  logger.deprecated(GetFiles, alt=fileinfo.getFileList)
+  __logger.deprecated(GetFiles, alt=fileinfo.getFileList)
 
   file_list = []
 
@@ -43,30 +47,34 @@ def GetFiles(path, flag=None):
 
         file_list.append(F)
 
-  return sorted(file_list, key=GS.lower)
+  return sorted(file_list, key=str.lower)
 
 
-## Retrieve's a file's timestamp
+## Retrieve's a file's timestamp.
 #
-#  \param path
-#  Absolute path of file to read
-#  \return
-#  \b \e Float formatted timestamp
+#  @param path
+#    Absolute path of file to read.
+#  @return
+#    Float formatted timestamp.
+#  @deprecated
+#    Use `libdbr.fileinfo.checkTimestamp`.
 def GetTimestamp(path):
-  logger.deprecated(GetTimestamp, alt=fileinfo.checkTimestamp)
+  __logger.deprecated(GetTimestamp, alt=fileinfo.checkTimestamp)
 
   return os.stat(path).st_mtime
 
 
-## Checks if a file has been modified via timestamp
+## Checks if a file has been modified via timestamp.
 #
-#  \param path
-#  Absolute path of file to read
-#  \param prevStamp
-#  The previously saved timestamp
-#  \return
-#  \b \e True if timestamps are not the same
+#  @param path
+#    Absolute path of file to read
+#  @param prevStamp
+#    The previously saved timestamp
+#  @return
+#    `True` if timestamps are not the same.
+#  @deprecated
+#    Use `libdbr.fileinfo.checkTimestamp`.
 def TimestampChanged(path, prevStamp):
-  logger.deprecated(TimestampChanged, alt=fileinfo.checkTimestamp)
+  __logger.deprecated(TimestampChanged, alt=fileinfo.checkTimestamp)
 
   return GetTimestamp(path) != prevStamp
