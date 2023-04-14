@@ -12,12 +12,13 @@
 
 import os, sys, wx
 
+import libdbr.config
+
 from dbr.functions   import GetBoolean
 from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
 from globals.strings import TextIsEmpty
-from libdbr          import config
 from libdbr          import paths
 from libdbr          import strings
 from libdbr.fileio   import readFile
@@ -25,7 +26,7 @@ from libdbr.fileio   import writeFile
 from libdbr.logger   import Logger
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
 ## Configuration codes
 class ConfCode:
@@ -102,12 +103,12 @@ __defaults_handlers = {
 
 def getConfiguration():
   return {
-    "center": config.getBool("center", __defaults["center"]),
-    "maximize": config.getBool("maximize", __defaults["maximize"]),
-    "position": tuple(config.getList("position", __defaults["position"], ",", int)),
-    "size": tuple(config.getList("size", __defaults["size"], ",", int)),
-    "workingdir": config.getValue("workingdir", __defaults["workingdir"]),
-    "tooltips": config.getBool("tooltips", __defaults["tooltips"])
+    "center": libdbr.config.getBool("center", __defaults["center"]),
+    "maximize": libdbr.config.getBool("maximize", __defaults["maximize"]),
+    "position": tuple(libdbr.config.getList("position", __defaults["position"], ",", int)),
+    "size": tuple(libdbr.config.getList("size", __defaults["size"], ",", int)),
+    "workingdir": libdbr.config.getValue("workingdir", __defaults["workingdir"]),
+    "tooltips": libdbr.config.getBool("tooltips", __defaults["tooltips"])
   }
 
 def getDefault(key):
@@ -118,7 +119,7 @@ def getDefault(key):
 
 ## TODO: Doxygen
 def SetDefaultConfigKey(key, value):
-  logger.deprecated(__name__, SetDefaultConfigKey.__name__, "libdbr.config")
+  __logger.deprecated(SetDefaultConfigKey, alt=libdbr.config)
 
   __defaults[key] = strings.toString(value)
 
@@ -130,10 +131,10 @@ def SetDefaultConfigKey(key, value):
 #  @return
 #    ConfCode.
 def initialize(conf=default_config):
-  config.setFile(conf)
+  libdbr.config.setFile(conf)
   for V in __defaults:
-    config.setValue(V, __defaults[V])
-  config.save()
+    libdbr.config.setValue(V, __defaults[V])
+  libdbr.config.save()
   return ConfCode.SUCCESS
 
 
