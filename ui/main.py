@@ -50,10 +50,9 @@ from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
 from globals.threads      import Thread
 from libdbr               import config
+from libdbr               import fileio
 from libdbr               import paths
 from libdbr               import strings
-from libdbr.fileio        import readFile
-from libdbr.fileio        import writeFile
 from libdbr.logger        import Logger
 from startup              import tests
 from ui.about             import AboutDialog
@@ -331,56 +330,45 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     else:
       # FIXME: files should be re-cached when Debreate upgraded to new version
       # TODO: trim unneeded text
-      cached = False
-      manual_cache = os.path.join(globals.paths.getCacheDir(), "manual")
-      manual_index = os.path.join(manual_cache, "index.html")
+      # ~ cached = False
+      manual_cache = paths.join(globals.paths.getCacheDir(), "manual")
+      manual_index = paths.join(manual_cache, "usage.html")
       if not os.path.isdir(manual_cache):
         os.makedirs(manual_cache)
-      elif os.path.isfile(manual_index):
-        cached = True
-      url_manual = "https://debreate.wordpress.com/manual/"
-      # NOTE: use urllib.request.urlopen for Python 3
-      manual_data = urllib.request.urlopen(url_manual)
-      url_state = manual_data.getcode()
-      if url_state == 200:
-        # cache files
-        if not cached:
-          self.progress = ProgressDialog(self, message=GT("Caching manual files"),
-              style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
-          self.Disable()
-          self.timer.Start(100)
-          Thread(self.__cacheManualFiles, (url_manual, manual_cache, manual_index,)).Start()
-          self.progress.ShowModal()
-        manual_dialog = wx.Dialog(self, title="Debreate Manual", size=(800,500), style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
-        manual = wx.html.HtmlWindow(manual_dialog)
-        wx.GetApp().Yield()
-        if manual.LoadFile(manual_index):
-          manual_dialog.CenterOnParent()
-          manual_dialog.ShowModal()
-        else:
-          wx.GetApp().Yield()
-          webbrowser.open(url_manual)
+      if not os.path.isfile(manual_index):
+        self.progress = ProgressDialog(self, message=GT("Caching manual files"),
+            style=wx.PD_APP_MODAL|wx.PD_AUTO_HIDE)
+        self.Disable()
+        self.timer.Start(100)
+        Thread(self.__cacheManualFiles, manual_cache).Start()
+        self.progress.ShowModal()
+        self.Enable()
+        if self.error:
+          msg = self.error["message"]
+          msg = GT(re.sub(r"^(.)", msg[0].title(), msg))
+          # ~ msg = msg[0].title() +
+          ShowErrorDialog(msg, self.error["details"])
+          self.__resetError()
+      if os.path.isfile(manual_index):
+        manual_dialog = wx.Dialog(self, title=GT("Debreate Manual"), size=wx.Size(800, 500),
+            style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
+        manual = wx.html2.WebView.New()
+        manual.Create(manual_dialog, url="file://" + manual_index)
+        manual_dialog.ShowModal()
         manual_dialog.Destroy()
       else:
-        # open local document
-        wx.GetApp().Yield()
-        subprocess.call(["xdg-open", "{}/docs/usage.pdf".format(paths.getAppDir())])
+        # fallback to local PDF document
+        cmd_xdg_open = paths.getExecutable("xdg-open")
+        if cmd_xdg_open:
+          wx.GetApp().Yield()
+          subprocess.run([cmd_xdg_open, paths.join(paths.getAppDir(), "docs/usage.pdf")])
 
 
   ## Opens the logs directory in the system's default file manager
   def OnLogDirOpen(self, event=None): #@UnusedVariable
     dir_logs = globals.paths.getLogsDir()
     if os.path.isdir(dir_logs):
-      cmd_xdg = paths.getExecutable("xdg-open")
-      logger.debug(GT("Opening log directory ..."))
-      if sys.platform == "win32":
-        os.startfile(paths.normalize(dir_logs, strict=True))
-      elif cmd_xdg:
-        res = subprocess.run((cmd_xdg, dir_logs), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        if res.returncode != 0:
-          logger.error("failed to open directory: {}".format(res.stdout.decode("utf-8")))
-      else:
-        logger.error("cannot determine method to handle opening directories")
+      fileio.openFileManager(dir_logs)
       return
     logger.debug("log directory not available")
 
@@ -449,7 +437,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
         # This try statement can be removed when unicode support is enabled
         try:
-          writeFile(path, "[DEBREATE-{}]\n{}".format(VERSION_string, "\n".join(data)))
+          fileio.writeFile(path, "[DEBREATE-{}]\n{}".format(VERSION_string, "\n".join(data)))
 
           if overwrite:
             os.remove(backup)
@@ -592,7 +580,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
           GT("File does not exist or is not a regular file: {}").format(project_file))
       return False
 
-    data = readFile(project_file)
+    data = fileio.readFile(project_file)
 
     lines = data.split("\n")
 

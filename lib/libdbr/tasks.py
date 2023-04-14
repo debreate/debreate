@@ -1,6 +1,6 @@
 
 # ****************************************************
-# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# * Copyright © 2023 - Jordan Irwin (AntumDeluge)    *
 # ****************************************************
 # * This software is licensed under the MIT license. *
 # * See: LICENSE.txt for details.                    *
@@ -9,7 +9,7 @@
 import errno
 import types
 
-from libdbr.logger import Logger
+from .logger import Logger
 
 
 __logger = Logger(__name__)

@@ -15,7 +15,7 @@ import re
 import traceback
 import types
 
-from libdbr.logger import Logger
+from .logger import Logger
 
 
 __logger = Logger(__name__)

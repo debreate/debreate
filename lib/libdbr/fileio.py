@@ -1,6 +1,6 @@
 
 # ****************************************************
-# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# * Copyright © 2023 - Jordan Irwin (AntumDeluge)    *
 # ****************************************************
 # * This software is licensed under the MIT license. *
 # * See: LICENSE.txt for details.                    *
@@ -14,12 +14,16 @@ import lzma
 import os
 import re
 import shutil
+import subprocess
+import sys
 import tarfile
 import zipfile
 import zlib
 
 from tarfile import TarFile
 from zipfile import ZipFile
+
+from . import paths
 
 
 # line ending delimeter
@@ -821,3 +825,34 @@ def replace(filepath, patterns, replacement=None, count=0, flags=re.M, fl=False,
     if err == 0 and verbose:
       print("updated file '{}'".format(filepath))
   return err, msg
+
+## Attempts to open the system file manager.
+#
+#  @param path
+#    Optional directory path to set in file manager.
+def openFileManager(path=None):
+  if path and not os.path.isdir(path):
+    print("ERROR: ({}.{}) path is not a directory '{}'"
+        .format(__name__, openFileManager.__name__, path))
+    return
+
+  if sys.platform == "win32":
+    if path:
+      os.startfile(path)
+    else:
+      cmd_explorer = paths.getExecutable("explorer.exe")
+      if not cmd_explorer:
+        print("ERROR: ({}.{}) could not find 'explorer' executable"
+            .format(__name__, openFileManager.__name__))
+        return
+      subprocess.run([cmd_explorer])
+  else:
+    cmd_xdg_open = paths.getExecutable("xdg-open")
+    if not cmd_xdg_open:
+      print("ERROR: ({}.{}) could not find 'xdg-open' executable"
+          .format(__name__, openFileManager.__name__))
+      return
+    if path:
+      subprocess.run([cmd_xdg_open, path])
+    else:
+      subprocess.run([cmd_xdg_open, os.getenv("HOME")])

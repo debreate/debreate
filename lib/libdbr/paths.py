@@ -1,6 +1,6 @@
 
 # ****************************************************
-# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# * Copyright © 2023 - Jordan Irwin (AntumDeluge)    *
 # ****************************************************
 # * This software is licensed under the MIT license. *
 # * See: LICENSE.txt for details.                    *
@@ -10,9 +10,9 @@ import os
 import sys
 import typing
 
-from libdbr import fileinfo
-from libdbr import sysinfo
-from libdbr import userinfo
+from . import fileinfo
+from . import sysinfo
+from . import userinfo
 
 
 __cache: typing.Dict[str, typing.Any] = {
@@ -249,6 +249,28 @@ def getExecutable(cmd):
         __cache["executables"][cmd] = ext_filepath
         return ext_filepath
   return None
+
+## Retrieves a cached executable instead of searching the system.
+#
+#  @param _id
+#    String identifier.
+#  @return
+#    String path to executable or None if not cached.
+def getCachedExecutable(_id):
+  if _id in __cache["executables"]:
+    return __cache["executables"][_id]
+  return None
+
+## Caches executable path.
+#
+#  Useful for using a custom identifier.
+#
+#  @param _id
+#    String identifier.
+#  @param path
+#    Path to executable.
+def setExecutable(_id, path):
+  __cache["executables"][_id] = path
 
 ## Checks if an executable is available from PATH environment variable.
 #

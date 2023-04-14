@@ -1,6 +1,6 @@
 
 # ****************************************************
-# * Copyright (C) 2023 - Jordan Irwin (AntumDeluge)  *
+# * Copyright © 2023 - Jordan Irwin (AntumDeluge)    *
 # ****************************************************
 # * This software is licensed under the MIT license. *
 # * See: LICENSE.txt for details.                    *
@@ -13,10 +13,9 @@
 import os
 import re
 
-from libdbr        import strings
-from libdbr.fileio import readFile
-from libdbr.fileio import writeFile
-from libdbr.logger import Logger
+from .       import fileio
+from .       import strings
+from .logger import Logger
 
 
 __logger = Logger(__name__)
@@ -102,7 +101,7 @@ def __parseLines(filepath=None):
   if not os.path.isfile(filepath):
     __logger.error("cannot parse config, file doesn't exist: {}".format(filepath))
     return []
-  lines_in = readFile(filepath).split("\n")
+  lines_in = fileio.readFile(filepath).split("\n")
   lines = []
   lidx = 0
   for line_orig in lines_in:
@@ -315,7 +314,7 @@ def save(update=True):
   # new keys
   for key in tmp:
     lines.append(key + " = " + tmp[key])
-  err, msg = writeFile(__config_file, lines)
+  err, msg = fileio.writeFile(__config_file, lines)
   if err == 0:
     # update cache
     if update:

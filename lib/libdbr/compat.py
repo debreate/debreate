@@ -8,7 +8,7 @@
 
 from sys import version_info as py_version_info
 
-from libdbr import strings
+from . import strings
 
 
 ## Checks for a compatible version.

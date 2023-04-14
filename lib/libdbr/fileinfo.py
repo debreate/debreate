@@ -11,8 +11,8 @@ import os
 import re
 import sys
 
-from libdbr     import paths
-from libdbr.bin import execute
+from .    import paths
+from .bin import execute
 
 
 __default = "application/octet-stream"
