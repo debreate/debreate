@@ -225,6 +225,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
         GT("Head Developer"),
         GT("Packager"),
         "{} (es, it)".format(GT("Translation")),
+        GT("Website Designer & Author")
       ),
       AUTHOR_email
     )
@@ -233,7 +234,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       "Hugo Posnic",
       (
         GT("Code Contributor"),
-        GT("Website Designer & Author"),
       ),
       "hugo.posnic@gmail.com"
     )
