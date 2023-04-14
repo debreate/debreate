@@ -2,7 +2,6 @@
 
 Mandatory:
 - Generated timestamp in changelog is "None"
-- exporting menu file broken
 
 Priority:
 - system information tab in about dialog does not layout properly until after resize

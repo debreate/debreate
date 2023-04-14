@@ -43,8 +43,9 @@ def setLineEndings(delim):
 #  @return
 #    Formatted string.
 def __cleanLE(data):
-  global __le
-
+  # ensure working with strings
+  if type(data) == bytes:
+    data = data.decode("utf-8")
   data = data.replace("\r\n", "\n").replace("\r", "\n")
   if __le != "\n":
     data = data.replace("\n", __le)
