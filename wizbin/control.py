@@ -8,7 +8,9 @@
 
 ## @module wizbin.control
 
-import os, wx
+import os
+
+import wx
 
 from wx.adv import OwnerDrawnComboBox
 
@@ -17,13 +19,13 @@ from globals.errorcodes import dbrerrno
 from globals.ident      import btnid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.select       import ChoiceESS
 from input.select       import ComboBoxESS
 from input.text         import TextAreaESS
 from input.text         import TextAreaPanelESS
 from input.toggle       import CheckBoxESS
+from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
@@ -304,7 +306,7 @@ class Page(WizardPage):
       field_name = field.GetName().title()
       field_value = field.GetValue()
 
-      if FieldEnabled(field) and not TextIsEmpty(field_value):
+      if FieldEnabled(field) and not strings.isEmpty(field_value):
         logger.debug(GT("Exporting {} field").format(field_name))
 
         # Strip leading & trailing spaces, tabs, & newlines
@@ -320,7 +322,7 @@ class Page(WizardPage):
             # Remove trailing whitespace
             description[line_index] = description[line_index].rstrip()
 
-            if TextIsEmpty(description[line_index]):
+            if strings.isEmpty(description[line_index]):
               # Empty lines are formatted with one space indentation & a period
               description[line_index] = " ."
 
@@ -359,7 +361,7 @@ class Page(WizardPage):
       field_name = field.GetName().title()
       field_value = field.GetStringSelection()
 
-      if FieldEnabled(field) and not TextIsEmpty(field_value):
+      if FieldEnabled(field) and not strings.isEmpty(field_value):
         logger.debug(GT("Exporting {} field").format(field_name))
 
         # Strip leading & trailing spaces, tabs, & newlines
@@ -602,12 +604,12 @@ class Page(WizardPage):
           description.append(wx.EmptyString)
           continue
 
-        if not TextIsEmpty(line) and line.startswith(" "):
+        if not strings.isEmpty(line) and line.startswith(" "):
           # Remove the first space generated in the description
           description.append(line[1:])
           continue
 
-        if not TextIsEmpty(line):
+        if not strings.isEmpty(line):
           description.append(line)
 
     # Put leftovers in long description

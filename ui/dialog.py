@@ -8,7 +8,9 @@
 
 ## @module ui.dialog
 
-import os, wx
+import os
+
+import wx
 
 from dbr.language         import GT
 from dbr.workingdir       import ChangeWorkingDirectory
@@ -19,9 +21,9 @@ from globals.bitmaps      import ICON_QUESTION
 from globals.moduleaccess import ModuleAccessCtrl
 from globals.project      import project_wildcards
 from globals.project      import supported_suffixes
-from globals.strings      import TextIsEmpty
 from input.select         import ComboBox
 from input.text           import TextAreaPanel
+from libdbr               import strings
 from libdbr.logger        import Logger
 from ui.button            import AddCustomButtons
 from ui.button            import ButtonSizer
@@ -252,7 +254,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 
     self.AddButtons(buttons)
 
-    if not TextIsEmpty(details):
+    if not strings.isEmpty(details):
       # self.details will be set here
       self.CreateDetailedView(details)
 
@@ -305,7 +307,7 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
   #  	\b \e str : Detailed text to show in dialog
   def CreateDetailedView(self, details):
     # Controls have not been constructed yet
-    if TextIsEmpty(self.details):
+    if strings.isEmpty(self.details):
       self.btn_details = wx.ToggleButton(self, label=GT("Details"))
       #btn_copy = wx.Button(self, label=GT("Copy details"))
 
@@ -324,14 +326,12 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 
       self.ToggleDetails()
 
-    if not TextIsEmpty(details):
+    if not strings.isEmpty(details):
       for C in self.GetChildren():
         if isinstance(C, TextAreaPanel):
           self.details = details
           C.SetValue(self.details)
-
           return True
-
     return False
 
 

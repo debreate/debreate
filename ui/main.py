@@ -16,10 +16,12 @@ import subprocess
 import sys
 import urllib
 import webbrowser
-import wx.html
 
 from urllib.error import HTTPError
 from urllib.error import URLError
+
+import wx
+import wx.html
 
 import globals.paths
 
@@ -46,10 +48,10 @@ from globals.ident        import pgid
 from globals.moduleaccess import ModuleAccessCtrl
 from globals.project      import PROJECT_ext
 from globals.project      import PROJECT_txt
-from globals.strings      import GS
 from globals.threads      import Thread
 from libdbr               import config
 from libdbr               import paths
+from libdbr               import strings
 from libdbr.fileio        import readFile
 from libdbr.fileio        import writeFile
 from libdbr.logger        import Logger
@@ -265,7 +267,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     error_remote = GT("An error occurred attempting to contact remote website")
 
     if isinstance(current, (URLError, HTTPError)):
-      current = GS(current)
+      current = strings.toString(current)
       ShowErrorDialog(error_remote, current)
 
     elif isinstance(current, tuple) and current > VERSION_tuple:

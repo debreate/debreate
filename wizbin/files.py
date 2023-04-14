@@ -21,13 +21,13 @@ from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.filelist     import FileListESS
 from input.filelist     import columns
 from input.text         import TextArea
 from input.toggle       import CheckBoxCFG
 from libdbr             import paths
+from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.logger      import Logger
 from ui.button          import CreateButton
@@ -270,7 +270,7 @@ class Page(WizardPage):
 
   ## TODO: Doxygen
   def CheckDest(self, event=None):
-    if TextIsEmpty(self.ti_target.GetValue()):
+    if strings.isEmpty(self.ti_target.GetValue()):
       self.ti_target.SetValue(self.prev_dest_value)
       self.ti_target.SetInsertionPoint(-1)
 
@@ -295,7 +295,7 @@ class Page(WizardPage):
   #
   #  TODO: Rename to 'GetTarget' or 'GetInputTarget'
   def GetDestValue(self, event=None):
-    if not TextIsEmpty(self.ti_target.GetValue()):
+    if not strings.isEmpty(self.ti_target.GetValue()):
       if self.ti_target.GetValue()[0] == paths.getSystemRoot():
         self.prev_dest_value = self.ti_target.GetValue()
 
@@ -404,7 +404,7 @@ class Page(WizardPage):
     targets_list = []
 
     for L in files_data:
-      if not TextIsEmpty(L) and L[0] not in ignore_characters:
+      if not strings.isEmpty(L) and L[0] not in ignore_characters:
         if "[" in L and "]" in L:
           target = L.split("[")[-1].split("]")[0]
           continue

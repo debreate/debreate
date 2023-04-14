@@ -25,11 +25,11 @@ from globals.execute    import ExecuteCommand
 from globals.ident      import btnid
 from globals.ident      import pgid
 from globals.ident      import selid
-from globals.strings    import TextIsEmpty
 from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
 from libdbr             import paths
+from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.logger      import Logger
 from ui.button          import CreateButton
@@ -122,7 +122,7 @@ class Page(WizardPage):
   #  @return
   #    `True`, if user confirmed.
   def DestroyLicenseText(self):
-    if not TextIsEmpty(self.dsp_copyright.GetValue()):
+    if not strings.isEmpty(self.dsp_copyright.GetValue()):
       warn_msg = GT("This will destroy all license text.")
       warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
 
@@ -139,7 +139,7 @@ class Page(WizardPage):
   def Get(self, getModule=False):
     page = self.dsp_copyright.GetValue()
 
-    if TextIsEmpty(page):
+    if strings.isEmpty(page):
       page = None
 
     if getModule:
@@ -189,7 +189,7 @@ class Page(WizardPage):
     # Remove preceding empty lines
     remove_index = 0
     for I in copyright_data:
-      if not TextIsEmpty(I):
+      if not strings.isEmpty(I):
         break
 
       remove_index += 1
@@ -209,7 +209,7 @@ class Page(WizardPage):
   #  @return
   #    `True` if export is possible.
   def IsOkay(self):
-    return not TextIsEmpty(self.dsp_copyright.GetValue())
+    return not strings.isEmpty(self.dsp_copyright.GetValue())
 
 
   ## Opens directory containing currently selected license.

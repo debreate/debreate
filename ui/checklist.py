@@ -10,21 +10,20 @@
 
 import wx
 
-from dbr.language    import GT
-from globals.ident   import btnid
-from globals.ident   import pnlid
-from globals.strings import GS
-from globals.strings import TextIsEmpty
-from libdbr.logger   import Logger
-from ui.button       import CreateButton
-from ui.layout       import BoxSizer
-from ui.panel        import BorderedPanel
-from ui.panel        import ScrolledPanel
-from ui.style        import layout as lyt
-from wiz.helper      import GetField
+from dbr.language  import GT
+from globals.ident import btnid
+from globals.ident import pnlid
+from libdbr        import strings
+from libdbr.logger import Logger
+from ui.button     import CreateButton
+from ui.layout     import BoxSizer
+from ui.panel      import BorderedPanel
+from ui.panel      import ScrolledPanel
+from ui.style      import layout as lyt
+from wiz.helper    import GetField
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
 ## A checkable list
 class CheckList(BorderedPanel):
@@ -76,7 +75,7 @@ class CheckList(BorderedPanel):
     # FIXME: Static lines are counted
     item_index = self.GetItemCount()
 
-    #logger.debug(GT("Lintian tag: {}; Set checked: {}").format(label, checked))
+    #__logger.debug(GT("Lintian tag: {}; Set checked: {}").format(label, checked))
 
     pnl_bg = GetField(self, pnlid.BACKGROUND)
     lyt_bg = pnl_bg.GetSizer()
@@ -102,7 +101,7 @@ class CheckList(BorderedPanel):
   #  Sets items as checked if True
   def AddItems(self, labels, checked=False):
     for l in labels:
-      logger.debug("Adding item: {} (checked={})".format(l, checked))
+      __logger.debug("Adding item: {} (checked={})".format(l, checked))
 
       self.AddItem(l, checked)
 
@@ -166,7 +165,7 @@ class CheckList(BorderedPanel):
       if CHK.IsChecked():
         label = CHK.GetLabel()
 
-        logger.debug(GT("Retrieving checked label: {}").format(label))
+        __logger.debug(GT("Retrieving checked label: {}").format(label))
 
         checked_list.append(label)
 
@@ -369,8 +368,8 @@ class CheckListDialog(wx.Dialog):
 
 
   def OnAddCustom(self, event=None):
-    custom_label = GS(self.input_add_custom.GetValue()).strip(" ").replace(" ", "_")
-    if not TextIsEmpty(custom_label) and not self.check_list.LabelExists(custom_label):
+    custom_label = strings.toString(self.input_add_custom.GetValue()).strip(" ").replace(" ", "_")
+    if not strings.isEmpty(custom_label) and not self.check_list.LabelExists(custom_label):
       self.check_list.AddItem(custom_label, True)
       self.check_list.ScrollToEnd()
 

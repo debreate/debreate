@@ -10,7 +10,10 @@
 #
 #  @module dbr.config
 
-import os, sys, wx
+import os
+import sys
+
+import wx
 
 import libdbr.config
 
@@ -18,7 +21,6 @@ from dbr.functions   import GetBoolean
 from dbr.functions   import GetIntTuple
 from dbr.functions   import IsIntTuple
 from dbr.language    import GT
-from globals.strings import TextIsEmpty
 from libdbr          import paths
 from libdbr          import strings
 from libdbr.fileio   import readFile

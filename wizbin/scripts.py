@@ -8,20 +8,22 @@
 
 ## @module wizbin.scripts
 
-import os, wx
+import os
+
+import wx
 
 from dbr.language     import GT
 from globals.fileitem import FileItem
 from globals.ident    import btnid
 from globals.ident    import inputid
 from globals.ident    import pgid
-from globals.strings  import TextIsEmpty
 from globals.tooltips import SetPageToolTips
 from input.filelist   import BasicFileList
 from input.markdown   import MarkdownDialog
 from input.pathctrl   import PathCtrl
 from input.text       import TextAreaPanelESS
 from input.toggle     import CheckBox
+from libdbr           import strings
 from libdbr.fileio    import readFile
 from libdbr.logger    import Logger
 from ui.button        import CreateButton
@@ -354,7 +356,7 @@ class Page(WizardPage):
       non_empty_scripts = []
 
       for DS in self.script_objects[1][0], self.script_objects[2][0]:
-        if not TextIsEmpty(DS.GetValue()):
+        if not strings.isEmpty(DS.GetValue()):
           non_empty_scripts.append(DS.GetName())
 
       # Warn about overwriting previous post-install & pre-remove scripts
@@ -613,15 +615,14 @@ class DebianScript(wx.Panel):
     return FieldEnabled(self.ScriptBody)
 
 
-  ## Checks if the script is used & can be exported
+  ## Checks if the script is used & can be exporteds.
   #
-  #  The text area is checked &, if not empty, signifies that
-  #  the user want to export the script.
+  #  The text area is checked &, if not empty, signifies that the user want to export the script.
   #
-  #  \return
-  #      <b><i>True</i></b> if text area is not empty, <b><i>False</i></b> otherwise
+  #  @return
+  #    `True` if text area is not empty, `False` otherwise.
   def IsOkay(self):
-    return not TextIsEmpty(self.ScriptBody.GetValue())
+    return not strings.isEmpty(self.ScriptBody.GetValue())
 
 
   ## Resets all members to default values

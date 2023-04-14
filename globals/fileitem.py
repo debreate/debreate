@@ -14,9 +14,9 @@ from dbr.colors      import COLOR_dir
 from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
 from globals.strings import IsString
-from globals.strings import TextIsEmpty
 from libdbr          import fileinfo
 from libdbr          import fileio
+from libdbr          import strings
 
 
 ## TODO: Doxygen
@@ -79,7 +79,7 @@ class FileItem:
 
   ## Checks if the file has a target installation directory
   def HasTarget(self):
-    return IsString(self.Target) and not TextIsEmpty(self.Target)
+    return IsString(self.Target) and not strings.isEmpty(self.Target)
 
 
   ## Checks if the item represented is a directory

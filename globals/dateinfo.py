@@ -11,8 +11,8 @@
 from datetime import datetime
 from time     import strftime
 
-from globals.strings import GS
-from libdbr.logger   import Logger
+from libdbr        import strings
+from libdbr.logger import Logger
 
 
 __logger = Logger(__name__)
@@ -28,28 +28,39 @@ class dtfmt:
   STAMP = 3
 
 
-## Prepends a zero to single-digit numbers
+## Prepends a zero to single-digit numbers.
 #
-#  \return
-#  \b \e String representation of digit
+#  @param number
+#    Number to be formatted.
+#  @return
+#    String representation of digit.
+#  @deprecated
+#    Use `libdbr.dateinfo.digitToString`.
 def _digit_to_string(number):
   __logger.deprecated(_digit_to_string, alt="libdbr.dateinfo.digitToString")
 
   if number < 10:
-    return GS("0{}".format(number))
+    return strings.toString("0{}".format(number))
 
-  return GS(number)
+  return strings.toString(number)
 
 
-## Retrieves the current year
+## Retrieves the current year.
 #
-#  FIXME: Should return value default to integer?
-#  \return
-#  \b \e String representation of the current year
+#  @fixme
+#    Should return value default to integer?
+#  @param fmt
+#    Formatting type.
+#  @param string_value
+#    If `True`, return a string value.
+#  @return
+#    String representation of the current year.
+#  @deprecated
+#    Use `libdbr.dateinfo.getYear`.
 def GetYear(fmt=dtfmt.DEFAULT, string_value=True):
   __logger.deprecated(GetYear, alt="libdbr.dateinfo.getYear")
 
-  year = GS(strftime("%Y"))
+  year = strings.toString(strftime("%Y"))
 
   if not string_value:
     year = int(year)
@@ -58,10 +69,15 @@ def GetYear(fmt=dtfmt.DEFAULT, string_value=True):
 
 
 ## TODO: Doxygen
+#
+#  @param string_value
+#    If `True`, return a string value.
+#  @deprecated
+#    Use `libdbr.dateinfo.getMonth`.
 def GetMonthInt(string_value=False):
   __logger.deprecated(GetMonthInt, alt="libdbr.dateinfo.getMonth")
 
-  month = GS(strftime("%m"))
+  month = strings.toString(strftime("%m"))
 
   if not string_value:
     month = int(month)
@@ -70,10 +86,15 @@ def GetMonthInt(string_value=False):
 
 
 ## TODO: Doxygen
+#
+#  @param string_value
+#    If `True`, return a string value.
+#  @deprecated
+#    Use `libdbr.dateinfo.getDay`.
 def GetDayInt(string_value=False):
   __logger.deprecated(GetDayInt, alt="libdbr.dateinfo.getDay")
 
-  day = GS(strftime("%d"))
+  day = strings.toString(strftime("%d"))
 
   if not string_value:
     day = int(day)
@@ -81,12 +102,14 @@ def GetDayInt(string_value=False):
   return day
 
 
-## Retrieves today's date
+## Retrieves today's date.
 #
-#  \param changelog
-#  If \b \e True, formats output to Debian changelog standard
-#  \return
-#  \b \e String representation of date
+#  @param fmt
+#    Formatting type.
+#  @return
+#    String representation of date.
+#  @deprecated
+#    Use `libdbr.dateinfo.getDate`.
 def GetDate(fmt=dtfmt.DEFAULT):
   __logger.deprecated(GetDate, alt="libdbr.dateinfo.getDate")
 
@@ -105,7 +128,14 @@ def GetDate(fmt=dtfmt.DEFAULT):
   return "{}-{}".format(yr, strftime("%m-%d"))
 
 
-## Retrieves current time
+## Retrieves current time.
+#
+#  @param fmt
+#    Formatting type.
+#  @return
+#    Current timestamp.
+#  @deprecated
+#    Use `libdbr.dateinfo.getTime`.
 def GetTime(fmt=dtfmt.DEFAULT):
   __logger.deprecated(GetTime, alt="libdbr.dateinfo.getTime")
 
@@ -113,21 +143,28 @@ def GetTime(fmt=dtfmt.DEFAULT):
   current_time = None
 
   if fmt in (dtfmt.LOG, dtfmt.STAMP,):
-    ms = GS(datetime.now().strftime("%f"))[:3]
+    ms = strings.toString(datetime.now().strftime("%f"))[:3]
 
     if fmt == dtfmt.STAMP:
       # HHMMSSmmm
-      current_time = "{}{}".format(GS(strftime("%H%M%S")), ms)
+      current_time = "{}{}".format(strings.toString(strftime("%H%M%S")), ms)
 
     else:
       # HH:MM:SS.mmm
-      current_time = "{}.{}".format(GS(strftime("%T")), ms)
+      current_time = "{}.{}".format(strings.toString(strftime("%T")), ms)
 
   return current_time
 
 
-## Retrieves current time zone
+## Retrieves current time zone.
+#
+#  @param fmt
+#    Formatting type.
+#  @return
+#    Timezone.
+#  @deprecated
+#    Use `libdbr.dateinfo.getTimeZone`.
 def GetTimeZone(fmt=dtfmt.DEFAULT):
   __logger.deprecated(GetTimeZone, alt="libdbr.dateinfo.getTimeZone")
 
-  return GS(strftime("%z"))
+  return strings.toString(strftime("%z"))

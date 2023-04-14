@@ -11,27 +11,36 @@
 #  Global functions used throughout Debreate
 
 
-import os, re, traceback, subprocess, wx
+import os
+import re
+import traceback
+import subprocess
+
 from urllib.error   import URLError
 from urllib.request import urlopen
+
+import wx
 
 from dbr.language        import GT
 from globals.application import APP_project_gh
 from globals.application import VERSION_dev
 from globals.errorcodes  import dbrerrno
-from globals.strings     import GS
 from globals.strings     import IsString
 from globals.strings     import StringIsNumeric
 from globals.system      import PY_VER_STRING
 from libdbr              import paths
+from libdbr              import strings
+from libdbr.logger       import Logger
 
 
-## Get the current version of the application
+__logger = Logger(__name__)
+
+## Get the current version of the application.
 #
-#  \param remote
-#  Website URL to parse for update
-#  \return
-#  	Application's version tuple
+#  @param remote
+#    Website URL to parse for update.
+#  @return
+#    Application's version tuple.
 def GetCurrentVersion(remote=APP_project_gh):
   try:
     version = os.path.basename(urlopen("{}/releases/latest".format(remote)).geturl())
@@ -84,12 +93,16 @@ def GetLongestLine(lines):
   return longest
 
 
-## Checks if the system is using a specific version of Python
+## Checks if the system is using a specific version of Python.
 #
-#  FIXME: This function is currently not used anywhere in the code
-#  \param version
-#  	The minimal version that should be required
+#  @fixme
+#    This function is currently not used anywhere in the code.
+#  @param version
+#    The minimal version that should be required.
+#  @deprecated
 def RequirePython(version):
+  __logger.deprecated(RequirePython)
+
   error = "Incompatible python version"
   t = type(version)
   if t == type(""):
@@ -107,34 +120,39 @@ def RequirePython(version):
   raise ValueError("Wrong type for argument 1 of RequirePython(version)")
 
 
-## Checks if a string contains any alphabetic characters
+## Checks if a string contains any alphabetic characters.
 #
-#  \param value
-#  	\b \e str : String to check
-#  \return
-#  	\b \e bool : Alphabet characters found
+#  @param value
+#    \b \e str : String to check.
+#  @return
+#    \b \e bool : Alphabet characters found.
+#  @deprecated
+#    Use `libdbr.strings.hasAlpha`.
 def HasAlpha(value):
-  return (re.search("[a-zA-Z]", GS(value)) != None)
+  __logger.deprecated(HasAlpha, alt=strings.hasAlpha)
+
+  # ~ return (re.search("[a-zA-Z]", strings.toString(value)) != None)
+  return strings.hasAlpha(value)
 
 
-## Finds integer value from a string, float, tuple, or list
+## Finds integer value from a string, float, tuple, or list.
 #
-#  \param value
-#  	Value to be checked for integer equivalent
-#  \return
-#  	\b \e int|None
+#  @param value
+#    Value to be checked for integer equivalent.
+#  @return
+#    `int` or `None`.
 def GetInteger(value):
   if isinstance(value, (int, float,)):
     return int(value)
 
-  # Will always use there very first value, even for nested items
+  # Will always use the very first value, even for nested items
   elif isinstance(value,(tuple, list,)):
     # Recursive check lists & tuples
     return GetInteger(value[0])
 
   elif value and IsString(value):
     # Convert because of unsupported methods in str class
-    value = GS(value)
+    value = strings.toString(value)
 
     if HasAlpha(value):
       return None
@@ -158,12 +176,12 @@ def GetInteger(value):
   return None
 
 
-## Finds a boolean value from a string, integer, float, or boolean
+## Finds a boolean value from a string, integer, float, or boolean.
 #
-#  \param value
-#  	Value to be checked for boolean equivalent
-#  \return
-#  	\b \e bool|None
+#  @param value
+#    Value to be checked for boolean equivalent.
+#  @return
+#    `bool` or `None`.
 def GetBoolean(value):
   v_type = type(value)
 
@@ -184,12 +202,12 @@ def GetBoolean(value):
   return None
 
 
-## Finds a tuple value from a string, tuple, or list
+## Finds a tuple value from a string, tuple, or list.
 #
-#  \param value
-#  	Value to be checked for tuple equivalent
-#  \return
-#  	\b \e tuple|None
+#  @param value
+#    Value to be checked for tuple equivalent.
+#  @return
+#   `tuple` or `None`.
 def GetIntTuple(value):
   if isinstance(value, (tuple, list,)):
     if len(value) > 1:
@@ -236,21 +254,42 @@ def GetIntTuple(value):
   return None
 
 
+## Checks if a value is an integer.
+#
+#  @param value
+#    Value to be checked.
+#  @return
+#    `True` if value represents an integer.
 def IsInteger(value):
   return GetInteger(value) != None
 
 
+## Checks if a value is a boolean.
+#
+#  @param value
+#    Value to be checked.
+#  @return
+#    `True` if value represents a boolean.
 def IsBoolean(value):
   return GetBoolean(value) != None
 
 
+## Checks if a value is an integer tuple.
+#
+#  @param value
+#    Value to be checked.
+#  @return
+#    `True` if value represents an integer tuple.
 def IsIntTuple(value):
   return GetIntTuple(value) != None
 
 
-## Checks if file is binary & needs stripped
+## Checks if file is binary & needs stripped.
 #
-#  FIXME: Handle missing 'file' command
+#  @param file_name
+#    Path to file.
+#  @fixme
+#    Handle missing 'file' command.
 def FileUnstripped(file_name):
   CMD_file = paths.getExecutable("file")
 
@@ -272,7 +311,17 @@ def FileUnstripped(file_name):
   return False
 
 
+## Builds a .deb package from a pre-formatted directory tree.
+#
+#  @param root_dir
+#    Directory containing files & meta data for package.
+#  @param filename
+#    Filename for constructed package.
+#  @deprecated
+#    Dead code. Use `BuildDebPackage`.
 def BuildBinaryPackageFromTree(root_dir, filename):
+  __logger.deprecated(BuildBinaryPackageFromTree, alt=BuildDebPackage)
+
   if not os.path.isdir(root_dir):
     return dbrerrno.ENOENT
 
@@ -286,10 +335,20 @@ def BuildBinaryPackageFromTree(root_dir, filename):
   return 0
 
 
+## Checks if this is a development version.
+#
+#  @return
+#    `True` if development version integer is not 0.
 def UsingDevelopmentVersion():
   return VERSION_dev != 0
 
 
+## Builds a .deb package from a pre-formatted directory tree.
+#
+#  @param stage_dir
+#    Directory containing files & meta data for package.
+#  @param target_file
+#    Filename for constructed package.
 def BuildDebPackage(stage_dir, target_file):
   packager = paths.getExecutable("dpkg-deb")
   fakeroot = paths.getExecutable("fakeroot")
@@ -308,7 +367,12 @@ def BuildDebPackage(stage_dir, target_file):
   return (dbrerrno.SUCCESS, output)
 
 
-## Check if mouse is within the rectangle area of a window
+## Check if mouse is within the rectangle area of a window.
+#
+#  @param window
+#    `wx.Window` instance.
+#  @return
+#    `True` if mouse positions is within `window` rectangle.
 def MouseInsideWindow(window):
   # Only need to find size because ScreenToClient method gets mouse pos
   # relative to window.

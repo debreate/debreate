@@ -19,7 +19,6 @@ from globals.ident    import chkid
 from globals.ident    import inputid
 from globals.ident    import pgid
 from globals.ident    import selid
-from globals.strings  import TextIsEmpty
 from globals.system   import GetOSDistNames
 from globals.tooltips import SetPageToolTips
 from input.pathctrl   import PathCtrlESS
@@ -30,6 +29,7 @@ from input.text       import TextAreaPanel
 from input.text       import TextAreaPanelESS
 from input.toggle     import CheckBox
 from input.toggle     import CheckBoxESS
+from libdbr           import strings
 from libdbr.logger    import Logger
 from ui.button        import CreateButton
 from ui.dialog        import DetailedMessageDialog
@@ -173,7 +173,7 @@ class Page(WizardPage):
   def AddInfo(self, event=None):
     new_changes = self.ti_changes.GetValue()
 
-    if TextIsEmpty(new_changes):
+    if strings.isEmpty(new_changes):
       DetailedMessageDialog(GetMainWindow(), GT("Warning"), ICON_WARNING,
           GT("\"Changes\" section is empty")).ShowModal()
 
@@ -196,7 +196,7 @@ class Page(WizardPage):
     old_changes = self.dsp_changes.GetValue().strip(" \t\n\r")
 
     # Only append newlines if log isn't already empty
-    if not TextIsEmpty(old_changes):
+    if not strings.isEmpty(old_changes):
       new_changes = "{}\n\n\n{}".format(new_changes, old_changes)
 
     # Add empty line to end of log
@@ -249,7 +249,7 @@ class Page(WizardPage):
   #  \return
   #      <b><i>False</i></b> if page cannot be exported
   def IsOkay(self):
-    return not TextIsEmpty(self.dsp_changes.GetValue())
+    return not strings.isEmpty(self.dsp_changes.GetValue())
 
 
   ## Imports select field values from the 'Control' page
@@ -268,10 +268,9 @@ class Page(WizardPage):
         err_msg1 = GT("Got error when attempting to retrieve field value")
         err_msg2 = "\tError code: {}\n\tError message: {}".format(field_value.GetCode(), field_value.GetString())
         logger.error("{}:\n{}".format(err_msg1, err_msg2))
-
         continue
 
-      if not TextIsEmpty(field_value):
+      if not strings.isEmpty(field_value):
         F.SetValue(field_value)
 
 

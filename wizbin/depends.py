@@ -14,11 +14,11 @@ from dbr.language     import GT
 from globals.ident    import btnid
 from globals.ident    import inputid
 from globals.ident    import pgid
-from globals.strings  import TextIsEmpty
 from globals.tooltips import SetPageToolTips
 from input.list       import ListCtrlESS
 from input.select     import Choice
 from input.text       import TextArea
+from libdbr           import strings
 from libdbr.logger    import Logger
 from ui.button        import CreateButton
 from ui.dialog        import ConfirmationDialog
@@ -250,7 +250,7 @@ class Page(WizardPage):
     addver = "({}{})".format(oper, ver)
 
     if key_id in (btnid.ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
-      if TextIsEmpty(addname):
+      if strings.isEmpty(addname):
         return
 
       category = self.GetDefaultCategory()
@@ -259,7 +259,7 @@ class Page(WizardPage):
           category = C.GetName()
           break
 
-      if TextIsEmpty(ver):
+      if strings.isEmpty(ver):
         self.AppendDependency(category, addname)
 
       else:
@@ -270,7 +270,7 @@ class Page(WizardPage):
 
       logger.debug("Appending to {} items".format(selected_count))
 
-      if not TextIsEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
+      if not strings.isEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
         selected_rows = self.lst_deps.GetSelectedIndexes()
 
         if logger.debugging():
@@ -286,7 +286,7 @@ class Page(WizardPage):
           # Get the text from that item
           prev_text = colitem.GetText()
 
-          if not TextIsEmpty(ver):
+          if not strings.isEmpty(ver):
             new_text = "{} | {} {}".format(prev_text, addname, addver)
 
           else:

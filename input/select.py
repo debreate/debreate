@@ -9,12 +9,13 @@
 ## @module input.select
 
 import wx
+
 from wx.adv import OwnerDrawnComboBox
 
 from dbr.font        import MONOSPACED_MD
 from fields.ifield   import InputField
-from globals.strings import TextIsEmpty
 from input.essential import EssentialField
+from libdbr          import strings
 
 
 ## Custom wx.Choice class for compatibility with older wx versions
@@ -148,7 +149,7 @@ class ComboBox(OwnerDrawnComboBox, InputField):
       for I in items:
         self.Append(I)
 
-    if not TextIsEmpty(cached_value):
+    if not strings.isEmpty(cached_value):
       self.SetValue(cached_value)
 
 

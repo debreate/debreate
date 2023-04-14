@@ -11,7 +11,6 @@
 import gettext
 import os
 
-from globals.strings import GS
 from libdbr.logger   import Logger
 
 
@@ -32,8 +31,8 @@ __translator = None
 #  \b \e str : String to be translated
 def GT(str_value):
   if not __translator:
-    return GS(str_value)
-  return __translator(GS(str_value))
+    return str_value
+  return __translator(str_value)
 
 
 ## Retrieves the path of gettext locale translations

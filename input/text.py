@@ -8,13 +8,15 @@
 
 ## @module input.text
 
-import time, wx
+import time
+
+import wx
 
 from dbr.font        import MONOSPACED_LG
 from dbr.language    import GT
 from fields.ifield   import InputField
-from globals.strings import TextIsEmpty
 from input.essential import EssentialField
+from libdbr          import strings
 from libdbr.fileio   import readFile
 from ui.layout       import BoxSizer
 from ui.panel        import BorderedPanel
@@ -86,7 +88,7 @@ class TextArea(wx.TextCtrl, InputField):
     if isinstance(filename, (tuple, list)):
       filename = filename[0]
 
-    if not TextIsEmpty(self.GetValue()):
+    if not strings.isEmpty(self.GetValue()):
       msg_li1 = GT("This will delete all text")
       msg_li2 = GT("Continue?")
 

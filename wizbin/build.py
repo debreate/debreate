@@ -8,7 +8,12 @@
 
 ## @module wizbin.build
 
-import os, shutil, subprocess, traceback, wx
+import os
+import shutil
+import subprocess
+import traceback
+
+import wx
 
 from dbr.functions      import FileUnstripped
 from dbr.language       import GT
@@ -22,14 +27,13 @@ from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
 from globals.ident      import pgid
-from globals.strings    import GS
 from globals.strings    import RemoveEmptyLines
-from globals.strings    import TextIsEmpty
 from globals.system     import PY_VER_MAJ
 from globals.tooltips   import SetPageToolTips
 from input.toggle       import CheckBox
 from input.toggle       import CheckBoxESS
 from libdbr             import paths
+from libdbr             import strings
 from libdbr.fileio      import readFile
 from libdbr.fileio      import writeFile
 from libdbr.logger      import Logger
@@ -596,7 +600,7 @@ class Page(WizardPage):
         index = 0
         for C in build_output:
           try:
-            GS(C)
+            strings.toString(C)
 
           except UnicodeDecodeError:
             build_output[index] = "�"
@@ -657,7 +661,7 @@ class Page(WizardPage):
           required.append(GetField(pg_launcher, inputid.FNAME))
 
       for item in required:
-        if TextIsEmpty(item.GetValue()):
+        if strings.isEmpty(item.GetValue()):
           field_name = GT(item.GetName().title())
           page_name = pg_control.GetName()
           if item not in fields_control:

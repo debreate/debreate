@@ -15,9 +15,9 @@ from globals.application import AUTHOR_email
 from globals.application import AUTHOR_name
 from globals.application import VERSION_string
 from globals.strings     import RemoveEmptyLines
-from globals.strings     import TextIsEmpty
 from globals.system      import OS_codename
 from libdbr              import dateinfo
+from libdbr              import strings
 from libdbr.dateinfo     import dtfmt
 from libdbr.logger       import Logger
 
@@ -84,7 +84,7 @@ def FormatChangelog(text, name=APP_name, version=VERSION_string, dist=OS_codenam
       urgency="low", packager=AUTHOR_name, email=AUTHOR_email, preserve_indent=False):
   __logger.deprecated(FormatChangelog, alt="libdbr.misc.formatDebianChanges")
 
-  if TextIsEmpty(text):
+  if strings.isEmpty(text):
     return None
 
   # Remove leading & trailing whitespace & empty lines & split into

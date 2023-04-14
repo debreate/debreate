@@ -8,7 +8,10 @@
 
 ## @module wizbin.launchers
 
-import os, shutil, wx
+import os
+import shutil
+
+import wx
 
 from dbr.language     import GT
 from globals.ident    import btnid
@@ -17,8 +20,6 @@ from globals.ident    import inputid
 from globals.ident    import listid
 from globals.ident    import pgid
 from globals.ident    import txtid
-from globals.strings  import GS
-from globals.strings  import TextIsEmpty
 from globals.tooltips import SetPageToolTips
 from input.list       import ListCtrl
 from input.select     import ComboBox
@@ -28,6 +29,7 @@ from input.text       import TextAreaESS
 from input.text       import TextAreaPanel
 from input.toggle     import CheckBox
 from input.toggle     import CheckBoxESS
+from libdbr           import strings
 from libdbr.fileio    import readFile
 from libdbr.fileio    import writeFile
 from libdbr.logger    import Logger
@@ -284,33 +286,33 @@ class Page(WizardPage):
     desktop_list = ["[Desktop Entry]"]
 
     name = GetField(self, inputid.NAME).GetValue()
-    if not TextIsEmpty(name):
+    if not strings.isEmpty(name):
       desktop_list.append("Name={}".format(name))
 
     desktop_list.append("Version=1.0")
 
     executable = GetField(self, inputid.EXEC).GetValue()
-    if not TextIsEmpty(executable):
+    if not strings.isEmpty(executable):
       desktop_list.append("Exec={}".format(executable))
 
     comment = GetField(self, inputid.DESCR).GetValue()
-    if not TextIsEmpty(comment):
+    if not strings.isEmpty(comment):
       desktop_list.append("Comment={}".format(comment))
 
     icon = GetField(self, inputid.ICON).GetValue()
-    if not TextIsEmpty(icon):
+    if not strings.isEmpty(icon):
       desktop_list.append("Icon={}".format(icon))
 
     launcher_type = GetField(self, inputid.TYPE).GetValue()
-    if not TextIsEmpty(launcher_type):
+    if not strings.isEmpty(launcher_type):
       desktop_list.append("Type={}".format(launcher_type))
 
-    desktop_list.append("Terminal={}".format(GS(GetField(self, chkid.TERM).GetValue()).lower()))
+    desktop_list.append("Terminal={}".format(strings.toString(GetField(self, chkid.TERM).GetValue()).lower()))
 
-    desktop_list.append("StartupNotify={}".format(GS(GetField(self, chkid.NOTIFY).GetValue()).lower()))
+    desktop_list.append("StartupNotify={}".format(strings.toString(GetField(self, chkid.NOTIFY).GetValue()).lower()))
 
     encoding = GetField(self, inputid.ENC).GetValue()
-    if not TextIsEmpty(encoding):
+    if not strings.isEmpty(encoding):
       desktop_list.append("Encoding={}".format(encoding))
 
     lst_categories = GetField(self, listid.CAT)
@@ -319,7 +321,7 @@ class Page(WizardPage):
     count = 0
     while count < cat_total:
       C = lst_categories.GetItemText(count)
-      if not TextIsEmpty(C):
+      if not strings.isEmpty(C):
         categories.append(lst_categories.GetItemText(count))
 
       count += 1
@@ -333,7 +335,7 @@ class Page(WizardPage):
       desktop_list.append("Categories={}".format(categories))
 
     other = GetField(self, inputid.OTHER).GetValue()
-    if not TextIsEmpty(other):
+    if not strings.isEmpty(other):
       desktop_list.append(other)
 
     return "\n".join(desktop_list)
@@ -343,7 +345,7 @@ class Page(WizardPage):
   def GetOutputFilename(self):
     if not GetField(self, chkid.FNAME).GetValue():
       filename = GetField(self, inputid.FNAME).GetValue().strip(" ").replace(" ", "_")
-      if not TextIsEmpty(filename):
+      if not strings.isEmpty(filename):
         return filename
 
     return GetField(self, inputid.NAME).GetValue().strip(" ").replace(" ", "_")
@@ -662,7 +664,7 @@ class Page(WizardPage):
           if "FILENAME=" in K:
             filename = K.replace("FILENAME=", "")
 
-            if not TextIsEmpty(filename):
+            if not strings.isEmpty(filename):
               logger.debug("Setting custom filename: {}".format(filename))
 
               GetField(self, inputid.FNAME).SetValue(filename)
@@ -670,7 +672,6 @@ class Page(WizardPage):
 
             # Remove so not added to misc. list
             misc_defs.pop(index)
-
             continue
 
         if misc_defs:

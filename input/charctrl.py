@@ -12,7 +12,7 @@
 
 import wx
 
-from globals.strings import TextIsEmpty
+from libdbr import strings
 
 
 # List of characters that cannot be entered
@@ -41,7 +41,7 @@ class CharCtrl(wx.TextCtrl):
       if C in text:
         text = text.replace(C, "-")
 
-    if not TextIsEmpty(text):
+    if not strings.isEmpty(text):
       for C in invalid_chars:
         if C in text:
           text = text.replace(C, "-")

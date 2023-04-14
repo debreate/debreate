@@ -8,10 +8,12 @@
 
 ## @module dbr.image
 
-import os, wx
+import os
 
-from globals.paths   import getBitmapsDir
-from globals.strings import GS
+import wx
+
+from globals.paths import getBitmapsDir
+from libdbr        import strings
 
 
 ## Retrieves an image from bitmaps dir & creates a wx.Cursor
@@ -30,16 +32,16 @@ def GetImagePath(name, size=16, cat=None, img_type="png"):
   name = "{}.{}".format(name, img_type)
 
   if cat:
-    b_paths = (getBitmapsDir(), cat, GS(size), name)
+    b_paths = (getBitmapsDir(), cat, strings.toString(size), name)
 
   else:
-    b_paths = (getBitmapsDir(), GS(size), name)
+    b_paths = (getBitmapsDir(), strings.toString(size), name)
 
   image_path = os.path.join(*b_paths)
 
   # Attempt to use failsafe image if file does not exists
   if not os.path.isfile(image_path):
-    image_path = os.path.join(getBitmapsDir(), GS(size), "failsafe.png")
+    image_path = os.path.join(getBitmapsDir(), strings.toString(size), "failsafe.png")
 
   # Last resort is to return None if a failsafe image was not found
   if not os.path.isfile(image_path):

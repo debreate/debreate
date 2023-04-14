@@ -8,31 +8,35 @@
 
 ## @module ui
 
-import os, time, traceback, wx
+import os
+import time
+import traceback
 
-from dbr.event           import EVT_REFRESH_LOG
-from dbr.event           import RefreshLogEvent
-from dbr.font            import GetMonospacedFont
-from dbr.language        import GT
-from globals             import bitmaps
-from globals             import paths
-from globals.fileitem    import FileItem
-from globals.ident       import btnid
-from globals.ident       import menuid
-from globals.strings     import GS
-from globals.threads     import Thread
-from input.text          import TextAreaPanel
-from libdbr.logger       import Logger
-from ui.button           import CreateButton
-from ui.dialog           import GetFileOpenDialog
-from ui.dialog           import ShowDialog
-from ui.dialog           import ShowErrorDialog
-from ui.layout           import BoxSizer
-from wiz.helper          import GetMainWindow
-from wiz.helper          import GetMenu
+import wx
+
+from dbr.event        import EVT_REFRESH_LOG
+from dbr.event        import RefreshLogEvent
+from dbr.font         import GetMonospacedFont
+from dbr.language     import GT
+from globals          import bitmaps
+from globals          import paths
+from globals.fileitem import FileItem
+from globals.ident    import btnid
+from globals.ident    import menuid
+from globals.threads  import Thread
+from input.text       import TextAreaPanel
+from libdbr           import strings
+from libdbr.logger    import Logger
+from ui.button        import CreateButton
+from ui.dialog        import GetFileOpenDialog
+from ui.dialog        import ShowDialog
+from ui.dialog        import ShowErrorDialog
+from ui.layout        import BoxSizer
+from wiz.helper       import GetMainWindow
+from wiz.helper       import GetMenu
 
 
-logger = Logger(__name__)
+__logger = Logger(__name__)
 
 # How often the log window will be refreshed
 LOG_WINDOW_REFRESH_INTERVAL = 1
@@ -145,7 +149,7 @@ class LogWindow(wx.Dialog):
 
         return
 
-    logger.error(GT("Can't change log window font"))
+    __logger.error(GT("Can't change log window font"))
 
 
   ## Hides the log window when close event occurs
@@ -187,7 +191,7 @@ class LogWindow(wx.Dialog):
         menu_debug.Check(menuid.LOG, window_shown)
 
     else:
-      logger.warn("Log thread still active!")
+      __logger.warn("Log thread still active!")
 
 
   ## Use an event to show the log window
@@ -246,9 +250,9 @@ class LogWindow(wx.Dialog):
         self.DspLog.ShowPosition(self.DspLog.GetLastPosition())
 
       except RuntimeError:
-        tb_error = GS(traceback.format_exc())
+        tb_error = strings.toString(traceback.format_exc())
 
-        logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))
+        __logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))
 
 
   ## Changes the file to be loaded & displayed
@@ -274,9 +278,9 @@ class LogWindow(wx.Dialog):
     self.Show(True)
 
     if not self.LogPollThread.IsActive():
-      logger.debug("Starting log polling thread ...")
+      __logger.debug("Starting log polling thread ...")
 
       self.LogPollThread.Start()
 
     else:
-      logger.debug("Log polling thread is already started")
+      __logger.debug("Log polling thread is already started")

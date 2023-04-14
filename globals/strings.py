@@ -49,7 +49,7 @@ def RemoveEmptyLines(text):
 
   # Iterate in reverse to avoid skipping indexes
   for INDEX in reversed(range(len(text))):
-    if TextIsEmpty(text[INDEX]):
+    if libdbr.strings.isEmpty(text[INDEX]):
       text.pop(INDEX)
 
   if fmt_string:
@@ -64,10 +64,7 @@ def RemoveEmptyLines(text):
 #
 #  @param text
 #    String to check.
-#  @deprecated
 def IsString(text):
-  __logger.deprecated(IsString)
-
   return isinstance(text, str)
 
 
@@ -88,8 +85,9 @@ def ToString(item):
 
 
 ## @deprecated
+#    Use `libdbr.strings.toString`.
 def GS(st):
-  __logger.deprecated(GS)
+  __logger.deprecated(GS, alt=libdbr.strings.toString)
 
   return str(st)
 

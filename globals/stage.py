@@ -8,19 +8,19 @@
 
 ## @module globals.stage
 
-import os, shutil
+import os
+import shutil
 
 from globals.application import APP_name
 from globals.application import VERSION_string
 from globals.dateinfo    import GetDate
 from globals.dateinfo    import dtfmt
-from globals.strings     import GS
 
 
-## Creates a directory for storing temporary files
+## Creates a directory for storing temporary files.
 #
-#  \return
-#  Path to new stage directory, or None if failed
+#  @return
+#    Path to new stage directory, or None if failed.
 def CreateStage():
   stage = "/tmp"
 
@@ -33,7 +33,7 @@ def CreateStage():
   #suffix = "_temp"
   suffix = GetDate(dtfmt.STAMP)
 
-  stage = "{}/{}-{}_{}".format(stage, GS(APP_name).lower(), VERSION_string, suffix)
+  stage = "{}/{}-{}_{}".format(stage, APP_name.lower(), VERSION_string, suffix)
 
   if os.access(os.path.dirname(stage), os.W_OK):
     # Start with fresh directory
@@ -49,14 +49,13 @@ def CreateStage():
       return stage
 
 
-## Remove a previously created stage directory
+## Remove a previously created stage directory.
 #
-#  \param stage
-#  Absolute path to directory to remove
-#  \return
-#  \b \e True if stage does not exist
+#  @param stage
+#    Absolute path to directory to remove.
+#  @return
+#    `True` if stage does not exist.
 def RemoveStage(stage):
   if os.access(stage, os.W_OK):
     shutil.rmtree(stage)
-
   return not os.path.exists(stage)
