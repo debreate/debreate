@@ -499,6 +499,18 @@ def taskDebSource():
   __buildDebChangelog()
   subprocess.run(("debuild", "-S", "-sa"), check=True)
 
+  dir_parent = os.path.dirname(dir_app)
+  dir_dist = paths.join(dir_app, "build/dist")
+  fileio.makeDir(dir_dist)
+  pre = package_name + "_" + package_version_full
+  for suf in (".dsc", ".tar.xz", "_source.build", "_source.buildinfo", "_source.changes"):
+    basename = pre + suf
+    source_filename = paths.join(dir_parent, basename)
+    target_filename = paths.join(dir_dist, basename)
+    if os.path.isfile(target_filename):
+      checkError((fileio.deleteFile(target_filename, verbose=options.verbose)))
+    checkError((fileio.moveFile(source_filename, target_filename, verbose=options.verbose)))
+
 def taskCheckCode():
   print()
   for action in ("pylint", "mypy"):
