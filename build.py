@@ -91,13 +91,10 @@ def stageApp(prefix):
   logger.info("staging app files ...")
 
   dirs_app = config.getValue("dirs_app").split(";")
-  files_app = config.getValue("files_app").split(";")
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_app:
     checkError((fileio.copyDir(paths.join(dir_app, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=options.verbose)))
-  for _file in files_app:
-    checkError((fileio.copyFile(paths.join(dir_app, _file), dir_target, _file, verbose=options.verbose)))
   exe = config.getValue("executable")
   checkError((fileio.copyExecutable(paths.join(dir_app, exe), dir_target, exe, verbose=options.verbose)))
 
@@ -406,9 +403,6 @@ def taskDistSource():
     abspath = paths.join(dir_app, _dir)
     checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), verbose=options.verbose)))
   for _file in config.getValue("files_dist_data").split(";"):
-    abspath = paths.join(dir_app, _file)
-    checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
-  for _file in config.getValue("files_dist_py").split(";"):
     abspath = paths.join(dir_app, _file)
     checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
   for _file in config.getValue("files_dist_exe").split(";"):
