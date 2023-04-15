@@ -24,7 +24,7 @@ jobs:
       - name: configure
         run: |
           package=$(grep "^package = " build.conf | head -n 1 | sed -e 's/^package = //')
-          version=$(python3 build.py -v)
+          version=$(python3 build.py -v -l 0)
           if [[ "${{ github.ref_name }}" =~ ^v[0-9] ]]; then
             echo "using GitHub ref version ..."
             version=$(echo ${{ github.ref_name }} | sed 's/^v//')
@@ -45,7 +45,7 @@ jobs:
         run: python3 build.py -t dist-deb -V
 
       - name: prepare release information
-        run: echo -e "Changes:\n\n$(python3 build.py -t changes)" > release_notes.tmp
+        run: echo -e "Changes:\n\n$(python3 build.py -t changes -l 0)" > release_notes.tmp
 
       - name: publish
         uses: softprops/action-gh-release@v1

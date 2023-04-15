@@ -41,33 +41,6 @@ logger = Logger(script_name)
 printUsage: types.FunctionType
 
 
-# --- configuration & command line options --- #
-
-def parseCommandLine():
-  task_help = []
-  for t in task_list:
-    task_help.append(sgr("<bold>{}</bold>: {}".format(t, task_list[t])))
-  args_parser = argparse.ArgumentParser(
-      formatter_class=argparse.RawTextHelpFormatter,
-      description="Debreate installer script",
-      add_help=False)
-  args_parser.version = package_version_full
-  args_parser.add_argument("-h", "--help", action="help",
-      help="Show help information.")
-  args_parser.add_argument("-v", "--version", action="version",
-      help="Show Debreate version.")
-  args_parser.add_argument("-V", "--verbose", action="store_true",
-      help="Include detailed task information when printing to stdout.")
-  args_parser.add_argument("-t", "--task",
-      help="\n".join(task_help))
-  args_parser.add_argument("-p", "--prefix", default=paths.getSystemRoot() + "usr",
-      help="Path prefix to directory where files are to be installed.")
-  args_parser.add_argument("-d", "--dir", default=paths.getSystemRoot(),
-      help="Target directory (defaults to system root). This is useful for directing the script" \
-          + " to place the files in a temporary directory, rather than the intended installation" \
-          + " path.")
-  return args_parser
-
 # --- helper functions --- #
 
 def exitWithError(msg, code=1, usage=False):
@@ -627,6 +600,36 @@ def initTasks():
   addTask("changes-deb", taskPrintChangesDeb, "Print most recent changes from"
       + "'doc/changelog' in Debianized format to stdout.")
 
+# --- configuration & command line options --- #
+
+def initOptions(aparser):
+  task_help = []
+  for t in task_list:
+    task_help.append(sgr("<bold>{}</bold>: {}".format(t, task_list[t])))
+
+  log_levels = []
+  for level in LogLevel.getLevels():
+    log_levels.append(sgr("<bold>{}) {}</bold>").format(level, LogLevel.toString(level).lower()))
+
+  aparser.add_argument("-h", "--help", action="help",
+      help="Show help information.")
+  aparser.add_argument("-v", "--version", action="store_true",
+      help="Show Debreate version.")
+  aparser.add_argument("-V", "--verbose", action="store_true",
+      help="Include detailed task information when printing to stdout.")
+  aparser.add_argument("-l", "--log-level", metavar="<level>",
+      default=LogLevel.toString(LogLevel.getDefault()).lower(),
+      help="Logging output verbosity.\n  " + "\n  ".join(log_levels))
+  aparser.add_argument("-t", "--task",
+      help="\n".join(task_help))
+  aparser.add_argument("-p", "--prefix", default=paths.getSystemRoot() + "usr",
+      help="Path prefix to directory where files are to be installed.")
+  aparser.add_argument("-d", "--dir", default=paths.getSystemRoot(),
+      help="Target directory (defaults to system root). This is useful for directing the script" \
+          + " to place the files in a temporary directory, rather than the intended installation" \
+          + " path.")
+
+
 # --- execution insertion point --- #
 
 def main():
@@ -635,6 +638,29 @@ def main():
 
   # ensure current working directory is app location
   os.chdir(dir_app)
+
+  # handle command line input
+  aparser = argparse.ArgumentParser(
+      formatter_class=argparse.RawTextHelpFormatter,
+      description="Debreate installer script",
+      add_help=False)
+
+  global options, printUsage, task_list
+  task_list = {}
+  initTasks()
+  initOptions(aparser)
+  printUsage = aparser.print_help
+  options = aparser.parse_args()
+
+  err = LogLevel.check(options.log_level)
+  if isinstance(err, Exception):
+    sys.stderr.write(sgr("<red>ERROR: {}</fg>\n".format(err)))
+    print()
+    aparser.print_help()
+    exit(1)
+
+  # set logger level before calling config functions
+  logger.setLevel(options.log_level)
 
   config.setFile(paths.join(dir_app, "build.conf"))
   config.load()
@@ -649,13 +675,11 @@ def main():
   package_version_full = package_version
   if package_version_dev > 0:
     package_version_full = "{}-dev{}".format(package_version_full, package_version_dev)
+  aparser.version = package_version_full
 
-  global options, printUsage, task_list
-  task_list = {}
-  initTasks()
-  args_parser = parseCommandLine()
-  printUsage = args_parser.print_help
-  options = args_parser.parse_args()
+  if options.version:
+    print(aparser.version)
+    exit(0)
 
   if not options.task:
     exitWithError("task argument not supplied", usage=True)
