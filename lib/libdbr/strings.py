@@ -28,7 +28,7 @@ __from_handlers = {"str": str.__call__}
 #    String or bytes object to check.
 #  @return
 #    String value.
-def __check_string(st):
+def checkString(st):
   if type(st) == bytes:
     st = st.decode("utf-8")
   if type(st) != str:
@@ -55,7 +55,7 @@ def toString(obj, sep=""):
     res = str(obj)
   else:
     res = obj
-  return __check_string(res)
+  return checkString(res)
 
 ## Converts a string to another type.
 #
@@ -80,7 +80,7 @@ def fromString(st, handler=str):
 #  @param st
 #    String to parse.
 def boolFromString(st):
-  if st.lower() == "true":
+  if st.lower() in ("true", "yes"):
     return True
   try:
     tmp = float(st)
@@ -267,7 +267,7 @@ def sgr(st):
 #    `True` if string contains only whitespace characters.
 def isEmpty(st):
   # ensure working with string
-  st = __check_string(st)
+  st = checkString(st)
   return st.strip() == ""
 
 ## Checks if a string represents an integer value.
@@ -278,7 +278,7 @@ def isEmpty(st):
 #    `True` if string contains only integers.
 def isInteger(st):
   # ensure working with string
-  st = __check_string(st)
+  st = checkString(st)
   try:
     int(st)
   except ValueError:
@@ -293,7 +293,7 @@ def isInteger(st):
 #    `True` if string can be parsed as a float.
 def isNumeric(st):
   # ensure working with string
-  st = __check_string(st)
+  st = checkString(st)
   try:
     float(st)
   except ValueError:
