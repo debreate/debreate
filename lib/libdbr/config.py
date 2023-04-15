@@ -28,13 +28,18 @@ _logger = Logger(__name__)
 #    Path to configuration file on filesystem.
 #  @param default_section
 #    Name to use for default section.
+#  @param load
+#    Set to `False` to disable automatically loading file contents into memory.
 class Config:
-  def __init__(self, filepath, default_section=""):
+  def __init__(self, filepath, default_section="", load=True):
     self.__filepath = strings.checkString(filepath)
     self.__default_section = default_section
     self.__sections = {
       default_section: ()
     }
+    # don't require manually calling 'load' to prevent accidentally overwriting
+    if load and os.path.isfile(filepath):
+      self.load()
 
   def __str__(self):
     return str(self.__sections)
