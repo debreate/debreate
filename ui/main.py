@@ -216,7 +216,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       (GT("Homepage"), APP_homepage),
       (GT("GitHub Project"), APP_project_gh),
       (GT("GitLab Project"), APP_project_gl),
-      (GT("Sourceforge Project"), APP_project_sf),
+      (GT("SourceForge Project"), APP_project_sf),
     ))
 
     about.AddJobs(
