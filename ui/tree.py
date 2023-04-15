@@ -197,6 +197,12 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.ctx_menu.Append(mitm_togglehidden)
     self.ctx_menu.Append(mitm_refresh)
 
+    # these options currently don't work
+    mitm_expand.Enable(False)
+    mitm_rename.Enable(False)
+    mitm_togglehidden.Enable(False)
+    mitm_refresh.Enable(False)
+
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
 
   def onContextMenu(self, evt):
