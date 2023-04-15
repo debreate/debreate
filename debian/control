@@ -9,7 +9,7 @@ X-Python-Version: >= 3.10
 
 Package: debreate
 Architecture: all
-Depends: ${misc:Depends}, python3 (>=3.10, python3-wxgtk4.2|python3-wxgtk4.1|python3-wxgtk4.0 (>=4.0.7)|python3-pip, fakeroot, dpkg (>=1.0.0), util-linux (>=2.0.0), debianutils (>=4.0.0)
+Depends: ${misc:Depends}, python3 (>=3.10), python3-wxgtk4.2|python3-wxgtk4.1|python3-wxgtk4.0 (>=4.0.7)|python3-pip, fakeroot, dpkg (>=1.0.0), util-linux (>=2.0.0), debianutils (>=4.0.0)
 Recommends: file, lintian, xdg-utils, man-db, gzip (>=1.0), binutils, x11-server-utils
 Suggests: gdebi|gdebi-kde|qapt-deb-installer
 Description: Debian Package Builder
