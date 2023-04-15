@@ -2,6 +2,7 @@
 -- Known Bugs --
 
 required for release:
+- doesn't find changelog when installed via .deb
 
 priority:
 - system information tab in about dialog does not layout properly until after resize
