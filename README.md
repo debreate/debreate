@@ -84,8 +84,8 @@ build process.
 
 Debreate requires the following software:
 
-- [Python][home.python] (tested with version 3.10, 2.x not supported) ([Ubuntu package][pkg.python3])
-- [wxPython][home.wxpython] (version 4.0 required, 4.1.1 recommended)
+- [Python][home.python] (>=3.10) ([Ubuntu package][pkg.python3])
+- [wxPython][home.wxpython] (>=4.0.7, >=4.2.0 recommended)
     - Packaged as [_python3-wxgtk*_][pkg.wxpython] on Debian/Ubuntu.
     - Available via [Pypi][pip.wxpython].
 - [dpkg][home.dpkg] ([Ubuntu package][pkg.dpkg])
@@ -126,6 +126,10 @@ Arguments:
     - Show Debreate version.
 - `-V|--verbose`
     - Include detailed task information when printing to stdout.
+- `-l|--log-level <level>`
+    - Logging output verbosity.
+    - Levels are __0__ (__silent__), __1__ (__error__), __2__ (__warn__), __3__ (__info__),
+      & __4__ (__debug__).
 - `-t|--task <task>`
     - Task to be executed (see [Build Tasks](#build-script-tasks)).
 - `-p|--prefix <directory>`
