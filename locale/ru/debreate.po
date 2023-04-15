@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2022-09-02 16:42-0700\n"
+        "POT-Creation-Date: 2023-04-15 06:25-0700\n"
         "PO-Revision-Date: 2016-12-09 03:03-0800\n"
         "Last-Translator: Zhmurkov Sergey <LL@li.org>\n"
         "Language-Team: Russian <LL@li.org>\n"
@@ -85,16 +85,13 @@ msgstr  ""
 msgid   "An error occurred during installation"
 msgstr  ""
 
-msgid   "An error occurred trying to create the configuration file:"
-msgstr  ""
-
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Ошибка при попытке удалить дерево сборки"
 
 msgid   "An error occurred when trying to update the distribution names cache"
 msgstr  ""
 
-msgid   "An unhandled error occured"
+msgid   "An unhandled error occurred"
 msgstr  ""
 
 msgid   "An unknown error occurred"
@@ -181,9 +178,6 @@ msgstr  ""
 msgid   "Cannot Continue"
 msgstr  "Продолжение невозможно"
 
-msgid   "Cannot create config directory, file exists"
-msgstr  ""
-
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  ""
 
@@ -191,9 +185,6 @@ msgid   "Cannot install package"
 msgstr  ""
 
 msgid   "Cannot move \"{}\" to trash, no write access"
-msgstr  ""
-
-msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
 msgid   "Cannot run \"fakeroot dpkg\""
@@ -290,12 +281,6 @@ msgid   "Comment"
 msgstr  "Коментарий"
 
 msgid   "Compressing changelog"
-msgstr  ""
-
-msgid   "Configuration key \"{}\" = \"{}\", type: {}"
-msgstr  ""
-
-msgid   "Configuration key not found"
 msgstr  ""
 
 msgid   "Confirm"
@@ -441,6 +426,10 @@ msgstr  "Debreate - построитель deb пакетов"
 
 msgid   "Debreate First Run"
 msgstr  "Первый запуск Debreate"
+
+#, fuzzy
+msgid   "Debreate Manual"
+msgstr  "О Debian"
 
 msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
 msgstr  "Debreate помогает создавать пакеты для установки в системах базируемых на Debian. Используйте стрелки, расположенные в верхнем правом углу или \"Страница \", чтобы перемещаться по частям программы. Для получения дополнительной информации о пакетах Debian используйте ссылки в \"Помощь \"."
@@ -643,6 +632,9 @@ msgid   "Getting installed size"
 msgstr  ""
 
 msgid   "GitHub Project"
+msgstr  ""
+
+msgid   "GitLab Project"
 msgstr  ""
 
 msgid   "Got error when attempting to retrieve field value"
@@ -885,13 +877,10 @@ msgstr  ""
 msgid   "Not a valid Debreate project: {}"
 msgstr  ""
 
-msgid   "Not writing empty text to configuration"
-msgstr  ""
-
 msgid   "Obsolete"
 msgstr  ""
 
-msgid   "One line descriptions/synopsys"
+msgid   "One line descriptions/synopsis"
 msgstr  ""
 
 msgid   "One of the required fields is empty:"
@@ -928,9 +917,6 @@ msgid   "Open logs directory"
 msgstr  ""
 
 msgid   "Open pre-formatted control text"
-msgstr  ""
-
-msgid   "Opening log directory ..."
 msgstr  ""
 
 msgid   "Opening project from argument: {}"
@@ -1029,12 +1015,6 @@ msgstr  "Путь \"{}\" не существует."
 msgid   "Platform on which package/software is meant to run"
 msgstr  ""
 
-msgid   "Please report this error to Debreate's developers"
-msgstr  ""
-
-msgid   "Please report this error to one of the following addresses:"
-msgstr  ""
-
 msgid   "Post-Install"
 msgstr  "Постустановка"
 
@@ -1115,9 +1095,6 @@ msgstr  ""
 
 msgid   "Quit?"
 msgstr  "Выйти?"
-
-msgid   "Reading configuration file: {}"
-msgstr  ""
 
 msgid   "Recommended"
 msgstr  "Рекомендовано"
@@ -1246,7 +1223,7 @@ msgstr  "Группа"
 msgid   "Section under which package managers will list this package"
 msgstr  ""
 
-msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
+msgid   "See \"Help ➜ Reference ➜ Launchers / Desktop Entries\" for more available options"
 msgstr  ""
 
 msgid   "See \"Help ➜ Reference ➜ Lintian Tags Explanation\""
@@ -1294,8 +1271,9 @@ msgstr  ""
 msgid   "Source"
 msgstr  "Исходник"
 
-msgid   "Sourceforge Project"
-msgstr  ""
+#, fuzzy
+msgid   "SourceForge Project"
+msgstr  "Сохранить текущий проект"
 
 msgid   "Specifies whether application should be run in a terminal"
 msgstr  ""
@@ -1368,9 +1346,6 @@ msgstr  ""
 
 msgid   "Thank you for using Debreate."
 msgstr  "Благодарим за использование Debreate"
-
-msgid   "The \"md5sum\" command was not found on the system."
-msgstr  ""
 
 msgid   "The cache file exists but may not have been updated"
 msgstr  ""
@@ -1452,9 +1427,6 @@ msgstr  ""
 msgid   "Ubuntu Policy Manual"
 msgstr  "Об Ubuntu"
 
-msgid   "Uncheck the \"{}\" box."
-msgstr  ""
-
 msgid   "Unfortunately Debreate does not support unicode yet."
 msgstr  ""
 
@@ -1506,7 +1478,7 @@ msgstr  ""
 msgid   "Version"
 msgstr  "Версия"
 
-msgid   "Version corresponing to package name and operator"
+msgid   "Version corresponding to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
@@ -1531,9 +1503,6 @@ msgid   "Would you like to go to Debreate's website?"
 msgstr  "Хотите перейти на Web сайт?"
 
 msgid   "Writing manual pages"
-msgstr  ""
-
-msgid   "Wrong value type for configuration key"
 msgstr  ""
 
 msgid   "You will lose any unsaved information"

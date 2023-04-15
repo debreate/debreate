@@ -2,18 +2,18 @@
 # Copyright (C) 2011 Jordan Irwin
 # This file is distributed under the same license as the debreate package.
 # Jordan Irwin <antumdeluge@gmail.com>, 2011.
-# 
+#
 # NOTES:
 #   If "%s" or "{}" is in the msgid, be sure to put it in
 #   the msgstr or parts of Debreate will not function.
-# 
+#
 #   If you do not wish to translate a line just leave its
 #   msgstr blank
-# 
+#
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2022-09-02 16:42-0700\n"
+        "POT-Creation-Date: 2023-04-15 06:25-0700\n"
         "PO-Revision-Date: 2016-12-10 19:56+0100\n"
         "Last-Translator: Philippe Dalet <philippe.dalet@ac-toulouse.fr>\n"
         "Language-Team: French <philippe.dalet@ac-toulouse.fr>\n"
@@ -86,17 +86,15 @@ msgstr  ""
 msgid   "An error occurred during installation"
 msgstr  "Une erreur s'est produite durant l'installation"
 
-msgid   "An error occurred trying to create the configuration file:"
-msgstr  ""
-
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Une erreur s'est produite lors de l'essai de destruction de l'arbre de construction"
 
 msgid   "An error occurred when trying to update the distribution names cache"
 msgstr  ""
 
-msgid   "An unhandled error occured"
-msgstr  ""
+#, fuzzy
+msgid   "An unhandled error occurred"
+msgstr  "Une erreur inconnue s'est produite"
 
 msgid   "An unknown error occurred"
 msgstr  "Une erreur inconnue s'est produite"
@@ -182,9 +180,6 @@ msgstr  ""
 msgid   "Cannot Continue"
 msgstr  "Ne peut Continuer"
 
-msgid   "Cannot create config directory, file exists"
-msgstr  "Ne peut créer un répertoire de configuration, des fichiers existent"
-
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  "Ne peut décoder, mimetype inconnue: {}"
 
@@ -193,9 +188,6 @@ msgstr  "Ne peut installer paquet"
 
 msgid   "Cannot move \"{}\" to trash, no write access"
 msgstr  ""
-
-msgid   "Cannot open config for writing, directory exists"
-msgstr  "Ne peut ouvrir une configuration en écriture, le répertoire existe"
 
 msgid   "Cannot run \"fakeroot dpkg\""
 msgstr  "Ne peut lancer \"fakeroot dpkg\""
@@ -292,12 +284,6 @@ msgstr  "Commentaires"
 
 msgid   "Compressing changelog"
 msgstr  "En train de compresser changelog"
-
-msgid   "Configuration key \"{}\" = \"{}\", type: {}"
-msgstr  "Clé de configuration \"{}\" = \"{}\", type: {}"
-
-msgid   "Configuration key not found"
-msgstr  "Clé de configuration non trouvée"
 
 msgid   "Confirm"
 msgstr  "Confirmer"
@@ -442,6 +428,10 @@ msgstr  "Debreate - Constructeur de paquet Debian"
 
 msgid   "Debreate First Run"
 msgstr  "Premier Lancement de Debreate"
+
+#, fuzzy
+msgid   "Debreate Manual"
+msgstr  "Debreate"
 
 msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
 msgstr  "Debreate assiste à la construction pour des installations sur des systèmes basés sur Debian. Utiliser les flêches dans le coin droit en haut de la \"Page\" pour naviguer  à travers le programme. Pour des informations sur les paquets Debian utiliser les liens de références dans le menu  \"Aide\"."
@@ -645,6 +635,10 @@ msgid   "Getting installed size"
 msgstr  "Obtenir la taille installée"
 
 msgid   "GitHub Project"
+msgstr  "Projet GitHub"
+
+#, fuzzy
+msgid   "GitLab Project"
 msgstr  "Projet GitHub"
 
 msgid   "Got error when attempting to retrieve field value"
@@ -887,13 +881,11 @@ msgstr  "Pas d'accès en écriture au répertoire cible"
 msgid   "Not a valid Debreate project: {}"
 msgstr  ""
 
-msgid   "Not writing empty text to configuration"
-msgstr  "Ne pas écrire de texte vide dans la configuration"
-
 msgid   "Obsolete"
 msgstr  ""
 
-msgid   "One line descriptions/synopsys"
+#, fuzzy
+msgid   "One line descriptions/synopsis"
 msgstr  "Une ligne descriptions/synopsys"
 
 msgid   "One of the required fields is empty:"
@@ -931,9 +923,6 @@ msgstr  "Ouvre le répertoire logs"
 
 msgid   "Open pre-formatted control text"
 msgstr  "Ouvre un texte de contrôle préformaté"
-
-msgid   "Opening log directory ..."
-msgstr  "Ouvre le répertoire log ..."
 
 msgid   "Opening project from argument: {}"
 msgstr  "Ouvre le projet à partir d'un argument: {}"
@@ -1031,12 +1020,6 @@ msgstr  "Le chemin \"{}\" n'existe pas."
 msgid   "Platform on which package/software is meant to run"
 msgstr  "Plate-forme sur laquelle le paquet/logiciel est destiné à s'exécuter"
 
-msgid   "Please report this error to Debreate's developers"
-msgstr  ""
-
-msgid   "Please report this error to one of the following addresses:"
-msgstr  "Veuillez signaler cette erreur à l'une des adresses suivantes:"
-
 msgid   "Post-Install"
 msgstr  "Post-Install"
 
@@ -1117,9 +1100,6 @@ msgstr  "Quitter"
 
 msgid   "Quit?"
 msgstr  "Quitter ?"
-
-msgid   "Reading configuration file: {}"
-msgstr  ""
 
 msgid   "Recommended"
 msgstr  "Recommendé"
@@ -1247,7 +1227,8 @@ msgstr  "Section"
 msgid   "Section under which package managers will list this package"
 msgstr  "Section dans laquelle les gestionnaires de paquet énuméreront ce paquet"
 
-msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
+#, fuzzy
+msgid   "See \"Help ➜ Reference ➜ Launchers / Desktop Entries\" for more available options"
 msgstr  "Voir «Aide ➜ Référence ➜ Lanceurs/Entrées de bureau» pour plus d'options disponibles"
 
 msgid   "See \"Help ➜ Reference ➜ Lintian Tags Explanation\""
@@ -1295,7 +1276,8 @@ msgstr  "Affiche les infobulles"
 msgid   "Source"
 msgstr  "Source"
 
-msgid   "Sourceforge Project"
+#, fuzzy
+msgid   "SourceForge Project"
 msgstr  "Projet Sourceforge"
 
 msgid   "Specifies whether application should be run in a terminal"
@@ -1369,9 +1351,6 @@ msgstr  "Texte affiché lorsque le curseur plane sur le lanceur"
 
 msgid   "Thank you for using Debreate."
 msgstr  "Merci d'utiliser  Debreate"
-
-msgid   "The \"md5sum\" command was not found on the system."
-msgstr  "La commande \"md5sum\" n'a pas été trouvée sur le système."
 
 msgid   "The cache file exists but may not have been updated"
 msgstr  ""
@@ -1455,9 +1434,6 @@ msgstr  "Résultat de la demande URL: {}"
 msgid   "Ubuntu Policy Manual"
 msgstr  "Manuel des Normes d'Ubuntu"
 
-msgid   "Uncheck the \"{}\" box."
-msgstr  "Désélectionner la boîte \"{}\"."
-
 msgid   "Unfortunately Debreate does not support unicode yet."
 msgstr  ""
 
@@ -1509,7 +1485,8 @@ msgstr  "Utiliser \"Name\" comme nom de fichier de sortie (<Name>.desktop)"
 msgid   "Version"
 msgstr  "Version"
 
-msgid   "Version corresponing to package name and operator"
+#, fuzzy
+msgid   "Version corresponding to package name and operator"
 msgstr  "Version correspondant au nom du paquet et de l'opérateur"
 
 msgid   "Version {} is available!"
@@ -1535,9 +1512,6 @@ msgstr  "Voulez-vous aller sur le site web de Debreate ?"
 
 msgid   "Writing manual pages"
 msgstr  ""
-
-msgid   "Wrong value type for configuration key"
-msgstr  "Mauvais type de valeur pour la clé de configuration"
 
 msgid   "You will lose any unsaved information"
 msgstr  "Vous allez perdre des informations non sauvées"
@@ -1617,6 +1591,12 @@ msgstr  ""
 #~ msgid        "Cancel build"
 #~ msgstr       "Annule Construction"
 
+#~ msgid        "Cannot create config directory, file exists"
+#~ msgstr       "Ne peut créer un répertoire de configuration, des fichiers existent"
+
+#~ msgid        "Cannot open config for writing, directory exists"
+#~ msgstr       "Ne peut ouvrir une configuration en écriture, le répertoire existe"
+
 #~ msgid        "Checking changelog"
 #~ msgstr       "En train de vérifier changelog"
 
@@ -1640,6 +1620,12 @@ msgstr  ""
 
 #~ msgid        "Checking scripts"
 #~ msgstr       "En train de vérifier les scripts"
+
+#~ msgid        "Configuration key \"{}\" = \"{}\", type: {}"
+#~ msgstr       "Clé de configuration \"{}\" = \"{}\", type: {}"
+
+#~ msgid        "Configuration key not found"
+#~ msgstr       "Clé de configuration non trouvée"
 
 #~ msgid        "Could not create configuration, exiting ..."
 #~ msgstr       "Ne peut crée une configuration, existante ..."
@@ -1770,11 +1756,17 @@ msgstr  ""
 #~ msgid        "Not set as top window"
 #~ msgstr       "Non défini comme fenêtre supérieure"
 
+#~ msgid        "Not writing empty text to configuration"
+#~ msgstr       "Ne pas écrire de texte vide dans la configuration"
+
 #~ msgid        "One of the required fields is empty"
 #~ msgstr       "Un des champs requis est vide"
 
 #~ msgid        "Open launcher file"
 #~ msgstr       "Ouvre le fichier lanceur"
+
+#~ msgid        "Opening log directory ..."
+#~ msgstr       "Ouvre le répertoire log ..."
 
 #~ msgid        "Other"
 #~ msgstr       "Autres"
@@ -1803,6 +1795,9 @@ msgstr  ""
 #~ msgid        "Permission Denied"
 #~ msgstr       "Permission refusé"
 
+#~ msgid        "Please report this error to one of the following addresses:"
+#~ msgstr       "Veuillez signaler cette erreur à l'une des adresses suivantes:"
+
 #~ msgid        "Previous"
 #~ msgstr       "Précédent"
 
@@ -1830,6 +1825,9 @@ msgstr  ""
 #~ msgid        "Text for the launcher"
 #~ msgstr       "Texte pour le lanceur"
 
+#~ msgid        "The \"md5sum\" command was not found on the system."
+#~ msgstr       "La commande \"md5sum\" n'a pas été trouvée sur le système."
+
 #~ msgid        "The file already exists in \"{}\". Replacing it will overwrite its contents."
 #~ msgstr       "Le fichier existe déjà dans \"{}\". Le remplacer remplacera son contenu."
 
@@ -1845,6 +1843,9 @@ msgstr  ""
 #~ msgid        "This will destroy all license text. Do you want to continue?"
 #~ msgstr       "Cela détruira tout le texte de la licence. Voulez-vous continuer?"
 
+#~ msgid        "Uncheck the \"{}\" box."
+#~ msgstr       "Désélectionner la boîte \"{}\"."
+
 #~ msgid        "Unfortunately Debreate does not support unicode yet. Remove any non-ASCII characters from your project."
 #~ msgstr       "Malheureusement, Debreate ne prend pas encore en charge l'unicode. Supprimez tous les caractères non-ASCII de votre projet."
 
@@ -1859,6 +1860,9 @@ msgstr  ""
 
 #~ msgid        "Window ID"
 #~ msgstr       "Window ID"
+
+#~ msgid        "Wrong value type for configuration key"
+#~ msgstr       "Mauvais type de valeur pour la clé de configuration"
 
 #~ msgid        "filename. Debreate does not know how to deal"
 #~ msgstr       "Nom de fichier. Debreate ne sait pas comment faire face"

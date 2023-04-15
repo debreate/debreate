@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.7.12\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2022-09-02 16:42-0700\n"
+        "POT-Creation-Date: 2023-04-15 06:25-0700\n"
         "PO-Revision-Date: 2016-12-09 02:57-0800\n"
         "Last-Translator: Jordan Irwin <antumdeluge@gmail.com>\n"
         "Language-Team: Spanish <antumdeluge@gmail.com>\n"
@@ -85,17 +85,15 @@ msgstr  ""
 msgid   "An error occurred during installation"
 msgstr  "Se ocurrió un error durante la instalación"
 
-msgid   "An error occurred trying to create the configuration file:"
-msgstr  ""
-
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  "Se occurió un error al intentar eliminar la ruta provisional"
 
 msgid   "An error occurred when trying to update the distribution names cache"
 msgstr  ""
 
-msgid   "An unhandled error occured"
-msgstr  ""
+#, fuzzy
+msgid   "An unhandled error occurred"
+msgstr  "Se ocurrió un error desconocido"
 
 msgid   "An unknown error occurred"
 msgstr  "Se ocurrió un error desconocido"
@@ -181,9 +179,6 @@ msgstr  ""
 msgid   "Cannot Continue"
 msgstr  "No se Puede Continuar"
 
-msgid   "Cannot create config directory, file exists"
-msgstr  "No se puede crear el directorio de configuración, ya existe un archivo"
-
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  "No se puede descifrar, tipo MIME no reconocido: {}"
 
@@ -192,9 +187,6 @@ msgstr  "No se puede instalar el paquete"
 
 msgid   "Cannot move \"{}\" to trash, no write access"
 msgstr  ""
-
-msgid   "Cannot open config for writing, directory exists"
-msgstr  "No se puede abrir el archivo de configuración para editar, ya existe directorio"
 
 msgid   "Cannot run \"fakeroot dpkg\""
 msgstr  "No se puede ejecutar \"fakeroot dpkg\""
@@ -291,12 +283,6 @@ msgstr  "Comentario"
 
 msgid   "Compressing changelog"
 msgstr  "Comprimir el registro de cambios"
-
-msgid   "Configuration key \"{}\" = \"{}\", type: {}"
-msgstr  ""
-
-msgid   "Configuration key not found"
-msgstr  ""
 
 msgid   "Confirm"
 msgstr  "Confirmar"
@@ -441,6 +427,10 @@ msgstr  "Debreate - Empaquetador de Debian"
 
 msgid   "Debreate First Run"
 msgstr  "Ejecución Primera de Debreate"
+
+#, fuzzy
+msgid   "Debreate Manual"
+msgstr  "Manual de Normas de Debian"
 
 msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
 msgstr  "Debreate asiste en consruir los paquetes de instalación para systemas con sede en Debian. Usar las flechas al superior derecha o el menú de \"Página\" para navegar a través del programa. Para información sobre los paquetes de Debian utilizar los enlaces de referencia en la menú de \"Ayuda\"."
@@ -889,13 +879,10 @@ msgstr  ""
 msgid   "Not a valid Debreate project: {}"
 msgstr  ""
 
-msgid   "Not writing empty text to configuration"
-msgstr  "No se escribe texto vacío a la configuración"
-
 msgid   "Obsolete"
 msgstr  ""
 
-msgid   "One line descriptions/synopsys"
+msgid   "One line descriptions/synopsis"
 msgstr  ""
 
 msgid   "One of the required fields is empty:"
@@ -932,9 +919,6 @@ msgid   "Open logs directory"
 msgstr  ""
 
 msgid   "Open pre-formatted control text"
-msgstr  ""
-
-msgid   "Opening log directory ..."
 msgstr  ""
 
 msgid   "Opening project from argument: {}"
@@ -1033,12 +1017,6 @@ msgstr  "La Ruta \"{}\" no existe."
 msgid   "Platform on which package/software is meant to run"
 msgstr  ""
 
-msgid   "Please report this error to Debreate's developers"
-msgstr  ""
-
-msgid   "Please report this error to one of the following addresses:"
-msgstr  ""
-
 msgid   "Post-Install"
 msgstr  "Post-Instalar"
 
@@ -1119,9 +1097,6 @@ msgstr  ""
 
 msgid   "Quit?"
 msgstr  "¿Cerrar?"
-
-msgid   "Reading configuration file: {}"
-msgstr  ""
 
 msgid   "Recommended"
 msgstr  "Recomendados"
@@ -1250,7 +1225,7 @@ msgstr  "Sección"
 msgid   "Section under which package managers will list this package"
 msgstr  ""
 
-msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
+msgid   "See \"Help ➜ Reference ➜ Launchers / Desktop Entries\" for more available options"
 msgstr  ""
 
 msgid   "See \"Help ➜ Reference ➜ Lintian Tags Explanation\""
@@ -1298,7 +1273,8 @@ msgstr  "Mostrar información sobre herramientas"
 msgid   "Source"
 msgstr  "Fuente"
 
-msgid   "Sourceforge Project"
+#, fuzzy
+msgid   "SourceForge Project"
 msgstr  "Página del Proyecto en SourceForge"
 
 msgid   "Specifies whether application should be run in a terminal"
@@ -1372,9 +1348,6 @@ msgstr  ""
 
 msgid   "Thank you for using Debreate."
 msgstr  "Gracias por usar Debreate"
-
-msgid   "The \"md5sum\" command was not found on the system."
-msgstr  ""
 
 msgid   "The cache file exists but may not have been updated"
 msgstr  ""
@@ -1456,9 +1429,6 @@ msgstr  ""
 msgid   "Ubuntu Policy Manual"
 msgstr  "Manual de Normas de Ubuntu"
 
-msgid   "Uncheck the \"{}\" box."
-msgstr  ""
-
 msgid   "Unfortunately Debreate does not support unicode yet."
 msgstr  ""
 
@@ -1510,7 +1480,7 @@ msgstr  ""
 msgid   "Version"
 msgstr  "Versión"
 
-msgid   "Version corresponing to package name and operator"
+msgid   "Version corresponding to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
@@ -1535,9 +1505,6 @@ msgid   "Would you like to go to Debreate's website?"
 msgstr  "¿Desea visitar al la página principal de Debreate?"
 
 msgid   "Writing manual pages"
-msgstr  ""
-
-msgid   "Wrong value type for configuration key"
 msgstr  ""
 
 msgid   "You will lose any unsaved information"
@@ -1617,6 +1584,12 @@ msgstr  ""
 
 #~ msgid        "Cancel build"
 #~ msgstr       "Cancelar empaquetar"
+
+#~ msgid        "Cannot create config directory, file exists"
+#~ msgstr       "No se puede crear el directorio de configuración, ya existe un archivo"
+
+#~ msgid        "Cannot open config for writing, directory exists"
+#~ msgstr       "No se puede abrir el archivo de configuración para editar, ya existe directorio"
 
 #~ msgid        "Checking changelog"
 #~ msgstr       "Comprobando el registro de cambios"
@@ -1749,6 +1722,9 @@ msgstr  ""
 
 #~ msgid        "Not a valid Debreate project"
 #~ msgstr       "No es proyecto válido de Debreate"
+
+#~ msgid        "Not writing empty text to configuration"
+#~ msgstr       "No se escribe texto vacío a la configuración"
 
 #~ msgid        "One of the required fields is empty"
 #~ msgstr       "Un campo obligatorio está vacío"

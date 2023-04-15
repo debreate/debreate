@@ -1,5 +1,5 @@
 # Debreate - Debian Package Builder
-# Copyright © 2022 Jordan Irwin
+# Copyright © 2014-2023 Jordan Irwin
 # This file is distributed under the same license as the Debreate package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -13,7 +13,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Debreate 0.8-dev5\n"
         "Report-Msgid-Bugs-To: antumdeluge@gmail.com\n"
-        "POT-Creation-Date: 2022-09-02 16:42-0700\n"
+        "POT-Creation-Date: 2023-04-15 06:25-0700\n"
         "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
         "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,16 +85,13 @@ msgstr  ""
 msgid   "An error occurred during installation"
 msgstr  ""
 
-msgid   "An error occurred trying to create the configuration file:"
-msgstr  ""
-
 msgid   "An error occurred when trying to delete the build tree"
 msgstr  ""
 
 msgid   "An error occurred when trying to update the distribution names cache"
 msgstr  ""
 
-msgid   "An unhandled error occured"
+msgid   "An unhandled error occurred"
 msgstr  ""
 
 msgid   "An unknown error occurred"
@@ -181,9 +178,6 @@ msgstr  ""
 msgid   "Cannot Continue"
 msgstr  ""
 
-msgid   "Cannot create config directory, file exists"
-msgstr  ""
-
 msgid   "Cannot decode, unrecognized mimetype: {}"
 msgstr  ""
 
@@ -191,9 +185,6 @@ msgid   "Cannot install package"
 msgstr  ""
 
 msgid   "Cannot move \"{}\" to trash, no write access"
-msgstr  ""
-
-msgid   "Cannot open config for writing, directory exists"
 msgstr  ""
 
 msgid   "Cannot run \"fakeroot dpkg\""
@@ -290,12 +281,6 @@ msgid   "Comment"
 msgstr  ""
 
 msgid   "Compressing changelog"
-msgstr  ""
-
-msgid   "Configuration key \"{}\" = \"{}\", type: {}"
-msgstr  ""
-
-msgid   "Configuration key not found"
 msgstr  ""
 
 msgid   "Confirm"
@@ -440,6 +425,9 @@ msgid   "Debreate - Debian Package Builder"
 msgstr  ""
 
 msgid   "Debreate First Run"
+msgstr  ""
+
+msgid   "Debreate Manual"
 msgstr  ""
 
 msgid   "Debreate aids in building packages for installation on Debian based systems. Use the arrows located in the top-right corner or the \"Page\" menu to navigate through the program. For some information on Debian packages use the reference links in the \"Help\" menu."
@@ -886,13 +874,10 @@ msgstr  ""
 msgid   "Not a valid Debreate project: {}"
 msgstr  ""
 
-msgid   "Not writing empty text to configuration"
-msgstr  ""
-
 msgid   "Obsolete"
 msgstr  ""
 
-msgid   "One line descriptions/synopsys"
+msgid   "One line descriptions/synopsis"
 msgstr  ""
 
 msgid   "One of the required fields is empty:"
@@ -929,9 +914,6 @@ msgid   "Open logs directory"
 msgstr  ""
 
 msgid   "Open pre-formatted control text"
-msgstr  ""
-
-msgid   "Opening log directory ..."
 msgstr  ""
 
 msgid   "Opening project from argument: {}"
@@ -1030,12 +1012,6 @@ msgstr  ""
 msgid   "Platform on which package/software is meant to run"
 msgstr  ""
 
-msgid   "Please report this error to Debreate's developers"
-msgstr  ""
-
-msgid   "Please report this error to one of the following addresses:"
-msgstr  ""
-
 msgid   "Post-Install"
 msgstr  ""
 
@@ -1115,9 +1091,6 @@ msgid   "Quit"
 msgstr  ""
 
 msgid   "Quit?"
-msgstr  ""
-
-msgid   "Reading configuration file: {}"
 msgstr  ""
 
 msgid   "Recommended"
@@ -1246,7 +1219,7 @@ msgstr  ""
 msgid   "Section under which package managers will list this package"
 msgstr  ""
 
-msgid   "See \"Help ➜ Reference ➜ Launchers / Dekstop Entries\" for more available options"
+msgid   "See \"Help ➜ Reference ➜ Launchers / Desktop Entries\" for more available options"
 msgstr  ""
 
 msgid   "See \"Help ➜ Reference ➜ Lintian Tags Explanation\""
@@ -1294,7 +1267,7 @@ msgstr  ""
 msgid   "Source"
 msgstr  ""
 
-msgid   "Sourceforge Project"
+msgid   "SourceForge Project"
 msgstr  ""
 
 msgid   "Specifies whether application should be run in a terminal"
@@ -1367,9 +1340,6 @@ msgid   "Text displayed when cursor hovers over launcher"
 msgstr  ""
 
 msgid   "Thank you for using Debreate."
-msgstr  ""
-
-msgid   "The \"md5sum\" command was not found on the system."
 msgstr  ""
 
 msgid   "The cache file exists but may not have been updated"
@@ -1452,9 +1422,6 @@ msgstr  ""
 msgid   "Ubuntu Policy Manual"
 msgstr  ""
 
-msgid   "Uncheck the \"{}\" box."
-msgstr  ""
-
 msgid   "Unfortunately Debreate does not support unicode yet."
 msgstr  ""
 
@@ -1506,7 +1473,7 @@ msgstr  ""
 msgid   "Version"
 msgstr  ""
 
-msgid   "Version corresponing to package name and operator"
+msgid   "Version corresponding to package name and operator"
 msgstr  ""
 
 msgid   "Version {} is available!"
@@ -1531,9 +1498,6 @@ msgid   "Would you like to go to Debreate's website?"
 msgstr  ""
 
 msgid   "Writing manual pages"
-msgstr  ""
-
-msgid   "Wrong value type for configuration key"
 msgstr  ""
 
 msgid   "You will lose any unsaved information"
