@@ -19,5 +19,5 @@ if sys.platform == "win32":
 #    True if user has elevate privileges.
 def isAdmin():
   if sys.platform == "win32":
-    return ctypes.windll.shell32.IsUserAnAdmin() != 0
+    return ctypes.windll.shell32.IsUserAnAdmin() != 0 # @UndefinedVariable
   return os.getuid() == 0 # pylint: disable=no-member

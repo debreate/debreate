@@ -844,7 +844,7 @@ def openFileManager(path=None):
 
   if sys.platform == "win32":
     if path:
-      os.startfile(path)
+      os.startfile(path) # @UndefinedVariable
     else:
       cmd_explorer = paths.getExecutable("explorer.exe")
       if not cmd_explorer:
