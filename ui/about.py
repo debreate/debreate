@@ -8,6 +8,7 @@
 
 ## @module ui.about
 
+import gzip
 import os
 
 import wx
@@ -26,8 +27,8 @@ from globals.system      import WX_VER_STRING
 from input.list          import ListCtrl
 from input.text          import TextAreaPanel
 from libdbr              import fileinfo
+from libdbr              import fileio
 from libdbr              import paths
-from libdbr.fileio       import readFile
 from libdbr.logger       import Logger
 from ui.button           import CreateButton
 from ui.dialog           import ShowErrorDialog
@@ -393,6 +394,8 @@ class AboutDialog(wx.Dialog):
     else:
       CHANGELOG = os.path.normpath(os.path.join(paths.getAppDir(), "docs/changelog.txt"))
 
+    if not os.path.isfile(CHANGELOG):
+      CHANGELOG += ".gz"
     if os.path.isfile(CHANGELOG):
       changelog_mimetype = fileinfo.getMimeType(CHANGELOG)
 
@@ -404,8 +407,9 @@ class AboutDialog(wx.Dialog):
                   GT("Cannot decode, unrecognized mimetype: {}").format(changelog_mimetype))
 
       if changelog_mimetype == "text/plain":
-        log_text = readFile(CHANGELOG)
-
+        log_text = fileio.readFile(CHANGELOG)
+      elif changelog_mimetype == "application/gzip":
+        log_text = gzip.decompress(fileio.readFile(CHANGELOG, binary=True))
       else:
         ShowErrorDialog(log_text, parent=self)
 
@@ -433,7 +437,7 @@ class AboutDialog(wx.Dialog):
       license_path = os.path.normpath(os.path.join(paths.getAppDir(), "LICENSE.txt"))
 
     if os.path.isfile(license_path):
-      lic_text = readFile(license_path)
+      lic_text = fileio.readFile(license_path)
 
     else:
       lic_text = GT("ERROR: Could not locate license file:\n\t'{}' not found".format(license_path))
