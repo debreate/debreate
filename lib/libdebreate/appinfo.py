@@ -11,7 +11,7 @@ from libdbr import strings
 
 
 __version = (0, 8)
-__version_dev = 5
+__version_dev = 6
 __dbr_standard = (1, 0)
 
 ## Retrieves app version.
