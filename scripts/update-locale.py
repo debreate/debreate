@@ -22,11 +22,9 @@ dir_app = os.path.dirname(dir_scripts)
 
 sys.path.insert(0, os.path.join(dir_app, "lib"))
 
-from libdbr          import config
-from libdbr          import fileio
-from libdbr          import paths
-from scripts_globals import GetInfoValue
-from scripts_globals import required_locale_files
+from libdbr import config
+from libdbr import fileio
+from libdbr import paths
 
 
 def parseStrings():
