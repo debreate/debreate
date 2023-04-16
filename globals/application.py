@@ -8,56 +8,39 @@
 
 ## @module globals.application
 
-import os.path
-
-from globals.paths import getBitmapsDir
-from libdbr        import fileio
-from libdbr        import paths
+from libdbr.logger import Logger
+from libdebreate   import appinfo
 
 
-__cache = {}
+__logger = Logger(__name__)
+__logger.deprecated(__name__, alt=appinfo)
 
 ## Checks if app is running portably.
 #
 #  @return
 #    True if not installed.
 def isPortable():
-  # ~ return os.path.isfile(paths.join(paths.getAppDir(), "portable"))
-  return not os.path.isfile(paths.join(paths.getAppDir(), "INSTALLED"))
+  __logger.deprecated(isPortable, alt=appinfo.isPortable)
+
+  return appinfo.isPortable()
 
 ## Retrievies app installation prefix.
 #
 #  @return
 #    Absolute path of installation directory prefix.
 def getInstallPrefix():
-  if "install_prefix" in __cache:
-    return __cache["install_prefix"]
+  __logger.deprecated(getInstallPrefix, alt=appinfo.getInstallPrefix)
 
-  if isPortable():
-    return paths.getAppDir()
-  prefix = ""
-  install_file = paths.join(paths.getAppDir(), "INSTALLED")
-  if os.path.isfile(install_file):
-    # FIXME: use libdbr.config when it supports multiple config files
-    for li in fileio.readFile(install_file).split("\n"):
-      if "=" in li:
-        tmp = li.split("=")
-        key = tmp[0].strip().lower()
-        value = tmp[1].strip()
-        if key== "prefix":
-          prefix = value
-          break
-  __cache["install_prefix"] = prefix
-  return __cache["install_prefix"]
+  return appinfo.getInstallPrefix()
 
 ## Retrieves location where locale files are stored.
 #
 #  @return
 #    Absolute path to locale directory prefix.
 def getLocaleDir():
-  if isPortable():
-    return paths.join(getInstallPrefix(), "locale")
-  return paths.join(getInstallPrefix(), "share/locale")
+  __logger.deprecated(getLocaleDir, alt=appinfo.getLocaleDir)
+
+  return appinfo.getLocaleDir()
 
 
 # *** Application information *** #
@@ -82,20 +65,9 @@ APP_name = "Debreate"
 
 # *** Version information *** #
 
-VERSION_maj = 0
-VERSION_min = 8
-VERSION_rev = 0
-VERSION_tuple = [VERSION_maj, VERSION_min]
-VERSION_string = "{}.{}".format(VERSION_maj, VERSION_min)
-if VERSION_rev > 0:
-    VERSION_tuple.append(VERSION_rev)
-    VERSION_string += ".{}".format(VERSION_rev)
-VERSION_tuple = tuple(VERSION_tuple)
-
-# Development version: Increment for every development release
-VERSION_dev = 6
-if VERSION_dev:
-  VERSION_string = "{}-dev{}".format(VERSION_string, VERSION_dev)
+VERSION_tuple = appinfo.getVersion()
+VERSION_dev = appinfo.getVersionDev()
+VERSION_string = appinfo.getVersionString()
 
 
 # *** Author information *** #

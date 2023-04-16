@@ -316,8 +316,6 @@ def taskUpdateVersion():
   if len(ver) > 2:
     repl.append((r"^VERSION_rev = .*$", "VERSION_rev = {}".format(ver[2])))
   repl.append((r"^VERSION_dev = .*$", "VERSION_dev = {}".format(ver_dev)))
-  fileio.replace(paths.join(dir_app, "globals/application.py"), repl, count=1,
-      verbose=options.verbose)
   fileio.replace(paths.join(dir_app, "docs/Doxyfile"), r"^PROJECT_NUMBER         = .*",
       "PROJECT_NUMBER         = {}".format(ver_string_full), count=1, verbose=options.verbose)
   fileio.replace(paths.join(dir_app, "locale/debreate.pot"),
