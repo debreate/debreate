@@ -47,14 +47,14 @@ sys_info_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTW
 
 ## Dialog that shows information about the application
 class AboutDialog(wx.Dialog):
-  ## Constructor
+  ## Constructor.
   #
-  #  \param parent
-  #  	The parent window
-  #  \param id
-  #  	Window id (FIXME: Not necessary)
-  #  \param title
-  #  	Text to be shown in the title bar
+  #  @param parent
+  #    The parent window.
+  #  @param id
+  #    Window id (FIXME: Not necessary).
+  #  @param title
+  #    Text to be shown in the title bar.
   def __init__(self, parent, size=(600,558)):
     wx.Dialog.__init__(self, parent, wx.ID_ABOUT, GT("About"), size=size,
             style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
@@ -70,12 +70,14 @@ class AboutDialog(wx.Dialog):
     t_credits = wx.Panel(tabs, -1)
     t_changelog = wx.Panel(tabs, -1)
     t_license = wx.Panel(tabs, -1)
+    t_sysinfo = wx.Panel(tabs, -1)
 
     # Add pages to tabbed interface
     tabs.AddPage(self.t_about, GT("About"))
     tabs.AddPage(t_credits, GT("Credits"))
     tabs.AddPage(t_changelog, GT("Changelog"))
     tabs.AddPage(t_license, GT("License"))
+    tabs.AddPage(t_sysinfo, GT("System Information"))
 
     # FIXME: Center vertical on about tab
     self.about_layout_V1 = BoxSizer(wx.VERTICAL)
@@ -124,40 +126,22 @@ class AboutDialog(wx.Dialog):
     t_license.SetSizer(license_sizer)
     t_license.Layout()
 
+    py_info = wx.StaticText(t_sysinfo, label=GT("Python version: {}").format(PY_VER_STRING))
+    # ~ py_info.SetFont(sys_info_font)
+    wx_info = wx.StaticText(t_sysinfo, label=GT("wxPython version: {}").format(WX_VER_STRING))
+    # ~ wx_info.SetFont(sys_info_font)
+    install_prefix = wx.StaticText(t_sysinfo, label=GT("App location: {}")
+        .format(paths.getAppDir()))
 
-    # System info
-    sys_info = wx.Panel(tabs, -1)
-    tabs.AddPage(sys_info, GT("System Information"))
+    box_sysinfo = wx.BoxSizer(wx.VERTICAL)
+    box_sysinfo.AddStretchSpacer()
+    box_sysinfo.Add(py_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+    box_sysinfo.Add(wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+    box_sysinfo.AddSpacer(20)
+    box_sysinfo.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP|wx.BOTTOM, 5)
+    box_sysinfo.AddStretchSpacer()
 
-    ## System's <a href="https://www.python.org/">Python</a> version
-    self.py_info = wx.StaticText(sys_info, -1,
-        GT("Python version: {}").format(PY_VER_STRING))
-
-    ## System's <a href="https://wxpython.org/">wxPython</a> version
-    self.wx_info = wx.StaticText(sys_info, -1,
-        GT("wxPython version: {}").format(WX_VER_STRING))
-
-    ## Debreate's installation prefix
-    install_prefix = wx.StaticText(sys_info,
-        label=GT("App location: {}").format(paths.getAppDir()))
-
-    if INSTALLED:
-      install_prefix.SetLabel(GT("Installation prefix: {}").format(appinfo.getInstallPrefix()))
-
-    self.py_info.SetFont(sys_info_font)
-    self.wx_info.SetFont(sys_info_font)
-
-
-    sysinfo_layout_V1 = BoxSizer(wx.VERTICAL)
-    sysinfo_layout_V1.AddStretchSpacer()
-    sysinfo_layout_V1.Add(self.py_info, 0, wx.ALIGN_CENTER|wx.BOTTOM, 5)
-    sysinfo_layout_V1.Add(self.wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
-    sysinfo_layout_V1.AddSpacer(20)
-    sysinfo_layout_V1.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP, 5)
-    sysinfo_layout_V1.AddStretchSpacer()
-
-    sys_info.SetSizer(sysinfo_layout_V1)
-    sys_info.Layout()
+    t_sysinfo.SetSizer(box_sysinfo)
 
     # Button to close the dialog
     btn_confirm = CreateButton(self, btnid.CONFIRM)
@@ -170,10 +154,10 @@ class AboutDialog(wx.Dialog):
     self.Layout()
 
 
-  ## Displays logo in 'about' tab
+  ## Displays logo in 'about' tab.
   #
-  #  \param graphic
-  #  	Path to image file
+  #  @param graphic
+  #    Path to image file.
   def SetGraphic(self, graphic):
     insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
 
@@ -193,10 +177,10 @@ class AboutDialog(wx.Dialog):
     self.t_about.Layout()
 
 
-  ## Displays version in 'about' tab
+  ## Displays version in 'about' tab.
   #
-  #  \param version
-  #  	String to display
+  #  @param version
+  #    String to display.
   def SetVersion(self, version):
     insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
 
@@ -217,10 +201,10 @@ class AboutDialog(wx.Dialog):
     self.t_about.Layout()
 
 
-  ## Display author's name
+  ## Display author's name.
   #
-  #  \param author
-  #  	String to display
+  #  @param author
+  #    String to display.
   def SetAuthor(self, author):
     insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
 
@@ -235,20 +219,21 @@ class AboutDialog(wx.Dialog):
     self.t_about.Layout()
 
 
-  ## Sets a hotlink to the app's homepage
+  ## Sets a hotlink to the app's homepage.
   #
-  #  TODO: Remove: Deprecated, unused
-  #  \param URL
-  #  	URL to open when link is clicked
+  #  @param URL
+  #    URL to open when link is clicked.
+  #  @todo
+  #    Remove: Deprecated, unused
   def SetWebsite(self, URL):
     self.website.SetLabel(URL)
     self.website.SetURL(URL)
 
 
-  ## Adds URL hotlinks to about dialog
+  ## Adds URL hotlinks to about dialog.
   #
-  #  \param url_list
-  #  	\b \e tuple : Website labels & URL definitions
+  #  @param url_list
+  #    \b \e tuple : Website labels & URL definitions.
   def SetWebsites(self, url_list):
     insertion_point = GetContainerItemCount(self.about_layout_V1) - 1
 
@@ -287,12 +272,12 @@ class AboutDialog(wx.Dialog):
     self.t_about.Layout()
 
 
-  ## Adds a developer to the list of credits
+  ## Adds a developer to the list of credits.
   #
-  #  \param name
-  #  	str: Developer's name
-  #  \param email
-  #  	str: Developer's email address
+  #  @param name
+  #    str: Developer's name.
+  #  @param email
+  #    str: Developer's email address.
   def AddDeveloper(self, name, email):
     next_item = self.credits.GetItemCount()
     self.credits.InsertStringItem(next_item, name)
@@ -300,12 +285,12 @@ class AboutDialog(wx.Dialog):
     self.credits.SetStringItem(next_item, 1, GT("Developer"))
 
 
-  ## Adds a packager to the list of credits
+  ## Adds a packager to the list of credits.
   #
-  #  \param name
-  #  	\b \e str : Packager's name
-  #  \param email
-  #  	\b \e str : Packager's email address
+  #  @param name
+  #    \b \e str : Packager's name.
+  #  @param email
+  #    \b \e str : Packager's email address.
   def AddPackager(self, name, email):
     next_item = self.credits.GetItemCount()
     self.credits.InsertStringItem(next_item, name)
@@ -313,14 +298,14 @@ class AboutDialog(wx.Dialog):
     self.credits.SetStringItem(next_item, 1, GT("Packager"))
 
 
-  ## Adds a translator to the list of credits
+  ## Adds a translator to the list of credits.
   #
-  #  \param name
-  #  	\b \e str : Translator's name
-  #  \param email
-  #  	\b \e str : Translator's email address
-  #  \param lang
-  #  	\b \e str : Locale code for the translation
+  #  @param name
+  #    \b \e str : Translator's name.
+  #  @param email
+  #    \b \e str : Translator's email address.
+  #  @param lang
+  #    \b \e str : Locale code for the translation.
   def AddTranslator(self, name, email, lang):
     job = GT("Translation")
     job = "{} ({})".format(job, lang)
@@ -330,14 +315,14 @@ class AboutDialog(wx.Dialog):
     self.credits.SetStringItem(next_item, 1, job)
 
 
-  ## Adds a general job to the credits list
+  ## Adds a general job to the credits list.
   #
-  #  \param name
-  #  	\b \e str : Contributer's name
-  #  \param job
-  #  	\b \e str : Job description
-  #  \param email
-  #  	\b \e str : Job holder's email address
+  #  @param name
+  #    \b \e str : Contributer's name.
+  #  @param job
+  #    \b \e str : Job description.
+  #  @param email
+  #    \b \e str : Job holder's email address.
   def AddJob(self, name, job, email=wx.EmptyString):
     next_item = self.credits.GetItemCount()
     self.credits.InsertStringItem(next_item, name)
@@ -345,16 +330,17 @@ class AboutDialog(wx.Dialog):
 
     if email != wx.EmptyString:
       self.credits.SetStringItem(next_item, 2, email)
+    self.Layout()
 
 
-  ## Adds list of jobs for single contributor
+  ## Adds list of jobs for single contributor.
   #
-  #  \param name
-  #  	\b \e str : Contributer's name
-  #  \param jobs
-  #  	\b \e string \b \e list|tuple : Contributer's jobs
-  #  \param email
-  #  	\b \e str : Optional contributer's email address
+  #  @param name
+  #    \b \e str : Contributer's name.
+  #  @param jobs
+  #    \b \e string \b \e list|tuple : Contributer's jobs.
+  #  @param email
+  #    \b \e str : Optional contributer's email address.
   def AddJobs(self, name, jobs, email=wx.EmptyString):
     if isinstance(jobs, str):
       logger.debug(GT("Converting string argument \"jobs\" to tuple"))
@@ -377,11 +363,12 @@ class AboutDialog(wx.Dialog):
       event.Veto()
 
 
-  ## Sets text to be shown on the 'Changelog' tab
+  ## Sets text to be shown on the 'Changelog' tab.
   #
-  #  FIXME: Change to create in class constructor
-  #  \param log_file
-  #  	\b \e str : Path to changelog file on filesystem
+  #  @param log_file
+  #    \b \e str : Path to changelog file on filesystem.
+  #  @fixme
+  #    Change to create in class constructor.
   def SetChangelog(self):
     ## Defines where the changelog is located
     #
@@ -420,10 +407,10 @@ class AboutDialog(wx.Dialog):
     self.changelog.SetInsertionPoint(0)
 
 
-  ## Sets text to be shown on the 'License' tab
+  ## Sets text to be shown on the 'License' tab.
   #
-  #  \param lic_file
-  #  	\b \e : Path to license file on the filesystem
+  #  @param lic_file
+  #    \b \e : Path to license file on the filesystem.
   def SetLicense(self):
     ## Defines where the LICENSE.txt is located
     #
@@ -448,10 +435,11 @@ class AboutDialog(wx.Dialog):
     self.license.SetInsertionPoint(0)
 
 
-  ## Defines action to take when 'Ok' button is press
+  ## Defines action to take when 'Ok' button is press.
   #
   #  Closes the dialog.
-  #  \param event
-  #  	<b><em>(wx.EVT_BUTTON)</em></b>
+  #
+  #  @param event
+  #    <b><em>(wx.EVT_BUTTON)</em></b>
   def OnOk(self, event=None):
     self.Close()
