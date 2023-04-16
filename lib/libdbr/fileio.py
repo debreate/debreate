@@ -87,13 +87,19 @@ touch = createFile
 #
 #  @param filepath
 #    Path to file to be read.
+#  @param binary
+#    Open file in binary mode.
 #  @return
-#    Text contents of file.
-def readFile(filepath):
-  fin = codecs.open(filepath, "r", "utf-8")
-  data = fin.read()
+#    Text or binary contents of file.
+def readFile(filepath, binary=False):
+  if binary:
+    fin = codecs.open(filepath, "rb")
+    data = fin.read()
+  else:
+    fin = codecs.open(filepath, "r", "utf-8")
+    data = __cleanLE(fin.read())
   fin.close()
-  return __cleanLE(data)
+  return data
 
 ## Writes text or binary data to a file without preserving previous contents.
 #
