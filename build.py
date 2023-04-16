@@ -303,6 +303,13 @@ def taskUpdateVersion():
   logger.info("updating version information ...")
 
   repl = [
+    ("^__version = .*$", "__version = ({})".format(", ".join(ver))),
+    ("^__version_dev = .*$", "__version_dev = {}".format(ver_dev))
+  ]
+  fileio.replace(paths.join(dir_app, "lib/libdebreate/appinfo.py"), repl, count=1,
+      verbose=options.verbose)
+
+  repl = [
     (r"^VERSION_maj = .*$", "VERSION_maj = {}".format(ver[0])),
     (r"^VERSION_min = .*$", "VERSION_min = {}".format(ver[1]))
   ]
@@ -324,11 +331,6 @@ def taskUpdateVersion():
         fl=True, verbose=options.verbose)
   # ~ fileio.replace(paths.join(dir_app, "docs/changelog.txt"), r"^(?!\s*$).+", ver_string_full, count=1,
       # ~ fl=True, verbose=options.verbose)
-
-  repl = [
-    (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
-    (r"^VERSION_dev=.*$", "VERSION_dev={}".format(ver_dev))
-  ]
 
 def __cleanByteCode(_dir):
   if os.path.basename(_dir) == "__pycache__":

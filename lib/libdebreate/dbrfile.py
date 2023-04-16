@@ -18,7 +18,7 @@ from libdbr.logger import Logger
 
 
 standards_defaults = {
-  "app": appinfo.getVersionTuple(),
+  "app": appinfo.getVersion(),
   "config": (0, 9) # assume legacy
 }
 
@@ -177,7 +177,7 @@ class DBRFile:
       self.__cacheStandards()
     if not self.standards["app"]:
       # fallback to current app standard
-      self.standards["app"] = list(appinfo.getVersionTuple())
+      self.standards["app"] = list(appinfo.getVersion())
     if Logger.debugging:
       self.logger.debug("app standard: {}".format(self.standards["app"]))
     return self.standards["app"]
@@ -191,7 +191,7 @@ class DBRFile:
       self.__cacheStandards()
     if not self.standards["config"]:
       # fallback to current config standard
-      self.standards["config"] = list(appinfo.getDBRStandardTuple())
+      self.standards["config"] = list(appinfo.getDBRStandard())
     if Logger.debugging():
       self.logger.debug("config standard: {}".format(self.standards["config"]))
     return self.standards["config"]

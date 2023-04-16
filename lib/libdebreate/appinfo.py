@@ -7,15 +7,17 @@
 # ****************************************************
 
 
-__version = 0.8
-__version_dev = 5
-__dbr_standard = 1.0
+from libdbr import strings
 
+
+__version = (0, 8)
+__version_dev = 5
+__dbr_standard = (1, 0)
 
 ## Retrieves app version.
 #
 #  @return
-#    App version float.
+#    App version tuple.
 def getVersion():
   return __version
 
@@ -31,36 +33,14 @@ def getVersionDev():
 #  @return
 #    App version string.
 def getVersionString():
-  ver = "{}".format(__version)
+  ver = strings.toString(__version, sep=".")
   if __version_dev > 0:
     ver += "-dev{}".format(__version_dev)
   return ver
-
-## Retrieves app version.
-#
-#  @return
-#    App version tuple.
-def getVersionTuple():
-  ver = []
-  for v in getVersionString().split("."):
-    if "-" in v:
-      v = v.split("-")[0]
-    ver.append(int(v))
-  return tuple(ver)
-
-## Retrieves config version standard.
-#
-#  @return
-#    Config standard float.
-def getDBRStandard():
-  return __dbr_standard
 
 ## Retrieves config version standard.
 #
 #  @return
 #    Config standard tuple.
-def getDBRStandardTuple():
-  ver = []
-  for v in "{}".format(__dbr_standard).split("."):
-    ver.append(int(v))
-  return tuple(ver)
+def getDBRStandard():
+  return __dbr_standard
