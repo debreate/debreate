@@ -329,8 +329,6 @@ def taskUpdateVersion():
     (r"^VERSION=.*$", "VERSION={}".format(ver_string)),
     (r"^VERSION_dev=.*$", "VERSION_dev={}".format(ver_dev))
   ]
-  # INFO file is deprecated, should be removed in future versions
-  fileio.replace(paths.join(dir_app, "INFO"), repl, count=1, verbose=options.verbose)
 
 def __cleanByteCode(_dir):
   if os.path.basename(_dir) == "__pycache__":

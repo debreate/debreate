@@ -1,28 +1,41 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
-# MIT licensing
-# See: docs/LICENSE.txt
+# ******************************************************
+# * Copyright © 2016-2023 - Jordan Irwin (AntumDeluge) *
+# ******************************************************
+# * This software is licensed under the MIT license.   *
+# * See: LICENSE.txt for details.                      *
+# ******************************************************
 
 # HOWTO:
-#   To add a changelog entry:
-#	 - Run this script (from any location)
-#	   - A new entry will be written to 'docs/changelog'
-#	 - Edit 'docs/changelog' to add new changes
-#	 - For Debian builds:
-#	   - Run 'scripts/update-debian-changelog.py'
+#  To add a changelog entry:
+#  - Run this script (from any location)
+#    - A new entry will be written to 'docs/changelog'
+#  - Edit 'docs/changelog' to add new changes
+#  - For Debian builds:
+#    - Run 'scripts/update-debian-changelog.py'
 #
-#	If a filename is used as the first argument, the
-#	script will copy any lines beginning with an alpha-
-#	numeric character & add them to the changelog
-#	output file.
+#  If a filename is used as the first argument, the
+#  script will copy any lines beginning with an alpha-
+#  numeric character & add them to the changelog
+#  output file.
 
-import os, sys, time, errno
+import os
+import sys
+import time
+import errno
 
-from scripts_globals import GetInfoValue
-from scripts_globals import file_CHANGELOG
+path_script = os.path.realpath(sys.argv[0])
+dir_scripts = os.path.dirname(path_script)
+dir_app = os.path.dirname(dir_scripts)
 
+sys.path.insert(0, os.path.join(dir_app, "lib"))
 
+from libdbr import config
+from libdbr import paths
+
+cfg = config.add("build", paths.join(dir_app, "build.conf"))
+file_CHANGELOG = paths.join(dir_app, "docs/changelog.txt")
 CHANGES = None
 
 # Writes information from changes_file to changelog output
@@ -53,8 +66,8 @@ def AddChanges(changes_file):
 
 
 # Version details
-new_version = GetInfoValue('VERSION')
-dev_version = GetInfoValue('VERSION_dev')
+new_version = cfg.getValue("version")
+dev_version = cfg.getValue("version_dev")
 if dev_version.isdigit():
 	dev_version = int(dev_version)
 
