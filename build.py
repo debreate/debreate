@@ -122,7 +122,7 @@ def stageDoc(prefix):
 
   dir_target = paths.join(prefix, "doc/{}".format(package_name))
   for _file in files_doc:
-    fileio.copyFile(paths.join(dir_app, _file), dir_target, _file, verbose=options.verbose)
+    fileio.copyFile(paths.join(dir_app, _file), dir_target, os.path.basename(_file), verbose=options.verbose)
 
   files_man = config.getValue("files_man").split(";")
   for _file in files_man:
@@ -459,7 +459,7 @@ def __buildDebChangelog():
   # create changelog for release
   fileio.writeFile(file_changelog, getChangesDeb(), verbose=options.verbose)
   if not os.path.isfile(file_changelog):
-    exitWithError("failed to created Debian changelog", errno.ENOENT)
+    exitWithError("failed to create Debian changelog", errno.ENOENT)
 
 def taskDistDeb():
   tasks.run("clean-deb")
