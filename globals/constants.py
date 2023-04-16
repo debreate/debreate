@@ -13,11 +13,12 @@
 
 import os, wx
 
+import globals.application as appinfo
+
 from dbr.language  import GT
 from libdbr        import paths
 from libdbr.fileio import readFile
 from libdbr.logger import Logger
-from util          import appinfo
 
 
 __logger = Logger(__name__)

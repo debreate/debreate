@@ -22,6 +22,7 @@ import errno, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
 import globals.paths
+import globals.application as appinfo
 import util
 
 from dbr.language  import setTranslator
@@ -55,7 +56,7 @@ parsed_path = command_line.options.project
 
 dir_app = paths.getAppDir()
 
-setTranslator(util.appinfo.getLocaleDir())
+setTranslator(appinfo.getLocaleDir())
 
 # Compiles python source into bytecode
 if command_line.options.command == "compile":

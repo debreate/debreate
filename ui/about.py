@@ -13,6 +13,8 @@ import os
 
 import wx
 
+import globals.application as appinfo
+
 from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
 from dbr.language        import GT
@@ -36,7 +38,6 @@ from ui.dialog           import ShowErrorDialog
 from ui.hyperlink        import Hyperlink
 from ui.layout           import BoxSizer
 from ui.style            import layout as lyt
-from util                import appinfo
 
 
 logger = Logger(__name__)
