@@ -29,6 +29,7 @@ from input.text          import TextAreaPanel
 from libdbr              import fileinfo
 from libdbr              import fileio
 from libdbr              import paths
+from libdbr              import sysinfo
 from libdbr.logger       import Logger
 from ui.button           import CreateButton
 from ui.dialog           import ShowErrorDialog
@@ -130,6 +131,8 @@ class AboutDialog(wx.Dialog):
     # ~ py_info.SetFont(sys_info_font)
     wx_info = wx.StaticText(t_sysinfo, label=GT("wxPython version: {}").format(WX_VER_STRING))
     # ~ wx_info.SetFont(sys_info_font)
+    sys_name = wx.StaticText(t_sysinfo, label=GT("System name: {}")
+        .format(sysinfo.getOSName().title()))
     install_prefix = wx.StaticText(t_sysinfo, label=GT("App location: {}")
         .format(paths.getAppDir()))
 
@@ -137,6 +140,7 @@ class AboutDialog(wx.Dialog):
     box_sysinfo.AddStretchSpacer()
     box_sysinfo.Add(py_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
     box_sysinfo.Add(wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+    box_sysinfo.Add(sys_name, 0, wx.ALIGN_CENTER|wx.TOP, 5)
     box_sysinfo.AddSpacer(20)
     box_sysinfo.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP|wx.BOTTOM, 5)
     box_sysinfo.AddStretchSpacer()
