@@ -597,8 +597,10 @@ def initTasks():
       + " directory.")
   addTask("update-version", taskUpdateVersion, "Update relevant files with version" \
       + " information from 'build.conf'.")
-  addTask("test", taskRunTests, "Run configured unit tests from 'tests' directory.")
+  addTask("run-tests", taskRunTests, "Run configured unit tests from 'tests' directory.")
+  addTask("test", taskRunTests, sgr("Alias of <bold>run-tests</bold>."))
   addTask("check-code", taskCheckCode, "Check code with pylint & mypy.")
+  addTask("check", taskCheckCode, sgr("Alias of <bold>check-code</bold>."))
   addTask("changes", taskPrintChanges, "Print most recent changes from 'doc/changelog'" \
       + " to stdout.")
   addTask("changes-deb", taskPrintChangesDeb, "Print most recent changes from"
