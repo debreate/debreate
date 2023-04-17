@@ -624,11 +624,11 @@ def initOptions(aparser):
   aparser.add_argument("-l", "--log-level", metavar="<level>",
       default=LogLevel.toString(LogLevel.getDefault()).lower(),
       help="Logging output verbosity.\n  " + "\n  ".join(log_levels))
-  aparser.add_argument("-t", "--task",
+  aparser.add_argument("-t", "--task", metavar="<task1>[,<task2>...]",
       help="\n".join(task_help))
-  aparser.add_argument("-p", "--prefix", default=paths.getSystemRoot() + "usr",
+  aparser.add_argument("-p", "--prefix", metavar="<dir>", default=paths.getSystemRoot() + "usr",
       help="Path prefix to directory where files are to be installed.")
-  aparser.add_argument("-d", "--dir", default=paths.getSystemRoot(),
+  aparser.add_argument("-d", "--dir", metavar="<dir>", default=paths.getSystemRoot(),
       help="Target directory (defaults to system root). This is useful for directing the script" \
           + " to place the files in a temporary directory, rather than the intended installation" \
           + " path.")
