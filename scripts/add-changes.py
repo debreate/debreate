@@ -72,7 +72,7 @@ if dev_version.isdigit():
 	dev_version = int(dev_version)
 
 	if dev_version:
-		new_version = '{}-dev{}'.format(new_version, dev_version)
+		new_version = '{}dev{}'.format(new_version, dev_version)
 
 
 # Check if we are importing changes from a text file

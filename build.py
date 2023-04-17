@@ -182,7 +182,7 @@ def getChangesDeb():
   deb_info["package"] = package_name
   deb_info["version"] = package_version
   if package_version_dev > 0:
-    deb_info["version"] = "{}-dev{}".format(deb_info["version"], package_version_dev)
+    deb_info["version"] = "{}dev{}".format(deb_info["version"], package_version_dev)
   return misc.formatDebianChanges(changes, deb_info)
 
 
@@ -292,7 +292,7 @@ def taskUpdateVersion():
   ver_dev = int(cfg.getValue("version_dev", 0))
   ver_string_full = ver_string
   if ver_dev > 0:
-    ver_string_full += "-dev{}".format(ver_dev)
+    ver_string_full += "dev{}".format(ver_dev)
 
   print()
   print("package:     {}".format(package_name))
@@ -472,7 +472,7 @@ def taskDistDeb():
   dir_dist = paths.join(dir_app, "build/dist")
   fileio.makeDir(dir_dist)
   deb_prefix = package_name + "_" + package_version \
-      + ("" if package_version_dev == 0 else "-dev{}".format(package_version_dev)) + "_"
+      + ("" if package_version_dev == 0 else "dev{}".format(package_version_dev)) + "_"
   deb_name = deb_prefix + "all.deb"
   deb_target = paths.join(dir_dist, deb_name)
   if os.path.isfile(deb_target):
@@ -678,7 +678,7 @@ def main():
     package_version_dev = int(tmp)
   package_version_full = package_version
   if package_version_dev > 0:
-    package_version_full = "{}-dev{}".format(package_version_full, package_version_dev)
+    package_version_full = "{}dev{}".format(package_version_full, package_version_dev)
   aparser.version = package_version_full
 
   if options.version:

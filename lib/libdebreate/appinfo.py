@@ -15,7 +15,7 @@ from libdbr import paths
 from libdbr import strings
 
 
-__version = (0, 8)
+__version = (0, 8, 0)
 __version_dev = 6
 __dbr_standard = (1, 0)
 
@@ -40,7 +40,7 @@ def getVersionDev():
 def getVersionString():
   ver = strings.toString(__version, sep=".")
   if __version_dev > 0:
-    ver += "-dev{}".format(__version_dev)
+    ver += "dev{}".format(__version_dev)
   return ver
 
 ## Retrieves config version standard.

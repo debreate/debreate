@@ -20,5 +20,5 @@ def version():
 def versionString():
   ver = strings.toString(__version, sep=".")
   if __version_dev > 0:
-    ver += "-dev{}".format(__version_dev)
+    ver += "dev{}".format(__version_dev)
   return ver

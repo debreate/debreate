@@ -59,7 +59,7 @@ def parseStrings():
   version = cfg.getValue("version")
   version_dev = int(cfg.getValue("version_dev"))
   if version_dev > 0:
-    version += "-dev{}".format(version_dev)
+    version += "dev{}".format(version_dev)
 
   params = [
     "--language=Python",
