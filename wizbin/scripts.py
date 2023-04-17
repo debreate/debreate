@@ -120,6 +120,8 @@ class Page(WizardPage):
     # Auto-Link executables to be linked
     self.Executables = BasicFileList(pnl_autolink, size=(200, 200), hlExe=True,
         name="al list")
+    if self.Executables.GetColumnCount() == 0:
+      self.Executables.AppendColumn("")
 
     # Auto-Link import, generate and remove buttons
     btn_al_import = CreateButton(pnl_autolink, btnid.IMPORT)
