@@ -15,6 +15,7 @@ import traceback
 
 import wx
 
+import globals.execute
 import libdbr.bin
 
 from dbr.functions      import FileUnstripped
@@ -23,7 +24,6 @@ from dbr.md5            import WriteMD5
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.errorcodes import dbrerrno
-from globals.execute    import GetSystemInstaller
 from globals.ident      import btnid
 from globals.ident      import chkid
 from globals.ident      import inputid
@@ -96,7 +96,7 @@ class Page(WizardPage):
 
     # Installs the deb on the system
     self.chk_install = CheckBox(pnl_options, chkid.INSTALL, GT("Install package after build"),
-        name="INSTALL", commands=("gdebi-gtk", "gdebi-kde",))
+        name="INSTALL", commands=globals.execute.getDebInstallerList())
     self.chk_install.tt_name = "install»"
     self.chk_install.col = 0
 
@@ -786,7 +786,7 @@ class Page(WizardPage):
   #  @param package
   #    \b \e str : Path to package to be installed
   def InstallPackage(self, package):
-    system_installer = GetSystemInstaller()
+    system_installer = globals.execute.getDebInstaller()
 
     if not system_installer:
       ShowErrorDialog(

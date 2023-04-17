@@ -12,10 +12,11 @@
 
 import wx
 
+import globals.execute
+
 from dbr.language    import GT
 from dbr.templates   import local_templates_path
 from globals.changes import section_delims
-from globals.execute import GetSystemInstaller
 from globals.ident   import btnid
 from globals.ident   import pgid
 from libdbr.logger   import Logger
@@ -202,7 +203,7 @@ TT_build = {
   btnid.BUILD: GT("Start building"),
   "install": (
     GT("Install package using a system installer after build"), "",
-    "{} {}".format(GT("System installer set to:"), GetSystemInstaller()),
+    "{} {}".format(GT("System installer set to:"), globals.execute.getDebInstaller()),
     ),
   "install_disabled": (
     GT("Installation requires one of the following utilities:"), "",

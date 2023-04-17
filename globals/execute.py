@@ -53,12 +53,25 @@ def elevated(cmd, *args, pword, check=False):
   return 0, res
 
 
-## Retrieves a usable GUI .deb installer application.
+__installers = ("gdebi-gtk", "gdebi-kde", "qapt-deb-installer")
+
+## Retrieves a list of recognized .deb installing applications.
 #
 #  @todo
-#    Use a list of whitelisted executables
-def GetSystemInstaller():
-  system_installer = paths.getExecutable("gdebi-gtk")
-  if not system_installer:
-    system_installer = paths.getExecutable("gdebi-kde")
-  return system_installer
+#    Move to different package.
+def getDebInstallerList():
+  return __installers
+
+
+## Retrieves a usable GUI .deb installer application.
+#
+#  @return
+#    Path to installer executable or `None` if not available.
+#  @todo
+#    Move to different package.
+def getDebInstaller():
+  for inst in __installers:
+    cmd = paths.getExecutable(inst)
+    if cmd:
+      return cmd
+  return None
