@@ -16,6 +16,7 @@ from libdbr.logger import Logger
 
 
 __logger = Logger(__name__)
+__logger.deprecated(__name__)
 
 ## Retrieves line number of script.
 def lineno():
@@ -98,6 +99,6 @@ def FixmeMessage(message, script=None, line=None, newline=True):
 #  @deprecated
 #    Use `libdbr.logger.Logger`.
 def TodoMessage(message, script=None, line=None, newline=True):
-  __logger.deprecated(, alt=Logger)
+  __logger.deprecated(TodoMessage, alt=Logger)
 
   HelperMessage(message, "TODO", script, line, newline)
