@@ -18,7 +18,7 @@ import wx
 import globals.execute
 import libdbr.bin
 
-from dbr.functions      import FileUnstripped
+from dbr.functions      import fileUnstripped
 from dbr.language       import GT
 from dbr.md5            import WriteMD5
 from globals.bitmaps    import ICON_EXCLAMATION
@@ -344,12 +344,9 @@ class Page(WizardPage):
           for F in FILES:
             # Don't check files in DEBIAN directory
             if ROOT != DIR_debian:
-              F = os.path.join(ROOT, F)
-
-              if FileUnstripped(F):
-                logger.debug("Unstripped file: {}".format(F))
-
-                # FIXME: check for 'strip' command
+              F = paths.join(ROOT, F)
+              if fileUnstripped(F):
+                logger.debug("unstripped file: {}".format(F))
                 err, msg = libdbr.bin.execute(paths.getExecutable("strip"), F)
 
         progress += 1

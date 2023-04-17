@@ -3,7 +3,6 @@
 
 required for release:
 - importing executables to scripts page broken
-- stripping binaries broken
 
 priority:
 - can't disable tooltips under Gtk

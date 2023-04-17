@@ -20,6 +20,8 @@ from urllib.request import urlopen
 
 import wx
 
+import libdbr.bin
+
 from dbr.language       import GT
 from globals.errorcodes import dbrerrno
 from globals.strings    import IsString
@@ -286,27 +288,18 @@ def IsIntTuple(value):
 #
 #  @param file_name
 #    Path to file.
-#  @fixme
-#    Handle missing 'file' command.
-def FileUnstripped(file_name):
+#  @todo
+#    FIXME: not platform independent
+def fileUnstripped(file_name):
   CMD_file = paths.getExecutable("file")
-
-  if CMD_file:
-    output = subprocess.run([CMD_file, file_name], capture_output=True).stdout.decode("utf-8")
-
-    if ": " in output:
-      output = output.split(": ")[1]
-
-    output = output.split(", ")
-
-    if "not stripped" in output:
-      return True
-
+  if not CMD_file:
+    __logger.error("'file' executable not found, cannot check if file '{}' is stripped".format(file_name))
     return False
-
-  print("ERROR: \"file\" command does not exist on system")
-
-  return False
+  err, output = libdbr.bin.execute(CMD_file, file_name)
+  if err != 0:
+    __logger.error("'file' command returned error '{}'".format(err))
+    return False
+  return "not stripped" == output.split(", ")[-1]
 
 
 ## Builds a .deb package from a pre-formatted directory tree.
