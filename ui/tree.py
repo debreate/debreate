@@ -13,6 +13,8 @@ import traceback
 
 import wx
 
+import libdbr.bin
+
 from dbr.colors      import COLOR_executable
 from dbr.colors      import COLOR_link
 from dbr.colors      import COLOR_warn
@@ -21,7 +23,6 @@ from dbr.image       import GetCursor
 from dbr.imagelist   import sm_DirectoryImageList as ImageList
 from dbr.language    import GT
 from globals.devices import GetMountedStorageDevices
-from globals.execute import ExecuteCommand
 from globals.ident   import menuid
 from libdbr          import fileinfo
 from libdbr          import paths
@@ -1004,6 +1005,9 @@ class _DirectoryTree(wx.TreeCtrl):
       self.SelectItem(selected)
 
   ## Send that selected item's path to trash
+  #
+  #  @todo
+  #    FIXME: not platform independent
   def SendToTrash(self, item_list):
     path_list = []
     for I in item_list:
@@ -1021,7 +1025,7 @@ class _DirectoryTree(wx.TreeCtrl):
       arg_list = list(path_list)
       # Use 'force' argument to avoid crash on non-existing paths
       arg_list.insert(0, "-f")
-      ExecuteCommand(paths.getExecutable("gvfs-trash"), arg_list)
+      libdbr.bin.execute(paths.getExecutable("gvfs-trash"), arg_list)
 
       logger.debug("Paths deleted")
 

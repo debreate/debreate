@@ -21,16 +21,15 @@ from dbr.templates      import GetSysLicenses
 from dbr.templates      import sys_licenses_path
 from globals.dateinfo   import GetYear
 from globals.errorcodes import dbrerrno
-from globals.execute    import ExecuteCommand
 from globals.ident      import btnid
 from globals.ident      import pgid
 from globals.ident      import selid
 from globals.tooltips   import SetPageToolTips
 from input.select       import Choice
 from input.text         import TextAreaPanelESS
+from libdbr             import fileio
 from libdbr             import paths
 from libdbr             import strings
-from libdbr.fileio      import readFile
 from libdbr.logger      import Logger
 from ui.button          import CreateButton
 from ui.dialog          import ConfirmationDialog
@@ -177,7 +176,7 @@ class Page(WizardPage):
     if not os.path.isfile(filename):
       return dbrerrno.ENOENT
 
-    copyright_data = readFile(filename).split("\n")
+    copyright_data = fileio.readFile(filename).split("\n")
 
     # Remove preceding empty lines
     remove_index = 0
@@ -205,23 +204,14 @@ class Page(WizardPage):
 
   ## Opens directory containing currently selected license.
   def OnOpenPath(self, event=None):
-    CMD_open = paths.getExecutable("xdg-open")
-
-    if CMD_open:
-      path = self.GetLicensePath()
-
-      if not path:
-        ShowErrorDialog(GT("Error retrieving template path: {}").format(self.GetSelectedName()))
-
-        return False
-
-      path = os.path.dirname(path)
-
-      if os.path.isdir(path):
-        ExecuteCommand(CMD_open, (path,))
-
-        return True
-
+    path = self.GetLicensePath()
+    if not path:
+      ShowErrorDialog(GT("Error retrieving template path: {}").format(self.GetSelectedName()))
+      return False
+    path = os.path.dirname(path)
+    if os.path.isdir(path):
+      fileio.openFileManager(path)
+      return True
     return False
 
   ## Repopulates template list.
@@ -291,7 +281,7 @@ class Page(WizardPage):
 
       __logger.debug("Copying license {}".format(template_file))
 
-      license_text = readFile(template_file)
+      license_text = fileio.readFile(template_file)
 
       # Number defines how many empty lines to add after the copyright header
       # Boolean/Integer defines whether copyright header should be centered/offset

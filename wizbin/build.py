@@ -15,13 +15,14 @@ import traceback
 
 import wx
 
+import libdbr.bin
+
 from dbr.functions      import FileUnstripped
 from dbr.language       import GT
 from dbr.md5            import WriteMD5
 from globals.bitmaps    import ICON_EXCLAMATION
 from globals.bitmaps    import ICON_INFORMATION
 from globals.errorcodes import dbrerrno
-from globals.execute    import ExecuteCommand
 from globals.execute    import GetSystemInstaller
 from globals.ident      import btnid
 from globals.ident      import chkid
@@ -348,8 +349,8 @@ class Page(WizardPage):
               if FileUnstripped(F):
                 logger.debug("Unstripped file: {}".format(F))
 
-                # FIXME: Strip command should be set as class member?
-                ExecuteCommand(paths.getExecutable("strip"), F)
+                # FIXME: check for 'strip' command
+                err, msg = libdbr.bin.execute(paths.getExecutable("strip"), F)
 
         progress += 1
 
@@ -799,11 +800,8 @@ class Page(WizardPage):
     logger.info(GT("Attempting to install package: {}").format(package))
     logger.info(GT("Installing with {}").format(system_installer))
 
-    install_cmd = (system_installer, package,)
-
     wx.GetApp().Yield()
-    # FIXME: Use ExecuteCommand here
-    install_output = subprocess.Popen(install_cmd)
+    err, install_output = libdbr.bin.execute(system_installer, package)
 
     # Command appears to not have been executed correctly
     if install_output == None:
@@ -818,7 +816,7 @@ class Page(WizardPage):
     if install_output.returncode:
       err_details = (
         GT("Process returned code {}").format(install_output.returncode),
-        GT("Command executed: {}").format(" ".join(install_cmd)),
+        GT("Command executed: {} {}").format(system_installer, package),
         )
 
       ShowErrorDialog(
