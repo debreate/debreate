@@ -25,7 +25,7 @@ from ui.style        import layout as lyt
 from wiz.helper      import GetMainWindow
 
 
-## Text control set up for handling file drop events
+## Text control set up for handling file drop events.
 class TextArea(wx.TextCtrl, InputField):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
@@ -43,18 +43,15 @@ class TextArea(wx.TextCtrl, InputField):
 
     self.Bind(wx.EVT_DROP_FILES, self.OnDropFiles)
 
-
-  ## Allow dropping files from file manager
+  ## Allow dropping files from file manager.
   def EnableDropTarget(self, enable=True):
     self.accepts_drop = enable
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsDropTarget(self):
     return self.accepts_drop
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnDropFiles(self, event=None):
     if not self.IsEnabled() or not event:
       return False
@@ -65,7 +62,6 @@ class TextArea(wx.TextCtrl, InputField):
 
       if isinstance(parent, TextAreaPanel):
         main_object = parent
-
       else:
         main_object = self
 
@@ -76,7 +72,6 @@ class TextArea(wx.TextCtrl, InputField):
       time.sleep(0.1)
 
       main_object.SetBackgroundColour(bgcolor)
-
       return False
 
     filename = event.GetFiles()
@@ -106,9 +101,7 @@ class TextArea(wx.TextCtrl, InputField):
 
       if input_text:
         self.SetValue(input_text)
-
         return True
-
     except UnicodeDecodeError:
       pass
 
@@ -119,7 +112,7 @@ class TextArea(wx.TextCtrl, InputField):
     return False
 
 
-## TextArea that notifies main window to mark the project dirty
+## TextArea that notifies main window to mark the project dirty.
 class TextAreaESS(TextArea, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
@@ -130,7 +123,7 @@ class TextAreaESS(TextArea, EssentialField):
     EssentialField.__init__(self)
 
 
-## A text control that is multiline & uses a themed border
+## A text control that is multiline & uses a themed border.
 class TextAreaML(TextArea):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
@@ -139,11 +132,10 @@ class TextAreaML(TextArea):
     TextArea.__init__(self, parent, win_id, value, defaultValue, pos, size, style|wx.TE_MULTILINE,
         validator, name, required, outLabel)
 
-
   ## Sets the font size of the text area
   #
-  #  \param point_size
-  #  	\b \e int : New point size of font
+  #  @param point_size
+  #    \b \e int : New point size of font
   def SetFontSize(self, point_size):
     font = self.GetFont()
     font.SetPointSize(point_size)
@@ -151,7 +143,7 @@ class TextAreaML(TextArea):
     self.SetFont(font)
 
 
-## TextAreaML that notifies main window to mark the project dirty
+## TextAreaML that notifies main window to mark the project dirty.
 class TextAreaMLESS(TextAreaML, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
@@ -176,7 +168,7 @@ button_H_pos = {
 }
 
 
-## Somewhat of a hack to attempt to get rounded corners on text control border
+## Somewhat of a hack to attempt to get rounded corners on text control border.
 class TextAreaPanel(BorderedPanel, ControlPanel):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,
@@ -208,18 +200,15 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
     if monospace:
       self.SetMonospaced(button)
 
-
-  ## Clears all text in the text area
+  ## Clears all text in the text area.
   def Clear(self):
     self.MainCtrl.Clear()
 
-
-  ## Disables self & text area
+  ## Disables self & text area.
   def Disable(self):
     return self.Enable(False)
 
-
-  ## Disables or enables self & text area
+  ## Disables or enables self & text area.
   #
   #  Because of issues with text control background color, it
   #  must be set manually when the parent TextAreaPanel
@@ -257,58 +246,47 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
 
     return return_value
 
-
-  ## Allow dropping files from file manager
+  ## Allow dropping files from file manager.
   def EnableDropTarget(self, enable=True):
     return self.MainCtrl.EnableDropTarget(enable)
 
-
-  ## Retrieves the caret instance of the wx.TextCtrl
+  ## Retrieves the caret instance of the wx.TextCtrl.
   def GetCaret(self):
     return self.MainCtrl.GetCaret()
 
-
-  ## Retrieves text area's default value
+  ## Retrieves text area's default value.
   def GetDefaultValue(self):
     return self.MainCtrl.GetDefaultValue()
 
-
-  ## Retrieves font that text area is using
+  ## Retrieves font that text area is using.
   def GetFont(self):
     return self.MainCtrl.GetFont()
 
-
-  ## Retrieves carat position
+  ## Retrieves carat position.
   def GetInsertionPoint(self):
     return self.MainCtrl.GetInsertionPoint()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetLastPosition(self):
     return self.MainCtrl.GetLastPosition()
 
-
-  ## Retrieves the text area object
+  ## Retrieves the text area object.
   def GetTextCtrl(self):
     return self.MainCtrl
 
-
-  ## Retrieves text from text input
+  ## Retrieves text from text input.
   def GetValue(self):
     return self.MainCtrl.GetValue()
 
-
-  ## Returns True if text area is empty
+  ## Returns True if text area is empty.
   def IsEmpty(self):
     return self.MainCtrl.IsEmpty()
 
-
-  ## Checks if field is required for building
+  ## Checks if field is required for building.
   def IsRequired(self):
     return self.MainCtrl.IsRequired()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnToggleTextSize(self, event=None):
     # Save insertion point
     insertion = self.MainCtrl.GetInsertionPoint()
@@ -328,90 +306,79 @@ class TextAreaPanel(BorderedPanel, ControlPanel):
     self.MainCtrl.SetInsertionPoint(insertion)
     self.MainCtrl.SetFocus()
 
-
-  ## Resets text area to default value
+  ## Resets text area to default value.
   def Reset(self):
     return self.MainCtrl.Reset()
 
-
-  ## Sets text area's default value
+  ## Sets text area's default value.
   def SetDefaultValue(self, value):
     return self.MainCtrl.SetDefaultValue(value)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetBackgroundColour(self, *args, **kwargs):
     self.MainCtrl.SetBackgroundColour(*args, **kwargs)
     return BorderedPanel.SetBackgroundColour(self, *args, **kwargs)
 
-
-  ## Sets the caret instance for the wx.TextCtrl
+  ## Sets the caret instance for the wx.TextCtrl.
   def SetCaret(self, caret):
     return self.MainCtrl.SetCaret(caret)
 
-
-  ## Sets font in text area
+  ## Sets font in text area.
   def SetFont(self, font):
     self.MainCtrl.SetFont(font)
 
-
-  ## Sets the font size of the text in the text area
+  ## Sets the font size of the text in the text area.
   #
+  #  @todo parameters
   def SetFontSize(self, point_size):
     self.MainCtrl.SetFontSize(point_size)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetForegroundColour(self, *args, **kwargs):
     self.MainCtrl.SetForegroundColour(*args, **kwargs)
     return BorderedPanel.SetForegroundColour(self, *args, **kwargs)
 
-
-  ## Places carat to position in text area
+  ## Places carat to position in text area.
   def SetInsertionPoint(self, point):
     self.MainCtrl.SetInsertionPoint(point)
 
-
-  ## Places carat at end of text area
+  ## Places carat at end of text area.
   def SetInsertionPointEnd(self):
     self.MainCtrl.SetInsertionPointEnd()
 
-
-  ## Sets text in text area
+  ## Sets text in text area.
   def SetValue(self, text):
     self.MainCtrl.SetValue(text)
 
-
-  ## Sets text area font to monospaced
+  ## Sets text area font to monospaced.
   def SetMonospaced(self, button):
     self.MainCtrl.SetFont(MONOSPACED_LG)
 
     if button:
       lyt_main = self.GetSizer()
-
       btn_text_size = wx.Button(self, label=GT("Text Size"))
       if button in (MT_BTN_TL, MT_BTN_TR):
         lyt_main.Insert(0, btn_text_size, 0, button_H_pos[button]|lyt.PAD_LR, 5)
-
       else:
         lyt_main.Add(btn_text_size, 0, button_H_pos[button]|lyt.PAD_LR, 5)
 
       btn_text_size.Bind(wx.EVT_BUTTON, self.OnToggleTextSize)
-
       self.Layout()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ShowPosition(self, pos):
     return self.MainCtrl.ShowPosition(pos)
 
-
-  ## Writes to the text area
+  ## Writes to the text area.
+  #
+  #  @todo parameters
   def WriteText(self, text):
     self.MainCtrl.WriteText(text)
 
 
-## TextAreaPanel that notifies main window to mark the project dirty
+## TextAreaPanel that notifies main window to mark the project dirty.
+#
+#  @todo parameters
 class TextAreaPanelESS(TextAreaPanel, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, defaultValue=wx.EmptyString,
       monospace=False, button=MT_NO_BTN, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0,

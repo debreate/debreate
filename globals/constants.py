@@ -6,10 +6,10 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.constants
+## Global variables used throughout the application & should remain constant.
 #
-#  Global variables used throughout the application & should remain constant.
-#  TODO: Rename or delete
+#  @module globals.constants
+#  @deprecated
 
 import os, wx
 
@@ -20,6 +20,7 @@ from libdbr.logger import Logger
 
 
 __logger = Logger(__name__)
+__logger.deprecated(__name__)
 
 # Local modules
 # *** Debreate Information *** #

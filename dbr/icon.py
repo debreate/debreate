@@ -11,23 +11,21 @@
 import wx
 
 
-## TODO: Doxygen
+## @todo
+#    Doxygen.
 class Icon(wx.Icon):
   def __init__(self, name, desiredWidth=-1, desiredHeight=-1):
     bm_type = self.GetBitmapType(name)
-
     wx.Icon.__init__(self, name, bm_type, desiredWidth, desiredHeight)
 
-
-  ## TODO: Doxygen
+  ## @todo
+  #    Doxygen.
   def GetBitmapType(self, filename):
     if filename:
       bm_types = {
         "png": wx.BITMAP_TYPE_PNG,
         }
-
       suffix = filename.split(".")[-1]
       if suffix in bm_types:
         return bm_types[suffix]
-
     return wx.BITMAP_TYPE_ANY

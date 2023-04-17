@@ -61,13 +61,12 @@ class CheckList(BorderedPanel):
     if items:
       self.AddItems(items)
 
-
   ## Add a single item to the list
   #
-  #  \param label
-  #  Item's displayed text
-  #  \param checked
-  #  Sets item checked if True
+  #  @param label
+  #    Item's displayed text
+  #  @param checked
+  #    Sets item checked if True
   def AddItem(self, label, checked=False):
     # Yield for progress dialog pulse updates
     wx.GetApp().Yield()
@@ -92,60 +91,48 @@ class CheckList(BorderedPanel):
     pnl_bg.Layout()
     self.Layout()
 
-
   ## Adds multiple items to the list
   #
-  #  \param labels
-  #  List of text labels to be displayed
-  #  \param checked
-  #  Sets items as checked if True
+  #  @param labels
+  #    List of text labels to be displayed
+  #  @param checked
+  #    Sets items as checked if True
   def AddItems(self, labels, checked=False):
     for l in labels:
       __logger.debug("Adding item: {} (checked={})".format(l, checked))
-
       self.AddItem(l, checked)
-
 
   ## Sets all item states to 'unchecked'
   def Clear(self):
     changed = False
-
     for CHK in self.GetAllItems():
       if CHK.GetValue():
         CHK.SetValue(False)
         changed = True
-
     if changed:
       self.PostCheckBoxEvent()
 
-
   ## Retrieves all check boxes
   #
-  #  \return
-  #  Tuple containing all children check box instances
+  #  @return
+  #    Tuple containing all children check box instances
   def GetAllItems(self):
     pnl_bg = GetField(self, pnlid.BACKGROUND)
     items = []
-
     for item in pnl_bg.GetChildren():
       if isinstance(item, wx.CheckBox):
         items.append(item)
-
     return tuple(items)
-
 
   ## Retrieves all item labels
   #
-  #  \return
-  #  Tuple of all check box labels
+  #  @return
+  #    Tuple of all check box labels
   def GetAllLabels(self):
     labels = []
-
     for CHK in self.GetAllItems():
       labels.append(CHK.GetLabel())
-
     return tuple(labels)
-
 
   ## Retrieves number of items in list that set as 'checked'
   def GetCheckedCount(self):
@@ -153,123 +140,101 @@ class CheckList(BorderedPanel):
     for CHK in self.GetAllItems():
       if CHK.GetValue():
         checked_count += 1
-
     return checked_count
-
 
   ## Retrieves list of items that are set as 'checked'
   def GetCheckedLabels(self):
     checked_list = []
-
     for CHK in self.GetAllItems():
       if CHK.IsChecked():
         label = CHK.GetLabel()
-
         __logger.debug(GT("Retrieving checked label: {}").format(label))
-
         checked_list.append(label)
-
     return tuple(checked_list)
-
 
   ## Retrieves a single item
   #
-  #  \param index
-  #  Retrieve item at index
-  #  \return
-  #  True if label is found
+  #  @param index
+  #    Retrieve item at index
+  #  @return
+  #    True if label is found
   def GetItem(self, index):
     return self.GetAllItems()[index]
 
-
   ## Retrieves an item using a label
   #
-  #  \param label
-  #  Text label to search for
+  #  @param label
+  #    Text label to search for
   def GetItemByLabel(self, label):
     labels = self.GetAllLabels()
-
     if label in labels:
       return self.GetItem(labels.index(label))
-
 
   ## Retrieves number of items in list
   def GetItemCount(self):
     return len(self.GetAllItems())
 
-
   ## Retrieves the checked state of an item
   #
-  #  \param index
-  #  \b \e Integer index of of item to check
+  #  @param index
+  #    \b \e Integer index of of item to check
   def GetValue(self, index):
     return self.GetItem(index).GetValue()
 
-
   ## Retrieves the checked state of an item
   #
-  #  \param label
-  #  Label whose value to get
-  #  \return
-  #  \b \e True if label's state is 'checked'
+  #  @param label
+  #    Label whose value to get
+  #  @return
+  #    \b \e True if label's state is 'checked'
   def GetValueByLabel(self, label):
     item = self.GetItemByLabel(label)
-
     if item:
       return item.GetValue()
-
     return False
-
 
   ## Checks if any item's state is 'checked'
   #
-  #  \return
-  #  \b \e True if any item's state is 'checked'
+  #  @return
+  #    \b \e True if any item's state is 'checked'
   def HasSelected(self):
     for CHK in self.GetAllItems():
       if CHK.GetValue():
         return True
-
     return False
-
 
   ## Check if an item's state is 'checked'
   #
-  #  \param label
-  #  Label of item to check
+  #  @param label
+  #    Label of item to check
   def IsSelected(self, label):
     return label in self.GetCheckedLabels()
 
-
   ## Checks if a label is in the list
   #
-  #  \param label
-  #  Text label to search for
+  #  @param label
+  #    Text label to search for
   def LabelExists(self, label):
     for LABEL in self.GetAllLabels():
       if LABEL == label:
         return True
-
     return False
-
 
   ## Handles check box events
   def OnCheckItem(self, event=None):
     self.PostCheckBoxEvent()
 
-
   ## Propagates check box event to parent or target
   #
-  #  \param target
-  #  \b \e wx.Window instance to post event to
+  #  @param target
+  #    \b \e wx.Window instance to post event to
   def PostCheckBoxEvent(self, target=None):
     if not target:
       target = self.Parent
 
     wx.PostEvent(target, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED, self.Id))
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ScrollToEnd(self):
     pnl_bg = GetField(self, pnlid.BACKGROUND)
 
@@ -278,28 +243,25 @@ class CheckList(BorderedPanel):
     pnl_bg.Refresh()
     self.Refresh()
 
-
-  ## TODO: Define & Doxygen
+  ## @todo Define & Doxygen
   def SetItemCheckedByLabel(self, label, checked=True):
     # FIXME: Should use a more efficient method to index & retrieve items
     for C in self.GetAllItems():
       if C.GetLabel() == label:
         C.SetValue(checked)
-
         break
-
 
   ## Sets the 'checked' state of an item
   #
-  #  \param index
-  #  \b \e Integer index of item to manipulate
-  #  \param checked
-  #  State to set item
+  #  @param index
+  #    \b \e Integer index of item to manipulate
+  #  @param checked
+  #    State to set item
   def SetValue(self, index, checked):
     return self.GetItem(index).SetValue(checked)
 
 
-## TODO: Doxygen
+## @todo Doxygen
 class CheckListDialog(wx.Dialog):
   def __init__(self, parent, ID=wx.ID_ANY, title=wx.EmptyString, pos=wx.DefaultPosition,
       size=wx.DefaultSize, style=wx.DEFAULT_DIALOG_STYLE, name=wx.DialogNameStr,
@@ -350,30 +312,30 @@ class CheckListDialog(wx.Dialog):
 
     self.CenterOnParent()
 
-
+  ## @todo Doxygen
   def AddItem(self, label, checked=False):
     self.check_list.AddItem(label, checked)
 
-
+  ## @todo Doxygen
   def GetCheckedCount(self):
     return self.check_list.GetCheckedCount()
 
-
+  ## @todo Doxygen
   def GetCheckedLabels(self):
     return self.check_list.GetCheckedLabels()
 
-
+  ## @todo Doxygen
   def InitCheckList(self, labels, checked=False):
     self.check_list.AddItems(labels, checked)
 
-
+  ## @todo Doxygen
   def OnAddCustom(self, event=None):
     custom_label = strings.toString(self.input_add_custom.GetValue()).strip(" ").replace(" ", "_")
     if not strings.isEmpty(custom_label) and not self.check_list.LabelExists(custom_label):
       self.check_list.AddItem(custom_label, True)
       self.check_list.ScrollToEnd()
 
-
+  ## @todo Doxygen
   def OnClearList(self, event=None):
     if self.GetCheckedCount():
       warn_dialog = wx.MessageDialog(self, GT("Clear Lintian overrides list?"), GT("Warning"),
@@ -383,15 +345,13 @@ class CheckListDialog(wx.Dialog):
       if warn_dialog.ShowModal() == wx.ID_YES:
         self.check_list.Clear()
 
-
+  ## @todo Doxygen
   def SetItemCheckedByLabel(self, label, checked=True):
     self.check_list.SetItemCheckedByLabel(label, checked)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ShowModal(self):
     # wx 2.8 doesn't automatically center on parent
     if self.Parent:
       self.CenterOnParent()
-
     return wx.Dialog.ShowModal(self)

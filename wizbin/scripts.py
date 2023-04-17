@@ -53,13 +53,12 @@ id_definitions = {
   ID_RM_POST: "postrm",
 }
 
-
 ## Scripts page
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
-  #      Parent <b><i>wx.Window</i></b> instance
+  #  @param parent
+  #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.SCRIPTS)
 
@@ -208,15 +207,13 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ChangeBG(self, exists):
     if exists == False:
       self.ti_autolink.SetBackgroundColour((255, 0, 0, 255))
 
     else:
       self.ti_autolink.SetBackgroundColour((255, 255, 255, 255))
-
 
   ## Retrieves page data from fields
   def Get(self):
@@ -228,8 +225,7 @@ class Page(WizardPage):
 
     return scripts
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetSaveData(self):
     # Custom dictionary of scripts
     script_list = (
@@ -244,12 +240,10 @@ class Page(WizardPage):
     for group in script_list:
       if group[0].IsChecked():
         data.append("<<{}>>\n1\n{}\n<</{}>>".format(group[2], group[0].GetValue(), group[2]))
-
       else:
         data.append("<<{}>>\n0\n<</{}>>".format(group[2], group[2]))
 
     return "<<SCRIPTS>>\n{}\n<</SCRIPTS>>".format("\n".join(data))
-
 
   ## Imports executables from files page for Auto-Link
   def ImportExes(self, event=None):
@@ -308,13 +302,12 @@ class Page(WizardPage):
     elif event_id in (btnid.REMOVE, wx.WXK_DELETE):
       self.Executables.RemoveSelected()
 
-
   ## Reads & parses page data from a formatted text file
   #
-  #  FIXME: Should be done in DebianScript class method???
-  #
-  #  \param filename
-  #      File path to open
+  #  @param filename
+  #    File path to open
+  #  @todo
+  #    FIXME: Should be done in DebianScript class method???
   def ImportFromFile(self, filename):
     logger.debug(GT("Importing script: {}").format(filename))
 
@@ -332,18 +325,16 @@ class Page(WizardPage):
     if script_object != None:
       script_object.SetValue(readFile(filename))
 
-
   ## Checks if one or more scripts can be exported
   #
-  #  \return
-  #      <b><i>True</i></b> if page is ready for export
+  #  @return
+  #    <b><i>True</i></b> if page is ready for export
   def IsOkay(self):
     for DS, CHK, RB in self.script_objects:
       if DS.IsChecked():
         return True
 
     return False
-
 
   ## Creates scripts that link the executables
   def OnGenerate(self, event=None):
@@ -423,7 +414,6 @@ class Page(WizardPage):
       DetailedMessageDialog(main_window, GT("Success"),
           text=GT("Post-Install and Pre-Remove scripts generated")).ShowModal()
 
-
   ## Displays an information dialog about Auto-Link when help button is pressed
   def OnHelpButton(self, event=None):
     al_help = MarkdownDialog(self, title=GT("Auto-Link Help"), readonly=True)
@@ -434,14 +424,12 @@ class Page(WizardPage):
 
     ShowDialog(al_help)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnToggleScripts(self, event=None):
     logger.debug("Toggling scripts")
 
     for DS, CHK, RB in self.script_objects:
       DS.Enable(DS.IsChecked())
-
 
   ## Resets all fields on page to default values
   def Reset(self):
@@ -456,7 +444,6 @@ class Page(WizardPage):
     self.ti_autolink.Reset()
     self.Executables.Reset()
 
-
   ## Changes current displayed script
   def ScriptSelect(self, event=None):
     for DS, CHK, RB in self.script_objects:
@@ -468,11 +455,10 @@ class Page(WizardPage):
 
     self.Layout()
 
-
   ## Sets the page's fields
   #
-  #  \param data
-  #      Text to parse for field values
+  #  @param data
+  #    Text to parse for field values
   def Set(self, data):
     chk_preinst = self.script_objects[0][1]
     chk_postinst = self.script_objects[1][1]
@@ -507,16 +493,12 @@ class Page(WizardPage):
 
     if chk_preinst.GetValue():
       self.script_objects[0][0].SetValue("\n".join(preinst[0]))
-
     if chk_postinst.GetValue():
       self.script_objects[1][0].SetValue("\n".join(postinst[0]))
-
     if chk_prerm.GetValue():
       self.script_objects[2][0].SetValue("\n".join(prerm[0]))
-
     if chk_postrm.GetValue():
       self.script_objects[3][0].SetValue("\n".join(postrm[0]))
-
 
 ## Class defining a Debian package script
 #
@@ -530,10 +512,10 @@ class Page(WizardPage):
 class DebianScript(wx.Panel):
   ## Constructor
   #
-  #  \param parent
-  #      The <b><i>wx.Window</i></b> parent instance
-  #  \param scriptId
-  #      Unique <b><i>integer</i></b> identifier for script
+  #  @param parent
+  #    The <b><i>wx.Window</i></b> parent instance
+  #  @param scriptId
+  #    Unique <b><i>integer</i></b> identifier for script
   def __init__(self, parent, scriptId):
     wx.Panel.__init__(self, parent, scriptId)
 
@@ -561,47 +543,40 @@ class DebianScript(wx.Panel):
     # Scripts are hidden by default
     self.Hide()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Disable(self):
     return self.Enable(False)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Enable(self, enable=True):
     return self.ScriptBody.Enable(enable)
 
-
   ## Retrieves the filename to use for exporting
   #
-  #  \return
-  #      Script filename
+  #  @return
+  #    Script filename
   def GetFilename(self):
     return self.FileName
 
-
   ## Retrieves the script's name for display
   #
-  #  \return
-  #      <b><i>String</i></b> representation of script's name
+  #  @return
+  #    <b><i>String</i></b> representation of script's name
   def GetName(self):
     return self.ScriptName
-
 
   ## Retrieves the text body of the script
   def GetValue(self):
     return self.ScriptBody.GetValue()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Hide(self):
     if self.Check:
       self.Check.Hide()
 
     return wx.Panel.Hide(self)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsChecked(self):
     # FIXME: Should check if field is wx.CheckBox
     if self.Check:
@@ -609,11 +584,9 @@ class DebianScript(wx.Panel):
 
     return False
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsEnabled(self):
     return FieldEnabled(self.ScriptBody)
-
 
   ## Checks if the script is used & can be exporteds.
   #
@@ -624,30 +597,28 @@ class DebianScript(wx.Panel):
   def IsOkay(self):
     return not strings.isEmpty(self.ScriptBody.GetValue())
 
-
   ## Resets all members to default values
   def Reset(self):
     self.ScriptBody.Clear()
     if self.Check:
       self.Check.Reset()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetCheckBox(self, check_box):
     self.Check = check_box
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetChecked(self, value=True):
     self.Check.SetValue(value)
-
 
   ## Sets the name of the script to be displayed
   #
   #  Sets the displayed script name to a value of either 'Pre Install',
   #  'Pre Uninstall', 'Post Install', or 'Post Uninstall'. 'self.FileName'
   #  is used to determine the displayed name.
-  #  TODO: Add strings to GetText translations
+  #
+  #  @todo
+  #    Add strings to GetText translations
   def SetScriptName(self):
     prefix = None
     suffix = None
@@ -655,32 +626,27 @@ class DebianScript(wx.Panel):
     if "pre" in self.FileName:
       prefix = "Pre"
       suffix = self.FileName.split("pre")[1]
-
     elif "post" in self.FileName:
       prefix = "Post"
       suffix = self.FileName.split("post")[1]
 
     if suffix.lower() == "inst":
       suffix = "Install"
-
     elif suffix.lower() == "rm":
       suffix = "Uninstall"
 
     if (prefix != None) and (suffix != None):
       self.ScriptName = GT("{}-{}".format(prefix, suffix))
 
-
   ## Fills the script
   #
-  #  \param value
-  #      Text to be entered into the script body
+  #  @param value
+  #    Text to be entered into the script body
   def SetValue(self, value):
     self.ScriptBody.SetValue(value)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Show(self):
     if self.Check:
       self.Check.Show()
-
     return wx.Panel.Show(self)

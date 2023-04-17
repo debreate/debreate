@@ -9,7 +9,10 @@
 ## @module dbr.help
 
 
-import subprocess, os, wx
+import os
+import subprocess
+
+import wx
 
 from wx.richtext import RE_READONLY
 from wx.richtext import RichTextCtrl
@@ -24,10 +27,10 @@ local_manpath = "man"
 man_section = "1"
 
 
-## Parses & returns Debreate's manpage as RichText
+## Parses & returns Debreate's manpage as RichText.
 #
-#  \return
-#     RichText help reference
+#  @return
+#    RichText help reference.
 def ParseManpage():
   help_text = "ERROR: Could not parse '{}'".format(app_man)
 
@@ -43,7 +46,7 @@ def ParseManpage():
   return help_text
 
 
-## TODO: Doxygen
+## @todo Doxygen
 class HelpDialog(wx.Dialog):
   def __init__(self, parent):
     wx.Dialog.__init__(self, parent, wx.ID_HELP, "Help",

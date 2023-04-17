@@ -16,44 +16,42 @@ from dbr.font        import MONOSPACED_MD
 from fields.ifield   import InputField
 from input.essential import EssentialField
 from libdbr          import strings
+from libdbr.logger   import Logger
 
 
-## Custom wx.Choice class for compatibility with older wx versions
+## Custom wx.Choice class for compatibility with older wx versions.
+#
+#  @deprecated
 class Choice(wx.Choice, InputField):
   def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
       choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
       defaultValue=0, required=False, outLabel=None):
+    Logger(Choice.__name__).deprecated(Choice)
 
     wx.Choice.__init__(self, parent, win_id, pos, size, choices, style, validator, name)
     InputField.__init__(self, defaultValue, required, outLabel)
 
-
-  ## wx 2.8 does not define wx.Choice.Set
+  ## wx 2.8 does not define wx.Choice.Set.
   #
-  #  \param items
-  #  List of items to be set
+  #  @param items
+  #    List of items to be set.
   def Set(self, items):
     cached_value = self.GetStringSelection()
-
     if not isinstance(items, (tuple, list, dict,)):
       items = (items,)
-
     if wx.MAJOR_VERSION > 2:
       wx.Choice.Set(self, items)
-
     else:
       self.Clear()
-
       for I in items:
         self.Append(I)
-
     if cached_value:
       self.SetStringSelection(cached_value)
 
 
-## Choice class that notifies main window to mark the project dirty
+## Choice class that notifies main window to mark the project dirty.
 #
-#  This is a dummy class to facilitate merging to & from unstable branch
+#  This is a dummy class to facilitate merging to & from unstable branch.
 class ChoiceESS(Choice, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
       choices=[], style=0, validator=wx.DefaultValidator, name=wx.ChoiceNameStr,
@@ -64,9 +62,9 @@ class ChoiceESS(Choice, EssentialField):
     EssentialField.__init__(self)
 
 
-## Custom combo box that sets background colors when enabled/disabled
+## Custom combo box that sets background colors when enabled/disabled.
 #
-#  This is a workaround for wx versions older than 3.0
+#  This is a workaround for wx versions older than 3.0.
 #
 #  Notes on processing combo box events (EVT_COMBOBOX)
 #  wx 2.8:
@@ -107,55 +105,44 @@ class ComboBox(OwnerDrawnComboBox, InputField):
       # FIXME: This doesn't work (use monospace in popup list)
       self.GetPopupControl().GetControl().SetFont(MONOSPACED_MD)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Disable(self):
     return self.Enable(False)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Enable(self, *args, **kwargs):
     return_value =  OwnerDrawnComboBox.Enable(self, *args, **kwargs)
-
     if wx.MAJOR_VERSION < 3:
       text_area = self.GetTextCtrl()
-
       if self.IsEnabled():
         text_area.SetBackgroundColour(self.clr_enabled)
-
       else:
         text_area.SetBackgroundColour(self.clr_disabled)
-
     return return_value
 
-
-  ## Override inherited method for compatibility with older wx versions
+  ## Override inherited method for compatibility with older wx versions.
   #
-  #  \param items
-  #  \b \e String or \b \e list of string items
+  #  @param items
+  #    \b \e String or \b \e list of string items.
   def Set(self, items):
     # Text control is cleared when options are changed
     cached_value = self.GetValue()
-
     if not isinstance(items, (tuple, list, dict)):
       items = (items,)
-
     if wx.MAJOR_VERSION > 2:
       OwnerDrawnComboBox.Set(self, items)
-
     else:
       self.Clear()
 
       for I in items:
         self.Append(I)
-
     if not strings.isEmpty(cached_value):
       self.SetValue(cached_value)
 
 
-## ComboBox class that notifies main window to mark the project dirty
+## ComboBox class that notifies main window to mark the project dirty.
 #
-#  This is a dummy class to facilitate merging to & from unstable branch
+#  This is a dummy class to facilitate merging to & from unstable branch.
 class ComboBoxESS(ComboBox, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, value=wx.EmptyString, pos=wx.DefaultPosition,
       size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator,

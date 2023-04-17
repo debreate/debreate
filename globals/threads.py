@@ -6,18 +6,21 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.threads
+## Threading.
 #
-#  WARNING: Standard Python module 'threads' cannot be imported here
+#  WARNING: Standard Python module 'threads' cannot be imported here.
+#
+#  @module globals.threads
 
 import threading
 
 from libdbr.logger import Logger
 
+
 logger = Logger(__name__)
 thr = threading
 
-## Standard thread class with renamed methods
+## Standard thread class with renamed methods.
 class Thread(thr.Thread):
   def __init__(self, function, *args):
     thr.Thread.__init__(self, target=function, args=args)
@@ -26,26 +29,22 @@ class Thread(thr.Thread):
     # TODO: Retrieve target exit value
     self.ExitVal = None
 
-
   def __del__(self):
     logger.debug("Destroying Thread instance; Thread is active: {}".format(self.IsActive()))
 
-
-  ## Exits the thread & sets inactive
+  ## Exits the thread & sets inactive.
   #
-  #  Alias of globals.threads.Thread.Join
+  #  Alias of `globals.threads.Thread.Join`.
   def Exit(self):
     return self.Join()
 
-
-  ## Retrieves the thread identifier
+  ## Retrieves the thread identifier.
   def GetId(self):
     return self.ident
 
-  ## Tests if thread is active
+  ## Tests if thread is active.
   def IsActive(self):
     return self.Active
-
 
   ## Exits the thread & sets inactive
   def join(self):
@@ -55,33 +54,26 @@ class Thread(thr.Thread):
       thr.Thread.join(self)
       self.Active = False
 
-
-  ## Exits the thread & sets inactive
+  ## Exits the thread & sets inactive.
   #
-  #  Alias of globals.threads.Thread.join
+  #  Alias of `globals.threads.Thread.join`.
   def Join(self):
     return self.join()
 
-
-  ## Executes target under new thread
+  ## Executes target under new thread.
   def start(self):
     try:
       thr.Thread.start(self)
       self.Active = True
-
-    # Do not try to restart thread if already started
+    # do not try to restart thread if already started
     except RuntimeError:
       logger.debug("ThreadStart: Thread is active, cannot restart")
-
       # In case active state has been changed
       self.Active = True
-
       pass
-
     return self.IsActive()
 
-
-  ## Alias for start method
+  ## Alias for start method.
   def Start(self):
     return self.start()
 
@@ -89,10 +81,10 @@ class Thread(thr.Thread):
 active_threads = []
 
 
-## Creates a new thread for processing
+## Creates a new thread for processing.
 #
-#  \return
-#  \b \e Integer thread ID if successfully activated
+#  @return
+#    Integer thread ID if successfully activated.
 def CreateThread(function, *args):
   global active_threads
 
@@ -107,13 +99,14 @@ def CreateThread(function, *args):
   return None
 
 
-## Ends an active thread
+## Ends an active thread.
 #
-#  TODO: Define
-#  \param thread_id
-#  \b \e Integer ID of the thread to kill
-#  \return
-#  \b \e True if thread was successfully killed
+#  @param thread_id
+#    Integer ID of the thread to kill.
+#  @return
+#    `True` if thread was successfully killed.
+#  @todo
+#    Define.
 def KillThread(thread_id):
   global active_threads
 

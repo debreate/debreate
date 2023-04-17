@@ -8,7 +8,10 @@
 
 ## @module ui.distcache
 
-import os, traceback, wx
+import os
+import traceback
+
+import wx
 
 from wx.adv import OwnerDrawnComboBox
 
@@ -114,60 +117,47 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
     if self.Parent:
       self.CenterOnParent()
 
-
   ## Checks for present error message & displays dialog
   #
-  #  \return
-  #  \b \e False if no errors present
+  #  @return
+  #    \b \e False if no errors present
   def CheckErrors(self):
     if self.error_message:
       ShowErrorDialog(self.error_message, parent=self, linewrap=410)
-
       # Clear error message & return
       self.error_message = None
       return True
-
     return False
-
 
   ## Deletes the distribution names cache file
   def OnClearCache(self, event=None):
     if os.path.isfile(FILE_distnames):
       os.remove(FILE_distnames)
-
       # Update list on changelog page
       distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
       if isinstance(distname_input, OwnerDrawnComboBox):
         distname_input.Set(GetOSDistNames())
-
       self.btn_preview.Disable()
-
     cache_exists = os.path.exists(FILE_distnames)
-
     self.btn_preview.Enable(cache_exists)
     return not cache_exists
-
 
   ## Opens cache file for previewing
   def OnPreviewCache(self, event=None):
     self.preview.SetValue(readFile(FILE_distnames))
     self.preview.ShowModal()
 
-
   ## Calls Pulse method on progress dialog when timer event occurs
   def OnTimerEvent(self, event=None):
     if self.progress:
       self.progress.Pulse()
-
 
   ## Closes & resets the progress dialog to None when timer stops
   def OnTimerStop(self, event=None):
     if self.progress:
       self.progress.EndModal(0)
       self.progress = None
-
     return not self.progress
-
 
   ## Creates/Updates the distribution names cache file
   def OnUpdateCache(self, event=None):
@@ -192,7 +182,6 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
       # Use ShowModal to wait for timer to stop before continuing
       self.progress.ShowModal()
-
       self.Enable()
 
       if self.CheckErrors():
@@ -203,19 +192,14 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
       if cache_updated:
         distname_input = GetField(pgid.CHANGELOG, inputid.DIST)
-
         if isinstance(distname_input, OwnerDrawnComboBox):
           distname_input.Set(GetOSDistNames())
-
         else:
           ShowMessageDialog(
             GT("The distribution names cache has been updated but Debreate needs to restart to reflect the changes on the changelog page"),
             parent=self, linewrap=410)
-
       self.btn_preview.Enable(cache_updated)
-
       return cache_updated
-
     except:
       # Make sure dialog is re-enabled
       self.Enable()
@@ -238,15 +222,14 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
 
     return False
 
-
   ## Method that does the actual updating of the names cache list
   #
   #  Called from a new thread
-  #  FIXME: Show error if could not contact 1 or more remote sites???
+  #
+  #  @todo
+  #    FIXME: Show error if could not contact 1 or more remote sites???
   def UpdateCache(self, args=None):
     logger.debug(GT("Updating cache ..."))
-
     UpdateDistNamesCache(self.chk_unstable.GetValue(), self.chk_obsolete.GetValue(),
         self.chk_generic.GetValue())
-
     self.timer.Stop()

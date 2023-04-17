@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module wizbin
+## Wizard pages related to binary package building.
 #
-#  Wizard pages related to binary package building
+#  @pacakge wizbin

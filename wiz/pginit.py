@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module wiz.pginit
+## The initial wizard page.
 #
-#  The initial wizard page
+#  @module wiz.pginit
 
 import wx
 

@@ -48,31 +48,25 @@ class TextPreview(BaseDialog):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Retrieves the text area
   def GetTextArea(self):
     for C in self.GetChildren():
       if isinstance(C, TextAreaPanel):
         return C
 
-
   ## Retrieves the displayed text
   def GetValue(self):
     text_display = self.GetTextArea()
-
     if text_display:
       return text_display.GetValue()
-
 
   ## Close dialog with button events
   def OnButton(self, event=None):
     if event:
       self.EndModal(event.GetEventObject().GetId())
 
-
   ## Sets the displayed text
   def SetValue(self, text):
     text_display = self.GetTextArea()
-
     if text_display:
       return text_display.SetValue(text)

@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module system
+## Functions related to the local system.
 #
-#  Functions related to the local system
+#  @package system

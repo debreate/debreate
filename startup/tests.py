@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module startup.tests
+## Sets list of tests to be checked through app.
 #
-#  Sets list of tests to be checked through app
+#  @module startup.tests
 
 from libdbr.logger  import Logger
 from libdbr.strings import sgr

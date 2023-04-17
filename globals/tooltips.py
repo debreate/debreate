@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.tooltips
+## Defines tooltips that have longer texts.
 #
-#  Defines tooltips that have longer texts
+#  @module globals.tooltips
 
 import wx
 
@@ -24,7 +24,7 @@ from wiz.helper      import FieldEnabled
 
 logger = Logger(__name__)
 
-# *** Wizard buttons ***#
+# *** wizard buttons *** #
 TT_wiz_prev = wx.ToolTip(GT("Previous page"))
 TT_wiz_next = wx.ToolTip(GT("Next page"))
 
@@ -224,7 +224,7 @@ TT_pages = {
 }
 
 
-## Universal function for setting window/control tooltips
+## Universal function for setting window/control tooltips.
 def SetToolTip(tooltip, control, required=False):
   if isinstance(tooltip, wx.ToolTip):
     tooltip = tooltip.GetTip()
@@ -239,19 +239,20 @@ def SetToolTip(tooltip, control, required=False):
     control.SetToolTip(tooltip)
 
 
-## Sets multiple tooltips at once
+## Sets multiple tooltips at once.
 def SetToolTips(tooltip, control_list, required=False):
   for FIELD in control_list:
     SetToolTip(tooltip, FIELD, required)
 
 
+## @todo Doxygen
 def SetPageToolTips(parent, page_id=None):
   control_list = []
 
   if not page_id:
     page_id = parent.GetId()
 
-  # Recursively set tooltips for children
+  # recursively set tooltips for children
   for FIELD in parent.GetChildren():
     control_list.append(FIELD)
 
@@ -263,7 +264,7 @@ def SetPageToolTips(parent, page_id=None):
     for FIELD in control_list:
       tooltip = None
 
-      # Use ID first
+      # use ID first
       field_id = FIELD.GetId()
       if field_id in TT_pages[page_id]:
         tooltip = TT_pages[page_id][field_id]
@@ -286,7 +287,7 @@ def SetPageToolTips(parent, page_id=None):
           if "*" in name[-2:]:
             required = True
 
-          # The » character causes a different tooltip to be set for disabled fields
+          # the » character causes a different tooltip to be set for disabled fields
           if "»" in name[-2:] and not FieldEnabled(FIELD):
             name = "{}_disabled".format(name)
 

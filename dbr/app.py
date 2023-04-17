@@ -11,7 +11,7 @@
 import wx
 
 
-## Custom wx.App class for setting & retrieving main window instance
+## Custom wx.App class for setting & retrieving main window instance.
 class DebreateApp(wx.App):
   ## Constructor
   def __init__(self):
@@ -19,29 +19,24 @@ class DebreateApp(wx.App):
 
     self.MainWindow = None
 
-
-  ## Retrieves the main window
+  ## Retrieves the main window.
   #
-  #  \return
-  #  <b><i>main.MainWindow</i></b> instance
+  #  @return
+  #    `ui.main.MainWindow` instance.
   def GetMainWindow(self):
     return self.MainWindow
 
-
-  ## Retrieves the wizard
+  ## Retrieves the wizard.
   #
-  #  \return
-  #  <b><i>wiz.wizard.Wizard</i></b> instance
+  #  @return
+  #    `wiz.wizard.Wizard` instance.
   def GetWizard(self):
     if self.MainWindow:
       return self.MainWindow.GetWizard()
 
-
-  ## Set the main window instance
+  ## Set the main window instance.
   #
-  #  \param window
-  #  <b><i>wx.Frame</i></b> instance to use for main window
-  #  \return
-  #  <b><i>None</i></b>
+  #  @param window
+  #    `wx.Frame` instance to use for main window.
   def SetMainWindow(self, window):
     self.MainWindow = window

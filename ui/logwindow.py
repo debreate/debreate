@@ -6,7 +6,7 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module ui
+## @module ui.logwindow
 
 import os
 import time
@@ -41,20 +41,24 @@ __logger = Logger(__name__)
 # How often the log window will be refreshed
 LOG_WINDOW_REFRESH_INTERVAL = 1
 
+
+## @todo Doxygen
 def SetLogWindowRefreshInterval(value):
   global LOG_WINDOW_REFRESH_INTERVAL
   LOG_WINDOW_REFRESH_INTERVAL = value
 
+
+## @todo Doxygen
 def GetLogWindowRefreshInterval():
   return LOG_WINDOW_REFRESH_INTERVAL
 
 
 ## Window displaying Logger messages
 #
-#  \param parent
-#  Parent \b \e wx.Window instance
-#  \param logFile
-#  Absolute path to file where log contents are written/read
+#  @param parent
+#    Parent \b \e wx.Window instance
+#  @param logFile
+#    Absolute path to file where log contents are written/read
 class LogWindow(wx.Dialog):
   def __init__(self, parent, logFile):
     wx.Dialog.__init__(self, parent, style=wx.DEFAULT_DIALOG_STYLE|wx.RESIZE_BORDER)
@@ -115,7 +119,6 @@ class LogWindow(wx.Dialog):
     # Make sure log window is not shown at initialization
     self.Show(False)
 
-
   ## Positions the log window relative to the main window
   def AlignWithMainWindow(self):
     debreate_pos = GetMainWindow().GetPosition()
@@ -125,12 +128,10 @@ class LogWindow(wx.Dialog):
 
     self.SetPosition(wx.Point(posX, posY))
 
-
   ## Hides the log window & clears contents
   def HideLog(self):
     self.Show(False)
     self.DspLog.Clear()
-
 
   ## Changes the font size
   def OnChangeFont(self, event=None):
@@ -146,53 +147,39 @@ class LogWindow(wx.Dialog):
       if S == current_font_size:
         self.DspLog.SetFont(GetMonospacedFont(font_sizes[S]))
         self.DspLog.font_size = font_sizes[S]
-
         return
-
     __logger.error(GT("Can't change log window font"))
-
 
   ## Hides the log window when close event occurs
   def OnClose(self, event=None):
     self.HideLog()
 
-
   ## Called by refresh event to update the log display
   def OnLogTimestampChanged(self, event=None):
     self.RefreshLog()
 
-
   ## Opens a new log file
   def OnOpenLogFile(self, event=None):
     log_select = GetFileOpenDialog(self, GT("Open Log"), directory=paths.getLogsDir())
-
     if ShowDialog(log_select):
       logFile = log_select.GetPath()
-
       if os.path.isfile(logFile):
         self.SetLogFile(logFile)
-
         return
-
       ShowErrorDialog("{}: {}".format(GT("File does not exist"), logFile),
           parent=self)
-
 
   ## Guarantees that menu item is synced with window's shown status
   def OnShow(self, event=None):
     menu_debug = GetMenu(menuid.DEBUG)
-
     # In case main window has been destroyed, but sub thread still active
     if GetMainWindow():
       window_shown = self.IsShown()
       m_checked = menu_debug.IsChecked(menuid.LOG)
-
       if m_checked != window_shown:
         menu_debug.Check(menuid.LOG, window_shown)
-
     else:
       __logger.warn("Log thread still active!")
-
 
   ## Use an event to show the log window
   #
@@ -207,31 +194,24 @@ class LogWindow(wx.Dialog):
       if GetMenu(menuid.DEBUG).IsChecked(menuid.LOG):
         self.ShowLog()
 
-
   ## Toggles the log window shown or hidden
   def OnToggleWindow(self, event=None):
     show = GetMenu(menuid.DEBUG).IsChecked(menuid.LOG)
-
     if show:
       self.ShowLog()
       return
-
     self.HideLog()
-
     if event:
       event.Skip(True)
-
 
   ## Creates a thread that polls for changes in log file
   def PollLogFile(self, args=None):
     while self and self.IsShown():
       if self.LogFile.TimestampChanged():
         print("Log timestamp changed, loading new log ...")
-
         wx.PostEvent(self, RefreshLogEvent(0))
 
       time.sleep(LOG_WINDOW_REFRESH_INTERVAL)
-
 
   ## Fills log with text file contents
   def RefreshLog(self, event=None):
@@ -248,29 +228,24 @@ class LogWindow(wx.Dialog):
         # FIXME: Causes delay when debug enabled
         wx.SafeYield()
         self.DspLog.ShowPosition(self.DspLog.GetLastPosition())
-
       except RuntimeError:
         tb_error = strings.toString(traceback.format_exc())
-
         __logger.warn("Error refreshing log window. Details below:\n\n{}".format(tb_error))
-
 
   ## Changes the file to be loaded & displayed
   #
-  #  \param logFile
-  #  Absolute path of file to load
+  #  @param logFile
+  #    Absolute path of file to load
   def SetLogFile(self, logFile):
     self.LogFile = FileItem(logFile)
     self.RefreshLog()
     self.SetTitle()
-
 
   ## Updates the window's title using path of log file
   def SetTitle(self):
     new_title = self.LogFile.GetPath()
     if new_title:
       return wx.Dialog.SetTitle(self, new_title)
-
 
   ## Shows the log window
   def ShowLog(self):

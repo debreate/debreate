@@ -9,14 +9,14 @@
 
 ## Script to set configurations & launch Debreate.
 #
-#  Checks if the config file exists in ~/.config/debreate. If
-#  not, a new file will be created (~/.config/debreate/config).
-#  If the config file already exists but is corrupted, it will
-#  reset it to its default settings.
+#  Checks if the config file exists ~/.config/debreate.conf.
+#  If not, a new one will be created.
 #
-#  @page init.py Initialization Script
+#  @script init.py
 
-import errno, os, sys
+import errno
+import os
+import sys
 
 # include libdbr in module search path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
@@ -90,7 +90,6 @@ if command_line.options.command == "compile":
       print
 
   sys.exit(0)
-
 
 if command_line.options.command == "clean":
   if not os.access(dir_app, os.W_OK):

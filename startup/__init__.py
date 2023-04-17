@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module startup
+## Modules related to application initialization.
 #
-#  Modules related to application initialization
+#  @package startup

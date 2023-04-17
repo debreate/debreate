@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module wiz.helper
+## Support functions for accessing wizard pages & attributes.
 #
-#  Support functions for accessing wizard pages & attributes
+#  @module wiz.helper
 
 import wx
 
@@ -16,66 +16,54 @@ from dbr.language  import GT
 from globals.ident import pgid
 
 
-## TODO: Doxygen
+## @todo Doxygen
 class ErrorTuple:
   def __init__(self, error_code=None, error_string=None):
-
     # FIXME: Should throw exception for wrong instance types???
     self.error_code = error_code
     self.error_string = error_string
-
 
   ## Same as dbr.functions.ErrorTuple.GetTuple
   def Get(self):
     return self.GetTuple()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetCode(self):
     return self.error_code
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetMessage(self):
     return self.GetString()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetString(self):
     return self.error_string
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetTuple(self):
     return (self.error_code, self.error_string,)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Set(self, error_code, error_string):
     # FIXME: Should throw exception for wrong instance types???
     self.error_code = error_code
     self.error_string = error_string
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetCode(self, error_code):
     # FIXME: Should throw exception for wrong instance type???
     if not isinstance(error_code, int):
       return 1
-
     self.error_code = error_code
-
     return 0
 
 
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetString(self, error_string):
     # FIXME: Should throw exception for wrong instance type???
     if not isinstance(error_string, str):
       return 1
-
     self.error_string = error_string
-
     return 0
 
 
@@ -85,8 +73,8 @@ class ErrorTuple:
 #  3.0 uses the method 'IsThisEnabled()' rather than
 #  'IsEnabled()' to get the 'intrinsic' status of the
 #  widget.
-#  \param field
-#  	The widget (wx.Window) to be checked
+#  @param field
+#   The widget (wx.Window) to be checked
 def FieldEnabled(field):
   # wx. 3.0 must use 'IsThisEnabled' to get 'intrinsic' status in case parent is disabled
   if wx.MAJOR_VERSION > 2:
@@ -98,18 +86,15 @@ def FieldEnabled(field):
 
 ## Finds the wiz.wizard.WizardPage instance where an object is located
 #
-#  \param field
-#  \b \e wx.Window instance to find parents of
+#  @param field
+#    \b \e wx.Window instance to find parents of
 def FindPageOf(field):
   parent = field.GetParent()
-
   if not parent:
     return None
-
   win_id = parent.GetId()
   if win_id in pgid.IdList:
     return GetPage(win_id)
-
   return FindPageOf(parent)
 
 
@@ -135,16 +120,16 @@ def GetAllTypeFields(page, fieldType):
 
 ## Retrieves a field/control from a page
 #
-#  FIXME: field_type is currently unused
-#
-#  \param page
-#  	\b \e wiz.wizard.WizardPage : The page to search
-#  \param field_id
-#  	\b \e int : ID of desired field/control
-#  \param field_type
-#  	\b \b wx.Window : The class type that field/control should be
-#  \return
-#  	\b \e wx.Window : Field control matching field_id or None
+#  @param page
+#    \b \e wiz.wizard.WizardPage : The page to search
+#  @param field_id
+#    \b \e int : ID of desired field/control
+#  @param field_type
+#    \b \b wx.Window : The class type that field/control should be
+#  @return
+#    \b \e wx.Window : Field control matching field_id or None
+#  @todo
+#    FIXME: field_type is currently unused
 def GetField(page, field_id, field_type=wx.Window):
   if not isinstance(page, wx.Window):
     page = GetPage(page)
@@ -167,16 +152,16 @@ def GetField(page, field_id, field_type=wx.Window):
 
 ## Retrieves the input value of a field/control
 #
-#  FIXME: field_type is currently unused
-#
-#  \param page
-#  \b \e Integer ID of desired page or page object
-#  \param field_id
-#  \b \e Integer ID of desired field/control
-#  \param field_type
-#  	\b \b wx.Window : The class type that field/control should be
-#  \return
-#  	The retrieved value of the field/control or an error tuple
+#  @param page
+#    \b \e Integer ID of desired page or page object
+#  @param field_id
+#    \b \e Integer ID of desired field/control
+#  @param field_type
+#    \b \b wx.Window : The class type that field/control should be
+#  @return
+#    The retrieved value of the field/control or an error tuple
+#  @todo
+#    FIXME: field_type is currently unused
 def GetFieldValue(page, field_id, field_type=wx.Window):
   if isinstance(page, int):
     page = GetWizard().GetPage(page)
@@ -202,41 +187,40 @@ def GetFieldValue(page, field_id, field_type=wx.Window):
   return ErrorTuple(1, err_msg)
 
 
-## Finds the MainWindow instance
+## Finds the MainWindow instance.
 def GetMainWindow():
   return wx.GetApp().GetMainWindow()
 
 
-## Retrieves a menu from the main window's menu bar by ID
+## Retrieves a menu from the main window's menu bar by ID.
 #
-#  \param menuId
-#  \b \e Integer ID of desired menu
-#  \return
-#  The \b \e wx.Menu instance
+#  @param menuId
+#    \b \e Integer ID of desired menu.
+#  @return
+#    The \b \e wx.Menu instance.
 def GetMenu(menuId):
   return GetMainWindow().GetMenu(menuId)
 
 
-## Retrieves the ui.menu.MenuBar instance in use by the main window
+## Retrieves the ui.menu.MenuBar instance in use by the main window.
 def GetMenuBar():
   return GetMainWindow().GetMenuBar()
 
 
-## Retrieves the wiz.wizard.WizardPage instance that matched pageId
+## Retrieves the wiz.wizard.WizardPage instance that matched pageId.
 def GetPage(pageId):
   page = GetWizard().GetPage(pageId)
-
   return page
 
 
-## Retrieves the full list of page IDs from the wizard
+## Retrieves the full list of page IDs from the wizard.
 #
-#  \return
-#  	\b e\ tuple : List of all active wizard page IDs
+#  @return
+#    \b e\ tuple : List of all active wizard page IDs.
 def GetPagesIdList():
   return GetWizard().GetPagesIdList()
 
 
-## Retrieves the wiz.wizard.Wizard instance
+## Retrieves the wiz.wizard.Wizard instance.
 def GetWizard():
   return GetMainWindow().GetWizard()

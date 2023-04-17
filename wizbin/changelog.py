@@ -43,12 +43,12 @@ from wiz.wizard       import WizardPage
 
 logger = Logger(__name__)
 
-## Changelog page
+## Changelog page.
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
-  #      Parent <b><i>wx.Window</i></b> instance
+  #  @param parent
+  #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.CHANGELOG)
 
@@ -168,7 +168,6 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Formats input text from 'changes' field for new entry in changelog
   def AddInfo(self, event=None):
     new_changes = self.ti_changes.GetValue()
@@ -209,13 +208,12 @@ class Page(WizardPage):
     self.ti_changes.Clear()
     self.ti_changes.SetFocus()
 
-
   ## Retrieves changelog text
   #
   #  The output is a text file that uses sections defined by braces ([, ])
   #
-  #  \return
-  #      <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
+  #  @return
+  #    <b><i>tuple(str, str)</i></b>: Filename & formatted string of changelog target & body
   def Get(self):
     target = self.pnl_target.GetPath()
     if target == self.pnl_target.GetDefaultPath():
@@ -223,34 +221,28 @@ class Page(WizardPage):
 
     return (target, self.GetChangelog())
 
-
   ## Retrieves plain text of the changelog field
   #
-  #  \return
-  #      Formatted changelog text
+  #  @return
+  #    Formatted changelog text
   def GetChangelog(self):
     return self.dsp_changes.GetValue()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetSaveData(self):
     target = self.pnl_target.GetPath()
     if target == self.pnl_target.GetDefaultPath():
       target = "<<DEST>>DEFAULT<</DEST>>"
-
     else:
       target = "<<DEST>>{}<</DEST>>".format(target)
-
     return "\n".join(("<<CHANGELOG>>", target, self.dsp_changes.GetValue(), "<</CHANGELOG>>"))
-
 
   ## Checks the page's fields for exporting
   #
-  #  \return
-  #      <b><i>False</i></b> if page cannot be exported
+  #  @return
+  #    <b><i>False</i></b> if page cannot be exported
   def IsOkay(self):
     return not strings.isEmpty(self.dsp_changes.GetValue())
-
 
   ## Imports select field values from the 'Control' page
   def OnImportFromControl(self, event=None):
@@ -263,30 +255,24 @@ class Page(WizardPage):
 
     for F, FID in fields:
       field_value = GetFieldValue(pgid.CONTROL, FID)
-
       if isinstance(field_value, ErrorTuple):
         err_msg1 = GT("Got error when attempting to retrieve field value")
         err_msg2 = "\tError code: {}\n\tError message: {}".format(field_value.GetCode(), field_value.GetString())
         logger.error("{}:\n{}".format(err_msg1, err_msg2))
         continue
-
       if not strings.isEmpty(field_value):
         F.SetValue(field_value)
 
-
   ## Sets values of page's fields with given input
   #
-  #  \param data
-  #      Text to parse for values
+  #  @param data
+  #    Text to parse for values
   def Set(self, data):
     changelog = data.split("\n")
     target = changelog[0].split("<<DEST>>")[1].split("<</DEST>>")[0]
-
     if target == "DEFAULT":
       if not self.pnl_target.UsingDefault():
         self.pnl_target.Reset()
-
     else:
       self.pnl_target.SetPath(target)
-
     self.dsp_changes.SetValue("\n".join(changelog[1:]))

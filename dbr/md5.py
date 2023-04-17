@@ -10,26 +10,27 @@
 
 import os
 
-from dbr.language    import GT
-from globals.ident   import chkid
-from globals.ident   import pgid
-from libdbr.fileio   import writeFile
-from libdbr.logger   import Logger
-from libdbr.misc     import generateMD5Hash
-from ui.dialog       import ErrorDialog
-from wiz.helper      import GetField
-from wiz.helper      import GetMainWindow
+from dbr.language  import GT
+from globals.ident import chkid
+from globals.ident import pgid
+from libdbr.fileio import writeFile
+from libdbr.logger import Logger
+from libdbr.misc   import generateMD5Hash
+from ui.dialog     import ErrorDialog
+from wiz.helper    import GetField
+from wiz.helper    import GetMainWindow
 
 
 logger = Logger(__name__)
 
 ## Creates a file of md5 hashes for files within the staged directory
 #
-#  FIXME: Should binary files be handled differently?
-#  \param stage_dir
-#  Temporary directory to scan files into list
-#  \param parent
-#  The window to be parent of error messages
+#  @param stage_dir
+#    Temporary directory to scan files into list.
+#  @param parent
+#    The window to be parent of error messages
+#  @fixme
+#    Should binary files be handled differently?
 def WriteMD5(stage_dir, parent=None):
   temp_list = []
   md5_list = [] # Final list used to write the md5sum file

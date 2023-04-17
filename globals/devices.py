@@ -17,7 +17,7 @@ from libdbr.paths  import getSystemRoot
 
 logger = Logger(__name__)
 
-## Class that represents a mounted storage device
+## Class that represents a mounted storage device.
 class StorageDevice:
   def __init__(self, node, mount_point):
     self.Node = node
@@ -78,19 +78,17 @@ class StorageDevice:
 
             if "usb" in TYPE.split("-"):
               logger.debug("{} is a removable drive".format(self.Node))
-
               self.Type = "removable"
-
 
   ## Get the instances string mount point
   def GetMountPoint(self):
     return self.MountPoint
 
 
-## Opens /etc/mtab file & parses attached storage devices
+## Opens /etc/mtab file & parses attached storage devices.
 #
-#  \return
-#  \b \e Dictionary of device labels with mount points
+#  @return
+#    Dictionary of device labels with mount points.
 def ParseMountedDevices():
   # FIXME: Identify labels for different systems & drive types
   device_labels = (
@@ -119,14 +117,13 @@ def ParseMountedDevices():
       for LABEL in device_labels:
         if device.startswith(LABEL):
           mounted_devices[device] = mount_point
-
   else:
     logger.warn("/etc/mtab file does not exist. Mounted devices list will be empty")
 
   return mounted_devices
 
 
-## Retrieves a list of globals.devices.StorageDevice instances
+## Retrieves a list of globals.devices.StorageDevice instances.
 def GetMountedStorageDevices():
   mounted_devices = ParseMountedDevices()
 

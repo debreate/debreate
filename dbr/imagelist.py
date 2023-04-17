@@ -16,9 +16,10 @@ from libdbr.logger import Logger
 
 logger = Logger(__name__)
 
-## List of images used by ui.tree.DirectoryTree
+## List of images used by `ui.tree.DirectoryTree`.
 #
-#  FIXME: Custom images should be generated dynamically using bitmaps found in MIME directory
+#  @todo
+#    FIXME: Custom images should be generated dynamically using bitmaps found in MIME directory.
 class DirectoryImageList(wx.ImageList):
   def __init__(self, width, height, mask=True, initial_count=1):
     wx.ImageList.__init__(self, width, height, mask, initial_count)
@@ -107,12 +108,12 @@ class DirectoryImageList(wx.ImageList):
         self.Add(wx.ArtProvider.GetBitmap(IMAGE, wx.ART_CMN_DIALOG, wx.Size(width, height)))
 
 
-  ## Retrieves image index for setting in ui.tree.DirectoryTree
+  ## Retrieves image index for setting in `ui.tree.DirectoryTree`.
   #
-  #  \param description
-  #  \b \e String name/description for image
-  #  \return
-  #  \b \e Integer index of image or index of failsafe image if description doesn't exist
+  #  @param description [\a str]
+  #    Name/Description for image.
+  #  @return [\a int]
+  #    Index of image or index of failsafe image if description doesn't exist.
   def GetImageIndex(self, description):
     if description in self.Images:
       return self.Images[description]

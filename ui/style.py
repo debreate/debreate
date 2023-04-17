@@ -11,14 +11,13 @@
 import wx
 
 
+# FIXME: legacy wx version no longer supported
 if wx.MAJOR_VERSION > 2:
   PANEL_BORDER = wx.BORDER_THEME
-
 else:
   PANEL_BORDER = wx.BORDER_MASK
 
-
-## Layout styles for sizers
+## Layout styles for sizers.
 class layout:
   ALGN_T = wx.ALIGN_TOP
   ALGN_B = wx.ALIGN_BOTTOM

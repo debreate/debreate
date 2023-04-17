@@ -15,16 +15,16 @@ from ui.layout import BoxSizer
 
 ## Control for opening a webpage with a mouse click
 #
-#  wx.HyperlinkCtrl seems to have some issues in wx 3.0,
-#  so this class is used instead.
-#  \param parent
-#  	\b \e wx.Window : Parend window
-#  \param ID
-#  	\b \e int : Identifier
-#  \param label
-#  	\b \e str : Text displayed on hyperlink
-#  \param url
-#  	\b \e str : Link to open when hyperlink clicked
+#  wx.HyperlinkCtrl seems to have some issues in wx 3.0, so this class is used instead.
+#
+#  @param parent
+#    \b \e wx.Window : Parend window
+#  @param ID
+#    \b \e int : Identifier
+#  @param label
+#    \b \e str : Text displayed on hyperlink
+#  @param url
+#    \b \e str : Link to open when hyperlink clicked
 class Hyperlink(wx.Panel):
   def __init__(self, parent, ID, label, url):
     wx.Panel.__init__(self, parent, ID)
@@ -54,8 +54,7 @@ class Hyperlink(wx.Panel):
     self.SetSizer(layout_V1)
     self.Layout()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnLeftClick(self, event=None):
     webbrowser.open(self.url)
 
@@ -66,14 +65,12 @@ class Hyperlink(wx.Panel):
     if event:
       event.Skip(True)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnMouseOut(self, event=None):
     self.SetCursor(wx.NullCursor)
     self.text.SetFont(self.FONT_DEFAULT)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnMouseOver(self, event=None):
     self.SetCursor(wx.Cursor(wx.CURSOR_HAND))
     self.text.SetFont(self.FONT_HIGHLIGHT)
@@ -81,12 +78,10 @@ class Hyperlink(wx.Panel):
     if event:
       event.Skip(True)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetDefaultFont(self, font):
     self.FONT_DEFAULT = font
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetHighlightFont(self, font):
     self.FONT_HIGHLIGHT = font

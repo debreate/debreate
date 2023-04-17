@@ -18,17 +18,17 @@ from ui.button     import CreateButton
 from ui.layout     import BoxSizer
 
 
-## Class to parse & display Markdown text
+## Class to parse & display Markdown text.
 class MarkdownCtrl(RichTextCtrl):
   def __init__(self, parent, rt_id=wx.ID_ANY, style=0):
     RichTextCtrl.__init__(self, parent, rt_id, style=style|RE_MULTILINE)
 
-
+  ## @todo Doxygen
   def LoadFile(self, *args, **kwargs):
     return RichTextCtrl.LoadFile(self, *args, **kwargs)
 
 
-## Class that displays a dialog with a MarkdownCtrl
+## Class that displays a dialog with a MarkdownCtrl.
 class MarkdownDialog(wx.Dialog):
   def __init__(self, parent, title=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE|wx.OK,
       readonly=False):
@@ -53,7 +53,7 @@ class MarkdownDialog(wx.Dialog):
     self.SetSizer(layout_V1)
     self.Layout()
 
-
+  ## @todo Doxygen
   def GetFile(self):
     return self.loaded_file
 

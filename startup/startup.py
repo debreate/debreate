@@ -8,7 +8,7 @@
 
 ## App initialization checks.
 #
-#  @package startup.startup
+#  @module startup.startup
 
 import os
 

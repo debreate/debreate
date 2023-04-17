@@ -11,35 +11,36 @@
 import gettext
 import os
 
-from libdbr.logger   import Logger
+from libdbr.logger import Logger
+from libdebreate   import appinfo
 
 
 __logger = Logger(__name__)
 
-TRANSLATION_DOMAIN = "debreate"
-DIR_locale = ""
-
+__domain = appinfo.getName().lower()
 __translator = None
 
 
-## Ensure gettext
+## Formats translatable strings.
 #
-#  FIXME: deprecated?
-#
-#  This is a workaround for Python 2
-#  \param str_value
-#  \b \e str : String to be translated
+#  @param str_value
+#    \b \e str : String to be translated.
+#  @fixme
+#    Use `str` function as default translator.
 def GT(str_value):
   if not __translator:
     return str_value
   return __translator(str_value)
 
 
-## Retrieves the path of gettext locale translations
+## Retrieves the path of gettext locale translations.
+#
+#  @deprecated
+#    Use `libdebreate.appinfo.getLocaleDir`.
 def GetLocaleDir():
-  __logger.deprecated(__name__, GetLocaleDir.__init__)
+  __logger.deprecated(GetLocaleDir, alt=appinfo.getLocaleDir)
 
-  return DIR_locale
+  return appinfo.getLocaleDir()
 
 
 ## Sets locale translator.
@@ -47,11 +48,9 @@ def GetLocaleDir():
 #  @param path
 #    Directory to search for gettext locale translations.
 def setTranslator(path):
-  global __translator, DIR_locale
-  DIR_locale = path
+  global __translator
   try:
-    __translator = gettext.translation(TRANSLATION_DOMAIN, path).gettext
+    __translator = gettext.translation(__domain, path).gettext
+    __logger.debug("locale directory: {}".format(path))
   except FileNotFoundError:
-    __translator = None
-
-  __logger.debug("locale directory: {}".format(path))
+    __logger.warn("translation search in '{}' failed".format(path))

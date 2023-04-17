@@ -52,7 +52,7 @@ logger = Logger(__name__)
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
+  #  @param parent
   #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.MENU) #, name=GT("Menu Launcher"))
@@ -275,11 +275,9 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Retrieves page data for export
   def Get(self):
     return self.GetLauncherInfo()
-
 
   ## Formats the launcher information for export
   def GetLauncherInfo(self):
@@ -323,7 +321,6 @@ class Page(WizardPage):
       C = lst_categories.GetItemText(count)
       if not strings.isEmpty(C):
         categories.append(lst_categories.GetItemText(count))
-
       count += 1
 
     # Add a final semi-colon if categories is not empty
@@ -331,7 +328,6 @@ class Page(WizardPage):
       categories = ";".join(categories)
       if categories[-1] != ";":
         categories = "{};".format(categories)
-
       desktop_list.append("Categories={}".format(categories))
 
     other = GetField(self, inputid.OTHER).GetValue()
@@ -340,52 +336,42 @@ class Page(WizardPage):
 
     return "\n".join(desktop_list)
 
-
   ## Retrieves the filename to be used for the menu launcher
   def GetOutputFilename(self):
     if not GetField(self, chkid.FNAME).GetValue():
       filename = GetField(self, inputid.FNAME).GetValue().strip(" ").replace(" ", "_")
       if not strings.isEmpty(filename):
         return filename
-
     return GetField(self, inputid.NAME).GetValue().strip(" ").replace(" ", "_")
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetSaveData(self):
     if GetField(self, chkid.ENABLE).GetValue():
       data = self.GetLauncherInfo()
       data = "\n".join(data.split("\n")[1:])
-
       if not GetField(self, chkid.FNAME).GetValue():
         data = "[FILENAME={}]\n{}".format(GetField(self, inputid.FNAME).GetValue(), data)
-
       return "<<MENU>>\n1\n{}\n<</MENU>>".format(data)
-
     else:
       return "<<MENU>>\n0\n<</MENU>>"
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsOkay(self):
     return GetField(self, chkid.ENABLE).GetValue()
-
 
   ## Handles button event from clear categories button
   def OnClearCategories(self, event=None):
     cats = GetField(self, listid.CAT)
-
     if cats.GetItemCount():
       clear = ConfirmationDialog(GetMainWindow(), GT("Confirm"), GT("Clear categories?"))
-
       if clear.Confirmed():
         cats.DeleteAllItems()
 
-
   ## Saves launcher information to file
   #
-  #  FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher)
-  #  	 'Others' field not being completely filled out.
+  #  @todo
+  #    FIXME: Might be problems with reading/writing launchers (see OnLoadLauncher) 'Others' field
+  #    not being completely filled out.
   def OnExportLauncher(self, event=None):
     logger.debug("Export launcher ...")
 
@@ -421,11 +407,11 @@ class Page(WizardPage):
         # Restore from backup
         shutil.move(backup, path)
 
-
   ## Loads a .desktop launcher's data
   #
-  #  FIXME: Might be problems with reading/writing launchers (see OnExportLauncher)
-  #  	 'Others' field not being completely filled out.
+  #  @todo
+  #    FIXME: Might be problems with reading/writing launchers (see OnExportLauncher) 'Others' field
+  #    not being completely filled out.
   def OnLoadLauncher(self, event=None):
     dia = wx.FileDialog(GetMainWindow(), GT("Open Launcher"), os.getcwd(),
         style=wx.FD_CHANGE_DIR)
@@ -442,8 +428,7 @@ class Page(WizardPage):
       self.Reset()
       self.SetLauncherData("\n".join(data))
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnPreviewLauncher(self, event=None):
     # Show a preview of the .desktop config file
     config = self.GetLauncherInfo()
@@ -454,8 +439,7 @@ class Page(WizardPage):
     dia.ShowModal()
     dia.Destroy()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnSetCustomFilename(self, event=None):
     chk_filename = GetField(self, chkid.FNAME)
     txt_filename = GetField(self, txtid.FNAME)
@@ -473,7 +457,6 @@ class Page(WizardPage):
 
     txt_filename.Enable(True)
     ti_filename.Enable(True)
-
 
   ## Enables/Disables fields for creating a launcher
   def OnToggle(self, event=None):
@@ -502,7 +485,6 @@ class Page(WizardPage):
 
     self.OnSetCustomFilename()
 
-
   ## Resets all fields to default values
   def Reset(self):
     chk_filename = GetField(self, chkid.FNAME)
@@ -521,8 +503,7 @@ class Page(WizardPage):
 
     self.OnToggle()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetCategory(self, event=None):
     try:
       ID = event.GetKeyCode()
@@ -553,13 +534,12 @@ class Page(WizardPage):
     if event:
       event.Skip()
 
-
   ## Fills out launcher information from loaded file
   #
-  #  \param data
-  #      Information to fill out menu launcher fields
-  #  \param enabled
-  #      \b \e bool : Launcher will be flagged for export if True
+  #  @param data
+  #    Information to fill out menu launcher fields
+  #  @param enabled
+  #    \b \e bool : Launcher will be flagged for export if True
   def SetLauncherData(self, data, enabled=True):
     # Make sure we are dealing with a list
     if isinstance(data, str):

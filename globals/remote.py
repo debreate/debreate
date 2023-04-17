@@ -13,6 +13,7 @@ from urllib.error   import URLError
 from urllib.request import urlopen
 
 
+## @todo Doxygen.
 def GetRemotePageText(remote_url):
   try:
     URL_BUFFER = urlopen(remote_url)

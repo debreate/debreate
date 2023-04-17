@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module input
+## Package for custom input controls.
 #
-#  Package for custom input controls
+## @package input

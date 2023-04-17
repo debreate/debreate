@@ -23,6 +23,7 @@ __logger = Logger(__name__)
 
 section_delims = "*-+#"
 
+## @todo Doxygen
 def _strip_line(line, preserve_indent=False):
   chars = " \t"
 
@@ -32,13 +33,16 @@ def _strip_line(line, preserve_indent=False):
   return line.strip(chars)
 
 
+## @todo Doxygen
 def _format_section(line, preserve_indent=False):
   global section_delims
 
   return "  * {}".format(_strip_line(line, preserve_indent).lstrip(" \t{}".format(section_delims)))
 
 
-## Formats lines for changelog output
+## Formats lines for changelog output.
+#
+#  @todo parameters
 def _format_lines(lines, preserve_indent=False):
   if isinstance(lines, tuple):
     lines = list(lines)
@@ -62,7 +66,9 @@ def _format_lines(lines, preserve_indent=False):
   return tuple(lines)
 
 
-## Formats date & time for changelog
+## Formats date & time for changelog.
+#
+#  @todo return
 def _get_cl_timestamp():
   __logger.deprecated(_get_cl_timestamp, alt="libdbr.dateinfo.getDebianizedDate")
 
@@ -73,10 +79,12 @@ def _get_cl_timestamp():
 
 ## Function to format text Debian changelog standards
 #
-#  \param text
-#  \b \e String to be formatted
-#  \return
-#  Debian changelog format
+#  @param text
+#    String to be formatted.
+#  @return
+#    Debian changelog format.
+#  @deprecated
+#    Use `libdbr.misc.formatDebianChanges`.
 def FormatChangelog(text, name=appinfo.getName(), version=appinfo.getVersionString(), dist=OS_codename,
       urgency="low", packager=appinfo.getAuthor(), email=appinfo.getEmail(), preserve_indent=False):
   __logger.deprecated(FormatChangelog, alt="libdbr.misc.formatDebianChanges")

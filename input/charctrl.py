@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module input.charctrl
+## Field data that cannot use certain characters.
 #
-#  This script is used for field data that cannot use certain characters
+#  @module input.charctrl
 
 import wx
 
@@ -20,17 +20,16 @@ from libdbr import strings
 invalid_chars = ("/", "\\", "_")
 
 
-## A customized text area that disallows certain character input
+## A customized text area that disallows certain character input.
 #
-#  \implements wx.TextCtrl
+#  @implements wx.TextCtrl
 class CharCtrl(wx.TextCtrl):
   def __init__(self, parent, ctrl_id=wx.ID_ANY, value=wx.EmptyString, name=wx.TextCtrlNameStr):
     wx.TextCtrl.__init__(self, parent, ctrl_id, value, name=name)
 
     wx.EVT_KEY_UP(self, self.OnKeyUp)
 
-
-  ## Actions to take when key is released
+  ## Actions to take when key is released.
   def OnKeyUp(self, event=None):
     insertion_point = self.GetInsertionPoint()
     text = self.GetValue()

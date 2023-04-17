@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module wiz
+#  The wizard interface classes & functions.
 #
-#  The wizard interface classes & functions
+#  @package wiz

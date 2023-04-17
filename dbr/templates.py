@@ -6,11 +6,11 @@
 
 import os
 
-from dbr.language    import GT
-from globals.paths   import getLocalDir
-from libdbr          import fileinfo
-from libdbr          import paths
-from libdbr.logger   import Logger
+from dbr.language  import GT
+from globals.paths import getLocalDir
+from libdbr        import fileinfo
+from libdbr        import paths
+from libdbr.logger import Logger
 
 
 __logger = Logger(__name__)

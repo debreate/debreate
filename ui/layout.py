@@ -6,13 +6,14 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module ui.layout
+## Custom sizer classes.
 #
-#  Custom sizer classes
+#  @module ui.layout
 
 import wx
 
 
+## @todo Doxygen
 class _SizerBase:
   ## Retains spacer at end of items
   #
@@ -35,44 +36,33 @@ class _SizerBase:
   ## Retrieves all sizers contained with the sizer
   def GetChildSizers(self):
     sizers = []
-
     for SIZER in self.GetChildren():
       SIZER = SIZER.GetSizer()
-
       if SIZER:
         sizers.append(SIZER)
-
     return tuple(sizers)
-
 
   ## Retrieves all windows contained within the sizer
   def GetChildWindows(self):
     windows = []
-
     for WIN in self.GetChildren():
       WIN = WIN.GetWindow()
-
       if WIN:
         windows.append(WIN)
-
     return tuple(windows)
-
 
   ## Retrieves item at give index
   #
-  #  \param index
-  #  \b \e Integer index of item to retrieve
-  #  \param sizer
-  #  Get sizer instance instead of window
+  #  @param index
+  #    \b \e Integer index of item to retrieve
+  #  @param sizer
+  #    Get sizer instance instead of window
   def GetItemAtIndex(self, index, sizer=False):
     items = self.GetChildren()
-
     if items:
       if sizer:
         return items[0].GetSizer()
-
       return items[0].GetWindow()
-
 
   ## Returns the number of items in the sizer
   #
@@ -80,9 +70,7 @@ class _SizerBase:
   def GetItemCount(self):
     if wx.MAJOR_VERSION > 2:
       return wx.Sizer.GetItemCount(self)
-
     return len(self.GetChildren())
-
 
   ## Finds index of an item
   def GetItemIndex(self, item):
@@ -90,23 +78,21 @@ class _SizerBase:
     for I in self.GetChildren():
       S = I.GetSizer()
       I = I.GetWindow()
-
       if not I:
         I = S
-
       if I == item:
         return index
-
       index += 1
-
     return None
 
 
+## @todo Doxygen
 class Sizer(wx.Sizer, _SizerBase):
   def __init__(self):
     wx.Sizer.__init__(self)
 
 
+## @todo Doxygen
 class BoxSizer(wx.BoxSizer, _SizerBase):
   def __init__(self, orient):
     wx.BoxSizer.__init__(self, orient)

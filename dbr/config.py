@@ -120,7 +120,7 @@ def getDefault(key):
   return __defaults[key]
 
 
-## TODO: Doxygen
+## @todo Doxygen
 def SetDefaultConfigKey(key, value):
   # ~ __logger.deprecated(SetDefaultConfigKey, alt=libdbr.config)
 

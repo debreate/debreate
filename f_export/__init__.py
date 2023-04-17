@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module f_export
+## File exporting
 #
-#  File exporting
+#  @package f_export

@@ -21,7 +21,6 @@ from wiz.helper    import GetMainWindow
 logger = Logger(__name__)
 PD_DEFAULT_STYLE = wx.PD_APP_MODAL|wx.PD_AUTO_HIDE
 
-
 ## A progress dialog that is compatible between wx versions
 class ProgressDialog(wx.ProgressDialog):
   def __init__(self, parent, title=GT("Progress"), message=wx.EmptyString, size=None, maximum=100,
@@ -29,7 +28,6 @@ class ProgressDialog(wx.ProgressDialog):
     wx.ProgressDialog.__init__(self, title, message, maximum, parent, style)
 
     self.resize = resize
-
     self.active = None
 
     if wx.MAJOR_VERSION < 3 and self.GetWindowStyle() & wx.PD_CAN_ABORT:
@@ -79,13 +77,11 @@ class ProgressDialog(wx.ProgressDialog):
 
     self.user_moved = False
 
-
   ## Sets the active status to False
   #
   #  Calls ui.progress.ProgressDialog.OnAbort
   def Cancel(self):
     self.OnAbort()
-
 
   ## Closes & destroys the dialog
   #
@@ -99,19 +95,16 @@ class ProgressDialog(wx.ProgressDialog):
 
     if not FieldEnabled(main_window):
       logger.debug("Re-enabling main window")
-
       main_window.Enable()
 
     if self.Parent and not FieldEnabled(self.Parent):
       logger.debug("Re-enabling parent")
-
       self.GetParent().Enable()
 
     if wx.MAJOR_VERSION < 3:
       self.EndModal(0)
 
     return wx.ProgressDialog.Destroy(self, *args, **kwargs)
-
 
   ## Retrieves the wx.Gauge child object
   #
@@ -121,7 +114,6 @@ class ProgressDialog(wx.ProgressDialog):
     for C in self.GetChildren():
       if isinstance(C, wx.Gauge):
         return C
-
 
   ## Retrieves the message shown on the dialog
   #
@@ -133,11 +125,8 @@ class ProgressDialog(wx.ProgressDialog):
       for C in self.GetChildren():
         if isinstance(C, wx.StaticText):
           return C.GetLabel()
-
       return
-
     return wx.ProgressDialog.GetMessage(self, *args, **kwargs)
-
 
   ## Retrieves the range, or maximum value of the gauge
   #
@@ -147,9 +136,7 @@ class ProgressDialog(wx.ProgressDialog):
   def GetRange(self, *args, **kwargs):
     if wx.MAJOR_VERSION < 3:
       return self.GetGauge().GetRange()
-
     return wx.ProgressDialog.GetRange(self, *args, **kwargs)
-
 
   ## Retrieves the current value of the gauge
   #
@@ -159,72 +146,56 @@ class ProgressDialog(wx.ProgressDialog):
   def GetValue(self, *args, **kwargs):
     if wx.MAJOR_VERSION < 3:
       return self.GetGauge().GetValue()
-
     return wx.ProgressDialog.GetValue(self, *args, **kwargs)
-
 
   ## Sets the active status to False
   #
   #  The dialog will be destroyed when ui.progress.ProgressDialog.WasCancelled is called
   def OnAbort(self, event=None):
     self.active = False
-
     if event:
       event.Skip()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Pulse(self, *args, **kwargs):
     pulse_value = wx.ProgressDialog.Pulse(self, *args, **kwargs)
-
     if self.resize:
       self.UpdateSize()
-
     return pulse_value
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetMessage(self, message):
     for C in self.GetChildren():
       if isinstance(C, wx.StaticText):
         return C.SetLabel(message)
-
     return False
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetRange(self, *args, **kwargs):
     if wx.MAJOR_VERSION < 3:
       return self.GetGauge().SetRange(*args, **kwargs)
-
     return wx.ProgressDialog.SetRange(self, *args, **kwargs)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ShowModal(self, *args, **kwargs):
     if wx.MAJOR_VERSION < 3:
       self.active = True
-
     return wx.ProgressDialog.ShowModal(self, *args, **kwargs)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def Update(self, *args, **kwargs):
     update_value = wx.ProgressDialog.Update(self, *args, **kwargs)
-
     if self.detailed:
       self.txt_tasks.SetLabel("{} / {}".format(args[0], self.GetRange()))
-
     if self.resize:
       self.UpdateSize()
-
     return update_value
-
 
   ## Currently only updates width
   #
-  #  FIXME: Window updates immediately, but children do not
-  #  FIXME: Dialog could potentially resize outsize of display boundaries
+  #  @todo
+  #    - FIXME: Window updates immediately, but children do not
+  #    - FIXME: Dialog could potentially resize outsize of display boundaries
   def UpdateSize(self):
     if not self.user_moved:
       if self.GetPosition().Get()[1] != self.initial_posY:
@@ -268,13 +239,11 @@ class ProgressDialog(wx.ProgressDialog):
       else:
         self.Layout()
 
-
   ## Override wx.ProgressDialog.WasCancelled method for compatibility wx older wx versions
   def WasCancelled(self, *args, **kwargs):
     if wx.MAJOR_VERSION < 3:
       if self.active == None:
         return False
-
       return not self.active
 
     # Failsafe for compatibility between wx 3.0 & older versions
@@ -283,10 +252,9 @@ class ProgressDialog(wx.ProgressDialog):
 
     return wx.ProgressDialog.WasCancelled(self, *args, **kwargs)
 
-
 ## A progress dialog that uses a time
 #
-#  TODO: Finish defining
+#  @todo Finish defining
 class TimedProgressDialog(ProgressDialog):
   def __init__(self, parent, title=GT("Progress"), message=wx.EmptyString, size=None, maximum=100,
       style=PD_DEFAULT_STYLE, detailed=False, resize=True, interval=100):
@@ -306,37 +274,28 @@ class TimedProgressDialog(ProgressDialog):
     self.Bind(wx.EVT_TIMER, self.OnTimerPulse)
     self.Bind(EVT_TIMER_STOP, self.OnTimerStop)
 
-
   ## Retrievers timer instance
   def GetTimer(self):
     return self.Timer
-
 
   ## Pulses dialog on timer event
   def OnTimerPulse(self, event=None):
     self.Pulse()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnTimerStop(self, event=None):
     logger.debug("Destroying TimedProgressDialog instance")
-
     if wx.MAJOR_VERSION <= 2:
       # Dialog needs to be closed before destroying for wx 2.8
       self.Close()
-
     self.Destroy()
-
 
   ## Starts the timer & begins pulsing dialog
   def Start(self):
     logger.debug("Starting TimedProgressDialog timer ...")
-
     self.Timer.Start(self.Interval)
-
 
   ## Stops the timer & destroys the progress dialog
   def Stop(self):
     logger.debug("Stopping TimedProgressDialog timer ...")
-
     self.Timer.Stop()

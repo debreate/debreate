@@ -35,12 +35,12 @@ from wiz.helper      import GetMainWindow
 
 logger = Logger(__name__)
 
-## A wxcustom tree item
+## A wxcustom tree item.
 #
-#  \param item
-#  The \b \e wx.TreeItemId to be associated with this instance
-#  \param path
-#  \b \e string : The filename path to be associated with this instance
+#  @param item
+#    The \b \e wx.TreeItemId to be associated with this instance
+#  @param path
+#    \b \e string : The filename path to be associated with this instance
 class PathItem:
   def __init__(self, item, path, label=None):
     if path == None:
@@ -96,49 +96,41 @@ class PathItem:
 
       logger.debug("PathItem type: {} ({})".format(self.Type, self.Path))
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def AddChild(self, item):
     self.Children.append(item)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ContainsInstance(self, item):
     return self.Item == item
 
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetBaseItem(self):
     return self.Item
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetChildren(self):
     return self.Children
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetLabel(self):
     return self.Label
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetPath(self):
     return self.Path
 
-
-  ## TODO: Doxygen
-  #
-  #  FIXME: Should return boolean
+  ## @todo Doxygen
+  #  @todo FIXME: Should return boolean
   def HasChildren(self):
     return self.Children
 
-
   ## Checks if this is a child of another PathItem instance
   #
-  #  \param item
-  #  \b \e PathItem instance to check against
-  #  \return
-  #  True if self instance found in item children
+  #  @param item
+  #    \b \e PathItem instance to check against
+  #  @return
+  #    `True` if self instance found in item children
   def IsChildOf(self, item):
     for CHILD in item.Children:
       if CHILD == self:
@@ -146,37 +138,33 @@ class PathItem:
 
     return False
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsDir(self):
     return os.path.isdir(self.Path)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsFile(self):
     return os.path.isfile(self.Path)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def RemoveChildren(self):
     self.Children = []
 
     return not self.Children
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetChildren(self, items):
     self.Children = items
 
     return self.Children == items
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetItem(self, item, path):
     self.Item = item
     self.Item.Path = paths.normalize(path, strict=True)
 
 
+## @todo Doxygen
 class DirectoryTree(wx.GenericDirCtrl):
   def __init__(self, parent, id=wx.ID_ANY, path=paths.getUserHome()):
     super().__init__(parent, id, path, style=wx.DIRCTRL_DEFAULT_STYLE|wx.DIRCTRL_MULTIPLE)
@@ -205,6 +193,7 @@ class DirectoryTree(wx.GenericDirCtrl):
 
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
 
+  ## @todo Doxygen
   def onContextMenu(self, evt):
     logger.debug("context menu activated")
 
@@ -213,10 +202,11 @@ class DirectoryTree(wx.GenericDirCtrl):
 
 ## A customized directory tree that is compatible with older wx versions
 #
-#  TODO: Add method GetFilePaths
-#  TODO: Change icon when directory expanded/collapsed
-#  TODO: Set current path when item selected
-#  TODO: Add option for refreshing tree (ReCreateTree?)
+#  @todo
+#    - Add method GetFilePaths
+#    - Change icon when directory expanded/collapsed
+#    - Set current path when item selected
+#    - Add option for refreshing tree (ReCreateTree?)
 class _DirectoryTree(wx.TreeCtrl):
   def __init__(self, parent, w_id=wx.ID_ANY, path=paths.getUserHome(), exclude_pattern=[".*",],
       pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.TR_DEFAULT_STYLE,
@@ -306,27 +296,23 @@ class _DirectoryTree(wx.TreeCtrl):
     if self.GetHomeItem():
       self.InitDirectoryLayout()
 
-
   ## Override inherited method to return custom PathItem instances
   #
-  #  \param label
-  #  \b \e string : Text shown on item
-  #  \param path
-  #  \b \e string : Path stored with item
-  #  \param image
-  #  \b \e ???
-  #  \param selImage
-  #  \b \e ???
-  #  \param data
-  #  \b \e
+  #  @param label
+  #    \b \e string : Text shown on item
+  #  @param path
+  #    \b \e string : Path stored with item
+  #  @param image
+  #    \b \e ???
+  #  @param selImage
+  #    \b \e ???
+  #  @param data
+  #    \b \e
   def AddRoot(self, label, image=-1, selImage=-1, data=None):
     root_item = wx.TreeCtrl.AddRoot(self, label, image, selImage, data)
-
     # Root item should always have children unless errors found on filesystem
     self.SetItemHasChildren(root_item)
-
     return root_item
-
 
   ## Override inherited method to return custom PathItem instances
   def AppendItem(self, parent, label, path, image=-1, selImage=-1, expImage=-1, data=None):
@@ -344,7 +330,6 @@ class _DirectoryTree(wx.TreeCtrl):
       # ???: Does this cause PathItem instance to be overwritten with wx.TreeItemId ...
       #    or other errors?
       self.SetItemHasChildren(tree_item)
-
     elif os.access(path, os.X_OK):
       self.SetItemTextColour(base_item, COLOR_executable)
 
@@ -352,14 +337,11 @@ class _DirectoryTree(wx.TreeCtrl):
       self.SetItemTextColour(base_item, COLOR_link)
 
     self.item_list.append(tree_item)
-
     return tree_item
-
 
   ## Make sure image list cannot be changed
   def AssignImageList(self):
     return wx.TreeCtrl.AssignImageList(self, ImageList)
-
 
   ## Override inherited method to avoid TypeError
   def Collapse(self, item):
@@ -368,10 +350,9 @@ class _DirectoryTree(wx.TreeCtrl):
 
     return wx.TreeCtrl.Collapse(self, item)
 
-
   ## Override inherited method to delete item & base item
   #
-  #  TODO: Test if PathItem is actually removed from memory
+  #  @todo Test if PathItem is actually removed from memory
   def Delete(self, item):
     if item:
       deleted = wx.TreeCtrl.Delete(self, item.GetBaseItem())
@@ -392,7 +373,6 @@ class _DirectoryTree(wx.TreeCtrl):
 
       return deleted
 
-
   ## Overrides inherited method to not delete everything but root item
   #
   #  FIXME: Need to make sure PathItem instances are removed from memory
@@ -410,21 +390,19 @@ class _DirectoryTree(wx.TreeCtrl):
     self.item_list = []
     self.mount_list = []
 
-
   ## Delete the listed items
   def DeleteItems(self, item_list):
     # Reversing the sorted list guarantees child objects will be deleted
     # before parents & prevents app crashing.
     item_list = sorted(item_list, key=PathItem.GetPath, reverse=True)
-
     for ITEM in item_list:
       self.Delete(ITEM)
-
 
   ## Override inherited method so children are filled out
   #
   #  NOTE: Only items representing directories should expand
-  #  FIXME: Change icon when expanded/collapsed
+  #
+  #  @todo FIXME: Change icon when expanded/collapsed
   def Expand(self, item):
     if isinstance(item, PathItem):
       if item.IsFile():
@@ -493,13 +471,12 @@ class _DirectoryTree(wx.TreeCtrl):
     return wx.TreeCtrl.Expand(self, base_item)
     # ~ return True
 
-
   ## Expands a mounted item all the way down path
   #
-  #  \param mount_item
-  #  Mounted \b \e PathItem to be expanded
-  #  \param path
-  #  Path to follow
+  #  @param mount_item
+  #    Mounted \b \e PathItem to be expanded
+  #  @param path
+  #    Path to follow
   def ExpandPath(self, mount_item, path):
     self.Expand(mount_item)
 
@@ -519,11 +496,9 @@ class _DirectoryTree(wx.TreeCtrl):
       if not in_path:
         break
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetAllItems(self):
     return tuple(self.item_list)
-
 
   ## Retrieve the item that represents user's home directory
   #
@@ -537,7 +512,6 @@ class _DirectoryTree(wx.TreeCtrl):
 
     return None
 
-
   ## Retrieves all children for an item
   def GetItemChildren(self, item):
     if not isinstance(item, PathItem):
@@ -545,15 +519,13 @@ class _DirectoryTree(wx.TreeCtrl):
 
     return item.Children
 
-
   ## Override to ensure return value of DirectoryImageList instance
   def GetImageList(self):
     #return wx.TreeCtrl.GetImageList(self)
 
     return ImageList
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetItemParent(self, item):
     if isinstance(item, wx.TreeItemId) and item == self.root_item:
       # Root item does not have parent
@@ -576,21 +548,17 @@ class _DirectoryTree(wx.TreeCtrl):
 
     return parent
 
-
   ## Get the path of an item
   def GetItemPath(self, item):
     return item.GetPath()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetPath(self):
     return self.current_path
-
 
   ## Override inherited method to retrieve wxcustom root item with 'Path' attribute
   def GetRootItem(self):
     return self.root_item
-
 
   ## Retrieves the parent mount item for current selection
   def GetSelectedMountItem(self):
@@ -606,79 +574,64 @@ class _DirectoryTree(wx.TreeCtrl):
       while isinstance(parent, PathItem):
         if parent in self.mount_list:
           return parent
-
         parent = self.GetItemParent(parent)
 
     # FIXME: Should return home item if mount item is None???
     return None
 
-
   ## Retrieve paths of all selected tree items
   #
-  #  TODO: Define method
+  #  @todo Define method
   def GetSelectedPaths(self):
     selected = self.GetSelections()
     s_paths = []
-
     for S in selected:
       # Ensure that all selected items are PathItem instances
       if isinstance(S, PathItem):
         s_paths.append(S.Path)
-
     return tuple(s_paths)
-
 
   ## Get selected item
   def GetSelection(self):
     # wx 3.0 does not allow use of GetSelection with TR_MULTIPLE flag
     if wx.MAJOR_VERSION <= 2:
       base_selected = wx.TreeCtrl.GetSelection(self)
-
       for ITEM in self.item_list:
         if ITEM.GetBaseItem() == base_selected:
           return ITEM
-
     else:
       selected = self.GetSelections()
-
       # Just use previous selection
       if len(selected) > 1:
         for I in self.item_list:
           if I.Path == self.current_path:
             return I
-
       elif selected:
         return selected[0]
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   #
   #  TODO: Define
   def GetSelections(self):
     base_selected = wx.TreeCtrl.GetSelections(self)
-
     # Return root item if it is only thing selected
     if len(base_selected) == 1 and self.root_item in base_selected:
       return tuple(base_selected)
 
     selected = []
-
     # Convert wx.TreeItemId instances to PathItem.
     # Also omits any selected items that are not PathItem instances.
     for BASE in base_selected:
       for ITEM in self.item_list:
         if ITEM.GetBaseItem() == BASE:
           selected.append(ITEM)
-
     return tuple(selected)
-
 
   ## Expands the user's home directory
   def InitDirectoryLayout(self):
     if self.mount_list:
       # Don't call self.Expand directly
       self.OnExpand(item=self.GetHomeItem())
-
 
   ## Creates all mount items for tree
   def InitMountItems(self):
@@ -701,7 +654,6 @@ class _DirectoryTree(wx.TreeCtrl):
         continue
 
       add_item = os.path.ismount(DEV.MountPoint)
-
       if add_item:
         for PITEM in self.mount_list:
           if DEV.MountPoint == PITEM.Path:
@@ -710,22 +662,18 @@ class _DirectoryTree(wx.TreeCtrl):
 
       if add_item:
         logger.debug("Adding new mount PathItem instance: {}".format(DEV.Label))
-
         self.mount_list.append(self.AppendItem(self.root_item, DEV.Label, DEV.MountPoint,
             ImageList.GetImageIndex(DEV.Type)))
         continue
-
       else:
         logger.debug("PathItem instance for \"{}\" directory already exists".format(DEV.MountPoint))
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsExpanded(self, item):
     if isinstance(item, PathItem):
       item = item.GetBaseItem()
 
     return wx.TreeCtrl.IsExpanded(self, item)
-
 
   ## Override inherited method to extract base item
   def ItemHasChildren(self, item):
@@ -737,54 +685,39 @@ class _DirectoryTree(wx.TreeCtrl):
     #  	Should return a boolean
     return item.HasChildren()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnCollapse(self, event=None, item=None):
     if event:
       item = event.GetItem()
-
       event.Veto()
-
       for ITEM in self.GetAllItems():
         if ITEM.ContainsInstance(item):
           item = ITEM
           break
-
       if not isinstance(item, PathItem):
         return False
-
     if item == None:
       return False
-
     return self.Collapse(item)
-
 
   ## Open a context menu for manipulating tree files & directories
   def OnContextMenu(self, event=None):
     removed_expand = None
-
     allow_rename = True
     allow_trash = True
-
     selected = self.GetSelections()
-
     if len(selected) > 1:
       allow_rename = False
-
       for ITEM in selected:
         if ITEM.Type != "folder":
           removed_expand = self.ctx_menu.Remove(menuid.EXPAND)
           break
-
     elif isinstance(selected[0], PathItem) and selected[0].Type != "folder":
       removed_expand = self.ctx_menu.Remove(menuid.EXPAND)
-
     elif selected and isinstance(selected[0], wx.TreeItemId) and selected[0] == self.root_item:
       logger.debug("Root item selected")
-
       # Only allow expand/collapse & refresh for root item
       removed_menus = []
-
       menu_ids = [wx.ID_ADD, None, menuid.RENAME,]
       if self.trash:
         menu_ids.append(wx.ID_DELETE)
@@ -793,7 +726,6 @@ class _DirectoryTree(wx.TreeCtrl):
         # None inserted into removed menus instead of trying to remember menu indexes
         if not MENU_ID:
           removed_menus.append(None)
-
         else:
           removed_menus.append(self.ctx_menu.Remove(MENU_ID))
 
@@ -809,7 +741,6 @@ class _DirectoryTree(wx.TreeCtrl):
         menu = removed_menus[INDEX]
         if menu:
           self.ctx_menu.InsertItem(INDEX, menu)
-
       return
 
     if selected:
@@ -841,12 +772,10 @@ class _DirectoryTree(wx.TreeCtrl):
       # Re-enable expand menu item
       if removed_expand:
         self.ctx_menu.InsertItem(1, removed_expand)
-
     else:
       logger.debug("No items were selected")
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnDoubleClick(self, event=None):
     mouse_event = False
     key_event = False
@@ -862,51 +791,38 @@ class _DirectoryTree(wx.TreeCtrl):
         return
 
     selected = list(self.GetSelections())
-
     if selected:
       if len(selected) == 1 and (self.ItemHasChildren(selected[0]) or os.path.isdir(selected[0].Path)):
         selected = selected[0]
-
         # Use default behavior for double-click mouse event
         if mouse_event:
           event.Skip()
-
         else:
           if self.IsExpanded(selected):
             self.Collapse(selected)
-
           else:
             self.Expand(selected)
-
       else:
         # FIXME: Better method?
         self.GetParent().GetParent().OnImportFromTree()
-
         # Return focus to tree for keyboard control
         self.SetFocus()
 
-
-  ## TODO: Doxygen
-  #
-  #  FIXME: File list does not receive EVT_ENTER_WINDOW during drag
+  ## @todo Doxygen
+  #  @todo FIXME: File list does not receive EVT_ENTER_WINDOW during drag
   def OnDragBegin(self, event=None):
     if event:
       event.Allow()
-
       self.dragging = True
-
       logger.debug("Dragging!!!")
-
       # Show a 'dragging' cursor
       self.UpdateCursor()
-
       # Skipping drag event & using mouse release event for drop looks better
       event.Skip()
 
-
-  ## TODO: Doxygen
-  #
-  # FIXME: Should send event to Files page???
+  ## @todo Doxygen
+  #  @todo
+  #    FIXME: Should send event to Files page???
   def OnDragEnd(self, event=None):
     if event and self.dragging:
       self.dragging = False
@@ -926,16 +842,14 @@ class _DirectoryTree(wx.TreeCtrl):
       #  	  if multiple items selected.
       #event.Skip()
 
-
-  ## TODO: Doxygen
-  #
-  #  FIXME: Paths can use forward slashes if a directory exists to move item into.
-  #  	 Tree does not update to show that the item has been moved.
+  ## @todo Doxygen
+  #  @todo
+  #    FIXME: Paths can use forward slashes if a directory exists to move item into. Tree does not
+  #    update to show that the item has been moved.
   def OnEndLabelEdit(self, event=None):
     if event:
       if event.IsEditCancelled():
         logger.debug("Vetoing due to cancelled edit")
-
         event.Veto()
         return
 
@@ -953,45 +867,33 @@ class _DirectoryTree(wx.TreeCtrl):
         if os.path.exists(new_path):
           msg_l1 = GT("Name already exists:")
           ShowErrorDialog("{}\n\n{}".format(msg_l1, new_path))
-
           event.Veto()
           return
-
         os.rename(item.Path, new_path)
 
         ## ???: Another way to test if rename was successful?
         if os.path.exists(new_path):
           # Items path must be updated
           I.Path = new_path
-
       except OSError:
         logger.debug("Item not renamed, traceback details below:\n\n{}".format(traceback.format_exc()))
-
         event.Veto()
-
       logger.debug("New item path: {}".format(item.Path))
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnExpand(self, event=None, item=None):
     if event:
       item = event.GetItem()
-
       event.Veto()
-
       for ITEM in self.GetAllItems():
         if ITEM.ContainsInstance(item):
           item = ITEM
           break
-
       if not isinstance(item, PathItem):
         return False
-
     if item == None:
       return False
-
     return self.Expand(item)
-
 
   ## Catch mouse left down event for custom selection behavior
   #
@@ -1003,68 +905,52 @@ class _DirectoryTree(wx.TreeCtrl):
       modifiers = event.ControlDown() or event.ShiftDown()
       if not modifiers and len(self.GetSelections()) > 1:
         self.ResetSelected()
-
       event.Skip()
-
 
   ## Actions for menu events
   def OnMenuSelect(self, event=None):
     if event:
       event_id = event.GetId()
-
       if event_id == menuid.EXPAND:
         expand = event.GetEventObject().GetLabel(menuid.EXPAND).lower() == "expand"
         selected = self.GetSelections()
-
         if expand:
           for ITEM in selected:
             self.Expand(ITEM)
-
         else:
           for ITEM in selected:
             self.Collapse(ITEM)
-
       elif event_id == menuid.RENAME:
         selected = self.GetSelection()
         self.EditLabel(selected.GetBaseItem())
-
       elif event_id == wx.ID_DELETE:
         selected = self.GetSelections()
         self.SendToTrash(selected)
-
 
   ## Catches menu event to refresh/recreate tree
   def OnRefresh(self, event=None):
     self.ReCreateTree()
 
-
   ## Sets the current path to the newly selected item's path
   #
-  #  FIXME: Behavior is different between wx 2.8 & 3.0.
-  #  	 2.8 behavior is preferred.
+  #  @todo
+  #    FIXME: Behavior is different between wx 2.8 & 3.0. 2.8 behavior is preferred.
   def OnSelect(self, event=None):
     selected = self.GetSelection()
-
     if isinstance(selected, PathItem):
       base_item = selected.GetBaseItem()
-
       if selected.Path != self.current_path:
         self.SetPath(selected.Path)
-
       if not os.path.exists(selected.Path):
         self.SetItemBackgroundColour(base_item, COLOR_warn)
-
       elif self.GetItemBackgroundColour(base_item) == COLOR_warn:
         self.SetItemBackgroundColour(base_item, self.COLOR_default)
-
     if event:
       event.Skip()
-
 
   ## Checks menu item state
   def IsHiddenShown(self):
     return self.ctx_menu.FindItemById(menuid.TOGGLEHIDDEN).IsChecked()
-
 
   ## Refreshes the tree's displayed layout
   def ReCreateTree(self):
@@ -1080,7 +966,6 @@ class _DirectoryTree(wx.TreeCtrl):
       if isinstance(selected, PathItem):
         selected_path = selected.Path
         expanded = self.IsExpanded(selected)
-
       else:
         selected_path = paths.getUserHome()
         expanded = True
@@ -1104,25 +989,19 @@ class _DirectoryTree(wx.TreeCtrl):
         if mount_item.Path == selected_path:
           if expanded:
             self.Expand(mount_item)
-
         elif expanded:
           self.ExpandPath(mount_item, selected_path)
-
         else:
           self.ExpandPath(mount_item, os.path.dirname(selected_path))
-
 
   ## Clears all selected items except latest selected
   def ResetSelected(self):
     selected = self.GetSelection()
     if selected:
       self.UnselectAll()
-
       if isinstance(selected, PathItem):
         selected = selected.GetBaseItem()
-
       self.SelectItem(selected)
-
 
   ## Send that selected item's path to trash
   def SendToTrash(self, item_list):
@@ -1131,9 +1010,7 @@ class _DirectoryTree(wx.TreeCtrl):
       if not os.access(I.Path, os.W_OK):
         ShowErrorDialog(GT("Cannot move \"{}\" to trash, no write access").format(I.Path),
             warn=True)
-
         return False
-
       path_list.append(I.Path)
 
     msg_l1 = GT("Move the following items to trash?")
@@ -1156,15 +1033,10 @@ class _DirectoryTree(wx.TreeCtrl):
       for P in path_list:
         if os.path.exists(P):
           logger.debug("Failed to remove \"{}\"".format(P))
-
           return False
-
       logger.debug("Items successfully moved to trash")
-
       return True
-
     return False
-
 
   ## Make sure image list cannot be changed
   #
@@ -1173,43 +1045,38 @@ class _DirectoryTree(wx.TreeCtrl):
   def SetImageList(self, _dummy=None):
     return wx.TreeCtrl.SetImageList(self, ImageList)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetItemHasChildren(self, item, has_children=True):
     if isinstance(item, PathItem):
       item = item.GetBaseItem()
 
     return wx.TreeCtrl.SetItemHasChildren(self, item, has_children)
 
-
   ## Override inherited method to extract wx.TreeItemId instance
   #
-  #  \param item
-  #  \b \e PathItem or \b \e wx.TreeItemId instance
-  #  \param image_index
-  #  Image \b \e integer index to set for item
-  #  \param state
-  #  Item state for which to use image
+  #  @param item
+  #    \b \e PathItem or \b \e wx.TreeItemId instance
+  #  @param image_index
+  #    Image \b \e integer index to set for item
+  #  @param state
+  #    Item state for which to use image
   def SetItemImage(self, item, image_index, state):
     if isinstance(item, PathItem):
       item = item.GetBaseItem()
 
     return wx.TreeCtrl.SetItemImage(self, item, image_index, state)
 
-
   ## Sets the currently selected path
   #
-  #  \param path
-  #  \b \e string : New path to be set
+  #  @param path
+  #    \b \e string : New path to be set
   def SetPath(self, path):
     self.current_path = paths.normalize(path, strict=True)
 
-
   ## Sets the visible cursor on the Files page dependent on drag-&-drop state
   #
-  #  FIXME: Does not work for wx 2.8
-  #  \param reset
-  #  \b \e bool : Resets cursor back to default if True
+  #  @param reset
+  #    \b \e bool : Resets cursor back to default if True
   def UpdateCursor(self, reset=False):
     try:
       if reset:
@@ -1228,7 +1095,6 @@ class _DirectoryTree(wx.TreeCtrl):
       err_l1 = GT("Failed to set cursor")
       err_l2 = GT("Details below:")
       logger.error("\n	{}\n	{}\n\n{}".format(err_l1, err_l2, traceback.format_exc()))
-
 
 ## Directory tree with a nicer border
 class DirectoryTreePanel(BorderedPanel):
@@ -1252,7 +1118,6 @@ class DirectoryTreePanel(BorderedPanel):
     self.SetAutoLayout(True)
     self.SetSizer(BoxSizer(wx.VERTICAL))
     self.Layout()
-
 
   ## Retrieve DirectoryTree instance so methods can be called from within other objects
   def GetDirectoryTree(self):

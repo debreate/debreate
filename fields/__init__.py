@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module fields
+## User interface input fields
 #
-#  User interface input fields
+#  @package fields

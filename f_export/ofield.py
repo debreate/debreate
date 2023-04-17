@@ -27,10 +27,9 @@ class OutputField:
   def GetOutLabel(self):
     return self.OutLabel
 
-
-  ## Sets the output label
+  ## Sets the output label.
   #
-  #  \param outLabel
-  #  New text label to use
+  #  @param outLabel
+  #    New text label to use.
   def SetOutLabel(self, outLabel):
     self.OutLabel = outLabel

@@ -251,10 +251,10 @@ def _get_ubuntu_distnames(unstable=True, obsolete=False):
 #  Release information is parsed from https://www.linuxmint.com/download_all.php. The default
 #  function is to include name of current production release.
 #
-#  @fixme
-#    Broken.
 #  @return
 #    List of available distribution names.
+#  @todo
+#    FIXME: Broken.
 def _get_mint_distnames():
   ref_site = "https://www.linuxmint.com/download_all.php"
   page_html = GetRemotePageText(ref_site)
@@ -275,12 +275,14 @@ def _get_mint_distnames():
   return dist_names
 
 
-## Creates/Updates list of distribution names stored in user's local directory
+## Creates/Updates list of distribution names stored in user's local directory.
 #
-#  \param deprecated
-#  If \b \e True, includes obsolete Ubuntu distributions
-#  \return
-#  \b \e Boolean value of writeFile
+#  @param deprecated
+#    If `True`, includes obsolete Ubuntu distributions.
+#  @return
+#    Boolean value of writeFile.
+#  @todo
+#    Fix docstrings.
 def UpdateDistNamesCache(unstable=True, obsolete=False, generic=False):
   global FILE_distnames
 
@@ -295,12 +297,15 @@ def UpdateDistNamesCache(unstable=True, obsolete=False, generic=False):
   return writeFile(FILE_distnames, "\n\n".join((section_debian, section_ubuntu, section_mint)))
 
 
-## Retrieves distribution names from cache file
+## Retrieves distribution names from cache file.
 #
-#  \param deprecated
-#  If \b \e True, includes obsolete Ubuntu distributions (only works if cache file doesn't already exist)
-#  \return
-#  ???
+#  @param deprecated
+#    If `True`, includes obsolete Ubuntu distributions (only works if cache file doesn't already
+#    exist)
+#  @return
+#    ???
+#  @todo
+#    Fix docstrings.
 def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
   global FILE_distnames
 
@@ -315,19 +320,14 @@ def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
   if text_temp:
     try:
       dist_names["debian"] = RemoveEmptyLines(text_temp.split("[DEBIAN]")[1].split("[UBUNTU]")[0].split("\n"))
-
     except IndexError:
       pass
-
     try:
       dist_names["ubuntu"] = RemoveEmptyLines(text_temp.split("[UBUNTU]")[1].split("[LINUX MINT]")[0].split("\n"))
-
     except IndexError:
       pass
-
     try:
       dist_names["mint"] = RemoveEmptyLines(text_temp.split("[LINUX MINT]")[1].split("\n"))
-
     except IndexError:
       pass
 
@@ -336,10 +336,10 @@ def GetCachedDistNames(unstable=True, obsolete=False, generic=False):
 
 ## Get a list of available system release codenames.
 #
-#  FIXME: unstable, obsolete, & generic names should only be added if specified
-#
 #  @return
 #    List of available distribution names.
+#  @todo
+#    FIXME: unstable, obsolete, & generic names should only be added if specified.
 def GetOSDistNames():
   global FILE_distnames
 

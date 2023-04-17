@@ -62,8 +62,8 @@ logger = Logger(__name__)
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
-  #      Parent <b><i>wx.Window</i></b> instance
+  #  @param parent
+  #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.BUILD)
 
@@ -165,17 +165,16 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Method that builds the actual Debian package
   #
-  #  \param task_list
-  #      \b \e dict : Task string IDs & page data
-  #  \param build_path
-  #      \b \e str : Directory where .deb will be output
-  #  \param filename
-  #      \b \e str : Basename of output file without .deb extension
-  #  \return
-  #      \b \e dbrerror : SUCCESS if build completed successfully
+  #  @param task_list
+  #    \b \e dict : Task string IDs & page data
+  #  @param build_path
+  #    \b \e str : Directory where .deb will be output
+  #  @param filename
+  #    \b \e str : Basename of output file without .deb extension
+  #  @return
+  #    \b \e dbrerror : SUCCESS if build completed successfully
   def Build(self, task_list, build_path, filename):
     # Declare this here in case of error before progress dialog created
     build_progress = None
@@ -618,11 +617,10 @@ class Page(WizardPage):
 
       return(dbrerrno.EUNKNOWN, traceback.format_exc())
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   #
-  #  \return
-  #      \b \e tuple containing Return code & build details
+  #  @return
+  #    \b \e tuple containing Return code & build details
   def BuildPrep(self):
     # Declare these here in case of error before dialogs created
     save_dia = None
@@ -666,7 +664,6 @@ class Page(WizardPage):
           page_name = pg_control.GetName()
           if item not in fields_control:
             page_name = pg_launcher.GetName()
-
           return (dbrerrno.FEMPTY, "{} ➜ {}".format(page_name, field_name))
 
       # Get information from control page for default filename
@@ -733,16 +730,13 @@ class Page(WizardPage):
         wizard_page = GetPage(PID)
         if wizard_page.IsOkay():
           task_list[id_string] = wizard_page.Get()
-
         progress += 1
 
       for task_check, id_string in other_checks:
         wx.GetApp().Yield()
         prebuild_progress.Update(progress, GT("Testing for: {}").format(task_check.GetLabel()))
-
         if task_check.GetValue():
           task_list[id_string] = None
-
         progress += 1
 
       # Close progress dialog
@@ -755,14 +749,11 @@ class Page(WizardPage):
     except:
       if save_dia:
         save_dia.Destroy()
-
       if prebuild_progress:
         prebuild_progress.Destroy()
-
       return (dbrerrno.EUNKNOWN, traceback.format_exc())
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetSaveData(self):
     build_list = []
 
@@ -775,7 +766,6 @@ class Page(WizardPage):
     for O in options:
       if O.GetValue():
         build_list.append("1")
-
       else:
         build_list.append("0")
 
@@ -783,7 +773,6 @@ class Page(WizardPage):
       build_list.append("strip")
 
     return "<<BUILD>>\n{}\n<</BUILD>>".format("\n".join(build_list))
-
 
   ## Installs the built .deb package onto the system
   #
@@ -793,8 +782,8 @@ class Page(WizardPage):
   #  Shows a success dialog if installed. Otherwise shows an
   #  error dialog.
   #
-  #  \param package
-  #      \b \e str : Path to package to be installed
+  #  @param package
+  #    \b \e str : Path to package to be installed
   def InstallPackage(self, package):
     system_installer = GetSystemInstaller()
 
@@ -805,7 +794,6 @@ class Page(WizardPage):
         __name__,
         warn=True
         )
-
       return
 
     logger.info(GT("Attempting to install package: {}").format(package))
@@ -824,7 +812,6 @@ class Page(WizardPage):
         GT("An unknown error occurred"),
         __name__
         )
-
       return
 
     # Command executed but did not return success code
@@ -839,11 +826,9 @@ class Page(WizardPage):
         "\n".join(err_details),
         __name__
         )
-
       return
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnBuild(self, event=None):
     # Build preparation
     ret_code, build_prep = self.BuildPrep()
@@ -856,7 +841,6 @@ class Page(WizardPage):
           text="{}\n{}".format(GT("One of the required fields is empty:"), build_prep))
       err_dia.ShowModal()
       err_dia.Destroy()
-
       return
 
     if ret_code == dbrerrno.SUCCESS:
@@ -873,41 +857,33 @@ class Page(WizardPage):
         # Installing the package
         if FieldEnabled(self.chk_install) and self.chk_install.GetValue():
           self.InstallPackage(result)
-
         return
 
       if result:
         ShowErrorDialog(GT("Package build failed"), result)
-
       else:
         ShowErrorDialog(GT("Package build failed with unknown error"))
-
       return
 
     if build_prep:
       ShowErrorDialog(GT("Build preparation failed"), build_prep)
-
     else:
       ShowErrorDialog(GT("Build preparation failed with unknown error"))
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   #
-  #  TODO: Show warning dialog that this could take a while
-  #  TODO: Add cancel option to progress dialog
-  #  FIXME: List should be cached so no need for re-scanning
+  #  @todo
+  #    - Show warning dialog that this could take a while
+  #    - Add cancel option to progress dialog
+  #    - FIXME: List should be cached so no need for re-scanning
   def OnSetLintOverrides(self, event=None):
     logger.debug(GT("Setting Lintian overrides..."))
-
     lintian_tags_file = "{}/data/lintian/tags".format(paths.getAppDir())
-
     if not os.path.isfile(lintian_tags_file):
       logger.error("Lintian tags file is missing: {}".format(lintian_tags_file))
-
       return False
 
     lint_tags = RemoveEmptyLines(readFile(lintian_tags_file).split("\n"))
-
     if lint_tags:
       logger.debug("Lintian tags set")
 
@@ -920,12 +896,10 @@ class Page(WizardPage):
       logger.debug("Processing {} tags".format(len(lint_tags)))
       # DEBUG: End
 
-
       tag_count = len(lint_tags)
 
       def GetProgressMessage(message, count=tag_count):
         return "{} ({} {})".format(message, count, GT("tags"))
-
 
       progress = TimedProgressDialog(GetMainWindow(), GT("Building Tag List"),
           GetProgressMessage(GT("Scanning default tags")))
@@ -961,18 +935,13 @@ class Page(WizardPage):
         self.lint_overrides = []
         for L in overrides_dialog.GetCheckedLabels():
           logger.debug(GT("Adding Lintian override: {}").format(L))
-
           self.lint_overrides.append(L)
-
       return True
-
     else:
       logger.debug("Setting lintian tags failed")
-
       return False
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   #
   #  TODO: Use string names in project file but retain
   #        compatibility with older projects that use
@@ -985,27 +954,23 @@ class Page(WizardPage):
     if paths.getExecutable("md5sum"):
       try:
         self.chk_md5.SetValue(int(build_data[0]))
-
       except IndexError:
         pass
 
     try:
       self.chk_rmstage.SetValue(int(build_data[1]))
-
     except IndexError:
       pass
 
     if paths.getExecutable("lintian"):
       try:
         self.chk_lint.SetValue(int(build_data[2]))
-
       except IndexError:
         pass
 
     self.chk_strip.SetValue(paths.getExecutable("strip") and "strip" in build_data)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetSummary(self, event=None):
     pg_scripts = GetPage(pgid.SCRIPTS)
 

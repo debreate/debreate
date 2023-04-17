@@ -10,7 +10,6 @@
 #
 #  Global functions used throughout Debreate
 
-
 import os
 import re
 import traceback

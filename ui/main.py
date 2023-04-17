@@ -8,7 +8,7 @@
 
 ## Defines interface of the main window.
 #
-#  @module ui.main Main Window Interface
+#  @module ui.main
 
 import os
 import re
@@ -75,14 +75,13 @@ from wiz.wizard           import Wizard
 logger = Logger(__name__)
 default_title = GT("Debreate - Debian Package Builder")
 
-
 ## The main window interface.
 class MainWindow(wx.Frame, ModuleAccessCtrl):
   ## Constructor
   #
-  #  \param pos
+  #  @param pos
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Point</i></b> instance indicating the screen position of the window
-  #  \param size
+  #  @param size
   #  <b><i>Integer tuple</i></b> or <b><i>wx.Size</i></b> instance indicating the dimensions of the window
   def __init__(self):#, pos, size):
     wx.Frame.__init__(self, None, wx.ID_ANY)
@@ -156,45 +155,37 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Retrieves menu by ID
   def GetMenu(self, menuId):
     return self.GetMenuBar().GetMenuById(menuId)
 
-
   ## Retrieves the Wizard instance
   #
-  #  \return
+  #  @return
   #  	wiz.wizard.Wizard
   def GetWizard(self):
     return self.Wizard
-
 
   ## Sets the pages in the wiz.wizard.Wizard instance
   def InitWizard(self):
     self.Wizard.AddPage(PageInit(self.Wizard))
     self.Wizard.SetModeBin(0)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsNewProject(self):
     title = self.GetTitle()
     if title == default_title:
       return True
-
     else:
       return False
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def IsSaved(self):
     title = self.GetTitle()
     if title[-1] == "*":
       return False
-
     else:
       return True
-
 
   ## Opens a dialog box with information about the program
   def OnAbout(self, event=None): #@UnusedVariable
@@ -247,7 +238,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     about.ShowModal()
     about.Destroy()
 
-
   ## Checks for new release availability
   def OnCheckUpdate(self, event=None): #@UnusedVariable
     update_test = tests.isActive("update-fail")
@@ -262,35 +252,31 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     if update_test:
       # Set a bad url to force error
       current = GetCurrentVersion("http://dummyurl.blah/")
-
     else:
       current = GetCurrentVersion()
 
     logger.debug(GT("URL request result: {}").format(current))
 
     error_remote = GT("An error occurred attempting to contact remote website")
-
     if isinstance(current, (URLError, HTTPError)):
       current = strings.toString(current)
       ShowErrorDialog(error_remote, current)
-
     elif isinstance(current, tuple) and current > appinfo.getVersion():
       current = "{}.{}.{}".format(current[0], current[1], current[2])
       l1 = GT("Version {} is available!").format(current)
       l2 = GT("Would you like to go to Debreate's website?")
       if ConfirmationDialog(self, GT("Update"), "{}\n\n{}".format(l1, l2)).Confirmed():
         wx.LaunchDefaultBrowser(appinfo.getHomePage())
-
     elif isinstance(current, str):
       ShowErrorDialog(error_remote, current)
-
     else:
       DetailedMessageDialog(self, GT("Debreate"), text=GT("Debreate is up to date!")).ShowModal()
 
-
+  ## @todo Doxygen
   def __resetError(self):
     self.error = {}
 
+  ## @todo Doxygen
   def __cacheManualFiles(self, *args, **kwargs):
     manual_url = "https://debreate.github.io/help/usage.html"
     logger.debug("caching manual from {}".format(manual_url))
@@ -322,23 +308,22 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     if self.progress:
       self.progress.Pulse()
 
+  ## @todo Doxygen
   def __onTimerStop(self, event=None):
     if self.progress:
       self.progress.EndModal(0)
       self.progress = None
-
     if not self.IsEnabled():
       self.Enable()
-
     return not self.progress
-
 
   ## Action to take when 'Help' is selected from the help menu
   #
   #  Opens a help dialog if using 'alpha' test. Otherwise, opens
   #  PDF usage document. If opening usage document fails, attempts
   #  to open web browser in remote usage page.
-  #  TODO: Use dialog as main method
+  #
+  #  @todo Use dialog as main method
   def OnHelp(self, event=None): #@UnusedVariable
     if tests.isActive("alpha"):
       HelpDialog(self).ShowModal()
@@ -377,7 +362,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
           wx.GetApp().Yield()
           subprocess.run([cmd_xdg_open, paths.join(paths.getAppDir(), "docs/usage.pdf")])
 
-
   ## Opens the logs directory in the system's default file manager
   def OnLogDirOpen(self, event=None): #@UnusedVariable
     dir_logs = globals.paths.getLogsDir()
@@ -386,24 +370,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       return
     logger.debug("log directory not available")
 
-
   ## Changes wizard page from menu
   def OnMenuChangePage(self, event=None):
     if isinstance(event, int):
       page_id = event
-
     else:
       page_id = event.GetId()
-
     self.Wizard.ShowPage(page_id)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnProjectNew(self, event=None): #@UnusedVariable
     self.ResetPages()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnProjectOpen(self, event=None): #@UnusedVariable
     projects_filter = "|*.{};*.{}".format(PROJECT_ext, PROJECT_txt)
     d = GT("Debreate project files")
@@ -421,12 +400,10 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     if self.OpenProject(filename):
       # Only set project open in memory if loaded completely
       self.LoadedProject = project
-
     else:
       self.LoadedProject = None
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnProjectSave(self, event=None):
     event_id = event.GetId()
 
@@ -455,7 +432,6 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
               "\n".join(data)))
           if overwrite:
             os.remove(backup)
-
         except UnicodeEncodeError:
           detail1 = GT("Unfortunately Debreate does not support unicode yet.")
           detail2 = GT("Remove any non-ASCII characters from your project.")
@@ -467,6 +443,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
             # Restore project backup
             shutil.move(backup, path)
 
+    ## @todo Doxygen
     def OnSaveAs():
       dbp = "|*.dbp"
       d = GT("Debreate project files")
@@ -486,21 +463,17 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       # If project already exists, don't show dialog
       if not self.IsSaved() or not self.LoadedProject or not os.path.isfile(self.LoadedProject):
         OnSaveAs()
-
       else:
         SaveIt(self.LoadedProject)
-
     else:
       # If save as is press, show the save dialog
       OnSaveAs()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnQuickBuild(self, event=None): #@UnusedVariable
     QB = QuickBuild(self)
     QB.ShowModal()
     QB.Destroy()
-
 
   ## Shows a dialog to confirm quit and write window settings to config file
   def OnQuit(self, event=None): #@UnusedVariable
@@ -525,10 +498,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     cfg_user.save()
     self.Destroy()
 
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnToggleTheme(self, event=None): #@UnusedVariable
     self.ToggleTheme(self)
-
 
   ## Shows or hides tooltips
   def OnToggleToolTips(self, event=None): #@UnusedVariable
@@ -538,11 +510,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     cfg_user.setValue("tooltips", enabled)
     cfg_user.save()
 
-
   ## Opens a dialog for creating/updating list of distribution names cache file
   def OnUpdateDistNamesCache(self, event=None): #@UnusedVariable
     DistNamesCacheDialog().ShowModal()
-
 
   ## Updates the page menu to reflect current page
   def OnWizardBtnPage(self, event=None): #@UnusedVariable
@@ -553,40 +523,33 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     if not menu_page.IsChecked(ID):
       menu_page.Check(ID, True)
 
-
   ## Deletes cache directory located at ~/.local/share/debreate/cache
   def OnClearCache(self, event=None):
     dir_cache = globals.paths.getCacheDir()
     if os.path.isdir(dir_cache):
       shutil.rmtree(dir_cache)
 
-
   ## Opens web links from the help menu
   def OpenPolicyManual(self, event=None):
     if isinstance(event, wx.CommandEvent):
       event_id = event.GetId()
-
     elif isinstance(event, int):
       event_id = event
-
     else:
       logger.error("Cannot open policy manual link with object type {}".format(type(event)))
-
       return
 
     url = self.menu_policy.GetHelpString(event_id)
     webbrowser.open(url)
 
-
   ## Retrieves filename of loaded project
   def ProjectGetLoaded(self):
     return self.LoadedProject
 
-
   ## Tests project type & calls correct method to read project file
   #
-  #  \param project_file
-  #  \b \e str : Path to project file
+  #  @param project_file
+  #    \b \e str : Path to project file
   def OpenProject(self, project_file):
     logger.debug("Opening project: {}".format(project_file))
 
@@ -644,17 +607,14 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
     return opened
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ProjectChanged(self, event=None):
     if logger.debugging():
       logger.debug("MainWindow.OnProjectChanged:")
       print("  Object: {}".format(event.GetEventObject()))
-
     self.ProjectDirty = True
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ResetPages(self):
     warn_msg = GT("You will lose any unsaved information.")
     warn_msg = "{}\n\n{}".format(warn_msg, GT("Continue?"))
@@ -672,18 +632,15 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
     return True
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetSavedStatus(self, status):
     if status: # If status is changing to unsaved this is True
       title = self.GetTitle()
       if self.IsSaved() and title != default_title:
         self.SetTitle("{}*".format(title))
 
-
-  ## TODO: Doxygen
-  #
-  #  TODO: Finish definition
+  ## @todo Doxygen
+  #  @todo Finish definition
   def ToggleTheme(self, window):
     for C in window.GetChildren():
       self.ToggleTheme(C)

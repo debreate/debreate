@@ -20,7 +20,7 @@ from libdbr.logger import Logger
 
 logger = Logger(__name__)
 
-## Class that updates the configuration file when a specific event occurs
+## Class that updates the configuration file when a specific event occurs.
 class ConfigField:
   def __init__(self, cfgKey=None, cfgSect=None):
     self.ConfigKey = cfgKey
@@ -67,17 +67,15 @@ class ConfigField:
   def SetValue(self, value):
     pass
 
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetConfigKey(self):
     return self.ConfigKey
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetConfigSection(self):
     return self.ConfigSection
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetConfigValue(self):
     GETVAL = 1
     CHOICE = 2
@@ -93,8 +91,7 @@ class ConfigField:
     if isinstance(self, ftypes[CHOICE]):
       return self.GetStringSelection()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnToggle(self, event=None):
     if event:
       event.Skip()
@@ -102,12 +99,10 @@ class ConfigField:
     cfg_user.setValue(self.ConfigKey, self.GetConfigValue())
     cfg_user.save()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetConfigKey(self, cfgKey):
     self.ConfigKey = cfgKey
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetConfigSection(self, cfgSect):
     self.ConfigSection = cfgSect

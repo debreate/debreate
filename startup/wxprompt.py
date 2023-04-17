@@ -6,6 +6,8 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## @module startup.wxprompt
+
 import errno
 import os
 import subprocess
@@ -23,6 +25,7 @@ from libdbr.modules import installModule
 
 __logger = Logger(__name__)
 
+## @todo Doxygen
 def promptForWxInstall():
   print("Debreate requires wxPython, do you want me to try to download and install it?")
   if input("yes/no (this could take a while): ").lower().strip() not in ("y", "yes"):

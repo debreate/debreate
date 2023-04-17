@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals
+## @package globals
 #
-#  General helper modules
+#  General helper modules.

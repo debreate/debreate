@@ -16,7 +16,7 @@ from input.essential import EssentialField
 from wiz.helper      import FieldEnabled
 
 
-## Standard wx.CheckBox
+## Standard wx.CheckBox.
 class CheckBox(wx.CheckBox, CommandField):
   def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
         size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
@@ -31,50 +31,46 @@ class CheckBox(wx.CheckBox, CommandField):
     # Initialize with default value
     self.SetValue(self.Default)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetDefaultValue(self):
     return self.Default
 
-
-  ## Retrieves current 'checked' state
+  ## Retrieves current 'checked' state.
   #
   #  Differences from inherited method:
   #  - Always returns False if the object is disabled
   def GetValue(self):
     if not FieldEnabled(self):
       return False
-
     return wx.CheckBox.GetValue(self)
 
-
-  ## Resets check box to default value
+  ## Resets check box to default value.
   def Reset(self):
     self.SetChecked(self.GetDefaultValue())
 
-
-  ## Manually emit EVT_CHECKBOX when setting value
+  ## Manually emit EVT_CHECKBOX when setting value.
   #
-  #  \param state
-  #  If \b \e True, the check is on, otherwise it is off
+  #  @param state
+  #    If `True`, the check is on, otherwise it is off.
   def SetChecked(self, state=True):
     wx.PostEvent(self, wx.CommandEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED))
-
     return self.SetValue(state)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetDefaultValue(self, value):
     self.Default = value
 
-
-  ## Override inherited method to not allow changing value if disabled
+  ## Override inherited method to not allow changing value if disabled.
+  #
+  #  @todo parameters
+  #  @todo return
   def SetValue(self, value):
     if FieldEnabled(self):
       return wx.CheckBox.SetValue(self, value)
 
-
-## CheckBox that updates config file when value is changed
+## CheckBox that updates config file when value is changed.
+#
+#  @todo parameters
 class CheckBoxCFG(CheckBox, ConfigField):
   def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
         size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,
@@ -85,9 +81,11 @@ class CheckBoxCFG(CheckBox, ConfigField):
     ConfigField.__init__(self, cfgKey, cfgSect)
 
 
-## CheckBox class that notifies main window to mark project dirty
+## CheckBox class that notifies main window to mark project dirty.
 #
-#  This is a dummy class to facilitate merging to & from unstable branch
+#  This is a dummy class to facilitate merging to & from unstable branch.
+#
+#  @todo parameters
 class CheckBoxESS(CheckBox, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, label=wx.EmptyString, pos=wx.DefaultPosition,
         size=wx.DefaultSize, style=0, name=wx.CheckBoxNameStr, defaultValue=False,

@@ -16,7 +16,7 @@ def GetMonospacedFont(size):
         wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 
 
-# TODO: Replace with registered fonts above
+# @todo Replace with registered fonts above
 SIZE_SM = 6
 SIZE_MS = 7
 SIZE_MD = 8

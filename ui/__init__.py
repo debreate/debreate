@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module ui
+## Custom user interface objects.
 #
-#  Custom user interface objects
+#  @package ui

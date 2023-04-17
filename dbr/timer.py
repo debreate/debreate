@@ -20,7 +20,5 @@ class DebreateTimer(wx.Timer):
 
   def Stop(self, *args, **kwargs):
     return_value = wx.Timer.Stop(self, *args, **kwargs)
-
     wx.PostEvent(self.GetOwner(), TimerStopEvent(0))
-
     return return_value

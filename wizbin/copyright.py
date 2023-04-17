@@ -47,7 +47,6 @@ __logger = Logger(__name__)
 # Globals
 copyright_header = GT("Copyright © {} <copyright holder(s)> [<email>]")
 
-
 ## Copyright page.
 #
 #  @param parent
@@ -116,7 +115,6 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Displays a confirmation dialog to clear the text area if it is not empty.
   #
   #  @return
@@ -130,7 +128,6 @@ class Page(WizardPage):
         return False
 
     return True
-
 
   ## Retrieves copyright/license text.
   #
@@ -147,7 +144,6 @@ class Page(WizardPage):
 
     return page
 
-
   ## Retrieves license path.
   #
   #  @param licName
@@ -161,12 +157,10 @@ class Page(WizardPage):
 
     return GetLicenseTemplateFile(licName)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetSaveData(self):
     data = self.Get()
     return "<<COPYRIGHT>>\n{}\n<</COPYRIGHT>>".format(data)
-
 
   ## Retrieves template name.
   #
@@ -174,7 +168,6 @@ class Page(WizardPage):
   #    Currently selected template.
   def GetSelectedName(self):
     return GetField(self, selid.LICENSE).GetStringSelection()
-
 
   ## Sets page's fields from opened file.
   #
@@ -203,14 +196,12 @@ class Page(WizardPage):
 
     return 0
 
-
   ## Checks if page can be exported or or added to build.
   #
   #  @return
   #    `True` if export is possible.
   def IsOkay(self):
     return not strings.isEmpty(self.dsp_copyright.GetValue())
-
 
   ## Opens directory containing currently selected license.
   def OnOpenPath(self, event=None):
@@ -232,7 +223,6 @@ class Page(WizardPage):
         return True
 
     return False
-
 
   ## Repopulates template list.
   def OnRefreshList(self, event=None):
@@ -272,7 +262,6 @@ class Page(WizardPage):
     else:
       sel_templates.SetSelection(sel_templates.GetDefaultValue())
 
-
   ## Enables/Disables simple template button.
   #
   #  Simple template generation is only available for system  licenses.
@@ -288,7 +277,6 @@ class Page(WizardPage):
         self.btn_template_simple.Enable()
 
       self.SetLicenseTooltip()
-
 
   ## Generates a full license template.
   def OnTemplateFull(self, event=None):
@@ -373,7 +361,6 @@ class Page(WizardPage):
 
     self.dsp_copyright.SetFocus()
 
-
   ## Generates a short reference template for a system license.
   def OnTemplateShort(self, event=None):
     if self.DestroyLicenseText():
@@ -386,7 +373,6 @@ class Page(WizardPage):
 
     self.dsp_copyright.SetFocus()
 
-
   ## Resets all page fields to default values.
   def Reset(self):
     self.dsp_copyright.Clear()
@@ -395,14 +381,12 @@ class Page(WizardPage):
       self.sel_templates.Reset()
       self.OnSelectLicense(self.sel_templates)
 
-
   ## Sets the text of the displayed copyright.
   #
   #  @param data
   #    Text to parse for field values.
   def Set(self, data):
     self.dsp_copyright.SetValue(data)
-
 
   ## Changes the Choice instance's tooltip for the current license.
   def SetLicenseTooltip(self):

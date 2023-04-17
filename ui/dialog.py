@@ -40,17 +40,16 @@ logger = Logger(__name__)
 class ButtonDialog:
   ## Changes the label of buttons of a given ID
   #
-  #  \param btnId
+  #  @param btnId
   #  \b \e Integer ID of buttons to change labels
-  #  \param newLabel
+  #  @param newLabel
   #  New \b \e string label for button
-  #  \return
+  #  @return
   #  Value of ui.button.ButtonSizer.SetLabel or \b \e False
   def SetButtonLabel(self, btnId, newLabel):
     btn_sizer = GetButtonSizer(self)
     if isinstance(btn_sizer, ButtonSizer):
       return btn_sizer.SetLabel(btnId, newLabel)
-
     return False
 
 
@@ -67,17 +66,13 @@ class BaseDialog(wx.Dialog):
 
     wx.Dialog.__init__(self, parent, ID, title, pos, size, style|wx.RESIZE_BORDER, name)
 
-
   ## Centers on parent then shows dialog in modal form
-  #
   def ShowModal(self):
     if self.GetParent():
       self.CenterOnParent()
-
     return wx.Dialog.ShowModal(self)
 
-
-## TODO: Doxygen
+## @todo Doxygen
 class StandardDirDialog(wx.DirDialog):
   def __init__(self, parent, title, style=wx.DD_DEFAULT_STYLE):
 
@@ -90,17 +85,13 @@ class StandardDirDialog(wx.DirDialog):
 
     self.CenterOnParent()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnAccept(self, event=None):
     path = self.GetPath()
-
     if os.path.isdir(path):
       self.EndModal(wx.ID_OK)
       return
-
     logger.debug("Path is not a directory: {}".format(path))
-
 
 ## A standard system file dialog modified for advanced use
 class StandardFileDialog(wx.FileDialog):
@@ -126,27 +117,22 @@ class StandardFileDialog(wx.FileDialog):
 
     self.CenterOnParent()
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def GetExtension(self):
     return self.Extension
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def HasExtension(self, path):
     if "." in path:
       if path.split(".")[-1] != "":
         return True
-
     return False
-
 
   ## Checks if dialog is using FD_SAVE style
   def IsSaveDialog(self):
     return self.WindowStyleFlag & wx.FD_SAVE
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def OnAccept(self, event=None):
     if self.IsSaveDialog():
       if self.Extension:
@@ -177,14 +163,14 @@ class StandardFileDialog(wx.FileDialog):
 
     self.EndModal(self.AffirmativeId)
 
-
   ## Updates the Filename & Path attributes
   #
   #  Differences from inherited method:
   #  - If the filename does not already have an extension, the default
   #  extension will be appended.
-  #  \param filename
-  #  New \b \e string filename
+  #
+  #  @param filename
+  #    New \b \e string filename
   def SetFilename(self, filename):
     if filename:
       if filename.endswith("."):
@@ -203,16 +189,15 @@ class StandardFileDialog(wx.FileDialog):
 
     return wx.FileDialog.SetFilename(self, filename)
 
-
 ## Displays a dialog with message & details
 #
-#  FIXME: Crashes if icon is wx.NullBitmap
-#  \param parent
-#  	\b \e wx.Window : The parent window
-#  \param title
-#  	\b \e str : Text to display in title bar
-#  \param icon
-#  	\b \e wx.Bitmap|str : Image to display
+#  @todo FIXME: Crashes if icon is wx.NullBitmap
+#  @param parent
+#    \b \e wx.Window : The parent window
+#  @param title
+#    \b \e str : Text to display in title bar
+#  @param icon
+#    \b \e wx.Bitmap|str : Image to display
 class DetailedMessageDialog(BaseDialog, ButtonDialog):
   def __init__(self, parent, title=GT("Message"), icon=ICON_INFORMATION, text=wx.EmptyString,
       details=wx.EmptyString, style=wx.DEFAULT_DIALOG_STYLE, buttons=(wx.ID_OK,),
@@ -266,19 +251,18 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 
     self.CenterOnParent()
 
-
   ## Add custom buttons to dialog
   #
   #  NOTE: Do not call before self.SetSizer
   #
-  #  FIXME: Rename to SetButtons???
-  #  FIXME: Should delete any previous buttons
+  #  @todo
+  #    - FIXME: Rename to SetButtons???
+  #    - FIXME: Should delete any previous buttons
   def AddButtons(self, button_ids):
     self.lyt_buttons = AddCustomButtons(self, button_ids)
 
     self.GetSizer().Add(self.lyt_buttons, (4, 2),
         flag=wx.ALIGN_RIGHT|wx.ALIGN_BOTTOM|lyt.PAD_RTB, border=5)
-
 
   ## Adds a clickable link to the dialog
   def AddURL(self, url):
@@ -292,19 +276,17 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
     self.SetMinSize(self.GetSize())
     self.CenterOnParent()
 
-
   ## Shows dialog modal & returns 'confirmed' value
   #
-  #  \return
-  #  \b \e bool : True if ShowModal return value one of wx.ID_OK, wx.OK, wx.ID_YES, wx.YES
+  #  @return
+  #    \b \e bool : True if ShowModal return value one of wx.ID_OK, wx.OK, wx.ID_YES, wx.YES
   def Confirmed(self):
     return self.ShowModal() in (wx.ID_OK, wx.OK, wx.ID_YES, wx.YES)
 
-
   ## Adds buttons & details text to dialog
   #
-  #  \param details
-  #  	\b \e str : Detailed text to show in dialog
+  #  @param details
+  #    \b \e str : Detailed text to show in dialog
   def CreateDetailedView(self, details):
     # Controls have not been constructed yet
     if strings.isEmpty(self.details):
@@ -334,15 +316,15 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
           return True
     return False
 
-
   ## Attempts to retrieve button instance matching btn_id
   #
-  #  FIXME: This will fail if there are standard buttons in the dialog
-  #  FIXME: Retrieving by label doesn't work
-  #  \param btn_id
-  #  ID of the button instance to retrieve
-  #  \return
-  #  \b \e wx.Button instance or None
+  #  @todo
+  #    - FIXME: This will fail if there are standard buttons in the dialog
+  #    - FIXME: Retrieving by label doesn't work
+  #  @param btn_id
+  #    ID of the button instance to retrieve
+  #  @return
+  #    \b \e wx.Button instance or None
   def GetButton(self, btn_id):
     # Allow search by label
     use_label = not isinstance(btn_id, int)
@@ -373,11 +355,9 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
             if LBL == btn_id:
               return BTN
 
-
-  ## TODO: Doxygen
-  #
-  #  FIXME: Layout initially wrong
-  #  TODO: Allow copying details to clipboard
+  ## @todo Doxygen
+  #  @todo FIXME: Layout initially wrong
+  #  @todo Allow copying details to clipboard
   def OnCopyDetails(self, event=None):
     print("DEBUG: Copying details to clipboard ...")
 
@@ -411,43 +391,33 @@ class DetailedMessageDialog(BaseDialog, ButtonDialog):
 
     wx.MessageBox("FIXME: Details not copied to clipboard", GT("Debug"))
 
-
   ## Override inherited method to center on parent window first
   def ShowModal(self, *args, **kwargs):
     if self.Parent:
       self.CenterOnParent()
-
     return wx.Dialog.ShowModal(self, *args, **kwargs)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def SetDetails(self, details):
     return self.CreateDetailedView(details)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def ToggleDetails(self, event=None):
     try:
       if self.btn_details.GetValue():
         self.dsp_details.Show()
-
       else:
         self.dsp_details.Hide()
-
       self.Layout()
       self.Fit()
       self.SetMinSize(self.GetSize())
-
       return True
-
     except AttributeError:
       # Disable toggling details
       self.btn_details.Hide()
-
       self.Layout()
       self.Fit()
       self.SetMinSize(self.GetSize())
-
       return False
 
 
@@ -476,12 +446,11 @@ class ConfirmSaveDialog(DetailedMessageDialog):
     if btn_save:
       btn_save.Bind(wx.EVT_BUTTON, self.OnButtonSave)
 
-
+  ## @todo Doxygen
   def OnButtonSave(self, event=None):
     self.EndModal(wx.ID_SAVE)
 
-
-## TODO: Doxygen
+## @todo Doxygen
 class OverwriteDialog(ConfirmationDialog):
   def __init__(self, parent, filename):
     text = "{}\n\n{}".format(GT("Overwrite file?"), filename)
@@ -497,16 +466,15 @@ class ErrorDialog(DetailedMessageDialog):
         linewrap=linewrap)
 
 
-## TODO: Doxygen
+## @todo Doxygen
 class SuperUserDialog(wx.Dialog):
   def __init__(self, ID=wx.ID_ANY):
     wx.Dialog.__init__(self, GetMainWindow(), ID)
-
     # User selector
     self.users = ComboBox(self)
 
 
-## TODO: Doxygen
+## @todo Doxygen
 def GetDialogWildcards(ID):
   proj_def = project_wildcards[ID][0]
   wildcards = list(project_wildcards[ID][1])
@@ -523,37 +491,31 @@ def GetDialogWildcards(ID):
 
   return (proj_def, ";".join(wildcards))
 
-
-## TODO: Doxygen
+## @todo Doxygen
 def GetDirDialog(parent, title):
   if parent == None:
     parent = GetMainWindow()
-
   dir_open = StandardDirDialog(parent, title)
-
   return dir_open
-
 
 ## Formats a wildcard list into a string
 def _format_wildcard(wildcard):
   if isinstance(wildcard, (list, tuple)):
     wildcard = "|".join(wildcard)
-
   return wildcard
-
 
 ## Retrieves an 'open file' dialog for display
 #
-#  \param parent
-#  \b \e wx.Window instance that should be dialog's parent
-#  \param title
-#  Text to be shown in the dialogs's title bar
-#  \param wildcard
-#  Wildcard to filter filenames
-#  \param extension
-#  The default filename extension to use when opening a file
-#  \return
-#  \b \e StandardFileDialog instance
+#  @param parent
+#    \b \e wx.Window instance that should be dialog's parent
+#  @param title
+#    Text to be shown in the dialogs's title bar
+#  @param wildcard
+#    Wildcard to filter filenames
+#  @param extension
+#    The default filename extension to use when opening a file
+#  @return
+#    \b \e StandardFileDialog instance
 def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None,
       directory=None):
 
@@ -567,19 +529,18 @@ def GetFileOpenDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
 
   return file_open
 
-
 ## Retrieves a 'save file' dialog for display
 #
-#  \param parent
-#  \b \e wx.Window instance that should be dialog's parent
-#  \param title
-#  Text to be shown in the dialogs's title bar
-#  \param wildcard
-#  Wildcard to filter filenames
-#  \param extension
-#  The default filename extension to use when saving a file
-#  \return
-#  \b \e StandardFileDialog instance
+#  @param parent
+#    \b \e wx.Window instance that should be dialog's parent
+#  @param title
+#    Text to be shown in the dialogs's title bar
+#  @param wildcard
+#    Wildcard to filter filenames
+#  @param extension
+#    The default filename extension to use when saving a file
+#  @return
+#    \b \e StandardFileDialog instance
 def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr, extension=None):
   if parent == None:
     parent = GetMainWindow()
@@ -591,20 +552,20 @@ def GetFileSaveDialog(parent, title, wildcard=wx.FileSelectorDefaultWildcardStr,
 
   return file_save
 
-
 ## Used to display a dialog window
 #
 #  For custom dialogs, the method 'DisplayModal()' is used
 #  to display the dialog. For stock dialogs, 'ShowModal()'
 #  is used. The dialog that will be shown is determined
 #  from 'GetFileSaveDialog'.
-#  FIXME: Perhaps should be moved to ui.output
-#  \param dialog
-#  The dialog window to be shown
-#  \param center
-#  Positioning relative to parent window
-#  \return
-#  'True' if the dialog's return value is 'wx..ID_OK', 'False'
+#
+#  @todo FIXME: Perhaps should be moved to ui.output
+#  @param dialog
+#    The dialog window to be shown
+#  @param center
+#    Positioning relative to parent window
+#  @return
+#    'True' if the dialog's return value is 'wx..ID_OK', 'False'
 #    otherwise
 #
 #  \b Alias: \e dbr.ShowDialog
@@ -613,23 +574,23 @@ def ShowDialog(dialog, center=wx.BOTH):
 
   return dialog.ShowModal() in (wx.ID_OK, wx.YES, wx.ID_YES, wx.ID_OPEN)
 
-
 ## Displays an instance of ErrorDialog class
 #
 #  Dialog is orphaned if parent is None so it can be displayed
 #  without main window in cases of initialization errors.
-#  \param text
-#  	\b \e str: Explanation of error
-#  \param details
-#  	\b \e str: Extended details of error
-#  \param parent
-#  \b \e Parent window of new dialog
-#  If False, parent is set to main window
-#  If None, dialog is orphaned
-#  \param module
-#  	\b \e str: Module where error was caught (used for Logger output)
-#  \param warn
-#  	\b \e bool: Show log message as warning instead of error
+#
+#  @param text
+#    \b \e str: Explanation of error
+#  @param details
+#    \b \e str: Extended details of error
+#  @param parent
+#    \b \e Parent window of new dialog
+#    If False, parent is set to main window
+#    If None, dialog is orphaned
+#  @param module
+#    \b \e str: Module where error was caught (used for Logger output)
+#  @param warn
+#    \b \e bool: Show log message as warning instead of error
 def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Error"),
       linewrap=0):
   # Instantiate Logger message type so it can be optionally changed
@@ -666,7 +627,6 @@ def ShowErrorDialog(text, details=None, parent=False, warn=False, title=GT("Erro
     error_dialog.SetDetails(details)
 
   error_dialog.ShowModal()
-
 
 ## A function that displays a modal message dialog on the main window
 def ShowMessageDialog(text, title=GT("Message"), details=None, module=None, parent=None,

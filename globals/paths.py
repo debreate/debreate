@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.paths
+## Global paths used in the app.
 #
-#  Global paths used in the app
+#  @module globals.paths
 
 import os
 import sys

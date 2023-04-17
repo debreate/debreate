@@ -22,12 +22,11 @@ __logger = Logger(__name__)
 
 ## Retrieves dimensions of primary display.
 #
-#  TODO:
-#  - use 1 or 2 alternate methods (wx.Display???)
-#  - make platform independent
-#
 #  @return
 #    Dictionary containing x,y coordinates & width & height of primary display.
+#  @todo
+#    - use 1 or 2 alternate methods (wx.Display???)
+#    - make platform independent
 def __getPrimaryRect():
   xrandr = paths.getExecutable("xrandr")
   if not xrandr:
@@ -57,15 +56,14 @@ def __getPrimaryRect():
   return rect
 
 
-## Centers the window on the primary display
-#
-#  TODO:
-#  - make platform independent
+## Centers the window on the primary display.
 #
 #  @param window
 #    wx.Window instance to be centered.
 #  @param size
 #    Override detected size from window.
+#  @todo
+#    - make platform independent
 def centerOnPrimary(window, size=None):
   __logger.debug("Attempting to center window: {} ({})".format(window.Name, window))
 

@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.errno
+## Redefines & adds some new codes to the system errno module.
 #
-#  Redefines & adds some new codes to the system errno module
+#  @module globals.errno
 
 import copy
 import errno
@@ -18,7 +18,7 @@ import wx
 
 # mypy: disable-error-code="attr-defined"
 
-# TODO: Convert these to dbrerror
+# @todo Convert these to dbrerror
 ERR_DIR_NOT_AVAILABLE = wx.NewId()
 ERR_FILE_READ = wx.NewId()
 ERR_FILE_WRITE = wx.NewId()

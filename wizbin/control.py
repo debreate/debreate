@@ -47,12 +47,12 @@ from wiz.wizard         import WizardPage
 
 logger = Logger(__name__)
 
-## This panel displays the field input of the control file
+## This panel displays the field input of the control file.
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
-  #      Parent <b><i>wx.Window</i></b> instance
+  #  @param parent
+  #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.CONTROL)
 
@@ -177,7 +177,6 @@ class Page(WizardPage):
     btn_save.Bind(wx.EVT_BUTTON, self.OnSave)
     btn_preview.Bind(wx.EVT_BUTTON, self.OnPreviewControl)
 
-
     # *** Layout *** #
 
     LEFT_BOTTOM = lyt.ALGN_LB
@@ -278,19 +277,17 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Retrieves information for control file export
   #
-  #  \return
-  #      A <b><i>tuple</i></b> containing the filename & a string representation
-  #      of control file formatted for text output
+  #  @return
+  #    A <b><i>tuple</i></b> containing the filename & a string representation of control file
+  #    formatted for text output
   def Get(self):
     return self.GetCtrlInfo()
 
-
   ## Retrieves field values & formats into plain text for output to file
   #
-  #  \return
+  #  @return
   #      Control file text
   def GetCtrlInfo(self):
     pg_depends = GetPage(pgid.DEPENDS)
@@ -369,7 +366,6 @@ class Page(WizardPage):
 
         ctrl_list.append("{}: {}".format(field_name, field_value))
 
-
     if self.chk_essential.GetValue():
       ctrl_list.append("Essential: yes")
 
@@ -424,19 +420,17 @@ class Page(WizardPage):
     # dpkg requires empty newline at end of file
     return "\n".join(ctrl_list).strip("\n") + "\n"
 
-
   ## Saving project
   def GetSaveData(self):
     data = self.GetCtrlInfo()
     return "<<CTRL>>\n{}<</CTRL>>".format(data)
 
-
   ## Reads & parses page data from a formatted text file
   #
-  #  TODO: Use 'Set'/'SetPage' method
-  #
-  #  \param filename
+  #  @param filename
   #      File path to open
+  #  @todo
+  #    Use 'Set'/'SetPage' method
   def ImportFromFile(self, filename):
     logger.debug(GT("Importing file: {}".format(filename)))
 
@@ -455,13 +449,11 @@ class Page(WizardPage):
     depends_data = self.Set(file_text)
     page_depends.Set(depends_data)
 
-
   ## Displays a file open dialog for selecting a text file to read
   def OnBrowse(self, event=None):
     browse_dialog = GetFileOpenDialog(GetMainWindow(), GT("Open File"))
     if ShowDialog(browse_dialog):
       self.ImportFromFile(browse_dialog.GetPath())
-
 
   ## Creates a formatted preview of the control file text
   def OnPreviewControl(self, event=None):
@@ -471,7 +463,6 @@ class Page(WizardPage):
         text=ctrl_info, size=(600,400))
 
     ShowDialog(preview)
-
 
   ## Opens a file save dialog to export control file data
   def OnSave(self, event=None):
@@ -485,15 +476,13 @@ class Page(WizardPage):
       # Be sure not to strip trailing newline (dpkg is picky)
       writeFile(save_dialog.GetPath(), control)
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   #
   #  FIXME: Unfinished???
   def ReLayout(self):
     # Organize all widgets correctly
     lc_width = self.coauth.GetSize()[0]
     self.coauth.SetColumnWidth(0, lc_width/2)
-
 
   ## Resets all fields on page to default values
   def Reset(self):
@@ -510,13 +499,12 @@ class Page(WizardPage):
 
     self.chk_essential.SetValue(self.chk_essential.Default)
 
-
   ## Fills page's fields with input data
   #
-  #  \param data
-  #      Text to be parsed for values
-  #  \return
-  #      Leftover text to fill out 'Dependecies' page fields
+  #  @param data
+  #    Text to be parsed for values
+  #  @return
+  #    Leftover text to fill out 'Dependecies' page fields
   def Set(self, data):
     # Decode to unicode string if input is byte string
     if isinstance(data, bytes):
@@ -565,16 +553,13 @@ class Page(WizardPage):
 
           for I in self.grp_input:
             input_name = I.GetName().title()
-
             if input_name == "Maintainer":
               I.SetValue(maintainer)
               continue
-
             if input_name == "Email":
               I.SetValue(email)
               # NOTE: Maintainer should be listed before email in input list
               break
-
           continue
 
         # Set the rest of the input fields
@@ -596,7 +581,6 @@ class Page(WizardPage):
           if container and key == container[0]:
             for dep in value.split(", "):
               container.append(dep)
-
       else:
         # Description
         if line.startswith(" ."):

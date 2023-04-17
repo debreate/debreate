@@ -8,7 +8,10 @@
 
 ## @module ui.quickbuild
 
-import os, traceback, wx
+import os
+import traceback
+
+import wx
 
 from dbr.event            import EVT_TIMER_STOP
 from dbr.functions        import BuildDebPackage
@@ -33,7 +36,6 @@ from ui.style             import layout as lyt
 
 logger = Logger(__name__)
 GAUGE_MAX = 100
-
 
 ## A dialog that takes a pre-formatted directory tree & creates a .deb package
 class QuickBuild(wx.Dialog, ModuleAccessCtrl):
@@ -116,13 +118,12 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     # For showing error dialog after build thread exits
     self.build_error = None
 
-
   ## Build process is done in background thread
   #
-  #  \param stage
-  #  Location of the source formatted directory tree
-  #  \param target
-  #  Absolute output target filename
+  #  @param stage
+  #    Location of the source formatted directory tree
+  #  @param target
+  #    Absolute output target filename
   def Build(self, stage, target):
     completed_status = (0, GT("errors"))
 
@@ -150,29 +151,23 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     self.SetTitle("{} ({})".format(self.title, completed_status[1]))
     self.Enable()
 
-
   ## Opens directory stage for target & file save dialog for target
   def OnBrowse(self, event=None):
     if event:
       button_id = event.GetEventObject().GetId()
-
       if button_id == btnid.STAGE:
         stage = GetDirDialog(self, GT("Choose Directory"))
-
         if (ShowDialog(stage)):
           self.input_stage.SetValue(stage.GetPath())
-
       elif button_id == btnid.TARGET:
         target = GetFileSaveDialog(self, GT("Choose Filename"), (GT("Debian packages"), "*.deb",),
             "deb")
-
         if (ShowDialog(target)):
           self.input_target.SetValue(target.GetPath())
 
-
   ## Checks & preps when build button is pressed
   #
-  #  TODO: Check timestamp of created .deb package (should be done for main build as well)
+  #  @todo Check timestamp of created .deb package (should be done for main build as well)
   def OnBuild(self, event=None):
     stage = self.input_stage.GetValue()
     target = self.input_target.GetValue().rstrip(os.sep)
@@ -192,10 +187,8 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
         for LINE in control_lines:
           if LINE.startswith("Package:"):
             name = LINE.replace("Package: ", "").strip()
-
           elif LINE.startswith("Version:"):
             version = LINE.replace("Version: ", "").strip()
-
           elif LINE.startswith("Architecture:"):
             arch = LINE.replace("Architecture: ", "").strip()
 
@@ -237,19 +230,15 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
     # Start new thread for background process
     Thread(self.Build, stage, target).Start()
 
-
   ## Closes the Quick Build dialog & destroys instance
   def OnClose(self, event=None):
     self.EndModal(True)
 
-
   ## Closes the progress dialog & shows status message when timer is stopped
   def OnTimerStop(self, event=None):
     logger.debug("OnTimerStop")
-
     if not self.timer.IsRunning():
       logger.debug(GT("Timer is stopped"))
-
     else:
       logger.debug(GT("Timer is running"))
 
@@ -271,14 +260,11 @@ class QuickBuild(wx.Dialog, ModuleAccessCtrl):
 
     ShowMessageDialog(msg_lines, GT("Build Complete"), module=__name__)
 
-
   ## Updates the progress bar
   def OnUpdateProgress(self, event=None):
     if event:
       if isinstance(event, wx.TimerEvent):
         if not self.timer.IsRunning():
           logger.debug(GT("Timer stopped. Stopping gauge ..."))
-
           return
-
     self.gauge.Pulse()

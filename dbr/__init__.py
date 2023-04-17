@@ -6,6 +6,6 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module dbr
+## User interface helper modules.
 #
-#  User interface helper modules
+#  @package dbr

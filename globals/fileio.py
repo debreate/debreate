@@ -6,15 +6,15 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.fileio
+## File I/O operations.
 #
-#  File I/O operations
+#  @module globals.fileio
 
 import codecs
 import os
 
-from libdbr          import fileinfo
-from libdbr.logger   import Logger
+from libdbr        import fileinfo
+from libdbr.logger import Logger
 
 
 __logger = Logger(__name__)

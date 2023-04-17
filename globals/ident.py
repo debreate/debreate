@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.ident
+## Miscellaneous IDs.
 #
-#  Miscellaneous IDs
+#  @module globals.ident
 
 import wx
 
@@ -18,15 +18,16 @@ from libdbr.logger import Logger
 
 logger = Logger(__name__)
 
-## Creates a new bitwise compatible ID
+## Creates a new bitwise compatible ID.
 #
-#  Along with return a new ID, it also updates the id_wrapper reference
+#  Along with return a new ID, it also updates the id_wrapper reference.
 #
-#  FIXME: Better method than using a list to pass reference?
-#  \param id_wrapper
-#  \b \e List instance to reference ID number so can be incremented
-#  \return
-#  New ID number
+#  @param id_wrapper
+#    \b \e List instance to reference ID number so can be incremented.
+#  @return
+#    New ID number.
+#  @todo
+#    FIXME: Better method than using a list to pass reference?
 def AddId(id_wrapper):
   new_id = id_wrapper[0]
   id_wrapper[0] *= 2
@@ -34,10 +35,10 @@ def AddId(id_wrapper):
   return new_id
 
 
-## Creates a ID & adds to a member list
+## Creates a ID & adds to a member list.
 #
-#  \param member_list
-#  \b \e List instance to add ID to
+#  @param member_list
+#    \b \e List instance to add ID to.
 def NewId(member_list=None):
   new_id = wx.NewId()
 
@@ -47,11 +48,11 @@ def NewId(member_list=None):
   return new_id
 
 
-# Page IDs
+# Page IDs.
 next_page_id = 1000
 page_ids = {}
 
-## Creates a new page ID & adds to a member list instance for iteration
+## Creates a new page ID & adds to a member list instance for iteration.
 def NewPageId(page_name=None, member_list=None):
   global next_page_id
 
@@ -67,29 +68,26 @@ def NewPageId(page_name=None, member_list=None):
   return this_page_id
 
 
-## Abstract ID class
+## Abstract ID class.
 class FieldId:
   def __init__(self):
     self.IdList = []
 
-
-  ## Adds a predetermined ID to ID list
+  ## Adds a predetermined ID to ID list.
   #
-  #  \param staticId
-  #  <b><i>integer</i></b>:
-  #    Predefined ID to set
+  #  @param staticId
+  #    <b><i>integer</i></b>: Predefined ID to set
   def AddStaticId(self, staticId):
     self.IdList.append(staticId)
 
     return staticId
 
-
-  ## Add a new ID
+  ## Add a new ID.
   def NewId(self):
     return NewId(self.IdList)
 
 
-## Page IDs
+## Page IDs.
 class PageId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -107,34 +105,25 @@ class PageId(FieldId):
     self.MENU = self.NewId(GT("Menu"))
     self.BUILD = self.NewId(GT("Build"))
 
-
-  ## Adds a predetermined ID to ID list & text label to label list
+  ## Adds a predetermined ID to ID list & text label to label list.
   #
-  #  \param staticId
-  #  <b><i>integer</i></b>:
-  #    Predefined ID to set
-  #  \param label
-  #  <b><i>string</i></b>
-  #    Page label/title
+  #  @param staticId
+  #    <b><i>integer</i></b>: Predefined ID to set.
+  #  @param label
+  #    <b><i>string</i></b> Page label/title.
   def AddStaticId(self, staticId, label):
     new_id = FieldId.AddStaticId(self, staticId)
-
     self.Labels[new_id] = label
-
     return new_id
 
-
-  ## Add a new ID & text label to label list
+  ## Add a new ID & text label to label list.
   #
   #  param label
-  #  <b><i>string</i></b>:
-  #    Page label/title
+  #    <b><i>string</i></b>: Page label/title.
   def NewId(self, label):
     #new_id = FieldId.NewId(self)
     new_id = NewPageId(label, self.IdList)
-
     self.Labels[new_id] = label
-
     return new_id
 
 pgid = PageId()
@@ -175,7 +164,7 @@ class InputId(FieldId):
 inputid = InputId()
 
 
-## IDs for button fields
+## IDs for button fields.
 class ButtonId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -211,51 +200,42 @@ class ButtonId(FieldId):
     self.TARGET = self.NewId()
     self.ZOOM = self.AddStaticId(wx.ID_PREVIEW_ZOOM, "zoom")
 
-
-  ## Adds a predetermined ID to ID list & optional bitmap image reference
+  ## Adds a predetermined ID to ID list & optional bitmap image reference.
   #
-  #  \param staticId
-  #  <b><i>integer</i></b>:
-  #    Predefined ID to set
-  #  \param imageName
-  #  <b><i>string</i></b>:
-  #    Image file basename
+  #  @param staticId
+  #    <b><i>integer</i></b>: Predefined ID to set
+  #  @param imageName
+  #    <b><i>string</i></b>: Image file basename.
   def AddStaticId(self, staticId, imageName=None):
     self.Images[staticId] = imageName
-
     return FieldId.AddStaticId(self, staticId)
 
-
-  ## Retrieves the image linked to the ID
+  ## Retrieves the image linked to the ID.
   #
-  #  \param btnId
-  #  Requested button ID
-  #  \return
-  #  <b><i>string</i></b>:
-  #    Image label associated with button ID (<b><i>None</i></b> if ID has no image)
+  #  @param btnId
+  #    Requested button ID.
+  #  @return
+  #    <b><i>string</i></b>: Image label associated with button ID (<b><i>None</i></b> if ID has no
+  #    image).
   def GetImage(self, btnId):
     if btnId in self.Images:
       return self.Images[btnId]
 
     logger.warn("ButtonId.GetImage: Requested button ID {} with no associated image".format(btnId))
 
-
-  ## Adds a new ID & optional bitmap image reference
+  ## Adds a new ID & optional bitmap image reference.
   #
-  #  \param imageName
-  #  <b><i>string</i></b>:
-  #    Image file basename
+  #  @param imageName
+  #    <b><i>string</i></b>: Image file basename
   def NewId(self, imageName=None):
     new_id = FieldId.NewId(self)
-
     self.Images[new_id] = imageName
-
     return new_id
 
 btnid = ButtonId()
 
 
-## IDs for check box fields
+## IDs for check box fields.
 class ChkId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -279,7 +259,7 @@ class ChkId(FieldId):
 chkid = ChkId()
 
 
-## IDs for list fields
+## IDs for list fields.
 class ListId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -289,7 +269,7 @@ class ListId(FieldId):
 listid = ListId()
 
 
-## IDs for menus
+## IDs for menus.
 class MenuId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -324,7 +304,7 @@ class MenuId(FieldId):
 menuid = MenuId()
 
 
-## IDs for panels
+## IDs for panels.
 class PanelId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -334,7 +314,7 @@ class PanelId(FieldId):
 pnlid = PanelId()
 
 
-## IDs for choice/selection fields
+## IDs for choice/selection fields.
 class SelId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -345,7 +325,7 @@ class SelId(FieldId):
 selid = SelId()
 
 
-## IDs for static text fields
+## IDs for static text fields.
 class TxtId(FieldId):
   def __init__(self):
     FieldId.__init__(self)
@@ -355,7 +335,7 @@ class TxtId(FieldId):
 txtid = TxtId()
 
 
-## IDs for reference manual menu item links
+## IDs for reference manual menu item links.
 class RefId(FieldId):
   def __init__(self):
     FieldId.__init__(self)

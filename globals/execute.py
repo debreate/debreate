@@ -6,9 +6,9 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module globals.execute
+## Executable commands available from the system.
 #
-#  Executable commands available from the system
+#  @module globals.execute
 
 import errno
 import os
@@ -50,7 +50,8 @@ def elevated(cmd, *args, pword, check=False):
   main_window.Enable(True)
   return 0, res
 
-## TODO: Doxygen
+## @deprecated
+#    Use `globals.elevated`.
 def ExecuteCommand(cmd, args=[], elevate=False, pword=""):
   __logger.deprecated(__name__, ExecuteCommand.__name__, "globals.elevated")
 
@@ -111,7 +112,7 @@ def ExecuteCommand(cmd, args=[], elevate=False, pword=""):
   return (returncode, stdout)
 
 
-## TODO: Doxygen
+## @todo Doxygen
 def GetCommandOutput(cmd, args=[]):
   __logger.deprecated(__name__, GetCommandOutput.__name__, "libdbr.bin.execute")
 
@@ -119,6 +120,7 @@ def GetCommandOutput(cmd, args=[]):
   return output
 
 
+## @todo Doxygen
 def GetSystemInstaller():
   system_installer = paths.getExecutable("gdebi-gtk")
 

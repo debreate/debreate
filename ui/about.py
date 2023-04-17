@@ -44,7 +44,6 @@ logger = Logger(__name__)
 bigfont = wx.Font(18, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
 sys_info_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD)
 
-
 ## Dialog that shows information about the application
 class AboutDialog(wx.Dialog):
   ## Constructor.
@@ -115,7 +114,6 @@ class AboutDialog(wx.Dialog):
     t_changelog.SetSizer(log_sizer)
     t_changelog.Layout()
 
-
     ## Licensing information text area
     self.license = TextAreaPanel(t_license, style=wx.TE_READONLY)
     self.license.SetFont(MONOSPACED_MD)
@@ -159,7 +157,6 @@ class AboutDialog(wx.Dialog):
     self.SetSizer(sizer)
     self.Layout()
 
-
   ## Displays logo in 'about' tab.
   #
   #  @param graphic
@@ -181,7 +178,6 @@ class AboutDialog(wx.Dialog):
     )
 
     self.t_about.Layout()
-
 
   ## Displays version in 'about' tab.
   #
@@ -206,7 +202,6 @@ class AboutDialog(wx.Dialog):
 
     self.t_about.Layout()
 
-
   ## Display author's name.
   #
   #  @param author
@@ -224,7 +219,6 @@ class AboutDialog(wx.Dialog):
 
     self.t_about.Layout()
 
-
   ## Sets a hotlink to the app's homepage.
   #
   #  @param URL
@@ -234,7 +228,6 @@ class AboutDialog(wx.Dialog):
   def SetWebsite(self, URL):
     self.website.SetLabel(URL)
     self.website.SetURL(URL)
-
 
   ## Adds URL hotlinks to about dialog.
   #
@@ -261,7 +254,6 @@ class AboutDialog(wx.Dialog):
     )
     self.t_about.Layout()
 
-
   ## Displays a description about the app on the 'about' tab
   def SetDescription(self, desc):
     # Place between spacers
@@ -277,7 +269,6 @@ class AboutDialog(wx.Dialog):
 
     self.t_about.Layout()
 
-
   ## Adds a developer to the list of credits.
   #
   #  @param name
@@ -290,7 +281,6 @@ class AboutDialog(wx.Dialog):
     self.credits.SetStringItem(next_item, 2, email)
     self.credits.SetStringItem(next_item, 1, GT("Developer"))
 
-
   ## Adds a packager to the list of credits.
   #
   #  @param name
@@ -302,7 +292,6 @@ class AboutDialog(wx.Dialog):
     self.credits.InsertStringItem(next_item, name)
     self.credits.SetStringItem(next_item, 2, email)
     self.credits.SetStringItem(next_item, 1, GT("Packager"))
-
 
   ## Adds a translator to the list of credits.
   #
@@ -320,7 +309,6 @@ class AboutDialog(wx.Dialog):
     self.credits.SetStringItem(next_item, 2, email)
     self.credits.SetStringItem(next_item, 1, job)
 
-
   ## Adds a general job to the credits list.
   #
   #  @param name
@@ -337,7 +325,6 @@ class AboutDialog(wx.Dialog):
     if email != wx.EmptyString:
       self.credits.SetStringItem(next_item, 2, email)
     self.Layout()
-
 
   ## Adds list of jobs for single contributor.
   #
@@ -363,18 +350,17 @@ class AboutDialog(wx.Dialog):
 
       self.credits.SetStringItem(next_item, 1, value)
 
-  # FIXME: Unused?
+  ## @todo FIXME: Unused?
   def NoResizeCol(self, event=None):
     if event:
       event.Veto()
-
 
   ## Sets text to be shown on the 'Changelog' tab.
   #
   #  @param log_file
   #    \b \e str : Path to changelog file on filesystem.
-  #  @fixme
-  #    Change to create in class constructor.
+  #  @todo
+  #    FIXME: Change to create in class constructor.
   def SetChangelog(self):
     ## Defines where the changelog is located
     #
@@ -405,13 +391,11 @@ class AboutDialog(wx.Dialog):
         log_text = gzip.decompress(fileio.readFile(CHANGELOG, binary=True))
       else:
         ShowErrorDialog(log_text, parent=self)
-
     else:
       log_text = GT("ERROR: Could not locate changelog file:\n\t'{}' not found".format(CHANGELOG))
 
     self.changelog.SetValue(log_text)
     self.changelog.SetInsertionPoint(0)
-
 
   ## Sets text to be shown on the 'License' tab.
   #
@@ -431,7 +415,6 @@ class AboutDialog(wx.Dialog):
 
     if os.path.isfile(license_path):
       lic_text = fileio.readFile(license_path)
-
     else:
       lic_text = GT("ERROR: Could not locate license file:\n\t'{}' not found".format(license_path))
       lic_text += "\n\nCopyright © {} {} <{}>".format(GetYear(), appinfo.getAuthor(), appinfo.getEmail())
@@ -439,7 +422,6 @@ class AboutDialog(wx.Dialog):
 
     self.license.SetValue(lic_text)
     self.license.SetInsertionPoint(0)
-
 
   ## Defines action to take when 'Ok' button is press.
   #

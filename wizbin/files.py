@@ -58,12 +58,11 @@ efficiency_threshold = 250
 ## Maximum file count to process before showing warning dialog
 warning_threshhold = 1000
 
-
 ## Class defining controls for the "Paths" page
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
+  #  @param parent
   #      Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.FILES)
@@ -217,14 +216,13 @@ class Page(WizardPage):
 
     SetPageToolTips(self)
 
-
   ## Adds files to file list
   #
-  #  \param dirs
+  #  @param dirs
   #      <b><i>dict</i></b>: dict[dir] = [file list]
-  #  \param fileCount
+  #  @param fileCount
   #      Number of explicit files being added to list
-  #  \param showDialog
+  #  @param showDialog
   #      If <b><i>True</i></b>, displays a progress dialog
   def AddPaths(self, dirs, fileCount=None, showDialog=False):
     target = self.GetTarget()
@@ -267,8 +265,7 @@ class Page(WizardPage):
 
     return True
 
-
-  ## TODO: Doxygen
+  ## @todo Doxygen
   def CheckDest(self, event=None):
     if strings.isEmpty(self.ti_target.GetValue()):
       self.ti_target.SetValue(self.prev_dest_value)
@@ -281,19 +278,18 @@ class Page(WizardPage):
     if event:
       event.Skip()
 
-
   ## Retrieves information on files to be packaged
   #
-  #  \return
-  #      A list of files with their targets formatted for text output
+  #  @return
+  #    A list of files with their targets formatted for text output
   def Get(self):
     # Remove section delimiters & first line which is just an integer
     return self.GetSaveData().split("\n")[2:-1]
 
-
   ## Retrieves target destination set by user input
   #
-  #  TODO: Rename to 'GetTarget' or 'GetInputTarget'
+  #  @todo
+  #    Rename to 'GetTarget' or 'GetInputTarget'
   def GetDestValue(self, event=None):
     if not strings.isEmpty(self.ti_target.GetValue()):
       if self.ti_target.GetValue()[0] == paths.getSystemRoot():
@@ -302,37 +298,33 @@ class Page(WizardPage):
     if event:
       event.Skip()
 
-
   ## Retrieves the directory tree object used by this page
   #
   #  Used in input.list.FileList for referencing size
   #
-  #  \return
-  #      <b><i>ui.tree.DirectoryTreePanel</i></b> instance
+  #  @return
+  #    <b><i>ui.tree.DirectoryTreePanel</i></b> instance
   def GetDirTreePanel(self):
     return self.tree_dirs
 
-
   ## Retrieves number of files in list
   #
-  #  \return
-  #      <b><i>Integer</i></b> count of items in file list
+  #  @return
+  #    <b><i>Integer</i></b> count of items in file list
   def GetFileCount(self):
     return self.lst_files.GetItemCount()
 
-
   ## Retrieves the file list object used by this page
   #
-  #  \return
-  #      <b><i>input.list.FileList</i></b> instance
+  #  @return
+  #    <b><i>input.list.FileList</i></b> instance
   def GetListInstance(self):
     return self.lst_files
 
-
   ## Retrieves file list to export to text file
   #
-  #  \return
-  #      List formatted text
+  #  @return
+  #    List formatted text
   def GetSaveData(self):
     file_list = []
     item_count = self.lst_files.GetItemCount()
@@ -368,10 +360,10 @@ class Page(WizardPage):
       # Place a "0" in FILES field if we are not saving any files
       return "<<FILES>>\n0\n<</FILES>>"
 
-
   ## Retrieves the target output directory
   #
-  #  FIXME: Duplicate of wizbin.files.Page.GetDestValue?
+  #  @todo
+  #    FIXME: Duplicate of `wizbin.files.Page.GetDestValue`?
   def GetTarget(self):
     if FieldEnabled(self.ti_target):
       return self.ti_target.GetValue()
@@ -380,10 +372,9 @@ class Page(WizardPage):
       if target.GetId() != inputid.CUSTOM and target.GetValue():
         return target.GetLabel()
 
-
   ## Accepts a file path to read & parse to fill the page's fields
   #
-  #  \param filename
+  #  @param filename
   #      Absolute path of formatted text file to read
   def ImportFromFile(self, filename):
     logger.debug(GT("Importing page info from {}").format(filename))
@@ -439,21 +430,19 @@ class Page(WizardPage):
 
     return 0
 
-
   ## Checks if the page is ready for export/build
   #
-  #  \return
+  #  @return
   #      <b><i>True</i></b> if the file list (self.lst_files) is not empty
   def IsOkay(self):
     return not self.lst_files.IsEmpty()
 
-
   ## Reads files & directories & preps for loading into list
   #
-  #  \param pathsList
+  #  @param pathsList
   #      <b><i>List/Tuple</i></b> of <b><i>string</i></b> values representing
   #      files & directories to be added
-  #  \return
+  #  @return
   #      Value of wizbin.files.Page.AddPaths, or <b><i>False</i></b> in case of error
   def LoadPaths(self, pathsList):
     if isinstance(pathsList, tuple):
@@ -585,7 +574,6 @@ class Page(WizardPage):
 
     return self.AddPaths(dir_list, file_count, showDialog=file_count >= efficiency_threshold)
 
-
   ## Handles event emitted by 'browse' button
   #
   #  Opens a directory dialog to select a custom output target
@@ -593,7 +581,6 @@ class Page(WizardPage):
     dia = GetDirDialog(GetMainWindow(), GT("Choose Target Directory"))
     if ShowDialog(dia):
       self.ti_target.SetValue(dia.GetPath())
-
 
   ## Handles event emitted by 'clear' button
   #
@@ -606,19 +593,17 @@ class Page(WizardPage):
             GT("Clear all files?")).Confirmed():
         self.lst_files.DeleteAllItems()
 
-
   ## Adds files to list from file manager drop
   #
   #  Note that this method should not be renamed as 'OnDropFiles'
   #  is the implicit handler for wx.FileDropTarget (<- correct class???)
   #
-  #  \param fileList
+  #  @param fileList
   #      <b><i>List</i></b> of files dropped from file manager
-  #  \return
+  #  @return
   #      Value of wizbin.files.Page.LoadPaths
   def OnDropFiles(self, fileList):
     return self.LoadPaths(fileList)
-
 
   ## Handles files & directories added from ui.tree.DirectoryTreePanel object
   #  (self.tree_dirs)
@@ -633,16 +618,14 @@ class Page(WizardPage):
       selection = self.tree_dirs.getTree().GetPaths()
     return self.LoadPaths(selection)
 
-
   ## Updates files' status in the file list
   #
   #  Refreshes files' executable & available status
   #
-  #  \return
+  #  @return
   #      Value of self.lst_files.RefreshFileList
   def OnRefreshFileList(self, event=None):
     return self.lst_files.RefreshFileList()
-
 
   ## Handles event emitted by 'remove' button
   #
@@ -661,7 +644,6 @@ class Page(WizardPage):
     elif keycode == 65 and modifier == wx.MOD_CONTROL:
       self.lst_files.SelectAll()
 
-
   ## Handles enabling/disabling the custom target field if the corresponding
   #  when a target radio button is selected
   #
@@ -672,28 +654,25 @@ class Page(WizardPage):
     self.ti_target.Enable(enable)
     self.btn_browse.Enable(enable)
 
-
   ## Resets page's fields to default values
   #
-  #  \return
+  #  @return
   #      Value of self.lst_files.Reset
   def Reset(self):
     return self.lst_files.Reset()
 
-
   ## Selects all files in the list
   #
-  #  \return
+  #  @return
   #      Value of self.lst_files.SelectAll
   def SelectAll(self):
     return self.lst_files.SelectAll()
 
-
   ## Sets the page's fields
   #
-  #  \param data
+  #  @param data
   #      The text information to parse
-  #  \return
+  #  @return
   #      <b><i>True</i></b> if the data was imported correctly
   def Set(self, data):
     # Clear files list

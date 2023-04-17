@@ -17,7 +17,7 @@ from libdbr.paths    import getSystemRoot
 
 sys_root = getSystemRoot()
 
-## A text area that can track if it's value is an actual path on the system
+## A text area that can track if it's value is an actual path on the system.
 class PathCtrl(TextArea):
   def __init__(self, parent, win_id=wx.ID_ANY, value=sys_root, defaultValue=sys_root, warn=False,
       name=wx.TextCtrlNameStr):
@@ -38,13 +38,11 @@ class PathCtrl(TextArea):
     # Set to default value & check path availability on construction
     self.Reset()
 
-
-  ## Retrieves the text area's default value
+  ## Retrieves the text area's default value.
   def GetDefaultValue(self):
     return self.Default
 
-
-  ## Key events trigger checking path availability
+  ## Key events trigger checking path availability.
   def OnKeyUp(self, event=None):
     value = self.GetValue()
     insertion_point = self.GetInsertionPoint()+1
@@ -58,16 +56,13 @@ class PathCtrl(TextArea):
     if event:
       event.Skip()
 
-
-  ## Resets text area to default value
+  ## Resets text area to default value.
   def Reset(self):
     self.SetPathAvailable()
     self.SetInsertionPointEnd()
-
     return TextArea.Reset(self)
 
-
-  ## If using 'Warn', changed background to red if path doesn't exists on system
+  ## If using 'Warn', changed background to red if path doesn't exists on system.
   def SetPathAvailable(self):
     # fields.ifield.InputField calls 'Reset' before PathCtrl is constructed
     try:
@@ -81,20 +76,18 @@ class PathCtrl(TextArea):
     except AttributeError:
       pass
 
-
-  ## Checks if field will show a warning when path is not available
+  ## Checks if field will show a warning when path is not available.
   def ShowsWarning(self):
     return self.Warn
 
-
-  ## Sets the text area's default value
+  ## Sets the text area's default value.
   def SetDefaultValue(self, default):
     self.Default = default
 
 
-## PathCtrl that notifies main window to mark project dirty
+## PathCtrl that notifies main window to mark project dirty.
 #
-#  This is a dummy class to facilitate merging to & from unstable branch
+#  This is a dummy class to facilitate merging to & from unstable branch.
 class PathCtrlESS(PathCtrl, EssentialField):
   def __init__(self, parent, win_id=wx.ID_ANY, value=sys_root, defaultValue=sys_root, warn=False,
       name=wx.TextCtrlNameStr):

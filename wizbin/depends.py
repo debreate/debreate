@@ -36,8 +36,8 @@ logger = Logger(__name__)
 class Page(WizardPage):
   ## Constructor
   #
-  #  \param parent
-  #      Parent <b><i>wx.Window</i></b> instance
+  #  @param parent
+  #    Parent <b><i>wx.Window</i></b> instance
   def __init__(self, parent):
     WizardPage.__init__(self, parent, pgid.DEPENDS)
 
@@ -182,46 +182,38 @@ class Page(WizardPage):
     self.SetSizer(lyt_main)
     self.Layout()
 
-
   ## Add a category & dependency to end of list
   #
-  #  \param category
-  #      Category label
-  #  \param value
-  #      Dependency value
+  #  @param category
+  #    Category label
+  #  @param value
+  #    Dependency value
   def AppendDependency(self, category, value):
     self.lst_deps.AppendStringItem((category, value))
-
 
   ## Retrieves the default category to use
   def GetDefaultCategory(self):
     return self.DefaultCategory
 
-
   ## Reads & parses page data from a formatted text file
   #
-  #  \param filename
-  #      File path to open
-  #  \see wiz.wizard.WizardPage.ImportFromFile
+  #  @param filename
+  #    File path to open
+  #  @see `wiz.wizard.WizardPage.ImportFromFile`
   def ImportFromFile(self, d_type, d_string):
     logger.debug(GT("Importing {}: {}".format(d_type, d_string)))
-
     values = d_string.split(", ")
-
     for V in values:
       self.lst_deps.InsertStringItem(0, d_type)
       self.lst_deps.SetStringItem(0, 1, V)
 
-
-  ## \see wiz.wizard.WizardPage.InitPage
+  ## @see `wiz.wizard.WizardPage.InitPage`
   def InitPage(self):
     control_page = GetPage(pgid.CONTROL)
     self.btn_open.Bind(wx.EVT_BUTTON, control_page.OnBrowse)
     self.btn_save.Bind(wx.EVT_BUTTON, control_page.OnSave)
     self.btn_preview.Bind(wx.EVT_BUTTON, control_page.OnPreviewControl)
-
     return True
-
 
   ## Resets all fields on page to default values
   def Reset(self):
@@ -229,18 +221,15 @@ class Page(WizardPage):
       if C.GetName() == self.DefaultCategory:
         C.SetValue(True)
         break
-
     self.ti_package.Clear()
     self.sel_operator.Reset()
     self.ti_version.Clear()
     self.lst_deps.DeleteAllItems()
 
-
   ## Adds/Appends/Removes dependency to list
   def SetDepends(self, event=None):
     try:
       key_id = event.GetKeyCode()
-
     except AttributeError:
       key_id = event.GetEventObject().GetId()
 
@@ -252,7 +241,6 @@ class Page(WizardPage):
     if key_id in (btnid.ADD, wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
       if strings.isEmpty(addname):
         return
-
       category = self.GetDefaultCategory()
       for C in self.categories:
         if C.GetValue():
@@ -261,18 +249,14 @@ class Page(WizardPage):
 
       if strings.isEmpty(ver):
         self.AppendDependency(category, addname)
-
       else:
         self.AppendDependency(category, "{} {}".format(addname, addver))
 
     elif key_id == btnid.APPEND:
       selected_count = self.lst_deps.GetSelectedItemCount()
-
       logger.debug("Appending to {} items".format(selected_count))
-
       if not strings.isEmpty(addname) and self.lst_deps.GetItemCount() and selected_count:
         selected_rows = self.lst_deps.GetSelectedIndexes()
-
         if logger.debugging():
           logger.debug("Selected rows:")
           for R in selected_rows:
@@ -288,31 +272,25 @@ class Page(WizardPage):
 
           if not strings.isEmpty(ver):
             new_text = "{} | {} {}".format(prev_text, addname, addver)
-
           else:
             new_text = "{} | {}".format(prev_text, addname)
-
           logger.debug("Appended item: {}".format(new_text))
-
           self.lst_deps.SetStringItem(listrow, 1, new_text)
 
     elif key_id in (btnid.REMOVE, wx.WXK_DELETE):
       self.lst_deps.RemoveSelected()
-
     elif key_id == btnid.CLEAR:
       if self.lst_deps.GetItemCount():
         if ConfirmationDialog(GetMainWindow(), GT("Confirm"),
             GT("Clear all dependencies?")).ShowModal() in (wx.ID_OK, wx.OK):
           self.lst_deps.DeleteAllItems()
-
     if event:
       event.Skip()
 
-
   ## Sets the page's fields data
   #
-  #  \param data
-  #      Text to parse for field values
+  #  @param data
+  #    Text to parse for field values
   def Set(self, data):
     self.lst_deps.DeleteAllItems()
     for item in data:

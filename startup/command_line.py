@@ -6,7 +6,7 @@
 # * See: LICENSE.txt for details.                      *
 # ******************************************************
 
-## @module command_line
+## @module startup.command_line
 
 import argparse
 import sys
