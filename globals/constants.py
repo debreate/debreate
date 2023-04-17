@@ -11,7 +11,9 @@
 #  @module globals.constants
 #  @deprecated
 
-import os, wx
+import os
+
+import wx
 
 from dbr.language  import GT
 from libdbr        import paths
