@@ -14,6 +14,7 @@ import os
 import wx
 
 import globals.application as appinfo
+import libdbr
 
 from dbr.font            import MONOSPACED_MD
 from dbr.functions       import GetContainerItemCount
@@ -128,20 +129,23 @@ class AboutDialog(wx.Dialog):
     t_license.SetSizer(license_sizer)
     t_license.Layout()
 
+    sys_name = wx.StaticText(t_sysinfo, label=GT("System name: {}")
+        .format(sysinfo.getOSName().title()))
     py_info = wx.StaticText(t_sysinfo, label=GT("Python version: {}").format(PY_VER_STRING))
     # ~ py_info.SetFont(sys_info_font)
     wx_info = wx.StaticText(t_sysinfo, label=GT("wxPython version: {}").format(WX_VER_STRING))
     # ~ wx_info.SetFont(sys_info_font)
-    sys_name = wx.StaticText(t_sysinfo, label=GT("System name: {}")
-        .format(sysinfo.getOSName().title()))
+    libdbr_info = wx.StaticText(t_sysinfo, label=GT("libdbr version: {}")
+        .format(libdbr.versionString()))
     install_prefix = wx.StaticText(t_sysinfo, label=GT("App location: {}")
         .format(paths.getAppDir()))
 
     box_sysinfo = wx.BoxSizer(wx.VERTICAL)
     box_sysinfo.AddStretchSpacer()
+    box_sysinfo.Add(sys_name, 0, wx.ALIGN_CENTER|wx.TOP, 5)
     box_sysinfo.Add(py_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
     box_sysinfo.Add(wx_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
-    box_sysinfo.Add(sys_name, 0, wx.ALIGN_CENTER|wx.TOP, 5)
+    box_sysinfo.Add(libdbr_info, 0, wx.ALIGN_CENTER|wx.TOP, 5)
     box_sysinfo.AddSpacer(20)
     box_sysinfo.Add(install_prefix, 0, wx.ALIGN_CENTER|wx.TOP|wx.BOTTOM, 5)
     box_sysinfo.AddStretchSpacer()
