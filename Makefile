@@ -17,14 +17,6 @@ install:
 uninstall:
 	@python3 build.py -t uninstall -d "$(DESTDIR)" -p "$(prefix)"
 
-doc-html: $(FILE_doxyfile)
-	@#doxygen "$(FILE_doxyfile)" \
-	echo "doc-html: feature not available"
-
-doxygen-format: doc-html
-	@#./scripts/doxygen-format.py \
-	echo "doxygen-format: feature not available"
-
 dist-source:
 	@python3 build.py -t dist-source
 
@@ -50,6 +42,13 @@ deb-source:
 debianize: dist
 	@#dh_make -y -n -c mit -e antumdeluge@gmail.com -f "$(PACKAGE_dist)" -p "$(PACKAGE)_$(VERSION)" -i \
 	echo "debianize: feature not available"
+
+doxygen:
+	@python3 build.py -t docs
+
+doxygen-format: docs
+	@#./scripts/doxygen-format.py \
+	echo "doxygen-format: feature not available"
 
 clean:
 	@python3 build.py -t clean
@@ -115,6 +114,9 @@ help:
 	\
 	echo "\tdeb-source"; \
 	echo "\t\t- Build a signed Debian source package for uploading to repo or PPA.\n"; \
+	\
+	echo "\tdoxygen"; \
+	echo "\t\t- Build documentation using `tput bold`Doxygen`tput sgr0`.\n"; \
 	\
 	echo "\tclean"; \
 	echo "\t\t- Remove all temporary build files.\n"; \

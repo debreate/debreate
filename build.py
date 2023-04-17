@@ -341,6 +341,23 @@ def __cleanByteCode(_dir):
     elif obj.endswith(".pyc") and os.path.lexists(abspath):
       checkError((fileio.deleteFile(abspath, verbose=options.verbose)))
 
+def taskBuildDocs():
+  tasks.run("update-version")
+
+  print()
+  logger.info("building Doxygen documentation ...")
+
+  dir_docs = paths.join(dir_app, "build/docs")
+  fileio.makeDir(dir_docs, verbose=options.verbose)
+  subprocess.run(["doxygen", paths.join(dir_app, "docs/Doxyfile")])
+  logger.info("cleaning up ...")
+  for ROOT, DIRS, FILES in os.walk(paths.join(dir_docs, "html")):
+    for _file in FILES:
+      if not _file.endswith(".html"):
+        continue
+      abspath = paths.join(ROOT, _file)
+      fileio.replace(abspath, r"^<!DOCTYPE html.*>$", "<!DOCTYPE html>", count=1, flags=re.M)
+
 def taskClean():
   tasks.run(("clean-deb", "clean-stage", "clean-dist"))
 
@@ -588,6 +605,7 @@ def initTasks():
       + " Requires <bold>debuild</bold> (<em>apt install devscripts</em>)."))
   addTask("deb-source", taskDebSource,
       "Build a signed Debian source package for uploading to repo or PPA.")
+  addTask("docs", taskBuildDocs, sgr("Build documentation using <bold>Doxygen</bold>."))
   addTask("clean", taskClean, "Remove all temporary build files.")
   addTask("clean-stage", taskCleanStage, "Remove temporary build files from" \
       + " 'build/stage' directory.")
