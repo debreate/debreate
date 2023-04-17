@@ -782,15 +782,17 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = init.py \
-                         main.py \
                          dbr \
                          f_export \
                          fields \
                          globals \
                          input \
+                         lib/libdbr \
+                         lib/libdebreate \
                          startup \
                          system \
                          ui \
+                         util \
                          wiz \
                          wizbin \
                          wizsrc \
