@@ -35,7 +35,7 @@ class Config:
     self.__filepath = strings.checkString(filepath)
     self.__default_section = default_section
     self.__sections = {
-      default_section: ()
+      default_section: []
     }
     # don't require manually calling 'load' to prevent accidentally overwriting
     if load and os.path.isfile(filepath):
@@ -138,7 +138,7 @@ class Config:
     s_lines = []
     for li in lines:
       if type(li) == str and li.startswith("[") and li.endswith("]"):
-        self.__add_section(s_name, tuple(s_lines))
+        self.__add_section(s_name, s_lines)
         # start new section
         s_lines = []
         s_name = li.strip("[]")
@@ -146,7 +146,7 @@ class Config:
       s_lines.append(li)
     # remaining
     if s_lines:
-      self.__add_section(s_name, tuple(s_lines))
+      self.__add_section(s_name, s_lines)
 
   ## Retrievies configuration file.
   #
@@ -209,8 +209,16 @@ class Config:
     except ValueError:
       raise TypeError("'{}.{}' parameter 'key' must be a string, found '{}'"
           .format(Config.__name__, setValue.__name__, type(key)))
-    conf = self.__sections[section] if section in self.__sections else {}
-    conf[key] = strings.toString(value)
+    conf = self.__sections[section] if section in self.__sections else []
+    insert_idx = len(conf)
+    for idx in range(insert_idx):
+      obj = conf[idx]
+      if type(obj) == Pair and obj[0] == key:
+        # replace old value
+        conf.pop(idx)
+        insert_idx = idx
+        break
+    conf.insert(insert_idx, Pair(key, strings.toString(value)))
     self.__sections[section] = conf
 
   ## Retreives a string value from config.
