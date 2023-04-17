@@ -137,7 +137,7 @@ def SetDefaultConfigKey(key, value):
 def initialize(conf=default_config):
   __logger.deprecated(initialize)
 
-  cfg_user = config.get("user")
+  cfg_user = libdbr.config.get("user")
   cfg_user.setFile(conf)
   for V in __defaults:
     cfg_user.setValue(V, __defaults[V])
