@@ -22,7 +22,6 @@ import errno, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), "lib"))
 
 import globals.paths
-import globals.application as appinfo
 import util
 
 from dbr.language  import setTranslator
@@ -30,6 +29,7 @@ from libdbr        import compat
 from libdbr        import paths
 from libdbr        import sysinfo
 from libdbr.logger import Logger
+from libdebreate   import appinfo
 from startup       import command_line
 from startup       import wxprompt
 
@@ -165,7 +165,6 @@ from dbr.config          import GetDefaultConfigValue
 from dbr.language        import GetLocaleDir
 from dbr.language        import GT
 from dbr.workingdir      import ChangeWorkingDirectory
-from globals.application import VERSION_string
 from globals.strings     import GS
 from globals.system      import PY_VER_STRING
 from globals.system      import WX_VER_STRING
@@ -179,7 +178,7 @@ if ".py" in script_name:
 
 logger.info("Python version: {}".format(PY_VER_STRING))
 logger.info("wxPython version: {}".format(WX_VER_STRING))
-logger.info("Debreate version: {}".format(VERSION_string))
+logger.info("Debreate version: {}".format(appinfo.getVersionString()))
 logger.info("logging level: {}".format(logger.getLevelString()))
 
 first_run = startup.initConfig()

@@ -10,16 +10,13 @@
 
 import globals.dateinfo
 
-from globals.application import APP_name
-from globals.application import AUTHOR_email
-from globals.application import AUTHOR_name
-from globals.application import VERSION_string
-from globals.strings     import RemoveEmptyLines
-from globals.system      import OS_codename
-from libdbr              import dateinfo
-from libdbr              import strings
-from libdbr.dateinfo     import dtfmt
-from libdbr.logger       import Logger
+from globals.strings import RemoveEmptyLines
+from globals.system  import OS_codename
+from libdbr          import dateinfo
+from libdbr          import strings
+from libdbr.dateinfo import dtfmt
+from libdbr.logger   import Logger
+from libdebreate     import appinfo
 
 
 __logger = Logger(__name__)
@@ -80,8 +77,8 @@ def _get_cl_timestamp():
 #  \b \e String to be formatted
 #  \return
 #  Debian changelog format
-def FormatChangelog(text, name=APP_name, version=VERSION_string, dist=OS_codename,
-      urgency="low", packager=AUTHOR_name, email=AUTHOR_email, preserve_indent=False):
+def FormatChangelog(text, name=appinfo.getName(), version=appinfo.getVersionString(), dist=OS_codename,
+      urgency="low", packager=appinfo.getAuthor(), email=appinfo.getEmail(), preserve_indent=False):
   __logger.deprecated(FormatChangelog, alt="libdbr.misc.formatDebianChanges")
 
   if strings.isEmpty(text):

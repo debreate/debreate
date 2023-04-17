@@ -43,14 +43,6 @@ from dbr.help             import HelpDialog
 from dbr.icon             import Icon
 from dbr.language         import GT
 from dbr.timer            import DebreateTimer
-from globals.application  import APP_homepage
-from globals.application  import APP_project_gh
-from globals.application  import APP_project_gl
-from globals.application  import APP_project_sf
-from globals.application  import AUTHOR_email
-from globals.application  import AUTHOR_name
-from globals.application  import VERSION_string
-from globals.application  import VERSION_tuple
 from globals.bitmaps      import LOGO
 from globals.ident        import menuid
 from globals.ident        import pgid
@@ -63,6 +55,7 @@ from libdbr               import fileio
 from libdbr               import paths
 from libdbr               import strings
 from libdbr.logger        import Logger
+from libdebreate          import appinfo
 from startup              import tests
 from ui.about             import AboutDialog
 from ui.dialog            import ConfirmationDialog
@@ -208,26 +201,27 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     about = AboutDialog(self)
 
     about.SetGraphic(LOGO)
-    about.SetVersion(VERSION_string)
+    about.SetVersion(appinfo.getVersionString())
     about.SetDescription(GT("A package builder for Debian based systems"))
-    about.SetAuthor(AUTHOR_name)
+    about.SetAuthor(appinfo.getAuthor())
 
+    proj_pages = appinfo.getProjectPages()
     about.SetWebsites((
-      (GT("Homepage"), APP_homepage),
-      (GT("GitHub Project"), APP_project_gh),
-      (GT("GitLab Project"), APP_project_gl),
-      (GT("SourceForge Project"), APP_project_sf),
+      (GT("Homepage"), appinfo.getHomePage()),
+      (GT("GitHub Project"), proj_pages[0]),
+      (GT("GitLab Project"), proj_pages[1]),
+      (GT("SourceForge Project"), proj_pages[2]),
     ))
 
     about.AddJobs(
-      AUTHOR_name,
+      appinfo.getAuthor(),
       (
         GT("Head Developer"),
         GT("Packager"),
         "{} (es, it)".format(GT("Translation")),
         GT("Website Designer & Author")
       ),
-      AUTHOR_email
+      appinfo.getEmail()
     )
 
     about.AddJobs(
@@ -280,12 +274,12 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
       current = strings.toString(current)
       ShowErrorDialog(error_remote, current)
 
-    elif isinstance(current, tuple) and current > VERSION_tuple:
+    elif isinstance(current, tuple) and current > appinfo.getVersion():
       current = "{}.{}.{}".format(current[0], current[1], current[2])
       l1 = GT("Version {} is available!").format(current)
       l2 = GT("Would you like to go to Debreate's website?")
       if ConfirmationDialog(self, GT("Update"), "{}\n\n{}".format(l1, l2)).Confirmed():
-        wx.LaunchDefaultBrowser(APP_homepage)
+        wx.LaunchDefaultBrowser(appinfo.getHomePage())
 
     elif isinstance(current, str):
       ShowErrorDialog(error_remote, current)
@@ -457,8 +451,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
         # This try statement can be removed when unicode support is enabled
         try:
-          fileio.writeFile(path, "[DEBREATE-{}]\n{}".format(VERSION_string, "\n".join(data)))
-
+          fileio.writeFile(path, "[DEBREATE-{}]\n{}".format(appinfo.getVersionString(),
+              "\n".join(data)))
           if overwrite:
             os.remove(backup)
 

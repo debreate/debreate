@@ -13,32 +13,29 @@ import os
 
 import wx
 
-import globals.application as appinfo
 import libdbr
 
-from dbr.font            import MONOSPACED_MD
-from dbr.functions       import GetContainerItemCount
-from dbr.language        import GT
-from globals.application import APP_name
-from globals.application import AUTHOR_email
-from globals.application import AUTHOR_name
-from globals.constants   import INSTALLED
-from globals.dateinfo    import GetYear
-from globals.ident       import btnid
-from globals.system      import PY_VER_STRING
-from globals.system      import WX_VER_STRING
-from input.list          import ListCtrl
-from input.text          import TextAreaPanel
-from libdbr              import fileinfo
-from libdbr              import fileio
-from libdbr              import paths
-from libdbr              import sysinfo
-from libdbr.logger       import Logger
-from ui.button           import CreateButton
-from ui.dialog           import ShowErrorDialog
-from ui.hyperlink        import Hyperlink
-from ui.layout           import BoxSizer
-from ui.style            import layout as lyt
+from dbr.font          import MONOSPACED_MD
+from dbr.functions     import GetContainerItemCount
+from dbr.language      import GT
+from globals.constants import INSTALLED
+from globals.dateinfo  import GetYear
+from globals.ident     import btnid
+from globals.system    import PY_VER_STRING
+from globals.system    import WX_VER_STRING
+from input.list        import ListCtrl
+from input.text        import TextAreaPanel
+from libdbr            import fileinfo
+from libdbr            import fileio
+from libdbr            import paths
+from libdbr            import sysinfo
+from libdbr.logger     import Logger
+from libdebreate       import appinfo
+from ui.button         import CreateButton
+from ui.dialog         import ShowErrorDialog
+from ui.hyperlink      import Hyperlink
+from ui.layout         import BoxSizer
+from ui.style          import layout as lyt
 
 
 logger = Logger(__name__)
@@ -195,7 +192,7 @@ class AboutDialog(wx.Dialog):
 
     app_label = wx.StaticText(
       self.t_about,
-      label="{} {}".format(APP_name, version)
+      label="{} {}".format(appinfo.getName(), version)
     )
     app_label.SetFont(bigfont)
 
@@ -437,7 +434,7 @@ class AboutDialog(wx.Dialog):
 
     else:
       lic_text = GT("ERROR: Could not locate license file:\n\t'{}' not found".format(license_path))
-      lic_text += "\n\nCopyright © {} {} <{}>".format(GetYear(), AUTHOR_name, AUTHOR_email)
+      lic_text += "\n\nCopyright © {} {} <{}>".format(GetYear(), appinfo.getAuthor(), appinfo.getEmail())
       lic_text += "\n\nhttps://opensource.org/licenses/MIT"
 
     self.license.SetValue(lic_text)

@@ -21,16 +21,15 @@ from urllib.request import urlopen
 
 import wx
 
-from dbr.language        import GT
-from globals.application import APP_project_gh
-from globals.application import VERSION_dev
-from globals.errorcodes  import dbrerrno
-from globals.strings     import IsString
-from globals.strings     import StringIsNumeric
-from globals.system      import PY_VER_STRING
-from libdbr              import paths
-from libdbr              import strings
-from libdbr.logger       import Logger
+from dbr.language       import GT
+from globals.errorcodes import dbrerrno
+from globals.strings    import IsString
+from globals.strings    import StringIsNumeric
+from globals.system     import PY_VER_STRING
+from libdbr             import paths
+from libdbr             import strings
+from libdbr.logger      import Logger
+from libdebreate        import appinfo
 
 
 __logger = Logger(__name__)
@@ -41,7 +40,7 @@ __logger = Logger(__name__)
 #    Website URL to parse for update.
 #  @return
 #    Application's version tuple.
-def GetCurrentVersion(remote=APP_project_gh):
+def GetCurrentVersion(remote=appinfo.getProjectPages()[0]):
   try:
     version = os.path.basename(urlopen("{}/releases/latest".format(remote)).geturl())
 
@@ -340,7 +339,7 @@ def BuildBinaryPackageFromTree(root_dir, filename):
 #  @return
 #    `True` if development version integer is not 0.
 def UsingDevelopmentVersion():
-  return VERSION_dev != 0
+  return appinfo.getVersionDev() != 0
 
 
 ## Builds a .deb package from a pre-formatted directory tree.

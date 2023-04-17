@@ -11,12 +11,12 @@
 import argparse
 import sys
 
-from globals.application import VERSION_string
-from libdbr              import clformat
-from libdbr.logger       import LogLevel
-from libdbr.logger       import Logger
-from libdbr.strings      import sgr
-from startup             import tests
+from libdbr         import clformat
+from libdbr.logger  import LogLevel
+from libdbr.logger  import Logger
+from libdbr.strings import sgr
+from libdebreate    import appinfo
+from startup        import tests
 
 
 __logger = Logger(__name__)
@@ -48,7 +48,7 @@ def init(exe):
     add_help = False,
     allow_abbrev = False
   )
-  parser.version = VERSION_string
+  parser.version = appinfo.getVersionString()
 
   clformat.Formatter.description = "Debreate - Debian Package Builder"
 

@@ -13,8 +13,6 @@
 
 import os, wx
 
-import globals.application as appinfo
-
 from dbr.language  import GT
 from libdbr        import paths
 from libdbr.fileio import readFile

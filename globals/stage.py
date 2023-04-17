@@ -11,10 +11,9 @@
 import os
 import shutil
 
-from globals.application import APP_name
-from globals.application import VERSION_string
-from globals.dateinfo    import GetDate
-from globals.dateinfo    import dtfmt
+from globals.dateinfo import GetDate
+from globals.dateinfo import dtfmt
+from libdebreate      import appinfo
 
 
 ## Creates a directory for storing temporary files.
@@ -33,7 +32,7 @@ def CreateStage():
   #suffix = "_temp"
   suffix = GetDate(dtfmt.STAMP)
 
-  stage = "{}/{}-{}_{}".format(stage, APP_name.lower(), VERSION_string, suffix)
+  stage = "{}/{}-{}_{}".format(stage, appinfo.getName().lower(), appinfo.getVersionString(), suffix)
 
   if os.access(os.path.dirname(stage), os.W_OK):
     # Start with fresh directory
