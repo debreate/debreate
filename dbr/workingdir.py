@@ -32,11 +32,12 @@ def ChangeWorkingDirectory(target_dir):
 
   try:
     os.chdir(target_dir)
-    config_dir = config.getValue("workingdir")
+    cfg_user = config.get("user")
+    config_dir = cfg_user.getValue("workingdir")
 
     if config_dir != target_dir:
-      config.setValue("workingdir", target_dir)
-      config.save()
+      cfg_user.setValue("workingdir", target_dir)
+      cfg_user.save()
       success = True
 
   except OSError:

@@ -516,18 +516,19 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
 
   ## Stores configuration settings & closes app.
   def saveConfigAndShutdown(self):
+    cfg_user = config.get("user")
     maximized = self.IsMaximized()
-    config.setValue("maximize", maximized)
+    cfg_user.setValue("maximize", maximized)
     if maximized:
-      config.setValue("position", GetDefaultConfigValue("position"), ",")
-      config.setValue("size", GetDefaultConfigValue("size"), ",")
-      config.setValue("center", True)
+      cfg_user.setValue("position", GetDefaultConfigValue("position"), ",")
+      cfg_user.setValue("size", GetDefaultConfigValue("size"), ",")
+      cfg_user.setValue("center", True)
     else:
-      config.setValue("position", self.GetPosition().Get(), ",")
-      config.setValue("size", self.GetSize().Get(), ",")
-      config.setValue("center", False)
-    config.setValue("workingdir", os.getcwd())
-    config.save()
+      cfg_user.setValue("position", self.GetPosition().Get(), ",")
+      cfg_user.setValue("size", self.GetSize().Get(), ",")
+      cfg_user.setValue("center", False)
+    cfg_user.setValue("workingdir", os.getcwd())
+    cfg_user.save()
     self.Destroy()
 
   ## TODO: Doxygen
@@ -539,9 +540,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   def OnToggleToolTips(self, event=None): #@UnusedVariable
     enabled = self.opt_tooltips.IsChecked()
     wx.ToolTip.Enable(enabled)
-
-    config.setValue("tooltips", enabled)
-    config.save()
+    cfg_user = config.get("user")
+    cfg_user.setValue("tooltips", enabled)
+    cfg_user.save()
 
 
   ## Opens a dialog for creating/updating list of distribution names cache file

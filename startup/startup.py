@@ -12,10 +12,11 @@
 
 import os
 
-from libdbr import config
-from libdbr import fileio
-from libdbr import logger
-from libdbr import paths
+from libdbr      import config
+from libdbr      import fileio
+from libdbr      import logger
+from libdbr      import paths
+from libdebreate import appinfo
 
 
 __logger = logger.Logger(__name__)
@@ -46,18 +47,17 @@ def initConfig():
     if len(os.listdir(dir_cfg_legacy)) == 0:
       fileio.deleteDir(dir_cfg_legacy)
 
-  config.setFile(file_cfg)
   if os.path.isfile(file_cfg):
     __logger.info("loading config from '{}'".format(file_cfg))
-    config.load()
     first_run = False
+  # initialize configuration file
+  cfg_user = config.add("user", file_cfg)
 
   global initialized
   initialized = True
 
-  file_portable = paths.join(paths.getAppDir(), "portable")
-  if os.path.isfile(file_portable):
+  if appinfo.isPortable():
     __logger.info("running in portable mode")
-    config.setValue("portable", True)
+    cfg_user.setValue("portable", True)
 
   return first_run

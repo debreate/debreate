@@ -104,13 +104,14 @@ __defaults_handlers = {
 }
 
 def getConfiguration():
+  cfg_user = libdbr.config.get("user")
   return {
-    "center": libdbr.config.getBool("center", __defaults["center"]),
-    "maximize": libdbr.config.getBool("maximize", __defaults["maximize"]),
-    "position": tuple(libdbr.config.getList("position", __defaults["position"], ",", int)),
-    "size": tuple(libdbr.config.getList("size", __defaults["size"], ",", int)),
-    "workingdir": libdbr.config.getValue("workingdir", __defaults["workingdir"]),
-    "tooltips": libdbr.config.getBool("tooltips", __defaults["tooltips"])
+    "center": cfg_user.getBool("center", __defaults["center"]),
+    "maximize": cfg_user.getBool("maximize", __defaults["maximize"]),
+    "position": tuple(cfg_user.getList("position", __defaults["position"], sep=",", handler=int)),
+    "size": tuple(cfg_user.getList("size", __defaults["size"], sep=",", handler=int)),
+    "workingdir": cfg_user.getValue("workingdir", __defaults["workingdir"]),
+    "tooltips": cfg_user.getBool("tooltips", __defaults["tooltips"])
   }
 
 def getDefault(key):
@@ -121,7 +122,7 @@ def getDefault(key):
 
 ## TODO: Doxygen
 def SetDefaultConfigKey(key, value):
-  __logger.deprecated(SetDefaultConfigKey, alt=libdbr.config)
+  # ~ __logger.deprecated(SetDefaultConfigKey, alt=libdbr.config)
 
   __defaults[key] = strings.toString(value)
 
@@ -132,11 +133,15 @@ def SetDefaultConfigKey(key, value):
 #    File to be written.
 #  @return
 #    ConfCode.
+#  @deprecated
 def initialize(conf=default_config):
-  libdbr.config.setFile(conf)
+  __logger.deprecated(initialize)
+
+  cfg_user = config.get("user")
+  cfg_user.setFile(conf)
   for V in __defaults:
-    libdbr.config.setValue(V, __defaults[V])
-  libdbr.config.save()
+    cfg_user.setValue(V, __defaults[V])
+  cfg_user.save()
   return ConfCode.SUCCESS
 
 

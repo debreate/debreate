@@ -36,7 +36,7 @@ class ConfigField:
     SetDefaultConfigKey(self.ConfigKey, self.GetDefaultValue())
 
     # Set state using config file if found
-    state = config.getBool(self.ConfigKey, "False")
+    state = config.get("user").getBool(self.ConfigKey, "False")
 
     ret_codes = (
       ConfCode.FILE_NOT_FOUND,
@@ -98,9 +98,9 @@ class ConfigField:
   def OnToggle(self, event=None):
     if event:
       event.Skip()
-
-    config.setValue(self.ConfigKey, self.GetConfigValue())
-    config.save()
+    cfg_user = config.get("user")
+    cfg_user.setValue(self.ConfigKey, self.GetConfigValue())
+    cfg_user.save()
 
 
   ## TODO: Doxygen

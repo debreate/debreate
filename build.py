@@ -90,12 +90,12 @@ def stageApp(prefix):
   print()
   logger.info("staging app files ...")
 
-  dirs_app = config.getValue("dirs_app").split(";")
+  dirs_app = cfg.getValue("dirs_app").split(";")
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_app:
     checkError((fileio.copyDir(paths.join(dir_app, _dir), dir_target, _dir, _filter="\.py$", exclude="__pycache__", verbose=options.verbose)))
-  exe = config.getValue("executable")
+  exe = cfg.getValue("executable")
   checkError((fileio.copyExecutable(paths.join(dir_app, exe), dir_target, exe, verbose=options.verbose)))
 
   # add desktop menu file
@@ -106,7 +106,7 @@ def stageData(prefix):
   print()
   logger.info("staging data files ...")
 
-  dirs_data = config.getValue("dirs_data").split(";")
+  dirs_data = cfg.getValue("dirs_data").split(";")
 
   dir_target = paths.join(prefix, package_name)
   for _dir in dirs_data:
@@ -118,13 +118,13 @@ def stageDoc(prefix):
   print()
   logger.info("staging doc files ...")
 
-  files_doc = config.getValue("files_doc").split(";")
+  files_doc = cfg.getValue("files_doc").split(";")
 
   dir_target = paths.join(prefix, "doc/{}".format(package_name))
   for _file in files_doc:
     fileio.copyFile(paths.join(dir_app, _file), dir_target, os.path.basename(_file), verbose=options.verbose)
 
-  files_man = config.getValue("files_man").split(";")
+  files_man = cfg.getValue("files_man").split(";")
   for _file in files_man:
     basename = os.path.basename(_file)
     dir_man = paths.join(prefix, "man/{}".format(os.path.basename(os.path.dirname(_file))))
@@ -163,8 +163,8 @@ def stageMimeInfo(prefix):
   # FIXME: need system independent directory
   dir_icons = paths.join(prefix, "icons/gnome/scalable/mimetype")
 
-  mime_prefix = config.getValue("dbp_mime_prefix")
-  mime_type = config.getValue("dbp_mime")
+  mime_prefix = cfg.getValue("dbp_mime_prefix")
+  mime_type = cfg.getValue("dbp_mime")
   mime_conf = paths.join(dir_app, "data/mime/{}.xml".format(package_name))
   mime_icon = paths.join(dir_app, "data/svg", mime_prefix + "-" + mime_type + ".svg")
   conf_target = paths.join(dir_conf, "{}.xml".format(package_name))
@@ -178,7 +178,7 @@ def getChangesDeb():
   if not os.path.isfile(changelog):
     return
   changes = misc.getLatestChanges(changelog)
-  deb_info = config.getKeyedValue("deb_info")
+  deb_info = cfg.getKeyedValue("deb_info")
   deb_info["package"] = package_name
   deb_info["version"] = package_version
   if package_version_dev > 0:
@@ -224,7 +224,7 @@ def taskInstall():
   # set executable
   os.chmod(paths.join(dir_data, "init.py"), 0o775)
 
-  createFileLink(paths.join(options.prefix, "share", package_name, config.getValue("executable")), paths.join(dir_bin, package_name))
+  createFileLink(paths.join(options.prefix, "share", package_name, cfg.getValue("executable")), paths.join(dir_bin, package_name))
   fileio.writeFile(paths.join(dir_data, "INSTALLED"), "prefix={}".format(options.prefix), verbose=options.verbose)
 
 def taskUninstall():
@@ -253,13 +253,13 @@ def taskUninstall():
     paths.join(root_mime, package_name + ".xml"),
     paths.join(root_pixmaps, package_name + ".png"),
     paths.join(root_icons, "scalable/mimetype/{}-{}.svg"
-        .format(config.getValue("dbp_mime_prefix"), config.getValue("dbp_mime")))
+        .format(cfg.getValue("dbp_mime_prefix"), cfg.getValue("dbp_mime")))
   )
 
   for rm_f in remove_files:
     checkError((fileio.deleteFile(rm_f, verbose=options.verbose)))
 
-  remove_files_man = config.getValue("files_man").split(";")
+  remove_files_man = cfg.getValue("files_man").split(";")
   for _file in remove_files_man:
     file_man = os.path.basename(_file) + ".gz"
     dir_man = paths.join(root_man, os.path.basename(os.path.dirname(_file)))
@@ -289,7 +289,7 @@ def taskUninstall():
 def taskUpdateVersion():
   ver_string = package_version
   ver = ver_string.split(".")
-  ver_dev = int(config.getValue("version_dev", 0))
+  ver_dev = int(cfg.getValue("version_dev", 0))
   ver_string_full = ver_string
   if ver_dev > 0:
     ver_string_full += "-dev{}".format(ver_dev)
@@ -350,7 +350,7 @@ def taskClean():
   dir_build = paths.join(dir_app, "build")
   checkError((fileio.deleteDir(dir_build, verbose=options.verbose)))
 
-  excludes = config.getValue("exclude_clean_dirs").split(";")
+  excludes = cfg.getValue("exclude_clean_dirs").split(";")
   for ROOT, DIRS, FILES in os.walk(dir_app):
     for _dir in DIRS:
       abspath = paths.join(ROOT, _dir)
@@ -394,16 +394,16 @@ def taskDistSource():
   root_stage = paths.join(dir_app, "build/stage")
   root_dist = paths.join(dir_app, "build/dist")
 
-  for _dir in config.getValue("dirs_dist_py").split(";"):
+  for _dir in cfg.getValue("dirs_dist_py").split(";"):
     abspath = paths.join(dir_app, _dir)
     checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), exclude=r"^(.*\.pyc|__pycache__)$", verbose=options.verbose)))
-  for _dir in config.getValue("dirs_dist_data").split(";"):
+  for _dir in cfg.getValue("dirs_dist_data").split(";"):
     abspath = paths.join(dir_app, _dir)
     checkError((fileio.copyDir(abspath, paths.join(root_stage, _dir), verbose=options.verbose)))
-  for _file in config.getValue("files_dist_data").split(";"):
+  for _file in cfg.getValue("files_dist_data").split(";"):
     abspath = paths.join(dir_app, _file)
     checkError((fileio.copyFile(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
-  for _file in config.getValue("files_dist_exe").split(";"):
+  for _file in cfg.getValue("files_dist_exe").split(";"):
     abspath = paths.join(dir_app, _file)
     checkError((fileio.copyExecutable(abspath, paths.join(root_stage, _file), verbose=options.verbose)))
 
@@ -435,9 +435,9 @@ def taskDistBin():
   fileio.makeDir(dir_dist, verbose=options.verbose)
   checkError((fileio.packDir(dir_data, pkg_dist, verbose=options.verbose)))
 
-  for _dir in config.getValue("dirs_bdist_data").split(";"):
+  for _dir in cfg.getValue("dirs_bdist_data").split(";"):
     checkError((fileio.packDir(_dir, pkg_dist, incroot=True, amend=True, verbose=options.verbose)))
-  for _file in config.getValue("files_bdist_data").split(";"):
+  for _file in cfg.getValue("files_bdist_data").split(";"):
     checkError((fileio.packFile(_file, pkg_dist, amend=True, verbose=options.verbose)))
 
   dir_locale = paths.join(root_data, "locale")
@@ -666,14 +666,14 @@ def main():
   # set logger level before calling config functions
   logger.setLevel(options.log_level)
 
-  config.setFile(paths.join(dir_app, "build.conf"))
-  config.load()
+  global cfg
+  cfg = config.add("build", paths.join(dir_app, "build.conf"))
 
   global package_name, package_version, package_version_dev, package_version_full
-  package_name = config.getValue("package")
-  package_version = config.getValue("version")
+  package_name = cfg.getValue("package")
+  package_version = cfg.getValue("version")
   package_version_dev = 0
-  tmp = config.getValue("version_dev")
+  tmp = cfg.getValue("version_dev")
   if tmp:
     package_version_dev = int(tmp)
   package_version_full = package_version

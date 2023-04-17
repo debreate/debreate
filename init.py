@@ -182,11 +182,11 @@ logger.info("wxPython version: {}".format(WX_VER_STRING))
 logger.info("Debreate version: {}".format(VERSION_string))
 logger.info("logging level: {}".format(logger.getLevelString()))
 
+first_run = startup.initConfig()
 
 Debreate = ui.main.MainWindow()
 debreate_app.SetMainWindow(Debreate)
 
-first_run = startup.initConfig()
 conf_values = dbr.config.getConfiguration()
 
 working_dir = conf_values["workingdir"]

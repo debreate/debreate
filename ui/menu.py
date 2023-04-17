@@ -148,7 +148,7 @@ def createMenuBar(parent):
     parent.menu_opt.Append(parent.opt_tooltips)
 
   if parent.menu_opt.FindItemById(menuid.TOOLTIPS):
-    show_tooltips = config.getBool("tooltips", dbr.config.getDefault("tooltips"))
+    show_tooltips = config.get("user").getBool("tooltips", dbr.config.getDefault("tooltips"))
     if show_tooltips != ConfCode.KEY_NO_EXIST:
       parent.opt_tooltips.Check(show_tooltips)
 
