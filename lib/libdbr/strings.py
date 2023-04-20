@@ -80,6 +80,8 @@ def fromString(st, handler=str):
 #  @param st
 #    String to parse.
 def boolFromString(st):
+  if type(st) != str:
+    st = toString(st)
   if st.lower() in ("true", "yes"):
     return True
   try:
