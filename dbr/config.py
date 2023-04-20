@@ -60,6 +60,8 @@ default_config = "{}/config".format(default_config_dir)
 # helper class
 class _IntPair:
   def __init__(self, value):
+    Logger(__name__).deprecated(_IntPair, alt="libdbr.types.Pair")
+
     self.first = 0
     self.second = 0
     if type(value) in (list, tuple):
