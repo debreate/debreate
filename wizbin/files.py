@@ -72,13 +72,13 @@ class Page(WizardPage):
     pnl_treeopts = BorderedPanel(self)
 
     self.chk_individuals = CheckBoxCFG(pnl_treeopts, label=GT("List files individually"),
-        name="individually", cfgSect="FILES")
+        name="individually", cfgSect="files")
 
     self.chk_preserve_top = CheckBoxCFG(pnl_treeopts, chkid.TOPLEVEL, GT("Preserve top-level directories"),
-        name="top-level", cfgSect="FILES")
+        name="top-level", cfgSect="files")
 
     self.chk_nofollow_symlink = CheckBoxCFG(pnl_treeopts, chkid.SYMLINK, GT("Don't follow symbolic links"),
-        defaultValue=True, name="nofollow-symlink", cfgSect="FILES")
+        defaultValue=True, name="nofollow-symlink", cfgSect="files")
 
     self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
     # ~ self.tree_dirs.setTree(wx.GenericDirCtrl(self.tree_dirs, dir=paths.getUserHome()))

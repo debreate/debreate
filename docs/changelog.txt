@@ -8,6 +8,7 @@ next
   - 'alpha'
     - Enables features that aren't ready for release
 - added Creative Commons & OpenGameArt.org license templates
+- build page options stored in user config instead of project
 - Some code merged from unstable branch
 - Rename log level argument value from 'warning' to 'warn'
 - Force main window to show on primary display at initial startup

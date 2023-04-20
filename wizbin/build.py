@@ -32,7 +32,7 @@ from globals.strings    import RemoveEmptyLines
 from globals.system     import PY_VER_MAJ
 from globals.tooltips   import SetPageToolTips
 from input.toggle       import CheckBox
-from input.toggle       import CheckBoxESS
+from input.toggle       import CheckBoxCFG
 from libdbr             import paths
 from libdbr             import strings
 from libdbr.fileio      import readFile
@@ -72,25 +72,25 @@ class Page(WizardPage):
 
     pnl_options = BorderedPanel(self)
 
-    self.chk_md5 = CheckBoxESS(pnl_options, chkid.MD5, GT("Create md5sums file"),
-        name="MD5", defaultValue=True, commands="md5sum")
+    self.chk_md5 = CheckBoxCFG(pnl_options, chkid.MD5, GT("Create md5sums file"), name="MD5",
+        defaultValue=True, commands="md5sum", cfgKey="md5sums", cfgSect="build")
     # The » character denotes that an alternate tooltip should be shown if the control is disabled
     self.chk_md5.tt_name = "md5»"
     self.chk_md5.col = 0
 
     # Option to strip binaries
-    self.chk_strip = CheckBoxESS(pnl_options, chkid.STRIP, GT("Strip binaries"),
-        name="strip»", defaultValue=True, commands="strip")
+    self.chk_strip = CheckBoxCFG(pnl_options, chkid.STRIP, GT("Strip binaries"), name="strip»",
+        defaultValue=True, commands="strip", cfgKey="strip", cfgSect="build")
     self.chk_strip.col = 0
 
     # Deletes the temporary build tree
-    self.chk_rmstage = CheckBoxESS(pnl_options, chkid.DELETE, GT("Delete staged directory"),
-        name="RMSTAGE", defaultValue=True)
+    self.chk_rmstage = CheckBoxCFG(pnl_options, chkid.DELETE, GT("Delete staged directory"),
+        name="RMSTAGE", defaultValue=True, cfgKey="delete_stage", cfgSect="build")
     self.chk_rmstage.col = 0
 
     # Checks the output .deb for errors
-    self.chk_lint = CheckBoxESS(pnl_options, chkid.LINT, GT("Check package for errors with lintian"),
-        name="LINTIAN", defaultValue=True, commands="lintian")
+    self.chk_lint = CheckBoxCFG(pnl_options, chkid.LINT, GT("Check package for errors with lintian"),
+        name="LINTIAN", defaultValue=True, commands="lintian", cfgKey="lintian", cfgSect="build")
     self.chk_lint.tt_name = "lintian»"
     self.chk_lint.col = 0
 
@@ -753,24 +753,25 @@ class Page(WizardPage):
 
   ## @todo Doxygen
   def GetSaveData(self):
-    build_list = []
+    pass
+    # ~ build_list = []
 
-    options = (
-      self.chk_md5,
-      self.chk_rmstage,
-      self.chk_lint,
-      )
+    # ~ options = (
+      # ~ self.chk_md5,
+      # ~ self.chk_rmstage,
+      # ~ self.chk_lint,
+      # ~ )
 
-    for O in options:
-      if O.GetValue():
-        build_list.append("1")
-      else:
-        build_list.append("0")
+    # ~ for O in options:
+      # ~ if O.GetValue():
+        # ~ build_list.append("1")
+      # ~ else:
+        # ~ build_list.append("0")
 
-    if self.chk_strip.GetValue():
-      build_list.append("strip")
+    # ~ if self.chk_strip.GetValue():
+      # ~ build_list.append("strip")
 
-    return "<<BUILD>>\n{}\n<</BUILD>>".format("\n".join(build_list))
+    # ~ return "<<BUILD>>\n{}\n<</BUILD>>".format("\n".join(build_list))
 
   ## Installs the built .deb package onto the system
   #
@@ -937,33 +938,30 @@ class Page(WizardPage):
       return False
 
   ## @todo Doxygen
-  #
-  #  TODO: Use string names in project file but retain
-  #        compatibility with older projects that use
-  #        integer values.
   def Set(self, data):
-    # ???: Redundant
-    self.Reset()
-    build_data = data.split("\n")
+    pass
+    # ~ # ???: Redundant
+    # ~ self.Reset()
+    # ~ build_data = data.split("\n")
 
-    if paths.getExecutable("md5sum"):
-      try:
-        self.chk_md5.SetValue(int(build_data[0]))
-      except IndexError:
-        pass
+    # ~ if paths.getExecutable("md5sum"):
+      # ~ try:
+        # ~ self.chk_md5.SetValue(int(build_data[0]))
+      # ~ except IndexError:
+        # ~ pass
 
-    try:
-      self.chk_rmstage.SetValue(int(build_data[1]))
-    except IndexError:
-      pass
+    # ~ try:
+      # ~ self.chk_rmstage.SetValue(int(build_data[1]))
+    # ~ except IndexError:
+      # ~ pass
 
-    if paths.getExecutable("lintian"):
-      try:
-        self.chk_lint.SetValue(int(build_data[2]))
-      except IndexError:
-        pass
+    # ~ if paths.getExecutable("lintian"):
+      # ~ try:
+        # ~ self.chk_lint.SetValue(int(build_data[2]))
+      # ~ except IndexError:
+        # ~ pass
 
-    self.chk_strip.SetValue(paths.getExecutable("strip") and "strip" in build_data)
+    # ~ self.chk_strip.SetValue(paths.getExecutable("strip") and "strip" in build_data)
 
   ## @todo Doxygen
   def SetSummary(self, event=None):
