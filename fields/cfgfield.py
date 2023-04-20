@@ -22,21 +22,15 @@ logger = Logger(__name__)
 
 ## Class that updates the configuration file when a specific event occurs.
 class ConfigField:
-  def __init__(self, cfgKey=None, cfgSect=None):
-    self.ConfigKey = cfgKey
+  def __init__(self, cfgKey=None, cfgSect=None, defaultValue=False):
+    self.ConfigKey = cfgKey or self.GetName()
     self.ConfigSection = cfgSect
-
-    if not self.ConfigSection:
-      self.ConfigSection = "GENERAL"
-
-    if self.ConfigKey == None:
-      self.ConfigKey = self.GetName()
 
     # Add to recognized configuration keys
     SetDefaultConfigKey(self.ConfigKey, self.GetDefaultValue())
 
     # Set state using config file if found
-    state = config.get("user").getBool(self.ConfigKey, "False")
+    state = config.get("user").getBool(self.ConfigKey, default=defaultValue, section=cfgSect)
 
     ret_codes = (
       ConfCode.FILE_NOT_FOUND,
@@ -96,7 +90,7 @@ class ConfigField:
     if event:
       event.Skip()
     cfg_user = config.get("user")
-    cfg_user.setValue(self.ConfigKey, self.GetConfigValue())
+    cfg_user.setValue(self.ConfigKey, self.GetConfigValue(), section=self.GetConfigSection())
     cfg_user.save()
 
   ## @todo Doxygen

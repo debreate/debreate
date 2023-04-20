@@ -78,7 +78,7 @@ class CheckBoxCFG(CheckBox, ConfigField):
 
     CheckBox.__init__(self, parent, win_id, label, pos, size, style, name, defaultValue,
         commands, requireAll)
-    ConfigField.__init__(self, cfgKey, cfgSect)
+    ConfigField.__init__(self, cfgKey, cfgSect, defaultValue)
 
 
 ## CheckBox class that notifies main window to mark project dirty.
