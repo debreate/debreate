@@ -100,7 +100,7 @@ class Config:
         continue
       # valid config lines must include '=' & start with alphabetical character
       if not "=" in li or not li[0].isalpha():
-        _logger.error("malformed line in config ({}:{}): '{}'"
+        _logger.warn("malformed line in config ({}:{}): '{}'"
             .format(self.__filepath, lidx, line_orig))
         continue
       key_value = li.split("=", 1)
@@ -108,7 +108,7 @@ class Config:
       value = key_value[1].strip()
       # check for empty key or value or invalid characters in key
       if not key or not value or re.search(r" |\t", key):
-        _logger.error("malformed line in config ({}:{}): '{}'"
+        _logger.warn("malformed line in config ({}:{}): '{}'"
             .format(self.__filepath, lidx, line_orig))
         continue
       lines.append(Pair(key, value))
@@ -159,8 +159,12 @@ class Config:
   #
   #  @param filepath
   #    Path to configuration file on filesystem.
-  def setFile(self, filepath):
+  #  @param load
+  #    Set to `False` to disable automatically loading file contents into memory.
+  def setFile(self, filepath, load=True):
     self.__filepath = filepath
+    if load and os.path.isfile(filepath):
+      self.load()
 
   ## Loads contents from disk.
   def load(self):
@@ -202,7 +206,9 @@ class Config:
   #    Value to be set.
   #  @param section
   #    Section name to be amended (default: "").
-  def setValue(self, key, value, section=None):
+  #  @param sep
+  #    For list types (default: ",").
+  def setValue(self, key, value, section=None, sep=","):
     section = section or self.__default_section
     try:
       key = strings.checkString(key).strip()
@@ -218,7 +224,7 @@ class Config:
         conf.pop(idx)
         insert_idx = idx
         break
-    conf.insert(insert_idx, Pair(key, strings.toString(value)))
+    conf.insert(insert_idx, Pair(key, strings.toString(value, sep=sep)))
     self.__sections[section] = conf
 
   ## Retreives a string value from config.
@@ -536,14 +542,14 @@ def __parseLines(filepath=None):
       continue
     # valid config lines must include '=' & start with alphabetical character
     if not "=" in line or not line[0].isalpha():
-      _logger.error("malformed line in config ({}): '{}'".format(lidx, line_orig))
+      _logger.warn("malformed line in config ({}): '{}'".format(lidx, line_orig))
       continue
     key_value = line.split("=", 1)
     key = key_value[0].strip()
     value = key_value[1].strip()
     # check for empty key or value or invalid characters in key
     if not key or not value or re.search(r" |\t", key):
-      _logger.error("malformed line in config ({}): '{}'".format(lidx, line_orig))
+      _logger.warn("malformed line in config ({}): '{}'".format(lidx, line_orig))
       continue
     lines.append((key, value))
   return lines

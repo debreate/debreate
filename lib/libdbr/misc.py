@@ -6,7 +6,9 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
-# miscellaneous functions
+## Miscellaneous functions.
+#
+#  @module libdbr.misc
 
 import hashlib
 import re

@@ -8,7 +8,7 @@
 
 ## String handling.
 #
-#  @package libdbr.strings
+#  @module libdbr.strings
 
 import re
 import sys

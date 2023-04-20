@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## System information.
+#
+#  @module libdbr.sysinfo
+
 import os
 import codecs
 import sys

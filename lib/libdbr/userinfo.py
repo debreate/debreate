@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## User information.
+#
+#  @module libdbr.userinfo
+
 import os
 import sys
 

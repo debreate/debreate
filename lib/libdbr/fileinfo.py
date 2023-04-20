@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## File & directory information.
+#
+#  @module libdbr.fileinfo
+
 import mimetypes
 import os
 import re

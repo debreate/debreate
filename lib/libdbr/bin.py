@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## Command execution functions.
+#
+#  @module libdbr.bin
+
 import subprocess
 
 

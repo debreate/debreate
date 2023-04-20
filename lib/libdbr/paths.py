@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## System paths handling.
+#
+#  @module libdbr.paths
+
 import os
 import sys
 import typing

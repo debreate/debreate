@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## Message logging.
+#
+#  @module libdbr.logger
+
 import errno
 import os
 import sys

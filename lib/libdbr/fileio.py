@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## File read/write handling.
+#
+#  @module libdbr.fileio
+
 import bz2
 import codecs
 import errno

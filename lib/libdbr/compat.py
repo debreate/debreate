@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## Version handling.
+#
+#  @module libdbr.compat
+
 from sys import version_info as py_version_info
 
 from . import strings

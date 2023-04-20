@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## Date & time formatting.
+#
+#  @module libdbr.dateinfo
+
 from datetime import datetime
 from time     import strftime
 

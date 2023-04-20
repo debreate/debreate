@@ -6,6 +6,10 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
+## Tasks execution & management.
+#
+#  @module libdbr.tasks
+
 import errno
 import types
 

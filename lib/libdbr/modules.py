@@ -6,7 +6,9 @@
 # * See: LICENSE.txt for details.                    *
 # ****************************************************
 
-# Python module handling
+## Python module handling.
+#
+#  @module libdbr.modules
 
 import errno
 import importlib

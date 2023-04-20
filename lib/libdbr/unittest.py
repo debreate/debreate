@@ -8,7 +8,7 @@
 
 ## Unit testing functions.
 #
-#  @package libdbr.unittest
+#  @module libdbr.unittest
 
 import importlib
 import re
