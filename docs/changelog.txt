@@ -18,7 +18,7 @@ next
   - Added 'refresh' & 'open directory' buttons to copyright page
   - Update some bitmap images
   - Show source directory in file list
-  - Option to preserve top-level directories in file list (adding files is currently broken)
+  - Option to preserve top-level directories in file list
   - Use checkbox for changelog target instead of radio button
   - Change layout of menu launcher page
   - added 'Collapse' option to file tree context menu

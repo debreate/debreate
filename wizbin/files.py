@@ -82,7 +82,11 @@ class Page(WizardPage):
 
     self.tree_dirs = DirectoryTreePanel(self, size=(300,20))
     # ~ self.tree_dirs.setTree(wx.GenericDirCtrl(self.tree_dirs, dir=paths.getUserHome()))
-    self.tree_dirs.setTree(DirectoryTree(self.tree_dirs))
+    tree = DirectoryTree(self.tree_dirs)
+    self.tree_dirs.setTree(tree)
+
+    # catch events to add items from directory tree
+    tree.addCallback("on_add", self.OnImportFromTree)
 
     # ----- Target path
     pnl_target = BorderedPanel(self)
@@ -129,9 +133,6 @@ class Page(WizardPage):
     # create an event to enable/disable custom widget
     for item in self.grp_targets:
       item.Bind(wx.EVT_RADIOBUTTON, self.OnSetDestination, id=wx.ID_ANY)
-
-    # Context menu events for directory tree
-    self.Bind(wx.EVT_MENU, self.OnImportFromTree, id=wx.ID_ADD)
 
     # Button events
     btn_add.Bind(wx.EVT_BUTTON, self.OnImportFromTree)

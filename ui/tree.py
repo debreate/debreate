@@ -170,6 +170,8 @@ class DirectoryTree(wx.GenericDirCtrl):
   def __init__(self, parent, id=wx.ID_ANY, path=paths.getUserHome()):
     super().__init__(parent, id, path, style=wx.DIRCTRL_DEFAULT_STYLE|wx.DIRCTRL_MULTIPLE)
 
+    self.callbacks = {}
+
     self.ctx_menu = wx.Menu()
 
     mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT("Add to project"))
@@ -192,6 +194,11 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.Bind(wx.EVT_MENU, self.onRename, id=menuid.RENAME)
     self.Bind(wx.EVT_MENU, self.onToggleHidden, id=menuid.TOGGLEHIDDEN)
     self.Bind(wx.EVT_MENU, self.onRefresh, id=wx.ID_REFRESH)
+
+    # add items via context menu
+    self.Bind(wx.EVT_MENU, self.onAddSelection, id=wx.ID_ADD)
+    # double-click files to add to project
+    self.GetTreeCtrl().Bind(wx.EVT_LEFT_DCLICK, self.onAddSelection)
 
   ## Opens the context menu.
   def onContextMenu(self, evt):
@@ -238,6 +245,29 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.UnselectAll()
     if len(paths) > 0:
       self.ExpandPath(paths[0])
+
+  ## Executes the "on_add" callback group.
+  def onAddSelection(self, evt):
+    if type(evt) == wx.MouseEvent:
+      path = self.GetPath()
+      if os.path.isdir(path) or not os.path.lexists(path):
+        evt.Skip()
+        return
+      logger.debug("adding file via double-click: {}".format(path))
+    if "on_add" in self.callbacks:
+      for func in self.callbacks["on_add"]:
+        func()
+
+  ## Adds a callback function to be triggered on special events.
+  #
+  #  @param group
+  #    Callback group.
+  #  @param func
+  #    Function to execute with group.
+  def addCallback(self, group, func):
+    if group not in self.callbacks:
+      self.callbacks[group] = []
+    self.callbacks[group].append(func)
 
 
 ## A customized directory tree that is compatible with older wx versions
