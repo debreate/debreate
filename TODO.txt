@@ -7,6 +7,7 @@ required for release:
 - Check for files being overwritten by duplicate items in file list before build
 
 priority:
+- use libdbr.tasks for build tasks
 - use static size for progress dialogs (prevent 'cancel' button from jumping around)
 - fallback to urllib if wget command not found
 - mark system license templates by different color text
