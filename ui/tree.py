@@ -186,16 +186,14 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.ctx_menu.Append(mitm_togglehidden)
     self.ctx_menu.Append(mitm_refresh)
 
-    # these options currently don't work
-    mitm_rename.Enable(False)
-
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.EXPAND)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.COLLAPSE)
+    self.Bind(wx.EVT_MENU, self.onRename, id=menuid.RENAME)
     self.Bind(wx.EVT_MENU, self.onToggleHidden, id=menuid.TOGGLEHIDDEN)
     self.Bind(wx.EVT_MENU, self.onRefresh, id=wx.ID_REFRESH)
 
-  ## @todo Doxygen
+  ## Opens the context menu.
   def onContextMenu(self, evt):
     logger.debug("context menu activated")
     expanding = False
@@ -219,6 +217,14 @@ class DirectoryTree(wx.GenericDirCtrl):
     if selections:
       for sel in selections:
         tree.Expand(sel) if expanding else tree.Collapse(sel)
+
+  ## Marks selected label for editing.
+  def onRename(self, evt):
+    tree = self.GetTreeCtrl()
+    selections = tree.GetSelections()
+    if len(selections) == 0:
+      return
+    tree.EditLabel(selections[0])
 
   ## Toggles visibility of hidden files.
   def onToggleHidden(self, evt):
