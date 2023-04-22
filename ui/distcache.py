@@ -28,6 +28,7 @@ from globals.threads      import Thread
 from libdbr.fileio        import readFile
 from libdbr.logger        import Logger
 from ui.dialog            import BaseDialog
+from ui.dialog            import ConfirmationDialog
 from ui.dialog            import ShowErrorDialog
 from ui.dialog            import ShowMessageDialog
 from ui.layout            import BoxSizer
@@ -132,6 +133,9 @@ class DistNamesCacheDialog(BaseDialog, ModuleAccessCtrl):
   ## Deletes the distribution names cache file
   def OnClearCache(self, event=None):
     if os.path.isfile(FILE_distnames):
+      dia = ConfirmationDialog(self, text=GT("Delete '{}'?").format(FILE_distnames))
+      if dia.ShowModal() != wx.ID_OK:
+        return True
       os.remove(FILE_distnames)
       # Update list on changelog page
       distname_input = GetField(pgid.CHANGELOG, inputid.DIST)

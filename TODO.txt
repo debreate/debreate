@@ -5,7 +5,6 @@ required for release:
 - examine changelog changes before release
 - close progress dialogs on errors so program doesn't freeze
 - Check for files being overwritten by duplicate items in file list before build
-- add confirmation dialog to clear local cache
 
 priority:
 - use static size for progress dialogs (prevent 'cancel' button from jumping around)

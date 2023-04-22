@@ -527,6 +527,9 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   def OnClearCache(self, event=None):
     dir_cache = globals.paths.getCacheDir()
     if os.path.isdir(dir_cache):
+      dia = ConfirmationDialog(self, text=GT("Delete '{}'?").format(dir_cache))
+      if dia.ShowModal() != wx.ID_OK:
+        return
       shutil.rmtree(dir_cache)
 
   ## Opens web links from the help menu
