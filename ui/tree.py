@@ -171,7 +171,8 @@ class DirectoryTree(wx.GenericDirCtrl):
     super().__init__(parent, id, path, style=wx.DIRCTRL_DEFAULT_STYLE|wx.DIRCTRL_MULTIPLE)
 
     self.callbacks = {}
-
+    # FIXME: not platform independent
+    self.cmd_trash = paths.getExecutable("gio")
     self.ctx_menu = wx.Menu()
 
     mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT("Add to project"))
@@ -184,6 +185,8 @@ class DirectoryTree(wx.GenericDirCtrl):
 
     self.ctx_menu.Append(mitm_add)
     self.ctx_menu.Append(mitm_rename)
+    if self.cmd_trash:
+      self.ctx_menu.Append(wx.MenuItem(self.ctx_menu, wx.ID_DELETE, GT("Trash")))
     self.ctx_menu.AppendSeparator()
     self.ctx_menu.Append(mitm_togglehidden)
     self.ctx_menu.Append(mitm_refresh)
@@ -194,6 +197,8 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.Bind(wx.EVT_MENU, self.onRename, id=menuid.RENAME)
     self.Bind(wx.EVT_MENU, self.onToggleHidden, id=menuid.TOGGLEHIDDEN)
     self.Bind(wx.EVT_MENU, self.onRefresh, id=wx.ID_REFRESH)
+    if self.cmd_trash:
+      self.Bind(wx.EVT_MENU, self.onTrash, id=wx.ID_DELETE)
 
     tree = self.GetTreeCtrl()
 
@@ -332,6 +337,17 @@ class DirectoryTree(wx.GenericDirCtrl):
       err_l1 = GT("Failed to set cursor")
       err_l2 = GT("Details below:")
       logger.error("\n	{}\n	{}\n\n{}".format(err_l1, err_l2, traceback.format_exc()))
+
+  ## Moves selected items to trash.
+  def onTrash(self, evt):
+    paths = self.GetPaths()
+    logger.debug("trashing files: {}".format(paths))
+    dia = ConfirmationDialog(self, text=GT("Move {} items to trash?").format(len(paths)))
+    if dia.ShowModal() != wx.ID_OK:
+      return
+    if libdbr.bin.trash(paths) != 0:
+      logger.error("failed to trash some files: {}".format(paths))
+    self.onRefresh(None)
 
 
 ## A customized directory tree that is compatible with older wx versions
