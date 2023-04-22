@@ -64,7 +64,7 @@ def getMimeType(filepath):
     if not f_info and f_exists:
       f_info = __default
 
-  return f_info
+  return f_info or "unknown"
 
 
 ## Checks if a file is marked as executable for the current user.
