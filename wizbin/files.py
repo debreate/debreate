@@ -85,9 +85,6 @@ class Page(WizardPage):
     tree = DirectoryTree(self.tree_dirs)
     self.tree_dirs.setTree(tree)
 
-    # catch events to add items from directory tree
-    tree.addCallback("on_add", self.OnImportFromTree)
-
     # ----- Target path
     pnl_target = BorderedPanel(self)
 
@@ -129,6 +126,10 @@ class Page(WizardPage):
     self.lst_files = FileListESS(self, inputid.LIST, name="filelist")
 
     # *** Event Handling *** #
+
+    # catch events to add items from directory tree
+    tree.addCallback("on_add", self.OnImportFromTree)
+    tree.drop_target = self.lst_files
 
     # create an event to enable/disable custom widget
     for item in self.grp_targets:

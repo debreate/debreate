@@ -195,10 +195,21 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.Bind(wx.EVT_MENU, self.onToggleHidden, id=menuid.TOGGLEHIDDEN)
     self.Bind(wx.EVT_MENU, self.onRefresh, id=wx.ID_REFRESH)
 
+    tree = self.GetTreeCtrl()
+
     # add items via context menu
     self.Bind(wx.EVT_MENU, self.onAddSelection, id=wx.ID_ADD)
     # double-click files to add to project
-    self.GetTreeCtrl().Bind(wx.EVT_LEFT_DCLICK, self.onAddSelection)
+    tree.Bind(wx.EVT_LEFT_DCLICK, self.onAddSelection)
+    # add items via drag-and-drop
+    tree.Bind(wx.EVT_TREE_BEGIN_DRAG, self.onDragStart)
+    # ~ self.Bind(wx.EVT_TREE_END_DRAG, self.onDragEnd)
+    # workaround because wx.EVT_TREE_END_DRAG doesn't work
+    tree.Bind(wx.EVT_LEFT_UP, self.onDragEnd)
+    self.dragging = False
+
+    # drop target window
+    self.drop_target = None
 
   ## Opens the context menu.
   def onContextMenu(self, evt):
@@ -258,6 +269,36 @@ class DirectoryTree(wx.GenericDirCtrl):
       for func in self.callbacks["on_add"]:
         func()
 
+  ## Handles actions when an item is dragged.
+  def onDragStart(self, evt):
+    logger.debug("file drag start")
+    evt.Allow()
+    self.dragging = True
+    # Show a 'dragging' cursor
+    self.updateCursor()
+    # Skipping drag event & using mouse release event for drop looks better
+    evt.Skip()
+
+  ## Handles actions when a dragged item is released.
+  def onDragEnd(self, evt):
+    if not self.dragging:
+      evt.Skip()
+      return
+    logger.debug("file drag end")
+    # Reset cursor to default
+    self.updateCursor(True)
+    self.dragging = False
+    if not self.drop_target:
+      return
+    on_target = MouseInsideWindow(self.drop_target)
+    logger.debug("Dropped inside file list: {}".format(on_target))
+    if on_target:
+      self.onAddSelection(None)
+
+    # WARNING: Skipping event causes selection to change in directory tree
+    #  	  if multiple items selected.
+    #event.Skip()
+
   ## Adds a callback function to be triggered on special events.
   #
   #  @param group
@@ -268,6 +309,29 @@ class DirectoryTree(wx.GenericDirCtrl):
     if group not in self.callbacks:
       self.callbacks[group] = []
     self.callbacks[group].append(func)
+
+  ## Sets the visible cursor on the Files page dependent on drag-&-drop state
+  #
+  #  @param reset
+  #    \b \e bool : Resets cursor back to default if True
+  def updateCursor(self, reset=False):
+    try:
+      if reset:
+        wx.SetCursor(wx.NullCursor)
+        return
+
+      new_cursor = "drag-file"
+      for path in self.GetPaths():
+        if os.path.isdir(path):
+          new_cursor = "drag-folder"
+          break
+
+      wx.SetCursor(GetCursor(new_cursor, 24))
+
+    except TypeError:
+      err_l1 = GT("Failed to set cursor")
+      err_l2 = GT("Details below:")
+      logger.error("\n	{}\n	{}\n\n{}".format(err_l1, err_l2, traceback.format_exc()))
 
 
 ## A customized directory tree that is compatible with older wx versions
