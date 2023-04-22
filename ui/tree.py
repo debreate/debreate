@@ -187,18 +187,25 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.ctx_menu.Append(mitm_refresh)
 
     # these options currently don't work
-    mitm_expand.Enable(False)
     mitm_rename.Enable(False)
     mitm_togglehidden.Enable(False)
     mitm_refresh.Enable(False)
 
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
+    self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.EXPAND)
 
   ## @todo Doxygen
   def onContextMenu(self, evt):
     logger.debug("context menu activated")
-
     self.PopupMenu(self.ctx_menu)
+
+  ## Expands the selected nodes in the directory tree.
+  def onExpand(self, evt=None):
+    tree = self.GetTreeCtrl()
+    selections = tree.GetSelections()
+    if selections:
+      for sel in selections:
+        tree.Expand(sel)
 
 
 ## A customized directory tree that is compatible with older wx versions
