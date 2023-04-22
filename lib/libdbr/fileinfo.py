@@ -20,6 +20,25 @@ from .bin import execute
 
 
 __default = "application/octet-stream"
+__directory = "inode/directory"
+
+__mimecmd = []
+
+## Parses command used for checking file type.
+def __check_cmd():
+  if len(__mimecmd) > 0:
+    return
+  cmd = paths.getExecutable("file")
+  if cmd:
+    __mimecmd.append(cmd)
+    __mimecmd.append("--mime-type")
+    __mimecmd.append("--brief")
+    return
+  # NOTE: 'mimetype' command is much slower
+  cmd = paths.getExecutable("mimetype")
+  if cmd:
+    __mimecmd.append(cmd)
+    __mimecmd.append("--brief")
 
 ## Retrieve MimeType info for file.
 #
@@ -28,12 +47,15 @@ __default = "application/octet-stream"
 #  @return
 #    MimeType ID string.
 def getMimeType(filepath):
-  f_info = None
+  if os.path.isdir(filepath):
+    return __directory
 
-  cmd_file = paths.getExecutable("file")
+  f_info = None
+  __check_cmd()
+
   f_exists = os.path.isfile(filepath)
-  if f_exists and cmd_file:
-    code, output = execute(cmd_file, "--mime-type", "--brief", filepath)
+  if f_exists and __mimecmd:
+    code, output = execute(__mimecmd[0], __mimecmd[1:], filepath)
     f_info = output
 
   if not f_info:
