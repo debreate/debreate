@@ -10,7 +10,12 @@
 #
 #  @module libdbr.bin
 
+import errno
+import os.path
 import subprocess
+import sys
+
+from . import paths
 
 
 ## Creates a uniform agument list.
@@ -53,3 +58,29 @@ def execute(cmd, *args, check=False, usestderr=False):
   if output:
     output = output.decode("utf-8").rstrip()
   return res.returncode, output
+
+
+__cmd_trash = []
+
+## Send a file to the trash/recycle bin.
+#
+#  @param files
+#    File(s) to be moved.
+#  @return
+#    `True` if ___files___ no longer exist.
+def trash(files):
+  if not __cmd_trash:
+    if sys.platform == "win32":
+      # TODO:
+      pass
+    else:
+      __cmd_trash.append(paths.getExecutable("gio"))
+      __cmd_trash.append("trash")
+  if __cmd_trash:
+    execute(__cmd_trash[0], __cmd_trash[1:], files)
+  if type(files) == str:
+    return 0 if not os.path.lexists(files) else errno.EEXIST
+  for f in files:
+    if os.path.lexists(f):
+      return errno.EEXIST
+  return 0
