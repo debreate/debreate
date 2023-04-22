@@ -188,11 +188,11 @@ class DirectoryTree(wx.GenericDirCtrl):
 
     # these options currently don't work
     mitm_rename.Enable(False)
-    mitm_togglehidden.Enable(False)
 
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.EXPAND)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.COLLAPSE)
+    self.Bind(wx.EVT_MENU, self.onToggleHidden, id=menuid.TOGGLEHIDDEN)
     self.Bind(wx.EVT_MENU, self.onRefresh, id=wx.ID_REFRESH)
 
   ## @todo Doxygen
@@ -219,6 +219,10 @@ class DirectoryTree(wx.GenericDirCtrl):
     if selections:
       for sel in selections:
         tree.Expand(sel) if expanding else tree.Collapse(sel)
+
+  ## Toggles visibility of hidden files.
+  def onToggleHidden(self, evt):
+    self.ShowHidden(self.ctx_menu.FindItemById(menuid.TOGGLEHIDDEN).IsChecked())
 
   ## Reloads directory tree.
   def onRefresh(self, evt):
