@@ -8,6 +8,7 @@ required for release:
 - add confirmation dialog to clear local cache
 
 priority:
+- use static size for progress dialogs (prevent 'cancel' button from jumping around)
 - fallback to urllib if wget command not found
 - mark system license templates by different color text
 - add option to override system locale
