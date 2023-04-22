@@ -189,11 +189,11 @@ class DirectoryTree(wx.GenericDirCtrl):
     # these options currently don't work
     mitm_rename.Enable(False)
     mitm_togglehidden.Enable(False)
-    mitm_refresh.Enable(False)
 
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.EXPAND)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.COLLAPSE)
+    self.Bind(wx.EVT_MENU, self.onRefresh, id=wx.ID_REFRESH)
 
   ## @todo Doxygen
   def onContextMenu(self, evt):
@@ -219,6 +219,15 @@ class DirectoryTree(wx.GenericDirCtrl):
     if selections:
       for sel in selections:
         tree.Expand(sel) if expanding else tree.Collapse(sel)
+
+  ## Reloads directory tree.
+  def onRefresh(self, evt):
+    # remember selection
+    paths = self.GetPaths()
+    self.ReCreateTree()
+    self.UnselectAll()
+    if len(paths) > 0:
+      self.ExpandPath(paths[0])
 
 
 ## A customized directory tree that is compatible with older wx versions
