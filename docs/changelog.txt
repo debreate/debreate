@@ -21,6 +21,7 @@ next
   - Option to preserve top-level directories in file list (adding files is currently broken)
   - Use checkbox for changelog target instead of radio button
   - Change layout of menu launcher page
+  - added 'Collapse' option to file tree context menu
 - Help reference:
   - Link to Debian manual page for overriding Lintian tags
   - Link to unofficial page for writing manual pages

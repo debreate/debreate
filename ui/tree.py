@@ -173,14 +173,14 @@ class DirectoryTree(wx.GenericDirCtrl):
     self.ctx_menu = wx.Menu()
 
     mitm_add = wx.MenuItem(self.ctx_menu, wx.ID_ADD, GT("Add to project"))
-    mitm_expand = wx.MenuItem(self.ctx_menu, menuid.EXPAND, GT("Expand"))
+    self.mitm_expand = wx.MenuItem(self.ctx_menu, menuid.EXPAND, GT("Expand"))
+    self.mitm_collapse = wx.MenuItem(self.ctx_menu, menuid.COLLAPSE, GT("Collapse"))
     mitm_rename = wx.MenuItem(self.ctx_menu, menuid.RENAME, GT("Rename"))
     mitm_togglehidden = wx.MenuItem(self.ctx_menu, menuid.TOGGLEHIDDEN, GT("Show Hidden"),
         kind=wx.ITEM_CHECK)
     mitm_refresh = wx.MenuItem(self.ctx_menu, wx.ID_REFRESH, GT("Refresh"))
 
     self.ctx_menu.Append(mitm_add)
-    self.ctx_menu.Append(mitm_expand)
     self.ctx_menu.Append(mitm_rename)
     self.ctx_menu.AppendSeparator()
     self.ctx_menu.Append(mitm_togglehidden)
@@ -193,19 +193,32 @@ class DirectoryTree(wx.GenericDirCtrl):
 
     self.Bind(wx.EVT_CONTEXT_MENU, self.onContextMenu)
     self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.EXPAND)
+    self.Bind(wx.EVT_MENU, self.onExpand, id=menuid.COLLAPSE)
 
   ## @todo Doxygen
   def onContextMenu(self, evt):
     logger.debug("context menu activated")
+    expanding = False
+    tree = self.GetTreeCtrl()
+    for sel in tree.GetSelections():
+      if not tree.IsExpanded(sel):
+        expanding = True
+        break
+    if expanding:
+      self.ctx_menu.Insert(1, self.mitm_expand)
+    else:
+      self.ctx_menu.Insert(1, self.mitm_collapse)
     self.PopupMenu(self.ctx_menu)
+    self.ctx_menu.Remove(self.ctx_menu.FindItemByPosition(1))
 
   ## Expands the selected nodes in the directory tree.
-  def onExpand(self, evt=None):
+  def onExpand(self, evt):
+    expanding = evt.GetId() != menuid.COLLAPSE
     tree = self.GetTreeCtrl()
     selections = tree.GetSelections()
     if selections:
       for sel in selections:
-        tree.Expand(sel)
+        tree.Expand(sel) if expanding else tree.Collapse(sel)
 
 
 ## A customized directory tree that is compatible with older wx versions
