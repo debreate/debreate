@@ -367,13 +367,14 @@ class FileList(BasicFileList):
       filename = os.path.basename(filename)
 
     source_path = os.path.join(sourceDir, filename)
+    mime_type = fileinfo.getMimeType(source_path)
 
-    logger.debug(GT("Adding file: {}").format(source_path))
+    logger.debug("adding file: {} ({})".format(source_path, mime_type))
 
     self.InsertStringItem(list_index, filename)
     self.SetStringItem(list_index, columns.SOURCE, sourceDir)
     self.SetStringItem(list_index, columns.TARGET, targetDir)
-    self.SetStringItem(list_index, columns.TYPE, fileinfo.getMimeType(source_path))
+    self.SetStringItem(list_index, columns.TYPE, mime_type)
 
     if os.path.islink(source_path):
       self.SetItemTextColour(list_index, COLOR_link)
@@ -583,6 +584,8 @@ class FileList(BasicFileList):
 
     while selected_count:
       current_selected = self.GetFirstSelected()
+      if current_selected < 0:
+        break
 
       logger.debug(GT("Removing selected item {} of {}".format(selected_total - selected_count + 1,
                                     selected_total
