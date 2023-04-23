@@ -104,3 +104,10 @@ def getMainWindow():
 #    `ui.wizard.Wizard` instance.
 def getWizard():
   return get().getWizard()
+
+## Helper function go retrieve a page of the wizard.
+#
+#  @param pageId
+#    Integer page identifier.
+def getPage(pageId):
+  return getWizard().getPage(pageId)
