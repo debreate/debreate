@@ -602,8 +602,8 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
     self.Wizard.GetPage(pgid.MENU).SetLauncherData(m_data, enabled=True)
 
     # Get Build Data
-    build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
-    self.Wizard.GetPage(pgid.BUILD).Set(build_data)
+    # ~ build_data = data.split("<<BUILD>>\n")[1].split("\n<</BUILD")[0]#.split("\n")
+    # ~ self.Wizard.GetPage(pgid.BUILD).Set(build_data)
 
     return opened
 
