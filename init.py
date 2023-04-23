@@ -52,8 +52,6 @@ command_line.init(os.path.basename(sys.argv[0]))
 
 logger.setLevel(command_line.options.log_level)
 
-parsed_path = command_line.options.project
-
 dir_app = paths.getAppDir()
 
 setTranslator(appinfo.getLocaleDir())
@@ -200,17 +198,15 @@ def logger_callback():
   Debreate.saveConfigAndShutdown()
 logger.setCallback(logger_callback)
 
-if parsed_path:
-  project_file = parsed_path
-  logger.debug(GT("Opening project from argument: {}").format(project_file))
-
-  if Debreate.OpenProject(project_file):
-    working_dir = os.path.dirname(project_file)
+Debreate.InitWizard()
+if command_line.options.project:
+  logger.debug(GT("Opening project from argument: {}").format(command_line.options.project))
+  if Debreate.OpenProject(command_line.options.project):
+    working_dir = os.path.dirname(command_line.options.project)
 
 # Set working directory
 ChangeWorkingDirectory(working_dir)
 
-Debreate.InitWizard()
 Debreate.Show(True)
 if first_run:
   firstrun.launch()

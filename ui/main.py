@@ -551,6 +551,7 @@ class MainWindow(wx.Frame, ModuleAccessCtrl):
   #  @param project_file
   #    \b \e str : Path to project file
   def OpenProject(self, project_file):
+    project_file = os.path.realpath(project_file)
     logger.debug("Opening project: {}".format(project_file))
 
     if not os.path.isfile(project_file):
