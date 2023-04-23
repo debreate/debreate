@@ -65,7 +65,6 @@ from ui.layout            import BoxSizer
 from ui.menu              import createMenuBar
 from ui.progress          import ProgressDialog
 from ui.quickbuild        import QuickBuild
-from ui.statusbar         import StatusBar
 from wiz.helper           import GetPage
 from wiz.pginit           import Page as PageInit
 from wiz.wizard           import Wizard
@@ -110,7 +109,7 @@ class MainWindow(wx.Frame):
     self.SetIcon(Icon(LOGO))
 
     # *** Status Bar *** #
-    StatusBar(self)
+    self.SetStatusBar(wx.StatusBar(self, style=wx.STB_SIZEGRIP))
 
     # *** Menus *** #
     createMenuBar(self)
